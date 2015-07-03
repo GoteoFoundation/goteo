@@ -140,7 +140,7 @@ class InfoTest extends \PHPUnit_Framework_TestCase {
      */
     public function testDeleteInfo($ob) {
         //delete post
-        $this->assertTrue($ob->delete());
+        $this->assertTrue($ob->dbDelete());
 
         return $ob;
     }

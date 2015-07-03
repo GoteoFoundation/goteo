@@ -17,8 +17,7 @@ module.exports = function(grunt) {
         livereload: {
             options: {
                 base: '<%= goteo.app %>', //Set the document root to the src folder.
-                // router: '../var/php/router_dev.php',
-                router: '../var/php/router.php',
+                router: '../var/php/router_dev.php',
                 open: true,
             },
         },

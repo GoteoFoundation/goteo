@@ -2,10 +2,10 @@
 use Goteo\Library\Text,
     Goteo\Model\License;
 
-$level = (int) $this['level'] ?: 3;
+$level = (int) $vars['level'] ?: 3;
 
-$project = $this['project'];
-$only = (in_array($this['only'], array('individual', 'social'))) ? $this['only'] : null;
+$project = $vars['project'];
+$only = (in_array($vars['only'], array('individual', 'social'))) ? $vars['only'] : null;
 
 $licenses = array();
 

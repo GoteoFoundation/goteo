@@ -3,7 +3,7 @@
 use Goteo\Library\Text;
 use Goteo\Library\Mail;
 
-$mailing = $this['mailing'];
+$mailing = $vars['mailing'];
 
 $link = Mail::getSinovesLink($mailing->mail);
 
@@ -20,7 +20,7 @@ $link = Mail::getSinovesLink($mailing->mail);
             <th>Alias</th>
             <th>Usuario</th>
         </tr>
-        <?php foreach ($this['receivers'] as $user) : ?>
+        <?php foreach ($vars['receivers'] as $user) : ?>
         <tr>
             <?php echo "<td>$user->email</td><td>$user->name</td><td>$user->user</td>" ?>
         </tr>

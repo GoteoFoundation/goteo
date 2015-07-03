@@ -149,8 +149,10 @@ namespace Goteo\Model\Project {
         /*
          * Recalcular imagen principal
          */
-        public function setImage ($id, $gallery) {
-
+        public static function setImage ($id, $gallery) {
+            if(!$gallery) {
+                return new Model\Image();
+            }
             // sacar objeto imagen de la galeria
             $image = $gallery[0]->imageData;
 
@@ -159,21 +161,6 @@ namespace Goteo\Model\Project {
             self::query($sql, array(':image'=>$image->id, ':id'=>$id));
 
             return $image;
-
-        }
-
-
-        /*
-         * Para aplicar una seccion o un enlace
-         */
-        public static function updateImage ($project, $image, $field, $value) {
-
-            $sql = "UPDATE project_image SET `$field` = :val WHERE project = :project AND MD5(image) = :image";
-            if (self::query($sql, array(':project'=>$project, ':image'=>$image, ':val'=>$value))) {
-                return true;
-            } else {
-                return false;
-            }
 
         }
 

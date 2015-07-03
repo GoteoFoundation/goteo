@@ -2,7 +2,7 @@
 use Goteo\Library\Text,
     Goteo\Core\View;
 
-$posts = $this['posts'];
+$posts = $vars['posts'];
 
 include __DIR__ . '/../prologue.html.php';
 include __DIR__ . '/../header.html.php';
@@ -19,7 +19,7 @@ $go_up = Text::get('regular-go_up');
 		</div>
 	</div>
 
-<?php if(isset($_SESSION['messages'])) { include __DIR__ . '/../header/message.html.php'; } ?>
+<?php if($_SESSION['messages']) { include __DIR__ . '/../header/message.html.php'; } ?>
 
 	<div id="main" class="threecols">
 		<div id="about-content">

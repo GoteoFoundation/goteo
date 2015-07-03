@@ -3,14 +3,14 @@
 use Goteo\Library\Text,
     Goteo\Model\User\Translate;
 
-$node = $this['node'];
+$node = $vars['node'];
 $transNode = Translate::is_legal($_SESSION['user']->id, $node, 'node') ? true : false;
 $translator = ( isset($_SESSION['user']->roles['translator']) ) ? true : false;
 ?>
 <a href="/admin/stories/add" class="button">Nueva historia exitosa</a>
 
 <div class="widget board">
-    <?php if (!empty($this['storyed'])) : ?>
+    <?php if (!empty($vars['storyed'])) : ?>
     <table>
         <thead>
             <tr>
@@ -26,7 +26,7 @@ $translator = ( isset($_SESSION['user']->roles['translator']) ) ? true : false;
         </thead>
 
         <tbody>
-            <?php foreach ($this['storyed'] as $story) :
+            <?php foreach ($vars['storyed'] as $story) :
                 $story_title = (!empty($story->name)) ? $story->name : $story->title;
                 ?>
             <tr>

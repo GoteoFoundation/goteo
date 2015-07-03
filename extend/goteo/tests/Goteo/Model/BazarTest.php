@@ -4,10 +4,11 @@
 namespace Goteo\Model\Tests;
 
 use Goteo\Model\Bazar;
+use Goteo\Model\Project;
 
 class BazarTest extends \PHPUnit_Framework_TestCase {
 
-    private static $data = array('reward' => 1, 'project' => 'test', 'title' => 'test title', 'description' => 'test description', 'order' => 0, 'active' => 0);
+    private static $data = array('reward' => 1, 'title' => 'test title', 'description' => 'test description', 'order' => 0, 'active' => 0);
 
     public function testInstance() {
         \Goteo\Core\DB::cache(false);
@@ -23,14 +24,22 @@ class BazarTest extends \PHPUnit_Framework_TestCase {
      * @depends testInstance
      */
     public function testValidate($ob) {
+        delete_test_project();
+        delete_test_user();
+
         $this->assertFalse($ob->validate(), print_r($errors, 1));
         $this->assertFalse($ob->save());
     }
 
     public function testCreate() {
+        $user = get_test_user();
+        $project = get_test_project();
+        $this->assertInstanceOf('\Goteo\Model\Project', $project);
+        self::$data['project'] = $project->id;
         $ob = new Bazar(self::$data);
         $this->assertTrue($ob->validate($errors), print_r($errors, 1));
         $this->assertTrue($ob->save());
+
         $ob = Bazar::get($ob->id);
         $this->assertInstanceOf('\Goteo\Model\Bazar', $ob);
 
@@ -39,7 +48,7 @@ class BazarTest extends \PHPUnit_Framework_TestCase {
             // else $this->assertInstanceOf('\Goteo\Model\Project', $ob->$key, "[$key]: " . print_r($ob->$key, 1));
         }
 
-        $this->assertTrue($ob->delete());
+        $this->assertTrue($ob->dbDelete());
 
         //save and delete statically
         $this->assertTrue($ob->save());
@@ -54,5 +63,13 @@ class BazarTest extends \PHPUnit_Framework_TestCase {
         $ob = Bazar::get($ob->id);
         $this->assertFalse($ob);
         $this->assertFalse(Bazar::delete($ob->id));
+    }
+
+    /**
+     * Some cleanup
+     */
+    static function tearDownAfterClass() {
+        delete_test_project();
+        delete_test_user();
     }
 }

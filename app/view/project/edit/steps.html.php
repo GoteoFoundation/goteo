@@ -2,8 +2,8 @@
 
 use Goteo\Library\Text;
 
-$errors = $this['errors'];
-$steps = $this['steps'];
+$errors = $vars['errors'];
+$steps = $vars['steps'];
 
 /**
  *  Estilos
@@ -28,11 +28,11 @@ $line = array(
 );
 
 // URL
-$url = "/project/edit/{$this['id_project']}/";
+$url = "/project/edit/{$vars['id_project']}/";
 ?>
 
 <div id="project-steps">
-            
+
             <fieldset>
 
                 <legend><h3><?php echo Text::get('form-navigation_bar-header'); ?></h3></legend>
@@ -46,7 +46,7 @@ $url = "/project/edit/{$this['id_project']}/";
                         if ($stepId == 'preview') echo '</fieldset>';
 
                         // circulito
-                        $active = ($this['step'] == $stepId) ? ' active' : ' activable';
+                        $active = ($vars['step'] == $stepId) ? ' active' : ' activable';
 
                         echo '<a href="' . $url . $stepId . '" title="' . $stepData['title'] . '">
                             <span class="step' . $line[$stepId] . $active . '">

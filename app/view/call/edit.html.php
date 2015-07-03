@@ -5,23 +5,23 @@ use Goteo\Core\View,
     Goteo\Library\SuperForm;
 
 $bodyClass = 'project-edit';
+$vars = $this->vars;
+$call = $vars['call'];
 
-$call = $this['call'];
-
-if (!empty($this['success'])) {
-    Goteo\Library\Message::Info($this['success']);
+if (!empty($vars['success'])) {
+    Goteo\Application\Message::info($vars['success']);
 } elseif ($call->status == 1) {
-    Goteo\Library\Message::Info(Text::get('call-form-ajax-info'));
+    Goteo\Application\Message::info(Text::get('call-form-ajax-info'));
 }
 
-$steps  = View::get('call/edit/steps.html.php', array('steps' => $this['steps'], 'step' => $this['step'], 'id_call' => $call->id));
+$steps  = View::get('call/edit/steps.html.php', array('steps' => $vars['steps'], 'step' => $vars['step'], 'id_call' => $call->id));
 
 // next step
 $debug = (isset($_GET['debug']));
-if ($debug) var_dump($this['step']);
-$keys = array_keys($this['steps']);
+if ($debug) var_dump($vars['step']);
+$keys = array_keys($vars['steps']);
 if ($debug) var_dump($keys);
-$next_step = $keys[ array_search($this['step'], $keys) + 1];
+$next_step = $keys[ array_search($vars['step'], $keys) + 1];
 if ($debug) var_dump($next_step);
 if ($debug) die;
 
@@ -40,17 +40,17 @@ include __DIR__ . '/../prologue.html.php';
         </div>
     </div>
 
-<?php if(isset($_SESSION['messages'])) { include __DIR__ . '/../header/message.html.php'; } ?>
+<?php if($_SESSION['messages']) { include __DIR__ . '/../header/message.html.php'; } ?>
 
-    <div id="main" class="<?php echo htmlspecialchars($this['step']) ?>">
+    <div id="main" class="<?php echo htmlspecialchars($vars['step']) ?>">
 
         <form method="post" action="<?php echo SITE_URL . "/call/edit/" . $call->id ?>" class="project" enctype="multipart/form-data" >
 
-            <input type="hidden" name="view-step-<?php echo $this['step'] ?>" value="please" />
+            <input type="hidden" name="view-step-<?php echo $vars['step'] ?>" value="please" />
 
             <?php echo $steps ?>
 
-            <?php if($this['step']) echo View::get("call/edit/{$this['step']}.html.php", $this->getArrayCopy() + array('level' => 3, 'next'=>$next_step)) ?>
+            <?php if($vars['step']) echo View::get("call/edit/{$vars['step']}.html.php", $vars + array('level' => 3, 'next'=>$next_step)) ?>
 
             <?php echo $steps ?>
 

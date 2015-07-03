@@ -3,6 +3,8 @@
 namespace Goteo\Model {
 
     use Goteo\Core\Model;
+    use Goteo\Application\Session;
+    use Goteo\Application\Config;
     use Goteo\Library\Text,
         Goteo\Model\Image,
         Goteo\Model\User,
@@ -496,7 +498,7 @@ namespace Goteo\Model {
                     ':uid' => $this->user,
                     ':unode' => $unode,
                     ':iid' => $this->id,
-                    ':inode' => NODE_ID)
+                    ':inode' => Config::get('current_node'))
                 );
 
                 // y las recompensas
@@ -607,7 +609,7 @@ namespace Goteo\Model {
                 $sql = "INSERT INTO invest_detail (invest, type, log, date)
                     VALUES (:id, 'solved', :log, NOW())";
 
-                self::query($sql, array(':id'=>$this->id, ':log'=>'Incidencia resuelta por el admin '.$_SESSION['user']->name.', aporte pasado a cash y cobrado'));
+                self::query($sql, array(':id'=>$this->id, ':log'=>'Incidencia resuelta por el admin '.Session::getUser()->name.', aporte pasado a cash y cobrado'));
 
 
                 self::query("COMMIT");
@@ -1272,7 +1274,8 @@ namespace Goteo\Model {
 
             $sql = "UPDATE invest SET
                         returned = :returned,
-                        status = $status
+                        status = $status,
+                        pool = 0
                     WHERE id = :id";
 
             if (self::query($sql, $values)) {

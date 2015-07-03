@@ -3,11 +3,12 @@
 use Goteo\Library\Text;
 use Goteo\Library\Mail;
 
-$mailing = $this['mailing'];
-$list = $this['list'];
-$detail = $this['detail'];
+$mailing = $vars['mailing'];
+$list = $vars['list'];
+$detail = $vars['detail'];
 
-$link = Mail::getSinovesLink($mailing->mail);
+// $link = Mail::getSinovesLink($mailing->mail);
+$link = '/mail/'.\mybase64_encode(md5(uniqid()) . '¬¬' . $mailing->mail);
 
 $title = array(
     'receivers' => 'Destinatarios',
@@ -21,7 +22,7 @@ $title = array(
         <p>
            Asunto: <strong><?php echo $mailing->subject ?></strong><br />
            Iniciado el: <strong><?php echo $mailing->date ?></strong><br />
-           Estado del envío automático: <?php echo ($mailing->active) 
+           Estado del envío automático: <?php echo ($mailing->active)
                ? '<span style="color:green;font-weight:bold;">Activo</span>'
                : '<span style="color:red;font-weight:bold;">Inactivo</span>' ?>
         </p>

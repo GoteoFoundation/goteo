@@ -1,15 +1,15 @@
 <?php
 use Goteo\Library\Text;
 
-if ($this['project']->media->url):
+if ($vars['project']->media->url):
 
-	if(!empty($this['project']->secGallery['play-video'][0])):
-		$img_url=$this['project']->secGallery['play-video'][0]->imageData->getLink(620, 380);
+	if(!empty($vars['project']->secGallery['play-video'][0])):
+		$img_url=$vars['project']->secGallery['play-video'][0]->imageData->getLink(620, 380);
 ?>
         <script type="text/javascript">
             function loadVideo() {
                 var vid = document.getElementById('video_holder');
-                vid.innerHTML = '<?php echo $this['project']->media->getEmbedCode(false, null,1); ?>';
+                vid.innerHTML = '<?php echo $vars['project']->media->getEmbedCode(false, null,1); ?>';
             }
         </script>
 		<div class="widget project-media" style="position:relative;" id="video_holder">
@@ -19,24 +19,24 @@ if ($this['project']->media->url):
 <?php
 	else:
 ?>
-		<div class="widget project-media" <?php if ($this['project']->media_usubs) : ?>style="height:412px;"<?php endif; ?>>
-	    <?php echo $this['project']->media->getEmbedCode($this['project']->media_usubs, \LANG); ?>
+		<div class="widget project-media" <?php if ($vars['project']->media_usubs) : ?>style="height:412px;"<?php endif; ?>>
+	    <?php echo $vars['project']->media->getEmbedCode($vars['project']->media_usubs, \LANG); ?>
 		</div>
 <?php
 	endif;
-elseif($this['project']->image && $this['project']->image->id):
+elseif($vars['project']->image && $vars['project']->image->id):
 ?>
         <div class="widget project-media" style="position:relative;height:auto;" id="video_holder">
-        <img src="<?php echo $this['project']->image->getLink(620, 380); ?>" alt="" />
+        <img src="<?php echo $vars['project']->image->getLink(620, 380); ?>" alt="" />
         </div>
 <?php
     // Eliminar de la galeria si ya se ha mostrado
     // TODO: quiza esto no se deberia hacer aqui
     //       o no se deberia hacer y punto (repetir imagenes)
-    if($this['project']->gallery) {
-        foreach($this['project']->gallery as $i => $img) {
-            if($img->imageData->id === $this['project']->image->id) {
-                unset($this['project']->gallery[$i]);
+    if($vars['project']->gallery) {
+        foreach($vars['project']->gallery as $i => $img) {
+            if($img->imageData->id === $vars['project']->image->id) {
+                unset($vars['project']->gallery[$i]);
             }
         }
     }

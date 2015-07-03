@@ -2,6 +2,9 @@
 
 namespace Goteo\Model {
 
+    use Goteo\Application\Lang;
+    use Goteo\Application\Config;
+
     class Interest extends \Goteo\Model\Category {
 
         public
@@ -15,10 +18,10 @@ namespace Goteo\Model {
          * @TODO añadir el numero de usos
          */
         public static function getAll () {
-
+            $lang = Lang::current();
             $list = array();
 
-             if(self::default_lang(\LANG)=='es') {
+             if(self::default_lang($lang) === Config::get('lang')) {
                 $different_select=" IFNULL(category_lang.name, category.name) as name,
                                     IFNULL(category_lang.description, category.description) as description";
                 }
@@ -47,7 +50,7 @@ namespace Goteo\Model {
                 $eng_join
                 ORDER BY `order` ASC";
 
-            $query = static::query($sql, array(':lang'=>\LANG));
+            $query = static::query($sql, array(':lang'=>$lang));
 
             foreach ($query->fetchAll(\PDO::FETCH_CLASS, __CLASS__) as $interest) {
                 if ($interest->id == 15) continue;

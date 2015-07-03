@@ -1,7 +1,7 @@
 <?php
 use Goteo\Library\Text;
 
-$banner = $this['banner'];
+$banner = $vars['banner'];
 
 $metter_txt = Text::get('regular-banner-metter');
 list($mreach, $mof, $mrest) = explode('-', $metter_txt);

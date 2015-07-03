@@ -10,20 +10,20 @@ include __DIR__ . '/header.html.php';
 
     <div id="sub-header">
         <div>
-            <h2 style="margin-bottom:5px"><?php echo $this['description']; ?></h2>
+            <h2 style="margin-bottom:5px"><?php echo $vars['description']; ?></h2>
         </div>
     </div>
 
     <div id="main">
 
-    <?php if ($this['show'] == 'activity') : /* ahora el feed*/ ?>
-        <?php echo View::get('community/feed.html.php', $this) ?>
+    <?php if ($vars['show'] == 'activity') : /* ahora el feed*/ ?>
+        <?php echo View::get('community/feed.html.php', $vars) ?>
     <?php /* Hasta aqui el feed*/ else : /*a ahora sharemates global*/ ?>
         <div class="center">
-            <?php echo View::get('community/sharemates.html.php', $this) ?>
+            <?php echo View::get('community/sharemates.html.php', $vars) ?>
         </div>
         <div class="side">
-            <?php echo View::get('community/investors.html.php', $this) ?>
+            <?php echo View::get('community/investors.html.php', $vars) ?>
         </div>
     <?php /* Hasta qui sharemates global */ endif; ?>
 

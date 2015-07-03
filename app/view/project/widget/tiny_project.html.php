@@ -5,7 +5,7 @@ use Goteo\Core\View,
     Goteo\Library\Check,
     Goteo\Model\Image;
 
-$project = $this['project'];
+$project = $vars['project'];
 
 $proj_id        = $project->id;
 $proj_name      = $project->name;

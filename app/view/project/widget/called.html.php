@@ -2,7 +2,7 @@
 
 use Goteo\Library\Text;
 
-$project = $this['project'];
+$project = $vars['project'];
 $call = $project->called;
 ?>
 <div class="widget project-called collapsable activable" id="project-called">

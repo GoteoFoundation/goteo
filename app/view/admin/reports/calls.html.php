@@ -2,8 +2,8 @@
 
 use Goteo\Library\Text;
 
-$data = $this['data'];
-$filters = $this['filters'];
+$data = $vars['data'];
+$filters = $vars['filters'];
 
 // lista de proyectos y su estado de financiación
 if (is_array($data)) : ?>
@@ -53,7 +53,7 @@ if (is_array($data)) : ?>
                 <td><?php echo $row['fin_0']; ?></td>
                 <td><?php echo $row['init_1']; ?></td>
                 <td><?php echo $row['fin_1']; ?></td>
-                <td><a href="/admin/calls/?name=<?php echo substr($row['name'], 0, 10); ?>" target="_blank">[Gestion]</td>
+                <td><a href="/admin/calls?name=<?php echo substr($row['name'], 0, 10); ?>" target="_blank">[Gestion]</td>
                 <td><a href="/call/<?php echo $id; ?>" target="_blank">[Ver]</td>
             </tr>
             <?php endforeach; ?>

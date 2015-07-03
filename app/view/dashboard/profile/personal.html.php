@@ -3,9 +3,9 @@
 use Goteo\Library\Text,
     Goteo\Library\SuperForm;
 
-$errors = $this['errors'];
-$personal = $this['personal'];
-$this['level'] = 3;
+$errors = $vars['errors'];
+$personal = $vars['personal'];
+$vars['level'] = 3;
 
 ?>
 <form method="post" action="/dashboard/profile/personal" class="project" enctype="multipart/form-data">
@@ -15,7 +15,7 @@ echo SuperForm::get(array(
     //si no se quiere que se auto-actualize el formulario descomentar la siguiente linea:
     // 'autoupdate'    => false,
 
-    'level'         => $this['level'],
+    'level'         => $vars['level'],
     'method'        => 'post',
     'hint'          => Text::get('guide-dashboard-user-personal'),
     'footer'        => array(

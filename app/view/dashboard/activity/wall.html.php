@@ -3,7 +3,7 @@ use Goteo\Core\View,
     Goteo\Library\Text,
     Goteo\Library\Feed;
 
-$items = $this['items'];
+$items = $vars['items'];
 ?>
 <div class="widget feed">
     <script type="text/javascript">

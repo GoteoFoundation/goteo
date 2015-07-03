@@ -4,11 +4,11 @@ use Goteo\Library\Text,
     Goteo\Model\Blog\Post,
     Goteo\Library\Feed;
 
-$blog = $this['blog'];
+$blog = $vars['blog'];
 
 $list = array();
 
-switch ($this['type']) {
+switch ($vars['type']) {
     case 'posts':
         $title = Text::get('blog-side-last_posts');
         $items = Post::getAll(null, 7);
@@ -23,7 +23,7 @@ switch ($this['type']) {
         // enlace a la lista de entradas con filtro tag
         foreach ($items as $item) {
             if ($item->used > 0) {
-                $list[] = '<a href="/blog/?tag='.$item->id.'">'.$item->name.'</a>';
+                $list[] = '<a href="/blog?tag='.$item->id.'">'.$item->name.'</a>';
             }
         }
         break;
@@ -51,7 +51,7 @@ switch ($this['type']) {
 }
 
 if (!empty($list)) : ?>
-<?php if ($this['type'] == 'feed') : ?>
+<?php if ($vars['type'] == 'feed') : ?>
 <div class="widget blog-sidebar-module feed">
     <h3 class="supertitle" style="margin-bottom: 0px;"><?php echo $title; ?></h3>
     <ul id="blog-side-comments" style="width: 260px;">
@@ -63,7 +63,7 @@ if (!empty($list)) : ?>
 <?php else : ?>
 <div class="widget blog-sidebar-module">
     <h3 class="supertitle"><?php echo $title; ?></h3>
-    <ul id="blog-side-<?php echo $this['type']; ?>">
+    <ul id="blog-side-<?php echo $vars['type']; ?>">
         <?php foreach ($list as $item) : ?>
         <li><?php echo $item; ?></li>
         <?php endforeach; ?>

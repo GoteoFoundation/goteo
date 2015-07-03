@@ -221,15 +221,10 @@ namespace Goteo\Model\Blog\Post {
         /*
          * Para quitar un comentario
          */
-        public function delete ($id = null) {
-            if(empty($id) && $this->id) {
-                $id = $this->id;
-                $post = $this->post;
-            }
-            else {
-                $query = self::query('SELECT post FROM comment WHERE id = ?', array($id));
-                $post = $query->fetchColumn();
-            }
+        public static function delete ($id, &$errors = array()) {
+            $query = self::query('SELECT post FROM comment WHERE id = ?', array($id));
+            $post = $query->fetchColumn();
+
             if(empty($id)) {
                 // throw new Exception("Delete error: ID not defined!");
                 return false;

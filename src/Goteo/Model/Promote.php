@@ -5,7 +5,8 @@ namespace Goteo\Model {
         \Goteo\Model\Project,
         \Goteo\Model\Image,
         \Goteo\Model\Blog,
-        \Goteo\Library\Check;
+        \Goteo\Library\Check,
+        \Goteo\Application\Lang;
 
     class Promote extends \Goteo\Core\Model {
 
@@ -25,7 +26,7 @@ namespace Goteo\Model {
         public static function get ($id) {
 
                 //Obtenemos el idioma de soporte
-                $lang=self::default_lang_by_id($id, 'promote_lang', \LANG);
+                $lang=self::default_lang_by_id($id, 'promote_lang', Lang::current());
 
                 $query = static::query("
                     SELECT
@@ -53,8 +54,8 @@ namespace Goteo\Model {
         /*
          * Lista de proyectos destacados
          */
-        public static function getAll ($activeonly = false, $node = \GOTEO_NODE, $lang = \LANG) {
-
+        public static function getAll ($activeonly = false, $node = \GOTEO_NODE, $lang = null) {
+            if(empty($lang)) $lang = Lang::current();
             $promos = array();
 
             $sqlFilter = ($activeonly) ? " AND promote.active = 1" : '';
@@ -123,7 +124,7 @@ namespace Goteo\Model {
                 ORDER BY promote.order ASC, title ASC
                 ", array(':node' => $node, ':lang'=>$lang));
 
-            foreach($query->fetchAll(\PDO::FETCH_CLASS, __CLASS__) as $promo) {
+            foreach($query->fetchAll(\PDO::FETCH_CLASS, '\\Goteo\\Model\\Project') as $promo) {
                 $promo->promo_text = Text::recorta($promo->promo_text, 100, false);
                 //variables usadas en view/project/widget/project.html.php
 
@@ -230,23 +231,13 @@ namespace Goteo\Model {
                 'active'
                 );
 
-            $set = '';
-            $values = array();
-
-            foreach ($fields as $field) {
-                if ($set != '') $set .= ", ";
-                $set .= "`$field` = :$field ";
-                $values[":$field"] = $this->$field;
-            }
-
             try {
-                $sql = "REPLACE INTO promote SET " . $set;
-                self::query($sql, $values);
-                if (empty($this->id)) $this->id = self::insertId();
+                //automatic $this->id assignation
+                $this->dbInsertUpdate($fields);
 
                 return true;
             } catch(\PDOException $e) {
-                $errors[] = "HA FALLADO!!! " . $e->getMessage();
+                $errors[] = "Save error " . $e->getMessage();
                 return false;
             }
         }
@@ -262,24 +253,6 @@ namespace Goteo\Model {
                 return false;
             }
 
-        }
-
-        /**
-         * Static compatible version of parent delete()
-         * @param  [type] $id [description]
-         * @return [type]     [description]
-         */
-        public function delete($id = null) {
-            if(empty($id)) return parent::delete();
-
-            $sql = 'DELETE FROM promote WHERE id = ?';
-            try {
-                self::query($sql, array($id));
-            } catch (\PDOException $e) {
-                // throw new Exception("Delete error in $sql");
-                return false;
-            }
-            return true;
         }
 
         /*

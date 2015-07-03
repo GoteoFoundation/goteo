@@ -5,7 +5,7 @@ use Goteo\Library\Text;
 <a href="/admin/patron" class="button">Volver</a>
 
 <div class="widget board">
-    <?php if (!empty($this['patrons'])) : ?>
+    <?php if (!empty($vars['patrons'])) : ?>
     <table>
         <thead>
             <tr>
@@ -18,7 +18,7 @@ use Goteo\Library\Text;
         </thead>
 
         <tbody>
-            <?php foreach ($this['patrons'] as $user) : ?>
+            <?php foreach ($vars['patrons'] as $user) : ?>
             <tr>
                 <td><?php echo $user->name; ?></td>
                 <td><?php echo $user->order; ?></td>

@@ -3,7 +3,7 @@ use Goteo\Library\Text,
     Goteo\Core\ACL;
 
 $translator = ( isset($_SESSION['user']->roles['translator']) ) ? true : false;
-$filters = $this['filters'];
+$filters = $vars['filters'];
 ?>
 <a href="/admin/criteria/add" class="button">Añadir criterio</a>
 
@@ -11,7 +11,7 @@ $filters = $this['filters'];
     <form id="sectionfilter-form" action="/admin/criteria" method="get">
         <label for="section-filter">Mostrar los criterios de la sección:</label>
         <select id="section-filter" name="section" onchange="document.getElementById('sectionfilter-form').submit();">
-        <?php foreach ($this['sections'] as $sectionId=>$sectionName) : ?>
+        <?php foreach ($vars['sections'] as $sectionId=>$sectionName) : ?>
             <option value="<?php echo $sectionId; ?>"<?php if ($filters['section'] == $sectionId) echo ' selected="selected"';?>><?php echo $sectionName; ?></option>
         <?php endforeach; ?>
         </select>
@@ -19,7 +19,7 @@ $filters = $this['filters'];
 </div>
 
 <div class="widget board">
-    <?php if (!empty($this['criterias'])) : ?>
+    <?php if (!empty($vars['criterias'])) : ?>
     <table>
         <thead>
             <tr>
@@ -34,7 +34,7 @@ $filters = $this['filters'];
         </thead>
 
         <tbody>
-            <?php foreach ($this['criterias'] as $criteria) : ?>
+            <?php foreach ($vars['criterias'] as $criteria) : ?>
             <tr>
                 <td><a href="/admin/criteria/edit/<?php echo $criteria->id; ?>">[Editar]</a></td>
                 <td><?php echo $criteria->title; ?></td>

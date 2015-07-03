@@ -16,17 +16,20 @@ body.home div#main div.widget.projects.patron_invests div.widget.project{
 
 /* Padrinos en portada*/
 body.node.home div#node-patrons div.patron,
+body.channel.home div#channel-patrons div.patron,
 body.home div#main div.patron {
     display: inline-block;
     width: 185px;
     position: relative;
 }
 body.node.home div#node-patrons div.patron + div.patron,
+body.channel.home div#channel-patrons div.patron + div.patron,
 body.home div#main div.patron + div.patron {
     margin-left: 30px;
 }
 
 body.node.home div#node-patrons div.patron > a.expand,
+body.channel.home div#channel-patrons div.patron > a.expand,
 body.home div#main div.patron > a.expand {
     position: absolute;
     top: 0px;
@@ -36,6 +39,7 @@ body.home div#main div.patron > a.expand {
 }
 
 body.node.home div#node-patrons div.patron > div.box,
+body.channel.home div#channel-patrons div.patron > div.box,
 body.home div#main div.patron > div.box {
     width: 185px;
     height: 94px;
@@ -44,6 +48,7 @@ body.home div#main div.patron > div.box {
 }
 
 body.node.home div#node-patrons div.patron > div.box > div.avatar,
+body.channel.home div#channel-patrons div.patron > div.box > div.avatar,
 body.home div#main div.patron > div.box > div.avatar {
     width: 112px;
     height: 74px;
@@ -51,6 +56,7 @@ body.home div#main div.patron > div.box > div.avatar {
 }
 
 body.node.home div#node-patrons div.patron > div.reco,
+body.channel.home div#channel-patrons div.patron > div.reco,
 body.home div#main div.patron > div.reco {
     padding: 3px 0;
     text-transform: uppercase;
@@ -59,11 +65,13 @@ body.home div#main div.patron > div.reco {
 }
 
 body.node.home div#node-patrons div.patron > div.reco > span,
+body.channel.home div#channel-patrons div.patron > div.reco > span,
 body.home div#main div.patron > div.reco > span {
 	color: #20B2B3;
 }
 
 body.node.home div#node-patrons div.patron > div.reco > span.name,
+body.channel.home div#channel-patrons div.patron > div.reco > span.name,
 body.home div#main div.patron > div.reco > span.name {
     font-size: 12px;
 	font-weight: bold;

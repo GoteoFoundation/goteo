@@ -3,7 +3,7 @@ use Goteo\Library\Text,
     Goteo\Core\ACL;
 
 $translator = ( isset($_SESSION['user']->roles['translator']) ) ? true : false;
-$filters = $this['filters'];
+$filters = $vars['filters'];
 ?>
 <a href="/admin/faq/add" class="button">Añadir pregunta</a>
 
@@ -11,7 +11,7 @@ $filters = $this['filters'];
     <form id="sectionfilter-form" action="/admin/faq" method="get">
         <label for="section-filter">Mostrar las preguntas de:</label>
         <select id="section-filter" name="section" onchange="document.getElementById('sectionfilter-form').submit();">
-        <?php foreach ($this['sections'] as $sectionId=>$sectionName) : ?>
+        <?php foreach ($vars['sections'] as $sectionId=>$sectionName) : ?>
             <option value="<?php echo $sectionId; ?>"<?php if ($filters['section'] == $sectionId) echo ' selected="selected"';?>><?php echo $sectionName; ?></option>
         <?php endforeach; ?>
         </select>
@@ -19,7 +19,7 @@ $filters = $this['filters'];
 </div>
 
 <div class="widget board">
-    <?php if (!empty($this['faqs'])) : ?>
+    <?php if (!empty($vars['faqs'])) : ?>
     <table>
         <thead>
             <tr>
@@ -34,7 +34,7 @@ $filters = $this['filters'];
         </thead>
 
         <tbody>
-            <?php foreach ($this['faqs'] as $faq) : ?>
+            <?php foreach ($vars['faqs'] as $faq) : ?>
             <tr>
                 <td><a href="/admin/faq/edit/<?php echo $faq->id; ?>">[Editar]</a></td>
                 <td><?php echo $faq->title; ?></td>

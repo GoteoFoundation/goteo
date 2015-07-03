@@ -6,9 +6,9 @@ use Goteo\Library\Text,
 
 $bodyClass = 'admin';
 
-$node = $this['node'];
-$page = $this['page'];
-$original = $this['original'];
+$node = $vars['node'];
+$page = $vars['page'];
+$original = $vars['original'];
 ?>
 <script type="text/javascript" src="<?php echo SRC_URL; ?>/view/js/ckeditor/ckeditor.js"></script>
 

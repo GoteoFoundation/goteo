@@ -4,13 +4,13 @@ use Goteo\Core\View,
     Goteo\Library\Text,
     Goteo\Library\SuperForm;
 
-$project = $this['project'];
-$types   = $this['types'];
+$project = $vars['project'];
+$types   = $vars['types'];
 $errors = $project->errors ?: array();
 
 // miramos el pruimer paso con errores para mandarlo a ese
 $goto = 'view-step-userProfile';
-foreach ($this['steps'] as $id => $data) {
+foreach ($vars['steps'] as $id => $data) {
 
     if (empty($step) && !empty($project->errors[$id])) {
         $goto = 'view-step-' . $id;
@@ -99,7 +99,7 @@ if ($project->status == 1) {
                 'title' => Text::get('form-footer-errors_title'),
                 'view'  => new View('project/edit/errors.html.php', array(
                         'project'   => $project,
-                        'step'      => $this['step']
+                        'step'      => $vars['step']
                     ))
             ),
             'buttons'  => array(
@@ -114,7 +114,7 @@ if ($project->status == 1) {
 // lanzamos el superform
 echo SuperForm::get(array(
     'action'        => '',
-    'level'         => $this['level'],
+    'level'         => $vars['level'],
     'method'        => 'post',
     'title'         => Text::get('preview-main-header'),
     'hint'          => Text::get('guide-project-preview'),

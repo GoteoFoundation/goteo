@@ -2,10 +2,10 @@
 use Goteo\Core\View,
     Goteo\Model\Criteria;
 
-echo View::get('review/reviews/selector.html.php', $this);
+echo View::get('review/reviews/selector.html.php', $vars);
 
-$review   = $this['review'];
-$evaluation = $this['evaluation'];
+$review   = $vars['review'];
+$evaluation = $vars['evaluation'];
 
 $sections = Criteria::sections();
 $criteria = array();

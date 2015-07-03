@@ -16,6 +16,8 @@ use Goteo\Core\Resource,
     Goteo\Core\Error,
     Goteo\Core\Exception,
     Goteo\Model,
+    Goteo\Application\Config,
+    Goteo\Application\Lang,
     Goteo\Library\Text,
     Goteo\Library\Feed,
     Goteo\Library\Template,
@@ -23,15 +25,24 @@ use Goteo\Core\Resource,
     Goteo\Library\Paypal,
     Goteo\Library\Mail;
 
-require_once __DIR__ . "/../app/config.php";
+
+//Public Web path
+define('GOTEO_WEB_PATH', dirname(__DIR__) . '/app/');
+
+require_once __DIR__ . '/../src/autoload.php';
 
 echo "This script gets active projects and process rounds\n";
 
 // constantes necesarias (las pone el dispatcher)
-define('LANG', 'es'); // tiene que ser 'es'
 define('HTTPS_ON', false); // para las url de project/media
-define('SITE_URL', \GOTEO_URL); // para los mails
+define('SITE_URL', 'http://goteo.org'); // para los mails
 define('SEC_URL', 'https:'.str_replace('http:', '', SITE_URL)); // urls para paypal (necesita schema)
+// Config file...
+Config::loadFromYaml('settings.yml');
+// set Lang
+Lang::setDefault(Config::get('lang'));
+Lang::set(Config::get('lang'));
+
 // run options
 $TEST = false; // throw errors intentionally
 if (in_array('--test', $argv)) {

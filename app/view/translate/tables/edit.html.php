@@ -5,9 +5,9 @@ use Goteo\Library\Text,
 
 $bodyClass = 'admin';
 
-$table = $this['table'];
-$id = $this['id'];
-$content = $this['content'];
+$table = $vars['table'];
+$id = $vars['id'];
+$content = $vars['content'];
 
 $sizes = array(
     'title'       => 'cols="100" rows="2"',
@@ -21,14 +21,14 @@ $sizes = array(
 <script type="text/javascript" src="<?php echo SRC_URL; ?>/view/js/ckeditor/ckeditor.js"></script>
 
 <div class="widget board">
-    <form action="/translate/<?php echo $table ?>/edit/<?php echo $id ?>/<?php echo $this['filter'] . '&page=' . $_GET['page'] ?>" method="post" >
+    <form action="/translate/<?php echo $table ?>/edit/<?php echo $id ?><?php echo $vars['filter'] . '&page=' . $_GET['page'] ?>" method="post" >
         <input type="hidden" name="table" value="<?php echo $table ?>" />
         <input type="hidden" name="id" value="<?php echo $id ?>" />
         <input type="hidden" name="lang" value="<?php echo $_SESSION['translate_lang'] ?>" />
         <?php if ($table == 'post') : ?><input type="hidden" name="blog" value="<?php echo $content->blog ?>" /><?php endif; ?>
 
 
-        <?php foreach (Content::$fields[$table] as $field=>$fieldName) : 
+        <?php foreach (Content::$fields[$table] as $field=>$fieldName) :
         if(($field=="text")&&($table=="post"))
             $class_field='class="ckeditor-text"';
         ?>

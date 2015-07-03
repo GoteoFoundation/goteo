@@ -2,9 +2,9 @@
 use Goteo\Core\View,
     Goteo\Library\Text;
 
-$promotes = $this['promotes'];
+$promotes = $vars['promotes'];
 ?>
-<div id="node-projects-promote" class="content_widget node-projects rounded-corners" <?php if ($this['hide_promotes']) : ?>style="display:none;"<?php endif; ?>>
+<div id="node-projects-promote" class="content_widget node-projects rounded-corners" <?php if ($vars['hide_promotes']) : ?>style="display:none;"<?php endif; ?>>
 
     <h2><?php echo Text::get('node-side-searcher-promote'); ?>
     <span class="line"></span>

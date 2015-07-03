@@ -2,7 +2,7 @@
 use Goteo\Library\Text,
     Goteo\Core\View;
 
-$sponsors = $this['sponsors'];
+$sponsors = $vars['sponsors'];
 
 ?>
 <script type="text/javascript">

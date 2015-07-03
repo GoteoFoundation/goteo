@@ -3,6 +3,8 @@
 namespace Goteo\Model\User {
 
     use Goteo\Model\Image;
+    use Goteo\Application\Lang;
+    use Goteo\Application\Config;
 
     class Interest extends \Goteo\Model\Category
     {
@@ -42,12 +44,13 @@ namespace Goteo\Model\User {
          */
         public static function getAll($user = null)
         {
+            $lang = Lang::current();
             $array = array();
 
             try {
-                $values = array(':lang' => \LANG);
+                $values = array(':lang' => $lang);
 
-                if (self::default_lang(\LANG) == 'es') {
+                if (self::default_lang($lang) == Config::get('lang')) {
                     $different_select = " IFNULL(category_lang.name, category.name) as name";
                 } else {
                     $different_select = " IFNULL(category_lang.name, IFNULL(eng.name, category.name)) as name";

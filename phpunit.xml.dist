@@ -22,13 +22,6 @@
         </testsuite>
     </testsuites>
 
-    <logging>
-        <log type="tap" target="tests/build/report.tap"/>
-        <log type="coverage-html" target="tests/build/coverage" charset="UTF-8" yui="true" highlight="true"/>
-        <log type="coverage-text" target="tests/build/coverage.txt"/>
-    </logging>
-
-
   <filter>
     <whitelist addUncoveredFilesFromWhitelist="true">
       <directory suffix=".php">src</directory>

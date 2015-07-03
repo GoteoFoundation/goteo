@@ -3,7 +3,7 @@
 namespace Goteo\Controller\Dashboard {
 
     use Goteo\Model,
-        Goteo\Library\Message,
+        Goteo\Application\Message,
 		Goteo\Library\Text;
 
     class Profile {
@@ -92,7 +92,7 @@ namespace Goteo\Controller\Dashboard {
             /// este es el único save que se lanza desde un metodo process_
             if ($user->save($errors)) {
                 $log_action = 'Actualizado su perfil';
-//                Message::Info(Text::get('user-profile-saved'));
+//                Message::info(Text::get('user-profile-saved'));
 
                 // si no español, aplicamos auto traducción
                 if ($user->lang != 'es') {
@@ -111,7 +111,7 @@ namespace Goteo\Controller\Dashboard {
                 return true;
             } else {
                 $log_action = '¡ERROR! al actualizar su perfil';
-                Message::Error(Text::get('user-save-fail'));
+                Message::error(Text::get('user-save-fail'));
                 return false;
             }
         }
@@ -145,11 +145,11 @@ namespace Goteo\Controller\Dashboard {
 
             // actualizamos estos datos en los personales del usuario
             if (Model\User::setPersonal($id, $personalData, true, $errors)) {
-                Message::Info(Text::get('user-personal-saved'));
+                Message::info(Text::get('user-personal-saved'));
                 $log_action = 'Modificado sus datos personales'; //feed admin
                 return true;
             } else {
-                Message::Error(Text::get('user-save-fail'));
+                Message::error(Text::get('user-save-fail'));
                 $log_action = '¡ERROR! al modificar sus datos personales'; //feed admin
                 return false;
             }
@@ -179,7 +179,7 @@ namespace Goteo\Controller\Dashboard {
                     $user->email = $_POST['user_nemail'];
                     unset($_POST['user_nemail']);
                     unset($_POST['user_remail']);
-                    Message::Info(Text::get('user-email-change-sended'));
+                    Message::info(Text::get('user-email-change-sended'));
 
                     $log_action = 'Cambiado su email'; //feed admin
                 }
@@ -200,7 +200,7 @@ namespace Goteo\Controller\Dashboard {
                     unset($_POST['user_password']);
                     unset($_POST['user_npassword']);
                     unset($_POST['user_rpassword']);
-                    Message::Info(Text::get('user-password-changed'));
+                    Message::info(Text::get('user-password-changed'));
 
                     $log_action = 'Cambiado su contraseña'; //feed admin
                 }
@@ -212,7 +212,7 @@ namespace Goteo\Controller\Dashboard {
                     unset($_SESSION['recovering']);
                 return true;
             } else {
-                Message::Error(Text::get('user-save-fail'));
+                Message::error(Text::get('user-save-fail'));
                 $log_action = '¡ERROR! al cambiar email/contraseña'; //feed admin
                 return false;
             }
@@ -248,12 +248,12 @@ namespace Goteo\Controller\Dashboard {
 
             // actualizamos estos datos en las preferencias del usuario
             if (Model\User::setPreferences($id, $preferences, $errors)) {
-                Message::Info(Text::get('user-prefer-saved'));
+                Message::info(Text::get('user-prefer-saved'));
                 $log_action = 'Modificado las preferencias de notificación'; //feed admin
                 $_SESSION['currency']=$_POST['currency'];
                 return true;
             } else {
-                Message::Error(Text::get('user-save-fail'));
+                Message::error(Text::get('user-save-fail'));
                 $log_action = '¡ERROR! al modificar las preferencias de notificación'; //feed admin
                 return false;
             }

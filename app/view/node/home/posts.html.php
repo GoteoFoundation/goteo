@@ -1,7 +1,7 @@
 <?php
 use Goteo\Library\Text;
 
-$posts = $this['posts'];
+$posts = $vars['posts'];
 
 if (count($posts) > 1) : ?>
 <script type="text/javascript">
@@ -19,11 +19,11 @@ if (count($posts) > 1) : ?>
     <h2><?php echo Text::get('node-home-posts-header'); ?>
     <span class="line"></span>
     </h2>
-    
+
     <div class="slder_container">
 
         <?php if (count($posts)==1) echo '<div style="position:relative; height: 175px;">'; ?>
-        <?php $i = 1; foreach ($posts as $post) : 
+        <?php $i = 1; foreach ($posts as $post) :
             if ($post->id == 728) $post->title = Text::recorta($post->title, 150);
             ?>
         <div class="slder_slide">

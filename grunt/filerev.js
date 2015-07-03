@@ -11,7 +11,7 @@ module.exports = function(grunt) {
 
                 src: [
                     // '<%= goteo.dist %>/view/js/*.js',
-                    '<%= goteo.dist %>/view/css/goteo.css'
+                    '<%= goteo.dist %>/view/css/{goteo,config,node}.css'
                 ]
         }
 

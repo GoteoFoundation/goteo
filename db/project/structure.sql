@@ -164,3 +164,9 @@ UPDATE `project` SET amount_call = null WHERE amount_call = 0;
 ALTER TABLE `project` ADD `currency` VARCHAR(4) NOT NULL DEFAULT 'EUR' COMMENT 'Divisa del proyecto' AFTER `lang`;
 ALTER TABLE `project` ADD `currency_rate` DECIMAL(9, 5) NOT NULL DEFAULT 1 COMMENT 'Ratio al crear el proyecto' AFTER `currency`;
 
+-- obsolete
+ALTER TABLE `project` DROP COLUMN `called`;
+
+-- constrains
+ALTER TABLE `project` ADD FOREIGN KEY (`node`) REFERENCES `node`(`id`) ON UPDATE CASCADE ON DELETE RESTRICT,
+                      ADD FOREIGN KEY (`owner`) REFERENCES `user`(`id`) ON UPDATE CASCADE ON DELETE RESTRICT;

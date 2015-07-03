@@ -3,11 +3,12 @@
 
 namespace Goteo\Model\Tests;
 
+use Goteo\TestCase;
 use Goteo\Model\Sponsor;
 
-class SponsorTest extends \PHPUnit_Framework_TestCase {
+class SponsorTest extends TestCase {
 
-    private static $data = array('name' => 'Test Sponsor', 'url' => 'http://goteo.org', 'node' => 'test', 'order' => 0);
+    private static $data = array('name' => 'Test Sponsor', 'url' => 'http://goteo.org', 'order' => 0);
 
     public function testInstance() {
         \Goteo\Core\DB::cache(false);
@@ -28,9 +29,10 @@ class SponsorTest extends \PHPUnit_Framework_TestCase {
     }
 
     public function testCreate() {
+        self::$data['node'] = get_test_node()->id;
         $ob = new Sponsor(self::$data);
         $this->assertTrue($ob->validate($errors), print_r($errors, 1));
-        $this->assertTrue($ob->save());
+        $this->assertTrue($ob->save($errors), print_r($errors, 1));
         $ob = Sponsor::get($ob->id);
         $this->assertInstanceOf('\Goteo\Model\Sponsor', $ob);
 
@@ -39,7 +41,7 @@ class SponsorTest extends \PHPUnit_Framework_TestCase {
             else $this->assertEquals($ob->$key, $val);
         }
 
-        $this->assertTrue($ob->delete());
+        $this->assertTrue($ob->dbDelete());
 
         //save and delete statically
         $this->assertTrue($ob->save());
@@ -55,5 +57,10 @@ class SponsorTest extends \PHPUnit_Framework_TestCase {
         $this->assertFalse($ob);
         $this->assertFalse(Sponsor::delete($ob->id));
     }
-
+    /**
+     * Some cleanup
+     */
+    static function tearDownAfterClass() {
+        delete_test_node();
+    }
 }

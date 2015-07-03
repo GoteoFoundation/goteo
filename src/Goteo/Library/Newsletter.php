@@ -2,9 +2,11 @@
 
 namespace Goteo\Library {
 
+    use Goteo\Application\Config;
 	use Goteo\Core\Model,
         Goteo\Core\Exception,
         Goteo\Library\Template,
+        Goteo\Application\Lang,
         Goteo\Core\View;
 	/*
 	 * Clase para montar contenido de Boletín
@@ -107,13 +109,13 @@ namespace Goteo\Library {
 
         }
 
-		static public function getContent ($content, $lang = LANG) {
-
+		static public function getContent ($content, $lang = null) {
+            if(empty($lang)) $lang = Lang::current();
             // necesitamos generar contenido en diferentes idiomas
             $_SESSION['VAR_LANG'] = $lang;
 
             // orden de los elementos en portada
-            $order = \Goteo\Model\Home::getAll();
+            $order = \Goteo\Model\Home::getAll(Config::get('node'));
 
             // entradas de blog
             $posts_content = '';

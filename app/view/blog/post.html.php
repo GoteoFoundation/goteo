@@ -5,17 +5,17 @@
 		Goteo\Model\Blog\Post,
 		Goteo\Model\Image;
 
-    $post = Post::get($this['post'], LANG);
-    $level = (int) $this['level'] ?: 3;
-    
-	if ($this['show'] == 'list') {
+    $post = Post::get($vars['post'], LANG);
+    $level = (int) $vars['level'] ?: 3;
+
+	if ($vars['show'] == 'list') {
 		$post->text = Text::recorta($post->text, 500);
 	}
 
-    if (empty($this['url'])) {
+    if (empty($vars['url'])) {
         $url = '/blog/';
     } else {
-        $url = $this['url'];
+        $url = $vars['url'];
     }
 ?>
     <?php if (count($post->gallery) > 1) : ?>
@@ -31,12 +31,12 @@
 		</script>
     <?php endif; ?>
 	<h<?php echo $level + 1?>><a href="<?php echo $url.$post->id; ?>"><?php echo $post->title; ?></a></h<?php echo $level + 1?>>
-    <span class="categories"><?php echo Text::get('regular-by') ?> <a href="<?php echo ($post->owner_type == 'project') ? '/project/'.$post->owner_id.'/updates' : '/blog/?author='.$post->author ; ?>"><?php echo $post->user->name; ?></a></span>
+    <span class="categories"><?php echo Text::get('regular-by') ?> <a href="<?php echo ($post->owner_type == 'project') ? '/project/'.$post->owner_id.'/updates' : '/blog?author='.$post->author ; ?>"><?php echo $post->user->name; ?></a></span>
 	<span class="date"><?php echo $post->fecha; ?></span>
 	<?php if (!empty($post->tags)) : $sep = '';?>
 		<span class="categories">
             <?php foreach ($post->tags as $key => $value) :
-                echo $sep.'<a href="/blog/?tag='.$key.'">'.$value.'</a>';
+                echo $sep.'<a href="/blog?tag='.$key.'">'.$value.'</a>';
             $sep = ', '; endforeach; ?>
         </span>
 	<?php endif; ?>
@@ -48,7 +48,7 @@
 						<div class="gallery-image gallery-post<?php echo $post->id ?>" id="gallery-post<?php echo $post->id ?>-<?php echo $i ?>">
 							<img src="<?php echo $image->getLink(500, 285); ?>" alt="<?php echo htmlspecialchars($post->title); ?>" />
 						</div>
-						<?php $i++; 
+						<?php $i++;
 					endif;
 				endforeach; ?>
 			</div>
@@ -81,5 +81,5 @@
 	<?php endif; ?>
 	<blockquote>
         <?php echo $post->text; ?>
-        <?php if ($this['show'] == 'list') : ?><div class="read_more"><a href="<?php echo $url.$post->id; ?>"><?php echo Text::get('regular-read_more') ?></a></div><?php endif ?>
+        <?php if ($vars['show'] == 'list') : ?><div class="read_more"><a href="<?php echo $url.$post->id; ?>"><?php echo Text::get('regular-read_more') ?></a></div><?php endif ?>
     </blockquote>

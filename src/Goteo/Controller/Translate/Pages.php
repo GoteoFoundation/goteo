@@ -6,10 +6,11 @@ namespace Goteo\Controller\Translate {
         Goteo\Core\Redirection,
         Goteo\Model,
         Goteo\Library\Feed,
-        Goteo\Library\Message,
         Goteo\Library\Page,
         Goteo\Library\Text,
-        Goteo\Library\Lang;
+        Goteo\Application\Message,
+        Goteo\Application\Session,
+        Goteo\Application\Lang;
 
     class Pages
     {
@@ -44,7 +45,7 @@ namespace Goteo\Controller\Translate {
                     $log = new Feed();
                     $log->populate('pagina traducida (traductor)', '/translate/pages',
                         \vsprintf('El traductor %s ha %s la página %s del nodo %s al %s', array(
-                        Feed::item('user', $_SESSION['user']->name, $_SESSION['user']->id),
+                        Feed::item('user', Session::getUser()->name, Session::getUserId()),
                         Feed::item('relevant', 'Traducido'),
                         Feed::item('blog', $id),
                         Feed::item('blog', $_POST['node']),
@@ -54,7 +55,7 @@ namespace Goteo\Controller\Translate {
                     unset($log);
                     */
 
-                    Message::Info('Contenido de la Pagina <strong>' . $id . '</strong> traducido correctamente al <strong>' . Lang::get($_POST['lang'])->name . '</strong>');
+                    Message::info('Contenido de la Pagina <strong>' . $id . '</strong> traducido correctamente al <strong>' . Lang::get($_POST['lang'])->name . '</strong>');
 
                     if ($_POST['node'] != \GOTEO_NODE) {
                         if (isset($_SESSION['translate_node'])) {
@@ -68,10 +69,10 @@ namespace Goteo\Controller\Translate {
                 } else {
                     // Evento Feed
                     $log = new Feed();
-                    $log->setTarget($_SESSION['user']->id, 'user');
+                    $log->setTarget(Session::getUserId(), 'user');
                     $log->populate('pagina traducida (traductor)', '/translate/pages',
                         \vsprintf('Al traductor %s le ha %s la página %s del nodo %s al %s', array(
-                            Feed::item('user', $_SESSION['user']->name, $_SESSION['user']->id),
+                            Feed::item('user', Session::getUser()->name, Session::getUserId()),
                             Feed::item('relevant', 'Fallado al traducir'),
                             Feed::item('blog', $id),
                             Feed::item('blog', $_POST['node']),
@@ -80,7 +81,7 @@ namespace Goteo\Controller\Translate {
                     $log->doAdmin('admin');
                     unset($log);
 
-                    Message::Error('Ha habido algun ERROR al traducir el contenido de la pagina <strong>' . $id . '</strong> al <strong>' . Lang::get($_POST['lang'])->name . '</strong><br />' . implode('<br />', $errors));
+                    Message::error('Ha habido algun ERROR al traducir el contenido de la pagina <strong>' . $id . '</strong> al <strong>' . Lang::get($_POST['lang'])->name . '</strong><br />' . implode('<br />', $errors));
                 }
             }
 
@@ -124,7 +125,7 @@ namespace Goteo\Controller\Translate {
 
 
                 $page = Page::get($id, $node, $_SESSION['translate_lang']);
-                $original = Page::get($id, $node, \GOTEO_DEFAULT_LANG);
+                $original = Page::get($id, $node, Lang::getDefault());
 
 
             }

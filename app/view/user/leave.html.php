@@ -9,8 +9,8 @@ $fbCode = Text::widget(Text::get('social-account-facebook'), 'fb');
 include __DIR__ . '/../prologue.html.php';
 include __DIR__ . '/../header.html.php';
 
-$error = $this['error'];
-$message = $this['message'];
+$error = $vars['error'];
+$message = $vars['message'];
 extract($_POST);
 if (!isset($_POST['email']) && isset($_GET['email'])) {
     $email = $_GET['email'];

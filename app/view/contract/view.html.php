@@ -3,7 +3,7 @@
 use Goteo\Library\Text,
     Goteo\Core\View;
 
-$contract = $this['contract'];
+$contract = $vars['contract'];
 
 $bodyClass = 'contract';
 
@@ -43,7 +43,7 @@ $fields = array(
 include __DIR__ . '/../prologue.html.php';
 include __DIR__ . '/../header.html.php';
 
-echo View::get('contract/widget/review.html.php', $this);
+echo View::get('contract/widget/review.html.php', $vars);
 
 include __DIR__ . '/../footer.html.php';
 include __DIR__ . '/../epilogue.html.php';

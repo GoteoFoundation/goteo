@@ -9,7 +9,7 @@ $bodyClass = 'user-profile';
 include __DIR__ . '/../prologue.html.php';
 include __DIR__ . '/../header.html.php';
 
-$user = $this['user'];
+$user = $vars['user'];
 $worthcracy = Worth::getAll();
 
 $_SESSION['msg_token'] = uniqid(rand(), true);
@@ -75,8 +75,8 @@ $_SESSION['msg_token'] = uniqid(rand(), true);
 
     </div>
     <div class="side">
-        <?php echo View::get('user/widget/investors.html.php', $this) ?>
-        <?php echo View::get('user/widget/sharemates.html.php', $this) ?>
+        <?php echo View::get('user/widget/investors.html.php', $vars) ?>
+        <?php echo View::get('user/widget/sharemates.html.php', $vars) ?>
     </div>
 
 </div>

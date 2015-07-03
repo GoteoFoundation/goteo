@@ -3,11 +3,12 @@
 
 namespace Goteo\Model\Tests;
 
+use Goteo\TestCase;
 use Goteo\Model\Home;
 
-class HomeTest extends \PHPUnit_Framework_TestCase {
+class HomeTest extends TestCase {
 
-    private static $data = array('node' => 'test', 'item' => 'test', 'type' => 'side', 'order' => 0);
+    private static $data = array('item' => 'test', 'type' => 'side', 'order' => 0);
 
     public function testInstance() {
         \Goteo\Core\DB::cache(false);
@@ -28,6 +29,7 @@ class HomeTest extends \PHPUnit_Framework_TestCase {
     }
 
     public function testCreate() {
+        self::$data['node'] = get_test_node()->id;
         $ob = new Home(self::$data);
         $this->assertTrue($ob->validate($errors));
         $this->assertTrue($ob->save());
@@ -39,12 +41,8 @@ class HomeTest extends \PHPUnit_Framework_TestCase {
             else $this->assertEquals($ob->$key, $val);
         }
 
-        $this->assertTrue($ob->delete());
-
-        //save and delete statically
-        $ob = new Home(self::$data);
-        $this->assertTrue($ob->save());
-        $this->assertTrue(Home::delete($ob->item, self::$data['node'], self::$data['type']));
+        //delete statically
+        $this->assertTrue(Home::remove($ob->item, self::$data['node'], self::$data['type']));
 
         return $ob;
     }
@@ -54,6 +52,5 @@ class HomeTest extends \PHPUnit_Framework_TestCase {
     public function testNonExisting($ob) {
         $ob = Home::get($ob->item);
         $this->assertFalse($ob);
-        $this->assertFalse(Home::delete($ob->item, self::$data['node'], self::$data['type']));
     }
 }

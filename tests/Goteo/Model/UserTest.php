@@ -3,9 +3,10 @@
 
 namespace Goteo\Model\Tests;
 
+use Goteo\TestCase;
 use Goteo\Model\User;
 
-class UserTest extends \PHPUnit_Framework_TestCase {
+class UserTest extends TestCase {
     private static $related_tables = array('user_api' => 'user_id',
                     'user_call' => 'user',
                     'user_donation' => 'user',
@@ -13,7 +14,6 @@ class UserTest extends \PHPUnit_Framework_TestCase {
                     'user_lang' => 'id',
                     'user_location' => 'id',
                     'user_login' => 'user',
-                    'user_node' => 'user',
                     'user_personal' => 'user',
                     'user_pool' => 'user',
                     'user_prefer' => 'user',
@@ -23,13 +23,26 @@ class UserTest extends \PHPUnit_Framework_TestCase {
                     'user_translang' => 'user',
                     'user_translate' => 'user',
                     'user_vip' => 'user',
-                    'user_web' => 'user'
+                    'user_web' => 'user',
+                    'project' => 'owner',
+                    'call' => 'owner',
+                    // 'blog' => 'owner', => el campo type indica la tabla del owner, se deberia cambiar
+                    'comment' => 'user',
+                    'invest' => 'user',
+                    'invest_node' => 'user_id',
+                    'invest_address' => 'user',
+                    'mailer_send' => 'user',
+                    'message' => 'user',
+                    'patron' => 'user',
+                    // 'post' => 'author', => investigar esto, parece que no siempre es el usuario
+                    'review_comment' => 'user',
+                    'review_score' => 'user',
                     );
 
     private static $user = array(
-            'userid' => '012-simulated-user-test-210',
+            'userid' => '012-simulated-user-test-211',
             'name' => 'Test user - please delete me',
-            'email' => 'simulated-user-test@goteo.org'
+            'email' => 'simulated-user-test2@goteo.org'
         );
 
     public function testInstance() {
@@ -72,13 +85,13 @@ class UserTest extends \PHPUnit_Framework_TestCase {
      * @depends testCreateUser
      */
     public function testDeleteUser($user) {
-        $this->assertTrue($user->delete());
+        $this->assertTrue($user->dbDelete());
         $this->assertFalse(User::get(self::$user['userid']));
     }
 
     public function testCleanUserRelated() {
         foreach(self::$related_tables as $tb => $field) {
-            $this->assertEquals(0, User::query("SELECT COUNT(*) FROM $tb WHERE $field NOT IN (SELECT id FROM user)")->fetchColumn(), "DB incoherences in table [$tb], Please run SQL command:\nDELETE FROM $tb WHERE $field NOT IN (SELECT id FROM user)");
+            $this->assertEquals(0, User::query("SELECT COUNT(*) FROM `$tb` WHERE `$field` NOT IN (SELECT id FROM `user`)")->fetchColumn(), "DB incoherences in table [$tb], Please run SQL command:\nDELETE FROM `$tb` WHERE `$field` NOT IN (SELECT id FROM `user`)");
         }
     }
 

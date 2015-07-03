@@ -2,8 +2,8 @@
 
 use Goteo\Library\Text;
 
-$project = $this['project'];
-$review  = $this['review'];
+$project = $vars['project'];
+$review  = $vars['review'];
 ?>
 <div class="widget board">
     <p>
@@ -11,7 +11,7 @@ $review  = $this['review'];
         <?php echo $project->comment; ?>
     </p>
 
-    <form method="post" action="/admin/reviews/<?php echo $this['action']; ?>/<?php echo $project->id; ?>">
+    <form method="post" action="/admin/reviews/<?php echo $vars['action']; ?>/<?php echo $project->id; ?>">
 
         <input type="hidden" name="id" value="<?php echo $review->id; ?>" />
         <input type="hidden" name="project" value="<?php echo $project->id; ?>" />

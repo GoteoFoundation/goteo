@@ -2,11 +2,11 @@
 use Goteo\Core\View,
     Goteo\Library\Text;
 
-$contract = $this['contract'];
+$contract = $vars['contract'];
 ?>
 <div class="widget">
-    <?php echo $this['content']; ?>
+    <?php echo $vars['content']; ?>
 </div>
 <div class="widget">
-    <?php echo $this['footer']; ?>
+    <?php echo $vars['footer']; ?>
 </div>

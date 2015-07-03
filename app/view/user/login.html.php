@@ -10,9 +10,9 @@ $jscrypt = true;
 include __DIR__ . '/../prologue.html.php';
 include __DIR__ . '/../header.html.php';
 
-$errors = $this['errors'];
+$errors = $vars['errors'];
 extract($_POST);
-if (empty($username) && isset($this['username'])) $username = $this['username'];
+if (empty($username) && isset($vars['username'])) $username = $vars['username'];
 ?>
 <script type="text/javascript">
 jQuery(document).ready(function($) {
@@ -72,7 +72,7 @@ jQuery(document).ready(function($) {
 	</div>
 </div>
 
-<?php if(isset($_SESSION['messages'])) { include __DIR__ . '/../header/message.html.php'; } ?>
+<?php if($_SESSION['messages']) { include __DIR__ . '/../header/message.html.php'; } ?>
 
 
     <div id="main">

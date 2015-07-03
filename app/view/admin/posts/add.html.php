@@ -10,8 +10,8 @@ $posts = Model\Blog\Post::getAll(1);
 <div class="widget board">
     <form method="post" action="/admin/posts">
 
-        <input type="hidden" name="action" value="<?php echo $this['action']; ?>" />
-        <input type="hidden" name="order" value="<?php echo $this['post']->order; ?>" />
+        <input type="hidden" name="action" value="<?php echo $vars['action']; ?>" />
+        <input type="hidden" name="order" value="<?php echo $vars['post']->order; ?>" />
         <input type="hidden" name="home" value="1" />
 
         <p>
@@ -19,7 +19,7 @@ $posts = Model\Blog\Post::getAll(1);
             <select id="home-post" name="post">
                 <option value="" >Seleccionar la entrada a publicar en portada</option>
             <?php foreach ($posts as $post) : ?>
-                <option value="<?php echo $post->id; ?>"<?php if ($this['post']->post == $post->id) echo' selected="selected"';?>><?php echo $post->title . ' ['. $post->date . ']'; ?></option>
+                <option value="<?php echo $post->id; ?>"<?php if ($vars['post']->post == $post->id) echo' selected="selected"';?>><?php echo $post->title . ' ['. $post->date . ']'; ?></option>
             <?php endforeach; ?>
             </select>
         </p>

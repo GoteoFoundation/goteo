@@ -3,8 +3,8 @@ use Goteo\Core\View,
     Goteo\Library\Text,
     Goteo\Library\SuperForm;
 
-$call = $this['call'];
-$errors = $this['errors'];
+$call = $vars['call'];
+$errors = $vars['errors'];
 
 $banners = array();
 
@@ -15,7 +15,7 @@ if (!empty($call->banners)) {
         $ch = array();
 
         // a ver si es el que estamos editando o no
-        if (!empty($this["banner-{$banner->id}-edit"])) {
+        if (!empty($vars["banner-{$banner->id}-edit"])) {
 
             $original = \Goteo\Model\Call\Banner::get($banner->id);
 

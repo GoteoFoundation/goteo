@@ -6,12 +6,13 @@ namespace Goteo\Controller {
         Goteo\Core\View,
         Goteo\Core\Redirection,
         Goteo\Model,
-	    Goteo\Library,
+	    Goteo\Application,
         Goteo\Library\Feed,
 	    Goteo\Library\Text,
 	    Goteo\Library\Page,
 	    Goteo\Library\Content,
-		Goteo\Library\Lang;
+        Goteo\Application\Session,
+		Goteo\Application\Lang;
 
 	class Translate extends \Goteo\Core\Controller {
 
@@ -21,30 +22,30 @@ namespace Goteo\Controller {
         public function index ($table = '', $action = 'list', $id = null, $auxAction = 'list', $contentId = null) {
 
             // si es un admin le damos todos los idiomas para traducir
-            if (isset($_SESSION['user']->roles['admin'])) {
+            if (isset(Session::getUser()->roles['admin'])) {
 
-                $langs = Lang::getAll();
-                foreach ($langs as &$lang) {
+                $langs = Lang::listAll('name', false);
+                foreach ($langs as $lang) {
                     $lang = $lang->name;
                 }
-                $_SESSION['user']->translangs = $langs;
+                Session::getUser()->translangs = $langs;
 
             } else {
 
-                $_SESSION['user']->translangs = Model\User\Translate::getLangs($_SESSION['user']->id);
-                if (empty($_SESSION['user']->translangs) ) {
+                Session::getUser()->translangs = Model\User\Translate::getLangs(Session::getUserId());
+                if (empty(Session::getUser()->translangs) ) {
 
-                    Library\Message::Error('No tienes ningún idioma, contacta con el administrador');
+                    Application\Message::error('No tienes ningún idioma, contacta con el administrador');
                     throw new Redirection('/dashboard');
                 }
 
             }
 
-            if (empty($_SESSION['translate_lang']) || !isset($_SESSION['user']->translangs[$_SESSION['translate_lang']])) {
-                if (count($_SESSION['user']->translangs) > 1 && isset($_SESSION['user']->translangs['en'])) {
+            if (empty($_SESSION['translate_lang']) || !isset(Session::getUser()->translangs[$_SESSION['translate_lang']])) {
+                if (count(Session::getUser()->translangs) > 1 && isset(Session::getUser()->translangs['en'])) {
                     $_SESSION['translate_lang'] = 'en';
                 } else {
-                    $_SESSION['translate_lang'] = current(array_keys($_SESSION['user']->translangs));
+                    $_SESSION['translate_lang'] = current(array_keys(Session::getUser()->translangs));
                 }
             }
 
@@ -64,8 +65,8 @@ namespace Goteo\Controller {
 
                 // verificar si este usuario puede traducir este nodo
                 // (ojo, al ser  table 'node' el id del nodo está en el parametro $action
-                if ( !Model\User\Translate::is_legal($_SESSION['user']->id, $action, 'node') ) {
-                    Library\Message::Info(Text::get('user-login-required-access'));
+                if ( !Model\User\Translate::is_legal(Session::getUserId(), $action, 'node') ) {
+                    Application\Message::info(Text::get('user-login-required-access'));
                     throw new Redirection('/dashboard/translates');
                 }
 

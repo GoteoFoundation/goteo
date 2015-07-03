@@ -1,19 +1,13 @@
 <?php
 
-namespace Goteo\Controller\Admin {
+namespace Goteo\Controller\Admin;
 
-    use Goteo\Core\View,
-        Goteo\Core\Redirection,
-        Goteo\Core\Error,
-		Goteo\Library\Feed,
-        Goteo\Model;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 
-    class Base {
+class Base extends AdminSubController {
 
-        public static function process ($action = 'list', $id = null, $filters = array(), $flag = null) {
-            
-        }
-
+    public function listAction($id = null, $subaction = null) {
+        return array('template' => '');
     }
 
 }

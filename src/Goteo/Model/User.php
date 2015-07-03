@@ -3,7 +3,6 @@
 namespace Goteo\Model {
 
 	use Goteo\Library\Text,
-        Goteo\Application\Session,
         Goteo\Model\Image,
         Goteo\Model\Node,
         Goteo\Model\Project,
@@ -11,7 +10,10 @@ namespace Goteo\Model {
         Goteo\Library\Template,
         Goteo\Library\Mail,
         Goteo\Library\Check,
-        Goteo\Library;
+        Goteo\Application;
+    use Goteo\Application\Lang;
+    use Goteo\Application\Config;
+    use Goteo\Application\Session;
 
 	class User extends \Goteo\Core\Model {
 
@@ -50,6 +52,7 @@ namespace Goteo\Model {
             $args = func_get_args();
             call_user_func_array(array('parent', '__construct'), $args);
             $this->avatar = new Image();
+            if(empty($this->node)) $this->node = Config::get('current_node');
         }
 
         /**
@@ -96,9 +99,6 @@ namespace Goteo\Model {
 	        if($name == "unlocable") {
 	            return UserLocation::isUnlocable($this->id);
 	        }
-	        if($name == "admin_node") {
-	            return \Goteo\Model\Node::getAdminNode($this->id);
-	        }
             return $this->$name;
         }
 
@@ -126,8 +126,8 @@ namespace Goteo\Model {
                     $data[':created'] = date('Y-m-d H:i:s');
                     $data[':active'] = true;
                     $data[':confirmed'] = false;
-                    $data[':lang'] = \LANG;
-                    $data[':node'] = \NODE_ID;
+                    $data[':lang'] = Lang::current();
+                    $data[':node'] = $this->node;
 
 					//active = 1 si no se quiere comprovar
 					if(in_array('active',$skip_validations) && $this->active) $data[':active'] = 1;
@@ -152,11 +152,10 @@ namespace Goteo\Model {
 						$mail->content = $content;
 						$mail->html = false;
 						$mail->template = $template->id;
-						if ($mail->send($errors)) {
-							Library\Message::Info(Text::get('register-confirm_mail-success'));
+						if ($mail->send($errors)) {Application\Message::info(Text::get('register-confirm_mail-success'));
 						} else {
-							Library\Message::Error(Text::get('register-confirm_mail-fail', GOTEO_MAIL));
-							Library\Message::Error(implode('<br />', $errors));
+							Application\Message::error(Text::get('register-confirm_mail-fail', GOTEO_MAIL));
+							Application\Message::error(implode('<br />', $errors));
 						}
 					}
                 }
@@ -172,6 +171,7 @@ namespace Goteo\Model {
                         else {
                             $query = self::query('SELECT email FROM user WHERE id = ?', array($this->id));
                             if($this->email !== $query->fetchColumn()) {
+                                //MAGIC METHOD HERE!!!
                                 $this->token = md5(uniqid()).'¬'.$this->email.'¬'.date('Y-m-d');
                             }
                         }
@@ -501,20 +501,20 @@ namespace Goteo\Model {
         /**
          * Este método actualiza directamente el campo de idioma preferido
          */
-        public function updateLang ($id, $lang) {
+        public function updateLang ($lang, &$errors = array()) {
 
-            $values = array(':id'=>$id, ':lang'=>$lang);
+            $values = array(':id'=>$this->id, ':lang'=>$lang);
 
             try {
                 $sql = "UPDATE user SET `lang` = :lang WHERE id = :id";
                 self::query($sql, $values);
+                $this->lang = $lang;
 
                 return true;
             } catch(\PDOException $e) {
-                $errors[] = "HA FALLADO!!! " . $e->getMessage();
-                return false;
+                $errors[] = "Update lang user preferences failed! " . $e->getMessage();
             }
-
+            return false;
         }
 
         /**
@@ -590,7 +590,6 @@ namespace Goteo\Model {
                 if (!$user instanceof  \Goteo\Model\User) {
                     return false;
                 }
-
                 $user->roles = $user->getRoles();
                 $user->avatar = Image::get($user->user_avatar);
                 $user->interests = User\Interest::get($id);
@@ -602,6 +601,7 @@ namespace Goteo\Model {
                 if (!empty($user->node) && $user->node != \GOTEO_NODE) {
                     $user->nodeData = Node::getMini($user->node);
                 }
+
 
                 // si es traductor cargamos sus idiomas
                 if (isset($user->roles['translator'])) {
@@ -643,16 +643,19 @@ namespace Goteo\Model {
          * Lista de usuarios.
          *
          * @param  array $filters  Filtros
-         * @param  boolean $subnode Filtra además por...
+         * @param  string|array $subnodes Filtra además por nodo o nodos (si es un array),
+         *                                también si el usuario ha invertido en un proyecto de ese nodo
          * @return mixed            Array de objetos de usuario activos|todos.
          */
-        public static function getAll ($filters = array(), $subnode = false) {
+        public static function getAll ($filters = array(), $subnodes = null, $offset = 0, $limit = 100, $count = false) {
 
             $values = array();
 
             $users = array();
 
-            $sqlFilter = "";
+            // ?? NO root
+            $sqlFilter = "id != 'root'";
+
             $sqlOrder = "";
             if (!empty($filters['id'])) {
                 $sqlFilter .= " AND id = :id";
@@ -684,16 +687,22 @@ namespace Goteo\Model {
             }
 
             // un admin de central puede filtrar usuarios de nodo
-            if($subnode) {
-                $sqlFilter .= " AND (node = :node
+            if($subnodes) {
+                if(!is_array($subnodes)) $subnodes = array( (string) $subnodes );
+                $ns = array();
+                foreach($subnodes as $i => $node) {
+                    $ns[":node$i"] = $node;
+                    $values[":node$i"] = $node;
+                }
+                $sqlFilter .= " AND (node IN (" . implode(', ', array_keys($ns)). ")
                     OR id IN (
                         SELECT user_id
                         FROM invest_node
-                        WHERE project_node = :node
+                        WHERE project_node IN (" . implode(', ', array_keys($ns)). ")
                     )
                 )";
-                $values[':node'] = $filters['node'];
-            } elseif (!empty($filters['node'])) {
+            }
+            if (!empty($filters['node'])) {
                 $sqlFilter .= " AND node = :node";
                 $values[':node'] = $filters['node'];
             }
@@ -739,7 +748,7 @@ namespace Goteo\Model {
                                 )
                             ) ";
                         break;
-                    case 'consultants': // asesores de proyectos (admins)
+                    case 'consultants': // asesores de proyectos (admins o consultants)
                         $sqlFilter .= " AND id IN (
                             SELECT DISTINCT(user)
                             FROM user_project
@@ -786,6 +795,12 @@ namespace Goteo\Model {
                 break;
             }
 
+            if($count) {
+                // Return count
+                $sql = "SELECT COUNT(id) as total FROM user WHERE $sqlFilter";
+                return (int) self::query($sql, $values)->fetchColumn();
+            }
+
             $sql = "SELECT
                         id,
                         name,
@@ -799,28 +814,15 @@ namespace Goteo\Model {
                         node
                         $sqlCR
                     FROM user
-                    WHERE id != 'root'
-                        $sqlFilter
+                    WHERE $sqlFilter
                     $sqlOrder
-                    LIMIT 999
+                    LIMIT $offset, $limit
                     ";
-
+            // sqldbg($sql, $values);
             // echo str_replace(array_keys($values), array_values($values),$sql).'<br />';
             $query = self::query($sql, $values);
 
             foreach ($query->fetchAll(\PDO::FETCH_CLASS, __CLASS__) as $user) {
-
-                $query = static::query("
-                    SELECT
-                        role_id
-                    FROM user_role
-                    WHERE user_id = :id
-                    ", array(':id' => $user->id));
-                foreach ($query->fetchAll(\PDO::FETCH_CLASS) as $role) {
-                    $rolevar = $role->role_id;
-                    $user->$rolevar = true;
-                }
-
                 $users[] = $user;
             }
             return $users;
@@ -932,7 +934,7 @@ namespace Goteo\Model {
                 ";
 
             if ($availableonly) {
-                $sql .= " WHERE id NOT IN (SELECT distinct(user) FROM user_node)";
+                $sql .= " WHERE ISNULL(user_role.node_id)";
             }
 
             $sql .= " ORDER BY user.name ASC
@@ -1041,41 +1043,272 @@ namespace Goteo\Model {
 
 			if($row = $query->fetch()) {
 			    $user = static::get($row['id']);
-			    if($user->active) {
+                if($user->active) {
                     // ponemos su divisa preferida en sesión
                     $prefs = self::getPreferences($row['id']);
                     if (!empty($prefs->currency)) $_SESSION['currency'] = $prefs->currency;
 
                     return $user;
 			    } else {
-			        Library\Message::Error(Text::get('user-account-inactive'));
+			        Application\Message::error(Text::get('user-account-inactive'));
 			    }
 			}
 			return false;
 		}
 
-        /**
-         * Comprueba si el usuario es administrador
-         * @param   type varchar(50)  $id   Usuario admin
-         * @return  type bool true/false
-         */
-        public function isAdmin ($id) {
 
-            $sql = "
+        /**
+         * Return all the user roles
+         */
+        public function getRoles () {
+
+            $roles = array();
+            $query = self::query('
                 SELECT
-                    user.id as id
-                FROM    user
-                INNER JOIN user_role
-                    ON  user_role.user_id = user.id
-                    AND user_role.role_id IN ('admin', 'superadmin')
-                WHERE user.id = :id
-                LIMIT 1
-                ";
-            $query = static::query($sql, array(':id' => $id));
-            $res = $query->fetchColumn();
-            return ($res == $id);
+                    role.id as id,
+                    role.name as name
+                FROM role
+                JOIN user_role ON role.id = user_role.role_id
+                WHERE user_id = ? ', array($this->id));
+            foreach ($query->fetchAll(\PDO::FETCH_OBJ) as $rol) {
+                $roles[$rol->id] = $rol;
+            }
+            // añadimos el de usuario normal
+            $roles['user'] = (object) array('id'=>'user', 'name'=>'Usuario registrado');
+
+            return $roles;
+
         }
 
+        /**
+         * Returns a list of roles
+         * @param  string $administrable_by_role specify a role to get only the roles administrable by that role
+         * @return array                        roles
+         */
+        public static function getRolesList ($administrable_by_role = 'root') {
+
+            $roles = array();
+            if($administrable_by_role === 'root') {
+                $filter = '';
+            }
+            elseif($administrable_by_role === 'superadmin') {
+                $filter = "WHERE role.id != 'root'";
+            }
+            elseif($administrable_by_role === 'admin') {
+                $filter = "WHERE role.id NOT IN ('superadmin', 'root')";
+            }
+            else {
+                return $roles;
+            }
+
+            $query = self::query('SELECT role.id as id, role.name as name FROM role ' . $filter . ' ORDER BY role.name');
+            foreach ($query->fetchAll(\PDO::FETCH_OBJ) as $rol) {
+                $roles[$rol->id] = $rol->name;
+            }
+            return $roles;
+
+        }
+
+        /**
+         * Returns the highest current role in node
+         */
+        public function getNodeRole($node) {
+            $roles = $this->getAllNodeRoles();
+            if(array_key_exists($node, $roles) && $roles[$node]) {
+                return $roles[$node][0];
+            }
+            return false;
+        }
+        /**
+         * Returns if a user has certain role in node
+         * By default checks if its a kind of admin
+         * @param  string  $node  the node to check
+         * @param  array|string   $roles if is an array check if has some of the roles specified
+         *                               if is a string, checks that role only
+         * @return boolean        return true if has role
+         */
+        public function hasRoleInNode($node, $check_roles = array('admin', 'superadmin', 'root')) {
+            if(!is_array($roles)) $roles = [ (string) $roles ];
+
+            foreach($this->getAllNodeRoles() as $n => $roles) {
+                if($node === $n && array_intersect($roles, $check_roles)) {
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        /**
+         * Returns all nodes administrable by the user along with the highest role in that node
+         * @return array Array of nodes containing a simple object of node, name, role property
+         */
+        public function getAdminNodes() {
+            $admin_nodes = array();
+            foreach($this->getAllNodeRoles() as $node => $roles) {
+                $role = '';
+                if(in_array($roles[0], array('root', 'superadmin', 'admin'))) {
+                    $admin_nodes[$node] = $roles[0];
+                }
+            }
+            // print_r($admin_nodes);die;
+            return $admin_nodes;
+        }
+
+        /**
+         * Returns an array of all nodes and the roles in each one for the user
+         * @return array Array of nodes containing a simple object of node, name, role property
+         */
+        public function getAllNodeRoles() {
+            if(is_array($this->all_roles_nodes)) return $this->all_roles_nodes;
+            $this->all_roles_nodes = array();
+
+            $query = self::query('
+                SELECT DISTINCT
+                    user_role.node_id AS `node`,
+                    user_role.role_id AS `role`
+                FROM user_role
+                WHERE
+                    user_role.user_id = ?
+                ', array($this->id));
+
+            if($query) {
+                foreach ($query->fetchAll(\PDO::FETCH_OBJ) as $n) {
+                    $role = $n->role;
+                    $node = $n->node;
+
+                    if(!array_key_exists($node, $this->all_roles_nodes)) {
+                        $this->all_roles_nodes[$node] = array();
+                    }
+                    if(in_array($role, $this->all_roles_nodes[$node])) {
+                        continue;
+                    }
+                    $this->all_roles_nodes[$node][] = $role;
+                }
+                // Add all nodes if empty node specified
+                if(array_key_exists('', $this->all_roles_nodes)) {
+                    //assign all nodes if node_id not specified
+                    $query = self::query('SELECT node.id AS `node` FROM node');
+                    $roles = $this->all_roles_nodes[''];
+                    foreach ($query->fetchAll(\PDO::FETCH_OBJ) as $m) {
+                        if(!array_key_exists($m->node, $this->all_roles_nodes)) {
+                            $this->all_roles_nodes[$m->node] = $roles;
+                        }
+                    }
+                    unset($this->all_roles_nodes['']);
+                }
+                // Order array
+                foreach($this->all_roles_nodes as $node => $roles) {
+                    usort($this->all_roles_nodes[$node], function($a, $b) {
+                        $order = array( 'root' => 0, 'superadmin' => 1, 'admin' => 2, 'caller' => 3, 'translator' => 4, 'checker' => 5, 'manager' => 6);
+                        if(!isset($order[$a])) return 1;
+                        return ($order[$a] < $order[$b]) ? -1 : 1;
+                    });
+                }
+            }
+            // print_r($this->all_roles_nodes);die;
+            return $this->all_roles_nodes;
+        }
+        /**
+         * Returns the list of roles without sugar
+         * ie: if non node is specified for a role, the list will not be completed
+         * @return [type] [description]
+         */
+        public function getAllNodeRolesRaw($only_roles = array()) {
+            $all_roles_nodes_raw = array();
+            $filter = '';
+            if(!is_array($only_roles)) $only_roles = array($only_roles);
+            $values = array(':id' => $this->id);
+            if($only_roles) {
+                foreach($only_roles as $i => $role) {
+                    $values[":role$i"] = $role;
+                }
+                $filter = " AND user_role.role_id IN (" . implode(', ', array_keys($values)). ")";
+            }
+
+            $query = self::query('SELECT
+                role_id AS role,
+                node_id AS node
+                FROM user_role
+                WHERE
+                    user_role.user_id = :id
+                    ' . $filter .
+                ' ORDER BY user_role.node_id ASC',  $values);
+
+            if($query) {
+                foreach ($query->fetchAll(\PDO::FETCH_OBJ) as $rol) {
+                    $node = (string) $rol->node;
+                    if(!is_array($all_roles_nodes_raw[$node])) {
+                        $all_roles_nodes_raw[$node] = array();
+                    }
+                    $all_roles_nodes_raw[$node][] = $rol->role;
+                }
+                // Order array
+                foreach($all_roles_nodes_raw as $node => $roles) {
+                    usort($all_roles_nodes_raw[$node], function($a, $b) {
+                        $order = array( 'root' => 0, 'superadmin' => 1, 'admin' => 2, 'caller' => 3, 'translator' => 4, 'checker' => 5, 'manager' => 6);
+                        if(!isset($order[$a])) return 1;
+                        return ($order[$a] < $order[$b]) ? -1 : 1;
+                    });
+                }
+            }
+            // print_r($all_roles_nodes_raw);die;
+            return $all_roles_nodes_raw;
+        }
+
+        /**
+         * Checks if current user can admin some role on some node
+         * if node is empty, all nodes permission assumed
+         * @param  [type] $to_role [description]
+         * @param  string $to_node [description]
+         * @return [type]          [description]
+         */
+        public function canAdminRoleInNode($to_role, $to_node = '') {
+
+            foreach ($this->getAllNodeRolesRaw(['root', 'superadmin', 'admin']) as $node => $roles) {
+                if(in_array('root', $roles))           $non_administrable_roles = [];
+                elseif(in_array('superadmin', $roles)) $non_administrable_roles = ['root'];
+                else                                   $non_administrable_roles = ['superadmin', 'root'];
+                // echo "<br>[$node => $role] againts [$to_node $to_role]";
+                if(($node === $to_node || $node === '') && !in_array($to_role, $non_administrable_roles)) {
+                    // echo " OK [$to_role $to_node]\n";
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
+
+        public function delRoleFromNode($to_role, $to_node = '') {
+            $values = array(':user' => $this->id, ':role' => $to_role);
+            $where = 'WHERE user_id = :user AND role_id = :role';
+            if($to_node) {
+                $where .= ' AND node_id = :node';
+                $values[':node'] = $to_node;
+            }
+            else {
+                $where .= ' AND ISNULL(node_id)';
+            }
+            self::query('DELETE FROM user_role ' . $where, $values);
+
+            return 0 === (int) self::query('SELECT COUNT(*) FROM user_role ' . $where, $values)->fetchColumn();
+        }
+
+        public function addRoleToNode($to_role, $to_node = '') {
+            $values = array(':user' => $this->id, ':role' => $to_role);
+            $insert_sql = 'INSERT INTO user_role (user_id,role_id,node_id) VALUES (:user, :role, ';
+            if($to_node) {
+                $insert_sql .= ':node)';
+                $values[':node'] = $to_node;
+            }
+            else {
+                $insert_sql .= 'NULL)';
+            }
+            if($this->delRoleFromNode($to_role, $to_node)) {
+                if(self::query($insert_sql, $values)) return true;
+            }
+            return false;
+        }
 		/**
 		 * Refresca la sesión.
 		 * (Utilizar después de un save)
@@ -1491,55 +1724,19 @@ namespace Goteo\Model {
 
         }
 
-		private function getRoles () {
-
-            $roles = array();
-
-		    $query = self::query('
-		    	SELECT
-		    		role.id as id,
-		    		role.name as name
-		    	FROM role
-		    	JOIN user_role ON role.id = user_role.role_id
-		    	WHERE user_id = ?
-		    ', array($this->id));
-            foreach ($query->fetchAll(\PDO::FETCH_OBJ) as $rol) {
-                $roles[$rol->id] = $rol;
-            }
-            // añadimos el de usuario normal
-            $roles['user'] = (object) array('id'=>'user', 'name'=>'Usuario registrado');
-
-            return $roles;
-
-		}
-
-        /* listado de roles */
-		public static function getRolesList () {
-
-            $roles = array();
-
-		    $query = self::query('SELECT role.id as id, role.name as name FROM role ORDER BY role.name');
-            foreach ($query->fetchAll(\PDO::FETCH_OBJ) as $rol) {
-                $roles[$rol->id] = $rol->name;
-            }
-            return $roles;
-
-		}
-
-
         /*
          * Lista de proyectos cofinanciados
          */
         public static function invested($user, $publicOnly = true)
         {
             $debug = false;
-
+            $lang = Lang::current();
             $projects = array();
             $values = array();
-            $values[':lang'] = \LANG;
+            $values[':lang'] = $lang;
             $values[':user'] = $user;
 
-            if(self::default_lang(\LANG)=='es') {
+            if(self::default_lang($lang) === Config::get('lang')) {
                 $different_select=" IFNULL(project_lang.description, project.description) as description";
             }
             else {
@@ -1605,7 +1802,7 @@ namespace Goteo\Model {
             }
 
             $query = self::query($sql, $values);
-            foreach ($query->fetchAll(\PDO::FETCH_OBJ) as $proj) {
+            foreach ($query->fetchAll(\PDO::FETCH_CLASS, 'Goteo\Model\Project') as $proj) {
                 $projects[] = Project::getWidget($proj);
             }
             return $projects;
@@ -1618,36 +1815,20 @@ namespace Goteo\Model {
          * @param string $userId
          * @return bool
          */
-        public static function cancel($userId) {
-
+        public static function cancel($userId, $param = null) {
             if (self::query('UPDATE user SET active = 0, hide = 1 WHERE id = :id', array(':id' => $userId))) {
                 return true;
-            } else {
-                return false;
             }
-
+            return false;
         }
 
-        /*
-         * Si no se pueden borrar todos los registros, estado cero para que lo borre el cron
-         * @return: boolean
-         */
-        public function delete(&$errors = array()) {
-            $id = $this->id;
-            if(empty($id)) {
-                // throw new Exception("Delete error: ID not defined!");
-                return false;
+        public static function setProperty($userId, $value, $param = 'active') {
+            if(in_array($param, array('active', 'hide'))) {
+                if (self::query("UPDATE user SET user.$param = :value WHERE id = :id", array(':id' => $userId, ':value' => $value))) {
+                    return true;
+                }
             }
-
-            $sql = 'DELETE FROM user WHERE id = ?';
-            try {
-                self::query($sql, array($id));
-            } catch (\PDOException $e) {
-                // throw new Exception("Delete error in $sql");
-                $errors[] = "Error deleting user $id. " . $e->getMessage();
-                return false;
-            }
-            return true;
+            return false;
         }
 
         /**

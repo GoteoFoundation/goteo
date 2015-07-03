@@ -2,7 +2,7 @@
 use Goteo\Core\View,
     Goteo\Library\Text;
 
-$promotes = $this['promotes'];
+$promotes = $vars['promotes'];
 // random y que solo pinte seis si hubiera más
 if (count($promotes) > 6) {
 	shuffle($promotes);

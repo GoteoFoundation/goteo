@@ -3,12 +3,12 @@
 use Goteo\Library\Text,
     Goteo\Core\View;
 
-$call = $this['call'];
-$filter = $this['filter'];
+$call = $vars['call'];
+$filter = $vars['filter'];
 ?>
 <div id="side">
     <p class="block"><?php echo $call->subtitle ?></p>
-    
+
 <?php if ($call->status == 3) : //inscripcion ?>
     <?php if (!empty($call->amount)) : ?>
     <dl class="">
@@ -59,7 +59,7 @@ $filter = $this['filter'];
                 if ($catId == $filter) {
                     echo '<a href="/call/'.$call->id.'/projects" class="current">'.$catName.'</a>';
                 } else {
-                    echo '<a href="/call/'.$call->id.'/projects/?filter='.$catId.'">'.$catName.'</a>';
+                    echo '<a href="/call/'.$call->id.'/projects?filter='.$catId.'">'.$catName.'</a>';
                 }
                 if ($c < count($call->categories))
                     echo ', ';

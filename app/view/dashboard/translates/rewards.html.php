@@ -3,8 +3,8 @@ use Goteo\Core\View,
     Goteo\Library\Text,
     Goteo\Library\SuperForm;
 
-$project = $this['project'];
-$errors = $this['errors'];
+$project = $vars['project'];
+$errors = $vars['errors'];
 
 $social_rewards = array();
 $individual_rewards = array();
@@ -13,7 +13,7 @@ if (!empty($project->social_rewards)) {
     foreach ($project->social_rewards as $social_reward) {
 
         // a ver si es el que estamos editando o no
-        if (!empty($this["social_reward-{$social_reward->id}-edit"])) {
+        if (!empty($vars["social_reward-{$social_reward->id}-edit"])) {
 
             $original = \Goteo\Model\Project\Reward::get($social_reward->id);
 
@@ -102,7 +102,7 @@ if (!empty($project->social_rewards)) {
             $social_rewards["social_reward-{$social_reward->id}"] = array(
                 'class'     => 'reward social_reward',
                 'view'      => 'dashboard/translates/rewards/reward.html.php',
-                'data'      => array('reward' => $social_reward, 'licenses' => $this['licenses']),
+                'data'      => array('reward' => $social_reward, 'licenses' => $vars['licenses']),
             );
 
         }
@@ -114,7 +114,7 @@ if (!empty($project->individual_rewards)) {
     foreach ($project->individual_rewards as $individual_reward) {
 
         // a ver si es el que estamos editando o no
-        if (!empty($this["individual_reward-{$individual_reward->id}-edit"])) {
+        if (!empty($vars["individual_reward-{$individual_reward->id}-edit"])) {
 
             $original = \Goteo\Model\Project\Reward::get($individual_reward->id);
 

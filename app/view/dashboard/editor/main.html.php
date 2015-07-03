@@ -14,7 +14,7 @@ use Goteo\Core\View,
         </thead>
 
         <tbody>
-            <?php foreach ($this['projects'] as $project) : ?>
+            <?php foreach ($vars['projects'] as $project) : ?>
             <tr>
                 <td><a href="/project/<?php echo $project->id; ?>" target="_blank" title="Preview"><?php echo $project->name; ?></a></td>
                 <td><a href="/project/edit/<?php echo $project->id; ?>" target="_blank">[Editar]</a></td>
@@ -23,5 +23,5 @@ use Goteo\Core\View,
         </tbody>
 
     </table>
-    
+
 </div>

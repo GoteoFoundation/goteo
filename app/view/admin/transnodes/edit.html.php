@@ -1,11 +1,10 @@
 <?php
 
-use Goteo\Library\Text,
-    Goteo\Library\Lang;
+use Goteo\Library\Text;
 
-$node = $this['node'];
+$node = $vars['node'];
 
-$filters = $this['filters'];
+$filters = $vars['filters'];
 
 ?>
 <script type="text/javascript">
@@ -30,7 +29,7 @@ function assign() {
             <?php foreach ($node->translators as $userId=>$userName) : ?>
             <tr>
                 <td><?php echo $userName; ?></td>
-                <td><a href="/admin/transnodes/unassign/<?php echo $node->id; ?>/?user=<?php echo $userId; ?>">[Desasignar]</a></td>
+                <td><a href="/admin/transnodes/unassign/<?php echo $node->id; ?>?user=<?php echo $userId; ?>">[Desasignar]</a></td>
             </tr>
             <?php endforeach; ?>
             <tr>
@@ -38,7 +37,7 @@ function assign() {
                 <td colspan="2">
                     <select id="assign-user" name="user">
                         <option value="">Selecciona otro traductor</option>
-                        <?php foreach ($this['translators'] as $user) :
+                        <?php foreach ($vars['translators'] as $user) :
                             if (in_array($user->id, array_keys($node->translators))) continue;
                             ?>
                         <option value="<?php echo $user->id; ?>"><?php echo $user->name; ?></option>

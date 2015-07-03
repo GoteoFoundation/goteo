@@ -6,8 +6,8 @@ use Goteo\Library\Text,
 
 $bodyClass = 'review';
 
-$review     = $this['review'];
-$evaluation = $this['evaluation'];
+$review     = $vars['review'];
+$evaluation = $vars['evaluation'];
 
 $sections = Criteria::sections();
 $criteria = array();

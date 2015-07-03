@@ -139,7 +139,7 @@ class Currency {
             $rates = $converter->getRates($default);
             $amount = ($revert) ? $amount / $rates[$currency] : $amount * $rates[$currency];
         }
- 
+
         $symbol= $nosymbol ? "" :$ccy['html']." ";
 
         if ($amount === false) {

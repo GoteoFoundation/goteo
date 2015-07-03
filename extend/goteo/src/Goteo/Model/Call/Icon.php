@@ -2,6 +2,9 @@
 
 namespace Goteo\Model\Call {
 
+    use Goteo\Application\Lang;
+    use Goteo\Application\Config;
+
     class Icon extends \Goteo\Core\Model {
 
         public
@@ -36,10 +39,11 @@ namespace Goteo\Model\Call {
          * @return array
          */
 		public static function getAll () {
+            $lang = Lang::current();
             $array = array ();
             try {
 
-                if(self::default_lang(\LANG)=='es') {
+                if(self::default_lang($lang) === Config::get('lang')) {
                     $different_select=" IFNULL(icon_lang.name, icon.name) as name";
                     }
                 else {
@@ -61,7 +65,7 @@ namespace Goteo\Model\Call {
                     ORDER BY name ASC
                     ";
 
-                $query = static::query($sql, array(':lang'=>\LANG));
+                $query = static::query($sql, array(':lang'=>$lang));
                 $categories = $query->fetchAll();
                 foreach ($categories as $cat) {
                     $array[$cat[0]] = $cat[1];
@@ -80,6 +84,7 @@ namespace Goteo\Model\Call {
          * @return array
          */
 		public static function getNames ($call = null, $limit = null) {
+            $lang = Lang::current();
             $array = array ();
             try {
                 $sqlFilter = "";
@@ -87,7 +92,7 @@ namespace Goteo\Model\Call {
                     $sqlFilter = " WHERE icon.id IN (SELECT icon FROM call_icon WHERE `call` = '$call')";
                 }
 
-                if(self::default_lang(\LANG)=='es') {
+                if(self::default_lang($lang) === Config::get('lang')) {
                     $different_select=" IFNULL(icon_lang.name, icon.name) as name";
                     }
                 else {
@@ -97,7 +102,7 @@ namespace Goteo\Model\Call {
                                     AND eng.lang = 'en'";
                     }
 
-                $sql = "SELECT 
+                $sql = "SELECT
                             icon.id,
                             $different_select
                         FROM icon
@@ -111,7 +116,7 @@ namespace Goteo\Model\Call {
                 if (!empty($limit)) {
                     $sql .= "LIMIT $limit";
                 }
-                $query = static::query($sql, array(':lang'=>\LANG));
+                $query = static::query($sql, array(':lang'=>$lang));
                 $categories = $query->fetchAll();
                 foreach ($categories as $cat) {
                     $array[$cat[0]] = $cat[1];
@@ -160,7 +165,7 @@ namespace Goteo\Model\Call {
 		 *
 		 * @param varchar(50) $call id de un proyecto
 		 * @param INT(12) $id  identificador de la tabla keyword
-		 * @param array $errors 
+		 * @param array $errors
 		 * @return boolean
 		 */
 		public function remove (&$errors = array()) {
@@ -180,5 +185,5 @@ namespace Goteo\Model\Call {
 		}
 
 	}
-    
+
 }

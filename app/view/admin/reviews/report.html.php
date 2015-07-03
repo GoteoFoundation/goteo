@@ -4,8 +4,8 @@ use Goteo\Library\Text,
     Goteo\Core\View,
     Goteo\Model\Criteria;
 
-$review     = $this['review'];
-$evaluation = $this['evaluation'];
+$review     = $vars['review'];
+$evaluation = $vars['evaluation'];
 
 $sections = Criteria::sections();
 $criteria = array();

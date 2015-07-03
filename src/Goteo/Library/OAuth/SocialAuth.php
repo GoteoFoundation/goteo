@@ -3,6 +3,7 @@
 namespace Goteo\Library\OAuth;
 use Goteo\Model\User,
     Goteo\Model\Image,
+    Goteo\Application\Cookie,
     Goteo\Core\Model,
     OAuth\OAuth2\Service\Facebook,
 	OAuth\Common\Storage\Session as Storage,
@@ -162,13 +163,13 @@ class SocialAuth {
 				}
 			}
 			else {
-				$openid->returnUrl = $this->host . '/user/oauth/?provider=' .  urlencode($this->original_provider);
+				$openid->returnUrl = $this->host . '/user/oauth?provider=' .  urlencode($this->original_provider);
 				$url = $openid->authUrl();
 				header("Location: $url");
 				exit;
 			}
 		}
-		catch(Exception $e){
+		catch(\Exception $e){
 			$this->last_error = $e->getMessage().' 1/ '.get_class($e);
 			$this->error_type = 'provider-exception';
 			return false;
@@ -185,7 +186,7 @@ class SocialAuth {
 			$credentials = new Credentials(
 				$this->credentials['twitter']['key'],
 				$this->credentials['twitter']['secret'],
-				$this->host . '/user/oauth/?provider=twitter'
+				$this->host . '/user/oauth?provider=twitter'
 			);
 			// Instantiate the twitter service using the credentials, http client and storage mechanism for the token
 			/** @var $twitterService Twitter */
@@ -244,7 +245,7 @@ class SocialAuth {
 			}
 
 		}
-		catch(Exception $e){
+		catch(\Exception $e){
 			$this->last_error = $e->getMessage().' 1/ '.get_class($e);
 			$this->error_type = 'provider-exception';
 			return false;
@@ -261,7 +262,7 @@ class SocialAuth {
 			$credentials = new Credentials(
 				$this->credentials['facebook']['key'],
 				$this->credentials['facebook']['secret'],
-				$this->host . '/user/oauth/?provider=facebook'
+				$this->host . '/user/oauth?provider=facebook'
 			);
 			// Instantiate the Facebook service using the credentials, http client and storage mechanism for the token
 			/** @var $facebookService Facebook */
@@ -319,7 +320,7 @@ class SocialAuth {
 					return true;
 
 				}
-				catch(Exception $e){
+				catch(\Exception $e){
 					$this->last_error =  $e->getMessage().' 1/ '.get_class($e);
 					$this->error_type = 'provider-exception';
 					return false;
@@ -333,7 +334,7 @@ class SocialAuth {
 			}
 			return true;
 		}
-		catch(Exception $e){
+		catch(\Exception $e){
 			$this->last_error = $e->getMessage().' 1/ '.get_class($e);
 			$this->error_type = 'provider-exception';
 			return false;
@@ -349,7 +350,7 @@ class SocialAuth {
 			$credentials = new Credentials(
 				$this->credentials['linkedin']['key'],
 				$this->credentials['linkedin']['secret'],
-				$this->host . '/user/oauth/?provider=linkedin'
+				$this->host . '/user/oauth?provider=linkedin'
 			);
 			// Instantiate the Linkedin service using the credentials, http client and storage mechanism for the token
 			/** @var $linkedinService Linkedin */
@@ -402,7 +403,7 @@ class SocialAuth {
 			}
 
 		}
-		catch(Exception $e){
+		catch(\Exception $e){
 			$this->last_error = $e->getMessage().' 1/ '.get_class($e);
 			$this->error_type = 'provider-exception';
 			return false;
@@ -590,9 +591,7 @@ class SocialAuth {
 
 	    //Guardar en una cookie la preferencia de "login with"
         //servira para mostrar al usuario primeramente su opcion preferida
-        //borrar cookie antigua si existe
-        setcookie('goteo_oauth_provider', '', time() -3600);
-        setcookie('goteo_oauth_provider', $this->original_provider, time() + 3600*24*365, '/');
+        Cookie::store('goteo_oauth_provider', $this->original_provider);
 
 		//return user
 		return $user;

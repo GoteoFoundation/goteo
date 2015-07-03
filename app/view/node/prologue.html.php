@@ -1,10 +1,15 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<?php
+
+use Goteo\Application\Config;
+
+
+?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
         <title><?php echo NODE_META_TITLE ?></title>
-        <link rel="icon" type="image/png" href="/nodesys/<?php echo NODE_ID ?>/myicon.png" />
+        <link rel="icon" type="image/png" href="/nodesys/<?php echo Config::get('current_node') ?>/myicon.png" />
         <meta name="description" content="<?php echo NODE_META_DESCRIPTION ?>" />
         <meta name="keywords" content="<?php echo NODE_META_KEYWORDS ?>" />
         <meta name="author" content="<?php echo NODE_META_AUTHOR ?>" />
@@ -27,13 +32,13 @@
 <?php else : ?>
         <meta property="og:title" content="<?php echo NODE_NAME ?>" />
         <meta property="og:description" content="<?php echo utf8_decode(NODE_META_DESCRIPTION) ?>" />
-        <meta property="og:image" content="<?php echo SRC_URL ?>/nodesys/<?php echo NODE_ID; ?>/view/css/logo.png" />
+        <meta property="og:image" content="<?php echo SRC_URL ?>/nodesys/<?php echo Config::get('current_node'); ?>/view/css/logo.png" />
         <meta property="og:url" content="<?php echo SITE_URL ?>" />
 <?php endif; ?>
 
-        <link rel="stylesheet" type="text/css" href="<?php echo SRC_URL ?>/nodesys/<?php echo NODE_ID ?>/view/css/goteo.css" />
-        <link rel="stylesheet" type="text/css" href="<?php echo SRC_URL ?>/nodesys/<?php echo NODE_ID ?>/view/css/config.css" />
-        <link rel="stylesheet" type="text/css" href="<?php echo SRC_URL ?>/nodesys/<?php echo NODE_ID ?>/view/css/node.css" />
+        <link rel="stylesheet" type="text/css" href="<?php echo SRC_URL ?>/nodesys/<?php echo Config::get('current_node') ?>/view/css/goteo.css" />
+        <link rel="stylesheet" type="text/css" href="<?php echo SRC_URL ?>/nodesys/<?php echo Config::get('current_node') ?>/view/css/config.css" />
+        <link rel="stylesheet" type="text/css" href="<?php echo SRC_URL ?>/nodesys/<?php echo Config::get('current_node') ?>/view/css/node.css" />
 
         <script type="text/javascript">
         if(navigator.userAgent.indexOf('Mac') != -1)

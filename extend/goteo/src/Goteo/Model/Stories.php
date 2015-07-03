@@ -1,6 +1,8 @@
 <?php
 namespace Goteo\Model {
 
+    use Goteo\Application\Lang;
+    use Goteo\Application\Config;
     use Goteo\Core\Model;
     use Goteo\Library\Text,
         Goteo\Model\Project,
@@ -29,7 +31,7 @@ namespace Goteo\Model {
         public static function get ($id, $lang = null) {
 
                 //Obtenemos el idioma de soporte
-                $lang=self::default_lang_by_id($id, 'stories_lang', $lang);
+                $lang = self::default_lang_by_id($id, 'stories_lang', $lang);
 
                 $query = static::query("
                     SELECT
@@ -103,7 +105,7 @@ namespace Goteo\Model {
 
             $sqlFilter = ($activeonly) ? " AND stories.active = 1" : '';
 
-            if(self::default_lang(\LANG)=='es') {
+            if(self::default_lang(Lang::current()) === Config::get('lang')) {
                 $different_select=" IFNULL(stories_lang.title, stories.title) as title,
                                     IFNULL(stories_lang.description, stories.description) as description,
                                     IFNULL(stories_lang.review, stories.review) as review,
@@ -165,7 +167,7 @@ namespace Goteo\Model {
                 $sqlFilter
                 GROUP BY id
                 ORDER BY `order` ASC
-                ", array(':node' => $node, ':lang' => \LANG));
+                ", array(':node' => $node, ':lang' => Lang::current()));
 
             foreach($query->fetchAll(\PDO::FETCH_CLASS, __CLASS__) as $story) {
                 $story->image = !empty($story->image) ? Image::get($story->image) : null;
@@ -269,7 +271,7 @@ namespace Goteo\Model {
                 if ($image->save($errors)) {
                     $this->image = $image->id;
                 } else {
-                    \Goteo\Library\Message::Error(Text::get('image-upload-fail') . implode(', ', $errors));
+                    \Goteo\Application\Message::error(Text::get('image-upload-fail') . implode(', ', $errors));
                     $this->image = '';
                 }
             }
@@ -320,18 +322,6 @@ namespace Goteo\Model {
                 return false;
             }
 
-        }
-
-        /**
-         * Static compatible version of parent delete()
-         * @param  [type] $id [description]
-         * @return [type]     [description]
-         */
-        public function delete($id = null) {
-            if(empty($id)) return parent::delete();
-
-            if(!($ob = Stories::get($id))) return false;
-            return $ob->delete();
         }
 
         /*

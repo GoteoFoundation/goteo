@@ -6,12 +6,12 @@ $bodyClass = 'dashboard project-edit';
 
 $user = $_SESSION['user'];
 
-$option = str_replace(array('call_overview', 'node_overview'), array('overview', 'overview'), $this['option']);
+$option = str_replace(array('call_overview', 'node_overview'), array('overview', 'overview'), $vars['option']);
 
 if ($option == 'location') $jsreq_autocomplete = true;
 
 // funcionalidades con ckeditor
-$jsreq_ckeditor = $this['ckeditor'];
+$jsreq_ckeditor = $vars['ckeditor'];
 $superform = true;
 include __DIR__ . '/../prologue.html.php';
 include __DIR__ . '/../header.html.php'; ?>
@@ -22,41 +22,41 @@ include __DIR__ . '/../header.html.php'; ?>
                 <h2><span><?php if (empty($option)) {
                         echo Text::get('dashboard-header-main');
                     } else {
-                        echo Text::get('dashboard-header-main') . ' / ' . $this['menu'][$this['section']]['label'] . ' / ' . $this['menu'][$this['section']]['options'][$option];
+                        echo Text::get('dashboard-header-main') . ' / ' . $vars['menu'][$vars['section']]['label'] . ' / ' . $vars['menu'][$vars['section']]['options'][$option];
                     } ?></span></h2>
             </div>
         </div>
 
-        <?php  echo View::get('dashboard/menu.html.php', $this) ?>
+        <?php  echo View::get('dashboard/menu.html.php', $vars) ?>
 
-<?php if(isset($_SESSION['messages'])) { include __DIR__ . '/../header/message.html.php'; } ?>
+<?php if($_SESSION['messages']) { include __DIR__ . '/../header/message.html.php'; } ?>
 
-        <div id="main" class="<?php echo $this['option'] ?>">
+        <div id="main" class="<?php echo $vars['option'] ?>">
 
-<?php if ($this['section'] == 'projects') echo View::get('dashboard/projects/selector.html.php', $this); ?>
-<?php if ($this['section'] == 'calls') echo View::get('dashboard/calls/selector.html.php', $this); ?>
-<?php if ($this['section'] == 'translates') echo View::get('dashboard/translates/selector.html.php', $this); ?>
+<?php if ($vars['section'] == 'projects') echo View::get('dashboard/projects/selector.html.php', $vars); ?>
+<?php if ($vars['section'] == 'calls') echo View::get('dashboard/calls/selector.html.php', $vars); ?>
+<?php if ($vars['section'] == 'translates') echo View::get('dashboard/translates/selector.html.php', $vars); ?>
 
-            <?php if (!empty($this['message'])) : ?>
+            <?php if (!empty($vars['message'])) : ?>
                 <div class="widget">
-                    <p><?php echo $this['message']; ?></p>
+                    <p><?php echo $vars['message']; ?></p>
                 </div>
             <?php endif; ?>
 
-            <?php if (!empty($this['errors'])) : ?>
+            <?php if (!empty($vars['errors'])) : ?>
                 <div class="widget" style="color:red;">
-                    <p><?php echo implode('<br />',$this['errors']); ?></p>
+                    <p><?php echo implode('<br />',$vars['errors']); ?></p>
                 </div>
             <?php endif; ?>
 
-            <?php if (!empty($this['success'])) : ?>
+            <?php if (!empty($vars['success'])) : ?>
                 <div class="widget">
-                    <p><?php echo implode('<br />',$this['success']); ?></p>
+                    <p><?php echo implode('<br />',$vars['success']); ?></p>
                 </div>
             <?php endif; ?>
 
-            <?php if (!empty($this['section']) && !empty($this['option'])) {
-                echo View::get('dashboard/'.$this['section'].'/'.$this['option'].'.html.php', $this);
+            <?php if (!empty($vars['section']) && !empty($vars['option'])) {
+                echo View::get('dashboard/'.$vars['section'].'/'.$vars['option'].'.html.php', $vars);
             } ?>
 
         </div>

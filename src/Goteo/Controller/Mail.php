@@ -5,6 +5,7 @@ namespace Goteo\Controller {
     use Goteo\Core\Redirection,
         Goteo\Core\Model,
         Goteo\Core\View,
+        Goteo\Application\Config,
         Goteo\Library\Mail as Mailer;
 
     class Mail extends \Goteo\Core\Controller {
@@ -21,7 +22,7 @@ namespace Goteo\Controller {
 
                 $token = \mybase64_decode($token);
                 $parts = explode('¬', $token);
-
+                // print_r($parts);die;
                 /*
                     // este metodo no se puede usar si no se ha grabado el contenido
                     // y ahora mismo no se está grabando
@@ -48,10 +49,10 @@ namespace Goteo\Controller {
                         if ($template == 33) {
                             return new View ('email/newsletter.html.php', array('content'=>$content, 'baja' => ''));
                         } else {
-                            $baja = SEC_URL . '/user/leave/?email=' . $parts[1];
+                            $baja = SEC_URL . '/user/leave?email=' . $parts[1];
 
-                            if (NODE_ID != \GOTEO_NODE && \file_exists('nodesys/'.NODE_ID.'/view/email/default.html.php')) {
-                                return new View (NODE_ID.'/view/email/default.html.php', array('content'=>$content, 'baja' => $baja));
+                            if (!\Goteo\Application\Config::isMasterNode() && \file_exists('nodesys/' . Config::get('current_node') . '/view/email/default.html.php')) {
+                                return new View (Config::get('current_node') . '/view/email/default.html.php', array('content'=>$content, 'baja' => $baja));
                             } else {
                                 return new View ('email/goteo.html.php', array('content'=>$content, 'baja' => $baja));
                             }

@@ -4,9 +4,9 @@ use Goteo\Library\Text,
     Goteo\Core\Redirection,
     Goteo\Model;
 
-$campaign = $this['campaign'];
-$calls = $this['calls'];
-$status = $this['status'];
+$campaign = $vars['campaign'];
+$calls = $vars['calls'];
+$status = $vars['status'];
 
 // solo para nodos
 // TODO: esto aqui no!
@@ -17,7 +17,7 @@ if (!isset($_SESSION['admin_node'])) {
 $node = $_SESSION['admin_node'];
 ?>
 <form method="post" action="/admin/campaigns">
-    <input type="hidden" name="action" value="<?php echo $this['action'] ?>" />
+    <input type="hidden" name="action" value="<?php echo $vars['action'] ?>" />
     <input type="hidden" name="order" value="<?php echo $campaign->order ?>" />
     <input type="hidden" name="id" value="<?php echo $campaign->id; ?>" />
 

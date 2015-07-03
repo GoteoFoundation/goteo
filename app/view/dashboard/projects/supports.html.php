@@ -3,15 +3,15 @@ use Goteo\Core\View,
     Goteo\Library\Text,
     Goteo\Library\SuperForm;
 
-$project = $this['project'];
+$project = $vars['project'];
 $errors = $project->errors['supports'] ?: array();
 $okeys  = $project->okeys['supports'] ?: array();
-$errors = $this['errors'];
-$this['level'] = 3;
+$errors = $vars['errors'];
+$vars['level'] = 3;
 
 $support_types = array();
 
-foreach ($this['types'] as $id => $type) {
+foreach ($vars['types'] as $id => $type) {
     $support_types[] = array(
         'value' => $id,
         'class' => "support_{$id}",
@@ -26,12 +26,12 @@ foreach ($project->supports as $support) {
     $ch = array();
 
     // a ver si es el que estamos editando o no
-    if (!empty($this["support-{$support->id}-edit"])) {
+    if (!empty($vars["support-{$support->id}-edit"])) {
 
 
         $support_types = array();
 
-        foreach ($this['types'] as $id => $type) {
+        foreach ($vars['types'] as $id => $type) {
             $support_types["support-{$support->id}-type-{$id}"] = array(
                 'name'  => "support-{$support->id}-type",
                 'value' => $id,
@@ -132,7 +132,7 @@ $sfid = 'sf-project-supports';
     'id'            => $sfid,
 
     'action'        => '',
-    'level'         => $this['level'],
+    'level'         => $vars['level'],
     'method'        => 'post',
     'title'         => '',
     'hint'          => Text::get('guide-project-supports'),

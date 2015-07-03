@@ -19,32 +19,32 @@ jQuery(document).ready(function ($) {
 <div class="widget board">
     <form method="post" action="/admin/criteria">
 
-        <input type="hidden" name="action" value="<?php echo $this['action']; ?>" />
-        <input type="hidden" name="id" value="<?php echo $this['criteria']->id; ?>" />
+        <input type="hidden" name="action" value="<?php echo $vars['action']; ?>" />
+        <input type="hidden" name="id" value="<?php echo $vars['criteria']->id; ?>" />
 
         <p>
-        <?php if ($this['action'] == 'add') : ?>
+        <?php if ($vars['action'] == 'add') : ?>
             <label for="criteria-section">Sección:</label><br />
             <select id="criteria-section" name="section">
                 <option value="" disabled>Elige la sección</option>
-                <?php foreach ($this['sections'] as $id=>$name) : ?>
-                <option value="<?php echo $id; ?>"<?php if ($id == $this['criteria']->section) echo ' selected="selected"'; ?>><?php echo $name; ?></option>
+                <?php foreach ($vars['sections'] as $id=>$name) : ?>
+                <option value="<?php echo $id; ?>"<?php if ($id == $vars['criteria']->section) echo ' selected="selected"'; ?>><?php echo $name; ?></option>
                 <?php endforeach; ?>
             </select>
         <?php else : ?>
-            <label for="criteria-section">Sección: <?php echo $this['sections'][$this['criteria']->section]; ?></label><br />
-            <input type="hidden" name="section" value="<?php echo $this['criteria']->section; ?>" />
+            <label for="criteria-section">Sección: <?php echo $vars['sections'][$vars['criteria']->section]; ?></label><br />
+            <input type="hidden" name="section" value="<?php echo $vars['criteria']->section; ?>" />
         <?php endif; ?>
         </p>
 
         <p>
             <label for="criteria-title">Título:</label><br />
-            <input type="text" name="title" id="criteria-title" value="<?php echo $this['criteria']->title; ?>" />
+            <input type="text" name="title" id="criteria-title" value="<?php echo $vars['criteria']->title; ?>" />
         </p>
 
         <p>
             <label for="criteria-description">Descripción:</label><br />
-            <textarea name="description" id="criteria-description" cols="60" rows="10"><?php echo $this['criteria']->description; ?></textarea>
+            <textarea name="description" id="criteria-description" cols="60" rows="10"><?php echo $vars['criteria']->description; ?></textarea>
         </p>
 
         <p>
@@ -54,8 +54,8 @@ jQuery(document).ready(function ($) {
                 <option value="up">Antes de </option>
                 <option value="down">Después de </option>
             </select>&nbsp;
-            <input type="text" name="order" id="criteria-order" value="<?php echo $this['criteria']->order; ?>" size="4" />
-            &nbsp;de&nbsp;<span id="criteria-num"><?php echo $this['criteria']->cuantos; ?></span>
+            <input type="text" name="order" id="criteria-order" value="<?php echo $vars['criteria']->order; ?>" size="4" />
+            &nbsp;de&nbsp;<span id="criteria-num"><?php echo $vars['criteria']->cuantos; ?></span>
         </p>
 
 

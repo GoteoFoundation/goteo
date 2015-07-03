@@ -1,15 +1,16 @@
 <?php
 use Goteo\Core\ACL,
     Goteo\Core\NodeSys,
+    Goteo\Application\Config,
     Goteo\Library\Text;
 
-$nodes = Nodesys::activeNodes(\NODE_ID);
+$nodes = Nodesys::activeNodes(Config::get('current_node'));
 
 ?>
     <div id="menu">
-        
+
         <h2><?php echo Text::get('regular-menu'); ?></h2>
-        
+
         <ul>
             <script type="text/javascript">
                 $(function(){
@@ -49,7 +50,7 @@ $nodes = Nodesys::activeNodes(\NODE_ID);
 
             </script>
             <?php if (!empty($banners)) : ?><li class="info"><a class="open" id="switch-banner" href="#">&nbsp;</a></li><?php endif; ?>
-            <li class="explore"><a class="button <?php echo (\NODE_ID == 'barcelona') ? 'blue' : 'red'; ?>" href="/discover"><?php echo Text::get('regular-discover'); ?></a></li>
+            <li class="explore"><a class="button blue" href="/discover"><?php echo Text::get('regular-discover'); ?></a></li>
             <li class="create"><a class="button aqua" href="/project/create"><?php echo Text::get('regular-create'); ?></a></li>
             <li class="help"><a class="button grey" href="/faq"><?php echo Text::get('node-footer-title-help'); ?></a></li>
             <li class="search">
@@ -65,13 +66,10 @@ $nodes = Nodesys::activeNodes(\NODE_ID);
             <li class="community"><a href="/community"><span><?php echo Text::get('community-menu-main'); ?></span></a>
                 <div>
                     <ul>
-                        <?php // si estamos en easy mode no pintamos estos enlaces
-                        if (!defined('GOTEO_EASY') || \GOTEO_EASY !== true) : ?>
                         <li><a href="/community/activity"><span><?php echo Text::get('community-menu-activity'); ?></span></a></li>
 <?php /* quitamos Compartiendo por ahora
                         <li><a href="/community/sharemates"><span><?php echo Text::get('community-menu-sharemates'); ?></span></a></li>
  */ ?>
-                        <?php endif; ?>
                         <!-- nodos activos -->
                         <?php  foreach ($nodes as $node) : ?>
                         <li><a class="node-jump" href="<?php echo $node->url ?>"><?php echo $node->name ?></a></li>
@@ -79,7 +77,7 @@ $nodes = Nodesys::activeNodes(\NODE_ID);
                     </ul>
                 </div>
             </li>
-            <?php if (!empty($_SESSION['user'])): ?>            
+            <?php if (!empty($_SESSION['user'])): ?>
             <li class="dashboard"><a href="/dashboard"><span><?php echo Text::get('dashboard-menu-main'); ?></span><img src="<?php echo $_SESSION['user']->avatar->getLink(28, 28, true); ?>" /></a>
                 <div>
                     <ul>
@@ -110,12 +108,12 @@ $nodes = Nodesys::activeNodes(\NODE_ID);
                         <li class="logout"><a href="/user/logout"><span><?php echo Text::get('regular-logout'); ?></span></a></li>
                     </ul>
                 </div>
-            </li>            
-            <?php else: ?>            
+            </li>
+            <?php else: ?>
             <li class="login">
                 <a href="<?php echo SEC_URL; ?>/user/login"><?php echo Text::get('regular-login'); ?></a>
             </li>
-            
+
             <?php endif ?>
         </ul>
     </div>

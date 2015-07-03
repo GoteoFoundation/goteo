@@ -11,7 +11,7 @@ $bodyClass = 'news';
 $read_more = Text::get('regular-read_more');
 
 // noticias
-$news = $this['news'];
+$news = $vars['news'];
 
 // últimas entradas del blog goteo
 $list = array();

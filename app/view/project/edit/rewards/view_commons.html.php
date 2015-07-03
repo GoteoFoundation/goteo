@@ -1,11 +1,11 @@
-<?php 
+<?php
 /* Esta vista se usa para gestión de retornos colectivos mediante ajax
  * Desde /admin/commons  y desde /dashboard/projects/commons
  * Necesita usar la vista view/project/edit/rewars/commons.js.php
  */
-$licenses = $this['licenses'];
-$project = $this['project'];
-$path = $this['path'];
+$licenses = $vars['licenses'];
+$project = $vars['project'];
+$path = $vars['path'];
 
 // en dashboard, solo editar y eliminar retornos bonus
 $chk = (strpos($path, 'dashboard') !== false);
@@ -27,15 +27,15 @@ $chk = (strpos($path, 'dashboard') !== false);
                 <a href="<?php echo $path; ?>/edit/<?php echo $project->id; ?>?reward_id=<?php echo $reward->id; ?>">[Editar]</a>
                 <?php endif; ?>
             </td>
-            <td style="color: #20B2B3;"><?php echo $reward->reward; echo ' ('.$this['icons'][$reward->icon].')'; ?></td>
+            <td style="color: #20B2B3;"><?php echo $reward->reward; echo ' ('.$vars['icons'][$reward->icon].')'; ?></td>
             <td>
                 <?php if (!$reward->fulsocial) : ?>
                     <div id="<?php echo 'rew'.$reward->id; ?>">
-                        <span style="color: red; font-weight: bold;">Pendiente</span>&nbsp;<a href="#" onclick="return fulsocial(<?php echo "'{$this['project']->id}', '{$reward->id}', 1"; ?>)">[ok]</a>
+                        <span style="color: red; font-weight: bold;">Pendiente</span>&nbsp;<a href="#" onclick="return fulsocial(<?php echo "'{$vars['project']->id}', '{$reward->id}', 1"; ?>)">[ok]</a>
                     </div>
                 <?php else : ?>
                     <div id="<?php echo 'rew'.$reward->id; ?>">
-                        <span style="color: green; font-weight: bold;">Cumplido</span>&nbsp;<a href="#" onclick="return fulsocial(<?php echo "'{$this['project']->id}', '{$reward->id}', 0"; ?>)">[X]</a>
+                        <span style="color: green; font-weight: bold;">Cumplido</span>&nbsp;<a href="#" onclick="return fulsocial(<?php echo "'{$vars['project']->id}', '{$reward->id}', 0"; ?>)">[X]</a>
                     </div>
                 <?php endif; ?>
             </td>
@@ -55,7 +55,7 @@ $chk = (strpos($path, 'dashboard') !== false);
                 </div>
                 <div id="<?php echo 'divrew'.$reward->id.'urlinput'; ?>" style="display:none;">
                     <input type="text" id="<?php echo 'rew'.$reward->id.'url'; ?>" style="width: 500px;" value="<?php echo $reward->url; ?>"/>&nbsp;
-                    <input type="button" class="doreq" rew="<?php echo $reward->id; ?>" proj="<?php echo $this['project']->id; ?>" value="Aplicar" />
+                    <input type="button" class="doreq" rew="<?php echo $reward->id; ?>" proj="<?php echo $vars['project']->id; ?>" value="Aplicar" />
                     <br /><a href="#" class="dohide" rel="<?php echo $reward->id; ?>">(Cancelar)</a></div>
                 </div>
             </td>

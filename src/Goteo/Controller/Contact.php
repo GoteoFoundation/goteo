@@ -8,6 +8,7 @@ namespace Goteo\Controller {
         Goteo\Core\View,
         Goteo\Library,
         Goteo\Library\Text,
+        Goteo\Application\Message,
         Goteo\Library\Template;
 
     class Contact extends \Goteo\Core\Controller {
@@ -89,13 +90,9 @@ namespace Goteo\Controller {
                     $subject = $tag.$subject;
 
                     // destinatario
-                    if (\defined('NODE_MAIL')) {
-                        $to = \NODE_MAIL;
-                        $toName = \NODE_NAME;
-                    } else {
-                        $to = \GOTEO_CONTACT_MAIL;
-                        $toName = 'Goteo';
-                    }
+                    $to = \Goteo\Application\Config::get('mail.contact');
+                    $toName = \Goteo\Application\Config::get('mail.contact_name');
+                    if(empty($toName)) $toName = 'Goteo';
 
                     // En el contenido:
                     $search  = array('%TONAME%', '%MESSAGE%', '%USEREMAIL%');
@@ -113,10 +110,10 @@ namespace Goteo\Controller {
                     $mailHandler->html = true;
                     $mailHandler->template = $template->id;
                     if ($mailHandler->send($errors)) {
-                        Library\Message::Info('Mensaje de contacto enviado correctamente.');
+                        Message::info('Mensaje de contacto enviado correctamente.');
                         $data = array();
                     } else {
-                        Library\Message::Error('Ha fallado al enviar el mensaje.');
+                        Message::error('Ha fallado al enviar el mensaje.');
                     }
 
                     unset($mailHandler);

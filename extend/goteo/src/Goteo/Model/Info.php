@@ -6,7 +6,10 @@ namespace Goteo\Model {
         \Goteo\Model\Image,
         \Goteo\Library\Text,
         \Goteo\Library,
-        \Goteo\Library\Check;
+        \Goteo\Library\Check,
+        \Goteo\Application;
+    use Goteo\Application\Lang;
+    use Goteo\Application\Config;
 
     class Info extends \Goteo\Core\Model {
 
@@ -27,7 +30,7 @@ namespace Goteo\Model {
         public static function get ($id) {
 
                 //Obtenemos el idioma de soporte
-                $lang=self::default_lang_by_id($id, 'info_lang', \LANG);
+                $lang=self::default_lang_by_id($id, 'info_lang', Lang::current());
 
                 $query = static::query("
                     SELECT
@@ -64,10 +67,10 @@ namespace Goteo\Model {
          * Lista de entradas por orden alfabético
          */
         public static function getAll ($published = false, $node = \GOTEO_NODE) {
-
+            $lang = Lang::current();
             $list = array();
 
-            if(self::default_lang(\LANG)=='es') {
+            if(self::default_lang($lang) === Config::get('lang')) {
                 $different_select=" IFNULL(info_lang.title, info.title) as title,
                                     IFNULL(info_lang.text, info.text) as `text`,
                                     IFNULL(info_lang.legend, info.legend) as `legend`";
@@ -104,7 +107,7 @@ namespace Goteo\Model {
             $sql .= " ORDER BY `order` ASC
                 ";
 
-            $query = static::query($sql, array(':node'=>$node, ':lang'=>\LANG));
+            $query = static::query($sql, array(':node'=>$node, ':lang'=>$lang));
 
             foreach ($query->fetchAll(\PDO::FETCH_CLASS, __CLASS__) as $info) {
 
@@ -166,7 +169,7 @@ namespace Goteo\Model {
                         $this->gallery[0]->setModelImage('info', $this->id);
                     }
                     else {
-                        Message::Error(Text::get('image-upload-fail') . implode(', ', $errors));
+                       Application\Message::error(Text::get('image-upload-fail') . implode(', ', $errors));
                     }
                 }
 
@@ -175,19 +178,6 @@ namespace Goteo\Model {
                 $errors[] = "HA FALLADO!!! " . $e->getMessage();
                 return false;
             }
-        }
-
-        /**
-         * Static compatible version of parent delete()
-         * @param  [type] $id [description]
-         * @return [type]     [description]
-         */
-        public function delete($id = null) {
-            if(empty($id)) return parent::delete();
-
-            if(!($ob = Glossary::get($id))) return false;
-            return $ob->delete();
-
         }
 
 

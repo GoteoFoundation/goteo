@@ -1,7 +1,7 @@
 <?php
 use Goteo\Model\Banner;
 
-$node = $this['node'];
+$node = $vars['node'];
 
 $banners = Banner::getList($node->id);
 ?>

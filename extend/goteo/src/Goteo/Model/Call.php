@@ -3,6 +3,8 @@
 namespace Goteo\Model {
 
     use Goteo\Core\ACL,
+        Goteo\Application\Config,
+        Goteo\Application\Lang,
         Goteo\Library\Check,
         Goteo\Library\Text,
         Goteo\Model\User,
@@ -295,9 +297,9 @@ namespace Goteo\Model {
                 if (!isset($call->running_projects)) {
                     $call->running_projects = Call\Project::numRunningProjects($id);
                 }
-                
+
                 $call->success_projects = Call\Project::numSuccessProjects($id);
-                
+
 
                 // para convocatorias en campaña o posterior
                 // los proyectos han conseguido pasta, son exitosos, estan en campaña o no han conseguido y estan caducados pero no se calculan ni dias ni ronda
@@ -325,20 +327,20 @@ namespace Goteo\Model {
                 // campos calculados
 
                 // riego comprometido
-                
+
                     $call->used = $call->getUsed();
-               
+
 
                 // riego restante
-                
+
                     $call->rest = $call->getRest($call->used);
-                
+
 
                 // proyectos asignados
                     // número de proyectos presentados a la campaña
                     $applied = $call->getConf('applied');
                     $call->applied = (isset($applied)) ? $applied : $call->getApplied();
-        
+
 
                 return $call;
             } catch (\PDOException $e) {
@@ -504,7 +506,7 @@ namespace Goteo\Model {
                     if ($logo->save($errors)) {
                         $this->logo = $logo->id;
                     } else {
-                        \Goteo\Library\Message::Error(Text::get('call-logo-upload-fail') . implode(', ', $errors));
+                        \Goteo\Application\Message::error(Text::get('call-logo-upload-fail') . implode(', ', $errors));
                     }
                 }
 
@@ -515,7 +517,7 @@ namespace Goteo\Model {
                     if ($image->save($errors)) {
                         $this->image = $image->id;
                     } else {
-                        \Goteo\Library\Message::Error(Text::get('call-image-upload-fail') . implode(', ', $errors));
+                        \Goteo\Application\Message::error(Text::get('call-image-upload-fail') . implode(', ', $errors));
                     }
                 }
 
@@ -526,7 +528,7 @@ namespace Goteo\Model {
                     if ($backimage->save($errors)) {
                         $this->backimage = $backimage->id;
                     } else {
-                        \Goteo\Library\Message::Error(Text::get('call-backimage-upload-fail') . implode(', ', $errors));
+                        \Goteo\Application\Message::error(Text::get('call-backimage-upload-fail') . implode(', ', $errors));
                     }
                 }
 
@@ -842,7 +844,7 @@ namespace Goteo\Model {
         /*
          * Si no se pueden borrar todos los registros, estado cero para que lo borre el cron
          */
-        public function delete(&$errors = array()) {
+        public function remove(&$errors = array()) {
 
             if ($this->status != 1) {
                 return false;
@@ -853,7 +855,6 @@ namespace Goteo\Model {
                 //borrar todos los registros
                 self::query("DELETE FROM call_category WHERE `call` = ?", array($this->id));
                 self::query("DELETE FROM call_icon WHERE `call` = ?", array($this->id));
-                self::query("DELETE FROM call_project WHERE `call` = ?", array($this->id));
                 self::query("DELETE FROM call_banner WHERE `call` = ?", array($this->id));
                 self::query("DELETE FROM call_sponsor WHERE `call` = ?", array($this->id));
                 self::query("DELETE FROM `call` WHERE id = ?", array($this->id));
@@ -928,7 +929,7 @@ namespace Goteo\Model {
 
             $debug = false;
 
-            $lang = \LANG;
+            $lang = Lang::current();
 
             $sqlFilter = '';
             $sqlJoin = '';
@@ -944,13 +945,13 @@ namespace Goteo\Model {
                 $sqlFilter .= " WHERE call.status IN ('3', '4')"; // solo aplicacion y campaña
             }
 
-            if (\NODE_ID != \GOTEO_NODE) {
+            if (!\Goteo\Application\Config::isMasterNode()) {
                 $sqlJoin .= " INNER JOIN campaign
                     ON campaign.call = call.id
                     AND campaign.node = :node
                     AND campaign.active = 1
                     ";
-                $values[':node'] = \NODE_ID;
+                $values[':node'] = Config::get('current_node');
             }
 
 

@@ -6,7 +6,7 @@ use Goteo\Library\Text,
 <a href="/admin/campaigns/add" class="button">Destacar otra convocatoria</a>
 
 <div class="widget board">
-    <?php if (!empty($this['setted'])) : ?>
+    <?php if (!empty($vars['setted'])) : ?>
     <table>
         <thead>
             <tr>
@@ -22,7 +22,7 @@ use Goteo\Library\Text,
         </thead>
 
         <tbody>
-            <?php foreach ($this['setted'] as $campa) : ?>
+            <?php foreach ($vars['setted'] as $campa) : ?>
             <tr>
                 <td><a href="/call/<?php echo $campa->project; ?>" target="_blank" title="Preview">[Ver]</a></td>
                 <td><?php echo ($campa->active) ? '<strong>'.$campa->name.'</strong>' : $campa->name; ?></td>

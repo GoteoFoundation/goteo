@@ -2,6 +2,8 @@
 
 namespace Goteo\Model {
 
+    use Goteo\Application\Lang;
+    use Goteo\Application\Config;
     use Goteo\Library\Check,
         Goteo\Library\Text;
 
@@ -21,7 +23,7 @@ namespace Goteo\Model {
         public static function get ($id) {
 
                 //Obtenemos el idioma de soporte
-                $lang=self::default_lang_by_id($id, 'faq_lang', \LANG);
+                $lang=self::default_lang_by_id($id, 'faq_lang', Lang::current());
 
                 $query = static::query("
                     SELECT
@@ -46,10 +48,10 @@ namespace Goteo\Model {
          * Lista de proyectos destacados
          */
         public static function getAll ($section = 'node') {
+            $lang = Lang::current();
+            $values = array(':section' => $section, ':lang' => $lang);
 
-            $values = array(':section' => $section, ':lang' => \LANG);
-
-            if(self::default_lang(\LANG)=='es') {
+            if(self::default_lang($lang) === Config::get('lang')) {
                 $different_select=" IFNULL(faq_lang.title, faq.title) as title,
                                     IFNULL(faq_lang.description, faq.description) as description";
                 }
@@ -141,10 +143,8 @@ namespace Goteo\Model {
         /*
          * Para quitar una pregunta
          */
-        public function delete ($id = null, $node = null) {
-            if(empty($id) && $this->id) $id = $this->id;
-            if(empty($node) && $this->node) $node = $this->node;
-            if(empty($node)) $node = \GOTEO_NODE;
+        public static function remove ($id, $node = null) {
+            if(empty($node)) $node = Config::get('current_node');
             if(empty($id)) return false;
             try {
                 $sql = "DELETE FROM faq WHERE id = :id AND node = :node";

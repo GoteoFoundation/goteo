@@ -3,7 +3,8 @@
 namespace Goteo\Model\Project {
 
     use \Goteo\Model\Icon,
-        \Goteo\Model\License;
+        \Goteo\Model\License,
+        \Goteo\Application\Lang;
 
     class Reward extends \Goteo\Core\Model {
 
@@ -81,7 +82,7 @@ namespace Goteo\Model\Project {
                                         ON  eng.id = reward.id
                                         AND eng.project = :project
                                         AND eng.lang = 'en'";
-                    }                
+                    }
 
                 $sql = "SELECT
                             reward.id as id,
@@ -126,8 +127,8 @@ namespace Goteo\Model\Project {
             }
         }
 
-        public static function getWidget($project, $lang = \LANG) {
-
+        public static function getWidget($project, $lang = null) {
+            if(empty($lang)) $lang = Lang::current();
             $debug = false;
 
             try {
@@ -379,7 +380,7 @@ namespace Goteo\Model\Project {
          * @param string $type individual|social
          * @return boolean
          */
-         
+
         public static function areFulfilled($project, $type = 'individual') {
 
             // diferente segun tipo
@@ -415,8 +416,8 @@ namespace Goteo\Model\Project {
                 return false;
             }
         }
-        
-        public static function getChosen($filters = array()) {
+
+        public static function getChosen($filters = array(), $offset = 0, $limit = 10, $count = false) {
             try {
                 $array = array();
 
@@ -443,6 +444,28 @@ namespace Goteo\Model\Project {
                     $and = " AND";
                 }
 
+                // Return total count for pagination
+                if($count) {
+                    $sql = "SELECT COUNT(invest_reward.invest)
+                        FROM invest_reward
+                        INNER JOIN invest
+                            ON invest.id = invest_reward.invest
+                            AND invest.status IN (0, 1, 3)
+                        INNER JOIN user
+                            ON user.id = invest.user
+                            $sqlFilterUser
+                        INNER JOIN project
+                            ON project.id = invest.project
+                            AND project.status IN (3, 4, 5)
+                            $sqlFilterProj
+                        INNER JOIN reward
+                            ON reward.id = invest_reward.reward
+                        $sqlFilter";
+                    return (int) self::query($sql, $values)->fetchColumn();
+                }
+
+                $offset = (int) $offset;
+                $limit = (int) $limit;
                 $sql = "SELECT
                             invest_reward.invest as invest,
                             reward.reward as reward_name,
@@ -469,7 +492,7 @@ namespace Goteo\Model\Project {
                         $sqlFilter
                         ";
 
-                $sql .= " ORDER BY user.name ASC";
+                $sql .= " ORDER BY user.name ASC LIMIT $offset,$limit";
 
                 $query = self::query($sql, $values);
                 foreach ($query->fetchAll(\PDO::FETCH_OBJ) as $item) {
@@ -484,7 +507,7 @@ namespace Goteo\Model\Project {
 
         /*
          * Método simple para sacar la lista de recompensas de un aporte
-         */        
+         */
         public static function txtRewards($invest) {
             try {
                 $array = array();
@@ -509,7 +532,7 @@ namespace Goteo\Model\Project {
             }
         }
 
-        
+
     }
 
 }

@@ -16,11 +16,17 @@ use Goteo\Core\Resource,
     Goteo\Core\Error,
     Goteo\Core\Redirection,
     Goteo\Core\Model,
+    Goteo\Application\Lang,
+    Goteo\Application\Config,
     Goteo\Library\Feed,
     Goteo\Library\Mail,
     Goteo\Library\Sender;
 
-require_once __DIR__ . '/../app/config.php';
+
+//Public Web path
+define('GOTEO_WEB_PATH', dirname(__DIR__) . '/app/');
+
+require_once __DIR__ . '/../src/autoload.php';
 
 // montar SITE_URL como el dispatcher para el enlace de darse de baja.
 define('SITE_URL', GOTEO_URL);
@@ -31,8 +37,17 @@ define('PHP_CLI', '/usr/bin/php'); //ruta al ejecutable PHP
 define('LOGS_DIR', GOTEO_LOG_PATH . 'mailing/'); //ruta a logs
 //Archivo de bloqueo en la carpeta var
 define('LOCK_FILE',  __DIR__ . '/../var/' . basename(__FILE__) . '.lock');
+
+// constantes necesarias (las pone el dispatcher)
+define('HTTPS_ON', false); // para las url de project/media
+define('SITE_URL', 'http://goteo.org'); // para los mails
+define('SEC_URL', 'https:'.str_replace('http:', '', SITE_URL)); // urls para paypal (necesita schema)
+// Config file...
+Config::loadFromYaml('settings.yml');
 // set Lang
-define('LANG', 'es');
+Lang::setDefault(Config::get('lang'));
+Lang::set(Config::get('lang'));
+
 
 /**
  * Comprueba si se está ejecutando un proceso cli-sendmail.php con un pid determinado

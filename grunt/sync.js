@@ -14,16 +14,16 @@ module.exports = function(grunt) {
                 '**',
                 '!view/**/*.{png,jpg,jpeg,gif}',
                 // "!**/view/css/{goteo,config,node}.css",
-                "!config/**",
-                "!data/**",
-                "data/.htaccess",
-                "!logs/**",
-                "logs/.htaccess",
-                "logs/README",
-                "logs/cron/README",
-                "!.git*"
                 ],
             dest: '<%= goteo.dist %>'
+        }, {
+            dot: true,
+            cwd: '<%= goteo.templates %>/default',
+            src: [
+                'partials/header/styles.php',
+                'partials/footer/javascript.php',
+                ],
+            dest: '<%= goteo.dist %>/templates'
         }],
         verbose: true,
         pretend: false, // Don't do any disk operations - just write log
@@ -31,10 +31,6 @@ module.exports = function(grunt) {
                         "data",
                         '**/*.{png,jpg,jpeg,gif}',
                         // "**/view/css/{goteo,config,node}.css",
-                        "config/**",
-                        "data/**",
-                        "logs/**",
-                        ".git*"
                     ], // Never remove js files from destination
         updateAndDelete: true // Remove all files from desc that are not found in src
 

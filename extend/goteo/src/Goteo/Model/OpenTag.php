@@ -3,6 +3,8 @@
 namespace Goteo\Model {
 
     use Goteo\Library\Check;
+    use Goteo\Application\Lang;
+    use Goteo\Application\Config;
 
     class OpenTag extends \Goteo\Core\Model {
         //table for this model is not opentag but open_tag
@@ -21,7 +23,7 @@ namespace Goteo\Model {
         public static function get ($id) {
 
                 //Obtenemos el idioma de soporte
-                $lang=self::default_lang_by_id($id, 'open_tag_lang', \LANG);
+                $lang=self::default_lang_by_id($id, 'open_tag_lang', Lang::current());
 
                 $query = static::query("
                     SELECT
@@ -45,10 +47,10 @@ namespace Goteo\Model {
          * @TODO añadir el numero de usos
          */
         public static function getAll () {
-
+            $lang = Lang::current();
             $list = array();
 
-            if(self::default_lang(\LANG)=='es') {
+            if(self::default_lang($lang) === Config::get('lang')) {
                 $different_select=" IFNULL(open_tag_lang.name, open_tag.name) as name,
                                     IFNULL(open_tag_lang.description, open_tag.description) as description";
                 }
@@ -76,7 +78,7 @@ namespace Goteo\Model {
                                 AND open_tag_lang.lang = :lang
                             ORDER BY `order` ASC";
 
-            $query = static::query($sql, array(':lang'=>\LANG));
+            $query = static::query($sql, array(':lang'=>$lang));
 
             foreach ($query->fetchAll(\PDO::FETCH_CLASS, __CLASS__) as $open_tag) {
                 $list[$open_tag->id] = $open_tag;
@@ -92,12 +94,12 @@ namespace Goteo\Model {
          * @return array
          */
 		public static function getList () {
-
+            $lang = Lang::current();
             $array = array ();
 
             try {
 
-                if(self::default_lang(\LANG)=='es') {
+                if(self::default_lang($lang) === Config::get('lang')) {
                 $different_select=" IFNULL(open_tag_lang.name, open_tag.name) as name";
                 }
                 else {
@@ -119,7 +121,7 @@ namespace Goteo\Model {
                         ORDER BY open_tag.order ASC
                         ";
 
-                $query = static::query($sql, array(':lang'=>\LANG));
+                $query = static::query($sql, array(':lang'=>$lang));
                 $open_tags = $query->fetchAll();
                 foreach ($open_tags as $cat) {
                     $array[$cat[0]] = $cat[1];
@@ -172,18 +174,6 @@ namespace Goteo\Model {
                 $errors[] = "HA FALLADO!!! " . $e->getMessage();
                 return false;
             }
-        }
-
-        /**
-         * Static compatible version of parent delete()
-         * @param  [type] $id [description]
-         * @return [type]     [description]
-         */
-        public function delete($id = null) {
-            if(empty($id)) return parent::delete();
-
-            if(!($ob = OpenTag::get($id))) return false;
-            return $ob->delete();
         }
 
         /*

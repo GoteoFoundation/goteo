@@ -3,6 +3,8 @@
 namespace Goteo\Library {
 
     use Goteo\Model\Project;
+    use Goteo\Application\Config;
+    use Goteo\Application\Lang;
 
 	/*
 	 * Clase para realizar búsquedas de proyectos
@@ -17,31 +19,42 @@ namespace Goteo\Library {
          * @return array results
          */
 		public static function params ($params, $showall = false, $limit = null) {
-
+            $lang = Lang::current();
             $results = array();
             $where   = array();
-            $values  = array(':lang' => \LANG);
-
+            $values  = array(':lang' => $lang);
 
             // @TODO : estos siguientes deberían ser JOINs
-            if (!empty($params['category'])) {
-                $where[] = 'AND project.id IN (
+            if ($category = $params['category']) {
+                if(!is_array($category)) $category = array($category);
+                $category = array_filter($category, function($v){return is_numeric($v);});
+                if($category) {
+                    $where[] = 'AND project.id IN (
                                     SELECT distinct(project)
                                     FROM project_category
-                                    WHERE category IN ('. implode(', ', $params['category']) . ')
+                                    WHERE category IN ('. implode(', ', $category) . ')
                                 )';
+                }
             }
 
-            if (!empty($params['location'])) {
-                $where[] = 'AND MD5(project.project_location) IN ('. implode(', ', $params['location']) .')';
+            if ($location = $params['location']) {
+                if(!is_array($location)) $location = array($location);
+                $location = array_map(function($v){return "'" .addslashes($v) . "'";}, $location);
+                if($location) {
+                    $where[] = 'AND MD5(project.project_location) IN ('. implode(', ', $location) .')';
             }
 
-            if (!empty($params['reward'])) {
-                $where[] = 'AND project.id IN (
+            if ($reward = $params['reward']) {
+                if(!is_array($reward)) $reward = array($reward);
+                }
+                $reward = array_map(function($v){return "'" .addslashes($v) . "'";}, $reward);
+                if($reward) {
+                    $where[] = 'AND project.id IN (
                                     SELECT DISTINCT(project)
                                     FROM reward
-                                    WHERE icon IN ('. implode(', ', $params['reward']) . ')
+                                    WHERE icon IN ('. implode(', ', $reward) . ')
                                     )';
+                }
             }
 
             if (!empty($params['query'])) {
@@ -60,7 +73,12 @@ namespace Goteo\Library {
 
             if (!empty($params['node'])) {
                 $where[] = ' AND project.node = :node';
-                $values[':node'] = NODE_ID;
+                $values[':node'] = Config::get('current_node');
+            }
+
+            if (!empty($params['channel'])) {
+                $where[] = ' AND project.node = :node';
+                $values[':node'] = $params['channel'];
             }
 
             if (!empty($params['status'])) {
@@ -73,7 +91,7 @@ namespace Goteo\Library {
 
             $different_select="project.popularity as popularity,";
 
-            if(Project::default_lang(\LANG)=='es') {
+            if(Project::default_lang($lang) === Config::get('lang')) {
                 $different_select2=" IFNULL(project_lang.description, project.description) as description";
             }
             else {
@@ -133,11 +151,11 @@ namespace Goteo\Library {
                 $sql .= " LIMIT $limit";
             }
 
-//            die(\sqldbg($sql, $values));
+           // die(\sqldbg($sql, $values));
 
             try {
                 $query = Project::query($sql, $values);
-                foreach ($query->fetchAll(\PDO::FETCH_OBJ) as $row) {
+                foreach ($query->fetchAll(\PDO::FETCH_CLASS, 'Goteo\\Model\\Project') as $row) {
                     $results[] = Project::getWidget($row);
                 }
                 return $results;

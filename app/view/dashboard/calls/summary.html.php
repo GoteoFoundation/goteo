@@ -4,7 +4,7 @@ use Goteo\Core\View,
     Goteo\Model\Call,
     Goteo\Model\Project;
 
-$call = $this['call'];
+$call = $vars['call'];
 
 if (!$call instanceof  Goteo\Model\call) {
     return;

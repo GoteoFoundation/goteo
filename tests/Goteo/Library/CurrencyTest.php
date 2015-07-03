@@ -63,7 +63,7 @@ class CurrencyTest extends \PHPUnit_Framework_TestCase {
         $format = Currency::amount_format($amount);
         // echo $format."\n";
         // format must have . for miliar
-        $this->assertRegExp('/\d?.{1}\d?/', $format);
+        $this->assertRegExp('/\d?.{1}\d?/', $format, $format);
 
 
         // to dollar
@@ -71,14 +71,14 @@ class CurrencyTest extends \PHPUnit_Framework_TestCase {
         $format = Currency::amount_format($amount);
         // echo $format."\n";
         // format must have , for miliar
-        $this->assertRegExp('/\d?\,{1}\d?/', $format);
+        $this->assertRegExp('/\d?\,{1}\d?/', $format, $format);
 
         // to pound
         $_SESSION['currency'] = 'gbp';
         $format = Currency::amount_format($amount);
         // echo $format."\n";
         // format must have , for miliar
-        $this->assertRegExp('/\d?\,{1}\d?/', $format);
+        $this->assertRegExp('/\d?\,{1}\d?/', $format, $format);
 
         return true;
     }

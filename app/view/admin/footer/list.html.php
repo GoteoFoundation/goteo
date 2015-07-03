@@ -7,7 +7,7 @@ use Goteo\Library\Text;
 <a href="/admin/footer/add" class="button">Nueva entrada al pie</a>
 
 <div class="widget board">
-    <?php if (!empty($this['posts'])) : ?>
+    <?php if (!empty($vars['posts'])) : ?>
     <table>
         <thead>
             <tr>
@@ -20,7 +20,7 @@ use Goteo\Library\Text;
         </thead>
 
         <tbody>
-            <?php foreach ($this['posts'] as $post) : ?>
+            <?php foreach ($vars['posts'] as $post) : ?>
             <tr>
                 <td><?php echo $post->title; ?></td>
                 <td><?php echo $post->order; ?></td>

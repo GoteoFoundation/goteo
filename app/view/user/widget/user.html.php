@@ -2,8 +2,8 @@
 
 use Goteo\Library\Text;
 
-$user = $this['user'];
-$level = (int) $this['level'] ?: 3;
+$user = $vars['user'];
+$level = (int) $vars['level'] ?: 3;
 
 // autodetección de enlaces en el texto
 $user->about = nl2br(Text::urlink($user->about));
@@ -53,7 +53,7 @@ $user->about = nl2br(Text::urlink($user->about));
                 <?php if (!empty($user->facebook)): ?>
                 <li class="facebook"><a href="<?php echo htmlspecialchars($user->facebook) ?>"><?php echo Text::get('regular-facebook'); ?></a></li>
                 <?php endif ?>
-            </ul>    
+            </ul>
         </dd>
         <?php endif ?>
 

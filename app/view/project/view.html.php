@@ -9,11 +9,11 @@ use Goteo\Core\View,
     Goteo\Model\Blog,
     Goteo\Library\Text;
 
-$project = $this['project'];
-$show    = $this['show'];
-$step    = $this['step'];
-$post    = $this['post'];
-$blog    = $this['blog'];
+$project = $vars['project'];
+$show    = $vars['show'];
+$step    = $vars['step'];
+$post    = $vars['post'];
+$blog    = $vars['blog'];
 
 $user    = $_SESSION['user'];
 $personalData = ($user instanceof User) ? User::getPersonal($user->id) : new stdClass();
@@ -94,7 +94,7 @@ include __DIR__ . '/../prologue.html.php' ?>
                 </div>
                 <?php endif; ?>
 
-                <?php if (!empty($project->node) && $project->node != \NODE_ID) : ?>
+                <?php if (!empty($project->node) && $project->node != Config::get('current_node')) : ?>
                 <div class="nodemark"><a class="node-jump" href="<?php echo $project->nodeData->url ?>" ><img src ="/nodesys/<?php echo $project->node ?>/sello.png" alt="<?php echo htmlspecialchars($project->nodeData->name) ?>" title="Nodo <?php echo htmlspecialchars($project->nodeData->name) ?>"/></a></div>
                 <?php endif; ?>
             </div>
@@ -114,7 +114,7 @@ include __DIR__ . '/../prologue.html.php' ?>
 
         </div>
 
-<?php if(isset($_SESSION['messages'])) { include __DIR__ . '/../header/message.html.php'; } ?>
+<?php if($_SESSION['messages']) { include __DIR__ . '/../header/message.html.php'; } ?>
 
 
         <div id="main" class="threecols">
@@ -162,7 +162,7 @@ include __DIR__ . '/../prologue.html.php' ?>
                 // los modulos centrales son diferentes segun el show
                 switch ($show) {
                     case 'needs':
-                        if ($this['non-economic']) {
+                        if ($vars['non_economic']) {
                             echo
                                 View::get('project/widget/non-needs.html.php',
                                     array('project' => $project, 'types' => Support::types()));
@@ -180,7 +180,7 @@ include __DIR__ . '/../prologue.html.php' ?>
                         if (!empty($step) && in_array($step, array('start', 'login', 'confirm', 'continue', 'ok', 'fail'))) {
 
                             // variables a pasar a las subvistas
-                            $subView = array('project' => $project, 'personal' => $personalData, 'step' => $step, 'allowpp'=> $this['allowpp'], 'pool'=> $this['pool']);
+                            $subView = array('project' => $project, 'personal' => $personalData, 'step' => $step, 'allowpp'=> $vars['allowpp'], 'pool'=> $vars['pool']);
 
                             switch ($step) {
                                 case 'continue':
@@ -209,7 +209,7 @@ include __DIR__ . '/../prologue.html.php' ?>
                             }
                         } else {
                             echo
-                                View::get('project/widget/supporters.html.php', $this),
+                                View::get('project/widget/supporters.html.php', $vars),
                                 View::get('worth/legend.html.php');
                         }
                         break;

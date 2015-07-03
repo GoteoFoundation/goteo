@@ -40,7 +40,7 @@
     "grunt-phpunit": "^0.3.6",
     "grunt-processhtml": "^0.3.3",
     "grunt-sync": "^0.2.0",
-    "grunt-usemin": "^2.6.0",
+    "grunt-usemin": "^2.6.2",
     "jshint-stylish": "^1.0.0",
     "matchdep": "^0.3.0",
     "time-grunt": "^1.0.0"

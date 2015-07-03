@@ -18,3 +18,6 @@ ALTER TABLE `info` ADD `gallery` VARCHAR( 2000 ) NULL COMMENT 'Galería de image
 
 -- imagen principal
 ALTER TABLE `info` ADD `image` VARCHAR( 255 ) NULL DEFAULT NULL COMMENT 'Imagen principal';
+
+-- constrains
+ALTER TABLE `info` ADD FOREIGN KEY (`node`) REFERENCES `node`(`id`) ON UPDATE CASCADE ON DELETE RESTRICT;

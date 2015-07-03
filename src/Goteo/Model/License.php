@@ -3,6 +3,8 @@
 namespace Goteo\Model {
 
     use Goteo\Library\Check;
+    use Goteo\Application\Lang;
+    use Goteo\Application\Config;
 
     class License extends \Goteo\Core\Model {
 
@@ -17,49 +19,48 @@ namespace Goteo\Model {
          *  Devuelve datos de un destacado
          */
         public static function get ($id) {
+            //Obtenemos el idioma de soporte
+            $lang=self::default_lang_by_id($id, 'license_lang', Lang::current());
 
-                //Obtenemos el idioma de soporte
-                $lang=self::default_lang_by_id($id, 'license_lang', \LANG);
+            $query = static::query("
+                SELECT
+                    license.id as id,
+                    IFNULL(license_lang.name, license.name) as name,
+                    IFNULL(license_lang.description, license.description) as description,
+                    IFNULL(license_lang.url, license.url) as url,
+                    license.group as `group`,
+                    license.order as `order`
+                FROM    license
+                LEFT JOIN license_lang
+                    ON  license_lang.id = license.id
+                    AND license_lang.lang = :lang
+                WHERE license.id = :id
+                ", array(':id' => $id, ':lang'=>$lang));
+            $license = $query->fetchObject(__CLASS__);
 
-                $query = static::query("
-                    SELECT
-                        license.id as id,
-                        IFNULL(license_lang.name, license.name) as name,
-                        IFNULL(license_lang.description, license.description) as description,
-                        IFNULL(license_lang.url, license.url) as url,
-                        license.group as `group`,
-                        license.order as `order`
-                    FROM    license
-                    LEFT JOIN license_lang
-                        ON  license_lang.id = license.id
-                        AND license_lang.lang = :lang
-                    WHERE license.id = :id
-                    ", array(':id' => $id, ':lang'=>$lang));
-                $license = $query->fetchObject(__CLASS__);
+            $query = static::query("
+                SELECT
+                    icon
+                FROM    icon_license
+                WHERE license = :license
+                ", array(':license' => $id));
+            foreach ($query->fetchAll(\PDO::FETCH_ASSOC) as $icon) {
+                $license->icons[] = $icon['icon'];
+            }
 
-                $query = static::query("
-                    SELECT
-                        icon
-                    FROM    icon_license
-                    WHERE license = :license
-                    ", array(':license' => $id));
-                foreach ($query->fetchAll(\PDO::FETCH_ASSOC) as $icon) {
-                    $license->icons[] = $icon['icon'];
-                }
-
-                return $license;
+            return $license;
         }
 
         /*
          * Lista de licencias
          */
         public static function getAll ($icon = null, $group = null) {
-
-            $values = array(':lang'=>\LANG);
+            $lang = Lang::current();
+            $values = array(':lang'=>$lang);
 
             // icon es si esta en relacion en icon_license
 
-            if(self::default_lang(\LANG)=='es') {
+            if(self::default_lang($lang) === Config::get('lang')) {
                 $different_select=" IFNULL(license_lang.name, license.name) as name,
                                     IFNULL(license_lang.description, license.description) as description,
                                     IFNULL(license_lang.url, license.url) as url";
@@ -119,11 +120,11 @@ namespace Goteo\Model {
          * Lista simple de licencias
          */
         public static function getList () {
-
+            $lang = Lang::current();
             $list = array();
-            $values = array(':lang'=>\LANG);
+            $values = array(':lang'=>$lang);
 
-            if(self::default_lang(\LANG)=='es') {
+            if(self::default_lang($lang) === Config::get('lang')) {
                 $different_select=" IFNULL(license_lang.name, license.name) as name,
                                     IFNULL(license_lang.description, license.description) as description,
                                     IFNULL(license_lang.url, license.url) as url";
@@ -217,10 +218,7 @@ namespace Goteo\Model {
         /*
          * Para quitar una pregunta
          */
-        public function delete ($id = null) {
-            if(empty($id) && $this->id) {
-                $id = $this->id;
-            }
+        public static function delete ($id, &$errors = array()) {
             if(empty($id)) {
                 // throw new Exception("Delete error: ID not defined!");
                 return false;

@@ -5,7 +5,7 @@ namespace Goteo\Core {
     class View extends \ArrayObject implements Resource, Resource\MIME {
 
         private
-            $file;
+            $file, $vars = array();
 
         protected static $views_path = array();
 
@@ -21,7 +21,6 @@ namespace Goteo\Core {
             if (isset($vars)) {
                 $this->set($vars);
             }
-
         }
 
         static public function addViewPath($path) {
@@ -36,9 +35,11 @@ namespace Goteo\Core {
             if (is_array($var) || is_object($var)) {
                 foreach ($var as $name => $value) {
                     $this[$name] = $value;
+                    $this->vars[$name] = $value;
                 }
             } else if (is_string($var) && func_num_args() >= 2) {
                 $this[$var] = func_get_arg(1);
+                $this->vars[$name] = func_get_arg(1);
             } else {
                 throw new View\Exception("Error args number in var [$var]", 1);
             }
@@ -62,7 +63,7 @@ namespace Goteo\Core {
             try {
                 $file = $this->getViewPath();
                 ob_start();
-
+                $vars = $this;
                 include $file;
 
                 return ob_get_clean();
@@ -71,15 +72,21 @@ namespace Goteo\Core {
                 // echo "La vista [$view] lanza una exception de redireccion!\nEsto no deberia hacerse aqui!\n";
                 return ob_get_clean();
             }
-            //TODO: catch not found and show 404 file
+            // Catch not found models
+            catch(\Goteo\Application\Exception\ModelNotFoundException $e) {
+                // echo "La vista [$view] lanza una exception de modelo!\nEsto no deberia hacerse aqui!";
+                ob_get_clean();
+                throw $e;
+            }
             catch(\Exception $e) {
+                ob_get_clean();
                 throw new View\Exception("Error in Included view [{$this->file}]\nView Exception Message:\n" . $e->getMessage()."\n", 1);
             }
-            catch(View\Exception $e) {
-                throw new View\Exception("Error in View [{$this->file}]\nView Exception Message:\n" . $e->getMessage()."\n", 1);
-                // print($e);
-                // die($e->getMessage());
-            }
+            // catch(View\Exception $e) {
+            //     throw new View\Exception("Error in View [{$this->file}]\nView Exception Message:\n" . $e->getMessage()."\n", 1);
+            //     // print($e);
+            //     // die($e->getMessage());
+            // }
 
         }
 

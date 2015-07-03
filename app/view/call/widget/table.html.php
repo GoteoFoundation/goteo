@@ -3,7 +3,7 @@
 use Goteo\Library\Text,
     Goteo\Core\View;
 
-$call = $this['call'];
+$call = $vars['call'];
 
 foreach ($call->projects as $key => $proj) {
 

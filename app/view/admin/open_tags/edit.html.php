@@ -3,20 +3,20 @@
 use Goteo\Library\Text,
     Goteo\Model;
 
-$open_tag = $this['open_tag'];
+$open_tag = $vars['open_tag'];
 $items = array();
 $node = isset($_SESSION['admin_node']) ? $_SESSION['admin_node'] : \GOTEO_NODE;
 // $iId = id del post
 // $iObj = titulo
-foreach ($this['items'] as $iId=>$iObj) {
+foreach ($vars['items'] as $iId=>$iObj) {
     $el_val = str_replace(array("'", '"'), '`', $iObj)." ({$iId})";
     $items[] = '{ value: "'.$el_val.'", id: "'.$iId.'" }';
     if ($iId == $open_tag->post) $preVal = "$el_val";
 }
 
 ?>
-<form method="post" action="/admin/open_tags/<?php echo $this['action'] ?>" enctype="multipart/form-data">
-    <input type="hidden" name="action" value="<?php echo $this['action'] ?>" />
+<form method="post" action="/admin/open_tags/<?php echo $vars['action'] ?>" enctype="multipart/form-data">
+    <input type="hidden" name="action" value="<?php echo $vars['action'] ?>" />
     <!--<input type="hidden" name="order" value="<?php echo $story->order ?>" />-->
     <input type="hidden" name="id" value="<?php echo $open_tag->id; ?>" />
 

@@ -1,0 +1,1502 @@
+<!DOCTYPE html><html><head><meta charset="utf-8"><style>body {
+  width: 45em;
+  border: 1px solid #ddd;
+  outline: 1300px solid #fff;
+  margin: 16px auto;
+}
+
+body .markdown-body
+{
+  padding: 30px;
+}
+
+@font-face {
+  font-family: fontawesome-mini;
+  src: url(data:font/woff;charset=utf-8;base64,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) format('woff');
+}
+
+@font-face {
+  font-family: octicons-anchor;
+  src: url(data:font/woff;charset=utf-8;base64,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) format('woff');
+}
+
+.markdown-body {
+  font-family: sans-serif;
+  -ms-text-size-adjust: 100%;
+  -webkit-text-size-adjust: 100%;
+  color: #333333;
+  overflow: hidden;
+  font-family: "Helvetica Neue", Helvetica, "Segoe UI", Arial, freesans, sans-serif;
+  font-size: 16px;
+  line-height: 1.6;
+  word-wrap: break-word;
+}
+
+.markdown-body a {
+  background: transparent;
+}
+
+.markdown-body a:active,
+.markdown-body a:hover {
+  outline: 0;
+}
+
+.markdown-body b,
+.markdown-body strong {
+  font-weight: bold;
+}
+
+.markdown-body mark {
+  background: #ff0;
+  color: #000;
+  font-style: italic;
+  font-weight: bold;
+}
+
+.markdown-body sub,
+.markdown-body sup {
+  font-size: 75%;
+  line-height: 0;
+  position: relative;
+  vertical-align: baseline;
+}
+.markdown-body sup {
+  top: -0.5em;
+}
+.markdown-body sub {
+  bottom: -0.25em;
+}
+
+.markdown-body h1 {
+  font-size: 2em;
+  margin: 0.67em 0;
+}
+
+.markdown-body img {
+  border: 0;
+}
+
+.markdown-body hr {
+  -moz-box-sizing: content-box;
+  box-sizing: content-box;
+  height: 0;
+}
+
+.markdown-body pre {
+  overflow: auto;
+}
+
+.markdown-body code,
+.markdown-body kbd,
+.markdown-body pre,
+.markdown-body samp {
+  font-family: monospace, monospace;
+  font-size: 1em;
+}
+
+.markdown-body input {
+  color: inherit;
+  font: inherit;
+  margin: 0;
+}
+
+.markdown-body html input[disabled] {
+  cursor: default;
+}
+
+.markdown-body input {
+  line-height: normal;
+}
+
+.markdown-body input[type="checkbox"] {
+  box-sizing: border-box;
+  padding: 0;
+}
+
+.markdown-body table {
+  border-collapse: collapse;
+  border-spacing: 0;
+}
+
+.markdown-body td,
+.markdown-body th {
+  padding: 0;
+}
+
+.markdown-body .codehilitetable {
+  border: 0;
+  border-spacing: 0;
+}
+
+.markdown-body .codehilitetable tr {
+  border: 0;
+}
+
+.markdown-body .codehilitetable pre,
+.markdown-body .codehilitetable div.codehilite {
+  margin: 0;
+}
+
+.markdown-body .linenos,
+.markdown-body .code,
+.markdown-body .codehilitetable td {
+  border: 0;
+  padding: 0;
+}
+
+.markdown-body td:not(.linenos) .linenodiv {
+  padding: 0 !important;
+}
+
+.markdown-body .code {
+  width: 100%;
+}
+
+.markdown-body .linenos div pre,
+.markdown-body .linenodiv pre,
+.markdown-body .linenodiv {
+  border: 0;
+  -webkit-border-radius: 0;
+  -moz-border-radius: 0;
+  border-radius: 0;
+  -webkit-border-top-left-radius: 3px;
+  -webkit-border-bottom-left-radius: 3px;
+  -moz-border-radius-topleft: 3px;
+  -moz-border-radius-bottomleft: 3px;
+  border-top-left-radius: 3px;
+  border-bottom-left-radius: 3px;
+}
+
+.markdown-body .code div pre,
+.markdown-body .code div {
+  border: 0;
+  -webkit-border-radius: 0;
+  -moz-border-radius: 0;
+  border-radius: 0;
+  -webkit-border-top-right-radius: 3px;
+  -webkit-border-bottom-right-radius: 3px;
+  -moz-border-radius-topright: 3px;
+  -moz-border-radius-bottomright: 3px;
+  border-top-right-radius: 3px;
+  border-bottom-right-radius: 3px;
+}
+
+.markdown-body * {
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+}
+
+.markdown-body input {
+  font: 13px Helvetica, arial, freesans, clean, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol";
+  line-height: 1.4;
+}
+
+.markdown-body a {
+  color: #4183c4;
+  text-decoration: none;
+}
+
+.markdown-body a:hover,
+.markdown-body a:focus,
+.markdown-body a:active {
+  text-decoration: underline;
+}
+
+.markdown-body hr {
+  height: 0;
+  margin: 15px 0;
+  overflow: hidden;
+  background: transparent;
+  border: 0;
+  border-bottom: 1px solid #ddd;
+}
+
+.markdown-body hr:before,
+.markdown-body hr:after {
+  display: table;
+  content: " ";
+}
+
+.markdown-body hr:after {
+  clear: both;
+}
+
+.markdown-body h1,
+.markdown-body h2,
+.markdown-body h3,
+.markdown-body h4,
+.markdown-body h5,
+.markdown-body h6 {
+  margin-top: 15px;
+  margin-bottom: 15px;
+  line-height: 1.1;
+}
+
+.markdown-body h1 {
+  font-size: 30px;
+}
+
+.markdown-body h2 {
+  font-size: 21px;
+}
+
+.markdown-body h3 {
+  font-size: 16px;
+}
+
+.markdown-body h4 {
+  font-size: 14px;
+}
+
+.markdown-body h5 {
+  font-size: 12px;
+}
+
+.markdown-body h6 {
+  font-size: 11px;
+}
+
+.markdown-body blockquote {
+  margin: 0;
+}
+
+.markdown-body ul,
+.markdown-body ol {
+  padding: 0;
+  margin-top: 0;
+  margin-bottom: 0;
+}
+
+.markdown-body ol ol,
+.markdown-body ul ol {
+  list-style-type: lower-roman;
+}
+
+.markdown-body ul ul ol,
+.markdown-body ul ol ol,
+.markdown-body ol ul ol,
+.markdown-body ol ol ol {
+  list-style-type: lower-alpha;
+}
+
+.markdown-body dd {
+  margin-left: 0;
+}
+
+.markdown-body code,
+.markdown-body pre,
+.markdown-body samp {
+  font-family: Consolas, "Liberation Mono", Menlo, Courier, monospace;
+  font-size: 12px;
+}
+
+.markdown-body pre {
+  margin-top: 0;
+  margin-bottom: 0;
+}
+
+.markdown-body kbd {
+  background-color: #e7e7e7;
+  background-image: -moz-linear-gradient(#fefefe, #e7e7e7);
+  background-image: -webkit-linear-gradient(#fefefe, #e7e7e7);
+  background-image: linear-gradient(#fefefe, #e7e7e7);
+  background-repeat: repeat-x;
+  border-radius: 2px;
+  border: 1px solid #cfcfcf;
+  color: #000;
+  padding: 3px 5px;
+  line-height: 10px;
+  font: 11px Consolas, "Liberation Mono", Menlo, Courier, monospace;
+  display: inline-block;
+}
+
+.markdown-body>*:first-child {
+  margin-top: 0 !important;
+}
+
+.markdown-body>*:last-child {
+  margin-bottom: 0 !important;
+}
+
+.markdown-body .headeranchor-link {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  display: block;
+  padding-right: 6px;
+  padding-left: 30px;
+  margin-left: -30px;
+}
+
+.markdown-body .headeranchor-link:focus {
+  outline: none;
+}
+
+.markdown-body h1,
+.markdown-body h2,
+.markdown-body h3,
+.markdown-body h4,
+.markdown-body h5,
+.markdown-body h6 {
+  position: relative;
+  margin-top: 1em;
+  margin-bottom: 16px;
+  font-weight: bold;
+  line-height: 1.4;
+}
+
+.markdown-body h1 .headeranchor,
+.markdown-body h2 .headeranchor,
+.markdown-body h3 .headeranchor,
+.markdown-body h4 .headeranchor,
+.markdown-body h5 .headeranchor,
+.markdown-body h6 .headeranchor {
+  display: none;
+  color: #000;
+  vertical-align: middle;
+}
+
+.markdown-body h1:hover .headeranchor-link,
+.markdown-body h2:hover .headeranchor-link,
+.markdown-body h3:hover .headeranchor-link,
+.markdown-body h4:hover .headeranchor-link,
+.markdown-body h5:hover .headeranchor-link,
+.markdown-body h6:hover .headeranchor-link {
+  height: 1em;
+  padding-left: 8px;
+  margin-left: -30px;
+  line-height: 1;
+  text-decoration: none;
+}
+
+.markdown-body h1:hover .headeranchor-link .headeranchor,
+.markdown-body h2:hover .headeranchor-link .headeranchor,
+.markdown-body h3:hover .headeranchor-link .headeranchor,
+.markdown-body h4:hover .headeranchor-link .headeranchor,
+.markdown-body h5:hover .headeranchor-link .headeranchor,
+.markdown-body h6:hover .headeranchor-link .headeranchor {
+  display: inline-block;
+}
+
+.markdown-body h1 {
+  padding-bottom: 0.3em;
+  font-size: 2.25em;
+  line-height: 1.2;
+  border-bottom: 1px solid #eee;
+}
+
+.markdown-body h2 {
+  padding-bottom: 0.3em;
+  font-size: 1.75em;
+  line-height: 1.225;
+  border-bottom: 1px solid #eee;
+}
+
+.markdown-body h3 {
+  font-size: 1.5em;
+  line-height: 1.43;
+}
+
+.markdown-body h4 {
+  font-size: 1.25em;
+}
+
+.markdown-body h5 {
+  font-size: 1em;
+}
+
+.markdown-body h6 {
+  font-size: 1em;
+  color: #777;
+}
+
+.markdown-body p,
+.markdown-body blockquote,
+.markdown-body ul,
+.markdown-body ol,
+.markdown-body dl,
+.markdown-body table,
+.markdown-body pre,
+.markdown-body .admonition {
+  margin-top: 0;
+  margin-bottom: 16px;
+}
+
+.markdown-body hr {
+  height: 4px;
+  padding: 0;
+  margin: 16px 0;
+  background-color: #e7e7e7;
+  border: 0 none;
+}
+
+.markdown-body ul,
+.markdown-body ol {
+  padding-left: 2em;
+}
+
+.markdown-body ul ul,
+.markdown-body ul ol,
+.markdown-body ol ol,
+.markdown-body ol ul {
+  margin-top: 0;
+  margin-bottom: 0;
+}
+
+.markdown-body li>p {
+  margin-top: 16px;
+}
+
+.markdown-body dl {
+  padding: 0;
+}
+
+.markdown-body dl dt {
+  padding: 0;
+  margin-top: 16px;
+  font-size: 1em;
+  font-style: italic;
+  font-weight: bold;
+}
+
+.markdown-body dl dd {
+  padding: 0 16px;
+  margin-bottom: 16px;
+}
+
+.markdown-body blockquote {
+  padding: 0 15px;
+  color: #777;
+  border-left: 4px solid #ddd;
+}
+
+.markdown-body blockquote>:first-child {
+  margin-top: 0;
+}
+
+.markdown-body blockquote>:last-child {
+  margin-bottom: 0;
+}
+
+.markdown-body table {
+  display: block;
+  width: 100%;
+  overflow: auto;
+  word-break: normal;
+  word-break: keep-all;
+}
+
+.markdown-body table th {
+  font-weight: bold;
+}
+
+.markdown-body table th,
+.markdown-body table td {
+  padding: 6px 13px;
+  border: 1px solid #ddd;
+}
+
+.markdown-body table tr {
+  background-color: #fff;
+  border-top: 1px solid #ccc;
+}
+
+.markdown-body table tr:nth-child(2n) {
+  background-color: #f8f8f8;
+}
+
+.markdown-body img {
+  max-width: 100%;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+}
+
+.markdown-body code,
+.markdown-body samp {
+  padding: 0;
+  padding-top: 0.2em;
+  padding-bottom: 0.2em;
+  margin: 0;
+  font-size: 85%;
+  background-color: rgba(0,0,0,0.04);
+  border-radius: 3px;
+}
+
+.markdown-body code:before,
+.markdown-body code:after {
+  letter-spacing: -0.2em;
+  content: "\00a0";
+}
+
+.markdown-body pre>code {
+  padding: 0;
+  margin: 0;
+  font-size: 100%;
+  word-break: normal;
+  white-space: pre;
+  background: transparent;
+  border: 0;
+}
+
+.markdown-body .codehilite {
+  margin-bottom: 16px;
+}
+
+.markdown-body .codehilite pre,
+.markdown-body pre {
+  padding: 16px;
+  overflow: auto;
+  font-size: 85%;
+  line-height: 1.45;
+  background-color: #f7f7f7;
+  border-radius: 3px;
+}
+
+.markdown-body .codehilite pre {
+  margin-bottom: 0;
+  word-break: normal;
+}
+
+.markdown-body pre {
+  word-wrap: normal;
+}
+
+.markdown-body pre code {
+  display: inline;
+  max-width: initial;
+  padding: 0;
+  margin: 0;
+  overflow: initial;
+  line-height: inherit;
+  word-wrap: normal;
+  background-color: transparent;
+  border: 0;
+}
+
+.markdown-body pre code:before,
+.markdown-body pre code:after {
+  content: normal;
+}
+
+/* Admonition */
+.markdown-body .admonition {
+  -webkit-border-radius: 3px;
+  -moz-border-radius: 3px;
+  position: relative;
+  border-radius: 3px;
+  border: 1px solid #e0e0e0;
+  border-left: 6px solid #333;
+  padding: 10px 10px 10px 30px;
+}
+
+.markdown-body .admonition table {
+  color: #333;
+}
+
+.markdown-body .admonition p {
+  padding: 0;
+}
+
+.markdown-body .admonition-title {
+  font-weight: bold;
+  margin: 0;
+}
+
+.markdown-body .admonition>.admonition-title {
+  color: #333;
+}
+
+.markdown-body .attention>.admonition-title {
+  color: #a6d796;
+}
+
+.markdown-body .caution>.admonition-title {
+  color: #d7a796;
+}
+
+.markdown-body .hint>.admonition-title {
+  color: #96c6d7;
+}
+
+.markdown-body .danger>.admonition-title {
+  color: #c25f77;
+}
+
+.markdown-body .question>.admonition-title {
+  color: #96a6d7;
+}
+
+.markdown-body .note>.admonition-title {
+  color: #d7c896;
+}
+
+.markdown-body .admonition:before,
+.markdown-body .attention:before,
+.markdown-body .caution:before,
+.markdown-body .hint:before,
+.markdown-body .danger:before,
+.markdown-body .question:before,
+.markdown-body .note:before {
+  font: normal normal 16px fontawesome-mini;
+  -moz-osx-font-smoothing: grayscale;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  line-height: 1.5;
+  color: #333;
+  position: absolute;
+  left: 0;
+  top: 0;
+  padding-top: 10px;
+  padding-left: 10px;
+}
+
+.markdown-body .admonition:before {
+  content: "\f056\00a0";
+  color: 333;
+}
+
+.markdown-body .attention:before {
+  content: "\f058\00a0";
+  color: #a6d796;
+}
+
+.markdown-body .caution:before {
+  content: "\f06a\00a0";
+  color: #d7a796;
+}
+
+.markdown-body .hint:before {
+  content: "\f05a\00a0";
+  color: #96c6d7;
+}
+
+.markdown-body .danger:before {
+  content: "\f057\00a0";
+  color: #c25f77;
+}
+
+.markdown-body .question:before {
+  content: "\f059\00a0";
+  color: #96a6d7;
+}
+
+.markdown-body .note:before {
+  content: "\f040\00a0";
+  color: #d7c896;
+}
+
+.markdown-body .admonition::after {
+  content: normal;
+}
+
+.markdown-body .attention {
+  border-left: 6px solid #a6d796;
+}
+
+.markdown-body .caution {
+  border-left: 6px solid #d7a796;
+}
+
+.markdown-body .hint {
+  border-left: 6px solid #96c6d7;
+}
+
+.markdown-body .danger {
+  border-left: 6px solid #c25f77;
+}
+
+.markdown-body .question {
+  border-left: 6px solid #96a6d7;
+}
+
+.markdown-body .note {
+  border-left: 6px solid #d7c896;
+}
+
+.markdown-body .admonition>*:first-child {
+  margin-top: 0 !important;
+}
+
+.markdown-body .admonition>*:last-child {
+  margin-bottom: 0 !important;
+}
+
+/* progress bar*/
+.markdown-body .progress {
+  display: block;
+  width: 300px;
+  margin: 10px 0;
+  height: 24px;
+  -webkit-border-radius: 3px;
+  -moz-border-radius: 3px;
+  border-radius: 3px;
+  background-color: #ededed;
+  position: relative;
+  box-shadow: inset -1px 1px 3px rgba(0, 0, 0, .1);
+}
+
+.markdown-body .progress-label {
+  position: absolute;
+  text-align: center;
+  font-weight: bold;
+  width: 100%; margin: 0;
+  line-height: 24px;
+  color: #333;
+  text-shadow: 1px 1px 0 #fefefe, -1px -1px 0 #fefefe, -1px 1px 0 #fefefe, 1px -1px 0 #fefefe, 0 1px 0 #fefefe, 0 -1px 0 #fefefe, 1px 0 0 #fefefe, -1px 0 0 #fefefe, 1px 1px 2px #000;
+  -webkit-font-smoothing: antialiased !important;
+  white-space: nowrap;
+  overflow: hidden;
+}
+
+.markdown-body .progress-bar {
+  height: 24px;
+  float: left;
+  -webkit-border-radius: 3px;
+  -moz-border-radius: 3px;
+  border-radius: 3px;
+  background-color: #96c6d7;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, .5), inset 0 -1px 0 rgba(0, 0, 0, .1);
+  background-size: 30px 30px;
+  background-image: -webkit-linear-gradient(
+    135deg, rgba(255, 255, 255, .4) 27%,
+    transparent 27%,
+    transparent 52%, rgba(255, 255, 255, .4) 52%,
+    rgba(255, 255, 255, .4) 77%,
+    transparent 77%, transparent
+  );
+  background-image: -moz-linear-gradient(
+    135deg,
+    rgba(255, 255, 255, .4) 27%, transparent 27%,
+    transparent 52%, rgba(255, 255, 255, .4) 52%,
+    rgba(255, 255, 255, .4) 77%, transparent 77%,
+    transparent
+  );
+  background-image: -ms-linear-gradient(
+    135deg,
+    rgba(255, 255, 255, .4) 27%, transparent 27%,
+    transparent 52%, rgba(255, 255, 255, .4) 52%,
+    rgba(255, 255, 255, .4) 77%, transparent 77%,
+    transparent
+  );
+  background-image: -o-linear-gradient(
+    135deg,
+    rgba(255, 255, 255, .4) 27%, transparent 27%,
+    transparent 52%, rgba(255, 255, 255, .4) 52%,
+    rgba(255, 255, 255, .4) 77%, transparent 77%,
+    transparent
+  );
+  background-image: linear-gradient(
+    135deg,
+    rgba(255, 255, 255, .4) 27%, transparent 27%,
+    transparent 52%, rgba(255, 255, 255, .4) 52%,
+    rgba(255, 255, 255, .4) 77%, transparent 77%,
+    transparent
+  );
+}
+
+.markdown-body .progress-100plus .progress-bar {
+  background-color: #a6d796;
+}
+
+.markdown-body .progress-80plus .progress-bar {
+  background-color: #c6d796;
+}
+
+.markdown-body .progress-60plus .progress-bar {
+  background-color: #d7c896;
+}
+
+.markdown-body .progress-40plus .progress-bar {
+  background-color: #d7a796;
+}
+
+.markdown-body .progress-20plus .progress-bar {
+  background-color: #d796a6;
+}
+
+.markdown-body .progress-0plus .progress-bar {
+  background-color: #c25f77;
+}
+
+.markdown-body .candystripe-animate .progress-bar{
+  -webkit-animation: animate-stripes 3s linear infinite;
+  -moz-animation: animate-stripes 3s linear infinite;
+  animation: animate-stripes 3s linear infinite;
+}
+
+@-webkit-keyframes animate-stripes {
+  0% {
+    background-position: 0 0;
+  }
+
+  100% {
+    background-position: 60px 0;
+  }
+}
+
+@-moz-keyframes animate-stripes {
+  0% {
+    background-position: 0 0;
+  }
+
+  100% {
+    background-position: 60px 0;
+  }
+}
+
+@keyframes animate-stripes {
+  0% {
+    background-position: 0 0;
+  }
+
+  100% {
+    background-position: 60px 0;
+  }
+}
+
+.markdown-body .gloss .progress-bar {
+  box-shadow:
+    inset 0 4px 12px rgba(255, 255, 255, .7),
+    inset 0 -12px 0 rgba(0, 0, 0, .05);
+}
+
+/* Multimarkdown Critic Blocks */
+.markdown-body .critic_mark {
+  background: #ff0;
+}
+
+.markdown-body .critic_delete {
+  color: #c82829;
+  text-decoration: line-through;
+}
+
+.markdown-body .critic_insert {
+  color: #718c00 ;
+  text-decoration: underline;
+}
+
+.markdown-body .critic_comment {
+  color: #8e908c;
+  font-style: italic;
+}
+
+.markdown-body .headeranchor {
+  font: normal normal 16px octicons-anchor;
+  line-height: 1;
+  display: inline-block;
+  text-decoration: none;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+.headeranchor:before {
+  content: '\f05c';
+}
+
+.markdown-body .task-list-item {
+  list-style-type: none;
+}
+
+.markdown-body .task-list-item+.task-list-item {
+  margin-top: 3px;
+}
+
+.markdown-body .task-list-item input {
+  margin: 0 4px 0.25em -20px;
+  vertical-align: middle;
+}
+
+/* Media */
+@media only screen and (min-width: 480px) {
+  .markdown-body {
+    font-size:14px;
+  }
+}
+
+@media only screen and (min-width: 768px) {
+  .markdown-body {
+    font-size:16px;
+  }
+}
+
+@media print {
+  .markdown-body * {
+    background: transparent !important;
+    color: black !important;
+    filter:none !important;
+    -ms-filter: none !important;
+  }
+
+  .markdown-body {
+    font-size:12pt;
+    max-width:100%;
+    outline:none;
+    border: 0;
+  }
+
+  .markdown-body a,
+  .markdown-body a:visited {
+    text-decoration: underline;
+  }
+
+  .markdown-body .headeranchor-link {
+    display: none;
+  }
+
+  .markdown-body a[href]:after {
+    content: " (" attr(href) ")";
+  }
+
+  .markdown-body abbr[title]:after {
+    content: " (" attr(title) ")";
+  }
+
+  .markdown-body .ir a:after,
+  .markdown-body a[href^="javascript:"]:after,
+  .markdown-body a[href^="#"]:after {
+    content: "";
+  }
+
+  .markdown-body pre {
+    white-space: pre;
+    white-space: pre-wrap;
+    word-wrap: break-word;
+  }
+
+  .markdown-body pre,
+  .markdown-body blockquote {
+    border: 1px solid #999;
+    padding-right: 1em;
+    page-break-inside: avoid;
+  }
+
+  .markdown-body .progress,
+  .markdown-body .progress-bar {
+    -moz-box-shadow: none;
+    -webkit-box-shadow: none;
+    box-shadow: none;
+  }
+
+  .markdown-body .progress {
+    border: 1px solid #ddd;
+  }
+
+  .markdown-body .progress-bar {
+    height: 22px;
+    border-right: 1px solid #ddd;
+  }
+
+  .markdown-body tr,
+  .markdown-body img {
+    page-break-inside: avoid;
+  }
+
+  .markdown-body img {
+    max-width: 100% !important;
+  }
+
+  .markdown-body p,
+  .markdown-body h2,
+  .markdown-body h3 {
+    orphans: 3;
+    widows: 3;
+  }
+
+  .markdown-body h2,
+  .markdown-body h3 {
+    page-break-after: avoid;
+  }
+}
+</style><style>.codehilite pre .hll { background-color: #f8eec7 }
+.codehilite pre  { background: #ffffff; color: #333333 }
+.codehilite pre .c { color: #999988; font-style: italic } /* Comment */
+.codehilite pre .err { color: #a61717; background-color: #e3d2d2 } /* Error */
+.codehilite pre .k { font-weight: bold } /* Keyword */
+.codehilite pre .n { color: #333333 } /* Name */
+.codehilite pre .o { font-weight: bold } /* Operator */
+.codehilite pre .cm { color: #999988; font-style: italic } /* Comment.Multiline */
+.codehilite pre .cp { color: #999999; font-weight: bold } /* Comment.Preproc */
+.codehilite pre .c1 { color: #999988; font-style: italic } /* Comment.Single */
+.codehilite pre .cs { color: #999988; font-style: italic } /* Comment.Special */
+.codehilite pre .gd { color: #000000; background-color: #ffdddd } /* Generic.Deleted */
+.codehilite pre .ge { font-style: italic } /* Generic.Emph */
+.codehilite pre .gr { color: #aa0000 } /* Generic.Error */
+.codehilite pre .gh { color: #999999 } /* Generic.Heading */
+.codehilite pre .gi { color: #000000; background-color: #ddffdd } /* Generic.Inserted */
+.codehilite pre .go { color: #888888 } /* Generic.Output */
+.codehilite pre .gp { color: #555555 } /* Generic.Prompt */
+.codehilite pre .gs { font-weight: bold } /* Generic.Strong */
+.codehilite pre .gu { color: #800080; font-weight: bold } /* Generic.Subheading */
+.codehilite pre .gt { color: #aa0000 } /* Generic.Traceback */
+.codehilite pre .kc { font-weight: bold } /* Keyword.Constant */
+.codehilite pre .kd { font-weight: bold } /* Keyword.Declaration */
+.codehilite pre .kn { font-weight: bold } /* Keyword.Namespace */
+.codehilite pre .kp { font-weight: bold } /* Keyword.Pseudo */
+.codehilite pre .kr { font-weight: bold } /* Keyword.Reserved */
+.codehilite pre .kt { font-weight: bold } /* Keyword.Type */
+.codehilite pre .m { color: #945277 } /* Literal.Number */
+.codehilite pre .s { color: #df5000 } /* Literal.String */
+.codehilite pre .na { color: #008080 } /* Name.Attribute */
+.codehilite pre .nb { color: #0086b3 } /* Name.Builtin */
+.codehilite pre .nc { color: #445588; font-weight: bold } /* Name.Class */
+.codehilite pre .no { color: #094e99 } /* Name.Constant */
+.codehilite pre .nd { color: #333333 } /* Name.Decorator */
+.codehilite pre .ni { color: #800080 } /* Name.Entity */
+.codehilite pre .ne { color: #990000; font-weight: bold } /* Name.Exception */
+.codehilite pre .nf { color: #945277; font-weight: bold } /* Name.Function */
+.codehilite pre .nl { color: #333333 } /* Name.Label */
+.codehilite pre .nn { color: #555555 } /* Name.Namespace */
+.codehilite pre .nx { color: #333333 } /* Name.Other */
+.codehilite pre .py { color: #333333 } /* Name.Property */
+.codehilite pre .nt { color: #000080 } /* Name.Tag */
+.codehilite pre .nv { color: #008080 } /* Name.Variable */
+.codehilite pre .ow { font-weight: bold } /* Operator.Word */
+.codehilite pre .w { color: #bbbbbb } /* Text.Whitespace */
+.codehilite pre .mb { color: #945277 } /* Literal.Number.Bin */
+.codehilite pre .mf { color: #945277 } /* Literal.Number.Float */
+.codehilite pre .mh { color: #945277 } /* Literal.Number.Hex */
+.codehilite pre .mi { color: #945277 } /* Literal.Number.Integer */
+.codehilite pre .mo { color: #945277 } /* Literal.Number.Oct */
+.codehilite pre .sb { color: #df5000 } /* Literal.String.Backtick */
+.codehilite pre .sc { color: #df5000 } /* Literal.String.Char */
+.codehilite pre .sd { color: #df5000 } /* Literal.String.Doc */
+.codehilite pre .s2 { color: #df5000 } /* Literal.String.Double */
+.codehilite pre .se { color: #df5000 } /* Literal.String.Escape */
+.codehilite pre .sh { color: #df5000 } /* Literal.String.Heredoc */
+.codehilite pre .si { color: #df5000 } /* Literal.String.Interpol */
+.codehilite pre .sx { color: #df5000 } /* Literal.String.Other */
+.codehilite pre .sr { color: #017936 } /* Literal.String.Regex */
+.codehilite pre .s1 { color: #df5000 } /* Literal.String.Single */
+.codehilite pre .ss { color: #8b467f } /* Literal.String.Symbol */
+.codehilite pre .bp { color: #999999 } /* Name.Builtin.Pseudo */
+.codehilite pre .vc { color: #008080 } /* Name.Variable.Class */
+.codehilite pre .vg { color: #008080 } /* Name.Variable.Global */
+.codehilite pre .vi { color: #008080 } /* Name.Variable.Instance */
+.codehilite pre .il { color: #945277 } /* Literal.Number.Integer.Long */</style><title>MIGRATE</title></head><body><article class="markdown-body"><h1 id="migracion-de-plantillas"><a name="user-content-migracion-de-plantillas" href="#migracion-de-plantillas" class="headeranchor-link" aria-hidden="true"><span class="headeranchor"></span></a>Migración de plantillas</h1>
+<p>Se usa PHP FOIL<br />
+<a href="http://foilphp.it/">http://foilphp.it/</a></p>
+<p>Antiguo sistema</p>
+<p><code>\Goteo\Core\View::get('plantilla.php', array( 'obj' =&gt; ... ));</code></p>
+<p>Nuevo</p>
+<p><code>\Goteo\Application\View::render('plantilla', [ 'obj' =&gt; ... ]);</code></p>
+<h2 id="diferencias-en-las-plantillas"><a name="user-content-diferencias-en-las-plantillas" href="#diferencias-en-las-plantillas" class="headeranchor-link" aria-hidden="true"><span class="headeranchor"></span></a>Diferencias en las plantillas</h2>
+<p><code>plantilla.php</code></p>
+<p>Antes:</p>
+<p>Las variables están dentro del array <strong>$this</strong> (objeto) o <strong>$vars[]</strong> (array)</p>
+<div class="codehilite"><pre><span class="cp">&lt;?php</span>
+
+<span class="c1">//Objecto</span>
+<span class="nv">$obj</span> <span class="o">=</span> <span class="nv">$this</span><span class="p">[</span><span class="s1">&#39;obj&#39;</span><span class="p">];</span>
+
+<span class="nv">$obj</span><span class="o">-&gt;</span><span class="na">doSomething</span><span class="p">();</span>
+
+<span class="k">echo</span> <span class="nb">htmlspecialchars</span><span class="p">(</span><span class="nv">$this</span><span class="p">[</span><span class="s1">&#39;obj&#39;</span><span class="p">]</span><span class="o">-&gt;</span><span class="na">doMore</span><span class="p">());</span> <span class="c1">// escapado con htmlspecialchars</span>
+
+<span class="c1">//Escalar</span>
+<span class="k">echo</span> <span class="nb">htmlspecialchars</span><span class="p">(</span><span class="nv">$this</span><span class="p">[</span><span class="s1">&#39;variable&#39;</span><span class="p">]);</span> <span class="c1">//escapada</span>
+<span class="k">echo</span> <span class="nv">$this</span><span class="p">[</span><span class="s1">&#39;variable&#39;</span><span class="p">];</span> <span class="c1">//sin escapar</span>
+
+<span class="cp">?&gt;</span><span class="x"></span>
+</pre></div>
+
+
+<p>Después:</p>
+<p>Las variables están instanciadas por defecto en el objecto <strong>$this</strong></p>
+<p><strong>NOTA</strong>: Por compatibilidad también es posible usar el array <code>$this-&gt;vars</code> que contiene todas las variables en un array. Aunque en todas las nuevas vistas no deberia usarse.</p>
+<div class="codehilite"><pre><span class="cp">&lt;?php</span>
+<span class="c1">//objecto</span>
+<span class="nv">$obj</span><span class="o">-&gt;</span><span class="na">doSomething</span><span class="p">();</span>
+
+<span class="k">echo</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">e</span><span class="p">(</span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">raw</span><span class="p">(</span><span class="s1">&#39;obj&#39;</span><span class="p">)</span><span class="o">-&gt;</span><span class="na">doMore</span><span class="p">());</span> <span class="c1">// escapado con $this-&gt;e()</span>
+
+<span class="c1">//escalar</span>
+<span class="k">echo</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">variable</span><span class="p">;</span> <span class="c1">// HTML escapada por defecto (strings y arrays)</span>
+<span class="k">echo</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">raw</span><span class="p">(</span><span class="s1">&#39;variable&#39;</span><span class="p">);</span> <span class="c1">// sin escapar</span>
+
+<span class="c1">//COMPATIBILIDAD CON VISTAS QUE NECESITAN UN ARRAY</span>
+<span class="k">echo</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">vars</span><span class="p">[</span><span class="s1">&#39;variable&#39;</span><span class="p">];</span> <span class="c1">// HTML escapada si es un string o array simple</span>
+<span class="cp">?&gt;</span><span class="x"></span>
+</pre></div>
+
+
+<h2 id="nuevas-funcionalidades"><a name="user-content-nuevas-funcionalidades" href="#nuevas-funcionalidades" class="headeranchor-link" aria-hidden="true"><span class="headeranchor"></span></a>Nuevas funcionalidades</h2>
+<p>FOIL soporta herencia, funciones y reasignación de variables</p>
+<p>Funcionamiento básico</p>
+<p><code>layout.php</code></p>
+<div class="codehilite"><pre><span class="x">&lt;html&gt;</span>
+<span class="x">&lt;head&gt;</span>
+<span class="x">    &lt;title&gt;</span><span class="cp">&lt;?</span><span class="o">=</span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">title</span><span class="cp">?&gt;</span><span class="x">&lt;/title&gt;</span>
+<span class="x">&lt;/head&gt;</span>
+<span class="x">&lt;body&gt;</span>
+
+<span class="cp">&lt;?php</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">section</span><span class="p">(</span><span class="s1">&#39;content&#39;</span><span class="p">)</span> <span class="cp">?&gt;</span><span class="x"></span>
+<span class="cp">&lt;?php</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">stop</span><span class="p">()</span> <span class="cp">?&gt;</span><span class="x"></span>
+
+<span class="x">&lt;/body&gt;</span>
+<span class="x">&lt;/html&gt;</span>
+</pre></div>
+
+
+<p>reescritura del titulo y sustitución de la sección &lsquo;content&rsquo;:</p>
+<p><code>profile.php</code></p>
+<div class="codehilite"><pre><span class="cp">&lt;?php</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">layout</span><span class="p">(</span><span class="s1">&#39;template&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;title&#39;</span> <span class="o">=&gt;</span> <span class="s1">&#39;User Profile&#39;</span><span class="p">])</span> <span class="cp">?&gt;</span><span class="x"></span>
+
+<span class="cp">&lt;?php</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">section</span><span class="p">(</span><span class="s1">&#39;content&#39;</span><span class="p">)</span> <span class="cp">?&gt;</span><span class="x"></span>
+<span class="x">&lt;h1&gt;User Profile&lt;/h1&gt;</span>
+<span class="x">&lt;p&gt;Hello, </span><span class="cp">&lt;?</span><span class="o">=</span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">name</span><span class="cp">?&gt;</span><span class="x">&lt;/p&gt;</span>
+<span class="cp">&lt;?php</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">stop</span><span class="p">()</span> <span class="cp">?&gt;</span><span class="x"></span>
+</pre></div>
+
+
+<p>Mas información en:<br />
+<a href="http://www.foilphp.it/docs/TEMPLATES/INHERITANCE.html">http://www.foilphp.it/docs/TEMPLATES/INHERITANCE.html</a><br />
+<a href="http://www.foilphp.it/docs/DATA/PASS-DATA.html">http://www.foilphp.it/docs/DATA/PASS-DATA.html</a></p>
+<h2 id="migracion-de-las-vistas-actuales"><a name="user-content-migracion-de-las-vistas-actuales" href="#migracion-de-las-vistas-actuales" class="headeranchor-link" aria-hidden="true"><span class="headeranchor"></span></a>Migración de las vistas actuales:</h2>
+<p>La nueva estructura de directorios deberia marcar de manera clara el próposito de cada vista:</p>
+<p><strong>Primer nivel</strong></p>
+<p>Multiples directorios que permiten sobreescritura de vistas segun las extensiones cargadas</p>
+<div class="codehilite"><pre>templates               &lt;- Carpeta de vistas generales
+extend/goteo/templates  &lt;- Carpeta de vistas privadas de goteo 
+                           (si existe una vista aquí sobreescribira la general)
+</pre></div>
+
+
+<p>Las vistas del primer nivel no se llaman directamente desde los controladores,<br />
+se llaman con la función <code>$this-&gt;layout('...')</code> dentro de otras vistas</p>
+<p><strong>Segundo nivel</strong></p>
+<p>Multiples directorios que permiten sobreescritura de vistas segun el tema usado<br />
+(por ejemplo: nodos, convocatorias, widgets, etc)</p>
+<div class="codehilite"><pre>templates/default      &lt;- primer nivel, indica el tema a usar
+templates/node            Un tema son paginas dentro de los tags &lt;html&gt;&lt;/html&gt;
+templates/...
+</pre></div>
+
+
+<p>Ejemplo de llamada en un controlador:</p>
+<div class="codehilite"><pre><span class="cp">&lt;?php</span>
+<span class="c1">// src/Goteo/Controller/DiscoverController.php</span>
+
+<span class="k">namespace</span> <span class="nx">Goteo\Controller</span><span class="p">;</span>
+
+<span class="k">use</span> <span class="nx">Symfony\Component\HttpFoundation\Response</span><span class="p">;</span>
+
+<span class="k">class</span> <span class="nc">DiscoverController</span> <span class="k">extends</span> <span class="nx">\Goteo\Core\Controller</span> <span class="p">{</span>
+    <span class="k">public</span> <span class="k">function</span> <span class="nf">index</span> <span class="p">()</span> <span class="p">{</span>
+        <span class="k">return</span> <span class="k">new</span> <span class="nx">Response</span><span class="p">(</span><span class="nx">View</span><span class="o">::</span><span class="na">render</span><span class="p">(</span>
+            <span class="s1">&#39;discover/index&#39;</span><span class="p">,</span>
+            <span class="p">[</span> <span class="s1">&#39;test&#39;</span> <span class="o">=&gt;</span> <span class="s1">&#39;Es un texto que se escapará automáticamente&#39;</span> <span class="p">]</span>
+         <span class="p">));</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+<span class="cp">?&gt;</span><span class="x"></span>
+</pre></div>
+
+
+<p>Como se ve, la ruta empieza en el tercer nivel (<code>discover</code>), la primera parte se busca automaticamente segun el tema en el que estamos (nodo, convocatoria, etc)</p>
+<p><strong>Tercer nivel</strong></p>
+<p>El tercel nivel es territorio de controladores, vistas que heredan del tema principal:</p>
+<div class="codehilite"><pre>templates/default/errors/   &lt;- tercer nivel estan las secciones de cada tema
+templates/default/home/        Por ej. vistas principales de los controladores
+templates/default/discover/            que usan herencia
+</pre></div>
+
+
+<p>Ejemplo de uso en una vista (<code>templates/default/discover/index.php</code>):</p>
+<div class="codehilite"><pre><span class="cp">&lt;?php</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">layout</span><span class="p">(</span><span class="s2">&quot;layout&quot;</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;bodyClass&#39;</span> <span class="o">=&gt;</span> <span class="s1">&#39;discover&#39;</span><span class="p">])</span> <span class="cp">?&gt;</span><span class="x"></span>
+
+<span class="cp">&lt;?php</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">section</span><span class="p">(</span><span class="s1">&#39;content&#39;</span><span class="p">)</span> <span class="cp">?&gt;</span><span class="x"></span>
+
+<span class="x">Contenido de la vista:</span>
+<span class="cp">&lt;?</span><span class="o">=</span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">test</span><span class="cp">?&gt;</span><span class="x"></span>
+
+<span class="cp">&lt;?php</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">replace</span><span class="p">()</span> <span class="cp">?&gt;</span><span class="x"></span>
+</pre></div>
+
+
+<p>También dentro de una carpeta <code>partials</code> (para especificar que no son controladores que heredan) se pueden poner partes de vistas que se incluyen dentro de otras:</p>
+<div class="codehilite"><pre>templates/default/partials/  &lt;- O bien bloques parciales que se incluyen en la
+                                vista padre
+</pre></div>
+
+
+<p>Ejemplo de uso de inclusión de un parcial (<code>templates/default/layout.php</code>):</p>
+<div class="codehilite"><pre><span class="x">&lt;html&gt;</span>
+<span class="x">&lt;head&gt;</span>
+<span class="cp">&lt;?</span><span class="o">=</span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">insert</span><span class="p">(</span><span class="s2">&quot;partials/header/metas&quot;</span><span class="p">)</span><span class="cp">?&gt;</span><span class="x"></span>
+<span class="x">&lt;/head&gt;</span>
+
+<span class="x">&lt;body&gt;</span>
+
+<span class="cp">&lt;?php</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">section</span><span class="p">(</span><span class="s1">&#39;content&#39;</span><span class="p">)</span> <span class="cp">?&gt;</span><span class="x"></span>
+<span class="cp">&lt;?php</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">stop</span><span class="p">()</span> <span class="cp">?&gt;</span><span class="x"></span>
+
+<span class="x">&lt;/body&gt;</span>
+<span class="x">&lt;/html&gt;</span>
+</pre></div>
+
+
+<p>La vista <code>partials/header/metas</code> heredará las variables que tenga <code>layout.php</code></p>
+<h2 id="objetivos-para-las-vistas"><a name="user-content-objetivos-para-las-vistas" href="#objetivos-para-las-vistas" class="headeranchor-link" aria-hidden="true"><span class="headeranchor"></span></a>OBJETIVOS PARA LAS VISTAS:</h2>
+<h3 id="syntaxis"><a name="user-content-syntaxis" href="#syntaxis" class="headeranchor-link" aria-hidden="true"><span class="headeranchor"></span></a>Syntaxis:</h3>
+<p>Las vistas deberían ser lo más simple posible y no tener código acoplado, el objetivo a largo plazo debería ser:</p>
+<ul>
+<li>Siempre usar HTML con PHP incrustado. No usar bloques de PHP.</li>
+<li>Siempre escapar las variables (por defecto las variables estan escapadas en Foil). Leer mas en <a href="http://www.foilphp.it/docs/DATA/RETRIEVE-DATA.html">http://www.foilphp.it/docs/DATA/RETRIEVE-DATA.html</a> </li>
+<li>Siempre utilizar la sintaxis corta (<code>&lt;?=</code>) para el echo de variables. Para el resto de código PHP, usar el tag completo <code>&lt;?php</code>.</li>
+<li>Siempre utilizar la sintaxis alternativa para las estructuras de control, que están diseñados para hacer plantillas más legibles (endforeach, endif, etc).</li>
+<li>Nunca usar llaves PHP.</li>
+<li>Tener una sola orden de código por cada tag PHP.</li>
+<li>Evitar el uso de punto y coma. No son necesarios cuando sólo hay una declaración por etiqueta PHP.</li>
+<li>Nunca utilizar el operador <code>use</code>. Las plantillas no deberían estar interactuando con las clases de esta manera. Utilizar en su lugar funciones <em>wrapper</em></li>
+<li>Nunca utilizar las estructuras de control <em>for</em>, <em>while</em> o <em>switch</em>. Utilizar su lugar <em>if</em> y *foreach. También estructuras del lenguage propias: <a href="http://www.foilphp.it/docs/FUNCTIONS/LOOP-HELPERS.html">http://www.foilphp.it/docs/FUNCTIONS/LOOP-HELPERS.html</a> <a href="http://www.foilphp.it/docs/FUNCTIONS/ARRAY-HELPERS.html">http://www.foilphp.it/docs/FUNCTIONS/ARRAY-HELPERS.html</a></li>
+<li>Evitar la asignación de variables.</li>
+</ul>
+<h2 id="guia-de-cambio-de-controladores"><a name="user-content-guia-de-cambio-de-controladores" href="#guia-de-cambio-de-controladores" class="headeranchor-link" aria-hidden="true"><span class="headeranchor"></span></a>Guía de cambio de controladores:</h2>
+<ol>
+<li>
+<p>Usar el objecto Response (de Symfony) como retorno del controlador y no la vista directamente <code>return new Response(View::render(...));</code></p>
+<ul>
+<li><strong>NOTAS:</strong></li>
+<li>Para las redirecciones usar la classe <code>RedirectResponse</code> de Symfony</li>
+<li>No usar directamente variables <code>$_GET</code> o <code>$_POST</code>, usar el objecto <code>Symfony\Component\HttpFoundation\Request</code> inyectado automáticamente al controlador (recomendable ponerlo al final del método). Para más información ver el <a href="http://symfony.com/doc/current/components/http_foundation/introduction.html">objeto Request</a></li>
+<li>Los nombres de las variables deben concordar con los definidos en las rutas (ver <a href="#routes">Rutas</a>). En realidad el orden de las variables no es importante.</li>
+<li>No usar directamente variables <code>$_SESSION</code> o <code>$_COOKIE</code>, usar la clase <code>\Goteo\Application\Session</code> y <code>\Goteo\Application\Cookie</code> respectivamente. Mirar los archivos correspondientes para más informacion.</li>
+</ul>
+<div class="codehilite"><pre><span class="cp">&lt;?php</span>
+    <span class="c1">// src/extend/goteo/src/Goteo/Controller/DiscoverAddonsController.php</span>
+
+    <span class="k">namespace</span> <span class="nx">Goteo\Controller</span><span class="p">;</span>
+    <span class="k">use</span> <span class="nx">Symfony\Component\HttpFoundation\Response</span><span class="p">;</span>
+    <span class="k">use</span> <span class="nx">Symfony\Component\HttpFoundation\RedirectResponse</span><span class="p">;</span>
+    <span class="k">use</span> <span class="nx">Symfony\Component\HttpFoundation\Request</span><span class="p">;</span>
+    <span class="k">use</span> <span class="o">...</span>
+    <span class="k">class</span> <span class="nc">DiscoverAddonsController</span> <span class="k">extends</span> <span class="nx">\Goteo\Core\Controller</span> <span class="p">{</span>
+
+        <span class="k">public</span> <span class="k">function</span> <span class="nf">call</span> <span class="p">()</span> <span class="p">{</span>
+            <span class="k">return</span> <span class="k">new</span> <span class="nx">RedirectResponse</span><span class="p">(</span><span class="s1">&#39;/discover/calls&#39;</span><span class="p">);</span>
+        <span class="p">}</span>
+
+        <span class="k">public</span> <span class="k">function</span> <span class="nf">calls</span> <span class="p">()</span> <span class="p">{</span>
+            <span class="nv">$viewData</span> <span class="o">=</span> <span class="k">array</span><span class="p">();</span>
+            <span class="nv">$viewData</span><span class="p">[</span><span class="s1">&#39;title&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="nx">Text</span><span class="o">::</span><span class="na">html</span><span class="p">(</span><span class="s1">&#39;discover-calls-header&#39;</span><span class="p">);</span>
+            <span class="nv">$viewData</span><span class="p">[</span><span class="s1">&#39;list&#39;</span><span class="p">]</span>  <span class="o">=</span> <span class="nx">Model\Call</span><span class="o">::</span><span class="na">getActive</span><span class="p">(</span><span class="k">null</span><span class="p">,</span> <span class="k">true</span><span class="p">);</span>
+            <span class="k">return</span> <span class="k">new</span> <span class="nx">Response</span><span class="p">(</span><span class="nx">View</span><span class="o">::</span><span class="na">render</span><span class="p">(</span><span class="s1">&#39;discover/calls&#39;</span><span class="p">,</span> <span class="nv">$viewData</span><span class="p">));</span>
+        <span class="p">}</span>
+
+        <span class="k">public</span> <span class="k">function</span> <span class="nf">prueba</span> <span class="p">(</span><span class="nv">$foo</span><span class="p">,</span> <span class="nv">$bar</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="nx">Request</span> <span class="nv">$request</span><span class="p">)</span> <span class="p">{</span>
+            <span class="c1">// Variable en &quot;POST&quot;:</span>
+            <span class="nv">$post_var</span> <span class="o">=</span> <span class="nv">$request</span><span class="o">-&gt;</span><span class="na">request</span><span class="o">-&gt;</span><span class="na">get</span><span class="p">(</span><span class="s1">&#39;var&#39;</span><span class="p">);</span>
+            <span class="c1">// Variable en &quot;GET&quot;:</span>
+            <span class="nv">$get_var</span> <span class="o">=</span> <span class="nv">$request</span><span class="o">-&gt;</span><span class="na">query</span><span class="o">-&gt;</span><span class="na">get</span><span class="p">(</span><span class="s1">&#39;var&#39;</span><span class="p">);</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+<span class="cp">?&gt;</span><span class="x"></span>
+</pre></div>
+
+
+</li>
+<li>
+<p>Usar el nuevo wrapper de vistas <code>Goteo\Application\View</code> y no el antiguo <code>Gote\Core\View</code>. La Función de renderizado es <code>View::render(...)</code></p>
+</li>
+<li>
+<p>Trasladar las vistas de <code>app/view/controller/vista.html.php</code> al nuevo directorio <code>templates/default/controller/vista.php</code>. La sub extension <code>.html.php</code> no hace falta.</p>
+</li>
+<li>
+<p>Eliminar includes a prologue.html.php, header.html.php, etc. del principio y final de las vistas. Reestructurar el contenido de la vista en bloques (secciones). Las secciones principales actuales se pueden consultar en <code>templates/default/layout.php</code>. Todas las sub-vistas deben implementar la sección &lsquo;content&rsquo;. El javascript debería idealmente eliminarse pero como paso intermedio puede simplemente añadirse al final de la sección <code>footer</code>.</p>
+</li>
+</ol>
+<p><strong>Ejemplo de adición de javascript dentro de una vista:</strong></p>
+<p><code>templates/default/discover/index.php</code></p>
+<div class="codehilite"><pre><span class="cp">&lt;?php</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">layout</span><span class="p">(</span><span class="s2">&quot;layout&quot;</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;bodyClass&#39;</span> <span class="o">=&gt;</span> <span class="s1">&#39;discover&#39;</span><span class="p">])</span> <span class="cp">?&gt;</span><span class="x"></span>
+
+<span class="cp">&lt;?php</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">section</span><span class="p">(</span><span class="s1">&#39;content&#39;</span><span class="p">)</span> <span class="cp">?&gt;</span><span class="x"></span>
+
+<span class="x">    Contenido de la vista:</span>
+<span class="cp">&lt;?</span><span class="o">=</span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">test</span><span class="cp">?&gt;</span><span class="x"></span>
+
+<span class="cp">&lt;?php</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">replace</span><span class="p">()</span> <span class="cp">?&gt;</span><span class="x"></span>
+<span class="cp">&lt;?php</span> <span class="c1">// Se reemplazará la sección &#39;content&#39; en el template &quot;layout.php&quot; ?&gt;</span>
+
+<span class="o">&lt;?</span><span class="nx">php</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">section</span><span class="p">(</span><span class="s1">&#39;footer&#39;</span><span class="p">)</span> <span class="cp">?&gt;</span><span class="x"></span>
+
+<span class="x">    &lt;script type=&quot;text/javascript&quot;&gt;</span>
+<span class="x">        jQuery(document).ready(function ($) {</span>
+<span class="x">            ...</span>
+<span class="x">        });</span>
+
+<span class="x">    &lt;/script&gt;</span>
+
+<span class="cp">&lt;?php</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">append</span><span class="p">()</span> <span class="cp">?&gt;</span><span class="x"></span>
+<span class="cp">&lt;?php</span> <span class="c1">// Se añadirá al final de la sección &#39;footer&#39; en el template &quot;layout.php&quot; ?&gt;</span>
+</pre></div>
+
+
+<div class="codehilite"><pre>Mas info http://www.foilphp.it/docs/TEMPLATES/INHERITANCE.html.
+</pre></div>
+
+
+<ol>
+<li>
+<p>Cambiar las referencias al array <code>$this['variable']</code> or <code>$vars['variable']</code> por referencias al objecto <code>$this-&gt;variable</code>. Tener en cuenta que si estas variables son arrays o escalares estaran escapadas por defecto.</p>
+</li>
+<li>
+<p>Quitar referencias a clases dentro de las vistas (sin obsesionarse pues puede ser un trabajo largo). Empezamos por sustituir las funciones de <code>Text::algo(...)</code> por <code>$this-&gt;text_algo(...)</code>. Mirar la extensiones <code>src/Goteo/Foil/Extension/TextUtils.php</code> y <code>src/Goteo/Foil/Extension/GoteoCore.php</code> para las funciones activas (o añadir las que falten).<br />
+Tampoco usar directamente variables <code>$_SESSION</code> o <code>$_COOKIE</code>, ni asignar nada en esas variables dentro de la vista. Usar en su lugar las funciones <code>$this-&gt;get_session('foo')</code> o <code>$this-&gt;get_cookie('foo')</code> si es imprescindible<br />
+Algunas funciones útiles:</p>
+<ul>
+<li><code>$this-&gt;text()</code> =&gt; antiguo Text::get()</li>
+<li><code>$this-&gt;text_html()</code> =&gt; antiguo Text::html()</li>
+<li><code>$this-&gt;text_widget()</code> =&gt; antiguo Text::widget()</li>
+<li><code>$this-&gt;get_session('foo')</code> =&gt; obtiene la variable de session &ldquo;foo&rdquo;</li>
+<li><code>$this-&gt;get_cookie('foo')</code> =&gt; obtiene la cookie &ldquo;foo&rdquo;</li>
+<li><code>$this-&gt;is_logged()</code> =&gt; Devuelve &ldquo;true&rdquo; si el usuario está loggeado</li>
+</ul>
+</li>
+<li>
+<p><a name="routes"></a>Poner la entrada del controlador para el procesado del nuevo dispacher en <code>src/routes.php</code>. Se usa el elemento <a href="http://symfony.com/doc/current/components/routing/introduction.html">Route de Symfony</a>.</p>
+<ul>
+<li><strong>NOTAS:</strong></li>
+<li>No añadir <code>/</code>  al final de la ruta (hay un controlador al final que se encarga de redirigir peticiones con <code>/</code> al final de la ruta)</li>
+<li>Añadir <strong>Action</strong> al final del método del controlador por claridad (ej: <code>edit()</code> pasa a <code>editAction()</code>)</li>
+<li><strong>UNA VEZ SE HAN PROCESADO TODOS LOS METODOS DEL CONTROLADOR:</strong></li>
+<li>Añadir <strong>Controller</strong> al final del nombre del archivo y nombre de clase del controlador. Esto se hace por claridad. <strong>CAMBIAR LOS TESTS ACORDE</strong></li>
+<li>Añadir a la variable <code>$non_legacy_routes</code> del archivo <code>src/Goteo/Controller/ErrorController.php</code> los prefijos de rutas que nunca deben tratarse con el controlador antiguo. <strong>ES DECIR:</strong> Cuando un controlador está completamente actualizado al nuevo sistema de rutas evitar que si hay una ruta no existente se procese segun el controlador antiguo.<br />
+<strong>Por ejemplo:</strong> <code>\Goteo\Controller\DiscoverController</code> y <code>\Goteo\Controller\UserController</code> ya estan acabados. Hay que evitar que todas las rutas que empiezan por &ldquo;/discover&rdquo; se procesen con el controlador antiguo:<br />
+<div class="codehilite"><pre><span class="cp">&lt;?php</span>
+<span class="c1">// src/Goteo/Controller/ErrorController.php</span>
+<span class="o">...</span>
+<span class="nv">$non_legacy_routes</span> <span class="o">=</span> <span class="k">array</span><span class="p">(</span>
+            <span class="s1">&#39;/discover&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;/user&#39;</span><span class="p">,</span>
+            <span class="o">...</span>
+            <span class="p">);</span>
+<span class="cp">?&gt;</span><span class="x"></span>
+</pre></div>
+</li>
+</ul>
+</li>
+</ol>
+<div class="codehilite"><pre><span class="cp">&lt;?php</span>
+<span class="c1">// src/routes.php</span>
+
+<span class="nv">$routes</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">RouteCollection</span><span class="p">();</span>
+
+<span class="c1">// ...</span>
+
+<span class="c1">// Esta ruta tiene parametros, algunos opcionales, va primero</span>
+<span class="c1">// Esta ruta concuerda con:</span>
+<span class="c1">//      /discover/results/2</span>
+<span class="c1">//      /discover/results</span>
+<span class="c1">// La última ruta no concuerdaria si no fuera opcional el parametro</span>
+<span class="nv">$routes</span><span class="o">-&gt;</span><span class="na">add</span><span class="p">(</span><span class="s1">&#39;discover-results&#39;</span><span class="p">,</span> <span class="k">new</span> <span class="nx">Route</span><span class="p">(</span>
+    <span class="s1">&#39;/discover/results/{category}&#39;</span><span class="p">,</span>
+    <span class="k">array</span><span class="p">(</span><span class="s1">&#39;category&#39;</span> <span class="o">=&gt;</span> <span class="k">null</span><span class="p">,</span>
+          <span class="s1">&#39;name&#39;</span> <span class="o">=&gt;</span> <span class="k">null</span><span class="p">,</span>
+          <span class="s1">&#39;_controller&#39;</span> <span class="o">=&gt;</span> <span class="s1">&#39;Goteo\Controller\DiscoverController::resultsAction&#39;</span><span class="p">,</span>
+          <span class="s1">&#39;category&#39;</span> <span class="o">=&gt;</span> <span class="s1">&#39;&#39;</span> <span class="c1">//parametro opcional</span>
+         <span class="p">)</span>
+<span class="p">));</span>
+<span class="c1">// esta ruta no tiene parametros</span>
+<span class="nv">$routes</span><span class="o">-&gt;</span><span class="na">add</span><span class="p">(</span><span class="s1">&#39;discover&#39;</span><span class="p">,</span> <span class="k">new</span> <span class="nx">Route</span><span class="p">(</span>
+    <span class="s1">&#39;/discover&#39;</span><span class="p">,</span>
+    <span class="k">array</span><span class="p">(</span><span class="s1">&#39;_controller&#39;</span> <span class="o">=&gt;</span> <span class="s1">&#39;Goteo\Controller\DiscoverController::discoverAction&#39;</span><span class="p">)</span>
+<span class="p">));</span>
+
+<span class="k">return</span> <span class="nv">$routes</span><span class="p">;</span>
+<span class="cp">?&gt;</span><span class="x"></span>
+</pre></div>
+
+
+<h2 id="ejemplo-real"><a name="user-content-ejemplo-real" href="#ejemplo-real" class="headeranchor-link" aria-hidden="true"><span class="headeranchor"></span></a>EJEMPLO REAL</h2>
+<p>Para la vista &ldquo;results&rdquo; del controlador &ldquo;DiscoverController&rdquo;:</p>
+<p>Antes <code>app/view/discover/results.html.php</code></p>
+<div class="codehilite"><pre><span class="cp">&lt;?php</span>
+<span class="c1">// app/view/discover/results.html.php</span>
+
+<span class="k">use</span> <span class="nx">Goteo\Core\View</span><span class="p">,</span>
+    <span class="nx">Goteo\Library\Text</span><span class="p">;</span>
+
+<span class="nv">$bodyClass</span> <span class="o">=</span> <span class="s1">&#39;discover&#39;</span><span class="p">;</span>
+
+<span class="k">include</span> <span class="nx">__DIR__</span> <span class="o">.</span> <span class="s1">&#39;/../prologue.html.php&#39;</span><span class="p">;</span>
+
+<span class="k">include</span> <span class="nx">__DIR__</span> <span class="o">.</span> <span class="s1">&#39;/../header.html.php&#39;</span> <span class="cp">?&gt;</span><span class="x"></span>
+
+<span class="x">        &lt;div id=&quot;sub-header&quot;&gt;</span>
+<span class="x">            &lt;div&gt;</span>
+<span class="x">                &lt;h2 class=&quot;title&quot;&gt;</span><span class="cp">&lt;?php</span> <span class="k">echo</span> <span class="nx">Text</span><span class="o">::</span><span class="na">get</span><span class="p">(</span><span class="s1">&#39;discover-results-header&#39;</span><span class="p">);</span> <span class="cp">?&gt;</span><span class="x">&lt;/h2&gt;</span>
+<span class="x">            &lt;/div&gt;</span>
+
+<span class="x">        &lt;/div&gt;</span>
+
+<span class="x">        &lt;div id=&quot;main&quot;&gt;</span>
+<span class="x">            </span><span class="cp">&lt;?php</span> <span class="k">echo</span> <span class="nx">View</span><span class="o">::</span><span class="na">get</span><span class="p">(</span><span class="s1">&#39;discover/searcher.html.php&#39;</span><span class="p">,</span>
+                                <span class="k">array</span><span class="p">(</span><span class="s1">&#39;params&#39;</span>     <span class="o">=&gt;</span> <span class="nv">$vars</span><span class="p">[</span><span class="s1">&#39;params&#39;</span><span class="p">]));</span> <span class="cp">?&gt;</span><span class="x"></span>
+
+<span class="x">            &lt;div class=&quot;widget projects&quot;&gt;</span>
+<span class="x">                </span><span class="cp">&lt;?php</span> <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="k">empty</span><span class="p">(</span><span class="nv">$vars</span><span class="p">[</span><span class="s1">&#39;results&#39;</span><span class="p">]))</span> <span class="o">:</span>
+                    <span class="k">foreach</span> <span class="p">(</span><span class="nv">$vars</span><span class="p">[</span><span class="s1">&#39;results&#39;</span><span class="p">]</span> <span class="k">as</span> <span class="nv">$result</span><span class="p">)</span> <span class="o">:</span>
+                        <span class="k">echo</span> <span class="nx">View</span><span class="o">::</span><span class="na">get</span><span class="p">(</span><span class="s1">&#39;project/widget/project.html.php&#39;</span><span class="p">,</span> <span class="k">array</span><span class="p">(</span>
+                            <span class="s1">&#39;project&#39;</span> <span class="o">=&gt;</span> <span class="nv">$result</span>
+                        <span class="p">));</span>
+                    <span class="k">endforeach</span><span class="p">;</span>
+                <span class="k">else</span> <span class="o">:</span>
+                    <span class="k">echo</span> <span class="nx">Text</span><span class="o">::</span><span class="na">get</span><span class="p">(</span><span class="s1">&#39;discover-results-empty&#39;</span><span class="p">);</span>
+                <span class="k">endif</span><span class="p">;</span> <span class="cp">?&gt;</span><span class="x"></span>
+<span class="x">            &lt;/div&gt;</span>
+
+<span class="x">        &lt;/div&gt;</span>
+
+<span class="x">        </span><span class="cp">&lt;?php</span> <span class="k">include</span> <span class="nx">__DIR__</span> <span class="o">.</span> <span class="s1">&#39;/../footer.html.php&#39;</span> <span class="cp">?&gt;</span><span class="x"></span>
+
+<span class="cp">&lt;?php</span> <span class="k">include</span> <span class="nx">__DIR__</span> <span class="o">.</span> <span class="s1">&#39;/../epilogue.html.php&#39;</span> <span class="cp">?&gt;</span><span class="x"></span>
+</pre></div>
+
+
+<p>Después: <code>templates/default/discover/results.php</code><br />
+(implica la conversion de las sub-vistas: <code>templates/default/discover/partials/searcher.php</code> y <code>templates/default/project/widget/project.php</code>)</p>
+<div class="codehilite"><pre><span class="cp">&lt;?php</span>
+<span class="c1">// templates/default/discover/results.php</span>
+
+<span class="nv">$this</span><span class="o">-&gt;</span><span class="na">layout</span><span class="p">(</span><span class="s2">&quot;layout&quot;</span><span class="p">,</span> <span class="p">[</span>
+    <span class="s1">&#39;bodyClass&#39;</span> <span class="o">=&gt;</span> <span class="s1">&#39;discover&#39;</span><span class="p">,</span> <span class="c1">// variable de classe en &lt;body class=&quot;...&quot;&gt;</span>
+    <span class="s1">&#39;title&#39;</span> <span class="o">=&gt;</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">text</span><span class="p">(</span><span class="s1">&#39;meta-title-discover&#39;</span><span class="p">),</span> <span class="c1">//esto solo si hace falta cambiar el titulo de la pagina por otro</span>
+    <span class="s1">&#39;meta_description&#39;</span> <span class="o">=&gt;</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">text</span><span class="p">(</span><span class="s1">&#39;meta-description-discover&#39;</span><span class="p">)</span> <span class="c1">// idem</span>
+    <span class="p">]);</span>
+
+<span class="nv">$this</span><span class="o">-&gt;</span><span class="na">section</span><span class="p">(</span><span class="s1">&#39;content&#39;</span><span class="p">);</span>
+
+<span class="cp">?&gt;</span><span class="x"></span>
+
+<span class="x">        &lt;div id=&quot;sub-header&quot;&gt;</span>
+<span class="x">            &lt;div&gt;</span>
+<span class="x">                &lt;h2 class=&quot;title&quot;&gt;</span><span class="cp">&lt;?</span><span class="o">=</span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">text</span><span class="p">(</span><span class="s1">&#39;discover-results-header&#39;</span><span class="p">)</span><span class="cp">?&gt;</span><span class="x">&lt;/h2&gt;</span>
+<span class="x">            &lt;/div&gt;</span>
+
+<span class="x">        &lt;/div&gt;</span>
+
+<span class="x">        &lt;div id=&quot;main&quot;&gt;</span>
+
+<span class="x">            </span><span class="cp">&lt;?</span><span class="o">=</span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">insert</span><span class="p">(</span><span class="s1">&#39;discover/partials/searcher&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;params&#39;</span> <span class="o">=&gt;</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">params</span><span class="p">])</span><span class="cp">?&gt;</span><span class="x"></span>
+
+<span class="x">            &lt;div class=&quot;widget projects&quot;&gt;</span>
+<span class="x">                </span><span class="cp">&lt;?php</span> <span class="k">if</span> <span class="p">(</span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">results</span><span class="p">)</span> <span class="o">:</span> <span class="cp">?&gt;</span><span class="x"></span>
+<span class="x">                    </span><span class="cp">&lt;?php</span> <span class="k">foreach</span> <span class="p">(</span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">results</span> <span class="k">as</span> <span class="nv">$result</span><span class="p">)</span> <span class="o">:</span> <span class="cp">?&gt;</span><span class="x"></span>
+<span class="x">                        </span><span class="cp">&lt;?</span><span class="o">=</span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">insert</span><span class="p">(</span><span class="s1">&#39;project/widget/project&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;project&#39;</span> <span class="o">=&gt;</span> <span class="nv">$result</span><span class="p">])</span><span class="cp">?&gt;</span><span class="x"></span>
+<span class="x">                    </span><span class="cp">&lt;?php</span> <span class="k">endforeach</span> <span class="cp">?&gt;</span><span class="x"></span>
+<span class="x">                </span><span class="cp">&lt;?php</span> <span class="k">else</span> <span class="o">:</span> <span class="cp">?&gt;</span><span class="x"></span>
+<span class="x">                    </span><span class="cp">&lt;?</span><span class="o">=</span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">text</span><span class="p">(</span><span class="s1">&#39;discover-results-empty&#39;</span><span class="p">)</span><span class="cp">?&gt;</span><span class="x"></span>
+<span class="x">                </span><span class="cp">&lt;?php</span> <span class="k">endif</span> <span class="cp">?&gt;</span><span class="x"></span>
+<span class="x">            &lt;/div&gt;</span>
+
+<span class="x">        &lt;/div&gt;</span>
+
+<span class="cp">&lt;?php</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">replace</span><span class="p">()</span> <span class="cp">?&gt;</span><span class="x"></span>
+</pre></div></article></body></html>

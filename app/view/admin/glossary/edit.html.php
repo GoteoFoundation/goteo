@@ -5,7 +5,7 @@ use Goteo\Library\Text,
     Goteo\Core\Redirection,
     Goteo\Library\NormalForm;
 
-$post = $this['post'];
+$post = $vars['post'];
 
 if (!$post instanceof Model\Glossary) {
     throw new Redirection('/admin/glossary');
@@ -48,7 +48,7 @@ $(document).ready(function(){
 });
 </script>
 
-<form method="post" action="/admin/glossary/<?php echo $this['action']; ?>/<?php echo $post->id; ?>" enctype="multipart/form-data">
+<form method="post" action="/admin/glossary/<?= $post->id ? $vars['action'].'/'.$post->id : $vars['action'] ?>" enctype="multipart/form-data">
 
     <?php echo new NormalForm(array(
 

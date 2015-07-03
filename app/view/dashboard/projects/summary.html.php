@@ -3,7 +3,7 @@ use Goteo\Core\View,
     Goteo\Library\Text,
     Goteo\Model\Project;
 
-$project = $this['project'];
+$project = $vars['project'];
 
 $http = (\HTTPS_ON) ? 'https' : 'http' ;
 
@@ -35,7 +35,7 @@ if (!$project instanceof  Goteo\Model\Project) {
 
 <div id="meter-big" class="widget collapsable">
 
-    <?php echo View::get('project/meter_hor_big.html.php', $this) ?>
+    <?php echo View::get('project/meter_hor_big.html.php', $vars) ?>
 
 </div>
 
@@ -62,7 +62,7 @@ if (!$project instanceof  Goteo\Model\Project) {
             <div class="titles">
                 <div>
                     <h2><?php echo Text::get('dashboard-chart-invested'); ?></h2>
-                <?php if (empty($this['data']['invests'])) : ?>
+                <?php if (empty($vars['data']['invests'])) : ?>
                     <div id="funded" class="obtenido number"><?php echo Text::get('dashboard-chart-no-invested'); ?></div>
                 <?php else : ?>
                     <div id="funded" class="obtenido number"><?php echo \amount_format($project->invested); ?> &euro;</div>
@@ -89,7 +89,7 @@ if (!$project instanceof  Goteo\Model\Project) {
 <script type="text/javascript">
     /* función para cargar los datos del gáfico, sacado de graphA.js */
 jQuery(document).ready(function(){
-        GOTEO.initializeGraph(<?php echo $this['data']; ?>);
+        GOTEO.initializeGraph(<?php echo $vars['data']; ?>);
     });
 
 </script>

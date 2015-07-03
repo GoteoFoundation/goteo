@@ -10,16 +10,16 @@ $bodyClass = 'user-profile';
 include __DIR__ . '/../prologue.html.php';
 include __DIR__ . '/../header.html.php';
 
-$user = $this['user'];
+$user = $vars['user'];
 $worthcracy = Worth::getAll();
 
 $categories = Interest::getAll($user->id);
 
 if (empty($categories)) {
-    throw new Redirection('/user/profile/' . $this['user']->id);
+    throw new Redirection('/user/profile/' . $vars['user']->id);
 }
 
-$limit = empty($this['category']) ? 6 : 20;
+$limit = empty($vars['category']) ? 6 : 20;
 
 $shares = array();
 foreach ($categories as $catId => $catName) {
@@ -29,14 +29,14 @@ foreach ($categories as $catId => $catName) {
 }
 
 if (empty($shares)) {
-    throw new Redirection('/user/profile/' . $this['user']->id);
+    throw new Redirection('/user/profile/' . $vars['user']->id);
 }
 
 ?>
 
 <?php echo View::get('user/widget/header.html.php', array('user'=>$user)) ?>
 
-<?php if(isset($_SESSION['messages'])) { include __DIR__ . '/../header/message.html.php'; } ?>
+<?php if($_SESSION['messages']) { include __DIR__ . '/../header/message.html.php'; } ?>
 
 <div id="main">
 
@@ -67,7 +67,7 @@ if (empty($shares)) {
             <div class="list">
                 <ul>
                     <?php foreach ($categories as $catId=>$catName) : if (count($shares[$catId]) == 0) continue; ?>
-                    <li><a id="catlist<?php echo $catId ?>" href="/user/profile/<?php echo $this['user']->id ?>/sharemates/<?php echo $catId ?>" <?php if (!empty($this['category'])) : ?>onclick="displayCategory(<?php echo $catId ?>); return false;"<?php endif; ?> <?php if ($catId == $this['category']) echo 'class="active"'?>><?php echo $catName ?></a></li>
+                    <li><a id="catlist<?php echo $catId ?>" href="/user/profile/<?php echo $vars['user']->id ?>/sharemates/<?php echo $catId ?>" <?php if (!empty($vars['category'])) : ?>onclick="displayCategory(<?php echo $catId ?>); return false;"<?php endif; ?> <?php if ($catId == $vars['category']) echo 'class="active"'?>><?php echo $catName ?></a></li>
                     <?php endforeach; ?>
                 </ul>
             </div>
@@ -79,14 +79,14 @@ if (empty($shares)) {
             if (count($sharemates) == 0) continue;
             shuffle($sharemates);
             ?>
-            <div class="widget user-mates" id="cat<?php echo $catId;?>" <?php if (!empty($this['category']) && $catId != $this['category']) echo 'style="display:none;"'?>>
+            <div class="widget user-mates" id="cat<?php echo $catId;?>" <?php if (!empty($vars['category']) && $catId != $vars['category']) echo 'style="display:none;"'?>>
                 <h3 class="title"><?php echo $categories[$catId] ?></h3>
                 <div class="users">
                     <ul>
                     <?php
                     $cnt = 1;
                     foreach ($sharemates as $mate) :
-                        if (empty($this['category']) && $cnt > 6) break;
+                        if (empty($vars['category']) && $cnt > 6) break;
                     ?>
                         <li>
                             <div class="user">
@@ -104,10 +104,10 @@ if (empty($shares)) {
                     endforeach; ?>
                     </ul>
                 </div>
-        <?php if (empty($this['category'])) : ?>
-            <a class="more" href="/user/profile/<?php echo $this['user']->id ?>/sharemates/<?php echo $catId ?>"><?php echo Text::get('regular-see_more'); ?></a>
+        <?php if (empty($vars['category'])) : ?>
+            <a class="more" href="/user/profile/<?php echo $vars['user']->id ?>/sharemates/<?php echo $catId ?>"><?php echo Text::get('regular-see_more'); ?></a>
         <?php else : ?>
-            <a class="more" href="/user/profile/<?php echo $this['user']->id ?>/sharemates"><?php echo Text::get('regular-see_all'); ?></a>
+            <a class="more" href="/user/profile/<?php echo $vars['user']->id ?>/sharemates"><?php echo Text::get('regular-see_all'); ?></a>
         <?php endif; ?>
         </div>
         <?php endforeach; ?>
@@ -115,8 +115,8 @@ if (empty($shares)) {
 
     </div>
     <div class="side">
-        <?php if (!empty($_SESSION['user'])) echo View::get('user/widget/investors.html.php', $this) ?>
-        <?php echo View::get('user/widget/user.html.php', $this) ?>
+        <?php if (!empty($_SESSION['user'])) echo View::get('user/widget/investors.html.php', $vars) ?>
+        <?php echo View::get('user/widget/user.html.php', $vars) ?>
     </div>
 
 </div>

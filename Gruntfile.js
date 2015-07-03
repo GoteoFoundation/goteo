@@ -10,6 +10,7 @@
 //
 GOTEO = {
     app: 'app',
+    templates: 'templates',
     src: 'src',
     dist: 'dist',
     localURL: 'localhost',

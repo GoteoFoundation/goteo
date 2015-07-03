@@ -18,11 +18,11 @@ include __DIR__ . '/../header.html.php' ?>
 
         <div id="main">
             <?php echo View::get('discover/searcher.html.php',
-                                array('params'     => $this['params'])); ?>
+                                array('params'     => $vars['params'])); ?>
 
             <div class="widget projects">
-                <?php if (!empty($this['results'])) :
-                    foreach ($this['results'] as $result) :
+                <?php if (!empty($vars['results'])) :
+                    foreach ($vars['results'] as $result) :
                         echo View::get('project/widget/project.html.php', array(
                             'project' => $result
                         ));

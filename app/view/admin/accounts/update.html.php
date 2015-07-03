@@ -4,8 +4,8 @@ use Goteo\Library\Text,
     Goteo\Model,
     Goteo\Core\Redirection;
 
-$invest = $this['invest'];
-$status = $this['status'];
+$invest = $vars['invest'];
+$status = $vars['status'];
 
 ?>
 <a href="/admin/accounts/details/<?php echo $invest->id ?>" class="button">Volver al detalle</a>

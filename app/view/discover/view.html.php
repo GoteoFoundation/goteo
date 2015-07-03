@@ -12,7 +12,7 @@ include __DIR__ . '/../header.html.php' ?>
 
         <div id="sub-header">
             <div>
-                <h2 class="title"><?php echo $this['title']; ?></h2>
+                <h2 class="title"><?php echo $vars['title']; ?></h2>
             </div>
 
         </div>
@@ -20,14 +20,14 @@ include __DIR__ . '/../header.html.php' ?>
         <div id="main">
 
             <div class="widget projects">
-                <?php foreach ($this['list'] as $project) {
+                <?php foreach ($vars['list'] as $project) {
                      echo View::get('project/widget/project.html.php', array(
                             'project' => $project
                             ));
                 } ?>
             </div>
 
-            <?php echo View::get('pagination.html.php', $this); ?>
+            <?php echo View::get('pagination.html.php', $vars); ?>
         </div>
 
         <?php include __DIR__ . '/../footer.html.php' ?>

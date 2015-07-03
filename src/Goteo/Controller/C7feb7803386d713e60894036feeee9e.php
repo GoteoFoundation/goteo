@@ -6,21 +6,22 @@
  */
 namespace Goteo\Controller {
 
+    use Goteo\Model;
+    use Goteo\Application\Session;
+    use Goteo\Controller\Cron\Send;
     use Goteo\Library\Check;
-    use Goteo\Model,
-        Goteo\Controller\Cron\Send,
-        Goteo\Library\Feed,
-        Goteo\Core\ACL;
+    use Goteo\Library\Feed;
+    use Goteo\Core\ACL;
 
     class C7feb7803386d713e60894036feeee9e extends \Goteo\Core\Controller {
-        
+
         /*
          * Marcar retorno colectivo como cumplido o pendiente
          * 'set-fulsocial'
          */
         public function ce8c56139d45ec05e0aa2261c0a48af9() {
 
-            $user = $_SESSION['user'];
+            $user = Session::getUser();
             $project = $_POST['project'];
             $reward = $_POST['reward'];
             $value = $_POST['value'];
@@ -46,7 +47,7 @@ namespace Goteo\Controller {
             }
 
             $log_txt .= "ha marcado el retorno colectivo {$reward} del proyecto {$project} como '{$value}'";
-            
+
             // TODO: Comprobar los parámetros de usuario por seguridad
 
             $sql = "UPDATE reward SET fulsocial = :val WHERE project = :proj AND type= 'social' AND id = :id";
@@ -58,23 +59,23 @@ namespace Goteo\Controller {
                 echo 'SQL FAIL';
                 die;
             }
-            
+
             // Evento Feed
             $log = new Feed();
             $log->populate('Gestion retorno cumplido', '/ultra-secret-ws/set-fulsocial', $log_txt);
             $log->doAdmin('usws');
             unset($log);
-            
+
             die;
         }
-        
+
         /*
          * Poner la Url de localización del retorno colectivo
          * 'set-rewardurl'
          */
         public function d82318a7bec39ac2b78be96b8ec2b76e() {
 
-            $user = $_SESSION['user'];
+            $user = Session::getUser();
             $project = $_POST['project'];
             $reward = $_POST['reward'];
             $value = $_POST['value'];
@@ -123,7 +124,7 @@ namespace Goteo\Controller {
                 echo 'SQL FAIL';
                 die;
             }
-            
+
             $log_txt = $rol . " " . $who . " ha puesto la url de localización del retorno colectivo {$reward} del proyecto {$project} a '{$value}'";
 
             // Evento Feed
@@ -131,13 +132,12 @@ namespace Goteo\Controller {
             $log->populate('Gestion url retorno', '/ultra-secret-ws/set-rewardurl', $log_txt);
             $log->doAdmin('usws');
             unset($log);
-            
+
             // Enviar correo informativo a los asesores del proyecto.
             $project_obj = Model\Project::getMini($project);
-            $project_obj->consultants = Model\Project::getConsultants($project);
 
             //Añadir siempre a Olivier.
-            if (!in_array('olivier', array_keys($project_obj->consultants))) {
+            if (!in_array('olivier', array_keys($project_obj->getConsultants()))) {
                 $project_obj->consultants['olivier'] = 'Olivier Schulbaum';
             }
             $project_obj->whodidit = $who;
@@ -146,7 +146,7 @@ namespace Goteo\Controller {
 
             die;
         }
-        
+
     }
-    
+
 }

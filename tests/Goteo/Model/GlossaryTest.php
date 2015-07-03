@@ -140,7 +140,7 @@ class GlossaryTest extends \PHPUnit_Framework_TestCase {
      */
     public function testDeleteGlossary($ob) {
         //delete post
-        $this->assertTrue($ob->delete());
+        $this->assertTrue($ob->dbDelete());
 
         return $ob;
     }

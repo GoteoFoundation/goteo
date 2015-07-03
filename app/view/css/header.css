@@ -6,7 +6,7 @@ div#super-header {
     position: relative;
     z-index: 999;
 }
- 
+
 div#header a,
 div#header span,
 div#header strong {
@@ -20,7 +20,7 @@ div#super-header {
     margin: 0 auto;
     height: 25px;
     font-size: 12px;
-    overflow: hidden; 
+    overflow: hidden;
     padding: 0 1em;
 }
 
@@ -32,7 +32,7 @@ div#super-header + * {
 
 div#super-header a {
     color: #e9e3dc;
-    font-size: 11px;    
+    font-size: 11px;
 }
 
 div#super-header a:hover {
@@ -40,9 +40,9 @@ div#super-header a:hover {
 }
 
 
-/* Sub-header */ 
+/* Sub-header */
 div#sub-header,
-div#sub-header-secondary { 
+div#sub-header-secondary {
     clear: both;
     padding: 20px 0;
     margin-bottom: 24px;
@@ -78,7 +78,7 @@ div#sub-header-secondary > div > h2 a{
 }
 
 div#sub-header-secondary > div > h2 a:hover span.red{
-	text-decoration:underline;	
+	text-decoration:underline;
 }
 
 div#sub-header > div > div.slides_container{
@@ -145,7 +145,7 @@ div#sub-header > div > div.slides_container > div.slides_control > div.subhead-b
     color:#1eb2b2;
 	display:block;
     overflow: hidden;
-    white-space: nowrap;    
+    white-space: nowrap;
     width: 240px;
     text-overflow: ellipsis;
 }
@@ -169,7 +169,7 @@ div#sub-header > div > div.slides_container > div.slides_control > div.subhead-b
     margin: 0px 0px 4px 0px;
 	font: normal 11px Helvetica, Arial, Geneva, sans-serif;
     overflow: hidden;
-    white-space: nowrap;    
+    white-space: nowrap;
     width: 240px;
     text-overflow: ellipsis;
 }
@@ -277,9 +277,9 @@ div#sub-header > div > div.mod-pojctopen{
 
 div#sub-header.banners > div > div.mod-pojctopen{
 	margin-left: 0;
-    margin-top:0; 
-    width:235px; 
-    margin-right:0px; 
+    margin-top:0;
+    width:235px;
+    margin-right:0px;
     position:relative;
     display: none;
 }
@@ -452,7 +452,7 @@ div#sub-header-secondary > div > ul.share-goteo li.rss a{
 }
 /* fin subheader secundario */
 
-div#header div#about {    
+div#header div#about {
     font-size: 12px;
     height: 2.2em;
     /*float: right;*/
@@ -522,7 +522,7 @@ div#header div#about ul li#currency a:hover{
     color:#fff}
 
 /* fin del carrusel de micronoticias */
-div#header div#highlights {    
+div#header div#highlights {
     font-size: 12px;
     height: 2.2em;
     max-width: 55%;
@@ -551,18 +551,18 @@ div#header div#highlights > h2 {
 
 div#header div#highlights > h2 a{
 	font-size:11px;
-	text-transform:uppercase;	
+	text-transform:uppercase;
 }
 
 div#header div#highlights > ul {
     list-style: none;
     padding: 0;
     margin: 0;
-    overflow: hidden;        
-    display: inline-block;    
+    overflow: hidden;
+    display: inline-block;
 }
 
-div#header div#highlights > ul > li {    
+div#header div#highlights > ul > li {
     white-space: nowrap;
     display: block;
     padding-right: 8em;
@@ -607,13 +607,13 @@ div#header div#menu > ul > li.home {
     top: 0;
 }
 
-div#header div#menu > ul > li.home > a {    
+div#header div#menu > ul > li.home > a {
     overflow: hidden;
     text-indent: 2000px;
     display: block;
     line-height: 2000px;
     width: 105px;
-    height: 36px;  
+    height: 36px;
     position: absolute;
     left: 50%;
     top: 50%;
@@ -645,13 +645,13 @@ div#header div#menu > ul > li.create > a {
 	line-height: 1em;
 }
 
-div#header div#menu > ul > li.explore > a {    
+div#header div#menu > ul > li.explore > a {
     margin-left: 124px;
 }
 
 div#header div#menu > ul > li.search {
     margin-top: 1em;
-    margin-right: .5em;    
+    margin-right: .5em;
 }
 
 div#header div#menu > ul > li.search fieldset {
@@ -685,7 +685,7 @@ div#header div#menu > ul > li.search fieldset input[type="submit"] {
     display: block;
     position: absolute;
     right: 0;
-    top: 0;    
+    top: 0;
     padding: 0;
     overflow: hidden;
     text-indent: 2000px;
@@ -701,10 +701,10 @@ div#header div#menu > ul > li.search fieldset input[type="submit"]:hover {
 div#header div#menu > ul > li.community ,
 div#header div#menu > ul > li.login ,
 div#header div#menu > ul > li.dashboard {
-    height: 48px;    
+    height: 48px;
     position: relative;
-	
-} 
+
+}
 
 div#header div#menu{
 	min-height:48px;
@@ -717,7 +717,7 @@ div#header div#menu > ul > li.dashboard {
 }
 
 div#header div#menu > ul > li.login fieldset > * {
-    display: none;        
+    display: none;
 }
 
 div#header div#menu > ul > li.login form,
@@ -725,7 +725,7 @@ div#header div#menu > ul > li.login fieldset,
 div#header div#menu > ul > li.login fieldset > legend {
     margin: 0;
     padding: 0;
-    border: none;        
+    border: none;
     display: inline-block;
 }
 
@@ -736,7 +736,7 @@ div#header div#menu > ul > li.dashboard > a {
     font-size: 12px;
     height: 40px;
     line-height: 40px;
-    display: inline-block;    
+    display: inline-block;
     color: #59595c;
 }
 
@@ -762,7 +762,7 @@ div#header ul.lang, ul.currency {
 div#header div#menu > ul > li.community:hover,
 div#header div#menu > ul > li.login:hover,
 div#header div#menu > ul > li.dashboard:hover {
-    background-color: #1db3b2;    
+    background-color: #1db3b2;
 }
 
 div#header div#menu > ul > li.community:hover,
@@ -774,13 +774,13 @@ div#header div#menu > ul > li.community:hover *,
 div#header div#menu > ul > li.login:hover *,
 div#header div#menu > ul > li.dashboard:hover * {
     color: white;
-} 
+}
 
 div#header div#menu > ul > li.dashboard > a > span > em {
     display: none;
 }
 
-div#header div#menu > ul > li.community > div, 
+div#header div#menu > ul > li.community > div,
 div#header div#menu > ul > li.dashboard > div {
     display: none;
 }
@@ -804,7 +804,7 @@ div#header div#menu > ul > li.dashboard > div > ul {
 
 div#header div#menu > ul > li.community > div > ul > li,
 div#header div#menu > ul > li.dashboard > div > ul > li {
-    border-top: 1px solid #a5e1e0;    
+    border-top: 1px solid #a5e1e0;
 }
 
 div#header div#menu > ul > li.community > div > ul > li *,
@@ -815,7 +815,7 @@ div#header div#menu > ul > li.dashboard > div > ul > li * {
 
 div#header div#menu > ul > li.community > div > ul > li > a,
 div#header div#menu > ul > li.dashboard > div > ul > li > a {
-    display: block;    
+    display: block;
     padding: .6em 1em;
 }
 
@@ -841,7 +841,7 @@ ul.lang{
 	margin:0;
 	padding:0;
 }
-	
+
 ul.lang li{
 background-color: #59595C;
 height: 15px;
@@ -851,7 +851,7 @@ width: 70px;
 text-align:center;
 }
 ul.lang li:hover {
-	background: #808285; 
+	background: #808285;
 }
 ul.lang li>a{
 	bottom: 0;
@@ -881,7 +881,7 @@ ul.currency{
     margin:0;
     padding:0;
 }
-    
+
 ul.currency li{
 background-color: #59595C;
 height: 15px;
@@ -891,7 +891,7 @@ width: 70px;
 text-align:center;
 }
 ul.currency li:hover {
-    background: #808285; 
+    background: #808285;
 }
 ul.currency li>a{
     bottom: 0;
@@ -941,36 +941,36 @@ body.project-show div#sub-header div.nodemark a img {
 
 /*Calendar en home*/
 div#sub-header.banners > div > div.mod-pojctopen a.expand{
-    position: absolute; 
-    top: 0px; 
+    position: absolute;
+    top: 0px;
     bottom: 0px;
     display: block;
     width: 100%;
     left: 0px;
-    right: 0px; 
+    right: 0px;
     z-index: 100;
 }
 
 div#sub-header.banners > div > div.mod-pojctopen div.main-calendar{
-    float:left;  
-    color:#FFFFFF; 
+    float:left;
+    color:#FFFFFF;
     width:45%;
-    height:136px; 
-    margin: 10px 0; 
+    height:136px;
+    margin: 10px 0;
     border-radius:5px;
 }
 
 div#sub-header.banners > div > div.mod-pojctopen div.next-event{
-    height:15px; 
-    padding-top:9px; 
+    height:15px;
+    padding-top:9px;
     text-align:center;
 }
 
 div#sub-header.banners > div > div.mod-pojctopen div.inside{
     height:102px;
-    background-color:#FFFFFF; 
-    margin:5px; 
-    border-radius:5px; 
+    background-color:#FFFFFF;
+    margin:5px;
+    border-radius:5px;
     text-align:center;
 }
 
@@ -979,7 +979,7 @@ div#sub-header.banners > div > div.mod-pojctopen div.inside div.event-month{
 }
 
 div#sub-header.banners > div > div.mod-pojctopen div.inside div.event-day{
-    font-size:35px; 
+    font-size:35px;
     padding-top:4px;
 }
 
@@ -989,26 +989,26 @@ div#sub-header.banners > div > div.mod-pojctopen div.inside div.event-text-day{
 
 div#sub-header.banners > div > div.mod-pojctopen div.extra-calendar{
     float:left;
-    font-size:10px; 
-    text-align:center; 
-    background-color:#FFFFFF; 
-    width:55%; 
-    height:136px; 
+    font-size:10px;
+    text-align:center;
+    background-color:#FFFFFF;
+    width:55%;
+    height:136px;
     margin: 10px 0;
 }
 
 div#sub-header.banners > div > div.mod-pojctopen div.extra-calendar div.event-category{
 
-    padding-top: 13px; 
-    border-bottom: 1px solid; 
-    width: 80%; 
-    text-align: center; 
-    margin: 0 15px; 
+    padding-top: 13px;
+    border-bottom: 1px solid;
+    width: 80%;
+    text-align: center;
+    margin: 0 15px;
     padding-bottom: 3px;
 }
 
 div#sub-header.banners > div > div.mod-pojctopen div.extra-calendar div.event-title{
-    padding:10px; 
+    padding:10px;
     height:60px;
 }
 
@@ -1103,7 +1103,16 @@ div#sub-header.banners > div > div.mod-pojctopen div.main-calendar div.event-int
 }
 
 
-
-
-
-
+/* DIV impersonator */
+.user-shadowing-bar {
+    font-weight: 700;
+    background: #D9534F;
+    color:#fff;
+    white-space: nowrap;
+    text-align: center;
+    vertical-align: baseline;
+    padding: 0.3em 0.6em 0.3em;
+}
+.user-shadowing-bar a{
+    color: #fff;
+}

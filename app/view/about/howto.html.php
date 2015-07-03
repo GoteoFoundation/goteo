@@ -20,17 +20,17 @@ jQuery(document).ready(function($) {
 
     <div id="sub-header">
         <div>
-            <h2><?php echo $this['description']; ?></h2>
+            <h2><?php echo $vars['description']; ?></h2>
         </div>
     </div>
 
-<?php if(isset($_SESSION['messages'])) { include __DIR__ . '/../header/message.html.php'; } ?>
+<?php if($_SESSION['messages']) { include __DIR__ . '/../header/message.html.php'; } ?>
 
     <div id="main">
 
         <div class="widget">
-            <h3 class="title"><?php echo $this['name']; ?></h3>
-            <?php echo $this['content']; ?>
+            <h3 class="title"><?php echo $vars['name']; ?></h3>
+            <?php echo $vars['content']; ?>
         </div>
 
     </div>

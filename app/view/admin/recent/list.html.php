@@ -2,8 +2,8 @@
 use Goteo\Library\Text,
     Goteo\Library\Feed;
 
-$feed = $this['feed'];
-$items = $this['items'];
+$feed = $vars['feed'];
+$items = $vars['items'];
 ?>
 <div class="widget feed">
     <script type="text/javascript">
@@ -26,7 +26,7 @@ $items = $this['items'];
 
         <p class="categories">
             <?php foreach (Feed::$admin_types as $id=>$cat) : ?>
-            <a href="/admin/recent/?feed=<?php echo $id ?>" <?php echo ($feed == $id) ? 'class="'.$cat['color'].'"': 'class="hov" rel="'.$cat['color'].'"' ?>><?php echo $cat['label'] ?></a>
+            <a href="/admin/recent?feed=<?php echo $id ?>" <?php echo ($feed == $id) ? 'class="'.$cat['color'].'"': 'class="hov" rel="'.$cat['color'].'"' ?>><?php echo $cat['label'] ?></a>
             <?php endforeach; ?>
         </p>
 

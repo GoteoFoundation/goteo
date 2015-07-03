@@ -8,13 +8,13 @@ $proj   = (isset($_GET['proj'])) ? $_GET['proj'] : null;
 
 
 $users = array();
-foreach ($this['users'] as $uI=>$uN) {
+foreach ($vars['users'] as $uI=>$uN) {
     $users[] = '{ value: "'.str_replace(array("'", '"'), '`', $uN).' ['.$uI.']", id: "'.$uI.'" }';
     if ($uI == $user) $preU = "$uN [$uI]";
 }
 
 $projs = array();
-foreach ($this['projects'] as $pI=>$pN) {
+foreach ($vars['projects'] as $pI=>$pN) {
     $projs[] = '{ value: "'.str_replace(array("'", '"'), '`', $pN).'", id: "'.$pI.'" }';
     if ($pI == $proj) $preP = "$pN [$pI]";
 }
@@ -29,25 +29,25 @@ foreach ($this['projects'] as $pI=>$pN) {
         <div class="ui-widget">
             <label for="busca-user">Buscador usuario:</label><br />
             <input type="text" id="busca-user" name="user_searcher" value="<?php echo $preU; ?>" style="width:500px;"/>
-        </div>        
-        
+        </div>
+
         <br />
-        
+
         <div class="ui-widget">
             <label for="busca-proj">Buscador proyecto: (solo proyectos en campaña)</label><br />
             <input type="text" id="busca-proj" name="proj_searcher" value="<?php echo $preP; ?>" style="width:500px;"/>
-        </div>        
-        
+        </div>
+
         <p>
             <label for="invest-amount">Importe:</label><br />
             <input type="text" id="invest-amount" name="amount" value="<?php echo $amount; ?>" />
         </p>
-        
+
         <p>
             <label for="invest-campaign">Convocatoria:</label><br />
             <select id="invest-campaign" name="campaign">
                 <option value="">Seleccionar la convocatoria que riega este aporte</option>
-            <?php foreach ($this['calls'] as $campaignId=>$campaignName) : ?>
+            <?php foreach ($vars['calls'] as $campaignId=>$campaignName) : ?>
                 <option value="<?php echo $campaignId; ?>"><?php echo substr($campaignName, 0, 100); ?></option>
             <?php endforeach; ?>
             </select>

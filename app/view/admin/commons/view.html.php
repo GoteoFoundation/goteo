@@ -2,8 +2,8 @@
 use Goteo\Core\View,
     Goteo\Library\Text;
 
-$project = $this['project'];
-$status = $this['statuses'];
+$project = $vars['project'];
+$status = $vars['statuses'];
 ?>
 <a class="button" href="/admin/commons">Volver a la lista</a>
 &nbsp;&nbsp;&nbsp;
@@ -15,6 +15,6 @@ $status = $this['statuses'];
 <br /><br />
 <div class="widget board">
     <h3><?php echo $project->name; ?> (<?php echo $status[$project->status]; ?>)</h3>
-    <?php echo View::get('project/edit/rewards/view_commons.html.php', $this); ?>
+    <?php echo View::get('project/edit/rewards/view_commons.html.php', $vars); ?>
 </div>
 <?php echo View::get('project/edit/rewards/commons.js.php'); ?>

@@ -2,8 +2,8 @@
 
 use Goteo\Library\Text;
 
-$data = $this['data'];
-$filters = $this['filters'];
+$data = $vars['data'];
+$filters = $vars['filters'];
 ?>
 <div class="widget board">
     <form id="filter-form" action="/admin/reports/top" method="get">
@@ -51,11 +51,11 @@ $filters = $this['filters'];
         <tbody>
             <?php foreach ($data as $row) : ?>
             <tr>
-                <td><a href="/admin/users/?id=<?php echo $row->id; ?>"><?php echo $row->name; ?></a></td>
+                <td><a href="/admin/users?id=<?php echo $row->id; ?>"><?php echo $row->name; ?></a></td>
                 <td><a href="/admin/users/manage/<?php echo $row->id; ?>"><?php echo $row->id; ?></a></td>
                 <td><a href="mailto:<?php echo $row->email; ?>"><?php echo $row->email; ?></a></td>
                 <td><?php echo $row->amount; ?></td>
-                <td><a href="/admin/accounts/?name=<?php echo $row->email; ?>"><?php echo $row->numproj; ?></a></td>
+                <td><a href="/admin/accounts?name=<?php echo $row->email; ?>"><?php echo $row->numproj; ?></a></td>
             </tr>
             <?php endforeach; ?>
         </tbody>

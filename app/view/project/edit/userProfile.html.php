@@ -4,15 +4,15 @@ use Goteo\Library\Text,
     Goteo\Library\SuperForm,
     Goteo\Core\View;
 
-$project = $this['project'];
-$user = $this['user'];
+$project = $vars['project'];
+$user = $vars['user'];
 
 $interests = array();
 
-$errors = $project->errors[$this['step']] ?: array();
-$okeys  = $project->okeys[$this['step']] ?: array();
+$errors = $project->errors[$vars['step']] ?: array();
+$okeys  = $project->okeys[$vars['step']] ?: array();
 
-foreach ($this['interests'] as $value => $label) {
+foreach ($vars['interests'] as $value => $label) {
     $interests[] =  array(
         'value'     => $value,
         'label'     => $label,
@@ -27,7 +27,7 @@ foreach ($user->webs as $web) {
     $ch = array();
 
     // a ver si es el que estamos editando o no
-    if (!empty($this["web-{$web->id}-edit"])) {
+    if (!empty($vars["web-{$web->id}-edit"])) {
 
         $user_webs["web-{$web->id}"] = array(
             'type'      => 'group',
@@ -84,7 +84,7 @@ $sfid = 'sf-project-profile';
 echo SuperForm::get(array(
     'id'            => $sfid,
     'action'        => '',
-    'level'         => $this['level'],
+    'level'         => $vars['level'],
     'method'        => 'post',
     'title'         => Text::get('profile-main-header'),
     'hint'          => Text::get('guide-project-user-information'),
@@ -154,7 +154,7 @@ echo SuperForm::get(array(
                     'type'  => 'html',
                     'class' => 'inline avatar-image',
                     'html'  => is_object($user->avatar) &&  $user->avatar->id != 'la_gota.png' ?
-                               $user->avatar . '<img src="' . SITE_URL . '/image/' . $user->avatar->id . '/128/128" alt="Avatar" /><button class="image-remove" type="submit" name="avatar-'.$user->avatar->hash.'-remove" title="Quitar imagen" value="remove">X</button>' :
+                               '<img src="' . SITE_URL . '/image/' . $user->avatar->id . '/128/128" alt="Avatar" /><button class="image-remove" type="submit" name="avatar-'.$user->avatar->hash.'-remove" title="Quitar imagen" value="remove">X</button>' :
                                ''
                 )
 
@@ -268,7 +268,7 @@ echo SuperForm::get(array(
                     'title' => Text::get('form-footer-errors_title'),
                     'view'  => new View('project/edit/errors.html.php', array(
                         'project'   => $project,
-                        'step'      => $this['step']
+                        'step'      => $vars['step']
                     ))
                 ),
                 'buttons'  => array(
@@ -276,7 +276,7 @@ echo SuperForm::get(array(
                     'children' => array(
                         'next' => array(
                             'type'  => 'submit',
-                            'name'  => 'view-step-'.$this['next'],
+                            'name'  => 'view-step-'.$vars['next'],
                             'label' => Text::get('form-next-button'),
                             'class' => 'next'
                         )

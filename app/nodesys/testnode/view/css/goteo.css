@@ -35,7 +35,7 @@ div#sub-header > div > h2 {
 }
 
 /* Main container */
-div#main {    
+div#main {
     width: 940px;
     margin: 10px auto;
     clear: both;
@@ -48,14 +48,14 @@ div#main {
 /**
  * Widgets
  */
- 
+
 div.widget {
     background-color: white;
     padding: 15px 20px;
-    overflow: hidden;    
+    overflow: hidden;
 }
 
- 
+
  div.widget .supertitle {
     font-size: 12px;
     font-weight: normal;

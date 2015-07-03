@@ -184,7 +184,7 @@ class Converter {
             $rates = $this->cache->retrieve($key);
         }
 
-        if($rates === false) {
+        if(empty($rates)) {
             $rates = $this->getData($base);
             // sets cache
             if($this->cache) $this->cache->store($key, $rates, $ttl);

@@ -5,16 +5,16 @@ use Goteo\Library\Text,
 
 $bodyClass = 'info';
 
-$call = $this['call'];
+$call = $vars['call'];
 
 include __DIR__ . '/../call/prologue.html.php';
 include __DIR__ . '/../call/header.html.php';
 ?>
 <div id="main">
-    <?php echo View::get('call/widget/title.html.php', $this); ?>
+    <?php echo View::get('call/widget/title.html.php', $vars); ?>
     <div id="banners-social">
-        <?php echo View::get('call/widget/banners.html.php', $this) ?>
-        <?php echo View::get('call/widget/social.html.php', $this) ?>
+        <?php echo View::get('call/widget/banners.html.php', $vars) ?>
+        <?php echo View::get('call/widget/social.html.php', $vars) ?>
     </div>
 
     <div id="info">
@@ -28,7 +28,7 @@ include __DIR__ . '/../call/header.html.php';
                 <?php endif; ?>
 
                 <?php if (($call->status > 3 ) && $call->num_projects > 0)
-                        echo View::get('call/widget/table.html.php', $this);
+                        echo View::get('call/widget/table.html.php', $vars);
                 ?>
 
                 <?php if (!empty($call->whom)) : // si hay contenido  ?>
@@ -58,12 +58,12 @@ include __DIR__ . '/../call/header.html.php';
         <?php endif; ?>
             </p>
         </div>
-        <?php echo View::get('call/side.html.php', $this); ?>
+        <?php echo View::get('call/side.html.php', $vars); ?>
     </div>
 
-    <?php echo View::get('call/widget/social-responsive.html.php', $this) ?>
+    <?php echo View::get('call/widget/social-responsive.html.php', $vars) ?>
 
-    <?php echo View::get('call/bottom.html.php', $this); ?>
+    <?php echo View::get('call/bottom.html.php', $vars); ?>
 </div>
 
 <?php

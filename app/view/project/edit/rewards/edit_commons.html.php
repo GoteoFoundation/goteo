@@ -3,12 +3,12 @@ use Goteo\Core\View,
     Goteo\Library\Text,
     Goteo\Library\NormalForm;
 
-$project = $this['project'];
-$reward = $this['reward'];
+$project = $vars['project'];
+$reward = $vars['reward'];
 
 $types = array();
 
-foreach ($this['stypes'] as $type) {
+foreach ($vars['stypes'] as $type) {
 
     $licenses = array();
 
@@ -83,8 +83,8 @@ foreach ($this['stypes'] as $type) {
 }
 
 ?>
-<form method="post" action="<?php echo $this['path']; ?>/edit/<?php echo $project->id; ?>?reward_id=<?php echo $reward->id; ?>" class="project">
-    <input type="hidden"  name="action" value="<?php echo $this['action']; ?>" />
+<form method="post" action="<?php echo $vars['path']; ?>/edit/<?php echo $project->id; ?>?reward_id=<?php echo $reward->id; ?>" class="project">
+    <input type="hidden"  name="action" value="<?php echo $vars['action']; ?>" />
 
 <?php
 $sfid = 'sf-project-rewards';

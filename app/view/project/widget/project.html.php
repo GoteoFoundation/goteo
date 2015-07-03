@@ -8,10 +8,10 @@ use Goteo\Core\View,
 
 $URL = \SITE_URL;
 
-$project = $this['project'];
-$level = $this['level'] ?: 3;
+$project = $vars['project'];
+$level = $vars['level'] ?: 3;
 
-if ($this['global'] === true) {
+if ($vars['global'] === true) {
     $blank = ' target="_blank"';
     $url = $URL;
 } else {
@@ -19,12 +19,12 @@ if ($this['global'] === true) {
     $url = '';
 }
 
-//si llega $this['investor'] sacamos el total aportado para poner en "mi aporte"
-if (isset($this['investor']) && is_object($this['investor'])) {
-    $investor = $this['investor'];
+//si llega $vars['investor'] sacamos el total aportado para poner en "mi aporte"
+if (isset($vars['investor']) && is_object($vars['investor'])) {
+    $investor = $vars['investor'];
     $invest = Invest::supported($investor->id, $project->id);
     // si no ha aportado, que no ponga el avatar
-    if (empty($invest->total)) unset($this['investor']);
+    if (empty($invest->total)) unset($vars['investor']);
 }
 
 // veamos si tiene el grifo cerrado mientras continua en campaña
@@ -38,10 +38,10 @@ if ($project->status == 3 && $project->noinvest) {
 }
 ?>
 
-<div class="widget project activable<?php if (isset($this['balloon'])) echo ' balloon' ?>">
+<div class="widget project activable<?php if (isset($vars['balloon'])) echo ' balloon' ?>">
 	<a href="<?php echo $url ?>/project/<?php echo $project->id ?>" class="expand"<?php echo $blank; ?>></a>
-    <?php if (isset($this['balloon'])): ?>
-    <div class="balloon"><?php echo $this['balloon'] ?></div>
+    <?php if (isset($vars['balloon'])): ?>
+    <div class="balloon"><?php echo $vars['balloon'] ?></div>
     <?php endif ?>
 
     <div class="image">
@@ -68,7 +68,7 @@ if ($project->status == 3 && $project->noinvest) {
                 break;
         } ?>
 
-        <?php if (isset($this['investor'])) : ?>
+        <?php if (isset($vars['investor'])) : ?>
             <div class="investor"><img src="<?php echo $investor->avatar->getLink(34, 34, 1) ?>" alt="<?php echo $investor->name ?>" /><div class="invest"><?php echo Text::get('proj-widget-my_invest'); ?><br /><span class="amount"><?php echo \amount_format($invest->total); ?></span></div></div>
         <?php endif; ?>
 
@@ -96,12 +96,12 @@ if ($project->status == 3 && $project->noinvest) {
         <h<?php echo $level + 1 ?>><?php echo Text::get('project-rewards-header'); ?></h<?php echo $level + 1?>>
 
         <ul>
-           <?php foreach ($project->rewards as $reward): ?>
+           <?php if($project->rewards): foreach ($project->rewards as $reward): ?>
             <li class="<?php echo $reward->icon ?> activable">
                 <?php $link_param= ($reward->type == 'individual') ? "/invest?amount=".\amount_format($reward->amount, 0, true) : "/rewards#social-rewards"; ?>
                 <a href="<?php echo $url ?>/project/<?php echo $project->id.$link_param ?>" title="<?php echo htmlspecialchars("{$reward->icon_name}: {$reward->reward}"); if ($reward->type == 'individual') echo ' '.\amount_format($reward->amount); ?>" class="tipsy"<?php echo $blank; ?>><?php echo htmlspecialchars($reward->reward) ?></a>
             </li>
-           <?php endforeach ?>
+           <?php endforeach; endif ?>
         </ul>
 
 

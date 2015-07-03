@@ -5,9 +5,10 @@ namespace Goteo\Controller {
     use Goteo\Core\ACL,
         Goteo\Core\Redirection,
         Goteo\Core\View,
-        Goteo\Application\Session,
         Goteo\Model,
-        Goteo\Library\Message,
+        Goteo\Application\Session,
+        Goteo\Application\Lang,
+        Goteo\Application\Message,
         Goteo\Library\Feed,
         Goteo\Library\Page,
         Goteo\Library\Text;
@@ -28,6 +29,7 @@ namespace Goteo\Controller {
         public function activity($option = 'summary', $action = 'view') {
 
             $user = Session::getUser();
+
             $errors = array();
 
             $viewData = array(
@@ -40,7 +42,7 @@ namespace Goteo\Controller {
             // portada
             if ($option == 'summary') {
                 $page = Page::get('dashboard');
-                $viewData['message'] = \str_replace('%USER_NAME%', $_SESSION['user']->name, $page->content);
+                $viewData['message'] = \str_replace('%USER_NAME%', Session::getUser()->name, $page->content);
                 $viewData['lists']   = Dashboard\Activity::projList($user);
                 $viewData['status']  = Model\Project::status();
                 $viewData['pool'] = Dashboard\Activity::pool($user->id, $action);
@@ -73,19 +75,19 @@ namespace Goteo\Controller {
             if (in_array($option, array('admin', 'review', 'translate'))) {
 
                 // si tiene algún rol de admin
-                if ( $option == 'admin' &&  ( isset($_SESSION['user']->roles['admin']) || isset($_SESSION['user']->roles['superadmin']) ) )
+                if ( $option == 'admin' &&  ( isset(Session::getUser()->roles['admin']) || isset(Session::getUser()->roles['superadmin']) ) )
                     throw new Redirection('/'.$option, Redirection::TEMPORARY);
                 else
                     throw new Redirection('/dashboard', Redirection::TEMPORARY);
 
                 // si tiene rol de revisor
-                if ( $option == 'review' && isset($_SESSION['user']->roles['checker']) )
+                if ( $option == 'review' && isset(Session::getUser()->roles['checker']) )
                     throw new Redirection('/'.$option, Redirection::TEMPORARY);
                 else
                     throw new Redirection('/dashboard', Redirection::TEMPORARY);
 
                 // si tiene rol de traductor
-                if ( $option == 'translate' &&  isset($_SESSION['user']->roles['admin']) || isset($_SESSION['user']->roles['superadmin']) || isset($_SESSION['user']->roles['translator']) )
+                if ( $option == 'translate' &&  isset(Session::getUser()->roles['admin']) || isset(Session::getUser()->roles['superadmin']) || isset(Session::getUser()->roles['translator']) )
                     throw new Redirection('/'.$option, Redirection::TEMPORARY);
                 else
                     throw new Redirection('/dashboard', Redirection::TEMPORARY);
@@ -213,7 +215,7 @@ namespace Goteo\Controller {
 
                     //Si no hay un idioma preferido para notificaciones
                     if(!$viewData['preferences']->comlang)
-                        $viewData['preferences']->comlang=LANG;
+                        $viewData['preferences']->comlang=Lang::current();
 
                     //Si no hay una moneda preferida usamos la de sesión
                     if(!$viewData['preferences']->currency)
@@ -241,7 +243,7 @@ namespace Goteo\Controller {
          */
         public function projects($option = 'summary', $action = 'list', $id = null) {
 
-            $user = $_SESSION['user'];
+            $user = Session::getUser();
 
             $errors = array();
 
@@ -272,7 +274,7 @@ namespace Goteo\Controller {
 
                 case 'commons':
                     if ($project->status != 4 && empty($project->social_rewards)) {
-                        Message::Error('Este proyecto no tiene retornos colectivos');
+                        Message::error('Este proyecto no tiene retornos colectivos');
                         throw new Redirection('/dashboard/projects/');
                     }
 
@@ -414,7 +416,7 @@ namespace Goteo\Controller {
                                 if ($reward->save($errors)) {
                                     throw new Redirection('/dashboard/projects/commons');
                                 } else {
-                                    Message::Error(implode('<br />', $errors));
+                                    Message::error(implode('<br />', $errors));
                                 }
                             }
 
@@ -435,7 +437,7 @@ namespace Goteo\Controller {
                                 }
 
                                 if (!$reward->remove($errors)) {
-                                    Message::Error(implode('<br />', $errors));
+                                    Message::error(implode('<br />', $errors));
                                 }
                             }
                             throw new Redirection('/dashboard/projects/commons');
@@ -548,11 +550,11 @@ namespace Goteo\Controller {
 
         public function translates($option = 'overview', $action = 'list', $id = null) {
 
-            $user = $_SESSION['user'];
+            $user = Session::getUser();
 
             $errors = array();
 
-            $langs = \Goteo\Library\Lang::getAll();
+            $langs = \Goteo\Application\Lang::listAll('object', false);
 
             if ($action == 'lang' && !empty($_POST['lang'])) {
                 $_SESSION['translate_lang'] = $_POST['lang'];
@@ -617,13 +619,13 @@ namespace Goteo\Controller {
                         }
 
                     } catch (\Goteo\Core\Error $e) {
-                        Message::Error('Ha fallado al cargar los datos del proyecto');
+                        Message::error('Ha fallado al cargar los datos del proyecto');
                         $_SESSION['translate_type'] = 'profile';
                         throw new Redirection('/dashboard/translates');
                     }
 
                     if (!$project instanceof Model\Project || !$project_original instanceof Model\Project) {
-                        Message::Error('Ha fallado al cargar los datos del proyecto');
+                        Message::error('Ha fallado al cargar los datos del proyecto');
                         $_SESSION['translate_type'] = 'profile';
                         throw new Redirection('/dashboard/translates');
                     }
@@ -672,7 +674,7 @@ namespace Goteo\Controller {
                                     $project->subtitle_lang = $_POST['subtitle'];
                                     $project->lang_lang = $_SESSION['translate_lang'];
                                     $project->saveLang($errors);
-                                    
+
                                     // redirect para que cargue el registro traducido
                                     throw new Redirection('/dashboard/translates/'.$option);
                                 }
@@ -843,13 +845,13 @@ namespace Goteo\Controller {
                         }
 
                     } catch (\Goteo\Core\Error $e) {
-                        Message::Error('Ha fallado al cargar los datos de la convocatoria');
+                        Message::error('Ha fallado al cargar los datos de la convocatoria');
                         $_SESSION['translate_type'] = 'profile';
                         throw new Redirection('/dashboard/translates');
                     }
 
                     if (!$call instanceof Model\Call || !$call_original instanceof Model\Call) {
-                        Message::Error('Ha fallado al cargar los datos de la convocatoria');
+                        Message::error('Ha fallado al cargar los datos de la convocatoria');
                         $_SESSION['translate_type'] = 'profile';
                         throw new Redirection('/dashboard/translates');
                     }
@@ -956,13 +958,13 @@ namespace Goteo\Controller {
                         }
 
                     } catch (\Goteo\Core\Error $e) {
-                        Message::Error('Ha fallado al cargar los datos del nodo');
+                        Message::error('Ha fallado al cargar los datos del nodo');
                         $_SESSION['translate_type'] = 'profile';
                         throw new Redirection('/dashboard/translates');
                     }
 
                     if (!$node instanceof Model\Node || !$node_original instanceof Model\Node) {
-                        Message::Error('Ha fallado al cargar los datos del nodo');
+                        Message::error('Ha fallado al cargar los datos del nodo');
                         $_SESSION['translate_type'] = 'profile';
                         throw new Redirection('/dashboard/translates');
                     }
@@ -999,7 +1001,7 @@ namespace Goteo\Controller {
             }
 
             if (!empty($errors)) {
-                Message::Error('HA HABIDO ERRORES: <br />' . implode('<br />', $errors));
+                Message::error('HA HABIDO ERRORES: <br />' . implode('<br />', $errors));
             }
 
             return new View('dashboard/index.html.php', $viewData);
@@ -1014,7 +1016,7 @@ namespace Goteo\Controller {
 
         public function calls($option = 'summary', $action = 'list', $id = null) {
 
-            $user = $_SESSION['user'];
+            $user = Session::getUser();
 
             $errors = array();
 
@@ -1043,7 +1045,7 @@ namespace Goteo\Controller {
                             $_SESSION['assign_mode'] = true;
                             throw new Redirection('/discover/call');
                         } else {
-                            Message::Error('No se pueden asignar proyectos ahora');
+                            Message::error('No se pueden asignar proyectos ahora');
                             unset($_SESSION['assign_mode']);
                         }
                     } elseif ($action == 'assign_mode' && $id == 'off') {
@@ -1058,13 +1060,13 @@ namespace Goteo\Controller {
                         $registry->id = $id;
                         $registry->call = $call->id;
                         if ($registry->remove($errors)) {
-                            Message::Error('El proyecto se ha quitado correctamente de la convocatoria');
+                            Message::error('El proyecto se ha quitado correctamente de la convocatoria');
                             $call->projects = Model\Call\Project::get($call->id);
                         } else {
-                            Message::Error('Falló al quitar el proyecto: ' . implode('<br />', $errors));
+                            Message::error('Falló al quitar el proyecto: ' . implode('<br />', $errors));
                         }
                     } elseif ($action == 'unassign') {
-                        Message::Error('No se puede quitar este proyecto ahora');
+                        Message::error('No se puede quitar este proyecto ahora');
                     }
                     */
 
@@ -1119,7 +1121,7 @@ namespace Goteo\Controller {
             );
 
             // si es un convocador
-            if (isset($_SESSION['user']->roles['caller'])) {
+            if (isset(Session::getUser()->roles['caller'])) {
                 $menu['calls'] = array(
                     'label' => Text::get('dashboard-menu-calls'),
                     'options' => array(
@@ -1173,15 +1175,15 @@ namespace Goteo\Controller {
             }
 
             // si tiene algún rol de admin
-            if ( isset($_SESSION['user']->roles['admin']) || isset($_SESSION['user']->roles['superadmin']) )
+            if ( isset(Session::getUser()->roles['admin']) || isset(Session::getUser()->roles['superadmin']) )
                 $menu['activity']['options']['admin'] = Text::get('dashboard-menu-admin_board');
 
             // si tiene rol de revisor
-            if ( isset($_SESSION['user']->roles['checker']) )
+            if ( isset(Session::getUser()->roles['checker']) )
                 $menu['activity']['options']['review'] = Text::get('dashboard-menu-review_board');
 
             // si tiene rol de traductor
-            if ( isset($_SESSION['user']->roles['admin']) || isset($_SESSION['user']->roles['translator']) )
+            if ( isset(Session::getUser()->roles['admin']) || isset(Session::getUser()->roles['translator']) )
                 $menu['activity']['options']['translate'] = Text::get('dashboard-menu-translate_board');
 
             return $menu;

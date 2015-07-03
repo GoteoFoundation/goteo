@@ -6,6 +6,8 @@ namespace Goteo\Model {
         Goteo\Library\Feed,
         Goteo\Model\User,
         Goteo\Model\Image;
+    use Goteo\Application\Lang;
+    use Goteo\Application\Config;
 
     class Message extends \Goteo\Core\Model {
 
@@ -81,11 +83,11 @@ namespace Goteo\Model {
         /*
          * Lista de hilos de un proyecto
          */
-        public static function getAll ($project, $lang = \LANG) {
-
+        public static function getAll ($project, $lang = null) {
+            if(empty($lang)) $lang = Lang::current();
             $messages = array();
 
-            if(self::default_lang($lang)=='es') {
+            if(self::default_lang($lang) === Config::get('lang')) {
                 $different_select=" IFNULL(message_lang.message, message.message) as message";
                 }
             else {
@@ -265,16 +267,13 @@ namespace Goteo\Model {
         /*
          * Para que el admin pueda borrar mensajes que no aporten nada
          */
-        public function delete ($id = null) {
-            if(empty($id) && $this->id) {
-                $id = $this->id;
-                $m = $this;
-            }
+        public static function delete ($id, &$errors = array()) {
+
             if(empty($id)) {
                 // throw new Exception("Delete error: ID not defined!");
                 return false;
             }
-            if(empty($m)) $m = self::get($id);
+            $m = self::get($id);
 
             try {
 
@@ -288,7 +287,7 @@ namespace Goteo\Model {
                 if (empty($m->thread) && is_array($m->responses)) {
                     foreach ($m->responses as $response) {
                         if ($response instanceof Message) {
-                            $response->delete();
+                            $response->dbDelete();
                         }
                     }
                 }

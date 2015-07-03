@@ -6,9 +6,9 @@ use Goteo\Core\View,
     Goteo\Util\Pagination\Paginated,
     Goteo\Util\Pagination\DoubleBarLayout;
 
-$project = $this['project'];
+$project = $vars['project'];
 
-$level = (int) $this['level'] ?: 3;
+$level = (int) $vars['level'] ?: 3;
 
 $reached    = \amount_format($project->invested);
 

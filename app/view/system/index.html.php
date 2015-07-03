@@ -14,7 +14,7 @@ include __DIR__ . '/../prologue.html.php';
             <div class="breadcrumbs">System</div>
         </div>
 
-<?php if(isset($_SESSION['messages'])) { include __DIR__ . '/../header/message.html.php'; } ?>
+<?php if($_SESSION['messages']) { include __DIR__ . '/../header/message.html.php'; } ?>
 
         <div id="main">
 
@@ -30,7 +30,7 @@ include __DIR__ . '/../prologue.html.php';
             </div>
 
             <div class="widget">
-                <?php foreach ($this['data'] as $item) {
+                <?php foreach ($vars['data'] as $item) {
                     echo \trace($item);
                 } ?>
             </div>

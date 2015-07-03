@@ -1,17 +1,20 @@
 <?php
-use Goteo\Library\Lang;
+use Goteo\Application\Lang;
 
-$langs = Lang::getAll(true);
+
 // piñonaco para activar portugués en la convocatoria de extremadura
+// TODO: por configuracion
 if (isset($call) && $call->id == 'cofinancia-extremadura')
-    $langs['pt'] = (object) array('id'=>'pt', 'short'=>'PORT');
+    Lang::setPublic('pt');
+
+$langs = Lang::listAll('short');
 ?>
 
     <ul class="lang">
-        <?php foreach ($langs as $lang): ?>
-            <?php if ($lang->id == LANG) continue; ?>
+        <?php foreach ($langs as $id => $lang): ?>
+            <?php if (Lang::isActive($id)) continue; ?>
             <li >
-            <a href="?lang=<?php echo $lang->id ?>"><?php echo htmlspecialchars($lang->short) ?></a>
+            <a href="?lang=<?php echo $id ?>"><?php echo htmlspecialchars($lang) ?></a>
             </li>
         <?php endforeach ?>
     </ul>

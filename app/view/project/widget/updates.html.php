@@ -8,27 +8,27 @@ use Goteo\Library\Text,
 
 $URL = \SITE_URL;
 
-$project = $this['project'];
-$blog    = $this['blog'];
+$project = $vars['project'];
+$blog    = $vars['blog'];
 
-if (empty($this['post'])) {
+if (empty($vars['post'])) {
     $posts = $blog->posts;
     $action = 'list';
-    $this['show'] = 'list';
+    $vars['show'] = 'list';
 } else {
-    $post = $this['post'];
+    $post = $vars['post'];
     if (!in_array($post, array_keys($blog->posts))) {
         $posts = $blog->posts;
         $action = 'list';
-        $this['show'] = 'list';
+        $vars['show'] = 'list';
     } else {
         $post = Post::get($post, LANG);
         $action = 'post';
-        $this['show'] = 'post';
+        $vars['show'] = 'post';
     }
 }
 
-if ($this['show'] == 'list') {
+if ($vars['show'] == 'list') {
     // paginacion
     $pagedResults = new Paginated($posts, 7, isset($_GET['page']) ? $_GET['page'] : 1);
 }
@@ -36,7 +36,7 @@ if ($this['show'] == 'list') {
 // segun lo que tengamos que mostrar :  lista o entrada
 // uso la libreria blog para sacar los datos adecuados para esta vista
 
-$level = (int) $this['level'] ?: 3;
+$level = (int) $vars['level'] ?: 3;
 ?>
 <div class="project-updates">
     <!-- una entrada -->

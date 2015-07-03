@@ -4,9 +4,9 @@ use Goteo\Library\Text,
     Goteo\Library\SuperForm,
     Goteo\Core\View;
 
-$user   = $this['user'];
-$errors = $this['errors'];
-$this['level'] = 3;
+$user   = $vars['user'];
+$errors = $vars['errors'];
+$vars['level'] = 3;
 
 /*
 if (!empty($user->avatar) && is_object($user->avatar))
@@ -20,7 +20,7 @@ if (!empty($user->avatar) && is_object($user->avatar))
 
 $interests = array();
 
-foreach ($this['interests'] as $value => $label) {
+foreach ($vars['interests'] as $value => $label) {
     $interests[] =  array(
         'value'     => $value,
         'label'     => $label,
@@ -35,7 +35,7 @@ foreach ($user->webs as $web) {
     $ch = array();
 
     // a ver si es el que estamos editando o no
-    if (!empty($this["web-{$web->id}-edit"])) {
+    if (!empty($vars["web-{$web->id}-edit"])) {
 
         $user_webs["web-{$web->id}"] = array(
             'type'      => 'group',
@@ -100,7 +100,7 @@ $superarray = array(
 
     'id'            => $sfid,
     'action'        => '',
-    'level'         => $this['level'],
+    'level'         => $vars['level'],
     'method'        => 'post',
     'hint'          => Text::get('guide-dashboard-user-profile'),
     'footer'        => array(
@@ -162,7 +162,7 @@ $superarray = array(
                     'type'  => 'html',
                     'class' => 'inline avatar-image',
                     'html'  => is_object($user->avatar) &&  $user->avatar->id != 1 ?
-                               $user->avatar . '<img src="' . SITE_URL . '/image/' . $user->avatar->id . '/128/128/1" alt="Avatar" /><button class="image-remove" type="submit" name="avatar-'.$user->avatar->hash.'-remove" title="Quitar imagen" value="remove">X</button>' :
+                               '<img src="/img/small/' . $user->avatar->id . '" alt="Avatar" /><button class="image-remove" type="submit" name="avatar-'.$user->avatar->hash.'-remove" title="Quitar imagen" value="remove">X</button>' :
                                ''
                 )
 
@@ -174,7 +174,7 @@ $superarray = array(
 // imagen de colaborador si es usuario vip
 if (isset($user->roles['vip'])) {
 
-    $vip = $this['vip'];
+    $vip = $vars['vip'];
 
     $superarray['elements']['vip_image'] = array(
             'type'      => 'group',
@@ -196,7 +196,7 @@ if (isset($user->roles['vip'])) {
                     'type'  => 'html',
                     'class' => 'inline avatar-image',
                     'html'  => is_object($vip->image) ?
-                               $vip->image . '<img src="' . SITE_URL . '/image/' . $vip->image->id . '/112/74/1" alt="Avatar" /><button class="image-remove" type="submit" name="vip_image-'.$vip->image->hash.'-remove" title="Quitar imagen" value="remove">X</button>' :
+                               '<img src="/img/112x24x1/' . $vip->image->id . '" alt="Avatar" /><button class="image-remove" type="submit" name="vip_image-'.$vip->image->hash.'-remove" title="Quitar imagen" value="remove">X</button>' :
                                ''
                 )
 

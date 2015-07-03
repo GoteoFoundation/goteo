@@ -128,7 +128,7 @@ namespace Goteo\Model\Call {
                 if ($image->save($errors)) {
                     $this->image = $image->id;
                 } else {
-                    \Goteo\Library\Message::Error(Text::get('image-upload-fail') . implode(', ', $errors));
+                    \Goteo\Application\Message::error(Text::get('image-upload-fail') . implode(', ', $errors));
                     $this->image = '';
                 }
             } elseif ($this->image instanceof Image) {
@@ -163,19 +163,6 @@ namespace Goteo\Model\Call {
                 $errors[] = "HA FALLADO!!! " . $e->getMessage();
                 return false;
             }
-        }
-
-        /**
-         * Static compatible version of parent delete()
-         * @param  [type] $id [description]
-         * @return [type]     [description]
-         */
-        public function delete($id = null) {
-            if(empty($id)) return parent::delete();
-
-            if(!($ob = Sponsor::get($id))) return false;
-            return $ob->delete();
-
         }
 
         /*

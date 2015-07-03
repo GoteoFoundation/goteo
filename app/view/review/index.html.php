@@ -22,36 +22,36 @@ include __DIR__ . '/../header.html.php';
         <div id="sub-header">
             <div>
                 <h2>
-                    <?php echo 'Mi panel de revisor / ' . $this['menu'][$this['section']]['label']; ?></h2>
+                    <?php echo 'Mi panel de revisor / ' . $vars['menu'][$vars['section']]['label']; ?></h2>
             </div>
         </div>
 
-        <?php  echo View::get('review/menu.html.php', $this) ?>
+        <?php  echo View::get('review/menu.html.php', $vars) ?>
 
-<?php if(isset($_SESSION['messages'])) { include __DIR__ . '/../header/message.html.php'; } ?>
+<?php if($_SESSION['messages']) { include __DIR__ . '/../header/message.html.php'; } ?>
 
         <div id="main">
 
 
-            <?php if (!empty($this['message'])) : ?>
+            <?php if (!empty($vars['message'])) : ?>
                 <div class="widget">
-                    <?php if (empty($this['section']) && empty($this['option'])) : ?>
+                    <?php if (empty($vars['section']) && empty($vars['option'])) : ?>
                         <h2 class="title">Bienvenid@</h2>
                     <?php endif; ?>
-                    <p><?php echo $this['message']; ?></p>
+                    <p><?php echo $vars['message']; ?></p>
                 </div>
             <?php endif; ?>
 
-            <?php if (!empty($this['errors'])) {
-                echo implode(',',$this['errors']);
+            <?php if (!empty($vars['errors'])) {
+                echo implode(',',$vars['errors']);
             } ?>
 
-            <?php if (!empty($this['success'])) {
-                echo implode(',',$this['success']);
+            <?php if (!empty($vars['success'])) {
+                echo implode(',',$vars['success']);
             } ?>
 
-            <?php if (!empty($this['section']) && !empty($this['option'])) {
-                echo View::get('review/'.$this['section'].'/'.$this['option'].'.html.php', $this);
+            <?php if (!empty($vars['section']) && !empty($vars['option'])) {
+                echo View::get('review/'.$vars['section'].'/'.$vars['option'].'.html.php', $vars);
             } ?>
 
         </div>

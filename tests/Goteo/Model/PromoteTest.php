@@ -3,11 +3,14 @@
 
 namespace Goteo\Model\Tests;
 
+use Goteo\TestCase;
 use Goteo\Model\Promote;
+use Goteo\Model\User;
+use Goteo\Model\Project;
 
-class PromoteTest extends \PHPUnit_Framework_TestCase {
+class PromoteTest extends TestCase {
 
-    private static $data = array('project' => 'test', 'node' => 'test', 'title' => 'test title', 'description' => 'test description', 'order' => 0, 'active' => 0);
+    private static $data = array('title' => 'test title', 'description' => 'test description', 'order' => 0, 'active' => 0);
 
     public function testInstance() {
         \Goteo\Core\DB::cache(false);
@@ -25,9 +28,32 @@ class PromoteTest extends \PHPUnit_Framework_TestCase {
     public function testValidate($ob) {
         $this->assertFalse($ob->validate());
         $this->assertFalse($ob->save());
+        return $ob;
     }
 
-    public function testCreate() {
+    /**
+     * @depends  testValidate
+     */
+    public function testSavePromoteNonProject($ob) {
+        delete_test_project();
+        delete_test_user();
+        delete_test_node();
+        self::$data['node'] = get_test_node()->id;
+        $ob = new Promote(self::$data);
+        $this->assertFalse($ob->save());
+    }
+
+    public function testCreateProject() {
+        $project = get_test_project();
+        $this->assertInstanceOf('\Goteo\Model\Project', $project);
+        self::$data['project'] = $project->id;
+        return $project;
+    }
+
+    /**
+     * @depends testCreateProject
+     */
+    public function testCreate($project) {
         $ob = new Promote(self::$data);
         $this->assertTrue($ob->validate($errors), print_r($errors, 1));
         $this->assertTrue($ob->save($errors), print_r($errors, 1));
@@ -39,7 +65,7 @@ class PromoteTest extends \PHPUnit_Framework_TestCase {
             $this->assertEquals($ob->$key, $val);
         }
 
-        $this->assertTrue($ob->delete());
+        $this->assertTrue($ob->dbDelete());
 
         //save and delete statically
         $this->assertTrue($ob->save($errors), print_r($errors, 1));
@@ -54,5 +80,13 @@ class PromoteTest extends \PHPUnit_Framework_TestCase {
         $ob = Promote::get($ob->id);
         $this->assertFalse($ob);
         $this->assertFalse(Promote::delete($ob->id));
+    }
+    /**
+     * Some cleanup
+     */
+    static function tearDownAfterClass() {
+        delete_test_project();
+        delete_test_user();
+        delete_test_node();
     }
 }

@@ -6,9 +6,10 @@ namespace Goteo\Controller\Translate {
         Goteo\Core\Redirection,
         Goteo\Model,
         Goteo\Library\Feed,
-        Goteo\Library\Message,
+        Goteo\Application\Message,
+        Goteo\Application\Session,
         Goteo\Library\Text,
-        Goteo\Library\Lang;
+        Goteo\Application\Lang;
 
     class Texts
     {
@@ -50,7 +51,7 @@ namespace Goteo\Controller\Translate {
                     $log = new Feed();
                     $log->populate('texto traducido (traductor)', '/translate/texts',
                         \vsprintf('El traductor %s ha %s el texto %s al %s', array(
-                            Feed::item('user', $_SESSION['user']->name, $_SESSION['user']->id),
+                            Feed::item('user', Session::getUser()->name, Session::getUserId()),
                             Feed::item('relevant', 'Traducido'),
                             Feed::item('blog', $id),
                             Feed::item('relevant', Lang::get($_POST['lang'])->name)
@@ -59,16 +60,16 @@ namespace Goteo\Controller\Translate {
                     unset($log);
                     */
 
-                    Message::Info('Texto <strong>' . $id . '</strong> traducido correctamente al <strong>' . Lang::get($_POST['lang'])->name . '</strong>');
+                    Message::info('Texto <strong>' . $id . '</strong> traducido correctamente al <strong>' . Lang::get($_POST['lang'])->name . '</strong>');
 
                     throw new Redirection("/translate/texts/$filter&page=" . $_GET['page']);
                 } else {
                     // Evento Feed
                     $log = new Feed();
-                    $log->setTarget($_SESSION['user']->id, 'user');
+                    $log->setTarget(Session::getUserId(), 'user');
                     $log->populate('texto traducido (traductor)', '/translate/texts',
                         \vsprintf('Al traductor %s  le ha %s el texto %s al %s', array(
-                            Feed::item('user', $_SESSION['user']->name, $_SESSION['user']->id),
+                            Feed::item('user', Session::getUser()->name, Session::getUserId()),
                             Feed::item('relevant', 'Fallado al traducir'),
                             Feed::item('blog', $id),
                             Feed::item('relevant', Lang::get($_POST['lang'])->name)
@@ -76,7 +77,7 @@ namespace Goteo\Controller\Translate {
                     $log->doAdmin('admin');
                     unset($log);
 
-                    Message::Error('Ha habido algun ERROR al traducir el Texto <strong>' . $id . '</strong> al <strong>' . Lang::get($_POST['lang'])->name . '</strong><br />' . implode('<br />', $errors));
+                    Message::error('Ha habido algun ERROR al traducir el Texto <strong>' . $id . '</strong> al <strong>' . Lang::get($_POST['lang'])->name . '</strong><br />' . implode('<br />', $errors));
                 }
             }
 

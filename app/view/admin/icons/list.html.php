@@ -3,14 +3,14 @@ use Goteo\Library\Text,
     Goteo\Core\ACL;
 
 $translator = ( isset($_SESSION['user']->roles['translator']) ) ? true : false;
-$filters = $this['filters'];
+$filters = $vars['filters'];
 ?>
 <div class="widget board">
     <form id="groupfilter-form" action="/admin/icons" method="get">
         <label for="group-filter">Mostrar los tipos para:</label>
         <select id="group-filter" name="group" onchange="document.getElementById('groupfilter-form').submit();">
             <option value="">Todo</option>
-        <?php foreach ($this['groups'] as $groupId=>$groupName) : ?>
+        <?php foreach ($vars['groups'] as $groupId=>$groupName) : ?>
             <option value="<?php echo $groupId; ?>"<?php if ($filters['group'] == $groupId) echo ' selected="selected"';?>><?php echo $groupName; ?></option>
         <?php endforeach; ?>
         </select>
@@ -18,7 +18,7 @@ $filters = $this['filters'];
 </div>
 
 <div class="widget board">
-    <?php if (!empty($this['icons'])) : ?>
+    <?php if (!empty($vars['icons'])) : ?>
     <table>
         <thead>
             <tr>
@@ -32,12 +32,12 @@ $filters = $this['filters'];
         </thead>
 
         <tbody>
-            <?php foreach ($this['icons'] as $icon) : ?>
+            <?php foreach ($vars['icons'] as $icon) : ?>
             <tr>
                 <td><a href="/admin/icons/edit/<?php echo $icon->id; ?>">[Editar]</a></td>
                 <td><?php echo $icon->name; ?></td>
                 <td><?php echo $icon->description; ?></td>
-                <td><?php echo !empty($icon->group) ? $this['groups'][$icon->group] : 'Ambas'; ?></td>
+                <td><?php echo !empty($icon->group) ? $vars['groups'][$icon->group] : 'Ambas'; ?></td>
                 <?php if ($translator) : ?>
                 <td><a href="/translate/icon/edit/<?php echo $icon->id; ?>" >[Traducir]</a></td>
                 <?php endif; ?>

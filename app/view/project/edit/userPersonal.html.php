@@ -4,10 +4,10 @@ use Goteo\Library\Text,
     Goteo\Library\SuperForm,
     Goteo\Core\View;
 
-$project = $this['project'];
-$errors = $project->errors[$this['step']] ?: array();
-$okeys  = $project->okeys[$this['step']] ?: array();
-$account = $this['account'];
+$project = $vars['project'];
+$errors = $project->errors[$vars['step']] ?: array();
+$okeys  = $project->okeys[$vars['step']] ?: array();
+$account = $vars['account'];
 
 // esto lo hago para que proyectos en convocatoria no les salga para poner cuenta paypal
 $campos_cuentas  = array();
@@ -42,7 +42,7 @@ $campos_cuentas['bank'] = array(
 
 echo SuperForm::get(array(
 
-    'level'         => $this['level'],
+    'level'         => $vars['level'],
     'method'        => 'post',
     'title'         => Text::get('personal-main-header'),
     'hint'          => Text::get('guide-project-contract-information'),
@@ -141,91 +141,6 @@ echo SuperForm::get(array(
             'children'  => $campos_cuentas
         ),
 
-        /* Radio de domicilio postal igual o diferente
-         * Aligerando superform
-        'post_address-radioset' => array(
-            'type'      => 'group',
-            'class'     => 'inline',
-            'title'     => Text::get('personal-field-post_address'),
-            'hint'      => Text::get('tooltip-project-post_address'),
-            'children'  => array(
-                'post_address-radio-same' =>  array(
-                    'name'  => 'secondary_address',
-                    'value' => false,
-                    'type'  => 'radio',
-                    'class' => 'inline',
-                    'label' => Text::get('personal-field-post_address-same'),
-                    'id'    => 'post_address-radio-same',
-                    'checked' => !$project->secondary_address ? true : false,
-                    'children' => array(
-                        // Children vacio si es igual
-                        'post_address-same' => array(
-                            'type' => 'hidden',
-                            'name' => "post_address-same",
-                            'value' => 'same'
-                        ),
-                    )
-                ),
-                'post_address-radio-different' =>  array(
-                    'name'  => 'secondary_address',
-                    'value' => true,
-                    'type'  => 'radio',
-                    'class' => 'inline',
-                    'label' => Text::get('personal-field-post_address-different'),
-                    'id'    => 'post_address-radio-different',
-                    'checked' => $project->secondary_address ? true : false,
-                    'children' => array(
-                        // Domicilio postal (a desplegar si es diferente)
-                        'post_address' => array(
-                            'type'      => 'textbox',
-                            'class'     => 'inline',
-                            'title'     => Text::get('personal-field-address'),
-                            'rows'      => 6,
-                            'cols'      => 40,
-                            'hint'      => Text::get('tooltip-project-post_address'),
-                            'errors'    => !empty($errors['post_address']) ? array($errors['post_address']) : array(),
-                            'ok'        => !empty($okeys['post_address']) ? array($okeys['post_address']) : array(),
-                            'value'     => $project->post_address
-                        ),
-
-                        'post_zipcode' => array(
-                            'type'      => 'textbox',
-                            'class'     => 'inline',
-                            'title'     => Text::get('personal-field-zipcode'),
-                            'size'      => 7,
-                            'hint'      => Text::get('tooltip-project-post_address'),
-                            'errors'    => !empty($errors['post_zipcode']) ? array($errors['post_zipcode']) : array(),
-                            'ok'        => !empty($okeys['post_zipcode']) ? array($okeys['post_zipcode']) : array(),
-                            'value'     => $project->post_zipcode
-                        ),
-
-                        'post_location' => array(
-                            'type'      => 'textbox',
-                            'class'     => 'inline',
-                            'title'     => Text::get('personal-field-location'),
-                            'size'      => 25,
-                            'hint'      => Text::get('tooltip-project-post_address'),
-                            'errors'    => !empty($errors['post_location']) ? array($errors['post_location']) : array(),
-                            'ok'        => !empty($okeys['post_location']) ? array($okeys['post_location']) : array(),
-                            'value'     => $project->post_location
-                        ),
-
-                        'post_country' => array(
-                            'type'      => 'textbox',
-                            'class'     => 'inline',
-                            'title'     => Text::get('personal-field-country'),
-                            'size'      => 25,
-                            'hint'      => Text::get('tooltip-project-post_address'),
-                            'errors'    => !empty($errors['post_country']) ? array($errors['post_country']) : array(),
-                            'ok'        => !empty($okeys['post_country']) ? array($okeys['post_country']) : array(),
-                            'value'     => $project->post_country
-                        )
-                    )
-                ),
-            )
-        ),
-        */
-
         'footer' => array(
             'type'      => 'group',
             'children'  => array(
@@ -233,7 +148,7 @@ echo SuperForm::get(array(
                     'title' => Text::get('form-footer-errors_title'),
                     'view'  => new View('project/edit/errors.html.php', array(
                         'project'   => $project,
-                        'step'      => $this['step']
+                        'step'      => $vars['step']
                     ))
                 ),
                 'buttons'  => array(
@@ -241,7 +156,7 @@ echo SuperForm::get(array(
                     'children' => array(
                         'next' => array(
                             'type'  => 'submit',
-                            'name'  => 'view-step-'.$this['next'],
+                            'name'  => 'view-step-'.$vars['next'],
                             'label' => Text::get('form-next-button'),
                             'class' => 'next'
                         )

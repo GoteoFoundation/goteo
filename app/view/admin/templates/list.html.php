@@ -5,7 +5,7 @@ use Goteo\Library\Text,
 
 $translator = ( isset($_SESSION['user']->roles['translator']) ) ? true : false;
 
-$filters = $this['filters'];
+$filters = $vars['filters'];
 ?>
 <div class="widget board">
     <form id="filter-form" action="/admin/templates" method="get">
@@ -15,7 +15,7 @@ $filters = $this['filters'];
                     <label for="group-filter">Filtrar agrupaci&oacute;n:</label><br />
                     <select id="group-filter" name="group">
                         <option value="">Todas las agrupaciones</option>
-                    <?php foreach ($this['groups'] as $groupId=>$groupName) : ?>
+                    <?php foreach ($vars['groups'] as $groupId=>$groupName) : ?>
                         <option value="<?php echo $groupId; ?>"<?php if ($filters['group'] == $groupId) echo ' selected="selected"';?>><?php echo $groupName; ?></option>
                     <?php endforeach; ?>
                     </select>
@@ -39,7 +39,7 @@ $filters = $this['filters'];
 </div>
 
 <div class="widget board">
-    <?php if (!empty($this['templates'])) : ?>
+    <?php if (!empty($vars['templates'])) : ?>
     <table>
         <thead>
             <tr>
@@ -50,7 +50,7 @@ $filters = $this['filters'];
             </tr>
         </thead>
         <tbody>
-            <?php foreach ($this['templates'] as $template) : ?>
+            <?php foreach ($vars['templates'] as $template) : ?>
             <tr>
                 <td><a href="/admin/templates/edit/<?php echo $template->id; ?>">[Editar]</a></td>
                 <td><?php echo $template->name; ?></td>

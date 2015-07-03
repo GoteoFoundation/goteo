@@ -9,8 +9,8 @@ $bodyClass = 'home patron';
 include __DIR__ . '/../prologue.html.php';
 include __DIR__ . '/../header.html.php';
 
-$user = $this['user'];
-$recos = $this['recos'];
+$user = $vars['user'];
+$recos = $vars['recos'];
 shuffle($recos);
 ?>
 <script type="text/javascript">
@@ -18,7 +18,7 @@ shuffle($recos);
     jQuery(document).ready(function ($) {
 
         /* todo esto para cada lista de proyectos (flechitas navegacion) */
-        <?php foreach ($this['lists'] as $type=>$list) :
+        <?php foreach ($vars['lists'] as $type=>$list) :
             if(array_empty($list)) continue; ?>
             $("#discover-group-<?php echo $type ?>-1").show();
             $("#navi-discover-group-<?php echo $type ?>-1").addClass('active');
@@ -60,7 +60,7 @@ shuffle($recos);
 
 </div>
 
-<?php if(isset($_SESSION['messages'])) { include __DIR__ . '/../header/message.html.php'; } ?>
+<?php if($_SESSION['messages']) { include __DIR__ . '/../header/message.html.php'; } ?>
 
 <div id="main">
 
@@ -112,7 +112,7 @@ shuffle($recos);
 
     </div>
 
-    <?php foreach ($this['lists'] as $type=>$list) :
+    <?php foreach ($vars['lists'] as $type=>$list) :
         if (\array_empty($list))
             continue;
         ?>

@@ -4,11 +4,11 @@ use Goteo\Library\Text,
     Goteo\Library\Paypal,
     Goteo\Library\Tpv;
 
-$invest = $this['invest'];
-$project = $this['project'];
-$calls = $this['calls'];
-$droped = $this['droped'];
-$user = $this['user'];
+$invest = $vars['invest'];
+$project = $vars['project'];
+$calls = $vars['calls'];
+$droped = $vars['droped'];
+$user = $vars['user'];
 
 $rewards = $invest->rewards;
 array_walk($rewards, function (&$reward) { $reward = $reward->reward; });
@@ -22,7 +22,7 @@ array_walk($rewards, function (&$reward) { $reward = $reward->reward; });
 <?php endif; ?>
 <div class="widget">
     <p>
-        <strong>Proyecto:</strong> <?php echo $project->name ?> (<?php echo $this['status'][$project->status] ?>)
+        <strong>Proyecto:</strong> <?php echo $project->name ?> (<?php echo $vars['status'][$project->status] ?>)
         <strong>Usuario: </strong><?php echo $user->name ?> [<?php echo $user->email ?>]
     </p>
     <p>
@@ -47,7 +47,7 @@ array_walk($rewards, function (&$reward) { $reward = $reward->reward; });
         <?php endif; ?>
 
         <?php if (!$invest->resign && $invest->status == 1 && $invest->status == 3) : ?>
-        <a href="/admin/accounts/resign/<?php echo $invest->id ?>/?token=<?php echo md5('resign'); ?>" class="button">Es donativo</a>
+        <a href="/admin/accounts/resign/<?php echo $invest->id ?>?token=<?php echo md5('resign'); ?>" class="button">Es donativo</a>
         <?php endif; ?>
     </p>
 
@@ -64,7 +64,7 @@ array_walk($rewards, function (&$reward) { $reward = $reward->reward; });
 
     <dl>
         <dt>Estado:</dt>
-        <dd><?php echo $this['investStatus'][$invest->status]; if ($invest->status < 0) echo ' <span style="font-weight:bold; color:red;">OJO! que este aporte no fue confirmado.<span>'; if ($invest->issue) echo ' <span style="font-weight:bold; color:red;">INCIDENCIA!<span>'; ?></dd>
+        <dd><?php echo $vars['investStatus'][$invest->status]; if ($invest->status < 0) echo ' <span style="font-weight:bold; color:red;">OJO! que este aporte no fue confirmado.<span>'; if ($invest->issue) echo ' <span style="font-weight:bold; color:red;">INCIDENCIA!<span>'; ?></dd>
     </dl>
 
     <dl>
@@ -149,7 +149,7 @@ array_walk($rewards, function (&$reward) { $reward = $reward->reward; });
     <?php if ($invest->method == 'paypal') : ?>
         <?php if (!isset($_GET['full'])) : ?>
         <p>
-            <a href="/admin/accounts/details/<?php echo $invest->id; ?>/?full=show">Mostrar detalles técnicos</a>
+            <a href="/admin/accounts/details/<?php echo $invest->id; ?>?full=show">Mostrar detalles técnicos</a>
         </p>
         <?php endif; ?>
 

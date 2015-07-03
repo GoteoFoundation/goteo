@@ -3,12 +3,14 @@
 
 namespace Goteo\Model\Tests;
 
+use Goteo\TestCase;
+
 use Goteo\Model\Project;
 use Goteo\Model\User;
 use Goteo\Model\Image;
 use Goteo\Model\Project\Image as ProjectImage;
 
-class ProjectTest extends \PHPUnit_Framework_TestCase {
+class ProjectTest extends TestCase {
 
     private static $related_tables = array('project_category' => 'project',
                     'project_account' => 'project',
@@ -17,7 +19,27 @@ class ProjectTest extends \PHPUnit_Framework_TestCase {
                     'project_image' => 'project',
                     'project_lang' => 'id',
                     'project_location' => 'id',
-                    'project_open_tag' => 'project');
+                    'project_open_tag' => 'project',
+                    // 'banner' => 'project', => investigar, parece que hay banners que pueden no tener proyecto
+                    'bazar' => 'project',
+                    // 'blog' => 'owner', => el campo type indica la tabla del owner, se deberia cambiar
+                    'call_project' => 'project',
+                    'contract' => 'project',
+                    'cost' => 'project',
+                    // 'cost_lang' => 'project', => investigar...
+                    'invest' => 'project',
+                    'invest_node' => 'project_id',
+                    // 'message' => 'project', => borrar con tranquilidad
+                    'patron' => 'project',
+                    'promote' => 'project',
+                    // 'review' => 'project', => borrar con tranquilidad
+                    // 'reward' => 'project', => borrar con tranquilidad
+                    // 'reward_lang' => 'project', => borrar con tranquilidad
+                    'stories' => 'project',
+                    // 'support' => 'project', => borrar con tranquilidad
+                    'user_project' => 'project',
+
+                    );
 
     private static $image = array(
                         'name' => 'test.png',
@@ -26,13 +48,7 @@ class ProjectTest extends \PHPUnit_Framework_TestCase {
                         'error' => '',
                         'size' => 0);
 
-    private static $data = array('id' => '012-simulated-project-test-210', 'owner' => '012-simulated-user-test-210', 'name' => '012 Simulated Project Test 210');
-
-    private static $user = array(
-            'userid' => '012-simulated-user-test-210',
-            'name' => 'Test user - please delete me',
-            'email' => 'simulated-user-test@goteo.org'
-        );
+    private static $data = array('id' => '012-simulated-project-test-211', 'name' => '012 Simulated Project Test 211');
 
     private static $image2;
 
@@ -90,40 +106,36 @@ class ProjectTest extends \PHPUnit_Framework_TestCase {
 
 
     public function testCreateUser() {
-        // We don't care if exists or not the test user:
-        if($user = \Goteo\Model\User::get(self::$user['userid'])) {
-            $user->delete();
-        }
-        $errors = array();
-        $user = new \Goteo\Model\User(self::$user);
-        $this->assertTrue($user->save($errors, array('password')), print_r($errors, 1));
-        $this->assertInstanceOf('\Goteo\Model\User', $user);
+        delete_test_user();
+        delete_test_node();
 
         //delete test project if exists
         try {
             $project = Project::get(self::$data['id']);
-            $project->delete();
+            $project->remove();
         } catch(\Exception $e) {
             // project not exists, ok
         }
-        return $user;
     }
 
     /**
      * @depends testCreateUser
      */
-    public function testCreateProject($user) {
-        $this->assertEquals($user->id, self::$data['owner']);
+    public function testCreateProject() {
+        $node = get_test_node();
+        $user = get_test_user();
+        self::$data['owner'] = $user->id;
 
         $errors = array();
         $project = new Project(self::$data);
         $this->assertTrue($project->validate($errors), print_r($errors, 1));
-        $this->assertNotFalse($project->create(GOTEO_NODE, $errors), print_r($errors, 1));
-
+        $this->assertNotFalse($project->create($node->id, $errors), print_r($errors, 1));
+// die($project->id);
         $project = Project::get($project->id);
         $this->assertInstanceOf('\Goteo\Model\Project', $project);
+        $this->assertInstanceOf('\Goteo\Model\Image', $project->image);
 
-        $this->assertEquals($project->owner, self::$user['userid']);
+        $this->assertEquals($project->owner, $user->id);
         return $project;
     }
 
@@ -132,6 +144,7 @@ class ProjectTest extends \PHPUnit_Framework_TestCase {
      * @depends testCreateProject
      */
     public function testEditProject($project) {
+        $user = get_test_user();
         $errors = array();
         $project->name = self::$data['name'];
         //add image
@@ -149,7 +162,7 @@ class ProjectTest extends \PHPUnit_Framework_TestCase {
         $this->assertCount(7, $project->all_galleries);
         $this->assertCount(2, $project->all_galleries['']);
         $this->assertEquals($project->image, $project->gallery[0]->imageData);
-        $this->assertEquals($project->owner, self::$user['userid']);
+        $this->assertEquals($project->owner, $user->id);
         $this->assertEquals($project->name, self::$data['name']);
 
     }
@@ -193,14 +206,17 @@ class ProjectTest extends \PHPUnit_Framework_TestCase {
         $project = Project::getMini($id);
         $this->assertInstanceOf('\Goteo\Model\Project', $project);
         $this->assertEquals($project->id, $id);
+        $this->assertInstanceOf('\Goteo\Model\Image', $project->image);
 
         $project = Project::getMedium($id);
         $this->assertInstanceOf('\Goteo\Model\Project', $project);
         $this->assertEquals($project->id, $id);
+        $this->assertInstanceOf('\Goteo\Model\Image', $project->image);
 
         $widget = Project::getWidget($project);
         $this->assertInstanceOf('\Goteo\Model\Project', $widget);
         $this->assertEquals($widget->id, $id);
+        $this->assertInstanceOf('\Goteo\Model\Image', $widget->image);
 
 
         return $project;
@@ -217,15 +233,15 @@ class ProjectTest extends \PHPUnit_Framework_TestCase {
         $project->image = ProjectImage::setImage($project->id, $project->gallery);
 
         $this->assertInternalType('array', $project->gallery);
-        $this->assertCount(1, $project->gallery);
-        $this->assertEquals($project->image, $project->gallery[0]->imageData);
+        $this->assertCount(1, $project->gallery, print_r($project->gallery, 1));
+        $this->assertEquals($project->image, $project->gallery[0]->imageData, print_r($project->image, 1));
 
         //remove second image
         $this->assertTrue($project->gallery[0]->imageData->remove($errors, 'project'), print_r($errors, 1));
         $project = Project::get($project->id);
         $this->assertInternalType('array', $project->gallery);
         $this->assertCount(0, $project->gallery);
-        $this->assertEmpty($project->image);
+        $this->assertInstanceOf('\Goteo\Model\Image', $project->image);
 
         //add image (to check autodelete)
         $project->image = self::$image;
@@ -242,7 +258,7 @@ class ProjectTest extends \PHPUnit_Framework_TestCase {
      */
     public function testDeleteProject($project) {
         $errors = array();
-        $this->assertTrue($project->delete($errors), print_r($errors, 1));
+        $this->assertTrue($project->remove($errors), print_r($errors, 1));
 
         return $project;
     }
@@ -251,18 +267,18 @@ class ProjectTest extends \PHPUnit_Framework_TestCase {
         try {
             $ob = Project::get(self::$data['id']);
         }catch(\Exception $e) {
-            $this->assertInstanceOf('\Goteo\Core\Error', $e);
+            $this->assertInstanceOf('\Goteo\Application\Exception\ModelNotFoundException', $e);
         }
         try {
             $ob = Project::get('non-existing-project');
         }catch(\Exception $e) {
-            $this->assertInstanceOf('\Goteo\Core\Error', $e);
+            $this->assertInstanceOf('\Goteo\Application\Exception\ModelNotFoundException', $e);
         }
     }
 
     public function testCleanProjectRelated() {
         foreach(self::$related_tables as $tb => $field) {
-            $this->assertEquals(0, Project::query("SELECT COUNT(*) FROM $tb WHERE $field NOT IN (SELECT id FROM project)")->fetchColumn(), "DB incoherences in table [$tb], Please run SQL command:\nDELETE FROM $tb WHERE $field NOT IN (SELECT id FROM project)");
+            $this->assertEquals(0, Project::query("SELECT COUNT(*) FROM `$tb`  WHERE `$field` NOT IN (SELECT id FROM project)")->fetchColumn(), "DB incoherences in table [$tb], Please run SQL command:\nDELETE FROM  `$tb` WHERE `$field` NOT IN (SELECT id FROM project)");
         }
     }
 
@@ -270,9 +286,8 @@ class ProjectTest extends \PHPUnit_Framework_TestCase {
      * Some cleanup
      */
     static function tearDownAfterClass() {
-        if($user = \Goteo\Model\User::get(self::$user['userid'])) {
-            $user->delete();
-        }
+        delete_test_user();
+        delete_test_node();
         // Remove temporal files on finish
         unlink(self::$image['tmp_name']);
         unlink(self::$image2['tmp_name']);

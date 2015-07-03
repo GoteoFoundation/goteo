@@ -5,6 +5,6 @@
         <title>Goteo.org</title>
     </head>
     <body>
-        <?php echo $this['content'] ?>
+        <?php echo $vars['content'] ?>
     </body>
 </html>

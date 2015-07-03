@@ -2,13 +2,16 @@
 
 namespace Goteo\Model\Blog {
 
-    use \Goteo\Model\Project\Media,
-        \Goteo\Model\Image,
-        \Goteo\Model\Project,
-        \Goteo\Model\Node,
-        \Goteo\Model\User,
-        \Goteo\Library\Text,
-        \Goteo\Library\Message;
+    use Goteo\Model\Project\Media;
+    use Goteo\Model\Image;
+    use Goteo\Model\Project;
+    use Goteo\Model\Node;
+    use Goteo\Model\User;
+    use Goteo\Library\Text;
+    use Goteo\Application\Message;
+    use Goteo\Application\Lang;
+    use Goteo\Application\Config;
+    use Goteo\Application\Session;
 
     class Post extends \Goteo\Core\Model {
 
@@ -40,6 +43,7 @@ namespace Goteo\Model\Blog {
             $debug = false;
 
             //Obtenemos el idioma de soporte
+
             $lang=self::default_lang_by_id($id, 'post_lang', $lang);
 
             $sql = "
@@ -99,34 +103,32 @@ namespace Goteo\Model\Blog {
                 if ($debug) die(' no es \Goteo\Model\Blog\Post  ???');
                 return false;
 
-            } else {
-
-                // autor
-                $post->user   = new User;
-                $post->user->name = $post->user_name;
-
-                $post->gallery = Image::getModelGallery('post', $post->id);
-                $post->image = Image::getModelImage($post->image, $post->gallery);
-
-                // video
-                if (isset($post->media)) {
-                    $post->media = new Media($post->media);
-                }
-
-                $post->comments = Post\Comment::getAll($id);
-
-                if (!isset($post->num_comments)) {
-                    $post->num_comments = Post\Comment::getCount($post->id);
-                }
-
-                //tags
-                $post->tags = Post\Tag::getAll($id);
-
-                //agregamos html si es texto plano
-                if(strip_tags($post->text) == $post->text)
-                    $post->text = nl2br(Text::urlink($post->text));
-
             }
+
+            // autor
+            $post->user   = new User;
+            $post->user->name = $post->user_name;
+
+            $post->gallery = Image::getModelGallery('post', $post->id);
+            $post->image = Image::getModelImage($post->image, $post->gallery);
+
+            // video
+            if (isset($post->media)) {
+                $post->media = new Media($post->media);
+            }
+
+            $post->comments = Post\Comment::getAll($id);
+
+            if (!isset($post->num_comments)) {
+                $post->num_comments = Post\Comment::getCount($post->id);
+            }
+
+            //tags
+            $post->tags = Post\Tag::getAll($id);
+
+            //agregamos html si es texto plano
+            if(strip_tags($post->text) == $post->text)
+                $post->text = nl2br(Text::urlink($post->text));
 
             return $post;
         }
@@ -136,7 +138,7 @@ namespace Goteo\Model\Blog {
          */
         public static function getMini ($id) {
 
-            $lang = \LANG;
+            $lang = Lang::current();
 
                 //Obtenemos el idioma de soporte
                 $lang=self::default_lang_by_id($id, 'post_lang', $lang);
@@ -176,11 +178,12 @@ namespace Goteo\Model\Blog {
          * // si es portada son los que se meten por la gestion de entradas en portada que llevan el tag 1 'Portada'
          */
         public static function getAll ($blog = null, $limit = null, $published = true) {
+            $lang = Lang::current();
             $list = array();
 
-            $values = array(':lang'=>\LANG);
+            $values = array(':lang'=>$lang);
 
-            if(self::default_lang(\LANG)=='es') {
+            if(self::default_lang($lang) === Config::get('lang')) {
                 $different_select=" IFNULL(post_lang.title, post.title) as title,
                                     IFNULL(post_lang.text, post.text) as `text`,
                                     IFNULL(post_lang.legend, post.legend) as `legend`,
@@ -298,12 +301,12 @@ namespace Goteo\Model\Blog {
          * de mas nueva a mas antigua
          */
         public static function getList ($filters = array(), $published = true) {
-
-            $values = array(':lang'=>\LANG);
+            $lang = Lang::current();
+            $values = array(':lang'=>$lang);
 
             $list = array();
 
-            if(self::default_lang(\LANG)=='es') {
+            if(self::default_lang($lang) === Config::get('lang')) {
                 $different_select=" IFNULL(post_lang.title, post.title) as title,
                                     IFNULL(post_lang.text, post.text) as `text`,
                                     IFNULL(post_lang.legend, post.legend) as `legend`";
@@ -487,7 +490,7 @@ namespace Goteo\Model\Blog {
                 );
 
             //eliminamos etiquetas script,iframe.. si no es admin o superadmin
-            if(!(isset($_SESSION['user']->roles['superadmin'])||isset($_SESSION['user']->roles['admin'])))
+            if(!(isset(Session::getUser()->roles['superadmin'])||isset(Session::getUser()->roles['admin'])))
                 $this->text = Text::tags_filter($this->text);
 
             try {
@@ -504,7 +507,7 @@ namespace Goteo\Model\Blog {
                         $this->gallery[0]->setModelImage('post', $this->id);
                     }
                     else {
-                        Message::Error(Text::get('image-upload-fail') . implode(', ', $errors));
+                        Message::error(Text::get('image-upload-fail') . implode(', ', $errors));
                     }
                 }
 
@@ -558,7 +561,7 @@ namespace Goteo\Model\Blog {
             }
 
              //eliminamos etiquetas script,iframe.. si no es admin o superadmin
-            if(!(isset($_SESSION['user']->roles['superadmin'])||isset($_SESSION['user']->roles['admin'])))
+            if(!(isset(Session::getUser()->roles['superadmin'])||isset(Session::getUser()->roles['admin'])))
                 $values[':text']=Text::tags_filter($values[':text']);
 
             try {
@@ -570,19 +573,6 @@ namespace Goteo\Model\Blog {
                 $errors[] = "HA FALLADO!!! " . $e->getMessage();
                 return false;
             }
-        }
-
-        /**
-         * Static compatible version of parent delete()
-         * @param  [type] $id [description]
-         * @return [type]     [description]
-         */
-        public function delete($id = null) {
-            if(empty($id)) return parent::delete();
-
-            if(!($ob = Post::get($id))) return false;
-            return $ob->delete();
-
         }
 
         /*

@@ -7,6 +7,8 @@ namespace Goteo\Model {
         Goteo\Model\Project,
         Goteo\Model\User,
         Goteo\Model\Node,
+        Goteo\Application\Lang,
+        Goteo\Application\Config,
         Goteo\Library\Check;
 
     class Post extends \Goteo\Core\Model {
@@ -29,7 +31,7 @@ namespace Goteo\Model {
         public static function get ($id) {
 
                 //Obtenemos el idioma de soporte
-                $lang=self::default_lang_by_id($id, 'post_lang', \LANG);
+                $lang=self::default_lang_by_id($id, 'post_lang', Lang::current());
 
                 $query = static::query("
                     SELECT
@@ -96,7 +98,7 @@ namespace Goteo\Model {
 
             $list = array();
 
-            $values = array(':lang'=>\LANG);
+            $values = array(':lang'=>Lang::current());
 
             if ($node == \GOTEO_NODE || empty($node)) {
                 // portada goteo, sacamos todas las de blogs tipo nodo
@@ -117,7 +119,7 @@ namespace Goteo\Model {
                 $sqlField = "(SELECT `order` FROM post_node WHERE node = :node AND post = post.id) as `order`,";
             }
 
-            if(self::default_lang(\LANG)=='es') {
+            if(Lang::current() === Config::get('lang')) {
                 $different_select=" IFNULL(post_lang.title, post.title) as title,
                                     IFNULL(post_lang.text, post.text) as `text`";
                 }
@@ -226,7 +228,7 @@ namespace Goteo\Model {
 
             $list = array();
 
-            $values = array(':lang'=>\LANG);
+            $values = array(':lang'=>Lang::current());
 
             if ($node == \GOTEO_NODE || empty($node)) {
                 // portada goteo, sacamos todas las de blogs tipo nodo
@@ -242,7 +244,7 @@ namespace Goteo\Model {
                 $values[':node'] = $node;
             }
 
-            if(self::default_lang(\LANG)=='es') {
+            if(Lang::current() === Config::get('lang')) {
                 $different_select=" IFNULL(post_lang.title, post.title) as title";
                 }
             else {
@@ -285,7 +287,7 @@ namespace Goteo\Model {
         public static function getAutocomplete () {
             $list = array();
 
-            if(self::default_lang(\LANG)=='es') {
+            if(Lang::current() === Config::get('lang')) {
                 $different_select=" IFNULL(post_lang.title, post.title) as title";
                 }
             else {
@@ -305,7 +307,7 @@ namespace Goteo\Model {
                     AND post_lang.lang = :lang
                     AND post_lang.blog = post.blog
                 $eng_join
-                ", array(':lang'=>\LANG));
+                ", array(':lang'=>Lang::current()));
 
             foreach ($query->fetchAll(\PDO::FETCH_OBJ) as $post) {
                 $list[$post->id] = $post->title;
@@ -499,18 +501,6 @@ namespace Goteo\Model {
 
         }
 
-        /**
-         * Static compatible version of parent delete()
-         * @param  [type] $id [description]
-         * @return [type]     [description]
-         */
-        public function delete($id = null) {
-            if(empty($id)) return parent::delete();
-
-            if(!($ob = Post::get($id))) return false;
-            return $ob->delete();
-
-        }
         /*
          * Para que salga antes  (disminuir el order)
          */

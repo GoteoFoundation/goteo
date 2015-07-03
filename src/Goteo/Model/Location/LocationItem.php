@@ -109,22 +109,6 @@ abstract class LocationItem extends \Goteo\Core\Model implements LocationInterfa
     }
 
     /**
-     * Desasignar el usuario de su localización
-     *
-     * @param array $errors
-     * @return boolean
-     */
-    public function delete (&$errors = array()) {
-        try {
-            self::query("DELETE FROM " . $this->Table . " WHERE id = ?", array($this->id));
-        } catch(\PDOException $e) {
-            $errors[] = 'Error removing location for id ' . $this->id . '. ' . $e->getMessage();
-            return false;
-        }
-        return true;
-    }
-
-    /**
      * Sets a property
      * @param [type] $id    [description]
      * @param [type] $prop    [description]

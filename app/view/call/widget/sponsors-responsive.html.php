@@ -1,7 +1,7 @@
 <?php
 use Goteo\Library\Text;
 
-$call = $this['call'];
+$call = $vars['call'];
 ?>
 
 <div id="sponsors-responsive">

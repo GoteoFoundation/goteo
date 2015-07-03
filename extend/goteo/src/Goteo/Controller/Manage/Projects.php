@@ -4,7 +4,7 @@ namespace Goteo\Controller\Manage {
 
     use Goteo\Core\Redirection,
         Goteo\Core\View,
-        Goteo\Library\Message,
+        Goteo\Application\Message,
         Goteo\Library\Mail,
         Goteo\Model;
 
@@ -18,7 +18,7 @@ namespace Goteo\Controller\Manage {
 
                 $projData = Model\Project::getMedium($_POST['id']);
                 if (empty($projData->id)) {
-                    Message::Error('El proyecto id "'.$_POST['id'].'" no existe o está corrupto');
+                    Message::error('El proyecto id "'.$_POST['id'].'" no existe o está corrupto');
                     throw new Redirection('/manage/projects');
                 }
 
@@ -30,7 +30,7 @@ namespace Goteo\Controller\Manage {
                     if ($accounts->save($errors)) {
                         throw new Redirection('/manage/projects');
                     } else {
-                        Message::Error(implode('<br />', $errors));
+                        Message::error(implode('<br />', $errors));
                     }
 
                 }
@@ -65,9 +65,9 @@ namespace Goteo\Controller\Manage {
                     $mailHandler->html = true;
                     $mailHandler->template = 11;
                     if ($mailHandler->send($errors)) {
-                        Message::Info('Se le ha enviado a '.$project->user->email.' el contenido de "Contrato listo para imprimir" ');
+                        Message::info('Se le ha enviado a '.$project->user->email.' el contenido de "Contrato listo para imprimir" ');
                     } else {
-                        Message::Error('FALLO al enviar mail de "Contrato listo para imprimir". <br />Mandarselo a mano.<br />Errores: '.implode('<br />', $errors));
+                        Message::error('FALLO al enviar mail de "Contrato listo para imprimir". <br />Mandarselo a mano.<br />Errores: '.implode('<br />', $errors));
                     }
 
                     unset($mailHandler);

@@ -2,9 +2,9 @@
 use Goteo\Core\View,
     Goteo\Library\Text;
 
-$stories = $this['stories'];
+$stories = $vars['stories'];
 ?>
-<div id="node-projects-story" class="content_widget node-projects rounded-corners" <?php if ($this['hide_stories']) : ?>style="display:none;"<?php endif; ?>>
+<div id="node-projects-story" class="content_widget node-projects rounded-corners" <?php if ($vars['hide_stories']) : ?>style="display:none;"<?php endif; ?>>
 
     <h2>
     AQUI VAN HISTORIAS

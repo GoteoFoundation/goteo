@@ -2,7 +2,7 @@
 
 use Goteo\Library\Text;
 
-$data = $this['data'];
+$data = $vars['data'];
 ?>
 <div class="widget board">
     <p>Ahora mismo en paypal debería haber <strong><?php echo \euro_format($data->total, 2); ?> &euro;</strong> aproximadamente.</p>

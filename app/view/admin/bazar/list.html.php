@@ -7,7 +7,7 @@ $translator = ( isset($_SESSION['user']->roles['translator']) ) ? true : false;
 <a href="/admin/bazar/add" class="button">Nuevo Elemento</a>&nbsp;&nbsp;&nbsp;<a href="/bazaar" class="button" target="_blank">Ver catalogo</a>
 
 <div class="widget board">
-    <?php if (!empty($this['items'])) : ?>
+    <?php if (!empty($vars['items'])) : ?>
     <table>
         <thead>
             <tr>
@@ -27,7 +27,7 @@ $translator = ( isset($_SESSION['user']->roles['translator']) ) ? true : false;
         </thead>
 
         <tbody>
-            <?php foreach ($this['items'] as $promo) : ?>
+            <?php foreach ($vars['items'] as $promo) : ?>
             <tr>
                 <td><a href="/bazaar/<?php echo $promo->id; ?>" target="_blank" title="Preview">[Ver]</a></td>
                 <td><?php echo ($promo->active) ? '<strong>'.$promo->title.'</strong>' : $promo->title; ?></td>

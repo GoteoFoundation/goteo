@@ -4,8 +4,8 @@ use Goteo\Library\Text,
     Goteo\Util\Pagination\Paginated,
     Goteo\Util\Pagination\DoubleBarLayout;
 
-$posts = $this['posts'];
-$index = $this['index'];
+$posts = $vars['posts'];
+$index = $vars['index'];
 
 $letters = array();
 
@@ -14,7 +14,7 @@ $bodyClass = 'glossary';
 $go_up = Text::get('regular-go_up');
 
 // paginacion
-$pagedResults = new Paginated($posts, $this['tpp'], isset($_GET['page']) ? $_GET['page'] : 1);
+$pagedResults = new Paginated($posts, $vars['tpp'], isset($_GET['page']) ? $_GET['page'] : 1);
 
 include __DIR__ . '/../prologue.html.php';
 include __DIR__ . '/../header.html.php';

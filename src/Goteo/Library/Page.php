@@ -2,6 +2,7 @@
 namespace Goteo\Library {
 
 	use Goteo\Core\Model,
+        Goteo\Application\Lang,
         Goteo\Core\Exception;
 
 	/*
@@ -19,8 +20,8 @@ namespace Goteo\Library {
             $content,
             $pendiente; // para si esta pendiente de traduccion
 
-        static public function get ($id, $node = \GOTEO_NODE, $lang = \LANG) {
-
+        static public function get ($id, $node = \GOTEO_NODE, $lang = null) {
+            if(empty($lang)) $lang = Lang::current();
             //idioma de soporte
             $default_lang=Model::default_lang($lang);
 
@@ -62,7 +63,8 @@ namespace Goteo\Library {
 		/*
 		 *  Metodo para la lista de páginas
 		 */
-		public static function getAll($filters = array(), $lang = \LANG, $node = \GOTEO_NODE) {
+		public static function getAll($filters = array(), $lang = null, $node = \GOTEO_NODE) {
+            if(empty($lang)) $lang = Lang::current();
             $pages = array();
 
             try {
@@ -212,7 +214,7 @@ namespace Goteo\Library {
                     $errors[] = "Ha fallado $sql con <pre>" . print_r($values, true) . "</pre>";
                     return false;
                 }
-                
+
 			} catch(\PDOException $e) {
                 $errors[] = 'Error sql al grabar el contenido de la pagina. ' . $e->getMessage();
                 return false;

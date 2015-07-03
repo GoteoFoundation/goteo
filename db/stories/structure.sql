@@ -20,3 +20,5 @@ ALTER TABLE `stories` CHANGE `post` `post` BIGINT( 20 ) UNSIGNED NULL DEFAULT NU
 ALTER TABLE `stories` CHANGE `image` `image` VARCHAR( 255 ) NULL DEFAULT NULL COMMENT 'Contiene nombre de archivo';
 
 
+-- constrains
+ALTER TABLE `stories` ADD FOREIGN KEY (`node`) REFERENCES `node`(`id`) ON UPDATE CASCADE ON DELETE RESTRICT;

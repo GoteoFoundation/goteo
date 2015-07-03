@@ -4,9 +4,9 @@ use Goteo\Library\Text,
     Goteo\Library\SuperForm,
     Goteo\Core\View;
 
-$call = $this['call'];
-$errors = $call->errors[$this['step']] ?: array();
-$okeys  = $call->okeys[$this['step']] ?: array();
+$call = $vars['call'];
+$errors = $call->errors[$vars['step']] ?: array();
+$okeys  = $call->okeys[$vars['step']] ?: array();
 
 // si tiene algo en direccion postal entonces tiene una direccion secundaria (la postal)
 $secondary_address = empty($call->post_address) ? false : true;
@@ -14,7 +14,7 @@ $secondary_address = empty($call->post_address) ? false : true;
 
 echo SuperForm::get(array(
 
-    'level'         => $this['level'],
+    'level'         => $vars['level'],
     'method'        => 'post',
     'title'         => Text::get('personal-main-header'),
     'hint'          => Text::get('guide-call-contract-information'),
@@ -311,7 +311,7 @@ echo SuperForm::get(array(
                     'title' => Text::get('form-footer-errors_title'),
                     'view'  => new View('project/edit/errors.html.php', array(
                         'project'   => $call,
-                        'step'      => $this['step']
+                        'step'      => $vars['step']
                     ))
                 ),
                 'buttons'  => array(
@@ -319,7 +319,7 @@ echo SuperForm::get(array(
                     'children' => array(
                         'next' => array(
                             'type'  => 'submit',
-                            'name'  => 'view-step-'.$this['next'],
+                            'name'  => 'view-step-'.$vars['next'],
                             'label' => Text::get('form-next-button'),
                             'class' => 'next'
                         )

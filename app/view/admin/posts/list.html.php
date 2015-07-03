@@ -4,7 +4,7 @@ use Goteo\Library\Text;
 <a href="/admin/posts/add" class="button">Nueva entrada en portada</a>
 
 <div class="widget board">
-    <?php if (!empty($this['posts'])) : ?>
+    <?php if (!empty($vars['posts'])) : ?>
     <table>
         <thead>
             <tr>
@@ -17,7 +17,7 @@ use Goteo\Library\Text;
         </thead>
 
         <tbody>
-            <?php foreach ($this['posts'] as $post) : ?>
+            <?php foreach ($vars['posts'] as $post) : ?>
             <tr>
                 <td><?php echo $post->title; ?></td>
                 <td><?php echo $post->order; ?></td>
