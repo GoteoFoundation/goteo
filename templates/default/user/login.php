@@ -67,7 +67,7 @@ $this->section('content');
                 $logins = array(
 					'facebook' => '<a href="/user/oauth?provider=facebook">' . $this->text('login-signin-facebook') . '</a>',
 					'twitter' => '<a href="/user/oauth?provider=twitter">' . $this->text('login-signin-twitter') . '</a>',
-					'Google' => '<a href="/user/oauth?provider=Google">' . $this->text('login-signin-google') . '</a>',
+					'google' => '<a href="/user/oauth?provider=google">' . $this->text('login-signin-google') . '</a>',
 					'Yahoo' => '<a href="/user/oauth?provider=Yahoo">' . $this->text('login-signin-yahoo') . '</a>',
 					'Ubuntu' => '<a href="/user/oauth?provider=Ubuntu">' . $this->text('login-signin-ubuntu') . '</a>',
 					'linkedin' => '<a href="/user/oauth?provider=linkedin">' . $this->text('login-signin-linkedin') . '</a>',

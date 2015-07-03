@@ -13,11 +13,10 @@ use Goteo\Model\User,
 
 /**
  * Suportat:
- * 				OAuth o similar: twitter, facebook, linkedin
- * 				OpenId: google
+ * 				OAuth o similar: twitter, facebook, linkedin, google
+ * 				OpenId: generic
  *
  * identities:
-	 *    Google : https://www.google.com/accounts/o8/id
 	 *    Google profile : http://www.google.com/profiles/~YOURUSERNAME
 	 *    Yahoo : https://me.yahoo.com
 	 *    AOL : https://www.aol.com
@@ -38,19 +37,19 @@ class SocialAuth {
 	public $import_user_data = array('name', 'about', 'location', 'avatar', 'twitter', 'facebook', 'google', 'identica', 'linkedin');
 
 	//secretos generados en el oauth
-	public $tokens = array('twitter'=>array('token'=>'','secret'=>''), 'facebook'=>array('token'=>'','secret'=>''), 'linkedin'=>array('token'=>'','secret'=>''), 'openid'=>array('token'=>'','secret'=>''));
+	public $tokens = array('twitter'=>array('token'=>'','secret'=>''), 'facebook'=>array('token'=>'','secret'=>''), 'google'=>array('token'=>'','secret'=>''), 'linkedin'=>array('token'=>'','secret'=>''), 'openid'=>array('token'=>'','secret'=>''));
 
 	private $credentials = array(
 		'twitter' => array('key' => OAUTH_TWITTER_ID, 'secret' => OAUTH_TWITTER_SECRET),
 		'facebook' => array('key' => OAUTH_FACEBOOK_ID, 'secret' => OAUTH_FACEBOOK_SECRET),
-		'linkedin' => array('key' => OAUTH_LINKEDIN_ID, 'secret' => OAUTH_LINKEDIN_SECRET)
+        'linkedin' => array('key' => OAUTH_LINKEDIN_ID, 'secret' => OAUTH_LINKEDIN_SECRET),
+		'google' => array('key' => OAUTH_GOOGLE_ID, 'secret' => OAUTH_GOOGLE_SECRET)
 	);
 	//variable para los servicios
 	private $storage;
 	private $serviceFactory;
 
 	public $openid_public_servers = array(
-		"Google" => "https://www.google.com/accounts/o8/id",
 		"Yahoo" => "https://me.yahoo.com",
 		"myOpenid" => "http://myopenid.com/",
 		"AOL" => "https://www.aol.com",
@@ -59,7 +58,7 @@ class SocialAuth {
 	 );
 
 	/**
-	 * @param $provider : 'twitter', 'facebook', 'linkedin', 'any_openid_server'
+	 * @param $provider : 'twitter', 'facebook', 'linkedin', 'google', 'any_openid_server'
 	 * */
 	function __construct($provider='') {
         $URL = \SITE_URL;
@@ -67,7 +66,7 @@ class SocialAuth {
         $this->host = $URL;
 
 		$this->original_provider = $provider;
-		if(in_array($provider,array('twitter', 'facebook', 'linkedin'))) {
+		if(in_array($provider,array('twitter', 'facebook', 'linkedin', 'google'))) {
 			$this->provider = $provider;
 		}
 		else {
@@ -87,8 +86,11 @@ class SocialAuth {
 			case 'twitter':
 				return $this->authenticateTwitter();
 				break;
-			case 'facebook':
-				return $this->authenticateFacebook();
+            case 'facebook':
+                return $this->authenticateFacebook();
+                break;
+			case 'google':
+				return $this->authenticateGoogle();
 				break;
 			case 'linkedin':
 				return $this->authenticateLinkedin();
@@ -177,72 +179,133 @@ class SocialAuth {
 		return true;
 	}
 
+    /**
+     * Autentica con twitter, redirige a Twitter para que el usuario acepte
+     * */
+    public function authenticateTwitter() {
+        try {
+            // Setup the credentials for the requests
+            $credentials = new Credentials(
+                $this->credentials['twitter']['key'],
+                $this->credentials['twitter']['secret'],
+                $this->host . '/user/oauth?provider=twitter'
+            );
+            // Instantiate the twitter service using the credentials, http client and storage mechanism for the token
+            /** @var $twitterService Twitter */
+            $twitterService = $this->serviceFactory->createService('twitter', $credentials, $this->storage);
+
+            if (!empty($_GET['oauth_token'])) {
+                $token = $this->storage->retrieveAccessToken('Twitter');
+                // This was a callback request from twitter, get the token
+                $twitterService->requestAccessToken(
+                    $_GET['oauth_token'],
+                    $_GET['oauth_verifier'],
+                    $token->getRequestTokenSecret()
+                );
+                // Send a request now that we have access token
+                $res = json_decode($twitterService->request('account/verify_credentials.json'));
+
+                $this->tokens['twitter']['token'] = $res->id ? $res->id : $res->screen_name;
+
+                if($res->name) $this->user_data['name'] = $res->name;
+                if($res->screen_name) $this->user_data['username'] = $res->screen_name;
+                //this is never provided by twitter...
+                if($res->email) $this->user_data['email'] = $res->email;
+
+                //ojo, pueden ser varias lineas con varias webs
+                if($res->entities) {
+                    foreach($res->entities as $k => $entity) {
+                        if($entity->urls && is_array($entity->urls)) {
+                            foreach($entity->urls as $url) {
+                                if($url->expanded_url) $this->user_data['website'] .= $url->expanded_url . "\n";
+                            }
+                        }
+                    }
+                }
+                if($res->description) $this->user_data['about'] = $res->description;
+                if($res->location) $this->user_data['location'] = $res->location;
+                if($res->profile_image_url) {
+                    $this->user_data['avatar'] = str_replace('_normal','',$res->profile_image_url);
+                    $this->user_data['avatar_name'] = basename(parse_url($this->user_data['avatar'], PHP_URL_PATH));
+                }
+
+                //twitter link
+                $this->user_data['twitter'] = 'http://twitter.com/'.$userInfo->screen_name;
+
+                // echo 'result: <pre>' . print_r($this->user_data, 1) . print_r($res, true) . '</pre>';die;
+
+                return true;
+
+            }
+            else {
+                 // extra request needed for oauth1 to request a request token :-)
+                $token = $twitterService->requestRequestToken();
+
+                $url = $twitterService->getAuthorizationUri(array('oauth_token' => $token->getRequestToken()));
+                header('Location: ' . $url);
+                exit;
+            }
+
+        }
+        catch(\Exception $e){
+            $this->last_error = $e->getMessage().' 1/ '.get_class($e);
+            $this->error_type = 'provider-exception';
+            return false;
+        }
+        return true;
+    }
+
 	/**
-	 * Autentica con twitter, redirige a Twitter para que el usuario acepte
+	 * Autentica con google, redirige a Google para que el usuario acepte
 	 * */
-	public function authenticateTwitter() {
+	public function authenticateGoogle() {
 		try {
 			// Setup the credentials for the requests
 			$credentials = new Credentials(
-				$this->credentials['twitter']['key'],
-				$this->credentials['twitter']['secret'],
-				$this->host . '/user/oauth?provider=twitter'
+				$this->credentials['google']['key'],
+				$this->credentials['google']['secret'],
+				$this->host . '/user/oauth?provider=google'
 			);
+
 			// Instantiate the twitter service using the credentials, http client and storage mechanism for the token
-			/** @var $twitterService Twitter */
-			$twitterService = $this->serviceFactory->createService('twitter', $credentials, $this->storage);
+            $googleService = $this->serviceFactory->createService('google', $credentials, $this->storage, array('userinfo_email', 'userinfo_profile'));
 
-			if (!empty($_GET['oauth_token'])) {
-				$token = $this->storage->retrieveAccessToken('Twitter');
-				// This was a callback request from twitter, get the token
-				$twitterService->requestAccessToken(
-					$_GET['oauth_token'],
-					$_GET['oauth_verifier'],
-					$token->getRequestTokenSecret()
-				);
-				// Send a request now that we have access token
-				$res = json_decode($twitterService->request('account/verify_credentials.json'));
 
-				$this->tokens['twitter']['token'] = $res->id ? $res->id : $res->screen_name;
+			if (!empty($_GET['code'])) {
+                // This was a callback request from google, get the token
+                $googleService->requestAccessToken($_GET['code']);
 
-				if($res->name) $this->user_data['name'] = $res->name;
-				if($res->screen_name) $this->user_data['username'] = $res->screen_name;
-				//this is never provided by twitter...
+                // Send a request with it
+                $res = json_decode($googleService->request('https://www.googleapis.com/oauth2/v1/userinfo'));
+
+				$this->tokens['google']['token'] = $res->id ? $res->id : $res->screen_name;
+
+                if($res->name) $this->user_data['name'] = $res->name;
+				if($res->name) $this->user_data['username'] = strtolower(Model::idealiza($res->name));
+				//this is never provided by google...
 				if($res->email) $this->user_data['email'] = $res->email;
 
-				//ojo, pueden ser varias lineas con varias webs
-				if($res->entities) {
-					foreach($res->entities as $k => $entity) {
-						if($entity->urls && is_array($entity->urls)) {
-							foreach($entity->urls as $url) {
-								if($url->expanded_url) $this->user_data['website'] .= $url->expanded_url . "\n";
-							}
-						}
-					}
-				}
-				if($res->description) $this->user_data['about'] = $res->description;
-				if($res->location) $this->user_data['location'] = $res->location;
-				if($res->profile_image_url) {
-					$this->user_data['avatar'] = str_replace('_normal','',$res->profile_image_url);
-					$this->user_data['avatar_name'] = basename(parse_url($this->user_data['avatar'], PHP_URL_PATH));
+				if($res->picture) {
+					$this->user_data['avatar'] = str_replace('_normal','',$res->picture);
+					$this->user_data['avatar_name'] = $this->user_data['username'] . '.jpg';
 				}
 
-				//twitter link
-				$this->user_data['twitter'] = 'http://twitter.com/'.$userInfo->screen_name;
+				//google link
+				if($res->link) $this->user_data['google'] = $res->link ;
+                 // $this->user_data['google'] = 'https://plus.google.com/'.$userInfo->id ;
 
 				// echo 'result: <pre>' . print_r($this->user_data, 1) . print_r($res, true) . '</pre>';die;
 
 				return true;
 
 			}
-			else {
-				 // extra request needed for oauth1 to request a request token :-)
-				$token = $twitterService->requestRequestToken();
-
-				$url = $twitterService->getAuthorizationUri(array('oauth_token' => $token->getRequestToken()));
-				header('Location: ' . $url);
-				exit;
-			}
+            else {
+                $url = $googleService->getAuthorizationUri();
+                // die($url);
+                header('Location: ' . $url);
+                exit;
+            }
+            return true;
 
 		}
 		catch(\Exception $e){
