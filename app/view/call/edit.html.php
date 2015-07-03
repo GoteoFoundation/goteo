@@ -50,7 +50,7 @@ include __DIR__ . '/../prologue.html.php';
 
             <?php echo $steps ?>
 
-            <?php if($vars['step']) echo View::get("call/edit/{$vars['step']}.html.php", $vars + array('level' => 3, 'next'=>$next_step)) ?>
+            <?php if($vars['step']) echo View::get("call/edit/{$vars['step']}.html.php", array_merge($vars, array('level' => 3, 'next'=>$next_step))) ?>
 
             <?php echo $steps ?>
 

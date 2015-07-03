@@ -31,7 +31,12 @@ namespace Goteo\Controller {
         public function index($id = null) {
 
             $contract = Model\Contract::get($id); // datos del contrato
+            if(!Session::isLogged()) {
+                // no lo puede ver y punto
+                throw new Redirection("/");
+            }
             $user = Session::getUser();
+
             // solamente se puede ver si....
             // Es un admin, es el impulsor
             //
@@ -138,12 +143,16 @@ namespace Goteo\Controller {
         //Aunque no esté en estado edición un admin siempre podrá editar los datos de contrato
         public function edit ($id, $step = 'promoter') {
             $contract = Model\Contract::get($id);
+            $user = Session::getUser();
+            if(!Session::isLogged()) {
+                // no lo puede ver y punto
+                throw new Redirection("/");
+            }
 
             // aunque pueda acceder edit, no lo puede editar si los datos ya se han dado por cerrados
-            if ($contract->project_user != $_SESSION['user']->id // no es su proyecto
+            if ($contract->project_user != $user->id // no es su proyecto
                 && $contract->status->owner // cerrado por
-                && !isset($_SESSION['user']->roles['manager'])
-                && !isset($_SESSION['user']->roles['superadmin']) // no es un gestor ni superadmin
+                && ! $user->hasRoleInNode(Config::get('node'), ['manager', 'superadmin', 'root']) // no es un gestor ni superadmin
                 ) {
                 // le mostramos el pdf
                 throw new Redirection('/contract/'.$id);
