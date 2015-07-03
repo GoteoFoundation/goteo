@@ -103,9 +103,8 @@ $this->section('content');
                     $sep = ', '; endforeach; ?>
                 </div>
                 <?php endif; ?>
-                -->
-
-                <?php if ($project->node !== $this->get_config('current_node')) : ?>
+                -->     
+                <?php if ($project->node !== $this->get_config('current_node')&&($project->nodeData->active)) : ?>
                 <div class="nodemark">
                     <?php if($project->nodeData->type!="node") 
                     {

@@ -396,6 +396,7 @@ namespace Goteo\Model {
                                 node.name as node_name,
                                 node.url as node_url,
                                 node.label as node_label,
+                                node.active as node_active,
                                 project_conf.*,
                                 user.name as user_name,
                                 user.email as user_email,
@@ -467,6 +468,7 @@ namespace Goteo\Model {
                 $project->nodeData->id = $project->node;
                 $project->nodeData->name = $project->node_name;
                 $project->nodeData->url = $project->node_url;
+                $project->nodeData->active = $project->node_active;
 
                 // label
                 $project->nodeData->label = Image::get($project->node_label);
