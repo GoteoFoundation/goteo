@@ -2844,6 +2844,7 @@ namespace Goteo\Model {
 
             $values[':lang'] = $lang;
 
+            // if($filter['type'] == 'recent') {sqldbg($sql, $values);die;}
             $projects = array();
             $query = self::query($sql, $values);
 

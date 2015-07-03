@@ -64,14 +64,13 @@ class DiscoverController extends \Goteo\Core\Controller {
 
         // cada tipo tiene sus grupos
         foreach ($types as $type) {
-            $projects = Model\Project::published($type, $node, 33);
-            if (empty($projects)) continue;
+            $projects = Model\Project::published($type, $node, 0, 33);
+            // if (empty($projects)) continue;
             // random para exitosos y retorno cumplido
             if ($type == 'success' || $type == 'fulfilled') shuffle ($projects);
 
             $viewData['lists'][$type] = Listing::get($projects);
         }
-
         return new Response(View::render('discover/index', $viewData));
 
     }
