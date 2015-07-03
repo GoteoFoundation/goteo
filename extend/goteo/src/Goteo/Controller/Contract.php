@@ -3,6 +3,8 @@
 namespace Goteo\Controller {
 
     use Goteo\Core\ACL,
+        Goteo\Application\Session,
+        Goteo\Application\Config,
         Goteo\Core\Error,
         Goteo\Core\Redirection,
         Goteo\Core\View,
@@ -29,16 +31,14 @@ namespace Goteo\Controller {
         public function index($id = null) {
 
             $contract = Model\Contract::get($id); // datos del contrato
-
+            $user = Session::getUser();
             // solamente se puede ver si....
             // Es un admin, es el impulsor
             //
             $grant = false;
-            if (isset($contract) && $contract->project_owner == $_SESSION['user']->id)  // es el dueño del proyecto
+            if (isset($contract) && $contract->project_owner == $user->id)  // es el dueño del proyecto
                 $grant = true;
-            elseif (isset($_SESSION['admin_node']) && $_SESSION['admin_node'] == \GOTEO_NODE)  // es un admin de central
-                $grant = true;
-            elseif (isset($_SESSION['user']->roles['superadmin'])) // es superadmin
+            elseif($user->hasRoleInNode(Config::get('node'), ['admin', 'superadmin', 'root']))
                 $grant = true;
 
             // si lo puede ver
