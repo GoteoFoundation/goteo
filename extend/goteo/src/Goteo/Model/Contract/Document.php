@@ -207,10 +207,6 @@ namespace Goteo\Model\Contract {
                     $array[] = $document;
                 }
 
-                if(empty($array)) {
-                    $array = false;
-                }
-
                 return $array;
             } catch(\PDOException $e) {
 				throw new \Goteo\Core\Exception($e->getMessage());
@@ -225,7 +221,6 @@ namespace Goteo\Model\Contract {
             $ok = false;
             $this->filedir = $this->contract.'/';
 
-            $this->fp->delete($this->filedir . $this->name);
             try {
                 $sql = "DELETE FROM document WHERE id = ?";
                 $values = array($this->id);

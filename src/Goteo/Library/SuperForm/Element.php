@@ -18,7 +18,8 @@ namespace Goteo\Library\SuperForm {
             $errors = array(),
             $children = array(),
             $level = 2,
-            $view,
+            $view, // legacy views
+            $content, // direct string content
             $data = array();
 
         public function offsetGet ($name) {
@@ -80,7 +81,11 @@ namespace Goteo\Library\SuperForm {
 
         public function getInnerHTML () {
 
-            if ($this->view) {
+            // if a direct string content is defined
+            if ($this->content) {
+                return $this->content;
+            }
+            elseif ($this->view) {
                 if ($this->view instanceof View) {
                     return $this->view->render();
                 } else {

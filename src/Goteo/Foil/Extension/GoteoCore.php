@@ -46,6 +46,7 @@ class GoteoCore implements ExtensionInterface
           'get_config' => [$this, 'get_config'],
           'get_user' => [$this, 'get_user'],
           'is_logged' => [$this, 'is_logged'],
+          'has_role' => [$this, 'has_role'],
           'is_admin' => [$this, 'is_admin'],
           'is_module_admin' => [$this, 'is_module_admin'],
           'get_query' => [$this, 'get_query'],
@@ -125,6 +126,17 @@ class GoteoCore implements ExtensionInterface
         return Session::getUser();
     }
 
+    // Checks user role
+    public function has_role($role, $node = null, \Goteo\Model\User $user = null) {
+        if(empty($user)) $user = Session::getUser();
+        if(empty($node)) $node = Config::get('current_node');
+        if(Session::isLogged()) {
+            if(!is_array($role)) $role = [$role];
+            return $user->hasRoleInNode($node, $role);
+        }
+        return false;
+    }
+
     // Returns if the user can admin anything or not
     public function is_admin() {
         if(Session::isLogged()) {
@@ -135,9 +147,9 @@ class GoteoCore implements ExtensionInterface
 
     // Returns if the user can admin some specific module
     public function is_module_admin($subcontroller, $node = null, \Goteo\Model\User $user = null) {
+        if(empty($node)) $node = Config::get('current_node');
+        if(empty($user)) $user = Session::getUser();
         if(Session::isLogged()) {
-            if(empty($node)) $node = Config::get('current_node');
-            if(empty($user)) $user = Session::getUser();
             $class = '\Goteo\Controller\Admin\\' . ucfirst($subcontroller) . 'SubController';
             // Silent false return on missing class
             if( ! class_exists($class) ) return false;

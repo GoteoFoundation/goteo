@@ -1,14 +1,14 @@
 <?php
 
-use Goteo\Library\Text,
-    Goteo\Library\SuperForm,
-    Goteo\Core\View;
 
-$contract = $vars['contract'];
-$errors = $contract->errors[$vars['step']] ?: array();
-$okeys  = $contract->okeys[$vars['step']] ?: array();
+$this->layout('contract/edit');
 
-$hint = ($contract->type == 0) ? Text::get('guide-contract-no_entity') : Text::get('guide-contract-entity');
+$contract = $this->contract;
+$step = $this->step;
+$errors = $contract->errors[$step] ?: array();
+$okeys  = $contract->okeys[$step] ?: array();
+
+$hint = ($contract->type == 0) ? $this->text('guide-contract-no_entity') : $this->text('guide-contract-entity');
 
 // captions segun tipo (tambien campos segun tipo
 switch ($contract->type) {
@@ -17,7 +17,7 @@ switch ($contract->type) {
         $regfields = array(
             'reg_name' => array(
                     'type'      => 'textbox',
-                    'title'     => Text::get('contract-field-reg_name_1'),
+                    'title'     => $this->text('contract-field-reg_name_1'),
                     'required'  => true,
                     'value'     => $contract->reg_name,
                     'errors'    => !empty($errors['reg_name']) ? array($errors['reg_name']) : array(),
@@ -31,7 +31,7 @@ switch ($contract->type) {
 
             'reg_number' => array(
                 'type'      => 'textbox',
-                'title'     => Text::get('contract-field-reg_number_1'),
+                'title'     => $this->text('contract-field-reg_number_1'),
                 'required'  => true,
                 'value'     => $contract->reg_number,
                 'errors'    => !empty($errors['reg_number']) ? array($errors['reg_number']) : array(),
@@ -60,7 +60,7 @@ switch ($contract->type) {
         $regfields = array(
             'reg_name' => array(
                     'type'      => 'textbox',
-                    'title'     => Text::get('contract-field-reg_name_2'),
+                    'title'     => $this->text('contract-field-reg_name_2'),
                     'required'  => true,
                     'value'     => $contract->reg_name,
                     'errors'    => !empty($errors['reg_name']) ? array($errors['reg_name']) : array(),
@@ -69,7 +69,7 @@ switch ($contract->type) {
 
             'reg_number' => array(
                     'type'      => 'textbox',
-                    'title'     => Text::get('contract-field-reg_number_2'),
+                    'title'     => $this->text('contract-field-reg_number_2'),
                     'required'  => true,
                     'value'     => $contract->reg_number,
                     'errors'    => !empty($errors['reg_number']) ? array($errors['reg_number']) : array(),
@@ -78,7 +78,7 @@ switch ($contract->type) {
 
             'reg_idname' => array(
                     'type'      => 'textbox',
-                    'title'     => Text::get('contract-field-reg_idname_2'),
+                    'title'     => $this->text('contract-field-reg_idname_2'),
                     'required'  => true,
                     'value'     => $contract->reg_idname,
                     'errors'    => !empty($errors['reg_idname']) ? array($errors['reg_idname']) : array(),
@@ -87,7 +87,7 @@ switch ($contract->type) {
 
             'reg_id' => array(
                     'type'      => 'textbox',
-                    'title'     => Text::get('contract-field-reg_id_2'),
+                    'title'     => $this->text('contract-field-reg_id_2'),
                     'required'  => true,
                     'value'     => $contract->reg_id,
                     'errors'    => !empty($errors['reg_id']) ? array($errors['reg_id']) : array(),
@@ -96,7 +96,7 @@ switch ($contract->type) {
 
             'reg_idloc' => array(
                 'type'      => 'textbox',
-                'title'     => Text::get('contract-field-reg_idloc_2'),
+                'title'     => $this->text('contract-field-reg_idloc_2'),
                 'required'  => true,
                 'value'     => $contract->reg_idloc,
                 'errors'    => !empty($errors['reg_idloc']) ? array($errors['reg_idloc']) : array(),
@@ -107,7 +107,7 @@ switch ($contract->type) {
                 'type'      => 'datebox',
                 'required'  => true,
                 'size'      => 8,
-                'title'     => Text::get('contract-field-reg_date_2'),
+                'title'     => $this->text('contract-field-reg_date_2'),
                 'errors'    => !empty($errors['reg_date']) ? array($errors['reg_date']) : array(),
                 'ok'        => !empty($okeys['reg_date']) ? array($okeys['reg_date']) : array(),
                 'value'     => $contract->reg_date
@@ -155,19 +155,21 @@ if ($contract->type == 0) {
                 'type'      => 'group',
                 'children'  => array(
                     'errors' => array(
-                        'title' => Text::get('form-footer-errors_title'),
-                        'view'  => new View('contract/edit/errors.html.php', array(
+                        'title' => $this->text('form-footer-errors_title'),
+                        'content'  => $this->insert('contract/partials/errors', array(
                             'contract'   => $contract,
-                            'step'      => $vars['step']
+                            'step'      => $step
                         ))
                     ),
                     'buttons'  => array(
                         'type'  => 'group',
                         'children' => array(
                             'next' => array(
-                                'type'  => 'submit',
-                                'name'  => 'view-step-accounts',
-                                'label' => Text::get('form-next-button'),
+                                'type'  => 'Button',
+                                'buttontype'  => 'submit',
+                                'name'  => 'step',
+                                'value'  => 'accounts',
+                                'label' => $this->text('form-next-button'),
                                 'class' => 'next'
                             )
                         )
@@ -189,8 +191,8 @@ if ($contract->type == 0) {
         'entity_name' => array(
             'type'      => 'textbox',
             'required'  => true,
-            'title'     => Text::get('personal-field-entity_name'),
-            'hint'      => Text::get('tooltip-contract-entity_name'),
+            'title'     => $this->text('personal-field-entity_name'),
+            'hint'      => $this->text('tooltip-contract-entity_name'),
             'errors'    => !empty($errors['entity_name']) ? array($errors['entity_name']) : array(),
             'ok'        => !empty($okeys['entity_name']) ? array($okeys['entity_name']) : array(),
             'value'     => $contract->entity_name
@@ -200,8 +202,8 @@ if ($contract->type == 0) {
             'type'      => 'textbox',
             'class'     => 'inline',
             'required'  => true,
-            'title'     => Text::get('personal-field-entity_cif'),
-            'hint'      => Text::get('tooltip-contract-entity_cif'),
+            'title'     => $this->text('personal-field-entity_cif'),
+            'hint'      => $this->text('tooltip-contract-entity_cif'),
             'errors'    => !empty($errors['entity_cif']) ? array($errors['entity_cif']) : array(),
             'ok'        => !empty($okeys['entity_cif']) ? array($okeys['entity_cif']) : array(),
             'value'     => $contract->entity_cif
@@ -211,8 +213,8 @@ if ($contract->type == 0) {
         'office' => array(
             'type'      => 'textbox',
             'required'  => true,
-            'title'     => Text::get('personal-field-entity_office'),
-            'hint'      => Text::get('tooltip-contract-entity_office'),
+            'title'     => $this->text('personal-field-entity_office'),
+            'hint'      => $this->text('tooltip-contract-entity_office'),
             'errors'    => !empty($errors['office']) ? array($errors['office']) : array(),
             'ok'        => !empty($okeys['office']) ? array($okeys['office']) : array(),
             'value'     => $contract->office
@@ -221,14 +223,14 @@ if ($contract->type == 0) {
         /* Domicilio */
         'entity' => array(
             'type'      => 'group',
-            'title'     => Text::get('personal-field-post_address'),
+            'title'     => $this->text('personal-field-post_address'),
             'children'  => array(
 
                 'entity_address' => array(
                     'type'      => 'textbox',
                     'class'     => 'inline',
                     'required'  => true,
-                    'title'     => Text::get('personal-field-address'),
+                    'title'     => $this->text('personal-field-address'),
                     'errors'    => !empty($errors['entity_address']) ? array($errors['entity_address']) : array(),
                     'ok'        => !empty($okeys['entity_address']) ? array($okeys['entity_address']) : array(),
                     'value'     => $contract->entity_address
@@ -238,7 +240,7 @@ if ($contract->type == 0) {
                     'type'      => 'textbox',
                     'class'     => 'inline',
                     'required'  => true,
-                    'title'     => Text::get('contract-field-location'),
+                    'title'     => $this->text('contract-field-location'),
                     'errors'    => !empty($errors['entity_location']) ? array($errors['entity_location']) : array(),
                     'ok'        => !empty($okeys['entity_location']) ? array($okeys['entity_location']) : array(),
                     'value'     => $contract->entity_location
@@ -248,7 +250,7 @@ if ($contract->type == 0) {
                     'type'      => 'textbox',
                     'class'     => 'inline',
                     'required'  => true,
-                    'title'     => Text::get('personal-field-region'),
+                    'title'     => $this->text('personal-field-region'),
                     'errors'    => !empty($errors['entity_region']) ? array($errors['entity_region']) : array(),
                     'ok'        => !empty($okeys['entity_region']) ? array($okeys['entity_region']) : array(),
                     'value'     => $contract->entity_region
@@ -258,7 +260,7 @@ if ($contract->type == 0) {
                     'type'      => 'textbox',
                     'class'     => 'inline',
                     'required'  => true,
-                    'title'     => Text::get('personal-field-zipcode'),
+                    'title'     => $this->text('personal-field-zipcode'),
                     'size'      => 7,
                     'errors'    => !empty($errors['entity_zipcode']) ? array($errors['entity_zipcode']) : array(),
                     'ok'        => !empty($okeys['entity_zipcode']) ? array($okeys['entity_zipcode']) : array(),
@@ -269,7 +271,7 @@ if ($contract->type == 0) {
                     'type'      => 'textbox',
                     'class'     => 'inline',
                     'required'  => true,
-                    'title'     => Text::get('personal-field-country'),
+                    'title'     => $this->text('personal-field-country'),
                     'errors'    => !empty($errors['entity_country']) ? array($errors['entity_country']) : array(),
                     'ok'        => !empty($okeys['entity_country']) ? array($okeys['entity_country']) : array(),
                     'value'     => $contract->entity_country
@@ -281,7 +283,7 @@ if ($contract->type == 0) {
         /* Registro */
         'regdata' => array(
             'type'      => 'group',
-            'title'     => Text::get('contract-field-regdata'),
+            'title'     => $this->text('contract-field-regdata'),
             'children'  => $regfields
         ),
 
@@ -289,19 +291,21 @@ if ($contract->type == 0) {
             'type'      => 'group',
             'children'  => array(
                 'errors' => array(
-                    'title' => Text::get('form-footer-errors_title'),
-                    'view'  => new View('contract/edit/errors.html.php', array(
+                    'title' => $this->text('form-footer-errors_title'),
+                    'content'  => $this->insert('contract/partials/errors', array(
                         'contract'   => $contract,
-                        'step'      => $vars['step']
+                        'step'      => $step
                     ))
                 ),
                 'buttons'  => array(
                     'type'  => 'group',
                     'children' => array(
                         'next' => array(
-                            'type'  => 'submit',
-                            'name'  => 'view-step-accounts',
-                            'label' => Text::get('form-next-button'),
+                            'type'  => 'Button',
+                            'buttontype'  => 'submit',
+                            'name'  => 'step',
+                            'value'  => 'accounts',
+                            'label' => $this->text('form-next-button'),
                             'class' => 'next'
                         )
                     )
@@ -314,12 +318,16 @@ if ($contract->type == 0) {
 }
 
 
-echo SuperForm::get(array(
+$this->section('contract-edit-step');
 
-    'level'         => $vars['level'],
+echo \Goteo\Library\SuperForm::get(array(
+
+    'level'         => 3,
     'method'        => 'post',
-    'title'         => Text::get('contract-step-entity'),
+    'title'         => $this->text('contract-step-entity'),
     'hint'          => $hint,
     'elements'      => $elements
     )
 );
+
+$this->replace();
