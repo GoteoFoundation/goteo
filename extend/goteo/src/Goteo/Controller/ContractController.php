@@ -26,8 +26,8 @@ class ContractController extends \Goteo\Core\Controller {
     public function indexAction($id) {
 
         $contract = Model\Contract::get($id); // datos del contrato
-        if(!Session::isLogged()) {
-            Application\Message::error("You're not allowed to access here! [$id]");
+        if(!Session::isLogged() || empty($contract)) {
+            Application\Message::error("Not found contract! [$id]");
             // no lo puede ver y punto
             return $this->redirect('/');
         }
@@ -97,13 +97,9 @@ class ContractController extends \Goteo\Core\Controller {
      */
     public function rawAction ($id) {
         $user = Session::getUser();
-        if(!Session::isLogged()) {
+        if(!Session::isLogged() || $user->hasRoleInNode(Config::get('node'), [ 'superadmin', 'root'])) {
+            Application\Message::error("You're not allowed to access here! [$id]");
             // no lo puede ver y punto
-            return $this->redirect('/');
-        }
-
-        // Solo superadmin
-        if ($user->hasRoleInNode(Config::get('node'), [ 'superadmin', 'root'])) {
             return $this->redirect('/');
         }
 
@@ -130,7 +126,8 @@ class ContractController extends \Goteo\Core\Controller {
         $contract = Model\Contract::get($id);
 
         $user = Session::getUser();
-        if(!Session::isLogged()) {
+        if(!Session::isLogged() || empty($contract)) {
+            Application\Message::error("Not found contract [$id]");
             // no lo puede ver y punto
             return $this->redirect('/');
         }
