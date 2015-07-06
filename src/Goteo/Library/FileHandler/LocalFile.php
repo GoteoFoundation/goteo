@@ -294,7 +294,6 @@ class LocalFile extends BaseFile implements FileInterface {
     public function exists($filename) {
         if(!$this->connect()) return $this->throwError("connect error: " . $this->last_error);
         $filepath = $this->get_path($filename);
-
         return file_exists($filepath);
     }
 
