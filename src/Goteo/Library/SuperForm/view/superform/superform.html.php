@@ -1,5 +1,3 @@
-<?php use Goteo\Core\View; ?>
-
 <div class="superform <?php echo $this['autoupdate'] ? ' autoupdate' : '' ?><?php if (isset($this['class'])) echo ' '. htmlspecialchars($this['class']) ?>"<?php if (isset($this['id'])) echo ' id="'. htmlspecialchars($this['id']) . '"' ?>>
 
     <?php if (isset($this['title'])): ?>
@@ -12,7 +10,7 @@
     </div>
     <?php endif ?>
 
-    <?php echo View::get('superform/elements.html.php', $this['elements']) ?>
+    <?php echo \Goteo\Core\View::get('superform/elements.html.php', $this['elements']) ?>
 
     <?php if(!empty($this['footer'])): ?>
     <div class="footer">

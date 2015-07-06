@@ -361,6 +361,7 @@ class LocalFile extends BaseFile implements FileInterface {
         while($path{0} == DIRECTORY_SEPARATOR) $path = substr($path, 1);
 
         $this->path = static::$base_dir . DIRECTORY_SEPARATOR . $path;
+        if(!is_dir($this->path)) @mkdir($this->path, 0777, true);
     }
 
 }

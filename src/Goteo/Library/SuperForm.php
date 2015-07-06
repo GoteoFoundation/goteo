@@ -40,7 +40,7 @@ namespace Goteo\Library {
                              $element['type'] = '';
                          }
                          $type = $element['type'];
-                         $hack = array('hidden' => 'Hidden', 'html' => 'HTML', 'checkbox' => 'CheckBox', 'checkboxes' => 'CheckBoxes', 'datebox' => 'DateBox', 'file' => 'File', 'group' => 'Group', 'hidden' => 'Hidden', 'named' => 'Named', 'password' => 'Password', 'radio' => 'Radio', 'radios' => 'Radios', 'select' => 'Select', 'slider' => 'Slider', 'submit' => 'Submit', 'textarea' => 'TextArea', 'textbox' => 'TextBox');
+                         $hack = array('hidden' => 'Hidden', 'html' => 'HTML', 'checkbox' => 'CheckBox', 'checkboxes' => 'CheckBoxes', 'datebox' => 'DateBox', 'file' => 'File', 'group' => 'Group', 'hidden' => 'Hidden', 'named' => 'Named', 'password' => 'Password', 'radio' => 'Radio', 'radios' => 'Radios', 'select' => 'Select', 'slider' => 'Slider', 'submit' => 'Submit', 'textarea' => 'TextArea', 'textbox' => 'TextBox', 'button' => 'Button');
                          if($hack[$type]) {
                             $type = $hack[$type];
                          }

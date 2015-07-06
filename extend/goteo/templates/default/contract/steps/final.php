@@ -1,28 +1,29 @@
 <?php
 
-use Goteo\Core\View,
-    Goteo\Library\Text,
-    Goteo\Library\SuperForm;
+$this->layout('contract/edit');
 
-$contract = $vars['contract'];
+$contract = $this->contract;
+$step = $this->step;
+$steps = $this->steps;
+
 $errors = $contract->errors ?: array();
 
 // miramos el pruimer paso con errores para mandarlo a ese
-$goto = 'view-step-promoter';
-foreach ($vars['steps'] as $id => $data) {
-
-    if (empty($step) && !empty($contract->errors[$id])) {
-        $goto = 'view-step-' . $id;
+$goto = 'promoter';
+foreach($errors as $id => $err)  {
+    if($err) {
+        $goto = $id;
         break;
     }
 }
-
 // boton de revisar sirve para volver al principio del formulario
 $buttons = array(
     'review' => array(
-        'type'  => 'submit',
-        'name'  => $goto,
-        'label' => Text::get('form-self_review-button'),
+        'type'  => 'Button',
+        'buttontype'  => 'submit',
+        'name'  => 'step',
+        'value'  => $goto,
+        'label' => $this->text('form-self_review-button'),
         'class' => 'retry'
     )
 );
@@ -58,7 +59,7 @@ $elements      = array(
         'html'      =>   '<div class="contract-final" style="position: relative"><div>'
                        . '<div class="overlay" style="position: absolute; left: 0; top: 0; right: 0; bottom: 0; z-index: 999"></div>'
                        . '<div style="z-index: 0">'
-                       . View::get('contract/widget/review.html.php', array('contract' => $contract))
+                       . \Goteo\Core\View::get('contract/widget/review.html.php', array('contract' => $contract))
                        . '</div>'
                        . '</div></div>'
     )
@@ -70,10 +71,10 @@ if (!$contract->status->owner) {
         'type'      => 'Group',
         'children'  => array(
             'errors' => array(
-                'title' => Text::get('form-footer-errors_title'),
-                'view'  => new View('contract/edit/errors.html.php', array(
+                'title' => $this->text('form-footer-errors_title'),
+                'content'  => $this->insert('contract/partials/errors', array(
                     'contract'   => $contract,
-                    'step'      => $vars['step']
+                    'step'      => $step
                 ))
             ),
             'buttons'  => array(
@@ -85,12 +86,17 @@ if (!$contract->status->owner) {
     );
 }
 
+
+$this->section('contract-edit-step');
+
 // lanzamos el superform
-echo SuperForm::get(array(
+echo \Goteo\Library\SuperForm::get(array(
     'action'        => '',
-    'level'         => $vars['level'],
+    'level'         => 3,
     'method'        => 'post',
-    'title'         => Text::get('contract-step-final'),
-    'hint'          => Text::get('guide-contract-final'),
+    'title'         => $this->text('contract-step-final'),
+    'hint'          => $this->text('guide-contract-final'),
     'elements'      => $elements
 ));
+
+$this->replace();
