@@ -53,7 +53,7 @@ class FileTest extends \PHPUnit_Framework_TestCase {
      * @depends testFactory
      */
     public function testDontExistFirst($fp) {
-        $this->assertFalse($fp->exists($test_img));
+        $this->assertFalse($fp->exists(self::$test_img));
         return $fp;
     }
 

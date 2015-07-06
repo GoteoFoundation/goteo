@@ -12,7 +12,7 @@ use Goteo\Application\Session,
     Goteo\Application,
     Goteo\Library\Feed,
     Goteo\Library\PDFContract,
-    Goteo\Library\Mail,
+    Goteo\Library,
     Goteo\Model;
 
 class ContractController extends \Goteo\Core\Controller {
@@ -389,7 +389,7 @@ class ContractController extends \Goteo\Core\Controller {
                 $contract->status = Model\Contract::getStatus($contract->project);
 
                 // mail de aviso
-                $mailHandler = new Mail();
+                $mailHandler = new Library\Mail();
                 $mailHandler->to = (defined('GOTEO_MANAGER_MAIL')) ? \GOTEO_MANAGER_MAIL : \GOTEO_CONTACT_MAIL;
                 $mailHandler->toName = 'Goteo.org';
                 $mailHandler->subject = 'Han cerrado los datos del contrato de ' . $contract->project_name;
