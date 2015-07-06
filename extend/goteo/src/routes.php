@@ -81,7 +81,8 @@ $custom_routes->add('contract-raw', new Route(
 // Download PDF
 $custom_routes->add('contract-view', new Route(
     '/contract/{id}',
-    array('_controller' => 'Goteo\Controller\ContractController::indexAction'
+    array('_controller' => 'Goteo\Controller\ContractController::indexAction',
+        'id' => null
         )
 ));
 
