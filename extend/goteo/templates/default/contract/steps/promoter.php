@@ -1,19 +1,26 @@
 <?php
 
-use Goteo\Library\Text,
-    Goteo\Library\SuperForm,
-    Goteo\Core\View;
+use Goteo\Core\View;
 
-$contract = $vars['contract'];
-$errors = $contract->errors[$vars['step']] ?: array();
-$okeys  = $contract->okeys[$vars['step']] ?: array();
 
-echo SuperForm::get(array(
+$this->layout('contract/edit');
 
-    'level'         => $vars['level'],
+
+$contract = $this->contract;
+$step = $this->step;
+
+$errors = $contract->errors[$step] ?: array();
+$okeys  = $contract->okeys[$step] ?: array();
+// print_r($errors);die;
+
+$this->section('contract-edit-step');
+
+echo \Goteo\Library\SuperForm::get(array(
+
+    'level'         => 3,
     'method'        => 'post',
-    'title'         => Text::get('contract-step-promoter'),
-    'hint'          => Text::get('guide-contract-promoter'),
+    'title'         => $this->text('contract-step-promoter'),
+    'hint'          => $this->text('guide-contract-promoter'),
     'elements'      => array(
         'process_promoter' => array (
             'type' => 'hidden',
@@ -23,15 +30,15 @@ echo SuperForm::get(array(
         /* Radio Tipo de persona */
         'contract_entity-radioset' => array(
             'type'      => 'group',
-            'title'     => Text::get('personal-field-contract_entity'),
-            'hint'     => Text::get('tooltip-project-contract_entity'),
+            'title'     => $this->text('personal-field-contract_entity'),
+            'hint'     => $this->text('tooltip-project-contract_entity'),
             'children'  => array(
                 'type-person' =>  array(
                     'name'  => 'type',
                     'value' => 0,
                     'type'  => 'radio',
                     'class' => 'inline',
-                    'label' => Text::get('contract-entity-option_0'),
+                    'label' => $this->text('contract-entity-option_0'),
                     'checked' => $contract->type == 0,
                 ),
                 'type-association' =>  array(
@@ -39,7 +46,7 @@ echo SuperForm::get(array(
                     'value' => 1,
                     'type'  => 'radio',
                     'class' => 'inline',
-                    'label' => Text::get('contract-entity-option_1'),
+                    'label' => $this->text('contract-entity-option_1'),
                     'checked' => $contract->type == 1,
                 ),
                 'type-bussines' =>  array(
@@ -47,7 +54,7 @@ echo SuperForm::get(array(
                     'value' => 2,
                     'type'  => 'radio',
                     'class' => 'inline',
-                    'label' => Text::get('contract-entity-option_2'),
+                    'label' => $this->text('contract-entity-option_2'),
                     'checked' => $contract->type == 2,
                 )
             )
@@ -57,8 +64,8 @@ echo SuperForm::get(array(
             'type'      => 'textbox',
             'class'     => 'inline',
             'required'  => true,
-            'title'     => Text::get('personal-field-contract_name'),
-            'hint'     => Text::get('tooltip-project-contract_name'),
+            'title'     => $this->text('personal-field-contract_name'),
+            'hint'     => $this->text('tooltip-project-contract_name'),
             'errors'    => !empty($errors['name']) ? array($errors['name']) : array(),
             'ok'        => !empty($okeys['name']) ? array($okeys['name']) : array(),
             'value'     => $contract->name
@@ -68,8 +75,8 @@ echo SuperForm::get(array(
             'type'      => 'textbox',
             'class'     => 'inline',
             'required'  => true,
-            'title'     => Text::get('personal-field-contract_nif'),
-            'hint'     => Text::get('tooltip-project-contract_nif'),
+            'title'     => $this->text('personal-field-contract_nif'),
+            'hint'     => $this->text('tooltip-project-contract_nif'),
             'errors'    => !empty($errors['nif']) ? array($errors['nif']) : array(),
             'ok'        => !empty($okeys['nif']) ? array($okeys['nif']) : array(),
             'value'     => $contract->nif
@@ -79,8 +86,8 @@ echo SuperForm::get(array(
             'type'      => 'datebox',
             'required'  => true,
             'size'      => 8,
-            'title'     => Text::get('personal-field-contract_birthdate'),
-            'hint'      => Text::get('tooltip-project-contract_birthdate'),
+            'title'     => $this->text('personal-field-contract_birthdate'),
+            'hint'      => $this->text('tooltip-project-contract_birthdate'),
             'errors'    => !empty($errors['birthdate']) ? array($errors['birthdate']) : array(),
             'ok'        => !empty($okeys['birthdate']) ? array($okeys['birthdate']) : array(),
             'value'     => $contract->birthdate
@@ -89,14 +96,14 @@ echo SuperForm::get(array(
         /* Domicilio fiscal */
         'fiscaladdr' => array(
             'type'      => 'group',
-            'title'     => Text::get('personal-field-main_address'),
+            'title'     => $this->text('personal-field-main_address'),
             'children'  => array(
 
                 'address' => array(
                     'type'      => 'textbox',
                     'class'     => 'inline',
                     'required'  => true,
-                    'title'     => Text::get('personal-field-address'),
+                    'title'     => $this->text('personal-field-address'),
                     'errors'    => !empty($errors['address']) ? array($errors['address']) : array(),
                     'ok'        => !empty($okeys['address']) ? array($okeys['address']) : array(),
                     'value'     => $contract->address
@@ -106,7 +113,7 @@ echo SuperForm::get(array(
                     'type'      => 'textbox',
                     'class'     => 'inline',
                     'required'  => true,
-                    'title'     => Text::get('contract-field-location'),
+                    'title'     => $this->text('contract-field-location'),
                     'errors'    => !empty($errors['location']) ? array($errors['location']) : array(),
                     'ok'        => !empty($okeys['location']) ? array($okeys['location']) : array(),
                     'value'     => $contract->location
@@ -116,7 +123,7 @@ echo SuperForm::get(array(
                     'type'      => 'textbox',
                     'class'     => 'inline',
                     'required'  => true,
-                    'title'     => Text::get('personal-field-region'),
+                    'title'     => $this->text('personal-field-region'),
                     'errors'    => !empty($errors['region']) ? array($errors['region']) : array(),
                     'ok'        => !empty($okeys['region']) ? array($okeys['region']) : array(),
                     'value'     => $contract->region
@@ -126,7 +133,7 @@ echo SuperForm::get(array(
                     'type'      => 'textbox',
                     'class'     => 'inline',
                     'required'  => true,
-                    'title'     => Text::get('personal-field-zipcode'),
+                    'title'     => $this->text('personal-field-zipcode'),
                     'size'      => 7,
                     'errors'    => !empty($errors['zipcode']) ? array($errors['zipcode']) : array(),
                     'ok'        => !empty($okeys['zipcode']) ? array($okeys['zipcode']) : array(),
@@ -137,7 +144,7 @@ echo SuperForm::get(array(
                     'type'      => 'textbox',
                     'class'     => 'inline',
                     'required'  => true,
-                    'title'     => Text::get('personal-field-country'),
+                    'title'     => $this->text('personal-field-country'),
                     'errors'    => !empty($errors['country']) ? array($errors['country']) : array(),
                     'ok'        => !empty($okeys['country']) ? array($okeys['country']) : array(),
                     'value'     => $contract->country
@@ -149,19 +156,18 @@ echo SuperForm::get(array(
             'type'      => 'group',
             'children'  => array(
                 'errors' => array(
-                    'title' => Text::get('form-footer-errors_title'),
-                    'view'  => new View('contract/edit/errors.html.php', array(
-                        'contract'   => $contract,
-                        'step'      => $vars['step']
-                    ))
+                    'title' => $this->text('form-footer-errors_title'),
+                    'content'  => $this->insert('contract/partials/errors', [ 'contract' => $contract, 'step' => $step ])
                 ),
                 'buttons'  => array(
                     'type'  => 'group',
                     'children' => array(
                         'next' => array(
-                            'type'  => 'submit',
-                            'name'  => 'view-step-entity',
-                            'label' => Text::get('form-next-button'),
+                            'type'  => 'Button',
+                            'buttontype'  => 'submit',
+                            'name'  => 'step',
+                            'value'  => 'entity',
+                            'label' => $this->text('form-next-button'),
                             'class' => 'next'
                         )
                     )
@@ -173,3 +179,5 @@ echo SuperForm::get(array(
     )
 
 ));
+
+$this->replace();

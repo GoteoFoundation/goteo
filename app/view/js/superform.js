@@ -170,8 +170,8 @@
 
             //verificar si existe dicho elemento
             if( ! new_el.attr('id')) {
-                // alert('Error, the expected id is not present in html response!');
-                goteo.trace('superform', 'Trigger: superform.dom.error', ' element:', t);
+                // alert('Error, the expected id ['+new_el.attr('id')+'] is not present in html response!');
+                goteo.trace('superform', 'Trigger: superform.dom.error', ' element:', t, 'new_el:', new_el, 'html:', html);
                 t.trigger('superform.dom.error', [html, new_el]);
                 t.trigger('superform.dom.done', [html, new_el]);
                 return false;

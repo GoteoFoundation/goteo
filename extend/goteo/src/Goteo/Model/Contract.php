@@ -206,7 +206,6 @@ namespace Goteo\Model {
                 // cargamos los documentos
                 $contract->docs = Contract\Document::getDocs($id);
 
-
                 return $contract;
             } else {
                 // aun no tenemos datos de contrato

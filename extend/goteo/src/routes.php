@@ -63,6 +63,29 @@ $custom_routes->add('calendar', new Route(
     array('_controller' => 'Goteo\Controller\CalendarController::indexAction')
 ));
 
+// Contracts
+$custom_routes->add('contract-edit', new Route(
+    '/contract/edit/{id}/{step}',
+    array('_controller' => 'Goteo\Controller\ContractController::editAction',
+        'step' => 'promoter'
+        )
+));
+
+// Dirty method...
+$custom_routes->add('contract-raw', new Route(
+    '/contract/raw/{id}',
+    array('_controller' => 'Goteo\Controller\ContractController::rawAction'
+        )
+));
+
+// Download PDF
+$custom_routes->add('contract-view', new Route(
+    '/contract/{id}',
+    array('_controller' => 'Goteo\Controller\ContractController::indexAction',
+        'id' => null
+        )
+));
+
 // Adding Default routes
 $main_routes = include(__DIR__ . '/../../../src/routes.php');
 $custom_routes->addCollection($main_routes);
