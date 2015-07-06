@@ -417,8 +417,7 @@ class ProjectsSubController extends AbstractSubController {
 
 
     public function datesAction($id = null, $subaction = null) {
-        // Project && permission check
-        $project = $this->getProject($id, 'edit');
+        
         if($this->isPost()) {
             $fields = array(
                 'created',
@@ -430,22 +429,25 @@ class ProjectsSubController extends AbstractSubController {
                 );
 
             $set = '';
-            $values = array(':id' => $project->id);
+            $values = array(':id' => $id);
 
             foreach ($fields as $field) {
                 $val = $this->getPost($field);
                 if (empty($val) || $val === '0000-00-00')
                     $val = null;
-                //validate date
-                $d = \DateTime::createFromFormat('Y-m-d', $val);
-                if($d && $d->format('Y-m-d') == $val) {
-                    $values[":$field"] = $val;
-                    if ($set != '') $set .= ", ";
-                    $set .= "`$field` = :$field ";
-                }
-                else {
-                    Message::error("Date format error in [$val]");
+                if(!is_null($val))
+                {
+                    //validate date
+                    $d = \DateTime::createFromFormat('Y-m-d', $val);
+                    if($d && $d->format('Y-m-d') == $val) {
+                        $values[":$field"] = $val;
+                        if ($set != '') $set .= ", ";
+                        $set .= "`$field` = :$field ";
+                    }
+                    else {
+                        Message::error("Error en formato de fecha [$val]");
 
+                    }
                 }
             }
 
@@ -453,10 +455,12 @@ class ProjectsSubController extends AbstractSubController {
                 $sql = "UPDATE project SET " . $set . " WHERE id = :id";
                 if (Model\Project::query($sql, $values)) {
                     $log_text = 'El admin %s ha <span class="red">tocado las fechas</span> del proyecto '.$project->name.' %s';
+                    
                 } else {
                     $log_text = 'Al admin %s le ha <span class="red">fallado al tocar las fechas</span> del proyecto '.$project->name.' %s';
                 }
 
+                $project = $this->getProject($id, 'edit');
                 // feed this action
                 $this->doFeed($project, $log_text);
 
@@ -464,6 +468,8 @@ class ProjectsSubController extends AbstractSubController {
                 Message::error("Ha fallado! " . $e->getMessage());
             }
         }
+        else
+            $project = $this->getProject($id, 'edit');
         // cambiar fechas
         return array(
                 'template' => 'admin/projects/dates',
