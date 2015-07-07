@@ -14,10 +14,10 @@ CREATE TABLE IF NOT EXISTS `user_donation` (
 
 
 -- Campos de control
-ALTER TABLE `user_donation` 
+ALTER TABLE `user_donation`
 	ADD `edited` INT( 1 ) NULL DEFAULT '0' COMMENT 'Revisados por el usuario',
 	ADD `confirmed` INT( 1 ) NULL DEFAULT '0' COMMENT 'Certificado generado';
-	
+
 -- el archivo del certificado asociado
 ALTER TABLE `user_donation` ADD `pdf` VARCHAR( 255 ) NULL COMMENT 'nombre del archivo de certificado';
 
@@ -29,3 +29,6 @@ ALTER TABLE `user_donation` ADD `region` VARCHAR( 255 ) CHARACTER SET utf8 COLLA
 
 -- nombre pais
 ALTER TABLE `user_donation` ADD `countryname` VARCHAR( 255 ) CHARACTER SET utf8 COLLATE utf8_general_ci NULL COMMENT 'Nombre del pais' AFTER `country` ;
+
+-- constrains
+ALTER TABLE `user_donation` ADD FOREIGN KEY (`user`) REFERENCES `user`(`id`) ON UPDATE CASCADE ON DELETE RESTRICT;

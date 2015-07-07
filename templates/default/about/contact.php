@@ -1,67 +1,57 @@
 <?php
 
-use Goteo\Library\Page,
-    Goteo\Library\Text;
-
-$page = Page::get('contact');
+$page = $this->page;
 $tags = $this->tags;
 
-$showCaptcha = $this->showCaptcha;
+$captcha = $this->captcha;
 
-$_SESSION['msg_token'] = uniqid(rand(), true);
 
-if ($showCaptcha) {
-    // recaptcha
-    require_once __DIR__ . '/../../../src/Goteo/Library/recaptchalib/recaptchalib.php';
-
-    $RECAPTCHA = (\HTTPS_ON) ? RECAPTCHA_API_SECURE_SERVER : RECAPTCHA_API_SERVER;
-    $RECAPTCHA .= '/challenge?k='. RECAPTCHA_PUBLIC_KEY;
-}
-
-$this->layout("layout", [
+$this->layout('layout', [
     'bodyClass' => 'about',
     'title' => $this->text('meta-title-contact'),
     'meta_description' => $this->text('meta-description-contact')
     ]);
 
-$this->section('content');
-
 ?>
-<style>#recaptcha_widget_div{display:none;}</style>
-<?php if (\Goteo\Application\Config::isMasterNode()) : ?>
+
+<?php $this->section('subheader') ?>
+<?php if ($this->is_master_node()) : ?>
     <div id="sub-header">
         <div>
-            <h2><?php echo $page->description; ?></h2>
+            <h2><?= $page->description ?></h2>
         </div>
     </div>
-<?php endif; ?>
+<?php endif ?>
+<?php $this->replace() ?>
+
+<?php $this->section('content') ?>
 
     <div id="main">
 
         <div class="widget contact-message">
-            <h3 class="title"><?php echo $page->name; ?></h3>
+            <h3 class="title"><?= $page->name ?></h3>
 
-            <?php if (!empty($this->errors)) : ?>
+            <?php if ($this->errors) : ?>
                 <p style="color:red;">
-                    <?php echo implode('<br />', $this->errors); ?>
+                    <?= implode('<br />', $this->errors) ?>
                 </p>
-            <?php endif; ?>
+            <?php endif ?>
 
             <div style="float:left;width: 450px;">
                 <form method="post" action="/contact">
-                    <input type="hidden" id="msg_token" name="msg_token" value="<?php echo $_SESSION['msg_token'] ; ?>" />
+                    <input type="hidden" name="form-token" value="<?= $this->token ?>">
                     <table>
                         <tr>
                             <td>
                                 <div class="field">
-                                    <label for="name"><?= $this->text('contact-name-field'); ?></label><br />
-                                    <input class="short" type="text" id="name" name="name" value="<?php echo $this->data['name'] ?>"/>
+                                    <label for="name"><?= $this->text('contact-name-field') ?></label><br />
+                                    <input class="short" type="text" id="name" name="name" value="<?= $this->data['name'] ?>"/>
                                 </div>
                             </td>
                             <td>
                                 <div class="field">
-                                    <label for="email"><?= $this->text('contact-email-field'); ?></label><br />
-                                    <input class="short" type="text" id="email" name="email" value="<?php echo $this->data['email'] ?>"/>
+                                    <label for="email"><?= $this->text('contact-email-field') ?></label><br />
+                                    <input class="short" type="text" id="email" name="email" value="<?= $this->data['email'] ?>"/>
                                 </div>
                             </td>
                         </tr>
@@ -69,7 +59,7 @@ $this->section('content');
                         <tr>
                             <td colspan="2">
                                 <div class="field">
-                                    <label for="tag"><?= $this->text('contact-tag-field'); ?></label><br />
+                                    <label for="tag"><?= $this->text('contact-tag-field') ?></label><br />
                                     <select name="tag" id="tag">
                                         <?php foreach ($tags as $key => $val) {
                                             $sel = ($key == $this->data['tag']) ? ' selected="selected"' : '';
@@ -79,50 +69,48 @@ $this->section('content');
                                 </div>
                             </td>
                         </tr>
-                        <?php endif; ?>
+                        <?php endif ?>
                         <tr>
                             <td colspan="2">
                                 <div class="field">
-                                    <label for="subject"><?= $this->text('contact-subject-field'); ?></label><br />
-                                    <input type="text" id="subject" name="subject" value="<?= $this->data['subject'] ?>"/>
+                                    <label for="subject"><?= $this->text('contact-subject-field') ?></label><br />
+                                    <input type="text" id="subject" name="subject" value="<?= $this->data['subject'] ?>">
                                 </div>
                             </td>
                         </tr>
                         <tr>
                             <td colspan="2">
                                 <div class="field">
-                                    <label for="message"><?= $this->text('contact-message-field'); ?></label><br />
+                                    <label for="message"><?= $this->text('contact-message-field') ?></label><br />
                                     <textarea id="message" name="message" cols="50" rows="5"><?= $this->data['message'] ?></textarea>
                                 </div>
                             </td>
                         </tr>
 
-                        <?php if ($showCaptcha) { ?>
+                        <?php if ($captcha) { ?>
                         <tr>
                             <td colspan="2">
                                 <div class="field">
-                                    <label for="recaptcha_response"><?= $this->text('contact-captcha-field'); ?></label><br />
-                                    <input type="text" id="recaptcha_response" name="recaptcha_response" value=""/>
+                                    <label for="recaptcha_response"><?= $this->text('contact-captcha-field') ?></label><br />
+                                    <input type="text" id="captcha_response" name="captcha_response" value="">
                                 </div>
                             </td>
                         </tr>
                         <?php } ?>
                     </table>
 
-                    <?php if ($showCaptcha) { ?>
-                    <!--reCAPTCHA -->
-                    <div id="recaptcha_image"></div><a href="javascript:Recaptcha.reload()"><?php echo $this->text('contact-captcha-refresh'); ?></a>
-                    <script type="text/javascript" src="<?php echo $RECAPTCHA; ?>"></script>
+                    <?php if ($captcha) { ?>
+                    <div id="recaptcha_image"></div><a href="#reload" id="reloadCaptcha"><?= $this->text('contact-captcha-refresh') ?></a>
+                    <img id="captchaImage" src="<?= $captcha->inline() ?>" alt="captcha">
                     <br />
-                    <!-- fin reCAPTCHA -->
                     <?php } ?>
 
-                    <button class="aqua" name="send" type="submit"><?php echo $this->text('contact-send_message-button'); ?></button>
+                    <button class="aqua" name="send" type="submit"><?= $this->text('contact-send_message-button') ?></button>
                 </form>
             </div>
 
             <div style="float:left;width: 450px;">
-                <?php echo $page->content; ?>
+                <?= $page->content ?>
             </div>
 
         </div>
@@ -130,3 +118,18 @@ $this->section('content');
     </div>
 
 <?php $this->replace() ?>
+
+<?php $this->section('footer') ?>
+
+<script type="text/javascript">
+    $(function(){
+        $('#reloadCaptcha').click(function(e){
+            e.preventDefault();
+            $.get('/contact/captcha', function(data) {
+                $('#captchaImage').attr('src', data);
+            });
+        });
+    });
+</script>
+
+<?php $this->append() ?>

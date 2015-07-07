@@ -6,9 +6,8 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 
-use Goteo\Core\Redirection;
-use Goteo\Core\Error;
 use Goteo\Model;
+use Goteo\Application\Exception\ControllerException;
 use Goteo\Application\Config;
 use Goteo\Application\Lang;
 use Goteo\Application\View;
@@ -399,7 +398,7 @@ class UserController extends \Goteo\Core\Controller {
         else    $user = Session::getUser();
 
         if (!$user instanceof Model\User || $user->hide) {
-            throw new Error('404', Text::html('fatal-error-user'));
+            throw new ControllerException(Text::html('fatal-error-user'));
         }
 
         //--- para usuarios públicos---

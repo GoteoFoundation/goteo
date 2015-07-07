@@ -2,7 +2,6 @@
 
 use Symfony\Component\Routing\Route;
 use Symfony\Component\Routing\RouteCollection;
-use Goteo\Application\Config;
 
 $routes = new RouteCollection();
 $routes->add('home', new Route(
@@ -25,19 +24,7 @@ $routes->add('discover-view', new Route(
           '_controller' => 'Goteo\Controller\DiscoverController::viewAction',
           )
 ));
-$routes->add('discover-patron', new Route(
-    '/discover/patron/{user}',
-    array('_controller' => 'Goteo\Controller\DiscoverController::patronAction')
-));
 
-$routes->add('discover-calls', new Route(
-    '/discover/calls',
-    array('_controller' => 'Goteo\Controller\DiscoverAddonsController::callsAction')
-));
-$routes->add('discover-call', new Route(
-        '/discover/call',
-    array('_controller' => 'Goteo\Controller\DiscoverAddonsController::callAction')
-));
 $routes->add('discover', new Route(
     '/discover',
     array('_controller' => 'Goteo\Controller\DiscoverController::indexAction')
@@ -86,6 +73,22 @@ $routes->add('project-sections', new Route(
         )
 ));
 
+//// CONTACT ////
+
+//new captcha
+$routes->add('contact-captcha', new Route(
+    '/contact/captcha',
+    array(
+        '_controller' => 'Goteo\Controller\ContactController::captchaAction'
+        )
+));
+//contact form
+$routes->add('contact-form', new Route(
+    '/contact',
+    array(
+        '_controller' => 'Goteo\Controller\ContactController::indexAction'
+        )
+));
 ///// ABOUT /////
 
 $routes->add('about-sections', new Route(

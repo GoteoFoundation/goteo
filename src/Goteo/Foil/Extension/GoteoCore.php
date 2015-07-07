@@ -49,6 +49,7 @@ class GoteoCore implements ExtensionInterface
           'has_role' => [$this, 'has_role'],
           'is_admin' => [$this, 'is_admin'],
           'is_module_admin' => [$this, 'is_module_admin'],
+          'is_master_node' => [$this, 'is_master_node'],
           'get_query' => [$this, 'get_query'],
           'get_post' => [$this, 'get_post'],
           'get_pathinfo' => [$this, 'get_pathinfo'],
@@ -162,5 +163,10 @@ class GoteoCore implements ExtensionInterface
     //is logged
     public function is_logged() {
         return Session::isLogged();
+    }
+
+    //is master node
+    public function is_master_node() {
+        return Config::isMasterNode();
     }
 }

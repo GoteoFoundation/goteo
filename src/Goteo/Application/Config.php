@@ -223,8 +223,6 @@ class Config {
         define('OAUTH_TWITTER_SECRET', self::get('oauth.twitter.secret'));
         define('OAUTH_LINKEDIN_ID', self::get('oauth.linkedin.id'));
         define('OAUTH_LINKEDIN_SECRET', self::get('oauth.linkedin.secret'));
-        define('RECAPTCHA_PUBLIC_KEY', self::get('recaptcha.public'));
-        define('RECAPTCHA_PRIVATE_KEY', self::get('recaptcha.private'));
 
     }
 

@@ -77,7 +77,7 @@ namespace Goteo\Model\User {
             }
         }
 
-        /* 
+        /*
         * Listado de datos de donativos que tenemos
         * @param csv boolean si procesamos los datos para el excel
         */
@@ -252,7 +252,7 @@ namespace Goteo\Model\User {
                 return false;
             }
         }
-        
+
         /*
          * Nombre del archivo de certificado generado
          */
@@ -274,7 +274,7 @@ namespace Goteo\Model\User {
         /*
          * Nombre del archivo de certificado guardado
          */
-        public function getPdf($user, $year) {
+        static public function getPdf($user, $year) {
             try {
                 $sql = "SELECT pdf FROM user_donation WHERE user = :user AND year = :year";
                 if ($filename = self::query($sql, array(':user' => $user, 'year' => $year))) {

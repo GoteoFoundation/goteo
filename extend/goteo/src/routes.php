@@ -6,6 +6,10 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 use Goteo\Application\App;
 use Goteo\Application\Config;
 use Goteo\Application\View;
+use Goteo\Core\View as LegacyView;
+
+// Old views custom folders
+LegacyView::addViewPath(__DIR__ . '/../views');
 
 $custom_routes = new RouteCollection();
 $custom_routes->add('barcelona-node-redirection', new Route(
@@ -55,7 +59,31 @@ if(in_array(strtok($_SERVER['HTTP_HOST'], '.'), array('barcelona', 'betabarcelon
 }
 
 
+//Discover addons
+$custom_routes->add('discover-calls', new Route(
+    '/discover/calls',
+    array('_controller' => 'Goteo\Controller\DiscoverAddonsController::callsAction')
+));
+$custom_routes->add('discover-call', new Route(
+        '/discover/call',
+    array('_controller' => 'Goteo\Controller\DiscoverAddonsController::callAction')
+));
+$custom_routes->add('discover-patron', new Route(
+    '/discover/patron/{user}',
+    array('_controller' => 'Goteo\Controller\DiscoverAddonsController::patronAction')
+));
 
+
+// Document download
+$custom_routes->add('document-download', new Route(
+    '/document/{id}/{filename}',
+    array('_controller' => 'Goteo\Controller\DocumentController::indexAction',
+        'filename' => '')
+));
+$custom_routes->add('document-certs', new Route(
+    '/document/cert/{user}/{year}',
+    array('_controller' => 'Goteo\Controller\DocumentController::certAction')
+));
 
 // Calendar
 $custom_routes->add('calendar', new Route(

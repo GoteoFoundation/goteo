@@ -212,8 +212,4 @@ oauth:
         id: aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
         secret: aaaaaaaaaaaaaaaaaa
 
-# recaptcha
-recaptcha:
-    public:  aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
-    private: aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
 

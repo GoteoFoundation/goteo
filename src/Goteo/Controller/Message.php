@@ -209,7 +209,7 @@ namespace Goteo\Controller {
 
                 // verificamos token
                 if (!isset($_POST['msg_token']) || $_POST['msg_token']!=$_SESSION['msg_token']) {
-//                    throw new Error(Error::BAD_REQUEST);
+                    // throw new Error(Error::BAD_REQUEST);
                     header("HTTP/1.1 418");
                     die('Temporalmente no disponible');
                 }

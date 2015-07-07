@@ -59,7 +59,7 @@ $elements      = array(
         'html'      =>   '<div class="contract-final" style="position: relative"><div>'
                        . '<div class="overlay" style="position: absolute; left: 0; top: 0; right: 0; bottom: 0; z-index: 999"></div>'
                        . '<div style="z-index: 0">'
-                       . \Goteo\Core\View::get('contract/widget/review.html.php', array('contract' => $contract))
+                       . $this->insert('contract/widget/review', array('contract' => $contract))
                        . '</div>'
                        . '</div></div>'
     )

@@ -2,7 +2,6 @@
 
 namespace Goteo\Controller;
 
-use Goteo\Application\View;
 use Goteo\Library\Text;
 use Goteo\Application\Message;
 use Goteo\Application\Config;
@@ -33,7 +32,7 @@ class BlogController extends \Goteo\Core\Controller {
         }
 
         // sacamos su blog
-        $blog = Model\Blog::get(\GOTEO_NODE, 'node');
+        $blog = Model\Blog::get(Config::get('node'), 'node');
 
         $filters = array();
         if ($request->query->has('tag')) {
@@ -69,19 +68,19 @@ class BlogController extends \Goteo\Core\Controller {
                   $request->query->get('preview') != Session::getUserId()
                  )
                 )
-                return new RedirectResponse('/blog');
+                return $this->redirect('/blog');
         }
 
         // segun eso montamos la vista
 
-        return new Response(View::render('blog/index', array(
+        return $this->viewResponse('blog/index', array(
                     'blog' => $blog,
                     'show' => $show,
                     'filters' => $filters,
                     'post' => $post,
                     'owner' => Config::get('node')
                 )
-        ));
+        );
 
     }
 

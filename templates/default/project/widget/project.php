@@ -10,13 +10,6 @@ $URL = \SITE_URL;
 $project = $this->project;
 $level = $this->level ?: 3;
 
-if ($this->global === true) {
-    $blank = ' target="_blank"';
-    $url = $URL;
-} else {
-    $blank = '';
-    $url = '';
-}
 
 //si llega $this->investor sacamos el total aportado para poner en "mi aporte"
 if (isset($this->investor) && is_object($this->investor)) {
@@ -35,7 +28,7 @@ if ($project->status == 3 && $project->noinvest) {
 ?>
 
 <div class="widget project activable<?php if (isset($this->balloon)) echo ' balloon' ?>">
-	<a href="<?php echo $url ?>/project/<?php echo $project->id ?>" class="expand"<?php echo $blank; ?>></a>
+	<a href="/project/<?php echo $project->id ?>" class="expand"></a>
     <?php if (isset($this->balloon)): ?>
     <div class="balloon"><?php echo $this->balloon ?></div>
     <?php endif ?>
@@ -69,7 +62,7 @@ if ($project->status == 3 && $project->noinvest) {
         <?php endif; ?>
 
         <?php if ($project->image instanceof Image): ?>
-        <a href="<?php echo $url ?>/project/<?php echo $project->id ?>"<?php echo $blank; ?>><img alt="<?php echo $project->id ?>" src="<?php echo $project->image->getLink(226, 130, true) ?>" /></a>
+        <a href="/project/<?php echo $project->id ?>"><img alt="<?php echo $project->id ?>" src="<?php echo $project->image->getLink(226, 130, true) ?>" /></a>
         <?php endif ?>
         <?php if (!empty($project->cat_names)): ?>
         <div class="categories">
@@ -80,9 +73,9 @@ if ($project->status == 3 && $project->noinvest) {
         <?php endif ?>
     </div>
 
-    <h<?php echo $level ?> class="title"><a href="<?php echo $url ?>/project/<?php echo $project->id ?>"<?php echo $blank; ?>><?php echo htmlspecialchars($this->text_recorta($project->name,50)) ?></a></h<?php echo $level ?>>
+    <h<?php echo $level ?> class="title"><a href="/project/<?php echo $project->id ?>"><?php echo htmlspecialchars($this->text_recorta($project->name,50)) ?></a></h<?php echo $level ?>>
 
-    <h<?php echo $level + 1 ?> class="author"><?php echo $this->text('regular-by')?> <a href="<?php echo $url ?>/user/profile/<?php echo htmlspecialchars($project->user->id) ?>"<?php echo $blank; ?>><?php echo htmlspecialchars($this->text_recorta($project->user->name,37)) ?></a></h<?php echo $level + 1?>>
+    <h<?php echo $level + 1 ?> class="author"><?php echo $this->text('regular-by')?> <a href="/user/profile/<?php echo htmlspecialchars($project->user->id) ?>"><?php echo htmlspecialchars($this->text_recorta($project->user->name,37)) ?></a></h<?php echo $level + 1?>>
 
     <div class="description"><?php echo $this->text_recorta($project->description, 100); ?></div>
 
@@ -95,7 +88,7 @@ if ($project->status == 3 && $project->noinvest) {
            <?php foreach ($project->rewards as $reward): ?>
             <li class="<?php echo $reward->icon ?> activable">
                 <?php $link_param= ($reward->type == 'individual') ? "/invest?amount=".\amount_format($reward->amount, 0, true) : "/rewards#social-rewards"; ?>
-                <a href="<?php echo $url ?>/project/<?php echo $project->id.$link_param ?>" title="<?php echo htmlspecialchars("{$reward->icon_name}: {$reward->reward}"); if ($reward->type == 'individual') echo ' '.\amount_format($reward->amount); ?>" class="tipsy"<?php echo $blank; ?>><?php echo htmlspecialchars($reward->reward) ?></a>
+                <a href="/project/<?php echo $project->id.$link_param ?>" title="<?php echo htmlspecialchars("{$reward->icon_name}: {$reward->reward}"); if ($reward->type == 'individual') echo ' '.\amount_format($reward->amount); ?>" class="tipsy"><?php echo htmlspecialchars($reward->reward) ?></a>
             </li>
            <?php endforeach ?>
         </ul>
@@ -103,28 +96,4 @@ if ($project->status == 3 && $project->noinvest) {
 
     </div>
 
-    <?php
-    /*
-
-    if ($_SESSION['assign_mode'] === true) : // boton para asignar ?>
-    <div class="buttons" id="assign_<?php echo $project->id ?>">
-        <?php if (!isset($_SESSION['call']->projects[$project->id])) : ?>
-            <a class="button weak" href="#" onclick="return projAssign('<?php echo $project->id ?>');"><?php echo $this->text('regular-call-assign_this'); ?></a>
-        <?php else : ?>
-            <span style="color:red;"><?php echo $this->text('regular-call-assigned'); ?></span>
-        <?php endif; ?>
-    </div>
-    <?php endif;
-
-    */
-    ?>
-
-
-    <?php
-
-    if ($_SESSION['user']->id == 'root') {
-        echo "<!-- ".print_r($project, 1)." -->";
-    }
-
-    ?>
 </div>
