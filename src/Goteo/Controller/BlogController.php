@@ -45,7 +45,7 @@ class BlogController extends \Goteo\Core\Controller {
         }
 
         if ($request->query->has('author')) {
-            $author = Model\User::getMini($request->get->query('author'));
+            $author = Model\User::getMini($request->query->get('author'));
             if ($author->id) {
                 $filters['author'] = $author->id;
             }
