@@ -6,9 +6,10 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 use Goteo\Application\App;
 use Goteo\Application\Config;
 use Goteo\Application\View;
+use Goteo\Core\View as LegacyView;
 
 // Old views custom folders
-\Goteo\Core\View::addViewPath(__DIR__ . '/../views');
+LegacyView::addViewPath(__DIR__ . '/../views');
 
 $custom_routes = new RouteCollection();
 $custom_routes->add('barcelona-node-redirection', new Route(

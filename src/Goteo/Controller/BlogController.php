@@ -2,7 +2,6 @@
 
 namespace Goteo\Controller;
 
-use Goteo\Application\View;
 use Goteo\Library\Text;
 use Goteo\Application\Message;
 use Goteo\Application\Config;
