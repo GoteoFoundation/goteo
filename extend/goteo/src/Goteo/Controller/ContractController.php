@@ -34,7 +34,7 @@ class ContractController extends \Goteo\Core\Controller {
 
         $project = Model\Project::get($id);
         if($contract->project_owner !== $user->id || !$project->userCanManage(Session::getUser())) {
-            throw new ControllerAccessDeniedException("Error: You don't have permissions to access to this contract!");
+            throw new ControllerAccessDeniedException("You don't have permissions to access to this contract!");
         }
 
         $pdf_name = 'contrato-goteo_'.$contract->fullnum . '.pdf';
@@ -88,7 +88,7 @@ class ContractController extends \Goteo\Core\Controller {
         $project = Model\Project::get($id);
 
         if(!$user || !$project->userCanAdmin($user)) {
-            throw new ControllerAccessDeniedException("Error: You don't have permissions to access to raw data in contract!");
+            throw new ControllerAccessDeniedException("You don't have permissions to access to raw data in contract!");
         }
 
         // temporal para testeo, si no tiene contrato lo creamos
@@ -112,7 +112,7 @@ class ContractController extends \Goteo\Core\Controller {
         }
         $project = Model\Project::get($id);
         if(!$user || !$project->userCanManage($user)) {
-            throw new ControllerAccessDeniedException("Error: You don't have permissions to access to this contract!");
+            throw new ControllerAccessDeniedException("You don't have permissions to access to this contract!");
         }
 
         // aunque pueda acceder edit, no lo puede editar si los datos ya se han dado por cerrados

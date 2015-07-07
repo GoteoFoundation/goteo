@@ -14,7 +14,7 @@ namespace Goteo\Controller {
             $doc = Model\Contract\Document::get($id);
             $project = Model\Project::get($doc->contract);
             if(!$project->userCanManage(Session::getUser())) {
-                throw new ControllerAccessDeniedException("Error: You don't have permissions to access to this document!");
+                throw new ControllerAccessDeniedException("You don't have permissions to access to this document!");
             }
 
             // pero ojo porque al ser el archivo privado quizas habra que coger los contenidos
@@ -25,7 +25,7 @@ namespace Goteo\Controller {
             $content = $fp->get_contents($doc->name);
 
             if(!$content) {
-                throw new ControllerException('Error: Empty document!');
+                throw new ControllerException('Empty document!');
             }
 
             return $this->rawResponse($content, $doc->type);
@@ -41,7 +41,7 @@ namespace Goteo\Controller {
 
             $me = Session::getUser();
             if(!$me || !$me->hasRoleInNode($user_ob->node, ['manager', 'superadmin', 'root'])) {
-                throw new ControllerAccessDeniedException("Error: You don't have permissions to access to this document!");
+                throw new ControllerAccessDeniedException("You don't have permissions to access to this document!");
             }
 
             if (empty($pdf)) {
@@ -55,7 +55,7 @@ namespace Goteo\Controller {
             $content = $fp->get_contents($pdf);
 
             if(!$content) {
-                throw new ControllerException('Error: Empty document!');
+                throw new ControllerException('Empty document!');
             }
 
             return $this->rawResponse($content, $doc->type);
