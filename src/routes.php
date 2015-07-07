@@ -74,6 +74,22 @@ $routes->add('project-sections', new Route(
         )
 ));
 
+//// CONTACT ////
+
+//new captcha
+$routes->add('contact-captcha', new Route(
+    '/contact/captcha',
+    array(
+        '_controller' => 'Goteo\Controller\ContactController::captchaAction'
+        )
+));
+//contact form
+$routes->add('contact-form', new Route(
+    '/contact',
+    array(
+        '_controller' => 'Goteo\Controller\ContactController::indexAction'
+        )
+));
 ///// ABOUT /////
 
 $routes->add('about-sections', new Route(
