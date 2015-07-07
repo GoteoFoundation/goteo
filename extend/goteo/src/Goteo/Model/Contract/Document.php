@@ -2,6 +2,7 @@
 
 namespace Goteo\Model\Contract {
 
+    use Goteo\Application\Exception\ModelNotFoundException;
     use Goteo\Library\Check,
         Goteo\Library\FileHandler\File,
         Goteo\Library\Text,
@@ -171,18 +172,15 @@ namespace Goteo\Model\Contract {
                     WHERE id = :id";
 
                 $query = static::query($sql, array(':id' => $id));
-                $doc = $query->fetchObject(__CLASS__);
-
-                if ($doc instanceof Document) {
+                if($doc = $query->fetchObject(__CLASS__)) {
                     $doc->filedir = $doc->dir . $doc->contract . '/';
-                } else {
-                    $doc = false;
+                    return $doc;
                 }
 
-                return $doc;
             } catch(\PDOException $e) {
-				throw new \Goteo\Core\Exception($e->getMessage());
+                throw new ModelNotFoundException($e->getMessage());
             }
+			throw new ModelNotFoundException('Document not found!');
 		}
 
         /**
@@ -209,7 +207,7 @@ namespace Goteo\Model\Contract {
 
                 return $array;
             } catch(\PDOException $e) {
-				throw new \Goteo\Core\Exception($e->getMessage());
+				throw new ModelNotFoundException($e->getMessage());
             }
 		}
 

@@ -73,6 +73,17 @@ $custom_routes->add('discover-patron', new Route(
 ));
 
 
+// Document download
+$custom_routes->add('document-download', new Route(
+    '/document/{id}/{filename}',
+    array('_controller' => 'Goteo\Controller\DocumentController::indexAction',
+        'filename' => '')
+));
+$custom_routes->add('document-certs', new Route(
+    '/document/cert/{user}/{year}',
+    array('_controller' => 'Goteo\Controller\DocumentController::certAction')
+));
+
 // Calendar
 $custom_routes->add('calendar', new Route(
     '/calendar',

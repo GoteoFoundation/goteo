@@ -259,7 +259,7 @@ namespace Goteo\Model {
         }
 
         /**
-         * Check if the project can ber published and other sensitive actions
+         * Check if the project can be published and other sensitive actions
          * @param  Goteo\Model\User $user  the user to check
          * @return boolean          true if success, false otherwise
          */
@@ -270,6 +270,20 @@ namespace Goteo\Model {
             if($user->hasRoleInNode($this->node, ['superadmin', 'root'])) return true;
             // is a consultant
             if($user->hasRoleInNode($this->node, ['consultant', 'admin']) && array_key_exists($user->id, $this->getConsultants())) return true;
+
+            return false;
+        }
+
+        /**
+         * Check if the user has the rol "manager" in the project
+         * @param  Goteo\Model\User $user  the user to check
+         * @return boolean          true if success, false otherwise
+         */
+        public function userCanManage(User $user = null) {
+            if(empty($user)) return false;
+
+            // is manager or superadmin in the project node
+            if($user->hasRoleInNode($this->node, ['manager', 'superadmin', 'root'])) return true;
 
             return false;
         }

@@ -1119,6 +1119,7 @@ namespace Goteo\Model {
             }
             return false;
         }
+
         /**
          * Returns if a user has certain role in node
          * By default checks if its a kind of admin
@@ -1128,7 +1129,7 @@ namespace Goteo\Model {
          * @return boolean        return true if has role
          */
         public function hasRoleInNode($node, $check_roles = array('admin', 'superadmin', 'root')) {
-            if(!is_array($roles)) $roles = [ (string) $roles ];
+            if(!is_array($check_roles)) $check_roles = [ (string) $check_roles ];
 
             foreach($this->getAllNodeRoles() as $n => $roles) {
                 if($node === $n && array_intersect($roles, $check_roles)) {

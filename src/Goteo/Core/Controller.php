@@ -17,6 +17,13 @@ abstract class Controller {
     }
 
     /**
+     * Handy method to send a response any string
+     */
+    public function rawResponse($string, $contentType = 'text/plain' , $status = 200) {
+        return new Response($string, $status, ['Content-Type' => $contentType]);
+    }
+
+    /**
      * **Experimental** method to send a response in json, vars only
      */
     public function jsonResponse($vars = []) {

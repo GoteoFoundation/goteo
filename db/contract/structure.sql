@@ -85,3 +85,6 @@ ALTER TABLE `contract` ADD `reg_idloc` tinytext DEFAULT NULL COMMENT 'Ciudad de 
 
 -- campo para el nombre del notario
 ALTER TABLE `contract` ADD `reg_idname` tinytext DEFAULT NULL COMMENT 'Nombre del notario' AFTER `reg_id` ;
+
+-- constrains
+ALTER TABLE `contract` ADD FOREIGN KEY (`project`) REFERENCES `project`(`id`) ON UPDATE CASCADE ON DELETE RESTRICT;

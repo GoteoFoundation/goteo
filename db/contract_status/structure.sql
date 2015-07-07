@@ -51,3 +51,5 @@ ALTER TABLE `contract_status` ADD `prepay_user` VARCHAR( 50 ) CHARACTER SET utf8
 ALTER TABLE `contract_status` ADD `closed_date` DATE NULL DEFAULT NULL COMMENT 'Fecha que se cambia el flag' AFTER `closed`;
 ALTER TABLE `contract_status` ADD `closed_user` VARCHAR( 50 ) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT 'Usuario que cambia el flag' AFTER `closed_date`;
 
+-- constrains
+ALTER TABLE `contract_status` ADD FOREIGN KEY (`contract`) REFERENCES `contract`(`project`) ON UPDATE CASCADE ON DELETE RESTRICT;
