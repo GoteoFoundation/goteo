@@ -225,6 +225,9 @@ class Lang {
         // if(Cookie::exists('goteo_lang')) {
         //     $desired[] = Cookie::get('goteo_lang');
         // }
+        if(Session::exists('lang')) {
+            $desired[] = Session::get('lang');
+        }
         if($request) {
             // set by navigator
             $desired[] = substr($request->server->get('HTTP_ACCEPT_LANGUAGE'), 0, 2);
@@ -242,6 +245,7 @@ class Lang {
         if($request && $lang === $request->query->get('lang')) {
             //Enviar cookie
             // Cookie::store('goteo_lang', $lang);
+            Session::store('lang', $lang);
             if(Session::isLogged()) {
                 //guardar preferencias de usuario
                 Session::getUser()->updateLang($lang);
