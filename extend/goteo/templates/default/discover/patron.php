@@ -3,7 +3,7 @@
 use Goteo\Util\Pagination\Paginated;
 use Goteo\Util\Pagination\DoubleBarLayout;
 
-$this->layout("layout", [
+$this->layout('layout', [
     'bodyClass' => 'discover',
     'title' => $this->text('meta-title-discover') . ' - ' . strip_tags($this->raw('title')),
     'meta_description' => $this->text('meta-description-discover'),
@@ -26,7 +26,7 @@ $this->section('content');
 
             <div class="widget projects">
                 <?php while ($project = $pagedResults->fetchPagedRow()) : ?>
-                    <?= $this->insert('project/widget/project', ['project' => $project]) ?>
+                    <?= $this->insert('project/widget/project', ['project' => $project->projectData]) ?>
                 <?php endwhile ?>
             </div>
 

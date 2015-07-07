@@ -162,22 +162,5 @@ class DiscoverController extends \Goteo\Core\Controller {
         }
     }
 
-    /*
-     * proyectos recomendados por usuario padrino (patron)
-     */
-    public function patronAction ($user) {
-
-        $viewData = array();
-
-        // título de la página
-        $viewData['title'] = Text::get('discover-patron-header', $user);
-
-        // segun el tipo cargamos la lista
-        $viewData['list']  = Model\Patron::getList($user);
-
-        return new Response(View::render('discover/patron', $viewData));
-
-    }
-
 }
 

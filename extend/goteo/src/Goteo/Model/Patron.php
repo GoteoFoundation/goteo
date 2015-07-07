@@ -226,11 +226,7 @@ namespace Goteo\Model {
                     ORDER BY patron.order ASC";
             $query = self::query($sql, $values);
             foreach ($query->fetchAll(\PDO::FETCH_CLASS, 'Goteo\Model\Project') as $reco) {
-                try {
-                    $reco->projectData = Project::getWidget($reco);
-                } catch (\Goteo\Core\Error $e) {
-                    continue;
-                }
+                $reco->projectData = Project::getWidget($reco);
                 $projects[] = $reco;
             }
 

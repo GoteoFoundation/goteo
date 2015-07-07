@@ -25,10 +25,6 @@ $routes->add('discover-view', new Route(
           '_controller' => 'Goteo\Controller\DiscoverController::viewAction',
           )
 ));
-$routes->add('discover-patron', new Route(
-    '/discover/patron/{user}',
-    array('_controller' => 'Goteo\Controller\DiscoverController::patronAction')
-));
 
 $routes->add('discover', new Route(
     '/discover',

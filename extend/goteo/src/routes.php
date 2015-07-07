@@ -67,6 +67,10 @@ $custom_routes->add('discover-call', new Route(
         '/discover/call',
     array('_controller' => 'Goteo\Controller\DiscoverAddonsController::callAction')
 ));
+$custom_routes->add('discover-patron', new Route(
+    '/discover/patron/{user}',
+    array('_controller' => 'Goteo\Controller\DiscoverAddonsController::patronAction')
+));
 
 
 // Calendar
