@@ -38,7 +38,7 @@ class ProjectsSubController extends AbstractSubController {
 
 
     protected $filters = array (
-      'status' => '-1',
+      'status' => -1,
       'category' => '',
       'proj_name' => '',
       'name' => '',
@@ -417,7 +417,7 @@ class ProjectsSubController extends AbstractSubController {
 
 
     public function datesAction($id = null, $subaction = null) {
-        
+
         if($this->isPost()) {
             $fields = array(
                 'created',
@@ -455,7 +455,7 @@ class ProjectsSubController extends AbstractSubController {
                 $sql = "UPDATE project SET " . $set . " WHERE id = :id";
                 if (Model\Project::query($sql, $values)) {
                     $log_text = 'El admin %s ha <span class="red">tocado las fechas</span> del proyecto '.$project->name.' %s';
-                    
+
                 } else {
                     $log_text = 'Al admin %s le ha <span class="red">fallado al tocar las fechas</span> del proyecto '.$project->name.' %s';
                 }
