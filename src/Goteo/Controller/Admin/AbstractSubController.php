@@ -54,16 +54,15 @@ abstract class AbstractSubController {
         $id = static::getId();
 
         $session_filters = Session::get('admin_filters');
+        if ($request->query->has('reset') && $request->query->get('reset') === 'filters') {
+            unset($session_filters);
+        }
         if(!is_array($session_filters)) $session_filters = array();
         if(!is_array($session_filters['main'])) $session_filters['main'] = array();
         if(!is_array($session_filters[$id])) $session_filters[$id] = array();
         // filters in session by default
-        $filters = array_intersect_key($session_filters[$id], $this->filters);
+        $filters = array_merge($this->filters, $session_filters[$id]);
         if(!is_array($filters)) $filters = array();
-        if ($request->query->has('reset') && $request->query->get('reset') === 'filters') {
-            unset($filters);
-            unset($session_filters['main']);
-        }
 
         // filtros de este gestor:
         // para cada uno tenemos el nombre del campo y el valor por defecto
