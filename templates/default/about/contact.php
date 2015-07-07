@@ -39,6 +39,7 @@ $this->layout('layout', [
 
             <div style="float:left;width: 450px;">
                 <form method="post" action="/contact">
+                    <input type="hidden" name="form-token" value="<?= $this->token ?>">
                     <table>
                         <tr>
                             <td>

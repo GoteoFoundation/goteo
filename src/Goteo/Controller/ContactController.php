@@ -29,7 +29,11 @@ class ContactController extends \Goteo\Core\Controller {
         }
 
         $errors = array();
-
+        $data = [];
+        if($user = Session::getUser()) {
+            $data['name'] = $user->name;
+            $data['email'] = $user->email;
+        }
         if ($request->isMethod('POST')) {
 
             $name = $request->request->get('name');
@@ -55,12 +59,21 @@ class ContactController extends \Goteo\Core\Controller {
                 $msg_content = nl2br(strip_tags($message));
             }
 
-            if($phrase = Session::get('captcha-phrase')) {
+            // check captcha
+            if(!$user && $phrase = Session::get('captcha-phrase')) {
                 Session::del('captcha-phrase');
                 $captcha = new CaptchaBuilder($phrase);
                 // captcha verification
                 if (!$captcha->testPhrase($request->request->get('captcha_response'))) {
                     $errors['recaptcha'] = Text::get('error-contact-captcha');
+                }
+            }
+
+            // check from token (ensures is a submit from the navigator)
+            if($token = Session::get('form-token')) {
+                Session::del('form-token');
+                if($token !== $request->request->get('form-token')) {
+                    $errors['form-token'] = 'Error submiting the form. Please try again!';
                 }
             }
 
@@ -78,8 +91,7 @@ class ContactController extends \Goteo\Core\Controller {
                 $template = Template::get(1);
 
                 // Asunto, añadimos tag
-                $tag = ($request->request->has('tag')) ? '[' . $request->request->get('tag') .'] ' : '';
-                $subject = $tag . $subject;
+                $subject = ($tag ? '[' . $tag . '] ' : '') . $subject;
 
                 // destinatario
                 $to = Config::get('mail.contact');
@@ -104,7 +116,6 @@ class ContactController extends \Goteo\Core\Controller {
 
                 if ($mailHandler->send($errors)) {
                     Message::info('Mensaje de contacto enviado correctamente.');
-                    $data = array();
                     return $this->redirect('/contact');
                 } else {
                     Message::error('Ha fallado al enviar el mensaje.');
@@ -119,11 +130,15 @@ class ContactController extends \Goteo\Core\Controller {
             $captcha->build();
             Session::store('captcha-phrase', $captcha->getPhrase());
         }
+        // Generate a new form token
+        $token = sha1(uniqid(mt_rand(), true));
+        Session::store('form-token', $token);
 
         return $this->viewResponse('about/contact',
             array(
                 'data'    => $data,
                 'tags'    => $tags,
+                'token'    => $token,
                 'page'    => Page::get('contact'),
                 'captcha' => $captcha,
                 'errors'  => $errors
