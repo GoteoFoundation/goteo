@@ -30,14 +30,6 @@ $routes->add('discover-patron', new Route(
     array('_controller' => 'Goteo\Controller\DiscoverController::patronAction')
 ));
 
-$routes->add('discover-calls', new Route(
-    '/discover/calls',
-    array('_controller' => 'Goteo\Controller\DiscoverAddonsController::callsAction')
-));
-$routes->add('discover-call', new Route(
-        '/discover/call',
-    array('_controller' => 'Goteo\Controller\DiscoverAddonsController::callAction')
-));
 $routes->add('discover', new Route(
     '/discover',
     array('_controller' => 'Goteo\Controller\DiscoverController::indexAction')

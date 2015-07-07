@@ -5,7 +5,7 @@ use Goteo\Core\View,
     Goteo\Util\Pagination\Paginated,
     Goteo\Util\Pagination\DoubleBarLayout;
 
-$this->layout('"layout', [
+$this->layout('layout', [
     'bodyClass' => 'discover',
     'title' => $this->text('meta-title-discover-calls'),
     'meta_description' => $this->text('meta-description-discover'),

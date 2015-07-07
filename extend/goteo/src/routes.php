@@ -7,6 +7,9 @@ use Goteo\Application\App;
 use Goteo\Application\Config;
 use Goteo\Application\View;
 
+// Old views custom folders
+\Goteo\Core\View::addViewPath(__DIR__ . '/../views');
+
 $custom_routes = new RouteCollection();
 $custom_routes->add('barcelona-node-redirection', new Route(
     '/channel/barcelona',
@@ -55,6 +58,15 @@ if(in_array(strtok($_SERVER['HTTP_HOST'], '.'), array('barcelona', 'betabarcelon
 }
 
 
+//Discover addons
+$custom_routes->add('discover-calls', new Route(
+    '/discover/calls',
+    array('_controller' => 'Goteo\Controller\DiscoverAddonsController::callsAction')
+));
+$custom_routes->add('discover-call', new Route(
+        '/discover/call',
+    array('_controller' => 'Goteo\Controller\DiscoverAddonsController::callAction')
+));
 
 
 // Calendar

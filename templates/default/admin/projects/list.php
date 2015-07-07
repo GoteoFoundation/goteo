@@ -243,7 +243,6 @@ foreach ($filters as $key=>$value) {
                         <?php if ($project->status == 4 || $project->status == 5) : ?><a href="/admin/commons?project=<?= $project->id ?>">[Retornos colectivos]</a><?php endif ?>
                     <?php endif ?>
                     <?php
-                    // TODO: ContractController is not secure!!!
                     if($project->userCanAdmin($this->user)): ?>
                         <?php if (isset($this->contracts[$project->id])) : ?><a href="<?php echo "/contract/{$project->id}" ?>" target="_blank">[Contrato]</a><?php endif ?>
                     <?php endif ?>

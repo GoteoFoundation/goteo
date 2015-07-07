@@ -3,9 +3,6 @@
 namespace Goteo\Controller;
 
 
-use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpFoundation\RedirectResponse;
-
 use Goteo\Application\View;
 use Goteo\Model;
 use Goteo\Library\Text;
@@ -23,7 +20,7 @@ class DiscoverAddonsController extends \Goteo\Core\Controller {
      * Alias a mostrar todas las convocatorias
      */
     public function callAction () {
-        return new RedirectResponse('/discover/calls');
+        return $this->redirect('/discover/calls');
     }
 
      /*
@@ -40,7 +37,7 @@ class DiscoverAddonsController extends \Goteo\Core\Controller {
         $viewData['list']  = Model\Call::getActive(null, true);
 
 
-        return new Response(View::render('discover/calls', $viewData));
+        return $this->viewResponse('discover/calls', $viewData);
 
     }
 

@@ -97,7 +97,7 @@ class ContractController extends \Goteo\Core\Controller {
      */
     public function rawAction ($id) {
         $user = Session::getUser();
-        if(!Session::isLogged() || $user->hasRoleInNode(Config::get('node'), [ 'superadmin', 'root'])) {
+        if(!Session::isLogged() || $user->hasRoleInNode(Config::get('current_node'), [ 'superadmin', 'root'])) {
             Application\Message::error("You're not allowed to access here! [$id]");
             // no lo puede ver y punto
             return $this->redirect('/');
@@ -135,7 +135,7 @@ class ContractController extends \Goteo\Core\Controller {
         // aunque pueda acceder edit, no lo puede editar si los datos ya se han dado por cerrados
         if ($contract->project_user != $user->id // no es su proyecto
             && $contract->status->owner // cerrado por
-            && ! $user->hasRoleInNode(Config::get('node'), ['manager', 'superadmin', 'root']) // no es un gestor ni superadmin
+            && ! $user->hasRoleInNode(Config::get('current_node'), ['manager', 'superadmin', 'root']) // no es un gestor ni superadmin
             ) {
             // le mostramos el pdf
             return $this->redirect('/contract/' . $id);
