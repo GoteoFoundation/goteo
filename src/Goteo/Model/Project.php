@@ -294,11 +294,13 @@ namespace Goteo\Model {
          * @param  Goteo\Model\User $user  the user to check
          * @return boolean          true if success, false otherwise
          */
-        public function userCanAdmin(User $user = null) {
+        public function userCanAdmin(User $user = null, $include_admins = false) {
             if(empty($user)) return false;
 
+            $roles = ['superadmin', 'root'];
+            if($include_admins) $roles[] = 'admin';
             // is superadmin in the project node
-            if($user->hasRoleInNode($this->node, ['superadmin', 'root'])) return true;
+            if($user->hasRoleInNode($this->node, $roles)) return true;
 
             return false;
         }

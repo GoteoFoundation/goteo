@@ -6,6 +6,8 @@ namespace Goteo\Controller;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
 
+use Goteo\Application\Exception\ControllerAccessDeniedException;
+use Goteo\Application\Exception\ControllerException;
 use Goteo\Application\Session,
     Goteo\Application\Config,
     Goteo\Library\Text,
@@ -26,69 +28,54 @@ class ContractController extends \Goteo\Core\Controller {
     public function indexAction($id) {
 
         $contract = Model\Contract::get($id); // datos del contrato
-        if(!Session::isLogged() || empty($contract)) {
-            Application\Message::error("Not found contract! [$id]");
-            // no lo puede ver y punto
-            return $this->redirect('/');
+        if(!$contract) {
+            throw new ControllerException("Not found contract [$id]");
         }
-        $user = Session::getUser();
 
-        // solamente se puede ver si....
-        // Es un admin, es el impulsor
-        //
-        $grant = false;
-        if (isset($contract) && $contract->project_owner == $user->id)  // es el dueño del proyecto
-            $grant = true;
-        elseif($user->hasRoleInNode(Config::get('node'), ['admin', 'superadmin', 'root']))
-            $grant = true;
+        $project = Model\Project::get($id);
+        if($contract->project_owner !== $user->id || !$project->userCanManage(Session::getUser())) {
+            throw new ControllerAccessDeniedException("Error: You don't have permissions to access to this contract!");
+        }
 
-        // si lo puede ver
-        if ($grant) {
+        $pdf_name = 'contrato-goteo_'.$contract->fullnum . '.pdf';
+        // $filename = Model\Contract\Document::$dir . $contract->project . '/' . $pdf_name;
 
-            $pdf_name = 'contrato-goteo_'.$contract->fullnum . '.pdf';
-            // $filename = Model\Contract\Document::$dir . $contract->project . '/' . $pdf_name;
+        // fecha
+        \setlocale(\LC_TIME, 'esp');
+        $contract->date = strftime('%e de %B de %Y', strtotime($contract->date));
 
-            // fecha
-            \setlocale(\LC_TIME, 'esp');
-            $contract->date = strftime('%e de %B de %Y', strtotime($contract->date));
+        // texto para "... en adelante EL IMPULSOR"
+        switch ($contract->type) {
+            case 0: // persona
+                //el responsable o la entidad %entity_name%
+                $contract->el_impulsor = "La persona responsable, {$contract->name}";
+                break;
+            case 1: // asociación
+                $contract->el_impulsor = "La entidad {$contract->entity_name}";
+                break;
+            case 2: // entidad
+                $contract->el_impulsor = "La entidad {$contract->entity_name}";
 
-            // texto para "... en adelante EL IMPULSOR"
-            switch ($contract->type) {
-                case 0: // persona
-                    //el responsable o la entidad %entity_name%
-                    $contract->el_impulsor = "La persona responsable, {$contract->name}";
-                    break;
-                case 1: // asociación
-                    $contract->el_impulsor = "La entidad {$contract->entity_name}";
-                    break;
-                case 2: // entidad
-                    $contract->el_impulsor = "La entidad {$contract->entity_name}";
-
-                    break;
-            }
+                break;
+        }
 
 
-            // para generarlo
-            $pdf = new PDFContract;
-            $pdf->setParameters($contract);
-            $pdf->generate();
+        // para generarlo
+        $pdf = new PDFContract;
+        $pdf->setParameters($contract);
+        $pdf->generate();
 
-            // borrador
-            if ($contract->draft) {
-                $pdf->Output();
-                die;
-            } else {
-                // y se lo damos para descargar
-                $pdf->Output($pdf_name, 'D');
-
-                Model\Contract::setStatus($id, array('pdf'=>1));
-
-                die;
-            }
-
+        // borrador
+        if ($contract->draft) {
+            $pdf->Output();
+            die;
         } else {
-            // no lo puede ver y punto
-            return $this->redirect('/');
+            // y se lo damos para descargar
+            $pdf->Output($pdf_name, 'D');
+
+            Model\Contract::setStatus($id, array('pdf'=>1));
+
+            die;
         }
     }
 
@@ -97,45 +84,40 @@ class ContractController extends \Goteo\Core\Controller {
      */
     public function rawAction ($id) {
         $user = Session::getUser();
-        if(!Session::isLogged() || $user->hasRoleInNode(Config::get('current_node'), [ 'superadmin', 'root'])) {
-            Application\Message::error("You're not allowed to access here! [$id]");
-            // no lo puede ver y punto
-            return $this->redirect('/');
+        $contract = Model\Contract::get($id);
+        $project = Model\Project::get($id);
+
+        if(!$user || !$project->userCanAdmin($user)) {
+            throw new ControllerAccessDeniedException("Error: You don't have permissions to access to raw data in contract!");
         }
 
-        $contract = Model\Contract::get($id);
         // temporal para testeo, si no tiene contrato lo creamos
         if (!$contract) {
             if (Model\Contract::create($id)) {
                 $contract = Model\Contract::get($id);
             } else {
-                Application\Message::error('fallo al crear el registro de contrato');
-                return $this->redirect('/manage/projects');
+               throw new ControllerException("Error creando registro de contrato [$id]");
             }
         }
         return new Response(\trace($contract));
     }
 
-    // los contratos no se pueden eliminar... ¿o sí?
-    public function deleteAction ($id) {
-        return $this->redirect('/');
-    }
 
     //Aunque no esté en estado edición un admin siempre podrá editar los datos de contrato
     public function editAction ($id, $step = 'promoter', Request $request) {
-        $contract = Model\Contract::get($id);
-
         $user = Session::getUser();
-        if(!Session::isLogged() || empty($contract)) {
-            Application\Message::error("Not found contract [$id]");
-            // no lo puede ver y punto
-            return $this->redirect('/');
+        $contract = Model\Contract::get($id);
+        if(!$contract) {
+            throw new ControllerException("Not found contract [$id]");
+        }
+        $project = Model\Project::get($id);
+        if(!$user || !$project->userCanManage($user)) {
+            throw new ControllerAccessDeniedException("Error: You don't have permissions to access to this contract!");
         }
 
         // aunque pueda acceder edit, no lo puede editar si los datos ya se han dado por cerrados
-        if ($contract->project_user != $user->id // no es su proyecto
-            && $contract->status->owner // cerrado por
-            && ! $user->hasRoleInNode(Config::get('current_node'), ['manager', 'superadmin', 'root']) // no es un gestor ni superadmin
+        if ($contract->status->owner // cerrado por
+            && ! $user->hasRoleInNode($project->node, ['manager', 'superadmin', 'root']) // no es un gestor ni superadmin
             ) {
             // le mostramos el pdf
             return $this->redirect('/contract/' . $id);
