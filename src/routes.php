@@ -312,11 +312,18 @@ $routes->add('remove-trailing-slash', new Route(
         ),
         array(
             'url' => '.*/$',
+        )
+));
+
+////// REDIRECT "//" STARTING ROUTES
+$routes->add('remove-starting-slash', new Route(
+        '/{url}',
+        array(
+            '_controller' => 'Goteo\Controller\ErrorController::removeStartingSlashAction',
         ),
-        array(),
-        '',
-        array(),
-        array('GET')
+        array(
+            'url' => '[/]+.*',
+        )
 ));
 
 /// LEGACY DISPATCHER ////

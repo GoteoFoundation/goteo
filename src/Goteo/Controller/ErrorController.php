@@ -61,6 +61,21 @@ class ErrorController extends \Goteo\Core\Controller {
     }
 
     /**
+     * Redirect routes starting in // (or more) to the equivalent non-ending /
+     * @param  Request $request [description]
+     * @return [type]           [description]
+     */
+    public function removeStartingSlashAction(Request $request)
+    {
+        $pathInfo = $request->getPathInfo();
+        $requestUri = $request->getRequestUri();
+
+        $url = '/' . str_replace($pathInfo, ltrim($pathInfo, '/'), $requestUri);
+        // return new RedirectResponse($url, 301); //permanent ?
+        return new RedirectResponse($url, Response::HTTP_PERMANENTLY_REDIRECT);
+    }
+
+    /**
      * Executes the legacy subsistem for old controllers
      * based on /controller/action => Controller->action()
      * @param  Request $request [description]
