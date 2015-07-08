@@ -79,8 +79,9 @@ class SessionListener implements EventSubscriberInterface
     {
         $request = $event->getRequest();
         $response = $event->getResponse();
+
         //not need to do anything on sub-requests
-        //Only in html type and non ajax requests
+        //Only in html content-type
         if (!$event->isMasterRequest() || false === stripos($response->headers->get('Content-Type'), 'text/html')) {
             return;
         }
@@ -113,7 +114,7 @@ class SessionListener implements EventSubscriberInterface
     {
         return array(
             KernelEvents::REQUEST => 'onRequest',
-            KernelEvents::RESPONSE => 'onResponse'
+            KernelEvents::RESPONSE => array('onResponse', -1) // low priority: after headers are processed by symfony
         );
     }
 }

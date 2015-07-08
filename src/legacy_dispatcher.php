@@ -71,10 +71,6 @@ try {
             if ($result instanceof Resource\MIME) {
                 $mime_type = $result->getMIME();
                 header("Content-type: $mime_type");
-                if ($mime_type == 'text/html') {
-                    //renovar tiempo de sesion si es tipo html
-                    Session::renew();
-                }
             }
 
             //esto suele llamar a un metodo magic: __toString de la vista View
