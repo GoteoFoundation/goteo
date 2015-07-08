@@ -41,6 +41,11 @@ class ErrorController extends \Goteo\Core\Controller {
         return new Response(View::render('errors/' . $template, ['msg' => $msg, 'code' => $code], $code));
     }
 
+    /**
+     * Redirect routes ending in / to the equivalent non-ending /
+     * @param  Request $request [description]
+     * @return [type]           [description]
+     */
     public function removeTrailingSlashAction(Request $request)
     {
         $pathInfo = $request->getPathInfo();
@@ -55,6 +60,12 @@ class ErrorController extends \Goteo\Core\Controller {
         return new RedirectResponse($url, Response::HTTP_TEMPORARY_REDIRECT);
     }
 
+    /**
+     * Executes the legacy subsistem for old controllers
+     * based on /controller/action => Controller->action()
+     * @param  Request $request [description]
+     * @return [type]           [description]
+     */
     public function legacyControllerAction(Request $request) {
         $legacy = true;
         if(App::debug() && $request->query->has('no-legacy')) $legacy = false;

@@ -4,7 +4,7 @@
         <label for="selector">Proyecto:</label>
         <select id="selector" name="project" onchange="document.getElementById('selector-form').submit();">
         <?php foreach ($vars['projects'] as $project) : ?>
-            <option value="<?php echo $project->id; ?>"<?php if ($project->id == $_SESSION['project']->id) echo ' selected="selected"'; ?>><?php echo $project->name; ?></option>
+            <option value="<?php echo $project->id; ?>"<?php if ($project->id == $_SESSION['project']) echo ' selected="selected"'; ?>><?php echo $project->name; ?></option>
         <?php endforeach; ?>
         </select>
         <!-- un boton para seleccionar si no tiene javascript -->
