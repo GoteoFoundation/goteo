@@ -273,24 +273,15 @@ namespace Goteo\Model {
                     'project_description',
                     'project_invest',
                     'project_return'
-                    );
-
-                $set = '';
-                $values = array();
-
-                foreach ($fields as $field) {
-                    if ($set != '') $set .= ', ';
-                    $set .= "$field = :$field";
-                    $values[":$field"] = $this->$field;
-                }
-
-				$sql = "REPLACE INTO contract SET " . $set;
-				if (!self::query($sql, $values)) {
-                    $errors[] = $sql . '<pre>' . print_r($values, true) . '</pre>';
-                    return false;
+                );
+                //automatic $this->id assignation
+                if($this->project) {
+                    $ok = $this->dbUpdate($fields, ['project']);
                 } else {
-                    return true;
+                    $ok = $this->dbInsert($fields);
+                    $this->project = static::insertId();
                 }
+                return $ok;
 
 			} catch(\PDOException $e) {
 				$errors[] = "Los datos de contrato no se han gaurdado correctamente. Por favor, revise los datos." . $e->getMessage();
