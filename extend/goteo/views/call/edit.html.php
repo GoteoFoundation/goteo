@@ -1,8 +1,7 @@
 <?php
 
 use Goteo\Core\View,
-    Goteo\Library\Text,
-    Goteo\Library\SuperForm;
+    Goteo\Library\Text;
 
 $bodyClass = 'project-edit';
 $vars = $this->vars;
@@ -27,9 +26,11 @@ if ($debug) die;
 
 
 $superform = true;
-include __DIR__ . '/../prologue.html.php';
 
-    include __DIR__ . '/../header.html.php'; ?>
+    include __DIR__ . '/../../../../app/view/prologue.html.php';
+
+    include __DIR__ . '/../../../../app/view/header.html.php';
+?>
 
     <div id="sub-header">
         <div class="project-header">
@@ -40,7 +41,7 @@ include __DIR__ . '/../prologue.html.php';
         </div>
     </div>
 
-<?php if($_SESSION['messages']) { include __DIR__ . '/../header/message.html.php'; } ?>
+<?php if($_SESSION['messages']) { include __DIR__ . '/../../../../app/view/header/message.html.php'; } ?>
 
     <div id="main" class="<?php echo htmlspecialchars($vars['step']) ?>">
 
@@ -58,6 +59,6 @@ include __DIR__ . '/../prologue.html.php';
 
     </div>
 
-    <?php include __DIR__ . '/../footer.html.php' ?>
+    <?php include __DIR__ . '/../../../../app/view/footer.html.php' ?>
 
-<?php include __DIR__ . '/../epilogue.html.php' ?>
+<?php include __DIR__ . '/../../../../app/view/epilogue.html.php' ?>

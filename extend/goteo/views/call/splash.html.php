@@ -7,7 +7,7 @@ $bodyClass = 'splash';
 
 $call = $vars['call'];
 
-include __DIR__ . '/../call/prologue.html.php';
+include __DIR__ . '/prologue.html.php';
 ?>
 
 <div id="main" class="onecol">
@@ -45,4 +45,4 @@ include __DIR__ . '/../call/prologue.html.php';
 
 <a href="<?php echo SITE_URL ?>/service/resources" id="capital" target="_blank">Goteo.org</a>
 
-<?php include __DIR__ . '/../epilogue.html.php' ?>
+<?php include __DIR__ . '/../../../../app/view/epilogue.html.php' ?>
