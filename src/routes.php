@@ -114,6 +114,15 @@ $routes->add('blog-post', new Route(
         )
 ));
 
+///// RSS //////
+
+$routes->add('rss', new Route(
+    '/rss/{lang}',
+    array('_controller' => 'Goteo\Controller\RssController::indexAction',
+        'lang' => '' //optional parameter
+        )
+));
+
 //////////// USER ROUTES ///////////////////
 
 $routes->add('user-login', new Route(
@@ -213,6 +222,9 @@ $routes->add('images', new Route(
     array('_controller' => 'Goteo\Controller\ImageController::indexAction',
         'params' => '', //default
         'filename' => ''
+        ),
+    array(
+        'filename' => '.*'
         )
 ));
 
@@ -309,11 +321,18 @@ $routes->add('remove-trailing-slash', new Route(
         ),
         array(
             'url' => '.*/$',
+        )
+));
+
+////// REDIRECT "//" STARTING ROUTES
+$routes->add('remove-starting-slash', new Route(
+        '/{url}',
+        array(
+            '_controller' => 'Goteo\Controller\ErrorController::removeStartingSlashAction',
         ),
-        array(),
-        '',
-        array(),
-        array('GET')
+        array(
+            'url' => '[/]+.*',
+        )
 ));
 
 /// LEGACY DISPATCHER ////

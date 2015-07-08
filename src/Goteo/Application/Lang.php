@@ -220,9 +220,13 @@ class Lang {
                 $desired[] = $request->query->get('lang');
             }
         }
+        // Las cookies para idiomas pueden ser problematicas, pues cambian el idioma sin enterarte.
         // set lang by cookie if exists
-        if(Cookie::exists('goteo_lang')) {
-            $desired[] = Cookie::get('goteo_lang');
+        // if(Cookie::exists('goteo_lang')) {
+        //     $desired[] = Cookie::get('goteo_lang');
+        // }
+        if(Session::exists('lang')) {
+            $desired[] = Session::get('lang');
         }
         if($request) {
             // set by navigator
@@ -240,7 +244,8 @@ class Lang {
         //Si el idioma existe (y se ha especificado), guardar preferencias
         if($request && $lang === $request->query->get('lang')) {
             //Enviar cookie
-            Cookie::store('goteo_lang', $lang);
+            // Cookie::store('goteo_lang', $lang);
+            Session::store('lang', $lang);
             if(Session::isLogged()) {
                 //guardar preferencias de usuario
                 Session::getUser()->updateLang($lang);

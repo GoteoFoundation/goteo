@@ -930,7 +930,7 @@ namespace Goteo\Model {
                 FROM    user
                 INNER JOIN user_role
                     ON  user_role.user_id = user.id
-                    AND user_role.role_id = 'admin'
+                    AND user_role.role_id IN ('admin', 'superadmin')
                 ";
 
             if ($availableonly) {

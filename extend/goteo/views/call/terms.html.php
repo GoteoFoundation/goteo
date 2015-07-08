@@ -8,8 +8,8 @@ $bodyClass = 'terms';
 
 $call = $vars['call'];
 
-include __DIR__ . '/../call/prologue.html.php';
-include __DIR__ . '/../call/header.html.php';
+include __DIR__ . '/prologue.html.php';
+include __DIR__ . '/header.html.php';
 ?>
 
 <div id="main">
@@ -52,6 +52,6 @@ include __DIR__ . '/../call/header.html.php';
 </div>
 
 <?php
-include __DIR__ . '/../call/footer.html.php';
-include __DIR__ . '/../epilogue.html.php';
+include __DIR__ . '/footer.html.php';
+include __DIR__ . '/../../../../app/view/epilogue.html.php';
 ?>

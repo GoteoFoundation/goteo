@@ -20,7 +20,7 @@ try {
     $uri = '/' . implode('/', $segments);
 
     // Get controller name
-    $controller = 'Index';
+    $controller = '';
     if (!empty($segments) && is_array($segments)) {
         // Take first segment as controller
         $firstSegment = ucfirst(array_shift($segments));
@@ -29,7 +29,9 @@ try {
             $controller = $firstSegment;
         }
     }
-
+    if(empty($controller)) {
+        throw new Error(Error::NOT_FOUND);
+    }
     // Continue
     try {
         $class = new ReflectionClass("Goteo\\Controller\\{$controller}");
@@ -69,10 +71,6 @@ try {
             if ($result instanceof Resource\MIME) {
                 $mime_type = $result->getMIME();
                 header("Content-type: $mime_type");
-                if ($mime_type == 'text/html') {
-                    //renovar tiempo de sesion si es tipo html
-                    Session::renew();
-                }
             }
 
             //esto suele llamar a un metodo magic: __toString de la vista View

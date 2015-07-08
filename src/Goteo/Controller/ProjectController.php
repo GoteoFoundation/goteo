@@ -2,14 +2,12 @@
 
 namespace Goteo\Controller {
 
-    use Goteo\Core\ACL,
-        Goteo\Core\Error,
-        Goteo\Core\Redirection,
-        Goteo\Application\Config,
+    use Goteo\Application\Config,
         Goteo\Application\View,
         Goteo\Application\Lang,
         Goteo\Application\Session,
         Goteo\Application\Exception\ModelException,
+        Goteo\Application\Exception\ControllerException,
         Goteo\Application\Exception\ModelNotFoundException,
         Goteo\Application,
         Goteo\Controller\Cron\Send,
@@ -61,12 +59,15 @@ namespace Goteo\Controller {
             // redirección según usuario
             $goto = isset($user->roles['admin']) ? '/admin/projects' : '/dashboard/projects';
 
-            // preveer posible cambio de id
             try {
-                $project = Project::getMini($id, null);
+                $project = Project::get($id);
 
-            } catch(\Goteo\Core\Error $e) {
-                return new RedirectResponse('/dashboard/projects');
+            } catch(ModelException $e) {
+                Application\Message::error('Project error!');
+                return new RedirectResponse($goto);
+            } catch(ModelNotFoundException $e) {
+                Application\Message::error('Project not found!');
+                return new RedirectResponse($goto);
             }
 
             // no lo puede eliminar si
@@ -78,8 +79,8 @@ namespace Goteo\Controller {
             $errors = array();
             if ($project->remove($errors)) {
                 Application\Message::info("Has borrado los datos del proyecto '<strong>{$project->name}</strong>' correctamente");
-                if ($_SESSION['project']->id == $id) {
-                    unset($_SESSION['project']);
+                if (Session::get('project') === $id) {
+                    Session::del('project');
                 }
             } else {
                 Application\Message::info("No se han podido borrar los datos del proyecto '<strong>{$project->name}</strong>'. Error:" . implode(', ', $errors));
@@ -97,7 +98,7 @@ namespace Goteo\Controller {
 
             // preveer posible cambio de id
             try {
-                $project = Project::get($id, null);
+                $project = Project::get($id);
 
             } catch(ModelException $e) {
                 Application\Message::error('Project error!');
@@ -332,10 +333,6 @@ namespace Goteo\Controller {
                     $old_id = $project->id;
                     if ($project->ready($errors)) {
 
-                        if ($_SESSION['project']->id == $old_id) {
-                            $_SESSION['project'] = $project;
-                        }
-
                         Application\Message::info(Text::get('project-review-request_mail-success'));
 
                         // email a los de goteo
@@ -371,17 +368,10 @@ namespace Goteo\Controller {
                     }
                 }
 
-                // redirect para que no muestre "reenviar los datos" al recargar la página
-                // throw new Redirection("/project/edit/{$project->id}/{$step}{$fragment}");
-                // Julian 26/09/2014  el redirect provoca que los errores no se muestren corregidos en la lista de abajo
-
-
-
             } elseif ($_SERVER['REQUEST_METHOD'] === 'POST' && empty($_POST)) {
 
                 // print_r($_POST);
                 // print_r($_FILES);
-                // throw new Error(Error::INTERNAL, 'EROR: '.print_r($_FILES,1));
                 // die;
                 // mail de aviso
                 $mailHandler = new Library\Mail();
@@ -398,7 +388,7 @@ namespace Goteo\Controller {
                 unset($mailHandler);
 
 
-                throw new Error(Error::INTERNAL, 'FORM CAPACITY OVERFLOW');
+                throw new ControllerException('FORM CAPACITY OVERFLOW');
             }
 
             // checkear errores
@@ -609,7 +599,7 @@ namespace Goteo\Controller {
                     // si no está en campaña no pueden estar aqui ni de coña
                     if ($project->status != 3) {
                         Application\Message::info(Text::get('project-invest-closed'));
-                        return new RedirectResponse('/project/'.$id, Redirection::TEMPORARY);
+                        return new RedirectResponse('/project/'.$id, Response::HTTP_TEMPORARY_REDIRECT);
                     }
 
                     if ($project->noinvest) {
@@ -677,11 +667,6 @@ namespace Goteo\Controller {
                         }
                     }
                      *
-                     */
-
-                    /*
-                        Application\Message::info(Text::get('user-login-required-to_invest'));
-                        throw new Redirection("/user/login");
                      */
 
                     $viewData['step'] = $step;

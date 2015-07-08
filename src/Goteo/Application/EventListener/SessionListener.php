@@ -70,23 +70,33 @@ class SessionListener implements EventSubscriberInterface
 
     }
 
+    /**
+     * Modifies the html to add some data
+     * @param  FilterResponseEvent $event [description]
+     * @return [type]                     [description]
+     */
     public function onResponse(FilterResponseEvent $event)
     {
+        $request = $event->getRequest();
+        $response = $event->getResponse();
 
         //not need to do anything on sub-requests
-        if (!$event->isMasterRequest()) {
+        //Only in html content-type
+        if (!$event->isMasterRequest() || false === stripos($response->headers->get('Content-Type'), 'text/html')) {
             return;
         }
 
+        // extend the life of the session
+        Session::renew();
+
         // Cookie
-        // the stupid law cookie
+        // the stupid cookie EU law
         if (!Cookie::exists('goteo_cookies')) {
             Cookie::store('goteo_cookies', '1');
             Message::info(Text::get('message-cookies'));
         }
 
-        $response = $event->getResponse();
-        //Are we shadowing some user?
+        //Are we shadowing some user? let's add a nice bar to return to the original user
         if($shadowed_by = Session::get('shadowed_by')) {
             $body = '<div class="user-shadowing-bar">Back to <a href="/user/logout">' . $shadowed_by[1] . '</a></div>';
             $content = $response->getContent();
@@ -104,7 +114,7 @@ class SessionListener implements EventSubscriberInterface
     {
         return array(
             KernelEvents::REQUEST => 'onRequest',
-            KernelEvents::RESPONSE => 'onResponse'
+            KernelEvents::RESPONSE => array('onResponse', -1) // low priority: after headers are processed by symfony
         );
     }
 }

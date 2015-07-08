@@ -10,15 +10,15 @@ if (LANG != 'es') {
 
 $bodyClass = 'admin';
 
-include __DIR__ . '/../prologue.html.php';
-include __DIR__ . '/../header.html.php';
+include __DIR__ . '/../../../../app/view/prologue.html.php';
+include __DIR__ . '/../../../../app/view/header.html.php';
 ?>
 
         <div id="sub-header" style="margin-bottom: 10px;">
             <div class="breadcrumbs">Panel Gestor&iacute;a<?php // echo ADMIN_BCPATH; ?></div>
         </div>
 
-<?php if($_SESSION['messages']) { include __DIR__ . '/../header/message.html.php'; } ?>
+<?php if($_SESSION['messages']) { include __DIR__ . '/../../../../app/view/header/message.html.php'; } ?>
 
         <div id="main">
 
@@ -62,5 +62,5 @@ include __DIR__ . '/../header.html.php';
         </div> <!-- fin main -->
 
 <?php
-    include __DIR__ . '/../footer.html.php';
-include __DIR__ . '/../epilogue.html.php';
+    include __DIR__ . '/../../../../app/view/footer.html.php';
+include __DIR__ . '/../../../../app/view/epilogue.html.php';

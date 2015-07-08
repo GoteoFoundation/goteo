@@ -1,10 +1,9 @@
 <?php
     use Goteo\Library\Text,
-        Goteo\Application\Lang,
-        Goteo\Core\ACL;
+        Goteo\Application\Lang;
 ?>
 
-<?php include __DIR__ . '/../header/lang.html.php' ?>
+<?php include __DIR__ . '/../../../../app/view/header/lang.html.php' ?>
 
 <div id="header">
     <h1><?php echo Text::get('regular-main-header'); ?></h1>

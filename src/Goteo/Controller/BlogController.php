@@ -36,7 +36,7 @@ class BlogController extends \Goteo\Core\Controller {
 
         $filters = array();
         if ($request->query->has('tag')) {
-            $tag = Model\Blog\Post\Tag::get($request->get->query('tag'));
+            $tag = Model\Blog\Post\Tag::get($request->query->get('tag'));
             if ($tag->id) {
                 $filters['tag'] = $tag->id;
             }
