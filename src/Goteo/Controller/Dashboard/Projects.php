@@ -61,7 +61,7 @@ namespace Goteo\Controller\Dashboard {
 
                 }
 
-            } catch(\Goteo\Core\Error $e) {
+            } catch(\Goteo\Application\Exception\ModelNotFoundException $e) {
 
                 // Capturar el posible 404 por cambio de id
                 $_SESSION['project'] = null;
