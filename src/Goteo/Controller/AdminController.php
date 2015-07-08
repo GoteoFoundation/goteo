@@ -138,13 +138,7 @@ namespace Goteo\Controller {
         /** Default index action */
         public function indexAction(Request $request) {
             $ret = array();
-            try {
-               $user = self::checkCurrentUser($request);
-            } catch(ControllerAccessDeniedException $e) {
-                // Instead of the default denied page, redirect to login
-                Message::error($e->getMessage());
-                return $this->redirect('/user/login');
-            }
+           $user = self::checkCurrentUser($request);
 
             //feed by default for someones
             $admin_node = Session::get('admin_node');

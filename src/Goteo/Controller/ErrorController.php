@@ -3,6 +3,7 @@
 namespace Goteo\Controller;
 
 use Goteo\Application\App;
+use Goteo\Application\Session;
 use Goteo\Application\View;
 use Goteo\Application\Message;
 use Goteo\Application\Exception\ControllerAccessDeniedException;
@@ -13,6 +14,12 @@ use Symfony\Component\HttpKernel\Exception\FlattenException;
 
 class ErrorController extends \Goteo\Core\Controller {
 
+    /**
+     * Handles errors and exceptions
+     * @param  FlattenException $exception [description]
+     * @param  Request          $request   [description]
+     * @return [type]                      [description]
+     */
     public function exceptionAction(FlattenException $exception, Request $request)
     {
         $msg = 'Something went wrong! ('.$exception->getMessage().')';
@@ -20,9 +27,15 @@ class ErrorController extends \Goteo\Core\Controller {
         if($exception->getClass() === 'Goteo\Core\Redirection') {
             return new RedirectResponse($exception->getMessage());
         }
+        // redirect to login on accesdenied exception if not logged already
+        if($exception->getClass() === 'Goteo\Application\Exception\ControllerAccessDeniedException') {
+            Message::error($exception->getMessage() ? $exception->getMessage() : 'Access denied, please log in!');
+            if(!Session::isLogged())
+                return new RedirectResponse('/user/login?return=' . rawurlencode($request->getPathInfo()));
+        }
         $code = $exception->getStatusCode();
         $template = 'not_found';
-        if($code === 403) {
+        if($code === Response::HTTP_FORBIDDEN) {
             $template = 'access_denied';
         }
         return new Response(View::render('errors/' . $template, ['msg' => $msg, 'code' => $code], $code));
@@ -39,33 +52,12 @@ class ErrorController extends \Goteo\Core\Controller {
             Message::error("[$requestUri] has been redirected to [$url]. Please remove final slash in the action form!");
         }
         // return new RedirectResponse($url, 301); //permanent ?
-        return new RedirectResponse($url, 302);
+        return new RedirectResponse($url, Response::HTTP_TEMPORARY_REDIRECT);
     }
 
     public function legacyControllerAction(Request $request) {
-        // Try legacy controller for not handled routes
-        $non_legacy_routes = array(
-            '/discover',
-            '/user',
-            '/glossary',
-            '/about',
-            '/service',
-            '/blog',
-            '/project',
-            '/channel',
-            '/image',
-            '/img',
-            );
-
         $legacy = true;
         if(App::debug() && $request->query->has('no-legacy')) $legacy = false;
-        $path = $request->getPathInfo();
-        foreach($non_legacy_routes as $route) {
-            if(strpos($path, $route) === 0) {
-                $legacy = false;
-                break;
-            }
-        }
         if($legacy) {
             try {
                 ob_start();
@@ -85,5 +77,6 @@ class ErrorController extends \Goteo\Core\Controller {
                 return new Response(View::render('errors/not_found', ['msg' => $e->getMessage() ? $e->getMessage() : 'Not found', 'code' => $e->getCode()]), $e->getCode());
             }
         }
+        return new Response(View::render('errors/not_found', ['msg' => 'Route not found', 'code' => Response::HTTP_NOT_FOUND]), Response::HTTP_NOT_FOUND);
     }
 }

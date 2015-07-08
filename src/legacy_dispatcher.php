@@ -20,7 +20,7 @@ try {
     $uri = '/' . implode('/', $segments);
 
     // Get controller name
-    $controller = 'Index';
+    $controller = '';
     if (!empty($segments) && is_array($segments)) {
         // Take first segment as controller
         $firstSegment = ucfirst(array_shift($segments));
@@ -29,7 +29,9 @@ try {
             $controller = $firstSegment;
         }
     }
-
+    if(empty($controller)) {
+        throw new Error(Error::NOT_FOUND);
+    }
     // Continue
     try {
         $class = new ReflectionClass("Goteo\\Controller\\{$controller}");
