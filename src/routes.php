@@ -213,6 +213,9 @@ $routes->add('images', new Route(
     array('_controller' => 'Goteo\Controller\ImageController::indexAction',
         'params' => '', //default
         'filename' => ''
+        ),
+    array(
+        'filename' => '.*'
         )
 ));
 
