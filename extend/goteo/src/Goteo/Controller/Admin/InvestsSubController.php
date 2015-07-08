@@ -64,8 +64,6 @@ class InvestsSubController extends AbstractSubController {
         $investStatus = Model\Invest::status();
         // listado de proyectos
         $projects = Model\Invest::projects(false, $node);
-        // usuarios cofinanciadores
-        $users = Model\Invest::users(true);
         // campañas que tienen aportes
         $calls = Model\Invest::calls();
         // extras
@@ -109,27 +107,26 @@ class InvestsSubController extends AbstractSubController {
         }
 
         // listado de aportes
-        if ($filters['filtered'] == 'yes') {
+        if (!empty($filters['calls']))
+            $filters['types'] = '';
 
-            if (!empty($filters['calls']))
-                $filters['types'] = '';
-
-            $list = Model\Invest::getList($filters, $node, 999);
-        } else {
-            $list = array();
-        }
+        $limit = 25;
+        $total = Model\Invest::getList($filters, $node, 0, 0, true);
+        $total_money = Model\Invest::getList($filters, $node, 0, 0, 'money');
+        $list = Model\Invest::getList($filters, $node, $this->getGet('pag') * $limit, $limit);
 
         return array(
-                'folder' => 'invests',
-                'file' => 'list',
+                'template' => 'admin/invests/list',
                 'list'          => $list,
                 'filters'       => $filters,
                 'projects'      => $projects,
-                'users'         => $users,
                 'calls'         => $calls,
                 'methods'       => $methods,
                 'types'         => $types,
-                'investStatus'  => $investStatus
+                'investStatus'  => $investStatus,
+                'limit' => $limit,
+                'total' => $total,
+                'total_money' => $total_money
             );
 
     }
