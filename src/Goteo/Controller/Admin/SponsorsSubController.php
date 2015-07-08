@@ -23,6 +23,20 @@ class SponsorsSubController extends AbstractSubController {
 
     static protected $label = 'Apoyos institucionales';
 
+    /**
+     * Overwrite some permissions
+     * @inherit
+     */
+    static public function isAllowed(\Goteo\Model\User $user, $node) {
+        $node = Node::get($node);
+        $limit = (int) $node->sponsors_limit;
+
+        // Only central node allowed here and nodes where sponsors_limit>0
+
+        if( !Config::isMasterNode($node) && !$limit ) return false;
+        return parent::isAllowed($user, $node);
+    }
+
     private function checkItemPermission($id = null) {
         if($sponsor = Sponsor::get($id)) {
             if($sponsor->node === $this->node) return true;
