@@ -114,6 +114,15 @@ $routes->add('blog-post', new Route(
         )
 ));
 
+///// RSS //////
+
+$routes->add('rss', new Route(
+    '/rss/{lang}',
+    array('_controller' => 'Goteo\Controller\RssController::indexAction',
+        'lang' => '' //optional parameter
+        )
+));
+
 //////////// USER ROUTES ///////////////////
 
 $routes->add('user-login', new Route(
