@@ -1,14 +1,13 @@
 <?php
 
-use Goteo\Library\Text,
-    Goteo\Core\View;
+use Goteo\Core\View;
 
-$project = $vars['project'];
-$account = $vars['account']; // cuentas del proyecto, para tener el porcentaje de comisión
+$project = $this->project;
+$account = $this->account; // cuentas del proyecto, para tener el porcentaje de comisión
 
 $GOTEO_FEE = round($account->fee / 100, 2);
 
-$Data = $vars['Data'];
+$Data = $this->Data;
 
 $desglose = array();
 $goteo    = array();
@@ -16,49 +15,40 @@ $proyecto = array();
 $estado   = array();
 $usuario  = array();
 
-$users = array();
-foreach ($vars['users'] as $user) {
-    $amount = $users[$user->user]->amount + $user->amount;
-    $users[$user->user] = (object) array(
-        'name'   => $user->name,
-        'user'   => $user->user,
-        'amount' => $amount
-    );
-}
-
-uasort($vars['users'],
-    function ($a, $b) {
-        if ($a->name == $b->name) return 0;
-        return ($a->name > $b->name) ? 1 : -1;
-        }
-    );
-
 // recorremos los aportes
-foreach ($vars['invests'] as $invest) {
+foreach ($this->invests as $invest) {
 
 // para cada metodo acumulamos desglose, comision, pago
     $desglose[$invest->method] += $invest->amount;
-    $goteo[$invest->method] += ( $invest->amount * $GOTEO_FEE );
+    $goteo[$invest->method] += ( in_array($invest->method, ['drop']) ? 0 : $invest->amount * $GOTEO_FEE );
     $proyecto[$invest->method] += ( $invest->amount * (1 - $GOTEO_FEE) );
 // para cada estado
     $estado[$invest->status]['total'] += $invest->amount;
     $estado[$invest->status][$invest->method] += $invest->amount;
 // para cada usuario
-    $usuario[$invest->user->id]['total'] += $invest->amount;
-    $usuario[$invest->user->id][$invest->method] += $invest->amount;
-// por metodo
-    $usuario[$invest->method]['users'][$invest->user->id] = 1;
-    $usuario[$invest->method]['invests']++;
+    $usuario[$invest->user]['user'] = $invest->getUser() ? $invest->getUser() : $invest->user;
+    $usuario[$invest->user]['total'] += $invest->amount;
+    $usuario[$invest->user][$invest->method] += $invest->amount;
+// // por metodo
+    $metodos[$invest->method]['users'][$invest->user] = 1;
+    $metodos[$invest->method]['invests']++;
 
 }
 
 ?>
+<?php $this->layout('admin/layout') ?>
+
+<?php $this->section('head') ?>
 <style type="text/css">
     td {padding: 3px 10px;}
 </style>
+<?php $this->append() ?>
+
+
+<?php $this->section('admin-content') ?>
 <div class="widget report">
     <p>Informe de financiación de <strong><?php echo $project->name ?></strong> al d&iacute;a <?php echo date('d-m-Y') ?></p>
-    <p>Se encuentra en estado <strong><?php echo $vars['status'][$project->status] ?></strong>
+    <p>Se encuentra en estado <strong><?php echo $this->status[$project->status] ?></strong>
         <?php if ($project->round > 0) : ?>
             , en <?php echo $project->round . 'ª ronda' ?> y le quedan <strong><?php echo $project->days ?> d&iacute;as</strong> para finalizarla
         <?php endif; ?>
@@ -76,35 +66,26 @@ foreach ($vars['invests'] as $invest) {
             <th>Goteo</th>
             <th>Proyecto</th>
         </tr>
+        <?php
+            $tot1 = $tot2 = $tot3 = 0;
+            foreach($this->methods as $method => $name):
+                $tot1 += $desglose[$method];
+                $tot2 += $goteo[$method];
+                $tot3 += $proyecto[$method];
+        ?>
         <tr>
-            <td>PayPal</td>
-            <td style="text-align:right;"><?php echo \euro_format($desglose['paypal']) ?></td>
-            <td style="text-align:right;"><?php echo \euro_format($goteo['paypal'], 2) ?></td>
-            <td style="text-align:right;"><?php echo \euro_format($proyecto['paypal'], 2) ?></td>
+            <td><?= $name ?></td>
+            <td style="text-align:right;"><?php echo \euro_format($desglose[$method]) ?></td>
+            <td style="text-align:right;"><?php echo \euro_format($goteo[$method], 2) ?></td>
+            <td style="text-align:right;"><?php echo \euro_format($proyecto[$method], 2) ?></td>
         </tr>
-        <tr>
-            <td>Tpv</td>
-            <td style="text-align:right;"><?php echo \euro_format($desglose['tpv']) ?></td>
-            <td style="text-align:right;"><?php echo \euro_format($goteo['tpv'], 2) ?></td>
-            <td style="text-align:right;"><?php echo \euro_format($proyecto['tpv'], 2) ?></td>
-        </tr>
-        <tr>
-            <td>Cash</td>
-            <td style="text-align:right;"><?php echo \euro_format($desglose['cash']) ?></td>
-            <td style="text-align:right;"><?php echo \euro_format($goteo['cash'], 2) ?></td>
-            <td style="text-align:right;"><?php echo \euro_format($proyecto['cash'], 2) ?></td>
-        </tr>
-        <tr>
-            <td>Riego</td>
-            <td style="text-align:right;"><?php echo \euro_format($desglose['drop']) ?></td>
-            <td style="text-align:right;">0</td>
-            <td style="text-align:right;"><?php echo \euro_format($desglose['drop'], 2) ?></td>
-        </tr>
+        <?php endforeach ?>
+
         <tr>
             <td>TOTAL</td>
-            <td style="text-align:right;"><?php echo \euro_format(($desglose['paypal'] + $desglose['tpv'] + $desglose['cash'] + $desglose['drop']), 2) ?></td>
-            <td style="text-align:right;"><?php echo \euro_format(($goteo['paypal'] + $goteo['tpv'] + $goteo['cash']), 2) ?></td>
-            <td style="text-align:right;"><?php echo \euro_format(($proyecto['paypal'] + $proyecto['tpv'] + $proyecto['cash'] + $desglose['drop']), 2) ?></td>
+            <td style="text-align:right;"><?php echo \euro_format($tot1, 2) ?></td>
+            <td style="text-align:right;"><?php echo \euro_format($tot2, 2) ?></td>
+            <td style="text-align:right;"><?php echo \euro_format($tot3, 2) ?></td>
         </tr>
     </table>
 
@@ -113,41 +94,37 @@ foreach ($vars['invests'] as $invest) {
         <tr>
             <th>Estado</th>
             <th>Cantidad</th>
-            <th>PayPal</th>
-            <th>Tpv</th>
-            <th>Cash</th>
-            <th>Riego</th>
+            <?php foreach($this->methods as $method => $name): ?>
+                <th><?= $name ?></th>
+            <?php endforeach ?>
         </tr>
-        <?php foreach ($vars['investStatus'] as $id=>$label) : if (in_array($id, array('-1'))) continue;?>
+        <?php foreach ($this->investStatus as $id=>$label) : if (in_array($id, array('-1'))) continue;?>
         <tr>
             <td><?php echo $label ?></td>
             <td style="text-align:right;"><?php echo \euro_format($estado[$id]['total']) ?></td>
-            <td style="text-align:right;"><?php echo \euro_format($estado[$id]['paypal']) ?></td>
-            <td style="text-align:right;"><?php echo \euro_format($estado[$id]['tpv']) ?></td>
-            <td style="text-align:right;"><?php echo \euro_format($estado[$id]['cash']) ?></td>
-            <td style="text-align:right;"><?php echo \euro_format($estado[$id]['drop']) ?></td>
+            <?php foreach($this->methods as $method => $name): ?>
+                <td style="text-align:right;"><?php echo \euro_format($estado[$id][$method]) ?></td>
+            <?php endforeach ?>
         </tr>
         <?php endforeach; ?>
     </table>
 
-    <h3>Por cofinanciadores (<?php echo count($vars['users']) ?>)</h3>
+    <h3>Por cofinanciadores (<?php echo count($this->users) ?>)</h3>
     <table>
         <tr>
             <th>Usuario</th>
             <th>Cantidad</th>
-            <th>PayPal</th>
-            <th>Tpv</th>
-            <th>Cash</th>
-            <th>Riego</th>
+            <?php foreach($this->methods as $method => $name): ?>
+                <th><?= $name ?></th>
+            <?php endforeach ?>
         </tr>
-        <?php foreach ($vars['users'] as $user) : ?>
+        <?php foreach ($usuario as $user => $parts) : ?>
         <tr>
-            <td><?php echo $user->name ?></td>
-            <td style="text-align:right;"><?php echo \euro_format($user->amount, 0) ?></td>
-            <td style="text-align:right;"><?php echo \euro_format($usuario[$user->user]['paypal']) ?></td>
-            <td style="text-align:right;"><?php echo \euro_format($usuario[$user->user]['tpv']) ?></td>
-            <td style="text-align:right;"><?php echo \euro_format($usuario[$user->user]['cash']) ?></td>
-            <td style="text-align:right;"><?php echo \euro_format($usuario[$user->user]['drop']) ?></td>
+            <td><?php echo $parts['user']->name ?></td>
+            <td style="text-align:right;"><?php echo \euro_format($parts['total'], 0) ?></td>
+            <?php foreach($this->methods as $method => $name): ?>
+                <td style="text-align:right;"><?php echo \euro_format($parts[$method]) ?></td>
+            <?php endforeach ?>
         </tr>
         <?php endforeach; ?>
     </table>
@@ -378,8 +355,8 @@ foreach ($vars['invests'] as $invest) {
 <?php if (!empty($Data['cash'])) : ?>
     <h4>CASH</h4>
     <?php
-        $users_ok = count($usuarios['cash']['users']);
-        $invests_ok = $usuarios['cash']['invests'];
+        $users_ok = count($metodos['cash']['users']);
+        $invests_ok = $metodos['cash']['invests'];
         $incidencias = 0;
         $correcto = $desglose['cash'] - $incidencias;
     ?>
@@ -449,8 +426,8 @@ foreach ($vars['invests'] as $invest) {
 <?php if (!empty($Data['drop'])) : ?>
     <h4>RIEGO</h4>
     <?php
-        $users_ok = count($usuarios['drop']['users']);
-        $invests_ok = $usuarios['drop']['invests'];
+        $users_ok = count($metodos['drop']['users']);
+        $invests_ok = $metodos['drop']['invests'];
         $incidencias = 0;
         $correcto = $desglose['drop'] - $incidencias;
     ?>
@@ -518,3 +495,5 @@ foreach ($vars['invests'] as $invest) {
 <?php endif; ?>
 
 </div>
+
+<?php $this->replace() ?>

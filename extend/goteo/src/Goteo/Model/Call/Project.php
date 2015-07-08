@@ -537,10 +537,9 @@ namespace Goteo\Model\Call {
          * @param type $called
          * @param type $amount ( lo que aporta el usuario )
          */
-        public static function setMaxdrop ($project, $amount = 0) {
+        public static function getMaxdrop ($project, $amount = 0) {
 
             $call = $project->called;
-
             // el proyecto ya no se puede regar si:
             // si el proyecto no está en una convocatoria o esa convocatoria ya no riega
             if (!isset($call) || !$call instanceof Model\Call || !$call->dropable)
@@ -597,6 +596,7 @@ namespace Goteo\Model\Call {
                 }
 
             }
+
 
             // que no supere el máximo por proyecto
             $maxdrop = min($maxdrop, $call->maxproj);

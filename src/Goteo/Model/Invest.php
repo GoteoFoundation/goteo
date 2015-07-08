@@ -5,6 +5,7 @@ namespace Goteo\Model {
     use Goteo\Core\Model;
     use Goteo\Application\Session;
     use Goteo\Application\Config;
+    use Goteo\Application\Exception\ModelNotFoundException;
     use Goteo\Library\Text,
         Goteo\Model\Image,
         Goteo\Model\User,
@@ -101,7 +102,7 @@ namespace Goteo\Model {
                 self::METHOD_TPV    => 'Tarjeta',
                 self::METHOD_DROP   => 'Riego',
                 self::METHOD_CASH   => 'Manual',
-                self::METHOD_DROP   => 'Gotas'
+                self::METHOD_POOL   => 'Monedero'
             );
         }
 
@@ -172,8 +173,6 @@ namespace Goteo\Model {
                 AND invest.status IN (:s0, :s1, :s3 :s4)
                 ", array(':p' => $project, ':s0' => self::STATUS_PENDING, ':s1' => self::STATUS_CHARGED, ':s3' => self::STATUS_PAID, ':s4' => self::STATUS_RETURNED));
             foreach ($query->fetchAll(\PDO::FETCH_CLASS, __CLASS__) as $invest) {
-                // datos del usuario
-                $invest->user = User::get($invest->user);
 
 				$query = static::query("
                     SELECT  *
@@ -205,14 +204,15 @@ namespace Goteo\Model {
         }
 
 
-        /*
+        /**
          * Lista de aportes individuales
          *
          * Los filtros vienen de la gestión de aportes
          * Los datos que sacamos: usuario, proyecto, cantidad, estado de proyecto, estado de aporte, fecha de aporte, tipo de aporte, campaña
          * .... anonimo, resign, etc...
+         * @param $count if true, counts the total. If it's 'money' sum all money instead
          */
-        public static function getList ($filters = array(), $node = null, $limited = false) {
+        public static function getList ($filters = array(), $node = null, $offset = 0, $limit = 10, $count = false) {
 
             $list = array();
             $values = array();
@@ -255,7 +255,7 @@ namespace Goteo\Model {
                 $values[':name'] = "%{$filters['name']}%";
             }
             if (!empty($filters['calls'])) {
-                $sqlFilter .= " AND invest.campaign = 1 AND invest.`call` = :calls";
+                $sqlFilter .= " AND invest.`call` = :calls";
                 $values[':calls'] = $filters['calls'];
             }
             if (!empty($filters['issue'])) {
@@ -337,6 +337,31 @@ namespace Goteo\Model {
                 $values[':node'] = $node;
             }
 
+            if($count) {
+                if($count === 'money') {
+                    $what = 'SUM(invest.amount)';
+                }
+                else {
+                    $what = 'COUNT(invest.id)';
+                }
+                // Return count
+                $sql = "SELECT $what
+                    FROM invest
+                    INNER JOIN project
+                        ON invest.project = project.id
+                    WHERE invest.project IS NOT NULL
+                        $sqlFilter";
+
+
+                $total = self::query($sql, $values)->fetchColumn();
+                if($count === 'money') {
+                    return (float) $total;
+                }
+                return (int) $total;
+            }
+
+            $offset = (int) $offset;
+            $limit = (int) $limit;
             $sql = "SELECT
                         invest.id as id,
                         invest.user as user,
@@ -364,17 +389,33 @@ namespace Goteo\Model {
                     WHERE invest.project IS NOT NULL
                         $sqlFilter
                     ORDER BY invest.id DESC
+                    LIMIT $offset, $limit
                     ";
 
-            if ($limited > 0 && is_numeric($limited)) {
-                $sql .= "LIMIT $limited";
-            }
-
+                    // echo sqldbg($sql, $values);die;
             $query = self::query($sql, $values);
-            foreach ($query->fetchAll(\PDO::FETCH_CLASS) as $item) {
+            foreach ($query->fetchAll(\PDO::FETCH_CLASS, __CLASS__) as $item) {
                 $list[$item->id] = $item;
             }
             return $list;
+        }
+
+        // returns the current project
+        public function getProject() {
+            if($this->projectObject) return $this->projectObject;
+            try {
+                $this->projectObject = Project::get($this->project);
+            } catch(ModelNotFoundException $e) {
+                return null;
+            }
+            return $this->projectObject;
+        }
+
+        // returns the current user
+        public function getUser() {
+            if($this->userObject) return $this->userObject;
+            $this->userObject = User::get($this->user);
+            return $this->userObject;
         }
 
         public function validate (&$errors = array()) {
@@ -446,10 +487,11 @@ namespace Goteo\Model {
                     }
 
                     // si es de convocatoria,
-                    if (isset($this->called) && $this->called instanceof Call) {
+                    if ($this->called instanceof Call) {
 
                         // si el aporte es más de lo que puede
-                        $drop_amount = ($this->amount > $this->maxdrop) ? $this->maxdrop : $this->amount;
+                        $maxdrop = Call\Project::getMaxdrop($this->getProject(), $this->amount);
+                        $drop_amount = ($this->amount > $maxdrop) ? $maxdrop : $this->amount;
 
                         // si queda capital riego
                         if ($drop_amount > 0) {
@@ -469,7 +511,6 @@ namespace Goteo\Model {
                                     'call' => $this->called->id
                                 )
                             ) ;
-
                             // se actualiza el registro de convocatoria
                             if ($drop->save($errors)) {
                                 self::query("UPDATE invest SET droped = :drop, `call`= :call WHERE id = :id",
@@ -479,6 +520,7 @@ namespace Goteo\Model {
                             }
 
                         }
+                        // print_r("amount: ".$this->amount);print_r($drop);print_r("[maxdrop: $maxdrop]");print_r($errors);die("$drop_amount");
                     }
 
                 }
@@ -486,9 +528,9 @@ namespace Goteo\Model {
                 // tabla para obtener aportaciones por nodo
 
                 // FIX: aseguramos que no hay ningun valor nulo
-                $pnode = Project::getMini($this->project)->node;
+                $pnode = $this->getProject()->node;
                 if (empty($pnode)) $pnode = \GOTEO_NODE;
-                $unode = User::getMini($this->user)->node;
+                $unode = $this->getUser()->node;
                 if (empty($unode)) $unode = \GOTEO_NODE;
 
                 $sql = "REPLACE INTO invest_node (project_id, project_node, user_id, user_node, invest_id, invest_node) VALUES (:pid, :pnode, :uid, :unode, :iid, :inode)";
@@ -703,38 +745,6 @@ namespace Goteo\Model {
 
             foreach ($query->fetchAll(\PDO::FETCH_CLASS) as $item) {
                 $list[$item->id] = $item->name;
-            }
-
-            return $list;
-        }
-
-        /*
-         * Lista de emails de usuarios que han aportado a algo
-         */
-        public static function emails ($all = false) {
-
-            $list = array();
-
-            $sql = "
-                SELECT
-                    user.id as id,
-                    user.email as email
-                FROM    user
-                INNER JOIN invest
-                    ON user.id = invest.user
-                ";
-
-            if (!$all) {
-                $sql .= "WHERE (user.hide = 0 OR user.hide IS NULL)
-                    ";
-            }
-                $sql .= "ORDER BY user.id ASC
-                ";
-
-            $query = static::query($sql);
-
-            foreach ($query->fetchAll(\PDO::FETCH_CLASS) as $item) {
-                $list[$item->id] = $item->email;
             }
 
             return $list;

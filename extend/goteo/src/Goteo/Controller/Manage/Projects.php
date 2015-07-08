@@ -384,18 +384,12 @@ namespace Goteo\Controller\Manage {
                 $the_proj->cName = "P-{$cNum}-{$cDate}";
 
                 // incidencias, importe total
-                $issues = Model\Invest::getList(array(
-                    'projects' => $the_proj->id,
-                    'issue' => 'show'
-                ));
-                $sum = 0;
-
-                foreach($issues as $issue) {
-                    $sum += $issue->amount;
-                }
+                $sum = Model\Invest::getList(array(
+                        'projects' => $the_proj->id,
+                        'issue' => 'show'
+                    ), null, 0, 0, 'money');
 
                 $the_proj->issues = $sum;
-
                 // y si estas incidencias hacen peligrar el mínimo
 
                 $projects[] = $the_proj;

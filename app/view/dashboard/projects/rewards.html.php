@@ -35,8 +35,8 @@ switch ($order) {
         break;
     case 'user': // nombre de usuario alfabetico
         uasort($invests, function ($a, $b) {
-                if ($a->user->name == $b->user->name) return 0;
-                return ($a->user->name > $b->user->name) ? 1 : -1;
+                if ($a->getUser()->name == $b->getUser()->name) return 0;
+                return ($a->getUser()->name > $b->getUser()->name) ? 1 : -1;
                 }
             );
         break;
@@ -142,11 +142,11 @@ switch ($order) {
                 <div class="investor">
 
                     <div class="left" style="width:45px;">
-                        <a href="/user/<?php echo $investData->user->id; ?>"><img src="<?php echo $investData->user->avatar->getLink(45, 45, true); ?>" /></a>
+                        <a href="/user/<?php echo $investData->getUser()->id; ?>"><img src="<?php echo $investData->getUser()->avatar->getLink(45, 45, true); ?>" /></a>
                     </div>
 
                     <div class="left" style="width:120px;">
-						<span class="username"><a href="/user/<?php echo $investData->user->id; ?>"><?php echo $investData->user->name; ?></a></span>
+						<span class="username"><a href="/user/<?php echo $investData->getUser()->id; ?>"><?php echo $investData->getUser()->name; ?></a></span>
                         <label class="amount">Aporte<?php if ($investData->anonymous) echo ' <strong>'.  Text::get('regular-anonymous').'</strong>'; echo " [{$investData->id}]";?></label>
 						<span class="amount"><?php echo $investData->amount; ?> &euro;</span>
                         <span class="date"><?php echo date('d-m-Y', strtotime($investData->invested)); ?></span>
@@ -187,8 +187,8 @@ switch ($order) {
                     </div>
 
                     <div class="left">
-                        <span class="profile"><a href="/user/profile/<?php echo $investData->user->id ?>" target="_blank"><?php echo Text::get('profile-widget-button'); ?></a> </span>
-                        <span class="contact"><a onclick="msgto_user('<?php echo $investData->user->id; ?>', '<?php echo addslashes($investData->user->name); ?>')" style="cursor: pointer;"><?php echo Text::get('regular-send_message'); ?></a></span>
+                        <span class="profile"><a href="/user/profile/<?php echo $investData->getUser()->id ?>" target="_blank"><?php echo Text::get('profile-widget-button'); ?></a> </span>
+                        <span class="contact"><a onclick="msgto_user('<?php echo $investData->getUser()->id; ?>', '<?php echo addslashes($investData->getUser()->name); ?>')" style="cursor: pointer;"><?php echo Text::get('regular-send_message'); ?></a></span>
                     </div>
 
 

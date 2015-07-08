@@ -164,14 +164,13 @@ namespace Goteo\Controller {
                         $invest->called = null;
                     } else  {
                         $invest->called = $projectData->called;
-                        $invest->maxdrop = Model\Call\Project::setMaxdrop($projectData, $invest->amount);
                     }
 
                 } else {
                     $invest->called = null;
                 }
 
-//                if ($debug) die(\trace($invest));
+               // if ($debug) die(\trace($invest));
 
                 if ($invest->save($errors)) {
                     // urls para paypal (necesita schema)
