@@ -707,11 +707,13 @@ class AccountsSubController extends AbstractSubController {
         );
 
         $filters = $this->getFilters();
+
         // listado de aportes
         $limit = 25;
-        $total = Model\Invest::getList($filters, $this->node, 0, 0, true);
-        $total_money = Model\Invest::getList($filters, $this->node, 0, 0, 'money');
-        $list = Model\Invest::getList($filters, $this->node, $this->getGet('pag') * $limit, $limit);
+        $node = null;
+        $total = Model\Invest::getList($filters, $node, 0, 0, true);
+        $total_money = Model\Invest::getList($filters, $node, 0, 0, 'money');
+        $list = Model\Invest::getList($filters, $node, $this->getGet('pag') * $limit, $limit);
 // print_r($list);die("$total $total_money");
         $viewData = array(
                 'template' => 'admin/accounts/list',

@@ -138,6 +138,7 @@ foreach ($this->invests as $invest) {
 <div class="widget">
 <!-- información detallada apra tratar transferencias a proyectos -->
     <h3 class="title">Desglose de financiación por rondas</h3>
+    <b>NOTA: ESTO NO ESTÁ MUY BIEN, HAY QUE REHACERLO</b>
     <p style="font-style:italic;">Las incidencias NO se tienen en cuenta en el conteo de usuarios/operaciones ni en importes ni en comisiones ni en netos.</p>
 
 <?php if (!empty($Data['tpv'])) : ?>
