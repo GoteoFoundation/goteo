@@ -26,14 +26,15 @@ class ContractController extends \Goteo\Core\Controller {
      * @return raw   Pdf
      */
     public function indexAction($id) {
-
         $contract = Model\Contract::get($id); // datos del contrato
         if(!$contract) {
             throw new ControllerException("Not found contract [$id]");
         }
 
+        $user = Session::getUser();
         $project = Model\Project::get($id);
-        if($contract->project_owner !== $user->id || !$project->userCanManage(Session::getUser())) {
+
+        if(!$user || ($contract->project_owner !== $user->id && !$project->userCanManage($user))) {
             throw new ControllerAccessDeniedException("You don't have permissions to access to this contract!");
         }
 
@@ -111,7 +112,7 @@ class ContractController extends \Goteo\Core\Controller {
             throw new ControllerException("Not found contract [$id]");
         }
         $project = Model\Project::get($id);
-        if(!$user || !$project->userCanManage($user)) {
+        if(!$user || ($contract->project_owner !== $user->id && !$project->userCanManage($user))) {
             throw new ControllerAccessDeniedException("You don't have permissions to access to this contract!");
         }
 
