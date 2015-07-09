@@ -28,8 +28,8 @@ class SponsorsSubController extends AbstractSubController {
      * @inherit
      */
     static public function isAllowed(\Goteo\Model\User $user, $node) {
-        $node = Node::get($node);
-        $limit = (int) $node->sponsors_limit;
+        $nodeData = Node::get($node);
+        $limit = (int) $nodeData->sponsors_limit;
 
         // Only central node allowed here and nodes where sponsors_limit>0
 
