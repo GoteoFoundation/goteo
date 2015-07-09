@@ -160,7 +160,7 @@ class ProjectsSubController extends AbstractSubController {
 
     public function rebaseAction($id = null, $subaction = null) {
         // Project && permission check
-        $project = $this->getProject($id, 'admin');
+        $project = $this->getProject($id, 'moderate');
 
         if ($this->getPost('newid')) {
 
@@ -241,7 +241,7 @@ class ProjectsSubController extends AbstractSubController {
 
     public function assignAction($id) {
         // Project && permission check
-        $project = $this->getProject($id, 'admin');
+        $project = $this->getProject($id, 'moderate');
 
         // asignar a una convocatoria solo si
         //   está en edición a campaña
@@ -387,7 +387,7 @@ class ProjectsSubController extends AbstractSubController {
 
 
     public function accountsAction($id) {
-        $project = $this->getProject($id, 'admin');
+        $project = $this->getProject($id, 'moderate');
 
         if ($this->isPost()) {
             $accounts = Model\Project\Account::get($project->id);
@@ -509,7 +509,7 @@ class ProjectsSubController extends AbstractSubController {
 
     public function enableAction($id) {
         // Project && permission check
-        $project = $this->getProject($id, 'admin');
+        $project = $this->getProject($id, 'moderate');
         $consultants = $project->getConsultants();
         // si no esta en edicion, recuperarlo
 
