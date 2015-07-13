@@ -2816,6 +2816,9 @@ namespace Goteo\Model {
 
             $offset = (int) $offset;
             $limit = (int) $limit;
+            if($limit)
+                $limit_sql='LIMIT '.$offset.','.$limit;
+
             $sql ="
                 SELECT
                     project.id AS project,
@@ -2855,7 +2858,7 @@ namespace Goteo\Model {
                 WHERE
                 $where
                 ORDER BY $order
-                LIMIT $offset,$limit
+                $limit_sql
                 ";
 
             $values[':lang'] = $lang;

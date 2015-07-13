@@ -191,11 +191,13 @@ foreach ($filters as $key=>$value) {
                 <td colspan="7">
                     CAMBIAR:&nbsp;
                     <a href="<?php echo "/admin/projects/dates/{$project->id}" ?>" title="Para modificar a mano las fechas clave">[Fechas]</a>
-                    <?php if($project->userCanAdmin($this->user)): ?>
+                    <?php if($project->userCanModerate($this->user)): ?>
                         <a href="<?php echo "/admin/projects/accounts/{$project->id}" ?>" title="Para cambiar las cuentas bancarias">[Cuentas]</a>
+                        <?php if ($project->status < 4) : ?><a href="<?php echo "/admin/projects/rebase/{$project->id}" ?>" title="Para cambiar la Url del proyecto" onclick="return confirm('Esto es MUY DELICADO, seguimos?');">[Id]</a><?php endif ?>
+                    <?php endif ?>
+                    <?php if($project->userCanAdmin($this->user)): ?>
                         <a href="<?php echo "/admin/projects/move/{$project->id}" ?>" title="Para pasar el proyecto a otro nodo">[Nodo]</a>
                         <a href="<?php echo "/admin/projects/open_tags/{$project->id}" ?>" title="Para asignar Opentags">[Agrupación]</a>
-                        <?php if ($project->status < 4) : ?><a href="<?php echo "/admin/projects/rebase/{$project->id}" ?>" title="Para cambiar la Url del proyecto" onclick="return confirm('Esto es MUY DELICADO, seguimos?');">[Id]</a><?php endif ?>
                         <a href="<?php echo "/admin/projects/consultants/{$project->id}" ?>" title="Para gestionar los asesosres">[Asesor]</a>
                     <?php endif ?>
                     <a href="<?php echo "/admin/projects/conf/{$project->id}" ?>" title="Para cambiar los días de primera y segunda ronda">[Configuración de campaña]</a>
