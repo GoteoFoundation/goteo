@@ -131,7 +131,7 @@ class PromoteSubController extends AbstractSubController {
                 'template' => 'admin/promote/edit',
                 'action' => '/admin/promote/add',
                 'promo' => (object) array('order' => $next),
-                'projects' => Model\Project::published([], $this->node),
+                'projects' => Model\Project::published([], $this->node, 0, 0),
                 'titleAndDesc' => $this->isMasterNode()
         );
     }
