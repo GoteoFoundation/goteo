@@ -221,7 +221,7 @@ switch ($order) {
             // confirmación porque no se puede desacer
             if (confirm('<?php echo Text::get('dashboard-rewards-process_alert'); ?>')) {
                 // usar webservice para marcar como cumplida
-                success_text = $.ajax({async: false, type: "POST", data: ({token: $(this).attr('id')}), url: '<?php echo SITE_URL; ?>/ws/fulfill_reward/<?php echo $project->id; ?>/<?php echo $_SESSION['user']->id; ?>'}).responseText;
+                success_text = $.ajax({async: false, type: "POST", data: ({token: $(this).attr('id')}), url: '/ws/fulfill_reward/<?php echo $project->id; ?>/<?php echo $_SESSION['user']->id; ?>'}).responseText;
                 if (success_text == '') {
                     $(this).attr('checked', false);
                     alert('Ha habido algún problema, contáctanos');
