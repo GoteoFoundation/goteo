@@ -16,6 +16,7 @@ class Node extends \Goteo\Core\Model {
         $admins = array(), // administradores
         $logo,
         $sello,
+        $active,
         $image,
         $default_consultant,
         $sponsors_limit;
@@ -612,6 +613,20 @@ class Node extends \Goteo\Core\Model {
         }
 
         return $data;
+    }
+
+    /**
+     * Check if the channel can be previewed by the user id
+     * @param  Goteo\Model\User $user  the user to check (if empty checks )
+     * @return boolean          true if success, false otherwise
+      */
+    public function userCanView(User $user = null) {
+    
+    // is admin in the node or the node is active
+    if($user->hasRoleInNode($this->id, ['admin', 'superadmin', 'root'])) return true;
+    
+    return false;
+        
     }
 
     private function updateData () {
