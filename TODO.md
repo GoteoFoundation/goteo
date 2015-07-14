@@ -1,6 +1,13 @@
 TODO
 =====
 
+REFORMAS PENDIENTES
+
+- eliminiar controladores ws y ws-ultra-secret. Pasar a json en sus respectivos controladores
+- arreglar el jquery (pasar a una version moderna). implica cambiar algunos plugins
+- reformar el controlador blog.
+
+
 Corto plazo:
     - añadir rol "consultant" para que sea posible añadir como asesores de proyecto los que tengan ese rol. De momento solo admines pueden ser asesores
 
