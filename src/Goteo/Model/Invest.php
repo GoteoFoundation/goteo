@@ -486,6 +486,13 @@ namespace Goteo\Model {
                 }
             }
 
+
+            if($this->method===self::METHOD_POOL)
+            {
+                $set .= ", `pool` = :pool ";
+                $values[':pool']=1;
+            }
+
             try {
                 $sql = "REPLACE INTO invest SET " . $set;
                 self::query($sql, $values);
@@ -1313,6 +1320,14 @@ namespace Goteo\Model {
                 return false;
             }
 
+        }
+
+        /*
+         * Switch credit option
+         */
+        public function switchPool($id) {    
+           $pool=!$this->pool;
+           self::query("UPDATE invest SET pool = :pool WHERE id = :id", array(':id' => $id, ':pool' => $pool));
         }
 
         /* Para marcar que es una incidencia */

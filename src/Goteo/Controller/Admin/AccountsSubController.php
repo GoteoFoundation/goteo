@@ -24,6 +24,7 @@ class AccountsSubController extends AbstractSubController {
       'cancel' => 'Cancelando aporte',
       'report' => 'Informe de proyecto',
       'viewer' => 'Viendo logs',
+      'cancel-pool' => 'Cancelando opción crédito'
     );
 
 
@@ -211,6 +212,14 @@ class AccountsSubController extends AbstractSubController {
         // mantenimiento de registros relacionados (usuario, proyecto, ...)
         $invest->keepUpdated();
         return $this->redirect();
+    }
+
+    // cancelar aporte antes de ejecución, solo aportes no cargados
+    public function switchpoolAction($id) {
+        $invest = Model\Invest::get($id);
+        if ($invest->switchPool($id))
+            Message::info('Aporte cancelado');
+        return $this->redirect('/admin/accounts/details/'.$id);
     }
 
 
