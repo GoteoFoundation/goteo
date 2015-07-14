@@ -33,7 +33,11 @@ class BlogController extends \Goteo\Core\Controller {
 
         // sacamos su blog
         $blog = Model\Blog::get(Config::get('node'), 'node');
-
+        if(!$blog) {
+            Message::error("No blogs for [" . Config::get('node') ."]!");
+            return $this->redirect('/blog');
+        }
+        // print_r($blog);die;
         $filters = array();
         if ($request->query->has('tag')) {
             $tag = Model\Blog\Post\Tag::get($request->query->get('tag'));

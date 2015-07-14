@@ -49,6 +49,8 @@ array_walk($rewards, function (&$reward) { $reward = $reward->reward; });
         <?php if (!$invest->resign && $invest->status == 1 && $invest->status == 3) : ?>
         <a href="/admin/accounts/resign/<?php echo $invest->id ?>?token=<?php echo md5('resign'); ?>" class="button">Es donativo</a>
         <?php endif; ?>
+
+        <a href="/admin/accounts/switchpool/<?php echo $invest->id ?>" class="button">Habilitar/Deshabilitar Pool</a>
     </p>
 
     <h3>Detalles de la transaccion</h3>

@@ -33,7 +33,9 @@ namespace Goteo\Model {
                     ", array(':owner' => $owner, ':type' => $type));
 
                 $blog =  $query->fetchObject(__CLASS__);
-                if(empty($blog)) $blog = new self();
+
+                if(!$blog) return false;
+
                 switch ($blog->type) {
                     case 'node':
                         $blog->node = $blog->owner;
