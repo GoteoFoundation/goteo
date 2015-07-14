@@ -3,6 +3,7 @@
 namespace Goteo\Controller;
 
 use Symfony\Component\HttpFoundation\Request;
+use Goteo\Application\Exception\ControllerAccessDeniedException;
 
 use Goteo\Application\Session;
 use Goteo\Application\Message;
@@ -24,6 +25,12 @@ class ChannelController extends \Goteo\Core\Controller {
     private function setChannelContext($id)
     {
         $channel = Node::get($id);
+
+        //Check if the user can access to the channel
+        $user = Session::getUser();
+
+        if(!$channel->active && (!$user || !$channel->userCanView($user)))
+            throw new ControllerAccessDeniedException("You don't have permissions to access to this channel!");
 
         $categories = Category::getList();
 
@@ -63,6 +70,7 @@ class ChannelController extends \Goteo\Core\Controller {
      */
     public function indexAction($id, Request $request)
     {
+        
         $this->setChannelContext($id);
 
         // Proyectos destacados si hay
