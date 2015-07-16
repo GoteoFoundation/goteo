@@ -244,3 +244,7 @@
             #supporters-sponsors .title {
               margin-left:0px;
             }
+
+            #project-list li div.obtained span.percent, #project-list li div.obtained strong{
+              font-size:15px !important;
+            }
