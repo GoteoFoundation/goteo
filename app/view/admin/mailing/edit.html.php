@@ -22,7 +22,7 @@ jQuery(document).ready(function ($) {
             $('#mail_subject').val('');
             $('#mail_content').html('');
            }
-            content = $.ajax({async: false, url: '<?php echo SITE_URL; ?>/ws/get_template_content/'+$('#template').val()}).responseText;
+            content = $.ajax({async: false, url: '/ws/get_template_content/'+$('#template').val()}).responseText;
             var arr = content.split('#$#$#');
             $('#mail_subject').val(arr[0]);
             $('#mail_content').val(arr[1]);

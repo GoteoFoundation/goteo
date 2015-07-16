@@ -61,12 +61,12 @@ $disabled = $review->ready == 1 ? 'disabled' : '';
 jQuery(document).ready(function ($) {
 
     $('.evaluate-criteria').change(function () {
-        success_text = $.ajax({async: false, type: "POST", data: ({campo: this.name, valor:this.checked}), url: '<?php echo SITE_URL; ?>/ws/set_review_criteria/<?php echo $_SESSION['user']->id; ?>/<?php echo $review->id; ?>'}).responseText;
+        success_text = $.ajax({async: false, type: "POST", data: ({campo: this.name, valor:this.checked}), url: '/ws/set_review_criteria/<?php echo $_SESSION['user']->id; ?>/<?php echo $review->id; ?>'}).responseText;
         $("#total-score").html(success_text);
     });
 
     $('.evaluate-comment').change(function () {
-        success_text = $.ajax({async: false, type: "POST", data: ({campo: this.name, valor:this.value}), url: '<?php echo SITE_URL; ?>/ws/set_review_comment/<?php echo $_SESSION['user']->id; ?>/<?php echo $review->id; ?>'}).responseText;
+        success_text = $.ajax({async: false, type: "POST", data: ({campo: this.name, valor:this.value}), url: '/ws/set_review_comment/<?php echo $_SESSION['user']->id; ?>/<?php echo $review->id; ?>'}).responseText;
         $("#"+this.name+"-result").html(success_text);
     });
 

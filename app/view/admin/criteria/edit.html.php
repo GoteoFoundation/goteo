@@ -8,7 +8,7 @@ use Goteo\Library\Text;
 jQuery(document).ready(function ($) {
 
     $('#criteria-section').change(function () {
-        order = $.ajax({async: false, url: '<?php echo SITE_URL; ?>/ws/get_criteria_order/'+$('#criteria-section').val()}).responseText;
+        order = $.ajax({async: false, url: '/ws/get_criteria_order/'+$('#criteria-section').val()}).responseText;
         $('#criteria-order').val(order);
         $('#criteria-num').html(order);
     });
