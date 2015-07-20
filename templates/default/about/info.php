@@ -22,9 +22,17 @@ $this->section('content');
 		</div>
 	</div>
 
-	<div id="main" class="threecols">
+	<div id="main">
 		<div id="about-content">
             <h3 class="title"><?= $this->text('regular-header-about') ?></h3>
+            <ul class="about-sections">
+                <?php foreach ($posts as $post) : ?>
+                    <?php $count++; ?>
+                    <!--<li><a href="/faq/<?php echo ($sectionId == 'node') ? '' : $sectionId; ?>"<?php if ($sectionId == $current) echo ' class="current"'; ?> style="color: <?php echo $vars['colors'][$sectionId] ?>;"><?php echo preg_replace('/\s/', '<br />', $sectionName, 1); ?></a></li>-->
+                    <li><a class="element-<?= $count ?>" href="#info<?php echo $post->id; ?>"><?= preg_replace('/\s/', '<br />', $post->title, 1);  ?></a></li>
+                <?php endforeach; ?>
+            </ul>
+            <br clear="all"></br>
             <?php if (!empty($posts)) : ?>
                 <div class="about-page">
                 <?php foreach ($posts as $post) : ?>
@@ -86,7 +94,7 @@ $this->section('content');
                 </div>
             <?php endif; ?>
 		</div>
-		<div id="about-sidebar">
+		<!--<div id="about-sidebar">
             <div class="widget about-sidebar-module">
                 <h3 class="supertitle"><?= $this->text('header-about-side') ?></h3>
                 <ul>
@@ -95,7 +103,7 @@ $this->section('content');
                     <?php endforeach; ?>
                 </ul>
             </div>
-		</div>
+		</div>-->
 
 	</div>
 
