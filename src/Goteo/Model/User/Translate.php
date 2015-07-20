@@ -96,7 +96,9 @@ namespace Goteo\Model\User {
                 foreach ($translates as $item) {
                     switch ($item['type']) {
                         case 'project':
-                            $array[] = Model\Project::getMini($item['item']);
+                            try {
+                                $array[] = Model\Project::getMini($item['item']);
+                            } catch(\Goteo\Application\Exception\ModelNotFoundException $e) {}
                             break;
                         case 'call':
                             $array[] = Model\Call::getMini($item['item']);
