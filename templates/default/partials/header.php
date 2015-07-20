@@ -15,7 +15,7 @@ $langs = Lang::listAll('short');
                         <ul class="currency">
                             <?php foreach ($currencies as $ccyId => $ccy): ?>
                                 <?php if ($ccyId == $_SESSION['currency']) continue; ?>
-                                <li >
+                                <li>
                                 <a href="?currency=<?php echo $ccyId ?>"><?php echo $ccy['html'].' '.$ccyId; ?></a>
                                 </li>
                             <?php endforeach ?>
@@ -26,7 +26,7 @@ $langs = Lang::listAll('short');
                         <ul class="lang">
                             <?php foreach ($langs as $id => $lang): ?>
                                 <?php if (Lang::isActive($id)) continue; ?>
-                                <li >
+                                <li>
                                 <a href="?lang=<?php echo $id ?>"><?php echo $lang ?></a>
                                 </li>
                             <?php endforeach ?>
@@ -50,7 +50,7 @@ $langs = Lang::listAll('short');
 
                     </li>
                     <?php } ?>
-                    <li id="lang"><a href="#" ><?php echo Lang::getShort(); ?></a>
+                    <li id="lang"><a href="#" ><?php echo Lang::getShort(Lang::current(true)); ?></a>
 
                         <?php // TODO: UL LANG AQUI ?>
 

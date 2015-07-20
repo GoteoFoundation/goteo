@@ -27,7 +27,7 @@ if (!\Goteo\Application\Config::isMasterNode()) {
                     <?php if($num_currencies>1) { ?>
                     <li id="currency"><a href="#" ><?php echo $select_currency." ".$_SESSION['currency']; ?></a></li>
                     <?php } ?>
-                    <li id="lang"><a href="#" ><?php echo Lang::getShort(); ?></a></li>
+                    <li id="lang"><a href="#" ><?php echo Lang::getShort(Lang::current(true)); ?></a></li>
                 </ul>
             </div>
 

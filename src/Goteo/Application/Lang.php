@@ -169,7 +169,7 @@ class Lang {
      * Gets the current active language
      * @return [type] [description]
      */
-    static public function current($public_only = true) {
+    static public function current($public_only = false) {
         $current = '';
         if(Session::exists('lang')) {
             $current = Session::get('lang');
@@ -177,7 +177,8 @@ class Lang {
         if(empty($current) || !self::exists($current)) {
             $current = self::getDefault();
         }
-        if($public_only && !self::isPublic($current)) {
+        // if($public_only && !self::isPublic($current)) {
+        if($public_only) {
             $current = self::getFallback($current);
         }
         return $current;
@@ -216,8 +217,8 @@ class Lang {
      * @param  [type]  $lang [description]
      * @return boolean       [description]
      */
-    static public function isActive($lang) {
-        return self::current() === $lang;
+    static public function isActive($lang, $public_only = true) {
+        return self::current($public_only) === $lang;
     }
 
     static public function setFromGlobals(Request $request = null) {

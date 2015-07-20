@@ -3,6 +3,7 @@
 use Goteo\Library\Text,
     Goteo\Core\View,
     Goteo\Model\Blog\Post,
+    Goteo\Application\Lang,
     Goteo\Util\Pagination\Paginated,
     Goteo\Util\Pagination\DoubleBarLayout;
 
@@ -22,7 +23,7 @@ if (empty($vars['post'])) {
         $action = 'list';
         $vars['show'] = 'list';
     } else {
-        $post = Post::get($post, LANG);
+        $post = Post::get($post, Lang::current());
         $action = 'post';
         $vars['show'] = 'post';
     }
