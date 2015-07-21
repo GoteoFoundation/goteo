@@ -4,9 +4,7 @@
 * version linea de comandos
 **/
 
-use Goteo\Core\Resource,
-    Goteo\Core\Error,
-    Goteo\Core\Model,
+use Goteo\Core\Model,
     Goteo\Application\Config,
     Goteo\Model\Location,
     Goteo\Library\Cacher,
@@ -15,7 +13,7 @@ use Goteo\Core\Resource,
     Goteo\Model\Project\ProjectLocation;
 
 if (PHP_SAPI !== 'cli') {
-    die("Acceso solo por linea de comandos!");
+    die('Console access only!');
 }
 error_reporting(E_ALL & ~E_NOTICE & ~E_STRICT);
 ini_set("display_errors",1);

@@ -2,12 +2,16 @@
 /**
  * Este es el proceso de final de ronda /cli-execute
  * version linea de comandos
+ *
+ *
+ * CRON SUGGESTED LINE:
+ *
+ * 1 0 * * *       www-data        /usr/bin/php /..path.../bin/cli-execute.php --update  > /..path.../var/logs/last-cli-execute.log
  **/
 
 
-use Goteo\Core\Resource,
-    Goteo\Core\Error,
-    Goteo\Core\Exception,
+use Goteo\Command\UsersSend;
+use Goteo\Core\Exception,
     Goteo\Model,
     Goteo\Application\Config,
     Goteo\Application\Lang,
@@ -19,7 +23,7 @@ use Goteo\Core\Resource,
     Goteo\Library\Mail;
 
 if (PHP_SAPI !== 'cli') {
-    die("Acceso solo por linea de comandos!");
+    die('Console access only!');
 }
 
 error_reporting(E_ALL & ~E_NOTICE & ~E_STRICT);
@@ -54,6 +58,7 @@ $UPDATE = false;
 if (in_array('--update', $argv)) {
     echo "Real run! Updating the database\n";
     $UPDATE = true;
+    ob_start();
 } else {
     echo "Dummy run! Use the --update modifier to actually update the database \n";
 }
@@ -72,6 +77,7 @@ if (in_array('--invests', $argv)) {
     $FAILED_INVESTS = true;
     $FEED = false;
 }
+
 
 try {
 
@@ -142,11 +148,15 @@ try {
 
 }
 
+echo "\nDone!\n";
 
-
-
-
-echo " END\n";
+if($UPDATE) {
+    // recogemos el buffer para grabar el log
+    @mkdir(GOTEO_LOG_PATH . 'cron/', 0777, true);
+    $log_file = GOTEO_LOG_PATH . 'cron/'.date('Ymd').'_execute.log';
+    file_put_contents($log_file, ob_get_contents(), FILE_APPEND);
+    chmod($log_file, 0666);
+}
 
 ///////// Funciones desfactorizadas
 /**
@@ -277,9 +287,9 @@ function project_fail($project, $per_amount)
 
             //Email de proyecto fallido al autor, inversores y destinatarios de recompensa
             // @FIXME : verificar si esto se puede hacer en cli mode (no veo porque no)
-            \Goteo\Controller\Cron\Send::toOwner('fail', $project);
-            \Goteo\Controller\Cron\Send::toInvestors('fail', $project);
-            \Goteo\Controller\Cron\Send::toFriends('fail', $project);
+            UsersSend::toOwner('fail', $project);
+            UsersSend::toInvestors('fail', $project);
+            UsersSend::toFriends('fail', $project);
         }
 
     } else {
@@ -348,8 +358,8 @@ function project_first_round($project, $per_amount)
             unset($log);
 
             // Email de proyecto pasa a segunda ronda al autor y a los inversores
-            \Goteo\Controller\Cron\Send::toOwner('r1_pass', $project);
-            \Goteo\Controller\Cron\Send::toInvestors('r1_pass', $project);
+            UsersSend::toOwner('r1_pass', $project);
+            UsersSend::toInvestors('r1_pass', $project);
         }
 
     } else {
@@ -422,8 +432,8 @@ function project_unique_round($project, $per_amount)
             unset($log);
 
             // Email de proyecto finaliza su única ronda al autor y a los inversores
-            \Goteo\Controller\Cron\Send::toOwner('unique_pass', $project);
-            \Goteo\Controller\Cron\Send::toInvestors('unique_pass', $project);
+            UsersSend::toOwner('unique_pass', $project);
+            UsersSend::toInvestors('unique_pass', $project);
 
             // mail de aviso
             $mailHandler = new Mail();
@@ -487,8 +497,8 @@ function project_second_round($project, $per_amount)
             unset($log);
 
             //Email de proyecto final segunda ronda al autor y a los inversores
-            \Goteo\Controller\Cron\Send::toOwner('r2_pass', $project);
-            \Goteo\Controller\Cron\Send::toInvestors('r2_pass', $project);
+            UsersSend::toOwner('r2_pass', $project);
+            UsersSend::toInvestors('r2_pass', $project);
         }
     } else {
         echo "Prevented project->succeed() to query \n # UPDATE project SET status = 4, success = '".date('Y-m-d')."' WHERE id = '{$project->id}' \n";
@@ -543,14 +553,14 @@ function cancel_payment($invest, $project, $userData)
                         $log_text = "Se ha cancelado aporte y preapproval de %s de %s (id: %s) al proyecto %s del dia %s";
                     } else {
                         $txt_errors = implode('; ', $err);
-                        $log_text = "Ha fallado al cancelar el preapproval de %s de %s (id: %s) al proyecto %s del dia %s. <br />Se han dado los siguientes errores: $txt_errors";
+                        $log_text = "Ha fallado al cancelar el preapproval de %s de %s (id: %s) al proyecto %s del dia %s. \nSe han dado los siguientes errores: $txt_errors";
                     }
                 } elseif (!empty($invest->transaction)) {
                     if (Paypal::cancelPay($invest, $err, true)) {
                         $log_text = "Se ha cancelado aporte y devuelto el pago en PayPal de %s de %s (id: %s) al proyecto %s del dia %s";
                     } else {
                         $txt_errors = implode('; ', $err);
-                        $log_text = "Ha fallado al hacer la devolución en PayPal del aporte de %s de %s (id: %s) al proyecto %s del dia %s. <br />Se han dado los siguientes errores: $txt_errors";
+                        $log_text = "Ha fallado al hacer la devolución en PayPal del aporte de %s de %s (id: %s) al proyecto %s del dia %s. \nSe han dado los siguientes errores: $txt_errors";
                     }
                 }
 
@@ -564,7 +574,7 @@ function cancel_payment($invest, $project, $userData)
                     $log_text = "Se ha anulado el cargo tpv de %s de %s mediante TPV (id: %s) al proyecto %s del dia %s";
                 } else {
                     $txt_errors = implode('; ', $err);
-                    $log_text = "Ha fallado al anular el cargo tpv de %s de %s mediante TPV (id: %s) al proyecto %s del dia %s. <br />Se han dado los siguientes errores: $txt_errors";
+                    $log_text = "Ha fallado al anular el cargo tpv de %s de %s mediante TPV (id: %s) al proyecto %s del dia %s. \nSe han dado los siguientes errores: $txt_errors";
                 }
                 break;
             case 'cash':
@@ -726,7 +736,7 @@ function execute_payment($invest, $project, $userData, $projectAccount)
                 } else {
                     $txt_errors = implode('; ', $err);
                     echo "Fallo al ejecutar cargo sermepa: ".$txt_errors;
-                    $log_text = "Ha fallado al ejecutar el cargo a %s por su aporte de %s mediante TPV (id: %s) al proyecto %s del dia %s <br />Se han dado los siguientes errores: $txt_errors";
+                    $log_text = "Ha fallado al ejecutar el cargo a %s por su aporte de %s mediante TPV (id: %s) al proyecto %s del dia %s \nSe han dado los siguientes errores: $txt_errors";
                 }
              *
              */
@@ -922,3 +932,4 @@ function process_invests($project, $projectAccount, $process = null)
     return true;
 
 }
+

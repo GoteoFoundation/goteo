@@ -13,7 +13,7 @@ use Goteo\Library\Text,
     Goteo\Library\Mail,
 	Goteo\Library\Template,
     Goteo\Model,
-    Goteo\Controller\Cron\Send;
+    Goteo\Command\UsersSend;
 
 class ProjectsSubController extends AbstractSubController {
 
@@ -498,8 +498,8 @@ class ProjectsSubController extends AbstractSubController {
         $project = $this->getProject($id, 'moderate');
         // poner un proyecto en campaña
         if ($project->publish($errors)) {
-            Send::toOwner('tip_0', $project);
-            Send::toConsultants('tip_0', $project);
+            UsersSend::toOwner('tip_0', $project);
+            UsersSend::toConsultants('tip_0', $project);
             $this->doFeed($project, 'El admin %s ha pasado el proyecto %s al estado <span class="red">en Campaña</span>');
         } else {
             $this->doFeed($project, 'Al admin %s le ha fallado al pasar el proyecto %s al estado <span class="red">en Campaña</span>');

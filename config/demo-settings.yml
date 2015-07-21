@@ -175,12 +175,6 @@ mail:
         complaints_topic: amazon-ses-complaints
 
 
-# Cron params
-cron:
-    param: --------------
-    value: --------------
-
-
 # Paypal config location path
 # /config/sdk_config.ini
 # see paypal.php for an example contents of it

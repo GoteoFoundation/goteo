@@ -8,7 +8,7 @@ namespace Goteo\Controller {
 
     use Goteo\Model;
     use Goteo\Application\Session;
-    use Goteo\Controller\Cron\Send;
+    use Goteo\Command\UsersSend;
     use Goteo\Library\Check;
     use Goteo\Library\Feed;
     use Goteo\Core\ACL;
@@ -142,7 +142,7 @@ namespace Goteo\Controller {
             }
             $project_obj->whodidit = $who;
             $project_obj->whorole = $rol;
-            Send::toConsultants('rewardfulfilled', $project_obj);
+            UsersSend::toConsultants('rewardfulfilled', $project_obj);
 
             die;
         }

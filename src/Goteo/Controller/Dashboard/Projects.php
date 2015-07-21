@@ -594,7 +594,7 @@ namespace Goteo\Controller\Dashboard {
 
                     // si no ha encontrado otro, lanzamos la notificación a cofinanciadores
                     if (!$log->unique_issue) {
-                        \Goteo\Controller\Cron\Send::toInvestors('update', $project, $post);
+                        \Goteo\Command\UsersSend::toInvestors('update', $project, $post);
                     }
 
                     unset($log);

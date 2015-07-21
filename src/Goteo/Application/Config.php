@@ -210,8 +210,6 @@ class Config {
         define('AWS_S3_BUCKET_MAIL', self::get('filesystem.bucket.mail'));
         define('AWS_S3_BUCKET_DOCUMENT', self::get('filesystem.bucket.document'));
         define('AWS_S3_BUCKET_PRESS', self::get('filesystem.bucket.press'));
-        define('CRON_PARAM', self::get('cron.param'));
-        define('CRON_VALUE', self::get('cron.value'));
         define('PP_CONFIG_PATH', GOTEO_PATH . 'config/');
         define('PAYPAL_REDIRECT_URL', self::get('paypal.redirect_url'));
         define('TPV_MERCHANT_CODE', self::get('tpv.merchant_code'));
