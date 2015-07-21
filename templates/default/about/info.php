@@ -6,10 +6,16 @@ $posts = $this->posts;
 
 $go_up = $this->text('regular-go_up');
 
+$share_url = \SITE_URL . '/about#info6';
+
+$facebook_url = 'http://facebook.com/sharer.php?u=' . urlencode($share_url) . '&t=' . urlencode($this->text('meta-about-share'));
+$twitter_url = 'http://twitter.com/home?status=' . urlencode($this->text('meta-about-share') . ': ' . $share_url);
+
 $this->layout("layout", [
     'bodyClass' => 'about',
     'title' => $this->text('meta-title-info'),
-    'meta_description' => $this->text('meta-description-info')
+    'meta_description' => $this->text('meta-description-info'),
+    'og_description' => $this->text('meta-title-info')
     ]);
 
 $this->section('content');
@@ -28,7 +34,6 @@ $this->section('content');
             <ul class="about-sections">
                 <?php foreach ($posts as $post) : ?>
                     <?php $count++; ?>
-                    <!--<li><a href="/faq/<?php echo ($sectionId == 'node') ? '' : $sectionId; ?>"<?php if ($sectionId == $current) echo ' class="current"'; ?> style="color: <?php echo $vars['colors'][$sectionId] ?>;"><?php echo preg_replace('/\s/', '<br />', $sectionName, 1); ?></a></li>-->
                     <li><a class="element-<?= $count ?>" href="#info<?php echo $post->id; ?>"><?= preg_replace('/\s/', '<br />', $post->title, 1);  ?></a></li>
                 <?php endforeach; ?>
             </ul>
@@ -91,19 +96,15 @@ $this->section('content');
                     </div>
                     <a class="up" href="#"><?php echo $go_up; ?></a>
                 <?php endforeach; ?>
+                <h4 class="share">Difundir</h4>
+                <ul class="share">
+                    <li class="twitter"><a target="_blank" href="<?php echo htmlentities($twitter_url) ?>"><?php echo Text::get('regular-twitter'); ?></a></li>
+                    <li class="facebook"><a target="_blank" href="<?php echo htmlentities($facebook_url) ?>"><?php echo Text::get('regular-facebook'); ?></a></li>
+                </ul>
                 </div>
             <?php endif; ?>
 		</div>
-		<!--<div id="about-sidebar">
-            <div class="widget about-sidebar-module">
-                <h3 class="supertitle"><?= $this->text('header-about-side') ?></h3>
-                <ul>
-                    <?php foreach ($posts as $post) : ?>
-                    <li><a href="#info<?php echo $post->id; ?>"><?php echo $post->title; ?></a></li>
-                    <?php endforeach; ?>
-                </ul>
-            </div>
-		</div>-->
+		
 
 	</div>
 
