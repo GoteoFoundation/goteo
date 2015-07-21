@@ -29,7 +29,7 @@
 
         <?php if ($this->superform) : ?>
             <script src="<?php echo SRC_URL ?>/view/js/datepicker.min.js"></script>
-            <script src="<?php echo SRC_URL ?>/view/js/datepicker/datepicker.<?= $this->lang_current() ?>.js"></script>
+            <script src="<?php echo SRC_URL ?>/view/js/datepicker/datepicker.<?= $this->lang_current(true) ?>.js"></script>
             <script src="<?php echo SRC_URL ?>/view/js/superform.js"></script>
         <?php endif; ?>
 

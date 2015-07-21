@@ -2,10 +2,11 @@
 // Vista para pintar una entrada de blog
 // puede ser resumen en la lista o completa
 	use Goteo\Library\Text,
-		Goteo\Model\Blog\Post,
+        Goteo\Model\Blog\Post,
+		Goteo\Application\Lang,
 		Goteo\Model\Image;
 
-    $post = Post::get($vars['post'], LANG);
+    $post = Post::get($vars['post'], Lang::current());
     $level = (int) $vars['level'] ?: 3;
 
 	if ($vars['show'] == 'list') {

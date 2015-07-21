@@ -36,7 +36,7 @@ class TranslatesSubController extends AbstractSubController {
      */
     static public function isAllowed(\Goteo\Model\User $user, $node) {
         // Only central node and superadmins allowed here
-        if( ! Config::isMasterNode($node) || !$user->hasRoleInNode($node, ['superadmin', 'root']) ) return false;
+        if( !$user->hasRoleInNode($node, ['admin', 'superadmin', 'root']) ) return false;
         return parent::isAllowed($user, $node);
     }
 

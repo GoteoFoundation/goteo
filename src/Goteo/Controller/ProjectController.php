@@ -530,7 +530,7 @@ namespace Goteo\Controller {
             //activamos la cache para esta llamada
             \Goteo\Core\DB::cache(true);
 
-            $project = Project::get($id, Lang::current());
+            $project = Project::get($id, Lang::current(false));
             $user = Session::getUser();
 
             // recompensas

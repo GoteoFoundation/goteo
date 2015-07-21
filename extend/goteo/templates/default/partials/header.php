@@ -55,7 +55,7 @@ $langs = Lang::listAll('short');
 
                     </li>
                     <?php } ?>
-                    <li id="lang"><a href="#" ><?php echo Lang::getShort(); ?></a>
+                    <li id="lang"><a href="#" ><?php echo Lang::getShort(Lang::current(true)); ?></a>
 
                         <?php // TODO: UL LANG AQUI ?>
 
