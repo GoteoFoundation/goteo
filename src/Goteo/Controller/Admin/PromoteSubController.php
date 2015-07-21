@@ -68,7 +68,11 @@ class PromoteSubController extends AbstractSubController {
                 'template' => 'admin/promote/edit',
                 'action' => '/admin/promote/edit/' . $promo->id,
                 'promo' => $promo,
-                'projects' => Model\Project::published([], $this->node),
+                'projects' => Model\Project::published($this->isMasterNode() ? null : ['status' => [
+                        Model\Project::STATUS_IN_CAMPAIGN,
+                        Model\Project::STATUS_FUNDED,
+                        Model\Project::STATUS_FULFILLED]
+                    ], $this->node),
                 'titleAndDesc' => $this->isMasterNode()
         );
     }
