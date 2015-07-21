@@ -20,6 +20,9 @@ node: goteo
 # Default system language
 lang: es
 
+# Default timezone
+timezone: Europe/Madrid
+
 # url
 url:
     main: //example.com
