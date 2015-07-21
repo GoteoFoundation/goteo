@@ -43,7 +43,7 @@ class LangTest extends \PHPUnit_Framework_TestCase {
         $this->assertTrue(Lang::isPublic($current));
         Lang::setPublic($current, false);
         $this->assertFalse(Lang::isPublic($current));
-        $this->assertNotEquals(Lang::current(), $current);
+        $this->assertNotEquals($current, Lang::current(true));
         return $all;
     }
 
@@ -67,8 +67,8 @@ class LangTest extends \PHPUnit_Framework_TestCase {
         foreach(Lang::listAll('array') as $lang => $info) {
             $this->assertInternalType('array', $info);
             Lang::set($lang);
-            $this->assertEquals(Lang::current(), $lang);
-            $this->assertTrue(Lang::isActive($lang));
+            $this->assertEquals($lang, Lang::current());
+            $this->assertTrue(Lang::isActive($lang, false));
         }
     }
 }

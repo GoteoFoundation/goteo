@@ -24,21 +24,21 @@ class Lang {
                     'short' => 'CAT',
                     'public' => true,
                     'locale' => 'ca_ES',
-                    'fallback' => 'es' //Overwrite fallback
+                    'fallback' => 'es'
                     ),
         'eu' => array(
                     'name' => 'Euskara',
                     'short' => 'EUSK',
                     'public' => true,
                     'locale' => 'eu_ES',
-                    'fallback' => 'es'  //Overwrite fallback
+                    'fallback' => 'es'
                     ),
         'gl' => array(
                     'name' => 'Galego',
                     'short' => 'GAL',
                     'public' => true,
                     'locale' => 'gl_ES',
-                    'fallback' => 'es'  //Overwrite fallback
+                    'fallback' => 'es'
                     ),
         'fr' => array(
                     'name' => 'Français',
@@ -50,34 +50,43 @@ class Lang {
                     'short' => 'ITA',
                     'public' => true,
                     'locale' => 'it_IT',
-                    'fallback' => 'es'  //Overwrite fallback
+                    'fallback' => 'es'
                     ),
         'nl' => array(
                     'name' => 'Dutch',
                     'short' => 'NL',
                     'public' => true,
-                    'locale' => 'nl_NL'
+                    'locale' => 'nl_NL',
+                    'fallback' => 'en'
                     ),
         'de' => array(
                     'name' => 'Deutsch',
-                    'short' => 'N',
+                    'short' => 'DE',
                     'public' => false,
-                    'locale' => 'N'),
+                    'locale' => 'de_DE',
+                    'fallback' => 'en'
+                ),
         'el' => array(
                     'name' => 'Ελληνικά',
                     'short' => 'GRK',
                     'public' => false,
-                    'locale' => 'el_GR'),
+                    'locale' => 'el_GR',
+                    'fallback' => 'en'
+
+                ),
         'pl' => array(
                     'name' => 'Polski',
                     'short' => 'POL',
                     'public' => false,
-                    'locale' => 'pl_PL'),
+                    'locale' => 'pl_PL',
+                    'fallback' => 'en'
+                ),
         'pt' => array(
                     'name' => 'Português',
                     'short' => 'PORT',
                     'public' => false,
-                    'locale' => 'pt_PT'
+                    'locale' => 'pt_PT',
+                    'fallback' => 'en'
                     ),
     );
 
@@ -138,7 +147,8 @@ class Lang {
      * @param [type] $lang [description]
      */
     static public function set($lang) {
-        if(!self::isPublic($lang)) {
+        // if(!self::isPublic($lang)) {
+        if(!self::exists($lang)) {
             // get the default
             $lang = self::getDefault($lang);
         }
@@ -159,13 +169,17 @@ class Lang {
      * Gets the current active language
      * @return [type] [description]
      */
-    static public function current() {
+    static public function current($public_only = false) {
         $current = '';
         if(Session::exists('lang')) {
             $current = Session::get('lang');
         }
-        if(empty($current) || !self::isPublic($current)) {
+        if(empty($current) || !self::exists($current)) {
             $current = self::getDefault();
+        }
+        // if($public_only && !self::isPublic($current)) {
+        if($public_only) {
+            $current = self::getFallback($current);
         }
         return $current;
     }
@@ -203,8 +217,8 @@ class Lang {
      * @param  [type]  $lang [description]
      * @return boolean       [description]
      */
-    static public function isActive($lang) {
-        return self::current() === $lang;
+    static public function isActive($lang, $public_only = true) {
+        return self::current($public_only) === $lang;
     }
 
     static public function setFromGlobals(Request $request = null) {
@@ -280,6 +294,22 @@ class Lang {
      */
     static function getShort($lang = null) {
         return self::get($lang ? $lang : self::current(), 'short');
+    }
+
+    /**
+     * Retrieve the fallback language a lang
+     * @param  [type] $lang [description]
+     * @return [type]       [description]
+     */
+    static function getFallback($lang = null) {
+        $lang = self::get($lang ? $lang : self::current(), 'object');
+        if(isset($lang->fallback) && $lang !== $lang->fallback) {
+            if(!self::isPublic($lang->fallback)) {
+                return self::getFallback($lang->fallback);
+            }
+            return $lang->fallback;
+        }
+        return self::getDefault();
     }
 
 

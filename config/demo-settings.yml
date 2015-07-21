@@ -20,6 +20,9 @@ node: goteo
 # Default system language
 lang: es
 
+# Default timezone
+timezone: Europe/Madrid
+
 # url
 url:
     main: //example.com
@@ -170,12 +173,6 @@ mail:
         region:           us-east-1
         bounces_topic:    amazon-ses-bounces
         complaints_topic: amazon-ses-complaints
-
-
-# Cron params
-cron:
-    param: --------------
-    value: --------------
 
 
 # Paypal config location path

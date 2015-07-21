@@ -27,12 +27,6 @@ class AclListener implements EventSubscriberInterface
         $request = $event->getRequest();
         $uri = $request->getPathInfo();
         if (!ACL::check($uri) && substr($uri, 0, 11) !== '/user/login') {
-
-            // TEMPORAL CRON
-            if ((strpos($uri, 'cron') !== false || strpos($uri, 'system') !== false) && $request->query->get(md5(CRON_PARAM)) === md5(CRON_VALUE)) {
-                define('CRON_EXEC', true);
-                return;
-            }
             //refresh permission status
             \Goteo\Model\User::flush();
 

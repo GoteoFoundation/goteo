@@ -57,7 +57,7 @@
             <?php endif ?>
 
 			<li id="lang">
-				<a href="#" ><?php echo Lang::getShort(); ?></a>
+				<a href="#" ><?php echo Lang::getShort(Lang::current(true)); ?></a>
 			</li>
 		</ul>
 
