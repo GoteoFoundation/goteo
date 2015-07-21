@@ -20,6 +20,8 @@ class Config {
 
     static public function factory(array $config) {
         self::$config = $config;
+        //Timezone
+        if(self::get('timezone')) date_default_timezone_set(self::get('timezone'));
         self::setConstants();
         self::setDirConfiguration();
         // Init database

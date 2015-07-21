@@ -1,9 +1,6 @@
 <?php
-error_reporting(E_ALL & ~E_NOTICE & ~E_STRICT);
-ini_set("display_errors",1);
 
 //system timezone
-date_default_timezone_set("Europe/Madrid");
 
 use Goteo\Core\Resource;
 use Goteo\Core\Error;
@@ -13,7 +10,12 @@ use Goteo\Library\Mail;
 use Goteo\Library\AmazonSns;
 use Goteo\Application\Config;
 
+error_reporting(E_ALL & ~E_NOTICE & ~E_STRICT);
+ini_set("display_errors",1);
+
 require_once __DIR__ . '/../src/autoload.php';
+
+
 // Config file...
 Config::loadFromYaml('settings.yml');
 

@@ -3,13 +3,6 @@
 * Este es el proceso que envia un email al usuario especificado
 * version linea de comandos
 **/
-if (PHP_SAPI !== 'cli') {
-    die("Acceso solo por linea de comandos!");
-}
-error_reporting(E_ALL & ~E_NOTICE & ~E_STRICT);
-ini_set("display_errors",1);
-//system timezone
-date_default_timezone_set("Europe/Madrid");
 
 use Goteo\Core\Resource,
     Goteo\Core\Error,
@@ -21,6 +14,11 @@ use Goteo\Core\Resource,
     Goteo\Library\Mail,
     Goteo\Library\Sender;
 
+if (PHP_SAPI !== 'cli') {
+    die("Acceso solo por linea de comandos!");
+}
+error_reporting(E_ALL & ~E_NOTICE & ~E_STRICT);
+ini_set("display_errors",1);
 
 //Public Web path
 define('GOTEO_WEB_PATH', dirname(__DIR__) . '/app/');
