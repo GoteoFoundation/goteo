@@ -8,14 +8,14 @@ $go_up = $this->text('regular-go_up');
 
 $share_url = \SITE_URL . '/about#info6';
 
-$facebook_url = 'http://facebook.com/sharer.php?u=' . urlencode($share_url) . '&t=' . urlencode($this->text('meta-about-share'));
-$twitter_url = 'http://twitter.com/home?status=' . urlencode($this->text('meta-about-share') . ': ' . $share_url);
+$facebook_url = 'http://facebook.com/sharer.php?u=' . urlencode($share_url) . '&t=' . urlencode($this->text('meta-share-about'));
+$twitter_url = 'http://twitter.com/home?status=' . urlencode($this->text('meta-share-about') . ': ' . $share_url);
 
 $this->layout("layout", [
     'bodyClass' => 'about',
     'title' => $this->text('meta-title-info'),
     'meta_description' => $this->text('meta-description-info'),
-    'og_description' => $this->text('meta-title-info')
+    'og_description' => $this->text('meta-share-about')
     ]);
 
 $this->section('content');
