@@ -2719,8 +2719,12 @@ namespace Goteo\Model {
             $where = array();
             $join = '';
 
-            // todos los que estan 'en campaña', en cualquier nodo
-            $status = array(self::STATUS_IN_CAMPAIGN);
+            if (!empty($filter['status']))
+                $status=$filter['status'];
+            else
+                // todos los que estan 'en campaña', en cualquier nodo
+                $status = array(self::STATUS_IN_CAMPAIGN);
+            
             $order = 'name ASC';
 
             if($node) {
@@ -2735,7 +2739,7 @@ namespace Goteo\Model {
                 // de los que estan en campaña,
                 // los que tienen más usuarios entre cofinanciadores y mensajeros
                 $where[] = 'project.popularity >' . $popularity;
-                $order = 'popularity DESC';
+                $order = 'status=3 DESC, popularity DESC';
             }
             elseif($filter['type'] === 'outdate') {
                 // los que les quedan 15 dias o menos
