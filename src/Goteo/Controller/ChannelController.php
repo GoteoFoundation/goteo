@@ -34,7 +34,7 @@ class ChannelController extends \Goteo\Core\Controller {
 
         $categories = Category::getList();
 
-        $side_order = Home::getAll($id, 'side'); //orden de lateral side
+        $side_order = Home::getAll($id, 'side'); // side order
 
         $types = array(
             'popular',
@@ -42,6 +42,14 @@ class ChannelController extends \Goteo\Core\Controller {
             'success',
             'outdate'
         );
+
+        //check if there are elements to show by type
+        foreach($types as $key => $type)
+        {
+            $total = Project::published(['type' => $type], $id, 0, 0, true);
+            if(!$total)
+                unset($types[$key]);
+        }
 
         if (isset($side_order['summary'])) {
             $summary = $channel->getSummary();
