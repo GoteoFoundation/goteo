@@ -45,9 +45,9 @@ class ChannelController extends \Goteo\Core\Controller {
 
         //check if there are elements to show by type
         foreach($types as $key => $type)
-        {
+        {       
             $total = Project::published(['type' => $type], $id, 0, 0, true);
-            if(!$total)
+            if(!$total&&$type!='popular')
                 unset($types[$key]);
         }
 
