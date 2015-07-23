@@ -177,8 +177,7 @@ class Lang {
         if(empty($current) || !self::exists($current)) {
             $current = self::getDefault();
         }
-        // if($public_only && !self::isPublic($current)) {
-        if($public_only) {
+        if($public_only && !self::isPublic($current)) {
             $current = self::getFallback($current);
         }
         return $current;
@@ -228,10 +227,10 @@ class Lang {
         // set Lang (forzado para el cron y el admin)
         if($request) {
             $uri = strtok($request->server->get('REQUEST_URI'), '?');
-            $desired[] = (strpos($uri, 'cron') !== false || strpos($uri, 'admin') !== false) ? 'es' : null;
+            if(strpos($uri, 'admin') !== false) $desired['forced'] = 'es';
             // set Lang by GET user request
             if($request->query->has('lang')) {
-                $desired[] = $request->query->get('lang');
+                $desired['get'] = $request->query->get('lang');
             }
         }
         // Las cookies para idiomas pueden ser problematicas, pues cambian el idioma sin enterarte.
@@ -240,11 +239,11 @@ class Lang {
         //     $desired[] = Cookie::get('goteo_lang');
         // }
         if(Session::exists('lang')) {
-            $desired[] = Session::get('lang');
+            $desired['session'] = Session::get('lang');
         }
         if($request) {
             // set by navigator
-            $desired[] = substr($request->server->get('HTTP_ACCEPT_LANGUAGE'), 0, 2);
+            $desired['browser'] = substr($request->server->get('HTTP_ACCEPT_LANGUAGE'), 0, 2);
         }
 
         // set the lang in order of preference
@@ -265,6 +264,7 @@ class Lang {
                 Session::getUser()->updateLang($lang);
             }
         }
+        // print_r($desired);die($lang);
 
         return $lang;
     }
