@@ -84,11 +84,12 @@ class NodeSys {
             WHERE id != '$current'
             AND active = 1
             AND id != 'testnode'
-            AND url != '' AND !ISNULL(url)
             ORDER BY `name` ASC
             ");
         $query->cacheTime(defined('SQL_CACHE_LONG_TIME') ? SQL_CACHE_LONG_TIME : 3600);
         foreach ($query->fetchAll(\PDO::FETCH_OBJ) as $item) {
+            if(empty($item->url))
+                $item->url= \SITE_URL.'/channel/'.$item->id;
             $list[] = $item;
         }
         //dejamos la cache como estaba
