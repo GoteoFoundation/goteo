@@ -52,7 +52,8 @@ foreach ($filters as $key=>$value) {
                 <td>
                     <label for="status-filter">Mostrar por estado:</label><br />
                     <select id="status-filter" name="status" onchange="document.getElementById('filter-form').submit();">
-                        <option value="-1"<?php if ($filters['status'] == -1) echo ' selected="selected"';?>>Todos los estados</option>
+                        <option value="-1"<?php if ($filters['status'] == -1) echo ' selected="selected"';?>>Todos excepto sin ID</option>
+                        <option value="-3"<?php if ($filters['status'] == -3) echo ' selected="selected"';?>>Todos los estados</option>
                         <option value="-2"<?php if ($filters['status'] == -2) echo ' selected="selected"';?>>En negociacion</option>
                     <?php foreach ($this->status as $statusId => $statusName) : ?>
                         <option value="<?= $statusId ?>"<?php if ($filters['status'] == $statusId) echo ' selected="selected"';?>><?= $statusName ?></option>

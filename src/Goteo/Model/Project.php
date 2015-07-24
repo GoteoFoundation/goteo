@@ -17,7 +17,7 @@ namespace Goteo\Model {
     class Project extends \Goteo\Core\Model {
 
         // PROJECT STATUS IDs
-        const STATUS_DRAFT       = -1;
+        const STATUS_DRAFT       = -1; // TODO: is this really necessary?
         const STATUS_REJECTED    = 0;
         const STATUS_EDITING     = 1; // en negociación
         const STATUS_REVIEWING   = 2; //
@@ -2724,7 +2724,7 @@ namespace Goteo\Model {
             else
                 // todos los que estan 'en campaña', en cualquier nodo
                 $status = array(self::STATUS_IN_CAMPAIGN);
-            
+
             $order = 'name ASC';
 
             if($node) {
@@ -3093,8 +3093,13 @@ namespace Goteo\Model {
                 $sqlFilter .= " AND project.status = :status";
                 $values[':status'] = $filters['status'];
             } elseif ($filters['status'] == -2) {
+                // en negociacion
                 $sqlFilter .= " AND (project.status = 1  AND project.id NOT REGEXP '[0-9a-f]{32}')";
-            } else {
+            } elseif($filters['status'] == -3) {
+                //all projects...
+            }
+            else {
+                // default valid projects
                 $sqlFilter .= " AND (project.status > 1  OR (project.status = 1 AND project.id NOT REGEXP '[0-9a-f]{32}') )";
             }
             if (!empty($filters['owner'])) {
@@ -3167,18 +3172,14 @@ namespace Goteo\Model {
             }
 
             //el Order
-            if (!empty($filters['order'])) {
-                switch ($filters['order']) {
-                    case 'updated':
-                        $sqlOrder .= " ORDER BY project.updated DESC";
-                    break;
-                    case 'name':
-                        $sqlOrder .= " ORDER BY project.name ASC";
-                    break;
-                    default:
-                        $sqlOrder .= " ORDER BY {$filters['order']}";
-                    break;
-                }
+            if ($filters['order'] === 'updated') {
+                $sqlOrder = " ORDER BY project.updated DESC";
+            }
+            elseif($filters['order']) {
+                $sqlOrder = " ORDER BY {$filters['order']}";
+            }
+            else {
+                $sqlOrder = " ORDER BY project.name ASC";
             }
 
             $where = "project.id != ''
@@ -3310,6 +3311,8 @@ namespace Goteo\Model {
          *
          * @param string node id
          * @return array of items , not instances of this class.
+         *
+         * TODO: remove this method
          */
         public static function getMiniList($filters = array(), $node = null) {
 
@@ -3638,13 +3641,14 @@ namespace Goteo\Model {
          */
         public static function status () {
             return array(
-                0=>Text::get('form-project_status-cancelled'),
-                1=>Text::get('form-project_status-edit'),
-                2=>Text::get('form-project_status-review'),
-                3=>Text::get('form-project_status-campaing'),
-                4=>Text::get('form-project_status-success'),
-                5=>Text::get('form-project_status-fulfilled'),
-                6=>Text::get('form-project_status-expired'));
+                self::STATUS_REJECTED => Text::get('form-project_status-cancelled'),
+                self::STATUS_EDITING => Text::get('form-project_status-edit'),
+                self::STATUS_REVIEWING => Text::get('form-project_status-review'),
+                self::STATUS_IN_CAMPAIGN => Text::get('form-project_status-campaing'),
+                self::STATUS_FUNDED => Text::get('form-project_status-success'),
+                self::STATUS_FULFILLED => Text::get('form-project_status-fulfilled'),
+                self::STATUS_UNFUNDED => Text::get('form-project_status-expired')
+            );
         }
 
         /*
@@ -3663,13 +3667,14 @@ namespace Goteo\Model {
          */
         public static function waitfor () {
             return array(
-                0=>Text::get('form-project_waitfor-cancel'),
-                1=>Text::get('form-project_waitfor-edit'),
-                2=>Text::get('form-project_waitfor-review'),
-                3=>Text::get('form-project_waitfor-campaing'),
-                4=>Text::get('form-project_waitfor-success'),
-                5=>Text::get('form-project_waitfor-fulfilled'),
-                6=>Text::get('form-project_waitfor-expired'));
+                self::STATUS_REJECTED => Text::get('form-project_waitfor-cancel'),
+                self::STATUS_EDITING => Text::get('form-project_waitfor-edit'),
+                self::STATUS_REVIEWING => Text::get('form-project_waitfor-review'),
+                self::STATUS_IN_CAMPAIGN => Text::get('form-project_waitfor-campaing'),
+                self::STATUS_FUNDED => Text::get('form-project_waitfor-success'),
+                self::STATUS_FULFILLED => Text::get('form-project_waitfor-fulfilled'),
+                self::STATUS_UNFUNDED => Text::get('form-project_waitfor-expired')
+            );
         }
 
         /*

@@ -233,7 +233,9 @@ class CommonsSubController extends AbstractSubController {
 
         }
 
+
         if (!empty($filters['projStatus'])) {
+            // TODO: change with getList, remove getMiniList
             $projects = Model\Project::getMiniList(array('status'=>$filters['projStatus'], 'proj_name'=>$filters['project'], 'order'=>'success'), $this->node);
         } else {
             $projects = Model\Project::getMiniList(array('multistatus'=>"4,5", 'proj_name'=>$filters['project'], 'order'=>'success'), $this->node);
