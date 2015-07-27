@@ -107,7 +107,6 @@ namespace Goteo\Model {
 
                     // sacar datos del proyecto
                     $projData = \Goteo\Model\Project::get($id, 'es');
-
                     if ( !empty($projData->published) ) {
                         $date = strtotime($projData->published);
                         $contract->date = date('Y-m-d', mktime(0, 0, 0, date('m', $date), date('d',$date)-1, date('Y', $date)));
@@ -274,12 +273,11 @@ namespace Goteo\Model {
                     'project_invest',
                     'project_return'
                 );
-                //automatic $this->id assignation
-                if($this->project) {
+
+                if(static::get($this->project)) {
                     $ok = $this->dbUpdate($fields, ['project']);
                 } else {
                     $ok = $this->dbInsert($fields);
-                    $this->project = static::insertId();
                 }
                 return $ok;
 
