@@ -17,7 +17,7 @@ use Goteo\Core\Exception,
     Goteo\Application\Lang,
     Goteo\Library\Text,
     Goteo\Library\Feed,
-    Goteo\Library\Template,
+    Goteo\Model\Template,
     Goteo\Library\Tpv,
     Goteo\Library\Paypal,
     Goteo\Library\Mail;

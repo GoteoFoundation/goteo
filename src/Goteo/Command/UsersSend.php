@@ -8,7 +8,7 @@ use Goteo\Application\Session;
 use Goteo\Core\View;
 use Goteo\Core\Redirection;
 use Goteo\Library\Text;
-use Goteo\Library\Template;
+use Goteo\Model\Template;
 use Goteo\Library\Mail;
 
 class UsersSend {

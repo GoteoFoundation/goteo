@@ -13,7 +13,7 @@ namespace Goteo\Controller {
         Goteo\Library\Feed,
         Goteo\Library\Page,
         Goteo\Library\Mail,
-        Goteo\Library\Template,
+        Goteo\Model\Template,
         Goteo\Application\View,
         Goteo\Application\Message,
         Goteo\Application\Session,

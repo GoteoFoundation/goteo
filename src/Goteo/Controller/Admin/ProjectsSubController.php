@@ -11,7 +11,7 @@ use Goteo\Library\Text,
 	Goteo\Library\Feed,
     Goteo\Application\Message,
     Goteo\Library\Mail,
-	Goteo\Library\Template,
+	Goteo\Model\Template,
     Goteo\Model,
     Goteo\Command\UsersSend;
 

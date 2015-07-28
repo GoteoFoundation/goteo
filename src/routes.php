@@ -123,6 +123,21 @@ $routes->add('rss', new Route(
         )
 ));
 
+////// MAILING /////
+$routes->add('mail-sys', new Route(
+    '/mail/sys/{file}',
+    array('_controller' => 'Goteo\Controller\MailController::sysAction')
+));
+$routes->add('mail-news', new Route(
+    '/mail/news/{file}',
+    array('_controller' => 'Goteo\Controller\MailController::newsAction')
+));
+$routes->add('mail-token', new Route(
+    '/mail/{token}',
+    array('_controller' => 'Goteo\Controller\MailController::indexAction')
+));
+
+
 //////////// USER ROUTES ///////////////////
 
 $routes->add('user-login', new Route(
@@ -170,8 +185,16 @@ $routes->add('user-recover', new Route(
 ));
 
 //User newsletter unsubscribing
-$routes->add('user-unsubscribe', new Route(
+//Mispelled
+$routes->add('user-unsuscribe', new Route(
     '/user/unsuscribe/{token}',
+    array(
+        '_controller' => 'Goteo\Controller\UserController::unsubscribeAction',
+        'token' => ''
+        )
+));
+$routes->add('user-unsubscribe', new Route(
+    '/user/unsubscribe/{token}',
     array(
         '_controller' => 'Goteo\Controller\UserController::unsubscribeAction',
         'token' => ''

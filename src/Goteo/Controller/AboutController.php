@@ -9,7 +9,7 @@ namespace Goteo\Controller {
         Goteo\Model,
         Goteo\Library\Text,
         Goteo\Library\Mail,
-        Goteo\Library\Template,
+        Goteo\Model\Template,
         Symfony\Component\HttpFoundation\Response,
         Symfony\Component\HttpFoundation\RedirectResponse;
 

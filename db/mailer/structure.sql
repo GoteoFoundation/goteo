@@ -55,3 +55,7 @@ CREATE TABLE `mailer_control` (
   `modified` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`email`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT = 'Lista negra para bounces y complaints';
+
+-- constraings
+ALTER TABLE `mailer_send` ADD FOREIGN KEY (`mailing`) REFERENCES `mailer_content`(`id`) ON UPDATE CASCADE ON DELETE CASCADE;
+ALTER TABLE `mailer_send` CHANGE `sended` `sent` INT(1) NULL;

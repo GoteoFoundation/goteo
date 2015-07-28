@@ -73,7 +73,7 @@ $filters = $this->filters;
             <tr>
                 <td><a href="/admin/rewards/edit/<?php echo $reward->invest ?>" >[Modificar]</a></td>
                 <td><a href="/admin/users/manage/<?php echo $reward->user ?>" target="_blank" title="<?php echo $reward->name; ?>"><?php echo $reward->email; ?></a></td>
-                <td><a href="/admin/projects?name=<?php echo $this->projects[$reward->project] ?>" target="_blank"><?php echo $this->text_recorta($this->projects[$reward->project], 20); if (!empty($invest->campaign)) echo '<br />('.$this->calls[$invest->campaign].')'; ?></a></td>
+                <td><a href="/admin/projects?name=<?php echo $this->projects[$reward->project] ?>" target="_blank"><?php echo $this->text_truncate($this->projects[$reward->project], 20); if (!empty($invest->campaign)) echo '<br />('.$this->calls[$invest->campaign].')'; ?></a></td>
                 <td><?php echo $reward->reward_name ?></td>
                 <?php if (!$reward->fulfilled) : ?>
                     <td style="color: red;" >Pendiente</td>

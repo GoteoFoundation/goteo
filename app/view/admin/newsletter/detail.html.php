@@ -1,18 +1,14 @@
 <?php
 
-use Goteo\Library\Text;
-use Goteo\Library\Mail;
-
 $mailing = $vars['mailing'];
 $list = $vars['list'];
 $detail = $vars['detail'];
 
-// $link = Mail::getSinovesLink($mailing->mail);
 $link = '/mail/'.\mybase64_encode(md5(uniqid()) . '¬¬' . $mailing->mail);
 
 $title = array(
     'receivers' => 'Destinatarios',
-    'sended' => 'Enviados',
+    'sent' => 'Enviados',
     'failed' => 'Falllidos',
     'pending' => 'Pendientes'
 );
@@ -33,7 +29,7 @@ $title = array(
                 <th><!-- Si no ves --></th>
                 <th>Fecha</th>
                 <th><a href="/admin/newsletter/detail/<?php echo $mailing->id; ?>?show=receivers" title="Ver destinatarios">Destinatarios</a></th>
-                <th><a href="/admin/newsletter/detail/<?php echo $mailing->id; ?>?show=sended" title="Ver enviados">Enviados</a></th>
+                <th><a href="/admin/newsletter/detail/<?php echo $mailing->id; ?>?show=sent" title="Ver enviados">Enviados</a></th>
                 <th><a href="/admin/newsletter/detail/<?php echo $mailing->id; ?>?show=failed" title="Ver fallidos">Fallidos</a></th>
                 <th><a href="/admin/newsletter/detail/<?php echo $mailing->id; ?>?show=pending" title="Ver pendientes">Pendientes</a></th>
             </tr>
@@ -43,7 +39,7 @@ $title = array(
                 <td><?php if (!empty($link)) : ?><a href="<?php echo $link; ?>" target="_blank">[Si no ves]</a><?php endif; ?></td>
                 <td><?php echo $mailing->date; ?></td>
                 <td style="width:15%"><?php echo $mailing->receivers; ?></td>
-                <td style="width:15%"><?php echo $mailing->sended; ?></td>
+                <td style="width:15%"><?php echo $mailing->sent; ?></td>
                 <td style="width:15%"><?php echo $mailing->failed; ?></td>
                 <td style="width:15%"><?php echo $mailing->pending; ?></td>
             </tr>

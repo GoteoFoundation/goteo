@@ -2,8 +2,7 @@
 
 namespace Goteo\Controller {
 
-    use Goteo\Core\ACL,
-        Goteo\Core\Error,
+    use Goteo\Core\Error,
         Goteo\Core\Redirection,
         Goteo\Core\View,
         Goteo\Model,
@@ -11,7 +10,7 @@ namespace Goteo\Controller {
         Goteo\Library,
         Goteo\Application,
         Goteo\Application\Session,
-        Goteo\Library\Template,
+        Goteo\Model\Template,
         Goteo\Library\Text;
 
     class Message extends \Goteo\Core\Controller {

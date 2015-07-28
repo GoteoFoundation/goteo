@@ -120,7 +120,7 @@ EOD;
 
 
         public function get_template_content($id) {
-            $Template = \Goteo\Library\Template::get($id);
+            $Template = \Goteo\Model\Template::get($id);
 
             header ('HTTP/1.1 200 Ok');
             echo $Template->title . '#$#$#' . $Template->text;

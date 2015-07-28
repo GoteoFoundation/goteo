@@ -55,22 +55,22 @@ $url = '';
                 echo '<div class="tagmark grey">' . $this->text('regular-fail_mark') . '</div>';
                 break;
         }  ?>
-        
+
         <?php if ($image instanceof Image): ?>
         <a href="<?php echo $url ?>/project/<?php echo $proj_id ?>"><img src="<?php echo $image->getLink(150, 98, true) ?>" alt="<?php echo $proj_name ?>"/></a>
         <?php endif ?>
         <?php if (!empty($categories)): ?>
         <div class="categories">
-        <?php $sep = ''; 
+        <?php $sep = '';
         foreach ($categories as $key => $value) :
             echo $sep.htmlspecialchars($value);
-            $sep = ', '; 
+            $sep = ', ';
         endforeach; ?></div>
         <?php endif ?>
     </div>
-    <h3 class="title"><a href="<?php echo $url ?>/project/<?php echo $proj_id ?>"<?php echo $blank; ?>><?php echo htmlspecialchars($this->text_recorta($proj_name, 50)) ?></a></h3>
-    <div class="description"><?php echo empty($proj_subtitle) ? $this->text_recorta($proj_description, 100) : $this->text_recorta($proj_subtitle, 100); ?></div>
-    <h4 class="author"><?php echo $this->text('regular-by')?> <a href="<?php echo $url ?>/user/profile/<?php echo htmlspecialchars($user->id) ?>" target="_blank"><?php echo htmlspecialchars($this->text_recorta($user->name,40)) ?></a></h4>
+    <h3 class="title"><a href="<?php echo $url ?>/project/<?php echo $proj_id ?>"<?php echo $blank; ?>><?php echo htmlspecialchars($this->text_truncate($proj_name, 50)) ?></a></h3>
+    <div class="description"><?php echo empty($proj_subtitle) ? $this->text_truncate($proj_description, 100) : $this->text_truncate($proj_subtitle, 100); ?></div>
+    <h4 class="author"><?php echo $this->text('regular-by')?> <a href="<?php echo $url ?>/user/profile/<?php echo htmlspecialchars($user->id) ?>" target="_blank"><?php echo htmlspecialchars($this->text_truncate($user->name,40)) ?></a></h4>
     <span class="obtained"><?php echo $this->text('project-view-metter-got'); ?></span>
     <div class="obtained">
         <strong><?php echo \amount_format($amount) ?></strong>

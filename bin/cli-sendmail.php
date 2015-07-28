@@ -51,7 +51,7 @@ $sql = "SELECT
     FROM mailer_send
     RIGHT JOIN mailer_content ON mailer_content.id=mailer_send.mailing AND mailer_content.active=1
     WHERE mailer_send.id = ?
-    AND mailer_send.sended IS NULL
+    AND mailer_send.sent IS NULL
     AND mailer_send.blocked IS NULL
     ";
 
@@ -124,14 +124,14 @@ try {
     if ($mailHandler->send($errors)) {
 
         // Envio correcto
-        Model::query("UPDATE mailer_send SET sended = 1, datetime = NOW() WHERE id = '{$user->id}' AND mailing =  '{$user->mailing_id}'");
+        Model::query("UPDATE mailer_send SET sent = 1, datetime = NOW() WHERE id = '{$user->id}' AND mailing =  '{$user->mailing_id}'");
         if ($debug) echo "dbg: Enviado OK a $user->email\n";
 
     } else {
 
         // falló al enviar
         $sql = "UPDATE mailer_send
-        SET sended = 0 , error = ? , datetime = NOW()
+        SET sent = 0 , error = ? , datetime = NOW()
         WHERE id = '{$user->id}' AND mailing =  '{$user->mailing_id}'
         ";
         Model::query($sql, array(implode(',', $errors)));

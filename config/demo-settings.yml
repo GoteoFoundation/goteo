@@ -149,6 +149,11 @@ mail:
     fail:         dev@example.com      # dev head
     log:          sitelog@example.com  # Loggin mail
 
+    # allowed addresses while in BETA/LOCAL env in PREG format
+    beta_senders: "(.+)example\.org|(.+)example\.com"
+    # Add to BCC this address to all communications (except massives). Applies only in REAL env
+    bcc_verifier: goteomaillog@gmail.com
+
     transport:
         from:          noreply@example.com
         name:          Goteo Sender

@@ -22,3 +22,5 @@ ALTER TABLE `mail` DROP `html`;
 
 -- constrains
 ALTER TABLE `mail` ADD FOREIGN KEY (`node`) REFERENCES `node`(`id`) ON UPDATE CASCADE ON DELETE CASCADE;
+UPDATE mail SET template=NULL WHERE template=0;
+ALTER TABLE `mail` CHANGE `template` `template` BIGINT(20) UNSIGNED NULL, ADD FOREIGN KEY (`template`) REFERENCES `template`(`id`) ON UPDATE CASCADE ON DELETE CASCADE;

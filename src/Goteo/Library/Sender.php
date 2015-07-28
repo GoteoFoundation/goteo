@@ -2,10 +2,7 @@
 
 namespace Goteo\Library {
 
-	use Goteo\Core\Model,
-        Goteo\Core\Exception,
-        Goteo\Library\Template,
-        Goteo\Core\View;
+	use Goteo\Core\Model;
 	/*
 	 * Clase para hacer envios masivos en segundo plano
 	 *
@@ -25,7 +22,7 @@ namespace Goteo\Library {
                     email
                 FROM mailer_send
                 WHERE mailing = ?
-                AND sended IS NULL
+                AND sent IS NULL
                 AND blocked IS NULL
                 ORDER BY id
                 ";
@@ -116,16 +113,16 @@ namespace Goteo\Library {
                     $query = Model::query("
                     SELECT
                             COUNT(mailer_send.id) AS receivers,
-                            SUM(IF(mailer_send.sended = 1, 1, 0)) AS sended,
-                            SUM(IF(mailer_send.sended = 0, 1, 0)) AS failed,
-                            SUM(IF(mailer_send.sended IS NULL, 1, 0)) AS pending
+                            SUM(IF(mailer_send.sent = 1, 1, 0)) AS sent,
+                            SUM(IF(mailer_send.sent = 0, 1, 0)) AS failed,
+                            SUM(IF(mailer_send.sent IS NULL, 1, 0)) AS pending
                     FROM    mailer_send
                     WHERE mailer_send.mailing = {$mailing->id}
                     ");
                     $sending = $query->fetchObject();
 
                     $mailing->receivers = $sending->receivers;
-                    $mailing->sended    = $sending->sended;
+                    $mailing->sent    = $sending->sent;
                     $mailing->failed    = $sending->failed;
                     $mailing->pending   = $sending->pending;
                 }
@@ -179,14 +176,14 @@ namespace Goteo\Library {
             $sqlFilter = " AND mailer_send.mailing = {$mailing}";
 
             switch ($detail) {
-                case 'sended':
-                    $sqlFilter .= " AND mailer_send.sended = 1";
+                case 'sent':
+                    $sqlFilter .= " AND mailer_send.sent = 1";
                     break;
                 case 'failed':
-                    $sqlFilter .= " AND mailer_send.sended = 0";
+                    $sqlFilter .= " AND mailer_send.sent = 0";
                     break;
                 case 'pending':
-                    $sqlFilter .= " AND mailer_send.sended IS NULL";
+                    $sqlFilter .= " AND mailer_send.sent IS NULL";
                     break;
                 case 'receivers':
                 default:
@@ -229,8 +226,6 @@ namespace Goteo\Library {
             // eliminamos los envíos de hace más de dos días
             Model::query("DELETE FROM mailer_content WHERE active = 0
              AND DATE_FORMAT(from_unixtime(unix_timestamp(now()) - unix_timestamp(datetime)), '%j') > 2");
-            // eliminamos los destinatarios
-            Model::query("DELETE FROM mailer_send WHERE mailing NOT IN (SELECT id FROM mailer_content)");
 
         }
 

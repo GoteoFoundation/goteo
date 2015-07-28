@@ -9,7 +9,7 @@ namespace Goteo\Controller\Dashboard {
 		Goteo\Library\Feed,
         Goteo\Library\Mail,
 		Goteo\Library\Page,
-		Goteo\Library\Template,
+		Goteo\Model\Template,
         Goteo\Application\Session,
 		Goteo\Application\Message;
 

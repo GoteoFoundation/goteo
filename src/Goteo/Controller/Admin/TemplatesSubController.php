@@ -7,7 +7,7 @@ namespace Goteo\Controller\Admin;
 use Goteo\Application\Message;
 use Goteo\Application\Config,
 	Goteo\Library\Feed,
-    Goteo\Library\Template;
+    Goteo\Model\Template;
 
 class TemplatesSubController extends AbstractSubController {
 

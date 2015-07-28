@@ -8,7 +8,7 @@ use Goteo\Application\Config;
 use Goteo\Application\Message,
 	Goteo\Application\Session,
 	Goteo\Library\Feed,
-    Goteo\Library\Template,
+    Goteo\Model\Template,
     Goteo\Library\Mail,
     Goteo\Library\Newsletter,
     Goteo\Application\Lang,

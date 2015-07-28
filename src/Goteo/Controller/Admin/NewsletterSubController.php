@@ -10,7 +10,7 @@ use Goteo\Library\Text,
     Goteo\Application\Lang,
     Goteo\Application\Message,
     Goteo\Application\Config,
-	Goteo\Library\Template,
+	Goteo\Model\Template,
     Goteo\Library\Newsletter as Boletin,
 	Goteo\Library\Sender;
 

@@ -1,7 +1,7 @@
 <?php
 
 use Goteo\Library\Text,
-    Goteo\Library\Template;
+    Goteo\Model\Template;
 
 //$templates = Template::getAllMini();
 $templates = array(

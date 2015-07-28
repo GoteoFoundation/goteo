@@ -637,6 +637,7 @@ class UserController extends \Goteo\Core\Controller {
         $vars = array();
 
         // si el token mola, logueo este usuario y lo llevo a su dashboard
+        // TODO: secure this
         if ($token) {
             $token = \mybase64_decode($token);
             $parts = explode('¬', $token);

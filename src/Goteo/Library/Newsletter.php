@@ -5,7 +5,7 @@ namespace Goteo\Library {
     use Goteo\Application\Config;
 	use Goteo\Core\Model,
         Goteo\Core\Exception,
-        Goteo\Library\Template,
+        Goteo\Model\Template,
         Goteo\Application\Lang,
         Goteo\Core\View;
 	/*

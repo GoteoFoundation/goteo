@@ -7,7 +7,7 @@ namespace Goteo\Controller\Admin;
 use Symfony\Component\HttpFoundation\Request;
 use Goteo\Library\Text,
 	Goteo\Library\Feed,
-	Goteo\Library\Template,
+	Goteo\Model\Template,
     Goteo\Application\Message,
     Goteo\Application\Session,
     Goteo\Application\Config,

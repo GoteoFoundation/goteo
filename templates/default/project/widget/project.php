@@ -73,11 +73,11 @@ if ($project->status == 3 && $project->noinvest) {
         <?php endif ?>
     </div>
 
-    <h<?php echo $level ?> class="title"><a href="/project/<?php echo $project->id ?>"><?php echo htmlspecialchars($this->text_recorta($project->name,50)) ?></a></h<?php echo $level ?>>
+    <h<?php echo $level ?> class="title"><a href="/project/<?php echo $project->id ?>"><?php echo htmlspecialchars($this->text_truncate($project->name,50)) ?></a></h<?php echo $level ?>>
 
-    <h<?php echo $level + 1 ?> class="author"><?php echo $this->text('regular-by')?> <a href="/user/profile/<?php echo htmlspecialchars($project->user->id) ?>"><?php echo htmlspecialchars($this->text_recorta($project->user->name,37)) ?></a></h<?php echo $level + 1?>>
+    <h<?php echo $level + 1 ?> class="author"><?php echo $this->text('regular-by')?> <a href="/user/profile/<?php echo htmlspecialchars($project->user->id) ?>"><?php echo htmlspecialchars($this->text_truncate($project->user->name,37)) ?></a></h<?php echo $level + 1?>>
 
-    <div class="description"><?php echo $this->text_recorta($project->description, 100); ?></div>
+    <div class="description"><?php echo $this->text_truncate($project->description, 100); ?></div>
 
     <?php echo View::get('project/meter_hor.html.php', array('project' => $project)) ?>
 

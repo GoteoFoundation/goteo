@@ -99,7 +99,7 @@ fwrite($lock_file, getmypid() . "\n");
 // print_r($commands);
 
 // Limite para sender, (deja margen para envios individuales)
-$LIMIT = (defined("GOTEO_MAIL_SENDER_QUOTA") ? GOTEO_MAIL_SENDER_QUOTA : 40000);
+$LIMIT = (Config::get('mail.quota.sender') ? Config::get('mail.quota.sender') : 40000);
 
 $debug = true;
 $fail = false;
@@ -173,7 +173,7 @@ if (!$fail) {
             // comprueba la quota para los envios que se van a hacer
 
             if (!Mail::checkLimit(null, false, $LIMIT)) {
-                if ($debug) echo "dbg: Se ha alcanzado el límite máximo de ".GOTEO_MAIL_SENDER_QUOTA." de envíos diarios! Lo dejamos para mañana\n";
+                if ($debug) echo "dbg: Se ha alcanzado el límite máximo de $LIMIT de envíos diarios! Lo dejamos para mañana\n";
                 $total_users = $i; //para los calculos posteriores
                 break;
             }
@@ -227,7 +227,7 @@ if (!$fail) {
 
             //No hace falta incrementar la quota de envio pues ya se hace en Mail::Send()
             $rest = Mail::checkLimit(null, true, $LIMIT);
-            if($debug) echo "Quota de envío restante para hoy: $rest emails, Quota diaria para mailing: ".GOTEO_MAIL_SENDER_QUOTA."\n";
+            if($debug) echo "Quota de envío restante para hoy: $rest emails, Quota diaria para mailing: $LIMIT\n";
             if($debug) echo "Envios por segundo: $current_rate - Ratio máximo: ".MAIL_MAX_RATE."\n";
 
             //aumentamos la concurrencia si el ratio es menor que el 75% de máximo

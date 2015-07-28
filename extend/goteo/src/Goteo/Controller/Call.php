@@ -9,7 +9,7 @@ namespace Goteo\Controller {
         Goteo\Library\Text,
         Goteo\Application,
         Goteo\Application\Lang,
-        Goteo\Library\Template,
+        Goteo\Model\Template,
         Goteo\Library\Feed,
         Goteo\Library\Buzz,
         Goteo\Model;

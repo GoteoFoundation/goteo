@@ -11,7 +11,7 @@ use Goteo\Library\Page;
 use Goteo\Application\Message;
 use Goteo\Application\Session;
 use Goteo\Application\Config;
-use Goteo\Library\Template;
+use Goteo\Model\Template;
 
 class ContactController extends \Goteo\Core\Controller {
 

@@ -182,22 +182,12 @@ class Config {
         define('SQL_CACHE_TIME', self::get('db.cache.time'));
         define('SQL_CACHE_LONG_TIME', self::get('db.cache.long_time'));
 
-        define('GOTEO_MAIL_FROM', self::get('mail.transport.from'));
         define('GOTEO_MAIL_NAME', self::get('mail.transport.name'));
-        define('GOTEO_MAIL_TYPE', self::get('mail.transport.type'));
-        define('GOTEO_MAIL_SMTP_AUTH', self::get('mail.transport.smtp.auth'));
-        define('GOTEO_MAIL_SMTP_SECURE', self::get('mail.transport.smtp.secure'));
-        define('GOTEO_MAIL_SMTP_HOST', self::get('mail.transport.smtp.host'));
-        define('GOTEO_MAIL_SMTP_PORT', self::get('mail.transport.smtp.port'));
-        define('GOTEO_MAIL_SMTP_USERNAME', self::get('mail.transport.smtp.username'));
-        define('GOTEO_MAIL_SMTP_PASSWORD', self::get('mail.transport.smtp.password'));
         define('GOTEO_MAIL', self::get('mail.mail'));
         define('GOTEO_CONTACT_MAIL', self::get('mail.contact'));
         define('GOTEO_MANAGER_MAIL', self::get('mail.manager'));
         define('GOTEO_FAIL_MAIL', self::get('mail.fail'));
         define('GOTEO_LOG_MAIL', self::get('mail.log'));
-        define('GOTEO_MAIL_QUOTA', self::get('mail.quota.total'));
-        define('GOTEO_MAIL_SENDER_QUOTA', self::get('mail.quota.sender'));
 
         define('GOTEO_URL', self::get('url.main'));
         define('SRC_URL', self::get('url.assets'));

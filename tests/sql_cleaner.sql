@@ -9,3 +9,4 @@ DELETE FROM `user_web` WHERE `user` NOT IN (SELECT id FROM `user`);
 DELETE FROM  `project_account` WHERE `project` NOT IN (SELECT id FROM project);
 DELETE FROM `message` WHERE `user` NOT IN (SELECT id FROM `user`);
 DELETE FROM  `cost` WHERE `project` NOT IN (SELECT id FROM project);
+DELETE FROM mailer_control WHERE email LIKE 'test@goteo.org';

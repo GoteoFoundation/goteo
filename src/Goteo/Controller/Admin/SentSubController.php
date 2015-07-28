@@ -7,7 +7,7 @@ namespace Goteo\Controller\Admin;
 use Goteo\Application\Config;
 use Goteo\Model\Node,
 	Goteo\Library\Feed,
-	Goteo\Library\Template,
+	Goteo\Model\Template,
 	Goteo\Library\Mail;
 
 class SentSubController extends AbstractSubController {

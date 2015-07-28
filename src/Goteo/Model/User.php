@@ -7,13 +7,14 @@ namespace Goteo\Model {
         Goteo\Model\Node,
         Goteo\Model\Project,
         Goteo\Model\User\UserLocation,
-        Goteo\Library\Template,
+        Goteo\Model\Template,
         Goteo\Library\Mail,
         Goteo\Library\Check,
         Goteo\Application;
     use Goteo\Application\Lang;
     use Goteo\Application\Config;
     use Goteo\Application\Session;
+    use Goteo\Application\Message;
 
 	class User extends \Goteo\Core\Model {
 
@@ -1364,25 +1365,16 @@ namespace Goteo\Model {
                 self::query('UPDATE user SET token = :token WHERE id = :id', array(':id' => $row->id, ':token' => $token));
 
                 // Obtenemos la plantilla para asunto y contenido
-                $template = Template::get(6);
-
-                // Sustituimos los datos
-                $subject = $template->title;
-
-                // En el contenido:
-                $search  = array('%USERNAME%', '%USERID%', '%RECOVERURL%');
-                $replace = array($row->name, $row->id, $URL . '/user/recover/' . \mybase64_encode($token));
-                $content = \str_replace($search, $replace, $template->text);
-                // Email de recuperacion
-                $mail = new Mail();
-                $mail->to = $row->email;
-                $mail->toName = $row->name;
-                $mail->subject = $subject;
-                $mail->content = $content;
-                $mail->html = true;
-                $mail->template = $template->id;
-                if ($mail->send($errors)) {
-                    return true;
+                if( Mail::createFromTemplate($row->email, $row->name, Template::RETRIEVE_PASSWORD, [
+                        '%USERNAME%'   => $row->name,
+                        '%USERID%'     => $row->id,
+                        '%RECOVERURL%' => $URL . '/user/recover/' . \mybase64_encode($token)
+                    ])
+                    ->send($errors)) {
+                        return true;
+                }
+                else {
+                    Message::error(implode("\n", $errors));
                 }
 			}
 			return false;
