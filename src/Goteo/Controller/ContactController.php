@@ -88,7 +88,7 @@ class ContactController extends \Goteo\Core\Controller {
             if (empty($errors)) {
 
                 // Obtenemos la plantilla para asunto y contenido
-                $template = Template::get(1);
+                $template = Template::get(Template::MESSAGE_CONTACT);
 
                 // Asunto, añadimos tag
                 $subject = ($tag ? '[' . $tag . '] ' : '') . $subject;

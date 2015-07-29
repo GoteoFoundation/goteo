@@ -4,6 +4,7 @@ namespace Goteo\Library;
 
 use Goteo\Application\Config;
 use Goteo\Application\View;
+use Goteo\Application\Message;
 use Goteo\Core\Model;
 use Goteo\Model\Template;
 use Goteo\Library\FileHandler\File;
@@ -181,26 +182,34 @@ class Mail {
                 }
                 elseif (Config::get('env') === 'beta') {
                     $this->subject = '[BETA] ' . $this->subject;
-                    if (Config::get('mail.beta_senders') && preg_match('/' . Config::get('beta_senders') .'/i', $this->to)) {
+                    if (Config::get('mail.beta_senders') && preg_match('/' . Config::get('mail.beta_senders') .'/i', $this->to)) {
                         $allowed = true;
                     }
                 }
+
+                $mail = $this->buildMessage();
 
                 // exit if not allowed
                 // TODO: log this?
                 if (!$allowed) {
                     // add any debug here
-                    $errors[] = 'SKIPPING MAIL SENDING with subject [' . $this->subject . '] to [' . $this->to . '] from  [' . $this->from . '] using template [' . $this->template . '] due configuration restrictions!';
-
-                    $this->saveContentToFile();
-                    return false;
+                    Message::error('SKIPPING MAIL SENDING with subject [' . $this->subject . '] to [' . $this->to . '] from  [' . $this->from . '] using) template [' . $this->template . '] due configuration restrictions!');
+                    // Log this email
+                    $mail->preSend();
+                    $path = GOTEO_LOG_PATH . 'mail-send/' . ;
+                    @mkdir($path, 0777, true);
+                    if(@file_put_contents($path . $this->id . '.eml', $mail->getSentMIMEMessage())) {
+                        Message::error('Logged email content into: ' . $path);
+                    }
+                    else {
+                        Message::error('ERROR while logging email content into: ' . $path);
+                    }
+                    return true;
                 }
 
-                $mail = $this->buildMessage();
 
                 // Envía el mensaje
                 if ($mail->send($errors)) {
-                    $this->saveContentToFile();
                     return true;
                 } else {
                     $errors[] = 'Internal mail server error!';
@@ -314,19 +323,6 @@ class Mail {
 
         $viewData = array('content' => $this->content);
 
-        // grabamos el contenido en la tabla de envios
-        // especial para masivos, solo grabamos un sinoves
-
-        // 'mail-file'
-        // el contenido se guarda en un bucket
-        // para mails normales, se genera md5 (id.email.template.Secret)
-        // para newsletter, se usa directamente id de registro tabla 'mail'
-        // en el campo 'content' de la tabla grabamos el nombre del archivo
-        // la dirección del bucket no se graba en la tabla (diferente para beta y real, desde settings)
-
-        // Caducidad
-        // se graba también en la tabla la fecha en la que caduca el contenido (un script auo. borra esos archivos del bucket y registros de la tabla)
-
         // tokens
         $token = $this->getToken();
 
@@ -381,24 +377,24 @@ class Mail {
      */
     public function saveContentToFile() {
 
-        //do no need to repeat if already uploaded
-        $sql = "SELECT content FROM mail WHERE id = :id";
-        $query = Model::query($sql, array(':id' => $this->id));
-        $current = (int) $query->fetchColumn();
-        if(empty($current)) {
-            return false;
-        }
+        // //do no need to repeat if already uploaded
+        // $sql = "SELECT content FROM mail WHERE id = :id";
+        // $query = Model::query($sql, array(':id' => $this->id));
+        // $current = (int) $query->fetchColumn();
+        // if(empty($current)) {
+        //     return false;
+        // }
 
         $email = ($this->massive) ? 'any' : $this->to;
         $path = ($this->massive) ? '/news/' : '/sys/';
         $contentId = md5("{$this->id}_{$email}_{$this->template}_" . Config::get('secret')) . ".html";
 
-        $sql = "UPDATE mail SET html='', content = :content WHERE id = :id";
-        $values = array (
-            ':content' => $path . $contentId,
-            ':id' => $this->id,
-            );
-        Model::query($sql, $values);
+        // $sql = "UPDATE mail SET html='', content = :content WHERE id = :id";
+        // $values = array (
+        //     ':content' => $path . $contentId,
+        //     ':id' => $this->id,
+        //     );
+        // Model::query($sql, $values);
 
         // Necesitamos constante de donde irán los mails: MAIL_PATH = /data/mail
         // MAIL_PATH + $path
@@ -411,7 +407,12 @@ class Mail {
         $fpremote->setPath($path);
 
         $headers = array("Content-Type" => "text/html; charset=UTF-8");
-        $fpremote->put_contents($contentId, $this->content, 0, 'public-read', array(), $headers);
+        if($fpremote->put_contents($contentId, $this->content, 0, 'public-read', array(), $headers)) {
+            return $path . $contentId;
+        }
+        return false;
+
+
     }
 
     /**
