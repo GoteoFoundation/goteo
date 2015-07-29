@@ -818,12 +818,18 @@ namespace Goteo\Model {
                 // aquí usará getWidget para sacar todo esto
                 $project = self::getWidget($project);
 
+                // podría estar asignado a alguna convocatoria
+                $call = Call\Project::calledMini($project->id);
+
+                if ( $call instanceof Call ) {
+                    $call = Call\Project::setDropable($project, $call);
+                    $project->called = $call;
+                } else {
+                    $project->called = null;
+                }
+
                 // Y añadir el dontsave
                 $project->dontsave = true;
-
-                // podría estar asignado a alguna convocatoria
-                // parece que no se usa en el widget
-                // $project->called = Call\Project::called($project);
 
                 // datos del nodo
                 // no se usa en el widget
@@ -2744,7 +2750,7 @@ namespace Goteo\Model {
             elseif($filter['type'] === 'outdate') {
                 // los que les quedan 15 dias o menos
                 $where[] = 'days <= 15 AND days > 0';
-                $order = 'popularity ASC';
+                $order = 'days ASC';
             }
             elseif($filter['type'] === 'recent') {
                 $where[] = 'project.passed IS NULL';
