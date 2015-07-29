@@ -347,7 +347,6 @@ class Mail {
      *
      */
     private function bodyHTML($plain = false) {
-        // tokens
         return $this->render($plain, [
                     'alternate' => SITE_URL . '/mail/' . $this->getToken(),
                     'tracker' => SITE_URL . '/mail/track/' . $this->id . '.gif' ]
@@ -355,6 +354,12 @@ class Mail {
 
     }
 
+    /**
+     * Renders the appropiated view for the mail
+     * @param  boolean     $plain      [description]
+     * @param  Array|array $extra_vars [description]
+     * @return [type]                  [description]
+     */
     public function render($plain = false, Array $extra_vars = []) {
         $viewData = $extra_vars;
         $viewData['content'] = $this->content;

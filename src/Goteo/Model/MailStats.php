@@ -17,7 +17,7 @@ class MailStats extends \Goteo\Core\Model {
     /*
      *  Devuelve datos de un elemento
      */
-    public static function getFromMail($id) {
+    static public function getFromMail($id) {
         $query = self::query('
             SELECT *
             FROM    mail_stats
@@ -29,6 +29,10 @@ class MailStats extends \Goteo\Core\Model {
         }
 
         return [];
+    }
+
+    static public function markRead() {
+
     }
 
 }
