@@ -87,6 +87,7 @@ class Template extends \Goteo\Core\Model {
         $group,
         $text;
 
+
     static public function get ($id, $lang = null) {
 
         // por si llega idioma vacio

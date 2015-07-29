@@ -30,8 +30,8 @@ img a {
 
 <body style="margin: 0px; padding: 0px; font-family: Helvetica, Arial, Geneva, sans-serif; color:#58595B; padding-left: 20px; background-color: #f1f1f1;">
 
-<?php if ($this->sinoves) : ?>
-    <div style="width: 100%; height: 22px; line-height:22px; font-size:10px; color:#cccccc; background-color:#58595B;"><span style="margin-left:50px;"><?= $this->text_html('mailer-sinoves', $this->raw('sinoves').'" style="color:white;') ?></span></div>
+<?php if ($this->alternate) : ?>
+    <div style="width: 100%; height: 22px; line-height:22px; font-size:10px; color:#cccccc; background-color:#58595B;"><span style="margin-left:50px;"><?= $this->text_html('mailer-sinoves', $this->alternate . '" style="color:white;') ?></span></div>
 <?php endif ?>
 <div style="width: 100%; background-color:#CDE4E5; padding-top:7px; padding-bottom:7px;"><span style="margin-left:50px;"><img src="<?= SITE_URL ?>/goteo_logo.png" alt="Logo" /></span></div>
 
@@ -50,11 +50,11 @@ img a {
 <div style="font-size:11px; padding-bottom:10px;"><?= $this->text('footer-header-social') ?><br />
   <span><a href="<?= $this->text('social-account-facebook') ?>" style="color:#233E99; text-decoration:none;">facebook</a></span> | <span><a href="<?= $this->text('social-account-twitter') ?>" style="color:#00AEEF; text-decoration:none;">twitter</a></span> |  <span><a href="<?= $this->text('social-account-identica') ?>" style="color:#C42F31; text-decoration:none;">identica</a></span> | <span><a rel="alternate" type="application/rss+xml" title="RSS" href="<?= $this->get_config('url.main'). '/rss' ?>" style="color:#F15A29; text-decoration:none;">RSS</a></span></div>
 
-<div style="width:630px;font-size:11px; text-align:right; padding-bottom:10px; padding-top:10px; border-top: 1px solid #20B3B2;"><?= $this->text_html('newsletter-block', $this->raw('baja')) ?></div> <!-- enlace color:#20B3B2; text-decoration:none; -->
+<div style="width:630px;font-size:11px; text-align:right; padding-bottom:10px; padding-top:10px; border-top: 1px solid #20B3B2;"><?= $this->text_html('newsletter-block', $this->raw('unsubscribe')) ?></div> <!-- enlace color:#20B3B2; text-decoration:none; -->
 
 </div>
 
 <div style="width: 100%; height: 22px; line-height:22px; font-size:10px; color:#ffffff; background-color:#58595B; text-align:right;"><span style="margin-right:50px;"><?= $this->text('footer-platoniq-iniciative') ?> <strong><a href="http://platoniq.net" style="color:#ffffff; text-decoration:none;" >Platoniq</a></strong></span></div>
-
+<?php if ($this->tracker) : ?><img src="<?= $this->tracker ?>" alt="" /><?php endif ?>
 </body>
 </html>

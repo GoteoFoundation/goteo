@@ -2,7 +2,7 @@
 
 namespace Goteo\Controller;
 
-use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Goteo\Core\Redirection;
 use Goteo\Core\Model;
 use Goteo\Application\Exception\ControllerException;
@@ -16,27 +16,32 @@ class MailController extends \Goteo\Core\Controller {
     /**
      * Expects a token and returns the email content
      */
-    public function indexAction ($token, Request $request) {
+    public function indexAction ($token) {
 
         if(list($md5, $email, $id) = Mailer::decodeToken($token)) {
 
             // Content still in database?
-            if ($query = Model::query('SELECT html, template FROM mail WHERE id = ?', $id)) {
-                $mail = $query->fetchObject();
-                $content = $mail->html;
-                $template = $mail->template;
-
-                if ($template == Template::NEWSLETTER) {
-                    return $this->viewResponse('email/newsletter', array('content' => $content, 'baja' => ''));
-                } else {
-                    $baja = SEC_URL . '/user/leave?email=' . $email;
-                    return $this->viewResponse('email/default', array('content' => $content, 'baja' => $baja));
-                }
+            if ($mail = Mailer::get($id)) {
+                return new Response($mail->render());
             }
+
             // TODO, check if exists as file-archived
         }
 
         throw new ControllerException('Mail not available!');
+    }
+
+    /**
+     * Redirects to the apropiate link
+     */
+
+    /**
+     * Returns an empty gif, to track the email
+     */
+    public function trackAction($id) {
+
+        // Return a transparent GIF
+        return new Response(base64_decode('R0lGODlhAQABAJAAAP8AAAAAACH5BAUQAAAALAAAAAABAAEAAAICBAEAOw=='), Response::HTTP_OK, ['Content-Type' => 'image/gif']);
     }
 
 }

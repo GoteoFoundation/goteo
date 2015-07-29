@@ -166,7 +166,7 @@ color:#20B3B2;
 
 <body>
 
-<?php if ($this->sinoves) : ?><div class="header-bar"><span class="header-element"><?= $this->text_html('mailer-sinoves', $this->raw('sinoves')) ?></span></div><?php endif ?>
+<?php if ($this->alternate) : ?><div class="header-bar"><span class="header-element"><?= $this->text_html('mailer-sinoves', $this->alternate) ?></span></div><?php endif ?>
 <div class="header"><span class="header-element"><img src="<?= SITE_URL ?>/goteo_logo.png" alt="Logo" /></span></div>
 
 <div class="content">
@@ -184,11 +184,12 @@ color:#20B3B2;
 <div class="follow">Síguenos en:<br />
   <span class="facebook"><a href="<?= $this->text('social-account-facebook') ?>">facebook</a></span> |  <span class="twitter"><a href="<?= $this->text('social-account-twitter') ?>">twitter</a></span> |   <span class="rss"><a rel="alternate" type="application/rss+xml" title="RSS" href="<?= SITE_URL. '/rss' ?>">RSS</a></span></div>
 
-<div class="unsuscribe"><?= $this->text('mailer-baja', $this->raw('baja')) ?></div>
+<div class="unsuscribe"><?= $this->text('mailer-baja', $this->unsubscribe) ?></div>
 
 </div>
 
 <div class="footer-bar"><span class="footer-element"><?= $this->text('footer-platoniq-iniciative') ?> <strong><a href="http://platoniq.net">Platoniq</a></strong></span></div>
 
+<?php if ($this->tracker) : ?><img src="<?= $this->tracker ?>" alt="" /><?php endif ?>
 </body>
 </html>

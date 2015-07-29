@@ -80,6 +80,31 @@ class Mail {
     }
 
     /**
+     * Get instance of mail already on table
+     * @return [type] [description]
+     */
+    static public function get($id) {
+        if ($query = Model::query('SELECT * FROM mail WHERE id = ?', $id)) {
+            $ob = $query->fetchObject();
+            $mail = new Mail();
+            $mail->html = true;
+            $mail->id = $ob->id;
+            $mail->to = $ob->email;
+
+            $tpl = Template::get($ob->template);
+            $mail->template = $tpl->id;
+            $mail->subject = $tpl->title;
+
+            $mail->content = $ob->html;
+
+            // $mail->toName = $to_name; // TODO: add name from users
+
+            return $mail;
+        }
+        return false;
+    }
+
+    /**
      * Creates a new instance of Mail from common vars
      * @return [type] [description]
      */
@@ -322,27 +347,31 @@ class Mail {
      *
      */
     private function bodyHTML($plain = false) {
-
-        $viewData = array('content' => $this->content);
-
         // tokens
-        $token = $this->getToken();
+        return $this->render($plain, [
+                    'alternate' => SITE_URL . '/mail/' . $this->getToken(),
+                    'tracker' => SITE_URL . '/mail/track/' . $this->id . '.gif' ]
+                );
 
-        $viewData['sinoves'] = SITE_URL . '/mail/' . $token . '?email=' . $this->to;
+    }
 
-        $viewData['baja'] = SITE_URL . '/user/leave?email=' . $this->to;
+    public function render($plain = false, Array $extra_vars = []) {
+        $viewData = $extra_vars;
+        $viewData['content'] = $this->content;
+
+        $viewData['unsubscribe'] = SITE_URL . '/user/leave?email=' . $this->to;
 
         if ($plain) {
-            return strip_tags($this->content) . "\n\n" . $viewData['sinoves'];
-        } else {
-            // para plantilla boletin
-            if ($this->template === Template::NEWSLETTER) {
-                $viewData['baja'] = SITE_URL . '/user/unsubscribe/' . $token;
-                return View::render('email/newsletter', $viewData);
-            } else {
-                return View::render('email/default', $viewData);
-            }
+            return strip_tags($this->content) . ($viewData['alternate'] ? "\n\n" . $viewData['alternate'] : '');
         }
+
+        // para plantilla boletin
+        if ($this->template === Template::NEWSLETTER) {
+            $viewData['unsubscribe'] = SITE_URL . '/user/unsubscribe/' . $this->getToken(); // ????
+            return View::render('email/newsletter', $viewData);
+        }
+
+        return View::render('email/default', $viewData);
     }
 
     /**
