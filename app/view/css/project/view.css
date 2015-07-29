@@ -68,6 +68,7 @@ body.project-show div#sub-header div.project-by {
     color: #20B3B2;
     font-size: 12px;
     margin: 0 0 .5em;
+    float:left;
 }
 
 body.project-show div#sub-header div.project-by a {
@@ -394,5 +395,29 @@ div.nodemark .label-title{
     font-weight: normal;
 }
 
+/*Tags de proyecto */
+
+div.project-tags{
+    float:left;
+    margin-left: 18px;
+}
+div.project-tags::before {
+    content: "";
+    display: block;
+    width: 13px;
+    height: 13px;
+    float: left;
+    margin-right: 6px;
+    background: url("/view/css/tags.png") no-repeat scroll 0% 0% / 13px 13px transparent;
+}
+
+div.project-tags a{
+    text-decoration: none;
+}
+
+div.by-tags{
+    margin-left: 8.1%;
+    display: table;
+}
 
 
