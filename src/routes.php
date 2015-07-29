@@ -124,14 +124,6 @@ $routes->add('rss', new Route(
 ));
 
 ////// MAILING /////
-$routes->add('mail-sys', new Route(
-    '/mail/sys/{file}',
-    array('_controller' => 'Goteo\Controller\MailController::sysAction')
-));
-$routes->add('mail-news', new Route(
-    '/mail/news/{file}',
-    array('_controller' => 'Goteo\Controller\MailController::newsAction')
-));
 $routes->add('mail-token', new Route(
     '/mail/{token}',
     array('_controller' => 'Goteo\Controller\MailController::indexAction')
