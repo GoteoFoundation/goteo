@@ -64,15 +64,18 @@ class PromoteSubController extends AbstractSubController {
                 Message::error('Project [' . $this->getPost('item') . '] not found: ' . $e->getMessage());
             }
         }
+
+        //If channel allow projects out of campaign
+        $filter=$this->isMasterNode() ? [] : ['status' => [
+                        Model\Project::STATUS_IN_CAMPAIGN,
+                        Model\Project::STATUS_FUNDED,
+                        Model\Project::STATUS_FULFILLED]];
+
         return array(
                 'template' => 'admin/promote/edit',
                 'action' => '/admin/promote/edit/' . $promo->id,
                 'promo' => $promo,
-                'projects' => Model\Project::published($this->isMasterNode() ? null : ['status' => [
-                        Model\Project::STATUS_IN_CAMPAIGN,
-                        Model\Project::STATUS_FUNDED,
-                        Model\Project::STATUS_FULFILLED]
-                    ], $this->node),
+                'projects' => Model\Project::published($filter, $this->node, 0, 0),
                 'titleAndDesc' => $this->isMasterNode()
         );
     }
