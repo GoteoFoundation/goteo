@@ -167,7 +167,7 @@ color:#20B3B2;
 <body>
 
 <?php if ($this->sinoves) : ?><div class="header-bar"><span class="header-element"><?= $this->text_html('mailer-sinoves', $this->sinoves) ?></span></div><?php endif ?>
-<div class="header"><span class="header-element"><img src="<?= SITE_URL ?>/goteo_logo.png" alt="Logo" /></span></div>
+<div class="header"><span class="header-element"><img src="http://barcelona.goteo.org/nodesys/barcelona/view/css/logo.png" alt="Logo" /></span></div>
 
 <div class="content">
 

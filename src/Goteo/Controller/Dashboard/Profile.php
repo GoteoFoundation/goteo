@@ -208,8 +208,6 @@ namespace Goteo\Controller\Dashboard {
             if (empty($errors) && $user->save($errors)) {
                 // Refresca la sesión.
                 $user = Model\User::flush();
-                if (isset($_SESSION['recovering']))
-                    unset($_SESSION['recovering']);
                 return true;
             } else {
                 Message::error(Text::get('user-save-fail'));

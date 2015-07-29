@@ -637,7 +637,8 @@ class UserController extends \Goteo\Core\Controller {
         $vars = array();
 
         // si el token mola, logueo este usuario y lo llevo a su dashboard
-        // TODO: secure this
+        // TODO:
+        // CAMBIAR ESTE FUNCIONAMIENTO por uno mas simple basado en poner la nueva contraseña y verificar el link
         if ($token) {
             $token = \mybase64_decode($token);
             $parts = explode('¬', $token);
@@ -649,8 +650,7 @@ class UserController extends \Goteo\Core\Controller {
                     Model\User::query('UPDATE user SET active = 1, hide = 0, confirmed = 1 WHERE id = ?', array($id));
                     $user = Model\User::get($id);
                     Session::setUser($user, true);
-                    Session::store('recovering', $user->id);
-                    return new RedirectResponse(SEC_URL.'/dashboard/profile/access/recover#password');
+                    return $this->redicect('/dashboard/profile/access/recover#password');
                 }
             }
 
@@ -669,7 +669,7 @@ class UserController extends \Goteo\Core\Controller {
         if($vars['error']) {
             Application\Message::error($vars['error']);
         }
-        return new Response(View::render('user/recover', $vars));
+        return $this->viewResponse('user/recover', $vars);
     }
 
     /**

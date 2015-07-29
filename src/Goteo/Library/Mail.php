@@ -196,9 +196,10 @@ class Mail {
                     Message::error('SKIPPING MAIL SENDING with subject [' . $this->subject . '] to [' . $this->to . '] from  [' . $this->from . '] using) template [' . $this->template . '] due configuration restrictions!');
                     // Log this email
                     $mail->preSend();
-                    $path = GOTEO_LOG_PATH . 'mail-send/' . ;
+                    $path = GOTEO_LOG_PATH . 'mail-send/';
                     @mkdir($path, 0777, true);
-                    if(@file_put_contents($path . $this->id . '.eml', $mail->getSentMIMEMessage())) {
+                    $path .= $this->id . '.eml';
+                    if(@file_put_contents($path, $mail->getSentMIMEMessage())) {
                         Message::error('Logged email content into: ' . $path);
                     }
                     else {
