@@ -87,32 +87,18 @@ class ContactController extends \Goteo\Core\Controller {
 
             if (empty($errors)) {
 
-                // Obtenemos la plantilla para asunto y contenido
-                $template = Template::get(Template::MESSAGE_CONTACT);
-
-                // Asunto, añadimos tag
-                $subject = ($tag ? '[' . $tag . '] ' : '') . $subject;
-
-                // destinatario
                 $to = Config::get('mail.contact');
                 $toName = Config::get('mail.contact_name');
                 if(empty($toName)) $toName = 'Goteo';
-
-                // En el contenido:
-                $search  = array('%TONAME%', '%MESSAGE%', '%USEREMAIL%');
-                $replace = array($toName, $msg_content, $name.' '.$email);
-                $content = \str_replace($search, $replace, $template->text);
-
-
-                $mailHandler = new Library\Mail();
-
-                $mailHandler->to = $to;
-                $mailHandler->toName = $toName;
+                // Obtenemos la plantilla para asunto y contenido
+                $mailHandler = Library\Mail::createFromTemplate($email, $toName, Template::MESSAGE_CONTACT, [
+                        '%TONAME%'     => $toName,
+                        '%MESSAGE%'    => $msg_content,
+                        '%USEREMAIL%'  => $name . ' ' . $email
+                    ]);
+                // Custom subject
+                $subject = ($tag ? '[' . $tag . '] ' : '') . $subject;
                 $mailHandler->subject = $subject;
-                $mailHandler->content = $content;
-                $mailHandler->reply = $email;
-                $mailHandler->html = true;
-                $mailHandler->template = $template->id;
 
                 if ($mailHandler->send($errors)) {
                     Message::info('Mensaje de contacto enviado correctamente.');

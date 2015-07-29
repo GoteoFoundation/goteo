@@ -144,7 +144,7 @@ class UserController extends \Goteo\Core\Controller {
 
             if (empty($errors)) {
                 Application\Message::info(Text::get('user-register-success'));
-
+                // no confirmation..., direct login
                 Session::setUser(Model\User::get($user->id));
                 //Redirect
                 return self::userRedirect($request);

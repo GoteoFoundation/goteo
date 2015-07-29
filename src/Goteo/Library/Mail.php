@@ -182,7 +182,7 @@ class Mail {
                 }
                 elseif (Config::get('env') === 'beta') {
                     $this->subject = '[BETA] ' . $this->subject;
-                    if (Config::get('mail.beta_senders') && preg_match('/' . Config::get('mail.beta_senders') .'/i', $this->to)) {
+                    if (Config::get('mail.beta_senders') && preg_match('/' . str_replace('/', '\/', Config::get('mail.beta_senders')) .'/i', $this->to)) {
                         $allowed = true;
                     }
                 }
@@ -205,6 +205,7 @@ class Mail {
                     else {
                         Message::error('ERROR while logging email content into: ' . $path);
                     }
+                    // return true is ok, mail sent...
                     return true;
                 }
 
