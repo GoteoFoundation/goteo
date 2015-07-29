@@ -120,51 +120,6 @@ else {
 
       <?php endif; ?>
 
-        <script type="text/javascript">
-                    jQuery(document).ready(function ($) {
-                         $("#lang").hover(function(){
-                           //desplegar idiomas
-                           try{clearTimeout(TID_LANG)}catch(e){};
-                           var pos = $(this).offset().left;
-                           $('ul.lang').css({left:pos+'px'});
-                           $("ul.lang").fadeIn();
-                           $("#lang").css("background","#808285 url('<?php echo SRC_URL; ?>/view/css/bolita.png') 4px 7px no-repeat");
-
-                       },function() {
-                           TID_LANG = setTimeout('$("ul.lang").hide()',100);
-                        });
-                        $('ul.lang').hover(function(){
-                            try{clearTimeout(TID_LANG)}catch(e){};
-                        },function() {
-                           TID_LANG = setTimeout('$("ul.lang").hide()',100);
-                           $("#lang").css("background","#59595C url('<?php echo SRC_URL; ?>/view/css/bolita.png') 4px 7px no-repeat");
-                        });
-
-
-                    });
-                    jQuery(document).ready(function ($) {
-                         $("#currency").hover(function(){
-                           //desplegar idiomas
-                           try{clearTimeout(TID_CURRENCY)}catch(e){};
-                           var pos = $(this).offset().left;
-                           $('ul.currency').css({left:pos+'px'});
-                           $("ul.currency").fadeIn();
-                           $("#currency").css("background","#808285");
-
-                       },function() {
-                           TID_CURRENCY = setTimeout('$("ul.currency").hide()',100);
-                        });
-                        $('ul.currency').hover(function(){
-                            try{clearTimeout(TID_CURRENCY)}catch(e){};
-                        },function() {
-                           TID_CURRENCY = setTimeout('$("ul.currency").hide()',100);
-                           $("#currency").css("background","#59595C");
-                        });
-
-
-                    });
-        </script>
-
 <script type="text/javascript">
 
   var _gaq = _gaq || [];
