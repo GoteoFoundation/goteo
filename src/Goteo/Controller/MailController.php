@@ -9,7 +9,7 @@ use Goteo\Application\Exception\ControllerException;
 use Goteo\Application\View;
 use Goteo\Application\Config;
 use Goteo\Model\Template;
-use Goteo\Model\MailStats;
+use Goteo\Library\MailStats;
 use Goteo\Library\Mail as Mailer;
 
 class MailController extends \Goteo\Core\Controller {
@@ -19,12 +19,12 @@ class MailController extends \Goteo\Core\Controller {
      */
     public function indexAction ($token) {
 
-        if(list($md5, $email, $id) = Mailer::decodeToken($token)) {
+        if(list($md5, $email, $mail_id) = Mailer::decodeToken($token)) {
 
             // track this opening
-            MailStats::markRead($id);
+            MailStats::incrMetric($mail_id, $email, 'read');
             // Content still in database?
-            if ($mail = Mailer::get($id)) {
+            if ($mail = Mailer::get($mail_id)) {
                 return new Response($mail->render());
             }
 
@@ -41,8 +41,11 @@ class MailController extends \Goteo\Core\Controller {
     /**
      * Returns an empty gif, to track the email
      */
-    public function trackAction($id) {
-        MailStats::markRead($id);
+    public function trackAction($token) {
+        //decode token
+        if(list($md5, $email, $mail_id) = Mailer::decodeToken($token)) {
+            MailStats::incrMetric($mail_id, $email, 'read');
+        }
         // Return a transparent GIF
         return new Response(base64_decode('R0lGODlhAQABAJAAAP8AAAAAACH5BAUQAAAALAAAAAABAAEAAAICBAEAOw=='), Response::HTTP_OK, ['Content-Type' => 'image/gif']);
     }

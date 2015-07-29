@@ -137,7 +137,7 @@ namespace Goteo\Core {
                 }
             }
             if(empty($values)) throw new \PDOException("No fields specified!", 1);
-            $sql = 'UPDATE `' . $this->Table . '` SET ' . implode(',', $set) . ' WHERE ' . implode(',', $clause);
+            $sql = 'UPDATE `' . $this->Table . '` SET ' . implode(',', $set) . ' WHERE ' . implode(' AND ', $clause);
 
             return self::query($sql, $values);
         }
@@ -175,7 +175,7 @@ namespace Goteo\Core {
                 }
             }
             if(empty($values)) throw new \PDOException("No fields specified!", 1);
-            $sql = 'DELETE FROM `' . $this->Table . '` WHERE ' . implode(',', $clause);
+            $sql = 'DELETE FROM `' . $this->Table . '` WHERE ' . implode(' AND ', $clause);
 
             self::query($sql, $values);
             return true;

@@ -125,7 +125,7 @@ $routes->add('rss', new Route(
 
 ////// MAILING /////
 $routes->add('mail-track', new Route(
-    '/mail/track/{id}.gif',
+    '/mail/track/{token}.gif',
     array('_controller' => 'Goteo\Controller\MailController::trackAction')
 ));
 $routes->add('mail-token', new Route(

@@ -650,7 +650,7 @@ class UserController extends \Goteo\Core\Controller {
                     Model\User::query('UPDATE user SET active = 1, hide = 0, confirmed = 1 WHERE id = ?', array($id));
                     $user = Model\User::get($id);
                     Session::setUser($user, true);
-                    return $this->redicect('/dashboard/profile/access/recover#password');
+                    return $this->redirect('/dashboard/profile/access/recover#password');
                 }
             }
 

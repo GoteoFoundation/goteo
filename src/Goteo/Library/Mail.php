@@ -347,9 +347,10 @@ class Mail {
      *
      */
     private function bodyHTML($plain = false) {
+        $token = $this->getToken();
         return $this->render($plain, [
-                    'alternate' => SITE_URL . '/mail/' . $this->getToken(),
-                    'tracker' => SITE_URL . '/mail/track/' . $this->id . '.gif' ]
+                    'alternate' => SITE_URL . '/mail/' . $token,
+                    'tracker' => SITE_URL . '/mail/track/' . $token . '.gif' ]
                 );
 
     }
