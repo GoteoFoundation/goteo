@@ -2,7 +2,8 @@
 
 namespace Goteo\Library {
 
-	use Goteo\Core\Model;
+    use Goteo\Core\Model;
+	use Goteo\Application\Config;
 	/*
 	 * Clase para hacer envios masivos en segundo plano
 	 *
@@ -40,12 +41,6 @@ namespace Goteo\Library {
         }
 
 		static public function initiateSending ($mailId, $subject, $receivers, $autoactive = 0, $reply = null, $reply_name = null) {
-
-            /*
-             * Grabar el contenido para el sinoves en la tabla mail, obtener el id y el codigo para sinoves
-             *
-             */
-
 
             try {
                 Model::query("START TRANSACTION");
@@ -148,8 +143,7 @@ namespace Goteo\Library {
                     mailer_content.mail as mail,
                     mailer_content.subject as subject,
                     DATE_FORMAT(mailer_content.datetime, '%d/%m/%Y %H:%i:%s') as date,
-                    mailer_content.blocked as blocked,
-                    mail.content as filename
+                    mailer_content.blocked as blocked
                 FROM mailer_content
                 LEFT JOIN mail ON mail.id = mailer_content.mail
                 ORDER BY id DESC
@@ -157,13 +151,17 @@ namespace Goteo\Library {
 
             if ($query = Model::query($sql)) {
                 foreach ($query->fetchAll(\PDO::FETCH_OBJ) as $mailing) {
-                    $mailing->link = Mail::getSinovesLink($mailing->mail, $mailing->filename);
+                    $mailing->link = self::getLink($mailing->id, $mailing->mail);
                     $list[] = $mailing;
                 }
             }
 
             return $list;
 
+        }
+
+        static public function getLink($id, $mail) {
+            return SITE_URL . '/mail/' . \mybase64_encode(md5(Config::get('secret') . '-' . $id . '-' . $mail) . '¬' . $id . '¬' . $mail);
         }
 
         /*
@@ -209,14 +207,6 @@ namespace Goteo\Library {
             return $list;
 
         }
-
-
-		static public function activateSending ($id) {
-            // marcamos como activo el envio
-            $query = Model::query("UPDATE mailer_content SET active = 1 WHERE id = {$id}");
-            return ($query->rowCount() == 1);
-        }
-
 
         /*
         *  Metodo para limpieza de envíos masivos enviados y sus destinatarios

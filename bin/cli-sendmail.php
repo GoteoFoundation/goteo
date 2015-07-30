@@ -6,6 +6,7 @@
 
 use Goteo\Core\Model,
     Goteo\Application\Lang,
+    Goteo\Application\Message,
     Goteo\Application\Config,
     Goteo\Library\Feed,
     Goteo\Library\Mail,
@@ -36,7 +37,7 @@ $debug = true;
 
 $id = $argv[1];
 if(empty($id)) {
-	die("Se necesita un identificador de sender como argumento del script!");
+	die("Se necesita un identificador de sender como argumento del script!\n");
 }
 
 $list = array();
@@ -97,7 +98,7 @@ $itime = microtime(true);
 try {
     $mailHandler = new Mail($debug);
 
-    $mailHandler->id = $user->mail_id;
+    $mailHandler->id = $user->mail_id; //does not saves email to db
     $mailHandler->lang = $lang;
 
     // reply, si es especial
@@ -125,7 +126,7 @@ try {
 
         // Envio correcto
         Model::query("UPDATE mailer_send SET sent = 1, datetime = NOW() WHERE id = '{$user->id}' AND mailing =  '{$user->mailing_id}'");
-        if ($debug) echo "dbg: Enviado OK a $user->email\n";
+        if ($debug) echo "dbg: Enviado OK a {$user->email}\n";
 
     } else {
 
@@ -146,7 +147,13 @@ try {
 
 
 } catch (\Exception $e) {
-    die ($e->errorMessage());
+    Message::error($e->errorMessage());
+}
+
+if($debug) {
+    foreach(Message::getAll() as $msg) {
+        echo '['. ($msg->type === 'error' ? "\033[31m" : "\033[33m") . $msg->type . "\033[0m] " . $msg->content . "\n";
+    }
 }
 
 //desbloquear usuario

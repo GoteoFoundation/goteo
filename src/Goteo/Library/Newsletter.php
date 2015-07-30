@@ -7,7 +7,7 @@ namespace Goteo\Library {
         Goteo\Core\Exception,
         Goteo\Model\Template,
         Goteo\Application\Lang,
-        Goteo\Core\View;
+        Goteo\Application\View;
 	/*
 	 * Clase para montar contenido de Boletín
 	 *
@@ -126,7 +126,7 @@ namespace Goteo\Library {
 //                    $posts_content = '<div class="section-tit">'.Text::get('home-posts-header').'</div>';
                     foreach ($posts as $id=>$title) {
                         $the_post = \Goteo\Model\Post::get($id);
-                        $posts_content .= View::get('email/newsletter_post.html.php', array('post'=>$the_post));
+                        $posts_content .= View::render('email/partials/newsletter_post', array('post'=>$the_post));
                         break; // solo cogemos uno
                     }
                 }
@@ -143,7 +143,7 @@ namespace Goteo\Library {
 //                    $promotes_content = '<div class="section-tit">'.Text::get('home-promotes-header').'</div>';
                     foreach ($home_promotes as $key => $promote) {
                         try {
-                            $promotes_content .= View::get('email/newsletter_project.html.php', array('promote'=>$promote, 'project'=>$promote->projectData));
+                            $promotes_content .= View::render('email/partials/newsletter_project', array('promote'=>$promote, 'project'=>$promote->projectData));
                         } catch (\Goteo\Core\Error $e) {
                             continue;
                         }

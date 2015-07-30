@@ -59,3 +59,4 @@ CREATE TABLE `mailer_control` (
 -- constraings
 ALTER TABLE `mailer_send` ADD FOREIGN KEY (`mailing`) REFERENCES `mailer_content`(`id`) ON UPDATE CASCADE ON DELETE CASCADE;
 ALTER TABLE `mailer_send` CHANGE `sended` `sent` INT(1) NULL;
+ALTER TABLE `mailer_content` CHANGE `mail` `mail` BIGINT(20) UNSIGNED NOT NULL, ADD FOREIGN KEY (`mail`) REFERENCES `mail`(`id`);

@@ -1,21 +1,11 @@
+<?php $this->layout('admin/layout') ?>
+
+<?php $this->section('admin-content') ?>
+
 <?php
 
-use Goteo\Library\Text,
-    Goteo\Model\Template;
-
-$list = $vars['list'];
-
-$templates = array(
-    '27' => 'Aviso a los donantes',
-    '38' => 'Recordatorio a los donantes',
-    '33' => 'Boletin',
-    '35' => 'Testeo'
-);
-
-// por defecto cogemos la newsletter
-$tpl = 33;
-
-$template = Template::get($tpl);
+$list = $this->list;
+$templates = $this->templates;
 
 ?>
 <div class="widget board">
@@ -49,7 +39,7 @@ $template = Template::get($tpl);
     </form>
 </div>
 
-<?php if (!empty($list)) : ?>
+<?php if ($list) : ?>
 <div class="widget board">
     <table>
         <thead>
@@ -70,11 +60,14 @@ $template = Template::get($tpl);
                 <td><?php echo $item->date; ?></td>
                 <td><?php echo $item->subject; ?></td>
                 <td><?php echo $item->active ? '<span style="color:green;font-weight:bold;">Activo</span>' : '<span style="color:red;font-weight:bold;">Inactivo</span>'; ?></td>
-                <td><?php echo $item->blocked ? 'Bloqueado' : ''; ?></td>
-                <td><?php if (!empty($item->filename)) : ?><a href="<?php echo $item->link; ?>" target="_blank">[Si no ves]</a><?php endif; ?></td>
+                <td><?php echo $item->blocked ? '<span style="color:red;font-weight:bold;">Bloqueado</span>' : 'En espera'; ?></td>
+                <td><a href="<?php echo $item->link; ?>" target="_blank">[Visualizar]</a></td>
             </tr>
             <?php endforeach; ?>
         </tbody>
     </table>
 </div>
 <?php endif; ?>
+
+
+<?php $this->replace() ?>

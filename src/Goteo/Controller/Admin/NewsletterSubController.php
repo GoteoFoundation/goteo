@@ -80,13 +80,13 @@ class NewsletterSubController extends AbstractSubController {
                     // destinatarios
                     if ($this->getPost('test')) {
                         $users = Boletin::getTesters();
-                    } elseif ($template == 33) {
+                    } elseif ($template == Template::NEWSLETTER) {
                         // los destinatarios de newsletter
                         $users = Boletin::getReceivers();
-                    } elseif ($template == 35) {
+                    } elseif ($template == Template::TEST) {
                         // los destinatarios para testear a subscriptores
                         $users = Boletin::getReceivers();
-                    } elseif ($template == 27 || $template == 38) {
+                    } elseif ($template == Template::DONORS_WARNING || $template == Template::DONORS_REMINDER) {
                         // los cofinanciadores de este año
                         $users = Boletin::getDonors(Model\User\Donor::currYear());
                     }
@@ -135,7 +135,7 @@ class NewsletterSubController extends AbstractSubController {
                         $tpl = Template::get($template, $lang);
 
                         // contenido de newsletter
-                        $content = ($template == 33) ? Boletin::getContent($tpl->text, $lang) : $content = $tpl->text;
+                        $content = ($template == Template::NEWSLETTER) ? Boletin::getContent($tpl->text, $lang) : $content = $tpl->text;
 
                         // asunto
                         $subject = $tpl->title;
@@ -164,34 +164,35 @@ class NewsletterSubController extends AbstractSubController {
                 return $this->redirect('/admin/newsletter');
 
                 break;
-            case 'activate':
-                if (Sender::activateSending($id)) {
-                    Message::info('Se ha activado un nuevo envío automático');
-                } else {
-                    Message::error('No se pudo activar el envío. Iniciar de nuevo');
-                }
-                return $this->redirect('/admin/newsletter');
-                break;
+
             case 'detail':
 
                 $mailing = Sender::getSending($id);
                 $list = Sender::getDetail($id, $filters['show']);
 
                 return array(
-                        'folder' => 'newsletter',
-                        'file' => 'detail',
+                        'template' => 'admin/newsletter/detail',
                         'detail' => $filters['show'],
                         'mailing' => $mailing,
-                        'list' => $list
+                        'list' => $list,
+                        'link' => Sender::getLink($mailing->id, $mailing->mail)
                 );
                 break;
+
             default:
                 $list = Sender::getMailings();
 
+                $templates = array(
+                    Template::DONORS_WARNING => 'Aviso a los donantes',
+                    Template::DONORS_REMINDER => 'Recordatorio a los donantes',
+                    Template::NEWSLETTER => 'Boletin',
+                    Template::TEST => 'Testeo'
+                );
+
                 return array(
-                        'folder' => 'newsletter',
-                        'file' => 'list',
-                        'list' => $list
+                        'template' => 'admin/newsletter/list',
+                        'list' => $list,
+                        'templates' => $templates
                 );
         }
 

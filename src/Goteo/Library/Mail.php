@@ -213,7 +213,6 @@ class Mail {
                 }
 
                 $mail = $this->buildMessage();
-
                 // exit if not allowed
                 // TODO: log this?
                 if (!$allowed) {
@@ -223,7 +222,7 @@ class Mail {
                     $mail->preSend();
                     $path = GOTEO_LOG_PATH . 'mail-send/';
                     @mkdir($path, 0777, true);
-                    $path .= $this->id . '.eml';
+                    $path .= $this->id .'-' . str_replace(['@', '.'], ['_', '_'], $this->to) . '.eml';
                     if(@file_put_contents($path, $mail->getSentMIMEMessage())) {
                         Message::error('Logged email content into: ' . $path);
                     }
@@ -308,9 +307,13 @@ class Mail {
         return $mail;
     }
 
-    public function getToken($encode = true) {
-        // TODO: make this secure!
-        $token = md5(Config::get('secret') . '-' . $this->to . '-' . $this->id) . '¬' . $this->to  . '¬' . $this->id;
+    public function getToken($encode = true, $detect_massive = false) {
+        $to = $this->to;
+        if($detect_massive && $this->massive) {
+            $to = 'any';
+        }
+
+        $token = md5(Config::get('secret') . '-' . $to . '-' . $this->id) . '¬' . $to  . '¬' . $this->id;
         if($encode) {
             return \mybase64_encode($token);
         }
@@ -397,6 +400,8 @@ class Mail {
             ':node' => $this->node,
             ':lang' => $this->lang
             );
+
+        // echo \sqldbg($sql, $values);
         Model::query($sql, $values);
 
         $id = Model::insertId();
@@ -546,6 +551,7 @@ class Mail {
                     mail.id as id,
                     mail.email as email,
                     mail.template as template,
+                    (mail.email = 'any') as massive,
                     DATE_FORMAT(mail.date, '%d/%m/%Y %H:%i') as date
                 FROM mail
                 $sqlFilter
@@ -553,37 +559,8 @@ class Mail {
                 LIMIT $offset,$limit";
 
         $query = Model::query($sql, $values);
-        return $query->fetchAll(\PDO::FETCH_OBJ);
+        return $query->fetchAll(\PDO::FETCH_CLASS, __CLASS__);
 
-    }
-
-    /**
-     * Devuelve el enlace para Sinoves
-     * @param $id
-     * @return $url
-     */
-    public static function getSinovesLink($id, $filename = null) {
-
-        $url = '';
-
-        if (empty($filename)) {
-            $sql = "SELECT content
-            FROM mail
-            WHERE id = :id";
-
-            $query = Model::query($sql, array(':id' => $id));
-            $content = $query->fetchColumn();
-
-        } else {
-            $content = $filename;
-        }
-
-        $url = SITE_URL . '/mail' . $content;
-        if (FILE_HANDLER == 's3') {
-            $url = 'http://' . AWS_S3_BUCKET_MAIL . $content;
-        }
-
-        return $url;
     }
 
     /**

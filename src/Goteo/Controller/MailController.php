@@ -20,9 +20,14 @@ class MailController extends \Goteo\Core\Controller {
     public function indexAction ($token) {
 
         if(list($md5, $email, $mail_id) = Mailer::decodeToken($token)) {
+            // die("$email $mail_id");
 
-            // track this opening
-            MailStats::incrMetric($mail_id, $email, 'read');
+            // A numeric email refers to a ID entry of the mailer_content table (pending sendings)
+            // 'any' refers to any massive sending
+            if(!is_numeric($email) && $email !== 'any') {
+                // track this opening
+                MailStats::incrMetric($mail_id, $email, 'read');
+            }
             // Content still in database?
             if ($mail = Mailer::get($mail_id)) {
                 return new Response($mail->render());

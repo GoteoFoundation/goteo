@@ -6,6 +6,7 @@
 
 use Goteo\Core\Model,
     Goteo\Application\Lang,
+    Goteo\Application\Message,
     Goteo\Application\Config,
     Goteo\Library\Feed,
     Goteo\Library\Mail,
@@ -255,6 +256,12 @@ if (!$fail) {
 
 } else {
     if ($debug) echo "dbg: FALLO\n";
+}
+
+if($debug) {
+    foreach(Message::getAll() as $msg) {
+        echo '['. ($msg->type === 'error' ? "\033[31m" : "\033[33m") . $msg->type . "\033[0m] " . $msg->content . "\n";
+    }
 }
 
 if ($debug) echo "dbg: FIN, tiempo de ejecución total " . round(microtime(true) - $itime, 2) . " segundos para enviar $total_users emails, ratio medio " . round($total_users/(microtime(true) - $itime),2) . " emails/segundo\n";
