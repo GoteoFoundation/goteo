@@ -44,7 +44,9 @@ class Lang {
                     'name' => 'Français',
                     'short' => 'FRA',
                     'public' => true,
-                    'locale' => 'fr_FR'),
+                    'locale' => 'fr_FR',
+                    'fallback' => 'en',
+                    ),
         'it' => array(
                     'name' => 'Italiano',
                     'short' => 'ITA',

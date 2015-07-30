@@ -10,8 +10,9 @@ use Goteo\Library\Text,
     Goteo\Application\Lang,
     Goteo\Application\Message,
     Goteo\Application\Config,
-	Goteo\Model\Template,
-    Goteo\Library\Newsletter as Boletin,
+    Goteo\Model\Template,
+	Goteo\Model\User,
+    Goteo\Library\Newsletter,
 	Goteo\Library\Sender;
 
 class NewsletterSubController extends AbstractSubController {
@@ -40,161 +41,120 @@ class NewsletterSubController extends AbstractSubController {
         return parent::isAllowed($user, $node);
     }
 
-    public function detailAction($id = null, $subaction = null) {
-        // Action code should go here instead of all in one process funcion
-        return call_user_func_array(array($this, 'process'), array('detail', $id, $this->getFilters(), $subaction));
+    public function detailAction($id) {
+        $filters = $this->request->query->all();
+        if(empty($filters['show'])) $filters['show'] = 'receivers';
+        $mailing = Sender::getSending($id);
+        $list = Sender::getDetail($id, $filters['show']);
+
+        return array(
+                'template' => 'admin/newsletter/detail',
+                'detail' => $filters['show'],
+                'mailing' => $mailing,
+                'list' => $list,
+                'link' => Sender::getLink($mailing->id, $mailing->mail)
+        );
     }
 
-
-    public function activateAction($id = null, $subaction = null) {
-        // Action code should go here instead of all in one process funcion
-        return call_user_func_array(array($this, 'process'), array('activate', $id, $this->getFilters(), $subaction));
-    }
-
-
-    public function initAction($id = null, $subaction = null) {
-        // Action code should go here instead of all in one process funcion
-        return call_user_func_array(array($this, 'process'), array('init', $id, $this->getFilters(), $subaction));
-    }
-
-
-    public function listAction($id = null, $subaction = null) {
-        // Action code should go here instead of all in one process funcion
-        return call_user_func_array(array($this, 'process'), array('list', $id, $this->getFilters(), $subaction));
-    }
-
-
-    public function process ($action = 'list', $id = null, $filters = array()) {
+    public function initAction() {
         $current_lang = Lang::current();
-        $debug = false;
 
         $node = $this->node;
 
-        switch ($action) {
-            case 'init':
-                if ($this->isPost()) {
+        if ($this->isPost()) {
+            $current_lang = Lang::current();
+            // plantilla
+            $template = $this->getPost('template');
+            // sin idiomas
+            $nolang = $this->getPost('nolang');
 
-                    // plantilla
-                    $template = $this->getPost('template');
+            // all user languages
+            $user_langs = User::getAvailableLangs();
 
-                    // destinatarios
-                    if ($this->getPost('test')) {
-                        $users = Boletin::getTesters();
-                    } elseif ($template == Template::NEWSLETTER) {
-                        // los destinatarios de newsletter
-                        $users = Boletin::getReceivers();
-                    } elseif ($template == Template::TEST) {
-                        // los destinatarios para testear a subscriptores
-                        $users = Boletin::getReceivers();
-                    } elseif ($template == Template::DONORS_WARNING || $template == Template::DONORS_REMINDER) {
-                        // los cofinanciadores de este año
-                        $users = Boletin::getDonors(Model\User\Donor::currYear());
+            // all templates languages
+            if($nolang) {
+                $template_langs = [$current_lang];
+            }
+            else {
+                $template_langs = Template::getAvailableLangs($template);
+            }
+            foreach($template_langs as $lang) {
+                Lang::set($lang);
+                $lang = Lang::current();
+
+
+                // datos de la plantilla
+                $tpl = Template::get($template, $lang);
+
+                // contenido de newsletter
+                $content = ($template == Template::NEWSLETTER) ? Newsletter::getContent($tpl->text, $lang) : $content = $tpl->text;
+
+                // asunto
+                $mailHandler = new Mail();
+                $mailHandler->template = $template;
+                $mailHandler->content = $content;
+                $mailHandler->node = $node;
+                $mailHandler->lang = $lang;
+                $mailHandler->massive = true;
+                $mailId = $mailHandler->saveEmailToDB();
+
+                // create the sender cue
+                $sender = new Sender($mailId, $tpl->title);
+                $sender->save(); //persists in database
+
+                // get the equivalent communication languages from preferences
+                $comlangs = [];
+                foreach($user_langs as $user_lang) {
+                    $comlang = $user_lang;
+                    while(!in_array($comlang, $template_langs)) {
+                        $comlang = Lang::getFallback($comlang);
                     }
-
-                    // sin idiomas
-                    $nolang = $this->getPost('nolang');
-                    if ($nolang) {
-                        foreach ($users as $usr) {
-                            $receivers[$current_lang][$usr->user] = $usr;
-                        }
-                    } else {
-                        // separamos destinatarios en idiomas
-                        $receivers = array();
-                        foreach ($users as $usr) {
-
-                            // idioma de preferencia
-                            $comlang = !empty($usr->comlang) ? $usr->comlang : $usr->lang;
-                            if (empty($comlang)) $comlang = $current_lang;
-
-                            // he visto un 'eN' raro en beta, pongo esto hasta que confirme en real
-                            $comlang = strtolower($comlang);
-
-                            // piñon para newsletter issue #48
-                            $newslang = (in_array($comlang, array('es', 'ca', 'gl', 'eu'))) ? 'es' : 'en';
-
-                            $receivers[$newslang][$usr->user] = $usr;
-                        }
+                    if($comlang === $lang) {
+                        $comlangs[] = $user_lang;
                     }
-
-                    // idiomas que vamos a enviar
-                    $langs = array_keys($receivers);
-
-                    if ($debug) {
-                        echo \trace($receivers);
-                        echo \trace($langs);
-                        die;
-                    }
-
-                    // para cada idioma
-                    foreach ($langs as $lang) {
-
-                        // destinatarios
-                        $recipients = $receivers[$lang];
-
-                        // datos de la plantilla
-                        $tpl = Template::get($template, $lang);
-
-                        // contenido de newsletter
-                        $content = ($template == Template::NEWSLETTER) ? Boletin::getContent($tpl->text, $lang) : $content = $tpl->text;
-
-                        // asunto
-                        $subject = $tpl->title;
-
-                        $mailHandler = new Mail();
-                        $mailHandler->template = $template;
-                        $mailHandler->content = $content;
-                        $mailHandler->node = $node;
-                        $mailHandler->lang = $lang;
-                        $mailHandler->massive = true;
-                        $mailId = $mailHandler->saveEmailToDB();
-
-                        // inicializamos el envío
-                        if (Sender::initiateSending($mailId, $subject, $recipients, 1)) {
-                            // ok...
-                        } else {
-                            Message::error('No se ha podido iniciar el mailing con asunto "'.$subject.'"');
-                        }
-                    }
-
-                    // cancelamos idioma variable usado para generar contenido de newsletter
-                    unset($_SESSION['VAR_LANG']);
-
+                }
+                // add subscribers from sql
+                if ($this->getPost('test')) {
+                    $sql = Newsletter::getTestersSQL($comlangs, $sender->id . ',');
+                } elseif ($template == Template::NEWSLETTER || $template == Template::TEST) {
+                    $sql = Newsletter::getReceiversSQL($comlangs, $sender->id . ',');
+                } elseif ($template == Template::DONORS_WARNING || $template == Template::DONORS_REMINDER) {
+                    // los cofinanciadores de este año
+                    $sql = Newsletter::getDonorsSQL($comlangs, $sender->id . ',');
                 }
 
-                return $this->redirect('/admin/newsletter');
+                // add subscribers
+                $sender->addSubscribersFromSQL($sql);
 
-                break;
+                // activate
+                $sender->activate();
 
-            case 'detail':
+            }
 
-                $mailing = Sender::getSending($id);
-                $list = Sender::getDetail($id, $filters['show']);
+            Lang::set($current_lang);
 
-                return array(
-                        'template' => 'admin/newsletter/detail',
-                        'detail' => $filters['show'],
-                        'mailing' => $mailing,
-                        'list' => $list,
-                        'link' => Sender::getLink($mailing->id, $mailing->mail)
-                );
-                break;
-
-            default:
-                $list = Sender::getMailings();
-
-                $templates = array(
-                    Template::DONORS_WARNING => 'Aviso a los donantes',
-                    Template::DONORS_REMINDER => 'Recordatorio a los donantes',
-                    Template::NEWSLETTER => 'Boletin',
-                    Template::TEST => 'Testeo'
-                );
-
-                return array(
-                        'template' => 'admin/newsletter/list',
-                        'list' => $list,
-                        'templates' => $templates
-                );
         }
 
+        return $this->redirect('/admin/newsletter');
+
     }
+
+    public function listAction() {
+        $list = Sender::getMailings();
+
+        $templates = array(
+            Template::DONORS_WARNING => 'Aviso a los donantes',
+            Template::DONORS_REMINDER => 'Recordatorio a los donantes',
+            Template::NEWSLETTER => 'Newsletter',
+            Template::TEST => 'Testeo'
+        );
+
+        return array(
+                'template' => 'admin/newsletter/list',
+                'list' => $list,
+                'templates' => $templates
+        );
+    }
+
+
 }

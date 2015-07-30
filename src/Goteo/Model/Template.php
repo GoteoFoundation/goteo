@@ -234,6 +234,19 @@ class Template extends \Goteo\Core\Model {
         return false;
 	}
 
+    /**
+     * Returns available langs for a template
+     */
+    static public function getAvailableLangs($id, $avoid_pending = true) {
+        $query = self::query('SELECT DISTINCT lang FROM template_lang WHERE ' . ($avoid_pending ? ' pending=0 AND ' : '') . ' id=?', $id);
+        $langs = [Lang::getDefault()]; // add system lang
+        if($query) {
+            foreach ($query->fetchAll(\PDO::FETCH_OBJ) as $lang) {
+                $langs[] = $lang->lang;
+            }
+        }
+        return $langs;
+    }
     /*
      * Grupos de textos
      */

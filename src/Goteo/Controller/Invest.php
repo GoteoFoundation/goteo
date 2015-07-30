@@ -438,12 +438,13 @@ namespace Goteo\Controller {
             $prefer = Model\User::getPreferences($user->id);
             $comlang = !empty($prefer->comlang) ? $prefer->comlang : $user->lang;
 
+            // activamos idioma comunicaciones para los textos
+            $current_lang = Lang::current();
+            Lang::set($comlang);
 
             // plantilla agradecimiento
-            $template = Template::get(64, $comlang);
+            $template = Template::get(Template::DONOR_INVEST_THANKS, $comlang);
 
-            // activamos idioma comunicaciones para los textos
-            $_SESSION['VAR_LANG'] = $comlang;
 
             // primero monto el texto de recompensas (o renuncia)
             if($invest->resign){
@@ -477,10 +478,6 @@ namespace Goteo\Controller {
             $txt_destaddr = $txt_address;
             $txt_address = Text::get('invest-mail_info-address') .'<br>'. $txt_address;
 
-            // desactivamos idioma comunicaciones para textos
-            unset($_SESSION['VAR_LANG']);
-
-
             // Sustituimos los datos
             $subject = str_replace('%PROJECTNAME%', $projectData->name, $template->title);
 
@@ -510,7 +507,7 @@ namespace Goteo\Controller {
             // si es un regalo
             if ($invest->address->regalo && !empty($invest->address->emaildest)) {
                 // Notificación al destinatario de regalo
-                $template = Template::get(53);
+                $template = Template::get(Template::BAZAAR_RECEIVER);
                 // Sustituimos los datos
                 $subject = str_replace('%USERNAME%', $user->name, $template->title);
 
@@ -537,14 +534,14 @@ namespace Goteo\Controller {
                 unset($mailHandler);
             }
 
-
             // Notificación al autor
 
             //  idioma de preferencia
             $prefer = Model\User::getPreferences($projectData->user->id);
             $comlang = !empty($prefer->comlang) ? $prefer->comlang : $projectData->user->lang;
+            Lang::set($comlang);
 
-            $template = Template::get(29, $comlang);
+            $template = Template::get(Template::OWNER_NEW_INVEST, $comlang);
             // Sustituimos los datos
             $subject = str_replace('%PROJECTNAME%', $projectData->name, $template->title);
 
@@ -564,6 +561,9 @@ namespace Goteo\Controller {
             $mailHandler->send();
 
             unset($mailHandler);
+
+            // desactivamos idioma comunicaciones para textos
+            Lang::set($current_lang);
 
             // marcar que ya se ha completado el proceso de aportar
             $_SESSION['invest_'.$invest->id.'_completed'] = true;

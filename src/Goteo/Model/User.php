@@ -486,6 +486,21 @@ namespace Goteo\Model {
         }
 
         /**
+         * Returns all user langs
+         * @return [type] [description]
+         */
+        static public function getAvailableLangs() {
+            $query = self::query('SELECT DISTINCT lang FROM user UNION SELECT DISTINCT comlang AS lang FROM user_prefer');
+            $langs = [];
+            if($query) {
+                foreach ($query->fetchAll(\PDO::FETCH_OBJ) as $lang) {
+                    $langs[] = $lang->lang;
+                }
+            }
+            return $langs;
+        }
+
+        /**
          * Este método actualiza directamente el campo de idioma preferido
          */
         public function updateLang ($lang, &$errors = array()) {

@@ -113,8 +113,8 @@ try {
     $mailHandler->toName = $user->name;
     $mailHandler->subject = $mailing->subject;
     $mailHandler->content = str_replace(
-        array('%USERID%', '%USEREMAIL%', '%USERNAME%'),
-        array($user->user, $user->email, $user->name),
+        array('%USERID%', '%USEREMAIL%', '%USERNAME%', '%SITEURL%'),
+        array($user->user, $user->email, $user->name, SITE_URL),
         $content);
     $mailHandler->html = true;
     $mailHandler->template = $template;
