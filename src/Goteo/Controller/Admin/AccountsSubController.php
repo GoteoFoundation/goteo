@@ -275,7 +275,7 @@ class AccountsSubController extends AbstractSubController {
 
 
                 } else {
-                    $txt_errors = implode('; ', $errors);
+                    $txt_errors = implode("<br>\n", $errors);
                     Message::error('Fallo al ejecutar cargo paypal: ' . $txt_errors . '<strong>POSIBLE INCIDENCIA NO COMUNICADA Y APORTE NO CANCELADO, HAY QUE TRATARLA MANUALMENTE</strong>');
                     $log_text = "El admin %s ha fallado al ejecutar el cargo a %s por su aporte de %s mediante PayPal (id: %s) al proyecto %s del dia %s. <br />Se han dado los siguientes errores: $txt_errors";
                 }
