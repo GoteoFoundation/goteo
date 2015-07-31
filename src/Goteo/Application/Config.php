@@ -211,7 +211,6 @@ class Config {
         define('AWS_S3_BUCKET_DOCUMENT', self::get('filesystem.bucket.document'));
         define('AWS_S3_BUCKET_PRESS', self::get('filesystem.bucket.press'));
         define('PP_CONFIG_PATH', GOTEO_PATH . 'config/');
-        define('PAYPAL_REDIRECT_URL', self::get('paypal.redirect_url'));
         define('TPV_MERCHANT_CODE', self::get('tpv.merchant_code'));
         define('TPV_REDIRECT_URL', self::get('tpv.redirect_url'));
         define('TPV_ENCRYPT_KEY', self::get('tpv.encrypt_key'));

@@ -5,6 +5,7 @@ namespace Goteo\Library {
         Goteo\Model\Project,
         Goteo\Model\User,
         Goteo\Library\Feed,
+        Goteo\Application\Config,
         Goteo\Core\Redirection;
 
     // updated: 08/12/2014
@@ -76,8 +77,8 @@ namespace Goteo\Library {
                 $preapprovalRequest->returnUrl = $returnURL;
                 $preapprovalRequest->clientDetails = new PPTypes\ClientDetailsType;
                 $preapprovalRequest->clientDetails->customerId = $customerId;
-                $preapprovalRequest->clientDetails->applicationId = PAYPAL_APPLICATION_ID;
-                $preapprovalRequest->clientDetails->deviceId = PAYPAL_DEVICE_ID;
+                $preapprovalRequest->clientDetails->applicationId = Config::get('paypal.application_id');
+                $preapprovalRequest->clientDetails->deviceId = Config::get('paypal.device_id');
                 $preapprovalRequest->clientDetails->ipAddress = $_SERVER['REMOTE_ADDR'];
                 $preapprovalRequest->currencyCode = "EUR";
                 $preapprovalRequest->startingDate = $startDate;
@@ -128,7 +129,7 @@ namespace Goteo\Library {
 
                 Invest::setDetail($invest->id, 'paypal-init', 'Se ha iniciado el preaproval y se redirije al usuario a paypal para aceptarlo. Proceso libary/paypal::preapproval');
                 $invest->setPreapproval($token);
-                $payPalURL = PAYPAL_REDIRECT_URL . '_ap-preapproval&preapprovalkey=' . $token;
+                $payPalURL = Config::get('paypal.redirect_url') . '_ap-preapproval&preapprovalkey=' . $token;
                 throw new Redirection($payPalURL, Redirection::TEMPORARY);
                 return true;
 
@@ -251,7 +252,7 @@ namespace Goteo\Library {
 
                 Invest::setDetail($invest->id, 'paypal-init', 'Se ha preparado el pago directo y se redirije al usuario a paypal para completarlo. Proceso libary/paypal::preparePay');
                 $invest->setPayment($token);
-                $payPalURL = \PAYPAL_REDIRECT_URL.'_express-checkout&token=' . $token;
+                $payPalURL = Config::get('paypal.redirect_url').'_express-checkout&token=' . $token;
                 throw new Redirection($payPalURL, Redirection::TEMPORARY);
                 return true;
 
@@ -467,9 +468,9 @@ namespace Goteo\Library {
                 $payRequest->returnUrl = $returnURL;
                 $payRequest->clientDetails = new PPTypes\ClientDetailsType;
                 $payRequest->clientDetails->customerId = $invest->user;
-                $payRequest->clientDetails->applicationId = PAYPAL_APPLICATION_ID;
-                $payRequest->clientDetails->deviceId = PAYPAL_DEVICE_ID;
-                $payRequest->clientDetails->ipAddress = PAYPAL_IP_ADDRESS;
+                $payRequest->clientDetails->applicationId = Config::get('paypal.application_id');
+                $payRequest->clientDetails->deviceId = Config::get('paypal.device_id');
+                $payRequest->clientDetails->ipAddress = Config::get('paypal.ip_address');
                 $payRequest->currencyCode = 'EUR';
                 $payRequest->preapprovalKey = $invest->preapproval;
                 $payRequest->actionType = 'PAY_PRIMARY';
@@ -482,14 +483,14 @@ namespace Goteo\Library {
 
                 // Primary receiver, Goteo Business Account
                 $receiverP = new PPAdaptivePayments\Receiver;
-                $receiverP->email = PAYPAL_BUSINESS_ACCOUNT; // tocar en config para poner en real
+                $receiverP->email = Config::get('paypal.business_account'); // tocar en config para poner en real
                 $receiverP->amount = $invest->amount;
                 $receiverP->primary = true;
 
                 // Receiver, Projects PayPal Account
                 $receiver = new PPAdaptivePayments\Receiver;
 //              en dev/beta la cuenta paypal del proyecto es la de sandbox
-                $receiver->email = (GOTEO_ENV == 'real') ? \trim($invest->account) : 'projec_1314918267_per@gmail.com';
+                $receiver->email = (GOTEO_ENV == 'real') ? \trim($invest->account) : Config::get('paypal.beta_project_email');
                 $receiver->amount = $amountPay;
                 $receiver->primary = false;
 
