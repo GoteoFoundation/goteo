@@ -225,7 +225,7 @@ class AccountsSubController extends AbstractSubController {
 
     public function executeAction($id) {
         $invest = Model\Invest::get($id);
-        if (!$invest instanceof Model\Invest || $invest->status !== 0) {
+        if (!$invest instanceof Model\Invest || $invest->status != 0) {
             Message::error('Invest ['.$id.'] not found or wrong status!');
             return $this->redirect();
         }
