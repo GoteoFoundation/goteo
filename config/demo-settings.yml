@@ -184,7 +184,11 @@ mail:
 # /config/sdk_config.ini
 # see paypal.php for an example contents of it
 paypal:
-    redirect_url:  https://www.sandbox.paypal.com/webscr&cmd=
+    redirect_url:     https://www.sandbox.paypal.com/webscr&cmd=
+    device_id:        example.com
+    application_id:   APP-ID
+    business_account: paypal@example.com
+    ip_address:       127.0.0.1
 
 # TPV [Bank Name]
 tpv:
