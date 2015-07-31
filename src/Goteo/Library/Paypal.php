@@ -704,10 +704,10 @@ namespace Goteo\Library {
                     if (empty($errorId)) {
                         $errors[] = 'NO es soapFault pero no es Success: <pre>' . print_r($ap, true) . '</pre>';
                     } elseif (!empty($error_txt)) {
-                        $errors[$errorId] = $error_txt;
-                    } else {
-                        $errors[$errorId] = "$action $errorMsg [$errorId]";
+                        $errors['error_text'] = $error_txt;
                     }
+                    $errors['errorId'] = "Paypal errorId: $errorId";
+                    $errors['errorMsg'] = "Paypal errorMsg: $errorMsg";
 
                     Invest::setIssue($invest->id);
                     return false;
