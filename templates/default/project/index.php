@@ -89,21 +89,21 @@ $this->section('content');
             <div class="project-header">
                 <a href="/user/<?php echo $project->owner; ?>"><img src="<?php echo $project->user->avatar->getLink(56,56, true) ?>" /></a>
                 <h2><span><?php echo htmlspecialchars($project->name) ?></span></h2>
+                <div class="by-tags">
                 <div class="project-subtitle"><?php echo htmlspecialchars($project->subtitle) ?></div>
-                <div class="project-by"><a href="/user/<?php echo $project->owner; ?>"><?= $this->text('regular-by') ?> <?php echo $project->user->name; ?></a></div>
-                <br/>
-
-                
-                <!--
-                <?php if (!empty($project->cat_names)) : ?>
-                <div class="categories">
-                    <h3><?php echo Text::get('project-view-categories-title'); ?></h3>
-                    <?php $sep = ''; foreach ($project->cat_names as $key=>$value) :
-                        echo $sep.'<a href="/discover/results/'.$key.'/'.$value.'">'.htmlspecialchars($value).'</a>';
-                    $sep = ', '; endforeach; ?>
+                    <div class="project-by"><a href="/user/<?php echo $project->owner; ?>"><?= $this->text('regular-by') ?> <?php echo $project->user->name; ?></a></div>
+                    <?php if (!empty($project->cat_names)) : ?>
+                        <div class="project-tags">     
+                        <?php $sep = ''; 
+                        foreach ($project->cat_names as $key=>$value) :
+                            echo $sep.'<a href="/discover/results/'.$key.'/'.$value.'">'.htmlspecialchars($value).'</a>';
+                            $sep = ', ';
+                        endforeach; ?>
+                        </div>
+                    <?php endif; ?>
                 </div>
-                <?php endif; ?>
-                -->     
+                <br/>
+    
                 <?php if ($project->node !== $this->get_config('current_node')&&($project->nodeData->active)) : ?>
                 <div class="nodemark">
                     <?php if($project->nodeData->type!="node") 
