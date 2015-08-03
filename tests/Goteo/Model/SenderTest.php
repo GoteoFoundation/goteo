@@ -1,9 +1,9 @@
 <?php
 
 
-namespace Goteo\Library\Tests;
+namespace Goteo\Model\Tests;
 
-use Goteo\Library\Sender;
+use Goteo\Model\Sender;
 
 class SenderTest extends \PHPUnit_Framework_TestCase {
 
@@ -11,7 +11,7 @@ class SenderTest extends \PHPUnit_Framework_TestCase {
 
         $converter = new Sender();
 
-        $this->assertInstanceOf('\Goteo\Library\Sender', $converter);
+        $this->assertInstanceOf('\Goteo\Model\Sender', $converter);
 
         return $converter;
     }

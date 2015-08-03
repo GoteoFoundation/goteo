@@ -13,7 +13,7 @@ use Goteo\Library\Text,
     Goteo\Model\Template,
 	Goteo\Model\User,
     Goteo\Library\Newsletter,
-	Goteo\Library\Sender;
+	Goteo\Model\Sender;
 
 class NewsletterSubController extends AbstractSubController {
 
@@ -42,18 +42,40 @@ class NewsletterSubController extends AbstractSubController {
     }
 
     public function detailAction($id) {
-        $filters = $this->request->query->all();
+        $filters = $this->request->query->all(); // we don't want to use the getFilters(), this filters does not persist
         if(empty($filters['show'])) $filters['show'] = 'receivers';
-        $mailing = Sender::getSending($id);
-        $list = Sender::getDetail($id, $filters['show']);
+        $mailing = Sender::get($id);
+        $limit = 50;
+        $list = Sender::getList($id, $filters['show'], $this->getGet('pag') * $limit, $limit);
+        $total = Sender::getList($id, $filters['show'], 0, 0, true);
 
         return array(
                 'template' => 'admin/newsletter/detail',
                 'detail' => $filters['show'],
                 'mailing' => $mailing,
                 'list' => $list,
-                'link' => Sender::getLink($mailing->id, $mailing->mail)
+                'total' => $total,
+                'link' => $mailing->getLink()
         );
+    }
+
+    public function activateAction($id) {
+        $mailing = Sender::get($id);
+        if($mailing->setActive(true)) {
+            Message::info("Newsletter [$id] activated for immediate sending!");
+        }
+        else {
+            Message::error("Newsletter [$id] cannot be activated for immediate sending!");
+        }
+        return $this->redirect();
+    }
+
+    public function cancelAction($id) {
+        if($mailing = Sender::get($id)) {
+            $mailing->dbDelete();
+            Message::error("Newsletter [$id] removed!");
+        }
+        return $this->redirect();
     }
 
     public function initAction() {
@@ -126,8 +148,8 @@ class NewsletterSubController extends AbstractSubController {
                 // add subscribers
                 $sender->addSubscribersFromSQL($sql);
 
-                // activate
-                $sender->activate();
+                // do no automatically activate ?
+                // $sender->activate();
 
             }
 
@@ -139,8 +161,20 @@ class NewsletterSubController extends AbstractSubController {
 
     }
 
+    public function statusAction($id) {
+        $mailing = [];
+        if($mailing = Sender::get($id)) {
+            $status = $mailing->getStatus();
+            if($status) {
+                $status->percent = number_format($status->percent, 2, ',', '') . '%';
+                $mailing->status = $status;
+            }
+        }
+        return $this->jsonResponse($mailing);
+    }
+
     public function listAction() {
-        $list = Sender::getMailings();
+        $list = Sender::getMailingList();
 
         $templates = array(
             Template::DONORS_WARNING => 'Aviso a los donantes',

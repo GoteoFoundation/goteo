@@ -1,15 +1,16 @@
 <?php
 
-namespace Goteo\Library;
+namespace Goteo\Model;
 
-use Goteo\Core\Model;
 use Goteo\Application\Config;
+use Goteo\Application\Exception\ModelNotFoundException;
 use Goteo\Application\Exception\ModelException;
 /*
  * Clase para hacer envios masivos en segundo plano
  *
  */
-class Sender {
+class Sender extends \Goteo\Core\Model {
+    protected $Table = 'mailer_content';
     public $id,
            $active = 0,
            $mail,
@@ -20,19 +21,23 @@ class Sender {
     /**
      * Creates a new sending cue
      */
-    public function __construct($mailId, $subject, $reply = null, $reply_name = null) {
-        $this->mail = $mailId;
-        $this->subject = $subject;
-        $this->reply = $reply;
-        $this->reply_name = $reply_name;
+    public function __construct($mailId = null, $subject = null, $reply = null, $reply_name = null) {
+        if($mailId)     $this->mail = $mailId;
+        if($subject)    $this->subject = $subject;
+        if($reply)      $this->reply = $reply;
+        if($reply_name) $this->reply_name = $reply_name;
     }
 
-    public function save() {
+    public function validate(&$errors = []) {
+        //TODO....
+        return true;
+    }
+    public function save(&$errors = []) {
         $sql = "INSERT INTO `mailer_content` (`active`, `mail`, `subject`, `blocked`, `reply`, `reply_name`)
                 VALUES (0, :mail, :subject, 0, :reply, :reply_name)";
-        Model::query($sql, array(':subject' => $this->subject, ':mail'=>$this->mail, ':reply'=>$this->reply, ':reply_name'=>$this->reply_name));
+        static::query($sql, array(':subject' => $this->subject, ':mail'=>$this->mail, ':reply'=>$this->reply, ':reply_name'=>$this->reply_name));
 
-        if($this->id = Model::insertId()) {
+        if($this->id = static::insertId()) {
             return $this;
         }
         else {
@@ -46,8 +51,8 @@ class Sender {
      * @param [type] $sql [description]
      */
     public function addSubscribersFromSQL($sql) {
-        $sql = 'INSERT INTO `mailer_send` (`mailing`, `user`, `email`, `name`) ' .$sql;
-        if(Model::query($sql)) {
+        $sql = 'INSERT INTO `mailer_send` (`mailing`, `user`, `name`, `email`) ' .$sql;
+        if(static::query($sql)) {
             return true;
         }
         throw new ModelException('Inserting SQL [' . $sql .'] has failed!');
@@ -60,9 +65,40 @@ class Sender {
     /**
      * Activates the Sender for sending
      */
-    public function activate() {
-        $query = Model::query("UPDATE mailer_content SET active = 1 WHERE id = {$this->id}");
+    public function setActive($active) {
+        $this->active = (bool) $active;
+        $query = static::query("UPDATE mailer_content SET active = " . ($this->active ? 1 : 0) . " WHERE id = {$this->id}");
         return ($query->rowCount() == 1);
+    }
+
+    /**
+     * Returns status of the sending
+     * @return [type] [description]
+     */
+    public function getStatus() {
+        try {
+            // y el estado
+            $query = static::query('
+            SELECT
+                    COUNT(mailer_send.id) AS receivers,
+                    SUM(IF(mailer_send.sent = 1, 1, 0)) AS sent,
+                    SUM(IF(mailer_send.sent = 0, 1, 0)) AS failed,
+                    SUM(IF(mailer_send.sent IS NULL, 1, 0)) AS pending
+            FROM    mailer_send
+            WHERE mailer_send.mailing = ?', $this->id);
+            $sending = $query->fetchObject();
+
+            $sending->percent   = 100 * (1 - $sending->pending / $sending->receivers);
+        } catch(\PDOException $e) {
+            throw new ModelNotFoundException('Not found mailingId [' . $this->id . ']' . $e->getMessage());
+        }
+
+        return $sending;
+
+    }
+
+    public function getLink() {
+        return SITE_URL . '/mail/' . \mybase64_encode(md5(Config::get('secret') . '-' . $this->id . '-' . $this->mail) . '¬' . $this->id . '¬' . $this->mail);
     }
 
     /*
@@ -85,7 +121,7 @@ class Sender {
             if($limit) $sql .= "LIMIT $limit
             ";
 
-        if ($query = Model::query($sql, array($id))) {
+        if ($query = static::query($sql, array($id))) {
             foreach ($query->fetchAll(\PDO::FETCH_OBJ) as $receiver) {
                 $list[] = $receiver;
             }
@@ -95,27 +131,29 @@ class Sender {
 
     }
 
+
+    // TODO: remove this
 	static public function initiateSending ($mailId, $subject, $receivers, $autoactive = 0, $reply = null, $reply_name = null) {
 
         try {
-            Model::query("START TRANSACTION");
+            static::query("START TRANSACTION");
 
             $sql = "INSERT INTO `mailer_content` (`id`, `active`, `mail`, `subject`, `blocked`, `reply`, `reply_name`)
                 VALUES ('' , '{$autoactive}', :mail, :subject, 0, :reply, :reply_name)";
-            Model::query($sql, array(':subject'=>$subject, ':mail'=>$mailId, ':reply'=>$reply, ':reply_name'=>$reply_name));
-            $mailing = Model::insertId();
+            static::query($sql, array(':subject'=>$subject, ':mail'=>$mailId, ':reply'=>$reply, ':reply_name'=>$reply_name));
+            $mailing = static::insertId();
 
             // destinatarios
             $sql = "INSERT INTO `mailer_send` (`id`, `mailing`, `user`, `email`, `name`)
              VALUES ('', :mailing, :user, :email, :name)";
 
             foreach ($receivers as $user) {
-                Model::query($sql,
+                static::query($sql,
                     array(':mailing'=>$mailing, ':user'=>$user->user, ':email'=>$user->email, ':name'=>$user->name)
                     );
             }
 
-            Model::query("COMMIT");
+            static::query("COMMIT");
             return true;
 
         } catch(\PDOException $e) {
@@ -129,15 +167,14 @@ class Sender {
     /*
     * Método para obtener el siguiente envío a tratar
     */
-    static public function getSending ($id = null) {
+    static public function get($id = null) {
         try {
-
-            if (!empty($id)) {
-                $sqlFilter = " WHERE id = $id";
-
-            } else {
+            $values = [];
+            if ($id === 'last') {
                 $sqlFilter = " ORDER BY active DESC, id DESC ";
-
+            } else {
+                $sqlFilter = " WHERE id = :id";
+                $values[':id'] = $id;
             }
 
             // recuperamos los datos del envío
@@ -155,39 +192,27 @@ class Sender {
                 LIMIT 1
                 ";
 
-            $query = Model::query($sql);
-            $mailing = $query->fetchObject();
+            $query = static::query($sql, $values);
+            return $query->fetchObject(__CLASS__);
 
-            // y el estado
-            if (!empty($mailing->id)) {
-                $query = Model::query("
-                SELECT
-                        COUNT(mailer_send.id) AS receivers,
-                        SUM(IF(mailer_send.sent = 1, 1, 0)) AS sent,
-                        SUM(IF(mailer_send.sent = 0, 1, 0)) AS failed,
-                        SUM(IF(mailer_send.sent IS NULL, 1, 0)) AS pending
-                FROM    mailer_send
-                WHERE mailer_send.mailing = {$mailing->id}
-                ");
-                $sending = $query->fetchObject();
-
-                $mailing->receivers = $sending->receivers;
-                $mailing->sent    = $sending->sent;
-                $mailing->failed    = $sending->failed;
-                $mailing->pending   = $sending->pending;
-            }
-
-            return $mailing;
         } catch(\PDOException $e) {
-            $errors[] = "HA FALLADO!!" . $e->getMessage();
-            return false;
+            throw new ModelNotFoundException('Not found sending [' . $id . ']' . $e->getMessage());
         }
+        return $mailing;
     }
+
 
     /*
     * Método para obtener el listado de envios programados
     */
-	static public function getMailings () {
+	static public function getMailingList ($offset = 0, $limit = 10, $count = false) {
+
+        if($count) {
+            $sql = "SELECT COUNT(mailer_content.id) FROM mailer_content";
+            return (int) static::query($sql, $values)->fetchColumn();
+        }
+        $offset = (int) $offset;
+        $limit = (int) $limit;
 
         $list = array();
 
@@ -202,31 +227,22 @@ class Sender {
             FROM mailer_content
             LEFT JOIN mail ON mail.id = mailer_content.mail
             ORDER BY id DESC
+            LIMIT $offset, $limit
             ";
 
-        if ($query = Model::query($sql)) {
-            foreach ($query->fetchAll(\PDO::FETCH_OBJ) as $mailing) {
-                $mailing->link = self::getLink($mailing->id, $mailing->mail);
-                $list[] = $mailing;
-            }
-        }
+        $query = static::query($sql, $values);
+        return $query->fetchAll(\PDO::FETCH_CLASS, __CLASS__);
 
-        return $list;
-
-    }
-
-    static public function getLink($id, $mail) {
-        return SITE_URL . '/mail/' . \mybase64_encode(md5(Config::get('secret') . '-' . $id . '-' . $mail) . '¬' . $id . '¬' . $mail);
     }
 
     /*
      * Listado completo de destinatarios/envaidos/fallidos/pendientes
      */
-	static public function getDetail ($mailing, $detail = 'receivers') {
+	static public function getList ($mailing, $detail = 'receivers', $offset = 0, $limit = 10, $count = false) {
 
         $list = array();
 
-        $sqlFilter = " AND mailer_send.mailing = {$mailing}";
+        $sqlFilter = " WHERE mailer_send.mailing = {$mailing}";
 
         switch ($detail) {
             case 'sent':
@@ -243,17 +259,21 @@ class Sender {
                 break;
         }
 
+        if($count) {
+            $sql = "SELECT COUNT(mailer_send.id) FROM mailer_send $sqlFilter";
+            return (int) static::query($sql, $values)->fetchColumn();
+        }
+        $offset = (int) $offset;
+        $limit = (int) $limit;
         $sql = "SELECT
-                user.id as user,
-                user.name as name,
-                user.email as email
-            FROM user
-            INNER JOIN mailer_send
-                ON mailer_send.user = user.id
+                mailer_send.*,
+                IF(mailer_send.sent = 1, 'sent', IF(mailer_send.sent = 0, 'failed', 'pending')) AS status
+            FROM  mailer_send
                 $sqlFilter
-            ORDER BY user.id";
+            ORDER BY sent ASC
+            LIMIT $offset,$limit";
 
-        if ($query = Model::query($sql)) {
+        if ($query = static::query($sql)) {
             foreach ($query->fetchAll(\PDO::FETCH_OBJ) as $user) {
                 $list[] = $user;
             }
@@ -270,7 +290,7 @@ class Sender {
     static public function cleanOld() {
 
         // eliminamos los envíos de hace más de dos días
-        Model::query("DELETE FROM mailer_content WHERE active = 0
+        static::query("DELETE FROM mailer_content WHERE active = 0
          AND DATE_FORMAT(from_unixtime(unix_timestamp(now()) - unix_timestamp(datetime)), '%j') > 2");
 
     }

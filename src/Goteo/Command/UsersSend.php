@@ -514,7 +514,7 @@ class UsersSend {
 
 
         // - se usa el metodo initializeSending para grabar el envío (parametro para autoactivar)
-        if (\Goteo\Library\Sender::initiateSending($mailId, $subject, $receivers, 1))
+        if (\Goteo\Model\Sender::initiateSending($mailId, $subject, $receivers, 1))
             return false;
         else
             return true;

@@ -340,7 +340,7 @@ namespace Goteo\Controller\Dashboard {
 
             // - se usa el metodo initializeSending para grabar el envío (parametro para autoactivar)
             // , también metemos el reply y repplyName (remitente) en la instancia de envío
-            if (\Goteo\Library\Sender::initiateSending($mailId, $subject, $receivers, 1, $project->user->email, $remite)) {
+            if (\Goteo\Model\Sender::initiateSending($mailId, $subject, $receivers, 1, $project->user->email, $remite)) {
                 Message::info(Text::get('dashboard-investors-mail-sended', 'la cola de envíos')); // cambiar este texto
             } else {
                 Message::error(Text::get('dashboard-investors-mail-fail', 'la cola de envíos')); // cambiar este texto

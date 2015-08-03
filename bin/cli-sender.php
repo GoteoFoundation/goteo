@@ -10,7 +10,7 @@ use Goteo\Core\Model,
     Goteo\Application\Config,
     Goteo\Library\Feed,
     Goteo\Library\Mail,
-    Goteo\Library\Sender;
+    Goteo\Model\Sender;
 
 if (PHP_SAPI !== 'cli') {
     die('Console access only!');
@@ -114,7 +114,7 @@ $itime = microtime(true);
 $total_users = 0;
 
 // cogemos el siguiente envío a tratar
-$mailing = Sender::getSending();
+$mailing = Sender::get('last');
 
 // si no está activa fin
 if (!$mailing->active) {

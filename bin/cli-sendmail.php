@@ -10,7 +10,7 @@ use Goteo\Core\Model,
     Goteo\Application\Config,
     Goteo\Library\Feed,
     Goteo\Library\Mail,
-    Goteo\Library\Sender;
+    Goteo\Model\Sender;
 
 if (PHP_SAPI !== 'cli') {
     die('Console access only!');
@@ -67,7 +67,7 @@ if(!is_object($user)) {
 if($debug) echo "dbg: Fecha inicio " .date("Y-m-d H:i:s"). "\n";
 // cogemos el siguiente envío a tratar
 
-$mailing = Sender::getSending($user->mailing_id);
+$mailing = Sender::get($user->mailing_id);
 
 // print_r($mailing);
 // si no está activa fin

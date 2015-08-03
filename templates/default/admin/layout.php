@@ -21,7 +21,9 @@ $this->layout('layout', [
 
             <?= $this->supply('admin-menu', $this->insert('admin/partials/menu')) ?>
 
-            <?= $this->supply('admin-content') ?>
+            <div id="admin-content">
+                <?= $this->supply('admin-content') ?>
+            </div>
 
             <?= $this->supply('admin-aside') ?>
 

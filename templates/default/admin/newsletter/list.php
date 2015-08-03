@@ -60,8 +60,8 @@ $templates = $this->templates;
                 <td><?php echo $item->date; ?></td>
                 <td><?php echo $item->subject; ?></td>
                 <td><?php echo $item->active ? '<span style="color:green;font-weight:bold;">Activo</span>' : '<span style="color:red;font-weight:bold;">Inactivo</span>'; ?></td>
-                <td><?php echo $item->blocked ? '<span style="color:red;font-weight:bold;">Bloqueado</span>' : 'En espera'; ?></td>
-                <td><a href="<?php echo $item->link; ?>" target="_blank">[Visualizar]</a></td>
+                <td><span class="mailing_status" data-id="<?= $item->id ?>" <?= $item->blocked ? ' style="color:red;font-weight:bold;"' : '' ?>><?= number_format($item->getStatus()->percent,2,',','') ?> %</span></td>
+                <td><a href="<?php echo $item->getLink(); ?>" target="_blank">[Visualizar]</a></td>
             </tr>
             <?php endforeach; ?>
         </tbody>
@@ -71,3 +71,24 @@ $templates = $this->templates;
 
 
 <?php $this->replace() ?>
+
+<?php $this->section('footer') ?>
+<script type="text/javascript">
+    $(function(){
+        var checkStatus = function(id) {
+            $.getJSON('/admin/newsletter/status/' + id, function(data){
+                if(data.status) {
+                    $('.mailing_status[data-id="' + data.id + '"]').html(data.status.percent);
+                    setTimeout()
+                }
+            });
+            setTimeout(function (){
+                checkStatus(id);
+            }, 500);
+        };
+        $('.mailing_status').each(function(){
+            checkStatus($(this).data('id'));
+        });
+    });
+</script>
+<?php $this->append() ?>

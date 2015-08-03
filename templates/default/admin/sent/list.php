@@ -63,8 +63,8 @@ $templates = $this->templates;
     </form>
 </div>
 
-<div class="widget board">
     <?php if ($this->sent) : ?>
+        <div class="widget board">
             <table>
                 <thead>
                     <tr>
