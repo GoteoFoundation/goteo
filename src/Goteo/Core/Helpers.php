@@ -63,7 +63,7 @@ namespace {
             $keys[] = $key;
             $vals[] = "'{$val}'";
         }
-        echo nl2br(str_replace($keys, $vals, $sql));
+        echo str_replace($keys, $vals, $sql);
     }
 
     function date_interval($date1, $date2 = 'now', $format = '%a') {

@@ -23,7 +23,7 @@ class InvestsSubController extends AbstractSubController {
     protected $filters = array (
       'methods' => '',
       'status' => 'all',
-      'investStatus' => 'all',
+      'status' => 'all',
       'projects' => '',
       'name' => '',
       'calls' => '',
@@ -59,7 +59,7 @@ class InvestsSubController extends AbstractSubController {
         // métodos de pago
         $methods = Model\Invest::methods();
         // estados del proyecto
-        $status = Model\Project::status();
+        $projectStatus = Model\Project::status();
         // estados de aporte
         $investStatus = Model\Invest::status();
         // listado de proyectos
@@ -94,13 +94,12 @@ class InvestsSubController extends AbstractSubController {
             }
 
             return array(
-                    'folder' => 'invests',
-                    'file' => 'details',
+                    'template' => 'admin/invests/details',
                     'invest' => $invest,
                     'project' => $project,
                     'user' => $userData,
-                    'status' => $status,
-                    'investStatus' => $investStatus,
+                    'projectStatus' => $projectStatus,
+                    'status' => $investStatus,
                     'droped' => $droped,
                     'calls' => $calls
             );
@@ -123,7 +122,7 @@ class InvestsSubController extends AbstractSubController {
                 'calls'         => $calls,
                 'methods'       => $methods,
                 'types'         => $types,
-                'investStatus'  => $investStatus,
+                'status'  => $investStatus,
                 'limit' => $limit,
                 'total' => $total,
                 'total_money' => $total_money

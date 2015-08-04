@@ -1,26 +1,28 @@
 <?php
 
-use Goteo\Library\Text;
-
 $amount = (isset($_GET['amount'])) ? $_GET['amount'] : null;
 $user   = (isset($_GET['user'])) ? $_GET['user'] : null;
 $proj   = (isset($_GET['proj'])) ? $_GET['proj'] : null;
 
 
 $users = array();
-foreach ($vars['users'] as $uI=>$uN) {
+foreach ($this->users as $uI=>$uN) {
     $users[] = '{ value: "'.str_replace(array("'", '"'), '`', $uN).' ['.$uI.']", id: "'.$uI.'" }';
     if ($uI == $user) $preU = "$uN [$uI]";
 }
 
 $projs = array();
-foreach ($vars['projects'] as $pI=>$pN) {
+foreach ($this->projects as $pI=>$pN) {
     $projs[] = '{ value: "'.str_replace(array("'", '"'), '`', $pN).'", id: "'.$pI.'" }';
     if ($pI == $proj) $preP = "$pN [$pI]";
 }
 
 
-?>
+
+$this->layout('admin/layout') ?>
+
+<?php $this->section('admin-content') ?>
+
 <div class="widget">
     <form id="filter-form" action="/admin/accounts/add" method="post">
         <input type="hidden" id="user" name="user" value="<?php echo $user; ?>" /> <br />
@@ -47,7 +49,7 @@ foreach ($vars['projects'] as $pI=>$pN) {
             <label for="invest-campaign">Convocatoria:</label><br />
             <select id="invest-campaign" name="campaign">
                 <option value="">Seleccionar la convocatoria que riega este aporte</option>
-            <?php foreach ($vars['calls'] as $campaignId=>$campaignName) : ?>
+            <?php foreach ($this->calls as $campaignId=>$campaignName) : ?>
                 <option value="<?php echo $campaignId; ?>"><?php echo substr($campaignName, 0, 100); ?></option>
             <?php endforeach; ?>
             </select>
@@ -62,6 +64,11 @@ foreach ($vars['projects'] as $pI=>$pN) {
 
     </form>
 </div>
+
+<?php $this->replace() ?>
+
+<?php $this->section('footer') ?>
+
 <script type="text/javascript">
 $(function () {
 
@@ -89,3 +96,5 @@ $(function () {
 
 });
 </script>
+
+<?php $this->append() ?>

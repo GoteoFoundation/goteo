@@ -2,6 +2,7 @@
 
 namespace Goteo\Model\User {
 
+    use Goteo\Model\Invest;
     /**
      * Class Pool
      * @package Goteo\Model\User
@@ -22,7 +23,7 @@ namespace Goteo\Model\User {
          * @return object $pool
          */
 	 	public static function get ($id) {
-            
+
             try {
                 $sql = "SELECT * FROM user_pool WHERE user = :id";
 
@@ -94,7 +95,7 @@ namespace Goteo\Model\User {
          * @param $invest isntancia aporte
          * @return object instancia reserva
          */
-        public static function add($invest, &$errors = array()) {
+        public static function add(Invest $invest, &$errors = array()) {
 
             // iniciar instancia de reserva
             $pool = static::get($invest->user);

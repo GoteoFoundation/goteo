@@ -29,6 +29,12 @@ $url = '/' . $this->template . '/' . $user->id;
             <?php endif; ?>
         </td>
     </tr>
+    <tr>
+        <td>Crédito en el monedero</td>
+        <td>
+            <?= (float)$this->poolAmount ?> €
+        </td>
+    </tr>
 
 <?php $this->append() ?>
 
