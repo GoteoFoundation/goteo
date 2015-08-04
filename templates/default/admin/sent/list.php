@@ -68,10 +68,12 @@ $templates = $this->templates;
             <table>
                 <thead>
                     <tr>
-                        <th width="5%"><!-- Si no ves --></th>
-                        <th width="45%">Destinatario</th>
-                        <th width="35%">Plantilla</th>
-                        <th width="15%">Fecha</th>
+                        <th><!-- detalles --></th>
+                        <th>Destinatario</th>
+                        <th>Plantilla</th>
+                        <th>Asunto</th>
+                        <th>Fecha</th>
+                        <th><!-- Si no ves --></th>
                         <th><!-- reenviar --></th>
                     </tr>
                 </thead>
@@ -80,11 +82,12 @@ $templates = $this->templates;
                     foreach($this->sent as $send):
                         ?>
                         <tr>
-                            <td><a href="/mail/<?= $send->getToken(true, true) ?>" target="_blank">[Visualizar]</a></td>
+                            <td><a href="/admin/sent/detail/<?= $send->id ?>">[Detalles]</a></td>
                             <td><a href="/admin/users?name=<?php echo urlencode($send->email) ?>"><?php echo $send->email; ?></a></td>
-                            <td><?php echo $templates[$send->template]; ?></td>
-                            <td><?php echo $send->date; ?></td>
-                            <td><!-- <a href="#" target="_blank">[Reenviar]</a> --></td>
+                            <td><?= $templates[$send->template] ?></td>
+                            <td><?= $send->getSubject() ?></td>
+                            <td><?= $send->date ?></td>
+                            <td><a href="/mail/<?= $send->getToken(true, true) ?>" target="_blank">[Visualizar]</a></td>
                         </tr>
                     <?php endforeach; ?>
                 </tbody>

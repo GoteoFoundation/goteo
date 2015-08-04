@@ -79,6 +79,14 @@ class Mail {
         $this->mail = $mail;
     }
 
+    public function getSubject() {
+        if(!$this->subject && $this->template) {
+            $tpl = Template::get($this->template);
+            $this->subject = $tpl->title;
+        }
+        return $this->subject;
+    }
+
     /**
      * Get instance of mail already on table
      * @return [type] [description]
@@ -90,10 +98,11 @@ class Mail {
             $mail->html = true;
             $mail->id = $ob->id;
             $mail->to = $ob->email;
-
-            $tpl = Template::get($ob->template);
-            $mail->template = $tpl->id;
-            $mail->subject = $tpl->title;
+            if($ob->template) {
+                $tpl = Template::get($ob->template);
+                $mail->template = $tpl->id;
+                $mail->subject = $tpl->title;
+            }
 
             $mail->content = $ob->html;
 

@@ -5,10 +5,11 @@
 namespace Goteo\Controller\Admin;
 
 use Goteo\Application\Config;
-use Goteo\Model\Node,
-	Goteo\Library\Feed,
-	Goteo\Model\Template,
-	Goteo\Library\Mail;
+use Goteo\Model\Node;
+use Goteo\Library\Feed;
+use Goteo\Model\Template;
+use Goteo\Library\Mail;
+use Goteo\Library\MailStats;
 
 class SentSubController extends AbstractSubController {
 
@@ -38,7 +39,21 @@ class SentSubController extends AbstractSubController {
         return parent::isAllowed($user, $node);
     }
 
-    public function listAction($id = null, $subaction = null) {
+    public function detailAction($id) {
+      $mail = Mail::get($id);
+      $limit = 25;
+      $list = MailStats::getFromMailId($id, $this->getGet('pag') * $limit, $limit);
+      $total = MailStats::getFromMailId($id, 0, 0, true);
+      return array(
+        'template' => 'admin/sent/detail',
+        'mail' => $mail,
+        'stats_list' => $list,
+        'total' => $total,
+        'limit' => $limit
+        );
+    }
+
+    public function listAction() {
         $templates = Template::getAllMini();
         $nodes = array();
         $all_nodes = Node::getList();

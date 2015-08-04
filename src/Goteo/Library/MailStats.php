@@ -40,18 +40,27 @@ class MailStats {
     /*
      *  Devuelve datos de un elemento
      */
-    static public function getFromMail($mail_id) {
-        $query = Model::query('
+    static public function getFromMailId($mail_id, $offset = 0, $limit = 10, $count = false) {
+        $values = array(':mail_id' => $mail_id);
+        if($count) {
+            $sql = "SELECT COUNT(*) FROM mail_stats WHERE mail_stats.mail_id = :mail_id";
+            return (int) Model::query($sql, $values)->fetchColumn();
+        }
+        $offset = (int) $offset;
+        $limit = (int) $limit;
+        $sql = "
             SELECT *
             FROM  mail_stats
             WHERE mail_stats.mail_id = :mail_id
-            ', array(':mail_id' => $mail_id));
+            LIMIT $offset, $limit";
 
-        if($query) {
-            return $query->fetchAll(\PDO::FETCH_CLASS, __CLASS__);
+        $list = [];
+        if ($query = Model::query($sql, $values)) {
+            foreach ($query->fetchAll(\PDO::FETCH_OBJ) as $item) {
+                $list[] = $item;
+            }
         }
-
-        return [];
+        return $list;
     }
 
     static public function incrMetric($mail_id, $email, $metric = 'read') {
