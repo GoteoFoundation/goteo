@@ -584,6 +584,14 @@ function cancel_payment($invest, $project, $userData)
                     $log_text = "Ha fallado al cancelar el aporte manual de %s de %s (id: %s) al proyecto %s del dia %s. ";
                 }
                 break;
+            case 'pool':
+                Model\User\Pool::add($invest);
+                if ($invest->cancel(true)) {
+                    $log_text = "Se ha devuelto al monedero el aporte de %s de %s (id: %s) al proyecto %s del dia %s";
+                } else {
+                    $log_text = "Ha fallado al cancelar el aporte de monedero de %s de %s (id: %s) al proyecto %s del dia %s. ";
+                }
+                break;
         }
         if ($FEED) {
             // Evento Feed admin
