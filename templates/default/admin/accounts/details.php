@@ -63,8 +63,8 @@ array_walk($rewards, function (&$reward) { $reward = $reward->reward; });
             <?php endif; ?>
 
             <?php if ($invest->status == 1) : ?>
-            <a href="/admin/accounts/update/<?php echo $invest->id ?>" onclick="return confirm('Esto marcará el aporte como retornado y generá dinero en el monedero. Continuar?')" class="button">Devolver al monedero</a>
-            <a href="/admin/accounts/update/<?php echo $invest->id ?>" onclick="return confirm('Esto marcará el aporte como retornado y devolverá el dinero al usuario. Esto NO funcionará si el aporte es muy antiguo. Continuar?')" class="button">Devolver al usuario</a>
+            <a href="/admin/accounts/returnpool/<?php echo $invest->id ?>" onclick="return confirm('Esto marcará el aporte como retornado y generá dinero en el monedero. Continuar?')" class="button">Devolver al monedero</a>
+            <a href="/admin/accounts/returnuser/<?php echo $invest->id ?>" onclick="return confirm('Esto marcará el aporte como retornado y devolverá el dinero al usuario. Esto NO funcionará si el aporte es muy antiguo. Continuar?')" class="button">Devolver al usuario</a><br>
             <?php endif; ?>
 
             <?php if ( !in_array($project->status, [4, 5]) && ($invest->status < 1

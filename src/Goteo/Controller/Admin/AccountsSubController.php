@@ -113,6 +113,108 @@ class AccountsSubController extends AbstractSubController {
     }
 
 
+    private function cancelInvest(Model\Invest $invest, $fail = false) {
+        $project = Model\Project::get($invest->project);
+        $verbo = $fail ? 'retornado' : 'cancelado';
+        $infinitivo = $fail ? 'retornar' : 'cancelar';
+        $ok = false;
+        switch ($invest->method) {
+            case 'paypal':
+                $err = array();
+
+                if (empty($invest->preapproval)) {
+
+                    if (Paypal::cancelPay($invest, $err)) {
+                        Message::info("Pago PayPal paypal $verbo.");
+                        $log_text = "El admin %s ha $verbo aporte y pago PayPal de %s de %s mediante PayPal (id: %s) al proyecto %s del dia %s";
+                        $ok = true;
+                    } else {
+                        $txt_errors = implode('; ', $err);
+                        Message::error("Fallo al $infinitivo el pago PayPal: " . $txt_errors);
+                        $log_text = "El admin %s ha fallado al $infinitivo el aporte de %s de %s mediante PayPal (id: %s) al proyecto %s del dia %s. <br />Se han dado los siguientes errores: $txt_errors";
+                        if ($invest->cancel($fail)) {
+                            Message::error("Aporte $verbo");
+                        } else{
+                            Message::error("Fallo al $infinitivo el aporte");
+                        }
+                    }
+
+                } else {
+
+                    if (Paypal::cancelPreapproval($invest, $err)) {
+                        Message::info("Preaproval paypal $verbo.");
+                        $log_text = "El admin %s ha $verbo aporte y preapproval de %s de %s mediante PayPal (id: %s) al proyecto %s del dia %s";
+                        $ok = true;
+                    } else {
+                        $txt_errors = implode('; ', $err);
+                        Message::error("Fallo al $infinitivo el preapproval en paypal: " . $txt_errors);
+                        $log_text = "El admin %s ha fallado al $infinitivo el aporte de %s de %s mediante PayPal (id: %s) al proyecto %s del dia %s. <br />Se han dado los siguientes errores: $txt_errors";
+                        if ($invest->cancel($fail)) {
+                            Message::error("Aporte $verbo");
+                        } else{
+                            Message::error("Fallo al $infinitivo el aporte");
+                        }
+                    }
+
+                }
+
+                break;
+            case 'tpv':
+                $err = array();
+                if (Tpv::cancelPreapproval($invest, $err)) {
+                    $txt_errors = implode('; ', $err);
+                    Message::error("Aporte $verbo correctamente. " . $txt_errors);
+                    $log_text = "El admin %s ha anulado el cargo tpv de %s de %s mediante TPV (id: %s) al proyecto %s del dia %s";
+                    $ok = true;
+                } else {
+                    $txt_errors = implode('; ', $err);
+                    Message::error("Fallo en la operación. " . $txt_errors);
+                    $log_text = "El admin %s ha fallado al solicitar la cancelación del cargo tpv de %s de %s mediante TPV (id: %s) al proyecto %s del dia %s. <br />Se han dado los siguientes errores: $txt_errors";
+                }
+                break;
+            case 'cash':
+                if ($invest->cancel($fail)) {
+                    $log_text = "El admin %s ha $verbo aporte manual de %s de %s (id: %s) al proyecto %s del dia %s";
+                    Message::error("Aporte $verbo");
+                    $ok = true;
+                } else{
+                    $log_text = "El admin %s ha fallado al $infinitivo el aporte manual de %s de %s (id: %s) al proyecto %s del dia %s. ";
+                    Message::error("Fallo al $infinitivo el aporte");
+                }
+                break;
+            case 'pool':
+                Model\User\Pool::add($invest);
+                if ($invest->cancel($fail)) {
+                    $log_text = "El admin %s ha devuelto al monedero el aporte de %s de %s (id: %s) al proyecto %s del dia %s";
+                    Message::error("Aporte $verbo y credito generado");
+                    $ok = true;
+                } else{
+                    $log_text = "El admin %s ha fallado al $infinitivo el aporte de monedero de %s de %s (id: %s) al proyecto %s del dia %s. ";
+                    Message::error("Fallo al $infinitivo el aporte");
+                }
+                break;
+        }
+
+        // Evento Feed
+        $log = new Feed();
+        $log->setTarget($project->id);
+        $log->populate("Cargo $verbo manualmente (admin)", '/admin/accounts',
+            \vsprintf($log_text, array(
+                Feed::item('user', $this->user->name, $this->user->id),
+                Feed::item('user', $userData->name, $userData->id),
+                Feed::item('money', $invest->amount.' &euro;'),
+                Feed::item('system', $invest->id),
+                Feed::item('project', $project->name, $project->id),
+                Feed::item('system', date('d/m/Y', strtotime($invest->invested)))
+        )));
+        $log->doAdmin('admin');
+        Model\Invest::setDetail($invest->id, $fail ? 'manually-returned' : 'manually-canceled', $log->html);
+
+        // mantenimiento de registros relacionados (usuario, proyecto, ...)
+        $invest->keepUpdated();
+        return $ok;
+    }
+
     // cancelar aporte antes de ejecución, solo aportes no cargados
     public function cancelAction($id) {
         $invest = Model\Invest::get($id);
@@ -127,82 +229,56 @@ class AccountsSubController extends AbstractSubController {
             Message::error('No debería poderse cancelar un aporte cuando el proyecto ya está financiado. Si es imprescindible, hacerlo desde el panel de paypal o tpv');
         } else {
 
-            switch ($invest->method) {
-                case 'paypal':
-                    $err = array();
+            $this->cancelInvest($invest);
+        }
 
-                    if (empty($invest->preapproval)) {
+        return $this->redirect('/admin/accounts/details/' . $id);
+    }
 
-                        if (Paypal::cancelPay($invest, $err)) {
-                            Message::error('Pago PayPal paypal cancelado.');
-                            $log_text = "El admin %s ha cancelado aporte y pago PayPal de %s de %s mediante PayPal (id: %s) al proyecto %s del dia %s";
-                        } else {
-                            $txt_errors = implode('; ', $err);
-                            Message::error('Fallo al cancelar el pago PayPal: ' . $txt_errors);
-                            $log_text = "El admin %s ha fallado al cancelar el aporte de %s de %s mediante PayPal (id: %s) al proyecto %s del dia %s. <br />Se han dado los siguientes errores: $txt_errors";
-                            if ($invest->cancel()) {
-                                Message::error('Aporte cancelado');
-                            } else{
-                                Message::error('Fallo al cancelar el aporte');
-                            }
-                        }
+    // cancelar aporte cobrado (pasar estado a retornado)
+    public function returnuserAction($id) {
+        $invest = Model\Invest::get($id);
+        if (!$invest instanceof Model\Invest) {
+            Message::error('No tenemos objeto para el aporte '.$id);
+            return $this->redirect('/admin/accounts');
+        }
+        $project = Model\Project::get($invest->project);
+        $userData = Model\User::get($invest->user);
 
-                    } else {
+        if ($invest->status != 1) {
+            Message::error('No se puede devolver un aporte no cobrado');
+        } else {
+            $this->cancelInvest($invest, true);
+        }
 
-                        if (Paypal::cancelPreapproval($invest, $err)) {
-                            Message::error('Preaproval paypal cancelado.');
-                            $log_text = "El admin %s ha cancelado aporte y preapproval de %s de %s mediante PayPal (id: %s) al proyecto %s del dia %s";
-                        } else {
-                            $txt_errors = implode('; ', $err);
-                            Message::error('Fallo al cancelar el preapproval en paypal: ' . $txt_errors);
-                            $log_text = "El admin %s ha fallado al cancelar el aporte de %s de %s mediante PayPal (id: %s) al proyecto %s del dia %s. <br />Se han dado los siguientes errores: $txt_errors";
-                            if ($invest->cancel()) {
-                                Message::error('Aporte cancelado');
-                            } else{
-                                Message::error('Fallo al cancelar el aporte');
-                            }
-                        }
+        return $this->redirect('/admin/accounts/details/' . $id);
+    }
 
-                    }
+    // cancelar aporte y incrementar el monedero
+    public function returnpoolAction($id) {
+        $invest = Model\Invest::get($id);
+        if (!$invest instanceof Model\Invest) {
+            Message::error('No tenemos objeto para el aporte '.$id);
+            return $this->redirect('/admin/accounts');
+        }
+        $project = Model\Project::get($invest->project);
+        $userData = Model\User::get($invest->user);
 
-                    break;
-                case 'tpv':
-                    $err = array();
-                    if (Tpv::cancelPreapproval($invest, $err)) {
-                        $txt_errors = implode('; ', $err);
-                        Message::error('Aporte cancelado correctamente. ' . $txt_errors);
-                        $log_text = "El admin %s ha anulado el cargo tpv de %s de %s mediante TPV (id: %s) al proyecto %s del dia %s";
-                    } else {
-                        $txt_errors = implode('; ', $err);
-                        Message::error('Fallo en la operación. ' . $txt_errors);
-                        $log_text = "El admin %s ha fallado al solicitar la cancelación del cargo tpv de %s de %s mediante TPV (id: %s) al proyecto %s del dia %s. <br />Se han dado los siguientes errores: $txt_errors";
-                    }
-                    break;
-                case 'cash':
-                    if ($invest->cancel()) {
-                        $log_text = "El admin %s ha cancelado aporte manual de %s de %s (id: %s) al proyecto %s del dia %s";
-                        Message::error('Aporte cancelado');
-                    } else{
-                        $log_text = "El admin %s ha fallado al cancelar el aporte manual de %s de %s (id: %s) al proyecto %s del dia %s. ";
-                        Message::error('Fallo al cancelar el aporte');
-                    }
-                    break;
-                case 'pool':
-                    Model\User\Pool::add($invest);
-                    if ($invest->cancel()) {
-                        $log_text = "El admin %s ha devuelto al monedero el aporte de %s de %s (id: %s) al proyecto %s del dia %s";
-                        Message::error('Aporte cancelado y credito generado');
-                    } else{
-                        $log_text = "El admin %s ha fallado al cancelar el aporte de monedero de %s de %s (id: %s) al proyecto %s del dia %s. ";
-                        Message::error('Fallo al cancelar el aporte');
-                    }
-                    break;
+        if ($invest->status != 1) {
+            Message::error('No se puede devolver un aporte no cobrado');
+        } else {
+            if ($invest->cancel(true)) {
+                $log_text = "El admin %s ha devuelto el aporte al monedero de %s de %s (id: %s) al proyecto %s del dia %s";
+                Model\User\Pool::add($invest);
+                Message::info("Aporte devuelto. Incrementado el monedero por valor de {$invest->amount} €");
+            } else{
+                $log_text = "El admin %s ha fallado al $infinitivo la devolución del aporte al monedero de %s de %s (id: %s) al proyecto %s del dia %s. ";
+                Message::error("Fallo al devolver el aporte al monedero");
             }
-
             // Evento Feed
             $log = new Feed();
             $log->setTarget($project->id);
-            $log->populate('Cargo cancelado manualmente (admin)', '/admin/accounts',
+            $log->populate('Cargo devuelto al monedero manualmente (admin)', '/admin/accounts',
                 \vsprintf($log_text, array(
                     Feed::item('user', $this->user->name, $this->user->id),
                     Feed::item('user', $userData->name, $userData->id),
@@ -212,15 +288,13 @@ class AccountsSubController extends AbstractSubController {
                     Feed::item('system', date('d/m/Y', strtotime($invest->invested)))
             )));
             $log->doAdmin('admin');
-            Model\Invest::setDetail($invest->id, 'manually-canceled', $log->html);
-            unset($log);
+            Model\Invest::setDetail($invest->id, 'manually-to-pool', $log->html);
 
+            // mantenimiento de registros relacionados (usuario, proyecto, ...)
+            $invest->keepUpdated();
         }
 
-
-        // mantenimiento de registros relacionados (usuario, proyecto, ...)
-        $invest->keepUpdated();
-        return $this->redirect();
+        return $this->redirect('/admin/accounts/details/' . $id);
     }
 
     // cancelar aporte antes de ejecución, solo aportes no cargados
