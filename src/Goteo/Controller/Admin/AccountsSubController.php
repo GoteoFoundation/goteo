@@ -225,10 +225,10 @@ class AccountsSubController extends AbstractSubController {
         $project = Model\Project::get($invest->project);
         $userData = Model\User::get($invest->user);
 
-        if (in_array($invest->status, [1,4])) {
+        if (in_array($invest->status, [4,5])) {
             Message::error('No debería poderse cancelar un aporte cuando el proyecto ya está financiado. Si es imprescindible, hacerlo desde el panel de paypal o tpv');
         } else {
-
+            $invest->setPool(false); //Marcar como si el usuario NO hubiera escogido pool
             $this->cancelInvest($invest);
         }
 
@@ -248,6 +248,7 @@ class AccountsSubController extends AbstractSubController {
         if (!in_array($status, [1,4])) {
             Message::error('Solo se pueden devolver aportes en estados de "Cobrado" y "Retornado" (y en este caso con suficiente dinero en el monedero)');
         } else {
+            $invest->setPool(false); //Marcar como si el usuario NO hubiera escogido pool
             if($status == 1) {
                 $this->cancelInvest($invest, true); //no need to check the pool
             }
@@ -290,6 +291,7 @@ class AccountsSubController extends AbstractSubController {
         } else {
             if ($invest->cancel(true)) {
                 $log_text = "El admin %s ha devuelto el aporte al monedero de %s de %s (id: %s) al proyecto %s del dia %s";
+                $invest->setPool(true); //Marcar como si el usuario hubiera escogido pool
                 Model\User\Pool::add($invest);
                 Message::info("Aporte devuelto. Incrementado el monedero por valor de {$invest->amount} €");
             } else{

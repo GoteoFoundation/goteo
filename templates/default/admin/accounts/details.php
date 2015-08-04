@@ -17,6 +17,8 @@ array_walk($rewards, function (&$reward) { $reward = $reward->reward; });
 
 <?php $this->section('admin-content') ?>
 
+<a href="/admin/accounts/" class="button">Volver</a>
+
 <div class="widget">
     <h3>Detalles de la transaccion</h3>
     <table>
@@ -26,12 +28,19 @@ array_walk($rewards, function (&$reward) { $reward = $reward->reward; });
         <td>
             <?php if ($invest->method != 'paypal' && $invest->status == 1) : ?>
             <a href="/admin/accounts/move/<?php echo $invest->id ?>" class="button">Reubicar este aporte</a>
-            <?php endif; ?>
+            <?php endif ?>
         </td>
     </tr>
     <tr>
         <td><strong>Usuario</strong></td>
-        <td><?php echo $user->id ?> [<?= $user->name ?> / <?= $user->email ?>]</td>
+        <td>
+            <?php if($this->is_module_admin('Users', $project->node)): ?>
+                <a href="/admin/users/manage/<?= $user->id ?>"><?= $user->id ?> [<?= $user->name ?> / <?= $user->email ?>]</a>
+            <?php else: ?>
+            <?= $user->id ?> [<?= $user->name ?> / <?= $user->email ?>]
+
+            <?php endif ?>
+        </td>
         <td>&nbsp;</td>
     </tr>
     <tr>
@@ -69,8 +78,8 @@ array_walk($rewards, function (&$reward) { $reward = $reward->reward; });
             <a href="/admin/accounts/returnuser/<?php echo $invest->id ?>" onclick="return confirm('Esto marcará el aporte como retornado y devolverá el dinero al usuario. Esto NO funcionará si el aporte es muy antiguo. Continuar?')" class="button">Devolver al usuario</a><br>
             <?php endif ?>
 
-            <?php if ( !in_array($project->status, [4, 5]) && ($invest->status < 1
-                || (in_array($invest->method, ['tpv', 'cash', 'pool']) && $invest->status < 2)
+            <?php if ( !in_array($project->status, [3, 4]) && in_array($invest->status, [4,5]) && (
+                (in_array($invest->method, ['tpv', 'cash', 'pool']) && $invest->status < 2)
                 || ($invest->method == 'paypal' && empty($invest->preapproval) && $invest->status < 2))
             ) : ?>
             <a href="/admin/accounts/cancel/<?php echo $invest->id ?>"

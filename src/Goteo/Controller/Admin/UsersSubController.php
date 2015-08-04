@@ -158,7 +158,7 @@ class UsersSubController extends AbstractSubController {
         $user = Model\User::get($id);
         $all_roles = Model\User::getRolesList();
         if(!array_key_exists($user->node, $this->nodes)) {
-            Message::error("Your not allowed to edit this user");
+            Message::error("You're not allowed to edit this user");
             return $this->redirect();
         }
         $all_nodes = Model\Node::getList();
@@ -260,6 +260,7 @@ class UsersSubController extends AbstractSubController {
         $viewData = array(
                 'template' => 'admin/users/manage',
                 'user'=>$user,
+                'poolAmount'=>Model\User\Pool::getAmount($user->id),
                 'nodes' => $nodes,
                 'node_roles' => $user->getAllNodeRolesRaw(),
                 'new_roles' => Model\User::getRolesList($this->user->getNodeRole($this->node)),
