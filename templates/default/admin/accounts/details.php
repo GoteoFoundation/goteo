@@ -18,26 +18,6 @@ array_walk($rewards, function (&$reward) { $reward = $reward->reward; });
 <?php $this->section('admin-content') ?>
 
 <div class="widget">
-    <p>
-        <?php if ( $invest->status < 1
-            || ($invest->method == 'tpv' && $invest->status < 2)
-            || ($invest->method == 'cash' && $invest->status < 2)
-            || ($invest->method == 'pool' && $invest->status < 2)
-            || ($invest->method == 'paypal' && empty($invest->preapproval) && $invest->status < 2)
-        ) : ?>
-        <a href="/admin/accounts/cancel/<?php echo $invest->id ?>"
-            onclick="return confirm('¿Estás seguro de querer cancelar este aporte y su preapproval?');"
-            class="button">Cancelar este aporte</a>&nbsp;&nbsp;&nbsp;
-        <?php endif; ?>
-
-        <?php if ($invest->method == 'paypal' && $invest->status == 0) : ?>
-        <a href="/admin/accounts/execute/<?php echo $invest->id ?>"
-            onclick="return confirm('¿Seguro que quieres ejecutar ahora el cargo del preapproval?');"
-            class="button">Ejecutar cargo ahora</a>
-        <?php endif; ?>
-
-    </p>
-
     <h3>Detalles de la transaccion</h3>
     <table>
     <tr>
@@ -71,10 +51,31 @@ array_walk($rewards, function (&$reward) { $reward = $reward->reward; });
 
         </td>
         <td>
-        <?php if ($invest->issue) : ?>
-        <a href="/admin/accounts/solve/<?php echo $invest->id ?>" onclick="return confirm('Esta incidencia se dará por resuelta: se va a cancelar el preaproval, el aporte pasará a ser de tipo Cash y en estado Cobrado por goteo, seguimos?')" class="button">Nos han hecho la transferencia</a>
-        <br>
-        <?php endif; ?>
+
+            <?php if ($invest->method == 'paypal' && $invest->status == 0) : ?>
+            <a href="/admin/accounts/execute/<?php echo $invest->id ?>"
+                onclick="return confirm('¿Seguro que quieres ejecutar ahora el cargo del preapproval?');"
+                class="button">Ejecutar cargo ahora</a><br>
+            <?php endif; ?>
+
+            <?php if ($invest->issue) : ?>
+            <a href="/admin/accounts/solve/<?php echo $invest->id ?>" onclick="return confirm('Esta incidencia se dará por resuelta: se va a cancelar el preaproval, el aporte pasará a ser de tipo Cash y en estado Cobrado por goteo, seguimos?')" class="button">Nos han hecho la transferencia</a><br>
+            <?php endif; ?>
+
+            <?php if ($invest->status == 1) : ?>
+            <a href="/admin/accounts/update/<?php echo $invest->id ?>" onclick="return confirm('Esto marcará el aporte como retornado y generá dinero en el monedero. Continuar?')" class="button">Devolver al monedero</a>
+            <a href="/admin/accounts/update/<?php echo $invest->id ?>" onclick="return confirm('Esto marcará el aporte como retornado y devolverá el dinero al usuario. Esto NO funcionará si el aporte es muy antiguo. Continuar?')" class="button">Devolver al usuario</a>
+            <?php endif; ?>
+
+            <?php if ( !in_array($project->status, [4, 5]) && ($invest->status < 1
+                || (in_array($invest->method == ['tpv', 'cash', 'pool']) && $invest->status < 2)
+                || ($invest->method == 'paypal' && empty($invest->preapproval) && $invest->status < 2))
+            ) : ?>
+            <a href="/admin/accounts/cancel/<?php echo $invest->id ?>"
+                onclick="return confirm('¿Estás seguro de querer cancelar este aporte y su preapproval?');"
+                class="button">Cancelar este aporte</a><br>
+            <?php endif; ?>
+
 
             <a href="/admin/accounts/update/<?php echo $invest->id ?>" onclick="return confirm('Seguro que deseas cambiarle el estado a este aporte?, esto es delicado')" class="button">Modificar el estado</a>
         </td>
@@ -110,7 +111,7 @@ array_walk($rewards, function (&$reward) { $reward = $reward->reward; });
     </tr>
 
     <tr>
-        <td>Pool (guardado cómo crédito):</td>
+        <td>Pool (pasar al monedero si falla):</td>
         <td>
             <?php echo ($invest->pool) ? 'SI' : 'NO'; ?>
         </td>
