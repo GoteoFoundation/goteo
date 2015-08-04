@@ -34,7 +34,7 @@ class AccountsSubController extends AbstractSubController {
     protected $filters = array (
       'id' => '',
       'methods' => '',
-      'investStatus' => 'all',
+      'status' => 'all',
       'projects' => '',
       'name' => '',
       'calls' => '',
@@ -75,8 +75,7 @@ class AccountsSubController extends AbstractSubController {
         }
 
         return array(
-                'folder' => 'accounts',
-                'file' => 'viewer',
+                'template' => 'admin/accounts/viewer',
                 'content' => $content,
                 'date' => $date,
                 'type' => $type
@@ -94,7 +93,7 @@ class AccountsSubController extends AbstractSubController {
         $invests = Model\Invest::getAll($id);
 
         $project->investors = Model\Invest::investors($id, false, true);
-        $status = Model\Project::status();
+        $projectStatus = Model\Project::status();
         $investStatus = Model\Invest::status();
 
         // Datos para el informe de transacciones correctas
@@ -106,8 +105,8 @@ class AccountsSubController extends AbstractSubController {
                 'invests' => $invests,
                 'project' => $project,
                 'account' => $account,
-                'status' => $status,
-                'investStatus' => $investStatus,
+                'projectStatus' => $projectStatus,
+                'status' => $investStatus,
                 'Data' => $Data,
                 'methods' => Model\Invest::methods()
         );
@@ -188,6 +187,16 @@ class AccountsSubController extends AbstractSubController {
                         Message::error('Fallo al cancelar el aporte');
                     }
                     break;
+                case 'pool':
+                    Model\User\Pool::add($invest);
+                    if ($invest->cancel()) {
+                        $log_text = "El admin %s ha devuelto al monedero el aporte de %s de %s (id: %s) al proyecto %s del dia %s";
+                        Message::error('Aporte cancelado y credito generado');
+                    } else{
+                        $log_text = "El admin %s ha fallado al cancelar el aporte de monedero de %s de %s (id: %s) al proyecto %s del dia %s. ";
+                        Message::error('Fallo al cancelar el aporte');
+                    }
+                    break;
             }
 
             // Evento Feed
@@ -217,8 +226,9 @@ class AccountsSubController extends AbstractSubController {
     // cancelar aporte antes de ejecución, solo aportes no cargados
     public function switchpoolAction($id) {
         $invest = Model\Invest::get($id);
-        if ($invest->switchPool($id))
-            Message::info('Aporte cancelado');
+        if ($invest->switchPool($id)) {
+            Message::info('Pool cambiado de estado');
+        }
         return $this->redirect('/admin/accounts/details/'.$id);
     }
 
@@ -407,8 +417,7 @@ class AccountsSubController extends AbstractSubController {
         }
 
         return array(
-            'folder' => 'accounts',
-            'file' => 'move',
+            'template' => 'admin/accounts/move',
             'original' => $original,
             'user'     => $userData,
             'project'  => $projectData
@@ -482,8 +491,7 @@ class AccountsSubController extends AbstractSubController {
         }
 
          return array(
-                'folder' => 'accounts',
-                'file' => 'add',
+                'template' => 'admin/accounts/add',
                 'autocomplete'  => true,
                 'users'         => $users,
                 'projects'      => $projects,
@@ -531,8 +539,7 @@ class AccountsSubController extends AbstractSubController {
         }
 
         return array(
-            'folder' => 'accounts',
-            'file' => 'update',
+            'template' => 'admin/accounts/update',
             'invest' => $invest,
             'status' => $status
         );
@@ -646,33 +653,36 @@ class AccountsSubController extends AbstractSubController {
     // detalles de una transaccion
     public function detailsAction($id) {
         // estados del proyecto
-        $status = Model\Project::status();
+        $projectStatus = Model\Project::status();
         // estados de aporte
         $investStatus = Model\Invest::status();
         $invest = Model\Invest::get($id);
         $project = Model\Project::get($invest->project);
         $userData = Model\User::get($invest->user);
+        $methods = Model\Invest::methods();
         return array(
-                'folder' => 'accounts',
-                'file' => 'details',
+                'template' => 'admin/accounts/details',
                 'invest'=>$invest,
                 'project'=>$project,
                 'user'=>$userData,
-                'status'=>$status,
-                'investStatus'=>$investStatus
+                'projectStatus'=>$projectStatus,
+                'investStatus'=>$investStatus,
+                'methods'=>$methods
         );
     }
 
 
-    public function resignAction($id) {
+    public function switchresignAction($id) {
         $invest = Model\Invest::get($id);
-        if ($invest && $this->getGet('token') == md5('resign')) {
-            if ($invest->setResign(true)) {
-                Model\Invest::setDetail($invest->id, 'manually-resigned', 'Se ha marcado como donativo independientemente de las recompensas');
+        if ($invest) {
+            if ($invest->switchResign()) {
+                if($invest->resign) {
+                    Model\Invest::setDetail($invest->id, 'manually-resigned', 'Se ha marcado como donativo independientemente de las recompensas');
+                }
             } else {
                 Message::error('Ha fallado al marcar donativo');
             }
-            return $this->redirect('/admin/accounts/detail/'.$invest->id);
+            return $this->redirect('/admin/accounts/details/'.$invest->id);
         }
 
         Message::error('Invest not found or bad request!');
@@ -683,7 +693,7 @@ class AccountsSubController extends AbstractSubController {
         // tipos de aporte
         $methods = Model\Invest::methods();
         // estados del proyecto
-        $status = Model\Project::status();
+        $projectStatus = Model\Project::status();
         $procStatus = Model\Project::procStatus();
         // estados de aporte
         $investStatus = Model\Invest::status();
@@ -736,10 +746,10 @@ class AccountsSubController extends AbstractSubController {
                 'review'        => $review,
                 'methods'       => $methods,
                 'types'         => $types,
-                'status'        => $status,
+                'projectStatus' => $projectStatus,
                 'procStatus'    => $procStatus,
                 'issue'         => $issue,
-                'investStatus'  => $investStatus
+                'status'  => $investStatus
             );
 
         return $viewData;

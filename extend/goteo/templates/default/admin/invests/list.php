@@ -9,7 +9,7 @@ $the_filters = array(
     'methods' => array (
         'label' => 'Método de pago',
         'first' => 'Todos los métodos'),
-    'investStatus' => array (
+    'status' => array (
         'label' => 'Estado de aporte',
         'first' => 'Todos los estados'),
     'calls' => array (
@@ -31,7 +31,7 @@ $the_filters = array(
         <div style="float:left;margin:5px;">
             <label for="<?php echo $filter ?>-filter"><?php echo $data['label'] ?></label><br />
             <select id="<?php echo $filter ?>-filter" name="<?php echo $filter ?>">
-                <option value="<?php if ($filter == 'investStatus' || $filter == 'status') echo 'all' ?>"<?php if (($filter == 'investStatus' || $filter == 'status') && $filters[$filter] == 'all') echo ' selected="selected"'?>><?php echo $data['first'] ?></option>
+                <option value="<?php if ($filter == 'status') echo 'all' ?>"<?php if (($filter == 'status') && $filters[$filter] == 'all') echo ' selected="selected"'?>><?php echo $data['first'] ?></option>
             <?php foreach ($this->$filter as $itemId=>$itemName) : ?>
                 <option value="<?php echo $itemId; ?>"<?php if ($filters[$filter] === (string) $itemId) echo ' selected="selected"';?>><?php echo substr($itemName, 0, 50); ?></option>
             <?php endforeach; ?>
@@ -89,7 +89,7 @@ $the_filters = array(
                 <td><a href="/admin/users?id=<?php echo $invest->user ?>" target="_blank"><?php echo $invest->getUser()->name; ?></a><?php if (!empty($invest->call)) echo '<br />(<strong>'.$this->calls[$invest->call].'</strong>)'; ?></td>
                 <td><a href="/admin/projects?name=<?php echo $this->projects[$invest->project] ?>" target="_blank"><?php echo $this->projects[$invest->project] ?></a></td>
                 <td><?php echo $this->methods[$invest->method] ?></td>
-                <td><?php echo $this->investStatus[$invest->investStatus] ?></td>
+                <td><?php echo $this->status[$invest->status] ?></td>
                 <td><?php echo $invest->amount ?></td>
             </tr>
             <?php endforeach; ?>

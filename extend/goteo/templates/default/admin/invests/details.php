@@ -1,20 +1,21 @@
 <?php
 
-use Goteo\Library\Text;
-
-$invest = $vars['invest'];
-$project = $vars['project'];
-$calls = $vars['calls'];
-$droped = $vars['droped'];
-$user = $vars['user'];
+$invest = $this->invest;
+$project = $this->project;
+$calls = $this->calls;
+$droped = $this->droped;
+$user = $this->user;
 
 $rewards = $invest->rewards;
 array_walk($rewards, function (&$reward) { $reward = $reward->reward; });
 
 ?>
+<?php $this->layout('admin/layout') ?>
+
+<?php $this->section('admin-content') ?>
 <div class="widget">
     <p>
-        <strong>Proyecto:</strong> <?php echo $project->name ?> (<?php echo $vars['status'][$project->status] ?>)
+        <strong>Proyecto:</strong> <?php echo $project->name ?> (<?php echo $this->status[$project->status] ?>)
         <strong>Usuario: </strong><?php echo $user->name ?>
     </p>
 
@@ -37,7 +38,7 @@ array_walk($rewards, function (&$reward) { $reward = $reward->reward; });
 
     <dl>
         <dt>Estado:</dt>
-        <dd><?php echo $vars['investStatus'][$invest->status]; if ($invest->status < 0) echo ' <span style="font-weight:bold; color:red;">OJO! que este aporte no fue confirmado.<span>';  ?></dd>
+        <dd><?php echo $this->status[$invest->status]; if ($invest->status < 0) echo ' <span style="font-weight:bold; color:red;">OJO! que este aporte no fue confirmado.<span>';  ?></dd>
     </dl>
 
     <dl>
@@ -101,3 +102,5 @@ array_walk($rewards, function (&$reward) { $reward = $reward->reward; });
     <?php endif; ?>
 
 </div>
+
+<?php $this->replace() ?>

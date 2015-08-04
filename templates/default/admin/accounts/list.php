@@ -13,7 +13,7 @@ $the_filters = array(
     'methods' => array (
         'label' => 'Método de pago',
         'first' => 'Todos los métodos'),
-    'investStatus' => array (
+    'status' => array (
         'label' => 'Estado del aporte',
         'first' => 'Todos los estados'),
     'procStatus' => array (
@@ -48,7 +48,7 @@ $the_filters = array(
         <div style="float:left;margin:5px;">
             <label for="<?= $filter ?>-filter"><?= $data['label'] ?></label><br />
             <select id="<?= $filter ?>-filter" name="<?= $filter ?>">
-                <option value="<?php if ($filter == 'procStatus' || $filter == 'investStatus' || $filter == 'status' || $filter == 'issue') echo 'all' ?>"<?php if (($filter == 'investStatus' || $filter == 'status') && $filters[$filter] == 'all') echo ' selected="selected"'?>><?= $data['first'] ?></option>
+                <option value="<?php if ($filter == 'procStatus' || $filter == 'projectStatus' || $filter == 'status' || $filter == 'issue') echo 'all' ?>"<?php if (($filter == 'procStatus' || $filter == 'status') && $filters[$filter] == 'all') echo ' selected="selected"'?>><?= $data['first'] ?></option>
             <?php foreach ($this->raw($filter) as $itemId => $itemName) : ?>
                 <option value="<?= $itemId ?>"<?php if ($filters[$filter] === (string) $itemId) echo ' selected="selected"';?>><?= $itemName ?></option>
             <?php endforeach ?>
@@ -131,7 +131,7 @@ $the_filters = array(
                 <td><a href="mailto:<?= $invest->getUser()->email ?>" title="<?= $invest->getUser()->id .' / ' . $invest->getUser()->email .' / ' . $invest->getUser()->node ?>"><?= $invest->getUser()->name ?></a><a href="/admin/users/manage/<?= $invest->user ?>" target="_blank" title="<?= $invest->getUser()->name ?>">[<?= $invest->user ?>]</a></td>
                 <td><a href="/admin/projects?proj_id=<?= $invest->project ?>" target="_blank"><?= $this->text_recorta($this->projects[$invest->project], 20); if (!empty($invest->campaign)) echo '<br />('.$invest->campaign.')' ?></a></td>
                 <td><?= $this->methods[$invest->method] ?></td>
-                <td><?= $this->investStatus[$invest->investStatus] ?></td>
+                <td><?= $this->status[$invest->status] ?></td>
                 <td><?= $invest->pool ? 'Yes' : 'No' ?></td>
             </tr>
             <?php endforeach ?>

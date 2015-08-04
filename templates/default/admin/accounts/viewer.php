@@ -2,10 +2,14 @@
 
 use Goteo\Core\View;
 
-$type = $vars['type'];
-$date = $vars['date'];
+$type = $this->type;
+$date = $this->date;
 
 ?>
+<?php $this->layout('admin/layout') ?>
+
+<?php $this->section('admin-content') ?>
+
 <div class="widget">
     <h3>Seleccionar log por tipo y fecha</h3>
     <form id="filter-form" action="/admin/accounts/viewer" method="get">
@@ -28,5 +32,7 @@ $date = $vars['date'];
     </form>
 </div>
 <div style="width:780px; height:1000px; overflow: scroll;">
-    <?php echo $vars['content']; ?>
+    <?php echo $this->content; ?>
 </div>
+
+<?php $this->replace() ?>

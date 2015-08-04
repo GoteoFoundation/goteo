@@ -1,13 +1,13 @@
 <?php
 
-use Goteo\Library\Text,
-    Goteo\Model,
-    Goteo\Core\Redirection;
+$invest = $this->invest;
+$status = $this->status;
 
-$invest = $vars['invest'];
-$status = $vars['status'];
 
-?>
+$this->layout('admin/layout') ?>
+
+<?php $this->section('admin-content') ?>
+
 <a href="/admin/accounts/details/<?php echo $invest->id ?>" class="button">Volver al detalle</a>
 <div class="widget" >
     <form method="post" action="/admin/accounts/update/<?php echo $invest->id ?>" >
@@ -31,3 +31,5 @@ $status = $vars['status'];
         <input type="submit" name="update" value="Aplicar" onclick="return confirm('Segurisimo que le campibamos el estado al aporte???')"/>
     </form>
 </div>
+
+<?php $this->replace() ?>
