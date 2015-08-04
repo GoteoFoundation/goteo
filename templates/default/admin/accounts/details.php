@@ -64,11 +64,13 @@ array_walk($rewards, function (&$reward) { $reward = $reward->reward; });
 
             <?php if ($invest->status == 1) : ?>
             <a href="/admin/accounts/returnpool/<?php echo $invest->id ?>" onclick="return confirm('Esto marcará el aporte como retornado y generá dinero en el monedero. Continuar?')" class="button">Devolver al monedero</a>
+            <?php endif ?>
+            <?php if (in_array($invest->status, [1,4])) : ?>
             <a href="/admin/accounts/returnuser/<?php echo $invest->id ?>" onclick="return confirm('Esto marcará el aporte como retornado y devolverá el dinero al usuario. Esto NO funcionará si el aporte es muy antiguo. Continuar?')" class="button">Devolver al usuario</a><br>
-            <?php endif; ?>
+            <?php endif ?>
 
             <?php if ( !in_array($project->status, [4, 5]) && ($invest->status < 1
-                || (in_array($invest->method == ['tpv', 'cash', 'pool']) && $invest->status < 2)
+                || (in_array($invest->method, ['tpv', 'cash', 'pool']) && $invest->status < 2)
                 || ($invest->method == 'paypal' && empty($invest->preapproval) && $invest->status < 2))
             ) : ?>
             <a href="/admin/accounts/cancel/<?php echo $invest->id ?>"

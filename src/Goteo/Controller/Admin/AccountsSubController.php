@@ -225,7 +225,7 @@ class AccountsSubController extends AbstractSubController {
         $project = Model\Project::get($invest->project);
         $userData = Model\User::get($invest->user);
 
-        if ($project->status > 3 && $project->status < 6) {
+        if (in_array($invest->status, [1,4])) {
             Message::error('No debería poderse cancelar un aporte cuando el proyecto ya está financiado. Si es imprescindible, hacerlo desde el panel de paypal o tpv');
         } else {
 
@@ -244,11 +244,32 @@ class AccountsSubController extends AbstractSubController {
         }
         $project = Model\Project::get($invest->project);
         $userData = Model\User::get($invest->user);
-
-        if ($invest->status != 1) {
-            Message::error('No se puede devolver un aporte no cobrado');
+        $status = $invest->status;
+        if (!in_array($status, [1,4])) {
+            Message::error('Solo se pueden devolver aportes en estados de "Cobrado" y "Retornado" (y en este caso con suficiente dinero en el monedero)');
         } else {
-            $this->cancelInvest($invest, true);
+            if($status == 1) {
+                $this->cancelInvest($invest, true); //no need to check the pool
+            }
+            else {
+                // check the pool
+                $amount = Model\User\Pool::getAmount($invest->user);
+                if($amount < $invest->amount) {
+                    Message::error('No se puede devolver este aporte de estado "Retornado" porque el usuario no tiene suficiente dinero en el monedero (' . $amount .' €)!');
+                }
+                else {
+                    if($this->cancelInvest($invest, true)) {
+                        $errors = array();
+                        Model\User\Pool::withdraw($invest->user, $invest->amount, $errors);
+                        if($errors) {
+                            Message::error('ERROR: ' . implode("<br>\n", $errors));
+                        }
+                        else {
+                            Message::info('Aporte devuelto. El monedero se ha reducido en (' . $invest->amount . ' €)');
+                        }
+                    }
+                }
+            }
         }
 
         return $this->redirect('/admin/accounts/details/' . $id);

@@ -94,8 +94,7 @@ class InvestsSubController extends AbstractSubController {
             }
 
             return array(
-                    'folder' => 'invests',
-                    'file' => 'details',
+                    'template' => 'admin/invests/details',
                     'invest' => $invest,
                     'project' => $project,
                     'user' => $userData,

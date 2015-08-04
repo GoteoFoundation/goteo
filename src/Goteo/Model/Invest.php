@@ -1319,12 +1319,13 @@ namespace Goteo\Model {
                     WHERE id = :id";
 
             if (self::query($sql, $values)) {
-
+                $this->status = $status;
                 // si tiene capital riego asociado, lo liberamos
                 if (!empty($this->droped)) {
                     $drop = Invest::get($this->droped);
                     if ($drop->setStatus(self::STATUS_CANCELED)) {
                         self::query("UPDATE invest SET droped = NULL WHERE id = :id", array(':id' => $this->id));
+                        $this->droped = null;
                     }
                 }
 
