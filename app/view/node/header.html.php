@@ -27,29 +27,6 @@ $nodeText = str_replace(array('[', ']'), array('<span class="blue">', '</span>')
                     <li><a href="/blog"><?php echo Text::get('regular-header-blog'); ?></a></li>
                     <li><a href="/faq"><?php echo Text::get('regular-header-faq'); ?></a></li>
                     <li id="lang"><a href="#" ><?php echo Lang::getShort(Lang::current(true)); ?></a></li>
-                    <script type="text/javascript">
-                    jQuery(document).ready(function ($) {
-						 $("#lang").hover(function(){
-						   //desplegar idiomas
-						   try{clearTimeout(TID_LANG)}catch(e){};
-						   var pos = $(this).offset().left;
-						   $('ul.lang').css({left:pos+'px'});
-						   $("ul.lang").fadeIn();
-					       $("#lang").css("background","#808285 url('<?php echo SRC_URL; ?>/view/css/bolita.png') 4px 7px no-repeat");
-
-					   },function() {
-						   TID_LANG = setTimeout('$("ul.lang").hide()',100);
-						});
-						$('ul.lang').hover(function(){
-							try{clearTimeout(TID_LANG)}catch(e){};
-						},function() {
-						   TID_LANG = setTimeout('$("ul.lang").hide()',100);
-						   $("#lang").css("background","#59595C url('<?php echo SRC_URL; ?>/view/css/bolita.png') 4px 7px no-repeat");
-						});
-
-
-					});
-					</script>
                 </ul>
             </div>
 
