@@ -21,7 +21,7 @@ class MailStats {
      * @param  [type] $metric  [description]
      * @return [type]          [description]
      */
-    static public function get($mail_id, $email, $metric) {
+    static public function getMetric($mail_id, $email, $metric) {
         $query = Model::query('
             SELECT *
             FROM  mail_stats
@@ -56,13 +56,20 @@ class MailStats {
 
         $list = [];
         if ($query = Model::query($sql, $values)) {
-            foreach ($query->fetchAll(\PDO::FETCH_OBJ) as $item) {
+            foreach ($query->fetchAll(\PDO::FETCH_CLASS, __CLASS__) as $item) {
                 $list[] = $item;
             }
         }
         return $list;
     }
 
+    /**
+     * Increments a metric
+     * @param  [type] $mail_id [description]
+     * @param  [type] $email   [description]
+     * @param  string $metric  [description]
+     * @return [type]          [description]
+     */
     static public function incrMetric($mail_id, $email, $metric = 'read') {
         try {
             if($mail = static::get($mail_id, $email, $metric)) {

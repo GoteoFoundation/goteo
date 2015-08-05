@@ -161,6 +161,11 @@ class NewsletterSubController extends AbstractSubController {
 
     }
 
+    /**
+     * Ajax response
+     * @param  [type] $id [description]
+     * @return [type]     [description]
+     */
     public function statusAction($id) {
         $mailing = [];
         if($mailing = Sender::get($id)) {

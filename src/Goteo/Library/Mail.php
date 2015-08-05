@@ -238,7 +238,7 @@ class Mail {
                     else {
                         Message::error('ERROR while logging email content into: ' . $path);
                     }
-                    // return true is ok, mail sent...
+                    // return true is ok, let's pretend the mail is sent...
                     return true;
                 }
 
