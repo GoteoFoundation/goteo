@@ -19,7 +19,7 @@ class MailController extends \Goteo\Core\Controller {
      */
     public function indexAction ($token) {
 
-        if(list($md5, $email, $mail_id) = Mailer::decodeToken($token)) {
+        if(list($email, $mail_id) = Mailer::decodeToken($token)) {
             // die("$email $mail_id");
 
             // A numeric email refers to a ID entry of the mailer_content table (pending sendings)
@@ -30,6 +30,7 @@ class MailController extends \Goteo\Core\Controller {
             }
             // Content still in database?
             if ($mail = Mailer::get($mail_id)) {
+                $mail->to = $email;
                 return new Response($mail->render());
             }
 
@@ -42,13 +43,26 @@ class MailController extends \Goteo\Core\Controller {
     /**
      * Redirects to the apropiate link
      */
+    public function urlAction ($token) {
+
+        if(list($email, $mail_id, $url) = Mailer::decodeToken($token)) {
+            // die("$email $mail_id $url");
+
+            // track this opening
+            MailStats::incrMetric($mail_id, $email, $url);
+
+            return $this->redirect($url);
+        }
+
+        throw new ControllerException('Link not available!');
+    }
 
     /**
      * Returns an empty gif, to track the email
      */
     public function trackAction($token) {
         //decode token
-        if(list($md5, $email, $mail_id) = Mailer::decodeToken($token)) {
+        if(list($email, $mail_id) = Mailer::decodeToken($token)) {
             MailStats::incrMetric($mail_id, $email, 'read');
         }
         // Return a transparent GIF

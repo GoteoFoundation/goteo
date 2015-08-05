@@ -23,12 +23,13 @@ define('GOTEO_WEB_PATH', dirname(__DIR__) . '/app/');
 
 require_once __DIR__ . '/../src/autoload.php';
 
-// constantes necesarias (las pone el dispatcher)
-define('HTTPS_ON', false); // para las url de project/media
-define('SITE_URL', 'http://goteo.org'); // para los mails
-define('SEC_URL', 'https:'.str_replace('http:', '', SITE_URL)); // urls para paypal (necesita schema)
 // Config file...
 Config::loadFromYaml('settings.yml');
+// constantes necesarias (las pone el dispatcher)
+define('HTTPS_ON', Config::get('ssl') ? true : false); // para las url de project/media
+$url = Config::get('url.main');
+define('SITE_URL', (Config::get('ssl') ? 'https://' : 'http://') . preg_replace('|^(https?:)?//|i','',$url));
+define('SEC_URL', SITE_URL);
 // set Lang
 Lang::setDefault(Config::get('lang'));
 Lang::set(Config::get('lang'));

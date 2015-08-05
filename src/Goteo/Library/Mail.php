@@ -335,8 +335,9 @@ class Mail {
         }
         if(strpos($token, '¬') !== false) {
             $decoded = explode('¬', $token);
+            $md5 = array_shift($decoded);
             if($validate) {
-                if(md5(Config::get('secret') . '-' . $decoded[1] . '-' . $decoded[2]) !== $decoded[0]) {
+                if(md5(Config::get('secret') . '-' . implode('-', $decoded)) !== $md5) {
                     return [];
                 }
             }
@@ -388,8 +389,19 @@ class Mail {
             $viewData['unsubscribe'] = SITE_URL . '/user/unsubscribe/' . $this->getToken(); // ????
             return View::render('email/newsletter', $viewData);
         }
+        $content = View::render('email/default', $viewData);
+        // compilar links y cambiarlos por redirecciones a un controlador
+        $content = preg_replace_callback([
+            '/(<a.*)href=(")([^"]*)"([^>]*)>/U',
+            "/(<a.*)href=(')([^']*)'([^>]*)>/U"
+            ],
+            function ($matches){
+                $new = SITE_URL . '/mail/url/' . \mybase64_encode(md5(Config::get('secret') . '-' . $this->to . '-' . $this->id. '-' . $matches[3]) . '¬' . $this->to  . '¬' . $this->id . '¬' . $matches[3]);
+                return $matches[1] . 'href="' . $new . '"'. $matches[4] . '>';
+            },
+            $content);
 
-        return View::render('email/default', $viewData);
+        return $content;
     }
 
     /**

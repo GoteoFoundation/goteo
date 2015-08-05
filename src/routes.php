@@ -128,6 +128,10 @@ $routes->add('mail-track', new Route(
     '/mail/track/{token}.gif',
     array('_controller' => 'Goteo\Controller\MailController::trackAction')
 ));
+$routes->add('mail-url', new Route(
+    '/mail/url/{token}',
+    array('_controller' => 'Goteo\Controller\MailController::urlAction')
+));
 $routes->add('mail-token', new Route(
     '/mail/{token}',
     array('_controller' => 'Goteo\Controller\MailController::indexAction')

@@ -189,7 +189,6 @@ class Config {
         define('GOTEO_FAIL_MAIL', self::get('mail.fail'));
         define('GOTEO_LOG_MAIL', self::get('mail.log'));
 
-        define('GOTEO_URL', self::get('url.main'));
         define('SRC_URL', self::get('url.assets'));
 
         if(self::get('url.data')) define('GOTEO_DATA_URL', self::get('url.data'));

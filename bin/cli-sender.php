@@ -24,9 +24,6 @@ define('GOTEO_WEB_PATH', dirname(__DIR__) . '/app/');
 
 require_once __DIR__ . '/../src/autoload.php';
 
-// montar SITE_URL como el dispatcher para el enlace de darse de baja.
-define('SITE_URL', GOTEO_URL);
-
 define('MAIL_MAX_RATE', 14); // envios por segundo máximos
 define('MAIL_MAX_CONCURRENCY', 50); //numero máximo de procesos simultaneos para enviar mail (pero no se llegará a esta cifra si el ratio de envios es mayor que MAIL_MAX_RATE)
 define('PHP_CLI', '/usr/bin/php'); //ruta al ejecutable PHP
@@ -34,12 +31,12 @@ define('LOGS_DIR', GOTEO_LOG_PATH . 'mailing/'); //ruta a logs
 //Archivo de bloqueo en la carpeta var
 define('LOCK_FILE',  __DIR__ . '/../var/' . basename(__FILE__) . '.lock');
 
-// constantes necesarias (las pone el dispatcher)
-define('HTTPS_ON', false); // para las url de project/media
-define('SITE_URL', 'http://goteo.org'); // para los mails
-define('SEC_URL', 'https:'.str_replace('http:', '', SITE_URL)); // urls para paypal (necesita schema)
 // Config file...
 Config::loadFromYaml('settings.yml');
+define('HTTPS_ON', Config::get('ssl') ? true : false); // para las url de project/media
+$url = Config::get('url.main');
+define('SITE_URL', (Config::get('ssl') ? 'https://' : 'http://') . preg_replace('|^(https?:)?//|i','',$url));
+define('SEC_URL', SITE_URL);
 // set Lang
 Lang::setDefault(Config::get('lang'));
 Lang::set(Config::get('lang'));

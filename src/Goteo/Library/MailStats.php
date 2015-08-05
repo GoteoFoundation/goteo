@@ -72,7 +72,7 @@ class MailStats {
      */
     static public function incrMetric($mail_id, $email, $metric = 'read') {
         try {
-            if($mail = static::get($mail_id, $email, $metric)) {
+            if($mail = static::getMetric($mail_id, $email, $metric)) {
                 $mail->counter = $mail->counter + 1;
                 return Model::query('
                     UPDATE mail_stats
