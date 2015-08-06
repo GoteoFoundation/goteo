@@ -4,9 +4,7 @@ namespace Goteo\Controller {
 
     use Goteo\Library\Page,
         Goteo\Core\Redirection,
-        Goteo\Core\View,
-        Goteo\Library\Text,
-        Goteo\Library\Mail;
+        Goteo\Core\View;
 
     class Legal extends \Goteo\Core\Controller {
 

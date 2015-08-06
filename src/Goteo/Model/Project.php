@@ -7,7 +7,7 @@ namespace Goteo\Model {
         Goteo\Application\Config,
         Goteo\Application\Session,
         Goteo\Application\Lang,
-        Goteo\Library,
+        Goteo\Model\Mail,
         Goteo\Library\Check,
         Goteo\Library\Text,
         Goteo\Library\Feed,
@@ -2338,7 +2338,7 @@ namespace Goteo\Model {
                         $content = \str_replace($search, $replace, $template->text);
 
 
-                        $mailHandler = new Library\Mail();
+                        $mailHandler = new Mail();
 
                         $mailHandler->to = $user->email;
                         $mailHandler->toName = $user->name;

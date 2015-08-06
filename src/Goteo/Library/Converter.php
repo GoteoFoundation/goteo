@@ -6,7 +6,7 @@ namespace Goteo\Library;
  * Clase para mantener una cache de rates
  */
 
-use Goteo\Library\Mail,
+use Goteo\Model\Mail,
     Goteo\Library\Cacher;
 
 class Converter {

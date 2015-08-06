@@ -8,7 +8,7 @@ namespace Goteo\Model {
         Goteo\Model\Project,
         Goteo\Model\User\UserLocation,
         Goteo\Model\Template,
-        Goteo\Library\Mail,
+        Goteo\Model\Mail,
         Goteo\Library\Check,
         Goteo\Application;
     use Goteo\Application\Lang;

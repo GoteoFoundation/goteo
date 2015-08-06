@@ -7,7 +7,7 @@ namespace Goteo\Controller\Dashboard {
         Goteo\Core\Redirection,
 		Goteo\Library\Text,
 		Goteo\Library\Feed,
-        Goteo\Library\Mail,
+        Goteo\Model\Mail,
 		Goteo\Library\Page,
 		Goteo\Model\Template,
         Goteo\Application\Session,
@@ -336,11 +336,11 @@ namespace Goteo\Controller\Dashboard {
             $mailHandler->lang = $comlang;
             $mailHandler->content = $content;
             $mailHandler->massive = true;
-            $mailId = $mailHandler->saveEmailToDB();
+            if( !$mailHandler->save($errors) ) throw new ModelException(implode('<br>', $errors));
 
             // - se usa el metodo initializeSending para grabar el envío (parametro para autoactivar)
             // , también metemos el reply y repplyName (remitente) en la instancia de envío
-            if (\Goteo\Model\Sender::initiateSending($mailId, $subject, $receivers, 1, $project->user->email, $remite)) {
+            if (\Goteo\Model\Sender::initiateSending($mailHandler->id, $subject, $receivers, 1, $project->user->email, $remite)) {
                 Message::info(Text::get('dashboard-investors-mail-sended', 'la cola de envíos')); // cambiar este texto
             } else {
                 Message::error(Text::get('dashboard-investors-mail-fail', 'la cola de envíos')); // cambiar este texto

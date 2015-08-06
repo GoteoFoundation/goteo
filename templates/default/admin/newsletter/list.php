@@ -13,7 +13,7 @@ $templates = $this->templates;
     <p><strong>NOTA:</strong> con este sistema no se pueden añadir variables en el contenido, se genera el mismo contenido para todos los destinatarios.<br/>
     Para contenido personalizado hay que usar la funcionalidad <a href="/admin/mailing" >Comunicaciones</a>.</p>
 
-    <form action="/admin/newsletter/init" method="post" onsubmit="return confirm('El envio se activará automáticamente, seguimos?');">
+    <form action="/admin/newsletter/init" method="post" onsubmit="return confirm('El envio NO se activará automáticamente. Puedes revisar el contenido y destinatarios y enviarlo después');">
 
     <p>
         <label>Plantillas masivas:

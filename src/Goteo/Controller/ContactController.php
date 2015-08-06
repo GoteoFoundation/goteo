@@ -12,6 +12,7 @@ use Goteo\Application\Message;
 use Goteo\Application\Session;
 use Goteo\Application\Config;
 use Goteo\Model\Template;
+use Goteo\Model\Mail;
 
 class ContactController extends \Goteo\Core\Controller {
 
@@ -91,7 +92,7 @@ class ContactController extends \Goteo\Core\Controller {
                 $toName = Config::get('mail.contact_name');
                 if(empty($toName)) $toName = 'Goteo';
                 // Obtenemos la plantilla para asunto y contenido
-                $mailHandler = Library\Mail::createFromTemplate($email, $toName, Template::MESSAGE_CONTACT, [
+                $mailHandler = Mail::createFromTemplate($email, $toName, Template::MESSAGE_CONTACT, [
                         '%TONAME%'     => $toName,
                         '%MESSAGE%'    => $msg_content,
                         '%USEREMAIL%'  => $name . ' ' . $email

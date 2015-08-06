@@ -10,7 +10,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Goteo\Library\Text,
 	Goteo\Library\Feed,
     Goteo\Application\Message,
-    Goteo\Library\Mail,
+    Goteo\Model\Mail,
 	Goteo\Model\Template,
     Goteo\Model,
     Goteo\Command\UsersSend;

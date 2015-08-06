@@ -1,9 +1,9 @@
 <?php
 
-namespace Goteo\Library\Tests;
+namespace Goteo\Model\Tests;
 
 use Goteo\Model\Template;
-use Goteo\Library\Mail;
+use Goteo\Model\Mail;
 
 class MailTest extends \PHPUnit_Framework_TestCase {
     /**
@@ -11,7 +11,7 @@ class MailTest extends \PHPUnit_Framework_TestCase {
      */
     public function testInstance() {
         $mail = new Mail();
-        $this->assertInstanceOf('\Goteo\Library\Mail', $mail);
+        $this->assertInstanceOf('\Goteo\Model\Mail', $mail);
         $this->assertInstanceOf('\PHPMailer', $mail->mail);
         return $mail;
     }
@@ -64,8 +64,8 @@ class MailTest extends \PHPUnit_Framework_TestCase {
         $mail->id = 12345;
         $token = $mail->getToken();
         $decoded = Mail::decodeToken($token);
-        $this->assertEquals('test@goteo.org', $decoded[1]);
-        $this->assertEquals(12345, $decoded[2]);
+        $this->assertEquals('test@goteo.org', $decoded[0]);
+        $this->assertEquals(12345, $decoded[1]);
 
         $this->assertTrue(empty(Mail::decodeToken('invalid¬token')));
     }
@@ -104,9 +104,21 @@ class MailTest extends \PHPUnit_Framework_TestCase {
         $this->assertEquals('Test', $mailer->getToAddresses()[0][1]);
         $this->assertEquals($tpl->title, $mailer->Subject);
         $this->assertEmpty($mailer->isHTML());
-        $this->assertContains($tpl->text, $mailer->Body);
+        $this->assertContains(strip_tags($tpl->text), strip_tags($mailer->Body));
         $this->assertContains(preg_replace("/[\n]{2,}/", "\n\n" ,strip_tags(str_ireplace(['<br', '<p'], ["\n<br", "\n<p"], $tpl->text))), $mailer->AltBody);
         $this->assertContains($mail->getToken(), $mailer->Body);
+        return $mail;
+    }
+
+    /**
+     * @depends testCreateTemplate
+     */
+    public function testSaveDB($mail) {
+        $errors = [];
+        $this->assertEmpty($mail->id);
+        $this->assertTrue($mail->save($errors), implode("\n", $errors));
+        $this->assertNotEmpty($mail->id);
+        $this->assertTrue($mail->dbDelete());
     }
 
 }

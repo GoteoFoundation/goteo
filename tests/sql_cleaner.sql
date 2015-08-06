@@ -10,3 +10,8 @@ DELETE FROM  `project_account` WHERE `project` NOT IN (SELECT id FROM project);
 DELETE FROM `message` WHERE `user` NOT IN (SELECT id FROM `user`);
 DELETE FROM  `cost` WHERE `project` NOT IN (SELECT id FROM project);
 DELETE FROM mailer_control WHERE email LIKE 'test@goteo.org';
+DELETE FROM mail WHERE email LIKE 'test@goteo.org';
+DELETE FROM mail_stats WHERE metric_id IN (SELECT id FROM metric WHERE metric LIKE 'TEST_METRIC');
+DELETE FROM metric WHERE metric LIKE 'TEST_METRIC';
+DELETE FROM mail_stats WHERE metric_id IN (SELECT id FROM metric WHERE metric LIKE 'TEST_STAT_METRIC');
+DELETE FROM metric WHERE metric LIKE 'TEST_STAT_METRIC';

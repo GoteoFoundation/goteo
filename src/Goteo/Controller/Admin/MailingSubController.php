@@ -4,12 +4,13 @@
  */
 namespace Goteo\Controller\Admin;
 
+use Goteo\Application\Exception\ModelException;
 use Goteo\Application\Config;
 use Goteo\Application\Message,
 	Goteo\Application\Session,
 	Goteo\Library\Feed,
     Goteo\Model\Template,
-    Goteo\Library\Mail,
+    Goteo\Model\Mail,
     Goteo\Library\Newsletter,
     Goteo\Application\Lang,
     Goteo\Model;
@@ -280,11 +281,12 @@ class MailingSubController extends AbstractSubController {
                 $mailHandler->node = $node;
                 $mailHandler->lang = $comlang;
                 $mailHandler->massive = true;
-                $mailId = $mailHandler->saveEmailToDB();
+                $errors = [];
+                if( !$mailHandler->save($errors) ) throw new ModelException(implode('<br>', $errors));
 
                 // - se usa el metodo initializeSending para grabar el envío (parametro para autoactivar)
                 // - initiateSending ($mailId, $subject, $receivers, $autoactive = 0)
-                if (\Goteo\Model\Sender::initiateSending($mailId, $subject, $receivers, 1))  {
+                if (\Goteo\Model\Sender::initiateSending($mailHandler->id, $subject, $receivers, 1))  {
                     $ok = true;
                     // Evento Feed
                     $log = new Feed();

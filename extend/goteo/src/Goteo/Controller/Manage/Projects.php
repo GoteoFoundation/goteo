@@ -5,8 +5,7 @@ namespace Goteo\Controller\Manage {
     use Goteo\Core\Redirection,
         Goteo\Core\View,
         Goteo\Application\Message,
-        Goteo\Library\Mail,
-        Goteo\Model;
+        Goteo\Model\Mail;
 
     class Projects {
 

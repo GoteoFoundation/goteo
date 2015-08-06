@@ -9,7 +9,7 @@ use Goteo\Core\Model,
     Goteo\Application\Message,
     Goteo\Application\Config,
     Goteo\Library\Feed,
-    Goteo\Library\Mail,
+    Goteo\Model\Mail,
     Goteo\Model\Sender;
 
 if (PHP_SAPI !== 'cli') {

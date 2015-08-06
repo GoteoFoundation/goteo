@@ -5,8 +5,7 @@
 namespace Goteo\Controller\Admin;
 
 use Goteo\Library\Text,
-    Goteo\Model,
-    Goteo\Library\Mail,
+    Goteo\Model\Mail,
     Goteo\Application\Lang,
     Goteo\Application\Message,
     Goteo\Application\Config,
@@ -118,10 +117,10 @@ class NewsletterSubController extends AbstractSubController {
                 $mailHandler->node = $node;
                 $mailHandler->lang = $lang;
                 $mailHandler->massive = true;
-                $mailId = $mailHandler->saveEmailToDB();
+                if( !$mailHandler->save($errors) ) throw new ModelException(implode('<br>', $errors));
 
                 // create the sender cue
-                $sender = new Sender($mailId, $tpl->title);
+                $sender = new Sender($mailHandler->id, $tpl->title);
                 $sender->save(); //persists in database
 
                 // get the equivalent communication languages from preferences

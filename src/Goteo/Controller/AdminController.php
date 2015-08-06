@@ -12,7 +12,6 @@ namespace Goteo\Controller {
         Goteo\Model,
         Goteo\Library\Feed,
         Goteo\Library\Page,
-        Goteo\Library\Mail,
         Goteo\Model\Template,
         Goteo\Application\View,
         Goteo\Application\Message,

@@ -9,7 +9,7 @@ use Goteo\Core\View;
 use Goteo\Core\Redirection;
 use Goteo\Library\Text;
 use Goteo\Model\Template;
-use Goteo\Library\Mail;
+use Goteo\Model\Mail;
 
 class UsersSend {
     static public $debug = false;
@@ -510,11 +510,14 @@ class UsersSend {
         $mailHandler->node = \GOTEO_NODE;
         $mailHandler->lang = $comlang;
         $mailHandler->massive = true;
-        $mailId = $mailHandler->saveEmailToDB();
+        if( ! $mailHandler->save() ) {
+            // TODO: exception ?
+            return false;
+        }
 
 
         // - se usa el metodo initializeSending para grabar el envío (parametro para autoactivar)
-        if (\Goteo\Model\Sender::initiateSending($mailId, $subject, $receivers, 1))
+        if (\Goteo\Model\Sender::initiateSending($mailHandler->id, $subject, $receivers, 1))
             return false;
         else
             return true;

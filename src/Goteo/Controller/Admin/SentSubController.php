@@ -8,8 +8,8 @@ use Goteo\Application\Config;
 use Goteo\Model\Node;
 use Goteo\Library\Feed;
 use Goteo\Model\Template;
-use Goteo\Library\Mail;
-use Goteo\Library\MailStats;
+use Goteo\Model\Mail;
+use Goteo\Model\MailStats;
 
 class SentSubController extends AbstractSubController {
 

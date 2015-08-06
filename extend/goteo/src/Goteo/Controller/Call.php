@@ -12,7 +12,7 @@ namespace Goteo\Controller {
         Goteo\Model\Template,
         Goteo\Library\Feed,
         Goteo\Library\Buzz,
-        Goteo\Model;
+        Goteo\Model\Mail;
 
     class Call extends \Goteo\Core\Controller {
 
@@ -179,7 +179,7 @@ namespace Goteo\Controller {
                     if ($call->ready($errors)) {
 
                         // email a los de goteo
-                        $mailHandler = new Library\Mail();
+                        $mailHandler = new Mail();
 
                         $mailHandler->to = \GOTEO_MAIL;
                         $mailHandler->toName = 'Revisor de convocatorias';
@@ -199,7 +199,7 @@ namespace Goteo\Controller {
                         unset($mailHandler);
 
                         // email al dueño
-                        $mailHandler = new Library\Mail();
+                        $mailHandler = new Mail();
 
                         $mailHandler->to = $call->user->email;
                         $mailHandler->toName = $call->user->name;

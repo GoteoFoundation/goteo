@@ -20,7 +20,7 @@ use Goteo\Core\Exception,
     Goteo\Model\Template,
     Goteo\Library\Tpv,
     Goteo\Library\Paypal,
-    Goteo\Library\Mail;
+    Goteo\Model\Mail;
 
 if (PHP_SAPI !== 'cli') {
     die('Console access only!');

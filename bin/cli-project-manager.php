@@ -2,13 +2,8 @@
 use Goteo\Model\Project,
     Goteo\Application\Config,
     Goteo\Application\Lang,
-    Goteo\Library\Text,
-    Goteo\Library\Feed,
     Goteo\Model\Invest,
-    Goteo\Model\User\Pool,
-    Goteo\Library\Tpv,
-    Goteo\Library\Paypal,
-    Goteo\Library\Mail;
+    Goteo\Model\User\Pool;
 
 if (PHP_SAPI !== 'cli') {
     die('Console access only!');

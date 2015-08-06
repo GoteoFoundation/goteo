@@ -4,7 +4,7 @@ namespace Goteo\Controller {
 
     use Goteo\Model,
         Goteo\Core\Error,
-		Goteo\Library,
+		Goteo\Model\Mail,
         Goteo\Library\Feed,
 		Goteo\Library\Text,
         Goteo\Core\Redirection;
@@ -128,7 +128,7 @@ namespace Goteo\Controller {
             if ($monitor) {
 
                 // mail de aviso
-                $mailHandler = new Library\Mail();
+                $mailHandler = new Mail();
                 $mailHandler->to = \GOTEO_FAIL_MAIL;
                 $mailHandler->toName = 'Tpv Monitor Goteo.org';
                 $mailHandler->subject = 'Comunicacion online Op:'.$_POST['Num_operacion'].' '.date('H:i:s d/m/Y');
@@ -225,7 +225,7 @@ namespace Goteo\Controller {
                         // TODO: esto se considera un pago valido?
 
                         // notificación del error a dev@goteo.org
-                        $mailHandler = new Library\Mail();
+                        $mailHandler = new Mail();
                         $mailHandler->to = \GOTEO_FAIL_MAIL;
                         $mailHandler->toName = 'Tpv Monitor Goteo.org';
                         $mailHandler->subject = 'Exception en comunicacion online '.date('H:i:s d/m/Y'). ' ' . \SITE_URL;
@@ -248,7 +248,7 @@ namespace Goteo\Controller {
 
                 } catch(\Exception $e) {
                     // notificación del error a dev@goteo.org
-                    $mailHandler = new Library\Mail();
+                    $mailHandler = new Mail();
                     $mailHandler->to = \GOTEO_FAIL_MAIL;
                     $mailHandler->toName = 'Tpv Monitor Goteo.org';
                     $mailHandler->subject = 'Error TPV en comunicacion online '.date('H:i:s d/m/Y'). ' ' . \SITE_URL;
@@ -313,7 +313,7 @@ namespace Goteo\Controller {
 
             // monitorizando todo lo que llega aqui
             // mail de aviso
-            $mailHandler = new Library\Mail();
+            $mailHandler = new Mail();
             $mailHandler->to = \GOTEO_FAIL_MAIL;
             $mailHandler->toName = 'Tpv Monitor Goteo.org';
             $mailHandler->subject = 'Comunicacion ipn '.date('H:i:s d/m/Y');
@@ -342,7 +342,7 @@ namespace Goteo\Controller {
 
             // monitorizando todo lo que llega aqui
             // mail de aviso
-            $mailHandler = new Library\Mail();
+            $mailHandler = new Mail();
             $mailHandler->to = \GOTEO_FAIL_MAIL;
             $mailHandler->toName = 'Tpv Monitor Goteo.org';
             $mailHandler->subject = 'Comunicacion online Op:'.$_POST['Num_operacion'].' '.date('H:i:s d/m/Y');

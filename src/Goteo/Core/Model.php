@@ -74,8 +74,8 @@ namespace Goteo\Core {
             }
             $class = get_called_class();
             $ob = new $class();
-            static::query('SELECT * FROM ' . $ob->getTable() . ' WHERE id = :id', array(':id' => $id));
-            return $query->fetchObject(__CLASS__);
+            $query = static::query('SELECT * FROM ' . $ob->getTable() . ' WHERE id = :id', array(':id' => $id));
+            return $query->fetchObject($class);
         }
 
         /**
@@ -107,7 +107,7 @@ namespace Goteo\Core {
             }
             if(empty($values)) throw new \PDOException("No fields specified!", 1);
             $sql = 'INSERT INTO `' . $this->Table . '` (' . implode(',', $set) . ') VALUES (' . implode(',', $keys) . ')';
-            // print_r($values);die($sql);
+            // echo \sqldbg($sql, $values);
             $res = self::query($sql, $values);
             return $res;
         }
@@ -121,14 +121,14 @@ namespace Goteo\Core {
             $values = $set = [];
             foreach($fields as $field) {
                 if(property_exists($this, $field)) {
-                    $set[] = "`$field` = :$field ";
+                    $set[] = "`$field` = :$field";
                     $values[":$field"] = $this->$field;
                 }
             }
             $clause = [];
             foreach($where as $field) {
                 if(property_exists($this, $field)) {
-                    $clause[] = "`$field` = :$field ";
+                    $clause[] = "`$field` = :$field";
                     $values[":$field"] = $this->$field;
                 }
                 else {
@@ -138,7 +138,7 @@ namespace Goteo\Core {
             }
             if(empty($values)) throw new \PDOException("No fields specified!", 1);
             $sql = 'UPDATE `' . $this->Table . '` SET ' . implode(',', $set) . ' WHERE ' . implode(' AND ', $clause);
-
+            // echo \sqldbg($sql, $values);
             return self::query($sql, $values);
         }
 

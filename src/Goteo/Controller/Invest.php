@@ -9,7 +9,7 @@ namespace Goteo\Controller {
         Goteo\Model,
         Goteo\Library\Feed,
         Goteo\Library\Text,
-        Goteo\Library\Mail,
+        Goteo\Model\Mail,
         Goteo\Model\Template,
         Goteo\Application\Message,
         Goteo\Library\Paypal,

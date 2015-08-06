@@ -5,7 +5,7 @@
 namespace Goteo\Controller\Admin;
 
 use Goteo\Library\Feed,
-    Goteo\Library\Mail,
+    Goteo\Model\Mail,
 	Goteo\Model\Template,
     Goteo\Application\Message,
     Goteo\Application\Session,

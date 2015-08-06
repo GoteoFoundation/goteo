@@ -1,15 +1,15 @@
 <?php
 
-namespace Goteo\Library;
+namespace Goteo\Model;
 
 use Goteo\Application\Config;
 use Goteo\Application\View;
 use Goteo\Application\Message;
-use Goteo\Core\Model;
 use Goteo\Model\Template;
 use Goteo\Library\FileHandler\File;
 
-class Mail {
+class Mail extends \Goteo\Core\Model {
+    protected $Table = 'mail';
 
     public
         $id, // id registro en tabla mail
@@ -92,9 +92,9 @@ class Mail {
      * @return [type] [description]
      */
     static public function get($id) {
-        if ($query = Model::query('SELECT * FROM mail WHERE id = ?', $id)) {
+        if ($query = static::query('SELECT * FROM mail WHERE id = ?', $id)) {
             $ob = $query->fetchObject();
-            $mail = new Mail();
+            $mail = new static();
             $mail->html = true;
             $mail->id = $ob->id;
             $mail->to = $ob->email;
@@ -118,7 +118,7 @@ class Mail {
      * @return [type] [description]
      */
     static public function createFromText($to, $to_name, $subject, $body) {
-        $mail = new Mail();
+        $mail = new static();
         $mail->to = $to;
         $mail->toName = $to_name;
         $mail->subject = $subject;
@@ -132,7 +132,7 @@ class Mail {
      * @return [type] [description]
      */
     static public function createFromHtml($to, $to_name, $subject, $body) {
-        $mail = new Mail();
+        $mail = new static();
         $mail->to = $to;
         $mail->toName = $to_name;
         $mail->subject = $subject;
@@ -146,7 +146,7 @@ class Mail {
      * @return [type] [description]
      */
     static public function createFromTemplate($to, $to_name, $template, $vars =[]) {
-        $mail = new Mail();
+        $mail = new static();
         $mail->to = $to;
         $mail->toName = $to_name;
         $mail->html = true;
@@ -201,7 +201,7 @@ class Mail {
         }
 
         if (empty($this->id)) {
-            $this->saveEmailToDB();
+            $this->save();
         }
 
         if($this->validate($errors)) {
@@ -409,31 +409,40 @@ class Mail {
      * @param $email
      * @return int ID of the inserted email
      */
-    public function saveEmailToDB() {
+    public function save(&$errors = []) {
+
+        if( !$this->validate($errors) ) return false;
 
         $email = ($this->massive) ? 'any' : $this->to;
-
-        $sql = "INSERT INTO mail (id, email, html, template, node, lang) VALUES ('', :email, :html, :template, :node, :lang)";
         $values = array (
             ':email' => $email,
-            ':html' => $this->content,
+            ':content' => $this->content,
             ':template' => $this->template,
             ':node' => $this->node,
             ':lang' => $this->lang
             );
 
+        if($this->id) {
+            $values[':id'] = $this->id;
+            $sql = "UPDATE mail SET email = :email, content = :content, template = :template, node = :node, lang = :lang WHERE id= :id";
+        }
+        else {
+            $sql = "INSERT INTO mail (email, content, template, node, lang) VALUES (:email, :content, :template, :node, :lang)";
+        }
+
         // echo \sqldbg($sql, $values);
-        Model::query($sql, $values);
-
-        $id = Model::insertId();
-        $this->id = $id;
-
-        return $id;
+        if(static::query($sql, $values)) {
+            if(!$this->id) $this->id = static::insertId();
+            return true;
+        }
+        $errors[] = 'Error saving email to database';
+        return false;
 
     }
 
     /**
      * Store HTML email body generating previously an unique ID for the filename
+     * TODO: remove this, convert to a backup old emails to a filesystem
      * @param $sendId
      * @param $filename
      * @return
@@ -442,7 +451,7 @@ class Mail {
 
         // //do no need to repeat if already uploaded
         // $sql = "SELECT content FROM mail WHERE id = :id";
-        // $query = Model::query($sql, array(':id' => $this->id));
+        // $query = static::query($sql, array(':id' => $this->id));
         // $current = (int) $query->fetchColumn();
         // if(empty($current)) {
         //     return false;
@@ -457,7 +466,7 @@ class Mail {
         //     ':content' => $path . $contentId,
         //     ':id' => $this->id,
         //     );
-        // Model::query($sql, $values);
+        // static::query($sql, $values);
 
         // Necesitamos constante de donde irán los mails: MAIL_PATH = /data/mail
         // MAIL_PATH + $path
@@ -563,7 +572,7 @@ class Mail {
         // Return total count for pagination
         if($count) {
             $sql = "SELECT COUNT(mail.id) FROM mail $sqlFilter";
-            return (int) Model::query($sql, $values)->fetchColumn();
+            return (int) static::query($sql, $values)->fetchColumn();
         }
 
         $offset = (int) $offset;
@@ -579,7 +588,7 @@ class Mail {
                 ORDER BY mail.date DESC
                 LIMIT $offset,$limit";
 
-        $query = Model::query($sql, $values);
+        $query = static::query($sql, $values);
         return $query->fetchAll(\PDO::FETCH_CLASS, __CLASS__);
 
     }
@@ -597,18 +606,18 @@ class Mail {
 
         //total de envios las ultimas 24 horas
         $sql = "SELECT SUM(num) AS total FROM mailer_limit WHERE `modified` > :modified";
-        $query = Model::query($sql, array(':modified' => $modified));
+        $query = static::query($sql, array(':modified' => $modified));
         $cuantos = (int) $query->fetchColumn();
 
         //añadir
         if (isset($add)) {
             $cuantos += $add;
             $sql = "SELECT num FROM mailer_limit WHERE `modified` > :modified AND `hora` = :hora";
-            $query = Model::query($sql, array(':modified' => $modified, ':hora' => $hora));
+            $query = static::query($sql, array(':modified' => $modified, ':hora' => $hora));
             $current = (int) $query->fetchColumn();
 
             $values= array(':hora' => $hora, ':num' => ($current + $add), ':modified' => date('Y-m-d H:i:s'));
-            Model::query("REPLACE INTO mailer_limit (`hora`, `num`, `modified`) VALUES (:hora, :num, :modified)", $values);
+            static::query("REPLACE INTO mailer_limit (`hora`, `num`, `modified`) VALUES (:hora, :num, :modified)", $values);
         }
 
         return ($ret) ? ($LIMIT - $cuantos) : ($cuantos < $LIMIT);
@@ -621,7 +630,7 @@ class Mail {
      * @return boolean        true o false
      */
     static public function checkBlocked($email, &$reason) {
-        $query = Model::query("SELECT * FROM mailer_control WHERE email=:email AND action='deny'", array(':email' => $email));
+        $query = static::query("SELECT * FROM mailer_control WHERE email=:email AND action='deny'", array(':email' => $email));
         if($ob = $query->fetchObject()) {
             $reason = $ob->last_reason;
             return ($ob->complaints > $ob->bounces ? $ob->complaints : $ob->bounces);
@@ -636,14 +645,14 @@ class Mail {
      * @param boolean $block  true o false, si se bloquea para envios o solo se incluye informativamente
      */
     static public function addBounce($email, $reason = '', $block = false) {
-        $query = Model::query("SELECT bounces FROM mailer_control WHERE email=:email", array(':email' => $email));
+        $query = static::query("SELECT bounces FROM mailer_control WHERE email=:email", array(':email' => $email));
         $bounces = (int) $query->fetchColumn();
         $values = array(':email' => $email,
             ':bounces' => $bounces+1,
             ':reason' => $reason,
             ':action' => ($block ? 'deny' : 'allow')
             );
-        Model::query("REPLACE INTO mailer_control (`email`, `bounces`, `last_reason`, `action`) VALUES (:email, :bounces, :reason, :action)", $values);
+        static::query("REPLACE INTO mailer_control (`email`, `bounces`, `last_reason`, `action`) VALUES (:email, :bounces, :reason, :action)", $values);
     }
 
     /**
@@ -652,14 +661,14 @@ class Mail {
      * @param string  $reason razon de inclusion en la lista
      */
     static public function addComplaint($email, $reason = '') {
-        $query = Model::query("SELECT complaints FROM mailer_control WHERE email=:email", array(':email' => $email));
+        $query = static::query("SELECT complaints FROM mailer_control WHERE email=:email", array(':email' => $email));
         $complaints = (int) $query->fetchColumn();
         $values = array(':email' => $email,
             ':complaints' => $complaints+1,
             ':reason' => $reason,
             ':action' => 'deny'
             );
-        Model::query("REPLACE INTO mailer_control (`email`, `complaints`, `last_reason`, `action`) VALUES (:email, :complaints, :reason, :action)", $values);
+        static::query("REPLACE INTO mailer_control (`email`, `complaints`, `last_reason`, `action`) VALUES (:email, :complaints, :reason, :action)", $values);
     }
 
 }

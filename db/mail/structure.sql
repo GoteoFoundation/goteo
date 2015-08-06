@@ -25,3 +25,9 @@ ALTER TABLE `mail` ADD FOREIGN KEY (`node`) REFERENCES `node`(`id`) ON UPDATE CA
 UPDATE mail SET template=NULL WHERE template=0;
 ALTER TABLE `mail` CHANGE `template` `template` BIGINT(20) UNSIGNED NULL, ADD FOREIGN KEY (`template`) REFERENCES `template`(`id`) ON UPDATE CASCADE ON DELETE CASCADE;
 ALTER TABLE `mail` CHANGE `email` `email` CHAR(255) CHARSET utf8 COLLATE utf8_general_ci NOT NULL, ADD UNIQUE INDEX (`id`, `email`);
+
+-- remove unused content
+ALTER TABLE `mail` DROP COLUMN `content`;
+
+-- change html to content
+ALTER TABLE `mail` CHANGE `html` `content` LONGTEXT CHARSET utf8 COLLATE utf8_general_ci NOT NULL;
