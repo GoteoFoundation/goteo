@@ -4,15 +4,17 @@
  */
 namespace Goteo\Controller\Admin;
 
-use Goteo\Library\Text,
-    Goteo\Model\Mail,
-    Goteo\Application\Lang,
-    Goteo\Application\Message,
-    Goteo\Application\Config,
-    Goteo\Model\Template,
-	Goteo\Model\User,
-    Goteo\Library\Newsletter,
-	Goteo\Model\Sender;
+use Goteo\Application\Exception\ModelException;
+use Goteo\Library\Text;
+use Goteo\Model\Mail;
+use Goteo\Application\Lang;
+use Goteo\Application\Message;
+use Goteo\Application\Config;
+use Goteo\Model\Template;
+use Goteo\Model\User;
+use Goteo\Library\Newsletter;
+use Goteo\Model\Sender;
+use Goteo\Model\SenderRecipient;
 
 class NewsletterSubController extends AbstractSubController {
 
@@ -45,8 +47,8 @@ class NewsletterSubController extends AbstractSubController {
         if(empty($filters['show'])) $filters['show'] = 'receivers';
         $mailing = Sender::get($id);
         $limit = 50;
-        $list = Sender::getList($id, $filters['show'], $this->getGet('pag') * $limit, $limit);
-        $total = Sender::getList($id, $filters['show'], 0, 0, true);
+        $list = SenderRecipient::getList($id, $filters['show'], $this->getGet('pag') * $limit, $limit);
+        $total = SenderRecipient::getList($id, $filters['show'], 0, 0, true);
 
         return array(
                 'template' => 'admin/newsletter/detail',
@@ -117,11 +119,19 @@ class NewsletterSubController extends AbstractSubController {
                 $mailHandler->node = $node;
                 $mailHandler->lang = $lang;
                 $mailHandler->massive = true;
-                if( !$mailHandler->save($errors) ) throw new ModelException(implode('<br>', $errors));
+                $errors = [];
+                if( !$mailHandler->save($errors) ) {
+                    Message::error(implode('<br>', $errors));
+                    return $this->redirect('/admin/newsletter');
+                }
 
                 // create the sender cue
-                $sender = new Sender($mailHandler->id, $tpl->title);
-                $sender->save(); //persists in database
+                $sender = new Sender(['mail' => $mailHandler->id, 'subject' => $tpl->title]);
+                $errors = [];
+                if ( ! $sender->save($errors) ) { //persists in database
+                    Message::error(implode('<br>', $errors));
+                    return $this->redirect('/admin/newsletter');
+                }
 
                 // get the equivalent communication languages from preferences
                 $comlangs = [];
@@ -145,7 +155,7 @@ class NewsletterSubController extends AbstractSubController {
                 }
 
                 // add subscribers
-                $sender->addSubscribersFromSQL($sql);
+                Sender::addSubscribersFromSQL($sql);
 
                 // do no automatically activate ?
                 // $sender->activate();

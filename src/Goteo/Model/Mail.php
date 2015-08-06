@@ -93,18 +93,12 @@ class Mail extends \Goteo\Core\Model {
      */
     static public function get($id) {
         if ($query = static::query('SELECT * FROM mail WHERE id = ?', $id)) {
-            $ob = $query->fetchObject();
-            $mail = new static();
+            if( ! ($mail = $query->fetchObject(__CLASS__)) ) return false;
             $mail->html = true;
-            $mail->id = $ob->id;
-            $mail->to = $ob->email;
-            if($ob->template) {
-                $tpl = Template::get($ob->template);
-                $mail->template = $tpl->id;
+            if($mail->template) {
+                $tpl = Template::get($mail->template);
                 $mail->subject = $tpl->title;
             }
-
-            $mail->content = $ob->html;
 
             // $mail->toName = $to_name; // TODO: add name from users
 
@@ -196,7 +190,7 @@ class Mail extends \Goteo\Core\Model {
     public function send(&$errors = array()) {
 
         if (!self::checkLimit(1)) {
-            $errors[] = 'Limite diario alcanzado.';
+            $errors[] = 'Daily limit reached!';
             return false;
         }
 
@@ -375,33 +369,35 @@ class Mail extends \Goteo\Core\Model {
      * @return [type]                  [description]
      */
     public function render($plain = false, Array $extra_vars = []) {
-        $viewData = $extra_vars;
-        $viewData['content'] = $this->content;
+        $content = $this->content;
+        // Process links if tracker var present
+        if(array_key_exists('tracker', $extra_vars)) {
+            // compilar links y cambiarlos por redirecciones a un controlador
+            $content = preg_replace_callback([
+                '/(<a.*)href=(")([^"]*)"([^>]*)>/U',
+                "/(<a.*)href=(')([^']*)'([^>]*)>/U"
+                ],
+                function ($matches){
+                    $new = SITE_URL . '/mail/url/' . \mybase64_encode(md5(Config::get('secret') . '-' . $this->to . '-' . $this->id. '-' . $matches[3]) . '¬' . $this->to  . '¬' . $this->id . '¬' . $matches[3]);
+                    return $matches[1] . 'href="' . $new . '"'. $matches[4] . '>';
+                },
+                $content);
+        }
 
-        $viewData['unsubscribe'] = SITE_URL . '/user/leave?email=' . $this->to;
+        $extra_vars['content'] = $content;
+
+        $extra_vars['unsubscribe'] = SITE_URL . '/user/leave?email=' . $this->to;
 
         if ($plain) {
-            return strip_tags($this->content) . ($viewData['alternate'] ? "\n\n" . $viewData['alternate'] : '');
+            return strip_tags($this->content) . ($extra_vars['alternate'] ? "\n\n" . $extra_vars['alternate'] : '');
         }
 
         // para plantilla boletin
         if ($this->template === Template::NEWSLETTER) {
-            $viewData['unsubscribe'] = SITE_URL . '/user/unsubscribe/' . $this->getToken(); // ????
-            return View::render('email/newsletter', $viewData);
+            $extra_vars['unsubscribe'] = SITE_URL . '/user/unsubscribe/' . $this->getToken(); // ????
+            return View::render('email/newsletter', $extra_vars);
         }
-        $content = View::render('email/default', $viewData);
-        // compilar links y cambiarlos por redirecciones a un controlador
-        $content = preg_replace_callback([
-            '/(<a.*)href=(")([^"]*)"([^>]*)>/U',
-            "/(<a.*)href=(')([^']*)'([^>]*)>/U"
-            ],
-            function ($matches){
-                $new = SITE_URL . '/mail/url/' . \mybase64_encode(md5(Config::get('secret') . '-' . $this->to . '-' . $this->id. '-' . $matches[3]) . '¬' . $this->to  . '¬' . $this->id . '¬' . $matches[3]);
-                return $matches[1] . 'href="' . $new . '"'. $matches[4] . '>';
-            },
-            $content);
-
-        return $content;
+        return View::render('email/default', $extra_vars);
     }
 
     /**
@@ -410,8 +406,9 @@ class Mail extends \Goteo\Core\Model {
      * @return int ID of the inserted email
      */
     public function save(&$errors = []) {
-
-        if( !$this->validate($errors) ) return false;
+        $this->validate($errors);
+        unset($errors['subject']); //no subject on table mail
+        if( !empty($errors) ) return false;
 
         $email = ($this->massive) ? 'any' : $this->to;
         $values = array (
@@ -447,26 +444,11 @@ class Mail extends \Goteo\Core\Model {
      * @param $filename
      * @return
      */
-    public function saveContentToFile() {
-
-        // //do no need to repeat if already uploaded
-        // $sql = "SELECT content FROM mail WHERE id = :id";
-        // $query = static::query($sql, array(':id' => $this->id));
-        // $current = (int) $query->fetchColumn();
-        // if(empty($current)) {
-        //     return false;
-        // }
+/*    public function saveContentToFile() {
 
         $email = ($this->massive) ? 'any' : $this->to;
         $path = ($this->massive) ? '/news/' : '/sys/';
         $contentId = md5("{$this->id}_{$email}_{$this->template}_" . Config::get('secret')) . ".html";
-
-        // $sql = "UPDATE mail SET html='', content = :content WHERE id = :id";
-        // $values = array (
-        //     ':content' => $path . $contentId,
-        //     ':id' => $this->id,
-        //     );
-        // static::query($sql, $values);
 
         // Necesitamos constante de donde irán los mails: MAIL_PATH = /data/mail
         // MAIL_PATH + $path
@@ -483,10 +465,8 @@ class Mail extends \Goteo\Core\Model {
             return $path . $contentId;
         }
         return false;
-
-
     }
-
+*/
     /**
      *
      * Adjuntar archivo.

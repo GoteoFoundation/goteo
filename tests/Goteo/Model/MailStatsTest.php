@@ -56,8 +56,27 @@ class MailStatsTest extends \PHPUnit_Framework_TestCase {
         $this->assertEquals(2, $stat->counter);
 
         $this->assertEquals('TEST_STAT_METRIC', $metric->metric);
+        return $mail;
+    }
+
+    /**
+     * @depends testIncMetric
+     */
+    public function testGetList($mail) {
+        $list = MailStats::getFromMailId($mail->id);
+        $this->assertCount(1, $list);
+
+        //add second
+        $stat = MailStats::incMetric($mail->id, 'test@goteo.org', 'TEST_STAT_METRIC_2');
+        $this->assertEquals(1, $stat->counter);
+
+        $list = MailStats::getFromMailId($mail->id);
+        $this->assertCount(2, $list);
+
 
         //delete email test
         $this->assertTrue($mail->dbDelete());
+
     }
+
 }

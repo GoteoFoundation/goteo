@@ -5,6 +5,7 @@ namespace Goteo\Model;
 use Goteo\Application\Config;
 use Goteo\Application\Exception\ModelNotFoundException;
 use Goteo\Application\Exception\ModelException;
+
 /*
  * Clase para hacer envios masivos en segundo plano
  *
@@ -18,49 +19,38 @@ class Sender extends \Goteo\Core\Model {
            $blocked,
            $reply,
            $reply_name;
-    /**
-     * Creates a new sending cue
-     */
-    public function __construct($mailId = null, $subject = null, $reply = null, $reply_name = null) {
-        if($mailId)     $this->mail = $mailId;
-        if($subject)    $this->subject = $subject;
-        if($reply)      $this->reply = $reply;
-        if($reply_name) $this->reply_name = $reply_name;
-    }
 
     public function validate(&$errors = []) {
-        //TODO....
-        return true;
+        if(empty($this->subject)) {
+            $errors[] = 'Empty Subject';
+        }
+        if(empty($this->mail)) {
+            $errors[] = 'Empty Mailer ID';
+        }
+
+        return empty($errors);
     }
+
     public function save(&$errors = []) {
+        if( ! $this->validate($errors) ) return false;
+
         $sql = "INSERT INTO `mailer_content` (`active`, `mail`, `subject`, `blocked`, `reply`, `reply_name`)
                 VALUES (0, :mail, :subject, 0, :reply, :reply_name)";
-        static::query($sql, array(':subject' => $this->subject, ':mail'=>$this->mail, ':reply'=>$this->reply, ':reply_name'=>$this->reply_name));
+        $values = [':subject' => $this->subject, ':mail' => $this->mail, ':reply' => $this->reply, ':reply_name' => $this->reply_name];
 
-        if($this->id = static::insertId()) {
-            return $this;
-        }
-        else {
-            throw new ModelException('The creation of a new sending cue has failed!');
-        }
-    }
-
-    /**
-     * Expects a SELECT clause with 4 components:
-     *  mailingId, user, email, name
-     * @param [type] $sql [description]
-     */
-    public function addSubscribersFromSQL($sql) {
-        $sql = 'INSERT INTO `mailer_send` (`mailing`, `user`, `name`, `email`) ' .$sql;
-        if(static::query($sql)) {
+        try {
+            // die(\sqldbg($sql, $values));
+            static::query($sql, $values);
+            $this->id = static::insertId();
             return true;
         }
-        throw new ModelException('Inserting SQL [' . $sql .'] has failed!');
+        catch(\PDOException $e) {
+            $errors[] = 'Error saving into mailer_content: ' . $e->getMessage();
+        }
+        return false;
+
     }
 
-    public function addSubscribers(Array $subscribers = []) {
-
-    }
 
     /**
      * Activates the Sender for sending
@@ -69,6 +59,10 @@ class Sender extends \Goteo\Core\Model {
         $this->active = (bool) $active;
         $query = static::query("UPDATE mailer_content SET active = " . ($this->active ? 1 : 0) . " WHERE id = {$this->id}");
         return ($query->rowCount() == 1);
+    }
+
+    public function getLink() {
+        return SITE_URL . '/mail/' . \mybase64_encode(md5(Config::get('secret') . '-' . $this->id . '-' . $this->mail) . '¬' . $this->id . '¬' . $this->mail);
     }
 
     /**
@@ -90,47 +84,12 @@ class Sender extends \Goteo\Core\Model {
 
             $sending->percent   = 100 * (1 - $sending->pending / $sending->receivers);
         } catch(\PDOException $e) {
-            throw new ModelNotFoundException('Not found mailingId [' . $this->id . ']' . $e->getMessage());
+            throw new ModelNotFoundException('Not found recipients for mailingId [' . $this->id . ']' . $e->getMessage());
         }
 
         return $sending;
 
     }
-
-    public function getLink() {
-        return SITE_URL . '/mail/' . \mybase64_encode(md5(Config::get('secret') . '-' . $this->id . '-' . $this->mail) . '¬' . $this->id . '¬' . $this->mail);
-    }
-
-    /*
-    *  Metodo para obtener la siguiente tanda de destinatarios
-    */
-    static public function getRecipients ($id, $limit=10) {
-        $list = array();
-
-        $sql = "SELECT
-                id,
-                user,
-                name,
-                email
-            FROM mailer_send
-            WHERE mailing = ?
-            AND sent IS NULL
-            AND blocked IS NULL
-            ORDER BY id
-            ";
-            if($limit) $sql .= "LIMIT $limit
-            ";
-
-        if ($query = static::query($sql, array($id))) {
-            foreach ($query->fetchAll(\PDO::FETCH_OBJ) as $receiver) {
-                $list[] = $receiver;
-            }
-        }
-
-        return $list;
-
-    }
-
 
     // TODO: remove this
 	static public function initiateSending ($mailId, $subject, $receivers, $autoactive = 0, $reply = null, $reply_name = null) {
@@ -235,47 +194,46 @@ class Sender extends \Goteo\Core\Model {
 
     }
 
-    /*
-     * Listado completo de destinatarios/envaidos/fallidos/pendientes
+    /**
+     * Expects a SELECT clause with 4 components:
+     *  mailingId, user, email, name
+     * @param [type] $sql [description]
      */
-	static public function getList ($mailing, $detail = 'receivers', $offset = 0, $limit = 10, $count = false) {
+    static public function addSubscribersFromSQL($sql) {
+        $sql = 'INSERT INTO `mailer_send` (`mailing`, `user`, `name`, `email`) ' .$sql;
+        if(static::query($sql)) {
+            return true;
+        }
+        throw new ModelException('Inserting SQL [' . $sql .'] has failed!');
+    }
 
+    static public function addSubscribers(Array $subscribers = []) {
+
+    }
+
+    /*
+    *  Metodo para obtener la siguiente tanda de destinatarios
+    */
+    static public function getRecipients ($id, $limit=10) {
         $list = array();
 
-        $sqlFilter = " WHERE mailer_send.mailing = {$mailing}";
-
-        switch ($detail) {
-            case 'sent':
-                $sqlFilter .= " AND mailer_send.sent = 1";
-                break;
-            case 'failed':
-                $sqlFilter .= " AND mailer_send.sent = 0";
-                break;
-            case 'pending':
-                $sqlFilter .= " AND mailer_send.sent IS NULL";
-                break;
-            case 'receivers':
-            default:
-                break;
-        }
-
-        if($count) {
-            $sql = "SELECT COUNT(mailer_send.id) FROM mailer_send $sqlFilter";
-            return (int) static::query($sql, $values)->fetchColumn();
-        }
-        $offset = (int) $offset;
-        $limit = (int) $limit;
         $sql = "SELECT
-                mailer_send.*,
-                IF(mailer_send.sent = 1, 'sent', IF(mailer_send.sent = 0, 'failed', 'pending')) AS status
-            FROM  mailer_send
-                $sqlFilter
-            ORDER BY sent ASC
-            LIMIT $offset,$limit";
+                id,
+                user,
+                name,
+                email
+            FROM mailer_send
+            WHERE mailing = ?
+            AND sent IS NULL
+            AND blocked IS NULL
+            ORDER BY id
+            ";
+            if($limit) $sql .= "LIMIT $limit
+            ";
 
-        if ($query = static::query($sql)) {
-            foreach ($query->fetchAll(\PDO::FETCH_OBJ) as $user) {
-                $list[] = $user;
+        if ($query = static::query($sql, array($id))) {
+            foreach ($query->fetchAll(\PDO::FETCH_OBJ) as $receiver) {
+                $list[] = $receiver;
             }
         }
 
@@ -283,15 +241,14 @@ class Sender extends \Goteo\Core\Model {
 
     }
 
-
     /*
     *  Metodo para limpieza de envíos masivos enviados y sus destinatarios
     */
-    static public function cleanOld() {
-
+    static public function cleanOld($days = 7) {
+        $days = (int) $days;
         // eliminamos los envíos de hace más de dos días
         static::query("DELETE FROM mailer_content WHERE active = 0
-         AND DATE_FORMAT(from_unixtime(unix_timestamp(now()) - unix_timestamp(datetime)), '%j') > 2");
+         AND DATE_FORMAT(from_unixtime(unix_timestamp(now()) - unix_timestamp(datetime)), '%j') > $days");
 
     }
 

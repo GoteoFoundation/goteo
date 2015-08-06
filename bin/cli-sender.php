@@ -119,7 +119,7 @@ if (!$mailing->active) {
     die;
 }
 if ($mailing->blocked) {
-    if ($debug) echo "dbg: BLOQUEADO!\n";
+    if ($debug) echo "dbg: BLOCKUED!\n";
     $fail = true;
 }
 
@@ -127,7 +127,7 @@ if ($mailing->blocked) {
 if ($debug) echo "dbg: mailing:\n=====\n".print_r($mailing,true)."\n=====\n";
 
 if (!$fail) {
-    if ($debug) echo "dbg: bloqueo este registro\n";
+    if ($debug) echo "dbg: Blocking mailer_content ID [{$mailing->id}]\n";
     Model::query('UPDATE mailer_content SET blocked = 1 WHERE id = ?', array($mailing->id));
 
     // cargamos los destinatarios
@@ -138,7 +138,7 @@ if (!$fail) {
     // si no quedan pendientes, grabamos el feed y desactivamos
     if (empty($users)) {
 
-        if ($debug) echo "dbg: No hay destinatarios\n";
+        if ($debug) echo "dbg: No recipients!\n";
 
         // Desactivamos
         Model::query('UPDATE mailer_content SET active = 0 WHERE id = ?', array($mailing->id));
@@ -150,18 +150,18 @@ if (!$fail) {
         $log->doAdmin('system');
         unset($log);
 
-        if ($debug) echo 'dbg: Se ha completado el envio masivo '.$mailing->id."\n";
+        if ($debug) echo 'dbg: Complete massive mailing ID ['.$mailing->id."]\n";
     } else {
 
         // destinatarios
-        if ($debug) echo "dbg: Enviamos a $total_users usuarios \n";
+        if ($debug) echo "dbg: Total users: [$total_users]\n";
 
         //limpiar logs
         for($i=0; $i<MAIL_MAX_CONCURRENCY; $i++) {
             @unlink(LOGS_DIR . "cli-sendmail-$i.log");
         }
 
-        if ($debug) echo "dbg: Comienza a enviar\n";
+        if ($debug) echo "dbg: Start sending...\n";
 
         $current_rate = 0;
         $current_concurrency = $increment = 2;
@@ -171,7 +171,7 @@ if (!$fail) {
             // comprueba la quota para los envios que se van a hacer
 
             if (!Mail::checkLimit(null, false, $LIMIT)) {
-                if ($debug) echo "dbg: Se ha alcanzado el límite máximo de $LIMIT de envíos diarios! Lo dejamos para mañana\n";
+                if ($debug) echo "dbg: Max limit daily [$LIMIT] reached!\n";
                 $total_users = $i; //para los calculos posteriores
                 break;
             }
@@ -196,10 +196,12 @@ if (!$fail) {
                 $cmd .= " ".escapeshellarg($user->id);
                 $cmd .= " >> $log 2>&1 & echo $!";
 
-                // if($debug) echo "dbg: ejecutando comando:\n$cmd\n";
                 $pid = trim(shell_exec($cmd));
                 $pids[$pid] = $user->id;
-                if($debug) echo "Proceso lanzado con el PID $pid para el envio a {$user->email}\n";
+                if($debug) {
+                    echo "Process PID [$pid] for mailer_send ID [{$user->id}] Email {$user->email} detached\n";
+                    echo "CMD: $cmd\n";
+                }
 
             }
 
@@ -216,7 +218,7 @@ if (!$fail) {
                     }
                 }
                 if($processing) {
-                    echo "PIDs ".implode(",", $processing). " en proceso, esperamos...\n";
+                    echo "PIDs [".implode(",", $processing). "] processing, waiting...\n";
                 }
             } while($check_processes);
 
@@ -225,20 +227,20 @@ if (!$fail) {
 
             //No hace falta incrementar la quota de envio pues ya se hace en Mail::Send()
             $rest = Mail::checkLimit(null, true, $LIMIT);
-            if($debug) echo "Quota de envío restante para hoy: $rest emails, Quota diaria para mailing: $LIMIT\n";
-            if($debug) echo "Envios por segundo: $current_rate - Ratio máximo: ".MAIL_MAX_RATE."\n";
+            if($debug) echo "Quota left for today: [$rest] emails, Quota limit: [$LIMIT]\n";
+            if($debug) echo "Rate sending (per second): $current_rate - Rate limit: [".MAIL_MAX_RATE."]\n";
 
             //aumentamos la concurrencia si el ratio es menor que el 75% de máximo
             if($current_rate < MAIL_MAX_RATE*0.75 && $current_concurrency < MAIL_MAX_CONCURRENCY) {
                 $current_concurrency += 2;
-                if($debug) echo "Ratio de envio actual menor a un 75% del máximo, aumentamos concurrencia a $current_concurrency\n";
+                if($debug) echo "Ratio less than 75% from maximum, raising concurrency to [$current_concurrency]\n";
             }
 
             //disminuimos la concurrencia si llegamos al 90% del ratio máximo
             if($current_rate > MAIL_MAX_RATE*0.9) {
                 $wait_time = ceil($current_rate - MAIL_MAX_RATE*0.9);
                 $current_concurrency--;
-                if($debug) echo "Ratio de envio actual mayor a un 90% del máximo, esperamos $wait_time segundos, disminuimos concurrencia a $current_concurrency\n";
+                if($debug) echo "Ratio overpassing 90% from maximum, waiting [$wait_time] seconds, lowering concurrency to [$current_concurrency]\n";
                 sleep($wait_time);
             }
 
@@ -248,11 +250,11 @@ if (!$fail) {
 
     }
 
-    if ($debug) echo "dbg: desbloqueo este registro\n";
+    if ($debug) echo "dbg: Unblocking mailing ID [{$mailing->id}]\n";
     Model::query('UPDATE mailer_content SET blocked = 0 WHERE id = ?', array($mailing->id));
 
 } else {
-    if ($debug) echo "dbg: FALLO\n";
+    if ($debug) echo "dbg: FAILED!\n";
 }
 
 if($debug) {
@@ -261,7 +263,7 @@ if($debug) {
     }
 }
 
-if ($debug) echo "dbg: FIN, tiempo de ejecución total " . round(microtime(true) - $itime, 2) . " segundos para enviar $total_users emails, ratio medio " . round($total_users/(microtime(true) - $itime),2) . " emails/segundo\n";
+if ($debug) echo "dbg: FIN, Total execution time [" . round(microtime(true) - $itime, 2) . "] seconds $total_users emails, Medium rate [" . round($total_users/(microtime(true) - $itime),2) . "] emails/second\n";
 
 // limpiamos antiguos procesados
 Sender::cleanOld();

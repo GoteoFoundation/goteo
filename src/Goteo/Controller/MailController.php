@@ -21,7 +21,12 @@ class MailController extends \Goteo\Core\Controller {
             // 'any' refers to any massive sending
             if(!is_numeric($email) && $email !== 'any') {
                 // track this opening
-                MailStats::incMetric($mail_id, $email, 'EMAIL_OPENED');
+                try {
+                    MailStats::incMetric($mail_id, $email, 'EMAIL_OPENED');
+                } catch(\Exception $e) {
+                    //TODO: log this
+                }
+
             }
             // Content still in database?
             if ($mail = Mail::get($mail_id)) {
@@ -44,7 +49,11 @@ class MailController extends \Goteo\Core\Controller {
             // die("$email $mail_id $url");
 
             // track this opening
-            MailStats::incMetric($mail_id, $email, $url);
+            try {
+                MailStats::incMetric($mail_id, $email, $url);
+            } catch(\Exception $e) {
+                //TODO: log this
+            }
 
             return $this->redirect($url);
         }
