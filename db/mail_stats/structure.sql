@@ -11,3 +11,6 @@ CREATE TABLE `mail_stats` (
   KEY `mail_id` (`mail_id`),
   CONSTRAINT `mail_stats_ibfk_1` FOREIGN KEY (`metric_id`) REFERENCES `metric` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- id primary needed
+ALTER TABLE `mail_stats` ADD COLUMN `id` BIGINT UNSIGNED NOT NULL AUTO_INCREMENT FIRST, DROP PRIMARY KEY, ADD PRIMARY KEY (`id`, `mail_id`, `email`, `metric_id`);

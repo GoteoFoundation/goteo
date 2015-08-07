@@ -87,14 +87,6 @@ else if (!$got_lock && $wouldblock) {
 ftruncate($lock_file, 0);
 fwrite($lock_file, getmypid() . "\n");
 
-// exec("ps x | grep " . escapeshellarg(escapeshellcmd(basename(__FILE__))) . " | grep -v grep | awk '{ print $1 }'", $commands);
-
-// if (count($commands)>1) {
-//     //echo `ps x`;
-//     die("Ya existe una copia de " . basename(__FILE__) . " en ejecución!\n");
-// }
-
-// print_r($commands);
 
 // Limite para sender, (deja margen para envios individuales)
 $LIMIT = (Config::get('mail.quota.sender') ? Config::get('mail.quota.sender') : 40000);

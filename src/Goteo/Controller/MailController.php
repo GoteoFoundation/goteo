@@ -5,6 +5,7 @@ namespace Goteo\Controller;
 use Symfony\Component\HttpFoundation\Response;
 use Goteo\Application\Exception\ControllerException;
 use Goteo\Model\MailStats;
+use Goteo\Model\Metric;
 use Goteo\Model\Mail;
 
 class MailController extends \Goteo\Core\Controller {
@@ -42,12 +43,11 @@ class MailController extends \Goteo\Core\Controller {
 
     /**
      * Redirects to the apropiate link
+     * Not really used, only as a fallback if mailstats fails
      */
     public function urlAction ($token) {
 
         if(list($email, $mail_id, $url) = Mail::decodeToken($token)) {
-            // die("$email $mail_id $url");
-
             // track this opening
             try {
                 MailStats::incMetric($mail_id, $email, $url);
@@ -56,6 +56,28 @@ class MailController extends \Goteo\Core\Controller {
             }
 
             return $this->redirect($url);
+        }
+
+        throw new ControllerException('Link not available!');
+    }
+
+    /**
+     * Redirects to the apropiate from a mailStats id
+     */
+    public function linkAction ($id) {
+
+        if($stat = MailStats::get($id)) {
+            // track this opening
+            try {
+                $stat->inc();
+                $url = $stat->getMetric()->metric;
+                if($url) {
+                    return $this->redirect($url);
+                }
+            } catch(\Exception $e) {
+                //TODO: log this
+            }
+
         }
 
         throw new ControllerException('Link not available!');

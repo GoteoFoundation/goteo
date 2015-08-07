@@ -2,10 +2,13 @@
 
 namespace Goteo\Model;
 
+use Goteo\Application\Exception\ModelException;
 use Goteo\Application\Config;
 use Goteo\Application\View;
 use Goteo\Application\Message;
 use Goteo\Model\Template;
+use Goteo\Model\MailStats;
+use Goteo\Model\Metric;
 use Goteo\Library\FileHandler\File;
 
 class Mail extends \Goteo\Core\Model {
@@ -368,17 +371,30 @@ class Mail extends \Goteo\Core\Model {
      * @param  Array|array $extra_vars [description]
      * @return [type]                  [description]
      */
-    public function render($plain = false, Array $extra_vars = []) {
+    public function render($plain = false, Array $extra_vars = [], $process_links = true) {
         $content = $this->content;
         // Process links if tracker var present
-        if(array_key_exists('tracker', $extra_vars)) {
+        if($process_links) {
             // compilar links y cambiarlos por redirecciones a un controlador
             $content = preg_replace_callback([
                 '/(<a.*)href=(")([^"]*)"([^>]*)>/U',
                 "/(<a.*)href=(')([^']*)'([^>]*)>/U"
                 ],
                 function ($matches){
-                    $new = SITE_URL . '/mail/url/' . \mybase64_encode(md5(Config::get('secret') . '-' . $this->to . '-' . $this->id. '-' . $matches[3]) . '¬' . $this->to  . '¬' . $this->id . '¬' . $matches[3]);
+                    // create metric for it
+                    try {
+                        $stat = MailStats::getStat($this->id, $this->to, Metric::getMetric($matches[3]));
+                        $errors = [];
+                        if (! $stat->save($errors) ) {
+                            throw new ModelException(implode("\n", $errors));
+                        }
+
+                        $new = SITE_URL . '/mail/link/' . $stat->id;
+                    } catch(ModelException $e) {
+                        Message::error('Error creating MailStats, fallback to base64: ' . $e->getMessage());
+                        $url = $matches[3];
+                        $new = SITE_URL . '/mail/url/' . \mybase64_encode(md5(Config::get('secret') . '-' . $this->to . '-' . $this->id. '-' . $url) . '¬' . $this->to  . '¬' . $this->id . '¬' . $url);
+                    }
                     return $matches[1] . 'href="' . $new . '"'. $matches[4] . '>';
                 },
                 $content);

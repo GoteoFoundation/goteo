@@ -8,6 +8,7 @@ use Goteo\Application\Exception\ModelException;
 class MailStats extends \Goteo\Core\Model {
     protected $Table = 'mail_stats';
     public
+        $id,
         $mail_id,
         $email,
         $metric_id,
@@ -108,16 +109,13 @@ class MailStats extends \Goteo\Core\Model {
         if( !$this->validate($errors) ) return false;
 
         try {
-            if(static::getStat($this->mail_id, $this->email, $this->getMetric(), false)) {
-                return $this->dbUpdate(['mail_id', 'email', 'metric_id', 'counter'], ['mail_id', 'email', 'metric_id']);
-            }
-            else {
-                return $this->dbInsert(['mail_id', 'email', 'metric_id', 'counter', 'created_at']);
-            }
+            $this->dbInsertUpdate(['mail_id', 'email', 'metric_id', 'counter'], ['mail_id', 'email', 'metric_id']);
+            return true;
         }
         catch(\PDOException $e) {
             $errors[] = 'MailStats saving error: ' . $e->getMessage();
         }
+
         return false;
 
     }
