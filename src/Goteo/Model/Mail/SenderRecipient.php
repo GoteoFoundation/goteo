@@ -1,11 +1,11 @@
 <?php
 
-namespace Goteo\Model;
+namespace Goteo\Model\Mail;
 
 use Goteo\Application\Config;
 use Goteo\Application\Exception\ModelNotFoundException;
 use Goteo\Application\Exception\ModelException;
-use Goteo\Model\Sender;
+use Goteo\Model\Mail\Sender;
 
 /*
  * SenderRecipient for Sender class

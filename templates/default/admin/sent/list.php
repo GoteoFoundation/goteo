@@ -63,12 +63,12 @@ $templates = $this->templates;
     </form>
 </div>
 
-    <?php if ($this->sent) : ?>
+    <?php if ($this->sent_list) : ?>
         <div class="widget board">
             <table>
                 <thead>
                     <tr>
-                        <th><!-- detalles --></th>
+                        <th colspan="2">Leído</th>
                         <th>Destinatario</th>
                         <th>Plantilla</th>
                         <th>Asunto</th>
@@ -79,15 +79,16 @@ $templates = $this->templates;
                 </thead>
                 <tbody>
                     <?php
-                    foreach($this->sent as $send):
+                    foreach($this->sent_list as $sent):
                         ?>
                         <tr>
-                            <td><a href="/admin/sent/detail/<?= $send->id ?>">[Detalles]</a></td>
-                            <td><a href="/admin/users?name=<?php echo urlencode($send->email) ?>"><?php echo $send->email; ?></a></td>
-                            <td><?= $templates[$send->template] ?></td>
-                            <td><?= $send->getSubject() ?></td>
-                            <td><?= $send->date ?></td>
-                            <td><a href="/mail/<?= $send->getToken(true, true) ?>" target="_blank">[Visualizar]</a></td>
+                            <td><?= sprintf('%02d',round($sent->getStats()->getEmailOpenedCollector()->getPercent())) ?>%</td>
+                            <td><a href="/admin/sent/detail/<?= $sent->id ?>">[Detalles]</a></td>
+                            <td><a href="/admin/users?name=<?php echo urlencode($sent->email) ?>"><?php echo $sent->email; ?></a></td>
+                            <td><?= $templates[$sent->template] ?></td>
+                            <td><?= $sent->getSubject() ?></td>
+                            <td><?= $sent->date ?></td>
+                            <td><a href="/mail/<?= $sent->getToken(true, true) ?>" target="_blank">[Visualizar]</a></td>
                         </tr>
                     <?php endforeach; ?>
                 </tbody>

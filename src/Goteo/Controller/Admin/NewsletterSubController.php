@@ -13,8 +13,8 @@ use Goteo\Application\Config;
 use Goteo\Model\Template;
 use Goteo\Model\User;
 use Goteo\Library\Newsletter;
-use Goteo\Model\Sender;
-use Goteo\Model\SenderRecipient;
+use Goteo\Model\Mail\Sender;
+use Goteo\Model\Mail\SenderRecipient;
 
 class NewsletterSubController extends AbstractSubController {
 

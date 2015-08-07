@@ -1,8 +1,8 @@
 <?php
 
-namespace Goteo\Model;
+namespace Goteo\Model\Mail;
 
-use Goteo\Model\Metric;
+use Goteo\Model\Mail\Metric;
 use Goteo\Application\Exception\ModelException;
 
 class MailStats extends \Goteo\Core\Model {
@@ -40,7 +40,7 @@ class MailStats extends \Goteo\Core\Model {
             ', array(':mail_id' => $mail_id, ':email' => $email, ':metric_id' => $metric->id));
 
         $obj = $query->fetchObject(__CLASS__);
-        if( ! ($obj instanceOf \Goteo\Model\MailStats) ) {
+        if( ! ($obj instanceOf \Goteo\Model\Mail\MailStats) ) {
             if($auto_create) $obj = new self(['metric_id' => $metric->id, 'mail_id' => $mail_id, 'email' => $email, 'created_at' => date("Y-m-d H:i:s")]);
             else             return false;
         }
@@ -136,5 +136,32 @@ class MailStats extends \Goteo\Core\Model {
             $errors[] = 'Empty Email';
         }
         return empty($errors);
+    }
+
+    /*
+     *  Return a list of stats
+     *  Not really used, use StatsCollector instead to collect nice stats
+     */
+    public function getList($offset = 0, $limit = 50, $count = false) {
+        $values = array(':mail_id' => $this->mail->id);
+        if($count) {
+            $sql = "SELECT COUNT(*) FROM mail_stats WHERE mail_stats.mail_id = :mail_id";
+            return (int) Model::query($sql, $values)->fetchColumn();
+        }
+        $offset = (int) $offset;
+        $limit = (int) $limit;
+        $sql = "
+            SELECT *
+            FROM  mail_stats
+            WHERE mail_stats.mail_id = :mail_id
+            LIMIT $offset, $limit";
+
+        $list = [];
+        if ($query = Model::query($sql, $values)) {
+            foreach ($query->fetchAll(\PDO::FETCH_CLASS, '\Goteo\Model\Mail\MailStats') as $item) {
+                $list[] = $item;
+            }
+        }
+        return $list;
     }
 }

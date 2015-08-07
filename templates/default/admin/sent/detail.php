@@ -4,25 +4,25 @@
 
 <div class="widget board">
 <a href="/mail/<?= $this->mail->getToken(true, true) ?>" target="_blank">[Visualizar]</a>
-<hr>stats:<hr>
-<?php print_r($this->stats) ?>
+<p><b>Subject:</b> <?= $this->mail->getSubject() ?> %</p>
+<p><b>Alcance:</b> <?= number_format(sprintf('%02f', $this->readed), 2, ',', '') ?> %</p>
 </div>
 
-<?php if ($this->stats_list) : ?>
+<?php if ($this->metric_list) : ?>
     <div class="widget board">
     <table>
         <tr>
-            <th>Email</th>
             <th>Metric</th>
-            <th>Counter</th>
-            <th>Created</th>
+            <th>Percent</th>
+            <th>Non zero</th>
+            <th>Total</th>
         </tr>
-        <?php foreach ($this->stats_list as $stat) : ?>
+        <?php foreach ($this->metric_list as $collection) : ?>
         <tr>
-            <td><?= $stat->email ?></td>
-            <td><?= $stat->metric ?></td>
-            <td><?= $stat->counter ?></td>
-            <td><?= $stat->created_at ?></td>
+            <td><?= $collection->metric->metric ?></td>
+            <td><?= number_format(sprintf('%02f', $collection->getPercent()), 2, ',', '') ?> %</td>
+            <td><?= $collection->non_zero ?></td>
+            <td><?= $collection->total ?></td>
         </tr>
         <?php endforeach ?>
     </table>

@@ -9,7 +9,7 @@ use Goteo\Model\Node;
 use Goteo\Library\Feed;
 use Goteo\Model\Template;
 use Goteo\Model\Mail;
-use Goteo\Model\MailStats;
+use Goteo\Model\Mail\StatsCollector;
 
 class SentSubController extends AbstractSubController {
 
@@ -41,15 +41,19 @@ class SentSubController extends AbstractSubController {
 
     public function detailAction($id) {
       $mail = Mail::get($id);
-      $limit = 25;
-      $list = MailStats::getFromMailId($id, $this->getGet('pag') * $limit, $limit);
-      $total = MailStats::getFromMailId($id, 0, 0, true);
+      $limit = 50;
+      $stats = new StatsCollector($mail);
+      $readed = $stats->getEmailOpenedCollector()->getPercent();
+      $metric_list = $stats->getAllMetrics();
+      $total = count($metric_list);
       return array(
         'template' => 'admin/sent/detail',
         'mail' => $mail,
-        'stats_list' => $list,
-        'total' => $total,
-        'limit' => $limit
+        'stats' => $stats,
+        'readed' => $readed,
+        'metric_list' => $metric_list,
+        'limit' => $limit,
+        'total' => $total
         );
     }
 
@@ -63,7 +67,7 @@ class SentSubController extends AbstractSubController {
 
         $filters = $this->getFilters();
         $limit = 20;
-        $sent = Mail::getSentList($filters, $this->node, $this->getGet('pag') * $limit, $limit);
+        $sent_list = Mail::getSentList($filters, $this->node, $this->getGet('pag') * $limit, $limit);
         $total = Mail::getSentList($filters, $this->node, 0, 0, true);
 
         return array(
@@ -71,7 +75,7 @@ class SentSubController extends AbstractSubController {
                 'filters' => $filters,
                 'templates' => $templates,
                 'nodes' => $nodes,
-                'sent' => $sent,
+                'sent_list' => $sent_list,
                 'total' => $total,
                 'limit' => $limit
         );

@@ -4,8 +4,8 @@ namespace Goteo\Controller;
 
 use Symfony\Component\HttpFoundation\Response;
 use Goteo\Application\Exception\ControllerException;
-use Goteo\Model\MailStats;
-use Goteo\Model\Metric;
+use Goteo\Model\Mail\MailStats;
+use Goteo\Model\Mail\Metric;
 use Goteo\Model\Mail;
 
 class MailController extends \Goteo\Core\Controller {
@@ -20,19 +20,23 @@ class MailController extends \Goteo\Core\Controller {
 
             // A numeric email refers to a ID entry of the mailer_content table (pending sendings)
             // 'any' refers to any massive sending
+            $track = false;
             if(!is_numeric($email) && $email !== 'any') {
                 // track this opening
+                $track = true;
                 try {
                     MailStats::incMetric($mail_id, $email, 'EMAIL_OPENED');
+                    // TODO: create location
+
                 } catch(\Exception $e) {
-                    //TODO: log this
+                    // TODO: log this
                 }
 
             }
             // Content still in database?
             if ($mail = Mail::get($mail_id)) {
                 $mail->to = $email;
-                return new Response($mail->render());
+                return new Response($mail->render(false, [], false));
             }
 
             // TODO, check if exists as file-archived
@@ -51,6 +55,8 @@ class MailController extends \Goteo\Core\Controller {
             // track this opening
             try {
                 MailStats::incMetric($mail_id, $email, $url);
+                // TODO: create location
+
             } catch(\Exception $e) {
                 //TODO: log this
             }

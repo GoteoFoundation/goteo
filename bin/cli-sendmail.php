@@ -10,8 +10,8 @@ use Goteo\Application\Message;
 use Goteo\Application\Config;
 use Goteo\Library\Feed;
 use Goteo\Model\Mail;
-use Goteo\Model\Sender;
-use Goteo\Model\SenderRecipient;
+use Goteo\Model\Mail\Sender;
+use Goteo\Model\Mail\SenderRecipient;
 
 if (PHP_SAPI !== 'cli') {
     die('Console access only!');

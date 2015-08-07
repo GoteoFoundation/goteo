@@ -10,7 +10,7 @@ use Goteo\Core\Model,
     Goteo\Application\Config,
     Goteo\Library\Feed,
     Goteo\Model\Mail,
-    Goteo\Model\Sender;
+    Goteo\Model\Mail\Sender;
 
 if (PHP_SAPI !== 'cli') {
     die('Console access only!');

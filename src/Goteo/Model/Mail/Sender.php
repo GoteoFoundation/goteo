@@ -1,6 +1,6 @@
 <?php
 
-namespace Goteo\Model;
+namespace Goteo\Model\Mail;
 
 use Goteo\Application\Config;
 use Goteo\Application\Exception\ModelNotFoundException;
@@ -160,7 +160,36 @@ class Sender extends \Goteo\Core\Model {
         return $mailing;
     }
 
+    /*
+    * Obtains a sender from a Mail id
+    */
+    static public function getFromMailId($mail_id = null) {
+        try {
+            $values = [':mail' => $mail_id];
 
+            // recuperamos los datos del envío
+            $sql = "SELECT
+                    mailer_content.id as id,
+                    mailer_content.active as active,
+                    mailer_content.mail as mail,
+                    mailer_content.subject as subject,
+                    DATE_FORMAT(mailer_content.datetime, '%d/%m/%Y %H:%i:%s') as date,
+                    mailer_content.blocked as blocked,
+                    mailer_content.reply as reply,
+                    mailer_content.reply_name as reply_name
+                FROM mailer_content
+                WHERE mail = :mail
+                LIMIT 1
+                ";
+
+            $query = static::query($sql, $values);
+            return $query->fetchObject(__CLASS__);
+
+        } catch(\PDOException $e) {
+            throw new ModelNotFoundException('Not found sending [' . $id . ']' . $e->getMessage());
+        }
+        return $mailing;
+    }
     /*
     * Método para obtener el listado de envios programados
     */

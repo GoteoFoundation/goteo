@@ -7,8 +7,9 @@ use Goteo\Application\Config;
 use Goteo\Application\View;
 use Goteo\Application\Message;
 use Goteo\Model\Template;
-use Goteo\Model\MailStats;
-use Goteo\Model\Metric;
+use Goteo\Model\Mail\MailStats;
+use Goteo\Model\Mail\StatsCollector;
+use Goteo\Model\Mail\Metric;
 use Goteo\Library\FileHandler\File;
 
 class Mail extends \Goteo\Core\Model {
@@ -517,11 +518,16 @@ class Mail extends \Goteo\Core\Model {
         );
     }
 
+    public function getStats() {
+        if(!$this->stats_collector) {
+            $this->stats_collector = new StatsCollector($this);
+        }
+        return $this->stats_collector;
+    }
 
     /**
      *
      * @param array $filters    user (nombre o email),  template
-     * FIXME: No funciona cuando las fechas desde y hasta son iguales.
      */
     public static function getSentList($filters = array(), $node = null, $offset = 0, $limit = 10, $count = false) {
 
@@ -560,9 +566,16 @@ class Mail extends \Goteo\Core\Model {
             $values[':date_from'] = $filters['date_from'];
         }
         if (!empty($filters['date_until'])) {
-            $sqlFilter .= $and . " mail.date <= :date_until";
-            $and = " AND";
-            $values[':date_until'] = $filters['date_until'];
+
+            if (!empty($filters['date_from']) && $filters['date_from'] == $filters['date_until']) {
+                $sqlFilter .= $and . " mail.date = :date";
+                $values[':date'] = $filters['date'];
+            }
+            else {
+                $sqlFilter .= $and . " mail.date <= :date_until";
+                $and = " AND";
+                $values[':date_until'] = $filters['date_until'];
+            }
         }
 
         // Return total count for pagination

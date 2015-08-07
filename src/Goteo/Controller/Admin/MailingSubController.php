@@ -286,7 +286,7 @@ class MailingSubController extends AbstractSubController {
 
                 // - se usa el metodo initializeSending para grabar el envío (parametro para autoactivar)
                 // - initiateSending ($mailId, $subject, $receivers, $autoactive = 0)
-                if (\Goteo\Model\Sender::initiateSending($mailHandler->id, $subject, $receivers, 1))  {
+                if (\Goteo\Model\Mail\Sender::initiateSending($mailHandler->id, $subject, $receivers, 1))  {
                     $ok = true;
                     // Evento Feed
                     $log = new Feed();

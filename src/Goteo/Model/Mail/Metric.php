@@ -1,6 +1,6 @@
 <?php
 
-namespace Goteo\Model;
+namespace Goteo\Model\Mail;
 
 use Goteo\Application\Exception\ModelException;
 
@@ -19,7 +19,7 @@ class Metric extends \Goteo\Core\Model {
     static public function getMetric ($metric) {
         $query = static::query('SELECT * FROM metric WHERE metric = :metric', array(':metric' => $metric));
         $obj = $query->fetchObject(__CLASS__);
-        if( ! ($obj instanceOf \Goteo\Model\Metric) ) {
+        if( ! ($obj instanceOf \Goteo\Model\Mail\Metric) ) {
             $obj = new self(['metric' => $metric]);
             $errors = [];
             if(!$obj->save($errors)) {
