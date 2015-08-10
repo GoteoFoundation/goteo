@@ -124,7 +124,7 @@ class AccountsSubController extends AbstractSubController {
 
                 if (empty($invest->preapproval)) {
 
-                    if (Paypal::cancelPay($invest, $err)) {
+                    if (Paypal::cancelPay($invest, $err, $fail)) {
                         Message::info("Pago PayPal paypal $verbo.");
                         $log_text = "El admin %s ha $verbo aporte y pago PayPal de %s de %s mediante PayPal (id: %s) al proyecto %s del dia %s";
                         $ok = true;
@@ -141,7 +141,7 @@ class AccountsSubController extends AbstractSubController {
 
                 } else {
 
-                    if (Paypal::cancelPreapproval($invest, $err)) {
+                    if (Paypal::cancelPreapproval($invest, $err, $fail)) {
                         Message::info("Preaproval paypal $verbo.");
                         $log_text = "El admin %s ha $verbo aporte y preapproval de %s de %s mediante PayPal (id: %s) al proyecto %s del dia %s";
                         $ok = true;
@@ -161,7 +161,7 @@ class AccountsSubController extends AbstractSubController {
                 break;
             case 'tpv':
                 $err = array();
-                if (Tpv::cancelPreapproval($invest, $err)) {
+                if (Tpv::cancelPreapproval($invest, $err, $fail)) {
                     $txt_errors = implode('; ', $err);
                     Message::error("Aporte $verbo correctamente. " . $txt_errors);
                     $log_text = "El admin %s ha anulado el cargo tpv de %s de %s mediante TPV (id: %s) al proyecto %s del dia %s";
