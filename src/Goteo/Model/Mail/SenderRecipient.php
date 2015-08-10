@@ -152,8 +152,9 @@ class SenderRecipient extends \Goteo\Core\Model {
             ORDER BY sent ASC
             LIMIT $offset,$limit";
 
+        // die(\sqldbg($sql));
         if ($query = static::query($sql)) {
-            foreach ($query->fetchAll(\PDO::FETCH_OBJ) as $user) {
+            foreach ($query->fetchAll(\PDO::FETCH_CLASS, __CLASS__) as $user) {
                 $list[] = $user;
             }
         }

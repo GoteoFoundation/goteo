@@ -28,11 +28,41 @@
     </table>
     </div>
 
+<?php else : ?>
+    <p>No se han encontrado registros</p>
+<?php endif ?>
+
+<h3>Viendo el listado completo de los receptores</h3>
+<?php if ($this->list) : ?>
+    <div class="widget board">
+    <table>
+        <tr>
+            <th>Email</th>
+            <th>Alias</th>
+            <th>Usuario</th>
+            <th>Estado</th>
+            <th>Leido</th>
+            <th>% links</th>
+            <th>Location</th>
+        </tr>
+        <?php foreach ($this->list as $user) : ?>
+        <tr>
+            <td><?= $user->email ?></td>
+            <td><?= $user->name ?></td>
+            <td><?= $user->user ?></td>
+            <td><?= $user->status . ($user->error ? $user->error : '')  ?></td>
+            <td><?= 0  ?></td>
+            <td><?= 0  ?></td>
+            <td><?= 0  ?></td>
+        </tr>
+        <?php endforeach ?>
+    </table>
+    </div>
+
     <?= $this->insert('partials/utils/paginator', ['total' => $this->total, 'limit' => $this->limit]) ?>
 
 <?php else : ?>
     <p>No se han encontrado registros</p>
 <?php endif ?>
-
 
 <?php $this->replace() ?>
