@@ -2,6 +2,8 @@
 
 namespace Goteo\Model\Call {
 
+    use \Goteo\Model;
+
     class Project extends \Goteo\Core\Model {
 
         public
