@@ -244,7 +244,6 @@ namespace Goteo\Model {
                     project.status as status
                 FROM    project
                 WHERE ( status = 5 OR status = 4 )
-                AND project.id NOT IN (SELECT project FROM stories WHERE stories.node = :node AND project IS NOT NULL {$sqlCurr} )
                 ORDER BY name ASC
                 ", array(':node' => $node));
 
