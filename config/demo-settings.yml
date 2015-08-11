@@ -179,6 +179,13 @@ mail:
         bounces_topic:    amazon-ses-bounces
         complaints_topic: amazon-ses-complaints
 
+# This will be used for geolocating users, projects, and mail tracking
+geolocation:
+    # Path to maxmind databases, you need to download (and keep updated) either the free o comercial
+    # databases from maxmind. Check this for more info: https://dev.maxmind.com/geoip/geoipupdate/
+    # relative paths are allowed (ie: you can save your maxmind databases into config/resources/maxmind if you want)
+    maxmind:
+        cities: #/usr/share/GeoIP/GeoLite2-City.mmdb
 
 # Paypal config location path
 # /config/sdk_config.ini

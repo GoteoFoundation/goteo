@@ -14,6 +14,7 @@ class StatsCollector {
     private $mail;
     private $sender;
     private $metric_list = [];
+    private $metric_list_retrieved = false;
     private $emails_list = [];
 
     /**
@@ -35,9 +36,10 @@ class StatsCollector {
      * @return [type] [description]
      */
     public function getAllMetrics() {
-        if(empty($this->metric_list)) {
+        if(!$this->metric_list_retrieved) {
             $values = array(':mail_id' => $this->mail->id);
             $sql = "SELECT DISTINCT(metric_id) as metric_id FROM mail_stats WHERE mail_stats.mail_id = :mail_id";
+            // die(\sqldbg($sql, $values));
             if($query = Model::query($sql, $values)) {
                 foreach($query->fetchAll(\PDO::FETCH_CLASS) as $ob) {
                     $metric = Metric::get($ob->metric_id);
@@ -80,6 +82,7 @@ class StatsCollector {
         return $this->metric_list[$metric->id];
 
     }
+
     /**
      * Handy method for retrieving EMAIL_OPENED method
      * @param  Metric $metric_val [description]
@@ -90,6 +93,12 @@ class StatsCollector {
         return $this->getMetricCollector($metric);
     }
 
+    /**
+     * Get useful data for email statistics
+     * @param  string $email         user email
+     * @param  string $metric_filter sql filter
+     * @return EmailCollector        instance
+     */
     public function getEmailCollector($email, $metric_filter = "metric.metric LIKE 'http%'") {
         //live caching results
         if(empty($this->emails_list[$metric->id])) {
@@ -113,6 +122,12 @@ class StatsCollector {
         return $this->emails_list[$email];
     }
 
+
+    /**
+     * Handy method for retrieving EMAIL_OPENED method counter
+     * @param  string $email user email to check
+     * @return int           number of hits
+     */
     public function getEmailOpenedCounter($email) {
         $metric = Metric::getMetric('EMAIL_OPENED');
         try {
@@ -122,7 +137,16 @@ class StatsCollector {
         return 0;
     }
 
-
+    public function getEmailOpenedLocation($email, $method = 'resume') {
+        $metric = Metric::getMetric('EMAIL_OPENED');
+        if($stat = MailStats::getStat($this->mail->id, $email ,$metric, false)) {
+            if($loc = MailStatsLocation::get($stat->id)) {
+                if($method == 'resume') return $loc->city . ' (' . $loc->country . ')';
+                return $loc;
+            }
+        }
+        return '';
+    }
 }
 
 class MetricCollector {

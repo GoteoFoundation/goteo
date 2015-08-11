@@ -13,16 +13,12 @@
     <table>
         <tr>
             <th>Metric</th>
-            <th>Percent</th>
-            <th>Non zero</th>
-            <th>Total</th>
+            <th>Porcentage éxito</th>
         </tr>
         <?php foreach ($this->metric_list as $collection) : ?>
         <tr>
             <td><?= $collection->metric->metric ?></td>
             <td><?= number_format(sprintf('%02f', $collection->getPercent()), 2, ',', '') ?> %</td>
-            <td><?= $collection->non_zero ?></td>
-            <td><?= $collection->total ?></td>
         </tr>
         <?php endforeach ?>
     </table>
@@ -35,6 +31,7 @@
 <h3>Viendo el listado completo de los receptores</h3>
 <?php if ($this->user_list) : ?>
     <div class="widget board">
+    <p>Total de receptores: <?= $this->total ?></p>
     <table>
         <tr>
             <th>Email</th>
@@ -53,7 +50,7 @@
             <td><?= $user->status . ($user->error ? $user->error : '')  ?></td>
             <td><?= $this->stats->getEmailOpenedCounter($user->email) ?></td>
             <td><?= sprintf('%02d',round($this->stats->getEmailCollector($user->email)->getPercent())) ?>%</td>
-            <td><?= 0  ?></td>
+            <td><?= $this->stats->getEmailOpenedLocation($user->email) ?></td>
         </tr>
         <?php endforeach ?>
     </table>
