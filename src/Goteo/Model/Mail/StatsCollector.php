@@ -14,6 +14,7 @@ class StatsCollector {
     private $mail;
     private $sender;
     private $metric_list = [];
+    private $emails_list = [];
 
     /**
      * Creates a new StatsCollector instance
@@ -53,7 +54,8 @@ class StatsCollector {
      * @return MetricCollector instance
      */
     public function getMetricCollector(Metric $metric) {
-        if(empty($this->metrics[$metric->id])) {
+        //live caching results
+        if(empty($this->metric_list[$metric->id])) {
             // Count total sendings, from mailer_send if exists sender
             $values = array(':mail_id' => $this->mail->id, ':metric_id' => $metric->id);
             if($this->sender) {
@@ -69,13 +71,13 @@ class StatsCollector {
             $sql = "SELECT ($total_sql) as total, ($non_zero_sql) as non_zero";
             // echo \sqldbg($sql, $values);
             if($query = Model::query($sql, $values)) {
-                $this->metrics[$metric->id] = $query->fetchObject('\Goteo\Model\Mail\MetricCollector', [$metric]);
+                $this->metric_list[$metric->id] = $query->fetchObject('\Goteo\Model\Mail\MetricCollector', [$metric]);
             }
             else {
-                $this->metrics[$metric->id] = new MetricCollector($metric);
+                $this->metric_list[$metric->id] = new MetricCollector($metric);
             }
         }
-        return $this->metrics[$metric->id];
+        return $this->metric_list[$metric->id];
 
     }
     /**
@@ -87,6 +89,40 @@ class StatsCollector {
         $metric = Metric::getMetric('EMAIL_OPENED');
         return $this->getMetricCollector($metric);
     }
+
+    public function getEmailCollector($email, $metric_filter = "metric.metric LIKE 'http%'") {
+        //live caching results
+        if(empty($this->emails_list[$metric->id])) {
+            // Count total sendings, from mailer_send if exists sender
+            $values = array(':mail_id' => $this->mail->id, ':email' => $email);
+            $where = "mail_stats.mail_id = :mail_id AND mail_stats.email = :email";
+            if($metric_filter) {
+                $where .= " AND mail_stats.metric_id IN (SELECT id FROM metric WHERE $metric_filter)";
+            }
+            $total_sql = "SELECT COUNT(*) FROM mail_stats WHERE $where";
+            $non_zero_sql = "SELECT COUNT(*) FROM mail_stats WHERE $where AND counter>0";
+            $sql = "SELECT ($total_sql) as total, ($non_zero_sql) as non_zero";
+            // echo \sqldbg($sql, $values);
+            if($query = Model::query($sql, $values)) {
+                $this->emails_list[$email] = $query->fetchObject('\Goteo\Model\Mail\EmailCollector', [$email]);
+            }
+            else {
+                $this->emails_list[$email] = new EmailCollector($email);
+            }
+        }
+        return $this->emails_list[$email];
+    }
+
+    public function getEmailOpenedCounter($email) {
+        $metric = Metric::getMetric('EMAIL_OPENED');
+        try {
+            if($stat = MailStats::getStat($this->mail->id, $email ,$metric, false))
+                return $stat->counter;
+        } catch(ModelNotFoundException $e) {}
+        return 0;
+    }
+
+
 }
 
 class MetricCollector {
@@ -96,6 +132,21 @@ class MetricCollector {
 
     public function __construct(Metric $metric) {
         $this->metric = $metric;
+    }
+    public function getPercent() {
+        if($this->total)
+            return 100 * $this->non_zero / $this->total;
+        return 0;
+    }
+}
+
+class EmailCollector {
+    public $email;
+    public $total = 0;
+    public $non_zero = 0;
+
+    public function __construct($email) {
+        $this->email = $email;
     }
     public function getPercent() {
         if($this->total)

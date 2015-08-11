@@ -76,7 +76,9 @@ class MailController extends \Goteo\Core\Controller {
             // track this opening
             try {
                 $stat->inc();
+                $stat->save();
                 $url = $stat->getMetric()->metric;
+
                 if($url) {
                     return $this->redirect($url);
                 }

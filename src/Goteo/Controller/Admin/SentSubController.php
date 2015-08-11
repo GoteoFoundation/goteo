@@ -51,7 +51,7 @@ class SentSubController extends AbstractSubController {
 
         $mailing = Sender::getFromMailId($id);
         $limit = 50;
-        $list = SenderRecipient::getList($mailing->id, 'receivers', $this->getGet('pag') * $limit, $limit);
+        $user_list = SenderRecipient::getList($mailing->id, 'receivers', $this->getGet('pag') * $limit, $limit);
         $total = SenderRecipient::getList($mailing->id, 'receivers', 0, 0, true);
 
       return array(
@@ -60,7 +60,7 @@ class SentSubController extends AbstractSubController {
         'stats' => $stats,
         'readed' => $readed,
         'metric_list' => $metric_list,
-        'list' => $list,
+        'user_list' => $user_list,
         'limit' => $limit,
         'total' => $total
         );

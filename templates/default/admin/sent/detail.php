@@ -33,7 +33,7 @@
 <?php endif ?>
 
 <h3>Viendo el listado completo de los receptores</h3>
-<?php if ($this->list) : ?>
+<?php if ($this->user_list) : ?>
     <div class="widget board">
     <table>
         <tr>
@@ -45,14 +45,14 @@
             <th>% links</th>
             <th>Location</th>
         </tr>
-        <?php foreach ($this->list as $user) : ?>
+        <?php foreach ($this->user_list as $user) : ?>
         <tr>
             <td><?= $user->email ?></td>
             <td><?= $user->name ?></td>
             <td><?= $user->user ?></td>
             <td><?= $user->status . ($user->error ? $user->error : '')  ?></td>
-            <td><?= 0  ?></td>
-            <td><?= 0  ?></td>
+            <td><?= $this->stats->getEmailOpenedCounter($user->email) ?></td>
+            <td><?= sprintf('%02d',round($this->stats->getEmailCollector($user->email)->getPercent())) ?>%</td>
             <td><?= 0  ?></td>
         </tr>
         <?php endforeach ?>
