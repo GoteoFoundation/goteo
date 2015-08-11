@@ -2421,13 +2421,13 @@ namespace Goteo\Model {
                         throw new Exception\ModelException('Fallo al iniciar transaccion rebase. ');
                     }
                 } elseif (!empty ($newid)) {
-//                   echo "Cambiando id proyecto: de {$this->id} a {$newid}<br /><br />";
+                  // echo "Cambiando id proyecto: de {$this->id} a {$newid}<br /><br />";
 
                     if (self::query("START TRANSACTION")) {
                         try {
 
-//                            echo 'en transaccion <br />';
-// @FIXME : estos 4 primeros se pueden hacer en una sola sentencia con un STR_REPLACE
+                           // echo 'en transaccion <br />';
+                            // @FIXME : estos 4 primeros se pueden hacer en una sola sentencia con un STR_REPLACE
                             // acls
                             $acls = self::query("SELECT * FROM acl WHERE url like :id", array(':id'=>"%{$this->id}%"));
                             foreach ($acls->fetchAll(\PDO::FETCH_OBJ) as $rule) {
@@ -2435,7 +2435,7 @@ namespace Goteo\Model {
                                 self::query("UPDATE `acl` SET `url` = :url WHERE id = :id", array(':url'=>$url, ':id'=>$rule->id));
 
                             }
-//                            echo 'acls listos <br />';
+                           // echo 'acls listos <br />';
 
                             // mails
                             $mails = self::query("SELECT * FROM mail WHERE content like :id", array(':id'=>"%{$this->id}%"));
@@ -2444,7 +2444,7 @@ namespace Goteo\Model {
                                 self::query("UPDATE `mail` SET `content` = :content WHERE id = :id;", array(':content'=>$content, ':id'=>$mail->id));
 
                             }
-//                            echo 'mails listos <br />';
+                           // echo 'mails listos <br />';
 
                             // feed
                             $feeds = self::query("SELECT * FROM feed WHERE url like :id", array(':id'=>"%{$this->id}%"));
