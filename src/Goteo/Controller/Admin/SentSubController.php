@@ -49,10 +49,13 @@ class SentSubController extends AbstractSubController {
         $metric_list = $stats->getAllMetrics();
         $total_metrics = count($metric_list);
 
-        $mailing = Sender::getFromMailId($id);
         $limit = 50;
-        $user_list = SenderRecipient::getList($mailing->id, 'receivers', $this->getGet('pag') * $limit, $limit);
-        $total = SenderRecipient::getList($mailing->id, 'receivers', 0, 0, true);
+        $user_list = [];
+        $total = 0;
+        if($mailing = Sender::getFromMailId($id)) {
+            $user_list = SenderRecipient::getList($mailing->id, 'receivers', $this->getGet('pag') * $limit, $limit);
+            $total = SenderRecipient::getList($mailing->id, 'receivers', 0, 0, true);
+        }
 
       return array(
         'template' => 'admin/sent/detail',
