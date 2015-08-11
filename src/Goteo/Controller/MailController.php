@@ -3,6 +3,8 @@
 namespace Goteo\Controller;
 
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\Request;
+use Goteo\Application\Config;
 use Goteo\Application\Exception\ControllerException;
 use Goteo\Model\Mail\MailStats;
 use Goteo\Model\Mail\Metric;
@@ -70,11 +72,34 @@ class MailController extends \Goteo\Core\Controller {
     /**
      * Redirects to the apropiate from a mailStats id
      */
-    public function linkAction ($id) {
+    public function linkAction ($id, Request $request) {
 
         if($stat = MailStats::get($id)) {
             // track this opening
             try {
+                // try to geolocate
+                if($cities = Config::get('geolocation.maxmind.cities')) {
+                    try {
+                        // This creates the Reader object, which should be reused across lookups.
+                        $reader = new \GeoIp2\Database\Reader($cities);
+                        $record = $reader->city($request->getClientIp());
+                        // $record = $reader->city('128.101.101.101');
+                        //Handles user localization
+                        $loc = new \Goteo\Model\Mail\MailStatsLocation(array(
+                                'id'           => $stat->id,
+                                'city'         => $record->city->name,
+                                'region'       => $record->mostSpecificSubdivision->name,
+                                'country'      => $record->country->name,
+                                'country_code' => $record->country->isoCode,
+                                'longitude'    => $record->location->longitude,
+                                'latitude'     => $record->location->latitude,
+                                'method'       => 'ip'
+                            ));
+                        $loc->save($errors);
+                    }catch(\Exception $e){
+                        // die($e->getMessage());
+                    }
+                }
                 $stat->inc();
                 $stat->save();
                 $url = $stat->getMetric()->metric;
