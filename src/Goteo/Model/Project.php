@@ -2422,7 +2422,6 @@ namespace Goteo\Model {
                     }
                 } elseif (!empty ($newid)) {
 //                   echo "Cambiando id proyecto: de {$this->id} a {$newid}<br /><br />";
-                    $fail = false;
 
                     if (self::query("START TRANSACTION")) {
                         try {
@@ -2439,10 +2438,10 @@ namespace Goteo\Model {
 //                            echo 'acls listos <br />';
 
                             // mails
-                            $mails = self::query("SELECT * FROM mail WHERE html like :id", array(':id'=>"%{$this->id}%"));
+                            $mails = self::query("SELECT * FROM mail WHERE content like :id", array(':id'=>"%{$this->id}%"));
                             foreach ($mails->fetchAll(\PDO::FETCH_OBJ) as $mail) {
-                                $html = str_replace($this->id, $newid, $mail->html);
-                                self::query("UPDATE `mail` SET `html` = :html WHERE id = :id;", array(':html'=>$html, ':id'=>$mail->id));
+                                $content = str_replace($this->id, $newid, $mail->content);
+                                self::query("UPDATE `mail` SET `content` = :content WHERE id = :id;", array(':content'=>$content, ':id'=>$mail->id));
 
                             }
 //                            echo 'mails listos <br />';
@@ -2481,17 +2480,13 @@ namespace Goteo\Model {
 
 
                             // si todo va bien, commit y cambio el id de la instancia
-                            if (!$fail) {
-                                self::query("COMMIT");
-                                $this->id = $newid;
-                                return true;
-                            } else {
-                                self::query("ROLLBACK");
-                                return false;
-                            }
+                            self::query("COMMIT");
+                            $this->id = $newid;
+                            return true;
 
                         } catch (\PDOException $e) {
                             self::query("ROLLBACK");
+                            $errors[] = $e->getMessage();
                             return false;
                         }
                     } else {

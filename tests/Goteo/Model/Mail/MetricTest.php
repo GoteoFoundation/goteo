@@ -1,9 +1,9 @@
 <?php
 
 
-namespace Goteo\Model\Tests;
+namespace Goteo\Model\Mail\Tests;
 
-use Goteo\Model\Metric;
+use Goteo\Model\Mail\Metric;
 
 class MetricTest extends \PHPUnit_Framework_TestCase {
 
@@ -11,7 +11,7 @@ class MetricTest extends \PHPUnit_Framework_TestCase {
 
         $converter = new Metric();
 
-        $this->assertInstanceOf('\Goteo\Model\Metric', $converter);
+        $this->assertInstanceOf('\Goteo\Model\Mail\Metric', $converter);
 
         return $converter;
     }
@@ -32,7 +32,7 @@ class MetricTest extends \PHPUnit_Framework_TestCase {
 
     public function testCreate() {
         $metric = Metric::getMetric('TEST_METRIC');
-        $this->assertInstanceOf('\Goteo\Model\Metric', $metric);
+        $this->assertInstanceOf('\Goteo\Model\Mail\Metric', $metric);
         $this->assertEquals('TEST_METRIC', $metric->metric);
         $this->assertNotEmpty($metric->id);
         $this->assertGreaterThan(0, $metric->id);

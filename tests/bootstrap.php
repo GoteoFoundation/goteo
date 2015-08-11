@@ -24,6 +24,16 @@ define('SITE_URL', 'http://localhost');
 Config::loadFromYaml('settings.yml');
 
 
+//SQL cleaning
+foreach(file(__DIR__ . '/sql_cleaner.sql') as $sql) {
+    $sql = trim($sql);
+    echo "SQL Cleaning: $sql\n";
+    \Goteo\Core\Model::query($sql);
+}
+delete_test_project();
+delete_test_user();
+delete_test_node();
+
 // usefull stuff
 // User, Project, Node creation
 function get_test_node() {
@@ -167,7 +177,3 @@ function delete_test_project() {
 
     return false;
 }
-
-delete_test_project();
-delete_test_user();
-delete_test_node();

@@ -1,9 +1,9 @@
 <?php
 
 
-namespace Goteo\Model\Tests;
+namespace Goteo\Model\Mail\Tests;
 
-use Goteo\Model\MailStats;
+use Goteo\Model\Mail\MailStats;
 use Goteo\Model\Template;
 use Goteo\Model\Mail;
 
@@ -13,7 +13,7 @@ class MailStatsTest extends \PHPUnit_Framework_TestCase {
 
         $converter = new MailStats();
 
-        $this->assertInstanceOf('\Goteo\Model\MailStats', $converter);
+        $this->assertInstanceOf('\Goteo\Model\Mail\MailStats', $converter);
 
         return $converter;
     }
@@ -47,9 +47,9 @@ class MailStatsTest extends \PHPUnit_Framework_TestCase {
 
         $stat = MailStats::incMetric($mail->id, 'test@goteo.org', 'TEST_STAT_METRIC');
 
-        $this->assertInstanceOf('\Goteo\Model\MailStats', $stat);
+        $this->assertInstanceOf('\Goteo\Model\Mail\MailStats', $stat);
         $metric = $stat->getMetric();
-        $this->assertInstanceOf('\Goteo\Model\Metric', $metric);
+        $this->assertInstanceOf('\Goteo\Model\Mail\Metric', $metric);
         $this->assertEquals(1, $stat->counter);
 
         $stat = MailStats::incMetric($mail->id, 'test@goteo.org', 'TEST_STAT_METRIC');
