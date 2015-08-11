@@ -43,11 +43,13 @@ class ErrorController extends \Goteo\Core\Controller {
         }
         else {
             $template = 'server_error';
-            foreach($exception->getTrace() as $trace) {
-                $msg .= '<br>';
-                $msg .= ' FILE <b>' . $trace['file'] . '</b> LINE <b>' . $trace['line'] .'</b>';
-                if($trace['class']) $msg .= ' CLASS ' . $trace['class'] .'';
-                if($trace['function']) $msg .= ' FUNCTION ' . $trace['function'] .'()';
+            if(App::debug()) {
+                foreach($exception->getTrace() as $trace) {
+                    $msg .= '<br>';
+                    $msg .= ' FILE <b>' . $trace['file'] . '</b> LINE <b>' . $trace['line'] .'</b>';
+                    if($trace['class']) $msg .= ' CLASS ' . $trace['class'] .'';
+                    if($trace['function']) $msg .= ' FUNCTION ' . $trace['function'] .'()';
+                }
             }
         }
         return new Response(View::render('errors/' . $template, ['title' => $title, 'msg' => $msg, 'code' => $code], $code));

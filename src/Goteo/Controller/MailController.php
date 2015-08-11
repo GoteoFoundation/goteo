@@ -4,9 +4,11 @@ namespace Goteo\Controller;
 
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
+use Goteo\Application\App;
 use Goteo\Application\Config;
 use Goteo\Application\Message;
 use Goteo\Application\Exception\ControllerException;
+use Goteo\Application\Exception\ModelException;
 use Goteo\Model\Mail\MailStats;
 use Goteo\Model\Mail\MailStatsLocation;
 use Goteo\Model\Mail\Metric;
@@ -32,10 +34,12 @@ class MailController extends \Goteo\Core\Controller {
                     $stat = MailStats::incMetric($mail_id, $email, 'EMAIL_OPENED');
                     // try to geolocate
                     try {
-                        $loc = MailStatsLocation::createByIp($request->getClientIp());
+                        $loc = MailStatsLocation::createByIp($stat->id, $request->getClientIp());
                         $loc->save();
                     } catch (ModelException $e) {
-                        // die($e->getMessage());
+                        if(App::debug()) {
+                            throw $e;
+                        }
                     }
 
                 } catch(\Exception $e) {
@@ -68,10 +72,12 @@ class MailController extends \Goteo\Core\Controller {
                 $stat = MailStats::incMetric($mail_id, $email, $url);
                 // try to geolocate
                 try {
-                    $loc = MailStatsLocation::createByIp($request->getClientIp());
+                    $loc = MailStatsLocation::createByIp($stat->id, $request->getClientIp());
                     $loc->save();
                 } catch (ModelException $e) {
-                    // die($e->getMessage());
+                    if(App::debug()) {
+                        throw $e;
+                    }
                 }
             } catch(\Exception $e) {
                 //TODO: log this
@@ -93,11 +99,13 @@ class MailController extends \Goteo\Core\Controller {
             try {
                 // try to geolocate
                 try {
-                    // $loc = MailStatsLocation::createByIp($stat->id, '128.101.101.101');
-                    $loc = MailStatsLocation::createByIp($request->getClientIp());
+                    // $loc = MailStatsLocation::createByIp($stat->id, $stat->id, '128.101.101.101');
+                    $loc = MailStatsLocation::createByIp($stat->id, $request->getClientIp());
                     $loc->save();
                 } catch (ModelException $e) {
-                    // die($e->getMessage());
+                    if(App::debug()) {
+                        throw $e;
+                    }
                 }
                 $stat->inc();
                 $stat->save();
@@ -125,7 +133,7 @@ class MailController extends \Goteo\Core\Controller {
             $stat = MailStats::incMetric($mail_id, $email, 'EMAIL_OPENED');
             // try to geolocate
             try {
-                $loc = MailStatsLocation::createByIp($request->getClientIp());
+                $loc = MailStatsLocation::createByIp($stat->id, $request->getClientIp());
                 $loc->save();
             } catch (ModelException $e) {
                 // die($e->getMessage());

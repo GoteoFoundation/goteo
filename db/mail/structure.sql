@@ -17,9 +17,6 @@ ALTER TABLE `mail`  ADD `lang` VARCHAR(2) NULL DEFAULT NULL COMMENT 'Idioma en e
 -- almacenamiento del html en Amazon S3
 ALTER TABLE `mail` ADD `content` VARCHAR(50) NULL DEFAULT NULL COMMENT 'ID del archivo con HTML estático';
 
--- cuando se pueda quitar...
-ALTER TABLE `mail` DROP `html`;
-
 -- constrains
 ALTER TABLE `mail` ADD FOREIGN KEY (`node`) REFERENCES `node`(`id`) ON UPDATE CASCADE ON DELETE CASCADE;
 UPDATE mail SET template=NULL WHERE template=0;
