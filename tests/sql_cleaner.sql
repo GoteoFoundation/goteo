@@ -1,3 +1,5 @@
+DELETE FROM `project` WHERE node='testnode';
+DELETE FROM `user` WHERE node='testnode';
 DELETE FROM `node` WHERE id='testnode';
 DELETE FROM `project` WHERE node='testnode';
 DELETE FROM `user` WHERE node='testnode';
