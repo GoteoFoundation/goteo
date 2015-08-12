@@ -75,6 +75,7 @@ Start the development server:
 grunt serve
 ```
 
+You can do the last command in your own machine, then vagrant will be used for mysql only.
 
 Now you can open your favorite browser on your machine and go to:
 
