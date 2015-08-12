@@ -5,7 +5,7 @@ namespace Goteo\Model\Mail;
 use Goteo\Application\Config;
 use Goteo\Application\Exception\ModelNotFoundException;
 use Goteo\Application\Exception\ModelException;
-use Goteo\Model\Mail\Sender;
+use Goteo\Model\Mail;
 
 /*
  * SenderRecipient for Sender class
@@ -104,7 +104,6 @@ class SenderRecipient extends \Goteo\Core\Model {
         return (bool)static::query('SELECT sent FROM mailer_send where id = ?', $this->id)->fetchColumn();
     }
 
-
     static public function get($id) {
         $sql = 'SELECT * FROM mailer_send WHERE id = ?';
 
@@ -152,8 +151,9 @@ class SenderRecipient extends \Goteo\Core\Model {
             ORDER BY sent ASC
             LIMIT $offset,$limit";
 
+        // die(\sqldbg($sql));
         if ($query = static::query($sql)) {
-            foreach ($query->fetchAll(\PDO::FETCH_OBJ) as $user) {
+            foreach ($query->fetchAll(\PDO::FETCH_CLASS, __CLASS__) as $user) {
                 $list[] = $user;
             }
         }

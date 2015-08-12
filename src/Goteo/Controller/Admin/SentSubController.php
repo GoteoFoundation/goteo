@@ -10,6 +10,8 @@ use Goteo\Library\Feed;
 use Goteo\Model\Template;
 use Goteo\Model\Mail;
 use Goteo\Model\Mail\StatsCollector;
+use Goteo\Model\Mail\Sender;
+use Goteo\Model\Mail\SenderRecipient;
 
 class SentSubController extends AbstractSubController {
 
@@ -40,18 +42,28 @@ class SentSubController extends AbstractSubController {
     }
 
     public function detailAction($id) {
-      $mail = Mail::get($id);
-      $limit = 50;
-      $stats = new StatsCollector($mail);
-      $readed = $stats->getEmailOpenedCollector()->getPercent();
-      $metric_list = $stats->getAllMetrics();
-      $total = count($metric_list);
+        $mail = Mail::get($id);
+
+        $stats = new StatsCollector($mail);
+        $readed = $stats->getEmailOpenedCollector()->getPercent();
+        $metric_list = $stats->getAllMetrics();
+        $total_metrics = count($metric_list);
+
+        $limit = 50;
+        $user_list = [];
+        $total = 0;
+        if($mailing = Sender::getFromMailId($id)) {
+            $user_list = SenderRecipient::getList($mailing->id, 'receivers', $this->getGet('pag') * $limit, $limit);
+            $total = SenderRecipient::getList($mailing->id, 'receivers', 0, 0, true);
+        }
+
       return array(
         'template' => 'admin/sent/detail',
         'mail' => $mail,
         'stats' => $stats,
         'readed' => $readed,
         'metric_list' => $metric_list,
+        'user_list' => $user_list,
         'limit' => $limit,
         'total' => $total
         );

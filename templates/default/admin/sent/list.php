@@ -68,7 +68,8 @@ $templates = $this->templates;
             <table>
                 <thead>
                     <tr>
-                        <th colspan="2">Leído</th>
+                        <th>Éxito</th>
+                        <th>&nbsp;</th>
                         <th>Destinatario</th>
                         <th>Plantilla</th>
                         <th>Asunto</th>

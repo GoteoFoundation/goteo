@@ -1,6 +1,6 @@
 <?php
 
-namespace Goteo\Model\Mail\MailStats;
+namespace Goteo\Model\Mail;
 
 class MailStatsLocation extends \Goteo\Model\Location\LocationItem {
     protected $Table = 'mail_stats_location';

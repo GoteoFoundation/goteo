@@ -1,8 +1,8 @@
 <?php
 //Simple overwrite
-$this->layout("layout", ['title' => 'Not found error']);
+$this->layout("layout", ['title' => 'Internal Server Error']);
 
-$page = $this->page('error');
+$page = $this->page('big-error');
 
 ?>
 

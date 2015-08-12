@@ -2421,14 +2421,13 @@ namespace Goteo\Model {
                         throw new Exception\ModelException('Fallo al iniciar transaccion rebase. ');
                     }
                 } elseif (!empty ($newid)) {
-//                   echo "Cambiando id proyecto: de {$this->id} a {$newid}<br /><br />";
-                    $fail = false;
+                  // echo "Cambiando id proyecto: de {$this->id} a {$newid}<br /><br />";
 
                     if (self::query("START TRANSACTION")) {
                         try {
 
-//                            echo 'en transaccion <br />';
-// @FIXME : estos 4 primeros se pueden hacer en una sola sentencia con un STR_REPLACE
+                           // echo 'en transaccion <br />';
+                            // @FIXME : estos 4 primeros se pueden hacer en una sola sentencia con un STR_REPLACE
                             // acls
                             $acls = self::query("SELECT * FROM acl WHERE url like :id", array(':id'=>"%{$this->id}%"));
                             foreach ($acls->fetchAll(\PDO::FETCH_OBJ) as $rule) {
@@ -2436,16 +2435,16 @@ namespace Goteo\Model {
                                 self::query("UPDATE `acl` SET `url` = :url WHERE id = :id", array(':url'=>$url, ':id'=>$rule->id));
 
                             }
-//                            echo 'acls listos <br />';
+                           // echo 'acls listos <br />';
 
                             // mails
-                            $mails = self::query("SELECT * FROM mail WHERE html like :id", array(':id'=>"%{$this->id}%"));
+                            $mails = self::query("SELECT * FROM mail WHERE content like :id", array(':id'=>"%{$this->id}%"));
                             foreach ($mails->fetchAll(\PDO::FETCH_OBJ) as $mail) {
-                                $html = str_replace($this->id, $newid, $mail->html);
-                                self::query("UPDATE `mail` SET `html` = :html WHERE id = :id;", array(':html'=>$html, ':id'=>$mail->id));
+                                $content = str_replace($this->id, $newid, $mail->content);
+                                self::query("UPDATE `mail` SET `content` = :content WHERE id = :id;", array(':content'=>$content, ':id'=>$mail->id));
 
                             }
-//                            echo 'mails listos <br />';
+                           // echo 'mails listos <br />';
 
                             // feed
                             $feeds = self::query("SELECT * FROM feed WHERE url like :id", array(':id'=>"%{$this->id}%"));
@@ -2481,17 +2480,13 @@ namespace Goteo\Model {
 
 
                             // si todo va bien, commit y cambio el id de la instancia
-                            if (!$fail) {
-                                self::query("COMMIT");
-                                $this->id = $newid;
-                                return true;
-                            } else {
-                                self::query("ROLLBACK");
-                                return false;
-                            }
+                            self::query("COMMIT");
+                            $this->id = $newid;
+                            return true;
 
                         } catch (\PDOException $e) {
                             self::query("ROLLBACK");
+                            $errors[] = $e->getMessage();
                             return false;
                         }
                     } else {

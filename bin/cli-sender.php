@@ -214,6 +214,13 @@ if (!$fail) {
                 }
             } while($check_processes);
 
+            //get log info
+            for($j=0; $j<$current_concurrency; $j++) {
+                $log = LOGS_DIR .  "cli-sendmail-$j.log";
+                readfile($log);
+                unlink($log);
+            }
+
             $process_time = microtime(true) - $stime;
             $current_rate  = round($j / $process_time,2);
 
@@ -258,7 +265,7 @@ if($debug) {
 if ($debug) echo "dbg: FIN, Total execution time [" . round(microtime(true) - $itime, 2) . "] seconds $total_users emails, Medium rate [" . round($total_users/(microtime(true) - $itime),2) . "] emails/second\n";
 
 // limpiamos antiguos procesados
-Sender::cleanOld();
+Sender::cleanOld(60);
 
 // All done; we blank the PID file and explicitly release the lock
 // (although this should be unnecessary) before terminating.

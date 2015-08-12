@@ -31,7 +31,7 @@ use Goteo\Application\Config;
         <meta property="og:url" content="<?php echo $ogmeta['url'] ?>" />
 <?php else : ?>
         <meta property="og:title" content="<?php echo NODE_NAME ?>" />
-        <meta property="og:description" content="<?php echo utf8_decode(NODE_META_DESCRIPTION) ?>" />
+        <meta property="og:description" content="<?php echo NODE_META_DESCRIPTION ?>" />
         <meta property="og:image" content="<?php echo SRC_URL ?>/nodesys/<?php echo Config::get('current_node'); ?>/view/css/logo.png" />
         <meta property="og:url" content="<?php echo SITE_URL ?>" />
 <?php endif; ?>
