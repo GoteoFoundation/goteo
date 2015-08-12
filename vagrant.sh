@@ -10,7 +10,7 @@ apt-get -y install build-essential binutils-doc libssl-dev git -y
 # Install Apache
 apt-get install apache2 -y
 #Install PHP
-apt-get install php5 libapache2-mod-php5 php5-cli php5-mysql php5-curl -y
+apt-get install php5 libapache2-mod-php5 php5-cli php5-gd php5-mcrypt php5-mysql php5-curl -y
 # Install MySQL
 echo "mysql-server mysql-server/root_password password root" | sudo debconf-set-selections
 echo "mysql-server mysql-server/root_password_again password root" | sudo debconf-set-selections
@@ -28,6 +28,8 @@ service apache2 restart
 # fully accessible database
 cat /etc/mysql/my.cnf | sed -e "s/bind-address$(printf '\t\t')= 127.0.0.1/#bind-address        = 127.0.0.1/" > /etc/mysql/my.cnf
 mysql -e "GRANT ALL PRIVILEGES ON *.* TO 'root'@'%' IDENTIFIED BY 'root';" -proot
+iptables -t nat -A PREROUTING -i lo -p tcp --dport 3307 -j REDIRECT --to-port 3306
+iptables-save
 service mysql restart
 
 # NPM
