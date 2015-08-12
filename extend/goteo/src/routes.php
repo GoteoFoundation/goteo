@@ -11,6 +11,9 @@ use Goteo\Core\View as LegacyView;
 // Old views custom folders
 LegacyView::addViewPath(__DIR__ . '/../views');
 
+// Default routes
+$main_routes = include(__DIR__ . '/../../../src/routes.php');
+
 $custom_routes = new RouteCollection();
 $custom_routes->add('barcelona-node-redirection', new Route(
     '/channel/barcelona',
@@ -58,6 +61,13 @@ if(in_array(strtok($_SERVER['HTTP_HOST'], '.'), array('barcelona', 'betabarcelon
     ));
 }
 
+// remove home route (overwrittern)
+$main_routes->remove('home');
+// Home replacement
+$custom_routes->add('home', new Route(
+    '/',
+    array('_controller' => 'Goteo\Controller\CustomIndexController::indexAction')
+));
 
 //Discover addons
 $custom_routes->add('discover-calls', new Route(
@@ -114,8 +124,6 @@ $custom_routes->add('contract-view', new Route(
         )
 ));
 
-// Adding Default routes
-$main_routes = include(__DIR__ . '/../../../src/routes.php');
 $custom_routes->addCollection($main_routes);
 
 // Adding more admin subcontrollers

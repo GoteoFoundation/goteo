@@ -28,7 +28,7 @@ use Goteo\Library\Page;
 
 // para sacar el contenido de about
 
-class IndexController extends \Goteo\Core\Controller
+class CustomIndexController extends \Goteo\Core\Controller
 {
 
     public function __construct()
