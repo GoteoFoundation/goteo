@@ -56,14 +56,17 @@ $this->layout('layout', [
         border-radius: 0.25em;
         padding: 0.15em 0.6em 0.1em;
     }
-    .label.label-admin {
-        background: #5BC0DE;
+    .label.label-admin,.label.label-pending,.label.label-info {
+        background: #5BC0DE; /* blue */
     }
-    .label.label-superadmin {
-        background: #F0AD4E;
+    .label.label-superadmin,.label.label-warning {
+        background: #F0AD4E; /* yellow */
     }
-    .label.label-root {
-        background: #D9534F;
+    .label.label-sent,.label.label-success {
+        background: #5CB85C; /* green */
+    }
+    .label.label-root,.label.label-failed,.label.label-error {
+        background: #D9534F; /* red */
     }
     .admin .channel {
         float:right;

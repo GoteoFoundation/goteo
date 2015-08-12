@@ -8,6 +8,7 @@ use Goteo\Application\Config;
 use Goteo\Model\Node;
 use Goteo\Library\Feed;
 use Goteo\Model\Template;
+use Goteo\Model\User;
 use Goteo\Model\Mail;
 use Goteo\Model\Mail\StatsCollector;
 use Goteo\Model\Mail\Sender;
@@ -52,9 +53,21 @@ class SentSubController extends AbstractSubController {
         $limit = 50;
         $user_list = [];
         $total = 0;
+        // if still in sender
         if($mailing = Sender::getFromMailId($id)) {
             $user_list = SenderRecipient::getList($mailing->id, 'receivers', $this->getGet('pag') * $limit, $limit);
             $total = SenderRecipient::getList($mailing->id, 'receivers', 0, 0, true);
+        }
+        else {
+          // get from mail itself
+          $user = User::getByEmail($mail->email);
+          $user_list = [(object)[
+            'email' => $mail->email,
+            'user' => $user->id,
+            'name' => $user->name,
+            'status' => Mail::checkBlocked($mail->email, $error) ? 'failed' : 'unknow',
+            'error' => $error
+          ]];
         }
 
       return array(
@@ -67,6 +80,16 @@ class SentSubController extends AbstractSubController {
         'limit' => $limit,
         'total' => $total
         );
+    }
+
+    public function removeblacklistAction() {
+      $email = $this->getGet('email');
+      die("remove from black list: $email");
+    }
+
+    public function resendAction($id) {
+      $email = $this->getGet('email');
+      die("resend id: $id to: $email");
     }
 
     public function listAction() {
