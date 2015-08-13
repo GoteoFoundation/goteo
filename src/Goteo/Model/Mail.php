@@ -107,12 +107,6 @@ class Mail extends \Goteo\Core\Model {
     static public function get($id) {
         if ($query = static::query('SELECT * FROM mail WHERE id = ?', $id)) {
             if( ! ($mail = $query->fetchObject(__CLASS__)) ) return false;
-            $mail->html = true;
-            if($mail->template) {
-                $tpl = Template::get($mail->template);
-                $mail->subject = $tpl->title;
-            }
-
             // $mail->toName = $to_name; // TODO: add name from users
 
             return $mail;
