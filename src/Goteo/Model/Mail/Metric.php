@@ -4,7 +4,8 @@ namespace Goteo\Model\Mail;
 
 use Goteo\Application\Exception\ModelException;
 
-class Metric extends \Goteo\Core\Model {
+class Metric extends \Goteo\Core\Model
+{
     protected $Table = 'metric';
     public
         $id,
@@ -16,10 +17,11 @@ class Metric extends \Goteo\Core\Model {
      * @param  string $metric Metric string
      * @return Metric     object
      */
-    static public function getMetric ($metric) {
+    static public function getMetric($metric) 
+    {
         $query = static::query('SELECT * FROM metric WHERE metric = :metric', array(':metric' => $metric));
         $obj = $query->fetchObject(__CLASS__);
-        if( ! ($obj instanceOf \Goteo\Model\Mail\Metric) ) {
+        if(! ($obj instanceOf \Goteo\Model\Mail\Metric) ) {
             $obj = new self(['metric' => $metric]);
             $errors = [];
             if(!$obj->save($errors)) {
@@ -31,12 +33,14 @@ class Metric extends \Goteo\Core\Model {
 
     /**
      * Guardar.
-     * @param   type array  $errors     Errores devueltos pasados por referencia.
+     * @param   type array $errors Errores devueltos pasados por referencia.
      * @return  type bool   true|false
      */
-     public function save (&$errors = array()) {
+     public function save(&$errors = array()) 
+     {
 
-        if( !$this->validate($errors) ) return false;
+        if(!$this->validate($errors) ) { return false; 
+        }
 
         try {
             $this->dbInsertUpdate(['metric', 'desc'], ['metric']);
@@ -47,18 +51,19 @@ class Metric extends \Goteo\Core\Model {
         }
         return false;
 
-     }
+        }
 
-    /**
+        /**
      * Validar.
-     * @param   type array  $errors     Errores devueltos pasados por referencia.
+     * @param   type array $errors Errores devueltos pasados por referencia.
      * @return  type bool   true|false
      */
-    public function validate (&$errors = array()) {
-        if(empty($this->metric)) {
-            $errors[] = 'Empty metric';
+        public function validate(&$errors = array()) 
+        {
+            if(empty($this->metric)) {
+                $errors[] = 'Empty metric';
+            }
+            return empty($errors);
         }
-        return empty($errors);
-    }
 
 }

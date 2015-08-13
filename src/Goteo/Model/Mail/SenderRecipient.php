@@ -11,7 +11,8 @@ use Goteo\Model\Mail;
  * SenderRecipient for Sender class
  *
  */
-class SenderRecipient extends \Goteo\Core\Model {
+class SenderRecipient extends \Goteo\Core\Model
+{
     protected $Table = 'mailer_send';
     public $id,
            $mailing,
@@ -24,22 +25,27 @@ class SenderRecipient extends \Goteo\Core\Model {
            $status = 'pending',
            $blocked;
 
-    public function __construct() {
+    public function __construct() 
+    {
         // call the parent constructor with whatever parameters were provided
         call_user_func_array(array('parent', '__construct'), func_get_args());
         // create the status var
-        if($this->sent == 1) $this->status = 'sent';
-        if($this->sent === 0 || $this->sent === '0') $this->status = 'failed';
+        if($this->sent == 1) { $this->status = 'sent'; 
+        }
+        if($this->sent === 0 || $this->sent === '0') { $this->status = 'failed'; 
+        }
     }
 
     // Magic property to check if the sender is blacklisted
-    public function __get($name) {
+    public function __get($name) 
+    {
         if($name == 'blacklisted') {
             return Mail::checkBlocked($this->email, $reason);
         }
     }
 
-    public function validate(&$errors = []) {
+    public function validate(&$errors = []) 
+    {
         if(empty($this->email)) {
             $errors['email'] = 'Empty Email';
         }
@@ -53,10 +59,12 @@ class SenderRecipient extends \Goteo\Core\Model {
         return empty($errors);
     }
 
-    public function save(&$errors = []) {
+    public function save(&$errors = []) 
+    {
         $this->validate($errors);
         unset($errors['blocked']);
-        if( !empty($errors) ) return false;
+        if(!empty($errors) ) { return false; 
+        }
 
         try {
             $this->dbInsertUpdate(['mailing', 'user', 'email', 'name', 'sent', 'error']);
@@ -74,16 +82,18 @@ class SenderRecipient extends \Goteo\Core\Model {
      * Send the email if ready
      * @return [type] [description]
      */
-    public function send(&$errors = array()) {
+    public function send(&$errors = array()) 
+    {
         $ok = true;
-        if( ! $this->validate($errors) ) $ok = false;
+        if(! $this->validate($errors) ) { $ok = false; 
+        }
         if(!empty($this->sent)) {
             $errors[] = 'This recipient is already sent!';
             $ok = false;
         }
 
         // cogemos el contenido y la plantilla desde el historial
-        if ( ! ($sender = Sender::get($this->mailing)) ) {
+        if (! ($sender = Sender::get($this->mailing)) ) {
             $errors[] = "Error obtaining Sender Instance [$id]\n";
             $ok = false;
         }
@@ -91,7 +101,7 @@ class SenderRecipient extends \Goteo\Core\Model {
             $errors[] = "Error, sender ID [{$sender->id}] inactive!\n";
             $ok = false;
         }
-        if ( ! ($mail = Mail::get($sender->mail)) ) {
+        if (! ($mail = Mail::get($sender->mail)) ) {
             $errors[] = "Error obtaining Mail Instance [{$sender->mail}]\n";
             $ok = false;
         }
@@ -109,7 +119,8 @@ class SenderRecipient extends \Goteo\Core\Model {
         $mail->content = str_replace(
             array('%USERID%', '%USEREMAIL%', '%USERNAME%', '%SITEURL%'),
             array($this->user, $this->email, $this->name, SITE_URL),
-            $mail->content);
+            $mail->content
+        );
 
         // send mail to recipient
         if($ok) {
@@ -122,21 +133,24 @@ class SenderRecipient extends \Goteo\Core\Model {
 
     }
 
-    public function setLock($status = null) {
+    public function setLock($status = null) 
+    {
         if(!is_null($status)) {
             static::query("UPDATE mailer_send SET blocked = :lock WHERE id = :id", [':lock' => (bool)$status, ':id' => $this->id]);
         }
         return (bool)static::query('SELECT blocked FROM mailer_send where id = ?', $this->id)->fetchColumn();
     }
 
-    public function setSent($status = null) {
+    public function setSent($status = null) 
+    {
         if(!is_null($status)) {
             static::query("UPDATE mailer_send SET sent = :sent WHERE id = :id", [':sent' => (bool)$status, ':id' => $this->id]);
         }
         return (bool)static::query('SELECT sent FROM mailer_send where id = ?', $this->id)->fetchColumn();
     }
 
-    static public function get($id) {
+    static public function get($id) 
+    {
         $sql = 'SELECT * FROM mailer_send WHERE id = ?';
 
         if ($query = static::query($sql, array($id))) {
@@ -145,7 +159,8 @@ class SenderRecipient extends \Goteo\Core\Model {
         return false;
     }
 
-    static public function getFromMailing($mailing_id, $email) {
+    static public function getFromMailing($mailing_id, $email) 
+    {
         $sql = 'SELECT * FROM mailer_send WHERE mailing = :mailing AND email = :email';
 
         if ($query = static::query($sql, array('mailing' => $mailing_id, 'email' => $email))) {
@@ -157,25 +172,26 @@ class SenderRecipient extends \Goteo\Core\Model {
     /*
      * Listado completo de destinatarios/envaidos/fallidos/pendientes
      */
-	static public function getList ($mailing, $detail = 'receivers', $offset = 0, $limit = 10, $count = false) {
+    static public function getList($mailing, $detail = 'receivers', $offset = 0, $limit = 10, $count = false) 
+    {
 
         $list = array();
 
         $sqlFilter = " WHERE mailer_send.mailing = {$mailing}";
 
         switch ($detail) {
-            case 'sent':
-                $sqlFilter .= " AND mailer_send.sent = 1";
-                break;
-            case 'failed':
-                $sqlFilter .= " AND mailer_send.sent = 0";
-                break;
-            case 'pending':
-                $sqlFilter .= " AND mailer_send.sent IS NULL";
-                break;
-            case 'receivers':
-            default:
-                break;
+        case 'sent':
+            $sqlFilter .= " AND mailer_send.sent = 1";
+            break;
+        case 'failed':
+            $sqlFilter .= " AND mailer_send.sent = 0";
+            break;
+        case 'pending':
+            $sqlFilter .= " AND mailer_send.sent IS NULL";
+            break;
+        case 'receivers':
+        default:
+            break;
         }
 
         if($count) {

@@ -10,7 +10,8 @@ use Goteo\Application\Exception\ModelNotFoundException;
 /**
  * Theses classes retrieves stats from MailStats generated
  */
-class StatsCollector {
+class StatsCollector
+{
     private $mail;
     private $sender;
     private $metric_list = [];
@@ -20,7 +21,8 @@ class StatsCollector {
     /**
      * Creates a new StatsCollector instance
      */
-    public function __construct(Mail $mail) {
+    public function __construct(Mail $mail) 
+    {
         $this->mail = $mail;
         // obtain Sender (if exists)
         // as is optional, stats without a Sender will rely only in mail_stats table to get the number of receivers
@@ -35,7 +37,8 @@ class StatsCollector {
      * List all metrics for this email
      * @return [type] [description]
      */
-    public function getAllMetrics() {
+    public function getAllMetrics() 
+    {
         if(!$this->metric_list_retrieved) {
             $values = array(':mail_id' => $this->mail->id);
             $sql = "SELECT DISTINCT(metric_id) as metric_id FROM mail_stats WHERE mail_stats.mail_id = :mail_id";
@@ -55,7 +58,8 @@ class StatsCollector {
      * @param  string $metric_val The metric to read stats of
      * @return MetricCollector instance
      */
-    public function getMetricCollector(Metric $metric) {
+    public function getMetricCollector(Metric $metric) 
+    {
         //live caching results
         if(empty($this->metric_list[$metric->id])) {
             // Count total sendings, from mailer_send if exists sender
@@ -88,7 +92,8 @@ class StatsCollector {
      * @param  Metric $metric_val [description]
      * @return [type]             [description]
      */
-    public function getEmailOpenedCollector() {
+    public function getEmailOpenedCollector() 
+    {
         $metric = Metric::getMetric('EMAIL_OPENED');
         return $this->getMetricCollector($metric);
     }
@@ -99,7 +104,8 @@ class StatsCollector {
      * @param  string $metric_filter sql filter
      * @return EmailCollector        instance
      */
-    public function getEmailCollector($email, $metric_filter = "metric.metric LIKE 'http%'") {
+    public function getEmailCollector($email, $metric_filter = "metric.metric LIKE 'http%'") 
+    {
         //live caching results
         if(empty($this->emails_list[$metric->id])) {
             // Count total sendings, from mailer_send if exists sender
@@ -128,20 +134,25 @@ class StatsCollector {
      * @param  string $email user email to check
      * @return int           number of hits
      */
-    public function getEmailOpenedCounter($email) {
+    public function getEmailOpenedCounter($email) 
+    {
         $metric = Metric::getMetric('EMAIL_OPENED');
         try {
-            if($stat = MailStats::getStat($this->mail->id, $email ,$metric, false))
-                return $stat->counter;
-        } catch(ModelNotFoundException $e) {}
+            if($stat = MailStats::getStat($this->mail->id, $email, $metric, false)) {
+                return $stat->counter; 
+            }
+        } catch(ModelNotFoundException $e) {
+        }
         return 0;
     }
 
-    public function getEmailOpenedLocation($email, $method = 'resume') {
+    public function getEmailOpenedLocation($email, $method = 'resume') 
+    {
         $metric = Metric::getMetric('EMAIL_OPENED');
-        if($stat = MailStats::getStat($this->mail->id, $email ,$metric, false)) {
+        if($stat = MailStats::getStat($this->mail->id, $email, $metric, false)) {
             if($loc = MailStatsLocation::get($stat->id)) {
-                if($method == 'resume') return $loc->city . ' (' . $loc->country . ')';
+                if($method == 'resume') { return $loc->city . ' (' . $loc->country . ')'; 
+                }
                 return $loc;
             }
         }
@@ -149,32 +160,40 @@ class StatsCollector {
     }
 }
 
-class MetricCollector {
+class MetricCollector
+{
     public $metric;
     public $total = 0;
     public $non_zero = 0;
 
-    public function __construct(Metric $metric) {
+    public function __construct(Metric $metric) 
+    {
         $this->metric = $metric;
     }
-    public function getPercent() {
-        if($this->total)
-            return 100 * $this->non_zero / $this->total;
+    public function getPercent() 
+    {
+        if($this->total) {
+            return 100 * $this->non_zero / $this->total; 
+        }
         return 0;
     }
 }
 
-class EmailCollector {
+class EmailCollector
+{
     public $email;
     public $total = 0;
     public $non_zero = 0;
 
-    public function __construct($email) {
+    public function __construct($email) 
+    {
         $this->email = $email;
     }
-    public function getPercent() {
-        if($this->total)
-            return 100 * $this->non_zero / $this->total;
+    public function getPercent() 
+    {
+        if($this->total) {
+            return 100 * $this->non_zero / $this->total; 
+        }
         return 0;
     }
 }
