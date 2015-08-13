@@ -3021,12 +3021,9 @@ namespace Goteo\Model {
         public static function getFunded($months = 10) {
             $success_date = date('Y-m-d', strtotime("-$months month"));
 
-            $projects = self::getList(
-                            array('status' => 4, 'success' => $success_date),
-                            null,
-                            0,
-                            $dummy
-                        );
+            $filter = ['status' => self::STATUS_FUNDED, 'success' => $success_date];
+            $total = self::getList($filter, null, 0, 0, true);
+            $projects = self::getList($filter, null, 0, $total);
 
             return $projects;
         }
@@ -3039,12 +3036,9 @@ namespace Goteo\Model {
          * @return $projects
          */
         public static function getPublishToday() {
-            $projects = self::getList(
-                            array('status' => 2, 'published' => date('Y-m-d') ),
-                            null,
-                            0,
-                            $dummy
-                        );
+            $filter = ['status' => self::STATUS_REVIEWING, 'published' => date('Y-m-d')];
+            $total = self::getList($filter, null, 0, 0, true);
+            $projects = self::getList($filter, null, 0, $total);
 
             return $projects;
         }
