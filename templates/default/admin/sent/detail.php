@@ -43,22 +43,24 @@
             <th>Location</th>
             <th>Acciones</th>
         </tr>
-        <?php foreach ($this->user_list as $user) :
-            $opened = $this->stats->getEmailOpenedCounter($user->email);
+        <?php foreach ($this->user_list as $recipient) :
+            $opened = $this->stats->getEmailOpenedCounter($recipient->email);
         ?>
         <tr>
-            <td><?= $user->email ?></td>
-            <td><?= $user->name ?></td>
-            <td><?= $user->user ?></td>
-            <td><?= '<span class="label label-'. $user->status . '">' . $user->status . '</span>' . ($user->error ? '<br>' . $user->error : '') ?>
+            <td><?= $recipient->email ?></td>
+            <td><?= $recipient->name ?></td>
+            <td><?= $recipient->user ?></td>
+            <td><?= '<span class="label label-'. $recipient->status . '">' . $recipient->status . '</span>' . ($recipient->error ? '<br>' . $recipient->error : '') ?>
             </td>
             <td><?= '<span class="label'. ($opened ? ' label-success' : '') . '">' . $opened .'</span>' ?></td>
-            <td><?= sprintf('%02d',round($this->stats->getEmailCollector($user->email)->getPercent())) ?>%</td>
-            <td><?= $this->stats->getEmailOpenedLocation($user->email) ?></td>
+            <td><?= sprintf('%02d',round($this->stats->getEmailCollector($recipient->email)->getPercent())) ?>%</td>
+            <td><?= $this->stats->getEmailOpenedLocation($recipient->email) ?></td>
             <td>
-                <?php if($user->status == 'failed') : ?>
-                    <br><a href="/admin/sent/removeblacklist?email=<?= urlencode($user->email) ?>" onclick="return confirm('Se quitará el bloqueo a este email. Continuar?')">[Desbloquear]</a>
-                    <br><a href="/admin/sent/resend/<?= $this->mail->id ?>?email=<?= urlencode($user->email) ?>" onclick="return confirm('Se reenviará el email. Continuar?')">[Reenviar]</a>
+                <?php if($recipient->blacklisted) : ?>
+                    <br><a href="/admin/sent/removeblacklist/<?= $this->mail->id ?>?email=<?= urlencode($recipient->email) ?>" onclick="return confirm('Se quitará el bloqueo a este email. Continuar?')">[Desbloquear]</a>
+                <?php endif ?>
+                <?php if($recipient->status == 'failed' || ($recipient->status == 'pending' && !$this->mail->massive)) : ?>
+                    <br><a href="/admin/sent/resend/<?= $this->mail->id ?>?email=<?= urlencode($recipient->email) ?>" onclick="return confirm('Se reenviará el email. Continuar?')">[Reenviar]</a>
                 <?php endif ?>
             </td>
         </tr>

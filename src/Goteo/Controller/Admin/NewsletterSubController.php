@@ -68,7 +68,7 @@ class NewsletterSubController extends AbstractSubController {
         else {
             Message::error("Newsletter [$id] cannot be activated for immediate sending!");
         }
-        return $this->redirect();
+        return $this->redirect('/admin/newsletter/detail/' . $id);
     }
 
     public function cancelAction($id) {
@@ -105,28 +105,16 @@ class NewsletterSubController extends AbstractSubController {
                 Lang::set($lang);
                 $lang = Lang::current();
 
+                $mailHandler = Mail::createFromTemplate('any', '', $template);
 
-                // datos de la plantilla
-                $tpl = Template::get($template, $lang);
-
-                // contenido de newsletter
-                $content = ($template == Template::NEWSLETTER) ? Newsletter::getContent($tpl->text, $lang) : $content = $tpl->text;
-
-                // asunto
-                $mailHandler = new Mail();
-                $mailHandler->template = $template;
-                $mailHandler->content = $content;
-                $mailHandler->node = $node;
-                $mailHandler->lang = $lang;
-                $mailHandler->massive = true;
                 $errors = [];
                 if( !$mailHandler->save($errors) ) {
-                    Message::error(implode('<br>', $errors));
+                    Message::error('Error saving mailing: ' . implode('<br>', $errors));
                     return $this->redirect('/admin/newsletter');
                 }
 
                 // create the sender cue
-                $sender = new Sender(['mail' => $mailHandler->id, 'subject' => $tpl->title]);
+                $sender = new Sender(['mail' => $mailHandler->id]);
                 $errors = [];
                 if ( ! $sender->save($errors) ) { //persists in database
                     Message::error(implode('<br>', $errors));

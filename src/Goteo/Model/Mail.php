@@ -4,6 +4,7 @@ namespace Goteo\Model;
 
 use Goteo\Application\Exception\ModelException;
 use Goteo\Application\Config;
+use Goteo\Application\Lang;
 use Goteo\Application\View;
 use Goteo\Application\Message;
 use Goteo\Model\Template;
@@ -11,6 +12,7 @@ use Goteo\Model\Mail\MailStats;
 use Goteo\Model\Mail\StatsCollector;
 use Goteo\Model\Mail\Metric;
 use Goteo\Library\FileHandler\File;
+use Goteo\Library\Newsletter;
 
 class Mail extends \Goteo\Core\Model {
     protected $Table = 'mail';
@@ -32,12 +34,19 @@ class Mail extends \Goteo\Core\Model {
         $html = true,
         $massive = false,
         $template = null,
+        $sent,
+        $error = '',
+        $status = 'pending',
         $lang = null;
 
     /**
      * Constructor.
      */
     function __construct($exceptions = false) {
+        if($this->sent == 1) $this->status = 'sent';
+        if($this->sent === 0 || $this->sent === '0') $this->status = 'failed';
+        if($this->email === 'any') $this->massive = true;
+        $this->node = Config::get('current_node');
 
         // Inicializa la instancia PHPMailer.
         $mail = new \PHPMailer($exceptions);
@@ -148,13 +157,15 @@ class Mail extends \Goteo\Core\Model {
         $mail->to = $to;
         $mail->toName = $to_name;
         $mail->html = true;
+        if($to == 'any') $mail->massive = true;
 
         // Obtenemos la plantilla para asunto y contenido
-        $tpl = Template::get($template);
+        $mail->lang = Lang::current();
+        $tpl = Template::get($template, $mail->lang);
         // Sustituimos los datos
         $mail->subject = $tpl->title;
         $mail->template = $tpl->id;
-        $mail->content = $tpl->text;
+        $mail->content = ($template == Template::NEWSLETTER) ? Newsletter::getContent($tpl->text, $lang) : $content = $tpl->text;
         // En el contenido:
         if($vars) {
             $mail->content = str_replace(array_keys($vars), array_values($vars), $mail->content);
@@ -174,9 +185,6 @@ class Mail extends \Goteo\Core\Model {
         elseif(!filter_var($this->to, FILTER_VALIDATE_EMAIL)) {
 	        $errors['email'] = 'Email destinatario inválido ['. $this->to. ']';
 	    }
-        elseif (self::checkBlocked($this->to, $reason)) {
-            $errors['email'] = "El destinatario esta bloqueado por demasiados rebotes o quejas [$reason]";
-        }
 	    if(empty($this->content)) {
 	        $errors['content'] = 'El mensaje no tiene contenido.';
 	    }
@@ -192,7 +200,6 @@ class Mail extends \Goteo\Core\Model {
 	 * @param type array	$errors
 	 */
     public function send(&$errors = array()) {
-
         if (!self::checkLimit(1)) {
             $errors[] = 'Daily limit reached!';
             return false;
@@ -201,29 +208,34 @@ class Mail extends \Goteo\Core\Model {
         if (empty($this->id)) {
             $this->save();
         }
-
+        $ok = false;
         if($this->validate($errors)) {
             try {
+                if (self::checkBlocked($this->to, $reason)) {
+                    throw new \phpmailerException("El destinatario esta bloqueado por demasiados rebotes o quejas [$reason]");
+                }
 
                 $allowed = false;
                 if (Config::get('env') === 'real') {
                     $allowed = true;
                 }
-                elseif (Config::get('env') === 'local') {
-                    $this->subject = '[LOCAL] ' . $this->subject;
-                }
-                elseif (Config::get('env') === 'beta') {
-                    $this->subject = '[BETA] ' . $this->subject;
-                    if (Config::get('mail.beta_senders') && preg_match('/' . str_replace('/', '\/', Config::get('mail.beta_senders')) .'/i', $this->to)) {
-                        $allowed = true;
-                    }
+                elseif (Config::get('env') === 'beta' && Config::get('mail.beta_senders') && preg_match('/' . str_replace('/', '\/', Config::get('mail.beta_senders')) .'/i', $this->to)) {
+                    $allowed = true;
                 }
 
                 $mail = $this->buildMessage();
-                // exit if not allowed
-                // TODO: log this?
-                if (!$allowed) {
-                    // add any debug here
+
+                if ($allowed) {
+                    // Envía el mensaje
+                    if ($mail->send()) {
+                        $ok = true;
+                    } else {
+                        $errors[] = 'Internal mail server error!';
+                    }
+                } else {
+                    // exit if not allowed
+                    // TODO: log this?
+                        // add any debug here
                     Message::error('SKIPPING MAIL SENDING with subject [' . $this->subject . '] to [' . $this->to . '] from  [' . $this->from . '] using) template [' . $this->template . '] due configuration restrictions!');
                     // Log this email
                     $mail->preSend();
@@ -237,27 +249,21 @@ class Mail extends \Goteo\Core\Model {
                         Message::error('ERROR while logging email content into: ' . $path);
                     }
                     // return true is ok, let's pretend the mail is sent...
-                    return true;
+                    $ok = true;
                 }
 
-
-                // Envía el mensaje
-                if ($mail->send($errors)) {
-                    return true;
-                } else {
-                    $errors[] = 'Internal mail server error!';
-                    return false;
-                }
-
-        	} catch(\PDOException $e) {
+            } catch(\PDOException $e) {
                 $errors[] = "Error sending message: " . $e->getMessage();
-                return false;
-			} catch(\phpmailerException $e) {
-			    $errors[] = $e->getMessage();
-			    return false;
-			}
+            } catch(\phpmailerException $e) {
+                $errors[] = $e->getMessage();
+            }
         }
-        return false;
+        if(!$this->massive) {
+            $this->sent = $ok;
+            $this->error = implode("\n", $errors);
+            $this->save();
+        }
+        return $ok;
 	}
 
     /**
@@ -301,7 +307,15 @@ class Mail extends \Goteo\Core\Model {
                 }
             }
         }
+
         $mail->Subject = $this->subject;
+        if (Config::get('env') === 'local') {
+            $mail->Subject = '[LOCAL] ' . $mail->Subject;
+        }
+        elseif (Config::get('env') === 'beta') {
+            $mail->Subject = '[BETA] ' . $mail->Subject;
+        }
+
         if($this->html) {
             $mail->isHTML(true);
             $mail->Body    = $this->bodyHTML();
@@ -424,32 +438,19 @@ class Mail extends \Goteo\Core\Model {
      */
     public function save(&$errors = []) {
         $this->validate($errors);
-        unset($errors['subject']); //no subject on table mail
+        if($this->massive) unset($errors['email']);
         if( !empty($errors) ) return false;
 
-        $email = ($this->massive) ? 'any' : $this->to;
-        $values = array (
-            ':email' => $email,
-            ':content' => $this->content,
-            ':template' => $this->template,
-            ':node' => $this->node,
-            ':lang' => $this->lang
-            );
+        $this->email = ($this->massive) ? 'any' : $this->to;
 
-        if($this->id) {
-            $values[':id'] = $this->id;
-            $sql = "UPDATE mail SET email = :email, content = :content, template = :template, node = :node, lang = :lang WHERE id= :id";
-        }
-        else {
-            $sql = "INSERT INTO mail (email, content, template, node, lang) VALUES (:email, :content, :template, :node, :lang)";
-        }
-
-        // echo \sqldbg($sql, $values);
-        if(static::query($sql, $values)) {
-            if(!$this->id) $this->id = static::insertId();
+        try {
+            $this->dbInsertUpdate(['email', 'subject', 'content', 'template', 'node', 'lang', 'sent', 'error']);
             return true;
         }
-        $errors[] = 'Error saving email to database';
+        catch(\PDOException $e) {
+            $errors[] = 'Error saving email to database: ' . $e->getMessage();
+        }
+
         return false;
 
     }
@@ -586,13 +587,7 @@ class Mail extends \Goteo\Core\Model {
 
         $offset = (int) $offset;
         $limit = (int) $limit;
-        $sql = "SELECT
-                    mail.id as id,
-                    mail.email as email,
-                    mail.template as template,
-                    (mail.email = 'any') as massive,
-                    DATE_FORMAT(mail.date, '%d/%m/%Y %H:%i') as date
-                FROM mail
+        $sql = "SELECT * FROM mail
                 $sqlFilter
                 ORDER BY mail.date DESC
                 LIMIT $offset,$limit";
@@ -638,7 +633,7 @@ class Mail extends \Goteo\Core\Model {
      * @param  string $reason razon de bloqueo
      * @return boolean        true o false
      */
-    static public function checkBlocked($email, &$reason) {
+    static public function checkBlocked($email, &$reason = '') {
         $query = static::query("SELECT * FROM mailer_control WHERE email=:email AND action='deny'", array(':email' => $email));
         if($ob = $query->fetchObject()) {
             $reason = $ob->last_reason;
@@ -647,6 +642,14 @@ class Mail extends \Goteo\Core\Model {
         return false;
     }
 
+    /**
+     * Deletes an email from the control table
+     * @param  string $email  email a comprobar
+     */
+    static public function removeBlocked($email) {
+        static::query("DELETE FROM mailer_control WHERE email=:email", array(':email' => $email));
+        return !static::query("SELECT COUNT(*) FROM mailer_control WHERE email=:email", array(':email' => $email))->fetchColumn();
+    }
     /**
      * Añade un email a la table de control (tipo bounce), con bloqueo de futuros envios si se especifica
      * @param string  $email  email a controlar

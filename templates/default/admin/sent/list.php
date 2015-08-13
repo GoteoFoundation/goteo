@@ -75,7 +75,7 @@ $templates = $this->templates;
                         <th>Asunto</th>
                         <th>Fecha</th>
                         <th><!-- Si no ves --></th>
-                        <th><!-- reenviar --></th>
+                        <th><!-- status--></th>
                     </tr>
                 </thead>
                 <tbody>
@@ -90,6 +90,7 @@ $templates = $this->templates;
                             <td><?= $sent->getSubject() ?></td>
                             <td><?= $sent->date ?></td>
                             <td><a href="/mail/<?= $sent->getToken(true, true) ?>" target="_blank">[Visualizar]</a></td>
+                            <td><?= '<span class="label label-'. $sent->status . '">' . $sent->status . '</span>' ?>
                         </tr>
                     <?php endforeach; ?>
                 </tbody>

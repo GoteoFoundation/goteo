@@ -21,24 +21,53 @@ class SenderRecipient extends \Goteo\Core\Model {
            $datetime,
            $sent,
            $error,
+           $status = 'pending',
            $blocked;
+
+    public function __construct() {
+        // call the parent constructor with whatever parameters were provided
+        call_user_func_array(array('parent', '__construct'), func_get_args());
+        // create the status var
+        if($this->sent == 1) $this->status = 'sent';
+        if($this->sent === 0 || $this->sent === '0') $this->status = 'failed';
+    }
+
+    // Magic property to check if the sender is blacklisted
+    public function __get($name) {
+        if($name == 'blacklisted') {
+            return Mail::checkBlocked($this->email, $reason);
+        }
+    }
 
     public function validate(&$errors = []) {
         if(empty($this->email)) {
-            $errors[] = 'Empty Email';
+            $errors['email'] = 'Empty Email';
         }
         if(empty($this->mailing)) {
-            $errors[] = 'Empty Mailer ID';
+            $errors['mailing'] = 'Empty Mailer ID';
         }
         if(!empty($this->blocked)) {
-            $errors[] = 'Sender Recipient blocked!';
+            $errors['blocked'] = 'Sender Recipient blocked!';
         }
 
         return empty($errors);
     }
 
     public function save(&$errors = []) {
-        //TODO...
+        $this->validate($errors);
+        unset($errors['blocked']);
+        if( !empty($errors) ) return false;
+
+        try {
+            $this->dbInsertUpdate(['mailing', 'user', 'email', 'name', 'sent', 'error']);
+            return true;
+        }
+        catch(\PDOException $e) {
+            $errors[] = 'Error saving email to database: ' . $e->getMessage();
+        }
+
+        return false;
+
     }
 
     /**
@@ -46,22 +75,25 @@ class SenderRecipient extends \Goteo\Core\Model {
      * @return [type] [description]
      */
     public function send(&$errors = array()) {
-        if( ! $this->validate($errors) ) return false;
+        $ok = true;
+        if( ! $this->validate($errors) ) $ok = false;
         if(!empty($this->sent)) {
             $errors[] = 'This recipient is already sent!';
-            return false;
+            $ok = false;
         }
 
         // cogemos el contenido y la plantilla desde el historial
         if ( ! ($sender = Sender::get($this->mailing)) ) {
-            die("Error obtaining Sender Instance [$id]\n");
+            $errors[] = "Error obtaining Sender Instance [$id]\n";
+            $ok = false;
         }
         if (!$sender->active) {
-            die("Error, sender ID [{$sender->id}] inactive!\n");
+            $errors[] = "Error, sender ID [{$sender->id}] inactive!\n";
+            $ok = false;
         }
         if ( ! ($mail = Mail::get($sender->mail)) ) {
             $errors[] = "Error obtaining Mail Instance [{$sender->mail}]\n";
-            return false;
+            $ok = false;
         }
 
         if (!empty($sender->reply)) {
@@ -80,13 +112,13 @@ class SenderRecipient extends \Goteo\Core\Model {
             $mail->content);
 
         // send mail to recipient
-        if($mail->send($errors)) {
-            if($this->setSent(true)) {
-                return true;
-            }
-            $errors[] = 'Error on marking SenderRecipient as sent!';
+        if($ok) {
+            $ok = $mail->send($errors);
         }
-        return false;
+        $this->sent = $ok;
+        $this->error = implode("\n", $errors);
+        $this->save();
+        return $ok;
 
     }
 
@@ -108,6 +140,15 @@ class SenderRecipient extends \Goteo\Core\Model {
         $sql = 'SELECT * FROM mailer_send WHERE id = ?';
 
         if ($query = static::query($sql, array($id))) {
+            return $query->fetchObject(__CLASS__);
+        }
+        return false;
+    }
+
+    static public function getFromMailing($mailing_id, $email) {
+        $sql = 'SELECT * FROM mailer_send WHERE mailing = :mailing AND email = :email';
+
+        if ($query = static::query($sql, array('mailing' => $mailing_id, 'email' => $email))) {
             return $query->fetchObject(__CLASS__);
         }
         return false;

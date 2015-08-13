@@ -5,6 +5,7 @@
 namespace Goteo\Controller\Admin;
 
 use Goteo\Application\Config;
+use Goteo\Application\Message;
 use Goteo\Model\Node;
 use Goteo\Library\Feed;
 use Goteo\Model\Template;
@@ -65,8 +66,9 @@ class SentSubController extends AbstractSubController {
             'email' => $mail->email,
             'user' => $user->id,
             'name' => $user->name,
-            'status' => Mail::checkBlocked($mail->email, $error) ? 'failed' : 'unknow',
-            'error' => $error
+            'blacklisted' => Mail::checkBlocked($mail->email),
+            'status' => $mail->status,
+            'error' => $mail->error
           ]];
         }
 
@@ -82,14 +84,47 @@ class SentSubController extends AbstractSubController {
         );
     }
 
-    public function removeblacklistAction() {
+    public function removeblacklistAction($id) {
       $email = $this->getGet('email');
-      die("remove from black list: $email");
+
+      if(Mail::removeBlocked($email)) {
+        Message::info("Quitado de la lista negra: [$email]");
+      }
+      else {
+        Message::info("Ha ocurrido un error al intentar quitar el email [$email] de la lista negra");
+      }
+      return $this->redirect('/admin/sent/detail/' . $id);
     }
 
     public function resendAction($id) {
       $email = $this->getGet('email');
-      die("resend id: $id to: $email");
+      $mail = Mail::get($id);
+      $user = User::getByEmail($email);
+      if($mail->massive) {
+        $recipient = SenderRecipient::getFromMailing(Sender::getFromMailId($id)->id, $email);
+        if($recipient->send($errors)) {
+          Message::info('Mensaje enviado correctamente');
+        } else {
+          Message::error('Errors: ' . implode("<br>", $errors));
+        }
+      }
+      else {
+        if($email == $mail->email) {
+          $errors = [];
+          $mail->to = $email;
+          $mail->toName = $user->name;
+          if($mail->send($errors)) {
+            Message::info('Mensaje enviado correctamente');
+          } else {
+            Message::error('Errors: ' . implode("<br>", $errors));
+          }
+        }
+        else {
+          Message::error('This email is not valid for the current Mail');
+        }
+      }
+      return $this->redirect('/admin/sent/detail/' . $id);
+      // die("resend id: $id to: $email");
     }
 
     public function listAction() {

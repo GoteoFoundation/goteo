@@ -17,15 +17,21 @@ $title = array(
 );
 ?>
 <a href="/admin/newsletter" class="button">Volver</a>
+
 <?php if(!$mailing->active): ?>
-<a href="/admin/newsletter/activate/<?= $mailing->id ?>" class="button">Enviar el boletin ahora</a>
+    <a href="/admin/newsletter/activate/<?= $mailing->id ?>" class="button">Enviar el boletin ahora</a>
 <?php endif ?>
+
+<?php if($mailing->mail && $this->is_module_admin('Sent')): ?>
+    <a href="/admin/sent/detail/<?= $mailing->mail ?>" class="button">Ir al historial de envios</a>
+<?php endif ?>
+
 <a href="/admin/newsletter/cancel/<?= $mailing->id ?>" onclick="return confirm('El boletín se borrará, seguro que quieres continuar?')" class="button">Cancelar y eliminar este boletin</a>
 
 <?php if ($mailing) : ?>
 <div class="widget board">
         <p>
-           Asunto: <strong><?= $mailing->subject ?></strong><br />
+           Asunto: <strong><?= $mailing->getMail()->subject ?></strong><br />
            Iniciado el: <strong><?= $mailing->date ?></strong><br />
            Estado del envío automático: <?= ($mailing->active)
                ? '<span style="color:green;font-weight:bold;">Activo</span>'
@@ -69,12 +75,13 @@ $title = array(
             <th>Usuario</th>
             <th>Estado</th>
         </tr>
-        <?php foreach ($list as $user) : ?>
+        <?php foreach ($list as $recipient) : ?>
         <tr>
-            <td><?= $user->email ?></td>
-            <td><?= $user->name ?></td>
-            <td><?= $user->user ?></td>
-            <td><?= $user->status . ($user->error ? $user->error : '')  ?></td>
+            <td><?= $recipient->email ?></td>
+            <td><?= $recipient->name ?></td>
+            <td><?= $recipient->user ?></td>
+            <td><?= '<span class="label label-'. $recipient->status . '">' . $recipient->status . '</span>' . ($recipient->error ? '<br>' . $recipient->error : '') ?>
+            </td>
         </tr>
         <?php endforeach ?>
     </table>

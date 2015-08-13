@@ -5,6 +5,7 @@ namespace Goteo\Model\Mail;
 use Goteo\Application\Config;
 use Goteo\Application\Exception\ModelNotFoundException;
 use Goteo\Application\Exception\ModelException;
+use Goteo\Model\Mail;
 
 /*
  * Clase para hacer envios masivos en segundo plano
@@ -15,15 +16,25 @@ class Sender extends \Goteo\Core\Model {
     public $id,
            $active = 0,
            $mail,
-           $subject,
            $blocked,
            $reply,
            $reply_name;
 
-    public function validate(&$errors = []) {
-        if(empty($this->subject)) {
-            $errors[] = 'Empty Subject';
+    public function getMail() {
+        if(!$this->mailHandler) {
+            $this->mailHandler = Mail::get($this->mail);
         }
+        return $this->mailHandler;
+    }
+
+    //Compatibility, a magic method to retrieve the subject of the email
+    public function __get($name) {
+        if($name == 'subject') {
+            return $this->getMail()->subject;
+        }
+    }
+
+    public function validate(&$errors = []) {
         if(empty($this->mail)) {
             $errors[] = 'Empty Mailer ID';
         }
@@ -34,9 +45,9 @@ class Sender extends \Goteo\Core\Model {
     public function save(&$errors = []) {
         if( ! $this->validate($errors) ) return false;
 
-        $sql = "INSERT INTO `mailer_content` (`active`, `mail`, `subject`, `blocked`, `reply`, `reply_name`)
-                VALUES (0, :mail, :subject, 0, :reply, :reply_name)";
-        $values = [':subject' => $this->subject, ':mail' => $this->mail, ':reply' => $this->reply, ':reply_name' => $this->reply_name];
+        $sql = "INSERT INTO `mailer_content` (`active`, `mail`, `blocked`, `reply`, `reply_name`)
+                VALUES (0, :mail, 0, :reply, :reply_name)";
+        $values = [':mail' => $this->mail, ':reply' => $this->reply, ':reply_name' => $this->reply_name];
 
         try {
             // die(\sqldbg($sql, $values));
@@ -92,14 +103,14 @@ class Sender extends \Goteo\Core\Model {
     }
 
     // TODO: remove this
-	static public function initiateSending ($mailId, $subject, $receivers, $autoactive = 0, $reply = null, $reply_name = null) {
+	static public function initiateSending ($mailId, $receivers, $autoactive = 0, $reply = null, $reply_name = null) {
 
         try {
             static::query("START TRANSACTION");
 
-            $sql = "INSERT INTO `mailer_content` (`id`, `active`, `mail`, `subject`, `blocked`, `reply`, `reply_name`)
-                VALUES ('' , '{$autoactive}', :mail, :subject, 0, :reply, :reply_name)";
-            static::query($sql, array(':subject'=>$subject, ':mail'=>$mailId, ':reply'=>$reply, ':reply_name'=>$reply_name));
+            $sql = "INSERT INTO `mailer_content` (`id`, `active`, `mail`, `blocked`, `reply`, `reply_name`)
+                VALUES ('' , '{$autoactive}', :mail, 0, :reply, :reply_name)";
+            static::query($sql, array(':mail'=>$mailId, ':reply'=>$reply, ':reply_name'=>$reply_name));
             $mailing = static::insertId();
 
             // destinatarios
@@ -141,7 +152,6 @@ class Sender extends \Goteo\Core\Model {
                     mailer_content.id as id,
                     mailer_content.active as active,
                     mailer_content.mail as mail,
-                    mailer_content.subject as subject,
                     DATE_FORMAT(mailer_content.datetime, '%d/%m/%Y %H:%i:%s') as date,
                     mailer_content.blocked as blocked,
                     mailer_content.reply as reply,
@@ -172,7 +182,6 @@ class Sender extends \Goteo\Core\Model {
                     mailer_content.id as id,
                     mailer_content.active as active,
                     mailer_content.mail as mail,
-                    mailer_content.subject as subject,
                     DATE_FORMAT(mailer_content.datetime, '%d/%m/%Y %H:%i:%s') as date,
                     mailer_content.blocked as blocked,
                     mailer_content.reply as reply,
@@ -209,7 +218,7 @@ class Sender extends \Goteo\Core\Model {
                 mailer_content.id as id,
                 mailer_content.active as active,
                 mailer_content.mail as mail,
-                mailer_content.subject as subject,
+                mail.subject as subject,
                 DATE_FORMAT(mailer_content.datetime, '%d/%m/%Y %H:%i:%s') as date,
                 mailer_content.blocked as blocked
             FROM mailer_content

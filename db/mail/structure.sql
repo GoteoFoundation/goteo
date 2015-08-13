@@ -28,3 +28,6 @@ ALTER TABLE `mail` DROP COLUMN `content`;
 
 -- change html to content
 ALTER TABLE `mail` CHANGE `html` `content` LONGTEXT CHARSET utf8 COLLATE utf8_general_ci NOT NULL;
+ALTER TABLE `mail` ADD COLUMN `sent` TINYINT NULL AFTER `lang`, ADD COLUMN `error` TINYTEXT NULL AFTER `sent`;
+ALTER TABLE `mail` ADD COLUMN `subject` CHAR(255) NULL AFTER `email`;
+
