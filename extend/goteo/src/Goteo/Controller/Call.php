@@ -2,12 +2,11 @@
 
 namespace Goteo\Controller {
 
-    use Goteo\Core\ACL,
-        Goteo\Core\Error,
-        Goteo\Core\Redirection,
+    use Goteo\Core\Redirection,
         Goteo\Core\View,
         Goteo\Library\Text,
         Goteo\Application,
+        Goteo\Model,
         Goteo\Application\Lang,
         Goteo\Model\Template,
         Goteo\Library\Feed,
