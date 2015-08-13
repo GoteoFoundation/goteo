@@ -75,3 +75,16 @@
 <?php endif ?>
 
 <?php $this->replace() ?>
+
+
+<?php $this->section('footer') ?>
+<script type="text/javascript">
+    $(function(){
+        var reloadPage = function() {
+            $('#admin-content').load('/admin/sent/detail/<?= $this->mail->id ?> #admin-content');
+            setTimeout(reloadPage, 2000);
+        };
+        setTimeout(reloadPage, 2000);
+    });
+</script>
+<?php $this->append() ?>

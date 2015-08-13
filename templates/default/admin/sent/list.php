@@ -104,3 +104,15 @@ $templates = $this->templates;
     <?php endif; ?>
 
 <?php $this->replace() ?>
+
+<?php $this->section('footer') ?>
+<script type="text/javascript">
+    $(function(){
+        var reloadPage = function() {
+            $('#admin-content').load('/admin/sent #admin-content');
+            setTimeout(reloadPage, 2000);
+        };
+        setTimeout(reloadPage, 2000);
+    });
+</script>
+<?php $this->append() ?>
