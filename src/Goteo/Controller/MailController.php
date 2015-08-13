@@ -50,7 +50,7 @@ class MailController extends \Goteo\Core\Controller {
             // Content still in database?
             if ($mail = Mail::get($mail_id)) {
                 $mail->to = $email;
-                return new Response($mail->render(false, [], false));
+                return new Response($mail->render(false, [], $track));
             }
 
             // TODO, check if exists as file-archived
@@ -67,6 +67,7 @@ class MailController extends \Goteo\Core\Controller {
     public function urlAction ($token, Request $request) {
 
         if(list($email, $mail_id, $url) = Mail::decodeToken($token)) {
+            // die("$email $mail_id $url");
             // track this opening
             try {
                 $stat = MailStats::incMetric($mail_id, $email, $url);
@@ -95,16 +96,19 @@ class MailController extends \Goteo\Core\Controller {
     public function linkAction ($id, Request $request) {
 
         if($stat = MailStats::get($id)) {
+            // print_r($stat);die("$id");
             // track this opening
             try {
                 // try to geolocate
-                try {
-                    // $loc = MailStatsLocation::createByIp($stat->id, $stat->id, '128.101.101.101');
-                    $loc = MailStatsLocation::createByIp($stat->id, $request->getClientIp());
-                    $loc->save();
-                } catch (ModelException $e) {
-                    if(App::debug()) {
-                        throw $e;
+                if(Config::get('geolocation.maxmind.cities')) {
+                    try {
+                        // $loc = MailStatsLocation::createByIp($stat->id, $stat->id, '128.101.101.101');
+                        $loc = MailStatsLocation::createByIp($stat->id, $request->getClientIp());
+                        $loc->save();
+                    } catch (ModelException $e) {
+                        if(App::debug()) {
+                            throw $e;
+                        }
                     }
                 }
                 $stat->inc();
