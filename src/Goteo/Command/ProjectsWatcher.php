@@ -73,7 +73,7 @@ class ProjectsWatcher {
 
             // primero los que no se bloquean
             //Solicitud de datos del contrato
-            if ($project->published == date('Y-m-d', mktime(0, 0, 0, date('m'), date('d') + 1, date('Y')) )) {
+            if ($project->success == date('Y-m-d', mktime(0, 0, 0, date('m'), date('d') - 1, date('Y')) )) {
                 // si ha superado el mínimo
                 if ($project->amount >= $project->mincost) {
                     if ($debug) echo "Solicitud de datos contrato\n";
