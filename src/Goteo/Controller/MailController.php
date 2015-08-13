@@ -111,6 +111,8 @@ class MailController extends \Goteo\Core\Controller {
                         // $loc = MailStatsLocation::createByIp($stat->id, $stat->id, '128.101.101.101');
                         $loc = MailStatsLocation::createByIp($stat->id, $request->getClientIp());
                         $loc->save();
+                        $loc->id = $e->id; // add to EMAIL_OPENED
+                        $loc->save();
                     }
                 } catch (ModelException $e) {
                     if(App::debug()) {
