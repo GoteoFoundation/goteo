@@ -31,11 +31,15 @@ class MailController extends \Goteo\Core\Controller {
                 // track this opening
                 $track = true;
                 try {
-                    $stat = MailStats::incMetric($mail_id, $email, 'EMAIL_OPENED');
                     // try to geolocate
                     try {
-                        $loc = MailStatsLocation::createByIp($stat->id, $request->getClientIp());
-                        $loc->save();
+                        // email tracker
+                        $stat = MailStats::incMetric($mail_id, $email, 'EMAIL_OPENED');
+                        // geolocation if exists database
+                        if(Config::get('geolocation.maxmind.cities')) {
+                            $loc = MailStatsLocation::createByIp($stat->id, $request->getClientIp());
+                            $loc->save();
+                        }
                     } catch (ModelException $e) {
                         if(App::debug()) {
                             throw $e;
@@ -99,22 +103,24 @@ class MailController extends \Goteo\Core\Controller {
             // print_r($stat);die("$id");
             // track this opening
             try {
-                // try to geolocate
-                if(Config::get('geolocation.maxmind.cities')) {
-                    try {
+                try {
+                    // set email opened metric if empty
+                    $e = MailStats::incMetric($stat->mail_id, $stat->email, 'EMAIL_OPENED', true);
+                    // try to geolocate
+                    if(Config::get('geolocation.maxmind.cities')) {
                         // $loc = MailStatsLocation::createByIp($stat->id, $stat->id, '128.101.101.101');
                         $loc = MailStatsLocation::createByIp($stat->id, $request->getClientIp());
                         $loc->save();
-                    } catch (ModelException $e) {
-                        if(App::debug()) {
-                            throw $e;
-                        }
+                    }
+                } catch (ModelException $e) {
+                    if(App::debug()) {
+                        throw $e;
                     }
                 }
                 $stat->inc();
                 $stat->save();
+                // Mark as readed if mail exists
                 $url = $stat->getMetric()->metric;
-
                 if($url) {
                     return $this->redirect($url);
                 }
@@ -134,11 +140,15 @@ class MailController extends \Goteo\Core\Controller {
     public function trackAction($token, Request $request) {
         //decode token
         if(list($email, $mail_id) = Mail::decodeToken($token)) {
-            $stat = MailStats::incMetric($mail_id, $email, 'EMAIL_OPENED');
             // try to geolocate
             try {
-                $loc = MailStatsLocation::createByIp($stat->id, $request->getClientIp());
-                $loc->save();
+                // email metric
+                $stat = MailStats::incMetric($mail_id, $email, 'EMAIL_OPENED');
+                // Geolocation if exists
+                if(Config::get('geolocation.maxmind.cities')) {
+                    $loc = MailStatsLocation::createByIp($stat->id, $request->getClientIp());
+                    $loc->save();
+                }
             } catch (ModelException $e) {
                 // die($e->getMessage());
             }

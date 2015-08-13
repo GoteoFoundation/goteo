@@ -90,7 +90,7 @@ class MailStats extends \Goteo\Core\Model
      * @param  string $metric_val [description]
      * @return [type]          [description]
      */
-    static public function incMetric($mail_id, $email, $metric_val = 'EMAIL_OPENED')
+    static public function incMetric($mail_id, $email, $metric_val = 'EMAIL_OPENED', $only_if_empty = false)
     {
         //check Mail existance (non-foreign key added here)
         if(! (int) static::query('SELECT count(id) FROM mail WHERE id = ?', $mail_id)->fetchColumn()) {
@@ -99,7 +99,9 @@ class MailStats extends \Goteo\Core\Model
 
         $metric = Metric::getMetric($metric_val);
         $stat = static::getStat($mail_id, $email, $metric);
-        $stat->inc();
+        if (!$only_if_empty || $stat->counter == 0) {
+            $stat->inc();
+        }
         $errors = [];
         if(!$stat->save($errors)) {
             throw new ModelException(implode("\n", $errors));
