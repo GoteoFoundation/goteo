@@ -76,7 +76,7 @@ class MailTest extends \PHPUnit_Framework_TestCase {
         $this->assertInstanceOf('\PHPMailer', $mailer);
         $this->assertEquals('test@goteo.org', $mailer->getToAddresses()[0][0]);
         $this->assertEquals('Test', $mailer->getToAddresses()[0][1]);
-        $this->assertEquals('Subject', $mailer->Subject);
+        $this->assertContains('Subject', $mailer->Subject);
         $this->assertEmpty($mailer->isHTML());
         $this->assertContains("Body\nsecond line", $mailer->Body);
         $this->assertContains($mail->getToken(), $mailer->Body);
@@ -88,7 +88,7 @@ class MailTest extends \PHPUnit_Framework_TestCase {
         $this->assertInstanceOf('\PHPMailer', $mailer);
         $this->assertEquals('test@goteo.org', $mailer->getToAddresses()[0][0]);
         $this->assertEquals('Test', $mailer->getToAddresses()[0][1]);
-        $this->assertEquals('Subject', $mailer->Subject);
+        $this->assertContains('Subject', $mailer->Subject);
         $this->assertEmpty($mailer->isHTML());
         $this->assertContains("Body<br>second line", $mailer->Body);
         $this->assertContains("Body\nsecond line", $mailer->AltBody);
@@ -102,7 +102,7 @@ class MailTest extends \PHPUnit_Framework_TestCase {
         $this->assertInstanceOf('\PHPMailer', $mailer);
         $this->assertEquals('test@goteo.org', $mailer->getToAddresses()[0][0]);
         $this->assertEquals('Test', $mailer->getToAddresses()[0][1]);
-        $this->assertEquals($tpl->title, $mailer->Subject);
+        $this->assertContains($tpl->title, $mailer->Subject);
         $this->assertEmpty($mailer->isHTML());
         $this->assertContains(strip_tags($tpl->text), strip_tags($mailer->Body));
         $this->assertContains(preg_replace("/[\n]{2,}/", "\n\n" ,strip_tags(str_ireplace(['<br', '<p'], ["\n<br", "\n<p"], $tpl->text))), $mailer->AltBody);
