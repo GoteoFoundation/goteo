@@ -45,7 +45,7 @@ class SentSubController extends AbstractSubController {
 
     public function detailAction($id) {
         $mail = Mail::get($id);
-
+// print_r($mail);die;
         $stats = new StatsCollector($mail);
         $readed = $stats->getEmailOpenedCollector()->getPercent();
         $metric_list = $stats->getAllMetrics();

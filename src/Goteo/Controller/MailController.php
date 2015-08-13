@@ -6,6 +6,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
 use Goteo\Application\App;
 use Goteo\Application\Config;
+use Goteo\Application\Session;
 use Goteo\Application\Message;
 use Goteo\Application\Exception\ControllerException;
 use Goteo\Application\Exception\ModelException;
@@ -13,6 +14,7 @@ use Goteo\Model\Mail\MailStats;
 use Goteo\Model\Mail\MailStatsLocation;
 use Goteo\Model\Mail\Metric;
 use Goteo\Model\Mail;
+use Goteo\Model\User;
 
 class MailController extends \Goteo\Core\Controller {
 
@@ -21,27 +23,24 @@ class MailController extends \Goteo\Core\Controller {
      */
     public function indexAction ($token, Request $request) {
 
-        if(list($email, $mail_id) = Mail::decodeToken($token)) {
-            // die("$email $mail_id");
+        if (list($email, $mail_id, $tracker) = Mail::decodeToken($token)) {
 
-            // A numeric email refers to a ID entry of the mailer_content table (pending sendings)
-            // 'any' refers to any massive sending
-            $track = false;
-            if(!is_numeric($email) && $email !== 'any') {
-                // track this opening
-                $track = true;
+            // die("$email | $mail_id | [$tracker]");
+            $track = ($tracker == '1');
+            // track this opening
+            if ($track) {
                 try {
                     // try to geolocate
                     try {
                         // email tracker
                         $stat = MailStats::incMetric($mail_id, $email, 'EMAIL_OPENED');
                         // geolocation if exists database
-                        if(Config::get('geolocation.maxmind.cities')) {
+                        if (Config::get('geolocation.maxmind.cities')) {
                             $loc = MailStatsLocation::createByIp($stat->id, $request->getClientIp());
                             $loc->save();
                         }
                     } catch (ModelException $e) {
-                        if(App::debug()) {
+                        if (App::debug()) {
                             throw $e;
                         }
                     }
@@ -53,6 +52,15 @@ class MailController extends \Goteo\Core\Controller {
             }
             // Content still in database?
             if ($mail = Mail::get($mail_id)) {
+                if ($mail->massive) {
+                    if ($user = User::getByEmail($email)) {
+                        $mail->content = str_replace(
+                            array('%USERID%', '%USEREMAIL%', '%USERNAME%', '%SITEURL%'),
+                            array($user->id, $user->email, $user->name, SITE_URL),
+                            $mail->content
+                        );
+                    }
+                }
                 $mail->to = $email;
                 return new Response($mail->render(false, [], $track));
             }
@@ -70,17 +78,24 @@ class MailController extends \Goteo\Core\Controller {
      */
     public function urlAction ($token, Request $request) {
 
-        if(list($email, $mail_id, $url) = Mail::decodeToken($token)) {
+        if (list($email, $mail_id, $url) = Mail::decodeToken($token)) {
             // die("$email $mail_id $url");
             // track this opening
             try {
                 $stat = MailStats::incMetric($mail_id, $email, $url);
                 // try to geolocate
                 try {
-                    $loc = MailStatsLocation::createByIp($stat->id, $request->getClientIp());
-                    $loc->save();
+                    // set email opened metric if empty
+                    $e = MailStats::incMetric($stat->mail_id, $stat->email, 'EMAIL_OPENED', true);
+                    // geolocation if exists database
+                    if (Config::get('geolocation.maxmind.cities')) {
+                        $loc = MailStatsLocation::createByIp($stat->id, $request->getClientIp());
+                        $loc->save();
+                        $loc->id = $e->id; // add to EMAIL_OPENED
+                        $loc->save();
+                    }
                 } catch (ModelException $e) {
-                    if(App::debug()) {
+                    if (App::debug()) {
                         throw $e;
                     }
                 }
@@ -99,7 +114,7 @@ class MailController extends \Goteo\Core\Controller {
      */
     public function linkAction ($id, Request $request) {
 
-        if($stat = MailStats::get($id)) {
+        if ($stat = MailStats::get($id)) {
             // print_r($stat);die("$id");
             // track this opening
             try {
@@ -107,7 +122,7 @@ class MailController extends \Goteo\Core\Controller {
                     // set email opened metric if empty
                     $e = MailStats::incMetric($stat->mail_id, $stat->email, 'EMAIL_OPENED', true);
                     // try to geolocate
-                    if(Config::get('geolocation.maxmind.cities')) {
+                    if (Config::get('geolocation.maxmind.cities')) {
                         // $loc = MailStatsLocation::createByIp($stat->id, $stat->id, '128.101.101.101');
                         $loc = MailStatsLocation::createByIp($stat->id, $request->getClientIp());
                         $loc->save();
@@ -115,7 +130,7 @@ class MailController extends \Goteo\Core\Controller {
                         $loc->save();
                     }
                 } catch (ModelException $e) {
-                    if(App::debug()) {
+                    if (App::debug()) {
                         throw $e;
                     }
                 }
@@ -123,7 +138,7 @@ class MailController extends \Goteo\Core\Controller {
                 $stat->save();
                 // Mark as readed if mail exists
                 $url = $stat->getMetric()->metric;
-                if($url) {
+                if ($url) {
                     return $this->redirect($url);
                 }
             } catch(\Exception $e) {
@@ -141,13 +156,13 @@ class MailController extends \Goteo\Core\Controller {
      */
     public function trackAction($token, Request $request) {
         //decode token
-        if(list($email, $mail_id) = Mail::decodeToken($token)) {
+        if (list($email, $mail_id) = Mail::decodeToken($token)) {
             // try to geolocate
             try {
                 // email metric
                 $stat = MailStats::incMetric($mail_id, $email, 'EMAIL_OPENED');
                 // Geolocation if exists
-                if(Config::get('geolocation.maxmind.cities')) {
+                if (Config::get('geolocation.maxmind.cities')) {
                     $loc = MailStatsLocation::createByIp($stat->id, $request->getClientIp());
                     $loc->save();
                 }

@@ -46,15 +46,18 @@ class Mail extends \Goteo\Core\Model {
         if($this->sent == 1) $this->status = 'sent';
         if($this->sent === 0 || $this->sent === '0') $this->status = 'failed';
         if($this->email === 'any') $this->massive = true;
+        else {
+
+        }
         $this->node = Config::get('current_node');
 
         // Inicializa la instancia PHPMailer.
         $mail = new \PHPMailer($exceptions);
         $this->from = Config::get('mail.transport.from');
-        $this->to = Config::get('mail.transport.from');
+        // $this->to = Config::get('mail.transport.from');
+        // $this->toName = Config::get('mail.transport.name');
         $this->reply = Config::get('mail.transport.from');
         $this->fromName = Config::get('mail.transport.name');
-        $this->toName = Config::get('mail.transport.name');
         $this->replyName = Config::get('mail.transport.name');
         $this->node = Config::get('current_node');
 
@@ -107,6 +110,7 @@ class Mail extends \Goteo\Core\Model {
     static public function get($id) {
         if ($query = static::query('SELECT * FROM mail WHERE id = ?', $id)) {
             if( ! ($mail = $query->fetchObject(__CLASS__)) ) return false;
+            $mail->to = $mail->email;
             // $mail->toName = $to_name; // TODO: add name from users
 
             return $mail;
@@ -322,13 +326,12 @@ class Mail extends \Goteo\Core\Model {
         return $mail;
     }
 
-    public function getToken($encode = true, $detect_massive = false) {
+    public function getToken($tracker = true, $force_to = '', $encode = true) {
         $to = $this->to;
-        if($detect_massive && $this->massive) {
-            $to = 'any';
-        }
+        if($force_to) $to = $force_to;
+        $tracker = $tracker ? '1' : '0';
+        $token = md5(Config::get('secret') . '-' . $to . '-' . $this->id . '-' . $tracker) . '¬' . $to . '¬' . $this->id . '¬' . $tracker;
 
-        $token = md5(Config::get('secret') . '-' . $to . '-' . $this->id) . '¬' . $to  . '¬' . $this->id;
         if($encode) {
             return \mybase64_encode($token);
         }
@@ -410,6 +413,7 @@ class Mail extends \Goteo\Core\Model {
         }
 
         $extra_vars['content'] = $content;
+        $extra_vars['subject'] = $this->subject;
 
         $extra_vars['unsubscribe'] = SITE_URL . '/user/leave?email=' . $this->to;
 

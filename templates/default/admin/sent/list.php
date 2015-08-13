@@ -89,7 +89,7 @@ $templates = $this->templates;
                             <td><?= $templates[$sent->template] ?></td>
                             <td><?= $sent->getSubject() ?></td>
                             <td><?= $sent->date ?></td>
-                            <td><a href="/mail/<?= $sent->getToken(true, true) ?>" target="_blank">[Visualizar]</a></td>
+                            <td><a href="/mail/<?= $sent->getToken(false) ?>" target="_blank">[Visualizar]</a></td>
                             <td><?= '<span class="label label-'. $sent->status . '">' . $sent->status . '</span>' ?>
                         </tr>
                     <?php endforeach; ?>

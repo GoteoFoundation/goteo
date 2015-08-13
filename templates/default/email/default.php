@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-<title>Goteo Mailer</title>
+<title><?= $this->subject ? $this->subject : 'Goteo Mailer'  ?></title>
 <style type="text/css">
 <!--
 body {

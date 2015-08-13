@@ -3,7 +3,7 @@
 <?php $this->section('admin-content') ?>
 
 <div class="widget board">
-<a href="/mail/<?= $this->mail->getToken(true, true) ?>" target="_blank">[Visualizar]</a>
+<a href="/mail/<?= $this->mail->getToken(false) ?>" target="_blank">[Visualizar]</a>
 <p><b>Subject:</b> <?= $this->mail->getSubject() ?></p>
 <p><b>Alcance:</b> <?= number_format(sprintf('%02f', $this->readed), 2, ',', '') ?> %</p>
 </div>
