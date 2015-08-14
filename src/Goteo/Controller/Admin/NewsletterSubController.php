@@ -146,7 +146,7 @@ class NewsletterSubController extends AbstractSubController {
                 Sender::addSubscribersFromSQL($sql);
 
                 // do no automatically activate ?
-                // $sender->activate();
+                // $sender->setActive(true);
 
             }
 

@@ -4,7 +4,9 @@
 
 <a href="/admin/sent" class="button">Volver al listado</a>
 
-<a href="/mail/<?= $this->mail->getToken(false) ?>" class="button" target="_blank">Ver la newsletter</a>
+<a href="/mail/<?= $this->mail->getToken(false) ?>" class="button" target="_blank">Ver el mensaje</a>
+
+<a href="/admin/mailing/copy/<?= $this->mail->id ?>" class="button" target="_blank">Copiar este mensaje en comunicaciones</a>
 
 <div class="widget board">
 <p><b>Subject:</b> <?= $this->mail->getSubject() ?></p>

@@ -147,9 +147,10 @@ class Session {
      * @param  [type] $key [description]
      * @return [type]      [description]
      */
-    static public function get($key) {
+    static public function get($key, $default = null) {
         global $_SESSION;
-        return $_SESSION[$key];
+        if(isset($_SESSION[$key])) return $_SESSION[$key];
+        return $default;
     }
 
     /**

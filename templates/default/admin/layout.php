@@ -79,6 +79,19 @@ $this->layout('layout', [
         right: 4px;
     }
 
+    .admin .widget ul.pagination {
+        border-top: 1px solid #f0f0f0;
+        padding-top: 5px;
+    }
+    .admin .widget ul.pagination li,
+    .admin .widget ul.pagination li.selected {
+        padding: 0;
+        margin: 0;
+    }
+    .admin .widget ul.pagination ul li a {
+        background: #f0f0f0;
+    }
+
 </style>
 <?php $this->append() ?>
 

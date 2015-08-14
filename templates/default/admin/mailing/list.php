@@ -7,7 +7,11 @@ $filters = $this->filters;
 
 <?php $this->section('admin-content') ?>
 
+
 <div class="widget board">
+
+    <h3>Copiando del mensaje <span class="label label-info"><?= $this->subject ?></span></h3>
+
     <form id="filter-form" action="/admin/mailing/edit" method="get">
 
         <table>

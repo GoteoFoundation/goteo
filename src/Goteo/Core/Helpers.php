@@ -50,20 +50,32 @@ namespace {
     }
 
     /**
-     * Incrusta parametros en un sql para podel lanzarlo en la consola
+     * Replaces any parameter placeholders in a query with the value of that
+     * parameter. Useful for debugging. Assumes anonymous parameters from
+     * $params are are in the same order as specified in $query
      *
-     * @param   string  $sql  sentencia
-     * @param   array  $values   parametros
+     * @param string $query The sql query with parameter placeholders
+     * @param array $params The array of substitution parameters
+     * @return string The interpolated query
      */
-    function sqldbg ($sql, $values = array()) {
-
-        $vals = array();
+    function sqldbg ($query, array $params = []) {
         $keys = array();
-        foreach ($values as $key=>$val) {
-            $keys[] = $key;
-            $vals[] = "'{$val}'";
+
+        # build a regular expression for each parameter
+        foreach ($params as $key => $value) {
+            if (is_string($key)) {
+                $keys[] = '/' . ($key{0} === ':' ? '' : ':') . $key . '\b/';
+            } else {
+                $keys[] = '/[?]/';
+            }
+            $params[$key] = "'" . str_replace("'", "\'", $value) . "'";
         }
-        echo str_replace($keys, $vals, $sql);
+        // print_r($keys);print_r($params);
+        $query = preg_replace($keys, $params, $query, -1, $count);
+
+        // trigger_error('replaced '.$count.' keys');
+
+        return $query;
     }
 
     function date_interval($date1, $date2 = 'now', $format = '%a') {

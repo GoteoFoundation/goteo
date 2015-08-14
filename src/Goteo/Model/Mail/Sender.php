@@ -21,7 +21,7 @@ class Sender extends \Goteo\Core\Model
            $reply,
            $reply_name;
 
-    public function getMail() 
+    public function getMail()
     {
         if(!$this->mailHandler) {
             $this->mailHandler = Mail::get($this->mail);
@@ -30,14 +30,14 @@ class Sender extends \Goteo\Core\Model
     }
 
     //Compatibility, a magic method to retrieve the subject of the email
-    public function __get($name) 
+    public function __get($name)
     {
         if($name == 'subject') {
             return $this->getMail()->subject;
         }
     }
 
-    public function validate(&$errors = []) 
+    public function validate(&$errors = [])
     {
         if(empty($this->mail)) {
             $errors[] = 'Empty Mailer ID';
@@ -46,9 +46,9 @@ class Sender extends \Goteo\Core\Model
         return empty($errors);
     }
 
-    public function save(&$errors = []) 
+    public function save(&$errors = [])
     {
-        if(! $this->validate($errors) ) { return false; 
+        if(! $this->validate($errors) ) { return false;
         }
 
         $sql = "INSERT INTO `mailer_content` (`active`, `mail`, `blocked`, `reply`, `reply_name`)
@@ -72,14 +72,14 @@ class Sender extends \Goteo\Core\Model
     /**
      * Activates the Sender for sending
      */
-    public function setActive($active) 
+    public function setActive($active)
     {
         $this->active = (bool) $active;
         $query = static::query("UPDATE mailer_content SET active = " . ($this->active ? 1 : 0) . " WHERE id = {$this->id}");
         return ($query->rowCount() == 1);
     }
 
-    public function getLink() 
+    public function getLink()
     {
         return SITE_URL . '/mail/' . \mybase64_encode(md5(Config::get('secret') . '-' . $this->id . '-' . $this->mail) . '¬' . $this->id . '¬' . $this->mail);
     }
@@ -88,7 +88,7 @@ class Sender extends \Goteo\Core\Model
      * Returns status of the sending
      * @return [type] [description]
      */
-    public function getStatus() 
+    public function getStatus()
     {
         try {
             // y el estado
@@ -114,7 +114,7 @@ class Sender extends \Goteo\Core\Model
     }
 
     // TODO: remove this
-    static public function initiateSending($mailId, $receivers, $autoactive = 0, $reply = null, $reply_name = null) 
+    static public function initiateSending($mailId, $receivers, $autoactive = 0, $reply = null, $reply_name = null)
     {
 
         try {
@@ -150,7 +150,7 @@ class Sender extends \Goteo\Core\Model
     /*
     * Método para obtener el siguiente envío a tratar
     */
-    static public function get($id = null) 
+    static public function get($id = null)
     {
         try {
             $values = [];
@@ -187,7 +187,7 @@ class Sender extends \Goteo\Core\Model
     /*
     * Obtains a sender from a Mail id
     */
-    static public function getFromMailId($mail_id = null) 
+    static public function getFromMailId($mail_id = null)
     {
         try {
             $values = [':mail' => $mail_id];
@@ -217,7 +217,7 @@ class Sender extends \Goteo\Core\Model
     /*
     * Método para obtener el listado de envios programados
     */
-    static public function getMailingList($offset = 0, $limit = 10, $count = false) 
+    static public function getMailingList($offset = 0, $limit = 10, $count = false)
     {
 
         if($count) {
@@ -253,7 +253,7 @@ class Sender extends \Goteo\Core\Model
      *  mailingId, user, email, name
      * @param [type] $sql [description]
      */
-    static public function addSubscribersFromSQL($sql) 
+    static public function addSubscribersFromSQL($sql)
     {
         $sql = 'INSERT INTO `mailer_send` (`mailing`, `user`, `name`, `email`) ' .$sql;
         if(static::query($sql)) {
@@ -262,7 +262,7 @@ class Sender extends \Goteo\Core\Model
         throw new ModelException('Inserting SQL [' . $sql .'] has failed!');
     }
 
-    static public function addSubscribers(Array $subscribers = []) 
+    static public function addSubscribers(Array $subscribers = [])
     {
 
     }
@@ -270,7 +270,7 @@ class Sender extends \Goteo\Core\Model
     /*
     *  Metodo para obtener la siguiente tanda de destinatarios
     */
-    static public function getRecipients($id, $limit=10) 
+    static public function getRecipients($id, $limit=10)
     {
         $list = array();
 
@@ -286,7 +286,7 @@ class Sender extends \Goteo\Core\Model
             ORDER BY id
             ";
         if($limit) { $sql .= "LIMIT $limit
-            "; 
+            ";
         }
 
         if ($query = static::query($sql, array($id))) {
@@ -302,7 +302,7 @@ class Sender extends \Goteo\Core\Model
     /*
     *  Metodo para limpieza de envíos masivos enviados y sus destinatarios
     */
-    static public function cleanOld($days = 7) 
+    static public function cleanOld($days = 7)
     {
         $days = (int) $days;
         // eliminamos los envíos de hace más de dos días
