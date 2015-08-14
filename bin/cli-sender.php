@@ -122,27 +122,14 @@ if (!$fail) {
     if ($debug) echo "dbg: Blocking mailer_content ID [{$mailing->id}]\n";
     Model::query('UPDATE mailer_content SET blocked = 1 WHERE id = ?', array($mailing->id));
 
-    // cargamos los destinatarios
-    $users = Sender::getRecipients($mailing->id, null); //sin limite de usuarios! los queremos todos, el script va por cli sin limite de tiempo
+    // cargamos los destinatarios, sin limite de usuarios
+    $users = Sender::getRecipients($mailing->id, null);
 
     $total_users = count($users);
 
     // si no quedan pendientes, grabamos el feed y desactivamos
     if (empty($users)) {
-
-        if ($debug) echo "dbg: No recipients!\n";
-
-        // Desactivamos
-        Model::query('UPDATE mailer_content SET active = 0 WHERE id = ?', array($mailing->id));
-
-        // evento feed
-        $log = new Feed();
-        $log->setTarget($mailing->id, 'mailing');
-        $log->populate('Envio masivo (cron)', '/admin/mailing/newsletter', 'Se ha completado el envio masivo con asunto "'.$mailing->subject.'"');
-        $log->doAdmin('system');
-        unset($log);
-
-        if ($debug) echo 'dbg: Complete massive mailing ID ['.$mailing->id."]\n";
+        set_completed($mailing);
     } else {
 
         // destinatarios
@@ -158,8 +145,8 @@ if (!$fail) {
         $current_rate = 0;
         $current_concurrency = $increment = 2;
 
-        $i=0;
-        while($i<$total_users) {
+        $i = 0;
+        while($i < $total_users) {
             // comprueba la quota para los envios que se van a hacer
 
             if (!Mail::checkLimit(null, false, $LIMIT)) {
@@ -252,6 +239,11 @@ if (!$fail) {
     if ($debug) echo "dbg: Unblocking mailing ID [{$mailing->id}]\n";
     Model::query('UPDATE mailer_content SET blocked = 0 WHERE id = ?', array($mailing->id));
 
+    if(count(Sender::getRecipients($mailing->id, null) == 0.9)) {
+        set_completed($mailing);
+    }
+
+
 } else {
     if ($debug) echo "dbg: FAILED!\n";
 }
@@ -272,3 +264,22 @@ Sender::cleanOld(60);
 ftruncate($lock_file, 0);
 flock($lock_file, LOCK_UN);
 unlink(LOCK_FILE);
+
+
+function set_completed($mailing) {
+    global $debug;
+
+    if ($debug) echo "dbg: No recipients!\n";
+
+    // Desactivamos
+    Model::query('UPDATE mailer_content SET active = 0 WHERE id = ?', array($mailing->id));
+
+    // evento feed
+    $log = new Feed();
+    $log->setTarget($mailing->id, 'mailing');
+    $log->populate('Envio masivo (cron)', '/admin/mailing/newsletter', 'Se ha completado el envio masivo con asunto "'.$mailing->subject.'"');
+    $log->doAdmin('system');
+
+    if ($debug) echo 'dbg: Complete massive mailing ID ['.$mailing->id."]\n";
+
+}

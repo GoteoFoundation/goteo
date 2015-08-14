@@ -47,10 +47,9 @@ $templates = $this->templates;
                 <th></th>
                 <th>Fecha</th>
                 <th>Asunto</th>
-                <th></th>
-                <th></th>
-                <th></th>
-                <th><!-- Si no ves --></th>
+                <th>Estado</th>
+                <th>% envío</th>
+                <th>Opciones</th>
             </tr>
         </thead>
         <tbody>
@@ -75,20 +74,11 @@ $templates = $this->templates;
 <?php $this->section('footer') ?>
 <script type="text/javascript">
     $(function(){
-        var checkStatus = function(id) {
-            $.getJSON('/admin/newsletter/status/' + id, function(data){
-                if(data.status) {
-                    $('.mailing_status[data-id="' + data.id + '"]').html(data.status.percent);
-                    setTimeout()
-                }
-            });
-            setTimeout(function (){
-                checkStatus(id);
-            }, 500);
+        var reloadPage = function() {
+            $('#admin-content').load('/admin/newsletter/list/ #admin-content');
+            setTimeout(reloadPage, 2000);
         };
-        $('.mailing_status').each(function(){
-            checkStatus($(this).data('id'));
-        });
+        setTimeout(reloadPage, 2000);
     });
 </script>
 <?php $this->append() ?>

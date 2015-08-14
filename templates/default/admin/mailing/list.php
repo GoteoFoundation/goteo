@@ -9,8 +9,9 @@ $filters = $this->filters;
 
 
 <div class="widget board">
-
-    <h3>Copiando del mensaje <span class="label label-info"><?= $this->subject ?></span></h3>
+    <?php if($this->subject):  ?>
+        <h3>Copiando del mensaje <span class="label label-info"><?= $this->subject ?></span></h3>
+    <?php endif  ?>
 
     <form id="filter-form" action="/admin/mailing/edit" method="get">
 
