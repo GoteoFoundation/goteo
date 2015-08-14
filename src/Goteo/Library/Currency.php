@@ -6,8 +6,7 @@ namespace Goteo\Library;
 * Clase para gestionar las divisas
 */
 
-use Goteo\Library\Mail,
-    Goteo\Library\Converter;
+use Goteo\Library\Converter;
 
 class Currency {
 

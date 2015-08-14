@@ -2,17 +2,16 @@
 
 namespace Goteo\Controller {
 
-    use Goteo\Core\ACL,
-        Goteo\Core\Error,
-        Goteo\Core\Redirection,
+    use Goteo\Core\Redirection,
         Goteo\Core\View,
         Goteo\Library\Text,
         Goteo\Application,
+        Goteo\Model,
         Goteo\Application\Lang,
-        Goteo\Library\Template,
+        Goteo\Model\Template,
         Goteo\Library\Feed,
         Goteo\Library\Buzz,
-        Goteo\Model;
+        Goteo\Model\Mail;
 
     class Call extends \Goteo\Core\Controller {
 
@@ -179,7 +178,7 @@ namespace Goteo\Controller {
                     if ($call->ready($errors)) {
 
                         // email a los de goteo
-                        $mailHandler = new Library\Mail();
+                        $mailHandler = new Mail();
 
                         $mailHandler->to = \GOTEO_MAIL;
                         $mailHandler->toName = 'Revisor de convocatorias';
@@ -199,7 +198,7 @@ namespace Goteo\Controller {
                         unset($mailHandler);
 
                         // email al dueño
-                        $mailHandler = new Library\Mail();
+                        $mailHandler = new Mail();
 
                         $mailHandler->to = $call->user->email;
                         $mailHandler->toName = $call->user->name;

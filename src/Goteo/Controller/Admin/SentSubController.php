@@ -5,10 +5,15 @@
 namespace Goteo\Controller\Admin;
 
 use Goteo\Application\Config;
-use Goteo\Model\Node,
-	Goteo\Library\Feed,
-	Goteo\Library\Template,
-	Goteo\Library\Mail;
+use Goteo\Application\Message;
+use Goteo\Model\Node;
+use Goteo\Library\Feed;
+use Goteo\Model\Template;
+use Goteo\Model\User;
+use Goteo\Model\Mail;
+use Goteo\Model\Mail\StatsCollector;
+use Goteo\Model\Mail\Sender;
+use Goteo\Model\Mail\SenderRecipient;
 
 class SentSubController extends AbstractSubController {
 
@@ -38,7 +43,92 @@ class SentSubController extends AbstractSubController {
         return parent::isAllowed($user, $node);
     }
 
-    public function listAction($id = null, $subaction = null) {
+    public function detailAction($id) {
+        $mail = Mail::get($id);
+
+        $stats = new StatsCollector($mail);
+        $readed = $stats->getEmailOpenedCollector()->getPercent();
+        $metric_list = $stats->getAllMetrics();
+        $total_metrics = count($metric_list);
+
+        $limit = 50;
+        $user_list = [];
+        $total = 0;
+        // if still in sender
+        if($mailing = Sender::getFromMailId($id)) {
+            $user_list = SenderRecipient::getList($mailing->id, 'receivers', $this->getGet('pag') * $limit, $limit);
+            $total = SenderRecipient::getList($mailing->id, 'receivers', 0, 0, true);
+        }
+        else {
+          // get from mail itself
+          $user = User::getByEmail($mail->email);
+          $user_list = [(object)[
+            'email' => $mail->email,
+            'user' => $user->id,
+            'name' => $user->name,
+            'blacklisted' => Mail::checkBlocked($mail->email),
+            'status' => $mail->status,
+            'error' => $mail->error
+          ]];
+        }
+
+      return array(
+        'template' => 'admin/sent/detail',
+        'mail' => $mail,
+        'sender' => $mailing ? $mailing->id : '',
+        'stats' => $stats,
+        'readed' => $readed,
+        'metric_list' => $metric_list,
+        'user_list' => $user_list,
+        'limit' => $limit,
+        'total' => $total
+        );
+    }
+
+    public function removeblacklistAction($id) {
+      $email = $this->getGet('email');
+
+      if(Mail::removeBlocked($email)) {
+        Message::info("Quitado de la lista negra: [$email]");
+      }
+      else {
+        Message::info("Ha ocurrido un error al intentar quitar el email [$email] de la lista negra");
+      }
+      return $this->redirect('/admin/sent/detail/' . $id);
+    }
+
+    public function resendAction($id) {
+      $email = $this->getGet('email');
+      $mail = Mail::get($id);
+      $user = User::getByEmail($email);
+      if($mail->massive) {
+        $recipient = SenderRecipient::getFromMailing(Sender::getFromMailId($id)->id, $email);
+        if($recipient->send($errors)) {
+          Message::info('Mensaje enviado correctamente');
+        } else {
+          Message::error('Errors: ' . implode("<br>", $errors));
+        }
+      }
+      else {
+        if($email == $mail->email) {
+          $errors = [];
+          $mail->to = $email;
+          $mail->toName = $user->name;
+          if($mail->send($errors)) {
+            Message::info('Mensaje enviado correctamente');
+          } else {
+            Message::error('Errors: ' . implode("<br>", $errors));
+          }
+        }
+        else {
+          Message::error('This email is not valid for the current Mail');
+        }
+      }
+      return $this->redirect('/admin/sent/detail/' . $id);
+      // die("resend id: $id to: $email");
+    }
+
+    public function listAction() {
         $templates = Template::getAllMini();
         $nodes = array();
         $all_nodes = Node::getList();
@@ -48,7 +138,7 @@ class SentSubController extends AbstractSubController {
 
         $filters = $this->getFilters();
         $limit = 20;
-        $sent = Mail::getSentList($filters, $this->node, $this->getGet('pag') * $limit, $limit);
+        $sent_list = Mail::getSentList($filters, $this->node, $this->getGet('pag') * $limit, $limit);
         $total = Mail::getSentList($filters, $this->node, 0, 0, true);
 
         return array(
@@ -56,7 +146,7 @@ class SentSubController extends AbstractSubController {
                 'filters' => $filters,
                 'templates' => $templates,
                 'nodes' => $nodes,
-                'sent' => $sent,
+                'sent_list' => $sent_list,
                 'total' => $total,
                 'limit' => $limit
         );

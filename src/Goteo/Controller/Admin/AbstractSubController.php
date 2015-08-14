@@ -7,6 +7,7 @@
 namespace Goteo\Controller\Admin;
 
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Goteo\Application\Config;
@@ -276,6 +277,9 @@ abstract class AbstractSubController {
      */
     public function response($view, $data = []) {
         return new Response(View::render($view, $data));
+    }
+    public function jsonResponse($data = []) {
+        return new JsonResponse($data);
     }
 
     /**

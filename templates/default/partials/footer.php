@@ -50,7 +50,7 @@ $sponsors   = Sponsor::getList();
                 <li><a href="/glossary"><?=$this->text('footer-resources-glossary') ?></a></li>
                 <li><a href="/press"><?=$this->text('footer-resources-press') ?></a></li>
                 <?php foreach ($posts as $id => $title) : ?>
-                <li><a href="/blog/<?php echo $id ?>"><?=$this->text_recorta($title, 50)?></a></li>
+                <li><a href="/blog/<?php echo $id ?>"><?=$this->text_truncate($title, 50)?></a></li>
                 <?php endforeach ?>
                 <li><a href="/newsletter" target="_blank">Newsletter</a></li>
                 <li><a href="https://github.com/Goteo/Goteo" target="_blank"><?=$this->text('footer-resources-source_code') ?></a></li>

@@ -3,6 +3,12 @@ TODO
 
 REFORMAS PENDIENTES
 
+- mailing::
+    + eliminar sinoveslink, eliminar guardar a archivo
+    + establecer proceso limpieza tabla mail (y entonces si guardar a archivo)
+    + controlador newsletter
+    + añadir estadísticas uso
+
 - eliminiar controladores ws y ws-ultra-secret. Pasar a json en sus respectivos controladores
 - arreglar el jquery (pasar a una version moderna). implica cambiar algunos plugins
 - reformar el controlador blog.

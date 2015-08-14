@@ -6,10 +6,11 @@
 
 use Goteo\Core\Model,
     Goteo\Application\Lang,
+    Goteo\Application\Message,
     Goteo\Application\Config,
     Goteo\Library\Feed,
-    Goteo\Library\Mail,
-    Goteo\Library\Sender;
+    Goteo\Model\Mail,
+    Goteo\Model\Mail\Sender;
 
 if (PHP_SAPI !== 'cli') {
     die('Console access only!');
@@ -23,9 +24,6 @@ define('GOTEO_WEB_PATH', dirname(__DIR__) . '/app/');
 
 require_once __DIR__ . '/../src/autoload.php';
 
-// montar SITE_URL como el dispatcher para el enlace de darse de baja.
-define('SITE_URL', GOTEO_URL);
-
 define('MAIL_MAX_RATE', 14); // envios por segundo máximos
 define('MAIL_MAX_CONCURRENCY', 50); //numero máximo de procesos simultaneos para enviar mail (pero no se llegará a esta cifra si el ratio de envios es mayor que MAIL_MAX_RATE)
 define('PHP_CLI', '/usr/bin/php'); //ruta al ejecutable PHP
@@ -33,12 +31,12 @@ define('LOGS_DIR', GOTEO_LOG_PATH . 'mailing/'); //ruta a logs
 //Archivo de bloqueo en la carpeta var
 define('LOCK_FILE',  __DIR__ . '/../var/' . basename(__FILE__) . '.lock');
 
-// constantes necesarias (las pone el dispatcher)
-define('HTTPS_ON', false); // para las url de project/media
-define('SITE_URL', 'http://goteo.org'); // para los mails
-define('SEC_URL', 'https:'.str_replace('http:', '', SITE_URL)); // urls para paypal (necesita schema)
 // Config file...
 Config::loadFromYaml('settings.yml');
+define('HTTPS_ON', Config::get('ssl') ? true : false); // para las url de project/media
+$url = Config::get('url.main');
+define('SITE_URL', (Config::get('ssl') ? 'https://' : 'http://') . preg_replace('|^(https?:)?//|i','',$url));
+define('SEC_URL', SITE_URL);
 // set Lang
 Lang::setDefault(Config::get('lang'));
 Lang::set(Config::get('lang'));
@@ -89,17 +87,9 @@ else if (!$got_lock && $wouldblock) {
 ftruncate($lock_file, 0);
 fwrite($lock_file, getmypid() . "\n");
 
-// exec("ps x | grep " . escapeshellarg(escapeshellcmd(basename(__FILE__))) . " | grep -v grep | awk '{ print $1 }'", $commands);
-
-// if (count($commands)>1) {
-//     //echo `ps x`;
-//     die("Ya existe una copia de " . basename(__FILE__) . " en ejecución!\n");
-// }
-
-// print_r($commands);
 
 // Limite para sender, (deja margen para envios individuales)
-$LIMIT = (defined("GOTEO_MAIL_SENDER_QUOTA") ? GOTEO_MAIL_SENDER_QUOTA : 40000);
+$LIMIT = (Config::get('mail.quota.sender') ? Config::get('mail.quota.sender') : 40000);
 
 $debug = true;
 $fail = false;
@@ -113,7 +103,7 @@ $itime = microtime(true);
 $total_users = 0;
 
 // cogemos el siguiente envío a tratar
-$mailing = Sender::getSending();
+$mailing = Sender::get('last');
 
 // si no está activa fin
 if (!$mailing->active) {
@@ -121,7 +111,7 @@ if (!$mailing->active) {
     die;
 }
 if ($mailing->blocked) {
-    if ($debug) echo "dbg: BLOQUEADO!\n";
+    if ($debug) echo "dbg: BLOCKUED!\n";
     $fail = true;
 }
 
@@ -129,51 +119,38 @@ if ($mailing->blocked) {
 if ($debug) echo "dbg: mailing:\n=====\n".print_r($mailing,true)."\n=====\n";
 
 if (!$fail) {
-    if ($debug) echo "dbg: bloqueo este registro\n";
+    if ($debug) echo "dbg: Blocking mailer_content ID [{$mailing->id}]\n";
     Model::query('UPDATE mailer_content SET blocked = 1 WHERE id = ?', array($mailing->id));
 
-    // cargamos los destinatarios
-    $users = Sender::getRecipients($mailing->id, null); //sin limite de usuarios! los queremos todos, el script va por cli sin limite de tiempo
+    // cargamos los destinatarios, sin limite de usuarios
+    $users = Sender::getRecipients($mailing->id, null);
 
     $total_users = count($users);
 
     // si no quedan pendientes, grabamos el feed y desactivamos
     if (empty($users)) {
-
-        if ($debug) echo "dbg: No hay destinatarios\n";
-
-        // Desactivamos
-        Model::query('UPDATE mailer_content SET active = 0 WHERE id = ?', array($mailing->id));
-
-        // evento feed
-        $log = new Feed();
-        $log->setTarget($mailing->id, 'mailing');
-        $log->populate('Envio masivo (cron)', '/admin/mailing/newsletter', 'Se ha completado el envio masivo con asunto "'.$mailing->subject.'"');
-        $log->doAdmin('system');
-        unset($log);
-
-        if ($debug) echo 'dbg: Se ha completado el envio masivo '.$mailing->id."\n";
+        set_completed($mailing);
     } else {
 
         // destinatarios
-        if ($debug) echo "dbg: Enviamos a $total_users usuarios \n";
+        if ($debug) echo "dbg: Total users: [$total_users]\n";
 
         //limpiar logs
         for($i=0; $i<MAIL_MAX_CONCURRENCY; $i++) {
             @unlink(LOGS_DIR . "cli-sendmail-$i.log");
         }
 
-        if ($debug) echo "dbg: Comienza a enviar\n";
+        if ($debug) echo "dbg: Start sending...\n";
 
         $current_rate = 0;
         $current_concurrency = $increment = 2;
 
-        $i=0;
-        while($i<$total_users) {
+        $i = 0;
+        while($i < $total_users) {
             // comprueba la quota para los envios que se van a hacer
 
             if (!Mail::checkLimit(null, false, $LIMIT)) {
-                if ($debug) echo "dbg: Se ha alcanzado el límite máximo de ".GOTEO_MAIL_SENDER_QUOTA." de envíos diarios! Lo dejamos para mañana\n";
+                if ($debug) echo "dbg: Max limit daily [$LIMIT] reached!\n";
                 $total_users = $i; //para los calculos posteriores
                 break;
             }
@@ -198,10 +175,12 @@ if (!$fail) {
                 $cmd .= " ".escapeshellarg($user->id);
                 $cmd .= " >> $log 2>&1 & echo $!";
 
-                // if($debug) echo "dbg: ejecutando comando:\n$cmd\n";
                 $pid = trim(shell_exec($cmd));
                 $pids[$pid] = $user->id;
-                if($debug) echo "Proceso lanzado con el PID $pid para el envio a {$user->email}\n";
+                if($debug) {
+                    echo "Process PID [$pid] for mailer_send ID [{$user->id}] Email {$user->email} detached\n";
+                    echo "CMD: $cmd\n";
+                }
 
             }
 
@@ -218,29 +197,36 @@ if (!$fail) {
                     }
                 }
                 if($processing) {
-                    echo "PIDs ".implode(",", $processing). " en proceso, esperamos...\n";
+                    echo "PIDs [".implode(",", $processing). "] processing, waiting...\n";
                 }
             } while($check_processes);
+
+            //get log info
+            for($j=0; $j<$current_concurrency; $j++) {
+                $log = LOGS_DIR .  "cli-sendmail-$j.log";
+                readfile($log);
+                unlink($log);
+            }
 
             $process_time = microtime(true) - $stime;
             $current_rate  = round($j / $process_time,2);
 
             //No hace falta incrementar la quota de envio pues ya se hace en Mail::Send()
             $rest = Mail::checkLimit(null, true, $LIMIT);
-            if($debug) echo "Quota de envío restante para hoy: $rest emails, Quota diaria para mailing: ".GOTEO_MAIL_SENDER_QUOTA."\n";
-            if($debug) echo "Envios por segundo: $current_rate - Ratio máximo: ".MAIL_MAX_RATE."\n";
+            if($debug) echo "Quota left for today: [$rest] emails, Quota limit: [$LIMIT]\n";
+            if($debug) echo "Rate sending (per second): $current_rate - Rate limit: [".MAIL_MAX_RATE."]\n";
 
             //aumentamos la concurrencia si el ratio es menor que el 75% de máximo
             if($current_rate < MAIL_MAX_RATE*0.75 && $current_concurrency < MAIL_MAX_CONCURRENCY) {
                 $current_concurrency += 2;
-                if($debug) echo "Ratio de envio actual menor a un 75% del máximo, aumentamos concurrencia a $current_concurrency\n";
+                if($debug) echo "Ratio less than 75% from maximum, raising concurrency to [$current_concurrency]\n";
             }
 
             //disminuimos la concurrencia si llegamos al 90% del ratio máximo
             if($current_rate > MAIL_MAX_RATE*0.9) {
                 $wait_time = ceil($current_rate - MAIL_MAX_RATE*0.9);
                 $current_concurrency--;
-                if($debug) echo "Ratio de envio actual mayor a un 90% del máximo, esperamos $wait_time segundos, disminuimos concurrencia a $current_concurrency\n";
+                if($debug) echo "Ratio overpassing 90% from maximum, waiting [$wait_time] seconds, lowering concurrency to [$current_concurrency]\n";
                 sleep($wait_time);
             }
 
@@ -250,20 +236,50 @@ if (!$fail) {
 
     }
 
-    if ($debug) echo "dbg: desbloqueo este registro\n";
+    if ($debug) echo "dbg: Unblocking mailing ID [{$mailing->id}]\n";
     Model::query('UPDATE mailer_content SET blocked = 0 WHERE id = ?', array($mailing->id));
 
+    if(count(Sender::getRecipients($mailing->id, null) == 0.9)) {
+        set_completed($mailing);
+    }
+
+
 } else {
-    if ($debug) echo "dbg: FALLO\n";
+    if ($debug) echo "dbg: FAILED!\n";
 }
 
-if ($debug) echo "dbg: FIN, tiempo de ejecución total " . round(microtime(true) - $itime, 2) . " segundos para enviar $total_users emails, ratio medio " . round($total_users/(microtime(true) - $itime),2) . " emails/segundo\n";
+if($debug) {
+    foreach(Message::getAll() as $msg) {
+        echo '['. ($msg->type === 'error' ? "\033[31m" : "\033[33m") . $msg->type . "\033[0m] " . $msg->content . "\n";
+    }
+}
+
+if ($debug) echo "dbg: FIN, Total execution time [" . round(microtime(true) - $itime, 2) . "] seconds $total_users emails, Medium rate [" . round($total_users/(microtime(true) - $itime),2) . "] emails/second\n";
 
 // limpiamos antiguos procesados
-Sender::cleanOld();
+Sender::cleanOld(60);
 
 // All done; we blank the PID file and explicitly release the lock
 // (although this should be unnecessary) before terminating.
 ftruncate($lock_file, 0);
 flock($lock_file, LOCK_UN);
 unlink(LOCK_FILE);
+
+
+function set_completed($mailing) {
+    global $debug;
+
+    if ($debug) echo "dbg: No recipients!\n";
+
+    // Desactivamos
+    Model::query('UPDATE mailer_content SET active = 0 WHERE id = ?', array($mailing->id));
+
+    // evento feed
+    $log = new Feed();
+    $log->setTarget($mailing->id, 'mailing');
+    $log->populate('Envio masivo (cron)', '/admin/mailing/newsletter', 'Se ha completado el envio masivo con asunto "'.$mailing->subject.'"');
+    $log->doAdmin('system');
+
+    if ($debug) echo 'dbg: Complete massive mailing ID ['.$mailing->id."]\n";
+
+}

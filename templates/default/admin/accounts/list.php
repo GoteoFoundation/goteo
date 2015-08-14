@@ -129,7 +129,7 @@ $the_filters = array(
                 <td><?= $invest->amount ?></td>
                 <td><?= $invest->invested ?></td>
                 <td><a href="mailto:<?= $invest->getUser()->email ?>" title="<?= $invest->getUser()->id .' / ' . $invest->getUser()->email .' / ' . $invest->getUser()->node ?>"><?= $invest->getUser()->name ?></a><a href="/admin/users/manage/<?= $invest->user ?>" target="_blank" title="<?= $invest->getUser()->name ?>">[<?= $invest->user ?>]</a></td>
-                <td><a href="/admin/projects?proj_id=<?= $invest->project ?>" target="_blank"><?= $this->text_recorta($this->projects[$invest->project], 20); if (!empty($invest->campaign)) echo '<br />('.$invest->campaign.')' ?></a></td>
+                <td><a href="/admin/projects?proj_id=<?= $invest->project ?>" target="_blank"><?= $this->text_truncate($this->projects[$invest->project], 20); if (!empty($invest->campaign)) echo '<br />('.$invest->campaign.')' ?></a></td>
                 <td><?= $this->methods[$invest->method] ?></td>
                 <td><?= $this->status[$invest->status] ?></td>
                 <td><?= $invest->pool ? 'Yes' : 'No' ?></td>

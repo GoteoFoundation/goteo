@@ -7,8 +7,8 @@ namespace Goteo\Controller\Admin;
 use Goteo\Application\Config;
 use Goteo\Application\Message,
 	Goteo\Library\Feed,
-    Goteo\Library\Mail,
-	Goteo\Library\Template,
+    Goteo\Model\Mail,
+	Goteo\Model\Template,
     Goteo\Model;
 
 class TranscallsSubController extends AbstractSubController {

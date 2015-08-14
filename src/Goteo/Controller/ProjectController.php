@@ -14,7 +14,6 @@ use Goteo\Application\Config,
     Goteo\Library\Text,
     Goteo\Library\Check,
     Goteo\Library,
-    Goteo\Library\Template,
     Goteo\Library\Page,
     Goteo\Library\Feed,
     Goteo\Model\Project,
@@ -374,7 +373,7 @@ class ProjectController extends \Goteo\Core\Controller {
             // print_r($_FILES);
             // die;
             // mail de aviso
-            $mailHandler = new Library\Mail();
+            $mailHandler = new Model\Mail();
             $mailHandler->to = \GOTEO_FAIL_MAIL;
             $mailHandler->toName = 'Goteo Fail Mail';
             $mailHandler->subject = 'FORM CAPACITY OVERFLOW en '.\SITE_URL;

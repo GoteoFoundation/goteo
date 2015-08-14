@@ -63,28 +63,35 @@ $templates = $this->templates;
     </form>
 </div>
 
-<div class="widget board">
-    <?php if ($this->sent) : ?>
+<div id="admin-sent-list">
+    <?php if ($this->sent_list) : ?>
+        <div class="widget board">
             <table>
                 <thead>
                     <tr>
-                        <th width="5%"><!-- Si no ves --></th>
-                        <th width="45%">Destinatario</th>
-                        <th width="35%">Plantilla</th>
-                        <th width="15%">Fecha</th>
-                        <th><!-- reenviar --></th>
+                        <th>Éxito</th>
+                        <th>&nbsp;</th>
+                        <th>Destinatario</th>
+                        <th>Plantilla</th>
+                        <th>Asunto</th>
+                        <th>Fecha</th>
+                        <th><!-- Si no ves --></th>
+                        <th><!-- status--></th>
                     </tr>
                 </thead>
                 <tbody>
                     <?php
-                    foreach($this->sent as $send):
+                    foreach($this->sent_list as $sent):
                         ?>
                         <tr>
-                            <td><a href="/mail/<?= \mybase64_encode(md5(uniqid()) . '¬' . $send->to  . '¬' . $send->id) ?>" target="_blank">[Enlace]</a></td>
-                            <td><a href="/admin/users?name=<?php echo urlencode($send->email) ?>"><?php echo $send->email; ?></a></td>
-                            <td><?php echo $templates[$send->template]; ?></td>
-                            <td><?php echo $send->date; ?></td>
-                            <td><!-- <a href="#" target="_blank">[Reenviar]</a> --></td>
+                            <td><?= sprintf('%02d',round($sent->getStats()->getEmailOpenedCollector()->getPercent())) ?>%</td>
+                            <td><a href="/admin/sent/detail/<?= $sent->id ?>">[Detalles]</a></td>
+                            <td><a href="/admin/users?name=<?php echo urlencode($sent->email) ?>"><?php echo $sent->email; ?></a></td>
+                            <td><?= $templates[$sent->template] ?></td>
+                            <td><?= $sent->getSubject() ?></td>
+                            <td><?= $sent->date ?></td>
+                            <td><a href="/mail/<?= $sent->getToken(false) ?>" target="_blank">[Visualizar]</a></td>
+                            <td><?= '<span class="label label-'. $sent->status . '">' . $sent->status . '</span>' ?>
                         </tr>
                     <?php endforeach; ?>
                 </tbody>
@@ -96,5 +103,18 @@ $templates = $this->templates;
     <?php else : ?>
         <p>No se han encontrado registros</p>
     <?php endif; ?>
+</div>
 
 <?php $this->replace() ?>
+
+<?php $this->section('footer') ?>
+<script type="text/javascript">
+    $(function(){
+        var reloadPage = function() {
+            $('#admin-sent-list').load('/admin/sent #admin-sent-list');
+            setTimeout(reloadPage, 2000);
+        };
+        setTimeout(reloadPage, 2000);
+    });
+</script>
+<?php $this->append() ?>

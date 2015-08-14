@@ -14,6 +14,7 @@ use Goteo\Application\View;
 use Goteo\Application\Session;
 use Goteo\Application\Cookie;
 use Goteo\Application;
+use Goteo\Model\Mail;
 use Goteo\Library\Feed;
 use Goteo\Library\Text;
 use Goteo\Library\OAuth\SocialAuth;
@@ -144,7 +145,7 @@ class UserController extends \Goteo\Core\Controller {
 
             if (empty($errors)) {
                 Application\Message::info(Text::get('user-register-success'));
-
+                // no confirmation..., direct login
                 Session::setUser(Model\User::get($user->id));
                 //Redirect
                 return self::userRedirect($request);
@@ -637,6 +638,8 @@ class UserController extends \Goteo\Core\Controller {
         $vars = array();
 
         // si el token mola, logueo este usuario y lo llevo a su dashboard
+        // TODO:
+        // CAMBIAR ESTE FUNCIONAMIENTO por uno mas simple basado en poner la nueva contraseña y verificar el link
         if ($token) {
             $token = \mybase64_decode($token);
             $parts = explode('¬', $token);
@@ -648,8 +651,7 @@ class UserController extends \Goteo\Core\Controller {
                     Model\User::query('UPDATE user SET active = 1, hide = 0, confirmed = 1 WHERE id = ?', array($id));
                     $user = Model\User::get($id);
                     Session::setUser($user, true);
-                    Session::store('recovering', $user->id);
-                    return new RedirectResponse(SEC_URL.'/dashboard/profile/access/recover#password');
+                    return $this->redirect('/dashboard/profile/access/recover#password');
                 }
             }
 
@@ -668,7 +670,7 @@ class UserController extends \Goteo\Core\Controller {
         if($vars['error']) {
             Application\Message::error($vars['error']);
         }
-        return new Response(View::render('user/recover', $vars));
+        return $this->viewResponse('user/recover', $vars);
     }
 
     /**
@@ -735,28 +737,23 @@ class UserController extends \Goteo\Core\Controller {
      * token es un
      *
      */
-    public function unsubscribeAction($token = null) {
+    public function unsubscribeAction($token = '') {
 
         $errors = array();
         // si el token mola, lo doy de baja
-        if (!empty($token)) {
-            $token = \mybase64_decode($token);
-            $parts = explode('¬', $token);
-            if (count($parts) > 1) {
-                $query = Model\User::query('SELECT id FROM user WHERE email = ?', array($parts[1]));
-                if ($id = $query->fetchColumn()) {
-                    if (!empty($id)) {
-                        // el token coincide con el email y he obtenido una id
-                        Model\User::setPreferences($id, array('mailing'=>1), $errors);
+        list($email, $mail_id) = Mail::decodeToken($token);
+        if ($email) {
+            $query = Model\User::query('SELECT id FROM user WHERE email = ?', array($email));
+            if ($id = $query->fetchColumn()) {
+                if (!empty($id)) {
+                    // el token coincide con el email y he obtenido una id
+                    Model\User::setPreferences($id, array('mailing'=>1), $errors);
 
-                        if (empty($errors)) {
-                            $message = Text::get('unsuscribe-request-success');
-                        } else {
-                            $error = implode('<br />', $errors);
-                        }
+                    if (empty($errors)) {
+                        $message = Text::get('unsuscribe-request-success');
+                    } else {
+                        $error = implode('<br />', $errors);
                     }
-                } else {
-                    $error = Text::get('leave-token-incorrect');
                 }
             } else {
                 $error = Text::get('leave-token-incorrect');

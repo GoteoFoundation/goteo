@@ -7,13 +7,14 @@ namespace Goteo\Model {
         Goteo\Model\Node,
         Goteo\Model\Project,
         Goteo\Model\User\UserLocation,
-        Goteo\Library\Template,
-        Goteo\Library\Mail,
+        Goteo\Model\Template,
+        Goteo\Model\Mail,
         Goteo\Library\Check,
         Goteo\Application;
     use Goteo\Application\Lang;
     use Goteo\Application\Config;
     use Goteo\Application\Session;
+    use Goteo\Application\Message;
 
 	class User extends \Goteo\Core\Model {
 
@@ -132,31 +133,18 @@ namespace Goteo\Model {
 					//active = 1 si no se quiere comprovar
 					if(in_array('active',$skip_validations) && $this->active) $data[':active'] = 1;
 					else {
-                        $URL = \SITE_URL;
-						// Obtenemos la plantilla para asunto y contenido
-						$template = Template::get(5);
-
-						// Sustituimos los datos
-						$subject = $template->title;
-
-						// En el contenido:
-						$search  = array('%USERNAME%', '%USERID%', '%USERPWD%', '%ACTIVATEURL%');
-						$replace = array($this->name, $this->id, $this->password, $URL . '/user/activate/' . $token);
-						$content = \str_replace($search, $replace, $template->text);
-
-						// Activación
-						$mail = new Mail();
-						$mail->to = $this->email;
-						$mail->toName = $this->name;
-						$mail->subject = $subject;
-						$mail->content = $content;
-						$mail->html = false;
-						$mail->template = $template->id;
-						if ($mail->send($errors)) {Application\Message::info(Text::get('register-confirm_mail-success'));
-						} else {
-							Application\Message::error(Text::get('register-confirm_mail-fail', GOTEO_MAIL));
-							Application\Message::error(implode('<br />', $errors));
-						}
+                        if( Mail::createFromTemplate($this->email, $this->name, Template::CONFIRM_REGISTER, [
+                                '%USERNAME%'   => $this->name,
+                                '%USERID%'     => $this->id,
+                                '%USERPWD%'     => $this->password,
+                                '%ACTIVATEURL%' => \SITE_URL . '/user/activate/' . $token
+                            ])->send($errors)) {
+                              Application\Message::info(Text::get('register-confirm_mail-success'));
+                        }
+                        else {
+                            Application\Message::error(Text::get('register-confirm_mail-fail', GOTEO_MAIL));
+                            Application\Message::error(implode('<br />', $errors));
+                        }
 					}
                 }
                 else {
@@ -171,8 +159,7 @@ namespace Goteo\Model {
                         else {
                             $query = self::query('SELECT email FROM user WHERE id = ?', array($this->id));
                             if($this->email !== $query->fetchColumn()) {
-                                //MAGIC METHOD HERE!!!
-                                $this->token = md5(uniqid()).'¬'.$this->email.'¬'.date('Y-m-d');
+                                $this->setToken(md5(uniqid()).'¬'.$this->email.'¬'.date('Y-m-d'));
                             }
                         }
                     }
@@ -496,6 +483,21 @@ namespace Goteo\Model {
                 return false;
             }
 
+        }
+
+        /**
+         * Returns all user langs
+         * @return [type] [description]
+         */
+        static public function getAvailableLangs() {
+            $query = self::query('SELECT DISTINCT lang FROM user UNION SELECT DISTINCT comlang AS lang FROM user_prefer');
+            $langs = [];
+            if($query) {
+                foreach ($query->fetchAll(\PDO::FETCH_OBJ) as $lang) {
+                    $langs[] = $lang->lang;
+                }
+            }
+            return $langs;
         }
 
         /**
@@ -1364,25 +1366,16 @@ namespace Goteo\Model {
                 self::query('UPDATE user SET token = :token WHERE id = :id', array(':id' => $row->id, ':token' => $token));
 
                 // Obtenemos la plantilla para asunto y contenido
-                $template = Template::get(6);
-
-                // Sustituimos los datos
-                $subject = $template->title;
-
-                // En el contenido:
-                $search  = array('%USERNAME%', '%USERID%', '%RECOVERURL%');
-                $replace = array($row->name, $row->id, $URL . '/user/recover/' . \mybase64_encode($token));
-                $content = \str_replace($search, $replace, $template->text);
-                // Email de recuperacion
-                $mail = new Mail();
-                $mail->to = $row->email;
-                $mail->toName = $row->name;
-                $mail->subject = $subject;
-                $mail->content = $content;
-                $mail->html = true;
-                $mail->template = $template->id;
-                if ($mail->send($errors)) {
-                    return true;
+                if( Mail::createFromTemplate($row->email, $row->name, Template::RETRIEVE_PASSWORD, [
+                        '%USERNAME%'   => $row->name,
+                        '%USERID%'     => $row->id,
+                        '%RECOVERURL%' => $URL . '/user/recover/' . \mybase64_encode($token)
+                    ])
+                    ->send($errors)) {
+                        return true;
+                }
+                else {
+                    Message::error(implode("\n", $errors));
                 }
 			}
 			return false;
@@ -1415,7 +1408,7 @@ namespace Goteo\Model {
                 self::query('UPDATE user SET token = :token WHERE id = :id', array(':id' => $row->id, ':token' => $token));
 
                 // Obtenemos la plantilla para asunto y contenido
-                $template = Template::get(9);
+                $template = Template::get(Template::UNSUBSCRIBE);
 
                 // Sustituimos los datos
                 $subject = $template->title;
@@ -1463,37 +1456,24 @@ namespace Goteo\Model {
     	 * @param type string	$token	Formato: '<md5>¬<email>'
     	 * @return type bool
     	 */
-    	private function setToken ($token) {
+    	private function setToken ($token, &$errors = []) {
             $URL = \SITE_URL;
             if(count($tmp = explode('¬', $token)) > 1) {
                 $email = $tmp[1];
                 if(Check::mail($email)) {
 
-                    // Obtenemos la plantilla para asunto y contenido
-                    $template = Template::get(7);
-
-                    // Sustituimos los datos
-                    $subject = $template->title;
-
-                    // En el contenido:
-                    $search  = array('%USERNAME%', '%CHANGEURL%');
-                    $replace = array($this->name, $URL . '/user/changeemail/' . \mybase64_encode($token));
-                    $content = \str_replace($search, $replace, $template->text);
-
-
-
-                    $mail = new Mail();
-                    $mail->to = $email;
-                    $mail->toName = $this->name;
-                    $mail->subject = $subject;
-                    $mail->content = $content;
-                    $mail->html = true;
-                    $mail->template = $template->id;
-                    $mail->send();
-
-                    return self::query('UPDATE user SET token = :token WHERE id = :id', array(':id' => $this->id, ':token' => $token));
+                    if( Mail::createFromTemplate($email, $this->name, Template::EMAIL_CHANGE, [
+                            '%USERNAME%'   => $this->name,
+                            '%CHANGEURL%' => \SITE_URL . '/user/changeemail/' . \mybase64_encode($token)
+                        ])->send($errors)) {
+                        if(self::query('UPDATE user SET token = :token WHERE id = :id', array(':id' => $this->id, ':token' => $token))) {
+                            $this->token = $token;
+                            return true;
+                        }
+                    }
                 }
             }
+            return false;
     	}
 
     	/**

@@ -1,6 +1,9 @@
 <?php
 
 namespace Goteo\Model\Location;
+use Goteo\Application\Exception\ModelException;
+use Goteo\Application\Config;
+
 /**
  * This class can be used to easily create a location item model just as:
  *
@@ -40,7 +43,7 @@ abstract class LocationItem extends \Goteo\Core\Model implements LocationInterfa
      * @param varcahr(50) $user  user identifier
      * @return UserLocation instance
      */
-    public static function get($id) {
+    static public function get($id) {
         $clas = get_called_class();
         $instance = new $clas;
         $query = static::query("SELECT * FROM " . $instance->Table . " WHERE id = ?", array($id));
@@ -49,6 +52,37 @@ abstract class LocationItem extends \Goteo\Core\Model implements LocationInterfa
             return false;
         }
         return $ob;
+    }
+
+    /**
+     * Creates a new location
+     * @param  [type] $ip    [description]
+     * @param  LocationInterface $model
+     * @return [type]        [description]
+     */
+    static public function createByIp($id, $ip){
+        $cities = Config::get('geolocation.maxmind.cities');
+        try {
+            // This creates the Reader object, which should be reused across lookups.
+            $reader = new \GeoIp2\Database\Reader($cities);
+            $record = $reader->city($ip);
+            //Handles user localization
+            $loc = new static(array(
+                    'id'           => $id,
+                    'city'         => $record->city->name,
+                    'region'       => $record->mostSpecificSubdivision->name,
+                    'country'      => $record->country->name,
+                    'country_code' => $record->country->isoCode,
+                    'longitude'    => $record->location->longitude,
+                    'latitude'     => $record->location->latitude,
+                    'method'       => 'ip'
+                ));
+
+            return $loc;
+
+        }catch(\Exception $e){
+            throw new ModelException('Locator error: ' . $e->getMessage());
+        }
     }
 
     public function validate(&$errors = array()) {

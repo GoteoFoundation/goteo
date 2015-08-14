@@ -26,7 +26,7 @@ class TextUtils implements ExtensionInterface
           'text_html' => [$this, 'html'],
           'text_get' => [$this, 'get'],
           'text_widget' => [$this, 'widget'],
-          'text_recorta' => [$this, 'recorta']
+          'text_truncate' => [$this, 'truncate']
         ];
     }
 
@@ -44,7 +44,7 @@ class TextUtils implements ExtensionInterface
     {
         return call_user_func_array ( 'Goteo\Library\Text::widget' , func_get_args() );
     }
-    public function recorta($var, $len = 10)
+    public function truncate($var, $len = 10)
     {
         return call_user_func_array ( 'Goteo\Library\Text::recorta' , func_get_args() );
     }

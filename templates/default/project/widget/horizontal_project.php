@@ -55,7 +55,7 @@ if ($project->status == 3 && $project->noinvest) {
 }
 
 
-if ($status == 3) 
+if ($status == 3)
 { // en campaña
     if ($days > 2) {
         $days_left = number_format($days);
@@ -65,10 +65,10 @@ if ($status == 3)
         $part = strtotime($date_published);
         if ($round == 1) {
             $plus = $days_round1;
-        } 
+        }
         elseif ($round == 2) {
-        
-        $plus = $days_total;     
+
+        $plus = $days_total;
         $final_day = date('Y-m-d', mktime(0, 0, 0, date('m', $part), date('d', $part)+$plus, date('Y', $part)));
         $days_left = Check::time_togo($final_day, 1);
         $days_left2 = '';
@@ -77,14 +77,14 @@ if ($status == 3)
 $days_left.=' '.$this->text('regular-days');
 $text=strtolower($this->text('project-view-metter-days'));
 
-} 
+}
 
 elseif (!empty($status)) {
     switch ($status) {
         case 1: // en edicion
           $text = 'project-view-metter-day_created';
             $date = $date_created;
-          
+
            case 2: // pendiente de valoración
             $text = 'project-view-metter-day_updated';
             $date = $date_updated;
@@ -109,9 +109,9 @@ elseif (!empty($status)) {
 
 <div class="widget project horizontal">
 	<a href="<?php echo $url ?>/project/<?php echo $project->id ?>" class="expand"<?php echo $blank; ?>></a>
-    
+
     <h<?php echo $level ?> class="title horizontal"><a href="<?php echo $url ?>/project/<?php echo $project->id ?>"<?php echo $blank; ?>><?= htmlspecialchars($project->name,150) ?></a></h<?php echo $level ?>>
-    <h<?php echo $level + 1 ?> class="author"><?php echo $this->text('regular-by')?> <a href="<?php echo $url ?>/user/profile/<?php echo htmlspecialchars($project->user->id) ?>"<?php echo $blank; ?>><?php echo htmlspecialchars($this->text_recorta($project->user->name,37)) ?></a></h<?php echo $level + 1?>>
+    <h<?php echo $level + 1 ?> class="author"><?php echo $this->text('regular-by')?> <a href="<?php echo $url ?>/user/profile/<?php echo htmlspecialchars($project->user->id) ?>"<?php echo $blank; ?>><?php echo htmlspecialchars($this->text_truncate($project->user->name,37)) ?></a></h<?php echo $level + 1?>>
 
     <div class="image">
         <?php if ($project->image instanceof Image): ?>
@@ -128,7 +128,7 @@ elseif (!empty($status)) {
 
 
     <div class="description">
-        <?php echo $this->text_recorta($project->description, 225); ?>
+        <?php echo $this->text_truncate($project->description, 225); ?>
         <ul class="amounts">
             <li>
                 <div class="amount"><?= \amount_format($reached) ?></div>

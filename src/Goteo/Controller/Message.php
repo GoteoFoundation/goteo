@@ -2,16 +2,14 @@
 
 namespace Goteo\Controller {
 
-    use Goteo\Core\ACL,
-        Goteo\Core\Error,
+    use Goteo\Core\Error,
         Goteo\Core\Redirection,
         Goteo\Core\View,
         Goteo\Model,
 		Goteo\Library\Feed,
-        Goteo\Library,
         Goteo\Application,
         Goteo\Application\Session,
-        Goteo\Library\Template,
+        Goteo\Model\Template,
         Goteo\Library\Text;
 
     class Message extends \Goteo\Core\Controller {
@@ -123,7 +121,7 @@ namespace Goteo\Controller {
                             $replace = array($_POST['message'], $thread->user->name, Session::getUser()->name, $projectData->name, $project_url, $response_url);
                             $content = \str_replace($search, $replace, $template->text);
 
-                            $mailHandler = new Library\Mail();
+                            $mailHandler = new Model\Mail();
 
                             $mailHandler->to = $thread->user->email;
                             $mailHandler->toName = $thread->user->name;
@@ -155,7 +153,7 @@ namespace Goteo\Controller {
                         $replace = array($_POST['message'], $projectData->user->name, Session::getUser()->name, $projectData->name, $project_url, $response_url);
                         $content = \str_replace($search, $replace, $template->text);
 
-                        $mailHandler = new Library\Mail();
+                        $mailHandler = new Model\Mail();
 
                         $mailHandler->to = $projectData->user->email;
                         $mailHandler->toName = $projectData->user->name;
@@ -242,7 +240,7 @@ namespace Goteo\Controller {
                 $replace = array($msg_content, $ownerData->name, Session::getUser()->name, $project->name, SITE_URL, $response_url);
                 $content = \str_replace($search, $replace, $template->text);
 
-                $mailHandler = new Library\Mail();
+                $mailHandler = new Model\Mail();
 
                 $mailHandler->to = $ownerData->email;
                 $mailHandler->toName = $ownerData->name;
@@ -325,7 +323,7 @@ namespace Goteo\Controller {
                 $replace = array($msg_content, $user->name, Session::getUser()->name, $profile_url, $response_url);
                 $content = \str_replace($search, $replace, $template->text);
 
-                $mailHandler = new Library\Mail();
+                $mailHandler = new Model\Mail();
                 $mailHandler->fromName = $remite;
                 $mailHandler->to = $user->email;
                 $mailHandler->toName = $user->name;
@@ -418,7 +416,7 @@ namespace Goteo\Controller {
 
                         // que no pete si no puede enviar el mail al autor
                         try {
-                            $mailHandler = new Library\Mail();
+                            $mailHandler = new Model\Mail();
 
                             $mailHandler->to = $projectData->user->email;
                             $mailHandler->toName = $projectData->user->name;

@@ -17,8 +17,17 @@ ALTER TABLE `mail`  ADD `lang` VARCHAR(2) NULL DEFAULT NULL COMMENT 'Idioma en e
 -- almacenamiento del html en Amazon S3
 ALTER TABLE `mail` ADD `content` VARCHAR(50) NULL DEFAULT NULL COMMENT 'ID del archivo con HTML estático';
 
--- cuando se pueda quitar...
-ALTER TABLE `mail` DROP `html`;
-
 -- constrains
 ALTER TABLE `mail` ADD FOREIGN KEY (`node`) REFERENCES `node`(`id`) ON UPDATE CASCADE ON DELETE CASCADE;
+UPDATE mail SET template=NULL WHERE template=0;
+ALTER TABLE `mail` CHANGE `template` `template` BIGINT(20) UNSIGNED NULL, ADD FOREIGN KEY (`template`) REFERENCES `template`(`id`) ON UPDATE CASCADE ON DELETE CASCADE;
+ALTER TABLE `mail` CHANGE `email` `email` CHAR(255) CHARSET utf8 COLLATE utf8_general_ci NOT NULL, ADD UNIQUE INDEX (`id`, `email`);
+
+-- remove unused content
+ALTER TABLE `mail` DROP COLUMN `content`;
+
+-- change html to content
+ALTER TABLE `mail` CHANGE `html` `content` LONGTEXT CHARSET utf8 COLLATE utf8_general_ci NOT NULL;
+ALTER TABLE `mail` ADD COLUMN `sent` TINYINT NULL AFTER `lang`, ADD COLUMN `error` TINYTEXT NULL AFTER `sent`;
+ALTER TABLE `mail` ADD COLUMN `subject` CHAR(255) NULL AFTER `email`;
+

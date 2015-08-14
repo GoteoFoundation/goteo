@@ -2,20 +2,16 @@
 //Simple overwrite
 $this->layout("layout", ['title' => 'Not found error']);
 
-if($this->code === 404) {
-    $page = $this->page('error');
-}
-else {
-    $page = $this->page('big-error');
-}
+$page = $this->page('error');
 
 ?>
 
 <?php $this->section('sub-header') ?>
 <div id="sub-header">
     <div>
-        <h2><?=$this->raw('msg')?></h2>
-        <h3>Error <?=$this->code?></h3>
+        <h2><?= $this->title ?></h2>
+        <h3>Error <?= $this->code ?></h3>
+        <p><?= $this->raw('msg') ?></p>
     </div>
 </div>
 <?php $this->stop() ?>

@@ -21,7 +21,9 @@ $this->layout('layout', [
 
             <?= $this->supply('admin-menu', $this->insert('admin/partials/menu')) ?>
 
-            <?= $this->supply('admin-content') ?>
+            <div id="admin-content">
+                <?= $this->supply('admin-content') ?>
+            </div>
 
             <?= $this->supply('admin-aside') ?>
 
@@ -54,14 +56,17 @@ $this->layout('layout', [
         border-radius: 0.25em;
         padding: 0.15em 0.6em 0.1em;
     }
-    .label.label-admin {
-        background: #5BC0DE;
+    .label.label-admin,.label.label-pending,.label.label-info {
+        background: #5BC0DE; /* blue */
     }
-    .label.label-superadmin {
-        background: #F0AD4E;
+    .label.label-superadmin,.label.label-warning {
+        background: #F0AD4E; /* yellow */
     }
-    .label.label-root {
-        background: #D9534F;
+    .label.label-sent,.label.label-success {
+        background: #5CB85C; /* green */
+    }
+    .label.label-root,.label.label-failed,.label.label-error {
+        background: #D9534F; /* red */
     }
     .admin .channel {
         float:right;
@@ -72,6 +77,19 @@ $this->layout('layout', [
         position: absolute;
         top:-15px;
         right: 4px;
+    }
+
+    .admin .widget ul.pagination {
+        border-top: 1px solid #f0f0f0;
+        padding-top: 5px;
+    }
+    .admin .widget ul.pagination li,
+    .admin .widget ul.pagination li.selected {
+        padding: 0;
+        margin: 0;
+    }
+    .admin .widget ul.pagination ul li a {
+        background: #f0f0f0;
     }
 
 </style>

@@ -26,7 +26,7 @@ $posts = $this->posts;
                 <?php if (!empty($post->author)) : ?>
                     <div class="author"><a href="/user/profile/<?php echo $post->author ?>"><?php echo $this->text('regular-by') ?> <?php echo $post->user->name ?></a></div>
                 <?php endif; ?>
-                <div class="post_text"><?php if ($post->id == 728) echo $this->text_recorta($post->text, 400); else echo $this->text_recorta($post->text, 600); ?></div>
+                <div class="post_text"><?php if ($post->id == 728) echo $this->text_truncate($post->text, 400); else echo $this->text_truncate($post->text, 600); ?></div>
 
                 <div class="read_more"><a href="<?php echo ($post->owner_type == 'project') ? '/project/'.$post->owner_id.'/updates/'.$post->id : '/blog/'.$post->id; ?>"><?php echo $this->text('regular-read_more') ?></a></div>
             </div>

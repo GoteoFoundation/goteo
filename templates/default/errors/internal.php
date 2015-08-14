@@ -15,7 +15,7 @@
 <div id="sub-header">
     <div>
         <h2>Error <?=$this->code?></h2>
-        <h3 style="text-transform: none"><?=$this->msg?></h3>
+        <h3 style="text-transform: none"><?= $this->msg ?></h3>
     </div>
 </div>
 

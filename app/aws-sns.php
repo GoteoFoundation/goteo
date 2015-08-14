@@ -6,7 +6,7 @@ use Goteo\Core\Resource;
 use Goteo\Core\Error;
 use Goteo\Core\Redirection;
 use Goteo\Core\Model;
-use Goteo\Library\Mail;
+use Goteo\Model\Mail;
 use Goteo\Library\AmazonSns;
 use Goteo\Application\Config;
 

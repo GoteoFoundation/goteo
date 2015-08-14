@@ -8,8 +8,7 @@ namespace Goteo\Controller {
         Goteo\Application\Session,
         Goteo\Model,
         Goteo\Library\Text,
-        Goteo\Library\Mail,
-        Goteo\Library\Template,
+        Goteo\Model\Template,
         Symfony\Component\HttpFoundation\Response,
         Symfony\Component\HttpFoundation\RedirectResponse;
 

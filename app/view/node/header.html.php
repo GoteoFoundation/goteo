@@ -16,7 +16,7 @@ $nodeText = str_replace(array('[', ']'), array('<span class="blue">', '</span>')
     <div id="super-header">
 		<div id="goteo-logo">
 			<ul>
-				<li class="home"><a class="node-jump" href="<?php echo GOTEO_URL ?>">Inicio</a></li>
+				<li class="home"><a class="node-jump" href="<?php echo SITE_URL ?>">Inicio</a></li>
 			</ul>
 		</div>
 

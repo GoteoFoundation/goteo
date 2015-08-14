@@ -73,7 +73,7 @@ class ProjectsWatcher {
 
             // primero los que no se bloquean
             //Solicitud de datos del contrato
-            if ($project->published == date('Y-m-d', mktime(0, 0, 0, date('m'), date('d') + 1, date('Y')) )) {
+            if ($project->success == date('Y-m-d', mktime(0, 0, 0, date('m'), date('d') - 1, date('Y')) )) {
                 // si ha superado el mínimo
                 if ($project->amount >= $project->mincost) {
                     if ($debug) echo "Solicitud de datos contrato\n";
@@ -178,8 +178,8 @@ class ProjectsWatcher {
                         ORDER BY mail.date DESC
                         LIMIT 1";
                     $query = Model\Project::query($sql, array(':email' => $project->user->email));
-                    $sended = $query->fetchColumn(0);
-                    if (!$sended) {
+                    $sent = $query->fetchColumn(0);
+                    if (!$sent) {
                         if ($project->num_investors >= 20) {
                             if ($debug) echo "Tiene 20 backers y no se le habia enviado aviso antes\n";
                             Send::toOwner('20_backers', $project);

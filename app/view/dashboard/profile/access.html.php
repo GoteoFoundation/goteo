@@ -9,25 +9,6 @@ $vars['level'] = 3;
 
 $message = $vars['action'] == 'recover' ? $vars['message'] : '';
 
-/*
-if ($_SESSION['recovering'] == $_SESSION['user']->id) {
-    $old_pass = array(
-                    'type'  => 'hidden',
-                    'errors'=> array(),
-                    'value' => $user->id
-                );
-} else {
-    $old_pass = array(
-                    'type'  => 'password',
-                    'class' => 'inline',
-                    'title' => Text::get('user-changepass-old'),
-                    'hint'  => Text::get('tooltip-dashboard-user-user_password'),
-                    'errors'=> !empty($errors['password']) ? array($errors['password']) : array(),
-                    'value' => $user_password
-                );
-}
-*/
-
 extract($_POST);
 ?>
 <form action="<?php echo SEC_URL; ?>/dashboard/profile/access" method="post" enctype="multipart/form-data">

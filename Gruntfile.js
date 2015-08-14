@@ -13,7 +13,7 @@ GOTEO = {
     templates: 'templates',
     src: 'src',
     dist: 'dist',
-    localURL: 'localhost',
+    localURL: '0.0.0.0',
     localPort:8081,
 
     // to override this parameter, simply copy:

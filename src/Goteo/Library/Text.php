@@ -94,13 +94,10 @@ namespace Goteo\Library {
             return $query->fetchObject()->text;
 		}
 
-        static public function get ($id) {
+        static public function get ($id, $lang = null) {
 
-            $lang = Lang::current();
-
-            // lang variable para generar contenido en distintos idiomas (/admin/newsletter)
-            if (isset($_SESSION['VAR_LANG']) && !empty($_SESSION['VAR_LANG'])) {
-                $lang = $_SESSION['VAR_LANG'];
+            if(!Lang::exists($lang)) {
+                $lang = Lang::current();
             }
 
             if (\defined('GOTEO_ADMIN_NOCACHE')) {

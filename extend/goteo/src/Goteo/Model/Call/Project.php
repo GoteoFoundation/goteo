@@ -2,8 +2,7 @@
 
 namespace Goteo\Model\Call {
 
-    use Goteo\Model,
-        Goteo\Library\Mail;
+    use \Goteo\Model;
 
     class Project extends \Goteo\Core\Model {
 

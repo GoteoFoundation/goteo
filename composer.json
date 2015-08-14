@@ -46,7 +46,8 @@
         "symfony/stopwatch": "^2.7",
         "symfony/dependency-injection": "^2.7",
         "symfony/debug": "^2.7",
-        "gregwar/captcha": "^1.1"
+        "gregwar/captcha": "^1.1",
+        "geoip2/geoip2": "~2.0"
 
     },
 

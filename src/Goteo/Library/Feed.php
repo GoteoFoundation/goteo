@@ -4,7 +4,7 @@ namespace Goteo\Library {
 	use Goteo\Core\Model,
         Goteo\Model\Blog\Post,
         Goteo\Library\Text,
-        Goteo\Library\Mail,
+        Goteo\Model\Mail,
         Goteo\Application\Lang,
         Goteo\Application\Config,
         Goteo\Model\Image;
