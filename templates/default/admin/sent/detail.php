@@ -2,8 +2,11 @@
 
 <?php $this->section('admin-content') ?>
 
+<a href="/admin/sent" class="button">Volver al listado</a>
+
+<a href="/mail/<?= $this->mail->getToken(false) ?>" class="button" target="_blank">Ver la newsletter</a>
+
 <div class="widget board">
-<a href="/mail/<?= $this->mail->getToken(false) ?>" target="_blank">[Visualizar]</a>
 <p><b>Subject:</b> <?= $this->mail->getSubject() ?></p>
 <p><b>Alcance:</b> <?= number_format(sprintf('%02f', $this->readed), 2, ',', '') ?> %</p>
 </div>

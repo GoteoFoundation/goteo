@@ -63,6 +63,7 @@ $templates = $this->templates;
     </form>
 </div>
 
+<div id="admin-sent-list">
     <?php if ($this->sent_list) : ?>
         <div class="widget board">
             <table>
@@ -102,6 +103,7 @@ $templates = $this->templates;
     <?php else : ?>
         <p>No se han encontrado registros</p>
     <?php endif; ?>
+</div>
 
 <?php $this->replace() ?>
 
@@ -109,7 +111,7 @@ $templates = $this->templates;
 <script type="text/javascript">
     $(function(){
         var reloadPage = function() {
-            $('#admin-content').load('/admin/sent #admin-content');
+            $('#admin-sent-list').load('/admin/sent #admin-sent-list');
             setTimeout(reloadPage, 2000);
         };
         setTimeout(reloadPage, 2000);

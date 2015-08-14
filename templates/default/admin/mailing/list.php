@@ -1,9 +1,12 @@
 <?php
-use Goteo\Library\Text;
 
-$filters = $vars['filters'];
+$filters = $this->filters;
 
 ?>
+<?php $this->layout('admin/layout') ?>
+
+<?php $this->section('admin-content') ?>
+
 <div class="widget board">
     <form id="filter-form" action="/admin/mailing/edit" method="get">
 
@@ -12,31 +15,31 @@ $filters = $vars['filters'];
                 <td>
                     <label for="type-filter">A los</label><br />
                     <select id="type-filter" name="type">
-                    <?php foreach ($vars['types'] as $typeId=>$typeName) : ?>
-                        <option value="<?php echo $typeId; ?>"<?php if ($filters['type'] == $typeId) echo ' selected="selected"';?>><?php echo $typeName; ?></option>
-                    <?php endforeach; ?>
+                    <?php foreach ($this->types as $typeId => $typeName) : ?>
+                        <option value="<?= $typeId ?>"<?php if ($filters['type'] == $typeId) echo ' selected="selected"';?>><?= $typeName ?></option>
+                    <?php endforeach ?>
                     </select>
                 </td>
                 <td>
                     <label for="project-filter">De proyectos que el nombre contenga</label><br />
-                    <input id="project-filter" name="project" value="<?php echo $filters['project']?>" style="width:300px;" />
+                    <input id="project-filter" name="project" value="<?= $filters['project']?>" style="width:300px;" />
                 </td>
                 <td>
                     <label for="status-filter">En estado</label><br />
                     <select id="status-filter" name="status">
                         <option value="-1"<?php if ($filters['status'] == -1) echo ' selected="selected"';?>>Cualquier estado</option>
-                    <?php foreach ($vars['status'] as $statusId=>$statusName) : ?>
-                        <option value="<?php echo $statusId; ?>"<?php if ($filters['status'] == $statusId) echo ' selected="selected"';?>><?php echo $statusName; ?></option>
-                    <?php endforeach; ?>
+                    <?php foreach ($this->status as $statusId => $statusName) : ?>
+                        <option value="<?= $statusId ?>"<?php if ($filters['status'] == $statusId) echo ' selected="selected"';?>><?= $statusName ?></option>
+                    <?php endforeach ?>
                     </select>
                 </td>
                 <td>
                     <label for="method-filter">Aportado mediante</label><br />
                     <select id="method-filter" name="method">
                         <option value="">Cualquier metodo</option>
-                    <?php foreach ($vars['methods'] as $methodId=>$methodName) : ?>
-                        <option value="<?php echo $methodId; ?>"<?php if ($filters['methods'] == $methodId) echo ' selected="selected"';?>><?php echo $methodName; ?></option>
-                    <?php endforeach; ?>
+                    <?php foreach ($this->methods as $methodId => $methodName) : ?>
+                        <option value="<?= $methodId ?>"<?php if ($filters['methods'] == $methodId) echo ' selected="selected"';?>><?= $methodName ?></option>
+                    <?php endforeach ?>
                     </select>
                 </td>
             </tr>
@@ -46,31 +49,31 @@ $filters = $vars['filters'];
                     <select id="interest-filter" name="interest">
                         <option value="">Cualquiera</option>
                         <option value="15"<?php if ($filters['interest'] == 15) echo ' selected="selected"';?>>__PRUEBAS__</option>
-                    <?php foreach ($vars['interests'] as $interestId=>$interestName) : ?>
-                        <option value="<?php echo $interestId; ?>"<?php if ($filters['interest'] == $interestId) echo ' selected="selected"';?>><?php echo $interestName; ?></option>
-                    <?php endforeach; ?>
+                    <?php foreach ($this->interests as $interestId => $interestName) : ?>
+                        <option value="<?= $interestId ?>"<?php if ($filters['interest'] == $interestId) echo ' selected="selected"';?>><?= $interestName ?></option>
+                    <?php endforeach ?>
                     </select>
                 </td>
                 <td>
                     <label for="name-filter">Que el nombre o email contenga</label><br />
-                    <input id="name-filter" name="name" value="<?php echo $filters['name']?>" style="width:300px;" />
+                    <input id="name-filter" name="name" value="<?= $filters['name']?>" style="width:300px;" />
                 </td>
                 <td>
                     <label for="role-filter">Que sean</label><br />
                     <select id="role-filter" name="role">
                         <option value="">Cualquiera</option>
-                    <?php foreach ($vars['roles'] as $roleId=>$roleName) : ?>
-                        <option value="<?php echo $roleId; ?>"<?php if ($filters['role'] == $roleId) echo ' selected="selected"';?>><?php echo $roleName; ?></option>
-                    <?php endforeach; ?>
+                    <?php foreach ($this->roles as $roleId => $roleName) : ?>
+                        <option value="<?= $roleId ?>"<?php if ($filters['role'] == $roleId) echo ' selected="selected"';?>><?= $roleName ?></option>
+                    <?php endforeach ?>
                     </select>
                 </td>
                 <td>
                     <label for="comlang-filter">Con idioma preferencia</label><br />
                     <select id="comlang-filter" name="comlang">
                         <option value=""></option>
-                        <?php foreach ($vars['langs'] as $lang) : ?>
-                            <option value="<?php echo $lang->id; ?>"<?php if ($filters['comlang'] == $lang->id) echo ' selected="selected"';?>><?php echo $lang->short; ?></option>
-                        <?php endforeach; ?>
+                        <?php foreach ($this->langs as $lang) : ?>
+                            <option value="<?= $lang->id ?>"<?php if ($filters['comlang'] == $lang->id) echo ' selected="selected"';?>><?= $lang->short ?></option>
+                        <?php endforeach ?>
                     </select>
                 </td>
             </tr>
@@ -86,3 +89,5 @@ $filters = $vars['filters'];
 
     </form>
 </div>
+
+<?php $this->replace() ?>
