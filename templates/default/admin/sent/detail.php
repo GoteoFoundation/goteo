@@ -6,7 +6,14 @@
 
 <a href="/mail/<?= $this->mail->getToken(false) ?>" class="button" target="_blank">Ver el mensaje</a>
 
-<a href="/admin/mailing/copy/<?= $this->mail->id ?>" class="button" target="_blank">Copiar este mensaje en comunicaciones</a>
+<?php if($this->sender && $this->is_module_admin('Newsletter')): ?>
+    <a href="/admin/newsletter/detail/<?= $this->sender ?>" class="button">Ver en el admin del boletín</a>
+<?php endif ?>
+
+<?php if($this->is_module_admin('Mailing')): ?>
+    <a href="/admin/mailing/copy/<?= $this->mail->id ?>" class="button">Copiar este mensaje en comunicaciones</a>
+<?php endif ?>
+
 
 <div class="widget board">
 <p><b>Subject:</b> <?= $this->mail->getSubject() ?></p>

@@ -23,7 +23,7 @@ $title = array(
 <?php endif ?>
 
 <?php if($mailing->mail && $this->is_module_admin('Sent')): ?>
-    <a href="/admin/sent/detail/<?= $mailing->mail ?>" class="button">Ir al historial de envios</a>
+    <a href="/admin/sent/detail/<?= $mailing->mail ?>" class="button">Ver en el historial de envios</a>
 <?php endif ?>
 
 <a href="/admin/newsletter/cancel/<?= $mailing->id ?>" onclick="return confirm('El boletín se borrará, seguro que quieres continuar?')" class="button">Cancelar y eliminar este boletin</a>
