@@ -19,8 +19,8 @@ $templates = $this->templates;
         <label>Plantillas masivas:
             <select id="template" name="template" >
             <?php foreach ($templates as $tplId=>$tplName) : ?>
-                <option value="<?php echo $tplId; ?>" <?php if ( $tplId == $tpl) echo 'selected="selected"'; ?>><?php echo $tplName; ?></option>
-            <?php endforeach; ?>
+                <option value="<?= $tplId ?>" <?php if ( $tplId == $tpl) echo 'selected="selected"' ?>><?= $tplName ?></option>
+            <?php endforeach ?>
             </select>
         </label>
     </p>
@@ -39,6 +39,7 @@ $templates = $this->templates;
     </form>
 </div>
 
+<div id="admin-newsletter-list">
 <?php if ($list) : ?>
 <div class="widget board">
     <table>
@@ -49,25 +50,27 @@ $templates = $this->templates;
                 <th>Asunto</th>
                 <th>Estado</th>
                 <th>% envío</th>
-                <th>Opciones</th>
+                <th>&nbsp;</th>
             </tr>
         </thead>
         <tbody>
-            <?php foreach ($list as $item) : ?>
-            <tr>
-                <td><a href="/admin/newsletter/detail/<?php echo $item->id; ?>">[Detalles]</a></td>
-                <td><?php echo $item->date; ?></td>
-                <td><?php echo $item->subject; ?></td>
-                <td><?php echo $item->active ? '<span style="color:green;font-weight:bold;">Activo</span>' : '<span style="color:red;font-weight:bold;">Inactivo</span>'; ?></td>
+            <?php foreach ($list as $item) :
+            $sent = $item->getStatus()->percent == 100;
+            ?>
+            <tr<?= ($sent ? ' style="opacity:0.5"': ' style="font-weight:bold"' ) ?>>
+                <td><a href="/admin/newsletter/detail/<?= $item->id ?>">[Detalles]</a></td>
+                <td><?= $item->date ?></td>
+                <td><?= $item->subject ?></td>
+                <td><?= $sent ? '<span class="label">Enviado</span>' : ($item->active ? '<span class="label label-success">Enviando</span>' : '<span class="label label-error">Inactivo</span>') ?></td>
                 <td><span class="mailing_status" data-id="<?= $item->id ?>" <?= $item->blocked ? ' style="color:red;font-weight:bold;"' : '' ?>><?= number_format($item->getStatus()->percent,2,',','') ?> %</span></td>
-                <td><a href="<?php echo $item->getLink(); ?>" target="_blank">[Visualizar]</a></td>
+                <td><a href="<?= $item->getLink() ?>" target="_blank">[Prever]</a></td>
             </tr>
-            <?php endforeach; ?>
+            <?php endforeach ?>
         </tbody>
     </table>
 </div>
-<?php endif; ?>
-
+<?php endif ?>
+</div>
 
 <?php $this->replace() ?>
 
@@ -75,7 +78,7 @@ $templates = $this->templates;
 <script type="text/javascript">
     $(function(){
         var reloadPage = function() {
-            $('#admin-content').load('/admin/newsletter/list/ #admin-content');
+            $('#admin-newsletter-list').load('/admin/newsletter/list/ #admin-newsletter-list');
             setTimeout(reloadPage, 2000);
         };
         setTimeout(reloadPage, 2000);

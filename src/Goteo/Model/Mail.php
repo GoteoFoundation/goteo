@@ -420,9 +420,8 @@ class Mail extends \Goteo\Core\Model {
         if ($plain) {
             return strip_tags($this->content) . ($extra_vars['alternate'] ? "\n\n" . $extra_vars['alternate'] : '');
         }
-
         // para plantilla boletin
-        if ($this->template === Template::NEWSLETTER) {
+        if ($this->template == Template::NEWSLETTER) {
             $extra_vars['unsubscribe'] = SITE_URL . '/user/unsubscribe/' . $this->getToken(); // ????
             return View::render('email/newsletter', $extra_vars);
         }

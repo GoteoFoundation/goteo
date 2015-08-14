@@ -148,9 +148,9 @@ class NewsletterSubController extends AbstractSubController {
                 // do no automatically activate ?
                 // $sender->setActive(true);
 
-            }
+                Message::info('Se ha generado el boletín [' . $sender->id . ']. <strong><a href="/admin/newsletter/detail/' . $sender->id . '">Recuerda activarlo</a> para que se envíe!</strong>');
 
-            Lang::set($current_lang);
+            }
 
         }
 

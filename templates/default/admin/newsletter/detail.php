@@ -15,12 +15,9 @@ $title = array(
     'failed' => 'Falllidos',
     'pending' => 'Pendientes'
 );
+$sent = $status->percent == 100;
 ?>
 <a href="/admin/newsletter" class="button">Volver</a>
-
-<?php if(!$mailing->active): ?>
-    <a href="/admin/newsletter/activate/<?= $mailing->id ?>" class="button">Enviar el boletin ahora</a>
-<?php endif ?>
 
 <?php if($mailing->mail && $this->is_module_admin('Sent')): ?>
     <a href="/admin/sent/detail/<?= $mailing->mail ?>" class="button">Ver en el historial de envios</a>
@@ -33,10 +30,12 @@ $title = array(
         <p>
            Asunto: <strong><?= $mailing->getMail()->subject ?></strong><br />
            Iniciado el: <strong><?= $mailing->date ?></strong><br />
-           Estado del envío automático: <?= ($mailing->active)
-               ? '<span style="color:green;font-weight:bold;">Activo</span>'
-               : '<span style="color:red;font-weight:bold;">Inactivo</span>' ?>
+           Estado del envío automático: <?= $sent ? '<span class="label">Enviado</span>' : ($mailing->active ? '<span class="label label-success">Enviando</span>' : '<span class="label label-error">Inactivo</span>') ?>
         </p>
+        <?php if(!$mailing->active): ?>
+            <p><a style="color: white" href="/admin/newsletter/activate/<?= $mailing->id ?>" class="button">Enviar el boletin ahora</a></p>
+        <?php endif ?>
+
 
     <table>
         <thead>
@@ -103,7 +102,7 @@ $title = array(
 <script type="text/javascript">
     $(function(){
         var reloadPage = function() {
-            $('#admin-content').load('/admin/newsletter/detail/<?= $mailing->id ?> #admin-content');
+            $('#admin-content').load('/admin/newsletter/detail/<?= $mailing->id ?>?pag=<?= $this->get_query('pag') ?> #admin-content');
             setTimeout(reloadPage, 2000);
         };
         setTimeout(reloadPage, 2000);

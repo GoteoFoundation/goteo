@@ -14,6 +14,7 @@ use Goteo\Application\View;
 use Goteo\Application\Session;
 use Goteo\Application\Cookie;
 use Goteo\Application;
+use Goteo\Model\Mail;
 use Goteo\Library\Feed;
 use Goteo\Library\Text;
 use Goteo\Library\OAuth\SocialAuth;
@@ -736,28 +737,23 @@ class UserController extends \Goteo\Core\Controller {
      * token es un
      *
      */
-    public function unsubscribeAction($token = null) {
+    public function unsubscribeAction($token = '') {
 
         $errors = array();
         // si el token mola, lo doy de baja
-        if (!empty($token)) {
-            $token = \mybase64_decode($token);
-            $parts = explode('¬', $token);
-            if (count($parts) > 1) {
-                $query = Model\User::query('SELECT id FROM user WHERE email = ?', array($parts[1]));
-                if ($id = $query->fetchColumn()) {
-                    if (!empty($id)) {
-                        // el token coincide con el email y he obtenido una id
-                        Model\User::setPreferences($id, array('mailing'=>1), $errors);
+        list($email, $mail_id) = Mail::decodeToken($token);
+        if ($email) {
+            $query = Model\User::query('SELECT id FROM user WHERE email = ?', array($email));
+            if ($id = $query->fetchColumn()) {
+                if (!empty($id)) {
+                    // el token coincide con el email y he obtenido una id
+                    Model\User::setPreferences($id, array('mailing'=>1), $errors);
 
-                        if (empty($errors)) {
-                            $message = Text::get('unsuscribe-request-success');
-                        } else {
-                            $error = implode('<br />', $errors);
-                        }
+                    if (empty($errors)) {
+                        $message = Text::get('unsuscribe-request-success');
+                    } else {
+                        $error = implode('<br />', $errors);
                     }
-                } else {
-                    $error = Text::get('leave-token-incorrect');
                 }
             } else {
                 $error = Text::get('leave-token-incorrect');
