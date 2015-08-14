@@ -43,7 +43,7 @@ class MailTest extends \PHPUnit_Framework_TestCase {
         $this->assertEquals('test@goteo.org', $mailer->getToAddresses()[0][0]);
 
         $this->assertContains('<img src="' . SITE_URL . '/goteo_logo.png" alt="Logo" />', $mailer->Body);
-        $this->assertContains('<title>Goteo Mailer</title>', $mailer->Body);
+        $this->assertContains('<title>' . $mail->subject . '</title>', $mailer->Body);
     }
 
     /**
@@ -55,7 +55,7 @@ class MailTest extends \PHPUnit_Framework_TestCase {
         // este test no funciona si no hay base de datos
         $this->assertContains('/user/unsubscribe', $mailer->Body);
         $this->assertContains('<img src="' . SITE_URL . '/goteo_logo.png" alt="Logo" />', $mailer->Body);
-        $this->assertContains('<title>Goteo Newsletter</title>', $mailer->Body);
+        $this->assertContains($mail->subject . '</title>', $mailer->Body);
     }
 
     public function testToken($mail) {
