@@ -16,8 +16,7 @@ composer.lock
 config/*
 !config/README
 !config/demo-settings.yml
-!config/demo-settings.php
-!config/paypal.php
+!config/vagrant-settings.yml
 dist
 
 app/data/*
