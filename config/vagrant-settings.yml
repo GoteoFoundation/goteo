@@ -25,9 +25,9 @@ timezone: Europe/Madrid
 
 # url
 url:
-    main: //localhost:8081
+    main: //localhost:8082
     # url de recursos estaticos (imagenes, CSS)
-    assets: //localhost:8081
+    assets: //localhost:8082
 
     # If you want to use a CDN or another web server to serve the cached images
     # You can define this constants. All cached images links will point to this
@@ -110,7 +110,7 @@ filesystem:
 db:
     driver:   mysql     # Database driver (mysql)
     host:     localhost # Database host
-    port:     3307      # Database port
+    port:     3306      # Database port
     charset:  UTF-8     # Database charset
     database: goteo     # Database schema (database name)
     username: root     # Database user for the goteo database

@@ -82,16 +82,17 @@ $templates = $this->templates;
                 <tbody>
                     <?php
                     foreach($this->sent_list as $sent):
+                        $percent = round($sent->getStats()->getEmailOpenedCollector()->getPercent());
                         ?>
                         <tr>
-                            <td><?= sprintf('%02d',round($sent->getStats()->getEmailOpenedCollector()->getPercent())) ?>%</td>
+                            <td><?= $this->percent_span($percent) ?></span></td>
                             <td><a href="/admin/sent/detail/<?= $sent->id ?>">[Detalles]</a></td>
                             <td><a href="/admin/users?name=<?php echo urlencode($sent->email) ?>"><?php echo $sent->email; ?></a></td>
                             <td><?= $templates[$sent->template] ?></td>
                             <td><?= $sent->getSubject() ?></td>
                             <td><?= $sent->date ?></td>
                             <td><a href="/mail/<?= $sent->getToken(false) ?>" target="_blank">[Visualizar]</a></td>
-                            <td><?= '<span class="label label-'. $sent->status . '">' . $sent->status . '</span>' ?>
+                            <td><?= '<span class="label label-'. $sent->getStatus() . '">' . $sent->getStatus() . '</span>' ?>
                         </tr>
                     <?php endforeach; ?>
                 </tbody>
@@ -111,7 +112,7 @@ $templates = $this->templates;
 <script type="text/javascript">
     $(function(){
         var reloadPage = function() {
-            $('#admin-sent-list').load('/admin/sent #admin-sent-list');
+            $('#admin-sent-list').load('/admin/sent?pag=<?= $this->get_query('pag') ?> #admin-sent-list');
             setTimeout(reloadPage, 2000);
         };
         setTimeout(reloadPage, 2000);

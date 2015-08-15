@@ -15,7 +15,7 @@ We use the **grunt** tool in order to execute repetitive task such as:
 
 **Composer** is the most popular PHP package management, we use it too.
 
-## Setting environment
+## Setting up environment
 
 You can set-up a development environment in your local machine by installing all required tools. Or, you can use a convenient Vagrant virtual machine with all tools ready to go.
 
@@ -110,6 +110,43 @@ unexpected permissions problems when using npm as non root user afterwards:
 ```bash
 sudo rm ~/.npm -rf 
 ```
+
+## Installing composer
+
+TODO
+
+## Installing mysql
+
+Instead of installing MySQL on your own machine, you may consider to install vagrant and use it as your msyql local server.
+
+TODO
+
+If you have copied the vagrant-settings.yml as you initial starting settings:
+- change in settings.yml db port from 3306 to 3307, localhost to 0.0.0.0
+- change in settings.yml url port from 8082 to 8081
+```
+url:
+    main: //localhost:8081
+    # url de recursos estaticos (imagenes, CSS)
+    assets: //localhost:8081
+
+...
+
+# Database stuff
+db:
+    driver:   mysql     # Database driver (mysql)
+    host:     0.0.0.0 # Database host
+    port:     3307      # Database port
+    charset:  UTF-8     # Database charset
+    database: goteo     # Database schema (database name)
+    username: root     # Database user for the goteo database
+    password: root  # Password for the goteo database
+```
+
+
+Otherwise, you can install mysql on your own machine and proceed to import the database into it.
+
+TODO
 
 Using grunt in Goteo
 ====================

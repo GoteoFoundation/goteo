@@ -5,7 +5,7 @@
 <?php
 
 $mailing = $this->mailing;
-$status = $mailing->getStatus();
+$status = $mailing->getStatusObject();
 $list = $this->list;
 $detail = $this->detail;
 
@@ -30,7 +30,7 @@ $sent = $status->percent == 100;
         <p>
            Asunto: <strong><?= $mailing->getMail()->subject ?></strong><br />
            Iniciado el: <strong><?= $mailing->date ?></strong><br />
-           Estado del envío automático: <?= $sent ? '<span class="label">Enviado</span>' : ($mailing->active ? '<span class="label label-success">Enviando</span>' : '<span class="label label-error">Inactivo</span>') ?>
+           Estado del envío automático: <span class="label label-<?= $mailing->getStatus() ?>"><?= $mailing->getStatus() ?></span>
         </p>
         <?php if(!$mailing->active): ?>
             <p><a style="color: white" href="/admin/newsletter/activate/<?= $mailing->id ?>" class="button">Enviar el boletin ahora</a></p>
@@ -57,7 +57,7 @@ $sent = $status->percent == 100;
                 <td style="width:12%"><?= $status->sent ?></td>
                 <td style="width:12%"><?= $status->failed ?></td>
                 <td style="width:12%"><?= $status->pending ?></td>
-                <td style="width:12%"><?= number_format($status->percent, 2, ',', '') ?>%</td>
+                <td style="width:12%"><?= $this->percent_span($status->percent) ?></td>
             </tr>
         </tbody>
     </table>

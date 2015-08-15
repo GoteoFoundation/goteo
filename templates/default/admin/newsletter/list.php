@@ -55,14 +55,15 @@ $templates = $this->templates;
         </thead>
         <tbody>
             <?php foreach ($list as $item) :
-            $sent = $item->getStatus()->percent == 100;
+            $percent = round($item->getStatusObject()->percent);
+            $sent = $percent == 100;
             ?>
             <tr<?= ($sent ? ' style="opacity:0.5"': ' style="font-weight:bold"' ) ?>>
                 <td><a href="/admin/newsletter/detail/<?= $item->id ?>">[Detalles]</a></td>
                 <td><?= $item->date ?></td>
-                <td><?= $item->subject ?></td>
-                <td><?= $sent ? '<span class="label">Enviado</span>' : ($item->active ? '<span class="label label-success">Enviando</span>' : '<span class="label label-error">Inactivo</span>') ?></td>
-                <td><span class="mailing_status" data-id="<?= $item->id ?>" <?= $item->blocked ? ' style="color:red;font-weight:bold;"' : '' ?>><?= number_format($item->getStatus()->percent,2,',','') ?> %</span></td>
+                <td<?= $item->blocked ? ' style="color:red"' : '' ?>><?= $item->subject ?></td>
+                <td><span class="label label-<?= $item->getStatus() ?>"><?= $item->getStatus() ?></span></td>
+                <td><?= $this->percent_span($percent) ?></td>
                 <td><a href="<?= $item->getLink() ?>" target="_blank">[Prever]</a></td>
             </tr>
             <?php endforeach ?>
@@ -78,7 +79,7 @@ $templates = $this->templates;
 <script type="text/javascript">
     $(function(){
         var reloadPage = function() {
-            $('#admin-newsletter-list').load('/admin/newsletter/list/ #admin-newsletter-list');
+            $('#admin-newsletter-list').load('/admin/newsletter?pag=<?= $this->get_query('pag') ?> #admin-newsletter-list');
             setTimeout(reloadPage, 2000);
         };
         setTimeout(reloadPage, 2000);

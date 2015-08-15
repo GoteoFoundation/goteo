@@ -26,10 +26,15 @@ class TextUtils implements ExtensionInterface
           'text_html' => [$this, 'html'],
           'text_get' => [$this, 'get'],
           'text_widget' => [$this, 'widget'],
-          'text_truncate' => [$this, 'truncate']
+          'text_truncate' => [$this, 'truncate'],
+          'percent_span' => [$this, 'percent_span']
         ];
     }
 
+    public function percent_span($percent, $decimals = 0) {
+        $percent = number_format( (float) $percent, $decimals, ',', '');
+        return '<span class="label label-percent" style="background-color:hsl(' . (120 * $percent/100) . ',45%,50%);">' . $percent .' %</span>';
+    }
     public function get()
     {
         return call_user_func_array ( 'Goteo\Library\Text::get' , func_get_args() );

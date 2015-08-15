@@ -17,7 +17,7 @@
 
 <div class="widget board">
 <p><b>Subject:</b> <?= $this->mail->getSubject() ?></p>
-<p><b>Alcance:</b> <?= number_format(sprintf('%02f', $this->readed), 2, ',', '') ?> %</p>
+<p><b>Alcance:</b> <?= $this->percent_span($this->readed, 2) ?></p>
 </div>
 
 <?php if ($this->metric_list) : ?>
@@ -30,7 +30,7 @@
         <?php foreach ($this->metric_list as $collection) : ?>
         <tr>
             <td><?= $collection->metric->metric ?></td>
-            <td><?= number_format(sprintf('%02f', $collection->getPercent()), 2, ',', '') ?> %</td>
+            <td><?= $this->percent_span($collection->getPercent()) ?></td>
         </tr>
         <?php endforeach ?>
     </table>
@@ -65,7 +65,7 @@
             <td><?= '<span class="label label-'. $recipient->status . '">' . $recipient->status . '</span>' . ($recipient->error ? '<br>' . $recipient->error : '') ?>
             </td>
             <td><?= '<span class="label'. ($opened ? ' label-success' : '') . '">' . $opened .'</span>' ?></td>
-            <td><?= sprintf('%02d',round($this->stats->getEmailCollector($recipient->email)->getPercent())) ?>%</td>
+            <td><?= $this->percent_span($this->stats->getEmailCollector($recipient->email)->getPercent()) ?></td>
             <td><?= $this->stats->getEmailOpenedLocation($recipient->email) ?></td>
             <td>
                 <?php if($recipient->blacklisted) : ?>

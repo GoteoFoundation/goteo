@@ -59,13 +59,13 @@ $this->layout('layout', [
     .label.label-admin,.label.label-pending,.label.label-info {
         background: #5BC0DE; /* blue */
     }
-    .label.label-superadmin,.label.label-warning {
+    .label.label-superadmin,.label.label-sending,.label.label-warning {
         background: #F0AD4E; /* yellow */
     }
     .label.label-sent,.label.label-success {
         background: #5CB85C; /* green */
     }
-    .label.label-root,.label.label-failed,.label.label-error {
+    .label.label-root,.label.label-failed,.label.label-inactive,.label.label-error {
         background: #D9534F; /* red */
     }
     .admin .channel {

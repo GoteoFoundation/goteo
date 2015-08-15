@@ -88,8 +88,9 @@ class Sender extends \Goteo\Core\Model
      * Returns status of the sending
      * @return [type] [description]
      */
-    public function getStatus()
+    public function getStatusObject()
     {
+        if($this->status_object) return $this->status_object;
         try {
             // y el estado
             $query = static::query(
@@ -105,12 +106,23 @@ class Sender extends \Goteo\Core\Model
             $sending = $query->fetchObject();
 
             $sending->percent   = 100 * (1 - $sending->pending / $sending->receivers);
+            $this->status_object = $sending;
         } catch(\PDOException $e) {
             throw new ModelNotFoundException('Not found recipients for mailingId [' . $this->id . ']' . $e->getMessage());
         }
 
         return $sending;
 
+    }
+
+    public function getStatus() {
+
+        try {
+            $status = $this->getStatusObject();
+            if($status->percent == 100) return 'sent';
+            if($this->active) return 'sending';
+            return 'inactive';
+        } catch(ModelNotFoundException $e) {}
     }
 
     // TODO: remove this

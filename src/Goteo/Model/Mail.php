@@ -3,6 +3,7 @@
 namespace Goteo\Model;
 
 use Goteo\Application\Exception\ModelException;
+use Goteo\Application\Exception\ModelNotFoundException;
 use Goteo\Application\Config;
 use Goteo\Application\Lang;
 use Goteo\Application\View;
@@ -11,6 +12,7 @@ use Goteo\Model\Template;
 use Goteo\Model\Mail\MailStats;
 use Goteo\Model\Mail\StatsCollector;
 use Goteo\Model\Mail\Metric;
+use Goteo\Model\Mail\Sender;
 use Goteo\Library\FileHandler\File;
 use Goteo\Library\Newsletter;
 
@@ -44,11 +46,9 @@ class Mail extends \Goteo\Core\Model {
      */
     function __construct($exceptions = false) {
         if($this->sent == 1) $this->status = 'sent';
-        if($this->sent === 0 || $this->sent === '0') $this->status = 'failed';
+        if($this->sent === 0 || $this->sent === '0') $this->status = 'failed'; // NULL values are 'pending'
         if($this->email === 'any') $this->massive = true;
-        else {
 
-        }
         $this->node = Config::get('current_node');
 
         // Inicializa la instancia PHPMailer.
@@ -523,6 +523,21 @@ class Mail extends \Goteo\Core\Model {
         return $this->stats_collector;
     }
 
+    public function getSender() {
+        if(!$this->sender) {
+            try {
+                $this->sender = Sender::getFromMailId($this->id);
+            } catch(ModelNotFoundException $e) {}
+        }
+        return $this->sender;
+    }
+    public function getStatus() {
+        if($this->getSender()) {
+            return $this->getSender()->getStatus();
+        }
+
+        return $this->status;
+    }
     /**
      *
      * @param array $filters    user (nombre o email),  template
