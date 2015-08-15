@@ -19,7 +19,7 @@ $templates = $this->templates
 
 <div class="widget">
     <p><?= 'Vamos a comunicarnos con ' . $this->raw('filters_txt') ?></p>
-    <p>Son <?= $this->total ?> destinatarios posibles.</p>
+    <p>Son <span class="label label-error"><?= $this->total ?></span> destinatarios posibles.</p>
     <form action="/admin/mailing/send" method="post" enctype="multipart/form-data">
     <dl>
         <dt>Seleccionar plantilla:</dt>
