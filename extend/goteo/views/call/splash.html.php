@@ -45,4 +45,4 @@ include __DIR__ . '/prologue.html.php';
 
 <a href="<?php echo SITE_URL ?>/service/resources" id="capital" target="_blank">Goteo.org</a>
 
-<?php include __DIR__ . '/../../../../app/view/epilogue.html.php' ?>
+<?php include GOTEO_WEB_PATH . 'view/epilogue.html.php' ?>

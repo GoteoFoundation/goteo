@@ -90,6 +90,7 @@ class Config {
         /**********************************/
         // LEGACY VIEWS
         \Goteo\Core\View::addViewPath(GOTEO_WEB_PATH . 'view');
+
         //NormalForm views
         \Goteo\Core\View::addViewPath(GOTEO_PATH . 'src/Goteo/Library/NormalForm/view');
         //SuperForm views

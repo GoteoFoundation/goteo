@@ -27,9 +27,9 @@ if ($debug) die;
 
 $superform = true;
 
-    include __DIR__ . '/../../../../app/view/prologue.html.php';
+    include GOTEO_WEB_PATH . 'view/prologue.html.php';
 
-    include __DIR__ . '/../../../../app/view/header.html.php';
+    include GOTEO_WEB_PATH . 'view/header.html.php';
 ?>
 
     <div id="sub-header">
@@ -41,7 +41,7 @@ $superform = true;
         </div>
     </div>
 
-<?php if($_SESSION['messages']) { include __DIR__ . '/../../../../app/view/header/message.html.php'; } ?>
+<?php if($_SESSION['messages']) { include GOTEO_WEB_PATH . 'view/header/message.html.php'; } ?>
 
     <div id="main" class="<?php echo htmlspecialchars($vars['step']) ?>">
 
@@ -59,6 +59,9 @@ $superform = true;
 
     </div>
 
-    <?php include __DIR__ . '/../../../../app/view/footer.html.php' ?>
+<?php
 
-<?php include __DIR__ . '/../../../../app/view/epilogue.html.php' ?>
+include GOTEO_WEB_PATH . 'view/footer.html.php';
+include GOTEO_WEB_PATH . 'view/epilogue.html.php';
+
+?>

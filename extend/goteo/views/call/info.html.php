@@ -68,5 +68,5 @@ include __DIR__ . '/header.html.php';
 
 <?php
 include __DIR__ . '/footer.html.php';
-include __DIR__ . '/../../../../app/view/epilogue.html.php';
+include GOTEO_WEB_PATH . 'view/epilogue.html.php';
 ?>

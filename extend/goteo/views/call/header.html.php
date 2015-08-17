@@ -3,7 +3,7 @@
         Goteo\Application\Lang;
 ?>
 
-<?php include __DIR__ . '/../../../../app/view/header/lang.html.php' ?>
+<?php include GOTEO_WEB_PATH . 'header/lang.html.php' ?>
 
 <div id="header">
     <h1><?php echo Text::get('regular-main-header'); ?></h1>
