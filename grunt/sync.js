@@ -16,14 +16,6 @@ module.exports = function(grunt) {
                 // "!**/view/css/{goteo,config,node}.css",
                 ],
             dest: '<%= goteo.dist %>'
-        }, {
-            dot: true,
-            cwd: '<%= goteo.templates %>/default',
-            src: [
-                'partials/header/styles.php',
-                'partials/footer/javascript.php',
-                ],
-            dest: '<%= goteo.dist %>/templates'
         }],
         verbose: true,
         pretend: false, // Don't do any disk operations - just write log

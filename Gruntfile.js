@@ -111,13 +111,13 @@ module.exports = function(grunt) {
 
         'useminPrepare',
         'sync',
+        'processhtml',
         'newer:imagemin',
         'concat:generated',
         // 'cssmin:generated', //no funciona con @imports se hace manualmente despues
         // 'uglify:generated',
         'cssmin:dist',
         'filerev:dist',
-        'usemin',
-        'processhtml'
+        'usemin'
     ]);
 };

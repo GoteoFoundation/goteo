@@ -16,7 +16,8 @@ module.exports = function(grunt) {
         dist: {
             files: {
                 '<%= goteo.dist %>/view/prologue.html.php': ['<%= goteo.dist %>/view/prologue.html.php'],
-                '<%= goteo.dist %>/templates/partials/footer/javascript.php': ['<%= goteo.templates %>/default/partials/footer/javascript.php']
+                '<%= goteo.dist %>/templates/partials/footer/javascript.php': ['<%= goteo.templates %>/default/partials/footer/javascript.php'],
+                '<%= goteo.dist %>/templates/partials/header/styles.php': ['<%= goteo.templates %>/default/partials/header/styles.php']
             }
         }
     });
