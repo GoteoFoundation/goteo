@@ -7,9 +7,9 @@ module.exports = function(grunt) {
     'use strict';
 
     grunt.config('phplint', {
-        app: [
-           '<%= goteo.app %>/**/*.php',
-           '!<%= goteo.app %>/vendor/**'
+        all: [
+           '**/*.php',
+           '!vendor/**'
         ]
     });
     grunt.loadNpmTasks('grunt-phplint');
