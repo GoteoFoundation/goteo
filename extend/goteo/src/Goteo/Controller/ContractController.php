@@ -15,7 +15,7 @@ use Goteo\Application\Session,
     Goteo\Library\Feed,
     Goteo\Library\PDFContract,
     Goteo\Library,
-    Goteo\Model\Mail;
+    Goteo\Model;
 
 class ContractController extends \Goteo\Core\Controller {
 
