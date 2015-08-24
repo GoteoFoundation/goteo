@@ -19,7 +19,9 @@ class UsersSend {
     public static $consultants = array(
         'merxxx' => 'Mercè Moreno Tarrés',
         'esenabre' => 'Enric Senabre',
-        'olivier' => 'Olivier Schulbaum'
+        'olivier' => 'Olivier Schulbaum',
+        'mauricio-obrien' => 'MauriOB',
+        'carmenlozano' => 'Carmen Lozano'
     );
 
     /**
