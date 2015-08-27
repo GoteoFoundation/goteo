@@ -12,8 +12,8 @@
 <head>EXPONEN</head>
 <condition>
 	<texts>
-		<text>     I.- LA FUNDACION GOTEO, en adelante FFA, es la titular de todos los derechos sobre GOTEO, una plataforma on line de crowdfunding o financiación colectiva (aportaciones monetarias) y colaboración distribuida (servicios, infraestructuras, microtareas) para proyectos que, además de ofrecer recompensas individuales generen retornos colectivos, desde la que impulsar el desarrollo autónomo de iniciativas, creativas e innovadoras, que contribuyan al desarrollo del procomún, el conocimiento libre y/o el código abierto.</text>
-		<text>     II.- %el_impulsor%, en adelante EL IMPULSOR está interesado en utilizar los servicios que FFA pone a su disposición a través de la plataforma GOTEO para la promoción del siguiente proyecto o iniciativa</text>
+		<text>     I.- LA FUNDACION GOTEO, en adelante FG, es la titular de todos los derechos sobre GOTEO, una plataforma on line de crowdfunding o financiación colectiva (aportaciones monetarias) y colaboración distribuida (servicios, infraestructuras, microtareas) para proyectos que, además de ofrecer recompensas individuales generen retornos colectivos, desde la que impulsar el desarrollo autónomo de iniciativas, creativas e innovadoras, que contribuyan al desarrollo del procomún, el conocimiento libre y/o el código abierto.</text>
+		<text>     II.- %el_impulsor%, en adelante EL IMPULSOR está interesado en utilizar los servicios que FG pone a su disposición a través de la plataforma GOTEO para la promoción del siguiente proyecto o iniciativa</text>
 		<data option="project_identification"/>
 		<data option="project_description"/>
 		<data option="payment"/>
