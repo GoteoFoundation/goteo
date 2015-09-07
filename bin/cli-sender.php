@@ -33,6 +33,7 @@ define('LOCK_FILE',  __DIR__ . '/../var/' . basename(__FILE__) . '.lock');
 
 // Config file...
 Config::loadFromYaml('settings.yml');
+
 define('HTTPS_ON', Config::get('ssl') ? true : false); // para las url de project/media
 $url = Config::get('url.main');
 define('SITE_URL', (Config::get('ssl') ? 'https://' : 'http://') . preg_replace('|^(https?:)?//|i','',$url));

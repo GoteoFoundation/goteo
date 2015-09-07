@@ -36,14 +36,15 @@ require_once __DIR__ . '/../src/autoload.php';
 
 echo "This script gets active projects and process rounds\n";
 
+// Config file...
+Config::loadFromYaml('settings.yml');
+
 // constantes necesarias (las pone el dispatcher)
 define('HTTPS_ON', Config::get('ssl') ? true : false); // para las url de project/media
 $url = Config::get('url.main');
 define('SITE_URL', (Config::get('ssl') ? 'https://' : 'http://') . preg_replace('|^(https?:)?//|i','',$url));
 define('SEC_URL', SITE_URL);
 
-// Config file...
-Config::loadFromYaml('settings.yml');
 // set Lang
 Lang::setDefault(Config::get('lang'));
 Lang::set(Config::get('lang'));
