@@ -45,7 +45,7 @@ $superform = true;
 
     <div id="main" class="<?php echo htmlspecialchars($vars['step']) ?>">
 
-        <form method="post" action="<?php echo SITE_URL . "/call/edit/" . $call->id ?>" class="project" enctype="multipart/form-data" >
+        <form method="post" action="<?= "/call/edit/" . $call->id ?>" class="project" enctype="multipart/form-data" >
 
             <input type="hidden" name="view-step-<?php echo $vars['step'] ?>" value="please" />
 
