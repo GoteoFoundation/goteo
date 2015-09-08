@@ -141,7 +141,7 @@ try {
 
     // mail de aviso
     $mailHandler = new Mail();
-    $mailHandler->to = \GOTEO_FAIL_MAIL;
+    $mailHandler->to = Config::getMail('fail');
     $mailHandler->subject = 'El cron execute ha dado excepción';
     $mailHandler->content = 'El cli-execute ha dado una excepción. '.$e->getMessage();
     $mailHandler->html = false;
@@ -170,7 +170,7 @@ function fail_mail($subject, $content)
     $subject = "[cli-execute] {$subject} " . \SITE_URL;
     // mail de aviso
     $mailHandler = new Mail();
-    $mailHandler->to = \GOTEO_FAIL_MAIL;
+    $mailHandler->to = Config::getMail('fail');
     $mailHandler->subject = $subject;
     $mailHandler->content = $content;
     $mailHandler->html = false;
@@ -203,7 +203,7 @@ function warn_no_paypal_account($project)
 
     // mail de aviso
     $mailHandler = new Mail();
-    $mailHandler->to = (defined('GOTEO_MANAGER_MAIL')) ? \GOTEO_MANAGER_MAIL : \GOTEO_CONTACT_MAIL;
+    $mailHandler->to = Config::getMail('manager');;
     $mailHandler->toName = "Goteo.org";
     $mailHandler->subject = "El proyecto " . $project->name . " no tiene cuenta PayPal";
     $mailHandler->content = "Hola Goteo, el proyecto " . $project->name . " no tiene cuenta PayPal y el proceso automatico no ha podido ejecutar los preaprovals.";
@@ -320,7 +320,7 @@ function project_first_round($project, $per_amount)
 
                 // mail de aviso
                 $mailHandler = new Mail();
-                $mailHandler->to = (defined('GOTEO_MANAGER_MAIL')) ? \GOTEO_MANAGER_MAIL : \GOTEO_CONTACT_MAIL;
+                $mailHandler->to = Config::getMail('manager');;
                 $mailHandler->toName = "Goteo.org";
                 $mailHandler->subject = "Iniciado contrato " . $project->name;
                 $mailHandler->content = "El proyecto " . $project->name . " ha pasado la primera ronda, se ha iniciado el registro de contrato.";
@@ -440,7 +440,7 @@ function project_unique_round($project, $per_amount)
 
             // mail de aviso
             $mailHandler = new Mail();
-            $mailHandler->to = (defined('GOTEO_MANAGER_MAIL')) ? \GOTEO_MANAGER_MAIL : \GOTEO_CONTACT_MAIL;
+            $mailHandler->to = Config::getMail('manager');;
             $mailHandler->toName = "Goteo.org";
             $mailHandler->subject = "Iniciado contrato " . $project->name;
             $mailHandler->content = "El proyecto " . $project->name . " ha finalizado su única ronda, se ha iniciado el registro de contrato.";
@@ -699,8 +699,8 @@ function execute_payment($invest, $project, $userData, $projectAccount)
                         $content = \str_replace($search, $replace, $template->text);
                         // iniciamos mail
                         $mailHandler = new Mail();
-                        $mailHandler->reply = GOTEO_CONTACT_MAIL;
-                        $mailHandler->replyName = GOTEO_MAIL_NAME;
+                        $mailHandler->reply = Config::getMail('contact');;
+                        $mailHandler->replyName = Config::get('mail.transport.name');;
                         $mailHandler->to = $userData->email;
                         $mailHandler->toName = $userData->name;
                         $mailHandler->subject = $subject;

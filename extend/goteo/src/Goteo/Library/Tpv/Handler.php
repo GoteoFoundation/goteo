@@ -1,5 +1,8 @@
 <?php
+
 namespace Goteo\Library\Tpv;
+use Goteo\Application\Config;
+
 /****************************************************
 handler.php
 
@@ -165,7 +168,7 @@ class Handler {
     //    curl_getinfo($ch);
 
         if (curl_errno($ch)) {
-            @mail(\GOTEO_FAIL_MAIL,
+            @mail(Config::getMail('fail'),
                 'Ha fallado el handler de tpv en ' . SITE_URL,
                 'curl_error: ' . curl_errno($ch) . '<br />' . curl_error($ch) . '<hr /><pre>'.print_r($data, true).'</pre>');
             return null;

@@ -561,7 +561,7 @@ namespace Goteo\Model {
                 }
             } catch(\PDOException $e) {
                 $errors[] = $e->getMessage();
-                // aquí debería grabar en un log de errores o mandar un mail a GOTEO_FAIL_MAIL
+                // aquí debería grabar en un log de errores o mandar un mail a Config::getMail('fail')
                 return false;
             }
             $this->id = 1;

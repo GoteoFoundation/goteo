@@ -185,7 +185,7 @@ namespace Goteo\Controller {
                     $formData['user'] = $nUser;
 
                 } else {
-                    Application\Message::error(Text::get('register-confirm_mail-fail', \GOTEO_MAIL));
+                    Application\Message::error(Text::get('register-confirm_mail-fail', Application\Config::getMail('mail')));
                     throw new Redirection("/bazaar/{$reward}/fail");
                 }
 

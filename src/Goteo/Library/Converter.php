@@ -6,8 +6,9 @@ namespace Goteo\Library;
  * Clase para mantener una cache de rates
  */
 
-use Goteo\Model\Mail,
-    Goteo\Library\Cacher;
+use Goteo\Model\Mail;
+use Goteo\Application\Config;
+use Goteo\Library\Cacher;
 
 class Converter {
 
@@ -96,7 +97,7 @@ class Converter {
         if (!$XML) {
             // mail de aviso
             $mailHandler = new Mail();
-            $mailHandler->to = \GOTEO_FAIL_MAIL;
+            $mailHandler->to = Config::getMail('fail');
             $mailHandler->subject = 'No coge divisas '.$this->source;
             $mailHandler->content = 'Library\Currency->getData  no obtiene feed desde '.$feed_url.' la respuesta es de '.strlen($response['body']);
             $mailHandler->html = false;
@@ -121,7 +122,7 @@ class Converter {
                     if ( empty($rate["rate"]) ) {
                         // mail de aviso
                         $mailHandler = new Mail();
-                        $mailHandler->to = \GOTEO_FAIL_MAIL;
+                        $mailHandler->to = Config::getMail('fail');
                         $mailHandler->subject = 'No coge divisas';
                         $mailHandler->content = 'Library\Currency->getData  no obtiene valor para '.$rate["currency"].' <pre>'.print_r($rate , 1).'</pre>';
                         $mailHandler->html = false;
@@ -148,7 +149,7 @@ class Converter {
                     if ( empty($val) ) {
                         // mail de aviso
                         $mailHandler = new Mail();
-                        $mailHandler->to = \GOTEO_FAIL_MAIL;
+                        $mailHandler->to = Config::getMail('fail');
                         $mailHandler->subject = 'No coge divisas';
                         $mailHandler->content = 'Library\Converter->getData tmc no obtiene valor para '.$tc[0].'</pre>';
                         $mailHandler->html = false;

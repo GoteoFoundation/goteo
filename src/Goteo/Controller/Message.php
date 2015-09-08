@@ -9,6 +9,7 @@ namespace Goteo\Controller {
 		Goteo\Library\Feed,
         Goteo\Application,
         Goteo\Application\Session,
+        Goteo\Application\Config,
         Goteo\Model\Template,
         Goteo\Library\Text;
 
@@ -311,7 +312,7 @@ namespace Goteo\Controller {
                 }
 
                 $remite = Session::getUser()->name . ' ' . Text::get('regular-from') . ' ';
-                $remite .= \Goteo\Application\Config::isMasterNode() ? GOTEO_MAIL_NAME : NODE_NAME;
+                $remite .= \Goteo\Application\Config::isMasterNode() ? Config::get('mail.transport.name') : NODE_NAME;
 
                 $response_url = SITE_URL . '/user/profile/' . Session::getUserId() . '/message';
                 $profile_url = SITE_URL."/user/profile/{$user->id}";
@@ -428,7 +429,7 @@ namespace Goteo\Controller {
 
                             unset($mailHandler);
                         } catch (Exception $e) {
-                            @mail(\GOTEO_FAIL_MAIL, 'FAIL '. __FUNCTION__ .' en ' . SITE_URL,
+                            @mail(Config::getMail('fail'), 'FAIL '. __FUNCTION__ .' en ' . SITE_URL,
                                 'Ha fallado a enviar mail a autor '. __FUNCTION__ .' en ' . SITE_URL.' a las ' . date ('H:i:s') . ' Objeto '. \trace($mailHandler));
                         }
 
@@ -459,7 +460,7 @@ namespace Goteo\Controller {
 
                 } else {
                     // error
-                    @mail(\GOTEO_FAIL_MAIL, 'FAIL '. __FUNCTION__ .' en ' . SITE_URL,
+                    @mail(Config::getMail('fail'), 'FAIL '. __FUNCTION__ .' en ' . SITE_URL,
                         'No ha grabado el comentario en post. '. __FUNCTION__ .' en ' . SITE_URL.' a las ' . date ('H:i:s') . ' Usuario '. Session::getUserId() . ' Errores: '.implode('<br />', $errors));
 
                 }

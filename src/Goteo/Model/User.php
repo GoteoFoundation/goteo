@@ -142,7 +142,7 @@ namespace Goteo\Model {
                               Application\Message::info(Text::get('register-confirm_mail-success'));
                         }
                         else {
-                            Application\Message::error(Text::get('register-confirm_mail-fail', GOTEO_MAIL));
+                            Application\Message::error(Text::get('register-confirm_mail-fail', Config::getMail('mail')));
                             Application\Message::error(implode('<br />', $errors));
                         }
 					}
@@ -1430,7 +1430,7 @@ namespace Goteo\Model {
 
                 // email a los de goteo
                 $mail = new Mail();
-                $mail->to = \GOTEO_MAIL;
+                $mail->to = Config::getMail('mail');
                 $mail->toName = 'Admin Goteo';
                 $mail->subject = 'El usuario ' . $row->id . ' se da de baja';
                 $mail->content = '<p>Han solicitado la baja para el mail <strong>'.$email.'</strong> que corresponde al usuario <strong>'.$row->name.'</strong>';

@@ -369,8 +369,8 @@ class ContractController extends \Goteo\Core\Controller {
                 $contract->status = Model\Contract::getStatus($contract->project);
 
                 // mail de aviso
-                $mailHandler = new Mail();
-                $mailHandler->to = (defined('GOTEO_MANAGER_MAIL')) ? \GOTEO_MANAGER_MAIL : \GOTEO_CONTACT_MAIL;
+                $mailHandler = new Model\Mail();
+                $mailHandler->to = Config::getMail('manager');
                 $mailHandler->toName = 'Goteo.org';
                 $mailHandler->subject = 'Han cerrado los datos del contrato de ' . $contract->project_name;
                 $mailHandler->content = 'El formulario de contrato del proyecto proyecto '.$contract->project_name.' está listo para ser revisaro.

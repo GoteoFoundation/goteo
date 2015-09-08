@@ -3,14 +3,15 @@
 namespace Goteo\Controller;
 
 use Goteo\Application\Session;
+use Goteo\Application\Config;
 use Goteo\Application\Lang;
+use Goteo\Application\Message;
 use Goteo\Core\Redirection;
 use Goteo\Model;
 use Goteo\Library\Feed;
 use Goteo\Library\Text;
 use Goteo\Model\Mail;
 use Goteo\Model\Template;
-use Goteo\Application\Message;
 use Goteo\Library\Paypal;
 use Goteo\Library\Tpv;
 use Goteo\Library\Currency;
@@ -298,7 +299,7 @@ class Invest extends \Goteo\Core\Controller
         if ($invest->method == 'tpv') {
             // si el aporte no está en estado "cobrado por goteo" (1)
             if ($invest->status != '1') {
-                @mail(\GOTEO_FAIL_MAIL,
+                @mail(Config::getMail('fail'),
                     'Aporte tpv no pagado ' . $invest->id,
                     'Ha llegado a invest/confirm el aporte '.$invest->id.' mediante tpv sin estado cobrado (llega con estado '.$invest->status.')');
                 // mandarlo a la pagina de aportar para que lo intente de nuevo
@@ -513,8 +514,8 @@ class Invest extends \Goteo\Core\Controller
         $content = \str_replace($search, $replace, $template->text);
 
         $mailHandler = new Mail();
-        $mailHandler->reply = GOTEO_CONTACT_MAIL;
-        $mailHandler->replyName = GOTEO_MAIL_NAME;
+        $mailHandler->reply = Config::getMail('contact');;
+        $mailHandler->replyName = Config::get('mail.transport.name');
         $mailHandler->to = $user->email;
         $mailHandler->toName = $user->name;
         $mailHandler->subject = $subject;

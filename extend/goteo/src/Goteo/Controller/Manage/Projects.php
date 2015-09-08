@@ -5,6 +5,7 @@ namespace Goteo\Controller\Manage {
     use Goteo\Core\Redirection,
         Goteo\Core\View,
         Goteo\Application\Message,
+        Goteo\Application\Config,
         Goteo\Model,
         Goteo\Model\Mail;
 
@@ -58,8 +59,8 @@ namespace Goteo\Controller\Manage {
 
                     $mailHandler->to = $project->user->email;
                     $mailHandler->toName = $project->user->name;
-                    $mailHandler->reply = (defined('GOTEO_MANAGER_MAIL')) ? \GOTEO_MANAGER_MAIL : \GOTEO_CONTACT_MAIL;
-                    $mailHandler->replyName = GOTEO_MAIL_NAME;
+                    $mailHandler->reply = Config::getMail('manager', 'contact');
+                    $mailHandler->replyName = Config::get('mail.transport.name');
                     $mailHandler->subject = 'Contrato listo para imprimir';
                     $mailHandler->content = \Goteo\Controller\Dashboard\Projects::prepare_content('ready');
                     $mailHandler->html = true;

@@ -8,6 +8,7 @@ namespace Goteo\Controller {
         Goteo\Application,
         Goteo\Model,
         Goteo\Application\Lang,
+        Goteo\Application\Config,
         Goteo\Model\Template,
         Goteo\Library\Feed,
         Goteo\Library\Buzz,
@@ -180,7 +181,7 @@ namespace Goteo\Controller {
                         // email a los de goteo
                         $mailHandler = new Mail();
 
-                        $mailHandler->to = \GOTEO_MAIL;
+                        $mailHandler->to = Config::getMail('mail');
                         $mailHandler->toName = 'Revisor de convocatorias';
                         $mailHandler->subject = 'Convocatoria ' . $call->name . ' finalizó la edición';
                         $mailHandler->content = '<p>Se ha finalizado la edicion de la convocatoria <span class="message-highlight-blue">'.$call->name.'</span>, se puede ver en <span class="message-highlight-blue"><a href="'.SITE_URL.'/call/'.$call->id.'">'.SITE_URL.'/call/'.$call->id.'</a></span></p>';

@@ -3,6 +3,7 @@ namespace Goteo\Library {
 
     use Goteo\Model\Invest,
         Goteo\Model\Project,
+        Goteo\Application\Config,
         Goteo\Library\Text,
         Goteo\Core\Redirection;
 
@@ -116,7 +117,7 @@ namespace Goteo\Library {
 
                 Invest::setDetail($invest->id, 'tpv-conection-fail', 'Ha fallado la comunicacion con el tpv. Proceso libary/tpv::pay');
                 $errors[] = 'Error fatal en la comunicacion con el TPV, se ha reportado la incidencia. Disculpe las molestias.';
-                @mail(\GOTEO_FAIL_MAIL, 'Error fatal en comunicacion TPV  en ' . SITE_URL, 'ERROR en ' . __FUNCTION__ . '<br />' . $ex->getMessage());
+                @mail(Config::getMail('fail'), 'Error fatal en comunicacion TPV  en ' . SITE_URL, 'ERROR en ' . __FUNCTION__ . '<br />' . $ex->getMessage());
                 return false;
 			}
 
@@ -178,7 +179,7 @@ namespace Goteo\Library {
                if(strtoupper($handler->isSuccess) == 'FAILURE') {
                     Invest::setDetail($invest->id, 'tpv-cancel-conection-fail', 'Ha fallado la comunicacion con el tpv al anular la operacion. Proceso libary/tpv::cancelPay');
                     $errors[] = 'No se ha podido completar la comunicacion con ceca para procesar la anulación del cargo. ';
-                    @mail(\GOTEO_FAIL_MAIL, 'Fallo en la comunicacion TPV  en ' . SITE_URL, 'ERROR en ' . __FUNCTION__ . '<br /><pre>' . print_r($errors, true) . '</pre>');
+                    @mail(Config::getMail('fail'), 'Fallo en la comunicacion TPV  en ' . SITE_URL, 'ERROR en ' . __FUNCTION__ . '<br /><pre>' . print_r($errors, true) . '</pre>');
                    return false;
                 } elseif (!empty($response)) {
                     $respobj = \htmlentities($response);
@@ -207,18 +208,18 @@ namespace Goteo\Library {
                     } else {
                         Invest::setDetail($invest->id, 'tpv-cancel-fail', 'No se ha podido anular la operacion de tpv. Proceso libary/tpv::cancelPay');
                         $errors[] = 'No se ha podido procesar la anulación del cargo. Localizar la operación <strong>'.$token.'</strong> en el panel tpv. El aporte el aporte <strong>'.$invest->id . '</strong> ha sido cancelado.';
-                        @mail(\GOTEO_FAIL_MAIL, 'No encuentra codigo en la comunicacion TPV Sermepa', 'ERROR en ' . __FUNCTION__ . '<hr />' . $response . '<pre>'.print_r($datos, true).'</pre>');
+                        @mail(Config::getMail('fail'), 'No encuentra codigo en la comunicacion TPV Sermepa', 'ERROR en ' . __FUNCTION__ . '<hr />' . $response . '<pre>'.print_r($datos, true).'</pre>');
                         return false;
                     }
                 } else {
-                    @mail(\GOTEO_FAIL_MAIL, 'Error fatal en comunicacion TPV  en ' . SITE_URL, 'ERROR en ' . __FUNCTION__ . '<br /><pre>' . print_r($handler, true) . '</pre>');
+                    @mail(Config::getMail('fail'), 'Error fatal en comunicacion TPV  en ' . SITE_URL, 'ERROR en ' . __FUNCTION__ . '<br /><pre>' . print_r($handler, true) . '</pre>');
                     return false;
                 }
 			}
 			catch(Exception $ex) {
                 Invest::setDetail($invest->id, 'tpv-cancel-conection-fail', 'Ha fallado la comunicacion con el tpv al anular la operacion. Proceso libary/tpv::cancelPay');
                 $errors[] = 'Error fatal en la comunicación con el TPV, se ha reportado la incidencia. Disculpe las molestias.';
-                @mail(\GOTEO_FAIL_MAIL, 'Error fatal en comunicacion TPV  en ' . SITE_URL, 'ERROR en ' . __FUNCTION__ . '<br /><pre>' . print_r($handler, true) . '</pre>');
+                @mail(Config::getMail('fail'), 'Error fatal en comunicacion TPV  en ' . SITE_URL, 'ERROR en ' . __FUNCTION__ . '<br /><pre>' . print_r($handler, true) . '</pre>');
                 return false;
 			}
 

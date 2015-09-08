@@ -5,6 +5,7 @@ namespace Goteo\Command;
 use Goteo\Model;
 use Goteo\Application\Lang;
 use Goteo\Application\Session;
+use Goteo\Application\Config;
 use Goteo\Core\View;
 use Goteo\Core\Redirection;
 use Goteo\Library\Text;
@@ -241,7 +242,7 @@ class UsersSend {
 
             // si es un proyecto de nodo: reply al mail del nodo
             // si es de centra: reply a MAIL_GOTEO
-            $mailHandler->reply = (!empty($project->nodeData->email)) ? $project->nodeData->email : \GOTEO_CONTACT_MAIL;
+            $mailHandler->reply = (!empty($project->nodeData->email)) ? $project->nodeData->email : Config::getMail('contact');;
 
             $mailHandler->subject = $subject;
             $mailHandler->content = $content;
@@ -249,7 +250,7 @@ class UsersSend {
             $mailHandler->template = $template->id;
             if (!$mailHandler->send($errors)) {
                 echo \trace($errors);
-                @mail(\GOTEO_FAIL_MAIL,
+                @mail(Config::getMail('fail'),
                     'Fallo al enviar email automaticamente al autor en ' . SITE_URL,
                     'Fallo al enviar email automaticamente al autor: <pre>' . print_r($mailHandler, true). '</pre>');
                 $error_sending = true;
@@ -360,7 +361,7 @@ class UsersSend {
                 $mailHandler->template = $template->id;
                 if (!$mailHandler->send($errors)) {
                     echo \trace($errors);
-                    @mail(\GOTEO_FAIL_MAIL,
+                    @mail(Config::getMail('fail'),
                         'Fallo al enviar email automaticamente al asesor ' . SITE_URL,
                         'Fallo al enviar email automaticamente al asesor: <pre>' . print_r($mailHandler, true). '</pre>');
                     $error_sending = true;
@@ -582,7 +583,7 @@ class UsersSend {
 
                 } else {
                     $anyfail = true;
-                    @mail(\GOTEO_FAIL_MAIL,
+                    @mail(Config::getMail('fail'),
                         'Fallo al enviar email automaticamente al amigo ' . SITE_URL,
                         'Fallo al enviar email automaticamente al amigo: <pre>' . print_r($mailHandler, true). '</pre>');
                 }

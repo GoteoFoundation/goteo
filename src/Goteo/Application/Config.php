@@ -183,13 +183,6 @@ class Config {
         define('SQL_CACHE_TIME', self::get('db.cache.time'));
         define('SQL_CACHE_LONG_TIME', self::get('db.cache.long_time'));
 
-        define('GOTEO_MAIL_NAME', self::get('mail.transport.name'));
-        define('GOTEO_MAIL', self::get('mail.mail'));
-        define('GOTEO_CONTACT_MAIL', self::get('mail.contact'));
-        define('GOTEO_MANAGER_MAIL', self::get('mail.manager'));
-        define('GOTEO_FAIL_MAIL', self::get('mail.fail'));
-        define('GOTEO_LOG_MAIL', self::get('mail.log'));
-
         define('SRC_URL', self::get('url.assets'));
 
         if(self::get('url.data')) define('GOTEO_DATA_URL', self::get('url.data'));
@@ -233,7 +226,7 @@ class Config {
                     // echo "[$part]";
                 }
                 elseif($strict) {
-                    throw new Config\ConfigException("Config var [$name] not found!", 1);
+                    throw new Config\ConfigException("Config var [$name] not found!");
                 }
                 else {
                     $ret = null;
@@ -242,7 +235,7 @@ class Config {
             return $ret;
         }
         elseif($strict) {
-            throw new Config\ConfigException("Config var [$name] not found!", 1);
+            throw new Config\ConfigException("Config var [$name] not found!");
         }
         return null;
     }
@@ -257,6 +250,22 @@ class Config {
             return $config[$name] = $value;
         }
         return self::_set($config[substr($name, 0, $pos)], substr($name, $pos + 1), $value);
+    }
+
+    /**
+     * Returns a mail (mail.mail, mail.contact, mail.manager) with fallback if not defined
+     * See config/settings-example.yml (mail part) for values
+     */
+    public function getMail($type = 'mail', $fallback = 'mail') {
+        if(self::get("mail.$type")) {
+            return self::get("mail.$type");
+        }
+
+        if(self::get("mail.$fallback")) {
+            return self::get("mail.$fallback");
+        }
+        // throw a exception?
+        throw new Config\ConfigException("Config var mail.mail not found!");
     }
 
     /**

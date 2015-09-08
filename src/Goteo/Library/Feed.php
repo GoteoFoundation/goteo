@@ -455,7 +455,7 @@ namespace Goteo\Library {
                 return $list;
             } catch (\PDOException $e) {
                 return array();
-                @\mail(\GOTEO_FAIL_MAIL, 'ERROR SQL en Feed::getItems', 'FATAL ERROR SQL: ' . $e->getMessage() . "<br />$sql<br /><pre>" . print_r($values, true) . "</pre>");
+                @\mail(Config::getMail('fail'), 'ERROR SQL en Feed::getItems', 'FATAL ERROR SQL: ' . $e->getMessage() . "<br />$sql<br /><pre>" . print_r($values, true) . "</pre>");
             }
 		}
 
@@ -473,7 +473,7 @@ namespace Goteo\Library {
 		 */
 		public function add() {
             if (empty($this->html)) {
-                @mail(\GOTEO_FAIL_MAIL,
+                @mail(Config::getMail('fail'),
                     'Evento feed sin html: ' . SITE_URL,
                     "Feed sin contenido html<hr /><pre>" . print_r($this, true) . "</pre>");
                 return false;
@@ -516,14 +516,14 @@ namespace Goteo\Library {
                 if (Model::query($sql, $values)) {
                     return true;
                 } else {
-                    @mail(\GOTEO_FAIL_MAIL,
+                    @mail(Config::getMail('fail'),
                         'Fallo al hacer evento feed: ' . SITE_URL,
                         "Ha fallado Feed<br /> {$sql} con <pre>" . print_r($values, true) . "</pre><hr /><pre>" . print_r($this, true) . "</pre>");
                     return false;
                 }
 
 			} catch(\PDOException $e) {
-                    @mail(\GOTEO_FAIL_MAIL,
+                    @mail(Config::getMail('fail'),
                         'PDO Exception evento feed: ' . SITE_URL,
                         "Ha fallado Feed PDO Exception<br /> {$sql} con " . $e->getMessage() . "<hr /><pre>" . print_r($this, true) . "</pre>");
                 return false;
@@ -645,12 +645,12 @@ namespace Goteo\Library {
         /* Logger, simple metodo para grabar en la tabla de logs */
         static public function logger( $scope, $target_type, $target_id, $text, $url = '' ) {
 
-            // si $scope contiene 'error' o 'exception', mail a \GOTEO_FAIL_MAIL
+            // si $scope contiene 'error' o 'exception', mail a Config::getMail('fail')
             if ( strpos($scope, 'error') !== false || strpos($scope, 'exception') !== false  ) {
 
                 // mail de aviso
                 $mailHandler = new Mail();
-                $mailHandler->to = \GOTEO_FAIL_MAIL;
+                $mailHandler->to = Config::getMail('fail');
                 $mailHandler->toName = 'Goteo Fail Mail';
                 $mailHandler->subject = $scope.' '.$target_type.' '.$target_id.' en '.\SITE_URL.' '.$url;
                 $mailHandler->content = $scope.' '.$target_type.' '.$target_id.' en '.\SITE_URL.' '.$url.'<br />'.$text;

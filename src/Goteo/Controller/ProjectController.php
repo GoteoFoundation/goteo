@@ -374,7 +374,7 @@ class ProjectController extends \Goteo\Core\Controller {
             // die;
             // mail de aviso
             $mailHandler = new Model\Mail();
-            $mailHandler->to = \GOTEO_FAIL_MAIL;
+            $mailHandler->to = Config::getMail('fail');
             $mailHandler->toName = 'Goteo Fail Mail';
             $mailHandler->subject = 'FORM CAPACITY OVERFLOW en '.\SITE_URL;
             $mailHandler->content = 'FORM CAPACITY OVERFLOW en el formulario de proyecto. Llega request method '.$_SERVER['REQUEST_METHOD'].'<hr />';

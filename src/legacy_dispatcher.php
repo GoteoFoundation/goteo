@@ -93,7 +93,7 @@ try {
         }
 
     } catch (\ReflectionException $e) {
-        // esto tendría que notificar a \GOTEO_FAIL_MAIL
+        // esto tendría que notificar a Config::getMail('fail')
         throw new Error(Error::BAD_REQUEST, $e->getMessage());
     }
     throw new Error(Error::NOT_FOUND);
