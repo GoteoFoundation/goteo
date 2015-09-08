@@ -64,16 +64,16 @@ class ProjectsWatcher {
         foreach ($projects as $project) {
             // por ahora solo tratamos los de primera ronda y hasta 2 meses tras la financiación
             // FIXME: la segunda condicion del if (depende de days_total)
+
             if ($project->days > $project->days_round1 + 2 || $project->days > 360) {
                 if ($debug) echo "Proyecto [{$project->name}] SKIPPED\n";
                 continue;
             }
-
             if ($debug) echo "Proyecto [{$project->name}], Impulsor: {$project->user->name}, email: {$project->user->email}, estado {$project->status}, lleva {$project->days} dias, conseguido {$project->amount}\n";
 
             // primero los que no se bloquean
             //Solicitud de datos del contrato
-            if ($project->success == date('Y-m-d', mktime(0, 0, 0, date('m'), date('d') - 1, date('Y')) )) {
+            if ($project->passed == date('Y-m-d', mktime(0, 0, 0, date('m'), date('d') - 1, date('Y')) )) {
                 // si ha superado el mínimo
                 if ($project->amount >= $project->mincost) {
                     if ($debug) echo "Solicitud de datos contrato\n";
