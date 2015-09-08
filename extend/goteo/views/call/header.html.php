@@ -3,7 +3,7 @@
         Goteo\Application\Lang;
 ?>
 
-<?php include GOTEO_WEB_PATH . 'header/lang.html.php' ?>
+<?php include GOTEO_WEB_PATH . 'view/header/lang.html.php' ?>
 
 <div id="header">
     <h1><?php echo Text::get('regular-main-header'); ?></h1>
@@ -61,33 +61,7 @@
 			</li>
 		</ul>
 
-		<script type="text/javascript">
-		jQuery(document).ready(function ($) {
-			 $("#lang").hover(function(){
-               // posicionar idiomas
-               var pos = $("#lang").position();
-               var top = $("#wrapper").scrollTop();
-               $("ul.lang").css("left", pos.left+5);
-               $("ul.lang").css("top", top+25);
-
-			   //desplegar idiomas
-			   try{clearTimeout(TID_LANG)}catch(e){};
-			   $("ul.lang").fadeIn();
-		       $("#lang").css("background","url('<?php echo SRC_URL; ?>/view/css/bolita.png') 4px 5px no-repeat #808285");
-
-		   },function() {
-			   TID_LANG = setTimeout('$("ul.lang").hide()',100);
-			});
-			$('ul.lang').hover(function(){
-				try{clearTimeout(TID_LANG)}catch(e){};
-			},function() {
-			   TID_LANG = setTimeout('$("ul.lang").hide()',100);
-			   $("#lang").css("background","url('<?php echo SRC_URL; ?>/view/css/bolita_gris.png') 4px 5px no-repeat transparent");
-			});
-
-
-		});
-		</script>
+		
 
 	   </div>
 	</div>
