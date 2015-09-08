@@ -236,8 +236,8 @@ namespace Goteo\Model {
             if($user->hasRoleInNode($this->node, ['superadmin', 'root'])) return true;
             // is a consultant
             if($user->hasRoleInNode($this->node, ['consultant', 'admin']) && array_key_exists($user->id, $this->getConsultants())) return true;
-            // is reviewer ... ¡no! ?? TODO: check this...
-            // if($user->hasRoleInNode($this->node, ['checker']) && User\Review::is_assigned($user->id, $this->id)) return true;
+            // is reviewer
+            if($user->hasRoleInNode($this->node, ['checker']) && User\Review::is_assigned($user->id, $this->id)) return true;
 
             return false;
         }
