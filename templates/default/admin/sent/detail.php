@@ -15,9 +15,11 @@
 <?php endif ?>
 
 
+<div id="detail-top">
+
 <div class="widget board">
 <p><b>Subject:</b> <?= $this->mail->getSubject() ?></p>
-<p><b>Alcance:</b> <?= $this->percent_span($this->readed, 2) ?></p>
+<p><b>Alcance:</b> <?= $this->percent_span($this->readed, 2) ?> <span class="label"><?= $this->readed_hits ?> hits</span></p>
 </div>
 
 <?php if ($this->metric_list) : ?>
@@ -30,15 +32,16 @@
         <?php foreach ($this->metric_list as $collection) : ?>
         <tr>
             <td><?= $collection->metric->metric ?></td>
-            <td><?= $this->percent_span($collection->getPercent()) ?></td>
+            <td><?= $this->percent_span($collection->getPercent()) ?> <span class="label"><?= $collection->non_zero ?> hits</span></td>
         </tr>
         <?php endforeach ?>
     </table>
     </div>
 
 <?php else : ?>
-    <p>No se han encontrado registros</p>
+    <p>No hay métricas</p>
 <?php endif ?>
+</div>
 
 <h3>Listado completo de los receptores</h3>
 <?php if ($this->user_list) : ?>
@@ -93,7 +96,7 @@
 <script type="text/javascript">
     $(function(){
         var reloadPage = function() {
-            $('#admin-content').load('/admin/sent/detail/<?= $this->mail->id ?> #admin-content');
+            $('#detail-top').load('/admin/sent/detail/<?= $this->mail->id ?> #detail-top');
             setTimeout(reloadPage, 2000);
         };
         setTimeout(reloadPage, 2000);

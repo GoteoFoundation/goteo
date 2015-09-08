@@ -373,7 +373,7 @@ class ContractController extends \Goteo\Core\Controller {
                 $mailHandler->to = Config::getMail('manager');
                 $mailHandler->toName = 'Goteo.org';
                 $mailHandler->subject = 'Han cerrado los datos del contrato de ' . $contract->project_name;
-                $mailHandler->content = 'El formulario de contrato del proyecto proyecto '.$contract->project_name.' está listo para ser revisaro.
+                $mailHandler->content = 'El formulario de contrato del proyecto proyecto '.$contract->project_name.' está listo para ser revisado.
                     Gestionar: http://goteo.org/manage/projects?filtered=yes&name=&proj_name='.substr($contract->project_name, 0, 10).'
                     Ver contrato: http://goteo.org/contract/'.$contract->project;
                 $mailHandler->html = false;

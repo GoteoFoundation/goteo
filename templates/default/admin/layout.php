@@ -79,6 +79,10 @@ $this->layout('layout', [
         right: 4px;
     }
 
+    .admin .widget {
+        overflow: auto;
+    }
+
     .admin .widget ul.pagination {
         border-top: 1px solid #f0f0f0;
         padding-top: 5px;

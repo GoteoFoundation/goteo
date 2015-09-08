@@ -62,6 +62,9 @@ class MailController extends \Goteo\Core\Controller {
                     }
                 }
                 $mail->to = $email;
+                if(empty($mail->template)) {
+                    $mail->content = '<pre>' . $mail->content . '</pre>';
+                }
                 return new Response($mail->render(false, [], $track));
             }
 

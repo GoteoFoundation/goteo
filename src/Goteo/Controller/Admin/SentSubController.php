@@ -48,6 +48,7 @@ class SentSubController extends AbstractSubController {
 
         $stats = new StatsCollector($mail);
         $readed = $stats->getEmailOpenedCollector()->getPercent();
+        $readed_hits = $stats->getEmailOpenedCollector()->non_zero;
         $metric_list = $stats->getAllMetrics();
         $total_metrics = count($metric_list);
 
@@ -78,6 +79,7 @@ class SentSubController extends AbstractSubController {
         'sender' => $mailing ? $mailing->id : '',
         'stats' => $stats,
         'readed' => $readed,
+        'readed_hits' => $readed_hits,
         'metric_list' => $metric_list,
         'user_list' => $user_list,
         'limit' => $limit,
