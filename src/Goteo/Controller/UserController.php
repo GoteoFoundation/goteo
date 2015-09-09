@@ -306,7 +306,7 @@ class UserController extends \Goteo\Core\Controller {
                         ));
                     }
                     else {
-                        Message::error($oauth->last_error);
+                        Application\Message::error($oauth->last_error);
                         return new RedirectResponse(SEC_URL . '/user/login');
                     }
                 }

@@ -11,7 +11,8 @@ namespace Goteo\Controller\Dashboard {
 		Goteo\Library\Page,
 		Goteo\Model\Template,
         Goteo\Application\Session,
-		Goteo\Application\Message;
+        Goteo\Application\Message,
+		Goteo\Application\Config;
 
 /*
  * las opciones para /dashboard/projects:
