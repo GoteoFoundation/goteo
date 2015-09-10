@@ -514,6 +514,7 @@ class Invest extends \Goteo\Core\Controller
         $content = \str_replace($search, $replace, $template->text);
 
         $mailHandler = new Mail();
+        $mailHandler->lang = $comlang;
         $mailHandler->reply = Config::getMail('contact');;
         $mailHandler->replyName = Config::get('mail.transport.name');
         $mailHandler->to = $user->email;
@@ -544,7 +545,7 @@ class Invest extends \Goteo\Core\Controller
             $content = \str_replace($search, $replace, $template->text);
 
             $mailHandler = new Mail();
-
+            $mailHandler->lang = $comlang;
             $mailHandler->to = $invest->address->emaildest;
             $mailHandler->toName = $invest->address->namedest;
             $mailHandler->subject = $subject;
@@ -578,7 +579,7 @@ class Invest extends \Goteo\Core\Controller
         $content = \str_replace($search, $replace, $template->text);
 
         $mailHandler = new Mail();
-
+        $mailHandler->lang = $comlang;
         $mailHandler->to = $projectData->user->email;
         $mailHandler->toName = $projectData->user->name;
         $mailHandler->subject = $subject;
