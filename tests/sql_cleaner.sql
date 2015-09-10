@@ -20,3 +20,4 @@ DELETE FROM mail_stats WHERE metric_id IN (SELECT id FROM metric WHERE metric LI
 DELETE FROM metric WHERE metric LIKE 'TEST_METRIC';
 DELETE FROM mail_stats WHERE metric_id IN (SELECT id FROM metric WHERE metric LIKE 'TEST_STAT_METRIC%');
 DELETE FROM metric WHERE metric LIKE 'TEST_STAT_METRIC%';
+DELETE FROM `mailer_send` WHERE `user` NOT IN (SELECT id FROM `user`);
