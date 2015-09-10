@@ -223,6 +223,7 @@ class UsersSend {
             $content = \str_replace($search, $replace, $template->text);
             // iniciamos mail
             $mailHandler = new Mail();
+            $mailHandler->lang = $comlang;
             $mailHandler->to = $project->user->email;
             $mailHandler->toName = $project->user->name;
 
@@ -480,15 +481,6 @@ class UsersSend {
             }
         }
 
-        // preparamos el contenido
-        // veamos los idiomas que necesitamos
-        // array_keys
-
-        // sacamos la plantilla en cada idioma
-        // $template_lang['es'] = Template::get($tpl, 'es');
-
-        // Luego, un mailing para cada idioma (como al enviar boletín)
-
         $comlang = Lang::current();
 
         // Obtenemos la plantilla para asunto y contenido
@@ -567,12 +559,13 @@ class UsersSend {
                 $replace = array($investor->name, $investor->name, $project->name, SITE_URL, $txt_rewards);
 
                 // Obtenemos la plantilla para asunto y contenido
-                $template = Template::get(54);
+                $template = Template::get(Template::PROJECT_FAILED_RECEIVERS, $comlang);
                 // Sustituimos los datos
                 $subject = str_replace('%PROJECTNAME%', $project->name, $template->title);
                 $content = \str_replace($search, $replace, $template->text);
                 // iniciamos mail
                 $mailHandler = new Mail();
+                $mailHandler->lang = $comlang;
                 $mailHandler->to = $investor->email;
                 $mailHandler->toName = $investor->name;
                 $mailHandler->subject = $subject;

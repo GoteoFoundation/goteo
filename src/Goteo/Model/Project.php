@@ -2329,7 +2329,7 @@ namespace Goteo\Model {
                         $comlang = !empty($prefer->comlang) ? $prefer->comlang : $user->lang;
 
                         // Obtenemos la plantilla para asunto y contenido
-                        $template = Template::get(39, $comlang);
+                        $template = Template::get(Template::CALL_CONFIRMATION, $comlang);
 
                         // Sustituimos los datos
                         $subject = str_replace('%CALLNAME%', $callData->name, $template->title);
@@ -2342,6 +2342,7 @@ namespace Goteo\Model {
 
                         $mailHandler = new Mail();
 
+                        $mailHandler->lang = $comlang;
                         $mailHandler->to = $user->email;
                         $mailHandler->toName = $user->name;
                         $mailHandler->subject = $subject;

@@ -192,7 +192,7 @@ class TranscallsSubController extends AbstractSubController {
                     $comlang = !empty($prefer->comlang) ? $prefer->comlang : $call->user->lang;
 
                     // Obtenemos la plantilla para asunto y contenido
-                    $template = Template::get(32, $comlang);
+                    $template = Template::get(Template::OWNER_CALL_READY_FOR_TRANSLATING, $comlang);
                     // Sustituimos los datos
                     $subject = str_replace('%CALLNAME%', $call->name, $template->title);
                     $search  = array('%OWNERNAME%', '%CALLNAME%', '%SITEURL%');
@@ -200,6 +200,7 @@ class TranscallsSubController extends AbstractSubController {
                     $content = \str_replace($search, $replace, $template->text);
                     // iniciamos mail
                     $mailHandler = new Mail();
+                    $mailHandler->lang = $comlang;
                     $mailHandler->to = $call->user->email;
                     $mailHandler->toName = $call->user->name;
                     $mailHandler->subject = $subject;

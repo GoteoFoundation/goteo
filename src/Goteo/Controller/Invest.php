@@ -467,10 +467,9 @@ class Invest extends \Goteo\Core\Controller
 
         // activamos idioma comunicaciones para los textos
         $current_lang = Lang::current();
-        Lang::set($comlang);
-
         // plantilla agradecimiento
-        $template = Template::get(Template::DONOR_INVEST_THANKS, $comlang);
+        $template = Template::get(Template::DONOR_INVEST_THANKS, $comlang); //comlang will be updated
+        Lang::set($comlang);
 
 
         // primero monto el texto de recompensas (o renuncia)
@@ -535,7 +534,7 @@ class Invest extends \Goteo\Core\Controller
         // si es un regalo
         if ($invest->address->regalo && !empty($invest->address->emaildest)) {
             // Notificación al destinatario de regalo
-            $template = Template::get(Template::BAZAAR_RECEIVER);
+            $template = Template::get(Template::BAZAAR_RECEIVER, $comlang);
             // Sustituimos los datos
             $subject = str_replace('%USERNAME%', $user->name, $template->title);
 

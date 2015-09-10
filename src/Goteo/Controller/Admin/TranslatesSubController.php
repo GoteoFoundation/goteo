@@ -231,7 +231,7 @@ class TranslatesSubController extends AbstractSubController {
                     $comlang = !empty($prefer->comlang) ? $prefer->comlang : $project->user->lang;
 
                     // Obtenemos la plantilla para asunto y contenido
-                    $template = Template::get(26, $comlang);
+                    $template = Template::get(Template::READY_FOR_TRANSLATING, $comlang);
                     // Sustituimos los datos
                     $subject = str_replace('%PROJECTNAME%', $project->name, $template->title);
                     $search  = array('%OWNERNAME%', '%PROJECTNAME%', '%SITEURL%');
@@ -239,6 +239,7 @@ class TranslatesSubController extends AbstractSubController {
                     $content = \str_replace($search, $replace, $template->text);
                     // iniciamos mail
                     $mailHandler = new Mail();
+                    $mailHandler->mail = $comlang;
                     $mailHandler->to = $project->user->email;
                     $mailHandler->toName = $project->user->name;
                     // blind copy a goteo desactivado durante las verificaciones

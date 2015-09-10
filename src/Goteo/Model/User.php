@@ -1408,7 +1408,7 @@ namespace Goteo\Model {
                 self::query('UPDATE user SET token = :token WHERE id = :id', array(':id' => $row->id, ':token' => $token));
 
                 // Obtenemos la plantilla para asunto y contenido
-                $template = Template::get(Template::UNSUBSCRIBE);
+                $template = Template::get(Template::UNSUBSCRIBE, $comlang);
 
                 // Sustituimos los datos
                 $subject = $template->title;
@@ -1419,6 +1419,7 @@ namespace Goteo\Model {
                 $content = \str_replace($search, $replace, $template->text);
                 // Email de recuperacion
                 $mail = new Mail();
+                $mail->lang = $comlang;
                 $mail->to = $row->email;
                 $mail->toName = $row->name;
                 $mail->subject = $subject;

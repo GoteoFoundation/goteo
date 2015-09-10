@@ -591,7 +591,7 @@ class ProjectsSubController extends AbstractSubController {
         $comlang = !empty($prefer->comlang) ? $prefer->comlang : $project->user->lang;
 
         // Obtenemos la plantilla para asunto y contenido
-        $template = Template::get(40, $comlang);
+        $template = Template::get(Template::PROJECT_EXPRESS_DISCARD, $comlang);
         // Sustituimos los datos
         $subject = str_replace('%PROJECTNAME%', $project->name, $template->title);
         $search  = array('%USERNAME%', '%PROJECTNAME%');
@@ -599,6 +599,7 @@ class ProjectsSubController extends AbstractSubController {
         $content = \str_replace($search, $replace, $template->text);
         // iniciamos mail
         $mailHandler = new Mail();
+        $mailHandler->lang = $comlang;
         $mailHandler->to = $project->user->email;
         $mailHandler->toName = $project->user->name;
         $mailHandler->subject = $subject;

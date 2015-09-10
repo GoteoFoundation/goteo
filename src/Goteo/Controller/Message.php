@@ -110,7 +110,7 @@ namespace Goteo\Controller {
                             // Mail al autor del thread
                             $comlang = !empty($prefer->lang) ? $prefer->lang : $thread->user->lang;
                             // Obtenemos la plantilla para asunto y contenido
-                            $template = Template::get(12, $comlang);
+                            $template = Template::get(Template::THREAD_OWNER, $comlang);
 
                             // Sustituimos los datos
                             $subject = str_replace('%PROJECTNAME%', $projectData->name, $template->title);
@@ -123,7 +123,7 @@ namespace Goteo\Controller {
                             $content = \str_replace($search, $replace, $template->text);
 
                             $mailHandler = new Model\Mail();
-
+                            $mailHandler->lang = $comlang;
                             $mailHandler->to = $thread->user->email;
                             $mailHandler->toName = $thread->user->name;
                             $mailHandler->subject = $subject;
@@ -142,7 +142,7 @@ namespace Goteo\Controller {
                         $comlang = !empty($prefer->comlang) ? $prefer->comlang : $projectData->user->lang;
 
                         // Obtenemos la plantilla para asunto y contenido
-                        $template = Template::get(30, $comlang);
+                        $template = Template::get(Template::OWNER_NEW_THREAD, $comlang);
 
                         // Sustituimos los datos
                         $subject = str_replace('%PROJECTNAME%', $projectData->name, $template->title);
@@ -156,6 +156,7 @@ namespace Goteo\Controller {
 
                         $mailHandler = new Model\Mail();
 
+                        $mailHandler->lang = $comlang;
                         $mailHandler->to = $projectData->user->email;
                         $mailHandler->toName = $projectData->user->name;
                         $mailHandler->subject = $subject;
@@ -224,7 +225,7 @@ namespace Goteo\Controller {
                 $comlang = !empty($prefer->comlang) ? $prefer->comlang : $ownerData->lang;
 
                 // Obtenemos la plantilla para asunto y contenido
-                $template = Template::get(3, $comlang);
+                $template = Template::get(Template::MESSAGE_OWNER, $comlang);
 
                 // Sustituimos los datos
                 // En el asunto: %PROJECTNAME% por $project->name
@@ -243,6 +244,7 @@ namespace Goteo\Controller {
 
                 $mailHandler = new Model\Mail();
 
+                $mailHandler->lang = $comlang;
                 $mailHandler->to = $ownerData->email;
                 $mailHandler->toName = $ownerData->name;
                 $mailHandler->subject = $subject;
@@ -301,7 +303,7 @@ namespace Goteo\Controller {
                 $comlang = !empty($prefer->comlang) ? $prefer->comlang : $user->lang;
 
                 // Obtenemos la plantilla para asunto y contenido
-                $template = Template::get(4, $comlang);
+                $template = Template::get(Template::MESSAGE_USERS, $comlang);
 
                 // Sustituimos los datos
                 if (isset($_POST['subject']) && !empty($_POST['subject'])) {
@@ -325,6 +327,7 @@ namespace Goteo\Controller {
                 $content = \str_replace($search, $replace, $template->text);
 
                 $mailHandler = new Model\Mail();
+                $mailHandler->lang = $comlang;
                 $mailHandler->fromName = $remite;
                 $mailHandler->to = $user->email;
                 $mailHandler->toName = $user->name;
@@ -403,7 +406,7 @@ namespace Goteo\Controller {
                         $comlang = !empty($prefer->comlang) ? $prefer->comlang : $projectData->user->lang;
 
                         // Obtenemos la plantilla para asunto y contenido
-                        $template = Template::get(31, $comlang);
+                        $template = Template::get(Template::OWNER_NEW_COMMENT, $comlang);
 
                         // Sustituimos los datos
                         $subject = str_replace('%PROJECTNAME%', $projectData->name, $template->title);
@@ -419,6 +422,7 @@ namespace Goteo\Controller {
                         try {
                             $mailHandler = new Model\Mail();
 
+                            $mailHandler->lang = $comlang;
                             $mailHandler->to = $projectData->user->email;
                             $mailHandler->toName = $projectData->user->name;
                             $mailHandler->subject = $subject;
