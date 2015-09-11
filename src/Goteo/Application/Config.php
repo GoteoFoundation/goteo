@@ -69,7 +69,6 @@ class Config {
         $extend = self::get('extend.autoload');
         if(is_array($extend)) {
             foreach($extend as $plugin) {
-                echo "$plugin\n";
                 //Autoload classes
                 self::addAutoloadDir(__DIR__ . '/../../../extend/' . $plugin);
             }
