@@ -4,11 +4,13 @@
 use Goteo\Application\App;
 use Goteo\Application\Config;
 
+
 //Public Web path
 define('GOTEO_WEB_PATH', dirname(__DIR__) . '/app/');
 
 require_once __DIR__ . '/../src/autoload.php';
 
+App::debug(true);
 error_reporting(E_ALL & ~E_NOTICE & ~E_STRICT & ~E_USER_DEPRECATED);
 ini_set("display_errors", 1);
 

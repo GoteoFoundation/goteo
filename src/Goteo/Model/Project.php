@@ -2098,8 +2098,18 @@ namespace Goteo\Model {
          */
         public function publish(&$errors = array()) {
 			try {
+                $status = self::STATUS_IN_CAMPAIGN;
+                $date = date('Y-m-d');
 				$sql = "UPDATE project SET passed = NULL, status = :status, published = :published WHERE id = :id";
-				self::query($sql, array(':status'=>3, ':published'=>date('Y-m-d'), ':id'=>$this->id));
+				self::query($sql, array(':status' => $status, ':published' => $date, ':id' => $this->id));
+                $this->status = $status;
+                $this->published = $date;
+                // update fee in bank account if exists
+                $query = static::query("SELECT fee FROM project_account WHERE project = ?", array($this->id));
+                $fee = $query->fetchObject();
+                if($fee && $fee->fee != Config::get('fee')) {
+                    static::query("UPDATE project_account SET fee=:fee WHERE project = :id", array(':fee' => Config::get('fee'), ':id' => $this->id));
+                }
 
                 /*
                  * Estos mensajes se automantinen en el paso del superform y en dashboard
@@ -2269,7 +2279,6 @@ namespace Goteo\Model {
                 self::query("DELETE FROM reward WHERE project = ?", array($this->id)); // recompensas y retornos
                 self::query("DELETE FROM support WHERE project = ?", array($this->id)); // colaboraciones
                 self::query("DELETE FROM message WHERE project = ?", array($this->id)); // mensajes
-                self::query("DELETE FROM project_account WHERE project = ?", array($this->id)); // cuentas
                 self::query("DELETE FROM review WHERE project = ?", array($this->id)); // revisión
                 self::query("DELETE FROM project_lang WHERE id = ?", array($this->id)); // traducción
                 self::query("DELETE FROM project WHERE id = ?", array($this->id));
@@ -2401,7 +2410,6 @@ namespace Goteo\Model {
                             self::query("UPDATE reward SET project = :newid WHERE project = :id", array(':newid'=>$newid, ':id'=>$this->id));
                             self::query("UPDATE support SET project = :newid WHERE project = :id", array(':newid'=>$newid, ':id'=>$this->id));
                             self::query("UPDATE message SET project = :newid WHERE project = :id", array(':newid'=>$newid, ':id'=>$this->id));
-                            self::query("UPDATE project_account SET project = :newid WHERE project = :id", array(':newid'=>$newid, ':id'=>$this->id));
                             self::query("UPDATE invest SET project = :newid WHERE project = :id", array(':newid'=>$newid, ':id'=>$this->id));
                             self::query("UPDATE review SET project = :newid WHERE project = :id", array(':newid'=>$newid, ':id'=>$this->id));
                             self::query("UPDATE project_lang SET id = :newid WHERE id = :id", array(':newid'=>$newid, ':id'=>$this->id));
@@ -2475,7 +2483,6 @@ namespace Goteo\Model {
                             self::query("UPDATE project_lang SET id = :newid WHERE id = :id", array(':newid'=>$newid, ':id'=>$this->id));
                             self::query("UPDATE reward SET project = :newid WHERE project = :id", array(':newid'=>$newid, ':id'=>$this->id));
                             self::query("UPDATE support SET project = :newid WHERE project = :id", array(':newid'=>$newid, ':id'=>$this->id));
-                            self::query("UPDATE project_account SET project = :newid WHERE project = :id", array(':newid'=>$newid, ':id'=>$this->id));
                             self::query("UPDATE invest SET project = :newid WHERE project = :id", array(':newid'=>$newid, ':id'=>$this->id));
                             self::query("UPDATE patron SET project = :newid WHERE project = :id", array(':newid'=>$newid, ':id'=>$this->id));
                             self::query("UPDATE invest SET project = :newid WHERE project = :id", array(':newid'=>$newid, ':id'=>$this->id));

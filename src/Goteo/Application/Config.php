@@ -69,10 +69,12 @@ class Config {
         $extend = self::get('extend.autoload');
         if(is_array($extend)) {
             foreach($extend as $plugin) {
+                echo "$plugin\n";
                 //Autoload classes
-                self::addAutoloadDir(__DIR__ . '/../../../extend/goteo/src');
+                self::addAutoloadDir(__DIR__ . '/../../../extend/' . $plugin);
             }
         }
+
         // Route app
         if(self::get('extend.routes') && is_file(__DIR__ . '/../../../extend/' .  self::get('extend.routes'))) {
             $routes = include(__DIR__ . '/../../../extend/' . self::get('extend.routes'));

@@ -17,3 +17,7 @@ ALTER TABLE `project_account` ADD `allowpp` INT(1) ;
 ALTER TABLE `project_account` ADD `fee` INT(1) NOT NULL DEFAULT 8 COMMENT 'porcentaje de comisión goteo';
 
 ALTER TABLE `project_account` CHANGE `fee` `fee` INT( 1 ) NOT NULL DEFAULT '4' COMMENT 'porcentaje de comisión goteo';
+
+
+-- constrains
+ALTER TABLE `project_account` ADD FOREIGN KEY (`project`) REFERENCES `project`(`id`) ON UPDATE CASCADE ON DELETE CASCADE;

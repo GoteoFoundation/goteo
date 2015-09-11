@@ -5,7 +5,9 @@ namespace Goteo\Model\Tests;
 
 use Goteo\TestCase;
 
+use Goteo\Application\Config;
 use Goteo\Model\Project;
+use Goteo\Model\Project\Account;
 use Goteo\Model\User;
 use Goteo\Model\Image;
 use Goteo\Model\Project\Image as ProjectImage;
@@ -252,7 +254,56 @@ class ProjectTest extends TestCase {
         $this->assertInternalType('array', $project->gallery);
         $this->assertCount(1, $project->gallery);
         $this->assertEquals($project->image, $project->gallery[0]->imageData);
+
+        return $project;
     }
+
+    /**
+     * @depends testGetProject
+     */
+    public function testAccountProject($project) {
+        $account = Account::get($project->id);
+        $this->assertEquals(Config::get('fee'), $account->fee);
+        $account->bank = '0000-1111-222';
+        $account->paypal = 'paypal@account';
+        $account->fee = Config::get('fee') + 4;
+        $errors = array();
+        $this->assertTrue($account->save($errors), print_r($errors, 1));
+        $account = Account::get($project->id);
+        $this->assertEquals(Config::get('fee') + 4, $account->fee);
+
+        return $project;
+    }
+
+    /**
+     * @depends testAccountProject
+     */
+    public function testPublishProject($project) {
+        $this->assertNotEquals(Project::STATUS_IN_CAMPAIGN, $project->status);
+        $errors = array();
+        $this->assertTrue($project->publish($errors), print_r($errors, 1));
+        $this->assertEquals(Project::STATUS_IN_CAMPAIGN, $project->status);
+        $this->assertEquals(date('Y-m-d'), $project->published);
+
+        $new = Project::get($project->id);
+        $this->assertEquals(Project::STATUS_IN_CAMPAIGN, $new->status);
+        $this->assertEquals(date('Y-m-d'), $new->published);
+        return $project;
+    }
+
+    /**
+     * @depends testPublishProject
+     */
+    public function testAccountFeeProject($project) {
+        $account = Account::get($project->id);
+        // check fee change from project publishing
+        $this->assertEquals(Config::get('fee'), $account->fee);
+        $account->paypal = '';
+        $this->assertTrue($account->save($errors), print_r($errors, 1));
+        $account = Account::get($project->id);
+        $this->assertEmpty($account->paypal);
+    }
+
     /**
      * @depends testCreateProject
      */
