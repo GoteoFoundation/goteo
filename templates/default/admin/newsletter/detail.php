@@ -32,7 +32,7 @@ $sent = $status->percent == 100;
            Iniciado el: <strong><?= $mailing->date ?></strong><br />
            Estado del envío automático: <span class="label label-<?= $mailing->getStatus() ?>"><?= $mailing->getStatus() ?></span>
         </p>
-        <?php if(!$mailing->active): ?>
+        <?php if(!$mailing->active && $mailing->getStatus() == 'inactive'): ?>
             <p><a style="color: white" href="/admin/newsletter/activate/<?= $mailing->id ?>" class="button">Enviar el boletin ahora</a></p>
         <?php endif ?>
 

@@ -62,7 +62,7 @@ class NewsletterSubController extends AbstractSubController {
 
     public function activateAction($id) {
         $mailing = Sender::get($id);
-        if($mailing->setActive(true)) {
+        if($mailing->getStatus() == 'inactive' && $mailing->setActive(true)) {
             Message::info("Newsletter [$id] activated for immediate sending!");
         }
         else {
