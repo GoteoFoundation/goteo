@@ -161,7 +161,9 @@ namespace Goteo\Model {
                 'media',
                 'legend',
                 'order',
-                'publish'
+                'publish',
+                'share_facebook',
+                'share_twitter'
                 );
 
             try {

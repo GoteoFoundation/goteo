@@ -90,7 +90,7 @@ $this->section('content');
                         <?php endif; ?>
                         <?php if(!empty($post->share_twitter)||!empty($post->share_facebook)):
                     
-                            $share_url = \SITE_URL . '/about#'.$post->id;
+                            $share_url = \SITE_URL . '/about#info'.$post->id;
 
                             $facebook_url = 'http://facebook.com/sharer.php?u=' . urlencode($share_url) . '&t=' . urlencode($post->share_facebook);
                             $twitter_url = 'http://twitter.com/home?status=' . urlencode($post->share_twitter . ': ' . $share_url);
