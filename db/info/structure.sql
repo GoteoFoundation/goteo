@@ -21,3 +21,7 @@ ALTER TABLE `info` ADD `image` VARCHAR( 255 ) NULL DEFAULT NULL COMMENT 'Imagen 
 
 -- constrains
 ALTER TABLE `info` ADD FOREIGN KEY (`node`) REFERENCES `node`(`id`) ON UPDATE CASCADE ON DELETE RESTRICT;
+
+--spread
+ALTER TABLE `info` ADD `share_facebook` TINYTEXT, ADD `share_twitter` TINYTEXT;
+ALTER TABLE `info_lang` ADD `share_facebook` TINYTEXT, ADD `share_twitter` TINYTEXT;

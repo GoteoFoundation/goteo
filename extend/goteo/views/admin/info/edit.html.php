@@ -149,6 +149,18 @@ $(document).ready(function(){
                 'value'     => $post->legend,
             ),
 
+            'share_facebook' => array(
+                'type'      => 'TextArea',
+                'title'     => 'Difusión Facebook',
+                'value'     => $post->share_facebook,
+            ),
+
+            'share_twitter' => array(
+                'type'      => 'TextArea',
+                'title'     => 'Difusión Twitter',
+                'value'     => $post->share_twitter,
+            ),
+
             'publish' => array(
                 'title'     => 'Publicada',
                 'type'      => 'slider',

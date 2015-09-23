@@ -11,11 +11,14 @@ $content = $vars['content'];
 
 $sizes = array(
     'title'       => 'cols="100" rows="2"',
+    'legend'      => 'cols="100" rows="2"',
     'name'        => 'cols="100" rows="1"',
     'description' => 'cols="100" rows="4"',
     'review'      => 'cols="100" rows="4"',
     'url'         => 'cols="100" rows="1"',
-    'text'        => 'cols="100" rows="10"'
+    'text'        => 'cols="100" rows="10"',
+    'share_facebook'      => 'cols="100" rows="2"',
+    'share_twitter'      => 'cols="100" rows="2"'
 );
 ?>
 <script type="text/javascript" src="<?php echo SRC_URL; ?>/view/js/ckeditor/ckeditor.js"></script>

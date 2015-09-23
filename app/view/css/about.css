@@ -327,7 +327,7 @@ div.widget.contact-message .button {
 ul.about-sections li{
 	float: left;
 	min-height: 35px;
-	min-width: 16%;
+	min-width: 12%;
 }
 
 ul.about-sections li + li {
@@ -363,7 +363,7 @@ ul.about-sections li a.element-5{
 
 #about-content ul.share{
 	list-style: outside none none;
-	margin: 0 0 30px 30px;
+	margin-bottom: 50px;
 	overflow: visible;
 	padding: 0px;
 }
