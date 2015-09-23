@@ -6,11 +6,6 @@ $posts = $this->posts;
 
 $go_up = $this->text('regular-go_up');
 
-$share_url = \SITE_URL . '/about#info6';
-
-$facebook_url = 'http://facebook.com/sharer.php?u=' . urlencode($share_url) . '&t=' . urlencode($this->text('meta-share-about'));
-$twitter_url = 'http://twitter.com/home?status=' . urlencode($this->text('meta-share-about') . ': ' . $share_url);
-
 $this->layout("layout", [
     'bodyClass' => 'about',
     'title' => $this->text('meta-title-info'),
@@ -93,14 +88,27 @@ $this->section('content');
                                 <img src="<?php echo $post->image->getLink(500, 285); ?>" alt="<?php echo htmlspecialchars($post->title) ?>" />
                             </div>
                         <?php endif; ?>
+                        <?php if(!empty($post->share_twitter)||!empty($post->share_facebook)):
+                    
+                            $share_url = \SITE_URL . '/about#'.$post->id;
+
+                            $facebook_url = 'http://facebook.com/sharer.php?u=' . urlencode($share_url) . '&t=' . urlencode($post->share_facebook);
+                            $twitter_url = 'http://twitter.com/home?status=' . urlencode($post->share_twitter . ': ' . $share_url);
+                            
+                            ?>
+                            <p><?= $this->text('spread-about') ?></p>
+                            <ul class="share">
+                                <li class="twitter">
+                                    <a href="<?php echo htmlentities($twitter_url) ?>" target="_blank"><?= $this->text('regular-twitter') ?></a>
+                                </li>
+                                <li class="facebook">
+                                    <a href="<?php echo htmlentities($facebook_url) ?>" target="_blank"><?= $this->text('regular-facebook') ?></a>
+                                </li>
+                            </ul>
+                        <?php endif; ?>
                     </div>
                     <a class="up" href="#"><?php echo $go_up; ?></a>
                 <?php endforeach; ?>
-                <h4 class="share">Difundir</h4>
-                <ul class="share">
-                    <li class="twitter"><a target="_blank" href="<?php echo htmlentities($twitter_url) ?>"><?php echo Text::get('regular-twitter'); ?></a></li>
-                    <li class="facebook"><a target="_blank" href="<?php echo htmlentities($facebook_url) ?>"><?php echo Text::get('regular-facebook'); ?></a></li>
-                </ul>
                 </div>
             <?php endif; ?>
 		</div>

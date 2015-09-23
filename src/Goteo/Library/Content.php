@@ -106,7 +106,9 @@ namespace Goteo\Library {
                 'info' => array (
                     'title' => 'Título',
                     'text' => 'Contenido',
-                    'legend' => 'Leyenda media'
+                    'legend' => 'Leyenda media',
+                    'share_facebook' => 'Share facebook',
+                    'share_twitter' => 'Share twitter'
                 )
             ),
             $types = array(

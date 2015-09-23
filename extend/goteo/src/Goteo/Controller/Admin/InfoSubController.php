@@ -98,7 +98,9 @@ class InfoSubController extends AbstractSubController {
                     'media',
                     'legend',
                     'publish',
-                    'order'
+                    'order',
+                    'share_twitter',
+                    'share_facebook'
                 );
 
                 foreach ($fields as $field) {

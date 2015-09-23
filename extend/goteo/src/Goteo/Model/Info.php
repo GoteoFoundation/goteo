@@ -22,6 +22,8 @@ namespace Goteo\Model {
             $legend,
             $publish,
             $order,
+            $share_facebook,
+            $share_twitter,
             $gallery = array(); // array de instancias image de info_image
 
         /*
@@ -39,6 +41,8 @@ namespace Goteo\Model {
                         IFNULL(info_lang.title, info.title) as title,
                         IFNULL(info_lang.text, info.text) as text,
                         IFNULL(info_lang.legend, info.legend) as legend,
+                        IFNULL(info_lang.share_facebook, info.share_facebook) as share_facebook,
+                        IFNULL(info_lang.share_twitter, info.share_twitter) as share_twitter,
                         info.media as `media`,
                         info.image as `image`,
                         info.publish as `publish`,
@@ -73,12 +77,16 @@ namespace Goteo\Model {
             if(self::default_lang($lang) === Config::get('lang')) {
                 $different_select=" IFNULL(info_lang.title, info.title) as title,
                                     IFNULL(info_lang.text, info.text) as `text`,
-                                    IFNULL(info_lang.legend, info.legend) as `legend`";
+                                    IFNULL(info_lang.legend, info.legend) as `legend`,
+                                    IFNULL(info_lang.share_facebook, info.share_facebook) as `share_facebook`,
+                                    IFNULL(info_lang.share_twitter, info.share_twitter) as `share_twitter`";
                 }
             else {
                     $different_select=" IFNULL(info_lang.title, IFNULL(eng.title, info.title)) as title,
                                         IFNULL(info_lang.text, IFNULL(eng.text, info.text)) as `text`,
-                                        IFNULL(info_lang.legend, IFNULL(eng.legend, info.legend)) as `legend`";
+                                        IFNULL(info_lang.legend, IFNULL(eng.legend, info.legend)) as `legend`,
+                                        IFNULL(info_lang.share_facebook, IFNULL(eng.share_facebook, info.share_facebook)) as `share_facebook`
+                                        IFNULL(info_lang.share_twitter, IFNULL(eng.share_twitter, info.share_twitter)) as `share_twitter`";
                     $eng_join=" LEFT JOIN info_lang as eng
                                     ON  eng.id = info.id
                                     AND eng.lang = 'en'";
