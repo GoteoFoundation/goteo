@@ -85,7 +85,7 @@ namespace Goteo\Model {
                     $different_select=" IFNULL(info_lang.title, IFNULL(eng.title, info.title)) as title,
                                         IFNULL(info_lang.text, IFNULL(eng.text, info.text)) as `text`,
                                         IFNULL(info_lang.legend, IFNULL(eng.legend, info.legend)) as `legend`,
-                                        IFNULL(info_lang.share_facebook, IFNULL(eng.share_facebook, info.share_facebook)) as `share_facebook`
+                                        IFNULL(info_lang.share_facebook, IFNULL(eng.share_facebook, info.share_facebook)) as `share_facebook`,
                                         IFNULL(info_lang.share_twitter, IFNULL(eng.share_twitter, info.share_twitter)) as `share_twitter`";
                     $eng_join=" LEFT JOIN info_lang as eng
                                     ON  eng.id = info.id
