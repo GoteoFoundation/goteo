@@ -96,7 +96,7 @@ $this->section('content');
                             $twitter_url = 'http://twitter.com/home?status=' . urlencode($post->share_twitter . ': ' . $share_url);
                             
                             ?>
-                            <p><?= $this->text('spread-about') ?></p>
+                            <p><?= $this->text('regular-spread') ?></p>
                             <ul class="share">
                                 <li class="twitter">
                                     <a href="<?php echo htmlentities($twitter_url) ?>" target="_blank"><?= $this->text('regular-twitter') ?></a>
