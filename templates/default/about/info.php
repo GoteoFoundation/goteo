@@ -89,8 +89,10 @@ $this->section('content');
                             </div>
                         <?php endif; ?>
                         <?php if(!empty($post->share_twitter)||!empty($post->share_facebook)):
+                            if (LANG != 'es')
+                                $share_lang= '?lang=' . LANG;
                     
-                            $share_url = \SITE_URL . '/about#info'.$post->id;
+                            $share_url = \SITE_URL . '/about'.$share_lang.'#info'.$post->id;
 
                             $facebook_url = 'http://facebook.com/sharer.php?u=' . urlencode($share_url) . '&t=' . urlencode($post->share_facebook);
                             $twitter_url = 'http://twitter.com/home?status=' . urlencode($post->share_twitter . ': ' . $share_url);
