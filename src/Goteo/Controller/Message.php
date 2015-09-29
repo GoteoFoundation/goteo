@@ -354,10 +354,11 @@ namespace Goteo\Controller {
          * Metodo para publicar un comentario en un post
          */
         public function post ($post, $project = null) {
-
-			if ($_SERVER['REQUEST_METHOD'] == 'POST' && !empty($_POST['message'])) {
-
-                 //eliminamos etiquetas script, iframe, embed y form.
+            if(!Session::getUser()->confirmed && Session::getUser()->active) {
+                Application\Message::error('Please confirm your email before make any comment!');
+            }
+			elseif ($_SERVER['REQUEST_METHOD'] == 'POST' && !empty($_POST['message'])) {
+                // eliminamos etiquetas script, iframe, embed y form.
 
                 $comment = new Model\Blog\Post\Comment(array(
                     'user' => Session::getUserId(),
