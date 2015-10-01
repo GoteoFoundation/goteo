@@ -3,12 +3,14 @@
         <input type="text" id="node-name" name="name" value="<?= $this->node->name; ?>" style="width:250px" />
     </p>
     <p>
-        <label for="node-email">Email:</label><br />
+        <label for="node-email">Email Institucional:</label><br />
         <input type="text" id="node-email" name="email" value="<?= $this->node->email; ?>" style="width:250px" />
     </p>
 
     <p>
-        <label for="node-consultant">Asesor por defecto:</label><br />
+        <label for="node-consultant">Asesor por defecto (Para proyectos del canal):<br />
+
+        </label>
         <select id="node-consultant" name="default_consultant">
             <option value="">Sin asesor</option>
             <?php foreach ($this->node_admins as $userId => $userName) : ?>

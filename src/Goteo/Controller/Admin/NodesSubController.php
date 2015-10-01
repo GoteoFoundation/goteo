@@ -122,7 +122,7 @@ class NodesSubController extends AbstractSubController {
                 Message::error('Fallo al actualizar, revisar los campos. ', implode('<br>', $errors));
             }
         }
-        return array( 'template' => 'admin/nodes/edit' );
+        return array( 'template' => 'admin/nodes/edit', 'node_admins' => Model\Node::getAdmins() );
     }
 
 
