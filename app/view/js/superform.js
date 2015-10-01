@@ -67,7 +67,6 @@
 
         }, options );
 
-        // Greenify the collection based on the settings variable.
         // console.log(settings);
         var frm = $(settings.form);
 
@@ -127,18 +126,16 @@
                 // }
             });
 
-            // console.log('sending data:', post.data);
+            goteo.trace('sending data:', post.data);
             //poner en el elemento html que hace la llamada una variable para impedir actualizaciones paralelas
             el.addClass('updating busy');
             //evento de antes de empezar ajax
             // goteo.trace('Trigger: superform.ajax.started');
             t.trigger('superform.ajax.started', [el]);
 
-            // console.log(frm[0].id, post.data);
-
             frm[0].xhr = $.ajax(post).done( function(html) {
                 //ajax finalizado
-                // goteo.trace('Trigger: superform.ajax.done html:', html);
+                goteo.trace('Trigger: superform.ajax.done html:', html);
                 t.trigger('superform.ajax.done', [html, el]);
                 //actualizar el nodo si target es un elemento html
                 //si no hay el el id esperado, no actualizar nada
@@ -254,7 +251,7 @@
         var feed = el.children('div.feedback');
         var new_feed = new_el.children('div.feedback');
         //si existe nuevo feedback los sustituimos
-        goteo.trace('old feedback',feed.html());
+        // goteo.trace('old feedback',feed.html());
         if (new_feed.length) {
             // console.log('new',new_feed.html());
             //existe el antiguo, sustituimos
@@ -386,7 +383,7 @@ $(function() {
             var fb = $(li).find('div.feedback#superform-feedback-for-' + id).not(':empty').first();
             // goteo.trace('search feedback for id: ',id, $(li.id).html());
             if (fb.length) {
-                goteo.trace('Found feedback for id:',id);
+                // goteo.trace('Found feedback for id:',id);
                 setTimeout(function () {
                     $('div.superform div.feedback').not(fb).fadeOut(200);
                 });
@@ -441,8 +438,10 @@ $(function() {
 
     //input text i textareas
     $('div.superform.autoupdate').delegate('li.element input[type="text"],li.element textarea', 'keydown paste focus', function (event) {
-
         var input = $(event.target);
+        // se puede evitar la auto-actualizacion de ciertos elementos
+        if(input.hasClass('no-autoupdate')) return;
+
         //elemento padre
         var li = input.closest('div.superform > div.elements > ol > li.element');
         // elemento immediatamente superior

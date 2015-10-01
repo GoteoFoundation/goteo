@@ -33,7 +33,7 @@ if (!empty($call->banners)) {
                         'title'     => '',
                         'type'      => 'TextBox',
                         'size'      => 100,
-                        'class'     => 'inline',
+                        'class'     => 'inline no-autoupdate',
                         'value'     => $banner->name,
                         'errors'    => !empty($errors["banner-{$banner->id}-banner"]) ? array($errors["banner-{$banner->id}-banner"]) : array(),
                         'ok'        => !empty($okeys["banner-{$banner->id}-banner"]) ? array($okeys["banner-{$banner->id}-banner"]) : array(),
@@ -56,7 +56,7 @@ if (!empty($call->banners)) {
         } else {
 
             $banners["banner-{$banner->id}"] = array(
-                'class'     => 'banner',
+                'class'     => 'banner no-autoupdate',
                 'view'      => 'dashboard/translates/call_banners/call_banner.html.php',
                 'data'      => array('banner' => $banner),
             );

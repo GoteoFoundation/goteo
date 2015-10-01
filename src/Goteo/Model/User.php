@@ -271,6 +271,7 @@ namespace Goteo\Model {
                                 $web->save($errors);
                             }
                         }
+                        $user->webs = User\Web::get($id);
                     }
                 }
 

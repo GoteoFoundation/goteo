@@ -88,7 +88,6 @@ namespace Goteo\Controller\Dashboard {
                             'url' => 'http://'
                         ));
             }
-
             /// este es el único save que se lanza desde un metodo process_
             if ($user->save($errors)) {
                 $log_action = 'Actualizado su perfil';

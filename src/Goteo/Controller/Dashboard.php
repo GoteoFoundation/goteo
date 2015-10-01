@@ -6,6 +6,7 @@ namespace Goteo\Controller {
         Goteo\Core\Redirection,
         Goteo\Core\View,
         Goteo\Model,
+        Goteo\Application\App,
         Goteo\Application\Session,
         Goteo\Application\Lang,
         Goteo\Application\Message,
@@ -147,6 +148,8 @@ namespace Goteo\Controller {
                         Dashboard\Profile::process_preferences($user->id, $errors, $log_action);
                         break;
                 }
+
+                $user = Session::getUser();
 
                 if (!empty($log_action)) {
                     // Evento Feed
@@ -905,7 +908,8 @@ namespace Goteo\Controller {
                                             $banner->saveLang($errors);
                                         }
                                     }
-                                }
+                                    $call = Model\Call::get($id, $_SESSION['translate_lang']);
+                                 }
                                 break;
 
                         }

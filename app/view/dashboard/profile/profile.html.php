@@ -54,7 +54,7 @@ foreach ($user->webs as $web) {
                         'hint'      => Text::get('tooltip-user-webs'),
                         'errors'    => !empty($errors['web-' . $web->id . '-url']) ? array($errors['web-' . $web->id . '-url']) : array(),
                         'ok'        => !empty($okeys['web-' . $web->id . '-url']) ? array($okeys['web-' . $web->id . '-url']) : array(),
-                        'class'     => 'web-url inline'
+                        'class'     => 'web-url inline no-autoupdate'
                     ),
                     "web-{$web->id}-buttons" => array(
                         'type' => 'group',
@@ -339,6 +339,7 @@ $(function () {
     webs.delegate('li.element.editweb input.ok', 'click', function (event) {
         event.preventDefault();
         var data = {};
+        alert(this.name)
         data[this.name.substring(0, this.name.length-2) + 'edit'] = '0';
         webs.superform({data:data});
     });
