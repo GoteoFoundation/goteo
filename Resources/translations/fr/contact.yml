@@ -1,0 +1,9 @@
+contact-email-field: 'Adresse mail'
+contact-message-field: Message
+contact-name-field: Nom
+contact-send_message-button: Envoyer
+contact-send_message-header: 'Envoyez-nous un message'
+contact-subject-field: Sujet
+error-contact-email-empty: 'Vous n''avez pas introduit votre adresse mail'
+error-contact-subject-empty: 'Vous n''avez pas introduit un sujet'
+error-contact-message-empty: 'Le champ de texte de votre message est vide'

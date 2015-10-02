@@ -1,0 +1,38 @@
+mandatory-project-field-zipcode: 'A postal code for the project leader is required'
+personal-field-address: 'Address '
+personal-field-location: City
+personal-field-country: Country
+personal-field-contract_birthdate: 'Date of birth'
+personal-field-post_address-different: Different
+personal-field-contract_email: 'Email linked to the project'
+tooltip-project-entity_cif: 'Enter the organization''s business number (CIF, letter plus the number)'
+tooltip-project-entity_office: 'Enter the position with which you represent the organization (secretary, president, ...)'
+tooltip-project-contract_birthdate: 'Enter your date of birth. It will never be published, but rather only used for statistical purposes.'
+tooltip-project-post_address: 'Indicate, if need be, a detailed postal address'
+personal-field-contract_data: 'Information about the project leader'
+personal-main-header: 'Information about the project leader'
+tooltip-project-main_address: 'Legal address of the person or organization (whichever applies)'
+personal-field-contract_entity-entity: 'Legal entity (associations, foundations, businesses, etc.)'
+tooltip-project-contract_email: 'Main email address associated with the project.You will receive all the notifications and messages from the Goteo team relating to your project proposal at this address.'
+personal-field-entity_name: 'Official name of the organization'
+personal-field-entity_cif: 'Organization''s Business ID Number (CIF)'
+tooltip-project-contract_surname: 'P2-Advice-5 Advice on filling in the surname of the person in charge of the project'
+personal-field-contract_entity-person: Person
+personal-field-entity_office: 'Position in the organization'
+personal-field-zipcode: 'Postal code'
+step-2: Promoter
+personal-field-post_address-same: Same
+step-userPersonal: 'Step: Personal information'
+personal-field-phone: Telephone
+tooltip-project-phone: 'Telephone number (mobile or landline) with prefix'
+validate-project-value-entity_cif: 'The Business number (CIF) is not valid.'
+validate-project-value-phone: 'The format of the telephone number is incorrect'
+validate-project-paypal_account: 'The PayPal account provided here should be similar to an email address.'
+mandatory-project-field-address: 'The project leaders'' address is required'
+tooltip-project-contract_data: 'Whether it''s a person or legal entity, someone has to be named as the project promoter, as well as the liaison with the Goteo team. It doesn''t have to be the same as the user profile from the previous field.'
+tooltip-project-entity_name: 'Write the name of the organization exactly as it appears in its CIF.'
+tooltip-user-image: 'You don''t have to add a profile picture, but it does help other users to identify you.'
+mandatory-project-field-country: 'You must enter a country for the project leader'
+mandatory-project-field-phone: 'You must enter a phone number for the project leader'
+mandatory-project-field-contract_email: 'You must enter the project leader''s email'
+mandatory-project-field-residence: 'You must enter the project leader''s place of residence'

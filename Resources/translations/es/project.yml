@@ -1,0 +1,77 @@
+tooltip-project-paypal: "<p> Además de mediante nuestra pasarela de pago bancaria, <strong>es posible recibir aportaciones vía PayPal</strong>. Para ello, debes indicar aquí una dirección de email asociada a una cuenta validada en PayPal. No escribas nada (ningún carácter) en este campo si no deseas ofrecer la opción de pago Paypal.</p>\r\n<p> Aunque no es obligatorio tener una cuenta en Paypal para recibir la recaudación de tu proyecto, sí es altamente recomendable.<strong> Si no se facilita una cuenta PayPal validada y verificada antes de la publicación de esta campaña, no será posible la recepción de aportaciones por esta vía.</strong></p>\r\n<p>Esta cuenta no podrás modificarla posteriormente, tendrás que contactar con nosotros si quieres cambiarla.</p>\r\n<p><strong>IMPORTANTE: No se puede usar esta misma cuenta para hacer aportaciones a tu propio proyecto ya que daría un error de sistema.</strong></p>\r\n"
+social_reward-access: Accede
+social_reward-access_title: 'Accede a este recurso colectivo'
+project-view-metter-day_closed: 'Archivado el'
+project-messages-closed: 'Aun no se pueden enviar mensajes al proyecto'
+project-rewards-bonus_reward-title: Bonus
+currency-switch: CAMBIAR
+project-view-categories-title: Categorías
+project-spread-embed_code: 'Código Embed'
+project-view-metter-investment: Cofinanciación
+project-menu-supporters: Cofinanciadores
+project-view-metter-investors: Cofinanciadores
+project-spread-social: 'Cofinancio el proyecto %s  #goteo #crowdfunding'
+project-menu-messages: Colaboraciones
+project-share-header: 'Comparte este proyecto'
+project-spread-widget_legend: 'Copia y pega el código en tu web o blog y ayuda a difundir este proyecto'
+project-view-metter-day_created: 'Creado el'
+personal-field-accounts: 'Cuentas del proyecto'
+project-share-pre_header: 'Deja saber a tu red que'
+project-spread-header: 'Difunde este proyecto'
+project-spread-pre_widget: 'Difunde este proyecto'
+overview-field-spread: Difusión
+contract-paypal_account: 'Email de tu cuenta PayPal:'
+project-messages-send_direct-header: 'Envía un mensaje al impulsor/a del proyecto'
+project-messages-send_message-button: Enviar
+project-messages-send_message-header: 'Escribe tu mensaje'
+project-not_published: 'Este proyecto aun no es público'
+project-willpublish: 'Este proyecto se publicará el %s'
+tooltip-project-spread: 'Explícanos como piensas difundir el proyecto entre tu comunidad: canales, tipo de mensajes, acciones de difusión, calendario mínimo...'
+project-menu_title-updates: 'Feedback: infórmate sobre los avances del proyecto directamente a través de quien lo impulsa.'
+project-view-metter-day_success: 'Financiado el'
+project-menu_title-home: 'Impacto social: este proyecto abre su código, comparte conocimientos, datos o archivos digitales a cambio de tu apoyo.'
+tooltip-project-scope: 'Indica el impacto geográfico que aspira a tener el proyecto (cada categoría incluye la anterior). '
+project-unpublished: 'La campaña de este proyecto ha sido cancelada.'
+project-view-metter-minimum: Mínimo
+project-menu-needs: Necesidades
+project-support-supertitle: 'Necesidades económicas'
+project-collaborations-supertitle: 'Necesidades no monetarias'
+project-help-cost: 'Necesito ayuda en la definición de los costes'
+project-help-license: 'Necesito ayuda para definir los retornos colectivos y las licencias'
+project-menu_title-messages: 'No sólo dinero: también puedes apoyar con tu talento, materiales, tiempo, contactos, saberes...'
+project-menu-updates: Novedades
+project-view-metter-got: Obtenido
+project-view-metter-optimum: Óptimo
+project-menu-home: Proyecto
+project-rounds: 'Proyecto de una sola ronda'
+project-langs-header: 'Proyecto en'
+regular-new_project: 'Proyecto nuevo'
+project-spread-widget_title: 'publica el widget del proyecto'
+project-rewards-supertitle: 'Qué ofrece a cambio'
+project-view-metter-days: Quedan
+project-rewards-individual_reward-units_left: 'Quedan <span class="left">%s</span> unidades'
+project-view-metter-day_updated: 'Recibido el'
+project-rewards-individual_reward-limited: 'Recompensa limitada'
+project-rewards-individual_reward-title: 'Recompensas individuales'
+project-menu_title-supporters: 'Red social de apoyo: los cofinanciadores y cofinanciadoras son tan importantes como quienes impulsan esta iniciativa.'
+project-messages-answer_it: Responder
+project-rewards-header: Retorno
+project-rewards-social_reward-title: 'Retorno colectivo'
+project-collaborations-title: 'Se busca'
+tooltip-project-rounds: 'Si eliges esta opción, tu proyecto solo tendrá una ronda de 40 días para conseguir la financiación necesaria: todo o nada.'
+tooltip-project-bank: 'Si no quieres ponerla ahora podrás ponerla más adelante cuando formalicemos el contrato'
+tooltip-project-help-cost: 'Si no tienes claro el desglose de costes o quieres consultarnos alguna cuestión, marca esta opción. Debes finalizar y enviar el formulario para que podamos asesorarte en esto.'
+tooltip-project-help-license: 'Si tienes dudas acerca de las licencias más adecuadas a los retornos colectivos de tu proyecto, marca esta opción. Debes finalizar y enviar el formulario para que podamos asesorarte en esto.'
+tooltip-updates-home: 'Texto tooltip-updates-home'
+tooltip-updates-tags: 'Texto tooltip-updates-tags'
+tooltip-updates-allow_comments: tooltip-updates-allow_comments
+tooltip-updates-date: tooltip-updates-date
+tooltip-updates-image: tooltip-updates-image
+tooltip-updates-image_upload: tooltip-updates-image_upload
+tooltip-updates-media: tooltip-updates-media
+tooltip-updates-text: tooltip-updates-text
+tooltip-updates-title: tooltip-updates-title
+project-menu_title-needs: 'Transparencia de costes: desglose detallado de lo mínimo y lo óptimo que necesita para llevarse a cabo.'
+project-media-play_video: 'Ver video'
+project-spread-widget: 'Widget del proyecto'
+project-side-investors-header: 'Ya han aportado'

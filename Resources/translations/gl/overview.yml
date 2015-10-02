@@ -1,0 +1,64 @@
+overview-field-video: 'Vídeo adicional sobre a motivación'
+overview-field-options-currently_avanzado: Avanzado
+tooltip-project-keywords: 'A medida que insiras texto o sistema suxerírache verbas clave que xa escribiron outros usuarios. Estas categorías axúdanche a vincular o teu proxecto con persoas afíns.'
+overview-field-description: 'Descripción curta'
+tooltip-project-about: 'Describe brevemente o proxecto en modo conceptual, técnico ou práctico. Por exemplo explicando as súas características de funcionamento, ou en que partes consistirá. Pensa en como será unha vez rematado e todo o que a xente poderá facer con el.'
+overview-field-categories: Categorías
+tooltip-project-usubs: 'Marca o check en caso de que subtitularas a outros idiomas o vídeo mediante Universal Subtitles:  http://www.universalsubtitles.org/'
+tooltip-project-category: 'Elixe tantas categorías coma creas necesarias para describir o proxecto, baseándote en todo o que describiches arriba. Mediante estas palabras clave poderémolo facer chegar a diferentes usuarios/as de Goteo.'
+tooltip-project-video: 'Considera aquí a posibilidade de publicar e ligar un vídeo (en Youtube ou Vimeo) onde expliques brevemente á cámara o porque do teu proxecto. Se se trata dalgo que poida complementar o vídeo principal, cunha persoa que transmita a súa necesidade ou orixinalidade, do modo máis directo posible. Se che da vergoña falar á cámara, tamén pode ser algunha persoa que coñezas e que siga o proxecto ou a idea e pida facer esa aportación coma "fan". A empatía e a necesidade de ver a alguen ó outro lado do proxecto é moi importante para determinado tipo de confinanceiros.'
+tooltip-project-media: 'Copia e pega a dirección URL dun vídeo de presentación do proxecto, publicado previamente en Youtube ou Vimeo. Esta parte é fundamental para atraer a atención dos potenciais cofinanceiros e colaboradores, e canto máis orixinal sexa mellor. Recomendámosche que teña unha duración entre 2 e 4 minutos.'
+tooltip-project-subtitle: 'Define cunha frase un subtítulo que remate de explicar en que consistirá a iniciativa, que permita facerse unha idea mínima de para que serve ou en que consiste. Aparecerá xunto ó título do proxecto.'
+overview-field-image_gallery: 'Imaxes actuais'
+overview-field-currently: 'Estado actual'
+tooltip-project-description: 'Describe o proxecto cun mínimo de 80 palabras (con menos marcará erro). Explícao de modo que sexa fácil de entender para calquera persoa. Tenta darlle un enfoque atractivo e social, resumindo os seus puntos fortes, que o fai único, innovador ou especial.'
+step-3: Descrición
+tooltip-project-name: 'Escribe un nome para o titular do proxecto. Canto máis breve mellor, para facelo máis descritivo podes amplialo no seguinte apartado.'
+tooltip-project-image_upload: BORRAR
+tooltip-project-motivation: 'Explica que motivos ou circunstancias leváronte a idear o proxecto, así coma as comunidades ou usuarios/as as que vai destinado. Axudarache a conectar con persoas movidas por ese mesmo tipo de intereses, problemáticas ou gustos.'
+overview-field-options-currently_finalizado: Rematado
+overview-field-options-scope_global: Global
+overview-field-goal: 'Obxectivos da campaña de crowdfunding'
+tooltip-project-reward: 'Aquí explicamos o bo que ten en canto a recompensas'
+overview-fields-images-title: 'Imaxes do proxecto'
+mandatory-project-field-related: 'É obrigado explicar na descrición do proxecto a experiencia relacionada e/ou o equipo co que se conta'
+validate-project-field-currently: 'Indica o estado do proxecto para mellorar a valoración do mesmo, de cara a determinar se publicalo en Goteo.'
+tooltip-project-lang: 'Indica en que idioma enches o formulario do proxecto.'
+tooltip-project-project_location: 'Indica o lugar onde se desenrolará o proxecto, en que poboación ou poboacións atópase o seu impulsor ou impulsores principais.'
+overview-field-keywords: 'Palabras clave do proxecto'
+tooltip-project-goal: 'Enumera as metas principais do proxecto, a curto e longo prazo, en todos os aspectos que consideres importantes salientar. Trátase de outra oportunidade para contactar e acadar o apoio de xente que simpatice con eses obxectivos.'
+overview-field-options-scope_local: Local
+overview-field-project_location: Ubicación
+overview-field-options-currently_medio: Medio
+overview-field-options-scope_nacional: Nacional
+overview-field-lang: 'Idioma orixinal'
+overview-field-media_preview: 'Vista previa'
+overview-main-header: 'Descrición do proxecto'
+overview-field-scope: 'Alcance do proxecto'
+overview-field-name: 'Título do proxecto'
+overview-field-usubs: 'Cargar con Universal Subtitles'
+overview-field-options-scope_regional: Rexional
+overview-field-reward: Recompensas
+overview-field-options-currently_inicial: Inicial
+step-overview: 'Paso: Descrición do proxecto'
+tooltip-project-related: 'Resume a túa traxectoria ou a do grupo impulsor do proxecto. ¿Que experiencia ten relacionada coa proposta? ¿Con que equipo de persoas, recursos e/ou infraestruturas conta?'
+overview-field-subtitle: 'Frase de resumo'
+overview-field-related: 'Experiencia previa e equipo'
+validate-project-field-about: 'A explicación do proxecto é demasiado curta'
+validate-project-field-description: 'A descripción do proxecto é demasiado curta'
+validate-project-value-description: 'A descripción do proxecto é demasiado curta'
+tooltip-project-image: 'Poden ser esquemas, pantallas, fotografías, ilustracións, storyboards, etc. (a súa licenza de autoría debe ser compatíbel coa que escollas no apartado 5). Suxerímosche que sexan diversas e de boa calidade, aínda que non demasiado grandes (uns 900 píxeles de ancho / 2 MB Max). ¡Podes subir tantas como queiras!'
+overview-field-image_upload: 'Subir unha imaxe (2MB max.)'
+overview-field-media: 'Vídeo de presentación'
+mandatory-project-field-media: 'Suxerimos poñer un vídeo para mellorar a valoración do proxecto á hora de decidir se publicalo ou non en Goteo.'
+tooltip-project-currently: 'Indica en que fase se atopa o proxecto actualmente respecto ó seu proceso de creación ou execución.'
+validate-project-value-keywords: 'Indica un mínimo de 5 palabras clave do proxecto para mellorar a valoración do mesmo, de cara a determinar se publicalo en Goteo.'
+mandatory-project-field-name: 'É obrigado poñer un nome ó proxecto'
+mandatory-project-field-description: 'É obrigado resumir o proxecto'
+mandatory-project-field-location: 'É obrigado poñer o alcance potencial do proxecto'
+mandatory-project-field-about: 'É obrigado explicar as características básicas do proxecto'
+mandatory-project-field-goal: 'É obrigado explicar os obxectivos na descrición do proxecto'
+mandatory-project-field-motivation: 'É obrigado explicar a motivación na descrición do proxecto'
+mandatory-project-field-lang: 'Tes que indicar o idioma do proxecto'
+mandatory-project-field-image: 'É obrigado ligar unha imaxe coma mínimo ó proxecto.'
+mandatory-project-field-category: 'É obrigado elixir polo menos unha categoría para o proxecto.'

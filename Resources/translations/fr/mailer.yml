@@ -1,0 +1,4 @@
+mailer-disclaimer: 'Goteo est un réseau social de financement collectif (apports monétaires) et de collaboration distribuée (services, infrastructures, et micro-tâches et ressources) pour soutenir des projets à caractère social, culturel, scientifique, éducatif, technologique ou écologique, qui permettent de développer des activités améliorant la société et enrichissant les biens communs.'
+mailer-sinoves: 'Si vous ne pouvez visualiser ce message utilisez ce  <a href="%s" style="color:white;">lien</a>'
+mailer-baja: 'Vous ne souhaitez plus recevoir de messages de Goteo? Vous pouvez envoyer une demande de résiliation via ce <a href="%s">lien</a>'
+newsletter-block: 'Vous ne souhaitez plus recevoir de nouvelles de Goteo? <br />Vous pouvez bloquer l''envoie des prochaines newsletters depuis le menu ''Mon profil > Préférences'' de votre <a href="%s">Unsubscribe</a>.'

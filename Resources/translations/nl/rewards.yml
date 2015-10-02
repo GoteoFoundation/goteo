@@ -1,0 +1,38 @@
+rewards-field-individual_reward-amount: 'Hoeveelheid gefinancierd'
+tooltip-project-individual_reward-amount: 'Hoeveelheid waarvoor je dit type beloning kunt kiezen.'
+rewards-field-social_reward-reward: Winst
+step-5: Baten
+rewards-main-header: 'Voordelen en beloningen'
+tooltip-project-individual_reward-icon-other: 'Omschrijf kort deze andere soort individuele beloning'
+tooltip-project-social_reward-icon-other: 'Leg kort uit waar deze andere collectieve beloning uit bestaat'
+tooltip-project-social_reward-description: 'Leg kort uit welke soort collectieve beloning dit project toestaat of brengt.'
+tooltip-project-individual_reward-description: 'Korte uitleggen waar de beloning uit bestaat voor degenen die het project in deze fase cofinancieren.'
+tooltip-project-social_reward-license: 'Kies een licentie uit de getoonde groep. Lees ze goed voor je kiest en onthoud dat het voor SiteName belangrijk is dat de projecten de meest open licentie hebben.'
+rewards-fields-social_reward-title: 'Collective winst'
+tooltip-project-social_rewards: 'Definieer het type winst uit het project waartoe open toegang is, en de licentie die dat reguleert. Als je nog twijfelt over welke licentie het beste past, neem dan contact met ons op op, <a href="/contact" target="new">contact us</a> en we geven je graag advies.'
+rewards-field-individual_reward-description: Omschrijving
+rewards-field-social_reward-description: Omschrijving
+validate-social_reward-license: 'Geef een licentie aan om je score te verbeteren'
+validate-project-individual_rewards: 'Geef maximaal 5 individuele beloningen op om de score te verbeteren'
+rewards-fields-individual_reward-title: 'Individuele beloningen'
+rewards-field-social_reward-license: 'Licentie opties'
+tooltip-project-individual_reward-units: 'Een beperkte hoeveelheid items kan individueel worden aangeboden voor dit bedrag. Pas de bedragen zodanig aan dat het totaal in de buurt komt van de minimumhoeveelheid die je nodig hebt. Vergeet niet dat je de vorige beloningen erbij in kunt zetten door te beginnen met "al het voorgaande, plus..."'
+rewards-field-individual_reward-reward: beloning
+tooltip-project-individual_reward-type: 'Selecteer het type beloning die je kunt bieden aan mensen die dit bedrag bijdragen.'
+validate-project-individual_rewards-any_error: 'Er mist informatie over individuele beloningen.'
+tooltip-project-individual_rewards: 'Geef aan welke beloning een cofinancier zal ontvangen, gekoppeld aan een bepaald bedrag. Denk goed na over wat je aanbiedt. Bied vooral dingen die geen extra kosten met zich mee brengen. Als dat wel moet, bereken dan hoeveel het gaat kosten (in tijd, geld, verzendkosten etc.) en bied een gelimiteerde hoeveelheid aan. Onthoudt dat je na afloop van het project aan deze verplichtingen vast zit.'
+rewards-field-social_reward-other: 'Specifieer het type winst'
+tooltip-project-social_reward-type: 'Specificeer de soort winst: bijvoorbeeld digitale files, ontwerpen, handleidingen, howto''scourses, etc.'
+rewards-field-individual_reward-other: 'Specifieer het type beloning'
+step-rewards: 'Step: Project / Baten'
+tooltip-project-social_reward-reward: 'Maak de titel zo beschrijvend mogelijk. Je kunt later nog beloningen toevoegen.'
+tooltip-project-individual_reward-reward: 'Probeer de titel zo beschrijvend mogelijk te maken. Onthoud dat je later meer beloningen toe kunt voegen.'
+rewards-field-social_reward-type: 'Type winst'
+rewards-field-individual_reward-type: 'Type beloning'
+rewards-field-individual_reward-units: Eenheden
+mandatory-individual_reward-field-description: 'Je moet een omschrijving toevoegen'
+mandatory-social_reward-field-icon: 'Je moet een type voor de baten invoeren'
+mandatory-individual_reward-field-icon: 'Je moet een type beloning kiezen'
+mandatory-social_reward-field-description: 'Je moet een omschrijving van de baten invoeren'
+mandatory-individual_reward-field-name: 'Je moet een beloning invoeren'
+mandatory-social_reward-field-name: 'Je moet de baten specificeren'

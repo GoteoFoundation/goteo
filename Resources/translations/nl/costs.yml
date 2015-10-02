@@ -1,0 +1,40 @@
+costs-fields-main-title: Deeluitgaven
+tooltip-project-cost-description: 'Leg kort uit waar de kostenpost uit bestaat.'
+costs-field-dates: Data
+costs-field-description: Omschrijving
+tooltip-project-cost-cost: 'oer de meest informatieve titel in voor deze kostenpost'
+costs-field-cost: Kosten
+costs-main-header: Uitgaven
+step-4: Kosten
+costs-field-date_from: Van
+tooltip-project-cost-dates: 'Geef een tijdsduur aan voor wanneer de taak compleet zal zijn of wanneer de kostenpost gedekt is. Plan dit door te starten tenminste twee maanden vanaf nu, omdat je de tijd moet rekenen die het duurt om het voorstel goed te keuren, het te publiceren als het uitgekozen wordt, en de 40 dagen voor de eerste financiering. Stop de gedeelten die eerder al zijn ontwikkeld er niet bij, hoewel het goed is die te noemen in je projectomschrijving. We willen alleen dingen in het schema die nog gedaan moeten worden en waarvoor je cofinanciering aanvraagt.'
+tooltip-project-cost-type: 'Hier moet je het type kostenpost aangeven: gerelateerd aan een taak (iets dat iemands vaardigheden of kennis gebruikt), materialen (verbruiksmaterialen of grondstoffen) of infrastructuur (ruimte, apparatuur, meubilair) '
+cost-type-structure: Infrastructuur
+cost-type-lend: Lening
+cost-type-material: Materiaal
+costs-field-required_cost-yes: Noodzakelijk
+tooltip-project-resource: 'Geef hier aan of je rekent op additionele bronnen, dus andere dan die waar je hier om vraagt, om je project uit te kunnen voeren: dit kan aantrekkelijk zijn voor financiers van je project.'
+costs-field-resoure: 'Andere bronnen'
+costs-fields-resources-title: Kapitaal
+validate-project-costs-any_error: 'Er mist informatie bij de uitleg van de kostenpost'
+tooltip-project-cost-amount: 'Specifieer het bedrag voor de kostenpost. Gebruik geen punten of komma''s om de duizendtallen aan te geven, OK?'
+validate-cost-field-dates: 'Specificeer de begin- en einddata om het project beter te kunnen beoordelen.'
+step-costs: 'Step: Project/Kosten'
+costs-field-required_cost-no: Additioneel
+cost-type-task: Taak
+costs-field-schedule: Werkschema
+tooltip-project-costs: 'Hoe preciezer je de kosten kunt specificeren, des te beter kan SiteName de algemen informatie van je project evalueren.'
+costs-field-required_cost: 'Deze uitgave is'
+tooltip-project-totals: 'Dzez grafiek toont de som van de noodzakelijke uitgaven (het minimum dat nodig is om het project af te ronden) en de som van de extra uitgavenvoor de twee rondes van financiering. De eerste ronde duurt 40 dagen, om het benodigde minimum bij elkaar te krijgen. Alleen de projecten waar dat bij lukt, kunnen naar de tweede ronde, weer van 40 dagen, om de additionele bedragen op te halen. In de tweede ronde krijg je alles wat je ophaalt, in tegenstelling tot de eerste.  '
+tooltip-project-cost-required: 'Dit gedeelte is heel belangrijk: voor elke kostenpost die je toevoegt, moet je aangeven of die onmisbaar is of additioneel. Alle kostenposten die worden aangemerkt als onmisbaar zullen optellen tot het minimumbedrag dat nodig is voor het project. De som van de additionele uitgaven kan aangevraagd worden bij de tweede ronde van het project, nadat je het minimumbedrag hebt gehaald.'
+costs-field-type: Type
+costs-field-date_until: Tot
+costs-field-amount: Waarde
+costs-fields-metter-title: 'Overzicht van uitgaven'
+validate-project-field-costs: 'We raden je aan het in tenmiste 5 kostenposten op te delen, zodat we makkelijker kunnen zien of je project past bij SiteName.'
+mandatory-cost-field-description: 'Je moet een omschrijving bij de uitgave invullen'
+mandatory-cost-field-name: 'Je moet de uitgaven een label geven'
+mandatory-project-total-costs: 'Je moet een kostenpost specificeren'
+mandatory-cost-field-task_dates: 'Je moet de data voor de taak specificeren'
+mandatory-project-field-resource: 'Je moet aangeven of je nog andere bronnen hebt om uit te putten'
+mandatory-project-resource: 'Je moet aangeven of je nog andere bronnen hebt om uit te putten'

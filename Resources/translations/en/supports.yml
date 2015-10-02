@@ -1,0 +1,15 @@
+mandatory-support-field-description: 'A description is required.'
+tooltip-project-support: 'Advice on editing existing collaborations'
+tooltip-project-nsupport: 'Advice on filling out a new collaboration proposal'
+tooltip-project-support-description: 'Briefly explain the kind of help that your project needs, to help people see what is needed and encourage them to collaborate.'
+tooltip-project-support-type: 'Choose if the project needs help with concrete tasks or rather loans of material, infrastructure, etc.'
+step-6: Collaborations
+supports-fields-support-title: Collaborations
+supports-field-description: Description
+tooltip-project-support-support: 'Descriptive title about the needed collaboration'
+tooltip-project-supports: 'In Goteo, projects can be supported in other ways besides just monetary. There are people who can''t help economically but have plenty to offer in terms of their talent, time, energy, and more.'
+supports-main-header: 'Request for collaborations'
+step-supports: 'Step: Project / Collaborations'
+supports-field-support: Summary
+supports-field-type: 'Type of help'
+mandatory-support-field-name: 'You have to enter a name for the collaboration'

@@ -1,0 +1,34 @@
+body.dashboard div#invests-list div.investor div.left span.profile{
+	display:inline-block;
+	margin-right:5px;
+}
+
+body.dashboard div#invests-list div.investor div.left span.contact{
+	display:block;
+}
+
+body.dashboard div#invests-list div.investor div.left span.profile a{
+	float:left;
+	background:url('/view/css/user/plus.png') left no-repeat;
+	padding-left:15px;
+	color:#808285;
+    text-decoration: none;
+}
+
+body.dashboard div#invests-list div.investor div.left span.profile a:hover{
+	background:url('/view/css/user/plus-hover.png') left no-repeat;
+	color:#58595B;
+}
+
+body.dashboard div#invests-list div.investor div.left span.contact a{
+	background:url('/view/css/user/contact.png') left no-repeat;
+	padding-left:15px;
+	color:#808285;
+    text-decoration: none;
+}
+
+body.dashboard div#invests-list div.investor div.left span.contact a:hover{
+	background:url('/view/css/user/contact-hover.png') left no-repeat;
+	color:#58595B;
+}
+

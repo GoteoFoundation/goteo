@@ -1,0 +1,36 @@
+help-license-to-consultant: '- Necesita ayuda con retornos colectivos y licencias<br/>'
+help-cost-to-consultant: '- Necesita ayuda en costes<br/>'
+form-accept-button: Aceptar
+form-add-button: Añadir
+form-apply-button: Aplicar
+form-project_status-expired: Archivado
+overview-extra-fields: 'Campos complementarios'
+form-self_review-button: Corregir
+form-project_status-cancelled: Descartado
+form-project_status-cancel: Desechado
+project-two-rounds: 'Dos rondas de 40 días'
+form-project_status-edit: Editándose
+form-edit-button: Editar
+form-ajax-info: 'El formulario se va grabando segun pases por cada campo'
+form-project_status-campaing: 'En campaña'
+project-personal-field-entity_name: 'Entidad en nombre de la que se actúa (si procede)'
+form-send_review-button: Enviar
+form-upload-button: Enviar
+form-footer-errors_title: Errores
+form-project-status-title: 'Estado del proyecto'
+form-project-info_status-title: 'Estado global de la información'
+form-project-progress-title: 'Evaluación de datos'
+form-project_status-success: Financiado
+project-form-header: Formulario
+form-errors-total: 'Hay %s errores en total'
+form-navigation_bar-header: 'Ir a'
+form-project_status-review: 'Pendiente de valoración'
+costs-field-select-rounds: Plazos
+form-media_send-button: 'Poner video'
+form-remove-button: Quitar
+form-project_status-fulfilled: 'Retorno cumplido'
+project-one-round: 'Ronda única de 40 días'
+tooltip-project-personal-entity_name: 'Si representas a alguna entidad, indica su nombre en este campo.'
+form-next-button: Siguiente
+form-image_upload-button: 'Subir imagen'
+form-errors-info: 'Total: %s | En este paso: %s'

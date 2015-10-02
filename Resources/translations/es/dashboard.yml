@@ -1,0 +1,124 @@
+dashboard-rewards-investors_table: '<p>Si quieres gestionarlo offline puedes <a id="sacaexcel" href="/dashboard/projects/rewards/table" target="_blank">sacar la Tabla de Cofinanciadores</a></p>'
+dashboard-rewards-massive_msg-all_alert: 'a todos es a todos, no tiene en cuenta el resto de marcados'
+dashboard-rewards-massive_msg-all: 'A todos los cofinanciadores de este proyecto'
+dashboard-menu-admin_board: Administración
+dashboard-rewards-thanks: 'Agradecimiento / Donativo'
+dashboard-rewards-process: 'Aplicar marcados'
+dashboard-rewards-amount_group: 'Aportaciones de '
+dashboard-password-recover-advice: 'Asegúrate de reestablecer tu contraseña'
+api-key-no-generated: 'Aún no tienes una key generada'
+user-preferences-tips: 'Bloquear consejos de difusión de campaña (para impulsores)'
+user-preferences-mailing: 'Bloquear el envio de newsletter'
+user-preferences-updates: 'Bloquear notificaciones de novedades sobre los proyectos que apoyo'
+user-preferences-rounds: 'Bloquear notificaciones de progreso de los proyectos que apoyo'
+user-preferences-threads: 'Bloquear notificaciones de respuestas en los mensajes que yo inicio'
+user-changepass-title: 'Cambiar contraseña'
+user-changeemail-title: 'Cambiar email'
+dashboard-menu-activity-apikey: 'Clave API'
+dashboard-embed_code_investor: 'CÓDIGO CON IMAGEN DE COFINANCIADOR'
+dashboard-embed_code: 'CÓDIGO DIFUSIÓN SIMPLE'
+dashboard-chart-investors: COFINANCIADORES
+dashboard-menu-projects-rewards: Cofinanciadores
+dashboard-menu-projects-supports: Colaboraciones
+dashboard-rewards-num_taken: 'Comprometidas '
+api-key-tool-tip: 'Con tu usuario y Api Key podrás realizar consultas a nuestra API'
+user-changepass-confirm: 'Confirmar nueva contraseña'
+dashboard-project-blog-fail: 'Contacta con nosotr*s'
+user-changepass-old: 'Contraseña actual'
+dashboard-menu-projects-contract: Contrato
+form-project_waitfor-edit: 'Cuando lo tengas listo mándalo a revisión. Necesitas llegar a un mínimo de información sobre el proyecto en el formulario.'
+dashboard-rewards-fulfilled_status: Cumplida
+dashboard-rewards-fulfilled_filter: Cumplidas
+dashboard-menu-profile-access: 'Datos de acceso'
+contract-data_title: 'Datos del contrato'
+dashboard-menu-profile-personal: 'Datos personales'
+user-personal-saved: 'Datos personales actualizados'
+form-project_waitfor-campaing: 'Difunde tu proyecto, ayuda a que consiga el máximo de aportaciones!'
+dashboard-menu-activity-spread: Difusión
+dashboard-rewards-address: 'Dirección de entrega:'
+user-preferences-comcurrency: 'Divisa en la que prefieres ver los importes'
+user-preferences-currency: 'Divisa en la que prefieres ver los importes'
+dashboard-rewards-resign_filter: Donativos
+dashboard-menu-profile-profile: 'Editar perfil'
+user-changeemail-success: 'El email se ha cambiado con éxito ;)'
+guide-dashboard-user-location: 'El sistema usa estos datos para geolocalizarte'
+form-project_waitfor-review: 'En breve nos pondremos en contacto contigo respecto al proyecto, una vez se lleve a cabo el proceso de revisión. A continuación lo publicaremos o bien te sugeriremos cosas para mejorarlo.'
+dashboard-project-updates-deleted: 'Entrada eliminada'
+dashboard-investors-mail-sendto: 'Enviado a %s de tus cofinanciadores:'
+dashboard-messegers-mail-sendto: 'Enviado a %s los participantes:'
+dashboard-project-updates-delete_fail: 'Error al eliminar la entrada'
+dashboard-investors-mail-text-required: 'Escribe el mensaje'
+dashboard-translate-doing_node: 'Estás traduciendo el nodo <strong>%s</strong>. El idioma original es <strong>Español</strong>'
+dashboard-translate-doing_project: 'Estás traduciendo el proyecto <strong>%s</strong>. El idioma original es <strong>%s</strong>'
+dashboard-translate-doing_call: 'Estás traduciendo la convocatoria <strong>%s</strong>. El idioma original es <strong>%s</strong>'
+dashboard-translate-doing_profile: 'Estas traduciendo tu perfil personal.'
+dashboard-rewards-notice: 'ESTO ES UNA VISUALIZACIÓN DE LAS OPCIONES DE RETORNO QUE ELIGEN TUS COFINANCIADORES.<br />NO TIENES QUE GESTIONAR ESOS RETORNOS HASTA HABER LLEGADO AL MÍNIMO DE LA CANTIDAD DESEADA'
+dashboard-investors-mail-fail: 'Fallo al enviar el mensaje a %s'
+form-project_waitfor-cancel: 'Finalmente hemos desestimado la propuesta para publicarla en Goteo, te invitamos a intentarlo con otra idea o concepto.'
+dashboard-chart-invested: 'FINANCIACIÓN OBTENIDA'
+dashboard-menu-profile-location: Geolocalización
+dashboard-project-updates-fail: 'Ha habido algun problema al guardar los datos'
+user-save-fail: 'Ha habido algun problema al guardar los datos'
+user-password-changed: 'Has cambiado tu contraseña'
+form-project_waitfor-success: 'Has conseguido el mínimo o más en aportes de cofinanciación para el proyecto. Enseguida te contactaremos para hablar de dinero :)'
+form-project_waitfor-fulfilled: 'Has cumplido con los retornos :) Gracias por tu participación!'
+user-preferences-comlang: 'Idioma en el que prefieres recibir las notificaciones'
+dashboard-rewards-issue: Incidencia!
+dashboard-rewards-user_msg: 'Individual a '
+user-profile-saved: 'Información de perfil actualizada'
+dashboard-translate-select_profile: 'Ir a traducir tu perfil personal'
+dashboard-project-updates-postcorrupt: 'La entrada está corrupta, contacta con nosotros'
+dashboard-project-updates-saved: 'La entrada se ha actualizado correctamente'
+dashboard-project-blog-wrongstatus: 'Lo sentimos, aún no se pueden publicar novedades en este proyecto...'
+dashboard-project-blog-inactive: 'Lo sentimos, la publicación de novedades en este proyecto está desactivada'
+guide-dashboard-user-preferences: 'Marca ''Sí'' en las notificaciones automáticas que quieras bloquear'
+dashboard-rewards-group_msg: 'mensaje a ese grupo'
+dashboard-investors-mail-sended: 'Mensaje enviado correctamente a %s'
+dashboard-rewards-massive_msg: 'Mensajes colectivos'
+dashboard-menu-activity: 'Mi actividad'
+dashboard-menu-activity-wall: 'Mi muro'
+dashboard-header-main: 'Mi panel'
+dashboard-menu-profile: 'Mi perfil'
+dashboard-menu-profile-preferences: 'Mis preferencias'
+dashboard-menu-projects: 'Mis proyectos'
+dashboard-menu-translates: 'Mis Traducciones'
+dashboard-chart-no-invested: 'No hay aportes.'
+form-project_waitfor-expired: 'No lo conseguiste :( Trata de mejorarlo e inténtalo de nuevo!'
+dashboard-project-updates-nopost: 'No se ha encontrado la entrada'
+dashboard-project-updates-noblog: 'No se ha encontrado ningún blog para este proyecto'
+dashboard-investors-mail-nowho: 'No se han encontrado destinatarios'
+dashboard-menu-projects-updates: Novedades
+user-changepass-new: 'Nueva contraseña'
+user-preferences-email: 'Ocultar mi email a los proyectos que apoyo'
+dashboard-rewards-process_alert: 'Ojo! Al marcar como cumplida no se puede desmarcar. Continuamos?'
+dashboard-chart-optimum: óptimo
+dashboard-menu-projects-preview: 'Página pública'
+dashboard-menu-projects-messegers: Participantes
+dashboard-menu-calls-sponsors: Patrocinadores
+dashboard-rewards-pending_status: Pendiente
+dashboard-rewards-pending_filter: Pendientes
+dashboard-menu-profile-public: 'Perfil público'
+dashboard-rewards-date_order: 'Por fecha'
+dashboard-rewards-amount_order: 'Por importe'
+dashboard-rewards-reward_order: 'Por retorno'
+dashboard-rewards-user_order: 'Por usuario'
+dashboard-chart-days: 'QUEDAN %s DÍAS'
+dashboard-rewards-choosen: 'Recompensas esperadas:'
+dashboard-rewards-resigns: 'Renuncia a la recompensa'
+dashboard-menu-activity-summary: Resumen
+dashboard-menu-projects-summary: Resumen
+dashboard-menu-projects-commons: Retornos
+dashboard-menu-review_board: Revisión
+dashboard-project-updates-inserted: 'Se ha añadido una nueva entrada'
+dashboard-investors_table-disclaimer: 'Se recuerda al impulsor que, tal y como establece su contrato, los datos de las personas comecenas incluidos en el archivo descargables se facilitan a los únicos y exclusivos efectos de satisfacer a las personas comecenas las recompensas o retornos comprometidos en el proyecto, así como para informar a aquellas sobre las novedades, avances y actividades relacionadas con el proyecto, quedando absolutamente prohibido el uso de los mismos para cualquier otra finalidad. El incumplimiento de dicha obligación faculta a la Fundación Goteo para emprender las acciones legales correspondientes y retirar el proyecto de la plataforma.'
+dashboard-translate-select_call: 'Selecciona convocatoria para traducir'
+dashboard-translate-select_node: 'Selecciona nodo para traducir'
+dashboard-translate-select_project: 'Selecciona proyecto para traducir'
+guide-dashboard-user-profile: 'Tanto si quieres presentar un proyecto como incorporarte como cofinanciador/a, para formar parte de la comunidad de Goteo te recomendamos que pongas atención en tu texto de presentación, que añadas links relevantes sobre lo que haces y subas una imagen de perfil con la que te identifiques.'
+user-email-change-sended: 'Te hemos enviado un email para que confirmes el cambio de dirección electrónica'
+guide-user-data: 'Texto guía en la edición de campos sensibles.'
+dashboard-rewards-all_filter: Todas
+dashboard-menu-translate_board: Traducción
+user-prefer-saved: 'Tus preferencias de notificación se han guardado correctamente'
+dashboard-menu-projects-widgets: Widget
+dashboard-project-delete_alert: '¿Seguro que deseas eliminar absoluta y definitivamente este proyecto?'

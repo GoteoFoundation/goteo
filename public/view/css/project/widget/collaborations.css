@@ -1,0 +1,39 @@
+/* Detalle de la linea verde */
+div.widget.project-collaborations h4.supertitle {
+    border-bottom: 1px solid #00B25A !important;
+}
+
+div.widget.project-collaborations ul {    
+    margin: 1em 0;
+    padding: 0;
+    list-style: none;
+}
+
+div.widget.project-collaborations ul li {
+    padding-left: 55px;        
+    background: none no-repeat left top;
+    min-height: 32px;    
+    border-bottom: 1px solid #00b25a;
+    margin-bottom: 1em;
+	padding-bottom: 10px;
+}
+
+div.widget.project-collaborations ul li > p {
+    margin:  0 0 1em;
+}
+
+div.widget.project-collaborations ul li.task {
+    background-image: url('/view/css/icon/m/task.png');
+}
+
+div.widget.project-collaborations ul li.lend {
+    background-image: url('/view/css/icon/m/lend.png');
+}
+
+div.widget.project-collaborations > a.more {
+    display: inline-block;
+    float: right;
+    text-decoration: none;
+	position: relative;
+/*	top: 22px; */
+}

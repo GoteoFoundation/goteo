@@ -1,0 +1,57 @@
+body.project-edit div#main div.project-preview {
+    overflow: hidden;
+}
+
+body.project-edit div#main div.project-preview > div > div.overlay {
+    cursor: default;
+}
+
+body.project-edit div#main div.project-preview > div > div {
+    
+}
+
+body.project-edit div#main div.project-preview div.widget {
+    margin-bottom: 20px;
+}
+
+body.project-edit div#main div.project-preview div.widget.project-support {
+    min-height: 340px;
+}
+
+body.project-edit div#main div.project-preview div.widget.project-support,
+body.project-edit div#main div.project-preview div.widget.project-collaborations,
+body.project-edit div#main div.project-preview div.widget.project-rewards, 
+body.project-edit div#main div.project-preview div.widget.user {
+    width: 260px;
+    float: right;
+    clear: right;    
+}
+
+body.project-edit div#main div.project-preview div.widget.project-summary,
+body.project-edit div#main div.project-preview div.widget.project-share,
+body.project-edit div#main div.project-preview div.widget.project-needs, 
+body.project-edit div#main div.project-preview div.widget.project-schedule {
+    max-width: 580px;
+    margin-right: 20px;
+}
+
+body.project-edit div#main div.project-preview div.widget.project-media {
+    padding: 0;
+    max-width: 620px;
+    height: 380px;
+    margin-right: 20px;
+}
+
+/* video motivacion */
+body.project-edit div#main div.project-preview div.project-motivation-video {
+    padding: 0;
+    margin-left: -20px;
+    max-width: 620px;
+    height: 380px;
+}
+
+/* Some hacks to the superform styles :S */
+body.project-edit div#main.preview div.superform > div.hint {
+    padding-right: 0;
+    border-right: none;
+}

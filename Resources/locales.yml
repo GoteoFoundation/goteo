@@ -1,0 +1,73 @@
+en:
+    name: English
+    short: ENG
+    public: true
+    locale: en_GB
+    fallback: es
+es:
+    name: Español
+    short: ES
+    public: true
+    locale: es_ES
+    fallback: en
+ca:
+    name: Català
+    short: CAT
+    public: true
+    locale: ca_ES
+    fallback: es
+eu:
+    name: Euskara
+    short: EUSK
+    public: true
+    locale: eu_ES
+    fallback: es
+gl:
+    name: Galego
+    short: GAL
+    public: true
+    locale: gl_ES
+    fallback: es
+fr:
+    name: Français
+    short: FRA
+    public: true
+    locale: fr_FR
+    fallback: en
+it:
+    name: Italiano
+    short: ITA
+    public: true
+    locale: it_IT
+    fallback: es
+nl:
+    name: Dutch
+    short: NL
+    public: true
+    locale: nl_NL
+    fallback: en
+de:
+    name: Deutsch
+    short: DE
+    public: false
+    locale: de_DE
+    fallback: en
+el:
+    name: Ελληνικά
+    short: GRK
+    public: false
+    locale: el_GR
+    fallback: en
+pl:
+    name: Polski
+    short: POL
+    public: false
+    locale: pl_PL
+    fallback: en
+pt:
+    name: Português
+    short: PORT
+    public: false
+    locale: pt_PT
+    fallback: en
+

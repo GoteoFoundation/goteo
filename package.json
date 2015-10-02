@@ -1,0 +1,44 @@
+{
+  "name": "goteo",
+  "description": "Open Source Crowdfunding Platform",
+  "author": "Fundación Goteo",
+  "homepage": "http://goteo.org",
+  "version": "0.1.0",
+  "repository": {
+    "type": "git",
+    "url": "git@git.goteo.org:dev/goteo.git"
+  },
+  "bugs": "https://git.goteo.org/dev/goteo/issues",
+  "contributors": "https://git.goteo.org/dev/goteo/graphs/master",
+  "licenses": [
+    {
+      "type": "AGPL-3.0",
+      "url": "http://www.gnu.org/licenses/agpl-3.0.html"
+    }
+  ],
+  "engines": {
+    "node": ">= 0.10.0"
+  },
+  "devDependencies": {
+    "grunt": "^0.4.5",
+    "grunt-aws-s3": "^0.9.4",
+    "grunt-contrib-clean": "^0.6.0",
+    "grunt-contrib-concat": "^0.5.0",
+    "grunt-contrib-copy": "^0.7.0",
+    "grunt-contrib-cssmin": "^0.10.0",
+    "grunt-contrib-imagemin": "^0.9.1",
+    "grunt-contrib-jshint": "^0.10.0",
+    "grunt-contrib-uglify": "^0.6.0",
+    "grunt-contrib-watch": "^0.6.1",
+    "grunt-filerev": "^2.1.1",
+    "grunt-newer": "^0.8.0",
+    "grunt-notify": "^0.3.1",
+    "grunt-php": "^1.1.1",
+    "grunt-phplint": "0.0.5",
+    "grunt-phpunit": "^0.3.6",
+    "grunt-usemin": "^2.6.2",
+    "jshint-stylish": "^1.0.0",
+    "matchdep": "^0.3.0",
+    "time-grunt": "^1.0.0"
+  }
+}

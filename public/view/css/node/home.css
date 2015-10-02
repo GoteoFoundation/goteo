@@ -1,0 +1,439 @@
+body.node.home div#node-main {
+    width: 940px;
+    margin: 6px auto;
+    clear: both;
+    overflow: hidden;
+    position: relative;
+    z-index: 0;
+}
+
+body.node.home div#node-main div#side,
+body.node.home div#node-main div#content {
+    float: left;
+}
+
+body.node.home div#node-main div#side {
+    width: 182px;
+    margin-right: 6px;
+}
+
+body.node.home div#node-main div#content {
+    width: 752px;
+    margin: 0;
+}
+
+/* Estilos para los elementos laterales */
+/* genericos de widget */
+div.side_widget{margin-bottom:18px}
+div.side_widget p.title{color:#1F81BB;font-size:14px;margin:0}
+div.side_widget span.line{display:block;clear:both;height:1px;width:85px;background:#c7dfee;margin:0}
+/* fin genericos de widget */
+
+/* genericos de euros */
+p.quantity.violet, p.quantity.violet a{color:#94278A}
+p.quantity.blue, p.quantity.blue a{color:#1ab3b0}
+p.quantity span{display:block;float:left;line-height:1em;margin-right:5px}
+p.quantity span.euro{display:block;float:left;height:30px;width:30px;}
+/* fin genericos de euros */
+
+/*widget de buscador*/
+div.side_widget > div{padding:13px 8px 13px 13px;background:#fff;margin-bottom:6px;height:auto;overflow:auto;}
+div.side_widget > div > p.title{margin-top:7px}
+div.side_widget > div.button{}
+div.side_widget > div.button.current{}
+
+div.side_widget > div.button > p{line-height:14px;margin:0} /*same line-height as font-size in p > a*/
+div.side_widget > div.button > p > a{display:block;text-decoration:none;background:url('/view/css/arrows.gif') no-repeat right -4px;font-size:14px;color:#929394;}
+div.side_widget > div.button > p > a:hover{color:#58595B;background-position:right -38px}
+div.side_widget > div.button.current > p > a{background-position:right}
+
+div.side_widget > div.rewards p.title, div.side_widget > div.categories p.title{color:#929394}
+div.side_widget > div.categories.current p.title, div.side_widget > div.rewards.current p.title{font-size:14px !important}
+div.side_widget > div.rewards a{display:block;float:left;margin:0 8px 5px 0;height:32px;width:32px; text-indent:-9999px;overflow:hidden;
+-ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=50)";filter: alpha(opacity=50);  -moz-opacity: 0.5; -khtml-opacity: 0.5;  opacity: 0.5;}
+div.side_widget > div.rewards a:hover{-ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=100)";filter: alpha(opacity=100);  -moz-opacity: 1; -khtml-opacity: 1;  opacity: 1;}
+div.side_widget > div.rewards > p.items{padding-left:8px}
+div.side_widget > div.categories > ul {list-style: none;padding-left: 6px;}
+div.side_widget > div.categories > ul > li {margin-bottom: 3px;}
+div.side_widget > div.categories > ul > li > a {text-decoration: none;}
+div.side_widget > div.categories > ul > li > a:hover {color: #20B2B3;}
+/*fin de widget de buscador*/
+
+
+/*widget de resumen convocatorias*/
+div.side_widget.convocatorias{clear:both;overflow:auto;height:auto}
+div.side_widget.convocatorias > div {background-color: #F5F2F0;}
+div.side_widget.convocatorias > div > p.title{background: url('/view/css/call/logo_riego.png') no-repeat scroll -2px center transparent;color: #1AB3B0 !important;font-size: 13px;height: 43px;margin-bottom: 16px;padding-left: 59px;padding-top: 10px;text-transform: uppercase;}
+div.side_widget.convocatorias > div > div > p.text{font-size:10px;margin:0 0 5px 0}
+div.side_widget.convocatorias > div > div > p.quantity{font-size:30px;margin:0;height:auto;overflow:hidden}
+div.side_widget.convocatorias > div > div > p.quantity.all{color:#94278a}
+div.side_widget.convocatorias > div > div > p.quantity.rest{color:#1ab3b0}
+
+div.side_widget.convocatorias > div.half{text-transform:uppercase;}
+div.side_widget.convocatorias > div.half.calls{color:#e02828;text-align:center}
+div.side_widget.convocatorias > div.half.campaigns{color:#1ab3b0;text-align:center}
+div.side_widget.convocatorias > div.half > span{font-size:30px;}
+
+div.side_widget.convocatorias.active > div {background-color: #FFF !important;}
+div.side_widget.convocatorias.active > div > p.title{text-decoration: underline;}
+div.side_widget.convocatorias a.expand {padding: 0;position: absolute;width: 182px;height: 304px;z-index: 99;}
+/*fin de widget de resumen convocatorias*/
+
+
+
+/* resumen de proyecto */
+div.side_widget.summary{}
+div.side_widget.summary > div > p{margin:0}
+div.side_widget.summary > div > p.text{font-size:10px;margin-bottom:6px}
+div.side_widget.summary > div > p.quantity{font-size:30px;text-decoration:none}
+div.side_widget.summary > div > p.quantity.projects{height:auto;overflow:auto}
+div.side_widget.summary > div > p.quantity.projects{color:#1ab3b1;display:block;font-size:30px}
+div.side_widget.summary > div > p.quantity.projects span.text{font-size:14px;margin-left:10px;float:none;display:inline}
+div.side_widget.summary > div > p.quantity.active{font-size:29px;color:#1ab3b1}
+div.side_widget.summary > div > p.quantity.success{font-size:29px;color:#e12828}
+div.side_widget.summary > div > p.quantity.investors{font-size:26px;color:#0c4e99}
+div.side_widget.summary > div > p.quantity.supporters{font-size:26px;color:#00b259}
+div.side_widget.summary > div > p.quantity.amount > a{}
+/* fin de resumen de proyecto */
+
+/* sponsors */
+div.side_widget.sponsors{}
+div.side_widget.sponsors p.title{margin:0; text-transform:uppercase}
+div.side_widget.sponsors p.title > span.line{background:#000;margin-bottom:12px}
+div.side_widget.sponsors > div.logo{display:block;margin-top:7px;background:none}
+div.side_widget.sponsors > div {background-color: transparent !important;}
+/* fin de sponsors */
+
+/* Fin de estilos elementos laterales*/
+
+
+/* Estilos para los elementos centrales */
+
+/* Genericos para todos los widgets*/
+div.content_widget{background:#fff;padding:20px 0px 6px 16px;margin-bottom:6px}
+div.content_widget h2{margin:0;font-weight:normal;text-transform:none;font-size:18px}
+div.content_widget h2 > span.line{display:block;clear:both;height:1px;width:85px;background:#c7dfee;margin-top:7px}
+/* Fin genericos para todos los widgets*/
+
+/* Entradas en portada
+Los elementos identicos de goteo se le pone la regla para nodo en /view/css/home.php a los de div#learn
+los diferentes se ponen aqui
+*/
+body.node.home div#node-news {
+    padding-bottom: 35px !important;
+}
+body.node.home div#node-news h2 {
+    margin-bottom: 25px;
+}
+body.node.home div#node-news div.slder_container,
+body.node.home div#node-news  div.slder_container div.slder_slide {
+    width:750px;
+    height:175px;
+    display:block;
+}
+body.node.home div#node-news div.slder_container div.slder_slide div.post div.embed,
+body.node.home div#node-news div.slder_container div.slder_slide div.post div.image {
+    float:left;
+    width: 330px;
+    height: 175px;
+}
+body.node.home div#node-news div.slder_container div.slder_slide div.post div.read_more {
+    bottom: 0px;
+    right: 25px;
+    position: absolute;
+}
+
+body.home div#node-main div.see_more {
+    right: 20px;
+    position: relative;
+    margin: 5px 0px;
+    display: block;
+    text-align: right;
+}
+body.home div#node-main div.see_more a {
+    text-decoration: none;
+    text-transform: uppercase;
+    font-size: 0.9em;
+}
+
+body.home div#node-main div.see_more a:hover {
+    color: #20B3B2;
+}
+
+
+/* Proyectos destacados (y resultado de fast-searcher del lateral)
+Los estilos son como los de la pagina de proyectos de convocatoria
+pero como esa carga css especificos, vamos a copiar aqui los de div#project-list de /view/css/call/view.css
+*/
+body.node.home div.node-projects h2 {
+    margin-bottom: 10px;
+}
+
+body.node.home div.node-projects ul {
+    padding: 0;
+    margin: 0;
+    overflow: hidden;
+}
+
+body.node.home div.node-projects ul li {
+    padding: 5px;
+    margin: 0 13px 10px 0;
+    list-style-type: none;
+    background-color: #ebe9e9;
+    width: 160px;
+    float: left;
+    min-height: 245px;
+    position: relative;
+    overflow: hidden;
+}
+
+body.node.home div.node-projects ul li.active {
+    background-color: #f8f8f8 !important;
+}
+
+body.node.home div.node-projects ul li .image {
+    height: 79px;
+    text-align: center;
+    background-color: #deddde;
+    padding: 0 !important;
+    overflow: hidden;
+    position: relative;
+}
+
+body.node.home div.node-projects ul li img {
+    width: 160px;
+}
+
+body.node.home div.node-projects ul li .categories {
+    text-align: left;
+    color: #ffffff;
+    background-color: #19b5b3;
+    font-size: 8px;
+    text-transform: uppercase;
+    padding: 2px 8px;
+    opacity: 0.8;
+    filter: alpha(opacity=80);
+    cursor: default;
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    left: 0;
+}
+
+body.node.home div.node-projects ul li .title {
+    height: 22px;
+    overflow: hidden;
+    margin: 10px 0 5px;
+    line-height: .8em;
+}
+
+body.node.home div.node-projects ul li .author {
+    margin: 0;
+    font-size: 10px;
+    color: #a7a9ac;
+    text-transform: none !important;
+    height: 26px;
+    overflow: hidden;
+}
+
+body.node.home div.node-projects ul li .author a {
+    text-decoration: none;
+    font-size: 10px;
+    color: #a7a9ac;
+    position: relative;
+    z-index: 999;
+}
+
+body.node.home div.node-projects ul li.active .author a:hover {
+    color: #20b3b2;
+}
+
+body.node.home div.node-projects ul li .title a {
+    text-transform: uppercase;
+    text-decoration: none;
+}
+
+body.node.home div.node-projects ul li.active .title a {
+    color: #20b3b2;
+}
+
+body.node.home div.node-projects ul li .description {
+    margin: 5px 0;
+    font-size: .9em;
+    height: 40px;
+    overflow: hidden;
+}
+
+body.node.home div.node-projects ul li div.obtained {
+    position: relative;
+    padding-left: 10px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid #a7a9ac;
+}
+
+body.node.home div.node-projects ul li span.obtained {
+    text-transform: uppercase;
+    font-size: 11px;
+    padding-top: 10px;
+    border-top: 1px solid #a7a9ac;
+    margin: 5px 0;
+    display: block;
+}
+
+body.node.home div.node-projects ul li div.obtained strong {
+    font-size: 16px;
+    font-weight: bold;
+    color: #96238F;
+    padding-right: 10px;
+    border-right: 1px solid #a7a9ac;
+}
+
+body.node.home div.node-projects ul li div.obtained span.percent {
+    font-size: 16px;
+    font-weight: bold;
+    color: #a7a9ac;
+    padding-left: 5px;
+}
+
+body.node.home div.node-projects ul li .days {
+    font-size: 11px;
+    margin: 1em 0 .5em;
+    color: #ff0000;
+}
+
+body.node.home div.node-projects ul li .days span {
+    text-transform: uppercase;
+    color: #59595C;
+}
+
+body.node.home div.node-projects ul li a.expand {
+    position:absolute;
+    top:0;bottom:0;left:0;right:0;
+    width:100%;
+    z-index:99;
+    padding: 0px;
+}
+
+/** Tagmarks widget **/
+body.node.home div.node-projects ul li div.image div.tagmark {
+    position: absolute;
+    z-index: 899;
+    text-align: left;
+    color: #ffffff;
+    font-size: 10px;
+    font-weight: normal;
+    text-transform: uppercase;
+    width: 160px;
+    height: 27px;
+    font-style: normal;
+    letter-spacing: 0;
+    margin-top: 8px;
+    line-height: 27px;
+    padding: 0;
+    padding-left: 25px;
+}
+
+body.node.home div.node-projects ul li div.image div.tagmark.aqua {
+    background:url('/view/css/node/tagmark_aqua.png') 0 0 no-repeat;
+}
+
+body.node.home div.node-projects ul li div.image div.tagmark.green {
+    background:url('/view/css/node/tagmark_green.png') 0 0 no-repeat;
+}
+
+body.node.home div.node-projects ul li div.image div.tagmark.red {
+    background:url('/view/css/node/tagmark_red.png') 0 0 no-repeat;
+}
+
+body.node.home div.node-projects ul li div.image div.tagmark.violet {
+    background:url('/view/css/node/tagmark_violet.png') 0 0 no-repeat;
+}
+
+body.node.home div.node-projects ul li div.image div.tagmark.grey {
+    background:url('/view/css/node/tagmark_grey.png') 0 0 no-repeat;
+}
+
+body.node.home div.node-projects ul li div.image div.tagmark span.small {
+    font-size: 8px !important;
+    line-height: normal;
+}
+
+/* Dos lineas para el en marcha y aun puedes */
+body.node.home div.node-projects ul li div.image div.tagmark.twolines {
+    padding-top: 4px !important;
+    font-weight: normal;
+    font-style: normal;
+}
+/** Fin tagmarks **/
+
+
+/* Convocatorias en portada*/
+body.node.home div#node-calls div.call {
+    width: 678px;
+}
+
+body.node.home div#node-calls {
+    padding: 20px 0 !important;
+}
+
+body.node.home div#node-calls h2{
+    padding-left: 16px;
+    margin-bottom: 10px;
+}
+
+body.node.home div#node-calls div.callrow {
+    margin-bottom: 26px;
+    clear: both;
+}
+
+body.node.home div#node-calls div.call div.image {
+    display: none;
+}
+
+/* flechitas */
+body.node.home div#node-calls div.slder_calls,
+body.node.home div#node-calls div.slder_campaigns,
+body.node.home div#node-calls div.arrow-left,
+body.node.home div#node-calls div.arrow-right {
+    float: left;
+}
+
+body.node.home div#node-calls div.slder_calls,
+body.node.home div#node-calls div.slder_campaigns {
+    width: 678px;
+    margin: 18px 10px;
+}
+
+body.node.home div#node-calls div.arrow-left,
+body.node.home div#node-calls div.arrow-right {
+    padding-top: 100px;
+    width: 24px;
+}
+
+/* Los estilos de las flechitas en portada estan en home.css */
+body.node.home div#node-calls a.all {
+    text-decoration: none;
+    text-transform: uppercase;
+    position:relative;
+    right: -670px;
+    font-size: 0.9em;
+}
+
+body.node.home div#node-calls a.all:hover{
+    color: #20B3B2;
+}
+
+/* padrinos */
+body.node.home div#node-patrons {
+    padding-bottom: 35px !important;
+    height: 169px;
+}
+body.node.home div#node-patrons h2 {
+    margin-bottom: 25px;
+}
+body.node.home div#node-patrons div#slides_patrons div.slder_patrons {
+	width: 670px !important;
+}
+
+
+/* Fin de estilos elementos centrales */

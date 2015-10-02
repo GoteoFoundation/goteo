@@ -1,0 +1,84 @@
+#faq-content {
+    padding: 30px;
+    background-color: white;
+}
+#faq-content div.faq-page-title {
+	font-size: 18px;
+    text-transform: uppercase;
+    width: 550px;
+    float: left;
+}
+#faq-content div.faq-page-title span.line{display:block;clear:both;height:1px;width:85px;background:#c7dfee;margin-top: 6px;}
+
+#faq-content div.goask,
+#faq-content div.goask-button {
+    float: left;
+}
+
+#faq-content div.goask {
+    font-size: 11px;
+    color: #585a5c;
+    line-height: 14px;
+    width: 170px;
+    text-align: center;
+    margin-right: 10px;
+}
+
+#faq-content div.goask-button a {
+    font-size: 13px;
+    margin: 0;
+    padding: 6px 20px;
+    display: inline-block;
+}
+
+#faq-content ul#faq-sections {
+    list-style: none;
+    margin-top: 30px;
+    width: 100%;
+    padding: 0;
+}
+#faq-content ul#faq-sections li {
+	float: left;
+    min-height: 35px;
+    min-width: 16%;
+}
+#faq-content ul#faq-sections li + li {
+    margin-left: 20px;
+    padding-left: 20px;
+    border-left: 1px solid #57585b;
+}
+#faq-content ul#faq-sections li a {
+    font-size: 15px;
+	text-decoration:none;
+}
+#faq-content ul#faq-sections li a.current {
+	text-decoration:underline !important;
+}
+#faq-content ul#faq-sections li a:hover {
+	text-decoration:underline;
+}
+#faq-content h3 {
+    margin-top: 30px;
+	font-size: 16px;
+}
+#faq-content h4 {
+	margin: 5px 0 0 5px;
+}
+#faq-content h4 a {
+	text-decoration: none;
+    text-transform: none;
+    font-weight: normal;
+}
+#faq-content h4 a:hover {
+	text-decoration: underline;
+}
+#faq-content ol{
+	margin-left:20px;
+	padding-left:0px;
+}
+#faq-content ol li {
+	margin: 0 0 10px 0;
+}
+#faq-content ol li div {
+	margin: 10px 0 25px 5px;
+}

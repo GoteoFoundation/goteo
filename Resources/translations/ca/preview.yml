@@ -1,0 +1,10 @@
+guide-project-preview: '<strong>Aquest és un resum de tota la informació sobre el projecte.</strong><br><br>Repassa els punts de cada apartat per veure si pots millorar alguna cosa, o bé envia el projecte per a la seva valoració (amb el botó "Enviar" de la part inferior) si ja estan emplenats tots els camps obligatoris, per a que així pugui ser valorat per l''equip i la comunitat de Goteo. Una vegada ho enviïs ja no es podran introduir canvis.<br><br>Tingues en compte que només podem seleccionar uns quants projectes al mes per garantir-ne l''atenció i la difusió de les propostes que es fan públiques. Pròximament rebràs un missatge amb tota la informació, que t''indicarà els passos a seguir i recomanacions per a que el teu projecte pugui aconseguir la meta proposada. '
+preview-send-comment: 'Notes addicionals per a l''administrador'
+guide-project-success-noerrors: 'Tots els camps obligatoris s''han emplenat'
+tooltip-project-comment: 'Tens dubtes o comentaris per a que els llegeixi l''administrador de Goteo? Aquest és el lloc on explicar alguna part del que has escrit de la qual no estiguis segur, per proposar millores, etc.'
+preview-main-header: 'Previsualització de dades:'
+step-7: Previsualització
+step-preview: 'Projecte / Previsualització'
+guide-project-error-mandatories: 'Falten camps obligatoris'
+guide-project-success-okfinish: 'Pot enviar-se per a revisió'
+guide-project-success-minprogress: 'Ha arribat al percentatge mínim'

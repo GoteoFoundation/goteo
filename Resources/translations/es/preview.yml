@@ -1,0 +1,10 @@
+guide-project-preview: '<strong>Éste es un resumen de toda la información sobre el proyecto.</strong><br><br> Repasa los puntos de cada apartado para ver si puedes mejorar algo, o bien envía el proyecto para su valoración (mediante el botón "Enviar" de la parte de abajo) si ya están cumplimentados todos los campos obligatorios, para que así pueda ser valorado por el equipo y la comunidad de Goteo. Una vez lo envíes ya no se podrán introducir cambios hasta que abramos de nuevo su edición. <br><br>Ten en cuenta que sólo podemos seleccionar unos cuantos proyectos al mes para garantizar la atención y la difusión de las propuestas que se hacen públicas. En breve nos pondremos en contacto contigo para comentar la propuesta de campaña y poder continuar con su proceso de optimización y publicación.'
+guide-project-error-mandatories: 'Faltan campos obligatorios'
+guide-project-success-minprogress: 'Ha llegado al porcentaje mínimo'
+preview-send-comment: 'Notas adicionales para el administrador'
+step-7: Previsualización
+preview-main-header: 'Previsualización de datos'
+step-preview: 'Proyecto / Previsualización'
+guide-project-success-okfinish: 'Puede enviarse para revisión'
+guide-project-success-noerrors: 'Todos los campos obligatorios se han cumplimentado'
+tooltip-project-comment: '¿Tienes dudas o comentarios que quieres que lea el administrador de Goteo? Éste es el lugar para explicar alguna parte de lo que has escrito de la que no estás seguro, para proponer mejoras, etc.'

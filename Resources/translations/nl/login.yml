@@ -1,0 +1,52 @@
+oauth-import-about: 'Over jou'
+login-signin-myopenid: 'Log in met myOpenID'
+login-recover-email-field: 'Account email'
+login-register-password-minlength: 'Ten minste 6 characters'
+login-leave-button: 'Sluit het account'
+login-leave-header: 'Sluit het account'
+login-register-confirm-field: 'Bevestig emailadres'
+login-register-confirm_password-field: 'Bevestig wachtwoord'
+oauth-confirm-user: 'Verbind met bestaande gebruiker'
+login-register-email-field: Emailadres
+login-access-button: Enter
+login-fail: Fout
+oauth-facebook-access-denied: 'Facebook toegang geweigerd'
+login-signin-openid-go: Ga
+login-leave-message: 'Laat het bericht achter'
+oauth-import-facebook: 'Verbind aan je Facebook account'
+oauth-import-twitter: 'Verbind aan je Twitter account'
+oauth-linkedin-access-denied: 'Linkedin toegang geweigerd'
+login-oneclick-header: 'Log in met een enkele klik'
+login-signin-facebook: 'Log in met Facebook'
+login-signin-google: 'Log in met Google'
+login-signin-linkedin: 'Log in met LinkedIn'
+login-signin-twitter: 'Log in met Twitter'
+login-signin-yahoo: 'Log in met Yahoo'
+login-signin-view-more: 'Meer login opties'
+oauth-import-name: Naam
+login-register-header: 'Nieuwe gebruiker'
+oauth-openid-access-denied: 'Open ID toegang geweigerd'
+login-signin-openid: 'Andere Open ID server'
+login-access-password-field: Wachtwoord
+login-register-password-field: Wachtwoord
+oauth-import-location: Woonplaats
+login-recover-button: Herstel
+login-recover-header: 'Herstel wachtwoord'
+login-recover-link: 'Herstel wachtwoord'
+login-register-button: Registeer
+login-access-header: 'Geregistreerde gebruiker'
+login-register-username-field: Alias
+oauth-unknown-provider: 'Sessie kan niet gestart worden bij deze provider'
+oauth-goteo-user-not-exists: 'Die gebruiker bestaat niet in SiteName'
+oauth-token-request-error: 'Er is een fout opgetreden bij het ophalen van data bij de provider'
+oauth-login-imported-data: 'Deze data wordt nog geimporteerd, je kutnt het veranderen als het geauthenticeerd is:'
+oauth-twitter-access-denied: 'Twitter toegang geweigerd'
+oauth-openid-not-logged: 'Gebruiker niet meer verbonden met Open ID'
+login-access-username-field: Gebruikersnaam
+login-recover-username-field: Gebruikersnaam
+login-register-userid-field: Gebruikersnaam
+oauth-login-welcome-from: 'Welkom bij SiteName. Controleer je gebruikersnaam en email om het proces af te maken. In het geval dat we het emailadres niet hebben kunnen importeren (of als je het veranderd hebt) sturen we een email met een activaitelink.'
+error-register-userid: 'Je moet een gebruikersnaam invoeren'
+oauth-goteo-openid-sync-password: 'Je probeert te verbinden met een bestaand SiteName account met een externe provider. Dat stelt je in staat met SiteName te verbinden met een enkele klik.<br>Deze keer moet je je indentiteit bevestigen met je SiteName wachtwoord.'
+oauth-openid-email-required: 'Open ID provider wil je emailadres voor we verder kunnen!'
+oauth-import-website: 'Jouw websites'

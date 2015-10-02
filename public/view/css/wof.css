@@ -1,0 +1,212 @@
+/* WOF general */
+div.wof {
+    font-size: 12px;
+    color: #58595b;
+    font-family: "Liberation Sans", Helvetica, "Helvetica Neue", Arial, Geneva, sans-serif;
+    background-color: #58595c;
+    display: inline-block;
+    height:auto;
+	padding: 0 22px 22px;
+}
+
+div.wof > div.ct {
+    position: relative;
+    clear:both;
+    min-height: 480px;
+    background: url('/view/css/fondo-wof.png') repeat;
+}
+
+div.wof > div.ct a {
+    position: relative;
+    z-index: 99;
+}
+
+div.wof > div.ct a.expand {
+    bottom: 0;
+    left: 0;
+    padding: 0;
+    position: absolute !important;
+    right: 0;
+    top: 0;
+    width: 100%;
+    z-index: 0 !important;
+}
+
+div.wof > div.ct > div.a,
+div.wof > div.ct > div.b,
+div.wof > div.ct > div.c {
+    display:inline-block;
+}
+
+div.wof > div.ct > div.i {
+    overflow:hidden;
+    padding: 0;
+    margin:0;
+    position:absolute;
+    background:#fff;
+	text-align: center;
+}
+
+div.wof > div.ct > div.c > div.c1 {
+    float:left;
+}
+
+div.wof > div.ct > div.c > div.c2 {
+    float:right;
+}
+
+div.wof a,
+div.wof a:link,
+div.wof a:visited,
+div.wof a:active,
+div.wof a:hover {
+    text-decoration:none;
+    color:#58595c;
+}
+
+div.wof h2 {
+    display:block;
+    font-size: 14px;
+    color:#fff;
+    padding:0;
+    margin: 0;
+}
+
+div.wof h2 a,
+div.wof h2 a:link,
+div.wof h2 a:visited,
+div.wof h2 a:active,
+div.wof h2 a:hover {
+	width:60%;
+    display: block;
+    height: 21px;
+	line-height: 21px;
+    overflow: hidden;
+    background: #58595c;
+    color: #fff;
+    padding: 4px 0 3px;
+    float:left;
+}
+div.wof h2 a.right {
+	width:30%;
+	text-align:right;
+	float:right;
+}
+
+div.wof>div.ct>div.i h3 {
+    color: #0b4f99;
+    font-weight:bold;
+    text-align: right;
+    padding: 0 15px 0 0;
+    margin: 15px 0 0;
+}
+
+div.wof>div.ct>div.i h3 a {
+    color: #0b4f99;
+    font-size: 52px;
+}
+
+div.wof>div.ct>div.i h3>img {
+
+}
+
+div.wof>div.ct>div.i p {
+    color:#58595c;
+    font-size:12px;
+    text-align: right;
+    padding: 0 15px 0 0;
+    margin:0;
+}
+
+div.wof>div.ct>div.i.a p a{
+	color:#0b4f99;
+    text-transform:uppercase;
+}
+
+div.wof>div.ct>div.i.b h3 {
+	padding-right: 15px;
+	text-align: right;
+}
+
+div.wof>div.ct>div.i.b h3 a {
+    color:#95268D;
+	font-size: 52px;
+}
+div.wof>div.ct>div.i.b h3 a img{
+	padding-top:3px;
+	padding-left: 5px;
+}
+div.wof>div.ct>div.i.b p {
+    color:#0b4f99;
+    text-align: right;
+}
+
+div.wof>div.ct>div.i.b p a {
+    color:#58595c;
+}
+
+div.wof>div.ct>div.i.c h3 {
+    color:#1db3b2;
+    text-transform:uppercase;
+    text-align:left;
+    padding:4px 0 4px 4px;
+}
+
+div.wof>div.ct>div.i.c h3 a{
+    color:#1db3b2;
+	font-size: 18px;
+}
+
+div.wof>div.ct>div.i.c p {
+    color:#58595c;
+    text-align:left;
+    padding:0 0 0 4px;
+	margin-right: 10px;
+}
+
+div.wof>div.ct>div.i.c>div.c1 p {
+    padding:10px;
+    font-size:10px;
+    line-height:10px;
+    text-align: left;
+}
+
+div.wof>div.ct>div.i.c>div.c1 p img {
+    padding:0 0 4px 0;
+}
+
+div.wof>div.ct>div.i.c>div.c1 a {
+    color:#1db3b2;
+	font-size: 11px;
+	text-align: left;
+}
+div.wof>div.ct>div.i.d p {
+	display:block;
+	float:left;
+	width:220px;
+	text-align:left;
+	font-size:12px;
+	padding:20px 0 0 90px;
+}
+div.wof>div.ct>div.i.d a {
+	display:block;
+	width:117px;
+	height:22px;
+	color:#fff;
+	font-size:14px;
+	line-height: 22px;
+	padding: 4px 0;
+	margin:20px 20px 0 0;
+	text-transform:uppercase;
+	background:url('/view/css/project/widget/wof_sup_btn.png') no-repeat;
+	overflow:hidden;
+	float:right;
+	text-decoration: none;
+	font-weight: normal;
+	font-style: normal;
+}
+
+div.wof >div.ct>div.e {
+    position: relative;
+    z-index: 100;
+}

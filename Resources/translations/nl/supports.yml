@@ -1,0 +1,15 @@
+mandatory-support-field-description: 'Een omschrijving is nodig.'
+tooltip-project-support: 'Advies over het bewerken van bestaande samenwerkingen'
+tooltip-project-nsupport: 'Advies over het invullen van een nieuw samenwerkingsverzoek'
+tooltip-project-support-description: 'leg kort uit wat voor soort hulp je project nodig heeft, zodat mensen zien wat er nodig is en hoe ze kunnen samenwerken.'
+tooltip-project-support-type: 'Kies of het project hulp nodig heeft in de zin van taken of eerder leningen van materialen, infrastructuur, etc.'
+step-6: Samenwerkingen
+supports-fields-support-title: Samenwerkingen
+supports-field-description: Omschrijving
+tooltip-project-support-support: 'Beschrijvende titel over de gewenste samenwerking'
+tooltip-project-supports: 'In SiteNamezijn er meer manieren om bij te dragen dan met geld. Sommige mnsen kunnen geen geld bijdragen maar hebben wel waardevolle vaardigheden, tijd, energie etc.'
+supports-main-header: 'Verzoek voor samenwerkingen'
+step-supports: 'Step: Project / Samenwerkingen'
+supports-field-support: Samenvatting
+supports-field-type: 'Type hulp'
+mandatory-support-field-name: 'Je moet een naam voor de samenwerking invoeren'

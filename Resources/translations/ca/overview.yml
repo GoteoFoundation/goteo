@@ -1,0 +1,70 @@
+overview-field-video: 'Vídeo addicional sobre motivació'
+overview-field-options-currently_avanzado: Avançat
+tooltip-project-keywords: 'A mesura que introdueixis text el sistema et suggerirà paraules clau que ja han escrit altres usuaris. Aquestes categories ajuden a vincular el teu projecte amb persones afins.'
+overview-field-description: 'Breu descripció'
+tooltip-project-about: 'Descriu breument el projecte de manera conceptual, tècnica o pràctica. Per exemple detallant les seves característiques de funcionament, o en quines parts consistirà. Pensa com serà una vegada acabat i tot el que la gent podrà fer amb ell.'
+overview-field-categories: Categories
+tooltip-project-usubs: 'Marca la casella en cas que hagis subtitulat a altres idiomes el vídeo mitjançant Universal Subtitles: http://www.universalsubtitles.org/'
+tooltip-project-category: 'Selecciona tantes categories com creguis necessari per descriure el projecte, basant-te en tot el que has descrit amunt. Mitjançant aquestes paraules clau ho podrem fer arribar a diferents usuaris de Goteo.'
+tooltip-project-video: 'Considera aquí la possibilitat de publicar i enllaçar un vídeo (a Youtube o Vimeo) on expliquis breument a la càmera el perquè del teu projecte. Es tracta de quelcom que pugui complementar el vídeo principal, amb una persona que transmeti la seva necessitat o originalitat, de la manera més directa possible. Si et dóna tall parlar a càmera, també pot ser alguna persona que coneixes i segueix el projecte o la idea i pugui fer aquesta aportació com a "fan". L''empatia i necessitat de veure algú a l''altre costat del projecte és molt important para determinat tipus de cofinançadors.  '
+tooltip-project-media: 'Còpia i enganxa l''adreça URL d''un vídeo de presentació del projecte, publicat prèviament a Youtube o Vimeo. Aquesta part és fonamental per atreure l''atenció de potencials cofinançadors i col·laboradors, i com més original sigui millor. Et recomanem que tingui una durada d''entre 2 i 4 minuts. '
+tooltip-project-subtitle: 'Defineix amb una frase un subtítol que acabi d''explicar en què consistirà la iniciativa, que permeti fer-se una idea mínima de per a què serveix o en què consisteix. Apareixerà al costat del títol del projecte.'
+overview-field-play-video: 'Dins vídeo'
+overview-field-image_gallery: 'Imatges actuals'
+overview-field-currently: 'Estat actual'
+tooltip-project-description: 'Descriu el projecte amb un mínim de 80 paraules (amb menys marcarà error). Explica-ho de manera que sigui fàcil d''entendre per a qualsevol persona. Intenta donar-li un enfocament atractiu i social, resumint els seus punts forts, com ara què ho fa únic, innovador o especial.'
+step-3: Descripció
+tooltip-project-name: 'Escull un nom per al projecte (ni massa curt, ni massa llarg :) que permeti fer-se una idea mínima de per a què serveix o en què consisteix. Pensa que apareixerà a molts llocs de la web!'
+tooltip-project-image_upload: ESBORRAR
+tooltip-project-motivation: 'Explica quins motius o circumstàncies t''han portat a idear el projecte, així com les comunitats o usuaris a qui va destinat. T''ajudarà a connectar amb persones mogudes per aquest mateix tipus d''interessos, problemàtiques o gustos.'
+overview-field-options-currently_finalizado: 'Finalitzat '
+overview-field-options-scope_global: 'Global '
+overview-field-goal: Objectius
+tooltip-project-reward: 'Aquí expliquem tot allò bo que té en quant a recompenses'
+overview-fields-images-title: 'Imatges del projecte'
+mandatory-project-field-related: 'És obligatori explicar en la descripció del projecte l''experiència relacionada i/o l''equip amb que es compta  '
+validate-project-field-currently: 'Indica l''estat del projecte per millorar-ne la seva valoració, de cara a determinar si publicar-ho a Goteo.'
+tooltip-project-lang: 'Indica en quina llengua omples el formulari del projecte.'
+tooltip-project-project_location: 'Indica en quina ciutat o província vols localitzar aquest projecte.'
+overview-field-keywords: 'Paraules clau del projecte'
+tooltip-project-goal: 'Enumera les metes principals del projecte, a curt i llarg termini, en tots els aspectes que consideris important destacar. Es tracta d''una altra oportunitat per contactar i aconseguir el suport de gent que simpatitzi amb aquests objectius.'
+overview-field-options-scope_local: Local
+overview-field-project_location: Ubicació
+overview-field-options-currently_medio: Mitjà
+overview-field-options-scope_nacional: Nacional
+overview-field-lang: 'Idioma original'
+step-3b: Imatges
+overview-field-media_preview: 'Vista prèvia'
+overview-main-header: 'Descripció del projecte'
+images-main-header: 'Imatges del projecte'
+overview-field-scope: 'Abast del projecte'
+overview-field-name: 'Títol del projecte'
+overview-field-usubs: 'Carregar amb Universal Subtitles'
+overview-field-options-scope_regional: Regional
+overview-field-reward: Recompenses
+overview-field-options-currently_inicial: Inicial
+step-images: 'Passa: Imatges del projecte'
+step-overview: 'Pas: Descripció del projecte'
+tooltip-project-related: 'Resumeix la teva trajectòria o la del grup impulsor del projecte. Quina experiència tens relacionada amb la proposta? Amb quin equip de persones, recursos i/o infraestructures compta? '
+overview-field-subtitle: 'Frase de resum'
+overview-field-related: 'Experiència prèvia i equip '
+validate-project-field-about: 'L''explicació del projecte és massa curta'
+validate-project-field-description: 'La descripció del projecte és massa curta'
+validate-project-value-description: 'La descripció del projecte és massa curta '
+tooltip-project-image: 'Poden ser esquemes, captures de pantalla, fotografies, il·lustracions, storyboards, etc. (la seva llicència d''autoria ha de ser compatible amb la que seleccions a l''apartat 5). Et recomanem que siguin diverses i de bona qualitat (uns 900 píxels d''amplada com a màxim / 2MB Max). Pots pujar tantes com vulguis!'
+overview-field-image_upload: 'Pujar una imatge (2MB max.)'
+overview-field-media: 'Vídeo de presentació'
+mandatory-project-field-media: 'Recomanem posar un vídeo per millorar la valoració del projecte a l''hora de decidir si publicar-ho o no a Goteo.'
+tooltip-project-currently: 'Indica a quina fase es troba el projecte actualment respecte al seu procés de creació o execució.'
+validate-project-value-keywords: 'Indica un mínim de 5 paraules clau del projecte per millorar-ne la seva valoració, de cara a determinar si publicar-ho a Goteo.'
+mandatory-project-field-name: 'És obligatori posar un nom al projecte'
+mandatory-project-field-description: 'És obligatori resumir el projecte'
+mandatory-project-field-location: 'És obligatori posar l''abast potencial del projecte'
+mandatory-project-field-about: 'És obligatori explicar les característiques bàsiques del projecte'
+mandatory-project-field-goal: 'És obligatori explicar els objectius en la descripció del projecte'
+mandatory-project-field-motivation: 'És obligatori explicar la motivació en la descripció del projecte'
+mandatory-project-field-lang: 'Has d''indicar l''idioma del projecte'
+mandatory-project-field-image: 'És obligatori vincular una imatge com a mínim al projecte'
+mandatory-project-field-category: 'És obligatori triar almenys una categoria pel projecte.'
+tooltip-project-currency: 'Indica en qué divisa calculas los costes del proyecto.'
+overview-field-currency: 'Divisa original'

@@ -1,0 +1,60 @@
+@import url("project/widget/projects.css");
+@import url("home/calls.css");
+@import url("home/feed.css");
+@import url("home/patrons.css");
+@import url("home/posts.css");
+@import url("home/promotes.css");
+@import url("home/stories.css");
+@import url("home/news.css");
+
+
+/*En este archivo dejamos reglas que afectan a más de un módulo */
+
+body.home div#main div.widget {
+    margin-bottom: 16px;
+    position: relative;
+}
+
+
+/* Flechitas de convocatorias y padrinos en portada */
+div.patronrow a.prev,
+div.patronrow a.next,
+div.callrow a.prev,
+div.callrow a.next
+ {
+    width: 24px;
+    position:relative;
+    color: white;
+    line-height: 27px;
+    text-indent: 24px;
+    display: inline-block;
+    cursor: pointer;
+    margin: 0;
+    padding: 0;
+}
+
+
+div.patronrow a.prev,
+div.callrow a.prev
+ {
+	background: url('/view/css/arrowslider-sprt.png') scroll no-repeat 0 0;
+}
+
+div.patronrow a.prev:hover,
+div.callrow a.prev:hover
+ {
+	background: url('/view/css/arrowslider-sprt.png') scroll no-repeat 0 -48px;
+}
+
+div.patronrow a.next,
+div.callrow a.next
+ {
+	background: url('/view/css/arrowslider-sprt.png') scroll no-repeat 0 -24px;
+}
+
+div.patronrow a.next:hover,
+div.callrow a.next:hover
+{
+	background: url('/view/css/arrowslider-sprt.png') scroll no-repeat 0 -72px;
+}
+/* Fin de las flechitas de convocatorias y patronos en portada */

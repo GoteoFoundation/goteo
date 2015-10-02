@@ -1,0 +1,280 @@
+/*
+ * Custom CSS Goteo
+ *
+ *
+ */
+
+ .main-color-background {
+  background-color: #B5DADC;
+ }
+
+ body{
+ 	background-color: #E7E7E7 !important;
+ }
+
+ .margin-top-7{
+ 	margin-top:7.5%;
+ }
+
+ .footer{
+	background-color: #58595B;
+	width:100%;
+ }
+
+ .footer a{
+ 	color:#FFF;
+ }
+
+ .footer-navbar{
+ 	min-height: 30px;
+ 	margin: 0;
+ }
+
+ .footer ul{
+ 	margin:10px 0;
+ }
+
+ .label-img{
+ 	vertical-align: top;
+ }
+
+.standard-margin-top{
+	margin-top:3%;
+}
+
+.panel-form{
+	margin: 0px auto;
+	max-width: 375px;
+}
+
+.modal{
+	top:15%;
+}
+
+.reminder{
+	background-color: #E9F4EA;
+	padding: 3%;
+	font-size: 1em;
+	color: #58595B;
+	margin-bottom: 4%;
+}
+
+.reminder .amount-reminder{
+	color: #96238F;
+	font-size: 20px;
+	font-weight: bold;
+	margin-left: 5px;
+}
+
+.select-method{
+	max-width:800px;
+	margin: 0 auto;
+}
+
+.label-method{
+	padding-top: 10px;
+	background-color: #E7E7E7;
+	border-radius:10px;
+	font-weight: normal;
+	color: #58595B;
+}
+
+label.label-method:hover {
+
+    cursor: pointer;
+    cursor: hand;
+    background-color:#2cb2b2 ;
+    font-weight: bold;
+    color:#FFF !important;
+}
+
+.check-method:checked + label {
+  color: red;
+  font-style: normal;
+}
+
+.method-text{
+
+}
+
+.pool-info{
+	margin-left: 15px;
+	background-color: #FFF;
+	font-size: 12px;
+	padding: 13px 13px 13px 0px;
+	border-radius: 7px;
+}
+
+.confirm-checkbox{
+	margin-top:4px;
+}
+
+.pay-method{
+	text-align:center;
+	padding-right: 7px;
+	padding-left: 7px;
+}
+
+.invest-button{
+	margin-top:20px;
+}
+
+.img-method{
+	padding: 4% 10% 10%;
+}
+
+.method-caption{
+	background-color: #FFF;
+	border-radius: 10px;
+}
+
+.method-conditions{
+	margin-top: 1.6%;
+}
+
+.make-sure{
+	max-width:600px;
+	margin: 0 auto;
+}
+
+.share{
+	max-width:650px;
+	margin: 0 auto;
+}
+
+
+.margin-bottom-4{
+	margin-bottom: 4%;
+}
+
+.reward{
+	padding-right: 7px;
+	padding-left: 7px;
+}
+
+.label-reward {
+    padding: 2%;
+    background-color: #E7E7E7;
+    border-radius: 10px;
+    font-weight: normal;
+    color: #58595B;
+    width: 100%;
+}
+
+label.label-reward:hover {
+
+    cursor: pointer;
+    cursor: hand;
+    background-color:#2cb2b2 ;
+    color:#FFF !important;
+}
+
+label.reward-choosen{
+	background-color:#2cb2b2 ;
+    color:#FFF !important;
+}
+
+.reward-amount{
+	color: #96238F;
+	font-size:1.8em;
+	margin-left: 10%;
+	vertical-align: middle;
+}
+
+.reward-icon{
+	padding:10%;
+}
+
+.margin-left-2{
+	margin-left: 2%;
+}
+
+.input-amount
+
+{
+	font-size: 1.4em;
+	text-align: center;
+}
+
+.container-input-amount{
+	padding-top: 3.5px;
+	margin-top:2.5px;
+}
+
+.display-none{
+	display: none;
+}
+
+#amount-container{
+	background-color:#FFF;
+	margin-top: 10px;
+	padding: 2% 0;
+}
+
+.reward-button{
+	margin-top: 2.5px;
+}
+
+.limit-reward{
+	color:#2CB2B2;
+}
+
+label.reward-choosen .limit-reward, label.label-reward:hover .limit-reward,
+label.reward-choosen .limit-reward-number, label.reward-choosen .reward-amount,
+label.label-reward:hover .reward-amount{
+	color:#58595b;
+
+}
+
+hr.share{
+	margin:8%;
+}
+
+hr.make-sure{
+	margin:8%;
+}
+
+.padding-bottom-6{
+	padding-bottom: 6%;
+}
+
+.padding-bottom-2{
+	padding-bottom: 2%;
+}
+
+.uppercase{
+	text-transform: uppercase;
+}
+
+
+@media(min-width:767px){
+
+.row-form{
+ 	padding-top:40px;
+ 	padding-bottom: 60px;
+ }
+
+ .footer{
+	position: fixed;
+	bottom:0;
+}
+  .no-padding{
+	padding:0;
+}
+
+}
+
+@media(max-width:767px){
+
+.sm-display-none{
+	display: none;
+}
+
+.margin-2{
+	margin:2%;
+}
+
+}
+
+
+

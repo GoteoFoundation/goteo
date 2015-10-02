@@ -1,0 +1,5 @@
+tooltip-project-cost-type-structure: 'Inversió en costos vinculats a un local, mitjà de transport o altres infraestructures bàsiques per dur a terme el projecte. '
+tooltip-project-cost-type-material: 'Materials necessaris per al projecte com ara eines, papereria, equips informàtics, etc.'
+tooltip-project-cost-type-task: 'Tasques on invertir coneixements i/o habilitats per desenvolupar alguna part del projecte.'
+tooltip-project-support-type-lend: 'Préstec temporal de material necessari per al projecte, o bé de cessió d''infraestructures o espais per un període determinat. També pot implicar préstecs permanents, és a dir regals :)'
+tooltip-project-support-type-task: 'Col·laboració que requereixi una habilitat per a una tasca específica, ja sigui a distància mitjançant ordinador o bé presencialment.'

@@ -1,0 +1,108 @@
+body.project-edit div#main.overview div.superform li.element.media,
+body.project-edit div#main.updates div.superform li.element.media {
+    position: relative;
+}
+
+body.project-edit div#main.overview div.superform li.element.media > div.contents,
+body.project-edit div#main.updates div.superform li.element.media > div.contents {
+    margin-right: 270px;
+}
+
+body.project-edit div#main.overview div.superform li.element.media > div.contents iframe,
+body.project-edit div#main.updates div.superform li.element.media > div.contents iframe {
+    width: 380px !important;
+    height: 220px !important;
+}
+
+body.project-edit div#main.overview div.superform li.element.media textarea {    
+    min-height: 170px;
+    max-height: 170px;
+    height: 170px;
+}
+
+body.project-edit div#main.overview div.superform li.element.media > div.children * {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    height: 100%;
+}
+
+body.project-edit div#main.overview div.superform li.element.media > div.children {
+    position: absolute;
+    right: 16px; /* 1em + 2px */
+    bottom: 26px; /* 2em of 13px */
+    width: 250px;
+    height: 170px;
+    padding: .4em;
+    font-size: 14px;
+    background-color: #f3f3f3;
+    border: 1px solid #f3f3f3;
+    z-index: 45;
+    border-radius: 8px;
+    -moz-border-radius: 8px;
+    -webkit-border-radius: 8px;
+    
+}
+
+body.project-edit div#main.overview div.superform li.element.media-preview > div {
+    background-color: white;
+}
+
+body.project-edit div#main.overview div.superform li.element.media-preview .title {
+    display: none;
+}
+
+
+/**
+ * Para imagenes de convocatorias
+ */
+
+body.project-edit div#main.overview div.superform li.element.logo > div.children > div.elements > ol > li.element,
+body.project-edit div#main.overview div.superform li.element.image > div.children > div.elements > ol > li.element {
+    display: inline-block;
+    vertical-align: top;
+}
+
+body.project-edit div#main.overview div.superform li.element.logo ol,
+body.project-edit div#main.overview div.superform li.element.image ol {
+    padding: 0;
+}
+
+body.project-edit div#main.overview div.superform li.element.logo li.element.logo-image,
+body.project-edit div#main.overview div.superform li.element.image li.element.image-image {
+    padding: 0 2em;
+    margin: 0px !important;
+}
+
+body.project-edit div#main.overview div.superform li.element.logo li.element.logo img,
+body.project-edit div#main.overview div.superform li.element.image li.element.image img {
+    width: 128px;
+    height: 128px;
+}
+
+body.project-edit div#main.overview div.superform li.element.logo li.element .title,
+body.project-edit div#main.overview div.superform li.element.image li.element .title {
+    display: none;
+}
+
+/**
+ * Para los campos cortos
+ */
+body.project-edit div#main.overview div.superform li.element.amount > div.contents > input {
+    width: 3em;
+    max-width: 3em;
+    min-width: 3em;
+    float: left;
+    padding-right: 2em;
+/*    background-image: url('/view/css/euro/m.png');*/
+    background-repeat: no-repeat;
+    background-position: 3.7em center;
+    font-size: 16px;
+    font-weight: bold;
+}
+
+body.project-edit div#main.overview div.superform li.element.days > div.contents > input {
+    width: 3em;
+    max-width: 3em;
+    min-width: 3em;
+}

@@ -1,0 +1,36 @@
+div#footer{background:#fff;padding: 17px 0 17px 0}
+
+div#footer div.block{float:left;width:155px;height:142px;padding:10px 0 0 15px;border-left:#ebe9ea 2px solid;overflow:hidden;
+color:#a1a1a4}
+div#footer div.block span{font-size:16px;}
+div#footer div.block span.title{margin-bottom:16px}
+div#footer div.block p{line-height:20px}
+div#footer div.block ul li{line-height:16px;margin-bottom:5px;font-size:11px}
+div#footer div.block ul li a{font-size:12px;color:#a1a1a4}
+
+div#footer div.block.about{width:205px;padding:0 15px 0}
+div#footer div.block.about span.title{background: url("/view/css/header/goteo.png") no-repeat scroll left center transparent;	display: block;	height: 36px;	text-indent: 2000px;	width: 105px;	overflow:hidden;margin-bottom:5px}
+div#footer div.block.about span.title:hover{background:url("/view/css/header/goteo.png") no-repeat scroll center right transparent}
+div#footer div.block.about p a, div#footer div.block.about p span {font-size:12px;color:#57c6c5;}
+
+div#footer div.block.help{width:132px}
+div#footer div.block.help span.title{color:#e85e5e;}
+
+div#footer div.block.creators{width:203px;}
+div#footer div.block.creators span.title{color:#1ab3b0}
+
+div#footer div.block.investors{width:188px}
+div#footer div.block.investors span.title{color:#0a4f99;}
+
+div#footer div.block.social{width:110px !important}
+div#footer div.block.social span.title{color:#585a5c;}
+
+div#footer div.block.social ul li{line-height:20px;margin-bottom:4px}
+div#footer div.block.social ul li a{
+background-image:url('/view/css/social/social-footer-16.jpg');background-repeat:no-repeat;
+font-size:11px;line-height:20px;height:20px;padding-left:25px}
+div#footer div.block.social ul li.twitter a{background-position:0 -2px !important}
+div#footer div.block.social ul li.facebook a{background-position:0 -24px !important}
+div#footer div.block.social ul li.calendar a{background-position:0 -45px !important}
+div#footer div.block.social ul li.gplus a{background-position:0 -66px !important}
+div#footer div.block.social ul li.rss a{background-position:0 -89px !important}

@@ -1,0 +1,5 @@
+mailer-disclaimer: 'Goteo is a social network for crowdfunding and distributed collaboration (services, infrastructures, microtasks and other resources) for encouraging the independent development of creative and innovative initiatives that contribute to the common good. '
+mailer-sinoves: 'If you can''t see this message use this <a href="%s">link</a>'
+mailer-baja: 'If you don''t want to receive more updates form Goteo.org, you can unsubscribe your email address with <a href="%s">link</a>'
+newsletter-block: 'Would you like to no longer receive newsletters from Goteo? <br/> <a href="%s">Unsubscribe</a>.'
+unsuscribe-request-success: 'You have canceled your subscription to the newsletter.'

@@ -1,0 +1,41 @@
+costs-fields-main-title: 'Detalle de custos'
+tooltip-project-cost-description: 'Explica brevemente en que consiste este custo.'
+costs-field-dates: Datas
+costs-field-description: Descrición
+tooltip-project-cost-cost: 'Insire un título o máis descritivo posible deste custo.'
+costs-field-cost: Custo
+costs-main-header: 'Aspectos económicos'
+step-4: Custos
+costs-field-date_from: Dende
+tooltip-project-cost-dates: 'Indica entre que datas calculas que se fará esa tarefa ou cubrir ese custo. Planifícao comezando non antes de dous meses contando dende agora, pois hai que considerar o prazo para revisar a proposta, publicala se fose escollida e os 40 días da primeira financiación. Non inclúas neste calendario a axenda do desenrolado anteriormente aínda que é bo que o expliques na descrición do proxecto. Na axenda so nos interesan as fases que faltan por facer e buscan ser cofinanciadas.'
+tooltip-project-cost-type: 'Aquí debes especificar o tipo de custo: ligado a unha tarefa (algo que require a habilidade ou coñecementos de alguén), a obtención de material (consumibles, materias primas) ou ben infraestrutura (espazos, equipos, mobiliario).'
+cost-type-structure: Infraestrutura
+cost-type-lend: Préstamo
+cost-type-material: Material
+costs-field-required_cost-yes: Imprescindíbel
+tooltip-project-resource: 'Indica aquí se contas con recursos adicionais, ademais dos que solicitas, para levar a cabo o proxecto: fontes de financiamento, recursos propios ou ben se xa recolleches parte dos materiais. Pode supoñer un aliciente para os potenciais cofinanceiros do proxecto.'
+costs-field-resoure: 'Outros recursos'
+costs-fields-resources-title: Recurso
+validate-project-costs-any_error: 'Falta algunha información no detalle dos custos'
+tooltip-project-cost-amount: 'Especifica o importe en euros do que consideras que implica este custo. Non empregues puntos para as cifras de miles ok?'
+validate-cost-field-dates: 'Debes indicar as datas de inicio e fin desde custo para poder valorar mellor o proxecto.'
+step-costs: 'Paso: Proxecto / Custos'
+costs-field-required_cost-no: Adicional
+cost-type-task: Tarefa
+costs-field-schedule: 'Axenda de traballo'
+tooltip-project-costs: 'Canta máis precisión no detalle, mellor valorará Goteo a información xeral do proxecto.'
+costs-field-required_cost: 'Este custo é'
+tooltip-project-totals: 'Este gráfico mostra a suma de custos imprescindíbeis (mínimos para leva a cabo o proxecto) e a suma de custos secundarios (importe óptimo) para as dúas roldas de financiamento. A primeira rolda é de 40 días, para chegar ó importe mínimo imprescindíbel. Só se se consegue ese volume de financiamento pódese optar á segunda rolda, de 40 días máis, para chegar ó presuposto óptimo. A diferencia da primeira, na segunda rolda obtense todo o recadado.'
+tooltip-project-cost-required: 'Este punto é moi importante: en cada custo que insiras tes que marcar se é imprescindíbel ou ben adicional. Todos os custos marcados coma imprescindíbeis sumaranse resultando o valor do importe de financiación mínimo para o proxecto. A suma dos custos adicionais, porém,  poderase obter na segunda rolda de financiación, despois de obter os fondos imprescindíbeis.'
+costs-field-type: Tipo
+costs-field-date_until: ata
+costs-field-amount: Valor
+costs-fields-metter-title: 'Visualización dos custos'
+validate-project-field-costs: 'Suxerimos detallar ata 5 custos diferentes para mellorar a valoración do proxecto de cara a determinar se publicalo en Goteo.'
+mandatory-cost-field-description: 'É obrigado poñer algunha descrición dos custos'
+mandatory-cost-field-amount: 'É obrigado asignar un importe ós custos'
+mandatory-cost-field-name: 'É obrigado poñerlle un nome ó custo'
+mandatory-project-total-costs: 'É obrigado especificar algún custo'
+mandatory-cost-field-task_dates: 'É obrigado especificar as datas aproximadas da tarefa'
+mandatory-project-field-resource: 'É obrigado especificar se contas con outros recursos ou non'
+mandatory-project-resource: 'É obrigado especificar se contas con outros recursos ou non'

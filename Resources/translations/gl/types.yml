@@ -1,0 +1,5 @@
+tooltip-project-cost-type-structure: 'Inversión en custos ligados a un local, medio de transporte ou outras infraestruturas básicas para levar a cabo o proxecto.'
+tooltip-project-cost-type-material: 'Materiais necesarios para o proxecto como ferramentas, papelería, equipos informáticos, etc.'
+tooltip-project-cost-type-task: 'Tarefas onde investir coñecementos e/ou habilidades para desenrolar algunha parte do proxecto.'
+tooltip-project-support-type-lend: 'Préstamo temporal de material necesario para o proxecto, ou ben cesión de infraestruturas ou espazos por un período determinado. Tamén pode implicar préstamos permanentes, ou sexa agasallos :)'
+tooltip-project-support-type-task: 'Colaboración que requira unha habilidade para unha tarefa específica, xa sexa a distancia co ordenador ou ben presenzalmente.'

@@ -1,0 +1,77 @@
+project-rewards-individual_reward-units_left: 'Restano <span class="left">%s</span>  unità'
+tooltip-project-paypal: '<p> In aggiunta al nostro gateway di pagamento,<strong> si possono ricevere donazioni via PayPal</strong>. Per accedervi devi indicare qui un indirizzo mail associato a un account valido su PayPal. Non scrivere niente (nessun carattere) in questo campo se non vuoi utilizzare l''opzione di pagamento di Paypal.</p> <p> Anche se non è obbligatorio essere registrato su Paypal per ricevere le donazioni del tuo progetto, è comunque caldamente consigliato.<strong> Se non si indicata un account di PayPal valido e verificato prima della pubblicazione di questa campagna, non sarà possibile ricevere le donazioni con questa modalità.</strong></p> <p> Questo account non potrà essere modificato posteriormente, dovrai contattarci se desideri cambiarlo.</p> <p><strong>IMPORTANTE: Non è possibile usare questo stesso account per effettuare donazioni al tuo proprio progetto e si verificherebbe ub errore nel sistema.</strong></p>'
+social_reward-access: 'Accedi '
+social_reward-access_title: 'Accedi a questa risorsa collettiva '
+project-side-investors-header: 'Hanno già contribuito '
+project-rewards-header: Benefici
+project-rewards-bonus_reward-title: Bonus
+project-view-categories-title: 'Categorie '
+project-menu-supporters: 'Co-finanziatori '
+project-view-metter-investors: 'Co-finanziatori '
+project-view-metter-investment: Co-finanziamento
+project-rewards-social_reward-title: 'Beneficio collettivo'
+currency-switch: 'CAMBIARE '
+project-spread-widget_legend: 'Copia e incolla il codice sul tuo sito o blog a aiuta a diffondere questo progetto'
+project-view-metter-day_created: 'Creato il '
+project-menu-messages: 'Collaborazioni '
+overview-field-spread: Diffusione
+project-support-supertitle: 'Bisogni economici'
+contract-paypal_account: 'Mail del tuo profilo PayPal:'
+project-spread-embed_code: 'Codice Embed'
+project-menu_title-updates: 'Feedback: informati sulle evoluzioni del progetto direttamente tramite chi lo promuove.'
+project-view-metter-day_closed: 'Archiviato il '
+project-view-metter-day_success: 'Finanziato il '
+tooltip-project-help-cost: 'Se non ti è chiaro l''elenco dei costi o hai bisogno di farci delle domande, seleziona quest''opzione. Devi terminare il questionario per portarti aiutare.'
+tooltip-project-help-license: 'Se hai dubbi sulle licenze più adeguate ai benefici collettivi del tuo progetto, seleziona quest''opzione. Devi terminare e inviare il questionario così ti possiamo aiutare.'
+project-spread-social: 'Co-finanzio il progetto %s #goteo #crowdfunding'
+project-help-license: 'Ho bisogno d''aiuto per definire i benefici collettive e le licenze'
+project-help-cost: 'Ho bisogno d''aiuto nella definizione dei costi'
+tooltip-project-rounds: 'Se scegli questa opzione, il tuo progetto avrà un giro di 40 giorni per ottenere il finanziamento necessario: tutto o niente.'
+tooltip-project-bank: 'Se non vuoi indicarla ora potrai aggiungerla più tardi quando si sottoscriva il contratto'
+project-rewards-individual_reward-title: 'Recompense individuali'
+project-messages-closed: 'Non è ancora possibile mandare messaggi al progetto '
+project-share-pre_header: 'Fai sapere al tuo network che '
+project-rewards-individual_reward-limited: 'Recompensa limitata '
+project-collaborations-title: 'Si cerca'
+project-view-metter-minimum: Minimo
+project-menu-needs: 'Bisogni '
+regular-new_project: 'Progetto nuovo'
+project-menu-updates: Novità
+project-collaborations-supertitle: 'Bisogni non monetari'
+project-menu_title-messages: 'Non solo denaro: puoi sostenere il progetto con talento, materiale, tempo, contatti, expertice'
+project-view-metter-optimum: Ottimo
+project-menu-home: Progetto
+personal-field-accounts: 'Conti del progetto'
+project-langs-header: 'Progetto in '
+project-spread-widget: 'Widget del progetto'
+project-spread-widget_title: 'pubblica il widget del progetto'
+project-view-metter-got: Ottenuto
+project-view-metter-day_updated: 'Ricevuto il '
+project-view-metter-days: Restano
+project-messages-answer_it: Rispondere
+project-messages-send_message-button: Inviare
+project-messages-send_direct-header: 'Manda un messaggio al promotore del progetto'
+project-share-header: 'Condividi questo progetto '
+project-rounds: 'Progetto con uno solo giro'
+project-menu_title-home: 'Impatto sociale: questo progetto è in open source, condivide conoscenza, dati o archivi digitali in cambio di sostegno.'
+project-menu_title-supporters: 'Social network di appoggio: i co-finanziatori sono tanto importanti come i promotori di quest''iniziativa'
+tooltip-project-scope: 'Indica l''impatto geografico a cui il progetto aspira (ogni categoria include quella precedente).'
+project-spread-header: 'Diffondi questo progetto '
+project-spread-pre_widget: 'Diffondi questo progetto '
+tooltip-project-spread: 'Spiegaci come credi di diffondere il progetto tra la tua comunità.'
+project-not_published: 'Questo progetto non è ancora pubblico'
+project-willpublish: 'Questo progetto su pubblicherà il %s'
+project-unpublished: 'La campagna di questo progetto è stata cancellata. '
+tooltip-updates-home: 'Texto tooltip-updates-home'
+tooltip-updates-tags: 'Texto tooltip-updates-tags'
+tooltip-updates-allow_comments: tooltip-updates-allow_comments
+tooltip-updates-date: tooltip-updates-date
+tooltip-updates-image: tooltip-updates-image
+tooltip-updates-image_upload: tooltip-updates-image_upload
+tooltip-updates-media: tooltip-updates-media
+tooltip-updates-text: tooltip-updates-title
+tooltip-updates-title: tooltip-updates-title
+project-menu_title-needs: 'Trasparenza nei costo: elenco dettagliato del minimo e del massimo di cui si ha bisogno per finalizzarlo. '
+project-media-play_video: 'Vedere video '
+project-rewards-supertitle: 'Cosa offre in cambio'
+project-messages-send_message-header: 'Scrivi il tuo messaggio '

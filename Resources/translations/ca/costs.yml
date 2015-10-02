@@ -1,0 +1,41 @@
+costs-fields-main-title: 'Desglossament de costos'
+tooltip-project-cost-description: 'Explica breument en què consisteix aquest cost.'
+costs-field-dates: Dates
+costs-field-description: Descripció
+tooltip-project-cost-cost: 'Introdueix un títol el més descriptiu possible d''aquest cost.'
+costs-field-cost: Cost
+costs-main-header: 'Aspectes econòmics'
+step-4: Costos
+costs-field-date_from: 'Des de'
+tooltip-project-cost-dates: 'Indica entre quines dates calcules que es durà a terme aquesta tasca o cobrir aquest cost. Planifica-ho començant no abans de dos mesos a partir d''ara, doncs cal considerar el termini per revisar la proposta, publicar-la si és seleccionada i els 40 dies del primer finançament.'
+tooltip-project-cost-type: 'Aquí has d''especificar el tipus de cost: vinculat a una tasca (quelcom que requereix l''habilitat o coneixements d''algú), l''obtenció de material (consumibles, matèries primeres) o bé infraestructura (espais, equips, mobiliari).'
+cost-type-structure: Infraestructura
+cost-type-lend: Préstec
+cost-type-material: Material
+costs-field-required_cost-yes: Imprescindible
+tooltip-project-resource: 'Indica aquí si comptes amb recursos addicionals, a part dels quals sol·licites, per dur a terme el projecte: fonts de finançament, recursos propis o bé ja comptes amb materials. Pot suposar un al·licient per als potencials cofinançadors del projecte.'
+costs-field-resoure: 'Altres recursos'
+costs-fields-resources-title: Recurs
+validate-project-costs-any_error: 'Manca alguna informació en el desglossament de costos'
+tooltip-project-cost-amount: 'Especifica l''import en euros del que consideres que implica aquest cost. No facis servir punts per a les xifres de milers ok?'
+validate-cost-field-dates: 'Has d''indicar les dates d''inici i final d''aquest cost per poder valorar millor el projecte.'
+step-costs: 'Pas: Projecte / Costos'
+costs-field-required_cost-no: Addicional
+cost-type-task: Tasca
+costs-field-schedule: 'Agenda de treball'
+tooltip-project-costs: 'Com més precisió en el desglossament millor valorarà Goteo la informació general del projecte. '
+costs-field-required_cost: 'Aquest cost és'
+tooltip-project-totals: 'Aquest gràfic mostra la suma de costos imprescindibles (mínims per realitzar el projecte) i la suma de costos secundaris (import òptim) per a les dues rondes de finançament. La primera ronda és de 40 dies, per aconseguir l''import mínim imprescindible. Només si s''aconsegueix aquest volum de finançament es pot optar a la segona ronda, de 40 dies més, per arribar al pressupost òptim. A diferència de la primera, a la segona ronda s''obté tot el que s''ha recaptat.'
+tooltip-project-cost-required: 'Aquest punt és molt important: en cada cost que introdueixis has de marcar si és imprescindible o bé addicional. Tots els costos marcats com a imprescindibles es sumaran donant el valor de l''import de finançament mínim per al projecte. La suma dels costos addicionals, en canvi, es podrà obtenir durant la segona ronda de finançament, després d''haver obtingut els fons imprescindibles.'
+costs-field-type: Tipus
+costs-field-date_until: Fins
+costs-field-amount: Valor
+costs-fields-metter-title: 'Visualització de costos'
+validate-project-field-costs: 'Recomanem desglossar fins a 5 costos diferents per millorar la valoració del projecte de cara a determinar si publicar-ho a Goteo.'
+mandatory-cost-field-description: 'És obligatori posar alguna descripció als costos'
+mandatory-cost-field-amount: 'És obligatori assignar un import als costos'
+mandatory-cost-field-name: 'És obligatori posar-li un nom al cost'
+mandatory-project-total-costs: 'És obligatori especificar algun cost'
+mandatory-cost-field-task_dates: 'És obligatori especificar les dates aproximades de la tasca'
+mandatory-project-field-resource: 'És obligatori especificar si comptes amb altres recursos o no'
+mandatory-project-resource: 'És obligatori especificar si comptes amb altres recursos'

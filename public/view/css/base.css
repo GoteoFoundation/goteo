@@ -1,0 +1,88 @@
+div#sub-header > div,
+div#sub-header-secondary > div {
+    display: block;
+    max-width: 940px;
+    margin: 0 auto;
+}
+
+div#sub-header > div > h2 {
+    margin: 0;
+    padding: 0;
+}
+
+/* Main container */
+div#main {
+    width: 940px;
+    margin: 10px auto;
+    clear: both;
+    overflow: hidden;
+    position: relative;
+    z-index: 0;
+}
+
+/**
+ * Widgets
+ */
+
+div.widget {
+    background-color: white;
+    padding: 15px 20px;
+    overflow: hidden;
+}
+
+
+ div.widget .supertitle {
+    font-size: 12px;
+    font-weight: normal;
+    margin: 0;
+    padding: 0 2px .5em;
+    border-bottom: 1px solid #21b0b0;
+    margin-bottom: 1em;
+}
+
+div.widget .title{
+    font-size: 16px;
+    font-weight: bold;
+    padding: 0 0 0 20px;
+    margin: 0 0 .8em -20px;
+    text-decoration: none;
+	background: url("arrowH2-section.gif") no-repeat -5px -16px;
+}
+
+
+/* read more */
+div.read_more {
+    text-align: right;
+	margin-top: 16px;
+}
+div.read_more a {
+    text-decoration: none;
+    text-transform: uppercase;
+	font-size: 11px;
+}
+div.read_more a:hover {
+    color: #20B3B2;
+}
+/** end readmore **/
+
+div#message{background: none repeat scroll 0 0 #19B4B2;color: #FFFFFF;padding: 20px 0;font-size: 14px;width: 100%;}
+div#message.message {background-color:#19B4B2; color: #FFFFFF;}
+div#message.error {background-color:#B32928; color: #FFFFFF;}
+div#message div#message-content{width:940px;margin:0 auto;position:relative;}
+div#message div#message-content input.message-close{ background:url('/view/css/message-close.png') no-repeat; width:34px;height:33px;border:none;position:absolute;top:-8px;right:0;z-index:100; cursor:pointer;}
+div#message div#message-content input.red-close{ background:url('/view/css/message-close-red.png') no-repeat; width:34px;height:33px; border:none;position:absolute;top:-8px;right:0;z-index:100; cursor:pointer;}
+div#message div#message-content ul{list-style:none;margin:0;padding:0;}
+
+
+
+/*no mostrar muesca en los widgets laterales*/
+div.side div.widget .title{background:none;}
+
+/*widget embed code for project*/
+body.project-embed{min-width:250px !important;max-width:250px !important;margin:0;padding:0}
+body.project-embed > div#wrapper{width:250px;margin:0;padding:0;}
+body.project-embed > div#wrapper > div.alone-project{width:250px;margin:0;padding:0;}
+body.project-embed > div#wrapper > div.alone-project > div.widget.project{width:250px;margin:0;padding:10px 0 0 0; position:relative;background-color:#EBEAEB;height:420px;}
+body.project-embed > div#wrapper > div.alone-project > div.widget.project a.expand{position:absolute;top:0;bottom:0;width:100%;z-index:100}
+body.project-embed > div#wrapper > div.alone-project > div.widget.project.active{background-color:#F8F8F8 !important;}
+div.alone-project > div.widget.project > div.buttons > a.button{padding: 0.6em 1em}

@@ -1,0 +1,32 @@
+      
+body.user-register div#main > div > * {
+    padding: 20px;
+    background-color: white;
+}
+
+body.user-register div#main > div h2 {
+    margin: 0 0 2em;
+    font-size: 16px;
+    font-weight: bold;    
+}
+
+body.user-register div#main > div form > div {
+    padding: 0 0 1em;
+}
+
+body.user-register div#main > div form > div label {
+    line-height: 2em;
+    display: block;
+    font-size: 14px;
+    font-weight: bold;
+}
+
+body.user-register div#main > div form > div input {
+    display: block;
+    background-color: #DFF2F3;
+    width: 18em;
+}
+
+body.user-register div#main form input[type="submit"] {
+    margin-bottom: 0;
+}

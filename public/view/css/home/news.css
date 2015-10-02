@@ -1,0 +1,120 @@
+/*Reglas módulo patrons de home */
+
+div #press_banner{
+    background-color:#cdcdcd; 
+    height:165px;
+}
+
+div #press_banner div.clip{
+    width:940px; 
+    margin:0 auto; 
+    position:relative;
+}
+
+div #press_banner div.clip img{
+    position:absolute; 
+    left:835px; 
+    top:-8px; 
+    overflow:visible;
+}
+
+div #press_banner div.clip_sup{
+   height:15px; 
+   background-color:#e7e7e7;
+}
+
+div#slides_news div.slder_news,
+div#slides_news div.arrow-left,
+div#slides_news div.arrow-right {
+    float: left;
+}
+
+div#slides_news div.slder_news {
+    width: 845px;
+    height: 115px;
+}
+
+div#slides_news div.arrow-left {
+    margin-left: -7px;
+    margin-right: 25px;
+    padding-top: 51px;
+}
+
+div#slides_news div.arrow-right {
+    margin-left: 45px;
+    padding-top: 51px;
+}
+
+div#slides_news div.new{
+
+    width: 185px;
+    position: relative;
+    text-align: center;
+    display: table;
+    height: 85px;
+    float: left;
+    margin-top: 15px;
+    margin-left: 25px;
+
+}
+
+
+div.news {
+    width: 940px;
+    margin: 0 auto;
+    display: table;
+
+}
+
+div.news h4.title {
+    color: #59595C; 
+    padding-top:20px; 
+    margin-top:0; 
+    margin-bottom:0;
+
+}
+
+div.newrow a.prev,
+div.newrow a.next {
+    color:#cdcdcd !important;
+}
+
+
+div#slides_news div.new a{ 
+    display: table-cell;
+    vertical-align: middle;
+    position: relative;
+}
+
+div.newrow a.prev,
+div.newrow a.next {
+    width: 16px;
+    height: 16px;
+    position:relative;
+    color:#cdcdcd !important;
+    line-height: 27px;
+    text-indent: 24px;
+    display: inline-block;
+    cursor: pointer;
+    margin: 0;
+    padding: 0;
+}
+
+div.newrow a.prev
+ {
+    background: url('/view/css/small_arrowslider-sprt.png') scroll no-repeat 0 0;
+}
+
+div.newrow a.prev:hover
+ {
+    background: url('/view/css/small_arrowslider-sprt.png') scroll no-repeat 0 -32px;
+}
+
+div.newrow a.next
+ {
+    background: url('/view/css/small_arrowslider-sprt.png') scroll no-repeat 0 -16px transparent;
+}
+
+div.newrow a.next:hover {
+    background: url('/view/css/small_arrowslider-sprt.png') scroll no-repeat 0 -48px;
+}

@@ -1,0 +1,389 @@
+* {
+    font-family: "Liberation Sans", Helvetica, "Helvetica Neue", Arial, Geneva, sans-serif;
+}
+
+html {
+    height: 100%;
+    margin: 0;
+    overflow: auto;
+}
+
+html, body {
+    padding: 0;
+    background-color: #e7e7e7;
+}
+
+
+body {
+	min-width: 780px;
+    min-height: 100%;
+    margin: 0 auto;
+    top: 0;
+    position: relative;
+}
+
+body, td, th, a, a:link, a:visited, a:active, a:hover, input, textarea, button {
+    font-size: 12px;
+    color: #58595b;
+}
+
+img {
+    border: none;
+}
+
+input, textarea, button {
+    font-size: 14px;
+}
+
+h1 {
+    display: none;
+}
+
+input[type="text"],
+input[type="password"],
+textarea,
+fieldset {
+    border: 1px solid #58595b;
+    background-color: #d7d9da;
+    padding: .3em;
+}
+
+fieldset {
+    display: inline-block;
+    background: transparent;
+}
+
+textarea {
+    min-height: 8em;
+}
+
+input[type="text"]:focus,
+input[type="password"]:focus,
+textarea:focus {
+    background-color: white !important;
+}
+
+input[type="submit"],
+input[type="reset"],
+button,
+a.button {
+    background-color: #58595B;
+    text-transform: uppercase;
+    border: none;
+    cursor: pointer;
+    font-weight: normal;
+    color: white;
+    display: inline-block;
+    text-decoration: none;
+    text-align: center;
+    border-radius: 3px;
+    -moz-border-radius: 3px;
+    -webkit-border-radius: 3px;
+    background: #149290 url('button/aqua.png') repeat-x top;
+	padding: .6em 1.3em .5em;
+	margin-top: .8em;
+	margin-right: 0;
+	margin-bottom: .5em;
+}
+
+input[type="submit"]:active,
+input[type="reset"]:active,
+button:active,
+a.button:active {
+    background: #60c1bf url('button/aqua-active.png') repeat-x top;
+}
+
+input[type="submit"]:hover,
+input[type="reset"]:hover,
+button:hover,
+a.button:hover {
+    background: #60c1bf url('button/aqua-active.png') repeat-x top;
+}
+
+input.red[type="submit"],
+input.red[type="reset"],
+button.red,
+a.button.red {
+    background: #b5161e url('button/red.png') repeat-x top;
+    color: white;
+}
+
+input.red[type="submit"]:active,
+input.red[type="reset"]:active,
+button.red:active,
+a.button.red:active {
+    background: #e44133 url('button/red-active.png') repeat-x top;
+}
+
+input.red[type="submit"]:hover,
+input.red[type="reset"]:hover,
+button.red:hover,
+a.button.red:hover {
+    background: #e44133 url('button/red-active.png') repeat-x top;
+}
+
+/* = botones violeta
+*****************************/
+input.violet[type="submit"],
+input.violet[type="reset"],
+button.violet,
+a.button.violet {
+    background: #96238F url('button/violet.png') repeat-x top;
+}
+
+input.violet[type="submit"]:hover,
+input.violet[type="reset"]:hover,
+button.violet:hover,
+a.button.violet:hover {
+    background: #96238F url('button/violet-active.png') repeat-x top;
+}
+/* fin botones violeta */
+
+input.weak[type="submit"],
+input.weak[type="reset"],
+button.weak,
+a.button.weak {
+    background: #60c1bf url('button/aqua-active.png') repeat-x top;
+    color: white;
+}
+
+input.weak[type="submit"]:active,
+input.weak[type="reset"]:active,
+button.weak:active,
+a.button.weak:active {
+    background: #b5161e url('button/red.png') repeat-x top;
+}
+
+input.weak[type="submit"]:hover,
+input.weak[type="reset"]:hover,
+button.weak:hover,
+a.button.weak:hover {
+    background: #b5161e url('button/red.png') repeat-x top;
+}
+
+/* boton dissabled */
+input.disabled[type="submit"],
+input.disabled[type="reset"],
+button.disabled,
+a.button.disabled {
+    background: #CCCCCC;
+    color: white;
+    cursor: default;
+}
+
+input.disabled[type="submit"]:hover,
+input.disabled[type="reset"]:hover,
+button.disabled:hover,
+a.button.disabled:hover {
+    background: #CCCCCC;
+    cursor: default;
+}
+/* fin boton dissabled */
+
+/* botón verde */
+input.green[type="submit"],
+input.green[type="reset"],
+button.green,
+a.button.green {
+    background: #00b05b url('button/green.png') repeat-x top;
+    color: white;
+}
+
+input.green[type="submit"]:active,
+input.green[type="reset"]:active,
+button.green:active,
+a.button.green:active {
+    background: #00b05b url('button/green-active.png') repeat-x top;
+}
+
+input.green[type="submit"]:hover,
+input.green[type="reset"]:hover,
+button.green:hover,
+a.button.green:hover {
+    background: #00b05b url('button/green-active.png') repeat-x top;
+}
+/* fin botón verde */
+
+/* botón azul */
+input.blue[type="submit"],
+input.blue[type="reset"],
+button.blue,
+a.button.blue {
+    background: #008ac0 url('button/blue.png') repeat-x top;
+    color: white;
+}
+
+input.blue[type="submit"]:active,
+input.blue[type="reset"]:active,
+button.blue:active,
+a.button.blue:active {
+    background: #008ac0 url('button/blue-active.png') repeat-x top;
+}
+
+input.blue[type="submit"]:hover,
+input.blue[type="reset"]:hover,
+button.blue:hover,
+a.button.blue:hover {
+    background: #008ac0 url('button/blue-active.png') repeat-x top;
+}
+/* fin botón azul */
+
+
+h1, h2, h3, h4, h5, h6, h7, h8 {
+    font-weight: bold;
+    text-transform: uppercase;
+    margin: 1em 0;
+}
+.clearfix:after {
+	visibility: hidden;
+	display: block;
+	font-size: 0;
+	content: " ";
+	clear: both;
+	height: 0;
+}
+.clearfix { display: inline-table; }
+/* Hides from IE-mac \*/
+* html .clearfix { height: 1%; }
+.clearfix { display: block; }
+/* End hide from IE-mac */
+
+ul.menu {
+
+}
+ul>li.selected, ul>li.selected>a {
+    font-weight:bold;
+}
+/** pagination **/
+ ul#pagination, ul.pagination {
+	list-style:none;
+	/*float:left;*/
+    text-align: center;
+	margin: 0 0 10px 0;
+	padding:0px;
+}
+ul#pagination li, ul.pagination li {
+	display:inline-block;
+	margin: 0 6px 0 0;
+	background: white;
+	width: auto;
+	// float: left;
+	text-align: center;
+}
+ul#pagination li.selected, ul.pagination li.selected {
+	background:#cde4e5;
+	font-weight:bold;
+	padding: 6px 20px;
+}
+ul#pagination li.hellip, ul.pagination li.hellip {
+	padding: 6px 20px;
+}
+ul#pagination li a, ul.pagination li a {
+	display: block;
+	padding: 6px 20px;
+	text-decoration:none;
+	font-weight:bold;
+}
+ul#pagination li a:hover, ul.pagination li a:hover {
+	background:#F3F3F3;
+}
+/** end of pagination **/
+
+/** navi box&arrows **/
+ul.navi {
+    list-style: none;
+    height: 10px;
+    z-index: 900;
+    margin: 0px;
+    padding: 10px;
+}
+
+ul.navi li {
+    display: block;
+    float: left;
+    width: 1em;
+    height: 1em;
+    overflow: hidden;
+    margin-right: .5em;
+}
+
+ul.navi li > * {
+    display: block;
+    height: 100%;
+    width: 100%;
+    text-indent: 2000px;
+    line-height: 2000px;
+}
+
+ul.navi li > a {
+    background-color: #cdcdce;
+}
+
+ul.navi li.active > a,
+ul.navi li > a:hover {
+    background-color: #20b3b2;
+}
+
+ul.navi li > a.active {
+    background-color: #808184;
+}
+
+ul.navi li.prev,
+ul.navi li.next {
+    width: 1em;
+    height: 1em;
+	line-height: 2000px;
+	overflow: hidden;
+}
+
+
+ul.navi li.prev a {
+	background: url('/view/css/small_arrowslider-sprt.png') scroll no-repeat 0 0;
+}
+
+ul.navi li.prev.active a {
+	background: url('/view/css/small_arrowslider-sprt.png') scroll no-repeat 0 -32px;
+}
+
+ul.navi li.next a {
+	background: url('/view/css/small_arrowslider-sprt.png') scroll no-repeat 0 -16px;
+}
+
+ul.navi li.next.active a {
+	background: url('/view/css/small_arrowslider-sprt.png') scroll no-repeat 0 -48px;
+}
+/** fin navi box&arrows**/
+
+/* = caja de comentarios
+*************************/
+div.widget.blog-comment{position:relative;}
+div.widget.blog-comment button.green{float:right;
+	margin-top: 25px;
+	margin-bottom: 5px;
+}
+div.widget.blog-comment div#bocadillo{background:url('/view/css/bocadillo.jpg') no-repeat;position:absolute;width: 50px;	height: 50px;
+	margin-top: 8px;
+}
+
+/* = enlace para volver arriba
+*******************************/
+a.up{display:inline-block;padding-left:15px;margin-left:18px; background:url('/view/css/arrow-up3.png') no-repeat left; line-height: 20px;
+	font-size: 10px;
+	text-decoration: none;
+	color: #9f9f9f;
+	margin-bottom: 40px;
+}
+a.up:hover{background:url('/view/css/arrow-up.png') no-repeat left;
+	color: #20b3b2;
+}
+
+/* = aviso de javascript desactivado
+******************************/
+div#noscript {
+    font-size: 24px;
+    border: 1px solid #f00;
+    color: #f00;
+    margin: 1em;
+    padding: 0.5em;
+    text-align: center;
+}

@@ -1,0 +1,28 @@
+div.widget.crowd-credit h3.beak{
+	background-color: #CCE7E8 !important;
+	padding: 20px 0px 30px 20px;
+	background-image: url("/view/css/project/view/invest/header_beak.png");
+	background-repeat: no-repeat;
+	background-attachment: scroll;
+	background-position: left bottom;
+	background-clip: border-box;
+	background-origin: padding-box;
+	background-size: auto auto;
+	font-size: 1em !important;
+	text-transform: uppercase !important;
+}
+
+div.widget.crowd-credit .credit-amount{
+background-color:#F5E9F4;
+padding:20px;
+color:#96238F;
+font-size: 22px;
+font-weight: bold;
+position:relative;
+}
+
+div.widget.crowd-credit .credit-amount .amount{
+	margin-left: 14px;
+	position:absolute;
+	top:32px;
+}

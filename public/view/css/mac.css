@@ -1,0 +1,9 @@
+/* CSS Document */
+div.widget .title {font-size: 17px;}
+div.widget.project div.buttons{}
+div.widget.projects div.project div.buttons{overflow:visible;height:30px;}
+div.widget.projects div.project div.buttons a.button {padding: 0.3em 0.8em !important;margin:0;	margin-right:10px;float:left;}
+div.widget.projects div.project div.buttons a.button + a.button{margin-right:0;}
+div#calls a.prev{left: -300px !important;}
+div#campaigns a.prev{left: -20px !important;}
+

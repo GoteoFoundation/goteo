@@ -1,0 +1,18 @@
+feed-new_project: '<span class="red">Novo proxecto en Goteo</span>, dende agora temos 40 días para apoialo!'
+feed-project_goon: 'O proxecto %s <span class="red">continúa en campaña</span> na segunda rolda obtendo <span class="violet">%s ? (%s &#37;) de achegas sobre mínimo</span>'
+feed-project_fail: 'O proxecto %s foi <span class="red">arquivado sen éxito</span> obtendo <span class="violet">%s ? (%s &#37;) de achegas sobre mínimo</span>'
+feed-project_finish: 'O proxecto %s <span class="red">completou a segunda rolda</span> obtendo <span class="violet">%s ? (%s &#37;) de aportes sobre o mínimo</span>'
+feed-timeago: 'Fai %s'
+feed-new_update: '%s publicou un novo post en %s sobre o proxecto %s'
+feed-messages-response: 'Respondeches en %s do proxecto %s'
+feed-invest: 'Achegaches %s ó proxecto %s'
+feed-messages-new_thread: 'Abriu un tema en %s do proxecto %s'
+feed-new_support: 'Publicaches unha nova <span class="green">Colaboración</span> no proxecto %s, co título "%s"'
+feed-blog-comment: 'Escribiches un <span class="green">Comentario</span> na entrada "%s" do blog de %s'
+feed-updates-comment: 'Escribiu un <span class="green">Comentario</span> na entrada "%s" no %s do proxecto %s'
+feed-timeago-justnow: nada
+feed-message_support-response: 'Nova colaboración con %s no proxecto %s'
+feed-new_user: 'Novo usuario en Goteo %s'
+feed-timeago-published: 'Publicado fai %s'
+feed-timeago-periods: segundo-segundos_minuto-minutos_hora-horas_día-días_semana-semanas_mes-meses_ano-anos_década-décadas
+feed-project_runout: 'Ó proxecto %s faltanlle <span class="red">%s días</span> para rematar a %sª rolda'

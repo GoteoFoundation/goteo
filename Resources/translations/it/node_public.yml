@@ -1,0 +1,30 @@
+node-side-sumcalls-campaigns: 'Attivo '
+node-side-summary-active: Attivi
+node-footer-title-investors: 'Co-finanziatori '
+node-side-summary-investors: 'Co-finanziatori '
+node-side-summary-supporters: 'Collaborazioni '
+node-side-searcher-bycategory: 'Per categoria'
+node-side-searcher-byreward: 'Per beneficio'
+node-home-calls-headers: 'Call '
+node-footer-title-creators: Promotori
+node-side-sumcalls-header: 'Cloud<br />funding'
+node-footer-investors-donate: 'Donazioni e sgravi'
+node-footer-title-social: Seguici
+node-side-searcher-promote: Rievanti
+node-footer-investors-payment: 'Come funzionano i pagamenti '
+node-footer-investors-invest: 'Come sostenere un progetto'
+node-side-summary-amount: 'Quantità di denaro raccolto'
+node-footer-title-help: 'Hai bisogno di aiuto?'
+node-home-posts-header: Novità
+node-side-sumcalls-calls: Aperto
+node-side-sumcalls-rest: 'Resta da distribuire'
+node-side-searcher-popular: Popolari
+node-side-searcher-recent: Recenti
+node-footer-about: 'Social network per cofinanziare e collaborare con progetti creativi che sostengono il commons <a href="/project/create">¿ Hai un progetto con DNA aperto?</a>'
+node-side-searcher-success: 'Di successo'
+node-side-summary-success: 'Di successo'
+node-side-sumcalls-budget: 'Totale (tutte le campagne)'
+node-side-searcher-outdate: Urgenti
+node-footer-help-what: 'Cos''è il Crowdfunding'
+node-footer-help-why: 'In cosa si distingue Goteo'
+node-header-sponsorby: 'Con il sostegno di:'

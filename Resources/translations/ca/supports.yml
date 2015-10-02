@@ -1,0 +1,15 @@
+mandatory-support-field-description: 'És obligatori posar alguna descripció'
+tooltip-project-support: 'Consell per editar col.laboracions existents'
+tooltip-project-nsupport: 'Consell per emplenar una nova col.laboració'
+tooltip-project-support-description: 'Explica breument en què consisteix l''ajuda que necessita el projecte, per facilitar que la gent la reconegui i s''animi a col·laborar. '
+tooltip-project-support-type: 'Selecciona si el projecte necessita ajuda en tasques concretes o bé préstecs (de material, infraestructura, etc). '
+step-6: Col·laboracions
+supports-fields-support-title: Col·laboracions
+supports-field-description: Descripció
+tooltip-project-support-support: 'Títol descriptiu sobre la col·laboració necessària.'
+tooltip-project-supports: 'A Goteo els projectes poden rebre un altre tipus d''ajudes a més d''aportacions monetàries. Hi ha gent que potser no pugui ajudar econòmicament però sí amb el seu talent, temps, energia, etc.'
+supports-main-header: 'Sol·licitud de col·laboracions'
+step-supports: 'Pas: Projecte / Col·laboracions'
+supports-field-support: Resum
+supports-field-type: 'Tipus d''ajut'
+mandatory-support-field-name: 'És obligatori posar-li un nom a la col·laboració'

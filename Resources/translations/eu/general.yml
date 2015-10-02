@@ -1,0 +1,136 @@
+guide-project-updates: '<b>Oso garrantzitsua da proiektuak beraien finantzakideak, eta interesaturik egon ahal diren beste pertsonak, informatuta izatea bere kanpaina zelan mugitzen den aurrera. Arlo honetatik proiektuari aurrera pausuei buruzko mezuak idatz dezakezu, blog publikoa antzera.</b> Goteo-n gainera, behin gutxiengo diru kopurua lortu eta gero, 2. finantzaketa txanda hasten denean, garrantzia handia du maiz azaltzeak zelan hasi den produkzio zatia, eman diren aurrera pausuak, egon diren arazoak, etabar. Horrela prozesua ahalik eta garden ikusiko da eta jendea proiektuaren hasieraren jakinaren gainean egongo da, eta interesa eta komunitatea piztuko da honen inguruan.'
+guide-project-supports: '<strong>Arlo honetan proiektua gauzatzeko, finantzaketaz aparte, zelako laguntza mota behar den zehaztu dezakezu.</strong><br /><br />Lanak beste pertsona batzuek egin ditzakete (itzulketak, kudeaketa, zabalketa, etabar), edo mailegu zehatzak (materiala, garraioa, hardware-a, etabar).'
+guide-project-rewards: '<strong>Arlo honetan proiektuaren talde itzulerak zehaztu behar dituzu, eta baita ere proiektuak finantzakideei eskaintzen dienak.</strong><br /><br />Diru kopuru bakoitzari dagokion banakako sariaz aparte, hemen proiektuari dagokion lizentzia ere aipatu behar duzu. Lizentzia aukeratzeko proiektuaren formatua kontutan izan behar duzu eta bere irekiera maila (osorik edo zatiren baten bat). Arlo hau oso garrantzitsua da: Goteo crowdfunding-eko plataforma bat da, non kode irekiko proiektuak eta Herri Ondarea indartzen dituzten proiektuak bultzatzen dira.<br /><br />Kasua bada, interesatzen zaizula hemen aipatutakoaren lizentziaz aparte, zure lana edo ideiaren jabetza intelektuala erregistratu nahi baduzu, talde itzuleraren bateragarritasuna mantenduz, babes legala jasotzea gomendatzen dizugu zerbitzu honen bitartez: <a href="http://www.safecreative.org/" target="new">Safe Creative</a>.'
+guide-project-costs: '<strong>Arlo honetan aurrekontu txiki bat prestatu behar duzu, non proiektuaren zure usteko gastuak ipintzen dituzun.</strong><br /><br />Lanak, azpiegiturak edo materialak zehaztuz egin behar duzu. Saiatu zaitez gastuetan errealista izaten, eta laburki azaldu zergatik bete behar duzun gastu bakoitza. Kontutan izan, orokorrean, proiektuaren zatirik handiena proiektua bultzatzen duzuenok landu behar duzuela, eta ez dela beste hirugarren pertsona bat kontratatuko. Kalkulatzerakoan, zenbatu ere Goteo-ko zerbitzu prestakuntza eta transakzioaren komisioak: 4''8%-6% a gutxi gorabehera (<a href="/faq/sponsor#q98" target="new">info + gure FAQetan</a>).<br /><br /> <strong>Oso garrantzitsua</strong>: Goteo-n funtsezko eta ez funtsezko gastuak bereizten ditugu. Funtsezkoak guztiz bete behar dira finantzaketa lortzeko, eta ez funtsezkoak aldiz eskatu egiten dira bigarren txanda batean, behin proiektua martxan dagoela, eta honen hobekuntza lortzeko (proiektua zabaltzeko, diseinua, irismena, ale gehiago, etabar). Ez funtsezko gastu hauek ezin dute proiektuaren gastu guztien erdia baino gehiago izan.'
+guide-project-contract-information: '<strong>Hemendik aurrera datu hauek bakarrik bete behar dituzu, zure proiektua alde berean finantzatua eta Goteo bitartez babestua izan nahi baduzu.</strong><br /><br />Arlo honetako informazioa beharrezkoa da zurekin harremanetan jartzeko, behar duzun finantzazioa lortzen baduzu. Horrela diru sarrera jaso ahal duzu. Erakundeen kasuetan aholkua da, erakundea ordezkatzen duen pertsona gero ofizialki bere burua egiaztatu ahal izatea (adibidez estatutuen bitartez edo lehendakariak onetsitako idazkari ziurtagiri baten bitartez, elkarteen kasuetan).'
+guide-project-description: '<strong>Arlo honetan proiektuaren alde kontzeptualak azalduko dira. </strong><br /><br />Hauxe izango da sareko erabiltzaileak aurkituko duten lehenengo gauza, beraz zaindu testua eta akats ortografikoak albo batean utzi. Derrigorreko kanpoak dagoela ikusiko duzu, adibidez, bideo sartu edo irudiak igo. Hauxe horrela da ukaezintzat ikusten ditugulako, Goteo bitartez, dirua jasotzeko kanpaina arrakastatsua hasi nahi bada.<br /><br />Kontutan izan Goteo-n baloratuena hauxe dela: zure proiektua komunitateari emango dion informazioa edo interes orokorreko ezagutza librea, originaltasuna, demanda soziala konpontzeko asmoa, interesaturik egon litekeen pertsona multzoa erakartzeko gaitasuna, argi eta garbi ustea proiekturen taldea gaitasuna esperientzia daukala proiektua ondo porturatzeko. Beraz ez ahaztu alde oien inguruan informatzea.'
+regular-header-about: 'Goteo-ri buruz'
+profile-about-header: 'Niri buruz'
+regular-admin_board: 'Admin panela'
+regular-allsome: guztiak/batzuk
+regular-anonymous: Ezezaguna
+regular-ask: Galdetu
+regular-header-blog: Blog
+regular-see_blog: Blog
+regular-by: 'Biderrez:'
+tooltip-dashboard-user-change_email: 'Hemen Goteo-n sartzeko erabiltzen duzun posta elektroniko helbidea aldatu dezakezu.'
+tooltip-dashboard-user-change_password: 'Hemen Goteo-n sartzeko erabiltzen duzun pasahitza aldatu dezakezu.'
+regular-invest_it: 'KOFINANTZATU PROIEKTU HAU'
+regular-collaborate: Babestu
+blog-comments: Iruzkinak
+tooltip-dashboard-user-confirm_email: 'Baieztatu Goteo-ko mezuak jasotzeko erabili nahi duzun posta elektroniko helbidea.'
+tooltip-dashboard-user-confirm_password: 'Baieztatu Goteo-n sartzeko erabili nahi duzun pasahitza.'
+regular-invest: Eman
+regular-investing: Jartzen
+regular-create: 'Proiektu bat sortu'
+regular-days: egun
+regular-discover: 'Ezagutu proiektuak'
+regular-published_no: Zirriborroa
+regular-edit: Editatu
+regular-delete: Ezabatu
+error-image-name: 'Errorea artxiboaren izenean'
+user-activate-fail: 'Errorea gertatu da erabiltzailearen kontu martxan jartzerakoan'
+user-changeemail-fail: 'Errorea emaila aldatzerakoan'
+error-image-tmp: 'Errorea artxiboa kargatzerakoan'
+error-image-size: 'Errorea artxiboaren tamainan'
+regular-facebook: Facebook
+fancybox: 'Fancybox testua'
+regular-header-faq: FAQ
+regular-first: Lehenengoa
+regular-share-twitter: 'Jarraituiguzu Twitter-en'
+regular-faq: 'Ohiko galderak'
+regular-getit: 'Lortu ezazu'
+regular-header-glossary: 'Ekonomia irekirako oinarriak'
+regular-google: Google+
+blog-main-header: 'Goteo-ko bloga'
+regular-share-facebook: 'Goteo Facebook-en'
+regular-main-header: Goteo.org
+guide-project-comment: guide-project-comment
+guide-project-support: guide-project-support
+regular-hello: Kaixo
+login-register-conditions: 'Plataforma erabiltzeko baldintzak onartzen ditut, eta nire datu pertsonalak tratatzeko baimena ematen dut. Horrela, portalaren erantzulea <a href="/legal/privacy" target="_blank">pribatutasun politikaz</a> ezarri du, non ikusi daiteke formulario honen bitartez jasotakoen datuei nolako erabilera izango duten, eta baita datuak ematen duen pertsonaren eskubideak.'
+regular-im: Naiz
+regular-identica: Identi.ca
+regular-media_legend: Legenda
+regular-lang: hizkuntza
+regular-last: Azkenengoa
+regular-license: Lizentzia
+regular-linkedin: LinkedIn
+regular-login: Sartu
+regular-logout: 'Saioa itxi'
+regular-looks_for: 'bila ezazu: '
+overview-field-about: 'Oinarriko ezaugarriak'
+regular-menu: Menua
+regular-message_success: 'Mezua ondo bidali da'
+regular-months: hilak
+home-posts-header: Berriak
+regular-news: 'Berriak:'
+regular-no: Ez
+translate-home-guide: 'Itzultzailearentzako mezua'
+error-image-type-not-allowed: 'Irudi formatu hauek bakarrik onartzen dira: .png .jpg .gif'
+error-image-type: 'png, jpg eta gif irudiak bakarrik onartzen dira'
+guide-project-images: 'Hau atala da proiektuaren irudiak igotzeko.'
+regular-more_info: '+ info'
+regular-preview: Aurreikusi
+tooltip-project-schedule: 'Zure proiektuaren produkzio agenda zelan geratzen den bistaratzea. Gogoratu bakarrik lan berriak markatu behar dituzula, ez aldiz bukatuta daudenak.'
+regular-recomended_by: 'Honako honek gomendatzen du proiektua:'
+regular-projects: proiektuak
+regular-published_yes: Argitaratua
+regular-read_more: 'Gehiago irakurri'
+regular-mandatory: 'Derrigorreko kanpoa'
+regular-review_board: 'Aztertzailearen panela'
+regular-round: '. txanda'
+regular-share-rss: RSS/BLOG
+regular-save: Gorde
+regular-search: Bilatu
+regular-see_all: 'Guztiak ikusi'
+regular-see_details: 'Xehetasunak ikusi'
+regular-see_more: 'Gehiago ikusi'
+regular-view_project: 'Proiektua ikusi'
+regular-send_message: 'Mezua bidali'
+regular-share_this: 'Konpartitu hemen:'
+regular-web: Webgunea
+tooltip-dashboard-user-new_email: 'Zehaztu posta elektronikoko helbide berria, non Goteo-ko mezuak jaso nahi dituzun.'
+regular-home: Hasiera
+regular-thanks: 'Eskerrik asko'
+user-account-inactive: 'Kontua desaktibaturik dago. Pasahitza berreskuratu behar duzu, berriro martxan jartzeko'
+error-user-email-token-invalid: 'Kodea ez da zuzena'
+error-user-email-confirm: 'Pasahitzaren baieztapena ez dator bat'
+error-contact-email-invalid: 'Idatzi duzun emaila ez da zuzena'
+error-user-email-invalid: 'Jarri duzun emaila ez da zuzena'
+error-register-email-exists: 'Aipatutako posta helbidea beste erabiltzaile batena da'
+error-image-size-too-large: 'Irudia handiegia da'
+validate-project-total-costs: 'Gastu hobezina ezin da 50%a baino gehiago gutxiengo gastuarekin konparatuz. Funtsezko gastuak igo ala ez funtsezko gastuak jaitsi.'
+error-user-password-confirm: 'Pasahitzaren baieztapena ez dator bat'
+error-user-wrong-password: 'Pasahitza ez da zuzena'
+error-user-password-invalid: 'Pasahitza laburregia da'
+user-register-success: 'Erabiltzailea ondo erregistratu da. Jarraian mezu bat jasoko duzu korreoan martxan jartzeko.'
+error-user-email-exists: 'Jada badago erabiltzaile bat email horrekin'
+regular-message_fail: 'Nolabaiteko errorea gertatu da mezua bidaltzerakoan'
+mandatory-project-costs: 'Bi gastuetan gutxienez banakatu behar da.'
+explain-project-progress: 'Grafiko honek ikuste-eran azaltzen du sartu duzun datu kopurua, sistemak egiten duen oinarriko ebaluazio batekin batera. Proiektua bidaltzeko 80%a baino gehiago gainditu behar duzu. "Termometro" hau igoarazten duten irizpideak nabarmenak diren ala ez, emandako informazioarekin zerikusia daukate, media-rekin, sartzen dituzun irudi eta estekekin, lizentzia irekiak aukeratzen badituzu, zure aurrekontuaren koherentzia eginbeharreko lanekin konparatuz, etabar. Ez galdu eskubiko zutabean dauden aholkuak, prozesu osoaren zehar gidatzen dute eta.'
+tooltip-dashboard-user-access_data: 'Hauexek dira zure sartzeko oraingo datuak. Aldatu ahal den datu bakarra, sartzeko izena da.'
+regular-total: Guztira
+project-invest-total: 'Jasotako kopurua'
+regular-translate_board: 'Itzultzailearen panela'
+regular-twitter: Twitter
+regular-go_up: Igo
+regular-sorry: 'Sentitzen dugu'
+regular-weeks: asteak
+header-about-side: 'Mugitzen gaituena'
+overview-field-motivation: 'Zerk bultzatzen zaitu eta nori doakio proiektua'
+project-messages-send_message_support-your_answer: 'Idatz ezazu hemen %s -(r)entzat elkarlanean aritzeko mezua'
+tooltip-dashboard-user-user_password: 'Goteo-n sartzeko orain erabiltzen duzun pasahitza idatz ezazu'
+tooltip-dashboard-user-new_password: 'Goteo-n sartzeko nahi duzun pasahitza idatz ezazu hemen.'
+project-messages-send_message-your_answer: 'Idatz ezazu hemen zure erantzuna'
+regular-yes: Bai
+guide-dashboard-user-access: 'Hemen Goteo-n sartzeko erabiltzen dituzun datuak aldatu ditzakezu.'
+invest-individual-header: 'Uko egin ahal duzu ez baduzu nahi saririk jaso zure jartzearen truke, edo beste sari bat aukeratu dezakezu, sari hori zure jartzearekin konparatuz maila berdinean edo beherago baldin badago.'
+error-user-email-empty: 'Ezin duzu email kanpoa hutsik utzi'
+error-register-pasword-empty: 'Ez duzu pasahitzik jarri'
+error-user-password-empty: 'Ez duzu pasahitza jarri'
+mandatory-register-field-email: 'Emaila zehaztu behar duzu'
+mandatory-cost-field-type: 'Gastu mota adieraztea derrigorrekoa da'
+validate-project-social_rewards: 'Talde itzulera bat gutxienez adieraztea derrigorrekoa da'
+mandatory-individual_reward-field-amount: 'Saria jasotzeko diru kopurua adieraztea derrigorrekoa da'
+guide-dashboard-user-personal: 'Datu hauek bete behar dituzu, bakarrik alde berean finantzatu izatea nahi baduzu eta Goteo-ren partetik babestua izan nahi baduzu. Arlo honetako informazioa beharrezkoa da zurekin harremanetan jartzeko, behar duzun finantzazioa lortzen baduzu. Horrela diru sarrera jaso ahal duzu.'

@@ -1,0 +1,227 @@
+#Goteo settings file
+---
+
+# Maintenance
+maintenance: false
+
+# Max session time
+session:
+    time: 3600
+
+# Internal secret for hashes
+secret: MkSsLUBRkQM0jHJkj8fbthvL7d2zvBEilGn7p4y7HACMz1mzlFKsCbz5ZLEW0ZN
+
+# local enviroment: local, beta, real
+env: local
+
+# main node
+node: goteo
+
+# Default system language
+lang: es
+
+# Default timezone
+timezone: Europe/Madrid
+
+# url
+url:
+    main: //localhost:8082
+    # url de recursos estaticos (imagenes, CSS)
+    assets: //localhost:8082
+
+    # If you want to use a CDN or another web server to serve the cached images
+    # You can define this constants. All cached images links will point to this
+    # Url, event if don't exists yet.
+    # Example:
+    # Point a data.example.com to var/cache/images
+    # the place a .htaccess in var/cache/images/.htaccess with this content
+    # <ifmodule mod_rewrite.c>
+    # RewriteEngine on
+    # RewriteCond %{REQUEST_FILENAME} !-f
+    # RewriteCond %{REQUEST_FILENAME} !-d
+    # RewriteRule ^(.*) http://example.com/img/$1 [R=302,L]
+    # </ifmodule>
+    #
+    data:
+
+# PLUGINS
+# Extend is the directory to personalize your copy of goteo.org
+# Routes, classes and templates can be overrided by copying the main structure
+# ie:
+#    - Autoloading classes
+#    - Templates will be found first from extend/plugin-name/Resources/templates path
+#    - Tests should be placed into extend/plugin-name/tests path
+#    - Routes can ve overwriten
+#    - Service container
+
+plugins:
+    goteo-dev:
+        active: true # plugin should be active=true to be loaded
+
+# Payment methods, must be registered as classes implementing Goteo\Payment\Method\PaymentMethodInterface
+payments:
+    # Paypal
+    paypal:
+        active: true
+        testMode:  true # set to false to real checkouts
+        username: paypal@example.com
+        password: paypal-password
+        signature: PAYPAL-Signature
+        # brandName: Your organisation
+        # headerImageUrl: Some URL image for the header
+        # logoImageUrl: logo URL
+        # borderColor: B5DADC
+
+    pool:
+        active: true
+    dummy:
+        active: true
+
+    # Additional custom payment methods should be added here
+
+# Force using https protocol
+ssl: false
+
+# IMPORTANT! if ssl and your server is behind a proxy
+# List the trusted proxies for SSL connection here
+proxies:
+    - 127.0.0.1
+    # Cloudflare IP list:
+    # - 103.21.244.0/22
+    # - 103.22.200.0/22
+    # - 103.31.4.0/22
+    # - 104.16.0.0/12
+    # - 108.162.192.0/18
+    # - 141.101.64.0/18
+    # - 162.158.0.0/15
+    # - 172.64.0.0/13
+    # - 173.245.48.0/20
+    # - 188.114.96.0/20
+    # - 190.93.240.0/20
+    # - 197.234.240.0/22
+    # - 198.41.128.0/17
+    # - 199.27.128.0/21
+
+
+# Default commission fee
+fee: 4
+
+# Filesystem used by goteo
+filesystem:
+    handler:    local      # 's3' to use AmazonS3 storage, 'local' to use local filesistem
+    # Only need to be defined credentials if filesystem is s3:
+    # AWS credentials
+    aws: &aws1
+        key:        your-aws-key
+        secret:     your-aws-secret
+        region:     eu-west-1
+
+    bucket:
+        static:     static.example.com        # where to store the assets (css, js, images)
+        mail:       mail-archive.example.com  # where to store alternative mail view
+
+# Database stuff
+db:
+    driver:   mysql     # Database driver (mysql)
+    host:     localhost # Database host
+    port:     3306      # Database port
+    charset:  UTF-8     # Database charset
+    database: goteo     # Database schema (database name)
+    username: root     # Database user for the goteo database
+    password: root  # Password for the goteo database
+
+    # SELECT queries caching
+    # setup it as 'files' to enable sql cache
+    cache:
+        driver:           # dejar vacia para no activar cache
+        time: 20          # Segundos de cache para las queries SELECT (puede ser sobreescrito por las query->cacheTime())
+        long_time: 3600   # Cache larga para textos
+
+    # Replica de lectura (opcional)
+
+    replica:
+        host:  # leave empty to not activate replica
+        # si se define una replica de lectura los siguientes parametros son opcionales
+        port: 3306
+        username: db-replica-username
+        password: db-replica-password
+
+# HTML Metas
+meta:
+    title:       "Development Goteo"       # Html default <title>
+    description: "--meta-description--" # Html default <meta description>
+    keywords:    "--keywords--"         # Html default <meta keywords>
+    author:      "--author--"           # Html default <meta author>
+    copyright:   "--copyright--"        # Html default <meta copyright>
+
+
+# Mail transport
+mail:
+    # receiving emails
+    mail:         info@localhost     # Main
+    contact:      info@localhost     # consulting head
+    manager:      manager@localhost  # accounts manager
+    fail:         dev@localhost      # dev head
+    log:          sitelog@localhost  # Loggin mail
+
+    # allowed addresses while in BETA/LOCAL env in PREG format
+    beta_senders: "(.+)example\\.org|(.+)example\\.com"
+    # Add to BCC this address to all communications (except massives). Applies only in REAL env
+    bcc_verifier:
+
+    transport:
+        from:          noreply@localhost
+        name:          Goteo Sender
+        type:          smtp
+        # if type is smtp:
+        smtp:
+            auth:     true
+            secure:   ssl
+            host:     localhost
+            port:     587
+            username: root
+            password: root
+
+    quota:
+        total: 50000  # Quota de envio máximo para goteo en 24 horas
+        sender: 40000 # Quota de envio máximo para newsletters para goteo en 24 horas
+
+    #clave de Amazon SNS para recopilar bounces automaticamente: 'arn:aws:sns:us-east-1:XXXXXXXXX:amazon-ses-bounces'
+    #la URL de informacion debe ser: goteo_url.tld/aws-sns.php
+    sns:
+        client_id:        XXXXXXXXX
+        region:           us-east-1
+        bounces_topic:    amazon-ses-bounces
+        complaints_topic: amazon-ses-complaints
+
+# This will be used for geolocating users, projects, and mail tracking
+geolocation:
+    # Path to maxmind databases, you need to download (and keep updated) either the free o comercial
+    # databases from maxmind. Check this for more info: https://dev.maxmind.com/geoip/geoipupdate/
+    # relative paths are allowed (ie: you can save your maxmind databases into config/resources/maxmind if you want)
+    maxmind:
+        cities: #/usr/share/GeoIP/GeoLite2-City.mmdb
+
+# Social Services constants
+oauth:
+    # Credenciales app Facebook
+    facebook:
+        id:     000000000000000                  #
+        secret: aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa #
+
+    # Credenciales app Twitter
+    twitter:
+        id:      aaaaaaaaaaaaaaaaaaaaaa                     #
+        secret:  aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa #
+
+    # Credenciales app Linkedin
+    linkedin:
+        id:     aaaaaaaaaaaa     #
+        secret: aaaaaaaaaaaaaaaa #
+
+    # Credenciales Google
+    google:
+        id: aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+        secret: aaaaaaaaaaaaaaaaaa
+
+

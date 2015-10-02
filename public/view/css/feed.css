@@ -1,0 +1,34 @@
+/* comunes
+************/
+div.feed a{text-decoration:none}
+div.feed h4, div.feed h5{margin:0}
+div.feed .light-blue{color:#1DB3B2}
+div.feed .blue{color:#0B4F99}
+div.feed .violet{color:#95268D}
+div.feed .red{color:#E22727}
+div.feed .grey{color:#CBBCBF}
+div.feed .green{color:#20A64B}
+
+div.subitem{height:auto;overflow:auto;border-bottom:#A7A8AC 1px dashed;padding:10px 5px 10px 0}
+div.subitem.odd{background:#F7F7F7}
+
+div.feed  div.block{border-right: 2px solid #EBEAEB;float: left;margin-right: 11px;overflow: hidden;
+width: 285px;}
+div.feed  div.block.last{border-right:none;padding-right:0;margin-right:0}
+div.feed  div.block > div.item{height:350px;}
+div.feed  div.block > div.item div.subitem{width:260px}
+div.subitem > div{height:auto;overflow:auto}
+div.feed  div.block > h4{color:#59595C; padding-bottom:5px;border-bottom:#E95C5C 1px solid;max-width:265px;margin-bottom:5px;}
+div.subitem h5{text-transform:none;margin-bottom:3px;}
+div.subitem h5 a{font-size:1.1em;}
+span.datepub{float:left;display:block;clear:right;color:#A7A8AC;font-size:0.9em;margin-bottom:2px}
+div.content-avatar{}
+div.content-title{height:auto;overflow:hidden !important}
+div.content-image{height:auto;overflow:hidden !important}
+div.content-pub{clear:both;margin-top:2px;color:#59595C;font-size:0.9em;}
+div.content-pub a{font-size:1em}
+div.subitem > div.content-avatar{margin-bottom:0;overflow:hidden;}
+div.subitem > div.content-avatar > a.avatar{float:left;display:block;margin-right:5px;}
+div.subitem > div.content-avatar > a.username{display:block;clear:right;font-size:1.1em;line-height:1.1em;font-weight:bold}
+div.subitem > div.content-image > a.image{float:left;height:60px;width:90px;margin-right:5px}
+div.subitem > div.content-image > a.project{display:block;clear:right;font-size:1em;line-height:1.1em;font-weight:600;margin-bottom:3px}

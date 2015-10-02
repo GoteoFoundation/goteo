@@ -1,0 +1,1 @@
+INSERT INTO node (id, `name`, active) VALUES('goteo', 'Master node', 1);

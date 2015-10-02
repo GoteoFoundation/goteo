@@ -1,0 +1,124 @@
+dashboard-investors-mail-fail: 'Error en enviar el missatge a %s: %s'
+dashboard-chart-days: 'QUEDEN %s DIES'
+dashboard-rewards-investors_table: '<p>Si vols gestionar-lo offline pots <a id="sacaexcel" href="/dashboard/projects/rewards/table" target="_blank">baixar la Taula de Cofinanciadors</a></p>'
+dashboard-menu-profile-access: 'Dades d''accés'
+dashboard-menu-admin_board: Administració
+dashboard-rewards-all_filter: Totes
+dashboard-rewards-massive_msg-all_alert: 'a tots és a tots, no té en compte la resta de marcats'
+dashboard-rewards-process: 'Aplicar marcats'
+dashboard-project-delete_alert: 'Segur que desitges eliminar absoluta i definitivament aquest projecte?'
+dashboard-menu-projects-rewards: 'Gestió cofinançadors'
+user-preferences-tips: 'Bloquejar consells de difusió de campanya (per a impulsors)'
+dashboard-rewards-amount_order: 'Per import'
+dashboard-rewards-date_order: 'Per data'
+dashboard-rewards-reward_order: 'Per retorn'
+dashboard-rewards-user_order: 'Per usuari'
+dashboard-rewards-process_alert: 'Ull! En marcar com a complerta no es pot desmarcar. Continuem?'
+user-changeemail-title: 'Canviar email'
+user-changepass-title: 'Canviar contrasenya'
+dashboard-chart-investors: COFINANÇADORS
+dashboard-embed_code_investor: 'CODI AMB IMATGE DE PERSONA COFINANÇADORA'
+dashboard-menu-projects-supports: 'Col·laboracions '
+dashboard-rewards-massive_msg: 'Missatges col.lectius'
+dashboard-rewards-num_taken: Compromeses
+user-changepass-confirm: 'Confirmar nova contrasenya'
+dashboard-project-blog-fail: 'Contacta amb nosaltres'
+dashboard-menu-projects-contract: Contracte
+contract-data_title: 'Dades del contracte'
+dashboard-rewards-amount_group: 'Aportacions de'
+user-changepass-old: 'Contrasenya actual'
+dashboard-rewards-address: 'Adreça de lliurament'
+user-preferences-threads: 'Bloquejar notificacions de respostes als missatges que jo inicio '
+user-preferences-updates: 'Bloquejar notificacions sobre novetats dels projectes que recolzo'
+user-preferences-mailing: 'Bloquejar l''enviament del newsletter'
+user-preferences-rounds: 'Bloquejar notificacions de progrés dels projectes que recolzo'
+dashboard-rewards-resign_filter: Donatius
+dashboard-menu-profile-profile: 'Editar perfil'
+dashboard-project-updates-delete_fail: 'Error en eliminar l''entrada'
+dashboard-rewards-choosen: 'Recompenses esperades:'
+dashboard-chart-invested: 'FINANÇAMENT OBTINGUT'
+dashboard-rewards-fulfilled_filter: Complertes
+dashboard-rewards-fulfilled_status: Complerta
+dashboard-menu-profile-location: Geolocalització
+dashboard-translate-select_profile: 'Traduir el teu perfil personal'
+guide-user-data: 'Text guia en l''edició de camps sensibles'
+user-preferences-email: 'Ocultar el meu correu electrònic als projectes que recolzo'
+dashboard-rewards-issue: Incidència!
+dashboard-rewards-user_msg: 'Individual a'
+form-project_waitfor-expired: 'No ho has aconseguit :( Tracta de millorar-ho i intenta-ho de nou!'
+user-preferences-comlang: 'Idioma en el que prefereixes rebre les notificacions'
+dashboard-investors-mail-sended: 'Missatge enviat correctament a %s: %s'
+dashboard-rewards-group_msg: 'missatge a aquell grup'
+dashboard-menu-activity: Activitat
+dashboard-header-main: 'El meu panell'
+dashboard-menu-profile: Perfil
+dashboard-menu-projects: Projectes
+dashboard-menu-translates: Traduccions
+dashboard-menu-activity-wall: 'El meu mur'
+user-changepass-new: 'Nova contrasenya'
+dashboard-project-updates-inserted: 'S''ha afegit una nova entrada'
+dashboard-menu-projects-updates: Actualitzacions
+dashboard-project-updates-noblog: 'No s''ha trobat cap blog per aquest projecte'
+dashboard-investors-mail-nowho: 'No s''han trobat destinataris'
+dashboard-chart-optimum: Òptim
+dashboard-menu-projects-messegers: Participants
+dashboard-rewards-pending_filter: Pendents
+dashboard-rewards-pending_status: Pendent
+dashboard-menu-profile-personal: 'Dades personals'
+dashboard-project-updates-nopost: 'No s''ha trobat l''entrada'
+dashboard-project-updates-deleted: 'Entada eliminada'
+dashboard-project-updates-saved: 'L''entrada s''ha actualitzat correctament'
+dashboard-menu-profile-preferences: Preferències
+user-profile-saved: 'Informació de perfil actualitzada'
+dashboard-menu-projects-preview: 'Pàgina pública'
+dashboard-menu-profile-public: 'Perfil públic'
+dashboard-menu-review_board: Revisió
+dashboard-menu-projects-commons: Retorns
+guide-dashboard-user-preferences: 'Marca ''Sí'' a les notificacions automàtiques que vulguis bloquejar.'
+dashboard-translate-select_call: 'Selecciona convocatòria per traduir'
+dashboard-translate-select_node: 'Selecciona node per traduir'
+dashboard-translate-select_project: 'Selecciona projecte per traduir'
+dashboard-investors-mail-sendto: 'Enviat a %s dels teus cofinançadors:'
+dashboard-messegers-mail-sendto: 'Enviat a %s els/les participants:'
+dashboard-embed_code: 'CODI DIFUSIÓ SIMPLE'
+dashboard-project-blog-wrongstatus: 'Ho sentim, encara no es poden publicar actualitzacions en aquest projecte'
+dashboard-project-blog-inactive: 'Ho sentim, la publicació de novetats en aquest projecte està desactivada'
+dashboard-menu-calls-sponsors: Patrocinadors
+dashboard-menu-activity-spread: Difusió
+form-project_waitfor-campaing: 'Difon el teu projecte, ajuda a que aconsegueixi el màxim d''aportacions!'
+dashboard-menu-activity-summary: Resum
+dashboard-menu-projects-summary: Resum
+dashboard-rewards-thanks: 'Agraïment / Donatiu'
+user-changeemail-success: 'L''email s''ha canviat correctament ;)'
+guide-dashboard-user-location: 'El sistema utilitza aquestes dades per geolocalitzar-te'
+dashboard-chart-no-invested: 'No hi ha aportacions'
+dashboard-project-updates-postcorrupt: 'L''entrada s''ha corromput, contacta amb nosaltres'
+dashboard-project-updates-fail: 'Hi ha hagut algun problema en desar les dades'
+user-save-fail: 'Hi ha hagut algun problema en desar les dades'
+dashboard-rewards-notice: 'AIXÒ ÉS UNA VISUALITZACIÓ DE LES OPCIONS DE RETORN QUE TRIEN ELS TEUS COFINANÇADORS.<br/> NO HAS DE GESTIONAR AQUESTS RETORNS FINS HAVER ARRIBAT AL MÍNIM DE LA QUANTITAT DESITJADA'
+dashboard-rewards-massive_msg-all: 'A totes les persones confinançadores d''aquest projecte'
+dashboard-menu-translate_board: Traducció
+user-personal-saved: 'Dades personals actualitzades '
+dashboard-rewards-resigns: 'Renuncia a la recompensa'
+form-project_waitfor-cancel: 'Finalment hem desestimat la proposta per publicar-la a Goteo, et convidem a intentar-ho amb una altra idea o concepte.'
+user-email-change-sended: 'T''hem enviat un email per confirmar el teu canvi d''adreça electrònica'
+dashboard-investors_table-disclaimer: 'Us recordem que, tal com estableix el vostre contracte, les dades descarregables dels finançadors inclosos a l''arxiu es faciliten als únics i exclusius efectes de satisfer als finançadors les recompenses o retorns compromesos en el projecte, així com per informar aquells sobre les novetats, avenços i activitats relacionades amb el projecte, quedant absolutament prohibit l''ús dels mateixos per a qualsevol altra finalitat. L''incompliment d''aquesta obligació faculta la Fundació Fuentes Abiertas, gestora de la plataforma, per emprendre les accions legals corresponents i retirar el projecte de la plataforma'
+form-project_waitfor-review: 'En breu ens posarem en contacte amb tu respecte al projecte, una vegada es dugui a terme el procés de revisió. A continuació ho publicarem o bé et suggerirem coses per millorar-lo.'
+form-project_waitfor-edit: 'Quan ho tinguis llest envia-ho a revisió. Necessites arribar a un mínim d''informació sobre el projecte al formulari.'
+guide-dashboard-user-profile: 'Tant si vols presentar un projecte com incorporar-te com a cofinanciador/a, per formar part de la comunitat de Goteo et recomanem que escriguis el teu text de presentació, que afegeixis links rellevants sobre el que fas i pugis una imatge de perfil amb la qual t''identifiquis.'
+dashboard-menu-projects-widgets: Widget
+dashboard-investors-mail-text-required: 'Escriu el missatge'
+dashboard-password-recover-advice: 'Assegura''t de restablir la teva contrasenya'
+dashboard-translate-doing_call: 'Estàs traduint la convocatòria <strong>%s</strong>. L''idioma original és <strong>%s</strong>'
+dashboard-translate-doing_node: 'Estàs traduint el node <strong>%s</strong>. L''idioma original és <strong>Català</strong>'
+dashboard-translate-doing_project: "Estàs traduint el projecte <strong>%s</strong>. L'idioma original és <strong>%s</strong>\r\n"
+dashboard-translate-doing_profile: 'Estàs traduint el teu perfil personal.'
+user-password-changed: 'Has canviat la teva contrasenya'
+form-project_waitfor-success: 'Has aconseguit el mínim o més en aportacions de cofinançament pel projecte. De seguida et contactarem per parlar de diners :)'
+form-project_waitfor-fulfilled: 'Has complert amb els retorns :) Gràcies per la teva participació!'
+user-prefer-saved: 'Les teves preferències de notificació s''han desat correctament'
+api-key-no-generated: 'Aún no tienes una key generada'
+dashboard-menu-activity-apikey: 'Clave API'
+user-preferences-currency: 'Divisa en la que prefieres ver los importes'
+user-preferences-comcurrency: 'Divisa en la que prefieres ver los importes'
+api-key-tool-tip: 'Con tu usuario y Api Key podrás realizar consultas a nuestra API'

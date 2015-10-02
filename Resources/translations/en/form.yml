@@ -1,0 +1,36 @@
+help-license-to-consultant: '- Needs help with collective returns and licenses<br/>'
+help-cost-to-consultant: '- Needs some help in the costs section.<br/>'
+form-add-button: Add
+form-apply-button: Apply
+form-project_status-fulfilled: 'Benefit completed'
+costs-field-select-rounds: 'Campaign duration'
+form-project_status-campaing: 'Campaign in progress'
+form-project_status-cancelled: Canceled
+form-project_status-expired: Closed
+overview-extra-fields: 'Complementary fields'
+form-self_review-button: Correct
+form-project-progress-title: 'Data evaluation'
+form-project_status-cancel: Discarded
+form-edit-button: Edit
+form-footer-errors_title: Errors
+form-project_status-review: 'Evaluation pending'
+project-form-header: Form
+form-project_status-success: Funded
+form-navigation_bar-header: 'Go to'
+tooltip-project-personal-entity_name: 'If you represent an entity, this is the indicated place to let it be known.'
+form-project_status-edit: 'In review'
+form-next-button: Next
+form-accept-button: OK
+form-project-info_status-title: 'Overall status of information'
+form-media_send-button: 'Play video'
+form-project-status-title: 'Project status'
+form-remove-button: Remove
+form-send_review-button: Send
+form-upload-button: Send
+project-one-round: 'Single 40-day round'
+project-personal-field-entity_name: 'The party on behalf of which you are acting (if applicable)'
+form-errors-total: 'There''s %s errors in total'
+form-ajax-info: 'This form is saved automatically while you fill it out'
+form-errors-info: 'Total: %s | At this step: %s'
+project-two-rounds: 'Two 40-day rounds'
+form-image_upload-button: 'Upload image'

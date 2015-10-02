@@ -1,0 +1,105 @@
+div.widget.user {   
+    margin-bottom: .8em;
+}
+
+div.widget.user div.image {
+    width: 80px;
+    height: 80px;
+    display: block;
+    margin-bottom: 12px;
+}
+
+div.widget.user blockquote.about {
+    padding: 0 2px;
+    margin: 0 0 1em;
+}
+
+div.widget.user dl,
+div.widget.user dt,
+div.widget.user dd {
+    padding: 0;
+    margin: 0;
+}
+
+div.widget.user dl dt {
+    display: none;
+}
+
+div.widget.user dl dd {
+    border-top: 1px solid #a5a7a9;
+    padding: 1em 0;
+}
+
+div.widget.user dl dd.location {
+    padding-left: 15px;
+    background: url('/view/css/location/s.png') no-repeat left center;
+    text-indent: .5em;
+    text-decoration: none;
+}
+
+div.widget.user dl dd.links ul {
+    padding: 0;
+    margin: 0;
+    list-style: none;
+    line-height: 2em;
+}
+
+div.widget.user dl dd.links ul a {
+    font-weight: bold;
+    text-decoration: none;
+    font-size: 12px;
+}
+
+div.widget.user dl dd.user-social ul{
+    padding: 0;
+    margin: 0;
+    list-style: none;
+    line-height: 2em;
+    display: table;
+    width:100%;
+}
+
+div.widget.user dl dd.user-social ul li {
+    display: block;
+    padding-left: 30px;
+    float: left;    
+    min-height: 2em;
+    line-height: 2em;
+    background: no-repeat left center;
+    min-width: 20%;
+}
+
+div.widget.user dl dd.user-social ul li a {
+    text-decoration: none;
+}
+
+div.widget.user dl dd.user-social ul li.facebook {
+    background-image: url('/view/css/social/facebook.png');
+}
+
+
+div.widget.user dl dd.user-social ul li.twitter {
+    background-image: url('/view/css/social/twitter.png');    
+}
+
+div.widget.user dl dd.message {
+    padding-left: 22px;
+    background: url('/view/css/bocadillo/s.png') no-repeat left center;
+    text-indent: .5em;
+    text-decoration: none;
+}
+
+div.widget.user dl dd.message a {
+    font-weight: bold;
+    text-decoration: none;
+    font-size: 14px;
+    color: #28B258;
+}
+
+div.widget.user dl dd.message a:hover {
+    text-decoration: underline;
+}
+
+div.widget.user a.button {
+    margin: 1.5em 0 10px;
+}

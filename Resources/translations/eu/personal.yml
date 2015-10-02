@@ -1,0 +1,37 @@
+mandatory-project-field-zipcode: 'Proiektuaren erantzulearen posta kodea derrigorrekoa da'
+personal-field-address: Helbidea
+personal-field-location: Hiria/herria
+personal-field-country: Herria
+personal-field-contract_birthdate: 'Jaiotze eguna'
+personal-field-post_address-different: Desberdina
+personal-field-contract_email: 'Proiektuari lotutako emaila'
+tooltip-project-entity_cif: 'Idatz ezazu erakundearen IFK zenbakia (letra + zenbakia).'
+tooltip-project-entity_office: 'Idatz ezazu ordezkatzen duzun erakundearen kargua (idazkaria, lehendakaria, batzordekide...).'
+tooltip-project-contract_birthdate: 'Aukeratu zure jaiotze data. Datu hau ez da inolaz ere argitara aterako, interesa estatistikoagatik eskatzen dizugu bakarrik.'
+tooltip-project-post_address: 'Beharrezkoa bada, zehaztu helbidea'
+personal-field-contract_data: 'Proiektua erantzulearen datuak'
+personal-main-header: 'Bultzatzailearen datuak'
+tooltip-project-main_address: 'Pertsona edota erakundearen zerga-egoitza (pertsona ala erakundea zaren)'
+personal-field-contract_entity-entity: 'Pertsona juridikoa (elkarteak, fundazioak, enpresak)'
+tooltip-project-contract_email: 'Proiektuari lotutako posta elektroniko helbide nagusia. Hemen jakinarazpenak jasoko dituzu eta baita Goteo-ko taldearen mezuak, proposatutako proiektuaren inguruan.'
+personal-field-entity_name: 'Erakundearen izena'
+personal-field-entity_cif: 'Erakundearen IFK zenbakia'
+tooltip-project-contract_surname: 'U2-Aholkua-5 Proiektuaren erantzulearen abizena betetzeko aholkua'
+personal-field-contract_entity-person: 'Pertsona fisikoa'
+personal-field-entity_office: 'Erakundean daukazun kargua'
+personal-field-zipcode: 'Posta kodea'
+step-2: Bultzataile
+personal-field-post_address-same: Berdin
+step-userPersonal: 'urratsa: norbanakoaren datuak'
+personal-field-phone: 'Telefono zenbakia'
+tooltip-project-phone: 'Telefono mugikorra edo finkoaren zenbakia, aurrezenbakiarekin.'
+validate-project-value-entity_cif: 'IFK zenbakia'
+validate-project-value-phone: 'Telefono zenbakiaren formatua ez da zuzena'
+mandatory-project-field-address: 'Proiektuaren erantzulearen helbideo idaztea derrigorrekoa da.'
+tooltip-project-contract_data: 'Bai pertsona fisiko edo juridiko bezala, beharrezkoa da norbaitek proiektuaren bultzatzaile bezala agertzea, Goteo-ko taldearekin mintzaide papera betetzeko. Ez da derrigorrez aurreko urratseko soslaiarekin egokitu behar.'
+tooltip-project-entity_name: 'Idatz ezazu erakundearen izena IFK agirian agertzen den bezala.'
+tooltip-user-image: 'Ez da derrigorrekoa irudia zure soslaian jartzea, baina gainerako erabiltzaileak zu ezagutzeko laguntzen du.'
+mandatory-project-field-country: 'Proiektuaren erantzulearen herria derrigorrekoa da'
+mandatory-project-field-phone: 'Proiektuaren erantzulearen telefono zenbakia derrigorrekoa da'
+mandatory-project-field-contract_email: 'Proiektuaren erantzulearen emaila idaztea derrigorrekoa da.'
+mandatory-project-field-residence: 'Proiektuaren erantzulearen bizilekua idaztea derrigorrekoa da.'

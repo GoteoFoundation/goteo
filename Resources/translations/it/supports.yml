@@ -1,0 +1,15 @@
+mandatory-support-field-description: 'È obbligatorio indicare una descrizione'
+tooltip-project-support: 'Consiglio per revisione collaborazioni esistenti '
+tooltip-project-nsupport: 'Consiglio per completare una nuova collaborazione'
+tooltip-project-support-description: 'Spiega brevemente di che tipo di aiuto progetto necessita per aiutare la gente a conoscerlo e così sostenerlo.'
+tooltip-project-support-type: 'Seleziona se il progetto necessita di supporto in compiti specifici o prestiti (di materiale, infrastruttura, ecc.).'
+step-6: 'Collaborazioni '
+supports-fields-support-title: 'Collaborazioni '
+supports-field-description: Descrizione
+tooltip-project-support-support: 'Titolo descrittivo sulla collaborazione necessaria.'
+tooltip-project-supports: 'Su Goteo i progetti possono ricevere un''altro sostegno oltre alle donazioni monetarie. Ci sono persone che non possono offrire un aiuto economico, ma di talento, tempo, energia, ecc.'
+supports-main-header: 'Richiesta di collaborazioni'
+step-supports: 'Passaggio: Progetto/Collaborazioni'
+supports-field-support: Riassunto
+supports-field-type: 'Tipo di sostegno'
+mandatory-support-field-name: 'È obbligatorio dare un nome alla collaborazione'

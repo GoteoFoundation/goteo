@@ -1,0 +1,17 @@
+feed-new_project: '    <span class="red">Nieuw SiteName project</span>, je hebt 40 dagen om dit project te steunen.'
+feed-project_goon: '    Het project, %s, <span class="red">zal doorgaan</span> naar de tweede ronde, omdat het <span class="violet">%s ? (%s %) van de minimum bijdragen heeft ontvangen</span>'
+feed-project_fail: '    Het project, %s, is <span class="red">gesloten</span> met slechts <span class="violet">%s ? (%s %) van de minimum bijdrage</span>'
+feed-project_finish: '    Het project, %s, heeft <span class="red">de tweede ronde afgelegd</span> en <span class="violet">%s ? (%s %) van de minimum bijdrage ontvangen</span>'
+feed-timeago: '%s geleden'
+feed-new_update: '%s nieuwe post in %s over %s'
+feed-messages-response: 'Heeft geantwoordt op %s van project %s'
+feed-invest: 'Heeft met %s bijgedragen aan het %s project'
+feed-messages-new_thread: 'heeft een thread geopend op %s van project %s'
+feed-new_support: 'Heeft een nieuwe <span class="green">samenwerking</span> gepubliceerd bij %s project, met de titel "%s"'
+feed-updates-comment: 'Heeft een <span class="green">Commentaar</span> geschreven op het bericht "%s" op %s van het %s project'
+feed-timeago-justnow: slechts
+feed-message_support-response: 'Nieuwe samenwerking met %s bij project %s'
+feed-new_user: 'Nieuwe gebruiker, %s'
+feed-timeago-published: 'Geleden %s gepubliceerd'
+feed-timeago-periods: seconde-seconden_minuut-minuten_uur-uren_dag-dagen_week-weken_maand-maanden_jaar-jaren_decennium-decennia
+feed-project_runout: 'Het %s project heeft nog<span class="red">%s dagen</span> tot het einde van ronde nummer %s'

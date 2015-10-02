@@ -1,0 +1,10 @@
+blog-side-tags: 'Categorie '
+blog-coments-header: 'Commenti '
+blog-comments_no_allowed: ...
+blog-side-last_comments: 'Ultimi commenti'
+blog-side-last_posts: 'Ultime entrate'
+blog-no_comments: 'Senza commenti'
+blog-no_posts: 'Nessuna entrata pubblicata'
+blog-send_comment-button: Inviare
+blog-comments_no_comments: 'Non ci sono commenti in questa entrata'
+blog-send_comment-header: 'Scrivi il tuo commento'

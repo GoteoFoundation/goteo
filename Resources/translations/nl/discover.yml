@@ -1,0 +1,18 @@
+discover-patron-header: '<span class="greenblue">%s</span> raad<br />deze <span class="red">projecten</span> aan'
+discover-group-outdate-header: 'Verloopt bijna'
+discover-searcher-bycategory-all: Alles
+discover-searcher-bylocation-all: Alles
+discover-searcher-byreward-all: Alles
+discover-group-archive-header: Opgeslagen
+discover-searcher-byreward-header: 'Per beloning:'
+discover-searcher-bycategory-header: 'Per categorie:'
+discover-searcher-bycontent-header: 'Op inhoud:'
+discover-searcher-bylocation-header: 'Per locatie:'
+discover-group-all-header: 'Campagne in ontwikkeling'
+discover-searcher-header: 'Vind een project'
+discover-group-popular-header: Populairst
+discover-group-recent-header: Recent
+discover-searcher-button: Zoek
+discover-results-header: Zoekresultaten
+discover-group-success-header: Successen
+discover-results-empty: 'We hebben geen projecten gevonden die aan jouw zoekcriteria voldoen'

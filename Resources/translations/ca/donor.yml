@@ -1,0 +1,23 @@
+dashboard-donor-main_guide: 'Passat l''any: fins el 15 de gener de cada any es poden confirmar les dades fiscals. Fins el 30 de juny es pot descarregar el certificat. <br/>Per a enguany: a partir de l''1 de juliol es poden confirmar dades i descarregar el certificat.'
+validate-donor-mandatory: 'Tots els camps són obligatoris'
+dashboard-donor-confirm_button: 'Tancar dades i emetre certificat'
+donor-address-country-field: País
+donor-field-amount: 'Import donatiu:'
+dashboard-menu-activity-donor: 'Certificat de donatiu'
+dashboard-donor-download_certificate: 'Descarregar el certificat'
+dashboard-donor-edit_guide: 'Emplena les dades que vols que apareguin al teu certificat. Un cop descarreguis l''arxiu aquestes dades ja no es podran modificar.'
+dashboard-donor-edit_data: 'Modificar dades'
+personal-field-donor_name: Nom
+donor-field-numproj: 'Aportacions realitzades el %s'
+donor-address-location-field: Província
+personal-field-donor_surname: Cognoms
+dashboard-activity-donor-header: 'Dades fiscals per obtenir el certificat de donació'
+dashboard-donor-saved: 'Gràcies per modificar les teves dades. Per descarregar el certificat assegura''t primer de que són correctes, i a continuació valida''ls amb el botó de tancar dades.'
+dashboard-donor-confirmed: 'Ja has confirmat les dades fiscals per al certificat de %s. Si has detectat alguna errada en les teves dades contacta''ns a donate@goteo.org'
+dashboard-donor-pdf_closed: 'Les dades fiscals per al certificat de donacions de %s no han estat confirmades, no es pot descarregar'
+dashboard-donor-save_fail: 'Hi ha hagut algun error en gravar les teves dades. Si us plau, revisa''ls i, si persisteix el problema, contacta amb nosaltres.'
+dashboard-donor-no_donor: 'El teu certificat de donacions de %s encara no està disponible'
+dashboard-donor-confirm_succes: 'Has confirmat la validesa de les teves dades. Gràcies!'
+dashboard-donor-confirm_data: 'Les dades fiscals d''aquest donatiu ja no podran modificar-se. Prement ACCEPTAR confirmes l''autenticitat dels mateixos.'
+dashboard-donor-mandatory: 'OBLIGATORIO RELLENAR LOS DATOS FISCALES'
+dashboard-donor-confirm_closed: 'El periodo de confirmación de datos fiscales para certificado de %s está cerrado'

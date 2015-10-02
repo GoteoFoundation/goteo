@@ -1,0 +1,20 @@
+discover-patron-header: '<span class="greenblue">%s</span> consiglia<br />estos <span class="red">Progetti</span>'
+discover-group-outdate-header: 'In archiviazione'
+discover-searcher-bycategory-all: TUTTE
+discover-searcher-bylocation-all: TUTTI
+discover-searcher-byreward-all: TUTTI
+discover-group-archive-header: 'Archiviati '
+discover-searcher-byreward-header: 'Per beneficio:'
+discover-searcher-bycategory-header: 'Per categoria:'
+discover-searcher-bycontent-header: 'Per contenuto:'
+discover-searcher-bylocation-header: 'Per luogo:'
+discover-group-all-header: 'In fase di campagna'
+discover-group-fulfilled-header: 'Hanno ottenuto benefici collettivi '
+discover-searcher-header: 'Cerca un progetto'
+discover-group-others-header: 'Negli altri nodi'
+discover-group-popular-header: 'Più popolari '
+discover-group-recent-header: 'Pubblicati recentemente'
+discover-searcher-button: Cercare
+discover-results-header: 'Risultato della ricerca'
+discover-group-success-header: 'Campagne di successo '
+discover-results-empty: 'Non abbiamo trovato nessun progetto che abbia i requisiti della ricerca'

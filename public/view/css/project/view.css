@@ -1,0 +1,423 @@
+@import url('widget/wof.css');
+@import url('widget/summary.css');
+@import url('widget/media.css');
+@import url('widget/share.css');
+@import url('widget/patrons.css');
+@import url('widget/message.css');
+@import url('widget/support.css');
+@import url('widget/needs.css');
+@import url('widget/collaborations.css');
+@import url('widget/supporters.css');
+@import url('widget/rewards.css');
+@import url('widget/messages.css');
+@import url('widget/updates.css');
+@import url('widget/invest.css');
+@import url('widget/schedule.css');
+@import url('../user/widget/user.css');
+@import url('../worth/base.css');
+@import url('../worth/legend.css');
+
+
+body.project-show div#main {
+    margin-top: 0;
+    margin-bottom: 0;
+}
+
+/**
+ * Menu
+*/
+
+body.project-show div#sub-header {
+	/*height:120px;*/
+	height:auto;
+	min-height:120px;
+    padding-bottom: 0;
+	background:#faf8f8;
+}
+
+body.project-show div#sub-header div.project-header{
+    min-height: 75px;
+	position:relative;
+	top:10px;
+}
+
+body.project-show div#sub-header div.project-header img{
+    float: left;
+	margin: 2px 20px 0 0;
+}
+
+body.project-show div#sub-header div.project-header h2{
+	font-size:2em;
+	max-width:700px;
+}
+
+body.project-show div#sub-header div.project-header h2 > span{
+	display: block;
+	line-height: 1em;
+}
+
+body.project-show div#sub-header div.project-subtitle {
+    font-size: 16px;
+    font-weight: normal;
+    margin: 3px 0;
+	max-width:620px;
+	font-style: normal;
+}
+
+body.project-show div#sub-header div.project-by {
+    color: #20B3B2;
+    font-size: 12px;
+    margin: 0 0 .5em;
+    float:left;
+}
+
+body.project-show div#sub-header div.project-by a {
+    font-weight: normal;
+    color: #20B3B2;
+    font-size: 12px;
+    text-decoration: none;
+}
+
+body.project-show div#sub-header div.project-by a:hover {
+    color: #58595B;
+}
+
+body.project-show div#sub-header div.categories {
+	position: absolute;
+    right: 0;
+	top: 70px;
+    text-align: right;
+	max-width: 320px;
+	max-height: 45px;
+    overflow: hidden;
+}
+
+body.project-show div#sub-header div.categories h3 {
+    font-weight: normal;
+    color: #20B3B2;   
+    margin: 0;
+}
+
+body.project-show div#sub-header div.categories * {
+    font-size: 12px;
+}
+
+body.project-show div#sub-header div.categories a {
+    color: #58595B;
+    text-decoration: none;
+}
+
+body.project-show div#sub-header div.categories a:hover {
+    color: #20B3B2;
+}
+
+body.project-show div.project-menu {
+	margin:18px 0 0 0;
+}
+
+body.project-show div.project-menu div.sub-menu{
+    max-width: 940px;
+    margin: 0;
+}
+
+body.project-show div.project-menu ul {
+    padding: 0;
+    margin: 0;
+    list-style: none;
+    font-size: 0;
+    height: 28px;
+}
+
+body.project-show div.project-menu ul li {
+    display: inline-block;
+    margin-right: 1px;    
+	height:30px;
+}
+
+body.project-show div.project-menu ul li span.digits{
+	display:inline-block;
+	width:30px;
+	text-align:center;
+}
+
+body.project-show div.project-menu ul li a {
+    display: inline-block;
+/*    padding: .6em 2em .2em .6em; */
+    padding: 8px 8px 1px 8px;
+    color: white;
+    text-transform: uppercase;
+    text-decoration: none;
+    height: 28px;
+    background-image: url('/view/css/project/view/menu/regular_menu.png');
+    background-position: left top !important;
+    background-repeat: repeat-x;
+	font-size:11px;	
+}
+
+body.project-show div.project-menu ul li.active a {
+    background-image: url('/view/css/project/view/menu/hover_menu.png');
+}
+
+body.project-show div.project-menu ul li.show a {
+    background-image: url('/view/css/project/view/menu/active_menu.png') !important;
+    background-repeat: no-repeat !important;
+}
+
+body.project-show div.project-menu ul li.messages a {
+    background-color: #00b05b;
+}
+
+body.project-show div.project-menu ul li.home a {
+    background-color: #1fb0b0;
+	padding-right:45px;
+} 
+
+body.project-show div.project-menu ul li.needs a {
+    background-color: #96238F;
+	padding-right:35px;
+} 
+
+body.project-show div.project-menu ul li.supporters a {
+    background-color: #313b96;
+}
+
+body.project-show div.project-menu ul li.updates a {
+    background-color: #c8babc;
+}
+
+body.project-show div#main div.widget {
+    margin-bottom: 20px;
+}
+
+body.project-show div#main div.widget.project-support {
+    min-height: 350px;
+}
+
+body.project-show div#main > div.side > div.widget {
+    width: 260px;
+    float: right;
+    clear: right;
+}
+
+body.project-show div#main > div.center > div.widget {
+    max-width: 580px;
+    margin-right: 20px;
+    clear: left;
+	padding-bottom: 20px;
+}
+
+body.project-show div#main > div.side > div.widget .title {
+    background: none !important;
+}
+
+/* ayuda a difundir este proyecto */
+div.widget.project-spread > h3.title{padding-left:46px;}
+div.widget.project-spread > div.widget.projects > div.left{float:left;width:280px;border-right:#000 1px solid;}
+div.widget.project-spread > div.widget.projects > div.right{float:left;width:245px;margin-left:12px;}
+div.widget.project-spread div.subtitle{width:245px;text-transform:uppercase;margin:0 0 10px 7px;}
+	div.widget.project-spread div.subtitle#s1{}
+	div.widget.project-spread div.subtitle#s2{}	
+	div.widget.project-spread div.subtitle > span{display:block;}
+	div.widget.project-spread div.subtitle > span.primero{margin-bottom:3px;}	
+	div.widget.project-spread div.subtitle > span.segundo{color:#28ACAB;font-weight:bold;}		
+	
+/* envía mensaje al autor - widget embed code */
+div.widget.projects #widget-code{	width:350px;	float:left; margin: 0 0 0 20px;}
+div.widget.projects  #widget-code .wc-embed{background: url("/view/css/social/embed.png") no-repeat; min-height:20px;text-transform:uppercase;padding: 3px 0 0 25px;}
+div.widget.projects  #widget-code textarea{width:200px;	margin: 10px 0;	padding:10px;	background:#E7E7E7;border:none;font-size:11px;resize:none;}
+
+
+/* widget called - regado por convocatoria */
+#project-called {
+    background: url("/view/css/call/logo-capital_medium.png") no-repeat 10px 10px #f5f2f0;
+    padding-top: 0px;
+}
+
+
+#project-called a.expand {
+     bottom: 0;
+    left: 0;
+    padding: 0;
+    position: absolute;
+    right: 0;
+    top: 0;
+    width: 100%;
+    z-index: 99;
+}
+
+#project-called > div{
+    margin-right: -5px;
+    margin-bottom: 0px;
+    padding: 0px 0px 0px 75px;
+    position: relative;
+    z-index: 0;
+    min-height: 106px;
+    border: 1px solid transparent;
+}
+
+#project-called div.amount {
+    display: none;
+}
+
+#project-called div.explain dl {
+    margin: 15px 0px 0px;
+}
+
+#project-called div.explain dl dt,
+#project-called div.amount dl dt {
+    text-transform: uppercase;
+    font-size: 10px;
+}
+
+#project-called div.amount dl dt {
+    padding-top: 5px;
+}
+
+#project-called div.explain dl dd {
+    color: #20b2b3;
+    text-transform: uppercase;
+    font-size: 1em;
+    margin: 8px 0px;
+}
+
+#project-called div.explain p,
+div.widget.project-invest-amount.called  p {
+    font-size: 0.9em;
+    margin: 0px 0px 5px;
+}
+
+#project-called div.explain p strong,
+div.widget.project-invest-amount.called  p strong {
+    color: #96238F;
+}
+
+#project-called div.amount dl {
+    margin: 10px 0px 0px;
+}
+
+#project-called div.amount dl dd {
+    margin: 0px;
+}
+
+#project-called div.amount dl dd span {
+    font-size: 26px;
+    font-weight: bold;
+    padding-right: 25px;
+}
+
+#project-called div.amount dl dd.light-violet span {
+    color: #BB70B6;
+}
+
+#project-called div.amount dl dd.violet span {
+    color: #96238F;
+}
+
+#project-called.active {
+    background-color: #FFF;
+}
+
+#project-called.active div.explain {
+    display: none;
+}
+
+#project-called.active div.amount {
+    display: block !important;
+}
+
+/* Widget horizontal */
+
+div.widget.project.horizontal{
+    overflow: auto;
+}
+
+div.widget.project.horizontal div.image {
+    width:40%;
+    float:left;
+}
+
+div.widget.project.horizontal div.description{
+    width:50%;
+    float:left;
+    font-size:1.3em;
+    margin-top: 7px;
+}
+
+div.widget.project.horizontal > .author{
+    font-size:1.1em !important;
+    padding-top:5px;
+    padding-bottom: 5px;
+}
+
+div.widget.project.horizontal > .author a {
+    font-size: 1.1em;
+    color: #00B259;
+}
+div.widget.project.horizontal .title.horizontal a{
+    font-size:1.5em;
+    line-height: 1;
+}
+
+div.widget.project.horizontal .title.horizontal{
+    height: auto;
+}
+
+div.widget.project.horizontal ul.amounts{
+    
+    
+}
+
+div.widget.project.horizontal ul.amounts li{
+    width: auto;
+    min-height: 0;
+    position: static;
+    overflow: auto;
+    background-color:#FFF;
+    padding-left: 0;
+}
+
+div.widget.project.horizontal ul.amounts li.active{
+    background-color: #FFF !important;
+}
+
+div.widget.project.horizontal ul.amounts li div.amount{
+    font-weight: bold;
+}
+
+div.widget.project.horizontal ul.amounts li div.label{
+    font-size: 11px;
+}
+
+
+div.nodemark .label-title{
+    color:#20B3B2; 
+    margin-bottom:0.5em; 
+    font-weight: normal;
+}
+
+/*Tags de proyecto */
+
+div.project-tags{
+    float:left;
+    margin-left: 18px;
+}
+div.project-tags::before {
+    content: "";
+    display: block;
+    width: 13px;
+    height: 13px;
+    float: left;
+    margin-right: 6px;
+    background: url("/view/css/tags.png") no-repeat scroll 0% 0% / 13px 13px transparent;
+}
+
+div.project-tags a{
+    text-decoration: none;
+}
+
+div.by-tags{
+    margin-left: 8.1%;
+    display: table;
+}
+
+

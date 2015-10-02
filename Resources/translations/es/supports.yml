@@ -1,0 +1,15 @@
+step-6: Colaboraciones
+supports-fields-support-title: Colaboraciones
+tooltip-project-support: 'Consejo para editar colaboraciones existentes'
+tooltip-project-nsupport: 'Consejo para rellenar una nueva colaboración'
+supports-field-description: Descripción
+tooltip-project-supports: 'En Goteo los proyectos pueden recibir otro tipo de ayudas además de aportaciones monetarias. Hay gente que a lo mejor no puede ayudar económicamente pero sí con su talento, tiempo, energía, etc.'
+mandatory-support-field-description: 'Es obligatorio poner alguna descripción'
+mandatory-support-field-name: 'Es obligatorio ponerle un nombre a la colaboración'
+tooltip-project-support-description: "Explica brevemente en qué consiste la ayuda que necesita el proyecto, para facilitar que la gente la reconozca y se anime a colaborar. \r\n"
+step-supports: 'Paso: Proyecto / Colaboraciones'
+supports-field-support: Resumen
+tooltip-project-support-type: 'Selecciona si el proyecto necesita ayuda en tareas concretas  o bien préstamos (de material, infraestructura, etc).  '
+supports-main-header: 'Solicitud de colaboraciones'
+supports-field-type: 'Tipo de ayuda'
+tooltip-project-support-support: 'Título descriptivo sobre la colaboración necesaria.'

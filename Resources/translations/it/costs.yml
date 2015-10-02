@@ -1,0 +1,41 @@
+costs-fields-main-title: 'Elenco dei costi'
+tooltip-project-cost-description: 'Spiega brevemente in cosa consiste questa spesa.'
+costs-field-dates: Date
+costs-field-description: Descrizione
+tooltip-project-cost-cost: 'Indica un titolo più descrittivo possibile per questo tipo di spesa.'
+costs-field-cost: Costo
+costs-main-header: 'Aspetti economici '
+step-4: Costi
+costs-field-date_from: Da
+tooltip-project-cost-dates: 'Indica le date che prevedi per la realizzazione di questo compito o per coprire questa spesa. Programmale iniziando non prima di un mese a partire da ora visto che c''è da considera il termine per rivedere la proposta, pubblicarla se è stata selezionata e i 40 giorni del primo giro di finanziamento. Non includere in questo calendario l''agenda dello sviluppo precedente anche se si consiglia di spiegarlo nella descrizione del progetto. Nell''agenda ci interessa solo le fasi che rimangono da realizzare e per cui si cerca una co-finanziazione. '
+tooltip-project-cost-type: 'Devi specificare qui il tipo di costi: relativi a compito (qualcosa che richiede l''abilità o le conoscenze di qualcuno), l''ottenimento del materiale (ausiliario, materie prime) o l''infrastruttura (spazi, equipaggiamento, arredo).'
+cost-type-structure: Infrastruttura
+cost-type-lend: Prestito
+cost-type-material: Materiale
+costs-field-required_cost-yes: 'Imprescindibile '
+tooltip-project-resource: 'Indica qui se fai affidamento a risorse aggiuntive oltre a quelle di cui fai richiesta per realizzare il progetto: sorgenti di finanziamento, risorse proprie o sei raccolto materiali. Può incoraggiare i potenziali co-finanziatori del progetto.'
+costs-field-resoure: 'Altre risorse'
+costs-fields-resources-title: 'Risorse '
+validate-project-costs-any_error: 'Manca qualche informazione nella lista delle spese'
+tooltip-project-cost-amount: 'Specifica l''importo della moneta scelta che prevedi per questa spesa. Non utilizzare punti per le cifre del mille, ok?'
+validate-cost-field-dates: 'Devi indicare la data di inizio e di conclusione di questa spesa per poter valutare meglio il progetto. '
+step-costs: 'Passaggio: Progetto/Spese'
+costs-field-required_cost-no: 'Aggiuntivo '
+cost-type-task: Compito
+costs-field-schedule: 'Agenda di lavoro'
+tooltip-project-costs: 'maggiore il gradi di precisione dell''elenco, migliore sarà la valutazione di Goteo sul progetto.'
+costs-field-required_cost: 'La spesa è'
+tooltip-project-totals: 'Questo grafico visualizza la somma delle spese imprescindibili (minime per la realizzazione del progetto) e la somma delle spese secondarie (importe ottimale) relative ai due giri di finanziamento. Il primo giro è di 40 giorni per l''ottenimento dell''importo minimo imprescindibile. Solo se ottieni questo primo finanziamento puoi optare al Secondo giro, di altri 40 giorni, per arrivare al preventivo ottimale. Diversamente dal primo giro, nel secondi giro si ottiene tutto ciò che si è raccolto.'
+tooltip-project-cost-required: 'Questo punto è molto importante: devi specificare per ogni spesa che indichi se è imprescindibile o aggiuntiva. Las somma di le spese selezionate come imprescindibili darà l''importo di finanziamento minimo per il progetto. La somma dei costi aggiuntivi, invece, si ottiene nel secondi giro di finanziamento, dopo aver ottenuto i fondi imprescindibili. '
+costs-field-type: Tipo
+costs-field-date_until: Fino
+costs-field-amount: 'Valore '
+costs-fields-metter-title: 'Visualizzazione delle spese'
+validate-project-field-costs: 'Suggeriamo di elencare 5 diverse spese per migliorare la valutazione del progetto rispetto alla sua pubblicazione su Goteo.'
+mandatory-cost-field-description: 'È obbligatorio aggiungere una descrizione ai costi'
+mandatory-cost-field-amount: 'È obbligatorio assegnare un importo ai costi'
+mandatory-cost-field-name: 'È obbligatorio dare un nome al costo '
+mandatory-project-total-costs: 'È obbligatorio specificare qualche costo'
+mandatory-cost-field-task_dates: 'È obbligatorio specificare le date approssimative del compito'
+mandatory-project-field-resource: 'È obbligatorio specificare se si appoggia a altre risorse o no'
+mandatory-project-resource: 'È obbligatorio specificare se si appoggia ad altre risorse o no'

@@ -1,0 +1,77 @@
+project-rewards-individual_reward-units_left: ' <span class="left">%s</span> units left'
+tooltip-project-paypal: "<p>Besides our secure bank payment gateway, you may receive contributions through PayPal</strong>. To do so, please write here an email address vinculated to an enabled PayPal account.</p>\r\n<p>Although it is not compulsory to have a PayPal account to receive the collected funds for your project, it is highly recommended. <strong>If you don't submit an enabled and verified PayPal account before we publish your campaign, contributions via PayPal won't be allowed.</strong></p>\r\n<p>This account cannot be changed later. Contact us if you need to modify it.</p>\r\n<p><strong>IMPORTANT: Note that you cannot use this same PayPal account to make contributions to your own project as it would generate a system error.</strong></p>"
+social_reward-access: Access
+social_reward-access_title: 'Access this collective resource'
+project-side-investors-header: 'Already contributed'
+project-rewards-header: Benefits
+project-rewards-bonus_reward-title: Bonus
+project-view-categories-title: Categories
+project-menu-supporters: Co-financiers
+project-view-metter-investors: Co-financiers
+project-view-metter-investment: Co-financing
+project-rewards-social_reward-title: 'Collective benefits'
+currency-switch: CONVERT
+project-spread-widget_legend: 'Copy and paste the code in your website or blog to help spread the word about this project'
+project-view-metter-day_created: Created
+project-menu-messages: Crowdsourcing
+overview-field-spread: Dissemination
+project-support-supertitle: 'Economic needs'
+contract-paypal_account: 'Email address vinculated to your Paypal account:'
+project-spread-embed_code: 'Embedding Code'
+project-menu_title-updates: 'Feedback and news: get informed about the project'' progress directly via its creators.'
+project-view-metter-day_closed: 'Filed on'
+project-view-metter-day_success: Finished
+tooltip-project-help-cost: 'For any help about the costs breakdown, check this box. Send us the complete form to receive our advice.'
+tooltip-project-help-license: 'For any help about which licenses fit better to the collective returns of your project, check this box. Send us the complete form to receive our advice.'
+project-spread-social: 'I am backing %s project #goteo #crowdfunding'
+project-help-license: 'I need help with collective returns and licenses'
+project-help-cost: 'I need help with the costs section'
+tooltip-project-rounds: 'If you choose this option, your project will only have a single 40-day round to obtain the necessary funding: all or nothing.'
+tooltip-project-bank: 'If you don''t want to add it now, you will be able to add it later when we formalise the contract'
+project-rewards-individual_reward-title: 'Individual rewards'
+project-messages-closed: 'It''s not possible to send messages to the project yet'
+project-share-pre_header: 'Let your network know that'
+project-rewards-individual_reward-limited: 'Limited reward'
+project-collaborations-title: 'Looking for'
+project-view-metter-minimum: Minimum
+project-menu-needs: Needs
+regular-new_project: 'New project'
+project-menu-updates: News
+project-collaborations-supertitle: 'Non-economic needs'
+project-menu_title-messages: 'Not only money: you can also give support with your talent, materials, contacts, knowledge...'
+project-view-metter-optimum: Optimum
+project-menu-home: Project
+personal-field-accounts: 'Project accounts'
+project-langs-header: 'Project in:'
+project-spread-widget: 'Project widget'
+project-spread-widget_title: 'publish the project widget'
+project-view-metter-got: Received
+project-view-metter-day_updated: 'Received on the'
+project-view-metter-days: Remaining
+project-messages-answer_it: Respond
+project-messages-send_message-button: Send
+project-messages-send_direct-header: 'Send a message to this project''s promoter'
+project-share-header: 'Share this project'
+project-rounds: 'Single-round project'
+project-menu_title-home: 'Social impact: this project opens its code, shares knowledge, data or digital files in return for your backing.'
+project-menu_title-supporters: 'Social network of support: co-financers are as much important as people creating this project.'
+tooltip-project-scope: 'Specify the geographic impact that you hope this project will have (each category includes the previous one)'
+project-spread-header: 'Spread the word'
+project-spread-pre_widget: 'Spread the word'
+tooltip-project-spread: 'Tell us how you''ll spread the project among your community: channels, type of messages, dissemination actions, minimum schedule...'
+project-not_published: 'This project is not public yet'
+project-willpublish: 'This project will be published on %s'
+project-unpublished: 'This project''s campaign has been canceled.'
+tooltip-updates-home: 'Tooltip text updates-home'
+tooltip-updates-tags: 'Tooltip text updates-tags'
+tooltip-updates-allow_comments: tooltip-updates-allow_comments
+tooltip-updates-date: tooltip-updates-date
+tooltip-updates-image: tooltip-updates-image
+tooltip-updates-image_upload: tooltip-updates-image_upload
+tooltip-updates-media: tooltip-updates-media
+tooltip-updates-text: tooltip-updates-text
+tooltip-updates-title: tooltip-updates-title
+project-menu_title-needs: 'Transparency of costs: detailed budget of minimum and optimum economic needs.'
+project-media-play_video: 'Watch video'
+project-rewards-supertitle: 'What is offered in exchange'
+project-messages-send_message-header: 'Write your message'

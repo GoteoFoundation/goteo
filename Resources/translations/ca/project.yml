@@ -1,0 +1,77 @@
+project-rewards-individual_reward-units_left: 'Queden <span class="left">%s</span> unitats'
+tooltip-project-paypal: "<p>A més de la pasarel.la de pagament bancari, a Goteo <strong>és possible rebre aportacions mitjançant PayPal</strong>. Per a això, has d'indicar aquí una adreça d'email associada a un compte PayPal degudament validat. No escriguis cap caràcter en aquest camp si no vols oferir l'opció de pagament via PayPal</p> <p>Tot i que no és obligatori oferir aquesta opció per rebre la recaptació del teu projecte, sí que és altament recomanable.</p>\r\n<p><strong>Si no indiques un compte PayPal, vàlid i verificat, abans de l'inici de la campanya, la gent usuària no podrà cofinançar mitjançant PayPal.</strong> </p> <p>Tingues present que no podràs modificar-lo posteriorment, hauràs de contactar amb nosaltres si vols canviar-lo.</p> <p><strong>IMPORTANT: Recorda que no es pot usar aquest mateix compte per fer aportacions al teu propi projecte ja que donaria un error de sistema.</strong></p>"
+social_reward-access: Accedeix
+social_reward-access_title: 'Accedeix a aquest recurs col.lectiu'
+project-side-investors-header: 'Ja han aportat'
+project-rewards-header: Retorn
+project-rewards-bonus_reward-title: Bonus
+project-view-categories-title: Categories
+project-menu-supporters: 'Cofinançadors '
+project-view-metter-investors: 'Cofinançadors '
+project-view-metter-investment: 'Cofinançament '
+project-rewards-social_reward-title: 'Retorn col·lectiu '
+currency-switch: CANVIAR
+project-spread-widget_legend: 'Còpia i enganxa el codi a la teva web o blog i ajuda a difondre aquest projecte'
+project-view-metter-day_created: 'Creat el'
+project-menu-messages: Col·laboracions
+overview-field-spread: Difusió
+project-support-supertitle: 'Necessitats econòmiques'
+contract-paypal_account: 'Email del teu compte PayPal:'
+project-spread-embed_code: 'Codi Embed'
+project-menu_title-updates: 'Feedback i novetats: informa''t sobre els avanços del projecte directament a través de qui ho impulsa. '
+project-view-metter-day_closed: 'Arxivat el'
+project-view-metter-day_success: 'Finançat el'
+tooltip-project-help-cost: 'Si no tens clar el desglossament de costos o vols consultar-nos alguna qüestió, marca aquesta opció. Hauràs de finalitzar i enviar-nos el formulari per poder rebre assessorament.'
+tooltip-project-help-license: 'Si tens dubtes sobre les llicències més adequades als retorns col.lectius del teu projecte, marca aquesta opció. Hauràs de finalitzar i enviar-nos el formulari per poder assessorar-te.'
+project-spread-social: 'Cofinanço el projecte %s #goteo #crowdfunding'
+project-help-license: 'Necessito ajuda per definir els retorns col.lectius i les llicències'
+project-help-cost: 'Necessito ajuda per definir els costos'
+tooltip-project-bank: 'Si no vols posar-la ara podràs indicar-la més endavant quan formalitzem el contracte en cas d''èxit'
+project-rewards-individual_reward-title: 'Recompenses individuals'
+project-messages-closed: 'Encara no es poden enviar missatges al projecte'
+project-share-pre_header: 'Fes saber a la teva xarxa que'
+project-rewards-individual_reward-limited: 'Recompensa limitada'
+project-collaborations-title: Cercant
+project-view-metter-minimum: Mínim
+project-menu-needs: Necessitats
+regular-new_project: 'Projecte nou'
+project-menu-updates: Novetats
+project-collaborations-supertitle: 'Necessitats no monetàries'
+project-menu_title-messages: 'No només diners: també pots ajudar amb el teu talent, materials, temps, contactes, coneixements... '
+project-view-metter-optimum: 'Òptim  '
+project-menu-home: Projecte
+personal-field-accounts: 'Comptes del projecte'
+project-langs-header: 'Projecte en:'
+project-spread-widget: 'Widget del projecte'
+project-spread-widget_title: 'publica el widget del projecte'
+project-view-metter-got: Obtingut
+project-view-metter-day_updated: 'Rebut el'
+project-view-metter-days: Queden
+project-messages-answer_it: 'Respondre '
+project-messages-send_message-button: Enviar
+project-messages-send_direct-header: 'Envia un missatge a l''impulsor/a del projecte'
+project-share-header: 'Comparteix aquest projecte'
+project-menu_title-home: 'Impacte social: aquest projecte obre el seu codi, comparteix coneixements, dades o arxius digitals a canvi del teu suport. '
+project-menu_title-supporters: 'Xarxa social de suport: els cofinançadors i cofinançadores són tan importants com qui impulsa aquesta iniciativa. '
+tooltip-project-scope: 'Indica l''impacte geogràfic que aspira a tenir el projecte (cada categoria inclou l''anterior). '
+project-spread-header: 'Difon aquest projecte'
+project-spread-pre_widget: 'Difon aquest projecte'
+tooltip-project-spread: 'Explica''ns com penses difondre el projecte entre la teva comunitat: canals, tipus o to dels missatges, accions de difusió, calendari mínim...'
+project-not_published: 'Aquest projecte encara no és públic'
+project-willpublish: 'Aquest projecte es publicarà el %s'
+project-unpublished: 'La campanya d''aquest projecte ha estat cancel·lada.'
+tooltip-updates-home: 'Text tooltip-updates-home'
+tooltip-updates-tags: 'Text tooltip-updates-tags'
+tooltip-updates-allow_comments: tooltip-updates-allow_comments
+tooltip-updates-date: tooltip-updates-date
+tooltip-updates-image: tooltip-updates-image
+tooltip-updates-image_upload: tooltip-updates-image_upload
+tooltip-updates-media: tooltip-updates-media
+tooltip-updates-text: tooltip-updates-text
+tooltip-updates-title: tooltip-updates-title
+project-menu_title-needs: 'Transparència de costos: desglossament detallat del mínim i l''òptim que necessita per a  dur-se a terme. '
+project-media-play_video: 'Veure vídeo'
+project-rewards-supertitle: 'Què ofereix a canvi'
+project-messages-send_message-header: 'Escriu el teu missatge'
+tooltip-project-rounds: 'Si eliges esta opción, tu proyecto solo tendrá una ronda de 40 días para conseguir la financiación necesaria: todo o nada.'
+project-rounds: 'Proyecto de una sola ronda'

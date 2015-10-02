@@ -1,0 +1,51 @@
+div.widget.project-media {
+    padding: 0 !important;
+    width: 620px !important;
+    min-width: 620px !important;
+    max-width: 620px !important;
+    height: 380px;
+    margin-right: 20px;
+}
+
+div.widget.project-media > iframe,
+div.widget.project-media > object,
+div.widget.project-media > embed {
+    min-width: 620px !important;
+    min-height: 380px !important;
+    width: 620px !important;
+    max-width: 620px !important;
+    height: 380px !important;
+}
+
+.video_button
+{
+    position:absolute;
+    left:236.5px;
+    top:169px; 
+    font-size:18px;
+    
+    background-color: #58595B;
+    text-transform: uppercase;
+    border: none;    
+    cursor: pointer;
+    font-weight: normal;
+    color: white;
+    display: inline-block;
+    text-decoration: none;    
+    text-align: center;
+    border-radius: 3px;
+    -moz-border-radius: 3px;
+    -webkit-border-radius: 3px;
+    background: #149290 url('button/aqua.png') repeat-x top;
+    padding: .6em 0.8em .5em;
+   
+}
+
+.video_button:active {
+    background: #60c1bf url('button/aqua-active.png') repeat-x top;    
+}
+
+
+.video_button:hover {
+    background: #60c1bf url('button/aqua-active.png') repeat-x top;
+}

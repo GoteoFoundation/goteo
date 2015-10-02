@@ -1,0 +1,65 @@
+project-rewards-individual_reward-units_left: 'Quedan <span class="left">%s</span> unidades'
+tooltip-project-paypal: '<p> Ademais da nosa pasarela de pago bancaria, <strong>é posible recibir aportacións vía PayPal</strong>. Para iso, debes indicar aquí unha dirección de correo electrónico ligada a unha conta validada en PayPal.</p> <p> Aínda que  non é obrigado ter unha conta en Paypal para recibir a recadación do teu proxecto, si é altamente recomendábel.<strong> Se non se facilita unha conta PayPal validada e verificada antes da publicación desta campaña, non será posible a recepción de aportacións por esta vía.</strong></p> <p>Esta conta non a poderás modificar posteriormente, terás que contactar con nós se queres cambiala.</p> <p><strong>IMPORTANTE: Non se pode usar esta mesma conta para facer aportacións ó teu propio proxecto xa que daría un erro de sistema.</strong></p> '
+social_reward-access: Accede
+social_reward-access_title: 'Accede a este recurso colectivo'
+project-side-investors-header: 'Xa aportaron'
+project-rewards-header: Retorno
+project-view-categories-title: Categorías
+project-menu-supporters: Cofinanceiros
+project-view-metter-investors: Cofinanceiros
+project-view-metter-investment: Cofinanciación
+project-rewards-social_reward-title: 'Retorno colectivo'
+project-spread-widget_legend: 'Copia e pega o código na túa web ou blog e axuda a espallar este proxecto'
+project-view-metter-day_created: 'Creado o'
+project-menu-messages: Colaboracións
+project-support-supertitle: 'Necesidades económicas'
+contract-paypal_account: 'Email da túa conta de PayPal:'
+project-spread-embed_code: 'Código Embed'
+project-menu_title-updates: 'Feedback: Infórmate sobre os avances do proxecto directamente a través de quen o impulsa.'
+project-view-metter-day_closed: 'Archivado o'
+project-view-metter-day_success: 'Financiado o'
+project-spread-social: 'Cofinancio o proxecto %s #goteo #crowdfunding'
+tooltip-project-bank: 'Se non queres poñela agora poderás poñela máis adiante cando formalicemos o contrato'
+project-rewards-individual_reward-title: 'Recompensas individuais'
+project-messages-closed: 'Aínda non se pode enviar mensaxes ó proxecto'
+project-share-pre_header: 'Deixa saber á túa rede de contactos que '
+project-rewards-individual_reward-limited: 'Recompensa limitada'
+project-collaborations-title: Búscase
+project-view-metter-minimum: Mínimo
+project-menu-needs: Necesidades
+regular-new_project: 'Proxecto novo'
+project-menu-updates: Novidades
+project-collaborations-supertitle: 'Necesidades non monetarias'
+project-menu_title-messages: 'Non só cartos: tamén podes apoiar co teu talento, materiais, tempo, contactos, coñecementos...'
+project-view-metter-optimum: Óptimo
+project-menu-home: Proxecto
+personal-field-accounts: 'Conta bancaria'
+project-langs-header: 'Proxecto en'
+project-spread-widget: 'Widget do proxecto'
+project-spread-widget_title: 'publica o widget do proxecto'
+project-view-metter-got: Obtido
+project-view-metter-day_updated: 'Recibido o'
+project-view-metter-days: Quedan
+project-messages-answer_it: Responder
+project-messages-send_message-button: Enviar
+project-messages-send_direct-header: 'Envía unha mensaxe ó impulsor/a do proxecto'
+project-share-header: 'Comparte este proxecto'
+project-menu_title-home: 'Impacto social: este proxecto abre o seu código, comparte coñecementos, datos ou arquivos dixitais en troco do teu apoio.'
+project-menu_title-supporters: 'Rede social de apoio: os cofinanceiros e cofinanceiras son tan importantes coma quen impulsa esta iniciativa.'
+tooltip-project-scope: 'Indica o impacto xeográfico ó que aspira ter o proxecto (cada categoría inclúe a anterior).'
+project-spread-header: 'Difunde este proxecto'
+project-spread-pre_widget: 'Difunde este proxecto'
+project-not_published: 'Este proxecto aínda non é público'
+project-unpublished: 'A campaña deste proxecto foi cancelada polo impulsor.'
+tooltip-updates-home: 'Texto tooltip-updates-home'
+tooltip-updates-tags: 'Texto tooltip-updates-tags'
+tooltip-updates-allow_comments: ' tooltip-updates-allow_comments'
+tooltip-updates-date: tooltip-updates-date
+tooltip-updates-image: tooltip-updates-image
+tooltip-updates-image_upload: tooltip-updates-image_upload
+tooltip-updates-media: tooltip-updates-media
+tooltip-updates-text: ' tooltip-updates-allow_comments'
+tooltip-updates-title: tooltip-updates-title
+project-menu_title-needs: 'Transparencia de custos: detalle explicado do mínimo e o óptimo que necesita para levalo a cabo.'
+project-rewards-supertitle: 'Que ofrece en troco'
+project-messages-send_message-header: 'Escribe a túa mensaxe'

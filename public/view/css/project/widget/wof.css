@@ -1,0 +1,31 @@
+/* WOF específico pagina proyecto */
+div.widget.wof-share {
+    margin-bottom: 0px !important;
+    padding: 15px 20px !important;
+}
+
+div.widget.wof-share div.left{
+	float: left;
+    text-transform: uppercase;
+	height: 20px;
+	line-height: 20px;
+}
+
+div.widget.wof-share div.right{
+	float: left;
+    margin-left: 20px;
+}
+
+div.widget.wof-share div.right a {
+	background: no-repeat url('/view/css/project/widget/proyecto.jpg') left center #58595C;
+	font-size: 11px;
+	height: 20px;
+	line-height: 20px;
+    color: #FFF;
+    text-decoration: none;
+    padding: 3px 20px 2px 30px;
+    width: 100%;
+}
+div.widget.wof-share div.right a:hover {
+    text-decoration: none;
+}

@@ -1,0 +1,14 @@
+contact-email-field: 'Email address'
+contact-message-field: Message
+contact-name-field: Name
+contact-captcha-refresh: 'Refresh image'
+contact-send_message-button: Send
+contact-send_message-header: 'Send us a message'
+contact-subject-field: Subject
+contact-captcha-field: 'Test of humanity (sorry...)'
+error-contact-captcha: 'The reCAPTCHA wasn''t entered correctly. Try again.'
+contact-tag-field: 'Type of question'
+error-contact-email-empty: 'You didn''t add your email address'
+error-contact-subject-empty: 'You didn''t enter a subject'
+error-contact-message-empty: 'You haven''t written a message'
+contact-form-tags: "[user] I have a problem with my account;\r\n[new promoter] I have a project;\r\n[new promoter 2] I have a question on the project form;\r\n[development] I need help with tech questions;\r\n[service] I'd like to contract your services;\r\n[other] I have another question;"

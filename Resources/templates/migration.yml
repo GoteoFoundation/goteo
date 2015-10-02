@@ -1,0 +1,60 @@
+# Log de conversion de vistas
+---
+# Theme
+Resources/templates/legacy/view/prologue.html.php:                             Resources/templates/default/layout.php
+Resources/templates/legacy/view/epilogue.html.php:                             Resources/templates/default/layout.php
+
+Resources/templates/legacy/view/header.html.php:                               Resources/templates/default/partials/header.php
+Resources/templates/legacy/view/header/currency.html.php:                      Resources/templates/default/partials/header.php
+Resources/templates/legacy/view/header/lang.html.php:                          Resources/templates/default/partials/header.php
+Resources/templates/legacy/view/header/menu.html.php:                          Resources/templates/default/partials/header/menu.php
+Resources/templates/legacy/view/header/message.html.php:                       Resources/templates/default/partials/header/messages.php
+Resources/templates/legacy/view/header/highlights.html.php:                    Resources/templates/default/partials/header/highlights.php
+Resources/templates/legacy/view/header/banner.html.php:                        Resources/templates/default/partials/header/banner.php
+Resources/templates/legacy/view/header/share.html.php:                         Resources/templates/default/partials/header/share.php
+
+
+Resources/templates/legacy/view/footer.html.php:                               Resources/templates/default/partials/footer.php
+
+Resources/templates/legacy/view/pagination.html.php:                           Resources/templates/default/partials/pagination.php
+
+Resources/templates/legacy/view/error/default.html.php:                        Resources/templates/default/errors/default.php
+Resources/templates/legacy/view/error/404.html.php:                            Resources/templates/default/errors/not_found.php
+
+
+
+# Controller: Index
+Resources/templates/legacy/view/index.html.php:                                Resources/templates/default/home/index.php
+Resources/templates/legacy/view/home/drops.html.php:                           Resources/templates/default/home/partials/drops.php
+Resources/templates/legacy/view/home/feed.html.php:                            Resources/templates/default/home/partials/feed.php
+Resources/templates/legacy/view/home/news.html.php:                            Resources/templates/default/home/partials/news.php
+Resources/templates/legacy/view/home/patrons.html.php:                         Resources/templates/default/home/partials/patrons.php
+Resources/templates/legacy/view/home/posts.html.php:                           Resources/templates/default/home/partials/posts.php
+Resources/templates/legacy/view/home/promotes.html.php:                        Resources/templates/default/home/partials/promotes.php
+Resources/templates/legacy/view/home/stories.html.php:                         Resources/templates/default/home/partials/stories.php
+
+# Controller: Discover
+Resources/templates/legacy/view/discover/index.html.php:                       Resources/templates/default/discover/index.php
+Resources/templates/legacy/view/discover/results.html.php:                     Resources/templates/default/discover/results.php
+Resources/templates/legacy/view/discover/searcher.html.php:                    Resources/templates/default/discover/partials/searcher.php
+Resources/templates/legacy/view/discover/view.html.php:                        Resources/templates/default/discover/view.php
+Resources/templates/legacy/view/discover/patron.html.php:                      Resources/templates/default/discover/patron.php
+
+# Controller: Project
+Resources/templates/legacy/view/project/widget/project.html.php:               Resources/templates/default/project/widget/project.php
+Resources/templates/legacy/view/project/view.html.php:   			           Resources/templates/default/project/index.php
+
+
+# Controller: Glossary
+Resources/templates/legacy/view/glossary/index.html.php:   	                   Resources/templates/default/glossary/index.php
+
+# Controller: About
+Resources/templates/legacy/view/about/contact.html.php:   	   	               Resources/templates/default/about/contact.php
+Resources/templates/legacy/view/about/howto.html.php:   	   	               Resources/templates/default/about/howto.php
+Resources/templates/legacy/view/about/info.html.php:   	   	                   Resources/templates/default/about/info.php
+Resources/templates/legacy/view/about/sample.html.php:   	   	               Resources/templates/default/about/sample.php
+
+
+
+
+

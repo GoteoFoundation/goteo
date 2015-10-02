@@ -1,0 +1,209 @@
+/*Reglas módulo patrons de home */
+
+/* Especial pagina vip */
+body.home div#main div.widget.projects.patron_invests h2.title {
+	margin-left:-15px !important;
+}
+
+body.home div#main div.widget.projects.patron_invests{
+	padding: 15px !important;
+    margin: 0 0 15px 0 !important;
+}
+
+body.home div#main div.widget.projects.patron_invests div.widget.project{
+	margin: 0 0 20px 30px !important;
+}
+
+/* Padrinos en portada*/
+body.node.home div#node-patrons div.patron,
+body.channel.home div#channel-patrons div.patron,
+body.home div#main div.patron {
+    display: inline-block;
+    width: 185px;
+    position: relative;
+}
+body.node.home div#node-patrons div.patron + div.patron,
+body.channel.home div#channel-patrons div.patron + div.patron,
+body.home div#main div.patron + div.patron {
+    margin-left: 30px;
+}
+
+body.node.home div#node-patrons div.patron > a.expand,
+body.channel.home div#channel-patrons div.patron > a.expand,
+body.home div#main div.patron > a.expand {
+    position: absolute;
+    top: 0px;
+    bottom: 0px;
+    width: 185px;
+    height: 100%;
+}
+
+body.node.home div#node-patrons div.patron > div.box,
+body.channel.home div#channel-patrons div.patron > div.box,
+body.home div#main div.patron > div.box {
+    width: 185px;
+    height: 94px;
+	border-top: 1px solid #20B2B3;
+	border-bottom: 1px solid #20B2B3;
+}
+
+body.node.home div#node-patrons div.patron > div.box > div.avatar,
+body.channel.home div#channel-patrons div.patron > div.box > div.avatar,
+body.home div#main div.patron > div.box > div.avatar {
+    width: 112px;
+    height: 74px;
+    margin: 10px auto;
+}
+
+body.node.home div#node-patrons div.patron > div.reco,
+body.channel.home div#channel-patrons div.patron > div.reco,
+body.home div#main div.patron > div.reco {
+    padding: 3px 0;
+    text-transform: uppercase;
+    font-size: 11px;
+    line-height: 17px;
+}
+
+body.node.home div#node-patrons div.patron > div.reco > span,
+body.channel.home div#channel-patrons div.patron > div.reco > span,
+body.home div#main div.patron > div.reco > span {
+	color: #20B2B3;
+}
+
+body.node.home div#node-patrons div.patron > div.reco > span.name,
+body.channel.home div#channel-patrons div.patron > div.reco > span.name,
+body.home div#main div.patron > div.reco > span.name {
+    font-size: 12px;
+	font-weight: bold;
+    text-transform: none !important;
+}
+/* fin patronos en portada*/
+
+/* Portada perfil patrono */
+body.home.patron div#sub-header > div{
+	margin:30px auto;
+}
+
+body.home.patron div#sub-header {
+    margin-bottom: 25px !important;
+}
+
+body.home.patron div#main div.patron-profile {
+	padding: 0px 50px;
+    margin-bottom: 32px;
+    display: block;
+}
+
+body.home.patron div#main div.patron-profile div.avatar {
+    float: left;
+    margin-right: 25px;
+}
+
+/* enlaces sociales */
+body.home.patron div#main div.patron-profile div.avatar ul{
+	overflow: hidden;
+    list-style: none;
+    padding: 0;
+    margin: 10px 0px;
+}
+
+body.home.patron div#main div.patron-profile div.avatar ul li{
+	margin-right: 4px;
+    display: inline-block;
+    overflow: hidden;
+    width: 20px;
+    height: 20px;
+}
+
+body.home.patron div#main div.patron-profile div.avatar ul li a{
+    background: no-repeat left center;
+    padding-left: 40px;
+    padding-top: 20px;
+    overflow: hidden;
+    line-height: 40px
+}
+
+body.home.patron div#main div.patron-profile div.avatar li a:hover{
+	opacity:0.7;
+	filter:alpha(opacity=70)
+}
+
+body.home.patron div#main div.patron-profile div.avatar li.twitter a {
+    background-image: url('/view/css/twitter.png');
+}
+
+body.home.patron div#main div.patron-profile div.avatar li.facebook a {
+    background-image: url('/view/css/facebook.png');
+}
+
+body.home.patron div#main div.patron-profile div.avatar li.identica a {
+    background-image: url('/view/css/identica.png');
+}
+
+body.home.patron div#main div.patron-profile div.avatar li.google a {
+    background-image: url('/view/css/google.png');
+}
+
+body.home.patron div#main div.patron-profile div.avatar li.linkedin a {
+    background-image: url('/view/css/linkedin.png');
+}
+/* Fin enlaces sociales */
+
+body.home.patron div#main div.patron-profile div.info {
+    float: left;
+    overflow: visible;
+    font-size: 16px;
+    color: #6A6B6E;
+    width: 590px;
+}
+
+body.home.patron div#main div.patron-profile div.info p {
+    padding: 0;
+    margin: 0px 0px 10px 0px;
+}
+
+body.home.patron div#main div.patron-profile div.info p a {
+    font-size: 16px !important;
+}
+
+body.home.patron div#main div.patron-profile div.info p a:hover {
+    color: #20B2B3 !important;
+}
+
+body.home.patron div#main div.patron-profile div.info ul {
+    list-style: none;
+    padding: 0;
+    margin: 10px 0px;
+}
+
+body.home.patron div#main div.patron-profile div.info ul li {
+}
+
+body.home.patron div#main div.patron-profile div.info ul li a {
+    text-decoration: none;
+    color: #20B2B3;
+    font-size: 12px;
+}
+
+/* patronos */
+div#slides_patrons div.slder_patrons,
+div#slides_patrons div.arrow-left,
+div#slides_patrons div.arrow-right {
+    float: left;
+}
+
+div#slides_patrons div.slder_patrons {
+	width: 845px;
+}
+
+div#slides_patrons div.arrow-left {
+    margin-left: -10px;
+    margin-right: 15px;
+    padding-top: 46px;
+}
+
+div#slides_patrons div.arrow-right {
+    margin-left: 0px;
+    padding-top: 46px;
+}
+

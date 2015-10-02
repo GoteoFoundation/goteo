@@ -1,0 +1,137 @@
+div.widget.chart {
+    background: #fff;
+    padding: 20px;
+    margin: 0 auto;
+}
+
+div.widget.chart .table_widget {
+    background: #fff;
+    width: 640px;
+    margin: 0 auto;
+}
+
+div.widget.chart h2 {
+    margin: 0px;
+    font-size: 17px;
+}
+
+div.widget.chart .number {
+    float: left;
+}
+
+div.widget.chart .obtenido {
+    color: #20b3b2;
+}
+
+div.widget.chart .de {
+    float: left;
+    margin-left: 5px;   
+}
+
+div.widget.chart .minimum {
+    color: #96238f;
+    margin-left: 5px;
+}
+
+div.widget.chart .euros {
+    margin-left: 5px;
+    float: left;
+}
+
+div.widget.chart .quedan {
+    width: 265px;
+    float: left;
+    text-align: right;
+}
+
+div.widget.chart .chart_div {
+    clear: both;
+}
+
+/* --- CHART STYLING --- */
+div.widget.chart .funds_area {
+    fill: #20B3B2;
+    opacity: 0.3;
+}
+
+div.widget.chart .funds_line {
+    stroke: #20B3B2;
+    stroke-width: 3;
+    fill: none;
+    cursor: pointer;
+}
+
+div.widget.chart .funders_area {
+    fill: #92AFD1;
+    opacity: 0.5;
+}
+
+div.widget.chart .funders_line {
+    stroke: #313B96;
+    stroke-width: 3;
+    fill: none;
+    cursor: pointer;
+}
+
+div.widget.chart .day_circle {
+    stroke-width: 3;
+    stroke: #20B3B2;
+    fill: #ffffff;
+    cursor: pointer;
+}
+
+div.widget.chart g.x.axis {
+    stroke: #808184;
+    stroke-width: 1;
+    fill: none;
+}
+
+div.widget.chart g.y.axis line {
+    stroke: #808184;
+    fill : none;
+    stroke-dasharray: 1px 3px;
+    stroke-width: 1px;
+}
+
+div.widget.chart g.axis text {
+    font-size: 10px;
+    font-weight: normal;
+    stroke: none;
+    fill: #808184;
+    text-anchor: end;
+}
+
+div.widget.chart g.x.axis text {
+    text-anchor: middle;
+}
+
+div.widget.chart .arrow_funded_height {
+    fill: #ffffff;
+    text-anchor: middle;
+    font-size: 11;
+}
+
+div.widget.chart .infobox {
+    fill: #CAE2E2;
+    opacity: 0;
+}
+
+div.widget.chart .infobox_funds_bg {
+    fill: #808184;
+}
+
+div.widget.chart .infofunds_text {
+    fill: #58595b;
+}
+
+div.widget.chart .infofunds_text2 {
+    fill: #58595b;
+    font-weight: normal;
+    font-size: 12;
+}
+
+div.widget.chart .infofunders_text {
+    fill: #ffffff;
+    font-weight: normal;
+    font-size: 11;
+}

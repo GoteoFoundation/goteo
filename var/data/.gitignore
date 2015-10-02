@@ -1,0 +1,6 @@
+*
+!images
+images/*
+!images/README
+!.gitignore
+!README

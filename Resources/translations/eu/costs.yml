@@ -1,0 +1,41 @@
+costs-fields-main-title: 'Gastuen banakapena'
+tooltip-project-cost-description: 'Laburki azaldu zertan datza gastu hau.'
+costs-field-dates: Datak
+costs-field-description: Deskribapena
+tooltip-project-cost-cost: 'Gastu honetarako izenburua ahalik eta esanguratsuen idatzi ezazu.'
+costs-field-cost: Balioa
+costs-main-header: 'Alde ekonomikoa'
+step-4: Balioa
+costs-field-date_from: '-etik'
+tooltip-project-cost-dates: 'Gastu hori bete edo lan hori bukatuko den data bitartea zehaztu. Planifikatu ezazu, gaurtik hasita hasierako data bi hilabete baino gehiago izan dadin, zeren proposamena ikusteko epea ere behar da, eta baita proposamena publikatzeko aukeratua izaten bada, eta lehenengo finantzazio txandaren 40 egunak. Egutegi honetan ez jarri aurretik garatutakoaren agenda, ona da baina proiektuaren deskribapenean hori idaztea. Agendan bakarrik interesatzen zaigu bukagabe dauden zatiak eta aldi berean finantzatuak nahi izatea direnak.'
+tooltip-project-cost-type: 'Hemen balio mota zehaztu behar duzu: ekintza bateri lotuta (pertsona baten gaitasuna edo ezagutza behar duen edozer), materialak jaso (konsumibleak, lehengaiak) edota azpiegitura (guneak, tresneria, altzariak).'
+cost-type-structure: Azpiegitura
+cost-type-lend: Mailegua
+cost-type-material: Materiala
+costs-field-required_cost-yes: Nahitaezkoa
+tooltip-project-resource: 'Zehaztu hemen baliabide gehiago badituzu proiektua aurrera eramateko, eskatzen dituzun baliabideak alde batera utzita: finantzazio-iturriak, berezko baliabideak edota materiala jada jaso duzula. Interesa piztu dezake proiektua aldi berean finantzatuko duten pertsonetan.'
+costs-field-resoure: 'Bestelako baliabideak'
+costs-fields-resources-title: Baliabidea
+validate-project-costs-any_error: 'Informazio baten bat falta da gastuen banakapenean'
+tooltip-project-cost-amount: 'Zure iritzian, gastu honen zenbatekoa (eurotan) zehaztu. Ez erabili punttua milakako zenbakiak idazteko ados?'
+validate-cost-field-dates: 'Gastu honen hasiera eta amaiera data zehaztu behar dituzu, proiektua hobeto baloratzeko'
+step-costs: 'urratsa: Proiektua / Gastuak'
+costs-field-required_cost-no: Gehigarria
+cost-type-task: Eginkizuna
+costs-field-schedule: 'Lan agenda'
+tooltip-project-costs: 'Zenbat eta hobeago banakepena zehaztu, Goteo-k proiektuaren informazio orokorra orduan eta hobeago baloratuko du'
+costs-field-required_cost: 'Gastu hau da'
+tooltip-project-totals: 'Grafiko honek funtsezko gastuak azaltzen ditu (minimoak proiektua aurrera eramateko) eta baita ez funtsezko diren gastuak ere (zenbateko hobezina), finantzazioaren bi txandetan kontutan izateko. Lehenengo txanda 40 egun irauten du, eta funtsezko dirua lortzen saiatzen da. Finantzazio hori lortzen baldin bada, orduan 2. txanda egiteko aukera dago. 40 egun gehiago zenbateko hobezinera heltzeko. Bigarren txanda, lehenengoan ez bezala, jasotako finantzazio guztia jasotzen da (nahiz eta minimoa ez izatea). '
+tooltip-project-cost-required: 'Arlo hau oso garrantzitsua da:  sartuko duzun gastu bakoitzean ukaezina edo aukerakoa den zehaztu behar duzu. Ukaezinezko gastu guztiak gehituko dira, proiektuaren finantzazio minimoa emaitza emanez. Aukerako gastuen gehiketa aldiz, finantzazioaren bigarren txandan agertu da, ukaezineko finantzazioa lortu ostean.'
+costs-field-type: Mota
+costs-field-date_until: Arte
+costs-field-amount: Balioa
+costs-fields-metter-title: 'Gastuen bistaratzea'
+validate-project-field-costs: '5 gastu gehienez banakatzea gomendatzen dugu, proiektuaren balorazioa hobetzeko eta horrela Goteo-n argitaratua izango den ala ez jakiteko.'
+mandatory-cost-field-description: 'Derrigorrekoa da gastuei edonolako deskribapena idaztea'
+mandatory-cost-field-amount: 'Derrigorrekoa da gastuei zenbateko bat esleitzea'
+mandatory-cost-field-name: 'Derrigorrekoa da gastuaren izena idaztea'
+mandatory-project-total-costs: 'Derrigorrekoa da gastu baten bat zehaztea'
+mandatory-cost-field-task_dates: 'Derrigorrekoa da lanaren gutxi gora beherako datak zehaztea'
+mandatory-project-field-resource: 'Derrigorrekoa da bestelako baliabideak dituzun ala ez zehaztea'
+mandatory-project-resource: 'Derrigorrekoa da bestelako baliabideak dituzun ala ez zehaztea'
