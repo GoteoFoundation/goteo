@@ -15,7 +15,7 @@ var/php/sess_*
 composer.lock
 
 config/*
-!config/README
+!config/README.md
 !config/demo-settings.yml
 !config/vagrant-settings.yml
 dist
