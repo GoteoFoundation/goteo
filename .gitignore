@@ -1,6 +1,10 @@
 .idea
 .vagrant
 
+extend/
+!extend/README.md
+!extend/goteo-dev
+
 /node_modules/
 /vendor/
 /bower_components/
