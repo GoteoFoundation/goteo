@@ -56,6 +56,7 @@ $pay_method = $this->pay_method;
 				</div>
 			</div>
 	</div>
+    <?= $this->insert('invest/partials/steps_bar') ?>
 </div>
 
 <?php $this->replace() ?>

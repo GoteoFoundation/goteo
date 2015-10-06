@@ -383,8 +383,26 @@ class InvestController extends \Goteo\Core\Controller {
             return $this->redirect('/invest/' . $project_id . '/payment?' . $this->query);
         }
 
-        // Aqui cambiar por escoger recompensa
-        return $this->viewResponse('invest/user_data');
+        $user = Session::getUser();
+        // $donor = \Goteo\Model\User\Donor::get($user->id);
+        // // print_r($user);
+        // $fiscal_address = [
+        //     'name' => $donor ? $donor->name : $user->name,
+        //     'nif' => $donor ? $donor->nif : null,
+        //     'address' => $donor ? $donor->address : null,
+        //     'zipcode' => $donor ? $donor->zipcode : null,
+        //     'location' => $donor ? $donor->location : null,
+        //     'country' => $donor ? $donor->country : null,
+        // ];
+        // check post data
+        if($request->isMethod('post')) {
+            // TODO: check and save, add event
+            return $this->redirect('/invest/' . $project_id. '/' . $invest->id . '/share');
+            // print_r($request->request->all());die;
+        }
+
+        // show form
+        return $this->viewResponse('invest/user_data', ['reward_address' => $reward_address]);
 
     }
 

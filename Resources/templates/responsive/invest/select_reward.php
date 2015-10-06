@@ -8,6 +8,7 @@ $this->layout('layout', [
 $this->section('content');
 
 ?>
+
 <div class="container">
 
 	<div class="row row-form">
@@ -104,9 +105,14 @@ $this->section('content');
 			</div>
 
 	</div>
+<?= $this->insert('invest/partials/steps_bar') ?>
 </div>
 
+
+
 <?php $this->replace() ?>
+
+
 
 <?php $this->section('footer') ?>
 <script type="text/javascript">

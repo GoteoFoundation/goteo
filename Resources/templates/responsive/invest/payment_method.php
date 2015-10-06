@@ -33,6 +33,7 @@ $this->section('content');
                     <input type="hidden" name="amount" value="<?= $this->amount ?>">
 
 					<div class="row no-padding col-md-10 col-md-offset-1">
+
                     <?php foreach($this->pay_methods as $method => $pay): ?>
                         <div class="col-xs-6 col-md-3 pay-method<?= $pay->isActive() ? '' : ' disabled' ?>">
                             <label class="label-method" for="<?= $method ?>-method">
@@ -50,31 +51,66 @@ $this->section('content');
 							<div class="col-md-10 col-md-offset-1 method-conditions">
 								<div class="checkbox">
 									<label>
-										<input class="confirm-checkbox" type="checkbox" name="anonymous" value="1">
+										<input class="confirm-checkbox" type="checkbox" name="anonymous" id="anonymous" value="1">
 											<?= $this->text('invest-anonymous') ?>
 									</label>
 								</div>
+
+                                <?php if(array_key_exists('pool', $this->pay_methods)): ?>
 								<div class="checkbox">
 									<label>
-										<input class="confirm-checkbox" type="checkbox" name="pool_on_fail" value="1">
+										<input class="confirm-checkbox" type="checkbox" name="pool_on_fail" id="pool_on_fail" value="1">
 											<?= $this->text('invest-pool') ?>
 									</label>
+    							</div>
+                                <?php endif ?>
 
-								</div>
-							</div>
-						</div>
+                            </div>
+                        </div>
 
 
-						<div class="form-group">
-							<div class="col-md-4 col-md-offset-1 invest-button">
-								<button type="submit" class="btn btn-block btn-success col-xs-3"><?= $this->text('invest-button') ?></button>
-							</div>
-						</div>
-					</form>
-				</div>
-			</div>
+                        <div class="form-group">
+                            <div class="col-md-4 col-md-offset-1 invest-button">
+                                <button type="submit" class="btn btn-block btn-success col-xs-3"><?= $this->text('invest-button') ?></button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
 
 	</div>
+	<?= $this->insert('invest/partials/steps_bar') ?>
+
+    </div>
 </div>
 
 <?php $this->replace() ?>
+
+<?php $this->section('footer') ?>
+<script type="text/javascript">
+$(function(){
+
+<?php if(array_key_exists('pool', $this->pay_methods)): ?>
+    $('#pool_on_fail').get(0).originalStatus = $('#pool_on_fail').prop('checked');
+
+    $('input[name="method"]').on('change', function(){
+        if($(this).val() === 'pool') {
+            $('#pool_on_fail').prop('checked', true);
+            $('#pool_on_fail').prop('disabled', true);
+        }
+        else {
+            $('#pool_on_fail').prop('disabled', false);
+            if(typeof $('#pool_on_fail').get(0).originalStatus !== 'undefined') {
+                $('#pool_on_fail').prop('checked', $('#pool_on_fail').get(0).originalStatus);
+            }
+        }
+    });
+    $('#pool_on_fail').on('change', function(){
+        $(this).get(0).originalStatus = $(this).prop('checked');
+    });
+<?php endif ?>
+
+});
+</script>
+<?php $this->append() ?>

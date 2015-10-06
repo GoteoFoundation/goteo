@@ -20,6 +20,7 @@ module.exports = function(grunt) {
             files: [
                 'Resources/templates/**/*.php',
                 'extend/**/templates/**/*.php',
+                '<%= goteo.app %>/assets/**/*.{js,css,gif,jpeg,jpg,png,svg,webp}',
                 '<%= goteo.app %>/**/view/**/*.{js,css,gif,jpeg,jpg,png,svg,webp}',
             ]
         }

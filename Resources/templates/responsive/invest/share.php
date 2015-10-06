@@ -52,6 +52,7 @@ $this->section('content');
 				</div>
 			</div>
 	</div>
+	<?= $this->insert('invest/partials/steps_bar') ?>
 </div>
 
 <?php $this->replace() ?>

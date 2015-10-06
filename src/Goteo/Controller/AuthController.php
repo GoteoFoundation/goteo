@@ -103,12 +103,12 @@ class AuthController extends \Goteo\Core\Controller {
                 else {
                     //si falla: error o formulario de confirmación
                     if ($oauth->error_type == 'user-not-exists') {
-                        return $this->viewResponse('user/confirm',[ 'oauth' => $oauth ]);
+                        return $this->viewResponse('auth/confirm',[ 'oauth' => $oauth ]);
                     }
                     // existe usuario, formulario de vinculacion
                     elseif ($oauth->error_type == 'user-password-exists') {
                         Message::error($oauth->last_error);
-                        return $this->viewResponse('user/confirm_account',
+                        return $this->viewResponse('auth/confirm_account',
                                         array(
                                             'oauth' => $oauth,
                                             'user' => User::get($oauth->user_data['username'])
