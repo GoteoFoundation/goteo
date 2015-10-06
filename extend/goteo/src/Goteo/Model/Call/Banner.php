@@ -2,6 +2,7 @@
 
 namespace Goteo\Model\Call {
 
+    use Goteo\Application\Config;
     use Goteo\Library\Check,
         Goteo\Model\Image;
 
@@ -90,7 +91,7 @@ namespace Goteo\Model\Call {
 
             $list = array();
 
-            if(self::default_lang($lang)=='es') {
+            if(self::default_lang($lang)==Config::get('lang')) {
                 $different_select=" IFNULL(call_banner_lang.name, call_banner.name) as name";
                 }
             else {
@@ -100,7 +101,7 @@ namespace Goteo\Model\Call {
                                 AND eng.lang = 'en'";
                 }
 
-            $sql = static::query("
+            $sql = "
                 SELECT
                     call_banner.id,
                     call_banner.call,
@@ -115,9 +116,14 @@ namespace Goteo\Model\Call {
                 $eng_join
                 WHERE call_banner.call = :call
                 ORDER BY call_banner.order ASC, call_banner.id ASC
-                ", array(':call'=>$call, ':lang'=>$lang));
+                ";
 
-            foreach ($sql->fetchAll(\PDO::FETCH_CLASS, __CLASS__) as $banner) {
+            // die(\sqldbg($sql, [':call'=>$call, ':lang' => $lang]));
+
+            $query = static::query($sql, array(':call'=>$call, ':lang'=>$lang));
+
+
+            foreach ($query->fetchAll(\PDO::FETCH_CLASS, __CLASS__) as $banner) {
                 // imagen
                 if (!empty($banner->image)) {
                     $banner->image = Image::get($banner->image);

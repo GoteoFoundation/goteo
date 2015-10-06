@@ -3,6 +3,7 @@
 namespace Goteo\Core {
 
     use Goteo\Application\App;
+    use Goteo\Application\Config;
 	use Goteo\Core\Error,
         Goteo\Library\Cacher;
 
@@ -339,6 +340,7 @@ namespace Goteo\Core {
          * @return  string $default_lang
          */
         public static function default_lang($lang) {
+            if($lang == Config::get('lang')) return $lang;
             return \Goteo\Application\Lang::getDefault($lang);
         }
 
@@ -350,19 +352,18 @@ namespace Goteo\Core {
          * TODO: hacer esto de otra manera
          */
          public static function default_lang_by_id($id, $table, $lang) {
-
             // Devolver inglés cuando no esté traducido en idioma no-español
-            if ($lang != 'es') {
+            if ($lang != Config::get('lang')) {
                 // Si el idioma se habla en españa y no está disponible, usar 'es' y sino usar 'en' por defecto
-                $default_lang = self::default_lang($lang);
-
+                $fallback = self::default_lang($lang);
                 $qaux = static::query(
                     "SELECT id FROM `{$table}` WHERE id = :id AND lang = :lang",
                     array(':id' => $id, ':lang' => $lang)
                 );
                 $ok = $qaux->fetchColumn();
+                // die("$ok-$id $lang");
                 if ($ok != $id)
-                    $lang = $default_lang;
+                    $lang = $fallback;
             }
 
             return $lang;

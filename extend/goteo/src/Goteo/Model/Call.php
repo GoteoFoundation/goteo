@@ -237,7 +237,7 @@ namespace Goteo\Model {
                 {
 
                     //Obtenemos el idioma de soporte
-                    $lang=self::default_lang_by_id($id, 'call_lang', $lang);
+                    $l=self::default_lang_by_id($id, 'call_lang', $lang);
 
                     $sql = "
                         SELECT
@@ -256,7 +256,8 @@ namespace Goteo\Model {
                             AND call_lang.lang = :lang
                         WHERE call.id = :id
                         ";
-                    $query = self::query($sql, array(':id' => $id, ':lang' => $lang));
+                    // echo \sqldbg($sql, [':id' => $id, ':lang' => $l]);die;
+                    $query = self::query($sql, array(':id' => $id, ':lang' => $l));
                     foreach ($query->fetch(\PDO::FETCH_ASSOC) as $field => $value) {
                         $call->$field = $value;
                     }

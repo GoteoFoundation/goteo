@@ -120,20 +120,19 @@ class Lang {
     }
 
     /**
-     * Returns the default language for a language
+     * Returns the default language  or retrieves the fallback language for a language
      * @param  string $lang [description]
      * @return [type]       [description]
      */
     static public function getDefault($lang = '') {
         $default = self::isPublic(self::$default) ? self::$default : '';
-
         foreach(self::$langs_available as $l => $info) {
             if($info['public']) {
                 if(empty($default)) {
                     $default = $l;
                 }
-                if($lang === $l && array_key_exists($lang, self::$langs_available) && array_key_exists('fallback', self::$langs_available[$lang])) {
-                    $fallback = self::$langs_available[$lang]['fallback'];
+                if($lang === $l && array_key_exists('fallback', $info)) {
+                    $fallback = $info['fallback'];
                     if($fallback && self::isPublic($fallback)) {
                         $default = $fallback;
                     }

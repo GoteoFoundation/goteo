@@ -93,7 +93,7 @@ class PagesSubController extends AbstractSubController {
                     return $this->redirect("/admin/pages");
                 }
                 // si estamos editando una página
-                $page = Page::get($id, $node, Lang::getDefault('get'));
+                $page = Page::get($id, $node);
 
                 // si llega post, vamos a guardar los cambios
                 if ($this->isPost()) {
