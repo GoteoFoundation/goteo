@@ -14,6 +14,7 @@ spread-facebook: 'Difunde en Facebook'
 spread-twitter: 'Difunde en Twitter'
 invest-address-address-field: 'Dirección:'
 invest-pool-available: disponibles
+invest-amount-in-pool: Tienes %s en tu monedero virtual
 invest-address-header: 'Dónde quieres recibir la recompensa (sólo en caso de envíos postales)'
 invest-alert-lackamount: 'El aporte debe ser mayor a la recompensa elegida'
 invest-payment_method-header: 'Elige el método de pago'

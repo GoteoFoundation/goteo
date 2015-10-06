@@ -37,7 +37,6 @@ namespace Goteo\Model\User {
 
                 $query = static::query($sql, array(':id' => $id));
                 $pool = $query->fetchObject(__CLASS__);
-
                 // si no tiene reserva devolvemos una instancia válida
                 if (!$pool instanceof  \Goteo\Model\User\Pool) {
 
@@ -51,7 +50,7 @@ namespace Goteo\Model\User {
 
 
             } catch(\PDOException $e) {
-				throw new \Goteo\Core\Exception($e->getMessage());
+				throw new \Goteo\Application\Exception\ModelException($e->getMessage());
             }
 		}
 

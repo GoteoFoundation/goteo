@@ -58,7 +58,7 @@ $this->section('sub-header');
     <div id="main">
 
      <?php
-     foreach ($this->order as $item=>$itemData) {
+     foreach ($this->order as $item => $itemData) {
 
         if ($item !== 'news' && $this->order[$item]) {
             echo $this->insert("home/partials/$item");

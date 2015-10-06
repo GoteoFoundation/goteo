@@ -41,7 +41,7 @@ $pay_method = $this->pay_method;
                                 <span class="method-text">
                                 <?= $pay_method->getName() ?>
                                 </span>
-                                <img class="img-responsive img-method" alt="<?= $pay_method->getId() ?>" title="<?= $pay_method->getDesc() ?>" src="<?= $pay_method->getIcon() ?>">
+                                <img class="img-responsive img-method" alt="<?= $pay_method::getId() ?>" title="<?= $pay_method->getDesc() ?>" src="<?= $pay_method->getIcon() ?>">
                             </div>
                         </div>
                     </div>

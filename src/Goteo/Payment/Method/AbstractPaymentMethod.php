@@ -12,6 +12,7 @@ namespace Goteo\Payment\Method;
 
 use Goteo\Application\Config;
 use Goteo\Model\Invest;
+use Goteo\Model\User;
 use Goteo\Payment\PaymentException;
 use Goteo\Library\Text;
 use Goteo\Library\Currency;
@@ -30,12 +31,17 @@ abstract class AbstractPaymentMethod implements PaymentMethodInterface {
     protected $gateway;
     protected $invest;
     protected $request;
+    protected $user;
+
+    public function __construct(User $user) {
+        $this->user = $user;
+    }
 
     /**
      * Returns the id of the method (max 20 chars long)
      * @return string id of the method
      */
-    public function getId() {
+    static public function getId() {
         $parts = explode('\\', get_called_class());
         $c = end($parts);
         $c = strtolower(str_replace('PaymentMethod', '', $c));
@@ -50,7 +56,7 @@ abstract class AbstractPaymentMethod implements PaymentMethodInterface {
      * @return string name of the method
      */
     public function getName() {
-        return Text::get('invest-' . $this->getId() . '-method');
+        return Text::get('invest-' . $this::getId() . '-method');
     }
 
     /**
@@ -67,7 +73,7 @@ abstract class AbstractPaymentMethod implements PaymentMethodInterface {
      */
     public function getIcon() {
         // $this->getGateway()->getLogoImageUrl();
-        return SRC_URL . '/assets/img/pay/' . $this->getId() . '.png';
+        return SRC_URL . '/assets/img/pay/' . $this::getId() . '.png';
     }
 
     /**
@@ -75,7 +81,7 @@ abstract class AbstractPaymentMethod implements PaymentMethodInterface {
      * so it can be shown on the payment page as a temporary non-available method
      * @return boolean status
      */
-    public function isActive() {
+    public function isActive($amount = 0) {
         return true;
     }
 
@@ -182,7 +188,7 @@ abstract class AbstractPaymentMethod implements PaymentMethodInterface {
      * @return string The name of the Omnipay gateway
      */
     public function getGatewayName() {
-        return ucfirst($this->getId());
+        return ucfirst($this::getId());
     }
 
     /**
@@ -200,7 +206,7 @@ abstract class AbstractPaymentMethod implements PaymentMethodInterface {
             }
 
             foreach($this->gateway->getDefaultParameters() as $var => $val) {
-                $config = Config::get('payments.' . $this->getId() . '.' . $var);
+                $config = Config::get('payments.' . $this::getId() . '.' . $var);
                 $method = "set" . ucfirst($var);
                 if($config && method_exists($this->gateway, $method)) {
                     $this->gateway->$method($config);

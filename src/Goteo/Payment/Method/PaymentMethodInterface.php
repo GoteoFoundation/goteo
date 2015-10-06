@@ -16,10 +16,16 @@ namespace Goteo\Payment\Method;
  */
 interface PaymentMethodInterface {
     /**
+     * Contructor should have the Goteo user
+     * @param User $user [description]
+     */
+    public function __construct(\Goteo\Model\User $user);
+
+    /**
      * Returns the id of the method (max 20 chars long)
      * @return string id of the method
      */
-    public function getId();
+    static public function getId();
 
     /**
      * Returns the name of the payment method (a sort description)
@@ -42,9 +48,10 @@ interface PaymentMethodInterface {
     /**
      * Should return if method must be registered but in a inactive state
      * so it can be shown on the payment page as a temporary non-available method
+     * @param integer $amount The method can decide to be active depending on the amount
      * @return boolean status
      */
-    public function isActive();
+    public function isActive($amount = 0);
 
     /**
      * Sets the Invest in order to be able to create a proper gateway request

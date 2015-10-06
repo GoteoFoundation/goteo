@@ -30,7 +30,7 @@ class InvestListener implements EventSubscriberInterface
         $invest = $event->getInvest();
         $method = $event->getMethod();
         $request = $event->getRequest();
-        App::getService('paylogger')->info('INVEST INIT: ' . $invest->id . ' METHOD: ' . $method->getId() . ' PROJECT: ' . $invest->project);
+        App::getService('paylogger')->info('INVEST INIT: ' . $invest->id . ' METHOD: ' . $method::getId() . ' PROJECT: ' . $invest->project);
 
         $method->setInvest($invest);
         $method->setRequest($request);
@@ -43,7 +43,7 @@ class InvestListener implements EventSubscriberInterface
     {
         $method = $event->getMethod();
         $invest = $method->getInvest();
-        App::getService('paylogger')->info('INVEST INIT REQUEST: ' . $invest->id . ' METHOD: ' . $method->getId() . ' PROJECT: ' . $invest->project);
+        App::getService('paylogger')->info('INVEST INIT REQUEST: ' . $invest->id . ' METHOD: ' . $method::getId() . ' PROJECT: ' . $invest->project);
 
 
         Invest::setDetail($invest->id, 'init-request', 'Payment gateway authorised');
@@ -55,7 +55,7 @@ class InvestListener implements EventSubscriberInterface
         $response = $event->getResponse();
         $invest = $method->getInvest();
         $reward = $invest->getReward();
-        App::getService('paylogger')->info('INVEST INIT REDIRECT: ' . $invest->id . ' METHOD: ' . $method->getId() . ' PROJECT: ' . $invest->project);
+        App::getService('paylogger')->info('INVEST INIT REDIRECT: ' . $invest->id . ' METHOD: ' . $method::getId() . ' PROJECT: ' . $invest->project);
 
         // Goto payment platform...
 
@@ -72,7 +72,7 @@ class InvestListener implements EventSubscriberInterface
         $invest = $event->getInvest();
         $method = $event->getMethod();
         $request = $event->getRequest();
-        App::getService('paylogger')->info('INVEST COMPLETE: ' . $invest->id . ' METHOD: ' . $method->getId() . ' PROJECT: ' . $invest->project);
+        App::getService('paylogger')->info('INVEST COMPLETE: ' . $invest->id . ' METHOD: ' . $method::getId() . ' PROJECT: ' . $invest->project);
 
         $method->setInvest($invest);
         $method->setRequest($request);
@@ -86,7 +86,7 @@ class InvestListener implements EventSubscriberInterface
         $method = $event->getMethod();
         $invest = $method->getInvest();
         $response = $event->getResponse();
-        App::getService('paylogger')->info('INVEST COMPLETE REQUEST: ' . $invest->id . ' METHOD: ' . $method->getId() . ' PROJECT: ' . $invest->project);
+        App::getService('paylogger')->info('INVEST COMPLETE REQUEST: ' . $invest->id . ' METHOD: ' . $method::getId() . ' PROJECT: ' . $invest->project);
 
         // Set transaction ID
         $invest->setTransaction($response->getTransactionReference());
@@ -99,7 +99,7 @@ class InvestListener implements EventSubscriberInterface
         $method = $event->getMethod();
         $invest = $method->getInvest();
         $response = $event->getResponse();
-        App::getService('paylogger')->info('INVEST NOTIFY: ' . $invest->id . ' METHOD: ' . $method->getId() . ' PROJECT: ' . $invest->project);
+        App::getService('paylogger')->info('INVEST NOTIFY: ' . $invest->id . ' METHOD: ' . $method::getId() . ' PROJECT: ' . $invest->project);
 
         // Set transaction ID
         $invest->setTransaction($response->getTransactionReference());
@@ -113,7 +113,7 @@ class InvestListener implements EventSubscriberInterface
         $response = $event->getResponse();
         $invest = $method->getInvest();
         $reward = $invest->getReward();
-        App::getService('paylogger')->info('INVEST FINISH FAILED: ' . $invest->id . ' METHOD: ' . $method->getId() . ' PROJECT: ' . $invest->project . ' MESSAGE: ' . $response->getMessage());
+        App::getService('paylogger')->info('INVEST FINISH FAILED: ' . $invest->id . ' METHOD: ' . $method::getId() . ' PROJECT: ' . $invest->project . ' MESSAGE: ' . $response->getMessage());
 
         // not making changes on invest status...
 
@@ -134,7 +134,7 @@ class InvestListener implements EventSubscriberInterface
         $method = $event->getMethod();
         $response = $event->getResponse();
         $invest = $method->getInvest();
-        App::getService('paylogger')->info('INVEST FINISH SUCCEEDED: ' . $invest->id . ' METHOD: ' . $method->getId() . ' PROJECT: ' . $invest->project);
+        App::getService('paylogger')->info('INVEST FINISH SUCCEEDED: ' . $invest->id . ' METHOD: ' . $method::getId() . ' PROJECT: ' . $invest->project);
 
         // Invest status to charged
         $invest->status = Invest::STATUS_CHARGED;

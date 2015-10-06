@@ -10,9 +10,71 @@
 
 namespace Goteo\Payment\Method;
 
+use Goteo\Payment\PaymentException;
+use Goteo\Model\User\Pool;
+use Goteo\Library\Text;
+
 /**
- * Creates a Payment Method that uses Paypal provider
+ * Creates a Payment Method that uses internal virtuall wallet
+ * This method does uses Omnipay Manual method
  */
 class PoolPaymentMethod extends AbstractPaymentMethod {
+    protected $pool;
+
+    // Uses omnipay manual method, always successful
+    public function getGatewayName() {
+        return 'Manual';
+    }
+
+    public function getPool() {
+        if(!$this->pool) {
+            $this->pool = Pool::get($this->user->id);
+        }
+        return $this->pool;
+    }
+
+    /**
+     * Should return if method must be registered but in a inactive state
+     * so it can be shown on the payment page as a temporary non-available method
+     * @return boolean status
+     */
+    public function isActive($amount = 0) {
+
+        // Checking pool status
+        if($this->getPool() && $this->getPool()->amount >= $amount) {
+            return true;
+        }
+        return false;
+    }
+
+    public function getDesc() {
+        $amount = $this->getPool()->amount;
+        return Text::get('invest-amount-in-pool', amount_format($amount));
+    }
+
+
+    // Completes purchase if enough amount available
+    public function purchase() {
+        $invest = $this->getInvest();
+
+        if($this->getPool() && $this->getPool()->amount >= $invest->amount) {
+            // remove current quantity from user pool
+            $errors = [];
+            Pool::withdraw($this->user->id, $invest->amount, $errors);
+            if (empty($errors)) {
+                // return response
+                return $this->getGateway()->authorize([
+                            'amount' => (float) $this->getInvest()->amount,
+                            'description' => $this->getInvestDescription(),
+                            'returnUrl' => $this->getCompleteUrl(),
+                            'cancelUrl' => $this->getCompleteUrl(),
+                ])->send();
+            } else {
+                throw new PaymentException("Error Processing Pool: " . implode('<br />, $errors)'));
+            }
+        }
+        throw new PaymentException(Text::get('invest-pool-error').'<br>'.Text::get('invest-amount-in-pool', amount_format($this->getPool()->amount)));
+
+    }
 
 }

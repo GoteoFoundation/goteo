@@ -68,7 +68,7 @@ class InvestController extends \Goteo\Core\Controller {
 
         // Available pay methods
 
-        $pay_methods = Payment::getMethods();
+        $pay_methods = Payment::getMethods(Session::getUser());
         // Is paypal active for the project?
         // This should be more generic...
         if(!Project\Account::getAllowpp($project_id)) {
@@ -221,7 +221,7 @@ class InvestController extends \Goteo\Core\Controller {
                     'currency_rate' => Currency::rate(),
                     'user' => Session::getUserId(),
                     'project' => $project_id,
-                    'method' => $method->getId(),
+                    'method' => $method::getId(),
                     'status' => Invest::STATUS_PROCESSING,  // aporte en proceso
                     'invested' => date('Y-m-d'),
                     // 'anonymous' => ['anonymous'],
@@ -240,7 +240,8 @@ class InvestController extends \Goteo\Core\Controller {
 
             // New Invest Init Event
             $method = $this->dispatch(AppEvents::INVEST_INIT, new FilterInvestInitEvent($invest, $method, $request))->getMethod();
-            // to go to the gateway, gets the response
+
+            // go to the gateway, gets the response
             $response = $method->purchase();
 
             // New Invest Request Event

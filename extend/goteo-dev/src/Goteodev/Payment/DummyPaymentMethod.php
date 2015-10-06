@@ -18,6 +18,7 @@ use Omnipay\Common\Message\ResponseInterface;
 /**
  * This class is just an example and must NOT be used in production
  * Creates a Payment Method that does nothing!
+ * Does not use Ommipay
  */
 class DummyPaymentMethod extends AbstractPaymentMethod {
     private $simulating_gateway = false;
@@ -26,7 +27,7 @@ class DummyPaymentMethod extends AbstractPaymentMethod {
         return 'Dummy';
     }
 
-    public function getid() {
+    static public function getid() {
         return 'dummy';
     }
 
