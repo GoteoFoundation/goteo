@@ -50,13 +50,13 @@ $this->section('content');
 							<div class="col-md-10 col-md-offset-1 method-conditions">
 								<div class="checkbox">
 									<label>
-										<input class="confirm-checkbox" type="checkbox" name="remember">
+										<input class="confirm-checkbox" type="checkbox" name="anonymous" value="1">
 											<?= $this->text('invest-anonymous') ?>
 									</label>
 								</div>
 								<div class="checkbox">
 									<label>
-										<input class="confirm-checkbox" type="checkbox" name="remember">
+										<input class="confirm-checkbox" type="checkbox" name="pool_on_fail" value="1">
 											<?= $this->text('invest-pool') ?>
 									</label>
 

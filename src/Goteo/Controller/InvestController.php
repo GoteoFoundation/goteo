@@ -224,9 +224,9 @@ class InvestController extends \Goteo\Core\Controller {
                     'method' => $method::getId(),
                     'status' => Invest::STATUS_PROCESSING,  // aporte en proceso
                     'invested' => date('Y-m-d'),
-                    // 'anonymous' => ['anonymous'],
-                    // 'resign' => $resign,
-                    // 'pool' => $to_pool
+                    'anonymous' => $request->query->has('anonymous') ? true : false,
+                    'resign' => $reward ? false : true,
+                    'pool' => $request->query->has('pool_on_fail') ? true : false
                 )
             );
 
@@ -369,7 +369,7 @@ class InvestController extends \Goteo\Core\Controller {
 
     /**
      * step4: reward/user data
-     * Showed when comming back from the payment gateway
+     * Shown when comming back from the payment gateway
      */
     public function userDataAction($project_id, $invest_id, Request $request)
     {
@@ -379,7 +379,7 @@ class InvestController extends \Goteo\Core\Controller {
         if($reward instanceOf Response) return $reward;
 
         if(!in_array($invest->status, [Invest::STATUS_CHARGED, Invest::STATUS_PAID])) {
-            Message::info(Text::get('project-invest-fail'));
+            Message::error(Text::get('project-invest-fail'));
             return $this->redirect('/invest/' . $project_id . '/payment?' . $this->query);
         }
 
@@ -399,7 +399,7 @@ class InvestController extends \Goteo\Core\Controller {
         if($reward instanceOf Response) return $reward;
 
         if(!in_array($invest->status, [Invest::STATUS_CHARGED, Invest::STATUS_PAID])) {
-            Message::info(Text::get('project-invest-fail'));
+            Message::error(Text::get('project-invest-fail'));
             return $this->redirect('/invest/' . $project_id . '/payment?' . $this->query);
         }
 

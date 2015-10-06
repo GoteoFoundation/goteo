@@ -513,7 +513,6 @@ namespace Goteo\Model {
                 }
             }
 
-
             // If current payment method is pool,
             // next failed payments go to pool as well
             if($this->method===self::METHOD_POOL)
@@ -538,9 +537,9 @@ namespace Goteo\Model {
 
                 // FIX: aseguramos que no hay ningun valor nulo
                 $pnode = $this->getProject()->node;
-                if (empty($pnode)) $pnode = \GOTEO_NODE;
+                if (empty($pnode)) $pnode = Config::get('current_node');
                 $unode = $this->getUser()->node;
-                if (empty($unode)) $unode = \GOTEO_NODE;
+                if (empty($unode)) $unode = Config::get('current_node');
 
                 $sql = "REPLACE INTO invest_node (project_id, project_node, user_id, user_node, invest_id, invest_node) VALUES (:pid, :pnode, :uid, :unode, :iid, :inode)";
                 self::query($sql, array(
