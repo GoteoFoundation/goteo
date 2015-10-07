@@ -9,7 +9,8 @@ INDEX ( `invest` )
 -- clave primaria
 ALTER TABLE `invest_detail` ADD UNIQUE `invest_type` ( `invest` , `type` );
 
+-- constrains
 DELETE FROM invest_detail WHERE invest NOT IN (SELECT id FROM invest);
 
--- constrains
 ALTER TABLE `invest_detail` CHANGE `invest` `invest` BIGINT(20) UNSIGNED NOT NULL, ADD FOREIGN KEY (`invest`) REFERENCES `invest`(`id`) ON UPDATE CASCADE ON DELETE CASCADE;
+

@@ -236,7 +236,7 @@ class AccountsSubController extends AbstractSubController {
         if (in_array($invest->status, [4,5])) {
             Message::error('No debería poderse cancelar un aporte cuando el proyecto ya está financiado. Si es imprescindible, hacerlo desde el panel de paypal o tpv');
         } else {
-            $invest->setPool(false); //Marcar como si el usuario NO hubiera escogido pool
+            $invest->setPoolOnFail(false); //Marcar como si el usuario NO hubiera escogido pool
             $this->cancelInvest($invest);
         }
 
@@ -256,7 +256,7 @@ class AccountsSubController extends AbstractSubController {
         if (!in_array($status, [1,4])) {
             Message::error('Solo se pueden devolver aportes en estados de "Cobrado" y "Retornado" (y en este caso con suficiente dinero en el monedero)');
         } else {
-            $invest->setPool(false); //Marcar como si el usuario NO hubiera escogido pool
+            $invest->setPoolOnFail(false); //Marcar como si el usuario NO hubiera escogido pool
             if($status == 1) {
                 $this->cancelInvest($invest, true); //no need to check the pool
             }
@@ -299,7 +299,7 @@ class AccountsSubController extends AbstractSubController {
         } else {
             if ($invest->cancel(true)) {
                 $log_text = "El admin %s ha devuelto el aporte al monedero de %s de %s (id: %s) al proyecto %s del dia %s";
-                $invest->setPool(true); //Marcar como si el usuario hubiera escogido pool
+                $invest->setPoolOnFail(true); //Marcar como si el usuario hubiera escogido pool
                 Model\User\Pool::add($invest);
                 Message::info("Aporte devuelto. Incrementado el monedero por valor de {$invest->amount} €");
             } else{
@@ -331,7 +331,7 @@ class AccountsSubController extends AbstractSubController {
     // cancelar aporte antes de ejecución, solo aportes no cargados
     public function switchpoolAction($id) {
         $invest = Model\Invest::get($id);
-        if ($invest->switchPool($id)) {
+        if ($invest->switchPoolOnFail($id)) {
             Message::info('Pool cambiado de estado');
         }
         return $this->redirect('/admin/accounts/details/'.$id);
@@ -487,7 +487,7 @@ class AccountsSubController extends AbstractSubController {
                     $rewards = Model\Project\Reward::getAll($projectNew, 'individual');
 
                     foreach ($rewards as $rewId => $rewData) {
-                        $invest->setReward($rewId); //asignar
+                        $invest->addReward($rewId); //asignar
                     }
                 }
 

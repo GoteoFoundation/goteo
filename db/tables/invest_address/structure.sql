@@ -18,3 +18,9 @@ ADD `nif` VARCHAR( 10 ) NULL ;
 -- alters
 ALTER TABLE `invest_address` ADD `namedest` TINYTEXT NULL, ADD `emaildest` TINYTEXT NULL, ADD `regalo` INT(1)  NULL DEFAULT '0';
 ALTER TABLE `invest_address` ADD `message` TEXT NULL;
+
+-- Constrains
+DELETE FROM invest_address WHERE invest NOT IN (SELECT id FROM invest);
+DELETE FROM invest_address WHERE USER NOT IN (SELECT id FROM `user`);
+
+ALTER TABLE `invest_address` ADD FOREIGN KEY (`invest`) REFERENCES `invest`(`id`) ON UPDATE CASCADE, ADD FOREIGN KEY (`user`) REFERENCES `user`(`id`) ON UPDATE CASCADE;

@@ -197,6 +197,7 @@ class Config {
         View::setTheme('default');
 
         // views function registering
+        View::getEngine()->loadExtension(new \Goteo\Foil\Extension\LangUtils(), [], true);
         View::getEngine()->loadExtension(new \Goteo\Foil\Extension\GoteoCore(), [], true);
         View::getEngine()->loadExtension(new \Goteo\Foil\Extension\TextUtils(), [], true);
         View::getEngine()->loadExtension(new \Goteo\Foil\Extension\Pages(), [], true);

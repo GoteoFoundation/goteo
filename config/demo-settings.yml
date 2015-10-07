@@ -28,7 +28,9 @@ url:
     main: //localhost:8081
     # static resources url if you use a different assets server
     assets: //localhost:8081
-
+    #optional, configure this as hostname only (ex: example.com) if you want languages to be selected as subdomains (es.example.com, en.example.com)
+    url_lang: localhost:8081
+    
     # If you want to use a CDN or another web server to serve the cached images
     # You can define this constants. All cached images links will point to this
     # Url, event if don't exists yet.

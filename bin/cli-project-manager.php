@@ -75,7 +75,7 @@ elseif($order === '--pool') {
     foreach($invests = Invest::getList(['projects' => $project->id, 'status' => [Invest::STATUS_PENDING, Invest::STATUS_CHARGED, Invest::STATUS_PAID, Invest::STATUS_RETURNED]], null, 0, 9999) as $invest) {
         echo $invest->id . " ". str_pad($invest->amount,3) . "\t STATUS: " . str_pad($i_status[$invest->status],18) ." \t METHOD: " . str_pad($invest->method, 8). " \t POOL: ".  ((int)$invest->pool) . "\tUSER: {$invest->user}\n";
         if(isset($value)) {
-            $invest->setPool($value);
+            $invest->setPoolOnFail($value);
             echo "Pool set to " . ((int) $value) . " ";
             $errors = array();
             if((bool)$value) {

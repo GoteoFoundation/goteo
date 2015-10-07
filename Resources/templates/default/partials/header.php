@@ -1,6 +1,5 @@
 <?php
 
-use Goteo\Application\Lang;
 use Goteo\Library\Currency;
 
 $currencies = Currency::$currencies;
@@ -9,14 +8,14 @@ $num_currencies=count($currencies);
 
 $select_currency=Currency::$currencies[$_SESSION['currency']]['html'];
 
-$langs = Lang::listAll('short');
+$langs = $this->lang_list('short');
 
 ?>
                         <ul class="currency">
                             <?php foreach ($currencies as $ccyId => $ccy): ?>
                                 <?php if ($ccyId == $_SESSION['currency']) continue; ?>
                                 <li>
-                                <a href="?currency=<?php echo $ccyId ?>"><?php echo $ccy['html'].' '.$ccyId; ?></a>
+                                <a href="?currency=<?= $ccyId ?>"><?= $ccy['html'].' '.$ccyId ?></a>
                                 </li>
                             <?php endforeach ?>
                         </ul>
@@ -25,9 +24,9 @@ $langs = Lang::listAll('short');
 
                         <ul class="lang">
                             <?php foreach ($langs as $id => $lang): ?>
-                                <?php if (Lang::isActive($id)) continue; ?>
+                                <?php if ($this->lang_active($id)) continue; ?>
                                 <li>
-                                <a href="?lang=<?php echo $id ?>"><?php echo $lang ?></a>
+                                <a href="<?= $this->lang_url($id) ?>"><?= $lang ?></a>
                                 </li>
                             <?php endforeach ?>
                         </ul>
@@ -44,13 +43,13 @@ $langs = Lang::listAll('short');
                     <li><a href="/blog"><?=$this->text('regular-header-blog')?></a></li>
                     <li><a href="/faq"><?=$this->text('regular-header-faq')?></a></li>
                     <?php if($num_currencies>1) { ?>
-                    <li id="currency"><a href="#" ><?php echo $select_currency." ".$_SESSION['currency']; ?></a>
+                    <li id="currency"><a href="#" ><?= $select_currency." ".$_SESSION['currency'] ?></a>
 
                         <?php // TODO: UL CURRENCY AQUI ?>
 
                     </li>
                     <?php } ?>
-                    <li id="lang"><a href="#" ><?php echo Lang::getShort(Lang::current(true)); ?></a>
+                    <li id="lang"><a href="#" ><?= $langs[$this->lang_current(true)] ?></a>
 
                         <?php // TODO: UL LANG AQUI ?>
 

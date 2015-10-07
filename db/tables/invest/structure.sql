@@ -56,3 +56,7 @@ ALTER TABLE `invest` ADD `currency_rate` DECIMAL(9, 5) NOT NULL DEFAULT 1 COMMEN
 
 -- funcionalidad credito
 ALTER TABLE `invest` ADD `pool` INT( 1 ) NULL DEFAULT NULL COMMENT 'A reservar si el proyecto falla';
+
+
+ALTER TABLE `invest` ADD FOREIGN KEY (`user`) REFERENCES `user`(`id`) ON UPDATE CASCADE;
+ALTER TABLE `invest` ADD FOREIGN KEY (`project`) REFERENCES `project`(`id`) ON UPDATE CASCADE;
