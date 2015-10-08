@@ -286,6 +286,11 @@ class Lang {
             $desired['session'] = Session::get('lang');
         }
         if($request) {
+            // set by subdomain
+            $subdomain = strtok($request->getHost(), '.');
+            if(self::isPublic($subdomain)) {
+                $desired['subdomain'] = $subdomain;
+            }
             // set by navigator
             $desired['browser'] = substr($request->server->get('HTTP_ACCEPT_LANGUAGE'), 0, 2);
         }

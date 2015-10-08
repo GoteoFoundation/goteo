@@ -1,41 +1,41 @@
 costs-fields-main-title: 'Détail des coûts'
-tooltip-project-cost-description: 'Expliquez brièvement en quoi consiste ce coût.'
+tooltip-project-cost-description: 'Expliquez birèvement en quoi consiste ce coût.'
 costs-field-dates: Dates
 costs-field-description: Description
-tooltip-project-cost-cost: 'Saisissez le titre le plus descriptif possible de ce coût.'
+tooltip-project-cost-cost: 'Saississez un titre le plus descriptif possible à propos de ce coût.'
 costs-field-cost: Coût
 costs-main-header: 'Aspects économiques'
 step-4: Coût
 costs-field-date_from: Depuis
-tooltip-project-cost-dates: 'Indiquez la période au cours de laquelle vous allez terminer cette tâche ou dépenser le coût afférent. Débutez au plus tôt dans deux mois à compter de maintenant, afin d''inclure le temps d''examen de la proposition, la publication et les 40 jours du premier tour de financement. N''incluez pas dans ce calendrier le planning de développement antérieur, même s''il est bon de le détailler dans la description du projet. Sur le planning, indiquez seulement les étapes qu''il reste à réaliser et pour lesquelles des financements sont recherchés. '
+tooltip-project-cost-dates: 'Calculez les dates nécessaires pour terminer cette tche ou couvrir ce coût. Débutez au plus tôt dans deux mois à compter de maintenant, afin d''inclure le temps de considération de la proposition, la publication et les 40 jours du premier tour de financement. N''incluez pas dans ce calendrier l''agenda de développement antérieur même s''il est bon de le détailler dans la description du projet. Sur l''agenda renseignez seulement les étapes liées au co-financement.'
 tooltip-project-cost-type: 'Ici, vous devez préciser le type de coût : associé à une tâche (nécessitant les compétences ou connaissances de quelqu''un), à l''achat de matériel (consommables, matières premières) ou bien à de l''infrastructure (locaux, équipements, mobiliers).'
 cost-type-structure: Infrastructure
 cost-type-lend: Prêt
 cost-type-material: Matériel
 costs-field-required_cost-yes: Indispensable
-tooltip-project-resource: 'Indiquez si vous bénéficiez d''apports supplémentaires, autres que ceux sollicités, pour mener à bien le projet : sources de financement, ressources propres ou stock de matériel déjà réalisé.  Cela peut motiver des cofinanceurs potentiels. '
+tooltip-project-resource: "Indiquez si vous bénéficiez d'apports supplémentaires, autres que ceux sollicités, pour mener à bien le projet: sources de financement, ressources propres ou stock de matériel déjà\_ réalisé.  Cela peut motiver des cofinanceurs potentiels."
 costs-field-resoure: 'Autres ressources'
 costs-fields-resources-title: Ressource
-validate-project-costs-any_error: 'Il manque quelques informations sur le détail des coûts.'
-tooltip-project-cost-amount: 'Indiquez le montant en euros envisagé pour ce coût. N''utilisez pas de point pour écrire les milliers.'
-validate-cost-field-dates: 'Vous devez indiquer les dates de début et de fin de la tâche correspondante a ce coût pour pouvoir mieux évaluer le projet.'
-step-costs: 'Étape: Projet / Coûts'
+validate-project-costs-any_error: 'Il manque quelques informations sur le détail des coûts'
+tooltip-project-cost-amount: 'Indiquez le montant en euros envisagé pour ce coût. N''utilisez pas de point pour écrire des milliers.'
+validate-cost-field-dates: 'Vous devez indiquer les dates de début et de fin de ce coût pour pouvoir mieux valoriser le projet.'
+step-costs: 'Etape 4 : Projet / Coûts'
 costs-field-required_cost-no: Optionnel
-cost-type-task: Tâche
+cost-type-task: Tche
 costs-field-schedule: 'Planning de travail'
-tooltip-project-costs: 'Plus les coûts sont détaillés et précisés, mieux l''information générale du projet sera valorisée au sein de Goteo.'
+tooltip-project-costs: 'Plus les coûts sont détaillés est précise, mieux l''information générale du projet sera valorisé au sein de SiteName.'
 costs-field-required_cost: 'Le coût est de'
-tooltip-project-totals: 'Ce graphique montre la somme des coûts indispensables (minimum pour réaliser le projet) et la somme des coûts secondaires (budget idéal) pour les deux tours de financement. Le premier tour de 40 jours sert à obtenir le montant minimum indispensable. Une fois ce minimum obtenu, le second tour de 40 jours sera lancé afin d''atteindre le budget idéal. À la différence du premier tour, le second tour permet de toucher le montant collecté quel qu''il soit. '
-tooltip-project-cost-required: 'Ce point est très important : à chaque coût entré, vous devez indiquer si c''est un coût indispensable ou bien secondaire. Tous les coûts indiqués comme indispensables s''additionneront ce qui donnera le montant du financement minimum pour le projet. La somme des coûts secondaires, par ailleurs, pourra être sollicitée durant le second tour de financement, après obtention des fonds indispensables.'
+tooltip-project-totals: 'Ce graphique montre la somme des coûts indispensables (minimum pour réaliser le projet) et la somme des coûts secondaires (idéal) pour les deux tours de financement. Le premier tour dure 40 jours pour obtenir la quantité minimum indispensable. Une fois ce minimum obtenu, le second tour de 40 jours sera lancé afin d''obtenir le coût idéal. àla différence du premier tour, le second tour distribue toutes les recettes.'
+tooltip-project-cost-required: 'Ce point est très important: à chaque coût vous devez écrire si c''est indispensable ou bien supplémentaire. Tous les coûts marqués comme essentiel s''additionneront en affichant le montant de la valeur du financement minimum pour le projet. L''addition des coûts indispensables, en échange, pourront être obtenu durant le second tour de financement, après l''obtention des fonds indispensables.'
 costs-field-type: Type
-costs-field-date_until: 'Jusqu''à'
+costs-field-date_until: "Jusqu'à\_"
 costs-field-amount: Valeur
 costs-fields-metter-title: 'Visualisation des coûts'
-validate-project-field-costs: 'Nous recommandons de détailler au moins 5 coûts différents pour améliorer l''évaluation du projet afin de déterminer sa publication sur Goteo ou non. '
-mandatory-cost-field-description: 'Il est obligatoire de donner une description des coûts.'
-mandatory-cost-field-amount: 'Il est obligatoire de chiffrer le montant des coûts.'
-mandatory-cost-field-name: 'Il est obligatoire de qualifier le coût (nom)'
-mandatory-project-total-costs: 'Il est obligatoire de préciser le coût.'
-mandatory-cost-field-task_dates: 'Il est obligatoire de préciser les dates approximatives de la tâche.'
-mandatory-project-field-resource: 'Il est obligatoire de préciser si vous avez d''autres ressources.'
-mandatory-project-resource: 'Il est obligatoire de préciser si vous avez d''autres ressources.'
+validate-project-field-costs: 'Nous recommandons le détail d''au moins 5 coûts différents pour améliorer la valorisation du projet afin de déterminer sa publication sur SiteName.'
+mandatory-cost-field-description: 'Il est obligatoire d''écrire une description aux coûts'
+mandatory-cost-field-amount: 'Il est obligatoire d''attribuer un montant aux coûts'
+mandatory-cost-field-name: 'Il est obligatoire de nommer le coût'
+mandatory-project-total-costs: 'Il est obligatoire de préciser un coût'
+mandatory-cost-field-task_dates: 'Il est obligatoire de préciser les dates approximatives de la tche'
+mandatory-project-field-resource: 'Il est important de préciser si vous avez d''autres ressources'
+mandatory-project-resource: 'Il est obligatoire de préciser si vous avez d''autres ressources'

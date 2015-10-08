@@ -1,28 +1,28 @@
 form-add-button: Ajouter
 form-apply-button: Valider
-form-project_status-fulfilled: 'Retombées effectuées'
-form-project_status-campaing: 'En campagne'
-form-project_status-cancelled: Refusé
+form-project_status-fulfilled: 'Récompense effectuée'
+form-project_status-campaing: 'Campagne en cours'
+form-project_status-cancelled: Annulé
 form-project_status-expired: Archivé
 form-self_review-button: Corriger
 form-project-progress-title: 'Evaluation des données'
-form-project_status-cancel: Refusé
+form-project_status-cancel: Rejeté
 form-edit-button: Editer
 form-footer-errors_title: Erreurs
 form-project_status-review: 'En cours de validation'
 project-form-header: Formulaire
 form-project_status-success: Cofinancé
-form-navigation_bar-header: 'Aller à'
+form-navigation_bar-header: 'Aller a'
 form-project_status-edit: 'En cours d´édition'
 form-next-button: 'Etape suivante'
 form-accept-button: Valider
-form-project-info_status-title: 'Stade global des donnés introduits'
-form-media_send-button: 'Charger une vidéo'
+form-project-info_status-title: 'Statut général des donnés inscrites'
+form-media_send-button: 'Importer vidéo'
 form-project-status-title: 'Stade du projet'
 form-remove-button: Effacer
 form-send_review-button: Envoyer
 form-upload-button: Envoyer
 form-errors-total: '%s erreurs au total'
-form-ajax-info: 'Le formulaire est sauvegardé automatiquement au fur et a mesure'
+form-ajax-info: 'Le formulaire est sauvegardé automatiquement au fur et àmesure'
 form-errors-info: 'Total: %s | Dans cette section: %s'
 form-image_upload-button: 'Envoyer image'

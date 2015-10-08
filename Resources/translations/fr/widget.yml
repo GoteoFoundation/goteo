@@ -1,5 +1,9 @@
 regular-success_mark: 'Success story!'
+call-tagmark-6: 'Appel archivé'
+call-tagmark-4: 'Campagne active!'
 regular-fail_mark: Archivé
+call-tagmark-5: 'Campagne finalisée'
 regular-gotit_mark: Cofinancé!
 regular-onrun_mark: 'En cours!'
 regular-keepiton_mark: 'Minimum atteint'
+call-tagmark-3: 'Ouverture de l''appel'

@@ -1,14 +1,14 @@
 dashboard-donor-confirm_button: 'Clore les données et émettre le certificat'
-donor-field-amount: 'Montant du don: '
+donor-field-amount: 'Montant du don:'
 dashboard-menu-activity-donor: 'Certificat de don'
 dashboard-donor-download_certificate: 'Télécharger votre Certificat de don'
 dashboard-donor-edit_guide: 'Remplissez les informations fiscales correctement car une fois le certificat émis ces dernières ne pourront plus être modifiées.'
 dashboard-donor-edit_data: 'Modifier vos informations fiscales pour ce certificat'
-donor-field-numproj: 'Nombre de projets'
+donor-field-numproj: 'Nombre de projet'
 dashboard-activity-donor-header: 'Données fiscales pour obtenir un certificat de don'
-dashboard-donor-saved: 'Vous pouvez modifier à nouveau les informations jusqu''à ce que vous téléchargiez le certificat. Après, vous ne pourrez plus l''éditer. '
-dashboard-donor-confirmed: 'Le certificat relatif à ce don a déjà été crée. Les informations ne peuvent plus être modifiées. Si une quelconque erreur a eu lieu, merci de nous contacter. '
-dashboard-donor-save_fail: 'Une erreur est survenue lors de l''enregistrement des données. Vérifiez s''il vous plait et, si le problème persiste, merci de nous contacter. '
-dashboard-donor-no_donor: 'Nous observons que vous n''avez réalisé aucun don. Si vous en réalisiez un, s''il vous plait, contactez-nous. '
+dashboard-donor-saved: "Vous pouvez modifier à\_ nouveau les informations Jusqu'à\_ ce que vous téléchargiez le certificat. Après, vous ne pourrez plus l'éditer."
+dashboard-donor-confirmed: "Le certificat relatif à\_ ce don a déjà\_ été crée. Les informations ne peuvent plus être modifiées. Si une quelconque erreur a eu lieu, merci de nous contacter."
+dashboard-donor-save_fail: 'Une erreur est survenue lors de l''enregistrement des données. Vérifiez s''il vous plait et, si le problème persiste, merci de nous contacter.'
+dashboard-donor-no_donor: 'Nous observons que vous n''avez réalisé aucun don. Si vous en réalisiez un, s''il vous plait, contactez-nous.'
 dashboard-donor-confirm_succes: 'Vous venez de confirmer la véracité de vos données. Merci!'
-dashboard-donor-confirm_data: 'Les informations fiscales relatives à ce don ne seront plus modifiables. En cliquant sur ACCEPTER vous confirmez leur authenticité.  '
+dashboard-donor-confirm_data: "Les informations fiscales relatives à\_ ce don ne seront plus modifiables. En cliquant sur ACCEPTER vous confirmez leur authenticité. "

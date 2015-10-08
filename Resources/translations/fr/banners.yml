@@ -1,5 +1,5 @@
-main-banner-header: "<h2 class=\"message\">Réseau social <span class=\"greenblue\">pour contribuer </span><br /> à des projets innovants au service des biens communs<br /> Votre projet est<span class=\"greenblue\"> \"open\"</span>?</h2><a href=\"/contact\" class=\"button banner-button\">Contactez-nous</a>\r\n"
+main-banner-header: '<h2 class="message">Réseau social <span class="greenblue">pour contribuer </span><br /> a des projets qui génèrent et favorisent les biens communs<br /> Developped by <span class="greenblue">Fundación SiteName</span> under <span class="greenblue">AGPL3</span> license<a href="https://github.com/SiteName/SiteName" class="button banner-button">on Github</a>'
 discover-banner-header: 'Par catégorie, lieu ou type de récompenses et retombées, <br /><span class="red">localisez le projet</span> qui vous motive le plus'
-login-banner-header: 'Accédez à la communauté Goteo<br /><span class="greenblue"> 100% open</span>'
-open-banner-header: '<div class="modpo-open">OPEN</div><div class="modpo-percent">100&#37; OUVERT</div><div class="modpo-whyopen">%s</div>'
+login-banner-header: 'Accédez à la communauté<br /><span class="greenblue"> 100% ouverte</span>'
+open-banner-header: '<div class="modpo-open">OPEN</div><div class="modpo-percen">100&#37; OUVERT</div><div class="modpo-whyopen">%s</div>'
 regular-banner-metter: 'Obtenu sur ce qu''il reste'

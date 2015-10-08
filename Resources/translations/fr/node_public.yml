@@ -3,16 +3,15 @@ node-side-summary-active: Actifs
 node-footer-title-investors: Cofinanceurs
 node-side-summary-investors: Cofinanceurs
 node-side-summary-supporters: Collaborateurs
-node-side-searcher-bycategory: 'Par catégorie'
 node-side-searcher-byreward: 'Par récompenses'
-node-home-calls-headers: 'Appels à projets'
+node-home-calls-headers: Convocations
 node-footer-title-creators: 'Porteurs de projets'
-node-side-sumcalls-header: 'Capital<br />Riego'
+node-side-sumcalls-header: 'Capital<br />riego'
 node-footer-investors-donate: 'Dons et dégrèvements'
 node-footer-title-social: Suivez-nous
 node-side-searcher-promote: Immanquables
-node-footer-investors-payment: 'Comment fonctionnent les paiements?'
-node-footer-investors-invest: 'Comment soutenir un projet?'
+node-footer-investors-payment: 'Comment fonctionnent les paiements'
+node-footer-investors-invest: 'Comment soutenir un projet ?'
 node-side-summary-amount: 'Argent collecté'
 node-footer-title-help: 'Besoin d''aide ?'
 node-home-posts-header: Nouveautés
@@ -26,5 +25,6 @@ node-side-summary-success: Réussis
 node-side-sumcalls-budget: 'Total ( toutes les campagnes )'
 node-side-searcher-outdate: Urgents
 node-footer-help-what: 'Le crowdfunding c''est quoi ?'
-node-footer-help-why: 'Pourquoi Goteo est différent ?'
+node-footer-help-why: 'Pourquoi SiteName est différent ?'
 node-header-sponsorby: 'Avec le support de :'
+node-side-searcher-bycategory: 'Par catégorie'

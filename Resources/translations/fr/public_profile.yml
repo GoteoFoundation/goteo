@@ -2,20 +2,20 @@ profile-invest_on-title: Cofinance
 profile-worth-title: 'Apportent ici:'
 profile-last_worth-title: Date
 profile_patron-invest_on-header: 'En plus je cofinance'
-profile-interests-header: 'Je suis intéressé par les projets à vocation...'
+profile-interests-header: "Je suis intéressé par les projets à\_vocation..."
 user-message-restricted: 'Peut seulement recevoir les messages de ses cofinanceurs'
 profile-my_investors-header: 'Mes cofinanceurs'
-profile-my_worth-header: 'Ma contribution sur goteo'
-profile-keywords-header: 'Mes mots clés '
-profile-location-header: 'Ma position '
+profile-my_worth-header: 'Ma contribution sur SiteName'
+profile-keywords-header: 'Mes mots clés'
+profile-location-header: 'Ma localisation'
 profile-my_projects-header: 'Mes projets'
-profile-webs-header: 'Mes sites web '
-profile-worthcracy-title: 'Position '
-profile-name-header: 'Profil de '
+profile-webs-header: 'Mes sites web'
+profile-worthcracy-title: Position
+profile-name-header: 'Profil de'
 profile-invest_on-header: 'Projets que je soutiens'
 profile-patron-header: "Recommande <span class=\"red\">%s projets</span>\r\n"
-user-message-send_personal-header: 'Envoyer un message à l´utilisateur'
-profile-sharing_interests-header: 'Intérêts partagés '
+user-message-send_personal-header: 'Envoyer un message à l´''utilisateur'
+profile-sharing_interests-header: 'Intérêts partagés'
 profile-widget-button: 'Voir le profil'
-profile-social-header: 'Social '
-profile-widget-user-header: 'Utilisateur '
+profile-social-header: Social
+profile-widget-user-header: Utilisateur

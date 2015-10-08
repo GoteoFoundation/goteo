@@ -4,16 +4,16 @@ discover-searcher-bycategory-all: TOUTES
 discover-searcher-bylocation-all: TOUS
 discover-searcher-byreward-all: TOUS
 discover-group-archive-header: Archivés
-discover-searcher-byreward-header: 'Par type de retombée:'
+discover-searcher-byreward-header: 'Par type de récompense:'
 discover-searcher-bycategory-header: 'Par catégorie:'
 discover-searcher-bycontent-header: 'Par contenu'
 discover-searcher-bylocation-header: 'Par lieu:'
-discover-group-all-header: 'En campagne'
+discover-group-all-header: 'Campagne en cours'
 discover-searcher-header: 'Chercher un projet'
-discover-group-others-header: 'Dans d''autres noeuds'
+discover-group-others-header: 'Autre noeud:'
 discover-group-popular-header: Populaires
 discover-group-recent-header: 'Publiés récemment'
 discover-searcher-button: Rechercher
 discover-results-header: 'Résultat de la recherche'
 discover-group-success-header: Réussis
-discover-results-empty: 'Nous n''avons trouvé aucun projet qui réponde aux critères de votre recherche. '
+discover-results-empty: 'Nous n''avons trouvé aucun projet répondant aux critères de votre recherche.'

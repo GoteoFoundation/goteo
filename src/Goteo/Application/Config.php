@@ -31,9 +31,13 @@ class Config {
     static public function load($config_file = 'settings.yml') {
         try {
             // load the main config
-            $config = self::loadFromYaml(__DIR__ . '/../../../config/' . $config_file);
-            // ... handle the config values
-            self::factory($config);
+            self::$config = self::loadFromYaml(__DIR__ . '/../../../config/' . $config_file);
+            //Timezone
+            if(self::get('timezone')) date_default_timezone_set(self::get('timezone'));
+            // handles legacy config values
+            self::setConstants();
+            // Init database
+            Model::factory();
             // load the language configuration
             $locales = self::loadFromYaml(__DIR__ . '/../../../Resources/locales.yml');
             if(is_array($locales) && $locales) {
@@ -48,6 +52,8 @@ class Config {
                     Lang::addYamlTranslation($lang, __DIR__ . '/../../../Resources/translations/' . $lang . '/' . $group . '.yml');
                 }
             }
+            // sets up the rest...
+            self::setDirConfiguration();
         }
         catch(\Exception $e) {
             $code = \Symfony\Component\HttpFoundation\Response::HTTP_FORBIDDEN;
@@ -56,21 +62,6 @@ class Config {
             die(\Goteo\Application\View::render('errors/config', ['msg' => $e->getMessage(), 'file' => $file, 'code' => $code], $code));
             return;
         }
-    }
-
-    /**
-     * This class initialization
-     * @param  array  $config [description]
-     */
-    static public function factory(array $config = null) {
-        self::$config = $config;
-        //Timezone
-        if(self::get('timezone')) date_default_timezone_set(self::get('timezone'));
-        self::setConstants();
-        self::setDirConfiguration();
-        // Init database
-        Model::factory();
-
     }
 
     /**

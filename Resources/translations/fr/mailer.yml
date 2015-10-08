@@ -1,4 +1,4 @@
-mailer-disclaimer: 'Goteo est un réseau social de financement collectif (apports monétaires) et de collaboration distribuée (services, infrastructures, et micro-tâches et ressources) pour soutenir des projets à caractère social, culturel, scientifique, éducatif, technologique ou écologique, qui permettent de développer des activités améliorant la société et enrichissant les biens communs.'
-mailer-sinoves: 'Si vous ne pouvez visualiser ce message utilisez ce  <a href="%s" style="color:white;">lien</a>'
-mailer-baja: 'Vous ne souhaitez plus recevoir de messages de Goteo? Vous pouvez envoyer une demande de résiliation via ce <a href="%s">lien</a>'
-newsletter-block: 'Vous ne souhaitez plus recevoir de nouvelles de Goteo? <br />Vous pouvez bloquer l''envoie des prochaines newsletters depuis le menu ''Mon profil > Préférences'' de votre <a href="%s">Unsubscribe</a>.'
+mailer-disclaimer: 'SiteName est une plateforme digitale pour le financement participatif, pour la collaboration et la distribution des récompenses pour le dévellopement de projet social, culturel, artistique et technique.'
+mailer-sinoves: 'Si vous ne pouvez voir ce message utiliser ce <a href="%s">lien</a>'
+mailer-baja: 'Si vous ne voulez pas recevoir plus de mise àjour, vous pouvez vous désinscrire via ce <a href="%s">lien</a>'
+newsletter-block: 'Ne plus recevoir de nouvelle de SiteName?<br />Vous pouvez bloquez nos newsletter dans le menu ''My Profile > Preferences'' ou <a href="/dashboard/profile/preferences"> Panneau Vos préférences</a>.'

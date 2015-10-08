@@ -17,19 +17,19 @@ class DbVerifier {
 
     public static function process ($debug = false) {
 
-        // eliminamos ACL innecesario
-        $sql = "DELETE FROM `acl`
-            WHERE id > 1000
-            AND role_id = 'user'
-            AND user_id != '*'
-            AND (url LIKE '%project/edit%'  OR url LIKE '%project/delete%')
-            AND DATE_FORMAT(from_unixtime(unix_timestamp(now()) - unix_timestamp(`timestamp`)), '%j') > 30
-            ";
+        // // eliminamos ACL innecesario
+        // $sql = "DELETE FROM `acl`
+        //     WHERE id > 1000
+        //     AND role_id = 'user'
+        //     AND user_id != '*'
+        //     AND (url LIKE '%project/edit%'  OR url LIKE '%project/delete%')
+        //     AND DATE_FORMAT(from_unixtime(unix_timestamp(now()) - unix_timestamp(`timestamp`)), '%j') > 30
+        //     ";
 
-        // echo $sql . '\n';
-        $query = Model\Project::query($sql);
-        $count = $query->rowCount();
-        if ($debug) echo "Eliminados $count registros de ACL antiguo.\n";
+        // // echo $sql . '\n';
+        // $query = Model\Project::query($sql);
+        // $count = $query->rowCount();
+        // if ($debug) echo "Eliminados $count registros de ACL antiguo.\n";
 
         // eliminamos feed antiguo
         $sql1 = "DELETE
@@ -44,22 +44,22 @@ class DbVerifier {
         $count1 = $query1->rowCount();
         if ($debug) echo "Eliminados $count1 registros de feed.\n";
 
-        // eliminamos mail antiguo
-        $sql2 = "DELETE
-            FROM `mail`
-            WHERE (template != 33 OR template IS NULL)
-            AND DATE_FORMAT(from_unixtime(unix_timestamp(now()) - unix_timestamp(`date`)), '%j') > 30
-            ";
+        // // eliminamos mail antiguo
+        // $sql2 = "DELETE
+        //     FROM `mail`
+        //     WHERE (template != 33 OR template IS NULL)
+        //     AND DATE_FORMAT(from_unixtime(unix_timestamp(now()) - unix_timestamp(`date`)), '%j') > 30
+        //     ";
 
-        // echo $sql2 . '\n';
-        $query2 = Model\Project::query($sql2);
-        $count2 = $query2->rowCount();
-        if ($debug) echo "Eliminados $count2 registros de mail.\n";
+        // // echo $sql2 . '\n';
+        // $query2 = Model\Project::query($sql2);
+        // $count2 = $query2->rowCount();
+        // if ($debug) echo "Eliminados $count2 registros de mail.\n";
 
         // eliminamos log antiguo
         $sql3 = "DELETE
             FROM `log`
-            WHERE DATE_FORMAT(from_unixtime(unix_timestamp(now()) - unix_timestamp(`datetime`)), '%j') > 10
+            WHERE DATE_FORMAT(from_unixtime(unix_timestamp(now()) - unix_timestamp(`datetime`)), '%j') > 30
             ";
 
         // echo $sql . '\n';

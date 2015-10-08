@@ -1,9 +1,13 @@
 contact-email-field: 'Adresse mail'
 contact-message-field: Message
 contact-name-field: Nom
+contact-captcha-refresh: 'Actualiser l''image'
 contact-send_message-button: Envoyer
 contact-send_message-header: 'Envoyez-nous un message'
 contact-subject-field: Sujet
-error-contact-email-empty: 'Vous n''avez pas introduit votre adresse mail'
-error-contact-subject-empty: 'Vous n''avez pas introduit un sujet'
-error-contact-message-empty: 'Le champ de texte de votre message est vide'
+contact-captcha-field: 'Test d''humanité(désolé...)'
+error-contact-captcha: 'Le code CAPTCHA n''a pas été saisi correctement. Réessayer.'
+error-contact-email-empty: 'Vous n''avez pas inscris votre adresse mail'
+error-contact-subject-empty: 'Vous n''avez pas inscris de sujet'
+error-contact-message-empty: 'Votre message est vide'
+contact-form-tags: "[user] J'ai un problème avec mon compte;\r\n[new promoter] J'ai un projet;\r\n[new promoter 2] J'ai une question sur un projet;\r\n[development] J'ai besoin d'une aide technique;\r\n[service] J'aimerais contacter votre bureau;\r\n[other] J'ai une qutre question;"
