@@ -19,7 +19,7 @@
 	      </ul>
     	</div>
     	<?php else: ?>
-    	<div class="pull-right">
+    	<div class="pull-right user-container">
     		<a href="/dashboard"><span></span><img class="avatar-radius" src="<?= $this->get_user()->avatar->getLink(35, 35, true); ?>" /></a>
     	<?php endif; ?>
       </div>

@@ -23,7 +23,7 @@ module.exports = function(grunt) {
                 '<%= goteo.app %>/assets/**/*.{js,css,gif,jpeg,jpg,png,svg,webp}',
                 '<%= goteo.app %>/**/view/**/*.{js,css,gif,jpeg,jpg,png,svg,webp}',
             ],
-            'tasks': ['copy:devel']
+            'tasks': ['copy:devel', 'copy:plugins:devel']
         }
     });
     grunt.loadNpmTasks('grunt-contrib-watch');
