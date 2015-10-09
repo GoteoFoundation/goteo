@@ -122,7 +122,7 @@ class SessionListener implements EventSubscriberInterface
     {
         return array(
             KernelEvents::REQUEST => 'onRequest',
-            KernelEvents::RESPONSE => array('onResponse', -1) // low priority: after headers are processed by symfony
+            KernelEvents::RESPONSE => array('onResponse', -50) // low priority: after headers are processed by symfony
         );
     }
 }

@@ -176,7 +176,7 @@ abstract class AbstractPaymentMethod implements PaymentMethodInterface {
         $invest = $this->getInvest();
         $project = $invest->getProject();
         $msg = ''; // TODO: from Text::get()
-        if($reward = $invest->getReward()) {
+        if($reward = $invest->getFirstReward()) {
             $msg = $reward->reward . " - ";
         }
         $msg .= $project->name;

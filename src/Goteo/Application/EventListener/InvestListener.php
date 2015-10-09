@@ -54,7 +54,7 @@ class InvestListener implements EventSubscriberInterface
         $method = $event->getMethod();
         $response = $event->getResponse();
         $invest = $method->getInvest();
-        $reward = $invest->getReward();
+        $reward = $invest->getFirstReward();
         App::getService('paylogger')->info('INVEST INIT REDIRECT: ' . $invest->id . ' METHOD: ' . $method::getId() . ' PROJECT: ' . $invest->project);
 
         // Goto payment platform...
@@ -112,7 +112,7 @@ class InvestListener implements EventSubscriberInterface
         $method = $event->getMethod();
         $response = $event->getResponse();
         $invest = $method->getInvest();
-        $reward = $invest->getReward();
+        $reward = $invest->getFirstReward();
         App::getService('paylogger')->info('INVEST FINISH FAILED: ' . $invest->id . ' METHOD: ' . $method::getId() . ' PROJECT: ' . $invest->project . ' MESSAGE: ' . $response->getMessage());
 
         // not making changes on invest status...

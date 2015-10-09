@@ -62,6 +62,10 @@ class PoolPaymentMethod extends AbstractPaymentMethod {
             $errors = [];
             Pool::withdraw($this->user->id, $invest->amount, $errors);
             if (empty($errors)) {
+                // Sets pool next failed payment go to pool as well
+                // Pool payments cannot be returned in cash
+                $invest->setPoolOnFail(true);
+
                 // return response
                 return $this->getGateway()->authorize([
                             'amount' => (float) $this->getInvest()->amount,

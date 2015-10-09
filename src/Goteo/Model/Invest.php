@@ -61,17 +61,7 @@ namespace Goteo\Model {
             $charged, //fecha en la que se ha cargado el importe del aporte a la cuenta del usuario
             $returned, //fecha en la que se ha devuelto el importe al usurio por cancelación bancaria
             $rewards = array(), //datos de las recompensas que le corresponden
-            $address = array(
-                'name'     => '',
-                'nif'      => '',
-                'address'  => '',
-                'zipcode'  => '',
-                'location' => '',
-                'country'  => '',
-                'regalo'  => '',
-                'namedest'  => '',
-                'emaildest'  => '',
-                'message'  => ''),  // dirección de envio de la recompensa y datos de regalo
+            $address = null,  // dirección de envio de la recompensa y datos de regalo
             $call = null, // aportes que tienen capital riego asociado
             $pool = null; // aportes a reservar si el proyecto falla
 
@@ -134,30 +124,9 @@ namespace Goteo\Model {
             if(!$invest instanceOf Invest) return false;
             $id = $invest->id;
 
-            $query = static::query("
-                SELECT  *
-                FROM  invest_reward
-                INNER JOIN reward
-                    ON invest_reward.reward = reward.id
-                WHERE   invest_reward.invest = ?
-                ", array($id));
-            $invest->rewards = $query->fetchAll(\PDO::FETCH_CLASS, '\Goteo\Model\Project\Reward');
+            $invest->rewards = $invest->getRewards();
 
-            $query = static::query("
-                SELECT  *
-                FROM  invest_address
-                WHERE   invest_address.invest = ?
-                ", array($id));
-            $invest->address = $query->fetchObject();
-
-            // si no tiene dirección, sacamos la dirección del usuario
-            if (empty($invest->address)) {
-                $usr_address = User::getPersonal($invest->user);
-                $usr_address->name = $usr_address->contract_name;
-                $usr_address->nif = $usr_address->contract_nif;
-
-                $invest->address = $usr_address;
-            }
+            $invest->address = $invest->getAddress();
 
             return $invest;
         }
@@ -191,28 +160,8 @@ namespace Goteo\Model {
                 ", array(':p' => $project, ':s0' => self::STATUS_PENDING, ':s1' => self::STATUS_CHARGED, ':s3' => self::STATUS_PAID, ':s4' => self::STATUS_RETURNED));
             foreach ($query->fetchAll(\PDO::FETCH_CLASS, __CLASS__) as $invest) {
 
-				$query = static::query("
-                    SELECT  *
-                    FROM  invest_reward
-                    INNER JOIN reward
-                        ON invest_reward.reward = reward.id
-                    WHERE   invest_reward.invest = ?
-                    ", array($invest->id));
-				$invest->rewards = $query->fetchAll(\PDO::FETCH_OBJ);
-
-				$query = static::query("
-                    SELECT  address, zipcode, location, country
-                    FROM  invest_address
-                    WHERE   invest_address.invest = ?
-                    ", array($invest->id));
-				$invest->address = $query->fetchObject();
-
-                // si no tiene dirección, sacamos la dirección del usuario
-                if (empty($invest->address)) {
-                    $usr_address = User::getPersonal($invest->user->id);
-
-                    $invest->address = $usr_address;
-                }
+                $invest->rewards = $invest->getRewards();
+                $invest->address = $invest->getAddress();
 
                 $invests[$invest->id] = $invest;
             }
@@ -455,6 +404,147 @@ namespace Goteo\Model {
             return $this->userObject;
         }
 
+        /**
+         * Returns the address of the invest (where to send the reward)
+         * @return array Address
+         */
+        public function getAddress() {
+            if(!$this->address) {
+                $query = static::query("
+                    SELECT  *
+                    FROM  invest_address
+                    WHERE   invest_address.invest = ?
+                    ", array($this->id));
+                $this->address = $query->fetchObject();
+
+                // si no tiene dirección, sacamos la dirección del usuario
+                if (empty($this->address)) {
+                    $address = User::getPersonal($this->user);
+                    $this->address = new \stdClass;
+                    $this->address->name = $address->contract_name;
+                    $this->address->nif = $address->contract_nif;
+                    $this->address->address = $address->address;
+                    $this->address->location = $address->location;
+                    $this->address->zipcode = $address->zipcode;
+                    $this->address->country = $address->country;
+                }
+            }
+            return $this->address;
+        }
+
+        /**
+         * Saves an address for a Investion
+         * @param array $address [description]
+         */
+        public function setAddress(array $address) {
+            $sql = "REPLACE INTO invest_address (invest, user, address, zipcode, location, country, name, nif, regalo, namedest, emaildest, message)
+                VALUES (:invest, :user, :address, :zipcode, :location, :country, :name, :nif, :regalo, :namedest, :emaildest, :message)";
+            if(self::query($sql, array(
+                ':invest'   => $this->id,
+                ':user'     => $this->user,
+                ':address'  => $address['address'],
+                ':zipcode'  => $address['zipcode'],
+                ':location' => $address['location'],
+                ':country'  => $address['country'],
+                ':name'     => $address['name'],
+                ':nif'      => $address['nif'],
+                ':regalo'   => $address['regalo'],
+                ':namedest' => $address['namedest'],
+                ':emaildest'=> $address['emaildest'],
+                ':message'  => $address['message']
+                )
+            )) {
+                $this->address = $address;
+                return true;
+            }
+            return false;
+        }
+
+        /**
+         * Returns the rewards of the invest
+         * @return array of Reward objects
+         */
+        public function getRewards() {
+            if(!$this->rewards) {
+                $query = static::query("
+                    SELECT  *
+                    FROM  invest_reward
+                    INNER JOIN reward
+                        ON invest_reward.reward = reward.id
+                    WHERE   invest_reward.invest = ?
+                    ", array($this->id));
+                $this->rewards = $query->fetchAll(\PDO::FETCH_CLASS, '\Goteo\Model\Project\Reward');
+            }
+            foreach($this->rewards as $i => $reward) {
+                if(!$reward instanceOf \Goteo\Model\Project\Reward) {
+                    $this->rewards[$i] = \Goteo\Model\Project\Reward::get($reward);
+                }
+            }
+            return $this->rewards;
+        }
+
+        /**
+         * Saves a collection of rewards for a Investion
+         * @param array $rewards array of rewards
+         */
+        public function setRewards(array $rewards) {
+            // borramos als recompensas
+            $sql = "DELETE FROM invest_reward WHERE invest = :invest";
+            if(self::query($sql, array(':invest' => $this->id))) {
+                $this->rewards = [];
+            }
+
+            foreach ($rewards as $reward) {
+                if(!$this->addReward($reward)) {
+                    return false;
+                }
+            }
+
+            return true;
+        }
+
+        /*
+         * Asignar a la aportación una recompensas
+         */
+        public function addReward ($reward) {
+            if(!$reward instanceOf \Goteo\Model\Project\Reward) {
+                $reward = \Goteo\Model\Project\Reward::get($reward);
+                if(!$reward) return false;
+            }
+            $values = array(
+                ':invest' => $this->id,
+                ':reward' => $reward->id
+            );
+
+            $sql = "REPLACE INTO invest_reward (invest, reward) VALUES (:invest, :reward)";
+            if (self::query($sql, $values)) {
+                $exists = false;
+                foreach ($this->rewards as $r) {
+                    if($r instanceOf \Goteo\Model\Project\Reward) {
+                        $r = $r->id;
+                    }
+                    if($r === $reward->id) {
+                        $exists = true;
+                        break;
+                    }
+                }
+                if(!$exists) {
+                    $this->rewards[] = $reward;
+                }
+                return $reward;
+            }
+            return false;
+        }
+
+        /**
+         * Obtains the first reward
+         * @return [type] [description]
+         */
+        public function getFirstReward() {
+            $rewards = $this->getRewards();
+            return current($rewards);
+        }
+
         public function validate (&$errors = array()) {
             if (!is_numeric($this->amount))
                 $errors[] = 'La cantidad no es correcta';
@@ -513,14 +603,6 @@ namespace Goteo\Model {
                 }
             }
 
-            // If current payment method is pool,
-            // next failed payments go to pool as well
-            if($this->method===self::METHOD_POOL)
-            {
-                $set .= ", `pool` = :pool ";
-                $values[':pool'] = 1;
-            }
-
             try {
                 $sql = "REPLACE INTO invest SET " . $set;
                 self::query($sql, $values);
@@ -551,34 +633,13 @@ namespace Goteo\Model {
                     ':inode' => Config::get('current_node'))
                 );
 
-                // y las recompensas
-                foreach ($this->rewards as $reward) {
-                    if($reward instanceOf \Goteo\Model\Project\Reward) {
-                        $reward = $reward->id;
-                    }
-                    $sql = "REPLACE INTO invest_reward (invest, reward) VALUES (:invest, :reward)";
-                    self::query($sql, array(':invest'=>$this->id, ':reward'=>$reward));
+                // recompensas
+                if (!empty($this->rewards)) {
+                    $this->setRewards($this->rewards);
                 }
-
                 // dirección
                 if (!empty($this->address)) {
-                    $sql = "REPLACE INTO invest_address (invest, user, address, zipcode, location, country, name, nif, regalo, namedest, emaildest, message)
-                        VALUES (:invest, :user, :address, :zipcode, :location, :country, :name, :nif, :regalo, :namedest, :emaildest, :message)";
-                    self::query($sql, array(
-                        ':invest'   => $this->id,
-                        ':user'     => $this->user,
-                        ':address'  => $this->address->address,
-                        ':zipcode'  => $this->address->zipcode,
-                        ':location' => $this->address->location,
-                        ':country'  => $this->address->country,
-                        ':name'     => $this->address->name,
-                        ':nif'      => $this->address->nif,
-                        ':regalo'   => $this->address->regalo,
-                        ':namedest' => $this->address->namedest,
-                        ':emaildest'=> $this->address->emaildest,
-                        ':message'  => $this->address->message
-                        )
-                    );
+                    $this->setAddress($this->address);
                 }
 
                 // mantenimiento de registros relacionados (usuario, proyecto, ...)
@@ -605,34 +666,13 @@ namespace Goteo\Model {
                 $sql = "UPDATE invest SET anonymous = :anonymous WHERE id = :id";
                 self::query($sql, array(':id'=>$this->id, ':anonymous'=>$this->anonymous));
 
-                // borramos als recompensas
-                $sql = "DELETE FROM invest_reward WHERE invest = :invest";
-                self::query($sql, array(':invest'=>$this->id));
-
-                // y grabamos las nuevas
-                foreach ($this->rewards as $reward) {
-                    $sql = "REPLACE INTO invest_reward (invest, reward) VALUES (:invest, :reward)";
-                    self::query($sql, array(':invest'=>$this->id, ':reward'=>$reward));
+                // recompensas
+                if (!empty($this->rewards)) {
+                    $this->setRewards($this->rewards);
                 }
-
                 // dirección
                 if (!empty($this->address)) {
-                    $sql = "REPLACE INTO invest_address (invest, user, address, zipcode, location, country, name, nif, regalo, namedest, emaildest)
-                        VALUES (:invest, :user, :address, :zipcode, :location, :country, :name, :nif, :regalo, :namedest, :emaildest)";
-                    self::query($sql, array(
-                        ':invest'   => $this->id,
-                        ':user'     => $this->user,
-                        ':address'  => $this->address->address,
-                        ':zipcode'  => $this->address->zipcode,
-                        ':location' => $this->address->location,
-                        ':country'  => $this->address->country,
-                        ':name'     => $this->address->name,
-                        ':nif'      => $this->address->nif,
-                        ':regalo'   => $this->address->regalo,
-                        ':namedest' => $this->address->namedest,
-                        ':emaildest'=> $this->address->emaildest
-                        )
-                    );
+                    $this->setAddress($this->address);
                 }
 
                 self::query("COMMIT");
@@ -1065,41 +1105,6 @@ namespace Goteo\Model {
             return $users;
         }
 
-
-        /*
-         * Asignar a la aportación una recompensas
-         */
-        public function setReward ($reward) {
-
-            $values = array(
-                ':invest' => $this->id,
-                ':reward' => $reward
-            );
-
-            $sql = "REPLACE INTO invest_reward (invest, reward) VALUES (:invest, :reward)";
-            if (self::query($sql, $values)) {
-                return true;
-            } else {
-                return false;
-            }
-        }
-
-        /**
-         * Obtains the first reward
-         * @return [type] [description]
-         */
-        public function getReward() {
-            if($this->rewards) {
-                foreach($this->rewards as $reward) {
-                    if($reward instanceOf \Goteo\Model\Project\Reward) {
-                        return $reward;
-                    }
-                    return \Goteo\Model\Project\Reward::get($reward);
-                }
-            }
-            return null;
-        }
-
         /*
          *  Actualiza el mail de la cuenta utilizada al registro del aporte
          */
@@ -1250,6 +1255,7 @@ namespace Goteo\Model {
         public function switchResign() {
            return $this->setResign(!$this->resign);
         }
+
         /*
          *  Modifica el campo resign para marcar/desmarcar donativo (independientemente de la recompensa)
          */
@@ -1345,13 +1351,17 @@ namespace Goteo\Model {
         /*
          * Switch credit option
          */
-        public function switchPool() {
-           return $this->setPool(!$this->pool);
+        public function switchPoolOnFail() {
+           return $this->setPoolOnFail(!$this->pool);
         }
 
-        public function setPool($value) {
+        /**
+         *  Sets pool status
+         *  @param boolean $status
+         */
+        public function setPoolOnFail($value) {
             if(self::query("UPDATE invest SET pool = :pool WHERE id = :id", array(':id' => $this->id, ':pool' => (bool)$value))) {
-                $this->pool = (bool) $pool;
+                $this->pool = (bool) $value;
                 return true;
             }
             return false;

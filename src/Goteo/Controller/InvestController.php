@@ -37,7 +37,6 @@ class InvestController extends \Goteo\Core\Controller {
     public function __construct() {
         // changing to a responsive theme here
         View::setTheme('responsive');
-
     }
 
     /**
@@ -129,7 +128,7 @@ class InvestController extends \Goteo\Core\Controller {
                 return $this->redirect('/invest/' . $project_id);
             }
             // Get the reward data from the invest
-            if($reward = $invest->getReward()) {
+            if($reward = $invest->getFirstReward()) {
                 $amount = $reward->amount;
             }
             // if($invest->rewards && is_array($invest->rewards)) {
@@ -175,7 +174,7 @@ class InvestController extends \Goteo\Core\Controller {
         if($reward instanceOf Response) return $reward;
 
         // Aqui cambiar por escoger recompensa
-        return $this->viewResponse('invest/select_reward');
+        return $this->viewResponse('invest/select_reward', ['step' => 1]);
 
     }
 
@@ -190,7 +189,7 @@ class InvestController extends \Goteo\Core\Controller {
 
         if($reward instanceOf Response) return $reward;
 
-        return $this->viewResponse('invest/payment_method');
+        return $this->viewResponse('invest/payment_method', ['step' => 2]);
 
     }
 
@@ -269,7 +268,7 @@ class InvestController extends \Goteo\Core\Controller {
         }
 
 
-        $vars = ['pay_method' => $method, 'response' => $response];
+        $vars = ['pay_method' => $method, 'response' => $response, 'step' => 2];
 
         if($request->isXmlHttpRequest()) {
             // return JSON
@@ -383,26 +382,29 @@ class InvestController extends \Goteo\Core\Controller {
             return $this->redirect('/invest/' . $project_id . '/payment?' . $this->query);
         }
 
-        $user = Session::getUser();
-        // $donor = \Goteo\Model\User\Donor::get($user->id);
-        // // print_r($user);
-        // $fiscal_address = [
-        //     'name' => $donor ? $donor->name : $user->name,
-        //     'nif' => $donor ? $donor->nif : null,
-        //     'address' => $donor ? $donor->address : null,
-        //     'zipcode' => $donor ? $donor->zipcode : null,
-        //     'location' => $donor ? $donor->location : null,
-        //     'country' => $donor ? $donor->country : null,
-        // ];
         // check post data
+        $invest_address = (array)$invest->getAddress();
         if($request->isMethod('post')) {
-            // TODO: check and save, add event
-            return $this->redirect('/invest/' . $project_id. '/' . $invest->id . '/share');
-            // print_r($request->request->all());die;
-        }
+            $invest_address = $request->request->get('invest');
+            if(is_array($invest_address)) {
+                $ok = true;
+                foreach(['name', 'address', 'zipcode', 'location', 'country'] as $part) {
+                    if(trim($invest_address[$part]) == '') {
+                        $ok = false;
+                        break;
+                    }
+                }
+                if($ok) {
+                    if($invest->setAddress($invest_address)) {
+                        return $this->redirect('/invest/' . $project_id. '/' . $invest->id . '/share');
+                    }
+                }
+            }
+            Message::error(Text::get('invest-address-fail'));
 
+        }
         // show form
-        return $this->viewResponse('invest/user_data', ['reward_address' => $reward_address]);
+        return $this->viewResponse('invest/user_data', ['invest_address' => $invest_address, 'step' => 3]);
 
     }
 
@@ -455,15 +457,15 @@ class InvestController extends \Goteo\Core\Controller {
         $twitter_url = 'http://twitter.com/home?status=' . urlencode($share_title . ': ' . $share_url);
 
         if($reward instanceOf Response) return $reward;
-        return $this->viewResponse(
-                'invest/share',
-                array(
-                    'facebook_url' => $facebook_url,
-                    'twitter_url' => $twitter_url,
-                    'widget_code' => $widget_code,
-                    'widget_code_investor' => $widget_code
-                )
-        );
+
+        $vars=[ 'facebook_url' => $facebook_url, 
+                'twitter_url' => $twitter_url,
+                'widget_code' => $widget_code,
+                'widget_code_investor' => $widget_code,
+                'step' => 4
+                ];
+        return $this->viewResponse('invest/share',$vars);
+
     }
 
 }
