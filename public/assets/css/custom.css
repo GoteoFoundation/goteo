@@ -14,6 +14,19 @@
  	background-color: #E7E7E7 !important;
  }
 
+/*Navbar */
+
+ .navbar-element{
+ 	color:#333;
+ 	margin-top: 7px;
+ }
+
+
+
+ .avatar-radius{
+ 	border-radius: 5px;
+ }
+
  .margin-top-7{
  	margin-top:7.5%;
  }
@@ -254,7 +267,6 @@ hr.make-sure{
 	text-transform: uppercase;
 }
 
-
 /* Steps bar */
 
 .bs-wizard {margin-bottom: 40px;}
@@ -287,9 +299,11 @@ hr.make-sure{
 }
 
 .label-checkbox{
-	font-size:0.8em;
+	font-size:0.9em;
 	margin:0;
 }
+
+
 
 @media(min-width:767px){
 
