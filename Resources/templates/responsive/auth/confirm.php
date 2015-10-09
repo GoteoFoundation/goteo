@@ -3,7 +3,8 @@
 $errors = $this->errors;
 $oauth = $this->oauth;
 
-extract($oauth->user_data);
+$name = $oauth->user_data['name'];
+$email = $oauth->user_data['email'];
 
 if($this->userid) $username = $this->userid;
 if($this->email) $email = $this->email;
@@ -11,8 +12,9 @@ if($this->email) $email = $this->email;
 if($this->provider_email) $provider_email = $this->provider_email;
 else                      $provider_email = $email;
 
+
 if(empty($name)) $name = strtok($email,"@");
-if(is_numeric($username) || empty($username)) $username = \Goteo\Core\Model::idealiza(str_replace(" ","",$name));
+if(is_numeric($username) || empty($username)) $username = $this->sanitize(str_replace(" ","",$name));
 if(empty($username)) $username = strtok($email,"@");
 //Falta, si l'usuari existeix, suggerir un altre que estigui disponible...
 
@@ -25,25 +27,26 @@ $this->section('content');
 <div class="container">
 
 	<div class="row row-form">
-			<div class="panel panel-default panel-form">
+			<div class="panel panel-default make-sure">
 				<div class="panel-body">
 					<h2 class="col-md-offset-1 padding-bottom-6"><?= $this->text('login-register-header') ?></h2>
-                	<p><?= $this->text('oauth-login-welcome-from') ?></p>
-					<div>  
-					<form class="form-horizontal" role="form" method="POST" action="oauthAction">
+                	<div class="col-md-10 col-md-offset-1 reminder">
+	                    <?= $this->text('oauth-login-welcome-from') ?>
+                    </div>
+					<div>
+					<form class="form-horizontal" role="form" method="POST" action="/signup/oauth">
 
-						<div class="form-group">
+						<div class="form-group<?= (isset($errors['userid']) ? ' has-error' : ($username ? ' has-success' : '')) ?>">
 							<div class="col-md-10 col-md-offset-1">
-								<input type="text" class="form-control" placeholder="<?= $this->text('login-register-userid-field') ?>" name="userid">
+								<input type="text" required class="form-control" placeholder="<?= $this->text('login-register-userid-field') ?>" name="userid" value="<?= $username ?>">
+                                <?php if(isset($errors['userid'])) { ?><span class="help-block"><?php echo $errors['userid']?></span><?php } ?>
 							</div>
-							<?php if(isset($errors['userid'])) { ?><em><?php echo $errors['userid']?></em><?php } ?>
 						</div>
 
-						<div class="form-group">
+						<div class="form-group<?= (isset($errors['email']) ? ' has-error' : ($email ? ' has-success' : '')) ?>">
 							<div class="col-md-10 col-md-offset-1">
-								<input type="text" class="form-control" placeholder="<?= $this->text('login-register-email-field') ?>" name="RegisterEmail">
-							
-                    <?php if(isset($errors['email'])) { ?><em><?php echo $errors['email']?></em><?php } ?>
+								<input type="email" required class="form-control" placeholder="<?= $this->text('login-register-email-field') ?>" name="email" value="<?= $email ?>">
+                                <?php if(isset($errors['email'])) { ?><span class="help-block"><?php echo $errors['email']?></span><?php } ?>
 							</div>
 						</div>
 
@@ -51,11 +54,11 @@ $this->section('content');
 							<div class="col-md-10 col-md-offset-1">
 								<div class="checkbox">
 									<label>
-										<input type="checkbox" >
-											<p>
-											<?= $this->text_html('login-register-conditions') ?> <a data-toggle="modal" data-target="#myModal" href="">Más información.</a>.
+										<input type="checkbox" class="no-margin-checkbox">
+											<p class="label-checkbox">
+											<?= $this->text('login-register-conditions') ?>.
 											</p>
-										</label>
+									</label>
 								</div>
 							</div>
 						</div>
@@ -84,28 +87,27 @@ $this->section('content');
 	                    //proveedor
 	                    echo '<input type="hidden" name="provider" value="' . $oauth->original_provider . '" />';
 	                    //email original
-	                    echo '<input type="hidden" name="email" value="' . $email . '" />';
 	                    echo '<input type="hidden" name="provider_email" value="' . $email . '" />';
 	                    ?>
-					</form>		
+					</form>
 
 					<div style="width:500px;">
 						<p><?= $this->text('oauth-login-imported-data') ?></p>
 						<?php
 
-						if($avatar) echo '<img style="float:left;width:200px;max-height:200px;" src="'.$avatar.'" alt="Imported profile image" />';
+						if($oauth->user_data['avatar']) echo '<img style="float:left;width:200px;max-height:200px;" src="'.$oauth->user_data['avatar'].'" alt="Imported profile image" />';
 						echo "<div>";
 						foreach(array_merge($oauth->import_user_data, array('website')) as $k) {
-							if($$k && $k != 'avatar') echo '<strong>' . $this->text('oauth-import-'.$k) . ':</strong><br />'.nl2br($$k)."<br /><br />\n";
+							if($oauth->user_data[$k] && $k != 'avatar') echo '<strong>' . $this->text('oauth-import-'.$k) . ':</strong><br />'.nl2br($oauth->user_data[$k])."<br /><br />\n";
 						}
 
 						echo "</div>\n";
 						?>
-					</div>		
+					</div>
 
 				</div>
 			</div>
-		
+
 	</div>
 </div>
 

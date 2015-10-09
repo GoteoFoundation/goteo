@@ -43,6 +43,27 @@ final class AppEvents
     const ALREADY_LOGGED = 'auth.login.logged';
 
     /**
+     * The auth.signup.success event is thrown each time a user completes a successful signup
+     *
+     * The event listener receives an
+     * Goteo\Application\Event\FilterAuthEvent instance.
+     *
+     * @var string
+     */
+    const SIGNUP_SUCCEEDED = 'auth.signup.success';
+
+    /**
+     * The auth.signup.fail event is thrown each time a user attemps to signup and fails
+     *
+     * The event listener receives an
+     * Goteo\Application\Event\FilterAuthEvent instance.
+     *
+     * @var string
+     */
+    const SIGNUP_FAILED = 'auth.signup.fail';
+
+
+    /**
      * The auth.logout event is thrown each time a user logouts the application
      *
      * The event listener receives an

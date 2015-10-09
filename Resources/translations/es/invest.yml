@@ -48,7 +48,7 @@ invest-next_step: 'Paso siguiente'
 invest-paypal-method: Paypal
 currency-alert: "Por favor, ten en cuenta que la gestión es en EUR. \r\nVas a pagar aproximadamente <span id=\"reminder_conversion\">%s</span> € <a href=\"/faq/investors#q115\" target=\"_blank\">Más info</a>"
 invest-anonymous: 'Quiero que mi aportación sea anónima'
-invest-pool: "Quiero que mi donación, en el caso de que el proyecto no llegue a su objetivo, permanezca en mi cuenta de Goteo (monedero virtual). La fecha de mi certificado de donación será la de hoy aunque podré destinar mi donación a otro proyecto que yo decida en cualquier otro momento.\r\n\r\n\r\n"
+invest-pool: "Quiero que mi donación, en el caso de que el proyecto no llegue a su objetivo, permanezca en mi monedero virtual."
 invest-method-title: 'Realiza tu aporte'
 imperative-register: Regístrate
 invest-alert-renounce: 'Renuncias pero no has puesto tu NIF para desgravar el donativo, ¿es correcto?'
@@ -69,8 +69,17 @@ invest-alert-noreward_renounce: '¿Deseas renunciar a la recompensa y desgravar 
 invest-success-make-sure: 'Bien hecho!, Tu donación al proyecto <strong>%s</strong> se ha realizado correctamente'
 invest-select-reward: 'Selecciona tu recompensa'
 invest-project: 'al proyecto'
-invest-step-1: 'Tu recompensa'
+invest-step-1: 'Recompensa'
 invest-step-2: 'Pago'
 invest-step-3: 'Make sure'
 invest-step-4: 'Compartir'
+invest-more-info: 'Más información'
+invest-modal-pool-title: 'Información monedero virtual'
+invest-modal-pool-description: 'El monedero virtual es un sistema de crédito de la plataforma Goteo, con el que podrás realizar aportes a proyectos..'
+invest-modal-fiscal-title: 'Información fiscal'
+invest-modal-fiscal-description: 'Como ya debes saber, aportar en Goteo no sólo hace posibles un montón de proyectos que nos benefician a todxs, sino que ¡además desgrava! <p>Al realizar una aportación a un proyecto, y gracias al incremento en los tipos de deducción aplicables desde 2015 para las donaciones puras y simples que se realicen en favor de la Fundación Goteo, como entidad acogida al régimen fiscal especial de la Ley 49/2002, de 23 de diciembre.'
+invest-fiscal-refused: 'No quiero un certificado de donación.'
+invest-fiscal-title: 'Asegúrate que puedes desgravar tu recompensa'
+invest-address-title: 'Asegúrate de que recibes tu recompensa'
+
 

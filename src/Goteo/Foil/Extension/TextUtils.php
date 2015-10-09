@@ -35,7 +35,8 @@ class TextUtils implements ExtensionInterface
           'text_get' => [$this, 'get'],
           'text_widget' => [$this, 'widget'],
           'text_truncate' => [$this, 'truncate'],
-          'percent_span' => [$this, 'percent_span']
+          'percent_span' => [$this, 'percent_span'],
+          'sanitize' => [$this, 'sanitize']
         ];
     }
 
@@ -60,5 +61,9 @@ class TextUtils implements ExtensionInterface
     public function truncate($var, $len = 10)
     {
         return call_user_func_array ( 'Goteo\Library\Text::recorta' , func_get_args() );
+    }
+    public function sanitize($var)
+    {
+        return call_user_func_array ( 'Goteo\Core\Model::idealiza' , func_get_args() );
     }
 }

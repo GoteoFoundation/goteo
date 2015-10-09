@@ -175,6 +175,12 @@ label.reward-choosen{
 	background-color:#2cb2b2 ;
     color:#FFF !important;
 }
+.amount-box {
+    display:none;
+}
+.reward-choosen .amount-box {
+    display:block;
+}
 
 .reward-amount{
 	color: #96238F;
@@ -259,8 +265,8 @@ hr.make-sure{
 .bs-wizard > .bs-wizard-step + .bs-wizard-step {}
 .bs-wizard > .bs-wizard-step .bs-wizard-stepnum {color: #595959; font-size: 16px; margin-bottom: 5px;}
 .bs-wizard > .bs-wizard-step .bs-wizard-info {color: #999; font-size: 14px;}
-.bs-wizard > .bs-wizard-step > .bs-wizard-dot {position: absolute; width: 30px; height: 30px; display: block; background: #B5DADA; top: 45px; left: 50%; margin-top: -15px; margin-left: -15px; border-radius: 50%;} 
-.bs-wizard > .bs-wizard-step > .bs-wizard-dot:after {content: ' '; width: 14px; height: 14px; background: #2FB6B5; border-radius: 50px; position: absolute; top: 8px; left: 8px; } 
+.bs-wizard > .bs-wizard-step > .bs-wizard-dot {position: absolute; width: 30px; height: 30px; display: block; background: #B5DADA; top: 45px; left: 50%; margin-top: -15px; margin-left: -15px; border-radius: 50%;}
+.bs-wizard > .bs-wizard-step > .bs-wizard-dot:after {content: ' '; width: 14px; height: 14px; background: #2FB6B5; border-radius: 50px; position: absolute; top: 8px; left: 8px; }
 .bs-wizard > .bs-wizard-step > .progress {position: relative; border-radius: 0px; height: 8px; box-shadow: none; margin: 20px 0;}
 .bs-wizard > .bs-wizard-step > .progress > .progress-bar {width:0px; box-shadow: none; background: #B5DADA;}
 .bs-wizard > .bs-wizard-step.complete > .progress > .progress-bar {width:100%;}
@@ -276,6 +282,14 @@ hr.make-sure{
 
 /* End steps bar */
 
+.no-margin-checkbox{
+	margin-top: 0px !important;
+}
+
+.label-checkbox{
+	font-size:0.8em;
+	margin:0;
+}
 
 @media(min-width:767px){
 

@@ -110,28 +110,44 @@ $routes->add('outh-login', new Route(
         )
 ));
 
-// For compatibility
+// old route compatibility
 $routes->add('auth-login-old-route', new Route(
     '/user/login',
     array('_controller' => 'Goteo\Controller\AuthController::loginAction',
         )
 ));
+
+// register
 $routes->add('auth-signup', new Route(
     '/signup',
     array('_controller' => 'Goteo\Controller\AuthController::signupAction',
         )
 ));
-
-$routes->add('reset-password', new Route(
-    '/contribute/reset-password',
-    array('_controller' => 'Goteo\Controller\ContributeController::resetPasswordAction',
-        )
+// old route for compatibility
+$routes->add('auth-signup-old-route', new Route(
+    '/user/register',
+    array('_controller' => 'Goteo\Controller\AuthController::signupAction')
+));
+// Oauth registering form
+$routes->add('auth-oauth-signup', new Route(
+    '/signup/oauth',
+    array('_controller' => 'Goteo\Controller\AuthController::oauthSignupAction')
+));
+// old route compatibility
+$routes->add('auth-oauth-signup-old-route', new Route(
+    '/user/oauth_register',
+    array('_controller' => 'Goteo\Controller\AuthController::oauthSignupAction')
 ));
 
-$routes->add('rewards', new Route(
-    '/contribute/rewards',
-    array('_controller' => 'Goteo\Controller\ContributeController::rewardsAction',
-        )
+//Logout
+$routes->add('auth-logout', new Route(
+    '/logout',
+    array('_controller' => 'Goteo\Controller\AuthController::logoutAction')
+));
+// old route compatibility
+$routes->add('auth-logout-old-route', new Route(
+    '/user/logout',
+    array('_controller' => 'Goteo\Controller\AuthController::logoutAction')
 ));
 
 //// PROJECT /////
@@ -241,15 +257,15 @@ $routes->add('mail-token', new Route(
 
 //////////// USER ROUTES ///////////////////
 
-$routes->add('user-login', new Route(
-    '/user/login',
-    array('_controller' => 'Goteo\Controller\UserController::loginAction')
-));
+// $routes->add('user-login', new Route(
+//     '/user/login',
+//     array('_controller' => 'Goteo\Controller\UserController::loginAction')
+// ));
 
-$routes->add('user-register', new Route(
-    '/user/register',
-    array('_controller' => 'Goteo\Controller\UserController::registerAction')
-));
+// $routes->add('user-register', new Route(
+//     '/user/register',
+//     array('_controller' => 'Goteo\Controller\UserController::registerAction')
+// ));
 
 //Oauth registering
 // $routes->add('user-oauth', new Route(
@@ -321,12 +337,6 @@ $routes->add('user-changeemail', new Route(
 $routes->add('user-activation', new Route(
     '/user/activate/{token}',
     array('_controller' => 'Goteo\Controller\UserController::activateAction')
-));
-
-//Logout
-$routes->add('user-logout', new Route(
-    '/user/logout',
-    array('_controller' => 'Goteo\Controller\UserController::logoutAction')
 ));
 
 //Additional user redirections

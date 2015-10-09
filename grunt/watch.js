@@ -22,7 +22,8 @@ module.exports = function(grunt) {
                 'extend/**/templates/**/*.php',
                 '<%= goteo.app %>/assets/**/*.{js,css,gif,jpeg,jpg,png,svg,webp}',
                 '<%= goteo.app %>/**/view/**/*.{js,css,gif,jpeg,jpg,png,svg,webp}',
-            ]
+            ],
+            'tasks': ['copy:devel']
         }
     });
     grunt.loadNpmTasks('grunt-contrib-watch');

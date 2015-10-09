@@ -639,7 +639,7 @@ namespace Goteo\Model {
                 }
                 // dirección
                 if (!empty($this->address)) {
-                    $this->setAddress($this->address);
+                    $this->setAddress((array)$this->address);
                 }
 
                 // mantenimiento de registros relacionados (usuario, proyecto, ...)

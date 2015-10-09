@@ -19,3 +19,15 @@ recover-request-fail: 'No se puede recuperar la contraseña de ninguna cuenta co
 leave-email-sended: 'Te hemos enviado un email para completar el proceso de baja. Verifica también la carpeta de correo no deseado o spam.'
 recover-email-sended: 'Te hemos enviado un email para reestablecer la contraseña de tu cuenta. Verifica también la carpeta de correo no deseado o spam.'
 guide-user-register: 'Texto guía en el registro de un nuevo usuario.'
+register-name-field: 'Nombre'
+register-email-field: 'Correo electrónico'
+register-email-confirm-field: 'Vuelve a escribir tu correo electrónico'
+register-id-field: 'Elige tu identificador en Goteo'
+register-password-field: 'Contraseña'
+register-password-confirm-field: 'Vuelve a escribir tu contraseña'
+
+
+
+
+
+

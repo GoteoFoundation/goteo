@@ -39,13 +39,13 @@ class SocialAuth {
 	public $error_type = '';
 
 	//datos que se recopilan
-	public $user_data = array('username' => null, 'name' => null, 'email' => null, 'avatar' => null, 'website' => null, 'about' => null, 'location'=>null,'twitter'=>null,'facebook'=>null,'google'=>null,'identica'=>null,'linkedin'=>null);
+	public $user_data = array('username' => null, 'name' => null, 'email' => null, 'avatar' => null, 'website' => null, 'about' => null, 'location' => null,'twitter' => null,'facebook' => null,'google' => null,'identica' => null,'linkedin' => null);
 
 	//datos que se importaran (si se puede) a la tabla 'user'
 	public $import_user_data = array('name', 'about', 'location', 'avatar', 'twitter', 'facebook', 'google', 'identica', 'linkedin');
 
 	//secretos generados en el oauth
-	public $tokens = array('twitter'=>array('token'=>'','secret'=>''), 'facebook'=>array('token'=>'','secret'=>''), 'google'=>array('token'=>'','secret'=>''), 'linkedin'=>array('token'=>'','secret'=>''), 'openid'=>array('token'=>'','secret'=>''));
+	public $tokens = array('twitter' => array('token' => '','secret' => ''), 'facebook' => array('token' => '','secret' => ''), 'google' => array('token' => '','secret' => ''), 'linkedin' => array('token' => '','secret' => ''), 'openid' => array('token' => '','secret' => ''));
 
 	private $credentials = array(
 		'twitter' => array('key' => OAUTH_TWITTER_ID, 'secret' => OAUTH_TWITTER_SECRET),

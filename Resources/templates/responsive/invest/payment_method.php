@@ -51,16 +51,21 @@ $this->section('content');
 							<div class="col-md-10 col-md-offset-1 method-conditions">
 								<div class="checkbox">
 									<label>
-										<input class="confirm-checkbox" type="checkbox" name="anonymous" id="anonymous" value="1">
-											<?= $this->text('invest-anonymous') ?>
+										<input class="no-margin-checkbox" type="checkbox" name="anonymous" id="anonymous" value="1">
+											<p class="label-checkbox">
+                                            <?= $this->text('invest-anonymous') ?>
+                                            </p>
 									</label>
+                                    
 								</div>
 
                                 <?php if(array_key_exists('pool', $this->pay_methods)): ?>
 								<div class="checkbox">
 									<label>
-										<input class="confirm-checkbox" type="checkbox" name="pool_on_fail" id="pool_on_fail" value="1">
-											<?= $this->text('invest-pool') ?>
+										<input class="no-margin-checkbox" type="checkbox" name="pool_on_fail" id="pool_on_fail" value="1">
+											<p class="label-checkbox">
+                                            <?= $this->text('invest-pool') ?><a data-toggle="modal" data-target="#myModal" href=""> <?= $this->text('invest-more-info') ?></a>
+                                            </p>
 									</label>
     							</div>
                                 <?php endif ?>
@@ -83,6 +88,21 @@ $this->section('content');
 	<?= $this->insert('invest/partials/steps_bar') ?>
 
     </div>
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel"><?= $this->text('invest-modal-pool-title') ?></h4>
+      </div>
+      <div class="modal-body">
+        <?= $this->text('invest-modal-pool-description') ?>
+      </div>
+    </div>
+  </div>
 </div>
 
 <?php $this->replace() ?>

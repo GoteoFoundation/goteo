@@ -2,8 +2,10 @@
 
 $errors = $this->errors;
 $oauth = $this->oauth;
+$user = $this->user;
 
-extract($oauth->user_data);
+$name = $oauth->user_data['name'];
+$email = $oauth->user_data['email'];
 
 if($this->userid) $username = $this->userid;
 if($this->email) $email = $this->email;
@@ -30,7 +32,9 @@ $this->section('content');
 			<div class="panel panel-default panel-form">
 				<div class="panel-body">
 					<h2 class="col-md-offset-1 padding-bottom-6"><?= $this->text('oauth-confirm-user') ?></h2>
-					<p><?= $this->text('oauth-goteo-openid-sync-password') ?></p>
+                	<div class="col-md-10 col-md-offset-1 reminder">
+	                    <?= $this->text('oauth-goteo-openid-sync-password') ?>
+                    </div>
 					<div>
                 	<?php
 	                    echo '<img style="padding-right:12px;float:left;" src="' . ($user->avatar ? $user->avatar->getLink(56, 56, true) : '') . '" alt="Profile image" />';
@@ -38,24 +42,18 @@ $this->section('content');
 	                    echo '<strong>'.$email.'</strong>'."</p>\n";
                 	?>
 
-					<form class="form-horizontal" role="form" method="POST" action="">
+					<form class="form-horizontal" role="form" method="POST" action="/signup/oauth">
 
 						<div class="form-group">
 							<div class="col-md-10 col-md-offset-1">
-								<input type="password" class="form-control" placeholder="Tu nueva contraseña" name="password">
-							</div>
-						</div>
-
-						<div class="form-group">
-							<div class="col-md-10 col-md-offset-1">
-								<input type="password" class="form-control" placeholder="Vuelve a escribir tu nueva contraseña" name="password">
+								<input type="password"  class="form-control" value="<?= $username?>" placeholder="<?= $this->text('login-access-password-field') ?>" name="password">
 							</div>
 						</div>
 
 
 						<div class="form-group">
 							<div class="col-md-10 col-md-offset-1">
-								<button type="submit" class="btn btn-block btn-success">Guardar</button>
+								<button type="submit" class="btn btn-block btn-success"><?= $this->text('login-access-button') ?></button>
 							</div>
 						</div>
 
@@ -77,10 +75,10 @@ $this->section('content');
 	                    echo '<input type="hidden" name="email" value="' . $email . '" />';
 	                    echo '<input type="hidden" name="provider_email" value="' . $email . '" />';
 	                    ?>
-					</form>								
+					</form>
 				</div>
 			</div>
-		
+
 	</div>
 </div>
 

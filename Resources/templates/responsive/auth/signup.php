@@ -21,37 +21,37 @@ $this->section('content');
 
 						<div class="form-group">
 							<div class="col-md-10 col-md-offset-1">
-								<input type="input" class="form-control" placeholder="Nombre" name="nombre">
+								<input type="input" class="form-control" placeholder="<?= $this->text('register-name-field') ?>" name="nombre">
 							</div>
 						</div>
 
 						<div class="form-group">
 							<div class="col-md-10 col-md-offset-1">
-								<input type="email" class="form-control" placeholder="Correo electrónico" name="email" value="">
+								<input type="email" class="form-control" placeholder="<?= $this->text('register-email-field') ?>" name="email" value="">
 							</div>
 						</div>
 
 						<div class="form-group">
 							<div class="col-md-10 col-md-offset-1">
-								<input type="email" class="form-control" placeholder="Vuelve a escrbir tu correo electrónico" name="email" value="">
+								<input type="email" class="form-control" placeholder="<?= $this->text('register-email-confirm-field') ?>" name="email" value="">
 							</div>
 						</div>
 
 						<div class="form-group">
 							<div class="col-md-10 col-md-offset-1">
-								<input type="input" class="form-control" placeholder="Elige tu identificador en Goteo" name="id_publico">
+								<input type="input" class="form-control" placeholder="<?= $this->text('register-id-field') ?>" name="id_publico">
 							</div>
 						</div>
 
 						<div class="form-group">
 							<div class="col-md-10 col-md-offset-1">
-								<input type="password" class="form-control" placeholder="Contraseña" name="password">
+								<input type="password" class="form-control" placeholder="<?= $this->text('register-password-field') ?>" name="password">
 							</div>
 						</div>
 
 						<div class="form-group">
 							<div class="col-md-10 col-md-offset-1">
-								<input type="password" class="form-control" placeholder="Vuelve a escribir tu contraseña" name="password">
+								<input type="password" class="form-control" placeholder="<?= $this->text('register-password-confirm-field') ?>" name="password">
 							</div>
 						</div>
 
@@ -59,9 +59,9 @@ $this->section('content');
 							<div class="col-md-10 col-md-offset-1">
 								<div class="checkbox">
 									<label>
-										<input type="checkbox" name="remember">
-											<p style="font-size:0.8em;">
-											Al registrarte, confirmas aceptación de nuestros <a href="/legal/terms">términos de uso</a>, <a href="/legal/privacy">política de privacidad</a> y política de cookies.
+										<input type="checkbox" class="no-margin-checkbox" name="remember">
+											<p class="label-checkbox">
+											<?= $this->text('login-register-conditions') ?>
 											</p>
 									</label>
 								</div>
@@ -76,32 +76,9 @@ $this->section('content');
 						</div>
 
 						<hr>
-						<div class="form-group margin-top-7">
-							<div class="col-md-10 col-md-offset-1">
-								<a class="btn btn-block btn-social btn-facebook">
-				    				<i class="fa fa-facebook"></i> Registrarse con Facebook
-				  				</a>
-				  			</div>
 
-				  			<div class="col-md-10 col-md-offset-1 standard-margin-top">
-				  				<a class="btn btn-social-icon btn-twitter">
-			    					<i class="fa fa-twitter"></i>
-			  					</a>
-				  				<a class="btn btn-social-icon btn-google">
-				    				<i class="fa fa-google-plus"></i>
-				  				</a>
+                        <?= $this->insert('auth/partials/social_login') ?>
 
-				  				<a class="btn btn-social-icon btn-yahoo">
-				    				<i class="fa fa-yahoo"></i>
-				  				</a>
-				  				<a class="btn btn-social-icon btn-linkedin">
-				    				<i class="fa fa-linkedin"></i>
-				  				</a>
-				  				<a class="btn btn-social-icon btn-openid">
-				    				<i class="fa fa-openid"></i>
-				  				</a>
-			  				</div>
-			  			</div>
 					</form>
 
 

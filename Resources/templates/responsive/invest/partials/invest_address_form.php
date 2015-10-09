@@ -1,5 +1,5 @@
 
-    <h3 class="col-md-offset-1 padding-bottom-6">Asegúrate de que recibes tu recompensa</h3>
+    <h3 class="col-md-offset-1 padding-bottom-6"><?= $this->text('invest-address-title') ?></h3>
 
     <div class="form-group">
         <div class="col-md-10 col-md-offset-1">

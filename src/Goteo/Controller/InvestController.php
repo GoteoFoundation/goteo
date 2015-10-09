@@ -144,7 +144,7 @@ class InvestController extends \Goteo\Core\Controller {
             // }
         }
 
-        // print_r($reward);
+        // print_r($project->individual_rewards);
         // Set vars for all views
         $this->contextVars([
             'project' => $project,
@@ -458,7 +458,7 @@ class InvestController extends \Goteo\Core\Controller {
 
         if($reward instanceOf Response) return $reward;
 
-        $vars=[ 'facebook_url' => $facebook_url, 
+        $vars=[ 'facebook_url' => $facebook_url,
                 'twitter_url' => $twitter_url,
                 'widget_code' => $widget_code,
                 'widget_code_investor' => $widget_code,
