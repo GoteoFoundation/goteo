@@ -36,8 +36,25 @@ namespace Goteo\Controller {
          * Registers a subcontroller in the admin
          * @param [type] $classname [description]
          */
-        public static function addSubController($classname) {
-            self::$subcontrollers[] = $classname;
+        public static function addSubController($classname, $path = null) {
+            self::$subcontrollers[$classname::getId()] = $classname;
+        }
+
+        /**
+         * Removes a subcontroller
+         * @param  [type] $classname [description]
+         */
+        public static function delSubController($classname) {
+            if(isset(self::$subcontrollers[$classname])) {
+                unset(self::$subcontrollers[$classname]);
+                return true;
+            }
+            foreach(self::$subcontrollers as $i => $sub) {
+                if($sub === $classname) {
+                    unset(self::$subcontrollers[$i]);
+                    return true;
+                }
+            }
         }
 
         /**
@@ -146,7 +163,7 @@ namespace Goteo\Controller {
         /** Default index action */
         public function indexAction(Request $request) {
             $ret = array();
-           $user = self::checkCurrentUser($request);
+            $user = self::checkCurrentUser($request);
 
             //feed by default for someones
             $admin_node = Session::get('admin_node');
@@ -162,12 +179,14 @@ namespace Goteo\Controller {
         // preparado para index unificado
         public function optionAction($option, $action = 'list', $id = null, $subaction = null, Request $request) {
             $ret = array();
-            $SubC = 'Goteo\Controller\Admin\\' . \strtoCamelCase($option) . 'SubController';
+            $SubC = static::$subcontrollers[$option];
+
+            // 'Goteo\Controller\Admin\\' . \strtoCamelCase($option) . 'SubController';
 
             try {
                 $user = self::checkCurrentUser($request, $option, $action, $id);
                 if( ! class_exists($SubC) ) {
-                    return $this->viewResponse('admin/denied', ['msg' => "Class [$SubC] not found"], Response::HTTP_BAD_REQUEST);
+                    return $this->viewResponse('admin/denied', ['msg' => "Class [$SubC] not found for path [$option]"], Response::HTTP_BAD_REQUEST);
                 }
                 $node = Session::exists('admin_node') ? Session::get('admin_node') : Config::get('node');
                 $controller = new $SubC($node, $user, $request);

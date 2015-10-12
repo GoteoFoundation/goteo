@@ -61,7 +61,7 @@ $this->section('sub-header');
      foreach ($this->order as $item => $itemData) {
 
         if ($item !== 'news' && $this->order[$item]) {
-            echo $this->insert("home/partials/$item");
+            echo $this->insertif("home/partials/$item");
         }
     }
     ?>
@@ -109,38 +109,12 @@ $this->section('sub-header');
             play: 0
         });
 
-        $('#calls').slides({
-            container: 'slder_calls',
-            generatePagination: false,
-            play: 6000
-        });
-
-        $('#campaigns').slides({
-            container: 'slder_campaigns',
-            generatePagination: false,
-            play: 6000
-        });
-
         $('.scroll-pane').jScrollPane({showArrows: true});
 
         $('#slides_news').slides({
             container: 'slder_news',
             generatePagination: false,
             play: 30000
-        });
-
-        $('#slides_patrons').slides({
-            container: 'slder_patrons',
-            generatePagination: false,
-            play: 0
-        });
-
-        $('#stories-banners').slides({
-            container: 'stories-banners-container',
-            paginationClass: 'bannerspage',
-            generatePagination: true,
-            effect: 'slide',
-            play:8000
         });
 
     });

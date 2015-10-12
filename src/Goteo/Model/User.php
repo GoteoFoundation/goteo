@@ -578,8 +578,6 @@ namespace Goteo\Model {
                         user.identica as identica,
                         user.linkedin as linkedin,
                         user.amount as amount,
-                        user.num_patron as num_patron,
-                        user.num_patron_active as num_patron_active,
                         user.worth as worth,
                         user.confirmed as confirmed,
                         user.hide as hide,

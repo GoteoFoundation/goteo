@@ -423,47 +423,6 @@ class UserController extends \Goteo\Core\Controller {
             Session::store('message_autorized', true);
         }
 
-        /*
-         *  Si es un usuario vip y tiene proyectos recomendados activados
-         *   mostramos la página especial de patronos
-         */
-        if (isset($user->roles['vip'])) {
-            $recommended = Model\Patron::getList($user->id);
-            if (count($recommended) > 0) {
-                $vip = Model\User\Vip::get($user->id);
-                if (!empty($vip->image)) {
-                    $user->avatar = $vip->image;
-                }
-
-                // pasarle el autodetector de urls por el about
-                $user->about = nl2br(Text::urlink($user->about));
-
-                // proyectos que cofinancia este vip (que no sean los que recomienda)
-                $invest_on = Model\User::invested($user->id, true);
-
-                $recomend = array();
-                // los proyectos que recomienda
-                foreach ($recommended as $recproj) {
-                    $recomend[] = $recproj->project;
-                }
-                // y quitarlos de los que cofinancia
-                foreach ($invest_on as $key => $invproj) {
-                    if (in_array($invproj->id, $recomend)) {
-                        unset($invest_on[$key]);
-                    }
-                }
-
-                // agrupados para carrusel
-                $invested = Listing::get($invest_on);
-
-                return new Response(View::render('user/patron', [
-                        'user' => $user,
-                        'recommended' => $recommended,
-                        'lists' => ['invest_on' => $invested]
-                    ]));
-            }
-        }
-
 
         $viewData = array();
         $viewData['user'] = $user;

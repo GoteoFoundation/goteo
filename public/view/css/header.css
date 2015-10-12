@@ -910,22 +910,10 @@ ul.currency li:hover>a {
 /* fin del desplegable de monedas */
 
 /* Sello de nodo  en pagina proyecto y pagina usuario */
-body.project-show div#sub-header div.nodemark,
-body.patron div#sub-header div.nodemark {
+body.project-show div#sub-header div.nodemark {
     text-align: left;
     overflow: hidden;
     width: 102px;
-}
-
-body.patron div#sub-header div.nodemark {
-    float: right;
-    margin-top: -30px;
-    padding-right: 80px;
-}
-
-body.patron div#sub-header h2 {
-    width: 500px;
-    display: inline-block;
 }
 
 body.project-show div#sub-header div.nodemark {

@@ -2,7 +2,6 @@
 @import url('widget/summary.css');
 @import url('widget/media.css');
 @import url('widget/share.css');
-@import url('widget/patrons.css');
 @import url('widget/message.css');
 @import url('widget/support.css');
 @import url('widget/needs.css');
@@ -94,7 +93,7 @@ body.project-show div#sub-header div.categories {
 
 body.project-show div#sub-header div.categories h3 {
     font-weight: normal;
-    color: #20B3B2;   
+    color: #20B3B2;
     margin: 0;
 }
 
@@ -130,7 +129,7 @@ body.project-show div.project-menu ul {
 
 body.project-show div.project-menu ul li {
     display: inline-block;
-    margin-right: 1px;    
+    margin-right: 1px;
 	height:30px;
 }
 
@@ -151,7 +150,7 @@ body.project-show div.project-menu ul li a {
     background-image: url('/view/css/project/view/menu/regular_menu.png');
     background-position: left top !important;
     background-repeat: repeat-x;
-	font-size:11px;	
+	font-size:11px;
 }
 
 body.project-show div.project-menu ul li.active a {
@@ -170,12 +169,12 @@ body.project-show div.project-menu ul li.messages a {
 body.project-show div.project-menu ul li.home a {
     background-color: #1fb0b0;
 	padding-right:45px;
-} 
+}
 
 body.project-show div.project-menu ul li.needs a {
     background-color: #96238F;
 	padding-right:35px;
-} 
+}
 
 body.project-show div.project-menu ul li.supporters a {
     background-color: #313b96;
@@ -216,11 +215,11 @@ div.widget.project-spread > div.widget.projects > div.left{float:left;width:280p
 div.widget.project-spread > div.widget.projects > div.right{float:left;width:245px;margin-left:12px;}
 div.widget.project-spread div.subtitle{width:245px;text-transform:uppercase;margin:0 0 10px 7px;}
 	div.widget.project-spread div.subtitle#s1{}
-	div.widget.project-spread div.subtitle#s2{}	
+	div.widget.project-spread div.subtitle#s2{}
 	div.widget.project-spread div.subtitle > span{display:block;}
-	div.widget.project-spread div.subtitle > span.primero{margin-bottom:3px;}	
-	div.widget.project-spread div.subtitle > span.segundo{color:#28ACAB;font-weight:bold;}		
-	
+	div.widget.project-spread div.subtitle > span.primero{margin-bottom:3px;}
+	div.widget.project-spread div.subtitle > span.segundo{color:#28ACAB;font-weight:bold;}
+
 /* envía mensaje al autor - widget embed code */
 div.widget.projects #widget-code{	width:350px;	float:left; margin: 0 0 0 20px;}
 div.widget.projects  #widget-code .wc-embed{background: url("/view/css/social/embed.png") no-repeat; min-height:20px;text-transform:uppercase;padding: 3px 0 0 25px;}
@@ -363,8 +362,8 @@ div.widget.project.horizontal .title.horizontal{
 }
 
 div.widget.project.horizontal ul.amounts{
-    
-    
+
+
 }
 
 div.widget.project.horizontal ul.amounts li{
@@ -390,8 +389,8 @@ div.widget.project.horizontal ul.amounts li div.label{
 
 
 div.nodemark .label-title{
-    color:#20B3B2; 
-    margin-bottom:0.5em; 
+    color:#20B3B2;
+    margin-bottom:0.5em;
     font-weight: normal;
 }
 

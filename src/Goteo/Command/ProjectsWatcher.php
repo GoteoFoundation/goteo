@@ -201,10 +201,17 @@ class ProjectsWatcher {
 
                 case 9: // Busca prescriptores e implícalos
                     // si no tiene padrinos
-                    if ($project->patrons > 0) {
-                        if ($debug) echo "Tiene padrino\n";
-                    } else {
-                        if ($debug) echo "No tiene padrino\n";
+                    $skip = false;
+                    if(class_exists('\Goteo\Model\Patron')) {
+                        // número de recomendaciones de padrinos
+                        $patrons = \Goteo\Model\Patron::numRecos($proj->id);
+
+                        if ($patrons > 0) {
+                            $skip = true;
+                            if ($debug) echo "Tiene padrino\n";
+                        }
+                    }
+                    if (!$skip) {
                         Send::toOwner('tip_9', $project);
                     }
                     break;

@@ -1,25 +1,23 @@
-/*Reglas módulo patrons de home */
-
 div #press_banner{
-    background-color:#cdcdcd; 
+    background-color:#cdcdcd;
     height:165px;
 }
 
 div #press_banner div.clip{
-    width:940px; 
-    margin:0 auto; 
+    width:940px;
+    margin:0 auto;
     position:relative;
 }
 
 div #press_banner div.clip img{
-    position:absolute; 
-    left:835px; 
-    top:-8px; 
+    position:absolute;
+    left:835px;
+    top:-8px;
     overflow:visible;
 }
 
 div #press_banner div.clip_sup{
-   height:15px; 
+   height:15px;
    background-color:#e7e7e7;
 }
 
@@ -67,9 +65,9 @@ div.news {
 }
 
 div.news h4.title {
-    color: #59595C; 
-    padding-top:20px; 
-    margin-top:0; 
+    color: #59595C;
+    padding-top:20px;
+    margin-top:0;
     margin-bottom:0;
 
 }
@@ -80,7 +78,7 @@ div.newrow a.next {
 }
 
 
-div#slides_news div.new a{ 
+div#slides_news div.new a{
     display: table-cell;
     vertical-align: middle;
     position: relative;

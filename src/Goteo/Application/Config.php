@@ -111,25 +111,6 @@ class Config {
      * sets directory configuration
      */
     static private function setDirConfiguration() {
-        // Plugins overwritting
-        foreach(self::getPlugins() as $plugin => $vars) {
-            // Calling start file from plugins
-            if(is_file(__DIR__ . "/../../../extend/$plugin/start.php")) {
-                include(__DIR__ . "/../../../extend/$plugin/start.php");
-            }
-        }
-        // TODO: fire event plugins loaded
-
-        // A catch-all Legacy routes controller (LEGACY DISPATCHER)
-        App::getRoutes()->add('legacy-dispacher', new Route(
-                '/{url}',
-                array(
-                    '_controller' => 'Goteo\Controller\ErrorController::legacyControllerAction',
-                ),
-                array(
-                    'url' => '.*',
-                )
-        ));
 
         //Admin subcontrollers added manually for legacy compatibility
         \Goteo\Controller\AdminController::addSubController('Goteo\Controller\Admin\AccountsSubController');
@@ -170,6 +151,25 @@ class Config {
         // Adding Paypal payment method
         \Goteo\Payment\Payment::addMethod('Goteo\Payment\Method\PaypalPaymentMethod');
 
+        // Plugins overwritting
+        foreach(self::getPlugins() as $plugin => $vars) {
+            // Calling start file from plugins
+            if(is_file(__DIR__ . "/../../../extend/$plugin/start.php")) {
+                include(__DIR__ . "/../../../extend/$plugin/start.php");
+            }
+        }
+        // TODO: fire event plugins loaded
+
+        // A catch-all Legacy routes controller (LEGACY DISPATCHER)
+        App::getRoutes()->add('legacy-dispacher', new Route(
+                '/{url}',
+                array(
+                    '_controller' => 'Goteo\Controller\ErrorController::legacyControllerAction',
+                ),
+                array(
+                    'url' => '.*',
+                )
+        ));
 
         //Cache dir in libs
         \Goteo\Library\Cacher::setCacheDir(GOTEO_CACHE_PATH);

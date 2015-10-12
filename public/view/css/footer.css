@@ -6,21 +6,21 @@ div#footer ul {
 	margin:0;padding:0;
 }
 
-div#footer {  
-	width:100%;  
+div#footer {
+	width:100%;
 	margin:0;
 	padding: 0 0 10px 0;
-	
-    position: relative;		
-    background-color: #faf8f8;         
-    z-index: 0;    
+
+    position: relative;
+    background-color: #faf8f8;
+    z-index: 0;
     /*max-width: 940px;*/
     bottom: 0;
     overflow: hidden;
     clear: both;
     color: #1f1d1e;
     font-size: 12px;
-    text-decoration: none;   
+    text-decoration: none;
 }
 
 div#sub-footer{
@@ -54,8 +54,8 @@ div#footer div.block{
 	float:left;
 	width: 155px;
 	height: 142px;
-	padding-left:15px;	
-	border-left:#ebe9ea 2px solid;	   
+	padding-left:15px;
+	border-left:#ebe9ea 2px solid;
 }
 
 
@@ -65,14 +65,8 @@ div#footer div.block h6{
 	color:#59595C;
 }
 
-/* Voy a añadir aqui:
-- el carrusel de patronos de la home
-- el carrusel de sponsors de nodo
-porque usan los mismos estilos
-*/
 div#node-main div#side div.sponsors ul,
 div#channel-main div#side div.sponsors ul
-div.widget.project-patrons ul,
 div#footer div.block ul{
 	list-style:none;
 	margin-top:15px;
@@ -81,7 +75,6 @@ div#footer div.block ul{
 }
 div#node-main div#side div.sponsors ul.paginacion,
 div#channel-main div#side div.sponsors ul.paginacion,
-div.widget.project-patrons ul.paginacion,
 div#footer div.block ul.paginacion {
 	margin: 8px 0 0 0;
 	list-style:none;
@@ -104,7 +97,6 @@ div#channel-main div#side div.sponsors ul.paginacion {
 
 div#node-main div#side div.sponsors ul.paginacion li,
 div#channel-main div#side div.sponsors ul.paginacion li,
-div.widget.project-patrons ul.paginacion li,
 div#footer div.block ul.paginacion li {
 	cursor:pointer;
     display: block;
@@ -115,7 +107,6 @@ div#footer div.block ul.paginacion li {
 
 div#node-main div#side div.sponsors ul.paginacion li a,
 div#channel-main div#side div.sponsors ul.paginacion li a,
-div.widget.project-patrons ul.paginacion li a,
 div#footer div.block ul.paginacion li a {
     width: 10px;
     height: 12px;
@@ -127,7 +118,6 @@ div#footer div.block ul.paginacion li a {
 
 div#node-main div#side div.sponsors ul.paginacion li a:hover,
 div#channel-main div#side div.sponsors ul.paginacion li a:hover,
-div.widget.project-patrons ul.paginacion li a:hover,
 div#footer div.block ul.paginacion li a:hover {
     background-color: #20b3b2;
     color: #20b3b2;
@@ -135,14 +125,11 @@ div#footer div.block ul.paginacion li a:hover {
 
 div#node-main div#side div.sponsors ul.paginacion li.current a,
 div#channel-main div#side div.sponsors ul.paginacion li.current a,
-div.widget.project-patrons ul.paginacion li.current a,
 div#footer div.block ul.paginacion li.current a {
     background-color: #808184 !important;
     color: #808184 !important;
 }
 
-div#slides_patrons .sliderspatrons-ctrl .next,
-div#slides_patrons .sliderspatrons-ctrl .prev,
 div#slides_sponsor .slidersponsors-ctrl .next,
 div#slides_sponsor .slidersponsors-ctrl .prev,
 div#slides_side_sponsor .slidersponsors-ctrl .next,
@@ -157,30 +144,25 @@ div#slides_side_sponsor .slidersponsors-ctrl .prev  {
 /*	display: inline-block; */
 }
 
-div#slides_patrons .sliderspatrons-ctrl .prev,
 div#slides_sponsor .slidersponsors-ctrl .prev,
 div#slides_side_sponsor .slidersponsors-ctrl .prev  {
 	background: url('/view/css/small_arrowslider-sprt.png') scroll no-repeat 0 0;
 }
 
-div#slides_patrons .sliderspatrons-ctrl .prev:hover,
 div#slides_sponsor .slidersponsors-ctrl .prev:hover,
 div#slides_side_sponsor .slidersponsors-ctrl .prev:hover {
 	background: url('/view/css/small_arrowslider-sprt.png') scroll no-repeat 0 -32px;
 }
 
-div#slides_patrons .sliderspatrons-ctrl .next,
 div#slides_sponsor .slidersponsors-ctrl .next,
 div#slides_side_sponsor .slidersponsors-ctrl .next{
 	background: url('/view/css/small_arrowslider-sprt.png') scroll no-repeat 0 -16px;
 }
 
-div#slides_patrons .sliderspatrons-ctrl .next:hover,
 div#slides_sponsor .slidersponsors-ctrl .next:hover,
 div#slides_side_sponsor .slidersponsors-ctrl .next:hover {
 	background: url('/view/css/small_arrowslider-sprt.png') scroll no-repeat 0 -48px;
 }
-/* fin reutilizacion para carrusel patronos y sponsors nodo */
 
 div#footer div.block ul li{
 	line-height:12px;
@@ -220,13 +202,13 @@ div#footer div.social ul{
 
 div#footer div.social ul li{
 	height:18px;
-	font-size:11px;	
+	font-size:11px;
 	margin-bottom:5px;
 }
 
 div#footer div.social ul li a{
 	margin:0;
-	font-size:11px; 
+	font-size:11px;
     padding-left: 30px;
     display: block;
     background: no-repeat left center;
@@ -241,10 +223,10 @@ div#footer div.social li a:hover{
 div#footer div.social li a{
 	background-image:url('/view/css/social/social-footer-20.png') !important;
 	background-repeat:no-repeat}
-	
+
 div#footer div.social li.twitter a {
     color: #6dc7eb;
-	background-position:0 -3px;    
+	background-position:0 -3px;
 }
 
 div#footer div.social li.facebook a {

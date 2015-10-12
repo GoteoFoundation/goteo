@@ -111,7 +111,8 @@ abstract class AbstractSubController {
      */
     public static function getId() {
         $class = get_called_class();
-        return strtolower(substr(end((explode('\\', $class))), 0, -13));
+        $a = explode('\\', $class);
+        return strtolower(str_replace('SubController', '', end($a)));
     }
     /**
      * Returns the label for this controller

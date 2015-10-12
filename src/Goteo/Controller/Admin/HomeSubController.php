@@ -27,15 +27,11 @@ class HomeSubController extends AbstractSubController {
     static protected $admin_modules = array(
          'promotes' => '\Goteo\Controller\Admin\PromoteSubController',
          'drops' => '\Goteo\Controller\Admin\CallsSubController',
-         'calls' => '\Goteo\Controller\Admin\CampaignsSubController',
          'posts' => '\Goteo\Controller\Admin\BlogSubController',
-         'patrons' => '\Goteo\Controller\Admin\PatronSubController',
          'sponsors' => '\Goteo\Controller\Admin\SponsorsSubController',
-         'stories' => '\Goteo\Controller\Admin\StoriesSubController',
          'news' => '\Goteo\Controller\Admin\NewsSubController',
 
          // 'categories' => '\Goteo\Controller\Admin\CategoriesSubController',
-         'sumcalls' => '\Goteo\Controller\Admin\CallsSubController',
          'summary' => '\Goteo\Controller\Admin\ProjectsSubController',
          'searcher' => '\Goteo\Controller\Admin\ProjectsSubController',
      );
@@ -43,16 +39,12 @@ class HomeSubController extends AbstractSubController {
         'main' => array( 'posts' => 'Entradas de blog',
                          'promotes' => 'Proyectos destacados',
                          'drops' => 'Capital Riego',
-                         'feed' => 'Actividad reciente',
-                         'patrons' => 'Padrinos',
-                         'stories' => 'Historias exitosas',
+                         // 'feed' => 'Actividad reciente',
                          'news' => 'Banner de prensa',
-                         'calls' => 'Convocatorias'
                         ),
         'side' => array( 'searcher' => 'Selector proyectos',
-                         'categories' => 'Categorias de proyectos',
+                         // 'categories' => 'Categorias de proyectos',
                          'summary' => 'Resumen proyectos',
-                         'sumcalls' => 'Resumen convocatorias',
                          'sponsors' => 'Patrocinadores'
                         ),
     );
@@ -85,8 +77,9 @@ class HomeSubController extends AbstractSubController {
 
         $central_items = Model\Home::getAll($node, 'main');
         $central_availables = array_diff_key(static::$available_types['main'], $central_items);
-        foreach(self::$available_types['main'] as $type => $desc) {
+        foreach(static::$available_types['main'] as $type => $desc) {
             $item = $central_items[$type];
+            if(!is_object($item)) $item = new \stdClass;
             if(isset($item)) {
                 $item->desc = $desc;
                 $item->item = $type;
@@ -100,12 +93,14 @@ class HomeSubController extends AbstractSubController {
                     unset($central_availables[$type]);
                 }
             }
+            // else die("[$class]");
         }
 
         $side_items = Model\Home::getAll($node, 'side');
         $side_availables = array_diff_key(static::$available_types['side'], $side_items);
-        foreach(self::$available_types['side'] as $type => $desc) {
+        foreach(static::$available_types['side'] as $type => $desc) {
             $item = $side_items[$type];
+            if(!is_object($item)) $item = new \stdClass;
             if(isset($item)) {
                 $item->desc = $desc;
                 $item->item = $type;

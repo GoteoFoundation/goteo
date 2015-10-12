@@ -625,11 +625,6 @@ namespace Goteo\Model {
                     $project->willfinish = date('Y-m-d', \mktime(0, 0, 0, date('m', $ptime), date('d', $ptime)+$project->days_total, date('Y', $ptime)));
                 }
 
-
-                // recomendaciones de padrinos
-                $project->patrons = Patron::getRecos($project->id);
-
-
                 //-----------------------------------------------------------------
                 // Fin de verificaciones
                 //-----------------------------------------------------------------
@@ -2466,7 +2461,6 @@ namespace Goteo\Model {
                             self::query("UPDATE reward SET project = :newid WHERE project = :id", array(':newid'=>$newid, ':id'=>$this->id));
                             self::query("UPDATE support SET project = :newid WHERE project = :id", array(':newid'=>$newid, ':id'=>$this->id));
                             self::query("UPDATE invest SET project = :newid WHERE project = :id", array(':newid'=>$newid, ':id'=>$this->id));
-                            self::query("UPDATE patron SET project = :newid WHERE project = :id", array(':newid'=>$newid, ':id'=>$this->id));
                             self::query("UPDATE invest SET project = :newid WHERE project = :id", array(':newid'=>$newid, ':id'=>$this->id));
                             self::query("UPDATE project SET id = :newid WHERE id = :id", array(':newid'=>$newid, ':id'=>$this->id));
 
@@ -2952,10 +2946,6 @@ namespace Goteo\Model {
 
                 // en days mantenemos el número de días de campaña
                 $the_proj->days = (int) $proj->dias - 1;
-
-                // número de recomendaciones de padrinos
-                $the_proj->patrons = Patron::numRecos($proj->id);
-
 
                 $projects[] = $the_proj;
             }

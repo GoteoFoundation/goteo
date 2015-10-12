@@ -423,18 +423,6 @@ body.channel.home div#channel-calls a.all:hover{
     color: #20B3B2;
 }
 
-/* padrinos */
-body.channel.home div#channel-patrons {
-    padding-bottom: 35px !important;
-    height: 169px;
-}
-body.channel.home div#channel-patrons h2 {
-    margin-bottom: 25px;
-}
-body.channel.home div#channel-patrons div#slides_patrons div.slder_patrons {
-	width: 670px !important;
-}
-
 
 /* Fin de estilos elementos centrales */
 
@@ -445,15 +433,15 @@ input.grey[type="reset"],
 button.grey,
 a.button.grey {
     background: #b51000 url('/view/css/button/grey.png') repeat-x top;
-    color: white;    
-} 
+    color: white;
+}
 
 input.grey[type="submit"]:active,
 input.grey[type="reset"]:active,
 button.grey:active,
 a.button.grey:active {
     background: #e44000 url('/view/css/button/grey-active.png') repeat-x top;
-} 
+}
 
 input.grey[type="submit"]:hover,
 input.grey[type="reset"]:hover,
@@ -504,8 +492,8 @@ div.owner-info ul.social{
     overflow: hidden;
     list-style: none;
     padding-bottom: 0 !important;
-    position:absolute; 
-    top:2px; 
+    position:absolute;
+    top:2px;
     right:15px;
 }
 
@@ -563,7 +551,7 @@ div.owner-info div.info {
     font-size: 16px;
     color: #FFF;
     width: 68%;
-    
+
 }
 
 div.owner-info div.info p {
@@ -607,8 +595,8 @@ div.sub-header-channel{
 }
 
 h2.channel-name{
-    margin: 0px; 
-    padding-bottom: 20px; 
+    margin: 0px;
+    padding-bottom: 20px;
     font-size: 40px;
     padding-left: 12px;
 }

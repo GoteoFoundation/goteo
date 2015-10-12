@@ -137,7 +137,6 @@ class Text {
             'invest-called-rest',
             'invest-called-nodrop',
             'currency-alert',
-            'profile-patron-header',
             'call-splash-invest_explain',
             'call-splash-drop_limit',
             'feed-new_support',

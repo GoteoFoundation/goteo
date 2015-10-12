@@ -195,7 +195,7 @@ $this->section('content');
                         break;
 
                     case 'supporters':
-$step = 'confirm';
+                        $step = 'confirm';
 						// segun el paso de aporte
                         if (!empty($step) && in_array($step, array('start', 'login', 'confirm', 'continue', 'ok', 'fail'))) {
 
@@ -261,9 +261,6 @@ $step = 'confirm';
                         echo View::get('project/widget/langs.html.php', array('project' => $project));
 
                         echo View::get('project/widget/share.html.php', array('project' => $project));
-                        if (!empty($project->patrons)) {
-                            echo View::get('project/widget/patrons.html.php', array('patrons' => $project->patrons));
-                        }
 
                         echo View::get('project/widget/summary.html.php', array('project' => $project));
 
