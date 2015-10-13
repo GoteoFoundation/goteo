@@ -8,7 +8,7 @@
  * and LICENSE files that was distributed with this source code.
  */
 
-namespace Goteo\Foil\Extension;
+namespace Goteo\Util\Foil\Extension;
 
 use Symfony\Component\HttpFoundation\Request;
 use Foil\Contracts\ExtensionInterface;

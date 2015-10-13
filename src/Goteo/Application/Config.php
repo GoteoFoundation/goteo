@@ -188,10 +188,10 @@ class Config {
         View::setTheme('default');
 
         // views function registering
-        View::getEngine()->loadExtension(new \Goteo\Foil\Extension\LangUtils(), [], true);
-        View::getEngine()->loadExtension(new \Goteo\Foil\Extension\GoteoCore(), [], true);
-        View::getEngine()->loadExtension(new \Goteo\Foil\Extension\TextUtils(), [], true);
-        View::getEngine()->loadExtension(new \Goteo\Foil\Extension\Pages(), [], true);
+        View::getEngine()->loadExtension(new \Goteo\Util\Foil\Extension\GoteoCore(), [], true);
+        View::getEngine()->loadExtension(new \Goteo\Util\Foil\Extension\TextUtils(), [], true);
+        View::getEngine()->loadExtension(new \Goteo\Util\Foil\Extension\Pages(), [], true);
+        View::getEngine()->loadExtension(new \Goteo\Util\Foil\Extension\LangUtils(), [], true);
 
 
         // Some defaults

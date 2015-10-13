@@ -12,6 +12,7 @@ namespace Goteo\Model;
 
 use Goteo\Application\Exception\ModelException;
 use Goteo\Application\Exception\ModelNotFoundException;
+use Goteo\Application\App;
 use Goteo\Application\Config;
 use Goteo\Application\Lang;
 use Goteo\Application\View;
@@ -31,6 +32,7 @@ class Mail extends \Goteo\Core\Model {
         $id, // id registro en tabla mail
         $from,
         $fromName,
+        $email,
         $to,
         $toName,
         $subject,
@@ -46,6 +48,7 @@ class Mail extends \Goteo\Core\Model {
         $template = null,
         $sent,
         $error = '',
+        $log,
         $status = 'pending',
         $lang = null;
 
@@ -103,6 +106,13 @@ class Mail extends \Goteo\Core\Model {
         $this->mail = $mail;
     }
 
+    private function logger($message, $func = 'info') {
+        if(!$this->log) {
+            $this->log = App::getService('logger');
+        }
+        $this->log->$func($message);
+
+    }
     public function getSubject() {
         if(!$this->subject && $this->template) {
             $tpl = Template::get($this->template);
@@ -242,17 +252,17 @@ class Mail extends \Goteo\Core\Model {
                     // exit if not allowed
                     // TODO: log this?
                         // add any debug here
-                    Message::error('SKIPPING MAIL SENDING with subject [' . $this->subject . '] to [' . $this->to . '] from  [' . $this->from . '] using) template [' . $this->template . '] due configuration restrictions!');
+                    $this->logger('SKIPPING MAIL SENDING with subject [' . $this->subject . '] to [' . $this->to . '] from  [' . $this->from . '] using) template [' . $this->template . '] due configuration restrictions!');
                     // Log this email
                     $mail->preSend();
                     $path = GOTEO_LOG_PATH . 'mail-send/';
                     @mkdir($path, 0777, true);
                     $path .= $this->id .'-' . str_replace(['@', '.'], ['_', '_'], $this->to) . '.eml';
                     if(@file_put_contents($path, $mail->getSentMIMEMessage())) {
-                        Message::error('Logged email content into: ' . $path);
+                        $this->logger('Logged email content into: ' . $path);
                     }
                     else {
-                        Message::error('ERROR while logging email content into: ' . $path);
+                        $this->logger('ERROR while logging email content into: ' . $path, 'error');
                     }
                     // return true is ok, let's pretend the mail is sent...
                     $ok = true;
@@ -411,7 +421,7 @@ class Mail extends \Goteo\Core\Model {
 
                         $new = SITE_URL . '/mail/link/' . $stat->id;
                     } catch(ModelException $e) {
-                        Message::error('Error creating MailStats, fallback to base64: ' . $e->getMessage());
+                        $this->logger('Error creating MailStats, fallback to base64: ' . $e->getMessage(), 'error');
                         $url = $matches[3];
                         $new = SITE_URL . '/mail/url/' . \mybase64_encode(md5(Config::get('secret') . '-' . $this->to . '-' . $this->id. '-' . $url) . '¬' . $this->to  . '¬' . $this->id . '¬' . $url);
                     }

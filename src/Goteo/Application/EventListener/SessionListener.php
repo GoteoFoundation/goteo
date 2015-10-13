@@ -27,8 +27,6 @@ use Goteo\Application\Config;
 use Goteo\Application\Lang;
 use Goteo\Library\Currency;
 use Goteo\Library\Text;
-use Goteo\Application\View;
-use Goteo\Foil\Extension;
 
 //
 class SessionListener implements EventSubscriberInterface

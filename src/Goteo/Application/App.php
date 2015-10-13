@@ -135,7 +135,7 @@ class App extends HttpKernel\HttpKernel
                 define('SITE_URL', 'http://' . $SITE_URL);
             }
             // Setup request for views
-            \Goteo\Foil\Extension\GoteoCore::setRequest($request);
+            \Goteo\Util\Foil\Extension\GoteoCore::setRequest($request);
 
             $sc = self::getServiceContainer();
             $sc->setParameter('routes', self::getRoutes());

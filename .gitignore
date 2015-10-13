@@ -1,8 +1,8 @@
 .vagrant
 
-extend/
-!extend/README.md
-!extend/goteo-dev
+#extend/
+#!extend/README.md
+#!extend/goteo-dev
 
 /node_modules/
 /vendor/

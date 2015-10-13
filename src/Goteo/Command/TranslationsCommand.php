@@ -46,25 +46,25 @@ This command may be used to export texts from database into YAML files
 Usage:
 
 With no arguments, the content of the 'text' for lang specified (from settings if not defined)
-<info>php console.php goteo:lang </info>
+<info>./console goteo:lang </info>
 
 Listing available langs (YAML format)
-<info>php console.php goteo:lang --langs </info>
+<info>./console goteo:lang --langs </info>
 
 Shows translation content for some lang
-<info>php console.php goteo:lang  -l en|fr|es|de|...</info>
+<info>./console goteo:lang  -l en|fr|es|de|...</info>
 
 Shows translation content for some lang stored only in local database (excludes yaml files)
-<info>php console.php goteo:lang --sql -l en|fr|es|de|...</info>
+<info>./console goteo:lang --sql -l en|fr|es|de|...</info>
 
 WRITES YAML files into Resources/translations/[LANG]/[GROUP].yml for lang specified in settings
-<info>php console.php goteo:lang --dump </info>
+<info>./console goteo:lang --dump </info>
 
 WRITES YAML files into Resources/translations/[LANG]/[GROUP].yml for lang English
-<info>php console.php goteo:lang --dump -l en</info>
+<info>./console goteo:lang --dump -l en</info>
 
 DELETES sql entries for lang specified that are already defined into yaml files
-<info>php console.php goteo:lang --sql-clear -l en|fr|es|de|...</info>
+<info>./console goteo:lang --sql-clear -l en|fr|es|de|...</info>
 
 EOT
 );

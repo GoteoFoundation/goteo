@@ -39,13 +39,13 @@ This command may be clear cache files (generated from SQL, yaml, files, etc)
 Usage:
 
 Clean config cached files (yaml files mostly, settings and localization)
-<info>php console.php goteo:cache --clear config </info>
+<info>./console goteo:cache --clear config </info>
 
 Clean lang translation cached files (yaml files and sql texts table)
-<info>php console.php goteo:cache --clear lang </info>
+<info>./console goteo:cache --clear lang </info>
 
 Clean SQL cached files (sql cache)
-<info>php console.php goteo:cache --clear sql </info>
+<info>./console goteo:cache --clear sql </info>
 
 EOT
 );
