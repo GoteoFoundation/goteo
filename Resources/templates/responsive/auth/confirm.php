@@ -91,18 +91,23 @@ $this->section('content');
 	                    ?>
 					</form>
 
-					<div style="width:500px;">
-						<p><?= $this->text('oauth-login-imported-data') ?></p>
+                	<div class="col-md-10 col-md-offset-1 no-padding">
+	                    <p><?= $this->text('oauth-login-imported-data') ?></p>
+                    
 						<?php
-
-						if($oauth->user_data['avatar']) echo '<img style="float:left;width:200px;max-height:200px;" src="'.$oauth->user_data['avatar'].'" alt="Imported profile image" />';
-						echo "<div>";
-						foreach(array_merge($oauth->import_user_data, array('website')) as $k) {
-							if($oauth->user_data[$k] && $k != 'avatar') echo '<strong>' . $this->text('oauth-import-'.$k) . ':</strong><br />'.nl2br($oauth->user_data[$k])."<br /><br />\n";
-						}
-
-						echo "</div>\n";
+						if($oauth->user_data['avatar']):
 						?>
+							<div class="col-md-5 no-padding">
+								<img class="img-responsive" src="<?= $oauth->user_data['avatar'] ?>" alt="Imported profile image" />
+							</div>
+							<div class="col-md-7">
+							<?php
+								foreach(array_merge($oauth->import_user_data, array('website')) as $k) {
+									if($oauth->user_data[$k] && $k != 'avatar') echo '<strong>' . $this->text('oauth-import-'.$k) . ':</strong><br />'.nl2br($oauth->user_data[$k])."<br />\n";
+								}
+							?>
+							</div>
+						<?php endif ?>
 					</div>
 
 				</div>

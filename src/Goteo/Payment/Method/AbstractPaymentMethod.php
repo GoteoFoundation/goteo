@@ -33,7 +33,7 @@ abstract class AbstractPaymentMethod implements PaymentMethodInterface {
     protected $request;
     protected $user;
 
-    public function __construct(User $user) {
+    public function __construct(User $user = null) {
         $this->user = $user;
     }
 
@@ -83,6 +83,23 @@ abstract class AbstractPaymentMethod implements PaymentMethodInterface {
      */
     public function isActive($amount = 0) {
         return true;
+    }
+
+    /**
+     * Sets the User
+     * @param User $user User object
+     */
+    public function setUser(User $user) {
+        $this->user = $user;
+        return $this;
+    }
+
+    /**
+     * Gets the User object
+     * @return User $user User object
+     */
+    public function getUser() {
+        return $this->user;
     }
 
     /**
@@ -162,6 +179,15 @@ abstract class AbstractPaymentMethod implements PaymentMethodInterface {
 
     }
 
+    /**
+     * {@inheritdoc}
+     */
+    public function refund() {
+        // Let's obtain the gateway and the
+        $gateway = $this->getGateway();
+        return $gateway->refund();
+    }
+
     public function getCompleteUrl() {
         $request = $this->getRequest();
         $invest = $this->getInvest();
@@ -206,7 +232,7 @@ abstract class AbstractPaymentMethod implements PaymentMethodInterface {
             }
 
             foreach($this->gateway->getDefaultParameters() as $var => $val) {
-                $config = Config::get('payments.' . $this::getId() . '.' . $var);
+                $config = Config::get('payments.' . static::getId() . '.' . $var);
                 $method = "set" . ucfirst($var);
                 if($config && method_exists($this->gateway, $method)) {
                     $this->gateway->$method($config);

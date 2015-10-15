@@ -17,41 +17,41 @@ $this->section('content');
 
                     <?= $this->supply('sub-header', $this->get_session('sub-header')) ?>
 
-					<form class="form-horizontal" role="form" method="POST" action="">
+					<form class="form-horizontal" role="form" method="post" action="/signup?return=<?= $return ?>">
 
 						<div class="form-group">
 							<div class="col-md-10 col-md-offset-1">
-								<input type="input" class="form-control" placeholder="<?= $this->text('register-name-field') ?>" name="nombre">
+								<input type="input" class="form-control" placeholder="<?= $this->text('register-name-field') ?>" name="username" value="<?= $this->username ?>" required>
 							</div>
 						</div>
 
 						<div class="form-group">
 							<div class="col-md-10 col-md-offset-1">
-								<input type="email" class="form-control" placeholder="<?= $this->text('register-email-field') ?>" name="email" value="">
+								<input type="email" class="form-control" placeholder="<?= $this->text('register-email-field') ?>" name="email" value="<?= $this->email ?>" required>
 							</div>
 						</div>
 
 						<div class="form-group">
 							<div class="col-md-10 col-md-offset-1">
-								<input type="email" class="form-control" placeholder="<?= $this->text('register-email-confirm-field') ?>" name="email" value="">
+								<input type="email" class="form-control" placeholder="<?= $this->text('register-email-confirm-field') ?>" name="remail" value="<?= $this->remail ?>" required>
 							</div>
 						</div>
 
 						<div class="form-group">
 							<div class="col-md-10 col-md-offset-1">
-								<input type="input" class="form-control" placeholder="<?= $this->text('register-id-field') ?>" name="id_publico">
+								<input type="input" class="form-control" placeholder="<?= $this->text('register-id-field') ?>" name="userid" value="<?= $this->userid ?>" required>
 							</div>
 						</div>
 
 						<div class="form-group">
 							<div class="col-md-10 col-md-offset-1">
-								<input type="password" class="form-control" placeholder="<?= $this->text('register-password-field') ?>" name="password">
+								<input type="password" class="form-control" placeholder="<?= $this->text('register-password-field') ?>" name="password" value="" required>
 							</div>
 						</div>
 
 						<div class="form-group">
 							<div class="col-md-10 col-md-offset-1">
-								<input type="password" class="form-control" placeholder="<?= $this->text('register-password-confirm-field') ?>" name="password">
+								<input type="password" class="form-control" placeholder="<?= $this->text('register-password-confirm-field') ?>" name="rpassword" value="" required>
 							</div>
 						</div>
 

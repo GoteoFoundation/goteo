@@ -22,6 +22,7 @@ use Goteo\Library\Text;
 use Goteo\Application\AppEvents;
 use Goteo\Application\Event\FilterInvestInitEvent;
 use Goteo\Application\Event\FilterInvestRequestEvent;
+use Goteo\Application\Event\FilterInvestRefundEvent;
 use Goteo\Model\Invest;
 
 class InvestListener implements EventSubscriberInterface
@@ -149,7 +150,7 @@ class InvestListener implements EventSubscriberInterface
             throw new \RuntimeException('Error saving Invest details! ' . implode("\n", $errors));
         }
 
-        // update pay cached data
+        // update cached data
         $invest->keepUpdated();
 
         // Goto User data fill
@@ -162,6 +163,58 @@ class InvestListener implements EventSubscriberInterface
         Invest::setDetail($invest->id, 'confirmed', 'Invest process completed successfully');
     }
 
+    /**
+     * Cancels and invest for other reasons than failed projects
+     * @param  FilterInvestRefundEvent $event
+     */
+    public function onInvestRefundCancel(FilterInvestRefundEvent $event)
+    {
+        $method = $event->getMethod();
+        $invest = $event->getInvest();
+        App::getService('paylogger')->info('INVEST REFUND CANCEL: ' . $invest->id . ' METHOD: ' . $method::getId() . ' PROJECT: ' . $invest->project . ' USER: ' . Session::getUserId());
+        if($invest->cancel(false)) {
+            Invest::setDetail($invest->id, $method::getId() .'-cancel', 'Invest process cancelled successfully');
+            // update cached data
+            $invest->keepUpdated();
+        }
+        else {
+            Invest::setDetail($invest->id, $method::getId() .'-cancel-fail', 'Error while cancelling invest');
+        }
+
+    }
+
+    /**
+     * Cancels and invest for failed projects
+     * @param  FilterInvestRefundEvent $event
+     */
+    public function onInvestRefundReturn(FilterInvestRefundEvent $event)
+    {
+        $method = $event->getMethod();
+        $invest = $event->getInvest();
+        App::getService('paylogger')->info('INVEST REFUND CANCEL: ' . $invest->id . ' METHOD: ' . $method::getId() . ' PROJECT: ' . $invest->project . ' USER: ' . Session::getUserId());
+        if($invest->cancel(true)) {
+            Invest::setDetail($invest->id, $method::getId() .'-cancel', 'Invest refunded successfully');
+            // update cached data
+            $invest->keepUpdated();
+        }
+        else {
+            Invest::setDetail($invest->id, $method::getId() .'-cancel-fail', 'Error while cancelling invest');
+        }
+
+    }
+    /**
+     * Handles failed refund process
+     * @param  FilterInvestRefundEvent $event
+     */
+    public function onInvestRefundFailed(FilterInvestRefundEvent $event)
+    {
+        $method = $event->getMethod();
+        $invest = $event->getInvest();
+        $response = $event->getResponse();
+        App::getService('paylogger')->info('INVEST REFUND FAILED: ' . $invest->id . ' METHOD: ' . $method::getId() . ' PROJECT: ' . $invest->project . ' USER: ' . Session::getUserId());
+        Invest::setDetail($invest->id, $method::getId() .'-return-fail', 'Error while refunding invest: ' . $response->getMessage());
+
+    }
     public static function getSubscribedEvents()
     {
         return array(
@@ -173,6 +226,9 @@ class InvestListener implements EventSubscriberInterface
             AppEvents::INVEST_NOTIFY => 'onInvestNotify',
             AppEvents::INVEST_FAILED => 'onInvestFailed',
             AppEvents::INVEST_SUCCEEDED => 'onInvestSuccess',
+            AppEvents::INVEST_CANCELLED => 'onInvestRefundCancel',
+            AppEvents::INVEST_RETURNED => 'onInvestRefundReturn',
+            AppEvents::INVEST_RETURN_FAILED => 'onInvestRefundFailed',
         );
     }
 }

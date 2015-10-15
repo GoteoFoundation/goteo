@@ -278,6 +278,9 @@ namespace Goteo\Model {
                     case 'pool':
                         $sqlFilter .= " AND invest.pool = 1";
                         break;
+                    case 'nopool':
+                        $sqlFilter .= " AND (invest.pool = 0 OR ISNULL(invest.pool))";
+                        break;
                 }
             }
 
@@ -349,24 +352,9 @@ namespace Goteo\Model {
             $offset = (int) $offset;
             $limit = (int) $limit;
             $sql = "SELECT
-                        invest.id as id,
-                        invest.user as user,
-                        invest.project as project,
-                        invest.method as method,
-                        invest.status as status,
+                        invest.*,
                         project.status as projectStatus,
-                        invest.campaign as campaign,
-                        invest.call as `call`,
-                        invest.droped as droped,
-                        invest.amount as amount,
-                        invest.anonymous as anonymous,
-                        invest.resign as resign,
-                        DATE_FORMAT(invest.invested, '%d/%m/%Y') as invested,
-                        DATE_FORMAT(invest.charged , '%d/%m/%Y') as charged,
-                        DATE_FORMAT(invest.returned, '%d/%m/%Y') as returned,
-                        user.name as admin,
-                        invest.issue as issue,
-                        invest.pool as pool
+                        user.name as admin
                     FROM invest
                     INNER JOIN project
                         ON invest.project = project.id
@@ -1310,7 +1298,7 @@ namespace Goteo\Model {
         /*
          * Marcar esta aportación como cancelada
          */
-        public function cancel ($fail = false) {
+        public function cancel ($failed_project = false) {
 
             $values = array(
                 ':id' => $this->id,
@@ -1318,7 +1306,7 @@ namespace Goteo\Model {
             );
 
             // si es un proyecto fallido el aporte se queda en el termometro
-            if ($fail) {
+            if ($failed_project) {
                 $status = self::STATUS_RETURNED;
             } else {
                 $status = self::STATUS_CANCELED;
@@ -1332,14 +1320,15 @@ namespace Goteo\Model {
 
             if (self::query($sql, $values)) {
                 $this->status = $status;
-                // si tiene capital riego asociado, lo liberamos
-                if (!empty($this->droped)) {
-                    $drop = Invest::get($this->droped);
-                    if ($drop->setStatus(self::STATUS_CANCELED)) {
-                        self::query("UPDATE invest SET droped = NULL WHERE id = :id", array(':id' => $this->id));
-                        $this->droped = null;
-                    }
-                }
+                $this->returned = $values[':returned'];
+                // // si tiene capital riego asociado, lo liberamos
+                // if (!empty($this->droped)) {
+                //     $drop = Invest::get($this->droped);
+                //     if ($drop->setStatus(self::STATUS_CANCELED)) {
+                //         self::query("UPDATE invest SET droped = NULL WHERE id = :id", array(':id' => $this->id));
+                //         $this->droped = null;
+                //     }
+                // }
 
                 return true;
             } else {
@@ -1980,30 +1969,12 @@ namespace Goteo\Model {
          * Retorna los aportes que no se han retornado correctamente (fallo en ceca por ejemplo)
          * @return [type] [description]
          */
-        public static function getFailed($method= 'tpv', $limited = false) {
-            $sql = "SELECT
-                        invest.*
-                    FROM invest
-                    INNER JOIN project
-                        ON invest.project = project.id
-                    LEFT JOIN user
-                        ON invest.admin = user.id
-                    WHERE invest.project IS NOT NULL
-                    AND project.status=6
-                    AND invest.status = 1
-                    AND (invest.pool = 0 OR ISNULL(invest.pool))
-                    #AND invest.status != 4
-                    #AND !ISNULL(invest.returned)
-                    AND invest.method IN (:method)
-                    ORDER BY invest.id DESC
-                    ";
-
-            if ($limited > 0 && is_numeric($limited)) {
-                $sql .= "LIMIT $limited";
-            }
-
-            $query = self::query($sql, array(':method' => $method));
-            return $query->fetchAll(\PDO::FETCH_CLASS, '\Goteo\Model\Invest');
+        public static function getFailed($methods= null, $offset = 0, $limit = 100, $count = false) {
+            return static::getList(['methods' => $methods,
+                                    'status' => self::STATUS_CHARGED,
+                                    'projectStatus' => Project::STATUS_UNFUNDED,
+                                    'types' => 'nopool'
+                                    ], null, $offset, $limit, $count);
         }
 
         /**

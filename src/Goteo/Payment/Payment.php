@@ -14,6 +14,8 @@ use Goteo\Application\Config;
 use Goteo\Application\Session;
 use Goteo\Model\user;
 
+use Goteo\Payment\Method\PaymentMethodInterface;
+
 /**
  * A statically defined class to manage payments
  *
@@ -32,8 +34,20 @@ class Payment {
         if(!in_array('Goteo\Payment\Method\PaymentMethodInterface', class_implements($clas))) {
             throw new PaymentException("Error registering class [$clas]. It must implement PaymentMethodInferface!");
         }
-        // $method = new $clas();
-        if(Config::get('payments.' . $clas::getId() . '.active')) self::$methods[$clas::getId()] = $clas;
+
+        // Keeping settings.yml order
+        $methods = [];
+        foreach(Config::get('payments') as $m => $vars) {
+            if($vars['active']) {
+                if($m === $clas::getId()) {
+                    $methods[$m] = $clas;
+                }
+                elseif(array_key_exists($m, self::$methods)) {
+                    $methods[$m] = self::$methods[$m];
+                }
+            }
+        }
+        self::$methods = $methods;
     }
 
     /**
@@ -49,6 +63,9 @@ class Payment {
         return self::$methods;
     }
 
+    static public function methodExists($method) {
+        return isset(self::$methods[$method]);
+    }
     /**
      * Returns a instance of the method
      * @param  [type] $method [description]
@@ -58,7 +75,7 @@ class Payment {
         if(!isset(self::$methods[$method])) {
             throw new PaymentException("Error, payment method [$method] is not registered!");
         }
-        if(!self::$methods[$method] instanceOf Goteo\Payment\Method\PaymentMethodInterface) {
+        if(!self::$methods[$method] instanceOf PaymentMethodInterface) {
             $clas = self::$methods[$method];
             self::$methods[$method] = new $clas(Session::getUser());
         }

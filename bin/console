@@ -56,3 +56,6 @@ $app->add(new Goteo\Command\CacheCommand());
 $app->add(new Goteo\Command\RoundExecuteCommand());
 
 $app->run();
+
+// Terminate events
+$sc->get('app')->terminate();

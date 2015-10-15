@@ -138,7 +138,6 @@ class App extends HttpKernel\HttpKernel
             \Goteo\Util\Foil\Extension\GoteoCore::setRequest($request);
 
             $sc = self::getServiceContainer();
-            $sc->setParameter('routes', self::getRoutes());
             self::$_app = $sc->get('app');
             $sc->get('logger')->info('REQUEST: ' . $request->getClientIp() . "\t" . ($request->getUser() ? $request->getUser().':'.$request->getPassword() : '') . $request->getUri());
         }

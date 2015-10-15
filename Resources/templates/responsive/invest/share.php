@@ -9,6 +9,9 @@ $this->layout('layout', [
 $this->section('content');
 
 ?>
+
+<?= $this->insert('invest/partials/project_info') ?>
+
 <div class="container">
 
 	<div class="row row-form">

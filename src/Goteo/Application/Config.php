@@ -171,6 +171,9 @@ class Config {
                 )
         ));
 
+        // Set routes into service container
+        App::getServiceContainer()->setParameter('routes', App::getRoutes());
+
         //Cache dir in libs
         \Goteo\Library\Cacher::setCacheDir(GOTEO_CACHE_PATH);
 

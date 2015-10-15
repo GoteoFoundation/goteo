@@ -35,17 +35,21 @@ $this->section('content');
                 	<div class="col-md-10 col-md-offset-1 reminder">
 	                    <?= $this->text('oauth-goteo-openid-sync-password') ?>
                     </div>
-					<div>
-                	<?php
-	                    echo '<img style="padding-right:12px;float:left;" src="' . ($user->avatar ? $user->avatar->getLink(56, 56, true) : '') . '" alt="Profile image" />';
-	                    echo '<p style="padding-top:30px;">'.$user->name.''."<br />\n";
-	                    echo '<strong>'.$email.'</strong>'."</p>\n";
-                	?>
+					<div class="col-md-10 col-md-offset-1 no-padding">
+						<div class="col-md-4 no-padding">
+							<img class="img-responsive" src="<?= $oauth->user_data['avatar'] ?>" alt="Profile image" >
+						</div>
+						<div class="col-md-8 standard-margin-top">
+							<div><?= $user->name ?></div>
+							<div><?= $email ?></div>
+						</div>
+                	
+                	</div>
 
 					<form class="form-horizontal" role="form" method="POST" action="/signup/oauth">
 
 						<div class="form-group">
-							<div class="col-md-10 col-md-offset-1">
+							<div class="col-md-10 col-md-offset-1 standard-margin-top">
 								<input type="password"  class="form-control" value="<?= $username?>" placeholder="<?= $this->text('login-access-password-field') ?>" name="password">
 							</div>
 						</div>

@@ -11,6 +11,9 @@ $this->section('content');
 $invest = $this->invest;
 
 ?>
+
+<?= $this->insert('invest/partials/project_info') ?>
+
 <div class="container">
 
 	<div class="row row-form">

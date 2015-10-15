@@ -9,16 +9,20 @@ $this->section('content');
 
 ?>
 
+<?= $this->insert('invest/partials/project_info') ?>
+
 <div class="container">
 
 	<div class="row row-form">
 			<div class="panel panel-default select-method">
 				<div class="panel-body">
 
+					<!--
 					<div class="col-md-10 col-md-offset-1 reminder">
 	                    <strong><?= $this->project->name ?></strong>
 	                        <?= $this->text('project-invest-start') ?>
                     </div>
+                    -->
 
                     <?= $this->supply('sub-header', $this->get_session('sub-header')) ?>
 

@@ -153,4 +153,37 @@ final class AppEvents
      */
     const INVEST_SUCCEEDED = 'invest.success';
 
+    /**
+     * The invest.refund.cancel event is thrown each time a payments processes a refund
+     * for any reason others than the project related is not archived/failed
+     *
+     * The event listener receives an
+     * Goteo\Application\Event\FilterInvestRefundEvent instance.
+     *
+     * @var string
+     */
+    const INVEST_CANCELLED = 'invest.refund.cancel';
+
+    /**
+     * The invest.refund.return event is thrown each time a payments processes a refund
+     * due the project related is archived/failed
+     *
+     * The event listener receives an
+     * Goteo\Application\Event\FilterInvestRefundEvent instance.
+     *
+     * @var string
+     */
+    const INVEST_RETURNED = 'invest.refund.return';
+
+    /**
+     * The invest.refund.return event is thrown each time a payments processes a refund
+     * due the project related is archived/failed
+     *
+     * The event listener receives an
+     * Goteo\Application\Event\FilterInvestRefundEvent instance.
+     *
+     * @var string
+     */
+    const INVEST_RETURN_FAILED = 'invest.refund.failed';
+
 }

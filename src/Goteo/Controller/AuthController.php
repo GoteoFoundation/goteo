@@ -14,6 +14,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Goteo\Application\Exception\ControllerAccessDeniedException;
 
 use Goteo\Application\Session;
+use Goteo\Application\Config;
 use Goteo\Application\AppEvents;
 use Goteo\Application\Event\FilterAuthEvent;
 use Goteo\Application\Message;
@@ -28,7 +29,7 @@ use Goteo\Model\User;
 class AuthController extends \Goteo\Core\Controller {
 
     public function __construct() {
-        // changin to a responsive theme here
+        // changing to a responsive theme here
         View::setTheme('responsive');
     }
 
@@ -55,7 +56,7 @@ class AuthController extends \Goteo\Core\Controller {
         }
 
 
-        return $this->viewResponse('auth/login');
+        return $this->viewResponse('auth/login', ['return' => $request->query->get('return')]);
 
     }
     /**
@@ -74,7 +75,7 @@ class AuthController extends \Goteo\Core\Controller {
             if($old_user = User::get($shadowed_by[0])) {
                 if($shadowed_by[2]) $url = $shadowed_by[2];
                 Session::onSessionDestroyed(function () use ($shadowed_by, $user) {
-                    Application\Message::error('User <strong>' . $user->name . ' ('. $user->id. ')</strong> returned to <strong>' . $shadowed_by[1] . ' ('. $shadowed_by[0]. ')</strong>');
+                    Message::error('User <strong>' . $user->name . ' ('. $user->id. ')</strong> returned to <strong>' . $shadowed_by[1] . ' ('. $shadowed_by[0]. ')</strong>');
                 });
             }
         }
@@ -93,7 +94,50 @@ class AuthController extends \Goteo\Core\Controller {
             return $this->dispatch(AppEvents::ALREADY_LOGGED, new FilterAuthEvent(Session::getUser()))->getUserRedirect($request);
         }
 
-        return $this->viewResponse('auth/signup');
+        $vars = [];
+
+
+        if ($request->getMethod() == 'POST') {
+            foreach ($request->request->all() as $key => $value) {
+                $vars[$key] = trim($value);
+            }
+
+            $errors = array();
+
+            if (strcmp($vars['email'], $vars['remail']) !== 0) {
+                $errors['remail'] = Text::get('error-register-email-confirm');
+            }
+            if (strcmp($vars['password'], $vars['rpassword']) !== 0) {
+                $errors['rpassword'] = Text::get('error-register-password-confirm');
+            }
+
+            $user = new User();
+            $user->userid = $vars['userid'];
+            $user->name = $vars['username'];
+            $user->email = $vars['email'];
+            $user->password = $vars['password'];
+            $user->active = true;
+            $user->node = Config::get('current_node');
+
+            $user->save($errors);
+
+            if (empty($errors)) {
+
+                Message::info(Text::get('user-register-success'));
+                // no confirmation..., direct login
+                Session::setUser(User::get($user->id));
+                //Redirect
+                 //Everything ok, redirecting
+                return $this->dispatch(AppEvents::LOGIN_SUCCEEDED, new FilterAuthEvent($user))->getUserRedirect($request);
+
+            }
+            foreach ($errors as $field => $text) {
+                Message::error($text);
+            }
+            $vars['errors'] = $errors;
+        }
+
+        return $this->viewResponse('auth/signup', $vars);
 
     }
 
@@ -156,7 +200,7 @@ class AuthController extends \Goteo\Core\Controller {
             }
         }
 
-        return $this->viewResponse('auth/login');
+        return $this->viewResponse('auth/login', ['return' => $request->query->get('return')]);
     }
 
     /**

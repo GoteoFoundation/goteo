@@ -97,4 +97,10 @@ interface PaymentMethodInterface {
      * @return Ommnipay\Common\Message\ResponseInterface Omnipay Response Object
      */
     public function completePurchase();
+
+    /**
+     * Processes a refund action on the gateway
+     * @return Ommnipay\Common\Message\ResponseInterface Omnipay Response Object
+     */
+    public function refund();
 }

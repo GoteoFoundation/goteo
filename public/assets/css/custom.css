@@ -16,6 +16,9 @@
 
 /*Navbar */
 
+.navbar{
+	margin-bottom: 0;
+}
  .navbar-element{
  	color:#333;
  	margin-top: 7px;
@@ -25,6 +28,22 @@
  	margin-top:15px;
  }
 
+
+ .navbar-brand{
+ 	padding: 0 !important;
+ } 
+ .navbar-brand img.logo{
+ 	height: 45px;
+ }
+
+ .language-dropbox{
+ 	min-width: 100px;
+ }
+
+.avatar-link{
+	padding-top:5px !important;
+	padding-bottom: 5px !important;
+}
 
 
  .avatar-radius{
@@ -105,6 +124,11 @@ label.label-method:hover {
     background-color:#2cb2b2 ;
     font-weight: bold;
     color:#FFF !important;
+}
+
+label.label-disabled{
+	pointer-events: none;
+
 }
 
 .check-method:checked + label {
@@ -309,32 +333,39 @@ hr.make-sure{
 
 
 
-@media(min-width:767px){
+@media(min-width:768px){
 
-.row-form{
- 	padding-top:40px;
- 	padding-bottom: 60px;
- }
+	.row-form{
+	 	padding-top:40px;
+	 	padding-bottom: 60px;
+	 }
 
- .footer{
-	position: fixed;
-	bottom:0;
-}
-  .no-padding{
-	padding:0;
-}
+	 .footer{
+		position: fixed;
+		bottom:0;
+	}
+	  .no-padding{
+		padding:0;
+	}
+	/*.dropdown:hover .dropdown-menu {
+	        display: block;
+	    }*/
 
 }
 
 @media(max-width:767px){
 
-.sm-display-none{
-	display: none;
-}
+	.sm-display-none{
+		display: none;
+	}
 
-.margin-2{
-	margin:2%;
-}
+	.margin-2{
+		margin:2%;
+	}
+
+	.label-method:hover{
+		font-weight: normal !important;
+	}
 
 }
 

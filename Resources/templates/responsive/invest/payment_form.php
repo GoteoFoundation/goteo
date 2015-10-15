@@ -11,6 +11,9 @@ $this->section('content');
 $pay_method = $this->pay_method;
 
 ?>
+
+<?= $this->insert('invest/partials/project_info') ?>
+
 <div class="container">
 
 	<div class="row row-form">

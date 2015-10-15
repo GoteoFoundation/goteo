@@ -19,7 +19,7 @@ class LocalFile extends BaseFile implements FileInterface {
 	public function __construct($path='') {
         static::$base_dir = \GOTEO_DATA_PATH;
         $this->setPath($path);
-        parent::__construct($fullpath);
+        parent::__construct($path);
 	}
 
 
@@ -365,7 +365,7 @@ class LocalFile extends BaseFile implements FileInterface {
      * Reimplementation to remove leading slash
      */
     public function setPath($path) {
-        while($path{0} == DIRECTORY_SEPARATOR) $path = substr($path, 1);
+        while(substr($path,0,1) == DIRECTORY_SEPARATOR) $path = substr($path, 1);
 
         $this->path = static::$base_dir . DIRECTORY_SEPARATOR . $path;
         if(!is_dir($this->path)) @mkdir($this->path, 0777, true);

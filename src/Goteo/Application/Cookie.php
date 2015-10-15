@@ -35,6 +35,11 @@ class Cookie {
         self::$path = $path;
     }
 
+    static function getDomain() {
+        $url = explode('//', Config::get('url.main'));
+        return end($url);
+    }
+
     /**
      * Stores some value in cookie
      * @param  [type] $key   [description]
@@ -47,9 +52,9 @@ class Cookie {
         if(empty($ttl)) $ttl = self::DEFAULT_TTL;
         if (PHP_SAPI !== 'cli') {
             //delete previous cookie
-            setcookie($key, '', time() - 3600, self::$path);
+            setcookie($key, '', time() - 3600, self::$path, self::getDomain());
             //store cookie
-            setcookie($key, $value, time() + $ttl, self::$path);
+            setcookie($key, $value, time() + $ttl, self::$path, self::getDomain());
         }
         return $_COOKIE[$key] = $value;
     }

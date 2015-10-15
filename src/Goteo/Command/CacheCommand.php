@@ -28,7 +28,7 @@ class CacheCommand extends Command {
 
     protected function configure()
     {
-        $this->setName("goteo:cache")
+        $this->setName("cache")
              ->setDescription("Manages cache files")
              ->setDefinition(array(
                       new InputOption('clear', 'c', InputOption::VALUE_REQUIRED, 'Clears files. specify one of [config|sql|images]'),
@@ -39,13 +39,13 @@ This command may be clear cache files (generated from SQL, yaml, files, etc)
 Usage:
 
 Clean config cached files (yaml files mostly, settings and localization)
-<info>./console goteo:cache --clear config </info>
+<info>./console cache --clear config </info>
 
 Clean lang translation cached files (yaml files and sql texts table)
-<info>./console goteo:cache --clear lang </info>
+<info>./console cache --clear lang </info>
 
 Clean SQL cached files (sql cache)
-<info>./console goteo:cache --clear sql </info>
+<info>./console cache --clear sql </info>
 
 EOT
 );

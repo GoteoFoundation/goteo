@@ -23,6 +23,9 @@ namespace Goteo\Library\FileHandler {
 
         public static function factory($extra = array()) {
 
+            if (!isset($extra['path'])) {
+                $extra['path'] = '';
+            }
             if (defined("FILE_HANDLER") && FILE_HANDLER == 's3'
                 && defined("AWS_SECRET") && defined("AWS_KEY")) {
 
@@ -30,9 +33,6 @@ namespace Goteo\Library\FileHandler {
 
                 if (!isset($extra['bucket'])) {
                     $extra['bucket'] = AWS_S3_BUCKET_STATIC;
-                }
-                if (!isset($extra['path'])) {
-                    $extra['path'] = '';
                 }
                 $obj = new S3File(AWS_KEY, AWS_SECRET, $extra['bucket'], $extra['path']);
 
