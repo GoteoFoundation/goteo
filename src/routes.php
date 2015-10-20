@@ -150,6 +150,22 @@ $routes->add('auth-logout-old-route', new Route(
     array('_controller' => 'Goteo\Controller\AuthController::logoutAction')
 ));
 
+// password recovery
+$routes->add('auth-password-recovery', new Route(
+    '/password-recovery/{token}',
+    array('_controller' => 'Goteo\Controller\AuthController::passwordRecoveryAction',
+          'token' => '', //optional parameter
+        )
+));
+
+// password reset
+$routes->add('auth-password-reset', new Route(
+    '/password-reset',
+    array('_controller' => 'Goteo\Controller\AuthController::passwordResetAction',
+        )
+));
+
+
 //// PROJECT /////
 /// TODO: more methods... ///
 
@@ -310,6 +326,7 @@ $routes->add('user-unsuscribe', new Route(
         'token' => ''
         )
 ));
+
 $routes->add('user-unsubscribe', new Route(
     '/user/unsubscribe/{token}',
     array(

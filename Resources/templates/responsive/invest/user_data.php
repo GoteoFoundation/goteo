@@ -26,7 +26,7 @@ $invest = $this->invest;
 
                     <form class="form-horizontal" id="make-sure-form" role="form" method="POST" action="/invest/<?= $this->project->id ?>/<?= $this->invest->id ?>">
 
-                        <?= $this->insert('invest/partials/invest_address_form') ?>
+                        <?= $this->supply('invest-form', $this->insert('invest/partials/invest_address_form')) ?>
 
                         <?= $this->insert('invest/partials/invest_submit_form') ?>
 

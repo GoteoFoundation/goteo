@@ -11,6 +11,7 @@
 namespace Goteo\Model {
 
     use Goteo\Core\Model;
+    use Goteo\Application\Lang;
     use Goteo\Application\Session;
     use Goteo\Application\Config;
     use Goteo\Application\Exception\ModelNotFoundException;
@@ -405,7 +406,7 @@ namespace Goteo\Model {
                     ", array($this->id));
                 $this->address = $query->fetchObject();
 
-                // si no tiene dirección, sacamos la dirección del usuario
+                // Get from personal address
                 if (empty($this->address)) {
                     $address = User::getPersonal($this->user);
                     $this->address = new \stdClass;
@@ -415,6 +416,21 @@ namespace Goteo\Model {
                     $this->address->location = $address->location;
                     $this->address->zipcode = $address->zipcode;
                     $this->address->country = $address->country;
+                }
+
+                // Get from older investions if empty
+                if (empty($this->address->name)) {
+                    $query = static::query("
+                        SELECT  *
+                        FROM  invest_address
+                        WHERE   invest_address.user = ?
+                        AND !ISNULL(invest_address.name) AND invest_address.name != ''
+                        ORDER BY invest_address.invest DESC LIMIT 1 ", array($this->user));
+                    $this->address = $query->fetchObject();
+                }
+
+                if(strlen($this->address->country) > 2) {
+                    $this->address->country = Lang::getCountryCode($this->address->country);
                 }
             }
             return $this->address;
@@ -443,6 +459,7 @@ namespace Goteo\Model {
                 )
             )) {
                 $this->address = $address;
+                // TODO: save into personal data if empty
                 return true;
             }
             return false;

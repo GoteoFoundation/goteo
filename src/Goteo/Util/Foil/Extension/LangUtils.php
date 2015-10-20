@@ -41,11 +41,17 @@ class LangUtils implements ExtensionInterface
           'lang_active' => [$this, 'lang_active'],
           'lang_list' => [$this, 'lang_list'],
           'lang_url' => [$this, 'lang_url'],
+          'list_countries' => [$this, 'list_countries'],
         ];
     }
     public function lang_current()
     {
         return Lang::current();
+    }
+
+    public function list_countries($lang = null)
+    {
+        return Lang::listCountries($lang);
     }
 
     public function lang_list($type = 'short')

@@ -86,6 +86,12 @@ class ExceptionListener implements EventSubscriberInterface
         }
     }
 
+    /**
+     * Fatal exception handling, provides nice message
+     * This will be done after ErrorController processing (or if that fails)
+     * @param  GetResponseForExceptionEvent $event [description]
+     * @return [type]                              [description]
+     */
     public function onKernelException(GetResponseForExceptionEvent $event)
     {
         // close pending buffers
@@ -119,7 +125,7 @@ class ExceptionListener implements EventSubscriberInterface
     {
         return array(
             KernelEvents::REQUEST => 'onKernelRequest',
-            KernelEvents::EXCEPTION => 'onKernelException',
+            KernelEvents::EXCEPTION => ['onKernelException', -256], // low priority for handler
         );
     }
 }

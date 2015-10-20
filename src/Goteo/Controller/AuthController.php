@@ -137,19 +137,90 @@ class AuthController extends \Goteo\Core\Controller {
             $vars['errors'] = $errors;
         }
 
+         $vars['return'] = $request->query->get('return');
+
         return $this->viewResponse('auth/signup', $vars);
 
     }
 
-    public function resetPasswordAction(Request $request)
+    public function passwordRecoveryAction($token = '', Request $request)
     {
 
-        return $this->viewResponse(
+        $vars = array();
+
+        // If the token is ok, login and redirect change password view
+
+        if ($token) {
+            $token = \mybase64_decode($token);
+            $parts = explode('¬', $token);
+            if (count($parts) > 1) {
+                $query = User::query('SELECT id FROM user WHERE email = ? AND token = ?', array($parts[1], $token));
+                if ($id = $query->fetchColumn()) {
+                    // el token coincide con el email y he obtenido una id
+                    // Activamos y dejamos de esconder el usuario
+                    User::query('UPDATE user SET active = 1, hide = 0, confirmed = 1 WHERE id = ?', array($id));
+                    $user = User::get($id);
+                    Session::setUser($user, true);
+                    return $this->redirect('/password-reset');
+                }
+            }
+
+            else {
+
+            //$vars['error'] = Text::get('recover-token-incorrect');
+            Message::error(Text::get('recover-token-incorrect'));
+                        return $this->redirect('/login');
+
+
+            }
+        }
+
+        if ($request->getMethod() === 'POST') {
+            $email = $request->request->get('email');
+            if ($email && User::recover($email)) {
+                //$vars['message'] = Text::get('recover-email-sended');
+                return $this->viewResponse(
+                    'auth/partials/recover_modal_success',
+                    array(
+                        'email' => $email
+                    )
+                );
+            } else {
+                $vars['error'] = Text::get('recover-request-fail');
+                $vars['email'] = $email;
+                //Application\Message::error($vars['error']);
+                return $this->viewResponse(
+                    'auth/partials/recover_modal_error',
+                    array(
+                        'error' => $vars['error']
+                    )
+                );
+            }
+        }
+        
+    }
+
+    public function passwordResetAction(Request $request)
+    {
+
+        // Already logged?
+        if (Session::isLogged()) {
+            return $this->viewResponse(
             'auth/reset_password',
             array(
-
                 )
-        );
+            );
+        }
+
+        else
+            return $this->redirect('/login');
+
+
+        /*return $this->viewResponse(
+            'auth/reset_password',
+            array(
+                )
+        );*/
 
     }
 

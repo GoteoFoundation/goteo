@@ -199,11 +199,11 @@ class Config {
 
         // Some defaults
         View::getEngine()->useData([
-            'title' => Config::get('meta.title'),
-            'meta_description' => Config::get('meta.description'),
-            'meta_keywords' => Config::get('meta.keywords'),
-            'meta_author' => Config::get('meta.author'),
-            'meta_copyright' => Config::get('meta.copyright'),
+            'title' => self::get('meta.title'),
+            'meta_description' => self::get('meta.description'),
+            'meta_keywords' => self::get('meta.keywords'),
+            'meta_author' => self::get('meta.author'),
+            'meta_copyright' => self::get('meta.copyright'),
             'image' => self::get('url.assets') . '/goteo_logo.png'
             ]);
 

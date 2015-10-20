@@ -42,7 +42,7 @@ $sc->register('listener.exception', 'Symfony\Component\HttpKernel\EventListener\
 ;
 
 // APP LISTENERS
-// Maintenance, Exception configuration
+// Nice Maintenance message, Other (fatal) thrown exceptions configuration
 $sc->register('app.listener.exception', 'Goteo\Application\EventListener\ExceptionListener');
 // Lang, cookies info, etc
 $sc->register('app.listener.session', 'Goteo\Application\EventListener\SessionListener');

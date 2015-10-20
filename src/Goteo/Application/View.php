@@ -50,12 +50,9 @@ class View {
      * Renders a template view
      */
     static public function render($view, $vars = []) {
-        if(!self::$engine) {
-            self::$engine = Foil\engine();
-        }
         //por compatibilidad
         // self::$engine->vars = $vars;
-        return self::$engine->render($view, $vars + array('vars' => $vars)); //por compatibilidad
+        return self::getEngine()->render($view, $vars + array('vars' => $vars)); //por compatibilidad
     }
 
 

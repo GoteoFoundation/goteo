@@ -2300,6 +2300,7 @@ namespace Goteo\Model {
                 unset($log);
 
                 // Si hay que asignarlo a un proyecto
+                // TODO: remove from here, goto a plugin
                 if ($call = Session::get('oncreate_applyto')) {
 
                     $registry = new Call\Project;

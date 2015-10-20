@@ -56,24 +56,32 @@ $this->section('content');
 
 </div>
 
-<!-- Modal -->
-<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        <h4 class="modal-title" id="myModalLabel"><?= $this->text('login-recover-modal-text') ?></h4>
-      </div>
-      <div class="modal-body">
-        <form>
-        	<input type="email" class="form-control" placeholder="<?= $this->text('login-recover-email-field') ?>" name="email" value="">
-        </form>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-success"><?= $this->text('login-recover-modal-button') ?></button>
-      </div>
-    </div>
-  </div>
-</div>
+<?= $this->insert('auth/partials/recover_modal') ?>
 
 <?php $this->replace() ?>
+
+<?php $this->section('footer') ?>
+
+<script type="text/javascript">
+
+$(function(){
+
+	$("#myModal").on('click', '#btn-password-recover', function(){
+
+	   var email=$("#password-recover-email").val();
+
+	   $.ajax({
+	          url: "/password-recovery",
+	          data: { 'email' : email }, 
+	          type: 'post',
+	          success: function(result){
+	            $("#modal-content").html(result);
+	    }});
+
+	}); 
+
+});
+
+</script>
+
+<?php $this->append() ?>

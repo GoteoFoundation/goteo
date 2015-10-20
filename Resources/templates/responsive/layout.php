@@ -1,4 +1,14 @@
-<!DOCTYPE html>
+<?php
+
+// Views called by AJAX methods will return Bootstrap modal windows
+if($this->is_ajax()):
+    $this->section('content');
+    $this->stop();
+    return;
+endif;
+
+// Normal operation, show the full page
+?><!DOCTYPE html>
 <html lang="es">
 
     <head>

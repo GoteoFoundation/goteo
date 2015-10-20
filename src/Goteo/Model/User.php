@@ -279,7 +279,7 @@ namespace Goteo\Model {
                                 $web->save($errors);
                             }
                         }
-                        $user->webs = User\Web::get($id);
+                        $this->webs = User\Web::get($id);
                     }
                 }
 
@@ -1372,11 +1372,12 @@ namespace Goteo\Model {
                 // die("[$token] [" . \mybase64_encode($token). "]");
                 self::query('UPDATE user SET token = :token WHERE id = :id', array(':id' => $row->id, ':token' => $token));
 
+                $errors=array();
                 // Obtenemos la plantilla para asunto y contenido
                 if( Mail::createFromTemplate($row->email, $row->name, Template::RETRIEVE_PASSWORD, [
                         '%USERNAME%'   => $row->name,
                         '%USERID%'     => $row->id,
-                        '%RECOVERURL%' => $URL . '/user/recover/' . \mybase64_encode($token)
+                        '%RECOVERURL%' => $URL . '/password-recovery/' . \mybase64_encode($token)
                     ])
                     ->send($errors)) {
                         return true;
@@ -1595,6 +1596,13 @@ namespace Goteo\Model {
                 , array($id));
 
             $data = $query->fetchObject();
+
+            // UNCOMMENT WHEN VIEWS READY
+            // Old manual country name
+            // if(strlen($data->country) > 2) {
+            //     $data->country = Lang::getCountryCode($data->country);
+            // }
+
             return $data;
         }
 

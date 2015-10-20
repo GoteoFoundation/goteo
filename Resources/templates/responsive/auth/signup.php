@@ -17,7 +17,7 @@ $this->section('content');
 
                     <?= $this->supply('sub-header', $this->get_session('sub-header')) ?>
 
-					<form class="form-horizontal" role="form" method="post" action="/signup?return=<?= $return ?>">
+					<form class="form-horizontal" role="form" method="post" action="/signup?return=<?= $this->return ?>">
 
 						<div class="form-group">
 							<div class="col-md-10 col-md-offset-1">

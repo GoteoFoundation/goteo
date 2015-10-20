@@ -3,41 +3,6 @@
 $langs = $this->lang_list('name');
 
 ?>
-<!-- Fixed navbar -->
- <!--   <nav class="navbar main-color-background" role="navigation">
-      <div class="container">
-      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#global-nav">
-        <span class="sr-only">Toggle navigation</span>
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-      </button>
-       <div class="pull-left">
-          <a href="/"><img src="<?= SRC_URL ?>/assets/img/logo.png" class="img-responsive logo" alt="Goteo"></a>
-       </div>
-       <div class="collapse navbar-collapse" id="global-nav">
-       <?php if (!$this->get_user()) : ?>
-        	<div class="navbar-right">
-    	      <ul class="nav navbar-nav">
-
-    	        <li>
-    	         <a class="navbar-element" href="/signup">Registrarse</a>
-    	        </li>
-
-    	        <li>
-    	          <a class="navbar-element" href="/login">Iniciar sesión</a>
-    	        </li>
-
-    	      </ul>
-      	  </div>
-    	<?php else: ?>
-        	<div class="pull-right user-container">
-        		<a href="/dashboard"><span></span><img class="avatar-radius" src="<?= $this->get_user()->avatar->getLink(35, 35, true); ?>" /></a>
-        	<?php endif ?>
-          </div>
-      </div>
-    </nav>-->
-
     <!-- Static navbar -->
       <nav class="navbar navbar-default main-color-background">
         <div class="container">
@@ -75,4 +40,3 @@ $langs = $this->lang_list('name');
           </div><!--/.nav-collapse -->
         </div><!--/.container-fluid -->
       </nav>
-

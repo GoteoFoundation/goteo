@@ -382,16 +382,23 @@ class InvestController extends \Goteo\Core\Controller {
             return $this->redirect('/invest/' . $project_id . '/payment?' . $this->query);
         }
 
+        // if resign to reward, redirect to shareAction
+        if($invest->resign) {
+            return $this->redirect('/invest/' . $project_id . '/' . $invest->id . '/share');
+        }
+
         // check post data
         $invest_address = (array)$invest->getAddress();
+        $errors = [];
         if($request->isMethod('post')) {
             $invest_address = $request->request->get('invest');
             if(is_array($invest_address)) {
                 $ok = true;
                 foreach(['name', 'address', 'zipcode', 'location', 'country'] as $part) {
-                    if(trim($invest_address[$part]) == '') {
+                    $invest_address[$part] = trim($invest_address[$part]);
+                    if(empty($invest_address[$part])) {
                         $ok = false;
-                        break;
+                        $errors[] = $part;
                     }
                 }
                 if($ok) {
@@ -404,7 +411,7 @@ class InvestController extends \Goteo\Core\Controller {
 
         }
         // show form
-        return $this->viewResponse('invest/user_data', ['invest_address' => $invest_address, 'step' => 3]);
+        return $this->viewResponse('invest/user_data', ['invest_address' => $invest_address, 'invest_errors' => $errors, 'step' => 3]);
 
     }
 

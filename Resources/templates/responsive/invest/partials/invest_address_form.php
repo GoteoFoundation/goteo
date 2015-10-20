@@ -1,32 +1,27 @@
 
     <h3 class="col-md-offset-1 padding-bottom-6"><?= $this->text('invest-address-title') ?></h3>
 
-    <div class="form-group">
+<?php foreach(['name', 'address', 'zipcode', 'location'] as $part): ?>
+    <div class="form-group<?= in_array($part, $this->a('invest_errors')) ? ' has-error' : '' ?>">
         <div class="col-md-10 col-md-offset-1">
-            <input type="input" class="form-control" placeholder="<?= $this->text('invest-address-name-field') ?>" name="invest[name]" id="invest-name" value="<?= $this->invest_address['name'] ?>" required>
+            <input type="input" class="form-control" placeholder="<?= $this->text('invest-address-' . $part . '-field') ?>" name="invest[<?= $part ?>]" id="invest-<?= $part ?>" value="<?= $this->invest_address[$part] ?>" required>
         </div>
     </div>
+<?php endforeach ?>
 
-    <div class="form-group">
+    <div class="form-group<?= in_array('country', $this->a('invest_errors')) ? ' has-error' : '' ?>">
         <div class="col-md-10 col-md-offset-1">
-            <input type="input" class="form-control" placeholder="<?= $this->text('invest-address-address-field') ?>" name="invest[address]" id="invest-address" value="<?= $this->invest_address['address'] ?>" required>
-        </div>
-    </div>
-
-    <div class="form-group">
-        <div class="col-md-10 col-md-offset-1">
-            <input type="input" class="form-control" placeholder="<?= $this->text('invest-address-zipcode-field') ?>" name="invest[zipcode]" id="invest-zipcode" value="<?= $this->invest_address['zipcode'] ?>" required>
-        </div>
-    </div>
-
-    <div class="form-group">
-        <div class="col-md-10 col-md-offset-1">
-            <input type="input" class="form-control" placeholder="<?= $this->text('invest-address-location-field') ?>" name="invest[location]" id="invest-location" value="<?= $this->invest_address['location'] ?>" required>
-        </div>
-    </div>
-
-    <div class="form-group">
-        <div class="col-md-10 col-md-offset-1">
-            <input type="input" class="form-control" placeholder="<?= $this->text('invest-address-country-field') ?>" name="invest[country]" id="invest-country" value="<?= $this->invest_address['country'] ?>" required>
+            <?= $this->html('input',
+                    ['type' => 'select',
+                    'name' => 'invest[country]',
+                    'id' => 'invest-country',
+                    'value' => strtoupper($this->invest_address['country']),
+                    'value' => '',
+                    'attribs' => [
+                        'class' => 'form-control',
+                        'placeholder' => $this->text('invest-address-country-field'),
+                    ],
+                    'options' => $this->list_countries()
+                ]) ?>
         </div>
     </div>

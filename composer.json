@@ -54,7 +54,8 @@
         "omnipay/omnipay": "^2.3",
         "monolog/monolog": "^1.17",
         "symfony/dom-crawler": "^2.7",
-        "symfony/css-selector": "^2.7"
+        "symfony/css-selector": "^2.7",
+        "openclerk/country-list": "^1.0"
 
     },
 

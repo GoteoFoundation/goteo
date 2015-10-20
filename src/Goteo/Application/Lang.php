@@ -376,4 +376,37 @@ class Lang {
         }
         return $ret;
     }
+
+    /**
+     * Return a list of countries
+     * @return [type] [description]
+     */
+    static function listCountries($lang = null) {
+        if(!$lang) $lang = self::current();
+        $countries = include(__DIR__ . '/../../../vendor/openclerk/country-list/country/' . $lang . '/country.php');
+        if(!$countries) {
+            $countries = include(__DIR__ . '/../../../vendor/openclerk/country-list/country/en/country.php');
+        }
+        return $countries;
+    }
+
+    /**
+     * Compatibility function to retrieve a 2-digit country code from and manually written country
+     * @param  [type] $country [description]
+     * @return [type]          [description]
+     */
+    static function getCountryCode($country) {
+        // manual old style country name
+        // for a old bug:
+        if($country == 'EspaÃ±a') $country = 'Spain';
+        foreach(self::listAll('id') as $lang) {
+            $countries = Lang::listCountries($lang);
+            foreach($countries as $code => $c) {
+                if(\Goteo\Core\Model::idealiza($country) == \Goteo\Core\Model::idealiza($c)) {
+                    return $code;
+                }
+            }
+        }
+        return ''; // not found
+    }
 }
