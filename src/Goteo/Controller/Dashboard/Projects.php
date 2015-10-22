@@ -633,7 +633,6 @@ namespace Goteo\Controller\Dashboard {
             }
 
             $project_conf = Model\Project\Conf::get($id);
-            $dates = new \stdClass;
             $dates->days_round1 = $project_conf->days_round1;
             $dates->days_round2 = $project_conf->days_round2;
             $dates->days_total = $dates->days_round1 + $dates->days_round2;
