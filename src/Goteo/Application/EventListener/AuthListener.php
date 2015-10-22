@@ -65,6 +65,15 @@ class AuthListener implements EventSubscriberInterface
         App::getService('logger')->debug('LOGIN REPEATED: USERNAME: ' . $user->id);
     }
 
+    public function resetPassword(FilterAuthEvent $event)
+    {
+        $user = $event->getUser();
+
+        Message::info(Text::get('password-changed-ok'));
+
+        App::getService('logger')->info('RESET PASSWORD SUCCEDEED: USERNAME: ' . $user->id);
+    }
+
     public static function getSubscribedEvents()
     {
         return array(
@@ -74,6 +83,7 @@ class AuthListener implements EventSubscriberInterface
             AppEvents::LOGOUT => 'logout',
             AppEvents::SIGNUP_FAILED => 'signupFail',
             AppEvents::ALREADY_LOGGED => 'loginRedundant',
+            AppEvents::RESET_PASSWORD => 'resetPassword',
         );
     }
 }

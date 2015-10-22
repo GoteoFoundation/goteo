@@ -109,13 +109,6 @@ else {
 
       <?php endif; ?>
 
-      <?php if (!isset($jsreq_calendar)) : ?>
-      <script src="<?php echo SRC_URL ?>/view/js/calendar/moment.min.js"></script>
-      <script src="<?php echo SRC_URL ?>/view/js/calendar/home_calendar.js"></script>
-      <script src="<?php echo SRC_URL ?>/view/js/calendar/lang/es.js"></script>
-
-      <?php endif; ?>
-
 <script type="text/javascript">
 
   var _gaq = _gaq || [];

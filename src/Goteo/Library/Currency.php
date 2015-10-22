@@ -25,6 +25,7 @@ class Currency {
     static public $currencies = array(
 
         'EUR' => array(
+            'id' => 'EUR',
             'name' => 'Euro',
             'html' => '&euro;',
             'thou' => '.',
@@ -33,6 +34,7 @@ class Currency {
         ),
 
         'USD' => array(
+            'id' => 'USD',
             'name' => 'U.S. Dollar',
             'html' => '&dollar;',
             'thou' => ',',
@@ -41,6 +43,7 @@ class Currency {
         ),
 
         'GBP' => array(
+            'id' => 'GBP',
             'name' => 'British Pound',
             'html' => '&pound;',
             'thou' => ',',
@@ -51,9 +54,14 @@ class Currency {
 
     );
 
+    // Return default currency
+    static public function getDefault() {
+        return self::$currencies[self::DEFAULT_CURRENCY];
+    }
+
     static public function get() {
         $cur = $_SESSION['currency'];
-        if(empty($cur)) $cur = key(self::$currencies);
+        if(empty($cur)) $cur = self::$currencies[self::DEFAULT_CURRENCY]['id'];
         return $cur;
     }
 

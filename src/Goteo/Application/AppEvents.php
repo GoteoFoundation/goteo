@@ -71,7 +71,18 @@ final class AppEvents
      *
      * @var string
      */
+
     const LOGOUT = 'auth.logout';
+
+    /**
+     * The auth.resetpassword event is thrown each time a user reset their password
+     *
+     * The event listener receives an
+     * Goteo\Application\Event\FilterAuthEvent instance.
+     *
+     * @var string
+     */
+    const RESET_PASSWORD = 'auth.reset_password';
 
     /**
      * The invest.init event is thrown each time a user starts a payment process
@@ -152,6 +163,16 @@ final class AppEvents
      * @var string
      */
     const INVEST_SUCCEEDED = 'invest.success';
+
+    /**
+     * The invest.finished event is thrown each time a user completes a successful personal data entry
+     *
+     * The event listener receives an
+     * Goteo\Application\Event\FilterInvestFinishEvent instance.
+     *
+     * @var string
+     */
+    const INVEST_FINISHED = 'invest.finished';
 
     /**
      * The invest.refund.cancel event is thrown each time a payments processes a refund

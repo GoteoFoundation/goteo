@@ -76,10 +76,11 @@ class AccountsSubController extends AbstractSubController {
             $recent = Feed::getLog($date);
             $content = '<pre>'.print_r($recent, 1).'</pre>';
         } elseif ( !empty($type) ) {
+            // TODO: does not work anymore
             $content = @file_get_contents(GOTEO_LOG_PATH . 'cron/'.str_replace('-', '', $date).'_'.$type.'.log');
             $content = nl2br($content);
         } else {
-            return $this->redirect('/admin/accounts/viewer/');
+            return $this->redirect('/admin/accounts/viewer');
         }
 
         return array(
@@ -122,10 +123,12 @@ class AccountsSubController extends AbstractSubController {
 
 
     private function cancelInvest(Model\Invest $invest, $fail = false) {
-        $project = Model\Project::get($invest->project);
+        $project = $invest->getProject();
         $verbo = $fail ? 'retornado' : 'cancelado';
         $infinitivo = $fail ? 'retornar' : 'cancelar';
         $ok = false;
+        // TODO: Omnypay refund()
+        print_r($invest);die;
         switch ($invest->method) {
             case 'paypal':
                 $err = array();
@@ -230,7 +233,7 @@ class AccountsSubController extends AbstractSubController {
             Message::error('No tenemos objeto para el aporte '.$id);
             return $this->redirect('/admin/accounts');
         }
-        $project = Model\Project::get($invest->project);
+        $project = $invest->getProject();
         $userData = Model\User::get($invest->user);
 
         if (in_array($invest->status, [4,5])) {
@@ -250,7 +253,7 @@ class AccountsSubController extends AbstractSubController {
             Message::error('No tenemos objeto para el aporte '.$id);
             return $this->redirect('/admin/accounts');
         }
-        $project = Model\Project::get($invest->project);
+        $project = $invest->getProject();
         $userData = Model\User::get($invest->user);
         $status = $invest->status;
         if (!in_array($status, [1,4])) {
@@ -291,7 +294,7 @@ class AccountsSubController extends AbstractSubController {
             Message::error('No tenemos objeto para el aporte '.$id);
             return $this->redirect('/admin/accounts');
         }
-        $project = Model\Project::get($invest->project);
+        $project = $invest->getProject();
         $userData = Model\User::get($invest->user);
 
         if ($invest->status != 1) {
@@ -345,7 +348,7 @@ class AccountsSubController extends AbstractSubController {
             return $this->redirect();
         }
 
-        $project = Model\Project::get($invest->project);
+        $project = $invest->getProject();
         $userData = Model\User::get($invest->user);
 
         // ejecutar cargo ahora!!, solo aportes no ejecutados
@@ -763,7 +766,7 @@ class AccountsSubController extends AbstractSubController {
         // estados de aporte
         $investStatus = Model\Invest::status();
         $invest = Model\Invest::get($id);
-        $project = Model\Project::get($invest->project);
+        $project = $invest->getProject();
         $userData = Model\User::get($invest->user);
         $methods = Model\Invest::methods();
         return array(

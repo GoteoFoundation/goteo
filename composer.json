@@ -1,6 +1,14 @@
 {
 
+    "repositories": [
+        {
+            "type": "git",
+            "url": "https://github.com/FoilPHP/Foil.git"
+        }
+    ],
     "require": {
+
+        "foil/foil": "dev-dev",
 
         "tpyo/amazon-s3-php-class": "~0.5",
 
@@ -23,9 +31,9 @@
         "iignatov/lightopenid": "~1.0",
 
 
-    	"paypal/adaptivepayments-sdk-php": "*",
+        "paypal/adaptivepayments-sdk-php": "*",
 
-    	"paypal/merchant-sdk-php": "*",
+        "paypal/merchant-sdk-php": "*",
 
 
         "symfony/class-loader": "~2.6",
@@ -40,7 +48,6 @@
         "symfony/http-kernel": "~2.6",
 
 
-        "foil/foil": "0.*",
         "symfony/security": "^2.7",
         "symfony/config": "^2.7",
         "symfony/stopwatch": "^2.7",

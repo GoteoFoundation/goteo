@@ -31,6 +31,7 @@ class TextUtils implements ExtensionInterface
         return [
           't' => [$this, 'get'],
           'text' => [$this, 'get'],
+          'text_sys' => [$this, 'sys'],
           'text_html' => [$this, 'html'],
           'text_get' => [$this, 'get'],
           'text_widget' => [$this, 'widget'],
@@ -47,6 +48,11 @@ class TextUtils implements ExtensionInterface
     public function get()
     {
         return call_user_func_array ( 'Goteo\Library\Text::get' , func_get_args() );
+    }
+
+    public function sys()
+    {
+        return call_user_func_array ( 'Goteo\Library\Text::sys' , func_get_args() );
     }
 
     public function html()

@@ -19,6 +19,8 @@ use Goteo\Application\Message;
 use Goteo\Application\Session;
 use Goteo\Application\App;
 use Goteo\Library\Text;
+use Goteo\Library\Currency;
+use Goteo\Library\Feed;
 use Goteo\Application\AppEvents;
 use Goteo\Application\Event\FilterInvestInitEvent;
 use Goteo\Application\Event\FilterInvestRequestEvent;
@@ -119,10 +121,30 @@ class InvestListener implements EventSubscriberInterface
 
         // not making changes on invest status...
 
-        // Goto user start
+        // Feed this failed payment
+        // Admin Feed
+        $coin = Currency::getDefault()['html'];
+        $log = new Feed();
+        $project = $invest->getProject();
+        $user = $invest->getUser();
+        $log->setTarget($project->id)
+            ->populate(
+                    Text::sys('feed-invest-by', strtoupper($method::getId())) ,
+                    '/admin/invests',
+                    Text::get('feed-user-invest-error',
+                        ['%MESSAGE%' => $response->getMessage(),
+                         '%USER%' => Feed::item('user', $user->name, $user->id),
+                         '%AMOUNT%' => Feed::item('money', $invest->amount.' ' . $coin),
+                         '%PROJECT%' => Feed::item('project', $project->name, $project->id),
+                         '%METHOD%' => strtoupper($method::getId())])
+                    )
+            ->doAdmin('money');
+
+        // Message
         Message::error("Payment [{$invest->method}] failed!");
 
         // Assign response if not previously assigned
+        // Goto user start
         if(!$event->getHttpResponse()) {
             $event->setHttpResponse(new RedirectResponse('/invest/' . $invest->project . '/payment?' . http_build_query(['amount' => $invest->amount, 'reward' => $reward ? $reward->id : '0'])));
         }
@@ -149,6 +171,35 @@ class InvestListener implements EventSubscriberInterface
         if($errors) {
             throw new \RuntimeException('Error saving Invest details! ' . implode("\n", $errors));
         }
+
+        // Feed this succeeded payment
+        // Admin Feed
+        $coin = Currency::getDefault()['html'];
+        $log = new Feed();
+        $project = $invest->getProject();
+        $user = $invest->getUser();
+        $log->setTarget($project->id)
+            ->populate(
+                    Text::sys('feed-invest-by', strtoupper($method::getId())),
+                    '/admin/invests',
+                    Text::get('feed-user-invest',
+                        ['%USER%' => Feed::item('user', $user->name, $user->id),
+                         '%AMOUNT%' => Feed::item('money', $invest->amount.' ' . $coin),
+                         '%PROJECT%' => Feed::item('project', $project->name, $project->id),
+                         '%METHOD%' => strtoupper($method::getId())])
+                    )
+            ->doAdmin('money');
+
+        // Public Feed
+        $log_html = Text::get('feed-invest',
+                            ['%AMOUNT%' => Feed::item('money', $invest->amount.' ' . $coin),
+                             '%PROJECT%' => Feed::item('project', $project->name, $project->id)]);
+        if ($invest->anonymous) {
+            $log->populate(Text::get('regular-anonymous'), '/user/profile/anonymous', $log_html, 1);
+        } else {
+            $log->populate($user->name, '/user/profile/'.$user->id, $log_html, $user->avatar->id);
+        }
+        $log->doPublic('community');
 
         // update cached data
         $invest->keepUpdated();

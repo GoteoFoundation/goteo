@@ -72,13 +72,13 @@ $(function(){
 
 	   $.ajax({
 	          url: "/password-recovery",
-	          data: { 'email' : email }, 
+	          data: { 'email' : email, 'return' : '<?= urlencode($this->get_query('return')) ?>'  },
 	          type: 'post',
 	          success: function(result){
 	            $("#modal-content").html(result);
 	    }});
 
-	}); 
+	});
 
 });
 

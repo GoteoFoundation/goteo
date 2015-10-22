@@ -5,8 +5,6 @@ use Goteo\Core\View,
 
 $project = $vars['project'];
 
-$http = (\HTTPS_ON) ? 'https' : 'http' ;
-
 if (!$project instanceof  Goteo\Model\Project) {
     return;
 }
@@ -44,9 +42,9 @@ if (!$project instanceof  Goteo\Model\Project) {
 
 <?php if (in_array($project->status, array(3, 4, 5))) : ?>
 <!-- librerias externas -->
-    <script language="javascript" type="text/javascript" src="<?php echo $http; ?>://cdnjs.cloudflare.com/ajax/libs/d3/3.0.8/d3.min.js"></script>
-    <script language="javascript" type="text/javascript" src="<?php echo $http; ?>://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.4.4/underscore-min.js"></script>
-    <script language="javascript" type="text/javascript" src="<?php echo $http; ?>://cdnjs.cloudflare.com/ajax/libs/datatables/1.9.4/jquery.dataTables.min.js"></script>
+    <script language="javascript" type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/d3/3.5.5/d3.js"></script>
+    <script language="javascript" type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/underscore.js/1.4.4/underscore-min.js"></script>
+    <script language="javascript" type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/datatables/1.9.4/jquery.dataTables.min.js"></script>
 
     <!-- funciones para la visualización -->
     <script language="javascript" type="text/javascript" src="<?php echo SRC_URL; ?>/view/js/project/chart.js"></script>
@@ -89,7 +87,7 @@ if (!$project instanceof  Goteo\Model\Project) {
 <script type="text/javascript">
     /* función para cargar los datos del gáfico, sacado de graphA.js */
 jQuery(document).ready(function(){
-        GOTEO.initializeGraph(<?php echo $vars['data']; ?>);
+        GOTEO.initializeGraph(<?php echo json_encode($vars['data']); ?>);
     });
 
 </script>

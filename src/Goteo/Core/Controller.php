@@ -56,8 +56,12 @@ abstract class Controller {
     /**
      * Handy method to add context vars to all view
      */
-    public function contextVars(array $vars = [], $view_path_context = '/') {
-        \Goteo\Application\View::getEngine()->useContext($view_path_context, $vars);
+    public function contextVars(array $vars = [], $view_path_context = null) {
+        if($view_path_context) {
+            \Goteo\Application\View::getEngine()->useContext($view_path_context, $vars);
+        } else {
+            \Goteo\Application\View::getEngine()->useData($vars);
+        }
     }
 
     /**

@@ -61,6 +61,7 @@ class GoteoCore implements ExtensionInterface
           'is_master_node' => [$this, 'is_master_node'],
           'get_query' => [$this, 'get_query'],
           'get_post' => [$this, 'get_post'],
+          'get_uri' => [$this, 'get_uri'],
           'get_pathinfo' => [$this, 'get_pathinfo'],
           'get_querystring' => [$this, 'get_querystring'],
           'is_ajax' => [$this, 'is_ajax'],
@@ -104,6 +105,11 @@ class GoteoCore implements ExtensionInterface
     public function get_post($var = null) {
         if($var) return self::getRequest()->request->get($var);
         return self::getRequest()->request->all();
+    }
+
+    //pathinfo
+    public function get_uri() {
+        return self::getRequest()->getUri();
     }
 
     //pathinfo

@@ -15,6 +15,6 @@ recover-request-fail: 'We kunnen je wachtwoord niet herstellen vanaf een account
 leave-request-fail: 'We hebben geen account in onze database gevonden met dat emailadres.'
 leave-email-sended: 'We hebben je een mail gestuurd over het afsluiten van je account. Als je die niet direct binnekrijgt, kijk dan even in je spam folder.'
 recover-email-sended: 'We hebben je een mail gestuurd met instructies om je wachtwoord te herstellen. Als je die niet direct ontvangt, kijk dan even in je spam folders.'
-leave-process-fail: 'Het is ons niet gelukt je account te sluiten. Neem even contact met ons op via SiteMail'
+leave-process-fail: 'Het is ons niet gelukt je account te sluiten. Neem even contact met ons op via %s'
 error-register-pasword: 'Je kunt het wachtwoordveld niet leeg laten.'
 error-register-username: 'Je moet een alias invoeren.'

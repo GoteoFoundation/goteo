@@ -636,15 +636,12 @@ namespace Goteo\Controller\Dashboard {
             $dates = array();
             $sql = 'SELECT published, closed, success, passed FROM project WHERE id = ?';
             $result = Model\Invest::query($sql, array($id));
-            foreach ($result->fetchAll(\PDO::FETCH_ASSOC) as $row){
-                $dates = $row;
-            }
+            $dates = $result->fetchObject();
 
             $project_conf = Model\Project\Conf::get($id);
-            $dates = new \stdClass;
-            $dates->days_round1 = $project_conf->days_round1;
-            $dates->days_round2 = $project_conf->days_round2;
-            $dates->days_total = $dates->days_round1 + $dates->days_round2;
+            $dates->days_round1 = (int) $project_conf->days_round1;
+            $dates->days_round2 = (int) $project_conf->days_round2;
+            $dates->days_total = (int) $dates->days_round1 + $dates->days_round2;
 
             // importes objetivo
             $optimum = $minimum = 0;
@@ -664,7 +661,7 @@ namespace Goteo\Controller\Dashboard {
                         'optimum' => $optimum
                     );
 
-            return json_encode($data);
+            return $data;
         }
 
     }

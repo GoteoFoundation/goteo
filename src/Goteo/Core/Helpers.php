@@ -86,6 +86,11 @@ namespace {
         return $query;
     }
 
+    /** Check if a array is associative */
+    function is_assoc(array $array) {
+      return (bool)count(array_filter(array_keys($array), 'is_string'));
+    }
+
     function date_interval($date1, $date2 = 'now', $format = '%a') {
         $datetime1 = new \DateTime($date1);
         $datetime2 = new \DateTime($date2);

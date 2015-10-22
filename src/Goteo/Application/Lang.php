@@ -39,10 +39,10 @@ class Lang {
 
     static function factory($lang = null) {
         if(empty($lang)) $lang = Config::get('lang');
-        if(!self::$translator) {
-            self::$translator = new Translator($lang, new MessageSelector());
-            self::$translator->addLoader('sql', new SqlTranslationLoader()); // cached loader
-            self::$translator->addLoader('yaml', new YamlTranslationLoader()); // cached loader
+        if(!static::$translator) {
+            static::$translator = new Translator($lang, new MessageSelector());
+            static::$translator->addLoader('sql', new SqlTranslationLoader()); // cached loader
+            static::$translator->addLoader('yaml', new YamlTranslationLoader()); // cached loader
         }
     }
 
@@ -51,8 +51,8 @@ class Lang {
      * @param string $lang      Language ID (es, en, fr, etc.)
      */
     static public function addSqlTranslation($lang) {
-        self::factory($lang);
-        self::$translator->addResource('sql', 'texts', $lang, 'sql');
+        static::factory($lang);
+        static::$translator->addResource('sql', 'texts', $lang, 'sql');
     }
 
     /**
@@ -61,12 +61,12 @@ class Lang {
      * @param [type] $yaml_file [description]
      */
     static public function addYamlTranslation($lang, $yaml_file) {
-        self::factory($lang);
+        static::factory($lang);
         if(is_file($yaml_file)) {
             $group = strtok(basename($yaml_file), '.');
             // Add this translation
-            self::$translator->addResource('yaml', $yaml_file, $lang);
-            self::$groups[$group][] = [$lang, $yaml_file];
+            static::$translator->addResource('yaml', $yaml_file, $lang);
+            static::$groups[$group][] = [$lang, $yaml_file];
         }
     }
 
@@ -75,7 +75,7 @@ class Lang {
      */
     static public function clearCache() {
         // force catalogue loading
-        $all = self::translator()->getCatalogue();
+        $all = static::translator()->getCatalogue();
         foreach(array_merge(SqlTranslationLoader::$cached_files, YamlTranslationLoader::$cached_files) as $file) {
             unlink($file);
         }
@@ -85,44 +85,44 @@ class Lang {
      * Handy method to retrieve the Symfony Component Translator
      */
     static public function translator() {
-        self::factory();
-        return self::$translator;
+        static::factory();
+        return static::$translator;
     }
 
     /**
      * Handy method for the trans() function of the Symfony Component Translator
      */
     static public function trans($id, array $parameters = array(), $locale = null) {
-        self::factory();
+        static::factory();
         // search in SQL first
-        $all = self::$translator->getCatalogue($locale)->all('sql');
+        $all = static::$translator->getCatalogue($locale)->all('sql');
         if(isset($all[$id])) return $all[$id];
         // Yaml files (message $domain)
-        return self::$translator->trans($id, $parameters, null, $locale);
+        return static::$translator->trans($id, $parameters, null, $locale);
     }
 
     /**
      * Handy method for the transChoice() function of the Symfony Component Translator
      */
     static public function transChoice($id, $number, array $parameters = array(), $domain = null, $locale = null) {
-        self::factory();
-        return self::$translator->transChoice($id, $number, $parameters, $domain, $locale);
+        static::factory();
+        return static::$translator->transChoice($id, $number, $parameters, $domain, $locale);
     }
 
     static public function groups($group = null) {
         if($group) {
-            return self::$groups[$group];
+            return static::$groups[$group];
         }
-        return self::$groups;
+        return static::$groups;
 
     }
 
     static public function getLangsAvailable() {
-        return self::$langs_available;
+        return static::$langs_available;
     }
 
     static public function setLangsAvailable(array $langs) {
-        self::$langs_available = $langs;
+        static::$langs_available = $langs;
     }
 
 
@@ -132,9 +132,9 @@ class Lang {
      */
     static public function setDefault($lang = null) {
         if(empty($lang)) $lang = Config::get('lang');
-        self::factory($lang);
-        if(self::exists($lang)) {
-            self::$default = $lang;
+        static::factory($lang);
+        if(static::exists($lang)) {
+            static::$default = $lang;
         }
     }
     /**
@@ -142,13 +142,13 @@ class Lang {
      * @param string $lang Language ID (es, en, fr, etc.)
      */
     static public function setPublic($lang, $public = true) {
-        if(self::exists($lang)) {
-            self::$langs_available[$lang]['public'] = (bool) $public;
+        if(static::exists($lang)) {
+            static::$langs_available[$lang]['public'] = (bool) $public;
         }
     }
 
     static public function isPublic($lang) {
-        return self::get($lang, 'public');
+        return static::get($lang, 'public');
     }
 
     /**
@@ -157,15 +157,15 @@ class Lang {
      * @return [type]       [description]
      */
     static public function getDefault($lang = '') {
-        $default = self::isPublic(self::$default) ? self::$default : '';
-        foreach(self::$langs_available as $l => $info) {
+        $default = static::isPublic(static::$default) ? static::$default : '';
+        foreach(static::$langs_available as $l => $info) {
             if($info['public']) {
                 if(empty($default)) {
                     $default = $l;
                 }
                 if($lang === $l && array_key_exists('fallback', $info)) {
                     $fallback = $info['fallback'];
-                    if($fallback && self::isPublic($fallback)) {
+                    if($fallback && static::isPublic($fallback)) {
                         $default = $fallback;
                     }
                     break;
@@ -180,21 +180,21 @@ class Lang {
      * @param string $lang Language ID (es, en, fr, etc.)
      */
     static public function set($lang) {
-        self::factory($lang);
-        self::$translator->setLocale($lang);
+        static::factory($lang);
+        static::$translator->setLocale($lang);
         $fallbacks = [];
-        $fallback = self::getFallback($lang);
+        $fallback = static::getFallback($lang);
         while($fallback !== $lang && !in_array($lang, $fallbacks) && !in_array($fallback, $fallbacks)) {
             $fallbacks[] = $fallback;
-            $fallback = self::getFallback($fallback);
+            $fallback = static::getFallback($fallback);
 
         }
-        self::$translator->setFallbackLocale($fallbacks);
+        static::$translator->setFallbackLocale($fallbacks);
 
-        // if(!self::isPublic($lang)) {
-        if(!self::exists($lang)) {
+        // if(!static::isPublic($lang)) {
+        if(!static::exists($lang)) {
             // get the default
-            $lang = self::getDefault($lang);
+            $lang = static::getDefault($lang);
         }
 
         // establecemos la constante
@@ -204,7 +204,7 @@ class Lang {
             define('LANG', $lang);
 
         // cambiamos el locale
-        setlocale(LC_TIME, self::getLocale($lang));
+        setlocale(LC_TIME, static::getLocale($lang));
 
         return Session::store('lang', $lang);
     }
@@ -218,11 +218,11 @@ class Lang {
         if(Session::exists('lang')) {
             $current = Session::get('lang');
         }
-        if(empty($current) || !self::exists($current)) {
-            $current = self::getDefault();
+        if(empty($current) || !static::exists($current)) {
+            $current = static::getDefault();
         }
-        if($public_only && !self::isPublic($current)) {
-            $current = self::getFallback($current);
+        if($public_only && !static::isPublic($current)) {
+            $current = static::getFallback($current);
         }
         return $current;
     }
@@ -231,9 +231,9 @@ class Lang {
      * @return [type] [description]
      */
     static public function get($lang, $method = 'object') {
-        if(self::exists($lang)) {
+        if(static::exists($lang)) {
 
-            $info = self::$langs_available[$lang];
+            $info = static::$langs_available[$lang];
 
             if($method === 'id')  return $lang;
             elseif($method === 'name' && $info['name'])       return $info['name'];
@@ -253,7 +253,7 @@ class Lang {
     }
 
     static public function exists($lang) {
-        return array_key_exists((string)$lang, self::$langs_available);
+        return array_key_exists((string)$lang, static::$langs_available);
     }
     /**
      * Returns if the lang is currently selected
@@ -261,11 +261,11 @@ class Lang {
      * @return boolean       [description]
      */
     static public function isActive($lang, $public_only = true) {
-        return self::current($public_only) === $lang;
+        return static::current($public_only) === $lang;
     }
 
     static public function setFromGlobals(Request $request = null) {
-        // self::setDefault('es');
+        // static::setDefault('es');
 
         $desired = array();
         // set Lang (forzado para el cron y el admin)
@@ -288,7 +288,7 @@ class Lang {
         if($request) {
             // set by subdomain
             $subdomain = strtok($request->getHost(), '.');
-            if(self::isPublic($subdomain)) {
+            if(static::isPublic($subdomain)) {
                 $desired['subdomain'] = $subdomain;
             }
             // set by navigator
@@ -297,7 +297,7 @@ class Lang {
 
         // set the lang in order of preference
         foreach($desired as $l) {
-            $lang = self::set($l);
+            $lang = static::set($l);
             if($lang === $l) {
                 break;
             }
@@ -324,7 +324,7 @@ class Lang {
      * @return [type]       [description]
      */
     static function getLocale($lang = null) {
-        return self::get($lang ? $lang : self::current(), 'locale');
+        return static::get($lang ? $lang : static::current(), 'locale');
     }
 
     /**
@@ -333,7 +333,7 @@ class Lang {
      * @return [type]       [description]
      */
     static function getName($lang = null) {
-        return self::get($lang ? $lang : self::current(), 'name');
+        return static::get($lang ? $lang : static::current(), 'name');
     }
 
     /**
@@ -342,7 +342,7 @@ class Lang {
      * @return [type]       [description]
      */
     static function getShort($lang = null) {
-        return self::get($lang ? $lang : self::current(), 'short');
+        return static::get($lang ? $lang : static::current(), 'short');
     }
 
     /**
@@ -351,14 +351,14 @@ class Lang {
      * @return [type]       [description]
      */
     static function getFallback($lang = null) {
-        $lang = self::get($lang ? $lang : self::current(), 'object');
+        $lang = static::get($lang ? $lang : static::current(), 'object');
         if(isset($lang->fallback) && $lang !== $lang->fallback) {
-            if(!self::isPublic($lang->fallback)) {
-                return self::getFallback($lang->fallback);
+            if(!static::isPublic($lang->fallback)) {
+                return static::getFallback($lang->fallback);
             }
             return $lang->fallback;
         }
-        return self::getDefault();
+        return static::getDefault();
     }
 
 
@@ -368,11 +368,11 @@ class Lang {
      */
     static function listAll($method = 'name', $public_only = true) {
         $ret = array();
-        foreach(self::$langs_available as $lang => $info) {
+        foreach(static::$langs_available as $lang => $info) {
 
             if(empty($info['public']) && $public_only) continue;
 
-            $ret[$lang] = self::get($lang, $method);
+            $ret[$lang] = static::get($lang, $method);
         }
         return $ret;
     }
@@ -382,7 +382,7 @@ class Lang {
      * @return [type] [description]
      */
     static function listCountries($lang = null) {
-        if(!$lang) $lang = self::current();
+        if(!$lang) $lang = static::current();
         $countries = include(__DIR__ . '/../../../vendor/openclerk/country-list/country/' . $lang . '/country.php');
         if(!$countries) {
             $countries = include(__DIR__ . '/../../../vendor/openclerk/country-list/country/en/country.php');
@@ -399,7 +399,7 @@ class Lang {
         // manual old style country name
         // for a old bug:
         if($country == 'EspaÃ±a') $country = 'Spain';
-        foreach(self::listAll('id') as $lang) {
+        foreach(static::listAll('id') as $lang) {
             $countries = Lang::listCountries($lang);
             foreach($countries as $code => $c) {
                 if(\Goteo\Core\Model::idealiza($country) == \Goteo\Core\Model::idealiza($c)) {

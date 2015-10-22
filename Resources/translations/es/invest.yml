@@ -78,7 +78,7 @@ invest-modal-pool-title: 'Información monedero virtual'
 invest-modal-pool-description: 'El monedero virtual es un sistema de crédito de la plataforma Goteo, con el que podrás realizar aportes a proyectos..'
 invest-modal-fiscal-title: 'Información fiscal'
 invest-modal-fiscal-description: 'Como ya debes saber, aportar en Goteo no sólo hace posibles un montón de proyectos que nos benefician a todxs, sino que ¡además desgrava! <p>Al realizar una aportación a un proyecto, y gracias al incremento en los tipos de deducción aplicables desde 2015 para las donaciones puras y simples que se realicen en favor de la Fundación Goteo, como entidad acogida al régimen fiscal especial de la Ley 49/2002, de 23 de diciembre.'
-invest-fiscal-refused: 'No quiero un certificado de donación.'
+invest-fiscal-skip: 'Ahora no quiero rellenar estos datos.'
 invest-fiscal-title: 'Asegúrate que puedes desgravar tu recompensa'
 invest-address-title: 'Asegúrate de que recibes tu recompensa'
 

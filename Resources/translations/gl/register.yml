@@ -16,6 +16,6 @@ recover-request-fail: 'Non se pode recuperar o contrasinal de ningunha conta con
 leave-request-fail: 'Non atopamos ningunha conta con este correo electrónico na nosa base de datos para dala de baixa'
 leave-email-sended: 'Enviámosche un correo electrónico para finalizar o proceso de baixa. Verifica tamén a carpeta de correo non desexado ou spam.'
 recover-email-sended: 'Enviámosche un correo electrónico para restablecer o contrasinal da túa conta. Verifica tamén a carpeta de correo non desexado ou spam.'
-leave-process-fail: 'Non puidemos completar o proceso para darche de baixa. Por favor, contáctanos a hola@goteo.org'
+leave-process-fail: 'Non puidemos completar o proceso para darche de baixa. Por favor, contáctanos a %s'
 error-register-pasword: 'O contrasinal non pode estar baleiro'
 error-register-username: 'O nombe púbico é obligatorio.'

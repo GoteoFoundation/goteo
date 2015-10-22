@@ -22,6 +22,7 @@ use Goteo\Application\View;
 use Goteo\Application\AppEvents;
 use Goteo\Application\Event\FilterInvestInitEvent;
 use Goteo\Application\Event\FilterInvestRequestEvent;
+use Goteo\Application\Event\FilterInvestFinishEvent;
 use Goteo\Library\Text;
 use Goteo\Library\Currency;
 use Goteo\Model\Project;
@@ -155,7 +156,7 @@ class InvestController extends \Goteo\Core\Controller {
             'reward' => $reward,
             'invest' => $invest
         ]);
-
+        // print_r($project);die;
         if($reward) {
             $this->query = http_build_query(['amount' => $amount, 'reward' => $reward->id]);
             return $reward;
@@ -384,7 +385,8 @@ class InvestController extends \Goteo\Core\Controller {
 
         // if resign to reward, redirect to shareAction
         if($invest->resign) {
-            return $this->redirect('/invest/' . $project_id . '/' . $invest->id . '/share');
+            // Event invest failed
+            return $this->dispatch(AppEvents::INVEST_FINISHED, new FilterInvestFinishEvent($invest, $request))->getHttpResponse();
         }
 
         // check post data
@@ -403,7 +405,8 @@ class InvestController extends \Goteo\Core\Controller {
                 }
                 if($ok) {
                     if($invest->setAddress($invest_address)) {
-                        return $this->redirect('/invest/' . $project_id. '/' . $invest->id . '/share');
+                        // Event invest failed
+                        return $this->dispatch(AppEvents::INVEST_FINISHED, new FilterInvestFinishEvent($invest, $request))->getHttpResponse();
                     }
                 }
             }

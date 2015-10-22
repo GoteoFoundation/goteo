@@ -16,6 +16,6 @@ recover-request-fail: 'Ezin da datu hauekin pasahitzik berreskuratu inongo kontu
 leave-request-fail: 'Harpidetza uzteko email hori daukan konturil ez dugu aurkitu gure datu basean'
 leave-email-sended: 'Harpidetza utzi prozesua betetzeko emaila bidali dizuegu. Ikusi spam eta nahi ezkoen karpetak ere.'
 recover-email-sended: 'Zure kontuan pasahitza berripintzeko emaila bidali dizuegu. Ikusi spam eta nahi ezkoen karpetak ere.'
-leave-process-fail: 'Harpidetza uzteko prozesua ezin izan da bete. Kontakta ezazu gurekin hola@goteo.org helbidea bitartez'
+leave-process-fail: 'Harpidetza uzteko prozesua ezin izan da bete. Kontakta ezazu gurekin %s helbidea bitartez'
 error-register-pasword: 'Pasahitza ezin da utzik egon'
 error-register-username: 'Izen publikoa derrigorrekoa da'

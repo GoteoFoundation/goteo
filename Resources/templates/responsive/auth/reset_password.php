@@ -15,17 +15,17 @@ $this->section('content');
 				<div class="panel-body">
 					<h2 class="col-md-offset-1 padding-bottom-6">Establecer nueva contraseña</h2>
 
-					<form class="form-horizontal" role="form" method="POST" action="">
+					<form class="form-horizontal" role="form" method="POST" action="/password-reset?return=<?= $this->return ?>">
 
 						<div class="form-group">
 							<div class="col-md-10 col-md-offset-1">
-								<input type="password" class="form-control" placeholder="Tu nueva contraseña" name="password">
+								<input type="password" class="form-control" placeholder="Tu nueva contraseña" name="password" required>
 							</div>
 						</div>
 
 						<div class="form-group">
 							<div class="col-md-10 col-md-offset-1">
-								<input type="password" class="form-control" placeholder="Vuelve a escribir tu nueva contraseña" name="password">
+								<input type="password" class="form-control" placeholder="Vuelve a escribir tu nueva contraseña" name="rpassword" required>
 							</div>
 						</div>
 

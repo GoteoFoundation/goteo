@@ -90,8 +90,7 @@ class DummyPaymentMethod extends AbstractPaymentMethod {
 
     public function purchase() {
         $this->simulating_gateway = true;
-        return new \Omnipay\Dummy\Message\Response();
-
+        return new MockResponse();
     }
 
     public function completePurchase() {
@@ -119,4 +118,21 @@ class DummyPaymentMethod extends AbstractPaymentMethod {
         return $payment->send();
     }
 
+}
+
+class MockResponse implements ResponseInterface {
+    public function getData() {}
+    public function getRequest() {}
+
+    public function isSuccessful(){return false;}
+
+    public function isRedirect() {return true;}
+
+    public function isCancelled(){}
+
+    public function getMessage(){}
+
+    public function getCode(){}
+
+    public function getTransactionReference() {}
 }

@@ -12,7 +12,6 @@ use Goteo\Core\View,
 $project = $this->project;
 
 $show    = $this->show;
-$step    = $this->step;
 $post    = $this->post;
 $blog    = $this->blog;
 
@@ -150,13 +149,6 @@ $this->section('content');
                 echo View::get('project/widget/called.html.php', array('project' => $project));
             }
 
-            /*if ((!empty($project->investors) &&
-                !empty($step) &&
-                in_array($step, array('start', 'login', 'confirm', 'continue', 'ok', 'fail')) )
-                || $show == 'messages' ) {
-                echo View::get('project/widget/investors.html.php', array('project' => $project));
-            }*/
-
             if ($project->status == 5 && $show != 'rewards' && $show != 'messages') {
                 echo View::get('project/widget/rewards.html.php', array('project' => $project, 'only'=>'social'));
             }
@@ -167,7 +159,6 @@ $this->section('content');
 
             if ($show != 'rewards' && $show != 'messages') {
                 $only_rew = ($project->status == 5) ? 'individual' : null;
-                $only_rew = (in_array($step, array('start', 'login', 'confirm', 'continue', 'ok', 'fail'))) ? 'social' : $only_rew;
                 echo View::get('project/widget/rewards.html.php', array('project' => $project, 'only'=>$only_rew));
             }
 
@@ -195,43 +186,9 @@ $this->section('content');
                         break;
 
                     case 'supporters':
-                        $step = 'confirm';
-						// segun el paso de aporte
-                        if (!empty($step) && in_array($step, array('start', 'login', 'confirm', 'continue', 'ok', 'fail'))) {
-
-                            // variables a pasar a las subvistas
-                            $subView = array('project' => $project, 'personal' => $personalData, 'step' => $step, 'allowpp'=> $this->allowpp, 'pool'=> $this->pool);
-
-                            switch ($step) {
-                                case 'continue':
-                                    echo
-                                        View::get('project/widget/investMsg.html.php', array('message' => $step, 'user' => $user)),
-                                        View::get('project/widget/invest_redirect.html.php', $subView);
-                                    break;
-
-                                case 'ok':
-                                    echo
-                                        View::get('project/widget/investMsg.html.php', array('message' => $step, 'user' => $user)), View::get('project/widget/spread.html.php',array('project' => $project));
-										//sacarlo de div#center
-										$printSendMsg=true;
-                                    break;
-
-                                case 'fail':
-                                    echo
-                                        View::get('project/widget/investMsg.html.php', array('message' => $step, 'user' => $user)),
-                                        View::get('project/widget/invest.html.php', $subView);
-                                    break;
-                                default:
-                                    echo
-                                        View::get('project/widget/investMsg.html.php', array('message' => $step, 'user' => $user)),
-                                        View::get('project/widget/invest.html.php', $subView);
-                                    break;
-                            }
-                        } else {
                             echo
                                 View::get('project/widget/supporters.html.php', $this->vars),
                                 View::get('worth/legend.html.php');
-                        }
                         break;
 
                     case 'messages':

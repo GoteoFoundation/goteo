@@ -16,6 +16,6 @@ recover-request-fail: 'Non si può recuperare la password di nessun account con 
 leave-request-fail: 'Non abbiamo trovato nessun account con questa mail nel nostro database per poterla disattivare'
 leave-email-sended: 'Ti abbiamo mandato una mail per completare il processo di disattivazione. Verifica anche nella cartella spam.'
 recover-email-sended: 'Ti abbiamo mandato una mail per riattivare la password utente. Verifica anche nella cartella spam'
-leave-process-fail: 'Non abbiamo potuto completare il processo di disattivazione della registrazione. Per favore, contattaci a hola@goteo.org'
+leave-process-fail: 'Non abbiamo potuto completare il processo di disattivazione della registrazione. Per favore, contattaci a %s'
 error-register-pasword: 'La password non si può lasciare incompleta'
 error-register-username: 'Il nome pubblico è obbligatorio '

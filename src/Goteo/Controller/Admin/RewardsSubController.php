@@ -94,7 +94,7 @@ class RewardsSubController extends AbstractSubController {
         if ($action == 'edit' && !empty($id)) {
 
             $invest = Model\Invest::get($id);
-            $projectData = Model\Project::get($invest->project);
+            $projectData = $invest->getProject();
             $userData = Model\User::getMini($invest->user);
             $status = Model\Project::status();
 

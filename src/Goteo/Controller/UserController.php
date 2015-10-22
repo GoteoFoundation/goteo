@@ -628,10 +628,10 @@ class UserController extends \Goteo\Core\Controller {
                         // el token coincide con el email y he obtenido una id
                         if (Model\User::cancel($id)) {
                             Application\Message::info(Text::get('leave-process-completed'));
-                            return new RedirectResponse(SEC_URL.'/user/login');
+                            return new RedirectResponse('/user/login');
                         } else {
-                            Application\Message::error(Text::get('leave-process-fail'));
-                            return new RedirectResponse(SEC_URL.'/user/login');
+                            Application\Message::error(Text::get('leave-process-fail', Config::get('mail.contact')));
+                            return new RedirectResponse('/user/login');
                         }
                     }
                 }

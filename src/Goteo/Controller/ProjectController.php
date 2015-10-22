@@ -34,8 +34,9 @@ use Goteo\Application\Config,
 class ProjectController extends \Goteo\Core\Controller {
 
     public function indexAction ($id = null, $show = 'home', $post = null, Request $request) {
+
         if ($id !== null) {
-            return $this->view($id, $show, $post);
+            return $this->view($id, $show, $post, $request);
         }
         if ($request->query->has('create')) {
             return new RedirectResponse('/project/create');
@@ -540,7 +541,7 @@ class ProjectController extends \Goteo\Core\Controller {
         return new RedirectResponse('/project/edit/'.$project->id);
     }
 
-    private function view ($id, $show, $post = null) {
+    private function view ($id, $show, $post = null, Request $request) {
         //activamos la cache para esta llamada
         \Goteo\Core\DB::cache(true);
 
@@ -605,87 +606,6 @@ class ProjectController extends \Goteo\Core\Controller {
             if ($show == 'needs-non') {
                 $viewData['show'] = 'needs';
                 $viewData['non_economic'] = true;
-            }
-
-            //tenemos que tocar esto un poquito para gestionar los pasos al aportar
-            // TODO: deprecated
-            // goto to InvestController instead
-            if ($show == 'invest') {
-
-                // si no está en campaña no pueden estar aqui ni de coña
-                if ($project->status != 3) {
-                    Application\Message::info(Text::get('project-invest-closed'));
-                    return new RedirectResponse('/project/'.$id, Response::HTTP_TEMPORARY_REDIRECT);
-                }
-
-                if ($project->noinvest) {
-                    Application\Message::error(Text::get('investing_closed'));
-                    return new RedirectResponse('/project/'.$id);
-                }
-
-                $viewData['show'] = 'supporters';
-
-                // si permite uso de paypal
-                $viewData['allowpp'] = Project\Account::getAllowpp($id);
-
-                /* pasos de proceso aporte
-                 *
-                 * 1, 'start': ver y seleccionar recompensa (y cantidad)
-                 * 2, 'login': loguear con usuario/contraseña o con email (que crea el usuario automáticamente)
-                 * 3, 'confirm': confirmar los datos y saltar a la pasarela de pago
-                 * 4, 'ok'/'fail': al volver de la pasarela de pago, la confirmación nos dice si todo bien o algo mal
-                 * 5, 'continue': recuperar aporte incompleto (variante de confirm)
-                 */
-
-                // usamos la variable de url $post para movernos entre los pasos
-                $step = ($post && in_array($post, array('start', 'login', 'confirm', 'continue'))) ? $post : 'start';
-
-                // si llega confirm ya ha terminado el proceso de aporte
-                if (isset($_GET['confirm']) && \in_array($_GET['confirm'], array('ok', 'fail'))) {
-                    unset($_SESSION['invest-amount']);
-                    // confirmación
-                    $step = $_GET['confirm'];
-                } else {
-                    // si no, a ver en que paso estamos
-                    // guardamos cantidad sin puntos
-                    if (isset($_GET['amount']))
-                        $_SESSION['invest-amount'] = str_replace(array(',', '.'), '', $_GET['amount']);
-
-                    // si el usuario está validado, recuperamos posible amount y mostramos
-                    if ($user instanceof Model\User) {
-                        $step = 'confirm';
-                    } elseif ($step != 'start' && empty($user)) {
-                        // si no está validado solo puede estar en start
-                        Application\Message::info(Text::get('user-login-required-to_invest'));
-                        $step = 'start';
-                    } elseif ($step == 'start') {
-                        // para cuando salte
-                        $_SESSION['jumpto'] = SEC_URL.'/project/' .  $id . '/invest/#continue';
-                    } else {
-                        $step = 'start';
-                    }
-                }
-
-                // recuperación de gotas si está logueado
-                if ($user instanceof Model\User) {
-                    $pool = Model\User\Pool::get($user->id);
-                    // pasamos la cantidad a la vista
-                    $viewData['pool'] = (int) $pool->amount;
-                }
-
-                /*
-                elseif (isset($_SESSION['pre-invest'])) {
-                    // aporte incompleto, puede ser que aun no esté logueado
-                    if (empty($user)) {
-                        $step = 'login';
-                    } else {
-                        $step = 'confirm';
-                    }
-                }
-                 *
-                 */
-
-                $viewData['step'] = $step;
             }
 
             // -- Mensaje azul molesto para usuarios no registrados

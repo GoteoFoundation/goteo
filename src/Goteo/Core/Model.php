@@ -28,9 +28,7 @@ namespace Goteo\Core {
             if (\func_num_args() >= 1) {
                 $data = \func_get_arg(0);
                 if (is_array($data) || is_object($data)) {
-                    foreach ($data as $k => $v) {
-                        $this->$k = $v;
-                    }
+                    $this->rebuildData((array) $data);
                 }
             }
 
@@ -43,6 +41,12 @@ namespace Goteo\Core {
                     $table = substr($table, strrpos($table, '\\') + 1);
                 }
                 $this->setTable($table);
+            }
+        }
+
+        public function rebuildData(Array $data) {
+            foreach ($data as $k => $v) {
+                $this->$k = $v;
             }
         }
 

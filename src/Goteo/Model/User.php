@@ -145,7 +145,7 @@ namespace Goteo\Model {
                                 '%USERNAME%'   => $this->name,
                                 '%USERID%'     => $this->id,
                                 '%USERPWD%'     => $this->password,
-                                '%ACTIVATEURL%' => \SITE_URL . '/user/activate/' . $token
+                                '%ACTIVATEURL%' => Config::get('url.main') . '/user/activate/' . $token
                             ])->send($errors)) {
                               Application\Message::info(Text::get('register-confirm_mail-success'));
                         }
@@ -479,6 +479,42 @@ namespace Goteo\Model {
                 $set .= "`password` = :password ";
                 $values[":password"] = sha1($this->password);
             }
+
+            if ($set == '') return false;
+
+            try {
+                $sql = "UPDATE user SET " . $set . " WHERE id = :id";
+                self::query($sql, $values);
+
+                return true;
+            } catch(\PDOException $e) {
+                $errors[] = "HA FALLADO!!! " . $e->getMessage();
+                return false;
+            }
+
+        }
+
+         /**
+         * This method change the user password
+         */
+        public function setPassword ($password) {
+            if(!empty($password)) {
+                if(!Check::password($password)) {
+                    $errors['password'] = Text::get('error-user-password-invalid');
+                }
+            }
+
+            if (!empty($errors['password'])) {
+                return false;
+            }
+
+            $set = '';
+            $values = array(':id'=>$this->id);
+
+
+            if ($set != '') $set .= ", ";
+            $set .= "`password` = :password ";
+            $values[":password"] = sha1($password);
 
             if ($set == '') return false;
 
@@ -1370,21 +1406,13 @@ namespace Goteo\Model {
                     }
                 }
                 // die("[$token] [" . \mybase64_encode($token). "]");
-                self::query('UPDATE user SET token = :token WHERE id = :id', array(':id' => $row->id, ':token' => $token));
+                if(self::query('UPDATE user SET token = :token WHERE id = :id', array(':id' => $row->id, ':token' => $token))) {
+                    $row->token = $token;
 
-                $errors=array();
-                // Obtenemos la plantilla para asunto y contenido
-                if( Mail::createFromTemplate($row->email, $row->name, Template::RETRIEVE_PASSWORD, [
-                        '%USERNAME%'   => $row->name,
-                        '%USERID%'     => $row->id,
-                        '%RECOVERURL%' => $URL . '/password-recovery/' . \mybase64_encode($token)
-                    ])
-                    ->send($errors)) {
-                        return true;
+                    return $row;
                 }
-                else {
-                    Message::error(implode("\n", $errors));
-                }
+
+
 			}
 			return false;
 		}

@@ -16,6 +16,7 @@ recover-request-fail: 'We could not recover the password from any account with t
 leave-request-fail: 'We didn''t find any account with that email in our database.'
 leave-email-sended: 'We have sent you an email to confirm the closure of your account. If you don''t find it right away, look in your junk or spam folder.'
 recover-email-sended: 'We have sent you an email with instructions for recovering your password. If you don''t get it right away, be sure to check your junk or spam folders.'
-leave-process-fail: 'We were not able to close the account. Please contact us at hola@goteo.org'
+leave-process-fail: 'We were not able to close the account. Please contact us at %s'
 error-register-pasword: 'You can''t leave the password field empty.'
 error-register-username: 'You have to enter a screen name.'
+password-changed-ok: 'Password changed successfully'

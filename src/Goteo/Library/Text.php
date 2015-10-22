@@ -27,42 +27,76 @@ class Text {
      * @param  string $id key to translate (will be searched in all group translations)
      * @return string     [description]
      */
-    static public function get ($id) {
-
-        $lang = Lang::current();
-
-        // si hay mas de un argumento, hay que meter el resto con
-        $args = \func_get_args();
-        if (count($args) > 1) {
-            array_shift($args);
-        } else {
-            $args = array();
+    static public function get ($id, $args = null) {
+        // Compatibilize with random number of arguments included
+        if(!is_array($args)) {
+            $args = func_get_args();
+            if (count($args) > 1) {
+                array_shift($args);
+            } else {
+                $args = array();
+            }
         }
-
-        $text = '';
-
-
-        // Get from Symfony tranlator files
-        $text = Lang::trans($id);
-        $all = Lang::translator()->getCatalogue()->all('messages');
-
-        if(empty($all[$id])) {
-            // for toolbar debuggin
-            self::$errors[$id] = 'Not found lang [' . $lang . '] translated as [' . $text . ']';
-        }
-
-        //contamos cuantos argumentos necesita el texto
-        $req_args = substr_count($text, '%');
-
-        if (!empty($args) && $req_args > 0 && count($args) >= $req_args) {
-            $text = vsprintf($text, $args);
-        }
-
-        return $text;
-
-        // $texto = nl2br($texto);
+        return static::lang($id, Lang::current(), $args);
     }
 
+    /**
+     * like get, but using system lang (or passed)
+     */
+    static public function sys($id, $args = null) {
+        // Compatibilize with random number of arguments included
+        if(!is_array($args)) {
+            $args = func_get_args();
+            if (count($args) > 1) {
+                array_shift($args);
+            } else {
+                $args = array();
+            }
+        }
+        return static::lang($id, Config::get('lang'), $args);
+    }
+
+    /**
+     * Gets the required text.
+     * If text does not exists a fallback will be returned
+     * @param  [type] $id   [description]
+     * @param  [type] $lang [description]
+     * @param  array  $vars [description]
+     * @return [type]       [description]
+     */
+    static public function lang($id, $lang = null, array $vars = []) {
+        if(!$lang) {
+            $lang = Lang::current();
+        }
+        // Get from Symfony tranlator files
+        if(\is_assoc($vars)) {
+            // use Symfony auto parametres replacing
+            $text = Lang::trans($id, $vars, $lang);
+        }
+        else {
+            $text = Lang::trans($id, [], $lang);
+            // old behaviour, assume sprintf like arguments
+            $req_args = substr_count($text, '%');
+
+            if (!empty($vars) && $req_args > 0 && count($vars) >= $req_args) {
+                $text = vsprintf($text, $vars);
+            }
+
+
+        }
+
+        // \Goteo\Application\App::getService('logger')->debug("Lang: [$id => $text]");
+        if(\Goteo\Application\App::debug()) {
+            $all = Lang::translator()->getCatalogue()->all('messages');
+
+            if(empty($all[$id])) {
+                // for toolbar debuggin
+                self::$errors[$id] = 'Not found lang [' . $lang . '] translated as [' . $text . ']';
+            }
+        }
+        return $text;
+
+    }
 
     /**
      * Devuelve un texto en HTML
@@ -70,11 +104,11 @@ class Text {
      */
     static public function html ($id) {
         // sacamos el contenido del texto
-        $text = call_user_func_array ( 'static::get' , \func_get_args() );
+        $text = call_user_func_array ( 'static::get' , func_get_args() );
         if (self::isHtml($id))
             return $text; // el texto ES html, lo devuelve tal cual
         else
-            return \htmlspecialchars ($text); // el texto NO es html, lo pasa por html especial chars
+            return htmlspecialchars ($text); // el texto NO es html, lo pasa por html especial chars
     }
 
     /*
@@ -120,7 +154,6 @@ class Text {
             'feed-project_goon',
             'feed-project_finish_unique',
             'feed-project_finish',
-            'feed-invest',
             'feed-messages-new_thread',
             'feed-message_support-response',
             'feed-messages-response',

@@ -14,6 +14,12 @@
  	background-color: #E7E7E7 !important;
  }
 
+ /* For the message alerts */
+
+ .custom-close{
+ 	font-size:30px !important;
+ }
+
 /*Navbar */
 
 .navbar{
@@ -24,10 +30,15 @@
  	margin-top: 7px;
  }
 
+.navbar-default .navbar-nav > li > a {
+    color:#58595B;
+    font-size: 1.1em;
+}
+ 
+
  .user-container{
  	margin-top:15px;
  }
-
 
  .navbar-brand{
  	padding: 0 !important;
@@ -43,6 +54,10 @@
 .avatar-link{
 	padding-top:5px !important;
 	padding-bottom: 5px !important;
+}
+
+.avatar-arrow{
+	margin-top: 7px;
 }
 
 
@@ -322,6 +337,8 @@ hr.make-sure{
 
 /* End steps bar */
 
+/* Forms checkboxs */
+
 .no-margin-checkbox{
 	margin-top: 0px !important;
 }
@@ -331,6 +348,29 @@ hr.make-sure{
 	margin:0;
 }
 
+/* Project info bar */
+
+div.jumbotron.project-info{
+	background-color: #E9F4EA; 
+	color: #58595B; 
+	padding-top:20px; 
+	padding-bottom:20px;
+}
+
+div.jumbotron .project-name{
+	padding-top: 0; 
+	margin-top: 10px;
+}
+
+div.jumbotron .project-owner{
+	color: #20B3B2 !important;
+}
+
+div.jumbotron .project-owner a{
+
+	color: #20B3B2 !important;
+
+}
 
 
 @media(min-width:768px){

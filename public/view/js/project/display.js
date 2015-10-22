@@ -1,14 +1,14 @@
 // **************
 //
 // Goteo Analytics
-// By Franc Camps-Febrer 
+// By Franc Camps-Febrer
 // 2013
 //
 // **************
 
 // Make sure the namespace is defined
 if (typeof GOTEO === 'undefined') {
-    var GOTEO = { 
+    var GOTEO = {
         charts : {},
         visualizers : {},
         utilities : {},
@@ -26,10 +26,12 @@ if (typeof GOTEO === 'undefined') {
 
 GOTEO.getDates = function(dates) {
     // ---------------
-    // Determine deadlines and whether project is finished 
+    // Determine deadlines and whether project is finished
     // ---------------
     var format = GOTEO.formats.format;
 
+        console.log(dates.published)
+        console.log(GOTEO.dates)
     GOTEO.dates.start_date = d3.time.day(format.parse(dates.published));
     GOTEO.dates.finished = (dates.success || dates.closed) ? true : false;
 
@@ -63,7 +65,7 @@ GOTEO.getDates = function(dates) {
 //
 // ----------------------
 
-GOTEO.getFundingByDay = function(invests){ 
+GOTEO.getFundingByDay = function(invests){
     var funded_data = [],
         funders_data = [],
         funded = 0,
@@ -93,8 +95,8 @@ GOTEO.getFundingByDay = function(invests){
 // ----------------------
 
 GOTEO.initializeGraph = function(raw_data) {
-    
-        var fundsChart, fundersChart, 
+
+        var fundsChart, fundersChart,
             invests, data,
             dates = GOTEO.dates,
             format = GOTEO.formats.format,
@@ -105,12 +107,11 @@ GOTEO.initializeGraph = function(raw_data) {
 
         // Get deadline, day_number and other time flags
         GOTEO.getDates(raw_data.dates);
-
         // Generate array of invest objects
         invests = [];
         raw_data.invests.forEach(function(d) {
-            invests.push({'amount' : d.amount, 
-                            'user' : d.user, 
+            invests.push({'amount' : d.amount,
+                            'user' : d.user,
                             'date' : d.invested});
         });
         // Generate daily data, funding and cofunders
@@ -160,7 +161,7 @@ GOTEO.initializeGraph = function(raw_data) {
         // Attach visualizer to funders object
         fundersChart.setRenderFn(GOTEO.visualizers.renderCofunders);
         fundersChart.render();
-        
+
         // Render charts and info
         // GOTEO.updateTitles();
         // now with php
@@ -173,7 +174,7 @@ GOTEO.initializeGraph = function(raw_data) {
 // ----------------------
 /*
  * Estos datos los pintamos en la vista con php
- * 
+ *
 GOTEO.updateTitles = function() {
     var fundsChart = GOTEO.charts.fundsChart,
         current = fundsChart.getCurrent().value,
@@ -181,7 +182,7 @@ GOTEO.updateTitles = function() {
         text = "de euros.";
 
     if (dates.passed_minimum) {
-        text = text + " (<div style='color: #bb70b6; display: inline'>" 
+        text = text + " (<div style='color: #bb70b6; display: inline'>"
                 + (+fundsChart.getOptimum()).toLocaleString("de-DE") + "</div> &oacuteptimo)";
     }
     if (current) {

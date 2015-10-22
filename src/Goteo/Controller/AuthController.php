@@ -14,11 +14,14 @@ use Symfony\Component\HttpFoundation\Request;
 use Goteo\Application\Exception\ControllerAccessDeniedException;
 
 use Goteo\Application\Session;
+use Goteo\Application\Cookie;
 use Goteo\Application\Config;
 use Goteo\Application\AppEvents;
 use Goteo\Application\Event\FilterAuthEvent;
 use Goteo\Application\Message;
 use Goteo\Application\View;
+use Goteo\Model\Template;
+use Goteo\Model\Mail;
 
 use Goteo\Library\OAuth\SocialAuth;
 use Goteo\Library\Text;
@@ -161,30 +164,44 @@ class AuthController extends \Goteo\Core\Controller {
                     User::query('UPDATE user SET active = 1, hide = 0, confirmed = 1 WHERE id = ?', array($id));
                     $user = User::get($id);
                     Session::setUser($user, true);
-                    return $this->redirect('/password-reset');
+                    return $this->redirect('/password-reset?' . $request->getQueryString());
                 }
             }
 
             else {
 
-            //$vars['error'] = Text::get('recover-token-incorrect');
-            Message::error(Text::get('recover-token-incorrect'));
-                        return $this->redirect('/login');
-
+                //$vars['error'] = Text::get('recover-token-incorrect');
+                Message::error(Text::get('recover-token-incorrect'));
+                return $this->redirect('/login?' . $request->getQueryString());
 
             }
         }
 
         if ($request->getMethod() === 'POST') {
             $email = $request->request->get('email');
-            if ($email && User::recover($email)) {
+            $return= $request->request->get('return');
+
+            if ($email && ($u = User::recover($email))) {
+                $errors=array();
+                // Obtenemos la plantilla para asunto y contenido
+                if( Mail::createFromTemplate($u->email, $u->name, Template::RETRIEVE_PASSWORD, [
+                        '%USERNAME%'   => $u->name,
+                        '%USERID%'     => $u->id,
+                        '%RECOVERURL%' => Config::get('url.main') . '/password-recovery/' . \mybase64_encode($u->token) . '?return=' . urlencode($return)
+                    ])
+                    ->send($errors)) {
+                        return $this->viewResponse(
+                            'auth/partials/recover_modal_success',
+                            array(
+                                'email' => $email
+                            )
+                        );
+                }
+                else {
+                    Message::error(implode("\n", $errors));
+                }
+
                 //$vars['message'] = Text::get('recover-email-sended');
-                return $this->viewResponse(
-                    'auth/partials/recover_modal_success',
-                    array(
-                        'email' => $email
-                    )
-                );
             } else {
                 $vars['error'] = Text::get('recover-request-fail');
                 $vars['email'] = $email;
@@ -197,30 +214,34 @@ class AuthController extends \Goteo\Core\Controller {
                 );
             }
         }
-        
+
     }
 
     public function passwordResetAction(Request $request)
     {
+        if ($request->getMethod() == 'POST') {
+            $password = $request->request->get('password');
+            $rpassword = $request->request->get('rpassword');
+
+            if (strcmp($password, $rpassword) !== 0) {
+                Message::error(Text::get('error-register-password-confirm'));
+            } else {
+                $user = new User();
+                $user->id = Session::getUserId();
+                if($user->setPassword($password))
+                {    // Refresca la sesión.
+                    $user = User::flush();
+                    return $this->dispatch(AppEvents::RESET_PASSWORD, new FilterAuthEvent($user))->getUserRedirect($request);
+                }
+            }
+        }
 
         // Already logged?
         if (Session::isLogged()) {
-            return $this->viewResponse(
-            'auth/reset_password',
-            array(
-                )
-            );
+            return $this->viewResponse('auth/reset_password', ['return' => $request->query->get('return')]);
+        } else {
+            return $this->redirect('/login?' . $request->getQueryString());
         }
-
-        else
-            return $this->redirect('/login');
-
-
-        /*return $this->viewResponse(
-            'auth/reset_password',
-            array(
-                )
-        );*/
 
     }
 
