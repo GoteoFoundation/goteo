@@ -38,7 +38,7 @@ $this->section('content');
 					<div class="row no-padding col-md-10 col-md-offset-1">
 
                     <?php foreach($this->pay_methods as $method => $pay): ?>
-                        <div class="col-xs-6 col-md-3 pay-method<?= $pay->isActive() ? '' : ' disabled' ?>">
+                        <div class="col-xxs-6 col-tn-6 col-xs-3 pay-method<?= $pay->isActive() ? '' : ' disabled' ?>">
                             <label class="label-method <?= $pay->isActive($this->amount) ? '' : 'label-disabled' ?>" for="<?= $method ?>-method">
                                 <input name="method" id="<?= $method ?>-method"<?= $this->default_method == $method ? ' checked' : '' ?> <?= $pay->isActive($this->amount) ? '' : ' disabled="disabled"' ?> value="<?= $method ?>" type="radio">
                                 <span class="method-text">

@@ -112,6 +112,7 @@ Please refer to the official guide to grunt to install it:
 http://gruntjs.com/getting-started
 
 If you want to install grunt on Ubuntu 12.04 o4 14.04 for the very first time just do:
+
 ```bash
 sudo apt-get install build-essential libssl-dev git
 sudo add-apt-repository ppa:chris-lea/node.js
@@ -129,7 +130,16 @@ sudo rm ~/.npm -rf
 
 ## Installing composer
 
-TODO...
+To install Composer on Ubuntu or any other *nix execute this commands:
+
+```bash
+curl -sS https://getcomposer.org/installer | php
+sudo mv composer.phar /usr/local/bin/composer
+```
+
+For other OS, please refer to the official install guides:
+Install Composer: https://getcomposer.org/doc/00-intro.md
+
 
 ## Installing mysql
 

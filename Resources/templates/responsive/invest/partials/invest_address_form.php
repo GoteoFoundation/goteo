@@ -16,7 +16,6 @@
                     'name' => 'invest[country]',
                     'id' => 'invest-country',
                     'value' => strtoupper($this->invest_address['country']),
-                    'value' => '',
                     'attribs' => [
                         'class' => 'form-control',
                         'placeholder' => $this->text('invest-address-country-field'),

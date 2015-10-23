@@ -39,7 +39,7 @@ $pay_method = $this->pay_method;
                     <!-- RETURN URL /invest/<?= $this->project->id ?>/12124 -->
 
                     <div class="row no-padding col-md-10 col-md-offset-1">
-                        <div class="col-xs-6 col-md-3 pay-method<?= $pay_method->isActive() ? '' : ' disabled' ?>">
+                        <div class="col-xxs-6 col-tn col-xs-3 pay-method<?= $pay_method->isActive() ? '' : ' disabled' ?>">
                             <div class="label-method">
                                 <span class="method-text">
                                 <?= $pay_method->getName() ?>
