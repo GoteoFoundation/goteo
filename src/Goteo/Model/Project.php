@@ -2963,8 +2963,7 @@ namespace Goteo\Model {
                 */
 
 
-                $the_proj = self::getMedium($proj->id); // ya coge la configuración de rondas
-
+                $the_proj = self::get($proj->id); // ya coge la configuración de rondas
                 // porcentaje conseguido
                 $the_proj->percent = floor(($the_proj->amount / $the_proj->mincost) * 100);
 
