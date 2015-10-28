@@ -54,6 +54,15 @@ interface PaymentMethodInterface {
     public function isActive($amount = 0);
 
     /**
+     * Returns if the payment method is public or not.
+     * Non-public methods can be used for custom payments outside the user-scope
+     * and will not be shown in the payment page
+     * @param integer $amount The method can decide to be active depending on the amount
+     * @return boolean status
+     */
+    public function isPublic($amount = 0);
+
+    /**
      * Sets the Invest in order to be able to create a proper gateway request
      * @param Invest $invest Invest object
      */
@@ -97,6 +106,12 @@ interface PaymentMethodInterface {
      * @return Ommnipay\Common\Message\ResponseInterface Omnipay Response Object
      */
     public function completePurchase();
+
+    /**
+     * Returns if the gateway can refund a investion
+     * @return Boolean true or false
+     */
+    public function refundable();
 
     /**
      * Processes a refund action on the gateway

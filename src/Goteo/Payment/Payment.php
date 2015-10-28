@@ -27,26 +27,36 @@ class Payment {
     static protected $default_method = '';
 
     /**
+     *
      * Adds a payment method suitable for its use in goteo.
-     * @param PaymentMethodInferface $method Class implementing interface
+     * @param Goteo\Payment\Method\PaymentMethodInterface $clas  The payment class
+     * @param boolean $force whether to check config or not
      */
-    static public function addMethod($clas) {
+    static public function addMethod($clas, $force = false) {
         if(!in_array('Goteo\Payment\Method\PaymentMethodInterface', class_implements($clas))) {
             throw new PaymentException("Error registering class [$clas]. It must implement PaymentMethodInferface!");
         }
 
-        // Keeping settings.yml order
+        $config = Config::get("payments");
+        // adding method
+        if($force || $config[$clas::getId()]['active']) {
+            self::$methods[$clas::getId()] = $clas;
+        }
+
         $methods = [];
-        foreach(Config::get('payments') as $m => $vars) {
-            if($vars['active']) {
-                if($m === $clas::getId()) {
-                    $methods[$m] = $clas;
-                }
-                elseif(array_key_exists($m, self::$methods)) {
-                    $methods[$m] = self::$methods[$m];
-                }
+        // Keeping settings.yml order
+        foreach($config as $id => $vars) {
+            if($vars['active'] && array_key_exists($id, self::$methods)) {
+                $methods[$id] = self::$methods[$id];
             }
         }
+        // adding non config
+        foreach(self::$methods as $id => $c) {
+            if(!array_key_exists($id, $methods)) {
+                $methods[$id] = $c;
+            }
+        }
+
         self::$methods = $methods;
     }
 
@@ -71,13 +81,13 @@ class Payment {
      * @param  [type] $method [description]
      * @return [type]         [description]
      */
-    static public function getMethod($method) {
+    static public function getMethod($method, User $user = null) {
         if(!isset(self::$methods[$method])) {
             throw new PaymentException("Error, payment method [$method] is not registered!");
         }
         if(!self::$methods[$method] instanceOf PaymentMethodInterface) {
             $clas = self::$methods[$method];
-            self::$methods[$method] = new $clas(Session::getUser());
+            self::$methods[$method] = new $clas($user ? $user : Session::getUser());
         }
         return self::$methods[$method];
     }

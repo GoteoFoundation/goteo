@@ -61,3 +61,10 @@ login-new-user-label: '¿Crear un nuevo usuario?'
 login-recover-modal-text: 'Ingresa la dirección de correo electrónico que usaste para registrarte y te enviaremos un enlace para restablecer tu contraseña.'
 login-recover-modal-button: 'Enviar'
 login-recover-modal-sucess: 'Hecho! - te enviamos un correo electrónico a %s con un enlace para restablecer la contraseña.'
+reset-password-title: 'Establecer nueva contraseña'
+reset-password-old-password: 'Tu nueva contraseña'
+reset-password-new-password: 'Vuelve a escribir tu nueva contraseña'
+reset-password-save: 'Guardar'
+
+
+

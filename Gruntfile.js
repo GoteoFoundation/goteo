@@ -36,11 +36,19 @@ module.exports = function(grunt) {
     if( grunt.file.exists('config/php.ini')) {
         GOTEO.phpINI = '../config/php.ini';
     }
+
+    var config = grunt.file.readYAML(GOTEO.configFile);
+    var port = parseInt(config.url.main.split(':')[1], 10);
+    if(port) {
+        GOTEO.localPort = port;
+        grunt.log.warn('Using local port from settings: ' + port);
+    }
+
     // Project configuration.
     grunt.initConfig({
         // Metadata.
         pkg: grunt.file.readJSON('package.json'),
-        settings: grunt.file.readYAML(GOTEO.configFile),
+        settings: config,
         //config values
         goteo: GOTEO
     });

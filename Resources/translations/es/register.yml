@@ -25,6 +25,11 @@ register-email-confirm-field: 'Vuelve a escribir tu correo electrónico'
 register-id-field: 'Elige tu identificador en Goteo'
 register-password-field: 'Contraseña'
 register-password-confirm-field: 'Vuelve a escribir tu contraseña'
+register-button-title: 'Regístrate'
+register-question: '¿Ya estás registrado?'
+register-form-title: 'Registrar'
+
+
 
 
 

@@ -27,6 +27,7 @@ use Goteo\Library\Text;
 use Goteo\Library\Currency;
 use Goteo\Model\Project;
 use Goteo\Model\Invest;
+use Goteo\Model\User;
 use Goteo\Payment\Payment;
 use Goteo\Payment\PaymentException;
 
@@ -68,7 +69,13 @@ class InvestController extends \Goteo\Core\Controller {
 
         // Available pay methods
 
-        $pay_methods = Payment::getMethods(Session::getUser());
+        $pay_methods = Payment::getMethods(Session::isLogged() ? Session::getUser() : new User());
+
+        foreach($pay_methods as $i => $method) {
+            if(!$method->isPublic()) {
+                unset($pay_methods[$i]);
+            }
+        }
         // Is paypal active for the project?
         // This should be more generic...
         if(!Project\Account::getAllowpp($project_id)) {
@@ -243,7 +250,6 @@ class InvestController extends \Goteo\Core\Controller {
 
             // go to the gateway, gets the response
             $response = $method->purchase();
-
             // New Invest Request Event
             $response = $this->dispatch(AppEvents::INVEST_INIT_REQUEST, new FilterInvestRequestEvent($method, $response))->getResponse();
 
@@ -285,21 +291,22 @@ class InvestController extends \Goteo\Core\Controller {
      * @return [type]           [description]
      */
     public function notifyPaymentAction($method, Request $request) {
-        $this->getService('paylogger')->debug('Payment Notification Access. USER AGENT: ' . $request->server->get('HTTP_USER_AGENT') . ' GET: ' . print_r($request->query->all(), 1) .' POST: ' . print_r($request->request->all(), 1));
+        $this->getService('paylogger')->debug('Payment Notification Access. USER AGENT: ' . $request->server->get('HTTP_USER_AGENT') . ' GET: ' . http_build_query($request->query->all()) .' POST: ' . http_build_query($request->request->all()));
         try {
             $method = Payment::getMethod($method);
             $method->setRequest($request);
 
-            $response = $method->completePurchase();
             $invest = $method->getInvest();
 
             // Invest valid check
             if (!$invest instanceof Invest) {
-                throw new \RuntimeException('The notify completePurchase() must obtain a valid Invest object');
+                throw new \RuntimeException('The setRequest() should provide a valid Invest object in notifyPaymentAction');
             }
 
+            $response = $method->completePurchase();
+
             if($invest->status != Invest::STATUS_PROCESSING) {
-                $this->getService('paylogger')->warn('Payment Notification Duplicated INVEST: [' . $invest->id . ']. USER AGENT: ' . $request->server->get('HTTP_USER_AGENT') . ' GET: ' . print_r($request->query->all(), 1) .' POST: ' . print_r($request->request->all(), 1));
+                $this->getService('paylogger')->warn('Payment Notification Duplicated INVEST: [' . $invest->id . ']. USER AGENT: ' . $request->server->get('HTTP_USER_AGENT') . ' GET: ' . http_build_query($request->query->all()) .' POST: ' . http_build_query($request->request->all()));
                 return $this->redirect('/invest/' . $project_id . '/' . $invest->id);
             }
 
@@ -341,7 +348,7 @@ class InvestController extends \Goteo\Core\Controller {
         }
 
         try {
-            $method = Payment::getMethod($invest->method);
+            $method = $invest->getMethod();
             $method = $this->dispatch(AppEvents::INVEST_COMPLETE, new FilterInvestInitEvent($invest, $method, $request))->getMethod();
             // Ending transaction
             $response = $method->completePurchase();

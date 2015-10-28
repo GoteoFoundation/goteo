@@ -108,9 +108,7 @@ EOT
                         // print_r($invest);
                         $log->info("Found active invest on archived project: {$invest->id} STATUS: {$invest->status} METHOD: {$invest->method} INVESTED: {$invest->invested} PROJECT: {$invest->project} USER: {$invest->user} PREAPPROVAL: {$invest->preapproval}");
                         if( $update ) {
-                            $method = Payment::getMethod($invest->method);
-                            $method->setUser(User::get($invest->user));
-                            $method->setInvest($invest);
+                            $method = $invest->getMethod();
                             // process gateway refund
                             // go to the gateway, gets the response
                             $response = $method->refund();
@@ -129,13 +127,13 @@ EOT
                                     $log->info('Invest cancelled successfully');
                                     $output->writeln('<info>Invest cancelled successfully</info> ' . $response->getMessage());
                                 } else {
-                                    $log->error('Error cancelling invest. INVEST:' . $invest->id . ' STATUS: ' . $invest->status);
+                                    $log->error('Error cancelling invest. INVEST: ' . $invest->id . ' STATUS: ' . $invest->status);
                                     $output->writeln('<error>Invest not cancelled!</error>' .  $response->getMessage());
                                 }
                             }
                             else {
                                 $invest = App::dispatch(AppEvents::INVEST_RETURN_FAILED, new FilterInvestRefundEvent($invest, $method, $response))->getInvest();
-                                $log->error('Error returning invest. INVEST:' . $invest->id . ' STATUS: ' . $invest->status);
+                                $log->error('Error refunding invest. INVEST: ' . $invest->id . ' STATUS: ' . $invest->status);
                                 $output->writeln('<error>Failed return for invest!</error> ' . $response->getMessage());
                             }
 

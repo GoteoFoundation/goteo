@@ -12,13 +12,23 @@
  */
 namespace Goteo\Controller\Admin;
 
-use Goteo\Library\Tpv,
-	Goteo\Library\Paypal,
-	Goteo\Library\Feed,
-    Goteo\Application\Message,
-    Goteo\Application\Config,
-	Goteo\Application\Session,
-    Goteo\Model;
+use Goteo\Library\Tpv;
+use Goteo\Library\Paypal;
+use Goteo\Library\Feed;
+use Goteo\Library\Text;
+use Goteo\Library\Currency;
+use Goteo\Application\AppEvents;
+use Goteo\Application\Message;
+use Goteo\Application\Config;
+use Goteo\Application\Session;
+use Goteo\Application\Event\FilterInvestRefundEvent;
+use Goteo\Payment\Payment;
+use Goteo\Model\Invest;
+use Goteo\Model\User;
+use Goteo\Model\Project;
+use Goteo\Model;
+
+use Omnipay\Common\Message\ResponseInterface;
 
 class AccountsSubController extends AbstractSubController {
 
@@ -61,7 +71,7 @@ class AccountsSubController extends AbstractSubController {
      * Overwrite some permissions
      * @inherit
      */
-    static public function isAllowed(\Goteo\Model\User $user, $node) {
+    static public function isAllowed(User $user, $node) {
         // Only central node allowed here
         if( ! Config::isMasterNode($node) ) return false;
         return parent::isAllowed($user, $node);
@@ -94,20 +104,20 @@ class AccountsSubController extends AbstractSubController {
 
     // Informe de la financiación de un proyecto
     public function reportAction($id) {
-        $project = Model\Project::get($id);
-        if (!$project instanceof Model\Project) {
+        $project = Project::get($id);
+        if (!$project instanceof Project) {
             Message::error('Instancia de proyecto no valida');
             return $this->redirect('/admin/accounts');
         }
-        $invests = Model\Invest::getAll($id);
+        $invests = Invest::getAll($id);
 
-        $project->investors = Model\Invest::investors($id, false, true);
-        $projectStatus = Model\Project::status();
-        $investStatus = Model\Invest::status();
+        $project->investors = Invest::investors($id, false, true);
+        $projectStatus = Project::status();
+        $investStatus = Invest::status();
 
         // Datos para el informe de transacciones correctas
-        $Data = Model\Invest::getReportData($project->id, $project->status, $project->round, $project->passed);
-        $account = Model\Project\Account::get($project->id);
+        $Data = Invest::getReportData($project->id, $project->status, $project->round, $project->passed);
+        $account = Project\Account::get($project->id);
 
         return array(
                 'template' => 'admin/accounts/report',
@@ -117,168 +127,151 @@ class AccountsSubController extends AbstractSubController {
                 'projectStatus' => $projectStatus,
                 'status' => $investStatus,
                 'Data' => $Data,
-                'methods' => Model\Invest::methods()
+                'methods' => Invest::methods()
         );
     }
 
 
-    private function cancelInvest(Model\Invest $invest, $fail = false) {
+    /**
+     * Contacts to the payment gateway and do the refund process
+     * @param  Invest  $invest   [description]
+     * @param  boolean $returned [description]
+     * @return [type]            [description]
+     */
+    private function cancelInvest(Invest $invest) {
         $project = $invest->getProject();
-        $verbo = $fail ? 'retornado' : 'cancelado';
-        $infinitivo = $fail ? 'retornar' : 'cancelar';
+        // Put the investion as returned only if it is an unfunded project, cancelled otherwise
+        $returned = ($project->status == Project::STATUS_UNFUNDED);
         $ok = false;
-        // TODO: Omnypay refund()
-        print_r($invest);die;
-        switch ($invest->method) {
-            case 'paypal':
-                $err = array();
 
-                if (empty($invest->preapproval)) {
+        // TODO:
+        // @deprecated To be removed once no more preaprovals left
+        if ($invest->method == 'paypal' && $invest->preapproval) {
+            $verbo = $returned ? 'retornado' : 'cancelado';
+            $infinitivo = $returned ? 'retornar' : 'cancelar';
+            if (Paypal::cancelPreapproval($invest, $err, $returned)) {
+                Message::info("Preaproval paypal $verbo.");
+                $log_text = "El admin %s ha $verbo aporte y preapproval de %s de %s mediante PayPal (id: %s) al proyecto %s del dia %s";
+                $ok = true;
 
-                    if (Paypal::cancelPay($invest, $err, $fail)) {
-                        Message::info("Pago PayPal paypal $verbo.");
-                        $log_text = "El admin %s ha $verbo aporte y pago PayPal de %s de %s mediante PayPal (id: %s) al proyecto %s del dia %s";
-                        $ok = true;
-                    } else {
-                        $txt_errors = implode('; ', $err);
-                        Message::error("Fallo al $infinitivo el pago PayPal: " . $txt_errors);
-                        $log_text = "El admin %s ha fallado al $infinitivo el aporte de %s de %s mediante PayPal (id: %s) al proyecto %s del dia %s. <br />Se han dado los siguientes errores: $txt_errors";
-                        if ($invest->cancel($fail)) {
-                            Message::error("Aporte $verbo");
-                        } else{
-                            Message::error("Fallo al $infinitivo el aporte");
-                        }
-                    }
+                // mantenimiento de registros relacionados (usuario, proyecto, ...)
+                $invest->keepUpdated();
 
-                } else {
-
-                    if (Paypal::cancelPreapproval($invest, $err, $fail)) {
-                        Message::info("Preaproval paypal $verbo.");
-                        $log_text = "El admin %s ha $verbo aporte y preapproval de %s de %s mediante PayPal (id: %s) al proyecto %s del dia %s";
-                        $ok = true;
-                    } else {
-                        $txt_errors = implode('; ', $err);
-                        Message::error("Fallo al $infinitivo el preapproval en paypal: " . $txt_errors);
-                        $log_text = "El admin %s ha fallado al $infinitivo el aporte de %s de %s mediante PayPal (id: %s) al proyecto %s del dia %s. <br />Se han dado los siguientes errores: $txt_errors";
-                        if ($invest->cancel($fail)) {
-                            Message::error("Aporte $verbo");
-                        } else{
-                            Message::error("Fallo al $infinitivo el aporte");
-                        }
-                    }
-
-                }
-
-                break;
-            case 'tpv':
-                $err = array();
-                if (Tpv::cancelPreapproval($invest, $err, $fail)) {
-                    $txt_errors = implode('; ', $err);
-                    Message::error("Aporte $verbo correctamente. " . $txt_errors);
-                    $log_text = "El admin %s ha anulado el cargo tpv de %s de %s mediante TPV (id: %s) al proyecto %s del dia %s";
-                    $ok = true;
-                } else {
-                    $txt_errors = implode('; ', $err);
-                    Message::error("Fallo en la operación. " . $txt_errors);
-                    $log_text = "El admin %s ha fallado al solicitar la cancelación del cargo tpv de %s de %s mediante TPV (id: %s) al proyecto %s del dia %s. <br />Se han dado los siguientes errores: $txt_errors";
-                }
-                break;
-            case 'cash':
-                if ($invest->cancel($fail)) {
-                    $log_text = "El admin %s ha $verbo aporte manual de %s de %s (id: %s) al proyecto %s del dia %s";
+            } else {
+                $txt_errors = implode('; ', $err);
+                Message::error("Fallo al $infinitivo el preapproval en paypal: " . $txt_errors);
+                $log_text = "El admin %s ha fallado al $infinitivo el aporte de %s de %s mediante PayPal (id: %s) al proyecto %s del dia %s. <br />Se han dado los siguientes errores: $txt_errors";
+                if ($invest->cancel($returned)) {
                     Message::error("Aporte $verbo");
-                    $ok = true;
                 } else{
-                    $log_text = "El admin %s ha fallado al $infinitivo el aporte manual de %s de %s (id: %s) al proyecto %s del dia %s. ";
                     Message::error("Fallo al $infinitivo el aporte");
                 }
-                break;
-            case 'pool':
-                Model\User\Pool::add($invest);
-                if ($invest->cancel($fail)) {
-                    $log_text = "El admin %s ha devuelto al monedero el aporte de %s de %s (id: %s) al proyecto %s del dia %s";
-                    Message::error("Aporte $verbo y credito generado");
-                    $ok = true;
-                } else{
-                    $log_text = "El admin %s ha fallado al $infinitivo el aporte de monedero de %s de %s (id: %s) al proyecto %s del dia %s. ";
-                    Message::error("Fallo al $infinitivo el aporte");
+            }
+        }
+        else {
+            try {
+                // Omnipay refund()
+                $method = $invest->getMethod();
+                // print_r($method);die;
+                // process gateway refund
+                // go to the gateway, gets the response
+                $response = $method->refund();
+
+                // Checks and redirects
+                if (!$response instanceof ResponseInterface) {
+                    throw new \RuntimeException('This response does not implements ResponseInterface.');
                 }
-                break;
+
+                // On-sites can return a successful response here
+                if ($response->isSuccessful()) {
+                    // Event invest success event
+                    $invest = $this->dispatch($returned ? AppEvents::INVEST_RETURNED : AppEvents::INVEST_CANCELLED, new FilterInvestRefundEvent($invest, $method, $response))->getInvest();
+                    // New Invest Refund Event
+                    if($invest->status === ($returned ? Invest::STATUS_RETURNED : Invest::STATUS_CANCELLED)) {
+                        $ok = true;
+                        // Evento Feed
+                        $coin = Currency::getDefault()['html'];
+                        $log = new Feed();
+                        $log->setTarget($project->id)
+                            ->populate(
+                                Text::sys('feed-admin-invest-' . ($returned ? 'returned' : 'cancelled') . '-subject'),
+                                '/admin/accounts',
+                                Text::sys('feed-admin-invest-' . ($returned ? 'returned' : 'cancelled'), [
+                                    '%ADMIN%' => Feed::item('user', $this->user->name, $this->user->id),
+                                    '%USER%' => Feed::item('user', $invest->getUser()->name, $invest->getUser()->id),
+                                    '%AMOUNT%' => Feed::item('money', $invest->amount.' '.$coin),
+                                    '%METHOD%' => strtoupper($invest->method),
+                                    '%INVEST%' => Feed::item('system', $invest->id),
+                                    '%PROJECT%' => Feed::item('project', $invest->getProject()->name, $invest->getProject()->id),
+                                    '%DATE%' => Feed::item('system', date('d/m/Y', strtotime($invest->invested)))
+                                ]))
+                            ->doAdmin('admin');
+                            Invest::setDetail($invest->id, 'manually-refund', $log->html);
+                    } else {
+                        Message::error('Error cancelling invest. INVEST:' . $invest->id . ' STATUS: ' . $invest->status);
+                    }
+                }
+                else {
+                    $invest = $this->dispatch($returned ? AppEvents::INVEST_RETURN_FAILED : AppEvents::INVEST_CANCEL_FAILED, new FilterInvestRefundEvent($invest, $method, $response))->getInvest();
+                    Message::error('Error refunding invest: [' . $response->getMessage().']');
+                }
+            } catch(\Exception $e) {
+                Message::error($e->getMessage());
+            }
         }
 
-        // Evento Feed
-        $log = new Feed();
-        $log->setTarget($project->id);
-        $log->populate("Cargo $verbo manualmente (admin)", '/admin/accounts',
-            \vsprintf($log_text, array(
-                Feed::item('user', $this->user->name, $this->user->id),
-                Feed::item('user', $userData->name, $userData->id),
-                Feed::item('money', $invest->amount.' &euro;'),
-                Feed::item('system', $invest->id),
-                Feed::item('project', $project->name, $project->id),
-                Feed::item('system', date('d/m/Y', strtotime($invest->invested)))
-        )));
-        $log->doAdmin('admin');
-        Model\Invest::setDetail($invest->id, $fail ? 'manually-returned' : 'manually-canceled', $log->html);
-
-        // mantenimiento de registros relacionados (usuario, proyecto, ...)
-        $invest->keepUpdated();
         return $ok;
     }
 
-    // cancelar aporte antes de ejecución, solo aportes no cargados
-    public function cancelAction($id) {
-        $invest = Model\Invest::get($id);
-        if (!$invest instanceof Model\Invest) {
-            Message::error('No tenemos objeto para el aporte '.$id);
+
+    /**
+     * Refunds to invest to the original user
+     * If project is failed, status will be returned
+     * If project is success or active, status will be cancelled
+     * @param  Integer $id Invest ID
+     */
+    public function refunduserAction($id) {
+        $invest = Invest::get($id);
+        if (!$invest instanceof Invest) {
+            Message::error(Text::get('admin-account-invalid-invest', $id));
             return $this->redirect('/admin/accounts');
         }
-        $project = $invest->getProject();
-        $userData = Model\User::get($invest->user);
 
-        if (in_array($invest->status, [4,5])) {
-            Message::error('No debería poderse cancelar un aporte cuando el proyecto ya está financiado. Si es imprescindible, hacerlo desde el panel de paypal o tpv');
-        } else {
-            $invest->setPoolOnFail(false); //Marcar como si el usuario NO hubiera escogido pool
-            $this->cancelInvest($invest);
-        }
-
-        return $this->redirect('/admin/accounts/details/' . $id);
-    }
-
-    // cancelar aporte cobrado (pasar estado a retornado)
-    public function returnuserAction($id) {
-        $invest = Model\Invest::get($id);
-        if (!$invest instanceof Model\Invest) {
-            Message::error('No tenemos objeto para el aporte '.$id);
-            return $this->redirect('/admin/accounts');
-        }
-        $project = $invest->getProject();
-        $userData = Model\User::get($invest->user);
         $status = $invest->status;
-        if (!in_array($status, [1,4])) {
-            Message::error('Solo se pueden devolver aportes en estados de "Cobrado" y "Retornado" (y en este caso con suficiente dinero en el monedero)');
+        $coin = Currency::getDefault()['html'];
+        if (!in_array($status, [Invest::STATUS_PENDING, Invest::STATUS_CHARGED, Invest::STATUS_PAID, Invest::STATUS_CANCELLED, Invest::STATUS_RETURNED])) {
+            Message::error(Text::get('admin-account-invest-non-user-refundable'));
         } else {
-            $invest->setPoolOnFail(false); //Marcar como si el usuario NO hubiera escogido pool
-            if($status == 1) {
-                $this->cancelInvest($invest, true); //no need to check the pool
-            }
-            else {
-                // check the pool
-                $amount = Model\User\Pool::getAmount($invest->user);
-                if($amount < $invest->amount) {
-                    Message::error('No se puede devolver este aporte de estado "Retornado" porque el usuario no tiene suficiente dinero en el monedero (' . $amount .' €)!');
+            // check the pool for this statuses
+            $errors = array();
+            $amount = null;
+            if(in_array($status, [Invest::STATUS_CANCELLED, Invest::STATUS_RETURNED])) {
+                if(!$invest->pool) {
+                    Message::error(Text::get('admin-account-invest-user-refund-fail-pool', "$amount $coin"));
+                    return $this->redirect('/admin/accounts/details/' . $id);
                 }
-                else {
-                    if($this->cancelInvest($invest, true)) {
-                        $errors = array();
-                        Model\User\Pool::withdraw($invest->user, $invest->amount, $errors);
-                        if($errors) {
-                            Message::error('ERROR: ' . implode("<br>\n", $errors));
-                        }
-                        else {
-                            Message::info('Aporte devuelto. El monedero se ha reducido en (' . $invest->amount . ' €)');
-                        }
+                $amount = (int)User\Pool::getAmount($invest->user);
+                if($amount < $invest->amount) {
+                    Message::error(Text::get('admin-account-invest-user-refund-fail-pool-amount', "$amount $coin"));
+                    return $this->redirect('/admin/accounts/details/' . $id);
+                }
+            }
+
+            // Cancels the invest, discounts pool if needed
+            if($this->cancelInvest($invest)) {
+                // Mark this invest as if the users has choosen not to use the pool on fail
+                $invest->setPoolOnFail(false);
+
+                if(is_null($amount)) {
+                    Message::info(Text::get('admin-account-invest-user-refund-ok'));
+                } else {
+                    // Discount pool for cancelled or returned invests
+                    User\Pool::withdraw($invest->user, $invest->amount, $errors);
+                    if($errors) {
+                        Message::error(Text::get('admin-account-invest-user-refund-ko', implode("<br>\n", $errors)));
+                    }
+                    else {
+                        Message::info(Text::get('admin-account-invest-user-refund-ok-pool', "{$invest->amount} $coin"));
                     }
                 }
             }
@@ -288,41 +281,44 @@ class AccountsSubController extends AbstractSubController {
     }
 
     // cancelar aporte y incrementar el monedero
-    public function returnpoolAction($id) {
-        $invest = Model\Invest::get($id);
-        if (!$invest instanceof Model\Invest) {
-            Message::error('No tenemos objeto para el aporte '.$id);
+    public function refundpoolAction($id) {
+        $invest = Invest::get($id);
+        if (!$invest instanceof Invest) {
+            Message::error(Text::get('admin-account-invalid-invest', $id));
             return $this->redirect('/admin/accounts');
         }
         $project = $invest->getProject();
-        $userData = Model\User::get($invest->user);
+        $returned = ($project->status == Project::STATUS_UNFUNDED);
+        $coin = Currency::getDefault()['html'];
 
-        if ($invest->status != 1) {
-            Message::error('No se puede devolver un aporte no cobrado');
+        if (!in_array($invest->status, [Invest::STATUS_CHARGED])) {
+            Message::error(Text::get('admin-account-invest-non-pool-refundable'));
         } else {
-            if ($invest->cancel(true)) {
-                $log_text = "El admin %s ha devuelto el aporte al monedero de %s de %s (id: %s) al proyecto %s del dia %s";
-                $invest->setPoolOnFail(true); //Marcar como si el usuario hubiera escogido pool
-                Model\User\Pool::add($invest);
-                Message::info("Aporte devuelto. Incrementado el monedero por valor de {$invest->amount} €");
+            if ($invest->cancel($returned)) {
+                // Mark this invest as if user choosed pool-on-fail
+                $invest->setPoolOnFail(true);
+                User\Pool::add($invest);
+                Message::info(Text::get('admin-account-invest-to-pool-ok', "{$invest->amount} $coin"));
+                // Evento Feed
+                $log = new Feed();
+                $log->setTarget($project->id)
+                    ->populate(Text::sys('feed-admin-invest-' . ($returned ? 'returned' : 'cancelled') . '-pool-subject'),
+                               '/admin/accounts',
+                        Text::sys('feed-admin-invest-' . ($returned ? 'returned' : 'cancelled') .'-pool', [
+                            '%ADMIN%' => Feed::item('user', $this->user->name, $this->user->id),
+                            '%USER%' => Feed::item('user', $invest->getUser()->name, $invest->getUser()->id),
+                            '%AMOUNT%' => Feed::item('money', $invest->amount.' &euro;'),
+                            '%METHOD%' => strtoupper($invest->method),
+                            '%INVEST%' => Feed::item('system', $invest->id),
+                            '%PROJECT%' => Feed::item('project', $project->name, $project->id),
+                            '%DATE%' => Feed::item('system', date('d/m/Y', strtotime($invest->invested)))
+                        ]))
+                    ->doAdmin('admin');
+                Invest::setDetail($invest->id, 'manually-to-pool', $log->html);
+
             } else{
-                $log_text = "El admin %s ha fallado al $infinitivo la devolución del aporte al monedero de %s de %s (id: %s) al proyecto %s del dia %s. ";
-                Message::error("Fallo al devolver el aporte al monedero");
+                Message::error(Text::get('admin-account-invest-to-pool-ko'));
             }
-            // Evento Feed
-            $log = new Feed();
-            $log->setTarget($project->id);
-            $log->populate('Cargo devuelto al monedero manualmente (admin)', '/admin/accounts',
-                \vsprintf($log_text, array(
-                    Feed::item('user', $this->user->name, $this->user->id),
-                    Feed::item('user', $userData->name, $userData->id),
-                    Feed::item('money', $invest->amount.' &euro;'),
-                    Feed::item('system', $invest->id),
-                    Feed::item('project', $project->name, $project->id),
-                    Feed::item('system', date('d/m/Y', strtotime($invest->invested)))
-            )));
-            $log->doAdmin('admin');
-            Model\Invest::setDetail($invest->id, 'manually-to-pool', $log->html);
 
             // mantenimiento de registros relacionados (usuario, proyecto, ...)
             $invest->keepUpdated();
@@ -333,7 +329,11 @@ class AccountsSubController extends AbstractSubController {
 
     // cancelar aporte antes de ejecución, solo aportes no cargados
     public function switchpoolAction($id) {
-        $invest = Model\Invest::get($id);
+        $invest = Invest::get($id);
+        if (!$invest instanceof Invest) {
+            Message::error(Text::get('admin-account-invalid-invest', $id));
+            return $this->redirect('/admin/accounts');
+        }
         if ($invest->switchPoolOnFail($id)) {
             Message::info('Pool cambiado de estado');
         }
@@ -342,14 +342,14 @@ class AccountsSubController extends AbstractSubController {
 
 
     public function executeAction($id) {
-        $invest = Model\Invest::get($id);
-        if (!$invest instanceof Model\Invest || $invest->status != 0) {
+        $invest = Invest::get($id);
+        if (!$invest instanceof Invest || $invest->status != 0) {
             Message::error('Invest ['.$id.'] not found or wrong status!');
             return $this->redirect();
         }
 
         $project = $invest->getProject();
-        $userData = Model\User::get($invest->user);
+        $userData = User::get($invest->user);
 
         // ejecutar cargo ahora!!, solo aportes no ejecutados
         // si esta pendiente, ejecutar el cargo ahora (como si fuera final de ronda), deja pendiente el pago secundario
@@ -358,7 +358,7 @@ class AccountsSubController extends AbstractSubController {
         switch ($invest->method) {
             case 'paypal':
                 // a ver si tiene cuenta paypal
-                $projectAccount = Model\Project\Account::get($invest->project);
+                $projectAccount = Project\Account::get($invest->project);
 
                 if (empty($projectAccount->paypal)) {
                     // Erroraco!
@@ -387,8 +387,8 @@ class AccountsSubController extends AbstractSubController {
 
                     // si era incidencia la desmarcamos
                     if ($invest->issue) {
-                        Model\Invest::unsetIssue($invest->id);
-                        Model\Invest::setDetail($invest->id, 'issue-solved', 'La incidencia se ha dado por resuelta al ejecutar el aporte manualmente por el admin ' . $this->user->name);
+                        Invest::unsetIssue($invest->id);
+                        Invest::setDetail($invest->id, 'issue-solved', 'La incidencia se ha dado por resuelta al ejecutar el aporte manualmente por el admin ' . $this->user->name);
                     }
 
 
@@ -432,114 +432,20 @@ class AccountsSubController extends AbstractSubController {
                     Feed::item('system', date('d/m/Y', strtotime($invest->invested)))
             )));
             $log->doAdmin('admin');
-            Model\Invest::setDetail($invest->id, 'manually-executed', $log->html);
+            Invest::setDetail($invest->id, 'manually-executed', $log->html);
         }
 
         return $this->redirect();
     }
 
 
-    // reubicando aporte,
-    public function moveAction($id) {
-        // el aporte original
-        $original = Model\Invest::get($id);
-        $userData = Model\User::getMini($original->user);
-        $projectData = Model\Project::getMini($original->project);
-
-        //el original tiene que ser de tpv o cash y estar como 'cargo ejecutado'
-        if ($original->method == 'paypal' || $original->status != 1) {
-            Message::error('No se puede reubicar este aporte!');
-            return $this->redirect('/admin/accounts');
-        }
-
-
-        // generar aporte manual y caducar el original
-        if ($this->isPost() && $this->hasPost('move'))  {
-            $errors = array();
-
-            // si falta proyecto, error
-
-            $projectNew = $this->getPost('project');
-
-            // @TODO a saber si le toca dinero de alguna convocatoria
-            $campaign = null;
-
-            $invest = new Model\Invest(
-                array(
-                    'amount'    => $original->amount,
-                    'user'      => $original->user,
-                    'project'   => $projectNew,
-                    'account'   => $userData->email,
-                    'method'    => 'cash',
-                    'status'    => '1',
-                    'invested'  => date('Y-m-d'),
-                    'charged'   => $original->charged,
-                    'anonymous' => $original->anonymous,
-                    'resign'    => $original->resign,
-                    'admin'     => $this->user->id,
-                    'campaign'  => $campaign
-                )
-            );
-            //@TODO si el proyecto seleccionado
-
-            if ($invest->save($errors)) {
-
-                //recompensas que le tocan (si no era resign)
-                if (!$original->resign) {
-                    // sacar recompensas
-                    $rewards = Model\Project\Reward::getAll($projectNew, 'individual');
-
-                    foreach ($rewards as $rewId => $rewData) {
-                        $invest->addReward($rewId); //asignar
-                    }
-                }
-
-                // cambio estado del aporte original a 'Reubicado' (no aparece en cofinanciadores)
-                // si tuviera que aparecer lo marcaríamos como caducado
-                if ($original->setStatus('5')) {
-
-                    // mantenimiento de registros relacionados (usuario, proyecto, ...)
-                    $original->keepUpdated();
-
-                    // Evento Feed
-                    $log = new Feed();
-                    $log->setTarget($projectData->id);
-                    $log->populate('Aporte reubicado', '/admin/accounts',
-                        \vsprintf("%s ha aportado %s al proyecto %s en nombre de %s", array(
-                            Feed::item('user', $this->user->name, $this->user->id),
-                            Feed::item('money', $invest->amount.' &euro;'),
-                            Feed::item('project', $projectData->name, $projectData->id),
-                            Feed::item('user', $userData->name, $userData->id)
-                    )));
-                    $log->doAdmin('money');
-
-                    Message::info('Aporte reubicado correctamente');
-                    return $this->redirect('/admin/accounts');
-                } else {
-                    Message::error('A fallado al cambiar el estado del aporte original ('.$original->id.')');
-                }
-            } else{
-                Message::error('Ha fallado algo al reubicar el aporte');
-            }
-
-        }
-
-        return array(
-            'template' => 'admin/accounts/move',
-            'original' => $original,
-            'user'     => $userData,
-            'project'  => $projectData
-        );
-    }
-
-
     // aportes manuales, cargamos la lista completa de usuarios, proyectos y campañas
     public function addAction() {
         // listado de proyectos en campaña
-        $projects = Model\Project::active(false, true);
+        $projects = Project::active(false, true);
         // usuarios
         // TODO: aaaaarrrrrgggggghhhhh!!!!! unlimited!!!
-        $users = Model\User::getAllMini();
+        $users = User::getAllMini();
         // campañas
         $calls = Model\Call::getAll();
 
@@ -548,10 +454,10 @@ class AccountsSubController extends AbstractSubController {
         // TODO: reformular esto con eventos y metodo cash
         if ($this->isPost()) {
 
-            $userData = Model\User::getMini($this->getPost('user'));
-            $projectData = Model\Project::getMini($this->getPost('project'));
+            $userData = User::getMini($this->getPost('user'));
+            $projectData = Project::getMini($this->getPost('project'));
 
-            $invest = new Model\Invest(
+            $invest = new Invest(
                 array(
                     'amount'    => $this->getPost('amount'),
                     'user'      => $userData->id,
@@ -590,7 +496,7 @@ class AccountsSubController extends AbstractSubController {
                 $log->doAdmin('money');
                 unset($log);
 
-                Model\Invest::setDetail($invest->id, 'admin-created', 'Este aporte ha sido creado manualmente por el admin ' . $this->user->name);
+                Invest::setDetail($invest->id, 'admin-created', 'Este aporte ha sido creado manualmente por el admin ' . $this->user->name);
                 Message::info('Aporte manual creado correctamente, seleccionar recompensa y dirección de entrega.');
                 return $this->redirect('/admin/rewards/edit/'.$invest->id);
             } else{
@@ -613,13 +519,13 @@ class AccountsSubController extends AbstractSubController {
     public function updateAction($id) {
 
         // el aporte original
-        $invest = Model\Invest::get($id);
-        if (!$invest instanceof Model\Invest) {
+        $invest = Invest::get($id);
+        if (!$invest instanceof Invest) {
             Message::error('No tenemos registro del aporte '.$id);
             return $this->redirect('/admin/accounts');
         }
 
-        $status = Model\Invest::status();
+        $status = Invest::status();
 
         $new = $this->hasPost('status') ? $this->getPost('status') : null;
 
@@ -627,14 +533,14 @@ class AccountsSubController extends AbstractSubController {
 
             // si estan desmarcando incidencia
             if ($invest->issue && $this->getPost('resolve') == 1) {
-                Model\Invest::unsetIssue($id);
-                Model\Invest::setDetail($id, 'issue-solved', 'La incidencia se ha dado por resuelta por el usuario ' . $this->user->name);
+                Invest::unsetIssue($id);
+                Invest::setDetail($id, 'issue-solved', 'La incidencia se ha dado por resuelta por el usuario ' . $this->user->name);
                 Message::info('La incidencia se ha dado por resuelta');
             }
 
             if ($new != $invest->status && isset($new) && isset($status[$new])) {
-                if (Model\Invest::query("UPDATE invest SET status=:status WHERE id=:id", array(':id'=>$id, ':status'=>$new))) {
-                    Model\Invest::setDetail($id, 'status-change'.rand(0, 9999), 'El admin ' . $this->user->name . ' ha cambiado el estado a '.$status[$new]);
+                if (Invest::query("UPDATE invest SET status=:status WHERE id=:id", array(':id'=>$id, ':status'=>$new))) {
+                    Invest::setDetail($id, 'status-change'.rand(0, 9999), 'El admin ' . $this->user->name . ' ha cambiado el estado a '.$status[$new]);
                     Message::info('Se ha actualizado el estado del aporte');
                 } else {
                     Message::error('Ha fallado al actualizar el estado del aporte');
@@ -657,13 +563,13 @@ class AccountsSubController extends AbstractSubController {
    // resolviendo incidencias
     public function solveAction($id) {
         // el aporte original
-        $invest = Model\Invest::get($id);
-        if (!$invest instanceof Model\Invest) {
+        $invest = Invest::get($id);
+        if (!$invest instanceof Invest) {
             Message::error('No tenemos registro del aporte '.$id);
             return $this->redirect('/admin/accounts');
         }
-        $projectData = Model\Project::getMini($invest->project);
-        $userData =  Model\User::get($invest->user);
+        $projectData = Project::getMini($invest->project);
+        $userData =  User::get($invest->user);
 
         $errors = array();
 
@@ -762,13 +668,13 @@ class AccountsSubController extends AbstractSubController {
     // detalles de una transaccion
     public function detailsAction($id) {
         // estados del proyecto
-        $projectStatus = Model\Project::status();
+        $projectStatus = Project::status();
         // estados de aporte
-        $investStatus = Model\Invest::status();
-        $invest = Model\Invest::get($id);
+        $investStatus = Invest::status();
+        $invest = Invest::get($id);
         $project = $invest->getProject();
-        $userData = Model\User::get($invest->user);
-        $methods = Model\Invest::methods();
+        $userData = User::get($invest->user);
+        $methods = Invest::methods();
         return array(
                 'template' => 'admin/accounts/details',
                 'invest'=>$invest,
@@ -782,11 +688,11 @@ class AccountsSubController extends AbstractSubController {
 
 
     public function switchresignAction($id) {
-        $invest = Model\Invest::get($id);
+        $invest = Invest::get($id);
         if ($invest) {
             if ($invest->switchResign()) {
                 if($invest->resign) {
-                    Model\Invest::setDetail($invest->id, 'manually-resigned', 'Se ha marcado como donativo independientemente de las recompensas');
+                    Invest::setDetail($invest->id, 'manually-resigned', 'Se ha marcado como donativo independientemente de las recompensas');
                 }
             } else {
                 Message::error('Ha fallado al marcar donativo');
@@ -800,17 +706,17 @@ class AccountsSubController extends AbstractSubController {
 
     public function listAction() {
         // tipos de aporte
-        $methods = Model\Invest::methods();
+        $methods = Invest::methods();
         // estados del proyecto
-        $projectStatus = Model\Project::status();
-        $procStatus = Model\Project::procStatus();
+        $projectStatus = Project::status();
+        $procStatus = Project::procStatus();
         // estados de aporte
-        $investStatus = Model\Invest::status();
+        $investStatus = Invest::status();
         // listado de proyectos
         // TODO: esto cambiar a getList de proyectos y convocatorias respectivamente
-        $projects = Model\Invest::projects();
+        $projects = Invest::projects();
         // campañas que tienen aportes
-        $calls = Model\Invest::calls();
+        $calls = Invest::calls();
 
         // extras
         $types = array(
@@ -839,9 +745,9 @@ class AccountsSubController extends AbstractSubController {
         // listado de aportes
         $limit = 25;
         $node = null;
-        $total = Model\Invest::getList($filters, $node, 0, 0, true);
-        $total_money = Model\Invest::getList($filters, $node, 0, 0, 'money');
-        $list = Model\Invest::getList($filters, $node, $this->getGet('pag') * $limit, $limit);
+        $total = Invest::getList($filters, $node, 0, 0, true);
+        $total_money = Invest::getList($filters, $node, 0, 0, 'money');
+        $list = Invest::getList($filters, $node, $this->getGet('pag') * $limit, $limit);
 // print_r($list);die("$total $total_money");
         $viewData = array(
                 'template' => 'admin/accounts/list',

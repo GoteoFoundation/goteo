@@ -159,3 +159,4 @@ tooltip-project-schedule: 'Visualización de cómo queda la agenda de producció
 regular-web: Web
 error-user-email-exists: 'Ya hay un usuario registrado con este email'
 regular-round: 'ª ronda'
+goteo-return-button: 'Volver a Goteo'

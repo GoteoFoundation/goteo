@@ -41,9 +41,9 @@ class TextUtils implements ExtensionInterface
         ];
     }
 
-    public function percent_span($percent, $decimals = 0) {
+    public function percent_span($percent, $decimals = 0, $text = '') {
         $percent = number_format( (float) $percent, $decimals, ',', '');
-        return '<span class="label label-percent" style="background-color:hsl(' . (120 * $percent/100) . ',45%,50%);">' . $percent .' %</span>';
+        return '<span class="label label-percent" style="background-color:hsl(' . (120 * $percent/100) . ',45%,50%);">' . ($text ? $text : "$percent %") .'</span>';
     }
     public function get()
     {

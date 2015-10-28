@@ -25,7 +25,7 @@ $sc->register('dev.listener.profiler', 'Goteodev\Profiler\EventListener\Profiler
 $sc->getDefinition('dispatcher')->addMethodCall('addSubscriber', array(new Reference('dev.listener.profiler')));
 
 // Adding grunt-livereload script
-$sc->register('dev.listener.livereload', 'Goteodev\Application\EventListener\LiveReload');
+$sc->register('dev.listener.livereload', 'Goteodev\Application\EventListener\LiveReloadListener');
 $sc->getDefinition('dispatcher')->addMethodCall('addSubscriber', array(new Reference('dev.listener.livereload')));
 
 

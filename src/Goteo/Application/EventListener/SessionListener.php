@@ -40,6 +40,11 @@ class SessionListener implements EventSubscriberInterface
 
         $request = $event->getRequest();
 
+        //non cookies for notifyAction on investController
+        if($request->attributes->get('_controller') == 'Goteo\Controller\InvestController::notifyPaymentAction') {
+            return;
+        }
+
         // Init session
         Session::start('goteo-'.Config::get('env'), Config::get('session.time'));
 
@@ -88,7 +93,12 @@ class SessionListener implements EventSubscriberInterface
 
         //not need to do anything on sub-requests
         //Only in html content-type
-        if (!$event->isMasterRequest() || false === stripos($response->headers->get('Content-Type'), 'text/html')) {
+        if (!$event->isMasterRequest() || false === stripos($response->headers->get('Content-Type'), 'text/html') || $request->isXmlHttpRequest()) {
+            return;
+        }
+
+        //non cookies for notifyAction on investController
+        if($request->attributes->get('_controller') == 'Goteo\Controller\InvestController::notifyPaymentAction') {
             return;
         }
 
@@ -113,7 +123,6 @@ class SessionListener implements EventSubscriberInterface
                 $event->setResponse($response);
             }
         }
-
     }
 
     public static function getSubscribedEvents()

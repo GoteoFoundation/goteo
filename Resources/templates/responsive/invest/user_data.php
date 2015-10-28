@@ -14,6 +14,8 @@ $invest = $this->invest;
 
 <?= $this->insert('invest/partials/project_info') ?>
 
+<?= $this->insert('invest/partials/steps_bar') ?>
+
 <div class="container">
 
 	<div class="row row-form">
@@ -36,7 +38,7 @@ $invest = $this->invest;
 				</div>
 			</div>
 	</div>
-	<?= $this->insert('invest/partials/steps_bar') ?>
+	
 </div>
 
 <?php $this->replace() ?>

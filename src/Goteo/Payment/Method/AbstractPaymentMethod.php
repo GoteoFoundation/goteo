@@ -77,11 +77,16 @@ abstract class AbstractPaymentMethod implements PaymentMethodInterface {
     }
 
     /**
-     * Should return if method must be registered but in a inactive state
-     * so it can be shown on the payment page as a temporary non-available method
-     * @return boolean status
+     * {@inheritdoc}
      */
     public function isActive($amount = 0) {
+        return true;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function isPublic($amount = 0) {
         return true;
     }
 
@@ -182,9 +187,21 @@ abstract class AbstractPaymentMethod implements PaymentMethodInterface {
     /**
      * {@inheritdoc}
      */
-    public function refund() {
-        // Let's obtain the gateway and the
+    public function refundable() {
+        // Let's obtain the gateway
         $gateway = $this->getGateway();
+        return $gateway->supportsRefund();
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function refund() {
+        // Let's obtain the gateway
+        $gateway = $this->getGateway();
+        if(!$gateway->supportsRefund()) {
+            throw new PaymentException("Refund not supported for method " . strtoupper(static::getId()));
+        }
         return $gateway->refund();
     }
 
@@ -193,6 +210,7 @@ abstract class AbstractPaymentMethod implements PaymentMethodInterface {
         $invest = $this->getInvest();
         return $request->getSchemeAndHttpHost() . '/invest/' . $invest->project . '/' . $invest->id . '/complete';
     }
+
     /**
      * Returns a description for the invest
      * @param  Invest $invest [description]

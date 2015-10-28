@@ -143,6 +143,7 @@ label.label-method:hover {
 
 label.label-disabled{
 	pointer-events: none;
+	opacity: 0.5;
 
 }
 
@@ -203,6 +204,10 @@ label.label-disabled{
 
 .margin-bottom-4{
 	margin-bottom: 4%;
+}
+
+.text-decoration-none{
+	text-decoration:none !important;
 }
 
 .reward{
@@ -312,7 +317,7 @@ hr.make-sure{
 
 /* Steps bar */
 
-.bs-wizard {margin-bottom: 40px;}
+.bs-wizard {margin-top: 40px;}
 
 /*Form Wizard*/
 .bs-wizard {border-bottom: solid 1px #e0e0e0; padding: 0 0 10px 0;}
@@ -405,6 +410,30 @@ div.jumbotron .project-owner a{
 
 	.label-method:hover{
 		font-weight: normal !important;
+	}
+
+}
+
+@media(max-width:767px){
+
+	.sm-display-none{
+		display: none;
+	}
+
+	.margin-2{
+		margin:2%;
+	}
+
+	.label-method:hover{
+		font-weight: normal !important;
+	}
+
+}
+
+@media (min-width: 480px) and (max-width: 600px) {
+
+	.label-method{
+		font-size: 0.9em !important;
 	}
 
 }

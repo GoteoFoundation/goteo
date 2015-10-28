@@ -21,6 +21,8 @@ use Symfony\Component\HttpFoundation\Request;
 use Goteo\Application\Config;
 use Goteo\Application\Session;
 use Goteo\Application\View;
+use Symfony\Component\EventDispatcher\Event;
+use Goteo\Application\App;
 
 abstract class AbstractSubController {
     protected $request;
@@ -279,6 +281,20 @@ abstract class AbstractSubController {
     }
 
     /**
+     * Handy method to get the getService function
+     */
+    public function getService($service) {
+        return App::getService($service);
+    }
+
+    /**
+     * Handy method to get the dispatch function
+     */
+    public function dispatch($eventName, Event $event = null) {
+        return App::dispatch($eventName, $event);
+    }
+
+    /**
      * Returns a response for a view with passed data
      * @param  [type] $view [description]
      * @param  array  $data [description]
@@ -287,6 +303,7 @@ abstract class AbstractSubController {
     public function response($view, $data = []) {
         return new Response(View::render($view, $data));
     }
+
     public function jsonResponse($data = []) {
         return new JsonResponse($data);
     }

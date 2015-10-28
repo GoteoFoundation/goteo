@@ -45,7 +45,7 @@ class Config {
             }
             // load translations
             // Initial groups
-            $groups = ['home', 'public_profile', 'project' , 'form'    , 'profile' , 'personal', 'overview', 'costs'   , 'rewards' , 'supports', 'preview' , 'dashboard', 'register', 'login'   , 'discover' , 'community' , 'general' , 'blog' , 'faq' , 'contact' , 'widget' , 'invest' , 'types', 'banners', 'footer', 'social', 'review', 'translate', 'menu', 'feed', 'mailer', 'bluead', 'error', 'wof', 'node_public', 'contract', 'donor', 'text_groups' ];
+            $groups = ['home', 'public_profile', 'project' , 'form'    , 'profile' , 'personal', 'overview', 'costs'   , 'rewards' , 'supports', 'preview' , 'dashboard', 'register', 'login'   , 'discover' , 'community' , 'general' , 'blog' , 'faq' , 'contact' , 'widget' , 'invest' , 'types', 'banners', 'footer', 'social', 'review', 'translate', 'menu', 'feed', 'mailer', 'bluead', 'error', 'wof', 'node_public', 'contract', 'donor', 'text_groups', 'admin' ];
             foreach(Lang::listAll('name', false) as $lang => $name) {
                 Lang::addSqlTranslation($lang);
                 foreach($groups as $group) {
@@ -150,6 +150,8 @@ class Config {
         \Goteo\Payment\Payment::addMethod('Goteo\Payment\Method\PoolPaymentMethod');
         // Adding Paypal payment method
         \Goteo\Payment\Payment::addMethod('Goteo\Payment\Method\PaypalPaymentMethod');
+        // Adding Cash non-public payment method (manual admin investions)
+        \Goteo\Payment\Payment::addMethod('Goteo\Payment\Method\CashPaymentMethod', true);
 
         // Plugins overwritting
         foreach(self::getPlugins() as $plugin => $vars) {

@@ -12,6 +12,8 @@ $this->section('content');
 
 <?= $this->insert('invest/partials/project_info') ?>
 
+<?= $this->insert('invest/partials/steps_bar') ?>
+
 <div class="container">
 
 	<div class="row row-form">
@@ -36,6 +38,11 @@ $this->section('content');
 				    			<i class="fa fa-facebook"></i> <?= $this->text('spread-twitter') ?>
 				  			</a>
 				  		</div>
+				  		<div class="col-sm-5 margin-2 visible-xs">
+							<a href="<?= SITE_URL ?>" class="text-decoration-none" >
+								<button type="button" class="btn btn-block btn-success" value=""><?= $this->text('goteo-return-button') ?></button>
+				  			</a>
+				  		</div>
 			  		</div>
 
 			  		<hr class="share">
@@ -55,7 +62,7 @@ $this->section('content');
 				</div>
 			</div>
 	</div>
-	<?= $this->insert('invest/partials/steps_bar') ?>
+	
 </div>
 
 <?php $this->replace() ?>

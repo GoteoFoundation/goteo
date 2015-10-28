@@ -1,4 +1,4 @@
-<div class="row bs-wizard" style="border-bottom:0;">
+<div class="row bs-wizard hidden-xs" style="border-bottom:0;">
 
     <?php for($i=1;$i<5;$i++): 
       if($i<$this->step)

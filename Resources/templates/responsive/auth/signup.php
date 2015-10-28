@@ -13,7 +13,7 @@ $this->section('content');
 	<div class="row row-form">
 			<div class="panel panel-default panel-form">
 				<div class="panel-body">
-					<h2 class="col-md-offset-1 padding-bottom-6">Registrar</h2>
+					<h2 class="col-md-offset-1 padding-bottom-6"> <?= $this->text('register-form-title') ?></h2>
 
                     <?= $this->supply('sub-header', $this->get_session('sub-header')) ?>
 
@@ -59,7 +59,7 @@ $this->section('content');
 							<div class="col-md-10 col-md-offset-1">
 								<div class="checkbox">
 									<label>
-										<input type="checkbox" class="no-margin-checkbox" name="remember">
+										<input type="checkbox" id="register_accept" class="no-margin-checkbox" name="remember">
 											<p class="label-checkbox">
 											<?= $this->text('login-register-conditions') ?>
 											</p>
@@ -70,8 +70,8 @@ $this->section('content');
 
 						<div class="form-group">
 							<div class="col-md-10 col-md-offset-1">
-								<button type="submit" class="btn btn-success">Regístrate</button>
-								<a class="btn btn-link" href="/login?return=<?= urlencode($this->get_query('return')) ?>">¿Ya estás registrado?</a>
+								<button type="submit" id="register_continue" disabled="disabled" class="btn btn-success"><?= $this->text('register-button-title') ?></button>
+								<a class="btn btn-link" href="/login?return=<?= urlencode($this->get_query('return')) ?>"><?= $this->text('register-question') ?></a>
 							</div>
 						</div>
 
@@ -87,4 +87,22 @@ $this->section('content');
 	</div>
 </div>
 
+
 <?php $this->replace() ?>
+
+<?php $this->section('footer') ?>
+
+<script type='text/javascript'>
+
+$(function() {
+	
+  $('#register_accept').change(function() {
+  	    $('#register_continue').attr('disabled', !this.checked);
+
+  });
+
+})
+
+</script>
+
+<?php $this->append() ?>

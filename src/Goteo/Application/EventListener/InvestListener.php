@@ -60,6 +60,7 @@ class InvestListener implements EventSubscriberInterface
         $invest = $method->getInvest();
         $reward = $invest->getFirstReward();
         App::getService('paylogger')->info('INVEST INIT REDIRECT: ' . $invest->id . ' METHOD: ' . $method::getId() . ' PROJECT: ' . $invest->project . ' USER: ' . Session::getUserId());
+        Invest::setDetail($invest->id, 'init-redirect', 'Redirecting to payment gateway');
 
         // Goto payment platform...
 
@@ -67,8 +68,6 @@ class InvestListener implements EventSubscriberInterface
         if(!$event->getHttpResponse()) {
             $event->setHttpResponse($response->getRedirectResponse());
         }
-
-        Invest::setDetail($invest->id, 'init-redirect', 'Redirecting to payment gateway');
     }
 
     public function onInvestComplete (FilterInvestInitEvent $event)
@@ -143,6 +142,8 @@ class InvestListener implements EventSubscriberInterface
         // Message
         Message::error("Payment [{$invest->method}] failed!");
 
+        Invest::setDetail($invest->id, 'confirm-fail', 'Invest process failed. Gateway error: ' . $response->getMessage());
+
         // Assign response if not previously assigned
         // Goto user start
         if(!$event->getHttpResponse()) {
@@ -150,7 +151,6 @@ class InvestListener implements EventSubscriberInterface
         }
 
 
-        Invest::setDetail($invest->id, 'confirm-fail', 'Invest process failed. Gateway error: ' . $response->getMessage());
     }
 
     public function onInvestSuccess(FilterInvestRequestEvent $event)
@@ -207,11 +207,12 @@ class InvestListener implements EventSubscriberInterface
         // Goto User data fill
         Message::info('Payment completed successfully');
 
+        Invest::setDetail($invest->id, 'confirmed', 'Invest process completed successfully');
+
         // Assign response if not previously assigned
         if(!$event->getHttpResponse()) {
             $event->setHttpResponse(new RedirectResponse('/invest/' . $invest->project . '/' . $invest->id));
         }
-        Invest::setDetail($invest->id, 'confirmed', 'Invest process completed successfully');
     }
 
     /**
@@ -224,7 +225,7 @@ class InvestListener implements EventSubscriberInterface
         $invest = $event->getInvest();
         App::getService('paylogger')->info('INVEST REFUND CANCEL: ' . $invest->id . ' METHOD: ' . $method::getId() . ' PROJECT: ' . $invest->project . ' USER: ' . Session::getUserId());
         if($invest->cancel(false)) {
-            Invest::setDetail($invest->id, $method::getId() .'-cancel', 'Invest process cancelled successfully');
+            Invest::setDetail($invest->id, $method::getId() .'-cancel', 'Invest process manually cancelled successfully');
             // update cached data
             $invest->keepUpdated();
         }
@@ -262,7 +263,7 @@ class InvestListener implements EventSubscriberInterface
         $method = $event->getMethod();
         $invest = $event->getInvest();
         $response = $event->getResponse();
-        App::getService('paylogger')->info('INVEST REFUND FAILED: ' . $invest->id . ' METHOD: ' . $method::getId() . ' PROJECT: ' . $invest->project . ' USER: ' . Session::getUserId());
+        App::getService('paylogger')->info('INVEST REFUND FAILED: ' . $invest->id . ' METHOD: ' . $method::getId() . ' PROJECT: ' . $invest->project . ' USER: ' . Session::getUserId(). ' MESSAGE: ' . $response->getMessage());
         Invest::setDetail($invest->id, $method::getId() .'-return-fail', 'Error while refunding invest: ' . $response->getMessage());
 
     }
@@ -278,6 +279,7 @@ class InvestListener implements EventSubscriberInterface
             AppEvents::INVEST_FAILED => 'onInvestFailed',
             AppEvents::INVEST_SUCCEEDED => 'onInvestSuccess',
             AppEvents::INVEST_CANCELLED => 'onInvestRefundCancel',
+            AppEvents::INVEST_CANCEL_FAILED => 'onInvestRefundFailed', // same action as return at this moment
             AppEvents::INVEST_RETURNED => 'onInvestRefundReturn',
             AppEvents::INVEST_RETURN_FAILED => 'onInvestRefundFailed',
         );

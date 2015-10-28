@@ -28,12 +28,12 @@ Config::load();
 // TODO: mock service container logger...
 
 
-//SQL cleaning
-foreach(file(__DIR__ . '/sql_cleaner.sql') as $sql) {
-    $sql = trim($sql);
-    echo "SQL Cleaning: $sql\n";
-    \Goteo\Core\Model::query($sql);
-}
+// //SQL cleaning
+// foreach(file(__DIR__ . '/sql_cleaner.sql') as $sql) {
+//     $sql = trim($sql);
+//     echo "SQL Cleaning: $sql\n";
+//     \Goteo\Core\Model::query($sql);
+// }
 delete_test_project();
 delete_test_user();
 delete_test_node();

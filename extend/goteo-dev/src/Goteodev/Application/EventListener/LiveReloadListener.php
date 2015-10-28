@@ -15,7 +15,7 @@ use Symfony\Component\HttpKernel\KernelEvents;
 use Symfony\Component\HttpKernel\Event;
 use Symfony\Component\HttpFoundation\Response;
 
-class LiveReload implements EventSubscriberInterface
+class LiveReloadListener implements EventSubscriberInterface
 {
 
     public function onKernelResponse(Event\FilterResponseEvent $event) {
@@ -27,6 +27,10 @@ class LiveReload implements EventSubscriberInterface
             return;
         }
 
+        //non cookies for notifyAction on investController
+        if($request->attributes->get('_controller') == 'Goteo\Controller\InvestController::notifyPaymentAction') {
+            return;
+        }
 
         $html  = "\n\t<!-- Debug Javascript for developers -->\n\t";
         $html .= '<script src="//' . $request->getHost() . ':35729/livereload.js"></script>';

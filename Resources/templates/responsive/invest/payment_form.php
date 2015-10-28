@@ -14,6 +14,8 @@ $pay_method = $this->pay_method;
 
 <?= $this->insert('invest/partials/project_info') ?>
 
+<?= $this->insert('invest/partials/steps_bar') ?>
+
 <div class="container">
 
 	<div class="row row-form">
@@ -59,7 +61,7 @@ $pay_method = $this->pay_method;
 				</div>
 			</div>
 	</div>
-    <?= $this->insert('invest/partials/steps_bar') ?>
+    
 </div>
 
 <?php $this->replace() ?>

@@ -10,25 +10,24 @@
 
 namespace Goteodev\Payment;
 
-use Goteo\Payment\Method\AbstractPaymentMethod;
 use Symfony\Component\HttpFoundation\Response;
-use Goteo\Library\Currency;
 use Omnipay\Common\Message\ResponseInterface;
+
+use Goteo\Payment\Method\AbstractPaymentMethod;
+use Goteo\Library\Currency;
+use Goteo\Util\Omnipay\Message\EmptyFailedResponse;
+use Goteo\Util\Omnipay\Message\EmptySuccessfulResponse;
 
 /**
  * This class is just an example and must NOT be used in production
  * Creates a Payment Method that does nothing!
- * Does not use Ommipay
+ * Does not use Omnipay
  */
 class DummyPaymentMethod extends AbstractPaymentMethod {
     private $simulating_gateway = false;
 
     public function getGatewayName() {
         return 'Dummy';
-    }
-
-    static public function getid() {
-        return 'dummy';
     }
 
     public function getName() {
@@ -90,7 +89,7 @@ class DummyPaymentMethod extends AbstractPaymentMethod {
 
     public function purchase() {
         $this->simulating_gateway = true;
-        return new MockResponse();
+        return new EmptyFailedResponse();
     }
 
     public function completePurchase() {
@@ -118,21 +117,7 @@ class DummyPaymentMethod extends AbstractPaymentMethod {
         return $payment->send();
     }
 
-}
-
-class MockResponse implements ResponseInterface {
-    public function getData() {}
-    public function getRequest() {}
-
-    public function isSuccessful(){return false;}
-
-    public function isRedirect() {return true;}
-
-    public function isCancelled(){}
-
-    public function getMessage(){}
-
-    public function getCode(){}
-
-    public function getTransactionReference() {}
+    public function refund() {
+        return new EmptySuccessfulResponse();
+    }
 }

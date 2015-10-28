@@ -11,6 +11,8 @@ $this->section('content');
 
 <?= $this->insert('invest/partials/project_info') ?>
 
+<?= $this->insert('invest/partials/steps_bar') ?>
+
 <div class="container">
 
 	<div class="row row-form">
@@ -39,7 +41,7 @@ $this->section('content');
 			</div>
 
 	</div>
-<?= $this->insert('invest/partials/steps_bar') ?>
+
 </div>
 
 
