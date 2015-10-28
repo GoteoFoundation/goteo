@@ -70,7 +70,9 @@ img a {
 
 <div style="font-size:12px; color:#20B3B2; padding-top:10px; padding-bottom:10px;"><a href="<?= $this->get_config('url.main') ?>" style="color:#20B3B2; text-decoration:none;">www.goteo.org</a></div>
 
-<a class="btn-support" href="https://fundacion.goteo.org/donaciones/"><?= $this->text('support-our-mission') ?></a>
+<a class="btn-support" style="background: #16A5A3; background-image: -webkit-linear-gradient(top, #16A5A3, #24837F); background-image: -moz-linear-gradient(top, #16A5A3, #24837F); background-image: -ms-linear-gradient(top, #16A5A3, #24837F); background-image: -o-linear-gradient(top, #16A5A3, #24837F); background-image: linear-gradient(to bottom, #16A5A3, #24837F); -webkit-border-radius: 11; -moz-border-radius: 11; border-radius: 6px; font-family: Arial; color: #ffffff; font-size: 15px; padding: 10px 20px 10px 20px; text-decoration: none; float:right; margin-top: 48px;" href="https://fundacion.goteo.org/donaciones/">
+  <?= $this->text('support-our-mission') ?>
+</a>
 <div style="color:#E32526; font-size:14px; padding-top:5px; text-transform: uppercase;"><a href="<?= $this->get_config('url.main') . '/discover' ?>" style="color:#E32526; text-decoration:none;"><?= $this->text('regular-discover') ?></a></div>
 <div style="color:#20B3B2; font-size:14px; padding-top:5px; padding-bottom:10px; text-transform: uppercase;"><a href="<?= $this->get_config('url.main') . '/project/create' ?>" style="color:#20B3B2; text-decoration:none;"><?= $this->text('regular-create') ?></a></div>
 
