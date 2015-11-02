@@ -90,6 +90,13 @@ class Lang {
                     'locale' => 'pt_PT',
                     'fallback' => 'en'
                     ),
+        'ar' => array(
+                    'name' => 'العربية',
+                    'short' => 'AR',
+                    'public' => false,
+                    'locale' => 'ar_MA',
+                    'fallback' => 'en'
+                    ),
     );
 
     // TODO: method to override by config??
