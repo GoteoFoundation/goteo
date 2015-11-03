@@ -45,7 +45,7 @@ class AclListener implements EventSubscriberInterface
                 $event->setResponse(new Response(View::render('errors/access_denied', ['msg' => 'Access denied', 'code' => $code], $code)));
                 return;
             }
-            $event->setResponse(new RedirectResponse(SEC_URL . '/user/login?return='.rawurlencode($uri)));
+            $event->setResponse(new RedirectResponse('/user/login?return='.rawurlencode($uri)));
             return;
         }
     }

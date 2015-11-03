@@ -80,7 +80,7 @@ elseif($order === '--pool') {
             $errors = array();
             if((bool)$value) {
                 //increment credit
-                Pool::add($invest, $errors);
+                Pool::refundInvest($invest, $errors);
                 if($errors) {
                     echo "ERRORS: " . implode("\n", $errors);
                     exit(1);

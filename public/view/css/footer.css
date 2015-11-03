@@ -244,9 +244,14 @@ div#footer div.social li.gplus a {
 	background-position:0 -66px;
 }
 
+div#footer div.social li.instagram a {
+    color: #125688;
+    background-position:0 -90px;
+}
+
 div#footer div.social li.rss a {
     color: #ee8226;
-	background-position:0 -89px;
+	background-position:0 -113px;
 }
 
 

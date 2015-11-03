@@ -36,8 +36,10 @@ class Cookie {
     }
 
     static function getDomain() {
-        $url = explode('//', Config::get('url.main'));
-        return end($url);
+        $url = Config::get('url.main');
+        if(strpos($url, '//') === 0) $url = "http:$url";
+        $host = parse_url($url, PHP_URL_HOST);
+        return $host;
     }
 
     /**
@@ -52,9 +54,13 @@ class Cookie {
         if(empty($ttl)) $ttl = self::DEFAULT_TTL;
         if (PHP_SAPI !== 'cli') {
             //delete previous cookie
+            setcookie($key, '', time() - 3600);
+            setcookie($key, '', time() - 3600, self::$path);
             setcookie($key, '', time() - 3600, self::$path, self::getDomain());
             //store cookie
             setcookie($key, $value, time() + $ttl, self::$path, self::getDomain());
+            // print_r($_COOKIE);
+            // die("$key : [".self::$path . '] ['. self::getDomain().'] ['.Config::get('url.main'));
         }
         return $_COOKIE[$key] = $value;
     }

@@ -18,7 +18,7 @@ $this->section('content');
 
                 <?= $this->supply('sub-header', $this->get_session('sub-header')) ?>
 
-				<form class="form-horizontal" role="form" method="POST" action="/login?return=<?= $this->return ?>">
+				<form class="form-horizontal" role="form" method="POST" action="/login?return=<?= urlencode($this->raw('return')) ?>">
 
 					<div class="form-group">
 						<div class="col-md-10 col-md-offset-1">
@@ -42,7 +42,7 @@ $this->section('content');
                             <a data-toggle="modal" data-target="#myModal" href=""><?= $this->text('login-recover-label') ?></a>
                         </div>
                         <div class="col-md-10 col-md-offset-1 standard-margin-top">
-                            <a href="/signup?return=<?= urlencode($this->get_query('return')) ?>"><?= $this->text('login-new-user-label') ?></a>
+                            <a href="/signup?return=<?= urlencode($this->raw('return')) ?>"><?= $this->text('login-new-user-label') ?></a>
 						</div>
 					</div>
 

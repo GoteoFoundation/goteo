@@ -116,7 +116,7 @@ class RewardsSubController extends AbstractSubController {
 
                 // dirección de envio para la recompensa
                 // y datos fiscales por si fuera donativo
-                $invest->address = (object) array(
+                $invest->address = array(
                     'name'     => $this->getPost('name'),
                     'nif'      => $this->getPost('nif'),
                     'address'  => $this->getPost('address'),

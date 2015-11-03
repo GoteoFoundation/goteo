@@ -22,6 +22,7 @@ use Goteo\Application\Message;
 use Goteo\Application\Config;
 use Goteo\Application\Session;
 use Goteo\Application\Event\FilterInvestRefundEvent;
+use Goteo\Util\Omnipay\Message\EmptySuccessfulResponse;
 use Goteo\Payment\Payment;
 use Goteo\Model\Invest;
 use Goteo\Model\User;
@@ -260,7 +261,7 @@ class AccountsSubController extends AbstractSubController {
             // Cancels the invest, discounts pool if needed
             if($this->cancelInvest($invest)) {
                 // Mark this invest as if the users has choosen not to use the pool on fail
-                $invest->setPoolOnFail(false);
+                if($invest->method != 'pool') $invest->setPoolOnFail(false);
 
                 if(is_null($amount)) {
                     Message::info(Text::get('admin-account-invest-user-refund-ok'));
@@ -297,8 +298,12 @@ class AccountsSubController extends AbstractSubController {
             if ($invest->cancel($returned)) {
                 // Mark this invest as if user choosed pool-on-fail
                 $invest->setPoolOnFail(true);
-                User\Pool::add($invest);
-                Message::info(Text::get('admin-account-invest-to-pool-ok', "{$invest->amount} $coin"));
+                if(User\Pool::refundInvest($invest)) {
+                    // Event invest success event
+                    $invest = $this->dispatch($returned ? AppEvents::INVEST_RETURNED : AppEvents::INVEST_CANCELLED, new FilterInvestRefundEvent($invest, $invest->getMethod(), new EmptySuccessfulResponse()))->getInvest();
+
+                    Message::info(Text::get('admin-account-invest-to-pool-ok', "{$invest->amount} $coin"));
+                }
                 // Evento Feed
                 $log = new Feed();
                 $log->setTarget($project->id)
@@ -343,7 +348,7 @@ class AccountsSubController extends AbstractSubController {
 
     public function executeAction($id) {
         $invest = Invest::get($id);
-        if (!$invest instanceof Invest || $invest->status != 0) {
+        if (!$invest instanceof Invest || $invest->status != Invest::STATUS_PENDING) {
             Message::error('Invest ['.$id.'] not found or wrong status!');
             return $this->redirect();
         }
@@ -521,7 +526,7 @@ class AccountsSubController extends AbstractSubController {
         // el aporte original
         $invest = Invest::get($id);
         if (!$invest instanceof Invest) {
-            Message::error('No tenemos registro del aporte '.$id);
+            Message::error(Text::get('admin-account-invalid-invest', $id));
             return $this->redirect('/admin/accounts');
         }
 
@@ -540,7 +545,7 @@ class AccountsSubController extends AbstractSubController {
 
             if ($new != $invest->status && isset($new) && isset($status[$new])) {
                 if (Invest::query("UPDATE invest SET status=:status WHERE id=:id", array(':id'=>$id, ':status'=>$new))) {
-                    Invest::setDetail($id, 'status-change'.rand(0, 9999), 'El admin ' . $this->user->name . ' ha cambiado el estado a '.$status[$new]);
+                    Invest::setDetail($id, 'status-change', 'El admin ' . $this->user->name . ' ha cambiado el estado a '.$status[$new]);
                     Message::info('Se ha actualizado el estado del aporte');
                 } else {
                     Message::error('Ha fallado al actualizar el estado del aporte');
@@ -565,9 +570,10 @@ class AccountsSubController extends AbstractSubController {
         // el aporte original
         $invest = Invest::get($id);
         if (!$invest instanceof Invest) {
-            Message::error('No tenemos registro del aporte '.$id);
+            Message::error(Text::get('admin-account-invalid-invest', $id));
             return $this->redirect('/admin/accounts');
         }
+
         $projectData = Project::getMini($invest->project);
         $userData =  User::get($invest->user);
 
@@ -675,10 +681,15 @@ class AccountsSubController extends AbstractSubController {
         $project = $invest->getProject();
         $userData = User::get($invest->user);
         $methods = Invest::methods();
+        $poolable = $invest->getMethod()->isPublic();
+        $refundable = $invest->getMethod()->refundable();
+
         return array(
                 'template' => 'admin/accounts/details',
                 'invest'=>$invest,
                 'project'=>$project,
+                'refundable' => $refundable,
+                'poolable' => $poolable,
                 'user'=>$userData,
                 'projectStatus'=>$projectStatus,
                 'investStatus'=>$investStatus,

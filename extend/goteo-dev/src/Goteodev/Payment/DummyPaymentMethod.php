@@ -117,6 +117,10 @@ class DummyPaymentMethod extends AbstractPaymentMethod {
         return $payment->send();
     }
 
+    public function refundable() {
+        return true;
+    }
+
     public function refund() {
         return new EmptySuccessfulResponse();
     }

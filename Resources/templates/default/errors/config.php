@@ -23,6 +23,15 @@ $file = $path .'/config/settings.yml';
 </div>
 
 <div id="main">
+
+<?php if($this->info): ?>
+    <div class="widget">
+    <p>Error info:</p>
+    <div style="padding:10px;border:1px solid #999999;font-family:Consolas,Monaco,Lucida Console,Liberation Mono,DejaVu Sans Mono,Bitstream Vera Sans Mono,Courier New, monospace;
+"><?= $this->raw('info'); ?></div>
+<?php endif ?>
+
+    </div>
 <?php if(basename($this->file) == 'settings.yml'): ?>
     <div class="widget">
     <p>Your <b><?= $file ?></b> seems incomplete or erroneous</p>
@@ -31,6 +40,8 @@ $file = $path .'/config/settings.yml';
 "><?= htmlspecialchars(file_get_contents($path . '/config/demo-settings.yml')); ?></pre>
     </div>
 <?php endif ?>
+
+
 </div>
 
 </body>

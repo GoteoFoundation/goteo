@@ -3,18 +3,18 @@ bazar-spread-text: '%s - Esta Navidad, regala crowdfunding abierto y para el bie
 faq-payment-method: '<a href="/faq/investors#q2" target="_blank">¿Qué sistemas de pago ofrece Goteo? ¿Son seguros?</a>'
 invest-called-allready: 'A este proyecto ya le has dado <span class="riego">Capital Riego</span> de la campaña <span class="call">%s</span>, no obtendrá más <span class="riego">Capital Riego</span> por tus aportes'
 invest-called-nodrop: 'Actualmente no hay <span class="riego">Capital Riego</span> disponible en la campaña <span class="call">%s</span>'
-invest-mail_info-drop: 'Además, %s ha aportado %s &euro; de capital riego a través de la campaña %s'
+invest-mail_info-drop: 'Además, %s ha aportado %s de capital riego a través de la campaña %s'
 project-invest-fail: 'Algo ha fallado, por favor inténtalo de nuevo'
 invest-address-fail: 'Hay campos vacíos o con errores, comprueba el formulario para que puedas recibir tu recompensa!'
 invest-fiscal-fail: 'Hay campos vacíos o con errores, comprueba el formulario fiscal para que puedas desgravar tu aporte!'
 invest-button: Aportar
 invest-amount: Cantidad
-invest-address-location-field: 'Ciudad:'
-invest-address-zipcode-field: 'Código postal:'
+invest-address-location-field: 'Ciudad'
+invest-address-zipcode-field: 'Código postal'
 invest-social-header: 'Con los retornos colectivos ganamos tod@s'
 spread-facebook: 'Difunde en Facebook'
 spread-twitter: 'Difunde en Twitter'
-invest-address-address-field: 'Dirección:'
+invest-address-address-field: 'Dirección'
 invest-pool-available: disponibles
 invest-amount-in-pool: Tienes %s en tu monedero virtual
 invest-address-header: 'Dónde quieres recibir la recompensa (sólo en caso de envíos postales)'
@@ -42,9 +42,9 @@ invest-alert-lackdrop: 'No queda suficiente Capital riego para cubrir tu aportac
 investing_closed: 'No se permiten más aportes en esta campaña.'
 invest-pool-error: 'No tienes suficiente dinero en tu monedero virtual'
 invest-address-namedest-field: 'Nombre del destinatario'
-invest-address-name-field: 'Nombre y apellidos:'
-invest-address-nif-field: 'Número de NIF / NIE / VAT:'
-invest-address-country-field: 'País:'
+invest-address-name-field: 'Nombre y apellidos'
+invest-address-nif-field: 'Número de NIF / NIE / VAT'
+invest-address-country-field: 'País'
 invest-next_step: 'Paso siguiente'
 invest-paypal-method: Paypal
 currency-alert: "Por favor, ten en cuenta que la gestión es en EUR. \r\nVas a pagar aproximadamente <span id=\"reminder_conversion\">%s</span> € <a href=\"/faq/investors#q115\" target=\"_blank\">Más info</a>"
@@ -89,5 +89,6 @@ invest-status-cancelled: 'Cancelado'
 invest-status-paid: 'Pagado al proyecto'
 invest-status-returned: 'Devuelto (archivado)'
 invest-status-relocated: 'Reubicado'
+invest-make-sure-save: 'Guardar'
 
 

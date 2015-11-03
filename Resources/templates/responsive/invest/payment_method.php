@@ -17,16 +17,18 @@ $this->section('content');
 <div class="container">
 
 	<div class="row row-form">
-			<div class="panel panel-default select-method">
+			<div class="panel panel-default invest-container">
 				<div class="panel-body">
-					<h2 class="col-md-offset-1 padding-bottom-2">Realiza tu aporte</h2>
+					<h2 class="col-md-offset-1 padding-bottom-2"><?= $this->text('invest-method-title') ?></h2>
 
 					<div class="col-md-10 col-md-offset-1 reminder">
-					<?= $this->text('invest-alert-investing') ?><span class="amount-reminder"><?= amount_format($this->amount) ?></span> <?= $this->text('invest-project') ?> <span class="uppercase"><?= $this->project->name ?></span>
-						<?php if($this->reward): ?>
-						<div>
+                        <div class="level-1">
+					       <?= $this->text('invest-alert-investing') ?><span class="amount-reminder"><?= amount_format($this->amount) ?></span> <?= $this->text('invest-project') ?> <span class="uppercase"><?= $this->project->name ?></span>
+						</div>
+                          <?php if($this->reward): ?>
+						<div class="level-2">
 							<?= $this->text('invest-alert-rewards') ?>
-	                        <strong class="uppercase"><?= $this->reward->reward ?></strong>
+	                        <strong class="text-uppercase"><?= $this->reward->reward ?></strong>
 						</div>
 					<?php endif; ?>
 					</div>
@@ -41,8 +43,8 @@ $this->section('content');
 
                     <?php foreach($this->pay_methods as $method => $pay): ?>
                         <div class="col-xxs-6 col-tn-6 col-xs-3 pay-method<?= $pay->isActive() ? '' : ' disabled' ?>">
-                            <label class="label-method <?= $pay->isActive($this->amount) ? '' : 'label-disabled' ?>" for="<?= $method ?>-method">
-                                <input name="method" id="<?= $method ?>-method"<?= $this->default_method == $method ? ' checked' : '' ?> <?= $pay->isActive($this->amount) ? '' : ' disabled="disabled"' ?> value="<?= $method ?>" type="radio">
+                            <label class="label-method <?= $pay->isActive($this->amount) ? '' : 'label-disabled' ?> <?= $this->default_method == $method ? ' method-choosen' : '' ?>" for="<?= $method ?>-method">
+                                <input class="method" name="method" id="<?= $method ?>-method"<?= $this->default_method == $method ? ' checked' : '' ?> <?= $pay->isActive($this->amount) ? '' : ' disabled="disabled"' ?> value="<?= $method ?>" type="radio">
                                 <span class="method-text">
                                 <?= $pay->getName() ?>
                                 </span>
@@ -137,5 +139,19 @@ $(function(){
 <?php endif ?>
 
 });
+
+
+
+$(':radio').change(function(){
+    var id = $(this).attr('id');
+    $(this).closest( "label" ).addClass( "method-choosen" );
+    $(".method:not(#" + id + ")").each(function(){
+        $(this).closest( "label" ).removeClass( "method-choosen" );
+        $(this).prop('checked', false);
+    })
+
+});
+
+
 </script>
 <?php $this->append() ?>

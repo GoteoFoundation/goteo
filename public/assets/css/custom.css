@@ -12,13 +12,39 @@
 
  body{
  	background-color: #E7E7E7 !important;
+ 	font-family: "Liberation Sans",Helvetica,"Helvetica Neue",Arial,Geneva,sans-serif !important;
+ 	color:#58595B;
  }
 
  /* For the message alerts */
 
  .custom-close{
  	font-size:30px !important;
+ 	opacity: 0.9 !important;
+ 	color: #FFF !important;
  }
+
+ .alert{
+ 	font-size: 16px !important;
+ 	color: #FFF;
+ }
+
+ .alert-danger {
+    background-color: #B32928;
+	
+    border-color: #B32928 !important;   
+}
+
+ .alert-success{
+ 	background-color: #19B4B2;
+ 	border-color: #19B4B2 !important;  
+ }
+
+
+
+
+
+
 
 /*Navbar */
 
@@ -105,11 +131,20 @@
 }
 
 .reminder{
-	background-color: #E9F4EA;
-	padding: 3%;
-	font-size: 1em;
+	padding: 2.3% 3% 3%;
 	color: #58595B;
 	margin-bottom: 4%;
+	border-top: 3px solid #E7E7E7;
+	border-bottom: 3px solid #E7E7E7;
+}
+
+.reminder .level-1{
+	font-size:18px;
+}
+
+.reminder .level-2{
+	font-size:15px;
+	color:#B2B0B1
 }
 
 .reminder .amount-reminder{
@@ -119,7 +154,7 @@
 	margin-left: 5px;
 }
 
-.select-method{
+.invest-container{
 	max-width:800px;
 	margin: 0 auto;
 }
@@ -130,11 +165,21 @@
 	border-radius:10px;
 	font-weight: normal;
 	color: #58595B;
+	height: auto;
+	width:100% !important;
 }
 
 label.label-method:hover {
 
     cursor: pointer;
+    cursor: hand;
+    background-color:#2cb2b2 ;
+    font-weight: bold;
+    color:#FFF !important;
+}
+
+label.method-choosen{
+	cursor: pointer;
     cursor: hand;
     background-color:#2cb2b2 ;
     font-weight: bold;
@@ -179,6 +224,9 @@ label.label-disabled{
 }
 
 .img-method{
+	display: block;
+	max-width: 100%;
+	height: auto;
 	padding: 4% 10% 10%;
 }
 
@@ -199,6 +247,19 @@ label.label-disabled{
 .share{
 	max-width:650px;
 	margin: 0 auto;
+}
+
+h4.embed-code{
+	background: url("/view/css/social/embed.png") no-repeat scroll 0% 0% transparent;
+	min-height: 20px;
+	text-transform: uppercase;
+	padding: 3px 0px 0px 25px;
+	font-size:15px;
+}
+
+textarea.widget-code{
+	width:250px; 
+	height:130px;
 }
 
 
@@ -317,13 +378,21 @@ hr.make-sure{
 
 /* Steps bar */
 
-.bs-wizard {margin-top: 40px;}
+.bs-wizard {
+	margin-top: 40px;
+	max-width: 1030px;
+	margin: 0 auto;
+}
 
 /*Form Wizard*/
-.bs-wizard {border-bottom: solid 1px #e0e0e0; padding: 0 0 10px 0;}
+.bs-wizard {border-bottom: solid 1px #e0e0e0; }
+.bs-wizard > .active .bs-wizard-stepnum{
+	color:#20B3B2 !important;
+	font-weight: bold;
+}
 .bs-wizard > .bs-wizard-step {padding: 0; position: relative;}
 .bs-wizard > .bs-wizard-step + .bs-wizard-step {}
-.bs-wizard > .bs-wizard-step .bs-wizard-stepnum {color: #595959; font-size: 16px; margin-bottom: 5px;}
+.bs-wizard > .bs-wizard-step .bs-wizard-stepnum {color: #b2b0b1; font-size: 16px; margin-bottom: 5px;}
 .bs-wizard > .bs-wizard-step .bs-wizard-info {color: #999; font-size: 14px;}
 .bs-wizard > .bs-wizard-step > .bs-wizard-dot {position: absolute; width: 30px; height: 30px; display: block; background: #B5DADA; top: 45px; left: 50%; margin-top: -15px; margin-left: -15px; border-radius: 50%;}
 .bs-wizard > .bs-wizard-step > .bs-wizard-dot:after {content: ' '; width: 14px; height: 14px; background: #2FB6B5; border-radius: 50px; position: absolute; top: 8px; left: 8px; }
@@ -355,8 +424,12 @@ hr.make-sure{
 
 /* Project info bar */
 
+div.jumbotron{
+	margin-bottom: 40px;
+}
+
 div.jumbotron.project-info{
-	background-color: #E9F4EA; 
+	background: none repeat scroll 0% 0% #FAF8F8;
 	color: #58595B; 
 	padding-top:20px; 
 	padding-bottom:20px;
@@ -364,18 +437,55 @@ div.jumbotron.project-info{
 
 div.jumbotron .project-name{
 	padding-top: 0; 
-	margin-top: 10px;
+	margin-top: 0;
+	font-weight: bold;
+	font-size: 2em;
+	text-transform: uppercase;
+	margin-bottom: 5px;
+}
+
+div.jumbotron .project-subtitle{
+	font-size: 16px;
+	font-weight: 400;
+	font-style: normal;
+	margin-bottom: 5px;
 }
 
 div.jumbotron .project-owner{
-	color: #20B3B2 !important;
+	font-size: 12px !important;
 }
 
 div.jumbotron .project-owner a{
 
 	color: #20B3B2 !important;
+	font-weight: 400;
+	font-size: 12px !important;
+	text-decoration: none;
 
 }
+div.jumbotron .project-tags{
+
+	margin-left: 18px;
+	font-size: 12px;
+
+}
+
+div.jumbotron .project-tags a{
+	text-decoration: none;
+	font-size: 12px;
+	color: #58595B;
+	}
+
+div.jumbotron .project-tags:before {
+    content: "";
+    display: block;
+    width: 13px;
+    height: 13px;
+    float: left;
+    margin-right: 6px;
+    background: url("/view/css/tags.png") no-repeat scroll 0px 0px / 13px 13px transparent;
+}
+
 
 
 @media(min-width:768px){
@@ -412,6 +522,10 @@ div.jumbotron .project-owner a{
 		font-weight: normal !important;
 	}
 
+	label.method-choosen{
+		font-weight: normal !important
+	}
+
 }
 
 @media(max-width:767px){
@@ -433,7 +547,7 @@ div.jumbotron .project-owner a{
 @media (min-width: 480px) and (max-width: 600px) {
 
 	.label-method{
-		font-size: 0.9em !important;
+		font-size: 0.75em !important;
 	}
 
 }

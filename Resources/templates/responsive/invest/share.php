@@ -17,9 +17,10 @@ $this->section('content');
 <div class="container">
 
 	<div class="row row-form">
-			<div class="panel panel-default share">
+			<div class="panel panel-default invest-container">
 				<div class="panel-body">
-					<div class="alert alert-success col-md-10 col-md-offset-1" role="alert">
+					<h2 class="col-sm-offset-1 padding-bottom-2"><?= $this->text('invest-step-4') ?></h2>
+					<div class="reminder col-md-10 col-md-offset-1">
         		    <?= $this->text('project-invest-ok') ?>
       				</div>
 
@@ -35,14 +36,10 @@ $this->section('content');
 				  		</div>
 				  		<div class="col-sm-5 margin-2">
 							<a href="<?= $this->twitter_url ?>" class="btn btn-block btn-social btn-twitter">
-				    			<i class="fa fa-facebook"></i> <?= $this->text('spread-twitter') ?>
+				    			<i class="fa fa-twitter"></i> <?= $this->text('spread-twitter') ?>
 				  			</a>
 				  		</div>
-				  		<div class="col-sm-5 margin-2 visible-xs">
-							<a href="<?= SITE_URL ?>" class="text-decoration-none" >
-								<button type="button" class="btn btn-block btn-success" value=""><?= $this->text('goteo-return-button') ?></button>
-				  			</a>
-				  		</div>
+				  		
 			  		</div>
 
 			  		<hr class="share">
@@ -53,12 +50,28 @@ $this->section('content');
 			  		<!-- Widget code -->
 					<div class="row standard-margin-top sm-display-none">
 						<div class="col-md-5 col-md-offset-1">
-						<?= $this->raw('widget_code') ?>
+							<?= $this->raw('widget_code') ?>
+							<h4 class="embed-code"><?= $this->text('project-spread-embed_code') ?></h4>
+							<textarea class="widget-code" onclick="this.focus();this.select()" readonly="readonly" ><?= $this->widget_code ?></textarea>
 						</div>
 						<div class="col-md-5">
-						<?= $this->raw('widget_code_investor') ?>
+							<?= $this->raw('widget_code_investor') ?>
+							<h4 class="embed-code"><?= $this->text('project-spread-embed_code') ?></h4>
+							<textarea class="widget-code" onclick="this.focus();this.select()" readonly="readonly" ><?= $this->widget_code_investor ?></textarea>
 						</div>
 					</div>
+
+					<hr class="share hidden-xs">
+
+					<div class="row">
+
+						<div class="col-sm-6 col-sm-offset-3 margin-2">
+								<a href="<?= SITE_URL ?>" class="text-decoration-none" >
+									<button type="button" class="btn btn-block btn-success" value=""><?= $this->text('goteo-return-button') ?></button>
+					  			</a>
+					  	</div>
+
+				  	</div>
 				</div>
 			</div>
 	</div>

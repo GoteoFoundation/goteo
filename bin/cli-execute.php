@@ -537,7 +537,7 @@ function cancel_payment($invest, $project, $userData)
     if ($invest->pool) {
         echo "Aporte {$invest->id} es para reservar ({$invest->method}).\n";
         if ($UPDATE) {
-            Model\User\Pool::add($invest);
+            Model\User\Pool::refundInvest($invest);
             // el aporte se queda en el estado que estuviera
             // a menos que sea un paypal en preapproval, que se debería ejecutar
             if ($invest->method == 'paypal' && $invest->status == 0) {
@@ -546,7 +546,7 @@ function cancel_payment($invest, $project, $userData)
 
 
         } else {
-            echo "Prevented pool::add() \n";
+            echo "Prevented pool::refundInvest() \n";
         }
         return true;
     }
@@ -596,7 +596,7 @@ function cancel_payment($invest, $project, $userData)
                 }
                 break;
             case 'pool':
-                Model\User\Pool::add($invest);
+                Model\User\Pool::refundInvest($invest);
                 if ($invest->cancel(true)) {
                     $log_text = "Se ha devuelto al monedero el aporte de %s de %s (id: %s) al proyecto %s del dia %s";
                 } else {

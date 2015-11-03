@@ -31,7 +31,7 @@ class ExceptionListener implements EventSubscriberInterface
     *                     leave as NULL when calling this function
     * @return array of strings, one entry per trace line
     */
-    function jTraceEx($e, $seen=null) {
+    static function jTraceEx($e, $seen=null) {
         $starter = $seen ? 'Caused by: ' : '';
         $result = array();
         if (!$seen) $seen = array();
@@ -116,7 +116,7 @@ class ExceptionListener implements EventSubscriberInterface
         \Goteo\Application\View::addFolder(__DIR__ . '/../../../../Resources/templates/default');
 
         // Send the modified response object to the event
-        if(App::debug()) $info = '<pre>'.$this->jTraceEx($exception).'</pre>';
+        if(App::debug()) $info = '<pre>'.self::jTraceEx($exception).'</pre>';
         $response->setContent(\Goteo\Application\View::render('errors/internal', ['msg' => $exception->getMessage(), 'file' => $file, 'code' => $code, 'info' => $info], $code));
         $event->setResponse($response);
     }

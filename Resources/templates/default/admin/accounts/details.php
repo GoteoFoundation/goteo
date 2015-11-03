@@ -71,11 +71,17 @@ array_walk($rewards, function (&$reward) { $reward = $reward->reward; });
             <a href="/admin/accounts/solve/<?php echo $invest->id ?>" onclick="return confirm('Esta incidencia se dará por resuelta: se va a cancelar el preaproval, el aporte pasará a ser de tipo Cash y en estado Cobrado por goteo, seguimos?')" class="button"><?= $this->text('admin-account-issue-solved') ?></a><br>
             <?php endif; ?>
 
-            <?php if ($invest->status == Invest::STATUS_CHARGED) : ?>
+            <?php if ($this->poolable && $invest->status == Invest::STATUS_CHARGED) : ?>
             <a href="/admin/accounts/refundpool/<?php echo $invest->id ?>" onclick="return confirm('<?= $this->ee($this->text('admin-account-refund-to-pool-confirm'), 'js') ?>')" class="button"><?= $this->text('admin-account-refund-to-pool') ?></a>
             <?php endif; ?>
 
-            <?php if ($invest->getMethod()->refundable() && in_array($invest->status, [Invest::STATUS_PENDING, Invest::STATUS_CHARGED, Invest::STATUS_PAID, Invest::STATUS_CANCELLED, Invest::STATUS_RETURNED])) : ?>
+            <?php if ( $invest->method != 'pool' &&
+                       $this->refundable &&
+                       (  in_array($invest->status, [Invest::STATUS_PENDING, Invest::STATUS_CHARGED, Invest::STATUS_PAID])
+                          ||
+                          ($invest->pool && in_array($invest->status, [Invest::STATUS_CANCELLED, Invest::STATUS_RETURNED]))
+                       )
+                    ) : ?>
             <a href="/admin/accounts/refunduser/<?php echo $invest->id ?>" onclick="return confirm('<?= $this->ee($this->text('admin-account-refund-to-user-confirm'), 'js') ?>')" class="button"><?= $this->text('admin-account-refund-to-user') ?></a><br>
             <?php endif; ?>
 

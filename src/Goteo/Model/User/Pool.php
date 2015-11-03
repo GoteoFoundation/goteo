@@ -97,12 +97,12 @@ namespace Goteo\Model\User {
 		}
 
         /**
-         * Añade un aporte a la reserva
+         * Refunds a investion to the pool
          *
-         * @param $invest isntancia aporte
-         * @return object instancia reserva
+         * @param $invest invest instance
+         * @return Pool object
          */
-        public static function add(Invest $invest, &$errors = array()) {
+        public static function refundInvest(Invest $invest, &$errors = array()) {
 
             // iniciar instancia de reserva
             $pool = static::get($invest->user);
@@ -111,10 +111,8 @@ namespace Goteo\Model\User {
             $pool->amount += $invest->amount;
 
             // grabar reserva
-            $pool->save($errors);
+            return $pool->save($errors);
 
-            // devolver instancia
-            return $pool;
         }
 
         /**

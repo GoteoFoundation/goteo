@@ -22,7 +22,7 @@ use Goteo\Application\Config;
 use Goteo\Command\ProjectsWatcher;
 
 if (PHP_SAPI !== 'cli') {
-die('Console access only!');
+    die('Console access only!');
 }
 
 error_reporting(E_ALL & ~E_NOTICE & ~E_STRICT);

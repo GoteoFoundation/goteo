@@ -75,7 +75,7 @@ class LangUtils implements ExtensionInterface
         $url_lang = Config::get('url.url_lang');
         $path = '/';
         if($request = GoteoCore::getRequest()) {
-            $path = $request->getPathInfo();
+            $path = $request->getRequestUri();
         }
         if($url_lang) {
             $url = (Config::get('ssl') ? 'https://' : 'http://') . $lang . '.' . $url_lang . $path;

@@ -11,7 +11,7 @@ invest-alert-noreward_renounce: 'Vuoi rinunciare alla ricompensa e sgravare la t
 invest-donation-header: 'Indica i dati fiscali per la donazione'
 invest-amount-tooltip: 'Indica l''importo con cui sosterrai il progetto'
 invest-payment-email: 'Indica il tuo account di PayPal'
-invest-mail_info-drop: 'In più, %s ha donato %s &euro; di cloudfunding con la campagna%s'
+invest-mail_info-drop: 'In più, %s ha donato %s di cloudfunding con la campagna%s'
 invest-resign: 'Rinuncio a questa ricompensa individuale, voglio solo sostenere il progetto'
 user-login-required-login: 'Se sei già registrato inizia la tua sessione, sennò crea un nuovo account '
 invest-address-msgdest-field: 'Messaggio per il destinatario'

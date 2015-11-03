@@ -8,7 +8,7 @@ invest-alert-noreward_renounce: 'Zure dohaina desgrabatzeari eta sariari uko egi
 invest-donation-header: 'Sar itzazu datu fiskalak dohaina egiteko'
 invest-amount-tooltip: 'Sar ezazu proiektua babesteko jarriko duzun kopurua'
 invest-payment-email: 'Sar ezazu zure PayPal kontua'
-invest-mail_info-drop: 'Gainera, %s-(e)k %s € ureztatze kapitala jarri du %s kanpainaren bitartez'
+invest-mail_info-drop: 'Gainera, %s-(e)k %s ureztatze kapitala jarri du %s kanpainaren bitartez'
 invest-resign: 'Norbanako sari bateri uko egin diozu, proiektua lagundu besterik ez duzu nahi'
 invest-address-name-field: 'Izena:'
 invest-next_step: 'Hurrengo urratsa'

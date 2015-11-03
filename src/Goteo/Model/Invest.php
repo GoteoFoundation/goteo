@@ -1335,15 +1335,6 @@ class Invest extends \Goteo\Core\Model {
         if (self::query($sql, $values)) {
             $this->status = $status;
             $this->returned = $values[':returned'];
-            // // si tiene capital riego asociado, lo liberamos
-            // if (!empty($this->droped)) {
-            //     $drop = Invest::get($this->droped);
-            //     if ($drop->setStatus(self::STATUS_CANCELLED)) {
-            //         self::query("UPDATE invest SET droped = NULL WHERE id = :id", array(':id' => $this->id));
-            //         $this->droped = null;
-            //     }
-            // }
-
             return true;
         } else {
             return false;

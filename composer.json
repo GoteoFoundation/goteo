@@ -1,14 +1,8 @@
 {
 
-    "repositories": [
-        {
-            "type": "git",
-            "url": "https://github.com/FoilPHP/Foil.git"
-        }
-    ],
     "require": {
 
-        "foil/foil": "dev-dev",
+        "foil/foil": "~0.6",
 
         "tpyo/amazon-s3-php-class": "~0.5",
 

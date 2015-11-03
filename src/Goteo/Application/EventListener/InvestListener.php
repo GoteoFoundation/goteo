@@ -15,11 +15,15 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Omnipay\Common\Message\RedirectResponseInterface;
 
-use Goteo\Application\Message;
 use Goteo\Application\Session;
 use Goteo\Application\App;
+use Goteo\Application\Lang;
+use Goteo\Application\Config;
+use Goteo\Application\Message;
 use Goteo\Library\Text;
 use Goteo\Library\Currency;
+use Goteo\Model\Template;
+use Goteo\Model\Mail;
 use Goteo\Library\Feed;
 use Goteo\Application\AppEvents;
 use Goteo\Application\Event\FilterInvestInitEvent;
@@ -34,7 +38,7 @@ class InvestListener implements EventSubscriberInterface
         $invest = $event->getInvest();
         $method = $event->getMethod();
         $request = $event->getRequest();
-        App::getService('paylogger')->info('INVEST INIT: ' . $invest->id . ' METHOD: ' . $method::getId() . ' PROJECT: ' . $invest->project . ' USER: ' . Session::getUserId());
+        App::getService('paylogger')->info('INVEST INIT: ' . $invest->id . ' METHOD: ' . $method::getId() . ' PROJECT: ' . $invest->project . ' SESSION_USER: ' . Session::getUserId());
 
         $method->setInvest($invest);
         $method->setRequest($request);
@@ -47,7 +51,7 @@ class InvestListener implements EventSubscriberInterface
     {
         $method = $event->getMethod();
         $invest = $method->getInvest();
-        App::getService('paylogger')->info('INVEST INIT REQUEST: ' . $invest->id . ' METHOD: ' . $method::getId() . ' PROJECT: ' . $invest->project . ' USER: ' . Session::getUserId());
+        App::getService('paylogger')->info('INVEST INIT REQUEST: ' . $invest->id . ' METHOD: ' . $method::getId() . ' PROJECT: ' . $invest->project . ' SESSION_USER: ' . Session::getUserId());
 
 
         Invest::setDetail($invest->id, 'init-request', 'Payment gateway authorised');
@@ -59,7 +63,7 @@ class InvestListener implements EventSubscriberInterface
         $response = $event->getResponse();
         $invest = $method->getInvest();
         $reward = $invest->getFirstReward();
-        App::getService('paylogger')->info('INVEST INIT REDIRECT: ' . $invest->id . ' METHOD: ' . $method::getId() . ' PROJECT: ' . $invest->project . ' USER: ' . Session::getUserId());
+        App::getService('paylogger')->info('INVEST INIT REDIRECT: ' . $invest->id . ' METHOD: ' . $method::getId() . ' PROJECT: ' . $invest->project . ' SESSION_USER: ' . Session::getUserId());
         Invest::setDetail($invest->id, 'init-redirect', 'Redirecting to payment gateway');
 
         // Goto payment platform...
@@ -75,7 +79,7 @@ class InvestListener implements EventSubscriberInterface
         $invest = $event->getInvest();
         $method = $event->getMethod();
         $request = $event->getRequest();
-        App::getService('paylogger')->info('INVEST COMPLETE: ' . $invest->id . ' METHOD: ' . $method::getId() . ' PROJECT: ' . $invest->project . ' USER: ' . Session::getUserId());
+        App::getService('paylogger')->info('INVEST COMPLETE: ' . $invest->id . ' METHOD: ' . $method::getId() . ' PROJECT: ' . $invest->project . ' SESSION_USER: ' . Session::getUserId());
 
         $method->setInvest($invest);
         $method->setRequest($request);
@@ -89,7 +93,7 @@ class InvestListener implements EventSubscriberInterface
         $method = $event->getMethod();
         $invest = $method->getInvest();
         $response = $event->getResponse();
-        App::getService('paylogger')->info('INVEST COMPLETE REQUEST: ' . $invest->id . ' METHOD: ' . $method::getId() . ' PROJECT: ' . $invest->project . ' USER: ' . Session::getUserId());
+        App::getService('paylogger')->info('INVEST COMPLETE REQUEST: ' . $invest->id . ' METHOD: ' . $method::getId() . ' PROJECT: ' . $invest->project . ' SESSION_USER: ' . Session::getUserId());
 
         // Set transaction ID
         $invest->setTransaction($response->getTransactionReference());
@@ -102,7 +106,7 @@ class InvestListener implements EventSubscriberInterface
         $method = $event->getMethod();
         $invest = $method->getInvest();
         $response = $event->getResponse();
-        App::getService('paylogger')->info('INVEST NOTIFY: ' . $invest->id . ' METHOD: ' . $method::getId() . ' PROJECT: ' . $invest->project . ' USER: ' . Session::getUserId());
+        App::getService('paylogger')->info('INVEST NOTIFY: ' . $invest->id . ' METHOD: ' . $method::getId() . ' PROJECT: ' . $invest->project . ' SESSION_USER: ' . Session::getUserId());
 
         // Set transaction ID
         $invest->setTransaction($response->getTransactionReference());
@@ -116,7 +120,7 @@ class InvestListener implements EventSubscriberInterface
         $response = $event->getResponse();
         $invest = $method->getInvest();
         $reward = $invest->getFirstReward();
-        App::getService('paylogger')->info('INVEST FINISH FAILED: ' . $invest->id . ' METHOD: ' . $method::getId() . ' PROJECT: ' . $invest->project . ' USER: ' . Session::getUserId() . ' MESSAGE: ' . $response->getMessage());
+        App::getService('paylogger')->info('INVEST FINISH FAILED: ' . $invest->id . ' METHOD: ' . $method::getId() . ' PROJECT: ' . $invest->project . ' SESSION_USER: ' . Session::getUserId() . ' MESSAGE: ' . $response->getMessage());
 
         // not making changes on invest status...
 
@@ -139,9 +143,6 @@ class InvestListener implements EventSubscriberInterface
                     )
             ->doAdmin('money');
 
-        // Message
-        Message::error("Payment [{$invest->method}] failed!");
-
         Invest::setDetail($invest->id, 'confirm-fail', 'Invest process failed. Gateway error: ' . $response->getMessage());
 
         // Assign response if not previously assigned
@@ -158,7 +159,9 @@ class InvestListener implements EventSubscriberInterface
         $method = $event->getMethod();
         $response = $event->getResponse();
         $invest = $method->getInvest();
-        App::getService('paylogger')->info('INVEST FINISH SUCCEEDED: ' . $invest->id . ' METHOD: ' . $method::getId() . ' PROJECT: ' . $invest->project . ' USER: ' . Session::getUserId());
+        $project = $invest->getProject();
+        $user = $invest->getUser();
+        App::getService('paylogger')->info('INVEST FINISH SUCCEEDED: ' . $invest->id . ' METHOD: ' . $method::getId() . ' PROJECT: ' . $invest->project . ' SESSION_USER: ' . Session::getUserId());
 
         // Invest status to charged
         $invest->status = Invest::STATUS_CHARGED;
@@ -171,6 +174,78 @@ class InvestListener implements EventSubscriberInterface
         if($errors) {
             throw new \RuntimeException('Error saving Invest details! ' . implode("\n", $errors));
         }
+
+        // MAIL SENDING
+        // Thanks template
+        $lang = Lang::current();
+        $template = Template::get(Template::DONOR_INVEST_THANKS, $lang); // lang will be updated to the available template lang
+
+        // Reward or resign text
+        if ($invest->resign) {
+            $txt_rewards = Text::lang('invest-template-resign', $lang);
+        } else {
+            $txt_rewards = Text::lang('invest-template-reward', $lang, ['%REWARDS%' => '<strong>' . $invest->getFirstReward()->reward . '</strong>']);
+        }
+
+        // method:
+        if ($invest->method == 'pool') {
+            $txt_method = Text::lang('invest-template-with-pool', $lang, ['%AMOUNT%' => \amount_format($invest->amount)]);
+        } elseif ($invest->pool) {
+            // aporte reservando al monedero
+            $txt_method = Text::lang('invest-template-to-pool', $lang, ['%AMOUNT%' => \amount_format($invest->amount)]);
+        } elseif($project->round == 2) {
+            // si aporte en segunda ronda
+            $txt_method = Text::lang('invest-template-round-two', $lang, ['%AMOUNT%' => $invest->amount]);
+        } else {
+            // resto de casos
+            $txt_method = Text::lang('invest-template-round-one', $lang, ['%AMOUNT%' => $invest->amount]);
+        }
+
+        // Dirección en el mail (y version para regalo)
+        $txt_address = Text::get('invest-address-address-field') . ' ' . $invest->address->address;
+        $txt_address .= '<br> ' . Text::get('invest-address-zipcode-field') . ' ' . $invest->address->zipcode;
+        $txt_address .= '<br> ' . Text::get('invest-address-location-field') . ' ' . $invest->address->location;
+        $txt_address .= '<br> ' . Text::get('invest-address-country-field') . ' ' . $invest->address->country;
+
+        $txt_destaddr = $txt_address;
+        $txt_address = Text::get('invest-mail_info-address') .'<br>'. $txt_address;
+
+        // Sustituimos los datos
+        $subject = str_replace('%PROJECTNAME%', $project->name, $template->title);
+
+        $txt_droped = '';
+
+        // datos para el drop
+        if (!empty($invest->droped) && class_exists('\Goteo\Model\Call')) {
+            $drop = Model\Invest::get($invest->droped);
+            $call = Model\Call::getMini($drop->call);
+            // texto de capital riego
+            $txt_droped = Text::get('invest-mail_info-drop', $call->user->name, \amount_format($drop->amount), $call->name);
+        }
+
+        // En el contenido:
+        $search  = array('%USERNAME%', '%PROJECTNAME%', '%PROJECTURL%', '%AMOUNT%', '%REWARDS%', '%ADDRESS%', '%DROPED%', '%METHOD%');
+        $replace = array($user->name, $project->name, Config::getUrl($lang) . '/project/' . $project->id, $invest->amount, $txt_rewards, $txt_address, $txt_droped, $txt_method);
+        $content = str_replace($search, $replace, $template->text);
+
+        $mailHandler = new Mail();
+        $mailHandler->lang = $lang;
+        $mailHandler->reply = Config::getMail('contact');
+        $mailHandler->replyName = Config::get('mail.transport.name');
+        $mailHandler->to = $user->email;
+        $mailHandler->toName = $user->name;
+        $mailHandler->subject = $subject;
+        $mailHandler->content = $content;
+        $mailHandler->html = true;
+        $mailHandler->template = $template->id;
+        $errors = [];
+        if ($mailHandler->send($errors)) {
+            Message::info(Text::get('project-invest-thanks_mail-success'));
+        } else {
+            Message::error(Text::get('project-invest-thanks_mail-fail'));
+            Message::error(implode('<br />', $errors));
+        }
+
 
         // Feed this succeeded payment
         // Admin Feed
@@ -204,9 +279,6 @@ class InvestListener implements EventSubscriberInterface
         // update cached data
         $invest->keepUpdated();
 
-        // Goto User data fill
-        Message::info('Payment completed successfully');
-
         Invest::setDetail($invest->id, 'confirmed', 'Invest process completed successfully');
 
         // Assign response if not previously assigned
@@ -223,7 +295,7 @@ class InvestListener implements EventSubscriberInterface
     {
         $method = $event->getMethod();
         $invest = $event->getInvest();
-        App::getService('paylogger')->info('INVEST REFUND CANCEL: ' . $invest->id . ' METHOD: ' . $method::getId() . ' PROJECT: ' . $invest->project . ' USER: ' . Session::getUserId());
+        App::getService('paylogger')->info('INVEST REFUND CANCEL: ' . $invest->id . ' METHOD: ' . $method::getId() . ' PROJECT: ' . $invest->project . ' SESSION_USER: ' . Session::getUserId());
         if($invest->cancel(false)) {
             Invest::setDetail($invest->id, $method::getId() .'-cancel', 'Invest process manually cancelled successfully');
             // update cached data
@@ -243,7 +315,7 @@ class InvestListener implements EventSubscriberInterface
     {
         $method = $event->getMethod();
         $invest = $event->getInvest();
-        App::getService('paylogger')->info('INVEST REFUND CANCEL: ' . $invest->id . ' METHOD: ' . $method::getId() . ' PROJECT: ' . $invest->project . ' USER: ' . Session::getUserId());
+        App::getService('paylogger')->info('INVEST REFUND CANCEL: ' . $invest->id . ' METHOD: ' . $method::getId() . ' PROJECT: ' . $invest->project . ' SESSION_USER: ' . Session::getUserId());
         if($invest->cancel(true)) {
             Invest::setDetail($invest->id, $method::getId() .'-cancel', 'Invest refunded successfully');
             // update cached data
@@ -263,7 +335,7 @@ class InvestListener implements EventSubscriberInterface
         $method = $event->getMethod();
         $invest = $event->getInvest();
         $response = $event->getResponse();
-        App::getService('paylogger')->info('INVEST REFUND FAILED: ' . $invest->id . ' METHOD: ' . $method::getId() . ' PROJECT: ' . $invest->project . ' USER: ' . Session::getUserId(). ' MESSAGE: ' . $response->getMessage());
+        App::getService('paylogger')->info('INVEST REFUND FAILED: ' . $invest->id . ' METHOD: ' . $method::getId() . ' PROJECT: ' . $invest->project . ' SESSION_USER: ' . Session::getUserId(). ' MESSAGE: ' . $response->getMessage());
         Invest::setDetail($invest->id, $method::getId() .'-return-fail', 'Error while refunding invest: ' . $response->getMessage());
 
     }

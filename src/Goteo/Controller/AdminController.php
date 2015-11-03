@@ -199,9 +199,9 @@ namespace Goteo\Controller {
             } catch(ControllerAccessDeniedException $e) {
                 // Instead of the default denied page, redirect to login
                 Message::error($e->getMessage());
-                $url = $request->headers->get('referer');
-                if(empty($url) || $url == $request->getUri()) $url = '/admin';
-                return $this->redirect($url);
+                $url = parse_url($request->headers->get('referer'), PHP_URL_PATH);
+                if(empty($url)) $url = '/admin';
+                return $this->redirect('/login?return=' . urlencode($url));
             }
 
             //Return the response if the subcontroller is a handy guy

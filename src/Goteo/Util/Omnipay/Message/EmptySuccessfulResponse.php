@@ -13,6 +13,12 @@ namespace Goteo\Util\Omnipay\Message;
 use Omnipay\Common\Message\ResponseInterface;
 
 class EmptySuccessfulResponse implements ResponseInterface {
+    private $message = '';
+
+    public function __construct($message = '') {
+        $this->setMessage($message);
+    }
+
     public function getData() {}
     public function getRequest() {}
 
@@ -22,7 +28,13 @@ class EmptySuccessfulResponse implements ResponseInterface {
 
     public function isCancelled(){}
 
-    public function getMessage(){}
+    public function setMessage($message) {
+        $this->message = $message;
+        return $this;
+    }
+    public function getMessage(){
+        return $this->message;
+    }
 
     public function getCode(){}
 

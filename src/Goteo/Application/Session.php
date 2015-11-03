@@ -90,12 +90,15 @@ class Session {
                 $_SESSION = array();
             }
             elseif (!headers_sent()) {
+
                 session_name($name);
                 if (!session_start()) {
-                   throw new Config\ConfigException(__METHOD__ . 'session_start failed.');
+                   throw new Config\ConfigException(__METHOD__ . ' session_start failed.');
                 }
+                // Fix for session cookie time life
+                Cookie::store(session_name(), session_id(), self::getSessionExpires());
             } else {
-                throw new Config\ConfigException(__METHOD__ . 'Session started after headers sent.');
+                throw new Config\ConfigException(__METHOD__ . ' Session started after headers sent.');
             }
         }
         self::setStartTime(microtime(true));

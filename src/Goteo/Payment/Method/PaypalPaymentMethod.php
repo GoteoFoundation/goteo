@@ -11,6 +11,7 @@
 namespace Goteo\Payment\Method;
 
 use Goteo\Application\Config;
+use Goteo\Library\Currency;
 
 /**
  * Creates a Payment Method that uses Paypal provider
@@ -35,8 +36,10 @@ class PaypalPaymentMethod extends AbstractPaymentMethod {
     public function completePurchase() {
         // Let's obtain the gateway and the
         $gateway = $this->getGateway();
+        $invest = $this->getInvest();
+        $gateway->setCurrency(Currency::DEFAULT_CURRENCY);
         $payment = $gateway->completePurchase([
-                    'amount' => (float) $this->getInvest()->amount,
+                    'amount' => (float) $invest->amount,
                     'description' => $this->getInvestDescription(),
                     'clientIp' => $this->getRequest()->getClientIp(),
                     'returnUrl' => $this->getCompleteUrl(),
@@ -52,4 +55,5 @@ class PaypalPaymentMethod extends AbstractPaymentMethod {
         return $payment->send();
 
     }
+
 }

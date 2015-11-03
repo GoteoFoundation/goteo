@@ -17,7 +17,7 @@ $this->section('content');
 
                     <?= $this->supply('sub-header', $this->get_session('sub-header')) ?>
 
-					<form class="form-horizontal" role="form" method="post" action="/signup?return=<?= $this->return ?>">
+					<form class="form-horizontal" role="form" method="post" action="/signup?return=<?= urlencode($this->raw('return')) ?>">
 
 						<div class="form-group">
 							<div class="col-md-10 col-md-offset-1">
@@ -71,7 +71,7 @@ $this->section('content');
 						<div class="form-group">
 							<div class="col-md-10 col-md-offset-1">
 								<button type="submit" id="register_continue" disabled="disabled" class="btn btn-success"><?= $this->text('register-button-title') ?></button>
-								<a class="btn btn-link" href="/login?return=<?= urlencode($this->get_query('return')) ?>"><?= $this->text('register-question') ?></a>
+								<a class="btn btn-link" href="/login?return=<?= urlencode($this->raw('return')) ?>"><?= $this->text('register-question') ?></a>
 							</div>
 						</div>
 
@@ -95,7 +95,7 @@ $this->section('content');
 <script type='text/javascript'>
 
 $(function() {
-	
+
   $('#register_accept').change(function() {
   	    $('#register_continue').attr('disabled', !this.checked);
 

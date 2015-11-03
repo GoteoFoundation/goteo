@@ -53,7 +53,9 @@ $app = new Application();
 
 $app->add(new Goteo\Command\TranslationsCommand());
 $app->add(new Goteo\Command\CacheCommand());
-$app->add(new Goteo\Command\RoundExecuteCommand());
+$app->add(new Goteo\Command\TestCommand());
+$app->add(new Goteo\Command\RoundCommand());
+$app->add(new Goteo\Command\RefundCommand());
 
 $app->run();
 

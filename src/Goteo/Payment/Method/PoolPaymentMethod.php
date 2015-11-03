@@ -12,7 +12,10 @@ namespace Goteo\Payment\Method;
 
 use Goteo\Payment\PaymentException;
 use Goteo\Model\User\Pool;
+use Goteo\Model\Invest;
 use Goteo\Library\Text;
+use Goteo\Util\Omnipay\Message\EmptyFailedResponse;
+use Goteo\Util\Omnipay\Message\EmptySuccessfulResponse;
 
 /**
  * Creates a Payment Method that uses internal virtuall wallet
@@ -81,4 +84,22 @@ class PoolPaymentMethod extends AbstractPaymentMethod {
 
     }
 
+    public function refundable() {
+        $invest = $this->getInvest();
+        if($invest->status == Invest::STATUS_CHARGED) return true;
+        return false;
+    }
+
+    public function refund() {
+        $invest = $this->getInvest();
+        // Mark this invest as return-to-pool (this should be redundant)
+        $invest->setPoolOnFail(true);
+        $errors = [];
+        if($this->refundable() && Pool::refundInvest($invest, $errors)) {
+            return new EmptySuccessfulResponse();
+        }
+        else {
+            return new EmptyFailedResponse(implode(', ', $errors));
+        }
+    }
 }

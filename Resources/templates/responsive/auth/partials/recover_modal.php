@@ -3,7 +3,9 @@
   <div class="modal-dialog" role="document">
     <div id="modal-content" class="modal-content">
       <div class="modal-header">
-        <? $this->error ?>
+
+        <?= $this->error ?>
+
         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
         <h4 class="modal-title" id="myModalLabel"><?= $this->text('login-recover-modal-text') ?></h4>
       </div>

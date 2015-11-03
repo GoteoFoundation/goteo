@@ -16,7 +16,7 @@ $this->section('content');
 <div class="container">
 
 	<div class="row row-form">
-			<div class="panel panel-default select-method">
+			<div class="panel panel-default invest-container">
 				<div class="panel-body">
 
 					<!--

@@ -12,7 +12,8 @@ namespace Goteo\Model\Project {
 
     use \Goteo\Model\Icon,
         \Goteo\Model\License,
-        \Goteo\Application\Lang;
+        \Goteo\Application\Lang,
+        \Goteo\Application\Config;
 
     class Reward extends \Goteo\Core\Model {
 
@@ -76,7 +77,7 @@ namespace Goteo\Model\Project {
                     $join = '';
                     unset($values[':lang']);
 
-                } elseif(self::default_lang($lang)=='es') {
+                } elseif(self::default_lang($lang) == Config::get('lang')) {
                     $different_select=" IFNULL(reward_lang.reward, reward.reward) as reward,
                                         IFNULL(reward_lang.description, reward.description) as description,
                                         IFNULL(reward_lang.other, reward.other) as other";

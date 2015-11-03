@@ -13,7 +13,7 @@ invest-alert-noreward_renounce: 'Desitges renunciar a la recompensa i desgravar 
 invest-donation-header: 'Introdueix les dades fiscals per al donatiu'
 invest-amount-tooltip: 'Introdueix la quantitat amb que recolzaràs el projecte'
 invest-payment-email: 'Introdueix el teu compte de PayPal'
-invest-mail_info-drop: 'A més, %s ha aportat %s &euro; de capital irrigació a través de la campanya %s'
+invest-mail_info-drop: 'A més, %s ha aportat %s de capital irrigació a través de la campanya %s'
 invest-resign: "Renuncio a una recompensa individual, només vull ajudar al projecte \r\n"
 user-login-required-login: 'Si ja estàs registrat has d''iniciar sessió; si no, has de crear un nou usuari.'
 invest-pool: 'Vull que la meva donació, en el cas que el projecte no arribi al seu objectiu, romangui al meu compte de Goteo (moneder virtual). La data del meu certificat de donació serà la d''avui, tot i que podré destinar meva donació a un altre projecte que jo decideixi en qualsevol altre moment.'

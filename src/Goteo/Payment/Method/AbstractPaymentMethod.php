@@ -174,13 +174,16 @@ abstract class AbstractPaymentMethod implements PaymentMethodInterface {
     public function completePurchase() {
         // Let's obtain the gateway and the
         $gateway = $this->getGateway();
+        $gateway->setCurrency(Currency::DEFAULT_CURRENCY);
         return $gateway->completePurchase([
                     'amount' => (float) $this->getInvest()->amount,
                     'description' => $this->getInvestDescription(),
                     'clientIp' => $this->getRequest()->getClientIp(),
                     'returnUrl' => $this->getCompleteUrl(),
                     'cancelUrl' => $this->getCompleteUrl(),
-        ])->send();
+        ])
+        // save extra data (such as a payment or preapproval) here if needed
+            ->send();
 
     }
 
@@ -202,7 +205,12 @@ abstract class AbstractPaymentMethod implements PaymentMethodInterface {
         if(!$gateway->supportsRefund()) {
             throw new PaymentException("Refund not supported for method " . strtoupper(static::getId()));
         }
-        return $gateway->refund();
+        $invest = $this->getInvest();
+        return $gateway->refund([
+            'amount' => (float) $invest->amount,
+            'transactionReference' => $invest->transaction, // some gateway may require extra data saved
+            ])
+            ->send();
     }
 
     public function getCompleteUrl() {

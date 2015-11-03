@@ -96,7 +96,9 @@ class Lang {
         static::factory();
         // search in SQL first
         $all = static::$translator->getCatalogue($locale)->all('sql');
-        if(isset($all[$id])) return $all[$id];
+        if(isset($all[$id])) {
+            return str_replace(array_keys($parameters), array_values($parameters), $all[$id]);
+        }
         // Yaml files (message $domain)
         return static::$translator->trans($id, $parameters, null, $locale);
     }
@@ -265,54 +267,57 @@ class Lang {
     }
 
     static public function setFromGlobals(Request $request = null) {
-        // static::setDefault('es');
+        static::setDefault();
 
         $desired = array();
-        // set Lang (forzado para el cron y el admin)
+        $save_lang = false;
+
         if($request) {
-            $uri = strtok($request->server->get('REQUEST_URI'), '?');
-            if(strpos($uri, 'admin') !== false) $desired['forced'] = 'es';
             // set Lang by GET user request
             if($request->query->has('lang')) {
                 $desired['get'] = $request->query->get('lang');
+                $save_lang = true;
             }
+
+            // set by subdomain
+            $subdomain = strtok($request->getHost(), '.');
+            if(static::isPublic($subdomain)) {
+                $desired['subdomain'] = $subdomain;
+                $save_lang = true;
+            }
+            // set by navigator
+            $desired['browser'] = substr($request->server->get('HTTP_ACCEPT_LANGUAGE'), 0, 2);
         }
+
         // Las cookies para idiomas pueden ser problematicas, pues cambian el idioma sin enterarte.
         // set lang by cookie if exists
         // if(Cookie::exists('goteo_lang')) {
         //     $desired[] = Cookie::get('goteo_lang');
         // }
+
+        // By session
         if(Session::exists('lang')) {
             $desired['session'] = Session::get('lang');
-        }
-        if($request) {
-            // set by subdomain
-            $subdomain = strtok($request->getHost(), '.');
-            if(static::isPublic($subdomain)) {
-                $desired['subdomain'] = $subdomain;
-            }
-            // set by navigator
-            $desired['browser'] = substr($request->server->get('HTTP_ACCEPT_LANGUAGE'), 0, 2);
         }
 
         // set the lang in order of preference
         foreach($desired as $l) {
             $lang = static::set($l);
             if($lang === $l) {
+                //Si el idioma existe (y se ha especificado), guardar preferencias
+                if($save_lang) {
+                    //Enviar cookie
+                    // Cookie::store('goteo_lang', $lang);
+                    Session::store('lang', $lang);
+                    if(Session::isLogged()) {
+                        //guardar preferencias de usuario
+                        Session::getUser()->updateLang($lang);
+                    }
+                }
                 break;
             }
         }
 
-        //Si el idioma existe (y se ha especificado), guardar preferencias
-        if($request && $lang === $request->query->get('lang')) {
-            //Enviar cookie
-            // Cookie::store('goteo_lang', $lang);
-            Session::store('lang', $lang);
-            if(Session::isLogged()) {
-                //guardar preferencias de usuario
-                Session::getUser()->updateLang($lang);
-            }
-        }
         // print_r($desired);die($lang);
 
         return $lang;

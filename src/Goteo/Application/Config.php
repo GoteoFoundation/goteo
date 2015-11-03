@@ -56,10 +56,16 @@ class Config {
             self::setDirConfiguration();
         }
         catch(\Exception $e) {
+            if(PHP_SAPI === 'cli') {
+                throw $e;
+            }
             $code = \Symfony\Component\HttpFoundation\Response::HTTP_FORBIDDEN;
             \Goteo\Application\View::addFolder(__DIR__ . '/../../../Resources/templates/default');
             // TODO: custom template
-            die(\Goteo\Application\View::render('errors/config', ['msg' => $e->getMessage(), 'file' => $file, 'code' => $code], $code));
+            $info = '';
+            $trace = EventListener\ExceptionListener::jTraceEx($e);
+            if(App::debug()) $info = '<pre>' . $trace . '</pre>';
+            die(\Goteo\Application\View::render('errors/config', ['msg' => $e->getMessage(), 'info' => $info, 'file' => $file, 'code' => $code], $code));
             return;
         }
     }
@@ -333,6 +339,27 @@ class Config {
         }
         // throw a exception?
         throw new ConfigException("Config var mail.mail not found!");
+    }
+
+
+    /**
+     * Gets a suitable http(s) link for use
+     * @param  string $lang ca
+     * @return [type]       [description]
+     */
+    static public function getUrl($lang = null) {
+        $url = self::get('url.main');
+        if(self::get('url.url_lang')) {
+            if(is_null($lang)) $lang = Lang::current();
+            $url = "//$lang." . self::get('url.url_lang');
+        }
+        if(strpos($url, '//') === 0) {
+            $url = 'http://' . $url;
+        }
+        if(self::get('ssl')) {
+            $url = str_replace('http://', 'https://', $url);
+        }
+        return $url;
     }
 
     static public function getPlugins() {

@@ -19,16 +19,18 @@ $pay_method = $this->pay_method;
 <div class="container">
 
 	<div class="row row-form">
-			<div class="panel panel-default select-method">
+			<div class="panel panel-default invest-container">
 				<div class="panel-body">
 					<h2 class="col-md-offset-1 padding-bottom-2"><?= $this->text('invest-method-title') ?></h2>
 
 					<div class="col-md-10 col-md-offset-1 reminder">
-					<?= $this->text('invest-alert-investing') ?><span class="amount-reminder"><?= amount_format($this->amount) ?></span> <?= $this->text('invest-project') ?> <span class="uppercase"><?= $this->project->name ?></span>
-						<?php if($this->reward): ?>
-						<div>
+                        <div class="level-1">
+					       <?= $this->text('invest-alert-investing') ?><span class="amount-reminder"><?= amount_format($this->amount) ?></span> <?= $this->text('invest-project') ?> <span class="uppercase"><?= $this->project->name ?></span>
+						</div>
+                        <?php if($this->reward): ?>
+						<div class="level-2">
 							<?= $this->text('invest-alert-rewards') ?>
-	                        <strong style="text-transform: uppercase;"><?= $this->reward->reward ?></strong>
+	                        <strong class="text-uppercase"><?= $this->reward->reward ?></strong>
 						</div>
 					<?php endif; ?>
 					</div>

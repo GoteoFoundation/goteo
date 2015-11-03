@@ -8,7 +8,7 @@ invest-alert-noreward_renounce: 'Wil je afzien van een beloning en je donatie va
 invest-donation-header: 'Voer de fiscale informatie in voor deze donatie'
 invest-amount-tooltip: 'Voer het bedrag in waarmee je dit project wilt steunen'
 invest-payment-email: 'voer je PayPal gebruikersnaam in'
-invest-mail_info-drop: 'Heeft ook, %s bijgedragen %s &euro; aan cloudfunding via de %s campagne '
+invest-mail_info-drop: 'Heeft ook, %s bijgedragen %s aan cloudfunding via de %s campagne '
 invest-resign: 'Ik hoef geen beloning, ik wil alleen aan het project deelnemen'
 invest-address-name-field: 'Naam:'
 invest-next_step: 'Volgende knop'

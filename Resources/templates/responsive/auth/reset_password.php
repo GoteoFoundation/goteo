@@ -15,7 +15,7 @@ $this->section('content');
 				<div class="panel-body">
 					<h2 class="col-md-offset-1 padding-bottom-6"><?= $this->text('reset-password-title') ?> </h2>
 
-					<form class="form-horizontal" role="form" method="POST" action="/password-reset?return=<?= $this->return ?>">
+					<form class="form-horizontal" role="form" method="POST" action="/password-reset?return=<?= urlencode($this->raw('return')) ?>">
 
 						<div class="form-group">
 							<div class="col-md-10 col-md-offset-1">
@@ -35,10 +35,10 @@ $this->section('content');
 								<button type="submit" class="btn btn-block btn-success"><?= $this->text('reset-password-save') ?></button>
 							</div>
 						</div>
-					</form>								
+					</form>
 				</div>
 			</div>
-		
+
 	</div>
 </div>
 

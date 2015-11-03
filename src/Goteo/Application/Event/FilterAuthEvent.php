@@ -41,16 +41,16 @@ class FilterAuthEvent extends Event
         if (isset($user->roles['admin']) || isset($user->roles['superadmin'])) {
             $return = '/admin';
         }
-
         // if return place specified
         if($request && $request->query->get('return')) {
             $return = $request->query->get('return');
         }
 
         if (Session::get('jumpto')) {
-            return new RedirectResponse(Session::getAndDel('jumpto'));
+            $return = Session::getAndDel('jumpto');
         }
 
+    // die($request->query->get('return'));
 
         return new RedirectResponse($return);
     }

@@ -100,7 +100,7 @@ class ContactController extends \Goteo\Core\Controller {
                 $toName = Config::get('mail.contact_name');
                 if(empty($toName)) $toName = 'Goteo';
                 // Obtenemos la plantilla para asunto y contenido
-                $mailHandler = Mail::createFromTemplate($email, $toName, Template::MESSAGE_CONTACT, [
+                $mailHandler = Mail::createFromTemplate($to, $toName, Template::MESSAGE_CONTACT, [
                         '%TONAME%'     => $toName,
                         '%MESSAGE%'    => $msg_content,
                         '%USEREMAIL%'  => $name . ' ' . $email

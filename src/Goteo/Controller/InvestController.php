@@ -152,6 +152,8 @@ class InvestController extends \Goteo\Core\Controller {
             // }
         }
 
+        $project->cat_names = Project\Category::getNames($id);
+
         // print_r($project->individual_rewards);
         // Set vars for all views
         $this->contextVars([
@@ -346,7 +348,6 @@ class InvestController extends \Goteo\Core\Controller {
             Message::info(Text::get('invest-process-completed'));
             return $this->redirect('/invest/' . $project_id . '/' . $invest->id);
         }
-
         try {
             $method = $invest->getMethod();
             $method = $this->dispatch(AppEvents::INVEST_COMPLETE, new FilterInvestInitEvent($invest, $method, $request))->getMethod();
@@ -360,9 +361,16 @@ class InvestController extends \Goteo\Core\Controller {
                 throw new \RuntimeException('This response does not implements ResponseInterface.');
             }
             if ($response->isSuccessful()) {
+
+                // Goto User data fill
+                Message::info('Payment completed successfully');
+
                 // Event invest success
                 return $this->dispatch(AppEvents::INVEST_SUCCEEDED, new FilterInvestRequestEvent($method, $response))->getHttpResponse();
             }
+
+            // Message
+            Message::error("Payment failed! [" . $response->getMessage() . "]");
 
             // Event invest failed
             return $this->dispatch(AppEvents::INVEST_FAILED, new FilterInvestRequestEvent($method, $response))->getHttpResponse();

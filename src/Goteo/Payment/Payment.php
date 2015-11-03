@@ -73,16 +73,22 @@ class Payment {
         return self::$methods;
     }
 
+    /**
+     * [methodExists description]
+     * @param  [type] $method [description]
+     * @return [type]         [description]
+     */
     static public function methodExists($method) {
         return isset(self::$methods[$method]);
     }
+
     /**
      * Returns a instance of the method
      * @param  [type] $method [description]
      * @return [type]         [description]
      */
     static public function getMethod($method, User $user = null) {
-        if(!isset(self::$methods[$method])) {
+        if(!self::methodExists($method)) {
             throw new PaymentException("Error, payment method [$method] is not registered!");
         }
         if(!self::$methods[$method] instanceOf PaymentMethodInterface) {

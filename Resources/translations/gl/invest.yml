@@ -9,7 +9,7 @@ invest-alert-noreward_renounce: '¿Desexas renunciar á recompensa e desgravar a
 invest-donation-header: 'Inserir os datos fiscais para a doazón'
 invest-amount-tooltip: 'Insire a cantidade coa que apoiaras ó proxecto'
 invest-payment-email: 'Insire a túa conta de PayPal'
-invest-mail_info-drop: 'Ademais, %s achegaches %s &euro; de capital riego por medio da campaña %s'
+invest-mail_info-drop: 'Ademais, %s achegaches %s de capital riego por medio da campaña %s'
 invest-resign: 'Renuncio a unha recompensa individual, só quero axudar ó proxecto'
 user-login-required-login: 'Se xa estás rexistrado debes iniciar sesión, se non, debes crear un novo usuario.'
 proj-widget-my_invest: 'As miñas achegas'

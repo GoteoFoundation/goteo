@@ -68,17 +68,50 @@ class SessionListener implements EventSubscriberInterface
         if(is_array(Config::get('proxies'))) {
             $request->setTrustedProxies(Config::get('proxies'));
         }
-        if (Config::get('ssl') && Session::isLogged() && !$request->isSecure()) {
-            $event->setResponse(new RedirectResponse('https://' . $request->getHttpHost() . $request->getRequestUri()));
-            return;
-        }
+
 
         // set currency
         Session::store('currency', Currency::set()); // depending on request
-        // Set lang
-        Lang::setDefault();
-        Lang::setFromGlobals($request);
 
+        // extend the life of the session
+        Session::renew();
+
+        // Cookie
+        // the stupid cookie EU law
+        if (!Cookie::exists('goteo_cookies')) {
+            Cookie::store('goteo_cookies', '1');
+            Message::info(Text::get('message-cookies'));
+        }
+
+        // Set lang
+        $lang = Lang::setFromGlobals($request);
+
+        $url = $request->getHttpHost();
+        // Redirect to proper URL if url_lang is defined
+        if(Config::get('url.url_lang')) {
+            $sub_lang = strtok($url, '.');
+            $sub_url = strtok('');
+            if(Lang::exists($sub_lang) && $sub_lang != $lang) {
+                $url = "$lang.$sub_url";
+            }
+            // echo "$url [$sub_lang=>$lang].$sub_url] ";die;
+        }
+
+        if (Config::get('ssl') && Session::isLogged() && !$request->isSecure()) {
+            // Force HTTPS redirection
+            $url = 'https://' . $url;
+        }
+        else {
+            // Conserve the current scheme
+            $url = $request->getScheme() .'://'. $url;
+        }
+
+        // Redirect if needed
+        if($url != $request->getScheme() . '://' . $request->getHttpHost()) {
+             //die("[$url " . $request->getScheme() . '://' . $request->getHttpHost());
+            $event->setResponse(new RedirectResponse($url . $request->getRequestUri()));
+            return;
+        }
     }
 
     /**
@@ -100,16 +133,6 @@ class SessionListener implements EventSubscriberInterface
         //non cookies for notifyAction on investController
         if($request->attributes->get('_controller') == 'Goteo\Controller\InvestController::notifyPaymentAction') {
             return;
-        }
-
-        // extend the life of the session
-        Session::renew();
-
-        // Cookie
-        // the stupid cookie EU law
-        if (!Cookie::exists('goteo_cookies')) {
-            Cookie::store('goteo_cookies', '1');
-            Message::info(Text::get('message-cookies'));
         }
 
         //Are we shadowing some user? let's add a nice bar to return to the original user
