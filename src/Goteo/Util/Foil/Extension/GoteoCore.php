@@ -62,6 +62,7 @@ class GoteoCore implements ExtensionInterface
           'get_query' => [$this, 'get_query'],
           'get_post' => [$this, 'get_post'],
           'get_uri' => [$this, 'get_uri'],
+          'get_url' => [$this, 'get_url'],
           'get_pathinfo' => [$this, 'get_pathinfo'],
           'get_querystring' => [$this, 'get_querystring'],
           'is_ajax' => [$this, 'is_ajax'],
@@ -127,15 +128,19 @@ class GoteoCore implements ExtensionInterface
         return Config::get($var);
     }
 
+    //URL
+    public function get_url($lang = null) {
+        return Config::getUrl($lang);
+    }
+
     //User
     public function get_user() {
         return Session::getUser();
     }
 
     //Currency
-    public function get_currency($var) {
-        $select_currency=Currency::$currencies[Currency::get()]['html'];
-        return $select_currency;
+    public function get_currency() {
+        return Currency::current('html');
     }
 
     // Checks user role

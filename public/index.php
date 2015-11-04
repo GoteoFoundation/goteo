@@ -14,6 +14,8 @@ use Goteo\Application\App;
 use Goteo\Application\Config;
 
 ini_set('display_errors', 0);
+error_reporting(E_ALL & ~E_USER_DEPRECATED); // for symfony user deprecated errors
+set_error_handler('\\Goteo\\Application\\App::errorHandler');
 
 //Public Web path
 define('GOTEO_WEB_PATH', __DIR__ . '/');

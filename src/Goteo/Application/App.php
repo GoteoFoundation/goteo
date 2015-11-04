@@ -249,8 +249,10 @@ class App extends HttpKernel\HttpKernel
             $message = strtoupper($type) . ': \'' . $errstr . '\' at ' . $errfile . ' ' . $errline . ': ' . join(' | ', $items);
             error_log($message);
         }
+
         self::$_errors["$errfile:$errline"] = $info;
         self::getService('logger')->err($txtinfo);
+
         if($fatal) {
             // $code = \Symfony\Component\HttpFoundation\Response::HTTP_INTERNAL_SERVER_ERROR;
             // \Goteo\Application\View::addFolder(__DIR__ . '/../../../templates/default');

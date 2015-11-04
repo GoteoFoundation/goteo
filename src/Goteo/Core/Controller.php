@@ -84,4 +84,11 @@ abstract class Controller {
     public function dispatch($eventName, Event $event = null) {
         return App::dispatch($eventName, $event);
     }
+
+    /**
+     * Handy method to get the debug function
+     */
+    public function debug($debug = null) {
+        return App::debug($debug);
+    }
 }

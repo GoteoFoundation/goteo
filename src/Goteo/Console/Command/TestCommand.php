@@ -8,7 +8,7 @@
  * and LICENSE files that was distributed with this source code.
  */
 
-namespace Goteo\Command;
+namespace Goteo\Console\Command;
 
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -39,21 +39,14 @@ EOT
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        try {
-            if ( $input->getOption('fail') ) {
-               $output->writeln('<comment>Throwing some errors intentionally to test email sending</comment>');
-               throw new \Exception('This is a simulated failed execution!');
-            }
-            else {
-                $output->writeln("<comment>Please run this command with options. Use --help for more info</comment>");
-                return;
-            }
+        if ( $input->getOption('fail') ) {
+           $output->writeln('<comment>Throwing some errors intentionally to test email sending</comment>');
+           $this->error('Simulated error log line');
+           throw new \Exception('This is a simulated failed execution!');
         }
-        catch(\Exception $e) {
-            $this->error($e->getMessage());
-            $output->writeln("<error>PROCESS FAILED: " . $e->getMessage() . "</error>");
+        else {
+            $output->writeln("<comment>Please run this command with options. Use --help for more info</comment>");
+            return;
         }
-
-
     }
 }

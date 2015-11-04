@@ -1,10 +1,10 @@
-regular-keepiton_mark: 'A por el óptimo'
-regular-fail_mark: Archivado...
+call-tagmark-3: 'Convocatoria abierta'
 call-tagmark-4: 'Campaña activa!'
 call-tagmark-5: 'Campaña finalizada'
-regular-gotit_mark: Cofinanciado!
-call-tagmark-3: 'Convocatoria abierta'
 call-tagmark-6: 'Convocatoria archivada'
+regular-fail_mark: Archivado...
+regular-gotit_mark: Cofinanciado!
+regular-keepiton_mark: 'A por el óptimo'
+regular-oneround_mark: 'Ronda única'
 regular-onrun_mark: 'En marcha!'
 regular-success_mark: 'Misión cumplida!'
-regular-oneround_mark: 'Ronda única'

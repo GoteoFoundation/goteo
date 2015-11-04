@@ -1,6 +1,6 @@
-faq-investors-section-header: 'Para cofinanciador@s'
-faq-sponsor-section-header: 'Para impulsor@s'
-faq-main-section-header: 'Sobre Goteo'
-faq-project-section-header: 'Sobre los proyectos'
-faq-nodes-section-header: 'Sobre nodos locales'
 faq-ask-question: "¿No has podido resolver tu duda?\r\n Envía un mensaje con tu pregunta."
+faq-investors-section-header: 'Para cofinanciador@s'
+faq-main-section-header: 'Sobre Goteo'
+faq-nodes-section-header: 'Sobre nodos locales'
+faq-project-section-header: 'Sobre los proyectos'
+faq-sponsor-section-header: 'Para impulsor@s'

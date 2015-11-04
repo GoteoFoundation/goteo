@@ -16,7 +16,7 @@ namespace Goteo\Controller {
 
     use Goteo\Model;
     use Goteo\Application\Session;
-    use Goteo\Command\UsersSend;
+    use Goteo\Console\UsersSend;
     use Goteo\Library\Check;
     use Goteo\Library\Feed;
     use Goteo\Core\ACL;

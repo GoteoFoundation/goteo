@@ -21,7 +21,7 @@ use Goteo\Library\Text,
     Goteo\Model\Mail,
 	Goteo\Model\Template,
     Goteo\Model,
-    Goteo\Command\UsersSend;
+    Goteo\Console\UsersSend;
 
 class ProjectsSubController extends AbstractSubController {
 

@@ -1,3 +1,3 @@
-fatal-error-teapot: '<span class="greenblue">How embarassing...</span> unexpected Error occurred'
 fatal-error-project: 'Este proyecto que buscas... <span class="red">no existe :(</span>'
+fatal-error-teapot: '<span class="greenblue">How embarassing...</span> unexpected Error occurred'
 fatal-error-user: 'Este usuario que buscas... <span class="red">no existe :(</span>'

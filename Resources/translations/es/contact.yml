@@ -1,14 +1,14 @@
-contact-subject-field: Asunto
-contact-email-field: Email
-contact-send_message-header: 'Envíanos un mensaje'
-contact-send_message-button: Enviar
-contact-message-field: Mensaje
-error-contact-email-empty: 'No has añadido tu email'
-error-contact-subject-empty: 'No has escrito el asunto'
-error-contact-message-empty: 'No has escrito ningún mensaje'
-contact-name-field: Nombre
 contact-captcha-field: 'Prueba de humanidad (lo sentimos...)'
 contact-captcha-refresh: 'Refresh image'
-error-contact-captcha: 'The reCAPTCHA wasn''t entered correctly. Try it again.'
-contact-tag-field: 'Tipo de consulta'
+contact-email-field: Email
 contact-form-tags: "[usuario] Tengo problemas con mi cuenta;\r\n[nuevo impulsor] Tengo un posible proyecto;\r\n[nuevo impulsor 2] Tengo dudas sobre el formulario de proyecto;\r\n[desarrollo] Tengo dudas sobre cuestiones técnicas;\r\n[justificante] Deseo un justificante de mi donación;\r\n[servicio] Quiero contratar un servicio;\r\n[otros] Es otro tipo de consulta;"
+contact-message-field: Mensaje
+contact-name-field: Nombre
+contact-send_message-button: Enviar
+contact-send_message-header: 'Envíanos un mensaje'
+contact-subject-field: Asunto
+contact-tag-field: 'Tipo de consulta'
+error-contact-captcha: 'The reCAPTCHA wasn''t entered correctly. Try it again.'
+error-contact-email-empty: 'No has añadido tu email'
+error-contact-message-empty: 'No has escrito ningún mensaje'
+error-contact-subject-empty: 'No has escrito el asunto'

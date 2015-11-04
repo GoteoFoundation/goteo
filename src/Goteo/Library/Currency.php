@@ -55,13 +55,22 @@ class Currency {
     );
 
     // Return default currency
-    static public function getDefault() {
-        return self::$currencies[self::DEFAULT_CURRENCY];
+    static public function getDefault($method = 'array') {
+        return self::get(self::DEFAULT_CURRENCY, $method);
     }
 
-    static public function get() {
-        $cur = $_SESSION['currency'];
-        if(empty($cur)) $cur = self::$currencies[self::DEFAULT_CURRENCY]['id'];
+    // Return current session currency
+    static public function current($method = 'id') {
+        return self::get($_SESSION['currency'], $method);
+    }
+
+    // Return a currency from the array of currencies
+    static public function get($cur = null, $method = 'array') {
+        if(!array_key_exists($cur, self::$currencies)) {
+            $cur = self::DEFAULT_CURRENCY;
+        }
+        $cur = self::$currencies[$cur];
+        if(array_key_exists($method, $cur)) return $cur[$method];
         return $cur;
     }
 

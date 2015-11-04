@@ -8,7 +8,7 @@
  * and LICENSE files that was distributed with this source code.
  */
 
-namespace Goteo\Command;
+namespace Goteo\Console;
 
 use Goteo\Model;
 use Goteo\Application\Lang;

@@ -1,20 +1,20 @@
-discover-patron-header: '<span class="greenblue">%s</span> recomienda<br />estos <span class="red">Proyectos</span>'
-discover-group-outdate-header: 'A punto de ser archivado'
-discover-group-archive-header: Archivados
-discover-searcher-header: 'Busca un proyecto'
-discover-searcher-button: Buscar
-discover-group-success-header: 'Campañas exitosas'
 discover-group-all-header: 'En campaña'
-discover-group-others-header: 'En otros nodos'
+discover-group-archive-header: Archivados
 discover-group-fulfilled-header: 'Han cumplido con los retornos colectivos'
+discover-group-others-header: 'En otros nodos'
+discover-group-outdate-header: 'A punto de ser archivado'
 discover-group-popular-header: 'Más populares'
+discover-group-recent-header: 'Publicados recientemente'
+discover-group-success-header: 'Campañas exitosas'
+discover-patron-header: '<span class="greenblue">%s</span> recomienda<br />estos <span class="red">Proyectos</span>'
 discover-results-empty: 'No hemos encontrado ningún proyecto que cumpla los criterios de búsqueda'
+discover-results-header: 'Resultado de búsqueda'
+discover-searcher-button: Buscar
+discover-searcher-bycategory-all: TODAS
 discover-searcher-bycategory-header: 'Por categoría:'
 discover-searcher-bycontent-header: 'Por contenido:'
-discover-searcher-bylocation-header: 'Por lugar:'
-discover-searcher-byreward-header: 'Por retorno:'
-discover-group-recent-header: 'Publicados recientemente'
-discover-results-header: 'Resultado de búsqueda'
-discover-searcher-bycategory-all: TODAS
 discover-searcher-bylocation-all: TODOS
+discover-searcher-bylocation-header: 'Por lugar:'
 discover-searcher-byreward-all: TODOS
+discover-searcher-byreward-header: 'Por retorno:'
+discover-searcher-header: 'Busca un proyecto'

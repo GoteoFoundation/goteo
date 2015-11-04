@@ -8,7 +8,7 @@
  * and LICENSE files that was distributed with this source code.
  */
 
-namespace Goteo\Command;
+namespace Goteo\Console\Command;
 
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;

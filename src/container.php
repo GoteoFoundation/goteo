@@ -103,11 +103,11 @@ if(Config::get('log.mail')) {
     $sc->register('logger.mail_handler', 'Goteo\Util\Monolog\Handler\MailHandler')
         ->setArguments(array(Goteo\Model\Mail::createFromHtml(Config::getMail('fail'),
                                                  '',
-                                                 "App error in [" . Config::get('url.main') . "] ",
+                                                 "WebApp error in [" . Config::get('url.main') . "] ",
                                                  "<pre>SERVER: " . print_R($_SERVER, 1) . "</pre>\n"
                              ), monolog_level(Config::get('log.mail'))))
     ;
-    $logger->addMethodCall('pushHandler', array(new Reference('logger.mail_handler')));
+    $logger->addMethodCall('pushHandler', array(new Reference('logger.mail_handler')))->addTag('mail');
     $paylogger->addMethodCall('pushHandler', array(new Reference('logger.mail_handler')));
 }
 

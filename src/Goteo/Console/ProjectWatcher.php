@@ -8,14 +8,13 @@
  * and LICENSE files that was distributed with this source code.
  */
 
-namespace Goteo\Command;
+namespace Goteo\Console;
 
 use Goteo\Model;
-use Goteo\Command\UsersSend as Send;
 use Goteo\Library\Text;
 use Goteo\Library\Feed;
 
-class ProjectsWatcher {
+class ProjectWatcher {
 
     /*
      * Control diario de proyectos
@@ -85,7 +84,7 @@ class ProjectsWatcher {
                 // si ha superado el mínimo
                 if ($project->amount >= $project->mincost) {
                     if ($debug) echo "Solicitud de datos contrato\n";
-                    Send::toOwner('1d_after', $project);
+                    UsersSend::toOwner('1d_after', $project);
                 } else {
                     if ($debug) echo "Solicitud de datos, no se envía porque no está financiado\n";
                 }
@@ -97,7 +96,7 @@ class ProjectsWatcher {
                     // si quedan recompensas/retornos pendientes por cumplir
                     if (!Model\Project\Reward::areFulfilled($project->id) || !Model\Project\Reward::areFulfilled($project->id, 'social') ) {
                         if ($debug) echo "Recompensas/Retornos pendientes\n";
-                        Send::toOwner('2m_after', $project);
+                        UsersSend::toOwner('2m_after', $project);
                     } else {
                         if ($debug) echo "Recompensas/Retornos cumplidas, no se envía\n";
                     }
@@ -109,7 +108,7 @@ class ProjectsWatcher {
                     // si quedan retornos pendientes por cumplir
                     if (!Model\Project\Reward::areFulfilled($project->id, 'social') ) {
                         if ($debug) echo "Retornos pendientes\n";
-                        Send::toOwner('8m_after', $project);
+                        UsersSend::toOwner('8m_after', $project);
                     } else {
                         if ($debug) echo "Retornos cumplidos, no se envía\n";
                     }
@@ -136,8 +135,8 @@ class ProjectsWatcher {
                 case 0: // Proyecto publicado
                     $template = 'tip_0';
                     if ($debug) echo "Envío {$template}\n";
-                    Send::toOwner($template, $project);
-                    Send::toConsultants($template, $project);
+                    UsersSend::toOwner($template, $project);
+                    UsersSend::toConsultants($template, $project);
                     break;
                 case 1: // Difunde, difunde, difunde
                 case 2: // Comienza por lo más próximo
@@ -147,7 +146,7 @@ class ProjectsWatcher {
                 case 8: // Agradece en público e individualmente
                     $template = 'tip_'.$project->days;
                     if ($debug) echo "Envío {$template}\n";
-                    Send::toOwner($template, $project);
+                    UsersSend::toOwner($template, $project);
                     break;
 
                 // periodico condicional
@@ -163,7 +162,7 @@ class ProjectsWatcher {
                         if ($debug) echo "Ya ha publicado novedades\n";
                     } else {
                         if ($debug) echo "Envío aviso de que no ha publicado novedades\n";
-                        Send::toOwner('any_update', $project);
+                        UsersSend::toOwner('any_update', $project);
                         $avisado = true;
                     }
                     break;
@@ -190,7 +189,7 @@ class ProjectsWatcher {
                     if (!$sent) {
                         if ($project->num_investors >= 20) {
                             if ($debug) echo "Tiene 20 backers y no se le habia enviado aviso antes\n";
-                            Send::toOwner('20_backers', $project);
+                            UsersSend::toOwner('20_backers', $project);
                         } else {
                             if ($debug) echo "No llega a los 20 backers\n";
                         }
@@ -212,7 +211,7 @@ class ProjectsWatcher {
                         }
                     }
                     if (!$skip) {
-                        Send::toOwner('tip_9', $project);
+                        UsersSend::toOwner('tip_9', $project);
                     }
                     break;
 
@@ -241,7 +240,7 @@ class ProjectsWatcher {
                         $lower = reset($rewards); $project->lower = $lower->reward;
                         $higher = end($rewards); $project->higher = $higher->reward;
 
-                        Send::toOwner('tip_10', $project);
+                        UsersSend::toOwner('tip_10', $project);
                     }
                     break;
 
@@ -250,7 +249,7 @@ class ProjectsWatcher {
                     // si no tiene video motivacional
                     if (empty($project->video)) {
                         if ($debug) echo "No tiene video motivacional\n";
-                        Send::toOwner('tip_11', $project);
+                        UsersSend::toOwner('tip_11', $project);
                     } else {
                         if ($debug) echo "Tiene video motivacional\n";
                     }
@@ -260,7 +259,7 @@ class ProjectsWatcher {
                     // si no ha llegado al mínimo
                     if ($project->amount < $project->mincost) {
                         if ($debug) echo "No ha llegado al mínimo\n";
-                        Send::toOwner('tip_15', $project);
+                        UsersSend::toOwner('tip_15', $project);
                     } else {
                         if ($debug) echo "Ha llegado al mínimo\n";
                     }
@@ -270,7 +269,7 @@ class ProjectsWatcher {
                     // si no ha llegado al mínimo
                     if ($project->amount < $project->mincost) {
                         if ($debug) echo "No ha llegado al mínimo\n";
-                        Send::toOwner('two_weeks', $project);
+                        UsersSend::toOwner('two_weeks', $project);
                     } else {
                         if ($debug) echo "Ha llegado al mínimo\n";
                     }
@@ -280,7 +279,7 @@ class ProjectsWatcher {
                     // si no ha llegado al mínimo
                     if ($project->amount < $project->mincost) {
                         if ($debug) echo "No ha llegado al mínimo\n";
-                        Send::toOwner('8_days', $project);
+                        UsersSend::toOwner('8_days', $project);
                     } else {
                         if ($debug) echo "Ha llegado al mínimo\n";
                     }
@@ -290,7 +289,7 @@ class ProjectsWatcher {
                     // si no ha llegado al mínimo pero está por encima del 70%
                     if ($project->amount < $project->mincost && $project->percent >= 70) {
                         if ($debug) echo "No ha llegado al mínimo\n";
-                        Send::toOwner('2_days', $project);
+                        UsersSend::toOwner('2_days', $project);
                     } else {
                         if ($debug) echo "Ha llegado al mínimo o lleva menos de 70%\n";
                     }
@@ -339,7 +338,7 @@ class ProjectsWatcher {
                     $lastUpdate = $query->fetchColumn(0);
                     if ($lastUpdate > 7) {
                         if ($debug) echo "Ultima novedad es de hace más de una semana\n";
-                        Send::toOwner('no_updates', $project);
+                        UsersSend::toOwner('no_updates', $project);
                     } elseif (is_numeric($lastUpdate)) {
                         if ($debug) echo "Publicó novedad hace menos de una semana\n";
                     } else {
@@ -378,7 +377,7 @@ class ProjectsWatcher {
             if ($debug) {
                 echo "Proyecto {$project->name}, Impulsor: {$project->user->name}, email: {$project->user->email} lleva 10 meses financiado y no constan retornos colectivos.\n";
             }
-            Send::toConsultants('commons', $project);
+            UsersSend::toConsultants('commons', $project);
         }
 
         $time = microtime();

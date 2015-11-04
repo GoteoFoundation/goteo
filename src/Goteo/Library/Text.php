@@ -134,7 +134,7 @@ class Text {
      * @deprecated
      * here to manually track old texts marked as html
      */
-	static public function isHtml ($id) {
+    static public function isHtml ($id) {
         $ids = ['invest-paypal_disabled',
             'dashboard-rewards-notice',
             'main-banner-header',
@@ -177,25 +177,28 @@ class Text {
             'feed-new_user',
             'open-banner-header'];
         return in_array($id, $ids);
-	}
+    }
 
 
-	/*
-	 *  Metodo para la lista de textos segun idioma
-	 */
-	public static function getAll($filters = array(), $lang = null) {
+    /*
+     *  Metodo para la lista de textos segun idioma
+     */
+    public static function getAll($filters = array(), $lang = null) {
         $sqls = $texts = array();
 
         // Obtain SQL texts first
         if (empty($filters['filesonly'])) {
-            $sql="SELECT * FROM text WHERE text.lang = :lang";
+            $sql="SELECT text.*,purpose.group FROM text
+            LEFT JOIN purpose ON purpose.text=text.id
+             WHERE text.lang = :lang
+             ORDER BY text.id ASC";
             $values = array(':lang' => $lang);
             $query = Model::query($sql, $values);
             foreach ($query->fetchAll(\PDO::FETCH_CLASS, __CLASS__) as $text) {
                 $sqls[$text->id] = $text;
             }
         }
-
+        // print_r($sqls);
         // Add files translations from groups
         foreach(Lang::groups() as $group => $parts) {
             if (!empty($filters['group']) && $filters['group'] != $group) {
@@ -205,6 +208,7 @@ class Text {
                 foreach($parts as list($l, $file)) {
                     // echo "[$l $file]\n";
                     $catalogue = Yaml::parse(file_get_contents($file));
+                    ksort($catalogue);
                     foreach($catalogue as $i => $t) {
                         $pending = false;
                         if($lang != $l) $pending = true;
@@ -229,45 +233,60 @@ class Text {
                         if (!empty($filters['text']) && stripos($t, $filters['text']) === false) {
                             continue;
                         }
+
                         $texts[$i] = new \stdClass;
                         $texts[$i]->id = $i;
+                        $texts[$i]->lang = $l;
                         $texts[$i]->group = $group;
                         $texts[$i]->pendiente = $pending;
+                        $texts[$i]->pending = $pending;
                         $texts[$i]->text = $t;
                     }
-
                 }
+            }
+
+            // add sql missing ids
+            foreach($sqls as $id => $ob) {
+                if((!array_key_exists($id, $texts) || $texts[$id]->lang != $ob->lang) && $ob->group == $group) {
+                    // echo "$id\n";print_r($ob);
+                    $texts[$id] = $ob;
+                    $texts[$id]->pendiente = $ob->pending;
+                }
+                // else {
+                //     // echo "[$id {$ob->group}]\n";
+                //     if(array_key_exists($id, $texts)) print_r($texts[$id]);
+                // }
             }
         }
 
         return $texts;
-	}
+    }
 
-	/*
-	 *  Esto se usa para traducciones
-	 */
-	public static function save($data, &$errors = array()) {
-		if (!is_array($data) ||
-			empty($data['id']) ||
-			empty($data['text']) ||
-			empty($data['lang'])) {
-				return false;
-		}
+    /*
+     *  Esto se usa para traducciones
+     */
+    public static function save($data, &$errors = array()) {
+        if (!is_array($data) ||
+            empty($data['id']) ||
+            empty($data['text']) ||
+            empty($data['lang'])) {
+                return false;
+        }
 
         $sql = "REPLACE `text` SET
                         `text` = :text,
                         id = :id,
                         lang = :lang
                 ";
-		if (Model::query($sql, array(':text' => $data['text'], ':id' => $data['id'], ':lang' => $data['lang']))) {
+        if (Model::query($sql, array(':text' => $data['text'], ':id' => $data['id'], ':lang' => $data['lang']))) {
             // delete text cache
             Lang::clearCache();
-        	return true;
-		} else {
-			$errors[] = 'Error al insertar los datos <pre>' . print_r($data, true) . '</pre>';
-			return false;
-		}
-	}
+            return true;
+        } else {
+            $errors[] = 'Error al insertar los datos <pre>' . print_r($data, true) . '</pre>';
+            return false;
+        }
+    }
 
     /*
      *  Esto se usa para marcar todas las traducciones de un texto como pendientes
@@ -287,10 +306,10 @@ class Text {
         }
     }
 
-	/*
-	 *  Delete id
-	 */
-	public static function delete($id, $lang) {
+    /*
+     *  Delete id
+     */
+    public static function delete($id, $lang) {
         $sql = "DELETE FROM `text` WHERE `id` = :id AND `lang` = :lang";
         Model::query($sql, array(':id' => $id, ':lang' => $lang));
     }
@@ -350,7 +369,7 @@ class Text {
 
         // seleccionar toda la tabla,
         $sql = "SELECT ".implode(', ', $fields)." FROM {$table}{$sqlFilter}";
-		$query = Model::query($sql, $values);
+        $query = Model::query($sql, $values);
         foreach ($query->fetchAll(\PDO::FETCH_ASSOC) as $row) {
             // para cada campo
             foreach ($fields as $field) {
@@ -414,24 +433,24 @@ class Text {
         return $urls;
     }
 
-	/*
-	 *   Pone el enlace a gmaps segun localidad
+    /*
+     *   Pone el enlace a gmaps segun localidad
      * @TODO , ponerle el LANG
-	 */
-	static public function GmapsLink($location)
-	{
-		$texto = '<a href="http://maps.google.es/maps?q='.htmlspecialchars(rawurlencode($location)).'&hl=es" target="_blank">'.htmlspecialchars($location).'</a>';
-		return $texto;
-	}
+     */
+    static public function GmapsLink($location)
+    {
+        $texto = '<a href="http://maps.google.es/maps?q='.htmlspecialchars(rawurlencode($location)).'&hl=es" target="_blank">'.htmlspecialchars($location).'</a>';
+        return $texto;
+    }
 
-	/*
-	 *   Método para formatear friendly un texto para ponerlo en la url
-	 */
-	static public function urliza($texto)
-	{
-		$texto = trim(strtolower($texto));
-		// Acentos
-//			$texto = strtr($texto, "ÁÀÄÂáàâäÉÈËÊéèêëÍÌÏÎíìîïÓÒÖÔóòôöÚÙÛÜúùûüÇçÑñ", "aaaaaaaaeeeeeeeeiiiiiiiioooooooouuuuuuuuccnn");
+    /*
+     *   Método para formatear friendly un texto para ponerlo en la url
+     */
+    static public function urliza($texto)
+    {
+        $texto = trim(strtolower($texto));
+        // Acentos
+//          $texto = strtr($texto, "ÁÀÄÂáàâäÉÈËÊéèêëÍÌÏÎíìîïÓÒÖÔóòôöÚÙÛÜúùûüÇçÑñ", "aaaaaaaaeeeeeeeeiiiiiiiioooooooouuuuuuuuccnn");
         $table = array(
             'Š'=>'S', 'š'=>'s', 'Đ'=>'Dj', 'đ'=>'dj', 'Ž'=>'Z', 'ž'=>'z', 'Č'=>'C', 'č'=>'c', 'Ć'=>'C', 'ć'=>'c',
             'À'=>'A', 'Á'=>'A', 'Â'=>'A', 'Ã'=>'A', 'Ä'=>'A', 'Å'=>'A', 'Æ'=>'A', 'Ç'=>'C', 'È'=>'E', 'É'=>'E',
@@ -444,55 +463,55 @@ class Text {
         );
 
         $texto = strtr($texto, $table);
-		// Separadores
-		$texto = preg_replace("/[\s\,\;\_\/\-]+/i", "-", $texto);
-		$texto = preg_replace("/[^a-z0-9\.\-\+]/", "", $texto);
-		return $texto;
-	}
+        // Separadores
+        $texto = preg_replace("/[\s\,\;\_\/\-]+/i", "-", $texto);
+        $texto = preg_replace("/[^a-z0-9\.\-\+]/", "", $texto);
+        return $texto;
+    }
 
-	/*
-	 *   Método para recortar un texto
-	 */
-	static public function recorta ($texto, $longitud, $puntos = '...')  {
-		// Es HTML?
-		$html = (strip_tags($texto) != $texto);
-		$palabras_vacias = array();
-		$separadores = array(" ",".",",",";");
+    /*
+     *   Método para recortar un texto
+     */
+    static public function recorta ($texto, $longitud, $puntos = '...')  {
+        // Es HTML?
+        $html = (strip_tags($texto) != $texto);
+        $palabras_vacias = array();
+        $separadores = array(" ",".",",",";");
 
-		$palabras_vacias = array ("un", "uno", "unos", "unas", "una",
-		"dos", "tres", "cuatro", "cinco", "seis", "siete", "ocho", "nueve", "diez",
-		"el", "la", "los", "las", "lo",
-		"que",
-		"o", "y", "u", "e", "a",
-		"ante", "bajo", "cabe", "con", "contra", "de", "desde", "hasta", "hacia", "para", "por", "según", "sin", "sobre", "tras", "durante", "mediante",
-		);
+        $palabras_vacias = array ("un", "uno", "unos", "unas", "una",
+        "dos", "tres", "cuatro", "cinco", "seis", "siete", "ocho", "nueve", "diez",
+        "el", "la", "los", "las", "lo",
+        "que",
+        "o", "y", "u", "e", "a",
+        "ante", "bajo", "cabe", "con", "contra", "de", "desde", "hasta", "hacia", "para", "por", "según", "sin", "sobre", "tras", "durante", "mediante",
+        );
 
-		$texto = trim($texto);
-		if (strlen($texto) <= $longitud) return $texto;
-		$texto = substr($texto,0,$longitud);
+        $texto = trim($texto);
+        if (strlen($texto) <= $longitud) return $texto;
+        $texto = substr($texto,0,$longitud);
 
-		// Buscamos el último espacio
-		$texto = substr($texto, 0, strrpos($texto, " "));
+        // Buscamos el último espacio
+        $texto = substr($texto, 0, strrpos($texto, " "));
 
-		// Quitamos palabras vacías
-		$ultima = self::ultima_palabra($texto,$separadores );
-		while ($texto != "" && (in_array($ultima,$palabras_vacias) || strlen($ultima)<=2) || ($html && $ultima{1} == "<" && substr($ultima,-1) == ">")) {
-			$texto = substr($texto,0,strlen($texto)-strlen($ultima));
-			while ($texto != "" && in_array(substr($texto,-1),$separadores)){
-				$texto = substr($texto, 0, -1);
-			}
-			$ultima = self::ultima_palabra($texto,$separadores);
-		}
+        // Quitamos palabras vacías
+        $ultima = self::ultima_palabra($texto,$separadores );
+        while ($texto != "" && (in_array($ultima,$palabras_vacias) || strlen($ultima)<=2) || ($html && $ultima{1} == "<" && substr($ultima,-1) == ">")) {
+            $texto = substr($texto,0,strlen($texto)-strlen($ultima));
+            while ($texto != "" && in_array(substr($texto,-1),$separadores)){
+                $texto = substr($texto, 0, -1);
+            }
+            $ultima = self::ultima_palabra($texto,$separadores);
+        }
 
-		// Hemos cortado una etiqueta html?
-		if ($html && strrpos($texto,"<") > strrpos($texto,">")) {
-			$texto = substr($texto,0,strrpos($texto,"<"));
-		}
-		// Si el texto era html, cerramos las etiquetas
-		if ($html) $texto = self::cerrar_etiquetas($texto);
-		if ($puntos !== false) $texto .= $puntos;
-		return $texto;
-	}
+        // Hemos cortado una etiqueta html?
+        if ($html && strrpos($texto,"<") > strrpos($texto,">")) {
+            $texto = substr($texto,0,strrpos($texto,"<"));
+        }
+        // Si el texto era html, cerramos las etiquetas
+        if ($html) $texto = self::cerrar_etiquetas($texto);
+        if ($puntos !== false) $texto .= $puntos;
+        return $texto;
+    }
 
     static public function ultima_palabra ($texto, $separadores = false) {
         $palabra = '';
@@ -535,8 +554,8 @@ class Text {
     }
 
 
-	/*
-	 *   Método para aplicar saltos de linea y poner links en las url
+    /*
+     *   Método para aplicar saltos de linea y poner links en las url
      *   ¿¡Como se puede ser tan guay!?
      *   http://www.kwi.dk/projects/php/UrlLinker/
      * -------------------------------------------------------------------------------
@@ -548,9 +567,9 @@ class Text {
      *  and related or neighboring rights to UrlLinker.
      *  http://creativecommons.org/publicdomain/zero/1.0/
      * -------------------------------------------------------------------------------
-	 */
-	static public function urlink($text)
-	{
+     */
+    static public function urlink($text)
+    {
         /*
          *  Regular expression bits used by htmlEscapeAndLinkUrls() to match URLs.
          */
@@ -655,7 +674,7 @@ class Text {
         $html .= htmlspecialchars(substr($text, $position));
         return $html;
 
-	}
+    }
 
     /*
      * Método para ocultar parámetros de una url

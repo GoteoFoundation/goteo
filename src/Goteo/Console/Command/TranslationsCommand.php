@@ -8,7 +8,7 @@
  * and LICENSE files that was distributed with this source code.
  */
 
-namespace Goteo\Command;
+namespace Goteo\Console\Command;
 
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
@@ -30,7 +30,7 @@ class TranslationsCommand extends Command {
     {
         $lang = Config::get('lang');
 
-        $this->setName("lang")
+        $this->setName("trans")
              ->setDescription("Manages Texts and Translations used on Goteo")
              ->setDefinition(array(
                       new InputOption('lang', 'l', InputOption::VALUE_OPTIONAL, 'Lang to import (ISO 639-1 codes) (default: defined in settings)', $lang),
@@ -46,25 +46,25 @@ This command may be used to export texts from database into YAML files
 Usage:
 
 With no arguments, the content of the 'text' for lang specified (from settings if not defined)
-<info>./console lang </info>
+<info>./console trans </info>
 
 Listing available langs (YAML format)
-<info>./console lang --langs </info>
+<info>./console trans --langs </info>
 
 Shows translation content for some lang
-<info>./console lang  -l en|fr|es|de|...</info>
+<info>./console trans  -l en|fr|es|de|...</info>
 
 Shows translation content for some lang stored only in local database (excludes yaml files)
-<info>./console lang --sql -l en|fr|es|de|...</info>
+<info>./console trans --sql -l en|fr|es|de|...</info>
 
-WRITES YAML files into Resources/translations/[LANG]/[GROUP].yml for lang specified in settings
-<info>./console lang --dump </info>
+WRITES YAML files into config/Resources/translations/[LANG]/[GROUP].yml for lang specified in settings
+<info>./console trans --dump </info>
 
-WRITES YAML files into Resources/translations/[LANG]/[GROUP].yml for lang English
-<info>./console lang --dump -l en</info>
+WRITES YAML files into config/Resources/translations/[LANG]/[GROUP].yml for lang English
+<info>./console trans --dump -l en</info>
 
 DELETES sql entries for lang specified that are already defined into yaml files
-<info>./console lang --sql-clear -l en|fr|es|de|...</info>
+<info>./console trans --sql-clear -l en|fr|es|de|...</info>
 
 EOT
 );
@@ -129,8 +129,8 @@ EOT
             $yml = Yaml::dump($texts);
             if($dump) {
                 // Main dir
-                $dir = __DIR__ . '/../../../Resources/translations/' . $lang . '/';
-                mkdir($dir, 0755, true);
+                $dir = GOTEO_PATH . 'config/Resources/translations/' . $lang . '/';
+                @mkdir($dir, 0755, true);
                 file_put_contents($dir . $group . '.yml', $yml);
                 $output->writeln("<comment>Dumped Lang collection into $dir$group.yml</comment>");
             }

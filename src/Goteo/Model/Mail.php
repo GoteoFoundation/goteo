@@ -228,7 +228,7 @@ class Mail extends \Goteo\Core\Model {
         if($this->validate($errors)) {
             try {
                 if (self::checkBlocked($this->to, $reason)) {
-                    throw new \phpmailerException("El destinatario esta bloqueado por demasiados rebotes o quejas [$reason]");
+                    throw new \phpmailerException("The recipient is blocked due too many bounces or complaints [$reason]");
                 }
 
                 $allowed = false;

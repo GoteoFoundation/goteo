@@ -8,7 +8,7 @@
  * and LICENSE files that was distributed with this source code.
  */
 
-namespace Goteo\Command;
+namespace Goteo\Console\Command;
 
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -46,14 +46,6 @@ EOT
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        try {
-           $output->writeln('<comment>nothing yet</comment>');
-        }
-        catch(\Exception $e) {
-            $this->error($e->getMessage());
-            $output->writeln("<error>PROCESS FAILED: " . $e->getMessage() . "</error>");
-        }
-
-
+       $output->writeln('<comment>nothing yet</comment>');
     }
 }

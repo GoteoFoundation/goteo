@@ -166,8 +166,8 @@ color:#20B3B2;
 
 <body>
 
-<?php if ($this->alternate) : ?><div class="header-bar"><span class="header-element"><?= $this->text_html('mailer-sinoves', $this->alternate) ?></span></div><?php endif ?>
-<div class="header"><span class="header-element"><img src="<?= SITE_URL ?>/goteo_logo.png" alt="Logo" /></span></div>
+<?php if ($this->alternate) : ?><div class="header-bar"><span class="header-element"><?= $this->text('mailer-sinoves', $this->raw('alternate')) ?></span></div><?php endif ?>
+<div class="header"><span class="header-element"><img src="<?= $this->get_url() ?>/goteo_logo.png" alt="Logo" /></span></div>
 
 <div class="content">
 
@@ -177,12 +177,12 @@ color:#20B3B2;
 
 <div class="disclaimer"><?= $this->text('mailer-disclaimer') ?></div>
 
-<div class="goteo-url"><a href="<?= SITE_URL ?>"><?= $this->get_config('url.main') ?></a></div>
-<div class="descubre"><a href="<?= SITE_URL . '/discover' ?>"><?= $this->text('regular-discover') ?></a></div>
-<div class="crea"><a href="<?= SITE_URL . '/project/create' ?>"><?= $this->text('regular-create') ?></a></div>
+<div class="goteo-url"><a href="<?= $this->get_url() ?>"><?= $this->get_config('url.main') ?></a></div>
+<div class="descubre"><a href="<?= $this->get_url() . '/discover' ?>"><?= $this->text('regular-discover') ?></a></div>
+<div class="crea"><a href="<?= $this->get_url() . '/project/create' ?>"><?= $this->text('regular-create') ?></a></div>
 
 <div class="follow">Síguenos en:<br />
-  <span class="facebook"><a href="<?= $this->text('social-account-facebook') ?>">facebook</a></span> |  <span class="twitter"><a href="<?= $this->text('social-account-twitter') ?>">twitter</a></span> |   <span class="rss"><a rel="alternate" type="application/rss+xml" title="RSS" href="<?= SITE_URL. '/rss' ?>">RSS</a></span></div>
+  <span class="facebook"><a href="<?= $this->text('social-account-facebook') ?>">facebook</a></span> |  <span class="twitter"><a href="<?= $this->text('social-account-twitter') ?>">twitter</a></span> |   <span class="rss"><a rel="alternate" type="application/rss+xml" title="RSS" href="<?= $this->get_url(). '/rss' ?>">RSS</a></span></div>
 
 <div class="unsuscribe"><?= $this->text('mailer-baja', $this->unsubscribe) ?></div>
 
