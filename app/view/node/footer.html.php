@@ -62,12 +62,20 @@ $steps = Post::get(566);
             <div class="block social">
                 <span class="title"><?php echo Text::get('node-footer-title-social') ?></span>
                 <ul class="scroll-pane">
+                    <!--
                     <li class="twitter"><a href="<?php echo Text::get('social-account-twitter') ?>" target="_blank"><?php echo Text::get('regular-twitter') ?></a></li>
                     <li class="facebook"><a href="<?php echo Text::get('social-account-facebook') ?>" target="_blank"><?php echo Text::get('regular-facebook') ?></a></li>
                     <li class="calendar"><a href="<?php echo Text::get('social-account-identica') ?>" target="_blank"><?php echo Text::get('regular-calendar') ?></a></li>
                     <li class="gplus"><a href="<?php echo Text::get('social-account-google') ?>" target="_blank"><?php echo Text::get('regular-google') ?></a></li>
                     <li class="rss"><a rel="alternate" type="application/rss+xml" title="RSS" href="/rss<?php echo $lang ?>" target="_blank"><?php echo Text::get('regular-share-rss'); ?></a></li>
+                    -->
 
+                    <li class="twitter"><a href="<?= Text::get('social-account-twitter') ?>" target="_blank"><?= Text::get('regular-twitter') ?></a></li>
+                    <li class="facebook"><a href="<?= Text::get('social-account-facebook') ?>" target="_blank"><?= Text::get('regular-facebook') ?></a></li>
+                    <li class="instagram"><a href="<?= Text::get('social-account-instagram') ?>" target="_blank"><?= Text::get('regular-instagram')?></a></li>
+                    <li class="calendar"><a href="/calendar" target="_blank"><?= Text::get('regular-calendar') ?></a></li>
+                    <li class="gplus"><a href="<?= Text::get('social-account-google') ?>" target="_blank"><?= Text::get('regular-google') ?></a></li>
+                    <li class="rss"><a rel="alternate" type="application/rss+xml" title="RSS" href="/rss<?= $lang ?>" target="_blank"><?= Text::get('regular-share-rss')?></a></li>
                 </ul>
             </div>
 

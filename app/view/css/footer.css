@@ -252,24 +252,24 @@ div#footer div.social li.facebook a {
 	background-position:0 -24px;
 }
 
+div#footer div.social li.instagram a {
+    color: #125688;
+    background-position:0 -45px;
+}
+
 div#footer div.social li.calendar a {
     color: #32b6b3;
-	background-position:0 -45px;
+	background-position:0 -66px;
 }
 
 div#footer div.social li.gplus a {
     color: #5075aa;
-	background-position:0 -66px;
-}
-
-div#footer div.social li.instagram a {
-    color: #125688;
-    background-position:0 -90px;
+	background-position:0 -90px;
 }
 
 div#footer div.social li.rss a {
     color: #ee8226;
-	background-position:0 -113px;
+	background-position:0 -115px;
 }
 
 
