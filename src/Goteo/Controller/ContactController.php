@@ -99,7 +99,11 @@ class ContactController extends \Goteo\Core\Controller {
                     ]);
                 // Custom subject
                 $subject = ($tag ? '[' . $tag . '] ' : '') . $subject;
+
                 $mailHandler->subject = $subject;
+
+                $mailHandler->replyName = $name;
+                $mailHandler->reply = $email;
 
                 if ($mailHandler->send($errors)) {
                     Message::info('Mensaje de contacto enviado correctamente.');
