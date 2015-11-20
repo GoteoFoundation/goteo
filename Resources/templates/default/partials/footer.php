@@ -98,6 +98,7 @@ $sponsors   = Sponsor::getList();
 
             </ul>
         </div>
+
     <?php $this->stop() ?>
 
 	</div>

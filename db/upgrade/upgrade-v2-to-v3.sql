@@ -1,49 +1,5 @@
 /*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
 
-/* Create table in target */
-CREATE TABLE `_location`(
-    `id` bigint(20) unsigned NOT NULL  auto_increment ,
-    `city` char(255) COLLATE utf8_general_ci NULL  ,
-    `region` char(255) COLLATE utf8_general_ci NULL  ,
-    `country` char(255) COLLATE utf8_general_ci NULL  ,
-    `country_code` char(2) COLLATE utf8_general_ci NOT NULL  ,
-    `longitude` decimal(16,14) NOT NULL  ,
-    `latitude` decimal(16,14) NOT NULL  ,
-    `valid` tinyint(1) NOT NULL  DEFAULT 0 ,
-    `modified` timestamp NOT NULL  DEFAULT CURRENT_TIMESTAMP on update CURRENT_TIMESTAMP ,
-    PRIMARY KEY (`id`) ,
-    UNIQUE KEY `location`(`longitude`,`latitude`) ,
-    KEY `latitude`(`latitude`) ,
-    KEY `longitude`(`longitude`)
-) ENGINE=InnoDB DEFAULT CHARSET='utf8' COLLATE='utf8_general_ci' COMMENT='Geolocalización';
-
-
-/* Create table in target */
-CREATE TABLE `_location_item`(
-    `location` int(20) unsigned NOT NULL  ,
-    `item` varchar(50) COLLATE utf8_general_ci NOT NULL  ,
-    `type` varchar(7) COLLATE utf8_general_ci NOT NULL  ,
-    `method` char(50) COLLATE utf8_general_ci NOT NULL  DEFAULT 'ip' ,
-    `locable` tinyint(1) NOT NULL  DEFAULT 0 ,
-    `info` char(255) COLLATE utf8_general_ci NULL  ,
-    `modified` timestamp NOT NULL  DEFAULT CURRENT_TIMESTAMP on update CURRENT_TIMESTAMP ,
-    PRIMARY KEY (`item`,`type`) ,
-    KEY `location`(`location`)
-) ENGINE=InnoDB DEFAULT CHARSET='utf8' COLLATE='utf8_general_ci' COMMENT='Tabla de relacion localizaciones y registros';
-
-
-/* Create table in target */
-CREATE TABLE `_user_node`(
-    `user` varchar(50) COLLATE utf8_general_ci NOT NULL  ,
-    `node` varchar(50) COLLATE utf8_general_ci NOT NULL  ,
-    PRIMARY KEY (`user`,`node`) ,
-    KEY `node`(`node`) ,
-    CONSTRAINT `_user_node_ibfk_1`
-    FOREIGN KEY (`user`) REFERENCES `user` (`id`) ON DELETE CASCADE ON UPDATE CASCADE ,
-    CONSTRAINT `_user_node_ibfk_2`
-    FOREIGN KEY (`node`) REFERENCES `node` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET='utf8' COLLATE='utf8_general_ci';
-
 
 /* Alter table in target */
 ALTER TABLE `banner`

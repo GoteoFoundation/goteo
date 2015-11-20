@@ -1,5 +1,5 @@
-main-banner-header: '    <h2 class="message">Social network for <span class="greenblue">crowdfunding and collaborating with </span><br /> creative projects that further the common good<br /> Do you have a project with <span class="greenblue">open DNA</span>?</h2><a href="/contact" class="button banner-button">Contact us!</a>'
 discover-banner-header: '    By category, location or benefit,<br /><span class="red">find the project</span> that you identify with the most.'
 login-banner-header: '    Get access to the <br /><span class="greenblue">100% open</span> Goteo community'
+main-banner-header: '    <h2 class="message">Social network for <span class="greenblue">crowdfunding and collaborating with </span><br /> creative projects that further the common good<br /> Do you have a project with <span class="greenblue">open DNA</span>?</h2><a href="/contact" class="button banner-button">Contact us!</a>'
 open-banner-header: '<div class="modpo-open">OPEN</div><div class="modpo-percent">100&#37; OPEN</div><div class="modpo-whyopen">%s</div>'
 regular-banner-metter: Obtained-of-lasting

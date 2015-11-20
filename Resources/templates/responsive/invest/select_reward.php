@@ -19,16 +19,9 @@ $this->section('content');
 			<div class="panel panel-default invest-container">
 				<div class="panel-body">
 
-					<!--
-					<div class="col-md-10 col-md-offset-1 reminder">
-	                    <strong><?= $this->project->name ?></strong>
-	                        <?= $this->text('project-invest-start') ?>
-                    </div>
-                    -->
+                    <h2 class="col-sm-offset-1 padding-bottom-2"><?= $this->text('invest-select-reward') ?></h2>
 
                     <?= $this->supply('sub-header', $this->get_session('sub-header')) ?>
-
-					<h2 class="col-sm-offset-1 padding-bottom-2"><?= $this->text('invest-select-reward') ?></h2>
 
                     <?= $this->insert('invest/partials/reward_box_resign') ?>
 

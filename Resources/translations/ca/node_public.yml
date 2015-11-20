@@ -1,30 +1,30 @@
-node-side-sumcalls-campaigns: Actiu
-node-side-summary-active: Actius
-node-footer-title-investors: 'Persones cofinançadores'
-node-side-summary-investors: 'Persones cofinançadores'
-node-side-summary-supporters: 'Persones col.laboradores'
-node-side-searcher-bycategory: 'Per categoria'
-node-side-searcher-byreward: 'Per retorn'
-node-home-calls-headers: Convocatòries
-node-footer-title-creators: 'Persones impulsores'
-node-side-sumcalls-header: 'Capital<br />irrigació'
-node-footer-investors-donate: 'Donacions i desgravacions'
-node-footer-title-social: Segueix-nos
-node-side-searcher-promote: Destacats
-node-footer-investors-payment: 'Com funcionen els pagaments'
-node-footer-investors-invest: 'Com recolzar un projecte'
-node-side-summary-amount: 'Diners recaptats'
-node-footer-title-help: 'Necessites ajuda?'
-node-home-posts-header: Novetats
-node-side-sumcalls-calls: Obert
-node-side-sumcalls-rest: 'Queda per repartir'
-node-side-searcher-popular: Populars
-node-side-searcher-recent: Recents
 node-footer-about: 'Xarxa social per cofinançar i col.laborar amb projectes creatius que fomentin el procomú <a href="/project/create">Tens un projecte amb adn obert?</a>'
-node-side-searcher-success: Exitosos
-node-side-summary-success: Exitosos
-node-side-sumcalls-budget: 'Total (totes les campanyes)'
-node-side-searcher-outdate: Urgents
 node-footer-help-what: 'Què és el crowdfunding'
 node-footer-help-why: 'Per què Goteo és diferent'
+node-footer-investors-donate: 'Donacions i desgravacions'
+node-footer-investors-invest: 'Com recolzar un projecte'
+node-footer-investors-payment: 'Com funcionen els pagaments'
+node-footer-title-creators: 'Persones impulsores'
+node-footer-title-help: 'Necessites ajuda?'
+node-footer-title-investors: 'Persones cofinançadores'
+node-footer-title-social: Segueix-nos
 node-header-sponsorby: 'Amb el suport de:'
+node-home-calls-headers: Convocatòries
+node-home-posts-header: Novetats
+node-side-searcher-bycategory: 'Per categoria'
+node-side-searcher-byreward: 'Per retorn'
+node-side-searcher-outdate: Urgents
+node-side-searcher-popular: Populars
+node-side-searcher-promote: Destacats
+node-side-searcher-recent: Recents
+node-side-searcher-success: Exitosos
+node-side-sumcalls-budget: 'Total (totes les campanyes)'
+node-side-sumcalls-calls: Obert
+node-side-sumcalls-campaigns: Actiu
+node-side-sumcalls-header: 'Capital<br />irrigació'
+node-side-sumcalls-rest: 'Queda per repartir'
+node-side-summary-active: Actius
+node-side-summary-amount: 'Diners recaptats'
+node-side-summary-investors: 'Persones cofinançadores'
+node-side-summary-success: Exitosos
+node-side-summary-supporters: 'Persones col.laboradores'

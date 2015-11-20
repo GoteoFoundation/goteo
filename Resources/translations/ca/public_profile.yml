@@ -1,21 +1,21 @@
-profile-invest_on-title: Cofinança
-profile-worth-title: 'Aporta aquí:'
-profile-last_worth-title: Data
-profile_patron-invest_on-header: 'A més, cofinanço'
 profile-interests-header: 'M''interessen projectes amb finalitat de tipus...'
-user-message-restricted: 'Només pot rebre missatges dels seus cofinançadors'
-profile-my_investors-header: 'Els meus cofinançadors'
-profile-my_worth-header: 'El meu cabal a Goteo'
-profile-keywords-header: 'Les meves paraules clau'
-profile-location-header: 'La meva ubicació'
-profile-my_projects-header: 'Els meus projectes'
-profile-webs-header: 'Les meves webs'
-profile-worthcracy-title: Posició
-profile-name-header: 'Perfil de '
 profile-invest_on-header: 'Projectes que recolzo'
+profile-invest_on-title: Cofinança
+profile-keywords-header: 'Les meves paraules clau'
+profile-last_worth-title: Data
+profile-location-header: 'La meva ubicació'
+profile-my_investors-header: 'Els meus cofinançadors'
+profile-my_projects-header: 'Els meus projectes'
+profile-my_worth-header: 'El meu cabal a Goteo'
+profile-name-header: 'Perfil de '
 profile-patron-header: 'Recomana <span class="red">%s projectes</span>'
-user-message-send_personal-header: 'Envia un missatge a un usuari'
 profile-sharing_interests-header: 'Compartint interessos'
-profile-widget-button: 'Veure perfil'
 profile-social-header: Social
+profile-webs-header: 'Les meves webs'
+profile-widget-button: 'Veure perfil'
 profile-widget-user-header: Usuari
+profile-worth-title: 'Aporta aquí:'
+profile-worthcracy-title: Posició
+profile_patron-invest_on-header: 'A més, cofinanço'
+user-message-restricted: 'Només pot rebre missatges dels seus cofinançadors'
+user-message-send_personal-header: 'Envia un missatge a un usuari'

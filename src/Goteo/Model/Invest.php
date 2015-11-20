@@ -18,6 +18,7 @@ use Goteo\Application\Exception\ModelNotFoundException;
 use Goteo\Library\Text;
 use Goteo\Model\Image;
 use Goteo\Model\User;
+use Goteo\Model\User\Pool;
 use Goteo\Model\Project;
 use Goteo\Payment\Payment;
 
@@ -143,12 +144,15 @@ class Invest extends \Goteo\Core\Model {
 
         $invests = array();
 
+        $values = array(':p' => $project, ':s0' => self::STATUS_PENDING, ':s1' => self::STATUS_CHARGED, ':s3' => self::STATUS_PAID, ':s4' => self::STATUS_RETURNED);
+
         $query = static::query("
             SELECT  *
             FROM  invest
             WHERE   invest.project = :p
             AND invest.status IN (:s0, :s1, :s3 :s4)
-            ", array(':p' => $project, ':s0' => self::STATUS_PENDING, ':s1' => self::STATUS_CHARGED, ':s3' => self::STATUS_PAID, ':s4' => self::STATUS_RETURNED));
+            ", $values);
+        // echo \sqldbg($sql, $values);
         foreach ($query->fetchAll(\PDO::FETCH_CLASS, __CLASS__) as $invest) {
 
             $invest->rewards = $invest->getRewards();
@@ -169,7 +173,7 @@ class Invest extends \Goteo\Core\Model {
      * .... anonimo, resign, etc...
      * @param $count if true, counts the total. If it's 'money' sum all money instead, if 'users' gets the number of different users
      */
-    public static function getList ($filters = array(), $node = null, $offset = 0, $limit = 10, $count = false) {
+    public static function getList ($filters = array(), $node = null, $offset = 0, $limit = 10, $count = false, $order = 'id ASC') {
 
         $list = array();
         $values = array();
@@ -202,8 +206,13 @@ class Invest extends \Goteo\Core\Model {
             if($parts) $sqlFilter .= " AND invest.status IN (" . implode(',', $parts) . ")";
         }
         if (!empty($filters['projects'])) {
-            $sqlFilter .= " AND invest.project = :projects";
-            $values[':projects'] = $filters['projects'];
+            $parts = [];
+            if(!is_array($filters['projects'])) $filters['projects'] = [$filters['projects']];
+            foreach($filters['projects'] as $i => $prj) {
+                $parts[] = ':prj' . $i;
+                $values[':prj' . $i] = $prj;
+            }
+            $sqlFilter .= " AND invest.project IN (" . implode(',', $parts) . ")";
         }
         if (!empty($filters['amount'])) {
             $sqlFilter .= " AND invest.amount >= :amount";
@@ -301,6 +310,9 @@ class Invest extends \Goteo\Core\Model {
             $sqlFilter .= " AND invest.invested <= :date_until";
             $values[':date_until'] = $filters['date_until'];
         }
+        if (isset($filters['fulfilled'])) {
+            $sqlFilter .= " AND invest_reward.fulfilled=" . ($filters['fulfilled'] ? '1' : '0');
+        }
 
         if ($node) {
             $sqlFilter .= " AND project.node = :node";
@@ -321,10 +333,14 @@ class Invest extends \Goteo\Core\Model {
                 $what = 'COUNT(invest.id)';
             }
             // Return count
-            $sql = "SELECT $what
+            $sql = "SELECT DISTINCT $what
                 FROM invest
                 INNER JOIN project
                     ON invest.project = project.id
+                LEFT JOIN user
+                    ON invest.admin = user.id
+                LEFT JOIN invest_reward
+                    ON invest_reward.invest = invest.id
                 WHERE invest.project IS NOT NULL
                     $sqlFilter";
 
@@ -343,7 +359,9 @@ class Invest extends \Goteo\Core\Model {
         $offset = (int) $offset;
         $limit = (int) $limit;
         $sql = "SELECT
-                    invest.*,
+                    DISTINCT invest.*,
+                    invest_reward.reward as reward,
+                    invest_reward.fulfilled as fulfilled,
                     project.status as projectStatus,
                     user.name as admin
                 FROM invest
@@ -351,9 +369,11 @@ class Invest extends \Goteo\Core\Model {
                     ON invest.project = project.id
                 LEFT JOIN user
                     ON invest.admin = user.id
+                LEFT JOIN invest_reward
+                    ON invest_reward.invest = invest.id
                 WHERE invest.project IS NOT NULL
                     $sqlFilter
-                ORDER BY invest.id DESC
+                " . ($order ? "ORDER BY $order" : '') ."
                 LIMIT $offset, $limit
                 ";
 
@@ -415,6 +435,7 @@ class Invest extends \Goteo\Core\Model {
                 $this->address->country = $address->country;
             }
 
+
             // Get from older investions if empty
             if (empty($this->address->name)) {
                 $query = static::query("
@@ -426,9 +447,15 @@ class Invest extends \Goteo\Core\Model {
                 $this->address = $query->fetchObject();
             }
 
+            // empty object
+            if (!is_object($this->address)) $this->address = new \stdClass;
+
+            if(empty($this->address->country)) $this->address->country = 'ES';
+
             if(strlen($this->address->country) > 2) {
                 $this->address->country = Lang::getCountryCode($this->address->country);
             }
+
         }
         return $this->address;
     }
@@ -1314,11 +1341,6 @@ class Invest extends \Goteo\Core\Model {
      */
     public function cancel ($failed_project = false) {
 
-        $values = array(
-            ':id' => $this->id,
-            ':returned' => date('Y-m-d')
-        );
-
         // si es un proyecto fallido el aporte se queda en el termometro
         if ($failed_project) {
             $status = self::STATUS_RETURNED;
@@ -1326,20 +1348,29 @@ class Invest extends \Goteo\Core\Model {
             $status = self::STATUS_CANCELLED;
         }
 
+
+        $values = array(
+            ':id' => $this->id,
+            ':status' => $status,
+            ':returned' => date('Y-m-d')
+        );
+
         $sql = "UPDATE invest SET
                     returned = :returned,
-                    status = $status,
-                    pool = 0
+                    status = :status
                 WHERE id = :id";
 
         if (self::query($sql, $values)) {
             $this->status = $status;
             $this->returned = $values[':returned'];
+            // should this invest go to pool?
+            if($this->pool) {
+                Pool::refundInvest($this);
+            }
             return true;
-        } else {
-            return false;
         }
 
+        return false;
     }
 
     /*
@@ -1945,6 +1976,9 @@ class Invest extends \Goteo\Core\Model {
      }
 
     /**
+     * @deprecated
+     * ONLY FOR THE FORMER PROCESS SCRIPT
+     * WILL RETURN ONLY PAYPAL WITH PREAPROVALS
      * Tratamiento de aportes pendientes en cron/execute
      */
     public static function getPending($project_id) {
@@ -1952,18 +1986,27 @@ class Invest extends \Goteo\Core\Model {
         // @FIXME esta distinción de métodos de pago es MAL!
         // @TODO capa de pagos
 
+        // $query = \Goteo\Core\Model::query("
+        //     SELECT  *
+        //     FROM  invest
+        //     WHERE   invest.project = ?
+        //     AND     (invest.status = 0
+        //         OR (invest.method = 'tpv'
+        //             AND invest.status = 1
+        //         )
+        //         OR (invest.method = 'cash'
+        //             AND invest.status = 1
+        //         )
+        //     )
+        //     AND (invest.campaign IS NULL OR invest.campaign = 0)
+        //     ", array($project_id));
+
         $query = \Goteo\Core\Model::query("
             SELECT  *
             FROM  invest
             WHERE   invest.project = ?
-            AND     (invest.status = 0
-                OR (invest.method = 'tpv'
-                    AND invest.status = 1
-                )
-                OR (invest.method = 'cash'
-                    AND invest.status = 1
-                )
-            )
+            AND invest.method = 'paypal'
+            AND invest.status = 0
             AND (invest.campaign IS NULL OR invest.campaign = 0)
             ", array($project_id));
 
@@ -1971,6 +2014,8 @@ class Invest extends \Goteo\Core\Model {
     }
 
     /**
+     * @deprecated
+     * ONLY FOR THE FORMER PROCESS SCRIPT
      * Retorna los aportes que no se han retornado correctamente (fallo en ceca por ejemplo)
      * @return [type] [description]
      */

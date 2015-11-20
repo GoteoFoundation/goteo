@@ -49,7 +49,7 @@ if ($project->status == 3 && $project->noinvest) {
 
     <div class="buttons">
         <?php if ($project->status == 3) : // boton apoyar solo si esta en campaña ?>
-        <a class="button violet supportit" href="<?php echo SEC_URL."/project/{$project->id}/invest"; ?>"><?php echo Text::get('regular-invest_it'); ?></a>
+        <a class="button violet supportit" href="<?php echo "/invest/{$project->id}"; ?>"><?php echo Text::get('regular-invest_it'); ?></a>
         <?php else : ?>
         <a class="button view" href="/project/<?php echo $project->id ?>/updates"><?php echo Text::get('regular-see_blog'); ?></a>
         <?php endif; ?>

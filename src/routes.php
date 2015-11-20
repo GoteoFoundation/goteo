@@ -252,6 +252,14 @@ $routes->add('rss', new Route(
         )
 ));
 
+/// Last newsletter
+$routes->add('newsletter', new Route(
+    '/newsletter/{id}',
+    array('_controller' => 'Goteo\Controller\NewsletterController::indexAction',
+        'id' => null //optional parameter
+        )
+));
+
 ////// MAILING /////
 $routes->add('mail-track', new Route(
     '/mail/track/{token}.gif',

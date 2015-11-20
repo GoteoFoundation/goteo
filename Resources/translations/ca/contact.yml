@@ -1,14 +1,14 @@
+contact-captcha-field: 'Prova d''humanitat (disculpeu...)'
+contact-captcha-refresh: 'Refresca la imatge'
 contact-email-field: Email
+contact-form-tags: "[usuari] Tinc problemes amb el meu compte;\r\n[nou impulsor] Tinc un possible projecte;\r\n[nou impulsor 2] Tinc un dubte sobre el formulari de projecte;\r\n[desenvolupament] Tinc dubtes sobre qüestions tècniques;\r\n[justificant] Desitjo un justificant de la meva donació;\r\n[servei] Vull contractar un servei;\r\n[altres] És un altre tipus de consulta;"
 contact-message-field: Missatge
 contact-name-field: Nom
-contact-captcha-refresh: 'Refresca la imatge'
 contact-send_message-button: Enviar
 contact-send_message-header: 'Envia''ns un missatge'
 contact-subject-field: Tema
-contact-captcha-field: 'Prova d''humanitat (disculpeu...)'
-error-contact-captcha: 'El CAPTCHA no és correcte. Intenta-ho de nou.'
 contact-tag-field: 'Tipus de consulta'
+error-contact-captcha: 'El CAPTCHA no és correcte. Intenta-ho de nou.'
 error-contact-email-empty: 'No has escrit el teu correu electrònic'
-error-contact-subject-empty: 'No has escrit el tema del missatge'
 error-contact-message-empty: 'No has escrit cap missatge'
-contact-form-tags: "[usuari] Tinc problemes amb el meu compte;\r\n[nou impulsor] Tinc un possible projecte;\r\n[nou impulsor 2] Tinc un dubte sobre el formulari de projecte;\r\n[desenvolupament] Tinc dubtes sobre qüestions tècniques;\r\n[justificant] Desitjo un justificant de la meva donació;\r\n[servei] Vull contractar un servei;\r\n[altres] És un altre tipus de consulta;"
+error-contact-subject-empty: 'No has escrit el tema del missatge'

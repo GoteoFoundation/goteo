@@ -157,7 +157,7 @@ abstract class AbstractPaymentMethod implements PaymentMethodInterface {
     public function purchase() {
         // Let's obtain the gateway and the
         $gateway = $this->getGateway();
-        $gateway->setCurrency(Currency::DEFAULT_CURRENCY);
+        $gateway->setCurrency(Currency::getDefault('id'));
         return $gateway->purchase([
                     'amount' => (float) $this->getInvest()->amount,
                     'description' => $this->getInvestDescription(),
@@ -174,7 +174,7 @@ abstract class AbstractPaymentMethod implements PaymentMethodInterface {
     public function completePurchase() {
         // Let's obtain the gateway and the
         $gateway = $this->getGateway();
-        $gateway->setCurrency(Currency::DEFAULT_CURRENCY);
+        $gateway->setCurrency(Currency::getDefault('id'));
         return $gateway->completePurchase([
                     'amount' => (float) $this->getInvest()->amount,
                     'description' => $this->getInvestDescription(),

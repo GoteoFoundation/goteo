@@ -538,8 +538,7 @@ namespace Goteo\Controller {
                         // email al autor
 
                         //  idioma de preferencia del usuario
-                        $prefer = Model\User::getPreferences($user->id);
-                        $comlang = !empty($prefer->comlang) ? $prefer->comlang : $user->lang;
+                        $comlang = Model\User::getPreferences($user)->comlang;
 
                         // Obtenemos la plantilla para asunto y contenido
                         $template = Template::get(39, $comlang);
@@ -953,7 +952,7 @@ namespace Goteo\Controller {
 
             // preveer cambio de divisa
             if ( $_POST['currency'] != $project->currency || $_POST['currency'] != $_SESSION['currency'] ) {
-                $_SESSION['currency'] = Library\Currency::set($_POST['currency']); // divisa en la que ve la web
+                $_SESSION['currency'] = Library\Currency::get($_POST['currency'], 'id'); // divisa en la que ve la web
 
                 // si el que edita es el impulsor, cambia su preferencia
                 if (Session::getUserId() == $project->owner) {

@@ -1,131 +1,131 @@
-guide-project-updates: '<b>Het is heel belangrijk dat projecten hun cofinanciers en andere potentieel geinteresseerde mensen op de hoogte houden van de voortgang van de campagne. Gebruik deze sectie als een blog om nieuws over je project te publiceren.</b>Op SiteName, nadat je de minimum financing bereikt hebt, en als je de tweede ronde in gaat, is het essentieel om periodiek uit te leggen hoe de productie, het proces, problemen etc. gaan, om de hoogst mogelijke transparatie en nog meer aandacht te genereren.'
-guide-project-supports: '<strong>In deze sectie kun je aangeven welke andere steun, behalve financiering, je nodig hebt om je project uit te kunnen voeren.</strong><br><br>Dat kan bestaan uit samenwerking of assistentie van andere mensen(vertalingen, organisatie, promotie, etc.) of misschien specifieke leningen (van materialen, transport, hardware, etc.)'
-guide-project-rewards: '<strong>In deze sectie moet je duidelijk maken wat het project de cofinanciers biedt en ook wat de collectieve winst is.</strong><br><br>Naast de individuele beloningen voor ieder niveau van cofinanciering, moet je de licentie definieren waaronder je het project uitvoert. Dus met de graad van openheid van (delen van) het project. Dit is heel belangrijk, omdat SiteName een crowdfunding platform is voor projecten die gebaseerd zijn op de filosofie van open source software en de promotie van het algemeen belang.<br><br>Indien je naast deze licentie ook het intellectueel eigendom van je werk of ideeen wilt registreren, als dat niet conflicteert met de maatschappelijke meerwaarde, kun je specifieke bescherming krijgen op <a href="http://www.safecreative.org/" target="new">Safe Creative</a>.'
+blog-comments: Opmerkingen
+blog-main-header: Blog
+error-contact-email-invalid: 'Het emailadres dat je hebt ingevoerd is niet geldig.'
+error-image-name: 'Fout in de bestandsnaam'
+error-image-size: 'Fout in de bestandsafmeting'
+error-image-size-too-large: 'De afbeelding is te groot.'
+error-image-tmp: 'Fout bij het laden van het bestand'
+error-image-type: 'Alleen JPG, PNG en GIF betanden zijn toegestaan'
+error-image-type-not-allowed: 'alleen .png, .jpg en .gif bestanden zijn toegestaan.'
+error-register-email-exists: 'Het emailadres dat je hebt ingevoerd is geregistreerd door een bestaande gebruiker.'
+error-register-pasword-empty: 'je hebt geen wachtwoord ingevuld'
+error-user-email-confirm: 'De emailbevestiging is niet hetzelfde als de email.'
+error-user-email-empty: 'Je kunt het email veld niet leeg laten'
+error-user-email-exists: 'Er is al een gebruiker met dat emailadres'
+error-user-email-invalid: 'de email die je hebt ingevoerd is niet geldig.'
+error-user-email-token-invalid: 'De code is incorrect'
+error-user-password-confirm: 'De wachtoordbevestiging is niet hetzelfde als het wachtwoord.'
+error-user-password-empty: 'je hebt geen wchtwoord ingevoerd'
+error-user-password-invalid: 'Het wachtwoord is te kort. Neem een wachtwoord met minstens 6 characters.'
+error-user-wrong-password: 'het wachtwoord is incorrect.'
+explain-project-progress: 'Deze grafiek legt op een visuele manier uit wat het niveau is van de data die je hebt ingevoerd, in combinatie met een basis evaluatie door het systeem. Om je project toe te kunnen voegen, moet je op z''n minst 80% hebben gehaald. De criteria die zorgen dat de "temperatuur" omhoog gaat, hebben te maken met de informatie die je invoert, de media, plaatjes en links die je toevoegt, de openheid van de licentie die je kiest, de coherentie van je inschatting van de hoeveelheid werk die nog gedaan moet worden, etc. Vergeet niet gebruik te maken van de gereedschappen aan de rechterkant, die je door het proces loodsen.'
+guide-dashboard-user-access: 'Je kunt de informatie veranderen waarmee je in kunt loggen op SiteName.'
+guide-dashboard-user-personal: 'Je moet deze informatie alleen invullen als je een project hebt gecreeerd dat je gecofinancierd wilt hebben via SiteName. De informatie in deze sectie is noodzakelijk zodat we contact met je op kunnen nemen als je de nodige cofinanciering hebt bereikt, en je het geld kunnen overmaken.'
+guide-project-comment: gids-project-commentaar
 guide-project-contract-information: '<strong>Het enige wat je nog moet doen is je gegevens invullen, als je wilt dat je project wordt gecofinancierd en ondersteund door SiteName.</strong><br><br>De informatie in deze sectie is noodzakelijk om contact met je op te kunnen nemen als je project gefinancierd is, en zodat we het geld naar je over kunnen maken. In het geval van organisaties raden we aan dat de vertegenwoordiger van de organisatie gevolmacht wordt (bijvoorbeeld door statuten of een schriftelijke volmacht).'
 guide-project-description: '<strong>Gebruik deze sectie voor uitleg over het project</strong><br><br>Dit is het eerste dat een bezoeker ziet. Om die reden raden we aan om zorgvuldig te schrijven en typefouten te vermijden. Je zult zien dat er verplichte velden zijn, inclusief die voor video en afbeeldingen. We vinden dat deze essentieel zijn voor het starten van een campagne om fondsen te werven via SiteName.<br><br>Houd in gedachten wat het meest waardevolle van SiteName is: de open informatie en de kennis die je project gaat brengen aan de samenleving, de originaliteit, het verlangen om een bijdrage te leveren aan de maatschappij, het vermogen om een brede gemeenschap van geinteresseerde mensen aan te trekken, duidelijk makend dat het promotieteam de capaciteiten heeft om het project tot bloei te brengen. Dus vergeet niet ons informatie te geven over deze aspecten.'
-regular-header-about: 'Over ons'
+guide-project-rewards: '<strong>In deze sectie moet je duidelijk maken wat het project de cofinanciers biedt en ook wat de collectieve winst is.</strong><br><br>Naast de individuele beloningen voor ieder niveau van cofinanciering, moet je de licentie definieren waaronder je het project uitvoert. Dus met de graad van openheid van (delen van) het project. Dit is heel belangrijk, omdat SiteName een crowdfunding platform is voor projecten die gebaseerd zijn op de filosofie van open source software en de promotie van het algemeen belang.<br><br>Indien je naast deze licentie ook het intellectueel eigendom van je werk of ideeen wilt registreren, als dat niet conflicteert met de maatschappelijke meerwaarde, kun je specifieke bescherming krijgen op <a href="http://www.safecreative.org/" target="new">Safe Creative</a>.'
+guide-project-support: gids-project-support
+guide-project-supports: '<strong>In deze sectie kun je aangeven welke andere steun, behalve financiering, je nodig hebt om je project uit te kunnen voeren.</strong><br><br>Dat kan bestaan uit samenwerking of assistentie van andere mensen(vertalingen, organisatie, promotie, etc.) of misschien specifieke leningen (van materialen, transport, hardware, etc.)'
+guide-project-updates: '<b>Het is heel belangrijk dat projecten hun cofinanciers en andere potentieel geinteresseerde mensen op de hoogte houden van de voortgang van de campagne. Gebruik deze sectie als een blog om nieuws over je project te publiceren.</b>Op SiteName, nadat je de minimum financing bereikt hebt, en als je de tweede ronde in gaat, is het essentieel om periodiek uit te leggen hoe de productie, het proces, problemen etc. gaan, om de hoogst mogelijke transparatie en nog meer aandacht te genereren.'
+header-about-side: 'Wat inspireert ons'
+home-posts-header: Nieuws
+invest-individual-header: 'Je kunt afzien van beloningen voor je bijdrage, of de beloning kiezen die past bij het bedrag dat je hebt ingevuld.'
+login-register-conditions: 'Id accepteer de gebruikersvoorwaarden van het platform, en geef mijn toestemming voor het gebruik van mijn persoonlijke gegevens. Hiervoor hebben degenen die de site beheren een <a href="/legal/privacy" target="_blank">privacybeleid</a> waarin staat hoe de gegevens door het huidige formulier worden doorgegeven, en wat de rechten zijn van de persoon die die gegevens doorgeeft.'
+mandatory-cost-field-type: 'Je moet een tyoe kostenpost selecteren'
+mandatory-individual_reward-field-amount: 'Je moet een bedrag ingeven die recht geeft op de beloning'
+mandatory-project-costs: 'Dit moet gesplitst worden in ten minste twee groepen.'
+mandatory-register-field-email: 'Je moet een emailadres invoeren'
+overview-field-about: 'Belangrijkste kenmerken'
+overview-field-motivation: 'Waarom is dit belangrijk'
 profile-about-header: 'Over mij'
+project-invest-total: 'Totale bijdragen'
+project-messages-send_message-your_answer: 'Schrijf je antwoord hier'
+project-messages-send_message_support-your_answer: 'Schrijf hier je samenwerkingsbericht voor %s'
 regular-admin_board: Beheerpaneel
 regular-allsome: 'alle of sommige van'
 regular-anonymous: Anoniem
 regular-ask: Vraag
-regular-header-blog: Blog
-regular-see_blog: Blog
 regular-by: 'Door:'
-tooltip-dashboard-user-change_email: 'Verander het emailadres waarop je berichten van SiteName wilt ontvangen.'
-tooltip-dashboard-user-change_password: 'Veran der het wachtwoord waarmee je op SiteName wilt inloggen.'
-regular-invest_it: 'Co-financier dit project'
 regular-collaborate: 'Werk samen'
-blog-comments: Opmerkingen
-tooltip-dashboard-user-confirm_email: 'Bevesting het emailadres waarop je berichten van SiteName wilt ontvangen.'
-tooltip-dashboard-user-confirm_password: 'Bevestig het wachtwoord waarmee je in wilt loggen op SiteName.'
-regular-invest: 'Draag bij'
-regular-investing: Bijdragen
 regular-create: 'Maak een project aan'
 regular-days: dagen
-regular-discover: 'ontdek projecten'
-regular-published_no: Schets
-regular-edit: Bewerk
 regular-delete: Verwijder
-error-image-name: 'Fout in de bestandsnaam'
-user-activate-fail: 'Fout bij het activeren van het gebruikersaccount'
-user-changeemail-fail: 'Fout bij het aanpassen van de email'
-error-image-tmp: 'Fout bij het laden van het bestand'
-error-image-size: 'Fout in de bestandsafmeting'
+regular-discover: 'ontdek projecten'
+regular-edit: Bewerk
 regular-facebook: Facebook
-regular-header-faq: FAQ
-regular-first: Eerst
-regular-share-twitter: 'Volg ons op Twitter'
 regular-faq: 'Veel gestelde vragen'
+regular-first: Eerst
 regular-getit: 'Neem het'
+regular-go_up: Upload
 regular-google: Google+
-blog-main-header: Blog
-regular-share-facebook: 'Op Facebook'
-regular-main-header: 'Goteo Crowdfunding system'
-guide-project-comment: gids-project-commentaar
-guide-project-support: gids-project-support
+regular-header-about: 'Over ons'
+regular-header-blog: Blog
+regular-header-faq: FAQ
 regular-hello: Hallo
-login-register-conditions: 'Id accepteer de gebruikersvoorwaarden van het platform, en geef mijn toestemming voor het gebruik van mijn persoonlijke gegevens. Hiervoor hebben degenen die de site beheren een <a href="/legal/privacy" target="_blank">privacybeleid</a> waarin staat hoe de gegevens door het huidige formulier worden doorgegeven, en wat de rechten zijn van de persoon die die gegevens doorgeeft.'
-regular-im: 'Ik ben'
+regular-home: Start
 regular-identica: Identi.ca
-regular-media_legend: Legenda
+regular-im: 'Ik ben'
+regular-invest: 'Draag bij'
+regular-invest_it: 'Co-financier dit project'
+regular-investing: Bijdragen
 regular-last: Laatste
 regular-license: Licentie
 regular-linkedin: LinkedIn
 regular-login: 'Log in'
 regular-logout: 'Log out'
 regular-looks_for: 'Op zoek naar:'
-overview-field-about: 'Belangrijkste kenmerken'
+regular-main-header: 'Goteo Crowdfunding system'
+regular-mandatory: 'Verplicht veld!'
+regular-media_legend: Legenda
 regular-menu: Menu
+regular-message_fail: 'Er ging iets fout bij het verzenden van het bericht'
 regular-message_success: 'Bericht correct verzonden'
 regular-months: maanden
-home-posts-header: Nieuws
+regular-more_info: 'meer info'
 regular-news: Nieuws
 regular-no: Nee
-translate-home-guide: 'Noot voor de vertaler'
-error-image-type-not-allowed: 'alleen .png, .jpg en .gif bestanden zijn toegestaan.'
-error-image-type: 'Alleen JPG, PNG en GIF betanden zijn toegestaan'
-regular-more_info: 'meer info'
 regular-preview: Preview
-tooltip-project-schedule: 'Productiekalender voor je project. Vergeet niet dat je alleen taken die nog uitgevoerd moeten worden en niet die die al compleet zijn in moet voeren.'
-regular-recomended_by: 'Project aangeraden door:'
 regular-projects: projecten
+regular-published_no: Schets
 regular-published_yes: Gepubliceerd
 regular-read_more: 'Lees meer'
-regular-mandatory: 'Verplicht veld!'
+regular-recomended_by: 'Project aangeraden door:'
 regular-review_board: 'Review paneel'
 regular-round: Ronde
-regular-share-rss: RSS/Blog
 regular-save: Bewaar
 regular-search: Zoek
 regular-see_all: 'Bekijk alles'
+regular-see_blog: Blog
 regular-see_details: 'Bekijk details'
 regular-see_more: 'Laat meer zien'
-regular-view_project: 'Bekijk project'
 regular-send_message: 'Stuur een bericht'
+regular-share-facebook: 'Op Facebook'
+regular-share-rss: RSS/Blog
+regular-share-twitter: 'Volg ons op Twitter'
 regular-share_this: 'Deel op:'
-regular-web: Site
-tooltip-dashboard-user-new_email: 'Specificeer het nieuwe emailadres waarop je berichten van SiteName wilt ontvangen.'
-regular-home: Start
+regular-sorry: 'Het spijt ons'
 regular-thanks: 'Dank je'
-user-account-inactive: 'Het account is gedeactiveerd.'
-error-user-email-token-invalid: 'De code is incorrect'
-error-user-email-confirm: 'De emailbevestiging is niet hetzelfde als de email.'
-error-contact-email-invalid: 'Het emailadres dat je hebt ingevoerd is niet geldig.'
-error-user-email-invalid: 'de email die je hebt ingevoerd is niet geldig.'
-error-register-email-exists: 'Het emailadres dat je hebt ingevoerd is geregistreerd door een bestaande gebruiker.'
-error-image-size-too-large: 'De afbeelding is te groot.'
-validate-project-total-costs: 'De optimale kosten kunnen niet meer dan 50% hoger zijn dan de noodzakelijke kosten. Pas de verhouding aan. '
-error-user-password-confirm: 'De wachtoordbevestiging is niet hetzelfde als het wachtwoord.'
-error-user-wrong-password: 'het wachtwoord is incorrect.'
-error-user-password-invalid: 'Het wachtwoord is te kort. Neem een wachtwoord met minstens 6 characters.'
-user-register-success: 'De gebruiker is correct geregistreerd. We sturen je nu een bevestigingsmail.'
-error-user-email-exists: 'Er is al een gebruiker met dat emailadres'
-regular-message_fail: 'Er ging iets fout bij het verzenden van het bericht'
-mandatory-project-costs: 'Dit moet gesplitst worden in ten minste twee groepen.'
-explain-project-progress: 'Deze grafiek legt op een visuele manier uit wat het niveau is van de data die je hebt ingevoerd, in combinatie met een basis evaluatie door het systeem. Om je project toe te kunnen voegen, moet je op z''n minst 80% hebben gehaald. De criteria die zorgen dat de "temperatuur" omhoog gaat, hebben te maken met de informatie die je invoert, de media, plaatjes en links die je toevoegt, de openheid van de licentie die je kiest, de coherentie van je inschatting van de hoeveelheid werk die nog gedaan moet worden, etc. Vergeet niet gebruik te maken van de gereedschappen aan de rechterkant, die je door het proces loodsen.'
-tooltip-dashboard-user-access_data: 'Dit zijn je huidige toegangsgegevens. Het enige dat je niet kunt veranderen is he gebruikersnaam.'
 regular-total: Totaal
-project-invest-total: 'Totale bijdragen'
 regular-translate_board: vertalingspaneel
 regular-twitter: Twitter
-regular-go_up: Upload
-regular-sorry: 'Het spijt ons'
+regular-view_project: 'Bekijk project'
+regular-web: Site
 regular-weeks: weken
-header-about-side: 'Wat inspireert ons'
-overview-field-motivation: 'Waarom is dit belangrijk'
-project-messages-send_message_support-your_answer: 'Schrijf hier je samenwerkingsbericht voor %s'
-tooltip-dashboard-user-user_password: 'Voer het huidige wachtwoord in'
-tooltip-dashboard-user-new_password: 'Voer een nieuw wachtwoord in waarmee je in wilt loggen op SiteName'
-project-messages-send_message-your_answer: 'Schrijf je antwoord hier'
 regular-yes: Ja
-guide-dashboard-user-access: 'Je kunt de informatie veranderen waarmee je in kunt loggen op SiteName.'
-invest-individual-header: 'Je kunt afzien van beloningen voor je bijdrage, of de beloning kiezen die past bij het bedrag dat je hebt ingevuld.'
-error-user-email-empty: 'Je kunt het email veld niet leeg laten'
-error-register-pasword-empty: 'je hebt geen wachtwoord ingevuld'
-error-user-password-empty: 'je hebt geen wchtwoord ingevoerd'
-mandatory-register-field-email: 'Je moet een emailadres invoeren'
-mandatory-cost-field-type: 'Je moet een tyoe kostenpost selecteren'
+tooltip-dashboard-user-access_data: 'Dit zijn je huidige toegangsgegevens. Het enige dat je niet kunt veranderen is he gebruikersnaam.'
+tooltip-dashboard-user-change_email: 'Verander het emailadres waarop je berichten van SiteName wilt ontvangen.'
+tooltip-dashboard-user-change_password: 'Veran der het wachtwoord waarmee je op SiteName wilt inloggen.'
+tooltip-dashboard-user-confirm_email: 'Bevesting het emailadres waarop je berichten van SiteName wilt ontvangen.'
+tooltip-dashboard-user-confirm_password: 'Bevestig het wachtwoord waarmee je in wilt loggen op SiteName.'
+tooltip-dashboard-user-new_email: 'Specificeer het nieuwe emailadres waarop je berichten van SiteName wilt ontvangen.'
+tooltip-dashboard-user-new_password: 'Voer een nieuw wachtwoord in waarmee je in wilt loggen op SiteName'
+tooltip-dashboard-user-user_password: 'Voer het huidige wachtwoord in'
+tooltip-project-schedule: 'Productiekalender voor je project. Vergeet niet dat je alleen taken die nog uitgevoerd moeten worden en niet die die al compleet zijn in moet voeren.'
+translate-home-guide: 'Noot voor de vertaler'
+user-account-inactive: 'Het account is gedeactiveerd.'
+user-activate-fail: 'Fout bij het activeren van het gebruikersaccount'
+user-changeemail-fail: 'Fout bij het aanpassen van de email'
+user-register-success: 'De gebruiker is correct geregistreerd. We sturen je nu een bevestigingsmail.'
 validate-project-social_rewards: 'Je moet minstens een collectief winstpunt noemen'
-mandatory-individual_reward-field-amount: 'Je moet een bedrag ingeven die recht geeft op de beloning'
-guide-dashboard-user-personal: 'Je moet deze informatie alleen invullen als je een project hebt gecreeerd dat je gecofinancierd wilt hebben via SiteName. De informatie in deze sectie is noodzakelijk zodat we contact met je op kunnen nemen als je de nodige cofinanciering hebt bereikt, en je het geld kunnen overmaken.'
+validate-project-total-costs: 'De optimale kosten kunnen niet meer dan 50% hoger zijn dan de noodzakelijke kosten. Pas de verhouding aan. '

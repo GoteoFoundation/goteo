@@ -109,6 +109,7 @@ $this->section('content');
                             </ul>
                         <?php endif; ?>
                     </div>
+                   
                     <a class="up" href="#"><?php echo $go_up; ?></a>
                 <?php endforeach; ?>
                 </div>

@@ -1,67 +1,67 @@
-project-rewards-individual_reward-units_left: 'Il reste <span class="left">%s</span> unités'
-tooltip-project-paypal: "<p>En plus du paiement sécurisé, vous pouvez recevoir des règlements via PayPal</strong>. Pour cela, Merci d'inscrire ici une adresse email liè àvotre compte PayPal.</p (ce compte est obligatoire pour recevoir les fonds collecté)<strong>Si vous n'avez pas soumis un compte Paypal actif et vérifié lors de la validation de votre campagne, les contributions ne seront pas autorisée. <strong></p>\r\n<p>Ce compte peut être changer ultérieurement. Contactez-nous si vous avez besoin de le modifier.</p>\r\n<p><strong>IMPORTANT: Notez que vous ne pouvez pas utlisez le même compte pour faire une contributions àvotre propre projet car cela génèrerait une erreur.</strong></p>"
-project-side-investors-header: 'Ont deja cofinancé'
-project-rewards-header: Récompense
-project-view-categories-title: Catégories
-project-menu-supporters: Cofinanceurs
-project-view-metter-investors: Cofinanceurs
-project-view-metter-investment: Cofinancement
-project-rewards-social_reward-title: 'Retombées collectives'
-project-spread-widget_legend: 'Copiez et collez le code dans votre site ou blog et aidez à diffuser ce projet'
-project-view-metter-day_created: 'Créé le'
-project-menu-messages: Messages
-project-support-supertitle: 'Besoins économiques'
 contract-paypal_account: 'Compte PayPal:'
-project-spread-embed_code: 'Code Embed'
-project-menu_title-updates: 'Retour: restez informé sur les avancées du projet directement auprès du porteur.'
-project-view-metter-day_closed: 'Classé le'
-project-view-metter-day_success: 'Financié le'
-project-spread-social: 'Je cofinance le projet %s'
-project-rewards-individual_reward-title: 'Récompenses individuelles'
-project-messages-closed: 'vous ne pouvez pas encore envoyé des messages au projet'
-project-share-pre_header: 'Faites connaâtre a votre réseau que'
-project-rewards-individual_reward-limited: 'Récompense limité'
-project-collaborations-title: 'On recherche'
-project-view-metter-minimum: Minimal
-project-menu-needs: Budget
-regular-new_project: 'Nouveau projet'
-project-menu-updates: Nouveautés
-project-collaborations-supertitle: 'Besoin non monétaires'
-project-menu_title-messages: 'Pas uniquement de l''argent: vous pouvez aussi soutenir le projet en mettant à disposition votre talent, des matériaux, du temps, des contacts ou/et des connaissances...'
-project-view-metter-optimum: Optimal
-project-menu-home: Projet
-project-langs-header: 'Projet en'
-project-spread-widget: 'Widget du projet'
-project-spread-widget_title: 'Publiez le widget du projet'
-project-view-metter-got: Accumulé
-project-view-metter-day_updated: 'reçu le'
-project-view-metter-days: 'Il reste'
-project-messages-answer_it: Répondre
-project-messages-send_message-button: Envoyer
-project-messages-send_direct-header: 'Envoyer un message au porteur du projet'
-project-share-header: 'Partagez ce projet'
-project-menu_title-home: 'Impact social: ce projet ouvre son code, partage ses connaissances, ses données et ses fichiers numériques en échange de votre soutien.'
-project-menu_title-supporters: 'Réseau social de soutien: les cofinanceurs sont aussi importants que les personnes à l''origine de cette initiative.'
-tooltip-project-scope: 'Indiquez l''impact géographique que souhaite avoir ce projet (chaque catégorie comprend la categorie précédente).'
-project-spread-header: 'Promouvoir ce projet'
-project-spread-pre_widget: 'Promouvoir ce projet'
-project-not_published: 'Ce projet n''est pas encore public.'
-project-unpublished: 'La campagne de ce projet a été annulé par le porteur.'
-tooltip-updates-home: 'Texte tooltip-updates-home'
-tooltip-updates-tags: 'Texte tooltip-updates-tags'
-tooltip-updates-allow_comments: tooltip-updates-allow_comments
-tooltip-updates-date: tooltip-updates-date
-tooltip-updates-image: tooltip-updates-image
-tooltip-updates-image_upload: tooltip-updates-image_upload
-tooltip-updates-media: tooltip-updates-media
-tooltip-updates-text: tooltip-updates-text
-tooltip-updates-title: tooltip-updates-title
-project-menu_title-needs: 'Transparence des coûts: détails du budget minimum et optimum nécessaire à la réalisation du projet. '
-project-rewards-supertitle: 'Qu''offrons nous en échange'
-project-messages-send_message-header: 'Ecrivez votre message'
-social_reward-access: Accèder
 currency-switch: CONVERTIR
 overview-field-spread: Diffusion
 personal-field-accounts: 'Compte bancaire'
-tooltip-project-spread: 'Expliquez comment vous prévoyez de diffuser le projet au sein de votre communauté: canaux, tels messages, la diffusion, le calendrier minimum...'
+project-collaborations-supertitle: 'Besoin non monétaires'
+project-collaborations-title: 'On recherche'
+project-langs-header: 'Projet en'
 project-media-play_video: 'Voir la Video'
+project-menu-home: Projet
+project-menu-messages: Messages
+project-menu-needs: Budget
+project-menu-supporters: Cofinanceurs
+project-menu-updates: Nouveautés
+project-menu_title-home: 'Impact social: ce projet ouvre son code, partage ses connaissances, ses données et ses fichiers numériques en échange de votre soutien.'
+project-menu_title-messages: 'Pas uniquement de l''argent: vous pouvez aussi soutenir le projet en mettant à disposition votre talent, des matériaux, du temps, des contacts ou/et des connaissances...'
+project-menu_title-needs: 'Transparence des coûts: détails du budget minimum et optimum nécessaire à la réalisation du projet. '
+project-menu_title-supporters: 'Réseau social de soutien: les cofinanceurs sont aussi importants que les personnes à l''origine de cette initiative.'
+project-menu_title-updates: 'Retour: restez informé sur les avancées du projet directement auprès du porteur.'
+project-messages-answer_it: Répondre
+project-messages-closed: 'vous ne pouvez pas encore envoyé des messages au projet'
+project-messages-send_direct-header: 'Envoyer un message au porteur du projet'
+project-messages-send_message-button: Envoyer
+project-messages-send_message-header: 'Ecrivez votre message'
+project-not_published: 'Ce projet n''est pas encore public.'
+project-rewards-header: Récompense
+project-rewards-individual_reward-limited: 'Récompense limité'
+project-rewards-individual_reward-title: 'Récompenses individuelles'
+project-rewards-individual_reward-units_left: 'Il reste <span class="left">%s</span> unités'
+project-rewards-social_reward-title: 'Retombées collectives'
+project-rewards-supertitle: 'Qu''offrons nous en échange'
+project-share-header: 'Partagez ce projet'
+project-share-pre_header: 'Faites connaâtre a votre réseau que'
+project-side-investors-header: 'Ont deja cofinancé'
+project-spread-embed_code: 'Code Embed'
+project-spread-header: 'Promouvoir ce projet'
+project-spread-pre_widget: 'Promouvoir ce projet'
+project-spread-social: 'Je cofinance le projet %s'
+project-spread-widget: 'Widget du projet'
+project-spread-widget_legend: 'Copiez et collez le code dans votre site ou blog et aidez à diffuser ce projet'
+project-spread-widget_title: 'Publiez le widget du projet'
+project-support-supertitle: 'Besoins économiques'
+project-unpublished: 'La campagne de ce projet a été annulé par le porteur.'
+project-view-categories-title: Catégories
+project-view-metter-day_closed: 'Classé le'
+project-view-metter-day_created: 'Créé le'
+project-view-metter-day_success: 'Financié le'
+project-view-metter-day_updated: 'reçu le'
+project-view-metter-days: 'Il reste'
+project-view-metter-got: Accumulé
+project-view-metter-investment: Cofinancement
+project-view-metter-investors: Cofinanceurs
+project-view-metter-minimum: Minimal
+project-view-metter-optimum: Optimal
+regular-new_project: 'Nouveau projet'
+social_reward-access: Accèder
+tooltip-project-paypal: "<p>En plus du paiement sécurisé, vous pouvez recevoir des règlements via PayPal</strong>. Pour cela, Merci d'inscrire ici une adresse email liè àvotre compte PayPal.</p (ce compte est obligatoire pour recevoir les fonds collecté)<strong>Si vous n'avez pas soumis un compte Paypal actif et vérifié lors de la validation de votre campagne, les contributions ne seront pas autorisée. <strong></p>\r\n<p>Ce compte peut être changer ultérieurement. Contactez-nous si vous avez besoin de le modifier.</p>\r\n<p><strong>IMPORTANT: Notez que vous ne pouvez pas utlisez le même compte pour faire une contributions àvotre propre projet car cela génèrerait une erreur.</strong></p>"
+tooltip-project-scope: 'Indiquez l''impact géographique que souhaite avoir ce projet (chaque catégorie comprend la categorie précédente).'
+tooltip-project-spread: 'Expliquez comment vous prévoyez de diffuser le projet au sein de votre communauté: canaux, tels messages, la diffusion, le calendrier minimum...'
+tooltip-updates-allow_comments: tooltip-updates-allow_comments
+tooltip-updates-date: tooltip-updates-date
+tooltip-updates-home: 'Texte tooltip-updates-home'
+tooltip-updates-image: tooltip-updates-image
+tooltip-updates-image_upload: tooltip-updates-image_upload
+tooltip-updates-media: tooltip-updates-media
+tooltip-updates-tags: 'Texte tooltip-updates-tags'
+tooltip-updates-text: tooltip-updates-text
+tooltip-updates-title: tooltip-updates-title

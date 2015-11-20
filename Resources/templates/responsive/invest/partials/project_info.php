@@ -1,17 +1,17 @@
 <div class="jumbotron project-info">
     <div class="container">
       <div class="row invest-container">       
-          <h3 class="project-name"><?= $this->project->name ?></h3>
+          <h3 class="project-name"><a href="/project/<?= $this->project->id ?>"><?= $this->project->name ?></a></h3>
           <div class="project-subtitle">
           <?= $this->project->subtitle ?>
           </div>
           <div class="project-owner pull-left">
           	<a href="/user/profile/<?= $this->project->user->id ?>"><?= $this->text('regular-by')." ". $this->project->user->name ?></a>
         	</div>
-          <?php if (!empty($this->project->cat_names)) : ?>
+          <?php if ($this->project_categories) : ?>
             <div class="project-tags pull-left hidden-xs hidden-sm">
             <?php $sep = '';
-            foreach ($this->project->cat_names as $key=>$value) :
+            foreach ($this->project_categories as $key=>$value) :
             echo $sep.'<a href="/discover/results/'.$key.'/'.$value.'">'.htmlspecialchars($value).'</a>';
                  $sep = ', ';
                   endforeach; ?>

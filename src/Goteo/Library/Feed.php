@@ -12,6 +12,7 @@ namespace Goteo\Library;
 use Goteo\Core\Model;
 use Goteo\Model\Blog\Post;
 use Goteo\Library\Text;
+use Goteo\Library\FeedBody;
 use Goteo\Model\Mail;
 use Goteo\Application\App;
 use Goteo\Application\Lang;
@@ -93,46 +94,46 @@ class Feed {
         )
     );
 
-    static public $color = array(
-        'user' => 'blue',
-        'project' => 'light-blue',
-        'call' => 'light-blue',
-        'blog' => 'grey',
-        'news' => 'grey',
-        'money' => 'violet',
-        'drop' => 'violet',
-        'relevant' => 'red',
-        'comment' => 'green',
-        'update-comment' => 'grey',
-        'message' => 'green',
-        'system' => 'grey',
-        'update' => 'grey'
-    );
-
-    static public $page = array(
-        'user' => '/user/profile/',
-        'project' => '/project/',
-        'call' => '/call/',
-        'drop' => SITE_URL,
-        'blog' => '/blog/',
-        'news' => '/news/',
-        'relevant' => '',
-        'comment' => '/blog/',
-        'update-comment' => '/project/',
-        'message' => '/project/',
-        'system' => '/admin/',
-        'update' => '/project/'
-    );
-
+    /**
+     * Construct function will compatibilize old behaviour
+     * (where text where just in the original language)
+     * to more flexible one.
+     * If html var is an serialized array it will be treated as a Text::lang() compatible arguments
+     * array('text-identifier', 'argument1', 'argument2', ...)
+     */
+    public function __construct() {
+        // Convert array to text translation
+        $this->title = Text::get($this->title);
+        $this->html = $this->getBody(); // for compatibility
+    }
     /**
      * Metodo que rellena instancia
-     * No usamos el __construct para no joder el fetch_CLASS
      */
     public function populate($title, $url, $html, $image = null) {
         $this->title = $title;
         $this->url = $url;
-        $this->html = $html;
+        $this->setBody($html);
         $this->image = ($image instanceof Image) ? $image->id : $image;
+        return $this;
+    }
+
+    public function getBody () {
+        $html = @unserialize($this->html);
+
+        if($html instanceOf FeedBody) {
+            return $html->render();
+        }
+        return $this->html;
+    }
+
+    // establece el html relacionado
+    public function setBody ($html) {
+        if($html instanceOf FeedBody) {
+            $this->html = serialize($html);
+        }
+        else {
+            $this->html = $html;
+        }
         return $this;
     }
 
@@ -489,23 +490,25 @@ class Feed {
             App::getService('logger')->err('Empty content while adding feed FEED: ' . print_r($this, true));
             return false;
         }
-
         // TODO: Restricción UNIQUE en BD?
         // primero, verificar si es unique, no duplicarlo
         if ($this->unique === true) {
-            $query = Model::query("SELECT id FROM feed WHERE url = :url AND scope = :scope AND type = :type",
+            $query = Model::query("SELECT id FROM feed WHERE title = :title AND html = :html AND url = :url AND scope = :scope AND type = :type",
                 array(
+                ':title' => $this->title,
+                ':html' => $this->html,
                 ':url' => $this->url,
                 ':scope' => $this->scope,
                 ':type' => $this->type
             ));
-            if ($query->fetchColumn(0) != false) {
+            if (($id = $query->fetchColumn(0)) != false) {
+                $this->id = $id;
                 $this->unique_issue = true;
                 return true;
             }
         }
 
-			try {
+		try {
             $values = array(
                 ':title' => $this->title,
                 ':url' => $this->url,
@@ -524,6 +527,7 @@ class Feed {
                         ('', :title, :url, :scope, :type, :html, :image, :target_type, :target_id, :post)
                     ";
 
+            // die(\sqldbg($sql, $values));
             if (Model::query($sql, $values)) {
                 return true;
             } else {
@@ -587,15 +591,7 @@ class Feed {
      *
      */
     public static function item ($type = 'system', $label = 'label', $id = null) {
-
-        // si llega id es un enlace
-        if (isset($id)) {
-            return '<a href="'.self::$page[$type].$id.'" class="'.self::$color[$type].'" target="_blank">'.$label.'</a>';
-        } else {
-            return '<span class="'.self::$color[$type].'">'.$label.'</span>';
-        }
-
-
+        return FeedBody::item($type, $label, $id);
     }
 
     /**

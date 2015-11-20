@@ -1,28 +1,28 @@
-form-add-button: Gehitu
-form-apply-button: Aplikatu
-form-project_status-fulfilled: 'Itzulera osatuta'
-form-project_status-campaing: Kanpainan
-form-project_status-cancelled: Baztertuta
-form-project_status-expired: Gordetuta
-form-self_review-button: Zuzentu
-form-project-progress-title: 'Datu ebaluazioa'
-form-project_status-cancel: 'Alde batera utzita'
-form-edit-button: Editatu
-form-footer-errors_title: Erroreak
-form-project_status-review: Balorateke
-project-form-header: Formularioa
-form-project_status-success: Finantzatuta
-form-navigation_bar-header: '-ra joan'
-form-project_status-edit: Editatzen
-form-next-button: Hurrengoa
 form-accept-button: Onartu
-form-project-info_status-title: 'Informazioaren egoera orokorra'
+form-add-button: Gehitu
+form-ajax-info: 'Formularioa gorde egiten da, kanpo baikotzatik pasatu ahala'
+form-apply-button: Aplikatu
+form-edit-button: Editatu
+form-errors-info: 'Guztira: %s | Urrats honetan: %s'
+form-errors-total: 'Guztira %s errore dago'
+form-footer-errors_title: Erroreak
+form-image_upload-button: 'Irudia igo'
 form-media_send-button: 'Bideo jarri'
+form-navigation_bar-header: '-ra joan'
+form-next-button: Hurrengoa
+form-project-info_status-title: 'Informazioaren egoera orokorra'
+form-project-progress-title: 'Datu ebaluazioa'
 form-project-status-title: 'Proiektuaren egoera'
+form-project_status-campaing: Kanpainan
+form-project_status-cancel: 'Alde batera utzita'
+form-project_status-cancelled: Baztertuta
+form-project_status-edit: Editatzen
+form-project_status-expired: Gordetuta
+form-project_status-fulfilled: 'Itzulera osatuta'
+form-project_status-review: Balorateke
+form-project_status-success: Finantzatuta
 form-remove-button: Kendu
+form-self_review-button: Zuzentu
 form-send_review-button: Bidali
 form-upload-button: Bidali
-form-errors-total: 'Guztira %s errore dago'
-form-ajax-info: 'Formularioa gorde egiten da, kanpo baikotzatik pasatu ahala'
-form-errors-info: 'Guztira: %s | Urrats honetan: %s'
-form-image_upload-button: 'Irudia igo'
+project-form-header: Formularioa

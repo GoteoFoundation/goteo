@@ -1,19 +1,19 @@
-discover-patron-header: '<span class="greenblue">%s-(e)k</span> honako<br /><span class="red">Proiektu</span> hauek gomendatzen ditu'
-discover-group-outdate-header: 'Artxibatzeko zorian'
-discover-searcher-bycategory-all: GUZTIAK
-discover-searcher-bylocation-all: GUZTIAK
-discover-searcher-byreward-all: GUZTIAK
-discover-group-archive-header: Artxibatuak
-discover-searcher-byreward-header: 'Itzuleragatik:'
-discover-searcher-bycategory-header: 'Kategoriaz:'
-discover-searcher-bycontent-header: 'Edukiaz:'
-discover-searcher-bylocation-header: 'Tokiz:'
 discover-group-all-header: Kanpainan
-discover-searcher-header: 'Proiektua bilatu'
+discover-group-archive-header: Artxibatuak
 discover-group-others-header: 'Beste nodo batzuetan:'
+discover-group-outdate-header: 'Artxibatzeko zorian'
 discover-group-popular-header: Ezagunenak
 discover-group-recent-header: 'Orain dela gutxi argitaraturik'
-discover-searcher-button: Bilatu
-discover-results-header: 'Bilaketaren emaitza'
 discover-group-success-header: Arrakastatsuak
+discover-patron-header: '<span class="greenblue">%s-(e)k</span> honako<br /><span class="red">Proiektu</span> hauek gomendatzen ditu'
 discover-results-empty: 'Ez dugu proiekturik aurkitu bilaketa irizpideak kontutan izanda'
+discover-results-header: 'Bilaketaren emaitza'
+discover-searcher-button: Bilatu
+discover-searcher-bycategory-all: GUZTIAK
+discover-searcher-bycategory-header: 'Kategoriaz:'
+discover-searcher-bycontent-header: 'Edukiaz:'
+discover-searcher-bylocation-all: GUZTIAK
+discover-searcher-bylocation-header: 'Tokiz:'
+discover-searcher-byreward-all: GUZTIAK
+discover-searcher-byreward-header: 'Itzuleragatik:'
+discover-searcher-header: 'Proiektua bilatu'

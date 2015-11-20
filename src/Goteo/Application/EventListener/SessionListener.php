@@ -10,27 +10,23 @@
 
 namespace Goteo\Application\EventListener;
 
-use Symfony\Component\EventDispatcher\EventSubscriberInterface;
-use Symfony\Component\HttpKernel\KernelEvents;
-use Symfony\Component\HttpKernel\Event\GetResponseEvent;
-use Symfony\Component\HttpKernel\Event\FilterResponseEvent;
-use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpFoundation\RedirectResponse;
-
-
-use Goteo\Core\Model;
-
+use Goteo\Application\Config;
+use Goteo\Application\Cookie;
+use Goteo\Application\Lang;
 use Goteo\Application\Message;
 use Goteo\Application\Session;
-use Goteo\Application\Cookie;
-use Goteo\Application\Config;
-use Goteo\Application\Lang;
+use Goteo\Core\Model;
 use Goteo\Library\Currency;
 use Goteo\Library\Text;
+use Symfony\Component\HttpFoundation\RedirectResponse;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Event\FilterResponseEvent;
+use Symfony\Component\HttpKernel\Event\GetResponseEvent;
+use Symfony\Component\HttpKernel\KernelEvents;
 
 //
-class SessionListener implements EventSubscriberInterface
-{
+
+class SessionListener extends AbstractListener {
     public function onRequest(GetResponseEvent $event) {
 
         //not need to do anything on sub-requests
@@ -40,13 +36,17 @@ class SessionListener implements EventSubscriberInterface
 
         $request = $event->getRequest();
 
+        // Add trusted proxies
+        if (is_array(Config::get('proxies'))) {
+            $request->setTrustedProxies(Config::get('proxies'));
+        }
         //non cookies for notifyAction on investController
-        if($request->attributes->get('_controller') == 'Goteo\Controller\InvestController::notifyPaymentAction') {
+        if (strpos($request->getPathInfo(), '/invest/notify/') === 0) {
             return;
         }
 
         // Init session
-        Session::start('goteo-'.Config::get('env'), Config::get('session.time'));
+        Session::start('goteo-' . Config::get('env'), Config::get('session.time'));
 
         // clean all caches if requested
         // TODO: replace by some controller
@@ -64,51 +64,57 @@ class SessionListener implements EventSubscriberInterface
             //Message::info('That\'s all folks!');
         });
 
-        // Mantain user in secure enviroment if logged and ssl config on
-        if(is_array(Config::get('proxies'))) {
-            $request->setTrustedProxies(Config::get('proxies'));
+        // set currency
+        $currency = $request->query->get('currency');
+        if ($amount = $request->query->get('amount')) {
+            $currency = (string) substr($amount, strlen((int) $amount));
+        }
+        if (empty($currency)) {
+            $currency = Currency::current('id');
         }
 
-
-        // set currency
-        Session::store('currency', Currency::set()); // depending on request
+        //ensure is a valid currency
+        $currency = Currency::get($currency, 'id');
+        Session::store('currency', $currency); // depending on request
 
         // extend the life of the session
         Session::renew();
 
-        // Cookie
-        // the stupid cookie EU law
-        if (!Cookie::exists('goteo_cookies')) {
-            Cookie::store('goteo_cookies', '1');
-            Message::info(Text::get('message-cookies'));
-        }
-
         // Set lang
         $lang = Lang::setFromGlobals($request);
 
+        // Cookie
+        // the stupid cookie EU law
+        if (!Cookie::exists('goteo_cookies')) {
+            // print_r($_COOKIE);die('cooki');
+            Cookie::store('goteo_cookies', 'ok');
+            // print_r($_COOKIE);die('cooki');
+            Message::info(Text::get('message-cookies'));
+        }
+
         $url = $request->getHttpHost();
         // Redirect to proper URL if url_lang is defined
-        if(Config::get('url.url_lang')) {
+        if (Config::get('url.url_lang')) {
             $sub_lang = strtok($url, '.');
             $sub_url = strtok('');
-            if(Lang::exists($sub_lang) && $sub_lang != $lang) {
+            if (Lang::exists($sub_lang) && $sub_lang != $lang) {
                 $url = "$lang.$sub_url";
             }
             // echo "$url [$sub_lang=>$lang].$sub_url] ";die;
         }
 
+        // Mantain user in secure enviroment if logged and ssl config on
         if (Config::get('ssl') && Session::isLogged() && !$request->isSecure()) {
             // Force HTTPS redirection
             $url = 'https://' . $url;
-        }
-        else {
+        } else {
             // Conserve the current scheme
-            $url = $request->getScheme() .'://'. $url;
+            $url = $request->getScheme() . '://' . $url;
         }
 
         // Redirect if needed
-        if($url != $request->getScheme() . '://' . $request->getHttpHost()) {
-             //die("[$url " . $request->getScheme() . '://' . $request->getHttpHost());
+        if ($url != $request->getScheme() . '://' . $request->getHttpHost()) {
+            //die("[$url " . $request->getScheme() . '://' . $request->getHttpHost());
             $event->setResponse(new RedirectResponse($url . $request->getRequestUri()));
             return;
         }
@@ -119,8 +125,7 @@ class SessionListener implements EventSubscriberInterface
      * @param  FilterResponseEvent $event [description]
      * @return [type]                     [description]
      */
-    public function onResponse(FilterResponseEvent $event)
-    {
+    public function onResponse(FilterResponseEvent $event) {
         $request = $event->getRequest();
         $response = $event->getResponse();
 
@@ -130,17 +135,42 @@ class SessionListener implements EventSubscriberInterface
             return;
         }
 
-        //non cookies for notifyAction on investController
-        if($request->attributes->get('_controller') == 'Goteo\Controller\InvestController::notifyPaymentAction') {
-            return;
+        $vars = [
+            'code' => $response->getStatusCode(),
+            // 'method' => $request->getMethod(),
+            // 'ip' => $request->getClientIp(),
+            'agent' => $request->headers->get('User-Agent'),
+            'referer' => $request->headers->get('referer'),
+            // 'http_user' => $request->getUser(),
+            // 'uri' => $request->getUri(),
+            'path' => $request->getPathInfo(),
+            'query' => $request->query->all(),
+            'user' => Session::getUserId(),
+            'time' => microtime(true) - Session::getStartTime(),
+            'route' => $request->attributes->get('_route'),
+        ];
+
+        $controller = $request->attributes->get('_controller');
+        if (is_string($controller) && strpos($controller, '::') !== false) {
+            $c = explode('::', $controller);
+            $vars['controller'] = $c[0];
+            $vars['action'] = $c[1];
+
+        } else {
+            $vars['controller'] = $controller;
+        }
+        if ($route_params = $request->attributes->get('_route_params')) {
+            $vars['route_params'] = $route_params;
         }
 
+        $this->info('Request', $vars);
+
         //Are we shadowing some user? let's add a nice bar to return to the original user
-        if($shadowed_by = Session::get('shadowed_by')) {
+        if ($shadowed_by = Session::get('shadowed_by')) {
             $body = '<div class="user-shadowing-bar">Back to <a href="/user/logout">' . $shadowed_by[1] . '</a></div>';
             $content = $response->getContent();
             $pos = strpos($content, '<div id="header">');
-            if($pos !== false) {
+            if ($pos !== false) {
                 $content = substr($content, 0, $pos + 17) . $body . substr($content, $pos + 17);
                 $response->setContent($content);
                 $event->setResponse($response);
@@ -148,12 +178,10 @@ class SessionListener implements EventSubscriberInterface
         }
     }
 
-    public static function getSubscribedEvents()
-    {
+    public static function getSubscribedEvents() {
         return array(
             KernelEvents::REQUEST => 'onRequest',
-            KernelEvents::RESPONSE => array('onResponse', -50) // low priority: after headers are processed by symfony
+            KernelEvents::RESPONSE => array('onResponse', -50), // low priority: after headers are processed by symfony
         );
     }
 }
-

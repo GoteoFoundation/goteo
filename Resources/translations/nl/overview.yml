@@ -1,62 +1,62 @@
-overview-field-video: 'Additionele video over motivatie'
-overview-field-options-currently_avanzado: Gevorderd
-tooltip-project-keywords: 'Als je tekst invoert, suggereert het systeem woorden die andere gebruikers hebben ingevoerd. Deze woorden helpen het systeem de soortgelijke projecten aan elkaar te koppelen.'
-overview-field-description: 'Korte omschrijving'
-tooltip-project-about: 'Omschrijf kort je project in conceptuele, practische en technische termen. Bij voorbeeld door uit te wijden over hoe het werkt en waar het uit bestaat. Denk na over hoe het er uit ziet als het af is en wat mensen er mee kunnen.'
-overview-field-categories: Categorieen
-tooltip-project-usubs: 'Controleer of je de video hebt vertaald naar andere talen met Universal Subtitles: http://www.universalsubtitles.org/'
-tooltip-project-category: 'Kies zoveel categorieen als je nodig hebt om het project te omschrijven, gebaseerd op wat je hierboven hebt geschreven. Je keuzes helpen ons SiteName gebruikers te interesseren voor je project.'
-tooltip-project-video: 'Overweeg een video te publiceren en te linken (YouTube of Vimeo) waar je kort vertelt over je visie voor het project. Dit kan je hoofdvideo aanvullen, door je je originaliteit zo duidelijk mogelijk over te laten brengen. Als je het moeilijk vindt om te vertellen over je project, misschen is er dan iemand anders die dat goed kan, bijvoorbeeld een fan die je project volgt. Empathie met de drager van een project is een belangrijke drijfveer voor cofinanciers.'
-tooltip-project-media: 'Kopieer en plak de URL van het project''s presentatievideo, zoals gepubliceerd op YouTube of Vimeo. Dit is een essentiele stap om de aandacht te trekken van potentiele cofinanciers of samenwerkers, en hoe origineler, hoe beter. Videos moeten tussen twee en vier minuten duren.'
-tooltip-project-subtitle: 'Geef een enkele zin voor de subtitle. die aangeeft waar je project over gaat, en een beeld geeft van wat er te verwachten valt. Hij verschijnt samen met de projecttitel.'
-overview-field-image_gallery: 'Huidige afbeeldingen'
-overview-field-currently: 'Huidige status'
-tooltip-project-description: 'beschrijf het project met ten minste 80 woorden (minder genereert een foutmelding). leg het zo uit dat het voor een leek duidelijk is. Probeer het een aantrekkelijke, sociale focus te geven, waarbij je sterke punten noemt die het uniek, innovatief en speciaal maken. '
-step-3: Omschrijving
-tooltip-project-name: 'Voer een titel in voor je project. Hoe korter hoe beter, je kunt een beschrijving toevoegen in het volgende veld.'
-tooltip-project-image_upload: GUMMEN
-tooltip-project-motivation: 'Vertel iets over de redenen en omstandigheden die hebben geleid tot dit project, en de gemeenschappen en gebruikers waar het voor dient. Dit gaat helpen bij het vinden van mensen met dezelfde interesses, smaken en behoeften.'
-overview-field-options-currently_finalizado: klaar
-overview-field-options-scope_global: Globaal
-overview-field-goal: 'Doelen van de crowdfunding campagne'
-overview-fields-images-title: 'Afbeeldingen van het project'
+mandatory-project-field-about: 'Je moet de basiskenmerken van het project uitleggen'
+mandatory-project-field-category: 'Je moet tenminste een categorie kiezen voor het project'
+mandatory-project-field-description: 'Je moet een samenvatting van het project invoeren'
+mandatory-project-field-goal: 'Je moet je doelen uitleggen binnen je projectomschrijving'
+mandatory-project-field-image: 'Je moet minsten een afbeelding aan je project linken'
+mandatory-project-field-lang: 'Je moet een taal voor je project kiezen'
+mandatory-project-field-location: 'Je moet een potentieel bereik voor je project invoeren'
+mandatory-project-field-media: 'We raden je aan een video te uploaden om de evaluatie van je project door het SiteName team te faciliteren.'
+mandatory-project-field-motivation: 'Je moet je motivatie uitleggen in de projectomschrijving'
+mandatory-project-field-name: 'Je moet een naam geven aan je project'
 mandatory-project-field-related: 'In de projectomschrijving moet je je projectervaring noemen en die van het team waarmee je gaat werken.'
-validate-project-field-currently: 'Geef de huidige status aan van je project zodat we kunnen zien of het past bij SiteName.'
-tooltip-project-lang: 'Geef de taal aan waarin je het formulier invult.'
-tooltip-project-project_location: 'geef aan waar het project plaatsvindt, in welke steden de promotoren actief zijn.'
+overview-field-categories: Categorieen
+overview-field-currently: 'Huidige status'
+overview-field-description: 'Korte omschrijving'
+overview-field-goal: 'Doelen van de crowdfunding campagne'
+overview-field-image_gallery: 'Huidige afbeeldingen'
+overview-field-image_upload: 'Upload een afbeelding'
 overview-field-keywords: 'Steekwoorden voor het project'
-tooltip-project-goal: 'Noem de lange- en korte termijn doelen van het project, in alle aspecten die je belangrijk vindt. Dit is weer een kans om in contact te komen met mensen die sympathiseren met die doelen.'
-overview-field-options-scope_local: Lokaal
-overview-field-project_location: Locatie
-overview-field-options-currently_medio: Halverwege
-overview-field-options-scope_nacional: Nationaal
 overview-field-lang: 'Originele taal'
+overview-field-media: Videointroductie
 overview-field-media_preview: Preview
-overview-main-header: Projectomschrijving
-overview-field-scope: 'Bereik van het project'
 overview-field-name: Projecttitel
-overview-field-usubs: 'Publiceer met Universal Subtitles'
-overview-field-options-scope_regional: Regionaal
+overview-field-options-currently_avanzado: Gevorderd
+overview-field-options-currently_finalizado: klaar
 overview-field-options-currently_inicial: 'Aan het starten'
-step-overview: 'Step: Projectomschrijving'
-tooltip-project-related: 'Vat samen hoe de groep tot dit punt is gekomen. Welke ervaring heb je die bijdraagt aan dit voorstel? Vertel ons over je team, bronnen en infrastructuur. '
-overview-field-subtitle: Samenvatting
+overview-field-options-currently_medio: Halverwege
+overview-field-options-scope_global: Globaal
+overview-field-options-scope_local: Lokaal
+overview-field-options-scope_nacional: Nationaal
+overview-field-options-scope_regional: Regionaal
+overview-field-project_location: Locatie
 overview-field-related: 'Team en ervaring'
+overview-field-scope: 'Bereik van het project'
+overview-field-subtitle: Samenvatting
+overview-field-usubs: 'Publiceer met Universal Subtitles'
+overview-field-video: 'Additionele video over motivatie'
+overview-fields-images-title: 'Afbeeldingen van het project'
+overview-main-header: Projectomschrijving
+step-3: Omschrijving
+step-overview: 'Step: Projectomschrijving'
+tooltip-project-about: 'Omschrijf kort je project in conceptuele, practische en technische termen. Bij voorbeeld door uit te wijden over hoe het werkt en waar het uit bestaat. Denk na over hoe het er uit ziet als het af is en wat mensen er mee kunnen.'
+tooltip-project-category: 'Kies zoveel categorieen als je nodig hebt om het project te omschrijven, gebaseerd op wat je hierboven hebt geschreven. Je keuzes helpen ons SiteName gebruikers te interesseren voor je project.'
+tooltip-project-currently: 'In welke fase is het project nu, met betrekkign tot creatie en uitvoering?'
+tooltip-project-description: 'beschrijf het project met ten minste 80 woorden (minder genereert een foutmelding). leg het zo uit dat het voor een leek duidelijk is. Probeer het een aantrekkelijke, sociale focus te geven, waarbij je sterke punten noemt die het uniek, innovatief en speciaal maken. '
+tooltip-project-goal: 'Noem de lange- en korte termijn doelen van het project, in alle aspecten die je belangrijk vindt. Dit is weer een kans om in contact te komen met mensen die sympathiseren met die doelen.'
+tooltip-project-image: 'Dit kunnen foto''s, illustraties, storyboards, etc zijn. (met een licentie die overeenkomt met die in sectie 5). gebruik een varieteit, met een behoorlijke resolutie. Je kunt zo veel uploaden als je wilt'
+tooltip-project-image_upload: GUMMEN
+tooltip-project-keywords: 'Als je tekst invoert, suggereert het systeem woorden die andere gebruikers hebben ingevoerd. Deze woorden helpen het systeem de soortgelijke projecten aan elkaar te koppelen.'
+tooltip-project-lang: 'Geef de taal aan waarin je het formulier invult.'
+tooltip-project-media: 'Kopieer en plak de URL van het project''s presentatievideo, zoals gepubliceerd op YouTube of Vimeo. Dit is een essentiele stap om de aandacht te trekken van potentiele cofinanciers of samenwerkers, en hoe origineler, hoe beter. Videos moeten tussen twee en vier minuten duren.'
+tooltip-project-motivation: 'Vertel iets over de redenen en omstandigheden die hebben geleid tot dit project, en de gemeenschappen en gebruikers waar het voor dient. Dit gaat helpen bij het vinden van mensen met dezelfde interesses, smaken en behoeften.'
+tooltip-project-name: 'Voer een titel in voor je project. Hoe korter hoe beter, je kunt een beschrijving toevoegen in het volgende veld.'
+tooltip-project-project_location: 'geef aan waar het project plaatsvindt, in welke steden de promotoren actief zijn.'
+tooltip-project-related: 'Vat samen hoe de groep tot dit punt is gekomen. Welke ervaring heb je die bijdraagt aan dit voorstel? Vertel ons over je team, bronnen en infrastructuur. '
+tooltip-project-subtitle: 'Geef een enkele zin voor de subtitle. die aangeeft waar je project over gaat, en een beeld geeft van wat er te verwachten valt. Hij verschijnt samen met de projecttitel.'
+tooltip-project-usubs: 'Controleer of je de video hebt vertaald naar andere talen met Universal Subtitles: http://www.universalsubtitles.org/'
+tooltip-project-video: 'Overweeg een video te publiceren en te linken (YouTube of Vimeo) waar je kort vertelt over je visie voor het project. Dit kan je hoofdvideo aanvullen, door je je originaliteit zo duidelijk mogelijk over te laten brengen. Als je het moeilijk vindt om te vertellen over je project, misschen is er dan iemand anders die dat goed kan, bijvoorbeeld een fan die je project volgt. Empathie met de drager van een project is een belangrijke drijfveer voor cofinanciers.'
 validate-project-field-about: 'De projectomschrijving is te kort'
+validate-project-field-currently: 'Geef de huidige status aan van je project zodat we kunnen zien of het past bij SiteName.'
 validate-project-field-description: 'De projectomschijving is te kort'
 validate-project-value-description: 'De projectomschrijving is te kort'
-tooltip-project-image: 'Dit kunnen foto''s, illustraties, storyboards, etc zijn. (met een licentie die overeenkomt met die in sectie 5). gebruik een varieteit, met een behoorlijke resolutie. Je kunt zo veel uploaden als je wilt'
-overview-field-image_upload: 'Upload een afbeelding'
-overview-field-media: Videointroductie
-mandatory-project-field-media: 'We raden je aan een video te uploaden om de evaluatie van je project door het SiteName team te faciliteren.'
-tooltip-project-currently: 'In welke fase is het project nu, met betrekkign tot creatie en uitvoering?'
 validate-project-value-keywords: 'Noem 5 steekwoorden die helpen bij de beoordeling door SiteName.'
-mandatory-project-field-name: 'Je moet een naam geven aan je project'
-mandatory-project-field-description: 'Je moet een samenvatting van het project invoeren'
-mandatory-project-field-location: 'Je moet een potentieel bereik voor je project invoeren'
-mandatory-project-field-about: 'Je moet de basiskenmerken van het project uitleggen'
-mandatory-project-field-goal: 'Je moet je doelen uitleggen binnen je projectomschrijving'
-mandatory-project-field-motivation: 'Je moet je motivatie uitleggen in de projectomschrijving'
-mandatory-project-field-lang: 'Je moet een taal voor je project kiezen'
-mandatory-project-field-image: 'Je moet minsten een afbeelding aan je project linken'
-mandatory-project-field-category: 'Je moet tenminste een categorie kiezen voor het project'

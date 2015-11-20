@@ -45,18 +45,31 @@ namespace Goteo\Library {
                 }
             }
 
-            if ($location = $params['location']) {
-                if(!is_array($location)) $location = array($location);
-                $location = array_map(function($v){return "'" .addslashes($v) . "'";}, $location);
-                if($location) {
+            if ($params['location']) {
+                if(!is_array($params['location'])) $params['location'] = array($params['location']);
+                $location = array();
+                foreach($params['location'] as $loc) {
+                    $loc = trim($loc);
+                    if($loc) {
+                        $location[] = "'" .addslashes($loc) . "'";;
+                    }
+                }
+                if(count($location) > 0) {
                     $where[] = 'AND MD5(project.project_location) IN ('. implode(', ', $location) .')';
+                }
             }
 
-            if ($reward = $params['reward']) {
-                if(!is_array($reward)) $reward = array($reward);
+            if ($params['reward']) {
+                if(!is_array($params['reward'])) $params['reward'] = array($params['reward']);
+                $reward = array();
+                foreach($params['reward'] as $rew) {
+                    $rew = trim($rew);
+                    if($rew) {
+                        $reward[] = "'" .addslashes($rew) . "'";;
+                    }
                 }
-                $reward = array_map(function($v){return "'" .addslashes($v) . "'";}, $reward);
-                if($reward) {
+
+                if(count($reward) > 0) {
                     $where[] = 'AND project.id IN (
                                     SELECT DISTINCT(project)
                                     FROM reward

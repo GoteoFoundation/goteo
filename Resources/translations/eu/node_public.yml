@@ -1,29 +1,29 @@
-node-side-sumcalls-campaigns: Aktiboa
-node-side-summary-active: Aktiboak
-node-footer-title-investors: 'Finantzakideak '
-node-side-summary-investors: Finantzakideak
-node-side-summary-supporters: Kolaboratzaileak
-node-side-searcher-byreward: 'Itzulera trukea'
-node-home-calls-headers: Deialdiak
-node-footer-title-creators: Bultzatzaileak
-node-side-sumcalls-header: Ureztatzeko<br/>kapitala
-node-footer-investors-donate: 'Dohaintzak eta desgrabazioak'
-node-footer-title-social: 'Jarraitu gaituzu'
-node-side-searcher-promote: Azpimarragarria
-node-footer-investors-payment: 'Zelan egiten dira ordainketak'
-node-footer-investors-invest: 'Nola indartu proiektu bat'
-node-side-summary-amount: 'Jasotako diru kopurua'
-node-footer-title-help: 'Laguntza behar?'
-node-home-posts-header: Berriak
-node-side-sumcalls-calls: Irekia
-node-side-sumcalls-rest: Banatuteke
-node-side-searcher-popular: Hedatuak
-node-side-searcher-recent: 'Duela gutxi'
 node-footer-about: 'Sortzaileak direnak eta Herri Ondarea bultzatzen dituzten proiektuekin, finantzakide izateko eta kolaboratzeko sare soziala <a href="/project/create">DNA irekiko proiekturik ba al daukazu?</a>'
-node-side-searcher-success: Arrakastatsuak
-node-side-summary-success: Arrakastatsuak
-node-side-sumcalls-budget: 'Guztira (kanpaina guztiak)'
-node-side-searcher-outdate: Premiazkoak
 node-footer-help-what: 'Zer da crowdfunding'
 node-footer-help-why: 'Zergatik da Goteo desberdin'
+node-footer-investors-donate: 'Dohaintzak eta desgrabazioak'
+node-footer-investors-invest: 'Nola indartu proiektu bat'
+node-footer-investors-payment: 'Zelan egiten dira ordainketak'
+node-footer-title-creators: Bultzatzaileak
+node-footer-title-help: 'Laguntza behar?'
+node-footer-title-investors: 'Finantzakideak '
+node-footer-title-social: 'Jarraitu gaituzu'
 node-header-sponsorby: 'laguntzailea:'
+node-home-calls-headers: Deialdiak
+node-home-posts-header: Berriak
+node-side-searcher-byreward: 'Itzulera trukea'
+node-side-searcher-outdate: Premiazkoak
+node-side-searcher-popular: Hedatuak
+node-side-searcher-promote: Azpimarragarria
+node-side-searcher-recent: 'Duela gutxi'
+node-side-searcher-success: Arrakastatsuak
+node-side-sumcalls-budget: 'Guztira (kanpaina guztiak)'
+node-side-sumcalls-calls: Irekia
+node-side-sumcalls-campaigns: Aktiboa
+node-side-sumcalls-header: Ureztatzeko<br/>kapitala
+node-side-sumcalls-rest: Banatuteke
+node-side-summary-active: Aktiboak
+node-side-summary-amount: 'Jasotako diru kopurua'
+node-side-summary-investors: Finantzakideak
+node-side-summary-success: Arrakastatsuak
+node-side-summary-supporters: Kolaboratzaileak

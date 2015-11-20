@@ -25,7 +25,7 @@ $pay_method = $this->pay_method;
 
 					<div class="col-md-10 col-md-offset-1 reminder">
                         <div class="level-1">
-					       <?= $this->text('invest-alert-investing') ?><span class="amount-reminder"><?= amount_format($this->amount) ?></span> <?= $this->text('invest-project') ?> <span class="uppercase"><?= $this->project->name ?></span>
+					       <?= $this->text('invest-alert-investing') ?><span class="amount-reminder"><?= \amount_format($this->amount) ?></span> <?= $this->text('invest-project') ?> <span class="uppercase"><?= $this->project->name ?></span>
 						</div>
                         <?php if($this->reward): ?>
 						<div class="level-2">
@@ -63,7 +63,7 @@ $pay_method = $this->pay_method;
 				</div>
 			</div>
 	</div>
-    
+
 </div>
 
 <?php $this->replace() ?>

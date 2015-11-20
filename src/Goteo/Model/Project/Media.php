@@ -156,7 +156,7 @@ namespace Goteo\Model\Project {
                     default:
                         // Mirar si es código HTML
                         $dom = new DOMDocument();
-                        if ($dom->loadHTML($this->url)) {
+                        if (@$dom->loadHTML($this->url)) {
                             $code = $media;
                         }
 

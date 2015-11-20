@@ -2,8 +2,8 @@
 
 $this->layout("layout", [
     'bodyClass' => '',
-    'title' => 'Iniciar sesión',
-    'meta_description' => $this->text('meta-description-discover')
+    'title' => $this->text('login-title'),
+    'meta_description' => $this->text('login-title')
     ]);
 
 $this->section('content');
@@ -58,6 +58,8 @@ $this->section('content');
 
 <?= $this->insert('auth/partials/recover_modal') ?>
 
+<?= $this->insert('auth/partials/openid_modal') ?>
+
 <?php $this->replace() ?>
 
 <?php $this->section('footer') ?>
@@ -65,20 +67,39 @@ $this->section('content');
 <script type="text/javascript">
 
 $(function(){
+    var _get_ajax_password_result = function() {
+        var email=$("#password-recover-email").val();
+
+        $.ajax({
+            url: "/password-recovery",
+            data: { 'email' : email, 'return' : '<?= urlencode($this->raw('return')) ?>'  },
+            type: 'post',
+            success: function(result){
+                $("#modal-content").html(result);
+            }
+        });
+   };
+
+   $("#myModal").on('keypress', "#password-recover-email", function (e) {
+        if (e.keyCode == 10 || e.keyCode == 13) {
+            e.preventDefault();
+            _get_ajax_password_result();
+            return false;
+        }
+    });
+
+    $('#myModal').on('shown.bs.modal', function () {
+        $('#myModal input:first').focus();
+    });
 
 	$("#myModal").on('click', '#btn-password-recover', function(){
-
-	   var email=$("#password-recover-email").val();
-
-	   $.ajax({
-	          url: "/password-recovery",
-	          data: { 'email' : email, 'return' : '<?= urlencode($this->get_query('return')) ?>'  },
-	          type: 'post',
-	          success: function(result){
-	            $("#modal-content").html(result);
-	    }});
-
+	   _get_ajax_password_result();
 	});
+
+	$('#openid').change(function() {
+  	    $('#openid-link').attr('href', '/login/openid?return=<?= urlencode($this->raw('return')) ?>&u='+$(this).val());
+
+  	});
 
 });
 

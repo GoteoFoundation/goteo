@@ -1,29 +1,29 @@
-node-side-sumcalls-campaigns: Actief
-node-side-summary-active: Actief
-node-footer-title-investors: Steuners
-node-side-summary-investors: Backers
-node-side-summary-supporters: Backers
-node-side-searcher-byreward: 'Voor teruggaaf'
-node-home-calls-headers: Groepen
-node-footer-title-creators: Initiatoren
-node-side-sumcalls-header: 'Cloud<br />fund'
-node-footer-investors-donate: 'Donaties en belastingvoordeel'
-node-footer-title-social: 'Volg ons'
-node-side-searcher-promote: Uitgelicht
-node-footer-investors-payment: 'Hoe betalingen werken'
-node-footer-investors-invest: 'Hoe help je een project'
-node-side-summary-amount: 'Verzameld geld'
-node-footer-title-help: 'Hulp nodig?'
-node-home-posts-header: Nieuws
-node-side-sumcalls-calls: Open
-node-side-sumcalls-rest: 'Rest om te distribueren'
-node-side-searcher-popular: Populair
-node-side-searcher-recent: Recent
 node-footer-about: 'Netwerk voor cofinanciering en samenwerking voor creatiefe projecten tot nut van het algemeen <a href="/project/create">Heb je een project met open DNA?</a>'
-node-side-searcher-success: Succesvol
-node-side-summary-success: Succes
-node-side-sumcalls-budget: 'Totaal ( alle campagnes )'
-node-side-searcher-outdate: Urgent
 node-footer-help-what: 'Wat is Crowdfunding?'
 node-footer-help-why: 'Wat is er anders aan SiteName?'
+node-footer-investors-donate: 'Donaties en belastingvoordeel'
+node-footer-investors-invest: 'Hoe help je een project'
+node-footer-investors-payment: 'Hoe betalingen werken'
+node-footer-title-creators: Initiatoren
+node-footer-title-help: 'Hulp nodig?'
+node-footer-title-investors: Steuners
+node-footer-title-social: 'Volg ons'
 node-header-sponsorby: 'Met de steun van:'
+node-home-calls-headers: Groepen
+node-home-posts-header: Nieuws
+node-side-searcher-byreward: 'Voor teruggaaf'
+node-side-searcher-outdate: Urgent
+node-side-searcher-popular: Populair
+node-side-searcher-promote: Uitgelicht
+node-side-searcher-recent: Recent
+node-side-searcher-success: Succesvol
+node-side-sumcalls-budget: 'Totaal ( alle campagnes )'
+node-side-sumcalls-calls: Open
+node-side-sumcalls-campaigns: Actief
+node-side-sumcalls-header: 'Cloud<br />fund'
+node-side-sumcalls-rest: 'Rest om te distribueren'
+node-side-summary-active: Actief
+node-side-summary-amount: 'Verzameld geld'
+node-side-summary-investors: Backers
+node-side-summary-success: Succes
+node-side-summary-supporters: Backers

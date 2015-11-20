@@ -1,42 +1,42 @@
-project-rewards-individual_reward-units_left: ' <span class="left">%s</span> eenheden over'
-project-side-investors-header: 'Al bijgedragen'
-project-rewards-header: Baten
-project-view-categories-title: Categorieen
-project-menu-supporters: Co-financiers
-project-view-metter-investors: Co-financiers
-project-view-metter-investment: Co-financieren
-project-rewards-social_reward-title: 'Collectieve winst'
-project-spread-widget_legend: 'Kopieer en plak de code in je website om bekendheid te geven aan het project'
-project-view-metter-day_created: 'gecreeerd op'
-project-menu-messages: Berichten
-project-support-supertitle: 'Economische behoeften'
-project-spread-embed_code: 'Code inbedden'
-project-view-metter-day_closed: 'Gearchiveerd op'
-project-view-metter-day_success: 'Gefinancierd op '
-project-spread-social: 'Ik co-financier het project %s'
-project-rewards-individual_reward-title: 'Individuele beloningen'
-project-messages-closed: 'Het is nog niet mogelijk berichten naar het project te sturen'
-project-share-pre_header: 'Laat je netwerk dit weten'
-project-rewards-individual_reward-limited: 'Gelimiteerde beloning'
-project-collaborations-title: 'Op zoek naar'
-project-view-metter-minimum: Minimum
-project-menu-needs: Behoeften
-regular-new_project: 'Nieuw project'
-project-menu-updates: Nieuws
 project-collaborations-supertitle: 'Niet-economische behoeften'
-project-view-metter-optimum: Optimum
+project-collaborations-title: 'Op zoek naar'
 project-menu-home: Project
-project-spread-widget: 'Project widget'
-project-spread-widget_title: 'publiceer de project widget'
-project-view-metter-got: Ontvangen
-project-view-metter-day_updated: 'ontvangen op'
-project-view-metter-days: Rest
+project-menu-messages: Berichten
+project-menu-needs: Behoeften
+project-menu-supporters: Co-financiers
+project-menu-updates: Nieuws
 project-messages-answer_it: Antwoord
-project-messages-send_message-button: Verstuur
+project-messages-closed: 'Het is nog niet mogelijk berichten naar het project te sturen'
 project-messages-send_direct-header: 'Stuur een bericht naar de promotor van dit project'
+project-messages-send_message-button: Verstuur
+project-messages-send_message-header: 'Schrijf je bericht'
+project-rewards-header: Baten
+project-rewards-individual_reward-limited: 'Gelimiteerde beloning'
+project-rewards-individual_reward-title: 'Individuele beloningen'
+project-rewards-individual_reward-units_left: ' <span class="left">%s</span> eenheden over'
+project-rewards-social_reward-title: 'Collectieve winst'
+project-rewards-supertitle: 'Wat wordt er aangeboden'
 project-share-header: 'Deel dit project'
-tooltip-project-scope: 'Specificeer de geografische impact die je hoopt dat jouw project zal hebben (elke categorie zit al ingebed in de vorige)'
+project-share-pre_header: 'Laat je netwerk dit weten'
+project-side-investors-header: 'Al bijgedragen'
+project-spread-embed_code: 'Code inbedden'
 project-spread-header: 'Verspreid het woord'
 project-spread-pre_widget: 'Verspreid het woord'
-project-rewards-supertitle: 'Wat wordt er aangeboden'
-project-messages-send_message-header: 'Schrijf je bericht'
+project-spread-social: 'Ik co-financier het project %s'
+project-spread-widget: 'Project widget'
+project-spread-widget_legend: 'Kopieer en plak de code in je website om bekendheid te geven aan het project'
+project-spread-widget_title: 'publiceer de project widget'
+project-support-supertitle: 'Economische behoeften'
+project-view-categories-title: Categorieen
+project-view-metter-day_closed: 'Gearchiveerd op'
+project-view-metter-day_created: 'gecreeerd op'
+project-view-metter-day_success: 'Gefinancierd op '
+project-view-metter-day_updated: 'ontvangen op'
+project-view-metter-days: Rest
+project-view-metter-got: Ontvangen
+project-view-metter-investment: Co-financieren
+project-view-metter-investors: Co-financiers
+project-view-metter-minimum: Minimum
+project-view-metter-optimum: Optimum
+regular-new_project: 'Nieuw project'
+tooltip-project-scope: 'Specificeer de geografische impact die je hoopt dat jouw project zal hebben (elke categorie zit al ingebed in de vorige)'

@@ -51,10 +51,6 @@ if (!$project instanceof  Goteo\Model\Project) {
     <script language="javascript" type="text/javascript" src="<?php echo SRC_URL; ?>/view/js/project/visualizers.js"></script>
     <script language="javascript" type="text/javascript" src="<?php echo SRC_URL; ?>/view/js/project/display.js"></script>
 
-    <!-- estilos para la visualización -->
-    <link rel="stylesheet" type="text/css" href="<?php echo SRC_URL; ?>/view/css/dashboard/projects/graph.css"/>
-
-
     <div class="widget chart">
             <div id="project_selection" style="margin-bottom: 10px"></div>
             <div class="titles">

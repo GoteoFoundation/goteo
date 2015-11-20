@@ -8,7 +8,8 @@ module.exports = function(grunt) {
       dist: {
         files: [{
           expand: true,
-          cwd: '.tmp',
+          // cwd: '.tmp',
+          cwd: '<%= goteo.dist %>',
           src: ['**/*.css'],
           dest: '<%= goteo.dist %>'
         }]

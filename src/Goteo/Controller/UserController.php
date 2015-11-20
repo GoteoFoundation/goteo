@@ -24,6 +24,7 @@ use Goteo\Application\Cookie;
 use Goteo\Application;
 use Goteo\Model\Mail;
 use Goteo\Library\Feed;
+use Goteo\Library\FeedBody;
 use Goteo\Library\Text;
 use Goteo\Library\OAuth\SocialAuth;
 use Goteo\Library\Listing;
@@ -498,9 +499,14 @@ class UserController extends \Goteo\Core\Controller {
 
                     // Evento Feed
                     $log = new Feed();
-                    $log->setTarget($user->id, 'user');
-                    $log->populate('nuevo usuario registrado (confirmado)', '/admin/users', Text::html('feed-new_user', Feed::item('user', $user->name, $user->id)));
-                    $log->doAdmin('user');
+                    $log->setTarget($user->id, 'user')
+                        ->populate('feed-new-user-confirmed',
+                                   '/admin/users',
+                                    new FeedBody(null, null, 'feed-new_user', [
+                                            Feed::item('user', $user->name, $user->id)
+                                        ])
+                        )
+                        ->doAdmin('user');
 
                     // evento público
                     $log->title = $user->name;

@@ -1,4 +1,4 @@
-regular-send_message: 'Enviar mensaje'
+login-register-conditions: 'Al registrarte, confirmas tu aceptación de nuestros <a href="/legal/terms">términos de uso</a>, <a href="/legal/privacy">política de privacidad</a> y <a href="legal/cookies">política de cookies</a>.'
 ID_DEL_TEXTO: 'Texto ID_DEL_TEXTO'
 admin_no_permission: 'No tienes permisos para acceder a <strong>%s</strong>'
 bazar-description-seo: 'Regalos solidarios crowdfunding en Goteo.org.'
@@ -49,7 +49,6 @@ guide-project-updates: "<b>Es muy importante que los proyectos mantengan informa
 header-about-side: 'Lo que nos mueve'
 home-posts-header: Novedades
 invest-individual-header: 'Puedes renunciar a recibir recompensas por tu aportación, o seleccionar las que igualen o estén por debajo del importe que hayas introducido.'
-login-register-conditions: 'Al registrarte, confirmas aceptación de nuestros <a href="/legal/terms">términos de uso</a>, <a href="/legal/privacy">política de privacidad</a> y política de cookies.'
 mandatory-cost-field-type: 'Es obligatorio seleccionar el tipo de coste'
 mandatory-individual_reward-field-amount: 'Es obligatorio indicar el importe que permite obtener la recompensa'
 mandatory-project-costs: 'Debe desglosarse en al menos dos costes.'
@@ -91,6 +90,7 @@ regular-hello: Hola
 regular-home: Inicio
 regular-identica: Identi.ca
 regular-im: Soy
+regular-instagram: Instagram
 regular-invest: Aportar
 regular-invest_it: 'Cofinancia este proyecto'
 regular-investing: Aportando
@@ -127,11 +127,13 @@ regular-see_all: 'Ver todos'
 regular-see_blog: Blog
 regular-see_details: 'Ver detalles'
 regular-see_more: 'Ver más'
+regular-send_message: 'Enviar mensaje'
 regular-share-facebook: 'Goteo en Facebook'
 regular-share-rss: RSS/BLOG
 regular-share-twitter: 'Síguenos en Twitter'
 regular-share_this: 'Compartir en:'
 regular-sorry: 'Lo sentimos'
+regular-spread: DIFUSION
 regular-thanks: Gracias
 regular-total: Total
 regular-translate_board: 'Panel traductor'
@@ -142,7 +144,9 @@ regular-weeks: semanas
 regular-yes: Sí
 session-about-to-expire: 'Tu sesión expirará en 10 minutos. ¿Quieres recargar la página para renovarla?'
 session-expired: 'Tu sesión en goteo ha expirado!'
+spread-about: 'Texto spread-about'
 stories-user-project: '%s, del proyecto: %s'
+support-our-mission: 'SUPPORT OUR MISSION'
 tooltip: 'Texto tooltip'
 tooltip-dashboard-user-access_data: 'Estos son tus datos actuales de acceso. Lo único que no se puede cambiar es el login de usuario.'
 tooltip-dashboard-user-change_email: 'Desde aquí puedes cambiar la dirección de correo electrónico en que recibes los mensajes de Goteo.'
@@ -160,7 +164,3 @@ user-changeemail-fail: 'Error al cambiar el email'
 user-register-success: 'El usuario se ha registrado correctamente. A continuación recibirás un mensaje de correo para activarlo.'
 validate-project-social_rewards: 'Es obligatorio indicar como mínimo un retorno colectivo '
 validate-project-total-costs: "El coste óptimo no puede superar en más de un 50% al coste mínimo. O subes los costes imprescindibles o bajas los costes adicionales.\r\n"
-regular-instagram: Instagram
-regular-spread: DIFUSION
-spread-about: 'Texto spread-about'
-support-our-mission: 'SUPPORT OUR MISSION'

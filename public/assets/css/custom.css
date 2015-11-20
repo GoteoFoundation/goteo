@@ -16,6 +16,11 @@
  	color:#58595B;
  }
 
+ .clear-both{
+ 	clear:both !important;
+ }
+
+
  /* For the message alerts */
 
  .custom-close{
@@ -25,7 +30,7 @@
  }
 
  .alert{
- 	font-size: 16px !important;
+ 	font-size: 14px !important;
  	color: #FFF;
  }
 
@@ -39,11 +44,6 @@
  	background-color: #19B4B2;
  	border-color: #19B4B2 !important;  
  }
-
-
-
-
-
 
 
 /*Navbar */
@@ -131,7 +131,7 @@
 }
 
 .reminder{
-	padding: 2.3% 3% 3%;
+	padding: 3%;
 	color: #58595B;
 	margin-bottom: 4%;
 	border-top: 3px solid #E7E7E7;
@@ -322,7 +322,7 @@ label.reward-choosen{
 .input-amount
 
 {
-	font-size: 1.4em;
+	font-size: 1.3em;
 	text-align: center;
 }
 
@@ -430,7 +430,6 @@ div.jumbotron{
 
 div.jumbotron.project-info{
 	background: none repeat scroll 0% 0% #FAF8F8;
-	color: #58595B; 
 	padding-top:20px; 
 	padding-bottom:20px;
 }
@@ -443,6 +442,15 @@ div.jumbotron .project-name{
 	text-transform: uppercase;
 	margin-bottom: 5px;
 }
+
+div.jumbotron .project-name a{
+	color: #58595B !important;
+}
+
+div.jumbotron .project-name a:hover{
+	text-decoration: none;
+}
+
 
 div.jumbotron .project-subtitle{
 	font-size: 16px;
@@ -526,23 +534,16 @@ div.jumbotron .project-tags:before {
 		font-weight: normal !important
 	}
 
-}
+	input.big-checkbox{
+		-webkit-transform: scale(1.3,1.3);
+		-moz-transform: scale(1.3,1.3);
+		-o-transform: scale(1.3,1.3);
 
-@media(max-width:767px){
 
-	.sm-display-none{
-		display: none;
-	}
-
-	.margin-2{
-		margin:2%;
-	}
-
-	.label-method:hover{
-		font-weight: normal !important;
 	}
 
 }
+
 
 @media (min-width: 480px) and (max-width: 600px) {
 

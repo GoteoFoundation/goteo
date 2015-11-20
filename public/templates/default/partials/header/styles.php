@@ -1,4 +1,4 @@
-    <!-- build:css view/css/goteo.css -->
+    <!-- build:css view/css/all.css -->
     <!-- POST PROCESSING THIS CSS BY GRUNT -->
     <link rel="stylesheet" type="text/css" href="<?= SRC_URL ?>/view/css/goteo.css" />
     <!-- endbuild -->

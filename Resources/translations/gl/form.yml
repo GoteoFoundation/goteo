@@ -1,28 +1,28 @@
-form-add-button: Engadir
-form-apply-button: Aplicar
-form-project_status-fulfilled: 'Retorno cumprido'
-form-project_status-campaing: 'En campaña'
-form-project_status-cancelled: Descartado
-form-project_status-expired: Archivado
-form-self_review-button: Corrixir
-form-project-progress-title: 'Avaliación de datos'
-form-project_status-cancel: Descartado
-form-edit-button: Editar
-form-footer-errors_title: Erros
-form-project_status-review: 'Pendente de valoración'
-project-form-header: Formulario
-form-project_status-success: Financiado
-form-navigation_bar-header: 'Ir a'
-form-project_status-edit: Editándose
-form-next-button: Seguinte
 form-accept-button: Aceptar
-form-project-info_status-title: 'Estado global da información'
+form-add-button: Engadir
+form-ajax-info: 'O formulario vaise gravando segundo pases por cada campo'
+form-apply-button: Aplicar
+form-edit-button: Editar
+form-errors-info: 'Total: %s | Neste paso: %s'
+form-errors-total: 'Hai %s erros en total'
+form-footer-errors_title: Erros
+form-image_upload-button: 'Cargar imaxe'
 form-media_send-button: 'Engadir video'
+form-navigation_bar-header: 'Ir a'
+form-next-button: Seguinte
+form-project-info_status-title: 'Estado global da información'
+form-project-progress-title: 'Avaliación de datos'
 form-project-status-title: 'Estado do proxecto'
+form-project_status-campaing: 'En campaña'
+form-project_status-cancel: Descartado
+form-project_status-cancelled: Descartado
+form-project_status-edit: Editándose
+form-project_status-expired: Archivado
+form-project_status-fulfilled: 'Retorno cumprido'
+form-project_status-review: 'Pendente de valoración'
+form-project_status-success: Financiado
 form-remove-button: Quitar
+form-self_review-button: Corrixir
 form-send_review-button: Enviar
 form-upload-button: Enviar
-form-errors-total: 'Hai %s erros en total'
-form-ajax-info: 'O formulario vaise gravando segundo pases por cada campo'
-form-errors-info: 'Total: %s | Neste paso: %s'
-form-image_upload-button: 'Cargar imaxe'
+project-form-header: Formulario

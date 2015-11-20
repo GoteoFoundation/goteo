@@ -1,24 +1,40 @@
-<?php $this->layout('admin/layout') ?>
+<?php
+
+$this->layout('admin/layout');
+
+$mail = $this->mail;
+$success = 100;
+if($sender = $mail->getSender()) {
+    $success = floor($sender->getStatusObject()->percent_success);
+}
+
+ ?>
 
 <?php $this->section('admin-content') ?>
 
 <a href="/admin/sent" class="button">Volver al listado</a>
 
-<a href="/mail/<?= $this->mail->getToken(false) ?>" class="button" target="_blank">Ver el mensaje</a>
+<a href="/mail/<?= $mail->getToken(false) ?>" class="button" target="_blank">Ver el mensaje</a>
 
 <?php if($this->sender && $this->is_module_admin('Newsletter')): ?>
     <a href="/admin/newsletter/detail/<?= $this->sender ?>" class="button">Ver en el admin del boletín</a>
 <?php endif ?>
 
 <?php if($this->is_module_admin('Mailing')): ?>
-    <a href="/admin/mailing/copy/<?= $this->mail->id ?>" class="button">Copiar este mensaje en comunicaciones</a>
+    <a href="/admin/mailing/copy/<?= $mail->id ?>" class="button">Copiar este mensaje en comunicaciones</a>
 <?php endif ?>
 
 
 <div id="detail-top">
 
 <div class="widget board">
-<p><b>Subject:</b> <?= $this->mail->getSubject() ?></p>
+<p><b>Subject:</b> <?= $mail->getSubject() ?></p>
+<?php if($mail->template): ?>
+<p><b>Template:</b> <td><?= $this->templates[$mail->template] ?></td></p>
+<?php endif ?>
+<p><b>Date:</b> <?= $mail->date ?></p>
+<p><b>Status:</b> <?= '<span class="label label-'. $mail->getStatus() . '">' . $mail->getStatus() . '</span>' ?>
+                  <?= $this->percent_span($success) ?></td>
 <p><b>Alcance:</b> <?= $this->percent_span($this->readed, 2) ?> <span class="label"><?= $this->readed_hits ?> hits</span></p>
 </div>
 
@@ -72,10 +88,10 @@
             <td><?= $this->stats->getEmailOpenedLocation($recipient->email) ?></td>
             <td>
                 <?php if($recipient->blacklisted) : ?>
-                    <br><a href="/admin/sent/removeblacklist/<?= $this->mail->id ?>?email=<?= urlencode($recipient->email) ?>" onclick="return confirm('Se quitará el bloqueo a este email. Continuar?')">[Desbloquear]</a>
+                    <br><a href="/admin/sent/removeblacklist/<?= $mail->id ?>?email=<?= urlencode($recipient->email) ?>" onclick="return confirm('Se quitará el bloqueo a este email. Continuar?')">[Desbloquear]</a>
                 <?php endif ?>
-                <?php if($recipient->status == 'failed' || ($recipient->status == 'pending' && !$this->mail->massive)) : ?>
-                    <br><a href="/admin/sent/resend/<?= $this->mail->id ?>?email=<?= urlencode($recipient->email) ?>" onclick="return confirm('Se reenviará el email. Continuar?')">[Reenviar]</a>
+                <?php if($recipient->status == 'failed' || ($recipient->status == 'pending' && !$mail->massive)) : ?>
+                    <br><a href="/admin/sent/resend/<?= $mail->id ?>?email=<?= urlencode($recipient->email) ?>" onclick="return confirm('Se reenviará el email. Continuar?')">[Reenviar]</a>
                 <?php endif ?>
             </td>
         </tr>
@@ -96,7 +112,7 @@
 <script type="text/javascript">
     $(function(){
         var reloadPage = function() {
-            $('#detail-top').load('/admin/sent/detail/<?= $this->mail->id ?> #detail-top');
+            $('#detail-top').load('/admin/sent/detail/<?= $mail->id ?> #detail-top');
             setTimeout(reloadPage, 2000);
         };
         setTimeout(reloadPage, 2000);

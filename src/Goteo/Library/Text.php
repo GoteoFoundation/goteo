@@ -76,7 +76,8 @@ class Text {
         else {
             $text = Lang::trans($id, [], $lang);
             // old behaviour, assume sprintf like arguments
-            $req_args = substr_count($text, '%');
+            // $text = vsprintf($text, $vars);
+            $req_args = substr_count($text, '%') - 2*substr_count($text, '%%');
 
             if (!empty($vars) && $req_args > 0 && count($vars) >= $req_args) {
                 $text = vsprintf($text, $vars);
@@ -147,12 +148,9 @@ class Text {
             'feed-new_project',
             'user-login-required',
             'fatal-error-node',
-            'fatal-error-project',
             'login-banner-header',
-            'feed-project_runout',
             'feed-project_fail',
             'feed-project_goon',
-            'feed-project_finish_unique',
             'feed-project_finish',
             'feed-messages-new_thread',
             'feed-message_support-response',
@@ -174,7 +172,6 @@ class Text {
             'call-splash-drop_limit',
             'feed-new_support',
             'feed-new_update',
-            'feed-new_user',
             'open-banner-header'];
         return in_array($id, $ids);
     }

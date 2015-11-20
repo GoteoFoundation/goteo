@@ -311,6 +311,7 @@ namespace Goteo\Controller {
                         //procesamos el envio de mails
                         if ($action == 'message') {
                             Dashboard\Projects::process_mailing($option, $project);
+                            throw new Redirection('/dashboard/projects/'.$option.'/'.$action);
                         }
                         break;
 
@@ -371,9 +372,49 @@ namespace Goteo\Controller {
                     // recompensas ofrecidas
                     $viewData['rewards'] = Model\Project\Reward::getAll($project->id, 'individual');
                     // aportes para este proyecto
-                    $viewData['invests'] = Model\Invest::getAll($project->id);
+                    // $viewData['invests'] = Model\Invest::getAll($project->id);
+                    $filters = ['projects'=> $project->id,
+                               'status' => [
+                                        Model\Invest::STATUS_PENDING,
+                                        Model\Invest::STATUS_CHARGED,
+                                        Model\Invest::STATUS_PAID,
+                                        Model\Invest::STATUS_RETURNED]
+                                        ];
+                    $filter = $_GET['filter'];
+                    if(empty($filter)) $filter = 'amount';
+                    $viewData['filter'] = $filter;;
+                    if($filter == 'date') {
+                        $order = 'invested ASC';
+                    }
+                    elseif($filter == 'user') {
+                        $order = 'invested ASC';
+                    }
+                    elseif($filter == 'reward') {
+                        $order = 'invest_reward.reward ASC';
+                    }
+                    elseif($filter == 'pending') {
+                        $filters['fulfilled'] = 0;
+                    }
+                    elseif($filter == 'fulfilled') {
+                        $filters['fulfilled'] = 1;
+                    }
+                    elseif($filter == 'resign') {
+                        $filters['types'] = 'donative';
+                    }
+                    else {
+                        $filter = 'amount';
+                    }
+                    if(empty($order)) {
+                        $order = 'amount DESC';
+                    }
+                    $viewData['invests_limit'] = $limit = 10;
+                    $offset = $limit * (int)$_GET['pag'];
+                    $viewData['invests'] = Model\Invest::getList($filters, null, $offset, $limit, false, $order);
+                    $viewData['invests_total'] = Model\Invest::getList($filters, null, 0, 0, true);
+                    // print_r($viewData['invests']);die("[".$viewData['invests_total']."]");
                     // ver por (esto son orden y filtros)
-                    $viewData['filter'] = $_SESSION['dashboard-rewards-filter'];
+                    // $viewData['filter'] = $_SESSION['dashboard-rewards-filter'];
+                    // print_r($viewData['filter']);die;
                     $viewData['order'] = $_SESSION['dashboard-rewards-order'];
                     break;
 

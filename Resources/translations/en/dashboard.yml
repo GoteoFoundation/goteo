@@ -1,124 +1,124 @@
 api-key-no-generated: 'Aún no tienes una key generada'
-dashboard-investors-mail-fail: '    Message failed to %s: %s'
-dashboard-chart-days: '%s DAYS LEFT'
-dashboard-rewards-investors_table: '<p>If you want to manage it offline, you can <a id="sacaexcel" href="/dashboard/projects/rewards/table" target="_blank">download the Table of Co-Financiers</a></p>'
-dashboard-menu-profile-access: 'Account details'
-dashboard-menu-admin_board: Administration
-dashboard-rewards-all_filter: All
-dashboard-rewards-massive_msg-all_alert: 'All means all, it doesn''t take into account the rest of marked items'
-dashboard-menu-activity-apikey: 'API key'
-dashboard-rewards-process: 'Apply marked items'
-dashboard-project-delete_alert: 'Are you sure you want to permanently delete this project?'
-dashboard-menu-projects-rewards: Backers
-user-preferences-tips: 'Block advice on how to promote the campaign (for campaign leaders)'
-dashboard-rewards-amount_order: 'By amount'
-dashboard-rewards-date_order: 'By date'
-dashboard-rewards-reward_order: 'By reward'
-dashboard-rewards-user_order: 'By user'
-dashboard-rewards-process_alert: 'Careful! Once marked as fulfilled, it cannot be cleared. Shall we continue?'
-user-changeemail-title: 'Change email'
-user-changepass-title: 'Change password'
-dashboard-chart-investors: CO-FINANCIERS
-dashboard-embed_code_investor: 'CODE WITH IMAGE OF CROWDFUNDER'
-dashboard-menu-projects-supports: Collaborations
-dashboard-rewards-massive_msg: 'Collective messages'
-dashboard-rewards-num_taken: Committed
-user-changepass-confirm: 'Confirm new password'
-dashboard-project-blog-fail: 'Contact us'
-dashboard-menu-projects-contract: Contract
+api-key-tool-tip: 'With your Goteo user and API key you''re able to query any data trough our API'
 contract-data_title: 'Contract details'
-dashboard-rewards-amount_group: 'Contributions by '
-user-preferences-currency: 'Currency in which you prefer to see amounts displayed'
-user-preferences-comcurrency: 'Currency you would prefer to view contributions in.'
-user-changepass-old: 'Current password'
-dashboard-rewards-address: 'Delivery address:'
-user-preferences-threads: 'Disable answer notifications to the messages I start'
-user-preferences-updates: 'Disable news notifications from the projects I''m backing'
-user-preferences-mailing: 'Disable newsletter subscription'
-user-preferences-rounds: 'Disable progress notifications from the projects I''m backing'
-dashboard-rewards-resign_filter: Donations
-dashboard-menu-profile-profile: 'Edit profile'
-dashboard-project-updates-delete_fail: 'Error while removing post'
-dashboard-rewards-choosen: 'Expected rewards:'
+dashboard-chart-days: '%s DAYS LEFT'
 dashboard-chart-invested: 'FINANÇAMENT OBTINGUT'
+dashboard-chart-investors: CO-FINANCIERS
+dashboard-chart-no-invested: 'There are no contributions.'
+dashboard-chart-optimum: optimum
+dashboard-embed_code: 'SIMPLE PROMOTION CODE'
+dashboard-embed_code_investor: 'CODE WITH IMAGE OF CROWDFUNDER'
+dashboard-header-main: 'My dashboard'
+dashboard-investors-mail-fail: '    Message failed to %s: %s'
+dashboard-investors-mail-nowho: 'No recipient was found'
+dashboard-investors-mail-sendt: 'Messages sent successfully'
+dashboard-investors-mail-sendto: 'Sent to %s of your backers:'
+dashboard-investors-mail-text-required: 'Write the message'
+dashboard-investors_table-disclaimer: 'We remind the campaign leader that, as established in their contract, the details of financiers included in the downloadable file are provided with the only and exclusive effects of providing the financiers the rewards committed to by the project, as well as informing them on news, progress, and activities related to the project, with an absolute prohibition of using these details for any other purpose. Failure to satisfy this obligation gives the Foundation the right to initiate the corresponding legal actions and to retire the project from the platform'
+dashboard-menu-activity: 'My activity'
+dashboard-menu-activity-apikey: 'API key'
+dashboard-menu-activity-spread: 'Spread the word'
+dashboard-menu-activity-summary: Summary
+dashboard-menu-activity-wall: 'My wall'
+dashboard-menu-admin_board: Administration
+dashboard-menu-calls-sponsors: Sponsors
+dashboard-menu-profile: 'My profile'
+dashboard-menu-profile-access: 'Account details'
+dashboard-menu-profile-location: Geo-location
+dashboard-menu-profile-personal: 'Personal information'
+dashboard-menu-profile-preferences: Preferences
+dashboard-menu-profile-profile: 'Edit profile'
+dashboard-menu-profile-public: 'Public profile'
+dashboard-menu-projects: 'My projects'
+dashboard-menu-projects-commons: Rewards
+dashboard-menu-projects-contract: Contract
+dashboard-menu-projects-messegers: Participants
+dashboard-menu-projects-preview: 'Public page'
+dashboard-menu-projects-rewards: Backers
+dashboard-menu-projects-summary: Summary
+dashboard-menu-projects-supports: Collaborations
+dashboard-menu-projects-updates: News
+dashboard-menu-projects-widgets: Widget
+dashboard-menu-review_board: Review
+dashboard-menu-translate_board: Translation
+dashboard-menu-translates: 'My translations'
+dashboard-messegers-mail-sendto: 'Sent to %s the participants:'
+dashboard-password-recover-advice: 'You are recovering your password. Remember to put your user name in the "current password" field to change it.'
+dashboard-project-blog-fail: 'Contact us'
+dashboard-project-blog-inactive: 'Sorry, you can''t publish news on this project right now.'
+dashboard-project-blog-wrongstatus: 'Sorry, you can''t publish news about this project yet...'
+dashboard-project-delete_alert: 'Are you sure you want to permanently delete this project?'
+dashboard-project-updates-delete_fail: 'Error while removing post'
+dashboard-project-updates-deleted: 'Post removed'
+dashboard-project-updates-fail: 'There was a problem saving the data'
+dashboard-project-updates-inserted: 'New post added'
+dashboard-project-updates-noblog: 'No blog was found for this project'
+dashboard-project-updates-nopost: 'Post not found'
+dashboard-project-updates-postcorrupt: 'There is a problem with the post. Please contact us.'
+dashboard-project-updates-saved: 'Post updated correctly'
+dashboard-rewards-address: 'Delivery address:'
+dashboard-rewards-all_filter: All
+dashboard-rewards-amount_group: 'Contributions by '
+dashboard-rewards-amount_order: 'By amount'
+dashboard-rewards-choosen: 'Expected rewards:'
+dashboard-rewards-date_order: 'By date'
 dashboard-rewards-fulfilled_filter: Fulfilled
 dashboard-rewards-fulfilled_status: Fulfilled
-dashboard-menu-profile-location: Geo-location
-dashboard-translate-select_profile: 'Go to translate your personal profile'
-guide-user-data: 'Guide text in the editing of sensitive fields.'
-user-preferences-email: 'Hide my email from projects I support'
-dashboard-rewards-issue: Incidence!
-dashboard-rewards-user_msg: 'Individual to'
-form-project_waitfor-expired: 'It didn''t work out. Make it better and try again!'
-user-preferences-comlang: 'Language in which you would like to receive notifications'
-dashboard-investors-mail-sended: 'Message sent correctly to %s: %s'
 dashboard-rewards-group_msg: 'message to this group'
-dashboard-menu-activity: 'My activity'
-dashboard-header-main: 'My dashboard'
-dashboard-menu-profile: 'My profile'
-dashboard-menu-projects: 'My projects'
-dashboard-menu-translates: 'My translations'
-dashboard-menu-activity-wall: 'My wall'
-user-changepass-new: 'New password'
-dashboard-project-updates-inserted: 'New post added'
-dashboard-menu-projects-updates: News
-dashboard-project-updates-noblog: 'No blog was found for this project'
-dashboard-investors-mail-nowho: 'No recipient was found'
-dashboard-chart-optimum: optimum
-dashboard-menu-projects-messegers: Participants
+dashboard-rewards-investors_table: '<p>If you want to manage it offline, you can <a id="sacaexcel" href="/dashboard/projects/rewards/table" target="_blank">download the Table of Co-Financiers</a></p>'
+dashboard-rewards-issue: Incidence!
+dashboard-rewards-massive_msg: 'Collective messages'
+dashboard-rewards-massive_msg-all: 'To all the co-financiers of this project'
+dashboard-rewards-massive_msg-all_alert: 'All means all, it doesn''t take into account the rest of marked items'
+dashboard-rewards-notice: 'THIS IS A VISUALISATION OF THE REWARD OPTIONS CHOSEN BY YOUR CO-FINANCIERS. <br />YOU DON''T HAVE TO MANAGE THESE REWARDS UNTIL YOU REACH THE MINIMUM OF THE DESIRED QUANTITY'
+dashboard-rewards-num_taken: Committed
 dashboard-rewards-pending_filter: Pending
 dashboard-rewards-pending_status: Pending
-dashboard-menu-profile-personal: 'Personal information'
-dashboard-project-updates-nopost: 'Post not found'
-dashboard-project-updates-deleted: 'Post removed'
-dashboard-project-updates-saved: 'Post updated correctly'
-dashboard-menu-profile-preferences: Preferences
-user-profile-saved: 'Profile updated'
-dashboard-menu-projects-preview: 'Public page'
-dashboard-menu-profile-public: 'Public profile'
-dashboard-menu-review_board: Review
-dashboard-menu-projects-commons: Rewards
-guide-dashboard-user-preferences: 'Select ''Yes'' for the automatic notifications you want to block.'
-dashboard-translate-select_call: 'Select a call to translate'
-dashboard-translate-select_node: 'Select the node to translate'
-dashboard-translate-select_project: 'Select the project to translate'
-dashboard-investors-mail-sendto: 'Sent to %s of your backers:'
-dashboard-messegers-mail-sendto: 'Sent to %s the participants:'
-dashboard-embed_code: 'SIMPLE PROMOTION CODE'
-dashboard-project-blog-wrongstatus: 'Sorry, you can''t publish news about this project yet...'
-dashboard-project-blog-inactive: 'Sorry, you can''t publish news on this project right now.'
-dashboard-menu-calls-sponsors: Sponsors
-dashboard-menu-activity-spread: 'Spread the word'
-form-project_waitfor-campaing: 'Spread the word about your project. Help get the most support!'
-dashboard-menu-activity-summary: Summary
-dashboard-menu-projects-summary: Summary
-dashboard-rewards-thanks: 'Thanks / Donation'
-user-changeemail-success: 'The email address has been successfully changed.'
-guide-dashboard-user-location: 'The system uses these details in order to geolocate you.'
-dashboard-chart-no-invested: 'There are no contributions.'
-dashboard-project-updates-postcorrupt: 'There is a problem with the post. Please contact us.'
-dashboard-project-updates-fail: 'There was a problem saving the data'
-user-save-fail: 'There was a problem saving the data'
-dashboard-rewards-notice: 'THIS IS A VISUALISATION OF THE REWARD OPTIONS CHOSEN BY YOUR CO-FINANCIERS. <br />YOU DON''T HAVE TO MANAGE THESE REWARDS UNTIL YOU REACH THE MINIMUM OF THE DESIRED QUANTITY'
-dashboard-rewards-massive_msg-all: 'To all the co-financiers of this project'
-dashboard-menu-translate_board: Translation
-user-personal-saved: 'Updated personal information'
+dashboard-rewards-process: 'Apply marked items'
+dashboard-rewards-process_alert: 'Careful! Once marked as fulfilled, it cannot be cleared. Shall we continue?'
+dashboard-rewards-resign_filter: Donations
 dashboard-rewards-resigns: 'Waiving of reward'
-form-project_waitfor-cancel: 'We have decided not to publish your proposal on Goteo, though we invite you to try again with a different idea or concept.'
-user-email-change-sended: 'We have sent you an email so that you can confirm the change of address'
-dashboard-investors_table-disclaimer: 'We remind the campaign leader that, as established in their contract, the details of financiers included in the downloadable file are provided with the only and exclusive effects of providing the financiers the rewards committed to by the project, as well as informing them on news, progress, and activities related to the project, with an absolute prohibition of using these details for any other purpose. Failure to satisfy this obligation gives the Foundation the right to initiate the corresponding legal actions and to retire the project from the platform'
-form-project_waitfor-review: 'We will get back to you as soon as we''ve had a chance to review your project. At that point, we will either post your project, or suggest ways to make it fit better on Goteo.'
-form-project_waitfor-edit: 'When it''s ready, send it for review. You have to provide a minimum of information about your project on the form.'
-guide-dashboard-user-profile: 'Whether you want to create a project or co-finance someone else''s, in order to join the Goteo community, we recommend that you carefully edit your presentation text, and include relevant links about what you do as well as a profile image with which you identify'
-dashboard-menu-projects-widgets: Widget
-api-key-tool-tip: 'With your Goteo user and API key you''re able to query any data trough our API'
-dashboard-investors-mail-text-required: 'Write the message'
-dashboard-password-recover-advice: 'You are recovering your password. Remember to put your user name in the "current password" field to change it.'
+dashboard-rewards-reward_order: 'By reward'
+dashboard-rewards-thanks: 'Thanks / Donation'
+dashboard-rewards-user_msg: 'Individual to'
+dashboard-rewards-user_order: 'By user'
 dashboard-translate-doing_call: 'You are translating call <strong>%s</strong>. The original language is <strong>%s</strong>'
 dashboard-translate-doing_node: 'You are translating node <strong>%s</strong>. The original language is <strong>Español</strong>'
-dashboard-translate-doing_project: 'You are translating project <strong>%s</strong>. The original language is <strong>%s</strong>'
 dashboard-translate-doing_profile: 'You are translating your personal profile.'
-user-password-changed: 'You have changed your password'
-form-project_waitfor-success: 'You have reached or surpassed your crowdfunding goal for this project. We will contact you shortly to talk about money :)'
+dashboard-translate-doing_project: 'You are translating project <strong>%s</strong>. The original language is <strong>%s</strong>'
+dashboard-translate-select_call: 'Select a call to translate'
+dashboard-translate-select_node: 'Select the node to translate'
+dashboard-translate-select_profile: 'Go to translate your personal profile'
+dashboard-translate-select_project: 'Select the project to translate'
+form-project_waitfor-campaing: 'Spread the word about your project. Help get the most support!'
+form-project_waitfor-cancel: 'We have decided not to publish your proposal on Goteo, though we invite you to try again with a different idea or concept.'
+form-project_waitfor-edit: 'When it''s ready, send it for review. You have to provide a minimum of information about your project on the form.'
+form-project_waitfor-expired: 'It didn''t work out. Make it better and try again!'
 form-project_waitfor-fulfilled: 'You''ve managed all the benefits. Thanks for participating!'
+form-project_waitfor-review: 'We will get back to you as soon as we''ve had a chance to review your project. At that point, we will either post your project, or suggest ways to make it fit better on Goteo.'
+form-project_waitfor-success: 'You have reached or surpassed your crowdfunding goal for this project. We will contact you shortly to talk about money :)'
+guide-dashboard-user-location: 'The system uses these details in order to geolocate you.'
+guide-dashboard-user-preferences: 'Select ''Yes'' for the automatic notifications you want to block.'
+guide-dashboard-user-profile: 'Whether you want to create a project or co-finance someone else''s, in order to join the Goteo community, we recommend that you carefully edit your presentation text, and include relevant links about what you do as well as a profile image with which you identify'
+guide-user-data: 'Guide text in the editing of sensitive fields.'
+user-changeemail-success: 'The email address has been successfully changed.'
+user-changeemail-title: 'Change email'
+user-changepass-confirm: 'Confirm new password'
+user-changepass-new: 'New password'
+user-changepass-old: 'Current password'
+user-changepass-title: 'Change password'
+user-email-change-sended: 'We have sent you an email so that you can confirm the change of address'
+user-password-changed: 'You have changed your password'
+user-personal-saved: 'Updated personal information'
 user-prefer-saved: 'Your notification preferences were saved correctly'
+user-preferences-comcurrency: 'Currency you would prefer to view contributions in.'
+user-preferences-comlang: 'Language in which you would like to receive notifications'
+user-preferences-currency: 'Currency in which you prefer to see amounts displayed'
+user-preferences-email: 'Hide my email from projects I support'
+user-preferences-mailing: 'Disable newsletter subscription'
+user-preferences-rounds: 'Disable progress notifications from the projects I''m backing'
+user-preferences-threads: 'Disable answer notifications to the messages I start'
+user-preferences-tips: 'Block advice on how to promote the campaign (for campaign leaders)'
+user-preferences-updates: 'Disable news notifications from the projects I''m backing'
+user-profile-saved: 'Profile updated'
+user-save-fail: 'There was a problem saving the data'

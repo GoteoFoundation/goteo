@@ -1,9 +1,9 @@
-regular-success_mark: 'Caso de éxito!'
-call-tagmark-6: 'Convocatoria archivada'
-call-tagmark-4: 'Campaña activa!'
-regular-fail_mark: Archivado...
-call-tagmark-5: 'Campaña finalizada'
-regular-gotit_mark: Cofinanciado!
-regular-onrun_mark: 'Imos aló!'
-regular-keepiton_mark: 'A polo óptimo'
 call-tagmark-3: 'Convocatoria aberta'
+call-tagmark-4: 'Campaña activa!'
+call-tagmark-5: 'Campaña finalizada'
+call-tagmark-6: 'Convocatoria archivada'
+regular-fail_mark: Archivado...
+regular-gotit_mark: Cofinanciado!
+regular-keepiton_mark: 'A polo óptimo'
+regular-onrun_mark: 'Imos aló!'
+regular-success_mark: 'Caso de éxito!'

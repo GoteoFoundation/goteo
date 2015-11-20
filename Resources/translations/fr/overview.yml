@@ -1,67 +1,67 @@
-overview-field-video: 'Video supplémentaire de motivation'
-overview-field-options-currently_avanzado: Avancé
-tooltip-project-keywords: "A mesure que vous mettez du texte dans le système, des mots clés déjà\_ écrits par d'autres utilisateurs apparaâtront. Ces catégories aident à relier votre projet aux personnes partageant vos centres d'intérêts."
-overview-field-description: 'Courte description'
-tooltip-project-about: 'Décrivez brièvement le projet de façon conceptuelle, technique ou pratique. En détaillant par exemple ses caractéristiques de fonctionnement ou ses différentes étapes. Imaginez comment il sera une fois terminé et tout ce que les gens pourront faire grâçe à lui. '
-overview-field-categories: Categories
-tooltip-project-usubs: 'Cochez la case dans le cas où vous avez sous-titré la vidéo dans d''autres langues avec Amara Subtitles: http://www.Amarasubtitles.org/'
-tooltip-project-category: "Sélectionnez toutes les catégories que vous jugez nécessaires pour décrire le projet, en vous basant sur les infos que vous avez introduites Jusqu'à\_ maintenant. Ces mots clés nous permettront de cibler les utilisateurs de SiteName à solliciter."
-tooltip-project-video: 'Vous avez ici la possibilité de publier et d''embarquer une vidéo (via youtube ou vimeo ou daylimotion aou utre) où vous expliquez brièvement à la caméra le pourquoi de votre projet. Il s''agit d''une vidéo d''une personne qui complète la vidéo principale et qui traduit vos besoins ou votre originalité, de la façon la plus directe possible. Si ça vous coûte de parler à la caméra, vous pouvez aussi demander à une personne que vous connaissez et qui suit le projet de le présenter en tant que "fan". L''empathie et la nécessité de voir un projet incarné est très importante pour certains types de cofinanceurs.'
-tooltip-project-media: 'Copiez/collez l''adresse URL d''une vidéo de présentation du projet, publiée auparavant sur Youtube ou autre plateforme. Cette partie est clé pour attirer l''attention de cofinanceurs et contributeurs potentiels. Plus elle est originale, mieux c''est. Nous vous recommandons qu''elle dure entre 2 et 4 minutes.'
-tooltip-project-subtitle: 'Définissez en une phrase un sous-titre qui expliquera en quoi consistera l''initiative et qui permettra de se faire une idée rapide de ce à quoi elle servira. Cette phrase apparaîtra avec le titre du projet.'
-overview-field-image_gallery: 'Images actuelles'
-overview-field-currently: 'Etat actuel'
-tooltip-project-description: 'Décrivez le projet en utilisant au moins 80 mots (en-deçà, cela indiquera une erreur). Expliquez-le afin qu''il soit facile à comprendre par n''importe qui. Essayez de le présenter de façon attractive, en résumant ses points forts, ce qui le rend unique, socialement intéressant, innovant ou spécial. '
-step-3: Description
-tooltip-project-name: 'Donnez un nom au projet. Plus il est bref, mieux c''est. Pour mieux le décrire, vous pouvez donner plus de détails dans la section ci-après.'
-tooltip-project-image_upload: Effacer
-tooltip-project-motivation: 'Expliquez les raisons et les circonstances qui sont à l''origine du projet, ainsi que les communautés ou utilisateurs auxquels il s''adresse. Cela vous aidera à vous mettre en relation avec des personnes mues par les mêmes centres d''intérêts, problématiques ou goûts.'
-overview-field-options-currently_finalizado: Finalisé
-overview-field-options-scope_global: Global
-overview-field-goal: 'Objectifs de la campagne de crowdfunding'
-tooltip-project-reward: 'Expliquer ici ce en quoi le projet est bon, rapport aux récompenses'
-overview-fields-images-title: 'Images du projet'
+images-main-header: 'Images du projet'
+mandatory-project-field-about: 'Il est obligatoire d''expliquer les caractéristiques de base du projet'
+mandatory-project-field-category: 'Il est obligatoire de choisir au moins une catégorie pour le projet.'
+mandatory-project-field-description: 'Il est obligatoire de résumer le projet.'
+mandatory-project-field-goal: 'Il est obligatoire d''expliquer les objectifs dans la description du projet.'
+mandatory-project-field-image: 'Il est obligatoire de mettre au moins une photo illustrant le projet.'
+mandatory-project-field-lang: 'Il est obligatoire de mettre la langue du projet.'
+mandatory-project-field-location: 'Il est obligatoire de renseigner les répercussions géographiques potentielles du projet.'
+mandatory-project-field-media: 'Nous vous recommandons de télécharger sur notre site une video pour faciliter l''évaluation de votre project par l''équipe de SiteName.'
+mandatory-project-field-motivation: 'Il est obligatoire d''expliquer votre motivation dans la description du projet.'
+mandatory-project-field-name: 'Il est obligatoire de donner un nom au projet.'
 mandatory-project-field-related: 'Il est obligatoire d''expliquer dans la description du projet l''expérience en lien avec celui-ci et/ou l''équipe sur laquelle vous comptez'
-validate-project-field-currently: 'Indiquez l''état du projet pour faciliter l''évaluation et la possible publication du projet sur SiteName.'
-tooltip-project-lang: 'Indiquez la langue dans lequel vous remplissez ce formulaire.'
-tooltip-project-project_location: 'Indiquez le lieu de réalisation du projet, dans quelle municipalité ou région se trouvent le ou les porteurs principaux du projet.'
+overview-field-categories: Categories
+overview-field-currently: 'Etat actuel'
+overview-field-description: 'Courte description'
+overview-field-goal: 'Objectifs de la campagne de crowdfunding'
+overview-field-image_gallery: 'Images actuelles'
+overview-field-image_upload: 'Importez une image'
 overview-field-keywords: 'Mots clés pour le projet'
-tooltip-project-goal: 'Enumérez les objectifs principaux du projet, à court et long terme, sur tous les aspects que vous considérez important de traiter. Cela offre une nouvelle opportunité pour toucher les gens qui se retrouvent dans ces objectifs et obtenir leur soutien.'
-overview-field-options-scope_local: Local
-overview-field-project_location: Localisation
-overview-field-options-currently_medio: Mi-chemin
-overview-field-options-scope_nacional: National
 overview-field-lang: 'Langue d''origine'
+overview-field-media: 'Video d''introduction'
 overview-field-media_preview: Prévisualiser
-overview-main-header: 'Description du projet'
-overview-field-scope: 'Répercussions du projet'
 overview-field-name: 'Titre du Projet'
-overview-field-usubs: 'Publié avec Amara Subtitles'
-overview-field-options-scope_regional: Regional
+overview-field-options-currently_avanzado: Avancé
+overview-field-options-currently_finalizado: Finalisé
 overview-field-options-currently_inicial: Commencement
-step-overview: 'Etape 3: Description du projet'
-tooltip-project-related: 'Résumez votre parcours ou celui du collectif ou entité porteuse du projet. Quelle expérience avez-vous en relation avec le projet? Sur quelle équipe comptez-vous et sur quelles infrastructures ?'
-overview-field-subtitle: 'Phrase de résumé'
+overview-field-options-currently_medio: Mi-chemin
+overview-field-options-scope_global: Global
+overview-field-options-scope_local: Local
+overview-field-options-scope_nacional: National
+overview-field-options-scope_regional: Regional
+overview-field-project_location: Localisation
 overview-field-related: 'Expérience antérieure et équipe'
+overview-field-reward: Rétributions
+overview-field-scope: 'Répercussions du projet'
+overview-field-subtitle: 'Phrase de résumé'
+overview-field-usubs: 'Publié avec Amara Subtitles'
+overview-field-video: 'Video supplémentaire de motivation'
+overview-fields-images-title: 'Images du projet'
+overview-main-header: 'Description du projet'
+step-3: Description
+step-3b: Images
+step-images: 'Section: Images du projet'
+step-overview: 'Etape 3: Description du projet'
+tooltip-project-about: 'Décrivez brièvement le projet de façon conceptuelle, technique ou pratique. En détaillant par exemple ses caractéristiques de fonctionnement ou ses différentes étapes. Imaginez comment il sera une fois terminé et tout ce que les gens pourront faire grâçe à lui. '
+tooltip-project-category: "Sélectionnez toutes les catégories que vous jugez nécessaires pour décrire le projet, en vous basant sur les infos que vous avez introduites Jusqu'à\_ maintenant. Ces mots clés nous permettront de cibler les utilisateurs de SiteName à solliciter."
+tooltip-project-currently: 'Indiquez dans quelle phase se trouve le projet actuellement. Par exemple, s''il est en phase de création ou d''éxécution.'
+tooltip-project-description: 'Décrivez le projet en utilisant au moins 80 mots (en-deçà, cela indiquera une erreur). Expliquez-le afin qu''il soit facile à comprendre par n''importe qui. Essayez de le présenter de façon attractive, en résumant ses points forts, ce qui le rend unique, socialement intéressant, innovant ou spécial. '
+tooltip-project-goal: 'Enumérez les objectifs principaux du projet, à court et long terme, sur tous les aspects que vous considérez important de traiter. Cela offre une nouvelle opportunité pour toucher les gens qui se retrouvent dans ces objectifs et obtenir leur soutien.'
+tooltip-project-image: 'Cela peut être des plans, screenshots, photographies, illustrations, storyboards, etc. (la licence associée doit être compatible avec les licences sélecionnées dans la section 5). Nous recommendons la publication de documents divers avec une bonne résolution (900 pixels largeur max /  2MB Max). Vous pouvez en charger autant que souhaité!'
+tooltip-project-image_upload: Effacer
+tooltip-project-keywords: "A mesure que vous mettez du texte dans le système, des mots clés déjà\_ écrits par d'autres utilisateurs apparaâtront. Ces catégories aident à relier votre projet aux personnes partageant vos centres d'intérêts."
+tooltip-project-lang: 'Indiquez la langue dans lequel vous remplissez ce formulaire.'
+tooltip-project-media: 'Copiez/collez l''adresse URL d''une vidéo de présentation du projet, publiée auparavant sur Youtube ou autre plateforme. Cette partie est clé pour attirer l''attention de cofinanceurs et contributeurs potentiels. Plus elle est originale, mieux c''est. Nous vous recommandons qu''elle dure entre 2 et 4 minutes.'
+tooltip-project-motivation: 'Expliquez les raisons et les circonstances qui sont à l''origine du projet, ainsi que les communautés ou utilisateurs auxquels il s''adresse. Cela vous aidera à vous mettre en relation avec des personnes mues par les mêmes centres d''intérêts, problématiques ou goûts.'
+tooltip-project-name: 'Donnez un nom au projet. Plus il est bref, mieux c''est. Pour mieux le décrire, vous pouvez donner plus de détails dans la section ci-après.'
+tooltip-project-project_location: 'Indiquez le lieu de réalisation du projet, dans quelle municipalité ou région se trouvent le ou les porteurs principaux du projet.'
+tooltip-project-related: 'Résumez votre parcours ou celui du collectif ou entité porteuse du projet. Quelle expérience avez-vous en relation avec le projet? Sur quelle équipe comptez-vous et sur quelles infrastructures ?'
+tooltip-project-reward: 'Expliquer ici ce en quoi le projet est bon, rapport aux récompenses'
+tooltip-project-subtitle: 'Définissez en une phrase un sous-titre qui expliquera en quoi consistera l''initiative et qui permettra de se faire une idée rapide de ce à quoi elle servira. Cette phrase apparaîtra avec le titre du projet.'
+tooltip-project-usubs: 'Cochez la case dans le cas où vous avez sous-titré la vidéo dans d''autres langues avec Amara Subtitles: http://www.Amarasubtitles.org/'
+tooltip-project-video: 'Vous avez ici la possibilité de publier et d''embarquer une vidéo (via youtube ou vimeo ou daylimotion aou utre) où vous expliquez brièvement à la caméra le pourquoi de votre projet. Il s''agit d''une vidéo d''une personne qui complète la vidéo principale et qui traduit vos besoins ou votre originalité, de la façon la plus directe possible. Si ça vous coûte de parler à la caméra, vous pouvez aussi demander à une personne que vous connaissez et qui suit le projet de le présenter en tant que "fan". L''empathie et la nécessité de voir un projet incarné est très importante pour certains types de cofinanceurs.'
 validate-project-field-about: 'L''explication du projet est trop courte'
+validate-project-field-currently: 'Indiquez l''état du projet pour faciliter l''évaluation et la possible publication du projet sur SiteName.'
 validate-project-field-description: 'La description du projet est trop courte'
 validate-project-value-description: 'La description du projet est trop courte'
-tooltip-project-image: 'Cela peut être des plans, screenshots, photographies, illustrations, storyboards, etc. (la licence associée doit être compatible avec les licences sélecionnées dans la section 5). Nous recommendons la publication de documents divers avec une bonne résolution (900 pixels largeur max /  2MB Max). Vous pouvez en charger autant que souhaité!'
-overview-field-image_upload: 'Importez une image'
-overview-field-media: 'Video d''introduction'
-mandatory-project-field-media: 'Nous vous recommandons de télécharger sur notre site une video pour faciliter l''évaluation de votre project par l''équipe de SiteName.'
-tooltip-project-currently: 'Indiquez dans quelle phase se trouve le projet actuellement. Par exemple, s''il est en phase de création ou d''éxécution.'
 validate-project-value-keywords: 'Indiquez un minimum de 5 mots clés pour faciliter l''évaluation et la possible publication du projet sur SiteName.'
-mandatory-project-field-name: 'Il est obligatoire de donner un nom au projet.'
-mandatory-project-field-description: 'Il est obligatoire de résumer le projet.'
-mandatory-project-field-location: 'Il est obligatoire de renseigner les répercussions géographiques potentielles du projet.'
-mandatory-project-field-about: 'Il est obligatoire d''expliquer les caractéristiques de base du projet'
-mandatory-project-field-goal: 'Il est obligatoire d''expliquer les objectifs dans la description du projet.'
-mandatory-project-field-motivation: 'Il est obligatoire d''expliquer votre motivation dans la description du projet.'
-mandatory-project-field-lang: 'Il est obligatoire de mettre la langue du projet.'
-mandatory-project-field-image: 'Il est obligatoire de mettre au moins une photo illustrant le projet.'
-mandatory-project-field-category: 'Il est obligatoire de choisir au moins une catégorie pour le projet.'
-step-3b: Images
-images-main-header: 'Images du projet'
-overview-field-reward: Rétributions
-step-images: 'Section: Images du projet'

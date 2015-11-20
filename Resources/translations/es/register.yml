@@ -1,3 +1,4 @@
+password-changed-ok: 'La contraseña ha sido cambiada correctamente.'
 error-register-email: 'La dirección de correo es obligatoria'
 error-register-email-confirm: 'La comprobación de email no coincide'
 error-register-invalid-password: 'La contraseña no es válida'
@@ -18,12 +19,12 @@ recover-token-incorrect: 'El código de recuperación de contraseña no es váli
 register-button-title: Regístrate
 register-email-confirm-field: 'Vuelve a escribir tu correo electrónico'
 register-email-field: 'Correo electrónico'
-register-form-title: Registrar
+register-form-title: Regístrate
 register-id-field: 'Elige tu identificador en Goteo'
-register-name-field: Nombre
+register-name-field: 'Nombre público'
 register-password-confirm-field: 'Vuelve a escribir tu contraseña'
 register-password-field: Contraseña
-register-question: '¿Ya estás registrado?'
+register-question: '¿Ya te has registrado?'
 user-activate-already-active: 'La cuenta de usuario ya está activada'
 user-activate-success: 'La cuenta de usuario se ha activado correctamente'
 validate-project-value-contract_email: 'La dirección de email no es correcta'

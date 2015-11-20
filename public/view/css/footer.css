@@ -168,6 +168,7 @@ div#footer div.block ul li{
 	line-height:12px;
     margin-bottom:5px;
     font-size:11px;
+    list-style: none;
 }
 
 div#footer div.block ul li a{
@@ -182,7 +183,7 @@ div#footer div.block ul li a:hover{
 div#footer .scroll-pane
 {
 	width: 100%;
-	height: 200px;
+	height: 110px;
 	overflow: auto;
 }
 div#footer .horizontal-only
@@ -234,24 +235,24 @@ div#footer div.social li.facebook a {
 	background-position:0 -24px;
 }
 
+div#footer div.social li.instagram a {
+    color: #125688;
+    background-position:0 -45px;
+}
+
 div#footer div.social li.calendar a {
     color: #32b6b3;
-	background-position:0 -45px;
+	background-position:0 -66px;
 }
 
 div#footer div.social li.gplus a {
     color: #5075aa;
-	background-position:0 -66px;
-}
-
-div#footer div.social li.instagram a {
-    color: #125688;
-    background-position:0 -90px;
+	background-position:0 -90px;
 }
 
 div#footer div.social li.rss a {
     color: #ee8226;
-	background-position:0 -113px;
+	background-position:0 -115px;
 }
 
 

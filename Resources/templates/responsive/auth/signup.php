@@ -59,7 +59,7 @@ $this->section('content');
 							<div class="col-md-10 col-md-offset-1">
 								<div class="checkbox">
 									<label>
-										<input type="checkbox" id="register_accept" class="no-margin-checkbox" name="remember">
+										<input type="checkbox" id="register_accept" class="no-margin-checkbox big-checkbox" name="remember">
 											<p class="label-checkbox">
 											<?= $this->text('login-register-conditions') ?>
 											</p>
@@ -87,6 +87,7 @@ $this->section('content');
 	</div>
 </div>
 
+<?= $this->insert('auth/partials/openid_modal') ?>
 
 <?php $this->replace() ?>
 
@@ -98,6 +99,11 @@ $(function() {
 
   $('#register_accept').change(function() {
   	    $('#register_continue').attr('disabled', !this.checked);
+
+  });
+
+  $('#openid').change(function() {
+  	    $('#openid-link').attr('href', '/login/openid?return=<?= urlencode($this->raw('return')) ?>&u='+$(this).val());
 
   });
 

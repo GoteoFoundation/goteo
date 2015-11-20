@@ -1,3 +1,4 @@
+project-spread-header: '¡Difunde este proyecto y ayúdales a conseguir visibilidad y más donaciones!'
 contract-paypal_account: 'Email de tu cuenta PayPal:'
 currency-switch: CAMBIAR
 overview-field-spread: Difusión
@@ -36,7 +37,6 @@ project-share-header: 'Comparte este proyecto'
 project-share-pre_header: 'Deja saber a tu red que'
 project-side-investors-header: 'Ya han aportado'
 project-spread-embed_code: 'Código Embed'
-project-spread-header: 'Difunde este proyecto'
 project-spread-pre_widget: 'Difunde este proyecto'
 project-spread-social: 'Cofinancio el proyecto %s  #goteo #crowdfunding'
 project-spread-widget: 'Widget del proyecto'

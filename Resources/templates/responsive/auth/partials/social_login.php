@@ -24,7 +24,7 @@ else              $return = urlencode($this->get_query('return'));
                 <a href="/login/linkedin?return=<?= urlencode($this->raw('return')) ?>" class="btn btn-social-icon btn-linkedin">
                 <i class="fa fa-linkedin"></i>
                 </a>
-                <a href="/login/facebook?return=<?= urlencode($this->raw('return')) ?>" class="btn btn-social-icon btn-openid">
+                <a href="" data-toggle="modal" data-target="#openIdModal" class="btn btn-social-icon btn-openid">
                 <i class="fa fa-openid"></i>
             </a>
             </div>

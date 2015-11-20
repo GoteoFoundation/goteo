@@ -1,5 +1,5 @@
+<h3 class="clear-both col-md-offset-1 padding-bottom-2 clear-both"><?= $this->text('invest-address-title') ?></h3>
 
-    <h3 class="col-md-offset-1 padding-bottom-2"><?= $this->text('invest-address-title') ?></h3>
 
 <?php foreach(['name', 'address', 'zipcode', 'location'] as $part): ?>
 

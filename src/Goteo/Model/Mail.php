@@ -24,6 +24,7 @@ use Goteo\Model\Mail\Metric;
 use Goteo\Model\Mail\Sender;
 use Goteo\Library\FileHandler\File;
 use Goteo\Library\Newsletter;
+use Goteo\Util\Monolog\Processor\WebProcessor;
 
 class Mail extends \Goteo\Core\Model {
     protected $Table = 'mail';
@@ -106,12 +107,13 @@ class Mail extends \Goteo\Core\Model {
         $this->mail = $mail;
     }
 
-    private function logger($message, $func = 'info') {
+    private function logger($message, array $context = [], $func = 'warning') {
         if(!$this->log) {
-            $this->log = App::getService('logger');
+            $this->log = App::getService('syslogger');
         }
-        $this->log->$func($message);
-
+        if($this->log) {
+            $this->log->$func($message, WebProcessor::processObject($context));
+        }
     }
     public function getSubject() {
         if(!$this->subject && $this->template) {
@@ -140,7 +142,7 @@ class Mail extends \Goteo\Core\Model {
      * Creates a new instance of Mail from common vars
      * @return [type] [description]
      */
-    static public function createFromText($to, $to_name, $subject, $body) {
+    static public function createFromText($to, $to_name, $subject, $body = '') {
         $mail = new static();
         $mail->to = $to;
         $mail->toName = $to_name;
@@ -154,7 +156,7 @@ class Mail extends \Goteo\Core\Model {
      * Creates a new instance of Mail from common vars
      * @return [type] [description]
      */
-    static public function createFromHtml($to, $to_name, $subject, $body) {
+    static public function createFromHtml($to, $to_name, $subject, $body = '') {
         $mail = new static();
         $mail->to = $to;
         $mail->toName = $to_name;
@@ -168,7 +170,7 @@ class Mail extends \Goteo\Core\Model {
      * Creates a new instance of Mail from a template
      * @return [type] [description]
      */
-    static public function createFromTemplate($to, $to_name, $template, $vars =[]) {
+    static public function createFromTemplate($to, $to_name, $template, $vars =[], $lang = null) {
         $mail = new static();
         $mail->to = $to;
         $mail->toName = $to_name;
@@ -176,12 +178,12 @@ class Mail extends \Goteo\Core\Model {
         if($to == 'any') $mail->massive = true;
 
         // Obtenemos la plantilla para asunto y contenido
-        $mail->lang = Lang::current();
+        if(empty($lang)) $mail->lang = Lang::current();
         $tpl = Template::get($template, $mail->lang);
         // Sustituimos los datos
         $mail->subject = $tpl->title;
         $mail->template = $tpl->id;
-        $mail->content = ($template == Template::NEWSLETTER) ? Newsletter::getContent($tpl->text, $lang) : $content = $tpl->text;
+        $mail->content = ($template == Template::NEWSLETTER) ? Newsletter::getContent($tpl->text, $mail->lang) : $content = $tpl->text;
         // En el contenido:
         if($vars) {
             $mail->content = str_replace(array_keys($vars), array_values($vars), $mail->content);
@@ -252,7 +254,7 @@ class Mail extends \Goteo\Core\Model {
                     // exit if not allowed
                     // TODO: log this?
                         // add any debug here
-                    $this->logger('SKIPPING MAIL SENDING with subject [' . $this->subject . '] to [' . $this->to . '] from  [' . $this->from . '] using) template [' . $this->template . '] due configuration restrictions!');
+                    $this->logger('SKIPPING MAIL SENDING', [$this, 'mail_to' => $this->to, 'mail_from' => $this->from, 'template' => $this->template , 'error' => 'Settings restrictions']);
                     // Log this email
                     $mail->preSend();
                     $path = GOTEO_LOG_PATH . 'mail-send/';
@@ -262,7 +264,7 @@ class Mail extends \Goteo\Core\Model {
                         $this->logger('Logged email content into: ' . $path);
                     }
                     else {
-                        $this->logger('ERROR while logging email content into: ' . $path, 'error');
+                        $this->logger('ERROR while logging email content into: ' . $path, [], 'error');
                     }
                     // return true is ok, let's pretend the mail is sent...
                     $ok = true;
@@ -421,7 +423,7 @@ class Mail extends \Goteo\Core\Model {
 
                         $new = SITE_URL . '/mail/link/' . $stat->id;
                     } catch(ModelException $e) {
-                        $this->logger('Error creating MailStats, fallback to base64: ' . $e->getMessage(), 'error');
+                        $this->logger('Error creating MailStats, fallback to base64', ['error' => $e->getMessage()], 'error');
                         $url = $matches[3];
                         $new = SITE_URL . '/mail/url/' . \mybase64_encode(md5(Config::get('secret') . '-' . $this->to . '-' . $this->id. '-' . $url) . '¬' . $this->to  . '¬' . $this->id . '¬' . $url);
                     }

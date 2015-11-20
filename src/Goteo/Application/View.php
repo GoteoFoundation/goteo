@@ -74,7 +74,8 @@ class View {
 
         $folders = [];
         // Compiled views by grunt
-        if(is_file(GOTEO_WEB_PATH . "templates/$theme")) $folders['compiled'] = GOTEO_WEB_PATH . "templates/$theme";
+        if(is_dir(GOTEO_WEB_PATH . "templates/$theme"))
+            $folders['compiled'] = GOTEO_WEB_PATH . "templates/$theme";
 
         // Search the theme in the plugins and add it first
         foreach(Config::getPlugins() as $plugin => $vars) {

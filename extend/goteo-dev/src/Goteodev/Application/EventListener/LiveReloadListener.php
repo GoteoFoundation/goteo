@@ -12,23 +12,18 @@ namespace Goteodev\Application\EventListener;
 
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpKernel\KernelEvents;
-use Symfony\Component\HttpKernel\Event;
+use Symfony\Component\HttpKernel\Event\FilterResponseEvent;
 use Symfony\Component\HttpFoundation\Response;
 
 class LiveReloadListener implements EventSubscriberInterface
 {
 
-    public function onKernelResponse(Event\FilterResponseEvent $event) {
+    public function onKernelResponse(FilterResponseEvent $event) {
 
         $response = $event->getResponse();
         $request = $event->getRequest();
 
         if(!$event->isMasterRequest() || false === stripos($response->headers->get('Content-Type'), 'text/html') || $request->isXmlHttpRequest()) {
-            return;
-        }
-
-        //non cookies for notifyAction on investController
-        if($request->attributes->get('_controller') == 'Goteo\Controller\InvestController::notifyPaymentAction') {
             return;
         }
 

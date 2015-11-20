@@ -5,5 +5,5 @@ contact-send_message-button: Bidali
 contact-send_message-header: 'Bidaliguzu mezu bat'
 contact-subject-field: Gaia
 error-contact-email-empty: 'Ez duzu zure emaila ipini'
-error-contact-subject-empty: 'Ez duzu gairik ipini'
 error-contact-message-empty: 'Ez duzu mezurik ipini'
+error-contact-subject-empty: 'Ez duzu gairik ipini'

@@ -1,70 +1,70 @@
-overview-field-video: 'Additional video about motivation'
-overview-field-options-currently_avanzado: Advanced
-tooltip-project-keywords: 'As you enter text, the system will suggest key words that other users have written. These categories help to link your project with other similar ones.'
-overview-field-description: 'Brief description'
-tooltip-project-about: 'Briefly describe the project in conceptual, technical, or practical terms. For example, by detailing how it works or what it is made up of. Think about what it will be like when it''s done, and what people will be able to do with it.'
-overview-field-categories: Categories
-tooltip-project-usubs: 'Check if you subtitled the video to other languages with Universal Subtitles: http://www.universalsubtitles.org/'
-tooltip-project-category: 'Choose as many categories as you deem necessary in order to describe the project, based on everything you''ve written above. Your choices will help us get your project out to interested Goteo users.'
-tooltip-project-video: 'Consider publishing and linking a video (YouTube, Vimeo or Giss.tv) where you briefly explain to the camera your vision for your project. This is something that might compliment the principal video, by letting you transmit your need or originality in the most direct way possible. If you find it hard speaking to the camera, maybe there''s someone else you know and who is following the project that might complete this step as a "fan". Feeling empathy for and seeing the person on the other side of the project is a key component for certain kinds of co-financiers.'
-tooltip-project-media: 'Copy and paste the URL address of the project''s presentation video, previously published on YouTube, Vimeo or Giss.tv. This is an essential step in attracting the attention of potential co-financiers and collaborators, and the more original it is, the better. Videos should last between 2 and 4 minutes.'
-tooltip-project-subtitle: 'Create a single phrase for the subtitle that explains just what your initiative is about, that gives a taste of what it''s for and what it consists of. It will appear together with the project title.'
-overview-field-play-video: 'Cue video'
-overview-field-image_gallery: 'Current images'
-overview-field-currently: 'Current status'
-tooltip-project-description: 'Describe the project in at least 80 words (any less will generate an error). Explain it so that it''s easy to understand for a lay person. Try to give it an attractive, social focus, summarizing its strong points that make it unique, innovative or special. '
-step-3: Description
-tooltip-project-name: 'Enter a title for your project. The shorter the better, you can add description in the following field.'
-tooltip-project-image_upload: ERASE
-tooltip-project-motivation: 'Explain the reasons or circumstances that led you do think of this project, as well as the communities or users to whom it is geared. It will help you connect with people who are moving in this same circle of interests, problems, and tastes.'
-overview-field-options-currently_finalizado: Finished
-overview-field-options-scope_global: Global
-overview-field-goal: 'Goals of the crowdfunding campaign'
-tooltip-project-reward: 'Here we explain what''s good about it in terms of rewards'
-overview-fields-images-title: 'Images from the project'
-mandatory-project-field-related: 'In the project description, you must describe your project-related experience and the team that you''re planning on working with.'
-tooltip-project-currency: 'Indicate the currency you are calculating the project''s costs in.'
-validate-project-field-currently: 'Indicate the current status of the project in order to facilitate the evaluation of the project and to determine whether it should be published on Goteo.'
-tooltip-project-lang: 'Indicate the language in which you''re filling out the project form.'
-tooltip-project-project_location: 'Indicates the city and/or province where this project is located.'
-overview-field-keywords: 'Key words for the project'
-tooltip-project-goal: 'List the project''s principal goals, in the long and short term, in all aspects that you consider important. This is another opportunity to contact with and get support from the people who sympathize with those objectives.'
-overview-field-options-scope_local: Local
-overview-field-project_location: Location
-overview-field-options-currently_medio: Midway
-overview-field-options-scope_nacional: National
-overview-field-currency: 'Original currency'
-overview-field-lang: 'Original language'
-step-3b: Pictures
-overview-field-media_preview: Preview
-overview-main-header: 'Project description'
 images-main-header: 'Project images'
-overview-field-scope: 'Project reach'
+mandatory-project-field-about: 'You have to explain the project''s basic characteristics'
+mandatory-project-field-category: 'You must choose at least one category for the project'
+mandatory-project-field-description: 'You have to enter a summary for the project'
+mandatory-project-field-goal: 'You have to explain your goals in the project description'
+mandatory-project-field-image: 'You have to link at least one image to your project'
+mandatory-project-field-lang: 'You have to indicate a language for the project'
+mandatory-project-field-location: 'You have to enter the potential reach for your project'
+mandatory-project-field-media: 'We recommend uploading a video to facilitate the evaluation of your project by the Goteo team.'
+mandatory-project-field-motivation: 'You have to explain your motivation in the project description'
+mandatory-project-field-name: 'You have to enter a name for the project'
+mandatory-project-field-related: 'In the project description, you must describe your project-related experience and the team that you''re planning on working with.'
+overview-field-categories: Categories
+overview-field-currency: 'Original currency'
+overview-field-currently: 'Current status'
+overview-field-description: 'Brief description'
+overview-field-goal: 'Goals of the crowdfunding campaign'
+overview-field-image_gallery: 'Current images'
+overview-field-image_upload: 'Upload an image (2MB max.)'
+overview-field-keywords: 'Key words for the project'
+overview-field-lang: 'Original language'
+overview-field-media: 'Video introduction'
+overview-field-media_preview: Preview
 overview-field-name: 'Project title'
-overview-field-usubs: 'Publish with Universal Subtitles'
-overview-field-options-scope_regional: Regional
-overview-field-reward: Rewards
+overview-field-options-currently_avanzado: Advanced
+overview-field-options-currently_finalizado: Finished
 overview-field-options-currently_inicial: Starting
+overview-field-options-currently_medio: Midway
+overview-field-options-scope_global: Global
+overview-field-options-scope_local: Local
+overview-field-options-scope_nacional: National
+overview-field-options-scope_regional: Regional
+overview-field-play-video: 'Cue video'
+overview-field-project_location: Location
+overview-field-related: 'Team and experience'
+overview-field-reward: Rewards
+overview-field-scope: 'Project reach'
+overview-field-subtitle: Summary
+overview-field-usubs: 'Publish with Universal Subtitles'
+overview-field-video: 'Additional video about motivation'
+overview-fields-images-title: 'Images from the project'
+overview-main-header: 'Project description'
+step-3: Description
+step-3b: Pictures
 step-images: 'Step: Pictures of the project'
 step-overview: 'Step: Project description'
+tooltip-project-about: 'Briefly describe the project in conceptual, technical, or practical terms. For example, by detailing how it works or what it is made up of. Think about what it will be like when it''s done, and what people will be able to do with it.'
+tooltip-project-category: 'Choose as many categories as you deem necessary in order to describe the project, based on everything you''ve written above. Your choices will help us get your project out to interested Goteo users.'
+tooltip-project-currency: 'Indicate the currency you are calculating the project''s costs in.'
+tooltip-project-currently: 'Which phase is the project currently in with respect to the process of creation or execution?'
+tooltip-project-description: 'Describe the project in at least 80 words (any less will generate an error). Explain it so that it''s easy to understand for a lay person. Try to give it an attractive, social focus, summarizing its strong points that make it unique, innovative or special. '
+tooltip-project-goal: 'List the project''s principal goals, in the long and short term, in all aspects that you consider important. This is another opportunity to contact with and get support from the people who sympathize with those objectives.'
+tooltip-project-image: 'These might be outlines, screenshots, photographs, illustrations, storyboards, etc. (their authoring license should be compatible with what you choose in section 5). Use a variety, and at a decent resolution (around 900 pixels width maximum / 2MB Max). You can upload as many as you like.'
+tooltip-project-image_upload: ERASE
+tooltip-project-keywords: 'As you enter text, the system will suggest key words that other users have written. These categories help to link your project with other similar ones.'
+tooltip-project-lang: 'Indicate the language in which you''re filling out the project form.'
+tooltip-project-media: 'Copy and paste the URL address of the project''s presentation video, previously published on YouTube, Vimeo or Giss.tv. This is an essential step in attracting the attention of potential co-financiers and collaborators, and the more original it is, the better. Videos should last between 2 and 4 minutes.'
+tooltip-project-motivation: 'Explain the reasons or circumstances that led you do think of this project, as well as the communities or users to whom it is geared. It will help you connect with people who are moving in this same circle of interests, problems, and tastes.'
+tooltip-project-name: 'Enter a title for your project. The shorter the better, you can add description in the following field.'
+tooltip-project-project_location: 'Indicates the city and/or province where this project is located.'
 tooltip-project-related: 'Summarize how you or the promoting group got to this point. What experience do you have that relates to the proposal? Tell us about your team, resources, and infrastructure. '
-overview-field-subtitle: Summary
-overview-field-related: 'Team and experience'
+tooltip-project-reward: 'Here we explain what''s good about it in terms of rewards'
+tooltip-project-subtitle: 'Create a single phrase for the subtitle that explains just what your initiative is about, that gives a taste of what it''s for and what it consists of. It will appear together with the project title.'
+tooltip-project-usubs: 'Check if you subtitled the video to other languages with Universal Subtitles: http://www.universalsubtitles.org/'
+tooltip-project-video: 'Consider publishing and linking a video (YouTube, Vimeo or Giss.tv) where you briefly explain to the camera your vision for your project. This is something that might compliment the principal video, by letting you transmit your need or originality in the most direct way possible. If you find it hard speaking to the camera, maybe there''s someone else you know and who is following the project that might complete this step as a "fan". Feeling empathy for and seeing the person on the other side of the project is a key component for certain kinds of co-financiers.'
 validate-project-field-about: 'The project description is too short'
+validate-project-field-currently: 'Indicate the current status of the project in order to facilitate the evaluation of the project and to determine whether it should be published on Goteo.'
 validate-project-field-description: 'The project description is too short'
 validate-project-value-description: 'The project description is too short'
-tooltip-project-image: 'These might be outlines, screenshots, photographs, illustrations, storyboards, etc. (their authoring license should be compatible with what you choose in section 5). Use a variety, and at a decent resolution (around 900 pixels width maximum / 2MB Max). You can upload as many as you like.'
-overview-field-image_upload: 'Upload an image (2MB max.)'
-overview-field-media: 'Video introduction'
-mandatory-project-field-media: 'We recommend uploading a video to facilitate the evaluation of your project by the Goteo team.'
-tooltip-project-currently: 'Which phase is the project currently in with respect to the process of creation or execution?'
 validate-project-value-keywords: 'Write down at least five key words about the project that will help facilitate its evaulation by Goteo.'
-mandatory-project-field-name: 'You have to enter a name for the project'
-mandatory-project-field-description: 'You have to enter a summary for the project'
-mandatory-project-field-location: 'You have to enter the potential reach for your project'
-mandatory-project-field-about: 'You have to explain the project''s basic characteristics'
-mandatory-project-field-goal: 'You have to explain your goals in the project description'
-mandatory-project-field-motivation: 'You have to explain your motivation in the project description'
-mandatory-project-field-lang: 'You have to indicate a language for the project'
-mandatory-project-field-image: 'You have to link at least one image to your project'
-mandatory-project-field-category: 'You must choose at least one category for the project'

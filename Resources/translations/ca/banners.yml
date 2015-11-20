@@ -1,5 +1,5 @@
-main-banner-header: '<h2 class="message">Xarxa social per <span class="greenblue">cofinançar i col·laborar amb</span><br /> projectes creatius que fomentin els béns comuns<br /> Tens un projecte amb <span class="greenblue">ADN obert</span>?</h2><a href="/contact" class="button banner-button">Contacta''ns</a>'
 discover-banner-header: 'Per categoria, lloc o retorn,<br /><span class="red">troba el projecte</span> amb que més t''identifiques'
 login-banner-header: 'Accedeix a la comunitat Goteo<br /><span class="greenblue">100% obert</span>'
+main-banner-header: '<h2 class="message">Xarxa social per <span class="greenblue">cofinançar i col·laborar amb</span><br /> projectes creatius que fomentin els béns comuns<br /> Tens un projecte amb <span class="greenblue">ADN obert</span>?</h2><a href="/contact" class="button banner-button">Contacta''ns</a>'
 open-banner-header: '<div class="modpo-open">OPEN</div><div class="modpo-percent">100&#37; OBERT</div><div class="modpo-whyopen">%s</div>'
 regular-banner-metter: Obtingut-de-queden

@@ -1,36 +1,36 @@
-help-license-to-consultant: '-Richiede aiuto in benefici collettivi e licenze<br/>'
-help-cost-to-consultant: '-Richiede aiuto nei costi<br/>'
-form-add-button: Aggiungere
-form-apply-button: Inviare
-form-project_status-fulfilled: 'Beneficio realizzato'
 costs-field-select-rounds: Termini
-form-project_status-campaing: 'In fase di campagna'
-form-project_status-cancelled: Scartato
-form-project_status-expired: 'Archiviato '
-overview-extra-fields: 'Campi complementari '
-form-self_review-button: Correggere
-form-project-progress-title: 'Valutazione dei dati'
-form-project_status-cancel: Cestinato
-form-edit-button: Modificare
-form-footer-errors_title: Errori
-form-project_status-review: 'In attesa di valutazione'
-project-form-header: Questionario
-form-project_status-success: Finanziato
-form-navigation_bar-header: 'Vai a '
-tooltip-project-personal-entity_name: 'Se rappresenti un''entità, indica il suo nome in questo campo.'
-form-project_status-edit: 'In fase di scrittura'
-form-next-button: Seguente
 form-accept-button: Accettare
-form-project-info_status-title: 'Stato globale dell''informazione'
+form-add-button: Aggiungere
+form-ajax-info: 'Il questionario si registra man mano che compili ogni campo'
+form-apply-button: Inviare
+form-edit-button: Modificare
+form-errors-info: 'Total: %s | in questo passaggio: %s'
+form-errors-total: 'Ci sono %s errori in totale'
+form-footer-errors_title: Errori
+form-image_upload-button: 'Caricare un''immagine'
 form-media_send-button: 'Aggiungere video'
+form-navigation_bar-header: 'Vai a '
+form-next-button: Seguente
+form-project-info_status-title: 'Stato globale dell''informazione'
+form-project-progress-title: 'Valutazione dei dati'
 form-project-status-title: 'Situazione del progetto '
+form-project_status-campaing: 'In fase di campagna'
+form-project_status-cancel: Cestinato
+form-project_status-cancelled: Scartato
+form-project_status-edit: 'In fase di scrittura'
+form-project_status-expired: 'Archiviato '
+form-project_status-fulfilled: 'Beneficio realizzato'
+form-project_status-review: 'In attesa di valutazione'
+form-project_status-success: Finanziato
 form-remove-button: Togliere
+form-self_review-button: Correggere
 form-send_review-button: Inviare
 form-upload-button: Inviare
+help-cost-to-consultant: '-Richiede aiuto nei costi<br/>'
+help-license-to-consultant: '-Richiede aiuto in benefici collettivi e licenze<br/>'
+overview-extra-fields: 'Campi complementari '
+project-form-header: Questionario
 project-one-round: 'Giro unico di 40 giorni'
 project-personal-field-entity_name: 'Entità per cui si agisce '
-form-errors-total: 'Ci sono %s errori in totale'
-form-ajax-info: 'Il questionario si registra man mano che compili ogni campo'
-form-errors-info: 'Total: %s | in questo passaggio: %s'
 project-two-rounds: 'Due giri di 40 giorni'
-form-image_upload-button: 'Caricare un''immagine'
+tooltip-project-personal-entity_name: 'Se rappresenti un''entità, indica il suo nome in questo campo.'

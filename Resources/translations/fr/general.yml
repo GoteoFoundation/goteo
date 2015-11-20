@@ -1,57 +1,81 @@
-guide-project-updates: '<b>C''est très important que les projets donnent des informations aux cofinanceurs et au reste des personnes potentiellement intéressées sur l''avancée de la campagne. Depuis ce paragraphe, vous pouvez publier des messages actualisant votre projet, comme une sorte de blog.</b> De plus, dans SiteName une fois les fonds mininums. Vous avez la seconde période pour expliquer vos progrès, vos problèmes, etc... C''est essentiel pour informer et ainsi générer encore plus d''intérêt pour la communauté.'
-guide-project-supports: "<strong> Dans ce paragraphe, précisez les besoins, hors financement, nécessaires à la réalisation de votre projet. </strong><br><br> \r\nDans ce paragraphe, précisez les besoins, hors financement, nécessaires à la réalisation de votre projet. \r\nCes besoins peuvent prendre la forme de tches ou d'actions réalisables par d'autres personnes (traduction, gestion, diffiusion, etc.), ou de prêts (de matériel informatique, pour le transport, etc.)"
-guide-project-rewards: '<strong>Dans cette partie, vous devez définir ce que vous proposez en échange à vos cofinanceurs, et aussi les récompenses collectives</strong><br><br>En plus des récompenses individuelles pour chaque personne apportant du cofinancement, vous devez définir quelle licence attribuée au projet, en fonction de son format et/ou du niveau d''ouverture de celui-ci. Cette partie est très importane, puisque SiteName est une plateforme de crowdfunding pour des projets basés sur la philosophie de la culture libre et favorise la notion de biens communs.<br><br> Au cas ou aux licences spécifiées ici vous voudriez ajouter un certificat d''auteur, nous vous recommandons d''obtenir une protection auprès de <a href="http://www.safecreative.org/" target="new">Safe Creative</a>.'
-guide-project-costs: "<strong>Dans cette partie, vous devez remplir un résumé de votre business plan basé sur l'estimation des coûts pour votre projet.</strong><br><br>Vous devez séparer les tches, infrastructure, ou materiels. Essayez d'être réalsite sur les coûts  et expliquez brièvement pourquoi vous avez besoin de chaque éléments. Gardez àl'esprit, qu'en règle générale la partie la plus importante du projet devvait être entreprise par la personne ou l'équipe promouvant le projet et non par une tierce partie. Pour le calcul n'oubliez pas la commission de SiteName, le coût des services et les transactions sont d'environ 8% , (<a href=\"/faq/sponsor#q98\" target=\"new\">+ info in our FAQ</a>). <br><br><strong>Très important</strong>: Sur SiteName, nous distinguons les coûts nécessaire et les coûts complémentaires.\nLes premiers doivent être totalement couverts pour que vous obteniez le financement du projet alors que les seconds ne le sont pas. Il s'agit de coût indicatif pour votre gestion de projet (promotion, complément au projet, conception etc...) ces coûts ne peuvent dépasser 50% du montant de votre projet."
+blog-comments: Commentaires
+blog-main-header: Blog
+couldn: 'Texte couldn'
+error-contact-email-invalid: 'L''adresse email n''est pas valide.'
+error-image-name: 'Erreur. Le nom de la pièce jointe est incorrect.'
+error-image-size: 'Erreur. La pièce jointe est trop lourde.'
+error-image-size-too-large: 'L''image est trop lourde.'
+error-image-tmp: 'Echec au chargement du document.'
+error-image-type: 'Seules les images au format  jpg, png et gif sont permises.'
+error-image-type-not-allowed: 'Seules les pièces jointes de type .png .jpg .gif sont permises.'
+error-register-email-exists: "L'adresse email indiquée correspond à un utilisateur déjà\_ enregistré."
+error-register-pasword-empty: 'Vous n''avez pas inscris de mot de passe.'
+error-user-email-confirm: 'La confirmation de l''adresse email ne concorde pas.'
+error-user-email-empty: 'Vous ne pouvez laisser le champ "adresse mail" vide.'
+error-user-email-exists: "Il existe déjà\_ un utilisateur enregistré avec cette adresse mail."
+error-user-email-invalid: 'L''adresse email n''est pas valide.'
+error-user-email-token-invalid: 'Le code est erroné.'
+error-user-password-confirm: 'La confirmation du mot de passe ne concorde pas.'
+error-user-password-empty: 'Vous n''avez pas inscis de mot de passe.'
+error-user-password-invalid: 'Le mot de passe est trop court. Il doit avoir au moins 6 caractères'
+error-user-wrong-password: 'Le mot de passe est erroné.'
+explain-project-progress: 'Ce diagramme représente la quantité et la pertinence des données renseignées. Vous devez atteindre les 80% pour pouvoir envoyer le projet à l''évaluation. Lisez attentivement les conseils que nous vous donnons sur la colonne de droite, qui vous servirons de guide. C''est parti!'
+fancybox: 'Texte fancybox'
+guide-dashboard-user-access: 'Vous pouvez changer les informations avec lesquelles vous vous connectez via SiteName accompte.'
+guide-dashboard-user-personal: 'Vous devez remplir ces données seulement si vous avez créé un projet et vous souhaitez qu''il soit co-financé par SiteName. L''information dans cette section est nécessaire pour que nous puissions vous contacter dans le cas oû vous obtenez le co-financement nécessaire, et faire le dépôt correspondant'
+guide-project-comment: guide-projet-commentaire
 guide-project-contract-information: "<strong>A partir de cette étape, vous devez remplir les données pour que votre projet soit cofinancé et soutenu sur SiteName. \r\n</strong>\r\n Les informations de cette section sont nécessaires pour vous contacter si vous obtenez le financement nécessaire, et ainsi permettre le versement. Dans le cas d'une structure, nous vous recommandons que la personne qui représente l'organisation puisse plus tard être accrédité formellement.\r\n( par exemple au travers les statuts ou via un certificat du secrétaire avec agrément du président, dans le cas d'associations )"
+guide-project-costs: "<strong>Dans cette partie, vous devez remplir un résumé de votre business plan basé sur l'estimation des coûts pour votre projet.</strong><br><br>Vous devez séparer les tches, infrastructure, ou materiels. Essayez d'être réalsite sur les coûts  et expliquez brièvement pourquoi vous avez besoin de chaque éléments. Gardez àl'esprit, qu'en règle générale la partie la plus importante du projet devvait être entreprise par la personne ou l'équipe promouvant le projet et non par une tierce partie. Pour le calcul n'oubliez pas la commission de SiteName, le coût des services et les transactions sont d'environ 8% , (<a href=\"/faq/sponsor#q98\" target=\"new\">+ info in our FAQ</a>). <br><br><strong>Très important</strong>: Sur SiteName, nous distinguons les coûts nécessaire et les coûts complémentaires.\nLes premiers doivent être totalement couverts pour que vous obteniez le financement du projet alors que les seconds ne le sont pas. Il s'agit de coût indicatif pour votre gestion de projet (promotion, complément au projet, conception etc...) ces coûts ne peuvent dépasser 50% du montant de votre projet."
 guide-project-description: "<strong>Dans ce paragraphe, précisez les besoins, hors financement, nécessaires à la réalisation de votre projet.</strong>\r\n<br><br>Dans ce paragraphe, précisez les besoins, hors financement, nécessaires à la réalisation de votre projet. \r\nCes besoins peuvent prendre la forme de tches ou d'actions réalisables par d'autres personnes (traduction, gestion, diffusion, etc...), ou de prêts (de matériel informatique, pour le transport, etc...)"
-regular-header-about: 'A propos'
+guide-project-images: 'Les images du projet peuvent être des plans, screenshots, photographies, illustrations, storyboards, etc. (la licence associée doit être compatible avec les licences sélecionnées dans la section 5. Vous pouvez en charger autant que souhaité!'
+guide-project-rewards: '<strong>Dans cette partie, vous devez définir ce que vous proposez en échange à vos cofinanceurs, et aussi les récompenses collectives</strong><br><br>En plus des récompenses individuelles pour chaque personne apportant du cofinancement, vous devez définir quelle licence attribuée au projet, en fonction de son format et/ou du niveau d''ouverture de celui-ci. Cette partie est très importane, puisque SiteName est une plateforme de crowdfunding pour des projets basés sur la philosophie de la culture libre et favorise la notion de biens communs.<br><br> Au cas ou aux licences spécifiées ici vous voudriez ajouter un certificat d''auteur, nous vous recommandons d''obtenir une protection auprès de <a href="http://www.safecreative.org/" target="new">Safe Creative</a>.'
+guide-project-support: guide-projet-support
+guide-project-supports: "<strong> Dans ce paragraphe, précisez les besoins, hors financement, nécessaires à la réalisation de votre projet. </strong><br><br> \r\nDans ce paragraphe, précisez les besoins, hors financement, nécessaires à la réalisation de votre projet. \r\nCes besoins peuvent prendre la forme de tches ou d'actions réalisables par d'autres personnes (traduction, gestion, diffiusion, etc.), ou de prêts (de matériel informatique, pour le transport, etc.)"
+guide-project-updates: '<b>C''est très important que les projets donnent des informations aux cofinanceurs et au reste des personnes potentiellement intéressées sur l''avancée de la campagne. Depuis ce paragraphe, vous pouvez publier des messages actualisant votre projet, comme une sorte de blog.</b> De plus, dans SiteName une fois les fonds mininums. Vous avez la seconde période pour expliquer vos progrès, vos problèmes, etc... C''est essentiel pour informer et ainsi générer encore plus d''intérêt pour la communauté.'
+header-about-side: 'Ce qui nous inspire'
+home-posts-header: Nouveautés
+invest-individual-header: 'Vous pouvez refuser de recevoir votre récompense, ou sélectionner une récompense d''un montant égal ou inférieur àvotre contribution.'
+login-register-conditions: "J'ccepte les conditions d'utilisation de la plateforme, et je donne mon consentement pour le traitement de mes données personnelles. Le responsable du portail a établi une politique de confidentialité qui définit l'usage des données personnelles fournis par ce formulaire, ainsi que les droits de la personne qui a fourni ses données.\r\n"
+mandatory-cost-field-type: 'Vous devez sélectionner le type de coût'
+mandatory-individual_reward-field-amount: 'Vous devez spécifier le montant pour cette récompense'
+mandatory-project-costs: 'These should be broken down into at least two groups.'
+mandatory-register-field-email: 'Vous devez renseigner une addresse email'
+node-menu-home: Noeud
+overview-field-about: 'Caractéristiques principales'
+overview-field-motivation: 'Pourquoi est-ce important'
 profile-about-header: 'A propos'
+project-invest-total: 'Total des contributions monétaires'
+project-messages-send_message-your_answer: 'Ecrivez votre réponse ici.'
+project-messages-send_message_support-your_answer: 'Ecrivez ici votre message de collaboration pour %s'
 regular-admin_board: 'Tableau de bord admin'
 regular-allsome: 'Tous/certains de'
 regular-anonymous: Anonyme
 regular-ask: Demander
-regular-header-blog: Blog
-regular-see_blog: Blog
 regular-by: 'Par:'
-tooltip-dashboard-user-change_email: 'Cet espace vous permet de modifier l''adresse email sur laquelle vous désirez recevoir les messages de SiteName.'
-tooltip-dashboard-user-change_password: 'Cet espace vous permet de modifier votre mot de passe.'
-regular-invest_it: 'Cofinancer ce projet'
 regular-collaborate: Collaborer
-blog-comments: Commentaires
-tooltip-dashboard-user-confirm_email: 'Confirmez votre nouvelle adresse email sur laquelle vous souhaitez recevoir les messages de SiteName'
-tooltip-dashboard-user-confirm_password: 'Confirmez votre nouveau mot de passe pour SiteName.'
-regular-invest: Apporter
-regular-investing: Pour
 regular-create: 'Créer un projet'
 regular-days: jours
-regular-discover: 'Voir les projets'
-regular-published_no: Brouillon
-regular-edit: Modifier
 regular-delete: Effacer
-error-image-name: 'Erreur. Le nom de la pièce jointe est incorrect.'
-user-activate-fail: 'Une erreur est apparue. Le compte n''a pu être créé.'
-user-changeemail-fail: 'Erreur. L''adresse email n''a pu être modifiée.'
-error-image-tmp: 'Echec au chargement du document.'
-error-image-size: 'Erreur. La pièce jointe est trop lourde.'
+regular-discover: 'Voir les projets'
+regular-edit: Modifier
 regular-facebook: Facebook
-regular-header-faq: FAQ
-regular-first: Première
-regular-share-twitter: 'Suivez-nous sur Twitter.'
 regular-faq: 'Questions fréquentes'
+regular-first: Première
 regular-from: Depuis
 regular-getit: Obtiens-le!
-regular-header-glossary: 'Glossaire de SiteName'
+regular-go_up: Importer.
 regular-google: Google+
-blog-main-header: Blog
-regular-share-facebook: 'SiteName sur Facebook'
-regular-main-header: SiteName.fr
-guide-project-comment: guide-projet-commentaire
-guide-project-support: guide-projet-support
+regular-header-about: 'A propos'
+regular-header-blog: Blog
+regular-header-faq: FAQ
+regular-header-glossary: 'Glossaire de SiteName'
 regular-hello: Bonjour
-login-register-conditions: "J'ccepte les conditions d'utilisation de la plateforme, et je donne mon consentement pour le traitement de mes données personnelles. Le responsable du portail a établi une politique de confidentialité qui définit l'usage des données personnelles fournis par ce formulaire, ainsi que les droits de la personne qui a fourni ses données.\r\n"
-regular-im: 'Je suis'
+regular-home: Commencer
 regular-identica: Identi.ca
-regular-media_legend: Légende
+regular-im: 'Je suis'
+regular-invest: Apporter
+regular-invest_it: 'Cofinancer ce projet'
+regular-investing: Pour
 regular-lang: Langue
 regular-last: Dernière
 regular-license: Licence
@@ -59,85 +83,61 @@ regular-linkedin: LinkedIn
 regular-login: Login
 regular-logout: 'Fermez la session.'
 regular-looks_for: 'Rechercher:'
-overview-field-about: 'Caractéristiques principales'
+regular-main-header: SiteName.fr
+regular-manage_board: 'Espace Administration'
+regular-mandatory: 'Champ obligatoire!'
+regular-media_legend: Légende
 regular-menu: Menu
+regular-message_fail: 'Une erreur s''est produite lors de l''envoi du message.'
 regular-message_success: 'Message envoyé'
 regular-months: Mois
-home-posts-header: Nouveautés
+regular-more_info: '+ d''infos'
 regular-news: News
 regular-no: Non
-translate-home-guide: 'Message pour le traducteur'
 regular-of: de
-error-image-type-not-allowed: 'Seules les pièces jointes de type .png .jpg .gif sont permises.'
-error-image-type: 'Seules les images au format  jpg, png et gif sont permises.'
-regular-more_info: '+ d''infos'
 regular-preview: Prévisualisation
-regular-manage_board: 'Espace Administration'
-tooltip-project-schedule: 'Prévisualisation de l''agenda de production du projet. Signalez uniquement des tches non réalisées.'
-regular-recomended_by: 'Projet recommandé par'
 regular-projects: Projets
+regular-published_no: Brouillon
 regular-published_yes: Publié
 regular-read_more: 'En voir plus'
-regular-mandatory: 'Champ obligatoire!'
+regular-recomended_by: 'Projet recommandé par'
 regular-review_board: 'Mes évaluations'
 regular-round: 'ª tour'
-regular-share-rss: RSS/BLOG
 regular-save: Sauvegarder
 regular-search: Rechercher
 regular-see_all: 'Tout voir'
+regular-see_blog: Blog
 regular-see_details: 'Voir les détails'
 regular-see_more: 'En voir plus'
-regular-view_project: 'Voir le projet'
 regular-send_message: 'Envoyez le message.'
+regular-share-facebook: 'SiteName sur Facebook'
+regular-share-rss: RSS/BLOG
+regular-share-twitter: 'Suivez-nous sur Twitter.'
 regular-share_this: 'Partager sur'
-regular-web: Web
-tooltip-dashboard-user-new_email: 'Indiquez la nouvelle adresse email sur laquelle vous souhaitez recevoir les messages de SiteName.'
-regular-home: Commencer
-couldn: 'Texte couldn'
+regular-sorry: Désolé
 regular-thanks: Merci
-user-account-inactive: 'Ce compte est désactivé. Vous devez récupérer le mot de passe pour l''activer à nouveau.'
-error-user-email-token-invalid: 'Le code est erroné.'
-error-user-email-confirm: 'La confirmation de l''adresse email ne concorde pas.'
-error-contact-email-invalid: 'L''adresse email n''est pas valide.'
-error-user-email-invalid: 'L''adresse email n''est pas valide.'
-error-register-email-exists: "L'adresse email indiquée correspond à un utilisateur déjà\_ enregistré."
-error-image-size-too-large: 'L''image est trop lourde.'
-validate-project-total-costs: 'La somme des coûts secondaires qui déterminent le montant optimal ne peut surpasser de plus de 50% la somme des coûts minimums.'
-error-user-password-confirm: 'La confirmation du mot de passe ne concorde pas.'
-error-user-wrong-password: 'Le mot de passe est erroné.'
-error-user-password-invalid: 'Le mot de passe est trop court. Il doit avoir au moins 6 caractères'
-user-register-success: 'Votre compte a été créé correctement. Vous allez recevoir un email d''activation.'
-error-user-email-exists: "Il existe déjà\_ un utilisateur enregistré avec cette adresse mail."
-regular-message_fail: 'Une erreur s''est produite lors de l''envoi du message.'
-mandatory-project-costs: 'These should be broken down into at least two groups.'
-explain-project-progress: 'Ce diagramme représente la quantité et la pertinence des données renseignées. Vous devez atteindre les 80% pour pouvoir envoyer le projet à l''évaluation. Lisez attentivement les conseils que nous vous donnons sur la colonne de droite, qui vous servirons de guide. C''est parti!'
-tooltip-dashboard-user-access_data: 'Voici vos données d''accès actuelles. Attention, vous ne pouvez modifier votre LOGIN !'
 regular-total: Total
-project-invest-total: 'Total des contributions monétaires'
 regular-translate_board: Traduction
 regular-twitter: Twitter
-regular-go_up: Importer.
-regular-sorry: Désolé
+regular-view_project: 'Voir le projet'
+regular-web: Web
 regular-weeks: Semaines
-header-about-side: 'Ce qui nous inspire'
-overview-field-motivation: 'Pourquoi est-ce important'
-project-messages-send_message_support-your_answer: 'Ecrivez ici votre message de collaboration pour %s'
-tooltip-dashboard-user-user_password: 'Ecrivez le mot de passe actuel.'
-tooltip-dashboard-user-new_password: 'Ecrivez le nouveau mot de passe.'
-project-messages-send_message-your_answer: 'Ecrivez votre réponse ici.'
 regular-yes: Oui
-guide-dashboard-user-access: 'Vous pouvez changer les informations avec lesquelles vous vous connectez via SiteName accompte.'
-invest-individual-header: 'Vous pouvez refuser de recevoir votre récompense, ou sélectionner une récompense d''un montant égal ou inférieur àvotre contribution.'
-error-user-email-empty: 'Vous ne pouvez laisser le champ "adresse mail" vide.'
-error-register-pasword-empty: 'Vous n''avez pas inscris de mot de passe.'
-error-user-password-empty: 'Vous n''avez pas inscis de mot de passe.'
-mandatory-register-field-email: 'Vous devez renseigner une addresse email'
-mandatory-cost-field-type: 'Vous devez sélectionner le type de coût'
-validate-project-social_rewards: 'Indiquez obligatoirement au moins une retombée collective.'
-mandatory-individual_reward-field-amount: 'Vous devez spécifier le montant pour cette récompense'
-guide-dashboard-user-personal: 'Vous devez remplir ces données seulement si vous avez créé un projet et vous souhaitez qu''il soit co-financé par SiteName. L''information dans cette section est nécessaire pour que nous puissions vous contacter dans le cas oû vous obtenez le co-financement nécessaire, et faire le dépôt correspondant'
-fancybox: 'Texte fancybox'
-node-menu-home: Noeud
-guide-project-images: 'Les images du projet peuvent être des plans, screenshots, photographies, illustrations, storyboards, etc. (la licence associée doit être compatible avec les licences sélecionnées dans la section 5. Vous pouvez en charger autant que souhaité!'
-session-expired: 'La session est terminée'
 session-about-to-expire: 'La session se fermera dans 10 minutes. Desirez vous reloader la page pour renouveler la session?'
+session-expired: 'La session est terminée'
+tooltip-dashboard-user-access_data: 'Voici vos données d''accès actuelles. Attention, vous ne pouvez modifier votre LOGIN !'
+tooltip-dashboard-user-change_email: 'Cet espace vous permet de modifier l''adresse email sur laquelle vous désirez recevoir les messages de SiteName.'
+tooltip-dashboard-user-change_password: 'Cet espace vous permet de modifier votre mot de passe.'
+tooltip-dashboard-user-confirm_email: 'Confirmez votre nouvelle adresse email sur laquelle vous souhaitez recevoir les messages de SiteName'
+tooltip-dashboard-user-confirm_password: 'Confirmez votre nouveau mot de passe pour SiteName.'
+tooltip-dashboard-user-new_email: 'Indiquez la nouvelle adresse email sur laquelle vous souhaitez recevoir les messages de SiteName.'
+tooltip-dashboard-user-new_password: 'Ecrivez le nouveau mot de passe.'
+tooltip-dashboard-user-user_password: 'Ecrivez le mot de passe actuel.'
+tooltip-project-schedule: 'Prévisualisation de l''agenda de production du projet. Signalez uniquement des tches non réalisées.'
+translate-home-guide: 'Message pour le traducteur'
+user-account-inactive: 'Ce compte est désactivé. Vous devez récupérer le mot de passe pour l''activer à nouveau.'
+user-activate-fail: 'Une erreur est apparue. Le compte n''a pu être créé.'
+user-changeemail-fail: 'Erreur. L''adresse email n''a pu être modifiée.'
+user-register-success: 'Votre compte a été créé correctement. Vous allez recevoir un email d''activation.'
+validate-project-social_rewards: 'Indiquez obligatoirement au moins une retombée collective.'
+validate-project-total-costs: 'La somme des coûts secondaires qui déterminent le montant optimal ne peut surpasser de plus de 50% la somme des coûts minimums.'

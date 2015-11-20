@@ -1,10 +1,10 @@
-blog-side-tags: Catégories
 blog-coments-header: Commentaires
 blog-comments_no_allowed: 'Commentaires non autorisés sur ce billet'
-blog-side-last_comments: 'Derniers commentaires'
-blog-side-last_posts: 'Derniers articles'
+blog-comments_no_comments: 'Il n''y a aucun commentaire sur ce billet.'
 blog-no_comments: 'Sans commentaire'
 blog-no_posts: 'Aucun article n''a été publié.'
 blog-send_comment-button: Envoyez.
-blog-comments_no_comments: 'Il n''y a aucun commentaire sur ce billet.'
 blog-send_comment-header: 'Ecrivez votre commentaire'
+blog-side-last_comments: 'Derniers commentaires'
+blog-side-last_posts: 'Derniers articles'
+blog-side-tags: Catégories

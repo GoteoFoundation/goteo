@@ -362,8 +362,12 @@ namespace Goteo\Model\Project {
             }
         }
 
+        /**
+         * Checks if this reward is available for buying
+         * @return boolean true if can be used, false otherwise
+         */
         public function available() {
-            return $this->units - $this->getTaken();
+            return (empty($this->units) || ($this->units > $this->getTaken()));
         }
 
         public static function icons($type = 'social') {

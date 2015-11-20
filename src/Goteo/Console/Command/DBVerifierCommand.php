@@ -14,7 +14,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputOption;
 
-use Goteo\Console\ProjectWatcher;
+use Goteo\Console\DbVerifier;
 
 /**
  *  Proceso que verifica si los preapprovals han sido coancelados
@@ -46,6 +46,6 @@ EOT
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-       $output->writeln(ProjectWatcher::process(true));
+       $output->writeln(DbVerifier::process(true));
     }
 }

@@ -1,57 +1,68 @@
-oauth-import-about: 'About you'
-login-signin-myopenid: 'Access with myOpenID'
-login-recover-email-field: 'Account email'
-login-register-password-minlength: 'At least 6 characters'
+error-register-userid: 'You have to enter a user name'
+auth-access-forbbiden: 'You don''t have permission to acces here!'
+login-access-button: Enter
+login-access-header: 'Registered user'
+login-access-password-field: Password
+login-access-username-field: 'User name'
+login-fail: Error
 login-leave-button: 'Close the account'
 login-leave-header: 'Close the account'
+login-leave-message: 'Leave a message'
+login-oneclick-header: 'Log in with a single click'
+login-recover-button: Recover
+login-recover-email-field: 'Email or user name'
+login-recover-header: "Recover password\r\nFill in the field with the email you used to sign up on the platform. You will receive there the information needed to recover your password. Frequently, it is the same email address linked to your social networks.\r\nNote: You will receive an email at the same email address with a direct link to change your password.\r\nIf you do not receive the email, make sure that it is not in the spam folder. If you have clicked several times asking for a new password, you may have received an email with a new auto-generated link for every time you clicked. Use the link in the last email you received.\r\nIf you do not remember the email address associated to your account, you can contact us and we will provide it. Please, do not forget to give us some data in order to enable us to search for your user in our system (full name, nickname, register date or if you made a contribution to a particular project)."
+login-recover-link: 'Recover password'
+login-recover-username-field: 'User name'
+login-register-button: Register
 login-register-confirm-field: 'Confirm email address'
 login-register-confirm_password-field: 'Confirm password'
-oauth-confirm-user: 'Connect with existing user'
 login-register-email-field: 'Email address'
-login-access-button: Enter
-login-fail: Error
-oauth-facebook-access-denied: 'Facebook access denied'
-login-signin-openid-go: Go
-login-leave-message: 'Leave a message'
-oauth-import-facebook: 'Link to your Facebook account'
-oauth-import-linkedin: 'Link to your LinkedIn account'
-oauth-import-twitter: 'Link to your Twitter account'
-oauth-linkedin-access-denied: 'Linkedin access denied'
-login-oneclick-header: 'Log in with a single click'
+login-register-header: 'New user'
+login-register-password-field: Password
+login-register-password-minlength: 'At least 6 characters'
+login-register-userid-field: 'User name'
+login-register-username-field: 'Screen name'
 login-signin-facebook: 'Log in with Facebook'
 login-signin-google: 'Log in with Google'
 login-signin-linkedin: 'Log in with LinkedIn'
+login-signin-myopenid: 'Access with myOpenID'
+login-signin-openid: 'Other Open ID server'
+login-signin-openid-go: Go
 login-signin-twitter: 'Log in with Twitter'
 login-signin-ubuntu: 'Log in with Ubuntu One'
-login-signin-yahoo: 'Log in with Yahoo'
 login-signin-view-more: 'More login options'
-oauth-import-name: Name
-login-register-header: 'New user'
-oauth-openid-access-denied: 'Open ID access denied'
-login-signin-openid: 'Other Open ID server'
-login-access-password-field: Password
-login-register-password-field: Password
-oauth-import-location: 'Place of residence'
-login-recover-button: Recover
-login-recover-header: "Recover password\r\nFill in the field with the email you used to sign up on the platform. You will receive there the information needed to recover your password. Frequently, it is the same email address linked to your social networks.\r\nNote: You will receive an email at the same email address with a direct link to change your password.\r\nIf you do not receive the email, make sure that it is not in the spam folder. If you have clicked several times asking for a new password, you may have received an email with a new auto-generated link for every time you clicked. Use the link in the last email you received.\r\nIf you do not remember the email address associated to your account, you can contact us and we will provide it. Please, do not forget to give us some data in order to enable us to search for your user in our system (full name, nickname, register date or if you made a contribution to a particular project)."
-login-recover-link: 'Recover password'
-login-register-button: Register
-login-access-header: 'Registered user'
-login-register-username-field: 'Screen name'
-oauth-unknown-provider: 'Session can''t be started with this provider'
-oauth-goteo-user-password-exists: 'That user already exists in Goteo'
-oauth-goteo-user-not-exists: 'That user does not exist in Goteo'
-oauth-token-request-error: 'There has been an error when getting data from provider'
-oauth-goteo-user-password-error: 'This account already uses a different password-free login provider. If you want to use more than one login provider for this account, you need to establish a password first.'
-oauth-login-imported-data: 'This data is also being imported, you can change it once authenticated:'
-oauth-twitter-access-denied: 'Twitter access denied'
-oauth-openid-not-logged: 'User disconnected from Open ID'
-login-access-username-field: 'User name'
-login-recover-username-field: 'User name'
-login-register-userid-field: 'User name'
-oauth-login-welcome-from: 'Welcome to Goteo. Please check your username and email to finish the process. In case we could not import the email address (or if you change it for another) an email will be sent with an activation link for validation.'
-error-register-userid: 'You have to enter a user name'
-oauth-goteo-user-provider-error: "You must use %s in order to access this user.\r\n\r\nIf you want to use more than one login provider for this account, you need to establish a password first."
+login-signin-yahoo: 'Log in with Yahoo'
+oauth-confirm-user: 'Connect with existing user'
+oauth-facebook-access-denied: 'Facebook access denied'
 oauth-goteo-openid-sync-password: 'You''re trying to connect an existing Goteo account with an external provider. That will allow you to access Goteo with a single click.<br>This time you must provide your Goteo account password in order to confirm your identity.'
-oauth-openid-email-required: 'Your OpenID provider must provide the email adress to continue'
+oauth-goteo-user-not-exists: 'That user does not exist in Goteo'
+oauth-goteo-user-password-error: 'This account already uses a different password-free login provider. If you want to use more than one login provider for this account, you need to establish a password first.'
+oauth-goteo-user-password-exists: 'That user already exists in Goteo'
+oauth-goteo-user-provider-error: "You must use %s in order to access this user.\r\n\r\nIf you want to use more than one login provider for this account, you need to establish a password first."
+oauth-import-about: 'About you'
+oauth-import-facebook: 'Link to your Facebook account'
+oauth-import-linkedin: 'Link to your LinkedIn account'
+oauth-import-location: 'Place of residence'
+oauth-import-name: Name
+oauth-import-twitter: 'Link to your Twitter account'
 oauth-import-website: 'Your websites'
+oauth-linkedin-access-denied: 'Linkedin access denied'
+oauth-login-imported-data: 'This data is also being imported, you can change it once authenticated:'
+oauth-login-welcome-from: 'Welcome to Goteo. Please check your username and email to finish the process. In case we could not import the email address (or if you change it for another) an email will be sent with an activation link for validation.'
+oauth-openid-access-denied: 'Open ID access denied'
+oauth-openid-email-required: 'Your OpenID provider must provide the email adress to continue'
+oauth-openid-not-logged: 'User disconnected from Open ID'
+oauth-token-request-error: 'There has been an error when getting data from provider'
+oauth-twitter-access-denied: 'Twitter access denied'
+oauth-unknown-provider: 'Session can''t be started with this provider'
+login-new-user-label: 'New user?'
+login-recover-label: 'Forgot your password?'
+login-recover-modal-button: Send
+login-recover-modal-sucess: 'Done! We’ve sent you an email where you''ll find a link to reestablish your password'
+login-recover-modal-text: 'Write the email you used when you registered and will send you a link to reestablish your password'
+login-title: 'Log in'
+reset-password-new-password: 'Confirm new password'
+reset-password-old-password: 'Your new password'
+reset-password-save: Save
+reset-password-title: 'Establish a new password'

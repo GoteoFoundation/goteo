@@ -1,66 +1,66 @@
-overview-field-video: 'Gainerako bideo motibazioaren inguruan'
-overview-field-options-currently_avanzado: Aurreratuta
-tooltip-project-keywords: 'Testua sartu ahala sistema beste erabiltzaileak sartu dituzten hitz gakoak proposatuko dizkizu. Kategoria hauek zure proiektua kideekin lotzeko laguntzen dute.'
-overview-field-description: 'Deskribapen laburra'
-tooltip-project-about: 'Proiektuaren arlo kontzeptuala, teknikoa edo praktikoa laburki deskribatu. Adibidez bere funtzionamenduaren berezitasunak zehaztuz, edo zenbat arlo izango dituen. Imajinatu behin proiektua bukatuta jendea berarekin zer egin ahal izango duen.'
-overview-field-categories: Kategoriak
-tooltip-project-usubs: 'Markatu ezazu laukia bideo beste hizkuntzetan itzuli baduzu Universal Subtitles-ekin: http://www.universalsubtitles.org/'
-tooltip-project-category: 'Proiektua deskribatzeko aukera ezazu nahi beste kategoria, goi partean azaldu kontutan hartuz. Hitz gako hauen bitartez Goteo-ko hainbat erabiltzaileei eraman ahal izango dugu.'
-tooltip-project-video: 'Pentsa ezazu hemen bideo bat argitaratu eta lotzeko aukera (Youtube-n edo Vimeo-n), non kamara aurrean zure proiektuaren zergatia azaltzen duzula. Bideo honen arrazoia bideo nagusia osatzea da, azaltzen duenak era zuzenagoena hartzen du, proiektuaren beharrezkotasuna eta originaltasuna azaltzeko. Kamara aurrean hitz egitea lotsa ematen badizu, posiblea da proiektua edo ideia jarraitzen duen ezagutzen duzun beste pertsona bat "fan" bezala ekarpen hau egitea. Enpatia eta proiektuaren beste aldean norbait dagoela ikustea oso garrantzitsua da alde bereko finantzadun batzuentzat.'
-tooltip-project-media: 'Aurretik bai Youtube-n edo Vimeo-n argitaraturik dagoen proiektuaren aurkezpen bideo baten URL helbidea, kopiatu eta hemen itsatsi. Alde hau oinarrizkoa da ahaleko alde bereko finantzazioa eta babesleen arreta deitzeko. Zenbat eta originalagoa, hobe. 2-4 minutuko iraupena izatea gomendatzen dizugu.'
-tooltip-project-subtitle: 'Zehaztu ezazu azpititulu bat: esaldi batean ekintza zertan datza, zertarako balio duen idea susmatzeko. Proiektuaren izenburuaren alboan agertuko da.'
-overview-field-image_gallery: 'Oraingo irudiak'
-overview-field-currently: 'Oraingo egoera'
-tooltip-project-description: 'Deskribatu proiektua gutxienez 80 hitz erabiliz (gutxiagorekin errorea agertuko da). Azaldu ezazu edonork ulertzeko moduan. Saia zaitez alde soziala azpimarratzen eta era erakargarrian azaltzen, bere alde indartsuak laburbilduz, zerk egiten duen paregabe, berritzaile edo berezia.'
-step-3: Deskribapena
-tooltip-project-name: 'Idatz ezazu proiektuari buruzko titularra. Ahalik eta laburren hobe. Azalpen gehiago emateko, hurrengo arloan egin ahal duzu.'
-tooltip-project-image_upload: EZABATU
-tooltip-project-motivation: 'Azaldu ezazu ze arrazoi eta baldintza eraman zaituzte proiektua bururatzera, baita zein komunitate eta erabiltzaile dituzun helburu. Honek gustu berdineko beste pertsonekin konektatzeko lagunduko dizu.'
-overview-field-options-currently_finalizado: Bukatuta
-overview-field-options-scope_global: Globala
-overview-field-goal: 'Crowdfunding-eko kanpainaren helburuak'
-overview-fields-images-title: 'Proiektuaren irudiak'
-mandatory-project-field-related: 'Proiektuaren deskribapenean derrigorrekoa da azaltzea kontutan hartzen den taldearen esperientzia.'
-validate-project-field-currently: ' Zehaztu proiektuaren egoera bere balorazioa hobetzeko, eta Goteo-n argitaratuko den ala ez jakiteko.'
-tooltip-project-lang: 'Zehaztu zein hizkuntzan betetzen duzun proiektuaren formularioa.'
-tooltip-project-project_location: 'Zehaztu non garatuko den proiektua, zein herrian edo hirian kokatzen bere bultzatzaile nagusia(k)'
-overview-field-keywords: 'Proiektuaren hitz gakoak'
-tooltip-project-goal: 'Banan-banan, zeure iritziz, aipatu proiektuaren helburu nagusiak, bai epe laburrean eta baita epe luzean ere. Hau beste aukera bat da jendearekin kontaktatzeko eta bere babesa jasotzeko, helburu hauekin ados badago.'
-overview-field-options-scope_local: Tokikoa
-overview-field-project_location: Kokapena
-overview-field-options-currently_medio: Erdikoa
-overview-field-options-scope_nacional: Nazionala
-overview-field-lang: 'Jatorrizko hizkuntza'
-step-3b: Argazkiak
-overview-field-media_preview: Aurrebista
-overview-main-header: 'Proiektuaren deskribapena'
 images-main-header: 'Proiektuaren argazkiak'
-overview-field-scope: 'Proiektuaren norainokoa'
+mandatory-project-field-about: 'Proiektuaren oinarrizko ezaugarriak azaltzea derrigorrekoa da'
+mandatory-project-field-category: 'Proiektuarentzat kategoria bat aukeratzea gutxienez derrigorrekoa da.'
+mandatory-project-field-description: 'Proiektua laburbildu derrigorrekoa da'
+mandatory-project-field-goal: 'Proiektuaren helburuak deskribapenean azaltzea derrigorrekoa da'
+mandatory-project-field-image: 'Proiektuari irudi bat lotzea gutxienez derrigorrekoa da.'
+mandatory-project-field-lang: 'Proiektuaren hizkuntza adierazi behar duzu'
+mandatory-project-field-location: 'Proiektuaren norainoko ahalmena ipintzea derrigorrekoa da.'
+mandatory-project-field-media: 'Bideoa jartzea proiektuaren balorazioa hobetzeko gomendatzen dugu, Goteo-n argitaratzeko erabakitzeko orduan.'
+mandatory-project-field-motivation: 'Proiektuaren deskribapenean derrigorrekoa da motibazioa azaltzea'
+mandatory-project-field-name: 'Proiektu izena ipintzea derrigorrekoa da'
+mandatory-project-field-related: 'Proiektuaren deskribapenean derrigorrekoa da azaltzea kontutan hartzen den taldearen esperientzia.'
+overview-field-categories: Kategoriak
+overview-field-currently: 'Oraingo egoera'
+overview-field-description: 'Deskribapen laburra'
+overview-field-goal: 'Crowdfunding-eko kanpainaren helburuak'
+overview-field-image_gallery: 'Oraingo irudiak'
+overview-field-image_upload: 'Irudia igo (2MB max.)'
+overview-field-keywords: 'Proiektuaren hitz gakoak'
+overview-field-lang: 'Jatorrizko hizkuntza'
+overview-field-media: 'Aurkezpena bideoa'
+overview-field-media_preview: Aurrebista
 overview-field-name: 'Proiektuaren izenburua'
-overview-field-usubs: 'Universal Subtitles bitartez azaldu'
-overview-field-options-scope_regional: Erregionala
-overview-field-reward: Sariak
+overview-field-options-currently_avanzado: Aurreratuta
+overview-field-options-currently_finalizado: Bukatuta
 overview-field-options-currently_inicial: Hasierakoa
+overview-field-options-currently_medio: Erdikoa
+overview-field-options-scope_global: Globala
+overview-field-options-scope_local: Tokikoa
+overview-field-options-scope_nacional: Nazionala
+overview-field-options-scope_regional: Erregionala
+overview-field-project_location: Kokapena
+overview-field-related: 'Aurretiko esperientzia eta taldea'
+overview-field-reward: Sariak
+overview-field-scope: 'Proiektuaren norainokoa'
+overview-field-subtitle: 'Laburpen esaldia'
+overview-field-usubs: 'Universal Subtitles bitartez azaldu'
+overview-field-video: 'Gainerako bideo motibazioaren inguruan'
+overview-fields-images-title: 'Proiektuaren irudiak'
+overview-main-header: 'Proiektuaren deskribapena'
+step-3: Deskribapena
+step-3b: Argazkiak
 step-images: 'Pausoa: Proiektuaren argazkiak'
 step-overview: 'urratsa: proiektuaren deskribapena'
+tooltip-project-about: 'Proiektuaren arlo kontzeptuala, teknikoa edo praktikoa laburki deskribatu. Adibidez bere funtzionamenduaren berezitasunak zehaztuz, edo zenbat arlo izango dituen. Imajinatu behin proiektua bukatuta jendea berarekin zer egin ahal izango duen.'
+tooltip-project-category: 'Proiektua deskribatzeko aukera ezazu nahi beste kategoria, goi partean azaldu kontutan hartuz. Hitz gako hauen bitartez Goteo-ko hainbat erabiltzaileei eraman ahal izango dugu.'
+tooltip-project-currently: 'Azaldu proiektuak zein zatian dago gaur egun, hasiera zatiarekin edo betetze zatiarekin kontutan hartuz.'
+tooltip-project-description: 'Deskribatu proiektua gutxienez 80 hitz erabiliz (gutxiagorekin errorea agertuko da). Azaldu ezazu edonork ulertzeko moduan. Saia zaitez alde soziala azpimarratzen eta era erakargarrian azaltzen, bere alde indartsuak laburbilduz, zerk egiten duen paregabe, berritzaile edo berezia.'
+tooltip-project-goal: 'Banan-banan, zeure iritziz, aipatu proiektuaren helburu nagusiak, bai epe laburrean eta baita epe luzean ere. Hau beste aukera bat da jendearekin kontaktatzeko eta bere babesa jasotzeko, helburu hauekin ados badago.'
+tooltip-project-image: 'Posiblea da eskemak, pantaila argazkiak, irudiak, storyboard-ak, etabar izatea (egilearen lizentzia bateragarri izan behar da 5) arloan aukeratzen duzunarekin. Baliabide anitz eta bereizmen handikoak izatea gomendatzen dizugu (900 pixeletako zabalera gehienez / 2MB Max). Nahi beste igo ditzakezu!'
+tooltip-project-image_upload: EZABATU
+tooltip-project-keywords: 'Testua sartu ahala sistema beste erabiltzaileak sartu dituzten hitz gakoak proposatuko dizkizu. Kategoria hauek zure proiektua kideekin lotzeko laguntzen dute.'
+tooltip-project-lang: 'Zehaztu zein hizkuntzan betetzen duzun proiektuaren formularioa.'
+tooltip-project-media: 'Aurretik bai Youtube-n edo Vimeo-n argitaraturik dagoen proiektuaren aurkezpen bideo baten URL helbidea, kopiatu eta hemen itsatsi. Alde hau oinarrizkoa da ahaleko alde bereko finantzazioa eta babesleen arreta deitzeko. Zenbat eta originalagoa, hobe. 2-4 minutuko iraupena izatea gomendatzen dizugu.'
+tooltip-project-motivation: 'Azaldu ezazu ze arrazoi eta baldintza eraman zaituzte proiektua bururatzera, baita zein komunitate eta erabiltzaile dituzun helburu. Honek gustu berdineko beste pertsonekin konektatzeko lagunduko dizu.'
+tooltip-project-name: 'Idatz ezazu proiektuari buruzko titularra. Ahalik eta laburren hobe. Azalpen gehiago emateko, hurrengo arloan egin ahal duzu.'
+tooltip-project-project_location: 'Zehaztu non garatuko den proiektua, zein herrian edo hirian kokatzen bere bultzatzaile nagusia(k)'
 tooltip-project-related: 'Laburtu ezazu zure ibilbidea edo proiektuaren talde bultzatzailearena. Zer nolako esperientzia dauka proposamenarekin erlazionatuta?, zer pertsona talde, baliabide edota azpiegiturak ditu?'
-overview-field-subtitle: 'Laburpen esaldia'
-overview-field-related: 'Aurretiko esperientzia eta taldea'
+tooltip-project-subtitle: 'Zehaztu ezazu azpititulu bat: esaldi batean ekintza zertan datza, zertarako balio duen idea susmatzeko. Proiektuaren izenburuaren alboan agertuko da.'
+tooltip-project-usubs: 'Markatu ezazu laukia bideo beste hizkuntzetan itzuli baduzu Universal Subtitles-ekin: http://www.universalsubtitles.org/'
+tooltip-project-video: 'Pentsa ezazu hemen bideo bat argitaratu eta lotzeko aukera (Youtube-n edo Vimeo-n), non kamara aurrean zure proiektuaren zergatia azaltzen duzula. Bideo honen arrazoia bideo nagusia osatzea da, azaltzen duenak era zuzenagoena hartzen du, proiektuaren beharrezkotasuna eta originaltasuna azaltzeko. Kamara aurrean hitz egitea lotsa ematen badizu, posiblea da proiektua edo ideia jarraitzen duen ezagutzen duzun beste pertsona bat "fan" bezala ekarpen hau egitea. Enpatia eta proiektuaren beste aldean norbait dagoela ikustea oso garrantzitsua da alde bereko finantzadun batzuentzat.'
 validate-project-field-about: 'Proiektuaren azalpena laburregia da'
+validate-project-field-currently: ' Zehaztu proiektuaren egoera bere balorazioa hobetzeko, eta Goteo-n argitaratuko den ala ez jakiteko.'
 validate-project-field-description: 'Proiektuaren deskribapena laburregia da'
 validate-project-value-description: 'Proiektuaren deskribapena laburregia da'
-tooltip-project-image: 'Posiblea da eskemak, pantaila argazkiak, irudiak, storyboard-ak, etabar izatea (egilearen lizentzia bateragarri izan behar da 5) arloan aukeratzen duzunarekin. Baliabide anitz eta bereizmen handikoak izatea gomendatzen dizugu (900 pixeletako zabalera gehienez / 2MB Max). Nahi beste igo ditzakezu!'
-overview-field-image_upload: 'Irudia igo (2MB max.)'
-overview-field-media: 'Aurkezpena bideoa'
-mandatory-project-field-media: 'Bideoa jartzea proiektuaren balorazioa hobetzeko gomendatzen dugu, Goteo-n argitaratzeko erabakitzeko orduan.'
-tooltip-project-currently: 'Azaldu proiektuak zein zatian dago gaur egun, hasiera zatiarekin edo betetze zatiarekin kontutan hartuz.'
 validate-project-value-keywords: 'Zehaztu proiektuari buruz 5 hitz gako gutxienez bere balorazioa hobetzeko, eta Goteo-n argitaratuko den ala ez jakiteko.'
-mandatory-project-field-name: 'Proiektu izena ipintzea derrigorrekoa da'
-mandatory-project-field-description: 'Proiektua laburbildu derrigorrekoa da'
-mandatory-project-field-location: 'Proiektuaren norainoko ahalmena ipintzea derrigorrekoa da.'
-mandatory-project-field-about: 'Proiektuaren oinarrizko ezaugarriak azaltzea derrigorrekoa da'
-mandatory-project-field-goal: 'Proiektuaren helburuak deskribapenean azaltzea derrigorrekoa da'
-mandatory-project-field-motivation: 'Proiektuaren deskribapenean derrigorrekoa da motibazioa azaltzea'
-mandatory-project-field-lang: 'Proiektuaren hizkuntza adierazi behar duzu'
-mandatory-project-field-image: 'Proiektuari irudi bat lotzea gutxienez derrigorrekoa da.'
-mandatory-project-field-category: 'Proiektuarentzat kategoria bat aukeratzea gutxienez derrigorrekoa da.'

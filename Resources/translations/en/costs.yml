@@ -1,41 +1,41 @@
-costs-fields-main-title: 'Breakdown of expenses'
-tooltip-project-cost-description: 'Briefly explain what this expense consists of.'
-costs-field-dates: Dates
-costs-field-description: Description
-tooltip-project-cost-cost: 'Enter the most descriptive title possible for this expense'
-costs-field-cost: Expense
-costs-main-header: Expenses
-step-4: Expenses
-costs-field-date_from: From
-tooltip-project-cost-dates: 'Give a time frame for when the task will be completed or the expense will be covered. Plan it by starting at least two months from today, since you have to take into account the time needed for revising the proposal, publicizing it if it is chosen, and the 40 days from the first financing. Don''t include pieces that were developed previously even though these are good to explain in your project''s description. We only want things on the schedule that still need to be done and for which you''re requesting co-financing.'
-tooltip-project-cost-type: 'Here you should specify the type of expense: related to a task (something that requires someone''s skill or knowledge), obtaining material (consumables, raw materials) or infrastructure (spaces, equipment, furniture) '
-cost-type-structure: Infrastructure
 cost-type-lend: Loan
 cost-type-material: Material
-costs-field-required_cost-yes: Necessary
-tooltip-project-resource: 'Note here if you are counting on additional resources, apart from those that you''re asking for, in order to carry out this project: sources of financing, your own resources, or perhaps you''ve already gathered some materials. This might be attractive to potential co-financiers of your project.'
-costs-field-resoure: 'Other resources'
-costs-fields-resources-title: Resource
-validate-project-costs-any_error: 'Some information is missing from the breakdown of the expense'
-tooltip-project-cost-amount: 'Specify the amount in euros for each expense. Don''t use points or commas to mark the thousands, OK?'
-validate-cost-field-dates: 'Specify the beginning and ending dates for the expense in order to better evaluate the project.'
-step-costs: 'Step: Project/Expenses'
-costs-field-required_cost-no: Supplemental
+cost-type-structure: Infrastructure
 cost-type-task: Task
-costs-field-schedule: 'Tasks schedule'
-tooltip-project-costs: 'The more precisely you break down the expenses, the better Goteo will be able to evaluate the general information about your project.'
-costs-field-required_cost: 'This expense is'
-tooltip-project-totals: 'This graph shows the sum of essential expenses (the minimum necessary to complete the project) and the sum of secondary expenses (optimal amount) for the two rounds of financing. The first round lasts 40 days, in order to obtain the minimum essential amount. Only those that achieve this level of financing can opt to continue with the second round, for an additional 40 days, in order to achieve the optimal amount of funds. In the second round (in contrast with the first), you get everything you have raised even if you don''t reach the full goal.  '
-tooltip-project-cost-required: 'This section is very important: for each expense that you enter, you have to indicate if it is absolutely necessary or just supplemental. All of the expenses that are marked as necessary will be added to get the full amount of minimum financing required for the project. The sum of the supplemental expenses, in contrast, can be requested during the second round of financing, after having gotten the “necessary” funds.'
-costs-field-type: Type
-costs-field-date_until: Until
 costs-field-amount: Value
+costs-field-cost: Expense
+costs-field-date_from: From
+costs-field-date_until: Until
+costs-field-dates: Dates
+costs-field-description: Description
+costs-field-required_cost: 'This expense is'
+costs-field-required_cost-no: Supplemental
+costs-field-required_cost-yes: Necessary
+costs-field-resoure: 'Other resources'
+costs-field-schedule: 'Tasks schedule'
+costs-field-type: Type
+costs-fields-main-title: 'Breakdown of expenses'
 costs-fields-metter-title: 'View of expenses'
-validate-project-field-costs: 'We recommend that you break it down into least 5 distinct expenses to make it easier to evaluate your project to see whether it should be published on Goteo.'
-mandatory-cost-field-description: 'You must add a description for the expenses'
+costs-fields-resources-title: Resource
+costs-main-header: Expenses
 mandatory-cost-field-amount: 'You must assign an amount to the expenses'
+mandatory-cost-field-description: 'You must add a description for the expenses'
 mandatory-cost-field-name: 'You must label the expenses'
-mandatory-project-total-costs: 'You must specify an expense'
 mandatory-cost-field-task_dates: 'You must specify the approximate dates for the task'
 mandatory-project-field-resource: 'You must specify whether or not you have other resources to draw from'
 mandatory-project-resource: 'You must specify whether or not you have other resources to draw from'
+mandatory-project-total-costs: 'You must specify an expense'
+step-4: Expenses
+step-costs: 'Step: Project/Expenses'
+tooltip-project-cost-amount: 'Specify the amount in euros for each expense. Don''t use points or commas to mark the thousands, OK?'
+tooltip-project-cost-cost: 'Enter the most descriptive title possible for this expense'
+tooltip-project-cost-dates: 'Give a time frame for when the task will be completed or the expense will be covered. Plan it by starting at least two months from today, since you have to take into account the time needed for revising the proposal, publicizing it if it is chosen, and the 40 days from the first financing. Don''t include pieces that were developed previously even though these are good to explain in your project''s description. We only want things on the schedule that still need to be done and for which you''re requesting co-financing.'
+tooltip-project-cost-description: 'Briefly explain what this expense consists of.'
+tooltip-project-cost-required: 'This section is very important: for each expense that you enter, you have to indicate if it is absolutely necessary or just supplemental. All of the expenses that are marked as necessary will be added to get the full amount of minimum financing required for the project. The sum of the supplemental expenses, in contrast, can be requested during the second round of financing, after having gotten the “necessary” funds.'
+tooltip-project-cost-type: 'Here you should specify the type of expense: related to a task (something that requires someone''s skill or knowledge), obtaining material (consumables, raw materials) or infrastructure (spaces, equipment, furniture) '
+tooltip-project-costs: 'The more precisely you break down the expenses, the better Goteo will be able to evaluate the general information about your project.'
+tooltip-project-resource: 'Note here if you are counting on additional resources, apart from those that you''re asking for, in order to carry out this project: sources of financing, your own resources, or perhaps you''ve already gathered some materials. This might be attractive to potential co-financiers of your project.'
+tooltip-project-totals: 'This graph shows the sum of essential expenses (the minimum necessary to complete the project) and the sum of secondary expenses (optimal amount) for the two rounds of financing. The first round lasts 40 days, in order to obtain the minimum essential amount. Only those that achieve this level of financing can opt to continue with the second round, for an additional 40 days, in order to achieve the optimal amount of funds. In the second round (in contrast with the first), you get everything you have raised even if you don''t reach the full goal.  '
+validate-cost-field-dates: 'Specify the beginning and ending dates for the expense in order to better evaluate the project.'
+validate-project-costs-any_error: 'Some information is missing from the breakdown of the expense'
+validate-project-field-costs: 'We recommend that you break it down into least 5 distinct expenses to make it easier to evaluate your project to see whether it should be published on Goteo.'

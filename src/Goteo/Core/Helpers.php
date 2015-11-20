@@ -10,6 +10,34 @@
 
 namespace {
 
+    function global_formatter ($record) {
+        if( !empty( $_SERVER ) ){
+            $record['extra']['_SERVER'] = $_SERVER;
+        }
+        if( !empty( $_SESSION ) ){
+            $record['extra']['_SESSION'] = $_SESSION;
+        }
+        if( !empty( $_GET ) ){
+            $record['extra']['_GET'] = $_GET;
+        }
+        if( !empty( $_POST ) ){
+            $record['extra']['_POST'] = $_POST;
+        }
+        if( !empty( $_COOKIE ) ){
+            $record['extra']['_COOKIE'] = $_COOKIE;
+        }
+        return $record;
+    }
+
+    function monolog_level($log_level) {
+        if($log_level == 'debug')       return \Monolog\Logger::DEBUG;
+        elseif($log_level == 'notice')  return \Monolog\Logger::NOTICE;
+        elseif($log_level == 'info')    return \Monolog\Logger::INFO;
+        elseif($log_level == 'warning') return \Monolog\Logger::WARNING;
+        elseif($log_level == 'error')   return \Monolog\Logger::ERROR;
+        else                            return \Monolog\Logger::CRITICAL;;
+    }
+
     /**
      * Obtiene dirección ip del cliente
      * @return ip address

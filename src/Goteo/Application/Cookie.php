@@ -50,8 +50,8 @@ class Cookie {
      */
     static public function store($key, $value, $ttl = null) {
         global $_COOKIE;
+        if(is_null($ttl)) $ttl = self::DEFAULT_TTL;
         $ttl = (int) $ttl;
-        if(empty($ttl)) $ttl = self::DEFAULT_TTL;
         if (PHP_SAPI !== 'cli') {
             //delete previous cookie
             setcookie($key, '', time() - 3600);
@@ -95,6 +95,7 @@ class Cookie {
         unset($_COOKIE[$key]);
         if (PHP_SAPI !== 'cli') {
             setcookie($key, '', time() - 3600, self::$path);
+            setcookie($key, '', time() - 3600, self::$path, self::getDomain());
         }
         return !self::exists($key);
     }

@@ -25,6 +25,11 @@ module.exports = function(grunt) {
                     cwd: "<%= goteo.dist %>/view/",
                     dest: "view/",
                     src: ["**/*.{css,png,jpg,gif,js,eot,svg,ttf,woff}"]
+                } , {
+                    expand: true,
+                    cwd: "<%= goteo.dist %>/assets/",
+                    dest: "assets/",
+                    src: ["**/*.*"]
                 }]
             },
     });

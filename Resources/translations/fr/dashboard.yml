@@ -1,110 +1,110 @@
-dashboard-investors-mail-fail: 'Erreur à l''envoi du message à %s'
-dashboard-rewards-investors_table: '<p>Si vous souhaitez le gérer hors ligne vous pouvez <a href="/dashboard/projects/rewards/table" target="_blank">modifier la liste des récompenses</a></p>'
-dashboard-menu-profile-access: 'Données d''accès'
-dashboard-menu-admin_board: Administration
-dashboard-rewards-all_filter: Toutes
-dashboard-rewards-massive_msg-all_alert: 'A tous signifie "A tous". Le système ne tient pas compte des utilisateurs marqués d''une croix.'
-dashboard-rewards-process: 'Appliquer aux utilisateurs marqués'
-dashboard-project-delete_alert: 'Voulez-vous vraiment supprimer définitivement ce projet ?'
-dashboard-menu-projects-rewards: Cofinanceurs
-dashboard-rewards-amount_order: 'Par montant'
-dashboard-rewards-date_order: 'Par date'
-dashboard-rewards-reward_order: 'Par récompense'
-dashboard-rewards-user_order: 'Par utilisateur'
-dashboard-rewards-process_alert: 'Attention! Une fois la récompense définie comme livrée, vous ne pourrez pas revenir en arrière. Souhaitez-vous continuer?'
-user-changeemail-title: 'Changer l''email'
-user-changepass-title: 'Changer le mot de passe'
-dashboard-embed_code_investor: 'Code avec une image/photo du cofinanceur'
-dashboard-menu-projects-supports: Contributions
-dashboard-rewards-massive_msg: 'Messages groupés'
-dashboard-rewards-num_taken: Engagées
-user-changepass-confirm: 'Confirmer ce nouveau mot de passe'
-dashboard-project-blog-fail: Contactez-nous
-dashboard-menu-projects-contract: 'Compte bancaire'
 contract-data_title: 'Données du contrat'
-dashboard-rewards-amount_group: 'Apports de'
-user-changepass-old: 'Mot de passe actuel'
-dashboard-rewards-address: 'Adresse de livraison:'
-user-preferences-threads: 'Bloquer les notifications de réponses aux messages que je lance'
-user-preferences-updates: 'Bloquer les notifications de nouveautés des projets que je soutiens'
-user-preferences-mailing: 'Bloquer l''envoi de la newsletter'
-user-preferences-rounds: 'Bloquer les notifications d''avancement des projets que je soutiens'
-dashboard-rewards-resign_filter: Dons
+dashboard-embed_code: 'Code diffusion simple'
+dashboard-embed_code_investor: 'Code avec une image/photo du cofinanceur'
+dashboard-header-main: 'Mon tableau de bord'
+dashboard-investors-mail-fail: 'Erreur à l''envoi du message à %s'
+dashboard-investors-mail-nowho: 'Il n''y pas de destinataires'
+dashboard-investors-mail-sent: 'Messages envoyés correctement'
+dashboard-investors-mail-sendto: "Envoyé à\_ %s de vos cofinanceurs:"
+dashboard-investors-mail-text-required: 'Ecrivez le message'
+dashboard-menu-activity: 'Mon activité'
+dashboard-menu-activity-spread: Diffusion
+dashboard-menu-activity-summary: Résumé
+dashboard-menu-activity-wall: 'Mon mur'
+dashboard-menu-admin_board: Administration
+dashboard-menu-calls-sponsors: Sponsors
+dashboard-menu-profile: 'Mon profil'
+dashboard-menu-profile-access: 'Données d''accès'
+dashboard-menu-profile-location: Géolocalisation
+dashboard-menu-profile-personal: 'Données personnelles'
+dashboard-menu-profile-preferences: Préférences
 dashboard-menu-profile-profile: 'Editer le profil'
+dashboard-menu-profile-public: 'Profil public'
+dashboard-menu-projects: 'Mes projets'
+dashboard-menu-projects-contract: 'Compte bancaire'
+dashboard-menu-projects-messegers: Participants
+dashboard-menu-projects-preview: 'Page publique'
+dashboard-menu-projects-rewards: Cofinanceurs
+dashboard-menu-projects-summary: Résumé
+dashboard-menu-projects-supports: Contributions
+dashboard-menu-projects-updates: Nouvelles
+dashboard-menu-projects-widgets: Widget
+dashboard-menu-review_board: Vérification
+dashboard-menu-translate_board: Traduction
+dashboard-menu-translates: 'Mes traductions'
+dashboard-messegers-mail-sendto: 'Envoyé à %s  de vos cofinanceurs'
+dashboard-password-recover-advice: 'Vérifiez que votre "mot de passe" est bien réinitialisée.'
+dashboard-project-blog-fail: Contactez-nous
+dashboard-project-blog-inactive: 'Désolé, la publication de nouvelle sur ce projet a été désactivée.'
+dashboard-project-blog-wrongstatus: "Désolé, il n'est pas possible de publier de nouvelles à\_ propos de ce projet..."
+dashboard-project-delete_alert: 'Voulez-vous vraiment supprimer définitivement ce projet ?'
 dashboard-project-updates-delete_fail: 'Erreur lors de la suppression du sujet'
+dashboard-project-updates-deleted: 'Sujet éliminée'
+dashboard-project-updates-fail: 'Problème lors de la sauvegarde des données'
+dashboard-project-updates-inserted: 'Un nouveau sujet a été ajoutée.'
+dashboard-project-updates-noblog: 'Il n''y a pas de blog pour ce projet'
+dashboard-project-updates-nopost: 'Aucun sujet trouvée'
+dashboard-project-updates-postcorrupt: 'Problème avec le sujet, contactez-nous.'
+dashboard-project-updates-saved: 'Le sujet a été actualisée correctement.'
+dashboard-rewards-address: 'Adresse de livraison:'
+dashboard-rewards-all_filter: Toutes
+dashboard-rewards-amount_group: 'Apports de'
+dashboard-rewards-amount_order: 'Par montant'
 dashboard-rewards-choosen: 'Récompenses espérées'
+dashboard-rewards-date_order: 'Par date'
 dashboard-rewards-fulfilled_filter: Réalisées
 dashboard-rewards-fulfilled_status: Réalisée
-dashboard-menu-profile-location: Géolocalisation
-dashboard-translate-select_profile: 'Traduire mon profil personnel'
-guide-user-data: 'Guide pour l''édition des champs actifs'
-user-preferences-email: 'Ne pas révéler mon email aux projets que je soutiens.'
-dashboard-rewards-issue: Incident!
-dashboard-rewards-user_msg: 'Individuel pour'
-form-project_waitfor-expired: 'Vous n''avez pas réussi : essayer d''améliorer ou essayer de nouveau !'
-dashboard-investors-mail-sended: 'Message envoyé correctement à %s'
 dashboard-rewards-group_msg: "Message à\_ce groupe de cofinanceurs"
-dashboard-menu-activity: 'Mon activité'
-dashboard-header-main: 'Mon tableau de bord'
-dashboard-menu-profile: 'Mon profil'
-dashboard-menu-projects: 'Mes projets'
-dashboard-menu-translates: 'Mes traductions'
-dashboard-menu-activity-wall: 'Mon mur'
-user-changepass-new: 'Nouveau mot de passe'
-dashboard-project-updates-inserted: 'Un nouveau sujet a été ajoutée.'
-dashboard-menu-projects-updates: Nouvelles
-dashboard-project-updates-noblog: 'Il n''y a pas de blog pour ce projet'
-dashboard-investors-mail-nowho: 'Il n''y pas de destinataires'
-dashboard-menu-projects-messegers: Participants
+dashboard-rewards-investors_table: '<p>Si vous souhaitez le gérer hors ligne vous pouvez <a href="/dashboard/projects/rewards/table" target="_blank">modifier la liste des récompenses</a></p>'
+dashboard-rewards-issue: Incident!
+dashboard-rewards-massive_msg: 'Messages groupés'
+dashboard-rewards-massive_msg-all: 'A tous les cofinanceurs de ce projet'
+dashboard-rewards-massive_msg-all_alert: 'A tous signifie "A tous". Le système ne tient pas compte des utilisateurs marqués d''une croix.'
+dashboard-rewards-notice: "CECI EST UNE VISUALISATION DES OPTIONS DE RECOMPENSES CHOISIES PAR VOS COFINANCEURS.<br />VOUS N'AVEZ PAS A GERER CES RECOMPENSES AVANT D'AVOIR ATTEINT LE FINANCEMENT MINIMUM SOUHAITE\r\n"
+dashboard-rewards-num_taken: Engagées
 dashboard-rewards-pending_filter: 'En attente'
 dashboard-rewards-pending_status: 'En attente'
-dashboard-menu-profile-personal: 'Données personnelles'
-dashboard-project-updates-nopost: 'Aucun sujet trouvée'
-dashboard-project-updates-deleted: 'Sujet éliminée'
-dashboard-project-updates-saved: 'Le sujet a été actualisée correctement.'
-dashboard-menu-profile-preferences: Préférences
-user-profile-saved: 'Information de profil actualisé'
-dashboard-menu-projects-preview: 'Page publique'
-dashboard-menu-profile-public: 'Profil public'
-dashboard-menu-review_board: Vérification
-guide-dashboard-user-preferences: 'Cocher ''Oui'' sur les notifications automatiques que vous voulez bloquer'
-dashboard-translate-select_call: "Choisissez l'appel de fond au\_ projet à traduire"
-dashboard-translate-select_node: 'Choisissez le noeud à traduire'
-dashboard-translate-select_project: 'Choose project for translation'
-dashboard-investors-mail-sendto: "Envoyé à\_ %s de vos cofinanceurs:"
-dashboard-messegers-mail-sendto: 'Envoyé à %s  de vos cofinanceurs'
-dashboard-embed_code: 'Code diffusion simple'
-dashboard-project-blog-wrongstatus: "Désolé, il n'est pas possible de publier de nouvelles à\_ propos de ce projet..."
-dashboard-project-blog-inactive: 'Désolé, la publication de nouvelle sur ce projet a été désactivée.'
-dashboard-menu-calls-sponsors: Sponsors
-dashboard-menu-activity-spread: Diffusion
-form-project_waitfor-campaing: 'Diffusez votre projet, pour trouver un maximum d''apport'
-dashboard-menu-activity-summary: Résumé
-dashboard-menu-projects-summary: Résumé
-dashboard-rewards-thanks: 'Remerciement/ Don'
-user-changeemail-success: 'L''email a été changé avec succès.'
-dashboard-project-updates-postcorrupt: 'Problème avec le sujet, contactez-nous.'
-dashboard-project-updates-fail: 'Problème lors de la sauvegarde des données'
-user-save-fail: 'Problème lors de la sauvegarde des données.'
-dashboard-rewards-notice: "CECI EST UNE VISUALISATION DES OPTIONS DE RECOMPENSES CHOISIES PAR VOS COFINANCEURS.<br />VOUS N'AVEZ PAS A GERER CES RECOMPENSES AVANT D'AVOIR ATTEINT LE FINANCEMENT MINIMUM SOUHAITE\r\n"
-dashboard-rewards-massive_msg-all: 'A tous les cofinanceurs de ce projet'
-dashboard-menu-translate_board: Traduction
-user-personal-saved: 'Données personnelles actualisées'
+dashboard-rewards-process: 'Appliquer aux utilisateurs marqués'
+dashboard-rewards-process_alert: 'Attention! Une fois la récompense définie comme livrée, vous ne pourrez pas revenir en arrière. Souhaitez-vous continuer?'
+dashboard-rewards-resign_filter: Dons
 dashboard-rewards-resigns: 'Renonce à la récompense'
-form-project_waitfor-cancel: 'Finalement, nous avons rejeté votre proposition de publication sur SiteName, nous vous invitons à essayer avec une autre idée ou concept.'
-user-email-change-sended: 'Nous vous avons envoyé un email pour confirmer le changement d''adresse électronique'
-form-project_waitfor-review: 'Nous prendrons contact avec vous au sujet de ce projet, une fois terminé le processus d''évaluation. Pour la suite, nous le publierons ou vous solliciterons pour le modifier.'
-form-project_waitfor-edit: 'Quand il sera prêt, envoie-le pour qu''il se fasse évaluer. Vous devez mettre un minimum d''informations sur le projet dans ce formulaire.'
-guide-dashboard-user-profile: 'Si vous voulez présenter un projet ou participer comme cofinanceur, pour faire partie de la communauté de SiteName, nous vous recommandons de porter attention à votre texte de présentation, que vous ajoutiez les liens pertinents sur vos activités et que vous ajoutiez une image permettant de vous identifier.'
-dashboard-menu-projects-widgets: Widget
-dashboard-investors-mail-text-required: 'Ecrivez le message'
-dashboard-password-recover-advice: 'Vérifiez que votre "mot de passe" est bien réinitialisée.'
+dashboard-rewards-reward_order: 'Par récompense'
+dashboard-rewards-thanks: 'Remerciement/ Don'
+dashboard-rewards-user_msg: 'Individuel pour'
+dashboard-rewards-user_order: 'Par utilisateur'
 dashboard-translate-doing_call: 'Vous êtes en train de traduire l''appel de fond du projet <strong>%s</strong>. La langue originale est <strong>%s</strong>'
 dashboard-translate-doing_node: 'Vous êtes en train de traduire le noeud <strong>%s</strong>. La langue originale est <strong>l''espagnol</strong>'
-dashboard-translate-doing_project: 'Vous êtes en train de traduire le projet <strong>%s</strong>. La langue originale est <strong>%s</strong>'
 dashboard-translate-doing_profile: 'Vous êtes en train de traduire votre profil personnel.'
-user-password-changed: 'Vous avez changé votre mot de passe.'
-form-project_waitfor-success: 'Vous avez réussi à obtenir le minimum d''apport de cofinancement pour ce projet. Nous vous contacterons pour parler argent :)'
+dashboard-translate-doing_project: 'Vous êtes en train de traduire le projet <strong>%s</strong>. La langue originale est <strong>%s</strong>'
+dashboard-translate-select_call: "Choisissez l'appel de fond au\_ projet à traduire"
+dashboard-translate-select_node: 'Choisissez le noeud à traduire'
+dashboard-translate-select_profile: 'Traduire mon profil personnel'
+dashboard-translate-select_project: 'Choose project for translation'
+form-project_waitfor-campaing: 'Diffusez votre projet, pour trouver un maximum d''apport'
+form-project_waitfor-cancel: 'Finalement, nous avons rejeté votre proposition de publication sur SiteName, nous vous invitons à essayer avec une autre idée ou concept.'
+form-project_waitfor-edit: 'Quand il sera prêt, envoie-le pour qu''il se fasse évaluer. Vous devez mettre un minimum d''informations sur le projet dans ce formulaire.'
+form-project_waitfor-expired: 'Vous n''avez pas réussi : essayer d''améliorer ou essayer de nouveau !'
 form-project_waitfor-fulfilled: 'Vous avez géré vos fonds. Merci de votre participation!'
-user-prefer-saved: 'Vos préférences de notifications ont été sauvegardées correctement'
+form-project_waitfor-review: 'Nous prendrons contact avec vous au sujet de ce projet, une fois terminé le processus d''évaluation. Pour la suite, nous le publierons ou vous solliciterons pour le modifier.'
+form-project_waitfor-success: 'Vous avez réussi à obtenir le minimum d''apport de cofinancement pour ce projet. Nous vous contacterons pour parler argent :)'
 guide-dashboard-user-location: 'Le système utilise ces données pour vous géolocaliser.'
+guide-dashboard-user-preferences: 'Cocher ''Oui'' sur les notifications automatiques que vous voulez bloquer'
+guide-dashboard-user-profile: 'Si vous voulez présenter un projet ou participer comme cofinanceur, pour faire partie de la communauté de SiteName, nous vous recommandons de porter attention à votre texte de présentation, que vous ajoutiez les liens pertinents sur vos activités et que vous ajoutiez une image permettant de vous identifier.'
+guide-user-data: 'Guide pour l''édition des champs actifs'
+user-changeemail-success: 'L''email a été changé avec succès.'
+user-changeemail-title: 'Changer l''email'
+user-changepass-confirm: 'Confirmer ce nouveau mot de passe'
+user-changepass-new: 'Nouveau mot de passe'
+user-changepass-old: 'Mot de passe actuel'
+user-changepass-title: 'Changer le mot de passe'
+user-email-change-sended: 'Nous vous avons envoyé un email pour confirmer le changement d''adresse électronique'
+user-password-changed: 'Vous avez changé votre mot de passe.'
+user-personal-saved: 'Données personnelles actualisées'
+user-prefer-saved: 'Vos préférences de notifications ont été sauvegardées correctement'
+user-preferences-email: 'Ne pas révéler mon email aux projets que je soutiens.'
+user-preferences-mailing: 'Bloquer l''envoi de la newsletter'
+user-preferences-rounds: 'Bloquer les notifications d''avancement des projets que je soutiens'
+user-preferences-threads: 'Bloquer les notifications de réponses aux messages que je lance'
+user-preferences-updates: 'Bloquer les notifications de nouveautés des projets que je soutiens'
+user-profile-saved: 'Information de profil actualisé'
+user-save-fail: 'Problème lors de la sauvegarde des données.'

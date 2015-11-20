@@ -14,5 +14,5 @@
 ?></script>
 
 <!-- geolocation -->
-<script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?v=3.exp&amp;libraries=places&amp;sensor=false"></script>
+<script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?v=3.exp&amp;libraries=places"></script>
 <script type="text/javascript" src="<?php echo SRC_URL ?>/view/js/geolocation.js"></script>

@@ -1,13 +1,14 @@
 <?php
 $reward = $this->reward_item;
 $selected = $selected;
+$available = $reward->available();
 ?>
     <form class="form-horizontal" role="form" method="GET" action="/invest/<?= $this->project->id ?>/payment">
 
         <div class="row no-padding col-sm-10 col-sm-offset-1">
-            <label class="label-reward <?= $selected ? 'reward-choosen' : '' ?>" for="reward-<?= $reward->id?>">
+            <label class="label-reward <?= $selected ? 'reward-choosen' : '' ?><?= $available ? '' : ' label-disabled' ?>" for="reward-<?= $reward->id?>">
             <div class="col-sm-2 no-padding">
-                <input name="reward" class="reward" id="reward-<?= $reward->id?>" <?= $selected ? ' checked="checked"' : '' ?> value="<?= $reward->id ?>" type="radio">
+                <input name="reward" class="reward" id="reward-<?= $reward->id?>" <?= $selected ? ' checked="checked"' : '' ?><?= $available ? '' : ' disabled' ?> value="<?= $reward->id ?>" type="radio">
                 <strong class="reward-amount"><?= amount_format($reward->amount) ?></strong>
             </div>
             <div class="col-sm-9">
@@ -16,7 +17,7 @@ $selected = $selected;
                 <?= $reward->description ?>
                 </div>
                 <div style="margin-top:10px">
-                    <?php if ($reward->none) : // no quedan ?>
+                    <?php if (!$available) : // no quedan ?>
                     <span class="limit-reward"><?= $this->text('invest-reward-none') ?></span>
                         <?php elseif (!empty($reward->units)) : // unidades limitadas ?>
                         <strong class="limit-reward"><?= $this->text('project-rewards-individual_reward-limited');?></strong><br>

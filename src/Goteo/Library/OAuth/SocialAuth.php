@@ -173,7 +173,7 @@ class SocialAuth {
 				}
 			}
 			else {
-				$openid->returnUrl = $this->host . '/login/' .  urlencode($this->original_provider);
+				$openid->returnUrl = $this->host . '/login/openid?u=' .  urlencode($this->original_provider);
 				$url = $openid->authUrl();
 				header("Location: $url");
 				exit;

@@ -67,6 +67,7 @@ class DummyPaymentMethod extends AbstractPaymentMethod {
         <div class="center">
         <h1>Dummy payment gateway</h1>
         <h3>This is a test gateway for testing. It does... nothing!</h3>
+        <h4>%3$s</h4>
             <p>Choose what kind of payment do you wish:</p>
             <form class="ok" action="%1$s" method="post">
                 <input type="hidden" name="number" value="4242424242424242">
@@ -83,7 +84,8 @@ class DummyPaymentMethod extends AbstractPaymentMethod {
         return new Response(sprintf(
                     $output,
                     htmlentities($this->getCompleteUrl(), ENT_QUOTES, 'UTF-8', false),
-                    htmlentities($this->getCompleteUrl(), ENT_QUOTES, 'UTF-8', false)
+                    htmlentities($this->getCompleteUrl(), ENT_QUOTES, 'UTF-8', false),
+                    $this->getInvest()->amount . ' ' .Currency::getDefault('html')
                 ));
     }
 
@@ -96,7 +98,7 @@ class DummyPaymentMethod extends AbstractPaymentMethod {
 
         // Let's obtain the gateway and the
         $gateway = $this->getGateway();
-        $gateway->setCurrency(Currency::DEFAULT_CURRENCY);
+        $gateway->setCurrency(Currency::getDefault('id'));
         $request = $this->getRequest();
         $invest = $this->getInvest();
         $payment = $gateway->purchase([

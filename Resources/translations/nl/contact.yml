@@ -5,5 +5,5 @@ contact-send_message-button: verstuur
 contact-send_message-header: 'Stuur ons een bericht'
 contact-subject-field: Onderwerp
 error-contact-email-empty: 'Je hebt geen emailadres ingevoerd'
-error-contact-subject-empty: 'Je hebt geen onderwerp ingevoerd'
 error-contact-message-empty: 'je hebt geen bericht geschreven'
+error-contact-subject-empty: 'Je hebt geen onderwerp ingevoerd'

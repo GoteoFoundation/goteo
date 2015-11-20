@@ -1,20 +1,20 @@
-footer-platoniq-iniciative: 'Una iniciativa de:'
-footer-service-campaign: Campanyes
 footer-header-categories: Categories
-footer-service-consulting: Consultoria
-regular-footer-contact: Contacte
-footer-service-resources: 'Capital d''irrigació'
-footer-header-social: Segueix-nos
-footer-resources-glossary: 'Glossari '
-footer-resources-source_code: 'Codi font AGPL3'
-footer-header-sponsors: 'Suports institucionals'
-regular-footer-legal: 'Termes legals'
-footer-resources-press: Premsa
-regular-footer-privacy: 'Política de privacitat'
 footer-header-projects: Projectes
 footer-header-resources: Recursos
 footer-header-services: Serveis
-regular-footer-terms: 'Condicions d´us'
-footer-service-workshop: Tallers
+footer-header-social: Segueix-nos
+footer-header-sponsors: 'Suports institucionals'
+footer-platoniq-iniciative: 'Una iniciativa de:'
 footer-resources-api: API
+footer-resources-glossary: 'Glossari '
+footer-resources-press: Premsa
+footer-resources-source_code: 'Codi font AGPL3'
 footer-resources-stats: Stats
+footer-service-campaign: Campanyes
+footer-service-consulting: Consultoria
+footer-service-resources: 'Capital d''irrigació'
+footer-service-workshop: Tallers
+regular-footer-contact: Contacte
+regular-footer-legal: 'Termes legals'
+regular-footer-privacy: 'Política de privacitat'
+regular-footer-terms: 'Condicions d´us'

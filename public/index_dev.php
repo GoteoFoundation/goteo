@@ -8,10 +8,10 @@
  * file that was distributed with this source code.
  */
 
-use Symfony\Component\HttpFoundation\Request;
 use Goteo\Application\App;
 use Goteo\Application\Config;
 use Symfony\Component\Debug;
+use Symfony\Component\HttpFoundation\Request;
 
 // This check prevents access to debug front controllers that are deployed by accident to production servers.
 // Feel free to remove this, extend it, or make something more sophisticated.
@@ -23,48 +23,37 @@ use Symfony\Component\Debug;
 //     exit('You are not allowed to access this file. Check '.basename(__FILE__).' for more information.');
 // }
 
-
 //Public Web path
-define('GOTEO_WEB_PATH', __DIR__ . '/');
+define('GOTEO_WEB_PATH', __DIR__ .'/');
 
-require_once __DIR__ . '/../src/autoload.php';
+require_once __DIR__ .'/../src/autoload.php';
 
 // Error reporting
 App::debug(true);
 // Too much notices...
 // error_reporting(E_ALL & ~E_NOTICE & ~E_STRICT & ~E_USER_DEPRECATED);
-error_reporting(E_ALL & ~E_NOTICE & ~E_USER_DEPRECATED);
+error_reporting(E_ALL&~E_NOTICE&~E_USER_DEPRECATED);
 
 //
 // Bored? Try the hard way and fix some notices:
 // Debug\Debug::enable();
-
-set_error_handler('\\Goteo\\Application\\App::errorHandler');
+// error handle needs to go after autoload
+set_error_handler('Goteo\Application\App::errorHandler');
 
 // Config file...
 
-Config::load(is_file(__DIR__ . '/../config/dev-settings.yml') ? 'dev-settings.yml' : 'settings.yml' );
-
-// Add the debug toolbar as a service
-$sc = App::getServiceContainer();
-
-// Add a log level debug to stderr
-$sc->register('logger.handler.debug', 'Monolog\Handler\StreamHandler')
-    ->setArguments(array('php://stderr', Monolog\Logger::DEBUG))
-;
-$sc->getDefinition('logger')->addMethodCall('pushHandler', array(new Symfony\Component\DependencyInjection\Reference('logger.handler.debug')));
-
-$sc->register('paylogger.handler.debug', 'Monolog\Handler\StreamHandler')
-    ->setArguments(array('php://stderr', Monolog\Logger::DEBUG))
-;
-$sc->getDefinition('paylogger')->addMethodCall('pushHandler', array(new Symfony\Component\DependencyInjection\Reference('paylogger.handler.debug')));
+Config::load(is_file(__DIR__ .'/../config/dev-settings.yml')?'dev-settings.yml':'settings.yml');
 
 //Get from globals defaults
 App::setRequest(Request::createFromGlobals());
 
+$handler = new Monolog\Handler\StreamHandler('php://stdout', Monolog\Logger::DEBUG);
+$handler->setFormatter(new Bramus\Monolog\Formatter\ColoredLineFormatter());
+
+// Add a log level debug to stderr
+App::getService('logger')->pushHandler($handler);
+App::getService('syslogger')->pushHandler($handler);
+App::getService('paylogger')->pushHandler($handler);
+
 // Get the app
-$app = App::get();
-
-// handle routes, flush buffer out
-$app->run();
-
+App::get()->run();

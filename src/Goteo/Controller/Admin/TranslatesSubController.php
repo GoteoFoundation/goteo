@@ -235,8 +235,7 @@ class TranslatesSubController extends AbstractSubController {
                     // Informar al autor de que la traduccion está habilitada
 
                     //  idioma de preferencia
-                    $prefer = Model\User::getPreferences($project->user->id);
-                    $comlang = !empty($prefer->comlang) ? $prefer->comlang : $project->user->lang;
+                    $comlang = Model\User::getPreferences($project->user)->comlang;
 
                     // Obtenemos la plantilla para asunto y contenido
                     $template = Template::get(Template::READY_FOR_TRANSLATING, $comlang);

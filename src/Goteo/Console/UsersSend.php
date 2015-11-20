@@ -19,19 +19,20 @@ use Goteo\Core\Redirection;
 use Goteo\Library\Text;
 use Goteo\Model\Template;
 use Goteo\Model\Mail;
+use Goteo\Model\Project;
+use Model\Blog\Post;
 
-class UsersSend {
-    static public $debug = false;
+class UsersSend extends AbstractCommandController {
 
     // asesores por defecto si no un proyecto no tiene asesores
     // TODO: by config...
     public static $consultants = array(
-        'merxxx' => 'Mercè Moreno Tarrés',
-        'esenabre' => 'Enric Senabre',
-        'olivier' => 'Olivier Schulbaum',
-        'mauricio-obrien' => 'MauriOB',
-        'carmenlozano' => 'Carmen Lozano'
+        'root' => 'Root'
     );
+
+    static public function setConsultants(array $consultants) {
+        self::$consultants = $consultants;
+    }
 
     /**
      * Al autor del proyecto, se encarga de substituir variables en plantilla
@@ -40,9 +41,8 @@ class UsersSend {
      * @param $project Object El proyecto que está relacionado con el envío del email
      * @return bool
      */
-    public static function toOwner ($type, $project) {
+    public static function toOwner ($type, Project $project) {
         $tpl = null; // Número de la plantilla que se obtendrá a partir del identificador
-        $debug = self::$debug;
         $error_sending = false;
 
         // necesitamos saber los consultores
@@ -53,8 +53,6 @@ class UsersSend {
         } else {
             $consultants = current(self::$consultants);
         }
-
-        if ($debug) echo 'toOwner: ';
 
         /// tipo de envio
         switch ($type) {
@@ -216,57 +214,55 @@ class UsersSend {
 
         }
 
-        if (!empty($tpl)) {
-            $errors = array();
 
-            //  idioma de preferencia del usuario
-            $prefer = Model\User::getPreferences($project->user->id);
-            $comlang = !empty($prefer->comlang) ? $prefer->comlang : $project->user->lang;
-
-            // Obtenemos la plantilla para asunto y contenido
-            $template = Template::get($tpl, $comlang);
-
-            // Sustituimos los datos
-            $subject = str_replace('%PROJECTNAME%', $project->name, $template->title);
-            $content = \str_replace($search, $replace, $template->text);
-            // iniciamos mail
-            $mailHandler = new Mail();
-            $mailHandler->lang = $comlang;
-            $mailHandler->to = $project->user->email;
-            $mailHandler->toName = $project->user->name;
-
-            // vigilancia de proyectos (añade en copia oculta a asesores + otros)
-            if (Model\Project\Conf::isWatched($project->id)) {
-                $monitors = array();
-
-                foreach ($project->getConsultants() as $id => $name) {
-                    $user = Model\User::getMini($id);
-                    $monitors[] = $user->email;
-                }
-
-                $mailHandler->bcc = $monitors;
-            }
-
-            if ($debug) echo $project->user->email . ', ';
-
-            // si es un proyecto de nodo: reply al mail del nodo
-            // si es de centra: reply a MAIL_GOTEO
-            $mailHandler->reply = (!empty($project->nodeData->email)) ? $project->nodeData->email : Config::getMail('contact');;
-
-            $mailHandler->subject = $subject;
-            $mailHandler->content = $content;
-            $mailHandler->html = true;
-            $mailHandler->template = $template->id;
-            if (!$mailHandler->send($errors)) {
-                echo \trace($errors);
-                @mail(Config::getMail('fail'),
-                    'Fallo al enviar email automaticamente al autor en ' . SITE_URL,
-                    'Fallo al enviar email automaticamente al autor: <pre>' . print_r($mailHandler, true). '</pre>');
-                $error_sending = true;
-            }
+        if (empty($tpl)) {
+            static::error("ERROR: template not found for type [$type]", ['type' => $type, $project]);
+            return false;
         }
 
-        if ($debug) echo "\n";
+        static::info('Sending communication to owner', ['type' => $type, $project, 'email' => $project->user->email, 'template' => $tpl]);
+
+        $errors = array();
+
+        //  idioma de preferencia del usuario
+        $comlang = Model\User::getPreferences($project->user->id)->comlang;
+
+        // Obtenemos la plantilla para asunto y contenido
+        $template = Template::get($tpl, $comlang);
+
+        // Sustituimos los datos
+        $subject = str_replace('%PROJECTNAME%', $project->name, $template->title);
+        $content = \str_replace($search, $replace, $template->text);
+        // iniciamos mail
+        $mailHandler = new Mail();
+        $mailHandler->lang = $comlang;
+        $mailHandler->to = $project->user->email;
+        $mailHandler->toName = $project->user->name;
+
+        // vigilancia de proyectos (añade en copia oculta a asesores + otros)
+        $monitors = array();
+        if (Model\Project\Conf::isWatched($project->id)) {
+            foreach ($project->getConsultants() as $id => $name) {
+                $user = Model\User::getMini($id);
+                $monitors[] = $user->email;
+            }
+            $mailHandler->bcc = $monitors;
+        }
+
+        // si es un proyecto de nodo: reply al mail del nodo
+        // si es de centra: reply a MAIL_GOTEO
+        $mailHandler->reply = (!empty($project->nodeData->email)) ? $project->nodeData->email : Config::getMail('contact');;
+
+        $mailHandler->subject = $subject;
+        $mailHandler->content = $content;
+        $mailHandler->html = true;
+        $mailHandler->template = $template->id;
+        if ($mailHandler->send($errors)) {
+            static::info("Communication sent successfully to owner", ['type' => $type, $project, 'email' => $project->user->email, 'bcc' => $monitors, 'template' => $tpl]);
+        } else {
+            static::critical("ERROR sending communication to owner", ['type' => $type, $project, 'email' => $project->user->email, 'bcc' => $monitors, 'template' => $tpl, 'errors' => $errors]);
+            $error_sending = true;
+        }
 
         return !$error_sending;
     }
@@ -279,11 +275,9 @@ class UsersSend {
      * @return bool
      */
     public static function toConsultants ($type, $project) {
-        $debug = self::$debug;
+
         $error_sending = false;
         $tpl = null;
-
-        if ($debug) echo 'toConsultants: ';
 
         $consultants = $project->getConsultants();
         // Si por cualquier motivo, el proyecto no tiene asignado ningún asesor, enviar a los asesores por defecto
@@ -343,43 +337,45 @@ class UsersSend {
                 //Pasamos la difusión
         }
 
-        if (!empty($tpl)) {
-            $errors = array();
-            // Obtenemos la plantilla para asunto y contenido
-            $template = Template::get($tpl);
-            // Sustituimos los datos
-            $subject = str_replace('%PROJECTNAME%', $project->name, $template->title);
-            $pre_content = \str_replace($search, $replace, $template->text);
+        if (empty($tpl)) {
+            static::error("ERROR: template not found for type [$type]", ['type' => $type, $project]);
+            return false;
+        }
 
-            foreach ($consultants as $id=>$name) {
-                $consultant = Model\User::getMini($id);
 
-                // Sustituimos el nombre del asesor en el cuerpo del e-mail
-                $content = \str_replace('%USERNAME%', $name, $pre_content);
+        $errors = array();
+        // Obtenemos la plantilla para asunto y contenido
+        $template = Template::get($tpl);
+        // Sustituimos los datos
+        $subject = str_replace('%PROJECTNAME%', $project->name, $template->title);
+        $pre_content = \str_replace($search, $replace, $template->text);
 
-                // iniciamos mail
-                $mailHandler = new Mail();
-                $mailHandler->to = $consultant->email;
-                $mailHandler->toName = $name;
+        foreach ($consultants as $id=>$name) {
+            $consultant = Model\User::getMini($id);
 
-                if ($debug) echo $consultant->email . ', ';
+            // Sustituimos el nombre del asesor en el cuerpo del e-mail
+            $content = \str_replace('%USERNAME%', $name, $pre_content);
 
-                $mailHandler->subject = $subject;
-                $mailHandler->content = $content;
-                $mailHandler->html = true;
-                $mailHandler->template = $template->id;
-                if (!$mailHandler->send($errors)) {
-                    echo \trace($errors);
-                    @mail(Config::getMail('fail'),
-                        'Fallo al enviar email automaticamente al asesor ' . SITE_URL,
-                        'Fallo al enviar email automaticamente al asesor: <pre>' . print_r($mailHandler, true). '</pre>');
-                    $error_sending = true;
-                }
+            // iniciamos mail
+            $mailHandler = new Mail();
+            $mailHandler->to = $consultant->email;
+            $mailHandler->toName = $name;
+
+            static::info('Sending communication to consultant', ['type' => $type, 'consultant' => $id, 'name' => $name, 'email' => $consultant->email, $project, 'template' => $tpl]);
+
+            $mailHandler->subject = $subject;
+            $mailHandler->content = $content;
+            $mailHandler->html = true;
+            $mailHandler->template = $template->id;
+
+            if ($mailHandler->send($errors)) {
+                static::info("Communication sent successfully to owner", ['type' => $type, 'consultant' => $id, 'name' => $name, 'email' => $consultant->email, $project, 'template' => $tpl]);
+            } else {
+                static::critical("ERROR sending communication to consultant", ['type' => $type, 'consultant' => $id, 'name' => $name, 'email' => $consultant->email, $project, 'template' => $tpl, 'errors' => $errors]);
+                $error_sending = true;
             }
 
         }
-
-        if ($debug) echo "\n";
 
         return !$error_sending;
     }
@@ -394,10 +390,7 @@ class UsersSend {
      * @param $post Object
      * @return bool
      */
-    static public function toInvestors ($type, $project, $post = null) {
-
-        // activar debug para mostrar menajes en el log
-        $debug = self::$debug;
+    static public function toInvestors ($type, Project $project, array $invest_status = null, Post $post = null) {
 
         // notificación
         $notif = $type == 'update' ? 'updates' : 'rounds';
@@ -447,7 +440,10 @@ class UsersSend {
         }
 
 
-        if (empty($tpl)) return false;
+        if (empty($tpl)) {
+            static::error("ERROR: template not found for type [$type]", ['type' => $type, $project]);
+            return false;
+        }
 
         // con esto montamos el receivers
         $receivers = array();
@@ -455,6 +451,11 @@ class UsersSend {
         // para cada inversor que no tenga bloqueado esta notificacion
         // sacamos idioma de preferencia
         // Y esto también tendía que mirar idioma alternativo al de preferencia
+        if(empty($invest_status)) $invest_status = ['0', '1', '3', '4'];
+        $status = array();
+        foreach($invest_status as $val) {
+            $status[":status$val"] = $val;
+        }
         $sql = "
             SELECT
                 invest.user as id,
@@ -467,17 +468,17 @@ class UsersSend {
                 AND user.active = 1
             LEFT JOIN user_prefer
                 ON user_prefer.user = invest.user
-            WHERE   invest.project = ?
-            AND invest.status IN ('0', '1', '3', '4')
+            WHERE   invest.project = :project
+            AND invest.status IN (" . implode(", ", array_keys($status)) . ")
             AND (user_prefer.{$notif} = 0 OR user_prefer.{$notif} IS NULL)
             GROUP BY user.id
             ";
-        if ($debug) {
-            echo "Template: $tpl\n";
-            echo str_replace('?',"'{$project->id}'",$sql);
-        }
-        if ($query = Model\Invest::query($sql, array($project->id))) {
-            foreach ($query->fetchAll(\PDO::FETCH_OBJ) as $investor) {
+        $values = $status + [':project' => $project->id];
+        // static::debug('Retrieving donors list SQL', ['sql' => str_replace("\n", " ", \sqldbg($sql, $values))]);
+
+        if ($query = Model\Invest::query($sql, $values)) {
+            foreach ($query->fetchAll(\PDO::FETCH_CLASS, '\Goteo\Model\User') as $investor) {
+                static::info('Adding donor to massive sending', [$investor, 'type' => $type, $project, 'template' => $tpl]);
 
                 // $receivers[$investor->lang][] = (object) array(
                 $receivers[] = (object) array(
@@ -487,6 +488,9 @@ class UsersSend {
                     'lang' => $investor->lang
                     );
             }
+        }
+        if(empty($receivers)) {
+            static::warning("No receivers found for massive sending", ['type' => $type, $project, 'template' => $tpl]);
         }
 
         $comlang = Lang::current();
@@ -515,23 +519,29 @@ class UsersSend {
         $mailHandler->lang = $comlang;
         $mailHandler->massive = true;
         if( ! $mailHandler->save() ) {
-            // TODO: exception ?
+            static::critical("ERROR saving mailHandler", ['type' => $type, $project, $mailHandler]);
             return false;
         }
 
 
         // - se usa el metodo initializeSending para grabar el envío (parametro para autoactivar)
-        if (\Goteo\Model\Mail\Sender::initiateSending($mailHandler->id, $receivers, 1))
-            return false;
-        else
-            return true;
+        if (\Goteo\Model\Mail\Sender::initiateSending($mailHandler->id, $receivers, 1)) {
+            static::notice('Newsletter activated', ['type' => $type, $project, $mailHandler]);
+        }
+        else {
+            static::critical("ERROR initiating massive sending", ['type' => $type, $project, $mailHandler]);
+        }
+
+        return true;
 
     }
 
     /**
+     * @deprecated ?
+     * NO CURRENTLY USED
+     *
      * A los destinatarios de recompensa (regalo)
      * solo tipo 'fail' por ahora
-     *
      * @param $type string (FIXME: sin uso)
      * @param $project Object
      * @return bool

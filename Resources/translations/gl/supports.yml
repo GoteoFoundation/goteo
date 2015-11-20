@@ -1,15 +1,15 @@
 mandatory-support-field-description: 'É obrigado poñer algunha descrición'
-tooltip-project-support: 'Consello para editar as colaboracións existentes'
-tooltip-project-nsupport: 'Consello para encher unha nova colaboración'
-tooltip-project-support-description: 'Explica brevemente en que consiste a axuda que necesita o proxecto, para facilitar que a xente a recoñeza e se anime a colaborar.'
-tooltip-project-support-type: 'Selecciona se o proxecto precisa axuda en tarefas concretas ou ben empréstitos (de material, infraestrutura, etc).'
+mandatory-support-field-name: 'É obrigado poñerlle un nome á colaboración'
 step-6: Colaboracións
-supports-fields-support-title: Colaboracións
-supports-field-description: Descrición
-tooltip-project-support-support: 'Título descritivo sobre a colaboración necesaria.'
-tooltip-project-supports: 'En Goteo os proxectos poden recibir outro tipo de axudas ademais de doazóns monetarias. Hai xente que ó mellor non pode axudar economicamente mais si co seu talento, tempo, enerxía, etc.'
-supports-main-header: 'Solicitude de colaboracións'
 step-supports: 'Paso: Proxecto / Colaboracións'
+supports-field-description: Descrición
 supports-field-support: Resumo
 supports-field-type: 'Tipo de axuda'
-mandatory-support-field-name: 'É obrigado poñerlle un nome á colaboración'
+supports-fields-support-title: Colaboracións
+supports-main-header: 'Solicitude de colaboracións'
+tooltip-project-nsupport: 'Consello para encher unha nova colaboración'
+tooltip-project-support: 'Consello para editar as colaboracións existentes'
+tooltip-project-support-description: 'Explica brevemente en que consiste a axuda que necesita o proxecto, para facilitar que a xente a recoñeza e se anime a colaborar.'
+tooltip-project-support-support: 'Título descritivo sobre a colaboración necesaria.'
+tooltip-project-support-type: 'Selecciona se o proxecto precisa axuda en tarefas concretas ou ben empréstitos (de material, infraestrutura, etc).'
+tooltip-project-supports: 'En Goteo os proxectos poden recibir outro tipo de axudas ademais de doazóns monetarias. Hai xente que ó mellor non pode axudar economicamente mais si co seu talento, tempo, enerxía, etc.'

@@ -57,7 +57,10 @@
         "symfony/dom-crawler": "^2.7",
         "symfony/css-selector": "^2.7",
         "openclerk/country-list": "^1.0",
-        "mockery/mockery": "^0.9.4"
+        "mockery/mockery": "^0.9.4",
+        "cron/cron": "1.0.*@dev",
+        "symfony/process": "^2.7",
+        "bramus/monolog-colored-line-formatter": "~2.0"
 
     },
 

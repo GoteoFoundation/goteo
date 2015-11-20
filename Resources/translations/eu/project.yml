@@ -1,59 +1,59 @@
-project-rewards-individual_reward-units_left: '<span class="left">%s</span> ale geratzen dira'
-project-side-investors-header: 'Jada eman dute'
-project-rewards-header: Itzulera
-project-view-categories-title: Kategoriak
-project-menu-supporters: Finantzakideak
-project-view-metter-investors: Finantzakideak
-project-view-metter-investment: Kofinantzaketa
-project-rewards-social_reward-title: 'Talde itzulera'
-project-spread-widget_legend: 'Kopiatu eta itsatsi kode hau zure webgunean edo blogean eta lagundu ezazu proiektu hau zabaltzen'
-project-view-metter-day_created: sortua
-project-menu-messages: Kolaboratzaileak
-project-support-supertitle: 'Diru beharrak'
 contract-paypal_account: 'Paypal kontua:'
-project-spread-embed_code: 'Embed kodea'
-project-menu_title-updates: 'Feedback-a eta berriak: sustatzaileengandik zuzenean izango duzu  proiektuaren aurrerapausoen berri.'
-project-view-metter-day_closed: artxibatua
-project-view-metter-day_success: finantzatua
-project-spread-social: 'Goteo.org-en %s proiektua aldi berean finantzatzen dut'
-project-rewards-individual_reward-title: 'Banakako sariak'
-project-messages-closed: 'Oraindik ezin da mezurik proiektura bidali'
-project-share-pre_header: 'Zure sarean jakinarazi zeren '
-project-rewards-individual_reward-limited: 'Sari mugatua'
-project-collaborations-title: Bila
-project-view-metter-minimum: Minimoa
-project-menu-needs: Beharrizanak
-regular-new_project: 'Proiektu berria'
-project-menu-updates: Berriak
 project-collaborations-supertitle: 'Dirua ez diren beharrak'
-project-menu_title-messages: 'Ez dirua bakarrik: zure gaitasunak, materiala, denbora, kontaktuak, ezagutzak… eskain ditzakezu.'
-project-view-metter-optimum: Hobezina
+project-collaborations-title: Bila
+project-media-play_video: 'Ikusi bideoa'
 project-menu-home: Proiektua
-project-spread-widget: 'Proiektuaren widget-a'
-project-spread-widget_title: 'proiektuaren widget-a argitaratzen du'
-project-view-metter-got: Jasota
-project-view-metter-day_updated: '-(ean) jasotakoa'
-project-view-metter-days: 'Falta dira'
-project-messages-answer_it: Erantzun
-project-messages-send_message-button: Bidali
-project-messages-send_direct-header: 'Bidali esaiozu mezua proiektuaren bultzatzaileari'
-project-share-header: 'Proiektu hau konpartitu'
+project-menu-messages: Kolaboratzaileak
+project-menu-needs: Beharrizanak
+project-menu-supporters: Finantzakideak
+project-menu-updates: Berriak
 project-menu_title-home: 'Gizarte inpaktua: proiektu honek bere kodea irekitzen du eta ezagutza, datuak edo fitxategiak partekatzen ditu zure laguntzaren truk.'
+project-menu_title-messages: 'Ez dirua bakarrik: zure gaitasunak, materiala, denbora, kontaktuak, ezagutzak… eskain ditzakezu.'
+project-menu_title-needs: 'Kostuen gardentasuna: proiektu bakoitzak behar duen gutxienekoaren eta hobezinaren banakapen zehatza izango du.'
 project-menu_title-supporters: 'Laguntzarako gizarte-sarea: kofinantzatzaileak ekimena sustatzen dutenak bezain garrantzitsuak dira.'
-tooltip-project-scope: 'Zehaztu proiektu honek ustez izan duen eragin geografikoa (kategori bakoitzak haurrekoa du barne).'
+project-menu_title-updates: 'Feedback-a eta berriak: sustatzaileengandik zuzenean izango duzu  proiektuaren aurrerapausoen berri.'
+project-messages-answer_it: Erantzun
+project-messages-closed: 'Oraindik ezin da mezurik proiektura bidali'
+project-messages-send_direct-header: 'Bidali esaiozu mezua proiektuaren bultzatzaileari'
+project-messages-send_message-button: Bidali
+project-messages-send_message-header: 'Idatz ezazu zure mezua'
+project-not_published: 'Oraindik proiektu hau ez da publikoa'
+project-rewards-header: Itzulera
+project-rewards-individual_reward-limited: 'Sari mugatua'
+project-rewards-individual_reward-title: 'Banakako sariak'
+project-rewards-individual_reward-units_left: '<span class="left">%s</span> ale geratzen dira'
+project-rewards-social_reward-title: 'Talde itzulera'
+project-rewards-supertitle: 'Zer ematen du trukean'
+project-share-header: 'Proiektu hau konpartitu'
+project-share-pre_header: 'Zure sarean jakinarazi zeren '
+project-side-investors-header: 'Jada eman dute'
+project-spread-embed_code: 'Embed kodea'
 project-spread-header: 'Zabaldu proiektu hau'
 project-spread-pre_widget: 'Zabaldu proiektu hau'
-project-not_published: 'Oraindik proiektu hau ez da publikoa'
-tooltip-updates-home: 'tooltip-updates-home testua'
-tooltip-updates-tags: 'tooltip-updates-tags testua'
+project-spread-social: 'Goteo.org-en %s proiektua aldi berean finantzatzen dut'
+project-spread-widget: 'Proiektuaren widget-a'
+project-spread-widget_legend: 'Kopiatu eta itsatsi kode hau zure webgunean edo blogean eta lagundu ezazu proiektu hau zabaltzen'
+project-spread-widget_title: 'proiektuaren widget-a argitaratzen du'
+project-support-supertitle: 'Diru beharrak'
+project-view-categories-title: Kategoriak
+project-view-metter-day_closed: artxibatua
+project-view-metter-day_created: sortua
+project-view-metter-day_success: finantzatua
+project-view-metter-day_updated: '-(ean) jasotakoa'
+project-view-metter-days: 'Falta dira'
+project-view-metter-got: Jasota
+project-view-metter-investment: Kofinantzaketa
+project-view-metter-investors: Finantzakideak
+project-view-metter-minimum: Minimoa
+project-view-metter-optimum: Hobezina
+regular-new_project: 'Proiektu berria'
+tooltip-project-scope: 'Zehaztu proiektu honek ustez izan duen eragin geografikoa (kategori bakoitzak haurrekoa du barne).'
 tooltip-updates-allow_comments: tooltip-updates-allow_comments
 tooltip-updates-date: tooltip-updates-date
+tooltip-updates-home: 'tooltip-updates-home testua'
 tooltip-updates-image: tooltip-updates-image
 tooltip-updates-image_upload: tooltip-updates-image_upload
 tooltip-updates-media: tooltip-updates-media
+tooltip-updates-tags: 'tooltip-updates-tags testua'
 tooltip-updates-text: tooltip-updates-text
 tooltip-updates-title: tooltip-updates-title
-project-menu_title-needs: 'Kostuen gardentasuna: proiektu bakoitzak behar duen gutxienekoaren eta hobezinaren banakapen zehatza izango du.'
-project-media-play_video: 'Ikusi bideoa'
-project-rewards-supertitle: 'Zer ematen du trukean'
-project-messages-send_message-header: 'Idatz ezazu zure mezua'

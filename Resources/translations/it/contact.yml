@@ -1,14 +1,14 @@
+contact-captcha-field: 'Sei umano (ci dispiace)?'
+contact-captcha-refresh: 'Immagine di refresh'
 contact-email-field: 'Mail '
+contact-form-tags: '[utente] Ho problemi con il mio account;[nuovo promoter] Ho un problema tecnico;[nuovo promoter2] Ho dei dubbi sul questionario del progetto;[sviluppo]Ho dubbi di carattere tecnico;[giustificativo] Ho bisogno di un giustificati della mia donazione;[servizio] Voglio contrattare un servizio; [altro] È un''altra consulenza;'
 contact-message-field: Messaggio
 contact-name-field: Nome
-contact-captcha-refresh: 'Immagine di refresh'
 contact-send_message-button: Inviare
 contact-send_message-header: 'Mandaci un messaggio'
 contact-subject-field: 'Causa '
-contact-captcha-field: 'Sei umano (ci dispiace)?'
-error-contact-captcha: 'The reCAPTCHA wasn''t entered correctly. Try it again.'
 contact-tag-field: 'Tipo di domanda'
+error-contact-captcha: 'The reCAPTCHA wasn''t entered correctly. Try it again.'
 error-contact-email-empty: 'Non hai indicato la tua mail '
-error-contact-subject-empty: 'Non hai completato la motivazione'
 error-contact-message-empty: 'Non hai scritto nessun messaggio'
-contact-form-tags: '[utente] Ho problemi con il mio account;[nuovo promoter] Ho un problema tecnico;[nuovo promoter2] Ho dei dubbi sul questionario del progetto;[sviluppo]Ho dubbi di carattere tecnico;[giustificativo] Ho bisogno di un giustificati della mia donazione;[servizio] Voglio contrattare un servizio; [altro] È un''altra consulenza;'
+error-contact-subject-empty: 'Non hai completato la motivazione'

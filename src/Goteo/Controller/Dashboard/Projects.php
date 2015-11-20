@@ -17,10 +17,13 @@ namespace Goteo\Controller\Dashboard {
 		Goteo\Library\Feed,
         Goteo\Model\Mail,
 		Goteo\Library\Page,
-		Goteo\Model\Template,
+        Goteo\Model\Template,
+		Goteo\Model\Exception\ModelException,
         Goteo\Application\Session,
         Goteo\Application\Message,
-		Goteo\Application\Config;
+        Goteo\Application\Config,
+		Goteo\Application\App;
+    use Goteo\Core\Traits\StaticLoggerTrait;
 
 /*
  * las opciones para /dashboard/projects:
@@ -35,6 +38,8 @@ namespace Goteo\Controller\Dashboard {
  *      'account'  cuentas
  */
     class Projects {
+
+        use StaticLoggerTrait;
 
         /**
          * Verificación de proyecto de trabajo
@@ -255,7 +260,7 @@ namespace Goteo\Controller\Dashboard {
                     if ($messeger == $project->owner)
                         continue;
                     $who[$messeger] = $messeger;
-//                    unset($msgData); // los datos del mensaje del participante no se usan
+                   // unset($msgData); // los datos del mensaje del participante no se usan
                 }
             } elseif ($option == 'rewards' && !empty($_POST['msg_all'])) {
                 // a todos los cofinanciadores
@@ -301,11 +306,10 @@ namespace Goteo\Controller\Dashboard {
             }
 
             //  idioma de preferencia
-            $prefer = Model\User::getPreferences($project->user->id);
-            $comlang = !empty($prefer->comlang) ? $prefer->comlang : $project->user->lang;
+            $comlang = Model\User::getPreferences($project->user->id)->comlang;
 
             // Obtenemos la plantilla para asunto y contenido
-            $template = Template::get(2, $comlang);
+            $template = Template::get(Template::MESSAGE_DONORS, $comlang);
 
             // Sustituimos los datos
             if (!empty($_POST['subject'])) {
@@ -350,9 +354,13 @@ namespace Goteo\Controller\Dashboard {
 
             // - se usa el metodo initializeSending para grabar el envío (parametro para autoactivar)
             // , también metemos el reply y repplyName (remitente) en la instancia de envío
+            static::setLogger(App::getService('logger'));
+
             if (\Goteo\Model\Mail\Sender::initiateSending($mailHandler->id, $receivers, 1, $project->user->email, $remite)) {
-                Message::info(Text::get('dashboard-investors-mail-sended', 'la cola de envíos')); // cambiar este texto
+                static::notice('Promoter massive sending activated', [$project, $mailHandler]);
+                Message::info(Text::get('dashboard-investors-mail-sent')); // cambiar este texto
             } else {
+                static::critical("ERROR initiating promoter massive sending", [$project, $mailHandler]);
                 Message::error(Text::get('dashboard-investors-mail-fail', 'la cola de envíos')); // cambiar este texto
             }
 
@@ -604,7 +612,7 @@ namespace Goteo\Controller\Dashboard {
 
                     // si no ha encontrado otro, lanzamos la notificación a cofinanciadores
                     if (!$log->unique_issue) {
-                        \Goteo\Console\UsersSend::toInvestors('update', $project, $post);
+                        \Goteo\Console\UsersSend::toInvestors('update', $project, null, $post);
                     }
 
                     unset($log);

@@ -595,8 +595,7 @@ class ProjectsSubController extends AbstractSubController {
         $consultants = $project->getConsultants();
 
         //  idioma de preferencia
-        $prefer = Model\User::getPreferences($project->user->id);
-        $comlang = !empty($prefer->comlang) ? $prefer->comlang : $project->user->lang;
+        $comlang = Model\User::getPreferences($project->user)->comlang;
 
         // Obtenemos la plantilla para asunto y contenido
         $template = Template::get(Template::PROJECT_EXPRESS_DISCARD, $comlang);

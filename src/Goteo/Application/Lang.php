@@ -285,8 +285,6 @@ class Lang {
                 $desired['subdomain'] = $subdomain;
                 $save_lang = true;
             }
-            // set by navigator
-            $desired['browser'] = substr($request->server->get('HTTP_ACCEPT_LANGUAGE'), 0, 2);
         }
 
         // Las cookies para idiomas pueden ser problematicas, pues cambian el idioma sin enterarte.
@@ -300,15 +298,22 @@ class Lang {
             $desired['session'] = Session::get('lang');
         }
 
+        if($request) {
+            // set by navigator
+            $desired['browser'] = substr($request->server->get('HTTP_ACCEPT_LANGUAGE'), 0, 2);
+        }
+
+
         // set the lang in order of preference
-        foreach($desired as $l) {
+        foreach($desired as $part => $l) {
             $lang = static::set($l);
-            if($lang === $l) {
+            if($lang == $l) {
                 //Si el idioma existe (y se ha especificado), guardar preferencias
                 if($save_lang) {
                     //Enviar cookie
                     // Cookie::store('goteo_lang', $lang);
                     Session::store('lang', $lang);
+                    self::set($lang);
                     if(Session::isLogged()) {
                         //guardar preferencias de usuario
                         Session::getUser()->updateLang($lang);
@@ -317,8 +322,8 @@ class Lang {
                 break;
             }
         }
+        // print_r($desired);die("$lang [$save_lang] " . Session::get('lang'));
 
-        // print_r($desired);die($lang);
 
         return $lang;
     }

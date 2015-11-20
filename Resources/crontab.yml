@@ -1,0 +1,70 @@
+# Default job crontab
+#
+#
+# Schedule format:
+#
+# *    *    *    *    *    *
+# -    -    -    -    -    -
+# |    |    |    |    |    |
+# |    |    |    |    |    + year [optional]
+# |    |    |    |    +----- day of week (0 - 7) (Sunday=0 or 7)
+# |    |    |    +---------- month (1 - 12)
+# |    |    +--------------- day of month (1 - 31)
+# |    +-------------------- hour (0 - 23)
+# +------------------------- min (0 - 59)
+local:
+    -
+        schedule: '*/5 * * * *'
+        command: 'pwd > var/logs/test_exec_dir.log'
+        type: shell
+        nice: true
+    -
+        schedule: '* * * * *'
+        command: 'bin/console mailing last --update --logmail'
+        type: php
+        nice: true
+
+beta:
+    -
+        schedule: '10 0 * * *'
+        command: 'bin/console endround --logmail --update --lock > var/logs/last-cli-endround.log'
+        type: php
+        nice: true
+    -
+        schedule: '15 3 * * *'
+        command: 'bin/console dbverify --logmail --lock > var/logs/last-cli-dbverify.log'
+        type: php
+        nice: true
+    -
+        schedule: '25 5 * * *'
+        command: 'bin/console projectwatch --logmail --lock > var/logs/last-cli-projectswatcher.log'
+        type: php
+        nice: true
+    -
+        schedule: '* * * * *'
+        command: 'bin/console mailing last --update --logmail'
+        type: php
+        nice: true
+
+
+real:
+    -
+        schedule: '1 0 * * *'
+        command: 'bin/console endround --logmail --update --lock > var/logs/last-cli-endround.log'
+        type: php
+        nice: true
+    -
+        schedule: '5 3 * * *'
+        command: 'bin/console dbverify --logmail --lock > var/logs/last-cli-dbverify.log'
+        type: php
+        nice: true
+    -
+        schedule: '15 5 * * *'
+        command: 'bin/console projectwatch --logmail --lock > var/logs/last-cli-projectswatch.log'
+        type: php
+        nice: true
+    -
+        schedule: '* * * * *'
+        command: 'bin/console mailing last --update --logmail'
+        type: php
+        nice: true

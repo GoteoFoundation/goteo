@@ -177,44 +177,45 @@ class AuthController extends \Goteo\Core\Controller {
             }
         }
 
-        if ($request->getMethod() === 'POST') {
-            $email = $request->request->get('email');
-            $return= $request->request->get('return');
+        if($request->isXmlHttpRequest()) {
+            //Default error
+            $vars = ['error' => Text::get('recover-request-fail')];
 
-            if ($email && ($u = User::recover($email))) {
-                $errors=array();
-                // Obtenemos la plantilla para asunto y contenido
-                if( Mail::createFromTemplate($u->email, $u->name, Template::RETRIEVE_PASSWORD, [
-                        '%USERNAME%'   => $u->name,
-                        '%USERID%'     => $u->id,
-                        '%RECOVERURL%' => Config::get('url.main') . '/password-recovery/' . \mybase64_encode($u->token) . '?return=' . urlencode($return)
-                    ])
-                    ->send($errors)) {
-                        return $this->viewResponse(
-                            'auth/partials/recover_modal_success',
-                            array(
-                                'email' => $email
-                            )
-                        );
-                }
-                else {
-                    Message::error(implode("\n", $errors));
-                }
+            if ($request->isMethod('post')) {
+                $email = $request->request->get('email');
+                $return= $request->request->get('return');
 
-                //$vars['message'] = Text::get('recover-email-sended');
-            } else {
-                $vars['error'] = Text::get('recover-request-fail');
-                $vars['email'] = $email;
-                //Application\Message::error($vars['error']);
-                return $this->viewResponse(
-                    'auth/partials/recover_modal_error',
-                    array(
-                        'error' => $vars['error']
-                    )
-                );
+                if ($email && ($u = User::recover($email))) {
+                    $errors=array();
+                    // Obtenemos la plantilla para asunto y contenido
+                    if( Mail::createFromTemplate($u->email, $u->name, Template::RETRIEVE_PASSWORD, [
+                            '%USERNAME%'   => $u->name,
+                            '%USERID%'     => $u->id,
+                            '%RECOVERURL%' => Config::get('url.main') . '/password-recovery/' . \mybase64_encode($u->token) . '?return=' . $return
+                        ])
+                        ->send($errors)) {
+                            return $this->viewResponse(
+                                'auth/partials/recover_modal_success',
+                                array(
+                                    'email' => $email
+                                )
+                            );
+                    }
+                    else {
+                        $vars['error'] .= implode("\n", $errors);
+                    }
+                }
             }
-        }
 
+            //Application\Message::error($vars['error']);
+            return $this->viewResponse(
+                'auth/partials/recover_modal_error',
+                array(
+                    'error' => $vars['error']
+                )
+            );
+        }
+        return $this->redirect('/login?' . $request->getQueryString());
     }
 
     public function passwordResetAction(Request $request)
@@ -239,10 +240,9 @@ class AuthController extends \Goteo\Core\Controller {
         // Already logged?
         if (Session::isLogged()) {
             return $this->viewResponse('auth/reset_password', ['return' => $request->query->get('return')]);
-        } else {
-            return $this->redirect('/login?' . $request->getQueryString());
         }
 
+        return $this->redirect('/login?' . $request->getQueryString());
     }
 
      /**
@@ -254,6 +254,9 @@ class AuthController extends \Goteo\Core\Controller {
         if ($provider) {
             if($request->query->has('return')) {
                 Session::store('jumpto', $request->query->get('return'));
+            }
+            if($request->query->has('u')) {
+                $provider=$request->query->get('u');
             }
             $oauth = new SocialAuth($provider);
             if ($oauth->authenticate()) {
@@ -271,7 +274,7 @@ class AuthController extends \Goteo\Core\Controller {
                     }
                     // existe usuario, formulario de vinculacion
                     elseif ($oauth->error_type == 'user-password-exists') {
-                        Message::error($oauth->last_error);
+                        Message::info($oauth->last_error);
                         return $this->viewResponse('auth/confirm_account',
                                         array(
                                             'oauth' => $oauth,

@@ -8,12 +8,12 @@
  * and LICENSE files that was distributed with this source code.
  */
 
-namespace Goteo\Command;
+namespace Goteo\Console;
 
 use Goteo\Model;
 use Goteo\Application\Config;
 
-class DbVerifier {
+class DbVerifier extends AbstractCommandController {
 
     public static function process ($debug = false) {
 

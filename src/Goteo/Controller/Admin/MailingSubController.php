@@ -138,7 +138,7 @@ class MailingSubController extends AbstractSubController {
         // add subscribers
         Sender::addSubscribersFromSQL($sql);
 
-        if ($sender->setActive(true))  {
+        if ($sender->setActive(true)->active)  {
             $ok = true;
             // Evento Feed
             $log = new Feed();

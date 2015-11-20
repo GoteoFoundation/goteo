@@ -15,16 +15,31 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputOption;
+use Symfony\Component\EventDispatcher\Event;
 
 use Monolog\Logger;
 
-use Goteo\Console\Application as Console;
+use Goteo\Console\Console;
+use Goteo\Util\Monolog\Processor\WebProcessor;
 
 abstract class AbstractCommand extends Command {
     protected $logs = [];
+    protected $input;
+    protected $output;
 
-    public function addLogger(Logger $logger) {
-        $this->logs[$logger->getName()] = $logger;
+    public function setInput(InputInterface $input) {
+        $this->input = $input;
+        return $this;
+    }
+
+    public function setOutput(OutputInterface $output) {
+        $this->output = $output;
+        return $this;
+    }
+
+    public function addLogger(Logger $logger, $name = null) {
+        if(!$name) $name = $this->getName(); // Name of the command
+        $this->logs["cli.$name"] = $logger;
         return $this;
     }
 
@@ -41,34 +56,43 @@ abstract class AbstractCommand extends Command {
 
     /**
      * Logs info to the default log
-     * @return [type] [description]
      */
-    public function info($txt) {
-        return $this->getLogger()->info($txt);
+    public function log($message, array $context = [], $func = 'info') {
+        $logger = $this->getLogger();
+        $context = array_merge(['command' => $this->getName()], $context);
+        if($this->output && $this->input) {
+            if($this->input->getOption('verbose')) {
+                $this->output->writeln($txt);
+            }
+        }
+
+        if (null !== $logger && method_exists($logger, $func)) {
+            return $logger->$func($message, WebProcessor::processObject($context));
+        }
     }
 
-    /**
-     * Logs warnings to the default log
-     * @return [type] [description]
-     */
-    public function warn($txt) {
-        return $this->getLogger()->warn($txt);
+    public function info($message, array $context = []) {
+        return $this->log($message, $context, 'info');
     }
 
-    /**
-     * Logs errors to the default log
-     * @return [type] [description]
-     */
-    public function error($txt) {
-        return $this->getLogger()->error($txt);
+    public function error($message, array $context = []) {
+        return $this->log($message, $context, 'error');
     }
 
-    /**
-     * Logs debug to the default log
-     * @return [type] [description]
-     */
-    public function debug($txt) {
-        return $this->getLogger()->debug($txt);
+    public function warning($message, array $context = []) {
+        return $this->log($message, $context, 'warning');
+    }
+
+    public function notice($message, array $context = []) {
+        return $this->log($message, $context, 'notice');
+    }
+
+    public function critical($message, array $context = []) {
+        return $this->log($message, $context, 'critical');
+    }
+
+    public function debug($message, array $context = []) {
+        return $this->log($message, $context, 'debug');
     }
 
     /**

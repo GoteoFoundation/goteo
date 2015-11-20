@@ -56,9 +56,9 @@ img a {
 <body style="margin: 0px; padding: 0px; font-family: Helvetica, Arial, Geneva, sans-serif; color:#58595B; padding-left: 20px; background-color: #f1f1f1;">
 
 <?php if ($this->alternate) : ?>
-    <div style="width: 100%; height: 22px; line-height:22px; font-size:10px; color:#cccccc; background-color:#58595B;"><span style="margin-left:50px;"><?= $this->text_html('mailer-sinoves', $this->alternate . '" style="color:white;') ?></span></div>
+    <div style="width: 100%; height: 22px; line-height:22px; font-size:10px; color:#cccccc; background-color:#58595B;"><span style="margin-left:50px;"><?= $this->text('mailer-sinoves', $this->raw('alternate') . '" style="color:white;') ?></span></div>
 <?php endif ?>
-<div style="width: 100%; background-color:#CDE4E5; padding-top:7px; padding-bottom:7px;"><span style="margin-left:50px;"><img src="<?= SITE_URL ?>/goteo_logo.png" alt="Logo" /></span></div>
+<div style="width: 100%; background-color:#CDE4E5; padding-top:7px; padding-bottom:7px;"><span style="margin-left:50px;"><img src="<?= $this->get_url() ?>/goteo_logo.png" alt="Logo" /></span></div>
 
 <div style="width:630px; margin-left:50px; margin-top:20px;">
 

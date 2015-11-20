@@ -1,27 +1,27 @@
-form-add-button: 'Voeg toe'
-form-apply-button: 'Pas toe'
-form-project_status-fulfilled: Voltooid
-form-project_status-campaing: 'Campagne loopt'
-form-project_status-cancelled: Afgelast
-form-project_status-expired: Gesloten
-form-self_review-button: Corrigeer
-form-project-progress-title: 'Data evaluatie'
-form-project_status-cancel: Verworpen
-form-edit-button: Bewerken
-form-footer-errors_title: Fouten
-form-project_status-review: 'In afwachting van evaluatie'
-project-form-header: Formulier
-form-project_status-success: Gefinancierd
-form-navigation_bar-header: 'Ga naar'
-form-project_status-edit: 'In beoordeling'
-form-next-button: Volgende
 form-accept-button: OK
-form-project-info_status-title: 'Algehele status van de informatie'
+form-add-button: 'Voeg toe'
+form-ajax-info: 'Dit formulier wordt automatisch opgeslagen als je het invult'
+form-apply-button: 'Pas toe'
+form-edit-button: Bewerken
+form-errors-info: 'Totaal: %s | bij deze stap: %s'
+form-footer-errors_title: Fouten
+form-image_upload-button: 'afbeelding uploaden'
 form-media_send-button: 'Stuur video'
+form-navigation_bar-header: 'Ga naar'
+form-next-button: Volgende
+form-project-info_status-title: 'Algehele status van de informatie'
+form-project-progress-title: 'Data evaluatie'
 form-project-status-title: 'Project status'
+form-project_status-campaing: 'Campagne loopt'
+form-project_status-cancel: Verworpen
+form-project_status-cancelled: Afgelast
+form-project_status-edit: 'In beoordeling'
+form-project_status-expired: Gesloten
+form-project_status-fulfilled: Voltooid
+form-project_status-review: 'In afwachting van evaluatie'
+form-project_status-success: Gefinancierd
 form-remove-button: Verwijder
+form-self_review-button: Corrigeer
 form-send_review-button: Verstuur
 form-upload-button: Verstuur
-form-ajax-info: 'Dit formulier wordt automatisch opgeslagen als je het invult'
-form-errors-info: 'Totaal: %s | bij deze stap: %s'
-form-image_upload-button: 'afbeelding uploaden'
+project-form-header: Formulier

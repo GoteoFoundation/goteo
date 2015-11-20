@@ -42,15 +42,14 @@ goteo.keepAlive = function () {
 $(function() {
     // Close mensajes error
    $(".message-close").click(function (event) {
-            $("#message").fadeOut(2000);
+        $("#message").fadeOut(2000);
    });
 
     // VARIS
-    if(jQuery().pluginName) {
-        $('.scroll-pane').jScrollPane({showArrows: true});
-    }
+    $('.scroll-pane').jScrollPane({showArrows: true});
 
     $('body').addClass('js');
+
     $('.tipsy').tipsy();
     /* Rolover sobre los cuadros de color */
     $("li").hover(

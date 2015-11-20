@@ -8,36 +8,43 @@
  * and LICENSE files that was distributed with this source code.
  */
 
-use Goteo\Application\App;
-use Goteo\Application\Config;
-
 use Symfony\Component\Routing\Route;
 use Symfony\Component\Routing\RouteCollection;
 use Symfony\Component\DependencyInjection\Reference;
+
+use Goteo\Application\App;
+use Goteo\Console\Console;
+use Goteo\Application\Config;
+use Goteodev\Console\Command\StatusInitCommand;
+
+
 
 // Autoload additional Classes
 Config::addAutoloadDir(__DIR__ . '/src');
 
 $sc = App::getServiceContainer();
 
-// Adding toolbar as eventlistener
-$sc->register('dev.listener.profiler', 'Goteodev\Profiler\EventListener\ProfilerListener');
-$sc->getDefinition('dispatcher')->addMethodCall('addSubscriber', array(new Reference('dev.listener.profiler')));
+if(App::debug()) {
+    // Adding toolbar as eventlistener
+    $sc->register('dev.listener.profiler', 'Goteodev\Profiler\EventListener\ProfilerListener');
+    $sc->getDefinition('dispatcher')->addMethodCall('addSubscriber', array(new Reference('dev.listener.profiler')));
 
-// Adding grunt-livereload script
-$sc->register('dev.listener.livereload', 'Goteodev\Application\EventListener\LiveReloadListener');
-$sc->getDefinition('dispatcher')->addMethodCall('addSubscriber', array(new Reference('dev.listener.livereload')));
-
+    // Adding grunt-livereload script
+    $sc->register('dev.listener.livereload', 'Goteodev\Application\EventListener\LiveReloadListener');
+    $sc->getDefinition('dispatcher')->addMethodCall('addSubscriber', array(new Reference('dev.listener.livereload')));
+}
 
 // Adding Routes:
 
 $routes = App::getRoutes();
 
-// $routes->add('goteo-dev-payment-dummy', new Route(
-//     '/payment/dummy',
-//     array('_controller' => 'Goteodev\Controller\DummyPaymentGatewayController::paymentAction')
+// $routes->add('some-identifier', new Route(
+//     '/some/route',
+//     array('_controller' => 'Goteodev\Controller\SomeController::someAction')
 // ));
 
 
 // Adding payment method
 \Goteo\Payment\Payment::addMethod('Goteodev\Payment\DummyPaymentMethod');
+// add usefull testing commands
+Console::add(new StatusInitCommand());

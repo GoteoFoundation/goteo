@@ -15,6 +15,7 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\EventDispatcher\Event;
 use Goteo\Application\App;
+use Goteo\Util\Monolog\Processor\WebProcessor;
 
 abstract class Controller {
 
@@ -85,10 +86,34 @@ abstract class Controller {
         return App::dispatch($eventName, $event);
     }
 
-    /**
-     * Handy method to get the debug function
-     */
-    public function debug($debug = null) {
-        return App::debug($debug);
+    public function log($message, array $context = [], $func = 'info') {
+        $logger = App::getService('logger');
+        if (null !== $logger && method_exists($logger, $func)) {
+            return $logger->$func($message, WebProcessor::processObject($context));
+        }
+    }
+
+    public function info($message, array $context = []) {
+        return $this->log($message, $context, 'info');
+    }
+
+    public function error($message, array $context = []) {
+        return $this->log($message, $context, 'error');
+    }
+
+    public function warning($message, array $context = []) {
+        return $this->log($message, $context, 'warning');
+    }
+
+    public function notice($message, array $context = []) {
+        return $this->log($message, $context, 'notice');
+    }
+
+    public function critical($message, array $context = []) {
+        return $this->log($message, $context, 'critical');
+    }
+
+    public function debug($message, array $context = []) {
+        return $this->log($message, $context, 'debug');
     }
 }

@@ -1,30 +1,30 @@
-node-side-sumcalls-campaigns: Actif
-node-side-summary-active: Actifs
-node-footer-title-investors: Cofinanceurs
-node-side-summary-investors: Cofinanceurs
-node-side-summary-supporters: Collaborateurs
-node-side-searcher-byreward: 'Par récompenses'
-node-home-calls-headers: Convocations
-node-footer-title-creators: 'Porteurs de projets'
-node-side-sumcalls-header: 'Capital<br />riego'
-node-footer-investors-donate: 'Dons et dégrèvements'
-node-footer-title-social: Suivez-nous
-node-side-searcher-promote: Immanquables
-node-footer-investors-payment: 'Comment fonctionnent les paiements'
-node-footer-investors-invest: 'Comment soutenir un projet ?'
-node-side-summary-amount: 'Argent collecté'
-node-footer-title-help: 'Besoin d''aide ?'
-node-home-posts-header: Nouveautés
-node-side-sumcalls-calls: Ouvert
-node-side-sumcalls-rest: 'Reste à répartir'
-node-side-searcher-popular: Populaires
-node-side-searcher-recent: Récents
 node-footer-about: 'Réseau social pour contribuer à des projets qui génèrent et favorisent le bien commun : Avez-vous un projet ouvert ?'
-node-side-searcher-success: Réussis
-node-side-summary-success: Réussis
-node-side-sumcalls-budget: 'Total ( toutes les campagnes )'
-node-side-searcher-outdate: Urgents
 node-footer-help-what: 'Le crowdfunding c''est quoi ?'
 node-footer-help-why: 'Pourquoi SiteName est différent ?'
+node-footer-investors-donate: 'Dons et dégrèvements'
+node-footer-investors-invest: 'Comment soutenir un projet ?'
+node-footer-investors-payment: 'Comment fonctionnent les paiements'
+node-footer-title-creators: 'Porteurs de projets'
+node-footer-title-help: 'Besoin d''aide ?'
+node-footer-title-investors: Cofinanceurs
+node-footer-title-social: Suivez-nous
 node-header-sponsorby: 'Avec le support de :'
+node-home-calls-headers: Convocations
+node-home-posts-header: Nouveautés
 node-side-searcher-bycategory: 'Par catégorie'
+node-side-searcher-byreward: 'Par récompenses'
+node-side-searcher-outdate: Urgents
+node-side-searcher-popular: Populaires
+node-side-searcher-promote: Immanquables
+node-side-searcher-recent: Récents
+node-side-searcher-success: Réussis
+node-side-sumcalls-budget: 'Total ( toutes les campagnes )'
+node-side-sumcalls-calls: Ouvert
+node-side-sumcalls-campaigns: Actif
+node-side-sumcalls-header: 'Capital<br />riego'
+node-side-sumcalls-rest: 'Reste à répartir'
+node-side-summary-active: Actifs
+node-side-summary-amount: 'Argent collecté'
+node-side-summary-investors: Cofinanceurs
+node-side-summary-success: Réussis
+node-side-summary-supporters: Collaborateurs

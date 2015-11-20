@@ -10,29 +10,34 @@
 
 namespace Goteo\Console\Command;
 
-use Symfony\Component\Console\Input\InputInterface;
-use Symfony\Component\Console\Output\OutputInterface;
-use Symfony\Component\Console\Input\InputArgument;
-use Symfony\Component\Console\Input\InputOption;
+use Goteo\Console\ConsoleEvents;
+use Goteo\Console\Event\FilterInvestRefundEvent;
+use Goteo\Model\Invest;
 
+use Goteo\Model\Project;
+
+use Goteo\Payment\Payment;
+
+use Goteo\Util\Omnipay\Message\EmptySuccessfulResponse;
 use Omnipay\Common\Message\ResponseInterface;
 
-use Goteo\Application\Event\FilterInvestRefundEvent;
-use Goteo\Console\ConsoleEvents;
-use Goteo\Model\Mail;
-use Goteo\Model\Invest;
-use Goteo\Payment\Payment;
+use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Input\InputOption;
+use Symfony\Component\Console\Output\OutputInterface;
 
 class RefundCommand extends AbstractCommand {
 
-    protected function configure()
-    {
-        $this->setName("refund")
-             ->setDescription("Processes refunds for failed projects")
-             ->setDefinition(array(
-                      new InputOption('update', 'u', InputOption::VALUE_NONE, 'Actually does the job. If not specified, nothing is done, readonly process.'),
-                ))
-             ->setHelp(<<<EOT
+	protected function configure() {
+		$this->setName("refund")
+		     ->setDescription("Processes refunds for failed projects")
+		     ->setDefinition(array(
+				new InputOption('update', 'u', InputOption::VALUE_NONE, 'Actually does the job. If not specified, nothing is done, readonly process.'),
+				new InputOption('force', 'f', InputOption::VALUE_NONE, 'Force the invest update to a refund or cancelled status, even if it fails for any reason'),
+				new InputOption('project', 'p', InputOption::VALUE_OPTIONAL, 'Only processes the specified Project ID'),
+				new InputOption('invest', 'i', InputOption::VALUE_OPTIONAL, 'Only processes the specified Invest ID'),
+				new InputOption('any-project', 'a', InputOption::VALUE_NONE, 'Does not check for project to be in an UNFUNDED status'),
+			))
+		->setHelp(<<<EOT
 This script proccesses refunds for payments no yet refunded for archived projects
 A failed project will refund payments to the backers.
 
@@ -44,73 +49,126 @@ Processes pending refunds for archived (failed) projects in read-only mode
 Processes pending refunds for archived (failed) projects and write operations to database
 <info>./console refund --update</info>
 
+Processes pending refunds for archived (failed) projects and write operations to database
+Also changes the Invest status to cancelled or refunded even if the refund operation fails
+<info>./console refund --update --force</info>
+
+Processes pending refunds in read-only mode for project demo-project
+<info>./console refund --project demo-project</info>
+
+Processes refunds for Invest 12345
+<info>./console refund --invest 12345</info>
+
+
 EOT
-);
-    }
+		)
+		;
 
-    protected function execute(InputInterface $input, OutputInterface $output)
-    {
-        $update  = $input->getOption('update');
+	}
 
-        $output->writeln('<comment>Showing projects archived with pending refunds:</comment>');
-        if($invests = Invest::getFailed()) {
-            $processed = 0;
-            foreach($invests as $invest) {
-                if(!Payment::methodExists($invest->method)) {
-                    $this->debug("SKIPPING NON EXISTING METHOD: {$invest->method} from INVEST: {$invest->id} STATUS: {$invest->status}");
-                    if ($output->isVerbose()) {
-                        $output->writeln("<comment>SKIPPING METHOD: {$invest->method} from INVEST: {$invest->id} STATUS: {$invest->status}</comment>");
-                    }
-                    continue;
-                }
+	protected function execute(InputInterface $input, OutputInterface $output) {
+		$update      = $input->getOption('update');
+		$project_id  = $input->getOption('project');
+		$invest_id   = $input->getOption('invest');
+		$force       = $input->getOption('force');
+		$any_project = $input->getOption('any-project');
 
-                $this->info("Found active invest on archived project: {$invest->id} STATUS: {$invest->status} METHOD: {$invest->method} INVESTED: {$invest->invested} PROJECT: {$invest->project} USER: {$invest->user} PREAPPROVAL: {$invest->preapproval}");
+		if ($invest_id) {
+			$output->writeln("<comment>Processing Invest [$invest_id]:</comment>");
+			$invests = [Invest::get($invest_id)];
+		} else {
+			if ($project_id) {
+				$output->writeln("<comment>Processing project [$project_id] with pending refunds:</comment>");
+			} else {
+				$output->writeln('<comment>Processing projects archived with pending refunds:</comment>');
+			}
+			$invests = Invest::getList(['methods' => null,
+					'status'                            => Invest::STATUS_CHARGED,
+					'projectStatus'                     => $any_project?null:Project::STATUS_UNFUNDED,
+					'projects'                          => $project_id
+				], null, 0, 10000);
 
-                // get my money back!!
-                if( $update ) {
-                    $method = $invest->getMethod();
-                    // process gateway refund
-                    // go to the gateway, gets the response
-                    $response = $method->refund();
+		}
 
-                    // Checks and redirects
-                    if (!$response instanceof ResponseInterface) {
-                        throw new \RuntimeException('This response does not implements ResponseInterface.');
-                    }
+		if (!$invests) {
+			$this->info("No invests found!");
+			return;
+		}
 
-                    // On-sites can return a successful response here
-                    if ($response->isSuccessful()) {
-                        // Event invest success
-                        $invest = $this->dispatch(ConsoleEvents::INVEST_RETURNED, new FilterInvestRefundEvent($invest, $method, $response))->getInvest();
-                        // New Invest Refund Event
-                        if($invest->status === Invest::STATUS_RETURNED) {
-                            $this->info('Invest cancelled successfully');
-                            $output->writeln('<info>Invest cancelled successfully</info> ' . $response->getMessage());
-                        } else {
-                            $this->error('Error cancelling invest. INVEST: ' . $invest->id . ' STATUS: ' . $invest->status);
-                            $output->writeln('<error>Invest not cancelled!</error>' .  $response->getMessage());
-                        }
-                    }
-                    else {
-                        $invest = $this->dispatch(ConsoleEvents::INVEST_RETURN_FAILED, new FilterInvestRefundEvent($invest, $method, $response))->getInvest();
-                        $this->error('Error refunding invest. INVEST: ' . $invest->id . ' STATUS: ' . $invest->status);
-                        $output->writeln('<error>Failed return for invest!</error> ' . $response->getMessage());
-                    }
+		$processed = 0;
+		foreach ($invests as $invest) {
+			$project             = $invest->getProject();
+			$returned            = ($project->status == Project::STATUS_UNFUNDED);
+			$event_refund        = $returned?ConsoleEvents::INVEST_RETURNED:ConsoleEvents::INVEST_CANCELLED;
+			$event_refund_failed = $returned?ConsoleEvents::INVEST_RETURN_FAILED:ConsoleEvents::INVEST_CANCEL_FAILED;
 
-                }
-                $processed++;
-            }
-        }
-        if($processed == 0) {
-            $this->info("No failed invests found");
-            $output->writeln('<info>--No errors found--</info>');
-        }
+			if ((int) $invest->status !== Invest::STATUS_CHARGED) {
+				$this->debug("Skipping status [{$invest->status}]. Only CHARGED status will be processed", [$invest, 'project' => $invest->project, 'user' => $invest->user]);
+				continue;
+			}
+			if (!Payment::methodExists($invest->method)) {
+				$this->debug("Skipping non existing method {$invest->method}", [$invest, 'project' => $invest->project, 'user' => $invest->user]);
+				continue;
+			}
 
-        if( !$update ) {
-           $this->warn('Dummy execution. No write operations done');
-           $output->writeln('<comment>No write operations done. Please execute the command with the --update modifier to perform write operations</comment>');
-        }
+			$this->info("Processing active invest", [$invest, 'project' => $invest->project, 'user' => $invest->user, 'invested' => $invest->invested, 'preapproval' => $invest->preapproval]);
 
+			// get my money back!!
+			if ($update) {
+				$method = $invest->getMethod();
 
-    }
+				if ($invest->pool) {
+					$this->notice("Invest refund goes to pool", [$invest, 'project' => $invest->project, 'user' => $invest->user]);
+					$response = new EmptySuccessfulResponse('Invest to Pool refund');
+				} elseif ($method->refundable()) {
+					// process gateway refund
+					// go to the gateway, gets the response
+					$response = $method->refund();
+				} elseif ($force) {
+					$this->warning("Forcing method: {$invest->method} as is not refundable. FORCING SUCCESSFUL REFUND", [$invest, 'project' => $invest->project, 'user' => $invest->user]);
+					$response = new EmptySuccessfulResponse('Forced refund');
+				} else {
+					$this->error("Skipping method: {$invest->method} as is not refundable.", [$invest, 'project' => $invest->project, 'user' => $invest->user]);
+					continue;
+				}
+				// Checks and redirects
+				if (!$response instanceof ResponseInterface) {
+					throw new \RuntimeException('This response does not implements ResponseInterface.');
+				}
+
+				// On-sites can return a successful response here
+				if ($response->isSuccessful()) {
+					if ($force) {
+						$this->warning("Forcing method: {$invest->method}. Original refund FAILED. FORCING SUCCESSFUL REFUND", [$invest, 'project' => $invest->project, 'user' => $invest->user]);
+					}
+					// Event invest success
+					$invest = $this->dispatch($event_refund, new FilterInvestRefundEvent($invest, $method, $response))->getInvest();
+				} else {
+					$invest = $this->dispatch($event_refund_failed, new FilterInvestRefundEvent($invest, $method, $response))->getInvest();
+					$this->error('Error refunding invest', [$invest, 'project' => $invest->project, 'user' => $invest->user, 'message' => $response->getMessage()]);
+					continue;
+				}
+
+				// New Invest Refund Event
+				if ($invest->status === $returned?Invest::STATUS_RETURNED:Invest::STATUS_CANCELLED) {
+					$this->notice('Invest refunded successfully', [$invest, 'project' => $invest->project, 'user' => $invest->user, 'message' => $response->getMessage()]);
+				} else {
+					$this->error('Error refunding invest', [$invest, 'project' => $invest->project, 'user' => $invest->user, 'message' => $response->getMessage()]);
+				}
+
+			}
+			$processed++;
+		}
+
+		if ($processed == 0) {
+			$this->info("No invests processed");
+			return;
+		}
+
+		if (!$update) {
+			$this->warning('Dummy execution. No write operations done');
+			$output->writeln('<comment>No write operations done. Please execute the command with the --update modifier to perform write operations</comment>');
+		}
+
+	}
 }

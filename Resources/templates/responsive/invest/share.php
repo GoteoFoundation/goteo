@@ -19,15 +19,18 @@ $this->section('content');
 	<div class="row row-form">
 			<div class="panel panel-default invest-container">
 				<div class="panel-body">
-					<h2 class="col-sm-offset-1 padding-bottom-2"><?= $this->text('invest-step-4') ?></h2>
+					<h2 class="col-sm-offset-1 padding-bottom-2"><?= $this->text('invest-share-title') ?></h2>
 					<div class="reminder col-md-10 col-md-offset-1">
         		    <?= $this->text('project-invest-ok') ?>
       				</div>
 
                     <?= $this->supply('sub-header', $this->get_session('sub-header')) ?>
 
-					<h3 class="col-md-offset-1 padding-bottom-6"><?= $this->text('project-spread-header') ?></h3>
+                    <div class="row">
+
+						<h3 class="col-md-offset-1 col-md-10 clearfix padding-bottom-6"><?= $this->text('project-spread-header') ?></h3>
 					
+					</div>
 					<div class="row">
 						<div class="col-sm-5 col-md-offset-1 margin-2">
 							<a href="<?= $this->facebook_url ?>" class="btn btn-block btn-social btn-facebook">

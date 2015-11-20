@@ -10,119 +10,174 @@
 
 namespace Goteo\Console\EventListener;
 
-use Symfony\Component\EventDispatcher\EventSubscriberInterface;
-use Symfony\Component\Console\Event\ConsoleCommandEvent;
-use Symfony\Component\Console\Event\ConsoleTerminateEvent;
-use Symfony\Component\Console\Event\ConsoleExceptionEvent;
-use Symfony\Component\Console\ConsoleEvents;
-use Symfony\Component\Console\Input\InputOption;
-use Symfony\Component\Console\Input\ArgvInput;
-
-use Monolog\Logger;
-use Monolog\Handler\RotatingFileHandler;
-use Monolog\Handler\StreamHandler;
-use Goteo\Util\Monolog\Handler\MailHandler;
-use Monolog\Processor\MemoryUsageProcessor;
-use Monolog\Processor\IntrospectionProcessor;
-
+use Bramus\Monolog\Formatter\ColoredLineFormatter;
 use Goteo\Application\Config;
+use Goteo\Application\EventListener\AbstractListener;
 use Goteo\Application\EventListener\ExceptionListener;
 use Goteo\Console\Command\AbstractCommand;
+use Goteo\Console\UsersSend;
+use Goteo\Core\Traits\LockTrait;
 use Goteo\Model\Mail;
+use Goteo\Util\Monolog\Handler\MailHandler;
+use Monolog\Formatter\HtmlFormatter;
+use Monolog\Formatter\LineFormatter;
 
-//
-class ConsoleExceptionListener implements EventSubscriberInterface
-{
-    private $_mailhandler = null;
+use Monolog\Handler\FingersCrossedHandler;
+use Monolog\Handler\StreamHandler;
 
-    public function onCommand(ConsoleCommandEvent $event) {
-        // get the command to be executed
-        $command = $event->getCommand();
+use Monolog\Logger;
 
-        // add a global option to the command
-        $command->addOption('logmail', null, InputOption::VALUE_NONE, 'Send errors by mail (specified in settings.yml)');
-        // merge the application's input definition
-        $command->mergeApplicationDefinition();
+use Symfony\Component\Console\ConsoleEvents;
+use Symfony\Component\Console\Event\ConsoleCommandEvent;
+use Symfony\Component\Console\Event\ConsoleExceptionEvent;
+use Symfony\Component\Console\Event\ConsoleTerminateEvent;
+use Symfony\Component\Console\Input\ArgvInput;
+use Symfony\Component\Console\Input\InputOption;
 
-        // get a new input argument
-        $input = new ArgvInput();
+/**
+ * Inspired in
+ * http://php-and-symfony.matthiasnoback.nl/2013/11/symfony2-add-a-global-option-to-console-commands-and-generate-pid-file/
+ */
 
-        // we use the input definition of the command
-        $input->bind($event->getCommand()->getDefinition());
+class ConsoleExceptionListener extends AbstractListener {
+	use LockTrait;
 
-        $name = $command->getName();
-        // if mail errors
-        if($input->getOption('logmail')) {
-            $this->_mailhandler = new MailHandler(Mail::createFromHtml(Config::getMail('fail'),
-                                                             '',
-                                                             "CLI-ERROR: [$name] in [" . Config::get('url.main') . "] ",
-                                                             "<pre>SERVER: " . print_R($_SERVER, 1) . "</pre>\n"
-                                                             ),
-                                        Logger::ERROR);
-        }
+	private $starttime   = 0;
+	private $mailhandler = null;
+	private $debug       = false;
+	private $lock_name   = null;
 
-        $env = Config::get('env');
+	public function onCommand(ConsoleCommandEvent $event) {
+		$env             = Config::get('env');
+		$this->starttime = microtime(true);
 
-        if(!$command instanceOf AbstractCommand) {
-            return;
-        }
+		// get the command to be executed
+		$command = $event->getCommand();
 
-        // Add logger
-        $command->addLogger(
-                    new Logger("cli.$name", [
-                        new StreamHandler('php://stderr', Logger::INFO),
-                        new RotatingFileHandler(GOTEO_LOG_PATH . "cli.$name-$env.log", 0, Logger::DEBUG),
-                        $this->_mailhandler
-                    ], [
-                        // processor, memory usage
-                        new MemoryUsageProcessor,
-                        new IntrospectionProcessor(Logger::ERROR)
-                    ])
-                );
-    }
+		// add a global option for sending errors by mail to the command
+		$command->addOption('logmail', null, InputOption::VALUE_NONE, 'Send errors by mail (specified as mail.fail in settings.yml)');
 
-    public function onTerminate(ConsoleTerminateEvent $event) {
-        // // get the output
-        // $output = $event->getOutput();
+		// add a global option for locking processes to the command
+		$command->addOption('lock', null, InputOption::VALUE_NONE, 'Allows only one instance of the process, even in a distributed system (uses MySQL GET_LOCK)');
+		$command->addOption('lock-name', null, InputOption::VALUE_OPTIONAL, 'Specifies the lock name (otherwise will be the command name)', $command->getName());
 
-        // // get the command that has been executed
-        // $command = $event->getCommand();
+		// merge the application's input definition
+		$command->mergeApplicationDefinition();
 
-        // // // display something
-        // // $output->writeln(sprintf('After running command <info>%s</info>', $command->getName()));
+		// get a new input argument
+		$input = new ArgvInput();
 
-        // // change the exit code
-        // $event->setExitCode(128);
-    }
+		// we use the input definition of the command
+		$input->bind($event->getCommand()->getDefinition());
 
-    public function onException(ConsoleExceptionEvent $event) {
-        $output = $event->getOutput();
+		$name = $command->getName();
 
-        $command = $event->getCommand();
+		// If verbose, debut to stderr
+		if ($input->getOption('verbose')) {
+			$this->debug = true;
+		}
 
-        $output->writeln(sprintf('Oops, exception thrown while running command <info>%s</info>', $command->getName()));
+		// nice colors
+		if ($this->logger) {
+			// if errors should be mailed
+			if ($input->getOption('logmail')) {
+				$mailer            = Mail::createFromHtml(Config::getMail('fail'), '', "CLI-ERROR: [$name] in [" .Config::get('url.main')."]");
+				$this->mailhandler = new MailHandler($mailer, '', Logger::DEBUG, true);
+				$this->mailhandler->setFormatter(new HtmlFormatter());
+				$this->logger->pushHandler(new FingersCrossedHandler($this->mailhandler, Logger::ERROR));
+			}
 
-        // get the current exit code (the exception code or the exit code set by a ConsoleEvents::TERMINATE event)
-        $exitCode = $event->getExitCode();
-        $exception = $event->getException();
+			if (!$input->getOption('no-ansi')) {
+				foreach ($this->logger->getHandlers() as $handler) {
+					if ($handler instanceOf StreamHandler && $handler->getFormatter() instanceOf LineFormatter) {
+						$handler->setFormatter(new ColoredLineFormatter());
+					}
+				}
+			}
+		}
 
-        if($command instanceOf AbstractCommand) {
-            // $command->error($exception->getMessage());
-            foreach(explode("\n", ExceptionListener::jTraceEx($exception)) as $line) {
-                $command->error($line);
-            }
-        }
-        // change the exception to another one and show some info about it
-        // $event->setException(new \LogicException(ExceptionListener::jTraceEx($exception), $exitCode, $exception));
-    }
+		$this->debug("Command [".$command->getName()."] started", ['command' => $command->getName(), 'options' => $input->getOptions(), 'started' => $this->starttime]);
 
-    public static function getSubscribedEvents()
-    {
-        return array(
-            ConsoleEvents::COMMAND => 'onCommand',
-            ConsoleEvents::TERMINATE => 'onTerminate',
-            ConsoleEvents::EXCEPTION => 'onException',
-        );
-    }
+		// Add logger for some Objects
+		UsersSend::setLogger($this->logger);
+
+		// Get a lock for this process
+		$this->lock_name = $env.'.'.$input->getOption('lock-name');
+		$lock            = $input->getOption('lock');
+		if (!$this->getNamedLock($this->lock_name)) {
+			$this->notice("Command [".$command->getName()."] is still running", ['command' => $command->getName(), 'lock' => $this->lock_name]);
+			// command should terminate if lock option defined
+			if ($lock) {
+				$this->warning("Aborting execution", ['command' => $command->getName(), 'lock' => $this->lock_name]);
+				$event->disableCommand();
+			}
+		} elseif ($lock) {
+			$this->info("Acquired lock", ['command' => $command->getName(), 'lock' => $this->lock_name]);
+		}
+
+		if ($command instanceOf AbstractCommand) {
+			// Replace input/output
+			$command->setOutput($event->getOutput());
+			$command->setInput($input);
+			// Add logger
+			$command->addLogger($this->logger);
+		}
+
+	}
+
+	public function onTerminate(ConsoleTerminateEvent $event) {
+		// get the input/output
+		$input  = $event->getInput();
+		$output = $event->getOutput();
+
+		// get the command that has been executed
+		$command = $event->getCommand();
+
+		if ($this->lock_name && $this->releaseNamedLock($this->lock_name)) {
+			if ($input->getOption('lock')) {
+				$this->info('Lock released', ['command' => $command->getName(), 'lock' => $this->lock_name]);
+			}
+		}
+
+		$now = (microtime(true)-$this->starttime);
+		$this->debug("Terminate command", ['command' => $command->getName(), 'options' => $input->getOptions(), 'time' => $now, 'started' => $this->starttime]);
+		if ($output->isVerbose()) {
+			$output->writeln("Total command time: $now seconds");
+		}
+		// Sent delayed emails
+		if ($this->mailhandler) {
+			$this->mailhandler->sendDelayed();
+		}
+		// // change the exit code
+		// $event->setExitCode(128);
+	}
+
+	public function onException(ConsoleExceptionEvent $event) {
+		$input  = $event->getInput();
+		$output = $event->getOutput();
+
+		$command = $event->getCommand();
+
+		$output->writeln(sprintf('Oops, exception thrown while running command <info>%s</info>', $command->getName()));
+
+		// get the current exit code (the exception code or the exit code set by a ConsoleEvents::TERMINATE event)
+		$exitCode  = $event->getExitCode();
+		$exception = $event->getException();
+
+		$this->error('Command Exception', ['error' => $exception->getMessage(),'command' => $command->getName(), 'options' => $input->getOptions(), 'trace' => ExceptionListener::jTraceEx($exception)]);
+
+		if ($input->getOption('logmail')) {
+			$output->writeln(sprintf('<error>Error trace sent to mail %s</error>', Config::get('mail.fail')));
+		}
+		// change the exception to another one and show some info about it
+		// $event->setException(new \LogicException(ExceptionListener::jTraceEx($exception), $exitCode, $exception));
+	}
+
+	public static function getSubscribedEvents() {
+		return array(
+			ConsoleEvents::COMMAND   => 'onCommand',
+			ConsoleEvents::TERMINATE => 'onTerminate',
+			ConsoleEvents::EXCEPTION => 'onException',
+		);
+	}
 }
-

@@ -81,8 +81,10 @@ class SentSubController extends AbstractSubController {
           ]];
         }
 
+      $templates = Template::getAllMini();
       return array(
         'template' => 'admin/sent/detail',
+        'templates' => $templates,
         'mail' => $mail,
         'sender' => $mailing ? $mailing->id : '',
         'stats' => $stats,

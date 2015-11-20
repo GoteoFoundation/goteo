@@ -10,81 +10,68 @@
 
 namespace Goteo\Application\EventListener;
 
-use Symfony\Component\EventDispatcher\EventSubscriberInterface;
-
-use Goteo\Application\Message;
-use Goteo\Application\App;
-use Goteo\Library\Text;
 use Goteo\Application\AppEvents;
 use Goteo\Application\Event\FilterAuthEvent;
+use Goteo\Application\Message;
+use Goteo\Library\Text;
 
-//TODO: use symfony components for security
-class AuthListener implements EventSubscriberInterface
-{
-    public function loginSuccess(FilterAuthEvent $event)
-    {
-        $user = $event->getUser();
-        // App::getService('logger')->debug('LOGIN SUCCEDEED: USERNAME: ' . $user->id . ' PASSWORD: ' . $user->password);
-        App::getService('logger')->info('LOGIN SUCCEDEED: USERNAME: ' . $user->id);
-    }
+class AuthListener extends AbstractListener {
+	public function loginSuccess(FilterAuthEvent $event) {
+		$user = $event->getUser();
+		// $this->info('LOGIN FAILED', [$user, 'password' => $user->password]);
+		$this->notice('Login succedeed', [$user]);
+	}
 
-    public function logout(FilterAuthEvent $event)
-    {
-        $user = $event->getUser();
-        App::getService('logger')->info('LOGOUT: USERNAME: ' . $user->id);
-    }
+	public function logout(FilterAuthEvent $event) {
+		$user = $event->getUser();
+		$this->info('Logout', [$user]);
+	}
 
-    public function signupSuccess(FilterAuthEvent $event)
-    {
-        $user = $event->getUser();
-        App::getService('logger')->info('SIGNUP SUCCEDEED: USERNAME: ' . $user->id);
-    }
+	public function signupSuccess(FilterAuthEvent $event) {
+		$user = $event->getUser();
+		$this->notice('Signup succedeed', [$user]);
+	}
 
-    public function loginFail(FilterAuthEvent $event)
-    {
-        $user = $event->getUser();
-        // App::getService('logger')->debug('LOGIN FAILED: USERNAME: ' . $user->id . ' PASSWORD: ' . $user->password);
-        App::getService('logger')->info('LOGIN FAILED: USERNAME: ' . $user->id);
+	public function loginFail(FilterAuthEvent $event) {
+		$user = $event->getUser();
+		// $this->info('LOGIN FAILED', [$user, 'password' => $user->password]);
+		$this->info('Login failed', [$user]);
 
-        Message::error(Text::get('login-fail'));
+		Message::error(Text::get('login-fail'));
 
-    }
+	}
 
-    public function signupFail(FilterAuthEvent $event)
-    {
-        $user = $event->getUser();
-        // App::getService('logger')->debug('LOGIN FAILED: USERNAME: ' . $user->id . ' PASSWORD: ' . $user->password);
-        App::getService('logger')->info('SIGNUP FAILED: USERNAME: ' . $user->id);
+	public function signupFail(FilterAuthEvent $event) {
+		$user = $event->getUser();
+		// $this->info('LOGIN FAILED', [$user, 'password' => $user->password]);
+		$this->info('Signup failed', [$user]);
 
-        Message::error(Text::get('login-fail'));
+		Message::error(Text::get('login-fail'));
 
-    }
+	}
 
-    public function loginRedundant(FilterAuthEvent $event) {
-        $user = $event->getUser();
-        App::getService('logger')->debug('LOGIN REPEATED: USERNAME: ' . $user->id);
-    }
+	public function loginRedundant(FilterAuthEvent $event) {
+		$user = $event->getUser();
+		$this->debug('Login repeated', [$user]);
+	}
 
-    public function resetPassword(FilterAuthEvent $event)
-    {
-        $user = $event->getUser();
+	public function resetPassword(FilterAuthEvent $event) {
+		$user = $event->getUser();
 
-        Message::info(Text::get('password-changed-ok'));
+		Message::info(Text::get('password-changed-ok'));
 
-        App::getService('logger')->info('RESET PASSWORD SUCCEDEED: USERNAME: ' . $user->id);
-    }
+		$this->info('Reset password succedeed', [$user]);
+	}
 
-    public static function getSubscribedEvents()
-    {
-        return array(
-            AppEvents::LOGIN_SUCCEEDED => 'loginSuccess',
-            AppEvents::SIGNUP_SUCCEEDED => 'signupSuccess',
-            AppEvents::LOGIN_FAILED => 'loginFail',
-            AppEvents::LOGOUT => 'logout',
-            AppEvents::SIGNUP_FAILED => 'signupFail',
-            AppEvents::ALREADY_LOGGED => 'loginRedundant',
-            AppEvents::RESET_PASSWORD => 'resetPassword',
-        );
-    }
+	public static function getSubscribedEvents() {
+		return array(
+			AppEvents::LOGIN_SUCCEEDED  => 'loginSuccess',
+			AppEvents::SIGNUP_SUCCEEDED => 'signupSuccess',
+			AppEvents::LOGIN_FAILED     => 'loginFail',
+			AppEvents::LOGOUT           => 'logout',
+			AppEvents::SIGNUP_FAILED    => 'signupFail',
+			AppEvents::ALREADY_LOGGED   => 'loginRedundant',
+			AppEvents::RESET_PASSWORD   => 'resetPassword',
+		);
+	}
 }
-

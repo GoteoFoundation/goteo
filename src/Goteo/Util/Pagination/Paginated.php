@@ -28,10 +28,11 @@ class Paginated {
 
         // quitar los indices...
         $obj = array();
-        foreach ($the_obj as $key => $value) {
-            $obj[] = $value;
+        if(is_object($the_obj) || is_array($the_obj)) {
+            foreach ($the_obj as $key => $value) {
+                $obj[] = $value;
+            }
         }
-
 		$this->setRs($obj);
 		$this->setPageSize($displayRows);
 		$this->assignPageNumber($pageNum);

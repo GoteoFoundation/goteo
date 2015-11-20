@@ -39,12 +39,6 @@ class ProfilerListener implements EventSubscriberInterface
             return;
         }
 
-        //non cookies for notifyAction on investController
-        if($request->attributes->get('_controller') == 'Goteo\Controller\InvestController::notifyPaymentAction') {
-            return;
-        }
-
-
         $head = DebugProfiler::getHeadContent();
         $body = DebugProfiler::getBodyContent();
         $content = $response->getContent();

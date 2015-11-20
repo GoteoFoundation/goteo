@@ -33,9 +33,9 @@ include __DIR__ . '/../header.html.php'; ?>
 
         <div id="main" class="<?php echo $vars['option'] ?>">
 
-<?php if ($vars['section'] == 'projects') echo View::get('dashboard/projects/selector.html.php', $vars); ?>
-<?php if ($vars['section'] == 'calls') echo View::get('dashboard/calls/selector.html.php', $vars); ?>
-<?php if ($vars['section'] == 'translates') echo View::get('dashboard/translates/selector.html.php', $vars); ?>
+            <?php if ($vars['section'] == 'projects') echo View::get('dashboard/projects/selector.html.php', $vars); ?>
+            <?php if ($vars['section'] == 'calls') echo View::get('dashboard/calls/selector.html.php', $vars); ?>
+            <?php if ($vars['section'] == 'translates') echo View::get('dashboard/translates/selector.html.php', $vars); ?>
 
             <?php if (!empty($vars['message'])) : ?>
                 <div class="widget">

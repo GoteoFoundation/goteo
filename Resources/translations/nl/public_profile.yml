@@ -1,19 +1,19 @@
-profile-invest_on-title: Co-financieringen
-profile-worth-title: 'Draag hier bij:'
-profile-last_worth-title: Datum
 profile-interests-header: 'Ik ben geinteresseerd in projecten die...'
-profile-my_investors-header: 'Mijn co-financiers'
-profile-my_worth-header: 'Mijn flow'
-profile-keywords-header: 'Mijn steekwoorden'
-profile-location-header: 'Mijn locatie'
-profile-my_projects-header: 'Mijn projecten'
-profile-webs-header: 'Mijn websites'
-profile-worthcracy-title: Positie
-profile-name-header: 'Profiel van'
 profile-invest_on-header: 'Projecten die ik steun'
+profile-invest_on-title: Co-financieringen
+profile-keywords-header: 'Mijn steekwoorden'
+profile-last_worth-title: Datum
+profile-location-header: 'Mijn locatie'
+profile-my_investors-header: 'Mijn co-financiers'
+profile-my_projects-header: 'Mijn projecten'
+profile-my_worth-header: 'Mijn flow'
+profile-name-header: 'Profiel van'
 profile-patron-header: 'Profiel van <span class="red">%s project</span>'
-user-message-send_personal-header: 'Stuur een bericht aan de gebruiker'
 profile-sharing_interests-header: 'Interesse delen'
-profile-widget-button: 'Laat profiel zien'
 profile-social-header: Sociaal
+profile-webs-header: 'Mijn websites'
+profile-widget-button: 'Laat profiel zien'
 profile-widget-user-header: Gebruiker
+profile-worth-title: 'Draag hier bij:'
+profile-worthcracy-title: Positie
+user-message-send_personal-header: 'Stuur een bericht aan de gebruiker'

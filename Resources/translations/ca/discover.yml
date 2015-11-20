@@ -1,20 +1,20 @@
-discover-patron-header: '<span class="greenblue">%s</span> recomana<br />aquests <span class="red">projectes</span>'
-discover-group-outdate-header: 'A punt de caducar'
-discover-searcher-bycategory-all: TOTES
-discover-searcher-bylocation-all: TOTS
-discover-searcher-byreward-all: TOTS
-discover-group-archive-header: 'Arxivats '
-discover-searcher-byreward-header: 'Per retorn:'
-discover-searcher-bycategory-header: 'Per categoria:'
-discover-searcher-bycontent-header: 'Per contingut:'
-discover-searcher-bylocation-header: 'Per lloc:'
 discover-group-all-header: 'En campanya'
+discover-group-archive-header: 'Arxivats '
 discover-group-fulfilled-header: 'Han complert amb els retorns col·lectius'
-discover-searcher-header: 'Cerca un projecte'
 discover-group-others-header: 'En altres nodes'
+discover-group-outdate-header: 'A punt de caducar'
 discover-group-popular-header: 'Més populars'
 discover-group-recent-header: Recents
-discover-searcher-button: Cercar
-discover-results-header: 'Resultat de la cerca'
 discover-group-success-header: 'Reeixits '
+discover-patron-header: '<span class="greenblue">%s</span> recomana<br />aquests <span class="red">projectes</span>'
 discover-results-empty: 'No hem trobat cap projecte que compleixi els criteris de cerca'
+discover-results-header: 'Resultat de la cerca'
+discover-searcher-button: Cercar
+discover-searcher-bycategory-all: TOTES
+discover-searcher-bycategory-header: 'Per categoria:'
+discover-searcher-bycontent-header: 'Per contingut:'
+discover-searcher-bylocation-all: TOTS
+discover-searcher-bylocation-header: 'Per lloc:'
+discover-searcher-byreward-all: TOTS
+discover-searcher-byreward-header: 'Per retorn:'
+discover-searcher-header: 'Cerca un projecte'

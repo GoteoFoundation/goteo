@@ -18,7 +18,7 @@
  **/
 
 
-use Goteo\Command\UsersSend;
+use Goteo\Console\UsersSend;
 use Goteo\Core\Exception,
     Goteo\Model,
     Goteo\Application\Config,
@@ -41,6 +41,9 @@ ini_set("display_errors", 1);
 define('GOTEO_WEB_PATH', dirname(__DIR__) . '/public/');
 
 require_once __DIR__ . '/../src/autoload.php';
+
+echo "\033[0;31mThis script is obsolete and will be removed soon\nUse ./bin/console oneround instead\033[0m\n";
+echo "\033[0;33mSOLO SE TRATAN LOS APORTES PAYPAL CON PREAPPROVAL\033[0m\n";
 
 echo "This script gets active projects and process rounds\n";
 
@@ -74,7 +77,7 @@ if (in_array('--update', $argv)) {
     echo "Dummy run! Use the --update modifier to actually update the database \n";
 }
 
-$FEED = true; // anyway, only Feed if Update
+$FEED = false; // anyway, only Feed if Update
 if (in_array('--no-feed', $argv)) {
     echo "No public feed\n";
     $FEED = false;
@@ -831,7 +834,7 @@ function process_project($project)
 
             // devolver los aportes
             process_invests($project, $projectAccount, 'cancel');
-            project_fail($project, $per_amount);
+            // project_fail($project, $per_amount);
 
         } else {
 
@@ -841,7 +844,7 @@ function process_project($project)
                 echo "Ha llegado a los " . $project->days_round1 . " dias de campaña, al ser ronda única termina aquí\n";
                 // ejecutar los cargos
                 process_invests($project, $projectAccount, 'execute');
-                project_unique_round($project, $per_amount);
+                // project_unique_round($project, $per_amount);
 
 
             } elseif ($project->days_active >= $project->days_total) {
@@ -850,7 +853,7 @@ function process_project($project)
                 echo "Ha llegado a los " . $project->days_total . " dias de campaña (final de segunda ronda)\n";
                 // ejecutar los cargos de la segunda ronda (y los que quedaran de primera ronda)
                 process_invests($project, $projectAccount, 'execute');
-                project_second_round($project, $per_amount);
+                // project_second_round($project, $per_amount);
 
 
             } elseif (empty($project->passed)) {
@@ -859,7 +862,7 @@ function process_project($project)
                 echo "Ha llegado a los " . $project->days_round1 . " dias de campaña, pasa a segunda ronda\n";
                 // ejecutar los cargos de la primera ronda
                 process_invests($project, $projectAccount, 'execute');
-                project_first_round($project, $per_amount);
+                // project_first_round($project, $per_amount);
 
 
             } else {

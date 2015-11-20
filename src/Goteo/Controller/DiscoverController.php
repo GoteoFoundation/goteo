@@ -98,20 +98,18 @@ class DiscoverController extends \Goteo\Core\Controller {
 
         $params['query']   =  strip_tags($query);
         foreach(array('category', 'location', 'reward') as $key) {
+            $val = null;
             if($request->request->has($key)) {
                 $val = $request->request->get($key);
             }
             elseif($key === 'category') {
                 if(empty($category)) $val = $request->request->get('category');
             }
-            else {
-                continue;
-            }
-            $params[$key] = (is_array($val) ? $val : [$val]);
-            if(in_array('all', $val)) $params[$key] = array();
+            if($val) $params[$key] = (is_array($val) ? $val : [$val]);
+            else $params[$key] = array();
         }
 
-        // print_r($params);die;
+        // print_r($params);
         if($params) {
             $results = \Goteo\Library\Search::params($params, false, 33);
         }

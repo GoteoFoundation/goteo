@@ -14,7 +14,7 @@ foreach ($project->images as $image) {
         'type'  => 'html',
         'class' => 'inline gallery-image',
         'html'  => is_object($image) ?
-                   $image . '<img src="' . SITE_URL . '/image/' . $image->id . '/128/128" alt="Imagen" /><button class="image-remove weak" type="submit" name="gallery-'.$image->hash.'-remove" title="Quitar imagen" value="remove" onclick="document.getElementById(\'proj-superform\').action += \'#images\';"></button>' :
+                   '<img src="' . SITE_URL . '/image/' . $image->id . '/128/128" alt="Imagen" /><button class="image-remove weak" type="submit" name="gallery-'.$image->hash.'-remove" title="Quitar imagen" value="remove" onclick="document.getElementById(\'proj-superform\').action += \'#images\';"></button>' :
                    ''
     );
 

@@ -55,4 +55,107 @@ final class ConsoleEvents
      */
     const INVEST_RETURN_FAILED = 'console.refund.failed';
 
+
+    /**
+     * The console.project.ending event is thrown when a project is about to end his active campaign
+     * triggered when 5, 3, 2 or 1 days left
+     *
+     * The event listener receives an
+     * Goteo\Application\Event\FilterProjectEvent instance.
+     *
+     * @var string
+     */
+    const PROJECT_ENDING = 'console.project.ending';
+
+    /**
+     * The console.project.fail event is thrown when a project reaches the end of his active campaign
+     * and fails to achieve the amount required
+     *
+     * The event listener receives an
+     * Goteo\Application\Event\FilterProjectEvent instance.
+     *
+     * @var string
+     */
+    const PROJECT_FAILED = 'console.project.fail';
+
+    /**
+     * The console.project.one_round event is thrown when a project reaches the end of the
+     * 1st round (and unique) of its campaign and successfully achieves the amount required
+     * Only for projects configured as one-round-only
+     *
+     * The event listener receives an
+     * Goteo\Application\Event\FilterProjectEvent instance.
+     *
+     * @var string
+     */
+    const PROJECT_ONE_ROUND = 'console.project.one_round';
+
+    /**
+     * The console.project.round1 event is thrown when a project reaches the end of the
+     * 1st round (and it's not unique) of its campaign and successfully achieves the amount required
+     * Only for projects configured as 2-rounds
+     *
+     * The event listener receives an
+     * Goteo\Application\Event\FilterProjectEvent instance.
+     *
+     * @var string
+     */
+    const PROJECT_ROUND1 = 'console.project.round1';
+
+    /**
+     * The console.project.round2 event is thrown when a project reaches the end of the
+     * 2nd round of its campaign (which means it's already successful)
+     * Only for projects configured as 2-rounds
+     *
+     * The event listener receives an
+     * Goteo\Application\Event\FilterProjectEvent instance.
+     *
+     * @var string
+     */
+    const PROJECT_ROUND2 = 'console.project.round2';
+
+    /**
+     * The console.mailing.sendmail event is thrown when a
+     * individual mail from the mailer_send table is sent
+     *
+     * The event listener receives an
+     * Goteo\Application\Event\FilterSendmailEvent instance.
+     *
+     * @var string
+     */
+    const MAILING_SENDMAIL = 'console.mailing.sendmail';
+
+    /**
+     * The console.mailing.start event is thrown when a
+     * massive mailing starts
+     *
+     * The event listener receives an
+     * Goteo\Application\Event\FilterSendmailEvent instance.
+     *
+     * @var string
+     */
+    const MAILING_STARTED = 'console.mailing.start';
+
+    /**
+     * The console.mailing.finish event is thrown when a
+     * massive mailing finishes
+     *
+     * The event listener receives an
+     * Goteo\Application\Event\FilterMailingEvent instance.
+     *
+     * @var string
+     */
+    const MAILING_FINISHED = 'console.mailing.finish';
+
+    /**
+     * The console.mailing.abort event is thrown when a
+     * massive mailing is aborted due any reaason
+     *
+     * The event listener receives an
+     * Goteo\Application\Event\FilterMailingEvent instance.
+     *
+     * @var string
+     */
+    const MAILING_ABORTED = 'console.mailing.abort';
+
 }

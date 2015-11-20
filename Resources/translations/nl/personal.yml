@@ -1,36 +1,36 @@
-mandatory-project-field-zipcode: 'Je moet een postcode van de projectleider invoeren'
-personal-field-address: Adres
-personal-field-location: Stad
-personal-field-country: Land
-personal-field-contract_birthdate: Geboortedatum
-personal-field-post_address-different: Verschillend
-personal-field-contract_email: 'Email gekoppeld aan het project'
-tooltip-project-entity_cif: 'Voer het kvk-nummer van de organisatie in'
-tooltip-project-entity_office: 'Voer de positie in die je bekleedt binnen de organisatie (secretaris, voorzitter, ...)'
-tooltip-project-contract_birthdate: 'Voer je geboortedatum in. Het wordt niet gepubliceerd, maar gebruikt voor statistische doeleinden.'
-tooltip-project-post_address: 'geef indien nodig een gedetailleerd postadres'
-personal-field-contract_data: 'Informatie over de projectleider'
-personal-main-header: 'Informatie over de projectleider'
-tooltip-project-main_address: 'Officieel adres van de persoon of organisatie (wat van toepassing is)'
-personal-field-contract_entity-entity: 'Rechtsvorm (cooperatie, stichting, BV, etc.)'
-tooltip-project-contract_email: 'Hoofdemailadres geassocieerd met het project. Je zult alle notificaties van het SiteName team op dit adres ontvangen.'
-personal-field-entity_name: 'Officiele naam van de organisatie'
-personal-field-entity_cif: KvK-nummer
-personal-field-contract_entity-person: Persoon
-personal-field-entity_office: 'Positie in de organisatie'
-personal-field-zipcode: Postcode
-step-2: Promotor
-personal-field-post_address-same: Hetzelfde
-step-userPersonal: 'Step: Persoonlijke gegevens'
-personal-field-phone: Telefoonnummer
-tooltip-project-phone: 'Telefoonnummer (mobiel of vast) met prefix'
-validate-project-value-entity_cif: 'Het kvknummer is niet geldig.'
-validate-project-value-phone: 'Het formaat van het telefoonnummer is incorrect'
 mandatory-project-field-address: 'Het adres van de leider van het project is nodig'
-tooltip-project-contract_data: 'Of het nou een persoon of een rechtsvorm is, iemand moet benoemd worden tot projectpromotor, en als contactpersoon voor SiteName. Het hoeft niet dezelfde te zijn als het gebruikersprofiel in het vorige veld.'
-tooltip-project-entity_name: 'Voer de naam van de organisatie in, precies zoals die bij de kvk bekend is.'
-tooltip-user-image: 'Je hoeft geen profielfoto te uploaden, maar het helpt wel je te identificeren.'
+mandatory-project-field-contract_email: 'Je moet de email van de projectleider invoeren'
 mandatory-project-field-country: 'Je moet een land voor de projectleider invoeren'
 mandatory-project-field-phone: 'Je moet het telefoonnummer invoeren van de projectleider'
-mandatory-project-field-contract_email: 'Je moet de email van de projectleider invoeren'
 mandatory-project-field-residence: 'Je moet de woonplaats invoeren van de projectleider'
+mandatory-project-field-zipcode: 'Je moet een postcode van de projectleider invoeren'
+personal-field-address: Adres
+personal-field-contract_birthdate: Geboortedatum
+personal-field-contract_data: 'Informatie over de projectleider'
+personal-field-contract_email: 'Email gekoppeld aan het project'
+personal-field-contract_entity-entity: 'Rechtsvorm (cooperatie, stichting, BV, etc.)'
+personal-field-contract_entity-person: Persoon
+personal-field-country: Land
+personal-field-entity_cif: KvK-nummer
+personal-field-entity_name: 'Officiele naam van de organisatie'
+personal-field-entity_office: 'Positie in de organisatie'
+personal-field-location: Stad
+personal-field-phone: Telefoonnummer
+personal-field-post_address-different: Verschillend
+personal-field-post_address-same: Hetzelfde
+personal-field-zipcode: Postcode
+personal-main-header: 'Informatie over de projectleider'
+step-2: Promotor
+step-userPersonal: 'Step: Persoonlijke gegevens'
+tooltip-project-contract_birthdate: 'Voer je geboortedatum in. Het wordt niet gepubliceerd, maar gebruikt voor statistische doeleinden.'
+tooltip-project-contract_data: 'Of het nou een persoon of een rechtsvorm is, iemand moet benoemd worden tot projectpromotor, en als contactpersoon voor SiteName. Het hoeft niet dezelfde te zijn als het gebruikersprofiel in het vorige veld.'
+tooltip-project-contract_email: 'Hoofdemailadres geassocieerd met het project. Je zult alle notificaties van het SiteName team op dit adres ontvangen.'
+tooltip-project-entity_cif: 'Voer het kvk-nummer van de organisatie in'
+tooltip-project-entity_name: 'Voer de naam van de organisatie in, precies zoals die bij de kvk bekend is.'
+tooltip-project-entity_office: 'Voer de positie in die je bekleedt binnen de organisatie (secretaris, voorzitter, ...)'
+tooltip-project-main_address: 'Officieel adres van de persoon of organisatie (wat van toepassing is)'
+tooltip-project-phone: 'Telefoonnummer (mobiel of vast) met prefix'
+tooltip-project-post_address: 'geef indien nodig een gedetailleerd postadres'
+tooltip-user-image: 'Je hoeft geen profielfoto te uploaden, maar het helpt wel je te identificeren.'
+validate-project-value-entity_cif: 'Het kvknummer is niet geldig.'
+validate-project-value-phone: 'Het formaat van het telefoonnummer is incorrect'

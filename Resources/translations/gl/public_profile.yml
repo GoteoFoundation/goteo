@@ -1,21 +1,21 @@
-profile-invest_on-title: Cofinancia
-profile-worth-title: 'Achega aquí:'
-profile-last_worth-title: Data
-profile_patron-invest_on-header: 'Ademais cofinancio'
 profile-interests-header: 'Interésanme proxecto co obxectivo...'
-user-message-restricted: 'Só pode recibir mensaxes dos seus cofinanceiros'
-profile-my_investors-header: 'Os meus cofinanceiros'
-profile-my_worth-header: 'O meu caudal en goteo'
-profile-keywords-header: 'As miñas palabras clave'
-profile-location-header: 'A miña ubicación'
-profile-my_projects-header: 'Os meus proxectos'
-profile-webs-header: 'As miñas webs'
-profile-worthcracy-title: Posición
-profile-name-header: 'Perfil de'
 profile-invest_on-header: 'Proxectos que apoio'
+profile-invest_on-title: Cofinancia
+profile-keywords-header: 'As miñas palabras clave'
+profile-last_worth-title: Data
+profile-location-header: 'A miña ubicación'
+profile-my_investors-header: 'Os meus cofinanceiros'
+profile-my_projects-header: 'Os meus proxectos'
+profile-my_worth-header: 'O meu caudal en goteo'
+profile-name-header: 'Perfil de'
 profile-patron-header: 'Aconsella <span class="red">%s proxectos</span>'
-user-message-send_personal-header: 'Envía unha mensaxe ó usuario'
 profile-sharing_interests-header: 'Compartindo intereses'
-profile-widget-button: 'Ver perfil'
 profile-social-header: Social
+profile-webs-header: 'As miñas webs'
+profile-widget-button: 'Ver perfil'
 profile-widget-user-header: Usuario/a
+profile-worth-title: 'Achega aquí:'
+profile-worthcracy-title: Posición
+profile_patron-invest_on-header: 'Ademais cofinancio'
+user-message-restricted: 'Só pode recibir mensaxes dos seus cofinanceiros'
+user-message-send_personal-header: 'Envía unha mensaxe ó usuario'

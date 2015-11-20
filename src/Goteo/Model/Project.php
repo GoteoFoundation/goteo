@@ -418,6 +418,7 @@ namespace Goteo\Model {
 				// metemos los datos del proyecto en la instancia
                 $sql = "SELECT project.*,
                                 project.id REGEXP '[0-9a-f]{32}' as draft,
+                                IFNULL(project.updated, project.created) as updated,
                                 node.name as node_name,
                                 node.url as node_url,
                                 node.label as node_label,
@@ -448,11 +449,12 @@ namespace Goteo\Model {
 				";
 
                 $values = array(':id'=>$id,':lang'=>$lang);
+                // echo \sqldbg($sql, $values);
 				$query = self::query($sql, $values);
 				$project = $query->fetchObject(__CLASS__);
 
                 if (!$project instanceof \Goteo\Model\Project) {
-                    throw new Exception\ModelNotFoundException(Text::html('fatal-error-project'));
+                    throw new Exception\ModelNotFoundException(Text::get('fatal-error-project'));
                 }
 
                 // si nos estan pidiendo el idioma original no traducimos nada, damos lo que sacamos de
@@ -510,27 +512,7 @@ namespace Goteo\Model {
                 }
 
                 // owner
-
-                $project->user = new User;
-                $project->user->id = $project->user_id;
-                $project->user->name = $project->user_name;
-                $project->user->email = $project->user_email;
-                $project->user->lang = $project->user_lang;
-                $project->user->about = $project->user_about;
-                $project->user->location = $project->user_location;
-
-                $project->user->avatar = Image::get($project->user_avatar);
-
-                $project->user->webs = User\Web::get($project->user_id);
-
-                //
-                $project->user->twitter = $project->user_twitter;
-                $project->user->facebook = $project->user_facebook;
-                $project->user->linkedin = $project->user_linkedin;
-                $project->user->identica = $project->user_identica;
-                $project->user->google = $project->user_google;
-
-                $project->user->facebook = $project->user_facebook;
+                $project->user = $project->getOwner();
 
                 //all galleries
                 $project->all_galleries = Project\Image::getGalleries($project->id);
@@ -664,6 +646,13 @@ namespace Goteo\Model {
             return $this->callInstance;
         }
 
+        // returns the current user
+        public function getOwner() {
+            if($this->userInstance) return $this->userInstance;
+            $this->userInstance = User::get($this->owner);
+            return $this->userInstance;
+        }
+
         /*
          *  Cargamos los datos mínimos de un proyecto: id, name, owner, comment, lang, status, user
          */
@@ -693,21 +682,15 @@ namespace Goteo\Model {
 				$project = $query->fetchObject(__CLASS__);
 
                 if (!$project instanceof \Goteo\Model\Project) {
-                    throw new Exception\ModelNotFoundException(Text::html('fatal-error-project'));
+                    throw new Exception\ModelNotFoundException(Text::get('fatal-error-project'));
                 }
 
                 // primero, que no lo grabe
                 $project->dontsave = true;
 
                 // owner
-                $project->user=new User;
-                $project->user->id=$project->user_id;
-                $project->user->name=$project->user_name;
-                $project->user->email=$project->user_email;
-                $project->user->lang=$project->user_lang;
-                $project->user->node=$project->user_node;
+                $project->user = $project->getOwner();
 
-                $project->user->avatar = Image::get($project->user_avatar);
                 $project->image = Image::get($project->image);
 
                 return $project;
@@ -768,17 +751,11 @@ namespace Goteo\Model {
 				$project = $query->fetchObject(__CLASS__);
 
                 if (!$project instanceof \Goteo\Model\Project) {
-                    throw new Exception\ModelNotFoundException(Text::html('fatal-error-project'));
+                    throw new Exception\ModelNotFoundException(Text::get('fatal-error-project'));
                 }
 
-                $project->user=new User;
-                $project->user->id=$project->user_id;
-                $project->user->name=$project->user_name;
-                $project->user->email=$project->user_email;
-                $project->user->lang=$project->user_lang;
-                $project->user->node=$project->user_node;
+                $project->user = $project->getOwner();
 
-                $project->user->avatar = Image::get($project->user_avatar);
                 $project->image = Image::get($project->image);
 
                 // si recibimos lang y no es el idioma original del proyecto, ponemos la traducción y mantenemos para el resto de contenido
@@ -905,6 +882,16 @@ namespace Goteo\Model {
             }
 
             return $list;
+        }
+
+        /**
+         * Return the currently achieved amount percent
+         */
+        function getAmountPercent() {
+            if ($this->mincost > 0) {
+                return floor(($this->amount / $this->mincost) * 100);
+            }
+            return 0;
         }
 
         /**
@@ -2166,11 +2153,10 @@ namespace Goteo\Model {
         public function succeed(&$errors = array()) {
 			try {
 				$sql = "UPDATE project SET status = :status, success = :success WHERE id = :id";
-				self::query($sql, array(':status'=>4, ':success'=>date('Y-m-d'), ':id'=>$this->id));
-
-                // si está en una convocatoria hay que actualizar el numero de proyectos en marcha
-                if (isset($this->called)) {
-                    Call\Project::numSuccessProjects($this->called->id);
+                $date = date('Y-m-d');
+				if(self::query($sql, array(':status'=>self::STATUS_FUNDED, ':success'=>$date, ':id'=>$this->id))) {
+                    $this->status = self::STATUS_FUNDED;
+                    $this->success = $date;
                 }
 
                 return true;
@@ -2187,11 +2173,9 @@ namespace Goteo\Model {
         public function passDate(&$errors = array()) {
 			try {
 				$sql = "UPDATE project SET passed = :passed WHERE id = :id";
-				self::query($sql, array(':passed'=>date('Y-m-d'), ':id'=>$this->id));
-
-                // si está en una convocatoria hay que actualizar el numero de proyectos en marcha
-                if (isset($this->called)) {
-                    Call\Project::numSuccessProjects($this->called->id);
+                $date = date('Y-m-d');
+				if(self::query($sql, array(':passed' => $date, ':id' => $this->id))) {
+                    $this->passed = $date;
                 }
 
                 return true;
@@ -2312,8 +2296,7 @@ namespace Goteo\Model {
                         // email al autor
 
                         //  idioma de preferencia del usuario
-                        $prefer = User::getPreferences($user->id);
-                        $comlang = !empty($prefer->comlang) ? $prefer->comlang : $user->lang;
+                        $comlang = User::getPreferences($user)->comlang;
 
                         // Obtenemos la plantilla para asunto y contenido
                         $template = Template::get(Template::CALL_CONFIRMATION, $comlang);
@@ -2942,7 +2925,8 @@ namespace Goteo\Model {
 
                 $the_proj = self::get($proj->id); // ya coge la configuración de rondas
                 // porcentaje conseguido
-                $the_proj->percent = floor(($the_proj->amount / $the_proj->mincost) * 100);
+                $the_proj->percent = 0;
+                if($the_proj->mincost) $the_proj->percent = floor(($the_proj->amount / $the_proj->mincost) * 100);
 
                 // en days mantenemos el número de días de campaña
                 $the_proj->days = (int) $proj->dias - 1;
@@ -2952,7 +2936,9 @@ namespace Goteo\Model {
             return $projects;
         }
 
-        /*
+        /**
+         * @deprecated
+         * ONLY USED IN THE FORMER CLI CRON PROCESS
          * Lista de proyectos en campaña (para ser revisados por el cron/execute)
          *
          * Escogemos los proyectos que están a 5 días de terminar primera ronda o 3 días de terminar segunda.
@@ -3179,27 +3165,9 @@ namespace Goteo\Model {
             // Si la lista de proyectos necesita campos calculados lo añadimos aqui  (ver view/admin/projects/list.html.php)
             // como los consultores
             $sql = "SELECT
-                        project.id,
+                        project.*,
                         project.id REGEXP '[0-9a-f]{32}' as draft,
-                        project.name as name,
-                        project.status as status,
-                        project.published as published,
-                        project.created as created,
                         IFNULL(project.updated, project.created) as updated,
-                        project.success as success,
-                        project.closed as closed,
-                        project.node as node,
-                        project.mincost as mincost,
-                        project.maxcost as maxcost,
-                        project.amount as amount,
-                        project.image as image,
-                        project.num_investors as num_investors,
-                        project.num_messengers as num_messengers,
-                        project.num_posts as num_posts,
-                        project.days as days,
-                        project.owner as owner,
-                        project.translate as translate,
-                        project.progress as progress,
                         user.email as user_email,
                         user.name as user_name,
                         user.lang as user_lang,
@@ -3221,7 +3189,7 @@ namespace Goteo\Model {
 
 
             $query = self::query($sql, $values);
-            foreach ($query->fetchAll(\PDO::FETCH_CLASS, 'Goteo\Model\Project') as $proj) {
+            foreach ($query->fetchAll(\PDO::FETCH_CLASS, __CLASS__) as $proj) {
                 //$the_proj = self::getMedium($proj['id']);
 
                 $proj->user = new User;

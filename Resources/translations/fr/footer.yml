@@ -1,18 +1,18 @@
-footer-platoniq-iniciative: 'Une initiative de'
-footer-service-campaign: Campagnes
 footer-header-categories: Catégories
-footer-service-consulting: Consulting
-regular-footer-contact: Contact
-footer-service-resources: Capital
-footer-header-social: 'Suivez nous'
-footer-resources-glossary: Glossaire
-footer-header-sponsors: 'Soutien institutionnel'
-regular-footer-legal: 'Mentions légales'
-footer-resources-press: 'Kit Presse'
-regular-footer-privacy: 'Politique de confidentialité'
 footer-header-projects: Projets
 footer-header-resources: Resources
 footer-header-services: Services
-regular-footer-terms: 'Conditions d''utilisation'
-footer-service-workshop: Ateliers
+footer-header-social: 'Suivez nous'
+footer-header-sponsors: 'Soutien institutionnel'
+footer-platoniq-iniciative: 'Une initiative de'
+footer-resources-glossary: Glossaire
+footer-resources-press: 'Kit Presse'
 footer-resources-source_code: 'Code source AGPL3'
+footer-service-campaign: Campagnes
+footer-service-consulting: Consulting
+footer-service-resources: Capital
+footer-service-workshop: Ateliers
+regular-footer-contact: Contact
+regular-footer-legal: 'Mentions légales'
+regular-footer-privacy: 'Politique de confidentialité'
+regular-footer-terms: 'Conditions d''utilisation'

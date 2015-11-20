@@ -14,7 +14,7 @@ use Goteo\Model;
 use Goteo\Library\Text;
 use Goteo\Library\Feed;
 
-class ProjectWatcher {
+class ProjectWatcher extends AbstractCommandController {
 
     /*
      * Control diario de proyectos
@@ -76,11 +76,14 @@ class ProjectWatcher {
                 if ($debug) echo "Proyecto [{$project->name}] SKIPPED\n";
                 continue;
             }
-            if ($debug) echo "Proyecto [{$project->name}], Impulsor: {$project->user->name}, email: {$project->user->email}, estado {$project->status}, lleva {$project->days} dias, conseguido {$project->amount}\n";
+            if ($debug) echo "Proyecto [{$project->name}], Impulsor: {$project->user->name}, email: {$project->user->email}, estado {$project->status}, lleva {$project->days} dias, conseguido {$project->amount} mincost: {$project->mincost} maxcost: {$project->maxcost} success: {$project->success} passed: {$project->passed} one_round: {$project->one_round}\n";
 
             // primero los que no se bloquean
             //Solicitud de datos del contrato
-            if ($project->passed == date('Y-m-d', mktime(0, 0, 0, date('m'), date('d') - 1, date('Y')) )) {
+
+            $previous_day = date('Y-m-d', mktime(0, 0, 0, date('m'), date('d') - 1, date('Y')) );
+
+            if ( ( $project->one_round ? $project->success : $project->passed ) == $previous_day  ) {
                 // si ha superado el mínimo
                 if ($project->amount >= $project->mincost) {
                     if ($debug) echo "Solicitud de datos contrato\n";
@@ -122,7 +125,7 @@ class ProjectWatcher {
             }
 
             // E idioma de preferencia del impulsor
-            $comlang = !empty($prefs->comlang) ? $prefs->comlang : $project->user->lang;
+            $comlang = $prefs->comlang;
 
             // flag de aviso
             $avisado = false;

@@ -11,7 +11,7 @@
       </div>
       <div class="modal-body">
         <form name="password-recover-form" id="password-recover-form" action="">
-            <input type="email" class="form-control" placeholder="<?= $this->text('login-recover-email-field') ?>" id="password-recover-email" name="password-recover-email" value="" required>
+            <input type="text" class="form-control" placeholder="<?= $this->text('login-recover-email-field') ?>" id="password-recover-email" name="password-recover-email" value="" required>
         </form>
       </div>
       <div class="modal-footer">

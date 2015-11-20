@@ -7,8 +7,8 @@ use Goteo\Core\View,
 $icons = Reward::icons('individual');
 
 $project = $vars['project'];
-
 $rewards = $vars['rewards'];
+
 // recompensas ordenadas por importe
 uasort($rewards, function ($a, $b) {
         if ($a->amount == $b->amount) return 0;
@@ -17,6 +17,8 @@ uasort($rewards, function ($a, $b) {
     );
 
 $invests = $vars['invests'];
+$invests_total = $vars['invests_total'];
+$invests_limit = $vars['invests_limit'];
 
 $filter = $vars['filter']; // al ir mostrando, quitamos los que no cumplan
 // pending = solo los que tienen alguna recompensa pendientes
@@ -61,26 +63,26 @@ switch ($order) {
 
 ?>
 <div class="widget gestrew">
-    <div class="message"><?php echo (in_array($project->status, array(4, 5))) ? Text::html('dashboard-rewards-investors_table') : Text::html('dashboard-rewards-notice'); ?></div>
+    <div class="message"><?php echo (in_array($project->status, array(4, 5))) ? Text::get('dashboard-rewards-investors_table') : Text::get('dashboard-rewards-notice'); ?></div>
     <div class="rewards">
         <?php $num = 1;
             foreach ($rewards as $rewardId=>$rewardData) : ?>
             <div class="reward <?php if(($num % 4)==0)echo " last"?>">
             	<div class="orden"><?php echo $num; ?></div>
-                <span class="aporte"><?php echo Text::get('dashboard-rewards-amount_group') ?><span class="num"><?php echo $rewardData->amount; ?></span></span>
-                <span class="cofinanciadores"><?php echo Text::get('dashboard-rewards-num_taken') ?><span class="num"><?php echo $rewardData->getTaken(); ?></span></span>
+                <span class="aporte"><?php echo Text::get('dashboard-rewards-amount_group') ?> <span class="num"><?php echo $rewardData->amount; ?></span></span>
+                <span class="cofinanciadores"><?php echo Text::get('dashboard-rewards-num_taken') ?> <span class="num"><?php echo $rewardData->getTaken(); ?></span></span>
                 <div class="tiporec"><ul><li class="<?php echo $rewardData->icon; ?>"><?php echo Text::recorta($rewardData->reward, 40); ?></li></ul></div>
                 <div class="contenedorrecompensa">
                 	<span class="recompensa"><strong style="color:#666;"><?php echo Text::get('rewards-field-individual_reward-reward') ?></strong><br/> <?php echo Text::recorta($rewardData->description, 100); ?></span>
                 </div>
-                <a class="button green" onclick="msgto('<?php echo $rewardData->id; ?>')" ><?php echo Text::get('dashboard-rewards-group_msg') ?></a>
+                <a class="button green" onclick="msgto('<?php echo $rewardId; ?>')" ><?php echo Text::get('dashboard-rewards-group_msg') ?></a>
             </div>
         <?php ++$num;
             endforeach; ?>
     </div>
 </div>
 
-<?php if (!empty($invests)) : ?>
+
 <script type="text/javascript">
     function set(what, which) {
         document.getElementById('invests-'+what).value = which;
@@ -98,21 +100,21 @@ switch ($order) {
     <div class="filters">
         <label>Ver aportaciones: </label><br />
         <ul>
-        	<li<?php if ($order == 'amount' || $order == '') echo ' class="current"'; ?>><a href="#" onclick="return set('order', 'amount');"><?php echo Text::get('dashboard-rewards-amount_order'); ?></a></li>
+        	<li<?php if ($filter == 'amount') echo ' class="current"'; ?>><a href="?filter=amount#gestrew" onclick="//return set('order', 'amount');"><?php echo Text::get('dashboard-rewards-amount_order'); ?></a></li>
             <li>|</li>
-        	<li<?php if ($order == 'date') echo ' class="current"'; ?>><a href="#" onclick="return set('order', 'date');"><?php echo Text::get('dashboard-rewards-date_order'); ?></a></li>
+        	<li<?php if ($filter == 'date') echo ' class="current"'; ?>><a href="?filter=date#gestrew" onclick="//return set('order', 'date');"><?php echo Text::get('dashboard-rewards-date_order'); ?></a></li>
             <li>|</li>
-            <li<?php if ($order == 'user') echo ' class="current"'; ?>><a href="#" onclick="return set('order', 'user');"><?php echo Text::get('dashboard-rewards-user_order'); ?></a></li>
+            <li<?php if ($filter == 'user') echo ' class="current"'; ?>><a href="?filter=user#gestrew" onclick="//return set('order', 'user');"><?php echo Text::get('dashboard-rewards-user_order'); ?></a></li>
             <li>|</li>
-            <li<?php if ($order == 'reward') echo ' class="current"'; ?>><a href="#" onclick="return set('order', 'reward');"><?php echo Text::get('dashboard-rewards-reward_order'); ?></a></li>
+            <li<?php if ($filter == 'reward') echo ' class="current"'; ?>><a href="?filter=reward#gestrew" onclick="//return set('order', 'reward');"><?php echo Text::get('dashboard-rewards-reward_order'); ?></a></li>
             <li>|</li>
-            <li<?php if ($filter == 'pending') echo ' class="current"'; ?>><a href="#" onclick="return set('filter', 'pending');"><?php echo Text::get('dashboard-rewards-pending_filter'); ?></a></li>
+            <li<?php if ($filter == 'pending') echo ' class="current"'; ?>><a href="?filter=pending#gestrew" onclick="//return set('filter', 'pending');"><?php echo Text::get('dashboard-rewards-pending_filter'); ?></a></li>
             <li>|</li>
-            <li<?php if ($filter == 'fulfilled') echo ' class="current"'; ?>><a href="#" onclick="return set('filter', 'fulfilled');"><?php echo Text::get('dashboard-rewards-fulfilled_filter'); ?></a></li>
+            <li<?php if ($filter == 'fulfilled') echo ' class="current"'; ?>><a href="?filter=fulfilled#gestrew" onclick="//return set('filter', 'fulfilled');"><?php echo Text::get('dashboard-rewards-fulfilled_filter'); ?></a></li>
             <li>|</li>
-            <li<?php if ($filter == 'resign') echo ' class="current"'; ?>><a href="#" onclick="return set('filter', 'resign');"><?php echo Text::get('dashboard-rewards-resign_filter'); ?></a></li>
+            <li<?php if ($filter == 'resign') echo ' class="current"'; ?>><a href="?filter=resign#gestrew" onclick="//return set('filter', 'resign');"><?php echo Text::get('dashboard-rewards-resign_filter'); ?></a></li>
             <li>|</li>
-            <li<?php if ($filter == '') echo ' class="current"'; ?>><a href="#" onclick="return set('filter', '');"><?php echo Text::get('dashboard-rewards-all_filter'); ?></a></li>
+            <li<?php if ($filter == '') echo ' class="current"'; ?>><a href="?#gestrew" onclick="//return set('filter', '');"><?php echo Text::get('dashboard-rewards-all_filter'); ?></a></li>
         </ul>
     </div>
 
@@ -120,12 +122,13 @@ switch ($order) {
         <form name="invests_form" action="<?php echo '/dashboard/'.$vars['section'].'/'.$vars['option'].'/process'; ?>" method="post">
            <input type="hidden" name="filter" value="<?php echo $filter; ?>" />
            <input type="hidden" name="order" value="<?php echo $order; ?>" />
-            <?php foreach ($invests as $investId=>$investData) :
+            <?php foreach ($invests as $investId => $investData) :
 
-                $address = $investData->address;
+                $address = $investData->getAddress();
+                $invest_rewards = $investData->getRewards();
                 $cumplida = true; //si nos encontramos una sola no cumplida, pasa a false
                 $estilo = " disabled";
-                foreach ($investData->rewards as $reward) {
+                foreach ($invest_rewards as $reward) {
                     if ($reward->fulfilled != 1) {
                         $estilo = "";
                         $cumplida = false;
@@ -133,10 +136,10 @@ switch ($order) {
                 }
 
                 // filtro
-                if ($filter == 'pending' && ($cumplida != false || empty($investData->rewards))) continue;
-                if ($filter == 'fulfilled' && ($cumplida != true)) continue;
-                if ($filter == 'resign' && !$investData->resign) continue;
-                if ($order  == 'reward' && empty($investData->rewards)) continue;
+                // if ($filter == 'pending' && ($cumplida != false || empty($invest_rewards))) continue;
+                // if ($filter == 'fulfilled' && ($cumplida != true)) continue;
+                // if ($filter == 'resign' && !$investData->resign) continue;
+                // if ($order  == 'reward' && empty($invest_rewards)) continue;
                 ?>
 
                 <div class="investor">
@@ -154,10 +157,10 @@ switch ($order) {
 
                     <div class="left recompensas"  style="width:280px;">
                      	<span style="margin-bottom:2px;" class="<?php echo 'dis'.$investId; echo $estilo;?>"><strong><?php echo Text::get('dashboard-rewards-choosen'); ?></strong></span>
-                    <?php if (empty($investData->rewards)) : // si no hay recompensas es renuncia ?>
+                    <?php if (empty($invest_rewards)) : // si no hay recompensas es renuncia ?>
                      	<span style="margin-bottom:2px;"><strong><?php echo Text::get('dashboard-rewards-resigns'); ?></strong></span>
                     <?php else : ?>
-                        <?php foreach ($investData->rewards as $reward) : ?>
+                        <?php foreach ($invest_rewards as $reward) : ?>
                         <div style="width: 250px; overflow: hidden; height: 18px; margin-bottom:2px;" class="<?php echo 'dis'.$investId; echo $estilo;?>">
                         <?php if (in_array($project->status, array(4,5))) : ?>
                             <input type="checkbox" class="fulrew" id="<?php echo "ful_reward-{$investId}-{$reward->id}"; ?>" ref="<?php echo $investId; ?>" value="1" <?php if ($reward->fulfilled == 1) echo ' checked="checked" disabled';?>  />
@@ -168,7 +171,7 @@ switch ($order) {
                         </div>
                         <?php endforeach; ?>
                     <?php endif; ?>
-                    <?php if (in_array($project->status, array(4,5)) && !empty($investData->rewards) ) : ?>
+                    <?php if (in_array($project->status, array(4,5)) && !empty($invest_rewards) ) : ?>
                         <span class="status" id="status-<?php echo $investId; ?>"><?php echo $cumplida ? '<span class="cumplida">'.Text::get('dashboard-rewards-fulfilled_status').'</span>' : '<span class="pendiente">'.Text::get('dashboard-rewards-pending_status').'</span>'; ?></span>
                     <?php endif; ?>
                     <?php if ($investData->issue) : // si es incidencia ?>
@@ -198,14 +201,14 @@ switch ($order) {
 
         </form>
     </div>
-
+        <?= \Goteo\Application\View::render('partials/utils/paginator', ['total' => $invests_total, 'limit' => $invests_limit]) ?>
 </div>
 <script type="text/javascript">
     jQuery(document).ready(function ($) {
 
         // al clickar, aviso
         $("#sacaexcel").click(function(){
-            alert('<?php echo Text::get('dashboard-investors_table-disclaimer'); ?>');
+            alert('<?php echo str_replace("'","\'",Text::get('dashboard-investors_table-disclaimer')); ?>');
         });
 
         // al clickar el recuadro de recompensa
@@ -246,7 +249,7 @@ switch ($order) {
         	<div id="checks">
                <input type="hidden" name="filter" value="<?php echo $filter; ?>" />
                <input type="hidden" name="order" value="<?php echo $order; ?>" />
-               <input type="hidden"id="msg_user" name="msg_user" value="" />
+               <input type="hidden" id="msg_user" name="msg_user" value="" />
 
                 <p>
                     <input type="checkbox" id="msg_all" name="msg_all" value="1" onclick="noindiv(); alert('<?php echo Text::get('dashboard-rewards-massive_msg-all_alert'); ?>');" />
@@ -297,7 +300,6 @@ switch ($order) {
 
 </div>
 
-<?php endif; ?>
 <script type="text/javascript">
     function noindiv() {
         $('#msg_user').val('');
@@ -316,7 +318,7 @@ switch ($order) {
         $('#msg_all').val('');
 
         $('#msg_user').val(user);
-        $('#msg_user_name').html('<p><?php echo Text::get('dashboard-rewards-user_msg'); ?><strong>'+name+'</strong></p>');
+        $('#msg_user_name').html('<p><?php echo Text::get('dashboard-rewards-user_msg'); ?> <strong>'+name+'</strong></p>');
         document.location.href = '#message';
         $("#message").focus();
 

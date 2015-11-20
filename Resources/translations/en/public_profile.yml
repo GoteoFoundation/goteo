@@ -1,21 +1,21 @@
-profile-invest_on-title: Co-finances
-profile-worth-title: 'Contributed here:'
-profile-last_worth-title: Date
-profile_patron-invest_on-header: 'I also co-finance'
 profile-interests-header: 'I am interested in projects that are...'
-user-message-restricted: 'It can only receive messages from its co-financiers'
-profile-my_investors-header: 'My co-financiers'
-profile-my_worth-header: 'My flow on Goteo'
-profile-keywords-header: 'My key words'
-profile-location-header: 'My location'
-profile-my_projects-header: 'My projects'
-profile-webs-header: 'My websites'
-profile-worthcracy-title: Position
-profile-name-header: 'Profile of'
 profile-invest_on-header: 'Projects that I support'
+profile-invest_on-title: Co-finances
+profile-keywords-header: 'My key words'
+profile-last_worth-title: Date
+profile-location-header: 'My location'
+profile-my_investors-header: 'My co-financiers'
+profile-my_projects-header: 'My projects'
+profile-my_worth-header: 'My flow on Goteo'
+profile-name-header: 'Profile of'
 profile-patron-header: 'Recomends <span class="red">%s projects</span>'
-user-message-send_personal-header: 'Send a message to the user'
 profile-sharing_interests-header: 'Sharing interests'
-profile-widget-button: 'Show profile'
 profile-social-header: Social
+profile-webs-header: 'My websites'
+profile-widget-button: 'Show profile'
 profile-widget-user-header: User
+profile-worth-title: 'Contributed here:'
+profile-worthcracy-title: Position
+profile_patron-invest_on-header: 'I also co-finance'
+user-message-restricted: 'It can only receive messages from its co-financiers'
+user-message-send_personal-header: 'Send a message to the user'

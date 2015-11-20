@@ -1,5 +1,5 @@
-regular-success_mark: Succesvol!
 regular-fail_mark: Geloten
 regular-gotit_mark: Gecofinancierd!
-regular-onrun_mark: 'Gaat voort!'
 regular-keepiton_mark: 'Minimum bereikt'
+regular-onrun_mark: 'Gaat voort!'
+regular-success_mark: Succesvol!

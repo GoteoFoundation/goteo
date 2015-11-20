@@ -1,78 +1,88 @@
-Migración de plantillas
+Template migration
 =======================
 
-Se usa PHP FOIL
-http://foilphp.it/
+The new system of templates in Goteo uses PHP FOIL:
+http://www.foilphp.it
 
-Antiguo sistema
+**Old class system:**
 
-`\Goteo\Core\View::get('plantilla.php', array( 'obj' => ... ));`
-
-Nuevo
-
-`\Goteo\Application\View::render('plantilla', [ 'obj' => ... ]);`
+`\Goteo\Core\View::get('template.html.php', array( 'obj' => ... ));`
 
 
-Diferencias en las plantillas
------------------------------
-`plantilla.php`
 
-Antes:
+**New Foil base templates:**
 
-Las variables están dentro del array **$this** (objeto) o **$vars[]** (array)
+`\Goteo\Application\View::render('template', [ 'obj' => ... ]);`
+
+Or, inside a Controller which extends `\Goteo\Core\Controller` ust do:
+
+`$this->viewResponse('template', ['ojb' => ...]);`
+
+Main differences
+----------------
+
+**Before:**
+
+Variables where located inside the array  `$vars[]` (or event for even older behaviour inside the `$this` [ArrayObject](http://php.net/manual/es/class.arrayobject.php) instance);
+
+File `template.html.php`
 
 ```php
 <?php
 
-//Objecto
+// Object
 $obj = $this['obj'];
 
 $obj->doSomething();
 
-echo htmlspecialchars($this['obj']->doMore()); // escapado con htmlspecialchars
+echo htmlspecialchars($this['obj']->doMore()); // Strings needed to be manually escaped
 
-//Escalar
-echo htmlspecialchars($this['variable']); //escapada
-echo $this['variable']; //sin escapar
+// Scalar
+echo htmlspecialchars($this['variable']); // escaped
+echo $this['variable']; // non-escaped
 
 ?>
 ```
 
-Después:
+**After:**
 
-Las variables están instanciadas por defecto en el objecto **$this**
+Variables are instantiated by default as properties of the object `$this` (that's Foil's behaviour).
 
-**NOTA**: Por compatibilidad también es posible usar el array `$this->vars` que contiene todas las variables en un array. Aunque en todas las nuevas vistas no deberia usarse.
+**NOTE**: For compatibility reasons it an automatic array `$this->vars` it's created with all variables copied inside. New views (or completely refactored) must not use this array.
+
+File `template.php`
 
 ```php
 <?php
-//objecto
+// Object
 $obj->doSomething();
 
-echo $this->e($this->raw('obj')->doMore()); // escapado con $this->e()
+echo $this->e($this->raw('obj')->doMore()); // Escaped with $this->e() function
 
-//escalar
-echo $this->variable; // HTML escapada por defecto (strings y arrays)
-echo $this->raw('variable'); // sin escapar
+// Scalar
+echo $this->variable; // HTML escaped by default (strings & arrays)
+echo $this->raw('variable'); // Non escaped
 
-//COMPATIBILIDAD CON VISTAS QUE NECESITAN UN ARRAY
-echo $this->vars['variable']; // HTML escapada si es un string o array simple
+// Compatibility with old views needing and array
+echo $this->vars['variable']; // HTML escaped if it's a string or a simple array
 ?>
 ```
 
-Nuevas funcionalidades
-----------------------
+New features
+------------
 
-FOIL soporta herencia, funciones y reasignación de variables
+FOIL supports inheritance, custom functions & a great variables manipulation capabilities between templates.
 
-Funcionamiento básico
+**Basic operation:**
 
-`layout.php`
+Things starts with a basic layout used as base by the other templates. Please refer to the official documentation of Foil to know more about this.
+
+File `layout.php`
 
 ```php
 <html>
 <head>
-    <title><?=$this->title?></title>
+    <title><?= $this->title ?></title>
 </head>
 <body>
 
@@ -83,7 +93,8 @@ Funcionamiento básico
 </html>
 ```
 
-reescritura del titulo y sustitución de la sección 'content':
+
+Let's override some vars in a final template extending `layout.php`, in this case the *title* variable and the section *content*:
 
 `profile.php`
 
@@ -91,23 +102,25 @@ reescritura del titulo y sustitución de la sección 'content':
 <?php $this->layout('template', ['title' => 'User Profile']) ?>
 
 <?php $this->section('content') ?>
-<h1>User Profile</h1>
-<p>Hello, <?=$this->name?></p>
+    <h1>User Profile</h1>
+    <p>Hello, <?=$this->name?></p>
 <?php $this->stop() ?>
 ```
 
-Mas información en:
+More info:
 http://www.foilphp.it/docs/TEMPLATES/INHERITANCE.html
 http://www.foilphp.it/docs/DATA/PASS-DATA.html
 
 
-Migración de las vistas actuales:
+Legacy views migration:
 ---------------------------------
 
-La nueva estructura de directorios deberia marcar de manera clara el próposito de cada vista:
+Goteo views can have themes, currently 2 (`default` & `responsive`)
 
-**Primer nivel**
+**First level**
 
+
+Multiples folders
 Multiples directorios que permiten sobreescritura de vistas segun las extensiones cargadas
 
 ```text

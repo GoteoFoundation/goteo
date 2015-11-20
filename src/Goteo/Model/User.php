@@ -602,7 +602,7 @@ namespace Goteo\Model {
                         user.name as name,
                         user.email as email,
                         user.active as active,
-                        IFNULL(user.lang, 'es') as lang,
+                        user.lang as lang,
                         user.location as location,
                         user.avatar as user_avatar,
                         IFNULL(user_lang.about, user.about) as about,
@@ -635,6 +635,7 @@ namespace Goteo\Model {
                 if (!$user instanceof  \Goteo\Model\User) {
                     return false;
                 }
+                if(empty($user->lang)) $user->lang = Lang::current();
                 $user->roles = $user->getRoles();
                 $user->avatar = Image::get($user->user_avatar);
                 $user->interests = User\Interest::get($id);
@@ -669,13 +670,13 @@ namespace Goteo\Model {
                         name,
                         avatar as user_avatar,
                         email,
-                        IFNULL(lang, 'es') as lang,
+                        lang,
                         node
                     FROM user
                     WHERE id = :id
                     ", array(':id' => $id));
                 $user = $query->fetchObject(); // stdClass para qno grabar accidentalmente y machacar todo
-
+                if(empty($user->lang)) $user->lang = Lang::current();
                 $user->avatar = Image::get($user->user_avatar);
 
                 return $user;
@@ -1091,7 +1092,7 @@ namespace Goteo\Model {
                 if($user->active) {
                     // ponemos su divisa preferida en sesión
                     $prefs = self::getPreferences($row['id']);
-                    if (!empty($prefs->currency)) $_SESSION['currency'] = $prefs->currency;
+                    if (!empty($prefs->currency)) Session::store('currency',  $prefs->currency);
 
                     return $user;
 			    } else {
@@ -1698,7 +1699,10 @@ namespace Goteo\Model {
          *
          * @return type array
          */
-        public static function getPreferences ($id) {
+        public static function getPreferences ($user) {
+            if(!$user instanceOf User) {
+                $user = self::getMini($user);
+            }
             $query = self::query('SELECT
                                       updates,
                                       threads,
@@ -1710,9 +1714,14 @@ namespace Goteo\Model {
                                       currency
                                   FROM user_prefer
                                   WHERE user = ?'
-                , array($id));
+                , array($user->id));
 
-            $data = $query->fetchObject();
+            if(!($data = $query->fetchObject())) {
+                $data = new \stdClass();
+            }
+            if(empty($data->comlang)) $data->comlang = $user->lang;
+            $data->lang = $data->comlang;
+            // TODO: other defaults?
             return $data;
         }
 

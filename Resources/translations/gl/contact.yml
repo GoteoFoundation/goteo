@@ -1,14 +1,14 @@
+contact-captcha-field: 'Proba de humanidade (sentímolo...)'
+contact-captcha-refresh: 'Actualizar imaxe'
 contact-email-field: Email
+contact-form-tags: '[usuario] Teño problemas coa miña conta; [impulsor] Teño dúbidas sobre a campaña; [novo impulsor] Teño un posible proxecto; [servizo] Quero contratar un servizo; [outros] É outro tipo de consulta;'
 contact-message-field: Mensaxe
 contact-name-field: Nome
-contact-captcha-refresh: 'Actualizar imaxe'
 contact-send_message-button: Enviar
 contact-send_message-header: 'Envíanos unha mensaxe'
 contact-subject-field: Asunto
-contact-captcha-field: 'Proba de humanidade (sentímolo...)'
-error-contact-captcha: 'The reCAPTCHA wasn''t entered correctly. Try it again.'
 contact-tag-field: 'Tipo de consulta'
+error-contact-captcha: 'The reCAPTCHA wasn''t entered correctly. Try it again.'
 error-contact-email-empty: 'Non engadiches o teu email'
-error-contact-subject-empty: 'Non escribiches o asunto'
 error-contact-message-empty: 'Non escribiches ningunha mensaxe'
-contact-form-tags: '[usuario] Teño problemas coa miña conta; [impulsor] Teño dúbidas sobre a campaña; [novo impulsor] Teño un posible proxecto; [servizo] Quero contratar un servizo; [outros] É outro tipo de consulta;'
+error-contact-subject-empty: 'Non escribiches o asunto'

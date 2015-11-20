@@ -80,16 +80,123 @@ class Sender extends \Goteo\Core\Model
     /**
      * Activates the Sender for sending
      */
-    public function setActive($active)
+    public function isActive() {
+        return (bool)static::query('SELECT active FROM mailer_content where id = ?', $this->id)->fetchColumn();
+    }
+
+    public function setActive($status = null)
     {
-        $this->active = (bool) $active;
-        $query = static::query("UPDATE mailer_content SET active = " . ($this->active ? 1 : 0) . " WHERE id = {$this->id}");
-        return ($query->rowCount() == 1);
+        if(!is_null($status)) {
+            static::query("UPDATE mailer_content SET active = :lock WHERE id = :id", [':lock' => (bool)$status, ':id' => $this->id]);
+            $this->active = $this->isActive();
+        }
+        return $this;
+    }
+
+    public function isLocked() {
+        return (bool)static::query('SELECT blocked FROM mailer_content where id = ?', $this->id)->fetchColumn();
+    }
+
+    public function setLock($status = null)
+    {
+        if(!is_null($status)) {
+            static::query("UPDATE mailer_content SET blocked = :lock WHERE id = :id", [':lock' => $status ? 1 : null, ':id' => $this->id]);
+            $this->blocked = $this->isLocked();
+        }
+        return $this;
+    }
+
+    public function isSent() {
+        return (bool)static::query('SELECT sent FROM mailer_content where id = ?', $this->id)->fetchColumn();
+    }
+
+    public function setSent($status = null)
+    {
+        if(!is_null($status)) {
+            static::query("UPDATE mailer_content SET sent = :sent WHERE id = :id", [':sent' => (bool)$status, ':id' => $this->id]);
+            $this->sent = $this->isSent();
+        }
+        return $this;
     }
 
     public function getLink()
     {
         return SITE_URL . '/mail/' . \mybase64_encode(md5(Config::get('secret') . '-' . $this->id . '-' . $this->mail) . '¬' . $this->id . '¬' . $this->mail);
+    }
+
+    /**
+    *  Returns pending recipients for the mailist
+    */
+    public function getPendingRecipients($offset= 0, $limit=20, $count = false, $autolock = false, $order = '') {
+
+        $where = "AND (sent IS NULL OR sent = 0)
+                AND (blocked IS NULL OR blocked = 0)";
+        if($count) {
+            // Return count
+            $sql = "SELECT COUNT(id) FROM mailer_send
+                    WHERE mailing = ? $where";
+            return (int) self::query($sql, [$this->id])->fetchColumn();
+        }
+
+        $offset = (int) $offset;
+        $limit = (int) $limit;
+
+        $extra = '';
+        $list = [];
+        if($order) {
+            $extra .= " ORDER BY $order";
+        }
+        if($limit) {
+            $extra .= " LIMIT $offset, $limit";
+        }
+        if($autolock) {
+            static::query('START TRANSACTION');
+        }
+        $sql = "SELECT * FROM mailer_send
+                WHERE mailing = ? $where$extra"
+                ;
+
+        $query = static::query($sql, [$this->id]);
+        if($query) {
+            $list =  $query->fetchAll(\PDO::FETCH_CLASS, 'Goteo\Model\Mail\SenderRecipient');
+        }
+
+        if($autolock) {
+            $values = [':id' => $this->id];
+            foreach($list as $i => $ob) {
+                $values[":i$i"] = $ob->id;
+            }
+            $sql = "UPDATE mailer_send SET blocked=1
+                WHERE mailing = :id AND id IN (" . implode(',', array_keys($values)) . ")";
+            static::query($sql, $values);
+            static::query('COMMIT');
+        }
+        return $list;
+    }
+
+    /*
+    *  Returns all recipients for the mailist
+    */
+    public function getRecipients($offset= 0, $limit=20, $count = false, $order = '') {
+
+        if($count) {
+            // Return count
+            $sql = "SELECT COUNT(id) FROM mailer_send
+                    WHERE mailing = ?";
+            return (int) self::query($sql, [$this->id])->fetchColumn();
+        }
+
+        $offset = (int) $offset;
+        $limit = (int) $limit;
+        $sql = "SELECT * FROM mailer_send
+                WHERE mailing = ?" .
+                ($order ? " ORDER BY $order" : '') .
+                ($limit ? " LIMIT $offset, $limit" : '');
+
+        if ($query = static::query($sql, [$this->id])) {
+            return $query->fetchAll(\PDO::FETCH_CLASS, 'Goteo\Model\Mail\SenderRecipient');
+        }
+        return [];
     }
 
     /**
@@ -114,6 +221,8 @@ class Sender extends \Goteo\Core\Model
             $sending = $query->fetchObject();
 
             $sending->percent   = 100 * (1 - $sending->pending / $sending->receivers);
+            $sending->percent_failed   = 100 * ($sending->failed / $sending->receivers);
+            $sending->percent_success   = 100 * ($sending->sent / $sending->receivers);
             $this->status_object = $sending;
         } catch(\PDOException $e) {
             throw new ModelNotFoundException('Not found recipients for mailingId [' . $this->id . ']' . $e->getMessage());
@@ -127,6 +236,7 @@ class Sender extends \Goteo\Core\Model
 
         try {
             $status = $this->getStatusObject();
+            // echo "success: {$status->percent_success} failed {$status->percent_failed}]";
             if($status->percent == 100) return 'sent';
             if($this->active) return 'sending';
             return 'inactive';
@@ -199,7 +309,7 @@ class Sender extends \Goteo\Core\Model
             return $query->fetchObject(__CLASS__);
 
         } catch(\PDOException $e) {
-            throw new ModelNotFoundException('Not found sending [' . $id . ']' . $e->getMessage());
+            throw new ModelNotFoundException('Not found mail [' . $id . ']' . $e->getMessage());
         }
         return $mailing;
     }
@@ -282,40 +392,7 @@ class Sender extends \Goteo\Core\Model
         throw new ModelException('Inserting SQL [' . $sql .'] has failed!');
     }
 
-    static public function addSubscribers(Array $subscribers = [])
-    {
-
-    }
-
-    /*
-    *  Metodo para obtener la siguiente tanda de destinatarios
-    */
-    static public function getRecipients($id, $limit=10)
-    {
-        $list = array();
-
-        $sql = "SELECT
-                id,
-                user,
-                name,
-                email
-            FROM mailer_send
-            WHERE mailing = ?
-            AND sent IS NULL
-            AND blocked IS NULL
-            ORDER BY id
-            ";
-        if($limit) { $sql .= "LIMIT $limit
-            ";
-        }
-
-        if ($query = static::query($sql, array($id))) {
-            foreach ($query->fetchAll(\PDO::FETCH_OBJ) as $receiver) {
-                $list[] = $receiver;
-            }
-        }
-
-        return $list;
+    static public function addSubscribers(Array $subscribers = []) {
 
     }
 

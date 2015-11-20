@@ -81,18 +81,22 @@ $templates = $this->templates;
                 </thead>
                 <tbody>
                     <?php
-                    foreach($this->sent_list as $sent):
-                        $percent = round($sent->getStats()->getEmailOpenedCollector()->getPercent());
+                    foreach($this->sent_list as $mail):
+                        $percent = round($mail->getStats()->getEmailOpenedCollector()->getPercent());
+                        $success = 100;
+                        if($sender = $mail->getSender()) {
+                            $success = floor($sender->getStatusObject()->percent_success);
+                        }
                         ?>
                         <tr>
                             <td><?= $this->percent_span($percent) ?></span></td>
-                            <td><a href="/admin/sent/detail/<?= $sent->id ?>">[Detalles]</a></td>
-                            <td><a href="/admin/users?name=<?php echo urlencode($sent->email) ?>"><?php echo $sent->email; ?></a></td>
-                            <td><?= $templates[$sent->template] ?></td>
-                            <td><?= $sent->getSubject() ?></td>
-                            <td><?= $sent->date ?></td>
-                            <td><a href="/mail/<?= $sent->getToken(false) ?>" target="_blank">[Visualizar]</a></td>
-                            <td><?= '<span class="label label-'. $sent->getStatus() . '">' . $sent->getStatus() . '</span>' ?>
+                            <td><a href="/admin/sent/detail/<?= $mail->id ?>">[Detalles]</a></td>
+                            <td><a href="/admin/users?name=<?php echo urlencode($mail->email) ?>"><?php echo $mail->email; ?></a></td>
+                            <td><?= $templates[$mail->template] ?></td>
+                            <td><?= $mail->getSubject() ?></td>
+                            <td><?= $mail->date ?></td>
+                            <td><a href="/mail/<?= $mail->getToken(false) ?>" target="_blank">[Visualizar]</a></td>
+                            <td><?= $this->percent_span($success, 0, $mail->getStatus(). " $success%") ?></td>
                         </tr>
                     <?php endforeach; ?>
                 </tbody>

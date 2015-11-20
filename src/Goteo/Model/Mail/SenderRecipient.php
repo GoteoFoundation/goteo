@@ -33,45 +33,45 @@ class SenderRecipient extends \Goteo\Core\Model
            $status = 'pending',
            $blocked;
 
-    public function __construct() 
+    public function __construct()
     {
         // call the parent constructor with whatever parameters were provided
         call_user_func_array(array('parent', '__construct'), func_get_args());
         // create the status var
-        if($this->sent == 1) { $this->status = 'sent'; 
+        if($this->sent == 1) { $this->status = 'sent';
         }
-        if($this->sent === 0 || $this->sent === '0') { $this->status = 'failed'; 
+        if($this->sent === 0 || $this->sent === '0') { $this->status = 'failed';
         }
     }
 
     // Magic property to check if the sender is blacklisted
-    public function __get($name) 
+    public function __get($name)
     {
         if($name == 'blacklisted') {
             return Mail::checkBlocked($this->email, $reason);
         }
     }
 
-    public function validate(&$errors = []) 
+    public function validate(&$errors = [], array $skip_validations = [])
     {
-        if(empty($this->email)) {
+        if(empty($this->email) && !in_array('email', $skip_validations)) {
             $errors['email'] = 'Empty Email';
         }
-        if(empty($this->mailing)) {
+        if(empty($this->mailing) && !in_array('mailing', $skip_validations)) {
             $errors['mailing'] = 'Empty Mailer ID';
         }
-        if(!empty($this->blocked)) {
+        if(!empty($this->blocked) && !in_array('blocked', $skip_validations)) {
             $errors['blocked'] = 'Sender Recipient blocked!';
         }
 
         return empty($errors);
     }
 
-    public function save(&$errors = []) 
+    public function save(&$errors = [])
     {
-        $this->validate($errors);
-        unset($errors['blocked']);
-        if(!empty($errors) ) { return false; 
+        $this->validate($errors, ['blocked']);
+        if(!empty($errors) ) {
+            return false;
         }
 
         try {
@@ -90,10 +90,11 @@ class SenderRecipient extends \Goteo\Core\Model
      * Send the email if ready
      * @return [type] [description]
      */
-    public function send(&$errors = array()) 
+    public function send(&$errors = array(), array $skip_validations = [])
     {
         $ok = true;
-        if(! $this->validate($errors) ) { $ok = false; 
+        if(! $this->validate($errors, $skip_validations) ) {
+            $ok = false;
         }
         if(!empty($this->sent)) {
             $errors[] = 'This recipient is already sent!';
@@ -102,15 +103,15 @@ class SenderRecipient extends \Goteo\Core\Model
 
         // cogemos el contenido y la plantilla desde el historial
         if (! ($sender = Sender::get($this->mailing)) ) {
-            $errors[] = "Error obtaining Sender Instance [$id]\n";
+            $errors[] = "Error obtaining Sender Instance [$id]";
             $ok = false;
         }
         if (!$sender->active) {
-            $errors[] = "Error, sender ID [{$sender->id}] inactive!\n";
+            $errors[] = "Error, Sender (mailing) ID [{$sender->id}] inactive!";
             $ok = false;
         }
         if (! ($mail = Mail::get($sender->mail)) ) {
-            $errors[] = "Error obtaining Mail Instance [{$sender->mail}]\n";
+            $errors[] = "Error obtaining Mail Instance [{$sender->mail}]";
             $ok = false;
         }
 
@@ -135,29 +136,39 @@ class SenderRecipient extends \Goteo\Core\Model
             $ok = $mail->send($errors);
         }
         $this->sent = $ok;
-        $this->error = implode("\n", $errors);
+        $this->error = implode("", $errors);
         $this->save();
         return $ok;
 
     }
 
-    public function setLock($status = null) 
-    {
-        if(!is_null($status)) {
-            static::query("UPDATE mailer_send SET blocked = :lock WHERE id = :id", [':lock' => (bool)$status, ':id' => $this->id]);
-        }
+    public function isLocked() {
         return (bool)static::query('SELECT blocked FROM mailer_send where id = ?', $this->id)->fetchColumn();
     }
 
-    public function setSent($status = null) 
+    public function setLock($status = null)
     {
         if(!is_null($status)) {
-            static::query("UPDATE mailer_send SET sent = :sent WHERE id = :id", [':sent' => (bool)$status, ':id' => $this->id]);
+            static::query("UPDATE mailer_send SET blocked = :lock WHERE id = :id", [':lock' => $status ? 1 : null, ':id' => $this->id]);
+            $this->blocked = $this->isLocked();
         }
+        return $this;
+    }
+
+    public function isSent() {
         return (bool)static::query('SELECT sent FROM mailer_send where id = ?', $this->id)->fetchColumn();
     }
 
-    static public function get($id) 
+    public function setSent($status = null)
+    {
+        if(!is_null($status)) {
+            static::query("UPDATE mailer_send SET sent = :sent WHERE id = :id", [':sent' => (bool)$status, ':id' => $this->id]);
+            $this->sent = $this->isSent();
+        }
+        return $this;
+    }
+
+    static public function get($id)
     {
         $sql = 'SELECT * FROM mailer_send WHERE id = ?';
 
@@ -167,7 +178,7 @@ class SenderRecipient extends \Goteo\Core\Model
         return false;
     }
 
-    static public function getFromMailing($mailing_id, $email) 
+    static public function getFromMailing($mailing_id, $email)
     {
         $sql = 'SELECT * FROM mailer_send WHERE mailing = :mailing AND email = :email';
 
@@ -180,7 +191,7 @@ class SenderRecipient extends \Goteo\Core\Model
     /*
      * Listado completo de destinatarios/envaidos/fallidos/pendientes
      */
-    static public function getList($mailing, $detail = 'receivers', $offset = 0, $limit = 10, $count = false) 
+    static public function getList($mailing, $detail = 'receivers', $offset = 0, $limit = 10, $count = false)
     {
 
         $list = array();

@@ -9,8 +9,9 @@ $page = $this->page('denied');
 <?php $this->section('sub-header') ?>
 <div id="sub-header">
     <div>
-        <h2><?=$this->raw('msg')?></h2>
-        <h3>Error <?=$this->code?></h3>
+        <h2><?= $this->title ?></h2>
+        <h3>Error <?= $this->code ?></h3>
+        <p><?= $this->raw('msg') ?></p>
     </div>
 </div>
 <?php $this->stop() ?>
@@ -26,3 +27,5 @@ $page = $this->page('denied');
 </div>
 
 <?php $this->stop() ?>
+
+

@@ -87,6 +87,12 @@ module.exports = function(grunt) {
     grunt.registerTask('serve', function (target) {
         if (target === 'dist') {
             return grunt.task.run([
+                'build:dist',
+                'php:dist:keepalive']);
+        }
+
+        if (target === 'devel') {
+            return grunt.task.run([
                 'clean:server',
                 'build:devel',
                 'php:dist:keepalive']);
@@ -106,6 +112,9 @@ module.exports = function(grunt) {
         grunt.task.run(['serve']);
     });
 
+    grunt.registerTask('build:dist', [
+        'build'
+    ]);
     // Build the dist folder without compression (useful for apache/nginx servers pointing that dir)
     grunt.registerTask('build:devel', [
         'clean:dist',

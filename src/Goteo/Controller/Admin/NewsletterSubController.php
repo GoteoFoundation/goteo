@@ -113,7 +113,7 @@ class NewsletterSubController extends AbstractSubController {
                 Lang::set($lang);
                 $lang = Lang::current();
 
-                $mailHandler = Mail::createFromTemplate('any', '', $template);
+                $mailHandler = Mail::createFromTemplate('any', '', $template, [], $lang);
 
                 $errors = [];
                 if( !$mailHandler->save($errors) ) {

@@ -23,7 +23,7 @@ $this->section('content');
 
 					<div class="col-md-10 col-md-offset-1 reminder">
                         <div class="level-1">
-					       <?= $this->text('invest-alert-investing') ?><span class="amount-reminder"><?= amount_format($this->amount) ?></span> <?= $this->text('invest-project') ?> <span class="uppercase"><?= $this->project->name ?></span>
+					       <?= $this->text('invest-alert-investing') ?><span class="amount-reminder"><?= $this->raw('amount_formated') ?></span> <?= $this->text('invest-project') ?> <span class="uppercase"><?= $this->project->name ?></span>
 						</div>
                           <?php if($this->reward): ?>
 						<div class="level-2">
@@ -37,7 +37,7 @@ $this->section('content');
 
                     <form class="form-horizontal" role="form" method="GET" action="/invest/<?= $this->project->id ?>/form">
                     <input type="hidden" name="reward" value="<?= $this->reward ? $this->reward->id : '0' ?>">
-                    <input type="hidden" name="amount" value="<?= $this->amount ?>">
+                    <input type="hidden" name="amount" value="<?= $this->amount_original . $this->currency ?>">
 
 					<div class="row no-padding col-md-10 col-md-offset-1">
 
@@ -58,18 +58,18 @@ $this->section('content');
 							<div class="col-md-10 col-md-offset-1 method-conditions">
 								<div class="checkbox">
 									<label>
-										<input class="no-margin-checkbox" type="checkbox" name="anonymous" id="anonymous" value="1">
+										<input class="no-margin-checkbox big-checkbox" type="checkbox" name="anonymous" id="anonymous" value="1">
 											<p class="label-checkbox">
                                             <?= $this->text('invest-anonymous') ?>
                                             </p>
 									</label>
-                                    
+
 								</div>
 
                                 <?php if(array_key_exists('pool', $this->pay_methods)): ?>
 								<div class="checkbox">
 									<label>
-										<input class="no-margin-checkbox" type="checkbox" name="pool_on_fail" id="pool_on_fail" value="1">
+										<input class="no-margin-checkbox big-checkbox" type="checkbox" name="pool_on_fail" id="pool_on_fail" value="1">
 											<p class="label-checkbox">
                                             <?= $this->text('invest-pool') ?><a data-toggle="modal" data-target="#myModal" href=""> <?= $this->text('invest-more-info') ?></a>
                                             </p>
@@ -92,7 +92,7 @@ $this->section('content');
 
 
 	</div>
-	
+
 
     </div>
 </div>

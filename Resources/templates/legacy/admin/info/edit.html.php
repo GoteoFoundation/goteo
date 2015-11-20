@@ -29,7 +29,7 @@ foreach ($post->gallery as $image) {
         'type'  => 'HTML',
         'class' => 'inline gallery-image',
         'html'  => is_object($image) ?
-                   $image . '<img src="' . SITE_URL . '/image/' . $image->id . '/128/128" alt="Imagen" /><button class="image-remove weak" type="submit" name="gallery-'.$image->hash.'-remove" title="Quitar imagen" value="remove"></button>' :
+                    '<img src="' . SITE_URL . '/image/' . $image->id . '/128/128" alt="Imagen" /><button class="image-remove weak" type="submit" name="gallery-'.$image->hash.'-remove" title="Quitar imagen" value="remove"></button>' :
                    ''
     );
 

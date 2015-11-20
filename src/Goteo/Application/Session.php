@@ -65,7 +65,7 @@ class Session {
      * @return [type] [description]
      */
     static public function expiresIn() {
-        return self::getStartTime() + self::getSessionExpires() - (int)self::get('session_init');
+        return self::getStartTime() + self::getSessionExpires() - (int)self::get('init_time');
     }
     /**
      * Renew the init_time to extend the expire time of the current session
@@ -117,6 +117,10 @@ class Session {
                 $callback();
             }
         }
+    }
+
+    static public function getId() {
+        return session_id();
     }
 
     /**

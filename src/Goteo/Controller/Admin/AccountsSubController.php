@@ -191,7 +191,7 @@ class AccountsSubController extends AbstractSubController {
                     if($invest->status === ($returned ? Invest::STATUS_RETURNED : Invest::STATUS_CANCELLED)) {
                         $ok = true;
                         // Evento Feed
-                        $coin = Currency::getDefault()['html'];
+                        $coin = Currency::getDefault('html');
                         $log = new Feed();
                         $log->setTarget($project->id)
                             ->populate(
@@ -295,15 +295,15 @@ class AccountsSubController extends AbstractSubController {
         if (!in_array($invest->status, [Invest::STATUS_CHARGED])) {
             Message::error(Text::get('admin-account-invest-non-pool-refundable'));
         } else {
-            if ($invest->cancel($returned)) {
-                // Mark this invest as if user choosed pool-on-fail
-                $invest->setPoolOnFail(true);
-                if(User\Pool::refundInvest($invest)) {
-                    // Event invest success event
-                    $invest = $this->dispatch($returned ? AppEvents::INVEST_RETURNED : AppEvents::INVEST_CANCELLED, new FilterInvestRefundEvent($invest, $invest->getMethod(), new EmptySuccessfulResponse()))->getInvest();
 
-                    Message::info(Text::get('admin-account-invest-to-pool-ok', "{$invest->amount} $coin"));
-                }
+            // Mark this invest as if user choosed pool-on-fail
+            $invest->setPoolOnFail(true);
+
+            // Event invest success event
+            $invest = $this->dispatch($returned ? AppEvents::INVEST_RETURNED : AppEvents::INVEST_CANCELLED, new FilterInvestRefundEvent($invest, $invest->getMethod(), new EmptySuccessfulResponse()))->getInvest();
+
+            if ($invest->status == ($returned ? Invest::STATUS_RETURNED : Invest::STATUS_CANCELLED)) {
+                Message::info(Text::get('admin-account-invest-to-pool-ok', "{$invest->amount} $coin"));
                 // Evento Feed
                 $log = new Feed();
                 $log->setTarget($project->id)

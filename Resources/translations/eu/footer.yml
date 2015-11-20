@@ -1,18 +1,18 @@
-footer-platoniq-iniciative: 'Honen ekimenari esker:'
-footer-service-campaign: Kanpainak
 footer-header-categories: Kategoriak
-footer-service-consulting: Aholkularitza
-regular-footer-contact: Kontaktua
-footer-service-resources: 'Ureztatze kapitala'
-footer-header-social: Jarraiguzu
-footer-resources-glossary: Glosarioa
-footer-resources-source_code: 'Iturri kodea AGPL3'
-footer-header-sponsors: 'Erakunde babesleak'
-regular-footer-legal: 'Lege informazioa'
-footer-resources-press: Prentsa
-regular-footer-privacy: 'Pribatutasun politika'
 footer-header-projects: Proiektuak
 footer-header-resources: Baliabideak
 footer-header-services: Zerbitzuak
-regular-footer-terms: 'Erabiltzeko baldintzak'
+footer-header-social: Jarraiguzu
+footer-header-sponsors: 'Erakunde babesleak'
+footer-platoniq-iniciative: 'Honen ekimenari esker:'
+footer-resources-glossary: Glosarioa
+footer-resources-press: Prentsa
+footer-resources-source_code: 'Iturri kodea AGPL3'
+footer-service-campaign: Kanpainak
+footer-service-consulting: Aholkularitza
+footer-service-resources: 'Ureztatze kapitala'
 footer-service-workshop: Tailerrak
+regular-footer-contact: Kontaktua
+regular-footer-legal: 'Lege informazioa'
+regular-footer-privacy: 'Pribatutasun politika'
+regular-footer-terms: 'Erabiltzeko baldintzak'

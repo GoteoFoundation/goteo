@@ -146,8 +146,7 @@ namespace Goteo\Controller {
                         // mensaje al autor del proyecto
 
                         //  idioma de preferencia
-                        $prefer = Model\User::getPreferences($projectData->user->id);
-                        $comlang = !empty($prefer->comlang) ? $prefer->comlang : $projectData->user->lang;
+                        $comlang = Model\User::getPreferences($projectData->user)->comlang;
 
                         // Obtenemos la plantilla para asunto y contenido
                         $template = Template::get(Template::OWNER_NEW_THREAD, $comlang);
@@ -229,8 +228,7 @@ namespace Goteo\Controller {
                 $msg_content = \nl2br(\strip_tags($_POST['message']));
 
                 //  idioma de preferencia
-                $prefer = Model\User::getPreferences($ownerData->id);
-                $comlang = !empty($prefer->comlang) ? $prefer->comlang : $ownerData->lang;
+                $comlang = Model\User::getPreferences($ownerData)->comlang;
 
                 // Obtenemos la plantilla para asunto y contenido
                 $template = Template::get(Template::MESSAGE_OWNER, $comlang);
@@ -307,8 +305,7 @@ namespace Goteo\Controller {
 
 
                 //  idioma de preferencia
-                $prefer = Model\User::getPreferences($user->id);
-                $comlang = !empty($prefer->comlang) ? $prefer->comlang : $user->lang;
+                $comlang = Model\User::getPreferences($user)->comlang;
 
                 // Obtenemos la plantilla para asunto y contenido
                 $template = Template::get(Template::MESSAGE_USERS, $comlang);
@@ -345,6 +342,7 @@ namespace Goteo\Controller {
                 $mailHandler->content = $content;
                 $mailHandler->html = true;
                 $mailHandler->template = $template->id;
+                $errors = [];
                 if ($mailHandler->send($errors)) {
                     // ok
                     Application\Message::info(Text::get('regular-message_success'));
@@ -411,8 +409,7 @@ namespace Goteo\Controller {
                         //Notificación al autor del proyecto
 
                         //  idioma de preferencia
-                        $prefer = Model\User::getPreferences($projectData->user->id);
-                        $comlang = !empty($prefer->comlang) ? $prefer->comlang : $projectData->user->lang;
+                        $comlang = Model\User::getPreferences($projectData->user)->comlang;
 
                         // Obtenemos la plantilla para asunto y contenido
                         $template = Template::get(Template::OWNER_NEW_COMMENT, $comlang);
