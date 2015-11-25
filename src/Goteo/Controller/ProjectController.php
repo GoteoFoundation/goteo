@@ -10,26 +10,26 @@
 
 namespace Goteo\Controller;
 
-use
-Goteo\Application;use Goteo\Application\Config;use
-Goteo\Application\Exception\ControllerAccessDeniedException;use
-Goteo\Application\Exception\ControllerException;use
-Goteo\Application\Exception\ModelException;use
-Goteo\Application\Exception\ModelNotFoundException;use
-Goteo\Application\Lang;use
-Goteo\Application\Session;use
-Goteo\Application\View;use
-Goteo\Console\UsersSend;use
-Goteo\Library;use
-Goteo\Library\Check;use
-Goteo\Library\Feed;use
-Goteo\Library\Page;use
-Goteo\Library\Text;use
-Goteo\Model;use
-Goteo\Model\Project;use
-Symfony\Component\HttpFoundation\RedirectResponse;use
-Symfony\Component\HttpFoundation\Request;use
-Symfony\Component\HttpFoundation\Response;
+use Goteo\Application;
+use Goteo\Application\Config;
+use Goteo\Application\Exception\ControllerAccessDeniedException;
+use Goteo\Application\Exception\ControllerException;
+use Goteo\Application\Exception\ModelException;
+use Goteo\Application\Exception\ModelNotFoundException;
+use Goteo\Application\Lang;
+use Goteo\Application\Session;
+use Goteo\Application\View;
+use Goteo\Console\UsersSend;
+use Goteo\Library;
+use Goteo\Library\Check;
+use Goteo\Library\Feed;
+use Goteo\Library\Page;
+use Goteo\Library\Text;
+use Goteo\Model;
+use Goteo\Model\Project;
+use Symfony\Component\HttpFoundation\RedirectResponse;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 
 class ProjectController extends \Goteo\Core\Controller {
 
@@ -230,9 +230,9 @@ class ProjectController extends \Goteo\Core\Controller {
 
 			$errors = array();// errores al procesar, no son errores en los datos del proyecto
 
-			foreach ($steps as $id => &$data) {
+			foreach ($steps as $id => $data) {
 
-				if (call_user_func_array(array($this, "process_{$id}"), array(&$project, &$errors))) {
+				if (call_user_func_array(array($this, "process_{$id}"), array($project, &$errors))) {
 					// Ok...
 				}
 
@@ -497,6 +497,7 @@ class ProjectController extends \Goteo\Core\Controller {
 			unset($_SESSION['superform_item_edit']);
 		}
 
+
 		return $this->viewResponse('project/edit', $viewData);
 
 	}
@@ -643,7 +644,7 @@ class ProjectController extends \Goteo\Core\Controller {
 	/*
 	 * Paso 1 - PERFIL
 	 */
-	private function process_userProfile(&$project, &$errors) {
+	private function process_userProfile($project, &$errors) {
 		if (!isset($_POST['process_userProfile'])) {
 			return false;
 		}
@@ -687,47 +688,45 @@ class ProjectController extends \Goteo\Core\Controller {
 		$user->interests = $_POST['user_interests'];
 
 		//tratar webs existentes
-		foreach ($user->webs as $i => &$web) {
+		foreach ($user->webs as $i => $web) {
 			// luego aplicar los cambios
 
 			if (isset($_POST['web-'.$web->id.'-url'])) {
 				$web->url = $_POST['web-'.$web->id.'-url'];
 			}
 
-			//quitar las que quiten
-			if (!empty($_POST['web-'.$web->id.'-remove'])) {
-				unset($user->webs[$i]);
-			}
+            //quitar las que quiten
+            if (!empty($_POST['web-'.$web->id.'-remove'])) {
+                unset($user->webs[$i]);
+            }
 
-		}
+        }
+        //tratar nueva web
+        if (!empty($_POST['web-add'])) {
+            $user->webs[] = new Model\User\Web(array(
+                    'url' => 'http://',
+                ));
+        }
+        /// este es el único save que se lanza desde un metodo process_
+        $user->save($project->errors['userProfile']);
 
-		//tratar nueva web
-		if (!empty($_POST['web-add'])) {
-			$user->webs[] = new Model\User\Web(array(
-					'url' => 'http://',
-				));
-		}
+        // si hay errores en la imagen hay que mostrarlos
+        if (!empty($project->errors['userProfile']['image'])) {
+            $project->errors['userProfile']['avatar'] = $project->errors['userProfile']['image'];
+        }
 
-		/// este es el único save que se lanza desde un metodo process_
-		$user->save($project->errors['userProfile']);
-
-		// si hay errores en la imagen hay que mostrarlos
-		if (!empty($project->errors['userProfile']['image'])) {
-			$project->errors['userProfile']['avatar'] = $project->errors['userProfile']['image'];
-		}
-
-		// actualizar perfil propio solo si es el impulsor
-		if (Session::getUserId() == $project->owner) {
-			Model\User::flush();
-		}
-		$project->user = $user;
-		return true;
+        // actualizar perfil propio solo si es el impulsor
+        if (Session::getUserId() == $project->owner) {
+            Model\User::flush();
+        }
+        $project->user = $user;
+        return true;
 	}
 
 	/*
 	 * Paso 2 - DATOS PERSONALES
 	 */
-	private function process_userPersonal(&$project, &$errors) {
+	private function process_userPersonal($project, &$errors) {
 		if (!isset($_POST['process_userPersonal'])) {
 			return false;
 		}
@@ -798,7 +797,7 @@ class ProjectController extends \Goteo\Core\Controller {
 	 * Paso 3 - DESCRIPCIÓN
 	 */
 
-	private function process_overview(&$project, &$errors) {
+	private function process_overview($project, &$errors) {
 		if (!isset($_POST['process_overview'])) {
 			return false;
 		}
@@ -877,7 +876,7 @@ class ProjectController extends \Goteo\Core\Controller {
 	 * Paso 3b - IMÁGENES
 	 */
 
-	private function process_images(&$project, &$errors) {
+	private function process_images($project, &$errors) {
 		if (!isset($_POST['process_images'])) {
 			return false;
 		}
@@ -907,7 +906,7 @@ class ProjectController extends \Goteo\Core\Controller {
 	/*
 	 * Paso 4 - COSTES
 	 */
-	private function process_costs(&$project, &$errors) {
+	private function process_costs($project, &$errors) {
 		if (!isset($_POST['process_costs'])) {
 			return false;
 		}
@@ -978,7 +977,7 @@ class ProjectController extends \Goteo\Core\Controller {
 	/*
 	 * Paso 5 - RETORNO
 	 */
-	private function process_rewards(&$project, &$errors) {
+	private function process_rewards($project, &$errors) {
 		if (!isset($_POST['process_rewards'])) {
 			return false;
 		}
@@ -1071,7 +1070,7 @@ class ProjectController extends \Goteo\Core\Controller {
 	/*
 	 * Paso 6 - COLABORACIONES
 	 */
-	private function process_supports(&$project, &$errors) {
+	private function process_supports($project, &$errors) {
 		if (!isset($_POST['process_supports'])) {
 			return false;
 		}
@@ -1133,7 +1132,7 @@ class ProjectController extends \Goteo\Core\Controller {
 	 * Paso 7 - PREVIEW
 	 * No hay nada que tratar porque aq este paso no se le envia nada por post
 	 */
-	private function process_preview(&$project) {
+	private function process_preview($project) {
 		if (!isset($_POST['process_preview'])) {
 			return false;
 		}

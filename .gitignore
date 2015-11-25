@@ -25,3 +25,4 @@ dist
 
 phpunit.xml
 tests/build
+.couscous

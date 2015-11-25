@@ -173,7 +173,7 @@ class Invest extends \Goteo\Core\Model {
      * .... anonimo, resign, etc...
      * @param $count if true, counts the total. If it's 'money' sum all money instead, if 'users' gets the number of different users
      */
-    public static function getList ($filters = array(), $node = null, $offset = 0, $limit = 10, $count = false, $order = 'id ASC') {
+    public static function getList ($filters = array(), $node = null, $offset = 0, $limit = 10, $count = false, $order = 'id DESC') {
 
         $list = array();
         $values = array();

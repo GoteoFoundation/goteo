@@ -339,7 +339,6 @@ $(function () {
     webs.delegate('li.element.editweb input.ok', 'click', function (event) {
         event.preventDefault();
         var data = {};
-        alert(this.name)
         data[this.name.substring(0, this.name.length-2) + 'edit'] = '0';
         webs.superform({data:data});
     });

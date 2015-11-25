@@ -15,6 +15,7 @@ rewards-field-social_reward-license: 'Opciones de licencia'
 rewards-field-social_reward-other: 'Especificar el tipo de retorno'
 rewards-field-social_reward-reward: Retorno
 rewards-field-social_reward-type: 'Tipo de retorno'
+rewards-field-social_reward-url: 'Url'
 rewards-fields-individual_reward-title: 'Recompensas individuales'
 rewards-fields-social_reward-title: 'Retornos colectivos'
 rewards-main-header: 'Retornos y recompensas'

@@ -1,4 +1,127 @@
-#Goteo settings file
+---
+currentMenu: install
+---
+Installation
+============
+
+
+Server requirements
+-------------------
+
+- PHP v5.4 or later with most common extension activated (GD, mcrypt, etc)
+- Apache, Nginx or any other server with ModRewrite activated
+- MySQL 5.6 or later
+
+Server configuration
+---------------------
+
+Goteo has been tested under Nginx and Apache configurations.
+
+You will need to build a `dist` production folder an point the webserver onto it. Use `grunt build` to create a minimized assets environment or `grunt build:devel` for javascript/css debugging.
+
+At this point, there are still no production-ready releases. Please refer to the [developers](developers/environment.html) documentation for more info.
+
+### Apache config:
+
+Modrewrite must be enabled for apache below 2.2.16:
+
+```
+<IfModule mod_rewrite.c>
+    Options -MultiViews
+
+    RewriteEngine On
+    #RewriteBase /path/to/goteo-folder/dist
+    RewriteCond %{REQUEST_FILENAME} !-f
+    RewriteRule ^ index.php [QSA,L]
+</IfModule>
+```
+
+Alternatively, if you use Apache 2.2.16 or higher, you can use the FallbackResource directive to make your .htaccess even easier:
+
+```
+FallbackResource /index.php
+```
+
+### Nginx config:
+
+```
+server {
+    server_name domain.tld www.domain.tld;
+    root /var/www/goteo-folder/dist;
+
+    location / {
+        # try to serve file directly, fallback to front controller
+        try_files $uri /index.php$is_args$args;
+    }
+
+    # If you have 2 front controllers for dev|prod use the following line instead
+    # location ~ ^/(index|index_dev)\.php(/|$) {
+    location ~ ^/index\.php(/|$) {
+        # the ubuntu default
+        fastcgi_pass   unix:/var/run/php5-fpm.sock;
+        # for running on centos
+        #fastcgi_pass   unix:/var/run/php-fpm/www.sock;
+
+        fastcgi_split_path_info ^(.+\.php)(/.*)$;
+        include fastcgi_params;
+        fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
+        fastcgi_param HTTPS off;
+
+        # Prevents URIs that include the front controller. This will 404:
+        # http://domain.tld/index.php/some-path
+        # Enable the internal directive to disable URIs like this
+        # internal;
+    }
+
+    #return 404 for all php files as we do have a front controller
+    location ~ \.php$ {
+        return 404;
+    }
+
+    error_log /var/log/nginx/project_error.log;
+    access_log /var/log/nginx/project_access.log;
+}
+```
+
+Database configuration
+----------------------
+
+A minimal system must be created, import this 2 SQL scripts:
+
+- `db/install/structure.sql`
+- `db/install/data.sql`
+
+Both scripts should be applied in a MySQL console:
+
+```bash
+mysql -u your_user -p your_password < db/install/structure.sql
+mysql -u your_user -p your_password < db/install/data.sql
+```
+
+This should setted up a empty system with only one user "root".
+
+Login with user "root" and password "root" (no quotes).
+Go `http://your.intallation.site/admin/users/edit/root` to change the password and email
+Try login with that password and manage the contents at http://your.intallation.site/admin
+
+However, we haven't tested in any production database and very likely errors will be thrown. Debugging info will be appreciated.
+
+Goteo configuration
+-------------
+
+Place in here a non-git-tracked copy of your `settings.yml`
+
+Use `demo-settings.yml` or `vagrant-settings.yml` as a example.
+
+Particularly you must configure the `db:` section with the proper MySQL username/password on settings.yml
+
+You can specify a different `dev-settings.yml` file which will be used by `public/index_dev.php`
+
+
+Example installation `config/settings.yml`:
+
+```yaml
+# Goteo settings file
 ---
 
 # Maintenance
@@ -25,12 +148,12 @@ timezone: Europe/Madrid
 
 # url
 url:
-    main: //localhost:8082
+    main: //localhost:8081
     # static resources url if you use a different assets server
-    assets: //localhost:8082
+    assets: //localhost:8081
     #optional, configure this as hostname only (ex: example.com) if you want languages to be selected as subdomains (es.example.com, en.example.com)
     url_lang: localhost:8081
-
+    
     # If you want to use a CDN or another web server to serve the cached images
     # You can define this constants. All cached images links will point to this
     # Url, event if don't exists yet.
@@ -74,10 +197,10 @@ payments:
         # logoImageUrl: logo URL
         # borderColor: B5DADC
 
-	# This is a built-in payment method using internal credit
+    # This is a built-in payment method using internal credit
     pool:
         active: true
-	# A stupid payment method defined in the plugin goteo-dev
+    # A stupid payment method defined in the plugin goteo-dev
     # Useful for development and testing
     dummy:
         active: true
@@ -114,7 +237,7 @@ fee: 4
 # Filesystem used by goteo
 filesystem:
     handler:    local      # 's3' to use AmazonS3 storage, 'local' to use local file system
-    # Only need to be defined credentials if filesystem is s3:
+    # Only need to be defined credentials if file system is s3:
     # AWS credentials
     aws: &aws1
         key:        your-aws-key
@@ -132,8 +255,8 @@ db:
     port:     3306      # Database port
     charset:  UTF-8     # Database charset
     database: goteo     # Database schema (database name)
-    username: root      # Database user for the goteo database
-    password: root      # Password for the goteo database
+    username: goteo     # Database user for the goteo database
+    password: password  # Password for the goteo database
 
     # SELECT queries caching
     # set it as 'files' to enable sql cache
@@ -153,11 +276,11 @@ db:
 
 # HTML Metas
 meta:
-    title:       "Development Goteo"       # Html default <title>
-    description: "--meta-description--" # Html default <meta description>
-    keywords:    "--keywords--"         # Html default <meta keywords>
-    author:      "--author--"           # Html default <meta author>
-    copyright:   "--copyright--"        # Html default <meta copyright>
+    title:       --meta-title--       # Html default <title>
+    description: --meta-description-- # Html default <meta description>
+    keywords:    --keywords--         # Html default <meta keywords>
+    author:      --author--           # Html default <meta author>
+    copyright:   --copyright--        # Html default <meta copyright>
 
 # Loggin level
 log:
@@ -165,7 +288,7 @@ log:
     app: info # debug info, warning, error (default)
     # payment collects messages related to payments
     payment: debug
-	# Debug level in Console commands
+    # Debug level in Console commands
     console: debug
     # mail specifies at what log level the error will be sent to mail.fail email
     mail: error # goes to mail.fail address
@@ -173,35 +296,35 @@ log:
 # Mail transport
 mail:
     # receiving emails
-    mail:         info@localhost     # Main
-    contact:      info@localhost     # consulting head
-    manager:      manager@localhost  # accounts manager
-    fail:         dev@localhost      # dev head
-    log:          sitelog@localhost  # Loggin mail
+    mail:         info@example.com     # Main
+    contact:      info@example.com     # consulting head
+    manager:      manager@example.com  # accounts manager
+    fail:         dev@example.com      # dev head
+    log:          sitelog@example.com  # Loggin mail
 
     # allowed addresses while in BETA/LOCAL env in PREG format
     beta_senders: "(.+)example\\.org|(.+)example\\.com"
     # Add to BCC this address to all communications (except massive). Applies only in REAL env
-	# Not recommended, there's a way in the admin to see all sent communications
+    # Not recommended, there's a way in the admin to see all sent communications
     bcc_verifier:
 
     # Default users where to send project notifications by default
-	# Only used if no consultants are assigned
+    # Only used if no consultants are assigned
     consultants:
         root: 'Root'
 
     transport:
-        from:          noreply@localhost
+        from:          noreply@example.com
         name:          Goteo Sender
         type:          smtp
         # if type is smtp:
         smtp:
             auth:     true
             secure:   ssl
-            host:     localhost
+            host:     smtp.example.com
             port:     587
-            username: root
-            password: root
+            username: smtp-usermail
+            password: smtp-password
 
     quota:
         total: 50000  # Maximum sending quota in 24 hours time (useful for SMTP servers like Amazon SES)
@@ -221,7 +344,7 @@ geolocation:
     # databases from maxmind. Check this for more info: https://dev.maxmind.com/geoip/geoipupdate/
     # relative paths are allowed (ie: you can save your maxmind databases into config/resources/maxmind if you want)
     # Un comment next 2 lines if you have it installed and working:
-	# maxmind:
+    # maxmind:
     #    cities: /usr/share/GeoIP/GeoLite2-City.mmdb
 
 # Social Login Services
@@ -247,4 +370,4 @@ oauth:
     #    id: aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
     #    secret: aaaaaaaaaaaaaaaaaa
 
-
+```

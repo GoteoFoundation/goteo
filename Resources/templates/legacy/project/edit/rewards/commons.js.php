@@ -83,7 +83,7 @@
                 $('#rew'+rew+'url').val(val);
             }
 
-            success_text = $.ajax({async: false, type: "POST", data: ({project: proj, reward: rew, value: val}), url: '/c7feb7803386d713e60894036feeee9e/d82318a7bec39ac2b78be96b8ec2b76e/'}).responseText;
+            success_text = $.ajax({async: false, type: "POST", data: ({project: proj, reward: rew, value: val}), url: '/c7feb7803386d713e60894036feeee9e/d82318a7bec39ac2b78be96b8ec2b76e'}).responseText;
 
             if (String(success_text).trim() == 'OK') {
                 $("#divrew"+rew+"url a.rewurl").attr('href', val);

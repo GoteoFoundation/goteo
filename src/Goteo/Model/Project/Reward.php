@@ -250,7 +250,8 @@ namespace Goteo\Model\Project {
                 'license',
                 'amount',
                 'units',
-                'bonus'
+                'bonus',
+                'url'
             );
 
             $set = '';
@@ -262,6 +263,7 @@ namespace Goteo\Model\Project {
                 $set .= "$field = :$field ";
                 $values[":$field"] = $this->$field;
             }
+
 
             try {
                 $sql = "REPLACE INTO reward SET " . $set;

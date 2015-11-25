@@ -19,6 +19,7 @@ namespace Goteo\Model {
         Goteo\Model\Mail,
         Goteo\Library\Check,
         Goteo\Application;
+    use Goteo\Model\User\Web as UserWeb;
     use Goteo\Application\Lang;
     use Goteo\Application\Config;
     use Goteo\Application\Session;
@@ -274,12 +275,12 @@ namespace Goteo\Model {
                     static::query('DELETE FROM user_web WHERE user= ?', $this->id);
                     if (!empty($this->webs)) {
                         foreach ($this->webs as $web) {
-                            if ($web instanceof User\Web) {
+                            if ($web instanceof UserWeb) {
                                 $web->user = $this->id;
                                 $web->save($errors);
                             }
                         }
-                        $this->webs = User\Web::get($id);
+                        $this->webs = UserWeb::get($this->id);
                     }
                 }
 
@@ -641,7 +642,7 @@ namespace Goteo\Model {
                 $user->interests = User\Interest::get($id);
 
                 // campo calculado tipo lista para las webs del usuario
-                $user->webs = User\Web::get($id);
+                $user->webs = UserWeb::get($id);
 
                 // Nodo
                 if (!empty($user->node) && $user->node != \GOTEO_NODE) {

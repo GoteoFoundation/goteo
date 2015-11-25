@@ -12,6 +12,7 @@ namespace Goteo\Controller\Dashboard {
 
     use Goteo\Model,
         Goteo\Application\Message,
+        Goteo\Application\Config,
 		Goteo\Library\Text;
 
     class Profile {
@@ -77,7 +78,7 @@ namespace Goteo\Controller\Dashboard {
             $user->interests = $_POST['user_interests'];
 
             //tratar webs existentes
-            foreach ($user->webs as $i => &$web) {
+            foreach ($user->webs as $i => $web) {
                 // luego aplicar los cambios
 
                 if (isset($_POST['web-' . $web->id . '-url'])) {
@@ -102,7 +103,7 @@ namespace Goteo\Controller\Dashboard {
 //                Message::info(Text::get('user-profile-saved'));
 
                 // si no español, aplicamos auto traducción
-                if ($user->lang != 'es') {
+                if ($user->lang != Config::get('lang')) {
                     // primero verificamos que no tenga traducido ya ese idioma
                     if (!Model\User::isTranslated($user->id, $user->lang)) {
 

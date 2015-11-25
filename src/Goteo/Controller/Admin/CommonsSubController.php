@@ -192,8 +192,13 @@ class CommonsSubController extends AbstractSubController {
                     if ($this->hasPost('social_reward-' . $reward->id . '-reward')) {
                         $errors = array();
 
+
+
                         $reward->reward = $this->getPost('social_reward-' . $reward->id . '-reward');
                         $reward->description = $this->getPost('social_reward-' . $reward->id . '-description');
+                        
+                        $reward->url = $this->getPost('social_reward-' . $reward->id . '-url');
+
                         $reward->icon = $this->getPost('social_reward-' . $reward->id . '-icon');
                         if ($reward->icon == 'other') {
                             $reward->other = $this->getPost('social_reward-' . $reward->id . '-other');

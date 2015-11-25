@@ -56,6 +56,7 @@ class CronCommand extends AbstractCommand {
      * @param [type] $schedule the crontab time line (ex: 5 * * * *)
      */
     public static function addSchedule($command, $schedule) {
+        chdir(GOTEO_PATH);
         $job = new ShellJob();
         $job->setCommand($command);
         $job->setSchedule(new CrontabSchedule($schedule));

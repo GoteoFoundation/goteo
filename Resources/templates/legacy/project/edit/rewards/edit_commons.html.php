@@ -129,6 +129,14 @@ echo new NormalForm(array(
                     'value'     => $reward->description,
                     'hint'      => Text::get('tooltip-project-social_reward-description')
                 ),
+                "social_reward-{$reward->id}-url" => array(
+                    'title'     => Text::get('rewards-field-social_reward-url'),
+                    'type'      => 'textbox',
+                    'required'  => false,
+                    'class'     => 'inline',
+                    'value'     => $reward->url,
+                    'hint'      => Text::get('tooltip-project-social_reward-url')
+                ),
                 "social_reward-{$reward->id}-icon" => array(
                     'title'     => Text::get('rewards-field-social_reward-type'),
                     'class'     => 'inline',

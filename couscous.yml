@@ -1,0 +1,54 @@
+# Base URL of the published website
+baseUrl: http://goteofoundation.github.io/goteo
+
+template:
+    # url: https://github.com/CouscousPHP/Template-ReadTheDocs
+    url: https://github.com/CouscousPHP/Template-Dark
+
+# Used to link to the GitHub project
+github:
+    user: goteofoundation
+    repo: goteo
+
+title: Goteo Developer's Documentation
+subTitle: An opensource crowdfunding platform made with PHP
+
+# The left menu bar
+menu:
+    sections:
+        main:
+            name: Main documentation
+            items:
+                home:
+                    text: About
+                    relativeUrl: index.html
+                install:
+                    text: Install
+                    relativeUrl: docs/install.html
+                upgrade:
+                    text: Upgrade
+                    relativeUrl: docs/upgrade.html
+        developers:
+            name: Developers
+            items:
+                environment:
+                    text: Environment
+                    relativeUrl: docs/developers/environment.html
+                templates:
+                    text: Template system
+                    relativeUrl: docs/developers/templates.html
+                migration:
+                    text: Legacy migration howto
+                    relativeUrl: docs/developers/migration.html
+                extend:
+                    text: Plugins & extending
+                    relativeUrl: docs/developers/extend.html
+        about:
+            name: About
+            items:
+                release_notes:
+                    text: Release notes
+                    relativeUrl: release_notes.html
+                license:
+                    text: License
+                    relativeUrl: LICENSE

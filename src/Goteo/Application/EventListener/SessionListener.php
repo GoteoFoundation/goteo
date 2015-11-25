@@ -159,9 +159,9 @@ class SessionListener extends AbstractListener {
         } else {
             $vars['controller'] = $controller;
         }
-        if ($route_params = $request->attributes->get('_route_params')) {
-            $vars['route_params'] = $route_params;
-        }
+        // if ($route_params = $request->attributes->get('_route_params')) {
+        //     $vars['route_params'] = $route_params;
+        // }
 
         $this->info('Request', $vars);
 
