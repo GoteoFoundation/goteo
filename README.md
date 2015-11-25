@@ -15,8 +15,8 @@ Some folders may have its own README.md file with comments. However, we will try
 
 ### DOCUMENTATION
 
-- [Install](http://goteofoundation.github.io/goteo/install.html)
-- [Upgrade](http://goteofoundation.github.io/goteo/upgrade.html)
+- [Install](http://goteofoundation.github.io/goteo/docs/install.html)
+- [Upgrade](http://goteofoundation.github.io/goteo/docs/upgrade.html)
 
 ### CONTRIBUTING
 
@@ -24,8 +24,8 @@ Please, be aware that all this system is under development and in a middle-step 
 
 There's still a lot of documentation missing. We'll try to do our best on complete it, however any help will be appreciated.
 
-- [Developers](http://goteofoundation.github.io/goteo/developers/environment.html)
-- [Credits](http://goteofoundation.github.io/goteo/release_notes.html)
+- [Developers](http://goteofoundation.github.io/goteo/docs/developers/environment.html)
+- [Credits](http://goteofoundation.github.io/goteo/docs/release_notes.html)
 
 This documentation is created using [Couscous](http://couscous.io).
 
