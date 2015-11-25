@@ -9,7 +9,7 @@ Plugins can extend or modify almost any aspect of the site.
 The plugins' folder
 -------------------
 
-Take as example **goteo-dev**
+Take as an example **goteo-dev**
 
 Plugins must be enabled in config/settings.yml, like this:
 

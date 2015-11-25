@@ -5,7 +5,7 @@ currentMenu: templates
 
 The new template system in Goteo uses [FOIL](http://www.foilphp.it) which is a powerful php-native template system.
 
-However, there's still a lot of the legacy views in use. They will coexists until we can full get rid of the old system.
+However, there's still a lot of the legacy views in use. They will coexist until we can fully get rid of the old system.
 
 This document compares the old and new template system and highlights the main differences:
 
@@ -27,7 +27,7 @@ Main differences
 
 **Before:**
 
-Variables where located inside the array  `$vars[]` (or event for even older behaviour inside the `$this` [ArrayObject](http://php.net/manual/es/class.arrayobject.php) instance);
+Variables were located inside the array  `$vars[]` (or event for even older behaviour inside the `$this` [ArrayObject](http://php.net/manual/es/class.arrayobject.php) instance);
 
 File `template.html.php`
 
@@ -52,7 +52,7 @@ echo $this['variable']; // non-escaped
 
 Variables are instantiated by default as properties of the object `$this` (that's Foil's behaviour).
 
-**NOTE**: For compatibility reasons it an automatic array `$this->vars` it's created with all variables copied inside. New views (or completely refactored) must not use this array.
+**NOTE**: For compatibility reasons an automatic array `$this->vars` is created with all variables copied inside. New views (or completely refactored) must not use this array.
 
 File `template.php`
 
@@ -79,7 +79,7 @@ FOIL supports inheritance, custom functions & a great variables manipulation cap
 
 **Basic operation:**
 
-Things starts with a basic layout used as base by the other templates. Please refer to the official documentation of Foil to know more about this.
+It starts with a basic layout used as the base by the other templates. Please refer to the official documentation of Foil to know more about this.
 
 File `layout.php`
 
@@ -265,9 +265,7 @@ Custom functions can be called like this:
 Guidelines
 ----------
 
-Ideally, templates must be keep as simple as possible, we will try to keep this guidelines for the new views using Foil.
-
-These are guidelines extracted from the [Plates templates system](http://platesphp.com/templates/syntax/):
+Ideally, templates must be kept as simple as possible, we will try to follow these guidelines for the new views using Foil (extracted from the [Plates templates system](http://platesphp.com/templates/syntax/)):
 
 - Always use HTML with inline PHP. Never use blocks of PHP.
 - Always escape potentially dangerous variables prior to outputting using the built-in escape functions. More on escaping [here](http://www.foilphp.it/docs/DATA/RETRIEVE-DATA.html).

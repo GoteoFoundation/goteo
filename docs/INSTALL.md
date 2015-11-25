@@ -17,7 +17,7 @@ Server configuration
 
 Goteo has been tested under Nginx and Apache configurations.
 
-You will need to build a `dist` production folder an point the webserver onto it. Use `grunt build` to create a minimized assets environment or `grunt build:devel` for javascript/css debugging.
+You will need to build a `dist` production folder an point the webserver onto it. Use `grunt build` to create a minimized assets or `grunt build:devel` for javascript/css debugging.
 
 At this point, there are still no production-ready releases. Please refer to the [developers](developers/environment.html) documentation for more info.
 
@@ -98,13 +98,13 @@ mysql -u your_user -p your_password < db/install/structure.sql
 mysql -u your_user -p your_password < db/install/data.sql
 ```
 
-This should setted up a empty system with only one user "root".
+This should give you an empty system with only one user "root".
 
 Login with user "root" and password "root" (no quotes).
 Go `http://your.intallation.site/admin/users/edit/root` to change the password and email
 Try login with that password and manage the contents at http://your.intallation.site/admin
 
-However, we haven't tested in any production database and very likely errors will be thrown. Debugging info will be appreciated.
+However, we haven't tested it in any production database and very likely errors will be thrown. Debugging info will be appreciated.
 
 Goteo configuration
 -------------
