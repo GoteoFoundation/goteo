@@ -19,15 +19,22 @@ use Goteo\Application\Session;
 class FilterAuthEvent extends Event
 {
     protected $user;
+    protected $provider;
 
-    public function __construct(User $user = null)
+    public function __construct(User $user = null, $provider = 'builtin')
     {
         $this->user = $user;
+        $this->provider = $provider;
     }
 
     public function getUser()
     {
         return $this->user;
+    }
+
+    public function getProvider()
+    {
+        return $this->provider;
     }
 
     /**

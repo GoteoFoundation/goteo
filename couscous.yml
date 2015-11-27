@@ -40,6 +40,9 @@ menu:
                 migration:
                     text: Legacy migration howto
                     relativeUrl: docs/developers/migration.html
+                payments:
+                    text: Payment process
+                    relativeUrl: docs/developers/payments.html
                 extend:
                     text: Plugins & extending
                     relativeUrl: docs/developers/extend.html

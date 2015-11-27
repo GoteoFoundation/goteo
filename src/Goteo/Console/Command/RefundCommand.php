@@ -84,7 +84,7 @@ EOT
 			}
 			$invests = Invest::getList(['methods' => null,
 					'status'                            => Invest::STATUS_CHARGED,
-					'projectStatus'                     => $any_project?null:Project::STATUS_UNFUNDED,
+					'projectStatus'                     => $any_project ? null : Project::STATUS_UNFUNDED,
 					'projects'                          => $project_id
 				], null, 0, 10000);
 
@@ -99,8 +99,8 @@ EOT
 		foreach ($invests as $invest) {
 			$project             = $invest->getProject();
 			$returned            = ($project->status == Project::STATUS_UNFUNDED);
-			$event_refund        = $returned?ConsoleEvents::INVEST_RETURNED:ConsoleEvents::INVEST_CANCELLED;
-			$event_refund_failed = $returned?ConsoleEvents::INVEST_RETURN_FAILED:ConsoleEvents::INVEST_CANCEL_FAILED;
+			$event_refund        = $returned ? ConsoleEvents::INVEST_RETURNED : ConsoleEvents::INVEST_CANCELLED;
+			$event_refund_failed = $returned ? ConsoleEvents::INVEST_RETURN_FAILED : ConsoleEvents::INVEST_CANCEL_FAILED;
 
 			if ((int) $invest->status !== Invest::STATUS_CHARGED) {
 				$this->debug("Skipping status [{$invest->status}]. Only CHARGED status will be processed", [$invest, 'project' => $invest->project, 'user' => $invest->user]);
@@ -150,7 +150,7 @@ EOT
 				}
 
 				// New Invest Refund Event
-				if ($invest->status === $returned?Invest::STATUS_RETURNED:Invest::STATUS_CANCELLED) {
+				if ($invest->status === $returned ? Invest::STATUS_RETURNED : Invest::STATUS_CANCELLED) {
 					$this->notice('Invest refunded successfully', [$invest, 'project' => $invest->project, 'user' => $invest->user, 'message' => $response->getMessage()]);
 				} else {
 					$this->error('Error refunding invest', [$invest, 'project' => $invest->project, 'user' => $invest->user, 'message' => $response->getMessage()]);

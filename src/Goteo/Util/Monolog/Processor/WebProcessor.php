@@ -5,6 +5,7 @@ namespace Goteo\Util\Monolog\Processor;
 use Goteo\Application\Session;
 use Goteo\Application\Lang;
 use Goteo\Application\Cookie;
+use Goteo\Core\Model;
 use Goteo\Library\Currency;
 use Symfony\Component\HttpFoundation\Request;
 
@@ -38,7 +39,8 @@ class WebProcessor
                 'license' => 'str',
                 'currency' => 'str',
                 'lang' => 'str',
- 'node'];
+                'node' => 'str'
+    ];
     public function __construct(Request $request) {
         $this->request = $request;
     }
@@ -57,6 +59,7 @@ class WebProcessor
 
     public function processRecord(array $record)
     {
+
         if (null === $this->token) {
             $this->token = substr(uniqid(), -8);
         }
@@ -78,6 +81,7 @@ class WebProcessor
             Cookie::store('uid', $this->uid, 15*50);
         }
 
+        $record['extra']['mhash'] = Model::idealiza($record['message']);
         $record['extra']['uid'] = $this->uid;
         $record['extra']['session'] = $this->session;
         $record['extra']['token'] = $this->token;

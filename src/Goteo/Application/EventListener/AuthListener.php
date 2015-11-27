@@ -19,23 +19,23 @@ class AuthListener extends AbstractListener {
 	public function loginSuccess(FilterAuthEvent $event) {
 		$user = $event->getUser();
 		// $this->info('LOGIN FAILED', [$user, 'password' => $user->password]);
-		$this->notice('Login succedeed', [$user]);
+		$this->notice('Login succedeed', [$user, 'provider' => $event->getProvider()]);
 	}
 
 	public function logout(FilterAuthEvent $event) {
 		$user = $event->getUser();
-		$this->info('Logout', [$user]);
+		$this->info('Logout', [$user, 'provider' => $event->getProvider()]);
 	}
 
 	public function signupSuccess(FilterAuthEvent $event) {
 		$user = $event->getUser();
-		$this->notice('Signup succedeed', [$user]);
+		$this->notice('Signup succedeed', [$user, 'provider' => $event->getProvider()]);
 	}
 
 	public function loginFail(FilterAuthEvent $event) {
 		$user = $event->getUser();
 		// $this->info('LOGIN FAILED', [$user, 'password' => $user->password]);
-		$this->info('Login failed', [$user]);
+		$this->info('Login failed', [$user, 'provider' => $event->getProvider()]);
 
 		Message::error(Text::get('login-fail'));
 
@@ -44,7 +44,7 @@ class AuthListener extends AbstractListener {
 	public function signupFail(FilterAuthEvent $event) {
 		$user = $event->getUser();
 		// $this->info('LOGIN FAILED', [$user, 'password' => $user->password]);
-		$this->info('Signup failed', [$user]);
+		$this->info('Signup failed', [$user, 'provider' => $event->getProvider()]);
 
 		Message::error(Text::get('login-fail'));
 
@@ -52,7 +52,7 @@ class AuthListener extends AbstractListener {
 
 	public function loginRedundant(FilterAuthEvent $event) {
 		$user = $event->getUser();
-		$this->debug('Login repeated', [$user]);
+		$this->debug('Login repeated', [$user, 'provider' => $event->getProvider()]);
 	}
 
 	public function resetPassword(FilterAuthEvent $event) {
@@ -60,7 +60,7 @@ class AuthListener extends AbstractListener {
 
 		Message::info(Text::get('password-changed-ok'));
 
-		$this->info('Reset password succedeed', [$user]);
+		$this->info('Reset password succedeed', [$user, 'provider' => $event->getProvider()]);
 	}
 
 	public static function getSubscribedEvents() {

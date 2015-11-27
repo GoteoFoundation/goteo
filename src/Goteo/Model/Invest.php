@@ -23,7 +23,7 @@ use Goteo\Model\Project;
 use Goteo\Payment\Payment;
 
 /**
- * TODO: refactor this to use PaymentMethods from config
+ * Invest Model
  */
 class Invest extends \Goteo\Core\Model {
 
@@ -42,6 +42,7 @@ class Invest extends \Goteo\Core\Model {
     const STATUS_PAID       = 3;  // paid to the project (successful project)
     const STATUS_RETURNED   = 4;  // automatically refunded to the user due a failed project
     const STATUS_RELOCATED  = 5;  // deprecated status
+    const STATUS_POOL       = 6;  // refunded to user's pool
 
     public
         $id,

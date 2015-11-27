@@ -170,7 +170,8 @@ class InvestListener extends AbstractListener {
 
 		// MAIL SENDING TO DONOR
 		// Thanks template
-		$original_lang = $lang = Lang::current();
+        $original_lang = $lang = User::getPreferences($invest->getUser())->comlang;
+
         // die("$original_lang");
 		$template = Template::get(Template::DONOR_INVEST_THANKS, $lang);// lang will be updated to the available template lang
         if($original_lang != $lang) {

@@ -265,7 +265,7 @@ class AuthController extends \Goteo\Core\Controller {
                     Session::setUser($user, true);
 
                      //Everything ok, redirecting
-                    return $this->dispatch(AppEvents::LOGIN_SUCCEEDED, new FilterAuthEvent($user))->getUserRedirect($request);
+                    return $this->dispatch(AppEvents::LOGIN_SUCCEEDED, new FilterAuthEvent($user, $provider))->getUserRedirect($request);
                 }
                 else {
                     //si falla: error o formulario de confirmación
@@ -356,7 +356,7 @@ class AuthController extends \Goteo\Core\Controller {
                         Session::setUser($user, true);
 
                         //Everything ok, redirecting
-                        return $this->dispatch(AppEvents::LOGIN_SUCCEEDED, new FilterAuthEvent($user))->getUserRedirect($request);
+                        return $this->dispatch(AppEvents::LOGIN_SUCCEEDED, new FilterAuthEvent($user, $provider))->getUserRedirect($request);
                     }
                     else {
                         //si no: registrar errores
@@ -369,7 +369,7 @@ class AuthController extends \Goteo\Core\Controller {
                     if($u->password) {
                         if($request->isMethod('post') && !$request->request->has('userid')) {
                             // A subscriber will register a message
-                            $this->dispatch(AppEvents::LOGIN_FAILED, new FilterAuthEvent($u));
+                            $this->dispatch(AppEvents::LOGIN_FAILED, new FilterAuthEvent($u, $provider));
                         }
                         return $this->viewResponse('auth/confirm_account',
                                             array(
@@ -381,7 +381,7 @@ class AuthController extends \Goteo\Core\Controller {
                     else {
                         // no se puede vincular la cuenta por falta de contraseña
                         Message::error(Text::get('oauth-goteo-user-password-error'));
-                        $this->dispatch(AppEvents::SIGNUP_FAILED, new FilterAuthEvent($u));
+                        $this->dispatch(AppEvents::SIGNUP_FAILED, new FilterAuthEvent($u, $provider));
                         return $this->redirect('/login');
                     }
                 }
@@ -393,12 +393,12 @@ class AuthController extends \Goteo\Core\Controller {
                     Session::setUser($user, true);
 
                     //Everything ok, redirecting
-                    return $this->dispatch(AppEvents::SIGNUP_SUCCEEDED, new FilterAuthEvent($user))->getUserRedirect($request);
+                    return $this->dispatch(AppEvents::SIGNUP_SUCCEEDED, new FilterAuthEvent($user, $provider))->getUserRedirect($request);
                 }
                 else {
                     //si no: registrar errores
                     Message::error($oauth->last_error);
-                    $this->dispatch(AppEvents::SIGNUP_FAILED, new FilterAuthEvent($user));
+                    $this->dispatch(AppEvents::SIGNUP_FAILED, new FilterAuthEvent($user, $provider));
                 }
             } elseif ($errors) {
                 foreach ($errors as $err => $val) {
