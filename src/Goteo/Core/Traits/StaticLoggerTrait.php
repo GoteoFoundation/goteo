@@ -14,7 +14,7 @@ use Monolog\Logger;
 use Goteo\Util\Monolog\Processor\WebProcessor;
 
 /**
- * Usefull trait to use log on legacy classes
+ * Trait to use log on legacy classes
  */
 trait StaticLoggerTrait {
 

@@ -80,6 +80,7 @@ invest-status-pending: Preaprobado
 invest-status-processing: Incompleto
 invest-status-relocated: Reubicado
 invest-status-returned: 'Devuelto (archivado)'
+invest-status-to-pool: 'Devuelto al monedero (archivado)'
 invest-step-1: Recompensa
 invest-step-2: Pago
 invest-step-3: Confirmar

@@ -37,6 +37,7 @@ class LangUtils implements ExtensionInterface
     {
         return [
           'lang_current' => [$this, 'lang_current'],
+          'lang_short' => [$this, 'lang_short'],
           'lang_locale' => [$this, 'lang_locale'],
           'lang_active' => [$this, 'lang_active'],
           'lang_list' => [$this, 'lang_list'],
@@ -44,9 +45,14 @@ class LangUtils implements ExtensionInterface
           'list_countries' => [$this, 'list_countries'],
         ];
     }
-    public function lang_current()
+    public function lang_current($public_only = false)
     {
-        return Lang::current();
+        return Lang::current($public_only);
+    }
+
+    public function lang_short($lang = null, $public_only = false)
+    {
+        return Lang::getShort($lang ? $lang : Lang::current($public_only));
     }
 
     public function list_countries($lang = null)
@@ -54,9 +60,9 @@ class LangUtils implements ExtensionInterface
         return Lang::listCountries($lang);
     }
 
-    public function lang_list($type = 'short')
+    public function lang_list($type = 'short', $public_only = true)
     {
-        return Lang::listAll($type);
+        return Lang::listAll($type, $public_only);
     }
 
     public function lang_locale()
@@ -88,7 +94,10 @@ class LangUtils implements ExtensionInterface
         }
         // echo "[$url][$url_lang] [$path]";die;
         if($url_lang) {
-            $url = (Config::get('ssl') ? 'https://' : 'http://') . $lang . '.' . $url_lang;
+            $url = (Config::get('ssl') ? 'https://' : 'http://');
+            // Main language stays without subdomain
+            if(Config::get('lang') != $lang) $url .= $lang . '.';
+            $url .= $url_lang;
         }
         return $url . $path;
     }

@@ -55,7 +55,7 @@ $sc->register('console_logger.handler', 'Monolog\Handler\StreamHandler')
    ->setArguments(array(GOTEO_LOG_PATH."console_$env.log", monolog_level(Config::get('log.console'))))
    ->addMethodCall('setFormatter', array(new Reference('console_logger.formatter')))
 ;
-$logger = $sc->register('console_logger', 'Monolog\Logger')
+$clilogger = $sc->register('console_logger', 'Monolog\Logger')
              ->setArguments(array('console', array(new Reference('console_logger.handler'))))
              ->addMethodCall('pushProcessor', array(new Reference('logger.processor.uid')))
              ->addMethodCall('pushProcessor', array(new Reference('logger.processor.memory')))
@@ -83,12 +83,12 @@ if (Config::get('log.mail')) {
 	$mail   = $sc->register('logger.mail_handler', 'Goteo\Util\Monolog\Handler\MailHandler')
 	           ->setArguments(array($mailer, '', Monolog\Logger::DEBUG, true))// delayed sending
 	           ->addMethodCall('setFormatter', array(new Reference('logger.mail_handler.formatter')))
-	// ->addMethodCall('pushProcessor', array("global_formatter"))
 	;
 
 	$sc->register('logger.buffer_handler', 'Monolog\Handler\FingersCrossedHandler')
 	   ->setArguments(array(new Reference('logger.mail_handler'), monolog_level(Config::get('log.mail'))));
 	$paylogger->addMethodCall('pushHandler', array(new Reference('logger.buffer_handler')));
+    $clilogger->addMethodCall('pushHandler', array(new Reference('logger.buffer_handler')));
 	$logger->addMethodCall('pushHandler', array(new Reference('logger.buffer_handler')));
 }
 

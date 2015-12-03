@@ -116,15 +116,15 @@ class ProjectController extends \Goteo\Core\Controller {
 			$project = Project::get($id);
 
 		} catch (ModelException $e) {
-			Application\Message::error('Project error!');
+			Application\Message::error('Project integrity error!');
 			return new RedirectResponse($goto);
 		} catch (ModelNotFoundException $e) {
-			Application\Message::error('Project not found!');
+			Application\Message::error(Text::get('fatal-error-project'));
 			return new RedirectResponse($goto);
 		}
 
 		if (!$project->userCanEdit(Session::getUser())) {
-			Application\Message::error('No tienes permiso para editar este proyecto');
+			Application\Message::error(Text::get('user-login-required-access'));
 			return new RedirectResponse($goto);
 		}
 
@@ -212,7 +212,7 @@ class ProjectController extends \Goteo\Core\Controller {
 			);
 		}
 
-		foreach ($_REQUEST as $k => $v) {
+		foreach ($request->request->all() as $k => $v) {
 			if (strncmp($k, 'view-step-', 10) === 0 && !empty($v) && !empty($steps[substr($k, 10)])) {
 				$step = substr($k, 10);
 			}
@@ -221,10 +221,16 @@ class ProjectController extends \Goteo\Core\Controller {
 		if ($step == 'images') {
 			// para que tenga todas las imágenes al procesar el post
 			$project->images = Model\Image::getAll($id, 'project');
-			$fragment        = '#images';
 		}
 
-		if ($_SERVER['REQUEST_METHOD'] === 'POST' && !empty($_POST)) {
+        // variables para la vista
+        $viewData = array(
+            'project' => $project,
+            'steps'   => $steps,
+            'step'    => $step,
+        );
+
+		if ($request->isMethod('post')) {
 
 			// @DEBUG  die( \trace($_POST) );
 
@@ -239,103 +245,86 @@ class ProjectController extends \Goteo\Core\Controller {
 			}
 
 			// guardamos los datos que hemos tratado y los errores de los datos
-			$project->save($errors);
+            $project->save($errors);
+            // $this->debug('Project save', ['social_rewards' => [end($project->social_rewards)->id, end($project->social_rewards)->reward], 'individual_rewards' => [end($project->individual_rewards)->id, end($project->individual_rewards)->reward]]);
 
 			// hay que mostrar errores en la imagen
 			if (!empty($errors['image'])) {
-				Application\Message::error(is_array($errors['image'])?implode('<br />', $errors['image']):$errors['image']);
+				Application\Message::error(is_array($errors['image']) ? implode('<br />', $errors['image']) : $errors['image']);
 			}
 
 			// en los pasos de listas de items (webs, costes, retornos, colaboracioens)
-			foreach ($_POST as $k => $v) {
+			foreach ($request->request->all() as $k => $v) {
 
 				// webs
 				if (!empty($v) && preg_match('/web-(\d+)-edit/', $k, $r)) {
-					$_SESSION['superform_item_edit'] = $k;
-					$fragment                        = "#$k";
+					$viewData[$k] = true;
 					break;
 				}
 
 				// costes
 				if (!empty($v) && preg_match('/cost-(\d+)-edit/', $k, $r)) {
-					$_SESSION['superform_item_edit'] = $k;
-					$fragment                        = "#$k";
+					$viewData[$k] = true;
 					break;
 				}
 
 				// recompensa
 				if (!empty($v) && preg_match('/((social)|(individual))_reward-(\d+)-edit/', $k)) {
-					$_SESSION['superform_item_edit'] = $k;
-					$fragment                        = "#$k";
+					$viewData[$k] = true;
 					break;
 				}
 
 				// colaboraciones
 				if (!empty($v) && preg_match('/support-(\d+)-edit/', $k, $r)) {
-					$_SESSION['superform_item_edit'] = $k;
-					$fragment                        = "#$k";
+					$viewData[$k] = true;
 					break;
 				}
 
 			}
 
 			// nueva web
-			if (isset($_POST['web-add'])) {
-				$last = end($project->user->webs);
-				if ($last !== false) {
-					$k                               = "web-{$last->id}-edit";
-					$_SESSION['superform_item_edit'] = $k;
-					// $viewData["web-{$last->id}-edit"] = true;
-					//$fragment = "#$k";
-					$fragment = "#webs";
+			if ($request->request->has('web-add')) {
+                // end() does not work here, we need the last ID generated (stored as the key of the array)
+                // $last = end($project->user->webs);
+                if($last = max(array_keys($project->user->webs))) {
+					$viewData["web-$last-edit"] = true;
 				}
 			}
 
 			// nuevo coste
-			if (isset($_POST['cost-add'])) {
-				$last = end($project->costs);
-				if ($last !== false) {
-					$k                               = "cost-{$last->id}-edit";
-					$_SESSION['superform_item_edit'] = $k;
-					// $viewData["cost-{$last->id}-edit"] = true;
-					$fragment = "#$k";
+			if ($request->request->has('cost-add')) {
+                // end() does not work here, we need the last ID generated (stored as the key of the array)
+                if($last = max(array_keys($project->costs))) {
+					$viewData["cost-$last-edit"] = true;
 				}
 			}
 
 			// nuevo retorno / recompensa
-			if (!empty($_POST['social_reward-add'])) {
-				$last = end($project->social_rewards);
-				if ($last !== false) {
-					$k                               = "social_reward-{$last->id}-edit";
-					$_SESSION['superform_item_edit'] = $k;
-					// $viewData["social_reward-{$last->id}-edit"] = true;
-					$fragment = "#$k";
-				}
-			}
+			if ($request->request->has('social_reward-add')) {
+                // end() does not work here, we need the last ID generated (stored as the key of the array)
+                if($last = max(array_keys($project->social_rewards))) {
+                    $viewData["social_reward-$last-edit"] = true;
+                }
+            }
 
-			if (!empty($_POST['individual_reward-add'])) {
-				$last = end($project->individual_rewards);
-				if ($last !== false) {
-					$k                               = "individual_reward-{$last->id}-edit";
-					$_SESSION['superform_item_edit'] = $k;
-					// $viewData["individual_reward-{$last->id}-edit"] = true;
-					$fragment = "#$k";
+            if ($request->request->has('individual_reward-add')) {
+                // end() does not work here, we need the last ID generated (stored as the key of the array)
+				if($last = max(array_keys($project->individual_rewards))) {
+					$viewData["individual_reward-$last-edit"] = true;
 				}
 			}
 
 			// nueva colaboración
-			if (!empty($_POST['support-add'])) {
-				$last = end($project->supports);
-				if ($last !== false) {
-					$k                               = "support-{$last->id}-edit";
-					$_SESSION['superform_item_edit'] = $k;
-					// $viewData["support-{$last->id}-edit"] = true;
-					$fragment = "#$k";
+			if ($request->request->has('support-add')) {
+                // end() does not work here, we need the last ID generated (stored as the key of the array)
+                if($last = max(array_keys($project->supports))) {
+					$viewData["support-$last-edit"] = true;
 				}
 			}
 
 			// si estan enviando el proyecto a revisión
-			if (isset($_POST['process_preview']) && isset($_POST['finish'])) {
+            // TODO: convert to events
+			if ($request->request->has('process_preview') && $request->request->has('finish')) {
 				$errors = array();
 				$old_id = $project->id;
 				if ($project->ready($errors)) {
@@ -377,37 +366,10 @@ class ProjectController extends \Goteo\Core\Controller {
 				}
 			}
 
-		} elseif ($_SERVER['REQUEST_METHOD'] === 'POST' && empty($_POST)) {
-
-			// print_r($_POST);
-			// print_r($_FILES);
-			// die;
-			// mail de aviso
-			$mailHandler          = new Model\Mail();
-			$mailHandler->to      = Config::getMail('fail');
-			$mailHandler->toName  = 'Goteo Fail Mail';
-			$mailHandler->subject = 'FORM CAPACITY OVERFLOW en '.\SITE_URL;
-			$mailHandler->content = 'FORM CAPACITY OVERFLOW en el formulario de proyecto. Llega request method '.$_SERVER['REQUEST_METHOD'].'<hr />';
-			$mailHandler->content .= ' y post <pre>'.print_r($_POST, true).'</pre><hr />';
-			$mailHandler->content .= 'SERVER:<pre>'.print_r($_SERVER, true).'</pre>';
-
-			$mailHandler->html     = true;
-			$mailHandler->template = 11;
-			$mailHandler->send($errors);
-			unset($mailHandler);
-
-			throw new ControllerException('FORM CAPACITY OVERFLOW');
 		}
 
 		// checkear errores
 		$project->check($steps);
-
-		// variables para la vista
-		$viewData = array(
-			'project' => $project,
-			'steps'   => $steps,
-			'step'    => $step,
-		);
 
 		// segun el paso añadimos los datos auxiliares para pintar
 		switch ($step) {
@@ -490,13 +452,6 @@ class ProjectController extends \Goteo\Core\Controller {
 
 				break;
 		}
-
-		// elemento abierto
-		if (isset($_SESSION['superform_item_edit'])) {
-			$viewData[$_SESSION['superform_item_edit']] = true;
-			unset($_SESSION['superform_item_edit']);
-		}
-
 
 		return $this->viewResponse('project/edit', $viewData);
 
@@ -1061,7 +1016,7 @@ class ProjectController extends \Goteo\Core\Controller {
 		}
 
 		// solicita ayuda con licencias
-		$project->help_license = !empty($_POST['help_license'])?1:0;
+		$project->help_license = empty($_POST['help_license']) ? 0 : 1;
 
 		return true;
 

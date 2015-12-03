@@ -20,6 +20,7 @@ namespace Goteo\Model {
         Goteo\Library\Check,
         Goteo\Application;
     use Goteo\Model\User\Web as UserWeb;
+    use Goteo\Model\User\Pool as UserPool;
     use Goteo\Application\Lang;
     use Goteo\Application\Config;
     use Goteo\Application\Session;
@@ -1105,6 +1106,16 @@ namespace Goteo\Model {
 
 
         /**
+         * Returns the current pool for the user
+         * @return [type] [description]
+         */
+        public function getPool() {
+            if($this->poolInstance) return $this->poolInstance;
+            $this->poolInstance = UserPool::get($this);
+            return $this->poolInstance;
+        }
+
+        /**
          * Return all the user roles
          */
         public function getRoles () {
@@ -1615,7 +1626,9 @@ namespace Goteo\Model {
         public static function getPersonal ($id) {
             $query = self::query('SELECT
                                       contract_name,
+                                      contract_name AS name,
                                       contract_nif,
+                                      contract_nif AS nif,
                                       phone,
                                       address,
                                       zipcode,

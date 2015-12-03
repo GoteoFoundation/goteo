@@ -9,7 +9,7 @@ endif;
 
 // Normal operation, show the full page
 ?><!DOCTYPE html>
-<html lang="es">
+<html lang="<?= $this->lang_current() ?>">
 
     <head>
     <?php $this->section('head') ?>

@@ -18,6 +18,7 @@ use Goteo\Application\Config;
 use Goteo\Application\Message;
 use Goteo\Application\Session;
 use Goteo\Library\Feed;
+use Goteo\Library\Text;
 use Goteo\Model\Template;
 use Goteo\Model\Mail;
 use Goteo\Model\Mail\Sender;
@@ -135,36 +136,20 @@ class MailingSubController extends AbstractSubController {
         //get the sql to add receivers
         $sql = $this->getReceivers(0, 0, false, $sender->id);
 
+        $this->debug("SQL receivers", ['sql' => $sql, $sender, $this->user]);
+
         // add subscribers
         Sender::addSubscribersFromSQL($sql);
 
-        if ($sender->setActive(true)->active)  {
-            $ok = true;
-            // Evento Feed
-            $log = new Feed();
-            $log->populate('comunicación masiva a usuarios (admin)', '/admin/mailing',
-                \vsprintf("El admin %s ha iniciado una %s a %s", array(
-                Feed::item('user', $this->user->name, $this->user->id),
-                Feed::item('relevant', 'Comunicacion masiva'),
-                $filters_txt
-            )));
-            $log->doAdmin('admin');
-            unset($log);
-        } else {
-            Message::error('Atención, no se ha activado el envío!');
-            $ok = false;
-            // Evento Feed
-            $log = new Feed();
-            $log->populate('comunicación masiva a usuarios (admin)', '/admin/mailing',
-                \vsprintf("El admin %s le ha %s una %s a %s", array(
-                Feed::item('user', $this->user->name, $this->user->id),
-                Feed::item('relevant', 'fallado'),
-                Feed::item('relevant', 'Comunicacion masiva'),
-                $filters_txt
-            )));
-            $log->doAdmin('admin');
-            unset($log);
-        }
+        // Evento Feed
+        $log = new Feed();
+        $log->populate(Text::sys('feed-admin-massive-subject'), '/admin/mailing',
+            Text::sys('feed-admin-massive', [
+                '%USER%' =>  Feed::item('user', $this->user->name, $this->user->id),
+                '%TYPE%' =>  Feed::item('relevant', Text::sys('feed-admin-massive-communication')),
+                '%TO%' => $filters_txt
+            ]))
+            ->doAdmin('admin');
 
         Session::del('mailing.subject');
         Session::del('mailing.content');
@@ -179,7 +164,7 @@ class MailingSubController extends AbstractSubController {
         $total = SenderRecipient::getList($sender->id, 'receivers', 0, 0, true);
         return array(
                 'template'    => 'admin/mailing/detail',
-                'sender'      => $id,
+                'sender'      => $sender,
                 'mail'      => $sender->mail,
                 'subject'     => $sender->getMail()->subject,
                 'total'       => $total,

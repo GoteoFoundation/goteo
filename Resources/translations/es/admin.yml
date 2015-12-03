@@ -10,7 +10,6 @@ admin-account-invest-non-pool-refundable: 'Este aporte no se puede reembolsar al
 admin-account-invest-non-user-refundable: "Este aporte no se puede reembolsar. Se pueden reembolsar los aportes en estados:\n\"Pendiente\", \"Cobrado\", \"Pagado al proyecto\"\n\"Cancelado\", \"Retornado\" (sólo si está marcado con \"pool\" y hay suficiente dinero en el monedero para descontar)\n"
 admin-account-invest-to-pool-ko: 'Fallo al devolver el aporte al monedero'
 admin-account-invest-to-pool-ok: 'Aporte reembolsado al monedero. Incrementado el monedero por valor de (%s)'
-admin-account-invest-user-refund-fail-pool: 'Este aporte no se puede devolver porque el usuario no esta marcado como pool'
 admin-account-invest-user-refund-fail-pool-amount: 'Este aporte no se puede devolver porque el usuario no tiene suficiente dinero en el monedero (%s)'
 admin-account-invest-user-refund-ko: 'No se ha podido devolver el aporte: [%s]'
 admin-account-invest-user-refund-ok: 'Aporte reembolsado correctamente'
@@ -44,3 +43,13 @@ admin-status: Estado
 admin-user: Usuario
 admin-users: Usuarios
 admin-yes: Si
+admin-mailing-back-to-list: 'Volver a comuncaciones'
+admin-mailing-view-message: 'Ver el mensaje'
+admin-mailing-communicating-with: 'Buscábamos comunicarnos con %DESC%'
+admin-mailing-new-massive: 'Se ha creado un nuevo mailing masivo a %TOTAL% usuarios'
+admin-mailing-subject: 'Asunto'
+admin-mailing-created: 'Creado el'
+admin-mailing-status: 'Estado del envío automático'
+admin-mailing-view-and-activate: 'Ver en el admin del boletín para activar el envio'
+admin-mailing-view-in-newsletter: 'Ver en el admin del boletín'
+admin-mailing-view-in-sent: 'Ver en el historial de envíos (estadísticas)'

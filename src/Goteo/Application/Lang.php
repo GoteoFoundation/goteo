@@ -66,7 +66,8 @@ class Lang {
             $group = strtok(basename($yaml_file), '.');
             // Add this translation
             static::$translator->addResource('yaml', $yaml_file, $lang);
-            static::$groups[$group][] = [$lang, $yaml_file];
+            if(!isset(static::$groups[$group])) static::$groups[$group] = [];
+            static::$groups[$group][$lang] = $yaml_file;
         }
     }
 
@@ -158,10 +159,10 @@ class Lang {
      * @param  string $lang [description]
      * @return [type]       [description]
      */
-    static public function getDefault($lang = '') {
+    static public function getDefault($lang = '', $only_public = true) {
         $default = static::isPublic(static::$default) ? static::$default : '';
         foreach(static::$langs_available as $l => $info) {
-            if($info['public']) {
+            if($info['public'] || !$only_public) {
                 if(empty($default)) {
                     $default = $l;
                 }
@@ -281,7 +282,7 @@ class Lang {
 
             // set by subdomain
             $subdomain = strtok($request->getHost(), '.');
-            if(static::isPublic($subdomain)) {
+            if(static::exists($subdomain)) {
                 $desired['subdomain'] = $subdomain;
                 $save_lang = true;
             }
@@ -300,7 +301,10 @@ class Lang {
 
         if($request) {
             // set by navigator
-            $desired['browser'] = substr($request->server->get('HTTP_ACCEPT_LANGUAGE'), 0, 2);
+            $l = strtolower(substr($request->server->get('HTTP_ACCEPT_LANGUAGE'), 0, 2));
+            if(preg_match('/[a-z]{2,2}+/', $l)) {
+                $desired['browser'] = $l;
+            }
         }
 
 

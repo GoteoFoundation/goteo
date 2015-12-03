@@ -210,8 +210,14 @@ class ExceptionListener extends AbstractListener {
 	 */
 	public function onKernelTerminate(PostResponseEvent $event) {
 		// send delayed mails from logger
-		if (App::isService('logger.mail_handler')) {
-			App::getService('logger.mail_handler')->sendDelayed();
+        if (App::isService('logger.mail_handler')) {
+            try {
+                App::getService('logger.mail_handler')->sendDelayed();
+            } catch(\Exception $e) {
+		        if (App::isService('syslogger')) {
+                    App::getService('syslogger')->critical($e->getMessage());
+                }
+            }
 		}
 	}
 

@@ -93,8 +93,7 @@ EOT
 			$percent         = $project->getAmountPercent();
 
 			$this->info("Processing project in campaign", [$project, "project_days_active" => $project->days_active, 'project_days_round1'  => $project->days_round1,
-                    'project_days_round2'  => $project->days_round2,
- "percent" => $percent]);
+                    'project_days_round2'  => $project->days_round2, "percent" => $percent]);
 
 			// a los 5, 3, 2, y 1 dia para finalizar ronda
 			if ($project->round > 0 && in_array((int) $project->days, array(5, 3, 2, 1))) {

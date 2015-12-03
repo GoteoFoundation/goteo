@@ -96,11 +96,22 @@ class SessionListener extends AbstractListener {
         // Redirect to proper URL if url_lang is defined
         if (Config::get('url.url_lang')) {
             $sub_lang = strtok($url, '.');
-            $sub_url = strtok('');
-            if (Lang::exists($sub_lang) && $sub_lang != $lang) {
-                $url = "$lang.$sub_url";
+            if (Lang::exists($sub_lang)) {
+                // reduce url: ca.goteo.org => goteo.org
+                $url = strtok('');
             }
-            // echo "$url [$sub_lang=>$lang].$sub_url] ";die;
+            // if reduced URL is the main domain, redirect to sub-level lang
+            if(substr_count($url, '.') == 1) {
+                if($request->query->has('lang')) {
+                    $request->query->remove('lang');
+                }
+                // Main platform language stays without subdomain
+                if(Config::get('lang') != $lang) {
+                    $url = "$lang.$url";
+                }
+
+                // echo "$url [$sub_lang=>$lang] ";die;
+            }
         }
 
         // Mantain user in secure enviroment if logged and ssl config on
@@ -114,8 +125,10 @@ class SessionListener extends AbstractListener {
 
         // Redirect if needed
         if ($url != $request->getScheme() . '://' . $request->getHttpHost()) {
-            //die("[$url " . $request->getScheme() . '://' . $request->getHttpHost());
-            $event->setResponse(new RedirectResponse($url . $request->getRequestUri()));
+            $query = http_build_query($request->query->all());
+            // die($url . $request->getPathInfo() . ($query ? "?$query" : ''));
+            // $event->setResponse(new RedirectResponse($url . $request->getRequestUri()));
+            $event->setResponse(new RedirectResponse($url . $request->getPathInfo() . ($query ? "?$query" : '')));
             return;
         }
     }

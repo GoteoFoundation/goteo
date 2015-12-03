@@ -31,7 +31,7 @@ class PoolPaymentMethod extends AbstractPaymentMethod {
 
     public function getPool() {
         if(!$this->pool) {
-            $this->pool = Pool::get($this->user->id);
+            $this->pool = $this->user->getPool();
         }
         return $this->pool;
     }
@@ -44,14 +44,14 @@ class PoolPaymentMethod extends AbstractPaymentMethod {
     public function isActive($amount = 0) {
 
         // Checking pool status
-        if($this->getPool() && $this->getPool()->amount >= $amount) {
+        if($this->getPool() && $this->getPool()->getAmount() >= $amount) {
             return true;
         }
         return false;
     }
 
     public function getDesc() {
-        $amount = $this->getPool()->amount;
+        $amount = $this->getPool()->getAmount();
         return Text::get('invest-amount-in-pool', amount_format($amount));
     }
 
@@ -60,10 +60,10 @@ class PoolPaymentMethod extends AbstractPaymentMethod {
     public function purchase() {
         $invest = $this->getInvest();
 
-        if($this->getPool() && $this->getPool()->amount >= $invest->amount) {
+        if($this->getPool() && $this->getPool()->getAmount() >= $invest->amount) {
             // remove current quantity from user pool
             $errors = [];
-            Pool::withdraw($this->user->id, $invest->amount, $errors);
+            $this->user->getPool()->withdraw($invest->amount, $errors);
             if (empty($errors)) {
                 // Sets pool next failed payment go to pool as well
                 // Pool payments cannot be returned in cash
@@ -80,7 +80,7 @@ class PoolPaymentMethod extends AbstractPaymentMethod {
                 throw new PaymentException("Error Processing Pool: " . implode('<br />, $errors)'));
             }
         }
-        throw new PaymentException(Text::get('invest-pool-error').'<br>'.Text::get('invest-amount-in-pool', amount_format($this->getPool()->amount)));
+        throw new PaymentException(Text::get('invest-pool-error').'<br>'.Text::get('invest-amount-in-pool', amount_format($this->getPool()->getAmount())));
 
     }
 

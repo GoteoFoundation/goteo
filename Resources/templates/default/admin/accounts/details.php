@@ -1,7 +1,6 @@
 <?php
 
 use Goteo\Library\Paypal;
-use Goteo\Model\Invest;
 
 $invest = $this->invest;
 $project = $this->project;
@@ -71,17 +70,11 @@ array_walk($rewards, function (&$reward) { $reward = $reward->reward; });
             <a href="/admin/accounts/solve/<?php echo $invest->id ?>" onclick="return confirm('Esta incidencia se dará por resuelta: se va a cancelar el preaproval, el aporte pasará a ser de tipo Cash y en estado Cobrado por goteo, seguimos?')" class="button"><?= $this->text('admin-account-issue-solved') ?></a><br>
             <?php endif; ?>
 
-            <?php if ($this->poolable && $invest->status == Invest::STATUS_CHARGED) : ?>
+            <?php if ($this->poolable) : ?>
             <a href="/admin/accounts/refundpool/<?php echo $invest->id ?>" onclick="return confirm('<?= $this->ee($this->text('admin-account-refund-to-pool-confirm'), 'js') ?>')" class="button"><?= $this->text('admin-account-refund-to-pool') ?></a>
             <?php endif; ?>
 
-            <?php if ( $invest->method != 'pool' &&
-                       $this->refundable &&
-                       (  in_array($invest->status, [Invest::STATUS_PENDING, Invest::STATUS_CHARGED, Invest::STATUS_PAID])
-                          ||
-                          ($invest->pool && in_array($invest->status, [Invest::STATUS_CANCELLED, Invest::STATUS_RETURNED]))
-                       )
-                    ) : ?>
+            <?php if ( $this->refundable) : ?>
             <a href="/admin/accounts/refunduser/<?php echo $invest->id ?>" onclick="return confirm('<?= $this->ee($this->text('admin-account-refund-to-user-confirm'), 'js') ?>')" class="button"><?= $this->text('admin-account-refund-to-user') ?></a><br>
             <?php endif; ?>
 
@@ -213,7 +206,7 @@ array_walk($rewards, function (&$reward) { $reward = $reward->reward; });
 
 <div class="widget">
     <h3>Log</h3>
-    <?php foreach (\Goteo\Model\Invest::getDetails($invest->id) as $log)  {
+    <?php foreach ($invest->getDetails() as $log)  {
         echo "{$log->date} : {$log->log} ({$log->type})<br />";
     } ?>
 </div>

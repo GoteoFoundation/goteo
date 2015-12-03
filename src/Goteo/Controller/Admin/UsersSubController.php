@@ -268,7 +268,7 @@ class UsersSubController extends AbstractSubController {
         $viewData = array(
                 'template' => 'admin/users/manage',
                 'user'=>$user,
-                'poolAmount'=>Model\User\Pool::getAmount($user->id),
+                'poolAmount' => $user->getPool()->getAmount(),
                 'nodes' => $nodes,
                 'node_roles' => $user->getAllNodeRolesRaw(),
                 'new_roles' => Model\User::getRolesList($this->user->getNodeRole($this->node)),

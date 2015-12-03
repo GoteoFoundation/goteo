@@ -29,7 +29,7 @@ $sent = $status->percent == 100;
 <div class="widget board">
         <p>
            Asunto: <strong><?= $mailing->getMail()->subject ?></strong><br />
-           Iniciado el: <strong><?= $mailing->date ?></strong><br />
+           Creado el: <strong><?= $mailing->date ?></strong><br />
            Estado del envío automático: <span class="label label-<?= $mailing->getStatus() ?>"><?= $mailing->getStatus() ?></span>
         </p>
         <?php if(!$mailing->active && $mailing->getStatus() == 'inactive'): ?>

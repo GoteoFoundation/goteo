@@ -45,6 +45,7 @@ Console::add(new Command\DBVerifierCommand());
 Console::add(new Command\MailingCommand());
 Console::add(new Command\SendmailCommand());
 Console::add(new Command\CronCommand());
+Console::add(new Command\ToolkitCommand());
 
 // Plugins can add commands by running
 // Console::add(new Command...);

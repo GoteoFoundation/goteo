@@ -150,7 +150,7 @@ EOT
 				}
 
 				// New Invest Refund Event
-				if ($invest->status === $returned ? Invest::STATUS_RETURNED : Invest::STATUS_CANCELLED) {
+				if (in_array($invest->status, [Invest::STATUS_RETURNED, Invest::STATUS_CANCELLED, Invest::STATUS_TO_POOL])) {
 					$this->notice('Invest refunded successfully', [$invest, 'project' => $invest->project, 'user' => $invest->user, 'message' => $response->getMessage()]);
 				} else {
 					$this->error('Error refunding invest', [$invest, 'project' => $invest->project, 'user' => $invest->user, 'message' => $response->getMessage()]);

@@ -239,35 +239,32 @@ class AccountsSubController extends AbstractSubController {
         }
 
         $status = $invest->status;
-        $coin = Currency::getDefault()['html'];
-        if (!in_array($status, [Invest::STATUS_PENDING, Invest::STATUS_CHARGED, Invest::STATUS_PAID, Invest::STATUS_CANCELLED, Invest::STATUS_RETURNED])) {
+        $coin = Currency::getDefault('html');
+        if (!in_array($status, [Invest::STATUS_PENDING, Invest::STATUS_CHARGED, Invest::STATUS_PAID, Invest::STATUS_CANCELLED, Invest::STATUS_RETURNED, Invest::STATUS_TO_POOL])) {
             Message::error(Text::get('admin-account-invest-non-user-refundable'));
         } else {
             // check the pool for this statuses
             $errors = array();
             $amount = null;
-            if(in_array($status, [Invest::STATUS_CANCELLED, Invest::STATUS_RETURNED])) {
-                if(!$invest->pool) {
-                    Message::error(Text::get('admin-account-invest-user-refund-fail-pool', "$amount $coin"));
-                    return $this->redirect('/admin/accounts/details/' . $id);
-                }
-                $amount = (int)User\Pool::getAmount($invest->user);
+            // If it's already on the user's pool, we will try to refunded anyway
+            if($status == Invest::STATUS_TO_POOL) {
+                $amount = $invest->getUser()->getPool()->getAmount();
                 if($amount < $invest->amount) {
                     Message::error(Text::get('admin-account-invest-user-refund-fail-pool-amount', "$amount $coin"));
                     return $this->redirect('/admin/accounts/details/' . $id);
                 }
+                // Mark this invest as if the users has choosen not to use the pool on fail
+                if($invest->method != 'pool') $invest->setPoolOnFail(false);
             }
 
             // Cancels the invest, discounts pool if needed
             if($this->cancelInvest($invest)) {
-                // Mark this invest as if the users has choosen not to use the pool on fail
-                if($invest->method != 'pool') $invest->setPoolOnFail(false);
 
                 if(is_null($amount)) {
                     Message::info(Text::get('admin-account-invest-user-refund-ok'));
                 } else {
-                    // Discount pool for cancelled or returned invests
-                    User\Pool::withdraw($invest->user, $invest->amount, $errors);
+                    // Recalculate pool for cancelled or returned invests
+                    $invest->getUser()->getPool()->calculate()->save($errors);
                     if($errors) {
                         Message::error(Text::get('admin-account-invest-user-refund-ko', implode("<br>\n", $errors)));
                     }
@@ -302,7 +299,7 @@ class AccountsSubController extends AbstractSubController {
             // Event invest success event
             $invest = $this->dispatch($returned ? AppEvents::INVEST_RETURNED : AppEvents::INVEST_CANCELLED, new FilterInvestRefundEvent($invest, $invest->getMethod(), new EmptySuccessfulResponse()))->getInvest();
 
-            if ($invest->status == ($returned ? Invest::STATUS_RETURNED : Invest::STATUS_CANCELLED)) {
+            if ($invest->status == Invest::STATUS_TO_POOL) {
                 Message::info(Text::get('admin-account-invest-to-pool-ok', "{$invest->amount} $coin"));
                 // Evento Feed
                 $log = new Feed();

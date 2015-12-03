@@ -918,7 +918,7 @@ body.project-show div#sub-header div.nodemark {
 
 body.project-show div#sub-header div.nodemark {
 	position: absolute;
-    right: 75px;
+    right: 0;
 	top: -25px;
 }
 

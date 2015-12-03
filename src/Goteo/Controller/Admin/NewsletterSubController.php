@@ -18,6 +18,7 @@ use Goteo\Model\Mail;
 use Goteo\Application\Lang;
 use Goteo\Application\Message;
 use Goteo\Application\Config;
+use Goteo\Library\Feed;
 use Goteo\Model\Template;
 use Goteo\Model\User;
 use Goteo\Library\Newsletter;
@@ -72,15 +73,37 @@ class NewsletterSubController extends AbstractSubController {
         $mailing = Sender::get($id);
         if($mailing->getStatus() == 'inactive' && $mailing->setActive(true)) {
             Message::info("Newsletter [$id] activated for immediate sending!");
+            $ok = true;
+            // Evento Feed
+            $log = new Feed();
+            $log->populate(Text::sys('feed-admin-newsletter-activate-subject'), '/admin/newsletter',
+                Text::sys('feed-admin-newsletter-activate', [
+                    '%USER%' =>  Feed::item('user', $this->user->name, $this->user->id),
+                    '%SUBJECT%' =>  Feed::item('relevant', $mailing->subject),
+                    '%ID%' => $mailing->id
+                ]))
+                ->doAdmin('admin');
         }
         else {
             Message::error("Newsletter [$id] cannot be activated for immediate sending!");
+            $ok = false;
+            // Evento Feed
+            $log = new Feed();
+            $log->populate(Text::sys('feed-admin-newsletter-activate-subject'), '/admin/newsletter',
+                Text::sys('feed-admin-newsletter-activate-failed', [
+                    '%USER%' =>  Feed::item('user', $this->user->name, $this->user->id),
+                    '%SUBJECT%' =>  Feed::item('relevant', $mailing->subject),
+                    '%ID%' => $mailing->id
+                ]))
+                ->doAdmin('admin');
         }
+        $this->notice('Newsletter activated', [$mailing, $this->user]);
         return $this->redirect('/admin/newsletter/detail/' . $id);
     }
 
     public function cancelAction($id) {
         if($mailing = Sender::get($id)) {
+            $this->notice('Newsletter deleted', [$mailing, $this->user]);
             $mailing->dbDelete();
             Message::error("Newsletter [$id] removed!");
         }
@@ -153,8 +176,6 @@ class NewsletterSubController extends AbstractSubController {
                 // add subscribers
                 Sender::addSubscribersFromSQL($sql);
 
-                // do no automatically activate ?
-                // $sender->setActive(true);
 
                 Message::info('Se ha generado el boletín [' . $sender->id . ']. <strong><a href="/admin/newsletter/detail/' . $sender->id . '">Recuerda activarlo</a> para que se envíe!</strong>');
 

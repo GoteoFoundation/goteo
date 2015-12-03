@@ -181,7 +181,7 @@ class Text {
      *  Metodo para la lista de textos segun idioma
      */
     public static function getAll($filters = array(), $lang = null) {
-        $sqls = $texts = array();
+        $sqls = $texts = $skip = [];
 
         // Obtain SQL texts first
         if (empty($filters['filesonly'])) {
@@ -197,48 +197,60 @@ class Text {
         }
         // print_r($sqls);
         // Add files translations from groups
-        foreach(Lang::groups() as $group => $parts) {
+        $langs_order = [$lang];
+        $l = Lang::getFallback($lang);
+        while(!in_array($l, $langs_order)) {
+            $langs_order[] = $l;
+            $l = Lang::getFallback($lang);
+        }
+
+        foreach(Lang::groups() as $group => $files) {
             if (!empty($filters['group']) && $filters['group'] != $group) {
                 continue;
             }
-            if($parts) {
-                foreach($parts as list($l, $file)) {
-                    // echo "[$l $file]\n";
-                    $catalogue = Yaml::parse(file_get_contents($file));
-                    ksort($catalogue);
-                    foreach($catalogue as $i => $t) {
-                        $pending = false;
-                        if($lang != $l) $pending = true;
-                        // replace from sql source if exists
-                        if(isset($sqls[$i])) {
-                            $t = $sqls[$i]->text;
-                            $pending = $sqls[$i]->pending;
-                        }
-                        elseif (!empty($filters['sqlonly'])) {
-                            continue;
-                        }
-                        // apply filters
-                        if (!empty($filters['strict']) && ($l != $lang && !isset($sqls[$i]))) {
-                            continue;
-                        }
-                        if (!empty($filters['pending']) && !$pending) {
-                            continue;
-                        }
-                        if (!empty($filters['idfilter']) && stripos($i, $filters['idfilter']) === false) {
-                            continue;
-                        }
-                        if (!empty($filters['text']) && stripos($t, $filters['text']) === false) {
-                            continue;
-                        }
-
-                        $texts[$i] = new \stdClass;
-                        $texts[$i]->id = $i;
-                        $texts[$i]->lang = $l;
-                        $texts[$i]->group = $group;
-                        $texts[$i]->pendiente = $pending;
-                        $texts[$i]->pending = $pending;
-                        $texts[$i]->text = $t;
+            foreach($langs_order as $l) {
+                if(!isset($files[$l])) continue;
+                $file = $files[$l];
+                // echo "[$l $file]\n";
+                $catalogue = Yaml::parse(file_get_contents($file));
+                ksort($catalogue);
+                foreach($catalogue as $i => $t) {
+                    if(in_array($i, $skip)) continue;
+                    $pending = false;
+                    if($lang != $l) $pending = true;
+                    // replace from sql source if exists
+                    if(isset($sqls[$i])) {
+                        $t = $sqls[$i]->text;
+                        $pending = $sqls[$i]->pending;
                     }
+                    elseif (!empty($filters['sqlonly'])) {
+                        continue;
+                    }
+
+                    if(isset($texts[$i])) continue;
+                    // apply filters
+                    if (!empty($filters['strict']) && ($l != $lang && !isset($sqls[$i]))) {
+                        continue;
+                    }
+                    if (!empty($filters['pending']) && !$pending) {
+                        $skip[] = $i;
+                        continue;
+                    }
+
+                    if (!empty($filters['idfilter']) && stripos($i, $filters['idfilter']) === false) {
+                        continue;
+                    }
+                    if (!empty($filters['text']) && stripos($t, $filters['text']) === false) {
+                        continue;
+                    }
+
+                    $texts[$i] = new \stdClass;
+                    $texts[$i]->id = $i;
+                    $texts[$i]->lang = $l;
+                    $texts[$i]->group = $group;
+                    $texts[$i]->pendiente = $pending;
+                    $texts[$i]->pending = $pending;
+                    $texts[$i]->text = $t;
                 }
             }
 
@@ -317,7 +329,7 @@ class Text {
     static public function groups()
     {
         $groups = [];
-        foreach(Lang::groups() as $group => $parts) {
+        foreach(Lang::groups() as $group => $files) {
             $groups[$group] = Lang::trans("text-group-$group");
         }
         asort($groups);

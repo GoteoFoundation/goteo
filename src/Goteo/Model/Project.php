@@ -26,7 +26,7 @@ namespace Goteo\Model {
     class Project extends \Goteo\Core\Model {
 
         // PROJECT STATUS IDs
-        const STATUS_DRAFT       = -1; // TODO: is this really necessary?
+        const STATUS_DRAFT       = -1; // is this really necessary?
         const STATUS_REJECTED    = 0;
         const STATUS_EDITING     = 1; // en negociación
         const STATUS_REVIEWING   = 2; //
@@ -1416,6 +1416,7 @@ namespace Goteo\Model {
                 $viene = $this->individual_rewards;
                 $quita = array_diff_key($tiene, $viene);
                 $guarda = array_diff_key($viene, $tiene);
+                // \Goteo\Application\App::getService('logger')->debug('reward save', ['viene' => [end($viene)->id, end($viene)->reward], 'quita' => [end($quita)->id, end($quita)->reward], 'guarda' => [end($guarda)->id, end($guarda)->reward]]);
                 foreach ($quita as $key=>$item) {
                     if (!$item->remove($errors)) {
                         $fail = true;
@@ -1998,9 +1999,11 @@ namespace Goteo\Model {
          */
         public function setProgress () {
             // Cálculo del % de progreso
-            $progress = 100 * $this->score / $this->max;
-            $progress = round($progress, 0);
-
+            $progress = 0;
+            if($this->max) {
+                $progress = 100 * $this->score / $this->max;
+                $progress = round($progress, 0);
+            }
             if ($progress > 100) $progress = 100;
             if ($progress < 0)   $progress = 0;
 
@@ -2192,7 +2195,7 @@ namespace Goteo\Model {
         public function satisfied(&$errors = array()) {
 			try {
 				$sql = "UPDATE project SET status = :status WHERE id = :id";
-				self::query($sql, array(':status'=>5, ':id'=>$this->id));
+				self::query($sql, array(':status'=>self::STATUS_FULFILLED, ':id'=>$this->id));
 
                 // si está en una convocatoria hay que actualizar el numero de proyectos en marcha
                 if (isset($this->called)) {
@@ -2213,7 +2216,7 @@ namespace Goteo\Model {
         public function rollback(&$errors = array()) {
 			try {
 				$sql = "UPDATE project SET status = :status WHERE id = :id";
-				self::query($sql, array(':status'=>4, ':id'=>$this->id));
+				self::query($sql, array(':status'=>self::STATUS_FUNDED, ':id'=>$this->id));
                 return true;
             } catch (\PDOException $e) {
                 $errors[] = 'Fallo al dar el retorno pendiente para el proyecto. ' . $e->getMessage();
@@ -2243,15 +2246,13 @@ namespace Goteo\Model {
                 self::query("DELETE FROM review WHERE project = ?", array($this->id)); // revisión
                 self::query("DELETE FROM project_lang WHERE id = ?", array($this->id)); // traducción
                 self::query("DELETE FROM project WHERE id = ?", array($this->id));
-                // y los permisos
-                self::query("DELETE FROM acl WHERE url like ?", array('%'.$this->id.'%'));
                 // si todo va bien, commit y cambio el id de la instancia
                 self::query("COMMIT");
                 return true;
             } catch (\PDOException $e) {
                 self::query("ROLLBACK");
 				$sql = "UPDATE project SET status = :status WHERE id = :id";
-				self::query($sql, array(':status'=>0, ':id'=>$this->id));
+				self::query($sql, array(':status'=>self::STATUS_REJECTED, ':id'=>$this->id));
                 $errors[] = "Fallo en la transaccion, el proyecto ha quedado como descartado";
                 return false;
             }
@@ -2376,8 +2377,6 @@ namespace Goteo\Model {
                             self::query("UPDATE project_lang SET id = :newid WHERE id = :id", array(':newid'=>$newid, ':id'=>$this->id));
                             self::query("UPDATE blog SET owner = :newid WHERE owner = :id AND type='project'", array(':newid'=>$newid, ':id'=>$this->id));
                             self::query("UPDATE project SET id = :newid WHERE id = :id", array(':newid'=>$newid, ':id'=>$this->id));
-                            // borro los permisos, el dashboard los creará de nuevo
-                            self::query("DELETE FROM acl WHERE url like ?", array('%'.$this->id.'%'));
 
                             // si todo va bien, commit y cambio el id de la instancia
                             self::query("COMMIT");
@@ -2385,9 +2384,8 @@ namespace Goteo\Model {
                             return true;
 
                         } catch (\PDOException $e) {
-                            $errors[] = $e->getMessage();
                             self::query("ROLLBACK");
-                            return false;
+                            throw $e;
                         }
                     } else {
                         throw new Exception\ModelException('Fallo al iniciar transaccion rebase. ');
@@ -2399,16 +2397,6 @@ namespace Goteo\Model {
                         try {
 
                            // echo 'en transaccion <br />';
-                            // @FIXME : estos 4 primeros se pueden hacer en una sola sentencia con un STR_REPLACE
-                            // acls
-                            $acls = self::query("SELECT * FROM acl WHERE url like :id", array(':id'=>"%{$this->id}%"));
-                            foreach ($acls->fetchAll(\PDO::FETCH_OBJ) as $rule) {
-                                $url = str_replace($this->id, $newid, $rule->url);
-                                self::query("UPDATE `acl` SET `url` = :url WHERE id = :id", array(':url'=>$url, ':id'=>$rule->id));
-
-                            }
-                           // echo 'acls listos <br />';
-
                             // mails
                             $mails = self::query("SELECT * FROM mail WHERE content like :id", array(':id'=>"%{$this->id}%"));
                             foreach ($mails->fetchAll(\PDO::FETCH_OBJ) as $mail) {
@@ -2456,8 +2444,8 @@ namespace Goteo\Model {
 
                         } catch (\PDOException $e) {
                             self::query("ROLLBACK");
-                            $errors[] = $e->getMessage();
-                            return false;
+                            throw $e;
+
                         }
                     } else {
                         throw new Exception\ModelException('Fallo al iniciar transaccion rebase. ');

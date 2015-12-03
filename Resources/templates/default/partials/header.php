@@ -49,7 +49,7 @@ $langs = $this->lang_list('short');
 
                     </li>
                     <?php } ?>
-                    <li id="lang"><a href="#" ><?= $langs[$this->lang_current(true)] ?></a>
+                    <li id="lang"><a href="#" ><?= $this->lang_short() ?></a>
 
                         <?php // TODO: UL LANG AQUI ?>
 

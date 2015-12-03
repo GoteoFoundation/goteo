@@ -23,8 +23,11 @@ use Goteo\Application\Session;
 use Goteo\Application\View;
 use Symfony\Component\EventDispatcher\Event;
 use Goteo\Application\App;
+use Goteo\Core\Traits\LoggerTrait;
 
 abstract class AbstractSubController {
+    use LoggerTrait;
+
     protected $request;
     protected $node;
     protected $user;

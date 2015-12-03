@@ -240,7 +240,7 @@ namespace Goteo\Model\Project {
                 return false;
 
             $fields = array(
-                'id',
+                // 'id',
                 'project',
                 'reward',
                 'description',
@@ -254,25 +254,13 @@ namespace Goteo\Model\Project {
                 'url'
             );
 
-            $set = '';
-            $values = array();
-
-            foreach ($fields as $field) {
-                if ($set != '')
-                    $set .= ", ";
-                $set .= "$field = :$field ";
-                $values[":$field"] = $this->$field;
-            }
-
-
             try {
-                $sql = "REPLACE INTO reward SET " . $set;
-                self::query($sql, $values);
-                if (empty($this->id))
-                    $this->id = self::insertId();
+                //automatic $this->id assignation
+                $this->dbInsertUpdate($fields);
+
                 return true;
-            } catch (\PDOException $e) {
-                $errors[] = "El retorno {$this->reward} no se ha grabado correctamente. Por favor, revise los datos." . $e->getMessage();
+            } catch(\PDOException $e) {
+                $errors[] = "Reward save error: " . $e->getMessage();
                 return false;
             }
         }

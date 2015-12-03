@@ -119,7 +119,7 @@ namespace Goteo\Model\Project {
             if (!$this->validate($errors)) return false;
 
 			$fields = array(
-				'id',
+				// 'id',
 				'project',
 				'support',
 				'type',
@@ -127,24 +127,15 @@ namespace Goteo\Model\Project {
                 'thread'
 				);
 
-			$set = '';
-			$values = array();
+            try {
+                //automatic $this->id assignation
+                $this->dbInsertUpdate($fields);
 
-			foreach ($fields as $field) {
-				if ($set != '') $set .= ", ";
-				$set .= "$field = :$field ";
-				$values[":$field"] = $this->$field;
-			}
-
-			try {
-				$sql = "REPLACE INTO support SET " . $set;
-				self::query($sql, $values);
-    			if (empty($this->id)) $this->id = self::insertId();
-				return true;
-			} catch(\PDOException $e) {
-				$errors[] = "La colaboración {$values[':support']} no se ha grabado correctamente. Por favor, revise los datos." . $e->getMessage();
+                return true;
+            } catch(\PDOException $e) {
+                $errors[] = "Support save error: " . $e->getMessage();
                 return false;
-			}
+            }
 		}
 
 		public function saveLang (&$errors = array()) {
@@ -168,7 +159,7 @@ namespace Goteo\Model\Project {
 			try {
 				$sql = "REPLACE INTO support_lang SET " . $set;
 				self::query($sql, $values);
-    			
+
 				return true;
 			} catch(\PDOException $e) {
 				$errors[] = "La colaboración {$data['support']} no se ha grabado correctamente. Por favor, revise los datos." . $e->getMessage();

@@ -158,9 +158,8 @@ namespace Goteo\Model\Project {
                 return false;
             }
 
-
 			$fields = array(
-				'id',
+				// 'id',
 				'project',
 				'cost',
 				'description',
@@ -169,26 +168,18 @@ namespace Goteo\Model\Project {
 				'required'
 				);
 
-			$set = '';
-			$values = array();
+            try {
+                //automatic $this->id assignation
+                $this->dbInsertUpdate($fields);
 
-			foreach ($fields as $field) {
-				if ($set != '') $set .= ", ";
-				$set .= "`$field` = :$field ";
-				$values[":$field"] = $this->$field;
-			}
-
-			try {
-				$sql = "REPLACE INTO cost SET " . $set;
-				self::query($sql, $values);
-            	if (empty($this->id)) $this->id = self::insertId();
             	//aqui actualizar los costes en la tabla project
             	\Goteo\Model\Project::calcCosts($this->project);
-				return true;
-			} catch(\PDOException $e) {
-                $errors[] = "El coste {$this->cost} no se ha grabado correctamente. Por favor, revise los datos." . $e->getMessage();
+
+                return true;
+            } catch(\PDOException $e) {
+                $errors[] = "Support save error: " . $e->getMessage();
                 return false;
-			}
+            }
 		}
 
 		public function saveLang (&$errors = array()) {

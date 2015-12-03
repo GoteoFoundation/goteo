@@ -367,8 +367,8 @@ $(function () {
 
     costs.bind('superform.ajax.done', function (event, html, new_el) {
         //Como html es un string, solo actualiza contenido, no reenvia los datos
-        $('li#cost-meter').superform(html);
-        $('li#schedule').superform(html)
+        $('li#li-cost-meter').superform(html);
+        // $('li#schedule').superform(html)
     });
 
 });

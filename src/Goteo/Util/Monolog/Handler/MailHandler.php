@@ -75,8 +75,10 @@ class MailHandler extends MonologMailHandler
         if($extra && $extra['extra']) {
             $this->mailer->content .= '<hr><pre style="font-size:0.8em;background:#f0f0f0">' . print_r($extra['extra'], true) .'</pre>';
         }
-
-        $this->mailer->send();
+        $errors = [];
+        if(!$this->mailer->send($errors)) {
+            throw new \RuntimeException('Error sending delayed email: ' . implode("\n", $errors));
+        }
         $this->mailer->id=null;
     }
     /**

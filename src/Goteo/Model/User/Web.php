@@ -19,7 +19,7 @@ namespace Goteo\Model\User {
 
 
         /**
-         * Get the interests for a user
+         * Get user's webs list
          * @param varcahr(50) $id  user identifier
          * @return array of interests identifiers
          */
@@ -28,10 +28,10 @@ namespace Goteo\Model\User {
             try {
                 $query = static::query("SELECT id, user, url FROM user_web WHERE user = ?", array($id));
                 foreach ($query->fetchAll(\PDO::FETCH_CLASS, __CLASS__) as $web) {
-                    if (\substr($web->url, 0, 4) != 'http') {
+                    if (substr($web->url, 0, 4) != 'http') {
                         $web->url = 'http://'.$web->url;
                     }
-                    $list[] = $web;
+                    $list[$web->id] = $web;
                 }
 
                 return $list;

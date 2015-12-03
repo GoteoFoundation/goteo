@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="<?= $this->lang_current() ?>">
 
     <head>
     <?php $this->section('head') ?>

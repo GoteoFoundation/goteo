@@ -59,7 +59,7 @@ $this->section('content');
     </div>
 
 <?php $this->replace() ?>
-
+ogh
 
 <?php $this->section('footer') ?>
 <script type="text/javascript">
@@ -70,7 +70,19 @@ $this->section('content');
         }
 
         $('div.superform').bind('superform.ajax.done', function (event, html, new_el) {
-            $('li#errors').superform(html);
+            $('li#li-errors').superform(html);
+        });
+
+        // focus on the recently opened element when a add button is pressed
+        $('div.superform').delegate('li.element.add.submit input[type="submit"].add', 'click', function (event) {
+            $('div.superform').unbind('superform.dom.done');
+            $('div.superform').bind('superform.dom.done', function (event, html, new_el) {
+                var $element = $(event.target).closest('li.element').find('input[type="text"]:first');
+                if($element.is('input')) {
+                    $element.select();
+                    $('div.superform').unbind('superform.dom.done');
+                }
+            });
         });
     });
 

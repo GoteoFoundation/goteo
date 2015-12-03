@@ -54,7 +54,7 @@ namespace Goteo\Controller {
                 $viewData['message'] = \str_replace('%USER_NAME%', Session::getUser()->name, $page->content);
                 $viewData['lists']   = Dashboard\Activity::projList($user);
                 $viewData['status']  = Model\Project::status();
-                $viewData['pool'] = Dashboard\Activity::pool($user->id, $action);
+                $viewData['pool'] = Dashboard\Activity::pool($user);
             }
 
             // gestión de certificado
@@ -64,7 +64,7 @@ namespace Goteo\Controller {
 
             // bote de gotas
             if ($option == 'pool')  {
-                $viewData['pool'] = Dashboard\Activity::pool($user->id, $action);
+                $viewData['pool'] = Dashboard\Activity::pool($user);
             }
 
 

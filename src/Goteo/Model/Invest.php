@@ -38,11 +38,11 @@ class Invest extends \Goteo\Core\Model {
     const STATUS_PROCESSING = -1; // payment gateway not reached yet or just a failed payment
     const STATUS_PENDING    = 0;  // In a status that requires post-processing (former paypal preapprovals)
     const STATUS_CHARGED    = 1;  // charged by the platform
-    const STATUS_CANCELLED  = 2;  // refunded to the user by some admin manual action
-    const STATUS_PAID       = 3;  // paid to the project (successful project)
+    const STATUS_CANCELLED  = 2;  // refunded to the user by some admin manual action, won't be sum to any total
+    const STATUS_PAID       = 3;  // paid to the project (successful project) NOT REALLY USED
     const STATUS_RETURNED   = 4;  // automatically refunded to the user due a failed project
     const STATUS_RELOCATED  = 5;  // deprecated status
-    const STATUS_POOL       = 6;  // refunded to user's pool
+    const STATUS_TO_POOL    = 6;  // refunded to user's pool
 
     public
         $id,
@@ -83,7 +83,8 @@ class Invest extends \Goteo\Core\Model {
             self::STATUS_CANCELLED  => Text::get('invest-status-cancelled'),
             self::STATUS_PAID       => Text::get('invest-status-paid'),
             self::STATUS_RETURNED   => Text::get('invest-status-returned'),
-            self::STATUS_RELOCATED  => Text::get('invest-status-relocated')
+            self::STATUS_RELOCATED  => Text::get('invest-status-relocated'),
+            self::STATUS_TO_POOL    => Text::get('invest-status-to-pool')
         );
 
         if (isset($id)) {
@@ -145,13 +146,13 @@ class Invest extends \Goteo\Core\Model {
 
         $invests = array();
 
-        $values = array(':p' => $project, ':s0' => self::STATUS_PENDING, ':s1' => self::STATUS_CHARGED, ':s3' => self::STATUS_PAID, ':s4' => self::STATUS_RETURNED);
+        $values = array(':p' => $project, ':s0' => self::STATUS_PENDING, ':s1' => self::STATUS_CHARGED, ':s3' => self::STATUS_PAID, ':s4' => self::STATUS_RETURNED, ':s5' => self::STATUS_TO_POOL);
 
         $query = static::query("
             SELECT  *
             FROM  invest
             WHERE   invest.project = :p
-            AND invest.status IN (:s0, :s1, :s3 :s4)
+            AND invest.status IN (:s0, :s1, :s3, :s4, :s5)
             ", $values);
         // echo \sqldbg($sql, $values);
         foreach ($query->fetchAll(\PDO::FETCH_CLASS, __CLASS__) as $invest) {
@@ -424,33 +425,27 @@ class Invest extends \Goteo\Core\Model {
                 ", array($this->id));
             $this->address = $query->fetchObject();
 
-            // Get from personal address
-            if (empty($this->address)) {
-                $address = User::getPersonal($this->user);
-                $this->address = new \stdClass;
-                $this->address->name = $address->contract_name;
-                $this->address->nif = $address->contract_nif;
-                $this->address->address = $address->address;
-                $this->address->location = $address->location;
-                $this->address->zipcode = $address->zipcode;
-                $this->address->country = $address->country;
+            if(!is_object($this->address)) $this->address = new \stdClass;
+
+            foreach(['name', 'nif', 'address', 'location', 'zipcode', 'country'] as $part) {
+                if(empty($this->address->{$part})) {
+                    if(empty($personal_address)) $personal_address = User::getPersonal($this->user);
+                    $this->address->{$part} = $personal_address->{$part};
+                }
+                // still empty? serach from and old invest
+                if(empty($this->address->{$part})) {
+                    $query = static::query("
+                        SELECT  `$part` FROM  invest_address WHERE invest_address.user = ?
+                        AND !ISNULL(invest_address.`$part`) AND invest_address.`$part` != ''
+                        ORDER BY invest_address.invest DESC LIMIT 1 ", array($this->user));
+                    $val = $query->fetchColumn();
+                    if($val) {
+                        $this->address->{$part} = $val;
+                    }
+                }
             }
 
-
-            // Get from older investions if empty
-            if (empty($this->address->name)) {
-                $query = static::query("
-                    SELECT  *
-                    FROM  invest_address
-                    WHERE   invest_address.user = ?
-                    AND !ISNULL(invest_address.name) AND invest_address.name != ''
-                    ORDER BY invest_address.invest DESC LIMIT 1 ", array($this->user));
-                $this->address = $query->fetchObject();
-            }
-
-            // empty object
-            if (!is_object($this->address)) $this->address = new \stdClass;
-
+            // Repair country code
             if(empty($this->address->country)) $this->address->country = 'ES';
 
             if(strlen($this->address->country) > 2) {
@@ -861,12 +856,12 @@ class Invest extends \Goteo\Core\Model {
      */
     public static function invested ($project, $scope = null, $call = null) {
 
-        $values = array(':project' => $project, ':s0' => self::STATUS_PENDING, ':s1' => self::STATUS_CHARGED, ':s3' => self::STATUS_PAID, ':s4' => self::STATUS_RETURNED);
+        $values = array(':project' => $project, ':s0' => self::STATUS_PENDING, ':s1' => self::STATUS_CHARGED, ':s3' => self::STATUS_PAID, ':s4' => self::STATUS_RETURNED, ':s5' => self::STATUS_TO_POOL);
 
         $sql = "SELECT  SUM(amount) as much
             FROM    invest
             WHERE   project = :project
-            AND     invest.status IN (:s0, :s1, :s3, :s4)
+            AND     invest.status IN (:s0, :s1, :s3, :s4, :s5)
             ";
 
         switch ($scope) {
@@ -926,11 +921,11 @@ class Invest extends \Goteo\Core\Model {
             INNER JOIN user
                 ON  user.id = invest.user
             WHERE   project = :p
-            AND     invest.status IN (:s0, :s1, :s3, :s4)
+            AND     invest.status IN (:s0, :s1, :s3, :s4, :s5)
             ORDER BY invest.invested DESC, invest.id DESC
             ";
 
-        $query = self::query($sql, array(':p' => $project, ':s0' => self::STATUS_PENDING, ':s1' => self::STATUS_CHARGED, ':s3' => self::STATUS_PAID, ':s4' => self::STATUS_RETURNED));
+        $query = self::query($sql, array(':p' => $project, ':s0' => self::STATUS_PENDING, ':s1' => self::STATUS_CHARGED, ':s3' => self::STATUS_PAID, ':s4' => self::STATUS_RETURNED, ':s5' => self::STATUS_TO_POOL));
         foreach ($query->fetchAll(\PDO::FETCH_OBJ) as $investor) {
 
             $investor->avatar = Image::get($investor->user_avatar);
@@ -1002,13 +997,13 @@ class Invest extends \Goteo\Core\Model {
             INNER JOIN user
                 ON  user.id = invest.user
             WHERE   (invest.campaign IS NULL OR invest.campaign = '' )
-            AND     invest.status IN (:s0, :s1, :s3, :s4)
+            AND     invest.status IN (:s0, :s1, :s3, :s4, :s5)
             GROUP BY invest.user
             ORDER BY amount DESC
             LIMIT {$limit}
             ";
 
-        $values = array(':id'=>$owner, ':s0' => self::STATUS_PENDING, ':s1' => self::STATUS_CHARGED, ':s3' => self::STATUS_PAID, ':s4' => self::STATUS_RETURNED);
+        $values = array(':id'=>$owner, ':s0' => self::STATUS_PENDING, ':s1' => self::STATUS_CHARGED, ':s3' => self::STATUS_PAID, ':s4' => self::STATUS_RETURNED, ':s5' => self::STATUS_TO_POOL);
 
         //die(\sqldbg($sql, $values));
 
@@ -1048,14 +1043,14 @@ class Invest extends \Goteo\Core\Model {
 
         $debug = false;
 
-        $values = array(':project' => $project, ':s0' => self::STATUS_PENDING, ':s1' => self::STATUS_CHARGED, ':s3' => self::STATUS_PAID, ':s4' => self::STATUS_RETURNED);
+        $values = array(':project' => $project, ':s0' => self::STATUS_PENDING, ':s1' => self::STATUS_CHARGED, ':s3' => self::STATUS_PAID, ':s4' => self::STATUS_RETURNED, ':s5' => self::STATUS_TO_POOL);
 
         $sql = "SELECT  COUNT(DISTINCT(invest.user)) as investors, project.num_investors as num, project.num_messengers as pop
             FROM    invest
             INNER JOIN project
                 ON project.id = invest.project
             WHERE   invest.project = :project
-            AND     invest.status IN (:s0, :s1, :s3, :s4)
+            AND     invest.status IN (:s0, :s1, :s3, :s4, :s5)
             ";
 
         if ($debug) {
@@ -1076,12 +1071,12 @@ class Invest extends \Goteo\Core\Model {
     }
 
     public static function my_numInvestors ($owner) {
-        $values = array(':owner' => $owner, ':s0' => self::STATUS_PENDING, ':s1' => self::STATUS_CHARGED, ':s3' => self::STATUS_PAID, ':s4' => self::STATUS_RETURNED);
+        $values = array(':owner' => $owner, ':s0' => self::STATUS_PENDING, ':s1' => self::STATUS_CHARGED, ':s3' => self::STATUS_PAID, ':s4' => self::STATUS_RETURNED, ':s5' => self::STATUS_TO_POOL);
 
         $sql = "SELECT  COUNT(DISTINCT(user)) as investors
             FROM    invest
             WHERE   project IN (SELECT id FROM project WHERE owner = :owner)
-            AND     invest.status IN (:s0, :s1, :s3, :s4)
+            AND     invest.status IN (:s0, :s1, :s3, :s4, :s5)
             ";
 
         $query = static::query($sql, $values);
@@ -1100,11 +1095,11 @@ class Invest extends \Goteo\Core\Model {
             FROM    invest
             WHERE   user = :user
             AND     project = :project
-            AND     invest.status IN (:s0, :s1, :s3, :s4)
+            AND     invest.status IN (:s0, :s1, :s3, :s4, :s5)
             AND     (anonymous = 0 OR anonymous IS NULL)
             ORDER BY invested DESC";
 
-        $query = self::query($sql, array(':user' => $user, ':project' => $project, ':s0' => self::STATUS_PENDING, ':s1' => self::STATUS_CHARGED, ':s3' => self::STATUS_PAID, ':s4' => self::STATUS_RETURNED));
+        $query = self::query($sql, array(':user' => $user, ':project' => $project, ':s0' => self::STATUS_PENDING, ':s1' => self::STATUS_CHARGED, ':s3' => self::STATUS_PAID, ':s4' => self::STATUS_RETURNED, ':s5' => self::STATUS_TO_POOL));
         return $query->fetchObject();
     }
 
@@ -1124,10 +1119,10 @@ class Invest extends \Goteo\Core\Model {
             INNER JOIN user
                 ON  user.id = invest.user
                 AND (user.hide = 0 OR user.hide IS NULL)
-            WHERE   invest.status IN (:s0, :s1, :s3, :s4)
+            WHERE   invest.status IN (:s0, :s1, :s3, :s4, :s5)
             ";
 
-        $query = self::query($sql, array(':reward' => $reward, ':s0' => self::STATUS_PENDING, ':s1' => self::STATUS_CHARGED, ':s3' => self::STATUS_PAID, ':s4' => self::STATUS_RETURNED));
+        $query = self::query($sql, array(':reward' => $reward, ':s0' => self::STATUS_PENDING, ':s1' => self::STATUS_CHARGED, ':s3' => self::STATUS_PAID, ':s4' => self::STATUS_RETURNED, ':s5' => self::STATUS_TO_POOL));
         foreach ($query->fetchAll(\PDO::FETCH_ASSOC) as $investor) {
             $users[] = $investor['user'];
         }
@@ -1199,7 +1194,7 @@ class Invest extends \Goteo\Core\Model {
      */
     public function setStatus ($status) {
 
-        if (!in_array($status, array(self::STATUS_PROCESSING, self::STATUS_PENDING, self::STATUS_CHARGED, self::STATUS_CANCELLED, self::STATUS_PAID, self::STATUS_RETURNED, self::STATUS_RELOCATED))) {
+        if (!in_array($status, array(self::STATUS_PROCESSING, self::STATUS_PENDING, self::STATUS_CHARGED, self::STATUS_CANCELLED, self::STATUS_PAID, self::STATUS_RETURNED, self::STATUS_RELOCATED, self::STATUS_TO_POOL))) {
             throw new \Exception("Error: Invest status unknow! [$status]");
         }
 
@@ -1216,7 +1211,7 @@ class Invest extends \Goteo\Core\Model {
                 $drop = Invest::get($this->droped);
                 // si estan reubicando o caducando
                 // liberamos el capital riego
-                if (in_array($status, array(self::STATUS_CANCELLED, self::STATUS_RETURNED, self::STATUS_RELOCATED))) {
+                if (in_array($status, array(self::STATUS_CANCELLED, self::STATUS_RETURNED, self::STATUS_RELOCATED, self::STATUS_TO_POOL))) {
                     $drop->setStatus(self::STATUS_CANCELLED);
                     self::query("UPDATE invest SET droped = NULL WHERE id = :id", array(':id' => $this->id));
                 } else {
@@ -1306,49 +1301,26 @@ class Invest extends \Goteo\Core\Model {
     }
 
     /*
-     *  marca un aporte como devuelto (devuelto el dinero despues de haber sido cargado)
+     * cancels/refunds and inves
      */
-    public function returnPayment () {
+    public function cancel ($status = false, &$errors = []) {
 
-        $values = array(
-            ':id' => $this->id,
-            ':returned' => date('Y-m-d')
-        );
-
-        $sql = "UPDATE  invest
-                SET
-                    returned = :returned,
-                    status = 2
-                WHERE id = :id";
-        if (self::query($sql, $values)) {
-
-            // si tiene capital riego asociado, lo liberamos
-            if (!empty($this->droped)) {
-                $drop = Invest::get($this->droped);
-                if ($drop->setStatus(2)) {
-                    self::query("UPDATE invest SET droped = NULL WHERE id = :id", array(':id' => $this->id));
-                }
-            }
-
-            return true;
-        } else {
-            return false;
-        }
-
-    }
-
-    /*
-     * Marcar esta aportación como cancelada
-     */
-    public function cancel ($failed_project = false) {
-
-        // si es un proyecto fallido el aporte se queda en el termometro
-        if ($failed_project) {
+        // true marks as returned so totals will added to a failed project's thermometer
+        if ($status) {
             $status = self::STATUS_RETURNED;
         } else {
             $status = self::STATUS_CANCELLED;
         }
 
+        // should this invest go to pool?
+        if($this->pool) {
+            if(Pool::refundInvest($this, $errors)) {
+                $status = self::STATUS_TO_POOL;
+            }
+            else {
+                return false;
+            }
+        }
 
         $values = array(
             ':id' => $this->id,
@@ -1364,10 +1336,6 @@ class Invest extends \Goteo\Core\Model {
         if (self::query($sql, $values)) {
             $this->status = $status;
             $this->returned = $values[':returned'];
-            // should this invest go to pool?
-            if($this->pool) {
-                Pool::refundInvest($this);
-            }
             return true;
         }
 
@@ -1954,11 +1922,11 @@ class Invest extends \Goteo\Core\Model {
 
      }
 
-     public static function getDetails($id) {
+     public function getDetails() {
 
          $list = array();
 
-         $values = array(':id' => $id);
+         $values = array(':id' => $this->id);
 
          $sql = "SELECT
                     type,

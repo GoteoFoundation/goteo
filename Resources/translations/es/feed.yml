@@ -6,6 +6,13 @@ feed-admin-invest-returned: 'El admin %ADMIN% ha retornado el aporte de %USER% d
 feed-admin-invest-returned-pool: 'El admin %ADMIN% ha retornado y devuelto al monedero el aporte de %USER% de %AMOUNT% mediante %METHOD% (Id: %INVEST%) al proyecto "%PROJECT%" del dia %DATE%'
 feed-admin-invest-returned-pool-subject: 'Cargo retornado al monedero manualmente (admin)'
 feed-admin-invest-returned-subject: 'Cargo retornado manualmente (admin)'
+feed-admin-massive-subject: 'comunicación masiva a usuarios (admin)'
+feed-admin-massive: 'El admin %USER% ha iniciado una %TYPE% a %TO%'
+feed-admin-massive-communication: 'Comunicacion masiva'
+feed-admin-newsletter-activate-subject: 'newsletter activada (admin)'
+feed-admin-newsletter-activate: 'El admin %USER% ha iniciado el envio de la newsletter %ID%: %SUBJECT%'
+feed-admin-newsletter-activate-failed: 'Ha fallado el envío automático de la newsletter %ID%: %SUBJECT% por parte de el admin %USER%'
+
 feed-blog-comment: 'Ha escrito un <span class="green">Comentario</span> en la entrada "%s" del blog de %s'
 feed-invest: 'Ha aportado %AMOUNT% al proyecto %PROJECT%'
 feed-invest-by: 'Aporte %s'
