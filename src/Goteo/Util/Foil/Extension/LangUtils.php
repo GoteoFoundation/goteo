@@ -95,8 +95,7 @@ class LangUtils implements ExtensionInterface
         // echo "[$url][$url_lang] [$path]";die;
         if($url_lang) {
             $url = (Config::get('ssl') ? 'https://' : 'http://');
-            // Main language stays without subdomain
-            if(Config::get('lang') != $lang) $url .= $lang . '.';
+            $url .= $lang . '.';
             $url .= $url_lang;
         }
         return $url . $path;
