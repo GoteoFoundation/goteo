@@ -102,8 +102,8 @@ class WebProcessor
         foreach($context as $key => $value) {
             if(is_null($value)) continue;
             if(is_object($value)) {
-                $clas = get_class($value);
-                $key = strtolower(end(explode('\\',$clas)));
+                $clas = explode('\\',get_class($value));
+                $key = strtolower(end($clas));
                 // standarized properties
                 if(property_exists($value, 'id')) {
                     $ctxt[$key] = $value->id;
