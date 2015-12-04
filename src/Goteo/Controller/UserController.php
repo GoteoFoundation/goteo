@@ -15,7 +15,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 
 use Goteo\Model;
-use Goteo\Application\Exception\ControllerException;
+use Goteo\Application\Exception\ModelNotFoundException;
 use Goteo\Application\Config;
 use Goteo\Application\Lang;
 use Goteo\Application\View;
@@ -370,7 +370,7 @@ class UserController extends \Goteo\Core\Controller {
         else    $user = Session::getUser();
 
         if (!$user instanceof Model\User || $user->hide) {
-            throw new ControllerException(Text::get('fatal-error-user'));
+            throw new ModelNotFoundException(Text::get('fatal-error-user'));
         }
 
         //--- para usuarios públicos---

@@ -78,7 +78,7 @@ class Lang {
         // force catalogue loading
         $all = static::translator()->getCatalogue();
         foreach(array_merge(SqlTranslationLoader::$cached_files, YamlTranslationLoader::$cached_files) as $file) {
-            unlink($file);
+            @unlink($file);
         }
     }
 
@@ -276,8 +276,11 @@ class Lang {
         if($request) {
             // set Lang by GET user request
             if($request->query->has('lang')) {
-                $desired['get'] = $request->query->get('lang');
-                $save_lang = true;
+                $l = $request->query->get('lang');
+                if(preg_match('/^[a-z]{2,2}+$/', $l)) {
+                    $desired['get'] = $l;
+                    $save_lang = true;
+                }
             }
 
             // set by subdomain
@@ -302,7 +305,7 @@ class Lang {
         if($request) {
             // set by navigator
             $l = strtolower(substr($request->server->get('HTTP_ACCEPT_LANGUAGE'), 0, 2));
-            if(preg_match('/[a-z]{2,2}+/', $l)) {
+            if(preg_match('/^[a-z]{2,2}+$/', $l)) {
                 $desired['browser'] = $l;
             }
         }

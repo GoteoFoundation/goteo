@@ -14,6 +14,7 @@ use Symfony\Component\Config\ConfigCache;
 use Symfony\Component\Translation\Loader\ArrayLoader;
 
 use Goteo\Application\App;
+use Goteo\Application\Config;
 use Goteo\Core\Model;
 
 class SqlTranslationLoader extends ArrayLoader
@@ -28,8 +29,9 @@ class SqlTranslationLoader extends ArrayLoader
 
         // the second argument indicates whether or not you want to use debug mode
         $cacheMatcher = new ConfigCache($cachePath, App::debug());
-        // $cacheMatcher = new ConfigCache($cachePath, false);
-        if (!$cacheMatcher->isFresh()) {
+        $expired = !empty(Config::get('db.cache.driver')) || ((time() - @filemtime($cacheMatcher->getPath())) > (int)Config::get('db.cache.long_time'));
+
+        if (!$cacheMatcher->isFresh() || $expired) {
 
             $sql="SELECT * FROM text WHERE text.lang = :lang";
             $values = array(':lang' => $locale);

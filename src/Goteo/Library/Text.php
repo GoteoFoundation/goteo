@@ -288,8 +288,6 @@ class Text {
                         lang = :lang
                 ";
         if (Model::query($sql, array(':text' => $data['text'], ':id' => $data['id'], ':lang' => $data['lang']))) {
-            // delete text cache
-            Lang::clearCache();
             return true;
         } else {
             $errors[] = 'Error al insertar los datos <pre>' . print_r($data, true) . '</pre>';

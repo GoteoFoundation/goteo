@@ -692,11 +692,11 @@ class Invest extends \Goteo\Core\Model {
             self::query($sql, array(':id'=>$this->id, ':anonymous'=>$this->anonymous));
 
             // recompensas
-            if (!empty($this->rewards)) {
+            if (is_array($this->rewards)) {
                 $this->setRewards($this->rewards);
             }
             // dirección
-            if (!empty($this->address)) {
+            if (is_array($this->address)) {
                 $this->setAddress($this->address);
             }
 
