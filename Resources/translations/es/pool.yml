@@ -1,0 +1,24 @@
+pool-step-1: 'Recarga'
+pool-step-2: 'Pago'
+pool-step-3: 'Confirmar'
+pool-step-4: 'Compartir'
+pool-step-4: 'Compartir'
+
+pool-recharge-title: 'Recarga tu monedero virtual'
+pool-recharge-amount-text: 'Decide con que cantidad quieres recargar tu monedero virtual'
+recharge-button: 'Recargar'
+pool-amount-first: 'Debes indicar una cantidad mayor a 0 para poder recargar tu monedero'
+pool-pay-method-title: 'Realiza tu recarga'
+pool-alert-recharging: 'Estas a punto de recargar tu monedero virtual con '
+
+pool-invest-success-make-sure: 'Tu monedero virtual ha sido recargado con éxito!'
+
+pool-invest-ok: 'Se ha tramitado tu recarga del monedero virtual :)'
+
+pool-invest-spread-header: 'Difunde tu recarga, y ayúdanos a que más gente utilice nuestro monedero virtual'
+
+pool-invest-spread-social: 'Acabo de recargar mi monedero virtual en #goteo'
+
+pool-invest-share-discover: 'Descubre proyectos'
+
+pool-invest-suggest-projects: 'Proyectos que podrían interesarte'

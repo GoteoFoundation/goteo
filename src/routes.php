@@ -55,6 +55,8 @@ $routes->add('invest', new Route(
     array('_controller' => 'Goteo\Controller\InvestController::selectRewardAction',
         )
 ));
+
+
 /// This is for compatibility with old routes
 $routes->add('invest-old-route', new Route(
     '/project/{project_id}/invest',
@@ -95,6 +97,54 @@ $routes->add('invest-share', new Route(
     array('_controller' => 'Goteo\Controller\InvestController::shareAction',
         )
 ));
+
+
+////// Pool rechargue //////
+///
+
+// Pool invest main route
+// Notify URL for gateways that need it
+// will use the same as invest route
+$routes->add('pool', new Route(
+    '/pool',
+    array('_controller' => 'Goteo\Controller\PoolController::selectAmountAction',
+        )
+));
+
+$routes->add('pool-select-payment', new Route(
+    '/pool/payment',
+    array('_controller' => 'Goteo\Controller\PoolController::selectPaymentMethodAction',
+        )
+));
+
+$routes->add('pool-show-form', new Route(
+    '/pool/form',
+    array('_controller' => 'Goteo\Controller\PoolController::paymentFormAction',
+        )
+));
+
+// Payment gateways returning points
+$routes->add('pool-invest-gateway-complete', new Route(
+    '/pool/{invest_id}/complete',
+    array('_controller' => 'Goteo\Controller\PoolController::completePaymentAction',
+        )
+));
+
+
+$routes->add('pool-invest-user-data', new Route(
+    '/pool/{invest_id}',
+    array('_controller' => 'Goteo\Controller\PoolController::userDataAction',
+        ),
+    array('invest_id' => '[0-9]+')
+));
+
+$routes->add('pool-invest-share', new Route(
+    '/pool/{invest_id}/share',
+    array('_controller' => 'Goteo\Controller\PoolController::shareAction',
+        )
+));
+
+
 
 // AUTH user routes
 $routes->add('auth-login', new Route(

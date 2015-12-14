@@ -117,20 +117,25 @@ $sc->register('app.listener.auth', 'Goteo\Application\EventListener\AuthListener
    ->setArguments(array(new Reference('logger')));
 // Invest listener
 $sc->register('app.listener.invest', 'Goteo\Application\EventListener\InvestListener')
-   ->setArguments(array(new Reference('paylogger')));
+	->setArguments(array(new Reference('paylogger')));
+
+// Invest listener
+$sc->register('app.listener.poolinvest', 'Goteo\Application\EventListener\PoolInvestListener')
+	->setArguments(array(new Reference('paylogger')));
 // Legacy Security ACL
 $sc->register('app.listener.acl', 'Goteo\Application\EventListener\AclListener')
    ->setArguments(array(new Reference('logger')));
 
 // Event Dispatcher object
 $sc->register('dispatcher', 'Symfony\Component\EventDispatcher\EventDispatcher')
-   ->addMethodCall('addSubscriber', array(new Reference('app.listener.exception')))
-   ->addMethodCall('addSubscriber', array(new Reference('app.listener.session')))
-   ->addMethodCall('addSubscriber', array(new Reference('app.listener.auth')))
-   ->addMethodCall('addSubscriber', array(new Reference('app.listener.invest')))
-   ->addMethodCall('addSubscriber', array(new Reference('app.listener.acl')))
-   ->addMethodCall('addSubscriber', array(new Reference('listener.router')))
-   ->addMethodCall('addSubscriber', array(new Reference('listener.response')))
+	->addMethodCall('addSubscriber', array(new Reference('app.listener.exception')))
+	->addMethodCall('addSubscriber', array(new Reference('app.listener.session')))
+	->addMethodCall('addSubscriber', array(new Reference('app.listener.auth')))
+	->addMethodCall('addSubscriber', array(new Reference('app.listener.invest')))
+	->addMethodCall('addSubscriber', array(new Reference('app.listener.poolinvest')))
+	->addMethodCall('addSubscriber', array(new Reference('app.listener.acl')))
+	->addMethodCall('addSubscriber', array(new Reference('listener.router')))
+	->addMethodCall('addSubscriber', array(new Reference('listener.response')))
 ;
 // Goteo main app
 $sc->register('app', 'Goteo\Application\App')

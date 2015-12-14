@@ -216,7 +216,13 @@ abstract class AbstractPaymentMethod implements PaymentMethodInterface {
     public function getCompleteUrl() {
         $request = $this->getRequest();
         $invest = $this->getInvest();
-        return $request->getSchemeAndHttpHost() . '/invest/' . $invest->project . '/' . $invest->id . '/complete';
+
+        // Project invest
+        if($invest->getProject())
+            return $request->getSchemeAndHttpHost() . '/invest/' . $invest->project . '/' . $invest->id . '/complete';
+        //Buy credit
+        else
+            return $request->getSchemeAndHttpHost() . '/pool/' . $invest->id . '/complete';
     }
 
     /**

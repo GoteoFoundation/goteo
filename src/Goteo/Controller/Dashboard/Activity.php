@@ -227,11 +227,11 @@ namespace Goteo\Controller\Dashboard {
             }
 
             if ($action == 'download') {
-
-                if (!$donation->confirmed) {
+                // no permitir descargas temporalmente
+                // if (!$donation->confirmed) {
                     Message::error(Text::get('dashboard-donor-pdf_closed', $year));
                     throw new Redirection('/dashboard/activity/donor');
-                }
+                // }
 
                 // ver si es una persona juridica
                 $donation->nif_type = '';

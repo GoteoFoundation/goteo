@@ -389,11 +389,11 @@ class Invest extends \Goteo\Core\Model {
 
     // returns the current project
     public function getProject() {
-        if($this->projectObject) return $this->projectObject;
+        if(isset($this->projectObject)) return $this->projectObject;
         try {
             $this->projectObject = Project::get($this->project);
         } catch(ModelNotFoundException $e) {
-            return null;
+            $this->projectObject = false;
         }
         return $this->projectObject;
     }
@@ -580,8 +580,8 @@ class Invest extends \Goteo\Core\Model {
         if (empty($this->user))
             $errors[] = 'Falta usuario';
 
-        if (empty($this->project))
-            $errors[] = 'Falta proyecto';
+        /*if (empty($this->project))
+            $errors[] = 'Falta proyecto';*/
 
         if (empty($errors))
             return true;

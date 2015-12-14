@@ -60,3 +60,6 @@ ALTER TABLE `invest` ADD `pool` INT( 1 ) NULL DEFAULT NULL COMMENT 'A reservar s
 
 ALTER TABLE `invest` ADD FOREIGN KEY (`user`) REFERENCES `user`(`id`) ON UPDATE CASCADE;
 ALTER TABLE `invest` ADD FOREIGN KEY (`project`) REFERENCES `project`(`id`) ON UPDATE CASCADE;
+
+-- Allow null in project for pool recharges
+ALTER TABLE `invest` CHANGE `project` `project` varchar(50);

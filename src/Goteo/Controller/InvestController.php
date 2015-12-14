@@ -350,9 +350,15 @@ class InvestController extends \Goteo\Core\Controller {
             $response = $method->completePurchase();
 
             if($invest->status != Invest::STATUS_PROCESSING) {
-                $this->warning('Payment Notification Duplicated', ['invest' => $invest->id, 'user_agent' => $request->server->get('HTTP_USER_AGENT'), 'get' => $request->query->all(), 'post' => $request->request->all()]);
-
-                return $this->redirect('/invest/' . $project_id . '/' . $invest->id);
+                $this->warning('Payment Notification Duplicated', [$invest, $invest->getUser(), 'user_agent' => $request->server->get('HTTP_USER_AGENT'), 'get' => $request->query->all(), 'post' => $request->request->all()]);
+                if($invest->getProject()) {
+                    return $this->redirect('/invest/' . $invest->getProject()->id . '/' . $invest->id);
+                } else {
+                    // This case belongs to pool controller
+                    // It's here because some Gateways does'nt allow to change
+                    // the notify URL
+                    return $this->redirect('/pool/' . $invest->id);
+                }
             }
 
             // New Invest Notify Event (a HttpResponse will be assigned here)
