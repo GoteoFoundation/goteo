@@ -96,7 +96,7 @@ class Session {
                    throw new Config\ConfigException(__METHOD__ . ' session_start failed.');
                 }
                 // Fix for session cookie time life
-                Cookie::store(session_name(), session_id(), self::getSessionExpires());
+                ini_set('session.cookie_lifetime', self::getSessionExpires());
             } else {
                 throw new Config\ConfigException(__METHOD__ . ' Session started after headers sent.');
             }
@@ -120,7 +120,15 @@ class Session {
     }
 
     static public function getId() {
-        return session_id();
+        $id = session_id();
+        if($id == 'deleted') {
+            session_regenerate_id();
+            $id = session_id();
+        }
+        if($id == 'deleted') {
+            throw new Config\ConfigException(__METHOD__ . ' session_id failed.');
+        }
+        return $id;
     }
 
     /**
@@ -137,8 +145,6 @@ class Session {
             session_unset();
             session_destroy();
             session_write_close();
-            session_regenerate_id(true);
-            session_start();
         }
         $callback = self::$triggers['session_destroyed'];
         if($throw_callback && is_callable($callback)) {
@@ -154,6 +160,9 @@ class Session {
      */
     static public function store($key, $value) {
         global $_SESSION;
+        if (session_status() == PHP_SESSION_NONE) {
+            session_start();
+        }
         return $_SESSION[$key] = $value;
     }
 
