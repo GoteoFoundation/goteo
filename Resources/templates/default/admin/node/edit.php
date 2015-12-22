@@ -100,6 +100,34 @@ $node = $this->node;
                 )
             ),
 
+            'homeimg' => array(
+                'type' => 'Hidden',
+                'value' => $node->home_img->id,
+            ),
+
+            'thehomeimg' => array(
+                'type'      => 'group',
+                'title'     => 'Imagen home',
+                'class'     => 'user_avatar',
+                'children'  => array(
+                    'homeimg_upload'    => array(
+                        'type'  => 'file',
+                        'label' => $this->text('form-image_upload-button'),
+                        'class' => 'inline avatar_upload'
+                    ),
+                    'homeimg-image' => array(
+                        'type'  => 'HTML',
+                        'class' => 'inline avatar-image',
+                        'html'  => is_object($node->home_img) ?
+                                   '<img src="' . '/img/small/' . $node->home_img->id . '" alt="Avatar"  title="'.$node->home_img->id.'"  /><button class="image-remove" type="submit" name="homeimg-'.$node->home_img->hash.'-remove" title="Quitar esta imagen de portada" value="remove">X</button>' :
+                                   ''
+                    )
+
+                )
+            ),
+
+
+
             'owner_background' => array(
                 'type'      => 'TextBox',
                 'size'      => 10,

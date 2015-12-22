@@ -21,11 +21,12 @@ use Symfony\Component\HttpFoundation\Request;
 use Goteo\Application\Config;
 use Goteo\Application\Session;
 use Goteo\Application\View;
+use Goteo\Library\Text;
 use Symfony\Component\EventDispatcher\Event;
 use Goteo\Application\App;
 use Goteo\Core\Traits\LoggerTrait;
 
-abstract class AbstractSubController {
+abstract class AbstractSubController extends \Goteo\Core\Controller {
     use LoggerTrait;
 
     protected $request;
@@ -125,8 +126,8 @@ abstract class AbstractSubController {
      * @param  string $action if label is specified returns the label text instead of the general one
      */
     public static function getLabel($action = null) {
-        if($action) return static::$labels[$action];
-        return static::$label;
+        if($action) return Text::get(static::$labels[$action]);
+        return Text::get(static::$label);
     }
     /**
      * Returns the url for this controller
@@ -276,25 +277,11 @@ abstract class AbstractSubController {
      * @param  [type] $url [description]
      * @return [type]      [description]
      */
-    public function redirect($url = null) {
+    public function redirect($url = null, $status = 302) {
         if(empty($url)) {
             $url = static::getUrl();
         }
-        return new RedirectResponse($url);
-    }
-
-    /**
-     * Handy method to get the getService function
-     */
-    public function getService($service) {
-        return App::getService($service);
-    }
-
-    /**
-     * Handy method to get the dispatch function
-     */
-    public function dispatch($eventName, Event $event = null) {
-        return App::dispatch($eventName, $event);
+        return new RedirectResponse($url, $status);
     }
 
     /**
@@ -305,10 +292,6 @@ abstract class AbstractSubController {
      */
     public function response($view, $data = []) {
         return new Response(View::render($view, $data));
-    }
-
-    public function jsonResponse($data = []) {
-        return new JsonResponse($data);
     }
 
     /**

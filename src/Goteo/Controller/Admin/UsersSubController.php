@@ -13,28 +13,29 @@
 namespace Goteo\Controller\Admin;
 
 use Symfony\Component\HttpFoundation\Request;
-use Goteo\Library\Text,
-	Goteo\Library\Feed,
-	Goteo\Model\Template,
-    Goteo\Application\Message,
-    Goteo\Application\Session,
-    Goteo\Application\Config,
-    Goteo\Application\Lang,
-    Goteo\Model;
+use Goteo\Library\Text;
+use Goteo\Library\Feed;
+use Goteo\Model\Template;
+use Goteo\Application\Message;
+use Goteo\Application\Session;
+use Goteo\Application\Config;
+use Goteo\Application\Lang;
+use Goteo\Model\User\UserLocation;
+use Goteo\Model;
 
 class UsersSubController extends AbstractSubController {
 
     static protected $labels = array (
-      'list' => 'Listando',
-      'add' => 'Creando Usuario',
-      'move' => 'Moviendo a otro Nodo el usuario ',
-      'edit' => 'Editando Usuario',
-      'manage' => 'Gestionando Usuario',
-      'impersonate' => 'Suplantando al Usuario',
+      'list' => 'users-lb-list',
+      'add' => 'users-lb-add',
+      'move' => 'users-lb-move',
+      'edit' => 'users-lb-edit',
+      'manage' => 'users-lb-manage',
+      'impersonate' => 'users-lb-impersonate',
     );
 
 
-    static protected $label = 'Usuarios';
+    static protected $label = 'users-lb';
 
 
     protected $filters = array (
@@ -268,6 +269,7 @@ class UsersSubController extends AbstractSubController {
         $viewData = array(
                 'template' => 'admin/users/manage',
                 'user'=>$user,
+                'location'=> UserLocation::get($user),
                 'poolAmount' => $user->getPool()->getAmount(),
                 'nodes' => $nodes,
                 'node_roles' => $user->getAllNodeRolesRaw(),

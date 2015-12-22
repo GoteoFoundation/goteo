@@ -1,5 +1,5 @@
-error-register-userid: 'You have to enter a user name'
 auth-access-forbbiden: 'You don''t have permission to acces here!'
+error-register-userid: 'You have to enter a user name'
 login-access-button: Enter
 login-access-header: 'Registered user'
 login-access-password-field: Password
@@ -8,11 +8,16 @@ login-fail: Error
 login-leave-button: 'Close the account'
 login-leave-header: 'Close the account'
 login-leave-message: 'Leave a message'
+login-new-user-label: 'New user?'
 login-oneclick-header: 'Log in with a single click'
 login-recover-button: Recover
 login-recover-email-field: 'Email or user name'
 login-recover-header: "Recover password\r\nFill in the field with the email you used to sign up on the platform. You will receive there the information needed to recover your password. Frequently, it is the same email address linked to your social networks.\r\nNote: You will receive an email at the same email address with a direct link to change your password.\r\nIf you do not receive the email, make sure that it is not in the spam folder. If you have clicked several times asking for a new password, you may have received an email with a new auto-generated link for every time you clicked. Use the link in the last email you received.\r\nIf you do not remember the email address associated to your account, you can contact us and we will provide it. Please, do not forget to give us some data in order to enable us to search for your user in our system (full name, nickname, register date or if you made a contribution to a particular project)."
+login-recover-label: 'Forgot your password?'
 login-recover-link: 'Recover password'
+login-recover-modal-button: Send
+login-recover-modal-sucess: 'Done! We’ve sent you an email where you''ll find a link to reestablish your password'
+login-recover-modal-text: 'Write the email you used when you registered and will send you a link to reestablish your password'
 login-recover-username-field: 'User name'
 login-register-button: Register
 login-register-confirm-field: 'Confirm email address'
@@ -33,6 +38,7 @@ login-signin-twitter: 'Log in with Twitter'
 login-signin-ubuntu: 'Log in with Ubuntu One'
 login-signin-view-more: 'More login options'
 login-signin-yahoo: 'Log in with Yahoo'
+login-title: 'Log in'
 oauth-confirm-user: 'Connect with existing user'
 oauth-facebook-access-denied: 'Facebook access denied'
 oauth-goteo-openid-sync-password: 'You''re trying to connect an existing Goteo account with an external provider. That will allow you to access Goteo with a single click.<br>This time you must provide your Goteo account password in order to confirm your identity.'
@@ -56,12 +62,6 @@ oauth-openid-not-logged: 'User disconnected from Open ID'
 oauth-token-request-error: 'There has been an error when getting data from provider'
 oauth-twitter-access-denied: 'Twitter access denied'
 oauth-unknown-provider: 'Session can''t be started with this provider'
-login-new-user-label: 'New user?'
-login-recover-label: 'Forgot your password?'
-login-recover-modal-button: Send
-login-recover-modal-sucess: 'Done! We’ve sent you an email where you''ll find a link to reestablish your password'
-login-recover-modal-text: 'Write the email you used when you registered and will send you a link to reestablish your password'
-login-title: 'Log in'
 reset-password-new-password: 'Confirm new password'
 reset-password-old-password: 'Your new password'
 reset-password-save: Save

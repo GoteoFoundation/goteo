@@ -13,9 +13,6 @@ namespace Goteo\Console;
 use Goteo\Application\App;
 use Goteo\Application\Config;
 
-use Monolog\Handler\StreamHandler;
-use Monolog\Logger;
-
 use Symfony\Component\Console\Application;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\EventDispatcher\Event;
@@ -52,13 +49,6 @@ class Console {
 			$url = Config::get('url.main');
 			define('SITE_URL', (Config::get('ssl')?'https://':'http://').preg_replace('|^(https?:)?//|i', '', $url));
 			define('SEC_URL', SITE_URL);
-
-			// Add a log level debug to stderr in the App general log
-			$stream = new StreamHandler('php://stdout', Logger::DEBUG);
-			$logger = App::getService('logger')->pushHandler($stream);
-
-			$logger = App::getService('console_logger');
-			$logger->pushHandler($stream);
 
 			self::$app = App::getService('console');
             self::$console = new Application();

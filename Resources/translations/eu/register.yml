@@ -19,3 +19,4 @@ user-activate-already-active: 'Erabiltzaile kontua martxan dago dagoeneko'
 user-activate-success: 'Erabiltzaile kontuan ondo martxan jarri da'
 validate-project-value-contract_email: 'Email helbidea ez da zuzena'
 validate-register-value-email: 'Sartutako emaila ez da zuzena'
+register-id-field: Username

@@ -22,7 +22,7 @@ $sponsors   = Sponsor::getList();
 	<div class="w940" style="padding:20px;">
     	<div class="block categories">
             <h6 class="title"><?=$this->text('footer-header-categories') ?></h6>
-            <ul class="scroll-pane">
+            <ul class="scroll-pane jspScrollable">
             <?php foreach ($categories as $id=>$name) : ?>
                 <li><a href="/discover/results/<?php echo $id.'/'.$name; ?>"><?php echo $name; ?></a></li>
             <?php endforeach; ?>
@@ -76,12 +76,11 @@ $sponsors   = Sponsor::getList();
 
             <h6 class="title"><?=$this->text('footer-header-services') ?></h6>
             <ul>
-                <li><a href="/service/resources"><?=$this->text('footer-service-resources') ?></a></li>
-<?php /*                    <li><a href="/service/campaign"><?=$this->text('footer-service-campaign') ?></a></li>
-                <li><a href="/service/consulting"><?=$this->text('footer-service-consulting') ?></a></li>
-*
-*/ ?>
-                <li><a href="/service/workshop"><?=$this->text('footer-service-workshop') ?></a></li>
+                <li><a href="/service/resources"><img class="icon" src="<?= SRC_URL . '/view/css/services/call_icon.png' ?>" height="20" /><?=$this->text('footer-service-resources') ?></a></li>
+                <li><a href="/service/workshop"><img class="icon" src="<?= SRC_URL . '/view/css/services/workshops_icon.png' ?>" height="20" /><?=$this->text('footer-service-workshop') ?></a></li>
+                <li><a href="/calculadora-fiscal"><img class="icon calculator" src="<?= SRC_URL . '/view/css/services/calculator_icon.png' ?>" height="20" /><?=$this->text('footer-service-calculator') ?></a></li>
+                <li><a href="/pool"><img class="icon pool" src="<?= SRC_URL . '/view/css/services/pool_icon.png' ?>" height="20" /><?=$this->text('footer-service-pool') ?></a></li>
+
             </ul>
 
         </div>

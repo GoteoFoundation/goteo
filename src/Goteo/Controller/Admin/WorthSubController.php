@@ -21,12 +21,12 @@ use Goteo\Application\Config,
 class WorthSubController extends AbstractSubController {
 
     static protected $labels = array (
-      'list' => 'Listando',
-      'edit' => 'Editando Nivel',
+      'list' => 'worth-lb-list',
+      'edit' => 'worth-lb-edit',
     );
 
 
-    static protected $label = 'Niveles de meritocracia';
+    static protected $label = 'worth-lb';
 
 
     /**

@@ -85,6 +85,7 @@ class Template extends \Goteo\Core\Model {
     const OWNER_PROJECT_REVIEWED = 62;    // Confirmacion de proyecto revisado
     const CONSULTANT_PROJECT_SENT = 63;    // Proyecto enviado desde preform a valoración
     const DONOR_INVEST_THANKS = 64;    // Agradecimiento aporte
+    const POOL_RECHARGUE_THANKS = 65;    // Agradecimiento aporte
 
     public
         $id,

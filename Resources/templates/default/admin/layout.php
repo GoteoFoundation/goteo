@@ -65,7 +65,7 @@ $this->layout('layout', [
     .label.label-sent,.label.label-success {
         background: #5CB85C; /* green */
     }
-    .label.label-root,.label.label-failed,.label.label-inactive,.label.label-error {
+    .label.label-root,.label.label-failed,.label.label-inactive,.label.label-error,.label.label-danger {
         background: #D9534F; /* red */
     }
     .admin .channel {
@@ -83,6 +83,9 @@ $this->layout('layout', [
         overflow: auto;
     }
 
+    .admin .widget table.table{
+        width:100%;
+    }
     .admin .widget ul.pagination {
         border-top: 1px solid #f0f0f0;
         padding-top: 5px;

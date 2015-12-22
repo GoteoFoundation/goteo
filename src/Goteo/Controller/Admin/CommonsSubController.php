@@ -22,16 +22,16 @@ use Goteo\Application\Lang,
 class CommonsSubController extends AbstractSubController {
 
     static protected $labels = array (
-      'list' => 'Listando',
-      'add' => 'Nuevo retorno',
-      'report' => 'Informe de proyecto',
-      'edit' => 'Editando retorno',
-      'view' => 'Gestión de retornos',
-      'info' => 'Información de contacto',
+      'list' => 'commons-lb-list',
+      'add' => 'commons-lb-add',
+      'report' => 'commons-lb-report',
+      'edit' => 'commons-lb-edit',
+      'view' => 'commons-lb-view',
+      'info' => 'commons-lb-info',
     );
 
 
-    static protected $label = 'Retornos colectivos';
+    static protected $label = 'commons-lb';
 
 
     protected $filters = array (

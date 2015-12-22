@@ -1,4 +1,4 @@
 mailer-baja: 'Als je geen nieuws meer wilt ontvangen, kun je je emailadres afmelden via <a href="%s">link</a>'
 mailer-disclaimer: 'Goteo Crowdfunding System is een digitaal platform voor collectieve financiering, samenwerking en distributie van beloningen voor het ontwikkelen van sociale, culturele, educatieve en technische projecten die bijdragen aan het algemeen belang en die open source en open kennis zijn.'
 mailer-sinoves: 'Als je dit bericht niet kunt zien, gebruik dan deze <a href="%s">link</a>'
-newsletter-block: 'Wil je geen nieuws meer van SiteName ontvangen?<br />Je kunt de volgende nieuwsbrief blokkeren in het menu ''Mijn profiel > Voorkeuren'' of <a href="%s">Unsubscribe</a>.'
+newsletter-block: 'Wil je geen nieuws meer van Goteo ontvangen?<br />Je kunt de volgende nieuwsbrief blokkeren in het menu ''Mijn profiel > Voorkeuren'' of <a href="%s">Unsubscribe</a>.'

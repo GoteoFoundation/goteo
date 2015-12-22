@@ -19,14 +19,14 @@ use Goteo\Application\Message,
 class FaqSubController extends AbstractSubController {
 
     static protected $labels = array (
-      'list' => 'Listando',
-      'add' => 'Nueva Pregunta',
-      'edit' => 'Editando Pregunta',
-      'translate' => 'Traduciendo Pregunta',
+      'list' => 'faq-lb-list',
+      'add' => 'faq-lb-add',
+      'edit' => 'faq-lb-edit',
+      'translate' => 'faq-lb-translate',
     );
 
 
-    static protected $label = 'FAQs';
+    static protected $label = 'faq-lb';
 
 
     protected $filters = array (

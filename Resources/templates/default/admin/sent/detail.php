@@ -43,7 +43,7 @@ if($sender = $mail->getSender()) {
     <table>
         <tr>
             <th>Metric</th>
-            <th>Porcentage éxito</th>
+            <th>Porcentaje éxito</th>
         </tr>
         <?php foreach ($this->metric_list as $collection) : ?>
         <tr>

@@ -208,40 +208,53 @@ locator.setGoogleMapPoint = function (obj, iteration) {
         zoom: 5,
         mapTypeId: google.maps.MapTypeId.ROADMAP
     };
+    //draw map
+    this.map = new google.maps.Map(obj, mapOptions);
+    // marker
+    this.marker = new google.maps.Marker();
+    this.marker.setMap(this.map);
+
+    //draw info window
+    if($(obj).is('[data-map-content]')) {
+        var desc = $(obj).data('map-content');
+        this.marker = new google.maps.InfoWindow();
+        this.marker.setContent(desc);
+        this.marker.setPosition(mapOptions.center);
+        this.marker.open(this.map);
+
+        google.maps.event.addListener(this.map, 'zoom_changed', function() {
+            locator.marker.setContent(desc);
+            locator.marker.open(locator.map);
+        });
+    }
 
     //look for data-map-* attributes:
+    var id = $(obj).attr('id');
+    if(!id) id = 'map';
     if($(obj).is('[data-map-latitude]') && $(obj).is('[data-map-latitude]')) {
-        var id = $(obj).attr('id');
         var lat = $(obj).data('map-latitude');
         var lng = $(obj).data('map-longitude');
 
         this.trace('Found printable geomap, id: ', id, ' lat,lng: ', lat, lng, ' content', $(obj).data('map-content'));
         if(lat && lng) {
-            mapOptions.center = new google.maps.LatLng(lat, lng);
-            mapOptions.zoom = 7;
+            var center = new google.maps.LatLng(lat, lng);
+            this.marker.setPosition(center);
+            this.map.setCenter(center);
+            this.map.setZoom(7);
         }
     }
-    //draw map
-    this.map = new google.maps.Map(obj, mapOptions);
-    var marker = new google.maps.Marker({
-        position: mapOptions.center
-    });
-    marker.setMap(this.map);
+    else if($(obj).is('[data-map-address]')) {
+        // Geocoding
+        var address = $(obj).data('map-address');
+        var geocoder = new google.maps.Geocoder();
 
-    //draw info window
-    if($(obj).is('[data-map-content]')) {
-        var desc = $(obj).data('map-content');
-        var coordInfoWindow = new google.maps.InfoWindow();
-        coordInfoWindow.setContent(desc);
-        coordInfoWindow.setPosition(mapOptions.center);
-        coordInfoWindow.open(this.map);
-
-        google.maps.event.addListener(this.map, 'zoom_changed', function() {
-            coordInfoWindow.setContent(desc);
-            coordInfoWindow.open(this.map);
-        });
+        geocoder.geocode({'address': address}, function(results, status) {
+        if (status === google.maps.GeocoderStatus.OK) {
+            locator.map.setCenter(results[0].geometry.location);
+            locator.marker.setPosition(results[0].geometry.location);
+        }
+      });
     }
-
 };
 
 /**
@@ -249,15 +262,16 @@ locator.setGoogleMapPoint = function (obj, iteration) {
  * @param {[type]} type          [description]
  * @param {[type]} autocomplete [description]
  */
-locator.setGoogleAddressFromAutocomplete = function (type, item) {
-    if(!this.autocomplete) {
-        this.trace('Geocoder error in setGoogleAddressFromAutocomplete, this.autocomplete not present');
+locator.getGoogleAddressFromAutocomplete = function (autocomplete) {
+    if(!autocomplete) {
+        this.trace('Geocoder error in getGoogleAddressFromAutocomplete, autocomplete not present');
         return;
     }
 
     //handle auto geolocator if needed
-    this.trace('Geocoder by autocomplete, type:', type, ' item:', item, ' autocomplete object:', this.autocomplete);
-    var place = this.autocomplete.getPlace();
+    this.trace('Geocoder by autocomplete, autocomplete object:', autocomplete);
+    var place = autocomplete.getPlace();
+    this.trace('place:', place);
     if(place && place.geometry && place.address_components) {
         var data = {
             latitude : place.geometry.location.lat(),
@@ -271,17 +285,35 @@ locator.setGoogleAddressFromAutocomplete = function (type, item) {
                 data.country = ob.long_name;
                 data.country_code = ob.short_name;
             }
+            if(ob.types[0] === 'route') {
+                data.route = ob.long_name;
+            }
+            if(ob.types[0] === 'street_number') {
+                data.number = ob.long_name;
+            }
             if(ob.types[0] === 'locality' && ob.types[1] === 'political') {
                 data.city = ob.long_name;
             }
-            if((ob.types[0] === 'administrative_area_level_1' || ob.types[0] === 'administrative_area_level_2') && ob.types[1] === 'political') {
+            if(ob.types[0] === 'postal_code') {
+                data.zipcode = ob.long_name;
+            }
+            if(ob.types[0] === 'administrative_area_level_1' && ob.types[1] === 'political' && !data.region) {
+                data.region = ob.long_name;
+            }
+            if(ob.types[0] === 'administrative_area_level_2' && ob.types[1] === 'political') {
                 data.region = ob.long_name;
             }
         }
-        this.trace('place:', place, 'location data:', data);
-        this.saveGeolocationData(type, item, data);
+        if(data.route) {
+            data.address = data.route;
+        }
+        if(data.number && data.route) {
+            data.address = data.route + ', ' + data.number;
+        }
+        this.trace('location data:', data);
+        return data;
     }
-
+    return [];
 };
 
 /**
@@ -311,13 +343,33 @@ locator.setGoogleAutocomplete = function(id, iteration) {
     }
 
     this.trace('Setting autocomplete for id: ', id, ' name: ', $(id).attr('name'), ' element: ', $(id)[0]);
-    this.autocomplete = new google.maps.places.Autocomplete($(id)[0], options);
+    if(!this.autocomplete) this.autocomplete = [];
+    this.autocomplete[id] = new google.maps.places.Autocomplete($(id)[0], options);
 
     // When the user selects an address from the dropdown,
-    // populate the address fields in the form.
-    google.maps.event.addListener(this.autocomplete, 'place_changed', function() {
+    google.maps.event.addListener(this.autocomplete[id], 'place_changed', function() {
+        var data = locator.getGoogleAddressFromAutocomplete(locator.autocomplete[id]);
+        // Save address field via ajax if required.
         if($(id).is('[data-geocoder-type]')) {
-            locator.setGoogleAddressFromAutocomplete($(id).data('geocoder-type'), $(id).is('[data-geocoder-item]') ? $(id).data('geocoder-item') : '');
+            locator.saveGeolocationData($(id).data('geocoder-type'), $(id).is('[data-geocoder-item]') ? $(id).data('geocoder-item') : '', data);
+        }
+        // populate the address fields in the form if available.
+        var fields = ['address', 'city', 'region', 'zipcode', 'country_code', 'country', 'latitude', 'longitude'];
+        for(var i in fields) {
+            var f = fields[i];
+            var el = $(id).data('geocoder-populate-' + f);
+            if($(id).is('[data-geocoder-populate-' + f + ']')) {
+                // if($(el).val() == '') $(el).val(data[f]);
+                // alert(el+': '+f+'['+data[f]+'] / '+$(el).val());
+                if(data[f]) {
+                    $(el).val(data[f]);
+                }
+            }
+        }
+        // Update marker if map present
+        if(locator.map && locator.marker) {
+            locator.map.setCenter(locator.autocomplete[id].getPlace().geometry.location);
+            locator.marker.setPosition(locator.autocomplete[id].getPlace().geometry.location);
         }
     });
 };
@@ -370,13 +422,13 @@ $(function(){
             locator.trace('Missing ID html element for input:', this);
         }
         else {
-            locator.setGoogleAutocomplete('input#' + $(this).attr('id') + '.geo-autocomplete');
+            locator.setGoogleAutocomplete('#' + $(this).attr('id'));
         }
         //bind superforn dom changes
         $(this).closest('li.element').bind('superform.dom.done', function (event, html, new_el) {
             locator.trace('dom update', new_el);
             $(new_el).find('input.geo-autocomplete').each(function(){
-                locator.setGoogleAutocomplete('input#' + $(this).attr('id') + '.geo-autocomplete');
+                locator.setGoogleAutocomplete('#' + $(this).attr('id'));
             });
         });
     });

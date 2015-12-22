@@ -1,4 +1,3 @@
-personal-field-region: Provincia
 contract-accounts_title: 'Cuentas bancarias del proyecto'
 contract-bank_account: 'Cuenta bancaria (código IBAN, formato ESxx xxxx xxxx xxxx xxxx xxxx):'
 contract-bank_owner: 'Titular de la cuenta bancaria:'
@@ -50,6 +49,7 @@ personal-field-contract_name: 'Nombre y apellidos'
 personal-field-contract_nif: 'Número de NIF / NIE / VAT'
 personal-field-main_address: 'Dirección postal'
 personal-field-post_address: 'Dirección social'
+personal-field-region: Provincia
 tooltip-contract-bank_account: 'Indica cuál es el número de cuenta bancaria con la nueva nomenclatura europea: IBAN ESxx xxxx xxxx xxxx xxxx xxxx'
 tooltip-contract-bank_owner: 'Indica aquí quién es el/la titular de la cuenta bancaria'
 tooltip-contract-docs: 'Puedes subir tantos archivos como necesites, cada uno de máximo 2Mb. Envíalos preferiblemente en formato .PDF, .ODT, .DOC, .JPG. Si no tienes escáner puedes hacer una foto de cada documento, pero asegúrate por favor de que la información sea legible'

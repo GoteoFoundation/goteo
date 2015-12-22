@@ -30,13 +30,13 @@ use Goteo\Model;
 class MailingSubController extends AbstractSubController {
 
     static protected $labels = array (
-      'list' => 'Seleccionando destinatarios',
-      'edit' => 'Escribiendo contenido',
-      'send' => 'Comunicación enviada',
+      'list' => 'mailing-lb-list',
+      'edit' => 'mailing-lb-edit',
+      'send' => 'mailing-lb-send',
     );
 
 
-    static protected $label = 'Comunicaciones';
+    static protected $label = 'mailing-lb';
 
 
     protected $filters = array (
@@ -49,6 +49,8 @@ class MailingSubController extends AbstractSubController {
       'name' => '',
       'donant' => '',
       'comlang' => '',
+      'langreverse' => '',
+      'antiquity' => 0,
     );
 
     /**
@@ -83,6 +85,14 @@ class MailingSubController extends AbstractSubController {
             Template::TEST => 'Testeo'
         );
         $this->langs = Lang::listAll('object', false);
+
+        $m = mktime( 0, 0, 0, date('m') -1, 1, date('Y') );
+
+        $this->antiquity = [
+            7 => 'Una semana',
+            date('t', $m) => 'Un mes',
+            365 => 'Un año',
+        ];
 
         // // una variable de sesion para mantener los datos de todo esto
         // if (!isset($_SESSION['mailing'])) {
@@ -258,6 +268,7 @@ class MailingSubController extends AbstractSubController {
                 'types'     => $this->types,
                 'roles'     => $this->roles,
                 'langs'     => $this->langs,
+                'antiquity' => $this->antiquity,
                 'filters'   => $this->getFilters()
         );
 
@@ -272,6 +283,7 @@ class MailingSubController extends AbstractSubController {
         $types = $this->types;
         $roles = $this->roles;
         $langs = $this->langs;
+        $antiquity = $this->antiquity;
 
         $investor_owner = in_array($filters['type'], ['investor', 'owner']);
 
@@ -295,6 +307,11 @@ class MailingSubController extends AbstractSubController {
             } elseif (empty($filters['method']) && $investor_owner) {
                 $filters_txt .= 'mediante cualquier metodo ';
             }
+            if (!empty($filters['antiquity']) && $investor_owner) {
+                $filters_txt .= 'más recientes que <strong>' . $antiquity[$filters['antiquity']] . '</strong> ';
+            } elseif (empty($filters['antiquity']) && $investor_owner) {
+                $filters_txt .= 'en cualquier fecha ';
+            }
         }
 
         if ($filters['interest'] == 15) {
@@ -312,7 +329,11 @@ class MailingSubController extends AbstractSubController {
         }
 
         if (!empty($filters['comlang'])) {
-            $filters_txt .= 'con idioma preferencia <strong>' . $langs[$filters['comlang']]->short . '</strong> ';
+            $filters_txt .= 'con idioma de preferencia ';
+            if($filters['langreverse']) {
+                $filters_txt .= 'que NO sea ';
+            }
+            $filters_txt .= '<strong>' . $langs[$filters['comlang']]->short . '</strong> ';
         }
 
         return $filters_txt;
@@ -346,7 +367,7 @@ class MailingSubController extends AbstractSubController {
             case 'investor':
                 $sqlInner .= "INNER JOIN invest
                         ON invest.user = user.id
-                        AND (invest.status = 0 OR invest.status = 1 OR invest.status = 3 OR invest.status = 4)
+                        AND invest.status IN(0, 1, 3, 4, 6)
                     INNER JOIN project
                         ON project.id = invest.project
                         ";
@@ -375,6 +396,10 @@ class MailingSubController extends AbstractSubController {
             if (!empty($filters['method']) && !empty($sqlInner)) {
                 $sqlFilter .= "AND invest.method = :method ";
                 $values[':method'] = $filters['method'];
+            }
+            if (!empty($filters['antiquity']) && !empty($sqlInner)) {
+                $sqlFilter .= "AND invest.invested >= DATE_SUB(NOW(), INTERVAL :antiquity DAY) ";
+                $values[':antiquity'] = $filters['antiquity'];
             }
         }
 
@@ -408,10 +433,13 @@ class MailingSubController extends AbstractSubController {
         }
 
         if (!empty($filters['comlang'])) {
-            $sqlInner .= "INNER JOIN user_prefer
-                    ON user_prefer.user = user.id
-                    AND user_prefer.comlang = :comlang
-                    ";
+            $sqlInner .= "LEFT JOIN user_prefer
+                    ON user_prefer.user = user.id";
+            $f = "user_prefer.comlang=:comlang OR (ISNULL(user_prefer.comlang) AND user.lang=:comlang)";
+            if($filters['langreverse']) {
+                $f = "user_prefer.comlang!=:comlang OR (ISNULL(user_prefer.comlang) AND user.lang!=:comlang)";
+            }
+            $sqlFilter .= "AND $f";
             $values[':comlang'] = $filters['comlang'];
         }
 
@@ -438,6 +466,7 @@ class MailingSubController extends AbstractSubController {
         // Return total count for pagination
         if($count) {
             $sql = "SELECT COUNT(DISTINCT(user.id)) FROM user $sqlInner WHERE user.active = 1 $sqlFilter";
+            // die( \sqldbg($sql, $values) );
             return (int) Model\User::query($sql, $values)->fetchColumn();
         }
 

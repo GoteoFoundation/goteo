@@ -20,16 +20,16 @@ use Goteo\Library\Text,
 class BlogSubController extends AbstractSubController {
 
     static protected $labels = array (
-      'list' => 'Listando',
-      'add' => 'Nueva Entrada',
-      'edit' => 'Editando Entrada',
-      'translate' => 'Traduciendo Entrada',
-      'reorder' => 'Ordenando las entradas en Portada',
-      'footer' => 'Ordenando las entradas en el Footer',
+      'list' => 'blog-lb-list',
+      'add' => 'blog-lb-add',
+      'edit' => 'blog-lb-edit',
+      'translate' => 'blog-lb-translate',
+      'reorder' => 'blog-lb-reorder',
+      'footer' => 'blog-lb-footer',
     );
 
 
-    static protected $label = 'Blog';
+    static protected $label = 'blog-lb';
 
 
     protected $filters = array (

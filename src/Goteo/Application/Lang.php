@@ -182,7 +182,7 @@ class Lang {
      * set the system lang
      * @param string $lang Language ID (es, en, fr, etc.)
      */
-    static public function set($lang) {
+    static public function set($lang, $save_session = true) {
         static::factory($lang);
         static::$translator->setLocale($lang);
         $fallbacks = [];
@@ -209,7 +209,10 @@ class Lang {
         // cambiamos el locale
         setlocale(LC_TIME, static::getLocale($lang));
 
-        return Session::store('lang', $lang);
+        if($save_session) {
+            Session::store('lang', $lang);
+        }
+        return $lang;
     }
 
     /**
@@ -313,14 +316,13 @@ class Lang {
 
         // set the lang in order of preference
         foreach($desired as $part => $l) {
-            $lang = static::set($l);
+             // XMLRequest does not must change Session var
+            $lang = static::set($l, $request && !$request->isXmlHttpRequest());
             if($lang == $l) {
                 //Si el idioma existe (y se ha especificado), guardar preferencias
                 if($save_lang) {
                     //Enviar cookie
                     // Cookie::store('goteo_lang', $lang);
-                    Session::store('lang', $lang);
-                    self::set($lang);
                     if(Session::isLogged()) {
                         //guardar preferencias de usuario
                         Session::getUser()->updateLang($lang);
@@ -425,5 +427,16 @@ class Lang {
             }
         }
         return ''; // not found
+    }
+
+    /**
+     * Retrieves a full name country from a 2-digits country code
+     * @param  [type] $code [description]
+     * @return [type]          [description]
+     */
+    static function getCountryName($code, $lang = null) {
+        // manual old style country name
+        $countries = Lang::listCountries($lang);
+        return $countries[$code];
     }
 }

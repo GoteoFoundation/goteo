@@ -28,6 +28,9 @@ menu:
                 upgrade:
                     text: Upgrade
                     relativeUrl: docs/upgrade.html
+                console:
+                    text: Console scripts
+                    relativeUrl: docs/console.html
         developers:
             name: Developers
             items:
@@ -46,6 +49,9 @@ menu:
                 extend:
                     text: Plugins & extending
                     relativeUrl: docs/developers/extend.html
+                consoledev:
+                    text: Extending console
+                    relativeUrl: docs/developers/consoledev.html
         about:
             name: About
             items:

@@ -6,8 +6,9 @@ invest-address-header: 'Oû voulez vous recevoir votre récompence (seulement si
 invest-address-location-field: Ville
 invest-address-name-field: 'Nom:'
 invest-address-nif-field: 'VAT:'
+invest-address-title: 'Assurez-vous de recevoir votre récompense'
 invest-address-zipcode-field: 'Code Postal:'
-invest-alert-investing: 'Vous allez apporter votre contribrution'
+invest-alert-investing: 'Vous allez apporter'
 invest-alert-lackamount: 'Votre contribution doit être au moins égale au montant de la récompense choisie'
 invest-alert-lackdrop: 'Il ne reste plus suffisamment de Capital Riego pour compléter ton soutien, il reste seulement'
 invest-alert-noreward: 'Vous avez choisi aucune récompense, voulez-vous corriger cela?'
@@ -17,29 +18,59 @@ invest-alert-rewards: 'Vous avez choisis cette récompense:'
 invest-amount: Quantité
 invest-amount-tooltip: 'Entrer la quantité avec laquelle vous voulez soutenir ce project'
 invest-anonymous: 'Faire une donation anonyme'
+invest-button: Contribuer
 invest-called-allready: 'Ce projet a déjà reçu <span class="riego">Capital Riego</span>  lors de la campagne <span class="call">%s</span>. Il ne recevra pas davantage de <span class="riego">Capital Riego</span> via tes apports. '
 invest-called-maxdrop: 'Jusqu''à maximum <strong>%s &euro;</strong>'
 invest-called-maxproj: 'Le maximum de <span class="riego">Capital Riego</span>  possible dans cette campagne <span class="call">%s</span> a été atteint. '
 invest-called-nodrop: 'Il n''y a pas actuellement de <span class="riego">Capital Riego</span> disponible dans la campagne <span class="call">%s</span>'
 invest-called-rest: 'Il ne reste que <strong>%s &euro;</strong> de <span class="riego">Capital Riego</span> dans la campagne <span class="call">%s</span>'
 invest-donation-header: 'Entrer les informations fiscal pour cette donation'
+invest-fiscal-skip: 'Fournir les détails plus tard'
+invest-fiscal-title: 'Assurez vous de recevoir votre certificat de donation donnant droit à des avantages fiscaux (Seulement en Espagne pour le moment)'
 invest-mail_info-address: 'A précisé l''addresse suivante:'
 invest-mail_info-drop: 'De plus, %s a apporté %s de fond nourricier à travers la campagne %s'
+invest-make-sure-save: Valider
+invest-make-sure-title: Confirmation
+invest-method-title: 'Choisissez votre moyen de paiement '
+invest-modal-fiscal-description: 'Comme vous le savez, contribuer à des projets sur Goteo vous donne droit a obtenir un certificat de donation et vous autorise à bénéficier d''avantages fiscaux! Pour en savoir plus sur le sujet, lisez nôtre <a href="https://goteo.org/faq/investors#q112" target="_blank">FAQ nr. 18 pour donateurs</a>.'
+invest-modal-fiscal-title: 'Information fiscale'
+invest-modal-pool-description: 'Le porte-monnaie virtuel de Goteo vous permet de contribuer aux projets quand vous le souhaitez sans avoir à donner vôtre numéro de carte ou compte paypal à chaque fois'
+invest-modal-pool-title: 'Comment fonctionne le porte-monnaie virtuel de Goteo?'
+invest-more-info: 'Plus d''infos'
 invest-next_step: 'Etape suivante'
 invest-payment-email: 'Entrer votre nom utilisateur de compte PayPal'
+invest-payment-fail: 'Une erreur de paiement s''est produite'
+invest-payment-success: 'Paiement realisé correctement'
 invest-payment_method-header: ' Merci de choisir une méthode de paiement'
+invest-paypal-method: Paypal
 invest-paypal_disabled: 'L''option de paiement via Paypal est désactivée pour ce projet. <a href="/faq/investors#q2">Más info</a>'
+invest-pool: 'Si ce projet n''atteint pas l''objectif de financement, je désire que le montant de ma donation soit gardé dans mon porte-monnaie virtuel et le déstiner a un autre projet de mon choix'
+invest-pool-available: Disponible
+invest-pool-error: 'Vous n''avez pas assez d''argent dans votre porte-monnaie virtuel'
+invest-pool-method: 'Porte-monnaie virtuel'
 invest-process-completed: 'Cette contribution a déjà été completée'
-invest-resign: 'Je veux aucune récompense, je désire juste aider au projet.'
+invest-project: 'au projet'
+invest-resign: 'Je ne souhaite pas de récompense, je désire juste aider au projet.'
 invest-reward-none: 'Cette récompense ne peut plus être choisie'
+invest-reward-not-found: 'Récompense introuvable!'
+invest-select-reward: 'Choisir une récompense'
+invest-share-title: Partager
 invest-social-header: 'Avec ces avantages, nous progressons tous'
+invest-step-1: Récompense
+invest-step-2: Paiement
+invest-step-3: Confirmation
+invest-step-4: Partager
+invest-success-make-sure: 'Well done! Votre apport au projet <strong>%s</strong> a été realisé correctement. Merci pour vôtre soutien!'
+investing_closed: 'No more contributions to this campaign allowed.'
 proj-widget-my_invest: 'Ma contribution'
 project-invest-confirm: 'Vous êtes sur le point de devenir cofinanceur de ce projet...'
 project-invest-continue: 'Choisissez le mode de paiement:'
 project-invest-fail: 'Une erreur est survenue, s''il vous plaît, essayez à nouveau.'
 project-invest-guest: Fantastique!
 project-invest-ok: 'Votre apport au projet a été transmis.'
+project-invest-pool-button: 'Utiliser mon porte-monnaie virtuel'
 project-invest-start: 'Vous êtes sur le point de cofinancer ce projet...'
 spread-facebook: 'Partagez sur Facebook.'
 spread-twitter: 'Partagez sur Twitter.'
-user-login-required-login: 'Si vous êtes membre de SiteName, connectez-vous normalement (Utilisateur enregistré). Si vous n''êtes pas encore utilisateur de SiteName enregistrez-vous (Nouvel utilisateur)'
+user-login-required-login: 'Si vous êtes membre de Goteo, <a href="%s">connectez-vous</a> normalement. Si vous n''êtes pas encore utilisateur de Goteo inscrivez-vous ci-dessous'
+warning_nojavascript: 'Activez l''usage de javascript dans les préférences de votre navigateur pour continuer le processus de paiement'

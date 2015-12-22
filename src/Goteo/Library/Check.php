@@ -93,6 +93,14 @@ namespace Goteo\Library {
                     return true;
             }
 
+            // RFC México
+            if (preg_match('/^[a-zA-Z]{3,4}(\d{6})((\D|\d){3})?$/',$value)) {
+					$type = 'rfc';
+                    return true;
+            }
+
+
+
 
             // Validación del numero VAT para los 27 paises de la UE
             $vats = array();

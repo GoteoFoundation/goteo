@@ -42,7 +42,7 @@ $templates = $this->templates
     <dl>
         <dt>Contenido: (en c&oacute;digo html; los saltos de linea deben ser con &lt;br /&gt;)</dt>
         <dd>
-            <textarea id="mail_content" name="content" cols="100" rows="10"><?= $this->content ?></textarea>
+            <textarea id="mail_content" name="content" cols="80" rows="10"><?= $this->content ?></textarea>
         </dd>
     </dl>
 

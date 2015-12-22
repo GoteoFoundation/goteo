@@ -1,5 +1,12 @@
 blog-comments: Commentaires
 blog-main-header: Blog
+calendar-calls-category: 'Appels à projets'
+calendar-events-category: événements
+calendar-home-title: 'Prochain événement'
+calendar-net-category: 'Politiques & Networks'
+calendar-projects-category: Projets
+calendar-share: Partager
+calendar-workshops-category: Workshops
 couldn: 'Texte couldn'
 error-contact-email-invalid: 'L''adresse email n''est pas valide.'
 error-image-name: 'Erreur. Le nom de la pièce jointe est incorrect.'
@@ -21,21 +28,25 @@ error-user-password-invalid: 'Le mot de passe est trop court. Il doit avoir au m
 error-user-wrong-password: 'Le mot de passe est erroné.'
 explain-project-progress: 'Ce diagramme représente la quantité et la pertinence des données renseignées. Vous devez atteindre les 80% pour pouvoir envoyer le projet à l''évaluation. Lisez attentivement les conseils que nous vous donnons sur la colonne de droite, qui vous servirons de guide. C''est parti!'
 fancybox: 'Texte fancybox'
-guide-dashboard-user-access: 'Vous pouvez changer les informations avec lesquelles vous vous connectez via SiteName accompte.'
-guide-dashboard-user-personal: 'Vous devez remplir ces données seulement si vous avez créé un projet et vous souhaitez qu''il soit co-financé par SiteName. L''information dans cette section est nécessaire pour que nous puissions vous contacter dans le cas oû vous obtenez le co-financement nécessaire, et faire le dépôt correspondant'
+goteo-return-button: 'Retour vers Goteo'
+guide-dashboard-user-access: 'Vous pouvez changer les informations avec lesquelles vous vous connectez via Goteo accompte.'
+guide-dashboard-user-personal: 'Vous devez remplir ces données seulement si vous avez créé un projet et vous souhaitez qu''il soit co-financé par Goteo. L''information dans cette section est nécessaire pour que nous puissions vous contacter dans le cas oû vous obtenez le co-financement nécessaire, et faire le dépôt correspondant'
 guide-project-comment: guide-projet-commentaire
-guide-project-contract-information: "<strong>A partir de cette étape, vous devez remplir les données pour que votre projet soit cofinancé et soutenu sur SiteName. \r\n</strong>\r\n Les informations de cette section sont nécessaires pour vous contacter si vous obtenez le financement nécessaire, et ainsi permettre le versement. Dans le cas d'une structure, nous vous recommandons que la personne qui représente l'organisation puisse plus tard être accrédité formellement.\r\n( par exemple au travers les statuts ou via un certificat du secrétaire avec agrément du président, dans le cas d'associations )"
-guide-project-costs: "<strong>Dans cette partie, vous devez remplir un résumé de votre business plan basé sur l'estimation des coûts pour votre projet.</strong><br><br>Vous devez séparer les tches, infrastructure, ou materiels. Essayez d'être réalsite sur les coûts  et expliquez brièvement pourquoi vous avez besoin de chaque éléments. Gardez àl'esprit, qu'en règle générale la partie la plus importante du projet devvait être entreprise par la personne ou l'équipe promouvant le projet et non par une tierce partie. Pour le calcul n'oubliez pas la commission de SiteName, le coût des services et les transactions sont d'environ 8% , (<a href=\"/faq/sponsor#q98\" target=\"new\">+ info in our FAQ</a>). <br><br><strong>Très important</strong>: Sur SiteName, nous distinguons les coûts nécessaire et les coûts complémentaires.\nLes premiers doivent être totalement couverts pour que vous obteniez le financement du projet alors que les seconds ne le sont pas. Il s'agit de coût indicatif pour votre gestion de projet (promotion, complément au projet, conception etc...) ces coûts ne peuvent dépasser 50% du montant de votre projet."
+guide-project-contract-information: "<strong>A partir de cette étape, vous devez remplir les données pour que votre projet soit cofinancé et soutenu sur Goteo. \r\n</strong>\r\n Les informations de cette section sont nécessaires pour vous contacter si vous obtenez le financement nécessaire, et ainsi permettre le versement. Dans le cas d'une structure, nous vous recommandons que la personne qui représente l'organisation puisse plus tard être accrédité formellement.\r\n( par exemple au travers les statuts ou via un certificat du secrétaire avec agrément du président, dans le cas d'associations )"
+guide-project-costs: "<strong>Dans cette partie, vous devez remplir un résumé de votre business plan basé sur l'estimation des coûts pour votre projet.</strong><br><br>Vous devez séparer les tches, infrastructure, ou materiels. Essayez d'être réalsite sur les coûts  et expliquez brièvement pourquoi vous avez besoin de chaque éléments. Gardez àl'esprit, qu'en règle générale la partie la plus importante du projet devvait être entreprise par la personne ou l'équipe promouvant le projet et non par une tierce partie. Pour le calcul n'oubliez pas la commission de Goteo, le coût des services et les transactions sont d'environ 8% , (<a href=\"/faq/sponsor#q98\" target=\"new\">+ info in our FAQ</a>). <br><br><strong>Très important</strong>: Sur Goteo, nous distinguons les coûts nécessaire et les coûts complémentaires.\nLes premiers doivent être totalement couverts pour que vous obteniez le financement du projet alors que les seconds ne le sont pas. Il s'agit de coût indicatif pour votre gestion de projet (promotion, complément au projet, conception etc...) ces coûts ne peuvent dépasser 50% du montant de votre projet."
 guide-project-description: "<strong>Dans ce paragraphe, précisez les besoins, hors financement, nécessaires à la réalisation de votre projet.</strong>\r\n<br><br>Dans ce paragraphe, précisez les besoins, hors financement, nécessaires à la réalisation de votre projet. \r\nCes besoins peuvent prendre la forme de tches ou d'actions réalisables par d'autres personnes (traduction, gestion, diffusion, etc...), ou de prêts (de matériel informatique, pour le transport, etc...)"
 guide-project-images: 'Les images du projet peuvent être des plans, screenshots, photographies, illustrations, storyboards, etc. (la licence associée doit être compatible avec les licences sélecionnées dans la section 5. Vous pouvez en charger autant que souhaité!'
-guide-project-rewards: '<strong>Dans cette partie, vous devez définir ce que vous proposez en échange à vos cofinanceurs, et aussi les récompenses collectives</strong><br><br>En plus des récompenses individuelles pour chaque personne apportant du cofinancement, vous devez définir quelle licence attribuée au projet, en fonction de son format et/ou du niveau d''ouverture de celui-ci. Cette partie est très importane, puisque SiteName est une plateforme de crowdfunding pour des projets basés sur la philosophie de la culture libre et favorise la notion de biens communs.<br><br> Au cas ou aux licences spécifiées ici vous voudriez ajouter un certificat d''auteur, nous vous recommandons d''obtenir une protection auprès de <a href="http://www.safecreative.org/" target="new">Safe Creative</a>.'
+guide-project-rewards: '<strong>Dans cette partie, vous devez définir ce que vous proposez en échange à vos cofinanceurs, et aussi les récompenses collectives</strong><br><br>En plus des récompenses individuelles pour chaque personne apportant du cofinancement, vous devez définir quelle licence attribuée au projet, en fonction de son format et/ou du niveau d''ouverture de celui-ci. Cette partie est très importane, puisque Goteo est une plateforme de crowdfunding pour des projets basés sur la philosophie de la culture libre et favorise la notion de biens communs.<br><br> Au cas ou aux licences spécifiées ici vous voudriez ajouter un certificat d''auteur, nous vous recommandons d''obtenir une protection auprès de <a href="http://www.safecreative.org/" target="new">Safe Creative</a>.'
 guide-project-support: guide-projet-support
 guide-project-supports: "<strong> Dans ce paragraphe, précisez les besoins, hors financement, nécessaires à la réalisation de votre projet. </strong><br><br> \r\nDans ce paragraphe, précisez les besoins, hors financement, nécessaires à la réalisation de votre projet. \r\nCes besoins peuvent prendre la forme de tches ou d'actions réalisables par d'autres personnes (traduction, gestion, diffiusion, etc.), ou de prêts (de matériel informatique, pour le transport, etc.)"
-guide-project-updates: '<b>C''est très important que les projets donnent des informations aux cofinanceurs et au reste des personnes potentiellement intéressées sur l''avancée de la campagne. Depuis ce paragraphe, vous pouvez publier des messages actualisant votre projet, comme une sorte de blog.</b> De plus, dans SiteName une fois les fonds mininums. Vous avez la seconde période pour expliquer vos progrès, vos problèmes, etc... C''est essentiel pour informer et ainsi générer encore plus d''intérêt pour la communauté.'
+guide-project-updates: '<b>C''est très important que les projets donnent des informations aux cofinanceurs et au reste des personnes potentiellement intéressées sur l''avancée de la campagne. Depuis ce paragraphe, vous pouvez publier des messages actualisant votre projet, comme une sorte de blog.</b> De plus, dans Goteo une fois les fonds mininums. Vous avez la seconde période pour expliquer vos progrès, vos problèmes, etc... C''est essentiel pour informer et ainsi générer encore plus d''intérêt pour la communauté.'
 header-about-side: 'Ce qui nous inspire'
 home-posts-header: Nouveautés
+horizontal-project-investors: cofinanceurs
+horizontal-project-percent: financé
+horizontal-project-reached: Obtenu
 invest-individual-header: 'Vous pouvez refuser de recevoir votre récompense, ou sélectionner une récompense d''un montant égal ou inférieur àvotre contribution.'
-login-register-conditions: "J'ccepte les conditions d'utilisation de la plateforme, et je donne mon consentement pour le traitement de mes données personnelles. Le responsable du portail a établi une politique de confidentialité qui définit l'usage des données personnelles fournis par ce formulaire, ainsi que les droits de la personne qui a fourni ses données.\r\n"
+login-register-conditions: "J'accepte les conditions d'utilisation de la plateforme, et je donne mon consentement pour le traitement de mes données personnelles. Le responsable du portail a établi une politique de confidentialité qui définit l'usage des données personnelles fournis par ce formulaire, ainsi que les droits de la personne qui a fourni ses données.\r\n"
 mandatory-cost-field-type: 'Vous devez sélectionner le type de coût'
 mandatory-individual_reward-field-amount: 'Vous devez spécifier le montant pour cette récompense'
 mandatory-project-costs: 'These should be broken down into at least two groups.'
@@ -52,12 +63,15 @@ regular-allsome: 'Tous/certains de'
 regular-anonymous: Anonyme
 regular-ask: Demander
 regular-by: 'Par:'
+regular-calendar: Calendrier
+regular-channel: Canal
 regular-collaborate: Collaborer
 regular-create: 'Créer un projet'
 regular-days: jours
 regular-delete: Effacer
 regular-discover: 'Voir les projets'
 regular-edit: Modifier
+regular-email: Email
 regular-facebook: Facebook
 regular-faq: 'Questions fréquentes'
 regular-first: Première
@@ -68,7 +82,7 @@ regular-google: Google+
 regular-header-about: 'A propos'
 regular-header-blog: Blog
 regular-header-faq: FAQ
-regular-header-glossary: 'Glossaire de SiteName'
+regular-header-glossary: 'Glossaire de Goteo'
 regular-hello: Bonjour
 regular-home: Commencer
 regular-identica: Identi.ca
@@ -83,7 +97,7 @@ regular-linkedin: LinkedIn
 regular-login: Login
 regular-logout: 'Fermez la session.'
 regular-looks_for: 'Rechercher:'
-regular-main-header: SiteName.fr
+regular-main-header: Goteo.fr
 regular-manage_board: 'Espace Administration'
 regular-mandatory: 'Champ obligatoire!'
 regular-media_legend: Légende
@@ -110,7 +124,7 @@ regular-see_blog: Blog
 regular-see_details: 'Voir les détails'
 regular-see_more: 'En voir plus'
 regular-send_message: 'Envoyez le message.'
-regular-share-facebook: 'SiteName sur Facebook'
+regular-share-facebook: 'Goteo sur Facebook'
 regular-share-rss: RSS/BLOG
 regular-share-twitter: 'Suivez-nous sur Twitter.'
 regular-share_this: 'Partager sur'
@@ -126,11 +140,11 @@ regular-yes: Oui
 session-about-to-expire: 'La session se fermera dans 10 minutes. Desirez vous reloader la page pour renouveler la session?'
 session-expired: 'La session est terminée'
 tooltip-dashboard-user-access_data: 'Voici vos données d''accès actuelles. Attention, vous ne pouvez modifier votre LOGIN !'
-tooltip-dashboard-user-change_email: 'Cet espace vous permet de modifier l''adresse email sur laquelle vous désirez recevoir les messages de SiteName.'
+tooltip-dashboard-user-change_email: 'Cet espace vous permet de modifier l''adresse email sur laquelle vous désirez recevoir les messages de Goteo.'
 tooltip-dashboard-user-change_password: 'Cet espace vous permet de modifier votre mot de passe.'
-tooltip-dashboard-user-confirm_email: 'Confirmez votre nouvelle adresse email sur laquelle vous souhaitez recevoir les messages de SiteName'
-tooltip-dashboard-user-confirm_password: 'Confirmez votre nouveau mot de passe pour SiteName.'
-tooltip-dashboard-user-new_email: 'Indiquez la nouvelle adresse email sur laquelle vous souhaitez recevoir les messages de SiteName.'
+tooltip-dashboard-user-confirm_email: 'Confirmez votre nouvelle adresse email sur laquelle vous souhaitez recevoir les messages de Goteo'
+tooltip-dashboard-user-confirm_password: 'Confirmez votre nouveau mot de passe pour Goteo.'
+tooltip-dashboard-user-new_email: 'Indiquez la nouvelle adresse email sur laquelle vous souhaitez recevoir les messages de Goteo.'
 tooltip-dashboard-user-new_password: 'Ecrivez le nouveau mot de passe.'
 tooltip-dashboard-user-user_password: 'Ecrivez le mot de passe actuel.'
 tooltip-project-schedule: 'Prévisualisation de l''agenda de production du projet. Signalez uniquement des tches non réalisées.'

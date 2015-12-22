@@ -1,5 +1,6 @@
 discover-group-all-header: 'Campagne en cours'
 discover-group-archive-header: Archivés
+discover-group-fulfilled-header: 'Retombées aprouvées!'
 discover-group-others-header: 'Autre noeud:'
 discover-group-outdate-header: 'Sur le point d''etre archivés'
 discover-group-popular-header: Populaires
@@ -17,3 +18,4 @@ discover-searcher-bylocation-header: 'Par lieu:'
 discover-searcher-byreward-all: TOUS
 discover-searcher-byreward-header: 'Par type de récompense:'
 discover-searcher-header: 'Chercher un projet'
+meta-title-discover: 'Découvrir :: Goteo.org'

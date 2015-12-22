@@ -18,3 +18,4 @@ user-activate-already-active: 'Het account is al actief.'
 user-activate-success: 'Het account is correct geactiveerd.'
 validate-project-value-contract_email: 'Het emailadres is incorrect.'
 validate-register-value-email: 'Het emailadres dat je hebt ingevoerd is niet geldig'
+register-id-field: Username

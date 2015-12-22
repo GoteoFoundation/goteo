@@ -1,4 +1,3 @@
-project-spread-header: 'Difon aquest projecte i ajuda''l a aconseguir més visibilitat i donacions!'
 contract-paypal_account: 'Email del teu compte PayPal:'
 currency-switch: CANVIAR
 overview-field-spread: Difusió
@@ -37,6 +36,7 @@ project-share-header: 'Comparteix aquest projecte'
 project-share-pre_header: 'Fes saber a la teva xarxa que'
 project-side-investors-header: 'Ja han aportat'
 project-spread-embed_code: 'Codi Embed'
+project-spread-header: 'Difon aquest projecte i ajuda''l a aconseguir més visibilitat i donacions!'
 project-spread-pre_widget: 'Difon aquest projecte'
 project-spread-social: 'Cofinanço el projecte %s #goteo #crowdfunding'
 project-spread-widget: 'Widget del projecte'

@@ -9,6 +9,7 @@ $droped = $this->droped;
 $user = $this->user;
 $methods = $this->methods;
 $rewards = $invest->rewards;
+$location = $this->location;
 array_walk($rewards, function (&$reward) { $reward = $reward->reward; });
 
 ?>
@@ -24,7 +25,12 @@ array_walk($rewards, function (&$reward) { $reward = $reward->reward; });
     <table>
     <tr>
         <td><strong><?= $this->text('admin-project') ?></strong></td>
-        <td><?php echo $project->name ?> (<?php echo $this->projectStatus[$project->status] ?>)</td>
+        <td><?php if($project): ?>
+                <?php echo $project->name ?> (<?php echo $this->projectStatus[$project->status] ?>)
+            <?php else: ?>
+                <span class="label label-info"><?= $this->text('invest-pool-method') ?></span>
+            <?php endif ?>
+        </td>
         <td>&nbsp;</td>
     </tr>
     <tr>
@@ -53,9 +59,7 @@ array_walk($rewards, function (&$reward) { $reward = $reward->reward; });
     <tr>
         <td><?= $this->text('admin-status') ?>:</td>
         <td><?= $this->percent_span(100 * ($invest->status + 1)/2, 0, $this->investStatus[$invest->status]) ?>
-            <?php if ($invest->status < 0) echo ' <span style="font-weight:bold; color:red;">OJO! que este aporte no fue confirmado.<span>';
-                  if ($invest->issue) echo ' <span style="font-weight:bold; color:red;">INCIDENCIA!<span>';
-            ?>
+            <?php if ($invest->issue) echo ' <span style="font-weight:bold; color:red;">INCIDENCIA!<span>'; ?>
 
         </td>
         <td>
@@ -96,6 +100,7 @@ array_walk($rewards, function (&$reward) { $reward = $reward->reward; });
         <td>&nbsp;</td>
     </tr>
 
+    <?php if(!empty($invest->project)): ?>
     <tr>
         <td><?= $this->text('admin-account-donation') ?>:</td>
         <td>
@@ -110,14 +115,16 @@ array_walk($rewards, function (&$reward) { $reward = $reward->reward; });
         </td>
         <td><a href="/admin/accounts/switchresign/<?php echo $invest->id ?>" onclick="return confirm('<?= $this->ee($this->text('admin-account-switch-donation-confirm'), 'js') ?>')" class="button"><?= $this->text('admin-account-switch-donation') ?></a></td>
     </tr>
+    <?php endif ?>
 
     <tr>
         <td><?= $this->text('admin-account-pool-on-fail') ?>:</td>
         <td>
             <?= ($invest->pool) ?  $this->text('admin-YES') : $this->text('admin-NO')  ?>
         </td>
-        <td>
+        <td><?php if(!$invest->pool || !$invest->isOnPool()): ?>
                 <a href="/admin/accounts/switchpool/<?php echo $invest->id ?>" onclick="return confirm('<?= $this->ee($this->text('admin-account-switch-pool-confirm'), 'js') ?>')" class="button"><?= $this->text('admin-account-switch-pool') ?></a>
+            <?php endif ?>
         </td>
     </tr>
 
@@ -166,15 +173,29 @@ array_walk($rewards, function (&$reward) { $reward = $reward->reward; });
     <tr>
         <td><?= $this->text('admin-address') ?>:</td>
         <td>
-            <?php echo $invest->address->address; ?>,
-            <?php echo $invest->address->location; ?>,
-            <?php echo $invest->address->zipcode; ?>
-            <?php echo $invest->address->country; ?>
+            <?php
+            $address = $invest->address->address;
+            if($invest->address->location) $address .= ', ' . $invest->address->location;
+            if($invest->address->zipcode) $address .= ', ' . $invest->address->zipcode;
+            if($invest->address->country) $address .= ', ' . $invest->address->country;
+            echo $address;
+            ?>
         </td>
         <td>&nbsp;</td>
     </tr>
 
     </table>
+
+<?php
+
+    if($location) {
+        echo $this->insert('partials/utils/map_canvas', ['latitude' => $location->latitude,
+                                                         'longitude' => $location->longitude,
+                                                         'content' => $invest->getUser()->name."<br>$address"]);
+    } elseif($address) {
+        echo $this->insert('partials/utils/map_canvas', ['address' => $address, 'content' => $invest->getUser()->name."<br>$address"]);
+    }
+?>
 
     <?php if ($invest->method == 'paypal') : ?>
         <?php if ($this->get_query('full') != 'show') : ?>

@@ -15,6 +15,7 @@ invest-address-myname-field: 'Your name'
 invest-address-name-field: 'Name & Surname'
 invest-address-namedest-field: 'Name of the recipient'
 invest-address-nif-field: 'VAT Number'
+invest-address-title: 'Make sure you receive your reward'
 invest-address-zipcode-field: 'ZIP code'
 invest-alert-investing: 'You''re about to contribute with '
 invest-alert-lackamount: 'The quantity must be superior to the reward selected'
@@ -24,6 +25,7 @@ invest-alert-noreward_renounce: 'Do you really renounce to any reward? '
 invest-alert-renounce: 'You''re renouncing to the reward, or the reward chosen isn''t an object or a product so you can detax your donation. To do so, we need your VAT number!'
 invest-alert-rewards: 'You’ve choosen the following reward:'
 invest-amount: Quantity
+invest-amount-in-pool: 'You’ve got %s in your virtual purse'
 invest-amount-tooltip: 'Enter the quantity with which you want to support this project'
 invest-anonymous: 'I want my contribution to be anonymous'
 invest-button: Contribute
@@ -34,11 +36,22 @@ invest-called-nodrop: 'Now there is no <span class="riego">Feeder Capital</span>
 invest-called-rest: 'There’s just <strong>%s €</strong> left of <span class="riego">Feeder Capital</span> in this cloudfunding call <span class="call">%s</span>'
 invest-card-method: 'Credit Card'
 invest-donation-header: 'Enter the fiscal information for this donation'
+invest-fiscal-skip: 'I don’t want to fill in this now'
+invest-fiscal-title: 'Make sure you can get a Tax return on your contribution (only for declarants in Spain)'
 invest-mail_info-address: 'You''ll receive the reward at the following address:'
 invest-mail_info-drop: 'Has also, %s contributed %s of cloudfunding via the %s campaign '
+invest-make-sure-save: Save
+invest-make-sure-title: Confirm
 invest-method-title: 'Make your contribution'
+invest-modal-fiscal-description: 'As you already may know, contributing in Goteo doesn’t just make possible many of the projects with a common benefit, its even prex-tax-deductible! As you contribute to a project, and thanks to the 2015 applicable deduction rates for pure and simple donations done in favor of Fundación Goteo, as it''s an entity under the special tax regime under the Spanish Law 49/2002, December 23rd, you''ll be able to deduct according to the percentages you can read on our <a href="https://goteo.org/faq/investors#q112" target="_blank">FAQ nr. 18 for backers</a>.'
+invest-modal-fiscal-title: 'Tax information'
+invest-modal-pool-description: 'The virtual purse is Goteo’s credit system, which you can use to contribute projects on our platform whenever you want, with no need to give your credit card or PayPal data each time.'
+invest-modal-pool-title: 'What''s the Goteo Virtual Purse?'
+invest-more-info: 'More information'
 invest-next_step: 'Next step'
 invest-payment-email: 'Enter your PayPal user name'
+invest-payment-fail: 'Something went wrong with the payment'
+invest-payment-success: 'The payment has been made correctly'
 invest-payment_method-header: 'Choose a method of payment'
 invest-paypal-method: Paypal
 invest-paypal_disabled: 'Payment via paypal is desactivated for this project. <a href="/faq/investors#q2">More info</a>'
@@ -47,9 +60,19 @@ invest-pool-available: Available
 invest-pool-error: 'You do not have enough money in your virtual wallet.'
 invest-pool-method: 'Virtual purse'
 invest-process-completed: 'Your contribution has been completed previoulsy'
+invest-project: 'to the project'
 invest-resign: 'I renounce to my personal reward, I just want to support the project'
 invest-reward-none: 'These can no longer be chosen'
+invest-reward-not-found: 'Reward not found!'
+invest-reward-used-up: 'This reward has been used up!'
+invest-select-reward: 'Choose your reward'
+invest-share-title: Share
 invest-social-header: 'With collective benefits, we all move forward'
+invest-step-1: Reward
+invest-step-2: Payment
+invest-step-3: Confirm
+invest-step-4: Share
+invest-success-make-sure: 'Well done! Your contribution to the project <strong>%s</strong> has been successfully managed.'
 investing_closed: 'No more contributions to this campaign allowed.'
 proj-widget-my_invest: 'My contribution'
 project-invest-confirm: 'You''re one step away from becoming a backer of this project...'
@@ -61,29 +84,5 @@ project-invest-pool-button: 'Use my Virtual Wallet'
 project-invest-start: 'You''re one step away from becoming a backer of this project...'
 spread-facebook: 'Share on Facebook'
 spread-twitter: 'Share on Twitter'
-user-login-required-login: 'If you’re registered you should <a href="%s">log in</a>; if you aren’t, you should create a new user'
+user-login-required-login: 'If you’re a registered user you should <a href="%s">log in</a>; if you are not, you should create a new user. (In case you want to make an anonymous donation, you can select that option later)'
 warning_nojavascript: 'Please enable javascript from your browser''s privacy settings to continue the payment process'
-invest-address-title: 'Make sure you receive your reward'
-invest-amount-in-pool: 'You’ve got %s in your virtual purse'
-invest-fiscal-skip: 'I don’t want to fill in this now'
-invest-fiscal-title: 'Make sure you can get a Tax return on your contribution (only for declarants in Spain)'
-invest-make-sure-save: Save
-invest-make-sure-title: Confirm
-invest-modal-fiscal-description: 'As you already may know, contributing in Goteo doesn’t just make possible many of the projects with a common benefit, its even prex-tax-deductible! As you contribute to a project, and thanks to the 2015 applicable deduction rates for pure and simple donations done in favor of Fundación Goteo, as it''s an entity under the special tax regime under the Spanish Law 49/2002, December 23rd, you''ll be able to deduct according to the percentages you can read on our <a href="https://goteo.org/faq/investors#q112" target="_blank">FAQ nr. 18 for backers</a>.'
-invest-modal-fiscal-title: 'Tax information'
-invest-modal-pool-description: 'The virtual purse is Goteo’s credit system, which you can use to contribute projects on our platform whenever you want, with no need to give your credit card or PayPal data each time.'
-invest-modal-pool-title: 'What''s the Goteo Virtual Purse?'
-invest-more-info: 'More information'
-invest-payment-fail: 'Something went wrong with the payment'
-invest-payment-success: 'The payment has been made correctly'
-invest-project: 'to the project'
-invest-select-reward: 'Choose your reward'
-invest-share-title: Share
-invest-step-1: Reward
-invest-step-2: Payment
-invest-step-3: Confirm
-invest-step-4: Share
-invest-success-make-sure: 'Well done! Your contribution to the project <strong>%s</strong> has been successfully managed.'
-invest-reward-used-up: 'This reward has been used up!'
-invest-reward-not-found: 'Reward not found!'
-

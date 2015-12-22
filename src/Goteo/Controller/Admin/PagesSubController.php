@@ -20,14 +20,14 @@ use Goteo\Application\Message,
 class PagesSubController extends AbstractSubController {
 
     static protected $labels = array (
-      'list' => 'Listando',
-      'add' => 'Nueva Página',
-      'edit' => 'Editando Página',
-      'translate' => 'Traduciendo Página',
+      'list' => 'pages-lb-list',
+      'add' => 'pages-lb-add',
+      'edit' => 'pages-lb-edit',
+      'translate' => 'pages-lb-translate',
     );
 
 
-    static protected $label = 'Páginas';
+    static protected $label = 'pages-lb';
 
     /**
      * Overwrite some permissions

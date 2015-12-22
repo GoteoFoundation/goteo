@@ -19,10 +19,10 @@ use Goteo\Model;
 class HomeSubController extends AbstractSubController {
 
     static protected $labels = array (
-      'list' => 'Elementos de portada',
+      'list' => 'home-lb-list',
     );
 
-    static protected $label = 'Elementos en portada';
+    static protected $label = 'home-lb';
 
     static protected $admin_modules = array(
          'promotes' => '\Goteo\Controller\Admin\PromoteSubController',

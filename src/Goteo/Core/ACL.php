@@ -36,10 +36,7 @@ class ACL {
 
         '/sacaexcel' => ['admin', 'superadmin', 'root'],
 
-        '/manage' => ['manager'],
-
-        '/document' => ['manager', 'superadmin']
-
+        '/manage' => ['manager']
         );
 
     public static function check ($url, $user = null) {

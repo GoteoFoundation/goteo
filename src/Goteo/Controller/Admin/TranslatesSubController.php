@@ -23,14 +23,14 @@ use Goteo\Library\Feed,
 class TranslatesSubController extends AbstractSubController {
 
     static protected $labels = array (
-      'list' => 'Listando',
-      'add' => 'Habilitando traducción',
-      'edit' => 'Asignando traducción',
-      'translate' => 'Traduciendo Texto',
+      'list' => 'translates-lb-list',
+      'add' => 'translates-lb-add',
+      'edit' => 'translates-lb-edit',
+      'translate' => 'translates-lb-translate',
     );
 
 
-    static protected $label = 'Traducciones de proyectos';
+    static protected $label = 'translates-lb';
 
 
     protected $filters = array (

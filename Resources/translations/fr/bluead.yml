@@ -18,7 +18,7 @@ register-confirm_mail-fail: 'Erreur d''envoi du mail d''activation du compte. Co
 register-confirm_mail-success: 'Message d''activation de compte envoyé correctement. S''il n''apparait pas dans votre boâte mail, regardez dans le folder spam.'
 review-ajax-alert: 'Les modifications sont sauvegardées automatiquement.'
 review-closed-alert: 'Vous avez assuré que l''évaluation était complète, vous ne pouvez plus en modifier le contenu.'
-user-login-required: '<a href="/user/login">Connectez-vous</a> pour pouvoir échanger avec la communauté SiteName.'
+user-login-required: '<a href="/user/login">Connectez-vous</a> pour pouvoir échanger avec la communauté Goteo.'
 user-login-required-access: 'Vous devez vous connecter ou solliciter l''autorisation pour accéder à cette section.'
 user-login-required-to_create: 'Vous devez vous connecter pour créer un projet.'
 user-login-required-to_invest: 'Vous devez vous connecter pour cofinancer un projet.'

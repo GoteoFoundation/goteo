@@ -16,6 +16,9 @@ use Goteo\Model\Invest;
 use Goteo\Library\Text;
 use Goteo\Util\Omnipay\Message\EmptyFailedResponse;
 use Goteo\Util\Omnipay\Message\EmptySuccessfulResponse;
+use Goteo\Application\App;
+use Goteo\Application\AppEvents;
+use Goteo\Application\Event\FilterInvestEvent;
 
 /**
  * Creates a Payment Method that uses internal virtuall wallet
@@ -92,6 +95,10 @@ class PoolPaymentMethod extends AbstractPaymentMethod {
 
     public function refund() {
         $invest = $this->getInvest();
+
+        // Any plugin can throw a PaymentException here in order to abort the refund process
+        App::dispatch(AppEvents::INVEST_REFUND, new FilterInvestEvent($invest, $this));
+
         // Mark this invest as return-to-pool (this should be redundant)
         $invest->setPoolOnFail(true);
         $errors = [];

@@ -14,14 +14,14 @@ use Goteo\Library\Text,
 class InfoSubController extends AbstractSubController {
 
     static protected $labels = array (
-      'list' => 'Listando',
-      'add' => 'Creando Idea',
-      'edit' => 'Editando Idea',
-      'translate' => 'Traduciendo Idea',
+      'list' => 'info-lb-list',
+      'add' => 'info-lb-add',
+      'edit' => 'info-lb-edit',
+      'translate' => 'info-lb-translate',
     );
 
 
-    static protected $label = 'Ideas about';
+    static protected $label = 'info-lb';
 
 
     /**

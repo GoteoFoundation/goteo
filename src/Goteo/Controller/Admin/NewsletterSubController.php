@@ -28,13 +28,13 @@ use Goteo\Model\Mail\SenderRecipient;
 class NewsletterSubController extends AbstractSubController {
 
     static protected $labels = array (
-      'list' => 'Estado del envío automático',
-      'init' => 'Iniciando un nuevo envío',
-      'detail' => 'Viendo destinatarios',
+      'list' => 'newsletter-lb-list',
+      'init' => 'newsletter-lb-init',
+      'detail' => 'newsletter-lb-detail',
     );
 
 
-    static protected $label = 'Boletín';
+    static protected $label = 'newsletter-lb';
 
 
     protected $filters = array (

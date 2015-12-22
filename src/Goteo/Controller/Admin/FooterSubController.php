@@ -18,7 +18,7 @@ use Goteo\Application\Message,
 
 class FooterSubController extends AbstractSubController {
 
-    static protected $label = 'Footer web';
+    static protected $label = 'footer-lb';
 
     /**
      * Overwrite some permissions

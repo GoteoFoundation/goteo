@@ -19,13 +19,13 @@ use Goteo\Application\Message,
 class GlossarySubController extends AbstractSubController {
 
     static protected $labels = array (
-      'list' => 'Listando',
-      'edit' => 'Editando Término',
-      'translate' => 'Traduciendo Término',
+      'list' => 'glossary-lb-list',
+      'edit' => 'glossary-lb-edit',
+      'translate' => 'glossary-lb-translate',
     );
 
 
-    static protected $label = 'Glosario';
+    static protected $label = 'glossary-lb';
 
 
     /**

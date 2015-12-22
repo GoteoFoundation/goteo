@@ -29,7 +29,7 @@ tooltip-project-individual_reward-units: 'Een beperkte hoeveelheid items kan ind
 tooltip-project-individual_rewards: 'Geef aan welke beloning een cofinancier zal ontvangen, gekoppeld aan een bepaald bedrag. Denk goed na over wat je aanbiedt. Bied vooral dingen die geen extra kosten met zich mee brengen. Als dat wel moet, bereken dan hoeveel het gaat kosten (in tijd, geld, verzendkosten etc.) en bied een gelimiteerde hoeveelheid aan. Onthoudt dat je na afloop van het project aan deze verplichtingen vast zit.'
 tooltip-project-social_reward-description: 'Leg kort uit welke soort collectieve beloning dit project toestaat of brengt.'
 tooltip-project-social_reward-icon-other: 'Leg kort uit waar deze andere collectieve beloning uit bestaat'
-tooltip-project-social_reward-license: 'Kies een licentie uit de getoonde groep. Lees ze goed voor je kiest en onthoud dat het voor SiteName belangrijk is dat de projecten de meest open licentie hebben.'
+tooltip-project-social_reward-license: 'Kies een licentie uit de getoonde groep. Lees ze goed voor je kiest en onthoud dat het voor Goteo belangrijk is dat de projecten de meest open licentie hebben.'
 tooltip-project-social_reward-reward: 'Maak de titel zo beschrijvend mogelijk. Je kunt later nog beloningen toevoegen.'
 tooltip-project-social_reward-type: 'Specificeer de soort winst: bijvoorbeeld digitale files, ontwerpen, handleidingen, howto''scourses, etc.'
 tooltip-project-social_rewards: 'Definieer het type winst uit het project waartoe open toegang is, en de licentie die dat reguleert. Als je nog twijfelt over welke licentie het beste past, neem dan contact met ons op op, <a href="/contact" target="new">contact us</a> en we geven je graag advies.'

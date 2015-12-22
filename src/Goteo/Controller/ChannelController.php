@@ -187,4 +187,23 @@ class ChannelController extends \Goteo\Core\Controller {
         return $this->redirect('/project/edit/'.$project->id);
     }
 
+     /**
+     * List of channels
+     * @param  Request $request [description]
+     */
+    public function listChannelsAction (Request $request)
+    {
+        $channels=Node::getAll(['status' => 'active', 'type' => 'channel']);
+
+        foreach ($channels as $chanelId => $channel) {
+            if(!$channel->home_img)
+                unset($channels[$chanelId]);
+        }
+
+         // changing to a responsive theme here
+        View::setTheme('responsive');
+     
+        return $this->viewResponse('channels/list', ['channels' => $channels]);
+    }
+        
 }

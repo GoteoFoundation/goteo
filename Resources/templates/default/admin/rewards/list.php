@@ -51,7 +51,7 @@ $filters = $this->filters;
         </div>
     </form>
     <br clear="both" />
-    <a href="/admin/rewards?reset=filters">Quitar filtros</a>
+    <a href="/admin/rewards?reset=filters">[<?= $this->text('admin-remove-filters') ?>]</a>
 </div>
 
 <div class="widget board">

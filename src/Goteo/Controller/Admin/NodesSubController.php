@@ -25,14 +25,14 @@ use Goteo\Library\Feed,
 class NodesSubController extends AbstractSubController {
 
     static protected $labels = array (
-      'list' => 'Listando',
-      'add' => 'Nuevo Canal',
-      'edit' => 'Gestionando Canal',
-      'admins' => 'Asignando administradores del Canal',
+      'list' => 'nodes-lb-list',
+      'add' => 'nodes-lb-add',
+      'edit' => 'nodes-lb-edit',
+      'admins' => 'nodes-lb-admins',
     );
 
 
-    static protected $label = 'Canales';
+    static protected $label = 'nodes-lb';
 
 
     protected $filters = array (

@@ -677,7 +677,11 @@ namespace Goteo\Model {
                     FROM user
                     WHERE id = :id
                     ", array(':id' => $id));
+
                 $user = $query->fetchObject(); // stdClass para qno grabar accidentalmente y machacar todo
+
+                if(!is_object($user)) return false;
+
                 if(empty($user->lang)) $user->lang = Lang::current();
                 $user->avatar = Image::get($user->user_avatar);
 
@@ -1110,7 +1114,7 @@ namespace Goteo\Model {
          * @return [type] [description]
          */
         public function getPool() {
-            if($this->poolInstance) return $this->poolInstance;
+            // if($this->poolInstance) return $this->poolInstance;
             $this->poolInstance = UserPool::get($this);
             return $this->poolInstance;
         }

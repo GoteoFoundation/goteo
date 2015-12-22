@@ -18,13 +18,13 @@ use Goteo\Application\Message,
 class NodeSubController extends AbstractSubController {
 
     static protected $labels = array (
-      'list' => 'Datos actuales',
-      'edit' => 'Editando',
-      'admins' => 'Viendo administradores',
+      'list' => 'node-lb-list',
+      'edit' => 'node-lb-edit',
+      'admins' => 'node-lb-admins',
     );
 
 
-    static protected $label = 'Datos del Canal';
+    static protected $label = 'node-lb';
 
     /**
      * Overwrite some permissions
@@ -104,6 +104,20 @@ class NodeSubController extends AbstractSubController {
                 $node->label = $_FILES['label_upload'];
             } else {
                 $node->label = (isset($node->label->id)) ? $node->label->id : null;
+            }
+
+             // tratar si quitan imagen de home
+            if ($this->getPost('homeimg-' . $node->home_img->hash .  '-remove')) {
+                if ($node->home_img instanceof Model\Image) $node->home_img->remove($errors);
+                $node->home_img = null;
+            }
+
+            // tratar la imagen y ponerla en la propiedad label
+            if(!empty($_FILES['homeimg_upload']['name'])) {
+                if ($node->home_img instanceof Model\Image) $node->home_img->remove($errors);
+                $node->home_img = $_FILES['homeimg_upload'];
+            } else {
+                $node->home_img = (isset($node->home_img->id)) ? $node->home_img->id : null;
             }
 
             /// este es el único save que se lanza desde un metodo process_

@@ -1,7 +1,7 @@
 <?php
 
 use Goteo\Library\Text,
-    Goteo\Core\View,
+    Goteo\Application\View,
     Goteo\Model;
 
 $geolocation = $vars['geolocation'];
@@ -18,11 +18,11 @@ $geolocation = $vars['geolocation'];
         echo '<p><a href="/dashboard/profile">' . Text::get('dashboard-user-location-change') . '</p></a>';
 
         //show map located
-        echo View::get( 'widget/map.html.php',
+        echo View::render( 'partials/utils/map_canvas',
                    array(
                     'latitude' => $geolocation->latitude,
                     'longitude' => $geolocation->longitude,
-                    'name' => $geolocation->name
+                    'content' => $geolocation->name
                   )
         );
 ?>

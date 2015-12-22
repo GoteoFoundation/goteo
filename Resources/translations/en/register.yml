@@ -16,16 +16,16 @@ password-changed-ok: 'Password changed successfully'
 recover-email-sended: 'We have sent you an email with instructions for recovering your password. If you don''t get it right away, be sure to check your junk or spam folders.'
 recover-request-fail: 'We could not recover the password from any account with that data'
 recover-token-incorrect: 'The code for recovering your password is not valid'
-user-activate-already-active: 'The account is already active.'
-user-activate-success: 'The account has been activated correctly.'
-validate-project-value-contract_email: 'The email address is incorrect.'
-validate-register-value-email: 'The email address you entered is not valid'
 register-button-title: Register
 register-email-confirm-field: 'Confirm email'
 register-email-field: Email
 register-form-title: Register
-register-id-field: 'Choose your ID at Goteo'
+register-id-field: 'Username '
 register-name-field: Name
 register-password-confirm-field: 'Confirm password'
 register-password-field: Password
 register-question: 'Already registered?'
+user-activate-already-active: 'The account is already active.'
+user-activate-success: 'The account has been activated correctly.'
+validate-project-value-contract_email: 'The email address is incorrect.'
+validate-register-value-email: 'The email address you entered is not valid'

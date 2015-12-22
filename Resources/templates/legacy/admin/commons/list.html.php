@@ -73,7 +73,7 @@ foreach ($vars['projects'] as $project) {
         </div>
     </form>
     <br clear="both" />
-    <a href="/admin/commons?reset=filters">Quitar filtros</a>
+    <a href="/admin/commons?reset=filters">[<?= $this->text('admin-remove-filters') ?>]</a>
 </div>
 
 <div class="widget board">

@@ -1,4 +1,3 @@
-login-register-conditions: 'Al registrarte, confirmas tu aceptación de nuestros <a href="/legal/terms">términos de uso</a>, <a href="/legal/privacy">política de privacidad</a> y <a href="legal/cookies">política de cookies</a>.'
 ID_DEL_TEXTO: 'Texto ID_DEL_TEXTO'
 admin_no_permission: 'No tienes permisos para acceder a <strong>%s</strong>'
 bazar-description-seo: 'Regalos solidarios crowdfunding en Goteo.org.'
@@ -49,6 +48,7 @@ guide-project-updates: "<b>Es muy importante que los proyectos mantengan informa
 header-about-side: 'Lo que nos mueve'
 home-posts-header: Novedades
 invest-individual-header: 'Puedes renunciar a recibir recompensas por tu aportación, o seleccionar las que igualen o estén por debajo del importe que hayas introducido.'
+login-register-conditions: 'Al registrarte, confirmas tu aceptación de nuestros <a href="/legal/terms">términos de uso</a>, <a href="/legal/privacy">política de privacidad</a> y <a href="legal/cookies">política de cookies</a>.'
 mandatory-cost-field-type: 'Es obligatorio seleccionar el tipo de coste'
 mandatory-individual_reward-field-amount: 'Es obligatorio indicar el importe que permite obtener la recompensa'
 mandatory-project-costs: 'Debe desglosarse en al menos dos costes.'
@@ -68,15 +68,20 @@ regular-anonymous: Anónimo
 regular-ask: Preguntar
 regular-by: 'Por:'
 regular-calendar: Calendar
+regular-cancel: Cancelar
+regular-cancel-back: 'Cancelar y volver atrás'
 regular-collaborate: Colabora
 regular-create: 'Crea un proyecto'
+regular-date: Fecha
 regular-days: días
 regular-delete: Borrar
 regular-discover: 'Descubre proyectos'
+regular-download: Descargar
 regular-edit: Editar
 regular-email: Email
 regular-facebook: Facebook
 regular-faq: 'Preguntas frecuentes'
+regular-female: Mujer
 regular-first: Primera
 regular-from: desde
 regular-getit: Consíguelo
@@ -87,6 +92,7 @@ regular-header-blog: Blog
 regular-header-faq: FAQ
 regular-header-glossary: 'Principios para una economía abierta'
 regular-hello: Hola
+regular-here: aquí
 regular-home: Inicio
 regular-identica: Identi.ca
 regular-im: Soy
@@ -102,6 +108,7 @@ regular-login: Accede
 regular-logout: 'Cerrar sesión'
 regular-looks_for: 'busca:'
 regular-main-header: Goteo.org
+regular-male: Hombre
 regular-manage_board: 'Panel Gestoría'
 regular-mandatory: 'Campo obligatorio!'
 regular-media_legend: Leyenda
@@ -134,6 +141,7 @@ regular-share-twitter: 'Síguenos en Twitter'
 regular-share_this: 'Compartir en:'
 regular-sorry: 'Lo sentimos'
 regular-spread: DIFUSION
+regular-status: Estado
 regular-thanks: Gracias
 regular-total: Total
 regular-translate_board: 'Panel traductor'
@@ -141,6 +149,7 @@ regular-twitter: Twitter
 regular-view_project: 'Ver proyecto'
 regular-web: Web
 regular-weeks: semanas
+regular-year: Año
 regular-yes: Sí
 session-about-to-expire: 'Tu sesión expirará en 10 minutos. ¿Quieres recargar la página para renovarla?'
 session-expired: 'Tu sesión en goteo ha expirado!'

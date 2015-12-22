@@ -169,6 +169,9 @@ body.admin div#main div.admin-center input[type="submit"],
 body.admin div#main div.admin-center a.button {
     padding: 0.2em 0.4em !important;
 }
+body.admin .widget a.button, body.admin div#main div.admin-center .widget a.button {
+    color:#fff;
+}
 
 /* tablas en zebra */
 body.admin table tbody tr:nth-child(odd) {

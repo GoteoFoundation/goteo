@@ -6,11 +6,12 @@ mandatory-project-field-goal: 'Il est obligatoire d''expliquer les objectifs dan
 mandatory-project-field-image: 'Il est obligatoire de mettre au moins une photo illustrant le projet.'
 mandatory-project-field-lang: 'Il est obligatoire de mettre la langue du projet.'
 mandatory-project-field-location: 'Il est obligatoire de renseigner les répercussions géographiques potentielles du projet.'
-mandatory-project-field-media: 'Nous vous recommandons de télécharger sur notre site une video pour faciliter l''évaluation de votre project par l''équipe de SiteName.'
+mandatory-project-field-media: 'Nous vous recommandons de télécharger sur notre site une video pour faciliter l''évaluation de votre project par l''équipe de Goteo.'
 mandatory-project-field-motivation: 'Il est obligatoire d''expliquer votre motivation dans la description du projet.'
 mandatory-project-field-name: 'Il est obligatoire de donner un nom au projet.'
 mandatory-project-field-related: 'Il est obligatoire d''expliquer dans la description du projet l''expérience en lien avec celui-ci et/ou l''équipe sur laquelle vous comptez'
 overview-field-categories: Categories
+overview-field-currency: 'Monnaie associée au projet'
 overview-field-currently: 'Etat actuel'
 overview-field-description: 'Courte description'
 overview-field-goal: 'Objectifs de la campagne de crowdfunding'
@@ -29,6 +30,7 @@ overview-field-options-scope_global: Global
 overview-field-options-scope_local: Local
 overview-field-options-scope_nacional: National
 overview-field-options-scope_regional: Regional
+overview-field-play-video: 'Cue video'
 overview-field-project_location: Localisation
 overview-field-related: 'Expérience antérieure et équipe'
 overview-field-reward: Rétributions
@@ -43,7 +45,8 @@ step-3b: Images
 step-images: 'Section: Images du projet'
 step-overview: 'Etape 3: Description du projet'
 tooltip-project-about: 'Décrivez brièvement le projet de façon conceptuelle, technique ou pratique. En détaillant par exemple ses caractéristiques de fonctionnement ou ses différentes étapes. Imaginez comment il sera une fois terminé et tout ce que les gens pourront faire grâçe à lui. '
-tooltip-project-category: "Sélectionnez toutes les catégories que vous jugez nécessaires pour décrire le projet, en vous basant sur les infos que vous avez introduites Jusqu'à\_ maintenant. Ces mots clés nous permettront de cibler les utilisateurs de SiteName à solliciter."
+tooltip-project-category: "Sélectionnez toutes les catégories que vous jugez nécessaires pour décrire le projet, en vous basant sur les infos que vous avez introduites Jusqu'à\_ maintenant. Ces mots clés nous permettront de cibler les utilisateurs de Goteo à solliciter."
+tooltip-project-currency: 'Indiquez la monnaie dans laquelle vous calculez les coûts de votre projet'
 tooltip-project-currently: 'Indiquez dans quelle phase se trouve le projet actuellement. Par exemple, s''il est en phase de création ou d''éxécution.'
 tooltip-project-description: 'Décrivez le projet en utilisant au moins 80 mots (en-deçà, cela indiquera une erreur). Expliquez-le afin qu''il soit facile à comprendre par n''importe qui. Essayez de le présenter de façon attractive, en résumant ses points forts, ce qui le rend unique, socialement intéressant, innovant ou spécial. '
 tooltip-project-goal: 'Enumérez les objectifs principaux du projet, à court et long terme, sur tous les aspects que vous considérez important de traiter. Cela offre une nouvelle opportunité pour toucher les gens qui se retrouvent dans ces objectifs et obtenir leur soutien.'
@@ -61,7 +64,7 @@ tooltip-project-subtitle: 'Définissez en une phrase un sous-titre qui expliquer
 tooltip-project-usubs: 'Cochez la case dans le cas où vous avez sous-titré la vidéo dans d''autres langues avec Amara Subtitles: http://www.Amarasubtitles.org/'
 tooltip-project-video: 'Vous avez ici la possibilité de publier et d''embarquer une vidéo (via youtube ou vimeo ou daylimotion aou utre) où vous expliquez brièvement à la caméra le pourquoi de votre projet. Il s''agit d''une vidéo d''une personne qui complète la vidéo principale et qui traduit vos besoins ou votre originalité, de la façon la plus directe possible. Si ça vous coûte de parler à la caméra, vous pouvez aussi demander à une personne que vous connaissez et qui suit le projet de le présenter en tant que "fan". L''empathie et la nécessité de voir un projet incarné est très importante pour certains types de cofinanceurs.'
 validate-project-field-about: 'L''explication du projet est trop courte'
-validate-project-field-currently: 'Indiquez l''état du projet pour faciliter l''évaluation et la possible publication du projet sur SiteName.'
+validate-project-field-currently: 'Indiquez l''état du projet pour faciliter l''évaluation et la possible publication du projet sur Goteo.'
 validate-project-field-description: 'La description du projet est trop courte'
 validate-project-value-description: 'La description du projet est trop courte'
-validate-project-value-keywords: 'Indiquez un minimum de 5 mots clés pour faciliter l''évaluation et la possible publication du projet sur SiteName.'
+validate-project-value-keywords: 'Indiquez un minimum de 5 mots clés pour faciliter l''évaluation et la possible publication du projet sur Goteo.'

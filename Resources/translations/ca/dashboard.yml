@@ -1,6 +1,29 @@
 api-key-no-generated: 'Aún no tienes una key generada'
 api-key-tool-tip: 'Con tu usuario y Api Key podrás realizar consultas a nuestra API'
 contract-data_title: 'Dades del contracte'
+dashboard-certificates-confirm: 'Confirmar dades'
+dashboard-certificates-confirm-checkbox: 'Confirmo que aquestes són les meves dades legals reals i sóc conscient que no podré modificar aquestes dades un cop confirmades'
+dashboard-certificates-confirmed: Confirmat
+dashboard-certificates-confirmed-ok: 'Dades fiscals confirmades correctament , si el teu certificat no es descarrega automàticament fes clic %HERE%'
+dashboard-certificates-data-alert: 'Tingues en compte que un cop confirmat no es poden modificar les dades!'
+dashboard-certificates-data-desc: 'Si us plau, comprova que les dades del formulari són correctes i confirma''l'
+dashboard-certificates-data-download-all: 'Descàrrega i presenta tots els certificats de l''any fiscal en curs per a la teva declaració a Hisenda'
+dashboard-certificates-data-new-invests: 'Però no et preocupis , qualsevol nova aportació que facis a Goteo generarà un nou certificat'
+dashboard-certificates-desc: 'Aquests certificats et permetran desgravar en la declaració de la renda si ets contribuent a l''estat Espanyol.'
+dashboard-certificates-details: 'Veure detalls'
+dashboard-certificates-details-desc: 'Llista d''aportacions per al certificat %CERT%'
+dashboard-certificates-download: 'Confirmar i descarregar'
+dashboard-certificates-empty: 'Has de fer alguna aportació a un projecte o recarregar el moneder virtual per veure els teus certificats'
+dashboard-certificates-expired: caducat
+dashboard-certificates-no-pending: 'No hi ha cap aportació pendent'
+dashboard-certificates-pending: Pendent
+dashboard-certificates-pending-desc: 'Aquestes són les aportacions que s''inclouran en certificats futurs.'
+dashboard-certificates-please-confirm: 'Has de marcar la casella de verificació per poder continuar'
+dashboard-certificates-summary: 'Certificat %ID%, Any %YEAR%'
+dashboard-certificates-too-old: 'Aquest certificat és massa antic i no es pot modificar. Si tens algun dubte posa''t en contacte amb nosaltres'
+dashboard-certificates-totals: '%NUM% aportacions, %AMOUNT%'
+dashboard-certificates-unconfirmed: 'Per a descarregar aquest certificat has confirmar les dades primer!'
+dashboard-certificates-view-pending: 'Les teves aportacions a projectes que encara no han assolit el mínim no es mostren. Pots consultar-les %HERE%.'
 dashboard-chart-days: 'QUEDEN %s DIES'
 dashboard-chart-invested: 'FINANÇAMENT OBTINGUT'
 dashboard-chart-investors: COFINANÇADORS
@@ -11,8 +34,8 @@ dashboard-embed_code_investor: 'CODI AMB IMATGE DE PERSONA COFINANÇADORA'
 dashboard-header-main: 'El meu panell'
 dashboard-investors-mail-fail: 'Error en enviar el missatge a %s: %s'
 dashboard-investors-mail-nowho: 'No s''han trobat destinataris'
-dashboard-investors-mail-sent: 'Missatges enviats correctament'
 dashboard-investors-mail-sendto: 'Enviat a %s dels teus cofinançadors:'
+dashboard-investors-mail-sent: 'Missatges enviats correctament'
 dashboard-investors-mail-text-required: 'Escriu el missatge'
 dashboard-investors_table-disclaimer: 'Us recordem que, tal com estableix el vostre contracte, les dades descarregables dels finançadors inclosos a l''arxiu es faciliten als únics i exclusius efectes de satisfer als finançadors les recompenses o retorns compromesos en el projecte, així com per informar aquells sobre les novetats, avenços i activitats relacionades amb el projecte, quedant absolutament prohibit l''ús dels mateixos per a qualsevol altra finalitat. L''incompliment d''aquesta obligació faculta la Fundació Fuentes Abiertas, gestora de la plataforma, per emprendre les accions legals corresponents i retirar el projecte de la plataforma'
 dashboard-menu-activity: Activitat
@@ -22,6 +45,9 @@ dashboard-menu-activity-summary: Resum
 dashboard-menu-activity-wall: 'El meu mur'
 dashboard-menu-admin_board: Administració
 dashboard-menu-calls-sponsors: Patrocinadors
+dashboard-menu-pool: 'El meu moneder'
+dashboard-menu-pool-available: Saldo
+dashboard-menu-pool-conditions: Condicions
 dashboard-menu-profile: Perfil
 dashboard-menu-profile-access: 'Dades d''accés'
 dashboard-menu-profile-location: Geolocalització
@@ -43,6 +69,9 @@ dashboard-menu-review_board: Revisió
 dashboard-menu-translate_board: Traducció
 dashboard-menu-translates: Traduccions
 dashboard-messegers-mail-sendto: 'Enviat a %s els/les participants:'
+dashboard-my-wallet-available: 'Actualmente, tens <span class="pool-amount">%s</span><br>al teu moneder Goteo'
+dashboard-my-wallet-modal-pool-info: 'El moneder de Goteo és una funcionalitat de la nostra plataforma que et permet fer la teva donació i decidir posteriorment a quin projecte o projectes aportar-la.<br><p>Les donacions que fas a través de la nostra plataforma són fiscalment desgravables, d''acord amb la Llei 49 / 2002, de 23 de desembre, de règim fiscal de les entitats sense fins lucratius i dels incentius fiscals al mecenatge.</p><p> Quan fas la teva donació, pots descarregar-te un certificat de donació que justifica davant Hisenda la teva contribució a una entitat sense ànim de lucre. Pots accedir a un històric dels certificats disponibles associats a les teves donacions a Goteo des del teu tauler d''usuari, concretament a la secció <a href="/dashboard/wallet/certificate" target="_blank">Certificat de donació</a>.</p><p>NOTA IMPORTANT:  Et recordem que totes les aportacions per les que hagis obtingut un certificat de donació de la nostra Fundació no es retornen. Això vol dir que si has fet una donació vinculada a un projecte concret dins la nostra plataforma i aquest no arriba al seu objectiu mínim de finançament durant la seva campanya, el teu aport anirà al teu moneder però no tornarà al teu compte corrent. Tot i això, podràs destinar aquest import des del teu moneder virtual a Goteo.org a qualsevol altre projecte actiu que desitgis en el moment que tu triïs, sense necessitat de tornar a introduir les dades bancàries o de PayPal.</p>'
+dashboard-my-wallet-pool-info: 'Més informació sobre l''ús del teu moneder'
 dashboard-password-recover-advice: 'Assegura''t de restablir la teva contrasenya'
 dashboard-project-blog-fail: 'Contacta amb nosaltres'
 dashboard-project-blog-inactive: 'Ho sentim, la publicació de novetats en aquest projecte està desactivada'

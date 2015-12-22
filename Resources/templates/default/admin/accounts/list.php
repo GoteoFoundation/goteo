@@ -94,12 +94,12 @@ $the_filters = array(
         </div>
     </form>
     <br clear="both" />
-    <a href="/admin/accounts?reset=filters">Quitar filtros</a>
+    <a href="/admin/accounts?reset=filters">[<?= $this->text('admin-remove-filters') ?>]</a>
 </div>
 
 <div class="widget board">
 <?php if ($this->list) : ?>
-    <p><strong>Total:</strong>  <?= number_format($this->total_money, 0, '', '.') ?> &euro; (<em><?= number_format($this->total, 0, '', '.') ?> aportes</em>)</p>
+    <p><strong><?= $this->text('regular-total') ?>:</strong>  <?= number_format($this->total_money, 0, '', '.') ?> &euro; (<em><?= number_format($this->total, 0, '', '.') ?> aportes</em>)</p>
 
     <table width="100%">
         <thead>
@@ -129,7 +129,12 @@ $the_filters = array(
                 <td><?= $invest->amount ?></td>
                 <td><?= $invest->invested ?></td>
                 <td><a href="mailto:<?= $invest->getUser()->email ?>" title="<?= $invest->getUser()->id .' / ' . $invest->getUser()->email .' / ' . $invest->getUser()->node ?>"><?= $invest->getUser()->name ?></a><a href="/admin/users/manage/<?= $invest->user ?>" target="_blank" title="<?= $invest->getUser()->name ?>">[<?= $invest->user ?>]</a></td>
-                <td><a href="/admin/projects?proj_id=<?= $invest->project ?>" target="_blank"><?= $this->text_truncate($this->projects[$invest->project], 20); if (!empty($invest->campaign)) echo '<br />('.$invest->campaign.')' ?></a></td>
+                <td><?php if($invest->project): ?>
+                    <a href="/admin/projects?proj_id=<?= $invest->project ?>" target="_blank"><?= $this->text_truncate($this->projects[$invest->project], 20); if (!empty($invest->campaign)) echo '<br />('.$invest->campaign.')' ?></a>
+                    <?php else: ?>
+                        <span class="label label-info"><?= $this->text('invest-pool-method') ?></span>
+                    <?php endif ?>
+                </td>
                 <td><?= $this->methods[$invest->method] ?></td>
                 <td><?= $this->percent_span(100 * ($invest->status + 1)/2, 0, $this->status[$invest->status]) ?></td>
                 <td><?= $invest->pool ? 'Yes' : 'No' ?></td>

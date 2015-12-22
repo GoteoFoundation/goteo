@@ -73,27 +73,29 @@ EOT
 		$force       = $input->getOption('force');
 		$any_project = $input->getOption('any-project');
 
-		if ($invest_id) {
-			$output->writeln("<comment>Processing Invest [$invest_id]:</comment>");
-			$invests = [Invest::get($invest_id)];
-		} else {
-			if ($project_id) {
-				$output->writeln("<comment>Processing project [$project_id] with pending refunds:</comment>");
-			} else {
-				$output->writeln('<comment>Processing projects archived with pending refunds:</comment>');
-			}
-			$invests = Invest::getList(['methods' => null,
-					'status'                            => Invest::STATUS_CHARGED,
-					'projectStatus'                     => $any_project ? null : Project::STATUS_UNFUNDED,
-					'projects'                          => $project_id
-				], null, 0, 10000);
+        if ($invest_id) {
+            $output->writeln("<info>Processing Invest [$invest_id]:</info>");
+            $invests = [Invest::get($invest_id)];
+        } else {
+            if ($project_id) {
+                $output->writeln("<info>Processing project [$project_id] with pending refunds:</info>");
+            } else {
+                $output->writeln('<info>Processing projects archived with pending refunds:</info>');
+            }
+            $invests = Invest::getList(['methods' => null,
+                    'status'                            => Invest::STATUS_CHARGED,
+                    'projectStatus'                     => $any_project ? null : Project::STATUS_UNFUNDED,
+                    'projects'                          => $project_id
+                ], null, 0, 10000);
 
-		}
+            // $output->writeln("update [$update] project[$project_id] invest[$invest_id] force[$force] any-project[$any_project]");
 
-		if (!$invests) {
-			$this->info("No invests found!");
-			return;
-		}
+        }
+
+        if (!$invests) {
+            $this->error("No invests found!");
+            return 1;
+        }
 
 		$processed = 0;
 		foreach ($invests as $invest) {

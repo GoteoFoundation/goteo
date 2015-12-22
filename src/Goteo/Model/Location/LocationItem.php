@@ -43,6 +43,8 @@ abstract class LocationItem extends \Goteo\Core\Model implements LocationInterfa
         $args = func_get_args();
         call_user_func_array(array('parent', '__construct'), $args);
         $this->locable = (bool) $this->locable;
+        // alternative location names
+        if(empty($this->city) && $this->location) $this->city = $this->location;
         $this->name = $this->city ? ($this->region ? $this->city . ' (' .$this->region . ')' : $this->city) : ($this->region ? $this->region : $this->country);
     }
 
@@ -52,6 +54,9 @@ abstract class LocationItem extends \Goteo\Core\Model implements LocationInterfa
      * @return UserLocation instance
      */
     static public function get($id) {
+        if(is_object($id)) {
+            throw new ModelException("Location identifier [$id] must be a integer or string!");
+        }
         $clas = get_called_class();
         $instance = new $clas;
         $query = static::query("SELECT * FROM " . $instance->Table . " WHERE id = ?", array($id));
@@ -129,12 +134,12 @@ abstract class LocationItem extends \Goteo\Core\Model implements LocationInterfa
         }
 
         $values = array(':id'         => $this->id,
-                        ':method'       => $this->method,
-                        ':locable'      => $this->locable,
-                        ':info'         => $this->info,
-                        ':city'         => $this->city,
-                        ':region'       => $this->region,
-                        ':country'      => $this->country,
+                        ':method'       => (string)$this->method,
+                        ':locable'      => (string)$this->locable,
+                        ':info'         => (string)$this->info,
+                        ':city'         => (string)$this->city,
+                        ':region'       => (string)$this->region,
+                        ':country'      => (string)$this->country,
                         ':country_code' => $this->country_code,
                         ':longitude'    => $this->longitude,
                         ':latitude'     => $this->latitude

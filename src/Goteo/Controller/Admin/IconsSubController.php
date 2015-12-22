@@ -19,13 +19,13 @@ use Goteo\Application\Message,
 class IconsSubController extends AbstractSubController {
 
     static protected $labels = array (
-      'list' => 'Listando',
-      'edit' => 'Editando Tipo',
-      'translate' => 'Traduciendo Tipo',
+      'list' => 'icons-lb-list',
+      'edit' => 'icons-lb-edit',
+      'translate' => 'icons-lb-translate',
     );
 
 
-    static protected $label = 'Tipos de Retorno';
+    static protected $label = 'icons-lb';
 
 
     protected $filters = array (

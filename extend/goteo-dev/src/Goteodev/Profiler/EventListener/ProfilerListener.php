@@ -14,6 +14,7 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpKernel\KernelEvents;
 use Symfony\Component\HttpKernel\Event;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\StreamedResponse;
 
 use Goteodev\Profiler\DebugProfiler;
 
@@ -35,7 +36,7 @@ class ProfilerListener implements EventSubscriberInterface
         DebugProfiler::addEvent($event);
         $response = $event->getResponse();
         $request = $event->getRequest();
-        if(!$event->isMasterRequest() || false === stripos($response->headers->get('Content-Type'), 'text/html') || $request->isXmlHttpRequest()) {
+        if(!$event->isMasterRequest() || false === stripos($response->headers->get('Content-Type'), 'text/html') || $request->isXmlHttpRequest() || $response instanceOf StreamedResponse) {
             return;
         }
 

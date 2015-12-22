@@ -1,4 +1,3 @@
-personal-field-region: Província
 contract-accounts_title: 'Comptes bancaris del projecte'
 contract-bank_account: 'Compte bancari:'
 contract-bank_owner: 'Titular del compte bancari:'
@@ -50,6 +49,7 @@ personal-field-contract_name: 'Nom i cognoms'
 personal-field-contract_nif: 'Número de NIF / NIE / VAT'
 personal-field-main_address: 'Domicili fiscal'
 personal-field-post_address: 'Domicili postal'
+personal-field-region: Província
 tooltip-contract-bank_account: 'Indica quin és el número de compte bancari amb la nova nomenclatura europea: IBAN ESxx xxxx xxxx xxxx xxxx xxxx'
 tooltip-contract-bank_owner: 'Indica aquí qui és el/la titular del compte bancari'
 tooltip-contract-docs: 'Pots pujar tants arxius com necessitis, cada un de màxim 2Mb. Envia''ls preferiblement en format .PDF, .ODT, .DOC, .JPG. Si no tens escàner pots fer una foto de cada document, però assegura''t per favor que la informació sigui llegible'

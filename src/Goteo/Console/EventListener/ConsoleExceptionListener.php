@@ -10,7 +10,7 @@
 
 namespace Goteo\Console\EventListener;
 
-use Bramus\Monolog\Formatter\ColoredLineFormatter;
+use Goteo\Application\App;
 use Goteo\Application\Config;
 use Goteo\Application\EventListener\AbstractListener;
 use Goteo\Application\EventListener\ExceptionListener;
@@ -24,8 +24,8 @@ use Monolog\Formatter\LineFormatter;
 
 use Monolog\Handler\FingersCrossedHandler;
 use Monolog\Handler\StreamHandler;
-
 use Monolog\Logger;
+use Bramus\Monolog\Formatter\ColoredLineFormatter;
 
 use Symfony\Component\Console\ConsoleEvents;
 use Symfony\Component\Console\Event\ConsoleCommandEvent;
@@ -42,39 +42,58 @@ use Symfony\Component\Console\Input\InputOption;
 class ConsoleExceptionListener extends AbstractListener {
 	use LockTrait;
 
-	private $starttime   = 0;
-	private $mailhandler = null;
-	private $debug       = false;
-	private $lock_name   = null;
+    private $starttime   = 0;
+    private $mailhandler = null;
+    private $debug       = false;
+    private $lock_name   = null;
+    private $command   = null;
+
+    public function log($message, array $context = [], $func = 'info') {
+        if($this->command instanceOf AbstractCommand) {
+            $this->command->log($message, $context, $func);
+        }
+        else {
+            parent::log($message, $context, $func);
+        }
+    }
 
 	public function onCommand(ConsoleCommandEvent $event) {
 		$env             = Config::get('env');
 		$this->starttime = microtime(true);
 
 		// get the command to be executed
-		$command = $event->getCommand();
+		$this->command = $command = $event->getCommand();
 
-		// add a global option for sending errors by mail to the command
-		$command->addOption('logmail', null, InputOption::VALUE_NONE, 'Send errors by mail (specified as mail.fail in settings.yml)');
 
-		// add a global option for locking processes to the command
-		$command->addOption('lock', null, InputOption::VALUE_NONE, 'Allows only one instance of the process, even in a distributed system (uses MySQL GET_LOCK)');
-		$command->addOption('lock-name', null, InputOption::VALUE_OPTIONAL, 'Specifies the lock name (otherwise will be the command name)', $command->getName());
+        // add a global option for sending errors by mail to the command
+        $command->addOption('logmail', null, InputOption::VALUE_NONE, 'Send errors by mail (specified as mail.fail in settings.yml)');
 
-		// merge the application's input definition
-		$command->mergeApplicationDefinition();
+        // add a global option for locking processes to the command
+        $command->addOption('lock', null, InputOption::VALUE_NONE, 'Allows only one instance of the process, even in a distributed system (uses MySQL GET_LOCK)');
+        $command->addOption('lock-name', null, InputOption::VALUE_OPTIONAL, 'Specifies the lock name (otherwise will be the command name)', $command->getName());
 
-		// get a new input argument
-		$input = new ArgvInput();
+        // merge the application's input definition
+        $command->mergeApplicationDefinition();
 
-		// we use the input definition of the command
-		$input->bind($event->getCommand()->getDefinition());
+        // get a new input argument
+        $input = new ArgvInput();
 
-		$name = $command->getName();
+        // we use the input definition of the command
+        $input->bind($event->getCommand()->getDefinition());
+
+        $name = $command->getName();
 
 		// If verbose, debut to stderr
 		if ($input->getOption('verbose')) {
 			$this->debug = true;
+
+            // Add a log level debug to stderr in the App general log
+            $stream = new StreamHandler('php://stdout', Logger::DEBUG);
+            $logger = App::getService('logger')->pushHandler($stream);
+
+            $logger = App::getService('console_logger');
+
+            $logger->pushHandler($stream);
 		}
 
 		// nice colors
@@ -131,7 +150,7 @@ class ConsoleExceptionListener extends AbstractListener {
 		$output = $event->getOutput();
 
 		// get the command that has been executed
-		$command = $event->getCommand();
+		$this->command = $command = $event->getCommand();
 
 		if ($this->lock_name && $this->releaseNamedLock($this->lock_name)) {
 			if ($input->getOption('lock')) {
@@ -156,7 +175,7 @@ class ConsoleExceptionListener extends AbstractListener {
 		$input  = $event->getInput();
 		$output = $event->getOutput();
 
-		$command = $event->getCommand();
+		$this->command = $command = $event->getCommand();
 
 		$output->writeln(sprintf('Oops, exception thrown while running command <info>%s</info>', $command->getName()));
 

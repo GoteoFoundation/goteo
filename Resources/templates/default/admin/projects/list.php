@@ -105,7 +105,7 @@ foreach ($filters as $key=>$value) {
         </table>
     </form>
     <br clear="both" />
-    <a href="/admin/projects?reset=filters">[Quitar filtros]</a>
+    <a href="/admin/projects?reset=filters">[<?= $this->text('admin-remove-filters') ?>]</a>
 
 
 <?php if ($this->projects): ?>
@@ -192,6 +192,7 @@ foreach ($filters as $key=>$value) {
                 <td colspan="7">
                     CAMBIAR:&nbsp;
                     <a href="<?php echo "/admin/projects/dates/{$project->id}" ?>" title="Para modificar a mano las fechas clave">[Fechas]</a>
+                    <a href="<?php echo "/admin/projects/location/{$project->id}" ?>" title="Modificar la localización del proyecto">[Localización]</a>
                     <?php if($project->userCanModerate($this->user)): ?>
                         <a href="<?php echo "/admin/projects/accounts/{$project->id}" ?>" title="Para cambiar las cuentas bancarias">[Cuentas]</a>
                         <?php if ($project->status < 4) : ?><a href="<?php echo "/admin/projects/rebase/{$project->id}" ?>" title="Para cambiar la Url del proyecto" onclick="return confirm('Esto es MUY DELICADO, seguimos?');">[Id]</a><?php endif ?>

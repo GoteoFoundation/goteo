@@ -21,21 +21,21 @@ use Goteo\Application\Config,
 class BannersSubController extends AbstractSubController {
 
     static protected $labels = array (
-      'list' => 'Listando',
-      'details' => 'Detalles del aporte',
-      'update' => 'Cambiando el estado al aporte',
-      'add' => 'Nuevo Banner',
-      'move' => 'Reubicando el aporte',
-      'execute' => 'Ejecución del cargo',
-      'cancel' => 'Cancelando aporte',
-      'report' => 'Informe de proyecto',
-      'viewer' => 'Viendo logs',
-      'edit' => 'Editando Banner',
-      'translate' => 'Traduciendo Banner',
+      'list' => 'banners-lb-list',
+      'details' => 'banners-lb-details',
+      'update' => 'banners-lb-update',
+      'add' => 'banners-lb-add',
+      'move' => 'banners-lb-move',
+      'execute' => 'banners-lb-execute',
+      'cancel' => 'banners-lb-cancel',
+      'report' => 'banners-lb-report',
+      'viewer' => 'banners-lb-viewer',
+      'edit' => 'banners-lb-edit',
+      'translate' => 'banners-lb-translate',
     );
 
 
-    static protected $label = 'Banners';
+    static protected $label = 'banners-lb';
 
     /**
      * Overwrite some permissions
@@ -146,7 +146,7 @@ class BannersSubController extends AbstractSubController {
                     && !Model\Banner::setPending($banner->id, 'banner')) {
                     Message::error('NO se ha marcado como pendiente de traducir!');
                 }
-                
+
                 return $this->redirect('/admin/banners');
 			}
 			else {
@@ -155,8 +155,7 @@ class BannersSubController extends AbstractSubController {
                 switch ($this->getPost('action')) {
                     case 'add':
                         return array(
-                                'folder' => 'banners',
-                                'file' => 'edit',
+                                'template' => 'admin/banners/edit',
                                 'action' => 'add',
                                 'banner' => $banner,
                                 'autocomplete' => true
@@ -164,8 +163,7 @@ class BannersSubController extends AbstractSubController {
                         break;
                     case 'edit':
                         return array(
-                                'folder' => 'banners',
-                                'file' => 'edit',
+                                'template' => 'admin/banners/edit',
                                 'action' => 'edit',
                                 'banner' => $banner,
                                 'autocomplete' => true
@@ -202,8 +200,7 @@ class BannersSubController extends AbstractSubController {
                 $next = Model\Banner::next($node);
 
                 return array(
-                        'folder' => 'banners',
-                        'file' => 'edit',
+                        'template' => 'admin/banners/edit',
                         'action' => 'add',
                         'banner' => (object) array('order' => $next),
                         'autocomplete' => true
@@ -213,8 +210,7 @@ class BannersSubController extends AbstractSubController {
                 $banner = Model\Banner::get($id);
 
                 return array(
-                        'folder' => 'banners',
-                        'file' => 'edit',
+                        'template' => 'admin/banners/edit',
                         'action' => 'edit',
                         'banner' => $banner,
                         'autocomplete' => true
@@ -226,8 +222,7 @@ class BannersSubController extends AbstractSubController {
         $bannered = Model\Banner::getAll(false, $node);
 
         return array(
-                'folder' => 'banners',
-                'file' => 'list',
+                'template' => 'admin/banners/list',
                 'bannered' => $bannered,
                 'node' => $node
         );

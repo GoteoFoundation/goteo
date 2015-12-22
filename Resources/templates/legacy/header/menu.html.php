@@ -44,6 +44,7 @@ $nodes = Nodesys::activeNodes();
                     <ul>
                         <li><a href="/dashboard/profile"><span><?php echo Text::get('dashboard-menu-profile'); ?></span></a></li>
                         <li><a href="/dashboard/activity"><span><?php echo Text::get('dashboard-menu-activity'); ?></span></a></li>
+                        <li><a href="/dashboard/wallet"><span><?php echo Text::get('dashboard-menu-pool'); ?></span></a></li>
                         <li><a href="/dashboard/projects"><span><?php echo Text::get('dashboard-menu-projects'); ?></span></a></li>
                         <li><a href="/dashboard/profile/preferences"><span><?php echo Text::get('dashboard-menu-profile-preferences'); ?></span></a></li>
 

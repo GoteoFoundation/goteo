@@ -10,5 +10,5 @@ dashboard-donor-no_donor: 'Non costa que fixeras ningunha doazón. Se fixeches a
 dashboard-donor-save_fail: 'Houbo algún erro ó gravar os datos, por favor, revísaos e se persiste contacta con nós.'
 dashboard-donor-saved: 'Grazas por modificar os teus datos. Para descargar o certificado asegúrate de que sexan correctos. Despois verifícaos co botón de pechar datos.'
 dashboard-menu-activity-donor: 'Certificado de doazón'
-donor-field-amount: 'Importe doazón:'
+donor-field-amount: 'Importe doazón'
 donor-field-numproj: 'Número de proxectos:'

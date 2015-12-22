@@ -67,16 +67,6 @@ class DbVerifier extends AbstractCommandController {
         $count3 = $query1->rowCount();
         if ($debug) echo "Eliminados $count3 registros de log.\n";
 
-        // busco aportes incompletos con codigo de autorización
-        $sql5 = "SELECT * FROM invest WHERE status = -1 AND transaction IS NOT NULL";
-        $query5 = Model\Project::query($sql5);
-        foreach ($query5->fetchAll(\PDO::FETCH_OBJ) as $row) {
-            @mail(Config::getMail('fail'),
-                'Aporte Incompleto con numero de autorización. En ' . SITE_URL,
-                'Aporte Incompleto con numero de autorización: <pre>' . print_r($row, true). '</pre>');
-        }
-
-
         // eliminamos aportes incompletos
         /*
         $sql4 = "DELETE

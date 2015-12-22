@@ -21,12 +21,12 @@ use Goteo\Library\Text,
 class TextsSubController extends AbstractSubController {
 
     static protected $labels = array (
-      'list' => 'Listando',
-      'edit' => 'Editando Original',
+      'list' => 'texts-lb-list',
+      'edit' => 'texts-lb-edit',
     );
 
 
-    static protected $label = 'Textos interficie';
+    static protected $label = 'texts-lb';
 
 
     protected $filters = array (

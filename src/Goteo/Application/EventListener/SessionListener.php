@@ -15,6 +15,7 @@ use Goteo\Application\Cookie;
 use Goteo\Application\Lang;
 use Goteo\Application\Message;
 use Goteo\Application\Session;
+use Goteo\Application\View;
 use Goteo\Core\Model;
 use Goteo\Library\Currency;
 use Goteo\Library\Text;
@@ -106,7 +107,7 @@ class SessionListener extends AbstractListener {
                     $request->query->remove('lang');
                 }
                 // Main platform language stays without subdomain
-                if(Config::get('lang') != $lang) {
+                if($lang && Config::get('lang') != $lang) {
                     $url = "$lang.$url";
                 }
 
@@ -141,7 +142,6 @@ class SessionListener extends AbstractListener {
     public function onResponse(FilterResponseEvent $event) {
         $request = $event->getRequest();
         $response = $event->getResponse();
-
         //not need to do anything on sub-requests
         //Only in html content-type
         if (!$event->isMasterRequest() || false === stripos($response->headers->get('Content-Type'), 'text/html') || $request->isXmlHttpRequest()) {
@@ -180,11 +180,17 @@ class SessionListener extends AbstractListener {
 
         //Are we shadowing some user? let's add a nice bar to return to the original user
         if ($shadowed_by = Session::get('shadowed_by')) {
+            // die(print_r(Session::get('shadowed_by')));
             $body = '<div class="user-shadowing-bar">Back to <a href="/user/logout">' . $shadowed_by[1] . '</a></div>';
             $content = $response->getContent();
-            $pos = strpos($content, '<div id="header">');
+            $search = '<div id="header">';
+
+            if(View::getTheme() == 'responsive') {
+                $search = '<body role="document">';
+            }
+            $pos = strpos($content, $search);
             if ($pos !== false) {
-                $content = substr($content, 0, $pos + 17) . $body . substr($content, $pos + 17);
+                $content = substr($content, 0, $pos + strlen($search)) . $body . substr($content, $pos + strlen($search));
                 $response->setContent($content);
                 $event->setResponse($response);
             }

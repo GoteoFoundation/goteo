@@ -32,6 +32,9 @@ ALTER TABLE `node`
 -- sello en proyectos
 ALTER TABLE `node` ADD `label` VARCHAR( 255 ) NULL DEFAULT NULL COMMENT 'Sello en proyectos';
 
+-- image in channels home module
+ALTER TABLE `node` ADD `home_img` VARCHAR( 255 ) NULL DEFAULT NULL COMMENT 'Imagen para módulo canales en home';
+
 -- background color del módulo de owner
 ALTER TABLE `node` ADD `owner_background` VARCHAR( 255 ) NULL DEFAULT NULL COMMENT 'Color de background módulo owner';
 

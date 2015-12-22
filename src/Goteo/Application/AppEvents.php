@@ -175,6 +175,17 @@ final class AppEvents
     const INVEST_FINISHED = 'invest.finished';
 
     /**
+     * The invest.refund event is thrown by the Payment\Method\AbstractPaymentMethod when the refund method is called
+     * Any attached listener can abort refunds due any particular reason by throwing an PaymentException Exception
+     *
+     * The event listener receives an
+     * Goteo\Application\Event\FilterInvestEvent instance.
+     *
+     * @var string
+     */
+    const INVEST_REFUND = 'invest.refund';
+
+    /**
      * The invest.refund.cancel event is thrown each time a payments processes a refund
      * for any reason others than the project related is not archived/failed
      *

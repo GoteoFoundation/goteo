@@ -16,8 +16,10 @@ dashboard-donor-saved: 'Gracias por modificar tus datos. Para descargar el certi
 dashboard-menu-activity-donor: 'Certificado de donación'
 donor-address-country-field: País
 donor-address-location-field: Provincia
-donor-field-amount: 'Importe donativo:'
+donor-field-amount: 'Importe donativo'
+donor-field-amount-relief: 'Importe desgravación'
 donor-field-numproj: 'Aportes realizados el %s'
 personal-field-donor_name: 'Nombre '
-personal-field-donor_surname: Apellidos
+personal-field-donor_surname: 'Primer apellido'
+personal-field-donor_surname2: 'Segundo apellido'
 validate-donor-mandatory: 'Todos los campos son obligatorios'

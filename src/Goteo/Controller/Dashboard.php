@@ -54,17 +54,16 @@ namespace Goteo\Controller {
                 $viewData['message'] = \str_replace('%USER_NAME%', Session::getUser()->name, $page->content);
                 $viewData['lists']   = Dashboard\Activity::projList($user);
                 $viewData['status']  = Model\Project::status();
-                $viewData['pool'] = Dashboard\Activity::pool($user);
             }
 
-            // gestión de certificado
-            if ($option == 'donor')  {
-                $viewData['donation'] = Dashboard\Activity::donor($user, $action);
-            }
 
             // bote de gotas
             if ($option == 'pool')  {
-                $viewData['pool'] = Dashboard\Activity::pool($user);
+                throw new Redirection("/dashboard/wallet");
+            }
+            if ($option == 'donor')  {
+                throw new Redirection("/dashboard/wallet/certificate");
+
             }
 
 
@@ -1146,6 +1145,12 @@ namespace Goteo\Controller {
                         'summary' => Text::get('dashboard-menu-activity-summary'),
                         'donor' => Text::get('dashboard-menu-activity-donor'),
                         'apikey' => Text::get('dashboard-menu-activity-apikey')
+                    )
+                ),
+                'wallet' => array(
+                    'label' => Text::get('dashboard-menu-pool'),
+                    'options' => array(
+                        'certificate' => Text::get('dashboard-menu-activity-donor')
                     )
                 ),
                 'profile' => array(

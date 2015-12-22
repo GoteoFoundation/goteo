@@ -44,6 +44,9 @@ Check project ID issues
 Repair project ID issues
 <info>./console toolkit projectid --update</info>
 
+Check/fix project unreturned invests
+<info>./console toolkit unreturned</info>
+
 Check/fix pool amount issues
 <info>./console toolkit poolamount [--update]</info>
 
@@ -77,6 +80,31 @@ EOT
                 if($update) {
                     $prj->rebase($newid);
                     $fixes++;
+                }
+                $index++;
+            }
+        }
+        elseif($scope == 'unreturned') {
+            $output->writeln("Checking failed project with unreturned invests...");
+
+            $sql = "SELECT count(invest.id) as count,SUM(invest.amount) as amount,invest.project,
+            GROUP_CONCAT(DISTINCT invest.method SEPARATOR ', ') AS methods,
+            MIN(invest.invested) AS min_date,
+            MAX(invest.invested) AS max_date,
+            project.status AS projectStatus
+            FROM invest
+            INNER JOIN project ON project.id=invest.project
+            WHERE invest.status IN (" . Invest::STATUS_PAID .','. Invest::STATUS_CHARGED . ") AND invest.project IN ($sql_failed_projects) GROUP BY invest.project";
+            $subquery = Invest::query($sql);
+            foreach($subquery->fetchAll(\PDO::FETCH_CLASS, '\Goteo\Model\Invest') as $invest) {
+                $project = $invest->project;
+                $output->writeln("Failed project: <info>$project</info> Project Status: <info>{$invest->projectStatus}</info> Num of Invests: <info>{$invest->count}</info> Total Amount: <comment>{$invest->amount}</comment> Methods: <info>{$invest->methods}</info> Date range: <info>[{$invest->min_date} - {$invest->max_date}]</info>");
+                $command = "<comment>".GOTEO_PATH . "bin/console refund -p {$invest->project}</comment> (with options -auf if needed)";
+                if($update) {
+                    $output->writeln("<error>NON REPAIRABLE</error> please run the command: $command");
+                    $fixes++;
+                } else {
+                    $output->writeln("Command to refund: $command");
                 }
                 $index++;
             }
@@ -181,6 +209,25 @@ EOT
                 $index++;
             }
 
+            $output->writeln("Checking pool statuses for invest-to-pool...");
+            $sql = "SELECT * FROM invest WHERE status IN (" . Invest::STATUS_CHARGED . ',' . Invest::STATUS_PAID . ',' . Invest::STATUS_TO_POOL. ") AND ISNULL(project)";
+            $subquery = Invest::query($sql);
+            foreach($subquery->fetchAll(\PDO::FETCH_CLASS, '\Goteo\Model\Invest') as $invest) {
+                if($invest->isOnPool() && $invest->pool) continue;
+                $output->write("User: <info>{$invest->user}</info> Active project: <info>{$invest->project}</info> Invest: {$invest->id} Amount: <comment>{$invest->amount}</comment> Method: <comment>{$invest->method}</comment> Status: <comment>{$invest->status}</comment> ");
+
+                $status = Invest::STATUS_TO_POOL;
+
+                if($update) {
+                    $output->writeln("<comment>Status changed to $status, pool changted to true</comment>");
+                    $invest->setPoolOnFail(true);
+                    $invest->setStatus($status);
+                    $fixes++;
+                } else {
+                    $output->writeln("<error>Status should be $status, pool property should be true</error>");
+                }
+                $index++;
+            }
         }
         elseif($scope == 'investstatus') {
             $output->writeln("Checking normal invests statuses related to project statuses...");

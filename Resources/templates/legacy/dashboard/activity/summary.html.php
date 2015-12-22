@@ -48,17 +48,6 @@ $lsuf = (LANG != 'es') ? '?lang='.LANG : '';
     });
 </script>
 
-<!-- monedero credito goteo -->
-<?php if ($vars['pool']->amount) : ?>
-<div class="widget crowd-credit">
-        <h3 class="beak"><?php echo Text::get('profile-credit-available'); ?></h3>
-        <div class="credit-amount">
-            <img style="vertical-align:middle;" src="/view/css/dashboard/monedero.svg" width="40" \>
-            <span class="amount"><?php echo \amount_format($vars['pool']->amount); ?></span>
-        </div>
-</div>
-<?php endif; ?>
-
 <!-- proyectos de mi interes -->
 <?php if (!empty($vars['lists']['favourite_categories'])) : ?>
     <div class="widget projects">

@@ -16,8 +16,9 @@ dashboard-donor-saved: 'Gràcies per modificar les teves dades. Per descarregar 
 dashboard-menu-activity-donor: 'Certificat de donatiu'
 donor-address-country-field: País
 donor-address-location-field: Província
-donor-field-amount: 'Import donatiu:'
+donor-field-amount: 'Import donatiu'
 donor-field-numproj: 'Aportacions realitzades el %s'
 personal-field-donor_name: Nom
-personal-field-donor_surname: Cognoms
+personal-field-donor_surname: 'Primer cognom'
+personal-field-donor_surname2: 'Segon cognom'
 validate-donor-mandatory: 'Tots els camps són obligatoris'

@@ -37,3 +37,4 @@ validate-project-individual_rewards: 'Indicate more than 3 individual rewards in
 validate-project-individual_rewards-any_error: 'Some information about individual rewards is missing.'
 validate-project-social_rewards-any_error: 'Some information is missing about collective benefits.'
 validate-social_reward-license: 'Indicate a license in order to improve the score'
+rewards-field-social_reward-url: Url

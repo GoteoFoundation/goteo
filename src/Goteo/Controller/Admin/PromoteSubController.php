@@ -22,14 +22,14 @@ use Goteo\Library\Feed,
 class PromoteSubController extends AbstractSubController {
 
     static protected $labels = array (
-      'list' => 'Listando',
-      'add' => 'Nuevo Destacado',
-      'edit' => 'Editando Destacado',
-      'translate' => 'Traduciendo Destacado',
+      'list' => 'promote-lb-list',
+      'add' => 'promote-lb-add',
+      'edit' => 'promote-lb-edit',
+      'translate' => 'promote-lb-translate',
     );
 
 
-    static protected $label = 'Proyectos destacados';
+    static protected $label = 'promote-lb';
 
     private function checkItemPermission($id) {
         if($sponsor = Model\Promote::get($id)) {

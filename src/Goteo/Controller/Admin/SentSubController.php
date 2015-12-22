@@ -26,11 +26,11 @@ use Goteo\Model\Mail\SenderRecipient;
 class SentSubController extends AbstractSubController {
 
     static protected $labels = array (
-      'list' => 'Emails enviados',
+      'list' => 'sent-lb-list',
     );
 
 
-    static protected $label = 'Historial envíos';
+    static protected $label = 'sent-lb';
 
 
     protected $filters = array (

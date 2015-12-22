@@ -19,3 +19,4 @@ user-activate-already-active: 'L''account è già attivo'
 user-activate-success: 'L''account si è attivato correttamente'
 validate-project-value-contract_email: 'L''indirizzo mail non è corretto'
 validate-register-value-email: 'La mail indicata non è valida'
+register-id-field: Username

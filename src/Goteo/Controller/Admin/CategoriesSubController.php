@@ -17,15 +17,15 @@ use Goteo\Application\Config;
 class CategoriesSubController extends AbstractSubController {
 
     static protected $labels = array (
-      'list' => 'Listando',
-      'add' => 'Nueva Categoría',
-      'edit' => 'Editando Categoría',
-      'translate' => 'Traduciendo Categoría',
-      'keywords' => 'Palabras clave',
+      'list' => 'categories-lb-list',
+      'add' => 'categories-lb-add',
+      'edit' => 'categories-lb-edit',
+      'translate' => 'categories-lb-translate',
+      'keywords' => 'categories-lb-keywords',
     );
 
 
-    static protected $label = 'Categorías';
+    static protected $label = 'categories-lb';
 
     /**
      * Overwrite some permissions

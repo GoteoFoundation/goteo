@@ -16,7 +16,7 @@ dashboard-donor-saved: 'Grazie della modifica ai tuoi dati. Per scaricare il cer
 dashboard-menu-activity-donor: 'Certificato di donazione '
 donor-address-country-field: 'Paese '
 donor-address-location-field: 'Provincia '
-donor-field-amount: 'Importo della donazione:'
+donor-field-amount: 'Importo della donazione'
 donor-field-numproj: 'Donazioni realizzare il %s'
 personal-field-donor_name: Nome
 personal-field-donor_surname: Cognome

@@ -44,6 +44,7 @@ $url_project_create = $this->url_project_create ? $this->url_project_create : '/
                     <ul>
                         <li><a href="/dashboard/profile"><span><?= $this->text('dashboard-menu-profile') ?></span></a></li>
                         <li><a href="/dashboard/activity"><span><?= $this->text('dashboard-menu-activity') ?></span></a></li>
+                        <li><a href="/dashboard/wallet"><span><?= $this->text('dashboard-menu-pool') ?></span></a></li>
                         <li><a href="/dashboard/projects"><span><?= $this->text('dashboard-menu-projects') ?></span></a></li>
                         <li><a href="/dashboard/profile/preferences"><span><?= $this->text('dashboard-menu-profile-preferences'); ?></span></a></li>
 

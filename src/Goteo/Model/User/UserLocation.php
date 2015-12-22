@@ -11,6 +11,7 @@
 namespace Goteo\Model\User;
 
 use Goteo\Model\Project\ProjectLocation;
+use Goteo\Model\User;
 
 class UserLocation extends \Goteo\Model\Location\LocationItem {
     protected $Table = 'user_location';

@@ -6,7 +6,7 @@ profile-last_worth-title: Date
 profile-location-header: 'Ma localisation'
 profile-my_investors-header: 'Mes cofinanceurs'
 profile-my_projects-header: 'Mes projets'
-profile-my_worth-header: 'Ma contribution sur SiteName'
+profile-my_worth-header: 'Ma contribution sur Goteo'
 profile-name-header: 'Profil de'
 profile-patron-header: "Recommande <span class=\"red\">%s projets</span>\r\n"
 profile-sharing_interests-header: 'Intérêts partagés'

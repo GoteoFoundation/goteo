@@ -1,5 +1,3 @@
-login-register-conditions: 'En registrar-te, confirmes la teva acceptació dels nostres <a href="/legal/terms">termes d''ús</a>, <a href="/legal/privacy">política de privacitat</a> i <a href="legal/cookies">política de cookies</a>.'
-goteo-return-button: 'Tornar a Goteo'
 ID_DEL_TEXTO: 'Text ID_DEL_TEXTO'
 admin_no_permission: 'No tens permisos per accedir a <strong>%s</strong>'
 bazar-description-seo: 'Regalos solidarios crowdfunding en Goteo.org.'
@@ -35,6 +33,7 @@ error-user-password-invalid: 'La contrasenya és massa curta'
 error-user-wrong-password: 'La contrasenya no és correcta'
 explain-project-progress: 'Aquest gràfic explica d''una manera visual el nivell de dades que has introduït juntament amb una avaluació bàsica que fa el sistema. Per poder enviar el projecte has de superar el 80%. Els criteris que fan pujar aquest "termòmetre" tenen a veure amb la informació rellevant que facilites, els media, imatges i links que introdueixes, si tries una llicència més oberta que una altre, la coherència del teu pressupost respecte a les tasques a desenvolupar, etc. No perdis de vista els consells de la columna dreta, que guien durant tot el procés.'
 fancybox: 'Text fancybox'
+goteo-return-button: 'Tornar a Goteo'
 guide-dashboard-user-access: 'Des d''aquí pots modificar les dades amb que accedeixes al teu compte de Goteo.'
 guide-dashboard-user-personal: 'Només has d''omplir aquestes dades si has creat un projecte i vols que sigui cofinançat i recolzat mitjançant Goteo. La informació d''aquest apartat és necessària per contactar-te en cas que obtinguis el finançament, i que així es pugui fer efectiu l''ingrés.'
 guide-project-comment: guide-project-comment
@@ -52,6 +51,7 @@ horizontal-project-investors: cofinanciadores
 horizontal-project-percent: financiado
 horizontal-project-reached: conseguido
 invest-individual-header: 'Pots renunciar a rebre recompenses per la teva aportació, o seleccionar les que igualin o estiguin per sota de l''import que hagis introduït.'
+login-register-conditions: 'En registrar-te, confirmes la teva acceptació dels nostres <a href="/legal/terms">termes d''ús</a>, <a href="/legal/privacy">política de privacitat</a> i <a href="legal/cookies">política de cookies</a>.'
 mandatory-cost-field-type: 'És obligatori seleccionar el tipus de cost'
 mandatory-individual_reward-field-amount: 'És obligatori indicar l''import que permet obtenir la recompensa'
 mandatory-project-costs: 'Ha de desglossar-se com a mínim en dos costos.'
@@ -91,6 +91,7 @@ regular-header-blog: Blog
 regular-header-faq: FAQ
 regular-header-glossary: 'Principis per a una economia oberta'
 regular-hello: Hola
+regular-here: aquí
 regular-home: Inici
 regular-identica: Identi.ca
 regular-im: Sóc

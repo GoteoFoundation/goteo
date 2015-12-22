@@ -106,6 +106,17 @@ Try login with that password and manage the contents at http://your.intallation.
 
 However, we haven't tested it in any production database and very likely errors will be thrown. Debugging info will be appreciated.
 
+Cron configuration
+---------------------
+
+You will need to add a cron/crontab line in order to process severals project related events:
+
+```cron
+* * * * *   nice /usr/bin/php /path/to/installation/bin/console cron --lock --logmail > /dev/null 2>&1
+```
+
+Refer to the **Console scripts** documentation for more info
+
 Goteo configuration
 -------------
 

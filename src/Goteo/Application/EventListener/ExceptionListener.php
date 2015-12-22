@@ -139,18 +139,20 @@ class ExceptionListener extends AbstractListener {
 
 		// Old legacy redirections for compatibility
 		if ($exception instanceOf LegacyRedirection) {
-			$event->setResponse(new RedirectResponse($exception->getUrl(), $exception->getCode()));
-			return;
-		}
+            $event->setResponse(new RedirectResponse($exception->getUrl(), $exception->getCode()));
+            return;
+        }
 
-		// redirect to login on acces denied exception if not logged already
-		if ($exception instanceof ControllerAccessDeniedException) {
-			Message::error($exception->getMessage() ? $exception->getMessage() : Text::get('user-login-required-access'));
-			if (!Session::isLogged()) {
-				$event->setResponse(new RedirectResponse('/user/login?return=' . rawurlencode($request->getPathInfo())));
-				return;
-			}
-		}
+        if(!$request->isXmlHttpRequest()) {
+    		// redirect to login on acces denied exception if not logged already
+    		if ($exception instanceof ControllerAccessDeniedException) {
+    			Message::error($exception->getMessage() ? $exception->getMessage() : Text::get('user-login-required-access'));
+    			if (!Session::isLogged()) {
+    				$event->setResponse(new RedirectResponse('/user/login?return=' . rawurlencode($request->getPathInfo())));
+    				return;
+    			}
+    		}
+        }
 
 		$this->logException($exception, sprintf('Exception thrown when handling an exception (%s: %s at %s line %s)', get_class($exception), $exception->getMessage(), $exception->getFile(), $exception->getLine()), false);
 

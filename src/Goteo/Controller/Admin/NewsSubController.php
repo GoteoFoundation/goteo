@@ -22,14 +22,14 @@ use Goteo\Library\Text,
 class NewsSubController extends AbstractSubController {
 
     static protected $labels = array (
-      'list' => 'Listando',
-      'add' => 'Nueva Micronoticia',
-      'edit' => 'Editando Micronoticia',
-      'translate' => 'Traduciendo Micronoticia',
+      'list' => 'news-lb-list',
+      'add' => 'news-lb-add',
+      'edit' => 'news-lb-edit',
+      'translate' => 'news-lb-translate',
     );
 
 
-    static protected $label = 'Micronoticias';
+    static protected $label = 'news-lb';
 
     /**
      * Overwrite some permissions

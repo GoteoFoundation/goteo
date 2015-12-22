@@ -21,6 +21,31 @@ $select_currency=Currency::$currencies[$_SESSION['currency']]['html'];
           </div>
           <div id="navbar" class="navbar-collapse collapse">
             <ul class="nav navbar-nav navbar-right">
+              <li><a href="/faq"><?=$this->text('regular-header-faq') ?></a></li>
+              <li class="dropdown">
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><?= $select_currency." ".$_SESSION['currency'] ?> <span class="caret"></span></a>
+                <ul class="dropdown-menu language-dropbox">
+                  <?php foreach ($currencies as $ccyId => $ccy): ?>
+                  <?php if ($ccyId == $_SESSION['currency']) continue; ?>
+                    <li>
+                      <a href="?currency=<?= $ccyId ?>"><?= $ccy['html'].' '.$ccyId ?></a>
+                    </li>
+                  <?php endforeach ?>
+                </ul>
+              </li>
+
+              <li class="dropdown">
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><?= strtoupper($this->lang_current()) ?> <span class="caret"></span></a>
+                <ul class="dropdown-menu language-dropbox">
+                  <?php foreach ($langs as $id => $lang): ?>
+                  <?php if ($this->lang_active($id)) continue; ?>
+                    <li>
+                      <a href="<?= $this->lang_url($id) ?>"><?= $lang ?></a>
+                    </li>
+                  <?php endforeach ?>
+                </ul>
+              </li>
+
               <?php if (!$this->get_user()) : ?>
               <li><a href="/signup?return=<?= $this->get_uri() ?>"><?= $this->text('menu-signup') ?></a></li>
               <li><a href="/login?return=<?= $this->get_uri() ?>"><?= $this->text('menu-login') ?></a></li>
@@ -30,6 +55,7 @@ $select_currency=Currency::$currencies[$_SESSION['currency']]['html'];
                 <ul class="dropdown-menu language-dropbox">
                   <li><a href="/dashboard"><?= $this->text('dashboard-menu-main') ?></a></li>
                   <li><a href="/dashboard/profile"><?= $this->text('dashboard-menu-profile') ?></a></li>
+                  <li><a href="/dashboard/wallet"><?= $this->text('dashboard-menu-pool') ?></a></li>
                   <li><a href="/dashboard/activity"><?= $this->text('dashboard-menu-activity') ?></a></li>
                   <li><a href="/dashboard/projects"><?= $this->text('dashboard-menu-projects') ?></a></li>
                   <li><a href="/dashboard/profile/preferences"><?= $this->text('dashboard-menu-profile-preferences'); ?></a></li>
@@ -57,29 +83,7 @@ $select_currency=Currency::$currencies[$_SESSION['currency']]['html'];
                 </ul>
               </li>
               <?php endif; ?>
-              <li><a href="/faq"><?=$this->text('regular-header-faq') ?></a></li>
-              <li class="dropdown">
-                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><?= strtoupper($this->lang_current()) ?> <span class="caret"></span></a>
-                <ul class="dropdown-menu language-dropbox">
-                  <?php foreach ($langs as $id => $lang): ?>
-                  <?php if ($this->lang_active($id)) continue; ?>
-                    <li>
-                      <a href="<?= $this->lang_url($id) ?>"><?= $lang ?></a>
-                    </li>
-                  <?php endforeach ?>
-                </ul>
-              </li>
-              <li class="dropdown">
-                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><?= $select_currency." ".$_SESSION['currency'] ?> <span class="caret"></span></a>
-                <ul class="dropdown-menu language-dropbox">
-                  <?php foreach ($currencies as $ccyId => $ccy): ?>
-                  <?php if ($ccyId == $_SESSION['currency']) continue; ?>
-                    <li>
-                      <a href="?currency=<?= $ccyId ?>"><?= $ccy['html'].' '.$ccyId ?></a>
-                    </li>
-                  <?php endforeach ?>
-                </ul>
-              </li>
+
             </ul>
           </div><!--/.nav-collapse -->
         </div><!--/.container-fluid -->

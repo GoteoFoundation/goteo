@@ -13,6 +13,7 @@ namespace Goteo\Core;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
+use Symfony\Component\HttpFoundation\ResponseHeaderBag;
 use Symfony\Component\EventDispatcher\Event;
 use Goteo\Application\App;
 use Goteo\Core\Traits\LoggerTrait;
@@ -30,8 +31,17 @@ abstract class Controller {
     /**
      * Handy method to send a response any string
      */
-    public function rawResponse($string, $contentType = 'text/plain' , $status = 200) {
-        return new Response($string, $status, ['Content-Type' => $contentType]);
+    public function rawResponse($string, $contentType = 'text/plain' , $status = 200, $file_name = '') {
+        $response = new Response($string, $status, ['Content-Type' => $contentType]);
+
+        if($file_name) {
+            $d = $response->headers->makeDisposition(
+                ResponseHeaderBag::DISPOSITION_ATTACHMENT,
+                $file_name
+            );
+            $response->headers->set('Content-Disposition', $d);
+        }
+        return $response;
     }
 
     /**

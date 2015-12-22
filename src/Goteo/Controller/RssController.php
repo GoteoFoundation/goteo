@@ -26,7 +26,9 @@ class RssController extends \Goteo\Core\Controller {
     public function indexAction ($lang = '', Request $request) {
         date_default_timezone_set('UTC');
 
-        if($lang) Lang::set($lang);
+        if(preg_match('/^[a-z]{2,2}+$/', $lang)) {
+            Lang::set($lang);
+        }
         $lang = Lang::current();
 
         $url = $request->getSchemeAndHttpHost();

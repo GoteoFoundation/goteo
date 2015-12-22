@@ -27,7 +27,7 @@ $filters = $this->filters;
                 </td>
                 <td>
                     <label for="project-filter">De proyectos que el nombre contenga</label><br />
-                    <input id="project-filter" name="project" value="<?= $filters['project']?>" style="width:300px;" />
+                    <input id="project-filter" name="project" value="<?= $filters['project']?>" style="width:200px;" />
                 </td>
                 <td>
                     <label for="status-filter">En estado</label><br />
@@ -47,6 +47,15 @@ $filters = $this->filters;
                     <?php endforeach ?>
                     </select>
                 </td>
+                <td>
+                    <label for="antiquity-filter">más recientes que:</label><br />
+                    <select id="antiquity-filter" name="antiquity">
+                        <option value="">Cualquiera</option>
+                    <?php foreach ($this->antiquity as $i => $date) : ?>
+                        <option value="<?= $i ?>"<?php if ($filters['antiquity'] == $i) echo ' selected="selected"';?>><?= $date ?></option>
+                    <?php endforeach ?>
+                    </select>
+                </td>
             </tr>
             <tr>
                 <td>
@@ -61,7 +70,7 @@ $filters = $this->filters;
                 </td>
                 <td>
                     <label for="name-filter">Que el nombre o email contenga</label><br />
-                    <input id="name-filter" name="name" value="<?= $filters['name']?>" style="width:300px;" />
+                    <input id="name-filter" name="name" value="<?= $filters['name']?>" style="width:200px;" />
                 </td>
                 <td>
                     <label for="role-filter">Que sean</label><br />
@@ -72,7 +81,7 @@ $filters = $this->filters;
                     <?php endforeach ?>
                     </select>
                 </td>
-                <td>
+                <td colspan="2">
                     <label for="comlang-filter">Con idioma preferencia</label><br />
                     <select id="comlang-filter" name="comlang">
                         <option value=""></option>
@@ -80,10 +89,10 @@ $filters = $this->filters;
                             <option value="<?= $lang->id ?>"<?php if ($filters['comlang'] == $lang->id) echo ' selected="selected"';?>><?= $lang->short ?></option>
                         <?php endforeach ?>
                     </select>
+                    <label><input type="checkbox" name="langreverse" value="1"> Invertir</label>
                 </td>
             </tr>
-            <tr>
-                <td colspan="3"><input type="submit" name="select" value="Buscar destinatarios"></td>
+                <td colspan="5"><input type="submit" name="select" value="Buscar destinatarios"></td>
             </tr>
         </table>
 

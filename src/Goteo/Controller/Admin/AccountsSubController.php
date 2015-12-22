@@ -25,6 +25,7 @@ use Goteo\Application\Event\FilterInvestRefundEvent;
 use Goteo\Util\Omnipay\Message\EmptySuccessfulResponse;
 use Goteo\Payment\Payment;
 use Goteo\Model\Invest;
+use Goteo\Model\Invest\InvestLocation;
 use Goteo\Model\User;
 use Goteo\Model\Project;
 use Goteo\Model;
@@ -34,20 +35,20 @@ use Omnipay\Common\Message\ResponseInterface;
 class AccountsSubController extends AbstractSubController {
 
     static protected $labels = array (
-      'list' => 'Listando',
-      'details' => 'Detalles del aporte',
-      'update' => 'Cambiando el estado al aporte',
-      'add' => 'Aporte manual',
-      'move' => 'Reubicando el aporte',
-      'execute' => 'Ejecución del cargo',
-      'cancel' => 'Cancelando aporte',
-      'report' => 'Informe de proyecto',
-      'viewer' => 'Viendo logs',
-      'cancel-pool' => 'Cancelando opción crédito'
+      'list' => 'accounts-lb-list',
+      'details' => 'accounts-lb-details',
+      'update' => 'accounts-lb-update',
+      'add' => 'accounts-lb-add',
+      'move' => 'accounts-lb-move',
+      'execute' => 'accounts-lb-execute',
+      'cancel' => 'accounts-lb-cancel',
+      'report' => 'accounts-lb-report',
+      'viewer' => 'accounts-lb-viewer',
+      'cancel-pool' => 'accounts-lb-cancel-pool'
     );
 
 
-    static protected $label = 'Aportes';
+    static protected $label = 'accounts-lb';
 
 
     protected $filters = array (
@@ -180,7 +181,7 @@ class AccountsSubController extends AbstractSubController {
 
                 // Checks and redirects
                 if (!$response instanceof ResponseInterface) {
-                    throw new \RuntimeException('This response does not implements ResponseInterface.');
+                    throw new \RuntimeException('This response does not implements ResponseInterface');
                 }
 
                 // On-sites can return a successful response here
@@ -240,12 +241,13 @@ class AccountsSubController extends AbstractSubController {
 
         $status = $invest->status;
         $coin = Currency::getDefault('html');
-        if (!in_array($status, [Invest::STATUS_PENDING, Invest::STATUS_CHARGED, Invest::STATUS_PAID, Invest::STATUS_CANCELLED, Invest::STATUS_RETURNED, Invest::STATUS_TO_POOL])) {
+        if (!in_array($status, [Invest::STATUS_PENDING, Invest::STATUS_CHARGED, Invest::STATUS_TO_POOL])) {
             Message::error(Text::get('admin-account-invest-non-user-refundable'));
         } else {
             // check the pool for this statuses
             $errors = array();
             $amount = null;
+            $current_pool = $invest->pool;
             // If it's already on the user's pool, we will try to refunded anyway
             if($status == Invest::STATUS_TO_POOL) {
                 $amount = $invest->getUser()->getPool()->getAmount();
@@ -272,6 +274,8 @@ class AccountsSubController extends AbstractSubController {
                         Message::info(Text::get('admin-account-invest-user-refund-ok-pool', "{$invest->amount} $coin"));
                     }
                 }
+            } else {
+                $invest->setPoolOnFail($current_pool);
             }
         }
 
@@ -287,7 +291,7 @@ class AccountsSubController extends AbstractSubController {
         }
         $project = $invest->getProject();
         $returned = ($project->status == Project::STATUS_UNFUNDED);
-        $coin = Currency::getDefault()['html'];
+        $coin = Currency::getDefault('html');
 
         if (!in_array($invest->status, [Invest::STATUS_CHARGED])) {
             Message::error(Text::get('admin-account-invest-non-pool-refundable'));
@@ -299,7 +303,7 @@ class AccountsSubController extends AbstractSubController {
             // Event invest success event
             $invest = $this->dispatch($returned ? AppEvents::INVEST_RETURNED : AppEvents::INVEST_CANCELLED, new FilterInvestRefundEvent($invest, $invest->getMethod(), new EmptySuccessfulResponse()))->getInvest();
 
-            if ($invest->status == Invest::STATUS_TO_POOL) {
+            if ($invest->isOnPool()) {
                 Message::info(Text::get('admin-account-invest-to-pool-ok', "{$invest->amount} $coin"));
                 // Evento Feed
                 $log = new Feed();
@@ -335,6 +339,10 @@ class AccountsSubController extends AbstractSubController {
         if (!$invest instanceof Invest) {
             Message::error(Text::get('admin-account-invalid-invest', $id));
             return $this->redirect('/admin/accounts');
+        }
+        if($invest->isOnPool() && $invest->pool) {
+            Message::error(Text::get('admin-account-switch-pool-fail'));
+            return $this->redirect('/admin/accounts/details/' . $id);
         }
         if ($invest->switchPoolOnFail($id)) {
             Message::info('Pool cambiado de estado');
@@ -541,7 +549,7 @@ class AccountsSubController extends AbstractSubController {
             }
 
             if ($new != $invest->status && isset($new) && isset($status[$new])) {
-                if (Invest::query("UPDATE invest SET status=:status WHERE id=:id", array(':id'=>$id, ':status'=>$new))) {
+                if (Invest::query("UPDATE invest SET status=:status WHERE id=:id", array(':id' => $id, ':status' => $new))) {
                     Invest::setDetail($id, 'status-change', 'El admin ' . $this->user->name . ' ha cambiado el estado a '.$status[$new]);
                     Message::info('Se ha actualizado el estado del aporte');
                 } else {
@@ -678,19 +686,21 @@ class AccountsSubController extends AbstractSubController {
         $project = $invest->getProject();
         $userData = User::get($invest->user);
         $methods = Invest::methods();
-        $poolable = $invest->getMethod()->isPublic();
-        $refundable = $invest->getMethod()->refundable();
+        $poolable = $invest->getMethod()->isPublic() && $invest->status == Invest::STATUS_CHARGED;
+        $refundable = $invest->getMethod()->refundable() && in_array($invest->status, [Invest::STATUS_PENDING, Invest::STATUS_CHARGED, Invest::STATUS_TO_POOL]);
+        $location = InvestLocation::get($invest);
 
         return array(
                 'template' => 'admin/accounts/details',
-                'invest'=>$invest,
-                'project'=>$project,
+                'invest' => $invest,
+                'location' => $location,
+                'project' => $project,
                 'refundable' => $refundable,
                 'poolable' => $poolable,
-                'user'=>$userData,
-                'projectStatus'=>$projectStatus,
-                'investStatus'=>$investStatus,
-                'methods'=>$methods
+                'user' => $userData,
+                'projectStatus' => $projectStatus,
+                'investStatus' => $investStatus,
+                'methods' => $methods
         );
     }
 

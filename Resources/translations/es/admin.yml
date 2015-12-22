@@ -7,7 +7,7 @@ admin-account-edit-reward: 'Gestionar recompensa/dirección'
 admin-account-invalid-invest: 'Aporte [%s] no encontrado!'
 admin-account-invest-date: 'Fecha del aporte'
 admin-account-invest-non-pool-refundable: 'Este aporte no se puede reembolsar al monedero virtual. Sólo se pueden reembolsar los aportes en estado "Cobrado"'
-admin-account-invest-non-user-refundable: "Este aporte no se puede reembolsar. Se pueden reembolsar los aportes en estados:\n\"Pendiente\", \"Cobrado\", \"Pagado al proyecto\"\n\"Cancelado\", \"Retornado\" (sólo si está marcado con \"pool\" y hay suficiente dinero en el monedero para descontar)\n"
+admin-account-invest-non-user-refundable: "Este aporte no se puede reembolsar. Se pueden reembolsar los aportes en estados:\n\"Pendiente\", \"Cobrado\" y \"Al monedero\" si hay suficiente dinero en el monedero para descontar\n"
 admin-account-invest-to-pool-ko: 'Fallo al devolver el aporte al monedero'
 admin-account-invest-to-pool-ok: 'Aporte reembolsado al monedero. Incrementado el monedero por valor de (%s)'
 admin-account-invest-user-refund-fail-pool-amount: 'Este aporte no se puede devolver porque el usuario no tiene suficiente dinero en el monedero (%s)'
@@ -28,6 +28,7 @@ admin-account-switch-donation: 'Conmutar donativo'
 admin-account-switch-donation-confirm: '¿Seguro que quieres cambiar el estado de donativo?'
 admin-account-switch-pool: 'Conmutar el pool'
 admin-account-switch-pool-confirm: 'Esto solo afecta para cuando falla el proyecto, no genera ni quita dinero del monedero. ¿Continuar?'
+admin-account-switch-pool-fail: 'No se puede cambiar el estado del pool de este aporte'
 admin-account-transaction: 'Códigos de seguimiento'
 admin-address: Dirección
 admin-back: Volver
@@ -35,6 +36,16 @@ admin-back-detail: 'Volver al detalle'
 admin-back-list: 'Volver al listado'
 admin-contents: 'Textos y Traducciones'
 admin-home: Portada
+admin-mailing-back-to-list: 'Volver a comuncaciones'
+admin-mailing-communicating-with: 'Buscábamos comunicarnos con %DESC%'
+admin-mailing-created: 'Creado el'
+admin-mailing-new-massive: 'Se ha creado un nuevo mailing masivo a %TOTAL% usuarios'
+admin-mailing-status: 'Estado del envío automático'
+admin-mailing-subject: Asunto
+admin-mailing-view-and-activate: 'Ver en el admin del boletín para activar el envio'
+admin-mailing-view-in-newsletter: 'Ver en el admin del boletín'
+admin-mailing-view-in-sent: 'Ver en el historial de envíos (estadísticas)'
+admin-mailing-view-message: 'Ver el mensaje'
 admin-no: 'No'
 admin-project: Proyecto
 admin-projects: Proyectos
@@ -43,13 +54,8 @@ admin-status: Estado
 admin-user: Usuario
 admin-users: Usuarios
 admin-yes: Si
-admin-mailing-back-to-list: 'Volver a comuncaciones'
-admin-mailing-view-message: 'Ver el mensaje'
-admin-mailing-communicating-with: 'Buscábamos comunicarnos con %DESC%'
-admin-mailing-new-massive: 'Se ha creado un nuevo mailing masivo a %TOTAL% usuarios'
-admin-mailing-subject: 'Asunto'
-admin-mailing-created: 'Creado el'
-admin-mailing-status: 'Estado del envío automático'
-admin-mailing-view-and-activate: 'Ver en el admin del boletín para activar el envio'
-admin-mailing-view-in-newsletter: 'Ver en el admin del boletín'
-admin-mailing-view-in-sent: 'Ver en el historial de envíos (estadísticas)'
+admin-percent: Porcentaje
+admin-empty-list: 'No se han encontrado registros'
+admin-items: 'entradas'
+admin-remove-filters: 'Quitar filtros'
+admin-all: 'Todos'

@@ -10,5 +10,5 @@ dashboard-donor-no_donor: 'Nous observons que vous n''avez réalisé aucun don. 
 dashboard-donor-save_fail: 'Une erreur est survenue lors de l''enregistrement des données. Vérifiez s''il vous plait et, si le problème persiste, merci de nous contacter.'
 dashboard-donor-saved: "Vous pouvez modifier à\_ nouveau les informations Jusqu'à\_ ce que vous téléchargiez le certificat. Après, vous ne pourrez plus l'éditer."
 dashboard-menu-activity-donor: 'Certificat de don'
-donor-field-amount: 'Montant du don:'
+donor-field-amount: 'Montant du don'
 donor-field-numproj: 'Nombre de projet'

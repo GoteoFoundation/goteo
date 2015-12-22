@@ -21,6 +21,7 @@ use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\Process\Process;
 
 class RoundCommand extends AbstractCommand {
 
@@ -66,10 +67,10 @@ EOT
 		$skip_invests = $input->getOption('skip-invests');
 
 		if ($project_id) {
-			$output->writeln("<comment>Processing Project [$project_id]:</comment>");
+			$output->writeln("<info>Processing Project [$project_id]:</info>");
 			$projects = [Project::get($project_id)];
 		} else {
-			$output->writeln('<comment>Processing Active Projects:</comment>');
+			$output->writeln('<info>Processing Active Projects:</info>');
 
 			// Active projects
 			$projects = Project::getList(['status' => Project::STATUS_IN_CAMPAIGN], null, 0, 10000);
@@ -82,78 +83,116 @@ EOT
 
 		$symbol    = Currency::getDefault('id');
 		$processed = 0;
-		foreach ($projects as $project) {
-			if ((int) $project->status !== Project::STATUS_IN_CAMPAIGN) {
-				$this->debug("Skipping status [{$project->status}] from PROJECT: {$project->id}. Only projects IN CAMPAIGN will be processed");
-				continue;
-			}
+        $action_done = false;
+        foreach ($projects as $project) {
+            if ((int) $project->status !== Project::STATUS_IN_CAMPAIGN) {
+                $this->debug("Skipping status [{$project->status}] from PROJECT: {$project->id}. Only projects IN CAMPAIGN will be processed");
+                continue;
+            }
 
-			// Make sure amounts are correct
-			$project->amount = Invest::invested($project->id);
-			$percent         = $project->getAmountPercent();
+            // Make sure amounts are correct
+            $project->amount = Invest::invested($project->id);
+            $percent         = $project->getAmountPercent();
 
-			$this->info("Processing project in campaign", [$project, "project_days_active" => $project->days_active, 'project_days_round1'  => $project->days_round1,
+			$this->debug("Processing project in campaign", [$project, "project_days_active" => $project->days_active, 'project_days_round1'  => $project->days_round1,
                     'project_days_round2'  => $project->days_round2, "percent" => $percent]);
 
 			// a los 5, 3, 2, y 1 dia para finalizar ronda
 			if ($project->round > 0 && in_array((int) $project->days, array(5, 3, 2, 1))) {
-				$this->notice("Public feed due remaining {$project->days} days to end of round {$project->round}", [$project]);
-				if ($update) {
-					// dispatch ending event, will generate a feed entry if needed
-					$project = $this->dispatch(ConsoleEvents::PROJECT_ENDING, new FilterProjectEvent($project))->getProject();
-				}
-			}
+				$this->notice("Public feed due remaining {$project->days} days until end of round {$project->round}", [$project]);
+                $action_done = true;
+                if ($update) {
+                    // dispatch ending event, will generate a feed entry if needed
+                    $project = $this->dispatch(ConsoleEvents::PROJECT_ENDING, new FilterProjectEvent($project))->getProject();
+                }
+            }
 
-			// Check project's health
-			if ($project->days_active >= $project->days_round1) {
-				// si no ha alcanzado el mínimo, pasa a estado caducado
-				if ($project->amount < $project->mincost) {
-					$this->warning("Archiving project. It has FAILED on achieving the minimum amount", [$project]);
-					if ($update) {
-						// dispatch ending event, will generate a feed entry if needed
-						$project = $this->dispatch(ConsoleEvents::PROJECT_FAILED, new FilterProjectEvent($project))->getProject();
-					}
+            // Check project's health
+            if ($project->days_active >= $project->days_round1) {
+                // si no ha alcanzado el mínimo, pasa a estado caducado
+                if ($project->amount < $project->mincost) {
+                    $action_done = true;
+                    $this->notice("Archiving project. It has FAILED on achieving the minimum amount", [$project]);
+                    if ($update) {
+                        // dispatch ending event, will generate a feed entry if needed
+                        $project = $this->dispatch(ConsoleEvents::PROJECT_FAILED, new FilterProjectEvent($project))->getProject();
+                    }
 
-					if ($skip_invests) {
-						$this->warning("Skipping Invests refunds as required", [$project]);
-					} else {
-						// Execute "console refund"  command for returning invests
-						// refund Invests for this project
-						$command = $this->getApplication()->find('refund');
-
-						// Changes the name of the logger:
-						// $command->addLogger(new \Monolog\Logger('refund', $this->getLogger()->getHandlers(), $this->getLogger()->getProcessors()), 'refund');
-						// lOG UNDER THE SAME NAME
-						$command->addLogger($this->getLogger(), 'refund');
-
-						$arguments = array(
-							'command'   => 'refund',
-							'--project' => $project->id,
-							'--update'  => $update,
-						);
-
-						$returnCode = $command->run(new ArrayInput($arguments), $output);
-					}
-				} else {
-					if ($project->one_round) {
-                        if(empty($project->success)) {
-    						// one round only project
-    						$this->notice('Ending round for one-round-only project', [$project, 'project_days_round1' => $project->days_round1]);
-    						if ($update) {
-    							// dispatch passing event, will generate a feed entry if needed
-    							$project = $this->dispatch(ConsoleEvents::PROJECT_ONE_ROUND, new FilterProjectEvent($project))->getProject();
-    						}
+                    if ($skip_invests) {
+                        $this->warning("Skipping Invests refunds as required", [$project]);
+                    } else {
+                        // Execute "console refund"  command for returning invests
+                        // refund Invests for this project
+                        $args = ' --project ' . escapeshellarg($project->id);
+                        if($update) $args .= ' --update';
+                        else        $args .= ' --any-project';
+                        if($output->isVerbose()) $args .= ' --verbose';
+                        $process = new Process(GOTEO_PATH . 'bin/console refund' . $args);
+                        $process->run(function ($type, $buffer) use ($output) {
+                            if (Process::ERR === $type) {
+                                $output->write("<error>$buffer</error>");
+                            } else {
+                                $output->write("<fg=magenta>$buffer</>");
+                            }
+                        });
+                        if($process->isSuccessful()) {
+                            $this->notice('Subcommand processed successfully', ['command' => $process->getCommandLine()]);
+                        } else {
+                            $this->error('Subcommand failed', ['command' => $process->getCommandLine()]);
                         }
-					} elseif ($project->days_active >= $project->days_total) {
-						// 2 rounds project, end of life
-						$this->notice('Ending second round for 2-rounds project', [$project, 'project_days_active' => $project->days_active, 'project_days_total' => $project->days_total]);
-						if ($update) {
-							// dispatch passing event, will generate a feed entry if needed
-							$project = $this->dispatch(ConsoleEvents::PROJECT_ROUND2, new FilterProjectEvent($project))->getProject();
-						}
 
-					} elseif (empty($project->passed)) {
-						// 2 rounds project, 1srt round passed
+                        //
+                        // NOT USING SUB-COMMAND CALLING BECAUSE EVENTS ARE NOT FIRED
+                        //
+                        // $command = $this->getApplication()->find('refund');
+
+                        // // Changes the name of the logger:
+                        // // $command->addLogger(new \Monolog\Logger('refund', $this->getLogger()->getHandlers(), $this->getLogger()->getProcessors()), 'refund');
+                        // // lOG UNDER THE SAME NAME
+                        // $command->addLogger($this->getLogger(), 'refund');
+
+                        // $arguments = array(
+                        //     'command'   => 'refund',
+                        //     '--project' => $project->id,
+                        // );
+                        // if($update) {
+                        //     $arguments['--update']  = true;
+                        // }
+                        // if($output->isVerbose()) {
+                        //     $arguments['--verbose'] = true;
+                        // }
+
+                        // $returnCode = $command->run(new ArrayInput($arguments), $output);
+                        // if($returnCode == 0) {
+                        //     $this->notice('Subcommand processed successfully', $arguments);
+                        // }
+                        // else {
+                        //     $this->error('Subcommand failed', $arguments);
+                        // }
+                    }
+                } else {
+                    if ($project->one_round) {
+                        if(empty($project->success)) {
+                            $action_done = true;
+                            // one round only project
+                            $this->notice('Ending round for one-round-only project', [$project, 'project_days_round1' => $project->days_round1]);
+                            if ($update) {
+                                // dispatch passing event, will generate a feed entry if needed
+                                $project = $this->dispatch(ConsoleEvents::PROJECT_ONE_ROUND, new FilterProjectEvent($project))->getProject();
+                            }
+                        }
+                    } elseif ($project->days_active >= $project->days_total) {
+                        // 2 rounds project, end of life
+                        $action_done = true;
+                        $this->notice('Ending second round for 2-rounds project', [$project, 'project_days_active' => $project->days_active, 'project_days_total' => $project->days_total]);
+                        if ($update) {
+                            // dispatch passing event, will generate a feed entry if needed
+                            $project = $this->dispatch(ConsoleEvents::PROJECT_ROUND2, new FilterProjectEvent($project))->getProject();
+                        }
+
+                    } elseif (empty($project->passed)) {
+                        // 2 rounds project, 1srt round passed
+                        $action_done = true;
 						$this->notice('Ending first round for 2-rounds project', [$project, 'project_days_round1' => $project->days_round1, 'project_days_total' => $project->days_total]);
 						if ($update) {
 							// dispatch passing event, will generate a feed entry if needed
@@ -171,7 +210,10 @@ EOT
 			$processed++;
 		}
 
-		if ($processed == 0) {
+        if (!$action_done) {
+            $this->info("No actions required");
+        }
+        if ($processed == 0) {
 			$this->info("No projects processed");
 			return;
 		}

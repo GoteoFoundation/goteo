@@ -21,14 +21,14 @@ use Goteo\Application\Message,
 class LicensesSubController extends AbstractSubController {
 
     static protected $labels = array (
-      'list' => 'Listando',
-      'add' => 'Creando Idea',
-      'edit' => 'Editando Licencia',
-      'translate' => 'Traduciendo Licencia',
+      'list' => 'licenses-lb-list',
+      'add' => 'licenses-lb-add',
+      'edit' => 'licenses-lb-edit',
+      'translate' => 'licenses-lb-translate',
     );
 
 
-    static protected $label = 'Licencias';
+    static protected $label = 'licenses-lb';
 
 
     protected $filters = array (

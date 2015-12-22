@@ -15,34 +15,35 @@ namespace Goteo\Controller\Admin;
 use Goteo\Application\Exception\ControllerAccessDeniedException;
 use Goteo\Application\Exception\ModelNotFoundException;
 use Symfony\Component\HttpFoundation\Request;
-use Goteo\Library\Text,
-	Goteo\Library\Feed,
-    Goteo\Application\Message,
-    Goteo\Model\Mail,
-	Goteo\Model\Template,
-    Goteo\Model,
-    Goteo\Console\UsersSend;
+use Goteo\Library\Text;
+use Goteo\Library\Feed;
+use Goteo\Application\Message;
+use Goteo\Model\Mail;
+use Goteo\Model\Template;
+use Goteo\Model\Project\ProjectLocation;
+use Goteo\Model;
+use Goteo\Console\UsersSend;
 
 class ProjectsSubController extends AbstractSubController {
 
     static protected $labels = array (
-      'list' => 'Listando',
-      'move' => 'Moviendo a otro Nodo el proyecto',
-      'execute' => 'Ejecución del cargo',
-      'cancel' => 'Cancelando aporte',
-      'report' => 'Informe Financiero del proyecto',
-      'conf' => 'Configuración de campaña del proyecto',
-      'dates' => 'Fechas del proyecto',
-      'accounts' => 'Cuentas del proyecto',
-      'images' => 'Imágenes del proyecto',
-      'assign' => 'Asignando a una Convocatoria el proyecto',
-      'open_tags' => 'Asignando una agrupación al proyecto',
-      'rebase' => 'Cambiando Id de proyecto',
-      'consultants' => 'Cambiando asesor del proyecto',
+      'list' => 'projects-lb-list',
+      'move' => 'projects-lb-move',
+      'execute' => 'projects-lb-execute',
+      'cancel' => 'projects-lb-cancel',
+      'report' => 'projects-lb-report',
+      'conf' => 'projects-lb-conf',
+      'dates' => 'projects-lb-dates',
+      'accounts' => 'projects-lb-accounts',
+      'images' => 'projects-lb-images',
+      'assign' => 'projects-lb-assign',
+      'open_tags' => 'projects-lb-open_tags',
+      'rebase' => 'projects-lb-rebase',
+      'consultants' => 'projects-lb-consultants',
     );
 
 
-    static protected $label = 'Proyectos';
+    static protected $label = 'projects-lb';
 
 
     protected $filters = array (
@@ -423,8 +424,49 @@ class ProjectsSubController extends AbstractSubController {
 
     }
 
+    public function locationAction($id) {
+        $project = $this->getProject($id, 'edit');
+
+        if ($this->isPost()) {
+            if($this->getPost('latitude') && $this->getPost('longitude')){
+                $loc = new ProjectLocation(array(
+                    'id'           => $project->id,
+                    'city'         => $this->getPost('city'),
+                    'region'       => $this->getPost('region'),
+                    'country'      => $this->getPost('country'),
+                    'country_code' => $this->getPost('country'),
+                    'longitude'    => $this->getPost('longitude'),
+                    'latitude'     => $this->getPost('latitude'),
+                    'method'       => 'manual'
+                ));
+                $errors = [];
+                if ($loc->save($errors)) {
+                    Message::info('Localización actualizada a '.$this->getPost('city') .', '.$this->getPost('country'));
+                } else {
+                    Message::error(implode("<br>", $errors));
+                }
+            }
+            else {
+                Message::error('Error: geolocalización no cambiada!');
+            }
+            return $this->redirect('/admin/projects/location/' . $project->id);
+        }
+
+        $location = ProjectLocation::get($project);
+
+        // cambiar fechas
+        return array(
+                'template' => 'admin/projects/location',
+                'project' => $project,
+                'location' => $location
+        );
+
+    }
+
 
     public function datesAction($id = null, $subaction = null) {
+
+        $project = $this->getProject($id, 'edit');
 
         if($this->isPost()) {
             $fields = array(
@@ -476,8 +518,6 @@ class ProjectsSubController extends AbstractSubController {
                 Message::error("Ha fallado! " . $e->getMessage());
             }
         }
-        else
-            $project = $this->getProject($id, 'edit');
         // cambiar fechas
         return array(
                 'template' => 'admin/projects/dates',

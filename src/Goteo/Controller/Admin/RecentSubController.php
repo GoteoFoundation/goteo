@@ -20,11 +20,11 @@ use Goteo\Application\config,
 class RecentSubController extends AbstractSubController {
 
     static protected $labels = array (
-      'list' => 'Listando',
+      'list' => 'recent-lb-list',
     );
 
 
-    static protected $label = 'Actividad reciente';
+    static protected $label = 'recent-lb';
 
     /**
      * Overwrite some permissions

@@ -1,3 +1,4 @@
+costs-field-select-rounds: 'Durée de la campagne'
 form-accept-button: Valider
 form-add-button: Ajouter
 form-ajax-info: 'Le formulaire est sauvegardé automatiquement au fur et àmesure'
@@ -25,4 +26,11 @@ form-remove-button: Effacer
 form-self_review-button: Corriger
 form-send_review-button: Envoyer
 form-upload-button: Envoyer
+help-cost-to-consultant: '- Besoin d''aide pour la section budget.<br/>'
+help-license-to-consultant: '- Besoin d''aide pour établir les retombées et choisir une license<br/>'
+overview-extra-fields: 'Champs complémentaires du formulaire'
 project-form-header: Formulaire
+project-one-round: 'Un seul round de 40 jours'
+project-personal-field-entity_name: 'The party on behalf of which you are acting (if applicable) '
+project-two-rounds: '2 rounds de 40 jours'
+tooltip-project-personal-entity_name: 'Si vous representez une organisation, veuillez nous l''indiquer ici'

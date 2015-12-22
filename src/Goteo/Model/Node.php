@@ -24,6 +24,7 @@ class Node extends \Goteo\Core\Model {
         $admins = array(), // administradores
         $logo,
         $sello,
+        $home_img,
         $active,
         $image,
         $default_consultant,
@@ -50,6 +51,7 @@ class Node extends \Goteo\Core\Model {
                 IFNULL(node_lang.description, node.description) as description,
                 node.logo as logo,
                 node.label as label,
+                node.home_img as home_img,
                 node.location as location,
                 node.url as url,
                 node.active as active,
@@ -80,6 +82,9 @@ class Node extends \Goteo\Core\Model {
 
         // label
         $item->label = (!empty($item->label)) ? Image::get($item->label) : null;
+
+        // label
+        $item->home_img = (!empty($item->home_img)) ? Image::get($item->home_img) : null;
 
         return $item;
     }
@@ -136,13 +141,23 @@ class Node extends \Goteo\Core\Model {
         $list = array();
 
         $sqlFilter = "";
+
         if (!empty($filters['name'])) {
             $sqlFilter .= " AND ( name LIKE ('%{$filters['name']}%') OR id = '{$filters['name']}' )";
         }
+
+        if (!empty($filters['type'])) {
+                if($filters['type'] == 'channel') 
+                    $sqlFilter .= " AND url = ''";
+                else
+                    $sqlFilter .= " AND url != ''";
+        }
+
         if (!empty($filters['status'])) {
             $active = $filters['status'] == 'active' ? '1' : '0';
             $sqlFilter .= " AND active = '$active'";
         }
+
         if (!empty($filters['admin'])) {
             $sqlFilter .= " AND id IN (SELECT node_id FROM user_role WHERE user_id = '{$filters['admin']}')";
         }
@@ -159,6 +174,14 @@ class Node extends \Goteo\Core\Model {
         foreach ($sql->fetchAll(\PDO::FETCH_CLASS, __CLASS__) as $item) {
             // y sus administradores
             $item->admins = self::getAdmins($item->id);
+
+            if (!empty($item->home_img)) {
+                    $item->home_img = Image::get($item->home_img);
+                }
+
+            // pojects
+           
+            $item->summary = $item->getSummary();
 
             $list[] = $item;
         }
@@ -221,6 +244,10 @@ class Node extends \Goteo\Core\Model {
 
         if (isset($this->label->id)) {
             $this->label = $this->label->id;
+        }
+
+        if (isset($this->home_img->id)) {
+            $this->home_img = $this->home_img->id;
         }
 
         return empty($errors);
@@ -424,6 +451,21 @@ class Node extends \Goteo\Core\Model {
             $this->label = '';
         }
 
+        // Tratamos imagen módulo home
+        if (is_array($this->home_img) && !empty($this->home_img['name'])) {
+            $image = new Image($this->home_img);
+
+            if ($image->save($errors)) {
+                $this->home_img = $image->id;
+            } else {
+                \Goteo\Application\Message::error(Text::get('image-upload-fail') . implode(', ', $errors));
+                $this->home_img = '';
+            }
+        }
+        if (is_null($this->home_img)) {
+            $this->home_img = '';
+        }
+
         $fields = array(
             'name',
             'subtitle',
@@ -431,6 +473,7 @@ class Node extends \Goteo\Core\Model {
             'location',
             'logo',
             'label',
+            'home_img',
             'description',
             'twitter',
             'facebook',

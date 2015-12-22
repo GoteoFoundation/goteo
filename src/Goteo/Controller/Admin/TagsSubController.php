@@ -21,14 +21,14 @@ use Goteo\Library\Text,
 class TagsSubController extends AbstractSubController {
 
     static protected $labels = array (
-      'list' => 'Listando',
-      'add' => 'Nuevo Tag',
-      'edit' => 'Editando Tag',
-      'translate' => 'Traduciendo Tag',
+      'list' => 'tags-lb-list',
+      'add' => 'tags-lb-add',
+      'edit' => 'tags-lb-edit',
+      'translate' => 'tags-lb-translate',
     );
 
 
-    static protected $label = 'Tags de blog';
+    static protected $label = 'tags-lb';
 
 
     /**

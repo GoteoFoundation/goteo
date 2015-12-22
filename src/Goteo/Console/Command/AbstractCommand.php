@@ -21,8 +21,11 @@ use Monolog\Logger;
 
 use Goteo\Console\Console;
 use Goteo\Util\Monolog\Processor\WebProcessor;
+use Goteo\Core\Traits\LoggerTrait;
 
 abstract class AbstractCommand extends Command {
+    use LoggerTrait;
+
     protected $logs = [];
     protected $input;
     protected $output;
@@ -59,40 +62,25 @@ abstract class AbstractCommand extends Command {
      */
     public function log($message, array $context = [], $func = 'info') {
         $logger = $this->getLogger();
+        $processed = WebProcessor::processObject($context);
         $context = array_merge(['command' => $this->getName()], $context);
         if($this->output && $this->input) {
-            if($this->input->getOption('verbose')) {
-                $this->output->writeln($txt);
+            if(!$this->output->isVerbose()) {
+                if($func == 'info') $color = 'green';
+                elseif($func == 'notice') $color = 'cyan';
+                elseif($func == 'critical') $color = 'red;options=bold';
+                elseif($func == 'error') $color = 'red';
+                elseif($func == 'warning') $color = 'yellow';
+                if($func != 'debug') {
+                    $this->output->writeln($color ? "<fg=$color>$message</>" : $message);
+                    if($processed) $this->output->writeln(implode("\n", array_map(function ($v, $k) { return sprintf("\t<fg=blue>%s:</> %s", $k, $v); }, $processed, array_keys($processed))));
+                }
             }
         }
 
         if (null !== $logger && method_exists($logger, $func)) {
-            return $logger->$func($message, WebProcessor::processObject($context));
+            return $logger->$func($message, $processed);
         }
-    }
-
-    public function info($message, array $context = []) {
-        return $this->log($message, $context, 'info');
-    }
-
-    public function error($message, array $context = []) {
-        return $this->log($message, $context, 'error');
-    }
-
-    public function warning($message, array $context = []) {
-        return $this->log($message, $context, 'warning');
-    }
-
-    public function notice($message, array $context = []) {
-        return $this->log($message, $context, 'notice');
-    }
-
-    public function critical($message, array $context = []) {
-        return $this->log($message, $context, 'critical');
-    }
-
-    public function debug($message, array $context = []) {
-        return $this->log($message, $context, 'debug');
     }
 
     /**

@@ -23,13 +23,13 @@ use Goteo\Library\Text,
 class SponsorsSubController extends AbstractSubController {
 
     static protected $labels = array (
-      'list' => 'Listando',
-      'add' => 'Nuevo Patrocinador',
-      'edit' => 'Editando Patrocinador',
+      'list' => 'sponsors-lb-list',
+      'add' => 'sponsors-lb-add',
+      'edit' => 'sponsors-lb-edit',
       );
 
 
-    static protected $label = 'Apoyos institucionales';
+    static protected $label = 'sponsors-lb';
 
     /**
      * Overwrite some permissions

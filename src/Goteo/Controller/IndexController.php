@@ -70,6 +70,7 @@ class IndexController extends \Goteo\Core\Controller
 
         }
 
+
         // Banners siempre
         $banners   = Banner::getAll(true);
         $vars = array(

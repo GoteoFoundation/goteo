@@ -1,4 +1,3 @@
-login-signin-facebook: 'Inicia sesión con Facebook'
 auth-access-forbbiden: '¡No tienes permiso para acceder aquí!'
 error-register-userid: 'Es obligatorio escribir un nombre de acceso'
 login-access-button: Entrar
@@ -29,6 +28,7 @@ login-register-password-field: Contraseña
 login-register-password-minlength: 'Mínimo 6 carácteres'
 login-register-userid-field: 'Nombre de acceso'
 login-register-username-field: 'Nombre público'
+login-signin-facebook: 'Inicia sesión con Facebook'
 login-signin-google: 'Accede con Google'
 login-signin-linkedin: 'Accede con LinkedIn'
 login-signin-myopenid: 'Accede con myOpenID'

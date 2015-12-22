@@ -182,7 +182,7 @@ class GoteoCore implements ExtensionInterface
     }
 
     //is master node
-    public function is_master_node() {
-        return Config::isMasterNode();
+    public function is_master_node($node = null) {
+        return Config::isMasterNode($node);
     }
 }

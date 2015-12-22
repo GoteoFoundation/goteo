@@ -34,6 +34,8 @@ class ErrorController extends \Goteo\Core\Controller {
         $requestUri = $request->getRequestUri();
 
         $url = str_replace($pathInfo, rtrim($pathInfo, ' /'), $requestUri);
+        if(empty($url)) $url = '/';
+
         // if is a POST let's show a message
         if($request->getMethod() === 'POST') {
             Message::error("[$requestUri] has been redirected to [$url]. Please remove final slash in the action form!");

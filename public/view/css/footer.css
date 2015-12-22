@@ -192,6 +192,12 @@ div#footer .horizontal-only
 	max-height: 200px;
 }
 
+/* Categories in footer */
+
+div#footer div.categories{
+    width:109px !important;
+}
+
 /*particular de social*/
 div#footer div.social{
 	width:109px !important;
@@ -277,13 +283,34 @@ div#footer div.sponsors > .slides_control > .sponsor {
 }
 
 /*particular de servicios*/
-div#footer div.services{
-
+div#footer div.services ul li{
+    height:18px;
+    font-size:11px;
+    margin-bottom:5px;
 }
 
-div#footer div.services ul li a{
-	text-transform:uppercase;
+div#footer div.services ul li a img.calculator{
+    margin-right: 13px !important;
 }
+
+div#footer div.services ul li a img.pool{
+    margin-right: 10px !important;
+}
+
+div#footer div.services ul li a img.icon{
+	vertical-align: middle;
+    margin-right: 7px;
+}
+
+div#footer div.services li a span.call {
+    background-image:url('/view/css/services/call_icon.png') !important;
+    background-repeat:no-repeat;
+    width:40px;
+    height: 40px;
+}
+
+
+
 
 
 
@@ -295,7 +322,7 @@ div#footer div.sponsors {
 
 div#footer div.services {
     position: relative;
-    width: 96px;
+    width: 130px;
     min-width: 0 !important;
 }
 

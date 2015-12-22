@@ -9,7 +9,7 @@ foreach($node_roles as $n => $roles) {
 }
 
 ?>
- <table>
+ <table style="width:100%">
  <?php $this->section('admin-user-info') ?>
     <tr>
         <td width="140px">Nombre de usuario</td>

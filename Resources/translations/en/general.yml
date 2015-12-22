@@ -33,6 +33,7 @@ error-user-password-invalid: 'The password is too short. It has to have at least
 error-user-wrong-password: 'The password is incorrect.'
 explain-project-progress: 'This graph explains in a visual way the level of data that you have entered together with a basic evaluation completed by the system. To be able to submit the project, you have to reach at least 80%. The criteria that make the “temperature” rise have to do with the relevant information that you provide, the media, images and links that you enter, the degree of openness of the license you choose, the coherence of your estimate with respect to the work that needs to be carried out, etc. Don''t forget to take advantage of the tooltips on the right that will guide you through the process.'
 fancybox: 'Fancybox text'
+goteo-return-button: 'Back to Goteo'
 guide-dashboard-user-access: 'You can change the information with which you log in to your Goteo account.'
 guide-dashboard-user-personal: 'You should only fill in this data if you have created a project and you want it to be co-financed and supported through Goteo. The information in this section is necessary so that we can contact you in the event that you obtain the necessary co-financing, and make the corresponding deposit.'
 guide-project-comment: guide-project-comment
@@ -163,4 +164,4 @@ user-changeemail-fail: 'Error while changing the email'
 user-register-success: 'The user was registered correctly. We are sending you an activation email now.'
 validate-project-social_rewards: 'You have to specify at least one collective benefit'
 validate-project-total-costs: 'The optimal cost cannot exceed the minimum cost by more than 50%. You have to either raise the essential costs or lower the supplemental costs. '
-goteo-return-button: 'Back to Goteo'
+regular-instagram: Instagram

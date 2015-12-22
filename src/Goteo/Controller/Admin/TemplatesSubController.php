@@ -20,12 +20,12 @@ use Goteo\Application\Config,
 class TemplatesSubController extends AbstractSubController {
 
     static protected $labels = array (
-      'list' => 'Listando',
-      'edit' => 'Editando Plantilla',
+      'list' => 'templates-lb-list',
+      'edit' => 'templates-lb-edit',
     );
 
 
-    static protected $label = 'Plantillas de email';
+    static protected $label = 'templates-lb';
 
 
     protected $filters = array (

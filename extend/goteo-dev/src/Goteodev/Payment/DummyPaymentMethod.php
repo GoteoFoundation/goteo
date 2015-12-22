@@ -17,6 +17,9 @@ use Goteo\Payment\Method\AbstractPaymentMethod;
 use Goteo\Library\Currency;
 use Goteo\Util\Omnipay\Message\EmptyFailedResponse;
 use Goteo\Util\Omnipay\Message\EmptySuccessfulResponse;
+use Goteo\Application\App;
+use Goteo\Application\AppEvents;
+use Goteo\Application\Event\FilterInvestEvent;
 
 /**
  * This class is just an example and must NOT be used in production
@@ -124,6 +127,9 @@ class DummyPaymentMethod extends AbstractPaymentMethod {
     }
 
     public function refund() {
+        // Any plugin can throw a PaymentException here in order to abort the refund process
+        App::dispatch(AppEvents::INVEST_REFUND, new FilterInvestEvent($this->getInvest(), $this));
+
         return new EmptySuccessfulResponse();
     }
 }

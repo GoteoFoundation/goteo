@@ -8,8 +8,6 @@ $this->layout('layout', [
 
 $this->section('content');
 
-$invest = $this->invest;
-
 ?>
 
 <?= $this->insert('invest/partials/project_info') ?>
@@ -40,7 +38,7 @@ $invest = $this->invest;
 				</div>
 			</div>
 	</div>
-	
+
 </div>
 
 <?php $this->replace() ?>

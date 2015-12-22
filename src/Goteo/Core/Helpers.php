@@ -157,6 +157,20 @@ namespace {
         return true;
     }
 
+
+    /**
+     * Converts a YYYY-MM-DD date to a language depending format
+     * @param  [type] $date [description]
+     * @return [type]       [description]
+     */
+    function date_formater($date) {
+        $lang = \Goteo\Application\Lang::current();
+        $format = 'd/m/Y';
+        if(in_array($lang, ['en', 'de'])) $format = 'Y/m/d';
+        $time = strtotime($date);
+        return date($format, $time);
+    }
+
     /**
      * Numberformat para convertir importes
      */

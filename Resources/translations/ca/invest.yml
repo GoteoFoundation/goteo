@@ -1,51 +1,22 @@
-invest-address-address-field: Adreça
-invest-address-country-field: País
-invest-address-location-field: Ciutat
-invest-address-name-field: 'Nom i cognoms'
-invest-address-zipcode-field: 'Codi postal'
-invest-button: Aportar
-invest-called-allready: 'A aquest projecte ja li has donat <span class="riego">Capital ''Riego''</span> de la convocatòria <span class="call">%s</span>, no n''obtindrà més pels teus aports'
-invest-called-maxproj: 'El projecte al que has donat suport ja ha aconseguit el màxim de <span class="riego">Capital ''Riego''</span> possible en la convocatòria <span class="call">%s</span>'
-invest-called-nodrop: 'Actualment no hi ha més <span class="riego">Capital ''Riego''</span> disponible a la convocatòria <span class="call">%s</span>'
-invest-called-rest: 'Només queden <strong>%s €</strong> de <span class="riego">Capital ''Riego''</span> a la convocatòria <span class="call">%s</span>'
-invest-method-title: 'Fes la teva aportació'
-invest-pool: 'Vull que la meva donació, en el cas que el projecte no arribi al seu objectiu, romangui al meu moneder virtual Goteo. '
-invest-resign: "Renuncio a una recompensa individual, només vull donar suport al projecte \r\n"
-user-login-required-login: 'Si ja t''has registrat has <a href="%s">d''iniciar sessió</a>; si no, has de crear un nou usuari.'
-invest-address-title: 'Assegura''t de rebre la teva recompensa'
-invest-amount-in-pool: 'Tens %s al teu moneder virtual'
-invest-fiscal-skip: 'Prefereixo omplir aquestes dades en un altre moment'
-invest-fiscal-title: 'Assegura''t de que puguis desgravar la teva aportació (per a contribuents a l''estat espanyol)'
-invest-make-sure-save: Desar
-invest-make-sure-title: Confirmar
-invest-modal-fiscal-description: 'Com ja deus saber, fer aportacions a Goteo no només fa possibles un munt de projectes que ens beneficien a tots i totes, sinó que a més desgrava! <p>En realitzar una aportació a un projecte, i gràcies a l''increment en els tipus de deducció aplicables des de 2015 per a les donacions pures i simples que es realitzin a favor de la Fundació Goteo, com a entitat acollida al règim fiscal especial de la Llei 49/2002 de 23 de desembre, podràs deduir les quantitats que indiquem en la nostra <a href="https://goteo.org/faq/investors#q112" target="_blank">FAQ nº 18 per a comecenes</a>.'
-invest-modal-fiscal-title: 'Informació fiscal'
-invest-modal-pool-description: 'El moneder virtual és un sistema de crèdit de la plataforma Goteo, que podràs omplir amb els teus diners i utilitzar-lo com a via de pagament sempre que vulguis realitzar aportacions a projectes dins la nostra plataforma, sense necessitat d''indicar les teves dades de targeta ni de paypal cada vegada.'
-invest-modal-pool-title: 'Sobre el moneder virtual Goteo'
-invest-more-info: 'Més informació'
-invest-payment-fail: 'Alguna cosa ha anat malament a l''hora de pagar'
-invest-payment-success: 'El pagament s''ha realitzat correctament'
-invest-project: 'al projecte'
-invest-select-reward: 'Selecciona la teva recompensa'
-invest-share-title: Compartir
-invest-step-1: Recompensa
-invest-step-2: Pagament
-invest-step-3: Confirmar
-invest-step-4: Compartir
-invest-success-make-sure: 'Ben fet! La teva donació al projecte <strong>%s</strong> s''ha realitzat correctament.'
 bazar-spread-text: '%s - Aquest Nadal, regala crowdfunding obert i per al bé comú amb @goteofunding #openbazaar'
 bazar-thanks: 'Gràcies per visitar el nostre bazaar, pots ajudar-nos a difondre''l.'
 currency-alert: "Tingues en compte que la gestió és en EUR.\r\nPagaràs aproximadament <span id=\"reminder_conversion\">%s</span> € <a href=\"/faq/investors#q115\" target=\"_blank\">Més info</a>"
 faq-payment-method: '<a href="/faq/investors#q2" target="_blank">Quins sistemes de pagament ofereix Goteo? Són segurs?</a>'
 imperative-register: 'Registra''t'
+invest-address-address-field: Adreça
+invest-address-country-field: País
 invest-address-friend-field: 'Selecciona aquesta casella si és un regal per a una altra persona'
 invest-address-header: 'On vols rebre la recompensa'
+invest-address-location-field: Ciutat
 invest-address-maildest-field: 'Adreça electrònica del destinatari'
 invest-address-msgdest-field: 'Missatge per al destinatari'
 invest-address-myemail-field: 'El teu correu electrònic'
 invest-address-myname-field: 'El teu nom'
+invest-address-name-field: 'Nom i cognoms'
 invest-address-namedest-field: 'Nom del destinatari'
 invest-address-nif-field: 'Número de NIF / NIE / VAT:'
+invest-address-title: 'Assegura''t de rebre la teva recompensa'
+invest-address-zipcode-field: 'Codi postal'
 invest-alert-investing: 'Estàs a punt d''aportar'
 invest-alert-lackamount: 'L''aportació ha de ser de valor més elevat que la recompensa escollida'
 invest-alert-lackdrop: 'No queda prou Capital Regadiu per cobrir la teva aportació, només queden'
@@ -54,24 +25,54 @@ invest-alert-noreward_renounce: 'Desitges renunciar a la recompensa i desgravar 
 invest-alert-renounce: "Renuncies però no has posat el teu NIF per desgravar el donatiu, és correcte?\r\n"
 invest-alert-rewards: 'Has escollit les següents recompenses:'
 invest-amount: Quantitat
+invest-amount-in-pool: 'Tens %s al teu moneder virtual'
 invest-amount-tooltip: 'Introdueix la quantitat amb que recolzaràs el projecte'
 invest-anonymous: "Vull que la meva aportació sigui anònima \r\n"
+invest-button: Aportar
+invest-called-allready: 'A aquest projecte ja li has donat <span class="riego">Capital ''Riego''</span> de la convocatòria <span class="call">%s</span>, no n''obtindrà més pels teus aports'
 invest-called-maxdrop: 'Fins a un màxim de <strong>%s &euro;</strong>'
+invest-called-maxproj: 'El projecte al que has donat suport ja ha aconseguit el màxim de <span class="riego">Capital ''Riego''</span> possible en la convocatòria <span class="call">%s</span>'
+invest-called-nodrop: 'Actualment no hi ha més <span class="riego">Capital ''Riego''</span> disponible a la convocatòria <span class="call">%s</span>'
+invest-called-rest: 'Només queden <strong>%s €</strong> de <span class="riego">Capital ''Riego''</span> a la convocatòria <span class="call">%s</span>'
 invest-card-method: Targeta
 invest-donation-header: 'Introdueix les dades fiscals per al donatiu'
+invest-fiscal-skip: 'Prefereixo omplir aquestes dades en un altre moment'
+invest-fiscal-title: 'Assegura''t de que puguis desgravar la teva aportació (per a contribuents a l''estat espanyol)'
 invest-mail_info-address: 'Has especificat la següent direcció:'
 invest-mail_info-drop: 'A més, %s ha aportat %s de capital irrigació a través de la campanya %s'
+invest-make-sure-save: Desar
+invest-make-sure-title: Confirmar
+invest-method-title: 'Fes la teva aportació'
+invest-modal-fiscal-description: 'Com ja deus saber, fer aportacions a Goteo no només fa possibles un munt de projectes que ens beneficien a tots i totes, sinó que a més desgrava! <p>En realitzar una aportació a un projecte, i gràcies a l''increment en els tipus de deducció aplicables des de 2015 per a les donacions pures i simples que es realitzin a favor de la Fundació Goteo, com a entitat acollida al règim fiscal especial de la Llei 49/2002 de 23 de desembre, podràs deduir les quantitats que indiquem en la nostra <a href="https://goteo.org/faq/investors#q112" target="_blank">FAQ nº 18 per a comecenes</a>.'
+invest-modal-fiscal-title: 'Informació fiscal'
+invest-modal-pool-description: 'El moneder virtual és un sistema de crèdit de la plataforma Goteo, que podràs omplir amb els teus diners i utilitzar-lo com a via de pagament sempre que vulguis realitzar aportacions a projectes dins la nostra plataforma, sense necessitat d''indicar les teves dades de targeta ni de paypal cada vegada.'
+invest-modal-pool-title: 'Sobre el moneder virtual Goteo'
+invest-more-info: 'Més informació'
 invest-next_step: 'Pas següent '
 invest-payment-email: 'Introdueix el teu compte de PayPal'
+invest-payment-fail: 'Alguna cosa ha anat malament a l''hora de pagar'
+invest-payment-success: 'El pagament s''ha realitzat correctament'
 invest-payment_method-header: 'Escull el mètode de pagament'
 invest-paypal-method: Paypal
 invest-paypal_disabled: 'Aquest projecte té desactivada l''opció de pagament a través de PayPal. <a href="/faq/investors#q2">Més info</a>'
+invest-pool: 'Vull que la meva donació, en el cas que el projecte no arribi al seu objectiu, romangui al meu moneder virtual Goteo. '
 invest-pool-available: disponibles
 invest-pool-error: 'No tens prou diners al teu moneder virtual'
 invest-pool-method: 'Moneder virtual'
 invest-process-completed: 'Aquesta aportació ja es va completar anteriorment'
+invest-project: 'al projecte'
+invest-resign: "Renuncio a una recompensa individual, només vull donar suport al projecte \r\n"
 invest-reward-none: 'Ja no es pot escollir'
+invest-reward-not-found: 'Aquesta recompensa no existeis!'
+invest-reward-used-up: 'Ja queden unitats d''aquesta recompensa!'
+invest-select-reward: 'Selecciona la teva recompensa'
+invest-share-title: Compartir
 invest-social-header: 'Amb els retorns col·lectius hi guanyem tots'
+invest-step-1: Recompensa
+invest-step-2: Pagament
+invest-step-3: Confirmar
+invest-step-4: Compartir
+invest-success-make-sure: 'Ben fet! La teva donació al projecte <strong>%s</strong> s''ha realitzat correctament.'
 investing_closed: 'No es permeten més aportacions a aquesta campanya'
 proj-widget-my_invest: 'La meva aportació'
 project-invest-confirm: 'Estàs a un pas de cofinançar aquest projecte...'
@@ -83,6 +84,5 @@ project-invest-pool-button: 'Fer servir el meu moneder virtual'
 project-invest-start: 'Estàs a un pas de cofinançar aquest projecte...'
 spread-facebook: 'Difon a Facebook'
 spread-twitter: 'Difon a Twitter'
+user-login-required-login: 'Si ja t''has registrat has <a href="%s">d''iniciar sessió</a>; si no, has de crear un nou usuari. (En cas que vulguis fer una aportació anònima, podràs seleccionar l''opció més endavant)'
 warning_nojavascript: 'Habilita javascript des de la configuració de privacitat del teu navegador per poder continuar amb el procés de pagament'
-invest-reward-used-up: 'Ja queden unitats d''aquesta recompensa!'
-invest-reward-not-found: 'Aquesta recompensa no existeis!'

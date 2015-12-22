@@ -17,11 +17,11 @@ use Goteo\Application\Config;
 class WordcountSubController extends AbstractSubController {
 
     static protected $labels = array (
-      'list' => 'Listando',
+      'list' => 'wordcount-lb-list',
     );
 
 
-    static protected $label = 'Conteo de palabras';
+    static protected $label = 'wordcount-lb';
 
 
     /**

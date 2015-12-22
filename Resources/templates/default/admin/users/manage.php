@@ -3,6 +3,7 @@
 
 $user = $this->user;
 $langs = $this->langs;
+$location = $this->location;
 
 $url = '/' . $this->template . '/' . $user->id;
 ?>
@@ -33,6 +34,21 @@ $url = '/' . $this->template . '/' . $user->id;
         <td>Crédito en el monedero</td>
         <td>
             <?= (float)$this->poolAmount ?> €
+        </td>
+    </tr>
+    <tr>
+        <td>Localización</td>
+        <td>
+        <?php
+
+            if($location) {
+                echo $this->insert('partials/utils/map_canvas', ['latitude' => $location->latitude,
+                                                                 'longitude' => $location->longitude,
+                                                                 'content' => $user->name."<br>{$user->location}"]);
+            } elseif($user->location) {
+                echo $this->insert('partials/utils/map_canvas', ['address' => $user->location, 'content' => $invest->getUser()->name."<br>{$user->location}"]);
+            }
+        ?>
         </td>
     </tr>
 

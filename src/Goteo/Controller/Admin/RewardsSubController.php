@@ -20,12 +20,12 @@ use Goteo\Application\Message,
 class RewardsSubController extends AbstractSubController {
 
     static protected $labels = array (
-      'list' => 'Listando',
-      'edit' => 'Gestionando recompensa',
+      'list' => 'rewards-lb-list',
+      'edit' => 'rewards-lb-edit',
     );
 
 
-    static protected $label = 'Recompensas';
+    static protected $label = 'rewards-lb';
 
 
     protected $filters = array (

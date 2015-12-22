@@ -90,7 +90,7 @@ $per = 100 / $cols;
         </tbody>
     </table>
     <?php else : ?>
-    <p>No se han encontrado registros</p>
+    <p><?= $this->text('admin-empty-list') ?></p>
     <?php endif; ?>
 </div>
 

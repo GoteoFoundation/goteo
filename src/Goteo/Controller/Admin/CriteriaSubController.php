@@ -19,14 +19,14 @@ use Goteo\Application\Message,
 class CriteriaSubController extends AbstractSubController {
 
     static protected $labels = array (
-      'list' => 'Listando',
-      'add' => 'Nuevo Criterio',
-      'edit' => 'Editando Criterio',
-      'translate' => 'Traduciendo Criterio',
+      'list' => 'criteria-lb-list',
+      'add' => 'criteria-lb-add',
+      'edit' => 'criteria-lb-edit',
+      'translate' => 'criteria-lb-translate',
     );
 
 
-static protected $label = 'Criterios de revisión';
+static protected $label = 'criteria-lb';
 
 
     protected $filters = array (

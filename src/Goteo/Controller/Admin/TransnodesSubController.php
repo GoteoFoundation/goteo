@@ -21,12 +21,12 @@ use Goteo\Application\Message,
 class TransnodesSubController extends AbstractSubController {
 
     static protected $labels = array (
-      'list' => 'Listando',
-      'edit' => 'Asignando traducción',
+      'list' => 'Transnodes-lb-list',
+      'edit' => 'Transnodes-lb-edit',
     );
 
 
-    static protected $label = 'Traducciones de nodos';
+    static protected $label = 'Transnodes-lb';
 
 
     protected $filters = array (

@@ -19,13 +19,13 @@ use Goteo\Library\Feed,
 class ReviewsSubController extends AbstractSubController {
 
     static protected $labels = array (
-      'list' => 'Listando',
-      'add' => 'Iniciando briefing',
-      'edit' => 'Editando briefing',
+      'list' => 'reviews-lb-list',
+      'add' => 'reviews-lb-add',
+      'edit' => 'reviews-lb-edit',
     );
 
 
-    static protected $label = 'Revisiones';
+    static protected $label = 'reviews-lb';
 
 
     protected $filters = array (

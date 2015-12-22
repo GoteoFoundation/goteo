@@ -15,8 +15,11 @@ use Psr\Log\LoggerInterface;
 
 use Goteo\Application\App;
 use Goteo\Util\Monolog\Processor\WebProcessor;
+use Goteo\Core\Traits\LoggerTrait;
 
 abstract class AbstractListener implements EventSubscriberInterface {
+    use LoggerTrait;
+
     protected $logger;
 
     public function __construct(LoggerInterface $logger = null) {
@@ -28,29 +31,7 @@ abstract class AbstractListener implements EventSubscriberInterface {
             return $this->logger->$func($message, WebProcessor::processObject($context));
         }
     }
-    public function info($message, array $context = []) {
-        return $this->log($message, $context, 'info');
-    }
 
-    public function error($message, array $context = []) {
-        return $this->log($message, $context, 'error');
-    }
-
-    public function warning($message, array $context = []) {
-        return $this->log($message, $context, 'warning');
-    }
-
-    public function notice($message, array $context = []) {
-        return $this->log($message, $context, 'notice');
-    }
-
-    public function critical($message, array $context = []) {
-        return $this->log($message, $context, 'critical');
-    }
-
-    public function debug($message, array $context = []) {
-        return $this->log($message, $context, 'debug');
-    }
     /**
      * Handy method to get the service container object
      */
