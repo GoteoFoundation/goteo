@@ -98,6 +98,12 @@ mysql -u your_user -p your_password < db/install/structure.sql
 mysql -u your_user -p your_password < db/install/data.sql
 ```
 
+Then, apply these updates:
+
+```bash
+mysql -u your_user -p your_password < db/install/upgrade-to-v3.0.3.sql
+```
+
 This should give you an empty system with only one user "root".
 
 Login with user "root" and password "root" (no quotes).
