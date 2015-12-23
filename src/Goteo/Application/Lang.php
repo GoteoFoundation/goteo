@@ -313,6 +313,7 @@ class Lang {
             }
         }
 
+        $desired['system'] = Config::get('lang');
 
         // set the lang in order of preference
         foreach($desired as $part => $l) {
