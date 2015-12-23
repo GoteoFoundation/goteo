@@ -118,9 +118,9 @@ namespace Goteo\Model\Project {
                 else {
                     //     $sql .= " ORDER BY reward.id ASC";
                     //     ORDERED BY AMOUNT
-                    $sql .= " ORDER BY reward.amount ASC";
+                    $sql .= " ORDER BY reward.amount ASC, reward.order ASC";
+                // die(\sqldbg($sql, $values));
                 }
-
                 $query = self::query($sql, $values);
                 foreach ($query->fetchAll(\PDO::FETCH_CLASS, __CLASS__) as $item) {
 
@@ -133,6 +133,7 @@ namespace Goteo\Model\Project {
 
                     $array[$item->id] = $item;
                 }
+                // print_r($array);
                 return $array;
             } catch (\PDOException $e) {
                 throw new \Goteo\Core\Exception($e->getMessage());

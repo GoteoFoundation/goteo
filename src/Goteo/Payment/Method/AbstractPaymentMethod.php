@@ -11,6 +11,9 @@
 namespace Goteo\Payment\Method;
 
 use Goteo\Application\Config;
+use Goteo\Application\App;
+use Goteo\Application\AppEvents;
+use Goteo\Application\Event\FilterInvestEvent;
 use Goteo\Model\Invest;
 use Goteo\Model\User;
 use Goteo\Payment\PaymentException;
@@ -206,6 +209,10 @@ abstract class AbstractPaymentMethod implements PaymentMethodInterface {
             throw new PaymentException("Refund not supported for method " . strtoupper(static::getId()));
         }
         $invest = $this->getInvest();
+
+        // Any plugin can throw a PaymentException here in order to abort the refund process
+        App::dispatch(AppEvents::INVEST_REFUND, new FilterInvestEvent($invest, $this));
+
         return $gateway->refund([
             'amount' => (float) $invest->amount,
             'transactionReference' => $invest->transaction, // some gateway may require extra data saved

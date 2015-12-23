@@ -219,10 +219,11 @@ class Sender extends \Goteo\Core\Model
             WHERE mailer_send.mailing = ?', $this->id
             );
             $sending = $query->fetchObject();
-
-            $sending->percent   = 100 * (1 - $sending->pending / $sending->receivers);
-            $sending->percent_failed   = 100 * ($sending->failed / $sending->receivers);
-            $sending->percent_success   = 100 * ($sending->sent / $sending->receivers);
+            if($sending->receivers) {
+                $sending->percent = 100 * (1 - $sending->pending / $sending->receivers);
+                $sending->percent_failed = 100 * ($sending->failed / $sending->receivers);
+                $sending->percent_success = 100 * ($sending->sent / $sending->receivers);
+            }
             $this->status_object = $sending;
         } catch(\PDOException $e) {
             throw new ModelNotFoundException('Not found recipients for mailingId [' . $this->id . ']' . $e->getMessage());

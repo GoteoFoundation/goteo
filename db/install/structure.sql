@@ -1,4 +1,5 @@
 SET SQL_MODE="NO_AUTO_VALUE_ON_ZERO";
+SET FOREIGN_KEY_CHECKS=0;
 
 /*!40101 SET NAMES utf8 */;
 
@@ -1710,3 +1711,5 @@ CREATE TABLE `worthcracy_lang` (
   `pending` int(1) DEFAULT '0' COMMENT 'Debe revisarse la traducción',
   UNIQUE KEY `id_lang` (`id`,`lang`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+SET FOREIGN_KEY_CHECKS=1;

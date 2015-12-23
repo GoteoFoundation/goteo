@@ -21,11 +21,11 @@ $putImages = function ($images) {
         foreach ($images as $image) {
             if (!empty($image->link)) {
                 $code .= '<div class="free-image">
-                    <a href="'.$image->link.'" target="_blank"><img src="'.$image->imageData->getLink(580, 580).'" alt="image" /></a>
+                    <a href="'.$image->link.'" target="_blank"><img src="'.$image->imageData->getLink(580, 580).'" style="width:580px" alt="image" /></a>
                 </div>';
             } else {
                 $code .= '<div class="free-image">
-                    <img src="'.$image->imageData->getLink(580, 580).'" alt="image" />
+                    <img src="'.$image->imageData->getLink(580, 580).'" style="width:580px" alt="image" />
                 </div>';
             }
 

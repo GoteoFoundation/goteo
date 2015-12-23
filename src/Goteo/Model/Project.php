@@ -172,8 +172,8 @@ namespace Goteo\Model {
          */
         public function __get ($name) {
             if($name == "call" || $name == "called") { // si está en una convocatoria
-	            return $this->getCall();
-	        }
+                return $this->getCall();
+            }
             if($name == "allowpp") {
                 return Project\Account::getAllowpp($this->id);
             }
@@ -185,8 +185,8 @@ namespace Goteo\Model {
                 if(empty($cost->mincost)) {
                     $cost = self::calcCosts($this->id);
                 }
-	            return $cost;
-	        }
+                return $cost;
+            }
             return $this->$name;
         }
 
@@ -391,7 +391,7 @@ namespace Goteo\Model {
             $sql = "REPLACE INTO project (" . implode(',', $campos) . ")
                  VALUES (" . implode(',', \array_keys($values)) . ")";
             try {
-				self::query($sql, $values);
+                self::query($sql, $values);
 
                 foreach ($campos as $campo) {
                     $this->$campo = $values[":$campo"];
@@ -415,7 +415,7 @@ namespace Goteo\Model {
         public static function get($id, $lang = null) {
 
             try {
-				// metemos los datos del proyecto en la instancia
+                // metemos los datos del proyecto en la instancia
                 $sql = "SELECT project.*,
                                 project.id REGEXP '[0-9a-f]{32}' as draft,
                                 IFNULL(project.updated, project.created) as updated,
@@ -436,22 +436,22 @@ namespace Goteo\Model {
                                 user.google as user_google,
                                 user.facebook as user_facebook
                 FROM project
-				LEFT JOIN project_conf
-				    ON project_conf.project = project.id
-				LEFT JOIN node
-				    ON node.id = project.node
+                LEFT JOIN project_conf
+                    ON project_conf.project = project.id
+                LEFT JOIN node
+                    ON node.id = project.node
                 INNER JOIN user
                     ON user.id=project.owner
                 LEFT JOIN user_lang
                     ON  user_lang.id = user.id
                     AND user_lang.lang = :lang
-				WHERE project.id = :id
-				";
+                WHERE project.id = :id
+                ";
 
                 $values = array(':id'=>$id,':lang'=>$lang);
                 // echo \sqldbg($sql, $values);
-				$query = self::query($sql, $values);
-				$project = $query->fetchObject(__CLASS__);
+                $query = self::query($sql, $values);
+                $project = $query->fetchObject(__CLASS__);
 
                 if (!$project instanceof \Goteo\Model\Project) {
                     throw new Exception\ModelNotFoundException(Text::get('fatal-error-project'));
@@ -545,16 +545,16 @@ namespace Goteo\Model {
                 }
 
                 // costes y los sumammos
-				$project->costs = Project\Cost::getAll($id, $lang);
+                $project->costs = Project\Cost::getAll($id, $lang);
                 $project->minmax();
 
-				// retornos colectivos
-				$project->social_rewards = Project\Reward::getAll($id, 'social', $lang);
-				// retornos individuales
-				$project->individual_rewards = Project\Reward::getAll($id, 'individual', $lang);
+                // retornos colectivos
+                $project->social_rewards = Project\Reward::getAll($id, 'social', $lang);
+                // retornos individuales
+                $project->individual_rewards = Project\Reward::getAll($id, 'individual', $lang);
 
-				// colaboraciones
-				$project->supports = Project\Support::getAll($id, $lang);
+                // colaboraciones
+                $project->supports = Project\Support::getAll($id, $lang);
 
                 // Fin contenidos adicionales
 
@@ -611,12 +611,12 @@ namespace Goteo\Model {
                 // Fin de verificaciones
                 //-----------------------------------------------------------------
 
-				return $project;
+                return $project;
 
-			} catch(\PDOException $e) {
-				throw new Exception\ModelException($e->getMessage());
-			}
-		}
+            } catch(\PDOException $e) {
+                throw new Exception\ModelException($e->getMessage());
+            }
+        }
 
         /**
          * Transitional function. Util if Call plugin is active
@@ -659,8 +659,8 @@ namespace Goteo\Model {
         public static function getMini($id) {
 
             try {
-				// metemos los datos del proyecto en la instancia
-				$query = self::query("SELECT
+                // metemos los datos del proyecto en la instancia
+                $query = self::query("SELECT
                                         project.id as id,
                                         project.name as name,
                                         project.owner as owner,
@@ -679,7 +679,7 @@ namespace Goteo\Model {
                                       LEFT JOIN user
                                       ON user.id=project.owner
                                       WHERE project.id = ?", array($id));
-				$project = $query->fetchObject(__CLASS__);
+                $project = $query->fetchObject(__CLASS__);
 
                 if (!$project instanceof \Goteo\Model\Project) {
                     throw new Exception\ModelNotFoundException(Text::get('fatal-error-project'));
@@ -695,10 +695,10 @@ namespace Goteo\Model {
 
                 return $project;
 
-			} catch(\PDOException $e) {
-				throw new Exception\ModelException($e->getMessage());
-			}
-		}
+            } catch(\PDOException $e) {
+                throw new Exception\ModelException($e->getMessage());
+            }
+        }
 
         /*
          *  Cargamos los datos suficientes para pintar un widget de proyecto
@@ -745,10 +745,10 @@ namespace Goteo\Model {
                     ON project_conf.project = project.id
                 WHERE project.id = :id";
 
-				// metemos los datos del proyecto en la instancia
+                // metemos los datos del proyecto en la instancia
                 $values = array(':id'=>$id);
-				$query = self::query($sql, $values);
-				$project = $query->fetchObject(__CLASS__);
+                $query = self::query($sql, $values);
+                $project = $query->fetchObject(__CLASS__);
 
                 if (!$project instanceof \Goteo\Model\Project) {
                     throw new Exception\ModelNotFoundException(Text::get('fatal-error-project'));
@@ -794,7 +794,7 @@ namespace Goteo\Model {
                 return $project;
 
             } catch(\PDOException $e) {
-				throw new Exception\ModelException($e->getMessage());
+                throw new Exception\ModelException($e->getMessage());
             }
         }
 
@@ -1208,7 +1208,7 @@ namespace Goteo\Model {
 
             if(!$this->validate($errors)) { return false; }
 
-  			try {
+            try {
                 // fail para pasar por todo antes de devolver false
                 $fail = false;
 
@@ -1301,12 +1301,12 @@ namespace Goteo\Model {
                 }
 
                 // Solamente marcamos updated cuando se envia a revision desde el superform o el admin
-//				$set .= ", updated = :updated";
-//				$values[':updated'] = date('Y-m-d');
-				$values[':id'] = $this->id;
+//              $set .= ", updated = :updated";
+//              $values[':updated'] = date('Y-m-d');
+                $values[':id'] = $this->id;
 
-				$sql = "UPDATE project SET " . $set . " WHERE id = :id";
-				if (!self::query($sql, $values)) {
+                $sql = "UPDATE project SET " . $set . " WHERE id = :id";
+                if (!self::query($sql, $values)) {
                     $errors[] = $sql . '<pre>' . print_r($values, true) . '</pre>';
                     $fail = true;
                 }
@@ -1384,7 +1384,7 @@ namespace Goteo\Model {
                 $this->minmax();
 
                 //retornos colectivos
-				$tiene = Project\Reward::getAll($this->id, 'social');
+                $tiene = Project\Reward::getAll($this->id, 'social');
                 $viene = $this->social_rewards;
                 $quita = array_diff_key($tiene, $viene);
                 $guarda = array_diff_key($viene, $tiene);
@@ -1409,10 +1409,10 @@ namespace Goteo\Model {
                 }
 
                 if (!empty($quita) || !empty($guarda))
-    				$this->social_rewards = Project\Reward::getAll($this->id, 'social');
+                    $this->social_rewards = Project\Reward::getAll($this->id, 'social');
 
                 //recompenssas individuales
-				$tiene = Project\Reward::getAll($this->id, 'individual');
+                $tiene = Project\Reward::getAll($this->id, 'individual');
                 $viene = $this->individual_rewards;
                 $quita = array_diff_key($tiene, $viene);
                 $guarda = array_diff_key($viene, $tiene);
@@ -1438,10 +1438,10 @@ namespace Goteo\Model {
                 }
 
                 if (!empty($quita) || !empty($guarda))
-    				$this->individual_rewards = Project\Reward::getAll($this->id, 'individual');
+                    $this->individual_rewards = Project\Reward::getAll($this->id, 'individual');
 
-				// colaboraciones
-				$tiene = Project\Support::getAll($this->id);
+                // colaboraciones
+                $tiene = Project\Support::getAll($this->id);
                 $viene = $this->supports;
                 $quita = array_diff_key($tiene, $viene); // quitar los que tiene y no viene
                 $guarda = array_diff_key($viene, $tiene); // añadir los que viene y no tiene
@@ -1466,16 +1466,16 @@ namespace Goteo\Model {
                 }
 
                 if (!empty($quita) || !empty($guarda))
-    				$this->supports = Project\Support::getAll($this->id);
+                    $this->supports = Project\Support::getAll($this->id);
 
                 //listo
                 return !$fail;
 
-			} catch(\PDOException $e) {
+            } catch(\PDOException $e) {
                 $errors[] = 'Error sql al grabar el proyecto.' . $e->getMessage();
                 //Text::get('save-project-fail');
                 return false;
-			}
+            }
         }
 
         /*
@@ -1483,7 +1483,7 @@ namespace Goteo\Model {
          */
         public function saveLang (&$errors = array()) {
 
-  			try {
+            try {
                 $fields = array(
                     'id'=>'id',
                     'lang'=>'lang_lang',
@@ -1511,18 +1511,18 @@ namespace Goteo\Model {
                     $values[":$field"] = $this->$ffield;
                 }
 
-				$sql = "REPLACE INTO project_lang SET " . $set;
-				if (self::query($sql, $values)) {
+                $sql = "REPLACE INTO project_lang SET " . $set;
+                if (self::query($sql, $values)) {
                     return true;
                 } else {
                     $errors[] = $sql . '<pre>' . print_r($values, true) . '</pre>';
                     return false;
                 }
-			} catch(\PDOException $e) {
+            } catch(\PDOException $e) {
                 $errors[] = 'Error sql al grabar el proyecto.' . $e->getMessage();
                 //Text::get('save-project-fail');
                 return false;
-			}
+            }
 
         }
 
@@ -2025,8 +2025,8 @@ namespace Goteo\Model {
          * @return: boolean
          */
         public function ready(&$errors = array()) {
-			try {
-				$this->rebase();
+            try {
+                $this->rebase();
 
                 $sql = "UPDATE project SET status = :status, updated = :updated WHERE id = :id";
                 self::query($sql, array(':status'=>2, ':updated'=>date('Y-m-d'), ':id'=>$this->id));
@@ -2049,9 +2049,9 @@ namespace Goteo\Model {
          * @return: boolean
          */
         public function enable(&$errors = array()) {
-			try {
-				$sql = "UPDATE project SET status = :status WHERE id = :id";
-				self::query($sql, array(':status'=>1, ':id'=>$this->id));
+            try {
+                $sql = "UPDATE project SET status = :status WHERE id = :id";
+                self::query($sql, array(':status'=>1, ':id'=>$this->id));
                 return true;
             } catch (\PDOException $e) {
                 $errors[] = 'Fallo al habilitar para edición. ' . $e->getMessage();
@@ -2064,11 +2064,11 @@ namespace Goteo\Model {
          * @return: boolean
          */
         public function publish(&$errors = array()) {
-			try {
+            try {
                 $status = self::STATUS_IN_CAMPAIGN;
                 $date = date('Y-m-d');
-				$sql = "UPDATE project SET passed = NULL, status = :status, published = :published WHERE id = :id";
-				self::query($sql, array(':status' => $status, ':published' => $date, ':id' => $this->id));
+                $sql = "UPDATE project SET passed = NULL, status = :status, published = :published WHERE id = :id";
+                self::query($sql, array(':status' => $status, ':published' => $date, ':id' => $this->id));
                 $this->status = $status;
                 $this->published = $date;
                 // update fee in bank account if exists
@@ -2124,9 +2124,9 @@ namespace Goteo\Model {
          * @return: boolean
          */
         public function cancel(&$errors = array()) {
-			try {
-				$sql = "UPDATE project SET status = :status, closed = :closed WHERE id = :id";
-				self::query($sql, array(':status'=>0, ':closed'=>date('Y-m-d'), ':id'=>$this->id));
+            try {
+                $sql = "UPDATE project SET status = :status, closed = :closed WHERE id = :id";
+                self::query($sql, array(':status'=>0, ':closed'=>date('Y-m-d'), ':id'=>$this->id));
                 return true;
             } catch (\PDOException $e) {
                 $errors[] = 'Fallo al cerrar el proyecto. ' . $e->getMessage();
@@ -2139,9 +2139,9 @@ namespace Goteo\Model {
          * @return: boolean
          */
         public function fail(&$errors = array()) {
-			try {
-				$sql = "UPDATE project SET status = :status, closed = :closed WHERE id = :id";
-				self::query($sql, array(':status'=>6, ':closed'=>date('Y-m-d'), ':id'=>$this->id));
+            try {
+                $sql = "UPDATE project SET status = :status, closed = :closed WHERE id = :id";
+                self::query($sql, array(':status'=>6, ':closed'=>date('Y-m-d'), ':id'=>$this->id));
                 return true;
             } catch (\PDOException $e) {
                 $errors[] = 'Fallo al cerrar el proyecto. ' . $e->getMessage();
@@ -2154,10 +2154,10 @@ namespace Goteo\Model {
          * @return: boolean
          */
         public function succeed(&$errors = array()) {
-			try {
-				$sql = "UPDATE project SET status = :status, success = :success WHERE id = :id";
+            try {
+                $sql = "UPDATE project SET status = :status, success = :success WHERE id = :id";
                 $date = date('Y-m-d');
-				if(self::query($sql, array(':status'=>self::STATUS_FUNDED, ':success'=>$date, ':id'=>$this->id))) {
+                if(self::query($sql, array(':status'=>self::STATUS_FUNDED, ':success'=>$date, ':id'=>$this->id))) {
                     $this->status = self::STATUS_FUNDED;
                     $this->success = $date;
                 }
@@ -2174,10 +2174,10 @@ namespace Goteo\Model {
          * @return: boolean
          */
         public function passDate(&$errors = array()) {
-			try {
-				$sql = "UPDATE project SET passed = :passed WHERE id = :id";
+            try {
+                $sql = "UPDATE project SET passed = :passed WHERE id = :id";
                 $date = date('Y-m-d');
-				if(self::query($sql, array(':passed' => $date, ':id' => $this->id))) {
+                if(self::query($sql, array(':passed' => $date, ':id' => $this->id))) {
                     $this->passed = $date;
                 }
 
@@ -2193,9 +2193,9 @@ namespace Goteo\Model {
          * @return: boolean
          */
         public function satisfied(&$errors = array()) {
-			try {
-				$sql = "UPDATE project SET status = :status WHERE id = :id";
-				self::query($sql, array(':status'=>self::STATUS_FULFILLED, ':id'=>$this->id));
+            try {
+                $sql = "UPDATE project SET status = :status WHERE id = :id";
+                self::query($sql, array(':status'=>self::STATUS_FULFILLED, ':id'=>$this->id));
 
                 // si está en una convocatoria hay que actualizar el numero de proyectos en marcha
                 if (isset($this->called)) {
@@ -2214,9 +2214,9 @@ namespace Goteo\Model {
          * @return: boolean
          */
         public function rollback(&$errors = array()) {
-			try {
-				$sql = "UPDATE project SET status = :status WHERE id = :id";
-				self::query($sql, array(':status'=>self::STATUS_FUNDED, ':id'=>$this->id));
+            try {
+                $sql = "UPDATE project SET status = :status WHERE id = :id";
+                self::query($sql, array(':status'=>self::STATUS_FUNDED, ':id'=>$this->id));
                 return true;
             } catch (\PDOException $e) {
                 $errors[] = 'Fallo al dar el retorno pendiente para el proyecto. ' . $e->getMessage();
@@ -2251,8 +2251,8 @@ namespace Goteo\Model {
                 return true;
             } catch (\PDOException $e) {
                 self::query("ROLLBACK");
-				$sql = "UPDATE project SET status = :status WHERE id = :id";
-				self::query($sql, array(':status'=>self::STATUS_REJECTED, ':id'=>$this->id));
+                $sql = "UPDATE project SET status = :status WHERE id = :id";
+                self::query($sql, array(':status'=>self::STATUS_REJECTED, ':id'=>$this->id));
                 $errors[] = "Fallo en la transaccion, el proyecto ha quedado como descartado";
                 return false;
             }
@@ -2581,7 +2581,7 @@ namespace Goteo\Model {
          * Lista de proyectos que tienen las categorias preferidas de un usuario
          * @return: array of Project
          */
-        public static function favouriteCategories($user, $published = false)
+        public static function favouriteCategories($user, $limit=false, $published = false)
         {
             $lang = Lang::current();
             $projects = array();
@@ -2601,6 +2601,11 @@ namespace Goteo\Model {
 
 
             $sqlFilter = " AND project.status = 3";
+
+            if($limit)
+            {
+                $sql_limit = ' LIMIT '.$limit;
+            }
 
 
             $sql ="
@@ -2647,7 +2652,8 @@ namespace Goteo\Model {
                         WHERE user = :user
                     ))
                 $sqlFilter
-                ORDER BY  project.status ASC, project.created DESC
+                ORDER BY  project.status ASC, project.created DESC    
+                $sql_limit
                 ";
 
             $query = self::query($sql, $values);

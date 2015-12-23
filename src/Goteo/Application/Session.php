@@ -261,12 +261,24 @@ class Session {
     }
 
     /**
-     * Comprueba si el usuario está identificado.
+     * Checks if the user is logged
      *
      * @return boolean
      */
     static public function isLogged () {
         return (self::get('user') instanceof User);
+    }
+
+    /**
+     * Checks if the user is an admin
+     *
+     * @return boolean
+     */
+    static public function isAdmin () {
+        if(static::isLogged()) {
+            return \Goteo\Controller\AdminController::isAllowed(static::getUser());
+        }
+        return false;
     }
 
     /**

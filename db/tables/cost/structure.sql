@@ -28,3 +28,7 @@ ALTER TABLE `cost` CHANGE `type` `type` VARCHAR( 50 ) CHARACTER SET utf8 COLLATE
 -- Lonmgitud de campos de texto
 ALTER TABLE `cost` CHANGE `cost` `cost` TINYTEXT CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL ,
 CHANGE `description` `description` TEXT CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL ;
+
+-- add order to cost
+ALTER TABLE `cost` ADD COLUMN `order` INT UNSIGNED DEFAULT 1 NOT NULL AFTER `until`;
+ALTER TABLE `cost` DROP INDEX `id`, ADD INDEX (`order`);

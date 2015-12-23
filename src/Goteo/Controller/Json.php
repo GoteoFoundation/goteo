@@ -15,7 +15,10 @@ use Goteo\Model;
 use Goteo\Application\Session;
 use Goteo\Model\User;
 use Goteo\Model\Project;
+use Goteo\Model\Invest;
+use Goteo\Model\Location\LocationItem;
 use Goteo\Model\User\UserLocation;
+use Goteo\Model\Invest\InvestLocation;
 use Goteo\Model\Project\ProjectLocation;
 use Goteo\Library\Text;
 use Goteo\Library\Feed;
@@ -149,6 +152,7 @@ class Json extends \Goteo\Core\Controller {
                 }
             }
             elseif($type === 'project') {
+
                 //check if user can edit project
                 try {
                     $project = Project::get($id);
@@ -210,8 +214,132 @@ class Json extends \Goteo\Core\Controller {
                     }
                 }
             }
+            elseif($type === 'invest') {
+                //check if user can edit invest
+                try {
+                    $invest = Invest::get($id);
+                    if(!$invest->user == Session::getUserid() && !Session::isAdmin()) {
+                        $return['msg'] = 'Invest id invalid: You don\'t have permissions to edit this invest!';
+                        $invest = false;
+                    }
+                } catch(\Exception $e){
+                    $return['msg'] = 'Invest id invalid: ' . strip_tags($e->getMessage());
+                    $invest = false;
+                }
+
+                if($invest) {
+                    $investId = $invest->id;
+                    $return['invest'] = $investId;
+                    if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+                        //Handles invest localization
+                        if($_POST['latitude'] && $_POST['longitude']) {
+                            $loc = new InvestLocation(array(
+                                'id'         => $investId,
+                                'city'         => $_POST['city'],
+                                'region'       => $_POST['region'],
+                                'country'      => $_POST['country'],
+                                'country_code' => $_POST['country_code'],
+                                'longitude'    => $_POST['longitude'],
+                                'latitude'     => $_POST['latitude'],
+                                'method'       => $_POST['method']
+                            ));
+                            if ($loc->save($errors)) {
+                                $return['msg'] = 'Location successfully added for invest';
+                                $return['location'] = $loc;
+                                $return['success'] = true;
+                            } else {
+                                $return['msg'] = 'Localization saving errors: '. implode(',', $errors);
+                            }
+                        }
+                        else {
+                            //Just changes some properties (locable, info)
+                            foreach($_POST as $key => $value) {
+                                if($key === 'locable' || $key === 'info') {
+                                    if(InvestLocation::setProperty($investId, $key, $value, $errors)) {
+                                        $return['msg'] = 'Property succesfully changed for invest';
+                                        $return['success'] = true;
+                                    }
+                                    else {
+                                        $return['msg'] = implode(',', $errors);
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    //GET method just returns invest info
+                    elseif ($loc = InvestLocation::get($investId)) {
+                        $return['location'] = $loc;
+                        $return['success'] = true;
+                    }
+                    else {
+                        $return['msg'] = 'Invest has no location';
+                    }
+                }
+            }
+            elseif($type === 'donor') {
+                //check if user can edit donor
+                try {
+                    $donor = User\Donor::get($id);
+                    if(!$donor->user == Session::getUserid() && !Session::isAdmin()) {
+                        $return['msg'] = 'Donor id invalid: You don\'t have permissions to edit this donor!';
+                        $donor = false;
+                    }
+                } catch(\Exception $e){
+                    $return['msg'] = 'Donor id invalid: ' . strip_tags($e->getMessage());
+                    $donor = false;
+                }
+
+                if($donor) {
+                    $donorId = $donor->id;
+                    $return['donor'] = $donorId;
+                    if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+                        //Handles donor localization
+                        if($_POST['latitude'] && $_POST['longitude']) {
+                            $loc = new User\DonorLocation(array(
+                                'id'         => $donorId,
+                                'city'         => $_POST['city'],
+                                'region'       => $_POST['region'],
+                                'country'      => $_POST['country'],
+                                'country_code' => $_POST['country_code'],
+                                'longitude'    => $_POST['longitude'],
+                                'latitude'     => $_POST['latitude'],
+                                'method'       => $_POST['method']
+                            ));
+                            if ($loc->save($errors)) {
+                                $return['msg'] = 'Location successfully added for donor';
+                                $return['location'] = $loc;
+                                $return['success'] = true;
+                            } else {
+                                $return['msg'] = 'Localization saving errors: '. implode(',', $errors);
+                            }
+                        }
+                        else {
+                            //Just changes some properties (locable, info)
+                            foreach($_POST as $key => $value) {
+                                if($key === 'locable' || $key === 'info') {
+                                    if(User\DonorLocation::setProperty($donorId, $key, $value, $errors)) {
+                                        $return['msg'] = 'Property succesfully changed for donor';
+                                        $return['success'] = true;
+                                    }
+                                    else {
+                                        $return['msg'] = implode(',', $errors);
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    //GET method just returns donor info
+                    elseif ($loc = User\DonorLocation::get($donorId)) {
+                        $return['location'] = $loc;
+                        $return['success'] = true;
+                    }
+                    else {
+                        $return['msg'] = 'Donor has no location';
+                    }
+                }
+            }
             else {
-                $return['msg'] = 'Type must be defined (user, project)';
+                $return['msg'] = 'Type must be defined (user, project, invest)';
             }
         }
         else {

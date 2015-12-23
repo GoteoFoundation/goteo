@@ -84,9 +84,9 @@ namespace Goteo\Model\Project {
                     {$join}
                     {$eng_join}
                     WHERE cost.project = :project
-                    ORDER BY cost.id ASC
+                    ORDER BY cost.required DESC, cost.order ASC, cost.id ASC
                     ";
-
+                // die(\sqldbg($sql, $values));
 				$query = self::query($sql, $values);
                 foreach ($query->fetchAll(\PDO::FETCH_CLASS, __CLASS__) as $item) {
                     $array[$item->id] = $item;

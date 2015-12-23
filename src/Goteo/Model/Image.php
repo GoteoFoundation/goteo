@@ -330,6 +330,31 @@ namespace Goteo\Model {
         public function display ($width, $height, $crop = false) {
             $width = (int) $width;
             $height = (int) $height;
+
+            $file = $this->dir_originals . $this->name;
+            // Get the url file if is S3
+            // TODO: more elegant solution, not mixed with assets bucket
+            if($this->fp instanceOf \Goteo\Library\FileHandler\S3File) {
+
+                $file = SRC_URL . '/' . $file;
+                if(substr($file, 0, 2) === '//') {
+                    $file = (HTTPS_ON ? 'https:' : 'http:' ) . $file;
+                }
+            }
+            else {
+                //Get the file by filesystem
+                $file = GOTEO_DATA_PATH . $file;
+            }
+            // die($file);
+
+            // Avoid resize on GIF images
+            if('gif' == pathinfo($this->name, PATHINFO_EXTENSION)) {
+                if($ret = @file_get_contents($file)) {
+                    return $ret;
+                }
+            }
+
+            // Retrieve the chachec version if exists
             if($this->cache && $this->name) {
                 if($cache_file = $this->cache->getFile($this->name, $width . 'x' . $height . ($crop ? 'c' : ''))) {
                     //correccion de extension para el cache
@@ -346,23 +371,8 @@ namespace Goteo\Model {
                     }
                 }
             }
-            $file = $this->dir_originals . $this->name;
 
-            // Get the url file if is S3
-            // TODO: more elegant solution, not mixed with assets bucket
-            if($this->fp instanceOf \Goteo\Library\FileHandler\S3File) {
 
-                $file = SRC_URL . '/' . $file;
-                if(substr($file, 0, 2) === '//') {
-                    $file = (HTTPS_ON ? 'https:' : 'http:' ) . $file;
-                }
-            }
-            else {
-                //Get the file by filesystem
-                $file = GOTEO_DATA_PATH . '/' . $file;
-            }
-
-            // die($file);
 
             if($width <= 0) $width = null;
             if($height <= 0) $height = null;

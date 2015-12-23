@@ -144,6 +144,20 @@ $routes->add('pool-invest-share', new Route(
         )
 ));
 
+// New dashboard
+
+$routes->add('dashboard-wallet', new Route(
+    '/dashboard/wallet',
+    array('_controller' => 'Goteo\Controller\DashboardController::walletAction',
+        )
+));
+
+$routes->add('dashboard-wallet-projects-suggestion', new Route(
+    '/dashboard/wallet/projects-suggestion',
+    array('_controller' => 'Goteo\Controller\DashboardController::projectsSuggestionAction',
+        )
+));
+
 
 
 // AUTH user routes
@@ -467,6 +481,11 @@ $routes->add('channel-list-projects', new Route(
         // 'type' => 'available',
         'category' => null
         )
+));
+
+$routes->add('channels-list-', new Route(
+    '/channels',
+    array('_controller' => 'Goteo\Controller\ChannelController::listChannelsAction')
 ));
 
 

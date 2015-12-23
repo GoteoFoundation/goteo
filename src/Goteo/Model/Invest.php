@@ -20,6 +20,7 @@ use Goteo\Model\Image;
 use Goteo\Model\User;
 use Goteo\Model\User\Pool;
 use Goteo\Model\Project;
+use Goteo\Model\Invest\InvestLocation;
 use Goteo\Payment\Payment;
 
 /**
@@ -177,24 +178,24 @@ class Invest extends \Goteo\Core\Model {
      */
     public static function getList ($filters = array(), $node = null, $offset = 0, $limit = 10, $count = false, $order = 'id DESC') {
 
-        $list = array();
-        $values = array();
+        $list = [];
+        $values = [];
+        $sqlFilter = [];
 
-        $sqlFilter = "";
         if (!empty($filters['id'])) {
-            $sqlFilter .= " AND invest.id = :id";
+            $sqlFilter[] = "invest.id = :id";
             $values[':id'] = $filters['id'];
         }
         if (!empty($filters['methods'])) {
-            $sqlFilter .= " AND invest.method = :methods";
+            $sqlFilter[] = "invest.method = :methods";
             $values[':methods'] = $filters['methods'];
         }
         if (is_numeric($filters['projectStatus'])) {
-            $sqlFilter .= " AND project.status = :projectStatus";
+            $sqlFilter[] = "project.status = :projectStatus";
             $values[':projectStatus'] = $filters['projectStatus'];
         }
         if (is_numeric($filters['status'])) {
-            $sqlFilter .= " AND invest.status = :status";
+            $sqlFilter[] = "invest.status = :status";
             $values[':status'] = $filters['status'];
         }
         elseif (is_array($filters['status'])) {
@@ -205,7 +206,7 @@ class Invest extends \Goteo\Core\Model {
                     $values[':status' . $i] = $status;
                 }
             }
-            if($parts) $sqlFilter .= " AND invest.status IN (" . implode(',', $parts) . ")";
+            if($parts) $sqlFilter[] = "invest.status IN (" . implode(',', $parts) . ")";
         }
         if (!empty($filters['projects'])) {
             $parts = [];
@@ -214,74 +215,74 @@ class Invest extends \Goteo\Core\Model {
                 $parts[] = ':prj' . $i;
                 $values[':prj' . $i] = $prj;
             }
-            $sqlFilter .= " AND invest.project IN (" . implode(',', $parts) . ")";
+            $sqlFilter[] = "invest.project IN (" . implode(',', $parts) . ")";
         }
         if (!empty($filters['amount'])) {
-            $sqlFilter .= " AND invest.amount >= :amount";
+            $sqlFilter[] = "invest.amount >= :amount";
             $values[':amount'] = $filters['amount'];
         }
         if (!empty($filters['maxamount'])) {
-            $sqlFilter .= " AND invest.amount <= :maxamount";
+            $sqlFilter[] = "invest.amount <= :maxamount";
             $values[':maxamount'] = $filters['maxamount'];
         }
         if (!empty($filters['users'])) {
-            $sqlFilter .= " AND invest.user = :users";
+            $sqlFilter[] = "invest.user = :users";
             $values[':users'] = $filters['users'];
         }
         if (!empty($filters['name'])) {
-            $sqlFilter .= " AND invest.user IN (SELECT id FROM user WHERE (name LIKE :name OR email LIKE :name))";
+            $sqlFilter[] = "invest.user IN (SELECT id FROM user WHERE (name LIKE :name OR email LIKE :name))";
             $values[':name'] = "%{$filters['name']}%";
         }
         if (!empty($filters['calls'])) {
-            $sqlFilter .= " AND invest.`call` = :calls";
+            $sqlFilter[] = "invest.`call` = :calls";
             $values[':calls'] = $filters['calls'];
         }
         if (!empty($filters['issue'])) {
             switch ($filters['issue']) {
                 case 'show':
-                    $sqlFilter .= " AND invest.issue = 1";
+                    $sqlFilter[] = "invest.issue = 1";
                     break;
                 case 'hide':
-                    $sqlFilter .= " AND (invest.issue = 0 OR invest.issue IS NULL)";
+                    $sqlFilter[] = "(invest.issue = 0 OR invest.issue IS NULL)";
                     break;
             }
         }
         if (!empty($filters['procStatus'])) {
             switch ($filters['procStatus']) {
                 case 'first': // en primera ronda
-                    $sqlFilter .= " AND project.status = 3 AND (project.passed IS NULL OR project.passed = '0000-00-00' )";
+                    $sqlFilter[] = "project.status = 3 AND (project.passed IS NULL OR project.passed = '0000-00-00' )";
                     break;
                 case 'second': // en segunda ronda
-                    $sqlFilter .= " AND project.status = 3 AND (project.passed IS NOT NULL AND project.passed != '0000-00-00' )";
+                    $sqlFilter[] = "project.status = 3 AND (project.passed IS NOT NULL AND project.passed != '0000-00-00' )";
                     break;
                 case 'completed': // financiados
-                    $sqlFilter .= " AND project.status = 4";
+                    $sqlFilter[] = "project.status = 4";
                     break;
             }
         }
-        // else { $sqlFilter .= " AND (invest.campaign = 0 OR invest.campaign IS NULL)"; }
+        // else { $sqlFilter[] = "(invest.campaign = 0 OR invest.campaign IS NULL)"; }
         if (!empty($filters['types'])) {
             switch ($filters['types']) {
                 case 'donative':
-                    $sqlFilter .= " AND invest.resign = 1";
+                    $sqlFilter[] = "invest.resign = 1";
                     break;
                 case 'anonymous':
-                    $sqlFilter .= " AND invest.anonymous = 1";
+                    $sqlFilter[] = "invest.anonymous = 1";
                     break;
                 case 'manual':
-                    $sqlFilter .= " AND invest.admin IS NOT NULL";
+                    $sqlFilter[] = "invest.admin IS NOT NULL";
                     break;
                 case 'campaign':
-                    $sqlFilter .= " AND invest.droped IS NOT NULL";
+                    $sqlFilter[] = "invest.droped IS NOT NULL";
                     break;
                 case 'drop':
-                    $sqlFilter .= " AND invest.campaign = 1";
+                    $sqlFilter[] = "invest.campaign = 1";
                     break;
                 case 'pool':
-                    $sqlFilter .= " AND invest.pool = 1";
+                    $sqlFilter[] = "invest.pool = 1";
                     break;
                 case 'nopool':
-                    $sqlFilter .= " AND (invest.pool = 0 OR ISNULL(invest.pool))";
+                    $sqlFilter[] = "(invest.pool = 0 OR ISNULL(invest.pool))";
                     break;
             }
         }
@@ -289,36 +290,42 @@ class Invest extends \Goteo\Core\Model {
         if (!empty($filters['review'])) {
             switch ($filters['review']) {
                 case 'collect': //  Recaudado: tpv cargado o paypal pendiente
-                    $sqlFilter .= " AND ((invest.method = 'tpv' AND invest.status = 1)
+                    $sqlFilter[] = "((invest.method = 'tpv' AND invest.status = 1)
                                     OR (invest.method = 'paypal' AND invest.status = 0))";
                     break;
                 case 'online': // Solo pagos online
-                    $sqlFilter .= " AND (invest.method = 'tpv' OR invest.method = 'paypal')";
+                    $sqlFilter[] = "(invest.method = 'tpv' OR invest.method = 'paypal')";
                     break;
                 case 'paypal': // Paypal pendientes o ok
-                    $sqlFilter .= " AND (invest.method = 'paypal' AND (invest.status = -1 OR invest.status = 0))";
+                    $sqlFilter[] = "(invest.method = 'paypal' AND (invest.status = -1 OR invest.status = 0))";
                     break;
                 case 'tpv': // Tpv pendientes o ok
-                    $sqlFilter .= " AND (invest.method = 'tpv' AND (invest.status = -1 OR invest.status = 1))";
+                    $sqlFilter[] = "(invest.method = 'tpv' AND (invest.status = -1 OR invest.status = 1))";
                     break;
             }
         }
 
         if (!empty($filters['date_from'])) {
-            $sqlFilter .= " AND invest.invested >= :date_from";
+            $sqlFilter[] = "invest.invested >= :date_from";
             $values[':date_from'] = $filters['date_from'];
         }
         if (!empty($filters['date_until'])) {
-            $sqlFilter .= " AND invest.invested <= :date_until";
+            $sqlFilter[] = "invest.invested <= :date_until";
             $values[':date_until'] = $filters['date_until'];
         }
         if (isset($filters['fulfilled'])) {
-            $sqlFilter .= " AND invest_reward.fulfilled=" . ($filters['fulfilled'] ? '1' : '0');
+            $sqlFilter[] = "invest_reward.fulfilled=" . ($filters['fulfilled'] ? '1' : '0');
         }
 
         if ($node) {
-            $sqlFilter .= " AND project.node = :node";
+            $sqlFilter[] = "(project.node = :node OR ISNULL(invest.project))";
             $values[':node'] = $node;
+        }
+
+        if($sqlFilter) {
+            $sqlFilter = 'WHERE ' . implode(' AND ', $sqlFilter);
+        } else {
+            $sqlFilter = '';
         }
 
         if($count) {
@@ -337,14 +344,13 @@ class Invest extends \Goteo\Core\Model {
             // Return count
             $sql = "SELECT DISTINCT $what
                 FROM invest
-                INNER JOIN project
+                LEFT JOIN project
                     ON invest.project = project.id
                 LEFT JOIN user
                     ON invest.admin = user.id
                 LEFT JOIN invest_reward
                     ON invest_reward.invest = invest.id
-                WHERE invest.project IS NOT NULL
-                    $sqlFilter";
+                $sqlFilter";
 
 
             if($count === 'all') {
@@ -367,19 +373,18 @@ class Invest extends \Goteo\Core\Model {
                     project.status as projectStatus,
                     user.name as admin
                 FROM invest
-                INNER JOIN project
+                LEFT JOIN project
                     ON invest.project = project.id
                 LEFT JOIN user
                     ON invest.admin = user.id
                 LEFT JOIN invest_reward
                     ON invest_reward.invest = invest.id
-                WHERE invest.project IS NOT NULL
-                    $sqlFilter
+                $sqlFilter
                 " . ($order ? "ORDER BY $order" : '') ."
                 LIMIT $offset, $limit
                 ";
 
-        // echo sqldbg($sql, $values);die;
+        // print_r($filters);echo sqldbg($sql, $values);die;
         $query = self::query($sql, $values);
         foreach ($query->fetchAll(\PDO::FETCH_CLASS, __CLASS__) as $item) {
             $list[$item->id] = $item;
@@ -403,6 +408,13 @@ class Invest extends \Goteo\Core\Model {
         if($this->userObject) return $this->userObject;
         $this->userObject = User::get($this->user);
         return $this->userObject;
+    }
+
+    // returns the current location
+    public function getLocation() {
+        if($this->locationObject) return $this->locationObject;
+        $this->locationObject = InvestLocation::get($this);
+        return $this->locationObject;
     }
 
     // returns payment method
@@ -1306,20 +1318,12 @@ class Invest extends \Goteo\Core\Model {
     public function cancel ($status = false, &$errors = []) {
 
         // true marks as returned so totals will added to a failed project's thermometer
-        if ($status) {
+        if($this->pool) {
+            $status = self::STATUS_TO_POOL;
+        } elseif ($status) {
             $status = self::STATUS_RETURNED;
         } else {
             $status = self::STATUS_CANCELLED;
-        }
-
-        // should this invest go to pool?
-        if($this->pool) {
-            if(Pool::refundInvest($this, $errors)) {
-                $status = self::STATUS_TO_POOL;
-            }
-            else {
-                return false;
-            }
         }
 
         $values = array(
@@ -1336,12 +1340,27 @@ class Invest extends \Goteo\Core\Model {
         if (self::query($sql, $values)) {
             $this->status = $status;
             $this->returned = $values[':returned'];
+
+            // should this invest go to pool?
+            if($this->pool) {
+                if(!Pool::refundInvest($this, $errors)) {
+                    return false;
+                }
+            }
+
             return true;
         }
 
         return false;
     }
 
+    /**
+     * Return if a invest is derived to pool
+     * @return boolean [description]
+     */
+    public function isOnPool() {
+        return $this->status == Invest::STATUS_TO_POOL;
+    }
     /*
      * Switch credit option
      */

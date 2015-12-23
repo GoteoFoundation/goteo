@@ -46,3 +46,4 @@ ALTER TABLE `reward` ADD `bonus` BOOLEAN NOT NULL DEFAULT '0' COMMENT 'Retorno c
 -- optimization
 ALTER TABLE `reward` ADD INDEX `icon` ( `icon` );
 ALTER TABLE `reward` ADD KEY `type`(`type`) ;
+ALTER TABLE `reward` DROP INDEX `id`, ADD INDEX (`order`);

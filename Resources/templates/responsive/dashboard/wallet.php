@@ -26,44 +26,11 @@
 	   	</div>
 	</div>
 
-	<?php if($this->projects_suggestion): ?>
+	<?php //if($this->projects_suggestion): ?>
 
-	<div class="container general-dashboard">
-	<h2><?= $this->text('profile-suggest-projects-interest') ?></h2>
-		<?php foreach ($this->projects_suggestion as $group=>$projects) : ?>
-			<div class="row spacer">
-			<?php foreach ($projects['items'] as $project) : ?>
-					<div class="col-md-4 margin-2">
-						<?= $this->text_widget('/widget/project/' . $project->id) ?>
-                    </div>
-                <?php endforeach; ?>
-            </div>
-            <?php if($group==2)
-            		break;
-            ?>
-		<?php endforeach; ?>
+	<div class="container general-dashboard" id="projects-container">
+		<?= $this->insert('dashboard/partials/projects_suggestion.php', ['projects_suggestion' => $this->projects_suggestion, 'interests' => $this->interests]) ?>
 	</div>
-
-	<?php else: ?>
-
-		<div class="container general-dashboard">
-			<h2><?= $this->text('discover-group-popular-header') ?></h2>
-				<div class="row spacer">
-				<?php foreach ($this->popular_projects as $key => $project) : ?>
-						<div class="col-md-4 margin-2">
-							<?= $this->text_widget('/widget/project/' . $project->id) ?>
-	                    </div>
-	                    <?php if($key==2): ?>
-			            	</div>
-			            	<!-- second row -->
-			            	<div class="row spacer">
-		            	<?php endif; ?>
-	                <?php endforeach; ?>
-	            </div>
-
-		</div>
-
-	<?php endif ?>
 
 <!-- Modal -->
 <div class="modal fade" id="poolModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
@@ -80,3 +47,38 @@
   </div>
 </div>
 <?php $this->replace() ?>
+
+<?php $this->section('footer') ?>
+
+<script type="text/javascript">
+
+$(function(){
+    var _update_ajax_projects = function(value, id) {
+
+        $.ajax({
+            url: "/dashboard/wallet/projects-suggestion",
+            data: { 'id' : id, 'value' : value  },
+            type: 'post',
+            success: function(result){
+            	//alert(result);
+                $("#projects-container").html(result);
+            }
+        });
+   };
+
+	$("#projects-container").on('change', ".interest", function (e) {
+		var value=0;
+		if ($(this).is(":checked"))
+		{
+  			value=1;
+		}
+        var id=$(this).attr('id');
+     
+        _update_ajax_projects(value, id);
+  	});
+
+});
+
+</script>
+
+<?php $this->append() ?>

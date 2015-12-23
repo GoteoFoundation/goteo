@@ -21,7 +21,7 @@ namespace Goteo\Library {
 	 *
 	 */
     class Newsletter {
-        static public function getTestersSQL($languages = [], $prefix = '') {
+        static public function getTestersSQL(array $languages = [], $prefix = '') {
             $langs = "('" .implode("','", $languages) . "')";
             return "SELECT
                         $prefix
@@ -79,7 +79,7 @@ namespace Goteo\Library {
         /*
          * Usuarios actualmente activos que no tienen bloqueado el envio de newsletter
          */
-        static public function getReceiversSQL($languages = [], $prefix = '') {
+        static public function getReceiversSQL(array $languages = [], $prefix = '') {
             $langs = "('" .implode("','", $languages) . "')";
             return "SELECT
                         $prefix
@@ -136,7 +136,7 @@ namespace Goteo\Library {
 
         }
 
-        static public function getDonorsSQL($languages = [], $prefix = '') {
+        static public function getDonorsSQL(array $languages = [], $prefix = '') {
 
             if(class_exists('\Goteo\Model\User\Donor')) {
                 $year = \Goteo\Model\User\Donor::currYear();

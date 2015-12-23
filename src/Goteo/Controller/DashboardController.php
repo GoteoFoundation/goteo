@@ -15,6 +15,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Goteo\Application\Session;
 use Goteo\Application\View;
 use Goteo\Model\Project;
+use Goteo\Model\User\Interest;
 use Goteo\Library\Listing;
 
 class DashboardController extends \Goteo\Core\Controller {
@@ -32,18 +33,56 @@ class DashboardController extends \Goteo\Core\Controller {
 
         $user = Session::getUser();
         $pool = $user->getPool();
+        $interests = Interest::getAll();
 
         //proyectos que coinciden con mis intereses
-        $favourite_categories = Project::favouriteCategories($user->id);
+        $projects_suggestion = Project::favouriteCategories($user->id, 6);
 
-        if (!empty($favourite_categories)) {
-            $projects_suggestion = Listing::get($favourite_categories);
+        if(empty($projects_suggestion))
+            $projects_suggestion=Project::published('popular', $id, 0, 6);
+
+        return $this->viewResponse('dashboard/wallet', ['pool' => $pool, 'projects_suggestion' => $projects_suggestion, 'user_interests' => $user->interests, 'interests' => $interests, 'popular_projects' => $popular_projects, 'section' => 'pool' ]);
+
+    }
+
+    /**
+     * Virtual wallet
+     */
+    public function projectsSuggestionAction(Request $request)
+    {
+
+        if ($request->isMethod('post')) {
+            $interest = $request->request->get('id');
+            $value= $request->request->get('value');   
         }
+
+        $user = Session::getUser();
+
+        $user_interests=$user->interests;
+
+        $interests = Interest::getAll();
+
+        if($value)
+            $user_interests[$interest]=$interest;
         else
-            $popular_projects=Project::published('popular', null, 0, 6);
+            unset($user_interests[$interest]);
 
-        return $this->viewResponse('dashboard/wallet', ['pool' => $pool, 'projects_suggestion' => $projects_suggestion, 'popular_projects' => $popular_projects, 'section' => 'pool' ]);
+        $user->interests=$user_interests;
 
+        $user->save();
+
+        //proyectos que coinciden con mis intereses
+        $projects_suggestion = Project::favouriteCategories($user->id, 6);
+
+        return $this->viewResponse(
+                'dashboard/partials/projects_suggestion',
+                [   'user' => $user,
+                    'interests' => $interests,
+                    'user_interests' => $user_interests,
+                    'projects_suggestion' => $projects_suggestion,
+                    'return' => 'return'
+                ]
+        );
     }
 
 }

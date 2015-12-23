@@ -12,7 +12,6 @@ $optimum    = \amount_format($project->maxcost);
 $costs = array();
 
 foreach ($project->costs as $cost) {
-
     $costs[$cost->type][] = (object) array(
         'name' => $cost->cost,
         'description' => $cost->description,
@@ -40,7 +39,7 @@ foreach ($project->costs as $cost) {
 
         <?php foreach ($costs as $type => $list):
 
-            usort($list, function ($a, $b) {if ($a->req == $b->req) return 0; if ($a->req && !$b->req) return -1; if ($b->req && !$a->req) return 1;});
+            // usort($list, function ($a, $b) {if ($a->req == $b->req) return 0; if ($a->req && !$b->req) return -1; if ($b->req && !$a->req) return 1;});
             ?>
 
         <thead class="<?php echo htmlspecialchars($type)?>">

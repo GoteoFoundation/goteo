@@ -16,13 +16,8 @@ foreach (License::getAll() as $l) {
 if (empty($project->social_rewards) && empty($project->individual_rewards))
     return '';
 
-uasort($project->individual_rewards,
-    function ($a, $b) {
-        if ($a->amount == $b->amount) return 0;
-        return ($a->amount > $b->amount) ? 1 : -1;
-        }
-    );
 ?>
+
 <div class="widget project-rewards collapsable" id="project-rewards">
 
     <?php if (!isset($only) || $only == 'social') : ?>
