@@ -539,7 +539,7 @@ INSERT  INTO `role`(`id`,`name`) VALUES ('vip','Padrino');
 
 
 /*Data for the table `user` */
-INSERT INTO `user` VALUES('root', 'Sysadmin', '', '', '$1$L0HUgg5m$BFHWQWxOD/L3ekMBEIMVU.', '', '', 1, 91, '', '', '', '', '', '', 0, '', '', '', 1, 1, 'en', 'goteo');
+INSERT INTO `user`(`id`,`name`,`password`,`email`,`active`,`worth`,`created`,`token`,`hide`,`confirmed`,`lang`,`node`) VALUES('root', 'Sysadmin', '$1$L0HUgg5m$BFHWQWxOD/L3ekMBEIMVU.','', 1, 0, NOW(),'',1,1, 'en', 'goteo');
 
 /*Data for the table `user_translang` */
 INSERT INTO `user_translang` (`user`, `lang`) VALUES
