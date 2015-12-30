@@ -16,7 +16,9 @@ use Goteo\Application\Message;
 use Goteo\Application\Cookie;
 use Goteo\Application\Config;
 use Goteo\Application\Session;
+use Goteo\Application\App;
 use Goteo\Application\Lang;
+use Goteo\Model\User;
 use Goteo\Library\Currency;
 
 class GoteoCore implements ExtensionInterface
@@ -67,8 +69,14 @@ class GoteoCore implements ExtensionInterface
           'get_querystring' => [$this, 'get_querystring'],
           'is_ajax' => [$this, 'is_ajax'],
           'get_currency' => [$this, 'get_currency'],
+          'debug' => [$this, 'debug'],
 
         ];
+    }
+
+    public function debug()
+    {
+        return App::debug();
     }
 
     public function messages()
@@ -144,7 +152,7 @@ class GoteoCore implements ExtensionInterface
     }
 
     // Checks user role
-    public function has_role($role, $node = null, \Goteo\Model\User $user = null) {
+    public function has_role($role, $node = null, User $user = null) {
         if(empty($user)) $user = Session::getUser();
         if(empty($node)) $node = Config::get('current_node');
         if(Session::isLogged()) {
@@ -156,24 +164,12 @@ class GoteoCore implements ExtensionInterface
 
     // Returns if the user can admin anything or not
     public function is_admin() {
-        if(Session::isLogged()) {
-            return \Goteo\Controller\AdminController::isAllowed(Session::getUser());
-        }
-        return false;
+        return Session::isAdmin();
     }
 
     // Returns if the user can admin some specific module
-    public function is_module_admin($subcontroller, $node = null, \Goteo\Model\User $user = null) {
-        if(empty($node)) $node = Config::get('current_node');
-        if(empty($user)) $user = Session::getUser();
-        if(Session::isLogged()) {
-            $class = '\Goteo\Controller\Admin\\' . ucfirst($subcontroller) . 'SubController';
-            // Silent false return on missing class
-            if( ! class_exists($class) ) return false;
-            // let's throw a exception if its a wrong class
-            return $class::isAllowed($user, $node);
-        }
-        return false;
+    public function is_module_admin($subcontroller, $node = null, User $user = null) {
+        return Session::isModuleAdmin($subcontroller, $node, $user);
     }
 
     //is logged

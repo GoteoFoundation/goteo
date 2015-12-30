@@ -24,6 +24,7 @@ use Goteo\Library\Feed;
 use Goteo\Library\FeedBody;
 use Goteo\Library\Text;
 use Goteo\Model\Invest;
+use Goteo\Model\Invest\InvestLocation;
 use Goteo\Model\Mail;
 use Goteo\Model\Template;
 use Goteo\Model\User;
@@ -41,15 +42,21 @@ class InvestListener extends AbstractListener {
         $method->setInvest($invest);
         $method->setRequest($request);
 
-        // Is this really necessary?
-        $this->info('Invest init', [$invest, $invest->getProject(), $invest->getFirstReward(), $invest->getUser()]);
+        // Save basic geolocation data
+        $loc = InvestLocation::get($invest->id);
+        if (!$loc && Config::get('geolocation.maxmind.cities')) {
+            $loc = InvestLocation::createByIp($invest->id, $request->getClientIp());
+            $loc->save();
+        }
+
+        $this->info(($invest->getProject()? '':'Pool') . 'Invest init', [$invest, $invest->getProject(), $invest->getFirstReward(), $invest->getUser()]);
         Invest::setDetail($invest->id, 'init', 'Invest input created');
     }
 
     public function onInvestInitRequest(FilterInvestRequestEvent $event) {
         $method = $event->getMethod();
         $invest = $method->getInvest();
-        $this->info('Invest init request', [$invest, $invest->getProject(), $invest->getFirstReward(), $invest->getUser()]);
+        $this->info(($invest->getProject()? '':'Pool') .'Invest init request', [$invest, $invest->getProject(), $invest->getFirstReward(), $invest->getUser()]);
 
         Invest::setDetail($invest->id, 'init-request', 'Payment gateway authorised');
     }
@@ -60,7 +67,7 @@ class InvestListener extends AbstractListener {
         $invest   = $method->getInvest();
         $reward   = $invest->getFirstReward();
 
-        $this->info('Invest init redirect', [$invest, $invest->getProject(), $invest->getFirstReward(), $invest->getUser()]);
+        $this->info(($invest->getProject()?'':'Pool') .'Invest init redirect', [$invest, $invest->getProject(), $invest->getFirstReward(), $invest->getUser()]);
         Invest::setDetail($invest->id, 'init-redirect', 'Redirecting to payment gateway');
 
         // Goto payment platform...
@@ -79,7 +86,7 @@ class InvestListener extends AbstractListener {
         $method->setInvest($invest);
         $method->setRequest($request);
 
-        $this->info('Invest complete', [$invest, $invest->getProject(), $invest->getFirstReward(), $invest->getUser()]);
+        $this->info(($invest->getProject()?'':'Pool') .'Invest complete', [$invest, $invest->getProject(), $invest->getFirstReward(), $invest->getUser()]);
         Invest::setDetail($invest->id, 'complete', 'Redirected from payment gateway');
     }
 
@@ -91,7 +98,7 @@ class InvestListener extends AbstractListener {
         // Set transaction ID
         $invest->setTransaction($response->getTransactionReference());
 
-        $this->info('Invest complete request', [$invest, $invest->getProject(), $invest->getFirstReward(), $invest->getUser()]);
+        $this->info(($invest->getProject()?'':'Pool') .'Invest complete request', [$invest, $invest->getProject(), $invest->getFirstReward(), $invest->getUser()]);
         Invest::setDetail($invest->id, 'complete-request', 'Redirecting to user data');
     }
 
@@ -103,7 +110,7 @@ class InvestListener extends AbstractListener {
         // Set transaction ID
         $invest->setTransaction($response->getTransactionReference());
 
-        $this->info('Invest notify', [$invest, $invest->getProject(), $invest->getFirstReward(), $invest->getUser()]);
+        $this->info(($invest->getProject()?'':'Pool') .'Invest notify', [$invest, $invest->getProject(), $invest->getFirstReward(), $invest->getUser()]);
         Invest::setDetail($invest->id, 'notify', 'Contact from payment gateway');
     }
 
@@ -366,7 +373,7 @@ class InvestListener extends AbstractListener {
         $method = $event->getMethod();
         $invest = $event->getInvest();
         if ($invest->cancel(false)) {
-            $this->notice('Invest cancelled', [$invest, $invest->getProject(), $invest->getFirstReward(), $invest->getUser()]);
+            $this->notice(($invest->getProject()?'':'Pool') .'Invest cancelled', [$invest, $invest->getProject(), $invest->getFirstReward(), $invest->getUser()]);
             Invest::setDetail($invest->id, $method::getId().'-cancel', 'Invest process manually cancelled successfully');
             // update cached data
             $invest->keepUpdated();
@@ -384,9 +391,9 @@ class InvestListener extends AbstractListener {
     public function onInvestRefundReturn(FilterInvestRefundEvent $event) {
         $method = $event->getMethod();
         $invest = $event->getInvest();
-        $this->notice('Invest refund cancel', [$invest, $invest->getProject(), $invest->getFirstReward(), $invest->getUser()]);
+        $this->notice(($invest->getProject()?'':'Pool') .'Invest refund cancel', [$invest, $invest->getProject(), $invest->getFirstReward(), $invest->getUser()]);
         if ($invest->cancel(true)) {
-            $this->notice('Invest refund succeeded', [$invest, $invest->getProject(), $invest->getFirstReward(), $invest->getUser()]);
+            $this->notice(($invest->getProject()?'':'Pool') .'Invest refund succeeded', [$invest, $invest->getProject(), $invest->getFirstReward(), $invest->getUser()]);
             Invest::setDetail($invest->id, $method::getId().'-cancel', 'Invest refunded successfully');
             // update cached data
             $invest->keepUpdated();
@@ -404,7 +411,7 @@ class InvestListener extends AbstractListener {
         $method   = $event->getMethod();
         $invest   = $event->getInvest();
         $response = $event->getResponse();
-        $this->warning('Invest refund failed', [$invest, $invest->getProject(), $invest->getFirstReward(), $invest->getUser(), 'messages' => $response->getMessage()]);
+        $this->warning(($invest->getProject()?'':'Pool') .'Invest refund failed', [$invest, $invest->getProject(), $invest->getFirstReward(), $invest->getUser(), 'messages' => $response->getMessage()]);
         Invest::setDetail($invest->id, $method::getId().'-return-fail', 'Error while refunding invest: '.$response->getMessage());
 
     }
@@ -417,7 +424,27 @@ class InvestListener extends AbstractListener {
         $request = $event->getRequest();
         $invest  = $event->getInvest();
 
-        $this->notice('Invest finished', [$invest, $invest->getProject(), $invest->getFirstReward(), $invest->getUser()]);
+        // Complete geolocation data
+        if($request->isMethod('post')) {
+            $data = $request->request->get('invest');
+            $loc = InvestLocation::get($invest);
+            // Save geolocation
+            if($data['latitude'] && $data['longitude']) {
+                $loc = new InvestLocation($data);
+                $loc->id = $invest->id;
+                $loc->country_code = $data['country'];
+                $loc->method = 'manual';
+            }
+            elseif (!$loc && Config::get('geolocation.maxmind.cities')) {
+                $loc = InvestLocation::createByIp($invest->id, $request->getClientIp());
+            }
+            if($loc) {
+                $errors = [];
+                $loc->save($errors);
+            }
+        }
+
+        $this->notice(($invest->getProject()?'':'Pool') .'Invest finished', [$invest, $invest->getProject(), $invest->getFirstReward(), $invest->getUser()]);
         Invest::setDetail($invest->id, $invest->method.'-return-data', 'User has saved personal data for rewards');
 
     }

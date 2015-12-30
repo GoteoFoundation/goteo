@@ -53,10 +53,10 @@ class PoolController extends \Goteo\Core\Controller {
      * @param  [type] $amount_id  [description]
      * @return [type]             [description]
      */
-    private function validate($custom_amount = null, $invest = null, $login_required = true) {
+    private function validate($amount = null, $login_required = true) {
 
-        $amount_original = (int)$custom_amount;
-        $currency = (string)substr($custom_amount, strlen($amount_original));
+        $amount_original = (int)$amount;
+        $currency = (string)substr($amount, strlen($amount_original));
         if(empty($currency)) $currency = Currency::current('id');
         $currency = Currency::get($currency, 'id');
 
@@ -82,7 +82,7 @@ class PoolController extends \Goteo\Core\Controller {
         if($login_required) {
 
             // A reward is required here
-            if($custom_amount == 0) {
+            if($amount_original == 0 && !is_null($amount)) {
                 Message::error(Text::get('pool-amount-first'));
                 return $this->redirect('/pool');
             }
@@ -93,7 +93,7 @@ class PoolController extends \Goteo\Core\Controller {
                 Message::info(Text::get('invest-login-alert', $login_return));
 
                 // Message for login page
-                Session::store('sub-header', $this->getViewEngine()->render('pool/partials/login_sub_header', ['amount' => $amount_original, 'url_return' => $login_return ]));
+                Session::store('sub-header', $this->getViewEngine()->render('invest/partials/login_sub_header', ['amount' => $amount_original, 'url_return' => $login_return ]));
 
                 // or login page?
                 return $this->redirect('/signup?return=' . urlencode($this->page . '/payment?' . $this->query));
@@ -138,8 +138,7 @@ class PoolController extends \Goteo\Core\Controller {
     {
         $amount = $request->query->get('amount');
 
-        $amount=$this->validate($amount);
-
+        $amount = $this->validate($amount);
         if($amount instanceOf Response) return $amount;
 
         //if($reward instanceOf Response) return $reward;
@@ -158,7 +157,7 @@ class PoolController extends \Goteo\Core\Controller {
 
         $amount_validated = $this->validate($amount);
         if($amount_return instanceOf Response) return $amount_validated;
-        $amount=$amount_validated;
+        $amount = $amount_validated;
 
         // pay method required
         try {
@@ -232,8 +231,10 @@ class PoolController extends \Goteo\Core\Controller {
     public function completePaymentAction($invest_id, Request $request) {
 
         $invest = Invest::get($invest_id);
-        /*$reward = $this->validate(null, $_dummy, $invest);
-        if($reward instanceOf Response) return $reward;*/
+
+        $amount = $this->validate();
+        if($amount instanceOf Response) return $amount;
+
 
         if($invest->status != Invest::STATUS_PROCESSING) {
             Message::info(Text::get('invest-process-completed'));
@@ -282,7 +283,10 @@ class PoolController extends \Goteo\Core\Controller {
     public function userDataAction($invest_id, Request $request)
     {
         $invest = Invest::get($invest_id);
+        $amount = $this->validate();
+        if($amount instanceOf Response) return $amount;
 
+        // print_r($invest);
         if(!in_array($invest->status, [Invest::STATUS_TO_POOL])) {
             Message::error(Text::get('project-invest-fail'));
             return $this->redirect('/pool/payment?' . $this->query);
@@ -312,8 +316,10 @@ class PoolController extends \Goteo\Core\Controller {
     public function shareAction($invest_id, Request $request) {
 
         $invest = Invest::get($invest_id);
+        $amount = $this->validate();
+        if($amount instanceOf Response) return $amount;
 
-        if(!in_array($invest->status, [Invest::STATUS_CHARGED, Invest::STATUS_PAID])) {
+        if(!in_array($invest->status, [Invest::STATUS_TO_POOL, Invest::STATUS_PAID])) {
             Message::error(Text::get('project-invest-fail'));
             return $this->redirect('/pool/payment?' . $this->query);
         }

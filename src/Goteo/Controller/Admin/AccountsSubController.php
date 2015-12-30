@@ -21,6 +21,7 @@ use Goteo\Application\AppEvents;
 use Goteo\Application\Message;
 use Goteo\Application\Config;
 use Goteo\Application\Session;
+use Goteo\Application\Exception\ModelNotFountException;
 use Goteo\Application\Event\FilterInvestRefundEvent;
 use Goteo\Util\Omnipay\Message\EmptySuccessfulResponse;
 use Goteo\Payment\Payment;
@@ -351,6 +352,38 @@ class AccountsSubController extends AbstractSubController {
     }
 
 
+    /**
+     * Refunds to invest to the original user
+     * If project is failed, status will be returned
+     * If project is success or active, status will be cancelled
+     * @param  Integer $id Invest ID
+     */
+    public function changeuserAction($id) {
+        $invest = Invest::get($id);
+        $u = $this->getGet('user');
+        try{
+            $user = User::get($u);
+        } catch(ModelNotFountException $e) {}
+
+        if (!$invest instanceof Invest || !Session::isModuleAdmin('users')) {
+            Message::error('Invest ['.$id.'] not found, user [' . $u .'] not fount or no permissions to complete the action!');
+            return $this->redirect('/admin/accounts/details/' . $id);
+        }
+
+        $invest->node = $user->node;
+        $invest->user = $user->id;
+        $invest->address = $invest->getAddress();
+
+        $errors = [];
+        if($invest->save($errors)) {
+            Message::info(Text::get('admin-account-user-changed-successfully', ['%ID%' => $id, '%NAME%' => $user->name]));
+        } else {
+            Message::error(Text::get('admin-account-user-changed-error', ['%ID%' => $id, '%NAME%' => $user->name]) . "<br>" . implode(", ", $errors));
+        }
+
+        return $this->redirect('/admin/accounts/details/' . $id);
+    }
+
     public function executeAction($id) {
         $invest = Invest::get($id);
         if (!$invest instanceof Invest || $invest->status != Invest::STATUS_PENDING) {
@@ -453,9 +486,6 @@ class AccountsSubController extends AbstractSubController {
     public function addAction() {
         // listado de proyectos en campaña
         $projects = Project::active(false, true);
-        // usuarios
-        // TODO: aaaaarrrrrgggggghhhhh!!!!! unlimited!!!
-        $users = User::getAllMini();
         // campañas
         $calls = Model\Call::getAll();
 
@@ -464,12 +494,14 @@ class AccountsSubController extends AbstractSubController {
         // TODO: reformular esto con eventos y metodo cash
         if ($this->isPost()) {
 
-            $userData = User::getMini($this->getPost('user'));
-            $projectData = Project::getMini($this->getPost('project'));
+            $userData = User::get($this->getPost('user'));
+            $projectData = Project::get($this->getPost('project'));
 
             $invest = new Invest(
                 array(
-                    'amount'    => $this->getPost('amount'),
+                    'amount'    => $this->getPost('amount') ? (int) $this->getPost('amount') : null,
+                    'currency' => Currency::current(),
+                    'currency_rate' => Currency::rate(),
                     'user'      => $userData->id,
                     'project'   => $projectData->id,
                     'account'   => $userData->email,
@@ -510,7 +542,7 @@ class AccountsSubController extends AbstractSubController {
                 Message::info('Aporte manual creado correctamente, seleccionar recompensa y dirección de entrega.');
                 return $this->redirect('/admin/rewards/edit/'.$invest->id);
             } else{
-                Message::error('Ha fallado algo al crear el aporte manual');
+                Message::error('Ha fallado algo al crear el aporte manual<br>'. implode(", ", $errors));
             }
 
         }
@@ -518,7 +550,6 @@ class AccountsSubController extends AbstractSubController {
          return array(
                 'template' => 'admin/accounts/add',
                 'autocomplete'  => true,
-                'users'         => $users,
                 'projects'      => $projects,
                 'calls'         => $calls
             );

@@ -116,7 +116,8 @@ class NewsletterSubController extends AbstractSubController {
         $node = $this->node;
 
         if ($this->isPost()) {
-            $current_lang = Lang::current();
+            $current_lang = Config::get('lang');
+            // $current_lang = 'en';
             // plantilla
             $template = $this->getPost('template');
             // sin idiomas
@@ -132,6 +133,7 @@ class NewsletterSubController extends AbstractSubController {
             else {
                 $template_langs = Template::getAvailableLangs($template);
             }
+            $messages = [];
             foreach($template_langs as $lang) {
                 Lang::set($lang);
                 $lang = Lang::current();
@@ -155,14 +157,21 @@ class NewsletterSubController extends AbstractSubController {
                 // get the equivalent communication languages from preferences
                 $comlangs = [];
                 foreach($user_langs as $user_lang) {
-                    $comlang = $user_lang;
-                    while(!in_array($comlang, $template_langs)) {
+                    $comlang = trim($user_lang);
+                    if(!$comlang) continue;
+                    // Get first fallback
+                    if(!in_array($comlang, $template_langs)) {
+                        $comlang = Lang::getFallback($comlang);
+                    }
+                    // Get the second fallback
+                    if(!in_array($comlang, $template_langs)) {
                         $comlang = Lang::getFallback($comlang);
                     }
                     if($comlang === $lang) {
                         $comlangs[] = $user_lang;
                     }
                 }
+                // print_r($comlangs);die;
                 // add subscribers from sql
                 if ($this->getPost('test')) {
                     $sql = Newsletter::getTestersSQL($comlangs, $sender->id . ',');
@@ -172,15 +181,17 @@ class NewsletterSubController extends AbstractSubController {
                     // los cofinanciadores de este año
                     $sql = Newsletter::getDonorsSQL($comlangs, $sender->id . ',');
                 }
-
+                // die($sql);
                 // add subscribers
                 Sender::addSubscribersFromSQL($sql);
 
-
-                Message::info('Se ha generado el boletín [' . $sender->id . ']. <strong><a href="/admin/newsletter/detail/' . $sender->id . '">Recuerda activarlo</a> para que se envíe!</strong>');
+                $messages[] = Text::get('admin-newsletter-generated', ['%ID%' => $sender->id]) .
+                              ' <strong><a href="/admin/newsletter/detail/' . $sender->id . '">' . Text::get('admin-newsletter-mind-activate') . '</a></strong> ' .
+                              Text::get('admin-newsletter-langs-to-send', ['%LANGS%' => '<em>' . implode(', ', $comlangs) . '</em>']);
 
             }
 
+            Message::info(implode("<br>", $messages));
         }
 
         return $this->redirect('/admin/newsletter');

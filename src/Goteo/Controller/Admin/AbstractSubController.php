@@ -14,16 +14,11 @@
  */
 namespace Goteo\Controller\Admin;
 
-use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Goteo\Application\Config;
 use Goteo\Application\Session;
-use Goteo\Application\View;
 use Goteo\Library\Text;
-use Symfony\Component\EventDispatcher\Event;
-use Goteo\Application\App;
+use Goteo\Model\User;
 use Goteo\Core\Traits\LoggerTrait;
 
 abstract class AbstractSubController extends \Goteo\Core\Controller {
@@ -49,7 +44,7 @@ abstract class AbstractSubController extends \Goteo\Core\Controller {
     /**
      * Some defaults
      */
-    public function __construct($node, \Goteo\Model\User $user, Request $request) {
+    public function __construct($node, User $user, Request $request) {
         $this->request = $request;
         $this->node = $node;
         $this->user = $user;
@@ -144,7 +139,7 @@ abstract class AbstractSubController extends \Goteo\Core\Controller {
      * Returns if this class can be administred by the user in the node
      * Overwrite this function to more specific control
      */
-    public static function isAllowed(\Goteo\Model\User $user, $node) {
+    public static function isAllowed(User $user, $node) {
         foreach($user->getAdminNodes() as $id => $role) {
             $has_required_role = in_array($role, static::$allowed_roles); // static refers to the called class
             // no id means all nodes allowed
@@ -281,7 +276,7 @@ abstract class AbstractSubController extends \Goteo\Core\Controller {
         if(empty($url)) {
             $url = static::getUrl();
         }
-        return new RedirectResponse($url, $status);
+        return parent::redirect($url, $status);
     }
 
     /**
@@ -291,13 +286,6 @@ abstract class AbstractSubController extends \Goteo\Core\Controller {
      * @return [type]       [description]
      */
     public function response($view, $data = []) {
-        return new Response(View::render($view, $data));
-    }
-
-    /**
-     * Handy method to add context vars to all view
-     */
-    public function contextVars(array $vars = [], $view_path_context = '/admin') {
-        View::getEngine()->useContext($view_path_context, $vars);
+        return $this->viewResponse($view, $data);
     }
 }

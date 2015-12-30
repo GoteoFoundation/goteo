@@ -16,6 +16,7 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\ResponseHeaderBag;
 use Symfony\Component\EventDispatcher\Event;
 use Goteo\Application\App;
+use Goteo\Application\View;
 use Goteo\Core\Traits\LoggerTrait;
 
 abstract class Controller {
@@ -25,7 +26,7 @@ abstract class Controller {
      * Handy method to send a response from a view
      */
     public function viewResponse($view, $vars = [], $status = 200) {
-        return new Response(\Goteo\Application\View::render($view, $vars), $status);
+        return new Response(View::render($view, $vars), $status);
     }
 
     /**
@@ -62,7 +63,7 @@ abstract class Controller {
      * Handy method to obtain the view engine object
      */
     public function getViewEngine() {
-        return \Goteo\Application\View::getEngine();
+        return View::getEngine();
     }
 
     /**
@@ -70,9 +71,9 @@ abstract class Controller {
      */
     public function contextVars(array $vars = [], $view_path_context = null) {
         if($view_path_context) {
-            \Goteo\Application\View::getEngine()->useContext($view_path_context, $vars);
+            View::getEngine()->useContext($view_path_context, $vars);
         } else {
-            \Goteo\Application\View::getEngine()->useData($vars);
+            View::getEngine()->useData($vars);
         }
     }
 

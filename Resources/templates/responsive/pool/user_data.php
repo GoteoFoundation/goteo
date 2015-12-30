@@ -8,8 +8,6 @@ $this->layout('layout', [
 
 $this->section('content');
 
-$invest = $this->invest;
-
 ?>
 
 <?= $this->insert('pool/partials/steps_bar') ?>
@@ -20,7 +18,7 @@ $invest = $this->invest;
 			<div class="panel panel-default invest-container">
 				<div class="panel-body">
 
-                    <h2 class="col-sm-offset-1 padding-bottom-2"><?= $this->text('invest-make-sure-title') ?></h2>
+                    <h2 class="col-sm-offset-1 padding-bottom-2"><?= $this->text('pool-make-sure-title') ?></h2>
 
                     <?= $this->insert('pool/partials/invest_header_form') ?>
 
@@ -28,8 +26,7 @@ $invest = $this->invest;
 
                     <form class="form-horizontal" id="make-sure-form" role="form" method="POST" action="/pool/<?= $this->invest->id ?>">
 
-                        <?= $this->section('invest-form'); ?>
-                        <?php $this->stop() ?>
+                        <?= $this->supply('invest-form', $this->insert('invest/partials/invest_address_form')) ?>
 
                         <?= $this->insert('invest/partials/invest_submit_form') ?>
 
@@ -39,7 +36,7 @@ $invest = $this->invest;
 				</div>
 			</div>
 	</div>
-	
+
 </div>
 
 <?php $this->replace() ?>

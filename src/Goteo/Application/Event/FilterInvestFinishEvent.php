@@ -48,10 +48,12 @@ class FilterInvestFinishEvent extends Event
     public function getHttpResponse() {
         if($this->response) return $this->response;
         // Default is a redirection
-        if($this->invest->project)
+        if($this->invest->project) {
             return new RedirectResponse('/invest/' . $this->invest->project . '/' . $this->invest->id . '/share');
-        else
+        }
+        else {
             return new RedirectResponse('/pool/'  . $this->invest->id . '/share');
+        }
 
     }
 }

@@ -6,11 +6,15 @@
  *
  * For the full copyright and license information, please view the README.md
  * and LICENSE files that was distributed with this source code.
- */ echo htmlspecialchars($this['id']) ?>" name="<?php echo htmlspecialchars($this['name']) ?>" type="password"<?php
+ */
+
+echo htmlspecialchars($this['id']) ?>" name="<?php echo htmlspecialchars($this['name']) ?>" type="password"<?php
 
 if (isset($this['class'])) echo ' class="' . htmlspecialchars($this['class']) . '"';
 
 if (isset($this['size'])) echo ' size="' . ((int) $this['size']) . '"';
+
+if (isset($this['autocomplete'])) echo ' autocomplete="' . htmlspecialchars($this['autocomplete']) . '"';
 
 if($this['data'] && is_array($this['data'])) {
     foreach($this['data'] as $key => $val) {

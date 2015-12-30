@@ -439,7 +439,7 @@ class MailingSubController extends AbstractSubController {
             if($filters['langreverse']) {
                 $f = "user_prefer.comlang!=:comlang OR (ISNULL(user_prefer.comlang) AND user.lang!=:comlang)";
             }
-            $sqlFilter .= "AND $f";
+            $sqlFilter .= "AND ($f)";
             $values[':comlang'] = $filters['comlang'];
         }
 

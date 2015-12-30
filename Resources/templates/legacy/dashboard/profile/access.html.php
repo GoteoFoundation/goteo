@@ -79,6 +79,7 @@ echo new NormalForm(array(
                 'user_npassword' => array(
                     'type'  => 'Password',
                     'class' => 'inline',
+                    'autocomplete' => 'off',
                     'title' => Text::get('user-changepass-new'),
                     'hint'  => Text::get('tooltip-dashboard-user-new_password'),
                     'errors'=> !empty($errors['password_new']) ? array($errors['password_new']) : array(),
@@ -87,6 +88,7 @@ echo new NormalForm(array(
                 'user_rpassword' => array(
                     'type'  => 'Password',
                     'class' => 'inline',
+                    'autocomplete' => 'off',
                     'title' => Text::get('user-changepass-confirm'),
                     'hint'  => Text::get('tooltip-dashboard-user-confirm_password'),
                     'errors'=> !empty($errors['password_retry']) ? array($errors['password_retry']) : array(),

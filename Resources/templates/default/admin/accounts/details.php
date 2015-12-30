@@ -22,7 +22,7 @@ array_walk($rewards, function (&$reward) { $reward = $reward->reward; });
 
 <div class="widget">
     <h3><?= $this->text('admin-account-detail') ?></h3>
-    <table>
+    <table class="table">
     <tr>
         <td><strong><?= $this->text('admin-project') ?></strong></td>
         <td><?php if($project): ?>
@@ -36,14 +36,23 @@ array_walk($rewards, function (&$reward) { $reward = $reward->reward; });
     <tr>
         <td><strong><?= $this->text('admin-user') ?></strong></td>
         <td>
-            <?php if($this->is_module_admin('Users', $project->node)): ?>
+            <?php if($this->is_module_admin('Users', $invest->node)): ?>
                 <a href="/admin/users/manage/<?= $user->id ?>"><?= $user->id ?> [<?= $user->name ?> / <?= $user->email ?>]</a>
             <?php else: ?>
-            <?= $user->id ?> [<?= $user->name ?> / <?= $user->email ?>]
-
+                <?= $user->id ?> [<?= $user->name ?> / <?= $user->email ?>]
             <?php endif ?>
         </td>
-        <td>&nbsp;</td>
+        <td>
+            <?php if($this->is_module_admin('Users', $invest->node)): ?>
+                <?= $this->insert('admin/partials/typeahead_form', [
+                                                                    'id' => 'change_user_input',
+                                                                    'hidden' => true
+                                                                    ]) ?>
+                <a href="#change_user" id="change_user" class="button"><?= $this->text('admin-account-change-user') ?></a><br>
+            <?php else: ?>
+                &nbsp;
+            <?php endif ?>
+        </td>
     </tr>
     <tr>
         <td><?= $this->text('admin-account-amount') ?>:</td>
@@ -193,7 +202,12 @@ array_walk($rewards, function (&$reward) { $reward = $reward->reward; });
                                                          'longitude' => $location->longitude,
                                                          'content' => $invest->getUser()->name."<br>$address"]);
     } elseif($address) {
-        echo $this->insert('partials/utils/map_canvas', ['address' => $address, 'content' => $invest->getUser()->name."<br>$address"]);
+        echo $this->insert('partials/utils/map_canvas', [
+            // By passing the address, a geocoding will be attempted
+            'address' => $address,
+            // this will save automatically into the InvestLocation table
+            'geoType' => 'invest', 'geoItem' => $invest->id,
+            'content' => $invest->getUser()->name."<br>$address"]);
     }
 ?>
 
@@ -280,3 +294,67 @@ array_walk($rewards, function (&$reward) { $reward = $reward->reward; });
 <?php endif; ?>
 
 <?php $this->replace() ?>
+
+
+<?php $this->section('footer') ?>
+<script type="text/javascript">
+$(function(){
+    $.typeahead({
+        input: "#change_user_input",
+        // order: "asc",
+        dynamic:true,
+        hint:true,
+        searchOnFocus:true,
+        accent:true,
+        emptyTemplate: 'No result for "{{query}}"',
+        display: ["id", "name", "email"],
+        template: '<span>' +
+            '<span class="avatar">' +
+                '<img src="/img/tinyc/{{avatar}}">' +
+            '</span> ' +
+            '<span class="name">{{name}}</span> ' +
+            '<span class="info">({{id}}, {{email}})</span>' +
+        '</span>',
+        source: {
+            list: {
+                url: [{
+                        url: "/api/users",
+                        data: {
+                            q: "{{query}}",
+                        }
+                    }, 'list']
+            }
+        },
+        callback: {
+            onClickAfter: function (node, a, item, event) {
+                event.preventDefault();
+                var r = confirm("<?= $this->ee($this->text('admin-account-change-user-confirm'), 'js') ?> " + item.name + "\n\n<?= $this->ee($this->text('regular-continue-question'), 'js') ?>");
+                if (r == true) {
+                    location.href = '/admin/accounts/changeuser/<?= $invest->id ?>?user=' + item.id;
+                }
+
+                // $('#change_user_input').closest('form').hide();
+                // $('#change_user').show();
+            }
+        },
+        debug: true
+    });
+    $('#main').on('click', '#change_user', function(e){
+        console.log('click', e);
+        e.preventDefault();
+        $('#change_user_input').closest('form').show();
+        $('#change_user_input').val('');
+        $('#change_user_input').select();
+        $(this).hide();
+        $('#main').one('blur', '#change_user_input', function(e){
+            console.log('blur', e);
+            setTimeout(function(){
+                $('#change_user_input').closest('form').hide();
+                $('#change_user').show();
+            }, 100);
+        });
+    });
+});
+
+</script>
+<?php $this->append() ?>

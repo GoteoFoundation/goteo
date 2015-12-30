@@ -21,7 +21,9 @@ use Goteo\Application\Session;
 use Goteo\Application\Config;
 use Goteo\Application\Lang;
 use Goteo\Model\User\UserLocation;
-use Goteo\Model;
+use Goteo\Model\User;
+use Goteo\Model\Invest;
+use Goteo\Model\Node;
 
 class UsersSubController extends AbstractSubController {
 
@@ -43,7 +45,7 @@ class UsersSubController extends AbstractSubController {
       'role' => '',
       'node' => '',
       'id' => '',
-      'name' => '',
+      'global' => '',
       'order' => '',
       'project' => '',
       'type' => '',
@@ -52,11 +54,11 @@ class UsersSubController extends AbstractSubController {
     /**
      * Some defaults
      */
-    public function __construct($node, \Goteo\Model\User $user, Request $request) {
+    public function __construct($node, User $user, Request $request) {
         parent::__construct($node, $user, $request);
-        // $this->admins = Model\User::getAdmins();
+        // $this->admins = User::getAdmins();
         // simple list of administrable nodes
-        $this->all_nodes = Model\Node::getList();
+        $this->all_nodes = Node::getList();
         $this->nodes = array();
         foreach($user->getAdminNodes() as $node_id => $role) {
             $this->nodes[$node_id] = $this->all_nodes[$node_id];
@@ -67,14 +69,14 @@ class UsersSubController extends AbstractSubController {
      * Overwrite some permissions
      * @inherit
      */
-    static public function isAllowed(\Goteo\Model\User $user, $node) {
+    static public function isAllowed(User $user, $node) {
         // Only central node or superadmins allowed here
         if( ! (Config::isMasterNode($node) || $user->hasRoleInNode($node, ['superadmin', 'root'])) ) return false;
         return parent::isAllowed($user, $node);
     }
 
     public function moveAction($id = null, $subaction = null) {
-        $user = Model\User::get($id);
+        $user = User::get($id);
         $post_node = $this->getPost('node');
         if(!array_key_exists($user->node, $this->nodes)) {
             Message::error("Your not allowed to move this user");
@@ -88,7 +90,7 @@ class UsersSubController extends AbstractSubController {
             $values = array(':id' => $id, ':node' => $post_node);
             try {
                 $sql = "UPDATE user SET node = :node WHERE id = :id";
-                if (Model\User::query($sql, $values)) {
+                if (User::query($sql, $values)) {
                     $log_text = 'El admin %s ha <span class="red">movido</span> el usuario %s al nodo %s';
                 } else {
                     $log_text = 'Al admin %s le ha <span class="red">fallado al mover</span> el usuario %s al nodo %s';
@@ -123,7 +125,7 @@ class UsersSubController extends AbstractSubController {
 
     public function impersonateAction($id = null, $subaction = null) {
 
-        $user = Model\User::get($id);
+        $user = User::get($id);
 
         if(!array_key_exists($user->node, $this->nodes)) {
             Message::error("Your not allowed to edit this user");
@@ -164,13 +166,13 @@ class UsersSubController extends AbstractSubController {
 
     public function manageAction($id = null, $subaction = null) {
 
-        $user = Model\User::get($id);
-        $all_roles = Model\User::getRolesList();
+        $user = User::get($id);
+        $all_roles = User::getRolesList();
         if(!array_key_exists($user->node, $this->nodes)) {
             Message::error("You're not allowed to edit this user");
             return $this->redirect();
         }
-        $all_nodes = Model\Node::getList();
+        $all_nodes = Node::getList();
         $all_nodes[''] = "(Todos los nodos)";
 
         $mod = false;
@@ -217,7 +219,7 @@ class UsersSubController extends AbstractSubController {
                 'hide' =>  ['hide', 1, 'Ocultado']
             );
             if($p = $actions[$subaction]) {
-                if(Model\User::setProperty($user->id, $p[1], $p[0])) {
+                if(User::setProperty($user->id, $p[1], $p[0])) {
                     $text = $p[2] . ' correctamente';
                     $mod = true;
                 }
@@ -227,12 +229,12 @@ class UsersSubController extends AbstractSubController {
             }
             elseif($subaction === 'translang') {
                 $sql = "DELETE FROM user_translang WHERE user = :user";
-                Model\User::query($sql, array(':user' => $id));
+                User::query($sql, array(':user' => $id));
                 $anylang = false;
                 if(is_array($this->getPost('langs'))) {
                     foreach ($this->getPost('langs') as $lang) {
                         $sql = "INSERT INTO user_translang (user, lang) VALUES (:user, :lang)";
-                        if (Model\User::query($sql, array(':user' => $id, ':lang' => $lang))) {
+                        if (User::query($sql, array(':user' => $id, ':lang' => $lang))) {
                             $anylang = true;
                         }
                     }
@@ -273,7 +275,7 @@ class UsersSubController extends AbstractSubController {
                 'poolAmount' => $user->getPool()->getAmount(),
                 'nodes' => $nodes,
                 'node_roles' => $user->getAllNodeRolesRaw(),
-                'new_roles' => Model\User::getRolesList($this->user->getNodeRole($this->node)),
+                'new_roles' => User::getRolesList($this->user->getNodeRole($this->node)),
                 'langs' => Lang::listAll('name', false)
             );
         // quitamos el español
@@ -285,7 +287,7 @@ class UsersSubController extends AbstractSubController {
 
 
     public function editAction($id = null, $subaction = null) {
-        $user = Model\User::get($id);
+        $user = User::get($id);
 
         if(!array_key_exists($user->node, $this->nodes)) {
             Message::error("Your not allowed to edit this user");
@@ -344,7 +346,7 @@ class UsersSubController extends AbstractSubController {
         if ($this->isPost()) {
 
             // para crear se usa el mismo método save del modelo, hay que montar el objeto
-            $user = new Model\User();
+            $user = new User();
             $user->userid = $this->getPost('userid');
             $user->name = $this->getPost('name');
             $user->email = $this->getPost('email');
@@ -375,15 +377,15 @@ class UsersSubController extends AbstractSubController {
     public function listAction($id = null, $subaction = null) {
         $filters = $this->getFilters();
         $limit = 20;
-        $users = Model\User::getAll($filters, array_keys($this->nodes), $this->getGet('pag') * $limit, $limit);
-        $total = Model\User::getAll($filters, array_keys($this->nodes), 0, 0 , true);
+        $users = User::getList($filters, array_keys($this->nodes), $this->getGet('pag') * $limit, $limit);
+        $total = User::getList($filters, array_keys($this->nodes), 0, 0 , true);
 
         $status = array(
                     'active' => 'Activo',
                     'inactive' => 'Inactivo'
                 );
-        $interests = Model\User\Interest::getAll();
-        $roles = Model\User::getRolesList();
+        $interests = User\Interest::getAll();
+        $roles = User::getRolesList();
         $roles['user'] = 'Solo usuario';
         $types = array(
             'creators' => 'Impulsores', // que tienen algun proyecto
@@ -400,8 +402,9 @@ class UsersSubController extends AbstractSubController {
             'projects' => 'Proyectos'
         );
         // proyectos con aportes válidos
-        $projects = Model\Invest::projects(true, $node);
+        $projects = Invest::projects(true, $this->node);
 
+        // print_r($users);die;
         return array(
                 'template' => 'admin/users/list',
                 'users' => $users,

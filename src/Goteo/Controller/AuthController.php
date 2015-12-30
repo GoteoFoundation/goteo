@@ -191,7 +191,7 @@ class AuthController extends \Goteo\Core\Controller {
                     if( Mail::createFromTemplate($u->email, $u->name, Template::RETRIEVE_PASSWORD, [
                             '%USERNAME%'   => $u->name,
                             '%USERID%'     => $u->id,
-                            '%RECOVERURL%' => Config::get('url.main') . '/password-recovery/' . \mybase64_encode($u->token) . '?return=' . $return
+                            '%RECOVERURL%' => Config::get('url.main') . '/password-recovery/' . \mybase64_encode($u->getToken()) . '?return=' . $return
                         ])
                         ->send($errors)) {
                             return $this->viewResponse(

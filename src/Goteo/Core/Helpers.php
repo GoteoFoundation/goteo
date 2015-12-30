@@ -163,10 +163,11 @@ namespace {
      * @param  [type] $date [description]
      * @return [type]       [description]
      */
-    function date_formater($date) {
+    function date_formater($date, $fulltime = false) {
         $lang = \Goteo\Application\Lang::current();
         $format = 'd/m/Y';
         if(in_array($lang, ['en', 'de'])) $format = 'Y/m/d';
+        if($fulltime) $format = "$format H:i";
         $time = strtotime($date);
         return date($format, $time);
     }

@@ -31,7 +31,11 @@ $the_filters = array(
     'issue' => array (
         'label' => 'Mostrar',
         'first' => 'Todos los aportes')
-) ?>
+);
+
+$coord = [];
+
+?>
 <?php $this->layout('admin/layout') ?>
 
 <?php $this->section('admin-content') ?>
@@ -99,7 +103,7 @@ $the_filters = array(
 
 <div class="widget board">
 <?php if ($this->list) : ?>
-    <p><strong><?= $this->text('regular-total') ?>:</strong>  <?= number_format($this->total_money, 0, '', '.') ?> &euro; (<em><?= number_format($this->total, 0, '', '.') ?> aportes</em>)</p>
+    <p><strong><?= $this->text('regular-total') ?>:</strong>  <?= \amount_format($this->total_money) ?> (<em><?= number_format($this->total, 0, '', '.') ?> aportes</em>)</p>
 
     <table width="100%">
         <thead>
@@ -116,7 +120,21 @@ $the_filters = array(
         </thead>
 
         <tbody>
-            <?php foreach ($this->list as $invest) : ?>
+            <?php
+            foreach ($this->list as $invest) :
+                $title = $invest->id . ' - ' . $invest->amount . '€ - ' . $invest->full_name;
+                if($loc = $invest->getLocation()) {
+                    $coords[] = ['title' => $title,
+                                'lat' => $loc->latitude,
+                                'lng' => $loc->longitude
+                                ];
+                } elseif($add = $invest->getAddress()) {
+                    $coords[] = ['title' => $title,
+                                 'address' => $add->address . ', ' . $add->location. ', ' . $add->zipcode. ', ' . $add->country
+                                ];
+                }
+
+            ?>
             <tr>
                 <td><a href="/admin/accounts/details/<?= $invest->id ?>" title="<?php
                     if ($invest->issue)  echo 'Incidencia! ';
@@ -143,6 +161,11 @@ $the_filters = array(
         </tbody>
 
     </table>
+
+<?php
+    echo $this->insert('partials/utils/map_canvas', ['coords' => $coords]);
+?>
+
 <?php else : ?>
     <p>No hay transacciones que cumplan con los filtros.</p>
 <?php endif;?>

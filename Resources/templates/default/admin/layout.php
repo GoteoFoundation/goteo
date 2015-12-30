@@ -6,6 +6,7 @@
 $this->layout('layout', [
     'bodyClass' => 'admin',
     'jsreq_autocomplete' => true,
+    'jquery' => 'latest' // Use the latest jquery release please...
     ]);
 ?>
 
@@ -34,6 +35,8 @@ $this->layout('layout', [
 <?php $this->replace() ?>
 
 <?php $this->section('head') ?>
+
+<link rel="stylesheet" href="<?= SRC_URL ?>/assets/css/jquery.typeahead.min.css" type="text/css" />
 <style type="text/css">
 
     ul.ul-admin>li.selected{
@@ -103,6 +106,13 @@ $this->layout('layout', [
 <?php $this->append() ?>
 
 <?php $this->section('footer') ?>
+
+<?php if($this->debug()): ?>
+<script type="text/javascript" src="<?= SRC_URL ?>/assets/js/jquery.typeahead.js"></script>
+<?php else: ?>
+<script type="text/javascript" src="<?= SRC_URL ?>/assets/js/jquery.typeahead.min.js"></script>
+<?php endif ?>
+
 <script type="text/javascript">
 $(function(){
     $('#select-node').change(function(e){

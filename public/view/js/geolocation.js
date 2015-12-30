@@ -208,11 +208,51 @@ locator.setGoogleMapPoint = function (obj, iteration) {
         zoom: 5,
         mapTypeId: google.maps.MapTypeId.ROADMAP
     };
+    var geocoder = new google.maps.Geocoder();
     //draw map
     this.map = new google.maps.Map(obj, mapOptions);
     // marker
     this.marker = new google.maps.Marker();
     this.marker.setMap(this.map);
+
+    // array of points
+    this.markers = [];
+    if($(obj).is('[data-map-coords]')) {
+        var coords = $(obj).data('map-coords');
+        if($.isArray(coords)) {
+            //  Create a new viewpoint bound
+            var bounds = new google.maps.LatLngBounds();
+            for(var i in coords) {
+                if(coords[i].lat && coords[i].lng) {
+                    var m = new google.maps.Marker();
+                    var pos = new google.maps.LatLng(coords[i].lat, coords[i].lng);
+                    m.setMap(this.map);
+                    m.setPosition(pos);
+                    bounds.extend(pos);
+                    if(coords[i].title) m.setTitle(coords[i].title);
+                    this.markers[this.markers.length] = m;
+                }
+                else if(coords[i].address) {
+                    // geolocate this address
+                    geocoder.geocode({'address': coords[i].address}, function(results, status) {
+                        if (status === google.maps.GeocoderStatus.OK) {
+                            var m = new google.maps.Marker();
+                            var pos = results[0].geometry.location;
+                            m.setMap(locator.map);
+                            m.setPosition(pos);
+                            bounds.extend(pos);
+                            if(coords[i].title) m.setTitle(coords[i].title);
+                            locator.markers[locator.markers.length] = m;
+                            //  Fit these bounds to the map
+                            // this.map.fitBounds(bounds);
+                        }
+                    });
+                }
+            }
+            //  Fit these bounds to the map
+            this.map.fitBounds(bounds);
+        }
+    }
 
     //draw info window
     if($(obj).is('[data-map-content]')) {
@@ -246,12 +286,16 @@ locator.setGoogleMapPoint = function (obj, iteration) {
     else if($(obj).is('[data-map-address]')) {
         // Geocoding
         var address = $(obj).data('map-address');
-        var geocoder = new google.maps.Geocoder();
 
         geocoder.geocode({'address': address}, function(results, status) {
         if (status === google.maps.GeocoderStatus.OK) {
             locator.map.setCenter(results[0].geometry.location);
             locator.marker.setPosition(results[0].geometry.location);
+            var data = locator.getGoogleAddressFromAutocomplete(results[0]);
+            // Save address field via ajax if required.
+            if($(obj).is('[data-geocoder-type]')) {
+                locator.saveGeolocationData($(obj).data('geocoder-type'), $(obj).is('[data-geocoder-item]') ? $(obj).data('geocoder-item') : '', data);
+            }
         }
       });
     }
@@ -262,15 +306,14 @@ locator.setGoogleMapPoint = function (obj, iteration) {
  * @param {[type]} type          [description]
  * @param {[type]} autocomplete [description]
  */
-locator.getGoogleAddressFromAutocomplete = function (autocomplete) {
-    if(!autocomplete) {
-        this.trace('Geocoder error in getGoogleAddressFromAutocomplete, autocomplete not present');
+locator.getGoogleAddressFromAutocomplete = function (place) {
+    if(!place) {
+        this.trace('Geocoder error in getGoogleAddressFromplace, place not present');
         return;
     }
 
     //handle auto geolocator if needed
-    this.trace('Geocoder by autocomplete, autocomplete object:', autocomplete);
-    var place = autocomplete.getPlace();
+    this.trace('Geocoder by place, place object:', place);
     this.trace('place:', place);
     if(place && place.geometry && place.address_components) {
         var data = {
@@ -348,7 +391,7 @@ locator.setGoogleAutocomplete = function(id, iteration) {
 
     // When the user selects an address from the dropdown,
     google.maps.event.addListener(this.autocomplete[id], 'place_changed', function() {
-        var data = locator.getGoogleAddressFromAutocomplete(locator.autocomplete[id]);
+        var data = locator.getGoogleAddressFromAutocomplete(locator.autocomplete[id].getPlace());
         // Save address field via ajax if required.
         if($(id).is('[data-geocoder-type]')) {
             locator.saveGeolocationData($(id).data('geocoder-type'), $(id).is('[data-geocoder-item]') ? $(id).data('geocoder-item') : '', data);

@@ -72,6 +72,11 @@ class View {
     static public function setTheme($theme) {
         self::factory();
 
+        self::$theme = $theme;
+
+        // Special theme JSON, will not be searched
+        if($theme == 'JSON') return;
+
         $folders = [];
         // Compiled views by grunt
         if(is_dir(GOTEO_WEB_PATH . "templates/$theme"))
@@ -107,8 +112,6 @@ class View {
         }
         // print_r(array_merge($prepend_dirs, $folders, $append_dirs));die;
         self::$engine->setFolders(array_merge($prepend_dirs, $folders, $append_dirs));
-        self::$theme = $theme;
-        return false;
     }
 
     /**

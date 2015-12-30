@@ -50,7 +50,9 @@ $(function() {
 
     $('body').addClass('js');
 
-    $('.tipsy').tipsy();
+    if(jQuery().tipsy) {
+        $('.tipsy').tipsy();
+    }
     /* Rolover sobre los cuadros de color */
     $("li").hover(
             function () { $(this).addClass('active'); },
@@ -102,15 +104,17 @@ $(function() {
        $("#currency").css("background","#59595C");
     });
 
-    // Footer sponsors
-    $('#slides_sponsor').slides({
-        container: 'slides_container',
-        effect: 'fade',
-        crossfade: false,
-        fadeSpeed: 350,
-        play: 5000,
-        pause: 1
-    });
+    if(jQuery().slides) {
+        // Footer sponsors
+        $('#slides_sponsor').slides({
+            container: 'slides_container',
+            effect: 'fade',
+            crossfade: false,
+            fadeSpeed: 350,
+            play: 5000,
+            pause: 1
+        });
+    }
 
     // Session keeper
     goteo.keepAlive();

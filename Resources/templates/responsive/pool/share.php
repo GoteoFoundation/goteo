@@ -17,9 +17,24 @@ $this->section('content');
 	<div class="row row-form">
 			<div class="panel panel-default invest-container">
 				<div class="panel-body">
-					<h2 class="col-sm-offset-1 padding-bottom-2"><?= $this->text('invest-share-title') ?></h2>
+					<h2 class="col-sm-offset-1 padding-bottom-2"><?= $this->text('pool-share-title') ?></h2>
 					<div class="reminder col-md-10 col-md-offset-1">
         		    <?= $this->text('pool-invest-ok') ?>
+        		    <div class="row spacer">
+
+						<div class="col-sm-5 margin-2">
+								<a href="/dashboard/wallet/certificate" class="text-decoration-none" >
+									<button type="button" class="btn btn-block btn-info" value=""><?= $this->text('pool-button-download-certificate') ?></button>
+					  			</a>
+					  	</div>
+
+					  	<div class="col-sm-5 margin-2">
+								<a href="/dashboard/wallet" class="text-decoration-none" >
+									<button type="button" class="btn btn-block btn-success" value=""><?= $this->text('dashboard-menu-pool') ?></button>
+					  			</a>
+					  	</div>
+
+				  	</div>
       				</div>
 
                     <?= $this->supply('sub-header', $this->get_session('sub-header')) ?>
@@ -43,30 +58,11 @@ $this->section('content');
 				  		
 			  		</div>
 
-			  		<hr class="share">
-
-			  		<h3 class="col-md-offset-1 standard-margin-top sm-display-none padding-bottom-6" ><?= $this->text('pool-invest-suggest-projects') ?></h3>
-
-					<!-- Widget code -->
-					<div class="row standard-margin-top sm-display-none">
-						<div class="col-md-5 col-md-offset-1">
-						<?php print_r($this->project_suggested) ?>
-							<?= $this->project_suggested[0] ?>
-						</div>
-						<div class="col-md-5">
-							<?php //$this->raw('widget_code_investor') ?>
-						</div>
-					</div>
-
 					<hr class="share hidden-xs">
 
 					<div class="row">
 
-						<div class="col-sm-6 col-sm-offset-3 margin-2">
-								<a href="<?= SITE_URL ?>/discover" class="text-decoration-none" >
-									<button type="button" class="btn btn-block btn-success" value=""><?= $this->text('pool-invest-share-discover') ?></button>
-					  			</a>
-					  	</div>
+						
 
 				  	</div>
 				</div>

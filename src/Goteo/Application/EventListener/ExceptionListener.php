@@ -17,9 +17,11 @@ use Goteo\Application\Exception\ModelNotFoundException;
 use Goteo\Application\Message;
 use Goteo\Application\Session;
 use Goteo\Application\View;
+use Goteo\Library\Text;
 use Goteo\Core\Error as LegacyError;
 use Goteo\Core\Redirection as LegacyRedirection;
 use Symfony\Component\HttpFoundation\RedirectResponse;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Event\GetResponseEvent;
 use Symfony\Component\HttpKernel\Event\GetResponseForExceptionEvent;
@@ -77,7 +79,7 @@ class ExceptionListener extends AbstractListener {
 		}
 		$result = join("\n", $result);
 		if ($prev) {
-			$result .= "\n" . jTraceEx($prev, $seen);
+			$result .= "\n" . self::jTraceEx($prev, $seen);
 		}
 
 		return $result;
@@ -144,9 +146,16 @@ class ExceptionListener extends AbstractListener {
         }
 
         if(!$request->isXmlHttpRequest()) {
-    		// redirect to login on acces denied exception if not logged already
-    		if ($exception instanceof ControllerAccessDeniedException) {
-    			Message::error($exception->getMessage() ? $exception->getMessage() : Text::get('user-login-required-access'));
+            // redirect to login on acces denied exception if not logged already
+            if ($exception instanceof ControllerAccessDeniedException) {
+                $error = $exception->getMessage() ? $exception->getMessage() : Text::get('user-login-required-access');
+                // JSON response for ApiController
+                if(View::getTheme() == 'JSON') {
+                    $event->setResponse(new JsonResponse(['error' => $error]));
+                    return;
+                }
+
+                Message::error($error);
     			if (!Session::isLogged()) {
     				$event->setResponse(new RedirectResponse('/user/login?return=' . rawurlencode($request->getPathInfo())));
     				return;
@@ -188,12 +197,21 @@ class ExceptionListener extends AbstractListener {
 			$info = '<pre>' . self::jTraceEx($exception) . '</pre>';
 		}
 
+        // JSON response for ApiController
+        if(View::getTheme() == 'JSON') {
+            $ret = ['error' => $exception->getMessage()];
+            if($info) $ret['info'] = $info;
+            $event->setResponse(new JsonResponse($ret));
+            return;
+        }
+
+
 		$view = 'unknown error';
 
 		// TODO:: create a low level path and avoid changing theme here
 		try {
 			View::setTheme('default');
-			$view = View::render('errors/' . $template, ['title' => $title, 'msg' => $info, 'code' => $code], $code);
+			$view = View::render('errors/' . $template, ['title' => $exception->getMessage(), 'msg' => $info, 'code' => $code], $code);
 
 		} catch (\Exception $e) {
 			View::addFolder(__DIR__ . '/../../../../Resources/templates/default');

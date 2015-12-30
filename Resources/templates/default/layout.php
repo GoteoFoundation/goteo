@@ -14,7 +14,6 @@
 
         <?= $this->insert('partials/header/javascript') ?>
 
-
     <?php $this->stop() ?>
 
     </head>

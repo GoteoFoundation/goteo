@@ -62,21 +62,8 @@ namespace Goteo\Model {
         public function __construct() {
             $args = func_get_args();
             call_user_func_array(array('parent', '__construct'), $args);
-            $this->avatar = new Image();
+            $this->avatar = new Image($this->avatar);
             if(empty($this->node)) $this->node = Config::get('current_node');
-        }
-
-        /**
-         * Sobrecarga de métodos 'setter'.
-         *
-         * @param type string	$name
-         * @param type string	$value
-         */
-        public function __set ($name, $value) {
-	        if($name == "token") {
-	            $this->$name = $this->setToken($value);
-	        }
-            $this->$name = $value;
         }
 
         /**
@@ -86,9 +73,6 @@ namespace Goteo\Model {
          * @return type mixed
          */
         public function __get ($name) {
-            if($name == "token") {
-	            return $this->getToken();
-	        }
 	        if($name == "get_numInvested") {
                 return self::numInvested($this->id);
             }
@@ -405,7 +389,7 @@ namespace Goteo\Model {
             else {
                 if(!empty($this->email)) {
                     if(count($tmp = explode('¬', $this->email)) > 1) {
-                        if($this->email !== $this->token) {
+                        if($this->email !== $this->getToken()) {
                             $errors['email'] = Text::get('error-user-email-token-invalid');
                         }
                     }
@@ -699,23 +683,30 @@ namespace Goteo\Model {
          *                                también si el usuario ha invertido en un proyecto de ese nodo
          * @return mixed            Array de objetos de usuario activos|todos.
          */
-        public static function getAll ($filters = array(), $subnodes = null, $offset = 0, $limit = 100, $count = false) {
+        public static function getList ($filters = array(), $subnodes = null, $offset = 0, $limit = 100, $count = false) {
 
             $values = array();
 
             $users = array();
 
             // ?? NO root
-            $sqlFilter = "id != 'root'";
+            $sqlFilter = "";
+            if(Session::getUserId() != 'root') {
+                $sqlFilter = "id != 'root'";
+            }
 
             $sqlOrder = "";
             if (!empty($filters['id'])) {
                 $sqlFilter .= " AND id = :id";
                 $values[':id'] = $filters['id'];
             }
+            if (!empty($filters['global'])) {
+                $sqlFilter .= " AND (id LIKE :global OR name LIKE :global OR email LIKE :global)";
+                $values[':global'] = '%' . $filters['global'] .'%';
+            }
             if (!empty($filters['name'])) {
-                $sqlFilter .= " AND (name LIKE :name OR email LIKE :name)";
-                $values[':name'] = "%{$filters['name']}%";
+                $sqlFilter .= " AND (id LIKE :name OR name LIKE :name)";
+                $values[':name'] = '%' . $filters['name'] .'%';
             }
             if (!empty($filters['status'])) {
                 $sqlFilter .= " AND active = :active";
@@ -854,23 +845,14 @@ namespace Goteo\Model {
             }
 
             $sql = "SELECT
-                        id,
-                        name,
-                        email,
-                        active,
-                        hide,
-                        DATE_FORMAT(created, '%d/%m/%Y %H:%i:%s') as register_date,
-                        amount,
-                        num_invested,
-                        num_owned,
-                        node
+                        user.*
                         $sqlCR
                     FROM user
                     WHERE $sqlFilter
                     $sqlOrder
                     LIMIT $offset, $limit
                     ";
-            // sqldbg($sql, $values);
+            // die(\sqldbg($sql, $values));
             // echo str_replace(array_keys($values), array_values($values),$sql).'<br />';
             $query = self::query($sql, $values);
 
@@ -1536,8 +1518,10 @@ namespace Goteo\Model {
     	 * @return type string
     	 */
     	private function getToken () {
+            if($this->token) return $this->token;
             $query = self::query('SELECT token FROM user WHERE id = ?', array($this->id));
-            return $query->fetchColumn(0);
+            $this->token = $query->fetchColumn(0);
+            return $this->token;
     	}
 
         /**

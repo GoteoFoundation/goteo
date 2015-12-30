@@ -26,4 +26,4 @@ DELETE FROM invest_node WHERE invest_id NOT IN (SELECT id FROM invest);
 ALTER TABLE `invest_node` CHANGE `invest_id` `invest_id` BIGINT(20) UNSIGNED NOT NULL, ADD FOREIGN KEY (`user_id`) REFERENCES `user`(`id`) ON UPDATE CASCADE ON DELETE CASCADE, ADD FOREIGN KEY (`project_id`) REFERENCES `project`(`id`) ON UPDATE CASCADE ON DELETE CASCADE, ADD FOREIGN KEY (`invest_id`) REFERENCES `invest`(`id`) ON UPDATE CASCADE ON DELETE CASCADE;
 
 -- Allow null in project for pool recharges
-ALTER TABLE `invest` CHANGE `project_id` `project_id` varchar(50);
+ALTER TABLE `invest_node` CHANGE `project_id` `project_id` varchar(50), CHANGE `project_node` `project_node` varchar(50);

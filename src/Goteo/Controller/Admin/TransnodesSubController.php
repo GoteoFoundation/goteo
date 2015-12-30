@@ -135,7 +135,7 @@ class TransnodesSubController extends AbstractSubController {
                 // fin asignar o desasignar
 
                 $node->translators = Model\User\Translate::translators($id, 'node');
-                $translators = Model\User::getAll(array('role'=>'translator'));
+                $translators = Model\User::getList(array('role'=>'translator'));
 
 
                 return array(
@@ -152,7 +152,7 @@ class TransnodesSubController extends AbstractSubController {
 
         $nodes = Model\Node::getTranslates($filters);
         $admins = Model\Node::getAdmins();
-        $translators = Model\User::getAll(array('role'=>'translator'));
+        $translators = Model\User::getList(array('role'=>'translator'));
 
         return array(
                 'folder' => 'transnodes',

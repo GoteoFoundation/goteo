@@ -266,7 +266,7 @@ class TranslatesSubController extends AbstractSubController {
 
 
                 $project->translators = Model\User\Translate::translators($id);
-                $translators = Model\User::getAll(array('role'=>'translator'));
+                $translators = Model\User::getList(array('role'=>'translator'));
                 // añadimos al dueño del proyecto en el array de traductores
                 array_unshift($translators, $project->user);
 
@@ -310,7 +310,7 @@ class TranslatesSubController extends AbstractSubController {
 
         $projects = Model\Project::getTranslates($filters, $node);
         $owners = Model\User::getOwners();
-        $translators = Model\User::getAll(array('role'=>'translator'));
+        $translators = Model\User::getList(array('role'=>'translator'));
 
         return array(
                 'folder' => 'translates',

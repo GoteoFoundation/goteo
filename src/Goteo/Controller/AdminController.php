@@ -23,7 +23,8 @@ use Symfony\Component\HttpFoundation\Response;
 
 class AdminController extends \Goteo\Core\Controller {
 
-	private static $subcontrollers = array();
+    private static $subcontrollers = array();
+	private static $context_vars = array();
 
 	/**
 	 * Registers a subcontroller in the admin
@@ -132,7 +133,7 @@ class AdminController extends \Goteo\Core\Controller {
 			}
 		}
 
-		View::getEngine()->useContext('admin/', [
+		self::$context_vars = [
 				'option'      => $option,
 				'admin_menu'  => $menu,
 				'all_roles'   => $all_roles,
@@ -140,7 +141,7 @@ class AdminController extends \Goteo\Core\Controller {
 				'admin_node'  => $admin_node,
 				'admin_nodes' => $admin_nodes,
 				'breadcrumb'  => $breadcrumb,
-			]);
+			];
 
 		// If menu is not allowed, throw exception
 		if (empty($menu) || ($option && !array_key_exists($option, $menu))) {
@@ -161,6 +162,7 @@ class AdminController extends \Goteo\Core\Controller {
 	public function indexAction(Request $request) {
 		$ret  = array();
 		$user = self::checkCurrentUser($request);
+        $this->contextVars(self::$context_vars, 'admin/');
 
 		//feed by default for someones
 		$admin_node = Session::get('admin_node');
@@ -182,47 +184,49 @@ class AdminController extends \Goteo\Core\Controller {
 
 		try {
 			$user = self::checkCurrentUser($request, $option, $action, $id);
-			if (!class_exists($SubC)) {
-				return $this->viewResponse('admin/denied', ['msg' => "Class [$SubC] not found for path [$option]"], Response::HTTP_BAD_REQUEST);
-			}
-			$node       = Session::exists('admin_node')?Session::get('admin_node'):Config::get('node');
-			$controller = new $SubC($node, $user, $request);
-			$method     = $action.'Action';
-			if (!method_exists($controller, $method)) {
-				return $this->viewResponse('admin/denied', ['msg' => "Method [$method()] not found for class [$SubC]"], Response::HTTP_BAD_REQUEST);
-			}
-			$ret = $controller->$method($id, $subaction);
 
-		} catch (ControllerAccessDeniedException $e) {
-			// Instead of the default denied page, redirect to login
-			Message::error($e->getMessage());
-			$url                   = parse_url($request->headers->get('referer'), PHP_URL_PATH);
-			if (empty($url)) {$url = '/admin';
-			}
+            if (!class_exists($SubC)) {
+                return $this->viewResponse('admin/denied', ['msg' => "Class [$SubC] not found for path [$option]"], Response::HTTP_BAD_REQUEST);
+            }
+            $node       = Session::exists('admin_node')?Session::get('admin_node'):Config::get('node');
+            $controller = new $SubC($node, $user, $request);
+            $method     = $action.'Action';
+            if (!method_exists($controller, $method)) {
+                return $this->viewResponse('admin/denied', ['msg' => "Method [$method()] not found for class [$SubC]"], Response::HTTP_BAD_REQUEST);
+            }
+            $ret = $controller->$method($id, $subaction);
 
-			return $this->redirect('/login?return='.urlencode($url));
-		}
+        } catch (ControllerAccessDeniedException $e) {
+            // Instead of the default denied page, redirect to login
+            Message::error($e->getMessage());
+            $url                   = parse_url($request->headers->get('referer'), PHP_URL_PATH);
+            if (empty($url)) {$url = '/admin';
+            }
 
-		//Return the response if the subcontroller is a handy guy
-		if ($ret instanceOf Response) {
-			return $ret;
-		}
+            return $this->redirect('/login?return='.urlencode($url));
+        }
 
-		// Old view compatibility
-		// They return a file to be rendered along with vars
-		$old_path = $ret['old_view_path'];
-		if (!$old_path && $ret['folder'] && $ret['file']) {
-			$old_path = 'admin/'.($ret['folder'] === 'base'?'':$ret['folder'].'/').$ret['file'].'.html.php';
-		}
-		if ($old_path) {
-			return $this->viewResponse('admin/simple', [
-					'content' => \Goteo\Core\View::get($old_path, $ret)
-				]);
-		}
+        //Return the response if the subcontroller is a handy guy
+        if ($ret instanceOf Response) {
+            return $ret;
+        }
 
-		// If the subcontroller just specifies a template to render let's do it
-		if ($ret['template']) {
-			return $this->viewResponse($ret['template'], $ret);
+        // Old view compatibility
+        // They return a file to be rendered along with vars
+        $old_path = $ret['old_view_path'];
+        if (!$old_path && $ret['folder'] && $ret['file']) {
+            $old_path = 'admin/'.($ret['folder'] === 'base'?'':$ret['folder'].'/').$ret['file'].'.html.php';
+        }
+        if ($old_path) {
+            return $this->viewResponse('admin/simple', [
+                    'content' => \Goteo\Core\View::get($old_path, $ret)
+                ]);
+        }
+
+        // If the subcontroller just specifies a template to render let's do it
+        $this->contextVars(self::$context_vars, 'admin/');
+        if ($ret['template']) {
+			return $this->viewResponse($ret['template'], $ret + self::$context_vars);
 		}
 
 		//default admin dashboard (nothing!)

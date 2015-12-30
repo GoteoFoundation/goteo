@@ -108,6 +108,25 @@ class PoolInvestListener extends AbstractListener {
         //Add the amount to the wallet
         Pool::refundInvest($invest);
 
+        // Amount in virtual wallet
+        $amount_pool=Pool::getAmount();
+
+        // Send mail with amount rechargued
+
+        if( Mail::createFromTemplate($user->email, $user->name, Template::POOL_RECHARGUE_THANKS, [
+              '%USERNAME%'   => $user->name,
+              '%AMOUNT_RECHARGUED%'   => Currency::amount_format($invest->amount),
+              '%AMOUNT_POOL%'     => Currency::amount_format($amount_pool),
+              '%WALLET_URL%'     => Config::getUrl($lang) . '/dashboard/wallet',
+              '%CERTIFICATE_URL%'     => Config::getUrl($lang) . '/dashboard/wallet/certificate'
+               ], $user->lang)
+        ->send($errors)) {
+            // Sent succesfully
+         }
+          else {
+              $vars['error'] .= implode("\n", $errors);
+          }
+
         // Feed this succeeded payment
         // Admin Feed
         $coin = Currency::getDefault('html');

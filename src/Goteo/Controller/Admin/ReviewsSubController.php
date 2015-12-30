@@ -299,7 +299,7 @@ class ReviewsSubController extends AbstractSubController {
             'open' => 'Abierta',
             'closed' => 'Cerrada'
         );
-        $checkers = Model\User::getAll(array('role'=>'checker'));
+        $checkers = Model\User::getList(array('role'=>'checker'));
 
         return array(
                 'folder' => 'reviews',

@@ -14,6 +14,8 @@ if ($this['maxlength'] > 0) echo ' maxlength="' . ((int) $this['maxlength']) . '
 
 if (isset($this['class'])) echo ' class="' . htmlspecialchars($this['class']) . '"';
 
+if (isset($this['autocomplete'])) echo ' autocomplete="' . htmlspecialchars($this['autocomplete']) . '"';
+
 if($this['data'] && is_array($this['data'])) {
     foreach($this['data'] as $key => $val) {
         echo ' data-' . $key . '="' . htmlspecialchars($val) . '"';
