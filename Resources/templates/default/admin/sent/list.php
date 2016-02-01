@@ -50,11 +50,11 @@ $templates = $this->templates;
 
         <div style="float:left;margin:5px;" id="date-filter-from">
             <label for="date-filter-from">Fecha desde</label><br />
-<?php echo View::get('superform/element/datebox.html.php', array('value' => $filters['date_from'], 'id' => 'date-filter-from', 'name' => 'date_from', 'js' => true)); ?>
+            <?= $this->html('input', ['value' => $filters['date_from'], 'name' => 'date_from', 'attribs' => ['id'=>'date-filter-from', 'class' => 'datepicker']]) ?>
         </div>
         <div style="float:left;margin:5px;" id="date-filter-until">
             <label for="date-filter-until">Fecha hasta</label><br />
-<?php echo View::get('superform/element/datebox.html.php', array('value' => $filters['date_until'], 'id' => 'date-filter-until', 'name' => 'date_until', 'js' => true)); ?>
+            <?= $this->html('input', ['value' => $filters['date_until'], 'name' => 'date_until', 'attribs' => ['id'=>'date-filter-until', 'class' => 'datepicker']]) ?>
         </div>
         <div style="float:left;margin:5px;">
             <input type="submit" name="filter" value="Filtrar">

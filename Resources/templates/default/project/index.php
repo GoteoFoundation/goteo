@@ -162,7 +162,7 @@ $this->section('content');
                 echo View::get('project/widget/rewards.html.php', array('project' => $project, 'only'=>$only_rew));
             }
 
-            echo View::get('user/widget/user.html.php', array('user' => $project->user));
+            echo View::get('user/widget/user.html.php', array('user' => $project->getOwner()));
 
             ?>
             </div>

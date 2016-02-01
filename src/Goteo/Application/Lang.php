@@ -200,15 +200,6 @@ class Lang {
             $lang = static::getDefault($lang);
         }
 
-        // establecemos la constante
-        // TODO: por desaparecer
-        // usar Lang::current() en su lugar
-        if(!defined('LANG'))
-            define('LANG', $lang);
-
-        // cambiamos el locale
-        setlocale(LC_TIME, static::getLocale($lang));
-
         if($save_session) {
             Session::store('lang', $lang);
         }
@@ -232,6 +223,7 @@ class Lang {
         }
         return $current;
     }
+
     /**
      * Get the a language
      * @return [type] [description]
@@ -314,24 +306,36 @@ class Lang {
         }
 
         $desired['system'] = Config::get('lang');
-
         // set the lang in order of preference
+        // XMLRequest must not change Session var
+        $save_session = $request && !$request->isXmlHttpRequest();
         foreach($desired as $part => $l) {
-             // XMLRequest does not must change Session var
-            $lang = static::set($l, $request && !$request->isXmlHttpRequest());
+            $lang = static::set($l, false);
             if($lang == $l) {
-                //Si el idioma existe (y se ha especificado), guardar preferencias
-                if($save_lang) {
-                    //Enviar cookie
-                    // Cookie::store('goteo_lang', $lang);
-                    if(Session::isLogged()) {
-                        //guardar preferencias de usuario
-                        Session::getUser()->updateLang($lang);
+                if($save_session) {
+                    $lang = static::set($l, true);
+                    //Si el idioma existe (y se ha especificado), guardar preferencias
+                    if($save_lang) {
+                        //Enviar cookie
+                        // Cookie::store('goteo_lang', $lang);
+                        if(Session::isLogged()) {
+                            //guardar preferencias de usuario
+                            Session::getUser()->updateLang($lang);
+                        }
                     }
                 }
                 break;
             }
         }
+        // print_r($desired);die("$lang");
+
+        //legacy constants
+        if(!defined('LANG'))
+            define('LANG', $lang);
+
+        // cambiamos el locale
+        setlocale(LC_TIME, static::getLocale($lang));
+
         // print_r($desired);die("$lang [$save_lang] " . Session::get('lang'));
 
 

@@ -15,9 +15,9 @@ $filters = $this->filters;
 
     <form id="filter-form" action="/admin/mailing/edit" method="get">
 
-        <table>
+        <table style="width:100%">
             <tr>
-                <td>
+                <td rowspan="4">
                     <label for="type-filter">A los</label><br />
                     <select id="type-filter" name="type">
                     <?php foreach ($this->types as $typeId => $typeName) : ?>
@@ -38,6 +38,8 @@ $filters = $this->filters;
                     <?php endforeach ?>
                     </select>
                 </td>
+            </tr>
+            <tr>
                 <td>
                     <label for="method-filter">Aportado mediante</label><br />
                     <select id="method-filter" name="method">
@@ -48,7 +50,7 @@ $filters = $this->filters;
                     </select>
                 </td>
                 <td>
-                    <label for="antiquity-filter">más recientes que:</label><br />
+                    <label for="antiquity-filter">En fechas:</label><br />
                     <select id="antiquity-filter" name="antiquity">
                         <option value="">Cualquiera</option>
                     <?php foreach ($this->antiquity as $i => $date) : ?>
@@ -72,6 +74,9 @@ $filters = $this->filters;
                     <label for="name-filter">Que el nombre o email contenga</label><br />
                     <input id="name-filter" name="name" value="<?= $filters['name']?>" style="width:200px;" />
                 </td>
+            </tr>
+            <tr>
+
                 <td>
                     <label for="role-filter">Que sean</label><br />
                     <select id="role-filter" name="role">
@@ -81,18 +86,29 @@ $filters = $this->filters;
                     <?php endforeach ?>
                     </select>
                 </td>
-                <td colspan="2">
+                <td>
                     <label for="comlang-filter">Con idioma preferencia</label><br />
                     <select id="comlang-filter" name="comlang">
                         <option value=""></option>
                         <?php foreach ($this->langs as $lang) : ?>
-                            <option value="<?= $lang->id ?>"<?php if ($filters['comlang'] == $lang->id) echo ' selected="selected"';?>><?= $lang->short ?></option>
+                            <option value="<?= $lang->id ?>"<?php if ($filters['comlang'] == $lang->id) echo ' selected="selected"';?>><?= $lang->name ?></option>
                         <?php endforeach ?>
                     </select>
                     <label><input type="checkbox" name="langreverse" value="1"> Invertir</label>
                 </td>
             </tr>
-                <td colspan="5"><input type="submit" name="select" value="Buscar destinatarios"></td>
+            <tr>
+                <td><input type="submit" name="select" value="Buscar destinatarios"></td>
+
+                <td>
+                    <label for="cert-filter">Con certificado</label><br />
+                    <select id="cert-filter" name="cert">
+                        <option value="">Cualquiera</option>
+                    <?php foreach ($this->certs as $certId => $certName) : ?>
+                        <option value="<?= $certId ?>"<?php if ($filters['cert'] == $certId) echo ' selected="selected"';?>><?= $certName ?></option>
+                    <?php endforeach ?>
+                    </select>
+                </td>
             </tr>
         </table>
 

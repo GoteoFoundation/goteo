@@ -90,7 +90,6 @@ class Session {
                 $_SESSION = array();
             }
             elseif (!headers_sent()) {
-
                 session_name($name);
                 if (!session_start()) {
                    throw new Config\ConfigException(__METHOD__ . ' session_start failed.');
@@ -277,6 +276,20 @@ class Session {
     static public function isAdmin () {
         if(static::isLogged()) {
             return \Goteo\Controller\AdminController::isAllowed(static::getUser());
+        }
+        return false;
+    }
+
+    // Returns if the user can admin some specific module
+    static function isModuleAdmin($subcontroller, $node = null, User $user = null) {
+        if(empty($node)) $node = Config::get('current_node');
+        if(empty($user)) $user = static::getUser();
+        if(static::isLogged()) {
+            $class = '\Goteo\Controller\Admin\\' . ucfirst($subcontroller) . 'SubController';
+            // Silent false return on missing class
+            if( ! class_exists($class) ) return false;
+            // let's throw a exception if its a wrong class
+            return $class::isAllowed($user, $node);
         }
         return false;
     }

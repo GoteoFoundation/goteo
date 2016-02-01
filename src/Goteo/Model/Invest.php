@@ -15,6 +15,7 @@ use Goteo\Application\Lang;
 use Goteo\Application\Session;
 use Goteo\Application\Config;
 use Goteo\Application\Exception\ModelNotFoundException;
+use Goteo\Application\Exception\ModelException;
 use Goteo\Library\Text;
 use Goteo\Model\Image;
 use Goteo\Model\User;
@@ -629,28 +630,9 @@ class Invest extends \Goteo\Core\Model {
             'pool'
             );
 
-        $set = '';
-        $values = array();
-
-        foreach ($fields as $field) {
-            if (!empty($this->$field)) {
-                if ($set != '') $set .= ", ";
-                $set .= "`$field` = :$field ";
-                $values[":$field"] = $this->$field;
-            }
-        }
-
         try {
-            $sql = "REPLACE INTO invest SET " . $set;
-            self::query($sql, $values);
-            if (empty($this->id)) {
-                $this->id = self::insertId();
-                if (empty($this->id)) {
-                    $errors[] = 'No ha conseguido Id de aporte';
-                    return false;
-                }
-
-            }
+            //automatic $this->id assignation
+            $this->dbInsertUpdate($fields);
 
             // tabla para obtener aportaciones por nodo
 
@@ -1028,8 +1010,8 @@ class Invest extends \Goteo\Core\Model {
                 // mantenemos la fecha del anonimo mas reciente
                 $investor->date = empty($investors['anonymous']->date) ? $investor->date : $investors['anonymous']->date;
                 $investor->user = 'anonymous';
-                $investors->avatar = new Image();
-                $investors->name = Text::get('regular-anonymous');
+                $investor->avatar = new Image();
+                $investor->name = Text::get('regular-anonymous');
             }
 
             $investors[$investor->user] = (object) array(
@@ -1313,7 +1295,7 @@ class Invest extends \Goteo\Core\Model {
     }
 
     /*
-     * cancels/refunds and inves
+     * cancels/refunds an investion
      */
     public function cancel ($status = false, &$errors = []) {
 
@@ -1341,11 +1323,13 @@ class Invest extends \Goteo\Core\Model {
             $this->status = $status;
             $this->returned = $values[':returned'];
 
-            // should this invest go to pool?
+            // // should this invest go to pool?
             if($this->pool) {
-                if(!Pool::refundInvest($this, $errors)) {
-                    return false;
-                }
+                return $this
+                        ->getUser()
+                        ->getPool()
+                        ->calculate()
+                        ->save($errors);
             }
 
             return true;

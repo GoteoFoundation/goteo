@@ -120,7 +120,7 @@ EOT
                 # AND status IN ($returned_status)
                  AND status > 0
                 AND pool=1
-                AND (project IN ($sql_failed_projects) OR ISNULL(project))
+                AND (project IN ($sql_failed_projects) OR ISNULL(project) OR status=".Invest::STATUS_TO_POOL.")
                 AND method!='pool'";
 
             $sql_total_from_pool = "SELECT SUM(amount) FROM invest i2 WHERE i2.user=invest.user

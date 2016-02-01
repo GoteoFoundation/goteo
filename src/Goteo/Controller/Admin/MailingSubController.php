@@ -50,7 +50,8 @@ class MailingSubController extends AbstractSubController {
       'donant' => '',
       'comlang' => '',
       'langreverse' => '',
-      'antiquity' => 0,
+      'antiquity' => '',
+      'cert' => 0,
     );
 
     /**
@@ -86,19 +87,26 @@ class MailingSubController extends AbstractSubController {
         );
         $this->langs = Lang::listAll('object', false);
 
-        $m = mktime( 0, 0, 0, date('m') -1, 1, date('Y') );
+        $now = new \DateTime(date('Y-m-d'));
+        $january1 = new \DateTime(date('Y') . '-01-01');
+        $january2 = new \DateTime((date('Y')-1) . '-01-01');
+        $january3 = new \DateTime((date('Y')-2) . '-01-01');
 
         $this->antiquity = [
-            7 => 'Una semana',
-            date('t', $m) => 'Un mes',
-            365 => 'Un año',
+            '7-0' => 'Últimos 7 días',
+            '30-0' => 'Últimos 30 días',
+            '365-0' => 'Últimos 365 días',
+            ($january1->diff($now)->days + 1) . '-0' => 'Desde 1 enero de ' . date('Y'),
+            ($january2->diff($now)->days + 1) .'-' . ($january1->diff($now)->days + 1) => 'El año ' . (date('Y') - 1),
+            ($january3->diff($now)->days + 1) .'-' . ($january2->diff($now)->days + 1) => 'El año ' . (date('Y') - 2),
         ];
 
-        // // una variable de sesion para mantener los datos de todo esto
-        // if (!isset($_SESSION['mailing'])) {
-        //     $_SESSION['mailing'] = array();
-        // }
-
+        $this->certs = [];
+        if(class_exists('\Goteo\Model\User\Donor')) {
+            $this->certs['confirmed'] = 'Confirmado';
+            $this->certs['unconfirmed'] = 'Sin confirmar';
+        }
+        // print_r($this->antiquity);die;
     }
 
     public function sendAction() {
@@ -269,6 +277,7 @@ class MailingSubController extends AbstractSubController {
                 'roles'     => $this->roles,
                 'langs'     => $this->langs,
                 'antiquity' => $this->antiquity,
+                'certs'     => $this->certs,
                 'filters'   => $this->getFilters()
         );
 
@@ -284,6 +293,7 @@ class MailingSubController extends AbstractSubController {
         $roles = $this->roles;
         $langs = $this->langs;
         $antiquity = $this->antiquity;
+        $certs = $this->certs;
 
         $investor_owner = in_array($filters['type'], ['investor', 'owner']);
 
@@ -298,19 +308,26 @@ class MailingSubController extends AbstractSubController {
         if (isset($filters['status']) && $filters['status'] > -1 && $investor_owner) {
             $filters_txt .= 'en estado <strong>' . $status[$filters['status']] . '</strong> ';
         } elseif ($filters['status'] < 0 && $investor_owner) {
-            $filters_txt .= 'en cualquier estado ';
+            $filters_txt .= 'en <strong>cualquier estado</strong> ';
         }
 
         if ($filters['type'] == 'investor') {
             if (!empty($filters['method']) && $investor_owner) {
                 $filters_txt .= 'mediante <strong>' . $methods[$filters['method']] . '</strong> ';
             } elseif (empty($filters['method']) && $investor_owner) {
-                $filters_txt .= 'mediante cualquier metodo ';
+                $filters_txt .= 'mediante <strong>cualquier metodo</strong> ';
             }
             if (!empty($filters['antiquity']) && $investor_owner) {
-                $filters_txt .= 'más recientes que <strong>' . $antiquity[$filters['antiquity']] . '</strong> ';
+                $filters_txt .= 'de fecha <strong>' . $antiquity[$filters['antiquity']] . '</strong> ';
             } elseif (empty($filters['antiquity']) && $investor_owner) {
-                $filters_txt .= 'en cualquier fecha ';
+                $filters_txt .= 'en <strong>cualquier fecha</strong> ';
+            }
+            if(class_exists('\Goteo\Model\User\Donor')) {
+                if (!empty($filters['cert']) && $investor_owner) {
+                    $filters_txt .= 'con certificado <strong>' . $certs[$filters['cert']] . '</strong> ';
+                } elseif (empty($filters['cert']) && $investor_owner) {
+                    $filters_txt .= 'con <strong>certificado o sin él</strong> ';
+                }
             }
         }
 
@@ -392,14 +409,26 @@ class MailingSubController extends AbstractSubController {
             $values[':status'] = $filters['status'];
         }
 
-        if ($filters['type'] == 'investor') {
-            if (!empty($filters['method']) && !empty($sqlInner)) {
+        if ($filters['type'] == 'investor' && !empty($sqlInner)) {
+            if (!empty($filters['method'])) {
                 $sqlFilter .= "AND invest.method = :method ";
                 $values[':method'] = $filters['method'];
             }
-            if (!empty($filters['antiquity']) && !empty($sqlInner)) {
-                $sqlFilter .= "AND invest.invested >= DATE_SUB(NOW(), INTERVAL :antiquity DAY) ";
-                $values[':antiquity'] = $filters['antiquity'];
+            if (!empty($filters['antiquity'])) {
+                $from = (int)strtok($filters['antiquity'], '-');
+                $to = (int)strtok('-');
+                $sqlFilter .= "AND invest.invested BETWEEN DATE_SUB(NOW(), INTERVAL :from DAY) AND DATE_SUB(NOW(), INTERVAL :to DAY) ";
+                $values[':from'] = $from;
+                $values[':to'] = $to;
+            }
+            if (!empty($filters['cert']) && class_exists('\Goteo\Model\User\Donor')) {
+                $sqlInner .= 'LEFT JOIN donor ON donor.user = user.id ';
+                if($filters['cert'] == 'unconfirmed') {
+                    $sqlFilter .= " AND (donor.confirmed = 0 OR ISNULL(donor.confirmed)) ";
+                }
+                if($filters['cert'] == 'confirmed') {
+                    $sqlFilter .= " AND donor.confirmed = 1 ";
+                }
             }
         }
 
@@ -471,7 +500,6 @@ class MailingSubController extends AbstractSubController {
         }
 
         $sql = "SELECT
-                    user.id as id,
                     user.id as user,
                     user.name as name,
                     user.email as email
@@ -489,6 +517,7 @@ class MailingSubController extends AbstractSubController {
 
         if ($query = Model\User::query($sql, $values)) {
             foreach ($query->fetchAll(\PDO::FETCH_OBJ) as $receiver) {
+                $receiver->id = $receiver->user;
                 $receivers[$receiver->id] = $receiver;
             }
         } else {

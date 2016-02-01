@@ -6,7 +6,8 @@ module.exports = function(grunt) {
 
     grunt.config('watch', {
         js: {
-            files: ['<%= goteo.app %>/view/js/{,*/}*.js'],
+            files: ['<%= goteo.app %>/view/js/{,*/}*.js',
+                    '<%= goteo.app %>/assets/js/{,*/}*.js'],
             tasks: ['newer:jshint'],
             options: {
                 livereload: true

@@ -1,8 +1,8 @@
 <!-- Bootstrap core JavaScript -->
 
-<script src="<?php echo SRC_URL ?>/assets/js/jquery.min.js"></script>
-<script src="<?php echo SRC_URL ?>/assets/js/bootstrap.min.js"></script>
-<script src="<?php echo SRC_URL ?>/assets/js/footable.min.js"></script>
+<script src="<?php echo SRC_URL ?>/assets/vendor/jquery.min.js"></script>
+<script src="<?php echo SRC_URL ?>/assets/vendor/bootstrap/js/bootstrap.min.js"></script>
+<script src="<?php echo SRC_URL ?>/assets/vendor/footable/footable.min.js"></script>
 
 <!--script src="<?php echo SRC_URL ?>/assets/js/docs.min.js"></script-->
 <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
@@ -34,4 +34,4 @@
 
 <!-- geolocation -->
 <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?v=3.exp&amp;libraries=places"></script>
-<script type="text/javascript" src="<?php echo SRC_URL ?>/view/js/geolocation.js"></script>
+<script type="text/javascript" src="<?php echo SRC_URL ?>/assets/js/geolocation.js"></script>

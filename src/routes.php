@@ -483,7 +483,7 @@ $routes->add('channel-list-projects', new Route(
         )
 ));
 
-$routes->add('channels-list-', new Route(
+$routes->add('channel-list', new Route(
     '/channels',
     array('_controller' => 'Goteo\Controller\ChannelController::listChannelsAction')
 ));
@@ -504,6 +504,12 @@ $routes->add('admin-action', new Route(
         'subaction' => null
         )
 ));
+
+
+////// MINI-API: Json controllers for ajax searching /////
+$api_routes = include __DIR__ . '/routes_api.php';
+$api_routes->addPrefix('/api');
+$routes->addCollection($api_routes);
 
 ///////// REDIRECT "/" ENDING ROUTES ///////////////
 

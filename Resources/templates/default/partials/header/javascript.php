@@ -6,7 +6,7 @@
         </script>
 
     <?php if ($this->jquery == 'latest') : ?>
-        <script type="text/javascript" src="<?php echo SRC_URL ?>/assets/js/jquery.min.js"></script>
+        <script type="text/javascript" src="<?php echo SRC_URL ?>/assets/vendor/jquery.min.js"></script>
     <?php else: ?>
         <script type="text/javascript" src="<?php echo SRC_URL ?>/view/js/jquery-1.6.4.min.js"></script>
         <!-- fancybox-->
@@ -16,6 +16,11 @@
         <!-- sliders -->
         <script type="text/javascript" src="<?php echo SRC_URL ?>/view/js/jquery.slides.min.js"></script>
         <!-- end sliders -->
+        <?php if ($this->superform) : ?>
+            <script src="<?php echo SRC_URL ?>/view/js/datepicker.min.js"></script>
+            <script src="<?php echo SRC_URL ?>/view/js/datepicker/datepicker.<?= $this->lang_current(true) ?>.js"></script>
+        <?php endif ?>
+
     <?php endif ?>
         <script type="text/javascript" src="<?php echo SRC_URL ?>/view/js/jquery.tipsy.min.js"></script>
         <!-- custom scrollbars -->
@@ -32,8 +37,6 @@
     <?php endif; ?>
 
     <?php if ($this->superform) : ?>
-        <script src="<?php echo SRC_URL ?>/view/js/datepicker.min.js"></script>
-        <script src="<?php echo SRC_URL ?>/view/js/datepicker/datepicker.<?= $this->lang_current(true) ?>.js"></script>
         <script src="<?php echo SRC_URL ?>/view/js/superform.js"></script>
     <?php endif; ?>
 

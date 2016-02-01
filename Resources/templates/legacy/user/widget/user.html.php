@@ -20,7 +20,7 @@ $user->about = nl2br(Text::urlink($user->about));
         <?php if (!empty($user->avatar)): ?><img alt="<?php echo htmlspecialchars($user->name) ?>" src="<?php echo $user->avatar->getLink(80, 80, true); ?>" /><?php endif ?>
     </div>
 
-    <?php if (isset($user->about)): ?>
+    <?php if ($user->about): ?>
     <blockquote class="about">
     <?php echo $user->about ?>
     </blockquote>
@@ -28,7 +28,7 @@ $user->about = nl2br(Text::urlink($user->about));
 
     <dl>
 
-        <?php if (isset($user->location)): ?>
+        <?php if ($user->location): ?>
         <dt class="location"><?php echo Text::get('profile-location-header'); ?></dt>
         <dd class="location"><?php echo Text::GmapsLink($user->location); ?></dd>
         <?php endif ?>

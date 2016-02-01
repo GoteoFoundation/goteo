@@ -12,8 +12,9 @@ $(document).ready(function() {
             item_start=item.start.dateTime || item.start.date;
             item_end=item.end.dateTime || item.end.date;
 
-            var current_day=moment(new Date()).format("MM-DD-YYYY");
-            var event_date=moment(new Date(item_start)).format("MM-DD-YYYY");
+            var current_day=moment(new Date()).format("YYYY-MM-DD");
+            var event_date=moment(new Date(item_start)).format("YYYY-MM-DD");
+
 
               if(current_day<=event_date)
               {

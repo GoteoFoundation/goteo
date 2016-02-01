@@ -15,43 +15,42 @@ use Goteo\Core\Model;
 
 class NodeSys {
 
-    /*
-     * Comprueba si es un nodo válido
-     */
-    public static function isValid ($id) {
+	/*
+		     * Comprueba si es un nodo válido
+	*/
+	public static function isValid($id) {
 
-        //activamos la cache para este metodo
-        $current_cache = \Goteo\Core\DB::cache();
-        \Goteo\Core\DB::cache(true);
+		//activamos la cache para este metodo
+		$current_cache = \Goteo\Core\DB::cache();
+		\Goteo\Core\DB::cache(true);
 
-        $query = Model::query("
+		$query = Model::query("
             SELECT
                 id
             FROM node
             WHERE id = :id
             LIMIT 1
             ",
-            array(
-                ':id' => $id
-            )
-        );
-        $query->cacheTime(defined('SQL_CACHE_LONG_TIME') ? SQL_CACHE_LONG_TIME : 3600);
-        $ret = (bool) $query->fetchColumn();
-        //dejamos la cache como estaba
-        \Goteo\Core\DB::cache($current_cache);
-        return $ret;
-    }
+			array(
+				':id' => $id,
+			)
+		);
+		$ret = (bool) $query->fetchColumn();
+		//dejamos la cache como estaba
+		\Goteo\Core\DB::cache($current_cache);
+		return $ret;
+	}
 
-    /*
-     * Comprueba si es un nodo esta activo
-     */
-    public static function isActive ($id) {
+	/*
+		     * Comprueba si es un nodo esta activo
+	*/
+	public static function isActive($id) {
 
-        //activamos la cache para este metodo
-        $current_cache = \Goteo\Core\DB::cache();
-        \Goteo\Core\DB::cache(true);
+		//activamos la cache para este metodo
+		$current_cache = \Goteo\Core\DB::cache();
+		\Goteo\Core\DB::cache(true);
 
-        $query = Model::query("
+		$query = Model::query("
             SELECT
                 id
             FROM node
@@ -60,32 +59,34 @@ class NodeSys {
             AND id != 'testnode'
             LIMIT 1
             ",
-            array(
-                ':id' => $id
-            )
-        );
-        $query->cacheTime(defined('SQL_CACHE_LONG_TIME') ? SQL_CACHE_LONG_TIME : 3600);
-        $ret = (bool) $query->fetchColumn();
-        //dejamos la cache como estaba
-        \Goteo\Core\DB::cache($current_cache);
-        return $ret;
-    }
+			array(
+				':id' => $id,
+			)
+		);
+		$ret = (bool) $query->fetchColumn();
+		//dejamos la cache como estaba
+		\Goteo\Core\DB::cache($current_cache);
+		return $ret;
+	}
 
-    /**
-     * Solo nodos activos con url propia apra el desplegable
-     * tampoco sacamos el nodo en el que estamos
-     * ni el de testeo
-     * @return <type>
-     */
-    public static function activeNodes ($current = null) {
-        if(empty($current)) $current = Config::get('node');
-        //activamos la cache para este metodo
-        $current_cache = \Goteo\Core\DB::cache();
-        \Goteo\Core\DB::cache(true);
+	/**
+	 * Solo nodos activos con url propia apra el desplegable
+	 * tampoco sacamos el nodo en el que estamos
+	 * ni el de testeo
+	 * @return <type>
+	 */
+	public static function activeNodes($current = null) {
+		if (empty($current)) {
+			$current = Config::get('node');
+		}
 
-        $list = array();
+		//activamos la cache para este metodo
+		$current_cache = \Goteo\Core\DB::cache();
+		\Goteo\Core\DB::cache(true);
 
-        $query = Model::query("
+		$list = array();
+
+		$query = Model::query("
             SELECT
                 id, name, url
             FROM node
@@ -94,25 +95,26 @@ class NodeSys {
             AND id != 'testnode'
             ORDER BY `name` ASC
             ");
-        $query->cacheTime(defined('SQL_CACHE_LONG_TIME') ? SQL_CACHE_LONG_TIME : 3600);
-        foreach ($query->fetchAll(\PDO::FETCH_OBJ) as $item) {
-            if(empty($item->url))
-                $item->url= \SITE_URL.'/channel/'.$item->id;
-            $list[] = $item;
-        }
-        //dejamos la cache como estaba
-        \Goteo\Core\DB::cache($current_cache);
+		foreach ($query->fetchAll(\PDO::FETCH_OBJ) as $item) {
+			if (empty($item->url)) {
+				$item->url = \SITE_URL . '/channel/' . $item->id;
+			}
 
-        return $list;
-    }
+			$list[] = $item;
+		}
+		//dejamos la cache como estaba
+		\Goteo\Core\DB::cache($current_cache);
 
-    /*
-     * Saca los datos del nodo
-     */
-    public static function setData ($id) {
+		return $list;
+	}
 
-        // datos del nodo
-        $query = Model::query("
+	/*
+		     * Saca los datos del nodo
+	*/
+	public static function setData($id) {
+
+		// datos del nodo
+		$query = Model::query("
             SELECT
                 name,
                 url,
@@ -123,19 +125,19 @@ class NodeSys {
             WHERE id = :id
             LIMIT 1
             ",
-            array(
-                ':id' => $id
-            )
-        );
-        $config = $query->fetch(\PDO::FETCH_OBJ);
+			array(
+				':id' => $id,
+			)
+		);
+		$config = $query->fetch(\PDO::FETCH_OBJ);
 
-        if (!empty($config)) {
-            if (!empty($config->logo)) {
-                $config->logo = \Goteo\Model\Image::get($config->logo);
-            }
-            return $config;
-        }
+		if (!empty($config)) {
+			if (!empty($config->logo)) {
+				$config->logo = \Goteo\Model\Image::get($config->logo);
+			}
+			return $config;
+		}
 
-    }
+	}
 
 }

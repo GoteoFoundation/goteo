@@ -67,7 +67,7 @@ class Pool extends \Goteo\Core\Model {
      * Recalculates the proper amount for the pool based on Invests Status went to pool
      * @return [type] [description]
      */
-    public function calculate() {
+    public function calculate($save = false) {
         $sql = "SELECT SUM(amount) AS total FROM invest WHERE user=:user AND method!='pool' AND status=:status";
         $query = static::query($sql, [':user' => $this->user, ':status' => Invest::STATUS_TO_POOL]);
         $total_to_pool = (int) $query->fetchColumn();
@@ -77,8 +77,14 @@ class Pool extends \Goteo\Core\Model {
         $total_from_pool = (int) $query->fetchColumn();
 
         $diff = max(0, $total_to_pool - $total_from_pool);
-        // echo "[$total_from_pool $total_to_pool $diff]\n";die;
+        // echo "[total_from_pool: $total_from_pool total_to_pool: $total_to_pool expected: $diff current: {$this->amount}]\n";die;
         $this->amount = $diff;
+        if($save) {
+            $errors = [];
+            if(!$this->save($errors)) {
+                throw new ModelException(implode("\n", $errors));
+            }
+        }
         return $this;
     }
 
@@ -114,8 +120,10 @@ class Pool extends \Goteo\Core\Model {
 
 	}
 
+
     /**
      * Refunds a investion to the pool
+     * @deprecated just use ->calculate(true) instead
      *
      * @param $invest invest instance
      * @return Pool object

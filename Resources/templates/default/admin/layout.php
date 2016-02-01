@@ -36,7 +36,8 @@ $this->layout('layout', [
 
 <?php $this->section('head') ?>
 
-<link rel="stylesheet" href="<?= SRC_URL ?>/assets/css/jquery.typeahead.min.css" type="text/css" />
+<link rel="stylesheet" href="<?= SRC_URL ?>/assets/vendor/typeahead/jquery.typeahead.min.css" type="text/css" />
+<link rel="stylesheet" href="<?= SRC_URL ?>/assets/vendor/datepicker/css/bootstrap.css" type="text/css" />
 <style type="text/css">
 
     ul.ul-admin>li.selected{
@@ -108,9 +109,11 @@ $this->layout('layout', [
 <?php $this->section('footer') ?>
 
 <?php if($this->debug()): ?>
-<script type="text/javascript" src="<?= SRC_URL ?>/assets/js/jquery.typeahead.js"></script>
+<script type="text/javascript" src="<?= SRC_URL ?>/assets/vendor/typeahead/jquery.typeahead.js"></script>
+<script type="text/javascript" src="<?= SRC_URL ?>/assets/vendor/datepicker/js/zebra_datepicker.src.js"></script>
 <?php else: ?>
-<script type="text/javascript" src="<?= SRC_URL ?>/assets/js/jquery.typeahead.min.js"></script>
+<script type="text/javascript" src="<?= SRC_URL ?>/assets/vendor/typeahead/jquery.typeahead.min.js"></script>
+<script type="text/javascript" src="<?= SRC_URL ?>/assets/vendor/datepicker/js/zebra_datepicker.js"></script>
 <?php endif ?>
 
 <script type="text/javascript">
@@ -119,6 +122,17 @@ $(function(){
         e.preventDefault();
         location.search = '?admin_node=' + $(this).val();
     });
+
+    $(function(){
+        $('input.datepicker').Zebra_DatePicker({
+            days: ['<?= $this->ee($this->text('date-sunday'), 'js') ?>', '<?= $this->ee($this->text('date-monday'), 'js') ?>', '<?= $this->ee($this->text('date-tuesday'), 'js') ?>', '<?= $this->ee($this->text('date-wednesday'), 'js') ?>', '<?= $this->ee($this->text('date-thursday'), 'js') ?>', '<?= $this->ee($this->text('date-friday'), 'js') ?>', '<?= $this->ee($this->text('date-saturday'), 'js') ?>'],
+            days_abbr: ['<?= $this->ee($this->text('date-su'), 'js') ?>', '<?= $this->ee($this->text('date-mo'), 'js') ?>', '<?= $this->ee($this->text('date-tu'), 'js') ?>', '<?= $this->ee($this->text('date-we'), 'js') ?>', '<?= $this->ee($this->text('date-th'), 'js') ?>', '<?= $this->ee($this->text('date-fr'), 'js') ?>', '<?= $this->ee($this->text('date-sa'), 'js') ?>'],
+            months: ['<?= $this->ee($this->text('date-january'), 'js') ?>', '<?= $this->ee($this->text('date-february'), 'js') ?>', '<?= $this->ee($this->text('date-march'), 'js') ?>', '<?= $this->ee($this->text('date-april'), 'js') ?>', '<?= $this->ee($this->text('date-may'), 'js') ?>', '<?= $this->ee($this->text('date-june'), 'js') ?>', '<?= $this->ee($this->text('date-july'), 'js') ?>', '<?= $this->ee($this->text('date-august'), 'js') ?>', '<?= $this->ee($this->text('date-september'), 'js') ?>', '<?= $this->ee($this->text('date-october'), 'js') ?>', '<?= $this->ee($this->text('date-november'), 'js') ?>', '<?= $this->ee($this->text('date-december'), 'js') ?>'],
+            months_abbr: ['<?= $this->ee($this->text('date-jan'), 'js') ?>', '<?= $this->ee($this->text('date-feb'), 'js') ?>', '<?= $this->ee($this->text('date-mar'), 'js') ?>', '<?= $this->ee($this->text('date-apr'), 'js') ?>', '<?= $this->ee($this->text('date-may'), 'js') ?>', '<?= $this->ee($this->text('date-jun'), 'js') ?>', '<?= $this->ee($this->text('date-jul'), 'js') ?>', '<?= $this->ee($this->text('date-aug'), 'js') ?>', '<?= $this->ee($this->text('date-sep'), 'js') ?>', '<?= $this->ee($this->text('date-oct'), 'js') ?>', '<?= $this->ee($this->text('date-nov'), 'js') ?>', '<?= $this->ee($this->text('date-dec'), 'js') ?>'],
+            show_select_today: '<?= $this->ee($this->text('date-today'), 'js') ?>'
+         });
+    });
+
 });
 </script>
 <?php $this->append() ?>

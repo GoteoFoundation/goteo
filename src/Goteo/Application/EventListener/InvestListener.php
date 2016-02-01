@@ -372,13 +372,14 @@ class InvestListener extends AbstractListener {
     public function onInvestRefundCancel(FilterInvestRefundEvent $event) {
         $method = $event->getMethod();
         $invest = $event->getInvest();
-        if ($invest->cancel(false)) {
+        $errors = [];
+        if ($invest->cancel(false, $errors)) {
             $this->notice(($invest->getProject()?'':'Pool') .'Invest cancelled', [$invest, $invest->getProject(), $invest->getFirstReward(), $invest->getUser()]);
             Invest::setDetail($invest->id, $method::getId().'-cancel', 'Invest process manually cancelled successfully');
             // update cached data
             $invest->keepUpdated();
         } else {
-            $this->warning('Error cancelling invest', [$invest, $invest->getProject(), $invest->getFirstReward(), $invest->getUser()]);
+            $this->warning('Error cancelling invest', [$invest, $invest->getProject(), $invest->getFirstReward(), $invest->getUser(), 'errors' >= $errors]);
             Invest::setDetail($invest->id, $method::getId().'-cancel-fail', 'Error while cancelling invest');
         }
 

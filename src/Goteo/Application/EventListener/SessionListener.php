@@ -46,14 +46,25 @@ class SessionListener extends AbstractListener {
             return;
         }
 
-        // Init session
-        Session::start('goteo-' . Config::get('env'), Config::get('session.time'));
-
         // clean all caches if requested
         // TODO: replace by some controller
         if ($request->query->has('cleancache')) {
             Model::cleanCache();
         }
+
+        // Init session
+        //
+        // if url_lang is defined set a common cookie for all domains
+        if (Config::get('url.url_lang')) {
+            $host = $request->getHost();
+            $sub_lang = strtok($host, '.');
+            if (Lang::exists($sub_lang)) {
+                // reduce host: ca.goteo.org => goteo.org
+                $host = strtok('');
+            }
+            ini_set('session.cookie_domain', ".$host");
+        }
+        Session::start('goteo-' . Config::get('env'), Config::get('session.time'));
 
         /**
          * Session.
@@ -65,25 +76,9 @@ class SessionListener extends AbstractListener {
             //Message::info('That\'s all folks!');
         });
 
-        // set currency
-        $currency = $request->query->get('currency');
-        if ($amount = $request->query->get('amount')) {
-            $currency = (string) substr($amount, strlen((int) $amount));
-        }
-        if (empty($currency)) {
-            $currency = Currency::current('id');
-        }
-
-        //ensure is a valid currency
-        $currency = Currency::get($currency, 'id');
-        Session::store('currency', $currency); // depending on request
-
-        // extend the life of the session
-        Session::renew();
 
         // Set lang
         $lang = Lang::setFromGlobals($request);
-
         // Cookie
         // the stupid cookie EU law
         if (!Cookie::exists('goteo_cookies')) {
@@ -92,6 +87,7 @@ class SessionListener extends AbstractListener {
             // print_r($_COOKIE);die('cooki');
             Message::info(Text::get('message-cookies'));
         }
+
 
         $url = $request->getHttpHost();
         // Redirect to proper URL if url_lang is defined
@@ -132,6 +128,23 @@ class SessionListener extends AbstractListener {
             $event->setResponse(new RedirectResponse($url . $request->getPathInfo() . ($query ? "?$query" : '')));
             return;
         }
+
+        // set currency
+        $currency = $request->query->get('currency');
+        if ($amount = $request->query->get('amount')) {
+            $currency = (string) substr($amount, strlen((int) $amount));
+        }
+        if (empty($currency)) {
+            $currency = Currency::current('id');
+        }
+
+        //ensure is a valid currency
+        $currency = Currency::get($currency, 'id');
+        Session::store('currency', $currency); // depending on request
+
+        // extend the life of the session
+        Session::renew();
+
     }
 
     /**

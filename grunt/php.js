@@ -1,16 +1,28 @@
 // PHP
 //  The php operation will start up php's built-in server, configure it's filepaths,
 //  and open a web browser to the provided hostname.
+path = require('path');
+absolute = path.resolve();
 module.exports = function(grunt) {
 
     'use strict';
 
     grunt.config('php', {
         options: {
-            ini: '<%= goteo.phpINI %>',
+            // ini: '<%= goteo.phpINI %>',
             hostname: '<%= goteo.localURL %>',
             port: '<%= goteo.localPort %>',
             livereload: 35729,
+            directives: {
+                memory_limit: '128M',
+                short_open_tag: 'On',
+                upload_tmp_dir: absolute + '/var/php',
+                sys_temp_dir: absolute + '/var/php',
+                display_errors: 'On',
+                session: {save_path: absolute + '/var/php'},
+                allow_url_fopen: 'On'
+
+            }
             // keepalive: true,
         },
         // Configuration options for the "server" task (i.e. during development).

@@ -46,7 +46,7 @@ class Config {
 			}
 			// load translations
 			// Initial groups
-			$groups = ['home', 'public_profile', 'project', 'labels', 'form', 'profile', 'personal', 'overview', 'costs', 'rewards', 'supports', 'preview', 'dashboard', 'register', 'login', 'discover', 'community', 'general', 'blog', 'faq', 'contact', 'widget', 'invest', 'types', 'banners', 'footer', 'social', 'review', 'translate', 'menu', 'feed', 'mailer', 'bluead', 'error', 'wof', 'node_public', 'contract', 'donor', 'text_groups', 'template', 'admin', 'metas', 'location', 'url', 'pool'];
+			$groups = ['home', 'public_profile', 'project', 'labels', 'form', 'profile', 'personal', 'overview', 'costs', 'rewards', 'supports', 'preview', 'dashboard', 'register', 'login', 'discover', 'community', 'general', 'blog', 'faq', 'contact', 'widget', 'invest', 'types', 'banners', 'footer', 'social', 'review', 'translate', 'menu', 'feed', 'mailer', 'bluead', 'error', 'wof', 'node_public', 'contract', 'donor', 'text_groups', 'template', 'admin', 'metas', 'location', 'url', 'pool', 'dates'];
 			foreach (Lang::listAll('name', false) as $lang => $name) {
 				Lang::addSqlTranslation($lang);
 				foreach ($groups as $group) {
@@ -251,33 +251,25 @@ class Config {
 		define('AWS_SECRET', self::get('filesystem.aws.secret'));
 		define('AWS_REGION', self::get('filesystem.aws.region'));
 
-		define('GOTEO_DB_DRIVER', self::get('db.driver', true));
-		define('GOTEO_DB_HOST', self::get('db.host', true));
-		define('GOTEO_DB_PORT', self::get('db.port', true));
-		define('GOTEO_DB_CHARSET', self::get('db.charset', true));
-		define('GOTEO_DB_SCHEMA', self::get('db.database', true));
-		define('GOTEO_DB_USERNAME', self::get('db.username', true));
-		define('GOTEO_DB_PASSWORD', self::get('db.password', true));
-
-		if (self::get('db.replica.host')) {
-			define('GOTEO_DB_READ_REPLICA_HOST', self::get('db.replica.host'));
+		$driver = self::get('db.driver', true);
+		$host = self::get('db.host', true);
+		$port = self::get('db.port', true);
+		$charset = self::get('db.charset', true);
+		if ($charset == 'UTF-8') {
+			$charset = 'UTF8';
 		}
 
-		if (('db.replica.port')) {
-			define('GOTEO_DB_READ_REPLICA_PORT', self::get('db.replica.port'));
-		}
+		$database = self::get('db.database', true);
+		$username = self::get('db.username', true);
+		$password = self::get('db.password', true);
+		self::set('dsn', "$driver:host=$host;dbname=$database;port=$port;charset=$charset");
 
-		if (self::get('db.replica.username')) {
-			define('GOTEO_DB_READ_REPLICA_USERNAME', self::get('db.replica.username'));
-		}
+		if ($replica = self::get('db.replica.host')) {
+			self::set('dsn_replica', "$driver:host=$replica;dbname=$database;port=" . (self::get('db.replica.port') ? self::get('db.replica.port') : $port) . ";charset=$charset");
 
-		if (self::get('db.replica.password')) {
-			define('GOTEO_DB_READ_REPLICA_PASSWORD', self::get('db.replica.password'));
 		}
 
 		define('SQL_CACHE_DRIVER', self::get('db.cache.driver'));
-		define('SQL_CACHE_TIME', self::get('db.cache.time'));
-		define('SQL_CACHE_LONG_TIME', self::get('db.cache.long_time'));
 
 		define('SRC_URL', self::get('url.assets'));
 
@@ -292,7 +284,7 @@ class Config {
 		define('AWS_S3_BUCKET_DOCUMENT', self::get('filesystem.bucket.document'));
 		define('AWS_S3_BUCKET_PRESS', self::get('filesystem.bucket.press'));
 
-        define('PP_CONFIG_PATH', GOTEO_PATH . 'config/');
+		define('PP_CONFIG_PATH', GOTEO_PATH . 'config/');
 
 		define('OAUTH_FACEBOOK_ID', self::get('oauth.facebook.id'));
 		define('OAUTH_FACEBOOK_SECRET', self::get('oauth.facebook.secret'));
@@ -420,5 +412,4 @@ class Config {
 
 		return self::isCurrentNode(self::get('node'));
 	}
-
 }

@@ -190,7 +190,9 @@ class AccountsSubController extends AbstractSubController {
                     // Event invest success event
                     $invest = $this->dispatch($returned ? AppEvents::INVEST_RETURNED : AppEvents::INVEST_CANCELLED, new FilterInvestRefundEvent($invest, $method, $response))->getInvest();
                     // New Invest Refund Event
-                    if($invest->status === ($returned ? Invest::STATUS_RETURNED : Invest::STATUS_CANCELLED)) {
+                    if( ($invest->method == 'pool' && $invest->status === Invest::STATUS_TO_POOL)
+                        || $invest->status === ($returned ? Invest::STATUS_RETURNED : Invest::STATUS_CANCELLED)
+                      ) {
                         $ok = true;
                         // Evento Feed
                         $coin = Currency::getDefault('html');

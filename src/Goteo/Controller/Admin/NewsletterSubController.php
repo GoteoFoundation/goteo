@@ -110,6 +110,10 @@ class NewsletterSubController extends AbstractSubController {
         return $this->redirect();
     }
 
+    /**
+     * Creates a new massive sending
+     * Does not sent it automatically
+     */
     public function initAction() {
         $current_lang = Lang::current();
 
@@ -133,11 +137,12 @@ class NewsletterSubController extends AbstractSubController {
             else {
                 $template_langs = Template::getAvailableLangs($template);
             }
+            // print_r($template_langs);
             $messages = [];
             foreach($template_langs as $lang) {
                 Lang::set($lang);
                 $lang = Lang::current();
-
+                // echo "[$lang]";
                 $mailHandler = Mail::createFromTemplate('any', '', $template, [], $lang);
 
                 $errors = [];

@@ -24,7 +24,7 @@ $date = $this->date;
         </div>
         <div style="float:left;margin:5px;" id="hdate">
             <label for="hdate">Fecha del log:</label><br />
-            <?php echo View::get('superform/element/datebox.html.php', array('value'=>$date, 'id'=>'hdate', 'name'=>'date', 'js' => true)); ?>
+            <?= $this->html('input', ['value' => $date, 'name' => 'date', 'attribs' => ['id'=>'hdate', 'class' => 'datepicker']]) ?>
         </div>
         <div style="float:left;margin:5px;">
             <input type="submit" value="Ver" />
@@ -32,7 +32,7 @@ $date = $this->date;
     </form>
 </div>
 <div style="width:780px; height:1000px; overflow: scroll;">
-    <?php echo $this->content; ?>
+    <?= $this->content ?>
 </div>
 
 <?php $this->replace() ?>

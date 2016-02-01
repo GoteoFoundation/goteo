@@ -14,6 +14,7 @@ module.exports = function(grunt) {
                 jshintrc: '.jshintrc'
             },
             app: [
+                '<%= goteo.app %>/assets/js/*.js',
                 '<%= goteo.app %>/view/js/*.js',
                 '!<%= goteo.app %>/view/js/jquery.*.js',
                 '!<%= goteo.app %>/view/js/slides.jquery.js',

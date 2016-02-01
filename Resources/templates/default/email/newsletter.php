@@ -79,7 +79,7 @@ img a {
 <div style="font-size:11px; padding-bottom:10px;"><?= $this->text('footer-header-social') ?><br />
   <span><a href="<?= $this->text('social-account-facebook') ?>" style="color:#233E99; text-decoration:none;">facebook</a></span> | <span><a href="<?= $this->text('social-account-twitter') ?>" style="color:#00AEEF; text-decoration:none;">twitter</a></span> |  <span><a href="<?= $this->text('social-account-identica') ?>" style="color:#C42F31; text-decoration:none;">identica</a></span> | <span><a rel="alternate" type="application/rss+xml" title="RSS" href="<?= $this->get_config('url.main'). '/rss' ?>" style="color:#F15A29; text-decoration:none;">RSS</a></span></div>
 
-<div style="width:630px;font-size:11px; text-align:right; padding-bottom:10px; padding-top:10px; border-top: 1px solid #20B3B2;"><?= $this->text_html('newsletter-block', $this->raw('unsubscribe')) ?></div> <!-- enlace color:#20B3B2; text-decoration:none; -->
+<div style="width:630px;font-size:11px; text-align:right; padding-bottom:10px; padding-top:10px; border-top: 1px solid #20B3B2;"><?= $this->text('newsletter-block', $this->raw('unsubscribe')) ?></div> <!-- enlace color:#20B3B2; text-decoration:none; -->
 
 </div>
 

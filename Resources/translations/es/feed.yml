@@ -14,6 +14,7 @@ feed-admin-newsletter-activate-failed: 'Ha fallado el envío automático de la n
 feed-admin-newsletter-activate-subject: 'newsletter activada (admin)'
 feed-blog-comment: 'Ha escrito un <span class="green">Comentario</span> en la entrada "%s" del blog de %s'
 feed-invest: 'Ha aportado %AMOUNT% al proyecto %PROJECT%'
+feed-invest-pool: 'Ha recargado %AMOUNT% en su monedero virtual'
 feed-invest-by: 'Aporte %s'
 feed-mailing-massive: 'Envio masivo (cron)'
 feed-mailing-massive-completed: 'Se ha completado el envio masivo [%ID%] [%SUBJECT%]'

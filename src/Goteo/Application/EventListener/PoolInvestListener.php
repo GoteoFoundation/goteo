@@ -89,6 +89,7 @@ class PoolInvestListener extends AbstractListener {
         }
 
         $user = $invest->getUser();
+        $pool = $user->getPool();
 
         $this->notice('PoolInvest finish succeeded', [$invest, 'project' => '', 'reward' => '', $invest->getUser()]);
 
@@ -105,11 +106,11 @@ class PoolInvestListener extends AbstractListener {
             throw new \RuntimeException('Error saving PoolInvest details! ' . implode("\n", $errors));
         }
 
-        //Add the amount to the wallet
-        Pool::refundInvest($invest);
+        //recalulate the pool
+        $pool->calculate(true);
 
         // Amount in virtual wallet
-        $amount_pool=Pool::getAmount();
+        $amount_pool = $pool->getAmount();
 
         // Send mail with amount rechargued
 
@@ -145,9 +146,8 @@ class PoolInvestListener extends AbstractListener {
             ->doAdmin('money');
 
         // Public Feed
-        $log_html = new FeedBody(null, null, 'feed-invest', [
-                '%AMOUNT%' => Feed::item('money', $invest->amount . ' ' . $coin),
-                '%PROJECT%' => Feed::item('project', 'POOL')
+        $log_html = new FeedBody(null, null, 'feed-invest-pool', [
+                '%AMOUNT%' => Feed::item('money', $invest->amount . ' ' . $coin)
                 ]);
         if ($invest->anonymous) {
             $log->populate(Text::get('regular-anonymous'), '/user/profile/anonymous', $log_html, 1);

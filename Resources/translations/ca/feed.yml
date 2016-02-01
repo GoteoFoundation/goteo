@@ -1,5 +1,6 @@
 feed-blog-comment: 'Ha escrit un <span class="green">Comentari</span> a l''entrada "%s" del blog de %s'
 feed-invest: 'Ha aportat %AMOUNT% al projecte %PROJECT%'
+feed-invest-pool: 'Ha recarregat %AMOUNT% al seu moneder virtual'
 feed-invest-by: 'Aportació %s'
 feed-message_support-response: 'Nova col·laboració amb %s el projecte %s'
 feed-messages-new_thread: 'Ha obert un tema en %s del projecte %s'

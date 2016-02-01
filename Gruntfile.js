@@ -20,7 +20,6 @@ GOTEO = {
     // var/php/php.ini file to config/php.ini
     // and edit it with your own data
     phpINI: 'var/php/php.ini',
-
     configFile: 'config/settings.yml'
 };
 

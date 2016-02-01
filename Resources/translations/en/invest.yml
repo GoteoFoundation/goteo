@@ -57,7 +57,7 @@ invest-paypal-method: Paypal
 invest-paypal_disabled: 'Payment via paypal is desactivated for this project. <a href="/faq/investors#q2">More info</a>'
 invest-pool: 'In case the project fails, I want my donation to go into my virtual Goteo Purse.'
 invest-pool-available: Available
-invest-pool-error: 'You do not have enough money in your virtual wallet.'
+invest-pool-error: 'You do not have enough money in your virtual purse.'
 invest-pool-method: 'Virtual purse'
 invest-process-completed: 'Your contribution has been completed previoulsy'
 invest-project: 'to the project'

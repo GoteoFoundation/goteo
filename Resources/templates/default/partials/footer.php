@@ -80,6 +80,7 @@ $sponsors   = Sponsor::getList();
                 <li><a href="/service/workshop"><img class="icon" src="<?= SRC_URL . '/view/css/services/workshops_icon.png' ?>" height="20" /><?=$this->text('footer-service-workshop') ?></a></li>
                 <li><a href="/calculadora-fiscal"><img class="icon calculator" src="<?= SRC_URL . '/view/css/services/calculator_icon.png' ?>" height="20" /><?=$this->text('footer-service-calculator') ?></a></li>
                 <li><a href="<?= ($this->is_logged()) ? 'dashboard/wallet' : '/pool' ?>"><img class="icon pool" src="<?= SRC_URL . '/view/css/services/pool_icon.png' ?>" height="20" /><?=$this->text('footer-service-pool') ?></a></li>
+                <li><a href="http://stats.goteo.org" target="_blank"><img class="icon stats" src="<?= SRC_URL . '/view/css/services/stats.png' ?>" height="20" /><?=$this->text('footer-resources-stats') ?></a></li>
 
             </ul>
 

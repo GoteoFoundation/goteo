@@ -102,7 +102,7 @@ class PoolPaymentMethod extends AbstractPaymentMethod {
         // Mark this invest as return-to-pool (this should be redundant)
         $invest->setPoolOnFail(true);
         $errors = [];
-        if($this->refundable() && Pool::refundInvest($invest, $errors)) {
+        if($this->refundable()) {
             return new EmptySuccessfulResponse();
         }
         else {
