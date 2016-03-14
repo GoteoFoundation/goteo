@@ -23,6 +23,8 @@ use Goteo\Model\Template;
 use Goteo\Model\Project\ProjectLocation;
 use Goteo\Model;
 use Goteo\Console\UsersSend;
+use Goteo\Application\Event\FilterProjectEvent;
+use Goteo\Application\AppEvents;
 
 class ProjectsSubController extends AbstractSubController {
 
@@ -534,7 +536,7 @@ class ProjectsSubController extends AbstractSubController {
         if ($project->ready($errors)) {
             // feed this action
             $this->doFeed($project, 'El admin %s ha pasado el proyecto %s al estado <span class="red">Revision</span>');
-            $this->redirect('reviews' , $project->id);
+            return $this->redirect('/admin/reviews?project='. $project->id);
         } else {
             $this->doFeed('Al admin %s le ha fallado al pasar el proyecto %s al estado <span class="red">Revision</span>');
         }
@@ -544,14 +546,10 @@ class ProjectsSubController extends AbstractSubController {
     public function publishAction($id) {
         // Project && permission check
         $project = $this->getProject($id, 'moderate');
-        // poner un proyecto en campaña
-        if ($project->publish($errors)) {
-            UsersSend::toOwner('tip_0', $project);
-            UsersSend::toConsultants('tip_0', $project);
-            $this->doFeed($project, 'El admin %s ha pasado el proyecto %s al estado <span class="red">en Campaña</span>');
-        } else {
-            $this->doFeed($project, 'Al admin %s le ha fallado al pasar el proyecto %s al estado <span class="red">en Campaña</span>');
-        }
+
+        // PUBLISH EVENT
+        $event = $this->dispatch(AppEvents::PROJECT_PUBLISH, new FilterProjectEvent($project));
+
         return $this->redirect();
     }
 
@@ -785,7 +783,7 @@ class ProjectsSubController extends AbstractSubController {
             // Evento Feed
             $log = new Feed();
             $log->setTarget($project->id);
-            $log->populate('Acción sobre un proyecto desde el admin', '/admin/projects',
+            $log->populate('feed-admin-project-action', '/admin/projects',
                 \vsprintf($log_text, array(
                     Feed::item('user', $this->user->name, $this->user->id),
                     Feed::item('project', $project->name, $project->id)

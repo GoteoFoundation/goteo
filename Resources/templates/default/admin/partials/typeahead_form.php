@@ -4,7 +4,8 @@
 
             <span class="typeahead-query">
                 <input id="<?= $this->id ? $this->id: 'typeahead-form' ?>"
-                       name="<?= $this->id ? $this->id: 'q' ?>"
+                       name="<?= $this->name ? $this->name : ($this->id ? $this->id : 'q') ?>"
+                       <?= ($this->value ? 'value="' . $this->value .'"' : '') ?>
                        type="search"
                        autocomplete="off">
             </span>

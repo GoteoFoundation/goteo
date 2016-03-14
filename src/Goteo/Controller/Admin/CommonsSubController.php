@@ -196,7 +196,7 @@ class CommonsSubController extends AbstractSubController {
 
                         $reward->reward = $this->getPost('social_reward-' . $reward->id . '-reward');
                         $reward->description = $this->getPost('social_reward-' . $reward->id . '-description');
-                        
+
                         $reward->url = $this->getPost('social_reward-' . $reward->id . '-url');
 
                         $reward->icon = $this->getPost('social_reward-' . $reward->id . '-icon');
@@ -248,13 +248,17 @@ class CommonsSubController extends AbstractSubController {
 
 
         if (!empty($filters['projStatus'])) {
-            // TODO: change with getList, remove getMiniList
-            $projects = Model\Project::getMiniList(array('status'=>$filters['projStatus'], 'proj_name'=>$filters['project'], 'order'=>'success'), $this->node);
+            $f = array('status'=>$filters['projStatus'], 'proj_id'=>$filters['project'], 'order'=>'success');
         } else {
-            $projects = Model\Project::getMiniList(array('multistatus'=>"4,5", 'proj_name'=>$filters['project'], 'order'=>'success'), $this->node);
+            $f = array('multistatus'=>"4,5", 'proj_id'=>$filters['project'], 'order'=>'success');
         }
 
-        foreach ($projects as $kay=>&$project) {
+        $limit = 25;
+        $node = null;
+        $projects = Model\Project::getList($f, $node, $this->getGet('pag') * $limit, $limit);
+        $total = Model\Project::getList($f, $node, 0, 0, true);
+
+        foreach ($projects as $key => $project) {
             $project->social_rewards = Model\Project\Reward::getAll($project->id, 'social', $lang);
             $cumplidos = 0;
             foreach ($project->social_rewards as $ret) {
@@ -265,9 +269,9 @@ class CommonsSubController extends AbstractSubController {
             $project->cumplidos = $cumplidos;
         }
 
+
         return array(
-                'folder' => 'commons',
-                'file' => 'list',
+                'template' => 'admin/commons/list',
                 'projects'=>$projects,
                 'filters' => $filters,
                 'statuses' => $statuses,

@@ -663,7 +663,19 @@ class ProjectController extends \Goteo\Core\Controller {
                 ));
         }
         /// este es el único save que se lanza desde un metodo process_
-        $user->save($project->errors['userProfile']);
+        if ( $user->save($project->errors['userProfile'])) {
+            // si no español, aplicamos auto traducción
+            if ($user->lang != Config::get('lang')) {
+                // primero verificamos que no tenga traducido ya ese idioma
+                // if (!Model\User::isTranslated($user->id, $user->lang)) {
+                    $user->about_lang = $user->about;
+                    $user->keywords_lang = $user->keywords;
+                    $user->contribution_lang = $user->contribution;
+                    $user->saveLang($project->errors['userProfile']);
+
+                // }
+            }
+        }
 
         // si hay errores en la imagen hay que mostrarlos
         if (!empty($project->errors['userProfile']['image'])) {
@@ -804,15 +816,15 @@ class ProjectController extends \Goteo\Core\Controller {
 
 		//categorias
 		// añadir las que vienen y no tiene
-		$tiene = $project->categories;
-		if (isset($_POST['categories'])) {
+		$tiene = is_array($project->categories) ? $project->categories : array();
+		if (is_array($_POST['categories'])) {
 			$viene = $_POST['categories'];
 			$quita = array_diff($tiene, $viene);
 		} else {
 			$quita = $tiene;
 		}
 		$guarda = array_diff($viene, $tiene);
-		foreach ($guarda as $key                                  => $cat) {
+		foreach ($guarda as $key => $cat) {
 			$category              = new Project\Category(array('id' => $cat, 'project' => $project->id));
 			$project->categories[] = $category;
 		}

@@ -284,8 +284,6 @@ class Config {
 		define('AWS_S3_BUCKET_DOCUMENT', self::get('filesystem.bucket.document'));
 		define('AWS_S3_BUCKET_PRESS', self::get('filesystem.bucket.press'));
 
-		define('PP_CONFIG_PATH', GOTEO_PATH . 'config/');
-
 		define('OAUTH_FACEBOOK_ID', self::get('oauth.facebook.id'));
 		define('OAUTH_FACEBOOK_SECRET', self::get('oauth.facebook.secret'));
 		define('OAUTH_GOOGLE_ID', self::get('oauth.google.id'));

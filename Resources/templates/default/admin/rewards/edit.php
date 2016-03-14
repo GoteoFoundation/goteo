@@ -14,36 +14,36 @@ foreach ($invest->rewards as $key => $data) {
 ?>
 <div class="widget">
     <p>
-        <strong>Proyecto:</strong> <?php echo $project->name ?> (<?php echo $this->status[$project->status] ?>)<br />
-        <strong>Usuario: </strong><?php echo $user->name ?><br />
-        <strong>Cantidad aportada: </strong><?php echo $invest->amount ?> &euro; <br />
+        <strong>Proyecto:</strong> <?= $project->name ?> (<?= $this->status[$project->status] ?>)<br />
+        <strong>Usuario: </strong><?= $user->name ?><br />
+        <strong>Cantidad aportada: </strong><?= $invest->amount ?> &euro; <br />
     </p>
 
 
-<form method="post" action="/admin/rewards/edit/<?php echo  $invest->id; ?>" >
+<form method="post" action="/admin/rewards/edit/<?= $invest->id ?>" >
     <h3>Recompensa</h3>
     <ul style="list-style: none;">
 
         <li>
             <label>
-                <input class="individual_reward" type="checkbox" id="anonymous" name="anonymous" value="1" <?php if ($invest->anonymous) echo ' checked="checked"'; ?>/>
+                <input class="individual_reward" type="checkbox" id="anonymous" name="anonymous" value="1" <?php if ($invest->anonymous) echo ' checked="checked"' ?>/>
                 An&oacute;nimo
             </label>
         </li>
         <li><hr /></li>
         <li>
             <label>
-                <input class="individual_reward" type="radio" id="no_reward" name="selected_reward" value="0" amount="0" <?php if (empty($ewards)) echo ' checked="checked"'; ?>/>
+                <input class="individual_reward" type="radio" id="no_reward" name="selected_reward" value="0" amount="0" <?php if (empty($rewards)) echo ' checked="checked"' ?>/>
                 Ninguna recompensa.
             </label>
         </li>
         <!-- <span class="chkbox"></span> -->
     <?php foreach ($project->individual_rewards as $individual) : ?>
-    <li class="<?php echo $individual->icon ?><?php if ($individual->none) echo ' disabled' ?>">
+    <li class="<?= $individual->icon ?><?= ($individual->available() ? '' : ' disabled') ?>">
 
         <label>
-            <input type="radio" name="selected_reward" id="reward_<?php echo $individual->id; ?>" value="<?php echo $individual->id; ?>" amount="<?php echo $individual->amount; ?>" class="individual_reward" title="<?php echo htmlspecialchars($individual->reward) ?>" <?php if ($individual->none) echo 'disabled="disabled"' ?>  <?php if (isset($rewards[$individual->id])) echo ' checked="checked"'; ?>/>
-            <?php echo htmlspecialchars($individual->reward) . ' <strong>' .$individual->amount . ' &euro; </strong>' ?>
+            <input type="radio"<?= ($individual->available() ? '' : ' disabled="disabled"')?> name="selected_reward" id="reward_<?= $individual->id ?>" value="<?= $individual->id ?>" amount="<?= $individual->amount ?>" class="individual_reward" title="<?= $individual->reward ?>" <?php if (isset($rewards[$individual->id])) echo ' checked="checked"' ?>/>
+            <?= $individual->reward . ' <strong>' .$individual->amount . ' &euro; </strong>' ?>
         </label>
 
     </li>

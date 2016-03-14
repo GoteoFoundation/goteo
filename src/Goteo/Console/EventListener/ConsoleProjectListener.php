@@ -33,41 +33,6 @@ class ConsoleProjectListener extends AbstractListener {
 	}
 
 	/**
-	 * Adds some actions for a ending-life project
-	 * Should be triggered when project is 5,3,2,1 days left to end round
-	 * @param  FilterProjectEnding $event
-	 */
-	public function onProjectEnding(FilterProjectEvent $event) {
-		$project = $event->getProject();
-
-		// Public feed
-		$log = new Feed();
-		// We don't want to repeat this feed
-		$log->unique = true;
-		$log->setTarget($project->id)
-		// Feed can handle Text objects automatically if an array is passed
-			->populate('feed-project-ending',
-			'/admin/projects',
-			new FeedBody(null, null, 'feed-project_runout', [
-					'%PROJECT%' => Feed::item('project', $project->name, $project->id),
-					'%DAYS%'    => $project->days,
-					'%ROUND%'   => $project->round
-				]
-			),
-			$project->image)
-			->doAdmin('project');
-
-		$this->logFeedEntry($log);
-		$log->unique_issue = false;
-		// Public event
-		$log->title = $project->name;
-		$log->url   = '/project/'.$project->id;
-		$log->doPublic('projects');
-
-		$this->logFeedEntry($log);
-	}
-
-	/**
 	 * Adds some actions for a failed project
 	 * Should be triggered when project reaches his end-life and fails
 	 * @param  FilterProjectEnding $event
@@ -318,7 +283,6 @@ class ConsoleProjectListener extends AbstractListener {
 
 	public static function getSubscribedEvents() {
 		return array(
-			ConsoleEvents::PROJECT_ENDING    => 'onProjectEnding',
 			ConsoleEvents::PROJECT_FAILED    => 'onProjectFailed',
 			ConsoleEvents::PROJECT_ONE_ROUND => 'onProjectOneRound',
 			ConsoleEvents::PROJECT_ROUND1    => 'onProjectRound1',

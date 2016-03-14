@@ -56,11 +56,13 @@ INSERT INTO `project` (`id`,
  `location`,
  `country`,
  `image`,
- `description`)
-VALUES
-('project-failed-finishing-today',
-'Project failed-finishing today',
-'Project description failed-finishing today',
+ `description`,
+ `video`,
+ `project_location`
+ ) VALUES (
+ 'project-failed-finishing-today',
+ 'Project failed-finishing today',
+ 'Project description failed-finishing today',
  'es',
  'EUR',
  1.00000,
@@ -92,7 +94,9 @@ VALUES
  'Barcelona',
  'España',
  '7_10.jpg',
- 'Testing project diseño participativo y auto-construcción');
+ 'Testing project diseño participativo y auto-construcción',
+ 'https://vimeo.com/81621213',
+ 'City, country');
 
 -- Project accounts
 INSERT INTO `project_account` (`project`, `bank`, `bank_owner`, `paypal`, `paypal_owner`, `allowpp`, `fee`) values('project-failed-finishing-today','','Testing user','testing@goteo.org','Testing user',NULL,'4');

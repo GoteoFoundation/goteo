@@ -49,7 +49,9 @@ abstract class Controller {
      * **Experimental** method to send a response in json, vars only
      */
     public function jsonResponse($vars = []) {
-        return new JsonResponse($vars);
+        $resp =  new JsonResponse($vars);
+        if(App::debug()) $resp->setEncodingOptions(JSON_PRETTY_PRINT);
+        return $resp;
     }
 
     /**

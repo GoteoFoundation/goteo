@@ -12,6 +12,12 @@ feed-admin-massive-subject: 'comunicación masiva a usuarios (admin)'
 feed-admin-newsletter-activate: 'El admin %USER% ha iniciado el envio de la newsletter %ID%: %SUBJECT%'
 feed-admin-newsletter-activate-failed: 'Ha fallado el envío automático de la newsletter %ID%: %SUBJECT% por parte de el admin %USER%'
 feed-admin-newsletter-activate-subject: 'newsletter activada (admin)'
+feed-admin-new_project: Publicación automática de un proyecto
+feed-admin-project-action: Acción sobre un proyecto desde el admin
+feed-admin-project-published-ok: 'El admin %USER% ha publicado el proyecto %PROJECT% al estado <span class="red">en Campaña</span>'
+feed-admin-project-published-ko: 'Al admin %USER% le ha fallado el pasar el proyecto %PROJECT% al estado <span class="red">en Campaña</span>'
+feed-project-published-ok: 'Se ha pasado automáticamente el proyecto %PROJECT% al estado <span class="red">en Campaña</span>'
+feed-project-published-ko: 'El sistema ha fallado al pasar el proyecto %PROJECT% al estado <span class="red">en Campaña</span>'
 feed-blog-comment: 'Ha escrito un <span class="green">Comentario</span> en la entrada "%s" del blog de %s'
 feed-invest: 'Ha aportado %AMOUNT% al proyecto %PROJECT%'
 feed-invest-pool: 'Ha recargado %AMOUNT% en su monedero virtual'

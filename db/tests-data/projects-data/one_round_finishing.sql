@@ -23,10 +23,47 @@ INSERT INTO `user` (`id`, `name`, `email`, `password`, `about`, `keywords`, `act
 
 
 -- Project
-INSERT INTO `project` (`id`, `name`, `subtitle`, `lang`, `currency`, `currency_rate`, `status`, `translate`, `progress`, `owner`, `node`, `amount`, `mincost`, `maxcost`, `days`, `num_investors`, `popularity`, `num_messengers`, `num_posts`, `created`, `updated`, `published`, `success`, `closed`, `passed`, `contract_name`, `contract_nif`, `phone`, `contract_email`, `address`, `zipcode`, `location`, `country`, `image`, `description`) VALUES
-('project-one-round-finishing',
-'Project one round finishing today',
-'Description project one round finishing today',
+INSERT INTO `project` (`id`,
+ `name`,
+ `subtitle`,
+ `lang`,
+ `currency`,
+ `currency_rate`,
+ `status`,
+ `translate`,
+ `progress`,
+ `owner`,
+ `node`,
+ `amount`,
+ `mincost`,
+ `maxcost`,
+ `days`,
+ `num_investors`,
+ `popularity`,
+ `num_messengers`,
+ `num_posts`,
+ `created`,
+ `updated`,
+ `published`,
+ `success`,
+ `closed`,
+ `passed`,
+ `contract_name`,
+ `contract_nif`,
+ `phone`,
+ `contract_email`,
+ `address`,
+ `zipcode`,
+ `location`,
+ `country`,
+ `image`,
+ `description`,
+ `video`,
+ `project_location`
+ ) VALUES (
+ 'project-one-round-finishing',
+ 'Project one round finishing today',
+ 'Description project one round finishing today',
  'es',
  'EUR',
  1.00000,
@@ -58,7 +95,9 @@ INSERT INTO `project` (`id`, `name`, `subtitle`, `lang`, `currency`, `currency_r
  'Barcelona',
  'España',
  '7_10.jpg',
- 'Testin project diseño participativo y auto-construcción');
+ 'Testing project diseño participativo y auto-construcción',
+ 'https://vimeo.com/81621213',
+ 'City, country');
 
 INSERT INTO `project_conf` (`project`, `noinvest`, `watch`, `days_round1`, `days_round2`, `one_round`, `help_license`, `help_cost`)
 	values('project-one-round-finishing','0','0','40','0','1','0','0');

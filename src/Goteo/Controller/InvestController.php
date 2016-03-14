@@ -75,7 +75,7 @@ class InvestController extends \Goteo\Core\Controller {
         if(empty($currency)) $currency = Currency::current('id');
         $currency = Currency::get($currency, 'id');
 
-        $custom_amount = Currency::amount($amount_original, $currency);
+        $custom_amount = Currency::amountInverse($amount_original, $currency);
         //Project categories
         $project_categories = Project\Category::getNames($project_id);
         $this->page = '/invest/' . $project_id;
@@ -119,9 +119,10 @@ class InvestController extends \Goteo\Core\Controller {
             $amount = $reward->amount;
         }
         // Custom amount allowed if are higher
+        // TODO: check this
         if($custom_amount < $amount) {
             $custom_amount = $amount;
-            $amount_original = Currency::amountInverse($amount, $currency);
+            $amount_original = Currency::amount($amount, $currency);
         }
 
         if(!$reward && $reward_id) {

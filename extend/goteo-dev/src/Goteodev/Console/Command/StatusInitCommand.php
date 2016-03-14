@@ -18,16 +18,19 @@ use Symfony\Component\Console\Input\InputOption;
 use Goteo\Console\Command\AbstractCommand;
 use Goteo\Core\Model;
 use Goteo\Model\Invest;
+use Goteo\Model\Project;
 
 class StatusInitCommand extends AbstractCommand {
+    protected $output;
 
     protected function configure()
     {
         $this->setName("dev:statusinit")
              ->setDescription("Initializes the database with some know project status")
               ->setDefinition(array(
-                       new InputOption('clean', 'c', InputOption::VALUE_NONE, 'Clean the data inserted by the inicial status'),
-                       new InputOption('expired', 'e', InputOption::VALUE_REQUIRED, 'Sets test ending rounds as already expired', 0),
+                       new InputOption('create', 'c', InputOption::VALUE_NONE, 'Creates the initial status using the current date as a reference'),
+                       new InputOption('erase', 'e', InputOption::VALUE_NONE, 'Deletes all the data inserted by the inicial status'),
+                       new InputOption('delta', 'd', InputOption::VALUE_REQUIRED, 'Updates the dates of publish, success, closed by this number of days in the past', 0),
                  ))
              ->setHelp(<<<EOT
 This script initializes projects, invests and users to some known status in order to allow tests
@@ -37,62 +40,110 @@ Usage:
 Run the SQL scripts to initialize status
 <info>./console dev:statusinit</info>
 
-Run the SQL scripts to initialize status with expired dates
-so it can be used to test endround command
-Specify num fo days the project are expired
+Run the SQL scripts to initialize status with published, passed and closed dates
+so it can be used to test the endround (and others such as projectwatch) command
 
-One day expired:
-<info>./console dev:statusinit --expired 1</info>
+One day succeeded, published or failed projects:
+<info>./console dev:statusinit --delta 1</info>
 
+Ten days succeeded, published or failed projects:
+<info>./console dev:statusinit --delta 10</info>
+
+Removes all testing data:
+<info>./console dev:statusinit --erase</info>
+
+Removes all testing data and creates a fresh one:
+<info>./console dev:statusinit -ec</info>
+
+Removes all testing data and creates a fresh one 5 days in the past:
+<info>./console dev:statusinit -ecd 5</info>
+
+Be verbose (show the SQL executed):
+<info>./console dev:statusinit --erase -v</info>
 EOT
 );
     }
 
+    protected function query($sql) {
+        $lines = explode("\n", $sql);
+        $queries = [];
+        $query = '';
+        foreach($lines as $line) {
+            if(strpos(ltrim($line), 'INSERT INTO') === 0 || strpos(ltrim($line), 'UPDATE') === 0 || strpos(ltrim($line), 'DELETE') === 0) {
+                if($query) $queries[] = $query;
+                $query = "$line\n";
+            }
+            elseif($query) {
+                $query .= "$line\n";
+            }
+        }
+        if($query) $queries[] = $query;
+        foreach($queries as $s) {
+            if($this->output->isVerbose()) {
+                $this->output->writeln("Executing <info>$s</info>");
+            }
+            $res = Model::query($s);
+            $res->closeCursor();
+        }
+        return $res;
+    }
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $clean  = $input->getOption('clean');
-
-        if($clean)
+        $erase  = $input->getOption('erase');
+        $delta  = $input->getOption('delta');
+        $create  = $input->getOption('create');
+        if(empty($erase) && empty($delta) && empty($create)) {
+            throw new \Exception("Please specify one or more options to run this command. use --help for more information");
+        }
+        $this->output = $output;
+        if($erase)
         {
             $output->writeln("<comment>Deleting projects creating by initial status</comment>");
 
             //Deleting project finishing today and related
             $filename = GOTEO_PATH.'db/tests-data/projects-data/delete_finishing_today.sql';
             $sql = file_get_contents($filename);
-            Model::query($sql);
+            $this->query($sql);
 
-            $output->writeln("<comment>Project 1 deleted: 'project-finishing-today'</comment>");
+            $output->writeln("Project 1 deleted: <info>project-finishing-today</info>");
+
+            //Deleting project publishing today and related
+            $filename = GOTEO_PATH.'db/tests-data/projects-data/delete_publishing_today.sql';
+            $sql = file_get_contents($filename);
+            $this->query($sql);
+
+            $output->writeln("Project 1 deleted: <info>project-publishing-today</info>");
 
             //Deleting project passing today and related
             $filename = GOTEO_PATH.'db/tests-data/projects-data/delete_passing_today.sql';
             $sql = file_get_contents($filename);
-            Model::query($sql);
+            $this->query($sql);
 
-            $output->writeln("<comment>Project 2 deleted: 'project-passing-today'</comment>");
+            $output->writeln("Project 2 deleted: <info>project-passing-today</info>");
 
             //Deleting one round project finishing today and related
             $filename = GOTEO_PATH.'db/tests-data/projects-data/delete_one_round_finishing_today.sql';
             $sql = file_get_contents($filename);
-            Model::query($sql);
+            $this->query($sql);
 
-            $output->writeln("<comment>Project 3 deleted: 'project-one-round-finishing'</comment>");
+            $output->writeln("Project 3 deleted: <info>project-one-round-finishing</info>");
 
             //Deleting failed project finishing today and related
             $filename = GOTEO_PATH.'db/tests-data/projects-data/delete_failed_finishing_today.sql';
             $sql = file_get_contents($filename);
-            Model::query($sql);
+            $this->query($sql);
 
-            $output->writeln("<comment>Project 4 deleted: 'project-failed-finishing-today'</comment>");
+            $output->writeln("Project 4 deleted: <info>project-failed-finishing-today</info>");
 
             //Deleting project finishing in five days and related
             $filename = GOTEO_PATH.'db/tests-data/projects-data/delete_finishing_five_days.sql';
             $sql = file_get_contents($filename);
-            Model::query($sql);
+            $this->query($sql);
 
-            $output->writeln("<comment>Project 5 deleted: 'project-finishing-five-days'</comment>");
+            $output->writeln("Project 5 deleted: <info>project-finishing-five-days</info>");
 
         }
-        else
+        if($create)
         {
             try {
                 $output->writeln("<comment>Creating projects with diferents status</comment>");
@@ -100,60 +151,63 @@ EOT
                 //Project finishing today
                 $filename = GOTEO_PATH.'db/tests-data/projects-data/finishing_today.sql';
                 $sql = file_get_contents($filename);
-                Model::query($sql);
+                $this->query($sql);
 
-                $output->writeln("<comment>Project 1 created ID: 'project-finishing-today'</comment>");
+                $output->writeln("Project 1 created ID: <info>project-finishing-today</info>");
+
+                //Project publishing today
+                $filename = GOTEO_PATH.'db/tests-data/projects-data/publishing_today.sql';
+                $sql = file_get_contents($filename);
+                $this->query($sql);
+
+                $output->writeln("Project 1 created ID: <info>project-publishing-today</info>");
 
                 //Project passing today
                 $filename = GOTEO_PATH.'db/tests-data/projects-data/passing_first_round_today.sql';
                 $sql = file_get_contents($filename);
-                Model::query($sql);
+                $this->query($sql);
 
-                $output->writeln("<comment>Project 2 created ID: 'project-passing-today'</comment>");
+                $output->writeln("Project 2 created ID: <info>project-passing-today</info>");
 
                 //Project one round finishing today
                 $filename = GOTEO_PATH.'db/tests-data/projects-data/one_round_finishing.sql';
                 $sql = file_get_contents($filename);
-                Model::query($sql);
+                $this->query($sql);
 
-                $output->writeln("<comment>Project 3 created ID: 'project-one-round-finishing'</comment>");
+                $output->writeln("Project 3 created ID: <info>project-one-round-finishing</info>");
 
                  //Project failed finishing today
                 $filename = GOTEO_PATH.'db/tests-data/projects-data/failed_finishing_today.sql';
                 $sql = file_get_contents($filename);
-                Model::query($sql);
+                $this->query($sql);
 
-                $output->writeln("<comment>Project 4 created ID: 'project-failed-finishing-today'</comment>");
+                $output->writeln("Project 4 created ID: <info>project-failed-finishing-today</info>");
 
                 //Project finishing five days
                 $filename = GOTEO_PATH.'db/tests-data/projects-data/finishing_five_days.sql';
                 $sql = file_get_contents($filename);
-                Model::query($sql);
+                $this->query($sql);
 
-                $output->writeln("<comment>Project 5 created ID: 'project-finishing-five-days'</comment>");
+                $output->writeln("<comment>Project 5 created ID: <info>project-finishing-five-days</comment>");
             }
             catch(\PDOException $e) {
                 $output->writeln("<error>Error creating tables:</error> <fg=red>" . $e->getMessage() .'</>');
             }
 
-            $expired = (int) $input->getOption('expired');
-            if($expired)
+            if($delta)
             {
+                $output->writeln("<comment>Putting projects in the past by $delta days</comment>");
                 //Deleting project passing today and related
-                $filename = GOTEO_PATH.'db/tests-data/projects-data/expired.sql';
+                $filename = GOTEO_PATH.'db/tests-data/projects-data/delta.sql';
                 $sql = file_get_contents($filename);
-                $sql = str_replace(['%DAYS_1_ROUND%', '%DAYS_2_ROUND%'], [39 + $expired, 79 + $expired], $sql);
-                Model::query($sql);
-                $output->writeln("<comment>Changed project to expired date: " . date("Y-m-d", mktime(0,0,0,date('m'),date('d')-$expired, date('Y'))) . "</comment>");
+
+                $sql = str_replace(['%DELTA%', '%STATUS_SUCCESS%', '%STATUS_FAILED%', '%STATUS_ACTIVE%'], [$delta, Project::STATUS_FUNDED, Project::STATUS_UNFUNDED, Project::STATUS_IN_CAMPAIGN], $sql);
+                $this->query($sql);
+                $output->writeln("<info>Changed project dates using</info> <fg=red>" . date("Y-m-d", mktime(0,0,0,date('m'),date('d')-$delta, date('Y'))) . "</> <info>as today</info>");
             }
 
 
         }
 
-
-        /*
-        $output->writeln("<info>a hard work</info>");
-        $output->writeln("<error>in case of error</error>");
-        */
      }
 }

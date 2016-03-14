@@ -97,16 +97,6 @@ EOT
 			$this->debug("Processing project in campaign", [$project, "project_days_active" => $project->days_active, 'project_days_round1'  => $project->days_round1,
                     'project_days_round2'  => $project->days_round2, "percent" => $percent]);
 
-			// a los 5, 3, 2, y 1 dia para finalizar ronda
-			if ($project->round > 0 && in_array((int) $project->days, array(5, 3, 2, 1))) {
-				$this->notice("Public feed due remaining {$project->days} days until end of round {$project->round}", [$project]);
-                $action_done = true;
-                if ($update) {
-                    // dispatch ending event, will generate a feed entry if needed
-                    $project = $this->dispatch(ConsoleEvents::PROJECT_ENDING, new FilterProjectEvent($project))->getProject();
-                }
-            }
-
             // Check project's health
             if ($project->days_active >= $project->days_round1) {
                 // si no ha alcanzado el mínimo, pasa a estado caducado

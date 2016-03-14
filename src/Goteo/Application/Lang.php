@@ -318,7 +318,7 @@ class Lang {
                     if($save_lang) {
                         //Enviar cookie
                         // Cookie::store('goteo_lang', $lang);
-                        if(Session::isLogged()) {
+                        if(Session::isLogged() && !Session::get('shadowed_by')) {
                             //guardar preferencias de usuario
                             Session::getUser()->updateLang($lang);
                         }

@@ -60,7 +60,7 @@ class PoolController extends \Goteo\Core\Controller {
         if(empty($currency)) $currency = Currency::current('id');
         $currency = Currency::get($currency, 'id');
 
-        $custom_amount = Currency::amount($amount_original, $currency);
+        $custom_amount = Currency::amountInverse($amount_original, $currency);
 
         $this->page = '/pool';
         $this->query = http_build_query(['amount' => "$amount_original$currency"]);

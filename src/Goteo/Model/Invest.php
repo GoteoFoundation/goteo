@@ -40,7 +40,7 @@ class Invest extends \Goteo\Core\Model {
     const STATUS_PROCESSING = -1; // payment gateway not reached yet or just a failed payment
     const STATUS_PENDING    = 0;  // In a status that requires post-processing (former paypal preapprovals)
     const STATUS_CHARGED    = 1;  // charged by the platform
-    const STATUS_CANCELLED  = 2;  // refunded to the user by some admin manual action, won't be sum to any total
+    const STATUS_CANCELLED  = 2;  // refunded to the user by some admin manual action, won't be added to any total
     const STATUS_PAID       = 3;  // paid to the project (successful project) NOT REALLY USED
     const STATUS_RETURNED   = 4;  // automatically refunded to the user due a failed project
     const STATUS_RELOCATED  = 5;  // deprecated status
@@ -430,7 +430,7 @@ class Invest extends \Goteo\Core\Model {
      * @return array Address
      */
     public function getAddress() {
-        if(!$this->address) {
+        if(!is_object($this->address)) {
             $query = static::query("
                 SELECT  *
                 FROM  invest_address
@@ -2022,4 +2022,3 @@ class Invest extends \Goteo\Core\Model {
     }
 
 }
-

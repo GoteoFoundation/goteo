@@ -115,6 +115,9 @@ $sc->register('app.listener.session', 'Goteo\Application\EventListener\SessionLi
 // Auth listener
 $sc->register('app.listener.auth', 'Goteo\Application\EventListener\AuthListener')
    ->setArguments(array(new Reference('logger')));
+// Project listener
+$sc->register('app.listener.project', 'Goteo\Application\EventListener\ProjectListener')
+    ->setArguments(array(new Reference('logger')));
 // Invest listener
 $sc->register('app.listener.invest', 'Goteo\Application\EventListener\InvestListener')
 	->setArguments(array(new Reference('paylogger')));
@@ -131,7 +134,8 @@ $sc->register('dispatcher', 'Symfony\Component\EventDispatcher\EventDispatcher')
 	->addMethodCall('addSubscriber', array(new Reference('app.listener.exception')))
 	->addMethodCall('addSubscriber', array(new Reference('app.listener.session')))
 	->addMethodCall('addSubscriber', array(new Reference('app.listener.auth')))
-	->addMethodCall('addSubscriber', array(new Reference('app.listener.invest')))
+	->addMethodCall('addSubscriber', array(new Reference('app.listener.project')))
+    ->addMethodCall('addSubscriber', array(new Reference('app.listener.invest')))
 	->addMethodCall('addSubscriber', array(new Reference('app.listener.poolinvest')))
 	->addMethodCall('addSubscriber', array(new Reference('app.listener.acl')))
 	->addMethodCall('addSubscriber', array(new Reference('listener.router')))
@@ -149,6 +153,9 @@ $sc->register('console.listener.exception', 'Goteo\Console\EventListener\Console
 // Project processing
 $sc->register('console.listener.project', 'Goteo\Console\EventListener\ConsoleProjectListener')
    ->setArguments(array(new Reference('console_logger')));
+// Project watcher processing
+$sc->register('console.listener.watcher', 'Goteo\Console\EventListener\ConsoleWatcherListener')
+   ->setArguments(array(new Reference('console_logger')));
 // Invest processing
 $sc->register('console.listener.invest', 'Goteo\Console\EventListener\ConsoleInvestListener')
    ->setArguments(array(new Reference('console_logger')));
@@ -159,6 +166,7 @@ $sc->register('console.listener.mailing', 'Goteo\Console\EventListener\ConsoleMa
 $sc->register('console_dispatcher', 'Symfony\Component\EventDispatcher\EventDispatcher')
    ->addMethodCall('addSubscriber', array(new Reference('console.listener.exception')))
    ->addMethodCall('addSubscriber', array(new Reference('console.listener.project')))
+   ->addMethodCall('addSubscriber', array(new Reference('console.listener.watcher')))
    ->addMethodCall('addSubscriber', array(new Reference('console.listener.invest')))
    ->addMethodCall('addSubscriber', array(new Reference('console.listener.mailing')))
 ;

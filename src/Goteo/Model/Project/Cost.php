@@ -10,8 +10,8 @@
 
 namespace Goteo\Model\Project {
 
-    use Goteo\Core\Error,
-        Goteo\Library\Text;
+    use Goteo\Library\Text;
+    use Goteo\Application\Lang;
 
     class Cost extends \Goteo\Core\Model {
 
@@ -37,6 +37,7 @@ namespace Goteo\Model\Project {
 
 		public static function getAll ($project, $lang = null) {
             try {
+                if(empty($lang)) $lang = Lang::current();
                 $array = array();
 
                 // FIXES #42

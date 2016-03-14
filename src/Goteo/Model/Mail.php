@@ -222,7 +222,6 @@ class Mail extends \Goteo\Core\Model {
             $errors[] = 'Daily limit reached!';
             return false;
         }
-
         if (empty($this->id)) {
             $this->save();
         }
@@ -295,7 +294,6 @@ class Mail extends \Goteo\Core\Model {
         $mail->FromName = $this->fromName;
 
         $address = $this->to;
-
         $mail->addAddress($address, $this->toName);
         // copia a mail log si no es masivo
         if (Config::get('env') === 'real' && !$this->massive && Config::get('bcc_verifier')) {

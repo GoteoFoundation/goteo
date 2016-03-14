@@ -17,7 +17,7 @@ final class ConsoleEvents
      * for any reason others than the project related is not archived/failed
      *
      * The event listener receives an
-     * Goteo\Application\Event\FilterInvestRefundEvent instance.
+     * Goteo\Console\Event\FilterInvestRefundEvent instance.
      *
      * @var string
      */
@@ -27,7 +27,7 @@ final class ConsoleEvents
      * The console.refund.cancel.failed event is thrown when manual refund it's done (normally a admin call)
      *
      * The event listener receives an
-     * Goteo\Application\Event\FilterInvestRefundEvent instance.
+     * Goteo\Console\Event\FilterInvestRefundEvent instance.
      *
      * @var string
      */
@@ -38,7 +38,7 @@ final class ConsoleEvents
      * due the project related is archived/failed
      *
      * The event listener receives an
-     * Goteo\Application\Event\FilterInvestRefundEvent instance.
+     * Goteo\Console\Event\FilterInvestRefundEvent instance.
      *
      * @var string
      */
@@ -49,30 +49,59 @@ final class ConsoleEvents
      * due the project related is archived/failed fails
      *
      * The event listener receives an
-     * Goteo\Application\Event\FilterInvestRefundEvent instance.
+     * Goteo\Console\Event\FilterInvestRefundEvent instance.
      *
      * @var string
      */
     const INVEST_RETURN_FAILED = 'console.refund.failed';
 
+    /**
+     * The console.project.publish event is thrown when a project is in a REVIEW status and has to be published this day
+     *
+     * The event listener receives an
+     * Goteo\Console\Event\FilterProjectEvent instance.
+     *
+     * @var string
+     */
+    const PROJECT_PUBLISH = 'console.project.publish';
 
     /**
      * The console.project.ending event is thrown when a project is about to end his active campaign
      * triggered when 5, 3, 2 or 1 days left
      *
      * The event listener receives an
-     * Goteo\Application\Event\FilterProjectEvent instance.
+     * Goteo\Console\Event\FilterProjectEvent instance.
      *
      * @var string
      */
     const PROJECT_ENDING = 'console.project.ending';
 
     /**
+     * The console.project.active event is thrown once a day whilst active campaign
+     *
+     * The event listener receives an
+     * Goteo\Console\Event\FilterProjectEvent instance.
+     *
+     * @var string
+     */
+    const PROJECT_ACTIVE = 'console.project.active';
+
+    /**
+     * The console.project.watch event is thrown once a day until a project has reached the status "fullfilled" (one year time max)
+     *
+     * The event listener receives an
+     * Goteo\Console\Event\FilterProjectEvent instance.
+     *
+     * @var string
+     */
+    const PROJECT_WATCH = 'console.project.watch';
+
+    /**
      * The console.project.fail event is thrown when a project reaches the end of his active campaign
      * and fails to achieve the amount required
      *
      * The event listener receives an
-     * Goteo\Application\Event\FilterProjectEvent instance.
+     * Goteo\Console\Event\FilterProjectEvent instance.
      *
      * @var string
      */
@@ -84,7 +113,7 @@ final class ConsoleEvents
      * Only for projects configured as one-round-only
      *
      * The event listener receives an
-     * Goteo\Application\Event\FilterProjectEvent instance.
+     * Goteo\Console\Event\FilterProjectEvent instance.
      *
      * @var string
      */
@@ -96,7 +125,7 @@ final class ConsoleEvents
      * Only for projects configured as 2-rounds
      *
      * The event listener receives an
-     * Goteo\Application\Event\FilterProjectEvent instance.
+     * Goteo\Console\Event\FilterProjectEvent instance.
      *
      * @var string
      */
@@ -108,7 +137,7 @@ final class ConsoleEvents
      * Only for projects configured as 2-rounds
      *
      * The event listener receives an
-     * Goteo\Application\Event\FilterProjectEvent instance.
+     * Goteo\Console\Event\FilterProjectEvent instance.
      *
      * @var string
      */

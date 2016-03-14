@@ -1,6 +1,13 @@
 <?php
 
 // Views called by AJAX methods will return Bootstrap modal windows
+if($this->is_pronto()):
+    echo json_encode([
+        'title' => $this->title,
+        'content' => $this->supply('content')
+        ]);
+    return;
+endif;
 if($this->is_ajax()):
     $this->section('content');
     $this->stop();
@@ -42,8 +49,10 @@ endif;
 
     <?= $this->supply('messages', $this->insert("partials/header/messages")) ?>
 
+    <div id="main-content">
     <?php $this->section('content') ?>
     <?php $this->stop() ?>
+    </div>
 
     <?php $this->section('footer') ?>
 

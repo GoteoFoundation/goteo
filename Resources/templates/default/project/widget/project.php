@@ -27,9 +27,9 @@ if ($project->status == 3 && $project->noinvest) {
 }
 ?>
 
-<div class="widget project activable<?php if (isset($this->balloon)) echo ' balloon' ?>">
+<div class="widget project activable<?php if ($this->balloon) echo ' balloon' ?>">
 	<a href="/project/<?php echo $project->id ?>" class="expand"></a>
-    <?php if (isset($this->balloon)): ?>
+    <?php if ($this->balloon): ?>
     <div class="balloon"><?php echo $this->balloon ?></div>
     <?php endif ?>
 

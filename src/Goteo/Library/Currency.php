@@ -27,7 +27,7 @@ class Currency {
         'EUR' => array(
             'id' => 'EUR',
             'name' => 'Euro',
-            'html' => '&euro;',
+            'html' => '€',
             'thou' => '.',
             'dec'  => ',',
             'active' => 1
@@ -36,7 +36,7 @@ class Currency {
         'USD' => array(
             'id' => 'USD',
             'name' => 'U.S. Dollar',
-            'html' => '&dollar;',
+            'html' => '$',
             'thou' => ',',
             'dec'  => '.',
             'active' => 1
@@ -45,7 +45,7 @@ class Currency {
         'GBP' => array(
             'id' => 'GBP',
             'name' => 'British Pound',
-            'html' => '&pound;',
+            'html' => '£',
             'thou' => ',',
             'dec'  => '.',
             'active' => 1
@@ -125,7 +125,7 @@ class Currency {
 
         if ($currency != $default) {
             $rates = $converter->getRates($default);
-            $amount = ($revert) ? $amount / $rates[$currency] : $amount * $rates[$currency];
+            $amount = round(($revert) ? $amount / $rates[$currency] : $amount * $rates[$currency]);
         }
 
         $symbol= $nosymbol ? "" :$ccy['html']." ";
@@ -173,14 +173,12 @@ class Currency {
 
     public static function amount($amount, $cur = null) {
         $rate = self::rate($cur);
-        $amount =  round($amount / $rate);
-        return number_format($amount, 0, '', '');
+        return round($amount * $rate);
     }
 
     public static function amountInverse($amount, $cur = null) {
         $rate = self::rate($cur);
-        $amount =  round($amount * $rate);
-        return number_format($amount, 0, '', '');
+        return round($amount / $rate);
     }
 
 }

@@ -9,29 +9,28 @@ $filters = $this->filters;
 ?>
 <div class="widget board">
     <h3 class="title">Filtros</h3>
+    <div class="ui-widget">
+        <label for="change_user_input">Buscador proyectos:</label><br />
+        <?= $this->insert('admin/partials/typeahead_form', [
+                                                            'id' => 'change_project_input',
+                                                            'value' => $filters['project']
+                                                            ]) ?>
+    </div>
     <form id="filter-form" action="/admin/rewards" method="get">
-        <div style="float:left;margin:5px;">
-            <label for="projects-filter">Proyecto</label><br />
-            <select id="projects-filter" name="project" onchange="document.getElementById('filter-form').submit();">
-                <option value="">Todos los proyectos</option>
-            <?php foreach ($this->projects as $itemId=>$itemName) : ?>
-                <option value="<?php echo $itemId; ?>"<?php if ($filters['project'] === (string) $itemId) echo ' selected="selected"';?>><?php echo $itemName; ?></option>
-            <?php endforeach; ?>
-            </select>
-        </div>
+        <input type="hidden" id="project" name="project" value="<?= $filters['project'] ?>" />
 
         <div style="float:left;margin:5px;">
             <label for="name-filter">Alias/Email del usuario:</label><br />
-            <input type="text" id ="name-filter" name="name" value ="<?php echo $filters['name']?>" />
+            <input type="text" id ="name-filter" name="name" value ="<?= $filters['name']?>" />
         </div>
 
         <div style="float:left;margin:5px;">
             <label for="status-filter">Mostrar por estado de recompensa:</label><br />
             <select id="status-filter" name="status" >
                 <option value="">Todos</option>
-            <?php foreach ($this->status as $statusId=>$statusName) : ?>
-                <option value="<?php echo $statusId; ?>"<?php if ($filters['status'] == $statusId) echo ' selected="selected"';?>><?php echo $statusName; ?></option>
-            <?php endforeach; ?>
+            <?php foreach ($this->status as $statusId => $statusName) : ?>
+                <option value="<?= $statusId ?>"<?php if ($filters['status'] == $statusId) echo ' selected="selected"';?>><?= $statusName ?></option>
+            <?php endforeach ?>
             </select>
         </div>
 
@@ -71,19 +70,19 @@ $filters = $this->filters;
         <tbody>
             <?php foreach ($this->list as $reward) : ?>
             <tr>
-                <td><a href="/admin/rewards/edit/<?php echo $reward->invest ?>" >[Modificar]</a></td>
-                <td><a href="/admin/users/manage/<?php echo $reward->user ?>" target="_blank" title="<?php echo $reward->name; ?>"><?php echo $reward->email; ?></a></td>
-                <td><a href="/admin/projects?name=<?php echo $this->projects[$reward->project] ?>" target="_blank"><?php echo $this->text_truncate($this->projects[$reward->project], 20); if (!empty($invest->campaign)) echo '<br />('.$this->calls[$invest->campaign].')'; ?></a></td>
-                <td><?php echo $reward->reward_name ?></td>
+                <td><a href="/admin/rewards/edit/<?= $reward->invest ?>" >[Modificar]</a></td>
+                <td><a href="/admin/users/manage/<?= $reward->user ?>" target="_blank" title="<?= $reward->name ?>"><?= $reward->email ?></a></td>
+                <td><a href="/admin/projects?name=<?= $reward->getProject()->name ?>" target="_blank"><?= $this->text_truncate($reward->getProject()->name, 20); if (!empty($invest->campaign)) echo '<br />('.$this->calls[$invest->campaign].')' ?></a></td>
+                <td><?= $reward->reward_name ?></td>
                 <?php if (!$reward->fulfilled) : ?>
                     <td style="color: red;" >Pendiente</td>
-                    <td><a href="<?php echo "/admin/rewards/fulfill/{$reward->invest}"; ?>">[Marcar cumplida]</a></td>
+                    <td><a href="<?= "/admin/rewards/fulfill/{$reward->invest}" ?>">[Marcar cumplida]</a></td>
                 <?php else : ?>
                     <td style="color: green;" >Cumplido</td>
-                    <td><a href="<?php echo "/admin/rewards/unfill/{$reward->invest}"; ?>">[Marcar pendiente]</a></td>
-                <?php endif; ?>
+                    <td><a href="<?= "/admin/rewards/unfill/{$reward->invest}" ?>">[Marcar pendiente]</a></td>
+                <?php endif ?>
             </tr>
-            <?php endforeach; ?>
+            <?php endforeach ?>
         </tbody>
 
     </table>
@@ -97,3 +96,46 @@ $filters = $this->filters;
 </div>
 
 <?php $this->replace() ?>
+
+
+<?php $this->section('footer') ?>
+<script type="text/javascript">
+$(function(){
+     $.typeahead({
+        input: "#change_project_input",
+        // order: "asc",
+        dynamic:true,
+        hint:true,
+        searchOnFocus:true,
+        accent:true,
+        emptyTemplate: 'No result for "{{query}}"',
+        display: ["id", "name", "owner"],
+        template: '<span>' +
+            '<span class="avatar">' +
+                '<img src="/img/tinyc/{{image}}">' +
+            '</span> ' +
+            '<span class="name">{{name}}</span> ' +
+            '<span class="info">({{id}}, {{owner}})</span>' +
+        '</span>',
+        source: {
+            list: {
+                url: [{
+                        url: "/api/projects",
+                        data: {
+                            q: "{{query}}",
+                        }
+                    }, 'list']
+            }
+        },
+        callback: {
+            onClickAfter: function (node, a, item, event) {
+                event.preventDefault();
+                $("#project").val(item.id);
+            }
+        },
+        debug: true
+    });
+});
+</script>
+
+<?php $this->append() ?>

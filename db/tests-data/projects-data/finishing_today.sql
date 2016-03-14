@@ -22,10 +22,47 @@ INSERT INTO `user` (`id`, `name`, `email`, `password`, `about`, `keywords`, `act
 
 
 -- Project
-INSERT INTO `project` (`id`, `name`, `subtitle`, `lang`, `currency`, `currency_rate`, `status`, `translate`, `progress`, `owner`, `node`, `amount`, `mincost`, `maxcost`, `days`, `num_investors`, `popularity`, `num_messengers`, `num_posts`, `created`, `updated`, `published`, `success`, `closed`, `passed`, `contract_name`, `contract_nif`, `phone`, `contract_email`, `address`, `zipcode`, `location`, `country`, `image`, `description`, `motivation`, `video`, `video_usubs`, `about`, `goal`, `related`, `spread`, `reward`, `category`, `keywords`, `media`, `media_usubs`, `currently`, `project_location`, `scope`, `resource`, `comment`, `contract_entity`, `contract_birthdate`, `entity_office`, `entity_name`, `entity_cif`, `post_address`, `secondary_address`, `post_zipcode`, `post_location`, `post_country`, `amount_users`, `amount_call`, `maxproj`) VALUES
-('project-finishing-today',
-'Project finishing today',
-'Description Project finishing today',
+INSERT INTO `project` (`id`,
+  `name`,
+  `subtitle`,
+  `lang`,
+  `currency`,
+  `currency_rate`,
+  `status`,
+  `translate`,
+  `progress`,
+  `owner`,
+  `node`,
+  `amount`,
+  `mincost`,
+  `maxcost`,
+  `days`,
+  `num_investors`,
+  `popularity`,
+  `num_messengers`,
+  `num_posts`,
+  `created`,
+  `updated`,
+  `published`,
+  `success`,
+  `closed`,
+  `passed`,
+  `contract_name`,
+  `contract_nif`,
+  `phone`,
+  `contract_email`,
+  `address`,
+  `zipcode`,
+  `location`,
+  `country`,
+  `image`,
+  `description`,
+  `video`,
+  `project_location`
+  ) VALUES (
+ 'project-finishing-today',
+ 'Project finishing today',
+ 'Description Project finishing today',
  'es',
  'EUR',
  1.00000,
@@ -57,39 +94,20 @@ INSERT INTO `project` (`id`, `name`, `subtitle`, `lang`, `currency`, `currency_r
  'Barcelona',
  'España',
  '7_10.jpg',
- 'Testin project diseño participativo y auto-construcción',
- NULL,
- '',
- NULL,
- NULL,
+ 'Testing project diseño participativo y auto-construcción',
  'https://vimeo.com/81621213',
- 0,
- NULL,
- 'City, country',
- NULL,
- NULL,
- '',
- 0,
- '1985-08-10',
- NULL,
- NULL,
- '',
- NULL,
- 0,
- NULL,
- NULL,
- NULL,
- NULL,
- NULL,
- NULL);
+ 'City, country');
 
 
 -- costs
-INSERT INTO `cost` (`project`, `cost`, `description`, `type`, `amount`, `required`, `from`, `until`) values('project-finishing-today','Cost 1','Description cost 1','task','50','1','2016-05-03','2016-05-16');
+INSERT INTO `cost` (`project`, `cost`, `description`, `type`, `amount`, `required`, `from`, `until`) values
+    ('project-finishing-today','Cost 1','Description cost 1','task','50','1','2016-05-03','2016-05-16');
 
-INSERT INTO `cost` (`project`, `cost`, `description`, `type`, `amount`, `required`, `from`, `until`) values('project-finishing-today','Cost 2','Description cost 2','task','150','1','2016-05-03','2016-05-16');
+INSERT INTO `cost` (`project`, `cost`, `description`, `type`, `amount`, `required`, `from`, `until`) values
+    ('project-finishing-today','Cost 2','Description cost 2','task','150','1','2016-05-03','2016-05-16');
 
-INSERT INTO `cost` (`project`, `cost`, `description`, `type`, `amount`, `required`, `from`, `until`) values('project-finishing-today','Cost 3','Description cost 3','task','200','0','2016-05-03','2016-05-16');
+INSERT INTO `cost` (`project`, `cost`, `description`, `type`, `amount`, `required`, `from`, `until`) values
+    ('project-finishing-today','Cost 3','Description cost 3','task','200','0','2016-05-03','2016-05-16');
 
 -- Invests
 

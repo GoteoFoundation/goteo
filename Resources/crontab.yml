@@ -32,12 +32,12 @@ beta:
         nice: true
     -
         schedule: '15 3 * * *'
-        command: 'bin/console dbverify --lock > var/logs/last-cli-dbverify.log'
+        command: 'bin/console dbverify -u --lock > var/logs/last-cli-dbverify.log'
         type: php
         nice: true
     -
-        schedule: '25 5 * * *'
-        command: 'bin/console projectwatch --lock > var/logs/last-cli-projectswatcher.log'
+        schedule: '25 7 * * *'
+        command: 'bin/console projectwatch -u --lock > var/logs/last-cli-projectswatcher.log'
         type: php
         nice: true
     -
@@ -55,12 +55,12 @@ real:
         nice: true
     -
         schedule: '5 3 * * *'
-        command: 'bin/console dbverify --logmail --lock > var/logs/last-cli-dbverify.log'
+        command: 'bin/console dbverify -u --logmail --lock > var/logs/last-cli-dbverify.log'
         type: php
         nice: true
     -
-        schedule: '15 5 * * *'
-        command: 'bin/console projectwatch --logmail --lock > var/logs/last-cli-projectswatch.log'
+        schedule: '15 7 * * *'
+        command: 'bin/console projectwatch -u --logmail --lock > var/logs/last-cli-projectswatch.log'
         type: php
         nice: true
     -

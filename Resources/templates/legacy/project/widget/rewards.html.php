@@ -41,7 +41,14 @@ if (empty($project->social_rewards) && empty($project->individual_rewards))
                 echo Text::html('project-rewards-individual_reward-units_left', $units); ?><br />
             <?php endif; ?>
             <div class="investors"><span class="taken"><?php echo $individual->taken; ?></span><?php echo Text::get('project-view-metter-investors'); ?></div>
-            <?php if ($project->status ==3 && !$individual->none) : ?><a href="<?= "/invest/{$project->id}/payment?reward=".$individual->id ?>" class="button violet" ><?php echo Text::get('regular-getit'); ?></a><?php endif; ?>
+            <?php if ($project->status == 3):
+                    if($individual->none):
+                        ?><a href="<?= "/invest/{$project->id}/payment?amount=".$individual->amount ?>" class="button violet" ><?php echo Text::get('landing-donor-button'); ?></a><?php
+                    else:
+                        ?><a href="<?= "/invest/{$project->id}/payment?reward=".$individual->id ?>" class="button violet" ><?php echo Text::get('regular-getit'); ?></a><?php
+                    endif;
+                endif;
+            ?>
         </li>
         <?php endforeach ?>
         </ul>

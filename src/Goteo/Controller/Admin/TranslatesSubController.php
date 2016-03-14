@@ -111,7 +111,7 @@ class TranslatesSubController extends AbstractSubController {
                 }
 
                 if (!empty($id)) {
-                    $project = Model\Project::getMini($id);
+                    $project = Model\Project::get($id);
                 } elseif ($action != 'add') {
                     Message::error('No hay proyecto sobre el que operar');
                     return $this->redirect('/admin/translates');
@@ -122,7 +122,7 @@ class TranslatesSubController extends AbstractSubController {
                 // la id del usuario llega por get
                 $user = $this->getGet('user');
                 if (!empty($user)) {
-                    $userData = Model\User::getMini($user);
+                    $userData = Model\User::get($user);
 
                     $assignation = new Model\User\Translate(array(
                         'item' => $project->id,
@@ -246,7 +246,7 @@ class TranslatesSubController extends AbstractSubController {
                     $content = \str_replace($search, $replace, $template->text);
                     // iniciamos mail
                     $mailHandler = new Mail();
-                    $mailHandler->mail = $comlang;
+                    $mailHandler->lang = $comlang;
                     $mailHandler->to = $project->user->email;
                     $mailHandler->toName = $project->user->name;
                     // blind copy a goteo desactivado durante las verificaciones
@@ -260,8 +260,7 @@ class TranslatesSubController extends AbstractSubController {
                     } else {
                         Message::error('Ha fallado al enviar el mail a <strong>'.$project->user->name.'</strong> a la dirección <strong>'.$project->user->email.'</strong>');
                     }
-                    unset($mailHandler);
-                    $action = 'edit';
+                    return $this->redirect('/admin/translates/edit/' . $project->id);
                 }
 
 

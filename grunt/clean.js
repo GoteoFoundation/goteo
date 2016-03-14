@@ -10,6 +10,9 @@ module.exports = function(grunt) {
     'use strict';
 
     grunt.config('clean', {
+        options: {
+            force: true
+        },
         // For the "server" task, we only need to clean the .tmp folder.
         server: {
             src : [

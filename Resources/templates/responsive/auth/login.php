@@ -42,7 +42,7 @@ $this->section('content');
                             <a data-toggle="modal" data-target="#myModal" href=""><?= $this->text('login-recover-label') ?></a>
                         </div>
                         <div class="col-md-10 col-md-offset-1 standard-margin-top">
-                            <a href="/signup?return=<?= urlencode($this->raw('return')) ?>"><?= $this->text('login-new-user-label') ?></a>
+                            <a href="/signup?return=<?= urlencode($this->raw('return')) ?>" ><?= $this->text('login-new-user-label') ?></a>
 						</div>
 					</div>
 

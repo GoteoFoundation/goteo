@@ -38,9 +38,9 @@ if ($project->status == 3 && $project->noinvest) {
 }
 ?>
 
-<div class="widget project activable<?php if (isset($vars['balloon'])) echo ' balloon' ?>">
+<div class="widget project activable<?php if ($vars['balloon']) echo ' balloon' ?>">
 	<a href="<?php echo $url ?>/project/<?php echo $project->id ?>" class="expand"<?php echo $blank; ?>></a>
-    <?php if (isset($vars['balloon'])): ?>
+    <?php if ($vars['balloon']): ?>
     <div class="balloon"><?php echo $vars['balloon'] ?></div>
     <?php endif ?>
 

@@ -276,6 +276,9 @@ abstract class AbstractSubController extends \Goteo\Core\Controller {
         if(empty($url)) {
             $url = static::getUrl();
         }
+        if(is_array($url)) {
+            $url = call_user_func_array("static::getUrl", $url);
+        }
         return parent::redirect($url, $status);
     }
 

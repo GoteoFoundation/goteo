@@ -1,5 +1,6 @@
 <?php
 use Goteo\Model\Contract;
+use Goteo\Model\Invest;
 
 $project = $vars['project'];
 $account = $vars['account']; // cuentas del proyecto, para tener el porcentaje de comisión
@@ -33,7 +34,14 @@ $cName = "P-{$cNum}-{$cDate}";
     $sumData['ghost'] = $Data['ghost']['total']['amount'];
     $sumData['fail']  = $total_issues;
     // $sumData['shown'] = $sumData['total'] + $sumData['fail'] + $sumData['drop'] + $sumData['pool'] + $sumData['ghost'];
-    $sumData['shown'] = \Goteo\Model\Invest::getList(['projects' => $project->id, 'status' => [0,1,2,3]], null, 0, 0, 'money');
+    $sumData['shown'] = Invest::getList(['projects' => $project->id, 'status' =>
+                        [Invest::STATUS_PENDING,
+                        Invest::STATUS_CHARGED,
+                        Invest::STATUS_CANCELLED,
+                        Invest::STATUS_TO_POOL,
+                        Invest::STATUS_PAID
+                        ]], null, 0, 0, 'money');
+    $sumData['cancelled'] = Invest::getList(['projects' => $project->id, 'status' => [Invest::STATUS_CANCELLED, Invest::STATUS_TO_POOL]], null, 0, 0, 'money');
     $sumData['tpv_fee_goteo'] = $Data['tpv']['total']['amount']  * 0.008;
     $sumData['cash_goteo'] = $Data['cash']['total']['amount']  * $GOTEO_FEE;
     $sumData['tpv_goteo'] = $Data['tpv']['total']['amount']  * $GOTEO_FEE;
@@ -77,11 +85,17 @@ $cName = "P-{$cNum}-{$cDate}";
             <th style="text-align:left;">1) Resumen de recaudación</th>
         </tr>
         <tr>
-            <td>-&nbsp;&nbsp;&nbsp;&nbsp;Mostrado en el termómetro de Goteo.org al cerrar la campaña (<?php echo (empty($project->success)) ? 'fecha' : date('d/m/Y', strtotime($project->success)); ?>): <strong><?php echo \amount_format($sumData['shown'], 2); ?></strong></td>
+            <td>-&nbsp;&nbsp;&nbsp;&nbsp;Máximo mostrado en el termómetro de Goteo.org al cerrar la campaña (<?php echo ($project->success) ? date('d/m/Y', strtotime($project->success)) : 'fecha'; ?>): <strong><?php echo \amount_format($sumData['shown'], 2); ?></strong>
+            <br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<em>(Puede que no se haya llegado nunca a esta cifra si han devuelto aportes antes del cierre de campaña)</em></td>
         </tr>
+        <tr>
+            <td>-&nbsp;&nbsp;&nbsp;&nbsp;Aportes cancelados manualmente desde el admin o devueltos al monedero del usuario: <strong style="color:red">-<?php echo \amount_format($sumData['cancelled'], 2); ?></strong></td>
+        </tr>
+        <?php if (!empty($Data['issues'])) : ?>
         <tr>
             <td>-&nbsp;&nbsp;&nbsp;&nbsp;Incidencias (Usuarios/as que no tienen fondos en su cuenta, tarjetas desactualizadas, cancelaciones, reembolsos...) : <strong><?php echo \amount_format($sumData['fail'], 2); ?></strong> (<strong>*</strong> ver listado más abajo)</td>
         </tr>
+        <?php endif ?>
         <tr>
             <td>-&nbsp;&nbsp;&nbsp;&nbsp;Total recaudado: <strong><?php echo \amount_format($sumData['total'], 2); ?></strong> (importe de las ayudas monetarias recibidas)</td>
         </tr>

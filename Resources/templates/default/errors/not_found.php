@@ -9,7 +9,7 @@ $page = $this->page('error');
 <?php $this->section('sub-header') ?>
 <div id="sub-header">
     <div>
-        <h2><?= $this->title ?></h2>
+        <h2><?= $this->raw('title') ?></h2>
         <h3>Error <?= $this->code ?></h3>
         <p><?= $this->raw('msg') ?></p>
     </div>

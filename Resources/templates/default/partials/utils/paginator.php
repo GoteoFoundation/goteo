@@ -5,6 +5,7 @@ $total = (int) $this->total;
 // Number of results per page
 $limit = (int) $this->limit;
 if (empty($limit)) $limit = 10;
+$hash = $this->hash ? '#'.$this->hash : '';
 
 // the page var to be added into the URL: ie: ?pag=2
 $page_var =  (string) $this->page_var;
@@ -54,24 +55,23 @@ if ($total_pags > 1) {
 
         if ($pag != $i) {
             if ($total_pags < $max_pages) {
-                $nums[] = '<li><a href="' . $baselink . $nextpart . '">' . ($i + 1) . '</a></li>';
+                $nums[] = '<li><a href="' . $baselink . $nextpart . $hash .'">' . ($i + 1) . '</a></li>';
             }
             elseif (in_array($i, array(0, 1, 2, 3, $pag - 2, $pag - 1, $pag, $pag + 1, $pag + 2, $total_pags - 4, $total_pags - 3, $total_pags - 2, $total_pags - 1))) {
-                $nums[] = '<li><a href="' . $baselink . ($i > 0 ? $nextpart : '') . '">' . ($i + 1) . '</a></li>';
+                $nums[] = '<li><a href="' . $baselink . ($i > 0 ? $nextpart : '') . $hash . '">' . ($i + 1). '</a></li>';
             }
             else {
-                if (in_array($i, array(4, $pag + 3))) $nums[] = '<li class="disabled"><a href="' . $baselink . ($i > 0 ? $nextpart : '') . '">' . '...</a></li>';
+                if (in_array($i, array(4, $pag + 3))) $nums[] = '<li class="disabled"><a href="' . $baselink . ($i > 0 ? $nextpart : '') . $hash . '">' . '...</a></li>';
             }
         }
         else {
-            $nums[] = '<li class="selected"><a href="' . $baselink . $nextpart . '">' . ($i + 1) . '</a></li>';
+            $nums[] = '<li class="selected"><a href="' . $baselink . $nextpart . $hash . '">' . ($i + 1) . '</a></li>';
             if ($pag > 0)             $anterior = $i - 1;
             if ($i + 1 < $total_pags) $seguent  = $i + 1;
         }
     }
-    if ($anterior >= 0) array_unshift($nums, '<li><a title="Previous" href="' . $baselink . ($anterior > 0 ? "$join$page_var=$anterior" : '') . '">' . $t_prev . '</a></li>');
-    if ($seguent > 0 )  $nums[] = '<li><a title="Next"  href="' . $baselink . "$join$page_var=$seguent" . '">' . $t_next . "</a></li>\n";
+    if ($anterior >= 0) array_unshift($nums, '<li><a title="Previous" href="' . $baselink . ($anterior > 0 ? "$join$page_var=$anterior" : '') . $hash . '">' . $t_prev . '</a></li>');
+    if ($seguent > 0 )  $nums[] = '<li><a title="Next"  href="' . $baselink . "$join$page_var=$seguent" . $hash . '">' . $t_next . '</a></li>';
 }
 
 if ($nums) echo '<ul class="pagination">' . implode("\n", $nums) . '</ul>';
-

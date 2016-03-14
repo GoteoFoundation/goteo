@@ -68,6 +68,7 @@ class GoteoCore implements ExtensionInterface
           'get_pathinfo' => [$this, 'get_pathinfo'],
           'get_querystring' => [$this, 'get_querystring'],
           'is_ajax' => [$this, 'is_ajax'],
+          'is_pronto' => [$this, 'is_pronto'],
           'get_currency' => [$this, 'get_currency'],
           'debug' => [$this, 'debug'],
 
@@ -102,6 +103,17 @@ class GoteoCore implements ExtensionInterface
     //returns if is a XmlHttpRequest (ajax) petition
     public function is_ajax() {
         return self::getRequest()->isXmlHttpRequest();
+    }
+
+    //returns if is a jquery.fs.pronto petition (ajax) petition
+    // Pages using pronto must return code like:
+    // json_encode(['title' => ...
+    //              'content' => ... ]);
+    public function is_pronto() {
+        if(App::debug()) {
+            return self::getRequest()->query->has('pronto');
+        }
+        return self::getRequest()->isXmlHttpRequest() && self::getRequest()->query->has('pronto');
     }
 
     //Request (_GET) var

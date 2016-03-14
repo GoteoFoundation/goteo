@@ -501,6 +501,7 @@ namespace Goteo\Model {
                 $project->nodeData->label = Image::get($project->node_label);
 
                  //para diferenciar el único nodo de los canales
+                 //TODO: to remove
                 if($project->node=='barcelona')
                     $project->nodeData->type='node';
 
@@ -653,6 +654,17 @@ namespace Goteo\Model {
             return $this->userInstance;
         }
 
+        // Replace $this->investors with this call
+        public function getInvestions($offset = 0, $limit = 10, $order = 'invested ASC') {
+            if($this->projectInvestions) return $this->projectInvestions;
+            $filter = ['projects' => $this->id, 'status' => [Invest::STATUS_PENDING, Invest::STATUS_CHARGED, Invest::STATUS_PAID, Invest::STATUS_RETURNED, Invest::STATUS_TO_POOL]];
+            return Invest::getList($filter, null, $offset, $limit, false, $order);
+        }
+        public function getTotalInvestions() {
+            if($this->projectTotalInvestions) return $this->projectTotalInvestions;
+            $filter = ['projects' => $this->id, 'status' => [Invest::STATUS_PENDING, Invest::STATUS_CHARGED, Invest::STATUS_PAID, Invest::STATUS_RETURNED, Invest::STATUS_TO_POOL]];
+            return Invest::getList($filter, null, 0, 0, true);
+        }
         /*
          *  Cargamos los datos mínimos de un proyecto: id, name, owner, comment, lang, status, user
          */
@@ -661,14 +673,7 @@ namespace Goteo\Model {
             try {
                 // metemos los datos del proyecto en la instancia
                 $query = self::query("SELECT
-                                        project.id as id,
-                                        project.name as name,
-                                        project.owner as owner,
-                                        project.comment as comment,
-                                        project.lang as lang,
-                                        project.status as status,
-                                        project.node as node,
-                                        project.image as image,
+                                        project.*,
                                         user.id as user_id,
                                         user.name as user_name,
                                         user.avatar as user_avatar,
@@ -709,26 +714,7 @@ namespace Goteo\Model {
 
                 $sql ="
                 SELECT
-                    project.id as id,
-                    project.id as project,
-                    project.name as name,
-                    project.description as description,
-                    project.status as status,
-                    project.created as created,
-                    project.updated as updated,
-                    project.published as published,
-                    project.success as success,
-                    project.closed as closed,
-                    project.passed as passed,
-                    project.mincost as mincost,
-                    project.maxcost as maxcost,
-                    project.amount as amount,
-                    project.image as image,
-                    project.num_investors as num_investors,
-                    project.num_messengers as num_messengers,
-                    project.num_posts as num_posts,
-                    project.days as days,
-                    project.owner as owner,
+                    project.*,
                     user.id as user_id,
                     user.name as user_name,
                     user.email as user_email,
@@ -753,7 +739,7 @@ namespace Goteo\Model {
                 if (!$project instanceof \Goteo\Model\Project) {
                     throw new Exception\ModelNotFoundException(Text::get('fatal-error-project'));
                 }
-
+                $project->project = $project->id;
                 $project->user = $project->getOwner();
 
                 $project->image = Image::get($project->image);
@@ -1027,7 +1013,7 @@ namespace Goteo\Model {
          */
         public function setDays() {
 
-            if ($this->status == 3) { // En campaña
+            if ($this->status == self::STATUS_IN_CAMPAIGN) { // En campaña
                 // Tiempo de campaña (días desde la fecha de publicación del proyecto)
                 $days = $this->days_active = date_interval($this->published);
 
@@ -2652,7 +2638,7 @@ namespace Goteo\Model {
                         WHERE user = :user
                     ))
                 $sqlFilter
-                ORDER BY  project.status ASC, project.created DESC    
+                ORDER BY  project.status ASC, project.created DESC
                 $sql_limit
                 ";
 
@@ -2842,39 +2828,6 @@ namespace Goteo\Model {
             return $projects;
         }
 
-        //
-        /**
-         * Lista de proyectos en campaña y/o financiados
-         *   para crear aporte manual
-         *   para gestión de contratos
-         *
-         * @param bool $campaignonly  solo saca proyectos en proceso de campaña  (parece que esto no se usa...)
-         * @param bool $mini  devuelve array asociativo id => nombre, para cuando no se necesita toda la instancia
-         * @return array de instancias de proyecto // array asociativo (si recibe mini = true)
-         */
-        public static function active($campaignonly = false, $mini = false)
-        {
-            $projects = array();
-
-            if ($campaignonly) {
-                $sqlFilter = " WHERE project.status = 3";
-            } else {
-                $sqlFilter = " WHERE project.status = 3 OR project.status = 4";
-            }
-
-            $sql = "SELECT id, name FROM  project {$sqlFilter} ORDER BY name ASC";
-
-            $query = self::query($sql);
-            foreach ($query->fetchAll(\PDO::FETCH_CLASS, __CLASS__) as $proj) {
-                if ($mini) {
-                    $projects[$proj->id] = $proj->name;
-                } else {
-                    $projects[] = self::get($proj->id);
-                }
-            }
-            return $projects;
-        }
-
         /**
          * Lista de proyectos para ser revisados por el cron/daily
          * en campaña
@@ -2926,50 +2879,6 @@ namespace Goteo\Model {
                 $the_proj->days = (int) $proj->dias - 1;
 
                 $projects[] = $the_proj;
-            }
-            return $projects;
-        }
-
-        /**
-         * @deprecated
-         * ONLY USED IN THE FORMER CLI CRON PROCESS
-         * Lista de proyectos en campaña (para ser revisados por el cron/execute)
-         *
-         * Escogemos los proyectos que están a 5 días de terminar primera ronda o 3 días de terminar segunda.
-         * En cron/execute necesitamos estos proyectos para feed y mail automático.
-         * @return: array of Project (full instance (get))
-         */
-        public static function getActive($debug = false)
-        {
-            $projects = array();
-
-            $sql = "
-                SELECT
-                    project.id as id,
-                    project.published,
-                    project.passed,
-                    project.success,
-                    project_conf.days_round1,
-                    project_conf.days_round2,
-                    project_conf.one_round,
-                    DATEDIFF( DATE_ADD( published, INTERVAL IFNULL(days_round1, 40) DAY ), now() ) as rest_primera,
-                    DATEDIFF( DATE_ADD( published, INTERVAL IFNULL(days_round1, 40) + IFNULL(days_round2, 40) DAY ), now() ) as rest_total
-                FROM  project
-                LEFT JOIN project_conf ON project_conf.project = project.id
-                WHERE project.status = 3
-                AND (
-                      DATEDIFF( DATE_ADD( published, INTERVAL IFNULL(days_round1, 40) DAY ), now() ) BETWEEN -3 AND 5
-                    OR
-                      DATEDIFF( DATE_ADD( published, INTERVAL IFNULL(days_round1, 40) + IFNULL(days_round2, 40) DAY ), now() ) BETWEEN -3 AND 3
-                )
-                ORDER BY name ASC
-            ";
-
-            if ($debug) echo $sql.'<hr />';
-
-            $query = self::query($sql);
-            foreach ($query->fetchAll(\PDO::FETCH_OBJ) as $proj) {
-                $projects[] = self::get($proj->id);
             }
             return $projects;
         }
@@ -3075,9 +2984,22 @@ namespace Goteo\Model {
                 $sqlFilter .= " AND project.id = :proj_id";
                 $values[':proj_id'] = $filters['proj_id'];
             }
+            if (!empty($filters['global'])) {
+                $sqlFilter .= " AND (project.id LIKE :name OR project.name LIKE :name)";
+                $values[':proj_id'] = "%{$filters['global']}%";
+                $values[':name'] = "%{$filters['global']}%";
+            }
             if (!empty($filters['published'])) {
                 $sqlFilter .= " AND project.published = :published";
                 $values[':published'] = $filters['published'];
+            }
+            if (!empty($filters['published_since'])) {
+                $sqlFilter .= " AND project.published >= :published_since";
+                $values[':published_since'] = $filters['published_since'];
+            }
+            if (!empty($filters['succeeded_since'])) {
+                $sqlFilter .= " AND project.success >= :succeeded_since";
+                $values[':succeeded_since'] = $filters['succeeded_since'];
             }
             if (!empty($filters['category'])) {
                 $sqlFilter .= " AND project.id IN (
@@ -3179,7 +3101,7 @@ namespace Goteo\Model {
                     ";
 
 
-            // echo \sqldbg($sql, $values);
+            // echo \sqldbg($sql, $values);print_r($filters);die;
 
 
             $query = self::query($sql, $values);
@@ -3218,91 +3140,6 @@ namespace Goteo\Model {
                 $projects[] = $proj;
             }
 
-            return $projects;
-        }
-
-
-        /**
-         * Saca una lista de proyectos, solo datos simples
-         *
-         * @param string node id
-         * @return array of items , not instances of this class.
-         *
-         * TODO: remove this method
-         */
-        public static function getMiniList($filters = array(), $node = null) {
-
-            $projects = array();
-
-            $values = array();
-
-
-            // los filtros
-            $sqlFilter = "";
-            $sqlOrder = '';
-
-            if (!empty($filters['multistatus'])) {
-                $sqlFilter .= " AND project.status IN ({$filters['multistatus']})";
-            }
-            if ($filters['status'] > -1) {
-                $sqlFilter .= " AND project.status = :status";
-                $values[':status'] = $filters['status'];
-            } elseif ($filters['status'] == -2) {
-                $sqlFilter .= " AND (project.status = 1  AND project.id NOT REGEXP '[0-9a-f]{32}')";
-            } else {
-                $sqlFilter .= " AND (project.status > 1  OR (project.status = 1 AND project.id NOT REGEXP '[0-9a-f]{32}') )";
-            }
-            if (!empty($filters['proj_name'])) {
-                $sqlFilter .= " AND project.name LIKE :name";
-                $values[':name'] = "%{$filters['proj_name']}%";
-            }
-            if (!empty($filters['proj_id'])) {
-                $sqlFilter .= " AND project.id = :proj_id";
-                $values[':proj_id'] = $filters['proj_id'];
-            }
-            if (!empty($filters['node'])) {
-                $sqlFilter .= " AND project.node = :node";
-                $values[':node'] = $filters['node'];
-            } elseif (!empty($node) && !Config::isMasterNode($node)) {
-                $sqlFilter .= " AND project.node = :node";
-                $values[':node'] = $node;
-            }
-
-            //el Order
-            if (!empty($filters['order'])) {
-                switch ($filters['order']) {
-                    case 'success':
-                        $sqlOrder .= " ORDER BY project.success ASC";
-                    break;
-                    case 'name':
-                        $sqlOrder .= " ORDER BY project.name ASC";
-                    break;
-                    default:
-                        $sqlOrder .= " ORDER BY {$filters['order']}";
-                    break;
-                }
-            }
-
-            // la select
-            $sql = "SELECT
-                        project.id,
-                        project.name,
-                        project.status,
-                        project.published,
-                        project.success,
-                        project.owner,
-                        project.node
-                    FROM project
-                    WHERE project.id != ''
-                        $sqlFilter
-                        $sqlOrder
-                    LIMIT 999
-                    ";
-
-            $query = self::query($sql, $values);
-            foreach ($query->fetchAll(\PDO::FETCH_OBJ) as $proj) {
-                $projects[] = $proj;
-            }
             return $projects;
         }
 

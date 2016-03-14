@@ -9,13 +9,6 @@ $icons = Reward::icons('individual');
 $project = $vars['project'];
 $rewards = $vars['rewards'];
 
-// recompensas ordenadas por importe
-uasort($rewards, function ($a, $b) {
-        if ($a->amount == $b->amount) return 0;
-        return ($a->amount > $b->amount) ? 1 : -1;
-        }
-    );
-
 $invests = $vars['invests'];
 $invests_total = $vars['invests_total'];
 $invests_limit = $vars['invests_limit'];
@@ -24,42 +17,6 @@ $filter = $vars['filter']; // al ir mostrando, quitamos los que no cumplan
 // pending = solo los que tienen alguna recompensa pendientes
 // fulfilled = solo los que tienen todas las recompensas cumplidas
 // resign = solo los que hicieron renuncia a recompensa
-
-$order = $vars['order'];
-// segun order:
-switch ($order) {
-    case 'date': // fecha aporte, mas reciente primero
-        uasort($invests, function ($a, $b) {
-                if ($a->invested == $b->invested) return 0;
-                return ($a->invested > $b->invested) ? -1 : 1;
-                }
-            );
-        break;
-    case 'user': // nombre de usuario alfabetico
-        uasort($invests, function ($a, $b) {
-                if ($a->getUser()->name == $b->getUser()->name) return 0;
-                return ($a->getUser()->name > $b->getUser()->name) ? 1 : -1;
-                }
-            );
-        break;
-    case 'reward': // importe de recompensa, más bajo primero
-        uasort($invests, function ($a, $b) {
-                if (empty($a->rewards)) return 1;
-                if (empty($b->rewards)) return -1;
-                if ($a->rewards[0]->amount == $b->rewards[0]->amount) return 0;
-                return ($a->rewards[0]->amount > $b->rewards[0]->amount) ? 1 : -1;
-                }
-            );
-        break;
-    case 'amount': // importe aporte, más alto primero
-    default:
-        uasort($invests, function ($a, $b) {
-                if ($a->amount == $b->amount) return 0;
-                return ($a->amount > $b->amount) ? -1 : 1;
-                }
-            );
-        break;
-}
 
 ?>
 <div class="widget gestrew">
@@ -201,7 +158,7 @@ switch ($order) {
 
         </form>
     </div>
-        <?= \Goteo\Application\View::render('partials/utils/paginator', ['total' => $invests_total, 'limit' => $invests_limit]) ?>
+        <?= \Goteo\Application\View::render('partials/utils/paginator', ['total' => $invests_total, 'limit' => $invests_limit, 'hash' => 'gestrew']) ?>
 </div>
 <script type="text/javascript">
     jQuery(document).ready(function ($) {

@@ -69,6 +69,7 @@ payments:
         username: paypal@example.com
         password: paypal-password
         signature: PAYPAL-Signature
+        appId: PAYPAL-APP-ID
         # brandName: Your organisation
         # headerImageUrl: Some URL image for the header
         # logoImageUrl: logo URL

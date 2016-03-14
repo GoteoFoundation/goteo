@@ -26,7 +26,6 @@
 
 
         "paypal/adaptivepayments-sdk-php": "*",
-
         "paypal/merchant-sdk-php": "*",
 
 
