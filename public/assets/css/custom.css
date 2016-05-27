@@ -5,16 +5,45 @@
  */
 
  .main-color-background {
-  background-color: #B5DADC;
+  background-color: #32BDB8;
+ }
+
+ .navbar-default .navbar-nav > li > a{
+ 	color:#FFF !important;
+ }
+
+ .navbar-default{
+ 	border:none;
+ }
+
+ .navbar{
+ 	border-radius: 0px;
+ }
+
+ .navbar-default .navbar-nav > .open > a{
+ 	color:#4D4D4D !important;
+ }
+
+ a.expand-link{
+ 	height:100%;
+ 	width: 100%;
+ 	position: absolute;
+ 	top: 0;
+ 	left: 0;
+ 	cursor: pointer;
  }
 
  body{
  	/*background-color: #E7E7E7 !important;*/
- 	background-color:#DAE0E8  !important;
- 	font-family: "Liberation Sans",Helvetica,"Helvetica Neue",Arial,Geneva,sans-serif !important;
- 	color:#58595B;
+ 	background-color:#E8ECEC  !important;
+ 	font-family: 'Roboto', sans-serif !important;
+ 	color:#3a3a3a !important;
  	margin-bottom: 0;
  }
+
+ .panel-heading {
+    cursor: pointer;
+}
 
  .clear-both{
  	clear:both !important;
@@ -22,6 +51,18 @@
 
  .no-margin{
  	margin:0 !important;
+ }
+
+ .no-padding{
+ 	padding: 0 !important;
+ }
+
+ .text-bold{
+ 	font-weight: bold;
+ }
+
+ .text-font-normal{
+ 	font-weight: normal;
  }
 
 
@@ -108,6 +149,7 @@ button.pink:hover, button.custom-green:hover{
  }
  .navbar-brand img.logo{
  	height: 45px;
+ 	margin-left: 10px;
  }
 
  .language-dropbox{
@@ -561,10 +603,10 @@ div.jumbotron .project-tags:before {
 
 @media(min-height:850px){
 
-.footer{
+/*.footer{
 		position: fixed;
 		bottom:0;
-	}
+	}*/
 
 }
 
@@ -609,6 +651,10 @@ div.jumbotron .project-tags:before {
 
 	div.user-pool-info div.pool-conditions{
 		margin-bottom:5px;
+	}
+
+	div.padding-sm{
+		padding:0 15px !important;
 	}
 }
 
@@ -666,9 +712,78 @@ div.jumbotron .project-tags:before {
 
 /* Pool style */
 
-.pool-bar{
-	margin-top:3%;
+
+/* Channels */
+
+div.jumbotron.channels
+{
+	margin-top:20px; 
+	text-align:center;
 }
+
+
+div.channels-container{
+	background-color:#FFF;
+	margin-bottom: 40px;
+}
+
+div.row.channels{
+	padding: 2%;
+}
+
+div.channel{
+	
+}
+
+div.channel .name{
+	max-width: 60%;
+    height: auto;
+    position: absolute;
+    top:0;
+    left: 0;
+    background-color: rgba(32, 179, 178, 0.85);
+    color:#FFF;
+    font-size: 1em;
+    padding: 5px 10px;
+    text-transform: uppercase;
+    font-weight: bold;
+}
+
+div.channel .projects{
+	height: auto;
+    position: absolute;
+    bottom:5px;
+    right: 0;
+    background-color: rgba(255, 255, 255, 0.85);
+    font-size: 1em;
+    padding: 5px 10px;
+    text-transform: uppercase;
+    color:#20B2B3;
+
+}
+
+div.channel .projects .eye{
+ 	height: 11px;
+    margin-right: 5px;
+}
+
+div.channel a.channel-link{
+	position: relative;
+	display: table;
+	margin: 0px auto;
+}
+
+@media(max-width: 769px) {
+
+	div.channel{
+		margin-bottom: 30px;
+		margin-top:20px;
+	}
+
+
+}
+
+
 
 
 /* Relief calculator landing */
@@ -1036,6 +1151,22 @@ div.row.general-dashboard, div.container.general-dashboard{
     margin-top: 40px;
 }
 
+.spacer-20{
+	margin-top:20px;
+}
+
+.spacer-5{
+	margin-top:5px;
+}
+
+.spacer-10{
+	margin-top:10px !important;
+}
+
+.cursor-pointer{
+	cursor: pointer;
+}
+
 div.row.user-pool div.user-pool-info div.extra-info{
 	margin-left: 2px;
 	margin-top: 5%;
@@ -1069,74 +1200,6 @@ div.user-pool-info div.pool-conditions a{
 }
 
 
-/* Channels */
-
-div.jumbotron.channels
-{
-	margin-top:20px;
-	text-align:center;
-}
-
-div.channels-container{
-	background-color:#FFF;
-	margin-bottom: 40px;
-}
-
-div.row.channels{
-	padding: 2%;
-}
-
-div.channel{
-
-}
-
-div.channel .name{
-	max-width: 60%;
-    height: auto;
-    position: absolute;
-    top:0;
-    left: 0;
-    background-color: rgba(32, 179, 178, 0.85);
-    color:#FFF;
-    font-size: 1em;
-    padding: 5px 10px;
-    text-transform: uppercase;
-    font-weight: bold;
-}
-
-div.channel .projects{
-	height: auto;
-    position: absolute;
-    bottom:5px;
-    right: 0;
-    background-color: rgba(255, 255, 255, 0.85);
-    font-size: 1em;
-    padding: 5px 10px;
-    text-transform: uppercase;
-    color:#20B2B3;
-
-}
-
-div.channel .projects .eye{
- 	height: 11px;
-    margin-right: 5px;
-}
-
-div.channel a.channel-link{
-	position: relative;
-	display: table;
-	margin: 0px auto;
-}
-
-@media(max-width: 769px) {
-
-	div.channel{
-		margin-bottom: 30px;
-		margin-top:20px;
-	}
-
-
-}
 
 
 /*Project widget */

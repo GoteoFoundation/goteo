@@ -35,6 +35,8 @@ class SentSubController extends AbstractSubController {
 
     protected $filters = array (
       'user' => '',
+      'reply' => '',
+      'subject' => '',
       'template' => '',
       'node' => '',
       'date_from' => '',
@@ -71,14 +73,16 @@ class SentSubController extends AbstractSubController {
         else {
           // get from mail itself
           $user = User::getByEmail($mail->email);
-          $user_list = [(object)[
-            'email' => $mail->email,
-            'user' => $user->id,
-            'name' => $user->name,
-            'blacklisted' => Mail::checkBlocked($mail->email),
-            'status' => $mail->status,
-            'error' => $mail->error
-          ]];
+          $user_list = [
+            (object) [
+                'email' => $mail->email,
+                'user' => $user->id,
+                'name' => $user->name,
+                'blacklisted' => Mail::checkBlocked($mail->email),
+                'status' => $mail->status,
+                'error' => $mail->error
+            ]
+          ];
         }
 
       $templates = Template::getAllMini();

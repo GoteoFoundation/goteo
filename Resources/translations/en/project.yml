@@ -75,3 +75,6 @@ tooltip-updates-media: tooltip-updates-media
 tooltip-updates-tags: 'Tooltip text updates-tags'
 tooltip-updates-text: tooltip-updates-text
 tooltip-updates-title: tooltip-updates-title
+
+project-view-preview: 'Preview the project'
+

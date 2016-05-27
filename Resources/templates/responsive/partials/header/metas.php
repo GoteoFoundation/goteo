@@ -28,6 +28,5 @@ if (is_array($this->og_image) && $this->og_image) :
 else :
 ?>
     <meta property="og:image" content="<?=$this->og_image?>">
-<?php
-endif;
-?>
+
+<?php endif ?>

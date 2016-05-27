@@ -39,14 +39,22 @@ namespace Goteo\Controller\Dashboard {
                 'user_google' => 'google',
                 'user_twitter' => 'twitter',
                 'user_identica' => 'identica',
-                'user_linkedin' => 'linkedin'
+                'user_linkedin' => 'linkedin',
+                'user_birthyear' => 'birthyear',
+                'user_gender' => 'gender',
+                'user_legal_entity' => 'legal_entity',
+                'user_entity_type' => 'entity_type'
             );
+
+            $project->help_cost = !empty($_POST['help_cost'])?1:0;
 
             foreach ($fields as $fieldPost => $fieldTable) {
                 if (isset($_POST[$fieldPost])) {
                     $user->$fieldTable = $_POST[$fieldPost];
                 }
             }
+
+            $user->entity_type = !empty($_POST['user_entity_type'])?1:0;
 
             // Avatar
             if (isset($_FILES['avatar_upload']) && $_FILES['avatar_upload']['error'] != UPLOAD_ERR_NO_FILE) {

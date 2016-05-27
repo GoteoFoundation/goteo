@@ -56,7 +56,12 @@ include __DIR__ . '/../header.html.php'; ?>
             <?php endif; ?>
 
             <?php if (!empty($vars['section']) && !empty($vars['option'])) {
-                echo View::get('dashboard/'.$vars['section'].'/'.$vars['option'].'.html.php', $vars);
+                $view = new View('dashboard/'.$vars['section'].'/'.$vars['option'].'.html.php', $vars);
+                if($view->getViewPath(false)) {
+                    echo $view->render();
+                } else {
+                    echo Text::get('fatal-error-teapot');
+                }
             } ?>
 
         </div>

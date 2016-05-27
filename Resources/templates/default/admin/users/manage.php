@@ -46,7 +46,7 @@ $url = '/' . $this->template . '/' . $user->id;
                                                                  'longitude' => $location->longitude,
                                                                  'content' => $user->name."<br>{$user->location}"]);
             } elseif($user->location) {
-                echo $this->insert('partials/utils/map_canvas', ['address' => $user->location, 'content' => $invest->getUser()->name."<br>{$user->location}"]);
+                echo $this->insert('partials/utils/map_canvas', ['address' => $user->location, 'content' => $user->name."<br>{$user->location}"]);
             }
         ?>
         </td>

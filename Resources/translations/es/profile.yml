@@ -1,4 +1,4 @@
-guide-project-user-information: '<strong>En este apartado debes introducir los datos para la información pública de tu perfil de usuario/a. </strong><br><br>Tanto si quieres presentar un proyecto como incorporarte como cofinanciador/a, para formar parte de la comunidad de Goteo te recomendamos que pongas atención en tu texto de presentación, que añadas links relevantes sobre lo que haces y subas una imagen de perfil con la que te identifiques.'
+guide-project-user-information: '<strong>En este apartado debes introducir los datos para la información pública de tu perfil de usuario/a. </strong><br><br>Tanto si quieres presentar un proyecto como incorporarte como cofinanciador/a, para formar parte de la comunidad de Goteo te recomendamos que pongas atención en tu texto de presentación, que añadas links relevantes sobre lo que haces y subas una imagen de perfil con la que te identifiques.<br/><br/><a href="/link/">Links a las FAQS</a>'
 profile-credit-available: 'Este es el saldo disponible en tu monedero virtual para distribuir en proyectos de Goteo.'
 profile-field-about: 'Cuéntanos algo sobre ti'
 profile-field-avatar_current: 'Tu imagen actual'
@@ -12,6 +12,26 @@ profile-field-url: URL
 profile-field-websites: 'Mis páginas web'
 profile-fields-image-title: 'Imagen de perfil'
 profile-fields-social-title: 'Perfiles sociales'
+
+profile-field-entity-type: 'Tipo de entidad'
+profile-field-entity-type-choose: 'Selecciona un tipo de entidad'
+profile-field-entity-type-public: 'Público'
+profile-field-entity-type-private: 'Privado'
+profile-field-entity-type-concerted: 'Concertado'
+
+profile-field-entity-type-checkbox-public: 'Soy una entidad publica'
+
+profile-field-legal-entity: 'Forma jurídica'
+profile-field-legal-entity-choose: 'Selecciona una forma jurídica'
+profile-field-legal-entity-person: 'Persona física'
+profile-field-legal-entity-self-employed: 'Autónomo'
+profile-field-legal-entity-ngo: 'ONG'
+profile-field-legal-entity-company: 'Empresa'
+profile-field-legal-entity-cooperative: 'Cooperativa'
+profile-field-legal-entity-asociation: 'Asociación'
+profile-field-legal-entity-others: 'Otros'
+
+
 profile-main-header: 'Datos de perfil'
 profile-suggest-projects-interest: 'Quizás quieras apoyar proyectos de categorías similares'
 step-1: Perfil

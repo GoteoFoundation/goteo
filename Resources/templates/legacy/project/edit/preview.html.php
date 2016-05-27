@@ -57,24 +57,10 @@ $elements      = array(
         'type' => 'html',
         'html' => '<a name="preview"></a>'
     ),
-
     'preview' => array(
         'type'      => 'html',
         'class'     => 'fullwidth',
-        'html'      =>   '<div class="project-preview" style="position: relative"><div>'
-                       . '<div class="overlay" style="position: absolute; left: 0; top: 0; right: 0; bottom: 0; z-index: 999"></div>'
-                       . '<div style="z-index: 0">'
-                       . View::get('project/widget/support.html.php', array('project' => $project))
-                       . View::get('project/widget/collaborations.html.php', array('project' => $project))
-                       . View::get('project/widget/rewards.html.php', array('project' => $project))
-                       . View::get('user/widget/user.html.php', array('user' => $project->user))
-                       . View::get('project/widget/media.html.php', array('project' => $project))
-                       . View::get('project/widget/share.html.php', array('project' => $project))
-                       . View::get('project/widget/summary.html.php', array('project' => $project))
-                       . View::get('project/widget/needs.html.php', array('project' => $project, 'types' => $types))
-                       . View::get('project/widget/schedule.html.php', array('project' => $project))
-                       . '</div>'
-                       . '</div></div>'
+        'html'      =>  '<div class="contents"><a style="font-size:16px;" target="_blank" class="button aqua" href="/project/'.$project->id.'">'.Text::get('project-view-preview').'</a></div>'
     )
 );
 

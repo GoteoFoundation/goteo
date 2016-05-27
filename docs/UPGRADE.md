@@ -10,26 +10,31 @@ Upgrading from version 2
 Version 2 is **unsupported** and can be found here:
 https://github.com/Goteo/goteo
 
-At this point, all of this is quite experimental, use it at your own risk. 
+At this point, all of this is quite experimental, use it at your own risk.
 Needless to say that you MUST have backups in case things go wrong.
 
-There are these upgrade SQL scripts:
+The folder `db/upgrade` contains several sql script tha must be applied in the correct order:
 
-- `db/upgrade/upgrade-v2-to-v3.sql`
-- `db/upgrade/upgrade-from-v3.0e-to-v3.0.1.sql`
-- `db/upgrade/upgrade-from-v3.0.1-to-v3.0.2.sql`
-- `db/upgrade/upgrade-from-v3.0.2-to-v3.0.3.sql`
-
-Both scripts should be applied in a MySQL console:
+Apply the script by using the MySQL console:
 
 ```bash
 mysql -u your_user -p your_password < db/upgrade/upgrade-v2-to-v3.sql
 mysql -u your_user -p your_password < db/upgrade/upgrade-from-v3.0e-to-v3.0.1.sql
 mysql -u your_user -p your_password < db/upgrade/upgrade-from-v3.0.1-to-v3.0.2.sql
 mysql -u your_user -p your_password < db/upgrade/upgrade-from-v3.0.2-to-v3.0.3.sql
+mysql -u your_user -p your_password < db/upgrade/upgrade-from-v3.0.4-to-v3.0.5.sql
+mysql -u your_user -p your_password < db/upgrade/upgrade-from-v3.0.5-to-v3.0.6.sql
 ```
 
-However, we haven't tested it in any production database and very likely errors will be thrown. 
+However, we haven't tested it in any production database and very likely errors will be thrown.
 Debugging info will be appreciated.
 
 
+Other upgrades
+--------------
+
+Apply this script to import the new milestones:
+
+```bash
+mysql -u your_user -p your_password < db/upgrade/upgrade-milestones.sql
+```

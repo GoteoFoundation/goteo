@@ -1,8 +1,7 @@
 <?php
-use Goteo\Core\ACL,
-    Goteo\Core\NodeSys;
+use Goteo\Core\NodeSys;
 
-$nodes = Nodesys::activeNodes();
+$nodes = NodeSys::activeNodes();
 
 $url_project_create = $this->url_project_create ? $this->url_project_create : '/project/create';
 ?>
@@ -11,7 +10,7 @@ $url_project_create = $this->url_project_create ? $this->url_project_create : '/
         <h2><?= $this->text('regular-menu') ?></h2>
 
         <ul>
-            <li class="home"><a class="node-jump" href="<?php echo SITE_URL ?>"><?= $this->text('regular-home') ?></a></li>
+            <li class="home"><a class="node-jump" href="<?= $this->get_config('url.main') ?>"><?= $this->text('regular-home') ?></a></li>
             <li class="explore"><a class="button red" href="/discover"><?= $this->text('regular-discover') ?></a></li>
             <li class="create"><a class="button aqua" href="<?= $url_project_create ?>"><?= $this->text('regular-create') ?></a></li>
             <li class="search">

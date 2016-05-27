@@ -28,6 +28,7 @@ INSERT INTO `icon_license` (`icon`, `license`) VALUES('design', 'oshw');
 INSERT INTO `icon_license` (`icon`, `license`) VALUES('design', 'pd');
 INSERT INTO `icon_license` (`icon`, `license`) VALUES('design', 'tapr');
 INSERT INTO `icon_license` (`icon`, `license`) VALUES('file', 'cc');
+INSERT INTO `icon_license` (`icon`, `license`) VALUES('file', 'ppl');
 INSERT INTO `icon_license` (`icon`, `license`) VALUES('file', 'cc0');
 INSERT INTO `icon_license` (`icon`, `license`) VALUES('file', 'ccby');
 INSERT INTO `icon_license` (`icon`, `license`) VALUES('file', 'ccbync');

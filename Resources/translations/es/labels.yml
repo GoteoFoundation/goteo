@@ -38,6 +38,12 @@ categories-lb-edit: 'Editando Categoría'
 categories-lb-translate: 'Traduciendo Categoría'
 categories-lb-keywords: 'Palabras clave'
 
+milestones-lb: 'Hitos'
+milestones-lb-list: 'Listando'
+milestones-lb-add: 'Nuevo Hito'
+milestones-lb-edit: 'Editando Hito'
+milestones-lb-translate: 'Traduciendo Hito'
+
 commons-lb: 'Retornos colectivos'
 commons-lb-list: 'Listando'
 commons-lb-add: 'Nuevo retorno'

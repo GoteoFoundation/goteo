@@ -406,8 +406,21 @@ div.widget.project-rewards ul li div.license.tapr > a strong,
 #rewards-summary ul li div.license.tapr > a strong {
     background-image: url('/view/css/license/tapr.png');
 }
+
+div.widget.project-invest ul li div.license.tapr > a strong,
+div.widget.project-rewards ul li div.license.tapr > a strong,
+#rewards-summary ul li div.license.tapr > a strong {
+    background-image: url('/view/css/license/tapr.png');
+}
+
 div.widget.project-invest ul li div.license.xoln > a strong,
 div.widget.project-rewards ul li div.license.xoln > a strong,
 #rewards-summary ul li div.license.xoln > a strong {
     background-image: url('/view/css/license/xoln.png');
+}
+
+div.widget.project-invest ul li div.license.ppl > a strong,
+div.widget.project-rewards ul li div.license.ppl > a strong,
+#rewards-summary ul li div.license.ppl > a strong {
+    background-image: url('/view/css/license/ppl.png');
 }

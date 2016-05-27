@@ -70,3 +70,14 @@ CHANGE `num_owned` `num_owned` INT( 10 ) UNSIGNED NULL DEFAULT NULL COMMENT 'Num
 
 -- Constrains
 ALTER TABLE `user` ADD FOREIGN KEY (`node`) REFERENCES `node`(`id`) ON UPDATE CASCADE ON DELETE RESTRICT;
+
+--  Password length for strong security
+ALTER TABLE `user` CHANGE `password` `password` VARCHAR(255) NOT NULL;
+
+
+-- Add gender and birthyear
+ALTER TABLE `user` ADD COLUMN `gender` CHAR(1) NULL AFTER `password`, ADD COLUMN `birthyear` YEAR NULL AFTER `gender`;
+
+
+-- Add entity type
+ALTER TABLE `user` ADD COLUMN `entity_type` tinyint(1) NULL AFTER `birthyear`, ADD COLUMN `legal_entity` tinyint(1) NULL AFTER `entity_type`;

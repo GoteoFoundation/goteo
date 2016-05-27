@@ -20,7 +20,7 @@ use Goteo\Library\Text;
 use Goteo\Model\Template;
 use Goteo\Model\Mail;
 use Goteo\Model\Project;
-use Model\Blog\Post;
+use Goteo\Model\Blog\Post;
 
 class UsersSend extends AbstractCommandController {
 
@@ -330,8 +330,8 @@ class UsersSend extends AbstractCommandController {
                 $help="";
                 if($project->help_cost) $help.=Text::get('help-cost-to-consultant').'<br>';
                 if($project->help_license) $help.=Text::get('help-license-to-consultant').'<br>';
-                $search  = array('%PROJECTNAME%', '%USERNAME%', '%PROJECTURL%', '%PROJECTEDITURL%', '%HELP%', '%SPREAD%', '%PROJECTDESCRIPTION%', '%COMMENT%');
-                $replace = array($project->name, $project->user->name, SITE_URL.'/project/'.$project->id, SITE_URL.'/project/edit/'.$project->id, $help, $project->spread, $project->description, $project->comment);
+                $search  = array('%PROJECTNAME%', '%USERNAME%', '%PROJECTURL%', '%PROJECTEDITURL%', '%HELP%', '%SPREAD%', '%PROJECTDESCRIPTION%', '%PROJECTMIN%', '%COMMENT%');
+                $replace = array($project->name, $project->user->name, SITE_URL.'/project/'.$project->id, SITE_URL.'/project/edit/'.$project->id, $help, $project->spread, $project->description, $project->mincost, $project->comment);
                 break;
 
                 //Pasamos la difusión

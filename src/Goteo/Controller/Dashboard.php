@@ -233,7 +233,6 @@ namespace Goteo\Controller {
 
                     break;
             }
-            // print_r($viewData);die;
             return new View('dashboard/index.html.php', $viewData);
         }
 
@@ -807,6 +806,9 @@ namespace Goteo\Controller {
                                 $post->lang = $_SESSION['translate_lang'];
                                 $post->saveLang($errors);
 
+
+                                //Add remove
+
                                 $action = 'edit';
                                 break;
                         }
@@ -1037,9 +1039,9 @@ namespace Goteo\Controller {
                     unset($langs['es']);
 
                     if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-
                         if ($action == 'save') {
                             $user = Model\User::get($_POST['id'], $_SESSION['translate_lang']);
+                            $user->name_lang = $_POST['name'];
                             $user->about_lang = $_POST['about'];
                             $user->keywords_lang = $_POST['keywords'];
                             $user->contribution_lang = $_POST['contribution'];

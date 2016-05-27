@@ -33,12 +33,12 @@ $this->section('content');
 					</div>
 					<div class="row">
 						<div class="col-sm-5 col-md-offset-1 margin-2">
-							<a href="<?= $this->facebook_url ?>" class="btn btn-block btn-social btn-facebook">
+							<a href="<?= $this->facebook_url ?>" target="_blank" class="btn btn-block btn-social btn-facebook">
 				    			<i class="fa fa-facebook"></i> <?= $this->text('spread-facebook') ?>
 				  			</a>
 				  		</div>
 				  		<div class="col-sm-5 margin-2">
-							<a href="<?= $this->twitter_url ?>" class="btn btn-block btn-social btn-twitter">
+							<a href="<?= $this->twitter_url ?>" target="_blank" class="btn btn-block btn-social btn-twitter">
 				    			<i class="fa fa-twitter"></i> <?= $this->text('spread-twitter') ?>
 				  			</a>
 				  		</div>
@@ -47,10 +47,30 @@ $this->section('content');
 
 			  		<hr class="share">
 
+			  		<h3 class="col-md-offset-1 standard-margin-top padding-bottom-6" ><?= $this->text('project-messages-send_direct-header') ?></h3>
+
+			  		<div class="row standard-margin-top" id="container-msg-form">
+				  		<form class="col-md-10 col-md-offset-1" name="msg-form" id="msg-form" action="">
+	            			<div class="alert alert-danger" role="alert" id="error" style="display:none;">
+	            				
+	            			</div>
+	            			<textarea class="form-control" id="support-msg" rows="4" required></textarea>
+		        			<div class="col-sm-4 no-padding margin-2 standard-margin-top">
+								<button type="button" class="btn btn-block btn-success" id="send-msg" value=""><?= $this->text('project-messages-send_message-button') ?></button>
+						  	</div>
+						</form>
+        			</div>
+
+        			<!--
+
+			  		<hr class="share">
+
 			  		<h3 class="col-md-offset-1 standard-margin-top sm-display-none padding-bottom-6" ><?= $this->text('project-spread-widget') ?></h3>
 
-
+					-->
+			  		
 			  		<!-- Widget code -->
+			  		<!--
 					<div class="row standard-margin-top sm-display-none">
 						<div class="col-md-5 col-md-offset-1">
 							<?= $this->raw('widget_code') ?>
@@ -64,13 +84,15 @@ $this->section('content');
 						</div>
 					</div>
 
+					-->
+
 					<hr class="share hidden-xs">
 
 					<div class="row">
 
 						<div class="col-sm-6 col-sm-offset-3 margin-2">
-								<a href="<?= SITE_URL ?>" class="text-decoration-none" >
-									<button type="button" class="btn btn-block btn-success" value=""><?= $this->text('goteo-return-button') ?></button>
+								<a href="<?= SITE_URL.'/project/'.$this->project->id ?>" class="text-decoration-none" >
+									<button type="button" class="btn btn-block green" value=""><?= $this->text('project-return-button') ?></button>
 					  			</a>
 					  	</div>
 
@@ -81,4 +103,44 @@ $this->section('content');
 	
 </div>
 
+<?= $this->insert('invest/partials/message_modal') ?>
+
 <?php $this->replace() ?>
+
+<?php $this->section('footer') ?>
+
+<script type="text/javascript">
+
+$(function(){
+    var _insert_ajax_msg = function() {
+        var msg=$("#support-msg").val();
+
+        $.ajax({
+            url: "/invest/<?= $this->project->id ?>/<?= $this->invest->id ?>/support-msg",
+            data: { 'msg' : msg, 'invest' : '<?= $this->invest->id ?>'  },
+            type: 'post',
+            success: function(result){
+            	if(result['result'])
+            	{
+                	$('#messageModal').modal('show');
+                	$('#error').hide();
+            	}
+                else
+                {
+                	$('#error').html('<?= $this->text('regular-message_fail') ?>');
+                	$('#error').show();
+                }
+            }
+        });
+   };
+
+	$("#container-msg-form").on('click', '#send-msg', function(){
+	   _insert_ajax_msg();
+	   $("#send-msg").prop("disabled", true);
+	});
+
+});
+
+</script>
+
+<?php $this->append() ?>

@@ -38,6 +38,22 @@ $sfid = 'sf-project-profile';
             'type' => 'hidden',
             'value' => $user->id
         ),
+        'name-orig' => array(
+            'type'      => 'html',
+            'title'     => Text::get('profile-field-name'),
+            'html'     => nl2br($original->name)
+        ),
+        'name' => array(
+            'type'      => 'textarea',
+            'cols'      => 40,
+            'rows'      => 4,
+            'class'     => 'inline',
+            'title'     => '',
+            'hint'      => Text::get('tooltip-user-name'),
+            'errors'    => array(),
+            'ok'        => array(),
+            'value'     => $user->name
+        ),
         'about-orig' => array(
             'type'      => 'html',
             'title'     => Text::get('profile-field-about'),

@@ -5,9 +5,7 @@ SET FOREIGN_KEY_CHECKS=0;
 
 /*Table structure for table `banner` */
 
-DROP TABLE IF EXISTS `banner`;
-
-CREATE TABLE `banner` (
+CREATE TABLE IF NOT EXISTS `banner` (
   `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
   `node` varchar(50) NOT NULL,
   `project` varchar(50) DEFAULT NULL,
@@ -26,9 +24,7 @@ CREATE TABLE `banner` (
 
 /*Table structure for table `banner_lang` */
 
-DROP TABLE IF EXISTS `banner_lang`;
-
-CREATE TABLE `banner_lang` (
+CREATE TABLE IF NOT EXISTS `banner_lang` (
   `id` bigint(20) unsigned NOT NULL,
   `lang` varchar(2) NOT NULL,
   `title` tinytext,
@@ -39,9 +35,7 @@ CREATE TABLE `banner_lang` (
 
 /*Table structure for table `blog` */
 
-DROP TABLE IF EXISTS `blog`;
-
-CREATE TABLE `blog` (
+CREATE TABLE IF NOT EXISTS `blog` (
   `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
   `type` varchar(10) NOT NULL,
   `owner` varchar(50) NOT NULL COMMENT 'la id del proyecto o nodo',
@@ -51,9 +45,7 @@ CREATE TABLE `blog` (
 
 /*Table structure for table `category` */
 
-DROP TABLE IF EXISTS `category`;
-
-CREATE TABLE `category` (
+CREATE TABLE IF NOT EXISTS `category` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `name` tinytext,
   `description` text,
@@ -64,9 +56,7 @@ CREATE TABLE `category` (
 
 /*Table structure for table `category_lang` */
 
-DROP TABLE IF EXISTS `category_lang`;
-
-CREATE TABLE `category_lang` (
+CREATE TABLE IF NOT EXISTS `category_lang` (
   `id` bigint(20) unsigned NOT NULL,
   `lang` varchar(2) NOT NULL,
   `name` tinytext,
@@ -78,9 +68,7 @@ CREATE TABLE `category_lang` (
 
 /*Table structure for table `comment` */
 
-DROP TABLE IF EXISTS `comment`;
-
-CREATE TABLE `comment` (
+CREATE TABLE IF NOT EXISTS `comment` (
   `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
   `post` bigint(20) unsigned NOT NULL,
   `date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
@@ -91,9 +79,7 @@ CREATE TABLE `comment` (
 
 /*Table structure for table `cost` */
 
-DROP TABLE IF EXISTS `cost`;
-
-CREATE TABLE `cost` (
+CREATE TABLE IF NOT EXISTS `cost` (
   `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
   `project` varchar(50) NOT NULL,
   `cost` tinytext,
@@ -109,9 +95,7 @@ CREATE TABLE `cost` (
 
 /*Table structure for table `cost_lang` */
 
-DROP TABLE IF EXISTS `cost_lang`;
-
-CREATE TABLE `cost_lang` (
+CREATE TABLE IF NOT EXISTS `cost_lang` (
   `id` int(20) NOT NULL,
   `project` varchar(50) NOT NULL,
   `lang` varchar(2) NOT NULL,
@@ -124,9 +108,7 @@ CREATE TABLE `cost_lang` (
 
 /*Table structure for table `criteria` */
 
-DROP TABLE IF EXISTS `criteria`;
-
-CREATE TABLE `criteria` (
+CREATE TABLE IF NOT EXISTS `criteria` (
   `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
   `section` varchar(50) NOT NULL DEFAULT 'node',
   `title` tinytext,
@@ -138,9 +120,7 @@ CREATE TABLE `criteria` (
 
 /*Table structure for table `criteria_lang` */
 
-DROP TABLE IF EXISTS `criteria_lang`;
-
-CREATE TABLE `criteria_lang` (
+CREATE TABLE IF NOT EXISTS `criteria_lang` (
   `id` bigint(20) unsigned NOT NULL,
   `lang` varchar(2) NOT NULL,
   `title` tinytext,
@@ -151,9 +131,7 @@ CREATE TABLE `criteria_lang` (
 
 /*Table structure for table `document` */
 
-DROP TABLE IF EXISTS `document`;
-
-CREATE TABLE `document` (
+CREATE TABLE IF NOT EXISTS `document` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `contract` varchar(50) NOT NULL,
   `name` varchar(255) DEFAULT NULL,
@@ -166,9 +144,7 @@ CREATE TABLE `document` (
 
 /*Table structure for table `faq` */
 
-DROP TABLE IF EXISTS `faq`;
-
-CREATE TABLE `faq` (
+CREATE TABLE IF NOT EXISTS `faq` (
   `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
   `node` varchar(50) NOT NULL,
   `section` varchar(50) NOT NULL DEFAULT 'node',
@@ -183,9 +159,7 @@ CREATE TABLE `faq` (
 
 /*Table structure for table `faq_lang` */
 
-DROP TABLE IF EXISTS `faq_lang`;
-
-CREATE TABLE `faq_lang` (
+CREATE TABLE IF NOT EXISTS `faq_lang` (
   `id` bigint(20) unsigned NOT NULL,
   `lang` varchar(2) NOT NULL,
   `title` tinytext,
@@ -196,9 +170,7 @@ CREATE TABLE `faq_lang` (
 
 /*Table structure for table `feed` */
 
-DROP TABLE IF EXISTS `feed`;
-
-CREATE TABLE `feed` (
+CREATE TABLE IF NOT EXISTS `feed` (
   `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
   `title` tinytext NOT NULL,
   `url` tinytext,
@@ -219,9 +191,7 @@ CREATE TABLE `feed` (
 
 /*Table structure for table `glossary` */
 
-DROP TABLE IF EXISTS `glossary`;
-
-CREATE TABLE `glossary` (
+CREATE TABLE IF NOT EXISTS `glossary` (
   `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
   `title` tinytext,
   `text` longtext COMMENT 'texto de la entrada',
@@ -234,9 +204,7 @@ CREATE TABLE `glossary` (
 
 /*Table structure for table `glossary_image` */
 
-DROP TABLE IF EXISTS `glossary_image`;
-
-CREATE TABLE `glossary_image` (
+CREATE TABLE IF NOT EXISTS `glossary_image` (
   `glossary` bigint(20) unsigned NOT NULL,
   `image` varchar(255) NOT NULL DEFAULT '' COMMENT 'Contiene nombre de archivo',
   PRIMARY KEY (`glossary`,`image`),
@@ -245,9 +213,7 @@ CREATE TABLE `glossary_image` (
 
 /*Table structure for table `glossary_lang` */
 
-DROP TABLE IF EXISTS `glossary_lang`;
-
-CREATE TABLE `glossary_lang` (
+CREATE TABLE IF NOT EXISTS `glossary_lang` (
   `id` bigint(20) unsigned NOT NULL,
   `lang` varchar(2) NOT NULL,
   `title` tinytext,
@@ -259,9 +225,7 @@ CREATE TABLE `glossary_lang` (
 
 /*Table structure for table `home` */
 
-DROP TABLE IF EXISTS `home`;
-
-CREATE TABLE `home` (
+CREATE TABLE IF NOT EXISTS `home` (
   `item` varchar(10) NOT NULL,
   `type` varchar(5) NOT NULL DEFAULT 'main' COMMENT 'lateral o central',
   `node` varchar(50) NOT NULL,
@@ -273,9 +237,7 @@ CREATE TABLE `home` (
 
 /*Table structure for table `icon` */
 
-DROP TABLE IF EXISTS `icon`;
-
-CREATE TABLE `icon` (
+CREATE TABLE IF NOT EXISTS `icon` (
   `id` varchar(50) NOT NULL,
   `name` varchar(100) NOT NULL,
   `description` tinytext,
@@ -286,9 +248,7 @@ CREATE TABLE `icon` (
 
 /*Table structure for table `icon_lang` */
 
-DROP TABLE IF EXISTS `icon_lang`;
-
-CREATE TABLE `icon_lang` (
+CREATE TABLE IF NOT EXISTS `icon_lang` (
   `id` varchar(50) NOT NULL,
   `lang` varchar(2) NOT NULL,
   `name` varchar(100) DEFAULT NULL,
@@ -299,9 +259,7 @@ CREATE TABLE `icon_lang` (
 
 /*Table structure for table `icon_license` */
 
-DROP TABLE IF EXISTS `icon_license`;
-
-CREATE TABLE `icon_license` (
+CREATE TABLE IF NOT EXISTS `icon_license` (
   `icon` varchar(50) NOT NULL,
   `license` varchar(50) NOT NULL,
   UNIQUE KEY `icon` (`icon`,`license`)
@@ -309,9 +267,7 @@ CREATE TABLE `icon_license` (
 
 /*Table structure for table `image` */
 
-DROP TABLE IF EXISTS `image`;
-
-CREATE TABLE `image` (
+CREATE TABLE IF NOT EXISTS `image` (
   `id` int(20) unsigned NOT NULL AUTO_INCREMENT,
   `name` varchar(50) DEFAULT NULL,
   `type` varchar(20) DEFAULT NULL,
@@ -321,9 +277,7 @@ CREATE TABLE `image` (
 
 /*Table structure for table `info` */
 
-DROP TABLE IF EXISTS `info`;
-
-CREATE TABLE `info` (
+CREATE TABLE IF NOT EXISTS `info` (
   `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
   `node` varchar(50) NOT NULL,
   `title` tinytext,
@@ -344,9 +298,7 @@ CREATE TABLE `info` (
 
 /*Table structure for table `info_image` */
 
-DROP TABLE IF EXISTS `info_image`;
-
-CREATE TABLE `info_image` (
+CREATE TABLE IF NOT EXISTS `info_image` (
   `info` bigint(20) unsigned NOT NULL,
   `image` varchar(255) NOT NULL DEFAULT '' COMMENT 'Contiene nombre de archivo',
   PRIMARY KEY (`info`,`image`),
@@ -355,9 +307,7 @@ CREATE TABLE `info_image` (
 
 /*Table structure for table `info_lang` */
 
-DROP TABLE IF EXISTS `info_lang`;
-
-CREATE TABLE `info_lang` (
+CREATE TABLE IF NOT EXISTS `info_lang` (
   `id` bigint(20) unsigned NOT NULL,
   `lang` varchar(2) NOT NULL,
   `title` tinytext,
@@ -371,9 +321,7 @@ CREATE TABLE `info_lang` (
 
 /*Table structure for table `invest` */
 
-DROP TABLE IF EXISTS `invest`;
-
-CREATE TABLE `invest` (
+CREATE TABLE IF NOT EXISTS `invest` (
   `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
   `user` varchar(50) NOT NULL,
   `project` varchar(50) NOT NULL,
@@ -411,9 +359,7 @@ CREATE TABLE `invest` (
 
 /*Table structure for table `invest_address` */
 
-DROP TABLE IF EXISTS `invest_address`;
-
-CREATE TABLE `invest_address` (
+CREATE TABLE IF NOT EXISTS `invest_address` (
   `invest` bigint(20) unsigned NOT NULL,
   `user` varchar(50) NOT NULL,
   `address` tinytext,
@@ -434,9 +380,7 @@ CREATE TABLE `invest_address` (
 
 /*Table structure for table `invest_detail` */
 
-DROP TABLE IF EXISTS `invest_detail`;
-
-CREATE TABLE `invest_detail` (
+CREATE TABLE IF NOT EXISTS `invest_detail` (
   `invest` bigint(20) unsigned NOT NULL,
   `type` varchar(30) NOT NULL,
   `log` text NOT NULL,
@@ -448,9 +392,7 @@ CREATE TABLE `invest_detail` (
 
 /*Table structure for table `invest_node` */
 
-DROP TABLE IF EXISTS `invest_node`;
-
-CREATE TABLE `invest_node` (
+CREATE TABLE IF NOT EXISTS `invest_node` (
   `user_id` varchar(50) NOT NULL,
   `user_node` varchar(50) NOT NULL,
   `project_id` varchar(50) NOT NULL,
@@ -474,9 +416,7 @@ CREATE TABLE `invest_node` (
 
 /*Table structure for table `invest_reward` */
 
-DROP TABLE IF EXISTS `invest_reward`;
-
-CREATE TABLE `invest_reward` (
+CREATE TABLE IF NOT EXISTS `invest_reward` (
   `invest` bigint(20) unsigned NOT NULL,
   `reward` bigint(20) unsigned NOT NULL,
   `fulfilled` tinyint(1) NOT NULL DEFAULT '0',
@@ -488,9 +428,7 @@ CREATE TABLE `invest_reward` (
 
 /*Table structure for table `license` */
 
-DROP TABLE IF EXISTS `license`;
-
-CREATE TABLE `license` (
+CREATE TABLE IF NOT EXISTS `license` (
   `id` varchar(50) NOT NULL,
   `name` varchar(100) NOT NULL,
   `description` tinytext,
@@ -502,9 +440,7 @@ CREATE TABLE `license` (
 
 /*Table structure for table `license_lang` */
 
-DROP TABLE IF EXISTS `license_lang`;
-
-CREATE TABLE `license_lang` (
+CREATE TABLE IF NOT EXISTS `license_lang` (
   `id` varchar(50) NOT NULL,
   `lang` varchar(2) NOT NULL,
   `name` varchar(100) DEFAULT NULL,
@@ -516,9 +452,7 @@ CREATE TABLE `license_lang` (
 
 /*Table structure for table `log` */
 
-DROP TABLE IF EXISTS `log`;
-
-CREATE TABLE `log` (
+CREATE TABLE IF NOT EXISTS `log` (
   `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
   `scope` varchar(50) NOT NULL,
   `target_type` varchar(10) DEFAULT NULL COMMENT 'tipo de objetivo',
@@ -531,9 +465,7 @@ CREATE TABLE `log` (
 
 /*Table structure for table `mail` */
 
-DROP TABLE IF EXISTS `mail`;
-
-CREATE TABLE `mail` (
+CREATE TABLE IF NOT EXISTS `mail` (
   `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
   `email` char(255) NOT NULL,
   `subject` char(255) DEFAULT NULL,
@@ -556,9 +488,7 @@ CREATE TABLE `mail` (
 
 /*Table structure for table `mail_stats` */
 
-DROP TABLE IF EXISTS `mail_stats`;
-
-CREATE TABLE `mail_stats` (
+CREATE TABLE IF NOT EXISTS `mail_stats` (
   `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
   `mail_id` bigint(20) unsigned NOT NULL,
   `email` char(150) NOT NULL,
@@ -575,9 +505,7 @@ CREATE TABLE `mail_stats` (
 
 /*Table structure for table `mail_stats_location` */
 
-DROP TABLE IF EXISTS `mail_stats_location`;
-
-CREATE TABLE `mail_stats_location` (
+CREATE TABLE IF NOT EXISTS `mail_stats_location` (
   `id` bigint(20) unsigned NOT NULL,
   `latitude` decimal(16,14) NOT NULL,
   `longitude` decimal(16,14) NOT NULL,
@@ -598,9 +526,7 @@ CREATE TABLE `mail_stats_location` (
 
 /*Table structure for table `mailer_content` */
 
-DROP TABLE IF EXISTS `mailer_content`;
-
-CREATE TABLE `mailer_content` (
+CREATE TABLE IF NOT EXISTS `mailer_content` (
   `id` int(20) unsigned NOT NULL AUTO_INCREMENT,
   `active` int(1) NOT NULL DEFAULT '1',
   `mail` bigint(20) unsigned NOT NULL,
@@ -615,9 +541,7 @@ CREATE TABLE `mailer_content` (
 
 /*Table structure for table `mailer_control` */
 
-DROP TABLE IF EXISTS `mailer_control`;
-
-CREATE TABLE `mailer_control` (
+CREATE TABLE IF NOT EXISTS `mailer_control` (
   `email` char(150) NOT NULL,
   `bounces` int(10) unsigned NOT NULL,
   `complaints` int(10) unsigned NOT NULL,
@@ -629,9 +553,7 @@ CREATE TABLE `mailer_control` (
 
 /*Table structure for table `mailer_limit` */
 
-DROP TABLE IF EXISTS `mailer_limit`;
-
-CREATE TABLE `mailer_limit` (
+CREATE TABLE IF NOT EXISTS `mailer_limit` (
   `hora` time NOT NULL COMMENT 'Hora envio',
   `num` int(5) unsigned NOT NULL DEFAULT '0' COMMENT 'Cuantos',
   `modified` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
@@ -640,9 +562,7 @@ CREATE TABLE `mailer_limit` (
 
 /*Table structure for table `mailer_send` */
 
-DROP TABLE IF EXISTS `mailer_send`;
-
-CREATE TABLE `mailer_send` (
+CREATE TABLE IF NOT EXISTS `mailer_send` (
   `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
   `mailing` int(20) unsigned NOT NULL COMMENT 'Id de mailer_content',
   `user` varchar(50) NOT NULL,
@@ -659,9 +579,7 @@ CREATE TABLE `mailer_send` (
 
 /*Table structure for table `message` */
 
-DROP TABLE IF EXISTS `message`;
-
-CREATE TABLE `message` (
+CREATE TABLE IF NOT EXISTS `message` (
   `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
   `user` varchar(50) NOT NULL,
   `project` varchar(50) NOT NULL,
@@ -676,9 +594,7 @@ CREATE TABLE `message` (
 
 /*Table structure for table `message_lang` */
 
-DROP TABLE IF EXISTS `message_lang`;
-
-CREATE TABLE `message_lang` (
+CREATE TABLE IF NOT EXISTS `message_lang` (
   `id` int(20) NOT NULL,
   `lang` varchar(2) NOT NULL,
   `message` text,
@@ -688,9 +604,7 @@ CREATE TABLE `message_lang` (
 
 /*Table structure for table `metric` */
 
-DROP TABLE IF EXISTS `metric`;
-
-CREATE TABLE `metric` (
+CREATE TABLE IF NOT EXISTS `metric` (
   `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
   `metric` char(255) NOT NULL,
   `desc` char(255) DEFAULT NULL,
@@ -700,9 +614,7 @@ CREATE TABLE `metric` (
 
 /*Table structure for table `news` */
 
-DROP TABLE IF EXISTS `news`;
-
-CREATE TABLE `news` (
+CREATE TABLE IF NOT EXISTS `news` (
   `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
   `title` tinytext NOT NULL,
   `description` text COMMENT 'Entradilla',
@@ -717,9 +629,7 @@ CREATE TABLE `news` (
 
 /*Table structure for table `news_lang` */
 
-DROP TABLE IF EXISTS `news_lang`;
-
-CREATE TABLE `news_lang` (
+CREATE TABLE IF NOT EXISTS `news_lang` (
   `id` bigint(20) unsigned NOT NULL,
   `lang` varchar(2) NOT NULL,
   `title` tinytext,
@@ -731,9 +641,7 @@ CREATE TABLE `news_lang` (
 
 /*Table structure for table `node` */
 
-DROP TABLE IF EXISTS `node`;
-
-CREATE TABLE `node` (
+CREATE TABLE IF NOT EXISTS `node` (
   `id` varchar(50) NOT NULL,
   `name` varchar(256) NOT NULL,
   `email` varchar(255) NOT NULL,
@@ -758,9 +666,7 @@ CREATE TABLE `node` (
 
 /*Table structure for table `node_data` */
 
-DROP TABLE IF EXISTS `node_data`;
-
-CREATE TABLE `node_data` (
+CREATE TABLE IF NOT EXISTS `node_data` (
   `node` varchar(50) NOT NULL,
   `projects` smallint(5) unsigned DEFAULT '0',
   `active` tinyint(3) unsigned DEFAULT '0',
@@ -779,9 +685,7 @@ CREATE TABLE `node_data` (
 
 /*Table structure for table `node_lang` */
 
-DROP TABLE IF EXISTS `node_lang`;
-
-CREATE TABLE `node_lang` (
+CREATE TABLE IF NOT EXISTS `node_lang` (
   `id` varchar(50) NOT NULL,
   `lang` varchar(2) NOT NULL,
   `subtitle` text,
@@ -793,9 +697,7 @@ CREATE TABLE `node_lang` (
 
 /*Table structure for table `page` */
 
-DROP TABLE IF EXISTS `page`;
-
-CREATE TABLE `page` (
+CREATE TABLE IF NOT EXISTS `page` (
   `id` varchar(50) NOT NULL,
   `name` tinytext NOT NULL,
   `description` text,
@@ -805,9 +707,7 @@ CREATE TABLE `page` (
 
 /*Table structure for table `page_lang` */
 
-DROP TABLE IF EXISTS `page_lang`;
-
-CREATE TABLE `page_lang` (
+CREATE TABLE IF NOT EXISTS `page_lang` (
   `id` varchar(50) NOT NULL,
   `lang` varchar(2) NOT NULL,
   `name` tinytext NOT NULL,
@@ -817,9 +717,7 @@ CREATE TABLE `page_lang` (
 
 /*Table structure for table `page_node` */
 
-DROP TABLE IF EXISTS `page_node`;
-
-CREATE TABLE `page_node` (
+CREATE TABLE IF NOT EXISTS `page_node` (
   `page` varchar(50) NOT NULL,
   `node` varchar(50) NOT NULL,
   `lang` varchar(2) NOT NULL,
@@ -834,9 +732,7 @@ CREATE TABLE `page_node` (
 
 /*Table structure for table `post` */
 
-DROP TABLE IF EXISTS `post`;
-
-CREATE TABLE `post` (
+CREATE TABLE IF NOT EXISTS `post` (
   `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
   `blog` bigint(20) unsigned NOT NULL,
   `title` tinytext,
@@ -861,9 +757,7 @@ CREATE TABLE `post` (
 
 /*Table structure for table `post_image` */
 
-DROP TABLE IF EXISTS `post_image`;
-
-CREATE TABLE `post_image` (
+CREATE TABLE IF NOT EXISTS `post_image` (
   `post` bigint(20) unsigned NOT NULL,
   `image` varchar(255) NOT NULL DEFAULT '' COMMENT 'Contiene nombre de archivo',
   PRIMARY KEY (`post`,`image`),
@@ -872,9 +766,7 @@ CREATE TABLE `post_image` (
 
 /*Table structure for table `post_lang` */
 
-DROP TABLE IF EXISTS `post_lang`;
-
-CREATE TABLE `post_lang` (
+CREATE TABLE IF NOT EXISTS `post_lang` (
   `id` bigint(20) unsigned NOT NULL,
   `blog` int(20) NOT NULL,
   `lang` varchar(2) NOT NULL,
@@ -889,9 +781,7 @@ CREATE TABLE `post_lang` (
 
 /*Table structure for table `post_node` */
 
-DROP TABLE IF EXISTS `post_node`;
-
-CREATE TABLE `post_node` (
+CREATE TABLE IF NOT EXISTS `post_node` (
   `post` bigint(20) unsigned NOT NULL,
   `node` varchar(50) NOT NULL,
   `order` int(11) DEFAULT '1',
@@ -902,9 +792,7 @@ CREATE TABLE `post_node` (
 
 /*Table structure for table `post_tag` */
 
-DROP TABLE IF EXISTS `post_tag`;
-
-CREATE TABLE `post_tag` (
+CREATE TABLE IF NOT EXISTS `post_tag` (
   `post` bigint(20) unsigned NOT NULL,
   `tag` bigint(20) unsigned NOT NULL,
   PRIMARY KEY (`post`,`tag`)
@@ -912,9 +800,7 @@ CREATE TABLE `post_tag` (
 
 /*Table structure for table `project` */
 
-DROP TABLE IF EXISTS `project`;
-
-CREATE TABLE `project` (
+CREATE TABLE IF NOT EXISTS `project` (
   `id` varchar(50) NOT NULL,
   `name` tinytext,
   `subtitle` tinytext,
@@ -990,9 +876,7 @@ CREATE TABLE `project` (
 
 /*Table structure for table `project_account` */
 
-DROP TABLE IF EXISTS `project_account`;
-
-CREATE TABLE `project_account` (
+CREATE TABLE IF NOT EXISTS `project_account` (
   `project` varchar(50) NOT NULL,
   `bank` tinytext,
   `bank_owner` tinytext,
@@ -1006,9 +890,7 @@ CREATE TABLE `project_account` (
 
 /*Table structure for table `project_category` */
 
-DROP TABLE IF EXISTS `project_category`;
-
-CREATE TABLE `project_category` (
+CREATE TABLE IF NOT EXISTS `project_category` (
   `project` varchar(50) NOT NULL,
   `category` bigint(20) unsigned NOT NULL,
   UNIQUE KEY `project_category` (`project`,`category`),
@@ -1018,9 +900,7 @@ CREATE TABLE `project_category` (
 
 /*Table structure for table `project_conf` */
 
-DROP TABLE IF EXISTS `project_conf`;
-
-CREATE TABLE `project_conf` (
+CREATE TABLE IF NOT EXISTS `project_conf` (
   `project` varchar(50) NOT NULL,
   `noinvest` int(1) NOT NULL DEFAULT '0' COMMENT 'No se permiten más aportes',
   `watch` tinyint(1) NOT NULL DEFAULT '0' COMMENT 'Vigilar el proyecto',
@@ -1035,9 +915,7 @@ CREATE TABLE `project_conf` (
 
 /*Table structure for table `project_data` */
 
-DROP TABLE IF EXISTS `project_data`;
-
-CREATE TABLE `project_data` (
+CREATE TABLE IF NOT EXISTS `project_data` (
   `project` varchar(50) NOT NULL,
   `updated` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `invested` int(6) unsigned NOT NULL DEFAULT '0' COMMENT 'Mostrado en termometro al cerrar',
@@ -1052,9 +930,7 @@ CREATE TABLE `project_data` (
 
 /*Table structure for table `project_image` */
 
-DROP TABLE IF EXISTS `project_image`;
-
-CREATE TABLE `project_image` (
+CREATE TABLE IF NOT EXISTS `project_image` (
   `project` varchar(50) NOT NULL,
   `image` varchar(255) NOT NULL DEFAULT '' COMMENT 'Contiene nombre de archivo',
   `section` varchar(50) DEFAULT NULL,
@@ -1067,9 +943,7 @@ CREATE TABLE `project_image` (
 
 /*Table structure for table `project_lang` */
 
-DROP TABLE IF EXISTS `project_lang`;
-
-CREATE TABLE `project_lang` (
+CREATE TABLE IF NOT EXISTS `project_lang` (
   `id` varchar(50) NOT NULL,
   `lang` varchar(2) NOT NULL,
   `description` text,
@@ -1088,9 +962,7 @@ CREATE TABLE `project_lang` (
 
 /*Table structure for table `project_location` */
 
-DROP TABLE IF EXISTS `project_location`;
-
-CREATE TABLE `project_location` (
+CREATE TABLE IF NOT EXISTS `project_location` (
   `id` varchar(50) NOT NULL,
   `latitude` decimal(16,14) NOT NULL,
   `longitude` decimal(16,14) NOT NULL,
@@ -1111,9 +983,7 @@ CREATE TABLE `project_location` (
 
 /*Table structure for table `project_open_tag` */
 
-DROP TABLE IF EXISTS `project_open_tag`;
-
-CREATE TABLE `project_open_tag` (
+CREATE TABLE IF NOT EXISTS `project_open_tag` (
   `project` varchar(50) NOT NULL,
   `open_tag` int(12) NOT NULL,
   UNIQUE KEY `project_open_tag` (`project`,`open_tag`)
@@ -1121,9 +991,7 @@ CREATE TABLE `project_open_tag` (
 
 /*Table structure for table `promote` */
 
-DROP TABLE IF EXISTS `promote`;
-
-CREATE TABLE `promote` (
+CREATE TABLE IF NOT EXISTS `promote` (
   `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
   `node` varchar(50) NOT NULL,
   `project` varchar(50) NOT NULL,
@@ -1142,9 +1010,7 @@ CREATE TABLE `promote` (
 
 /*Table structure for table `promote_lang` */
 
-DROP TABLE IF EXISTS `promote_lang`;
-
-CREATE TABLE `promote_lang` (
+CREATE TABLE IF NOT EXISTS `promote_lang` (
   `id` bigint(20) unsigned NOT NULL,
   `lang` varchar(2) NOT NULL,
   `title` tinytext,
@@ -1156,9 +1022,7 @@ CREATE TABLE `promote_lang` (
 
 /*Table structure for table `review` */
 
-DROP TABLE IF EXISTS `review`;
-
-CREATE TABLE `review` (
+CREATE TABLE IF NOT EXISTS `review` (
   `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
   `project` varchar(50) NOT NULL,
   `status` tinyint(1) NOT NULL DEFAULT '1',
@@ -1172,9 +1036,7 @@ CREATE TABLE `review` (
 
 /*Table structure for table `review_comment` */
 
-DROP TABLE IF EXISTS `review_comment`;
-
-CREATE TABLE `review_comment` (
+CREATE TABLE IF NOT EXISTS `review_comment` (
   `review` bigint(20) unsigned NOT NULL,
   `user` varchar(50) NOT NULL,
   `section` varchar(50) NOT NULL,
@@ -1186,9 +1048,7 @@ CREATE TABLE `review_comment` (
 
 /*Table structure for table `review_score` */
 
-DROP TABLE IF EXISTS `review_score`;
-
-CREATE TABLE `review_score` (
+CREATE TABLE IF NOT EXISTS `review_score` (
   `review` bigint(20) unsigned NOT NULL,
   `user` varchar(50) NOT NULL,
   `criteria` bigint(20) unsigned NOT NULL,
@@ -1198,9 +1058,7 @@ CREATE TABLE `review_score` (
 
 /*Table structure for table `reward` */
 
-DROP TABLE IF EXISTS `reward`;
-
-CREATE TABLE `reward` (
+CREATE TABLE IF NOT EXISTS `reward` (
   `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
   `project` varchar(50) NOT NULL,
   `reward` tinytext,
@@ -1224,9 +1082,7 @@ CREATE TABLE `reward` (
 
 /*Table structure for table `reward_lang` */
 
-DROP TABLE IF EXISTS `reward_lang`;
-
-CREATE TABLE `reward_lang` (
+CREATE TABLE IF NOT EXISTS `reward_lang` (
   `id` int(20) NOT NULL,
   `project` varchar(50) NOT NULL,
   `lang` varchar(2) NOT NULL,
@@ -1240,9 +1096,7 @@ CREATE TABLE `reward_lang` (
 
 /*Table structure for table `role` */
 
-DROP TABLE IF EXISTS `role`;
-
-CREATE TABLE `role` (
+CREATE TABLE IF NOT EXISTS `role` (
   `id` varchar(50) NOT NULL,
   `name` varchar(50) NOT NULL,
   PRIMARY KEY (`id`)
@@ -1250,9 +1104,7 @@ CREATE TABLE `role` (
 
 /*Table structure for table `sponsor` */
 
-DROP TABLE IF EXISTS `sponsor`;
-
-CREATE TABLE `sponsor` (
+CREATE TABLE IF NOT EXISTS `sponsor` (
   `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
   `name` tinytext NOT NULL,
   `url` tinytext,
@@ -1266,9 +1118,7 @@ CREATE TABLE `sponsor` (
 
 /*Table structure for table `stories` */
 
-DROP TABLE IF EXISTS `stories`;
-
-CREATE TABLE `stories` (
+CREATE TABLE IF NOT EXISTS `stories` (
   `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
   `node` varchar(50) NOT NULL,
   `project` varchar(50) DEFAULT NULL,
@@ -1287,9 +1137,7 @@ CREATE TABLE `stories` (
 
 /*Table structure for table `stories_lang` */
 
-DROP TABLE IF EXISTS `stories_lang`;
-
-CREATE TABLE `stories_lang` (
+CREATE TABLE IF NOT EXISTS `stories_lang` (
   `id` bigint(20) unsigned NOT NULL,
   `lang` varchar(2) NOT NULL,
   `title` tinytext,
@@ -1301,9 +1149,7 @@ CREATE TABLE `stories_lang` (
 
 /*Table structure for table `support` */
 
-DROP TABLE IF EXISTS `support`;
-
-CREATE TABLE `support` (
+CREATE TABLE IF NOT EXISTS `support` (
   `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
   `project` varchar(50) NOT NULL,
   `support` tinytext,
@@ -1318,9 +1164,7 @@ CREATE TABLE `support` (
 
 /*Table structure for table `support_lang` */
 
-DROP TABLE IF EXISTS `support_lang`;
-
-CREATE TABLE `support_lang` (
+CREATE TABLE IF NOT EXISTS `support_lang` (
   `id` int(20) NOT NULL,
   `project` varchar(50) NOT NULL,
   `lang` varchar(2) NOT NULL,
@@ -1333,9 +1177,7 @@ CREATE TABLE `support_lang` (
 
 /*Table structure for table `tag` */
 
-DROP TABLE IF EXISTS `tag`;
-
-CREATE TABLE `tag` (
+CREATE TABLE IF NOT EXISTS `tag` (
   `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
   `name` tinytext NOT NULL,
   UNIQUE KEY `id` (`id`)
@@ -1343,9 +1185,7 @@ CREATE TABLE `tag` (
 
 /*Table structure for table `tag_lang` */
 
-DROP TABLE IF EXISTS `tag_lang`;
-
-CREATE TABLE `tag_lang` (
+CREATE TABLE IF NOT EXISTS `tag_lang` (
   `id` bigint(20) unsigned NOT NULL,
   `lang` varchar(2) NOT NULL,
   `name` tinytext,
@@ -1355,9 +1195,7 @@ CREATE TABLE `tag_lang` (
 
 /*Table structure for table `task` */
 
-DROP TABLE IF EXISTS `task`;
-
-CREATE TABLE `task` (
+CREATE TABLE IF NOT EXISTS `task` (
   `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
   `node` varchar(50) NOT NULL,
   `text` text NOT NULL,
@@ -1372,9 +1210,7 @@ CREATE TABLE `task` (
 
 /*Table structure for table `template` */
 
-DROP TABLE IF EXISTS `template`;
-
-CREATE TABLE `template` (
+CREATE TABLE IF NOT EXISTS `template` (
   `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
   `name` tinytext NOT NULL,
   `group` varchar(50) NOT NULL DEFAULT 'general' COMMENT 'Agrupación de uso',
@@ -1387,9 +1223,7 @@ CREATE TABLE `template` (
 
 /*Table structure for table `template_lang` */
 
-DROP TABLE IF EXISTS `template_lang`;
-
-CREATE TABLE `template_lang` (
+CREATE TABLE IF NOT EXISTS `template_lang` (
   `id` bigint(20) unsigned NOT NULL,
   `lang` varchar(2) NOT NULL,
   `title` tinytext,
@@ -1401,9 +1235,7 @@ CREATE TABLE `template_lang` (
 
 /*Table structure for table `text` */
 
-DROP TABLE IF EXISTS `text`;
-
-CREATE TABLE `text` (
+CREATE TABLE IF NOT EXISTS `text` (
   `id` varchar(50) NOT NULL,
   `lang` varchar(2) NOT NULL DEFAULT 'es',
   `text` text NOT NULL,
@@ -1413,9 +1245,7 @@ CREATE TABLE `text` (
 
 /*Table structure for table `user` */
 
-DROP TABLE IF EXISTS `user`;
-
-CREATE TABLE `user` (
+CREATE TABLE IF NOT EXISTS `user` (
   `id` varchar(50) NOT NULL,
   `name` varchar(100) NOT NULL,
   `location` varchar(255) DEFAULT NULL,
@@ -1452,9 +1282,7 @@ CREATE TABLE `user` (
 
 /*Table structure for table `user_api` */
 
-DROP TABLE IF EXISTS `user_api`;
-
-CREATE TABLE `user_api` (
+CREATE TABLE IF NOT EXISTS `user_api` (
   `user_id` varchar(50) NOT NULL,
   `key` varchar(50) NOT NULL,
   `expiration_date` datetime DEFAULT NULL,
@@ -1464,9 +1292,7 @@ CREATE TABLE `user_api` (
 
 /*Table structure for table `user_donation` */
 
-DROP TABLE IF EXISTS `user_donation`;
-
-CREATE TABLE `user_donation` (
+CREATE TABLE IF NOT EXISTS `user_donation` (
   `user` varchar(50) NOT NULL,
   `amount` int(11) NOT NULL,
   `name` varchar(255) DEFAULT NULL,
@@ -1488,9 +1314,7 @@ CREATE TABLE `user_donation` (
 
 /*Table structure for table `user_interest` */
 
-DROP TABLE IF EXISTS `user_interest`;
-
-CREATE TABLE `user_interest` (
+CREATE TABLE IF NOT EXISTS `user_interest` (
   `user` varchar(50) NOT NULL,
   `interest` int(12) NOT NULL,
   UNIQUE KEY `user_interest` (`user`,`interest`),
@@ -1500,9 +1324,7 @@ CREATE TABLE `user_interest` (
 
 /*Table structure for table `user_lang` */
 
-DROP TABLE IF EXISTS `user_lang`;
-
-CREATE TABLE `user_lang` (
+CREATE TABLE IF NOT EXISTS `user_lang` (
   `id` varchar(50) NOT NULL,
   `lang` varchar(2) NOT NULL,
   `about` text,
@@ -1513,9 +1335,7 @@ CREATE TABLE `user_lang` (
 
 /*Table structure for table `user_location` */
 
-DROP TABLE IF EXISTS `user_location`;
-
-CREATE TABLE `user_location` (
+CREATE TABLE IF NOT EXISTS `user_location` (
   `id` varchar(50) NOT NULL,
   `latitude` decimal(16,14) NOT NULL,
   `longitude` decimal(16,14) NOT NULL,
@@ -1536,9 +1356,7 @@ CREATE TABLE `user_location` (
 
 /*Table structure for table `user_login` */
 
-DROP TABLE IF EXISTS `user_login`;
-
-CREATE TABLE `user_login` (
+CREATE TABLE IF NOT EXISTS `user_login` (
   `user` varchar(50) NOT NULL,
   `provider` varchar(50) NOT NULL,
   `oauth_token` text NOT NULL,
@@ -1550,9 +1368,7 @@ CREATE TABLE `user_login` (
 
 /*Table structure for table `user_node` */
 
-DROP TABLE IF EXISTS `user_node`;
-
-CREATE TABLE `user_node` (
+CREATE TABLE IF NOT EXISTS `user_node` (
   `user` varchar(50) NOT NULL,
   `node` varchar(50) NOT NULL,
   PRIMARY KEY (`user`,`node`)
@@ -1560,9 +1376,7 @@ CREATE TABLE `user_node` (
 
 /*Table structure for table `user_personal` */
 
-DROP TABLE IF EXISTS `user_personal`;
-
-CREATE TABLE `user_personal` (
+CREATE TABLE IF NOT EXISTS `user_personal` (
   `user` varchar(50) NOT NULL,
   `contract_name` varchar(255) DEFAULT NULL,
   `contract_surname` varchar(255) DEFAULT NULL,
@@ -1578,9 +1392,7 @@ CREATE TABLE `user_personal` (
 
 /*Table structure for table `user_pool` */
 
-DROP TABLE IF EXISTS `user_pool`;
-
-CREATE TABLE `user_pool` (
+CREATE TABLE IF NOT EXISTS `user_pool` (
   `user` varchar(50) NOT NULL,
   `amount` int(7) unsigned NOT NULL DEFAULT '0',
   PRIMARY KEY (`user`),
@@ -1589,9 +1401,7 @@ CREATE TABLE `user_pool` (
 
 /*Table structure for table `user_prefer` */
 
-DROP TABLE IF EXISTS `user_prefer`;
-
-CREATE TABLE `user_prefer` (
+CREATE TABLE IF NOT EXISTS `user_prefer` (
   `user` varchar(50) NOT NULL,
   `updates` int(1) NOT NULL DEFAULT '0',
   `threads` int(1) NOT NULL DEFAULT '0',
@@ -1606,9 +1416,7 @@ CREATE TABLE `user_prefer` (
 
 /*Table structure for table `user_project` */
 
-DROP TABLE IF EXISTS `user_project`;
-
-CREATE TABLE `user_project` (
+CREATE TABLE IF NOT EXISTS `user_project` (
   `user` varchar(50) NOT NULL,
   `project` varchar(50) NOT NULL,
   UNIQUE KEY `user` (`user`,`project`),
@@ -1619,9 +1427,7 @@ CREATE TABLE `user_project` (
 
 /*Table structure for table `user_review` */
 
-DROP TABLE IF EXISTS `user_review`;
-
-CREATE TABLE `user_review` (
+CREATE TABLE IF NOT EXISTS `user_review` (
   `user` varchar(50) NOT NULL,
   `review` bigint(20) unsigned NOT NULL,
   `ready` tinyint(1) NOT NULL DEFAULT '0' COMMENT 'Ha terminado con la revision',
@@ -1630,9 +1436,7 @@ CREATE TABLE `user_review` (
 
 /*Table structure for table `user_role` */
 
-DROP TABLE IF EXISTS `user_role`;
-
-CREATE TABLE `user_role` (
+CREATE TABLE IF NOT EXISTS `user_role` (
   `user_id` varchar(50) NOT NULL,
   `role_id` varchar(50) NOT NULL,
   `node_id` varchar(50) DEFAULT NULL,
@@ -1647,9 +1451,7 @@ CREATE TABLE `user_role` (
 
 /*Table structure for table `user_translang` */
 
-DROP TABLE IF EXISTS `user_translang`;
-
-CREATE TABLE `user_translang` (
+CREATE TABLE IF NOT EXISTS `user_translang` (
   `user` varchar(50) NOT NULL,
   `lang` varchar(2) NOT NULL,
   PRIMARY KEY (`user`,`lang`)
@@ -1657,9 +1459,7 @@ CREATE TABLE `user_translang` (
 
 /*Table structure for table `user_translate` */
 
-DROP TABLE IF EXISTS `user_translate`;
-
-CREATE TABLE `user_translate` (
+CREATE TABLE IF NOT EXISTS `user_translate` (
   `user` varchar(50) NOT NULL,
   `type` varchar(10) NOT NULL COMMENT 'Tipo de contenido',
   `item` varchar(50) NOT NULL COMMENT 'id del contenido',
@@ -1669,9 +1469,7 @@ CREATE TABLE `user_translate` (
 
 /*Table structure for table `user_vip` */
 
-DROP TABLE IF EXISTS `user_vip`;
-
-CREATE TABLE `user_vip` (
+CREATE TABLE IF NOT EXISTS `user_vip` (
   `user` varchar(50) NOT NULL,
   `image` varchar(255) DEFAULT NULL COMMENT 'Contiene nombre de archivo',
   PRIMARY KEY (`user`)
@@ -1679,9 +1477,7 @@ CREATE TABLE `user_vip` (
 
 /*Table structure for table `user_web` */
 
-DROP TABLE IF EXISTS `user_web`;
-
-CREATE TABLE `user_web` (
+CREATE TABLE IF NOT EXISTS `user_web` (
   `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
   `user` varchar(50) NOT NULL,
   `url` tinytext NOT NULL,
@@ -1691,9 +1487,7 @@ CREATE TABLE `user_web` (
 
 /*Table structure for table `worthcracy` */
 
-DROP TABLE IF EXISTS `worthcracy`;
-
-CREATE TABLE `worthcracy` (
+CREATE TABLE IF NOT EXISTS `worthcracy` (
   `id` int(2) NOT NULL AUTO_INCREMENT,
   `name` tinytext NOT NULL,
   `amount` int(6) NOT NULL,
@@ -1702,9 +1496,7 @@ CREATE TABLE `worthcracy` (
 
 /*Table structure for table `worthcracy_lang` */
 
-DROP TABLE IF EXISTS `worthcracy_lang`;
-
-CREATE TABLE `worthcracy_lang` (
+CREATE TABLE IF NOT EXISTS `worthcracy_lang` (
   `id` int(2) unsigned NOT NULL,
   `lang` varchar(2) NOT NULL,
   `name` tinytext NOT NULL,

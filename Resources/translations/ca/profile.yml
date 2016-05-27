@@ -12,6 +12,26 @@ profile-field-url: URL
 profile-field-websites: 'Les meves pàgines web '
 profile-fields-image-title: 'Imatge de perfil'
 profile-fields-social-title: 'Perfils socials'
+
+profile-field-entity-type: 'Tipus d''entitat'
+profile-field-entity-type-choose: 'Selecciona un tipus d''entitat'
+profile-field-entity-type-public: 'Públic'
+profile-field-entity-type-private: 'Privat'
+profile-field-entity-type-concerted: 'Concertat'
+
+profile-field-entity-type-checkbox-public: 'Sóc una entitat pública'
+
+profile-field-legal-entity: 'Forma jurídica'
+profile-field-legal-entity-choose: 'Selecciona una forma jurídica'
+profile-field-legal-entity-person: 'Persona física'
+profile-field-legal-entity-self-employed: 'Autònom/a'
+profile-field-legal-entity-ngo: 'ONG'
+profile-field-legal-entity-company: 'Empresa'
+profile-field-legal-entity-cooperative: 'Cooperativa'
+profile-field-legal-entity-asociation: 'Associació'
+profile-field-legal-entity-others: 'Altres'
+
+
 profile-main-header: 'Dades de perfil'
 profile-suggest-projects-interest: 'Quizás quieras apoyar proyectos de categorías similares'
 step-1: Perfil

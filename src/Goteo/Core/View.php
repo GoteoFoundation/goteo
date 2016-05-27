@@ -60,11 +60,14 @@ namespace Goteo\Core {
             return 'text/html';
         }
 
-        public function getViewPath() {
+        public function getViewPath($exception = true) {
             foreach(self::$views_path as $path) {
                 if(is_file($path . $this->file)) return $path . $this->file;
             }
-            throw new View\Exception("View [{$this->file}] not found!", 1);
+            if($exception) {
+                throw new View\Exception("View [{$this->file}] not found!", 1);
+            }
+            return false;
         }
 
         public function render() {

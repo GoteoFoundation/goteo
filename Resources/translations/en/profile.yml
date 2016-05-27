@@ -12,6 +12,25 @@ profile-field-url: URL
 profile-field-websites: 'My web pages'
 profile-fields-image-title: 'Profile image'
 profile-fields-social-title: 'Social profiles'
+
+rofile-field-entity-type: 'Type of organization'
+profile-field-entity-type-choose: 'Select type of organization'
+profile-field-entity-type-public: 'Public'
+profile-field-entity-type-private: 'Private'
+profile-field-entity-type-concerted: 'Private-Public partnership'
+
+profile-field-entity-type-checkbox-public: 'I''m a public entity'
+
+profile-field-legal-entity: 'Legal form'
+profile-field-legal-entity-choose: 'Select legal form'
+profile-field-legal-entity-person: 'Individual'
+profile-field-legal-entity-self-employed: 'Freelancer'
+profile-field-legal-entity-ngo: 'NGO'
+profile-field-legal-entity-company: 'Company'
+profile-field-legal-entity-cooperative: 'Cooperative'
+profile-field-legal-entity-asociation: 'Association'
+profile-field-legal-entity-others: 'Other'
+
 profile-main-header: 'Profile data'
 profile-suggest-projects-interest: 'You might want to support'
 step-1: Profile

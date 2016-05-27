@@ -14,36 +14,8 @@ ALTER TABLE `invest_node`
     DROP FOREIGN KEY `invest_node_ibfk_5`  ,
     DROP FOREIGN KEY `invest_node_ibfk_6`  ;
 
-
 /* Create table in target */
-CREATE TABLE `bazar`(
-    `id` bigint(20) unsigned NOT NULL  auto_increment ,
-    `reward` bigint(20) unsigned NULL  ,
-    `project` varchar(50) COLLATE utf8_general_ci NULL  ,
-    `title` tinytext COLLATE utf8_general_ci NULL  ,
-    `description` text COLLATE utf8_general_ci NULL  ,
-    `amount` int(5) NULL  ,
-    `image` varchar(255) COLLATE utf8_general_ci NULL  COMMENT 'Contiene nombre de archivo' ,
-    `order` smallint(5) NOT NULL  DEFAULT 9999 ,
-    `active` int(1) NOT NULL  DEFAULT 1 ,
-    PRIMARY KEY (`id`) ,
-    UNIQUE KEY `id`(`id`)
-) ENGINE=InnoDB DEFAULT CHARSET='utf8' COLLATE='utf8_general_ci' COMMENT='productos del catalogo';
-
-
-/* Create table in target */
-CREATE TABLE `bazar_lang`(
-    `id` bigint(20) unsigned NOT NULL  ,
-    `lang` varchar(2) COLLATE utf8_general_ci NOT NULL  ,
-    `title` tinytext COLLATE utf8_general_ci NULL  ,
-    `description` text COLLATE utf8_general_ci NULL  ,
-    `pending` int(1) NULL  DEFAULT 0 COMMENT 'Debe revisarse la traducción' ,
-    UNIQUE KEY `id_lang`(`id`,`lang`)
-) ENGINE=InnoDB DEFAULT CHARSET='utf8' COLLATE='utf8_general_ci';
-
-
-/* Create table in target */
-CREATE TABLE `call`(
+CREATE TABLE IF NOT EXISTS `call`(
     `id` varchar(50) COLLATE utf8_general_ci NOT NULL  ,
     `name` tinytext COLLATE utf8_general_ci NULL  ,
     `subtitle` tinytext COLLATE utf8_general_ci NULL  ,
@@ -105,7 +77,7 @@ CREATE TABLE `call`(
 
 
 /* Create table in target */
-CREATE TABLE `call_banner`(
+CREATE TABLE IF NOT EXISTS `call_banner`(
     `id` bigint(20) unsigned NOT NULL  auto_increment ,
     `call` varchar(50) COLLATE utf8_general_ci NOT NULL  ,
     `name` tinytext COLLATE utf8_general_ci NOT NULL  ,
@@ -118,7 +90,7 @@ CREATE TABLE `call_banner`(
 
 
 /* Create table in target */
-CREATE TABLE `call_banner_lang`(
+CREATE TABLE IF NOT EXISTS `call_banner_lang`(
     `id` int(20) NOT NULL  ,
     `lang` varchar(2) COLLATE utf8_general_ci NOT NULL  ,
     `name` tinytext COLLATE utf8_general_ci NULL  ,
@@ -128,7 +100,7 @@ CREATE TABLE `call_banner_lang`(
 
 
 /* Create table in target */
-CREATE TABLE `call_category`(
+CREATE TABLE IF NOT EXISTS `call_category`(
     `call` varchar(50) COLLATE utf8_general_ci NOT NULL  ,
     `category` int(12) NOT NULL  ,
     UNIQUE KEY `call_category`(`call`,`category`)
@@ -136,7 +108,7 @@ CREATE TABLE `call_category`(
 
 
 /* Create table in target */
-CREATE TABLE `call_conf`(
+CREATE TABLE IF NOT EXISTS `call_conf`(
     `call` varchar(50) COLLATE utf8_general_ci NOT NULL  ,
     `applied` int(4) NULL  COMMENT 'Para fijar numero de proyectos recibidos' ,
     `limit1` set('normal','minimum','unlimited','none') COLLATE utf8_general_ci NOT NULL  DEFAULT 'normal' COMMENT 'tipo limite riego primera ronda' ,
@@ -149,7 +121,7 @@ CREATE TABLE `call_conf`(
 
 
 /* Create table in target */
-CREATE TABLE `call_icon`(
+CREATE TABLE IF NOT EXISTS `call_icon`(
     `call` varchar(50) COLLATE utf8_general_ci NOT NULL  ,
     `icon` varchar(50) COLLATE utf8_general_ci NOT NULL  ,
     UNIQUE KEY `call_icon`(`call`,`icon`)
@@ -157,7 +129,7 @@ CREATE TABLE `call_icon`(
 
 
 /* Create table in target */
-CREATE TABLE `call_lang`(
+CREATE TABLE IF NOT EXISTS `call_lang`(
     `id` varchar(50) COLLATE utf8_general_ci NOT NULL  ,
     `lang` varchar(2) COLLATE utf8_general_ci NOT NULL  ,
     `name` tinytext COLLATE utf8_general_ci NULL  ,
@@ -175,7 +147,7 @@ CREATE TABLE `call_lang`(
 
 
 /* Create table in target */
-CREATE TABLE `call_post`(
+CREATE TABLE IF NOT EXISTS `call_post`(
     `call` varchar(50) COLLATE utf8_general_ci NOT NULL  ,
     `post` int(20) NOT NULL  ,
     UNIQUE KEY `call_post`(`call`,`post`)
@@ -183,7 +155,7 @@ CREATE TABLE `call_post`(
 
 
 /* Create table in target */
-CREATE TABLE `call_project`(
+CREATE TABLE IF NOT EXISTS `call_project`(
     `call` varchar(50) COLLATE utf8_general_ci NOT NULL  ,
     `project` varchar(50) COLLATE utf8_general_ci NOT NULL  ,
     UNIQUE KEY `call_project`(`call`,`project`) ,
@@ -196,7 +168,7 @@ CREATE TABLE `call_project`(
 
 
 /* Create table in target */
-CREATE TABLE `call_sponsor`(
+CREATE TABLE IF NOT EXISTS `call_sponsor`(
     `id` bigint(20) unsigned NOT NULL  auto_increment ,
     `call` varchar(50) COLLATE utf8_general_ci NOT NULL  ,
     `name` tinytext COLLATE utf8_general_ci NOT NULL  ,
@@ -209,7 +181,7 @@ CREATE TABLE `call_sponsor`(
 
 
 /* Create table in target */
-CREATE TABLE `campaign`(
+CREATE TABLE IF NOT EXISTS `campaign`(
     `id` bigint(20) unsigned NOT NULL  auto_increment ,
     `node` varchar(50) COLLATE utf8_general_ci NOT NULL  ,
     `call` varchar(50) COLLATE utf8_general_ci NOT NULL  ,
@@ -224,14 +196,14 @@ CREATE TABLE `campaign`(
 
 
 /* Create table in target */
-CREATE TABLE `conf`(
+CREATE TABLE IF NOT EXISTS `conf`(
     `key` varchar(255) COLLATE utf8_general_ci NOT NULL  COMMENT 'Clave' ,
     `value` varchar(255) COLLATE utf8_general_ci NOT NULL  COMMENT 'Valor'
 ) ENGINE=InnoDB DEFAULT CHARSET='utf8' COLLATE='utf8_general_ci' COMMENT='Para guardar pares para configuraciones, bloqueos etc';
 
 
 /* Create table in target */
-CREATE TABLE `contract`(
+CREATE TABLE IF NOT EXISTS `contract`(
     `project` varchar(50) COLLATE utf8_general_ci NOT NULL  ,
     `number` int(11) NOT NULL  auto_increment ,
     `date` date NOT NULL  COMMENT 'dia anterior a la publicacion' ,
@@ -281,7 +253,7 @@ CREATE TABLE `contract`(
 
 
 /* Create table in target */
-CREATE TABLE `contract_status`(
+CREATE TABLE IF NOT EXISTS `contract_status`(
     `contract` varchar(50) COLLATE utf8_general_ci NOT NULL  COMMENT 'Id del proyecto' ,
     `owner` int(1) NOT NULL  DEFAULT 0 COMMENT 'El impulsor ha dado por rellenados los datos' ,
     `owner_date` date NULL  COMMENT 'Fecha que se cambia el flag' ,
@@ -320,7 +292,7 @@ ALTER TABLE `cost`
     ADD KEY `order`(`order`) ;
 
 /* Create table in target */
-CREATE TABLE `donor`(
+CREATE TABLE IF NOT EXISTS `donor`(
     `id` bigint(20) unsigned NOT NULL  auto_increment ,
     `user` varchar(50) COLLATE utf8_general_ci NOT NULL  ,
     `amount` int(11) NOT NULL  ,
@@ -352,7 +324,7 @@ CREATE TABLE `donor`(
 
 
 /* Create table in target */
-CREATE TABLE `donor_invest`(
+CREATE TABLE IF NOT EXISTS `donor_invest`(
     `donor_id` bigint(20) unsigned NOT NULL  ,
     `invest_id` bigint(20) unsigned NOT NULL  ,
     PRIMARY KEY (`donor_id`,`invest_id`) ,
@@ -365,7 +337,7 @@ CREATE TABLE `donor_invest`(
 
 
 /* Create table in target */
-CREATE TABLE `donor_location`(
+CREATE TABLE IF NOT EXISTS `donor_location`(
     `id` bigint(20) unsigned NOT NULL  ,
     `latitude` decimal(16,14) NOT NULL  ,
     `longitude` decimal(16,14) NOT NULL  ,
@@ -391,7 +363,7 @@ ALTER TABLE `invest`
     CHANGE `project` `project` varchar(50)  COLLATE utf8_general_ci NULL after `user` ;
 
 /* Create table in target */
-CREATE TABLE `invest_location`(
+CREATE TABLE IF NOT EXISTS `invest_location`(
     `id` bigint(20) unsigned NOT NULL  ,
     `latitude` decimal(16,14) NOT NULL  ,
     `longitude` decimal(16,14) NOT NULL  ,
@@ -422,7 +394,7 @@ ALTER TABLE `node`
     ADD COLUMN `home_img` varchar(255)  COLLATE utf8_general_ci NULL COMMENT 'Imagen para módulo canales en home' after `sponsors_limit` ;
 
 /* Create table in target */
-CREATE TABLE `open_tag`(
+CREATE TABLE IF NOT EXISTS `open_tag`(
     `id` bigint(20) unsigned NOT NULL  auto_increment ,
     `name` tinytext COLLATE utf8_general_ci NULL  ,
     `description` text COLLATE utf8_general_ci NULL  ,
@@ -434,7 +406,7 @@ CREATE TABLE `open_tag`(
 
 
 /* Create table in target */
-CREATE TABLE `open_tag_lang`(
+CREATE TABLE IF NOT EXISTS `open_tag_lang`(
     `id` bigint(20) unsigned NOT NULL  ,
     `lang` varchar(2) COLLATE utf8_general_ci NOT NULL  ,
     `name` tinytext COLLATE utf8_general_ci NULL  ,
@@ -445,7 +417,7 @@ CREATE TABLE `open_tag_lang`(
 
 
 /* Create table in target */
-CREATE TABLE `patron`(
+CREATE TABLE IF NOT EXISTS `patron`(
     `id` bigint(20) unsigned NOT NULL  auto_increment ,
     `node` varchar(50) COLLATE utf8_general_ci NOT NULL  ,
     `project` varchar(50) COLLATE utf8_general_ci NOT NULL  ,
@@ -466,7 +438,7 @@ CREATE TABLE `patron`(
 
 
 /* Create table in target */
-CREATE TABLE `patron_lang`(
+CREATE TABLE IF NOT EXISTS `patron_lang`(
     `id` bigint(20) unsigned NOT NULL  ,
     `lang` varchar(2) COLLATE utf8_general_ci NOT NULL  ,
     `title` tinytext COLLATE utf8_general_ci NULL  ,
@@ -477,7 +449,7 @@ CREATE TABLE `patron_lang`(
 
 
 /* Create table in target */
-CREATE TABLE `patron_order`(
+CREATE TABLE IF NOT EXISTS `patron_order`(
     `id` varchar(50) COLLATE utf8_general_ci NOT NULL  ,
     `order` tinyint(3) unsigned NOT NULL  DEFAULT 1 ,
     PRIMARY KEY (`id`)
@@ -485,7 +457,7 @@ CREATE TABLE `patron_order`(
 
 
 /* Create table in target */
-CREATE TABLE `purpose`(
+CREATE TABLE IF NOT EXISTS `purpose`(
     `text` varchar(50) COLLATE utf8_general_ci NOT NULL  ,
     `purpose` text COLLATE utf8_general_ci NOT NULL  ,
     `html` tinyint(1) NULL  COMMENT 'Si el texto lleva formato html' ,
@@ -495,7 +467,7 @@ CREATE TABLE `purpose`(
 
 
 /* Create table in target */
-CREATE TABLE `purpose_copy`(
+CREATE TABLE IF NOT EXISTS `purpose_copy`(
     `text` varchar(50) COLLATE utf8_general_ci NOT NULL  ,
     `purpose` text COLLATE utf8_general_ci NOT NULL  ,
     `html` tinyint(1) NULL  COMMENT 'Si el texto lleva formato html' ,
@@ -505,7 +477,7 @@ CREATE TABLE `purpose_copy`(
 
 
 /* Create table in target */
-CREATE TABLE `relief`(
+CREATE TABLE IF NOT EXISTS `relief`(
     `id` bigint(20) unsigned NOT NULL  auto_increment ,
     `year` int(4) NOT NULL  ,
     `percentage` int(2) NOT NULL  ,
@@ -529,7 +501,7 @@ ALTER TABLE `stories`
     ADD COLUMN `text_position` varchar(50)  COLLATE utf8_general_ci NULL after `pool` ;
 
 /* Create table in target */
-CREATE TABLE `user_call`(
+CREATE TABLE IF NOT EXISTS `user_call`(
     `user` varchar(50) COLLATE utf8_general_ci NOT NULL  ,
     `call` varchar(50) COLLATE utf8_general_ci NOT NULL  ,
     PRIMARY KEY (`user`,`call`)

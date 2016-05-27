@@ -64,7 +64,7 @@ class IndexController extends \Goteo\Core\Controller
         foreach ($news as $idNew => &$new) {
             //comprobamos si esta activo el campo banner prensa y si tiene imagen asociada
 
-            if ((!$new->press_banner)||(!$new->image instanceof \Goteo\Model\Image)) {
+            if ( ! $new->press_banner || ! $new->image instanceof \Goteo\Model\Image ) {
                     unset($news[$idNew]);
             }
 

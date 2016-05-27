@@ -20,7 +20,7 @@ project-menu_title-supporters: 'Red social de apoyo: los cofinanciadores y cofin
 project-menu_title-updates: 'Feedback: infórmate sobre los avances del proyecto directamente a través de quien lo impulsa.'
 project-messages-answer_it: Responder
 project-messages-closed: 'Aun no se pueden enviar mensajes al proyecto'
-project-messages-send_direct-header: 'Envía un mensaje al impulsor/a del proyecto'
+project-messages-send_direct-header: 'Envía un mensaje público de apoyo al proyecto'
 project-messages-send_message-button: Enviar
 project-messages-send_message-header: 'Escribe tu mensaje'
 project-not_published: 'Este proyecto aun no es público'
@@ -75,3 +75,30 @@ tooltip-updates-media: tooltip-updates-media
 tooltip-updates-tags: 'Texto tooltip-updates-tags'
 tooltip-updates-text: tooltip-updates-text
 tooltip-updates-title: tooltip-updates-title
+
+project-view-metter-favourite: 'Recordarme'
+project-menu-news: 'Noticias'
+project-menu-participate: 'Participa'
+project-about-title: 'Sobre este proyecto'
+project-rewards-side-title: 'Recompensas'
+project-general-information: 'Información general'
+project-go-up: 'volver arriba'
+project-collaborations-number: 'colaboradores'
+project-collaborations-available: 'colaboraciones disponibles'
+project-invest: 'Aportación'
+
+project-invest-msg: 'Mensaje de apoyo:'
+project-hide-needs: 'Ocultar listado de necesidades'
+project-show-needs: 'Mostrar listado de necesidades'
+project-hide-donors: 'Ocultar cofinanciadores'
+project-show-donors: 'Mostrar cofinanciadores'
+project-related: 'Proyectos relacionados'
+project-regular-support: 'Cofinanciar'
+project-chart-costs-reset: 'Back'
+project-chart-amount-reached: 'Acumulado'
+project-chart-amount-ideal: 'Ideal'
+
+project-comment-start-sesion: 'Inicia sesión'
+project-comment-start-sesion-2: 'para dejar un comentario'
+project-view-preview: 'Previsualización del proyecto'
+

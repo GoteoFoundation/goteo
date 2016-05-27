@@ -1,5 +1,4 @@
 <?php
-use Goteo\Core\View;
 
 $news = $this->news;
 
@@ -25,7 +24,13 @@ $news = $this->news;
         array_walk($chunks, function($row) {
             echo '<div class="row">';
             foreach($row as $new) {
-                echo '<div class="new"><a href="' . $new->url .'" class="tipsy" title="' . $this->e($new->title) . '" target="_blank" rel="nofollow"><img src="' . $new->image->getLink(150, 85)  . '" alt="' . $this->e($new->title) . '" /></a></div>';
+                echo '<div class="new"><a href="' . $new->url .'" class="tipsy" title="' . $this->e($new->title) . '" target="_blank" rel="nofollow">';
+                if($new->image && is_object($new->image)) {
+                    echo '<img src="' . $new->image->getLink(150, 85)  . '" alt="' . $this->e($new->title) . '" />';
+                } else {
+                    echo $new->title;
+                }
+                echo '</a></div>';
             }
             echo "</div>\n";
         }); ?>

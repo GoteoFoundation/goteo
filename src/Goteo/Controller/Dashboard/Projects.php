@@ -11,13 +11,13 @@
 namespace Goteo\Controller\Dashboard {
 
     use Goteo\Model,
-        Goteo\Core\ACL,
         Goteo\Core\Redirection,
 		Goteo\Library\Text,
 		Goteo\Library\Feed,
         Goteo\Model\Mail,
 		Goteo\Library\Page,
         Goteo\Model\Template,
+        Goteo\Model\Project\ProjectMilestone,
 		Goteo\Model\Exception\ModelException,
         Goteo\Application\Session,
         Goteo\Application\Message,
@@ -264,7 +264,7 @@ namespace Goteo\Controller\Dashboard {
                 }
             } elseif ($option == 'rewards' && !empty($_POST['msg_all'])) {
                 // a todos los cofinanciadores
-                foreach (Model\Invest::investors($project->id, false, true) as $user => $investor) {
+                foreach (Model\Invest::investors($project->id, false, true, 0, null) as $user => $investor) {
                     // no duplicar
                     $who[$investor->user] = $investor->user;
                 }
@@ -288,6 +288,8 @@ namespace Goteo\Controller\Dashboard {
                     }
                 }
             }
+            // print_r($_POST);
+            // print_r($who);die;
 
             // no hay destinatarios
             if (count($who) == 0) {
@@ -350,6 +352,7 @@ namespace Goteo\Controller\Dashboard {
             $mailHandler->subject = $subject;
             $mailHandler->content = $content;
             $mailHandler->massive = true;
+
             if( !$mailHandler->save($errors) ) throw new ModelException(implode('<br>', $errors));
 
             // - se usa el metodo initializeSending para grabar el envío (parametro para autoactivar)
@@ -573,7 +576,6 @@ namespace Goteo\Controller\Dashboard {
 
                 // si ha marcado publish, grabamos evento de nueva novedad en proyecto
                 if ((bool) $post->publish) {
-
                     // imagen de proyecto si la entrada no tiene imagen
 
                     if (is_object($post->image)) {
@@ -611,7 +613,8 @@ namespace Goteo\Controller\Dashboard {
                     $log->doPublic('projects');
 
                     // si no ha encontrado otro, lanzamos la notificación a cofinanciadores
-                    if (!$log->unique_issue) {
+                    // y el post no es demasiado viejo
+                    if (!$log->unique_issue && (new \DateTime('-1 week')) <  (new \DateTime($post->date))) {
                         \Goteo\Console\UsersSend::toInvestors('update', $project, null, $post);
                     }
 
@@ -619,6 +622,28 @@ namespace Goteo\Controller\Dashboard {
                 }
             } else {
                 $errors[] = Text::get('dashboard-project-updates-fail');
+            }
+
+            // Get de post Milestone
+            $post_milestone=ProjectMilestone::get($project->id, $post->id);
+
+            if($post->publish && !$post_milestone)
+            {
+                //Insert milestone
+                $project_milestone= new ProjectMilestone;
+                $project_milestone->project=$project->id;
+                $project_milestone->post=$post->id;
+                $project_milestone->date=$post->date;
+                $project_milestone->save($errors);
+            }
+            elseif(!$post->publish)
+            {
+                //Delete milestone
+                $project_milestone= new ProjectMilestone;
+                $project_milestone->project=$project->id;
+                $project_milestone->post=$post->id;
+                $project_milestone->removePostMilestone($errors);
+
             }
 
             return array($action, $id);
@@ -645,7 +670,7 @@ namespace Goteo\Controller\Dashboard {
             $sql = 'SELECT published, closed, success, passed FROM project WHERE id = ?';
             $result = Model\Invest::query($sql, array($id));
             $dates = $result->fetchObject();
-
+            if(empty($dates)) $dates = new \stdClass;
             $project_conf = Model\Project\Conf::get($id);
             $dates->days_round1 = (int) $project_conf->days_round1;
             $dates->days_round2 = (int) $project_conf->days_round2;

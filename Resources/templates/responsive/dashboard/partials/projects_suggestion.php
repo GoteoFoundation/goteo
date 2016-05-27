@@ -13,7 +13,7 @@
     <?php foreach ($this->projects_suggestion as $key => $project) : ?>
             
               <div class="col-sm-6 col-md-4 col-xs-12 spacer">
-                <?= $this->insert('projects/widget.php', ['project' => $project]) ?>
+                <?= $this->insert('project/widget.php', ['project' => $project]) ?>
               </div>
     <?php endforeach; ?>
     </div>

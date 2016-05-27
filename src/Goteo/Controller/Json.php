@@ -276,6 +276,68 @@ class Json extends \Goteo\Core\Controller {
                     }
                 }
             }
+            elseif($type === 'call') {
+                //check if user can edit call
+                try {
+                    $call = \Goteo\Model\Call::get($id);
+                    if(!$call->user == Session::getUserid() && !Session::isAdmin()) {
+                        $return['msg'] = 'Call id invalid: You don\'t have permissions to edit this call!';
+                        $call = false;
+                    }
+                } catch(\Exception $e){
+                    $return['msg'] = 'Call id invalid: ' . strip_tags($e->getMessage());
+                    $call = false;
+                }
+
+                if($call) {
+                    $callId = $call->id;
+                    $return['call'] = $callId;
+                    if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+                        //Handles call localization
+                        if($_POST['latitude'] && $_POST['longitude']) {
+                            $loc = new \Goteo\Model\Call\CallLocation(array(
+                                'id'         => $callId,
+                                'city'         => $_POST['city'],
+                                'region'       => $_POST['region'],
+                                'country'      => $_POST['country'],
+                                'country_code' => $_POST['country_code'],
+                                'longitude'    => $_POST['longitude'],
+                                'latitude'     => $_POST['latitude'],
+                                'method'       => $_POST['method']
+                            ));
+                            if ($loc->save($errors)) {
+                                $return['msg'] = 'Location successfully added for call';
+                                $return['location'] = $loc;
+                                $return['success'] = true;
+                            } else {
+                                $return['msg'] = 'Localization saving errors: '. implode(',', $errors);
+                            }
+                        }
+                        else {
+                            //Just changes some properties (locable, info)
+                            foreach($_POST as $key => $value) {
+                                if($key === 'locable' || $key === 'info') {
+                                    if(\Goteo\Model\Call\CallLocation::setProperty($callId, $key, $value, $errors)) {
+                                        $return['msg'] = 'Property succesfully changed for call';
+                                        $return['success'] = true;
+                                    }
+                                    else {
+                                        $return['msg'] = implode(',', $errors);
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    //GET method just returns call info
+                    elseif ($loc = \Goteo\Model\Call\CallLocation::get($callId)) {
+                        $return['location'] = $loc;
+                        $return['success'] = true;
+                    }
+                    else {
+                        $return['msg'] = 'Call has no location';
+                    }
+                }
+            }
             elseif($type === 'donor') {
                 //check if user can edit donor
                 try {

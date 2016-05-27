@@ -15,8 +15,8 @@ $the_filters = '';
 foreach ($filters as $key=>$value) {
     $the_filters = "&{$key}={$value}";
 }
-if (!empty($this->post)) {
-    $post = Post::get($this->post, LANG);
+if (!empty($this->vars['post'])) {
+    $post = Post::get($this->vars['post'], LANG);
 }
 
 $bodyClass = 'blog';

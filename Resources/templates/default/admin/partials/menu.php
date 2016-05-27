@@ -2,7 +2,7 @@
 <?php
 
 $zones = array(
-    'admin-contents' => array('node', 'blog', 'texts', 'faq', 'pages', 'categories', 'licenses', 'icons', 'tags', 'criteria', 'templates', 'glossary', 'info', 'wordcount'),
+    'admin-contents' => array('node', 'blog', 'texts', 'faq', 'pages', 'categories', 'licenses', 'icons', 'tags', 'criteria', 'templates', 'glossary', 'info', 'wordcount', 'milestones'),
     'admin-projects' => array('projects', 'accounts', 'reviews', 'translates', 'rewards', 'commons'),
     'admin-users' => array('users', 'worth', 'mailing', 'sent'),
     'admin-home' => array('home', 'promote', 'news', 'banners', 'footer', 'recent'),

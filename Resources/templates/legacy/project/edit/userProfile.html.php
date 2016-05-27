@@ -22,6 +22,51 @@ foreach ($vars['interests'] as $value => $label) {
 
 $user_webs = array();
 
+$birthyear_options=array();
+
+$years =  range(date('Y') - 18, date('Y') - 100 );
+
+$birthyear_options[]= array(
+            'value'     => '',
+            'label'     => Text::get('invest-address-birthyear-field')
+        );
+
+foreach ($years as $year) {
+    $birthyear_options[] =  array(
+            'value'     => $year,
+            'label'     => $year,
+        );
+}
+
+
+$legal_entity_options=[
+    [   'value' => '' ,
+        'label' => Text::get('profile-field-legal-entity-choose') 
+    ], 
+    [   'value' => '0' ,
+        'label' => Text::get('profile-field-legal-entity-person') 
+    ],
+    [   'value' => '1' ,
+        'label' => Text::get('profile-field-legal-entity-self-employed') 
+    ],
+    [   'value' => '2' ,
+        'label' => Text::get('profile-field-legal-entity-ngo') 
+    ],
+    [   'value' => '3' ,
+        'label' => Text::get('profile-field-legal-entity-company') 
+    ],
+    [   'value' => '4' ,
+        'label' => Text::get('profile-field-legal-entity-cooperative') 
+    ],
+    [   'value' => '5' ,
+        'label' => Text::get('profile-field-legal-entity-asociation') 
+    ],
+    [   'value' => '6' ,
+        'label' => Text::get('profile-field-legal-entity-others') 
+    ],
+];
+
+
 foreach ($user->webs as $web) {
 
     $ch = array();
@@ -122,6 +167,49 @@ echo SuperForm::get(array(
             //write data to location tables
             'data'      => array('geocoder-type' => 'user'),
             'value'     => $user->location
+        ),
+
+        'user_birthyear' => array(
+            'type'      => 'Select',
+            'title'     => Text::get('invest-address-birthyear-field'),
+            'hint'      => '',
+            'errors'    => !empty($errors['birthyear']) ? array($errors['birthyear']) : array(),
+            'ok'        => !empty($okeys['birthyear']) ? array($okeys['birthyear']) : array(),
+            'options'   => $birthyear_options,
+            'value'     => $user->birthyear
+        ),
+
+        "user_gender"  => array(
+                        'title'     => Text::get('invest-address-gender-field'),
+                        'class'     => 'inline cost-required cols_2',
+                        'type'      => 'radios',
+                        'options'   => array (
+                            array(
+                                    'value'     => 'M',
+                                    'class'     => 'required_cost-yes',
+                                    'label'     => Text::get('regular-male')
+                                ),
+                            array(
+                                    'value'     => 'F',
+                                    'class'     => 'required_cost-no',
+                                    'label'     => 'Dos rondas',
+                                    'label'     => Text::get('regular-female')
+                                )
+                        ),
+                        'value'     => $user->gender,
+                        'errors'    => array(),
+                        'ok'        => array(),
+                        'hint'      => ''
+        ),
+
+        'user_legal_entity' => array(
+            'type'      => 'Select',
+            'title'     => Text::get('profile-field-legal-entity'),
+            'hint'      => '',
+            'errors'    => !empty($errors['legal_entity']) ? array($errors['legal_entity']) : array(),
+            'ok'        => !empty($okeys['legal_entity']) ? array($okeys['legal_entity']) : array(),
+            'options'   => $legal_entity_options,
+            'value'     => $user->legal_entity
         ),
 
         'anchor-avatar' => array(

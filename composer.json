@@ -60,7 +60,8 @@
         "cron/cron": "1.0.*@dev",
         "symfony/process": "^2.7",
         "bramus/monolog-colored-line-formatter": "~2.0",
-        "setasign/fpdf": "1.8"
+        "setasign/fpdf": "1.8",
+        "rych/phpass": "3.0.*@beta"
 
     },
 

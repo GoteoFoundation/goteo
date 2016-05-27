@@ -28,6 +28,49 @@ foreach ($vars['interests'] as $value => $label) {
         );
 }
 
+$birthyear_options=array();
+
+$years =  range(date('Y') - 18, date('Y') - 100 );
+
+$birthyear_options[]= array(
+            'value'     => '',
+            'label'     => Text::get('invest-address-birthyear-field')
+        );
+
+foreach ($years as $year) {
+    $birthyear_options[] =  array(
+            'value'     => $year,
+            'label'     => $year,
+        );
+}
+
+$legal_entity_options=[
+    [   'value' => '' ,
+        'label' => Text::get('profile-field-legal-entity-choose') 
+    ], 
+    [   'value' => '0' ,
+        'label' => Text::get('profile-field-legal-entity-person') 
+    ],
+    [   'value' => '1' ,
+        'label' => Text::get('profile-field-legal-entity-self-employed') 
+    ],
+    [   'value' => '2' ,
+        'label' => Text::get('profile-field-legal-entity-ngo') 
+    ],
+    [   'value' => '3' ,
+        'label' => Text::get('profile-field-legal-entity-company') 
+    ],
+    [   'value' => '4' ,
+        'label' => Text::get('profile-field-legal-entity-cooperative') 
+    ],
+    [   'value' => '5' ,
+        'label' => Text::get('profile-field-legal-entity-asociation') 
+    ],
+    [   'value' => '6' ,
+        'label' => Text::get('profile-field-legal-entity-others') 
+    ],
+];
+
 $user_webs = array();
 
 foreach ($user->webs as $web) {
@@ -204,6 +247,59 @@ if (isset($user->roles['vip'])) {
         );
 }
 
+$superarray['elements']['user_birthyear'] = array(
+            'type'      => 'Select',
+            'title'     => Text::get('invest-address-birthyear-field'),
+            'hint'      => '',
+            'errors'    => !empty($errors['birthyear']) ? array($errors['birthyear']) : array(),
+            'ok'        => !empty($okeys['birthyear']) ? array($okeys['birthyear']) : array(),
+            'options'   => $birthyear_options,
+            'value'     => $user->birthyear
+        );
+
+$superarray['elements']['user_gender']  = array(
+                        'title'     => Text::get('invest-address-gender-field'),
+                        'class'     => 'inline cost-required cols_2',
+                        'type'      => 'radios',
+                        'options'   => array (
+                            array(
+                                    'value'     => 'M',
+                                    'class'     => 'required_cost-yes',
+                                    'label'     => Text::get('regular-male')
+                                ),
+                            array(
+                                    'value'     => 'F',
+                                    'class'     => 'required_cost-no',
+                                    'label'     => 'Dos rondas',
+                                    'label'     => Text::get('regular-female')
+                                )
+                        ),
+                        'value'     => $user->gender,
+                        'errors'    => array(),
+                        'ok'        => array(),
+                        'hint'      => ''
+        );
+
+$superarray['elements']['user_legal_entity']  =  array(
+            'type'      => 'Select',
+            'title'     => Text::get('profile-field-legal-entity'),
+            'hint'      => '',
+            'errors'    => !empty($errors['legal_entity']) ? array($errors['legal_entity']) : array(),
+            'ok'        => !empty($okeys['legal_entity']) ? array($okeys['legal_entity']) : array(),
+            'options'   => $legal_entity_options,
+            'value'     => $user->legal_entity
+        );
+
+$superarray['elements']['user_entity_type'] = array(
+            'type'      => 'checkbox',
+            'class'     => 'cols_1',
+            'label'     => Text::get('profile-field-entity-type-checkbox-public'),
+            'errors'    => array(),
+            'ok'        => array(),
+            'checked'   => (bool) $user->entity_type,
+            'value'     => 1
+        );
+
 // seguimos con los campos
 $superarray['elements']['user_about'] = array(
             'type'      => 'textarea',
@@ -216,6 +312,7 @@ $superarray['elements']['user_about'] = array(
             'ok'        => !empty($okeys['about']) ? array($okeys['about']) : array(),
             'value'     => $user->about
         );
+
 $superarray['elements']['interests'] = array(
             'type'      => 'checkboxes',
             'required'  => true,
@@ -227,6 +324,7 @@ $superarray['elements']['interests'] = array(
             'ok'        => !empty($okeys['interests']) ? array($okeys['interests']) : array(),
             'options'   => $interests
         );
+
 $superarray['elements']['user_keywords'] = array(
             'type'      => 'textbox',
             'required'  => true,

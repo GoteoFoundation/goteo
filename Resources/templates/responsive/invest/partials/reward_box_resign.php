@@ -1,6 +1,6 @@
     <form class="form-horizontal" role="form" method="GET" action="/invest/<?= $this->project->id ?>/payment">
 
-    <div class="row no-padding col-sm-10 col-sm-offset-1">
+    <div class="row padding-sm no-padding col-sm-10 col-sm-offset-1">
         <label class="label-reward <?= $this->reward ? '' : 'reward-choosen' ?>" for="reward-empty">
             <div class="col-sm-11 no-padding">
                 <input name="reward" class="reward" id="reward-empty" <?= $this->reward ? '' : 'checked="checked"' ?> value="0" type="radio">
@@ -8,7 +8,7 @@
             </div>
 
             <div class="amount-box">
-                <div class="row no-padding col-sm-10 col-sm-offset-2 margin-2" id="amount-container">
+                <div class="row col-sm-10 col-sm-offset-2 margin-2" id="amount-container">
                     <div class="col-sm-1 col-sm-offset-1 no-padding col-xs-1">
                         <strong class="reward-amount"><?= $this->get_currency('symbol') ?></strong>
                     </div>

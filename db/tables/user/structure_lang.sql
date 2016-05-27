@@ -6,3 +6,7 @@ CREATE TABLE IF NOT EXISTS `user_lang` (
 `contribution` text COLLATE utf8_general_ci DEFAULT NULL,
  UNIQUE KEY `id_lang` (`id`,`lang`)
 ) ENGINE = InnoDB CHARACTER SET utf8 COLLATE utf8_general_ci;
+
+-- user name translate
+ALTER TABLE `user_lang`
+  ADD COLUMN `name` varchar(100) COLLATE utf8_general_ci DEFAULT NULL AFTER `about`;

@@ -1,5 +1,6 @@
 /*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
 
+INSERT IGNORE INTO `node` (`id`, `name`, `email`, `url`, `active`) VALUES('goteo', 'Goteo Central', '', '', 1);
 
 /* Alter table in target */
 ALTER TABLE `banner`
@@ -16,33 +17,6 @@ ALTER TABLE `banner`
 /* Alter table in target */
 ALTER TABLE `banner_lang`
     ADD COLUMN `pending` int(1)   NULL DEFAULT 0 COMMENT 'Debe revisarse la traducción' after `description` ;
-
-/* Create table in target */
-CREATE TABLE `bazar`(
-    `id` bigint(20) unsigned NOT NULL  auto_increment ,
-    `reward` bigint(20) unsigned NULL  ,
-    `project` varchar(50) COLLATE utf8_general_ci NULL  ,
-    `title` tinytext COLLATE utf8_general_ci NULL  ,
-    `description` text COLLATE utf8_general_ci NULL  ,
-    `amount` int(5) NULL  ,
-    `image` varchar(255) COLLATE utf8_general_ci NULL  COMMENT 'Contiene nombre de archivo' ,
-    `order` smallint(5) NOT NULL  DEFAULT 9999 ,
-    `active` int(1) NOT NULL  DEFAULT 1 ,
-    PRIMARY KEY (`id`) ,
-    UNIQUE KEY `id`(`id`)
-) ENGINE=InnoDB DEFAULT CHARSET='utf8' COLLATE='utf8_general_ci' COMMENT='productos del catalogo';
-
-
-/* Create table in target */
-CREATE TABLE `bazar_lang`(
-    `id` bigint(20) unsigned NOT NULL  ,
-    `lang` varchar(2) COLLATE utf8_general_ci NOT NULL  ,
-    `title` tinytext COLLATE utf8_general_ci NULL  ,
-    `description` text COLLATE utf8_general_ci NULL  ,
-    `pending` int(1) NULL  DEFAULT 0 COMMENT 'Debe revisarse la traducción' ,
-    UNIQUE KEY `id_lang`(`id`,`lang`)
-) ENGINE=InnoDB DEFAULT CHARSET='utf8' COLLATE='utf8_general_ci';
-
 
 /* Create table in target */
 CREATE TABLE `call`(

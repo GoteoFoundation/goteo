@@ -65,3 +65,46 @@ assets:
 This will be fully documented some day. 
 
 Meanwhile, please take a look at the file  `extend/goteo-dev/start.php`  as an example.
+
+
+## Dev plugin
+
+There's a demo plugin with some utilities distributed with the code, the  `goteo-dev` plugin.
+It adds a toolbar at the bottom of the page with debugging info.
+Also, it provides a useful command line that can be used to create testing situations:
+
+```bash
+./bin/console dev:statusinit -h
+```
+
+```
+Help:
+ This script initializes projects, invests and users to some known status in order to allow tests
+ 
+ Usage:
+ 
+ Run the SQL scripts to initialize status
+ ./bin/console dev:statusinit
+ 
+ Run the SQL scripts to initialize status with published, passed and closed dates
+ so it can be used to test the endround (and others such as projectwatch) command
+ 
+ One day succeeded, published or failed projects:
+ ./bin/console dev:statusinit --delta 1
+ 
+ Ten days succeeded, published or failed projects:
+ ./bin/console dev:statusinit --delta 10
+ 
+ Removes all testing data:
+ ./bin/console dev:statusinit --erase
+ 
+ Removes all testing data and creates a fresh one:
+ ./bin/console dev:statusinit -ec
+ 
+ Removes all testing data and creates a fresh one 5 days in the past:
+ ./bin/console dev:statusinit -ecd 5
+ 
+ Be verbose (show the SQL executed):
+ ./bin/console dev:statusinit --erase -v
+
+```

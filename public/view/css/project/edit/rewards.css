@@ -351,7 +351,14 @@ body.project-edit div#main.rewards div.superform li.element.editsocial_reward li
 body.project-edit div#main.rewards div.superform li.element.reward div.license_xoln ,
 body.project-edit div#main.rewards div.superform li.element.editsocial_reward li.license_xoln div.contents {
     background-image: url('/view/css/license/xoln.png');
-}/* Fin licencias */
+}
+
+body.project-edit div#main.rewards div.superform li.element.reward div.license_ppl ,
+body.project-edit div#main.rewards div.superform li.element.editsocial_reward li.license_ppl div.contents {
+    background-image: url('/view/css/license/ppl.png');
+}
+
+/* Fin licencias */
 
 body.project-edit div#main.rewards div.superform li.element.editindividual_reward div.children li.element.reward-amount > div.contents {
     position: relative;

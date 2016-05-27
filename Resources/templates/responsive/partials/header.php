@@ -17,7 +17,7 @@ $select_currency=Currency::$currencies[$_SESSION['currency']]['html'];
               <span class="icon-bar"></span>
               <span class="icon-bar"></span>
             </button>
-            <a class="navbar-brand" href="<?= SITE_URL ?>"><img src="<?= SRC_URL ?>/assets/img/logo.png" class="img-responsive logo" alt="Goteo"></a>
+            <a class="navbar-brand" href="<?= SITE_URL ?>"><img src="<?= SRC_URL ?>/assets/img/logo.svg" class="img-responsive logo" alt="Goteo"></a>
           </div>
           <div id="navbar" class="navbar-collapse collapse">
             <ul class="nav navbar-nav navbar-right">

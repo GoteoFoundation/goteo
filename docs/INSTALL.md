@@ -17,15 +17,36 @@ Server configuration
 
 Goteo has been tested under Nginx and Apache configurations.
 
-You will need to build a `dist` production folder an point the webserver onto it. Use `grunt build` to create a minimized assets or `grunt build:devel` for javascript/css debugging.
+> At this point, there are still no production-ready releases. Please refer to the [developers](developers/environment.html) documentation for more info.
+>
+> You will need to install dependencies and to build a `dist` production folder to point the webserver onto it.
+>
+> We use [Composer](https://getcomposer.org/) and [Grunt](http://gruntjs.com/) for that. [Be sure to have it installed in your system](developers/environment.html).
+>
+> **Quick start**
+>
+> Install all the required dependencies:
+>
+> ```bash
+> composer install
+> npm install
+> ```
+>
+> Create the compiled minimized system:
+>
+> ```bash
+> grunt build
+> ```
+>
+> Alternatively, use  `grunt build:devel` for javascript/css debugging.
 
-At this point, there are still no production-ready releases. Please refer to the [developers](developers/environment.html) documentation for more info.
+
 
 ### Apache config:
 
 Modrewrite must be enabled for apache below 2.2.16:
 
-```
+```apache
 <IfModule mod_rewrite.c>
     Options -MultiViews
 
@@ -38,13 +59,13 @@ Modrewrite must be enabled for apache below 2.2.16:
 
 Alternatively, if you use Apache 2.2.16 or higher, you can use the FallbackResource directive to make your .htaccess even easier:
 
-```
+```apache
 FallbackResource /index.php
 ```
 
 ### Nginx config:
 
-```
+```nginxs
 server {
     server_name domain.tld www.domain.tld;
     root /var/www/goteo-folder/dist;
@@ -101,14 +122,16 @@ mysql -u your_user -p your_password < db/install/data.sql
 Then, apply these updates:
 
 ```bash
-mysql -u your_user -p your_password < db/install/upgrade-to-v3.0.3.sql
+mysql -u your_user -p your_password < db/install/upgrade-to-v3.0.6.sql
 ```
 
 This should give you an empty system with only one user "root".
 
-Login with user "root" and password "root" (no quotes).
+Login with user **"root"** and password **"root"** (no quotes).
 Go `http://your.intallation.site/admin/users/edit/root` to change the password and email
 Try login with that password and manage the contents at http://your.intallation.site/admin
+
+The `data.sql` script also creates demo project, you can remove all demo data by using the command `./bin/console dev:statusinit --erase'` from the [dev-plugin](developers/extend.html#dev-plugin).
 
 However, we haven't tested it in any production database and very likely errors will be thrown. Debugging info will be appreciated.
 

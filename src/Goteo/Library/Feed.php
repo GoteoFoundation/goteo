@@ -613,7 +613,7 @@ class Feed {
 
                 if (substr($item->url, 0, 5) == '/user') {
                     $content .= '<div class="content-avatar">
-                    <a href="'.$item->url.'" class="avatar"><img src="'.$item->image->getLink(32, 32, true).'" /></a>
+                    <a href="'.$item->url.'" class="avatar"><img height="32" width="32" src="'.$item->image->getLink(32, 32, true).'" /></a>
                     <a href="'.$item->url.'" class="username">'.$item->title.'</a>
                     <span class="datepub">'.$pub_timeago.'</span>
                     </div>';

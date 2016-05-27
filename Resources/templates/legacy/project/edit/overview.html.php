@@ -26,6 +26,15 @@ foreach ($vars['languages'] as $value => $object) {
     );
 }
 
+$scope = array();
+
+    foreach ($vars['scope'] as $value => $label) {
+        $scope[] =  array(
+            'value'     => $value,
+            'label'     => $label
+        );
+    }
+
 // preparamos campo de divisa
 $currencies = $vars['currencies'];
 
@@ -94,7 +103,7 @@ if (!empty($project->video->url)) {
 
 // en función de si es pre-form o form
 
-if (!$project->draft) {
+if (!$project->draft || $project->call) {
 
     $about = array(
             'type'      => 'textarea',
@@ -367,6 +376,7 @@ $superform = array(
 
         'video-preview' => $video,
 
+
         // fin video motivacion
 
         /*
@@ -397,7 +407,7 @@ $superform = array(
 
 
 
-        /* Aligerando superform
+        // Aligerando superform
         'scope' => array(
             'title'     => Text::get('overview-field-scope'),
             'type'      => 'slider',
@@ -409,7 +419,7 @@ $superform = array(
             'ok'        => !empty($okeys['scope']) ? array($okeys['scope']) : array(),
             'value'     => $project->scope
         ),
-         */
+         
 
         'footer' => array(
             'type'      => 'group',

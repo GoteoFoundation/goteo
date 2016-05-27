@@ -179,7 +179,7 @@ namespace Goteo\Controller {
                 }
 			}
 
-            throw new Redirection("/project/{$project}/messages#message".$message->id, Redirection::TEMPORARY);
+            throw new Redirection("/project/{$project}/participate#child-msg-".$message->id, Redirection::TEMPORARY);
         }
 
         public function edit ($id, $project) {

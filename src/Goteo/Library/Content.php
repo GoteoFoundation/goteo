@@ -39,7 +39,8 @@ namespace Goteo\Library {
                 'worthcracy'=> 'Meritocrácia',
                 'template'  => 'Plantillas emails automáticos',
                 'glossary'  => 'Glosario de términos',
-                'info'      => 'Ideas de about'
+                'info'      => 'Ideas de about',
+                'milestone'      => 'Hitos'
             ),
             $fields = array(
                 'banner' => array (
@@ -117,6 +118,9 @@ namespace Goteo\Library {
                     'legend' => 'Leyenda media',
                     'share_facebook' => 'Share facebook',
                     'share_twitter' => 'Share twitter'
+                ),
+                'milestone' => array (
+                    'description' => 'Descripción'
                 )
             ),
             $types = array(
