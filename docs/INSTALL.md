@@ -63,6 +63,10 @@ Alternatively, if you use Apache 2.2.16 or higher, you can use the FallbackResou
 FallbackResource /index.php
 ```
 
+> **NOTE:**
+> - If you want to debug the site, you must point the server to the `index_dev.php` file instead of `index.php`. This way error traces will be shown in the error pages
+> - If you cannot configure the server to point to the `dist/` folder, the `.htaccess` file on the root folder can be used as alternative
+
 ### Nginx config:
 
 ```nginxs
@@ -107,16 +111,18 @@ server {
 Database configuration
 ----------------------
 
-A minimal system must be created, import this 2 SQL scripts:
+A minimal system must be created, import this 3 SQL scripts:
 
 - `db/install/structure.sql`
 - `db/install/data.sql`
+- `db/install/templates.sql`
 
 Both scripts should be applied in a MySQL console:
 
 ```bash
 mysql -u your_user -p your_password < db/install/structure.sql
 mysql -u your_user -p your_password < db/install/data.sql
+mysql -u your_user -p your_password < db/install/templates.sql
 ```
 
 Then, apply these updates:

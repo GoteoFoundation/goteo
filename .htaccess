@@ -1,0 +1,14 @@
+AddDefaultCharset UTF-8
+Options +FollowSymLinks
+ServerSignature Off
+
+<IfModule mod_rewrite.c>
+    # You can use this file to for Apache to point to the dist/ folder
+    RewriteEngine On
+    RewriteBase /dist
+    RewriteCond %{REQUEST_FILENAME} !-f
+    # Use this for debugging
+    # RewriteRule .* index_dev.php?%{QUERY_STRING}
+    # For production
+    RewriteRule .* index.php?%{QUERY_STRING}
+</IfModule>

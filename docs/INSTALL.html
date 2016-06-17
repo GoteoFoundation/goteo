@@ -1,0 +1,1456 @@
+<!DOCTYPE html><html><head><meta charset="utf-8"><meta name="currentmenu" content="install"><style>body {
+  width: 45em;
+  border: 1px solid #ddd;
+  outline: 1300px solid #fff;
+  margin: 16px auto;
+}
+
+body .markdown-body
+{
+  padding: 30px;
+}
+
+@font-face {
+  font-family: fontawesome-mini;
+  src: url(data:font/woff;charset=utf-8;base64,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) format('woff');
+}
+
+@font-face {
+  font-family: octicons-anchor;
+  src: url(data:font/woff;charset=utf-8;base64,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) format('woff');
+}
+
+.markdown-body {
+  font-family: sans-serif;
+  -ms-text-size-adjust: 100%;
+  -webkit-text-size-adjust: 100%;
+  color: #333333;
+  overflow: hidden;
+  font-family: "Helvetica Neue", Helvetica, "Segoe UI", Arial, freesans, sans-serif;
+  font-size: 16px;
+  line-height: 1.6;
+  word-wrap: break-word;
+}
+
+.markdown-body a {
+  background: transparent;
+}
+
+.markdown-body a:active,
+.markdown-body a:hover {
+  outline: 0;
+}
+
+.markdown-body b,
+.markdown-body strong {
+  font-weight: bold;
+}
+
+.markdown-body mark {
+  background: #ff0;
+  color: #000;
+  font-style: italic;
+  font-weight: bold;
+}
+
+.markdown-body sub,
+.markdown-body sup {
+  font-size: 75%;
+  line-height: 0;
+  position: relative;
+  vertical-align: baseline;
+}
+.markdown-body sup {
+  top: -0.5em;
+}
+.markdown-body sub {
+  bottom: -0.25em;
+}
+
+.markdown-body h1 {
+  font-size: 2em;
+  margin: 0.67em 0;
+}
+
+.markdown-body img {
+  border: 0;
+}
+
+.markdown-body hr {
+  -moz-box-sizing: content-box;
+  box-sizing: content-box;
+  height: 0;
+}
+
+.markdown-body pre {
+  overflow: auto;
+}
+
+.markdown-body code,
+.markdown-body kbd,
+.markdown-body pre,
+.markdown-body samp {
+  font-family: monospace, monospace;
+  font-size: 1em;
+}
+
+.markdown-body input {
+  color: inherit;
+  font: inherit;
+  margin: 0;
+}
+
+.markdown-body html input[disabled] {
+  cursor: default;
+}
+
+.markdown-body input {
+  line-height: normal;
+}
+
+.markdown-body input[type="checkbox"] {
+  box-sizing: border-box;
+  padding: 0;
+}
+
+.markdown-body table {
+  border-collapse: collapse;
+  border-spacing: 0;
+}
+
+.markdown-body td,
+.markdown-body th {
+  padding: 0;
+}
+
+.markdown-body .codehilitetable {
+  border: 0;
+  border-spacing: 0;
+}
+
+.markdown-body .codehilitetable tr {
+  border: 0;
+}
+
+.markdown-body .codehilitetable pre,
+.markdown-body .codehilitetable div.codehilite {
+  margin: 0;
+}
+
+.markdown-body .linenos,
+.markdown-body .code,
+.markdown-body .codehilitetable td {
+  border: 0;
+  padding: 0;
+}
+
+.markdown-body td:not(.linenos) .linenodiv {
+  padding: 0 !important;
+}
+
+.markdown-body .code {
+  width: 100%;
+}
+
+.markdown-body .linenos div pre,
+.markdown-body .linenodiv pre,
+.markdown-body .linenodiv {
+  border: 0;
+  -webkit-border-radius: 0;
+  -moz-border-radius: 0;
+  border-radius: 0;
+  -webkit-border-top-left-radius: 3px;
+  -webkit-border-bottom-left-radius: 3px;
+  -moz-border-radius-topleft: 3px;
+  -moz-border-radius-bottomleft: 3px;
+  border-top-left-radius: 3px;
+  border-bottom-left-radius: 3px;
+}
+
+.markdown-body .code div pre,
+.markdown-body .code div {
+  border: 0;
+  -webkit-border-radius: 0;
+  -moz-border-radius: 0;
+  border-radius: 0;
+  -webkit-border-top-right-radius: 3px;
+  -webkit-border-bottom-right-radius: 3px;
+  -moz-border-radius-topright: 3px;
+  -moz-border-radius-bottomright: 3px;
+  border-top-right-radius: 3px;
+  border-bottom-right-radius: 3px;
+}
+
+.markdown-body * {
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+}
+
+.markdown-body input {
+  font: 13px Helvetica, arial, freesans, clean, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol";
+  line-height: 1.4;
+}
+
+.markdown-body a {
+  color: #4183c4;
+  text-decoration: none;
+}
+
+.markdown-body a:hover,
+.markdown-body a:focus,
+.markdown-body a:active {
+  text-decoration: underline;
+}
+
+.markdown-body hr {
+  height: 0;
+  margin: 15px 0;
+  overflow: hidden;
+  background: transparent;
+  border: 0;
+  border-bottom: 1px solid #ddd;
+}
+
+.markdown-body hr:before,
+.markdown-body hr:after {
+  display: table;
+  content: " ";
+}
+
+.markdown-body hr:after {
+  clear: both;
+}
+
+.markdown-body h1,
+.markdown-body h2,
+.markdown-body h3,
+.markdown-body h4,
+.markdown-body h5,
+.markdown-body h6 {
+  margin-top: 15px;
+  margin-bottom: 15px;
+  line-height: 1.1;
+}
+
+.markdown-body h1 {
+  font-size: 30px;
+}
+
+.markdown-body h2 {
+  font-size: 21px;
+}
+
+.markdown-body h3 {
+  font-size: 16px;
+}
+
+.markdown-body h4 {
+  font-size: 14px;
+}
+
+.markdown-body h5 {
+  font-size: 12px;
+}
+
+.markdown-body h6 {
+  font-size: 11px;
+}
+
+.markdown-body blockquote {
+  margin: 0;
+}
+
+.markdown-body ul,
+.markdown-body ol {
+  padding: 0;
+  margin-top: 0;
+  margin-bottom: 0;
+}
+
+.markdown-body ol ol,
+.markdown-body ul ol {
+  list-style-type: lower-roman;
+}
+
+.markdown-body ul ul ol,
+.markdown-body ul ol ol,
+.markdown-body ol ul ol,
+.markdown-body ol ol ol {
+  list-style-type: lower-alpha;
+}
+
+.markdown-body dd {
+  margin-left: 0;
+}
+
+.markdown-body code,
+.markdown-body pre,
+.markdown-body samp {
+  font-family: Consolas, "Liberation Mono", Menlo, Courier, monospace;
+  font-size: 12px;
+}
+
+.markdown-body pre {
+  margin-top: 0;
+  margin-bottom: 0;
+}
+
+.markdown-body kbd {
+  background-color: #e7e7e7;
+  background-image: -moz-linear-gradient(#fefefe, #e7e7e7);
+  background-image: -webkit-linear-gradient(#fefefe, #e7e7e7);
+  background-image: linear-gradient(#fefefe, #e7e7e7);
+  background-repeat: repeat-x;
+  border-radius: 2px;
+  border: 1px solid #cfcfcf;
+  color: #000;
+  padding: 3px 5px;
+  line-height: 10px;
+  font: 11px Consolas, "Liberation Mono", Menlo, Courier, monospace;
+  display: inline-block;
+}
+
+.markdown-body>*:first-child {
+  margin-top: 0 !important;
+}
+
+.markdown-body>*:last-child {
+  margin-bottom: 0 !important;
+}
+
+.markdown-body .headeranchor-link {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  display: block;
+  padding-right: 6px;
+  padding-left: 30px;
+  margin-left: -30px;
+}
+
+.markdown-body .headeranchor-link:focus {
+  outline: none;
+}
+
+.markdown-body h1,
+.markdown-body h2,
+.markdown-body h3,
+.markdown-body h4,
+.markdown-body h5,
+.markdown-body h6 {
+  position: relative;
+  margin-top: 1em;
+  margin-bottom: 16px;
+  font-weight: bold;
+  line-height: 1.4;
+}
+
+.markdown-body h1 .headeranchor,
+.markdown-body h2 .headeranchor,
+.markdown-body h3 .headeranchor,
+.markdown-body h4 .headeranchor,
+.markdown-body h5 .headeranchor,
+.markdown-body h6 .headeranchor {
+  display: none;
+  color: #000;
+  vertical-align: middle;
+}
+
+.markdown-body h1:hover .headeranchor-link,
+.markdown-body h2:hover .headeranchor-link,
+.markdown-body h3:hover .headeranchor-link,
+.markdown-body h4:hover .headeranchor-link,
+.markdown-body h5:hover .headeranchor-link,
+.markdown-body h6:hover .headeranchor-link {
+  height: 1em;
+  padding-left: 8px;
+  margin-left: -30px;
+  line-height: 1;
+  text-decoration: none;
+}
+
+.markdown-body h1:hover .headeranchor-link .headeranchor,
+.markdown-body h2:hover .headeranchor-link .headeranchor,
+.markdown-body h3:hover .headeranchor-link .headeranchor,
+.markdown-body h4:hover .headeranchor-link .headeranchor,
+.markdown-body h5:hover .headeranchor-link .headeranchor,
+.markdown-body h6:hover .headeranchor-link .headeranchor {
+  display: inline-block;
+}
+
+.markdown-body h1 {
+  padding-bottom: 0.3em;
+  font-size: 2.25em;
+  line-height: 1.2;
+  border-bottom: 1px solid #eee;
+}
+
+.markdown-body h2 {
+  padding-bottom: 0.3em;
+  font-size: 1.75em;
+  line-height: 1.225;
+  border-bottom: 1px solid #eee;
+}
+
+.markdown-body h3 {
+  font-size: 1.5em;
+  line-height: 1.43;
+}
+
+.markdown-body h4 {
+  font-size: 1.25em;
+}
+
+.markdown-body h5 {
+  font-size: 1em;
+}
+
+.markdown-body h6 {
+  font-size: 1em;
+  color: #777;
+}
+
+.markdown-body p,
+.markdown-body blockquote,
+.markdown-body ul,
+.markdown-body ol,
+.markdown-body dl,
+.markdown-body table,
+.markdown-body pre,
+.markdown-body .admonition {
+  margin-top: 0;
+  margin-bottom: 16px;
+}
+
+.markdown-body hr {
+  height: 4px;
+  padding: 0;
+  margin: 16px 0;
+  background-color: #e7e7e7;
+  border: 0 none;
+}
+
+.markdown-body ul,
+.markdown-body ol {
+  padding-left: 2em;
+}
+
+.markdown-body ul ul,
+.markdown-body ul ol,
+.markdown-body ol ol,
+.markdown-body ol ul {
+  margin-top: 0;
+  margin-bottom: 0;
+}
+
+.markdown-body li>p {
+  margin-top: 16px;
+}
+
+.markdown-body dl {
+  padding: 0;
+}
+
+.markdown-body dl dt {
+  padding: 0;
+  margin-top: 16px;
+  font-size: 1em;
+  font-style: italic;
+  font-weight: bold;
+}
+
+.markdown-body dl dd {
+  padding: 0 16px;
+  margin-bottom: 16px;
+}
+
+.markdown-body blockquote {
+  padding: 0 15px;
+  color: #777;
+  border-left: 4px solid #ddd;
+}
+
+.markdown-body blockquote>:first-child {
+  margin-top: 0;
+}
+
+.markdown-body blockquote>:last-child {
+  margin-bottom: 0;
+}
+
+.markdown-body table {
+  display: block;
+  width: 100%;
+  overflow: auto;
+  word-break: normal;
+  word-break: keep-all;
+}
+
+.markdown-body table th {
+  font-weight: bold;
+}
+
+.markdown-body table th,
+.markdown-body table td {
+  padding: 6px 13px;
+  border: 1px solid #ddd;
+}
+
+.markdown-body table tr {
+  background-color: #fff;
+  border-top: 1px solid #ccc;
+}
+
+.markdown-body table tr:nth-child(2n) {
+  background-color: #f8f8f8;
+}
+
+.markdown-body img {
+  max-width: 100%;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+}
+
+.markdown-body code,
+.markdown-body samp {
+  padding: 0;
+  padding-top: 0.2em;
+  padding-bottom: 0.2em;
+  margin: 0;
+  font-size: 85%;
+  background-color: rgba(0,0,0,0.04);
+  border-radius: 3px;
+}
+
+.markdown-body code:before,
+.markdown-body code:after {
+  letter-spacing: -0.2em;
+  content: "\00a0";
+}
+
+.markdown-body pre>code {
+  padding: 0;
+  margin: 0;
+  font-size: 100%;
+  word-break: normal;
+  white-space: pre;
+  background: transparent;
+  border: 0;
+}
+
+.markdown-body .codehilite {
+  margin-bottom: 16px;
+}
+
+.markdown-body .codehilite pre,
+.markdown-body pre {
+  padding: 16px;
+  overflow: auto;
+  font-size: 85%;
+  line-height: 1.45;
+  background-color: #f7f7f7;
+  border-radius: 3px;
+}
+
+.markdown-body .codehilite pre {
+  margin-bottom: 0;
+  word-break: normal;
+}
+
+.markdown-body pre {
+  word-wrap: normal;
+}
+
+.markdown-body pre code {
+  display: inline;
+  max-width: initial;
+  padding: 0;
+  margin: 0;
+  overflow: initial;
+  line-height: inherit;
+  word-wrap: normal;
+  background-color: transparent;
+  border: 0;
+}
+
+.markdown-body pre code:before,
+.markdown-body pre code:after {
+  content: normal;
+}
+
+/* Admonition */
+.markdown-body .admonition {
+  -webkit-border-radius: 3px;
+  -moz-border-radius: 3px;
+  position: relative;
+  border-radius: 3px;
+  border: 1px solid #e0e0e0;
+  border-left: 6px solid #333;
+  padding: 10px 10px 10px 30px;
+}
+
+.markdown-body .admonition table {
+  color: #333;
+}
+
+.markdown-body .admonition p {
+  padding: 0;
+}
+
+.markdown-body .admonition-title {
+  font-weight: bold;
+  margin: 0;
+}
+
+.markdown-body .admonition>.admonition-title {
+  color: #333;
+}
+
+.markdown-body .attention>.admonition-title {
+  color: #a6d796;
+}
+
+.markdown-body .caution>.admonition-title {
+  color: #d7a796;
+}
+
+.markdown-body .hint>.admonition-title {
+  color: #96c6d7;
+}
+
+.markdown-body .danger>.admonition-title {
+  color: #c25f77;
+}
+
+.markdown-body .question>.admonition-title {
+  color: #96a6d7;
+}
+
+.markdown-body .note>.admonition-title {
+  color: #d7c896;
+}
+
+.markdown-body .admonition:before,
+.markdown-body .attention:before,
+.markdown-body .caution:before,
+.markdown-body .hint:before,
+.markdown-body .danger:before,
+.markdown-body .question:before,
+.markdown-body .note:before {
+  font: normal normal 16px fontawesome-mini;
+  -moz-osx-font-smoothing: grayscale;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  line-height: 1.5;
+  color: #333;
+  position: absolute;
+  left: 0;
+  top: 0;
+  padding-top: 10px;
+  padding-left: 10px;
+}
+
+.markdown-body .admonition:before {
+  content: "\f056\00a0";
+  color: 333;
+}
+
+.markdown-body .attention:before {
+  content: "\f058\00a0";
+  color: #a6d796;
+}
+
+.markdown-body .caution:before {
+  content: "\f06a\00a0";
+  color: #d7a796;
+}
+
+.markdown-body .hint:before {
+  content: "\f05a\00a0";
+  color: #96c6d7;
+}
+
+.markdown-body .danger:before {
+  content: "\f057\00a0";
+  color: #c25f77;
+}
+
+.markdown-body .question:before {
+  content: "\f059\00a0";
+  color: #96a6d7;
+}
+
+.markdown-body .note:before {
+  content: "\f040\00a0";
+  color: #d7c896;
+}
+
+.markdown-body .admonition::after {
+  content: normal;
+}
+
+.markdown-body .attention {
+  border-left: 6px solid #a6d796;
+}
+
+.markdown-body .caution {
+  border-left: 6px solid #d7a796;
+}
+
+.markdown-body .hint {
+  border-left: 6px solid #96c6d7;
+}
+
+.markdown-body .danger {
+  border-left: 6px solid #c25f77;
+}
+
+.markdown-body .question {
+  border-left: 6px solid #96a6d7;
+}
+
+.markdown-body .note {
+  border-left: 6px solid #d7c896;
+}
+
+.markdown-body .admonition>*:first-child {
+  margin-top: 0 !important;
+}
+
+.markdown-body .admonition>*:last-child {
+  margin-bottom: 0 !important;
+}
+
+/* progress bar*/
+.markdown-body .progress {
+  display: block;
+  width: 300px;
+  margin: 10px 0;
+  height: 24px;
+  -webkit-border-radius: 3px;
+  -moz-border-radius: 3px;
+  border-radius: 3px;
+  background-color: #ededed;
+  position: relative;
+  box-shadow: inset -1px 1px 3px rgba(0, 0, 0, .1);
+}
+
+.markdown-body .progress-label {
+  position: absolute;
+  text-align: center;
+  font-weight: bold;
+  width: 100%; margin: 0;
+  line-height: 24px;
+  color: #333;
+  text-shadow: 1px 1px 0 #fefefe, -1px -1px 0 #fefefe, -1px 1px 0 #fefefe, 1px -1px 0 #fefefe, 0 1px 0 #fefefe, 0 -1px 0 #fefefe, 1px 0 0 #fefefe, -1px 0 0 #fefefe, 1px 1px 2px #000;
+  -webkit-font-smoothing: antialiased !important;
+  white-space: nowrap;
+  overflow: hidden;
+}
+
+.markdown-body .progress-bar {
+  height: 24px;
+  float: left;
+  -webkit-border-radius: 3px;
+  -moz-border-radius: 3px;
+  border-radius: 3px;
+  background-color: #96c6d7;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, .5), inset 0 -1px 0 rgba(0, 0, 0, .1);
+  background-size: 30px 30px;
+  background-image: -webkit-linear-gradient(
+    135deg, rgba(255, 255, 255, .4) 27%,
+    transparent 27%,
+    transparent 52%, rgba(255, 255, 255, .4) 52%,
+    rgba(255, 255, 255, .4) 77%,
+    transparent 77%, transparent
+  );
+  background-image: -moz-linear-gradient(
+    135deg,
+    rgba(255, 255, 255, .4) 27%, transparent 27%,
+    transparent 52%, rgba(255, 255, 255, .4) 52%,
+    rgba(255, 255, 255, .4) 77%, transparent 77%,
+    transparent
+  );
+  background-image: -ms-linear-gradient(
+    135deg,
+    rgba(255, 255, 255, .4) 27%, transparent 27%,
+    transparent 52%, rgba(255, 255, 255, .4) 52%,
+    rgba(255, 255, 255, .4) 77%, transparent 77%,
+    transparent
+  );
+  background-image: -o-linear-gradient(
+    135deg,
+    rgba(255, 255, 255, .4) 27%, transparent 27%,
+    transparent 52%, rgba(255, 255, 255, .4) 52%,
+    rgba(255, 255, 255, .4) 77%, transparent 77%,
+    transparent
+  );
+  background-image: linear-gradient(
+    135deg,
+    rgba(255, 255, 255, .4) 27%, transparent 27%,
+    transparent 52%, rgba(255, 255, 255, .4) 52%,
+    rgba(255, 255, 255, .4) 77%, transparent 77%,
+    transparent
+  );
+}
+
+.markdown-body .progress-100plus .progress-bar {
+  background-color: #a6d796;
+}
+
+.markdown-body .progress-80plus .progress-bar {
+  background-color: #c6d796;
+}
+
+.markdown-body .progress-60plus .progress-bar {
+  background-color: #d7c896;
+}
+
+.markdown-body .progress-40plus .progress-bar {
+  background-color: #d7a796;
+}
+
+.markdown-body .progress-20plus .progress-bar {
+  background-color: #d796a6;
+}
+
+.markdown-body .progress-0plus .progress-bar {
+  background-color: #c25f77;
+}
+
+.markdown-body .candystripe-animate .progress-bar{
+  -webkit-animation: animate-stripes 3s linear infinite;
+  -moz-animation: animate-stripes 3s linear infinite;
+  animation: animate-stripes 3s linear infinite;
+}
+
+@-webkit-keyframes animate-stripes {
+  0% {
+    background-position: 0 0;
+  }
+
+  100% {
+    background-position: 60px 0;
+  }
+}
+
+@-moz-keyframes animate-stripes {
+  0% {
+    background-position: 0 0;
+  }
+
+  100% {
+    background-position: 60px 0;
+  }
+}
+
+@keyframes animate-stripes {
+  0% {
+    background-position: 0 0;
+  }
+
+  100% {
+    background-position: 60px 0;
+  }
+}
+
+.markdown-body .gloss .progress-bar {
+  box-shadow:
+    inset 0 4px 12px rgba(255, 255, 255, .7),
+    inset 0 -12px 0 rgba(0, 0, 0, .05);
+}
+
+/* Multimarkdown Critic Blocks */
+.markdown-body .critic_mark {
+  background: #ff0;
+}
+
+.markdown-body .critic_delete {
+  color: #c82829;
+  text-decoration: line-through;
+}
+
+.markdown-body .critic_insert {
+  color: #718c00 ;
+  text-decoration: underline;
+}
+
+.markdown-body .critic_comment {
+  color: #8e908c;
+  font-style: italic;
+}
+
+.markdown-body .headeranchor {
+  font: normal normal 16px octicons-anchor;
+  line-height: 1;
+  display: inline-block;
+  text-decoration: none;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+.headeranchor:before {
+  content: '\f05c';
+}
+
+.markdown-body .task-list-item {
+  list-style-type: none;
+}
+
+.markdown-body .task-list-item+.task-list-item {
+  margin-top: 3px;
+}
+
+.markdown-body .task-list-item input {
+  margin: 0 4px 0.25em -20px;
+  vertical-align: middle;
+}
+
+/* Media */
+@media only screen and (min-width: 480px) {
+  .markdown-body {
+    font-size:14px;
+  }
+}
+
+@media only screen and (min-width: 768px) {
+  .markdown-body {
+    font-size:16px;
+  }
+}
+
+@media print {
+  .markdown-body * {
+    background: transparent !important;
+    color: black !important;
+    filter:none !important;
+    -ms-filter: none !important;
+  }
+
+  .markdown-body {
+    font-size:12pt;
+    max-width:100%;
+    outline:none;
+    border: 0;
+  }
+
+  .markdown-body a,
+  .markdown-body a:visited {
+    text-decoration: underline;
+  }
+
+  .markdown-body .headeranchor-link {
+    display: none;
+  }
+
+  .markdown-body a[href]:after {
+    content: " (" attr(href) ")";
+  }
+
+  .markdown-body abbr[title]:after {
+    content: " (" attr(title) ")";
+  }
+
+  .markdown-body .ir a:after,
+  .markdown-body a[href^="javascript:"]:after,
+  .markdown-body a[href^="#"]:after {
+    content: "";
+  }
+
+  .markdown-body pre {
+    white-space: pre;
+    white-space: pre-wrap;
+    word-wrap: break-word;
+  }
+
+  .markdown-body pre,
+  .markdown-body blockquote {
+    border: 1px solid #999;
+    padding-right: 1em;
+    page-break-inside: avoid;
+  }
+
+  .markdown-body .progress,
+  .markdown-body .progress-bar {
+    -moz-box-shadow: none;
+    -webkit-box-shadow: none;
+    box-shadow: none;
+  }
+
+  .markdown-body .progress {
+    border: 1px solid #ddd;
+  }
+
+  .markdown-body .progress-bar {
+    height: 22px;
+    border-right: 1px solid #ddd;
+  }
+
+  .markdown-body tr,
+  .markdown-body img {
+    page-break-inside: avoid;
+  }
+
+  .markdown-body img {
+    max-width: 100% !important;
+  }
+
+  .markdown-body p,
+  .markdown-body h2,
+  .markdown-body h3 {
+    orphans: 3;
+    widows: 3;
+  }
+
+  .markdown-body h2,
+  .markdown-body h3 {
+    page-break-after: avoid;
+  }
+}
+</style><style>/*github*/
+.codehilite {background-color:#fff;color:#333333;}
+.codehilite .hll {background-color:#ffffcc;}
+.codehilite .c{color:#999988;font-style:italic}
+.codehilite .err{color:#a61717;background-color:#e3d2d2}
+.codehilite .k{font-weight:bold}
+.codehilite .o{font-weight:bold}
+.codehilite .cm{color:#999988;font-style:italic}
+.codehilite .cp{color:#999999;font-weight:bold}
+.codehilite .c1{color:#999988;font-style:italic}
+.codehilite .cs{color:#999999;font-weight:bold;font-style:italic}
+.codehilite .gd{color:#000000;background-color:#ffdddd}
+.codehilite .ge{font-style:italic}
+.codehilite .gr{color:#aa0000}
+.codehilite .gh{color:#999999}
+.codehilite .gi{color:#000000;background-color:#ddffdd}
+.codehilite .go{color:#888888}
+.codehilite .gp{color:#555555}
+.codehilite .gs{font-weight:bold}
+.codehilite .gu{color:#800080;font-weight:bold}
+.codehilite .gt{color:#aa0000}
+.codehilite .kc{font-weight:bold}
+.codehilite .kd{font-weight:bold}
+.codehilite .kn{font-weight:bold}
+.codehilite .kp{font-weight:bold}
+.codehilite .kr{font-weight:bold}
+.codehilite .kt{color:#445588;font-weight:bold}
+.codehilite .m{color:#009999}
+.codehilite .s{color:#dd1144}
+.codehilite .n{color:#333333}
+.codehilite .na{color:teal}
+.codehilite .nb{color:#0086b3}
+.codehilite .nc{color:#445588;font-weight:bold}
+.codehilite .no{color:teal}
+.codehilite .ni{color:purple}
+.codehilite .ne{color:#990000;font-weight:bold}
+.codehilite .nf{color:#990000;font-weight:bold}
+.codehilite .nn{color:#555555}
+.codehilite .nt{color:navy}
+.codehilite .nv{color:teal}
+.codehilite .ow{font-weight:bold}
+.codehilite .w{color:#bbbbbb}
+.codehilite .mf{color:#009999}
+.codehilite .mh{color:#009999}
+.codehilite .mi{color:#009999}
+.codehilite .mo{color:#009999}
+.codehilite .sb{color:#dd1144}
+.codehilite .sc{color:#dd1144}
+.codehilite .sd{color:#dd1144}
+.codehilite .s2{color:#dd1144}
+.codehilite .se{color:#dd1144}
+.codehilite .sh{color:#dd1144}
+.codehilite .si{color:#dd1144}
+.codehilite .sx{color:#dd1144}
+.codehilite .sr{color:#009926}
+.codehilite .s1{color:#dd1144}
+.codehilite .ss{color:#990073}
+.codehilite .bp{color:#999999}
+.codehilite .vc{color:teal}
+.codehilite .vg{color:teal}
+.codehilite .vi{color:teal}
+.codehilite .il{color:#009999}
+.codehilite .gc{color:#999;background-color:#EAF2F5}
+</style><title>INSTALL</title></head><body><article class="markdown-body"><h1 id="installation"><a name="user-content-installation" href="#installation" class="headeranchor-link" aria-hidden="true"><span class="headeranchor"></span></a>Installation</h1>
+<h2 id="server-requirements"><a name="user-content-server-requirements" href="#server-requirements" class="headeranchor-link" aria-hidden="true"><span class="headeranchor"></span></a>Server requirements</h2>
+<ul>
+<li>PHP v5.4 or later with most common extension activated (GD, mcrypt, etc)</li>
+<li>Apache, Nginx or any other server with ModRewrite activated</li>
+<li>MySQL 5.6 or later</li>
+</ul>
+<h2 id="server-configuration"><a name="user-content-server-configuration" href="#server-configuration" class="headeranchor-link" aria-hidden="true"><span class="headeranchor"></span></a>Server configuration</h2>
+<p>Goteo has been tested under Nginx and Apache configurations.</p>
+<blockquote>
+<p>At this point, there are still no production-ready releases. Please refer to the <a href="developers/environment.html">developers</a> documentation for more info.</p>
+<p>You will need to install dependencies and to build a <code>dist</code> production folder to point the webserver onto it.</p>
+<p>We use <a href="https://getcomposer.org/">Composer</a> and <a href="http://gruntjs.com/">Grunt</a> for that. <a href="developers/environment.html">Be sure to have it installed in your system</a>.</p>
+<p><strong>Quick start</strong></p>
+<p>Install all the required dependencies:</p>
+<div class="codehilite"><pre>composer install
+npm install
+</pre></div>
+
+
+<p>Create the compiled minimized system:</p>
+<div class="codehilite"><pre>grunt build
+</pre></div>
+
+
+<p>Alternatively, use  <code>grunt build:devel</code> for javascript/css debugging.</p>
+</blockquote>
+<h3 id="apache-config"><a name="user-content-apache-config" href="#apache-config" class="headeranchor-link" aria-hidden="true"><span class="headeranchor"></span></a>Apache config:</h3>
+<p>Modrewrite must be enabled for apache below 2.2.16:</p>
+<div class="codehilite"><pre><span class="nt">&lt;IfModule</span> <span class="s">mod_rewrite.c</span><span class="nt">&gt;</span>
+    <span class="nb">Options</span> -MultiViews
+
+    <span class="nb">RewriteEngine</span> <span class="k">On</span>
+    <span class="c">#RewriteBase /path/to/goteo-folder/dist</span>
+    <span class="nb">RewriteCond</span> %{REQUEST_FILENAME} !-f
+    <span class="nb">RewriteRule</span> ^ index.php [QSA,L]
+<span class="nt">&lt;/IfModule&gt;</span>
+</pre></div>
+
+
+<p>Alternatively, if you use Apache 2.2.16 or higher, you can use the FallbackResource directive to make your .htaccess even easier:</p>
+<div class="codehilite"><pre><span class="nb">FallbackResource</span> <span class="sx">/index.php</span>
+</pre></div>
+
+
+<blockquote>
+<p><strong>NOTE:</strong><br />
+- If you want to debug the site, you must point the server to the <code>index_dev.php</code> file instead of <code>index.php</code>. This way error trace will be shown in the errors pages<br />
+- If you cannot configure the server to point to the <code>dist/</code> folder, the <code>.htaccess</code> file on the root folder can be used as alternative</p>
+</blockquote>
+<h3 id="nginx-config"><a name="user-content-nginx-config" href="#nginx-config" class="headeranchor-link" aria-hidden="true"><span class="headeranchor"></span></a>Nginx config:</h3>
+<div class="codehilite"><pre><span class="nt">server</span> <span class="p">{</span>
+    <span class="n">server_name</span> <span class="n">domain</span><span class="o">.</span><span class="n">tld</span> <span class="n">www</span><span class="o">.</span><span class="n">domain</span><span class="o">.</span><span class="n">tld</span><span class="p">;</span>
+    <span class="n">root</span> <span class="o">/</span><span class="n">var</span><span class="o">/</span><span class="n">www</span><span class="o">/</span><span class="n">goteo</span><span class="o">-</span><span class="n">folder</span><span class="o">/</span><span class="n">dist</span><span class="p">;</span>
+
+    <span class="n">location</span> <span class="o">/</span> <span class="err">{</span>
+        <span class="err">#</span> <span class="n">try</span> <span class="n">to</span> <span class="n">serve</span> <span class="n">file</span> <span class="n">directly</span><span class="o">,</span> <span class="n">fallback</span> <span class="n">to</span> <span class="n">front</span> <span class="n">controller</span>
+        <span class="n">try_files</span> <span class="err">$</span><span class="n">uri</span> <span class="o">/</span><span class="n">index</span><span class="o">.</span><span class="n">php</span><span class="err">$</span><span class="n">is_args</span><span class="err">$</span><span class="n">args</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="err">#</span> <span class="nt">If</span> <span class="nt">you</span> <span class="nt">have</span> <span class="nt">2</span> <span class="nt">front</span> <span class="nt">controllers</span> <span class="nt">for</span> <span class="nt">dev</span><span class="o">|</span><span class="nt">prod</span> <span class="nt">use</span> <span class="nt">the</span> <span class="nt">following</span> <span class="nt">line</span> <span class="nt">instead</span>
+    <span class="err">#</span> <span class="nt">location</span> <span class="o">~</span> <span class="o">^/(</span><span class="nt">index</span><span class="o">|</span><span class="nt">index_dev</span><span class="o">)</span><span class="err">\</span><span class="nc">.php</span><span class="o">(/|$)</span> <span class="p">{</span>
+    <span class="n">location</span> <span class="o">~</span> <span class="o">^/</span><span class="n">index</span><span class="err">\</span><span class="o">.</span><span class="n">php</span><span class="p">(</span><span class="o">/|</span><span class="err">$</span><span class="p">)</span> <span class="err">{</span>
+        <span class="err">#</span> <span class="n">the</span> <span class="n">ubuntu</span> <span class="k">default</span>
+        <span class="n">fastcgi_pass</span>   <span class="n">unix</span><span class="o">:/</span><span class="n">var</span><span class="o">/</span><span class="n">run</span><span class="o">/</span><span class="n">php5</span><span class="o">-</span><span class="n">fpm</span><span class="o">.</span><span class="n">sock</span><span class="p">;</span>
+        <span class="err">#</span> <span class="n">for</span> <span class="n">running</span> <span class="n">on</span> <span class="n">centos</span>
+        <span class="m">#fastcg</span><span class="n">i_pass</span>   <span class="n">unix</span><span class="o">:/</span><span class="n">var</span><span class="o">/</span><span class="n">run</span><span class="o">/</span><span class="n">php</span><span class="o">-</span><span class="n">fpm</span><span class="o">/</span><span class="n">www</span><span class="o">.</span><span class="n">sock</span><span class="p">;</span>
+
+        <span class="n">fastcgi_split_path_info</span> <span class="o">^</span><span class="p">(</span><span class="o">.+</span><span class="err">\</span><span class="o">.</span><span class="n">php</span><span class="p">)(</span><span class="o">/.*</span><span class="p">)</span><span class="err">$</span><span class="p">;</span>
+        <span class="n">include</span> <span class="n">fastcgi_params</span><span class="p">;</span>
+        <span class="n">fastcgi_param</span> <span class="n">SCRIPT_FILENAME</span> <span class="err">$</span><span class="n">document_root</span><span class="err">$</span><span class="n">fastcgi_script_name</span><span class="p">;</span>
+        <span class="n">fastcgi_param</span> <span class="n">HTTPS</span> <span class="n">off</span><span class="p">;</span>
+
+        <span class="err">#</span> <span class="n">Prevents</span> <span class="n">URIs</span> <span class="n">that</span> <span class="n">include</span> <span class="n">the</span> <span class="n">front</span> <span class="n">controller</span><span class="o">.</span> <span class="n">This</span> <span class="n">will</span> <span class="m">404</span><span class="o">:</span>
+        <span class="err">#</span> <span class="n">http</span><span class="o">://</span><span class="n">domain</span><span class="o">.</span><span class="n">tld</span><span class="o">/</span><span class="n">index</span><span class="o">.</span><span class="n">php</span><span class="o">/</span><span class="n">some</span><span class="o">-</span><span class="n">path</span>
+        <span class="err">#</span> <span class="n">Enable</span> <span class="n">the</span> <span class="n">internal</span> <span class="n">directive</span> <span class="n">to</span> <span class="n">disable</span> <span class="n">URIs</span> <span class="n">like</span> <span class="n">this</span>
+        <span class="err">#</span> <span class="n">internal</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="nf">#return</span> <span class="nt">404</span> <span class="nt">for</span> <span class="nt">all</span> <span class="nt">php</span> <span class="nt">files</span> <span class="nt">as</span> <span class="nt">we</span> <span class="nt">do</span> <span class="nt">have</span> <span class="nt">a</span> <span class="nt">front</span> <span class="nt">controller</span>
+    <span class="nt">location</span> <span class="o">~</span> <span class="err">\</span><span class="nc">.php</span><span class="o">$</span> <span class="p">{</span>
+        <span class="n">return</span> <span class="m">404</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="nt">error_log</span> <span class="o">/</span><span class="nt">var</span><span class="o">/</span><span class="nt">log</span><span class="o">/</span><span class="nt">nginx</span><span class="o">/</span><span class="nt">project_error</span><span class="nc">.log</span><span class="o">;</span>
+    <span class="nt">access_log</span> <span class="o">/</span><span class="nt">var</span><span class="o">/</span><span class="nt">log</span><span class="o">/</span><span class="nt">nginx</span><span class="o">/</span><span class="nt">project_access</span><span class="nc">.log</span><span class="o">;</span>
+<span class="err">}</span>
+</pre></div>
+
+
+<h2 id="database-configuration"><a name="user-content-database-configuration" href="#database-configuration" class="headeranchor-link" aria-hidden="true"><span class="headeranchor"></span></a>Database configuration</h2>
+<p>A minimal system must be created, import this 3 SQL scripts:</p>
+<ul>
+<li><code>db/install/structure.sql</code></li>
+<li><code>db/install/data.sql</code></li>
+<li><code>db/install/templates.sql</code></li>
+</ul>
+<p>Both scripts should be applied in a MySQL console:</p>
+<div class="codehilite"><pre>mysql -u your_user -p your_password &lt; db/install/structure.sql
+mysql -u your_user -p your_password &lt; db/install/data.sql
+mysql -u your_user -p your_password &lt; db/install/templates.sql
+</pre></div>
+
+
+<p>Then, apply these updates:</p>
+<div class="codehilite"><pre>mysql -u your_user -p your_password &lt; db/install/upgrade-to-v3.0.6.sql
+</pre></div>
+
+
+<p>This should give you an empty system with only one user &ldquo;root&rdquo;.</p>
+<p>Login with user <strong>&ldquo;root&rdquo;</strong> and password <strong>&ldquo;root&rdquo;</strong> (no quotes).<br />
+Go <code>http://your.intallation.site/admin/users/edit/root</code> to change the password and email<br />
+Try login with that password and manage the contents at <a href="http://your.intallation.site/admin">http://your.intallation.site/admin</a></p>
+<p>The <code>data.sql</code> script also creates demo project, you can remove all demo data by using the command <code>./bin/console dev:statusinit --erase'</code> from the <a href="developers/extend.html#dev-plugin">dev-plugin</a>.</p>
+<p>However, we haven&rsquo;t tested it in any production database and very likely errors will be thrown. Debugging info will be appreciated.</p>
+<h2 id="cron-configuration"><a name="user-content-cron-configuration" href="#cron-configuration" class="headeranchor-link" aria-hidden="true"><span class="headeranchor"></span></a>Cron configuration</h2>
+<p>You will need to add a cron/crontab line in order to process severals project related events:</p>
+<div class="codehilite"><pre>* * * * *   nice /usr/bin/php /path/to/installation/bin/console cron --lock --logmail &gt; /dev/null 2&gt;&amp;1
+</pre></div>
+
+
+<p>Refer to the <strong>Console scripts</strong> documentation for more info</p>
+<h2 id="goteo-configuration"><a name="user-content-goteo-configuration" href="#goteo-configuration" class="headeranchor-link" aria-hidden="true"><span class="headeranchor"></span></a>Goteo configuration</h2>
+<p>Place in here a non-git-tracked copy of your <code>settings.yml</code></p>
+<p>Use <code>demo-settings.yml</code> or <code>vagrant-settings.yml</code> as a example.</p>
+<p>Particularly you must configure the <code>db:</code> section with the proper MySQL username/password on settings.yml</p>
+<p>You can specify a different <code>dev-settings.yml</code> file which will be used by <code>public/index_dev.php</code></p>
+<p>Example installation <code>config/settings.yml</code>:</p>
+<div class="codehilite"><pre><span class="c1"># Goteo settings file</span>
+<span class="nn">---</span>
+
+<span class="c1"># Maintenance</span>
+<span class="l l-Scalar l-Scalar-Plain">maintenance</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">false</span>
+
+<span class="c1"># Max session time</span>
+<span class="l l-Scalar l-Scalar-Plain">session</span><span class="p p-Indicator">:</span>
+    <span class="l l-Scalar l-Scalar-Plain">time</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">3600</span>
+
+<span class="c1"># Internal secret for hashes</span>
+<span class="l l-Scalar l-Scalar-Plain">secret</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">--a-very-secret-string---</span>
+
+<span class="c1"># local enviroment: local, beta, real</span>
+<span class="l l-Scalar l-Scalar-Plain">env</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">local</span>
+
+<span class="c1"># main node</span>
+<span class="l l-Scalar l-Scalar-Plain">node</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">goteo</span>
+
+<span class="c1"># Default system language</span>
+<span class="l l-Scalar l-Scalar-Plain">lang</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">es</span>
+
+<span class="c1"># Default timezone</span>
+<span class="l l-Scalar l-Scalar-Plain">timezone</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">Europe/Madrid</span>
+
+<span class="c1"># url</span>
+<span class="l l-Scalar l-Scalar-Plain">url</span><span class="p p-Indicator">:</span>
+    <span class="l l-Scalar l-Scalar-Plain">main</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">//localhost:8081</span>
+    <span class="c1"># static resources url if you use a different assets server</span>
+    <span class="l l-Scalar l-Scalar-Plain">assets</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">//localhost:8081</span>
+    <span class="c1">#optional, configure this as hostname only (ex: example.com) if you want languages to be selected as subdomains (es.example.com, en.example.com)</span>
+    <span class="l l-Scalar l-Scalar-Plain">url_lang</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">localhost:8081</span>
+
+    <span class="c1"># If you want to use a CDN or another web server to serve the cached images</span>
+    <span class="c1"># You can define this constants. All cached images links will point to this</span>
+    <span class="c1"># Url, event if don&#39;t exists yet.</span>
+    <span class="c1"># Example:</span>
+    <span class="c1"># Point a data.example.com to var/cache/images</span>
+    <span class="c1"># the place a .htaccess in var/cache/images/.htaccess with this content</span>
+    <span class="c1"># &lt;ifmodule mod_rewrite.c&gt;</span>
+    <span class="c1"># RewriteEngine on</span>
+    <span class="c1"># RewriteCond %{REQUEST_FILENAME} !-f</span>
+    <span class="c1"># RewriteCond %{REQUEST_FILENAME} !-d</span>
+    <span class="c1"># RewriteRule ^(.*) http://example.com/img/$1 [R=302,L]</span>
+    <span class="c1"># &lt;/ifmodule&gt;</span>
+    <span class="c1">#</span>
+    <span class="l l-Scalar l-Scalar-Plain">data</span><span class="p p-Indicator">:</span>
+
+<span class="c1"># PLUGINS</span>
+<span class="c1"># Extend is the directory to personalize your copy of goteo.org</span>
+<span class="c1"># Routes, classes and templates can be overridden by copying the main structure</span>
+<span class="c1"># ie:</span>
+<span class="c1">#    - Autoloading classes</span>
+<span class="c1">#    - Templates will be found first from extend/plugin-name/Resources/templates path</span>
+<span class="c1">#    - Tests should be placed into extend/plugin-name/tests path</span>
+<span class="c1">#    - Routes can be overwritten</span>
+<span class="c1">#    - Service container can be tampered</span>
+
+<span class="l l-Scalar l-Scalar-Plain">plugins</span><span class="p p-Indicator">:</span>
+    <span class="l l-Scalar l-Scalar-Plain">goteo-dev</span><span class="p p-Indicator">:</span>
+        <span class="l l-Scalar l-Scalar-Plain">active</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">true</span> <span class="c1"># plugin should be active=true to be loaded</span>
+
+<span class="c1"># Payment methods, must be registered as classes implementing Goteo\Payment\Method\PaymentMethodInterface</span>
+<span class="l l-Scalar l-Scalar-Plain">payments</span><span class="p p-Indicator">:</span>
+    <span class="c1"># Paypal</span>
+    <span class="l l-Scalar l-Scalar-Plain">paypal</span><span class="p p-Indicator">:</span>
+        <span class="l l-Scalar l-Scalar-Plain">active</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">true</span>
+        <span class="l l-Scalar l-Scalar-Plain">testMode</span><span class="p p-Indicator">:</span>  <span class="l l-Scalar l-Scalar-Plain">true</span> <span class="c1"># set to false to real checkouts</span>
+        <span class="l l-Scalar l-Scalar-Plain">username</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">paypal@example.com</span>
+        <span class="l l-Scalar l-Scalar-Plain">password</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">paypal-password</span>
+        <span class="l l-Scalar l-Scalar-Plain">signature</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">PAYPAL-Signature</span>
+        <span class="c1"># brandName: Your organisation</span>
+        <span class="c1"># headerImageUrl: Some URL image for the header</span>
+        <span class="c1"># logoImageUrl: logo URL</span>
+        <span class="c1"># borderColor: B5DADC</span>
+
+    <span class="c1"># This is a built-in payment method using internal credit</span>
+    <span class="l l-Scalar l-Scalar-Plain">pool</span><span class="p p-Indicator">:</span>
+        <span class="l l-Scalar l-Scalar-Plain">active</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">true</span>
+    <span class="c1"># A stupid payment method defined in the plugin goteo-dev</span>
+    <span class="c1"># Useful for development and testing</span>
+    <span class="l l-Scalar l-Scalar-Plain">dummy</span><span class="p p-Indicator">:</span>
+        <span class="l l-Scalar l-Scalar-Plain">active</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">true</span>
+
+    <span class="c1"># Additional custom payment methods should be added here</span>
+
+<span class="c1"># Force using https protocol</span>
+<span class="l l-Scalar l-Scalar-Plain">ssl</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">false</span>
+
+<span class="c1"># IMPORTANT! if ssl is true and your server is behind a proxy</span>
+<span class="c1"># List the trusted proxies for SSL connection here</span>
+<span class="l l-Scalar l-Scalar-Plain">proxies</span><span class="p p-Indicator">:</span>
+    <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">127.0.0.1</span>
+    <span class="c1"># Cloudflare IP list:</span>
+    <span class="c1"># - 103.21.244.0/22</span>
+    <span class="c1"># - 103.22.200.0/22</span>
+    <span class="c1"># - 103.31.4.0/22</span>
+    <span class="c1"># - 104.16.0.0/12</span>
+    <span class="c1"># - 108.162.192.0/18</span>
+    <span class="c1"># - 141.101.64.0/18</span>
+    <span class="c1"># - 162.158.0.0/15</span>
+    <span class="c1"># - 172.64.0.0/13</span>
+    <span class="c1"># - 173.245.48.0/20</span>
+    <span class="c1"># - 188.114.96.0/20</span>
+    <span class="c1"># - 190.93.240.0/20</span>
+    <span class="c1"># - 197.234.240.0/22</span>
+    <span class="c1"># - 198.41.128.0/17</span>
+    <span class="c1"># - 199.27.128.0/21</span>
+
+
+<span class="c1"># Default commission fee</span>
+<span class="l l-Scalar l-Scalar-Plain">fee</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">4</span>
+
+<span class="c1"># Filesystem used by goteo</span>
+<span class="l l-Scalar l-Scalar-Plain">filesystem</span><span class="p p-Indicator">:</span>
+    <span class="l l-Scalar l-Scalar-Plain">handler</span><span class="p p-Indicator">:</span>    <span class="l l-Scalar l-Scalar-Plain">local</span>      <span class="c1"># &#39;s3&#39; to use AmazonS3 storage, &#39;local&#39; to use local file system</span>
+    <span class="c1"># Only need to be defined credentials if file system is s3:</span>
+    <span class="c1"># AWS credentials</span>
+    <span class="l l-Scalar l-Scalar-Plain">aws</span><span class="p p-Indicator">:</span> <span class="nl">&amp;aws1</span>
+        <span class="l l-Scalar l-Scalar-Plain">key</span><span class="p p-Indicator">:</span>        <span class="l l-Scalar l-Scalar-Plain">your-aws-key</span>
+        <span class="l l-Scalar l-Scalar-Plain">secret</span><span class="p p-Indicator">:</span>     <span class="l l-Scalar l-Scalar-Plain">your-aws-secret</span>
+        <span class="l l-Scalar l-Scalar-Plain">region</span><span class="p p-Indicator">:</span>     <span class="l l-Scalar l-Scalar-Plain">eu-west-1</span>
+
+    <span class="l l-Scalar l-Scalar-Plain">bucket</span><span class="p p-Indicator">:</span>
+        <span class="l l-Scalar l-Scalar-Plain">static</span><span class="p p-Indicator">:</span>     <span class="l l-Scalar l-Scalar-Plain">static.example.com</span>        <span class="c1"># where to store the assets (css, js, images)</span>
+        <span class="l l-Scalar l-Scalar-Plain">mail</span><span class="p p-Indicator">:</span>       <span class="l l-Scalar l-Scalar-Plain">mail-archive.example.com</span>  <span class="c1"># where to store alternative mail view</span>
+
+<span class="c1"># Database stuff</span>
+<span class="l l-Scalar l-Scalar-Plain">db</span><span class="p p-Indicator">:</span>
+    <span class="l l-Scalar l-Scalar-Plain">driver</span><span class="p p-Indicator">:</span>   <span class="l l-Scalar l-Scalar-Plain">mysql</span>     <span class="c1"># Database driver (mysql)</span>
+    <span class="l l-Scalar l-Scalar-Plain">host</span><span class="p p-Indicator">:</span>     <span class="l l-Scalar l-Scalar-Plain">localhost</span> <span class="c1"># Database host</span>
+    <span class="l l-Scalar l-Scalar-Plain">port</span><span class="p p-Indicator">:</span>     <span class="l l-Scalar l-Scalar-Plain">3306</span>      <span class="c1"># Database port</span>
+    <span class="l l-Scalar l-Scalar-Plain">charset</span><span class="p p-Indicator">:</span>  <span class="l l-Scalar l-Scalar-Plain">UTF-8</span>     <span class="c1"># Database charset</span>
+    <span class="l l-Scalar l-Scalar-Plain">database</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">goteo</span>     <span class="c1"># Database schema (database name)</span>
+    <span class="l l-Scalar l-Scalar-Plain">username</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">goteo</span>     <span class="c1"># Database user for the goteo database</span>
+    <span class="l l-Scalar l-Scalar-Plain">password</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">password</span>  <span class="c1"># Password for the goteo database</span>
+
+    <span class="c1"># SELECT queries caching</span>
+    <span class="c1"># set it as &#39;files&#39; to enable sql cache</span>
+    <span class="l l-Scalar l-Scalar-Plain">cache</span><span class="p p-Indicator">:</span>
+        <span class="l l-Scalar l-Scalar-Plain">driver</span><span class="p p-Indicator">:</span>           <span class="c1"># leave empty to avoid query-caching</span>
+        <span class="l l-Scalar l-Scalar-Plain">time</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">5</span>           <span class="c1"># time in seconds where SELECT queries will be cached (may be overwritten by Model::query-&gt;cacheTime())</span>
+        <span class="l l-Scalar l-Scalar-Plain">long_time</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">3600</span>   <span class="c1"># Obsolete</span>
+
+    <span class="c1"># Read-only replicas (optional)</span>
+
+    <span class="l l-Scalar l-Scalar-Plain">replica</span><span class="p p-Indicator">:</span>
+        <span class="l l-Scalar l-Scalar-Plain">host</span><span class="p p-Indicator">:</span>  <span class="c1"># leave empty to not activate replica</span>
+        <span class="c1"># this parameters are optionals (needed in case replica credentials are different)</span>
+        <span class="l l-Scalar l-Scalar-Plain">port</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">3306</span>
+        <span class="l l-Scalar l-Scalar-Plain">username</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">db-replica-username</span>
+        <span class="l l-Scalar l-Scalar-Plain">password</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">db-replica-password</span>
+
+<span class="c1"># HTML Metas</span>
+<span class="l l-Scalar l-Scalar-Plain">meta</span><span class="p p-Indicator">:</span>
+    <span class="l l-Scalar l-Scalar-Plain">title</span><span class="p p-Indicator">:</span>       <span class="l l-Scalar l-Scalar-Plain">--meta-title--</span>       <span class="c1"># Html default &lt;title&gt;</span>
+    <span class="l l-Scalar l-Scalar-Plain">description</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">--meta-description--</span> <span class="c1"># Html default &lt;meta description&gt;</span>
+    <span class="l l-Scalar l-Scalar-Plain">keywords</span><span class="p p-Indicator">:</span>    <span class="l l-Scalar l-Scalar-Plain">--keywords--</span>         <span class="c1"># Html default &lt;meta keywords&gt;</span>
+    <span class="l l-Scalar l-Scalar-Plain">author</span><span class="p p-Indicator">:</span>      <span class="l l-Scalar l-Scalar-Plain">--author--</span>           <span class="c1"># Html default &lt;meta author&gt;</span>
+    <span class="l l-Scalar l-Scalar-Plain">copyright</span><span class="p p-Indicator">:</span>   <span class="l l-Scalar l-Scalar-Plain">--copyright--</span>        <span class="c1"># Html default &lt;meta copyright&gt;</span>
+
+<span class="c1"># Loggin level</span>
+<span class="l l-Scalar l-Scalar-Plain">log</span><span class="p p-Indicator">:</span>
+    <span class="c1"># app collects general messages generated by de website</span>
+    <span class="l l-Scalar l-Scalar-Plain">app</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">info</span> <span class="c1"># debug info, warning, error (default)</span>
+    <span class="c1"># payment collects messages related to payments</span>
+    <span class="l l-Scalar l-Scalar-Plain">payment</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">debug</span>
+    <span class="c1"># Debug level in Console commands</span>
+    <span class="l l-Scalar l-Scalar-Plain">console</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">debug</span>
+    <span class="c1"># mail specifies at what log level the error will be sent to mail.fail email</span>
+    <span class="l l-Scalar l-Scalar-Plain">mail</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">error</span> <span class="c1"># goes to mail.fail address</span>
+
+<span class="c1"># Mail transport</span>
+<span class="l l-Scalar l-Scalar-Plain">mail</span><span class="p p-Indicator">:</span>
+    <span class="c1"># receiving emails</span>
+    <span class="l l-Scalar l-Scalar-Plain">mail</span><span class="p p-Indicator">:</span>         <span class="l l-Scalar l-Scalar-Plain">info@example.com</span>     <span class="c1"># Main</span>
+    <span class="l l-Scalar l-Scalar-Plain">contact</span><span class="p p-Indicator">:</span>      <span class="l l-Scalar l-Scalar-Plain">info@example.com</span>     <span class="c1"># consulting head</span>
+    <span class="l l-Scalar l-Scalar-Plain">manager</span><span class="p p-Indicator">:</span>      <span class="l l-Scalar l-Scalar-Plain">manager@example.com</span>  <span class="c1"># accounts manager</span>
+    <span class="l l-Scalar l-Scalar-Plain">fail</span><span class="p p-Indicator">:</span>         <span class="l l-Scalar l-Scalar-Plain">dev@example.com</span>      <span class="c1"># dev head</span>
+    <span class="l l-Scalar l-Scalar-Plain">log</span><span class="p p-Indicator">:</span>          <span class="l l-Scalar l-Scalar-Plain">sitelog@example.com</span>  <span class="c1"># Loggin mail</span>
+
+    <span class="c1"># allowed addresses while in BETA/LOCAL env in PREG format</span>
+    <span class="l l-Scalar l-Scalar-Plain">beta_senders</span><span class="p p-Indicator">:</span> <span class="s">&quot;(.+)example\\.org|(.+)example\\.com&quot;</span>
+    <span class="c1"># Add to BCC this address to all communications (except massive). Applies only in REAL env</span>
+    <span class="c1"># Not recommended, there&#39;s a way in the admin to see all sent communications</span>
+    <span class="l l-Scalar l-Scalar-Plain">bcc_verifier</span><span class="p p-Indicator">:</span>
+
+    <span class="c1"># Default users where to send project notifications by default</span>
+    <span class="c1"># Only used if no consultants are assigned</span>
+    <span class="l l-Scalar l-Scalar-Plain">consultants</span><span class="p p-Indicator">:</span>
+        <span class="l l-Scalar l-Scalar-Plain">root</span><span class="p p-Indicator">:</span> <span class="s">&#39;Root&#39;</span>
+
+    <span class="l l-Scalar l-Scalar-Plain">transport</span><span class="p p-Indicator">:</span>
+        <span class="l l-Scalar l-Scalar-Plain">from</span><span class="p p-Indicator">:</span>          <span class="l l-Scalar l-Scalar-Plain">noreply@example.com</span>
+        <span class="l l-Scalar l-Scalar-Plain">name</span><span class="p p-Indicator">:</span>          <span class="l l-Scalar l-Scalar-Plain">Goteo Sender</span>
+        <span class="l l-Scalar l-Scalar-Plain">type</span><span class="p p-Indicator">:</span>          <span class="l l-Scalar l-Scalar-Plain">smtp</span>
+        <span class="c1"># if type is smtp:</span>
+        <span class="l l-Scalar l-Scalar-Plain">smtp</span><span class="p p-Indicator">:</span>
+            <span class="l l-Scalar l-Scalar-Plain">auth</span><span class="p p-Indicator">:</span>     <span class="l l-Scalar l-Scalar-Plain">true</span>
+            <span class="l l-Scalar l-Scalar-Plain">secure</span><span class="p p-Indicator">:</span>   <span class="l l-Scalar l-Scalar-Plain">ssl</span>
+            <span class="l l-Scalar l-Scalar-Plain">host</span><span class="p p-Indicator">:</span>     <span class="l l-Scalar l-Scalar-Plain">smtp.example.com</span>
+            <span class="l l-Scalar l-Scalar-Plain">port</span><span class="p p-Indicator">:</span>     <span class="l l-Scalar l-Scalar-Plain">587</span>
+            <span class="l l-Scalar l-Scalar-Plain">username</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">smtp-usermail</span>
+            <span class="l l-Scalar l-Scalar-Plain">password</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">smtp-password</span>
+
+    <span class="l l-Scalar l-Scalar-Plain">quota</span><span class="p p-Indicator">:</span>
+        <span class="l l-Scalar l-Scalar-Plain">total</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">50000</span>  <span class="c1"># Maximum sending quota in 24 hours time (useful for SMTP servers like Amazon SES)</span>
+        <span class="l l-Scalar l-Scalar-Plain">sender</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">40000</span> <span class="c1"># Part of this quota used by newsletter mailing</span>
+
+    <span class="c1"># Amazon SNS key to process automatic bounces: &#39;arn:aws:sns:us-east-1:XXXXXXXXX:amazon-ses-bounces&#39;</span>
+    <span class="c1"># URL mus be: goteo_url.tld/aws-sns.php</span>
+    <span class="l l-Scalar l-Scalar-Plain">sns</span><span class="p p-Indicator">:</span>
+        <span class="l l-Scalar l-Scalar-Plain">client_id</span><span class="p p-Indicator">:</span>        <span class="l l-Scalar l-Scalar-Plain">XXXXXXXXX</span>
+        <span class="l l-Scalar l-Scalar-Plain">region</span><span class="p p-Indicator">:</span>           <span class="l l-Scalar l-Scalar-Plain">us-east-1</span>
+        <span class="l l-Scalar l-Scalar-Plain">bounces_topic</span><span class="p p-Indicator">:</span>    <span class="l l-Scalar l-Scalar-Plain">amazon-ses-bounces</span>
+        <span class="l l-Scalar l-Scalar-Plain">complaints_topic</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">amazon-ses-complaints</span>
+
+<span class="c1"># This will be used for geolocating users, projects, and mail tracking</span>
+<span class="l l-Scalar l-Scalar-Plain">geolocation</span><span class="p p-Indicator">:</span>
+    <span class="c1"># Path to maxmind databases, you need to download (and keep updated) either the free o commercial</span>
+    <span class="c1"># databases from maxmind. Check this for more info: https://dev.maxmind.com/geoip/geoipupdate/</span>
+    <span class="c1"># relative paths are allowed (ie: you can save your maxmind databases into config/resources/maxmind if you want)</span>
+    <span class="c1"># Un comment next 2 lines if you have it installed and working:</span>
+    <span class="c1"># maxmind:</span>
+    <span class="c1">#    cities: /usr/share/GeoIP/GeoLite2-City.mmdb</span>
+
+<span class="c1"># Social Login Services</span>
+<span class="c1"># Fill an uncomment the needed one&#39;s</span>
+<span class="l l-Scalar l-Scalar-Plain">oauth</span><span class="p p-Indicator">:</span>
+    <span class="c1"># Credentials app Facebook</span>
+    <span class="c1"># facebook:</span>
+    <span class="c1">#    id:     000000000000000                  #</span>
+    <span class="c1">#    secret: aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa #</span>
+
+    <span class="c1"># Credentials app Twitter</span>
+    <span class="c1"># twitter:</span>
+    <span class="c1">#    id:      aaaaaaaaaaaaaaaaaaaaaa                     #</span>
+    <span class="c1">#    secret:  aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa #</span>
+
+    <span class="c1"># Credentials app Linkedin</span>
+    <span class="c1"># linkedin:</span>
+    <span class="c1">#    id:     aaaaaaaaaaaa     #</span>
+    <span class="c1">#    secret: aaaaaaaaaaaaaaaa #</span>
+
+    <span class="c1"># Credentials Google</span>
+    <span class="c1"># google:</span>
+    <span class="c1">#    id: aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa</span>
+    <span class="c1">#    secret: aaaaaaaaaaaaaaaaaa</span>
+</pre></div></article></body></html>
