@@ -33,7 +33,7 @@ namespace Goteo\Model\Project {
         /*
          *  Get Project milestone
          */
-        public static function get ($project, $post) {
+        public static function get ($project, $post=null) {
 
 
                 $query = static::query("
@@ -55,9 +55,9 @@ namespace Goteo\Model\Project {
 
                 $values = [':project'=>$project];
 
-                $sql= "SELECT * 
-                        FROM project_milestone 
-                        WHERE project = :project 
+                $sql= "SELECT *
+                        FROM project_milestone
+                        WHERE project = :project
                         ORDER BY date DESC, id DESC";
 
                 //die(\sqldbg($sql, $values));
@@ -99,7 +99,7 @@ namespace Goteo\Model\Project {
 
 		/**
          * Save.
-         * @param   type array  $errors     
+         * @param   type array  $errors
          * @return  type bool   true|false
         */
         public function save(&$errors = array()) {

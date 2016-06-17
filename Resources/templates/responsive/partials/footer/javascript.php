@@ -1,9 +1,12 @@
 <!-- Bootstrap core JavaScript -->
 
 <script src="<?php echo SRC_URL ?>/assets/vendor/jquery.min.js"></script>
+<script src="<?php echo SRC_URL ?>/assets/vendor/jquery.mobile.custom.min.js"></script>
 <script src="<?php echo SRC_URL ?>/assets/vendor/bootstrap/js/bootstrap.min.js"></script>
 <script src="<?php echo SRC_URL ?>/assets/vendor/footable/footable.min.js"></script>
 <script src="<?php echo SRC_URL ?>/assets/vendor/pronto/jquery.fs.pronto.min.js"></script>
+
+<script src="<?php echo SRC_URL ?>/assets/vendor/d3/d3.v3.min.js"></script>
 
 <!--script src="<?php echo SRC_URL ?>/assets/js/docs.min.js"></script-->
 <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->

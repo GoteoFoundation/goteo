@@ -136,7 +136,7 @@ class Milestone extends \Goteo\Core\Model {
         }
         if (is_null($this->image)) {
             $this->image = '';
-        }  
+        }
 
          // Save image emoji
 
@@ -159,7 +159,7 @@ class Milestone extends \Goteo\Core\Model {
             'link',
             'description',
             'image',
-            'image_emoji'   
+            'image_emoji'
         );
 
         try {
@@ -174,10 +174,10 @@ class Milestone extends \Goteo\Core\Model {
 
     /**
      * Random milestone by type
-     * @param   type array  
+     * @param   type array
      * @return  type bool
     */
-    public function random_milestone($type, $field='type') {
+    static public function random_milestone($type, $field='type') {
         if ($query = static::query("SELECT * FROM milestone WHERE `$field` = ? ORDER BY rand() LIMIT 1", $type)) {
 
             if( $milestone = $query->fetchObject(__CLASS__) )

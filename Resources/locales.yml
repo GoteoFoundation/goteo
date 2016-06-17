@@ -76,3 +76,9 @@ ar:
     public: false
     locale: ar_MA
     fallback: en
+tr:
+    name: Türkçe
+    short: TUR
+    public: false
+    locale: tr_TR
+    fallback: en

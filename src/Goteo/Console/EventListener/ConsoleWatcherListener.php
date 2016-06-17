@@ -60,9 +60,9 @@ class ConsoleWatcherListener extends AbstractListener {
                 $this->warning('Duplicated event', [$project, 'event' => "$to:$template"]);
                 return;
             }
-            $event->fire(function() use ($project, $template, $target) {
-                if(in_array('owner', $target)) UsersSend::toOwner($template, $project);
-                if(in_array('consultants', $target)) UsersSend::toConsultants($template, $project);
+            $event->fire(function() use ($project, $template, $to) {
+                if('owner' === $to) UsersSend::toOwner($template, $project);
+                if('consultants' === $to) UsersSend::toConsultants($template, $project);
             });
 
             $this->notice("Sent message to $to", [$project, 'event' => "$to:$template"]);
@@ -151,12 +151,25 @@ class ConsoleWatcherListener extends AbstractListener {
     public function onProjectActive(FilterProjectEvent $event) {
         $project = $event->getProject();
         $days_active = $event->getDays();
-        $this->info("Project in-campaign event", [$project, 'days_active' => $days_active]);
+        $days_funded = $event->getDaysFunded();
+        $this->info("Project in-campaign event", [$project, 'days_active' => $days_active, 'days_funded' => $days_funded]);
+
+        // CONTRACT DATA
+        // primero los que no se bloquean
+        //Solicitud de datos del contrato
+        // TODO: to extend/...
+        if( $days_funded >= 1 && $days_funded < 3) {
+            // si ha superado el mínimo
+            if ($project->amount >= $project->mincost) {
+                $this->info("Requesting contract data", [$project, 'days_active' => $days_active, 'days_funded' => $days_funded, 'days_succeeded' => $days_succeeded]);
+                $this->send($project, '1d_after', ['owner']);
+            }
+        }
 
         // ahora checkeamos bloqueo de consejos
         $prefs = User::getPreferences($project->owner);
         if ($prefs->tips) {
-            $this->warning("Non sending campaign tips due user preferences", [$project, 'days_active' => $days_active]);
+            $this->warning("Non sending campaign tips due user preferences", [$project, 'days_active' => $days_active, 'days_funded' => $days_funded]);
             return;
         }
 
@@ -193,7 +206,7 @@ class ConsoleWatcherListener extends AbstractListener {
             case 36:
                 // si ya hay novedades, nada
                 if (Blog::hasUpdates($project->id)) {
-                    $this->info("Project already has blog updates", [$project, 'days_active' => $days_active]);
+                    $this->info("Project already has blog updates", [$project, 'days_active' => $days_active, 'days_funded' => $days_funded]);
                 } else {
                     $this->send($project, "any_update", ['owner'], $days_active);
                     $blog_tip_sent = true;
@@ -211,7 +224,7 @@ class ConsoleWatcherListener extends AbstractListener {
                 if ($project->num_investors >= 20) {
                     $this->send($project, "20_backers", ['owner']);
                 } else {
-                    $this->warning("Not sending message to project with less than 20 backers", [$project, 'days_active' => $days_active]);
+                    $this->warning("Not sending message to project with less than 20 backers", [$project, 'days_active' => $days_active, 'days_funded' => $days_funded]);
                 }
                 break;
 
@@ -224,7 +237,7 @@ class ConsoleWatcherListener extends AbstractListener {
                     $patrons = \Goteo\Model\Patron::numRecos($project->id);
 
                     if ($patrons > 0) {
-                        $this->warning("Not sending message to project as already has patrons", [$project, 'days_active' => $days_active]);
+                        $this->warning("Not sending message to project as already has patrons", [$project, 'days_active' => $days_active, 'days_funded' => $days_funded]);
                     } else {
                         $this->send($project, "tip_9", ['owner']);
                     }
@@ -243,7 +256,7 @@ class ConsoleWatcherListener extends AbstractListener {
                     }
                 }
                 if ($thanksonly) {
-                    $this->warning("Not sending message to project with thanks-only rewards", [$project, 'days_active' => $days_active]);
+                    $this->warning("Not sending message to project with thanks-only rewards", [$project, 'days_active' => $days_active, 'days_funded' => $days_funded]);
                 } else {
                     uasort($rewards,
                         function ($a, $b) {
@@ -265,7 +278,7 @@ class ConsoleWatcherListener extends AbstractListener {
                 if (empty($project->video)) {
                     $this->send($project, "tip_11", ['owner']);
                 } else {
-                    $this->warning("Not sending message to project as already has motivational video", [$project, 'days_active' => $days_active]);
+                    $this->warning("Not sending message to project as already has motivational video", [$project, 'days_active' => $days_active, 'days_funded' => $days_funded]);
                 }
                 break;
 
@@ -274,7 +287,7 @@ class ConsoleWatcherListener extends AbstractListener {
                 if ($project->amount < $project->mincost) {
                     $this->send($project, "tip_15", ['owner']);
                 } else {
-                    $this->warning("Not sending message project as already has reached the minimum amount", [$project, 'days_active' => $days_active]);
+                    $this->warning("Not sending message project as already has reached the minimum amount", [$project, 'days_active' => $days_active, 'days_funded' => $days_funded]);
                 }
                 break;
 
@@ -283,7 +296,7 @@ class ConsoleWatcherListener extends AbstractListener {
                 if ($project->amount < $project->mincost) {
                     $this->send($project, "two_weeks", ['owner']);
                 } else {
-                    $this->warning("Not sending message project as already has reached the minimum amount", [$project, 'days_active' => $days_active]);
+                    $this->warning("Not sending message project as already has reached the minimum amount", [$project, 'days_active' => $days_active, 'days_funded' => $days_funded]);
                 }
                 break;
 
@@ -292,7 +305,7 @@ class ConsoleWatcherListener extends AbstractListener {
                 if ($project->amount < $project->mincost) {
                     $this->send($project, "8_days", ['owner']);
                 } else {
-                    $this->warning("Not sending message project as already has reached the minimum amount", [$project, 'days_active' => $days_active]);
+                    $this->warning("Not sending message project as already has reached the minimum amount", [$project, 'days_active' => $days_active, 'days_funded' => $days_funded]);
                 }
                 break;
 
@@ -301,7 +314,7 @@ class ConsoleWatcherListener extends AbstractListener {
                 if ($project->amount < $project->mincost && $project->percent >= 70) {
                     $this->send($project, "2_days", ['owner']);
                 } else {
-                    $this->warning("Not sending message to project as already has reached the minimum amount or more than 70%", [$project, 'days_active' => $days_active]);
+                    $this->warning("Not sending message to project as already has reached the minimum amount or more than 70%", [$project, 'days_active' => $days_active, 'days_funded' => $days_funded]);
                 }
                 break;
         }
@@ -347,12 +360,12 @@ class ConsoleWatcherListener extends AbstractListener {
                 if ($lastUpdate > 7) {
                     $this->send($project, "no_updates", ['owner']);
                 } elseif (is_numeric($lastUpdate)) {
-                    $this->warning("Not sending message to project published news less than one week ago", [$project, 'days_active' => $days_active]);
+                    $this->warning("Not sending message to project published news less than one week ago", [$project, 'days_active' => $days_active, 'days_funded' => $days_funded]);
                 } else {
-                    $this->warning("Not sending message to project without any news", [$project, 'days_active' => $days_active]);
+                    $this->warning("Not sending message to project without any news", [$project, 'days_active' => $days_active, 'days_funded' => $days_funded]);
                 }
             } else {
-                $this->warning("Not sending message to project already advised less than one week ago", [$project, 'days_active' => $days_active]);
+                $this->warning("Not sending message to project already advised less than one week ago", [$project, 'days_active' => $days_active, 'days_funded' => $days_funded]);
             }
         }
     }
@@ -365,28 +378,17 @@ class ConsoleWatcherListener extends AbstractListener {
         $project = $event->getProject();
         $days_active = $event->getDays();
         $days_succeeded = $event->getDaysSucceeded();
-        $this->info("Project vigilant", [$project, 'days_active' => $days_active, 'days_succeeded' => $days_succeeded]);
-
+        $days_funded = $event->getDaysFunded();
+        $this->info("Project vigilant", [$project, 'days_active' => $days_active, 'days_funded' => $days_funded, 'days_succeeded' => $days_succeeded]);
+        die("[$days_funded]\n");
         // ~ 10 month ago
         if( $days_succeeded > 10 * 30 && $days_succeeded < 10 * 31) {
             if(!Reward::areFulfilled($project->id, 'social') && $project->status != Project::STATUS_FULFILLED) {
-                $this->info('Found 10 month old project with non-social accomplished returns', [$project, 'days_active' => $days_active, 'days_succeeded' => $days_succeeded]);
+                $this->info('Found 10 month old project with non-social accomplished returns', [$project, 'days_active' => $days_active, 'days_funded' => $days_funded, 'days_succeeded' => $days_succeeded]);
                 // Non social accomplished returns
                 $this->send($project, 'commons', ['consultants']);
             } else {
                 $this->warning("Not sending message to consultants with fulfilled social rewards after 10 months", [$project, 'days_succeeded' => $days_active]);
-            }
-        }
-
-        // CONTRACT DATA
-        // primero los que no se bloquean
-        //Solicitud de datos del contrato
-        // TODO: to extend/...
-        if( $days_succeeded >= 1 && $days_succeeded < 3) {
-            // si ha superado el mínimo
-            if ($project->amount >= $project->mincost) {
-                $this->info("Requesting contract data", [$project, 'days_active' => $days_active, 'days_succeeded' => $days_succeeded]);
-                $this->send($project, '1d_after', ['owner']);
             }
         }
 
