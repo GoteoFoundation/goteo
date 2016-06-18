@@ -18,7 +18,7 @@ $this->section('content');
 
                 <?= $this->supply('sub-header', $this->get_session('sub-header')) ?>
 
-				<form class="form-horizontal" role="form" method="POST" action="/login?return=<?= urlencode($this->raw('return')) ?>">
+				<form class="form-horizontal" role="form" method="POST" action="/login?return=<?= urlencode($this->raw('return')) ?>&amp;lang=<?= $this->lang_current() ?>">
 
 					<div class="form-group">
 						<div class="col-md-10 col-md-offset-1">

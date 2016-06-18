@@ -26,6 +26,10 @@ endif;
 
         <?= $this->insert('partials/header/metas') ?>
 
+        <?php $this->section('lang-metas') ?>
+            <?= $this->insert('partials/header/lang_metas') ?>
+        <?php $this->stop() ?>
+
         <title><?= $this->title ?></title>
 
         <link rel="icon" type="image/png" href="/favicon.ico" >
@@ -39,7 +43,7 @@ endif;
 
     </head>
 
-    <body role="document">
+    <body role="document" <?php if ($this->bodyClass) echo ' class="' . $this->bodyClass . '"' ?>>
 
     <noscript><div id="noscript">Please enable JavaScript</div></noscript>
 

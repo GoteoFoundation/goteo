@@ -10,6 +10,10 @@
 
         <?= $this->insert('partials/header/metas') ?>
 
+        <?php $this->section('lang-metas') ?>
+            <?= $this->insert('partials/header/lang_metas') ?>
+        <?php $this->stop() ?>
+
         <?= $this->insert('partials/header/styles') ?>
 
         <?= $this->insert('partials/header/javascript') ?>

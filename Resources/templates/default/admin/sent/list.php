@@ -18,8 +18,17 @@ $templates = $this->templates;
 <div class="widget board">
     <form id="filter-form" action="/admin/sent" method="get">
         <div style="float:left;margin:5px;">
-            <label for="user-filter">ID, nombre o email del destinatario</label><br />
+            <label for="reply-filter">Nombre o email del remitente</label><br />
+            <input id="reply-filter" name="reply" value="<?php echo $filters['reply']; ?>" style="width:300px;"/>
+        </div>
+        <div style="float:left;margin:5px;">
+            <label for="user-filter">Email del destinatario</label><br />
             <input id="user-filter" name="user" value="<?php echo $filters['user']; ?>" style="width:300px;"/>
+        </div>
+
+        <div style="float:left;margin:5px;">
+            <label for="subject-filter">Asunto</label><br />
+            <input id="subject-filter" name="subject" value="<?php echo $filters['subject']; ?>" style="width:300px;"/>
         </div>
 
         <div style="float:left;margin:5px;">
@@ -71,6 +80,7 @@ $templates = $this->templates;
                     <tr>
                         <th>Éxito</th>
                         <th>&nbsp;</th>
+                        <th>Remitente</th>
                         <th>Destinatario</th>
                         <th>Plantilla</th>
                         <th>Asunto</th>
@@ -91,6 +101,7 @@ $templates = $this->templates;
                         <tr>
                             <td><?= $this->percent_span($percent) ?></span></td>
                             <td><a href="/admin/sent/detail/<?= $mail->id ?>">[Detalles]</a></td>
+                            <td><a href="/admin/users?email=<?php echo urlencode($mail->getReply()) ?>" title="<?= $this->ee($mail->getReplyName()) ?>"><?php echo $mail->getReply(); ?></a></td>
                             <td><a href="/admin/users?name=<?php echo urlencode($mail->email) ?>"><?php echo $mail->email; ?></a></td>
                             <td><?= $templates[$mail->template] ?></td>
                             <td><?= $mail->getSubject() ?></td>
