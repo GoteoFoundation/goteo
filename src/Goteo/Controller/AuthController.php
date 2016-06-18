@@ -36,6 +36,10 @@ class AuthController extends \Goteo\Core\Controller {
         View::setTheme('responsive');
     }
 
+    public function redirectLoginAction(Request $request) {
+        return $this->redirect('/login?'.$request->getQueryString());
+    }
+
     public function loginAction(Request $request)
     {
         // Already logged?

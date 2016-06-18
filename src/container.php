@@ -120,7 +120,15 @@ $sc->register('app.listener.project', 'Goteo\Application\EventListener\ProjectLi
     ->setArguments(array(new Reference('logger')));
 // Invest listener
 $sc->register('app.listener.invest', 'Goteo\Application\EventListener\InvestListener')
-	->setArguments(array(new Reference('paylogger')));
+  ->setArguments(array(new Reference('paylogger')));
+
+// Milestone listener
+$sc->register('console.listener.milestone', 'Goteo\Console\EventListener\ConsoleMilestoneListener')
+  ->setArguments(array(new Reference('console_logger')));
+
+  // Favourite listener
+$sc->register('console.listener.favourite', 'Goteo\Console\EventListener\ConsoleFavouriteListener')
+	->setArguments(array(new Reference('console_logger')));
 
 // Invest listener
 $sc->register('app.listener.poolinvest', 'Goteo\Application\EventListener\PoolInvestListener')
@@ -135,11 +143,13 @@ $sc->register('dispatcher', 'Symfony\Component\EventDispatcher\EventDispatcher')
 	->addMethodCall('addSubscriber', array(new Reference('app.listener.session')))
 	->addMethodCall('addSubscriber', array(new Reference('app.listener.auth')))
 	->addMethodCall('addSubscriber', array(new Reference('app.listener.project')))
-    ->addMethodCall('addSubscriber', array(new Reference('app.listener.invest')))
-	->addMethodCall('addSubscriber', array(new Reference('app.listener.poolinvest')))
-	->addMethodCall('addSubscriber', array(new Reference('app.listener.acl')))
-	->addMethodCall('addSubscriber', array(new Reference('listener.router')))
-	->addMethodCall('addSubscriber', array(new Reference('listener.response')))
+  ->addMethodCall('addSubscriber', array(new Reference('app.listener.invest')))
+  ->addMethodCall('addSubscriber', array(new Reference('app.listener.poolinvest')))
+  ->addMethodCall('addSubscriber', array(new Reference('console.listener.milestone')))
+  ->addMethodCall('addSubscriber', array(new Reference('console.listener.favourite')))
+  ->addMethodCall('addSubscriber', array(new Reference('app.listener.acl')))
+  ->addMethodCall('addSubscriber', array(new Reference('listener.router')))
+  ->addMethodCall('addSubscriber', array(new Reference('listener.response')))
 ;
 // Goteo main app
 $sc->register('app', 'Goteo\Application\App')
@@ -168,6 +178,8 @@ $sc->register('console_dispatcher', 'Symfony\Component\EventDispatcher\EventDisp
    ->addMethodCall('addSubscriber', array(new Reference('console.listener.project')))
    ->addMethodCall('addSubscriber', array(new Reference('console.listener.watcher')))
    ->addMethodCall('addSubscriber', array(new Reference('console.listener.invest')))
+   ->addMethodCall('addSubscriber', array(new Reference('console.listener.milestone')))
+   ->addMethodCall('addSubscriber', array(new Reference('console.listener.favourite')))
    ->addMethodCall('addSubscriber', array(new Reference('console.listener.mailing')))
 ;
 

@@ -190,13 +190,6 @@ namespace {
     }
 
     /*
-     * Verifica si una cadena es sha1
-     */
-    function is_sha1($str) {
-        return (bool) preg_match('/^[0-9a-f]{40}$/i', $str);
-    }
-
-    /*
      * Asegura una url si está en entorno seguro
      */
     function sec($url) {

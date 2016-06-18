@@ -57,10 +57,12 @@ class SessionListener extends AbstractListener {
         // if url_lang is defined set a common cookie for all domains
         if (Config::get('url.url_lang')) {
             $host = $request->getHost();
-            $sub_lang = strtok($host, '.');
+            $parts = explode('.', $host);
+            $sub_lang = array_shift($parts);
+            if($sub_lang == 'www') $sub_lang = Config::get('lang');
             if (Lang::exists($sub_lang)) {
                 // reduce host: ca.goteo.org => goteo.org
-                $host = strtok('');
+                $host = implode('.', $parts);
             }
             ini_set('session.cookie_domain', ".$host");
         }
@@ -92,23 +94,33 @@ class SessionListener extends AbstractListener {
         $url = $request->getHttpHost();
         // Redirect to proper URL if url_lang is defined
         if (Config::get('url.url_lang')) {
-            $sub_lang = strtok($url, '.');
+            $parts = explode('.', $url);
+            $sub_lang = $parts[0];
+            if($sub_lang == 'www') $sub_lang = Config::get('lang');
             if (Lang::exists($sub_lang)) {
                 // reduce url: ca.goteo.org => goteo.org
-                $url = strtok('');
+                array_shift($parts);
+                $url = implode('.', $parts);
             }
             // if reduced URL is the main domain, redirect to sub-level lang
-            if(substr_count($url, '.') == 1) {
+            if(count($parts) == 2) {
                 if($request->query->has('lang')) {
                     $request->query->remove('lang');
                 }
-                // Main platform language stays without subdomain
-                if($lang && Config::get('lang') != $lang) {
+                // Login controller should mantaing always the same URL to help browser
+                if(in_array($request->getPathInfo(), ['/login', '/password-recovery', '/password-reset', '/signup'])) {
+                    // $url = "$url";
+                    $request->query->set('lang', $lang);
+                }
+                // Main platform language will be shown as www subdomain
+                elseif($lang && Config::get('lang') != $lang) {
                     $url = "$lang.$url";
+                } else {
+                    $url = "www.$url";
                 }
 
-                // echo "$url [$sub_lang=>$lang] ";die;
             }
+            // print_r($parts);echo "$url [$sub_lang=>$lang] ";die;
         }
 
         // Mantain user in secure enviroment if logged and ssl config on
@@ -124,10 +136,11 @@ class SessionListener extends AbstractListener {
         if ($url != $request->getScheme() . '://' . $request->getHttpHost()) {
             $query = http_build_query($request->query->all());
             // die($url . $request->getPathInfo() . ($query ? "?$query" : ''));
-            // $event->setResponse(new RedirectResponse($url . $request->getRequestUri()));
+            // $event->setResponse(new RedirectdirectResponse($url . $request->getRequestUri()));
             $event->setResponse(new RedirectResponse($url . $request->getPathInfo() . ($query ? "?$query" : '')));
             return;
         }
+        // die("[$url] - " .$request->getScheme() . '://' . $request->getHttpHost());
 
         // set currency
         $currency = $request->query->get('currency');
@@ -212,7 +225,7 @@ class SessionListener extends AbstractListener {
 
     public static function getSubscribedEvents() {
         return array(
-            KernelEvents::REQUEST => 'onRequest',
+            KernelEvents::REQUEST => array('onRequest', 50),
             KernelEvents::RESPONSE => array('onResponse', -50), // low priority: after headers are processed by symfony
         );
     }

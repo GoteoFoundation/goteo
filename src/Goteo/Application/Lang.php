@@ -280,6 +280,7 @@ class Lang {
 
             // set by subdomain
             $subdomain = strtok($request->getHost(), '.');
+            if($subdomain == 'www') $subdomain = Config::get('lang');
             if(static::exists($subdomain)) {
                 $desired['subdomain'] = $subdomain;
                 $save_lang = true;
@@ -319,8 +320,8 @@ class Lang {
                         //Enviar cookie
                         // Cookie::store('goteo_lang', $lang);
                         if(Session::isLogged() && !Session::get('shadowed_by')) {
-                            //guardar preferencias de usuario
-                            Session::getUser()->updateLang($lang);
+                            // guardar preferencias de usuario
+                            // Session::getUser()->updateLang($lang);
                         }
                     }
                 }

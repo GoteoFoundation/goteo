@@ -25,8 +25,14 @@ use Goteo\Library\Check;
 use Goteo\Library\Feed;
 use Goteo\Library\Page;
 use Goteo\Library\Text;
+use Goteo\Library\Worth;
 use Goteo\Model;
 use Goteo\Model\Project;
+use Goteo\Model\Invest;
+use Goteo\Model\Project\Favourite;
+use Goteo\Model\Project\ProjectMilestone;
+use Goteo\Model\License;
+use Goteo\Model\Blog\Post;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -54,7 +60,7 @@ class ProjectController extends \Goteo\Core\Controller {
 		}
 
 		// pasos para el check
-		if ($project->draft) {
+		if ($project->draft && !$project->call) {
 			// primer borrador, menos pasos
 			$steps = array('userProfile', 'overview', 'costs', 'rewards');
 		} else {
@@ -143,7 +149,7 @@ class ProjectController extends \Goteo\Core\Controller {
 				)
 			);
 
-		} elseif ($project->draft) {
+		} elseif ($project->draft && !$project->call) {
 			// primer borrador, menos pasos
 			$steps = array(
 				'userProfile' => array(
@@ -388,6 +394,8 @@ class ProjectController extends \Goteo\Core\Controller {
 				$viewData['languages']        = Lang::listAll('object');// idiomas activos
 				$viewData['currencies']       = Library\Currency::$currencies;// divisas
 				$viewData['default_currency'] = Library\Currency::DEFAULT_CURRENCY;// divisa por defecto
+				$viewData['scope'] = Model\Project::scope();
+
 
 				break;
 
@@ -489,8 +497,28 @@ class ProjectController extends \Goteo\Core\Controller {
 		//activamos la cache para esta llamada
 		\Goteo\Core\DB::cache(true);
 
+		//Set the responsive theme
+		View::setTheme('responsive');
+
 		$project = Project::get($id, Lang::current(false));
 		$user    = Session::getUser();
+
+		$show_allow=['home', 'updates', 'participate'];
+
+		if(!in_array($show, $show_allow))
+			return $this->redirect('/project/' . $project->id);
+
+		$related_projects=Project::published(['categories' => $project->categories], null, 0, 3, false);
+
+		$lsuf = (LANG != 'es') ? '?lang='.LANG : '';
+
+        $URL = $request->getSchemeAndHttpHost();
+
+        //Get widgets code
+
+        $url = $URL . '/widget/project/' . $project->id;
+
+        $widget_code = Text::widget($url . $lsuf);
 
 		// recompensas
 		foreach ($project->individual_rewards as $reward) {
@@ -541,8 +569,43 @@ class ProjectController extends \Goteo\Core\Controller {
 			$viewData = array(
 				'project' => $project,
 				'show'    => $show,
-				'blog'    => null
+				'blog'    => null,
+				'related_projects' => $related_projects,
+				'widget_code' => $widget_code
 			);
+
+			// Custom view data
+
+			if ($show == 'home') {
+
+				$viewData['types'] = Project\Cost::types();
+
+				// Costs by type
+				$costs = array();
+
+				foreach ($project->costs as $cost) {
+				    $costs[$cost->type][] = (object) array(
+				        'name' => $cost->cost,
+				        'description' => $cost->description,
+				        'min' => $cost->required == 1 ? $cost->amount : '',
+				        'opt' => $cost->amount,
+				        'req' => $cost->required
+				    );
+				}
+
+				$viewData['costs'] = $costs;
+
+				// Licenses for the social rewards
+
+				$licenses = array();
+
+				foreach (License::getAll() as $l) {
+				    $licenses[$l->id] = $l;
+				}
+
+
+				$viewData['licenses'] = $licenses;
+			}
 
 			// tenemos que tocar esto un poquito para motrar las necesitades no economicas
 			if ($show == 'needs-non') {
@@ -550,17 +613,18 @@ class ProjectController extends \Goteo\Core\Controller {
 				$viewData['non_economic'] = true;
 			}
 
-			// -- Mensaje azul molesto para usuarios no registrados
-			if ($show == 'messages') {
-				$project->messages = Model\Message::getAll($project->id);
-
-				if (empty($user)) {
-					Application\Message::info(Text::html('user-login-required'));
-				}
-			}
-
 			// posts
 			if ($show == 'updates') {
+
+				//if is an individual post page
+				if($post)
+				{
+					$post=Post::get($post);
+					$viewData['post']  = $post;
+
+					$show  = 'updates_post';
+				}
+
 				// sus entradas de novedades
 				$blog = Model\Blog::get($project->id);
 				// si está en modo preview, ponemos  todas las entradas, incluso las no publicadas
@@ -568,20 +632,45 @@ class ProjectController extends \Goteo\Core\Controller {
 					$blog->posts = Model\Blog\Post::getAll($blog->id, null, false);
 				}
 
+				// Get milestones, included posts
+
+				$milestones = ProjectMilestone::getAll($project->id);
+
+				$viewData['milestones']=$milestones;
+
 				$viewData['blog'] = $blog;
 
-				$viewData['post']  = $post;
+
+
 				$viewData['owner'] = $project->owner;
+
 
 				if (empty($user)) {
 					Application\Message::info(Text::html('user-login-required'));
 				}
 			}
 
+			if ($show == 'participate') {
+				$viewData['worthcracy']=Worth::getAll();
+				$limit=15;
+				$viewData['investors_list']= Invest::investors($project->id, false, false, (int)$request->query->get('pag') * $limit, $limit, false);
+				$viewData['investors_total'] = Invest::investors($project->id, false, false, 0, 0, true);
+        		$viewData['investors_limit'] = $limit;
+
+        		//Colaborations
+        		$viewData['messages'] = Model\Message::getAll($project->id);
+
+				if (empty($user)) {
+					Application\Message::info(Text::html('user-login-required'));
+				}
+
+			}
+
 			if ($show == 'messages' && $project->status < 3) {
 				Application\Message::info(Text::get('project-messages-closed'));
 			}
-			return new Response(View::render('project/index', $viewData));
+
+			return new Response(View::render('project/'.$show, $viewData));
 
 		} else {
 			Application\Message::info('Project not public yet!');
@@ -621,6 +710,9 @@ class ProjectController extends \Goteo\Core\Controller {
 			'user_twitter'  => 'twitter',
 			'user_identica' => 'identica',
 			'user_linkedin' => 'linkedin',
+			'user_birthyear' => 'birthyear',
+			'user_gender' 	=> 'gender',
+			'user_legal_entity' 	=> 'legal_entity'
 		);
 
 		foreach ($fields as $fieldPost => $fieldTable) {
@@ -799,6 +891,7 @@ class ProjectController extends \Goteo\Core\Controller {
 			'media',
 			'media_usubs',
 			'project_location',
+			'scope'
 		);
 
 		foreach ($fields as $field) {
@@ -1113,4 +1206,59 @@ class ProjectController extends \Goteo\Core\Controller {
 	//-------------------------------------------------------------
 	// Hasta aquí los métodos privados para el tratamiento de datos
 	//-------------------------------------------------------------
+
+
+	// A user mark a project as favourite
+
+    public function favouriteAction($project_id, Request $request) {
+
+    	if (!Session::isLogged()) {
+			return $this->redirect('/user/login?return='.urldecode('/project/favourite/'.$project_id));
+		}
+
+        $user=Session::getUser()->id;
+
+        //Calculate the date to send mail
+
+        $project=Project::get($project_id, Lang::current(false));
+
+        if( ($project->days>1) && ($project->round==1) && ($project->amount<$project->mincost) )
+        {
+			$interval_days_send=round(($project->days-1)*0.8);
+
+    		$date_send=new \DateTime(date('Y-m-d'));
+
+    		$date_send=$date_send->modify("+".$interval_days_send." days");
+
+    		$date_send=$date_send->format('Y-m-d');
+		}
+
+		$favourite=new Favourite(array(
+		    'project' => $project_id, 'user' => $user, 'date_send' => $date_send
+		));
+
+	    $favourite->save($errors);
+
+	    if ($request->isMethod('post'))
+	        return $this->jsonResponse(['result' => $favourite]);
+
+        return $this->redirect('/project/' . $project_id);;
+    }
+
+    // A user unmark a project as favourite
+
+    public function deleteFavouriteAction(Request $request) {
+         if ($request->isMethod('post')) {
+                $project = $request->request->get('project');
+                $user= $request->request->get('user');
+
+                $favourite=new Favourite(array(
+                    'project' => $project, 'user' => $user
+                ));
+
+        		$favourite->remove($errors);
+        }
+
+        return $this->jsonResponse(['result' => true]);
+    }
 }

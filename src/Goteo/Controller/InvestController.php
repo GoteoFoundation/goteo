@@ -546,4 +546,19 @@ class InvestController extends \Goteo\Core\Controller {
 
     }
 
+    // Send a public support message
+
+    public function supportMsgAction(Request $request) {
+         if ($request->isMethod('post')) {
+                $msg = $request->request->get('msg');
+                $invest= $request->request->get('invest');
+                if(empty($msg))
+                    $result=false;
+                else
+                    $result=Invest::newSupportMessage($invest, $msg);
+        }
+
+        return $this->jsonResponse(['result' => $result]);
+    }
+
 }

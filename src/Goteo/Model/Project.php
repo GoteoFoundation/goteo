@@ -353,7 +353,7 @@ namespace Goteo\Model {
             $userPersonal = User::getPersonal($user);
 
             $values = array(
-                ':id'   => md5($user.'-'.$num),
+                ':id'   => md5($user.'-'.uniqid($num)),
                 ':name' => "El nuevo proyecto de {$userProfile->name}",
                 ':lang' => !empty($_SESSION['lang']) ? $_SESSION['lang'] : 'es',
                 ':currency' => 'EUR',
@@ -388,8 +388,9 @@ namespace Goteo\Model {
                 $campos[] = \str_replace(':', '', $campo);
             }
 
-            $sql = "REPLACE INTO project (" . implode(',', $campos) . ")
+            $sql = "INSERT INTO project (" . implode(',', $campos) . ")
                  VALUES (" . implode(',', \array_keys($values)) . ")";
+            // die (\sqldbg($sql, $values));
             try {
                 self::query($sql, $values);
 
@@ -494,16 +495,14 @@ namespace Goteo\Model {
                 $project->nodeData = new Node;
                 $project->nodeData->id = $project->node;
                 $project->nodeData->name = $project->node_name;
-                $project->nodeData->url = $project->node_url;
+                $project->nodeData->url = '/channel/' . $project->node;
+                if($project->node_url) $project->nodeData->url = $project->node_url;
                 $project->nodeData->active = $project->node_active;
 
                 // label
                 $project->nodeData->label = Image::get($project->node_label);
 
                  //para diferenciar el único nodo de los canales
-                 //TODO: to remove
-                if($project->node=='barcelona')
-                    $project->nodeData->type='node';
 
                 if (isset($project->media)) {
                     $project->media = new Project\Media($project->media);
@@ -569,7 +568,8 @@ namespace Goteo\Model {
                 //-----------------------------------------------------------------
                 // Diferentes verificaciones segun el estado del proyecto
                 //-----------------------------------------------------------------
-                $project->investors = Invest::investors($id);
+                //TODO: to be removed, very ineficient
+                $project->investors = Invest::investors($id, false, false, 0, null);
 
                 if($project->status >= 3 && empty($project->amount)) {
                     $project->amount = Invest::invested($id);
@@ -600,6 +600,10 @@ namespace Goteo\Model {
                 // calculos de días y banderolos
                 $project->setDays();
                 $project->setTagmark();
+
+                // Percent
+
+                $project->percent=$project->getAmountPercent();
 
                 // fecha final primera ronda (fecha campaña + PRIMERA_RONDA)
                 if (!empty($project->published)) {
@@ -800,6 +804,7 @@ namespace Goteo\Model {
             $Widget->updated = $project->updated;
             $Widget->success = $project->success;
             $Widget->closed = $project->closed;
+            $Widget->node = $project->node;
 
             // configuración de campaña
             // $project_conf = Project\Conf::get($Widget->id);  lo sacamos desde la consulta

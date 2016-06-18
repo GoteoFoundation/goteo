@@ -154,6 +154,7 @@ class Config {
 		\Goteo\Controller\AdminController::addSubController('Goteo\Controller\Admin\UsersSubController');
 		\Goteo\Controller\AdminController::addSubController('Goteo\Controller\Admin\WordcountSubController');
 		\Goteo\Controller\AdminController::addSubController('Goteo\Controller\Admin\WorthSubController');
+		\Goteo\Controller\AdminController::addSubController('Goteo\Controller\Admin\MilestonesSubController');
 
 		// Adding Pool (internal credit) payment method
 		\Goteo\Payment\Payment::addMethod('Goteo\Payment\Method\PoolPaymentMethod');
@@ -363,14 +364,17 @@ class Config {
 			if (is_null($lang)) {
 				$lang = Lang::current();
 			}
+            if($lang == self::get('lang')) {
+                $lang =  'www';
+            }
 
 			$url = "//$lang." . self::get('url.url_lang');
 		}
 		if (strpos($url, '//') === 0) {
-			$url = 'http://' . $url;
+			$url = 'http:' . $url;
 		}
 		if (self::get('ssl')) {
-			$url = str_replace('http://', 'https://', $url);
+			$url = str_ireplace('http://', 'https://', $url);
 		}
 		return $url;
 	}

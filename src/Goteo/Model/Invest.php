@@ -895,11 +895,25 @@ class Invest extends \Goteo\Core\Model {
     /*
      * Aportes individuales a un proyecto
      */
-    public static function investors ($project, $projNum = false, $showall = false) {
+    public static function investors ($project, $projNum = false, $showall = false, $offset = 0, $limit = 10, $count = false) {
         $investors = array();
+
+        // Return total count for pagination
+        if($count) {
+            $sql = "SELECT COUNT(invest.id) FROM invest WHERE project = :p
+            AND     invest.status IN (:s0, :s1, :s3, :s4, :s5)";
+                return (int) self::query($sql, array(':p' => $project, ':s0' => self::STATUS_PENDING, ':s1' => self::STATUS_CHARGED, ':s3' => self::STATUS_PAID, ':s4' => self::STATUS_RETURNED, ':s5' => self::STATUS_TO_POOL))->fetchColumn();
+        }
+
+        $offset = (int) $offset;
+        $limit = (int) $limit;
+
+        if($limit)
+            $limit_sql='LIMIT '.$offset.','.$limit;
 
         $sql = "
             SELECT
+                invest.id as id,
                 invest.user as user,
                 user.name as name,
                 user.avatar as user_avatar,
@@ -910,13 +924,17 @@ class Invest extends \Goteo\Core\Model {
                 invest.droped as droped,
                 invest.campaign as campaign,
                 invest.call as `call`,
-                invest.anonymous as anonymous
+                invest.anonymous as anonymous,
+                invest_msg.msg as msg
             FROM    invest
+            LEFT JOIN invest_msg
+                ON invest_msg.invest=invest.id
             INNER JOIN user
                 ON  user.id = invest.user
             WHERE   project = :p
             AND     invest.status IN (:s0, :s1, :s3, :s4, :s5)
             ORDER BY invest.invested DESC, invest.id DESC
+            $limit_sql
             ";
 
         $query = self::query($sql, array(':p' => $project, ':s0' => self::STATUS_PENDING, ':s1' => self::STATUS_CHARGED, ':s3' => self::STATUS_PAID, ':s4' => self::STATUS_RETURNED, ':s5' => self::STATUS_TO_POOL));
@@ -931,6 +949,7 @@ class Invest extends \Goteo\Core\Model {
                 $anonymous_date = empty($investors['anonymous']->date) ? $investor->date : $investors['anonymous']->date;
 
                 $investors[] = (object) array(
+                    'id' => $investor->id,
                     'user' => 'anonymous',
                     'name' => Text::get('regular-anonymous'),
                     'projects' => null,
@@ -940,12 +959,14 @@ class Invest extends \Goteo\Core\Model {
                     'date' => $investor->date,
                     'droped' => $investor->droped,
                     'campaign' => $investor->campaign,
-                    'call' => $investor->call
+                    'call' => $investor->call,
+                    'msg' => $investor->msg
                 );
 
             } else {
 
                 $investors[] = (object) array(
+                    'id' => $investor->id,
                     'user' => $investor->user,
                     'name' => $investor->name,
                     'projects' => $investor->projects,
@@ -955,7 +976,8 @@ class Invest extends \Goteo\Core\Model {
                     'date' => $investor->date,
                     'droped' => $investor->droped,
                     'campaign' => $investor->campaign,
-                    'call' => $investor->call
+                    'call' => $investor->call,
+                    'msg' => $investor->msg
                 );
 
             }
@@ -2018,6 +2040,30 @@ class Invest extends \Goteo\Core\Model {
         // proyecto
         self::invested($this->project); // conseguido
         self::numInvestors($this->project); // inversores
+
+    }
+
+     /**
+     * Save a support message
+     *
+     * @return success boolean
+     */
+    public static function newSupportMessage($invest, $msg) {
+
+        try {
+
+        $sql = "INSERT INTO invest_msg (invest, msg)
+                VALUES (:invest, :msg)";
+
+        self::query($sql, array(':invest'=>$invest, ':msg'=> $msg));
+
+
+        } catch (\PDOException $e) {
+            $errors[] = "El mensaje ya ha sido asignado. Por favor, revise los datos." . $e->getMessage();
+            return false;
+        }
+
+        return true;
 
     }
 

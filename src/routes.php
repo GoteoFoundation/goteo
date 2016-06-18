@@ -98,6 +98,12 @@ $routes->add('invest-share', new Route(
         )
 ));
 
+$routes->add('invest-msg-support', new Route(
+    '/invest/{project_id}/{invest_id}/support-msg',
+    array('_controller' => 'Goteo\Controller\InvestController::supportMsgAction',
+        )
+));
+
 
 ////// Pool rechargue //////
 ///
@@ -177,7 +183,7 @@ $routes->add('outh-login', new Route(
 // old route compatibility
 $routes->add('auth-login-old-route', new Route(
     '/user/login',
-    array('_controller' => 'Goteo\Controller\AuthController::loginAction',
+    array('_controller' => 'Goteo\Controller\AuthController::redirectLoginAction',
         )
 ));
 
@@ -246,6 +252,20 @@ $routes->add('project-create', new Route(
     array('_controller' => 'Goteo\Controller\ProjectController::createAction')
 ));
 
+// Favourite project
+
+$routes->add('project-favourite', new Route(
+    '/project/favourite/{project_id}',
+    array('_controller' => 'Goteo\Controller\ProjectController::favouriteAction')
+));
+
+// Delete Favourite project
+
+$routes->add('project-delete-favourite', new Route(
+    '/project/delete-favourite',
+    array('_controller' => 'Goteo\Controller\ProjectController::DeletefavouriteAction')
+));
+
 //TODO: quitar esta guarrada:
 $routes->add('project-raw', new Route(
     '/project/raw/{id}',
@@ -265,6 +285,7 @@ $routes->add('project-sections', new Route(
         'post' => null //optional
         )
 ));
+
 
 //// CONTACT ////
 

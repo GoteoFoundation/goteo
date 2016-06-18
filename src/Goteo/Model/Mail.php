@@ -34,6 +34,7 @@ class Mail extends \Goteo\Core\Model {
         $from,
         $fromName,
         $email,
+        $sender_id,
         $to,
         $toName,
         $subject,
@@ -73,6 +74,18 @@ class Mail extends \Goteo\Core\Model {
         $this->replyName = Config::get('mail.transport.name');
         $this->node = Config::get('current_node');
 
+        // If sender defined, lets create the object
+        if($this->sender_id) {
+            $this->sender = new Sender([
+                        'mail' => $this->id,
+                        'id' => $this->sender_id,
+                        'active' => $this->sender_active,
+                        'datetime' => $this->sender_datetime,
+                        'blocked' => $this->sender_blocked,
+                        'reply' => $this->sender_reply,
+                        'reply_name' => $this->sender_reply_name
+                        ]);
+        }
         // Define  el idioma para los mensajes de error.
         $mail->setLanguage("es");
 
@@ -121,6 +134,20 @@ class Mail extends \Goteo\Core\Model {
             $this->subject = $tpl->title;
         }
         return $this->subject;
+    }
+
+    public function getReply() {
+        if($this->sender) {
+            return $this->sender->reply;
+        }
+        return $this->reply;
+    }
+
+    public function getReplyName() {
+        if($this->sender) {
+            return $this->sender->reply_name;
+        }
+        return $this->replyName;
     }
 
     /**
@@ -187,6 +214,8 @@ class Mail extends \Goteo\Core\Model {
         // En el contenido:
         if($vars) {
             $mail->content = str_replace(array_keys($vars), array_values($vars), $mail->content);
+            $mail->subject = str_replace(array_keys($vars), array_values($vars), $mail->subject);
+
         }
 
         return $mail;
@@ -572,11 +601,24 @@ class Mail extends \Goteo\Core\Model {
             $values[':user'] = "%{$filters['user']}%";
         }
 
+        if (!empty($filters['reply'])) {
+            $sqlFilter .= $and . " (mailer_content.reply LIKE :reply OR mailer_content.reply_name LIKE :reply)";
+            $and = " AND";
+            $values[':reply'] = "%{$filters['reply']}%";
+        }
+
         if (!empty($filters['template'])) {
             $sqlFilter .= $and . " mail.template = :template";
             $and = " AND";
             $values[':template'] = $filters['template'];
         }
+
+        if (!empty($filters['subject'])) {
+            $sqlFilter .= $and . " mail.subject = :subject";
+            $and = " AND";
+            $values[':subject'] = $filters['subject'];
+        }
+
 
         /*
         if ($node != \GOTEO_NODE) {
@@ -611,17 +653,29 @@ class Mail extends \Goteo\Core\Model {
 
         // Return total count for pagination
         if($count) {
-            $sql = "SELECT COUNT(mail.id) FROM mail $sqlFilter";
+            $sql = "SELECT COUNT(mail.id)
+                    FROM mail
+                    LEFT JOIN mailer_content ON mailer_content.mail = mail.id
+                    $sqlFilter";
             return (int) static::query($sql, $values)->fetchColumn();
         }
 
         $offset = (int) $offset;
         $limit = (int) $limit;
-        $sql = "SELECT * FROM mail
+        $sql = "SELECT mail.*,
+                mailer_content.id as sender_id,
+                mailer_content.active as sender_active,
+                mailer_content.datetime as sender_datetime,
+                mailer_content.blocked as sender_blocked,
+                mailer_content.reply as sender_reply,
+                mailer_content.reply_name as sender_reply_name
+                FROM mail
+                LEFT JOIN mailer_content ON mailer_content.mail = mail.id
                 $sqlFilter
                 ORDER BY mail.date DESC
                 LIMIT $offset,$limit";
 
+        // die(\sqldbg($sql, $values));
         $query = static::query($sql, $values);
         return $query->fetchAll(\PDO::FETCH_CLASS, __CLASS__);
 

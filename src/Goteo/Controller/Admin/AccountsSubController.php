@@ -114,7 +114,6 @@ class AccountsSubController extends AbstractSubController {
         }
         $invests = Invest::getAll($id);
 
-        $project->investors = Invest::investors($id, false, true);
         $projectStatus = Project::status();
         $investStatus = Invest::status();
 

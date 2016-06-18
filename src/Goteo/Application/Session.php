@@ -250,9 +250,9 @@ class Session {
             if($full_storage) {
                 // Username remembering cookie
                 Cookie::store('goteo_user', $user->id);
-                if (!empty($user->lang)) {
-                    self::store('lang', $user->lang);
-                }
+                // if (!empty($user->lang)) {
+                //     self::store('lang', $user->lang);
+                // }
             }
             return $user;
         }

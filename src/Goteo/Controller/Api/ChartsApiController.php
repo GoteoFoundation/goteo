@@ -42,16 +42,36 @@ class ChartsApiController extends AbstractApiController {
 
         //add costs
         $costs = ['mandatory' => [], 'optional' => []];
+
+        //Light colors
+        $light_o=30;
+        $light_m=40;
+
         foreach(Project\Cost::getAll($id) as $cost) {
             $arr = $cost->required ? 'mandatory' : 'optional';
-            if(!is_array($costs[$arr][$cost->type])) $costs[$arr][$cost->type] = ['name' => Text::get('cost-type-' . $cost->type), 'size' => 0, 'children' => []];
-            $costs[$arr][$cost->type]['children'][] = ['name' => $cost->cost, 'title' => \amount_format($cost->amount), 'size' => (int)$cost->amount];
+            
+            if($arr=='mandatory')
+            {
+                $light_m+=4;
+                $color='hsla(303, 46%,'. $light_m.'%, 1)';
+                $color_first='hsla(303, 46%, 40%, 1)';
+            }
+            else
+            {
+                $light_o-=4;
+                $color='hsla(179, 76%,'. $light_m.'%, 1)';
+                $color_first='hsla(179, 76%, 30%, 1)';
+            }
+
+            if(!is_array($costs[$arr][$cost->type])) $costs[$arr][$cost->type] = ['name' => Text::get('cost-type-' . $cost->type), 'size' => 0, 'color' => $color, 'children' => []];
+            $costs[$arr][$cost->type]['children'][] = ['name' => $cost->cost, 'title' => \amount_format($cost->amount), 'color' => $color, 'size' => (int)$cost->amount];
             $costs[$arr][$cost->type]['size'] += (int)$cost->amount;
+            $costs[$arr][$cost->type]['color'] = $color_first;
         }
         // $ob['children'] = array_values($costs);
         $ob = ['size' => $mincost + $maxcost, 'name' => $prj->name, 'children' => [
-            ['size' => $mincost, 'name' => Text::get('project-view-metter-minimum'), 'children' => array_values($costs['mandatory'])],
-            ['size' => $maxcost, 'name' => Text::get('project-view-metter-optimum'), 'children' => array_values($costs['optional'])],
+            ['size' => $mincost, 'name' => Text::get('project-view-metter-minimum'), 'color' =>'hsla(303, 46%, 30%, 1)', 'children' => array_values($costs['mandatory'])],
+            ['size' => $maxcost, 'name' => Text::get('project-view-metter-optimum'), 'color' =>'hsla(179, 76%, 20%, 1)', 'children' => array_values($costs['optional'])],
         ]];
 
         return $this->jsonResponse($ob);

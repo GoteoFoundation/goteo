@@ -57,9 +57,9 @@ class ProjectListener extends AbstractListener {
                 $this->warning('Duplicated event', [$project, 'event' => "$to:$template"]);
                 return;
             }
-            $event->fire(function() use ($project, $template, $target) {
-                if(in_array('owner', $target)) UsersSend::toOwner($template, $project);
-                if(in_array('consultants', $target)) UsersSend::toConsultants($template, $project);
+            $event->fire(function() use ($project, $template, $to) {
+                if('owner' === $to) UsersSend::toOwner($template, $project);
+                if('consultants' === $to) UsersSend::toConsultants($template, $project);
             });
 
             $this->notice("Sent message to $to", [$project, 'event' => "$to:$template"]);

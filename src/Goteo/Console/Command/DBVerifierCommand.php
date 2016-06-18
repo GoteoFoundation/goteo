@@ -36,7 +36,7 @@ class DBVerifierCommand extends AbstractCommand {
              ->setDescription("Database cleaner")
              ->setDefinition(array(
                       new InputOption('update', 'u', InputOption::VALUE_NONE, 'Actually does the cleaning action, read-only operation otherwise'),
-                      new InputOption('days', 'd', InputOption::VALUE_REQUIRED, 'Number of days that a record is considered "old" (120 by default)', -1),
+                      new InputOption('days', 'd', InputOption::VALUE_REQUIRED, 'Number of days that a record is considered "old" (120 by default, 365 for mails)', -1),
                       new InputOption('scope', 's', InputOption::VALUE_REQUIRED, 'Optional operation scope (default all): [all|feed|token|mailing|blocked]', 'all')
                 ))
 
@@ -132,16 +132,16 @@ EOT
 
         if(in_array($scope, ['all', 'mailing'])) {
             $days = (int) $input->getOption('days');
-            if($days == -1) $days = 120;
+            if($days == -1) $days = 365;
             if($days < 30) {
-                throw new \Exception('Number of days must be greater than 90!');
+                throw new \Exception('Number of days must be greater than 30!');
             }
 
             $output->writeln("Checking old mail data...");
-            $where = " WHERE (template != :template OR template IS NULL)
+            $where = " WHERE (template NOT IN (:template1, :template2) OR template IS NULL)
                         AND DATE_FORMAT(from_unixtime(unix_timestamp(now()) - unix_timestamp(`date`)), '%j') > $days";
 
-            $query = Project::query("SELECT * FROM mail $where", [':template' => Template::NEWSLETTER]);
+            $query = Project::query("SELECT * FROM mail $where", [':template1' => Template::NEWSLETTER, ':template2' => Template::MESSAGE_DONORS]);
 
             $found = 0;
             foreach ($query->fetchAll(\PDO::FETCH_CLASS) as $mail) {
@@ -158,7 +158,7 @@ EOT
             }
             $query = Project::query("SELECT count(*) as total FROM mail");
             $total = $query->fetchColumn();
-            $output->writeln("Found <comment>$found</comment> <info>mail records</info> older thant <comment>$days days</comment> from a total of <comment>$total</comment> records");
+            $output->writeln("Found <comment>$found</comment> <info>mail records</info> older than <comment>$days days</comment> from a total of <comment>$total</comment> records");
             $index += $found;
         }
 
