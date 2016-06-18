@@ -247,22 +247,25 @@ d3.json('/api/charts/<?= $this->project->id ?>/invests', function (error, rawDat
     };
   });
 
-  d3.json('/assets/markers.json', function (error, markerData) {
-    if (error) {
-      console.error(error);
-      return;
-    }
+  // TODO: create round markers
+  var markers = [];
+  // var markers = [{date:parseDate('2014-01-01'),type:'Ronda', version: "1"},{date:parseDate('2014-02-01'),type:'Ronda', version: "2"}];
+//   d3.json('/assets/markers.json', function (error, markerData) {
+//     if (error) {
+//       console.error(error);
+//       return;
+//     }
 
-    var markers = markerData.map(function (marker) {
-      return {
-        date: parseDate(marker.date),
-        type: marker.type,
-        version: marker.version
-      };
-    });
-
+//     var markers = markerData.map(function (marker) {
+//       return {
+//         date: parseDate(marker.date),
+//         type: marker.type,
+//         version: marker.version
+//       };
+//     });
+//     makeChart(data, markers);
+//   });
     makeChart(data, markers);
-  });
 
 
    var cachedWidth = $(window).width();
@@ -274,7 +277,7 @@ d3.json('/api/charts/<?= $this->project->id ?>/invests', function (error, rawDat
           }catch(e){}
           amountTIMEOUT = setTimeout(function(){printAmount()}, 100);
           cachedWidth = newWidth;
-        } 
+        }
     });
 
   /*$(window).one("resize", function(e) {
