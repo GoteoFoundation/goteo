@@ -4,7 +4,9 @@ $vars['option'] = str_replace(array('call_overview', 'node_overview'), array('ov
 ?>
 <div id="dashboard-menu">
     <ul>
-    <?php foreach ($vars['menu'] as $section=>$item) : ?>
+    <?php foreach ($vars['menu'] as $section=>$item) :
+
+    ?>
         <li class="section<?php if ($section == $vars['section']) echo ' current'; ?>">
             <a class="section" href="/dashboard/<?php echo $section; ?>"><?php echo $item['label']; ?></a>
             <ul>

@@ -10,8 +10,7 @@
 
 namespace Goteo\Controller {
 
-    use Goteo\Core\ACL,
-        Goteo\Core\Redirection,
+    use Goteo\Core\Redirection,
         Goteo\Core\View,
         Goteo\Model,
         Goteo\Application\App,
@@ -1246,7 +1245,37 @@ namespace Goteo\Controller {
             if ( isset(Session::getUser()->roles['admin']) || isset(Session::getUser()->roles['translator']) )
                 $menu['activity']['options']['translate'] = Text::get('dashboard-menu-translate_board');
 
-            return $menu;
+            // Hack to remove some private routes
+            $routes = [];
+            foreach(App::getRoutes()->all() as $i => $route) {
+                if(strpos($route->getPath(), '/dashboard') === 0) $routes[$i] = $route->getPath();
+            }
+            // print_r($routes);
+
+            $menu2 = [];
+            foreach($menu as $k => $sub) {
+                foreach($routes as $i => $path) {
+                    $menu2[$k] = $sub;
+                    if(strpos($path, "/dashboard/$k") === 0) {
+                        $menu2[$k]['options'] = [];
+                        if(isset($sub['options'])) {
+                            foreach($sub['options'] as $sk => $ssub) {
+                                foreach($routes as $si => $spath) {
+                                    // echo "/dashboard/$k/$sk $spath\n";
+                                    if(strpos($spath, "/dashboard/$k/$sk") === 0) {
+                                        echo "/dashboard/$k/$sk $spath\n";
+                                        $menu2[$k][$sk] = $ssub;
+                                        break;
+                                    }
+                                }
+                            }
+                        }
+                        break;
+                    }
+                }
+            }
+            // print_r($menu2);print_r($menu);
+            return $menu2;
         }
 
     }

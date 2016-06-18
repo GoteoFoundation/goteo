@@ -47,10 +47,6 @@ $url_project_create = $this->url_project_create ? $this->url_project_create : '/
                         <li><a href="/dashboard/projects"><span><?= $this->text('dashboard-menu-projects') ?></span></a></li>
                         <li><a href="/dashboard/profile/preferences"><span><?= $this->text('dashboard-menu-profile-preferences'); ?></span></a></li>
 
-                        <?php if ( isset($this->get_user()->roles['caller']) ) : ?>
-                            <li><a href="/dashboard/calls"><span><?= $this->text('dashboard-menu-calls') ?></span></a></li>
-                        <?php endif; ?>
-
                         <?php if ( isset($this->get_user()->roles['translator']) ||  isset($this->get_user()->roles['admin']) || isset($this->get_user()->roles['superadmin']) ) : ?>
                             <li><a href="/translate"><span><?= $this->text('regular-translate_board') ?></span></a></li>
                         <?php endif; ?>
@@ -63,17 +59,13 @@ $url_project_create = $this->url_project_create ? $this->url_project_create : '/
                             <li><a href="/admin"><span><?= $this->text('regular-admin_board') ?></span></a></li>
                         <?php endif; ?>
 
-                        <?php if ( isset($this->get_user()->roles['manager']) ) : ?>
-                            <li><a href="/manage"><span><?= $this->text('regular-manage_board') ?></span></a></li>
-                        <?php endif; ?>
-
                         <li class="logout"><a href="/user/logout"><span><?= $this->text('regular-logout') ?></span></a></li>
                     </ul>
                 </div>
             </li>
             <?php else: ?>
             <li class="login">
-                <a href="<?php echo SEC_URL; ?>/user/login"><?= $this->text('regular-login') ?></a>
+                <a href="/user/login"><?= $this->text('regular-login') ?></a>
             </li>
 
             <?php endif ?>
