@@ -65,7 +65,7 @@ FallbackResource /index.php
 
 > **NOTE:**
 > - If you want to debug the site, you must point the server to the `index_dev.php` file instead of `index.php`. This way error traces will be shown in the error pages
-> - If you cannot configure the server to point to the `dist/` folder, the `.htaccess` file on the root folder can be used as alternative
+> - If you cannot configure the server to point to the `dist/` folder, the `.htaccess` file on the root folder can be used as alternative (using this solution will force the use of an assets URL pointing to the dist/ folder.)
 
 ### Nginx config:
 

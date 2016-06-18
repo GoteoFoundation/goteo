@@ -20,6 +20,7 @@ goteo.error = function () {
     }catch(e){}
 };
 
+var prontoTarget = '#main-content';
 var transitionDeferred;
 
 function getTransitionOutDeferred() {
@@ -32,7 +33,7 @@ function getTransitionOutDeferred() {
     transitionDeferred = $.Deferred();
 
     // Animate content out
-    $("#main-content").animate({ opacity: 0 }, 500, function() {
+    $(prontoTarget).animate({ opacity: 0 }, 500, function() {
         // Resolve active deferred
         transitionDeferred.resolve();
     });
@@ -61,7 +62,7 @@ function pageRendered(e) {
     goteo.trace("Render new page");
 
     // Animate content in
-    $("#main-content").animate({ opacity: 1 }, 500);
+    $(prontoTarget).animate({ opacity: 1 }, 500);
 }
 
 function pageLoadError(e, error) {
@@ -81,10 +82,26 @@ $(function(){
              .on("pronto.render", pageRendered)
              .on("pronto.error", pageLoadError);
 
+    $('#main-content').on('click', 'a.pronto', function(e){
+        if($(this).data('pronto-target')) {
+            prontoTarget = $(this).data('pronto-target');
+            $.pronto('defaults',{
+                target: { title: 'title', content: prontoTarget }
+            });
+        } else {
+            if(prontoTarget !== '#main-content') {
+                prontoTarget = '#main-content';
+                $.pronto('defaults',{
+                    target: { title: 'title', content: prontoTarget }
+                });
+            }
+        }
+    });
     $.pronto({
         selector: "a.pronto",
         transitionOut: getTransitionOutDeferred,
-        target: { title: 'title', content: '#main-content' }
+        jump: false,
+        target: { title: 'title', content: prontoTarget }
     });
 
     pageRendered();
