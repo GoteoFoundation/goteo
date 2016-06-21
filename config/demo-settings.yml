@@ -11,8 +11,10 @@ session:
 # Internal secret for hashes
 secret: --a-very-secret-string---
 
-# local enviroment: local, beta, real
-env: local
+# local environment: local, beta, real
+env: local # set to real to send emails
+debug: true # whether to show trace for errors or not
+            # This is always true for local or beta env
 
 # main node
 node: goteo

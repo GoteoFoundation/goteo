@@ -629,7 +629,7 @@ namespace Goteo\Model {
          */
         public function getCall() {
             if($this->callInstance) return $this->callInstance;
-            if(class_exists('\Goteo\Model\Call')) {
+            if(Config::get('calls_enabled')) {
                 // podría estar asignado a alguna convocatoria
                 $call = Call\Project::calledMini($this->id);
                 if ( $call instanceof Call ) {

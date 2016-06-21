@@ -229,7 +229,7 @@ class InvestListener extends AbstractListener {
         $txt_droped = '';
 
         // datos para el drop
-        if (!empty($invest->droped) && class_exists('\Goteo\Model\Call')) {
+        if (!empty($invest->droped) && Config::get('calls_enabled')) {
             $drop = Invest::get($invest->droped);
             $call = \Goteo\Model\Call::getMini($drop->call);
             // texto de capital riego

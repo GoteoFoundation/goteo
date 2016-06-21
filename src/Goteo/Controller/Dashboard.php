@@ -1275,6 +1275,10 @@ namespace Goteo\Controller {
                 }
             }
             // print_r($menu2);print_r($menu);
+            // HACK, for the legacy dashboar donor certificate
+            if(!isset($menu2['wallet']['options']['certificate'])) {
+                unset($menu2['activity']['options']['donor']);
+            }
             return $menu2;
         }
 

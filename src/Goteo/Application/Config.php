@@ -173,6 +173,13 @@ class Config {
 		}
 		// TODO: fire event plugins loaded
 
+        // If calls_enabled is not defined, figure it out from the database
+        if(self::get('calls_enabled') === null) {
+            // self::set('calls_enabled', (\Goteo\Model\Call::dbCount() > 0));
+            $e = \Goteo\Controller\AdminController::existsSubController('Goteo\Controller\Admin\CallsSubController');
+            self::set('calls_enabled', $e);
+        }
+
 		// A catch-all Legacy routes controller (LEGACY DISPATCHER)
 		App::getRoutes()->add('legacy-dispacher', new Route(
 			'/{url}',

@@ -4,6 +4,7 @@ namespace Goteo\Util\Monolog\Processor;
 
 use Goteo\Application\Session;
 use Goteo\Application\Lang;
+use Goteo\Application\Config;
 use Goteo\Application\Cookie;
 use Goteo\Core\Model;
 use Goteo\Library\Currency;
@@ -117,7 +118,7 @@ class WebProcessor
                         $ctxt[$key . "_$k"] = $val;
                     }
                 }
-                if(method_exists($value, 'getCall') && class_exists('\Goteo\Model\Call')) {
+                if(method_exists($value, 'getCall') && Config::get('calls_enabled')) {
                     $call = $value->getCall();
                     if($call instanceOf \Goteo\Model\Call) {
                         $ctxt = array_merge(self::processObject([$call]), $ctxt);

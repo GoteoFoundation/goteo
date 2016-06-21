@@ -32,7 +32,7 @@ require_once __DIR__ .'/../src/autoload.php';
 App::debug(true);
 // Too much notices...
 // error_reporting(E_ALL & ~E_NOTICE & ~E_STRICT & ~E_USER_DEPRECATED);
-error_reporting(E_ALL&~E_NOTICE&~E_USER_DEPRECATED);
+error_reporting(E_ALL & ~E_NOTICE & ~E_USER_DEPRECATED); // for symfony user deprecated errors
 
 //
 // Bored? Try the hard way and fix some notices:

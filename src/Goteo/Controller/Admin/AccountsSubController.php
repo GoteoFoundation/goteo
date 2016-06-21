@@ -363,7 +363,7 @@ class AccountsSubController extends AbstractSubController {
     // aportes manuales, cargamos la lista completa de usuarios, proyectos y campañas
     public function addAction() {
         // listado de proyectos en campaña
-        if(class_exists('\Goteo\Model\Call')) {
+        if(Config::get('calls_enabled')) {
             $calls = Model\Call::getAll();
         } else {
             $calls = [];

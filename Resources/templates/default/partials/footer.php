@@ -19,8 +19,10 @@ $sponsors   = Sponsor::getList();
     <?php $this->section('footer-news') ?>
     <?php $this->stop() ?>
 
-	<div class="w940" style="padding:20px;">
-    	<div class="block categories">
+    <div class="w940" style="padding:20px;">
+
+        <?php $this->section('footer-categories') ?>
+        <div class="block categories">
             <h6 class="title"><?=$this->text('footer-header-categories') ?></h6>
             <ul class="scroll-pane jspScrollable">
             <?php foreach ($categories as $id=>$name) : ?>
@@ -28,7 +30,9 @@ $sponsors   = Sponsor::getList();
             <?php endforeach; ?>
             </ul>
         </div>
+        <?php $this->stop() ?>
 
+        <?php $this->section('footer-project') ?>
         <div class="block projects">
             <h6 class="title"><?=$this->text('footer-header-projects') ?></h6>
             <ul class="scroll-pane">
@@ -42,52 +46,53 @@ $sponsors   = Sponsor::getList();
                 <li><a href="/project/create"><?=$this->text('regular-create') ?></a></li>
             </ul>
         </div>
+        <?php $this->stop() ?>
 
+        <?php $this->section('footer-resources') ?>
         <div class="block resources">
             <h6 class="title"><?=$this->text('footer-header-resources') ?></h6>
             <ul class="scroll-pane">
                 <li><a href="/faq"><?=$this->text('regular-header-faq') ?></a></li>
                 <li><a href="/glossary"><?=$this->text('footer-resources-glossary') ?></a></li>
-                <li><a href="/press"><?=$this->text('footer-resources-press') ?></a></li>
                 <?php foreach ($posts as $id => $title) : ?>
                 <li><a href="/blog/<?php echo $id ?>"><?=$this->text_truncate($title, 50)?></a></li>
                 <?php endforeach ?>
                 <li><a href="/newsletter" target="_blank">Newsletter</a></li>
-                <li><a href="https://github.com/Goteo/Goteo" target="_blank"><?=$this->text('footer-resources-source_code') ?></a></li>
+                <li><a href="https://github.com/GoteoFoundation/goteo" target="_blank"><?=$this->text('footer-resources-source_code') ?></a></li>
             </ul>
         </div>
-       <div id="slides_sponsor" class="block sponsors">
-            <h6 class="title"><?=$this->text('footer-header-sponsors') ?></h6>
-			<div class="slides_container">
-				<?php $i = 1; foreach ($sponsors as $sponsor) : ?>
-				<div class="sponsor" id="footer-sponsor-<?php echo $i ?>">
-					<a href="<?php echo $sponsor->url ?>" title="<?php echo $sponsor->name ?>" target="_blank" rel="nofollow"><img src="<?php echo $sponsor->image->getLink(150, 85) ?>" alt="<?=$this->e($sponsor->name) ?>" /></a>
-				</div>
-				<?php $i++; endforeach; ?>
-			</div>
-			<div class="slidersponsors-ctrl">
-				<a class="prev">prev</a>
-				<ul class="paginacion"></ul>
-				<a class="next">next</a>
-			</div>
-        </div>
+        <?php $this->stop() ?>
 
+        <?php $this->section('footer-sponsors') ?>
+        <div id="slides_sponsor" class="block sponsors">
+            <h6 class="title"><?=$this->text('footer-header-sponsors') ?></h6>
+            <div class="slides_container">
+                <?php $i = 1; foreach ($sponsors as $sponsor) : ?>
+                <div class="sponsor" id="footer-sponsor-<?php echo $i ?>">
+                    <a href="<?php echo $sponsor->url ?>" title="<?php echo $sponsor->name ?>" target="_blank" rel="nofollow"><img src="<?php echo $sponsor->image->getLink(150, 85) ?>" alt="<?=$this->e($sponsor->name) ?>" /></a>
+                </div>
+                <?php $i++; endforeach; ?>
+            </div>
+            <div class="slidersponsors-ctrl">
+                <a class="prev">prev</a>
+                <ul class="paginacion"></ul>
+                <a class="next">next</a>
+            </div>
+        </div>
+        <?php $this->stop() ?>
+
+        <?php $this->section('footer-services') ?>
         <div class="block services">
 
             <h6 class="title"><?=$this->text('footer-header-services') ?></h6>
             <ul>
-                <li><a href="/service/resources"><img class="icon" src="<?= SRC_URL . '/view/css/services/call_icon.png' ?>" height="20" /><?=$this->text('footer-service-resources') ?></a></li>
-                <li><a href="/service/workshop"><img class="icon" src="<?= SRC_URL . '/view/css/services/workshops_icon.png' ?>" height="20" /><?=$this->text('footer-service-workshop') ?></a></li>
-                <li><a href="/calculadora-fiscal"><img class="icon calculator" src="<?= SRC_URL . '/view/css/services/calculator_icon.png' ?>" height="20" /><?=$this->text('footer-service-calculator') ?></a></li>
                 <li><a href="<?= ($this->is_logged()) ? '/dashboard/wallet' : '/pool' ?>"><img class="icon pool" src="<?= SRC_URL . '/view/css/services/pool_icon.png' ?>" height="20" /><?=$this->text('footer-service-pool') ?></a></li>
-                <li><a href="http://stats.goteo.org" target="_blank"><img class="icon stats" src="<?= SRC_URL . '/view/css/services/stats.png' ?>" height="20" /><?=$this->text('footer-resources-stats') ?></a></li>
-
             </ul>
 
         </div>
+        <?php $this->stop() ?>
 
-    <?php $this->section('footer-social') ?>
-
+        <?php $this->section('footer-social') ?>
         <div class="block social" style="border-right:#ebe9ea 2px solid;">
             <h6 class="title"><?=$this->text('footer-header-social') ?></h6>
             <ul>
@@ -98,16 +103,13 @@ $sponsors   = Sponsor::getList();
 
             </ul>
         </div>
-
-    <?php $this->stop() ?>
+        <?php $this->stop() ?>
 
 	</div>
 </div>
 
 <div id="sub-footer">
 	<div class="w940">
-
-
 
             <ul>
                 <li><a href="/about"><?=$this->text('regular-header-about')?></a></li>

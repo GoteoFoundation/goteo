@@ -27,6 +27,12 @@ set_error_handler('Goteo\Application\App::errorHandler');
 // Config file...
 Config::load();
 
+// Error traces
+if(Config::get('debug')) {
+    ini_set('display_errors', 1);
+    App::debug(true);
+}
+
 //Get from globals defaults
 App::setRequest(Request::createFromGlobals());
 

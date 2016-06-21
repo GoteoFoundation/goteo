@@ -10,13 +10,13 @@ $user= $this['apikey']['user'];
         <h3 class="beak"><?= Text::get('api-key-tool-tip') ?></h3>
         <div class="user-key">
         	<div title="User" class="element-box">
-            	<img style="vertical-align:middle;" src="/view/css/dashboard/user.png" width="20" \>
+            	<img style="vertical-align:middle;" src="<?= SRC_URL ?>/view/css/dashboard/user.png" width="20" \>
             	<span class="content user"><?= $user; ?></span>
           	</div>
           	<div title="Key" class="element-box">
-            	<img style="vertical-align:middle;" src="/view/css/dashboard/key.png" width="40" \>
+            	<img style="vertical-align:middle;" src="<?= SRC_URL ?>/view/css/dashboard/key.png" width="40" \>
             	<span class="content">
-            	<?= !empty($key) ? $key : Text::get('api-key-no-generated') ?>            		    	   
+            	<?= !empty($key) ? $key : Text::get('api-key-no-generated') ?>
             	</span>
           	</div>
           	<div class="button-key">

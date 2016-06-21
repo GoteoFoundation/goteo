@@ -26,12 +26,24 @@ class AdminController extends \Goteo\Core\Controller {
 	private static $subcontrollers = array();
 	private static $context_vars = array();
 
+    /**
+     * Registers a subcontroller in the admin
+     * @param [type] $classname [description]
+     */
+    public static function addSubController($classname, $path = null) {
+        self::$subcontrollers[$classname::getId()] = $classname;
+    }
+
+
 	/**
-	 * Registers a subcontroller in the admin
+	 * Checks if a subcontroller is loaded
 	 * @param [type] $classname [description]
 	 */
-	public static function addSubController($classname, $path = null) {
-		self::$subcontrollers[$classname::getId()] = $classname;
+	public static function existsSubController($classname) {
+        foreach (static::$subcontrollers as $id => $class) {
+		  if($class === $classname) return true;
+        }
+        return false;
 	}
 
 	/**
