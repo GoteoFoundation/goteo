@@ -75,11 +75,8 @@ $select_currency=Currency::$currencies[$_SESSION['currency']]['html'];
                       <li><a href="/admin"><?= $this->text('regular-admin_board') ?></a></li>
                   <?php endif; ?>
 
-                  <?php if ( isset($this->get_user()->roles['manager']) ) : ?>
-                       <li><a href="/manage"><?= $this->text('regular-manage_board') ?></a></li>
-                  <?php endif; ?>
                    <li role="separator" class="divider"></li>
-                   <li class="logout"><a href="/logout?return=<?= $this->get_uri() ?>"><?= $this->text('regular-logout') ?></a></li>                      
+                   <li class="logout"><a href="/logout?return=<?= $this->get_uri() ?>"><?= $this->text('regular-logout') ?></a></li>
                 </ul>
               </li>
               <?php endif; ?>

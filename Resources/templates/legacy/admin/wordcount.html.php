@@ -76,8 +76,10 @@ $total = 0;
                 </tr>
             </thead>
             <?php foreach ($section['options'] as $oCode=>$option) :
+                $_total = Text::wordCount($sCode,$oCode,$fields[$oCode], $total);
+                if(is_null($_total)) continue;
                 echo '<tr>
-                    <td align="right">'.  Text::wordCount($sCode,$oCode,$fields[$oCode], $total).'</td>
+                    <td align="right">'.  $_total .'</td>
                     <td align="center">'.$option.'</td>
                     <td>'.$oCode.'</td>
                 </tr>

@@ -79,27 +79,24 @@ namespace Goteo\Controller {
 
 
             // si es un salto a otro panel
-            if (in_array($option, array('admin', 'review', 'translate'))) {
 
-                // si tiene algún rol de admin
-                if ( $option == 'admin' &&  ( isset(Session::getUser()->roles['admin']) || isset(Session::getUser()->roles['superadmin']) ) )
-                    throw new Redirection('/'.$option, Redirection::TEMPORARY);
-                else
-                    throw new Redirection('/dashboard', Redirection::TEMPORARY);
-
-                // si tiene rol de revisor
-                if ( $option == 'review' && isset(Session::getUser()->roles['checker']) )
-                    throw new Redirection('/'.$option, Redirection::TEMPORARY);
-                else
-                    throw new Redirection('/dashboard', Redirection::TEMPORARY);
-
-                // si tiene rol de traductor
-                if ( $option == 'translate' &&  isset(Session::getUser()->roles['admin']) || isset(Session::getUser()->roles['superadmin']) || isset(Session::getUser()->roles['translator']) )
-                    throw new Redirection('/'.$option, Redirection::TEMPORARY);
-                else
-                    throw new Redirection('/dashboard', Redirection::TEMPORARY);
-
+            // si tiene algún rol de admin
+            if ( $option == 'admin' && (isset(Session::getUser()->roles['admin']) || isset(Session::getUser()->roles['superadmin']) )) {
+                throw new Redirection('/'.$option, Redirection::TEMPORARY);
+            // si tiene rol de revisor
+            } elseif ( $option == 'review' && isset(Session::getUser()->roles['checker']) ) {
+                throw new Redirection('/'.$option, Redirection::TEMPORARY);
+            // si tiene rol de traductor
+            } elseif ( $option == 'translate' &&
+                       (   isset(Session::getUser()->roles['admin'])
+                        || isset(Session::getUser()->roles['superadmin'])
+                        || isset(Session::getUser()->roles['translator']) )) {
+                throw new Redirection('/'.$option, Redirection::TEMPORARY);
             }
+            elseif($option) {
+                throw new Redirection('/dashboard', Redirection::TEMPORARY);
+            }
+
 
             return new View('dashboard/index.html.php', $viewData);
         }

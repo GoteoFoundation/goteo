@@ -375,7 +375,11 @@ class Text {
         }
 
         // seleccionar toda la tabla,
-        $sql = "SELECT ".implode(', ', $fields)." FROM {$table}{$sqlFilter}";
+        if(!Model::query("SHOW TABLES LIKE '$table'")->fetchAll()) {
+            return null;
+        }
+
+        $sql = "SELECT `".implode('`, `', $fields)."` FROM `$table`$sqlFilter";
         $query = Model::query($sql, $values);
         foreach ($query->fetchAll(\PDO::FETCH_ASSOC) as $row) {
             // para cada campo
