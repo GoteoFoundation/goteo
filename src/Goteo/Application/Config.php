@@ -156,6 +156,8 @@ class Config {
 		\Goteo\Controller\AdminController::addSubController('Goteo\Controller\Admin\WorthSubController');
 		\Goteo\Controller\AdminController::addSubController('Goteo\Controller\Admin\MilestonesSubController');
         \Goteo\Controller\AdminController::addSubController('Goteo\Controller\Admin\OpenTagsSubController');
+        \Goteo\Controller\AdminController::addSubController('Goteo\Controller\Admin\StoriesSubController');
+
 
 		// Adding Pool (internal credit) payment method
 		\Goteo\Payment\Payment::addMethod('Goteo\Payment\Method\PoolPaymentMethod');

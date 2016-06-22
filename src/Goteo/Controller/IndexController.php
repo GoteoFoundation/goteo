@@ -17,6 +17,7 @@ use Goteo\Application\View;
 use Goteo\Model;
 use Goteo\Model\Home;
 use Goteo\Model\Banner;
+use Goteo\Model\Stories;
 use Goteo\Model\News;
 use Goteo\Model\Post;
 use Goteo\Model\Promote;
@@ -59,6 +60,8 @@ class IndexController extends \Goteo\Core\Controller
             $feed['community'] = Feed::getAll('community', 'public', 15);
         }
 
+        $stories = (isset($order['stories'])) ? Stories::getAll(true) : array();
+
         $news =  (isset($order['news'])) ? News::getAll(true) : array();
 
         foreach ($news as $idNew => &$new) {
@@ -75,6 +78,7 @@ class IndexController extends \Goteo\Core\Controller
         $banners   = Banner::getAll(true);
         $vars = array(
                 'banners'   => $banners,
+                'stories'   => $stories,
                 'posts'     => $posts,
                 'promotes'  => $promotes,
                 'feed'      => $feed,

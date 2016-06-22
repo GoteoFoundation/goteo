@@ -80,20 +80,20 @@ namespace Goteo\Controller {
 
             // si es un salto a otro panel
 
-            // si tiene algún rol de admin
-            if ( $option == 'admin' && (isset(Session::getUser()->roles['admin']) || isset(Session::getUser()->roles['superadmin']) )) {
-                throw new Redirection('/'.$option, Redirection::TEMPORARY);
-            // si tiene rol de revisor
-            } elseif ( $option == 'review' && isset(Session::getUser()->roles['checker']) ) {
-                throw new Redirection('/'.$option, Redirection::TEMPORARY);
-            // si tiene rol de traductor
-            } elseif ( $option == 'translate' &&
-                       (   isset(Session::getUser()->roles['admin'])
-                        || isset(Session::getUser()->roles['superadmin'])
-                        || isset(Session::getUser()->roles['translator']) )) {
-                throw new Redirection('/'.$option, Redirection::TEMPORARY);
-            }
-            elseif($option) {
+            if(in_array($option, ['admin', 'review', 'translate'])) {
+                // si tiene algún rol de admin
+                if ( $option == 'admin' && (isset(Session::getUser()->roles['admin']) || isset(Session::getUser()->roles['superadmin']) )) {
+                    throw new Redirection('/'.$option, Redirection::TEMPORARY);
+                // si tiene rol de revisor
+                } elseif ( $option == 'review' && isset(Session::getUser()->roles['checker']) ) {
+                    throw new Redirection('/'.$option, Redirection::TEMPORARY);
+                // si tiene rol de traductor
+                } elseif ( $option == 'translate' &&
+                           (   isset(Session::getUser()->roles['admin'])
+                            || isset(Session::getUser()->roles['superadmin'])
+                            || isset(Session::getUser()->roles['translator']) )) {
+                    throw new Redirection('/'.$option, Redirection::TEMPORARY);
+                }
                 throw new Redirection('/dashboard', Redirection::TEMPORARY);
             }
 

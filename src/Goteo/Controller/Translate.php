@@ -10,8 +10,7 @@
 
 namespace Goteo\Controller {
 
-	use Goteo\Core\ACL,
-        Goteo\Core\View,
+	use Goteo\Core\View,
         Goteo\Core\Redirection,
         Goteo\Model,
 	    Goteo\Application,

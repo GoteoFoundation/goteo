@@ -29,6 +29,7 @@ class HomeSubController extends AbstractSubController {
          'drops' => '\Goteo\Controller\Admin\CallsSubController',
          'posts' => '\Goteo\Controller\Admin\BlogSubController',
          'sponsors' => '\Goteo\Controller\Admin\SponsorsSubController',
+         'stories' => '\Goteo\Controller\Admin\StoriesSubController',
          'news' => '\Goteo\Controller\Admin\NewsSubController',
 
          // 'categories' => '\Goteo\Controller\Admin\CategoriesSubController',
