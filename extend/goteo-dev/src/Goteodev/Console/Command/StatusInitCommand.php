@@ -142,6 +142,20 @@ EOT
 
             $output->writeln("Project 5 deleted: <info>project-finishing-five-days</info>");
 
+            //Deleting project passed yesterday and related
+            $filename = GOTEO_PATH.'db/tests-data/projects-data/delete_passed_yesterday.sql';
+            $sql = file_get_contents($filename);
+            $this->query($sql);
+
+            $output->writeln("Project 6 deleted: <info>project-passed-yesterday</info>");
+
+            //Deleting one round project finished yesterday and related
+            $filename = GOTEO_PATH.'db/tests-data/projects-data/delete_one_round_finished_yesterday.sql';
+            $sql = file_get_contents($filename);
+            $this->query($sql);
+
+            $output->writeln("Project 7 deleted: <info>project-one-round-finished</info>");
+
         }
         if($create)
         {
@@ -189,6 +203,22 @@ EOT
                 $this->query($sql);
 
                 $output->writeln("<comment>Project 5 created ID: <info>project-finishing-five-days</comment>");
+
+                //Project passed yesterday
+                $filename = GOTEO_PATH.'db/tests-data/projects-data/passed_first_round_yesterday.sql';
+                $sql = file_get_contents($filename);
+                $this->query($sql);
+
+                $output->writeln("Project 6 created ID: <info>project-passed-yesterday</info>");
+
+
+                //Project one round finished yesterday
+                $filename = GOTEO_PATH.'db/tests-data/projects-data/one_round_finished_yesterday.sql';
+                $sql = file_get_contents($filename);
+                $this->query($sql);
+
+                $output->writeln("Project 7 created ID: <info>project-one-round-finished</info>");
+
             }
             catch(\PDOException $e) {
                 $output->writeln("<error>Error creating tables:</error> <fg=red>" . $e->getMessage() .'</>');

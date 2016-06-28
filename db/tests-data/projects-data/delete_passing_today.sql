@@ -21,3 +21,4 @@ DELETE FROM `user` WHERE `id` IN (
     'backer-4-passing-project');
 
 
+DELETE FROM event WHERE action LIKE 'project-passing-today:%';

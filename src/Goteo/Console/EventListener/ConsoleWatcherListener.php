@@ -380,7 +380,20 @@ class ConsoleWatcherListener extends AbstractListener {
         $days_succeeded = $event->getDaysSucceeded();
         $days_funded = $event->getDaysFunded();
         $this->info("Project vigilant", [$project, 'days_active' => $days_active, 'days_funded' => $days_funded, 'days_succeeded' => $days_succeeded]);
-        die("[$days_funded]\n");
+
+        // CONTRACT DATA for first round
+        // primero los que no se bloquean
+        //Solicitud de datos del contrato
+        // TODO: to extend/...
+        if( $project->one_round && $days_funded >= 1 && $days_funded < 3) {
+            // si ha superado el mínimo
+            if ($project->amount >= $project->mincost) {
+                $this->info("Requesting contract data", [$project, 'days_active' => $days_active, 'days_funded' => $days_funded, 'days_succeeded' => $days_succeeded]);
+                $this->send($project, '1d_after', ['owner']);
+            }
+        }
+
+        // die("[$days_funded]\n");
         // ~ 10 month ago
         if( $days_succeeded > 10 * 30 && $days_succeeded < 10 * 31) {
             if(!Reward::areFulfilled($project->id, 'social') && $project->status != Project::STATUS_FULFILLED) {

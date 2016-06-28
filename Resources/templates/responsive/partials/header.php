@@ -59,9 +59,6 @@ $select_currency=Currency::$currencies[$_SESSION['currency']]['html'];
                   <li><a href="/dashboard/activity"><?= $this->text('dashboard-menu-activity') ?></a></li>
                   <li><a href="/dashboard/projects"><?= $this->text('dashboard-menu-projects') ?></a></li>
                   <li><a href="/dashboard/profile/preferences"><?= $this->text('dashboard-menu-profile-preferences'); ?></a></li>
-                  <?php if ( isset($this->get_user()->roles['caller']) ) : ?>
-                      <li><a href="/dashboard/calls"><?= $this->text('dashboard-menu-calls') ?></a></li>
-                  <?php endif; ?>
 
                   <?php if ( isset($this->get_user()->roles['translator']) ||  isset($this->get_user()->roles['admin']) || isset($this->get_user()->roles['superadmin']) ) : ?>
                        <li><a href="/translate"><?= $this->text('regular-translate_board') ?></a></li>

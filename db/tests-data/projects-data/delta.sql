@@ -23,6 +23,13 @@ WHERE `id` = 'project-passing-today';
 
 UPDATE `project` SET
     `published` =  NOW() - INTERVAL (79 + %DELTA%) DAY,
+    `passed` =  NOW() - INTERVAL %DELTA% DAY,
+    `days` = (79 + %DELTA%),
+    `status` = %STATUS_SUCCESS%
+WHERE `id` = 'project-passed-yesterday';
+
+UPDATE `project` SET
+    `published` =  NOW() - INTERVAL (79 + %DELTA%) DAY,
     `closed` =  NOW() - INTERVAL %DELTA% DAY,
     `days` = 80,
     `status` = %STATUS_FAILED%

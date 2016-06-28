@@ -14,7 +14,6 @@ use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputOption;
 
-use Goteo\Console\ProjectWatcher;
 use Goteo\Console\Event\FilterProjectEvent;
 use Goteo\Console\ConsoleEvents;
 use Goteo\Model\Project;
@@ -72,8 +71,6 @@ EOT
         }
 
         $processed = 0;
-
-       // $output->writeln(ProjectWatcher::process(true));
 
         $total = Project::getList($filter + ['status' => Project::STATUS_REVIEWING, 'published' => date('Y-m-d')], null, 0, 0, true);
         $output->writeln("Found <info>$total projects</info> for publishing today");

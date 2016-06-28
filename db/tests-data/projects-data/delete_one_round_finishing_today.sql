@@ -26,3 +26,4 @@ DELETE FROM `user` WHERE `id` IN (
     'backer-4-one-round-finishing');
 
 
+DELETE FROM event WHERE action LIKE 'project-one-round-finishing:%';
