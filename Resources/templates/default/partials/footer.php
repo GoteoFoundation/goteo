@@ -1,16 +1,8 @@
 <?php
 
-use Goteo\Model\Category,
-Goteo\Model\Post,  // esto son entradas en portada o en footer
-Goteo\Model\Sponsor;
-
-//activamos la cache para las consultas de categorias, posts, sponsors
-\Goteo\Core\DB::cache(true);
-
-$categories = Category::getList();  // categorias que se usan en proyectos
-$posts      = Post::getList('footer');
-
-$sponsors   = Sponsor::getList();
+$categories = $this->model_static('Category', 'getList');
+$posts = $this->model_static('Post', 'getList', 'footer');
+$sponsors = $this->model_static('Sponsor', 'getList');
 
 ?>
 

@@ -221,7 +221,7 @@ class Config {
 		// views function registering
 		View::getEngine()->loadExtension(new \Goteo\Util\Foil\Extension\GoteoCore(), [], true);
 		View::getEngine()->loadExtension(new \Goteo\Util\Foil\Extension\TextUtils(), [], true);
-		View::getEngine()->loadExtension(new \Goteo\Util\Foil\Extension\Pages(), [], true);
+		View::getEngine()->loadExtension(new \Goteo\Util\Foil\Extension\ModelsData(), [], true);
 		View::getEngine()->loadExtension(new \Goteo\Util\Foil\Extension\LangUtils(), [], true);
 
 		// Some defaults
