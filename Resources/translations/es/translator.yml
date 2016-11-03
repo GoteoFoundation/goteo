@@ -1,0 +1,71 @@
+translator: Traductor
+translator-choose: Escoje una opción
+translator-only-pendings: "Sólo pendientes en:"
+translator-no-langs: No tienes ningún idioma, contacta con el administrador
+translator-more-langs: Otros
+translator-lang-no-perms: No tienes permiso para adminstrar este idioma
+translator-zone-not-found: Esta zona de traducción no es válida
+translator-translations: Traducciones
+translator-pending: Pendiente de traducción
+translator-pending-desc: Este contenido está "pendiente", cosa que significa que <strong>NO ES PÚBLICO</strong> y queda cómo borrador hasta que se quite la opción "Pendiente de traducción"
+translator-original-text: Texto original
+translator-not-translated: Sin entrada en la tabla de traducciones
+translator-save: Guardar y publicar
+translator-save-draft: Guardar como borrador
+translator-delete: Borrar traducción al %s
+translator-delete-sure: Seguro que quieres borrar la traducción al %s? Esto no se puede deshacer!
+translator-deleted-ok: Traducción al %s borrada correctamente
+translator-deleted-ko: Error al borrar la traducción al %s!
+translator-cannot-delete-system: No se puede borrar esta traducción porque és de sistema!
+translator-saved-ok: Traducciones guardadas correctamente para los idiomas [%s]
+translator-saved-ko: Error al guardar la traducción al %LANG% (%ERROR%)
+translator-not-saved: No se ha guardado ningún contenido! (quizá tienes campos vacíos?)
+translator-copy-from: Copiar contenido de
+translator-autotranslate-from: Traducción automática de
+translator-skipped-fields: "Algunos campos no se han copiado porque ya contenían texto.\nBorra el texto original para poder copiar desde otro idioma."
+translator-field-title: Título
+translator-field-name: Nombre
+translator-field-description: Descripción
+translator-field-text: Texto
+translator-field-url: URL
+translator-field-blog: Blog
+translator-field-legend: Leyenda
+translator-field-media: Media
+translator-field-schedule: Horario
+translator-field-twitter_msg: Mensaje de twitter
+translator-field-facebook_msg: Mensaje de facebook
+translator-field-twitter_msg_owner: Autor de twitter
+translator-field-facebook_msg_owner: Autor de facebook
+translator-field-share_facebook: Texto compartir facebook
+translator-field-share_twitter: Texto compartir twitter
+translator-field-review: Review
+translator-field-content: Contenido
+translator-back-to-list: Volver a la lista
+translator-tables: Tablas generales
+translator-home: Portada
+translator-system: Sistema
+translator-texts: Textos interfície
+translator-stories: Historias exitosas
+translator-promote: Proyectos destacados
+translator-patron: Proyectos apadrinados
+translator-icon: Tipos de retorno/recompensa
+translator-license: Licencias
+translator-category: Categorías
+translator-opentag: Agrupaciones
+translator-news: Noticias
+translator-faq: Faq
+translator-page: Páginas
+translator-post: Blog
+translator-banner: Banners
+translator-bazar: Catalogo
+translator-tag: Tags de blog
+translator-criteria: Criterios de evaluación
+translator-worthcracy: Meritocrácia
+translator-template: Plantillas emails automáticos
+translator-glossary: Glosario de términos
+translator-info: Ideas de about
+translator-milestone: Hitos
+translator-sphere: Ámbitos de convocatoria
+translator-workshop: Talleres
+translator-feed-translated-target: Traducción en %s
+translator-feed-translated-desc: "%LINK% traducido por %USER% a %LANGS%"

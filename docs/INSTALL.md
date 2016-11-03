@@ -121,15 +121,21 @@ Both scripts should be applied in a MySQL console:
 
 ```bash
 mysql -u your_user -p your_password < db/install/structure.sql
+```
+
+Then, apply the minor-version update:
+
+```bash
+mysql -u your_user -p your_password < db/install/upgrade-to-v3.0.7.sql
+```
+
+And, finally, import some bare data:
+
+```bash
 mysql -u your_user -p your_password < db/install/data.sql
 mysql -u your_user -p your_password < db/install/templates.sql
 ```
 
-Then, apply these updates:
-
-```bash
-mysql -u your_user -p your_password < db/install/upgrade-to-v3.0.6.sql
-```
 
 This should give you an empty system with only one user "root".
 
