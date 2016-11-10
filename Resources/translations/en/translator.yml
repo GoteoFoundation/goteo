@@ -13,7 +13,7 @@ translator-delete-sure: 'Are you sure you want to delete the %s translation? Thi
 translator-deleted-ko: 'Error deleting %s translation!'
 translator-deleted-ok: '%s translation deleted successfully'
 translator-faq: Faq
-translator-feed-translated-desc: '%LINK% translated by %USER% to %LANG%'
+translator-feed-translated-desc: '%LINK% translated by %USER% to %LANGS%'
 translator-feed-translated-target: 'Translation in %s'
 translator-field-blog: Blog
 translator-field-content: Content
