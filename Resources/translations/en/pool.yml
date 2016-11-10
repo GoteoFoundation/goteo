@@ -1,0 +1,21 @@
+landing-calculate-button: Calculate
+landing-donor-button: Donate
+landing-error-zero: 'The amount for a donation needs to be over 0'
+landing-less-info: 'Read less'
+landing-main-slogan: 'Calculate your tax savings bearing in mind the tax law improvement in 2015'
+landing-more-info: 'Read more'
+landing-more-info-text: '<h4>The new regulation makes it easier for you to donate and contribute pushing forward more projects</h4><p>Until now, your donations to charities and other similar entities payed 25% back in your annual income tax declaration. Starting in 2015, the deduction increases and it will even increase more in 2016. <br><br>The proportional share will vary, not only according to each year, but to how much you donate and when: contributions under or above 150€ over an entire year pay off determined, variable percentages.</p><h4>If repeating with Goteo through, at least, 3 consecutive years… </h4><p>When you collaborate with the same entity over the last 3 years, the deductions are higher*. Your engagement will be rewarded with a higher return this way.</p><hr><p>(*) The limit of deduction over the tax base will stay 10%.<br>Artículo 19 (Deducción de la cuota del Impuesto sobre la Renta de las Personas Físicas) de la ley 49/2002, de 23 de diciembre, de régimen fiscal de las entidades sin fines lucrativos y de los incentivos fiscales al mecenazgo.</p>'
+landing-real-amount: 'Your real expense will be'
+landing-regular-invest: Donation
+landing-stories-title: 'Thanks to your donation, initiatives like these get funded:'
+landing-subtitle-banner: '<span class="line">When engaging and supporting <strong>projects through Goteo,</strong><br> <strong>it pays off</strong> between <strong>30%</strong> and <strong>75%</strong> of your donation!</span>'
+landing-target-description: 'Our objective in 2015: getting <strong> over 50% of Goteo’s users to exercise their right to tax benefits</strong> on their donations (in 2014, only 12% did!).'
+landing-taxes-explain: 'Make your donation through <strong>Goteo’s Virtual Wallet</strong>: a recently developed feature that allows you to donate immediately and later decide which projects to support. You will instantly obtain a document by our non profit entity Fundación Goteo, that certifies your donation to the Tax Office.'
+landing-taxes-regional: '<strong>* Important</strong> This fiscal advantages do not apply outside Spain, nor in the Basque Country or Navarra, which maintain a tax deduction of 20% and 25% from the total donation respectively.'
+landing-taxes-title: 'The Tax Office pays you back*:'
+landing-title-banner: 'At Goteo,<br>contributing pays off'
+landing-type-company: Company
+landing-type-person: Individual
+pool-make-sure-title: 'Confirm data for the certificate'
+pool-share-title: 'Download your certificate and share'
+recharge-button: Charge

@@ -18,3 +18,4 @@ discover-searcher-bylocation-header: 'Per lloc:'
 discover-searcher-byreward-all: TOTS
 discover-searcher-byreward-header: 'Per retorn:'
 discover-searcher-header: 'Cerca un projecte'
+meta-title-discover: 'Descobreix projectes :: Goteo.org'

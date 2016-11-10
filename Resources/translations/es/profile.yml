@@ -4,44 +4,45 @@ profile-field-about: 'Cuéntanos algo sobre ti'
 profile-field-avatar_current: 'Tu imagen actual'
 profile-field-avatar_upload: 'Subir una imagen'
 profile-field-contribution: 'Qué puedes aportar a Goteo'
+profile-field-entity-type: 'Tipo de entidad'
+profile-field-entity-type-checkbox-public: 'Soy una entidad publica'
+profile-field-entity-type-choose: 'Selecciona un tipo de entidad'
+profile-field-entity-type-concerted: Concertado
+profile-field-entity-type-private: Privado
+profile-field-entity-type-public: Público
 profile-field-interests: 'Qué tipo de proyecto te motiva más'
 profile-field-keywords: 'Temas que te interesan'
+profile-field-legal-entity: 'Forma jurídica'
+profile-field-legal-entity-asociation: Asociación
+profile-field-legal-entity-choose: 'Selecciona una forma jurídica'
+profile-field-legal-entity-company: Empresa
+profile-field-legal-entity-cooperative: Cooperativa
+profile-field-legal-entity-ngo: ONG
+profile-field-legal-entity-others: Otros
+profile-field-legal-entity-person: 'Persona física'
+profile-field-legal-entity-self-employed: Autónomo
 profile-field-location: 'Lugar de residencia habitual'
 profile-field-name: 'Nombre de usuario/a'
 profile-field-url: URL
 profile-field-websites: 'Mis páginas web'
+profile-fields-analytics-title: Analítica
 profile-fields-image-title: 'Imagen de perfil'
 profile-fields-social-title: 'Perfiles sociales'
-
-profile-field-entity-type: 'Tipo de entidad'
-profile-field-entity-type-choose: 'Selecciona un tipo de entidad'
-profile-field-entity-type-public: 'Público'
-profile-field-entity-type-private: 'Privado'
-profile-field-entity-type-concerted: 'Concertado'
-
-profile-field-entity-type-checkbox-public: 'Soy una entidad publica'
-
-profile-field-legal-entity: 'Forma jurídica'
-profile-field-legal-entity-choose: 'Selecciona una forma jurídica'
-profile-field-legal-entity-person: 'Persona física'
-profile-field-legal-entity-self-employed: 'Autónomo'
-profile-field-legal-entity-ngo: 'ONG'
-profile-field-legal-entity-company: 'Empresa'
-profile-field-legal-entity-cooperative: 'Cooperativa'
-profile-field-legal-entity-asociation: 'Asociación'
-profile-field-legal-entity-others: 'Otros'
-
-
 profile-main-header: 'Datos de perfil'
 profile-suggest-projects-interest: 'Quizás quieras apoyar proyectos de categorías similares'
+regular-analytics: 'Google Analytics'
+regular-facebook-pixel: 'Facebook Pixel'
 step-1: Perfil
 step-userProfile: 'Paso: Usuario / Perfil'
 tooltip-user-about: "Como red social, Goteo pretende ayudar a difundir y financiar proyectos interesantes entre el máximo de gente posible. Para eso es importante la información que puedas compartir sobre tus habilidades o experiencia (profesional, académica, aficiones, etc).\r\n"
+tooltip-user-analytics: 'Ingresa, en caso de que dispongas de uno, tu ID de seguimiento de Google Analytics para habilitar Google Analytics en tu proyecto. El ID debe estar en este formato: UA-000000-01 (ejemplo de ID)'
 tooltip-user-avatar_upload: 'Texto tooltip subir imagen usuario'
 tooltip-user-contribution: 'Explica brevemente tus habilidades o los ámbitos en que podrías ayudar a un proyecto (traduciendo, difundiendo, testeando, programando, enseñando, etc).'
 tooltip-user-facebook: 'Esta red social puede ayudar a que difundas proyectos de Goteo que te interesan entre amigos y familiares.'
+tooltip-user-facebook-pixel: 'Ingresa el ID de tu Facebook Pixel, si quieres medir las conversiones de una campaña en Facebook.'
 tooltip-user-google: 'La red social de Google+ es muy nueva pero también puedes indicar tu usuario si ya la usas :)'
 tooltip-user-identica: 'Este canal puede ayudar a que difundas proyectos de Goteo entre la comunidad afín al software libre.'
+tooltip-user-instagram: 'Esta red social te permite compartir imágenes de manera fácil e inmediata'
 tooltip-user-interests: 'Indica el tipo de proyectos que pueden conectar con tus intereses para cofinanciarlos y/o aportar con otros recursos, conocimientos o habilidades. Estas categorías son transversales, puedes seleccionar más de una.'
 tooltip-user-keywords: 'A medida que introduzcas texto el sistema te sugerirá palabras clave que ya han escrito otros usuarios/as. Estas categorías ayudan a vincular tu perfil con otras personas y con proyectos concretos.'
 tooltip-user-linkedin: 'Esta red social puede ayudar a que difundas proyectos de Goteo que te interesan entre contactos profesionales.'

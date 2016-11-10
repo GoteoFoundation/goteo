@@ -21,17 +21,17 @@ project-not_published: 'Oraindik proiektu hau ez da publikoa'
 project-rewards-header: Itzulera
 project-rewards-individual_reward-limited: 'Sari mugatua'
 project-rewards-individual_reward-title: 'Banakako sariak'
-project-rewards-individual_reward-units_left: '<span class="left">%s</span> ale geratzen dira'
+project-rewards-individual_reward-units_left: '<span class="left">%s</span> unitate gelditzen dira'
 project-rewards-social_reward-title: 'Talde itzulera'
 project-rewards-supertitle: 'Zer ematen du trukean'
 project-share-header: 'Proiektu hau konpartitu'
 project-share-pre_header: 'Zure sarean jakinarazi zeren '
 project-side-investors-header: 'Jada eman dute'
 project-spread-embed_code: 'Embed kodea'
-project-spread-header: 'Zabaldu proiektu hau'
+project-spread-header: 'Egin proiektu honen zabalkundea eta lagun iezaiezu ikusgaitasuna eta dohaintza gehiago lortzen!'
 project-spread-pre_widget: 'Zabaldu proiektu hau'
 project-spread-social: 'Goteo.org-en %s proiektua aldi berean finantzatzen dut'
-project-spread-widget: 'Proiektuaren widget-a'
+project-spread-widget: 'Proiektuaren widgeta'
 project-spread-widget_legend: 'Kopiatu eta itsatsi kode hau zure webgunean edo blogean eta lagundu ezazu proiektu hau zabaltzen'
 project-spread-widget_title: 'proiektuaren widget-a argitaratzen du'
 project-support-supertitle: 'Diru beharrak'
@@ -57,3 +57,17 @@ tooltip-updates-media: tooltip-updates-media
 tooltip-updates-tags: 'tooltip-updates-tags testua'
 tooltip-updates-text: tooltip-updates-text
 tooltip-updates-title: tooltip-updates-title
+project-about-title: 'Proiektu honi buruz'
+project-collaborations-available: 'lankidetza erabilgarria'
+project-collaborations-number: Laguntzaileak
+project-general-information: 'Informazio orokorra'
+project-go-up: 'Itzuli gora'
+project-hide-donors: 'Ezkutatu kofinantzatzaiileak'
+project-menu-news: Berriak
+project-menu-participate: 'Parte hartu'
+project-regular-support: Kofinantzatu
+project-related: 'Zerikusia duten proiektuak'
+project-rewards-side-title: Sariak
+project-show-donors: 'Erakutsi kofinantzatzaileak'
+project-show-needs: 'Erakutsi beharren zerrenda'
+project-view-metter-favourite: Gogorarazi

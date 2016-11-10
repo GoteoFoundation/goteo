@@ -40,7 +40,7 @@ overview-main-header: 'Descrición do proxecto'
 step-3: Descrición
 step-overview: 'Paso: Descrición do proxecto'
 tooltip-project-about: 'Describe brevemente o proxecto en modo conceptual, técnico ou práctico. Por exemplo explicando as súas características de funcionamento, ou en que partes consistirá. Pensa en como será unha vez rematado e todo o que a xente poderá facer con el.'
-tooltip-project-category: 'Elixe tantas categorías coma creas necesarias para describir o proxecto, baseándote en todo o que describiches arriba. Mediante estas palabras clave poderémolo facer chegar a diferentes usuarios/as de Goteo.'
+tooltip-project-category: 'Elixe un máximo de 4 categorías coma creas necesarias para describir o proxecto, baseándote en todo o que describiches arriba. Mediante estas palabras clave poderémolo facer chegar a diferentes usuarios/as de Goteo.'
 tooltip-project-currently: 'Indica en que fase se atopa o proxecto actualmente respecto ó seu proceso de creación ou execución.'
 tooltip-project-description: 'Describe o proxecto cun mínimo de 80 palabras (con menos marcará erro). Explícao de modo que sexa fácil de entender para calquera persoa. Tenta darlle un enfoque atractivo e social, resumindo os seus puntos fortes, que o fai único, innovador ou especial.'
 tooltip-project-goal: 'Enumera as metas principais do proxecto, a curto e longo prazo, en todos os aspectos que consideres importantes salientar. Trátase de outra oportunidade para contactar e acadar o apoio de xente que simpatice con eses obxectivos.'

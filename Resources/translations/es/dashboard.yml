@@ -56,6 +56,7 @@ dashboard-menu-profile-preferences: 'Mis preferencias'
 dashboard-menu-profile-profile: 'Editar perfil'
 dashboard-menu-profile-public: 'Perfil público'
 dashboard-menu-projects: 'Mis proyectos'
+dashboard-menu-projects-analytics: Analítica
 dashboard-menu-projects-commons: Retornos
 dashboard-menu-projects-contract: Contrato
 dashboard-menu-projects-messegers: Participantes
@@ -73,7 +74,10 @@ dashboard-my-wallet-available: 'Actualmente, tienes <span class="pool-amount">%s
 dashboard-my-wallet-contribute-button: Donar
 dashboard-my-wallet-modal-pool-info: "El monedero de Goteo es una funcionalidad de nuestra plataforma que te permite efectuar tu donación y decidir posteriormente a qué proyecto aportarla.<br> <p>Las donaciones que realizas a través de nuestra plataforma son fiscalmente desgravables, de acuerdo a la Ley 49/2002, de 23 de diciembre, de régimen fiscal de las entidades sin fines lucrativos y de los incentivos fiscales al mecenazgo.</p> <p>Cuando efectúas tu donación, puedes descargarte un certificado de donación que justifica ante Hacienda tu contribución a una entidad sin ánimo de lucro. Puedes acceder a un histórico de los certificados disponibles asociados a tus donaciones en Goteo en tu panel del usuario, concretamente en la sección <a href=\"/dashboard/wallet/certificate\" target=\"_blank\">Certificado de donación</a>.</p><p> NOTA IMPORTANTE: Te recordamos que todas las aportaciones por las que hayas obtenido un certificado de donación de nuestra Fundación no se devuelven.\r\nEsto significa que si has hecho una donación vinculada a un proyecto concreto dentro de nuestra plataforma y este no llega a su objetivo mínimo de financiación durante su campaña, tu aporte irá a tu monedero pero no volverá a tu cuenta corriente. Sin embargo podrás destinar ese importe desde tu monedero virtual en Goteo.org a cualquier otro proyecto activo que desees en el momento que tú elijas, sin necesidad de volver a introducir tus datos bancarios o de PayPal.</p>"
 dashboard-my-wallet-pool-info: 'Más información sobre el uso de tu monedero'
+dashboard-no-projects: 'No tienes ningún proyecto, puedes crear uno <a href="/project/create">aquí</a>'
 dashboard-password-recover-advice: 'Asegúrate de restablecer tu contraseña'
+dashboard-project-analytics-fail: 'Ha ocurrido un error al guardar tus identificadores para analítica'
+dashboard-project-analytics-ok: 'Tus identificadores para analítica se han guardado correctamente'
 dashboard-project-blog-fail: 'Contacta con nosotr*s'
 dashboard-project-blog-inactive: 'Lo sentimos, la publicación de novedades en este proyecto está desactivada'
 dashboard-project-blog-wrongstatus: 'Lo sentimos, aún no se pueden publicar novedades en este proyecto...'

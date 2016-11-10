@@ -2,15 +2,34 @@ contract-paypal_account: 'Email de tu cuenta PayPal:'
 currency-switch: CAMBIAR
 overview-field-spread: Difusión
 personal-field-accounts: 'Cuentas del proyecto'
+project-about-title: 'Sobre este proyecto'
+project-call-got: 'El proyecto ya ha conseguido <strong>%s</strong> de <strong>%s</strong>'
+project-chart-amount-end-round: 'Fin Ronda'
+project-chart-amount-ideal: Ideal
+project-chart-amount-reached: Acumulado
+project-chart-costs-reset: Back
+project-collaborations-available: 'colaboraciones disponibles'
+project-collaborations-number: colaboradores
 project-collaborations-supertitle: 'Necesidades no monetarias'
 project-collaborations-title: 'Se busca'
+project-comment-start-sesion: 'Inicia sesión'
+project-comment-start-sesion-2: 'para dejar un comentario'
+project-error-main-lang: 'No se puede establecer este idioma [%s] como principal porque ya está asignado a una traducción. Elimina la traducción existente en [%s], desde el panel de traducción, para poder introducir una nueva.'
+project-general-information: 'Información general'
+project-go-up: 'volver arriba'
 project-help-cost: 'Necesito ayuda en la definición de los costes'
 project-help-license: 'Necesito ayuda para definir los retornos colectivos y las licencias'
+project-hide-donors: 'Ocultar cofinanciadores'
+project-hide-needs: 'Ocultar listado de necesidades'
+project-invest: Aportación
+project-invest-msg: 'Mensaje de apoyo:'
 project-langs-header: 'Proyecto en'
 project-media-play_video: 'Ver video'
 project-menu-home: Proyecto
 project-menu-messages: Colaboraciones
 project-menu-needs: Necesidades
+project-menu-news: Noticias
+project-menu-participate: Participa
 project-menu-supporters: Cofinanciadores
 project-menu-updates: Novedades
 project-menu_title-home: 'Impacto social: este proyecto abre su código, comparte conocimientos, datos o archivos digitales a cambio de tu apoyo.'
@@ -24,16 +43,25 @@ project-messages-send_direct-header: 'Envía un mensaje público de apoyo al pro
 project-messages-send_message-button: Enviar
 project-messages-send_message-header: 'Escribe tu mensaje'
 project-not_published: 'Este proyecto aun no es público'
+project-regular-support: Cofinanciar
+project-related: 'Proyectos relacionados'
+project-remove-translation: 'Eliminar traducción'
+project-remove-translation-confirm: '¿Seguro que quieres eliminar esta traducción? Esta operación no se puede deshacer!'
+project-removed-translation-ko: '¡Error al intentar eliminar la traducción!'
+project-removed-translation-ok: '¡Traducción eliminada!'
 project-rewards-bonus_reward-title: Bonus
 project-rewards-header: Retorno
 project-rewards-individual_reward-limited: 'Recompensa limitada'
 project-rewards-individual_reward-title: 'Recompensas individuales'
 project-rewards-individual_reward-units_left: 'Quedan <span class="left">%s</span> unidades'
+project-rewards-side-title: Recompensas
 project-rewards-social_reward-title: 'Retorno colectivo'
 project-rewards-supertitle: 'Qué ofrece a cambio'
 project-rounds: 'Proyecto de una sola ronda'
 project-share-header: 'Comparte este proyecto'
 project-share-pre_header: 'Deja saber a tu red que'
+project-show-donors: 'Mostrar cofinanciadores'
+project-show-needs: 'Mostrar listado de necesidades'
 project-side-investors-header: 'Ya han aportado'
 project-spread-embed_code: 'Código Embed'
 project-spread-header: '¡Difunde este proyecto y ayúdales a conseguir visibilidad y más donaciones!'
@@ -50,11 +78,13 @@ project-view-metter-day_created: 'Creado el'
 project-view-metter-day_success: 'Financiado el'
 project-view-metter-day_updated: 'Recibido el'
 project-view-metter-days: Quedan
+project-view-metter-favourite: Recordarme
 project-view-metter-got: Obtenido
 project-view-metter-investment: Cofinanciación
 project-view-metter-investors: Cofinanciadores
 project-view-metter-minimum: Mínimo
 project-view-metter-optimum: Óptimo
+project-view-preview: 'Previsualización del proyecto'
 project-willpublish: 'Este proyecto se publicará el %s'
 regular-new_project: 'Proyecto nuevo'
 social_reward-access: Accede
@@ -75,30 +105,3 @@ tooltip-updates-media: tooltip-updates-media
 tooltip-updates-tags: 'Texto tooltip-updates-tags'
 tooltip-updates-text: tooltip-updates-text
 tooltip-updates-title: tooltip-updates-title
-
-project-view-metter-favourite: 'Recordarme'
-project-menu-news: 'Noticias'
-project-menu-participate: 'Participa'
-project-about-title: 'Sobre este proyecto'
-project-rewards-side-title: 'Recompensas'
-project-general-information: 'Información general'
-project-go-up: 'volver arriba'
-project-collaborations-number: 'colaboradores'
-project-collaborations-available: 'colaboraciones disponibles'
-project-invest: 'Aportación'
-
-project-invest-msg: 'Mensaje de apoyo:'
-project-hide-needs: 'Ocultar listado de necesidades'
-project-show-needs: 'Mostrar listado de necesidades'
-project-hide-donors: 'Ocultar cofinanciadores'
-project-show-donors: 'Mostrar cofinanciadores'
-project-related: 'Proyectos relacionados'
-project-regular-support: 'Cofinanciar'
-project-chart-costs-reset: 'Back'
-project-chart-amount-reached: 'Acumulado'
-project-chart-amount-ideal: 'Ideal'
-
-project-comment-start-sesion: 'Inicia sesión'
-project-comment-start-sesion-2: 'para dejar un comentario'
-project-view-preview: 'Previsualización del proyecto'
-

@@ -3,8 +3,23 @@ profile-field-about: 'Kontaiguzu zeozer zuri buruz'
 profile-field-avatar_current: 'Zure oraingo irudia'
 profile-field-avatar_upload: 'Irudi bat igo'
 profile-field-contribution: 'Zertan lagundu ahal duzun Goteo-n'
+profile-field-entity-type: 'Entitate mota'
+profile-field-entity-type-checkbox-public: 'Entitate publikoa naiz'
+profile-field-entity-type-choose: 'Hautatu entitate mota bat'
+profile-field-entity-type-concerted: Itundua
+profile-field-entity-type-private: Pribatua
+profile-field-entity-type-public: Publikoa
 profile-field-interests: 'Zer nola proiektu mota motibatzen zaitu gehien'
 profile-field-keywords: 'Nire hitz gakoak'
+profile-field-legal-entity: 'Forma juridikoa'
+profile-field-legal-entity-asociation: Elkartea
+profile-field-legal-entity-choose: 'Hautatu forma juridiko bat'
+profile-field-legal-entity-company: Enpresa
+profile-field-legal-entity-cooperative: Kooperatiba
+profile-field-legal-entity-ngo: 'Gobernuz Kanpoko Erakundea'
+profile-field-legal-entity-others: 'Beste batzuk'
+profile-field-legal-entity-person: 'Pertsona fisikoa'
+profile-field-legal-entity-self-employed: Autonomoa
 profile-field-location: Bizilekua
 profile-field-name: 'Erabiltzaile izena'
 profile-field-url: URL

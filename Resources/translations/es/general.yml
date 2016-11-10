@@ -62,6 +62,7 @@ profile-about-header: 'Sobre mí'
 project-invest-total: 'Total de aportaciones'
 project-messages-send_message-your_answer: 'Escribe aquí tu respuesta'
 project-messages-send_message_support-your_answer: 'Escribe aquí tu mensaje de colaboración para %s'
+regular-add: 'Nuevo registro'
 regular-admin_board: 'Panel admin'
 regular-allsome: 'todos/algunos de'
 regular-anonymous: Anónimo
@@ -71,13 +72,17 @@ regular-calendar: Calendar
 regular-cancel: Cancelar
 regular-cancel-back: 'Cancelar y volver atrás'
 regular-collaborate: Colabora
+regular-content: Contenido
+regular-continue-question: '¿Continuar?'
 regular-create: 'Crea un proyecto'
 regular-date: Fecha
+regular-date_in: 'Fecha entrada'
+regular-date_out: 'Fecha salida'
 regular-days: días
 regular-delete: Borrar
+regular-description: Descripción
 regular-discover: 'Descubre proyectos'
 regular-download: Descargar
-regular-continue-question: ¿Continuar?
 regular-edit: Editar
 regular-email: Email
 regular-facebook: Facebook
@@ -88,6 +93,7 @@ regular-from: desde
 regular-getit: Consíguelo
 regular-go_up: Subir
 regular-google: Google+
+regular-header: Cabezera
 regular-header-about: 'Sobre Goteo'
 regular-header-blog: Blog
 regular-header-faq: FAQ
@@ -112,8 +118,10 @@ regular-main-header: Goteo.org
 regular-male: Hombre
 regular-manage_board: 'Panel Gestoría'
 regular-mandatory: 'Campo obligatorio!'
+regular-matchfunding: 'Match funding'
 regular-media_legend: Leyenda
 regular-menu: Menú
+regular-message-clipboard-fail: 'Selecciona y copia este enlace'
 regular-message_fail: 'Ha habido algun error al enviar el mensaje'
 regular-message_success: 'Mensaje enviado correctamente'
 regular-months: meses
@@ -126,10 +134,12 @@ regular-projects: proyectos
 regular-published_no: Borrador
 regular-published_yes: Publicado
 regular-read_more: 'Leer más'
+regular-recent-activity: 'Actividad reciente'
 regular-recomended_by: 'Proyecto recomendado por:'
 regular-review_board: 'Panel revisor'
 regular-round: 'ª ronda'
 regular-save: Guardar
+regular-schedule: Horario
 regular-search: Buscar
 regular-see_all: 'Ver todos'
 regular-see_blog: Blog
@@ -143,10 +153,15 @@ regular-share_this: 'Compartir en:'
 regular-sorry: 'Lo sentimos'
 regular-spread: DIFUSION
 regular-status: Estado
+regular-template: Plantilla
 regular-thanks: Gracias
+regular-title: Título
 regular-total: Total
+regular-translate: Traducir
 regular-translate_board: 'Panel traductor'
 regular-twitter: Twitter
+regular-url: Enlace
+regular-view: Ver
 regular-view_project: 'Ver proyecto'
 regular-web: Web
 regular-weeks: semanas

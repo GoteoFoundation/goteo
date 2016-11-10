@@ -19,7 +19,8 @@ use Symfony\Component\Translation\MessageSelector;
 
 class Lang {
     static protected $default = '';
-    static protected $groups = array();
+    static protected $groups = array(); // Groups with translations
+    static protected $all_groups = array(); // All desired groups (even without translations)
     static protected $translator = null;
 
     // This is overwriten by Config using file Resources/locales.yml
@@ -28,12 +29,14 @@ class Lang {
                     'name' => 'English',
                     'short' => 'ENG',
                     'public' => true,
-                    'locale' => 'en_GB'
+                    'locale' => 'en_GB',
+                    'fallback' => 'es',
                     ),
         'es' => array(
                     'name' => 'Español',
                     'short' => 'ES',
                     'public' => true,
+                    'fallback' => 'en',
                     'locale' => 'es_ES'),
     );
 
@@ -62,8 +65,12 @@ class Lang {
      */
     static public function addYamlTranslation($lang, $yaml_file) {
         static::factory($lang);
+        $group = strtok(basename($yaml_file), '.');
+        if(isset(static::$all_groups[$group]))
+            static::$all_groups[$group][] = $yaml_file;
+        else
+            static::$all_groups[$group] = [$yaml_file];
         if(is_file($yaml_file)) {
-            $group = strtok(basename($yaml_file), '.');
             // Add this translation
             static::$translator->addResource('yaml', $yaml_file, $lang);
             if(!isset(static::$groups[$group])) static::$groups[$group] = [];
@@ -117,6 +124,11 @@ class Lang {
             return static::$groups[$group];
         }
         return static::$groups;
+
+    }
+
+    static public function allGroups() {
+        return static::$all_groups;
 
     }
 

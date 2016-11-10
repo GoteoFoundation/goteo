@@ -4,39 +4,37 @@ profile-field-about: 'Explica''ns alguna cosa sobre tu'
 profile-field-avatar_current: 'La teva imatge actual'
 profile-field-avatar_upload: 'Pujar una imatge'
 profile-field-contribution: 'Què pots aportar a Goteo'
+profile-field-entity-type: 'Tipus d''entitat'
+profile-field-entity-type-checkbox-public: 'Sóc una entitat pública'
+profile-field-entity-type-choose: 'Selecciona un tipus d''entitat'
+profile-field-entity-type-concerted: Concertat
+profile-field-entity-type-private: Privat
+profile-field-entity-type-public: Públic
 profile-field-interests: 'Quin tipus de projecte et motiva més'
 profile-field-keywords: 'Les meves paraules clau'
+profile-field-legal-entity: 'Forma jurídica'
+profile-field-legal-entity-asociation: Associació
+profile-field-legal-entity-choose: 'Selecciona una forma jurídica'
+profile-field-legal-entity-company: Empresa
+profile-field-legal-entity-cooperative: Cooperativa
+profile-field-legal-entity-ngo: ONG
+profile-field-legal-entity-others: Altres
+profile-field-legal-entity-person: 'Persona física'
+profile-field-legal-entity-self-employed: Autònom/a
 profile-field-location: 'Lloc de residència habitual'
 profile-field-name: 'Nom d''usuari/a'
 profile-field-url: URL
 profile-field-websites: 'Les meves pàgines web '
+profile-fields-analytics-title: Analítica
 profile-fields-image-title: 'Imatge de perfil'
 profile-fields-social-title: 'Perfils socials'
-
-profile-field-entity-type: 'Tipus d''entitat'
-profile-field-entity-type-choose: 'Selecciona un tipus d''entitat'
-profile-field-entity-type-public: 'Públic'
-profile-field-entity-type-private: 'Privat'
-profile-field-entity-type-concerted: 'Concertat'
-
-profile-field-entity-type-checkbox-public: 'Sóc una entitat pública'
-
-profile-field-legal-entity: 'Forma jurídica'
-profile-field-legal-entity-choose: 'Selecciona una forma jurídica'
-profile-field-legal-entity-person: 'Persona física'
-profile-field-legal-entity-self-employed: 'Autònom/a'
-profile-field-legal-entity-ngo: 'ONG'
-profile-field-legal-entity-company: 'Empresa'
-profile-field-legal-entity-cooperative: 'Cooperativa'
-profile-field-legal-entity-asociation: 'Associació'
-profile-field-legal-entity-others: 'Altres'
-
-
 profile-main-header: 'Dades de perfil'
 profile-suggest-projects-interest: 'Quizás quieras apoyar proyectos de categorías similares'
+regular-analytics: 'Google Analytics'
 step-1: Perfil
 step-userProfile: 'Pas: Usuari / Perfil'
 tooltip-user-about: 'Com a xarxa social, Goteo pretén ajudar a difondre i finançar projectes interessants entre el màxim de gent possible. Per això és important la informació que puguis compartir sobre les teves habilitats o experiència (professional, acadèmica, aficions, etc). '
+tooltip-user-analytics: 'En cas de disposar-ne, ingresa el teu ID de seguiment de Google Analytics per tal d''habilitar Google Analytics pel teu projecte. L''ID ha de ser en aquest format: UA-000000-01 (exemple d''ID)'
 tooltip-user-avatar_upload: 'Text tooltip pujar imatge usuari'
 tooltip-user-contribution: 'Explica breument les teves habilitats o els àmbits on podries ajudar un projecte (traduint, difonent, testejant, programant, ensenyant, etc).'
 tooltip-user-facebook: 'Aquesta xarxa social pot ajudar que difonguis projectes de Goteo que t''interessen entre amics i familiars.'
@@ -63,3 +61,4 @@ validate-user-field-name: 'Posa el teu nom complert per millorar la valoració d
 validate-user-field-twitter: 'L''usuari de Twitter no és vàlid'
 validate-user-field-web: 'Has de posar l''adreça (URL) de la web'
 validate-user-field-webs: 'Posa la teva pàgina web per millorar la valoració del projecte de cara a determinar si publicar-ho a Goteo.'
+regular-facebook-pixel: 'Facebook Pixel'

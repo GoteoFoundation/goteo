@@ -41,28 +41,28 @@ foreach ($years as $year) {
 
 $legal_entity_options=[
     [   'value' => '' ,
-        'label' => Text::get('profile-field-legal-entity-choose') 
-    ], 
+        'label' => Text::get('profile-field-legal-entity-choose')
+    ],
     [   'value' => '0' ,
-        'label' => Text::get('profile-field-legal-entity-person') 
+        'label' => Text::get('profile-field-legal-entity-person')
     ],
     [   'value' => '1' ,
-        'label' => Text::get('profile-field-legal-entity-self-employed') 
+        'label' => Text::get('profile-field-legal-entity-self-employed')
     ],
     [   'value' => '2' ,
-        'label' => Text::get('profile-field-legal-entity-ngo') 
+        'label' => Text::get('profile-field-legal-entity-ngo')
     ],
     [   'value' => '3' ,
-        'label' => Text::get('profile-field-legal-entity-company') 
+        'label' => Text::get('profile-field-legal-entity-company')
     ],
     [   'value' => '4' ,
-        'label' => Text::get('profile-field-legal-entity-cooperative') 
+        'label' => Text::get('profile-field-legal-entity-cooperative')
     ],
     [   'value' => '5' ,
-        'label' => Text::get('profile-field-legal-entity-asociation') 
+        'label' => Text::get('profile-field-legal-entity-asociation')
     ],
     [   'value' => '6' ,
-        'label' => Text::get('profile-field-legal-entity-others') 
+        'label' => Text::get('profile-field-legal-entity-others')
     ],
 ];
 
@@ -279,7 +279,7 @@ echo SuperForm::get(array(
 
         'user_webs' => array(
             'type'      => 'group',
-            'required'  => true,
+            'required'  => false,
             'title'     => Text::get('profile-field-websites'),
             'hint'      => Text::get('tooltip-user-webs'),
             'class'     => 'webs',
@@ -346,6 +346,30 @@ echo SuperForm::get(array(
                     'errors'    => !empty($errors['linkedin']) ? array($errors['linkedin']) : array(),
                     'ok'        => !empty($okeys['linkedin']) ? array($okeys['linkedin']) : array(),
                     'value'     => empty($user->linkedin) ? Text::get('regular-linkedin-url') : $user->linkedin
+                )
+            )
+        ),
+         'user_analytic' => array(
+            'type'      => 'group',
+            'title'     => Text::get('profile-fields-analytics-title'),
+            'children'  => array(
+                'analytics_id' => array(
+                    'type'      => 'textbox',
+                    'size'      => 40,
+                    'title'     => Text::get('regular-analytics'),
+                    'hint'      => Text::get('tooltip-user-analytics'),
+                    'errors'    => !empty($errors['analytics_id']) ? array($errors['analytics_id']) : array(),
+                    'ok'        => !empty($okeys['analytics_id']) ? array($okeys['analytics_id']) : array(),
+                    'value'     => empty($project->analytics_id) ? '' : $project->analytics_id
+                ),
+                'facebook_pixel' => array(
+                    'type'      => 'textbox',
+                    'size'      => 40,
+                    'title'     => Text::get('regular-facebook-pixel'),
+                    'hint'      => Text::get('tooltip-user-facebook-pixel'),
+                    'errors'    => !empty($errors['facebook_pixel']) ? array($errors['facebook_pixel']) : array(),
+                    'ok'        => !empty($okeys['facebook_pixel']) ? array($okeys['facebook_pixel']) : array(),
+                    'value'     => empty($project->facebook_pixel) ? '' : $project->facebook_pixel
                 )
             )
         ),

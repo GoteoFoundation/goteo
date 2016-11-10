@@ -110,6 +110,7 @@ regular-manage_board: 'Panell gestoria'
 regular-mandatory: 'Camp obligatori!'
 regular-media_legend: Llegenda
 regular-menu: Menú
+regular-message-clipboard-fail: 'Sel·lecciona i copia aquest enllaç'
 regular-message_fail: 'Hi ha hagut algun error en enviar el missatge'
 regular-message_success: 'Missatge enviat correctament'
 regular-months: 'mesos '
@@ -165,3 +166,15 @@ user-changeemail-fail: 'Error en canviar l''email'
 user-register-success: 'L''usuari s''ha registrat correctament. A continuació rebràs un missatge de correu per activar-lo.'
 validate-project-social_rewards: 'És obligatori indicar com a mínim un retorn col·lectiu'
 validate-project-total-costs: 'El cost òptim no pot superar en més d''un 40% el cost mínim. Has de revisar el desglossament de costos.'
+regular-cancel: Cancel·lar
+regular-cancel-back: 'Cancel·lar i tornar enrere'
+regular-date: Data
+regular-download: Descarregar
+regular-female: Dona
+regular-instagram: Instagram
+regular-male: Home
+regular-matchfunding: 'Match funding'
+regular-spread: DIFUSIÓ
+regular-status: Estat
+regular-year: Any
+support-our-mission: 'Dóna suport a la nostra missió'

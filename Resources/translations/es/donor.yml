@@ -17,8 +17,8 @@ dashboard-menu-activity-donor: 'Certificado de donación'
 donor-address-country-field: País
 donor-address-location-field: Provincia
 donor-field-amount: 'Importe donativo'
-donor-field-amount-relief: 'Desgravación'
-donor-field-lot-relief: 'Tramo'
+donor-field-amount-relief: Desgravación
+donor-field-lot-relief: Tramo
 donor-field-numproj: 'Aportes realizados el %s'
 personal-field-donor_name: 'Nombre '
 personal-field-donor_surname: 'Primer apellido'

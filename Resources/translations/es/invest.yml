@@ -99,10 +99,9 @@ project-invest-guest: ¡Genial!
 project-invest-ok: 'Se ha tramitado tu aportación para cofinanciar este proyecto :)'
 project-invest-pool-button: 'Usar mi Monedero virtual'
 project-invest-start: 'Estás a un paso de cofinanciar este proyecto...'
+project-return-button: 'Volver al proyecto'
+project-see-msg: 'Ver tu mensaje'
 spread-facebook: 'Difunde en Facebook'
 spread-twitter: 'Difunde en Twitter'
 user-login-required-login: 'Si ya te has registrado debes <a href="%s">iniciar sesión</a>, si no, debes crear un nuevo usuario. (En caso que quieras hacer una aportación anónima, podrás seleccionar esa opción más adelante)'
 warning_nojavascript: 'Habilita javascript desde la configuración de privacidad de tu navegador para poder seguir con el proceso de pago'
-
-project-return-button: 'Volver al proyecto'
-project-see-msg: 'Ver tu mensaje'

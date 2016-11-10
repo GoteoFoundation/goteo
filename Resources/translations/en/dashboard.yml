@@ -30,6 +30,7 @@ dashboard-menu-profile-preferences: Preferences
 dashboard-menu-profile-profile: 'Edit profile'
 dashboard-menu-profile-public: 'Public profile'
 dashboard-menu-projects: 'My projects'
+dashboard-menu-projects-analytics: Analytics
 dashboard-menu-projects-commons: Rewards
 dashboard-menu-projects-contract: Contract
 dashboard-menu-projects-messegers: Participants
@@ -44,6 +45,8 @@ dashboard-menu-translate_board: Translation
 dashboard-menu-translates: 'My translations'
 dashboard-messegers-mail-sendto: 'Sent to %s the participants:'
 dashboard-password-recover-advice: 'You are recovering your password. Remember to put your user name in the "current password" field to change it.'
+dashboard-project-analytics-fail: 'Error while saving analytics IDs'
+dashboard-project-analytics-ok: 'Your analytics IDs have been saved correctly'
 dashboard-project-blog-fail: 'Contact us'
 dashboard-project-blog-inactive: 'Sorry, you can''t publish news on this project right now.'
 dashboard-project-blog-wrongstatus: 'Sorry, you can''t publish news about this project yet...'
@@ -122,3 +125,34 @@ user-preferences-tips: 'Block advice on how to promote the campaign (for campaig
 user-preferences-updates: 'Disable news notifications from the projects I''m backing'
 user-profile-saved: 'Profile updated'
 user-save-fail: 'There was a problem saving the data'
+dashboard-certificates-confirm: 'Confirm data'
+dashboard-certificates-confirm-checkbox: 'I hereby confirm that these are my real legal data and I''m conscious that I will not be able to modify them once confirmed'
+dashboard-certificates-confirmed: Confirmed
+dashboard-certificates-confirmed-ok: 'Your fiscal data are confirmed now. If your certificate does not download automatically, please click %HERE%'
+dashboard-certificates-data-alert: 'Keep in mind that once confirmed, the data can not be modified!'
+dashboard-certificates-data-desc: 'Please make sure the data in the form is correct and confirm the form'
+dashboard-certificates-data-download-all: 'Download and present all the certificates of the current fiscal year in your annual income tax declaration'
+dashboard-certificates-data-new-invests: 'And hey, don''t worry! Any further donation you make through Goteo will generate a new certificate'
+dashboard-certificates-desc: 'These certificates will allow a deduction in your income tax declaration only if you are a taxpayer in Spain.'
+dashboard-certificates-details: 'Show details'
+dashboard-certificates-details-desc: 'List of donations for the certificate %CERT%'
+dashboard-certificates-download: 'Confirm and download'
+dashboard-certificates-empty: 'You need to make at least a donation to any project or charge an amount to your virtual wallet to see your certificates'
+dashboard-certificates-expired: Expired
+dashboard-certificates-no-pending: 'There''s no pending donation'
+dashboard-certificates-pending: Pending
+dashboard-certificates-pending-desc: 'These donations will be included in future certificates.'
+dashboard-certificates-please-confirm: 'Please check the verification box to continue'
+dashboard-certificates-summary: 'Certificate %ID%, Year %YEAR%'
+dashboard-certificates-too-old: 'This certificate is too old and can''t be modified. In case you have any question, please contact us'
+dashboard-certificates-totals: '%NUM% donations, %AMOUNT%'
+dashboard-certificates-unconfirmed: 'For downloading this certificate, you need to confirm the data first!'
+dashboard-certificates-view-pending: 'Your donations to current projects in campaign that haven''t reach the minimum won''t show. You can check them %HERE%'
+dashboard-investors-mail-sent: 'Messages sent correctly'
+dashboard-menu-pool: 'My virtual wallet'
+dashboard-menu-pool-available: Remainder
+dashboard-menu-pool-conditions: Conditions
+dashboard-my-wallet-available: 'You currently have <span class="pool-amount">%s</span><br>in your virtual wallet in Goteo'
+dashboard-my-wallet-contribute-button: Donate
+dashboard-my-wallet-modal-pool-info: 'Goteo’s virtual wallet is a feature of our platform that allows you to make a donation and later decide which project you’d like to support.<br> <p>Donations made through our platform pay you back in your income tax declaration, according to the Spanish regulation (Ley 49/2002, de 23 de diciembre, de régimen fiscal de las entidades sin fines lucrativos y de los incentivos fiscales al mecenazgo).</p> <p>When donating, you can download a certificate that validates towards the Tax Office your contribution to a non profit entity. You may access a compilation of your certificates in the past, associated with your previous donations in Goteo through your User Pannel, exactly in the section <a href="/dashboard/wallet/certificate" target="_blank">Certificado de donación</a>.</p><p> IMPORTANT NOTE: We remind you that the donations already reflected in a certificate from our Foundation can not be refunded. This means that if you have made a donation to a concrete project in our platform and that project does not reach its minimum tuning goal during the campaign, your donation will be transferred to your wallet but not back to your bank account. However, you may donate later that amount from your virtual wallet in Goteo.org to any other future project that you like, when you like, without introducing again your bank account number or PayPal user.</p>'
+dashboard-my-wallet-pool-info: 'More information on using your wallet'

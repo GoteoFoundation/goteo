@@ -123,6 +123,12 @@ namespace Goteo\Model {
             // Comment
             $comment, // Comentario para los admin introducido por el usuario
 
+            // Google Analytics ID
+            $analytics_id,
+
+            // Facebook pixel for facebook ads
+            $facebook_pixel,
+
             //Operative purpose properties
             $mincost = 0,
             $maxcost = 0,
@@ -837,6 +843,7 @@ namespace Goteo\Model {
             $Widget->user = new User;
             $Widget->user->id = $project->user_id;
             $Widget->user->name = $project->user_name;
+            $Widget->user->gender = $project->user_gender;
             $Widget->user->email = $project->user_email;
             $Widget->user->lang = $project->user_lang;
 
@@ -1161,7 +1168,6 @@ namespace Goteo\Model {
          * @return: boolean
          */
         public function validate(&$errors = array()) {
-
             // Estos son errores que no permiten continuar
             if (empty($this->id))
                 $errors[] = 'El proyecto no tiene id';
@@ -1185,6 +1191,10 @@ namespace Goteo\Model {
 
             if (empty($this->node))
                 $this->node = 'goteo';
+
+            if(self::isTranslated($this->id, $this->lang)) {
+                $errors['alert'] = sprintf(Text::get('project-error-main-lang'), $this->lang, $this->lang);
+            }
 
             //cualquiera de estos errores hace fallar la validación
             return empty($errors);
@@ -1279,7 +1289,9 @@ namespace Goteo\Model {
                     'project_location',
                     'scope',
                     'resource',
-                    'comment'
+                    'comment',
+                    'analytics_id',
+                    'facebook_pixel'
                     );
 
                 $set = '';
@@ -1577,9 +1589,7 @@ namespace Goteo\Model {
                     ++$score;
                 }
 
-                if (empty($this->user->webs)) {
-                    $errors['userProfile']['webs'] = Text::get('validate-project-userProfile-web');
-                } else {
+                if (!empty($this->user->webs)) {
                     $okeys['userProfile']['webs'] = 'ok';
                     ++$score;
                     if (count($this->user->webs) > 2) ++$score;
@@ -2249,6 +2259,22 @@ namespace Goteo\Model {
             }
         }
 
+        /** Custom remove lang
+         */
+        public function removeLang($lang) {
+            try {
+                static::query("DELETE FROM `project_lang` WHERE id = :id AND lang = :lang", array(':id' => $this->id, ':lang' => $lang));
+                static::query("DELETE FROM `cost_lang` WHERE project = :id AND lang = :lang", array(':id' => $this->id, ':lang' => $lang));
+                static::query("DELETE FROM `reward_lang` WHERE project = :id AND lang = :lang", array(':id' => $this->id, ':lang' => $lang));
+                static::query("DELETE FROM `support_lang` WHERE project = :id AND lang = :lang", array(':id' => $this->id, ':lang' => $lang));
+                static::query("DELETE FROM `post_lang` WHERE blog = (SELECT id FROM blog WHERE `owner` = :id) AND lang = :lang", array(':id' => $this->id, ':lang' => $lang));
+                return true;
+            } catch (\Exception $e) {
+            }
+            return false;
+        }
+
+
         /**
          * Creates a new project for a user and node/channel
          */
@@ -2299,7 +2325,7 @@ namespace Goteo\Model {
                         // En el contenido:
                         $search  = array('%USERNAME%', '%CALLNAME%', '%CALLERNAME%', '%CALLURL%');
                         $replace = array($user->name, $callData->name, $callData->user->name, SITE_URL.'/call/'.$call);
-                        $content = \str_replace($search, $replace, $template->text);
+                        $content = \str_replace($search, $replace, $template->parseText());
 
 
                         $mailHandler = new Mail();
@@ -3053,6 +3079,12 @@ namespace Goteo\Model {
             if (!empty($filters['success'])) {
                 $sqlFilter .= " AND success = :success";
                 $values[':success'] = $filters['success'];
+            }
+            // Located/unlocated
+            if ($filters['located'] === 'located') {
+                $sqlFilter .= " AND project.id IN (SELECT id FROM project_location)";
+            } elseif ($filters['located'] === 'unlocated') {
+                $sqlFilter .= " AND project.id NOT IN (SELECT id FROM project_location)";
             }
 
             //el Order

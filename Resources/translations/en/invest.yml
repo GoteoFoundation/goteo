@@ -86,3 +86,22 @@ spread-facebook: 'Share on Facebook'
 spread-twitter: 'Share on Twitter'
 user-login-required-login: 'If you’re a registered user you should <a href="%s">log in</a>; if you are not, you should create a new user. (In case you want to make an anonymous donation, you can select that option later)'
 warning_nojavascript: 'Please enable javascript from your browser''s privacy settings to continue the payment process'
+invest-address-birthyear-field: 'Year of birth'
+invest-address-fail: 'There are empty or faulty fields. Please check the form so you can go forward and receive your reward!'
+invest-address-gender-field: Gender
+invest-cash-method: 'Manual (cash)'
+invest-drop-method: 'Matching funds'
+invest-fiscal-fail: 'There are faulty of empty fields. Please check the fiscal form to go forward and deduct your contribution!'
+invest-login-alert: 'You must register or <a href="%s">log in</a> to make your contribution'
+invest-method: 'Payment method'
+invest-reward-first: 'Remember the amount for a donation must be higher than 0'
+invest-status-cancelled: Cancelled
+invest-status-charged: Charged
+invest-status-paid: 'Paid to project'
+invest-status-pending: Pending
+invest-status-processing: Incomplete
+invest-status-relocated: Relocated
+invest-status-returned: 'Returned (archived)'
+invest-status-to-pool: 'Virtual wallet'
+project-return-button: 'Back to project'
+project-see-msg: 'See your message'

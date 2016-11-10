@@ -94,6 +94,7 @@ regular-hello: Hello
 regular-home: Start
 regular-identica: Identi.ca
 regular-im: 'I am'
+regular-instagram: Instagram
 regular-invest: Contribute
 regular-invest_it: 'Co-finance this project'
 regular-investing: Contributing
@@ -109,6 +110,7 @@ regular-manage_board: 'Processing Agency Panel'
 regular-mandatory: 'Required field!'
 regular-media_legend: Key
 regular-menu: Menu
+regular-message-clipboard-fail: 'Select and copy this link'
 regular-message_fail: 'There was an error sending the message'
 regular-message_success: 'Message sent correctly'
 regular-months: months
@@ -164,4 +166,7 @@ user-changeemail-fail: 'Error while changing the email'
 user-register-success: 'The user was registered correctly. We are sending you an activation email now.'
 validate-project-social_rewards: 'You have to specify at least one collective benefit'
 validate-project-total-costs: 'The optimal cost cannot exceed the minimum cost by more than 50%. You have to either raise the essential costs or lower the supplemental costs. '
-regular-instagram: Instagram
+regular-female: Female
+regular-here: here
+regular-male: Male
+regular-matchfunding: 'Match funding'

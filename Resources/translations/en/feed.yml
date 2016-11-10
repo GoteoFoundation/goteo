@@ -1,7 +1,7 @@
 feed-blog-comment: 'Has written a <span class="green">Comment</span> at the post "%s" from the %s blog'
 feed-invest: 'Has contributed with %AMOUNT% to %PROJECT%'
-feed-invest-pool: 'Has added %AMOUNT% in his virtual purse'
 feed-invest-by: 'Invest by %s'
+feed-invest-pool: 'Has added %AMOUNT% in his virtual purse'
 feed-message_support-response: 'New collaboration with %s at project %s'
 feed-messages-new_thread: 'Has opened a thread at %s of the project %s'
 feed-messages-response: 'Has answered to %s of the project %s'

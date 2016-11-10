@@ -17,6 +17,7 @@ login-recover-label: 'Has oblidat la contrasenya?'
 login-recover-link: 'Recuperar contrasenya '
 login-recover-modal-button: Enviar
 login-recover-modal-sucess: 'Fet! - T''hem enviat un correu electrònic a %s amb un enllaç per restablir la contrasenya.'
+login-recover-modal-text: "Escriu l'adreça de correu electrònic que vas fer servir per registrar-te i t'enviarem un enllaç on restablir la teva contrasenya\r\n"
 login-recover-username-field: 'Nom d''accés '
 login-register-button: Registrar
 login-register-confirm-field: 'Confirmar email'
@@ -37,6 +38,7 @@ login-signin-twitter: 'Accedeix amb Twitter'
 login-signin-ubuntu: 'Accedeix amb Ubuntu One'
 login-signin-view-more: 'Mostrar més opcions d''accés'
 login-signin-yahoo: 'Accedeix amb Yahoo'
+login-title: 'Iniciar sessió'
 oauth-confirm-user: 'Vincular usuari existent'
 oauth-facebook-access-denied: 'Accés des de Facebook denegat'
 oauth-goteo-openid-sync-password: 'Estàs intentant vincular un compte ja existent a Goteo amb un proveïdor extern. Això et permetrà entrar a Goteo amb un sol clic en el futur.<br>Aquesta primera vegada hauràs de proporcionar la contrasenya del teu compte de Goteo per confirmar la teva identitat.'
@@ -64,5 +66,3 @@ reset-password-new-password: 'Torna a escriure la teva nova contrasenya'
 reset-password-old-password: 'La teva nova contrasenya'
 reset-password-save: Desar
 reset-password-title: 'Establir una nova contrasenya'
-login-recover-modal-text: "Escriu l'adreça de correu electrònic que vas fer servir per registrar-te i t'enviarem un enllaç on restablir la teva contrasenya\r\n"
-login-title: 'Iniciar sessió'

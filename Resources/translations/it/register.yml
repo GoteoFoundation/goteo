@@ -1,9 +1,9 @@
 error-register-email: 'La mail non è obbligatoria'
 error-register-email-confirm: 'La verifica della mail non coincide '
-error-register-invalid-password: 'La password non è valida'
+error-register-invalid-password: 'La password non é valida. Inserisci almeno 6 caratteri'
 error-register-password-confirm: 'La verifica della password non coincide '
 error-register-pasword: 'La password non si può lasciare incompleta'
-error-register-short-password: 'La password deve contenere un minino di 8 caratteri'
+error-register-short-password: 'La password deve contenere un minino di 6 caratteri'
 error-register-user-exists: 'Questo nome utente è già registrato.'
 error-register-username: 'Il nome pubblico è obbligatorio '
 guide-user-register: 'Testo guida per la registrazione di un nuovo utente.'
@@ -15,8 +15,8 @@ leave-token-incorrect: 'Il codice per completare il processo di disattivazione n
 recover-email-sended: 'Ti abbiamo mandato una mail per riattivare la password utente. Verifica anche nella cartella spam'
 recover-request-fail: 'Non si può recuperare la password di nessun account con questi dati'
 recover-token-incorrect: 'Il codice per recuperare la password non è valido'
+register-id-field: Username
 user-activate-already-active: 'L''account è già attivo'
 user-activate-success: 'L''account si è attivato correttamente'
 validate-project-value-contract_email: 'L''indirizzo mail non è corretto'
 validate-register-value-email: 'La mail indicata non è valida'
-register-id-field: Username

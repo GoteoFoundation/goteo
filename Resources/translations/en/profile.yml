@@ -4,38 +4,37 @@ profile-field-about: 'Tell us something about yourself'
 profile-field-avatar_current: 'Your current image'
 profile-field-avatar_upload: 'Upload an image'
 profile-field-contribution: 'What can you offer Goteo?'
+profile-field-entity-type-checkbox-public: 'I''m a public entity'
+profile-field-entity-type-choose: 'Select type of organization'
+profile-field-entity-type-concerted: 'Private-Public partnership'
+profile-field-entity-type-private: Private
+profile-field-entity-type-public: Public
 profile-field-interests: 'What kind of project motivates you most?'
 profile-field-keywords: 'My key words'
+profile-field-legal-entity: 'Legal form'
+profile-field-legal-entity-asociation: Association
+profile-field-legal-entity-choose: 'Select legal form'
+profile-field-legal-entity-company: Company
+profile-field-legal-entity-cooperative: Cooperative
+profile-field-legal-entity-ngo: NGO
+profile-field-legal-entity-others: Other
+profile-field-legal-entity-person: Individual
+profile-field-legal-entity-self-employed: Freelancer
 profile-field-location: 'Place of residence'
 profile-field-name: 'User name'
 profile-field-url: URL
 profile-field-websites: 'My web pages'
+profile-fields-analytics-title: Analytics
 profile-fields-image-title: 'Profile image'
 profile-fields-social-title: 'Social profiles'
-
-rofile-field-entity-type: 'Type of organization'
-profile-field-entity-type-choose: 'Select type of organization'
-profile-field-entity-type-public: 'Public'
-profile-field-entity-type-private: 'Private'
-profile-field-entity-type-concerted: 'Private-Public partnership'
-
-profile-field-entity-type-checkbox-public: 'I''m a public entity'
-
-profile-field-legal-entity: 'Legal form'
-profile-field-legal-entity-choose: 'Select legal form'
-profile-field-legal-entity-person: 'Individual'
-profile-field-legal-entity-self-employed: 'Freelancer'
-profile-field-legal-entity-ngo: 'NGO'
-profile-field-legal-entity-company: 'Company'
-profile-field-legal-entity-cooperative: 'Cooperative'
-profile-field-legal-entity-asociation: 'Association'
-profile-field-legal-entity-others: 'Other'
-
 profile-main-header: 'Profile data'
 profile-suggest-projects-interest: 'You might want to support'
+regular-analytics: 'Google Analytics'
+rofile-field-entity-type: 'Type of organization'
 step-1: Profile
 step-userProfile: 'Step: User / Profile'
 tooltip-user-about: 'As a social network, Goteo attempts to help spread the word about and finance interesting projects among the largest amount of people possible. To that end, it''s important to share information about your skills and experience (professional, academic, hobbies, etc.)'
+tooltip-user-analytics: 'Provide, in case you have it, your Google Analytics track ID to enable Google Analytics for your project. The ID should be in this format: UA-000000-01 (ID example)'
 tooltip-user-avatar_upload: 'Tooltip text upload user image'
 tooltip-user-contribution: 'Briefly explain your skills and the areas in which you could help (translating, marketing, testing, programming, teaching, etc.)'
 tooltip-user-facebook: 'This social network can help you spread the word about Goteo projects that interest you with your friends and family.'
@@ -62,3 +61,4 @@ validate-user-field-name: 'Enter your complete name to help us evaluate your pro
 validate-user-field-twitter: 'The Twitter user name is not valid'
 validate-user-field-web: 'Please enter the address (URL) of the website'
 validate-user-field-webs: 'Enter the address of your website to help us evaluate your project and determine if it is suitable for publishing on Goteo.'
+regular-facebook-pixel: 'Facebook Pixel'

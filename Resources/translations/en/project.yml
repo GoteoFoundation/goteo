@@ -2,8 +2,10 @@ contract-paypal_account: 'Email address vinculated to your Paypal account:'
 currency-switch: CONVERT
 overview-field-spread: Dissemination
 personal-field-accounts: 'Project accounts'
+project-chart-amount-end-round: 'End Round'
 project-collaborations-supertitle: 'Non-economic needs'
 project-collaborations-title: 'Looking for'
+project-error-main-lang: 'You can’t set this language [%s] as the main language because it is being used by an existing translation. Delete the existing translation in [%s], from the translation panel, to introduce a new one.'
 project-help-cost: 'I need help with the costs section'
 project-help-license: 'I need help with collective returns and licenses'
 project-langs-header: 'Project in:'
@@ -24,6 +26,10 @@ project-messages-send_direct-header: 'Send a message to this project''s promoter
 project-messages-send_message-button: Send
 project-messages-send_message-header: 'Write your message'
 project-not_published: 'This project is not public yet'
+project-remove-translation: 'Remove translation'
+project-remove-translation-confirm: 'Are you sure to remove this translation? This operation cannot be undone!'
+project-removed-translation-ko: 'Error while removing translation!'
+project-removed-translation-ok: 'Translation removed!'
 project-rewards-bonus_reward-title: Bonus
 project-rewards-header: Benefits
 project-rewards-individual_reward-limited: 'Limited reward'
@@ -55,6 +61,7 @@ project-view-metter-investment: Co-financing
 project-view-metter-investors: Co-financiers
 project-view-metter-minimum: Minimum
 project-view-metter-optimum: Optimum
+project-view-preview: 'Preview the project'
 project-willpublish: 'This project will be published on %s'
 regular-new_project: 'New project'
 social_reward-access: Access
@@ -75,6 +82,23 @@ tooltip-updates-media: tooltip-updates-media
 tooltip-updates-tags: 'Tooltip text updates-tags'
 tooltip-updates-text: tooltip-updates-text
 tooltip-updates-title: tooltip-updates-title
-
-project-view-preview: 'Preview the project'
-
+project-about-title: 'About this project'
+project-chart-amount-ideal: Ideal
+project-chart-amount-reached: Acummulated
+project-chart-costs-reset: Back
+project-collaborations-available: 'Available crowdsourcing needs'
+project-collaborations-number: collaborators
+project-general-information: 'General information'
+project-go-up: 'Back to top'
+project-hide-donors: 'Hide donors'
+project-hide-needs: 'Hide list of needs'
+project-invest: Donation
+project-invest-msg: 'Support message:'
+project-menu-news: News
+project-menu-participate: Participate
+project-regular-support: Donate
+project-related: 'Related projects'
+project-rewards-side-title: Rewards
+project-show-donors: 'Show donors'
+project-show-needs: 'Show list of needs'
+project-view-metter-favourite: 'Remind me'

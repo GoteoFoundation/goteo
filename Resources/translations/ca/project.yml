@@ -2,8 +2,10 @@ contract-paypal_account: 'Email del teu compte PayPal:'
 currency-switch: CANVIAR
 overview-field-spread: Difusió
 personal-field-accounts: 'Comptes del projecte'
+project-chart-amount-end-round: 'Fi Ronda'
 project-collaborations-supertitle: 'Necessitats no monetàries'
 project-collaborations-title: Cercant
+project-error-main-lang: 'No es pot establir aquest idioma [%s] com a principal perquè ja està assignat a una traducció. Elimina la traducció existent en [%s], desde el panell de traducció, per introduïr-ne una de nova.'
 project-help-cost: 'Necessito ajuda per definir els costos'
 project-help-license: 'Necessito ajuda per definir els retorns col.lectius i les llicències'
 project-langs-header: 'Projecte en:'
@@ -24,6 +26,10 @@ project-messages-send_direct-header: 'Envia un missatge a l''impulsor/a del proj
 project-messages-send_message-button: Enviar
 project-messages-send_message-header: 'Escriu el teu missatge'
 project-not_published: 'Aquest projecte encara no és públic'
+project-remove-translation: 'Elimina la traducció'
+project-remove-translation-confirm: 'Segur que vols eliminar aquesta traducció? Aquesta operació no es pot desfer!'
+project-removed-translation-ko: 'Error al intentar eliminar la traducció!'
+project-removed-translation-ok: 'Traducció eliminada!'
 project-rewards-bonus_reward-title: Bonus
 project-rewards-header: Retorn
 project-rewards-individual_reward-limited: 'Recompensa limitada'
@@ -55,6 +61,7 @@ project-view-metter-investment: 'Cofinançament '
 project-view-metter-investors: 'Cofinançadors '
 project-view-metter-minimum: Mínim
 project-view-metter-optimum: 'Òptim  '
+project-view-preview: 'Previsualització del projecte'
 project-willpublish: 'Aquest projecte es publicarà el %s'
 regular-new_project: 'Projecte nou'
 social_reward-access: Accedeix
@@ -75,6 +82,22 @@ tooltip-updates-media: tooltip-updates-media
 tooltip-updates-tags: 'Text tooltip-updates-tags'
 tooltip-updates-text: tooltip-updates-text
 tooltip-updates-title: tooltip-updates-title
-
-project-view-preview: 'Previsualització del projecte'
-
+project-about-title: 'Sobre aquest projecte'
+project-chart-amount-reached: Acumulat
+project-chart-costs-reset: Back
+project-collaborations-available: 'Col.laboracions disponibles'
+project-collaborations-number: Col.laboradors
+project-general-information: 'Informació general'
+project-go-up: 'Tornar a dalt'
+project-hide-donors: 'Amagar comecenes'
+project-hide-needs: 'Amagar llistat de necessitats'
+project-invest: Aportació
+project-invest-msg: 'Missatge de suport:'
+project-menu-news: Notícies
+project-menu-participate: Participa
+project-regular-support: Cofinançar
+project-related: 'Projectes relacionats'
+project-rewards-side-title: Recompenses
+project-show-donors: 'Mostrar comecenes'
+project-show-needs: 'Mostrar llistat de necessitats'
+project-view-metter-favourite: 'Recorda-m''ho'

@@ -1,3 +1,9 @@
+as:
+    name: Asturiano
+    short: AST
+    public: false
+    locale: as_ES
+    fallback: es
 en:
     name: English
     short: ENG
@@ -39,7 +45,7 @@ it:
     short: ITA
     public: true
     locale: it_IT
-    fallback: es
+    fallback: en
 nl:
     name: Dutch
     short: NL

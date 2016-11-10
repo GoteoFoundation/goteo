@@ -1,0 +1,71 @@
+translator: Translator
+translator-autotranslate-from: 'Machine translation from'
+translator-back-to-list: 'Back to list'
+translator-banner: Banners
+translator-bazar: Catalogue
+translator-cannot-delete-system: 'This is a system translation and can not be deleted!'
+translator-category: Categories
+translator-choose: 'Choose an option'
+translator-copy-from: 'Copy content from'
+translator-criteria: 'Evaluation Criteria'
+translator-delete: 'Remove %s translation'
+translator-delete-sure: 'Are you sure you want to delete the %s translation? This cannot be undone!'
+translator-deleted-ko: 'Error deleting %s translation!'
+translator-deleted-ok: '%s translation deleted successfully'
+translator-faq: Faq
+translator-feed-translated-desc: '%LINK% translated by %USER% to %LANG%'
+translator-feed-translated-target: 'Translation in %s'
+translator-field-blog: Blog
+translator-field-content: Content
+translator-field-description: Description
+translator-field-facebook_msg: 'Facebook message'
+translator-field-facebook_msg_owner: 'Facebook author'
+translator-field-legend: Legend
+translator-field-media: Media
+translator-field-name: Name
+translator-field-review: Review
+translator-field-schedule: Schedule
+translator-field-share_facebook: 'Share text for Facebook'
+translator-field-share_twitter: 'Share text for Twitter'
+translator-field-text: Text
+translator-field-title: Title
+translator-field-twitter_msg: 'Twitter message'
+translator-field-twitter_msg_owner: 'Twitter author'
+translator-field-url: URL
+translator-glossary: 'Glossary of terms'
+translator-home: Home
+translator-icon: 'Types of return/reward'
+translator-info: 'About ideas'
+translator-lang-no-perms: 'You don''t have permissions to manage this language'
+translator-license: Licences
+translator-milestone: Milestones
+translator-more-langs: Others
+translator-news: News
+translator-no-langs: 'You don''t manage any language, contact the administrator'
+translator-not-saved: 'No content has been saved! (empty fields perhaps?)'
+translator-not-translated: 'No entry in the translation table'
+translator-only-pendings: 'Only pending in:'
+translator-opentag: Groupings
+translator-original-text: 'Original text'
+translator-page: Pages
+translator-patron: 'Sponsored projects'
+translator-pending: 'Translation pending'
+translator-pending-desc: 'This content is "pending", which means that <strong>IS NOT PUBLIC</strong> and will hold as a draft until the "Pending translation" option is removed'
+translator-post: Blog
+translator-promote: 'Promoted projects'
+translator-save: 'Save & publish'
+translator-save-draft: 'Save as draft'
+translator-saved-ko: 'Failed to save translation to %LANG% (%ERROR%)'
+translator-saved-ok: 'Translations saved correctly for languages [%s]'
+translator-skipped-fields: "Some fields have not been copied because they already contain text.\r\nDelete the original text to allow copying from another language."
+translator-sphere: 'Areas of a call'
+translator-stories: 'Success stories'
+translator-system: System
+translator-tables: 'General tables'
+translator-tag: 'Blog tags'
+translator-template: 'Automatic email templates'
+translator-texts: 'Interface texts'
+translator-translations: Translations
+translator-workshop: Workshops
+translator-worthcracy: Meritocracy
+translator-zone-not-found: 'This translation area is invalid '

@@ -86,3 +86,20 @@ spread-facebook: 'Difon a Facebook'
 spread-twitter: 'Difon a Twitter'
 user-login-required-login: 'Si ja t''has registrat has <a href="%s">d''iniciar sessió</a>; si no, has de crear un nou usuari. (En cas que vulguis fer una aportació anònima, podràs seleccionar l''opció més endavant)'
 warning_nojavascript: 'Habilita javascript des de la configuració de privacitat del teu navegador per poder continuar amb el procés de pagament'
+invest-address-birthyear-field: 'Any de naixement'
+invest-address-fail: 'Hi ha camps buits o amb errors, comprova el formulari perquè puguis rebre la teva recompensa!'
+invest-address-gender-field: Sexe
+invest-cash-method: 'Manual (cash)'
+invest-drop-method: Regadiu
+invest-fiscal-fail: 'Hi ha camps buits o amb errors, comprova el formulari fiscal perquè puguis desgravar la teva aportació!'
+invest-login-alert: 'T''has de registrar o <a href="%s">iniciar sessió</a> per poder realitzar l''aportació'
+invest-method: 'Mètode de pagament'
+invest-reward-first: '<br>Recorda que la quantitat a aportar ha de ser més gran que 0'
+invest-status-cancelled: Cancel·lat
+invest-status-charged: Cobrat
+invest-status-paid: 'Pagat al projecte'
+invest-status-pending: Preaprovat
+invest-status-processing: Incomplet
+invest-status-relocated: Reubicat
+invest-status-returned: 'Retornat (arxivat)'
+invest-status-to-pool: 'Al moneder'
