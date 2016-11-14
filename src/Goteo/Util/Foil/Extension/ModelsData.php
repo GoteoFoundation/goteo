@@ -12,7 +12,7 @@ namespace Goteo\Util\Foil\Extension;
 
 use Foil\Contracts\ExtensionInterface;
 
-use Goteo\Library\Page;
+use Goteo\Model\Page;
 
 class ModelsData implements ExtensionInterface
 {

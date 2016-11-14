@@ -23,7 +23,9 @@ class ChartsApiController extends AbstractApiController {
 
     private function getProject($id) {
         $prj = Project::get($id);
-        if(!$this->is_admin && !in_array($prj->status, [Project::STATUS_IN_CAMPAIGN, Project::STATUS_FUNDED, Project::STATUS_FULFILLED, Project::STATUS_UNFUNDED])) {
+        $is_visible = in_array($prj->status, [Project::STATUS_IN_CAMPAIGN, Project::STATUS_FUNDED, Project::STATUS_FULFILLED, Project::STATUS_UNFUNDED]);
+        $is_mine = $prj->owner === $this->user->id;
+        if(!$this->is_admin && !$is_mine && !$is_visible) {
             throw new ControllerAccessDeniedException();
         }
         return $prj;
@@ -49,7 +51,7 @@ class ChartsApiController extends AbstractApiController {
 
         foreach(Project\Cost::getAll($id) as $cost) {
             $arr = $cost->required ? 'mandatory' : 'optional';
-            
+
             if($arr=='mandatory')
             {
                 $light_m+=4;

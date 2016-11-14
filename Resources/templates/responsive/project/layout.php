@@ -14,15 +14,17 @@ endif;
 $this->layout('layout', [
     'bodyClass' => 'project',
     'title' => $this->project->name,
-    'meta_description' => $this->project->name
+    'meta_description' => $this->project->subtitle
     ]);
 
 $this->section('lang-metas');
-foreach($this->project->getLangs() as $l => $lang) {
-    if($l == $this->lang_current()) continue;
-    echo  "\n\t" . '<link rel="alternate" href="' . $this->lang_url($l) .'" hreflang="' . $l . '" />';
+$langs = $this->project->getLangs();
+if (count($langs) > 1) {
+    foreach($langs as $l => $lang) {
+        if($l == $this->lang_current()) continue;
+        echo  "\n\t" . '<link rel="alternate" href="' . $this->lang_url($l) .'" hreflang="' . $l . '" />';
+    }
 }
-
 $this->replace();
 
 $this->section('content');
@@ -307,11 +309,17 @@ $this->section('content');
  			 $( "div.chart-costs" ).fadeIn("slow");
 		});
 
+        $("div.row.call-info").hover(function(){
+            $(".info-default-call").toggle();
+            $(".info-hover-call").toggle();
+        });
+
 
 
     });
 
 </script>
+<?= $this->insert('project/partials/google_analytics.php', ['project' => $project]) ?>
 <?php $this->append() ?>
 
 

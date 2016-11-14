@@ -123,10 +123,16 @@ $langs = $project->getLangs();
                                             <?= $this->text('node-side-sumcalls-header') ?>
                                             </div>
                                         </div>
-                                        <div class="col-xs-10" >
+                                        <div class="col-xs-10 info-default-call" >
                                             <div class="header-text"><?= $project->called->user->name.' '.$this->text('call-project-get') ?></div>
                                             <div class="call-name">
                                                 <?= $project->called->name ?>
+                                            </div>
+                                        </div>
+                                        <div class="col-xs-10 info-hover-call display-none" >
+                                            <div class="header-text"><?= $project->called->user->name.' '.$this->text('call-project-get') ?></div>
+                                            <div class="call-name">
+                                            <?= $this->text('project-call-got', amount_format($project->amount_call), $project->called->user->name) ?>
                                             </div>
                                         </div>
                                     </div>
@@ -167,14 +173,17 @@ $langs = $project->getLangs();
                     <div class="row call-info col-lg-10 col-md-11 col-sm-12">
                         <div class="col-xs-2 no-padding" >
                             <img src="<?= SRC_URL . '/assets/img/project/drop.svg' ?>" class="img-responsive">
-                            <div class="label-call" >
-                            <?= $this->text('node-side-sumcalls-header') ?>
-                            </div>
                         </div>
-                        <div class="col-xs-10" >
+                        <div class="col-xs-10 info-default-call" >
                             <div class="header-text"><?= $project->called->user->name.' '.$this->text('call-project-get') ?></div>
                             <div class="call-name">
                                 <?= $project->called->name ?>
+                            </div>
+                        </div>
+                        <div class="col-xs-10 info-hover-call display-none" >
+                            <div class="header-text"><?= $project->called->user->name.' '.$this->text('call-project-get') ?></div>
+                            <div class="call-name">
+                            <?= $this->text('project-call-got', amount_format($project->amount_call), $project->called->user->name) ?>
                             </div>
                         </div>
                     </div>

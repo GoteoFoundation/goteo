@@ -21,8 +21,8 @@ $page = $this->page('error');
 
 <div id="main">
     <div class="widget">
-        <h3 class="title"><?=$page->name?></h3>
-        <?=$page->content?>
+        <h3 class="title"><?= $page->name?></h3>
+        <?= $page->parseContent() ?>
     </div>
 </div>
 

@@ -124,6 +124,9 @@ class BannersSubController extends AbstractSubController {
             }
 
 			if ($banner->save($errors)) {
+                //Reorder with up
+                Model\Banner::up($banner->id, $node);
+
                 Message::info('Datos guardados');
 
                 if ($this->getPost('action') == 'add') {
@@ -202,7 +205,7 @@ class BannersSubController extends AbstractSubController {
                 return array(
                         'template' => 'admin/banners/edit',
                         'action' => 'add',
-                        'banner' => (object) array('order' => $next),
+                        'banner' => (object) array('order' => 0),
                         'autocomplete' => true
                 );
                 break;

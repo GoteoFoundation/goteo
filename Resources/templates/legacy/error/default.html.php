@@ -1,7 +1,7 @@
 <?php
 use Goteo\Library\Text,
     Goteo\Core\View,
-    Goteo\Library\Page;
+    Goteo\Model\Page;
 
 $page = Page::get('error');
 
@@ -19,7 +19,7 @@ if (!isset($error) || !($error instanceof Error)) {
 
     <div id="sub-header">
         <div>
-            <h2><?php echo $error->getMessage() ?>!</h2>
+            <h2><?= $error->getMessage() ?>!</h2>
         </div>
     </div>
 
@@ -27,8 +27,8 @@ if (!isset($error) || !($error instanceof Error)) {
 
     <div id="main">
         <div class="widget">
-            <h3 class="title"><?php echo $page->name; ?></h3>
-            <?php echo $page->content; ?>
+            <h3 class="title"><?= $page->name ?></h3>
+            <?= $page->parseContent() ?>
         </div>
     </div>
 
