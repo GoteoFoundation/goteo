@@ -83,6 +83,7 @@ class MailingSubController extends AbstractSubController {
             Template::ADMIN_MESSAGE => 'Base',
             Template::DONORS_WARNING => 'Aviso a los donantes',
             Template::DONORS_REMINDER => 'Recordatorio a los donantes',
+            Template::COMMUNICATION => 'Comunicación general',
             Template::TEST => 'Testeo'
         );
         $this->langs = Lang::listAll('object', false);
@@ -121,9 +122,11 @@ class MailingSubController extends AbstractSubController {
         $subject = trim($this->getPost('subject'));
         $content = trim($this->getPost('content'));
         $template = $this->getPost('template');
+        $type = $this->getPost('type');
         Session::store('mailing.subject', $subject);
         Session::store('mailing.content', $content);
         Session::store('mailing.template', $template);
+        Session::store('mailing.type', $type);
 
         $templateId = !empty($this->getPost('template')) ? $template : 11;
         $content = \str_replace('%SITEURL%', \SITE_URL, $content);
@@ -131,6 +134,11 @@ class MailingSubController extends AbstractSubController {
         if(empty($subject) || empty($content)) {
             Message::error('El asunto o el contentido está vacio!');
             return $this->redirect('/admin/mailing/edit');
+        }
+
+        if($type === 'md') {
+            $pd = new \Parsedown();
+            $content = $pd->text($content);
         }
 
         // montamos el mailing
@@ -171,6 +179,7 @@ class MailingSubController extends AbstractSubController {
 
         Session::del('mailing.subject');
         Session::del('mailing.content');
+        Session::del('mailing.type');
         Session::del('mailing.template');
         Session::del('mailing.removed_receivers');
 
@@ -207,6 +216,8 @@ class MailingSubController extends AbstractSubController {
         return array(
                 'template'    => 'admin/mailing/edit',
                 'templates'    => $this->templates,
+                'languages' => Lang::listAll('name', false),
+                'type' => Session::get('mailing.type', 'md'),
                 'receivers' => $receivers,
                 'removed_receivers' => Session::get('mailing.removed_receivers', []),
                 'subject' => Session::get('mailing.subject'),
@@ -237,9 +248,10 @@ class MailingSubController extends AbstractSubController {
     }
 
     public function get_template_contentAction($id) {
-        $Template = Template::get($id);
+        $lang = $this->getGet('hl');
+        $template = Template::get($id, $lang);
 
-        return $this->jsonResponse(['title' => $Template->title, 'text' => $Template->text]);
+        return $this->jsonResponse(['title' => $template->title, 'text' => $template->text, 'type' => $template->type]);
     }
 
     public function copyAction($id) {
@@ -247,6 +259,7 @@ class MailingSubController extends AbstractSubController {
             Session::store('mailing.subject', $mail->subject);
             Session::store('mailing.content', $mail->content);
             Session::store('mailing.template', $mail->template);
+            Session::store('mailing.type', 'html');
             return array(
                 'template'    => 'admin/mailing/list',
                 'interests' => $this->interests,

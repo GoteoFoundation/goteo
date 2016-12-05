@@ -438,8 +438,10 @@ class BlogSubController extends AbstractSubController {
                 // siguiente orden
                 if (!$this->isMasterNode()) {
                     $next = Model\Post::next_node($node);
-                    $data = (object) array('post' => $id, 'node' => $node, 'order' => $next);
+                    $data = (object) array('post' => $id, 'node' => $node, 'order' => 0);
                     if (Model\Post::update_node($data, $errors)) {
+                         //Reorder posts with up
+                        Model\Post::up_node($id, $node);
                         Message::info('Entrada colocada en la portada correctamente');
                     } else {
                         Message::error('Ha habido algun problema:<br />' . \implode('<br />', $errors));
@@ -448,11 +450,13 @@ class BlogSubController extends AbstractSubController {
                     $next = Model\Post::next('home');
                     $post = new Model\Post(array(
                         'id' => $id,
-                        'order' => $next,
+                        'order' => 0,
                         'home' => 1
                     ));
 
                     if ($post->update($errors)) {
+                        //Reorder posts with up
+                        Model\Post::up($id, 'home');
                         Message::info('Entrada colocada en la portada correctamente');
                     } else {
                         Message::error('Ha habido algun problema:<br />' . \implode('<br />', $errors));

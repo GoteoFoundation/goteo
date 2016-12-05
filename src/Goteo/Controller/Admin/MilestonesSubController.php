@@ -19,6 +19,8 @@ use Goteo\Application\Message;
 use Goteo\Application\Session;
 use Goteo\Model;
 use Goteo\Model\Milestone;
+use Goteo\Application\Config;
+
 
 
 class MilestonesSubController extends AbstractSubController {
@@ -74,7 +76,17 @@ class MilestonesSubController extends AbstractSubController {
       '/' => 'Página principal campaña'
     );
 
-     public function editAction($id) {
+    /**
+     * Overwrite some permissions
+     * @inherit
+     */
+    static public function isAllowed(\Goteo\Model\User $user, $node) {
+        // Only central node and superadmins allowed here
+        if( ! Config::isMasterNode($node) || !$user->hasRoleInNode($node, ['superadmin', 'root']) ) return false;
+        return parent::isAllowed($user, $node);
+    }
+
+    public function editAction($id) {
 
         $milestone = Model\Milestone::get($id);
 
@@ -104,7 +116,7 @@ class MilestonesSubController extends AbstractSubController {
                     if ($milestone->image_emoji instanceof Model\Image) $milestone->image_emoji->remove($errors);
                     $milestone->image_emoji = null;
                 }
- 
+
                 // New image emojicono
                 if(!empty($_FILES['image_emoji']['name'])) {
                     if ($milestone->image_emoji instanceof Model\Image) $milestone->image_emoji->remove($errors);

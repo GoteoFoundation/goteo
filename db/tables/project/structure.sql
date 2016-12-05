@@ -170,3 +170,9 @@ ALTER TABLE `project` DROP COLUMN `called`;
 -- constrains
 ALTER TABLE `project` ADD FOREIGN KEY (`node`) REFERENCES `node`(`id`) ON UPDATE CASCADE ON DELETE RESTRICT,
                       ADD FOREIGN KEY (`owner`) REFERENCES `user`(`id`) ON UPDATE CASCADE ON DELETE RESTRICT;
+
+--id of Google Analytics for the project
+ALTER TABLE `project` ADD `analytics_id` VARCHAR(30);
+
+--facebook pixel
+ALTER TABLE `project` ADD `facebook_pixel` VARCHAR(20);

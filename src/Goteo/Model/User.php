@@ -57,6 +57,7 @@ class User extends \Goteo\Core\Model {
     $twitter,
     $identica,
     $linkedin,
+    $instagram,
     $amount,
     $worth,
     $created,
@@ -236,6 +237,10 @@ class User extends \Goteo\Core\Model {
                     $data[':twitter'] = $this->twitter;
                 }
 
+                if (isset($this->instagram)) {
+                    $data[':instagram'] = $this->instagram;
+                }
+
                 if (isset($this->identica)) {
                     $data[':identica'] = $this->identica;
                 }
@@ -377,7 +382,7 @@ class User extends \Goteo\Core\Model {
                 $id = self::idealiza($this->userid);
                 $query = self::query('SELECT id FROM user WHERE id = ?', array($id));
                 if ($query->fetchColumn()) {
-                    $errors['userid'] = Text::get('error-register-user-exists');
+                    $errors['userid'] = Text::get('error-register-user-exists'). " ($id)";
                 }
             }
 
@@ -638,6 +643,7 @@ class User extends \Goteo\Core\Model {
                     user.facebook as facebook,
                     user.google as google,
                     user.twitter as twitter,
+                    user.instagram as instagram,
                     user.identica as identica,
                     user.linkedin as linkedin,
                     user.amount as amount,
@@ -1516,7 +1522,7 @@ class User extends \Goteo\Core\Model {
             // En el contenido:
             $search = array('%USERNAME%', '%URL%');
             $replace = array($row->name, SEC_URL . '/user/leave/' . \mybase64_encode($token));
-            $content = \str_replace($search, $replace, $template->text);
+            $content = \str_replace($search, $replace, $template->parseText());
             // Email de recuperacion
             $mail = new Mail();
             $mail->lang = $comlang;

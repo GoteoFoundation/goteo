@@ -11,6 +11,7 @@
 use Symfony\Component\Routing\Route;
 use Symfony\Component\Routing\RouteCollection;
 use Goteo\Application\View;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 
 
 $routes = new RouteCollection();
@@ -161,6 +162,12 @@ $routes->add('dashboard-wallet', new Route(
 $routes->add('dashboard-wallet-projects-suggestion', new Route(
     '/dashboard/wallet/projects-suggestion',
     array('_controller' => 'Goteo\Controller\DashboardController::projectsSuggestionAction',
+        )
+));
+
+$routes->add('dashboard-projects-analytics', new Route(
+    '/dashboard/projects/analytics',
+    array('_controller' => 'Goteo\Controller\DashboardController::analyticsAction',
         )
 ));
 
@@ -525,6 +532,44 @@ $routes->add('admin-action', new Route(
         'subaction' => null
         )
 ));
+
+//// TRANSLATE ////
+$routes->add('translate', new Route(
+    '/translate',
+    array('_controller' => 'Goteo\Controller\TranslateController::indexAction',
+        )
+));
+$routes->add('translate-list-texts', new Route(
+    '/translate/texts',
+    array('_controller' => 'Goteo\Controller\TranslateController::listTextAction',
+        )
+));
+$routes->add('translate-list', new Route(
+    '/translate/{zone}',
+    array('_controller' => 'Goteo\Controller\TranslateController::listAction',
+        )
+));
+
+$routes->add('translate-edit-texts', new Route(
+    '/translate/texts/{id}',
+    array('_controller' => 'Goteo\Controller\TranslateController::editTextAction',
+        )
+));
+
+$routes->add('translate-edit', new Route(
+    '/translate/{zone}/{id}',
+    array('_controller' => 'Goteo\Controller\TranslateController::editAction',
+        )
+));
+
+//Compatibility redirect for old links
+$routes->add('translate-old-edit', new Route(
+    '/translate/{zone}/edit/{id}',
+    array('_controller' => function ($zone, $id) {
+            return new RedirectResponse("/translate/$zone/$id");
+        })
+    )
+);
 
 
 ////// MINI-API: Json controllers for ajax searching /////

@@ -52,11 +52,11 @@ $filters = $this->filters;
         <tbody>
             <?php foreach ($this->templates as $template) : ?>
             <tr>
-                <td><a href="/admin/templates/edit/<?= $template->id ?>">[<?= $this->text('regular-edit') ?>]</a></td>
+                <td><a target="_blank" href="/admin/templates/edit/<?= $template->id ?>">[<?= $this->text('regular-edit') ?>]</a></td>
                 <td><?= $template->name ?></td>
                 <td><?= $template->purpose ?></td>
                 <?php if ($this->has_role('translator')) : ?>
-                <td><a href="/translate/template/edit/<?= $template->id ?>" >[<?= $this->text('regular-translate') ?>]</a></td>
+                <td><a target="_blank" href="/translate/template/edit/<?= $template->id ?>" >[<?= $this->text('regular-translate') ?>]</a></td>
                 <?php endif ?>
             </tr>
             <?php endforeach ?>

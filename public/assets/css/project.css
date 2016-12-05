@@ -129,7 +129,7 @@ div.sticky-menu div.favourite.active span.heart-icon {
  }
 
  div.thermometer{
- 	width:15px; 
+ 	width:15px;
  	height:290px;
  }
 
@@ -139,7 +139,7 @@ div.sticky-menu div.favourite.active span.heart-icon {
 
 div.thermometer div.extra div.left{
  	background-color:#d5d5d5;
- 	height:100%; 
+ 	height:100%;
 }
 
 div.thermometer div.extra div.done{
@@ -152,36 +152,36 @@ div.thermometer div.extra .top-border-radius{
 }
 
 div.thermometer div.optimum{
-	height: 55%; 
+	height: 55%;
 	margin-top:2px;
 }
 
 div.thermometer div.optimum div.left{
-	background-color:#d5d5d5; 
+	background-color:#d5d5d5;
 	height:100%;
 }
 
 
 div.thermometer div.optimum div.done{
-	background-color:#149290; 
+	background-color:#149290;
 }
 
 div.thermometer div.minimum{
-	height: 30%;  
+	height: 30%;
 	margin-top:2px;
 }
 
 div.thermometer div.minimum div.left{
-	background-color:#d5d5d5; 
+	background-color:#d5d5d5;
 }
 
 div.thermometer div.minimum div.done{
-	background-color:#149290; 
+	background-color:#149290;
 }
 
 div.thermometer div.minimum .bottom-border-radius{
-	border-bottom-left-radius: 10px; 
-	border-bottom-right-radius: 10px; 
+	border-bottom-left-radius: 10px;
+	border-bottom-right-radius: 10px;
 }
 
 div.thermometer-container div.labels{
@@ -229,46 +229,46 @@ div.thermometer-info{
 }
 
 div.thermometer-info div.round{
-	font-size: 14px; 
+	font-size: 14px;
 	font-weight:bold;
 }
 
 div.thermometer-info div.time-left{
-	text-transform:uppercase; 
-	font-size:20px; 
+	text-transform:uppercase;
+	font-size:20px;
 	font-weight:bold;
 }
 
 div.thermometer-info div.time-status{
-	border-bottom: 1px solid #d5d5d5; 
+	border-bottom: 1px solid #d5d5d5;
 	padding-bottom:10px;
 	width: 75%;
 }
 
 div.thermometer-info div.status{
-	color:#149290; 
-	font-size:18px; 
-	font-weight: bold; 
+	color:#149290;
+	font-size:18px;
+	font-weight: bold;
 	width: 75% !important;
 }
 
 div.thermometer-info div.reached-label{
-	padding-top:10px; 
-	color:#149290; 
-	font-size:14px; 
+	padding-top:10px;
+	color:#149290;
+	font-size:14px;
 	font-weight:bold;
 }
 
 div.thermometer-info div.reached{
-	font-size:48px; 
-	color:#149290; 
-	font-weight:bold; 
-	font-size: 48px; 
+	font-size:48px;
+	color:#149290;
+	font-weight:bold;
+	font-size: 48px;
 	line-height: 1.1;
 }
 
 div.thermometer-info div.optimum-label{
-	font-size:14px; 
+	font-size:14px;
 	margin-top:10px;
 }
 
@@ -277,7 +277,7 @@ div.thermometer-info div.optimum{
 }
 
 div.thermometer-info div.minimum-label{
-	font-size:14px; 
+	font-size:14px;
 	margin-top:10px;
 }
 
@@ -286,16 +286,16 @@ div.thermometer-info div.minimum{
 }
 
 div.meter-investors{
-	font-weight:bold; 
-	font-size:13px; 
+	font-weight:bold;
+	font-size:13px;
 	text-transform:uppercase;
 	float: left;
 	margin-left: 15px;
 }
 
 div.favourite{
-	color: #bcbcbc; 
-	font-size:13px; 
+	color: #bcbcbc;
+	font-size:13px;
 	font-weight:bold;
 	cursor: pointer;
 	float: right;
@@ -398,12 +398,12 @@ button.message-grey {
 /* Call module */
 
 div.call-info{
-	font-size:13px; 
-	background-color: #E8ECEC; 
-	border-radius: 5px; 
-	padding: 17px 3%; 
-	font-weight: bold; 
-	text-transform: uppercase; 
+	font-size:13px;
+	background-color: #E8ECEC;
+	border-radius: 5px;
+	padding: 17px 3%;
+	font-weight: bold;
+	text-transform: uppercase;
 	margin:0;
 	margin-top: 55px !important;
 	color:#3A3A3A !important;
@@ -454,7 +454,7 @@ div.project-menu  div.item.current{
 
 div.project-menu span.label-item{
 	margin-left: 5px;
-} 
+}
 
 /* End menu */
 
@@ -593,8 +593,8 @@ div.circle {
 }
 
 div.circle.required{
-	background-color: #EFE5F0;  
-	border:1px solid #C158BB;  
+	background-color: #EFE5F0;
+	border:1px solid #C158BB;
 }
 
 div.circle.extra{
@@ -634,6 +634,10 @@ div.side-widget .investors{
 	padding: 15px 0;
 }
 
+div.side-widget .investors div.left{
+    font-weight: normal;
+}
+
 /* Social rewards */
 ul.social-rewards{
 	padding-bottom: 20px;
@@ -666,6 +670,8 @@ div.row.new{
 
 div.row.new .date{
 	position: relative;
+    padding-top: 75px;
+    margin-top: -75px;
 }
 
 div.row.new div.date div.month{
@@ -675,7 +681,7 @@ div.row.new div.date div.month{
 	text-align: center;
 	padding-top: 10px;
 	padding-bottom: 5px;
-	font-weight: bold; 
+	font-weight: bold;
 	text-transform: uppercase;
 }
 
@@ -698,13 +704,13 @@ div.row.new div.date div.extra{
 }
 
 div.row.new div.date div.repeat{
-	background-color: #149290; 
-	border-radius: 50%; 
-	width: 30px; 
-	height: 30px; 
-	opacity: 0.4; 
+	background-color: #149290;
+	border-radius: 50%;
+	width: 30px;
+	height: 30px;
+	opacity: 0.4;
 	margin: 20px auto 0px;
-	
+
 }
 
 div.row.new div.date div.extra-top{
@@ -766,8 +772,6 @@ div.row.new div.milestone-content{
 	display: flex;
 	flex-direction: column;
 	justify-content: center;
-	padding-top: 75px;
-	margin-top: -75px;
 }
 
 div.row.new div.milestone-content div.inside{
@@ -781,7 +785,7 @@ div.row.new div.milestone-content div.inside{
 
 div.row.new div.milestone-content div.inside a{
 	color:#FFF !important;
-	
+
 }
 
 div.row.new div.milestone-content div.inside span.pointer{
@@ -815,7 +819,7 @@ div.row.new div.milestone-content div.inside .twitter-icon{
 div.row.new div.milestone-content div.inside .facebook-icon:hover,
 div.row.new div.milestone-content div.inside .twitter-icon:hover{
 	opacity: 1;
-} 
+}
 
 /* Post entry */
 
@@ -934,7 +938,7 @@ div.row.message{
 div.row.message div.user-name a{
  	font-weight: bold;
  	color: #3A3A3A !important;
-} 
+}
 
 div.row.message div.msg-content{
  	clear: both;
@@ -987,7 +991,7 @@ div.child{
 
 div.child.no-owner div.msg-content{
 	margin-left: 55px;
-} 
+}
 
 div.child.owner{
  	background-color: #DDECEC;
@@ -1044,7 +1048,7 @@ div.row.message.child.no-owner div.user-name{
 		margin-top: 5px !important;
 	}
 
-	div.thermometer-info div.optimum{	
+	div.thermometer-info div.optimum{
 		line-height: 0.9;
 	}
 
@@ -1053,7 +1057,7 @@ div.row.message.child.no-owner div.user-name{
 		margin-top: 5px !important;
 	}
 
-	div.thermometer-info div.minimum{	
+	div.thermometer-info div.minimum{
 		line-height: 0.9;
 	}
 
@@ -1098,12 +1102,17 @@ div.row.message.child.no-owner div.user-name{
 @media(max-width:767px){
 
 	.navbar{
-		font-size:14px !important; 
+		font-size:14px !important;
 	}
+
+    body.project{
+        padding-bottom: 57px;
+    }
 
 	div.sticky-menu{
  		bottom:0;
  		top:auto;
+        z-index: 1000;
  	}
 
 
@@ -1320,7 +1329,7 @@ div.row.message.child.no-owner div.user-name{
 		top:136px !important;
 	}
 
-	
+
 	div.row.new div.content h2{
 		font-size: 2em !important;
 	}
@@ -1358,7 +1367,7 @@ div.row.message.child.no-owner div.user-name{
 	h2.pink-title{
 		font-size: 2em;
 	}
-	
+
 
 }
 

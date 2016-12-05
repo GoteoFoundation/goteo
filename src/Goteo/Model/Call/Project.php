@@ -77,6 +77,7 @@ namespace Goteo\Model\Call {
                             IF(project.passed IS NULL, 1, 2) as round,
                             user.id as user_id,
                             user.name as user_name,
+                            user.gender as user_gender,
                             project_conf.noinvest as noinvest,
                             project_conf.one_round as one_round,
                             project_conf.days_round1 as days_round1,
@@ -96,23 +97,23 @@ namespace Goteo\Model\Call {
 
                 // echo \sqldbg($sql, $values);
                 $query = static::query($sql, $values);
-                $items = $query->fetchAll(\PDO::FETCH_CLASS, '\Goteo\Model\Project');
 
-                foreach ($items as $item) {
+                foreach ($query->fetchAll(\PDO::FETCH_CLASS, '\Goteo\Model\Project') as $proj) {
+                    $project=\Goteo\Model\Project::getWidget($proj);
                     // cuanto han recaudado
                     // de los usuarios
-                    if (!isset($item->amount_users)) {
-                        $item->amount_users = Model\Invest::invested($item->id, 'users', $call);
-                    }
-                    // de la convocatoria
-                    if (!isset($item->amount_call)) {
-                        $item->amount_call = Model\Invest::invested($item->id, 'call', $call);
+                    if (!isset($project->amount_users)) {
+                        $project->amount_users = Model\Invest::invested($proj->id, 'users', $call);
                     }
 
-                    $array[$item->id] = $item;
+                    if (!isset($project->amount_call)) {
+                        $project->amount_call = Model\Invest::invested($proj->id, 'call', $call);
+                    }
+                    $projects[] = $project;
                 }
 
-                return $array;
+                return $projects;
+
             } catch(\PDOException $e) {
 				throw new \Goteo\Core\Exception($e->getMessage());
             }
@@ -479,6 +480,13 @@ namespace Goteo\Model\Call {
                     return $call;
                 }
 
+                // if unlimited and the project has reached the optimum not match
+                if ($call->conf == 'unlimited' && $project->invested >= $project->maxcost) {
+                    $call->dropable = false;
+                    $call->maxproj = 0;
+                    return $call;
+                }
+
                 // si el proyecto no está en campaña ni de coña puede obtener riego
                 if ($project->status != 3) {
                     $call->dropable = false;
@@ -601,8 +609,10 @@ namespace Goteo\Model\Call {
             // que no supere el máximo por proyecto
             $maxdrop = min($maxdrop, $call->maxproj);
 
-            // y no supere lo que puede llegar a conseguir de la convocatoria (máximo original menos lo ya conseguido)
-            $maxdrop = min($maxdrop, ($call->rawmaxproj - $project->amount_call));
+            //if unlimited, not take into account the original max
+            if($call->conf != 'unlimited')
+                // y no supere lo que puede llegar a conseguir de la convocatoria (máximo original menos lo ya conseguido)
+                $maxdrop = min($maxdrop, ($call->rawmaxproj - $project->amount_call));
 
             // que no supere lo que le queda por repartir a la convocatoria
             $maxdrop = min($maxdrop, $call->rest);
@@ -724,6 +734,7 @@ namespace Goteo\Model\Call {
                 INNER JOIN project
                     ON call_project.project = project.id
                     AND (project.amount >= project.mincost)
+                    AND (project.amount>0)
                 WHERE   call.id = :call
                 ";
 
@@ -786,6 +797,45 @@ namespace Goteo\Model\Call {
 
             return true;
         }
+
+        /* Project gender stats */
+
+        public static function genderStats($projects)
+        {
+            $tot_male = 0;
+            $tot_female = 0;
+            $tot_gender= 0;
+
+            foreach($projects as $project)
+            {
+                if($project->user->gender=="M")
+                {
+                    $tot_male++;
+                    $tot_gender++;
+                }
+                elseif($project->user->gender=="F")
+                {
+                    $tot_female++;
+                    $tot_gender++;
+                }
+            }
+
+            if($tot_gender)
+            {
+                $percent_male=round(($tot_male/$tot_gender)*100);
+                $percent_female=round(($tot_female/$tot_gender)*100);
+            }
+
+            else
+            {
+                $percent_male=0;
+                $percent_female=0;
+            }
+
+            return ['percent_male' => $percent_male, 'percent_female' => $percent_female ];
+
+        }
+
 
     }
 

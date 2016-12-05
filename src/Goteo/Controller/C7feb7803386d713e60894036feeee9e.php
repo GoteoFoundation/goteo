@@ -148,6 +148,12 @@ namespace Goteo\Controller {
             if (!in_array('olivier', array_keys($project_obj->getConsultants()))) {
                 $project_obj->consultants['olivier'] = 'Olivier Schulbaum';
             }
+
+            //Añadir siempre a Manuela.
+            if (!in_array('lamanuf', array_keys($project_obj->getConsultants()))) {
+                $project_obj->consultants['lamanuf'] = 'Manuela Frudà';
+            }
+
             $project_obj->whodidit = $who;
             $project_obj->whorole = $rol;
             UsersSend::toConsultants('rewardfulfilled', $project_obj);

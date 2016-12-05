@@ -22,6 +22,8 @@ $templates = $this->templates;
                 <option value="<?= $tplId ?>" <?php if ( $tplId == $tpl) echo 'selected="selected"' ?>><?= $tplName ?></option>
             <?php endforeach ?>
             </select>
+            <a href="/admin/templates/edit/" onclick="window.location=$(this).attr('href')+$('#template').val();return false;"><?= $this->text('regular-edit') ?></a>
+            <a href="/translate/template/" onclick="window.location=$(this).attr('href')+$('#template').val();return false;"><?= $this->text('regular-translate') ?></a>
         </label>
     </p>
     <p>

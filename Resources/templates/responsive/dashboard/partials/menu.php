@@ -8,7 +8,7 @@
       	</div>
         <div class="navbar-header">
           <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
-            <span class="sr-only">Toggle navigation</span>
+            <span class="sr-only">Menu</span>
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
@@ -61,6 +61,7 @@
                 <li><a href="/dashboard/projects/rewards"><?= $this->text('dashboard-menu-projects-rewards') ?></a></li>
                 <li><a href="/dashboard/projects/messengers"><?= $this->text('dashboard-menu-projects-messegers') ?></a></li>
                 <li><a href="/dashboard/projects/contract"><?= $this->text('dashboard-menu-projects-contract') ?></a></li>
+                <li><a href="/dashboard/projects/analytics"><?= $this->text('dashboard-menu-projects-analytics') ?></a></li>
                 <li><a href="/dashboard/projects/commons"><?= $this->text('dashboard-menu-projects-commons') ?></a></li>
                 <?php $this->stop() ?>
               </ul>

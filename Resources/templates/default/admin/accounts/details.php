@@ -23,13 +23,17 @@ array_walk($rewards, function (&$reward) { $reward = $reward->reward; });
     <table class="table">
     <tr>
         <td><strong><?= $this->text('admin-project') ?></strong></td>
-        <td><?php if($project): ?>
+        <?php if($project): ?>
+            <td>
                 <?php echo $project->name ?> (<?php echo $this->projectStatus[$project->status] ?>)
-            <?php else: ?>
+            </td>
+            <td>[<a href="/admin/accounts/converttopool/<?= $invest->id ?>" onclick="return confirm('<?= $this->ee($this->text('admin-account-convert-to-pool-confirm'), 'js') ?>')"><?= $this->text('admin-account-convert-to-pool') ?></a>]</td>
+        <?php else: ?>
+            <td>
                 <span class="label label-info"><?= $this->text('invest-pool-method') ?></span>
-            <?php endif ?>
-        </td>
-        <td>&nbsp;</td>
+            </td>
+            <td>&nbsp;</td>
+        <?php endif ?>
     </tr>
     <tr>
         <td><strong><?= $this->text('admin-user') ?></strong></td>
@@ -46,7 +50,7 @@ array_walk($rewards, function (&$reward) { $reward = $reward->reward; });
                                                                     'id' => 'change_user_input',
                                                                     'hidden' => true
                                                                     ]) ?>
-                <a href="#change_user" id="change_user" class="button"><?= $this->text('admin-account-change-user') ?></a><br>
+                [<a href="#change_user" id="change_user"><?= $this->text('admin-account-change-user') ?></a>]<br>
             <?php else: ?>
                 &nbsp;
             <?php endif ?>
@@ -83,7 +87,7 @@ array_walk($rewards, function (&$reward) { $reward = $reward->reward; });
             <a href="/admin/accounts/refunduser/<?php echo $invest->id ?>" onclick="return confirm('<?= $this->ee($this->text('admin-account-refund-to-user-confirm'), 'js') ?>')" class="button"><?= $this->text('admin-account-refund-to-user') ?></a><br>
             <?php endif; ?>
 
-            <a href="/admin/accounts/update/<?php echo $invest->id ?>" onclick="return confirm('<?= $this->ee($this->text('admin-account-modify-status-confirm'), 'js') ?>')" class="button"><?= $this->text('admin-account-modify-status') ?></a>
+            [<a href="/admin/accounts/update/<?php echo $invest->id ?>" onclick="return confirm('<?= $this->ee($this->text('admin-account-modify-status-confirm'), 'js') ?>')"><?= $this->text('admin-account-modify-status') ?></a>]
         </td>
     </tr>
 
@@ -101,7 +105,7 @@ array_walk($rewards, function (&$reward) { $reward = $reward->reward; });
         <td>&nbsp;</td>
     </tr>
 
-    <?php if(!empty($invest->project)): ?>
+    <?php if($project): ?>
     <tr>
         <td><?= $this->text('admin-account-donation') ?>:</td>
         <td>
@@ -114,7 +118,7 @@ array_walk($rewards, function (&$reward) { $reward = $reward->reward; });
             }
             ?>
         </td>
-        <td><a href="/admin/accounts/switchresign/<?php echo $invest->id ?>" onclick="return confirm('<?= $this->ee($this->text('admin-account-switch-donation-confirm'), 'js') ?>')" class="button"><?= $this->text('admin-account-switch-donation') ?></a></td>
+        <td>[<a href="/admin/accounts/switchresign/<?php echo $invest->id ?>" onclick="return confirm('<?= $this->ee($this->text('admin-account-switch-donation-confirm'), 'js') ?>')"><?= $this->text('admin-account-switch-donation') ?></a>]</td>
     </tr>
     <?php endif ?>
 
@@ -123,8 +127,12 @@ array_walk($rewards, function (&$reward) { $reward = $reward->reward; });
         <td>
             <?= ($invest->pool) ?  $this->text('admin-YES') : $this->text('admin-NO')  ?>
         </td>
-        <td><?php if(!$invest->pool || !$invest->isOnPool()): ?>
-                <a href="/admin/accounts/switchpool/<?php echo $invest->id ?>" onclick="return confirm('<?= $this->ee($this->text('admin-account-switch-pool-confirm'), 'js') ?>')" class="button"><?= $this->text('admin-account-switch-pool') ?></a>
+        <td><?php if(
+                    (!$invest->pool || !$invest->isOnPool())
+                    &&
+                    ($project && $project->status == \Goteo\Model\Project::STATUS_IN_CAMPAIGN)
+                    ): ?>
+                [<a href="/admin/accounts/switchpool/<?php echo $invest->id ?>" onclick="return confirm('<?= $this->ee($this->text('admin-account-switch-pool-confirm'), 'js') ?>')"><?= $this->text('admin-account-switch-pool') ?></a>]
             <?php endif ?>
         </td>
     </tr>
@@ -154,14 +162,18 @@ array_walk($rewards, function (&$reward) { $reward = $reward->reward; });
                 }
 
                 if (!empty($invest->payment)) {
-                    echo "<br>\nCargo: ".$invest->payment . '   ';
+                    echo "<br>\nPayment: ".$invest->payment . '   ';
+                }
+
+                if (!empty($invest->transaction)) {
+                    echo "<br>\nTransaction: ".$invest->transaction . '   ';
                 }
             ?>
         </td>
         <td>&nbsp;</td>
     </tr>
 
-    <?php if (!$invest->resign) : ?>
+    <?php if (!$invest->resign && $project) : ?>
     <tr>
         <td><?= $this->text('admin-account-rewards') ?>:</td>
         <td>

@@ -1,5 +1,10 @@
 {
-
+    "repositories": [
+        {
+            "type": "vcs",
+            "url": "https://github.com/GoteoFoundation/omnipay-paypal"
+        }
+    ],
     "require": {
 
         "foil/foil": "~0.6",
@@ -19,7 +24,7 @@
         "mibe/feedwriter": "~1.0",
 
 
-        "lusitanian/oauth": "~0.3",
+        "lusitanian/oauth": "^0.8.9",
 
 
         "iignatov/lightopenid": "~1.0",
@@ -51,7 +56,6 @@
         "symfony/console": "^2.7",
         "symfony/translation": "^2.7",
         "symfony/finder": "^2.7",
-        "omnipay/omnipay": "^2.3",
         "monolog/monolog": "^1.17",
         "symfony/dom-crawler": "^2.7",
         "symfony/css-selector": "^2.7",
@@ -61,7 +65,10 @@
         "symfony/process": "^2.7",
         "bramus/monolog-colored-line-formatter": "~2.0",
         "setasign/fpdf": "1.8",
-        "rych/phpass": "3.0.*@beta"
+        "rych/phpass": "3.0.*@beta",
+        "erusev/parsedown": "^1.6",
+        "omnipay/omnipay": "^2.3",
+        "omnipay/paypal": "dev-master"
 
     },
 

@@ -7,6 +7,7 @@
 <script src="<?php echo SRC_URL ?>/assets/vendor/pronto/jquery.fs.pronto.min.js"></script>
 
 <script src="<?php echo SRC_URL ?>/assets/vendor/d3/d3.v3.min.js"></script>
+<script src="<?php echo SRC_URL ?>/assets/vendor/clipboard/clipboard.min.js"></script>
 
 <!--script src="<?php echo SRC_URL ?>/assets/js/docs.min.js"></script-->
 <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
@@ -39,6 +40,3 @@
 <!-- geolocation -->
 <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?v=3.exp&amp;libraries=places"></script>
 <script type="text/javascript" src="<?php echo SRC_URL ?>/assets/js/geolocation.js"></script>
-
-<?= $this->insert('partials/footer/analytics') ?>
-

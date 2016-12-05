@@ -44,7 +44,7 @@ class TranslatesSubController extends AbstractSubController {
      */
     static public function isAllowed(\Goteo\Model\User $user, $node) {
         // Only central node and superadmins allowed here
-        if( !$user->hasRoleInNode($node, ['admin', 'superadmin', 'root']) ) return false;
+        if( !$user->hasRoleInNode($node, ['superadmin', 'root']) ) return false;
         return parent::isAllowed($user, $node);
     }
 
@@ -243,7 +243,7 @@ class TranslatesSubController extends AbstractSubController {
                     $subject = str_replace('%PROJECTNAME%', $project->name, $template->title);
                     $search  = array('%OWNERNAME%', '%PROJECTNAME%', '%SITEURL%');
                     $replace = array($project->user->name, $project->name, SITE_URL);
-                    $content = \str_replace($search, $replace, $template->text);
+                    $content = \str_replace($search, $replace, $template->parseText());
                     // iniciamos mail
                     $mailHandler = new Mail();
                     $mailHandler->lang = $comlang;

@@ -135,26 +135,18 @@ if (!$project->draft || $project->call) {
     );
 
     $anchor_video = array(
-            'type' => 'html',
-            'html' => '<a name="video"></a>'
+        'type'  => 'hidden',
+        'class' => 'inline'
+    );
+    $video_field=array(
+        'type'  => 'hidden',
+        'class' => 'inline',
+        'value'     => (string) $project->video
     );
 
-    $video_field= array(
-            'type'      => 'textbox',
-            'required'  => false,
-            'title'     => Text::get('overview-field-video'),
-            'hint'      => Text::get('tooltip-project-video'),
-            'errors'    => !empty($errors['video']) ? array($errors['video']) : array(),
-            'ok'        => !empty($okeys['video']) ? array($okeys['video']) : array(),
-            'value'     => (string) $project->video
-    );
-
-    $video_upload= array(
-            'name' => "upload",
-            'type'  => 'submit',
-            'label' => Text::get('form-upload-button'),
-            'class' => 'inline media-upload',
-            'onclick' => "document.getElementById('proj-superform').action += '#video';"
+    $video_upload=array(
+        'type'  => 'hidden',
+        'class' => 'inline'
     );
 
     $title_description_group=Text::get('overview-extra-fields');
@@ -374,7 +366,7 @@ $superform = array(
 
         'video-upload' => $video_upload,
 
-        'video-preview' => $video,
+        //'video-preview' => $video,
 
 
         // fin video motivacion
@@ -419,7 +411,7 @@ $superform = array(
             'ok'        => !empty($okeys['scope']) ? array($okeys['scope']) : array(),
             'value'     => $project->scope
         ),
-         
+
 
         'footer' => array(
             'type'      => 'group',
@@ -454,7 +446,7 @@ $superform = array(
 foreach ($superform['elements'] as $id => &$element) {
 
     if (!empty($vars['errors'][$vars['step']][$id])) {
-        $element['errors'] = arrray();
+        $element['errors'] = array();
     }
 
 }

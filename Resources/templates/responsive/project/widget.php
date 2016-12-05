@@ -69,20 +69,56 @@ elseif (!empty($status)) {
     $text=strtolower($this->text($text));
     $days_left=date('d/m/Y', strtotime($date));
 }
+
 ?>
 <div class="project-widget">
-    <a href="/project/<?= $this->project->id ?>">
-        <img class="img-responsive img-project" src="<?= $this->project->image->getLink(600, 330, true); ?>">
+    <?php if(!empty($this->project->image)): ?>
+    <a class="img-link" href="/project/<?= $this->project->id ?>">
+        <img class="img-responsive img-project" src="<?= $this->project->image->getLink(600, 250, true); ?>">
+        <?php if($this->project->called): ?>
+        <div class="call-mark">
+            <img class="img-responsive" src="<?= '/assets/img/project/drop.svg' ?>" >
+        </div>
+        <?php endif; ?>
     </a>
-    <div class="content">
+    <?php endif; ?>
+    <div class="content <?= $project->called ? 'called': '' ?>  ">
         <div class="title"><a href="/project/<?= $this->project->id ?>"><?= $this->text_truncate($this->project->name, 80); ?></a></div>
         <div class="author">
             <a href="/user/profile/<?= $this->project->user->id?>" style="color:#20B3B2 !important" target="_blank"><?= $this->text('regular-by').' '.$this->project->user->name ?></a>
         </div>
         <div class="description">
-            <?= $this->text_truncate($this->project->description, 150) ?>
+            <?= $this->text_truncate($this->project->description, 140) ?>
         </div>
-        <ul class="amounts list-unstyled text-center">
+
+        <?php if($project->called): ?>
+        <?php //amout depending on the call configurating
+            if (!empty($project->called->rawmaxproj))
+                $call_amount_rest=$project->called->rawmaxproj;
+            elseif(!empty($project->called->maxproj))
+                $call_amount_rest=$project->called->maxproj;
+            else
+                $call_amount_rest=$project->called->rest;
+
+            $project_drop_rest=$call_amount_rest-$project->amount_call;
+        ?>
+        <div class="call-amount">
+
+            <?php if($project->status==3&&$project->round==1): ?>
+            <div>
+                <?= $this->text('call-project-widget-remain', amount_format($project_drop_rest)) ?>
+            </div>
+            <?php endif; ?>
+
+            <div>
+                <?= $this->text('call-project-got_explain', amount_format($project->amount_call)) ?>
+            </div>
+
+        </div>
+        <?php endif; ?>
+
+    </div>
+    <ul class="amounts list-unstyled text-center">
             <li class="col-xs-4">
                 <div class="amount"><?= amount_format($this->project->invested) ?></div>
                 <div class="data-label"><?= $this->text('horizontal-project-reached') ?></div>
@@ -95,7 +131,6 @@ elseif (!empty($status)) {
                 <div class="amount"><?= $days_left ?></div>
                 <div class="data-label"><?= $text ?></div>
             </li>
-        </ul>
-    </div>
+    </ul>
 </div>
 

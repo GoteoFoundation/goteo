@@ -251,13 +251,16 @@ class Invest extends \Goteo\Core\Model {
         if (!empty($filters['procStatus'])) {
             switch ($filters['procStatus']) {
                 case 'first': // en primera ronda
-                    $sqlFilter[] = "project.status = 3 AND (project.passed IS NULL OR project.passed = '0000-00-00' )";
+                    $sqlFilter[] = "project.status = " . Project::STATUS_IN_CAMPAIGN . " AND (project.passed IS NULL OR project.passed = '0000-00-00' )";
                     break;
                 case 'second': // en segunda ronda
-                    $sqlFilter[] = "project.status = 3 AND (project.passed IS NOT NULL AND project.passed != '0000-00-00' )";
+                    $sqlFilter[] = "project.status = " . Project::STATUS_IN_CAMPAIGN . " AND (project.passed IS NOT NULL AND project.passed != '0000-00-00' )";
                     break;
                 case 'completed': // financiados
-                    $sqlFilter[] = "project.status = 4";
+                    $sqlFilter[] = "project.status IN (" . Project::STATUS_FUNDED . ',' . Project::STATUS_FULFILLED . ")";
+                    break;
+                case 'archived': // no financiados
+                    $sqlFilter[] = "project.status = " .  Project::STATUS_UNFUNDED;
                     break;
             }
         }
@@ -1318,6 +1321,7 @@ class Invest extends \Goteo\Core\Model {
 
     /*
      * cancels/refunds an investion
+     * Transfer the Invest to the pool if choosed
      */
     public function cancel ($status = false, &$errors = []) {
 

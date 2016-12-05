@@ -12,6 +12,7 @@ namespace Goteo\Model\Project;
 
 use Goteo\Application\Exception\ModelNotFoundException;
 use Goteo\Model\Project;
+use Goteo\Model\Invest;
 use Goteo\Model\Icon;
 use Goteo\Model\License;
 use Goteo\Application\Lang;
@@ -373,6 +374,23 @@ class Reward extends \Goteo\Core\Model {
         return $this->projectObject;
     }
 
+
+    /**
+     * Returns true if reward (Object or Id) has been choosen by the invest
+     * @param  [type]  $reward [description]
+     * @return boolean         [description]
+     */
+    public function inInvest($invest) {
+        if(!$invest instanceOf Invest) {
+            return false;
+        }
+        if($rewards = $invest->getRewards()) {
+            foreach($rewards as $r) {
+                if($r->id == $this->id) return true;
+            }
+        }
+        return false;
+    }
     public static function icons($type = 'social') {
         $list = array();
 

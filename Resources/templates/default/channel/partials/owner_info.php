@@ -11,7 +11,7 @@ $channel=$this->channel;
     <div class="info">
 
         <!-- Nombre y texto presentación -->
-        <h2 class="channel-name"><?= $this->text('regular-channel').' '.$channel->name ?></h2>
+        <h2 class="channel-name"><?= $channel->name ?></h2>
         <p><?= $channel->description; ?></p>
 
         <!-- 2 webs -->

@@ -36,9 +36,9 @@ $status = $this->status;
                 <td><?php echo ($promo->active) ? '<strong>'.$promo->name.'</strong>' : $promo->name; ?></td>
                 <td><?php echo $status[$promo->status]; ?></td>
                 <td><?php echo $promo->order; ?></td>
-                <td><a href="/admin/promote/up/<?php echo $promo->id; ?>">[&uarr;]</a></td>
-                <td><a href="/admin/promote/down/<?php echo $promo->id; ?>">[&darr;]</a></td>
-                <td><a href="/admin/promote/edit/<?php echo $promo->id; ?>">[Editar]</a></td>
+                <td><a  href="/admin/promote/up/<?php echo $promo->id; ?>">[&uarr;]</a></td>
+                <td><a  href="/admin/promote/down/<?php echo $promo->id; ?>">[&darr;]</a></td>
+                <td><a target="_blank" href="/admin/promote/edit/<?php echo $promo->id; ?>">[Editar]</a></td>
                 <td>
                 <?php if ($promo->active) : ?>
                     <a href="/admin/promote/active/<?php echo $promo->id; ?>/off">[Ocultar]</a>
@@ -47,7 +47,7 @@ $status = $this->status;
                 <?php endif ?>
                 </td>
                 <?php if ($this->translator) : ?>
-                    <td><a href="/translate/promote/edit/<?php echo $promo->id; ?>" >[Traducir]</a></td>
+                    <td><a target="_blank" href="/translate/promote/edit/<?php echo $promo->id; ?>" >[Traducir]</a></td>
                 <?php endif ?>
                 <td><a href="/admin/promote/remove/<?php echo $promo->id; ?>" onclick="return confirm('Seguro que deseas eliminar este registro?');">[Quitar]</a></td>
             </tr>

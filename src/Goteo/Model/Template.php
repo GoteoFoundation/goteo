@@ -87,6 +87,12 @@ class Template extends \Goteo\Core\Model {
     const DONOR_INVEST_THANKS = 64;    // Agradecimiento aporte
     const POOL_RECHARGUE_THANKS = 65;    // Agradecimiento aporte
     const FAVOURITE_PROJECT_REMEMBER = 66;    // Recordatorio favorito
+    const CONTACT_AUTO_REPLY_ACCOUNT_PROBLEMS = 67;    // Acount problems
+    const CONTACT_AUTO_REPLY_NEW_PROJECT = 68;    // New project chance
+    const CONTACT_AUTO_REPLY_PROJECT_FORM = 69;    // Queries about the project form
+    const CONTACT_AUTO_REPLY_DEV = 70;    // Dev
+    const CONTACT_AUTO_REPLY_RELIEF = 71;    // Relief
+    const COMMUNICATION = 72;    // Multi-purpose communication
 
     public
         $id,
@@ -95,6 +101,7 @@ class Template extends \Goteo\Core\Model {
         $purpose,
         $title,
         $group,
+        $type,
         $text;
 
 
@@ -113,6 +120,7 @@ class Template extends \Goteo\Core\Model {
                         template.group as `group`,
                         template_lang.lang as `lang`,
                         template.purpose as purpose,
+                        template.type as type,
                         IFNULL(template_lang.title, template.title) as title,
                         IFNULL(template_lang.text, template.text) as text
                  FROM template
@@ -163,6 +171,7 @@ class Template extends \Goteo\Core\Model {
                         template.id as id,
                         template.name as name,
                         template.purpose as purpose,
+                        template.type as type,
                         IFNULL(template_lang.title, template.title) as title,
                         IFNULL(template_lang.text, template.text) as text
                     FROM template
@@ -192,7 +201,8 @@ class Template extends \Goteo\Core\Model {
         try {
             $sql = "SELECT
                         template.id as id,
-                        template.name as name
+                        template.name as name,
+                        template.type as type
                     FROM template
                     ORDER BY name ASC
                     ";
@@ -206,6 +216,19 @@ class Template extends \Goteo\Core\Model {
             throw new ModelException('FATAL ERROR SQL: ' . $e->getMessage() . "<br />$sql<br /><pre>" . print_r($values, true) . "</pre>");
         }
 	}
+
+    /**
+     * creates the html if is markdown
+     *
+     * @return string HTML content
+     */
+    public function parseText() {
+        if($this->type === 'md') {
+            $pd = new \Parsedown();
+            return $pd->text($this->text);
+        }
+        return $this->text;
+    }
 
     public function validate(&$errors = array()) {
 
@@ -226,6 +249,11 @@ class Template extends \Goteo\Core\Model {
             $allok = false;
         }
 
+        if (!in_array($this->type, ['plain', 'html', 'md'])) {
+            $errors[] = 'Non valid text type';
+            $allok = false;
+        }
+
         return $allok;
     }
 
@@ -235,7 +263,7 @@ class Template extends \Goteo\Core\Model {
 	public function save(&$errors = array()) {
         if($this->validate($errors)) {
 			try {
-                $this->dbInsertUpdate(['name', 'group', 'purpose', 'title', 'text']);
+                $this->dbInsertUpdate(['name', 'group', 'purpose', 'title', 'text', 'type']);
                 return true;
     		} catch(\PDOException $e) {
                 $errors[] = 'Template saving error! ' . $e->getMessage();

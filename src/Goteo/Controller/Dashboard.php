@@ -18,7 +18,7 @@ namespace Goteo\Controller {
         Goteo\Application\Lang,
         Goteo\Application\Message,
         Goteo\Library\Feed,
-        Goteo\Library\Page,
+        Goteo\Model\Page,
         Goteo\Library\Text;
 
     class Dashboard extends \Goteo\Core\Controller {
@@ -50,7 +50,7 @@ namespace Goteo\Controller {
             // portada
             if ($option == 'summary') {
                 $page = Page::get('dashboard');
-                $viewData['message'] = \str_replace('%USER_NAME%', Session::getUser()->name, $page->content);
+                $viewData['message'] = \str_replace('%USER_NAME%', Session::getUser()->name, $page->parseContent());
                 $viewData['lists']   = Dashboard\Activity::projList($user);
                 $viewData['status']  = Model\Project::status();
             }
@@ -372,7 +372,8 @@ namespace Goteo\Controller {
                                         Model\Invest::STATUS_PENDING,
                                         Model\Invest::STATUS_CHARGED,
                                         Model\Invest::STATUS_PAID,
-                                        Model\Invest::STATUS_RETURNED]
+                                        Model\Invest::STATUS_RETURNED,
+                                        Model\Invest::STATUS_TO_POOL]
                                         ];
                     $filter = $_GET['filter'];
                     if(empty($filter)) $filter = 'amount';
@@ -600,6 +601,19 @@ namespace Goteo\Controller {
 
             $errors = array();
 
+            // Check if a translation must be removed
+            if( $_GET['remove_translation'] === $_SESSION['translate_lang'] &&
+                $_SESSION['translate_project'] instanceOf Model\Project ) {
+                if(Model\Project::isTranslated($_SESSION['translate_project']->id, $_GET['remove_translation'])) {
+                    if($_SESSION['translate_project']->removeLang($_GET['remove_translation'])) {
+                        Message::info(Text::get('project-removed-translation-ok'));
+                        throw new Redirection("/dashboard/translates/overview");
+                    }
+                }
+                Message::error(Text::get('project-removed-translation-ko'));
+                throw new Redirection("/dashboard/translates/overview");
+            }
+
             $langs = \Goteo\Application\Lang::listAll('object', false);
 
             if ($action == 'lang' && !empty($_POST['lang'])) {
@@ -639,7 +653,8 @@ namespace Goteo\Controller {
                 'calls' => $calls,
                 'nodes' => $nodes,
                 'errors' => $errors,
-                'success' => $success
+                'success' => $success,
+                'langs_available' => []
             );
 
             // aqui, segun lo que este traduciendo, necesito tener un proyecto de trabajo, una convocatoria o mi perfil personal
@@ -656,6 +671,7 @@ namespace Goteo\Controller {
 
                             // instancia traducción
                             $project = Model\Project::get($proj_id, $_SESSION['translate_lang']);
+                            $viewData['langs_available'] = $project->getLangsAvailable();
 
                         } else {
 
@@ -682,7 +698,7 @@ namespace Goteo\Controller {
                     // quitamos el idioma original del desplegable de idiomas
                     unset($viewData['langs'][$project_original->lang]);
 
-//// Control de traduccion de proyecto
+                    // Control de traduccion de proyecto
                     if ($option == 'updates') {
                         // sus novedades
                         $blog = Model\Blog::get($project->id);
@@ -779,10 +795,11 @@ namespace Goteo\Controller {
                                             $support->saveLang($errors);
 
                                             // actualizar el Mensaje correspondiente, solamente actualizar
-                                            $msg = Model\Message::get($support->thread);
-                                            $msg->message_lang = "{$support->support_lang}: {$support->description_lang}";
-                                            $msg->lang = $_SESSION['translate_lang'];
-                                            $msg->saveLang($errors);
+                                            if($msg = Model\Message::get($support->thread)) {
+                                                $msg->message_lang = "{$support->support_lang}: {$support->description_lang}";
+                                                $msg->lang = $_SESSION['translate_lang'];
+                                                $msg->saveLang($errors);
+                                            }
                                         }
                                     }
                                 }
@@ -930,6 +947,8 @@ namespace Goteo\Controller {
                             case 'overview':
                                 if ($action == 'save') {
                                     $call->name_lang = $_POST['name'];
+                                    $call->description_summary_lang = $_POST['description_summary'];
+                                    $call->description_nav_lang = $_POST['description_nav'];
                                     $call->description_lang = $_POST['description'];
                                     $call->whom_lang = $_POST['whom'];
                                     $call->apply_lang = $_POST['apply'];
@@ -1148,7 +1167,7 @@ namespace Goteo\Controller {
                 'wallet' => array(
                     'label' => Text::get('dashboard-menu-pool'),
                     'options' => array(
-                        'certificate' => Text::get('dashboard-menu-activity-donor')
+                        // 'certificate' => Text::get('dashboard-menu-activity-donor')
                     )
                 ),
                 'profile' => array(
@@ -1170,6 +1189,7 @@ namespace Goteo\Controller {
                         'supports' => Text::get('dashboard-menu-projects-supports'),
                         'rewards' => Text::get('dashboard-menu-projects-rewards'),
                         'messengers' => Text::get('dashboard-menu-projects-messegers'),
+                        'analytics' => Text::get('dashboard-menu-projects-analytics'),
                         'contract' => Text::get('dashboard-menu-projects-contract'),
                         'commons' => Text::get('dashboard-menu-projects-commons')
                     )
@@ -1242,41 +1262,15 @@ namespace Goteo\Controller {
             if ( isset(Session::getUser()->roles['admin']) || isset(Session::getUser()->roles['translator']) )
                 $menu['activity']['options']['translate'] = Text::get('dashboard-menu-translate_board');
 
-            // Hack to remove some private routes
-            $routes = [];
+            // Hack to add some private routes
             foreach(App::getRoutes()->all() as $i => $route) {
-                if(strpos($route->getPath(), '/dashboard') === 0) $routes[$i] = $route->getPath();
-            }
-            // print_r($routes);
-
-            $menu2 = [];
-            foreach($menu as $k => $sub) {
-                foreach($routes as $i => $path) {
-                    $menu2[$k] = $sub;
-                    if(strpos($path, "/dashboard/$k") === 0) {
-                        $menu2[$k]['options'] = [];
-                        if(isset($sub['options'])) {
-                            foreach($sub['options'] as $sk => $ssub) {
-                                foreach($routes as $si => $spath) {
-                                    // echo "/dashboard/$k/$sk $spath\n";
-                                    if(strpos($spath, "/dashboard/$k/$sk") === 0) {
-                                        echo "/dashboard/$k/$sk $spath\n";
-                                        $menu2[$k][$sk] = $ssub;
-                                        break;
-                                    }
-                                }
-                            }
-                        }
-                        break;
-                    }
+                if(strpos($route->getPath(), '/dashboard/wallet/certificate') === 0) {
+                    $menu['wallet']['options']['certificate'] = Text::get('dashboard-menu-activity-donor');
                 }
             }
-            // print_r($menu2);print_r($menu);
-            // HACK, for the legacy dashboar donor certificate
-            if(!isset($menu2['wallet']['options']['certificate'])) {
-                unset($menu2['activity']['options']['donor']);
-            }
-            return $menu2;
+
+            return $menu;
+
         }
 
     }

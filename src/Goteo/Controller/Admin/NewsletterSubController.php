@@ -180,11 +180,11 @@ class NewsletterSubController extends AbstractSubController {
                 // add subscribers from sql
                 if ($this->getPost('test')) {
                     $sql = Newsletter::getTestersSQL($comlangs, $sender->id . ',');
-                } elseif ($template == Template::NEWSLETTER || $template == Template::TEST) {
-                    $sql = Newsletter::getReceiversSQL($comlangs, $sender->id . ',');
                 } elseif ($template == Template::DONORS_WARNING || $template == Template::DONORS_REMINDER) {
                     // los cofinanciadores de este año
                     $sql = Newsletter::getDonorsSQL($comlangs, $sender->id . ',');
+                } else {
+                    $sql = Newsletter::getReceiversSQL($comlangs, $sender->id . ',');
                 }
                 // die($sql);
                 // add subscribers
@@ -210,6 +210,7 @@ class NewsletterSubController extends AbstractSubController {
             Template::DONORS_WARNING => 'Aviso a los donantes',
             Template::DONORS_REMINDER => 'Recordatorio a los donantes',
             Template::NEWSLETTER => 'Newsletter',
+            Template::COMMUNICATION => 'Comunicación general',
             Template::TEST => 'Testeo'
         );
 

@@ -484,7 +484,9 @@ div.owner-info div.avatar {
     float: left;
     margin: 0 25px;
     width: 20%;
-    margin-left: 60px;
+    display: table-cell;
+    vertical-align: middle;
+    padding: 30px;
 }
 
 /* enlaces sociales */
@@ -550,7 +552,8 @@ div.owner-info div.info {
     overflow: visible;
     font-size: 16px;
     color: #FFF;
-    width: 68%;
+    width: 63%;
+    display: table-cell;
 
 }
 
@@ -599,6 +602,7 @@ div.owner-info div.info ul li a {
 div.sub-header-channel{
     height: auto !important;
 }
+
 
 h2.channel-name{
     margin: 0px;

@@ -16,6 +16,8 @@ use Goteo\Application\Session;
 use Goteo\Application\View;
 use Goteo\Model\Project;
 use Goteo\Model\User\Interest;
+use Goteo\Application\Message;
+use Goteo\Library\Text;
 use Goteo\Library\Listing;
 
 class DashboardController extends \Goteo\Core\Controller {
@@ -53,7 +55,7 @@ class DashboardController extends \Goteo\Core\Controller {
 
         if ($request->isMethod('post')) {
             $interest = $request->request->get('id');
-            $value= $request->request->get('value');   
+            $value= $request->request->get('value');
         }
 
         $user = Session::getUser();
@@ -83,6 +85,36 @@ class DashboardController extends \Goteo\Core\Controller {
                     'return' => 'return'
                 ]
         );
+    }
+
+     /**
+     * Analytics section
+     */
+    public function analyticsAction(Request $request)
+    {
+
+        $user = Session::getUser();
+
+        // Verify user projects and work project
+        list($project, $projects) = Dashboard\Projects::verifyProject($user, $action, $option);
+
+        if($request->isMethod('post')) {
+            $project->analytics_id = $request->request->get('analytics_id');
+            $project->facebook_pixel= $request->request->get('facebook_pixel');
+
+            if ($project->save($errors))
+                Message::info(Text::get('dashboard-project-analytics-ok'));
+            else
+                Message::error(Text::get('dashboard-project-analytics-fail'));
+
+        }
+
+        return $this->viewResponse('dashboard/analytics',
+                                ['project' => $project,
+                                'projects' => $projects,
+                                'section' => 'analytics' ]
+                );
+
     }
 
 }

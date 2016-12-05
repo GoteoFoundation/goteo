@@ -2753,6 +2753,7 @@ namespace Goteo\Model {
                 // ni edicion ni revision ni cancelados, estan disponibles para verse publicamente
                 $status[] = self::STATUS_FUNDED;
                 $status[] = self::STATUS_FULFILLED;
+                $status[] = self::STATUS_UNFUNDED;
                 $order = 'name ASC';
             }
             elseif($filter['type'] === 'archive') {
@@ -3448,7 +3449,8 @@ namespace Goteo\Model {
             return array(
                 'first' => 'En primera ronda',
                 'second' => 'En segunda ronda',
-                'completed' => 'Campaña completada'
+                'completed' => 'Campaña completada',
+                'archived' => 'Archivados'
                 );
         }
 

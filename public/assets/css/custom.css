@@ -8,21 +8,39 @@
   background-color: #32BDB8;
  }
 
- .navbar-default .navbar-nav > li > a{
+ .main-color-background.navbar-default .navbar-nav > li > a{
  	color:#FFF !important;
  }
 
- .navbar-default{
+ .main-color-background.navbar-default{
  	border:none;
  }
 
- .navbar{
+ .main-color-background.navbar{
  	border-radius: 0px;
  }
 
- .navbar-default .navbar-nav > .open > a{
+ .main-color-background.navbar-default .navbar-nav > .open > a{
  	color:#4D4D4D !important;
  }
+
+ .main-color-background .navbar-toggle.general{
+    padding: 5px !important;
+    border:none !important;
+
+ }
+
+ .main-color-background .navbar-toggle.general:hover, .navbar-toggle.general:focus{
+    background-color: transparent !important;
+ }
+
+ .main-color-background .navbar-toggle.general .icon-bar{
+    background-color: #FFF !important;
+ }
+
+div.tooltip-inner {
+    max-width: 100% !important;
+}
 
  a.expand-link{
  	height:100%;
@@ -92,6 +110,12 @@
 
  /* Custom buttons */
 
+.btn-success{
+    background-color: #25A083 !important;
+    border-color: #25A083 !important;
+}
+
+
 button.pink{
 	background-color: #CD5EB3;
 	font-size:1.2em;
@@ -144,10 +168,10 @@ button.pink:hover, button.custom-green:hover{
  	margin-top:15px;
  }
 
- .navbar-brand{
+ .main-color-background .navbar-brand{
  	padding: 0 !important;
  }
- .navbar-brand img.logo{
+ .main-color-background .navbar-brand img.logo{
  	height: 45px;
  	margin-left: 10px;
  }
@@ -429,6 +453,10 @@ label.reward-choosen{
 	display: none;
 }
 
+.display-none-important{
+    display: none !important;
+}
+
 #amount-container{
 	background-color:#FFF;
 	margin-top: 10px;
@@ -589,6 +617,11 @@ div.jumbotron .project-tags:before {
 }
 
 
+@media(min-width: 992px){
+    .clear-both-md{
+        clear:both !important;
+    }
+}
 
 @media(min-width:768px){
 
@@ -717,7 +750,7 @@ div.jumbotron .project-tags:before {
 
 div.jumbotron.channels
 {
-	margin-top:20px; 
+	margin-top:20px;
 	text-align:center;
 }
 
@@ -732,7 +765,7 @@ div.row.channels{
 }
 
 div.channel{
-	
+
 }
 
 div.channel .name{
@@ -1204,6 +1237,21 @@ div.user-pool-info div.pool-conditions a{
 
 /*Project widget */
 
+.project-widget a.img-link{
+	position: relative;
+	display: block;
+}
+
+.project-widget a.img-link div.call-mark{
+	width: 11%;
+	position: absolute;
+	top: 0;
+	left: 4%;
+	padding: 12px 4px 9px 4px;
+	background-color: #FFF;
+}
+
+
 .project-widget .img-project
 {
 	border-top-left-radius: 5px;
@@ -1213,22 +1261,27 @@ div.user-pool-info div.pool-conditions a{
 .project-widget .content
 {
 	padding: 5%;
-	border:1px solid #D9D9DE; 
-	border-top:0px; 
+	border:1px solid #D9D9DE;
+	border-top:0px;
 	color: #B3B2B2;
 	border-bottom-left-radius: 5px;
 	border-bottom-right-radius: 5px;
 	height: 240px;
 	overflow: hidden;
 	position: relative;
-	padding-bottom: 30px;
+	padding-bottom: 20px;
+	background-color: #FFF;
+}
+
+.project-widget .content.called{
+	height: 270px;
 }
 
 .project-widget .title a
 {
-	font-size:15px; 
-	color:#58595B; 
-	font-weight:bold; 
+	font-size:18px;
+	color:#58595B;
+	font-weight:bold;
 	margin-top: 10px;
 }
 
@@ -1239,31 +1292,48 @@ div.user-pool-info div.pool-conditions a{
 
 .project-widget .author
 {
-	font-size: 10px;
-	margin-top: 7px;
+	font-size: 12px;
 }
 
 .project-widget .description{
-	font-size: 12px;
+	font-size: 13px;
 	max-height: 100px;
 	overflow: hidden;
-	margin-top: 20px;
+	margin-top: 10px;
+}
 
+.project-widget div.call-amount{
+	font-size: 13px;
+	color:#58595B;
+	margin-top: 15px;
 }
 
 .project-widget ul.amounts{
 	padding: 0px;
 	margin: 0px;
 	overflow: hidden;
-	bottom:10px;
+	bottom:0px;
 	position: absolute;
 	color: #58595B;
 	font-size: 13px;
-	width: 90%;
+	width: 91.8%;
+	border-top: 1px solid #C5C5C5;
+}
+
+.project-widget ul li{
+	padding: 10px;
+}
+
+.project-widget ul li:not(:last-child){
+	border-right: 1px solid #C5C5C5;
 }
 
 .project-widget ul li .amount{
 	font-weight: bold;
+}
+
+.project-widget ul li .data-label{
+	color:#979797 !important;
 }
 
 #projects-container .interests{
@@ -1297,4 +1367,8 @@ div.user-pool-info div.pool-conditions a{
 		padding-bottom: 8%;
 	}
 
+}
+
+.footable-toggle {
+    cursor: pointer;
 }

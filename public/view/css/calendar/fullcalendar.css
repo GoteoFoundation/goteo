@@ -123,7 +123,7 @@ body .fc { /* extra precedence to overcome jqui */
 
 /* Firefox has an annoying inner border */
 .fc button::-moz-focus-inner { margin: 0; padding: 0; }
-	
+
 .fc-state-default { /* non-theme */
 	border: 1px solid;
 }
@@ -145,7 +145,7 @@ body .fc { /* extra precedence to overcome jqui */
 	top: .05em; /* seems to be a good adjustment across browsers */
 	margin: 0 .1em;
 }
-	
+
 /*
   button states
   borrowed from twitter bootstrap (http://twitter.github.com/bootstrap/)
@@ -350,7 +350,7 @@ previous button's border...
 	border-right: 0 hidden transparent;
 
 	/* no bottom borders on rows */
-	border-bottom: 0 hidden transparent; 
+	border-bottom: 0 hidden transparent;
 }
 
 .fc-row:first-child table {
@@ -603,7 +603,7 @@ a.fc-more:hover {
 .fc .fc-toolbar > * > :first-child { /* extra precedence to override button border margins */
 	margin-left: 0;
 }
-	
+
 /* title text */
 
 .fc-toolbar h2 {
@@ -622,7 +622,7 @@ a.fc-more:hover {
 .fc-toolbar .ui-state-hover {
 	z-index: 2;
 }
-	
+
 .fc-toolbar .fc-state-down {
 	z-index: 3;
 }
@@ -986,32 +986,20 @@ be a descendant of the grid when it is being dragged.
 }
 
 #faq-content .read-more {
-	width:800px; 
-	margin:0 auto; 
+	width:800px;
+	margin:0 auto;
 	display:none
 }
 
 #faq-content .read-more h3{
-	color:#20B2B3; 
-	margin-bottom:5px; 
-	font-weight: bold; 
-	font-size:16px;
-}
-
-#faq-content .read-more h3{
-	color:#20B2B3; 
-	margin-bottom:5px; 
-	font-weight: bold; 
+	color:#20B2B3;
+	margin-bottom:5px;
+	font-weight: bold;
 	font-size:16px;
 }
 
 #faq-content .read-more #event-title{
-	font-weight: bold; 
-	font-size:16px;
-}
-
-#faq-content .read-more #event-title{
-	font-weight: bold; 
+	font-weight: bold;
 	font-size:15px;
 }
 
@@ -1021,32 +1009,31 @@ be a descendant of the grid when it is being dragged.
 }
 
 #faq-content .read-more .extra{
-	border-top:1px solid; 
-	border-bottom:1px dashed; 
-	margin-top: 15px; 
-	margin-bottom:10px; 
-	padding-top:10px; 
-	padding-bottom:10px; 
+	border-top:1px solid;
+	border-bottom:1px dashed;
+	margin-top: 15px;
+	margin-bottom:10px;
+	padding-top:10px;
+	padding-bottom:10px;
 	display:table;
 	font-size:13px;
 	width:800px;
 }
 
-#faq-content .read-more #event-description{ 
-	padding-bottom:15px; 
-	border-bottom:1px solid; 
+#faq-content .read-more #event-description{
+	padding: 10px 0 20px 0 !important;
+	border-bottom:1px solid;
 	margin-bottom:20px;
-	white-space: pre-line;
 	width: 800px;
 	display: table;
 }
 
 .category{
-	margin-top: 5px; 
-	color: #FFF; 
-	width: 9px; 
-	padding-left: 5px; 
-	padding-right: 4px; 
+	margin-top: 5px;
+	color: #FFF;
+	width: 9px;
+	padding-left: 5px;
+	padding-right: 4px;
 	padding-top: 1px;
 }
 
@@ -1054,7 +1041,7 @@ be a descendant of the grid when it is being dragged.
 	background-color: #58595B;
 }
 
-.e{
+.r{
 	background-color: #E11F19;
 }
 
@@ -1064,7 +1051,7 @@ be a descendant of the grid when it is being dragged.
 .c{
 	background-color: #7e3f98;
 }
-.r{
+.e{
 	background-color: #10519b;
 }
  .category-background{
@@ -1088,14 +1075,14 @@ ul.event-category li{
 }
 
 .category-legend{
-	padding:2px 5px; 
-	margin-right:5px; 
+	padding:2px 5px;
+	margin-right:5px;
 	color:#FFF;
 	padding-top: 3px;
 }
 
 .category-info{
-	margin-top: 5px; 
+	margin-top: 5px;
 }
 
 .nodisplay{
@@ -1103,7 +1090,7 @@ ul.event-category li{
 }
 
 .event-hour{
-	float:left;	
+	float:left;
 }
 .event-hour:before {
 
@@ -1130,11 +1117,15 @@ ul.event-category li{
 }
 
 .event-description-img{
-	float: left; 
-	width:200px; 
+	float: left;
+	width:200px;
 	height:150px;
-	margin-right:20px; 
+	margin-right:20px;
 	margin-bottom:5px;
+}
+
+.event-description-img.img-available{
+    height: auto !important;
 }
 
 .other-event{
@@ -1176,4 +1167,58 @@ ul.event-category li{
     margin: 0 auto;
 }
 
+/* Export calendar */
+
+.form-export-events{
+    display: table;
+}
+
+.form-export-events .input-container{
+  float:left;
+  margin:5px;
+}
+
+.form-export-events .button-container{
+    clear: both;
+    font-size: 15px;
+}
+
+#exported-events{
+    border-top: 1px dotted;
+    margin-left: 5px;
+    margin-top: 20px;
+}
+
+#faq-content.export-calendar div.event{
+    clear: both;
+    font-size: 11px;
+    font-family: Arial,Helvetica Neue,Helvetica,sans-serif;
+    margin-top: 25px;
+}
+
+#faq-content.export-calendar div.item{
+    padding: 5px 0;
+}
+
+#faq-content.export-calendar div.item img.export-event-img{
+    max-width: 600px;
+}
+
+
+#faq-content.export-calendar div.description{
+    border-top: 1px solid;
+    padding: 10px 0;
+    margin-top: 10px;
+}
+
+#faq-content.export-calendar div.share-url{
+    border-top: 1px solid;
+    margin-top: 10px;
+    padding-top: 20px;
+    display: none;
+}
+
+#faq-content.export-calendar div.share-url input{
+    width: 400px
+}
 

@@ -232,7 +232,7 @@ class UsersSend extends AbstractCommandController {
 
         // Sustituimos los datos
         $subject = str_replace('%PROJECTNAME%', $project->name, $template->title);
-        $content = \str_replace($search, $replace, $template->text);
+        $content = \str_replace($search, $replace, $template->parseText());
         // iniciamos mail
         $mailHandler = new Mail();
         $mailHandler->lang = $comlang;
@@ -251,7 +251,7 @@ class UsersSend extends AbstractCommandController {
 
         // si es un proyecto de nodo: reply al mail del nodo
         // si es de centra: reply a MAIL_GOTEO
-        $mailHandler->reply = (!empty($project->nodeData->email)) ? $project->nodeData->email : Config::getMail('contact');;
+        $mailHandler->reply = (!empty($project->nodeData->email)) ? $project->nodeData->email : Config::getMail('transport.from');
 
         $mailHandler->subject = $subject;
         $mailHandler->content = $content;
@@ -348,7 +348,7 @@ class UsersSend extends AbstractCommandController {
         $template = Template::get($tpl);
         // Sustituimos los datos
         $subject = str_replace('%PROJECTNAME%', $project->name, $template->title);
-        $pre_content = \str_replace($search, $replace, $template->text);
+        $pre_content = \str_replace($search, $replace, $template->parseText());
 
         foreach ($consultants as $id=>$name) {
             $consultant = Model\User::getMini($id);
@@ -509,7 +509,7 @@ class UsersSend extends AbstractCommandController {
         }
 
         // content
-        $content = \str_replace($search, $replace, $template->text);
+        $content = \str_replace($search, $replace, $template->parseText());
 
         $mailHandler = new Mail();
         $mailHandler->template = $tpl;
@@ -580,7 +580,7 @@ class UsersSend extends AbstractCommandController {
                 $template = Template::get(Template::PROJECT_FAILED_RECEIVERS, $comlang);
                 // Sustituimos los datos
                 $subject = str_replace('%PROJECTNAME%', $project->name, $template->title);
-                $content = \str_replace($search, $replace, $template->text);
+                $content = \str_replace($search, $replace, $template->parseText());
                 // iniciamos mail
                 $mailHandler = new Mail();
                 $mailHandler->lang = $comlang;

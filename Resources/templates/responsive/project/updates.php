@@ -7,7 +7,7 @@
 foreach($this->milestones as $update):
     $num++;
     $identical_date=0;
-    
+
     if($current_date!=$update->date)
     {
         $date=new Datetime($update->date);
@@ -20,7 +20,7 @@ foreach($this->milestones as $update):
 ?>
 
 <div class="row spacer new">
-    <div class="col-sm-3 col-xs-4 date">
+    <div class="col-sm-3 col-xs-4 date" <?= $update->post ? '' : 'id="milestone-'.$update->milestone->id.'"' ?> >
         <?php if(!$identical_date): ?>
             <div class="month">
             <?= $this->text('date-'.$month); ?>
@@ -72,8 +72,8 @@ foreach($this->milestones as $update):
         <?php endif; ?>
     </div>
     <?php else: ?>
-        <div class="col-sm-9 col-xs-8 milestone-content" id="milestone-<?= $update->milestone->id ?>">
-            
+        <div class="col-sm-9 col-xs-8 milestone-content">
+
             <div class="inside">
                 <?php if(!empty($update->milestone->link)): ?>
                     <?php if($update->milestone->link!="invest"): ?>

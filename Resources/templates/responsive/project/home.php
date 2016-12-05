@@ -16,20 +16,20 @@
             <div class="panel panel-default widget">
                 <div class="panel-heading">
                     <h2 class="panel-title grey-title">
-                        <?= $this->text('project-menu-needs') ?>    
+                        <?= $this->text('project-menu-needs') ?>
                     </h2>
                     <div class="row">
                         <div class="chart-costs col-sm-6 col-sm-offset-3">
                         </div>
                     </div>
                     <div class="row">
-                         <div id="reset-chart" class="chart-reset-button text-center col-xs-4 col-xs-offset-4 col-md-2 col-md-offset-5">      
+                         <div id="reset-chart" class="chart-reset-button text-center col-xs-4 col-xs-offset-4 col-md-2 col-md-offset-5">
                             <button class="btn btn-default" type="button" id="reset-button"> <span class="glyphicon glyphicon-repeat"> </span> <?= $this->text('project-chart-costs-reset') ?></button>
                         </div>
                     </div>
                 </div>
                 <a class="accordion-toggle collapsed" data-toggle="collapse" data-target="#collapseOne">
-                    <h2 class="panel-title green-title text-center accordion-title" >        
+                    <h2 class="panel-title green-title text-center accordion-title" >
                         <?= $this->text('project-show-needs') ?>
                         <span class="icon glyphicon glyphicon glyphicon-menu-down" aria-hidden="true"></span>
                     </h2>
@@ -89,16 +89,16 @@
             <a class="accordion-toggle" data-toggle="collapse" data-target="#collapseTwo">
                 <div class="panel-heading standard-padding">
                     <h2 class="panel-title green-title">
-                        <?= $this->text('project-general-information') ?> 
+                        <?= $this->text('project-general-information') ?>
                         <span class="icon glyphicon glyphicon glyphicon-menu-up pull-right" aria-hidden="true"></span>
                     </h2>
                 </div>
             </a>
             <div id="collapseTwo" class="panel-collapse collapse in">
               <div class="panel-body">
-              
+
                 <div class="general-text">
-                    <?= nl2br($project->description) ?>
+                    <?= nl2br($this->text_url_link($project->description)) ?>
                 </div>
 
                 <!-- carousel slider -->
@@ -117,7 +117,7 @@
                     <?php foreach($project->gallery as $key => $image): ?>
                         <div class="item <?= !$key ? 'active' : '' ?>">
                             <img src="<?= $image->imageData->getLink(700, 700) ?>" class="img-responsive">
-                        </div>  
+                        </div>
                     <?php endforeach ?>
                 </div>
 
@@ -130,61 +130,61 @@
                     <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
                     <span class="sr-only">Next</span>
                  </a>
-                
+
                 </div>
 
                 <!-- About -->
 
                 <h2 class="pink-title " >
                     <span class="anchor-mark" id="about" >
-                    <?= $this->text('overview-field-about') ?> 
-                    </span> 
+                    <?= $this->text('overview-field-about') ?>
+                    </span>
                 </h2>
                 <div class="spacer-20 general-text">
-                <?= nl2br($project->about) ?>
+                <?= nl2br($this->text_url_link($project->about)) ?>
                 </div>
 
                 <?php foreach($project->secGallery['about'] as $image): ?>
-                    <img src="<?= $image->imageData->getLink(700, 700) ?>" class="spacer-5 img-responsive">
+                    <img src="<?= $image->imageData->getLink(700, 0) ?>" class="spacer-5 img-responsive">
                 <?php endforeach ?>
 
                 <h2 class="pink-title spacer" >
                     <span class="anchor-mark" id="motivation">
                     <?= $this->text('overview-field-motivation') ?>
-                    </span> 
+                    </span>
                 </h2>
                 <div class="spacer-20 general-text">
-                <?= nl2br($project->motivation) ?>
+                <?= nl2br($this->text_url_link($project->motivation)) ?>
                 </div>
 
                 <?php foreach($project->secGallery['motivation'] as $image): ?>
-                    <img src="<?= $image->imageData->getLink(700, 700) ?>" class="spacer-5 img-responsive">
+                    <img src="<?= $image->imageData->getLink(700, 0) ?>" class="spacer-5 img-responsive">
                 <?php endforeach ?>
 
                 <h2 class="pink-title spacer" >
                     <span class="anchor-mark" id="goal">
                     <?= $this->text('overview-field-goal') ?>
-                    </span>   
+                    </span>
                 </h2>
                 <div class="spacer-20 general-text">
-                <?= nl2br($project->goal) ?>
+                <?= nl2br($this->text_url_link($project->goal)) ?>
                 </div>
 
                 <?php foreach($project->secGallery['goal'] as $image): ?>
-                    <img src="<?= $image->imageData->getLink(700, 700) ?>" class="spacer-5 img-responsive">
+                    <img src="<?= $image->imageData->getLink(700, 0) ?>" class="spacer-5 img-responsive">
                 <?php endforeach ?>
 
                 <h2 class="pink-title spacer-20" >
                     <span class="anchor-mark" id="related">
                     <?= $this->text('overview-field-related') ?>
-                    </span>   
+                    </span>
                 </h2>
                 <div class="spacer-20 general-text">
-                <?= nl2br($project->related) ?>
+                <?= nl2br($this->text_url_link($project->related)) ?>
                 </div>
 
                 <?php foreach($project->secGallery['related'] as $image): ?>
-                    <img src="<?= $image->imageData->getLink(700, 700) ?>" class="spacer-5 img-responsive">
+                    <img src="<?= $image->imageData->getLink(700, 0) ?>" class="spacer-5 img-responsive">
                 <?php endforeach ?>
 
                 <div id="go-top" class="row btn-up">
@@ -197,7 +197,7 @@
             <!-- end body -->
 
           </div>
-         
+
         </div>
 
         <!-- End general information -->
@@ -207,7 +207,7 @@
                     <div class="panel-heading">
                         <h2 class="panel-title green-title" >
                             <?= $this->text('project-rewards-social_reward-title') ?>
-                            <span class="icon glyphicon glyphicon-menu-down pull-right" aria-hidden="true"></span>   
+                            <span class="icon glyphicon glyphicon-menu-down pull-right" aria-hidden="true"></span>
                         </h2>
                         <span class="anchor-mark" id="social-rewards" >
                         </span>
@@ -226,9 +226,9 @@
                                  <div class="row spacer-10">
                                     <div class="col-md-3 col-sm-4">
                                         <a href="<?= $social->url ?>" target="_blank" title="<?= $this->text('social_reward-access_title') ?>"><button class="btn btn-block green"><?= $this->text('social_reward-access') ?></button></a>
-                                    </div>  
+                                    </div>
                                  </div>
-                                <?php endif; ?>    
+                                <?php endif; ?>
 
                                 <!-- License -->
                                 <?php if (!empty($social->license) && array_key_exists($social->license, $this->licenses)): ?>

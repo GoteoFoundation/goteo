@@ -29,7 +29,7 @@ use Symfony\Component\Process\Process;
 
 class MailingCommand extends AbstractCommand {
 
-	const MAIL_MAX_RATE        = 8;// envios por segundo máximos
+	const MAIL_MAX_RATE        = 20;// envios por segundo máximos
 	const MAIL_MAX_CONCURRENCY = 20;//numero máximo de procesos simultaneos para enviar mail (pero no se llegará a esta cifra si el ratio de envios es mayor que MAIL_MAX_RATE)
 
 	protected function configure() {

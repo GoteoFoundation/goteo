@@ -58,6 +58,8 @@ namespace Goteo\Model {
         $logo,  // imagen de cabecera
         $image, // imagen para el widget
         $backimage, //imagen de fondo
+        $description_summary,
+        $description_nav,
         $description,
         $whom, // quienes pueden participar
         $apply, // como publicar un convocatoria
@@ -211,6 +213,7 @@ namespace Goteo\Model {
                             user.facebook as user_facebook,
                             user.google as user_google,
                             user.twitter as user_twitter,
+                            user.instagram as user_instagram,
                             user.identica as user_identica,
                             user.linkedin as user_linkedin,
                             user.lang as user_lang,
@@ -248,6 +251,8 @@ namespace Goteo\Model {
                             IFNULL(user_lang.name, user.name) as user_name,
                             IFNULL(call_lang.name, call.name) as name,
                             IFNULL(call_lang.subtitle, call.subtitle) as subtitle,
+                            IFNULL(call_lang.description_summary, call.description_summary) as description_summary,
+                            IFNULL(call_lang.description_nav, call.description_nav) as description_nav,
                             IFNULL(call_lang.description, call.description) as description,
                             IFNULL(call_lang.whom, call.whom) as whom,
                             IFNULL(call_lang.apply, call.apply) as apply,
@@ -283,6 +288,7 @@ namespace Goteo\Model {
                 $call->user->facebook = $call->user_facebook;
                 $call->user->google = $call->user_google;
                 $call->user->twitter = $call->user_twitter;
+                $call->user->instagram = $call->user_instagram;
                 $call->user->identica = $call->user_identica;
                 $call->user->linkedin = $call->user_linkedin;
                 $call->user->user_birthyear = $call->user_birthyear;
@@ -339,6 +345,8 @@ namespace Goteo\Model {
                 $call->sponsors = Call\Sponsor::getList($id);
                 $call->banners  = Call\Banner::getList($id, $lang);
 
+                //$call->logo = Image::get($call->logo);
+
                 // campos calculados
 
                 // riego comprometido
@@ -359,7 +367,7 @@ namespace Goteo\Model {
 
                 return $call;
             } catch (\PDOException $e) {
-                throw \Goteo\Core\Exception($e->getMessage());
+                throw new \Goteo\Core\Exception($e->getMessage());
             } catch (\Goteo\Core\Error $e) {
                 die($e->getMessage());
                 throw new \Goteo\Core\Error('404', Text::get('fatal-error-call'));
@@ -570,6 +578,8 @@ namespace Goteo\Model {
                     'logo',
                     'image',
                     'backimage',
+                    'description_summary',
+                    'description_nav',
                     'description',
                     'whom',
                     'apply',
@@ -738,6 +748,8 @@ namespace Goteo\Model {
                     'lang' => 'lang_lang',
                     'name' => 'name_lang',
                     'subtitle' => 'subtitle_lang',
+                    'description_summary' => 'description_summary_lang',
+                    'description_nav' => 'description_nav_lang',
                     'description' => 'description_lang',
                     'whom' => 'whom_lang',
                     'apply' => 'apply_lang',
@@ -1790,6 +1802,7 @@ namespace Goteo\Model {
                 ", array(':id' => $this->id));
 
             $conf = ($field == '*') ? $query->fetchObject() : $query->fetchColumn();
+
             return (!empty($conf)) ? $conf : null;
         }
 
@@ -1815,8 +1828,15 @@ namespace Goteo\Model {
                   'buzz_first', // Solo primer hashtag en el buzz
                   'buzz_own', // Tweets  propios en el buzz
                   'buzz_mention', // Menciones en el buzz
-                  'applied' // Para fijar numero de proyectos recibidos
-            );
+                  'applied', // Para fijar numero de proyectos recibidos
+                  'map_stage1', // Iframe map stage 1
+                  'map_stage2', // Iframe map stage 2
+                  'date_stage1', // Date stage 1
+                  'date_stage1_out', // Date finish stage 1
+                  'date_stage2', // Date stage 2
+                  'date_stage3' // Date stage 3
+                  );
+
 
             $values = array();
             $set = '';
@@ -1936,6 +1956,101 @@ namespace Goteo\Model {
             );
 
             return $errors;
+        }
+
+        /* Spheres of a call */
+
+        public static function getSpheres ($call = null) {
+
+            $list = array();
+            $lang = Lang::current();
+
+            $sqlFilter = "";
+            if (!empty($call)) {
+                $sqlFilter .= " WHERE call_sphere.call = '{$call}'";
+
+                if(self::default_lang($lang) === Config::get('lang')) {
+                    $different_select=" IFNULL(sphere_lang.name, sphere.name) as name";
+                }
+                else {
+                    $different_select=" IFNULL(sphere_lang.name, IFNULL(eng.name,sphere.name)) as name";
+                    $eng_join=" LEFT JOIN sphere_lang as eng
+                                    ON  eng.id = sphere.id
+                                    AND eng.lang = 'en'";
+                }
+
+            }
+
+
+            $query = static::query("
+                SELECT
+                    DISTINCT(call_sphere.sphere) as sphere,
+                    sphere.image as image,
+                    $different_select
+                FROM call_sphere
+                INNER JOIN sphere
+                    ON sphere.id = call_sphere.sphere
+                LEFT JOIN sphere_lang
+                    ON  sphere_lang.id = sphere.id
+                    AND sphere_lang.lang = :lang
+                $eng_join
+                $sqlFilter
+                ORDER BY sphere.name ASC
+                ", array(':lang'=>$lang));
+
+            foreach ($query->fetchAll(\PDO::FETCH_OBJ) as $item) {
+                $list[$item->sphere]['name'] = $item->name;
+                $list[$item->sphere]['image'] = Image::get($item->image);
+            }
+
+            return $list;
+        }
+
+
+        /*
+         * Assign sphere
+         * @return: boolean
+         */
+        public function assignSphere ($sphere, &$errors = array()) {
+
+            $values = array(':sphere'=>$sphere, ':call'=>$this->id);
+
+            try {
+                $sql = "REPLACE INTO call_sphere (`call`, `sphere`) VALUES(:call, :sphere)";
+                if (self::query($sql, $values)) {
+
+                    return true;
+                } else {
+                    $errors[] = 'No se ha creado el registro `call_sphere`';
+                    return false;
+                }
+            } catch(\PDOException $e) {
+                $errors[] = 'No se ha podido asignar el ambito {$sphere} a la convocatoria {$this->id}.' . $e->getMessage();
+                return false;
+            }
+
+        }
+
+        /*
+         * Unassing sphere
+         * @return: boolean
+         */
+        public function unassignSphere ($sphere, &$errors = array()) {
+            $values = array (
+                ':sphere'=>$sphere,
+                ':call'=>$this->id,
+            );
+
+            try {
+                if (self::query("DELETE FROM call_sphere WHERE `call` = :call AND `sphere` = :sphere", $values)) {
+                    return true;
+                } else {
+                    return false;
+                }
+            } catch(\PDOException $e) {
+                $errors[] = 'No se ha podido quitar el ambito {$sphere} a la convocatoria {$this->id}. ' . $e->getMessage();
+                return false;
+            }
         }
 
     }
