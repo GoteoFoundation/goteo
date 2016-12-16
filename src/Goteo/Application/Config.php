@@ -389,6 +389,18 @@ class Config {
 		return $url;
 	}
 
+    /**
+     * Get sanitized Main URL
+     * @return [type] [description]
+     */
+    static public function getMainUrl() {
+        $url = self::get('url.main');
+        if(strpos($url, '//') === 0) {
+            $url = (self::get('ssl') ? 'https:' : 'http:') . $url;
+        }
+        return $url;
+    }
+
 	static public function getPlugins() {
 		$all_plugins = self::get('plugins');
 		if (!is_array($all_plugins)) {

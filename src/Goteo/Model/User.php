@@ -118,6 +118,7 @@ class User extends \Goteo\Core\Model {
      */
     public function save(&$errors = array(), $skip_validations = array()) {
         $data = array();
+
         if ($this->validate($errors, $skip_validations)) {
             // Nuevo usuario.
             if (empty($this->id)) {
@@ -145,7 +146,7 @@ class User extends \Goteo\Core\Model {
                         '%USERNAME%' => $this->name,
                         '%USERID%' => $this->id,
                         '%USERPWD%' => $this->password,
-                        '%ACTIVATEURL%' => Config::get('url.main') . '/user/activate/' . $token,
+                        '%ACTIVATEURL%' => Config::getMainUrl() . '/user/activate/' . $token,
                     ])->send($errors)) {
                         Application\Message::info(Text::get('register-confirm_mail-success'));
                     } else {
