@@ -1,0 +1,14 @@
+contact-captcha-field: 'Test auf menschlichen Benutzer (BOT-Blocker)'
+contact-captcha-refresh: 'Bild aktualisieren'
+contact-email-field: 'Email-Adresse'
+contact-form-tags: "[user] Ich habe ein Problem mit meinem Konto; \r\n[new promoter] Ich habe ein Projekt;\r\n[new promoter 2] Ich habe eine Frage über das Projektformular;\r\n[development] Ich brauche Hilfe bei Technik-Fragen;\r\n[service] Ich möchte Ihre Dienste in Anspruch nehmen;\r\n[other] Ich habe eine andere Frage;"
+contact-message-field: Nachricht
+contact-name-field: Name
+contact-send_message-button: Senden
+contact-send_message-header: 'Senden Sie uns eine Nachricht'
+contact-subject-field: Betreff
+contact-tag-field: 'Art der Frage'
+error-contact-captcha: 'Das reCAPTCHA wurde nicht korrekt eingegeben. Versuchen Sie es erneut.'
+error-contact-email-empty: 'Sie haben Ihre Email-Adresse nicht angegeben'
+error-contact-message-empty: 'Sie haben keine Nachricht geschrieben'
+error-contact-subject-empty: 'Sie haben keinen Betreff angegeben'

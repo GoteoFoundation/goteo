@@ -1,0 +1,40 @@
+landing-calculate-button: berechnen
+landing-donor-button: spenden
+landing-error-zero: 'Der Betrag muss größer als 0 sein'
+landing-less-info: 'Weniger Informationen'
+landing-main-slogan: 'Kalkuliere Deine Steuerersparnis'
+landing-more-info: 'Mehr Informationen'
+landing-more-info-text: '<h4>La nueva ley te permite aportar más y contribuirá a concretar más proyectos</h4><p>Hasta ahora lo que aportabas a entidades benéficas y similares desgravaba un 25% en tu declaración de la renta. A partir de este 2015 te podrás desgravar más, y todavía más en 2016. <br><br>Los porcentajes dependen no sólo del año, sino también de cuánto aportas: así, para aportaciones de todo un año que no superen los 150€ hay unos porcentajes, y para los importes que superen los 150€ hay otros.</p><h4>Y si repites con Goteo durante al menos 3 años...</h4><p>Si has colaborado con la misma entidad en los últimos tres años, los porcentajes de desgravación son superiores*. De esta manera tu fidelidad se ve recompensada con una mayor devolución.</p><hr><p>(*) El límite de la deducción sobre la base liquidable se mantiene en el 10%.<br>Artículo 19 (Deducción de la cuota del Impuesto sobre la Renta de las Personas Físicas) de la ley 49/2002, de 23 de diciembre, de régimen fiscal de las entidades sin fines lucrativos y de los incentivos fiscales al mecenazgo.</p>'
+landing-real-amount: 'Dein tatsächlicher Aufwand beträgt'
+landing-regular-invest: Beitrag
+landing-stories-title: 'Dank Deines Beitrags werden Projekte unterstützt wie etwa:'
+landing-subtitle-banner: '"<span class=\"line\">Beteilige Dich und unterstütze <strong>Projekte von Goteo</strong><br>\r\n<strong>desgravas</strong> zwischen <strong>27,5%</strong> und <strong>50%</strong> Deines Spendenbetrags</span>"'
+landing-target-description: 'Unser Ziel 2015: dass <strong> mehr als 50% der Goteo-Nutzer/innen ihre Berechtigung des Steuerabzugs für Ihre Spenden in Anspruch nehmen</strong> (2014 taten dies nur 12% der Nutzer/innen).'
+landing-target-title: 'Ziel 2015'
+landing-taxes-explain: 'Tätige Deine Spende jetzt mit der <strong>Goteo Geldbörse</strong>: eine neue Funktion, die Dir ermöglicht, sofort zu spenden und später zu entscheiden, welches Projekt unterstützt wird. Du erhältst dann sofort ein steuerabzugsfähige Bescheinigung Deiner Spende an die Goteo Stiftung, einer gemeinnützigen Organisation.'
+landing-taxes-regional: '<strong>* Wichtig</strong> Diese steuerliche Verbesserung trifft nicht ausserhalb Spaniens zu.'
+landing-taxes-title: 'Steuerrückerstattung*:'
+landing-title-banner: 'Mit Goteo,<br>Steuern sparen'
+landing-type-company: Firma
+landing-type-person: 'Steurerrechtliche Person'
+landing-spread-title: 'Erzähle anderen von den steuerlichen Möglichkeiten bei Goteo!'
+landing-spread: 'Kalkuliere Deine Steuerersparnis mit Goteo! #mojarsedesgrava'
+pool-alert-recharging: 'Sie sind dabei ihre virtuelle Geldbörse neu aufzufüllen '
+pool-amount-first: 'Sie müssen den aufzufüllenden Betrag für Ihre Geldbörse angeben'
+pool-button-download-certificate: 'Lade Deine Bescheinigung herunter'
+pool-invest-ok: 'Deine Auffüllung der virtuellen Geldbörse wurde bearbeitet :-)'
+pool-invest-share-discover: 'Projekte entdecken'
+pool-invest-spread-header: 'Mache die Benefiz-Konto-Auffüllung bekannt und helfe uns dabei, dass mehr Leute die Goteo-Geldbörse nutzen.'
+pool-invest-spread-social: 'Gerade habe ich mein Benefiz-Konto, die virtuelle #Goteo Geldbörse wieder aufgefüllt, um weitere tolle Projekte zu unterstützen.'
+pool-invest-success-make-sure: 'Ihre virtuelle Geldbörse wurde erfolgreich neu aufgefüllt!'
+pool-invest-suggest-projects: 'Projekte, die Sie interessieren könnten'
+pool-make-sure-title: 'Bestätige Deine Daten für die Bescheinigung'
+pool-pay-method-title: 'Machen Sie Ihre Wiederaufladung'
+pool-recharge-amount-text: 'Entscheiden Sie, wie viel Sie in Ihre virtuelle Geldbörse auffüllen möchten'
+pool-recharge-title: 'Füllen Sie Ihre virtuelle Geldbörse auf'
+pool-share-title: 'Lade Deine Bescheinigung herunter und erzähle es weiter'
+pool-step-1: Aufladung
+pool-step-2: Bezahlung
+pool-step-3: bestätigen
+pool-step-4: teilen
+recharge-button: aufladen

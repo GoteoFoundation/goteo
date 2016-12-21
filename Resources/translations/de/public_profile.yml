@@ -1,0 +1,21 @@
+﻿profile_patron-invest_on-header: 'Ich habe auch kofinanziert'
+profile-interests-header: 'Ich interessiere mich für folgende Projekte'
+profile-invest_on-header: 'Projekte, die ich unterstütze'
+profile-invest_on-title: Kofinanzierer
+profile-keywords-header: 'Meine Schlagworte'
+profile-last_worth-title: Datum
+profile-location-header: 'Mein Standort'
+profile-my_investors-header: 'Meine Kofinanzierer'
+profile-my_projects-header: 'Meine Projekte'
+profile-my_worth-header: 'Mein „Flow“ bei Goteo'
+profile-name-header: 'Profil von'
+profile-patron-header: 'Empfohlene <span class="red">%s Projekte</span>'
+profile-sharing_interests-header: 'Interessen teilen'
+profile-social-header: Sozial
+profile-webs-header: 'Meine Webseiten'
+profile-widget-button: 'Profil anzeigen'
+profile-widget-user-header: Benutzer
+profile-worth-title: 'hierzu beigetragen:'
+profile-worthcracy-title: Position
+user-message-restricted: 'Kann nur von seinem Kofinanzierern Nachrichten empfangen'
+user-message-send_personal-header: 'Sende eine Nachricht an den Benutzer'

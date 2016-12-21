@@ -1,0 +1,10 @@
+guide-project-error-mandatories: 'Einige benötigte Felder fehlen'
+guide-project-preview: "<strong>Dies ist eine Zusammenfassung aller Informationen über das Projekt.</strong><br><br>Überprüfen Sie die in jedem Feld angegebenen Informationen, um zu sehen, ob irgendwelche Verbesserungen vorgenommen werden können, und wenn Sie bereit sind, senden Sie uns das Projekt (durch Klicken auf die unten befindliche Schaltfläche 'Senden'), so können wir es bewerten. Sobald der Vorschlag an uns gesendet wurde, sind keine weiteren Änderungen zulässig. Bitte denken Sie daran, dass wir nur ein paar Projekte pro Monat auswählen, um eine bestimmte Menge an Aufmerksamkeit und Förderung für diejenigen zu gewährleisten, die veröffentlicht werden. Sie werden eine Nachricht mit all diesen Informationen In Kürze erhalten, welche die nächsten Schritte, sowie einige Empfehlungen, die Ihrem Projekt helfen können, die vorgenommenen Ziele zu erreichen."
+guide-project-success-minprogress: 'Sie haben die Mindest-Prozentzahl erreicht'
+guide-project-success-noerrors: 'Alle erforderlichen Felder sind ausgefüllt'
+guide-project-success-okfinish: 'Sie können es nun zur Überprüfung absenden'
+preview-main-header: 'Projektvorschau'
+preview-send-comment: 'Zusätzliche Anmerkungen für den Administrator'
+step-7: Vorschau
+step-preview: 'Projekt / Vorschau'
+tooltip-project-comment: 'Haben Sie irgendwelche Zweifel oder Anmerkungen für den Goteo-Administrator? Dies ist der Ort, um etwas von dem, was Sie geschrieben haben, bei dem Sie sich nicht sicher sind, zu erwähnen oder um Verbesserungsvorschläge, usw. zu nennen.'

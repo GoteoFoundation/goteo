@@ -1,0 +1,7 @@
+dashboard-user-location-change: 'Sie können Ihren Standort jederzeit im Bunutzerprofil ändern.'
+dashboard-user-location-locate: 'Meinen Standort teilen'
+dashboard-user-location-located-text: 'Wenn Sie Ihre Standortdaten nicht mit uns teilen möchten, klicken Sie einfach auf die Schaltfläche `Weiter`'
+dashboard-user-location-located-title: 'Ihr Standort wurde korrekt ermittelt.'
+dashboard-user-location-unlocate: 'Bitte meinen Standort nicht teilen'
+dashboard-user-location-unlocated-text: 'Es könnte sein, dass Sie aufgrund der Eingabe einer unbekannten Adresse nach Ihrem Standort gefragt werden, oder weil Sie irgendwann eine Browser-Aufforderung nach Angabe Ihrer geographischen Position abgelehnt haben. Dies sind wichtige Daten für das Goteo-System, denn sie ermöglichen uns, Informationen zu generieren (anonym, ohne Offenlegung Ihrer persönlichen Daten an Dritte), sowie Wirkungsindikatoren zu ermitteln, die die Effizienz unserer Arbeit und Projektunterstützung zu verbessern helfen.'
+dashboard-user-location-unlocated-title: 'Unser System kann Ihren Standort nicht bestimmen.'
