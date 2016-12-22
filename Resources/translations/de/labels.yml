@@ -110,7 +110,7 @@ projects-lb-conf: 'Kampagneneinstellung des Projektes'
 projects-lb-consultants: 'Projektberater wechseln'
 projects-lb-dates: 'Daten des Projektes'
 projects-lb-execute: 'Auftrag ausführen'
-projects-lb-images: 'Bilder des Projektes'                                     
+projects-lb-images: 'Bilder des Projektes'
 projects-lb-list: Auflistung
 projects-lb-move: 'Verschieben an anderen Projektabschnitt'
 projects-lb-open_tags: 'Einer Projektgruppe beitreten'

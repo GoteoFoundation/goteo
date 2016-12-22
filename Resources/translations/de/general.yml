@@ -1,5 +1,5 @@
 ID_DEL_TEXTO: 'Texto ID_DEL_TEXTO'
-﻿admin_no_permission: 'Sie haben keine Zugangsbereichtigung für <strong>%s</strong>'
+admin_no_permission: 'Sie haben keine Zugangsbereichtigung für <strong>%s</strong>'
 bazar-description-seo: 'Crowdfunding-Benefiz-Geschenke bei Goteo.org'
 bazar-title-seo: 'Solidaritätsgeschenke :: Goteo.org'
 blog-comments: Kommentare
@@ -51,7 +51,7 @@ horizontal-project-investors: Ko-Finanzierer
 horizontal-project-percent: finanziert
 horizontal-project-reached: erreicht
 invest-individual-header: 'Sie können auf die Projektbelohnung für Ihre Zuwendung verzichten oder diejenige wählen, die dem Betrag Ihrer Zuwendung oder einem kleineren als dem von Ihnen eingetragenen Betrag entspricht.'
-login-register-conditions: 'Ich akzeptiere die Nutzungsbedingungen der Plattform und gebe meine Zustimmung zur Behandlung meiner persönlichen Daten. Zu diesem Zweck haben die Betreiber der Website <a href="/legal/privacy" target="_blank"> Datenschutzbestimmungen </a>, die festlegen, wie mit den Daten umgegangen wird.'
+login-register-conditions: 'Ich akzeptiere die <a href="/legal/privacy/terms" target="_blank">Nutzungsbedingungen</a> der Plattform und gebe meine Zustimmung zur Behandlung meiner persönlichen Daten. Zu diesem Zweck haben die Betreiber der Website <a href="/legal/privacy" target="_blank"> Datenschutzbestimmungen </a>, die festlegen, wie mit den Daten umgegangen wird.'
 mandatory-cost-field-type: 'Sie müssen eine Kostenart auswählen'
 mandatory-individual_reward-field-amount: 'Sie müssen den Betrag angeben, ab dem die Belohnung verfügbar ist.'
 mandatory-project-costs: 'Dies sollte untergliedert sein in mindestens zwei Gruppen.'
