@@ -2,8 +2,8 @@
 
 $this->layout("layout", [
     'bodyClass' => '',
-    'title' => 'Registrar :: Goteo.org',
-    'meta_description' => $this->text('meta-description-discover')
+    'title' => $this->text('meta-title-register'),
+    'meta_description' => $this->text('meta-description-register')
     ]);
 
 $this->section('content');

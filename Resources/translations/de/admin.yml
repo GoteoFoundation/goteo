@@ -1,0 +1,79 @@
+admin-NO: 'NEIN'
+admin-YES: 'JA'
+admin-account-amount: 'beigetragene Menge'
+admin-account-detail: 'Angaben zur Transaktion'
+admin-account-donation: 'Geschenk/Spende'
+admin-account-edit-reward: 'Belohnungen bearbeiten'
+admin-account-invalid-invest: 'Beitrag [%s] wurde nicht gefunden!'
+admin-account-invest-date: 'Datum des Beitrags'
+admin-account-invest-non-pool-refundable: 'Este aporte no se puede reembolsar al monedero virtual. Sólo se pueden reembolsar los aportes en estado "Cobrado"'
+admin-account-invest-non-user-refundable: "Este aporte no se puede reembolsar. Se pueden reembolsar los aportes en estados:\n\"Pendiente\", \"Cobrado\", \"Pagado al proyecto\"\n\"Cancelado\", \"Retornado\" (sólo si está marcado con \"pool\" y hay suficiente dinero en el monedero para descontar)\n"
+admin-account-invest-to-pool-ko: 'Fallo al devolver el aporte al monedero'
+admin-account-invest-to-pool-ok: 'Aporte reembolsado al monedero. Incrementado el monedero por valor de (%s)'
+admin-account-invest-user-refund-fail-pool: 'Este aporte no se puede devolver porque el usuario no esta marcado como pool'
+admin-account-invest-user-refund-fail-pool-amount: 'Este aporte no se puede devolver porque el usuario no tiene suficiente dinero en el monedero (%s)'
+admin-account-invest-user-refund-ko: 'No se ha podido devolver el aporte: [%s]'
+admin-account-invest-user-refund-ok: 'Beitrag ordnungsgemäß erstattet'
+admin-account-invest-user-refund-ok-pool: 'Beitrag ordnungsgemäß erstattet. Die Geldbörse wurde um %s reduziert'
+admin-account-issue-solved: 'Nos han hecho la transferencia/Wir haben die Überweisung getätigt'
+admin-account-change-user: 'Cambiar de usuario'
+admin-account-change-user-confirm: '¿Seguro que quieres cambiar el usuario del aporte? El nuevo usuario será:'
+admin-account-user-changed-successfully: 'Se ha cambiado el usuario del aporte [%ID%] a [%NAME%]'
+admin-account-user-changed-error: 'No se ha podido cambiar el usuario del aporte [%ID%] a [%NAME%]!'
+admin-account-modify-status: 'Ändern des Status'
+admin-account-modify-status-confirm: "¿Seguro que deseas cambiar manualmente el estado a este aporte? Esto es delicado!\nNO SE REALIZARÁ NINGUNA operación de retorno del aporte.\n"
+admin-account-payment-method: 'Zahlungsmethode'
+admin-account-pool-on-fail: 'Pool (retornar al monedero si falla/zurück in die Geldbörse, wenn es scheitert)'
+admin-account-refund-to-pool: 'Rückzahlung des Beitrags in die virtuelle Geldbörse'
+admin-account-refund-to-pool-confirm: "Esto marcará el aporte como:\nRetornado si el proyecto es fallido\nCancelado si el proyecto està activo o es exitoso\nNo se reembolsará al usuario, se generá dinero en el monedero del usuario.\n¿Continuar?\n"
+admin-account-refund-to-user: 'Rückzahlung des Beitrags an der Bunutzer'
+admin-account-refund-to-user-confirm: "Esto marcará el aporte como:\nRetornado si el proyecto es fallido\nCancelado si el proyecto està activo o es exitoso\nSe reembolsará el dinero al usuario.\nEsto puede NO funcionar si el aporte es muy antiguo o el método de pago no lo soporta.\n¿Continuar?\n"
+admin-account-rewards: 'gewählte Belohnungen'
+admin-account-switch-donation: 'Conmutar donativo/Umschalten Spende'
+admin-account-switch-donation-confirm: '¿Seguro que quieres cambiar el estado de donativo?'
+admin-account-switch-pool: 'Umschalten auf die Virtuelle Geldbörse'
+admin-account-switch-pool-confirm: 'Esto solo afecta para cuando falla el proyecto, no genera ni quita dinero del monedero. ¿Continuar?'
+admin-account-switch-pool-fail: 'No se puede cambiar el estado del pool de este aporte'
+admin-account-transaction: 'Códigos de seguimiento/Tracking-Codes'
+admin-address: Anschrift
+admin-back: Zurück
+admin-back-detail: 'Zurück zu den Details'
+admin-back-list: 'Zurück zur Liste'
+admin-contents: 'Texte und Übersetzungen'
+admin-faq-add-question-btn: 'Frage hinzufügen'
+admin-faq-list-edit: Bearbeiten
+admin-faq-list-position: Position
+admin-faq-list-remove: entfernen
+admin-faq-list-title: Titel
+admin-faq-list-translate: übersetzen
+admin-faq-show-questions: 'Fragen anzeigen aus Sektion:'
+admin-home: Startseite
+admin-no: 'Nein'
+admin-project: Projekt
+admin-projects: Projekte
+admin-sponsors: 'Servicios/Unterstützer/admin-sponsors'
+admin-status: Status
+admin-user: Benutzer
+admin-users: Benutzer
+admin-yes: 'Ja'
+admin-mailing-back-to-list: 'Volver a comuncaciones / Zurück zu Kommunikation'
+admin-mailing-view-message: 'Nachricht ansehen'
+admin-mailing-communicating-with: 'Buscábamos comunicarnos con %DESC%'
+admin-mailing-new-massive: 'Se ha creado un nuevo mailing masivo a %TOTAL% usuarios'
+admin-mailing-subject: 'Betreff'
+admin-mailing-created: 'Erstellt'
+admin-mailing-status: 'Status des automatischen Mailversands'
+admin-mailing-view-and-activate: 'Ver en el admin del boletín para activar el envio'
+admin-mailing-view-in-newsletter: 'Ver en el admin del boletín'
+admin-mailing-view-in-sent: 'Ver en el historial de envíos (estadísticas)'
+admin-no: 'No'
+admin-project: Proyecto
+admin-projects: Proyectos
+admin-sponsors: Servicios
+admin-status: Estado
+admin-user: Usuario
+admin-users: Usuarios
+admin-yes: Si
+admin-percent: Porcentaje
+admin-empty-list: 'No se han encontrado registros'
+admin-items: 'entradas'
