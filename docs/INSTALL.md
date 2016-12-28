@@ -134,6 +134,8 @@ And, finally, import some bare data:
 ```bash
 mysql -u your_user -p your_password < db/install/data.sql
 mysql -u your_user -p your_password < db/install/templates.sql
+mysql -u your_user -p your_password < db/install/glossary.sql
+mysql -u your_user -p your_password < db/install/faq.sql
 ```
 
 
