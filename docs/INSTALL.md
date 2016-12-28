@@ -111,7 +111,9 @@ server {
 Database configuration
 ----------------------
 
-A minimal system must be created, import this 3 SQL scripts:
+First you'll need an empty database (**your_goteo_db**) with user (**your_user**) and password (**your_password**).
+
+Once you got it, a minimal system must be created, import this 3 SQL scripts:
 
 - `db/install/structure.sql`
 - `db/install/data.sql`
@@ -120,22 +122,22 @@ A minimal system must be created, import this 3 SQL scripts:
 Both scripts should be applied in a MySQL console:
 
 ```bash
-mysql -u your_user -p your_password < db/install/structure.sql
+mysql -u your_user -p your_password your_goteo_db < db/install/structure.sql
 ```
 
 Then, apply the minor-version update:
 
 ```bash
-mysql -u your_user -p your_password < db/install/upgrade-to-v3.0.7.sql
+mysql -u your_user -p your_password your_goteo_db < db/install/upgrade-to-v3.0.7.sql
 ```
 
-And, finally, import some bare data:
+And, finally, import some bare data (glossary and faq may be optional, or you can delete date afterwards):
 
 ```bash
-mysql -u your_user -p your_password < db/install/data.sql
-mysql -u your_user -p your_password < db/install/templates.sql
-mysql -u your_user -p your_password < db/install/glossary.sql
-mysql -u your_user -p your_password < db/install/faq.sql
+mysql -u your_user -p your_password your_goteo_db < db/install/data.sql
+mysql -u your_user -p your_password your_goteo_db < db/install/templates.sql
+mysql -u your_user -p your_password your_goteo_db < db/install/glossary.sql
+mysql -u your_user -p your_password your_goteo_db < db/install/faq.sql
 ```
 
 
@@ -308,9 +310,9 @@ db:
     host:     localhost # Database host
     port:     3306      # Database port
     charset:  UTF-8     # Database charset
-    database: goteo     # Database schema (database name)
-    username: goteo     # Database user for the goteo database
-    password: password  # Password for the goteo database
+    database: your_goteo_db     # Database schema (database name)
+    username: your_user     # Database user for the goteo database
+    password: your_password  # Password for the goteo database
 
     # SELECT queries caching
     # set it as 'files' to enable sql cache
