@@ -1,0 +1,176 @@
+accounts-lb-add: 'manuelle Spende'
+accounts-lb-cancel-pool: 'gewählte Zahlungsweise löschen'
+accounts-lb-cancel: 'Spende löschen'
+accounts-lb-details: 'Spendendetails'
+accounts-lb-execute: 'Auftrag ausführen'
+accounts-lb-list: 'Auflistung'
+accounts-lb-move: 'Spende neu platzieren'
+accounts-lb-report: 'Projektbericht'
+accounts-lb-update: 'Spendenstatus aktualisieren'
+accounts-lb-viewer: 'Logs sehen'
+accounts-lb: 'Konten'
+banners-lb-add: 'Neues Banner'
+banners-lb-cancel: 'Spende löschen'
+banners-lb-details: 'Spendendetails'
+banners-lb-edit: 'Banner bearbeiten'
+banners-lb-execute: 'Auftrag ausführen'
+banners-lb-list: 'Auflistung'
+banners-lb-move: 'Spende neu platzieren'
+banners-lb-report: Projektbericht
+banners-lb-translate: 'Banner übersetzen'
+banners-lb-update: 'Spendenstatus aktualisieren'
+banners-lb-viewer: 'Logs sehen'
+banners-lb: 'Banner'
+blog-lb-add: 'Neuer Eintrag'
+blog-lb-edit: 'Eintrag bearbeiten'
+blog-lb-footer: 'Einträge im Footer sortieren'
+blog-lb-list: 'Auflistung'
+blog-lb-reorder: 'Einträge auf der Titelseite sortieren'
+blog-lb-translate: 'Eintrag übersetzen'
+blog-lb: 'Blog'
+categories-lb-add: 'Neue Kategorie'
+categories-lb-edit: 'Kategorie bearbeiten'
+categories-lb-keywords: Schlüssenwörter
+categories-lb-list: Auflistung
+categories-lb-translate: 'Kategorie übersetzen'
+categories-lb: 'Kategorien'
+commons-lb-add: 'Neue Rückgabe („Dankeschön“)'
+commons-lb-edit: 'Rückgabe bearbeiten'
+commons-lb-info: Kontaktinformation
+commons-lb-list: Auflistung
+commons-lb-report: Projektbericht
+commons-lb-view: 'Management der Rückgaben'
+commons-lb: 'kollektiver Nutzen'
+criteria-lb-add: 'Neues Kriterium'
+criteria-lb-edit: 'Kriterium bearbeiten'
+criteria-lb-list: Auflistung
+criteria-lb-translate: 'Kriterium übersetzen'
+criteria-lb: Bewertungskriterien
+faq-lb-add: 'Neue Frage'
+faq-lb-edit: 'Frage bearbeiten'
+faq-lb-list: Auflistung
+faq-lb-translate: 'Frage übersetzen'
+faq-lb: FAQ
+glossary-lb-edit: 'Begriff bearbeiten'
+glossary-lb-list: Auflistung
+glossary-lb-translate: 'Begriff übersetzen'
+glossary-lb: Glossar
+home-lb-list: 'Elemente der Startseite'
+home-lb: Startseite
+icons-lb-edit: 'Art bearbeiten'
+icons-lb-list: Auflistung
+icons-lb-translate: 'Art übersetzen'
+icons-lb: 'Arten von Belohnungen'
+info-lb-add: 'Idee erschaffen'
+info-lb-edit: 'Idee bearbeiten'
+info-lb-list: Auflistung
+info-lb-translate: 'Idee übersetzen'
+info-lb: 'Ideen für'
+licenses-lb-add: 'Idee erschaffen'
+licenses-lb-edit: 'Lizenz bearbeiten'
+licenses-lb-list: Auflistung
+licenses-lb-translate: 'Lizenz übersetzen'
+licenses-lb: Lizenzen
+mailing-lb-edit: 'Inhalt schreiben'
+mailing-lb-list: 'Empfänger auswählen'
+mailing-lb-send: 'Nachricht senden'
+mailing-lb: Nachrichten
+milestones-lb: 'Meilensteine'
+milestones-lb-list: Auflistung
+milestones-lb-add: 'Neue Meilensteine'
+milestones-lb-edit: 'Meilensteine bearbeiten'
+milestones-lb-translate: 'Meilensteine übersetzen'
+news-lb-add: 'Neue News'
+news-lb-edit: 'News bearbeiten'
+news-lb-list: Auflistung
+news-lb-translate: 'News übersetzen'
+news-lb: News
+newsletter-lb-detail: 'Empfänger anzeigen'
+newsletter-lb-init: 'Neue Aussendung einrichten'
+newsletter-lb-list: 'Status der Aussendung'
+newsletter-lb: Newsletter
+node-lb-admins: 'Administratoren anzeigen'
+node-lb-edit: Bearbeiten
+node-lb-list: 'aktuelle Daten'
+node-lb: Datenkanal
+nodes-lb-add: 'Neuer Kanal'
+nodes-lb-admins: 'Kanaladministratoren zuweisen'
+nodes-lb-edit: 'Kanal editieren'
+nodes-lb-list: Auflistung
+nodes-lb: Kanäle
+pages-lb-add: 'Neue Seite'
+pages-lb-list: Auflistung'
+pages-lb-translate: 'Seite übersetzen'
+pages-lb: Seiten
+pages-lbedit: 'Seite bearbeiten'
+projects-lb-accounts: 'Konten des Projektes'
+projects-lb-assign: 'Einem Projektaufruf folgen'
+projects-lb-cancel: 'Spende löschen'
+projects-lb-conf: 'Kampagneneinstellung des Projektes'
+projects-lb-consultants: 'Projektberater wechseln'
+projects-lb-dates: 'Daten des Projektes'
+projects-lb-execute: 'Auftrag ausführen'
+projects-lb-images: 'Bilder des Projektes'
+projects-lb-list: Auflistung
+projects-lb-move: 'Verschieben an anderen Projektabschnitt'
+projects-lb-open_tags: 'Einer Projektgruppe beitreten'
+projects-lb-rebase: 'Projekt-ID ändern'
+projects-lb-report: 'Finanzbericht des Projektes'
+projects-lb: Projekte
+promote-lb-add: 'Neue Hervorhebung'
+promote-lb-edit: 'Hervorhebung bearbeiten'
+promote-lb-list: Auflistung
+promote-lb-translate: 'Hervorhebung übersetzen'
+promote-lb: 'Hervorgehobene Projekte'
+recent-lb-list: Auflistung
+recent-lb: 'letzte Aktivität'
+reviews-lb-add: 'Briefing initiieren'
+reviews-lb-edit: 'Briefing bearbeiten'
+reviews-lb-list: Auflistung
+reviews-lb: Überarbeitungen
+rewards-lb-edit: 'Belohnung in die Wege leiten'
+rewards-lb-list: Auflistung
+rewards-lb: Belohnungen
+sent-lb-list: 'gesendete Emails'
+sent-lb: Sendeverlauf
+sponsors-lb-add: 'Neuer Schirmherr'
+sponsors-lb-edit: 'Schirmherr bearbeiten'
+sponsors-lb-list: Auflistung
+sponsors-lb: 'institutionelle Hilfen'
+stories-lb-list: 'Auflistung'
+stories-lb-add: 'Neue Erfolgsstory'
+stories-lb-edit: 'Erfolgsstory bearbeiten'
+stories-lb-translate: 'Erfolgsstory übersetzen'
+stories-lb-preview: 'Erfolgsstory-Vorschau'
+stories-lb: 'Erfolgstories'
+tags-lb-add: 'Neuer Tag'
+tags-lb-edit: 'Tag bearbeiten'
+tags-lb-list: Auflistung
+tags-lb-translate: 'Tag übersetzen'
+tags-lb: 'Blog-Tags'
+templates-lb-edit: 'Vorlage bearbeiten'
+templates-lb-list: Auflistung
+templates-lb: Mailvorlagen
+texts-lb-edit: 'Original bearbeiten'
+texts-lb-list: Auflistung
+texts-lb: Textinterface
+translates-lb-add: 'Übersetzung aktivieren'
+translates-lb-edit: 'Übersetzung bearbeiten'
+translates-lb-list: Auflistung
+translates-lb-translate: 'Text übersetzen'
+translates-lb: Projektübersetzungen
+transnodes-lb-edit: 'Übersetzung bearbeiten'
+transnodes-lb-list: Auflistung
+transnodes-lb: 'Übersetzung der Knoten'
+users-lb-add: 'Benutzer erstellen'
+users-lb-edit: 'Benutzer bearbeiten'
+users-lb-impersonate: 'Benutzer ersetzen'
+users-lb-list: Auflistung
+users-lb-manage: 'Benutzer verwalten'
+users-lb-move: 'Wechseln zu anderem Knoten des Benutzers'
+users-lb: Benutzer
+wordcount-lb-list: Auflistung
+wordcount-lb: 'Wörter zählen'
+worth-lb-edit: 'Level bearbeiten'
+worth-lb-list: Auflistung
+worth-lb: 'Wertelevel'

@@ -1,0 +1,38 @@
+﻿mandatory-project-field-address: 'Die Adresse des Projektleiters ist erforderlich'
+mandatory-project-field-contract_email: 'Sie müssen eine Email-Adresse für den/die Projektleiter/in angeben.'
+mandatory-project-field-country: 'Sie müssen ein Land für den/die Projektleiter/in angeben.'
+mandatory-project-field-phone: 'Sie müssen eine Telefonnummer für den/die Projektleiter/in angeben.'
+mandatory-project-field-residence: 'Sie müssen den Wohnort des/der Projektleiter/in angeben.'
+mandatory-project-field-zipcode: 'Eine Postleitzahl des Projektleiters ist erforderlich'
+personal-field-address: Adresse
+personal-field-contract_birthdate: 'Geburtsdatum'
+personal-field-contract_data: 'Information über den/die Projektleiter/in'
+personal-field-contract_email: 'Mit dem Projekt verbundene Email-Adresse'
+personal-field-contract_entity-entity: 'juristische Person (Verein, Stiftung, Firma, etc.)'
+personal-field-contract_entity-person: Person
+personal-field-country: Land
+personal-field-entity_cif: 'Vereinsregisternummer oder Unternehmensnummer der Organisation'
+personal-field-entity_name: 'Offizieller Name der Organisation'
+personal-field-entity_office: 'Position in der Organisation'
+personal-field-location: Stadt
+personal-field-phone: Telefon
+personal-field-post_address-different: Abweichend
+personal-field-post_address-same: dieselbe
+personal-field-zipcode: 'PLZ'
+personal-main-header: 'Information über den/die Projektleiter/in'
+step-2: Organisator
+step-userPersonal: 'Step: Persönliche Information'
+tooltip-project-contract_birthdate: 'Tragen Sie Ihr Geburtsdatum ein. Es wird niemals veröffentlicht, sondern dient ausschließlich statistischen Zwecken.'
+tooltip-project-contract_data: 'Egal, ob es eine natürliche oder juristische Person ist, es muss jemand als Projektveranstalter und als Kontaktperson zum Goteo-Team benannt werden. Es muss nicht dieselbe Person sein, wie im Userprofil im vorangegangenen Feld.'
+tooltip-project-contract_email: 'Projektbezogene Email-Adresse. Alle projektbezogenen Benachrichtigungen und Mitteilungen des Goteo-Teams werden an diese Adresse gesendet.'
+tooltip-project-contract_surname: 'P2-Advice-5 Hinweis zum Ausfüllen im Namen des/der Projektleiter/in'
+tooltip-project-entity_cif: 'Tragen Sie die Betriebsnummer oder Vereinsregisternummer ein'
+tooltip-project-entity_name: 'Schreiben Sie den Namen der Organisation in der exakten offiziellen Schreibweise.'
+tooltip-project-entity_office: 'Tragen Sie die Funktion ein, in der Sie die Organisation repräsentieren (Vorsitzender, Projektleiter, ...)'
+tooltip-project-main_address: 'Gültige Adresse der Person oder Organisation (zutreffendes)'
+tooltip-project-phone: 'Telefonnummer (Mobil oder Festnetz) mit Vorwahl'
+tooltip-project-post_address: 'Tragen Sie gegebenenfalls eine detaillierte Postadresse ein'
+tooltip-user-image: 'Sie müssen kein Profilbild hochladen, aber es hilft anderen Usern, Sie wiederzuerkennen.'
+validate-project-paypal_account: 'Das angegebene PayPal Konto sollte identisch mit einer Email-Adresse sein.'
+validate-project-value-entity_cif: 'Die Unternehmensnummer oder Vereinsregisternummer ist ungültig.'
+validate-project-value-phone: 'Das Format der Telefonnummer ist ungültig'

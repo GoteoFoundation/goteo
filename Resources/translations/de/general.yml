@@ -1,0 +1,180 @@
+ID_DEL_TEXTO: 'Texto ID_DEL_TEXTO'
+admin_no_permission: 'Sie haben keine Zugangsbereichtigung für <strong>%s</strong>'
+bazar-description-seo: 'Crowdfunding-Benefiz-Geschenke bei Goteo.org'
+bazar-title-seo: 'Solidaritätsgeschenke :: Goteo.org'
+blog-comments: Kommentare
+blog-main-header: 'Goteo Blog'
+calendar-calls-category: Aufrufe
+calendar-events-category: Events
+calendar-home-hour: to
+calendar-home-title: 'Nächstes Event'
+calendar-net-category: 'Netzwerke & Politik'
+calendar-projects-category: Projekte
+calendar-share: Teilen
+calendar-workshops-category: Workshops
+couldn: 'Text couldn'
+error-contact-email-invalid: 'Ihre eingegebene Email Adresse ist ungültig.'
+error-image-name: 'Fehler beim Dateinamen'
+error-image-size-too-large: 'Das Bild ist zu groß.'
+error-image-size: 'Problem mit der Dateigröße'
+error-image-tmp: 'Fehler beim Laden der Datei'
+error-image-type-not-allowed: 'Nur .png, .jpg, und .gif Bilder erlaubt.'
+error-image-type: 'Nur JPG, PNG, and GIF Bilder erlaubt.'
+error-register-email-exists: 'Ihre eingegebene Email Adresse ist bei einem bestehenden User registriert.'
+error-register-pasword-empty: 'Sie haben kein Passwort angegeben'
+error-user-email-confirm: 'Ihre Email Bestätigung entspricht nicht der Email.'
+error-user-email-empty: 'Sie müssen eine Email-Adresse angeben'
+error-user-email-exists: 'Es gibt bereits einen registrierten User mit dieser Email-Adresse'
+error-user-email-invalid: 'Ihre eingegebene Email Adresse ist ungültig.'
+error-user-email-token-invalid: 'Der Code ist inkorrekt'
+error-user-password-confirm: 'Die Passwortbestätigung entspricht nicht dem Passwort'
+error-user-password-empty: 'Sie haben kein Passwort angegeben'
+error-user-password-invalid: 'Das Passwort ist zu kurz. Es muss aus mindestens 6 Zeichen bestehen.'
+error-user-wrong-password: 'Das Passwort ist falsch.'
+explain-project-progress: 'Diese Grafik visualisiert den Level Ihrer eingegebenen Daten sowie eine einfache, automatisierte Evaluation. Um das Projekt zu veröffentlichen, muss es mindestens 80% erreichen. Die Kriterien, die zum Ansteigen des Prozentsatzes führen beinhalten Ihre relevanten Informationen, die Projektmedien, Bilder und Links, die Sie eingeben, den Grad der Offenheit Ihrer gewählten Projektlizenz, die Stimmigkeit Ihrer Kosten-Schätzung in Bezug auf die zu erledigende Arbeit, etc. Nutzen Sie auch die Tipps auf der rechten Seite, die Ihnen durch den Prozess helfen.'
+fancybox: 'Fancybox text'
+goteo-return-button: 'Zurück zu Goteo'
+guide-dashboard-user-access: 'Sie können die Informationen ändern, mit denen Sie sich in Ihren Goteo-Account einloggen.'
+guide-dashboard-user-personal: 'Sie sollten diese Daten nur dann ausfüllen, wenn Sie ein Projekt angelegt haben und es durch Goteo kofinanziert und unterstützt werden soll. Die Informationen in diesem Abschnitt sind notwendig, damit wir Sie im Falle, dass Sie die erforderliche Kofinanzierung erhalten, kontaktieren können und die entsprechende Zahlung an Sie tätigen können.'
+guide-project-comment: guide-project-comment
+guide-project-contract-information: '<strong>Das Einzige, was nun noch fehlt, ist Ihre Daten einzutragen, wenn Sie eine anteilige Projektfinanzierung oder Unterstützung durch den Plattformbetreiber erhalten möchten. </strong><br><br>Ihre Informationen in diesem Bereich sind erforderlich, um Sie zu kontaktieren, wenn wir Ihnen die gewünschte Unterstützung gewähren können. Im Falle von Organisationen empfehlen wir, dass der Repräsentant von seiner Organisation offiziell akkreditiert wird. (Bspw. Im Rahmen der Vereinssatzung oder durch ein entsprechendes Schreiben der Geschäftsführung bzw. des Vereinsvorstands)'
+guide-project-costs: '<strong>In diesem Bereich tragen Sie eine kurze Kalkulation auf Grundlage geschätzter Projektkosten ein.</strong><br><br>Sie sollten den Betrag untergliedern in Tätigkeiten, Infrastruktur oder Materialkosten. Versuchen Sie, dabei realistisch zu schätzen und beschreiben Sie kurz, warum Ihr Projekt die jeweilige Position benötigt. Bedenken Sie dabei, dass als Grundregel gilt, dass der überwiegende Teil des Projektes von der Person oder dem Team zu erbringen ist, welches das Projekt einstellt und nicht etwa von beauftragten Dritten. Zur Kalkulation bedenken Sie bitte auch, dass die Plattform-Kommission für die Bereitstellung seiner Dienste und Transaktionen zwischen 4%-6% betragen wird, je nachdem ob die Paypal Bezahlmethode gewählt wird oder nicht (<a href="/faq/sponsor#q98" target="new">+ info in unseren FAQs</a>). <br><br><strong>Sehr wichtig</strong>: Auf dieser Plattform unterscheiden wir zwischen erforderlichen und zusätzlichen Kosten. Der erste Betrag muss in der Finanzierungsphase unbedingt erreicht werden, damit die Summe ausgezahlt werden kann, während der zweite Betrag auch als Teil einer zweiten Finanzierungsrunde erreicht werden kann, während das Projekt bereits in der Umsetzung ist. Dieser Betrag dient einer optimalen Projektrealisierung und soll zusätzliche Leistungen ermöglichen (bspw. Werbung, Design, Wirkungsreichweite, zusätzliche Projektteile, etc.) Diese Zusatzkosten dürfen nicht mehr als die Hälfte des Projektvolumens betragen.'
+guide-project-description: '<strong>Nutzen Sie diesen Bereich, um die Projektkonzeption darzustellen. </strong><br><br>Dies ist die erste Information, die der Seitenbetrachter sehen wird. Deshalb empfehlen wir, dies aufmerksam zu formulieren und Tippfehler zu vermeiden. Sie werden sehen, dass es dabei einige Pflichtfelder gibt, darunter eins für einen Projektfilm und Bilder. Wir halten dies für wesentlich, um eine Crowdfunding-Kampagne mit Goteo zu starten und Geld oder Unterstützung einzuwerben.<br><br>Bedenken Sie, dass für Goteo freie Information,  offenes und Gemeinwohl-Nutzen Wissen das Wertvollste sind, mit dem Ihr Projekt unsere Gesellschaft bereichern kann. Die Originalität Ihres Projektes; das Bestreben, ein soziales Problem zu lösen; die Fähigkeit, eine große Menge interessierter Menschen damit zu begeistern; und die Qualität und Erfahrung Ihres Teams, das Projekt zum Erfolg zu bringen, sind die Argumente, die am meisten zählen. Vergessen Sie also nicht, Ihre Stärken in diesen Punkten hervorzuheben.'
+guide-project-images: 'Bilder können Fotos, Screenshots, Skizzen, Illustrationen, Storyboards, etc. sein. (ihre Lizenzierung sollte kompatibel mit Ihrer gewählten Projektlizensierung sein. Sie können so viele Motive hochladen, wie Sie möchten.'
+guide-project-rewards: '<strong>In diesem Bereich sollen Sie beschreiben, was das Projekt seinen Unterstützern als Dankeschön oder Belohnung anbietet und welchen allgemeinen Nutzen es für die Gesellschaft hat.</strong><br><br>Zusätzlich zu den individuellen Belohnungen für verschiedene Zuwendungsbeträge sollten Sie den Lizenztyp Ihres Projektes definieren, je nach seinem Format und/oder dem Grad der Offenheit (open-source) des Projektes o(der seiner Teile). Dies ist daher wichtig, weil Goteo diese Crowdfunding-Plattform für Projekte entwickelt hat, die auf der Open-Source Philosophie beruhen und das Gemein-Gut fördern.<br><br>Im Falle, dass Sie zusätzlich zu einer der hier spezifizierten Lizenzarten auch ein Urheberrecht Ihrer Arbeit oder Idee geltend machen möchten, welches dennoch kompatibel mit kollektivem Nutzen ist, können Sie auf der folgenden Seite spezifischen rechtlichen Schutz erhalten:<a href="http://www.safecreative.org/" target="new">Safe Creative</a>.'
+guide-project-support: guide-project-support
+guide-project-supports: '<strong>In diesem Bereich können Sie angeben, welche nichtmonetäre Unterstützung Sie zur Realisierung Ihres Projektes benötigen.</strong><br><br>Das kann eine Projektunterstützung durch andere sein (bspw. Übersetzungen, Organisation, Werbung, etc.) oder vielleicht spezifische Leihgaben (Material, Technik, Transport, Werkzeug, etc.)'
+guide-project-updates: '<b>Es ist für Projekte überaus wichtig, ihre Unterstützer/innen und andere potentiell interessierte Menschen über den Projektverlauf auf dem Laufenden zu halten. Nutzen Sie diesen Bereich wie einen Blog für Neuigkeiten über Ihr Projekt.</b>Auf dieser Plattform sollten Sie - auch nachdem Sie das minimale Finanzierungsziel erreicht haben, sowie in der zweiten Finanzierungsrunde – regelmäßig über den Projektfortschritt, über Probleme und Erfolge, etc. berichten, um eine größtmögliche Transparenz zu gewährleisten. So können Sie Ihre Unterstützer/innen weiter einbinden und eine noch größere Community erreichen.'
+header-about-side: 'Was uns inspiriert'
+home-posts-header: Neuigkeiten
+horizontal-project-investors: Ko-Finanzierer
+horizontal-project-percent: finanziert
+horizontal-project-reached: erreicht
+invest-individual-header: 'Sie können auf die Projektbelohnung für Ihre Zuwendung verzichten oder diejenige wählen, die dem Betrag Ihrer Zuwendung oder einem kleineren als dem von Ihnen eingetragenen Betrag entspricht.'
+login-register-conditions: 'Ich akzeptiere die <a href="/legal/privacy/terms" target="_blank">Nutzungsbedingungen</a> der Plattform und gebe meine Zustimmung zur Behandlung meiner persönlichen Daten. Zu diesem Zweck haben die Betreiber der Website <a href="/legal/privacy" target="_blank"> Datenschutzbestimmungen </a>, die festlegen, wie mit den Daten umgegangen wird.'
+mandatory-cost-field-type: 'Sie müssen eine Kostenart auswählen'
+mandatory-individual_reward-field-amount: 'Sie müssen den Betrag angeben, ab dem die Belohnung verfügbar ist.'
+mandatory-project-costs: 'Dies sollte untergliedert sein in mindestens zwei Gruppen.'
+mandatory-register-field-email: 'Sie müssen eine Email-Adresse angeben'
+mark-pending: 'Als ausstehende Übersetzung markieren'
+meta-description-index: 'Goteo ist ein offenes Netzwerk für Crowdfunding, Kollaborationen und „Gegenseitigem Lernen“, führend bei sozialen Innovationen. Mit zwei Finanzierungsrunden und Steuervorteilen für Spender!'
+node-menu-home: Knoten
+overview-field-about: 'Hauptmerkmale'
+overview-field-motivation: 'Warum das wichtig ist'
+profile-about-header: 'über mich'
+project-invest-total: 'Gesamte Zusendungen'
+project-messages-send_message_support-your_answer: 'Schreiben Sie hier Ihre Kooperationsnachricht an %s'
+project-messages-send_message-your_answer: 'Schreiben Sie hier Ihre Antwort'
+regular-admin_board: 'Admin Panel'
+regular-allsome: 'alle/einige'
+regular-anonymous: Anonym
+regular-ask: Frage
+regular-by: 'Von:'
+regular-calendar: Kalender
+regular-cancel: Abbrechen
+regular-cancel-back: 'Abbrechen und zurück'
+regular-channel: Kanal
+regular-collaborate: Kooperieren Sie
+regular-create: 'Erstellen Sie ein Projekt'
+regular-date: Datum
+regular-days: Tage
+regular-delete: Löschen
+regular-discover: 'Entdecken Sie Projekte'
+regular-download: Download
+regular-continue-question: Weiter?
+regular-edit: Bearbeiten
+regular-email: Email
+regular-facebook: Facebook
+regular-faq: 'Häufigste Fragen'
+regular-female: weiblich
+regular-first: First
+regular-from: von
+regular-getit: 'Get it'
+regular-go_up: Upload
+regular-google: 'Google+'
+regular-header-about: 'über Goteo'
+regular-header-blog: Blog
+regular-header-faq: FAQ
+regular-header-glossary: 'Glossar der Goteo-Begriffe'
+regular-hello: Hallo
+regular-here: hier
+regular-home: Start
+regular-identica: Identi.ca
+regular-im: 'Ich bin'
+regular-instagram: Instagram
+regular-invest_it: 'Projekt unterstützen'
+regular-invest: 'Unterstützen Sie'
+regular-investing: Unterstützend
+regular-lang: Sprache
+regular-last: Last
+regular-license: Lizenz
+regular-linkedin: LinkedIn
+regular-login: 'Einloggen'
+regular-logout: 'Ausloggen'
+regular-looks_for: 'suchen nach:'
+regular-main-header: Goteo.org
+regular-male: männlich
+regular-manage_board: 'Processing Agency Panel'
+regular-mandatory: 'Erforderliches Feld!'
+regular-media_legend: Legende
+regular-menu: Menü
+regular-message_fail: 'Fehler beim Senden der Nachricht'
+regular-message_success: 'Nachricht erfolgreich gesendet'
+regular-months: Monate
+regular-more_info: 'Mehr Infos'
+regular-news: Neuigkeiten
+regular-no: 'Nein'
+regular-of: von
+regular-preview: Vorschau
+regular-projects: Projekte
+regular-published_no: Projektskizze
+regular-published_yes: Veröffentlicht
+regular-read_more: 'weiter lesen'
+regular-recomended_by: 'Projekt empfohlen von:'
+regular-review_board: 'Bewertungsgremium'
+regular-round: Runde
+regular-save: Sichern
+regular-search: Suchen
+regular-see_all: 'Alle anzeigen'
+regular-see_blog: Blog
+regular-see_details: 'Details anzeigen'
+regular-see_more: 'Mehr anzeigen'
+regular-send_message: 'Nachricht senden'
+regular-share_this: 'Teilen auf:'
+regular-share-facebook: 'Goteo bei Facebook'
+regular-share-rss: 'RSS/Blog'
+regular-share-twitter: 'Folgen Sie uns auf Twitter'
+regular-sorry: 'Es tut uns leid'
+regular-spread: Verbreitung
+regular-status: Status
+regular-thanks: 'Vielen Dank'
+regular-total: Gesamt
+regular-translate_board: 'Übersetzungsfeld'
+regular-twitter: Twitter
+regular-view_project: 'Projekt anzeigen'
+regular-web: Seite
+regular-weeks: Wochen
+regular-year: Jahr
+regular-yes: 'Ja'
+session-about-to-expire: 'Ihre Sitzung wird in 10 Minuten ablaufen, wollen Sie erneut laden?'
+session-expired: 'Ihre Sitzung ist abgelaufen'
+spread-about: 'Text spread-about'
+stories-user-project: '%s, vom Projekt: %s'
+support-our-mission: 'Unterstütze unsere Mission'
+tooltip-dashboard-user-access_data: 'Dies sind Ihre aktuellen Login-Daten. Das einzige, was Sie nicht ändern können, ist Ihr Username.'
+tooltip-dashboard-user-change_email: 'Ändern Sie die Email-Adresse, mit der Sie Nachrichten von Goteo erhalten.'
+tooltip-dashboard-user-change_password: 'Ändern Sie Ihr Goteo Login-Passwort'
+tooltip-dashboard-user-confirm_email: 'Bestätigen Sie die neue Email-Adresse, mit der Sie Nachrichten von Goteo erhalten möchten.'
+tooltip-dashboard-user-confirm_password: 'Bestätigen Sie Ihr neues Goteo Login-Passwort.'
+tooltip-dashboard-user-new_email: 'Benenne die neue Email Adresse, auf der Sie Nachrichten von Goteo erhalten möchten.'
+tooltip-dashboard-user-new_password: 'Schreiben Sie Ihr neues Goteo Login-Passwort'
+tooltip-dashboard-user-user_password: 'Schreiben Sie Ihr aktuelles Goteo Login-Passwort'
+tooltip-project-schedule: 'Produktionskalender Ihres Projektes. Bitte tragen Sie nur neue Aufgaben ein, nicht solche, die bereits erledigt sind.'
+tooltip: 'Tipp Text'
+translate-home-guide: 'Nachricht an die Übersetzer'
+user-account-inactive: 'Das Konto ist deaktiviert.'
+user-activate-fail: 'Fehler beim Aktivieren des User-Accounts'
+user-changeemail-fail: 'Fehler beim Wechseln der Email Adresse'
+user-register-success: 'Der User wurde korrekt registriert. Wir senden Ihnen jetzt eine Aktivierungsmail.'
+validate-project-social_rewards: 'Sie müssen zumindest einen kollektiven Nutzen benennen'
+validate-project-total-costs: 'Die optimalen Projektkosten dürfen die minimalen Projektkosten nicht um mehr als 50% übersteigen. Sie müssen entweder die erforderlichen Kosten erhöhen oder die zusätzlichen Kosten verringern.'

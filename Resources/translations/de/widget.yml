@@ -1,0 +1,10 @@
+call-tagmark-3: 'Open Call'
+call-tagmark-4: 'Kampagne ist aktiv!'
+call-tagmark-5: 'Kampagne ist geendet.'
+call-tagmark-6: 'Archivierter Aufruf'
+regular-fail_mark: Geschlossen
+regular-gotit_mark: Gefördert!
+regular-keepiton_mark: 'Jetzt bis zum Optimum'
+regular-oneround_mark: 'eine Runde'
+regular-onrun_mark: 'Läuft!'
+regular-success_mark: Erfolgreich!

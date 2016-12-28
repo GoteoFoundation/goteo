@@ -1,0 +1,37 @@
+costs-field-select-rounds: 'Dauer der Kampagne'
+form-accept-button: OK
+form-add-button: Hinzufügen
+form-ajax-info: 'Dieses Formular wird beim Ausfüllen automatisch gespeichert'
+form-apply-button: Anwenden
+form-edit-button: Bearbeiten
+form-errors-info: 'Total: %s | In diesem Schritt: %s'
+form-errors-total: 'Hier sind insgesamt %s Fehler'
+form-footer-errors_title: Fehler
+form-image_upload-button: 'Bild hochladen'
+form-media_send-button: 'Video abspielen'
+form-navigation_bar-header: 'Go to'
+form-next-button: Nächste
+form-project_status-campaing: 'Kampagne läuft'
+form-project_status-cancel: Verworfen
+form-project_status-cancelled: Abgebrochen
+form-project_status-edit: 'In der Bearbeitung'
+form-project_status-fanstage: 'Fan-Phase	läuft'
+form-project_status-expired: Geschlossen
+form-project_status-fulfilled: 'Ziel erreicht'
+form-project_status-review: 'Bewertung ausstehend'
+form-project_status-success: 'Erfolgreich'
+form-project-info_status-title: 'Gesamtstatus der Informationen'
+form-project-progress-title: 'Datenauswertung'
+form-project-status-title: 'Projekt Status'
+form-remove-button: Entfernen
+form-self_review-button: Korrigieren
+form-send_review-button: Senden
+form-upload-button: Senden
+help-cost-to-consultant: '- Needs some help in the costs section.<br/>'
+help-license-to-consultant: '- Needs help with collective returns and licenses<br/>'
+overview-extra-fields: 'Ergänzende Felder'
+project-form-header: Formular
+project-one-round: 'Eine 40-Tage-Runde'
+project-personal-field-entity_name: 'The party on behalf of which you are acting (if applicable)'
+project-two-rounds: 'Zwei 40-Tage-Runden'
+tooltip-project-personal-entity_name: 'If you represent an entity, this is the indicated place to let it be known.'

@@ -1,0 +1,3 @@
+fatal-error-project: 'Das Projekt, welches Sie suchen... <span class="red">existiert leider nicht :(</span>'
+fatal-error-teapot: '<span class="greenblue">Wie peinlich...</span> ein unerwarteter Fehler ist aufgetreten'
+fatal-error-user: 'Der Benutzer, nachdem Sie suchen... <span class="red">existiert leider nicht :(</span>'

@@ -1,0 +1,30 @@
+﻿node-footer-about: 'Soziales Netzwerk für Crowdfunding und die Zusammenarbeit mit kreativen Projekten, die das Gemeinwohl fördern. <a href="/project/create">Haben Sie ein "open DNA"-Projekt?</a>'
+node-footer-help-what: 'Was ist Crowdfunding?'
+node-footer-help-why: 'Was ist anders bei Goteo?'
+node-footer-investors-donate: 'Spenden und Steuerbescheinigungen'
+node-footer-investors-invest: 'Wie Sie ein Projekt unterstützen können'
+node-footer-investors-payment: 'Funktionsweise Bezahlsystem'
+node-footer-title-creators: 'Projektleiter'
+node-footer-title-help: 'Benötigen Sie Hilfe?'
+node-footer-title-investors: Unterstützer/innen
+node-footer-title-social: 'Folge uns'
+node-header-sponsorby: 'Mit der Unterstützung von:'
+node-home-calls-headers: Aufrufe
+node-home-posts-header: Neuigkeiten
+node-side-searcher-bycategory: 'Nach Kategorie'
+node-side-searcher-byreward: 'Nach Belohnung'
+node-side-searcher-outdate: Dringend
+node-side-searcher-popular: Beliebt
+node-side-searcher-promote: Hervorgehoben
+node-side-searcher-recent: Kürzlich
+node-side-searcher-success: Erfolgreich
+node-side-sumcalls-budget: 'Total (alle Kampagnen)'
+node-side-sumcalls-calls: Offen
+node-side-sumcalls-campaigns: Aktiv
+node-side-sumcalls-header: 'Cloud<br />fund'
+node-side-sumcalls-rest: 'unerledigte Aufgabe'
+node-side-summary-active: Aktiv
+node-side-summary-amount: 'gesammelter Geldbetrag'
+node-side-summary-investors: Unterstützer/innen
+node-side-summary-success: Erfolgreich
+node-side-summary-supporters: Unterstützer/innen
