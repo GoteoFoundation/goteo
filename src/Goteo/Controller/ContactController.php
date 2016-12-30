@@ -15,10 +15,11 @@ use Gregwar\Captcha\CaptchaBuilder;
 
 use Goteo\Library;
 use Goteo\Library\Text;
-use Goteo\Library\Page;
+use Goteo\Model\Page;
 use Goteo\Application\Message;
 use Goteo\Application\Session;
 use Goteo\Application\Config;
+use Goteo\Application\Lang;
 use Goteo\Model\Template;
 use Goteo\Model\Mail;
 
@@ -26,16 +27,15 @@ class ContactController extends \Goteo\Core\Controller {
 
     public function indexAction (Request $request) {
 
-        $tags = array();
-        $rawTags = Text::get('contact-form-tags');
-        $listTags = explode(';', $rawTags);
-        foreach ($listTags as $pair) {
-            $pair = trim($pair);
-            if (empty($pair)) continue;
-            $pairTag = explode(']', $pair);
-            $keyTag = trim(str_replace(array('[', '<br />'), '', $pairTag[0]));
-            $tags[$keyTag] = trim($pairTag[1]);
-        }
+        $tags=[ 'contact-form-user-tag-name'         => Text::get('contact-form-user-tag-description'),
+                'contact-form-new-project-tag-name'  => Text::get('contact-form-new-project-tag-description'),
+                'contact-form-project-form-tag-name' => Text::get('contact-form-project-form-tag-description'),
+                'contact-form-dev-tag-name' => Text::get('contact-form-dev-tag-description'),
+                'contact-form-relief-tag-name' => Text::get('contact-form-relief-tag-description'),
+                'contact-form-service-tag-name' => Text::get('contact-form-service-tag-description'),
+                'contact-form-others-tag-name' => Text::get('contact-form-others-tag-description'),
+
+        ];
 
         $errors = array();
         $data = [];
@@ -96,17 +96,70 @@ class ContactController extends \Goteo\Core\Controller {
 
             if (empty($errors)) {
 
-                $to = Config::get('mail.contact');
+                switch ($tag) {
+                    //Acount problems
+                    case 'contact-form-user-tag-name':
+                        $to_admin = Config::get('mail.contact');
+                        $user_template=Template::CONTACT_AUTO_REPLY_ACCOUNT_PROBLEMS;
+                        break;
+                    // New project chance
+                    case 'contact-form-new-project-tag-name':
+                        $to_admin = Config::get('mail.contact');
+                        $user_template=Template::CONTACT_AUTO_REPLY_NEW_PROJECT;
+                        break;
+                    // Queries about the project form
+                    case 'contact-form-project-form-tag-name':
+                         $to_admin = Config::get('mail.contact');
+                         $user_template=Template::CONTACT_AUTO_REPLY_PROJECT_FORM;
+                        break;
+                    // Dev
+                    case 'contact-form-dev-tag-name':
+                         $to_admin = Config::get('mail.fail');
+                         $user_template=Template::CONTACT_AUTO_REPLY_DEV;
+                        break;
+                    // Relief
+                    case 'contact-form-relief-tag-name':
+                        $to_admin = Config::get('mail.donor');
+                        $user_template=Template::CONTACT_AUTO_REPLY_RELIEF;
+                        break;
+                    // Service
+                    case 'contact-form-service-tag-name':
+                         $to_admin = Config::get('mail.management');
+                        break;
+                    //Others
+                    default:
+                        $to_admin = Config::get('mail.contact');
+                        break;
+                }
+
+                if($user_template)
+                {
+                    //Sent an automatic mail to the user depending on the tag
+                    $to_user=$email;
+                    $toName = Config::get('mail.contact_name');
+                    if(empty($toName)) $toName = 'Goteo';
+                    // Obtenemos la plantilla para asunto y contenido
+                    $mailHandler = Mail::createFromTemplate($to_user, $toName, $user_template);
+
+                    $mailHandler->replyName = Config::get('transport.name');
+                    $mailHandler->reply = Config::get('transport.from');
+
+                    if (!$mailHandler->send($errors))
+                        Message::error('Ha fallado al enviar el mensaje.');
+                }
+
+
+                //Sent mail to manage the contact
                 $toName = Config::get('mail.contact_name');
                 if(empty($toName)) $toName = 'Goteo';
                 // Obtenemos la plantilla para asunto y contenido
-                $mailHandler = Mail::createFromTemplate($to, $toName, Template::MESSAGE_CONTACT, [
+                $mailHandler = Mail::createFromTemplate($to_admin, $toName, Template::MESSAGE_CONTACT, [
                         '%TONAME%'     => $toName,
                         '%MESSAGE%'    => $msg_content,
                         '%USEREMAIL%'  => $name . ' ' . $email
                     ]);
                 // Custom subject
-                $subject = ($tag ? '[' . $tag . '] ' : '') . $subject;
+                $subject = ($tag ? '[' . Text::get($tag) . '] ' : '') . $subject;
 
                 $mailHandler->subject = $subject;
 

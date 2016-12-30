@@ -34,10 +34,16 @@ class DB extends \PDO {
 			$dsn = Config::get('dsn');
 			$username = Config::get('db.username', true);
 			$password = Config::get('db.password', true);
-			parent::__construct($dsn, $username, $password);
+			parent::__construct(
+                $dsn,
+                $username,
+                $password,
+                // Avoid stric mysql configurations (sorry we're not there yet, so many old queries)
+                array(\PDO::MYSQL_ATTR_INIT_COMMAND => "SET @@SESSION.sql_mode=''")
+            );
 
-			$this->setAttribute(static::ATTR_ERRMODE, static::ERRMODE_EXCEPTION);
-
+            $this->setAttribute(\PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION);
+            // $this->setAttribute(\PDO::MYSQL_ATTR_INIT_COMMAND, "SET @@SESSION.sql_mode=''");
 			if ($cache instanceOf Cacher) {
 				$this->cache = $cache;
 			}
@@ -53,7 +59,7 @@ class DB extends \PDO {
 				$password = Config::get('db.replica.password') ? Config::get('db.replica.password') : $password;
 				$this->read_replica = new \PDO($dsn_replica, $username, $password);
 				$this->read_replica->type = 'replica';
-				$this->read_replica->setAttribute(static::ATTR_ERRMODE, static::ERRMODE_EXCEPTION);
+				$this->read_replica->setAttribute(\PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION);
 
 				//no queremos que las queries vayan al servidor para preparase si usamos cache
 				$this->read_replica->setAttribute(\PDO::ATTR_EMULATE_PREPARES, true);
