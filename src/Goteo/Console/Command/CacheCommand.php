@@ -34,7 +34,7 @@ class CacheCommand extends Command {
                       new InputOption('clear', 'c', InputOption::VALUE_REQUIRED, 'Clears files. specify one of [config|sql|images]'),
                 ))
              ->setHelp(<<<EOT
-This command may be clear cache files (generated from SQL, yaml, files, etc)
+This command may be used to clear cache files (generated from SQL, yaml, files, etc)
 
 Usage:
 

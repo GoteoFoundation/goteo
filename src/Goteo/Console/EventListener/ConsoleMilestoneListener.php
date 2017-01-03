@@ -12,6 +12,7 @@ namespace Goteo\Console\EventListener;
 
 use Goteo\Application\EventListener\AbstractListener;
 use Goteo\Application\AppEvents;
+use Goteo\Application\Event\FilterInvestRequestEvent;
 use Goteo\Console\ConsoleEvents;
 use Goteo\Console\Event\FilterProjectEvent;
 use Goteo\Console\UsersSend;
@@ -25,7 +26,6 @@ use Goteo\Model\User;
 use Goteo\Model\Event;
 use Goteo\Model\Milestone;
 use Goteo\Model\Project\ProjectMilestone;
-
 
 class ConsoleMilestoneListener extends AbstractListener {
 
@@ -45,9 +45,9 @@ class ConsoleMilestoneListener extends AbstractListener {
                 return;
             }
 
-        $event->fire(function() use ($project_milestone) {  
+        $event->fire(function() use ($project_milestone) {
             $project_milestone->save($errors);
-        }); 
+        });
     }
      /**
      * Automatically publishes projects
@@ -82,8 +82,8 @@ class ConsoleMilestoneListener extends AbstractListener {
     public function onProjectWatch(FilterProjectEvent $event) {
         $project = $event->getProject();
         $this->info("Creating milestones if fulfilled");
-        
-        if(Reward::areFulfilled($project->id)) 
+
+        if(Reward::areFulfilled($project->id))
             $type='rewards-fullfilled';
 
         if(Reward::areFulfilled($project->id, 'social'))
@@ -99,7 +99,7 @@ class ConsoleMilestoneListener extends AbstractListener {
      * @param  FilterProjectEvent $event
      */
     public function onInvestSucceeded(FilterInvestRequestEvent $event) {
-        
+
         $method   = $event->getMethod();
         $response = $event->getResponse();
         $invest   = $method->getInvest();
@@ -115,30 +115,30 @@ class ConsoleMilestoneListener extends AbstractListener {
         elseif($percentage>=50&&$percentage<90)
             $type='50-percent-reached';
         elseif($percentage>=90&&$percentage<100)
-            $type='90-percent-reached'; 
+            $type='90-percent-reached';
         elseif($percentage>=100&&$percentage<200)
             $type='100-percent-reached';
         elseif($percentage>=200)
             $type='200-percent-reached';
-        
+
         //Milestones by amount
-        if($invest->amount>=500&&$invest->amount<1000) 
-            $type='invest-500'; 
-        if($invest->amount>=1000&&$invest->amount<2500) 
+        if($invest->amount>=500&&$invest->amount<1000)
+            $type='invest-500';
+        if($invest->amount>=1000&&$invest->amount<2500)
             $type='invest-1000';
-        elseif($invest->amount>=2500) 
+        elseif($invest->amount>=2500)
             $type='invest-2500';
 
         //Milestones by donors
-        if($project->num_investors==2) 
+        if($project->num_investors==2)
             $type='2-donors';
-        elseif($project->num_investors==99) 
-            $type='99-donors'; 
-        elseif($project->num_investors==200) 
-            $type='200-donors'; 
-        elseif($project->num_investors==500) 
-            $type='500-donors'; 
-        
+        elseif($project->num_investors==99)
+            $type='99-donors';
+        elseif($project->num_investors==200)
+            $type='200-donors';
+        elseif($project->num_investors==500)
+            $type='500-donors';
+
 
         if($type)
             $this->create_milestone($project, $type);

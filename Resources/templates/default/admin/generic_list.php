@@ -22,36 +22,36 @@ $per = 100 / $cols;
 
 ?>
 <?php if ($this->addbutton) : ?>
-    <a href="<?php echo $this->url ?>/add" class="button"><?php echo $this->addbutton ?></a>
-<?php endif; ?>
+    <a href="<?= $this->url ?>/add" class="button"><?= $this->addbutton ?></a>
+<?php endif ?>
 
 <?php if ($this->otherbutton) : ?>
-    <?php echo $this->otherbutton ?>
-<?php endif; ?>
+    <?= $this->otherbutton ?>
+<?php endif ?>
 
 <!-- Filtro -->
 <?php if ($filters) : ?>
 <div class="widget board">
-    <form id="filter-form" action="<?php echo $this->url; ?>" method="get">
+    <form id="filter-form" action="<?= $this->url ?>" method="get">
         <?php foreach ($filters as $id=>$fil) : ?>
         <?php if ($fil['type'] == 'select') : ?>
-            <label for="filter-<?php echo $id; ?>"><?php echo $fil['label']; ?></label>
-            <select id="filter-<?php echo $id; ?>" name="<?php echo $id; ?>" onchange="document.getElementById('filter-form').submit();">
+            <label for="filter-<?= $id ?>"><?= $fil['label'] ?></label>
+            <select id="filter-<?= $id ?>" name="<?= $id ?>" onchange="document.getElementById('filter-form').submit();">
             <?php foreach ($fil['options'] as $val=>$opt) : ?>
-                <option value="<?php echo $val; ?>"<?php if ($fil['value'] == $val) echo ' selected="selected"';?>><?php echo $opt; ?></option>
-            <?php endforeach; ?>
+                <option value="<?= $val ?>"<?php if ($fil['value'] == $val) echo ' selected="selected"';?>><?= $opt ?></option>
+            <?php endforeach ?>
             </select>
-        <?php endif; ?>
+        <?php endif ?>
         <?php if ($fil['type'] == 'input') : ?>
             <br />
-            <label for="filter-<?php echo $id; ?>"><?php echo $fil['label']; ?></label>
-            <input name="<?php echo $id; ?>" value="<?php echo (string) $fil['value']; ?>" />
+            <label for="filter-<?= $id ?>"><?= $fil['label'] ?></label>
+            <input name="<?= $id ?>" value="<?= (string) $fil['value'] ?>" />
             <input type="submit" name="filter" value="Buscar">
-        <?php endif; ?>
-        <?php endforeach; ?>
+        <?php endif ?>
+        <?php endforeach ?>
     </form>
 </div>
-<?php endif; ?>
+<?php endif ?>
 
 <!-- lista -->
 <div class="widget board">
@@ -60,38 +60,58 @@ $per = 100 / $cols;
         <thead>
             <tr>
                 <?php foreach ($this->columns as $key => $label) : ?>
-                    <th><?php echo $label; ?></th>
-                <?php endforeach; ?>
+                    <?php
+                        if (in_array($key, ['translate','remove','edit','up','down']))  {
+                            $addfinals = true;
+                            continue;
+                        }
+                     ?>
+                    <th><?= $label ?></th>
+                <?php endforeach ?>
+                <?php if($addfinals): ?>
+                    <th>Ops.</th>
+                <?php endif ?>
             </tr>
         </thead>
 
         <tbody>
-        <?php foreach ($this->data as $item) : ?>
+        <?php
+        foreach ($this->data as $item) : ?>
             <tr>
-            <?php foreach ($this->columns as $key=>$label) : ?>
-                <?php if ($key == 'translate') : ?>
-                    <td width="5%"><?php if ($translator) : ?><a href="/translate/<?php echo $this->model.'/edit/'.$item->id; ?>" >[Traducir]</a><?php endif; ?>
-                    </td>
-                <?php elseif ($key == 'remove') : ?>
-                    <td width="5%"><a href="<?php echo $this->url?>/remove/<?php echo (is_object($item)) ? $item->id : $item['id']; ?>" onclick="return confirm('Seguro que deseas eliminar este registro?');">[Quitar]</a></td>
-                <?php elseif (in_array($key, array('edit', 'up', 'down'))) :
-                    $id = (is_object($item)) ? $item->id : $item['id'];?>
-                    <td width="5%">
-                        <a title="Registro <?php echo $id; ?>" href="<?php echo "{$this->url}/{$key}/{$id}/{$filter}"; ?>"><?php echo $botones[$key]; ?></a>
-                    </td>
+            <?php
+             $finals = [];
+             foreach ($this->columns as $key => $label) : ?>
+                <?php
+                 if (in_array($key, ['translate','remove','edit','up','down'])) : ?>
+                    <?php
+                    $id = (is_object($item)) ? $item->id : $item['id'];
+                    if ($key == 'translate') {
+                        if($translator) $finals[] = '<a href="/translate/' . $this->model . '/edit/'.$id . '" >[Traducir]</a>';
+                    } elseif ($key == 'remove') {
+                        $finals[] = '<a href="' . $this->url . '/remove/' . $id . '" onclick="return confirm(\'Seguro que deseas eliminar este registro?\');">' . $botones[$key] . '</a>';
+                        // $finals[] = $botones[$key];
+                    } else {
+                        $finals[] = '<a title="Registro ' . $id . '" href="' . "{$this->url}/{$key}/{$id}/{$filter}" . '">' . $botones[$key] . '</a>';
+                    }
+                    ?>
                 <?php elseif ($key == 'image') : ?>
-                    <td width="<?php echo round($per)-5; ?>%"><?php if ($item->$key) : ?><img src="<?php echo SITE_URL ?>/image/<?php echo (is_object($item)) ? $item->$key : $item[$key]; ?>/110/110" alt="image" /><?php endif; ?></td>
+                    <td width="<?= round($per)-5 ?>%"><?php if ($item->$key) : ?><img src="<?= SITE_URL ?>/image/<?= (is_object($item)) ? $item->$key : $item[$key] ?>/110/110" alt="image" /><?php endif ?></td>
                 <?php else : ?>
-                    <td width="<?php echo round($per)-5; ?>%"><?php echo (is_object($item)) ? $item->$key : $item[$key]; ?></td>
-                <?php endif; ?>
-            <?php endforeach; ?>
+                    <td width="<?= round($per)-5 ?>%"><?= (is_object($item)) ? $item->$key : $item[$key] ?></td>
+                <?php endif ?>
+            <?php endforeach ?>
+
+            <?php if($finals) : ?>
+                <td width="5%"><?= implode(' ', $finals) ?></td>
+            <?php endif ?>
+
             </tr>
-        <?php endforeach; ?>
+        <?php endforeach ?>
         </tbody>
     </table>
     <?php else : ?>
     <p><?= $this->text('admin-empty-list') ?></p>
-    <?php endif; ?>
+    <?php endif ?>
 </div>
 
 <?php $this->replace() ?>

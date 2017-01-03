@@ -75,6 +75,7 @@ namespace Goteo\Model\Blog\Post {
                 ORDER BY comment.date ASC, comment.id ASC
                 ";
 
+            // die(\sqldbg($sql, [$post]));
             $query = static::query($sql, array($post));
 
             foreach ($query->fetchAll(\PDO::FETCH_CLASS, __CLASS__) as $comment) {
@@ -97,7 +98,6 @@ namespace Goteo\Model\Blog\Post {
 
                 $list[$comment->id] = $comment;
             }
-
             return $list;
         }
 

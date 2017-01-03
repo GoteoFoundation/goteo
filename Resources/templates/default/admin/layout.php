@@ -38,7 +38,25 @@ $this->layout('layout', [
 
 <link rel="stylesheet" href="<?= SRC_URL ?>/assets/vendor/typeahead/jquery.typeahead.min.css" type="text/css" />
 <link rel="stylesheet" href="<?= SRC_URL ?>/assets/vendor/datepicker/css/bootstrap.css" type="text/css" />
+<link rel="stylesheet" href="<?= SRC_URL ?>/assets/vendor/simplemde-markdown/simplemde.min.css" type="text/css" />
 <style type="text/css">
+
+    /* Tuning Markdown editor */
+    .newsletter, .newsletter a {
+        font-size:14px;
+    }
+    .newsletter .editor-preview a {
+        color: #3AB9C2 !important;
+        padding:0 !important;
+    }
+    .newsletter .CodeMirror .CodeMirror-code .cm-link {
+        color: #3AB9C2;
+    }
+
+    .newsletter .CodeMirror .CodeMirror-code .cm-url {
+        color: #7f8c8d;
+    }
+
 
     ul.ul-admin>li.selected{
         background-color:#C3DFE1 !important;
@@ -107,6 +125,8 @@ $this->layout('layout', [
 <?php $this->append() ?>
 
 <?php $this->section('footer') ?>
+
+<script type="text/javascript" src="<?= SRC_URL ?>/assets/vendor/simplemde-markdown/simplemde.min.js"></script>
 
 <?php if($this->debug()): ?>
 <script type="text/javascript" src="<?= SRC_URL ?>/assets/vendor/typeahead/jquery.typeahead.js"></script>

@@ -23,7 +23,7 @@
 <?php if (!empty($_SESSION['user'])) : ?>
 <div class="widget blog-comment">
     <h<?php echo $level ?> class="title"><?php echo Text::get('blog-send_comment-header'); ?></h<?php echo $level ?>>
-    <form method="post" action="/message/post/<?php echo $vars['post']; ?>/<?php echo $vars['project']; ?>">
+    <form method="post" action="/message/post/<?php echo $vars['post']; ?><?php echo $vars['project'] ? '/'.$vars['project'] : ''; ?>">
 	    <div id="bocadillo"></div>
         <textarea id="message" name="message" cols="50" rows="5"></textarea>
         <a target="_blank" id="a-preview" href="#preview" class="preview">&middot;<?php echo Text::get('regular-preview'); ?></a>

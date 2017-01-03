@@ -182,7 +182,7 @@ class AdminController extends \Goteo\Core\Controller {
 		$admin_node = Session::get('admin_node');
 		if ($user->hasRoleInNode($admin_node, ['superadmin', 'root']) || ($user->hasRoleInNode($admin_node, ['admin']) && Config::isMasterNode($admin_node))) {
 			//TODO: allow Feed to handle multiple nodes
-			$ret['feed'] = \Goteo\Library\Feed::getAll('all', 'admin', 50, $admin_node);
+			$ret['feed'] = Feed::getAll('all', 'admin', 50, $admin_node);
 		}
 		//default admin dashboard (nothing!)
 		return $this->viewResponse('admin/default', $ret);

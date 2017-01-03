@@ -1,5 +1,5 @@
 <?php
-use Goteo\Library\Page,
+use Goteo\Model\Page,
     Goteo\Library\Feed,
     Goteo\Library\Text;
 

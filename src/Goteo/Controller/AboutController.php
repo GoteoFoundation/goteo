@@ -10,7 +10,7 @@
 
 namespace Goteo\Controller {
 
-    use Goteo\Library\Page,
+    use Goteo\Model\Page,
         Goteo\Application\Config,
         Goteo\Application\View,
         Goteo\Application\Session,
@@ -53,7 +53,7 @@ namespace Goteo\Controller {
                  return new Response(View::render('project/howto', array(
                         'name' => $page->name,
                         'description' => $page->description,
-                        'content' => $page->content
+                        'content' => $page->parseContent()
                     )
                  ));
 
@@ -83,7 +83,7 @@ namespace Goteo\Controller {
             return new Response(View::render('about/sample', array(
                         'name' => $page->name,
                         'description' => $page->description,
-                        'content' => $page->content
+                        'content' => $page->parseContent()
                     )
                  ));
 

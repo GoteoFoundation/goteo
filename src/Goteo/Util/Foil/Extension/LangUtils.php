@@ -38,6 +38,7 @@ class LangUtils implements ExtensionInterface
         return [
           'lang_current' => [$this, 'lang_current'],
           'lang_short' => [$this, 'lang_short'],
+          'lang_name' => [$this, 'lang_name'],
           'lang_locale' => [$this, 'lang_locale'],
           'lang_active' => [$this, 'lang_active'],
           'lang_list' => [$this, 'lang_list'],
@@ -53,6 +54,11 @@ class LangUtils implements ExtensionInterface
     public function lang_short($lang = null, $public_only = false)
     {
         return Lang::getShort($lang ? $lang : Lang::current($public_only));
+    }
+
+    public function lang_name($lang = null, $public_only = false)
+    {
+        return Lang::getName($lang ? $lang : Lang::current($public_only));
     }
 
     public function list_countries($lang = null)

@@ -1,4 +1,4 @@
-<?php $project=$this->project; ?>        
+<?php $project=$this->project; ?>
 
 <div class="hidden-xs">
 
@@ -7,6 +7,9 @@
         </h2>
 
         <?php foreach ($project->individual_rewards as $individual) : ?>
+
+        <?php $available = $individual->available(); ?>
+        <?php $units = ($individual->units - $individual->taken); // units left?>
         <div class="side-widget">
 
             <div class="amount"><?= $this->text('regular-investing').' '.amount_format($individual->amount); ?></div>
@@ -14,18 +17,29 @@
             <div class="spacer-20"><?= $individual->description ?></div>
 
             <div class="investors">
-                <?= '> '.sprintf("%02d", $individual->taken).' '.$this->text('project-view-metter-investors') ?>
+                <div><?= '> '.sprintf("%02d", $individual->taken).' '.$this->text('project-view-metter-investors') ?></div>
+                <?php if ($project->status==3): ?>
+
+                <?php if (!$available):  ?>
+                    <div class="left"><?= ' > '.$this->text('invest-reward-none') ?></div>
+                <?php elseif (!empty($individual->units)) : ?>
+                    <div class="left">
+                        <?= ' > '.$this->text('project-rewards-individual_reward-units_left', sprintf("%02d", $units)) ?>
+                    </div>
+                <?php endif ?>
+
+                <?php endif; ?>
             </div>
+
+
             <?php if ($project->status==3): ?>
 
                 <div class="row spacer-5">
                     <div class="col-md-6 col-sm-8">
-                        <?php if($individual->none): ?>
-                        <a href="<?= '/invest/'.$project->id.'/payment?amount='.$individual->amount ?>"><button class="btn btn-block side-pink"><?= $this->text('landing-donor-button') ?></button></a>
-                        <?php else: ?>
+                        <?php if(!$individual->none): ?>
                         <a href="<?= '/invest/'.$project->id.'/payment?reward='.$individual->id ?>"><button class="btn btn-block side-pink"><?= $this->text('regular-getit') ?></button></a>
                         <?php endif; ?>
-                    </div>  
+                    </div>
                 </div>
 
             <?php endif; ?>
@@ -52,7 +66,7 @@
                 <div class="row spacer-5">
                     <div class="col-md-6 col-sm-8">
                         <a href="<?= '/project/'.$project->id.'/participate#msg-'.$support->thread ?>"><button class="btn btn-block green"><?= $this->text('regular-collaborate') ?></button></a>
-                    </div>  
+                    </div>
                 </div>
             </div>
         <?php endforeach ?>

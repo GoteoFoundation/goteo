@@ -439,6 +439,7 @@ class ProjectsSubController extends AbstractSubController {
                     'country_code' => $this->getPost('country'),
                     'longitude'    => $this->getPost('longitude'),
                     'latitude'     => $this->getPost('latitude'),
+                    'radius'       => $this->getPost('radius'),
                     'method'       => 'manual'
                 ));
                 $errors = [];
@@ -457,10 +458,15 @@ class ProjectsSubController extends AbstractSubController {
         $location = ProjectLocation::get($project);
 
         // cambiar fechas
+        if(empty($location->city)) {
+            $location->city = $project->location;
+        }
         return array(
                 'template' => 'admin/projects/location',
                 'project' => $project,
-                'location' => $location
+                'location' => $location,
+                'with_radius' => true,
+                'radius' => $location->radius
         );
 
     }
@@ -641,7 +647,7 @@ class ProjectsSubController extends AbstractSubController {
         $subject = str_replace('%PROJECTNAME%', $project->name, $template->title);
         $search  = array('%USERNAME%', '%PROJECTNAME%');
         $replace = array($project->user->name, $project->name);
-        $content = \str_replace($search, $replace, $template->text);
+        $content = \str_replace($search, $replace, $template->parseText());
         // iniciamos mail
         $mailHandler = new Mail();
         $mailHandler->lang = $comlang;

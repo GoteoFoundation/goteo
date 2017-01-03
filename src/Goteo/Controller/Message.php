@@ -128,7 +128,7 @@ namespace Goteo\Controller {
 
                             $search  = array('%MESSAGE%', '%OWNERNAME%', '%USERNAME%', '%PROJECTNAME%', '%PROJECTURL%', '%RESPONSEURL%');
                             $replace = array($_POST['message'], $thread->user->name, Session::getUser()->name, $projectData->name, $project_url, $response_url);
-                            $content = \str_replace($search, $replace, $template->text);
+                            $content = \str_replace($search, $replace, $template->parseText());
 
                             $mailHandler = new Model\Mail();
                             $mailHandler->lang = $comlang;
@@ -159,7 +159,7 @@ namespace Goteo\Controller {
 
                         $search  = array('%MESSAGE%', '%OWNERNAME%', '%USERNAME%', '%PROJECTNAME%', '%PROJECTURL%', '%RESPONSEURL%');
                         $replace = array($_POST['message'], $projectData->user->name, Session::getUser()->name, $projectData->name, $project_url, $response_url);
-                        $content = \str_replace($search, $replace, $template->text);
+                        $content = \str_replace($search, $replace, $template->parseText());
 
                         $mailHandler = new Model\Mail();
 
@@ -246,7 +246,7 @@ namespace Goteo\Controller {
                 // url de la plataforma -> %SITEURL% por SITE_URL
                 $search  = array('%MESSAGE%', '%OWNERNAME%', '%USERNAME%', '%PROJECTNAME%', '%SITEURL%', '%RESPONSEURL%');
                 $replace = array($msg_content, $ownerData->name, Session::getUser()->name, $project->name, SITE_URL, $response_url);
-                $content = \str_replace($search, $replace, $template->text);
+                $content = \str_replace($search, $replace, $template->parseText());
 
                 $mailHandler = new Model\Mail();
 
@@ -329,7 +329,7 @@ namespace Goteo\Controller {
                 // url del perfil -> %PROFILEURL% por ".SITE_URL."/user/profile/{$user->id}"
                 $search  = array('%MESSAGE%','%TONAME%',  '%USERNAME%', '%PROFILEURL%', '%RESPONSEURL%');
                 $replace = array($msg_content, $user->name, Session::getUser()->name, $profile_url, $response_url);
-                $content = \str_replace($search, $replace, $template->text);
+                $content = \str_replace($search, $replace, $template->parseText());
 
                 $mailHandler = new Model\Mail();
                 $mailHandler->lang = $comlang;
@@ -372,7 +372,6 @@ namespace Goteo\Controller {
                     'date' => date('Y-m-d H:i:s'),
                     'text' => $_POST['message']
                 ));
-
                 if ($comment->save($errors)) {
                     // a ver los datos del post
                     $postData = Model\Blog\Post::get($post);
@@ -422,7 +421,7 @@ namespace Goteo\Controller {
 
                         $search  = array('%MESSAGE%', '%OWNERNAME%', '%USERNAME%', '%PROJECTNAME%', '%PROJECTURL%', '%RESPONSEURL%');
                         $replace = array($_POST['message'], $projectData->user->name, Session::getUser()->name, $projectData->name, $project_url, $response_url);
-                        $content = \str_replace($search, $replace, $template->text);
+                        $content = \str_replace($search, $replace, $template->parseText());
 
                         // que no pete si no puede enviar el mail al autor
                         try {
@@ -475,6 +474,7 @@ namespace Goteo\Controller {
 
                 }
 			}
+                // print_r($comment);die("[$post]");
 
             if (!empty($project)) {
                 throw new Redirection("/project/{$project}/updates/{$post}#comment".$comment->id, Redirection::TEMPORARY);

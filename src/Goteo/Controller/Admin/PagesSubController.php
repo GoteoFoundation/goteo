@@ -15,7 +15,7 @@ use Goteo\Application\Config;
 use Goteo\Application\Session;
 use Goteo\Application\Lang;
 use Goteo\Library\Feed;
-use Goteo\Library\Page;
+use Goteo\Model\Page;
 
 class PagesSubController extends AbstractSubController {
 
@@ -29,15 +29,13 @@ class PagesSubController extends AbstractSubController {
 
     static protected $label = 'pages-lb';
 
-    static public $node_pages = array('about', 'contact', 'press', 'service');
 
     /**
      * Overwrite some permissions
      * @inherit
      */
     static public function isAllowed(\Goteo\Model\User $user, $node) {
-        // Only central node or superadmins allowed here
-        if( ! (Config::isMasterNode($node) || $user->hasRoleInNode($node, ['superadmin', 'root'])) ) return false;
+        if( ! Config::isMasterNode($node) ) return false;
         return parent::isAllowed($user, $node);
     }
 
@@ -59,35 +57,31 @@ class PagesSubController extends AbstractSubController {
         }
 
         return array(
-                'folder' => 'pages',
-                'file' => 'add'
+                'template' => 'admin/pages/add'
          );
     }
 
 
     public function editAction($id = null, $subaction = null) {
-        $node = $this->node;
         $errors = array();
 
-        if (!$this->isMasterNode() && !in_array($id, self::$node_pages)) {
+        if (!$this->isMasterNode()) {
             Message::info('No puedes gestionar la página <strong>'.$id.'</strong>');
             return $this->redirect("/admin/pages");
         }
         // si estamos editando una página
-        $page = Page::get($id, $node, Lang::getDefault());
+        $page = Page::get($id, Lang::getDefault());
 
         // si llega post, vamos a guardar los cambios
         if ($this->isPost()) {
             $page->name = $this->getPost('name');
             $page->description = $this->getPost('description');
             $page->content = $this->getPost('content');
+            $page->type = $this->getPost('type');
             if ($page->save($errors)) {
 
                 // Evento Feed
                 $log = new Feed();
-                if (!$this->isMasterNode() && in_array($id, self::$node_pages)) {
-                    $log->setTarget($node, 'node');
-                }
                 $log->populate('modificacion de página institucional (admin)', '/admin/pages',
                     \vsprintf("El admin %s ha %s la página institucional %s", array(
                     Feed::item('user', $this->user->name, $this->user->id),
@@ -100,12 +94,9 @@ class PagesSubController extends AbstractSubController {
                 Message::info('La página '.$page->name. ' se ha actualizado correctamente');
 
                 // tratar si han marcado pendiente de traducir
-                // no usamos Core\Model porque no es tabla _lang
-                if ($this->getPost('pending') == 1) {
-                    $ok = Page::setPending($id, $node, $errors);
-                    if (!$ok) {
-                        Message::error(implode('<br />', $errors));
-                    }
+                if ($this->hasPost('pending') && $this->getPost('pending') == 1
+                    && !Page::setPending($post->id, 'page')) {
+                    Message::error('NO se ha marcado como pendiente de traducir!');
                 }
 
                 return $this->redirect("/admin/pages");
@@ -117,8 +108,7 @@ class PagesSubController extends AbstractSubController {
 
         // sino, mostramos para editar
         return array(
-                'folder' => 'pages',
-                'file' => 'edit',
+                'template' => 'admin/pages/edit',
                 'page' => $page
          );
     }
@@ -126,13 +116,11 @@ class PagesSubController extends AbstractSubController {
 
     public function listAction($id = null, $subaction = null) {
         // si estamos en la lista de páginas
-        $pages = Page::getList($this->node);
+        $pages = Page::getList();
 
         return array(
-                'folder' => 'pages',
-                'file' => 'list',
-                'pages' => $pages,
-                'node' => $this->node
+                'template' => 'admin/pages/list',
+                'pages' => $pages
         );
     }
 

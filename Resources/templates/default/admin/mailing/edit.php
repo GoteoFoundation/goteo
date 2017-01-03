@@ -30,6 +30,7 @@ $templates = $this->templates
                 <option value="<?= $templateId ?>"<?= ($this->templateId == $templateId ? ' selected="selected"' : '') ?>><?= $templateName ?></option>
             <?php endforeach ?>
             </select>
+            <?= $this->html('select', ['options' => $this->languages, 'value' => $this->get_query('hl'), 'name' => 'hl', 'attribs' => ['id' => 'template-lang']]) ?>
             <input type="button" id="template_load" value="Cargar" />
         </dd>
     </dl>
@@ -40,9 +41,21 @@ $templates = $this->templates
         </dd>
     </dl>
     <dl>
-        <dt>Contenido: (en c&oacute;digo html; los saltos de linea deben ser con &lt;br /&gt;)</dt>
+        <dt>Contenido:</dt>
         <dd>
             <textarea id="mail_content" name="content" cols="80" rows="10"><?= $this->content ?></textarea>
+        </dd>
+    </dl>
+    <dl>
+        <dt>Tipo de procesado</dt>
+        <dd><?= $this->html('select', [
+                'value' => $this->type,
+                'options' => [
+                    'md' => $this->text('admin-text-type-md'),
+                    'html' => $this->text('admin-text-type-html')
+                    ],
+                'name' => 'type',
+                'attribs' => ['id'=>'mail_type']]) ?>
         </dd>
     </dl>
 
@@ -76,30 +89,64 @@ $templates = $this->templates
 
 <?php $this->section('footer') ?>
 
+<script type="text/javascript" src="<?= SRC_URL ?>/assets/vendor/simplemde-markdown/simplemde.min.js"></script>
+
 <script type="text/javascript">
 $(function ($) {
+
+    var setEditor;
+    var simplemde;
+    (setEditor = function(){
+        if($('#mail_type').val() == 'md') {
+            if(!(simplemde)) {
+                simplemde = new SimpleMDE({
+                  element: $('#mail_content')[0],
+                  spellChecker: false,
+                  promptURLs: true,
+                  forceSync: true
+                });
+            }
+        } else {
+            if(simplemde) {
+                simplemde.toTextArea();
+                simplemde = null;
+            }
+        }
+    })();
+    $('#mail_type').on('change', setEditor);
 
     $('#template_load').click(function () {
        if (confirm('El asunto y el contenido actual se substiruira por el que hay en la plantilla. Seguimos?')) {
             if($('#template').val() == 0) {
                 $('#mail_subject').val('');
                 $('#mail_content').val('');
+                $('#mail_type').val('md');
                 return true;
             }
-            $.getJSON('/admin/mailing/get_template_content/' + $('#template').val(), function(data){
-                if(data) {
-                    if(data.title || data.text) {
-                        $('#mail_subject').val(data.title);
-                        $('#mail_content').val(data.text);
+
+            $.getJSON('/admin/mailing/get_template_content/' + $('#template').val(),
+                {hl: $('#template-lang').val()},
+                function(data){
+                    if(data) {
+                        if(data.title || data.text) {
+                            $('#mail_type').val(data.type);
+                            $('#mail_type').change();
+                            $('#mail_subject').val(data.title);
+                            if(simplemde) {
+                                simplemde.value(data.text);
+                            } else {
+                                $('#mail_content').val(data.text);
+                            }
+                        }
+                        else {
+                            alert('Error:', data);
+                        }
                     }
                     else {
-                        alert('Error:', data);
+                        alert('Error retrieving template!');
                     }
                 }
-                else {
-                    alert('Error retrieving template!');
-                }
-            });
+            );
         }
     });
 

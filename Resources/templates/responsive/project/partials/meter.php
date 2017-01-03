@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 use Goteo\Library\Check;
 
@@ -35,7 +35,7 @@ use Goteo\Library\Check;
     if($optimum_done>=100)
     {
         $extra_done=@floor(((($project->amount-$project->maxcost)*100))/($project->maxcost*0.5));
-        
+
         // Max 100% (1.5 the optimum)
         $extra_done=min($extra_done, 100);
         $extra_left=100-$extra_done;
@@ -56,24 +56,24 @@ use Goteo\Library\Check;
 
     //Day
 
-    if ($project->status == 3) 
+    if ($project->status == 3)
     { // en campaña
-        
-        if ($project->days > 2) 
+
+        if ($project->days > 2)
         {
             $days_left = number_format($project->days);
             $days_left2 = $this->text('regular-days');
-        } 
-        else 
+        }
+        else
         {
 
             $part = strtotime($project->published);
 
-            if ($project->round == 1) 
+            if ($project->round == 1)
             {
                 $plus = $project->days_round1;
-            } 
-            elseif ($project->round == 2) 
+            }
+            elseif ($project->round == 2)
             {
                 $plus = $project->days_total;
             }
@@ -87,7 +87,7 @@ use Goteo\Library\Check;
         $days_string=$days_left.' '.$days_left2;
 
     }
-            
+
     elseif (!empty($project->status)) {
         switch ($project->status) {
             case 1: // en edicion
@@ -116,7 +116,7 @@ use Goteo\Library\Check;
     }
 
 ?>
-             
+
                 <div class="row hidden-xs">
                     <div class="col-md-3 col-sm-4 thermometer-container">
                         <div class="thermometer pull-left hidden-xs">
@@ -137,16 +137,18 @@ use Goteo\Library\Check;
                                 </div>
                                 <div class="done <?= $minimum_done ? 'bottom-border-radius' : '' ?>" style="height:<?= $minimum_done.'%' ?>" >
                                 </div>
-                            </div> 
+                            </div>
                         </div>
 
                         <div class="labels pull-left hidden-xs">
                             <div class="minimum-label" style="bottom:<?= $minimum_label.'%' ?>">
                             <img src="<?= SRC_URL . '/assets/img/project/arrow-meter.png' ?>"><span class="text">Min.</span>
                             </div>
-                            <div class="optimum-label">
-                            <img src="<?= SRC_URL . '/assets/img/project/arrow-meter.png' ?>"><span class="text">Opt.</span>
-                            </div>
+                            <?php if($project->mincost!=$project->maxcost): ?>
+                                <div class="optimum-label">
+                                <img src="<?= SRC_URL . '/assets/img/project/arrow-meter.png' ?>"><span class="text">Opt.</span>
+                                </div>
+                            <?php endif; ?>
                             <div class="percentage" style="bottom: <?= $percentage_marker.'%' ?>">
                                 <?= $project->percent.'%' ?>
                             </div>
@@ -170,15 +172,15 @@ use Goteo\Library\Check;
                                 <div class="status">
                                 <?php   if($project->tagmark=='onrun-keepiton')
                                             echo $this->text('regular-onrun_mark') . '<br />' . $this->text('regular-keepiton_mark');
-                                        else 
-                                            echo $this->text('regular-'.$project->tagmark.'_mark') 
-                                ?>              
+                                        else
+                                            echo $this->text('regular-'.$project->tagmark.'_mark')
+                                ?>
                                 </div>
                             <?php endif; ?>
                         </div>
                         <div class="reached-label">
                         <?= $this->text('project-view-metter-got') ?>
-                        </div>  
+                        </div>
                         <div class="reached">
                         <?= amount_format($project->amount) ?>
                         </div>
@@ -211,7 +213,7 @@ use Goteo\Library\Check;
                     <div class="meter-investors">
                         <?= $project->num_investors.' '.$this->text('project-view-metter-investors') ?>
                     </div>
-                    
+
                     <?php if(!$this->get_user() ): ?>
                     <a href="/project/favourite/<?= $project->id ?>">
                     <?php endif; ?>
@@ -222,5 +224,5 @@ use Goteo\Library\Check;
                     <?php if(!$this->get_user() ): ?>
                     </a>
                     <?php endif; ?>
-                    
+
                 </div>

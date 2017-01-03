@@ -53,6 +53,9 @@ function item_select(type) {
             <option value="<?php echo $lng->id; ?>"<?php if ($lng->id == $_SESSION['translate_lang']) echo ' selected="selected"'; ?>><?php echo $lng->name; ?></option>
         <?php endforeach; ?>
         </select>
+        <?php if(in_array($_SESSION['translate_lang'], $vars['langs_available'])): ?>
+        <a href="?remove_translation=<?= $_SESSION['translate_lang'] ?>" onclick="return confirm('<?= str_replace("'","\'",Text::get('project-remove-translation-confirm')) ?>')"><?= Text::get('project-remove-translation') ?></a>
+        <?php endif ?>
     </form>
 
     <?php if ($_SESSION['translate_type'] == 'project' && !empty($_SESSION['translate_project'])) : ?>

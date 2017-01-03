@@ -10,7 +10,7 @@
 
 namespace Goteo\Controller {
 
-    use Goteo\Library\Page,
+    use Goteo\Model\Page,
         Goteo\Core\View,
         Goteo\Model;
 
@@ -31,7 +31,7 @@ namespace Goteo\Controller {
                 array(
                     'name' => $page->name,
                     'title' => $page->description,
-                    'content' => $page->content,
+                    'content' => $page->parseContent(),
                     'news' => $news
                 )
              );

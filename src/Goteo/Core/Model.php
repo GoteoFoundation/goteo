@@ -401,7 +401,7 @@ abstract class Model {
 	}
 
 	/*
-		     *   Metodo para marcar como pendiente todas las traducciones de cierto registro
+	*   Metodo para marcar como pendiente todas las traducciones de cierto registro
 	*/
 	public static function setPending($id, $table) {
 
@@ -409,11 +409,40 @@ abstract class Model {
 			static::query("UPDATE `{$table}_lang` SET `pending` = 1 WHERE id = :id", array(':id' => $id));
 			return true;
 		} catch (\Exception $e) {
-			return false;
-		}
-
+        }
+		return false;
 	}
 
+
+    /**
+     * Removes a lang entry
+     * @param  [type] $id    [description]
+     * @param  [type] $table [description]
+     * @return [type]        [description]
+     */
+    public function removeLang($lang) {
+        try {
+            static::query("DELETE FROM `{$this->Table}_lang` WHERE id = :id AND lang = :lang", array(':id' => $this->id, ':lang' => $lang));
+            return true;
+        } catch (\Exception $e) {
+        }
+        return false;
+    }
+
+    /**
+     * Returns all translations available
+     * @return [type] [description]
+     */
+    public function getLangsAvailable() {
+        $langs = [];
+        try {
+            if($query = static::query("SELECT GROUP_CONCAT(lang) AS langs FROM `{$this->Table}_lang` WHERE id = :id GROUP BY id", array(':id' => $this->id))) {
+                $langs = explode(',',$query->fetchColumn());
+            }
+        } catch (\Exception $e) {
+        }
+        return $langs;
+    }
 	/**
 	 * Cuenta el numero de items y lo divide en páginas
 	 * @param type $sql

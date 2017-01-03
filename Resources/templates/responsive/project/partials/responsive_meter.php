@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 use Goteo\Library\Check;
 
@@ -6,23 +6,23 @@ use Goteo\Library\Check;
 
     //Day
 
-    if ($project->status == 3) 
+    if ($project->status == 3)
     { // en campaña
-        
-        if ($project->days > 2) 
+
+        if ($project->days > 2)
         {
             $days_left = number_format($project->days);
             $days_left2 = $this->text('regular-days');
-        } 
-        else 
+        }
+        else
         {
             $part = strtotime($project->published);
 
-            if ($project->round == 1) 
+            if ($project->round == 1)
             {
                 $plus = $project->days_round1;
-            } 
-            elseif ($project->round == 2) 
+            }
+            elseif ($project->round == 2)
             {
                 $plus = $project->days_total;
             }
@@ -37,7 +37,7 @@ use Goteo\Library\Check;
         $days_string=$days_left.' '.$days_left2;
 
     }
-            
+
     elseif (!empty($project->status)) {
         switch ($project->status) {
             case 1: // en edicion
@@ -77,7 +77,7 @@ use Goteo\Library\Check;
 </div>
 
 <?php endif; ?>
-             
+
 <div class="row responsive-meter visible-xs">
         <div class="round-left-time">
             <?php if(!empty($project->round)): ?>
@@ -94,17 +94,17 @@ use Goteo\Library\Check;
             </span>
         </div>
 
-        
+
         <div class="status">
             <?php if($project->tagmark): ?>
             <?php   if($project->tagmark=='onrun-keepiton')
                         echo $this->text('regular-onrun_mark').' '.$this->text('regular-keepiton_mark');
-                    else 
-                        echo $this->text('regular-'.$project->tagmark.'_mark') 
-            ?> 
+                    else
+                        echo $this->text('regular-'.$project->tagmark.'_mark')
+            ?>
             <?php endif; ?>
         </div>
-        
+
         <div class="row meter-numbers">
             <div class="item reached-container">
                 <div class="meter-label">
@@ -144,15 +144,18 @@ use Goteo\Library\Check;
     <div class="row call-info visible-xs">
         <div class="col-xs-2 no-padding" >
             <img src="<?= SRC_URL . '/assets/img/project/drop.svg' ?>" class="img-responsive">
-            <div class="label-call" >
-            <?= $this->text('node-side-sumcalls-header') ?>
-            </div>
         </div>
-        <div class="col-xs-10" >
+        <div class="col-xs-10 info-default-call" >
             <div class="header-text"><?= $project->called->user->name.' '.$this->text('call-project-get') ?></div>
             <div class="call-name">
-                <?= $project->called->name ?>    
+                <?= $project->called->name ?>
             </div>
+        </div>
+        <div class="col-xs-10 info-hover-call display-none" >
+            <div class="header-text"><?= $project->called->user->name.' '.$this->text('call-project-get') ?></div>
+                <div class="call-name">
+                <?= $this->text('project-call-got', amount_format($project->amount_call), $project->called->user->name) ?>
+                </div>
         </div>
     </div>
 </a>
@@ -171,5 +174,5 @@ use Goteo\Library\Check;
         </div>
     <?php if(!$this->get_user() ): ?>
         </a>
-    <?php endif; ?>   
+    <?php endif; ?>
 </div>

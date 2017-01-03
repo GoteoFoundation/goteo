@@ -37,7 +37,6 @@ namespace Goteo\Model\Project {
 
 		public static function getAll ($project, $lang = null) {
             try {
-                if(empty($lang)) $lang = Lang::current();
                 $array = array();
 
                 // FIXES #42

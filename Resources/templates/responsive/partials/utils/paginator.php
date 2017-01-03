@@ -64,7 +64,7 @@ if ($total_pags > 1) {
             }
         }
         else {
-            $nums[] = '<li class="selected"><a href="' . $baselink . $nextpart . '">' . ($i + 1) . '</a></li>';
+            $nums[] = '<li class="selected active"><a href="' . $baselink . $nextpart . '">' . ($i + 1) . '</a></li>';
             if ($pag > 0)             $anterior = $i - 1;
             if ($i + 1 < $total_pags) $seguent  = $i + 1;
         }

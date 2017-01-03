@@ -25,7 +25,7 @@ use // convocatorias en portada
     Goteo\Model\User;
 use Goteo\Model\Category;
 use Goteo\Library\Text;
-use Goteo\Library\Page;
+use Goteo\Model\Page;
 
 class ChannelController extends \Goteo\Core\Controller {
 
@@ -53,7 +53,7 @@ class ChannelController extends \Goteo\Core\Controller {
 
         //check if there are elements to show by type
         foreach($types as $key => $type)
-        {       
+        {
             $total = Project::published(['type' => $type], $id, 0, 0, true);
             if(!$total&&$type!='popular')
                 unset($types[$key]);
@@ -86,7 +86,7 @@ class ChannelController extends \Goteo\Core\Controller {
      */
     public function indexAction($id, Request $request)
     {
-        
+
         $this->setChannelContext($id);
 
         // Proyectos destacados si hay
@@ -177,7 +177,7 @@ class ChannelController extends \Goteo\Core\Controller {
                         'action' => '/channel/' . $id . '/create',
                         'name' => $page->name,
                         'description' => $page->description,
-                        'content' => $page->content
+                        'content' => $page->parseContent()
                     )
                  );
         }
@@ -202,8 +202,8 @@ class ChannelController extends \Goteo\Core\Controller {
 
          // changing to a responsive theme here
         View::setTheme('responsive');
-     
+
         return $this->viewResponse('channels/list', ['channels' => $channels]);
     }
-        
+
 }

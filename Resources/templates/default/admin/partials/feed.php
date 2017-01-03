@@ -2,7 +2,7 @@
     <a name="feed"></a>
     <div class="widget feed">
 
-        <h3>actividad reciente</h3>
+        <h3><?= $this->text('regular-recent-activity') ?></h3>
         Ver Feeds por:
 
         <p class="categories">

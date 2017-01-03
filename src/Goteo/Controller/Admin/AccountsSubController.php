@@ -12,7 +12,6 @@
  */
 namespace Goteo\Controller\Admin;
 
-use Goteo\Library\Tpv;
 use Goteo\Library\Paypal;
 use Goteo\Library\Feed;
 use Goteo\Library\Text;
@@ -133,7 +132,6 @@ class AccountsSubController extends AbstractSubController {
         );
     }
 
-
     /**
      * Contacts to the payment gateway and do the refund process
      * @param  Invest  $invest   [description]
@@ -217,6 +215,7 @@ class AccountsSubController extends AbstractSubController {
         }
 
         $status = $invest->status;
+
         $coin = Currency::getDefault('html');
         if (!in_array($status, [Invest::STATUS_PENDING, Invest::STATUS_CHARGED, Invest::STATUS_TO_POOL])) {
             Message::error(Text::get('admin-account-invest-non-user-refundable'));
@@ -225,16 +224,17 @@ class AccountsSubController extends AbstractSubController {
             $errors = array();
             $amount = null;
             $current_pool = $invest->pool;
-            // If it's already on the user's pool, we will try to refunded anyway
+            // If it's already on the user's pool, we will try to refund anyway
             if($status == Invest::STATUS_TO_POOL) {
                 $amount = $invest->getUser()->getPool()->getAmount();
                 if($amount < $invest->amount) {
                     Message::error(Text::get('admin-account-invest-user-refund-fail-pool-amount', "$amount $coin"));
                     return $this->redirect('/admin/accounts/details/' . $id);
                 }
-                // Mark this invest as if the users has choosen not to use the pool on fail
-                if($invest->method != 'pool') $invest->setPoolOnFail(false);
             }
+
+            // Mark this invest as if the users has choosen not to use the pool on fail
+            if($invest->method != 'pool') $invest->setPoolOnFail(false);
 
             // Cancels the invest, discounts pool if needed
             if($this->cancelInvest($invest)) {
@@ -327,6 +327,34 @@ class AccountsSubController extends AbstractSubController {
         return $this->redirect('/admin/accounts/details/'.$id);
     }
 
+    public function converttopoolAction($id) {
+        $invest = Invest::get($id);
+        if (!$invest instanceof Invest) {
+            Message::error(Text::get('admin-account-invalid-invest', $id));
+            return $this->redirect('/admin/accounts');
+        }
+
+        $project = $invest->getProject();
+        $errors = [];
+        if($project instanceOf Project) {
+            $invest->status = Invest::STATUS_TO_POOL;
+            $invest->pool = true;
+            $invest->project = null;
+            if($invest->save($errors)) {
+                if(!$invest->setRewards([])) {
+                    $errors[] = 'Failed to remove rewards from invest';
+                }
+            }
+        } else {
+            $errors[] = 'Already a pool invest!';
+        }
+        if($errors) {
+            Message::error(Text::get('admin-account-convert-to-pool-ko', implode(',', $errors)));
+        } else {
+            Message::info(Text::get('admin-account-convert-to-pool-ok'));
+        }
+        return $this->redirect('/admin/accounts/details/' . $id);
+    }
 
     /**
      * Refunds to invest to the original user

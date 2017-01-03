@@ -22,7 +22,7 @@ $page = $this->page('denied');
 <div id="main">
     <div class="widget">
         <h3 class="title"><?=$page->name?></h3>
-        <?=$page->content?>
+        <?= $page->parseContent() ?>
     </div>
 </div>
 

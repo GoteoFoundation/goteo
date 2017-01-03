@@ -12,22 +12,21 @@ $account = $vars['account'];
 // esto lo hago para que proyectos en convocatoria no les salga para poner cuenta paypal
 $campos_cuentas  = array();
 
-if (!$project->called) {
-    $campos_cuentas['paypal'] = array(
-        'type'      => 'textbox',
-        'title'     => Text::get('contract-paypal_account'),
-        'hint'      => Text::get('tooltip-project-paypal'),
-        'errors'    => !empty($errors['paypal']) ? array($errors['paypal']) : array(),
-        'ok'        => !empty($okeys['paypal']) ? array($okeys['paypal']) : array(),
-        'value'     => $account->paypal
-    );
+$campos_cuentas['paypal'] = array(
+    'type'      => 'textbox',
+    'title'     => Text::get('contract-paypal_account'),
+    'hint'      => Text::get('tooltip-project-paypal'),
+    'errors'    => !empty($errors['paypal']) ? array($errors['paypal']) : array(),
+     'ok'        => !empty($okeys['paypal']) ? array($okeys['paypal']) : array(),
+    'value'     => $account->paypal
+);
 
-    $campos_cuentas['paypal_advice'] = array(
-        'type'      => 'html',
-        'class'     => 'inline',
-        'html'      => Text::get('tooltip-project-paypal')
-    );
-}
+$campos_cuentas['paypal_advice'] = array(
+    'type'      => 'html',
+    'class'     => 'inline',
+     'html'      => Text::get('tooltip-project-paypal')
+);
+
 
 $campos_cuentas['bank'] = array(
     'type'      => 'textbox',

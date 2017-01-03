@@ -17,7 +17,8 @@ namespace Goteo\Model\Call {
             $name,
             $url,
             $image,
-            $order;
+            $order,
+            $amount;
 
         /*
          *  Devuelve datos de un destacado
@@ -30,6 +31,7 @@ namespace Goteo\Model\Call {
                         name,
                         url,
                         image,
+                        amount,
                         `order`
                     FROM    call_sponsor
                     WHERE id = :id
@@ -57,6 +59,7 @@ namespace Goteo\Model\Call {
                     name,
                     url,
                     image,
+                    amount,
                     `order`
                 FROM    call_sponsor
                 WHERE `call` = :call
@@ -84,6 +87,7 @@ namespace Goteo\Model\Call {
                     name,
                     url,
                     image,
+                    amount,
                     `order`
                 FROM    call_sponsor
                 WHERE `call` = :call
@@ -141,7 +145,8 @@ namespace Goteo\Model\Call {
                 'name',
                 'url',
                 'image',
-                'order'
+                'order',
+                'amount'
                 );
 
             $set = '';

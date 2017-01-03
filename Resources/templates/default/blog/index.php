@@ -23,6 +23,9 @@ $bodyClass = 'blog';
 
 // metas og: para que al compartir en facebook coja bien el nombre y las imagenes del blog
 if ($this->show == 'list') {
+    // SEO metas
+    $title=$this->text('meta-title-blog');
+    $description=$this->text('meta-description-blog');
     $ogmeta = array(
         'title' => 'Goteo Blog',
         'description' => Text::get('regular-by').' Goteo',
@@ -41,6 +44,10 @@ if ($this->show == 'list') {
         }
     }
 } elseif ($this->show == 'post') {
+
+    $title=$post->title;
+    $description=htmlspecialchars(strip_tags($this->text_truncate($post->text, 155)), ENT_QUOTES);
+
     $ogmeta = array(
         'title' => htmlspecialchars($post->title, ENT_QUOTES),
         'description' => Text::get('regular-by').' '.$post->user->name,
@@ -63,8 +70,8 @@ $pagedResults = new Paginated($posts, 7, isset($_GET['page']) ? $_GET['page'] : 
 
 $this->layout("layout", [
     'bodyClass' => 'blog',
-    'title' => $this->text('meta-title-blog'),
-    'meta_description' => $this->text('meta-description-blog')
+    'title' => $title,
+    'meta_description' => $description
     ]);
 
 $this->section('content');
@@ -102,8 +109,8 @@ $this->section('content');
                     <?php echo View::get('blog/share.html.php', array('urls' => Text::shareLinks($URL . '/blog/' . $post->id, $post->title))); ?>
 					<div class="comments-num"><a href="/blog/<?php echo $post->id; ?>"><?php echo $post->num_comments > 0 ? $post->num_comments . ' ' .Text::get('blog-comments') : Text::get('blog-no_comments'); ?></a></div>
 				</div>
-                <?php echo View::get('blog/comments.html.php', (array)$this) ?>
-                <?php echo View::get('blog/sendComment.html.php', (array)$this) ?>
+                <?php echo View::get('blog/comments.html.php', $this->vars) ?>
+                <?php echo View::get('blog/sendComment.html.php', $this->vars) ?>
 			<?php endif; ?>
 		</div>
 		<div id="blog-sidebar">

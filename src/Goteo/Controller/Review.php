@@ -18,7 +18,7 @@ namespace Goteo\Controller {
         Goteo\Application,
         Goteo\Application\Session,
         Goteo\Library\Feed,
-        Goteo\Library\Page,
+        Goteo\Model\Page,
         Goteo\Library\Text;
 
     class Review extends \Goteo\Core\Controller {
@@ -30,7 +30,7 @@ namespace Goteo\Controller {
 
             $page = Page::get('review');
 
-            $message = \str_replace('%USER_NAME%', Session::getUser()->name, $page->content);
+            $message = \str_replace('%USER_NAME%', Session::getUser()->name, $page->parseContent());
 
             $user = Session::getUser();
 

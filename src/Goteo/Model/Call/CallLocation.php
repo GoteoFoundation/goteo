@@ -14,18 +14,18 @@ use Goteo\Model\Call;
 
 class CallLocation extends \Goteo\Model\Location\LocationItem {
     protected $Table = 'call_location';
-    public $invest;
+    public $call;
 
     public function __construct() {
         $args = func_get_args();
         call_user_func_array(array('parent', '__construct'), $args);
-        $this->invest = $this->id;
+        $this->call = $this->id;
     }
 
-    public static function get($invest) {
-        $id = $invest;
-        if($invest instanceOf Call) {
-            $id = $invest->id;
+    public static function get($call) {
+        $id = $call;
+        if($call instanceOf Call) {
+            $id = $call->id;
         }
 
         return parent::get($id);

@@ -13,12 +13,13 @@
 namespace Goteo\Controller\Admin;
 
 use Goteo\Application\Exception\ControllerAccessDeniedException;
-use Goteo\Library\Text,
-	Goteo\Library\Feed,
-    Goteo\Application\Message,
-	Goteo\Application\Config,
-    Goteo\Model\Sponsor,
-    Goteo\Model\Node;
+use Goteo\Library\Text;
+use	Goteo\Library\Feed;
+use Goteo\Application\Message;
+use	Goteo\Application\Config;
+use Goteo\Model\Sponsor;
+use Goteo\Model\Node;
+use Goteo\Model\Image;
 
 class SponsorsSubController extends AbstractSubController {
 
@@ -79,7 +80,7 @@ class SponsorsSubController extends AbstractSubController {
             ));
             // tratar si quitan la imagen
             if ($this->hasPost('image-' . md5($item->image) .  '-remove')) {
-                $image = Model\Image::get($item->image);
+                $image = Image::get($item->image);
                 $image->remove($errors);
                 $item->image = null;
                 $removed = true;

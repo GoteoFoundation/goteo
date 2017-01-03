@@ -46,7 +46,7 @@ class InvestListener extends AbstractListener {
         $loc = InvestLocation::get($invest->id);
         if (!$loc && Config::get('geolocation.maxmind.cities')) {
             $loc = InvestLocation::createByIp($invest->id, $request->getClientIp());
-            $loc->save();
+            if($loc) $loc->save();
         }
 
         $this->info(($invest->getProject()? '':'Pool') . 'Invest init', [$invest, $invest->getProject(), $invest->getFirstReward(), $invest->getUser()]);
@@ -67,7 +67,7 @@ class InvestListener extends AbstractListener {
         $invest   = $method->getInvest();
         $reward   = $invest->getFirstReward();
 
-        $this->info(($invest->getProject()?'':'Pool') .'Invest init redirect', [$invest, $invest->getProject(), $invest->getFirstReward(), $invest->getUser()]);
+        $this->info(($invest->getProject() ? '' : 'Pool') .'Invest init redirect', [$invest, $invest->getProject(), $invest->getFirstReward(), $invest->getUser()]);
         Invest::setDetail($invest->id, 'init-redirect', 'Redirecting to payment gateway');
 
         // Goto payment platform...
@@ -86,7 +86,7 @@ class InvestListener extends AbstractListener {
         $method->setInvest($invest);
         $method->setRequest($request);
 
-        $this->info(($invest->getProject()?'':'Pool') .'Invest complete', [$invest, $invest->getProject(), $invest->getFirstReward(), $invest->getUser()]);
+        $this->info(($invest->getProject() ? '' : 'Pool') .'Invest complete', [$invest, $invest->getProject(), $invest->getFirstReward(), $invest->getUser()]);
         Invest::setDetail($invest->id, 'complete', 'Redirected from payment gateway');
     }
 
@@ -98,7 +98,7 @@ class InvestListener extends AbstractListener {
         // Set transaction ID
         $invest->setTransaction($response->getTransactionReference());
 
-        $this->info(($invest->getProject()?'':'Pool') .'Invest complete request', [$invest, $invest->getProject(), $invest->getFirstReward(), $invest->getUser()]);
+        $this->info(($invest->getProject() ? '' : 'Pool') .'Invest complete request', [$invest, $invest->getProject(), $invest->getFirstReward(), $invest->getUser()]);
         Invest::setDetail($invest->id, 'complete-request', 'Redirecting to user data');
     }
 
@@ -110,7 +110,7 @@ class InvestListener extends AbstractListener {
         // Set transaction ID
         $invest->setTransaction($response->getTransactionReference());
 
-        $this->info(($invest->getProject()?'':'Pool') .'Invest notify', [$invest, $invest->getProject(), $invest->getFirstReward(), $invest->getUser()]);
+        $this->info(($invest->getProject() ? '' : 'Pool') .'Invest notify', [$invest, $invest->getProject(), $invest->getFirstReward(), $invest->getUser()]);
         Invest::setDetail($invest->id, 'notify', 'Contact from payment gateway');
     }
 
@@ -239,11 +239,11 @@ class InvestListener extends AbstractListener {
         // En el contenido:
         $search = array('%USERNAME%', '%PROJECTNAME%', '%PROJECTURL%', '%AMOUNT%', '%REWARDS%', '%ADDRESS%', '%DROPED%', '%METHOD%');
         $replace = array($user->name, $project->name, Config::getUrl($lang) . '/project/' . $project->id, $invest->amount, $txt_rewards, $txt_address, $txt_droped, $txt_method);
-        $content = str_replace($search, $replace, $template->text);
+        $content = str_replace($search, $replace, $template->parseText());
 
         $mailHandler = new Mail();
         $mailHandler->lang = $lang;
-        $mailHandler->reply = Config::getMail('contact');
+        $mailHandler->reply = Config::get('mail.transport.name');
         $mailHandler->replyName = Config::get('mail.transport.name');
         $mailHandler->to = $user->email;
         $mailHandler->toName = $user->name;
@@ -272,7 +272,7 @@ class InvestListener extends AbstractListener {
         //     // En el contenido:
         //     $search  = array('%DESTNAME%', '%USERNAME%', '%MESSAGE%', '%PROJECTNAME%', '%PROJECTURL%', '%AMOUNT%', '%PROJAMOUNT%', '%PROJPER%', '%REWNAME%', '%ADDRESS%', '%DROPED%');
         //     $replace = array($invest->address->namedest, $user->name, $invest->address->message, $projectData->name, $URL.'/project/'.$projectData->id, $invest->amount, $amount, $percent, $txt_rewards, $txt_destaddr, $txt_droped);
-        //     $content = \str_replace($search, $replace, $template->text);
+        //     $content = \str_replace($search, $replace, $template->parseText());
 
         // $mailHandler = new Mail();
         // $mailHandler->lang = $comlang;lang
@@ -306,7 +306,7 @@ class InvestListener extends AbstractListener {
         // En el contenido:
         $search = array('%OWNERNAME%', '%USERNAME%', '%PROJECTNAME%', '%SITEURL%', '%AMOUNT%', '%MESSAGEURL%', '%DROPED%');
         $replace = array($project->user->name, $user->name, $project->name, $URL, $invest->amount, Config::getUrl() . '/user/profile/' . $user->id . '/message', $txt_droped);
-        $content = str_replace($search, $replace, $template->text);
+        $content = str_replace($search, $replace, $template->parseText());
 
         $mailHandler = new Mail();
         $mailHandler->lang = $lang;
@@ -348,9 +348,15 @@ class InvestListener extends AbstractListener {
                 '%PROJECT%' => Feed::item('project', $project->name, $project->id)
                 ]);
         if ($invest->anonymous) {
-            $log->populate(Text::get('regular-anonymous'), '/user/profile/anonymous', $log_html, 1);
+            $log->populate('regular-anonymous',
+                '/user/profile/anonymous',
+                $log_html,
+                1);
         } else {
-            $log->populate($user->name, '/user/profile/' . $user->id, $log_html, $user->avatar->id);
+            $log->populate($user->name,
+                '/user/profile/' . $user->id,
+                $log_html,
+                $user->avatar->id);
         }
         $log->doPublic('community');
 
@@ -374,7 +380,7 @@ class InvestListener extends AbstractListener {
         $invest = $event->getInvest();
         $errors = [];
         if ($invest->cancel(false, $errors)) {
-            $this->notice(($invest->getProject()?'':'Pool') .'Invest cancelled', [$invest, $invest->getProject(), $invest->getFirstReward(), $invest->getUser()]);
+            $this->notice(($invest->getProject() ? '' : 'Pool') .'Invest cancelled', [$invest, $invest->getProject(), $invest->getFirstReward(), $invest->getUser()]);
             Invest::setDetail($invest->id, $method::getId().'-cancel', 'Invest process manually cancelled successfully');
             // update cached data
             $invest->keepUpdated();
@@ -392,9 +398,9 @@ class InvestListener extends AbstractListener {
     public function onInvestRefundReturn(FilterInvestRefundEvent $event) {
         $method = $event->getMethod();
         $invest = $event->getInvest();
-        $this->notice(($invest->getProject()?'':'Pool') .'Invest refund cancel', [$invest, $invest->getProject(), $invest->getFirstReward(), $invest->getUser()]);
+        $this->notice(($invest->getProject() ? '' : 'Pool') .'Invest refund cancel', [$invest, $invest->getProject(), $invest->getFirstReward(), $invest->getUser()]);
         if ($invest->cancel(true)) {
-            $this->notice(($invest->getProject()?'':'Pool') .'Invest refund succeeded', [$invest, $invest->getProject(), $invest->getFirstReward(), $invest->getUser()]);
+            $this->notice(($invest->getProject() ? '' : 'Pool') .'Invest refund succeeded', [$invest, $invest->getProject(), $invest->getFirstReward(), $invest->getUser()]);
             Invest::setDetail($invest->id, $method::getId().'-cancel', 'Invest refunded successfully');
             // update cached data
             $invest->keepUpdated();
@@ -412,7 +418,7 @@ class InvestListener extends AbstractListener {
         $method   = $event->getMethod();
         $invest   = $event->getInvest();
         $response = $event->getResponse();
-        $this->warning(($invest->getProject()?'':'Pool') .'Invest refund failed', [$invest, $invest->getProject(), $invest->getFirstReward(), $invest->getUser(), 'messages' => $response->getMessage()]);
+        $this->warning(($invest->getProject() ? '' : 'Pool') .'Invest refund failed', [$invest, $invest->getProject(), $invest->getFirstReward(), $invest->getUser(), 'messages' => $response->getMessage()]);
         Invest::setDetail($invest->id, $method::getId().'-return-fail', 'Error while refunding invest: '.$response->getMessage());
 
     }
@@ -445,7 +451,7 @@ class InvestListener extends AbstractListener {
             }
         }
 
-        $this->notice(($invest->getProject()?'':'Pool') .'Invest finished', [$invest, $invest->getProject(), $invest->getFirstReward(), $invest->getUser()]);
+        $this->notice(($invest->getProject() ? '' : 'Pool') .'Invest finished', [$invest, $invest->getProject(), $invest->getFirstReward(), $invest->getUser()]);
         Invest::setDetail($invest->id, $invest->method.'-return-data', 'User has saved personal data for rewards');
 
     }

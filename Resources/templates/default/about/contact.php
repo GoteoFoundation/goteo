@@ -110,7 +110,7 @@ $this->layout('layout', [
             </div>
 
             <div style="float:left;width: 450px;">
-                <?= $page->content ?>
+                <?= $page->parseContent() ?>
             </div>
 
         </div>

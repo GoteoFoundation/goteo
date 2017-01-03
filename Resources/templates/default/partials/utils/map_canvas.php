@@ -9,5 +9,6 @@
     if($this->content): ?> data-map-content="<?= $this->content ?>"<?php endif;
     if($this->geoType): ?> data-geocoder-type="<?= $this->geoType ?>"<?php endif;
     if($this->geoItem): ?> data-geocoder-item="<?= $this->geoItem ?>"<?php endif;
+    if($this->radius): ?> data-map-radius="<?= $this->radius ?>"<?php endif;
     if($this->coords): ?> data-map-coords="<?= $this->escape(json_encode($this->raw('coords'))) ?>"<?php endif;
     ?> style="border: 2px solid grey; height: 500px;"></div>

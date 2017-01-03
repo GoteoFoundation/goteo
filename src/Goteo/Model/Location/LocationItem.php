@@ -35,6 +35,7 @@ abstract class LocationItem extends \Goteo\Core\Model implements LocationInterfa
         $country_code,  // codigo pais  ISO 3166-1 alpha-2
         $longitude,
         $latitude,
+        $radius,
         $info, //Some stored info
         $name, //friendly description
         $id;
@@ -46,6 +47,7 @@ abstract class LocationItem extends \Goteo\Core\Model implements LocationInterfa
         // alternative location names
         if(empty($this->city) && $this->location) $this->city = $this->location;
         $this->name = $this->city ? ($this->region ? $this->city . ' (' .$this->region . ')' : $this->city) : ($this->region ? $this->region : $this->country);
+        $this->radius = (int) $this->radius;
     }
 
     /**
@@ -88,14 +90,16 @@ abstract class LocationItem extends \Goteo\Core\Model implements LocationInterfa
                     'country_code' => $record->country->isoCode,
                     'longitude'    => $record->location->longitude,
                     'latitude'     => $record->location->latitude,
+                    'radius'       => 0,
                     'method'       => 'ip'
                 ));
 
             return $loc;
 
         }catch(\Exception $e){
-            throw new ModelException('Locator error: ' . $e->getMessage());
+            // throw new ModelException('Locator error: ' . $e->getMessage());
         }
+        return false;
     }
 
     public function validate(&$errors = array()) {
@@ -142,11 +146,12 @@ abstract class LocationItem extends \Goteo\Core\Model implements LocationInterfa
                         ':country'      => (string)$this->country,
                         ':country_code' => $this->country_code,
                         ':longitude'    => $this->longitude,
-                        ':latitude'     => $this->latitude
+                        ':latitude'     => $this->latitude,
+                        ':radius'       => $this->radius
                         );
 
         try {
-            $sql = "REPLACE INTO " . $this->Table . " (id, method, locable, info, city, region, country, country_code, longitude, latitude) VALUES (:id, :method, :locable, :info, :city, :region, :country, :country_code, :longitude, :latitude)";
+            $sql = "REPLACE INTO " . $this->Table . " (id, method, locable, info, city, region, country, country_code, longitude, latitude, radius) VALUES (:id, :method, :locable, :info, :city, :region, :country, :country_code, :longitude, :latitude, :radius)";
             self::query($sql, $values);
         } catch(\PDOException $e) {
             $errors[] = "Error updating location for id. " . $e->getMessage();

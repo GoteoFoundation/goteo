@@ -100,7 +100,7 @@ class Sponsor extends \Goteo\Core\Model {
             $sql = 'SELECT COUNT(id) FROM sponsor where node = :node';
             return (int) self::query($sql, [':node'=>$node])->fetchColumn();
         }
-
+        // die(\sqldbg($sql, [':node'=>$node]));
         $query = static::query($sql, [':node'=>$node]);
 
         foreach ($query->fetchAll(\PDO::FETCH_CLASS, __CLASS__) as $sponsor) {

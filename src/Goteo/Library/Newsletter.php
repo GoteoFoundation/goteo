@@ -278,7 +278,8 @@ namespace Goteo\Library {
             */
 
             // montammos el contenido completo
-            $tmpcontent = $content;
+            $tmpcontent = '<div style="background: #fff;padding:20px 20px 5px;margin-bottom:20px;">' . $content . '</div>';
+
             foreach (\array_keys($order) as $item) {
                 $var = $item.'_content';
                 $tmpcontent .= $$var;

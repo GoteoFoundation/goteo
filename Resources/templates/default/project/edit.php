@@ -16,7 +16,7 @@ if (!empty($this->success)) {
     Goteo\Application\Message::info($this->text('form-ajax-info'));
 }
 
-$this->layout( $this->is_ajax() ? 'wrapper' : 'layout', [
+$this->layout( $this->is_ajax() ? 'content' : 'layout', [
     'bodyClass' => 'project-edit',
     'superform' => true,
     'title' => $this->text('meta-title-create-project'),
@@ -25,6 +25,11 @@ $this->layout( $this->is_ajax() ? 'wrapper' : 'layout', [
 
 $this->section('content');
 ?>
+
+    <?php if($this->alert): ?>
+        <div style="display:none" class="ajax-alert"><?= $this->alert ?></div>
+    <?php endif ?>
+
 
     <div id="sub-header">
         <div class="project-header">
@@ -59,7 +64,6 @@ $this->section('content');
     </div>
 
 <?php $this->replace() ?>
-ogh
 
 <?php $this->section('footer') ?>
 <script type="text/javascript">
@@ -85,7 +89,6 @@ ogh
             });
         });
     });
-
 
 </script>
 <?php $this->append() ?>

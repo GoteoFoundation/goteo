@@ -24,7 +24,8 @@ class FeedBody {
         'update-comment' => '/project/',
         'message' => '/project/',
         'system' => '/admin/',
-        'update' => '/project/'
+        'update' => '/project/',
+        'translate' => '/translate/'
     );
 
     static public $color = array(
@@ -40,7 +41,8 @@ class FeedBody {
         'update-comment' => 'grey',
         'message' => 'green',
         'system' => 'grey',
-        'update' => 'grey'
+        'update' => 'grey',
+        'translate' => 'grey'
     );
 
     protected $type;
@@ -89,5 +91,7 @@ class FeedBody {
 
     }
 
-
+    public function getVar($var) {
+        return $this->vars[$var];
+    }
 }

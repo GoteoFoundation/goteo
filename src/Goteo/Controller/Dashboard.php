@@ -1263,16 +1263,17 @@ namespace Goteo\Controller {
             if ( isset(Session::getUser()->roles['admin']) || isset(Session::getUser()->roles['translator']) )
                 $menu['activity']['options']['translate'] = Text::get('dashboard-menu-translate_board');
 
-            // Remove pool if not configured
-            if(!Config::get('payments.pool.active')) {
-                unset($menu['wallet']);
-            }
             // Hack to add some private routes
             foreach(App::getRoutes()->all() as $i => $route) {
                 if(strpos($route->getPath(), '/dashboard/wallet/certificate') === 0) {
                     $menu['activity']['options']['donor'] = Text::get('dashboard-menu-activity-donor');
                     $menu['wallet']['options']['certificate'] = Text::get('dashboard-menu-activity-donor');
                 }
+            }
+
+            // Remove pool if not configured
+            if(!Config::get('payments.pool.active')) {
+                unset($menu['wallet']);
             }
 
             return $menu;

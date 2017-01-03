@@ -35,8 +35,8 @@ $sc->register('logger.processor.instrospection', 'Monolog\Processor\Introspectio
    ->setArguments(array(monolog_level('error')));
 
 //General main log
-$sc->register('logger.formatter', 'Monolog\Formatter\LogstashFormatter')
-   ->setArguments(array("app_$env", gethostname(), null, 'ctxt_', Monolog\Formatter\LogstashFormatter::V1));
+$sc->register('logger.formatter', 'Goteo\Util\Monolog\Formatter\LogstashFormatter')
+   ->setArguments(array("app_$env", gethostname(), null, 'ctxt_', Goteo\Util\Monolog\Formatter\LogstashFormatter::V1));
 $sc->register('logger.handler', 'Monolog\Handler\StreamHandler')
    ->setArguments(array(GOTEO_LOG_PATH."app_$env.log", monolog_level(Config::get('log.app'))))
    ->addMethodCall('setFormatter', array(new Reference('logger.formatter')))
@@ -48,8 +48,8 @@ $logger = $sc->register('logger', 'Monolog\Logger')
 ;
 
 // Console log
-$sc->register('console_logger.formatter', 'Monolog\Formatter\LogstashFormatter')
-   ->setArguments(array("console_$env", gethostname(), null, 'ctxt_', Monolog\Formatter\LogstashFormatter::V1));
+$sc->register('console_logger.formatter', 'Goteo\Util\Monolog\Formatter\LogstashFormatter')
+   ->setArguments(array("console_$env", gethostname(), null, 'ctxt_', Goteo\Util\Monolog\Formatter\LogstashFormatter::V1));
 
 $sc->register('console_logger.handler', 'Monolog\Handler\StreamHandler')
    ->setArguments(array(GOTEO_LOG_PATH."console_$env.log", monolog_level(Config::get('log.console'))))

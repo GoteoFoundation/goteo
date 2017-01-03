@@ -1,7 +1,7 @@
 <?php
 use Goteo\Library\Text,
     Goteo\Core\View,
-    Goteo\Library\Page;
+    Goteo\Model\Page;
 
 $page = Page::get('big-error');
 
@@ -27,7 +27,7 @@ if (!isset($error) || !($error instanceof Error)) {
     <div id="main">
         <div class="widget">
             <h3 class="title"><?php echo $page->name; ?></h3>
-            <?php echo $page->content; ?>
+            <?= $page->parseContent() ?>
         </div>
     </div>
 

@@ -57,42 +57,45 @@ class RewardsSubController extends AbstractSubController {
         $status = Project::status();
 
         // si tratando post
-        if ($this->isPost() && $this->hasPost('selected_reward')) {
+        if ($this->isPost()) {
             $errors = array();
-            $r = $this->getPost('selected_reward');
-            if (empty($r)) {
-                // renuncia a las recompensas, bien por el/ella!
-                $invest->rewards = array();
-            } else {
-                // la recompensa:
-                $chosen = Reward::get($r);
-                if(!$chosen instanceof Reward) {
-                    Message::error('la recompensa elegida no existe en la base de datos!');
-                    return $this->redirect(['edit', $id]);
-                }
-                if(!$chosen->available()) {
-                    Message::error('la recompensa elegida está agotada!');
-                    return $this->redirect(['edit', $id]);
-                }
+            if($this->hasPost('selected_reward'))
+            {
+                $r = $this->getPost('selected_reward');
+                if (empty($r)) {
+                    // renuncia a las recompensas, bien por el/ella!
+                    $invest->rewards = array();
+                } else {
+                    // la recompensa:
+                    $chosen = Reward::get($r);
+                    if(!$chosen instanceof Reward) {
+                        Message::error('la recompensa elegida no existe en la base de datos!');
+                        return $this->redirect(['edit', $id]);
+                    }
+                    if($r!=$invest->rewards[0]->id&&!$chosen->available()) {
+                        Message::error('la recompensa elegida está agotada!');
+                        return $this->redirect(['edit', $id]);
+                    }
 
-                $invest->rewards = array($chosen);
+                    $invest->rewards = array($chosen);
+                }
             }
 
-            $invest->anonymous = $this->getPost('anonymous');
+                $invest->anonymous = $this->getPost('anonymous');
 
-            // dirección de envio para la recompensa
-            // y datos fiscales por si fuera donativo
-            $invest->address = array(
-                'name'     => $this->getPost('name'),
-                'nif'      => $this->getPost('nif'),
-                'address'  => $this->getPost('address'),
-                'zipcode'  => $this->getPost('zipcode'),
-                'location' => $this->getPost('location'),
-                'country'  => $this->getPost('country'),
-                'regalo'   => $this->getPost('regalo'),
-                'namedest' => $this->getPost('namedest'),
-                'emaildest'=> $this->getPost('emaildest')
-            );
+                // dirección de envio para la recompensa
+                // y datos fiscales por si fuera donativo
+                $invest->address = array(
+                    'name'     => $this->getPost('name'),
+                    'nif'      => $this->getPost('nif'),
+                    'address'  => $this->getPost('address'),
+                    'zipcode'  => $this->getPost('zipcode'),
+                    'location' => $this->getPost('location'),
+                    'country'  => $this->getPost('country'),
+                    'regalo'   => $this->getPost('regalo'),
+                    'namedest' => $this->getPost('namedest'),
+                    'emaildest'=> $this->getPost('emaildest')
+                );
 
 
             if ($invest->update($errors)) {

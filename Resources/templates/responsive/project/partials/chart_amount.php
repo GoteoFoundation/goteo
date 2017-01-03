@@ -249,7 +249,7 @@ d3.json('/api/charts/<?= $this->project->id ?>/invests', function (error, rawDat
 
   // TODO: create round markers
   var markers = [];
-  // var markers = [{date:parseDate('2014-01-01'),type:'Ronda', version: "1"},{date:parseDate('2014-02-01'),type:'Ronda', version: "2"}];
+   var markers = [{date:parseDate('<?= $this->project->willpass ?>'),type:"<?= $this->text('project-chart-amount-end-round') ?>" , version: "1"}];
 //   d3.json('/assets/markers.json', function (error, markerData) {
 //     if (error) {
 //       console.error(error);

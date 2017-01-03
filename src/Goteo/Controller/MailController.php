@@ -45,7 +45,7 @@ class MailController extends \Goteo\Core\Controller {
                         // geolocation if exists database
                         if (Config::get('geolocation.maxmind.cities')) {
                             $loc = MailStatsLocation::createByIp($stat->id, $request->getClientIp());
-                            $loc->save();
+                            if($loc) $loc->save();
                         }
                     } catch (ModelException $e) {
                         if (App::debug()) {
@@ -101,9 +101,11 @@ class MailController extends \Goteo\Core\Controller {
                     // geolocation if exists database
                     if (Config::get('geolocation.maxmind.cities')) {
                         $loc = MailStatsLocation::createByIp($stat->id, $request->getClientIp());
-                        $loc->save();
-                        $loc->id = $e->id; // add to EMAIL_OPENED
-                        $loc->save();
+                        if($loc) {
+                            $loc->save();
+                            $loc->id = $e->id; // add to EMAIL_OPENED
+                            $loc->save();
+                        }
                     }
                 } catch (ModelException $e) {
                     if (App::debug()) {
@@ -175,7 +177,7 @@ class MailController extends \Goteo\Core\Controller {
                 // Geolocation if exists
                 if (Config::get('geolocation.maxmind.cities')) {
                     $loc = MailStatsLocation::createByIp($stat->id, $request->getClientIp());
-                    $loc->save();
+                    if($loc) $loc->save();
                 }
             } catch (ModelException $e) {
                 // die($e->getMessage());

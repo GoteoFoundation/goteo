@@ -1,6 +1,6 @@
 <?php
 /// esto se usa ???
-use Goteo\Library\Page;
+use Goteo\Model\Page;
 
 $node = $vars['node'];
 

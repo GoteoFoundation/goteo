@@ -20,7 +20,7 @@
                 <?php foreach($this->post->gallery as $key => $image): ?>
                     <div class="item <?= !$key ? 'active' : '' ?>">
                          <img src="<?= $image->getLink(700, 700) ?>" class="img-responsive">
-                    </div>  
+                    </div>
                   <?php endforeach ?>
                </div>
                  <!-- Left and right controls -->
@@ -33,7 +33,7 @@
                    <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
                    <span class="sr-only">Next</span>
                 </a>
-               
+
                </div>
     <?php elseif( $this->post->image instanceof \Goteo\Model\Image ): ?>
         <div class="spacer-20">
@@ -66,7 +66,7 @@
         <?php foreach ($this->post->comments as $child) : ?>
         <div id="child-msg-<?= $child->id ?>" class="row no-margin normalize-padding message child<?= ($child->user->id == $project->owner) ? ' owner' : ' no-owner' ?> no-margin normalize-padding">
             <?php if($child->user->id != $project->owner): ?>
-            <div class="pull-left anchor-mark" id="comment<?= $child->id ?>">                             
+            <div class="pull-left anchor-mark" id="comment<?= $child->id ?>">
                 <img class="avatar" src="<?= $child->user->avatar->getLink(45, 45, true); ?>">
             </div>
             <?php endif; ?>
@@ -78,7 +78,7 @@
                  <?= $child->text?>
             </div>
         </div>
-        
+
         <?php endforeach ?>
     <?php endif; ?>
 
@@ -88,7 +88,7 @@
 
     <div class="row standard-margin-top">
         <form class="col-xs-12" method="post" action="/message/post/<?= $this->post->id ?>/<?= $this->project->id ?>">
-            <div class="alert alert-danger" role="alert" id="error" style="display:none;">                   
+            <div class="alert alert-danger" role="alert" id="error" style="display:none;">
             </div>
             <textarea class="form-control" id="message" name="message" rows="4" required></textarea>
             <div class="col-sm-4 no-padding margin-2 standard-margin-top">
@@ -98,7 +98,7 @@
     </div>
 
     <?php else: ?>
-        <p><a href="/login?return=<?= urlencode($this->get_uri().'#add-comment') ?>"><?= $this->text('project-comment-start-sesion') ?></a> <?= $this->text('project-comment-start-sesion-2') ?></p> 
+        <p><a href="/login?return=<?= urlencode($this->get_uri().'#add-comment') ?>"><?= $this->text('project-comment-start-sesion') ?></a> <?= $this->text('project-comment-start-sesion-2') ?></p>
     <?php endif; ?>
 
 </div>

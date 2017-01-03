@@ -210,7 +210,8 @@ class Mail extends \Goteo\Core\Model {
         // Sustituimos los datos
         $mail->subject = $tpl->title;
         $mail->template = $tpl->id;
-        $mail->content = ($template == Template::NEWSLETTER) ? Newsletter::getContent($tpl->text, $mail->lang) : $content = $tpl->text;
+        $text = $tpl->parseText();
+        $mail->content = ($template == Template::NEWSLETTER) ? Newsletter::getContent($text, $mail->lang) : $content = $text;
         // En el contenido:
         if($vars) {
             $mail->content = str_replace(array_keys($vars), array_values($vars), $mail->content);

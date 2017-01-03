@@ -344,7 +344,7 @@ class Feed {
             }
             return $list;
         } catch (\PDOException $e) {
-            throw new Exception('FATAL ERROR SQL: ' . $e->getMessage() . "<br />$sql<br /><pre>" . print_r($values, true) . "</pre>");
+            throw new \Exception('FATAL ERROR SQL: ' . $e->getMessage() . "<br />$sql<br /><pre>" . print_r($values, true) . "</pre>");
         }
 	}
 

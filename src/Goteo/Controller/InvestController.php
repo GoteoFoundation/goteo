@@ -208,7 +208,7 @@ class InvestController extends \Goteo\Core\Controller {
         ]);
         // print_r($project);die;
         if($reward) {
-            if(!$reward->available()) {
+            if(!$reward->available() && !$reward->inInvest($invest)) {
                 Message::error(Text::get('invest-reward-used-up'));
                 return $this->redirect('/invest/' . $project_id);
             }
@@ -258,7 +258,6 @@ class InvestController extends \Goteo\Core\Controller {
         $amount = $amount_original = $request->query->get('amount');
         $reward = $this->validate($project_id, $request->query->get('reward'), $amount);
         if($reward instanceOf Response) return $reward;
-
         // pay method required
         try {
             $method = Payment::getMethod($request->query->get('method'));

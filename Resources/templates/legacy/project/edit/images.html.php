@@ -132,7 +132,7 @@ $superform = array(
 foreach ($superform['elements'] as $id => &$element) {
 
     if (!empty($vars['errors'][$vars['step']][$id])) {
-        $element['errors'] = arrray();
+        $element['errors'] = array();
     }
 
 }

@@ -9,15 +9,17 @@
  */
 
 namespace Goteo\Library\OAuth;
-use Goteo\Model\User,
-    Goteo\Model\Image,
-    Goteo\Application\Cookie,
-    Goteo\Core\Model,
-    OAuth\OAuth2\Service\Facebook,
-	OAuth\Common\Storage\Session as Storage,
-	OAuth\Common\Consumer\Credentials,
-	OAuth\ServiceFactory,
-	Goteo\Library\Text;
+
+use Goteo\Application\Config;
+use Goteo\Model\User;
+use Goteo\Model\Image;
+use Goteo\Application\Cookie;
+use Goteo\Core\Model;
+use OAuth\OAuth2\Service\Facebook;
+use OAuth\Common\Storage\Session as Storage;
+use OAuth\Common\Consumer\Credentials;
+use OAuth\ServiceFactory;
+use Goteo\Library\Text;
 
 /**
  * Suportat:
@@ -69,8 +71,9 @@ class SocialAuth {
 	 * @param $provider : 'twitter', 'facebook', 'linkedin', 'google', 'any_openid_server'
 	 * */
 	function __construct($provider='') {
-        $URL = \SITE_URL;
-        if(substr($URL,0, 2) === '//') $URL = HTTPS_ON ? "https:$URL" : "http:$URL";
+        $URL = Config::get('url.url_lang') ? Config::get('url.url_lang') : Config::get('url.main');
+        if(substr($URL, 0, 2) === '//') $URL = HTTPS_ON ? "https:$URL" : "http:$URL";
+        if(substr(strtolower($URL), 0, 4) !== 'http') $URL = HTTPS_ON ? "https://$URL" : "http://$URL";
         $this->host = $URL;
 
 		$this->original_provider = $provider;

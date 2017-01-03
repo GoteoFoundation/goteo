@@ -19,7 +19,7 @@ namespace Goteo\Model\Call {
          * @param varcahr(50) $id  Call identifier
          * @return instance of post
          */
-		public static function get ($call, $lang) {
+		public static function get ($call, $lang=null) {
 
             $debug = false;
 

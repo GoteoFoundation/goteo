@@ -3,13 +3,14 @@ use Goteo\Library\Text,
     Goteo\Model\Blog\Post;
 
 $post = Post::get($vars['post']);
+
 $level = (int) $vars['level'] ?: 3;
 //@TODO: Si el usuario es el dueño del blog o tiene permiso para moderar, boton de borrar comentario
 ?>
 <h<?php echo $level ?> class="title"><?php echo Text::get('blog-coments-header'); ?></h<?php echo $level ?>>
 <div class="widget post-comments">
 
-<?php if (!empty($post->comments)): ?>
+<?php if ($post->comments): ?>
 
     <div id="post-comments">
 

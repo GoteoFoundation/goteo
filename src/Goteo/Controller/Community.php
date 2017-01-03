@@ -10,7 +10,7 @@
 
 namespace Goteo\Controller {
 
-    use Goteo\Library\Page,
+    use Goteo\Model\Page,
         Goteo\Library\Feed,
         Goteo\Core\View,
         Goteo\Core\Redirection,

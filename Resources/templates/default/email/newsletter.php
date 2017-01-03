@@ -4,6 +4,28 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 <title>Goteo Newsletter<?= $this->subject ? ' :: ' . $this->subject : ''  ?></title>
 <style type="text/css">
+/* Defaults */
+h1 {
+    font-size:24px;
+}
+h2 {
+    font-size:22px;
+}
+h3 {
+    font-size:20px;
+}
+h4 {
+    font-size:18px;
+}
+h5 {
+    font-size:16px;
+}
+h6 {
+    font-size:14px;
+}
+a {
+    color: #3AB9C2;
+}
 .message {
 	font-size:14px; padding-bottom:20px; padding-top:20px;
 	}

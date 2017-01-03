@@ -15,7 +15,7 @@ namespace Goteo\Controller\Dashboard {
 		Goteo\Library\Text,
 		Goteo\Library\Feed,
         Goteo\Model\Mail,
-		Goteo\Library\Page,
+		Goteo\Model\Page,
         Goteo\Model\Template,
         Goteo\Model\Project\ProjectMilestone,
 		Goteo\Model\Exception\ModelException,
@@ -326,7 +326,7 @@ namespace Goteo\Controller\Dashboard {
             $search = array('%MESSAGE%', '%PROJECTNAME%', '%PROJECTURL%', '%OWNERURL%', '%OWNERNAME%');
             $replace = array($msg_content, $project->name, SITE_URL . "/project/" . $project->id,
                 SITE_URL . "/user/profile/" . $project->owner, $project->user->name);
-            $content = \str_replace($search, $replace, $template->text);
+            $content = \str_replace($search, $replace, $template->parseText());
 
             // para usar el proceso Sender:
 
@@ -467,10 +467,8 @@ namespace Goteo\Controller\Dashboard {
                             'type' => 'task',
                             'description' => ''
                         ));
-
                 if ($new_support->save($errors)) {
-
-                    $project->supports[] = $new_support;
+                    $project->supports[$new_support->id] = $new_support;
                     $_POST['support-' . $new_support->id . '-edit'] = true;
                 } else {
                     $project->supports[] = new Model\Project\Support(array(
@@ -614,7 +612,8 @@ namespace Goteo\Controller\Dashboard {
 
                     // si no ha encontrado otro, lanzamos la notificación a cofinanciadores
                     // y el post no es demasiado viejo
-                    if (!$log->unique_issue && (new \DateTime('-1 week')) <  (new \DateTime($post->date))) {
+
+                    if (!$log->unique_issue && $project->num_investors && (new \DateTime('-1 week')) <  (new \DateTime($post->date))) {
                         \Goteo\Console\UsersSend::toInvestors('update', $project, null, $post);
                     }
 

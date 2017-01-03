@@ -17,6 +17,7 @@ use Symfony\Component\Console\Input\InputOption;
 use Goteo\Model\Project;
 use Goteo\Model\User\Pool;
 use Goteo\Model\Invest;
+use Goteo\Model\Post;
 
 /**
  * Userful tools for check & repair several database potential issues
@@ -55,6 +56,9 @@ Check/fix pool invests statuses issues
 
 Check/fix normal invests statuses issues
 <info>./console toolkit investstatus [--update]</info>
+
+Check/fix number of comments in blogs
+<info>./console toolkit comments [--update]</info>
 
 EOT
 );
@@ -247,6 +251,24 @@ EOT
                 }
                 $index++;
             }
+        }
+        elseif($scope == 'comments') {
+            $output->writeln("Checking number of comments calculated");
+            $sql = "SELECT post.id,post.date,post.title,post.num_comments,COUNT(comment.id) AS real_num
+                    FROM post JOIN comment ON comment.post=post.id
+                    GROUP BY post.id
+                    HAVING real_num!=post.num_comments";
+                        $query = Post::query($sql);
+            foreach($query->fetchAll(\PDO::FETCH_OBJ) as $post) {
+                $output->write("Post {$post->id} has <comment>{$post->real_num}</comment> of comments but shows <error>{$post->num_comments}</error>");
+                $index++;
+                if($update) {
+                    Post::query("UPDATE post SET num_comments=:num WHERE id=:id", [':num' => $post->real_num, ':id' => $post->id]);
+                    $fixes++;
+                }
+                $output->writeln("");
+            }
+
         }
         else {
             throw new \Exception("Scope [$scope] not available!");
