@@ -192,6 +192,10 @@ secret: --a-very-secret-string---
 
 # local enviroment: local, beta, real
 env: local
+debug: true # whether to show trace for errors or not
+            # This is always true for local or beta env
+# liveport: 35729 # Local development only livereload port (optional)
+
 
 # main node
 node: goteo
@@ -204,11 +208,11 @@ timezone: Europe/Madrid
 
 # url
 url:
-    main: //localhost:8081
+    main: //example.com
     # static resources url if you use a different assets server
-    assets: //localhost:8081
+    assets: //example.com
     #optional, configure this as hostname only (ex: example.com) if you want languages to be selected as subdomains (es.example.com, en.example.com)
-    url_lang: localhost:8081
+    url_lang: example.com
     
     # If you want to use a CDN or another web server to serve the cached images
     # You can define this constants. All cached images links will point to this
@@ -407,23 +411,35 @@ geolocation:
 # Fill an uncomment the needed one's
 oauth:
     # Credentials app Facebook
-    # facebook:
-    #    id:     000000000000000                  #
-    #    secret: aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa #
+    facebook:
+       active: false
+       id:     000000000000000                  #
+       secret: aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa #
 
     # Credentials app Twitter
-    # twitter:
-    #    id:      aaaaaaaaaaaaaaaaaaaaaa                     #
-    #    secret:  aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa #
+    twitter:
+       active: false
+       id:      aaaaaaaaaaaaaaaaaaaaaa                     #
+       secret:  aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa #
 
     # Credentials app Linkedin
-    # linkedin:
-    #    id:     aaaaaaaaaaaa     #
-    #    secret: aaaaaaaaaaaaaaaa #
+    linkedin:
+       active: false
+       id:     aaaaaaaaaaaa     #
+       secret: aaaaaaaaaaaaaaaa #
 
     # Credentials Google
-    # google:
-    #    id: aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
-    #    secret: aaaaaaaaaaaaaaaaaa
+    google:
+       active: false
+       id: aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+       secret: aaaaaaaaaaaaaaaaaa
+
+    # OpenID logins does not need for Keys, just active/inactive
+    yahoo:
+        active: false
+
+    openid:
+        active: true
+
 
 ```
