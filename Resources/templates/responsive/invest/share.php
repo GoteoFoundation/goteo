@@ -29,7 +29,7 @@ $this->section('content');
                     <div class="row">
 
 						<h3 class="col-md-offset-1 col-md-10 clearfix padding-bottom-6"><?= $this->text('project-spread-header') ?></h3>
-					
+
 					</div>
 					<div class="row">
 						<div class="col-sm-5 col-md-offset-1 margin-2">
@@ -42,7 +42,7 @@ $this->section('content');
 				    			<i class="fa fa-twitter"></i> <?= $this->text('spread-twitter') ?>
 				  			</a>
 				  		</div>
-				  		
+
 			  		</div>
 
 			  		<hr class="share">
@@ -52,7 +52,7 @@ $this->section('content');
 			  		<div class="row standard-margin-top" id="container-msg-form">
 				  		<form class="col-md-10 col-md-offset-1" name="msg-form" id="msg-form" action="">
 	            			<div class="alert alert-danger" role="alert" id="error" style="display:none;">
-	            				
+
 	            			</div>
 	            			<textarea class="form-control" id="support-msg" rows="4" required></textarea>
 		        			<div class="col-sm-4 no-padding margin-2 standard-margin-top">
@@ -68,7 +68,7 @@ $this->section('content');
 			  		<h3 class="col-md-offset-1 standard-margin-top sm-display-none padding-bottom-6" ><?= $this->text('project-spread-widget') ?></h3>
 
 					-->
-			  		
+
 			  		<!-- Widget code -->
 			  		<!--
 					<div class="row standard-margin-top sm-display-none">
@@ -100,7 +100,7 @@ $this->section('content');
 				</div>
 			</div>
 	</div>
-	
+
 </div>
 
 <?= $this->insert('invest/partials/message_modal') ?>
@@ -110,6 +110,7 @@ $this->section('content');
 <?php $this->section('footer') ?>
 
 <script type="text/javascript">
+// @license magnet:?xt=urn:btih:0b31508aeb0634b347b8270c7bee4d411b5d4109&dn=agpl-3.0.txt
 
 $(function(){
     var _insert_ajax_msg = function() {
@@ -120,27 +121,28 @@ $(function(){
             data: { 'msg' : msg, 'invest' : '<?= $this->invest->id ?>'  },
             type: 'post',
             success: function(result){
-            	if(result['result'])
-            	{
-                	$('#messageModal').modal('show');
-                	$('#error').hide();
-            	}
+                if(result['result'])
+                {
+                    $('#messageModal').modal('show');
+                    $('#error').hide();
+                }
                 else
                 {
-                	$('#error').html('<?= $this->text('regular-message_fail') ?>');
-                	$('#error').show();
+                    $('#error').html('<?= $this->text('regular-message_fail') ?>');
+                    $('#error').show();
                 }
             }
         });
    };
 
-	$("#container-msg-form").on('click', '#send-msg', function(){
-	   _insert_ajax_msg();
-	   $("#send-msg").prop("disabled", true);
-	});
+    $("#container-msg-form").on('click', '#send-msg', function(){
+       _insert_ajax_msg();
+       $("#send-msg").prop("disabled", true);
+    });
 
 });
 
+// @license-end
 </script>
 
 <?php $this->append() ?>

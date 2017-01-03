@@ -25,27 +25,29 @@ foreach ($post->gallery as $image) {
 ?>
 <script type="text/javascript" src="<?php echo SRC_URL; ?>/view/js/ckeditor/ckeditor.js"></script>
 <script type="text/javascript">
+// @license magnet:?xt=urn:btih:0b31508aeb0634b347b8270c7bee4d411b5d4109&dn=agpl-3.0.txt
 $(document).ready(function(){
-	// Lanza wysiwyg contenido
-	CKEDITOR.replace('text_editor', {
-		toolbar: 'Full',
-		toolbar_Full: [
-				['Source','-'],
-				['Cut','Copy','Paste','PasteText','PasteFromWord','-','Print', 'SpellChecker', 'Scayt'],
-				['Undo','Redo','-','Find','Replace','-','SelectAll','RemoveFormat'],
-				'/',
-				['Bold','Italic','Underline','Strike'],
-				['NumberedList','BulletedList','-','Outdent','Indent','Blockquote'],
-				['JustifyLeft','JustifyCenter','JustifyRight','JustifyBlock'],
-				['Link','Unlink','Anchor'],
+    // Lanza wysiwyg contenido
+    CKEDITOR.replace('text_editor', {
+        toolbar: 'Full',
+        toolbar_Full: [
+                ['Source','-'],
+                ['Cut','Copy','Paste','PasteText','PasteFromWord','-','Print', 'SpellChecker', 'Scayt'],
+                ['Undo','Redo','-','Find','Replace','-','SelectAll','RemoveFormat'],
+                '/',
+                ['Bold','Italic','Underline','Strike'],
+                ['NumberedList','BulletedList','-','Outdent','Indent','Blockquote'],
+                ['JustifyLeft','JustifyCenter','JustifyRight','JustifyBlock'],
+                ['Link','Unlink','Anchor'],
                 ['Image','Format','FontSize'],
-			  ],
-		skin: 'kama',
-		language: 'es',
-		height: '300px',
-		width: '675px'
-	});
+              ],
+        skin: 'kama',
+        language: 'es',
+        height: '300px',
+        width: '675px'
+    });
 });
+// @license-end
 </script>
 
 <form method="post" action="/admin/glossary/<?= $post->id ? $vars['action'].'/'.$post->id : $vars['action'] ?>" enctype="multipart/form-data">

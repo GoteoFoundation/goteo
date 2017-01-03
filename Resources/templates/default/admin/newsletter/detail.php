@@ -100,6 +100,7 @@ $sent = $status->percent == 100;
 
 <?php $this->section('footer') ?>
 <script type="text/javascript">
+// @license magnet:?xt=urn:btih:0b31508aeb0634b347b8270c7bee4d411b5d4109&dn=agpl-3.0.txt
     $(function(){
         var reloadPage = function() {
             $('#admin-content').load('/admin/newsletter/detail/<?= $mailing->id ?>?pag=<?= $this->get_query('pag') ?> #admin-content');
@@ -107,5 +108,6 @@ $sent = $status->percent == 100;
         };
         setTimeout(reloadPage, 2000);
     });
+// @license-end
 </script>
 <?php $this->append() ?>

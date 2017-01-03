@@ -75,6 +75,8 @@ uasort($messengers, function ($a, $b) {
     		</div>
 		    <div id="comment">
             <script type="text/javascript">
+            // @license magnet:?xt=urn:btih:0b31508aeb0634b347b8270c7bee4d411b5d4109&dn=agpl-3.0.txt
+
                 // Mark DOM as javascript-enabled
                 jQuery(document).ready(function ($) {
                     //change div#preview content when textarea lost focus
@@ -84,11 +86,12 @@ uasort($messengers, function ($a, $b) {
 
                     //add fancybox on #a-preview click
                     $("#a-preview").fancybox({
-                        'titlePosition'		: 'inside',
-                        'transitionIn'		: 'none',
-                        'transitionOut'		: 'none'
+                        'titlePosition'     : 'inside',
+                        'transitionIn'      : 'none',
+                        'transitionOut'     : 'none'
                     });
                 });
+            // @license-end
             </script>
             <div id="bocadillo"></div>
             <label for="contact-subject"><?php echo Text::get('contact-subject-field'); ?></label>
@@ -108,6 +111,7 @@ uasort($messengers, function ($a, $b) {
 
 <?php endif; ?>
 <script type="text/javascript">
+// @license magnet:?xt=urn:btih:0b31508aeb0634b347b8270c7bee4d411b5d4109&dn=agpl-3.0.txt
     function noindiv() {
         $('#msg_user').val('');
         $('#msg_user_name').html('');
@@ -120,4 +124,5 @@ uasort($messengers, function ($a, $b) {
         $("#message").focus();
 
     }
+// @license-end
 </script>

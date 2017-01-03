@@ -137,22 +137,22 @@ $this->layout('layout', [
 <?php endif ?>
 
 <script type="text/javascript">
+// @license magnet:?xt=urn:btih:0b31508aeb0634b347b8270c7bee4d411b5d4109&dn=agpl-3.0.txt
 $(function(){
     $('#select-node').change(function(e){
         e.preventDefault();
         location.search = '?admin_node=' + $(this).val();
     });
 
-    $(function(){
-        $('input.datepicker').Zebra_DatePicker({
-            days: ['<?= $this->ee($this->text('date-sunday'), 'js') ?>', '<?= $this->ee($this->text('date-monday'), 'js') ?>', '<?= $this->ee($this->text('date-tuesday'), 'js') ?>', '<?= $this->ee($this->text('date-wednesday'), 'js') ?>', '<?= $this->ee($this->text('date-thursday'), 'js') ?>', '<?= $this->ee($this->text('date-friday'), 'js') ?>', '<?= $this->ee($this->text('date-saturday'), 'js') ?>'],
-            days_abbr: ['<?= $this->ee($this->text('date-su'), 'js') ?>', '<?= $this->ee($this->text('date-mo'), 'js') ?>', '<?= $this->ee($this->text('date-tu'), 'js') ?>', '<?= $this->ee($this->text('date-we'), 'js') ?>', '<?= $this->ee($this->text('date-th'), 'js') ?>', '<?= $this->ee($this->text('date-fr'), 'js') ?>', '<?= $this->ee($this->text('date-sa'), 'js') ?>'],
-            months: ['<?= $this->ee($this->text('date-january'), 'js') ?>', '<?= $this->ee($this->text('date-february'), 'js') ?>', '<?= $this->ee($this->text('date-march'), 'js') ?>', '<?= $this->ee($this->text('date-april'), 'js') ?>', '<?= $this->ee($this->text('date-may'), 'js') ?>', '<?= $this->ee($this->text('date-june'), 'js') ?>', '<?= $this->ee($this->text('date-july'), 'js') ?>', '<?= $this->ee($this->text('date-august'), 'js') ?>', '<?= $this->ee($this->text('date-september'), 'js') ?>', '<?= $this->ee($this->text('date-october'), 'js') ?>', '<?= $this->ee($this->text('date-november'), 'js') ?>', '<?= $this->ee($this->text('date-december'), 'js') ?>'],
-            months_abbr: ['<?= $this->ee($this->text('date-jan'), 'js') ?>', '<?= $this->ee($this->text('date-feb'), 'js') ?>', '<?= $this->ee($this->text('date-mar'), 'js') ?>', '<?= $this->ee($this->text('date-apr'), 'js') ?>', '<?= $this->ee($this->text('date-may'), 'js') ?>', '<?= $this->ee($this->text('date-jun'), 'js') ?>', '<?= $this->ee($this->text('date-jul'), 'js') ?>', '<?= $this->ee($this->text('date-aug'), 'js') ?>', '<?= $this->ee($this->text('date-sep'), 'js') ?>', '<?= $this->ee($this->text('date-oct'), 'js') ?>', '<?= $this->ee($this->text('date-nov'), 'js') ?>', '<?= $this->ee($this->text('date-dec'), 'js') ?>'],
-            show_select_today: '<?= $this->ee($this->text('date-today'), 'js') ?>'
-         });
+    $('input.datepicker').Zebra_DatePicker({
+        days: ['<?= $this->ee($this->text('date-sunday'), 'js') ?>', '<?= $this->ee($this->text('date-monday'), 'js') ?>', '<?= $this->ee($this->text('date-tuesday'), 'js') ?>', '<?= $this->ee($this->text('date-wednesday'), 'js') ?>', '<?= $this->ee($this->text('date-thursday'), 'js') ?>', '<?= $this->ee($this->text('date-friday'), 'js') ?>', '<?= $this->ee($this->text('date-saturday'), 'js') ?>'],
+        days_abbr: ['<?= $this->ee($this->text('date-su'), 'js') ?>', '<?= $this->ee($this->text('date-mo'), 'js') ?>', '<?= $this->ee($this->text('date-tu'), 'js') ?>', '<?= $this->ee($this->text('date-we'), 'js') ?>', '<?= $this->ee($this->text('date-th'), 'js') ?>', '<?= $this->ee($this->text('date-fr'), 'js') ?>', '<?= $this->ee($this->text('date-sa'), 'js') ?>'],
+        months: ['<?= $this->ee($this->text('date-january'), 'js') ?>', '<?= $this->ee($this->text('date-february'), 'js') ?>', '<?= $this->ee($this->text('date-march'), 'js') ?>', '<?= $this->ee($this->text('date-april'), 'js') ?>', '<?= $this->ee($this->text('date-may'), 'js') ?>', '<?= $this->ee($this->text('date-june'), 'js') ?>', '<?= $this->ee($this->text('date-july'), 'js') ?>', '<?= $this->ee($this->text('date-august'), 'js') ?>', '<?= $this->ee($this->text('date-september'), 'js') ?>', '<?= $this->ee($this->text('date-october'), 'js') ?>', '<?= $this->ee($this->text('date-november'), 'js') ?>', '<?= $this->ee($this->text('date-december'), 'js') ?>'],
+        months_abbr: ['<?= $this->ee($this->text('date-jan'), 'js') ?>', '<?= $this->ee($this->text('date-feb'), 'js') ?>', '<?= $this->ee($this->text('date-mar'), 'js') ?>', '<?= $this->ee($this->text('date-apr'), 'js') ?>', '<?= $this->ee($this->text('date-may'), 'js') ?>', '<?= $this->ee($this->text('date-jun'), 'js') ?>', '<?= $this->ee($this->text('date-jul'), 'js') ?>', '<?= $this->ee($this->text('date-aug'), 'js') ?>', '<?= $this->ee($this->text('date-sep'), 'js') ?>', '<?= $this->ee($this->text('date-oct'), 'js') ?>', '<?= $this->ee($this->text('date-nov'), 'js') ?>', '<?= $this->ee($this->text('date-dec'), 'js') ?>'],
+        show_select_today: '<?= $this->ee($this->text('date-today'), 'js') ?>'
     });
 
 });
+// @license-end
 </script>
 <?php $this->append() ?>

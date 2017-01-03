@@ -84,18 +84,8 @@ $this->section('sub-header');
 
 <?php $this->section('footer') ?>
 
-
-<div id="fb-root"></div>
-
 <script type="text/javascript">
-
-    (function(d, s, id) {
-      var js, fjs = d.getElementsByTagName(s)[0];
-      if (d.getElementById(id)) {return;}
-      js = d.createElement(s); js.id = id;
-      js.src = "//connect.facebook.net/<?= $this->lang_locale() ?>/all.js#xfbml=1&appId=189133314484241";
-      fjs.parentNode.insertBefore(js, fjs);
-    }(document, 'script', 'facebook-jssdk'));
+// @license magnet:?xt=urn:btih:0b31508aeb0634b347b8270c7bee4d411b5d4109&dn=agpl-3.0.txt
 
     $(function(){
         $('#sub-header').slides({
@@ -120,6 +110,7 @@ $this->section('sub-header');
     });
 
 
+// @license-end
 </script>
 
 <?php $this->append() ?>

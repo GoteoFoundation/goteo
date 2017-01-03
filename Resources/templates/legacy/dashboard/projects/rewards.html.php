@@ -41,11 +41,13 @@ $filter = $vars['filter']; // al ir mostrando, quitamos los que no cumplan
 
 
 <script type="text/javascript">
+// @license magnet:?xt=urn:btih:0b31508aeb0634b347b8270c7bee4d411b5d4109&dn=agpl-3.0.txt
     function set(what, which) {
         document.getElementById('invests-'+what).value = which;
         document.getElementById('invests-filter-form').submit();
         return false;
     }
+// @license-end
 </script>
 <div class="widget gestrew">
     <h2 class="title">Gestionar retornos</h2>
@@ -161,6 +163,7 @@ $filter = $vars['filter']; // al ir mostrando, quitamos los que no cumplan
         <?= \Goteo\Application\View::render('partials/utils/paginator', ['total' => $invests_total, 'limit' => $invests_limit, 'hash' => 'gestrew']) ?>
 </div>
 <script type="text/javascript">
+// @license magnet:?xt=urn:btih:0b31508aeb0634b347b8270c7bee4d411b5d4109&dn=agpl-3.0.txt
     jQuery(document).ready(function ($) {
 
         // al clickar, aviso
@@ -195,6 +198,7 @@ $filter = $vars['filter']; // al ir mostrando, quitamos los que no cumplan
             }
         });
     });
+// @license-end
 </script>
 
 
@@ -203,7 +207,7 @@ $filter = $vars['filter']; // al ir mostrando, quitamos los que no cumplan
     <h2 class="title"><?php echo Text::get('dashboard-rewards-massive_msg'); ?></h2>
 
         <form name="message_form" method="post" action="<?php echo '/dashboard/'.$vars['section'].'/'.$vars['option'].'/message'; ?>">
-        	<div id="checks">
+            <div id="checks">
                <input type="hidden" name="filter" value="<?php echo $filter; ?>" />
                <input type="hidden" name="order" value="<?php echo $order; ?>" />
                <input type="hidden" id="msg_user" name="msg_user" value="" />
@@ -226,6 +230,7 @@ $filter = $vars['filter']; // al ir mostrando, quitamos los que no cumplan
     		</div>
 		    <div id="comment">
             <script type="text/javascript">
+            // @license magnet:?xt=urn:btih:0b31508aeb0634b347b8270c7bee4d411b5d4109&dn=agpl-3.0.txt
                 jQuery(document).ready(function ($) {
                     //change div#preview content when textarea lost focus
                     $("#message").blur(function(){
@@ -234,11 +239,12 @@ $filter = $vars['filter']; // al ir mostrando, quitamos los que no cumplan
 
                     //add fancybox on #a-preview click
                     $("#a-preview").fancybox({
-                        'titlePosition'		: 'inside',
-                        'transitionIn'		: 'none',
-                        'transitionOut'		: 'none'
+                        'titlePosition'     : 'inside',
+                        'transitionIn'      : 'none',
+                        'transitionOut'     : 'none'
                     });
                 });
+            // @license-end
             </script>
             <div id="bocadillo"></div>
             <label for="contact-subject"><?php echo Text::get('contact-subject-field'); ?></label>
@@ -258,6 +264,7 @@ $filter = $vars['filter']; // al ir mostrando, quitamos los que no cumplan
 </div>
 
 <script type="text/javascript">
+// @license magnet:?xt=urn:btih:0b31508aeb0634b347b8270c7bee4d411b5d4109&dn=agpl-3.0.txt
     function noindiv() {
         $('#msg_user').val('');
         $('#msg_user_name').html('');
@@ -280,4 +287,5 @@ $filter = $vars['filter']; // al ir mostrando, quitamos los que no cumplan
         $("#message").focus();
 
     }
+// @license-end
 </script>

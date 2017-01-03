@@ -87,6 +87,7 @@ if ($vars['action'] == 'none') return;
     ?>
 
 <script type="text/javascript">
+// @license magnet:?xt=urn:btih:0b31508aeb0634b347b8270c7bee4d411b5d4109&dn=agpl-3.0.txt
 
 $(document).ready(function(){
     // Lanza wysiwyg contenido
@@ -109,6 +110,7 @@ $(document).ready(function(){
         width: '630px'
     });
 });
+// @license-end
 </script>
 
     <form method="post" action="/dashboard/projects/updates/<?= $post->id ? $vars['action'].'/'.$post->id : $vars['action'] ?>" class="project" enctype="multipart/form-data">

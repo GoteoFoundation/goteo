@@ -28,12 +28,14 @@ foreach ($project->costs as $cost) {
     <h<?php echo $level+1 ?> class="title"><?php echo Text::get('project-view-metter-investment'); ?></h<?php echo $level+1 ?>>
 
     <script type="text/javascript">
-	$(document).ready(function() {
-	   $("div.click").click(function() {
-		   $(this).children("blockquote").toggle();
-		   $(this).children("span.icon").toggleClass("closed");
-		});
-	 });
+    // @license magnet:?xt=urn:btih:0b31508aeb0634b347b8270c7bee4d411b5d4109&dn=agpl-3.0.txt
+    $(document).ready(function() {
+       $("div.click").click(function() {
+           $(this).children("blockquote").toggle();
+           $(this).children("span.icon").toggleClass("closed");
+        });
+     });
+    // @license-end
 	</script>
     <table width="100%">
 

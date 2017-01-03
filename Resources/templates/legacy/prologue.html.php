@@ -56,10 +56,12 @@ else {
  ?>
 
         <script type="text/javascript">
-        if(navigator.userAgent.indexOf('Mac') != -1)
-		{
-			document.write ('<link rel="stylesheet" type="text/css" href="<?php echo SRC_URL ?>/view/css/mac.css" />');
-		}
+        // @license magnet:?xt=urn:btih:0b31508aeb0634b347b8270c7bee4d411b5d4109&dn=agpl-3.0.txt
+                if(navigator.userAgent.indexOf('Mac') != -1)
+        {
+            document.write ('<link rel="stylesheet" type="text/css" href="<?php echo SRC_URL ?>/view/css/mac.css" />');
+        }
+        // @license-end
 	    </script>
 
         <script type="text/javascript" src="<?php echo SRC_URL ?>/view/js/jquery-1.6.4.min.js"></script>
@@ -124,6 +126,7 @@ var _prum = [['id', '5434f3beabe53dcd6ff6f0cf'],
     </head>
 
     <body<?php if (isset($bodyClass)) echo ' class="' . htmlspecialchars($bodyClass) . '"' ?>>
+
 <?php if (isset($fbCode)) : ?>
 <div id="fb-root"></div>
 <script type="text/javascript">(function(d, s, id) {
@@ -133,26 +136,29 @@ var _prum = [['id', '5434f3beabe53dcd6ff6f0cf'],
   js.src = "//connect.facebook.net/<?php echo Lang::getLocale(); ?>/all.js#xfbml=1&appId=189133314484241";
   fjs.parentNode.insertBefore(js, fjs);
 }(document, 'script', 'facebook-jssdk'));</script>
-<?php endif; ?>
-        <script type="text/javascript">
-            // Mark DOM as javascript-enabled
-            jQuery(document).ready(function ($) {
-                $('body').addClass('js');
-                $('.tipsy').tipsy();
-                /* Rolover sobre los cuadros de color */
-                $("li").hover(
-                        function () { $(this).addClass('active') },
-                        function () { $(this).removeClass('active') }
-                );
-                $('.activable').hover(
-                    function () { $(this).addClass('active') },
-                    function () { $(this).removeClass('active') }
-                );
-                $(".a-null").click(function (event) {
-                    event.preventDefault();
-                });
-            });
-        </script>
-        <noscript><div id="noscript">Please enable JavaScript</div></noscript>
 
-        <div id="wrapper">
+<?php endif; ?>
+<script type="text/javascript">
+// @license magnet:?xt=urn:btih:0b31508aeb0634b347b8270c7bee4d411b5d4109&dn=agpl-3.0.txt
+    // Mark DOM as javascript-enabled
+    jQuery(document).ready(function ($) {
+        $('body').addClass('js');
+        $('.tipsy').tipsy();
+        /* Rolover sobre los cuadros de color */
+        $("li").hover(
+                function () { $(this).addClass('active') },
+                function () { $(this).removeClass('active') }
+        );
+        $('.activable').hover(
+            function () { $(this).addClass('active') },
+            function () { $(this).removeClass('active') }
+        );
+        $(".a-null").click(function (event) {
+            event.preventDefault();
+        });
+    });
+// @license-end
+</script>
+<noscript><div id="noscript">Please enable JavaScript</div></noscript>
+
+<div id="wrapper">

@@ -27,13 +27,15 @@ $twitter_url = 'http://twitter.com/home?status=' . urlencode($share_title . ': '
 
 ?>
 <script type="text/javascript">
-            jQuery(document).ready(function ($) {
-				$("#a-proyecto").fancybox({
-					'titlePosition'		: 'inside',
-					'transitionIn'		: 'none',
-					'transitionOut'		: 'none'
-				});
-			});
+// @license magnet:?xt=urn:btih:0b31508aeb0634b347b8270c7bee4d411b5d4109&dn=agpl-3.0.txt
+    jQuery(document).ready(function ($) {
+        $("#a-proyecto").fancybox({
+            'titlePosition'     : 'inside',
+            'transitionIn'      : 'none',
+            'transitionOut'     : 'none'
+        });
+    });
+// @license-end
 </script>
 <div class="widget project-share">
 	<div class="left">

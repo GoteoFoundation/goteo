@@ -4,7 +4,7 @@ use Goteo\Library\Text;
 
 ?>
 <script type="text/javascript">
-
+// @license magnet:?xt=urn:btih:0b31508aeb0634b347b8270c7bee4d411b5d4109&dn=agpl-3.0.txt
 jQuery(document).ready(function ($) {
 
     $('#faq-section').change(function () {
@@ -14,6 +14,7 @@ jQuery(document).ready(function ($) {
     });
 
 });
+// @license-end
 </script>
 <div class="widget board">
     <form method="post" action="/admin/faq">

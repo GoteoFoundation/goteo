@@ -110,6 +110,7 @@ if($sender = $mail->getSender()) {
 
 <?php $this->section('footer') ?>
 <script type="text/javascript">
+// @license magnet:?xt=urn:btih:0b31508aeb0634b347b8270c7bee4d411b5d4109&dn=agpl-3.0.txt
     $(function(){
         var reloadPage = function() {
             $('#detail-top').load('/admin/sent/detail/<?= $mail->id ?> #detail-top');
@@ -117,5 +118,6 @@ if($sender = $mail->getSender()) {
         };
         setTimeout(reloadPage, 2000);
     });
+// @license-end
 </script>
 <?php $this->append() ?>

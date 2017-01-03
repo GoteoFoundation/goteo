@@ -51,6 +51,7 @@
 <?php $this->section('footer') ?>
 
 <script type="text/javascript">
+// @license magnet:?xt=urn:btih:0b31508aeb0634b347b8270c7bee4d411b5d4109&dn=agpl-3.0.txt
 
 $(function(){
     var _update_ajax_projects = function(value, id) {
@@ -60,25 +61,26 @@ $(function(){
             data: { 'id' : id, 'value' : value  },
             type: 'post',
             success: function(result){
-            	//alert(result);
+                //alert(result);
                 $("#projects-container").html(result);
             }
         });
    };
 
-	$("#projects-container").on('change', ".interest", function (e) {
-		var value=0;
-		if ($(this).is(":checked"))
-		{
-  			value=1;
-		}
+    $("#projects-container").on('change', ".interest", function (e) {
+        var value=0;
+        if ($(this).is(":checked"))
+        {
+            value=1;
+        }
         var id=$(this).attr('id');
-     
+
         _update_ajax_projects(value, id);
-  	});
+    });
 
 });
 
+// @license-end
 </script>
 
 <?php $this->append() ?>

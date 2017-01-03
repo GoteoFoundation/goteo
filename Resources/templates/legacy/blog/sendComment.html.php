@@ -6,19 +6,21 @@
 ?>
 <?php if ($allow == 1) : ?>
 <script type="text/javascript">
-	jQuery(document).ready(function ($) {
-	    //change div#preview content when textarea lost focus
-		$("#message").blur(function(){
-			$("#preview").html($("#message").val().replace(/\n/g, "<br />"));
-		});
+// @license magnet:?xt=urn:btih:0b31508aeb0634b347b8270c7bee4d411b5d4109&dn=agpl-3.0.txt
+    jQuery(document).ready(function ($) {
+        //change div#preview content when textarea lost focus
+        $("#message").blur(function(){
+            $("#preview").html($("#message").val().replace(/\n/g, "<br />"));
+        });
 
-		//add fancybox on #a-preview click
-		$("#a-preview").fancybox({
-			'titlePosition'		: 'inside',
-			'transitionIn'		: 'none',
-			'transitionOut'		: 'none'
-		});
-	});
+        //add fancybox on #a-preview click
+        $("#a-preview").fancybox({
+            'titlePosition'     : 'inside',
+            'transitionIn'      : 'none',
+            'transitionOut'     : 'none'
+        });
+    });
+// @license-end
 </script>
 <?php if (!empty($_SESSION['user'])) : ?>
 <div class="widget blog-comment">

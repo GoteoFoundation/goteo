@@ -46,28 +46,28 @@ foreach ($years as $year) {
 
 $legal_entity_options=[
     [   'value' => '' ,
-        'label' => Text::get('profile-field-legal-entity-choose') 
-    ], 
+        'label' => Text::get('profile-field-legal-entity-choose')
+    ],
     [   'value' => '0' ,
-        'label' => Text::get('profile-field-legal-entity-person') 
+        'label' => Text::get('profile-field-legal-entity-person')
     ],
     [   'value' => '1' ,
-        'label' => Text::get('profile-field-legal-entity-self-employed') 
+        'label' => Text::get('profile-field-legal-entity-self-employed')
     ],
     [   'value' => '2' ,
-        'label' => Text::get('profile-field-legal-entity-ngo') 
+        'label' => Text::get('profile-field-legal-entity-ngo')
     ],
     [   'value' => '3' ,
-        'label' => Text::get('profile-field-legal-entity-company') 
+        'label' => Text::get('profile-field-legal-entity-company')
     ],
     [   'value' => '4' ,
-        'label' => Text::get('profile-field-legal-entity-cooperative') 
+        'label' => Text::get('profile-field-legal-entity-cooperative')
     ],
     [   'value' => '5' ,
-        'label' => Text::get('profile-field-legal-entity-asociation') 
+        'label' => Text::get('profile-field-legal-entity-asociation')
     ],
     [   'value' => '6' ,
-        'label' => Text::get('profile-field-legal-entity-others') 
+        'label' => Text::get('profile-field-legal-entity-others')
     ],
 ];
 
@@ -423,6 +423,7 @@ echo SuperForm::get($superarray);
 ?>
 </form>
 <script type="text/javascript">
+// @license magnet:?xt=urn:btih:0b31508aeb0634b347b8270c7bee4d411b5d4109&dn=agpl-3.0.txt
 $(function () {
 
     var webs = $('div#<?php echo $sfid ?> li.element#li-user_webs');
@@ -456,4 +457,5 @@ $(function () {
     });
 
 });
+// @license-end
 </script>

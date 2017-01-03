@@ -81,11 +81,13 @@ if (!$project instanceof  Goteo\Model\Project) {
     </div>
 
 <script type="text/javascript">
+// @license magnet:?xt=urn:btih:0b31508aeb0634b347b8270c7bee4d411b5d4109&dn=agpl-3.0.txt
     /* función para cargar los datos del gáfico, sacado de graphA.js */
 jQuery(document).ready(function(){
         GOTEO.initializeGraph(<?php echo json_encode($vars['data']); ?>);
     });
 
+// @license-end
 </script>
 <?php elseif (($project->status == 2) && (!empty($project->published))): ?>
         <div class="widget chart">

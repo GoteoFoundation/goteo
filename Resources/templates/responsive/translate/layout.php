@@ -32,6 +32,7 @@ $this->section('content');
 
 <?php $this->section('footer') ?>
     <script type="text/javascript">
+    // @license magnet:?xt=urn:btih:0b31508aeb0634b347b8270c7bee4d411b5d4109&dn=agpl-3.0.txt
         $(function(){
             $('select#select-zone').on('change', function(e) {
                 e.preventDefault();
@@ -45,6 +46,7 @@ $this->section('content');
                 $(this).closest('form').submit();
             });
         });
+    // @license-end
     </script>
     <?php $this->section('translate-footer') ?>
     <?php $this->stop() ?>

@@ -8,10 +8,12 @@ if ($project->media->url):
 		$img_url=$project->secGallery['play-video'][0]->imageData->getLink(780, 478);
 ?>
         <script type="text/javascript">
+        // @license magnet:?xt=urn:btih:0b31508aeb0634b347b8270c7bee4d411b5d4109&dn=agpl-3.0.txt
             function loadVideo() {
                 var vid = document.getElementById('video_holder');
                 vid.innerHTML = '<?= $project->media->getEmbedCode(false, null,1); ?>';
             }
+        // @license-end
         </script>
 		<div class="project-media embed-responsive embed-responsive-16by9" style="position:relative;" id="video_holder">
 			<img src="<?php echo $img_url; ?>" class="img-responsive">

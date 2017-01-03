@@ -26,6 +26,7 @@ $campaigns = $vars['campaigns'];
 
     <?php if (!empty($calls)) : ?>
     <script type="text/javascript">
+    // @license magnet:?xt=urn:btih:0b31508aeb0634b347b8270c7bee4d411b5d4109&dn=agpl-3.0.txt
         $(function(){
             $('#calls').slides({
                 container: 'slder_calls',
@@ -33,6 +34,7 @@ $campaigns = $vars['campaigns'];
                 play: 6000
             });
         });
+    // @license-end
     </script>
     <div id="calls" class="callrow">
         <?php if (count($calls) > 1) : ?><a class="prev">prev</a><?php endif ?>
@@ -49,6 +51,7 @@ $campaigns = $vars['campaigns'];
 
     <?php if (!empty($campaigns)) : ?>
     <script type="text/javascript">
+    // @license magnet:?xt=urn:btih:0b31508aeb0634b347b8270c7bee4d411b5d4109&dn=agpl-3.0.txt
         $(function(){
             $('#campaigns').slides({
                 container: 'slder_campaigns',
@@ -56,6 +59,7 @@ $campaigns = $vars['campaigns'];
                 play: 6000
             });
         });
+    // @license-end
     </script>
     <div id="campaigns" class="callrow">
         <?php if (count($campaigns) > 1) : ?><a class="prev">prev</a><?php endif ?>

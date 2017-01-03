@@ -1,8 +1,10 @@
         <script type="text/javascript">
+        // @license magnet:?xt=urn:btih:0b31508aeb0634b347b8270c7bee4d411b5d4109&dn=agpl-3.0.txt
         if(navigator.userAgent.indexOf('Mac') != -1)
         {
             document.write ('<link rel="stylesheet" type="text/css" href="<?php echo SRC_URL ?>/view/css/mac.css" />');
         }
+        // @license-end
         </script>
 
     <?php if ($this->jquery == 'latest') : ?>

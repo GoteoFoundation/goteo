@@ -7,11 +7,13 @@ $items = $vars['items'];
 ?>
 <div class="widget feed">
     <script type="text/javascript">
+    // @license magnet:?xt=urn:btih:0b31508aeb0634b347b8270c7bee4d411b5d4109&dn=agpl-3.0.txt
         jQuery(document).ready(function($) {
             $('.scroll-pane').jScrollPane({showArrows: true});
         });
-        </script>
-        <h3 class="title"><?php echo Text::get('dashboard-menu-activity-wall'); ?></h3>
+    // @license-end
+    </script>
+    <h3 class="title"><?php echo Text::get('dashboard-menu-activity-wall'); ?></h3>
 
     <div style="height:auto;overflow:auto;margin-left:15px">
 

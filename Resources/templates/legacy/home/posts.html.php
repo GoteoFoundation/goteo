@@ -4,6 +4,7 @@ use Goteo\Library\Text;
 $posts = $vars['posts'];
 ?>
 <script type="text/javascript">
+// @license magnet:?xt=urn:btih:0b31508aeb0634b347b8270c7bee4d411b5d4109&dn=agpl-3.0.txt
     $(function(){
         $('#learn').slides({
             container: 'slder_container',
@@ -12,6 +13,7 @@ $posts = $vars['posts'];
             play: 0
         });
     });
+// @license-end
 </script>
 <div id="learn" class="widget learn">
     <h2 class="title"><?php echo Text::get('home-posts-header'); ?></h2>

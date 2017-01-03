@@ -44,17 +44,19 @@ $this->section('content');
 
 <?php $this->section('footer') ?>
 <script type="text/javascript">
+// @license magnet:?xt=urn:btih:0b31508aeb0634b347b8270c7bee4d411b5d4109&dn=agpl-3.0.txt
 
 $(':radio').change(function(){
     var id = $(this).attr('id');
-	$(this).closest( "label" ).addClass( "reward-choosen" );
+    $(this).closest( "label" ).addClass( "reward-choosen" );
     $(".reward:not(#" + id + ")").each(function(){
         $(this).closest( "label" ).removeClass( "reward-choosen" );
         $(this).prop('checked', false);
-	})
+    })
 
 });
 
+// @license-end
 </script>
 
 <?php $this->append() ?>

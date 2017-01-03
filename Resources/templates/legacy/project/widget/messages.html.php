@@ -7,30 +7,32 @@ $level = (int) $vars['level'] ?: 3;
 
 ?>
 <script type="text/javascript">
-	jQuery(document).ready(function ($) {
-	    //change div#preview content when textarea lost focus
-		$("#message-text").blur(function(){
-			$("#preview").html($("#message-text").val().replace(/\n/g, "<br />"));
-		});
+// @license magnet:?xt=urn:btih:0b31508aeb0634b347b8270c7bee4d411b5d4109&dn=agpl-3.0.txt
+    jQuery(document).ready(function ($) {
+        //change div#preview content when textarea lost focus
+        $("#message-text").blur(function(){
+            $("#preview").html($("#message-text").val().replace(/\n/g, "<br />"));
+        });
 
-		//add fancybox on #a-preview click
-		$("#a-preview").fancybox({
-			'titlePosition'		: 'inside',
-			'transitionIn'		: 'none',
-			'transitionOut'		: 'none'
-		});
+        //add fancybox on #a-preview click
+        $("#a-preview").fancybox({
+            'titlePosition'     : 'inside',
+            'transitionIn'      : 'none',
+            'transitionOut'     : 'none'
+        });
 
     <?php if (isset($_GET['msgto']) && $support = Message::isSupport($_GET['msgto'])) : ?>
         $('#thread').val('<?php echo $_GET['msgto'] ?>');
         $('#message-text').val('<?php echo addslashes(Text::get('project-messages-send_message_support-your_answer', $support)) ?>').focus().select();
     <?php endif; ?>
 
-	});
+    });
 
     function answer(id, text) {
         $('#thread').val(id);
         $('#message-text').val(text).focus().select();
     }
+// @license-end
 </script>
 <?php if (!empty($_SESSION['user']) && $project->status >= 3) : ?>
 <div class="widget project-message">

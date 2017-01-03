@@ -5,10 +5,12 @@ use Goteo\Library\Text;
 $vars['option'] = str_replace(array('call_overview', 'node_overview'), array('overview', 'overview'), $vars['option']);
 ?>
 <script type="text/javascript">
+// @license magnet:?xt=urn:btih:0b31508aeb0634b347b8270c7bee4d411b5d4109&dn=agpl-3.0.txt
 function item_select(type) {
     document.getElementById('selector-type').value = type;
     document.getElementById('selector-form').submit();
 }
+// @license-end
 </script>
 <div id="project-selector">
     <form id="selector-form" name="selector_form" action="<?php echo '/dashboard/translates/overview/select'; ?>" method="post">

@@ -19,14 +19,16 @@
 
 /*
 <script type="text/javascript">
-	// Mark DOM as javascript-enabled
-	jQuery(document).ready(function ($) {
-		$("#code").click(function(){
-			$("#code").focus();
-			$("#code").select();
-		});
+// @license magnet:?xt=urn:btih:0b31508aeb0634b347b8270c7bee4d411b5d4109&dn=agpl-3.0.txt
+    // Mark DOM as javascript-enabled
+    jQuery(document).ready(function ($) {
+        $("#code").click(function(){
+            $("#code").focus();
+            $("#code").select();
+        });
 
-	});
+    });
+// @license-end
 </script>
 */
 ?>

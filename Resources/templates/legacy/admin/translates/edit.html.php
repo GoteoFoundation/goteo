@@ -9,6 +9,7 @@ $langs = Lang::listAll('object', false);
 $filters = $vars['filters'];
 ?>
 <script type="text/javascript">
+// @license magnet:?xt=urn:btih:0b31508aeb0634b347b8270c7bee4d411b5d4109&dn=agpl-3.0.txt
 function assign() {
     if (document.getElementById('assign-user').value != '') {
         document.getElementById('form-assign').submit();
@@ -18,6 +19,7 @@ function assign() {
         return false;
     }
 }
+// @license-end
 </script>
 <div class="widget">
 <?php if ($vars['action'] == 'edit') : ?>
