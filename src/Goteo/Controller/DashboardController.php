@@ -13,6 +13,7 @@ namespace Goteo\Controller;
 use Symfony\Component\HttpFoundation\Request;
 
 use Goteo\Application\Session;
+use Goteo\Application\Config;
 use Goteo\Application\View;
 use Goteo\Model\Project;
 use Goteo\Model\User\Interest;
@@ -32,6 +33,9 @@ class DashboardController extends \Goteo\Core\Controller {
      */
     public function walletAction(Request $request)
     {
+        if(!Config::get('payments.pool.active')) {
+            throw new \RuntimeException("Pool payment is not active!");
+        }
 
         $user = Session::getUser();
         $pool = $user->getPool();

@@ -5,7 +5,7 @@ else              $return = urlencode($this->get_query('return'));
 
 ?>    <div class="form-group margin-top-7">
         <div class="col-md-10 col-md-offset-1">
-          <?php if($this->get_config('oauth.active.facebook')): ?>
+          <?php if($this->get_config('oauth.facebook.active')): ?>
             <a href="/login/facebook?return=<?= urlencode($this->raw('return')) ?>" class="btn btn-block btn-social btn-facebook">
                 <i class="fa fa-facebook"></i> <?= $this->text('login-signin-facebook') ?>
                 </a>
