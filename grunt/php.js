@@ -12,7 +12,8 @@ module.exports = function(grunt) {
             // ini: '<%= goteo.phpINI %>',
             hostname: '<%= goteo.localURL %>',
             port: '<%= goteo.localPort %>',
-            livereload: 35729,
+            livereload: '<%= goteo.livePort %>',
+            // bin: '/usr/bin/php56',
             directives: {
                 memory_limit: '128M',
                 short_open_tag: 'On',

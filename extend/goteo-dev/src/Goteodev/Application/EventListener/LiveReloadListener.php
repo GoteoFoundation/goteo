@@ -14,6 +14,7 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpKernel\KernelEvents;
 use Symfony\Component\HttpKernel\Event\FilterResponseEvent;
 use Symfony\Component\HttpFoundation\Response;
+use Goteo\Application\Config;
 
 class LiveReloadListener implements EventSubscriberInterface
 {
@@ -26,9 +27,10 @@ class LiveReloadListener implements EventSubscriberInterface
         if(!$event->isMasterRequest() || false === stripos($response->headers->get('Content-Type'), 'text/html') || $request->isXmlHttpRequest()) {
             return;
         }
-
+        $port = Config::get('liveport');
+        if(empty($port)) $port = 35729;
         $html  = "\n\t<!-- Debug Javascript for developers -->\n\t";
-        $html .= '<script src="//' . $request->getHost() . ':35729/livereload.js"></script>';
+        $html .= '<script src="//' . $request->getHost() . ':' . $port . '/livereload.js"></script>';
         $html .=  "\n\n";
 
         $content = $response->getContent();

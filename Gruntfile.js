@@ -15,6 +15,7 @@ GOTEO = {
     dist: 'dist',
     localURL: '0.0.0.0',
     localPort:8081,
+    livePort:35729,
 
     // to override this parameter, simply copy:
     // var/php/php.ini file to config/php.ini
@@ -41,6 +42,11 @@ module.exports = function(grunt) {
     if(port) {
         GOTEO.localPort = port;
         grunt.log.warn('Using local port from settings: ' + port);
+    }
+    var livePort = parseInt(config.liveport, 10);
+    if(livePort) {
+        console.log("LIVE", config.liveport, livePort);
+        GOTEO.livePort = livePort;
     }
 
     // Project configuration.

@@ -10,17 +10,24 @@ module.exports = function(grunt) {
                     '<%= goteo.app %>/assets/js/{,*/}*.js'],
             tasks: ['newer:jshint'],
             options: {
-                livereload: true
+                livereload: {
+                    host: '<%= goteo.localURL %>',
+                    port: '<%= goteo.livePort %>'
+                }
             }
         },
 
         livereload: {
             options: {
-                livereload: '<%= php.options.livereload %>'
+                livereload: {
+                    host: '<%= goteo.localURL %>',
+                    port: '<%= goteo.livePort %>'
+                }
             },
             files: [
                 'Resources/templates/**/*.php',
                 'extend/**/templates/**/*.php',
+                'extend/**/*.{js,css,gif,jpeg,jpg,png,svg,webp}',
                 '<%= goteo.app %>/assets/**/*.{js,css,gif,jpeg,jpg,png,svg,webp}',
                 '<%= goteo.app %>/**/view/**/*.{js,css,gif,jpeg,jpg,png,svg,webp}',
             ],

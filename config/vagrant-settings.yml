@@ -15,6 +15,7 @@ secret: --a-very-secret-string---
 env: local # set to real to send emails
 debug: true # whether to show trace for errors or not
             # This is always true for local or beta env
+liveport: 35729 # Local development only livereload port (optional)
 
 # main node
 node: goteo
