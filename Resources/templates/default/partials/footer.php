@@ -2,7 +2,7 @@
 
 $categories = $this->model_static('Category', 'getList');
 $posts = $this->model_static('Post', 'getList', 'footer');
-$sponsors = $this->model_static('Sponsor', 'getList');
+$sponsors = $this->model_static('Sponsor', 'getList', 'goteo');
 
 ?>
 
@@ -78,7 +78,9 @@ $sponsors = $this->model_static('Sponsor', 'getList');
 
             <h6 class="title"><?=$this->text('footer-header-services') ?></h6>
             <ul>
+            <?php if($this->get_config('payments.pool.active')): ?>
                 <li><a href="<?= ($this->is_logged()) ? '/dashboard/wallet' : '/pool' ?>"><img class="icon pool" src="<?= SRC_URL . '/view/css/services/pool_icon.png' ?>" height="20" /><?=$this->text('footer-service-pool') ?></a></li>
+            <?php endif ?>
             </ul>
 
         </div>
@@ -116,7 +118,7 @@ $sponsors = $this->model_static('Sponsor', 'getList');
             <div class="platoniq">
                <span class="text"><a href="#" class="poweredby"><?=$this->text('footer-platoniq-iniciative') ?></a></span>
                <span class="logo"><a href="http://fundacion.goteo.org" target="_blank" class="foundation">Fundación Goteo</a></span>
-               <span class="logo"><a href="http://www.youcoop.org" target="_blank" class="growby">Platoniq</a></span>
+               <span class="logo"><a href="http://www.platoniq.net" target="_blank" class="growby">Platoniq</a></span>
             </div>
 
 

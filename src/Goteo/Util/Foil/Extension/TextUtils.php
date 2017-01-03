@@ -37,6 +37,7 @@ class TextUtils implements ExtensionInterface
           'text_widget' => [$this, 'widget'],
           'text_truncate' => [$this, 'truncate'],
           'text_plain' => [$this, 'plain'],
+          'text_url_link' => [$this, 'url_link'],
           'percent_span' => [$this, 'percent_span'],
           'sanitize' => [$this, 'sanitize']
         ];
@@ -61,19 +62,25 @@ class TextUtils implements ExtensionInterface
         return call_user_func_array ( 'Goteo\Library\Text::html' , func_get_args() );
     }
 
-    public function widget($var)
+    public function widget($var = '')
     {
         return call_user_func_array ( 'Goteo\Library\Text::widget' , func_get_args() );
     }
-    public function truncate($var, $len = 10)
+    public function truncate($var = '', $len = 10)
     {
         return call_user_func_array ( 'Goteo\Library\Text::recorta' , func_get_args() );
     }
-    public function plain($var)
+    public function plain($var = '')
     {
         return call_user_func_array ( 'Goteo\Library\Text::plain' , func_get_args() );
     }
-    public function sanitize($var)
+
+    public function url_link($var = '')
+    {
+        return call_user_func_array ( 'Goteo\Library\Text::urlink' , func_get_args() );
+    }
+
+    public function sanitize($var = '')
     {
         return call_user_func_array ( 'Goteo\Core\Model::idealiza' , func_get_args() );
     }

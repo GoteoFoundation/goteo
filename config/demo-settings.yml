@@ -231,22 +231,32 @@ geolocation:
 # Fill an uncomment the needed one's
 oauth:
     # Credentials app Facebook
-    # facebook:
-    #    id:     000000000000000                  #
-    #    secret: aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa #
+    facebook:
+       active: false
+       id:     000000000000000                  #
+       secret: aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa #
 
     # Credentials app Twitter
-    # twitter:
-    #    id:      aaaaaaaaaaaaaaaaaaaaaa                     #
-    #    secret:  aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa #
+    twitter:
+       active: false
+       id:      aaaaaaaaaaaaaaaaaaaaaa                     #
+       secret:  aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa #
 
     # Credentials app Linkedin
-    # linkedin:
-    #    id:     aaaaaaaaaaaa     #
-    #    secret: aaaaaaaaaaaaaaaa #
+    linkedin:
+       active: false
+       id:     aaaaaaaaaaaa     #
+       secret: aaaaaaaaaaaaaaaa #
 
     # Credentials Google
-    # google:
-    #    id: aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
-    #    secret: aaaaaaaaaaaaaaaaaa
+    google:
+       active: false
+       id: aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+       secret: aaaaaaaaaaaaaaaaaa
 
+    # OpenID logins does not need for Keys, just active/inactive
+    yahoo:
+        active: false
+
+    openid:
+        active: true

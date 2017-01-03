@@ -20,6 +20,7 @@ use Goteo\Application\Session;
 use Goteo\Application\Message;
 use Goteo\Application\View;
 use Goteo\Application\Lang;
+use Goteo\Application\Config;
 use Goteo\Application\AppEvents;
 use Goteo\Application\Event\FilterInvestInitEvent;
 use Goteo\Application\Event\FilterInvestRequestEvent;
@@ -43,6 +44,9 @@ class PoolController extends \Goteo\Core\Controller {
     public function __construct() {
         // changing to a responsive theme here
         View::setTheme('responsive');
+        if(!Config::get('payments.pool.active')) {
+            throw new PaymentException("Pool payment is not active!");
+        }
     }
 
      /**

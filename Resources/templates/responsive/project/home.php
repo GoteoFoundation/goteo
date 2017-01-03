@@ -1,7 +1,8 @@
 <?php $this->layout('project/layout') ?>
+
 <?php $this->section('main-content') ?>
 
-<?php $project=$this->project; ?>
+<?php $project = $this->project ?>
 
 <h2 class="green-title">
         <?= $this->text('project-about-title') ?>
@@ -63,7 +64,7 @@
                         <?php endforeach ?>
                           </tbody>
                     </table>
-                    <?php endforeach; ?>
+                    <?php endforeach ?>
 
                     <div class="row no-margin legend no-margin">
                             <div class="circle required pull-left">
@@ -109,7 +110,7 @@
                   <ol class="carousel-indicators">
                     <?php for($slide=0;$slide<count($project->gallery);$slide++): ?>
                     <li data-target="#infoCarousel" data-slide-to="<?= $slide?>" <?= !$slide ? 'class="active"' : '' ?> ></li>
-                    <?php endfor; ?>
+                    <?php endfor ?>
                   </ol>
 
                  <!-- Wrapper for slides -->
@@ -228,7 +229,7 @@
                                         <a href="<?= $social->url ?>" target="_blank" title="<?= $this->text('social_reward-access_title') ?>"><button class="btn btn-block green"><?= $this->text('social_reward-access') ?></button></a>
                                     </div>
                                  </div>
-                                <?php endif; ?>
+                                <?php endif ?>
 
                                 <!-- License -->
                                 <?php if (!empty($social->license) && array_key_exists($social->license, $this->licenses)): ?>
