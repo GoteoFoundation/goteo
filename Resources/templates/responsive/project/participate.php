@@ -1,20 +1,18 @@
 <?php $this->layout('project/layout') ?>
 <?php $this->section('main-content') ?>
 
-<?php $project=$this->project; 
-
-?>
+<?php $project=$this->project ?>
 
 <div class="panel-group" id="accordion">
-	
+
 	<!-- Backers start -->
 	<div class="panel panel-default widget">
 		<div class="panel-heading">
 			<h2 class="panel-title green-title" >
-				<?= $project->num_investors.' '.$this->text('project-menu-supporters') ?>   
+				<?= $project->num_investors.' '.$this->text('project-menu-supporters') ?>
 			</h2>
 			<h2 class="panel-title grey-title spacer-10" >
-				<?= $project->num_messengers.' '.$this->text('project-collaborations-number') ?>   
+				<?= $project->num_messengers.' '.$this->text('project-collaborations-number') ?>
 			</h2>
 			<div class="row">
                     <div class="chart-amount text-center">
@@ -22,7 +20,7 @@
             </div>
 
             <a class="accordion-toggle" data-toggle="collapse" data-target="#collapseTwo">
-		        <h2 class="panel-title green-title text-center accordion-title" >        
+		        <h2 class="panel-title green-title text-center accordion-title" >
 		            <?= $this->text('project-show-donors') ?>
 		            <span class="icon glyphicon glyphicon glyphicon-menu-down" aria-hidden="true"></span>
 		        </h2>
@@ -31,11 +29,11 @@
 		<div id="collapseTwo" class="panel-collapse collapse in">
 			<div class="panel-body">
 				<span class="anchor-mark" id="supporters" >
-                 </span> 
+                 </span>
 				<?php foreach($this->investors_list as $invest): ?>
 					<div class="invest">
 						<div class="row info">
-							<div class="pull-left">								
+							<div class="pull-left">
 								<?php if($invest->user!= 'anonymous'): ?>
 									<a href="/user/<?= $invest->user ?>"><img class="avatar" src="<?= $invest->avatar->getLink(45, 45, true); ?>">
 									</a>
@@ -103,7 +101,7 @@
 			<div class="panel-heading">
 				<h2 class="panel-title green-title normalize-padding">
 					<?= $this->text('project-menu-messages') ?>
-					<span class="icon glyphicon glyphicon-menu-down pull-right" aria-hidden="true"></span>    
+					<span class="icon glyphicon glyphicon-menu-down pull-right" aria-hidden="true"></span>
 				</h2>
 			</div>
 		</a>
@@ -141,7 +139,7 @@
                     	</div>
                     	<div class="text-area">
                     		<form method="post" action="/message/<?= $project->id ?>">
-					            <input type="hidden" id="thread" name="thread" value="<?= $message->id ?>" /> 	
+					            <input type="hidden" id="thread" name="thread" value="<?= $message->id ?>" />
                     			<textarea id="message-text" name="message" class="message" required></textarea>
                     			<div class="col-sm-2 pull-right no-padding">
                        				<button class="btn btn-block green" type="submit"><?= $this->text('blog-send_comment-button') ?></button>
@@ -150,14 +148,14 @@
                     	</div>
                     </div>
                 </div>
-                <?php endif; ?>  
-			
+                <?php endif; ?>
+
 
 			<?php if (!empty($message->responses)) :
                     foreach ($message->responses as $child) : ?>
                     	<div id="child-msg-<?= $child->id ?>" class="row no-margin normalize-padding message child<?= ($child->user->id == $project->owner) ? ' owner' : ' no-owner' ?> no-margin normalize-padding">
 							<?php if($child->user->id != $project->owner): ?>
-							<div class="pull-left">								
+							<div class="pull-left">
 								<a href="/user/<?= $child->user->id ?>"><img class="avatar" src="<?= $child->user->avatar->getLink(45, 45, true); ?>"></a>
 							</div>
 							<?php endif; ?>

@@ -3,8 +3,10 @@
 
 <?php
     $num=0;
-    $total=count($this->milestones);
-foreach($this->milestones as $update):
+    $milestones = $this->milestones;
+    if(!is_array($milestones)) $milestones = array();
+    $total=count($milestones);
+foreach($milestones as $update):
     $num++;
     $identical_date=0;
 

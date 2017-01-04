@@ -131,8 +131,8 @@ class ChartsApiController extends AbstractApiController {
             $cumulative_invests ++;
             $ob[$invest->invested]['cumulative'] = round($cumulative);
             $ob[$invest->invested]['cumulative-invests'] = round($cumulative_invests);
-            $ob[$invest->invested]['cumulative-amount-percent'] = round(100 * $cumulative / $mincost, 2);
-            $ob[$invest->invested]['cumulative-invests-percent'] = round(100 * $cumulative_invests / $total, 2);
+            $ob[$invest->invested]['cumulative-amount-percent'] = $mincost ? round(100 * $cumulative / $mincost, 2) : 0;
+            $ob[$invest->invested]['cumulative-invests-percent'] = $total ? round(100 * $cumulative_invests / $total, 2) : 0;
         }
         ksort($ob);
         $ret = [];
