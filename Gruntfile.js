@@ -45,7 +45,6 @@ module.exports = function(grunt) {
     }
     var livePort = parseInt(config.liveport, 10);
     if(livePort) {
-        console.log("LIVE", config.liveport, livePort);
         GOTEO.livePort = livePort;
     }
 

@@ -1,10 +1,38 @@
+/*
+@licstart  The following is the entire license notice for the
+JavaScript code in this page.
+
+Copyright (c) 1998, 1999, 2000 Thai Open Source Software Center Ltd
+
+Permission is hereby granted, free of charge, to any person obtaining
+a copy of this software and associated documentation files (the
+"Software"), to deal in the Software without restriction, including
+without limitation the rights to use, copy, modify, merge, publish,
+distribute, sublicense, and/or sell copies of the Software, and to
+permit persons to whom the Software is furnished to do so, subject to
+the following conditions:
+
+The above copyright notice and this permission notice shall be included
+in all copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
+IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY
+CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,
+TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
+SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+
+@licend  The above is the entire license notice
+for the JavaScript code in this page.
+*/
 /**
  *
  * Date picker
  * Author: Stefan Petre www.eyecon.ro
- * 
+ *
  * Dual licensed under the MIT and GPL licenses
- * 
+ *
  */
 (function ($) {
 	var DatePicker = function () {
@@ -164,7 +192,7 @@
 						case 'datepickerViewYears':
 							dow = (date.getFullYear()-6) + ' - ' + (date.getFullYear()+5);
 							break;
-					} 
+					}
 					tblCal.find('thead tr:first th:eq(1) span').text(dow);
 					dow = date.getFullYear()-6;
 					data = {
@@ -566,7 +594,7 @@
 								}
 								break;
 						}
-						fillIt = true;						
+						fillIt = true;
 					}
 					if (fillIt) {
 						fill(this);
@@ -717,7 +745,7 @@
 							options.current = new Date();
 						} else {
 							options.current = parseDate(options.current, options.format);
-						} 
+						}
 						options.current.setDate(1);
 						options.current.setHours(0,0,0,0);
 						var id = 'datepicker_' + parseInt(Math.random() * 1000), cnt;
@@ -775,17 +803,17 @@
 				});
 			},
 			setDate: function(date, shiftTo){
-                            
+
 				return this.each(function(){
 					if ($(this).data('datepickerId')) {
 						var cal = $('#' + $(this).data('datepickerId'));
 						var options = cal.data('datepicker');
-                                                
+
 						if (date.constructor == String) {
 							date = parseDate(date, options.format);
 							date.setHours(0,0,0,0);
-						}                                                                                                
-                                                
+						}
+
 						if (options.mode != 'single') {
 							if (date.constructor != Array) {
 								date = [date.valueOf()];
@@ -803,17 +831,17 @@
 						} else {
 							date = date.valueOf();
 						}
-                                                
+
                                                 if (date) {
                                                     options.date = date;
-                                                
+
                                                     if (shiftTo) {
 							options.current = new Date (options.mode != 'single' ? options.date[0] : options.date);
                                                     }
                                                     fill(cal.get(0));
                                                     return true;
-                                                }               
-                                                
+                                                }
+
                                                 return false;
 					}
 				});
@@ -861,22 +889,22 @@
 
 (function(){
   var cache = {};
- 
+
   this.tmpl = function tmpl(str, data){
     // Figure out if we're getting a template, or if we need to
     // load the template - and be sure to cache the result.
     var fn = !/\W/.test(str) ?
       cache[str] = cache[str] ||
         tmpl(document.getElementById(str).innerHTML) :
-     
+
       // Generate a reusable function that will serve as a template
       // generator (and which will be cached).
       new Function("obj",
         "var p=[],print=function(){p.push.apply(p,arguments);};" +
-       
+
         // Introduce the data as local variables using with(){}
         "with(obj){p.push('" +
-       
+
         // Convert the template into pure JavaScript
         str
           .replace(/[\r\t\n]/g, " ")
@@ -887,7 +915,7 @@
           .split("%>").join("p.push('")
           .split("\r").join("\\'")
       + "');}return p.join('');");
-   
+
     // Provide some basic currying to the user
     return data ? fn( data ) : fn;
   };

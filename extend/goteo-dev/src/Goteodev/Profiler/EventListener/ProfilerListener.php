@@ -44,7 +44,7 @@ class ProfilerListener implements EventSubscriberInterface
         $body = DebugProfiler::getBodyContent();
         $content = $response->getContent();
         if(strpos($content, '/jquery.') === false) {
-            $head .= '<script src="'. SRC_URL .'/assets/js/jquery.min.js"></script>';
+            $head .= '<script src="'. SRC_URL .'/assets/js/jquery-1.12.4.min.js"></script>';
         }
         $pos = strpos($content, '</head>');
         if($pos !== false) {

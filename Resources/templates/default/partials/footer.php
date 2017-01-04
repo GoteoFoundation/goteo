@@ -51,6 +51,7 @@ $sponsors = $this->model_static('Sponsor', 'getList', 'goteo');
                 <?php endforeach ?>
                 <li><a href="/newsletter" target="_blank">Newsletter</a></li>
                 <li><a href="https://github.com/GoteoFoundation/goteo" target="_blank"><?=$this->text('footer-resources-source_code') ?></a></li>
+                <li><a rel="jslicense" href="/about/librejs">Licenses</a></li>
             </ul>
         </div>
         <?php $this->stop() ?>

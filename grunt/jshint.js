@@ -17,7 +17,6 @@ module.exports = function(grunt) {
                 '<%= goteo.app %>/assets/js/*.js',
                 '<%= goteo.app %>/view/js/*.js',
                 '!<%= goteo.app %>/view/js/jquery.*.js',
-                '!<%= goteo.app %>/view/js/slides.jquery.js',
                 '!<%= goteo.app %>/view/js/sha1*.js',
                 '!<%= goteo.app %>/view/js/datepicker*.js',
                 '!<%= goteo.app %>/view/js/jquery-*.js'

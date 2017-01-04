@@ -1,3 +1,27 @@
+/*
+@licstart  The following is the entire license notice for the
+JavaScript code in this page.
+
+Copyright (C) 2010  Goteo Foundation
+
+The JavaScript code in this page is free software: you can
+redistribute it and/or modify it under the terms of the GNU
+General Public License (GNU GPL) as published by the Free Software
+Foundation, either version 3 of the License, or (at your option)
+any later version.  The code is distributed WITHOUT ANY WARRANTY;
+without even the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PURPOSE.  See the GNU GPL for more details.
+
+As additional permission under GNU GPL version 3 section 7, you
+may distribute non-source (e.g., minimized or compacted) forms of
+that code without the copy of the GNU GPL normally required by
+section 4, provided you include this license notice and a URL
+through which recipients can access the Corresponding Source.
+
+
+@licend  The above is the entire license notice
+for the JavaScript code in this page.
+*/
 /**
  *
  * Plugin para realizar cambios Ajax en el Super form
@@ -140,6 +164,10 @@
                 //actualizar el nodo si target es un elemento html
                 //si no hay el el id esperado, no actualizar nada
                 _superformUpdate(t, el, html);
+                //alert if alert div is present
+                if($(html).first().hasClass('ajax-alert')) {
+                    alert($(html).first().text());
+                }
             }).fail( function(html, status) {
                 // console.log(html,status,xhr);
                 if(status !== 'abort') {
@@ -236,6 +264,7 @@
                 });
             //esta en el nuevo, sustituimos
             } else if (!focused.length || (!$.contains(cont[0], focused[0]))) {
+                // console.log('REPLACE WITH', new_cont);
                 cont.replaceWith(new_cont);
             }
         //no existe, añadimos
@@ -244,7 +273,13 @@
         }
 
         if(new_cont.length) {
-            goteo.trace('nuevo contendido:', new_cont.html());
+            goteo.trace('NEW CONTENT:', new_cont.html());
+            // Reset select fields if value comming from AJAX is not the same as previsously selected
+            var sel = new_cont.contents('select');
+            var cur_sel = $('#' + sel.attr('id'));
+            if(sel.is('select') && cur_sel.is('select')) {
+                cur_sel.val(sel.val());
+            }
         }
 
         //miramos si hay apartado feedback
@@ -488,3 +523,4 @@ $(function() {
 
     //
 });
+

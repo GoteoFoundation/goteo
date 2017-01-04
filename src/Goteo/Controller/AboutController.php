@@ -80,15 +80,17 @@ namespace Goteo\Controller {
             // resto de casos
             $page = Page::get($id);
 
-            return new Response(View::render('about/sample', array(
+            return $this->viewResponse('about/sample', array(
                         'name' => $page->name,
                         'description' => $page->description,
                         'content' => $page->parseContent()
-                    )
-                 ));
+                    ));
 
         }
 
+        public function librejsAction() {
+            return $this->viewResponse('about/librejs');
+        }
     }
 
 }

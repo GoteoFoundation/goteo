@@ -1,12 +1,40 @@
+/*
+@licstart  The following is the entire license notice for the
+JavaScript code in this page.
+
+Copyright (c) 1998, 1999, 2000 Thai Open Source Software Center Ltd
+
+Permission is hereby granted, free of charge, to any person obtaining
+a copy of this software and associated documentation files (the
+"Software"), to deal in the Software without restriction, including
+without limitation the rights to use, copy, modify, merge, publish,
+distribute, sublicense, and/or sell copies of the Software, and to
+permit persons to whom the Software is furnished to do so, subject to
+the following conditions:
+
+The above copyright notice and this permission notice shall be included
+in all copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
+IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY
+CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,
+TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
+SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+
+@licend  The above is the entire license notice
+for the JavaScript code in this page.
+*/
 (function($) {
     $.fn.tipsy = function(options) {
 
         options = $.extend({}, $.fn.tipsy.defaults, options);
-        
+
         return this.each(function() {
-            
+
             var opts = $.fn.tipsy.elementOptions(this, options);
-            
+
             $(this).hover(function() {
 
                 $.data(this, 'cancel.tipsy', true);
@@ -72,11 +100,11 @@
                 }, 100);
 
             });
-            
+
         });
-        
+
     };
-    
+
     // Overwrite this method to provide options on a per-element basis.
     // For example, you could store the gravity in a 'tipsy-gravity' attribute:
     // return $.extend({}, options, {gravity: $(ele).attr('tipsy-gravity') || 'n' });
@@ -84,7 +112,7 @@
     $.fn.tipsy.elementOptions = function(ele, options) {
         return $.metadata ? $.extend({}, options, $(ele).metadata()) : options;
     };
-    
+
     $.fn.tipsy.defaults = {
         fade: false,
         fallback: '',
@@ -92,13 +120,13 @@
         html: false,
         title: 'title'
     };
-    
+
     $.fn.tipsy.autoNS = function() {
         return $(this).offset().top > ($(document).scrollTop() + $(window).height() / 2) ? 's' : 'n';
     };
-    
+
     $.fn.tipsy.autoWE = function() {
         return $(this).offset().left > ($(document).scrollLeft() + $(window).width() / 2) ? 'e' : 'w';
     };
-    
+
 })(jQuery);

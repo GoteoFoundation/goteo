@@ -312,6 +312,13 @@ $routes->add('contact-form', new Route(
 ));
 ///// ABOUT /////
 
+$routes->add('about-librejs', new Route(
+    '/about/librejs',
+    array(
+        '_controller' => 'Goteo\Controller\AboutController::librejsAction',
+        )
+));
+
 $routes->add('about-sections', new Route(
     '/about/{id}',
     array(
