@@ -4,11 +4,6 @@ use Goteo\Library\Text,
     Goteo\Application\Lang,
     Goteo\Application\Config;
 
-if (Config::get('alternate.prologue')) {
-    include Config::get('alternate.prologue');
-    return;
-}
-
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="<?= Lang::current() ?>">
@@ -99,45 +94,17 @@ else {
            <script type="text/javascript" src="<?php echo SRC_URL; ?>/view/js/ckeditor/ckeditor.js"></script>
         <?php endif; ?>
 
-
- <script>
-  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
-
-  ga('create', 'UA-17744816-4', 'auto');
-  ga('send', 'pageview');
-
-</script>
-
-<script>
-var _prum = [['id', '5434f3beabe53dcd6ff6f0cf'],
-             ['mark', 'firstbyte', (new Date()).getTime()]];
-(function() {
-    var s = document.getElementsByTagName('script')[0]
-      , p = document.createElement('script');
-    p.async = 'async';
-    p.src = '//rum-static.pingdom.net/prum.min.js';
-    s.parentNode.insertBefore(p, s);
-})();
-</script>
+<?php
+    // Place for custom header styles/scripts for legacy views
+    if(Config::get('alternate.legacy.header')) {
+        include Config::get('alternate.legacy.header');
+    }
+?>
 
     </head>
 
     <body<?php if (isset($bodyClass)) echo ' class="' . htmlspecialchars($bodyClass) . '"' ?>>
 
-<?php if (isset($fbCode)) : ?>
-<div id="fb-root"></div>
-<script type="text/javascript">(function(d, s, id) {
-  var js, fjs = d.getElementsByTagName(s)[0];
-  if (d.getElementById(id)) {return;}
-  js = d.createElement(s); js.id = id;
-  js.src = "//connect.facebook.net/<?php echo Lang::getLocale(); ?>/all.js#xfbml=1&appId=189133314484241";
-  fjs.parentNode.insertBefore(js, fjs);
-}(document, 'script', 'facebook-jssdk'));</script>
-
-<?php endif; ?>
 <script type="text/javascript">
 // @license magnet:?xt=urn:btih:0b31508aeb0634b347b8270c7bee4d411b5d4109&dn=agpl-3.0.txt
     // Mark DOM as javascript-enabled
