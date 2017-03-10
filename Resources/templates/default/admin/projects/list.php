@@ -146,8 +146,15 @@ foreach ($filters as $key=>$value) {
                         $add[] = "<strong>Conseguido:</strong> ".\euro_format($project->amount)."€";
                         $add[] = "<strong>Cofin:</strong> {$project->num_investors}";
                         $add[] = "<strong>Colab:</strong> {$project->num_messengers}";
-
                     }
+
+                    if ($project->publishing_estimation) {
+                        $date=new \Datetime($project->publishing_estimation);
+                        $date_publishing=$date->format("d-m-Y");
+                        $add[] = "Fecha publicación estimada: <strong>{$date_publishing}</strong>";
+                    }
+
+
 
                     if ($project->getConsultants()) {
                         $consultants = array();

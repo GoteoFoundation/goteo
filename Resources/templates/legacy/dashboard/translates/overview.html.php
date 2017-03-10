@@ -225,6 +225,22 @@ if ( $_SESSION['user']->id == $project->owner ) {
             )
         ),
 
+        'social_commitment_description_original' => array(
+            'type'      => 'html',
+            'title'     => Text::get('overview-field-social-description'),
+            'html'     => $original->social_commitment_description
+        ),
+
+        'social_commitment_description' => array(
+                    'type'      => 'textarea',
+                    'title'     => '',
+                    'class'     => 'inline',
+                    'hint'      => Text::get('overview-field-social-description'),
+                    'errors'    => array(),
+                    'ok'        => array(),
+                    'value'     => $project->social_commitment_description
+                ),
+
         'keywords-orig' => array(
             'type'      => 'html',
             'title'     => Text::get('overview-field-keywords'),

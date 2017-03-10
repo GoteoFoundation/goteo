@@ -12,6 +12,7 @@ namespace Goteo\Model\Project {
 
     use Goteo\Application\Lang;
     use Goteo\Application\Config;
+    use Goteo\Model\Image;
 
     class Category extends \Goteo\Core\Model {
 
@@ -69,18 +70,23 @@ namespace Goteo\Model\Project {
                         ON  category_lang.id = category.id
                         AND category_lang.lang = :lang
                     $eng_join
+                    $where
                     ORDER BY name ASC
                         ";
 
                 $query = static::query($sql, array(':lang'=>Lang::current()));
+
+
                 $categories = $query->fetchAll();
                 foreach ($categories as $cat) {
-                    // la 15 es de testeos
-                    if ($cat[0] == 15) continue;
+                // la 15 es de testeos
+                if ($cat[0] == 15) continue;
                     $array[$cat[0]] = $cat[1];
                 }
 
                 return $array;
+
+
             } catch(\PDOException $e) {
 				throw new \Goteo\Core\Exception($e->getMessage());
             }

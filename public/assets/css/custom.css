@@ -4,6 +4,37 @@
  *
  */
 
+
+/* GENERAL STYLES */
+
+.spacer {
+    margin-top: 40px;
+}
+
+.spacer-20{
+    margin-top:20px;
+}
+
+.spacer-5{
+    margin-top:5px;
+}
+
+.spacer-10{
+    margin-top:10px !important;
+}
+
+.cursor-pointer{
+    cursor: pointer;
+}
+
+.text-left-important{
+	text-align: left !important;
+}
+
+.align-center-margin{
+	margin: 0 auto;
+}
+
  .main-color-background {
   background-color: #32BDB8;
  }
@@ -130,7 +161,7 @@ button.custom-green{
 	font-weight: bold;
 }
 
-button.pink:hover, button.custom-green:hover{
+button.pink:hover, button.pink:focus, button.custom-green:hover{
 	color:#FFF !important;
 }
 
@@ -617,6 +648,132 @@ div.jumbotron .project-tags:before {
 }
 
 
+/* Create project form */
+
+div.create-form{
+    /*background-color:#FFF;*/
+    margin-top:50px;
+    padding-bottom:30px;
+    margin-bottom: 50px;
+    font-size: 18px;
+}
+
+div.create-form h1{
+    font-size: 36px;
+    font-weight: 700;
+    color:#149290;
+    margin-top:60px;
+}
+
+form.create-project-form div.form-group{
+    opacity: 0.3;
+    padding-top: 70px;
+}
+
+form.create-project-form div.form-group.active{
+    opacity: 1;
+}
+
+form.create-project-form div#calculated-msg{
+    display: none;
+}
+
+
+form.create-project-form label.category{
+    margin-top: 30px;
+    cursor: pointer;
+    font-weight: normal;
+}
+
+form.create-project-form .datepicker{
+    border-radius: 10px;
+    padding: 15px 5px;
+    margin-top: 15px;
+    background-color: #FFF;
+}
+
+
+
+form.create-project-form .bootstrap-datetimepicker-widget table td.active{
+    background-color: #CD5EB3 !important;
+}
+
+form.create-project-form .bootstrap-datetimepicker-widget table td:hover{
+    /*background-color: #FFF;*/
+}
+
+form.create-project-form .bootstrap-datetimepicker-widget .picker-switch{
+    text-transform: uppercase;;
+}
+
+form.create-project-form .bootstrap-datetimepicker-widget .glyphicon{
+    color:#149290;
+}
+
+
+form.create-project-form table thead tr:first-child th:hover{
+    background:#FFF !important;
+}
+
+form.create-project-form .bootstrap-datetimepicker-widget table td span.active{
+    background-color: #CD5EB3 !important;
+}
+
+
+form.create-project-form input {
+  outline: 0 !important;
+  border-width: 0 0 2px 0 !important;
+  border-color: #CD5EB3 !important;
+  border-radius: 0 !important;
+  box-shadow: none !important;
+  font-size: 20px;
+  background-color: transparent !important;
+}
+
+form.create-project-form input.minimum{
+    display:inline;
+}
+
+form.create-project-form button.pink{
+    font-size: 1em;
+    margin-top: 25px;
+}
+
+form.create-project-form select{
+    display: block;
+}
+
+form.create-project-form .alert{
+    margin-top:30px;
+    display: none;
+}
+
+form.create-project-form .alert strong{
+    font-size: 24px;
+}
+
+form.create-project-form input:focus {
+  border-color: #CD5EB3 !important;
+}
+
+form.create-project-form div.investors{
+    font-size:25px;
+    display: inline;
+    margin-left:20px;
+    display: none;
+    margin-top: 25px;
+}
+
+form.create-project-form label.terms{
+    font-size: 14px;
+    font-weight: normal;
+}
+
+form.create-project-form button#create-continue{
+    font-size: 18px;
+}
+
+
 @media(min-width: 992px){
     .clear-both-md{
         clear:both !important;
@@ -644,6 +801,10 @@ div.jumbotron .project-tags:before {
 }
 
 @media(max-width:767px){
+
+	.clear-both-xs{
+        clear:both !important;
+    }
 
 	.sm-display-none{
 		display: none;
@@ -1180,26 +1341,6 @@ div.row.general-dashboard, div.container.general-dashboard{
 	margin-bottom: 40px;
 }
 
-.spacer {
-    margin-top: 40px;
-}
-
-.spacer-20{
-	margin-top:20px;
-}
-
-.spacer-5{
-	margin-top:5px;
-}
-
-.spacer-10{
-	margin-top:10px !important;
-}
-
-.cursor-pointer{
-	cursor: pointer;
-}
-
 div.row.user-pool div.user-pool-info div.extra-info{
 	margin-left: 2px;
 	margin-top: 5%;
@@ -1231,6 +1372,33 @@ div.user-pool-info div.pool-conditions a{
 	text-decoration: underline;
 	font-weight: bold;
 }
+
+
+/* Social Commitment */
+
+table.social-commitment .glyphicon-ok{
+    color: #00C65B;
+}
+
+table.social-commitment .glyphicon-remove{
+    color: #FF4848;
+}
+
+table.social-commitment td:not(:first-child){
+    vertical-align: middle;
+    text-align: center;
+}
+
+table.social-commitment  th{
+    text-align: center;
+}
+
+/* Shared materials */
+
+div.new-material-success{
+	margin-top: 20px;
+}
+
 
 
 

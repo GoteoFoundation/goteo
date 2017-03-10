@@ -72,8 +72,6 @@ endif;
 
     <body role="document" <?php if ($this->bodyClass) echo ' class="' . $this->bodyClass . '"' ?>>
 
-    <noscript><div id="noscript">Please enable JavaScript</div></noscript>
-
     <?php $this->section('header') ?>
         <?= $this->insert("partials/header") ?>
     <?php $this->stop() ?>

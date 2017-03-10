@@ -1088,7 +1088,7 @@ class User extends \Goteo\Core\Model {
      */
     public static function getByEmail($email, $lang = null, $with_password = false) {
 
-        $query = self::query("SELECT id FROM user WHERE BINARY email = ?", $email);
+        $query = self::query("SELECT id FROM user WHERE email = ?", $email);
 
         if ($row = $query->fetch()) {
             if ($user = static::get($row['id'], $lang, $with_password)) {
@@ -1457,7 +1457,7 @@ class User extends \Goteo\Core\Model {
 
         $query = self::query("
                 SELECT * FROM user
-                WHERE BINARY $field = :email
+                WHERE $field = :email
                 ",
             array(
                 ':email' => trim($email),
@@ -1502,7 +1502,7 @@ class User extends \Goteo\Core\Model {
                     name,
                     email
                 FROM user
-                WHERE BINARY email = :email
+                WHERE email = :email
                 ",
             array(
                 ':email' => trim($email),

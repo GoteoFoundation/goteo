@@ -24,9 +24,6 @@
 
     <body<?php if ($this->bodyClass) echo ' class="' . $this->bodyClass . '"' ?>>
 
-
-    <noscript><div id="noscript">Please enable JavaScript</div></noscript>
-
     <div id="wrapper">
 
     <?= $this->insert('wrapper') ?>

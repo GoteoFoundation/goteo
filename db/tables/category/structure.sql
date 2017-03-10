@@ -9,3 +9,5 @@ CREATE TABLE IF NOT EXISTS `category` (
 -- alters
 ALTER TABLE `category` ADD `order` TINYINT UNSIGNED NOT NULL DEFAULT '1';
 ALTER TABLE `category` CHANGE `id` `id` INT(10) UNSIGNED NOT NULL AUTO_INCREMENT;
+
+ALTER TABLE `category` ADD `social_commitment` VARCHAR(50) DEFAULT NULL COMMENT 'Social commitment';

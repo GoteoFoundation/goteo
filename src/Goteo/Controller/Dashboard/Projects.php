@@ -71,7 +71,7 @@ namespace Goteo\Controller\Dashboard {
 
                 } else {
                     // si no hay proyecto de trabajo, coger el primero
-                    $project = Model\Project::get($projects[0]->id);;
+                    $project = Model\Project::get($projects[0]->id);
 
                 }
 
@@ -307,7 +307,7 @@ namespace Goteo\Controller\Dashboard {
                 Message::info(Text::get('dashboard-investors-mail-sendto', $enviandoa));
             }
 
-            //  idioma de preferencia
+            // idioma de preferencia
             $comlang = Model\User::getPreferences($project->user->id)->comlang;
 
             // Obtenemos la plantilla para asunto y contenido

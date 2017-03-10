@@ -764,7 +764,8 @@ class ProjectsSubController extends AbstractSubController {
         $open_tags = Model\Project\OpenTag::getAll();
         $orders = array(
             'name' => 'Nombre',
-            'updated' => 'Enviado a revision'
+            'updated' => 'Enviado a revision',
+            'publishing_estimation' => 'Fecha publicación estimada'
         );
 
         return  array(

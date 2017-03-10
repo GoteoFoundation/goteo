@@ -8,6 +8,8 @@
 
 <script src="<?= SRC_URL ?>/assets/vendor/d3/d3.v3.min.js"></script>
 <script src="<?= SRC_URL ?>/assets/vendor/clipboard/clipboard.min.js"></script>
+<script src="<?= SRC_URL ?>/assets/vendor/moment/moment-locales.js"></script>
+<script src="<?= SRC_URL ?>/assets/vendor/bootstrap/js/bootstrap-datetimepicker.min.js"></script>
 
 <!--script src="<?= SRC_URL ?>/assets/js/docs.min.js"></script-->
 <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->

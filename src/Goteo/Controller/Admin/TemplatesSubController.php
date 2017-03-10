@@ -46,7 +46,7 @@ class TemplatesSubController extends AbstractSubController {
     }
 
 
-    public function editAction($id = null, $subaction = null) {
+    public function editAction($id = null, $subaction = null, $filters=array()) {
         // si estamos editando una plantilla
         $template = Template::get($id);
 
@@ -78,9 +78,12 @@ class TemplatesSubController extends AbstractSubController {
     }
 
 
-    public function listAction($id = null, $subaction = null) {
+    public function listAction($id = null, $subaction = null, $filters=array()) {
+
         // si estamos en la lista de páginas
         $templates = Template::getAll($filters);
+        $groups= Template::groups();
+
 
         return array(
             'template' => 'admin/templates/list',

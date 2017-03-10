@@ -126,6 +126,5 @@ else {
     });
 // @license-end
 </script>
-<noscript><div id="noscript">Please enable JavaScript</div></noscript>
 
 <div id="wrapper">

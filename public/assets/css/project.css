@@ -638,9 +638,33 @@ div.side-widget .investors div.left{
     font-weight: normal;
 }
 
+/* Social commitment */
+
+div.social-commitment{
+    margin-top: 10px;
+}
+
+div.social-commitment img.social-img{
+    margin: 0 auto;
+}
+
+div.social-commitment h3.title{
+    font-size:13px;
+    font-weight: bold;
+}
+
+h2.social-reward-title{
+    border-top: 1px solid #BCBCBC;
+    padding-top: 35px;
+    font-size: 18px;
+    font-weight: bold;
+    text-transform: uppercase;
+}
+
 /* Social rewards */
 ul.social-rewards{
 	padding-bottom: 20px;
+    padding-top: 10px;
 }
 
 li.social-reward:not(:last-child){

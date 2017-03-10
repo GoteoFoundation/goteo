@@ -13,6 +13,8 @@
 namespace Goteo\Controller\Admin;
 
 use Goteo\Application\Config;
+use Goteo\Model\Image;
+use Goteo\Model\SocialCommitment;
 
 class CategoriesSubController extends AbstractSubController {
 
@@ -87,6 +89,16 @@ class CategoriesSubController extends AbstractSubController {
         $model = 'Goteo\Model\Category';
         $url = '/admin/categories';
 
+        // Prepare shperes of call
+        $social_commitments= SocialCommitment::getall();
+
+        $social_commitments_normalize=[];
+
+        foreach($social_commitments as $social)
+        {
+            $social_commitments_normalize[$social->id]=$social->name;
+        }
+
         $errors = array();
 
         switch ($action) {
@@ -124,7 +136,13 @@ class CategoriesSubController extends AbstractSubController {
                                     'type' => 'textarea',
                                     'properties' => 'cols="100" rows="2"',
 
-                                )
+                                ),
+                                 'social_commitment' => array(
+                                    'label' => 'Compromiso Social',
+                                    'name' => 'social_commitment',
+                                    'type' => 'select',
+                                    'options' => $social_commitments_normalize
+                                    )
                             )
                     )
                 );
@@ -135,12 +153,30 @@ class CategoriesSubController extends AbstractSubController {
                 // gestionar post
                 if ($this->isPost() && $this->hasPost('update')) {
 
+                    $active= $this->getPost('active') ? 1 : 0;
+
                     // instancia
                     $item = new $model(array(
                         'id' => $this->getPost('id'),
                         'name' => $this->getPost('name'),
-                        'description' => $this->getPost('description')
+                        'image' => $this->getPost('image'),
+                        'description' => $this->getPost('description'),
+                        'active'    => $active,
+                        'social_commitment' => $this->getPost('social_commitment')
                     ));
+
+                    // tratar si quitan la imagen
+                    if ($this->hasPost('image-' . md5($item->image) .  '-remove')) {
+                        $image = Image::get($item->image);
+                        $image->remove($errors);
+                        $item->image = null;
+                        $removed = true;
+                    }
+
+                    // tratar la imagen y ponerla en la propiedad image
+                    if(!empty($_FILES['image']['name'])) {
+                        $item->image = $_FILES['image'];
+                    }
 
                     if ($item->save($errors)) {
                         return $this->redirect($url);
@@ -179,7 +215,13 @@ class CategoriesSubController extends AbstractSubController {
                                     'type' => 'textarea',
                                     'properties' => 'cols="100" rows="2"',
 
-                                )
+                                ),
+                                 'social_commitment' => array(
+                                    'label' => 'Compromiso Social',
+                                    'name' => 'social_commitment',
+                                    'type' => 'select',
+                                    'options' => $social_commitments_normalize
+                                    )
                             )
                     )
                 );

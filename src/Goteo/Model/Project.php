@@ -17,6 +17,7 @@ namespace Goteo\Model {
         Goteo\Model\Message,
         Goteo\Application\Lang,
         Goteo\Model\Mail,
+        Goteo\Model\SocialCommitment,
         Goteo\Library\Check,
         Goteo\Library\Text,
         Goteo\Library\Feed,
@@ -90,17 +91,21 @@ namespace Goteo\Model {
             $secGallery = array(), // array de instancias image de project_image (secundarias)
             $all_galleries = array(), // array de instancias image de project_image (secundarias)
             $description,
-             $motivation,
-              $video,   // video de motivacion
-               $video_usubs,   // universal subtitles para el video de motivacion
-             $about,
-             $goal,
-             $related,
-             $spread, //campo para que expliquen la difusión prevista del proyecto
-             $reward, // nueva sección, solo editable por admines y traductores
+            $motivation,
+            $video,   // video de motivacion
+            $video_usubs,   // universal subtitles para el video de motivacion
+            $about,
+            $goal,
+            $related,
+            $spread, //campo para que expliquen la difusión prevista del proyecto
+            $execution_plan,
+            $execution_plan_url,
+            $sustainability_model,
+            $sustainability_model_url,
+            $reward, // nueva sección, solo editable por admines y traductores
             $categories = array(),
             $media, // video principal
-             $media_usubs, // universal subtitles para el video principal
+            $media_usubs, // universal subtitles para el video principal
             $keywords, // por ahora se guarda en texto tal cual
             $currently, // Current development status of the project
             $project_location, // project execution location
@@ -128,6 +133,12 @@ namespace Goteo\Model {
 
             // Facebook pixel for facebook ads
             $facebook_pixel,
+
+            // Social commitment
+
+            $social_commitment,
+
+            $social_commitment_description,
 
             //Operative purpose properties
             $mincost = 0,
@@ -326,7 +337,7 @@ namespace Goteo\Model {
          * @param array $data
          * @return boolean
          */
-        public function create ($node = null, &$errors = array()) {
+        public function create ($data, $node = null, &$errors = array()) {
             if(empty($node)) $node = Config::get('node');
             $user = $this->owner;
 
@@ -360,7 +371,10 @@ namespace Goteo\Model {
 
             $values = array(
                 ':id'   => md5($user.'-'.uniqid($num)),
-                ':name' => "El nuevo proyecto de {$userProfile->name}",
+                ':name' => $data['name'],
+                ':subtitle' => $data['subtitle'],
+                ':social_commitment'  => $data['social_commitment'],
+                ':social_commitment_description'  => $data['social_description'],
                 ':lang' => !empty($_SESSION['lang']) ? $_SESSION['lang'] : 'es',
                 ':currency' => 'EUR',
                 ':currency_rate' => 1,
@@ -481,7 +495,8 @@ namespace Goteo\Model {
                             IFNULL(project_lang.reward, project.reward) as reward,
                             IFNULL(project_lang.keywords, project.keywords) as keywords,
                             IFNULL(project_lang.media, project.media) as media,
-                            IFNULL(project_lang.subtitle, project.subtitle) as subtitle
+                            IFNULL(project_lang.subtitle, project.subtitle) as subtitle,
+                            IFNULL(project_lang.social_commitment_description, project.social_commitment_description) as social_commitment_description
                         FROM project
                         LEFT JOIN project_lang
                             ON  project_lang.id = project.id
@@ -536,6 +551,15 @@ namespace Goteo\Model {
 
                 // categorias
                 $project->categories = Project\Category::get($id);
+
+
+                //Social commitment
+
+                if ($project->social_commitment)
+                {
+                    $project->social_commitmentData = SocialCommitment::get($project->social_commitment);
+                    $project->social_commitmentData->image = Image::get($project->social_commitmentData->image);
+                }
 
 
                 // @FIXME #42 : para contenidos adicionales (cost, reward, support) se está suponiendo erroneamente que el contenido original es español
@@ -880,6 +904,31 @@ namespace Goteo\Model {
             }
 
             return $list;
+        }
+
+         /*
+         * Average of invests in the last 12 months
+         * @return: float number
+         */
+        public static function getInvestAverage() {
+
+            $sql = "
+               SELECT AVG(anon_1.amount) AS avg_1
+                FROM (
+                SELECT AVG(invest.amount) AS amount
+                FROM invest INNER JOIN project ON project.id = invest.project
+                WHERE
+                invest.status IN (0, 1, 3, 4, 6)
+                AND invest.project = project.id
+                AND project.status
+                IN (4, 5, 6, 3)
+                AND invest.status > 0
+                AND invest.`invested`> DATE_SUB(NOW(), INTERVAL 12 MONTH)
+                GROUP BY invest.user
+                ) AS anon_1
+                ";
+
+            return round(self::query($sql)->fetchColumn(), 2);
         }
 
         /**
@@ -1281,6 +1330,10 @@ namespace Goteo\Model {
                     'goal',
                     'related',
                     'spread',
+                    'execution_plan',
+                    'execution_plan_url',
+                    'sustainability_model',
+                    'sustainability_model_url',
                     'reward',
                     'keywords',
                     'media',
@@ -1291,7 +1344,9 @@ namespace Goteo\Model {
                     'resource',
                     'comment',
                     'analytics_id',
-                    'facebook_pixel'
+                    'facebook_pixel',
+                    'social_commitment',
+                    'social_commitment_description'
                     );
 
                 $set = '';
@@ -1309,6 +1364,7 @@ namespace Goteo\Model {
                 $values[':id'] = $this->id;
 
                 $sql = "UPDATE project SET " . $set . " WHERE id = :id";
+                
                 if (!self::query($sql, $values)) {
                     $errors[] = $sql . '<pre>' . print_r($values, true) . '</pre>';
                     $fail = true;
@@ -1499,7 +1555,8 @@ namespace Goteo\Model {
                     'related'=>'related_lang',
                     'reward'=>'reward_lang',
                     'keywords'=>'keywords_lang',
-                    'media'=>'media_lang'
+                    'media'=>'media_lang',
+                    'social_commitment_description'=>'social_commitment_description_lang'
                     );
 
                 $set = '';
@@ -1672,7 +1729,9 @@ namespace Goteo\Model {
 
             if (isset($steps) && isset($steps['overview'])) {
                 /***************** Revisión de campos del paso 3, DESCRIPCION *****************/
-                $maxScore = 13;
+                //$maxScore = 13;
+                $maxScore = 12;
+                // Remove category -1
                 $score = 0;
                 // obligatorios: nombre, subtitulo, imagen, descripcion, about, motivation, categorias, video, localización
                 if (empty($this->name)) {
@@ -1700,12 +1759,12 @@ namespace Goteo\Model {
                      ++$score;
                 }
 
-                if (empty($this->categories)) {
+                /*if (empty($this->categories)) {
                     $errors['overview']['categories'] = Text::get('mandatory-project-field-category');
                 } else {
                      $okeys['overview']['categories'] = 'ok';
                      ++$score;
-                }
+                }*/
 
                 if (empty($this->media)) {
                     // solo error si no está aplicando a una convocatoria
@@ -1724,8 +1783,6 @@ namespace Goteo\Model {
                      ++$score;
                 }
 
-                if (!$this->draft)
-                {
                     if (empty($this->about)) {
                         $errors['overview']['about'] = Text::get('mandatory-project-field-about');
                      } else {
@@ -1740,6 +1797,18 @@ namespace Goteo\Model {
                         ++$score;
                     }
 
+                     //Check only the social reward with category.
+                foreach ($this->social_rewards as $social) {
+                    if($social->category)
+                    {
+                        if (empty($social->reward)) {
+                        $errors['overview']['social_reward-'.$social->id.'-reward'] = Text::get('mandatory-social_reward-field-name');
+                        } else {
+                             $okeys['overview']['social_reward-'.$social->id.'-reward'] = 'ok';
+                        }
+                    }
+                }
+
                     // paso 3b: imágenes
                     if (empty($this->gallery) && empty($errors['images']['image'])) {
                         $errors['images']['image'] .= Text::get('mandatory-project-field-image');
@@ -1753,11 +1822,6 @@ namespace Goteo\Model {
                         $okeys['overview']['goal'] = 'ok';
                         ++$score;
                     }
-
-                } else {
-                    // este paso, para los draft, tiene menos puntuación máxima
-                    $maxScore = 8;
-                }
 
                 $this->setScore($score, $maxScore);
                 /***************** FIN Revisión del paso 3, DESCRIPCION *****************/
@@ -1808,15 +1872,6 @@ namespace Goteo\Model {
                          $scoreAmount = 1;
                     }
 
-                    //  Si no hay fechas no debe haber error por fechas
-                    /*
-                    if ($cost->type == 'task' && (empty($cost->from) || empty($cost->until))) {
-                        $errors['costs']['cost-'.$cost->id.'-dates'] = Text::get('mandatory-cost-field-task_dates');
-                        $anyerror = !$anyerror ?: true;
-                    } elseif ($cost->type == 'task') {
-                        $okeys['costs']['cost-'.$cost->id.'-dates'] = 'ok';
-                    }
-                    */
                 }
 
                 if ($anyerror) {
@@ -1841,18 +1896,9 @@ namespace Goteo\Model {
                 /***************** Revisión de campos del paso 5, RETORNOS *****************/
 
                 //Si ha marcado checkbox de ayuda en licencias maxScore pasa a la mitad
-                $maxScore = ($this->help_license)? 4 : 8;
+                $maxScore =  4;
                 $score = 0; $scoreName = $scoreDesc = $scoreAmount = $scoreLicense = 0;
                 //Si ha solicitado ayuda marcando el checkbox no lo tenemos en cuenta
-
-                if (empty($this->social_rewards)&&(!$this->help_license)) {
-                    $errors['rewards']['social_rewards'] = Text::get('validate-project-social_rewards');
-                } else {
-                     $okeys['rewards']['social_rewards'] = 'ok';
-                     if (count($this->social_rewards) >= 2) {
-                         ++$score;
-                     }
-                }
 
                 if (empty($this->individual_rewards)) {
                     $errors['rewards']['individual_rewards'] = Text::get('validate-project-individual_rewards');
@@ -1865,50 +1911,6 @@ namespace Goteo\Model {
                         $errors['rewards']['individual_rewards'] = Text::get('validate-project-individual_rewards');
 
                     }
-                }
-
-                //Si ha pedido ayuda con licencias nos saltamos la parte de retornos.
-                if(!$this->help_license)
-                {
-
-                    $anyerror = false;
-                    foreach ($this->social_rewards as $social) {
-                        if (empty($social->reward)) {
-                            $errors['rewards']['social_reward-'.$social->id.'reward'] = Text::get('mandatory-social_reward-field-name');
-                            $anyerror = !$anyerror ?: true;
-                        } else {
-                             $okeys['rewards']['social_reward-'.$social->id.'reward'] = 'ok';
-                             $scoreName = 1;
-                        }
-
-                        if (empty($social->description)) {
-                            $errors['rewards']['social_reward-'.$social->id.'-description'] = Text::get('mandatory-social_reward-field-description');
-                            $anyerror = !$anyerror ?: true;
-                        } else {
-                             $okeys['rewards']['social_reward-'.$social->id.'-description'] = 'ok';
-                             $scoreDesc = 1;
-                        }
-
-                        if (empty($social->icon)) {
-                            $errors['rewards']['social_reward-'.$social->id.'-icon'] = Text::get('mandatory-social_reward-field-icon');
-                            $anyerror = !$anyerror ?: true;
-                        } else {
-                             $okeys['rewards']['social_reward-'.$social->id.'-icon'] = 'ok';
-                        }
-
-                        if (!empty($social->license)) {
-                            $scoreLicense = 1;
-                        }
-                    }
-
-                    if ($anyerror) {
-                        unset($okeys['rewards']['social_rewards']);
-                        $errors['rewards']['social_rewards'] = Text::get('validate-project-social_rewards-any_error');
-                    }
-
-                    $score = $score + $scoreName + $scoreDesc + $scoreLicense;
-                    $scoreName = $scoreDesc = $scoreAmount = 0;
-
                 }
 
                 $anyerror = false;
@@ -2278,7 +2280,7 @@ namespace Goteo\Model {
         /**
          * Creates a new project for a user and node/channel
          */
-        static public function createNewProject(User $user = null, $node_id = null) {
+        static public function createNewProject($data, User $user = null, $node_id = null) {
 
             if(empty($user)) $user = Session::getUser();
             if(empty($node_id)) $node_id = Config::get('current_node');
@@ -2286,7 +2288,7 @@ namespace Goteo\Model {
             $project = new self(array('owner' => $user->id));
 
             $errors = array();
-            if ($project->create($node_id, $errors)) {
+            if ($project->create($data, $node_id, $errors)) {
 
                 //TODO: as events
                 //
@@ -2965,6 +2967,8 @@ namespace Goteo\Model {
 
             $sqlOrder = '';
 
+            $not_null_date_publishing='';
+
             // los filtros
 
             // pre-filtro de nombre|email de usuario
@@ -3092,6 +3096,12 @@ namespace Goteo\Model {
             if ($filters['order'] === 'updated') {
                 $sqlOrder = " ORDER BY project.updated DESC";
             }
+            elseif ($filters['order'] === 'publishing_estimation') {
+                $sqlOrder = " ORDER BY project_conf.publishing_estimation ASC";
+
+                //if the order is by the estimated publishing date, add not null for this field
+                $not_null_date_publishing="AND project_conf.publishing_estimation IS NOT NULL";
+            }
             elseif($filters['order']) {
                 $sqlOrder = " ORDER BY {$filters['order']}";
             }
@@ -3100,13 +3110,16 @@ namespace Goteo\Model {
             }
 
             $where = "project.id != ''
+                      $not_null_date_publishing
                       $sqlFilter
-                      $sqlOrder";
+                      $sqlOrder";                
 
             if($count) {
                 // Return count
                 $sql = "SELECT COUNT(id)
                     FROM project
+                    LEFT JOIN project_conf
+                    ON project_conf.project=project.id
                     $sqlConsultantFilter
                     WHERE $where";
                 return (int) self::query($sql, $values)->fetchColumn();
@@ -3139,7 +3152,7 @@ namespace Goteo\Model {
                     ";
 
 
-            // echo \sqldbg($sql, $values);print_r($filters);die;
+             //echo \sqldbg($sql, $values);print_r($filters);die;
 
 
             $query = self::query($sql, $values);

@@ -54,6 +54,8 @@ class UsersSend extends AbstractCommandController {
             $consultants = current(self::$consultants);
         }
 
+
+
         /// tipo de envio
         switch ($type) {
             // Estos son avisos de final de ronda
@@ -127,7 +129,7 @@ class UsersSend extends AbstractCommandController {
             case '8m_after': // template 52, ocho meses despues de financiado
                 $tpl = 52;
                 $search  = array('%USERNAME%', '%PROJECTNAME%', '%COMMONSURL%');
-                $replace = array($project->user->name, $project->name, SITE_URL . '/dashboard/projects/commons');
+                $replace = array($project->user->name, $project->name, SITE_URL . '/dashboard/projects/shared-materials');
                 break;
 
             case '20_backers': // template 46, "Apóyate en quienes te van apoyando "  (en cuanto se llega a los 20 backers
@@ -141,6 +143,14 @@ class UsersSend extends AbstractCommandController {
                 $tpl = ($project->draft) ? 8 : 62;
 
                 $search  = array('%PROJECTNAME%', '%USERNAME%', '%PROJECTURL%', '%PROJECTEDITURL%', '%NOMBREASESOR%');
+                $replace = array($project->name, $project->user->name, SITE_URL.'/project/'.$project->id, SITE_URL.'/project/edit/'.$project->id, $consultants);
+                break;
+
+            case 'project_created':
+                // Project created
+                $tpl = Template::PROJECT_CREATED;
+
+                $search  = array('%PROJECTNAME%', '%USERNAME%', '%PROJECTURL%', '%PROJECTEDITURL%');
                 $replace = array($project->name, $project->user->name, SITE_URL.'/project/'.$project->id, SITE_URL.'/project/edit/'.$project->id, $consultants);
                 break;
 
@@ -326,12 +336,17 @@ class UsersSend extends AbstractCommandController {
             case 'project_preform_to_review_consultant': // template 63, "Aviso a asesores cuando un impulsor envia el proyecto a revisión desde preform"
                 $tpl = 63;
 
+                // get the project configuration
+                $conf = Model\Project\Conf::get($project->id);
+                $date=new \Datetime($conf->publishing_estimation);
+                $date_publishing=$date->format("d-m-Y");
+
                 //Creamos el mensaje que avisa si ha solicitado ayuda a través de los checkbox
                 $help="";
                 if($project->help_cost) $help.=Text::get('help-cost-to-consultant').'<br>';
                 if($project->help_license) $help.=Text::get('help-license-to-consultant').'<br>';
-                $search  = array('%PROJECTNAME%', '%USERNAME%', '%PROJECTURL%', '%PROJECTEDITURL%', '%HELP%', '%SPREAD%', '%PROJECTDESCRIPTION%', '%PROJECTMIN%', '%COMMENT%');
-                $replace = array($project->name, $project->user->name, SITE_URL.'/project/'.$project->id, SITE_URL.'/project/edit/'.$project->id, $help, $project->spread, $project->description, $project->mincost, $project->comment);
+                $search  = array('%PROJECTNAME%', '%USERNAME%', '%PROJECTURL%', '%PROJECTEDITURL%', '%HELP%', '%SPREAD%', '%PROJECTDESCRIPTION%', '%PROJECTMIN%', '%COMMENT%', '%PUBLISHINGESTIMATION%');
+                $replace = array($project->name, $project->user->name, SITE_URL.'/project/'.$project->id, SITE_URL.'/project/edit/'.$project->id, $help, $project->spread, $project->description, $project->mincost, $project->comment, $date_publishing);
                 break;
 
                 //Pasamos la difusión

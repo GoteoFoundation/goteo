@@ -171,7 +171,7 @@ $sfid = 'sf-project-costs';
 
 // en función de si es pre-form o form
 
-if ($project->draft && !$project->call) {
+/*if ($project->draft && !$project->call) {
     $help_cost=array(
             'type'      => 'checkbox',
             'class'     => 'cols_1',
@@ -185,7 +185,7 @@ if ($project->draft && !$project->call) {
             'value'     => 1
         );
 }
-else
+else*/
     $help_cost= array(
         'type'  => 'hidden',
         'class' => 'inline',

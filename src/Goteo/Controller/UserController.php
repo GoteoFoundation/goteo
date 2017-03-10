@@ -307,7 +307,7 @@ class UserController extends \Goteo\Core\Controller {
                     name,
                     email
                 FROM user
-                WHERE BINARY email = :email
+                WHERE email = :email
                 ",
             array(
                 ':email'    => trim($email)

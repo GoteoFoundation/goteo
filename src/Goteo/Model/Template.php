@@ -93,6 +93,7 @@ class Template extends \Goteo\Core\Model {
     const CONTACT_AUTO_REPLY_DEV = 70;    // Dev
     const CONTACT_AUTO_REPLY_RELIEF = 71;    // Relief
     const COMMUNICATION = 72;    // Multi-purpose communication
+    const PROJECT_CREATED = 73;    // Multi-purpose communication
 
     public
         $id,

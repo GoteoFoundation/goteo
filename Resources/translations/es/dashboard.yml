@@ -59,6 +59,8 @@ dashboard-menu-projects: 'Mis proyectos'
 dashboard-menu-projects-analytics: Analítica
 dashboard-menu-projects-commons: Retornos
 dashboard-menu-projects-contract: Contrato
+dashboard-menu-projects-analytics: 'Analítica'
+dashboard-menu-projects-social-commitment: 'Compromiso social'
 dashboard-menu-projects-messegers: Participantes
 dashboard-menu-projects-preview: 'Página pública'
 dashboard-menu-projects-rewards: Cofinanciadores
@@ -156,3 +158,24 @@ user-preferences-tips: 'Bloquear consejos de difusión de campaña (para impulso
 user-preferences-updates: 'Bloquear notificaciones de novedades sobre los proyectos que apoyo'
 user-profile-saved: 'Información de perfil actualizada'
 user-save-fail: 'Ha habido algún problema al guardar los datos'
+dashboard-project-analytics-ok: 'Tus identificadores para analítica se han guardado correctamente'
+dashboard-project-analytics-fail: 'Ha ocurrido un error al guardar tus identificadores para analítica'
+
+dashboard-modal-success-msg: 'La URL ha sido actualizada correctamente'
+dashboard-add-new-share-material: 'Nuevo material'
+dashboard-edit-share-material-url: 'Editar URL'
+dashboard-modal-edit-url: 'Url donde se encuentra el material compartido'
+dashboard-modal-placeholder-edit-url: 'Url'
+dashboard-modal-success-msg: 'La URL ha sido actualizada correctamente'
+
+dashboard-new-material-form-success: 'El nuevo material compartido ha sido agregado correctamente.'
+dashboard-new-material-form-material: 'Material'
+dashboard-new-material-form-description: 'Descripción'
+dashboard-new-material-form-url: 'URL'
+dashboard-new-material-form-type: 'Tipo de material'
+dashboard-new-material-form-license: 'Licencia del material'
+dashboard-menu-projects-shared-materials: 'Materiales'
+project-no-share-material: 'No hay materiales compartidos por el proyecto'
+
+
+

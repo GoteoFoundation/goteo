@@ -176,3 +176,19 @@ ALTER TABLE `project` ADD `analytics_id` VARCHAR(30);
 
 --facebook pixel
 ALTER TABLE `project` ADD `facebook_pixel` VARCHAR(20);
+
+-- social commitment
+ALTER TABLE `project` ADD `social_commitment` VARCHAR(50) NULL COMMENT 'Social commitment of the project';
+
+-- social commitment description
+ALTER TABLE `project` ADD `social_commitment_description` TEXT COMMENT 'Social commitment of the project';
+
+-- execution plan
+ALTER TABLE `project` ADD `execution_plan` TEXT;
+ALTER TABLE `project` ADD `execution_plan_url` tinytext DEFAULT NULL;
+
+
+-- File with sustainability model
+ALTER TABLE `project` ADD `sustainability_model` TEXT;
+ALTER TABLE `project` ADD `sustainability_model_url` tinytext DEFAULT NULL;
+

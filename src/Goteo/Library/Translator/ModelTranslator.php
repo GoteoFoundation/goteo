@@ -28,6 +28,7 @@ class ModelTranslator implements TranslatorInterface {
         'worthcracy' => 'Worth',
         'tag' => 'Blog\Post\Tag',
         'opentag' => 'OpenTag',
+        'social_commitment' => 'SocialCommitment',
     ];
     static protected $_forced_types = [
         'post' => 'html',

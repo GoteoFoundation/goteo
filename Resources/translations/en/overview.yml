@@ -68,3 +68,16 @@ validate-project-field-currently: 'Indicate the current status of the project in
 validate-project-field-description: 'The project description is too short'
 validate-project-value-description: 'The project description is too short'
 validate-project-value-keywords: 'Write down at least five key words about the project that will help facilitate its evaulation by Goteo.'
+
+overview-field-social-category: 'Social commitment'
+overview-field-social-description: 'Social commitment description'
+tooltip-project-social-category: 'Choose your social commitment'
+tooltip-project-social-description: 'Explain your social commitment'
+
+overview-field-execution-plan: 'Schedule plan'
+tooltip-project-execution-plan: 'Set a clear timeline with concrete milestones that demonstrates how you will develop and deliver your prototype'
+tooltip-project-execution-plan-url: 'Schedule plan URL'
+overview-field-sustainability-model: 'Sustainability plan'
+overview-field-sustainability-model-url: 'URL of your business canvas'
+tooltip-project-sustainability-model: 'Present a basic business plan to show how you will ensure project''s sustainability. The business plan should cover the key elements of the business canvas template and be no longer than two pages.'
+tooltip-project-sustainability-model-url: 'Add the URL of your <a href="https://canvanizer.com/new/business-model-canvas" target="_blank">business canvas</a>'

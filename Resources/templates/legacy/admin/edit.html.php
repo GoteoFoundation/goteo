@@ -18,6 +18,11 @@ use Goteo\Library\Text;
                     case 'textarea': ?>
                         <textarea id="<?php echo $Id; ?>" name="<?php echo $field['name']; ?>" <?php echo $field['properties']; ?>><?php $name = $field['name']; echo $this['data']->$name; ?></textarea>
                     <?php break;
+                    case 'checkbox':
+                        $name = $field['name'];
+                        ?>
+                        <input type="checkbox" id="<?php echo $Id; ?>" name="<?php echo $field['name']; ?>" <?php echo $field['properties']; ?> value="1" <?= $this['data']->$name ? 'checked="checked"' : '' ?> />
+                    <?php break;
                     case 'image':
                          $name = $field['name'];
                         ?>
@@ -28,6 +33,20 @@ use Goteo\Library\Text;
                             <input type="submit" name="image-<?php echo md5($this['data']->$name); ?>-remove" value="Quitar" />
                         <?php endif; ?>
                     <?php break;
+                    case 'select':
+                        $name = $field['name'];
+                    ?>
+                        <?php if($field['options']): ?>
+                        <select name="<?= $field['name'] ?>">
+                                    <option value="">-- Selecciona una opción --</option>
+
+                                <?php foreach($field['options'] as $sphereId => $sphereName) : ?>
+                                    <option value="<?= $sphereId ?>" <?= $this['data']->$name==$sphereId ? 'selected' : '' ?>><?= $sphereName ?></option>
+                                <?php endforeach; ?>
+                        </select>
+                        <?php endif; ?>
+                    <?php break;
+
                 } ?></dd>
 
             <?php endforeach; ?>

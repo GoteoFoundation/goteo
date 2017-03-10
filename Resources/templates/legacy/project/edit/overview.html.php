@@ -8,7 +8,7 @@ $project = $vars['project'];
 $errors = $project->errors[$vars['step']] ?: array();
 $okeys  = $project->okeys[$vars['step']] ?: array();
 
-$categories = array();
+/*$categories = array();
 
 foreach ($vars['categories'] as $value => $label) {
     $categories[] =  array(
@@ -16,7 +16,7 @@ foreach ($vars['categories'] as $value => $label) {
         'label'     => $label,
         'checked'   => in_array($value, $project->categories)
         );
-}
+}*/
 
 // preparamos selector idioma
 foreach ($vars['languages'] as $value => $object) {
@@ -34,6 +34,18 @@ $scope = array();
             'label'     => $label
         );
     }
+
+//Categories for the social reward
+
+$social_commitments = [];
+
+    foreach ($vars['social_commitments'] as $social) {
+        $social_commitments[] =  array(
+            'value'     => $social->id,
+            'label'     => $social->name
+        );
+    }
+
 
 // preparamos campo de divisa
 $currencies = $vars['currencies'];
@@ -103,90 +115,53 @@ if (!empty($project->video->url)) {
 
 // en función de si es pre-form o form
 
-if (!$project->draft || $project->call) {
-
-    $about = array(
-            'type'      => 'textarea',
-            'title'     => Text::get('overview-field-about'),
-            'required'  => true,
-            'hint'      => Text::get('tooltip-project-about'),
-            'errors'    => !empty($errors['about']) ? array($errors['about']) : array(),
-            'ok'        => !empty($okeys['about']) ? array($okeys['about']) : array(),
-            'value'     => $project->about
-    );
-
-    $motivation= array(
-                    'type'      => 'textarea',
-                    'title'     => Text::get('overview-field-motivation'),
-                    'required'  => true,
-                    'hint'      => Text::get('tooltip-project-motivation'),
-                    'errors'    => !empty($errors['motivation']) ? array($errors['motivation']) : array(),
-                    'ok'        => !empty($okeys['motivation']) ? array($okeys['motivation']) : array(),
-                    'value'     => $project->motivation
-    );
-
-    $goal = array(
-                    'type'      => 'textarea',
-                    'title'     => Text::get('overview-field-goal'),
-                    'hint'      => Text::get('tooltip-project-goal'),
-                    'errors'    => !empty($errors['goal']) ? array($errors['goal']) : array(),
-                    'ok'        => !empty($okeys['goal']) ? array($okeys['goal']) : array(),
-                    'value'     => $project->goal
-    );
-
-    $anchor_video = array(
-        'type'  => 'hidden',
-        'class' => 'inline'
-    );
-    $video_field=array(
-        'type'  => 'hidden',
-        'class' => 'inline',
-        'value'     => (string) $project->video
-    );
-
-    $video_upload=array(
-        'type'  => 'hidden',
-        'class' => 'inline'
-    );
-
-    $title_description_group=Text::get('overview-extra-fields');
-
-} else {
-
-    $about = array(
-        'type'  => 'hidden',
-        'class' => 'inline',
+$about = array(
+        'type'      => 'textarea',
+        'title'     => Text::get('overview-field-about'),
+        'required'  => true,
+        'hint'      => Text::get('tooltip-project-about'),
+        'errors'    => !empty($errors['about']) ? array($errors['about']) : array(),
+        'ok'        => !empty($okeys['about']) ? array($okeys['about']) : array(),
         'value'     => $project->about
-    );
+);
 
-    $motivation = array(
-        'type'  => 'hidden',
-        'class' => 'inline',
-        'value'     => $project->motivation
-    );
+$motivation= array(
+                'type'      => 'textarea',
+                'title'     => Text::get('overview-field-motivation'),
+                'required'  => true,
+                'hint'      => Text::get('tooltip-project-motivation'),
+                'errors'    => !empty($errors['motivation']) ? array($errors['motivation']) : array(),
+                'ok'        => !empty($okeys['motivation']) ? array($okeys['motivation']) : array(),
+                'value'     => $project->motivation
+);
 
-    $goal = array(
-        'type'  => 'hidden',
-        'class' => 'inline',
-        'value'     => $project->goal
-    );
+$goal = array(
+                'type'      => 'textarea',
+                'title'     => Text::get('overview-field-goal'),
+                'hint'      => Text::get('tooltip-project-goal'),
+                'errors'    => !empty($errors['goal']) ? array($errors['goal']) : array(),
+                'ok'        => !empty($okeys['goal']) ? array($okeys['goal']) : array(),
+                'value'     => $project->goal
+);
 
-    $anchor_video = array(
-        'type'  => 'hidden',
-        'class' => 'inline'
-    );
-    $video_field=array(
-        'type'  => 'hidden',
-        'class' => 'inline',
-        'value'     => (string) $project->video
-    );
 
-    $video_upload=array(
-        'type'  => 'hidden',
-        'class' => 'inline'
-    );
+$anchor_video = array(
+     'type'  => 'hidden',
+    'class' => 'inline'
+);
+$video_field=array(
+    'type'  => 'hidden',
+    'class' => 'inline',
+    'value'     => (string) $project->video
+);
 
-}
+$video_upload=array(
+    'type'  => 'hidden',
+    'class' => 'inline'
+);
+
+$title_description_group=Text::get('overview-extra-fields');
+
 
 $spread = array(
     'type'      => 'textarea',
@@ -196,6 +171,85 @@ $spread = array(
     'ok'        => !empty($okeys['spread']) ? array($okeys['spread']) : array(),
     'value'     => $project->spread
 );
+
+// Fields only for called projects
+
+if($project->call){
+
+    $title_execution_plan_group=Text::get('overview-field-execution-plan');
+
+    $title_sustainability_model_group=Text::get('overview-field-sustainability-model');
+
+    $execution_plan = array(
+        'type'      => 'textarea',
+        'title'     => Text::get('regular-description'),
+        'hint'      => Text::get('tooltip-project-execution-plan'),
+        'errors'    => !empty($errors['execution_plan']) ? array($errors['execution_plan']) : array(),
+        'ok'        => !empty($okeys['execution_plan']) ? array($okeys['execution_plan']) : array(),
+        'value'     => $project->execution_plan
+    );
+
+    $execution_plan_url = array(
+        'type'      => 'textbox',
+        'title'     => Text::get('regular-url'),
+        'hint'      => Text::get('tooltip-project-execution-plan-url'),
+        'errors'    => !empty($errors['execution_plan_url']) ? array($errors['execution_plan_url']) : array(),
+        'ok'        => !empty($okeys['execution_plan_url']) ? array($okeys['execution_plan_url']) : array(),
+        'value'     => $project->execution_plan_url
+    );
+
+    $sustainability_model = array(
+        'type'      => 'textarea',
+        'title'     => Text::get('regular-description'),
+        'hint'      => Text::get('tooltip-project-sustainability-model'),
+        'errors'    => !empty($errors['sustainability_model']) ? array($errors['sustainability_model']) : array(),
+        'ok'        => !empty($okeys['sustainability_model']) ? array($okeys['sustainability_model']) : array(),
+        'value'     => $project->sustainability_model
+    );
+
+    $sustainability_model_url = array(
+        'type'      => 'textbox',
+        'title'     => Text::get('overview-field-sustainability-model-url'),
+        'hint'      => Text::get('tooltip-project-sustainability-model-url'),
+        'errors'    => !empty($errors['sustainability_model_url']) ? array($errors['sustainability_model_url']) : array(),
+        'ok'        => !empty($okeys['sustainability_model_url']) ? array($okeys['sustainability_model_url']) : array(),
+        'value'     => $project->sustainability_model_url
+    );
+
+}
+
+else{
+
+    $execution_plan_class='hidden';
+    
+    $sustainability_model_class='hidden';
+
+    $execution_plan = array(
+        'type'  => 'hidden',
+        'class' => 'inline',
+        'value'     => $project->execution_plan
+    );
+
+    $execution_plan_url = array(
+        'type'  => 'hidden',
+        'class' => 'inline',
+        'value'     => $project->execution_plan_url
+    );
+
+    $sustainability_model = array(
+        'type'  => 'hidden',
+        'class' => 'inline',
+        'value'     => $project->sustainability_model
+    );
+
+    $sustainability_model_url = array(
+        'type'  => 'hidden',
+        'class' => 'inline',
+        'value'     => $project->sustainability_model_url
+    );
+
+}
+
 
 // nueva sección de contenido recompensas (oculta para el impulsor)
 if ( $_SESSION['user']->id == $project->owner ) {
@@ -277,7 +331,7 @@ $superform = array(
             'ok'        => !empty($okeys['description']) ? array($okeys['description']) : array()
         ),
 
-        'category' => array(
+        /*'category' => array(
             'type'      => 'checkboxes',
             'name'      => 'categories[]',
             'title'     => Text::get('overview-field-categories'),
@@ -287,7 +341,7 @@ $superform = array(
             'hint'      => Text::get('tooltip-project-category'),
             'errors'    => !empty($errors['categories']) ? array($errors['categories']) : array(),
             'ok'        => !empty($okeys['categories']) ? array($okeys['categories']) : array()
-        ),
+        ),*/
 
         'location' => array(
             'type'      => 'textbox',
@@ -340,6 +394,30 @@ $superform = array(
         ),
 
         'spread' => $spread,
+
+        'execution_plan_group' => array(
+            'type' => 'group',
+            'title' => $title_execution_plan_group,
+            'class' => $execution_plan_class,
+            'children'  => array(
+
+                'execution_plan' => $execution_plan,
+
+                'execution_plan_url' => $execution_plan_url
+            )
+        ),
+
+        'sustainability_model_group' => array(
+            'type' => 'group',
+            'title' => $title_sustainability_model_group,
+            'class' => $sustainability_model_class,
+            'children'  => array(
+
+                'sustainability_model' => $sustainability_model,
+
+                'sustainability_model_url' => $sustainability_model_url
+            )
+        ),
 
         // fin media
 
@@ -412,6 +490,27 @@ $superform = array(
             'value'     => $project->scope
         ),
 
+        'social_commitment' =>array(
+            'title'     => Text::get('overview-field-social-category'),
+            'type'      => 'slider',
+            'required'  => true,
+            'options'   => $social_commitments,
+            'class'     => 'scope cols_3',
+            'hint'      => Text::get('tooltip-project-social-category'),
+            'errors'    => array(),
+            'ok'        => array(),
+            'value'     => $project->social_commitment
+        ),
+
+        'social_commitment_description' => array(
+        'type'      => 'textarea',
+        'title'     => Text::get('overview-field-social-description'),
+        'required'  => true,
+        'hint'      => Text::get('tooltip-project-social-description'),
+        'errors'    => !empty($errors["social_reward-{$reward->id}-reward"]) ? array($errors["social_reward-{$reward->id}-reward"]) : array(),
+        'ok'        => !empty($okeys["social_reward-{$reward->id}-reward"]) ? array($okeys["social_reward-{$reward->id}-reward"]) : array(),
+        'value'     => $project->social_commitment_description
+        ),
 
         'footer' => array(
             'type'      => 'group',

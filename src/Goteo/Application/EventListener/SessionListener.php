@@ -209,14 +209,16 @@ class SessionListener extends AbstractListener {
             // die(print_r(Session::get('shadowed_by')));
             $body = '<div class="user-shadowing-bar">Back to <a href="/user/logout">' . $shadowed_by[1] . '</a></div>';
             $content = $response->getContent();
-            $search = '<div id="header">';
+            $search = '<div id="header"';
 
             if(View::getTheme() == 'responsive') {
-                $search = '<body role="document">';
+                $search = '<body';
             }
             $pos = strpos($content, $search);
             if ($pos !== false) {
-                $content = substr($content, 0, $pos + strlen($search)) . $body . substr($content, $pos + strlen($search));
+                $pos2 = $pos + strpos(substr($content, $pos), '>') + 1;
+                // die("$pos $pos2");
+                $content = substr($content, 0, $pos2) . $body . substr($content, $pos2);
                 $response->setContent($content);
                 $event->setResponse($response);
             }

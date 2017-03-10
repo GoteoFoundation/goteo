@@ -13,6 +13,9 @@ ALTER TABLE `project_conf` ADD `one_round` BOOLEAN NOT NULL DEFAULT FALSE COMMEN
 ALTER TABLE `project_conf` ADD `help_license` BOOLEAN NOT NULL DEFAULT FALSE COMMENT 'Si necesita ayuda en licencias';
 ALTER TABLE `project_conf` ADD `help_cost` BOOLEAN NOT NULL DEFAULT FALSE COMMENT 'Si necesita ayuda en costes';
 
+ALTER TABLE `project_conf` ADD `mincost_estimation` INT(11);
+ALTER TABLE `project_conf` ADD `publishing_estimation` DATE DEFAULT NULL;
+
 -- Charset
 ALTER TABLE `project_conf` DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci;
 ALTER TABLE `project_conf` CHANGE `project` `project` VARCHAR( 50 ) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL;

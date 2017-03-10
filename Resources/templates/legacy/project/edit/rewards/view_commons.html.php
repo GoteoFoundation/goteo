@@ -14,7 +14,7 @@ $chk = (strpos($path, 'dashboard') !== false);
     <thead>
         <tr>
             <th style="width: 100px;"></th>
-            <th style="width: 600px; text-align: left;">Retorno (tipo)</th>
+            <th style="width: 600px; text-align: left;">Compromiso social</th>
             <th style="width: 100px;">Estado</th>
         </tr>
     </thead>
@@ -23,9 +23,7 @@ $chk = (strpos($path, 'dashboard') !== false);
         <?php foreach ($project->social_rewards as $reward) : ?>
         <tr>
             <td>
-                <?php if ( !$chk || ( $chk && $reward->bonus ) ) : ?>
                 <a href="<?php echo $path; ?>/edit/<?php echo $project->id; ?>?reward_id=<?php echo $reward->id; ?>">[Editar]</a>
-                <?php endif; ?>
             </td>
             <td style="color: #20B2B3;"><?php echo $reward->reward; echo ' ('.$vars['icons'][$reward->icon].')'; ?></td>
             <td>
@@ -59,11 +57,13 @@ $chk = (strpos($path, 'dashboard') !== false);
                     <br /><a href="#" class="dohide" rel="<?php echo $reward->id; ?>">(Cancelar)</a></div>
                 </div>
             </td>
+            <!--
             <td>
                 <?php if ( !$chk || ( $chk && $reward->bonus ) ) : ?>
                 <a href="<?php echo $path; ?>/delete/<?php echo $project->id; ?>?reward_id=<?php echo $reward->id; ?>" style="color: red; font-weight: bold;" onclick="return confirm('Seguro que eliminamos este retorno?');">[Eliminar]</a>
                 <?php endif; ?>
             </td>
+            -->
         </tr>
         <tr><td colspan="3"><hr /></td></tr>
         <?php endforeach; ?>

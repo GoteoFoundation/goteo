@@ -171,6 +171,35 @@ $routes->add('dashboard-projects-analytics', new Route(
         )
 ));
 
+$routes->add('dashboard-projects-shared-materials', new Route(
+    '/dashboard/projects/shared-materials',
+    array('_controller' => 'Goteo\Controller\DashboardController::sharedMaterialsAction',
+        )
+));
+
+$routes->add('dashboard-projects-save-material-url', new Route(
+    '/dashboard/projects/save-material-url',
+    array('_controller' => 'Goteo\Controller\DashboardController::saveMaterialUrlAction',
+        )
+));
+
+$routes->add('dashboard-projects-update-materials-table', new Route(
+    '/dashboard/projects/update-materials-table',
+    array('_controller' => 'Goteo\Controller\DashboardController::updateMaterialsTableAction',
+        )
+));
+
+$routes->add('dashboard-projects-icon-licenses', new Route(
+    '/dashboard/projects/icon-licenses',
+    array('_controller' => 'Goteo\Controller\DashboardController::getLicensesIconAction',
+        )
+));
+
+$routes->add('dashboard-projects-save-new-material', new Route(
+    '/dashboard/projects/save-new-material',
+    array('_controller' => 'Goteo\Controller\DashboardController::saveNewMaterialAction',
+        )
+));
 
 
 // AUTH user routes
@@ -271,6 +300,14 @@ $routes->add('project-favourite', new Route(
 $routes->add('project-delete-favourite', new Route(
     '/project/delete-favourite',
     array('_controller' => 'Goteo\Controller\ProjectController::DeletefavouriteAction')
+));
+
+// Calculate investors average
+
+$routes->add('project-investors-required', new Route(
+    '/project/investors-required',
+    array('_controller' => 'Goteo\Controller\ProjectController::investorsRequiredAction',
+        )
 ));
 
 //TODO: quitar esta guarrada:

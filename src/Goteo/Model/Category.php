@@ -20,6 +20,7 @@ namespace Goteo\Model {
             $id,
             $name,
             $description,
+            $social_commitment,
             $used; // numero de proyectos que usan la categoria
 
         /*
@@ -34,7 +35,8 @@ namespace Goteo\Model {
                     SELECT
                         category.id,
                         IFNULL(category_lang.name, category.name) as name,
-                        IFNULL(category_lang.description, category.description) as description
+                        IFNULL(category_lang.description, category.description) as description,
+                        category.social_commitment
                     FROM    category
                     LEFT JOIN category_lang
                         ON  category_lang.id = category.id
@@ -68,6 +70,7 @@ namespace Goteo\Model {
 
             $sql="SELECT
                     category.id as id,
+                    category.social_commitment as social_commitment,
                     $different_select,
                     (   SELECT
                             COUNT(project_category.project)
@@ -129,6 +132,7 @@ namespace Goteo\Model {
 
                 $query = static::query($sql, array(':lang'=>Lang::current()));
                 $categories = $query->fetchAll();
+
                 foreach ($categories as $cat) {
                     // la 15 es de testeos
                     if ($cat[0] == 15) continue;
@@ -158,7 +162,8 @@ namespace Goteo\Model {
             $fields = array(
                 'id',
                 'name',
-                'description'
+                'description',
+                'social_commitment'
                 );
 
             $set = '';

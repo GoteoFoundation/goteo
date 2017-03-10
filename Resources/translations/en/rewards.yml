@@ -18,9 +18,9 @@ rewards-field-social_reward-type: 'Type of benefit'
 rewards-field-social_reward-url: Url
 rewards-fields-individual_reward-title: 'Individual rewards'
 rewards-fields-social_reward-title: 'Collective benefits'
-rewards-main-header: 'Benefits and rewards'
-step-5: Benefits
-step-rewards: 'Step: Project / Benefits'
+rewards-main-header: 'Rewards'
+step-5: 'Rewards'
+step-rewards: 'Step: Project / Rewards'
 tooltip-project-individual_reward-amount: 'Amount for which one can receive this type of reward.'
 tooltip-project-individual_reward-description: 'Briefly explain what the reward will consist of for those who co-finance the project at this level.'
 tooltip-project-individual_reward-icon-other: 'Briefly describe this other type of individual reward'

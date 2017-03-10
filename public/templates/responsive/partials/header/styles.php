@@ -8,6 +8,7 @@
 <!-- POST PROCESSING THIS CSS BY GRUNT -->
 
 <!-- build:css assets/css/all.css -->
+<link href="<?= SRC_URL ?>/assets/vendor/bootstrap/css/bootstrap-datetimepicker.min.css" rel="stylesheet">
 <link href="<?= SRC_URL ?>/assets/css/bootstrap-xxs-tn.css" rel="stylesheet">
 <link href="<?= SRC_URL ?>/assets/css/bootstrap-social.css" rel="stylesheet">
 <link href="<?= SRC_URL ?>/assets/css/custom.css" rel="stylesheet">

@@ -20,3 +20,6 @@ ALTER TABLE `project_lang` ADD `reward` TEXT CHARACTER SET utf8 COLLATE utf8_gen
 
 -- pendiente de traducir
 ALTER TABLE `project_lang` ADD `pending` INT( 1 ) NULL DEFAULT '0' COMMENT 'Debe revisarse la traducción';
+
+ALTER TABLE `project_lang` ADD `social_commitment_description` TEXT COMMENT 'Social commitment of the project';
+

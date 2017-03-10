@@ -733,6 +733,8 @@ namespace Goteo\Controller {
                                     $project->related_lang = $_POST['related'];
                                     $project->reward_lang = $_POST['reward'];
                                     $project->keywords_lang = $_POST['keywords'];
+                                    $project->social_commitment_description_lang = $_POST['social_commitment_description'];
+
                                     $project->media_lang = $_POST['media'];
                                     $project->subtitle_lang = $_POST['subtitle'];
                                     $project->lang_lang = $_SESSION['translate_lang'];
@@ -1192,7 +1194,7 @@ namespace Goteo\Controller {
                         'messengers' => Text::get('dashboard-menu-projects-messegers'),
                         'analytics' => Text::get('dashboard-menu-projects-analytics'),
                         'contract' => Text::get('dashboard-menu-projects-contract'),
-                        'commons' => Text::get('dashboard-menu-projects-commons')
+                        'shared-materials' => Text::get('dashboard-menu-projects-shared-materials')
                     )
                 )
             );

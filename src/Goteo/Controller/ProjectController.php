@@ -30,8 +30,11 @@ use Goteo\Model;
 use Goteo\Model\Project;
 use Goteo\Model\Invest;
 use Goteo\Model\Project\Favourite;
+use Goteo\Model\Project\Conf;
 use Goteo\Model\Project\ProjectMilestone;
+use Goteo\Model\Project\Category;
 use Goteo\Model\License;
+use Goteo\Model\SocialCommitment;
 use Goteo\Model\Blog\Post;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -39,195 +42,164 @@ use Symfony\Component\HttpFoundation\Response;
 
 class ProjectController extends \Goteo\Core\Controller {
 
-    public function indexAction($id = null, $show = 'home', $post = null, Request $request) {
+	public function indexAction($id = null, $show = 'home', $post = null, Request $request) {
 
-        if ($id !== null) {
-            return $this->view($id, $show, $post, $request);
-        }
-        if ($request->query->has('create')) {
-            return new RedirectResponse('/project/create');
-        }
-        return new RedirectResponse('/discover');
-    }
+		if ($id !== null) {
+			return $this->view($id, $show, $post, $request);
+		}
+		if ($request->query->has('create')) {
+			return new RedirectResponse('/project/create');
+		}
+		return new RedirectResponse('/discover');
+	}
 
-    //** esto es una guarrada **/
-    public function rawAction($id) {
+	//** esto es una guarrada **/
+	public function rawAction($id) {
 
-        $project = Project::get($id, Lang::current());
+		$project = Project::get($id, Lang::current());
 
-        if (!$project->userCanEdit(Session::getUser())) {
-            throw new ControllerAccessDeniedException(Text::get('user-login-required-access'));
-        }
+		if (!$project->userCanEdit(Session::getUser())) {
+			throw new ControllerAccessDeniedException(Text::get('user-login-required-access'));
+		}
 
-        // pasos para el check
-        if ($project->draft && !$project->call) {
-            // primer borrador, menos pasos
-            $steps = array('userProfile', 'overview', 'costs', 'rewards');
-        } else {
-            // todos los pasos
-            $steps = array('userProfile', 'userPersonal', 'overview', 'images', 'costs', 'rewards', 'supports');
-        }
-        $project->check($steps);
-        \trace($project->called);
-        \trace($project);
-        die;
-    }
+		$steps = array('userProfile', 'userPersonal', 'overview', 'images', 'costs', 'rewards', 'supports');
 
-    public function deleteAction($id) {
+		$project->check($steps);
+		\trace($project->called);
+		\trace($project);
+		die;
+	}
 
-        $user = Session::getUser();
+	public function deleteAction($id) {
 
-        // redirección según usuario
-        $goto = isset($user->roles['admin'])?'/admin/projects':'/dashboard/projects';
+		$user = Session::getUser();
 
-        try {
-            $project = Project::get($id);
+		// redirección según usuario
+		$goto = isset($user->roles['admin'])?'/admin/projects':'/dashboard/projects';
 
-        } catch (ModelException $e) {
-            Application\Message::error('Project error!');
-            return new RedirectResponse($goto);
-        } catch (ModelNotFoundException $e) {
-            Application\Message::error('Project not found!');
-            return new RedirectResponse($goto);
-        }
+		try {
+			$project = Project::get($id);
 
-        // no lo puede eliminar si
-        if (!$project->userCanDelete($user)) {
-            Application\Message::info('No tienes permiso para eliminar este proyecto');
-            return new RedirectResponse($goto);
-        }
+		} catch (ModelException $e) {
+			Application\Message::error('Project error!');
+			return new RedirectResponse($goto);
+		} catch (ModelNotFoundException $e) {
+			Application\Message::error('Project not found!');
+			return new RedirectResponse($goto);
+		}
 
-        $errors = array();
-        if ($project->remove($errors)) {
-            Application\Message::info("Has borrado los datos del proyecto '<strong>{$project->name}</strong>' correctamente");
-            if (Session::get('project') === $id) {
-                Session::del('project');
-            }
-        } else {
-            Application\Message::info("No se han podido borrar los datos del proyecto '<strong>{$project->name}</strong>'. Error:" .implode(', ', $errors));
-        }
-        return new RedirectResponse($goto);
-    }
+		// no lo puede eliminar si
+		if (!$project->userCanDelete($user)) {
+			Application\Message::info('No tienes permiso para eliminar este proyecto');
+			return new RedirectResponse($goto);
+		}
 
-    //Aunque no esté en estado edición un admin siempre podrá editar un proyecto
-    public function editAction($id, $step = 'userProfile', Request $request) {
+		$errors = array();
+		if ($project->remove($errors)) {
+			Application\Message::info("Has borrado los datos del proyecto '<strong>{$project->name}</strong>' correctamente");
+			if (Session::get('project') === $id) {
+				Session::del('project');
+			}
+		} else {
+			Application\Message::info("No se han podido borrar los datos del proyecto '<strong>{$project->name}</strong>'. Error:" .implode(', ', $errors));
+		}
+		return new RedirectResponse($goto);
+	}
 
-        $user = Session::getUser();
+	//Aunque no esté en estado edición un admin siempre podrá editar un proyecto
+	public function editAction($id, $step = 'userProfile', Request $request) {
 
-        // redirección según usuario
-        $goto = isset($user->roles['admin'])?'/admin/projects':'/dashboard/projects';
+		$user = Session::getUser();
 
-        // preveer posible cambio de id
-        try {
-            $project = Project::get($id);
+		// redirección según usuario
+		$goto = isset($user->roles['admin'])?'/admin/projects':'/dashboard/projects';
 
-        } catch (ModelException $e) {
-            Application\Message::error('Project integrity error!');
-            return new RedirectResponse($goto);
-        } catch (ModelNotFoundException $e) {
-            Application\Message::error(Text::get('fatal-error-project'));
-            return new RedirectResponse($goto);
-        }
+		// preveer posible cambio de id
+		try {
+			$project = Project::get($id);
 
-        if (!$project->userCanEdit(Session::getUser())) {
-            Application\Message::error(Text::get('user-login-required-access'));
-            return new RedirectResponse($goto);
-        }
+		} catch (ModelException $e) {
+			Application\Message::error('Project integrity error!');
+			return new RedirectResponse($goto);
+		} catch (ModelNotFoundException $e) {
+			Application\Message::error(Text::get('fatal-error-project'));
+			return new RedirectResponse($goto);
+		}
 
-        $currency_data = Library\Currency::$currencies[$project->currency];
+		if (!$project->userCanEdit(Session::getUser())) {
+			Application\Message::error(Text::get('user-login-required-access'));
+			return new RedirectResponse($goto);
+		}
 
-        // al impulsor se le prohibe ver ningun paso cuando ya no está en edición
-        if ($project->status != 1 && $project->owner == $user->id) {
-            // solo puede estar en preview
-            $step = 'preview';
+		$currency_data = Library\Currency::$currencies[$project->currency];
 
-            $steps = array(
-                'preview'   => array(
-                    'name'     => Text::get('step-7'),
-                    'title'    => Text::get('step-preview'),
-                    'offtopic' => true
-                )
-            );
+		// al impulsor se le prohibe ver ningun paso cuando ya no está en edición
+		if ($project->status != 1 && $project->owner == $user->id) {
+			// solo puede estar en preview
+			$step = 'preview';
 
-        } elseif ($project->draft && !$project->call) {
-            // primer borrador, menos pasos
-            $steps = array(
-                'userProfile' => array(
-                    'name'       => Text::get('step-1'),
-                    'title'      => Text::get('step-userProfile'),
-                    'offtopic'   => true
-                ),
-                'overview' => array(
-                    'name'    => Text::get('step-3'),
-                    'title'   => Text::get('step-overview')
-                ),
-                'costs'  => array(
-                    'name'  => Text::get('step-4'),
-                    'title' => Text::get('step-costs')
-                ),
-                'rewards' => array(
-                    'name'   => Text::get('step-5'),
-                    'title'  => Text::get('step-rewards')
-                ),
-                'preview'   => array(
-                    'name'     => Text::get('step-7'),
-                    'title'    => Text::get('step-preview'),
-                    'offtopic' => true
-                )
-            );
+			$steps = array(
+				'preview'   => array(
+					'name'     => Text::get('step-7'),
+					'title'    => Text::get('step-preview'),
+					'offtopic' => true
+				)
+			);
 
-        } else {
-            // todos los pasos
-            // entrando, por defecto, en el paso especificado en url
-            $steps = array(
-                'userProfile' => array(
-                    'name'       => Text::get('step-1'),
-                    'title'      => Text::get('step-userProfile'),
-                    'offtopic'   => true
-                ),
-                'userPersonal' => array(
-                    'name'        => Text::get('step-2'),
-                    'title'       => Text::get('step-userPersonal'),
-                    'offtopic'    => true
-                ),
-                'overview' => array(
-                    'name'    => Text::get('step-3'),
-                    'title'   => Text::get('step-overview')
-                ),
-                'images' => array(
-                    'name'  => Text::get('step-3b'),
-                    'title' => Text::get('step-images')
-                ),
-                'costs'  => array(
-                    'name'  => Text::get('step-4'),
-                    'title' => Text::get('step-costs')
-                ),
-                'rewards' => array(
-                    'name'   => Text::get('step-5'),
-                    'title'  => Text::get('step-rewards')
-                ),
-                'supports' => array(
-                    'name'    => Text::get('step-6'),
-                    'title'   => Text::get('step-supports')
-                ),
-                'preview'   => array(
-                    'name'     => Text::get('step-7'),
-                    'title'    => Text::get('step-preview'),
-                    'offtopic' => true
-                )
-            );
-        }
+		}
 
-        foreach ($request->request->all() as $k => $v) {
-            if (strncmp($k, 'view-step-', 10) === 0 && !empty($v) && !empty($steps[substr($k, 10)])) {
-                $step = substr($k, 10);
-            }
-        }
+        else {
+			// todos los pasos
+			// entrando, por defecto, en el paso especificado en url
+			$steps = array(
+				'userProfile' => array(
+					'name'       => Text::get('step-1'),
+					'title'      => Text::get('step-userProfile'),
+					'offtopic'   => true
+				),
+				'userPersonal' => array(
+					'name'        => Text::get('step-2'),
+					'title'       => Text::get('step-userPersonal'),
+					'offtopic'    => true
+				),
+				'overview' => array(
+					'name'    => Text::get('step-3'),
+					'title'   => Text::get('step-overview')
+				),
+				'images' => array(
+					'name'  => Text::get('step-3b'),
+					'title' => Text::get('step-images')
+				),
+				'costs'  => array(
+					'name'  => Text::get('step-4'),
+					'title' => Text::get('step-costs')
+				),
+				'rewards' => array(
+					'name'   => Text::get('step-5'),
+					'title'  => Text::get('step-rewards')
+				),
+				'supports' => array(
+					'name'    => Text::get('step-6'),
+					'title'   => Text::get('step-supports')
+				),
+				'preview'   => array(
+					'name'     => Text::get('step-7'),
+					'title'    => Text::get('step-preview'),
+					'offtopic' => true
+				)
+			);
+		}
 
-        if ($step == 'images') {
-            // para que tenga todas las imágenes al procesar el post
-            $project->images = Model\Image::getAll($id, 'project');
-        }
+		foreach ($request->request->all() as $k => $v) {
+			if (strncmp($k, 'view-step-', 10) === 0 && !empty($v) && !empty($steps[substr($k, 10)])) {
+				$step = substr($k, 10);
+			}
+		}
+
+		if ($step == 'images') {
+			// para que tenga todas las imágenes al procesar el post
+			$project->images = Model\Image::getAll($id, 'project');
+		}
 
         // variables para la vista
         $viewData = array(
@@ -334,187 +306,241 @@ class ProjectController extends \Goteo\Core\Controller {
 
             // si estan enviando el proyecto a revisión
             // TODO: convert to events
-            if ($request->request->has('process_preview') && $request->request->has('finish')) {
-                $errors = array();
-                $old_id = $project->id;
-                if ($project->ready($errors)) {
+			if ($request->request->has('process_preview') && $request->request->has('finish')) {
+				$errors = array();
+				$old_id = $project->id;
+				if ($project->ready($errors)) {
 
-                    Application\Message::info(Text::get('project-review-request_mail-success'));
+					Application\Message::info(Text::get('project-review-request_mail-success'));
 
-                    // email a los de goteo
-                    if ($project->draft) {
-                        $sent1 = UsersSend::toConsultants('project_preform_to_review_consultant', $project);
-                    } else {
+					// email a los de goteo
+					if ($project->draft) {
+						$sent1 = UsersSend::toConsultants('project_preform_to_review_consultant', $project);
+					} else {
 
-                        $sent1 = UsersSend::toConsultants('project_to_review_consultant', $project);
-                    }
+						$sent1 = UsersSend::toConsultants('project_to_review_consultant', $project);
+					}
 
-                    // email al autor
-                    $sent2 = UsersSend::toOwner('project_to_review', $project);
+					// email al autor
+					$sent2 = UsersSend::toOwner('project_to_review', $project);
 
-                    if ($sent1 && $sent2) {
-                        Application\Message::info(Text::get('project-review-confirm_mail-success'));
-                    } else {
-                        Application\Message::error(Text::get('project-review-confirm_mail-fail'));
-                    }
+					if ($sent1 && $sent2) {
+						Application\Message::info(Text::get('project-review-confirm_mail-success'));
+					} else {
+						Application\Message::error(Text::get('project-review-confirm_mail-fail'));
+					}
 
-                    // Evento Feed
-                    $log = new Feed();
-                    $log->setTarget($project->id);
-                    $log->populate('El proyecto '.$project->name.' se ha enviado a revision', '/project/'.$project->id, \vsprintf('%s ha inscrito el proyecto %s para <span class="red">revisión</span>, el estado global de la información es del %s', array(
-                                Feed::item('user', $project->user->name, $project->user->id),
-                                Feed::item('project', $project->name, $project->id),
-                                Feed::item('relevant', $project->progress.'%')
-                            )));
-                    $log->doAdmin('project');
-                    unset($log);
+					// Evento Feed
+					$log = new Feed();
+					$log->setTarget($project->id);
+					$log->populate('El proyecto '.$project->name.' se ha enviado a revision', '/project/'.$project->id, \vsprintf('%s ha inscrito el proyecto %s para <span class="red">revisión</span>, el estado global de la información es del %s', array(
+								Feed::item('user', $project->user->name, $project->user->id),
+								Feed::item('project', $project->name, $project->id),
+								Feed::item('relevant', $project->progress.'%')
+							)));
+					$log->doAdmin('project');
+					unset($log);
 
-                    return new RedirectResponse('/dashboard?ok');
-                } else {
-                    Application\Message::error(Text::get('project-review-request_mail-fail'));
-                    Application\Message::error(implode('<br />', $errors));
-                }
-            }
+					return new RedirectResponse('/dashboard?ok');
+				} else {
+					Application\Message::error(Text::get('project-review-request_mail-fail'));
+					Application\Message::error(implode('<br />', $errors));
+				}
+			}
 
-        }
+		}
 
-        // checkear errores
-        $project->check($steps);
+		// checkear errores
+		$project->check($steps);
 
-        // segun el paso añadimos los datos auxiliares para pintar
-        switch ($step) {
-            case 'userProfile':
-                $project->user->interests = Model\User\Interest::get($project->user->id);
-                $viewData['user']         = $project->user;
-                $viewData['interests']    = Model\User\Interest::getAll();
-                break;
+		// segun el paso añadimos los datos auxiliares para pintar
+		switch ($step) {
+			case 'userProfile':
+				$project->user->interests = Model\User\Interest::get($project->user->id);
+				$viewData['user']         = $project->user;
+				$viewData['interests']    = Model\User\Interest::getAll();
+				break;
 
-            case 'userPersonal':
-                $viewData['account'] = Project\Account::get($project->id);
-                break;
+			case 'userPersonal':
+				$viewData['account'] = Project\Account::get($project->id);
+				break;
 
-            case 'overview':
-                $viewData['categories']       = Project\Category::getAll();
-                $viewData['languages']        = Lang::listAll('object');// idiomas activos
-                $viewData['currencies']       = Library\Currency::$currencies;// divisas
-                $viewData['default_currency'] = Library\Currency::DEFAULT_CURRENCY;// divisa por defecto
-                $viewData['scope'] = Model\Project::scope();
+			case 'overview':
+				$viewData['social_commitments']       = SocialCommitment::getAll();
+				$viewData['languages']        = Lang::listAll('object');// idiomas activos
+				$viewData['currencies']       = Library\Currency::$currencies;// divisas
+				$viewData['default_currency'] = Library\Currency::DEFAULT_CURRENCY;// divisa por defecto
+				$viewData['scope'] = Model\Project::scope();
+				break;
 
+			case 'images':
 
-                break;
+				break;
 
-            case 'images':
+			case 'costs':
+				$viewData['types'] = Project\Cost::types();
 
-                break;
+				// convert costs to project currency
+				foreach ($project->costs as &$cost) {
+					// var_dump($cost);
+					$cost->currency        = $project->currency;
+					$cost->currency_rate   = $project->currency_rate;
+					$cost->currency_html   = $currency_data['html'];
+					$cost->amount_original = round($cost->amount*$project->currency_rate);
+					$cost->amount_format   = $cost->amount_original.' '.$currency_data['html'];
+					// aquí pueden darse desajustes por redondeo
+				}
 
-            case 'costs':
-                $viewData['types'] = Project\Cost::types();
+				// para el termómetro horizontal de paso costes
+				$project->mincost = round($project->mincost*$project->currency_rate).' '.$currency_data['html'];
+				$project->maxcost = round($project->maxcost*$project->currency_rate).' '.$currency_data['html'];
 
-                // convert costs to project currency
-                foreach ($project->costs as &$cost) {
-                    // var_dump($cost);
-                    $cost->currency        = $project->currency;
-                    $cost->currency_rate   = $project->currency_rate;
-                    $cost->currency_html   = $currency_data['html'];
-                    $cost->amount_original = round($cost->amount*$project->currency_rate);
-                    $cost->amount_format   = $cost->amount_original.' '.$currency_data['html'];
-                    // aquí pueden darse desajustes por redondeo
-                }
+				break;
 
-                // para el termómetro horizontal de paso costes
-                $project->mincost = round($project->mincost*$project->currency_rate).' '.$currency_data['html'];
-                $project->maxcost = round($project->maxcost*$project->currency_rate).' '.$currency_data['html'];
+			case 'rewards':
 
-                break;
+				// convert costs to project currency
+				foreach ($project->individual_rewards as &$individual_reward) {
+					// var_dump($cost);
+					$individual_reward->currency        = $project->currency;
+					$individual_reward->currency_rate   = $project->currency_rate;
+					$individual_reward->currency_html   = $currency_data['html'];
+					$individual_reward->amount_original = round($individual_reward->amount*$project->currency_rate);
+					$individual_reward->amount_format   = $individual_reward->amount_original.' '.$currency_data['html'];
+					// aquí pueden darse desajustes por redondeo
+				}
 
-            case 'rewards':
+				$viewData['stypes']   = Project\Reward::icons('social');
+				$viewData['itypes']   = Project\Reward::icons('individual');
+				$viewData['licenses'] = Project\Reward::licenses();
+				break;
 
-                // convert costs to project currency
-                foreach ($project->individual_rewards as &$individual_reward) {
-                    // var_dump($cost);
-                    $individual_reward->currency        = $project->currency;
-                    $individual_reward->currency_rate   = $project->currency_rate;
-                    $individual_reward->currency_html   = $currency_data['html'];
-                    $individual_reward->amount_original = round($individual_reward->amount*$project->currency_rate);
-                    $individual_reward->amount_format   = $individual_reward->amount_original.' '.$currency_data['html'];
-                    // aquí pueden darse desajustes por redondeo
-                }
+			case 'supports':
+				$viewData['types'] = Project\Support::types();
 
-                $viewData['stypes']   = Project\Reward::icons('social');
-                $viewData['itypes']   = Project\Reward::icons('individual');
-                $viewData['licenses'] = Project\Reward::licenses();
-                break;
+				break;
 
-            case 'supports':
-                $viewData['types'] = Project\Support::types();
+			case 'preview':
+				$success = array();
+				if (empty($project->errors)) {
+					$success[] = Text::get('guide-project-success-noerrors');
+				}
+				if ($project->finishable) {
+					$success[] = Text::get('guide-project-success-minprogress');
+					$success[] = Text::get('guide-project-success-okfinish');
+				}
+				$viewData['success'] = $success;
+				$viewData['types']   = Project\Cost::types();
 
-                break;
+				break;
+		}
 
-            case 'preview':
-                $success = array();
-                if (empty($project->errors)) {
-                    $success[] = Text::get('guide-project-success-noerrors');
-                }
-                if ($project->finishable) {
-                    $success[] = Text::get('guide-project-success-minprogress');
-                    $success[] = Text::get('guide-project-success-okfinish');
-                }
-                $viewData['success'] = $success;
-                $viewData['types']   = Project\Cost::types();
+		return $this->viewResponse('project/edit', $viewData);
 
-                break;
-        }
+	}
 
-        return $this->viewResponse('project/edit', $viewData);
+	/**
+	 * Initial create project action
+	 * @param  Request $request [description]
+	 * @return [type]           [description]
+	 */
+	public function createAction(Request $request) {
 
-    }
+        //Set the responsive theme
+        View::setTheme('responsive');
 
-    /**
-     * Initial create project action
-     * @param  Request $request [description]
-     * @return [type]           [description]
-     */
-    public function createAction(Request $request) {
+        // Social commitments
+        $social_commitments=SocialCommitment::getAll();
+
+        $terms = Page::get('howto');
+
         if (!Session::isLogged()) {
             Application\Message::info(Text::get('user-login-required-to_create'));
             return $this->redirect('/user/login?return='.urldecode('/project/create'));
         }
 
-        if ($request->request->get('action') != 'continue' || $request->request->get('confirm') != 'true') {
-            $page = Page::get('howto');
+        if ($request->getMethod() == 'POST') {
 
-            return new Response(View::render('project/howto', array(
-                        'action'      => '/project/create',
-                        'name'        => $page->name,
-                        'description' => $page->description,
-                        'content'     => $page->parseContent()
-                    )
-                ));
+        	$social_commitment=$request->request->get('social');
 
+            $data=[
+                'name'         => $request->request->get('name'),
+                'subtitle'   => $request->request->get('subtitle'),
+                'social_commitment'   => $social_commitment,
+                'social_description' => $request->request->get('social-description')
+            ];
+
+            $project = Project::createNewProject($data, Session::getUser(), Config::get('current_node'));
+
+            // categories created depending on the social commitment
+        	$categories=SocialCommitment::getCategories($social_commitment);
+
+        	foreach ($categories as $item) {
+        		$category=new Category();
+        		$category->project=$project->id;
+        		$category->id=$item;
+        		$category->save();
+        	}
+
+            // Save publishing day and min required estimation
+            $conf = Project\Conf::get($project->id);
+            $conf->mincost_estimation = $request->request->get('minimum');
+            $conf->publishing_estimation = $request->request->get('publishing_date');
+            $conf->save();
+
+            // Send a mail to the creator
+            $project->user=Session::getUser();
+            $sent = UsersSend::toOwner('project_created', $project);
+
+            return new RedirectResponse('/project/edit/'.$project->id);
         }
-        //Do the creation stuff (exception will be throwed on fail)
-        $project = Project::createNewProject(Session::getUser(), Config::get('current_node'));
-        return new RedirectResponse('/project/edit/'.$project->id);
+
+        return $this->viewResponse( 'project/create',
+                                    ['social_commitments' => $social_commitments,
+                                     'terms'      => $terms
+                                     ]);
+
+	}
+
+     /**
+     * Calculate de investors required for the minimum
+     */
+
+    public function investorsRequiredAction(Request $request) {
+
+        if ($request->isMethod('post')) {
+            $minimum = $request->request->get('minimum');
+        }
+
+        //Get the investors
+
+        $average=Project::getInvestAverage();
+
+        $investors=ceil($minimum/$average);
+
+        return $this->jsonResponse($investors);
+
     }
 
-    private function view($id, $show, $post = null, Request $request) {
-        //activamos la cache para esta llamada
-        \Goteo\Core\DB::cache(true);
 
-        //Set the responsive theme
-        View::setTheme('responsive');
+	private function view($id, $show, $post = null, Request $request) {
+		//activamos la cache para esta llamada
+		\Goteo\Core\DB::cache(true);
 
-        $project = Project::get($id, Lang::current(false));
-        $user    = Session::getUser();
+		//Set the responsive theme
+		View::setTheme('responsive');
 
-        $show_allow=['home', 'updates', 'participate'];
+		$project = Project::get($id, Lang::current(false));
+		$user    = Session::getUser();
 
-        if(!in_array($show, $show_allow))
-            return $this->redirect('/project/' . $project->id);
+		$show_allow=['home', 'updates', 'participate'];
 
-        $related_projects=Project::published(['categories' => $project->categories], null, 0, 3, false);
+		if(!in_array($show, $show_allow))
+			return $this->redirect('/project/' . $project->id);
 
-        $lsuf = (LANG != 'es') ? '?lang='.LANG : '';
+		$related_projects=Project::published(['categories' => $project->categories], null, 0, 3, false);
+
+		$lsuf = (LANG != 'es') ? '?lang='.LANG : '';
 
         $URL = '//'.$request->getHttpHost();
 
@@ -897,12 +923,18 @@ class ProjectController extends \Goteo\Core\Controller {
             'goal',
             'related',
             'spread',
+            'execution_plan',
+            'execution_plan_url',
+            'sustainability_model',
+            'sustainability_model_url',
             'reward',
             'keywords',
             'media',
             'media_usubs',
             'project_location',
-            'scope'
+            'scope',
+            'social_commitment',
+            'social_commitment_description'
         );
 
         foreach ($fields as $field) {
@@ -922,11 +954,15 @@ class ProjectController extends \Goteo\Core\Controller {
             $project->video = new Project\Media($project->video);
         }
 
+
+        //New categories update depending on the social commitment
+        $categories=SocialCommitment::getCategories($_POST['social_commitment']);
+
         //categorias
         // añadir las que vienen y no tiene
         $tiene = is_array($project->categories) ? $project->categories : array();
-        if (is_array($_POST['categories'])) {
-            $viene = $_POST['categories'];
+        if (is_array($categories)) {
+            $viene = $categories;
             $quita = array_diff($tiene, $viene);
         } else {
             $quita = $tiene;
@@ -943,7 +979,14 @@ class ProjectController extends \Goteo\Core\Controller {
             unset($project->categories[$key]);
         }
 
+        //New categories update depending on the social commitment
+
+        /*$categories=SocialCommitment::getCategories($_POST['social_commitment']);
+
+        $project->categories=$categories;*/
+
         $quedan = $project->categories;// truki para xdebug
+
 
         return true;
     }

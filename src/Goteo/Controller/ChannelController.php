@@ -11,6 +11,8 @@
 namespace Goteo\Controller;
 
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\RedirectResponse;
+use Symfony\Component\HttpFoundation\Response;
 use Goteo\Application\Exception\ControllerAccessDeniedException;
 
 use Goteo\Application\Session;
@@ -26,6 +28,11 @@ use // convocatorias en portada
 use Goteo\Model\Category;
 use Goteo\Library\Text;
 use Goteo\Model\Page;
+use Goteo\Model\Project\Conf;
+use Goteo\Model\SocialCommitment;
+use Goteo\Console\UsersSend;
+
+
 
 class ChannelController extends \Goteo\Core\Controller {
 
@@ -164,27 +171,60 @@ class ChannelController extends \Goteo\Core\Controller {
         // Some context vars
         $this->contextVars(['url_project_create' => '/channel/' . $id . '/create']);
 
-        if (! ($user = Session::getUser()) ) {
+        //Set the responsive theme
+        View::setTheme('responsive');
+
+        // Social commitments
+        $social_commitments=SocialCommitment::getAll();
+
+        $terms = Page::get('howto');
+
+        if (!Session::isLogged()) {
             Session::store('jumpto', '/channel/' . $id . '/create');
             Message::info(Text::get('user-login-required-to_create'));
-            return $this->redirect(SEC_URL.'/user/login');
+            return $this->redirect('/user/login?return='.urldecode('/project/create'));
         }
 
-        if ($request->request->get('action') != 'continue' || $request->request->get('confirm') != 'true') {
-            $page = Page::get('howto');
+        if ($request->getMethod() == 'POST') {
 
-             return $this->viewResponse('project/howto', array(
-                        'action' => '/channel/' . $id . '/create',
-                        'name' => $page->name,
-                        'description' => $page->description,
-                        'content' => $page->parseContent()
-                    )
-                 );
+            $social_commitment=$request->request->get('social');
+
+            $data=[
+                'name'         => $request->request->get('name'),
+                'subtitle'   => $request->request->get('subtitle'),
+                'social_commitment'   => $social_commitment,
+                'social_description' => $request->request->get('social-description')
+            ];
+
+            $project = Project::createNewProject($data, Session::getUser(), $id);
+
+            // categories created depending on the social commitment
+            $categories=SocialCommitment::getCategories($social_commitment);
+
+            foreach ($categories as $item) {
+                $category=new Category();
+                $category->project=$project->id;
+                $category->id=$item;
+                $category->save();
+            }
+
+            // Save publishing day and min required estimation
+            $conf = Project\Conf::get($project->id);
+            $conf->mincost_estimation = $request->request->get('minimum');
+            $conf->publishing_estimation = $request->request->get('publishing_date');
+            $conf->save();
+
+            // Send a mail to the creator
+            $project->user=Session::getUser();
+            $sent = UsersSend::toOwner('project_created', $project);
+
+            return new RedirectResponse('/project/edit/'.$project->id);
         }
 
-        //Do the creation stuff (exception will be throwed on fail)
-        $project = Project::createNewProject(Session::getUser(), $id);
-        return $this->redirect('/project/edit/'.$project->id);
+        return $this->viewResponse( 'project/create',
+                                    ['social_commitments' => $social_commitments,
+                                     'terms'      => $terms
+                                     ]);
     }
 
      /**

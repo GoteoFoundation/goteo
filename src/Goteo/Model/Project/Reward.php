@@ -14,6 +14,8 @@ use Goteo\Application\Exception\ModelNotFoundException;
 use Goteo\Model\Project;
 use Goteo\Model\Invest;
 use Goteo\Model\Icon;
+use Goteo\Model\Category;
+use Goteo\Model\Image;
 use Goteo\Model\License;
 use Goteo\Application\Lang;
 use Goteo\Application\Config;
@@ -105,7 +107,8 @@ class Reward extends \Goteo\Core\Model {
                         reward.units as units,
                         reward.fulsocial as fulsocial,
                         reward.url,
-                        reward.bonus
+                        reward.bonus,
+                        reward.category
                     FROM    reward
                     {$join}
                     {$eng_join}
@@ -131,6 +134,12 @@ class Reward extends \Goteo\Core\Model {
                 }
                 else {
                     $item->icon_name = $icons[$item->icon]->name;
+                }
+
+                if($type == 'social'&&$item->category)
+                {
+                    $item->category=Category::get($item->category);
+                    $item->category->image=new Image($item->category->image);
                 }
 
                 $array[$item->id] = $item;
@@ -254,13 +263,13 @@ class Reward extends \Goteo\Core\Model {
             'amount',
             'units',
             'bonus',
-            'url'
+            'url',
+            'category'
         );
 
         try {
             //automatic $this->id assignation
             $this->dbInsertUpdate($fields);
-
             return true;
         } catch(\PDOException $e) {
             $errors[] = "Reward save error: " . $e->getMessage();
@@ -299,6 +308,25 @@ class Reward extends \Goteo\Core\Model {
             return false;
         }
     }
+
+    public function updateURL(&$errors = array()){
+
+        $fields = array(
+            'url'
+        );
+
+        try {
+            //automatic $this->id assignation
+            $this->dbInsertUpdate($fields);
+
+            return true;
+        } catch(\PDOException $e) {
+            $errors[] = "Reward url save error: " . $e->getMessage();
+            return false;
+        }
+
+    }
+
 
     /**
      * Quitar un retorno de un proyecto
