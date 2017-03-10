@@ -8,7 +8,7 @@ Installation
 Server requirements
 -------------------
 
-- PHP v5.4 or later with most common extension activated (GD, mcrypt, etc)
+- PHP v5.6 or later with most common extension activated (GD, mcrypt, etc)
 - Apache, Nginx or any other server with ModRewrite activated
 - MySQL 5.6 or later
 
@@ -122,22 +122,22 @@ Once you got it, a minimal system must be created, import this 3 SQL scripts:
 Both scripts should be applied in a MySQL console:
 
 ```bash
-mysql -u your_user -p your_password your_goteo_db < db/install/structure.sql
+mysql -u your_user -pyour_password your_goteo_db < db/install/structure.sql
 ```
 
 Then, apply the minor-version update:
 
 ```bash
-mysql -u your_user -p your_password your_goteo_db < db/install/upgrade-to-v3.0.7.sql
+mysql -u your_user -pyour_password your_goteo_db < db/install/upgrade-to-v3.0.9.sql
 ```
 
 And, finally, import some bare data (glossary and faq may be optional, or you can delete date afterwards):
 
 ```bash
-mysql -u your_user -p your_password your_goteo_db < db/install/data.sql
-mysql -u your_user -p your_password your_goteo_db < db/install/templates.sql
-mysql -u your_user -p your_password your_goteo_db < db/install/glossary.sql
-mysql -u your_user -p your_password your_goteo_db < db/install/faq.sql
+mysql -u your_user -pyour_password your_goteo_db < db/install/data.sql
+mysql -u your_user -pyour_password your_goteo_db < db/install/templates.sql
+mysql -u your_user -pyour_password your_goteo_db < db/install/glossary.sql
+mysql -u your_user -pyour_password your_goteo_db < db/install/faq.sql
 ```
 
 
