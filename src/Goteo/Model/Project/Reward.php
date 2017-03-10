@@ -14,7 +14,7 @@ use Goteo\Application\Exception\ModelNotFoundException;
 use Goteo\Model\Project;
 use Goteo\Model\Invest;
 use Goteo\Model\Icon;
-use Goteo\Model\Category;
+use Goteo\Model\Category as MainCategory;
 use Goteo\Model\Image;
 use Goteo\Model\License;
 use Goteo\Application\Lang;
@@ -138,7 +138,7 @@ class Reward extends \Goteo\Core\Model {
 
                 if($type == 'social'&&$item->category)
                 {
-                    $item->category=Category::get($item->category);
+                    $item->category=MainCategory::get($item->category);
                     $item->category->image=new Image($item->category->image);
                 }
 
