@@ -33,6 +33,7 @@ iptables-save
 service mysql restart
 
 # NPM
+curl -sL https://deb.nodesource.com/setup_6.x | bash -
 apt-get install nodejs -y
 npm install -g grunt-cli
 
