@@ -28,12 +28,10 @@ module.exports = function(grunt) {
                         }
                         else {
                             var files = grunt.file.expandMapping('**/*', destination, {cwd: origin});
-                            console.log('ORIGIN',origin);
                             for(var i in files) {
                                 var o = files[i].src;
                                 var d = files[i].dest;
-                                console.log('COPY',o,'TO',d);
-                                console.log('Found plugin [' + plugin + '] with asset [' + o + '] , copying to [' + d + ']');
+                                // console.log('COPY',o,'TO',d);
                                 if(grunt.file.isFile(o.toString())) {
                                     grunt.verbose.writeln('Found plugin [' + plugin + '] with asset [' + o + '] , copying to [' + d + ']');
                                     grunt.file.copy(o.toString(), d);

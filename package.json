@@ -31,7 +31,7 @@
     "grunt-phplint": "0.1.0",
     "grunt-phpunit": "^0.3.6",
     "grunt-usemin": "^3.1.1",
-    "jshint-stylish": "^1.0.1",
+    "jshint-stylish": "^2.2.1",
     "matchdep": "^1.0.1",
     "time-grunt": "^1.0.0"
   }
