@@ -62,176 +62,6 @@ for the JavaScript code in this page.
 (function ( $ ) {
 
     /**
-     * Envia el superform y sustituye el elemento via ajax
-     * Si el parametro data es un string, se puede usar para actualizar el html del elemento target
-     * @param  {[type]} options [description]
-     * @return {[type]}         [description]
-     */
-    $.fn.superform = function( options ) {
-        var t = this;
-
-        // Si es un string no hay llamada post, actualiza el target con el string enviado
-        if(typeof options === 'string') {
-            _superformUpdate(t, t, options);
-            return;
-        }
-
-        // This is the easiest way to have default options.
-        var settings = $.extend({
-            // Si es un objeto, debe contener los parametros adicionales para enviar via post
-            // Si no es un objecto, no se hace el envio ajax
-            data: {},
-            //el objecto a sustituirle el html por el retornado por la llamada ajax
-            //si es false o null, no se realizará ninguna sustitucion html, por defect el objecto que hace la llamada
-            //IMPORTANTE: debe contener obligatoriamente un id unico
-            //MEJORA: si se pasa por ajax solo el html necesario se podria obviar y sustituir directamente el elemento
-            target: this,
-            //el objecto form por defecto es el que está contenido el elemento que hace la llamada
-            form: this.closest('form')
-
-        }, options );
-
-        // console.log(settings);
-        var frm = $(settings.form);
-
-
-        //si no es un formulario, no hacemos nada con este plugin
-        if( ! frm.is('form') ) {
-            alert('Does not seems to be a form around...');
-            return;
-        }
-
-        //objecto para $.ajax
-        var post = {
-                type:       'POST',
-                url:        frm.attr('action'),
-                cache:      false
-            };
-
-        post.data = frm.serializeArray();
-        post.processData = true;
-
-        // try {
-        //     //si se quiere metodo tracicional (no sube archivos):
-        //     // throw new Exception();
-        //     //metdo html5
-        //     post.data = new FormData(frm[0]);
-        //     //con este metodo jquery no hade falte que procese el formulario:
-        //     post.contentType = false;
-        //     post.processData = false;
-        // }
-        // catch(e) {
-        //     //metodo serializado
-        //     post.data = frm.serializeArray();
-        // }
-
-        // console.log(typeof post.data);
-        //elemento a actualizar, por defecto el que realiza la llamada
-        var el = $(settings.target);
-
-        if(typeof settings.data === 'object' && settings.data !== null && (post.url)) {
-            //si todavia se está realizando la llamada ajax en el elemento, salimos
-            if (frm[0].xhr) {
-                frm[0].xhr.abort();
-                // alert('Already updating!');
-            }
-
-            //añadir los elementos pasados
-            $.each(settings.data, function (k, v) {
-                // try {
-                //     //metodo html5
-                //     post.data.append(k, v);
-                // }
-                // catch(e) {
-                    post.data.push({
-                        name: k,
-                        value: v
-                    });
-                // }
-            });
-
-            goteo.trace('sending data:', post.data);
-            //poner en el elemento html que hace la llamada una variable para impedir actualizaciones paralelas
-            el.addClass('updating busy');
-            //evento de antes de empezar ajax
-            // goteo.trace('Trigger: superform.ajax.started');
-            t.trigger('superform.ajax.started', [el]);
-
-            frm[0].xhr = $.ajax(post).done( function(html) {
-                //ajax finalizado
-                goteo.trace('Trigger: superform.ajax.done html:', html);
-                t.trigger('superform.ajax.done', [html, el]);
-                //actualizar el nodo si target es un elemento html
-                //si no hay el el id esperado, no actualizar nada
-                _superformUpdate(t, el, html);
-                //alert if alert div is present
-                if($(html).first().hasClass('ajax-alert')) {
-                    alert($(html).first().text());
-                }
-            }).fail( function(html, status) {
-                // console.log(html,status,xhr);
-                if(status !== 'abort') {
-                    // alert('Error, status return not success: ' +  status);
-                    goteo.trace('Error, status return not success: ' +  status);
-                    goteo.trace(html,status);
-                }
-            });
-        }
-    };
-
-    /**
-     * Realiza la sustitucion html y lanzan los eventos
-     */
-    var _superformUpdate = function(t, el, html) {
-        var caller = t.get(0);
-        if(el.length && caller instanceof HTMLElement) {
-            if( ! el.attr('id')) {
-                alert('Error, not id present in the target!');
-                return false;
-            }
-
-            //obtener el mismo elemento del codigo html de la respuesta
-            var new_el = $(html).find('li.element#' + el.attr('id'));
-
-            //verificar si existe dicho elemento
-            if( ! new_el.attr('id')) {
-                // alert('Error, the expected id ['+new_el.attr('id')+'] is not present in html response!');
-                goteo.trace('superform', 'Trigger: superform.dom.error', ' element:', t, 'new_el:', new_el, 'html:', html);
-                t.trigger('superform.dom.error', [html, new_el]);
-                t.trigger('superform.dom.done', [html, new_el]);
-                return false;
-            }
-            //actualizar html
-            //obtener el foco por si se esta escribiendo en algun text/textarea
-            var $focused = $(document.activeElement);
-            // console.log($focused,$focused[0].tagName,$focused.attr('class'),$focused.attr('id'));
-            var focusedElement = $focused[0].tagName.toLowerCase() + '#' + $focused.attr('id');
-            // console.log(focusedElement);
-
-            //evento de antes de actualizar
-            goteo.trace('superform', 'Trigger: superform.dom.started', ' element:', t);
-            t.trigger('superform.dom.started', [html, new_el]);
-
-            var promises = _superformUpdateElement(el, new_el);
-
-            //recuperar foco
-            $(focusedElement).focus();
-
-            //evento de despues de actualizar
-            $.when.apply( $, promises ).always(function(){
-                // el.removeClass('updating busy');
-                el.attr('class', new_el.attr('class'));
-                goteo.trace('superform', 'Trigger: superform.dom.done', ' element:', t, 'new_el:', new_el);
-                t.trigger('superform.dom.done', [html, new_el]);
-            });
-
-            // console.log('update:',el.attr('id'),data);
-        }
-        else {
-            // alert('not updating');
-        }
-    };
-    /**
      * Sustituye elegantemente (slide) un elemento jquery por otro
      */
     var _superformUpdateElement = function(el, new_el) {
@@ -359,6 +189,178 @@ for the JavaScript code in this page.
         });
 
         return promises;
+    };
+
+
+    /**
+     * Realiza la sustitucion html y lanzan los eventos
+     */
+    var _superformUpdate = function(t, el, html) {
+        var caller = t.get(0);
+        if(el.length && caller instanceof HTMLElement) {
+            if( ! el.attr('id')) {
+                alert('Error, not id present in the target!');
+                return false;
+            }
+
+            //obtener el mismo elemento del codigo html de la respuesta
+            var new_el = $(html).find('li.element#' + el.attr('id'));
+
+            //verificar si existe dicho elemento
+            if( ! new_el.attr('id')) {
+                // alert('Error, the expected id ['+new_el.attr('id')+'] is not present in html response!');
+                goteo.trace('superform', 'Trigger: superform.dom.error', ' element:', t, 'new_el:', new_el, 'html:', html);
+                t.trigger('superform.dom.error', [html, new_el]);
+                t.trigger('superform.dom.done', [html, new_el]);
+                return false;
+            }
+            //actualizar html
+            //obtener el foco por si se esta escribiendo en algun text/textarea
+            var $focused = $(document.activeElement);
+            // console.log($focused,$focused[0].tagName,$focused.attr('class'),$focused.attr('id'));
+            var focusedElement = $focused[0].tagName.toLowerCase() + '#' + $focused.attr('id');
+            // console.log(focusedElement);
+
+            //evento de antes de actualizar
+            goteo.trace('superform', 'Trigger: superform.dom.started', ' element:', t);
+            t.trigger('superform.dom.started', [html, new_el]);
+
+            var promises = _superformUpdateElement(el, new_el);
+
+            //recuperar foco
+            $(focusedElement).focus();
+
+            //evento de despues de actualizar
+            $.when.apply( $, promises ).always(function(){
+                // el.removeClass('updating busy');
+                el.attr('class', new_el.attr('class'));
+                goteo.trace('superform', 'Trigger: superform.dom.done', ' element:', t, 'new_el:', new_el);
+                t.trigger('superform.dom.done', [html, new_el]);
+            });
+
+            // console.log('update:',el.attr('id'),data);
+        }
+        else {
+            // alert('not updating');
+        }
+    };
+
+    /**
+     * Envia el superform y sustituye el elemento via ajax
+     * Si el parametro data es un string, se puede usar para actualizar el html del elemento target
+     * @param  {[type]} options [description]
+     * @return {[type]}         [description]
+     */
+    $.fn.superform = function( options ) {
+        var t = this;
+
+        // Si es un string no hay llamada post, actualiza el target con el string enviado
+        if(typeof options === 'string') {
+            _superformUpdate(t, t, options);
+            return;
+        }
+
+        // This is the easiest way to have default options.
+        var settings = $.extend({
+            // Si es un objeto, debe contener los parametros adicionales para enviar via post
+            // Si no es un objecto, no se hace el envio ajax
+            data: {},
+            //el objecto a sustituirle el html por el retornado por la llamada ajax
+            //si es false o null, no se realizará ninguna sustitucion html, por defect el objecto que hace la llamada
+            //IMPORTANTE: debe contener obligatoriamente un id unico
+            //MEJORA: si se pasa por ajax solo el html necesario se podria obviar y sustituir directamente el elemento
+            target: this,
+            //el objecto form por defecto es el que está contenido el elemento que hace la llamada
+            form: this.closest('form')
+
+        }, options );
+
+        // console.log(settings);
+        var frm = $(settings.form);
+
+
+        //si no es un formulario, no hacemos nada con este plugin
+        if( ! frm.is('form') ) {
+            alert('Does not seems to be a form around...');
+            return;
+        }
+
+        //objecto para $.ajax
+        var post = {
+                type:       'POST',
+                url:        frm.attr('action'),
+                cache:      false
+            };
+
+        post.data = frm.serializeArray();
+        post.processData = true;
+
+        // try {
+        //     //si se quiere metodo tracicional (no sube archivos):
+        //     // throw new Exception();
+        //     //metdo html5
+        //     post.data = new FormData(frm[0]);
+        //     //con este metodo jquery no hade falte que procese el formulario:
+        //     post.contentType = false;
+        //     post.processData = false;
+        // }
+        // catch(e) {
+        //     //metodo serializado
+        //     post.data = frm.serializeArray();
+        // }
+
+        // console.log(typeof post.data);
+        //elemento a actualizar, por defecto el que realiza la llamada
+        var el = $(settings.target);
+
+        if(typeof settings.data === 'object' && settings.data !== null && (post.url)) {
+            //si todavia se está realizando la llamada ajax en el elemento, salimos
+            if (frm[0].xhr) {
+                frm[0].xhr.abort();
+                // alert('Already updating!');
+            }
+
+            //añadir los elementos pasados
+            $.each(settings.data, function (k, v) {
+                // try {
+                //     //metodo html5
+                //     post.data.append(k, v);
+                // }
+                // catch(e) {
+                    post.data.push({
+                        name: k,
+                        value: v
+                    });
+                // }
+            });
+
+            goteo.trace('sending data:', post.data);
+            //poner en el elemento html que hace la llamada una variable para impedir actualizaciones paralelas
+            el.addClass('updating busy');
+            //evento de antes de empezar ajax
+            // goteo.trace('Trigger: superform.ajax.started');
+            t.trigger('superform.ajax.started', [el]);
+
+            frm[0].xhr = $.ajax(post).done( function(html) {
+                //ajax finalizado
+                goteo.trace('Trigger: superform.ajax.done html:', html);
+                t.trigger('superform.ajax.done', [html, el]);
+                //actualizar el nodo si target es un elemento html
+                //si no hay el el id esperado, no actualizar nada
+                _superformUpdate(t, el, html);
+                //alert if alert div is present
+                if($(html).first().hasClass('ajax-alert')) {
+                    alert($(html).first().text());
+                }
+            }).fail( function(html, status) {
+                // console.log(html,status,xhr);
+                if(status !== 'abort') {
+                    // alert('Error, status return not success: ' +  status);
+                    goteo.trace('Error, status return not success: ' +  status);
+                    goteo.trace(html,status);
+                }
+            });
+        }
     };
 
 }( jQuery ));
