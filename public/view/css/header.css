@@ -116,6 +116,11 @@ div#sub-header > div > div.slides_container > div.slides_control > div.subhead-b
 	height:156px;
 }
 
+div#sub-header > div > div.slides_container > div.slides_control > div.subhead-banner .img-social-commitment{
+    vertical-align: middle;
+    margin: 7px 5px 7px 0;
+}
+
 div#sub-header > div > div.slides_container > div.slides_control > div.subhead-banner .shb-info{
 	margin:0px;
 	background:#FFFFFF;
@@ -1057,7 +1062,7 @@ div#sub-header.banners > div > div.mod-pojctopen div.main-calendar div.event-int
     background-color: #58595B;
 }
 
-.e-bg{
+.r-bg{
     background-color: #E11F19;
 }
 
@@ -1067,7 +1072,7 @@ div#sub-header.banners > div > div.mod-pojctopen div.main-calendar div.event-int
 .c-bg{
     background-color: #7e3f98;
 }
-.r-bg{
+.e-bg{
     background-color: #10519b;
 }
 
@@ -1076,7 +1081,7 @@ div#sub-header.banners > div > div.mod-pojctopen div.main-calendar div.event-int
     color: #58595B;
 }
 
-.e{
+.r{
     color: #E11F19;
 }
 
@@ -1086,7 +1091,7 @@ div#sub-header.banners > div > div.mod-pojctopen div.main-calendar div.event-int
 .c{
     color: #7e3f98;
 }
-.r{
+.e{
     color: #10519b;
 }
 

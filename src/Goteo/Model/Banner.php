@@ -11,6 +11,7 @@ namespace Goteo\Model {
 
     use Goteo\Library\Text,
         Goteo\Model\Project,
+        Goteo\Model\SocialCommitment,
         Goteo\Model\Image,
         Goteo\Application\Lang,
         Goteo\Application\Config,
@@ -101,7 +102,8 @@ namespace Goteo\Model {
 	                    user.name as project_user_name,
                         banner.image as image,
                         banner.order as `order`,
-                        banner.active as `active`
+                        banner.active as `active`,
+                        project.social_commitment as project_social_commitment
                     FROM    banner
                     LEFT JOIN project
                         ON project.id = banner.project
@@ -129,6 +131,12 @@ namespace Goteo\Model {
                     $banner->project_mincost = $calc->mincost;
                     $banner->project_maxcost = $calc->maxcost;
                     //a partir de aqui ya deberia estar calculado para las siguientes consultas
+                }
+
+                if ($banner->project_social_commitment)
+                {
+                    $banner->social_commitmentData = SocialCommitment::get($banner->project_social_commitment);
+                    $banner->social_commitmentData->image = Image::get($banner->social_commitmentData->image);
                 }
 
                 //rewards, metodo antiguo un sql por proyecto

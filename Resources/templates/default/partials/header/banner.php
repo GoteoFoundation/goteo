@@ -24,31 +24,41 @@ if (empty($banner->project)):
         <h2><?= $banner->project_name ?></h2>
         <small><?= $this->text('regular-by') ?> <?= $banner->project_user_name ?></small>
         <div class="col-return clearfix">
-            <h3><?= $this->text('project-rewards-social_reward-title') ?></h3>
-            <p><?= current($project_social_rewards)->reward ?></p>
-            <ul>
-    <?php
+            <?php if($banner->project_social_commitment): ?>
+                <h3><?= $this->text('project-social-commitment-title') ?></h3>
+                <div>
+                <img class="img-social-commitment" width="35" src="<?= $banner->social_commitmentData->image->getLink(60, 60, false) ?>" alt="<?= $banner->social_commitmentData->name ?>" title="<?= $banner->social_commitmentData->name ?>" />
+                <span><?= $banner->social_commitmentData->name ?></span>
+                </div>
+            <?php 
+                else:
+            ?>
+                <h3><?= $this->text('project-rewards-social_reward-title') ?></h3>
+                <p><?= current($project_social_rewards)->reward ?></p>
+                <ul>
+            <?php
             $c = 1;
             foreach ($project_social_rewards as $id => $reward) :
-    ?>
+            ?>
                 <li><img src="<?= SRC_URL ?>/view/css/icon/s/<?= $reward->icon ?>.png" alt="<?= $reward->icon ?>" title="<?= $this->ee($reward->reward) ?>" /></li>
-    <?php
+            <?php
                 if ($c>4) break;
                 else      $c++;
             endforeach;
-    ?>
+            ?>
             </ul>
             <div class="license">
-    <?php
+            <?php
             foreach ($project_social_rewards as $id => $reward):
                 if (empty($reward->license)) continue;
-    ?>
+            ?>
                 <img src="<?= SRC_URL ?>/view/css/license/<?= $reward->license ?>.png" alt="<?= $reward->license ?>" />
-    <?php
+            <?php
                 break;
             endforeach;
-    ?>
+            ?>
             </div>
+        <?php endif; ?>
         </div>
         <ul class="financ-meter">
             <li><?= $mreach ?></li>
