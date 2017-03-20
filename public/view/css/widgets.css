@@ -6,23 +6,23 @@ h5.widget-login-title{
 }
 
 div .login-widget-form{
-    width:65%; 
-    float:left; 
-    border-right: 1px dashed; 
+    width:65%;
+    float:left;
+    border-right: 1px dashed;
     padding-right:3%;
 }
 
 div.login-widget-form input.login-widget-input{
-    width:46%; 
-    height:20px; 
-    background-color: white; 
-    border: 1px solid #CCD6DD; 
+    width:46%;
+    height:20px;
+    background-color: white;
+    border: 1px solid #CCD6DD;
     border-radius:5px;
 }
 
 div.login-widget-form input.login-widget-input:focus {
     box-shadow: 0px 1px 3px rgba(0, 0, 0, 0.05) inset, 0px 0px 8px rgba(82, 168, 236, 0.6);
-} 
+}
 
 div.login-widget-form input.login-widget-keep{
     float: left;
@@ -40,14 +40,13 @@ div.login-widget-form .buttons
 {
     width: auto !important;
     float: right;
-    margin-left: ;
     margin-right: 1%;
 }
 
 div.login-widget-social
 {
-    width:25%; 
-    float:left;  
+    width:25%;
+    float:left;
     margin-left:4%;
 }
 
@@ -57,7 +56,7 @@ div.login-widget-social ul{
 
 div.login-widget-social ul li.icon
 {
-    padding:0; 
+    padding:0;
     float:left;
     margin-bottom: 0;
 }
@@ -74,12 +73,12 @@ div.login-widget-form .login-widget-remember
 }
 
 div.login-widget-form .login-widget-remember a
-{ 
+{
     text-decoration: none;
 }
 
 div.login-widget-form.register
-{ 
+{
     width:100%;
     border:none;
 }

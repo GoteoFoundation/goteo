@@ -468,7 +468,6 @@ body .cke_dialog
 	display: inline-block;
 	cursor: default;
 	min-width: 60px;
-	+margin: 2px 0; /* IE7 */
 }
 
 /* Gecko 1.8 does not support display: inline-block */

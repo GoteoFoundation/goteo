@@ -267,7 +267,6 @@ ul#pagination li, ul.pagination li {
 	margin: 0 6px 0 0;
 	background: white;
 	width: auto;
-	// float: left;
 	text-align: center;
 }
 ul#pagination li.selected, ul.pagination li.selected {
