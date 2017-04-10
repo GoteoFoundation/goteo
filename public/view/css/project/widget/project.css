@@ -343,7 +343,7 @@ div.widget.project div.meter.hor div.graph .minimum .done {
 }
 
 div.widget.project div.meter div.graph .minimum .done strong {
-    background: url("project/marker.png") no-repeat;
+    background: url("/view/css/project/widget/project/marker.png") no-repeat;
     display: block;
     height: 16px;
     line-height: 2000px;
