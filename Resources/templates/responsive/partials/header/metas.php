@@ -16,7 +16,16 @@ if(empty($this->og_url)) $this->og_url = $this->url;
     <meta property="og:type" content="activity">
     <meta property="og:site_name" content="Goteo.org">
     <meta property="og:url" content="<?= $this->og_url?>">
-    <meta name="twitter:image" content="<?= $this->tw_image ?>">
+
+    <meta name="twitter:card" content="summary" />
+
+<meta name="twitter:site" content="@goteofunding" />
+
+<meta name="twitter:title" content="<?= $this->title ?>" />
+
+<meta name="twitter:description" content="<?=$this->meta_description?>" />
+
+<meta name="twitter:image" content="<?= $this->tw_image ?>">
 
 
 <?php
