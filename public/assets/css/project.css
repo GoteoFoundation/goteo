@@ -545,7 +545,8 @@ table.needs{
 	font-size: 13px;
 }
 
-table.needs > tbody > tr.bg-required{
+table.needs > tbody > tr.bg-required
+{
 	background-color: #EFE5F0;
 }
 
