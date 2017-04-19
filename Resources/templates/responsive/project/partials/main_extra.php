@@ -49,7 +49,7 @@ $langs = $project->getLangs();
                             <?php if ($project->node !== $this->get_config('current_node')&&($project->nodeData->active)) : ?>
                                 <div class="pull-left">
                                     <a href="<?= $project->nodeData->url ?>">
-                                        <button class="btn btn-block grey text-uppercase"><?= $this->text('regular-channel') . $project->nodeData->name ?></button>
+                                        <button class="btn btn-block grey text-uppercase"><?= $this->text('regular-channel') .' '. $project->nodeData->name ?></button>
                                     </a>
                                 </div>
                             <?php endif; ?>
