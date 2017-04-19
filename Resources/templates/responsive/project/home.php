@@ -39,7 +39,7 @@
 
 
                     <?php foreach ($this->costs as $type => $list): ?>
-                    <table class="footable table needs table-striped">
+                    <table class="footable table needs">
                          <thead>
                             <tr>
                               <th data-type="html">
@@ -52,7 +52,7 @@
                          </thead>
                           <tbody>
                         <?php foreach ($list as $cost): ?>
-                            <tr>
+                            <tr <?= $cost->min ? 'class="bg-required"' : '' ?>>
                               <td>
                                   <strong><?= $cost->name ?></strong>
                                   <div><?= $cost->description ?></div>
