@@ -695,8 +695,6 @@ div.row.new{
 
 div.row.new .date{
 	position: relative;
-    padding-top: 75px;
-    margin-top: -75px;
 }
 
 div.row.new div.date div.month{
