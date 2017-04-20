@@ -550,6 +550,10 @@ table.needs > tbody > tr.bg-required
 	background-color: #EFE5F0;
 }
 
+table.needs > tbody > tr.bg-optional{
+	background-color: #DCE5E4;
+}
+
 table.needs thead{
 	text-transform: uppercase;
 }
@@ -934,6 +938,10 @@ div.invest div.row.chart div.grey{
 	height: 15px;
 	float: left;
 	border-radius: 10px;
+}
+
+div.chart-reset-button{
+	margin-bottom: 30px;
 }
 
 div.invest div.msg{
