@@ -202,6 +202,12 @@ function printCosts() {
         chart.attr("width", targetWidth);
         chart.attr("height", Math.round(targetWidth / aspect));
       }).trigger("resize");
+
+    $('#collapseOne').on('shown.bs.collapse', function () {
+        var targetWidth = container.width();
+        chart.attr("width", targetWidth);
+        chart.attr("height", Math.round(targetWidth / aspect));
+      }).trigger("resize");
   }
 
 $(function(){

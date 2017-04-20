@@ -10,7 +10,8 @@ if($this->is_pronto()):
     return;
 endif;
 
-$meta_img=$project->secGallery['play-video'][0] ? $this->project->secGallery['play-video'][0]->imageData->getLink(780, 478) : $project->gallery[0]->imageData->getLink(700, 700);
+if($project->gallery[0])
+    $meta_img=$project->secGallery['play-video'][0] ? $this->project->secGallery['play-video'][0]->imageData->getLink(780, 478) : $project->gallery[0]->imageData->getLink(700, 700);
 
 
 $this->layout('layout', [
