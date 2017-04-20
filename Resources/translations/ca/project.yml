@@ -3,6 +3,7 @@ currency-switch: CANVIAR
 overview-field-spread: Difusió
 personal-field-accounts: 'Comptes del projecte'
 project-chart-amount-end-round: 'Fi Ronda'
+project-costs-total: 'Total'
 project-collaborations-supertitle: 'Necessitats no monetàries'
 project-collaborations-title: Cercant
 project-error-main-lang: 'No es pot establir aquest idioma [%s] com a principal perquè ja està assignat a una traducció. Elimina la traducció existent en [%s], desde el panell de traducció, per introduïr-ne una de nova.'

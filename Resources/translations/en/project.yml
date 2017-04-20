@@ -3,6 +3,7 @@ currency-switch: CONVERT
 overview-field-spread: Dissemination
 personal-field-accounts: 'Project accounts'
 project-chart-amount-end-round: 'End Round'
+project-costs-total: 'Total'
 project-collaborations-supertitle: 'Non-economic needs'
 project-collaborations-title: 'Looking for'
 project-error-main-lang: 'You can’t set this language [%s] as the main language because it is being used by an existing translation. Delete the existing translation in [%s], from the translation panel, to introduce a new one.'
