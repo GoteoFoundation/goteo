@@ -49,24 +49,23 @@
                                   <td class="text-center"><span class="required"><?= amount_format($cost->min) ?></span></td>
                                   <td class="text-center"><?= !$cost->min ? amount_format($cost->opt) : '' ?></td>
                                 </tr>
+                                <?php if(end($this->costs)==$list&&end($list)==$cost): ?>
+                                    <tr>
+                                        <td class="text-right" data-type="html">
+                                            <strong><?= $this->text('project-costs-total') ?></strong>
+                                        </td>
+
+                                        <td class="text-center" data-type="html" data-breakpoints="xs">
+                                            <span class="required"><?= amount_format($project->mincost) ?></span>
+                                        </td>
+                                        <td class="text-center" data-type="html" data-breakpoints="xs">
+                                            <?= amount_format($project->maxcost) ?>
+                                        </td>
+                                    </tr>
+                                <?php endif; ?>
                             <?php endforeach ?>
                               </tbody>
-                              <?php if(end($this->costs)==$list): ?>
-                                <tfoot>
-                                    <tr>
-                                        <th class="text-right">
-                                            <strong><?= $this->text('project-costs-total') ?></strong>
-                                        </th>
-
-                                        <th class="text-center required">
-                                            <?= amount_format($project->mincost) ?>
-                                        </th>
-                                        <th class="text-center ">
-                                            <?= amount_format($project->maxcost) ?>
-                                        </th>
-                                    </tr>
-                                </tfoot>
-                                <?php endif; ?>
+                              
                         </table>
                     <?php endforeach ?>
                     <!--
