@@ -128,6 +128,8 @@ project-chart-costs-reset: 'Back'
 project-chart-amount-reached: 'Acumulado'
 project-chart-amount-ideal: 'Ideal'
 project-chart-amount-end-round: 'Fin Ronda'
+project-costs-total: 'Total'
+
 
 project-comment-start-sesion: 'Inicia sesión'
 project-comment-start-sesion-2: 'para dejar un comentario'

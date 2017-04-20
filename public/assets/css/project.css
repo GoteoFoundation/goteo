@@ -578,6 +578,14 @@ table.needs thead th:last-child{
 	padding-right: 2.5%;
 }
 
+table.needs tfoot tr th{
+	font-weight: normal;
+}
+
+table.needs tfoot tr th.required{
+	color:#C054BA;
+}
+
 div.row.legend{
 	background-color: #E9EAEA;
 	padding:15px 2.5%;

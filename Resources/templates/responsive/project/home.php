@@ -28,31 +28,70 @@
 
 
                     <?php foreach ($this->costs as $type => $list): ?>
+                        <table class="footable table needs">
+                             <thead>
+                                <tr>
+                                  <th data-type="html">
+                                    <img src="<?= SRC_URL . '/assets/img/project/needs/'.$type.'.png' ?> ">
+                                    <span class="type"><?= $this->types[$type] ?></span>
+                                  </th>
+                                  <th class="text-center" data-type="html" data-breakpoints="xs"><?= $this->text('project-view-metter-minimum') ?></th>
+                                  <th class="text-center" data-type="html" data-breakpoints="xs"><?= $this->text('project-view-metter-optimum') ?></th>
+                                </tr>
+                             </thead>
+                              <tbody>
+                            <?php foreach ($list as $cost): ?>
+                                <tr class="<?= $cost->min ? 'bg-required' : 'bg-optional' ?>" >
+                                  <td>
+                                      <strong><?= $cost->name ?></strong>
+                                      <div><?= $cost->description ?></div>
+                                  </td>
+                                  <td class="text-center"><span class="required"><?= amount_format($cost->min) ?></span></td>
+                                  <td class="text-center"><?= !$cost->min ? amount_format($cost->opt) : '' ?></td>
+                                </tr>
+                            <?php endforeach ?>
+                              </tbody>
+                              <?php if(end($this->costs)==$list): ?>
+                                <tfoot>
+                                    <tr>
+                                        <th class="text-right">
+                                            <strong><?= $this->text('project-costs-total') ?></strong>
+                                        </th>
+
+                                        <th class="text-center required">
+                                            <?= amount_format($project->mincost) ?>
+                                        </th>
+                                        <th class="text-center ">
+                                            <?= amount_format($project->maxcost) ?>
+                                        </th>
+                                    </tr>
+                                </tfoot>
+                                <?php endif; ?>
+                        </table>
+                    <?php endforeach ?>
+                    <!--
                     <table class="footable table needs">
                          <thead>
                             <tr>
                               <th data-type="html">
-                                <img src="<?= SRC_URL . '/assets/img/project/needs/'.$type.'.png' ?> ">
-                                <span class="type"><?= $this->types[$type] ?></span>
+                                <span class="type"><?= $this->text('project-costs-total') ?></span>
                               </th>
                               <th class="text-center" data-type="html" data-breakpoints="xs"><?= $this->text('project-view-metter-minimum') ?></th>
                               <th class="text-center" data-type="html" data-breakpoints="xs"><?= $this->text('project-view-metter-optimum') ?></th>
                             </tr>
                          </thead>
                           <tbody>
-                        <?php foreach ($list as $cost): ?>
-                            <tr class="<?= $cost->min ? 'bg-required' : 'bg-optional' ?>" >
+                            <tr>
                               <td>
-                                  <strong><?= $cost->name ?></strong>
-                                  <div><?= $cost->description ?></div>
+                                  <strong></strong>
+                                  <div></div>
                               </td>
-                              <td class="text-center"><span class="required"><?= amount_format($cost->min) ?></span></td>
-                              <td class="text-center"><?= !$cost->min ? amount_format($cost->opt) : '' ?></td>
+                              <td class="text-center"><span class="required"><?= amount_format($project->mincost) ?></span></td>
+                              <td class="text-center"><?= amount_format($project->maxcost) ?></td>
                             </tr>
-                        <?php endforeach ?>
                           </tbody>
                     </table>
-                    <?php endforeach ?>
+                    -->
 
                     <div class="row no-margin legend no-margin">
                             <div class="circle required pull-left">
