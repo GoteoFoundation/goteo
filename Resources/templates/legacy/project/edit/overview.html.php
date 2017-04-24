@@ -145,21 +145,6 @@ $goal = array(
 );
 
 
-$anchor_video = array(
-     'type'  => 'hidden',
-    'class' => 'inline'
-);
-$video_field=array(
-    'type'  => 'hidden',
-    'class' => 'inline',
-    'value'     => (string) $project->video
-);
-
-$video_upload=array(
-    'type'  => 'hidden',
-    'class' => 'inline'
-);
-
 $title_description_group=Text::get('overview-extra-fields');
 
 
@@ -216,6 +201,30 @@ if($project->call){
         'value'     => $project->sustainability_model_url
     );
 
+    $anchor_video = array(
+        'type' => 'html',
+        'html' => '<a name="video"></a>'
+    );
+
+    $video_field=array(
+        'type'      => 'textbox',
+        'required'  => false,
+        'title'     => Text::get('overview-field-video'),
+        'hint'      => Text::get('tooltip-project-video'),
+        'errors'    => !empty($errors['video']) ? array($errors['video']) : array(),
+        'ok'        => !empty($okeys['video']) ? array($okeys['video']) : array(),
+        'value'     => (string) $project->video
+    );
+
+    $video_upload=array(
+        'name' => "upload",
+        'type'  => 'submit',
+        'label' => Text::get('form-upload-button'),
+        'class' => 'inline media-upload'
+    );
+
+    
+
 }
 
 else{
@@ -246,6 +255,22 @@ else{
         'type'  => 'hidden',
         'class' => 'inline',
         'value'     => $project->sustainability_model_url
+    );
+
+    $anchor_video = array(
+     'type'  => 'hidden',
+    'class' => 'inline'
+    );
+
+    $video_field=array(
+        'type'  => 'hidden',
+        'class' => 'inline',
+        'value'     => (string) $project->video
+    );
+
+    $video_upload=array(
+        'type'  => 'hidden',
+        'class' => 'inline'
     );
 
 }
@@ -444,7 +469,7 @@ $superform = array(
 
         'video-upload' => $video_upload,
 
-        //'video-preview' => $video,
+        'video-preview' => $video,
 
 
         // fin video motivacion

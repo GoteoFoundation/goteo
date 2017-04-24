@@ -215,6 +215,11 @@
                     <span class="anchor-mark" id="related">
                     <?= $this->text('overview-field-related') ?>
                     </span>
+                    <?php if (!empty($project->video->url)): ?>
+                        <div class="embed-responsive embed-responsive-16by9 spacer-20" >
+                        <?= $project->video->getEmbedCode(); ?>
+                        </div>
+                    <?php endif; ?>
                 </h2>
                 <div class="spacer-20 general-text">
                 <?= nl2br($this->text_url_link($project->related)) ?>
