@@ -13,7 +13,9 @@ namespace Goteo\Model {
     use Goteo\Library\Text,
         Goteo\Library\FileHandler\File,
         Intervention\Image\ImageManagerStatic as ImageManager,
-        Goteo\Library\Cacher;
+        Goteo\Library\Cacher,
+        Goteo\Application\Config;
+
 
     class Image extends \Goteo\Core\Model {
 
