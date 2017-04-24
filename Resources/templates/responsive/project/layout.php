@@ -10,11 +10,16 @@ if($this->is_pronto()):
     return;
 endif;
 
+if($project->gallery[0])
+    $meta_img=$project->secGallery['play-video'][0] ? $this->project->secGallery['play-video'][0]->imageData->getLink(780, 478) : $project->gallery[0]->imageData->getLink(700, 700);
+
 
 $this->layout('layout', [
     'bodyClass' => 'project',
     'title' => $this->project->name,
-    'meta_description' => $this->project->subtitle
+    'meta_description' => $this->project->subtitle.'1',
+    'tw_image' => $meta_img,
+    'og_image' => $meta_img
     ]);
 
 $this->section('lang-metas');

@@ -14,56 +14,83 @@
 
         <div class="panel-group" id="accordion">
             <div class="panel panel-default widget">
-                <div class="panel-heading">
-                    <h2 class="panel-title grey-title">
-                        <?= $this->text('project-menu-needs') ?>
-                    </h2>
-                    <div class="row">
-                        <div class="chart-costs col-sm-6 col-sm-offset-3">
-                        </div>
-                    </div>
-                    <div class="row">
-                         <div id="reset-chart" class="chart-reset-button text-center col-xs-4 col-xs-offset-4 col-md-2 col-md-offset-5">
-                            <button class="btn btn-default" type="button" id="reset-button"> <span class="glyphicon glyphicon-repeat"> </span> <?= $this->text('project-chart-costs-reset') ?></button>
-                        </div>
-                    </div>
-                </div>
                 <a class="accordion-toggle collapsed" data-toggle="collapse" data-target="#collapseOne">
-                    <h2 class="panel-title green-title text-center accordion-title" >
-                        <?= $this->text('project-show-needs') ?>
-                        <span class="icon glyphicon glyphicon glyphicon-menu-down" aria-hidden="true"></span>
-                    </h2>
+                    <div class="panel-heading standard-padding">
+                        <h2 class="panel-title green-title" >
+                            <?= $this->text('project-show-needs') ?>
+                            <span class="icon glyphicon glyphicon glyphicon-menu-down" aria-hidden="true"></span>
+                        </h2>
+                    </div>
                 </a>
+                
                 <div id="collapseOne" class="panel-collapse collapse">
                   <div class="panel-body">
 
 
                     <?php foreach ($this->costs as $type => $list): ?>
-                    <table class="footable table needs table-striped">
+                        <table class="footable table needs">
+                             <thead>
+                                <tr>
+                                  <th data-type="html">
+                                    <img src="<?= SRC_URL . '/assets/img/project/needs/'.$type.'.png' ?> ">
+                                    <span class="type"><?= $this->types[$type] ?></span>
+                                  </th>
+                                  <th class="text-center" data-type="html" data-breakpoints="xs"><?= $this->text('project-view-metter-minimum') ?></th>
+                                  <th class="text-center" data-type="html" data-breakpoints="xs"><?= $this->text('project-view-metter-optimum') ?></th>
+                                </tr>
+                             </thead>
+                              <tbody>
+                            <?php foreach ($list as $cost): ?>
+                                <tr class="<?= $cost->min ? 'bg-required' : 'bg-optional' ?>" >
+                                  <td>
+                                      <strong><?= $cost->name ?></strong>
+                                      <div><?= $cost->description ?></div>
+                                  </td>
+                                  <td class="text-center text-nowrap"><span class="required"><?= amount_format($cost->min) ?></span></td>
+                                  <td class="text-center text-nowrap"><?= !$cost->min ? amount_format($cost->opt) : '' ?></td>
+                                </tr>
+                                <?php if(end($this->costs)==$list&&end($list)==$cost): ?>
+                                    <tr>
+                                        <td class="text-right" data-type="html">
+                                            <strong><?= $this->text('project-costs-total') ?></strong>
+                                        </td>
+
+                                        <td class="text-center text-nowrap" data-type="html" data-breakpoints="xs">
+                                            <span class="required"><?= amount_format($project->mincost) ?></span>
+                                        </td>
+                                        <td class="text-center text-nowrap" data-type="html" data-breakpoints="xs">
+                                            <?= amount_format($project->maxcost) ?>
+                                        </td>
+                                    </tr>
+                                <?php endif; ?>
+                            <?php endforeach ?>
+                              </tbody>
+                              
+                        </table>
+                    <?php endforeach ?>
+                    <!--
+                    <table class="footable table needs">
                          <thead>
                             <tr>
                               <th data-type="html">
-                                <img src="<?= SRC_URL . '/assets/img/project/needs/'.$type.'.png' ?> ">
-                                <span class="type"><?= $this->types[$type] ?></span>
+                                <span class="type"><?= $this->text('project-costs-total') ?></span>
                               </th>
                               <th class="text-center" data-type="html" data-breakpoints="xs"><?= $this->text('project-view-metter-minimum') ?></th>
                               <th class="text-center" data-type="html" data-breakpoints="xs"><?= $this->text('project-view-metter-optimum') ?></th>
                             </tr>
                          </thead>
                           <tbody>
-                        <?php foreach ($list as $cost): ?>
                             <tr>
                               <td>
-                                  <strong><?= $cost->name ?></strong>
-                                  <div><?= $cost->description ?></div>
+                                  <strong></strong>
+                                  <div></div>
                               </td>
-                              <td class="text-center"><span class="required"><?= amount_format($cost->min) ?></span></td>
-                              <td class="text-center"><?= amount_format($cost->opt) ?></td>
+                              <td class="text-center"><span class="required"><?= amount_format($project->mincost) ?></span></td>
+                              <td class="text-center"><?= amount_format($project->maxcost) ?></td>
                             </tr>
-                        <?php endforeach ?>
                           </tbody>
                     </table>
-                    <?php endforeach ?>
+                    -->
 
                     <div class="row no-margin legend no-margin">
                             <div class="circle required pull-left">
@@ -79,6 +106,16 @@
                             <div class="title pull-left">
                             <?= $this->text('costs-field-required_cost-no') ?>
                             </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="chart-costs col-sm-6 col-sm-offset-3">
+                        </div>
+                    </div>
+                    <div class="row">
+                         <div id="reset-chart" class="chart-reset-button text-center col-xs-4 col-xs-offset-4 col-md-2 col-md-offset-5">
+                            <button class="btn btn-default" type="button" id="reset-button"> <span class="glyphicon glyphicon-repeat"> </span> <?= $this->text('project-chart-costs-reset') ?></button>
+                        </div>
                     </div>
 
                   </div>
