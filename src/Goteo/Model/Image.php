@@ -316,7 +316,7 @@ namespace Goteo\Model {
             else                          $link = SITE_URL . '/img/' . $path;
 
             if ($http && substr($link, 0, 2) == '//') {
-                $link = 'http:'.$link;
+                $link = (Config::get('ssl') ? 'https:' : 'http:').$link; 
             }
 
             return $link;
