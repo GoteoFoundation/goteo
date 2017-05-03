@@ -91,6 +91,6 @@ tr:
 sv:
     name: Svenska
     short: SV
-    public: false
+    public: true
     locale: sv_SE
     fallback: en
