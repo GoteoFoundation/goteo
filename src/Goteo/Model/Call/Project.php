@@ -2,7 +2,10 @@
 
 namespace Goteo\Model\Call {
 
-    use \Goteo\Model;
+    use \Goteo\Model,
+        Goteo\Application\Lang,
+        Goteo\Application\Config;
+
 
     class Project extends \Goteo\Core\Model {
 
@@ -28,6 +31,8 @@ namespace Goteo\Model\Call {
             $array = array ();
             try {
 
+                $lang = Lang::current();
+
                 $values = array(':call'=>$call);
 
                 $sqlFilter = "";
@@ -48,6 +53,17 @@ namespace Goteo\Model\Call {
                     $and = "AND";
                 }
 
+                // Lang
+                if(self::default_lang($lang) === Config::get('lang')) {
+                $lang_select = ' IFNULL(project_lang.description, project.description) AS description';
+                }
+                else {
+                    $lang_select = ' IFNULL(project_lang.description, IFNULL(eng.description, project.description)) AS description';
+                    $lang_join = " LEFT JOIN project_lang AS eng
+                                    ON  eng.id = project.id
+                                    AND eng.lang = 'en'";
+                }
+
 
 
 
@@ -55,6 +71,7 @@ namespace Goteo\Model\Call {
                 $sql = "SELECT
                             project.id as id,
                             project.name as name,
+                            $lang_select,
                             project.status as status,
                             project.published as published,
                             project.created as created,
@@ -68,7 +85,6 @@ namespace Goteo\Model\Call {
                             project.maxcost as maxcost,
                             project.project_location as location,
                             project.subtitle as subtitle,
-                            project.description as description,
                             project.image as image,
                             project.maxproj as maxproj,
                             project.amount_users as amount_users,
@@ -87,6 +103,10 @@ namespace Goteo\Model\Call {
                             ON user.id = project.owner
                         LEFT JOIN project_conf
                             ON project_conf.project = project.id
+                        LEFT JOIN project_lang
+                            ON  project_lang.id = project.id
+                            AND project_lang.lang = :lang
+                        $lang_join
                         INNER JOIN call_project
                             ON  call_project.project = project.id
                             AND call_project.call = :call
@@ -94,6 +114,8 @@ namespace Goteo\Model\Call {
                         GROUP BY project.id
                         ORDER BY project.name ASC
                         ";
+
+                $values[':lang'] = $lang;
 
                 // echo \sqldbg($sql, $values);
                 $query = static::query($sql, $values);
