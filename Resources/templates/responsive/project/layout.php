@@ -327,6 +327,8 @@ $this->section('content');
 // @license-end
 </script>
 <?= $this->insert('project/partials/google_analytics.php', ['project' => $project]) ?>
+<?= $this->insert('project/partials/facebook_pixel.php', ['project' => $project]) ?>
+
 <?php $this->append() ?>
 
 
