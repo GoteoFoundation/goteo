@@ -1,0 +1,5 @@
+# This plugin add HTTP basic auth to any defined route in settings.yml
+---
+
+name: PrivateZones
+version: 1.0
