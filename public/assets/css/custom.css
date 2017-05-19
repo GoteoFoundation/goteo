@@ -1423,6 +1423,7 @@ div.new-material-success{
 {
 	border-top-left-radius: 5px;
 	border-top-right-radius: 5px;
+    width: 100%;
 }
 
 .project-widget .content
