@@ -44,8 +44,12 @@ namespace Goteo\Model\Call {
                 }
 
                 $and = "WHERE";
-                if (!isset($filters['all'])) {
+                if (!isset($filters['all']) && !isset($filters['non-rejected'])) {
                     $sqlFilter .= " $and (project.status > 1  OR (project.status = 1 AND project.id NOT REGEXP '[0-9a-f]{32}') )";
+                    $and = "AND";
+                }
+                if (isset($filters['non-rejected'])) {
+                    $sqlFilter .= " $and project.status != 0";
                     $and = "AND";
                 }
                 if (isset($filters['published'])) {
@@ -63,8 +67,6 @@ namespace Goteo\Model\Call {
                                     ON  eng.id = project.id
                                     AND eng.lang = 'en'";
                 }
-
-
 
 
 
@@ -161,13 +163,17 @@ namespace Goteo\Model\Call {
                 }
 
                 $and = "WHERE";
-                if (!isset($filters['all'])) {
+                if (!isset($filters['all']) && !isset($filters['non-rejected'])) {
                     $sqlFilter .= " $and (project.status > 1  OR (project.status = 1 AND project.id NOT REGEXP '[0-9a-f]{32}') )";
                     $and = "AND";
                     $sql_draft ="project.id REGEXP '[0-9a-f]{32}' as draft,";
                 }
                 if (isset($filters['published'])) {
                     $sqlFilter .= " $and project.status >= 3";
+                    $and = "AND";
+                }
+                if (isset($filters['non-rejected'])) {
+                    $sqlFilter .= " $and project.status != 0";
                     $and = "AND";
                 }
 
@@ -187,7 +193,6 @@ namespace Goteo\Model\Call {
                         GROUP BY project.id
                         ORDER BY project.name ASC
                         ";
-
                 $query = static::query($sql, $values);
                 $items = $query->fetchAll(\PDO::FETCH_OBJ);
 
