@@ -46,39 +46,40 @@ $dash->add('dashboard-wallet-projects-suggestion', new Route(
         )
 ));
 
+// Projects editing
 $dash->add('dashboard-projects-analytics', new Route(
     '/projects/analytics',
-    array('_controller' => 'Goteo\Controller\DashboardController::analyticsAction',
+    array('_controller' => 'Goteo\Controller\Dashboard\DashboardProjectController::analyticsAction',
         )
 ));
 
 $dash->add('dashboard-projects-shared-materials', new Route(
     '/projects/shared-materials',
-    array('_controller' => 'Goteo\Controller\DashboardController::sharedMaterialsAction',
+    array('_controller' => 'Goteo\Controller\Dashboard\DashboardProjectController::sharedMaterialsAction',
         )
 ));
 
 $dash->add('dashboard-projects-save-material-url', new Route(
     '/projects/save-material-url',
-    array('_controller' => 'Goteo\Controller\DashboardController::saveMaterialUrlAction',
+    array('_controller' => 'Goteo\Controller\Dashboard\DashboardProjectController::saveMaterialUrlAction',
         )
 ));
 
 $dash->add('dashboard-projects-update-materials-table', new Route(
     '/projects/update-materials-table',
-    array('_controller' => 'Goteo\Controller\DashboardController::updateMaterialsTableAction',
+    array('_controller' => 'Goteo\Controller\Dashboard\DashboardProjectController::updateMaterialsTableAction',
         )
 ));
 
 $dash->add('dashboard-projects-icon-licenses', new Route(
     '/projects/icon-licenses',
-    array('_controller' => 'Goteo\Controller\DashboardController::getLicensesIconAction',
+    array('_controller' => 'Goteo\Controller\Dashboard\DashboardProjectController::getLicensesIconAction',
         )
 ));
 
 $dash->add('dashboard-projects-save-new-material', new Route(
     '/projects/save-new-material',
-    array('_controller' => 'Goteo\Controller\DashboardController::saveNewMaterialAction',
+    array('_controller' => 'Goteo\Controller\Dashboard\DashboardProjectController::saveNewMaterialAction',
         )
 ));
 
