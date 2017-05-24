@@ -18,6 +18,7 @@ use Goteo\Application\View;
 use Goteo\Model\Project;
 use Goteo\Model\User;
 use Goteo\Model\User\Interest;
+use Goteo\Model\Page;
 
 class DashboardController extends \Goteo\Core\Controller {
 
@@ -33,7 +34,8 @@ class DashboardController extends \Goteo\Core\Controller {
         $projects = Project::ofmine($user->id, false, 0, 3);
         $projects_total = Project::ofmine($user->id, false, 0, 0, true);
         // proyectos que cofinancio
-        $invested = User::invested($user->id, false);
+        $invested = User::invested($user->id, false, 0, 3);
+        $invested_total = User::invested($user->id, false, 0, 0, true);
         //proyectos que coinciden con mis intereses
         $favourite = Project::favouriteCategories($user->id, 0, 3);
         if($favourite) {
@@ -46,10 +48,14 @@ class DashboardController extends \Goteo\Core\Controller {
 
         $interests = Interest::getAll();
 
+        $page = Page::get('dashboard');
+
         return $this->viewResponse('dashboard/activity', [
+            'message' => str_replace('%USER_NAME%', $user->name, $page->parseContent()),
             'projects' => $projects,
             'projects_total' => $projects_total,
             'invested' => $invested,
+            'invested_total' => $invested_total,
             'interests' => $interests,
             'user_interests' => $user->interests,
             'favourite' => $favourite,

@@ -1895,6 +1895,25 @@ class User extends \Goteo\Core\Model {
             $sqlFilter = " AND project.status > 2";
         }
 
+        if($count) {
+            $sql = "
+            SELECT COUNT(project.id) FROM project
+            INNER JOIN invest
+                ON project.id = invest.project
+                AND invest.user = :user
+                AND invest.status IN ('0', '1', '3', '4')
+            INNER JOIN user
+                ON user.id = project.owner
+            WHERE project.status < 7
+            $sqlFilter
+            ";
+            return (int) self::query($sql, [':user' => $user])->fetchColumn();
+        }
+
+        if($limit) {
+            $sql_limit = ' LIMIT ' . (int)$offset . ','. (int)$limit;
+        }
+
         $sql = "
             SELECT
                 project.id as project,
@@ -1936,9 +1955,8 @@ class User extends \Goteo\Core\Model {
             WHERE project.status < 7
             $sqlFilter
             ORDER BY  project.status ASC, project.created DESC
+            $sql_limit
             ";
-
-        $sql .= "LIMIT 12";
 
         if ($debug) {
             echo \trace($values);

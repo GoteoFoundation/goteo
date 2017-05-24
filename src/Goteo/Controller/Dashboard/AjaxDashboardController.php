@@ -94,5 +94,30 @@ class AjaxDashboardController extends \Goteo\Core\Controller {
 
     }
 
+    /**
+     * User's invested projects
+     */
+    public function projectsInvestedAction(Request $request)
+    {
+
+        $offset = (int)$request->query->get('offset');
+        $limit = (int)$request->query->get('limit');
+        if(empty($limit)) $limit = 6;
+
+        $userId = Session::getUserId();
+
+        //proyectos que coinciden con mis intereses
+        $projects = User::invested($userId, false, $offset, $limit);
+        $total = User::invested($userId, false, 0, 0, true);
+
+        return $this->jsonResponse([
+            'total' => $total,
+            'offset' => $offset,
+            'limit' => $limit,
+            'html' => View::render( 'dashboard/partials/projects_widgets_list', ['projects' => $projects] )
+        ]);
+
+    }
+
 
 }

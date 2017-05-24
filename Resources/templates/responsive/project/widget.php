@@ -1,24 +1,22 @@
 <?php
 use Goteo\Library\Check;
 
-$project=$this->project;
+$project = $this->project;
 
 $percentage= $this->project->mincost ? floor(($this->project->amount/$this->project->mincost)*100) : 0;
-$status=$project->status;
+$status = $project->status;
 
 $date_created = $project->created;
 $date_updated = $project->updated;
 $date_success = $project->success;
 $date_published = $project->published;
 
-$date_closed  = $project->closed;
+$date_closed = $project->closed;
 
 $days       = $project->days;
 $days_round1 = $project->days_round1;
 $days_total = $project->days_total;
 $round      = $project->round;
-
-
 
 if ($status == 3)
 { // en campaña
@@ -40,7 +38,7 @@ if ($status == 3)
         }
     }
 $days_left.=' '.$this->text('regular-days');
-$text=strtolower($this->text('project-view-metter-days'));
+$text = strtolower($this->text('project-view-metter-days'));
 
 }
 
@@ -66,8 +64,8 @@ elseif (!empty($status)) {
            $date = $date_closed;
             break;
     }
-    $text=strtolower($this->text($text));
-    $days_left=date('d/m/Y', strtotime($date));
+    $text = strtolower($this->text($text));
+    $days_left = date('d/m/Y', strtotime($date));
 }
 
 ?>
@@ -94,13 +92,13 @@ elseif (!empty($status)) {
         <?php if($project->called): ?>
         <?php //amout depending on the call configurating
             if (!empty($project->called->rawmaxproj))
-                $call_amount_rest=$project->called->rawmaxproj;
+                $call_amount_rest = $project->called->rawmaxproj;
             elseif(!empty($project->called->maxproj))
-                $call_amount_rest=$project->called->maxproj;
+                $call_amount_rest = $project->called->maxproj;
             else
-                $call_amount_rest=$project->called->rest;
+                $call_amount_rest = $project->called->rest;
 
-            $project_drop_rest=$call_amount_rest-$project->amount_call;
+            $project_drop_rest = $call_amount_rest-$project->amount_call;
         ?>
         <div class="call-amount">
 
@@ -132,5 +130,21 @@ elseif (!empty($status)) {
                 <div class="data-label"><?= $text ?></div>
             </li>
     </ul>
+
+
+    <?php if($this->admin): ?>
+    <div class="project-widget-admin">
+        <div class="project-widget-admin-panel">
+            <div class="btn-group">
+                <a class="btn btn-default" href="/dashboard/projects/summary/select?project=<?= $project->id ?>"><i class="fa fa-eye"></i> <?= $this->text('dashboard-menu-activity-summary') ?></a>
+            </div>
+            <div class="btn-group">
+                <a class="btn btn-default" href="/project/edit/<?= $project->id ?>"><i class="fa fa-edit"></i> <?= $this->text('regular-edit') ?></a>
+                <a class="btn btn-default" href="/project/<?= $project->id ?>" target="_blank"><i class="fa fa-external-link"></i> <?= $this->text('regular-preview') ?></a>
+            </div>
+        </div>
+    </div>
+    <?php endif ?>
+
 </div>
 

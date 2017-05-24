@@ -61,8 +61,8 @@ namespace Goteo\Controller\Dashboard {
 
             try {
                 // si está seleccionando otro proyecto
-                if ( $action == 'select' && !empty($_POST['project']) ) {
-                    $_SESSION['project'] = $_POST['project'];
+                if ( $action == 'select' && !empty($_REQUEST['project']) ) {
+                    $_SESSION['project'] = $_REQUEST['project'];
                     throw new Redirection('/dashboard/projects/'.$option);
 
                 } elseif ( !empty($_SESSION['project']) ) {

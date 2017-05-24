@@ -1408,6 +1408,9 @@ div.new-material-success{
 
 
 /*Project widget */
+.project-widget {
+    position: relative;
+}
 
 .project-widget a.img-link{
 	position: relative;
@@ -1507,6 +1510,29 @@ div.new-material-success{
 
 .project-widget ul li .data-label{
 	color:#979797 !important;
+}
+
+.project-widget .project-widget-admin {
+    position: absolute;
+    top:0;
+    left:0;
+    width: 100%;
+    height:100%;
+    background: rgba(0,0,0,0.8);
+    display:none;
+}
+.project-widget:hover .project-widget-admin {
+    display:block;
+}
+
+.project-widget-admin-panel {
+    padding:20px;
+    position: absolute;
+    top:0;
+    left:0;
+}
+.project-widget-admin-panel .btn-group {
+    margin:10px 0;
 }
 
 .projects-container .interests{
