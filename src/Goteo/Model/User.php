@@ -128,6 +128,11 @@ class User extends \Goteo\Core\Model {
                 $data[':location'] = $this->location;
                 $data[':email'] = $this->email;
                 $data[':token'] = $token = md5(uniqid());
+                // TODO: Do not save password here
+                // This can reencode passwords if Password library estimates
+                // a password is no longer secure
+                // use ->setPassword() instead
+                // To be removed when profile & register forms uses it
                 // Check if password is already encoded
                 if ($this->password && !in_array('password', $skip_validations)) {
                     $pass = new Password($this->password);
