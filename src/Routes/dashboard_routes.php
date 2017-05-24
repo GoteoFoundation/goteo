@@ -42,46 +42,46 @@ $dash->add('dashboard-wallet', new Route(
 ));
 
 // AJAX utils
-$dash->add('dashboard-wallet-projects-suggestion', new Route(
-    '/ajax/projects-suggestion',
-    array('_controller' => 'Goteo\Controller\DashboardController::projectsSuggestionAction',
+$dash->add('dashboard-ajax-projects-interests', new Route(
+    '/ajax/projects/interests',
+    array('_controller' => 'Goteo\Controller\Dashboard\AjaxDashboardController::projectsInterestsAction',
         )
 ));
 
 // Projects editing
 $dash->add('dashboard-projects-analytics', new Route(
     '/projects/analytics',
-    array('_controller' => 'Goteo\Controller\Dashboard\DashboardProjectController::analyticsAction',
+    array('_controller' => 'Goteo\Controller\Dashboard\ProjectDashboardController::analyticsAction',
         )
 ));
 
 $dash->add('dashboard-projects-shared-materials', new Route(
     '/projects/shared-materials',
-    array('_controller' => 'Goteo\Controller\Dashboard\DashboardProjectController::sharedMaterialsAction',
+    array('_controller' => 'Goteo\Controller\Dashboard\ProjectDashboardController::sharedMaterialsAction',
         )
 ));
 
 $dash->add('dashboard-projects-save-material-url', new Route(
     '/projects/save-material-url',
-    array('_controller' => 'Goteo\Controller\Dashboard\DashboardProjectController::saveMaterialUrlAction',
+    array('_controller' => 'Goteo\Controller\Dashboard\ProjectDashboardController::saveMaterialUrlAction',
         )
 ));
 
 $dash->add('dashboard-projects-update-materials-table', new Route(
     '/projects/update-materials-table',
-    array('_controller' => 'Goteo\Controller\Dashboard\DashboardProjectController::updateMaterialsTableAction',
+    array('_controller' => 'Goteo\Controller\Dashboard\ProjectDashboardController::updateMaterialsTableAction',
         )
 ));
 
 $dash->add('dashboard-projects-icon-licenses', new Route(
     '/projects/icon-licenses',
-    array('_controller' => 'Goteo\Controller\Dashboard\DashboardProjectController::getLicensesIconAction',
+    array('_controller' => 'Goteo\Controller\Dashboard\ProjectDashboardController::getLicensesIconAction',
         )
 ));
 
 $dash->add('dashboard-projects-save-new-material', new Route(
     '/projects/save-new-material',
-    array('_controller' => 'Goteo\Controller\Dashboard\DashboardProjectController::saveNewMaterialAction',
+    array('_controller' => 'Goteo\Controller\Dashboard\ProjectDashboardController::saveNewMaterialAction',
         )
 ));
 

@@ -118,7 +118,7 @@ class DashboardController extends \Goteo\Core\Controller {
             unset($data['interests']);
             unset($data['user_interests']);
         }
-        return $this->viewResponse( 'dashboard/partials/projects_suggestion', $data );
+        return $this->viewResponse( 'dashboard/partials/projects_interests', $data );
     }
 
 

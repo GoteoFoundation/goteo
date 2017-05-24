@@ -119,12 +119,13 @@ class DashboardProjectController extends \Goteo\Core\Controller {
                 // Enviar correo informativo a los asesores del proyecto.
                 $project_obj = Project::getMini($project_id);
 
-                //Añadir siempre a Olivier.
+                // TODO: arreglar esta chapuza..
+                // Añadir siempre a Olivier.
                 if (!in_array('olivier', array_keys($project_obj->getConsultants()))) {
                     $project_obj->consultants['olivier'] = 'Olivier Schulbaum';
                 }
 
-                //Añadir siempre a Manuela.
+                // Añadir siempre a Manuela.
                 if (!in_array('lamanuf', array_keys($project_obj->getConsultants()))) {
                     $project_obj->consultants['lamanuf'] = 'Manuela Frudà';
                 }

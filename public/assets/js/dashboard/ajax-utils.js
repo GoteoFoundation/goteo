@@ -30,7 +30,7 @@ $(function(){
         var id = $(this).attr('id');
         var $parent = $(this).closest('.auto-update-projects-interests');
         $.ajax({
-            url: "/dashboard/ajax/projects-suggestion",
+            url: "/dashboard/ajax/projects/interests",
             data: { 'id' : id, 'value' : value  },
             type: 'post',
             success: function(html) {
@@ -44,7 +44,7 @@ $(function(){
         var $parent = $(this).closest('.auto-update-projects-interests');
         var total = $parent.find('.widget-element').length;
         $(this).remove();
-        $.get('/dashboard/ajax/projects-suggestion', {offset:total, 'show': 'projects'}, function(html) {
+        $.get('/dashboard/ajax/projects/interests', {offset:total, 'show': 'projects'}, function(html) {
             $parent.contents('.projects-container').append(html);
         });
     });

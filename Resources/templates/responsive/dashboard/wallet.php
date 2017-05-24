@@ -30,7 +30,7 @@
 
 	<div class="container general-dashboard" id="projects-container">
         <h2><?= $this->text('profile-suggest-projects-interest') ?></h2>
-		<?= $this->insert('dashboard/partials/projects_suggestion.php', [
+		<?= $this->insert('dashboard/partials/projects_interests.php', [
             'projects' => $this->projects_suggestion,
             'interests' => $this->interests,
             'autoUpdate' => true,
