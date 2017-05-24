@@ -1,10 +1,5 @@
 
-<?php if($this->interests || $this->projects): ?>
-<div class="<?= $this->autoUpdate ? 'auto-update-projects-interests' : '' ?>">
-    <h2><?= $this->text('profile-suggest-projects-interest') ?></h2>
-<?php else: return ?>
-
-<?php endif ?>
+<?php if($this->autoUpdate): ?><div class="auto-update-projects-interests"><?php endif ?>
 
 <?php if($this->interests): ?>
     <div class="row interests spacer">
@@ -21,9 +16,9 @@
 
 
 <?php if($this->projects): ?>
-    <div class="row spacer">
+    <div class="row spacer projects-container">
         <?php foreach ($this->projects as $project) : ?>
-              <div class="col-sm-6 col-md-4 col-xs-12 spacer">
+              <div class="col-sm-6 col-md-4 col-xs-12 spacer widget-element">
                 <?= $this->insert('project/widget.php', ['project' => $project]) ?>
               </div>
         <?php endforeach ?>
@@ -38,4 +33,4 @@
     <?php endif ?>
 <?php endif ?>
 
-</div>
+<?php if($this->autoUpdate): ?></div><?php endif ?>

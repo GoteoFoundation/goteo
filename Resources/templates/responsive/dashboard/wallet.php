@@ -29,10 +29,12 @@
 	<?php //if($this->projects_suggestion): ?>
 
 	<div class="container general-dashboard" id="projects-container">
+        <h2><?= $this->text('profile-suggest-projects-interest') ?></h2>
 		<?= $this->insert('dashboard/partials/projects_suggestion.php', [
             'projects' => $this->projects_suggestion,
             'interests' => $this->interests,
-            'autoUpdate' => true
+            'autoUpdate' => true,
+            'showMore' => $this->projects_suggestion_total > count($this->projects_suggestion)
             ]) ?>
 	</div>
 

@@ -1339,6 +1339,11 @@ div.row.general-dashboard, div.container.general-dashboard{
 	border-radius: 7px;
 	margin-bottom: 40px;
 }
+.general-dashboard div.row.more-projects-button {
+    display: flex;
+    justify-content: center;
+    margin-top: 40px;
+}
 
 div.row.user-pool div.user-pool-info div.extra-info{
 	margin-left: 2px;

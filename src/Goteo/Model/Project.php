@@ -2640,7 +2640,7 @@ namespace Goteo\Model {
 
             if($limit)
             {
-                $sql_limit = ' LIMIT '.$limit;
+                $sql_limit = ' LIMIT ' . (int)$offset . ','. (int)$limit;
             }
 
 
