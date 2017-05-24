@@ -148,6 +148,7 @@ regular-weeks: weeks
 regular-yes: 'Yes'
 regular-description: 'Description'
 regular-url: 'URL'
+regular-load-more: 'Load more'
 session-about-to-expire: 'Your session will expire in 10 Minutes, do you want to reload?'
 session-expired: 'Your session has expired'
 stories-user-project: '%s, from the project: %s'

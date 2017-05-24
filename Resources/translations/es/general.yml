@@ -182,6 +182,7 @@ regular-template: Plantilla
 regular-matchfunding: 'Match funding'
 regular-recent-activity: Actividad reciente
 regular-message-clipboard-fail: 'Selecciona y copia este enlace'
+regular-load-more: 'Cargar más'
 session-about-to-expire: 'Tu sesión expirará en 10 minutos. ¿Quieres recargar la página para renovarla?'
 session-expired: 'Tu sesión en goteo ha expirado!'
 spread-about: 'Texto spread-about'

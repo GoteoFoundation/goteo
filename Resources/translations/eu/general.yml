@@ -118,6 +118,7 @@ regular-view_project: 'Proiektua ikusi'
 regular-web: Webgunea
 regular-weeks: asteak
 regular-yes: Bai
+regular-load-more: 'Gehiago kargatu'
 tooltip-dashboard-user-access_data: 'Hauexek dira zure sartzeko oraingo datuak. Aldatu ahal den datu bakarra, sartzeko izena da.'
 tooltip-dashboard-user-change_email: 'Hemen Goteo-n sartzeko erabiltzen duzun posta elektroniko helbidea aldatu dezakezu.'
 tooltip-dashboard-user-change_password: 'Hemen Goteo-n sartzeko erabiltzen duzun pasahitza aldatu dezakezu.'

@@ -1364,7 +1364,7 @@ namespace Goteo\Model {
                 $values[':id'] = $this->id;
 
                 $sql = "UPDATE project SET " . $set . " WHERE id = :id";
-                
+
                 if (!self::query($sql, $values)) {
                     $errors[] = $sql . '<pre>' . print_r($values, true) . '</pre>';
                     $fail = true;
@@ -2600,7 +2600,7 @@ namespace Goteo\Model {
          * Lista de proyectos que tienen las categorias preferidas de un usuario
          * @return: array of Project
          */
-        public static function favouriteCategories($user, $limit=false, $published = false)
+        public static function favouriteCategories($user, $offset = 0, $limit=false, $count = false)
         {
             $lang = Lang::current();
             $projects = array();
@@ -2620,6 +2620,23 @@ namespace Goteo\Model {
 
 
             $sqlFilter = " AND project.status = 3";
+
+            if($count) {
+                $sql = "
+                SELECT COUNT(project.id) FROM project
+                INNER JOIN user ON user.id = project.owner
+                WHERE project.id IN (
+                    SELECT project
+                    FROM project_category
+                    WHERE category IN (
+                        SELECT interest
+                            FROM user_interest
+                        WHERE user = :user
+                    ))
+                $sqlFilter
+                ";
+                return (int) self::query($sql, [':user' => $user])->fetchColumn();
+            }
 
             if($limit)
             {
@@ -3112,7 +3129,7 @@ namespace Goteo\Model {
             $where = "project.id != ''
                       $not_null_date_publishing
                       $sqlFilter
-                      $sqlOrder";                
+                      $sqlOrder";
 
             if($count) {
                 // Return count

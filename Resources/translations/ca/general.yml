@@ -148,6 +148,7 @@ regular-weeks: setmanes
 regular-yes: Sí
 regular-description: 'Descripció'
 regular-url: 'URL'
+regular-load-more: 'Carregar-ne més'
 session-about-to-expire: 'Tu sesión expirará en 10 minutos. ¿Quieres recargar la página para renovarla?'
 session-expired: 'Tu sesión en goteo ha expirado!'
 stories-user-project: "%s, del projecte: %s\r\n"

@@ -10,14 +10,15 @@
 
 use Symfony\Component\Routing\Route;
 use Symfony\Component\Routing\RouteCollection;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 
 $dash = new RouteCollection();
 
-// $dash->add('dashboard-activity', new Route(
-//     '/activity',
-//     array('_controller' => 'Goteo\Controller\DashboardController::activityAction',
-//         )
-// ));
+$dash->add('dashboard-activity', new Route(
+    '/activity',
+    array('_controller' => 'Goteo\Controller\DashboardController::activityAction',
+        )
+));
 // Old route Redirection
 $dash->add('dashboard-activity-sumary', new Route(
     '/activity/summary',
@@ -40,8 +41,9 @@ $dash->add('dashboard-wallet', new Route(
         )
 ));
 
+// AJAX utils
 $dash->add('dashboard-wallet-projects-suggestion', new Route(
-    '/wallet/projects-suggestion',
+    '/ajax/projects-suggestion',
     array('_controller' => 'Goteo\Controller\DashboardController::projectsSuggestionAction',
         )
 ));

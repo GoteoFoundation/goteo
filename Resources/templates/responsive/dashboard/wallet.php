@@ -29,7 +29,11 @@
 	<?php //if($this->projects_suggestion): ?>
 
 	<div class="container general-dashboard" id="projects-container">
-		<?= $this->insert('dashboard/partials/projects_suggestion.php', ['projects_suggestion' => $this->projects_suggestion, 'interests' => $this->interests]) ?>
+		<?= $this->insert('dashboard/partials/projects_suggestion.php', [
+            'projects' => $this->projects_suggestion,
+            'interests' => $this->interests,
+            'autoUpdate' => true
+            ]) ?>
 	</div>
 
 <!-- Modal -->
@@ -48,39 +52,3 @@
 </div>
 <?php $this->replace() ?>
 
-<?php $this->section('footer') ?>
-
-<script type="text/javascript">
-// @license magnet:?xt=urn:btih:0b31508aeb0634b347b8270c7bee4d411b5d4109&dn=agpl-3.0.txt
-
-$(function(){
-    var _update_ajax_projects = function(value, id) {
-
-        $.ajax({
-            url: "/dashboard/wallet/projects-suggestion",
-            data: { 'id' : id, 'value' : value  },
-            type: 'post',
-            success: function(result){
-                //alert(result);
-                $("#projects-container").html(result);
-            }
-        });
-   };
-
-    $("#projects-container").on('change', ".interest", function (e) {
-        var value=0;
-        if ($(this).is(":checked"))
-        {
-            value=1;
-        }
-        var id=$(this).attr('id');
-
-        _update_ajax_projects(value, id);
-    });
-
-});
-
-// @license-end
-</script>
-
-<?php $this->append() ?>

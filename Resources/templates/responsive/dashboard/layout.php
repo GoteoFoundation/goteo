@@ -18,3 +18,10 @@ $this->section('content');
     </div>
 
 <?php $this->replace() ?>
+
+
+<?php $this->section('footer') ?>
+
+    <script type="text/javascript" src="<?= SRC_URL ?>/assets/js/dashboard/ajax-utils.js"></script>
+
+<?php $this->append() ?>

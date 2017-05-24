@@ -16,6 +16,7 @@ use Goteo\Application\Session;
 use Goteo\Application\Config;
 use Goteo\Application\View;
 use Goteo\Model\Project;
+use Goteo\Model\User;
 use Goteo\Model\User\Interest;
 
 class DashboardController extends \Goteo\Core\Controller {
@@ -26,7 +27,26 @@ class DashboardController extends \Goteo\Core\Controller {
     }
 
     public function activityAction(Request $request) {
-        return $this->viewResponse('dashboard/activity');
+                $user = Session::getUser();
+
+        // mis proyectos
+        $projects = Project::ofmine($user->id);
+        // proyectos que cofinancio
+        $invested = User::invested($user->id, false);
+        //proyectos que coinciden con mis intereses
+        $favourite = Project::favouriteCategories($user->id, 0, 6);
+        $total_fav = Project::favouriteCategories($user->id, 0, 0, true);
+
+        $interests = Interest::getAll();
+
+        return $this->viewResponse('dashboard/activity', [
+            'projects' => $projects,
+            'invested' => $invested,
+            'interests' => $interests,
+            'user_interests' => $user->interests,
+            'favourite' => $favourite,
+            'favourite_total' => $total_fav
+        ]);
     }
 
     /**
@@ -43,12 +63,19 @@ class DashboardController extends \Goteo\Core\Controller {
         $interests = Interest::getAll();
 
         //proyectos que coinciden con mis intereses
-        $projects_suggestion = Project::favouriteCategories($user->id, 6);
+        $projects_suggestion = Project::favouriteCategories($user->id, 0, 6);
 
         if(empty($projects_suggestion))
             $projects_suggestion=Project::published('popular', $id, 0, 6);
 
-        return $this->viewResponse('dashboard/wallet', ['pool' => $pool, 'projects_suggestion' => $projects_suggestion, 'user_interests' => $user->interests, 'interests' => $interests, 'popular_projects' => $popular_projects, 'section' => 'pool' ]);
+        return $this->viewResponse('dashboard/wallet', [
+            'pool' => $pool,
+            'projects_suggestion' => $projects_suggestion,
+            'user_interests' => $user->interests,
+            'interests' => $interests,
+            'popular_projects' => $popular_projects,
+            'section' => 'pool' ]
+        );
 
     }
 
@@ -79,15 +106,14 @@ class DashboardController extends \Goteo\Core\Controller {
         $user->save();
 
         //proyectos que coinciden con mis intereses
-        $projects_suggestion = Project::favouriteCategories($user->id, 6);
+        $projects_suggestion = Project::favouriteCategories($user->id, 0, 6);
 
         return $this->viewResponse(
                 'dashboard/partials/projects_suggestion',
-                [   'user' => $user,
+                [
                     'interests' => $interests,
                     'user_interests' => $user_interests,
-                    'projects_suggestion' => $projects_suggestion,
-                    'return' => 'return'
+                    'projects' => $projects_suggestion
                 ]
         );
     }
