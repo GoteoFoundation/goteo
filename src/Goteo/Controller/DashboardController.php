@@ -33,6 +33,10 @@ class DashboardController extends \Goteo\Core\Controller {
         View::setTheme('responsive');
     }
 
+    public function activityAction(Request $request) {
+        return $this->viewResponse('dashboard/activity');
+    }
+
     /**
      * Virtual wallet
      */
@@ -158,7 +162,7 @@ class DashboardController extends \Goteo\Core\Controller {
     {
         if($request->isXmlHttpRequest()) {
 
-            if ($request->isMethod('post')) 
+            if ($request->isMethod('post'))
             {
                 $url = $request->request->get('url');
                 $reward_id= $request->request->get('reward_id');
@@ -194,7 +198,7 @@ class DashboardController extends \Goteo\Core\Controller {
                 if (!in_array('lamanuf', array_keys($project_obj->getConsultants()))) {
                     $project_obj->consultants['lamanuf'] = 'Manuela Frudà';
                 }
-                
+
                 $project_obj->whodidit = $who;
                 $project_obj->whorole = $rol;
                 UsersSend::toConsultants('rewardfulfilled', $project_obj);
@@ -215,7 +219,7 @@ class DashboardController extends \Goteo\Core\Controller {
     {
         if($request->isXmlHttpRequest()) {
 
-            if ($request->isMethod('post')) 
+            if ($request->isMethod('post'))
             {
                 $project = $request->request->get('project');
                 $material = $request->request->get('material');
@@ -253,7 +257,7 @@ class DashboardController extends \Goteo\Core\Controller {
     {
         if($request->isXmlHttpRequest()) {
 
-            if ($request->isMethod('post')) 
+            if ($request->isMethod('post'))
             {
                 $licenses_list = Project\Reward::licenses();
                 $project_id = $request->request->get('project_id');
@@ -280,7 +284,7 @@ class DashboardController extends \Goteo\Core\Controller {
     {
         if($request->isXmlHttpRequest()) {
 
-            if ($request->isMethod('post')) 
+            if ($request->isMethod('post'))
             {
                 $icon = $request->request->get('icon');
                 $licenses=License::getAll($icon);
