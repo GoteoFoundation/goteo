@@ -17,7 +17,7 @@ if($project->gallery[0])
 $this->layout('layout', [
     'bodyClass' => 'project',
     'title' => $this->project->name,
-    'meta_description' => $this->project->subtitle.'1',
+    'meta_description' => $this->project->subtitle,
     'tw_image' => $meta_img,
     'og_image' => $meta_img
     ]);

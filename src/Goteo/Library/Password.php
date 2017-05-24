@@ -88,6 +88,12 @@ class Password {
         return $encoded;
     }
 
+    /**
+     * Verifies a password is using Blowfish algorithm
+     */
+    static function isBlowfish($str) {
+        return strpos($str, '$2a$') === 0;
+    }
     /*
      * Verifies if a string is a SHA-1
      */
@@ -100,4 +106,5 @@ class Password {
 
         return strpos($str, '$1$') === 0;
     }
+
 }
