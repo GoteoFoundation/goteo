@@ -1541,6 +1541,16 @@ div.new-material-success{
 	border-radius: 10px;
 }
 
+.media-project {
+    padding: 10px;
+    margin-bottom: 10px;
+    // background: #f0f0f0;
+    // // border-bottom: 1px solid #D9D9DE;
+    // color: #B3B2B2;
+    // border-radius: 5px;
+    // overflow: hidden;
+    // padding-bottom: 20px;
+}
 
 @media (max-width: 480px) {
 

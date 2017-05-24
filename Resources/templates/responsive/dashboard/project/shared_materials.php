@@ -1,50 +1,40 @@
-<?php $this->layout('dashboard/layout') ?>
-<?php $this->section('dashboard-content') ?>
-    <div class="container general-dashboard spacer">
-        <h2><?= $this->text('project-menu-home') ?></h2>
-        <?php if($this->projects): ?>
-        <form id="selector-form" name="selector_form" action="<?php echo '/dashboard/projects/'.$this->section.'/select'; ?>" method="post">
-            <select id="selector" name="project" onchange="document.getElementById('selector-form').submit();">
-            <?php foreach ($this->projects as $project) : ?>
-                <option value="<?php echo $project->id; ?>"<?php if ($project->id == $_SESSION['project']) echo ' selected="selected"'; ?> ><?php echo $project->name; ?></option>
-            <?php endforeach; ?>
-            </select>
-        </form>
-        <?php else : ?>
-        <p><?= $this->text('dashboard-no-projects') ?></p>
-        <?php endif; ?>
-    </div>
+<?php $this->layout('dashboard/project/layout') ?>
 
-    <div class="container general-dashboard">
-        <h1><?= $this->text('project-share-materials') ?></h1>
-        <?php if($this->project->status==4||$this->project->status==5): ?>
+<?php $this->section('dashboard-project-content') ?>
+
+    <!-- <h1><?= $this->text('project-share-materials') ?></h1> -->
+
+    <?php if(1||$this->project->status==4 || $this->project->status==5): ?>
+
         <div class="row spacer">
             <div class="col-xs-6 col-sm-3 col-md-2" id="button-container" data-toggle="collapse" data-target="#new-material-form">
                 <button id="add-new-material" class="btn btn-block side-pink"><span class="glyphicon glyphicon-plus"></span> <?= $this->text('dashboard-add-new-share-material') ?></button>
             </div>
         </div>
-        <?php endif; ?>
-        <div class="row">
-            <div class="col-md-6">
-                <div id="alert-success" class="new-material-success alert alert-success" style="display: none;">
-                  <strong><?= $this->text('dashboard-new-material-form-success') ?></strong> .
-                </div>
-                <?= $this->insert('dashboard/partials/shared_materials/new_material_form') ?>
+
+    <?php endif; ?>
+
+    <div class="row">
+        <div class="col-md-6">
+            <div id="alert-success" class="new-material-success alert alert-success" style="display: none;">
+              <strong><?= $this->text('dashboard-new-material-form-success') ?></strong> .
             </div>
-        <?php if($this->project->social_rewards): ?>
-        <div id="materials-table">
-        <?= $this->insert('dashboard/partials/shared_materials/materials_table.php') ?>
+            <?= $this->insert('dashboard/project/partials/materials/new_material_form') ?>
         </div>
-        <?php else: ?>
+
+    <?php if($this->project->social_rewards): ?>
+        <div id="materials-table">
+            <?= $this->insert('dashboard/project/partials/materials/materials_table') ?>
+        </div>
+    <?php else: ?>
         <h3><?= $this->text('project-no-share-material') ?></h3>
-        <?php endif; ?>
+    <?php endif; ?>
 
-    </div>
 
-<?= $this->insert('dashboard/partials/shared_materials/save_url_modal') ?>
-<?= $this->insert('dashboard/partials/shared_materials/save_url_modal_content') ?>
+    <?= $this->insert('dashboard/project/partials/materials/save_url_modal') ?>
+    <?= $this->insert('dashboard/project/partials/materials/save_url_modal_content') ?>
 
-   
+
 <?php $this->replace() ?>
 
 <?php $this->section('footer') ?>
@@ -58,7 +48,7 @@
         });
 
         var _update_material_table = function() {
-           
+
         //update table
             $.ajax({
                 url: "/dashboard/projects/update-materials-table",
@@ -98,13 +88,13 @@
 
             $.ajax({
                 url: "/dashboard/projects/save-new-material",
-                data: { 'project' : project, 
-                        'material' : material, 
-                        'description' : description, 
-                        'icon' : icon, 
-                        'license' : license, 
-                        'project' : project, 
-                        'url' : url 
+                data: { 'project' : project,
+                        'material' : material,
+                        'description' : description,
+                        'icon' : icon,
+                        'license' : license,
+                        'project' : project,
+                        'url' : url
                     },
                 type: 'post',
                 success: function(result){
@@ -136,11 +126,11 @@
         });
 
         $('#UrlModal').on('hidden.bs.modal', function () {
-            $("#modal-content").html($("#modal-content-reset").html());    
+            $("#modal-content").html($("#modal-content-reset").html());
         })
 
         $("#new-material-form").on('change', '#new-material-icon', function(){
-            var icon=$("#new-material-icon").val();    
+            var icon=$("#new-material-icon").val();
             if(icon=="service"||icon=="other")
                 $("#license-group").hide();
             else

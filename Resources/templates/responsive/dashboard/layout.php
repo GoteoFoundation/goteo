@@ -12,7 +12,6 @@ $this->section('content');
 
   <?= $this->supply('admin-menu', $this->insert('dashboard/partials/menu')) ?>
 
-
     <div class="container">
       <?= $this->supply('dashboard-content') ?>
     </div>

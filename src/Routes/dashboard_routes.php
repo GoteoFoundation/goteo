@@ -27,13 +27,6 @@ $dash->add('dashboard-activity-sumary', new Route(
     })
 ));
 
-// Project image editing
-$dash->add('dashboard-project-edit-images', new Route(
-    '/project/{pid}/images',
-    array('_controller' => 'Goteo\Controller\DashboardController::walletAction',
-        )
-));
-
 // Virtual wallet
 $dash->add('dashboard-wallet', new Route(
     '/wallet',
@@ -59,17 +52,39 @@ $dash->add('dashboard-ajax-projects-invested', new Route(
 ));
 
 // Projects editing
-$dash->add('dashboard-projects-analytics', new Route(
-    '/projects/analytics',
-    array('_controller' => 'Goteo\Controller\Dashboard\ProjectDashboardController::analyticsAction',
+// Project image editing
+$dash->add('dashboard-project-images', new Route(
+    '/project/{pid}/images',
+    array('_controller' => 'Goteo\Controller\Dashboard\ProjectDashboardController::imagesAction',
         )
 ));
 
-$dash->add('dashboard-projects-shared-materials', new Route(
-    '/projects/shared-materials',
-    array('_controller' => 'Goteo\Controller\Dashboard\ProjectDashboardController::sharedMaterialsAction',
+$dash->add('dashboard-project-analytics', new Route(
+    '/project/{pid}/analytics',
+    array('_controller' => 'Goteo\Controller\Dashboard\ProjectDashboardController::analyticsAction',
         )
 ));
+// Route from menu
+$dash->add('dashboard-project-analytics-redirect', new Route(
+    '/projects/analytics',
+    array('_controller' => 'Goteo\Controller\Dashboard\ProjectDashboardController::analyticsAction',
+        'pid' => null
+        )
+));
+
+$dash->add('dashboard-project-materials', new Route(
+    '/project/{pid}/materials',
+    array('_controller' => 'Goteo\Controller\Dashboard\ProjectDashboardController::materialsAction',
+        )
+));
+// Route from menu
+$dash->add('dashboard-project-materials-redirect', new Route(
+    '/projects/materials',
+    array('_controller' => 'Goteo\Controller\Dashboard\ProjectDashboardController::materialsAction',
+        'pid' => null
+        )
+));
+
 
 $dash->add('dashboard-projects-save-material-url', new Route(
     '/projects/save-material-url',

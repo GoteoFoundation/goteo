@@ -136,13 +136,24 @@ elseif (!empty($status)) {
     <div class="project-widget-admin">
         <div class="project-widget-admin-panel">
             <div class="btn-group">
-                <a class="btn btn-default" href="/dashboard/projects/summary/select?project=<?= $project->id ?>"><i class="fa fa-eye"></i> <?= $this->text('dashboard-menu-activity-summary') ?></a>
+                <a class="btn btn-success" href="/dashboard/projects/summary/select?project=<?= $project->id ?>"><i class="fa fa-eye"></i> <?= $this->text('dashboard-menu-activity-summary') ?></a>
             </div>
         </div>
         <div class="project-widget-admin-panel">
             <div class="btn-group">
-                <a class="btn btn-default" href="/project/edit/<?= $project->id ?>"><i class="fa fa-edit"></i> <?= $this->text('regular-edit') ?></a>
+                <a class="btn btn-danger" href="/project/edit/<?= $project->id ?>"><i class="fa fa-edit"></i> <?= $this->text('regular-edit') ?></a>
                 <a class="btn btn-default" href="/project/<?= $project->id ?>" target="_blank"><i class="fa fa-external-link"></i> <?= $this->text('regular-preview') ?></a>
+            </div>
+        </div>
+        <div class="project-widget-admin-panel">
+            <div class="btn-group">
+                <a class="btn btn-danger" href="/dashboard/project/<?= $project->id ?>/images"><i class="fa fa-image"></i> <?= $this->text('images-main-header') ?></a>
+            </div>
+        </div>
+        <div class="project-widget-admin-panel">
+            <div class="btn-group">
+                <a class="btn btn-danger" href="/dashboard/project/<?= $project->id ?>/analytics"><i class="fa fa-pie-chart"></i> <?= $this->text('profile-fields-analytics-title') ?></a>
+                <a class="btn btn-danger" href="/dashboard/project/<?= $project->id ?>/materials"><i class="fa fa-beer"></i> <?= $this->text('project-share-materials') ?></a>
             </div>
         </div>
     </div>

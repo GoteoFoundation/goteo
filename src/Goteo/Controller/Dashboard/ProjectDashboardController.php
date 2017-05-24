@@ -11,6 +11,7 @@
 namespace Goteo\Controller\Dashboard;
 
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 
 use Goteo\Application\Session;
 use Goteo\Application\View;
@@ -21,25 +22,48 @@ use Goteo\Library\Text;
 use Goteo\Model\License;
 use Goteo\Console\UsersSend;
 use Goteo\Controller\Dashboard;
+use Goteo\Application\Exception\ModelException;
+use Goteo\Application\Exception\ControllerAccessDeniedException;
 
-
-class DashboardProjectController extends \Goteo\Core\Controller {
+class ProjectDashboardController extends \Goteo\Core\Controller {
+    protected $user;
 
     public function __construct() {
         // changing to a responsive theme here
         View::setTheme('responsive');
+        $this->user = Session::getUser();
+    }
+
+    protected function validateProject($pid = null, $section = 'summary') {
+
+        // Old Compatibility with session value
+        if(!$pid) {
+            $pid = Session::get('project');
+
+            // If empty project, get one of mine
+            list($project) = Project::ofmine($this->user->id, false, 0, 1);
+            if($project) {
+                $pid = $project->id;
+            }
+            if($pid) {
+                return $this->redirect("/dashboard/project/{$pid}/$section");
+            }
+        }
+        // Get project
+        $project = Project::get( $pid );
+        if(!$project instanceOf Project || !$project->userCanEdit($this->user)) {
+            throw new ControllerAccessDeniedException(Text::get('user-login-required-access'));
+        }
+        return $project;
     }
 
     /**
     * Analytics section
     */
-    public function analyticsAction(Request $request)
+    public function analyticsAction($pid = null, Request $request)
     {
-
-        $user = Session::getUser();
-
-        // Verify user projects and work project
-        list($project, $projects) = Dashboard\Projects::verifyProject($user, $action, $option);
+        $project = $this->validateProject($pid, 'analytics');
+        if($project instanceOf Response) return $project;
 
         if($request->isMethod('post')) {
             $project->analytics_id = $request->request->get('analytics_id');
@@ -51,37 +75,33 @@ class DashboardProjectController extends \Goteo\Core\Controller {
                 Message::error(Text::get('dashboard-project-analytics-fail'));
 
         }
+        // die("$pid {$project->id} {$project->name}");
 
-        return $this->viewResponse('dashboard/analytics',
-                                ['project' => $project,
-                                'projects' => $projects,
-                                'section' => 'analytics' ]
-                );
+        return $this->viewResponse('dashboard/project/analytics', [
+            'project' => $project,
+            'section' => 'analytics'
+            ]);
 
     }
 
     /**
      * Social commitment
      */
-    public function sharedMaterialsAction(Request $request)
+    public function materialsAction($pid = null, Request $request)
     {
 
-        $user = Session::getUser();
+        $project = $this->validateProject($pid, 'analytics');
+        if($project instanceOf Response) return $project;
+
         $licenses_list = Reward::licenses();
         $icons   = Reward::icons('social');
 
-        // Verify user projects and work project
-        list($project, $projects) = Dashboard\Projects::verifyProject($user, $action, $option);
-
-        return $this->viewResponse('dashboard/shared_materials',
-                [   'project' => $project,
-                    'projects' => $projects,
-                    'section' => 'commitment',
-                    'licenses_list' => $licenses_list,
-                    'icons' => $icons,
-                    'section' => 'shared-materials'
-                ]
-        );
+        return $this->viewResponse('dashboard/project/shared_materials', [
+           'project' => $project,
+            'licenses_list' => $licenses_list,
+            'icons' => $icons,
+            'section' => 'materials'
+            ]);
 
     }
 
@@ -135,7 +155,7 @@ class DashboardProjectController extends \Goteo\Core\Controller {
                 UsersSend::toConsultants('rewardfulfilled', $project_obj);
 
                 return $this->viewResponse(
-                    'dashboard/partials/shared_materials/save_url_modal_success'
+                    'dashboard/project/partials/shared_materials/save_url_modal_success'
                 );
             }
         }
@@ -173,7 +193,7 @@ class DashboardProjectController extends \Goteo\Core\Controller {
                 $reward->save();
 
                 return $this->viewResponse(
-                    'dashboard/partials/shared_materials/new_material_form'
+                    'dashboard/project/partials/shared_materials/new_material_form'
                 );
             }
         }
@@ -195,7 +215,7 @@ class DashboardProjectController extends \Goteo\Core\Controller {
                 $project=Project::get($project_id);
 
                 return $this->viewResponse(
-                    'dashboard/partials/shared_materials/materials_table',
+                    'dashboard/project/partials/shared_materials/materials_table',
                     [
                         'project' => $project,
                         'licenses_list' => $licenses_list
@@ -221,7 +241,7 @@ class DashboardProjectController extends \Goteo\Core\Controller {
                 $licenses=License::getAll($icon);
 
                 return $this->viewResponse(
-                    'dashboard/partials/shared_materials/license_options',
+                    'dashboard/project/partials/shared_materials/license_options',
                     ['licenses' => $licenses]
                 );
             }
