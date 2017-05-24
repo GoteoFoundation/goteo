@@ -58,6 +58,13 @@ $dash->add('dashboard-project-images', new Route(
     array('_controller' => 'Goteo\Controller\Dashboard\ProjectDashboardController::imagesAction',
         )
 ));
+// Route from menu (if exists)
+$dash->add('dashboard-project-images-redirect', new Route(
+    '/projects/images',
+    array('_controller' => 'Goteo\Controller\Dashboard\ProjectDashboardController::imagesAction',
+        'pid' => null
+        )
+));
 
 $dash->add('dashboard-project-analytics', new Route(
     '/project/{pid}/analytics',

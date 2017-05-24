@@ -57,6 +57,18 @@ class ProjectDashboardController extends \Goteo\Core\Controller {
         return $project;
     }
 
+    public function imagesAction($pid = null, Request $request)
+    {
+        $project = $this->validateProject($pid, 'images');
+        if($project instanceOf Response) return $project;
+
+        return $this->viewResponse('dashboard/project/images', [
+            'project' => $project,
+            'section' => 'images'
+            ]);
+
+    }
+
     /**
     * Analytics section
     */
