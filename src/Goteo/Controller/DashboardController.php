@@ -27,15 +27,21 @@ class DashboardController extends \Goteo\Core\Controller {
     }
 
     public function activityAction(Request $request) {
-                $user = Session::getUser();
+        $user = Session::getUser();
 
         // mis proyectos
         $projects = Project::ofmine($user->id);
         // proyectos que cofinancio
         $invested = User::invested($user->id, false);
         //proyectos que coinciden con mis intereses
-        $favourite = Project::favouriteCategories($user->id, 0, 6);
-        $total_fav = Project::favouriteCategories($user->id, 0, 0, true);
+        $favourite = Project::favouriteCategories($user->id, 0, 3);
+        if($favourite) {
+            $total_fav = Project::favouriteCategories($user->id, 0, 0, true);
+        } else {
+            $favourite = Project::published('popular', null, 0, 3);
+            $total_fav = Project::published('popular', null, 0, 0, true);
+        }
+
 
         $interests = Interest::getAll();
 
@@ -64,10 +70,13 @@ class DashboardController extends \Goteo\Core\Controller {
 
         //proyectos que coinciden con mis intereses
         $projects_suggestion = Project::favouriteCategories($user->id, 0, 6);
-        $total_fav = Project::favouriteCategories($user->id, 0, 0, true);
 
-        if(empty($projects_suggestion))
-            $projects_suggestion=Project::published('popular', $id, 0, 6);
+        if($projects_suggestion) {
+            $total_fav = Project::favouriteCategories($user->id, 0, 0, true);
+        } else {
+            $projects_suggestion = Project::published('popular', null, 0, 6);
+            $total_fav = Project::published('popular', null, 0, 0, true);
+        }
 
         return $this->viewResponse('dashboard/wallet', [
             'pool' => $pool,
@@ -80,46 +89,5 @@ class DashboardController extends \Goteo\Core\Controller {
         );
 
     }
-
-    /**
-     * Virtual wallet
-     */
-    public function projectsSuggestionAction(Request $request)
-    {
-
-        $offset = (int)$request->query->get('offset');
-        $show = $request->query->get('show');
-
-        $user = Session::getUser();
-
-        $interests = Interest::getAll();
-
-        if ($request->isMethod('post')) {
-            $interest = $request->request->get('id');
-            $value = $request->request->get('value');
-            if($value) {
-                $user->interests[$interest] = $interest;
-            } else {
-                unset($user->interests[$interest]);
-            }
-            $user->save();
-        }
-
-        //proyectos que coinciden con mis intereses
-        $projects_suggestion = Project::favouriteCategories($user->id, $offset, 6);
-        $total_fav = Project::favouriteCategories($user->id, 0, 0, true);
-        $data = [
-            'interests' => $interests,
-            'user_interests' => $user->interests,
-            'projects' => $projects_suggestion,
-            'showMore' => $total_fav > ($offset + @count($projects_suggestion)),
-        ];
-        if($show === 'projects') {
-            unset($data['interests']);
-            unset($data['user_interests']);
-        }
-        return $this->viewResponse( 'dashboard/partials/projects_interests', $data );
-    }
-
 
 }

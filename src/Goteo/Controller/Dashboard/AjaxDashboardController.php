@@ -27,7 +27,7 @@ class AjaxDashboardController extends \Goteo\Core\Controller {
     }
 
     /**
-     * Virtual wallet
+     * Projects suggestion by user interests (categories)
      */
     public function projectsInterestsAction(Request $request)
     {
@@ -51,13 +51,19 @@ class AjaxDashboardController extends \Goteo\Core\Controller {
         }
 
         //proyectos que coinciden con mis intereses
-        $projects_suggestion = Project::favouriteCategories($user->id, $offset, 6);
-        $total_fav = Project::favouriteCategories($user->id, 0, 0, true);
+        $favourite = Project::favouriteCategories($user->id, $offset, 6);
+        if($favourite) {
+            $total_fav = Project::favouriteCategories($user->id, 0, 0, true);
+        } else {
+            $favourite = Project::published('popular', null, $offset, 6);
+            $total_fav = Project::published('popular', null, 0, 0, true);
+        }
+
         $data = [
             'interests' => $interests,
             'user_interests' => $user->interests,
-            'projects' => $projects_suggestion,
-            'showMore' => $total_fav > ($offset + @count($projects_suggestion)),
+            'projects' => $favourite,
+            'showMore' => $total_fav > ($offset + @count($favourite)),
         ];
         if($show === 'projects') {
             unset($data['interests']);
