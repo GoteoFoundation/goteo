@@ -128,8 +128,12 @@ class User extends \Goteo\Core\Model {
                 $data[':location'] = $this->location;
                 $data[':email'] = $this->email;
                 $data[':token'] = $token = md5(uniqid());
-                if (!in_array('password', $skip_validations)) {
-                    $data[':password'] = Password::encode($this->password);
+                // Check if password is already encoded
+                if ($this->password && !in_array('password', $skip_validations)) {
+                    $pass = new Password($this->password);
+                    if(!$pass->isSecure()) {
+                       $data[':password'] = Password::encode($this->password);
+                    }
                 }
 
                 $data[':created'] = date('Y-m-d H:i:s');
