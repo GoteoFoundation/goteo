@@ -1509,7 +1509,7 @@ div.new-material-success{
 	color:#979797 !important;
 }
 
-#projects-container .interests{
+.projects-container .interests{
 	background-color: #DAE0E8;
 	margin:40px 1px;
 	padding: 3%;
@@ -1534,7 +1534,7 @@ div.new-material-success{
 		width: 100%;
 	}
 
-	#projects-container .interests{
+	.projects-container .interests{
 		font-size: 0.8em;
 		padding-top: 8%;
 		padding-bottom: 8%;

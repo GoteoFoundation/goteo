@@ -1874,7 +1874,7 @@ class User extends \Goteo\Core\Model {
     /*
                  * Lista de proyectos cofinanciados
     */
-    public static function invested($user, $publicOnly = true) {
+    public static function invested($user, $publicOnly = true, $offset = 0, $limit = 12, $count = false) {
         $debug = false;
         $lang = Lang::current();
         $projects = array();

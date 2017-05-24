@@ -25,27 +25,40 @@ for the JavaScript code in this page.
 
 $(function(){
 
-    $(".auto-update-projects-interests").on('change', ".interest", function (e) {
+    $(".auto-update-projects").on('change', ".interest", function (e) {
         var value = $(this).is(":checked") ? 1 : 0;
         var id = $(this).attr('id');
-        var $parent = $(this).closest('.auto-update-projects-interests');
-        $.ajax({
-            url: "/dashboard/ajax/projects/interests",
-            data: { 'id' : id, 'value' : value  },
-            type: 'post',
-            success: function(html) {
-                $parent.html(html);
+        var $parent = $(this).closest('.auto-update-projects');
+        var $button = $parent.find('.more-projects-button');
+        var url = $parent.data('url');
+        var limit = $parent.data('limit') || 6;
+
+        $.post(url + '?' + $.param({ limit: limit }), { 'id' : id, 'value' : value  }, function(result) {
+            if((result.offset + result.limit) >= result.total) {
+                $button.addClass('hidden');
+            } else {
+                $button.removeClass('hidden');
             }
+            $parent.contents('.elements-container').html(result.html);
         });
     });
 
-    $(".auto-update-projects-interests").on('click', ".more-projects-button", function (e) {
+    $(".auto-update-projects").on('click', ".more-projects-button", function (e) {
         e.preventDefault();
-        var $parent = $(this).closest('.auto-update-projects-interests');
-        var total = $parent.find('.widget-element').length;
-        $(this).remove();
-        $.get('/dashboard/ajax/projects/interests', {offset:total, 'show': 'projects'}, function(html) {
-            $parent.contents('.projects-container').append(html);
+        var $parent = $(this).closest('.auto-update-projects');
+        var $button = $parent.find('.more-projects-button');
+        var total_elements = $parent.find('.widget-element').length;
+        var url = $parent.data('url');
+        var total = $parent.data('total');
+        var limit = $parent.data('limit') || 6;
+
+        $.get(url, {offset:total_elements, limit: limit}, function(result) {
+            if((result.offset + result.limit) >= result.total) {
+                $button.addClass('hidden');
+            } else {
+                $button.removeClass('hidden');
+            }
+            $parent.contents('.elements-container').append(result.html);
         });
     });
 

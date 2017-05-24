@@ -33,7 +33,8 @@ class AjaxDashboardController extends \Goteo\Core\Controller {
     {
 
         $offset = (int)$request->query->get('offset');
-        $show = $request->query->get('show');
+        $limit = (int)$request->query->get('limit');
+        if(empty($limit)) $limit = 6;
 
         $user = Session::getUser();
 
@@ -51,25 +52,46 @@ class AjaxDashboardController extends \Goteo\Core\Controller {
         }
 
         //proyectos que coinciden con mis intereses
-        $favourite = Project::favouriteCategories($user->id, $offset, 6);
+        $favourite = Project::favouriteCategories($user->id, $offset, $limit);
         if($favourite) {
-            $total_fav = Project::favouriteCategories($user->id, 0, 0, true);
-        } else {
-            $favourite = Project::published('popular', null, $offset, 6);
-            $total_fav = Project::published('popular', null, 0, 0, true);
+            $total = Project::favouriteCategories($user->id, 0, 0, true);
+        } elseif($offset === 0) {
+            // Special case
+            $favourite = Project::published('popular', null, $offset, $limit);
+            $total = Project::published('popular', null, 0, 0, true);
         }
 
-        $data = [
-            'interests' => $interests,
-            'user_interests' => $user->interests,
-            'projects' => $favourite,
-            'showMore' => $total_fav > ($offset + @count($favourite)),
-        ];
-        if($show === 'projects') {
-            unset($data['interests']);
-            unset($data['user_interests']);
-        }
-        return $this->viewResponse( 'dashboard/partials/projects_interests', $data );
+        return $this->jsonResponse([
+            'total' => $total,
+            'offset' => $offset,
+            'limit' => $limit,
+            'html' => View::render( 'dashboard/partials/projects_widgets_list', ['projects' => $favourite] )
+        ]);
+    }
+
+    /**
+     * User's projects
+     */
+    public function projectsMineAction(Request $request)
+    {
+
+        $offset = (int)$request->query->get('offset');
+        $limit = (int)$request->query->get('limit');
+        if(empty($limit)) $limit = 6;
+
+        $userId = Session::getUserId();
+
+        //proyectos que coinciden con mis intereses
+        $projects = Project::ofmine($userId, false, $offset, $limit);
+        $total = Project::ofmine($userId, false, 0, 0, true);
+
+        return $this->jsonResponse([
+            'total' => $total,
+            'offset' => $offset,
+            'limit' => $limit,
+            'html' => View::render( 'dashboard/partials/projects_widgets_list', ['projects' => $projects] )
+        ]);
+
     }
 
 

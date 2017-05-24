@@ -47,6 +47,11 @@ $dash->add('dashboard-ajax-projects-interests', new Route(
     array('_controller' => 'Goteo\Controller\Dashboard\AjaxDashboardController::projectsInterestsAction',
         )
 ));
+$dash->add('dashboard-ajax-projects-mine', new Route(
+    '/ajax/projects/mine',
+    array('_controller' => 'Goteo\Controller\Dashboard\AjaxDashboardController::projectsMineAction',
+        )
+));
 
 // Projects editing
 $dash->add('dashboard-projects-analytics', new Route(

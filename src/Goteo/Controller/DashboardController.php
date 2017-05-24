@@ -30,7 +30,8 @@ class DashboardController extends \Goteo\Core\Controller {
         $user = Session::getUser();
 
         // mis proyectos
-        $projects = Project::ofmine($user->id);
+        $projects = Project::ofmine($user->id, false, 0, 3);
+        $projects_total = Project::ofmine($user->id, false, 0, 0, true);
         // proyectos que cofinancio
         $invested = User::invested($user->id, false);
         //proyectos que coinciden con mis intereses
@@ -47,11 +48,13 @@ class DashboardController extends \Goteo\Core\Controller {
 
         return $this->viewResponse('dashboard/activity', [
             'projects' => $projects,
+            'projects_total' => $projects_total,
             'invested' => $invested,
             'interests' => $interests,
             'user_interests' => $user->interests,
             'favourite' => $favourite,
-            'favourite_total' => $total_fav
+            'favourite_total' => $total_fav,
+            'limit' => 3
         ]);
     }
 
@@ -85,7 +88,9 @@ class DashboardController extends \Goteo\Core\Controller {
             'user_interests' => $user->interests,
             'interests' => $interests,
             'popular_projects' => $popular_projects,
-            'section' => 'pool' ]
+            'section' => 'pool',
+            'limit' => 6
+             ]
         );
 
     }

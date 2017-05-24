@@ -1,5 +1,5 @@
 
-<?php if($this->autoUpdate): ?><div class="auto-update-projects-interests"><?php endif ?>
+<?php if($this->auto_update): ?><div class="auto-update-projects" data-url="<?= $this->auto_update ?>" data-total="<?= $this->total ?>" data-limit="<?= $this->limit ?>"><?php endif ?>
 
 <?php if($this->interests): ?>
     <div class="row interests spacer">
@@ -16,21 +16,15 @@
 
 
 <?php if($this->projects): ?>
-    <div class="row spacer projects-container">
-        <?php foreach ($this->projects as $project) : ?>
-              <div class="col-sm-6 col-md-4 col-xs-12 spacer widget-element">
-                <?= $this->insert('project/widget.php', ['project' => $project]) ?>
-              </div>
-        <?php endforeach ?>
+    <div class="row spacer elements-container">
+        <?= $this->insert('dashboard/partials/projects_widgets_list') ?>
     </div>
 
-    <?php if($this->showMore): ?>
-        <div class="row more-projects-button">
-            <div class="col-sm-2 button">
-                <button class="btn btn-block dark-grey"><?= $this->text('regular-load-more') ?></button>
-            </div>
+    <div class="row more-projects-button<?= $this->auto_update && $this->total > count($this->projects) ? '' : ' hidden' ?>">
+        <div class="col-sm-2 button">
+            <button class="btn btn-block dark-grey"><?= $this->text('regular-load-more') ?></button>
         </div>
-    <?php endif ?>
+    </div>
 <?php endif ?>
 
-<?php if($this->autoUpdate): ?></div><?php endif ?>
+<?php if($this->auto_update): ?></div><?php endif ?>

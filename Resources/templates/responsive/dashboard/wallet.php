@@ -28,13 +28,14 @@
 
 	<?php //if($this->projects_suggestion): ?>
 
-	<div class="container general-dashboard" id="projects-container">
+	<div class="container general-dashboard projects-container">
         <h2><?= $this->text('profile-suggest-projects-interest') ?></h2>
-		<?= $this->insert('dashboard/partials/projects_interests.php', [
+		<?= $this->insert('dashboard/partials/projects_interests', [
             'projects' => $this->projects_suggestion,
+            'total' => $this->projects_suggestion_total,
             'interests' => $this->interests,
-            'autoUpdate' => true,
-            'showMore' => $this->projects_suggestion_total > count($this->projects_suggestion)
+            'auto_update' => '/dashboard/ajax/projects/interests',
+            'limit' => $this->limit
             ]) ?>
 	</div>
 

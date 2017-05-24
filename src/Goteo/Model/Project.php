@@ -2526,7 +2526,7 @@ namespace Goteo\Model {
          * Lista de proyectos de un usuario
          * @return: array of Project
          */
-        public static function ofmine($owner, $published = false)
+        public static function ofmine($owner, $published = false, $offset = 0, $limit = 12, $count = false)
         {
             $lang = Lang::current();
             $projects = array();
@@ -2546,6 +2546,20 @@ namespace Goteo\Model {
 
             if ($published) {
                 $sqlFilter = " AND project.status > 2";
+            }
+
+            if($count) {
+                $sql = "
+                SELECT COUNT(project.id) FROM project
+                INNER JOIN user ON user.id = project.owner
+                WHERE project.owner = :owner
+                $sqlFilter
+                ";
+                return (int) self::query($sql, [':owner' => $owner])->fetchColumn();
+            }
+
+            if($limit) {
+                $sql_limit = ' LIMIT ' . (int)$offset . ','. (int)$limit;
             }
 
             $sql ="
@@ -2586,6 +2600,7 @@ namespace Goteo\Model {
                 WHERE project.owner = :owner
                 $sqlFilter
                 ORDER BY  project.status ASC, project.created DESC
+                $sql_limit
                 ";
 
             $query = self::query($sql, $values);
