@@ -1527,12 +1527,11 @@ div.new-material-success{
 
 .project-widget-admin-panel {
     padding:20px;
-    position: absolute;
-    top:0;
-    left:0;
-}
+ }
 .project-widget-admin-panel .btn-group {
     margin:10px 0;
+    display: block;
+    float:none;
 }
 
 .projects-container .interests{

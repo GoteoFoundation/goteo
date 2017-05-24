@@ -138,6 +138,8 @@ elseif (!empty($status)) {
             <div class="btn-group">
                 <a class="btn btn-default" href="/dashboard/projects/summary/select?project=<?= $project->id ?>"><i class="fa fa-eye"></i> <?= $this->text('dashboard-menu-activity-summary') ?></a>
             </div>
+        </div>
+        <div class="project-widget-admin-panel">
             <div class="btn-group">
                 <a class="btn btn-default" href="/project/edit/<?= $project->id ?>"><i class="fa fa-edit"></i> <?= $this->text('regular-edit') ?></a>
                 <a class="btn btn-default" href="/project/<?= $project->id ?>" target="_blank"><i class="fa fa-external-link"></i> <?= $this->text('regular-preview') ?></a>
