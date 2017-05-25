@@ -140,9 +140,9 @@ user-email-change-sended: 'T''hem enviat un email per confirmar el teu canvi d''
 user-password-changed: 'Has canviat la teva contrasenya'
 user-personal-saved: 'Dades personals actualitzades '
 user-prefer-saved: 'Les teves preferències de notificació s''han desat correctament'
-user-preferences-comcurrency: 'Divisa en la que prefieres ver los importes'
+user-preferences-comcurrency: 'Divisa en la que prefereixes veure les quantitats'
 user-preferences-comlang: 'Idioma en el que prefereixes rebre les notificacions'
-user-preferences-currency: 'Divisa en la que prefieres ver los importes'
+user-preferences-currency: 'Divisa en la que prefereixes veure les quantitats'
 user-preferences-email: 'Ocultar el meu correu electrònic als projectes que recolzo'
 user-preferences-mailing: 'Bloquejar l''enviament del newsletter'
 user-preferences-rounds: 'Bloquejar notificacions de progrés dels projectes que recolzo'
@@ -159,7 +159,7 @@ dashboard-edit-share-material-url: 'Editar URL'
 dashboard-modal-edit-url: 'URL on es troba el material compartit'
 dashboard-modal-placeholder-edit-url: 'Url'
 
-dashboard-new-material-form-success: 'El nou material s’ha afegit correctament'
+dashboard-new-material-form-success: "El nou material s'ha afegit correctament"
 dashboard-new-material-form-material: 'Material'
 dashboard-new-material-form-description: 'Descripció'
 dashboard-new-material-form-url: 'URL'
@@ -168,9 +168,15 @@ dashboard-new-material-form-license: 'Llicència del material'
 dashboard-menu-projects-shared-materials: 'Material'
 project-no-share-material: 'No hi ha materials guardats per aquest projecte'
 
-dashboard-project-images-desc: 'Organitza les imatges com vulguis arrossegant i deixant anar, fins i tot entre zones. Quan acabis recorda desar els canvis.'
+dashboard-project-images-desc: 'Organitza les imatges com vulguis arrossegant i deixant anar, fins i tot entre zones.'
 dashboard-project-default-image: 'Imatge per defecte'
 dashboard-project-delete-image: 'Esborra la imatge'
 dashboard-project-delete-image-confirm: 'Segur que vols esborrar aquests imatge?'
-dashboard-project-dnd-image: 'Arrastra una imatge aquí'
+dashboard-project-dnd-image: 'Arrastra una o varies imatges aquí'
+dashboard-project-image-delete-ko: "La imatge no s'ha pogut esborrar!"
+project-upload-images-some-ko: "Algunes imatges no s'han pujat!"
+dashboard-project-default-image-confirm: 'Vols fer servir aquesta imatge per defecte del projecte?'
+dashboard-project-image-default-ko: "No se s'ha pogut posar la imatge per defecte!"
+dashboard-project-image-reorder-ko: "No se s'han pogut ordenar les imatges!"
+
 
