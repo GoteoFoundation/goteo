@@ -4,7 +4,7 @@
 
     <div class="row">
         <div class="col-md-6">
-            <!-- <h1><?= $this->text('dashboard-menu-projects-analytics') ?></h1> -->
+            <h1><?= $this->text('dashboard-menu-projects-analytics') ?></h1>
             <form name="analytic-post" method="post">
                 <label class="spacer" >
                 <?= $this->text('regular-analytics') ?>

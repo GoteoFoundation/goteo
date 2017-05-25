@@ -20,28 +20,28 @@
 
 ?>
 
-<div class="media media-project">
-  <div class="media-body">
-    <h4 class="media-heading"><?= $this->project->name ?></h4>
-    <?= $this->project->subtitle ?>
-  </div>
-  <div class="media-right">
-    <img class="media-object" src="<?= $this->project->image->getLink(150, 75, true); ?>">
-  </div>
-</div>
+<h4><?= $this->project->name ?></h4>
+<img class="img-responsive" src="<?= $this->project->image->getLink(150, 75, true); ?>">
+<hr>
 
-<ul class="nav nav-tabs">
+<ul class="nav nav-pills nav-stacked">
   <li role="presentation"<?= $this->section === 'summary' ? ' class="active"' : '' ?>>
-    <a href="/dashboard/projects/summary/select?project=<?= $this->project->id ?>"><?= $this->text('dashboard-menu-activity-summary') ?></a>
+    <a href="/dashboard/projects/summary/select?project=<?= $this->project->id ?>"><i class="fa fa-eye"></i> <?= $this->text('dashboard-menu-activity-summary') ?></a>
+  </li>
+  <li role="presentation"<?= $this->section === 'summary' ? ' class="active"' : '' ?>>
+    <a href="/project/<?= $this->project->id ?>" target="_blank"><i class="fa fa-external-link"></i> <?= $this->text('regular-preview') ?></a>
   </li>
   <li role="presentation"<?= $this->section === 'images' ? ' class="active"' : '' ?>>
-    <a href="/dashboard/project/<?= $this->project->id ?>/images"><?= $this->text('images-main-header') ?></a>
+    <a href="/dashboard/project/<?= $this->project->id ?>/images"><i class="fa fa-image"></i> <?= $this->text('images-main-header') ?></a>
   </li>
   <li role="presentation"<?= $this->section === 'analytics' ? ' class="active"' : '' ?>>
-    <a href="/dashboard/project/<?= $this->project->id ?>/analytics"><?= $this->text('dashboard-menu-projects-analytics') ?></a>
+    <a href="/dashboard/project/<?= $this->project->id ?>/analytics"><i class="fa fa-pie-chart"></i> <?= $this->text('dashboard-menu-projects-analytics') ?></a>
   </li>
   <li role="presentation"<?= $this->section === 'materials' ? ' class="active"' : '' ?>>
-    <a href="/dashboard/project/<?= $this->project->id ?>/materials"><?= $this->text('project-share-materials') ?></a>
+    <a href="/dashboard/project/<?= $this->project->id ?>/materials"><i class="fa fa-beer"></i> <?= $this->text('project-share-materials') ?></a>
+  </li>
+  <li role="presentation"<?= $this->section === 'materials' ? ' class="active"' : '' ?>>
+    <a href="/dashboard/activity"><i class="fa fa-reply"></i> <?= $this->text('profile-my_projects-header') ?></a>
   </li>
 </ul>
 

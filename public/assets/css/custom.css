@@ -178,6 +178,10 @@ button.pink:hover, button.pink:focus, button.custom-green:hover,
 	color:#FFF !important;
 }
 
+/* Nav pills colors */
+.nav-pills > li.active > a, .nav-pills > li.active > a:focus, .nav-pills > li.active > a:hover {
+    background-color: #CD5EB3;
+}
 /* DIV impersonator */
 .user-shadowing-bar {
     font-weight: 700;
@@ -1291,6 +1295,10 @@ ul.dashboard-navbar > li.active > a, ul.dashboard-navbar li a:hover{
 	background-color: #1DB3B2 !important;
 	color: #FFF;
 
+}
+
+.dashboard-sidebar {
+    border-right:1px solid #ccc;
 }
 
 ul.dashboard-navbar li a{
