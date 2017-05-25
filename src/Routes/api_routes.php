@@ -76,13 +76,13 @@ $api->add('api-projects-images-delete', new Route(
 
 // Project reorder images
 $api->add('api-projects-images-reorder', new Route(
-    '/projects/{id}/images',
+    '/projects/{id}/images/reorder',
     array('_controller' => 'Goteo\Controller\Api\ProjectsApiController::projectReorderImagesAction'),
     array(), // requirements
     array(), // options
     '', // host
     array(), // schemes
-    array('PUT') // methods
+    array('POST') // methods
 ));
 
 // Projects

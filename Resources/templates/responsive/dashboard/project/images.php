@@ -37,11 +37,12 @@ $(function(){
         });
         // console.log('Current order', gallery,JSON.stringify(gallery));
         $.ajax({
-            url: '/api/projects/<?= $this->project->id ?>/images',
-            'method': 'PUT',
+            url: '/api/projects/<?= $this->project->id ?>/images/reorder',
+            'method': 'POST',
             data: {gallery: gallery}
         })
         .done(function(data){
+            console.log(data);
             if(!data.result) {
                 $error.html(data.msg);
                 $error.removeClass('hidden');

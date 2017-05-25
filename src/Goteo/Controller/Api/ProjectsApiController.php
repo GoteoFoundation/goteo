@@ -11,6 +11,7 @@
 namespace Goteo\Controller\Api;
 
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Goteo\Application\Exception\ControllerAccessDeniedException;
 
 use Goteo\Model\Project;
@@ -128,6 +129,7 @@ class ProjectsApiController extends AbstractApiController {
         }
 
         foreach($files as $file) {
+            if(!$file instanceOf UploadedFile) continue;
             // Process image
             $msg = 'uploaded-ok';
             $success = false;
