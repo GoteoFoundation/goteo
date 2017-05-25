@@ -144,15 +144,28 @@ div.tooltip-inner {
     background-color: #25A083 !important;
     border-color: #25A083 !important;
 }
-
-
-button.pink{
-	background-color: #CD5EB3;
-	font-size:1.2em;
-	color:#FFF;
-	font-weight: bold;
+.btn-pink{
+    background-color: #CD5EB3;
+    color:#FFF;
 }
 
+.btn-green{
+    background-color: #14AE84;
+    color:#FFF;
+}
+.btn-grey {
+    background-color: #E8ECEC;
+    color: #4D4D4D;
+}
+.btn-dark {
+    background-color: #BCBCBC;
+    color: #FFFFFF;
+}
+button.pink{
+    background-color: #CD5EB3;
+    font-size:1.2em;
+    color:#FFF;
+}
 button.custom-green{
 	background-color: #14AE84;
 	font-size:1.2em;
@@ -160,7 +173,8 @@ button.custom-green{
 	font-weight: bold;
 }
 
-button.pink:hover, button.pink:focus, button.custom-green:hover{
+button.pink:hover, button.pink:focus, button.custom-green:hover,
+.btn-pink:hover, .btn-pink:focus, .btn-green:hover{
 	color:#FFF !important;
 }
 
@@ -733,7 +747,7 @@ form.create-project-form input.minimum{
     display:inline;
 }
 
-form.create-project-form button.pink{
+form.create-project-form button.pink, form.create-project-form .btn-pink{
     font-size: 1em;
     margin-top: 25px;
 }
