@@ -238,7 +238,7 @@ class ProjectsApiController extends AbstractApiController {
                     $vars = array(':project' => $prj->id, ':image' => $img, ':section' => $s, ':order' => $index);
                     $sql = "UPDATE project_image SET `order` = :order, `section` = :section WHERE project = :project AND image = :image";
                     Project::query($sql, $vars);
-                    $result[$section] = \sqldbg($sql, $vars);
+                    // $result[$section] = \sqldbg($sql, $vars);
                     $index++;
                 }
             }
