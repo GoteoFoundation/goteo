@@ -116,9 +116,7 @@ class ProjectsApiController extends AbstractApiController {
         if(!$prj->userCanEdit($this->user)) {
             throw new ControllerAccessDeniedException();
         }
-        if(!in_array($request->getMethod(), ['POST', 'PUT'])) {
-            throw new ControllerAccessDeniedException();
-        }
+
         $files = $request->files->get('file');
         if(!is_array($files)) $files = [$files];
         $global_msg = 'all-files-uploaded';
@@ -177,15 +175,85 @@ class ProjectsApiController extends AbstractApiController {
         if(!$prj->userCanEdit($this->user)) {
             throw new ControllerAccessDeniedException();
         }
-        if($request->getMethod() !== 'DELETE') {
-            throw new ControllerAccessDeniedException();
-        }
+
         $vars = array(':project' => $prj->id, ':image' => $image);
         Project::query("DELETE FROM project_image WHERE project = :project AND image = :image", $vars);
         $sql = "SELECT COUNT(*) FROM project_image WHERE project = :project AND image = :image";
-
         $success = (int) Project::query($sql, $vars)->fetchColumn() === 0;
-
+        // $sql = "SELECT image FROM project WHERE id = :project";
+        // if( Project::query($sql, ['project' => $prj->id])->fetchColumn() === $image) {
+        //     Project::query("UPDATE project SET image = '' WHERE id = :project", ['project' => $prj->id]);
+        // }
         return $this->jsonResponse(['image' => $image, 'result' => $success]);
+    }
+
+    public function projectDefaultImagesAction($id, $image, Request $request) {
+        $prj = Project::get($id);
+
+        // Security, first of all...
+        if(!$prj->userCanEdit($this->user)) {
+            throw new ControllerAccessDeniedException();
+        }
+        $success = false;
+        $msg = Text::get('dashboard-project-image-default-ko');
+        if($prj->all_galleries) {
+            $vars = array(':project' => $prj->id, ':image' => $image);
+            foreach($prj->all_galleries as $key => $gal) {
+                foreach($gal as $img) {
+                    if($img->imageData->name === $image) {
+                        // Set default
+                        Project::query("UPDATE project SET image = :image WHERE id = :project", $vars);
+                        $sql = "SELECT COUNT(*) FROM project WHERE id = :project AND image = :image";
+                        $success = (int) Project::query($sql, $vars)->fetchColumn() === 1;
+                        if($success) $msg = '';
+                        break;
+                    }
+                }
+                if($success) break;
+            }
+        }
+        return $this->jsonResponse(['msg' => $msg, 'default' => $image, 'result' => $success]);
+    }
+
+    public function projectReorderImagesAction($id, Request $request) {
+        $gallery = $request->request->get('gallery');
+
+        $prj = Project::get($id);
+
+        // Security, first of all...
+        if(!$prj->userCanEdit($this->user)) {
+            throw new ControllerAccessDeniedException();
+        }
+        $success = false;
+        $result = [];
+        $msg = Text::get('dashboard-project-image-reorder-ko');
+        if($gallery) {
+            foreach($gallery as $section => $gal) {
+                $index = 0;
+                $result[$section] = $gal;
+                $s = $section == '_' ? null : $section;
+                foreach($gal as $img) {
+                    $vars = array(':project' => $prj->id, ':image' => $img, ':section' => $s, ':order' => $index);
+                    $sql = "UPDATE project_image SET `order` = :order, `section` = :section WHERE project = :project AND image = :image";
+                    Project::query($sql, $vars);
+                    $result[$section] = \sqldbg($sql, $vars);
+                    $index++;
+                }
+            }
+            // $success = true;
+            // $msg = '';
+        }
+        if($prj->all_galleries) {
+            $vars = array(':project' => $prj->id, ':image' => $image);
+            foreach($prj->all_galleries as $key => $gal) {
+                foreach($gal as $img) {
+                    if($img->imageData->name === $image) {
+                        // break;
+                    }
+                }
+                if($success) break;
+            }
+        }
+        return $this->jsonResponse(['msg' => $msg, 'gallery' => $result, 'result' => $success]);
     }
 }

@@ -21,7 +21,7 @@
 ?>
 
 <h4><?= $this->project->name ?></h4>
-<img class="img-responsive" src="<?= $this->project->image->getLink(150, 75, true); ?>">
+<img class="img-responsive auto-project-image" src="<?= $this->project->image->getLink(150, 75, true); ?>">
 <hr>
 
 <ul class="nav nav-pills nav-stacked">

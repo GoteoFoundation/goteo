@@ -184,5 +184,8 @@ dashboard-project-delete-image-confirm: '¿Seguro que quieres borrar esta imagen
 dashboard-project-dnd-image: 'Arrastra y suelta una imagen aquí'
 dashboard-project-image-delete-ko: 'La imagen no se ha podido borrar!'
 project-upload-images-some-ko: 'Algunas imágenes no se han subido!'
+dashboard-project-default-image-confirm: '¿Quieres poner esta imagen por defecto del proyecto?'
+dashboard-project-image-default-ko: 'No se ha podido poner la imagen por defecto!'
+dashboard-project-image-reorder-ko: 'No se han podido ordenar las imágenes!'
 
 

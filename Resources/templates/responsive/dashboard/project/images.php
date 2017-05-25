@@ -24,12 +24,46 @@
 // @license magnet:?xt=urn:btih:0b31508aeb0634b347b8270c7bee4d411b5d4109&dn=agpl-3.0.txt
 
 $(function(){
+    var saveCurrentOrder = function() {
+        var gallery = {};
+        var $error = $('.image-list-sortable .error-msg');
+        $('.image-list-sortable li:not(.dragndrop)').each(function(){
+            var name = $(this).data('name');
+            var section = $(this).closest('ul').data('section') ||  '_';
+            if(!$.isArray(gallery[section])) {
+                gallery[section] = [];
+            }
+            gallery[section].push(name);
+        });
+        // console.log('Current order', gallery,JSON.stringify(gallery));
+        $.ajax({
+            url: '/api/projects/<?= $this->project->id ?>/images',
+            'method': 'PUT',
+            data: {gallery: gallery}
+        })
+        .done(function(data){
+            if(!data.result) {
+                $error.html(data.msg);
+                $error.removeClass('hidden');
+            }
+        });
+    };
+
     Dropzone.autoDiscover = false;
-    $(".image-list-sortable").each(function(){
+
+    $('.image-list-sortable').each(function(){
         Sortable.create($(this).get(0), {
             group: 'project-images'
             , filter: ".dragndrop"
+            // Reorder actions
+            , onEnd: function (evt) {
+                // evt.oldIndex;  // element's old index within parent
+                // evt.newIndex;  // element's new index within parent
+                // console.log(evt);
+                saveCurrentOrder();
+            }
         });
+
         var $list = $(this);
         var $error = $list.next();
         var element = $list.find('.dragndrop>div').get(0);
@@ -59,11 +93,19 @@ $(function(){
             }
             // Add to list
             var li = '<?= $this->ee($this->insert('dashboard/project/partials/image_list_item', ['image_url' => '{URL}', 'image_name' => '{NAME}']), 'js') ?>';
-            var img = '/img/300x300c/' + file.name;
+            var name = file.name;
+            for(var i in response.files) {
+                if(response.files[i].originalName == name) {
+                    name = response.files[i].name;
+                }
+            }
+
+            var img = '/img/300x300c/' + name;
             li = li.replace('{URL}', img);
-            li = li.replace('{NAME}', file.name);
+            li = li.replace('{NAME}', name);
             $list.find('.dragndrop').before(li);
-            console.log('success', file, response, li);
+            $error.addClass('hidden');
+            // console.log('success', file, response, li);
         });
         dropzone.on("complete", function(file) {
             dropzone.removeFile(file);
@@ -83,21 +125,55 @@ $(function(){
         if(confirm('<?= $this->ee($this->text('dashboard-project-delete-image-confirm'), 'js') ?>')) {
             $.ajax({
                 url: '/api/projects/<?= $this->project->id ?>/images/' + $li.data('name'),
-                'method': 'DELETE',
-                data: {data:'hola'}
+                'method': 'DELETE'
             })
             .done(function(data) {
-                console.log('done',data);
+                // console.log('done',data);
                 if(data.result) {
                     // OK
                     $li.remove();
+                    $error.addClass('hidden');
                 } else {
                     $error.html('<?= $this->ee($this->text('dashboard-project-image-delete-ko'), 'js') ?>');
                     $error.removeClass('hidden');
                 }
             });
         }
-    })
+    });
+    $('.image-list-sortable').on( 'click', '.default-image', function(e) {
+        e.preventDefault();
+        var $li = $(this).closest('li');
+        var $this = $(this);
+        var $list = $(this).closest('ul');
+        var $error = $list.next();
+        if(confirm('<?= $this->ee($this->text('dashboard-project-default-image-confirm'), 'js') ?>')) {
+            $.ajax({
+                url: '/api/projects/<?= $this->project->id ?>/images/' + $li.data('name'),
+                'method': 'PUT'
+            })
+            .done(function(data) {
+                // console.log('done',data);
+                if(data.result) {
+                    // OK
+                    $('.image-list-sortable .default-image').removeClass('btn-pink').addClass('btn-default');
+                    $this.addClass('btn-pink').removeClass('btn-default');
+                    $error.addClass('hidden');
+                    // Autoupdate images covers with class auto-project-image
+                    $('img.auto-project-image').each(function() {
+                        var src =  $(this).attr('src').split('/');
+                        src[src.length - 1] = data.default;
+                        $(this).attr('src', src.join('/'));
+                    });
+                } else {
+                    $error.html(data.msg);
+                    $error.removeClass('hidden');
+                }
+            });
+        }
+
+    });
+
+
 })
 
 // @license-end

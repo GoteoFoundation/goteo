@@ -52,6 +52,17 @@ $api->add('api-projects-images-upload', new Route(
     array('POST') // methods
 ));
 
+// Project images default
+$api->add('api-projects-images-default', new Route(
+    '/projects/{id}/images/{image}',
+    array('_controller' => 'Goteo\Controller\Api\ProjectsApiController::projectDefaultImagesAction'),
+    array(), // requirements
+    array(), // options
+    '', // host
+    array(), // schemes
+    array('PUT') // methods
+));
+
 // Project images delete
 $api->add('api-projects-images-delete', new Route(
     '/projects/{id}/images/{image}',
@@ -61,6 +72,17 @@ $api->add('api-projects-images-delete', new Route(
     '', // host
     array(), // schemes
     array('DELETE') // methods
+));
+
+// Project reorder images
+$api->add('api-projects-images-reorder', new Route(
+    '/projects/{id}/images',
+    array('_controller' => 'Goteo\Controller\Api\ProjectsApiController::projectReorderImagesAction'),
+    array(), // requirements
+    array(), // options
+    '', // host
+    array(), // schemes
+    array('PUT') // methods
 ));
 
 // Projects
