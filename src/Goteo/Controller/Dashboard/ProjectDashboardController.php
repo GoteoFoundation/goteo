@@ -17,6 +17,7 @@ use Goteo\Application\Session;
 use Goteo\Application\View;
 use Goteo\Model\Project;
 use Goteo\Model\Project\Reward;
+use Goteo\Model\Project\Image as ProjectImage;
 use Goteo\Application\Message;
 use Goteo\Library\Text;
 use Goteo\Model\License;
@@ -62,8 +63,15 @@ class ProjectDashboardController extends \Goteo\Core\Controller {
         $project = $this->validateProject($pid, 'images');
         if($project instanceOf Response) return $project;
 
+        $zones = ProjectImage::sections();
+        $images = [];
+        foreach ($zones as $sec => $secName) {
+            $images[$sec] = ProjectImage::get($project->id, $sec);
+        }
         return $this->viewResponse('dashboard/project/images', [
             'project' => $project,
+            'zones' => $zones,
+            'images' => $images,
             'section' => 'images'
             ]);
 

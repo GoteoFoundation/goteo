@@ -167,3 +167,5 @@ dashboard-new-material-form-type: 'Classe de material'
 dashboard-new-material-form-license: 'Llicència del material'
 dashboard-menu-projects-shared-materials: 'Material'
 project-no-share-material: 'No hi ha materials guardats per aquest projecte'
+
+dashboard-project-images-desc: 'Organitza les imatges com vulguis arrossegant i deixant anar, fins i tot entre zones. Quan acabis recorda desar els canvis.'

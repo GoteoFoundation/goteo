@@ -1298,7 +1298,14 @@ ul.dashboard-navbar > li.active > a, ul.dashboard-navbar li a:hover{
 }
 
 .dashboard-sidebar {
-    border-right:1px solid #ccc;
+}
+.dashboard-sidebar > .nav {
+    border-radius:5px;
+    // background: #C7ECEC;
+    background: #f9f9f9;
+}
+.dashboard-sidebar > .nav a{
+    color:#20B3B2;
 }
 
 ul.dashboard-navbar li a{

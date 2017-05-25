@@ -80,7 +80,7 @@ namespace Goteo\Model\Project {
                     ORDER BY `order` ASC, image DESC";
 
                 $query = static::query($sql, $values);
-                $images = $query->fetchAll(\PDO::FETCH_OBJ);
+                $images = $query->fetchAll(\PDO::FETCH_CLASS, __CLASS__);
 
                 foreach ($images as $image) {
                     $image->imageData = Model\Image::get($image->image);
@@ -209,6 +209,11 @@ namespace Goteo\Model\Project {
             );
        }
 
+       // Helpers
+       public function getLink() {
+            $args = func_get_args();
+            return call_user_func_array(array($this->imageData, 'getLink'), $args);
+       }
     }
 
 }

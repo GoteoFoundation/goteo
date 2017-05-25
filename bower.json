@@ -1,0 +1,21 @@
+{
+  "name": "goteo",
+  "description": "Open Source Crowdfunding Platform",
+  "main": "",
+  "authors": [
+    "Fundación Goteo"
+  ],
+  "license": "AGPL-3.0",
+  "homepage": "https://github.com/GoteoFoundation/goteo",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "public/vendor/",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "Sortable": "sortablejs#^1.5.1"
+  }
+}

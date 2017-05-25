@@ -2,11 +2,15 @@
 
 <?php $this->section('dashboard-project-content') ?>
 
-    <div class="row">
-        <div class="col-md-6">
-            images here!
-        </div>
-    </div>
+    <h1><?= $this->text('images-main-header') ?></h1>
+    <blockquote><?= $this->text('dashboard-project-images-desc') ?></blockquote>
+
+    <?php foreach($this->zones as $key => $zone): ?>
+        <h4><?= $zone ?></h4>
+        <?php foreach($this->images[$key] as $i => $img): ?>
+            <img class="img-responsive" src="<?= $img->getLink(200, 200, true) ?>">
+        <?php endforeach ?>
+    <?php endforeach ?>
 
 <?php $this->replace() ?>
 
