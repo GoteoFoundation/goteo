@@ -1,29 +1,29 @@
 .vagrant
 
-extend/
-!extend/README.md
-!extend/goteo-dev
-!extend/private-zones
+/extend/
+!/extend/README.md
+!/extend/goteo-dev
+!/extend/private-zones
 
 /node_modules/
 /vendor/
 /bower_components/
 *.log
 .tmp
-var/*
-!var/logs
-!var/cache
-!var/data
-!var/php
-var/php/sess_*
+/var/*
+!/var/logs
+!/var/cache
+!/var/data
+!/var/php
+/var/php/sess_*
 composer.lock
 
-config/*
-!config/README.md
-!config/demo-settings.yml
-!config/vagrant-settings.yml
-dist
+/config/*
+!/config/README.md
+!/config/demo-settings.yml
+!/config/vagrant-settings.yml
+/dist
 
 phpunit.xml
-tests/build
+/tests/build
 .couscous
