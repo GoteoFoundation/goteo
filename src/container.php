@@ -18,7 +18,8 @@ use Symfony\Component\DependencyInjection\Reference;
 $sc = new DependencyInjection\ContainerBuilder();
 
 // Context and matcher
-$sc->register('context', 'Symfony\Component\Routing\RequestContext');
+$sc->register('context', 'Symfony\Component\Routing\RequestContext')
+    ->addMethodCall('fromRequest', array(App::getRequest()));
 $sc->register('matcher', 'Symfony\Component\Routing\Matcher\UrlMatcher')
    ->setArguments(array('%routes%', new Reference('context')))
 ;
@@ -97,7 +98,7 @@ $sc->register('resolver', 'Symfony\Component\HttpKernel\Controller\ControllerRes
 
 // Router for the dispatcher
 $sc->register('listener.router', 'Symfony\Component\HttpKernel\EventListener\RouterListener')
-   ->setArguments(array(new Reference('matcher')))
+   ->setArguments(array(new Reference('matcher'), null, null, new Reference('logger')))
 ;
 
 // always utf-8 output, just in case...

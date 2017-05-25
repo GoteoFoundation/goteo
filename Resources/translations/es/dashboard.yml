@@ -181,6 +181,8 @@ dashboard-project-images-desc: 'Organiza las imágenes como quieras arrastrando 
 dashboard-project-default-image: 'Imagen por defecto'
 dashboard-project-delete-image: 'Borrar imagen'
 dashboard-project-delete-image-confirm: '¿Seguro que quieres borrar esta imagen?'
-dashboard-project-dnd-image: 'Arrastra y suelta una imagen aqui'
+dashboard-project-dnd-image: 'Arrastra y suelta una imagen aquí'
+dashboard-project-image-delete-ko: 'La imagen no se ha podido borrar!'
+project-upload-images-some-ko: 'Algunas imágenes no se han subido!'
 
 

@@ -41,13 +41,27 @@ $api->add('api-chart-project', new Route(
         )
 ));
 
-// One Project chart preprocessed data (invests)
-$api->add('api-projects-images', new Route(
+// Project images upload
+$api->add('api-projects-images-upload', new Route(
     '/projects/{id}/images',
-    array('_controller' => 'Goteo\Controller\Api\ProjectsApiController::projectUploadImagesAction',
-        )
+    array('_controller' => 'Goteo\Controller\Api\ProjectsApiController::projectUploadImagesAction'),
+    array(), // requirements
+    array(), // options
+    '', // host
+    array(), // schemes
+    array('POST') // methods
 ));
 
+// Project images delete
+$api->add('api-projects-images-delete', new Route(
+    '/projects/{id}/images/{image}',
+    array('_controller' => 'Goteo\Controller\Api\ProjectsApiController::projectDeleteImagesAction'),
+    array(), // requirements
+    array(), // options
+    '', // host
+    array(), // schemes
+    array('DELETE') // methods
+));
 
 // Projects
 return $api;

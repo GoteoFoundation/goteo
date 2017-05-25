@@ -16,6 +16,7 @@ use Goteo\Application\Exception\ControllerAccessDeniedException;
 use Goteo\Model\Project;
 use Goteo\Model\Project\Image as ProjectImage;
 use Goteo\Model\Image;
+use Goteo\Library\Text;
 
 
 class ProjectsApiController extends AbstractApiController {
@@ -163,10 +164,28 @@ class ProjectsApiController extends AbstractApiController {
                 'maxSize' => $file->getMaxFileSize(),
                 'errorMsg' => $file->getErrorMessage()
             ];
-            if(!$success) $global_msg = 'some-files-failed';
+            if(!$success) $global_msg = Text::get('project-upload-images-some-ko');
         }
         // ,$file->getPathName(),$file->getSize(),$file->getMimeType(),$file->getClientOriginalName()
         return $this->jsonResponse(['files' => $result, 'msg' => $global_msg]);
     }
 
+    public function projectDeleteImagesAction($id, $image, Request $request) {
+        $prj = Project::get($id);
+
+        // Security, first of all...
+        if(!$prj->userCanEdit($this->user)) {
+            throw new ControllerAccessDeniedException();
+        }
+        if($request->getMethod() !== 'DELETE') {
+            throw new ControllerAccessDeniedException();
+        }
+        $vars = array(':project' => $prj->id, ':image' => $image);
+        Project::query("DELETE FROM project_image WHERE project = :project AND image = :image", $vars);
+        $sql = "SELECT COUNT(*) FROM project_image WHERE project = :project AND image = :image";
+
+        $success = (int) Project::query($sql, $vars)->fetchColumn() === 0;
+
+        return $this->jsonResponse(['image' => $image, 'result' => $success]);
+    }
 }

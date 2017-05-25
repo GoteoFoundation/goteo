@@ -37,7 +37,7 @@ $(function(){
             url:'/api/projects/<?= $this->project->id ?>/images',
             uploadMultiple: true,
             createImageThumbnails: true,
-            maxFiles:null,
+            maxFiles:10,
             autoProcessQueue: true,
             dictDefaultMessage: '<i style="font-size:2em" class="fa fa-plus"></i><br><br><?= $this->ee($this->text('dashboard-project-dnd-image'), 'js') ?>'
         });
@@ -61,6 +61,7 @@ $(function(){
             var li = '<?= $this->ee($this->insert('dashboard/project/partials/image_list_item', ['image_url' => '{URL}', 'image_name' => '{NAME}']), 'js') ?>';
             var img = '/img/300x300c/' + file.name;
             li = li.replace('{URL}', img);
+            li = li.replace('{NAME}', file.name);
             $list.find('.dragndrop').before(li);
             console.log('success', file, response, li);
         });
@@ -72,6 +73,31 @@ $(function(){
           formData.append("section", $list.data('section'));
         });
     });
+
+    // Delete actions
+    $('.image-list-sortable').on( 'click', '.delete-image', function(e) {
+        e.preventDefault();
+        var $li = $(this).closest('li');
+        var $list = $(this).closest('ul');
+        var $error = $list.next();
+        if(confirm('<?= $this->ee($this->text('dashboard-project-delete-image-confirm'), 'js') ?>')) {
+            $.ajax({
+                url: '/api/projects/<?= $this->project->id ?>/images/' + $li.data('name'),
+                'method': 'DELETE',
+                data: {data:'hola'}
+            })
+            .done(function(data) {
+                console.log('done',data);
+                if(data.result) {
+                    // OK
+                    $li.remove();
+                } else {
+                    $error.html('<?= $this->ee($this->text('dashboard-project-image-delete-ko'), 'js') ?>');
+                    $error.removeClass('hidden');
+                }
+            });
+        }
+    })
 })
 
 // @license-end
