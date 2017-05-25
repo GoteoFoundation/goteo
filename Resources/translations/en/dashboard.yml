@@ -174,3 +174,9 @@ dashboard-menu-projects-shared-materials: 'Files'
 project-no-share-material: 'There are not shared materials for this project'
 
 dashboard-project-images-desc: 'Drag and drop images as you like to organize them, even between areas. On finish, remember to save the changes.'
+
+dashboard-project-default-image: 'Default image'
+dashboard-project-delete-image: 'Delete image'
+dashboard-project-delete-image-confirm: 'Are you sure to remove this image?'
+dashboard-project-dnd-image: 'Drag & drop an image here'
+

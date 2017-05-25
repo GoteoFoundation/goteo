@@ -16,6 +16,8 @@
     "tests"
   ],
   "dependencies": {
-    "Sortable": "sortablejs#^1.5.1"
+    "Sortable": "sortablejs#^1.5.1",
+    "font-awesome": "fontawesome#^4.7.0",
+    "dropzone": "^4.3.0"
   }
 }

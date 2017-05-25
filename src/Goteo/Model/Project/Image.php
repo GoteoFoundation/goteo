@@ -209,11 +209,14 @@ namespace Goteo\Model\Project {
             );
        }
 
-       // Helpers
-       public function getLink() {
+        // Helpers
+        public function getLink() {
             $args = func_get_args();
             return call_user_func_array(array($this->imageData, 'getLink'), $args);
-       }
+        }
+        public function getName() {
+            return $this->imageData->name;
+        }
     }
 
 }

@@ -169,3 +169,8 @@ dashboard-menu-projects-shared-materials: 'Material'
 project-no-share-material: 'No hi ha materials guardats per aquest projecte'
 
 dashboard-project-images-desc: 'Organitza les imatges com vulguis arrossegant i deixant anar, fins i tot entre zones. Quan acabis recorda desar els canvis.'
+dashboard-project-default-image: 'Imatge per defecte'
+dashboard-project-delete-image: 'Esborra la imatge'
+dashboard-project-delete-image-confirm: 'Segur que vols esborrar aquests imatge?'
+dashboard-project-dnd-image: 'Arrastra una imatge aquí'
+

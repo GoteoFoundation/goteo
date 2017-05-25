@@ -178,5 +178,9 @@ dashboard-menu-projects-shared-materials: 'Materiales'
 project-no-share-material: 'No hay materiales compartidos por el proyecto'
 
 dashboard-project-images-desc: 'Organiza las imágenes como quieras arrastrando y soltando entre zonas incluso. Cuando acabes recuerda guardar los cambios.'
+dashboard-project-default-image: 'Imagen por defecto'
+dashboard-project-delete-image: 'Borrar imagen'
+dashboard-project-delete-image-confirm: '¿Seguro que quieres borrar esta imagen?'
+dashboard-project-dnd-image: 'Arrastra y suelta una imagen aqui'
 
 
