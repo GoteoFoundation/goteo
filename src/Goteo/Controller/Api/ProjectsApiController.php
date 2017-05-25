@@ -166,7 +166,7 @@ class ProjectsApiController extends AbstractApiController {
             ];
             if(!$success) $global_msg = Text::get('project-upload-images-some-ko');
         }
-        // ,$file->getPathName(),$file->getSize(),$file->getMimeType(),$file->getClientOriginalName()
+
         return $this->jsonResponse(['files' => $result, 'msg' => $global_msg]);
     }
 
@@ -242,8 +242,8 @@ class ProjectsApiController extends AbstractApiController {
                     $index++;
                 }
             }
-            // $success = true;
-            // $msg = '';
+            $success = true;
+            $msg = '';
         }
         if($prj->all_galleries) {
             $vars = array(':project' => $prj->id, ':image' => $image);

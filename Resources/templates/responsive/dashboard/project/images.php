@@ -42,7 +42,7 @@ $(function(){
             data: {gallery: gallery}
         })
         .done(function(data){
-            console.log(data);
+            // console.log(data);
             if(!data.result) {
                 $error.html(data.msg);
                 $error.removeClass('hidden');
