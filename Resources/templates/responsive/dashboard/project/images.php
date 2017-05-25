@@ -26,7 +26,7 @@
 $(function(){
     var saveCurrentOrder = function() {
         var gallery = {};
-        var $error = $('.image-list-sortable .error-msg');
+        var $error = $('.image-list-sortable+.error-msg');
         $('.image-list-sortable li:not(.dragndrop)').each(function(){
             var name = $(this).data('name');
             var section = $(this).closest('ul').data('section') ||  '_';
