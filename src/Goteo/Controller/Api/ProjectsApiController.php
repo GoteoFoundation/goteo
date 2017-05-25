@@ -14,6 +14,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Goteo\Application\Exception\ControllerAccessDeniedException;
 
 use Goteo\Model\Project;
+use Goteo\Model\Project\Image as ProjectImage;
 use Goteo\Model\Image;
 
 
@@ -105,6 +106,67 @@ class ProjectsApiController extends AbstractApiController {
         }
 
         return $this->jsonResponse($ob);
+    }
+
+    public function projectUploadImagesAction($id, Request $request) {
+        $prj = Project::get($id);
+
+        // Security, first of all...
+        if(!$prj->userCanEdit($this->user)) {
+            throw new ControllerAccessDeniedException();
+        }
+        if(!in_array($request->getMethod(), ['POST', 'PUT'])) {
+            throw new ControllerAccessDeniedException();
+        }
+        $files = $request->files->get('file');
+        if(!is_array($files)) $files = [$files];
+        $global_msg = 'all-files-uploaded';
+        $result = [];
+
+        $section = $request->request->get('section');
+        if(!array_key_exists($section, ProjectImage::sections())) {
+            $section = '';
+        }
+
+        foreach($files as $file) {
+            // Process image
+            $msg = 'uploaded-ok';
+            $success = false;
+            $image = new Image($file);
+            $errors = [];
+            if ($image->save($errors)) {
+                /**
+                 * Guarda la relación NM en la tabla 'project_image'.
+                 */
+                if(!empty($image->id)) {
+                    Project::query("REPLACE project_image (project, image, section) VALUES (:project, :image, :section)", array(':project' => $prj->id, ':image' => $image->id, ':section' => $section));
+                }
+                // recalculamos las galerias e imagen
+                // getGallery en Project\Image  procesa todas las secciones
+                // $galleries = Project\Image::getGalleries($this->id);
+                // Project\Image::setImage($this->id, $galleries['']);
+                $success = true;
+            }
+            else {
+                $msg = implode(', ',$errors['image']);
+                // print_r($errors);
+                // Si hay errores al colgar una imagen, mostrar error correspondiente
+            }
+
+            $result[] = [
+                'originalName' => $file->getClientOriginalName(),
+                'name' => $image->name,
+                'success' => $success,
+                'msg' => $msg,
+                'error' => $file->getError(),
+                'size' => $file->getSize(),
+                'maxSize' => $file->getMaxFileSize(),
+                'errorMsg' => $file->getErrorMessage()
+            ];
+            if(!$success) $global_msg = 'some-files-failed';
+        }
+        // ,$file->getPathName(),$file->getSize(),$file->getMimeType(),$file->getClientOriginalName()
+        return $this->jsonResponse(['files' => $result, 'msg' => $global_msg]);
     }
 
 }

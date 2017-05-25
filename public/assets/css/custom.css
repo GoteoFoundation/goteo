@@ -1347,23 +1347,33 @@ ul.image-list-sortable >li .image{
     width:150px;
     height:150px;
     cursor: move;
+    background: #ddd;
+    background-position: 0 0;
+    background-size: 100% 100%;
+    background-repeat: no-repeat;
 }
 ul.image-list-sortable >li.dragndrop {
-    background: #ddd;
-    border:5px dashed #ccc;
-    border-radius:5px;
     width: 150px;
     height: 150px;
 }
-ul.image-list-sortable >li.dragndrop span{
+ul.image-list-sortable .dropzone{
+    border:5px dashed #ccc;
+    border-radius:5px;
     cursor:pointer;
+    background: #ddd;
     position: absolute;
-    top:25%;
+    top:0;
     left:0;
-    text-align: center;
-    display:inline-block;
+    height: 100%;
+    width: 100%;
     color:#999;
     overflow: hidden;
+}
+ul.image-list-sortable .dropzone .dz-preview.dz-image-preview {
+    background: none;
+}
+ul.image-list-sortable .dropzone .dz-preview {
+    margin:-10px;
 }
 ul.image-list-sortable .options {
     position:absolute;
@@ -1372,7 +1382,7 @@ ul.image-list-sortable .options {
     left:0;
     padding:10px;
     text-align: right;
-    // background: rgba(0,0,0,0.5);
+    /* background: rgba(0,0,0,0.5); */
 }
 div.row.user-pool{
 	margin-top:50px;

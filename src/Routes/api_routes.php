@@ -42,10 +42,12 @@ $api->add('api-chart-project', new Route(
 ));
 
 // One Project chart preprocessed data (invests)
-$api->add('api-chart-invests', new Route(
-    '/charts/{id}/invests',
-    array('_controller' => 'Goteo\Controller\Api\ChartsApiController::projectInvestsAction',
+$api->add('api-projects-images', new Route(
+    '/projects/{id}/images',
+    array('_controller' => 'Goteo\Controller\Api\ProjectsApiController::projectUploadImagesAction',
         )
 ));
 
+
+// Projects
 return $api;

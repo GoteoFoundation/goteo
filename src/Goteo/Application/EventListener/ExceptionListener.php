@@ -149,7 +149,6 @@ class ExceptionListener extends AbstractListener {
             return;
         }
 
-        if(!$request->isXmlHttpRequest()) {
             // redirect to login on acces denied exception if not logged already
             if ($exception instanceof ControllerAccessDeniedException) {
                 $error = $exception->getMessage() ? $exception->getMessage() : Text::get('user-login-required-access');
@@ -159,6 +158,7 @@ class ExceptionListener extends AbstractListener {
                     return;
                 }
 
+            if(!$request->isXmlHttpRequest()) {
                 Message::error($error);
                 if (!Session::isLogged()) {
                     $event->setResponse(new RedirectResponse('/user/login?return=' . rawurlencode($request->getPathInfo())));

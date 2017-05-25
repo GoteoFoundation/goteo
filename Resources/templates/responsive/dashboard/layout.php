@@ -18,6 +18,9 @@ $this->section('content');
 
 <?php $this->replace() ?>
 
+<?php $this->section('head') ?>
+    <link rel="stylesheet" type="text/css" href="<?= SRC_URL ?>/assets/vendor/dropzone/dist/min/dropzone.min.css" />
+<?php $this->append() ?>
 
 <?php $this->section('footer') ?>
 
