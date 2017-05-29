@@ -12,10 +12,12 @@ namespace Goteo\Controller\Dashboard;
 
 use Symfony\Component\HttpFoundation\Request;
 
+use Goteo\Application\Exception\ControllerAccessDeniedException;
 use Goteo\Application\Session;
 use Goteo\Application\Config;
 use Goteo\Application\View;
 use Goteo\Model\Project;
+use Goteo\Model\Project\Reward;
 use Goteo\Model\User;
 use Goteo\Model\User\Interest;
 
@@ -116,6 +118,28 @@ class AjaxDashboardController extends \Goteo\Core\Controller {
             'limit' => $limit,
             'html' => View::render( 'dashboard/partials/projects_widgets_list', ['projects' => $projects] )
         ]);
+
+    }
+
+    /**
+     * get materials table
+     */
+    public function projectMaterialsTableAction($id, Request $request)
+    {
+        $project = Project::get($id);
+        if(!$project->userCanView(Session::getUser())) {
+            throw new ControllerAccessDeniedException();
+        }
+
+        $licenses_list = Reward::licenses();
+
+        return $this->viewResponse(
+            'dashboard/project/partials/materials/materials_table',
+            [
+                'project' => $project,
+                'licenses_list' => $licenses_list
+            ]
+        );
 
     }
 

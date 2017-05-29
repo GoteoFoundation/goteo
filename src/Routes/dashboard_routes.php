@@ -50,6 +50,11 @@ $dash->add('dashboard-ajax-projects-invested', new Route(
     array('_controller' => 'Goteo\Controller\Dashboard\AjaxDashboardController::projectsInvestedAction',
         )
 ));
+$dash->add('dashboard-ajax-projects-materials-table', new Route(
+    '/ajax/projects/{id}/materials-table',
+    array('_controller' => 'Goteo\Controller\Dashboard\AjaxDashboardController::projectMaterialsTableAction',
+        )
+));
 
 // Projects editing
 // Project image editing
@@ -79,41 +84,18 @@ $dash->add('dashboard-project-analytics-redirect', new Route(
         )
 ));
 
+// Materials editing
 $dash->add('dashboard-project-materials', new Route(
     '/project/{pid}/materials',
     array('_controller' => 'Goteo\Controller\Dashboard\ProjectDashboardController::materialsAction',
         )
 ));
+
 // Route from menu
 $dash->add('dashboard-project-materials-redirect', new Route(
     '/projects/materials',
     array('_controller' => 'Goteo\Controller\Dashboard\ProjectDashboardController::materialsAction',
         'pid' => null
-        )
-));
-
-
-$dash->add('dashboard-projects-save-material-url', new Route(
-    '/projects/save-material-url',
-    array('_controller' => 'Goteo\Controller\Dashboard\ProjectDashboardController::saveMaterialUrlAction',
-        )
-));
-
-$dash->add('dashboard-projects-update-materials-table', new Route(
-    '/projects/update-materials-table',
-    array('_controller' => 'Goteo\Controller\Dashboard\ProjectDashboardController::updateMaterialsTableAction',
-        )
-));
-
-$dash->add('dashboard-projects-icon-licenses', new Route(
-    '/projects/icon-licenses',
-    array('_controller' => 'Goteo\Controller\Dashboard\ProjectDashboardController::getLicensesIconAction',
-        )
-));
-
-$dash->add('dashboard-projects-save-new-material', new Route(
-    '/projects/save-new-material',
-    array('_controller' => 'Goteo\Controller\Dashboard\ProjectDashboardController::saveNewMaterialAction',
         )
 ));
 

@@ -8,7 +8,7 @@
 
         <div class="row spacer">
             <div class="col-xs-6 col-sm-3 col-md-2" id="button-container" data-toggle="collapse" data-target="#new-material-form">
-                <button id="add-new-material" class="btn btn-block side-pink"><span class="glyphicon glyphicon-plus"></span> <?= $this->text('dashboard-add-new-share-material') ?></button>
+                <button id="add-new-material" class="btn btn-pink"><span class="glyphicon glyphicon-plus"></span> <?= $this->text('dashboard-add-new-share-material') ?></button>
             </div>
         </div>
 
@@ -17,22 +17,21 @@
     <div class="row">
         <div class="col-md-6">
             <div id="alert-success" class="new-material-success alert alert-success" style="display: none;">
-              <strong><?= $this->text('dashboard-new-material-form-success') ?></strong> .
+              <strong class="msg"></strong>
             </div>
             <?= $this->insert('dashboard/project/partials/materials/new_material_form') ?>
         </div>
 
-    <?php if($this->project->social_rewards): ?>
-        <div id="materials-table">
+    <div id="materials-table">
+        <?php if($this->project->social_rewards): ?>
             <?= $this->insert('dashboard/project/partials/materials/materials_table') ?>
-        </div>
-    <?php else: ?>
-        <h3><?= $this->text('project-no-share-material') ?></h3>
-    <?php endif; ?>
+        <?php else: ?>
+            <h3><?= $this->text('project-no-share-material') ?></h3>
+        <?php endif; ?>
+    </div>
 
 
     <?= $this->insert('dashboard/project/partials/materials/save_url_modal') ?>
-    <?= $this->insert('dashboard/project/partials/materials/save_url_modal_content') ?>
 
 
 <?php $this->replace() ?>
@@ -44,58 +43,67 @@
 
     $(function(){
 
+        var project = '<?= $this->project->id ?>';
+
         $('#materials-table').on('click', '.edit-url', function() {
-            $("#edit-url").val($(this).attr('data-value'));
-            $("#reward-id").val($(this).attr('data-reward-id'));
+            $("#edit-url").val($(this).data('url'));
+            $("#reward-id").val($(this).data('reward'));
         });
 
-        var _update_material_table = function() {
-
-        //update table
-            $.ajax({
-                url: "/dashboard/projects/update-materials-table",
-                data: { 'project_id' : '<?= $this->project->id ?>'   },
-                type: 'post',
-                success: function(table){
-                    $("#materials-table").html(table);
-                }
+        var _show_success_msg = function(msg) {
+            $("#alert-success .msg").html(msg);
+            $("#alert-success").fadeTo(1000, 500).slideUp(1500, function(){
+                $("#alert-success").alert('close');
             });
+
+        }
+        var _update_material_table = function() {
+            //update table
+            $.get('/dashboard/ajax/projects/' + project + '/materials-table',
+                function(table) {
+                    $("#materials-table").html(table);
+                });
         };
 
         var _get_ajax_save_url_result = function() {
-            var url=$("#edit-url").val();
-            var reward_id=$("#reward-id").val();
-            var project = '<?= $this->project->id ?>';
+            var url = $("#edit-url").val();
+            var reward_id = $("#reward-id").val();
 
             $.ajax({
-                url: "/dashboard/projects/save-material-url",
-                data: { 'url' : url, 'reward_id' : reward_id, 'project': project  },
-                type: 'post',
+                url: '/api/projects/' + project + '/materials',
+                data: {
+                    'url' : url,
+                    'reward' : reward_id
+                },
+                type: 'put',
                 success: function(result){
-                    $("#modal-content").html(result);
+                    $('#UrlModal').modal('toggle');
                     //update table
                     _update_material_table();
+                    _show_success_msg('<?= $this->ee($this->text('dashboard-modal-url-success-msg'), 'js') ?>')
+
+                },
+                error: function(result, status) {
+                    var error = result.responseText ? JSON.parse(result.responseText).error : result;
+                    $('#reward-error').removeClass('hidden').html(error);
                 }
             });
         };
 
         var _get_ajax_save_new_material_result = function() {
 
-            var project = '<?= $this->project->id ?>';
             var material = $("#new-material-material").val();
-            var description= $("#new-material-description").val();
-            var icon= $("#new-material-icon").val();
-            var license= $("#new-material-license").val();
-            var url= $("#new-material-url").val();
+            var description = $("#new-material-description").val();
+            var icon = $("#new-material-icon").val();
+            var license = $("#new-material-license").val();
+            var url = $("#new-material-url").val();
 
             $.ajax({
-                url: "/dashboard/projects/save-new-material",
-                data: { 'project' : project,
-                        'material' : material,
+                url: '/api/projects/' + project + '/materials',
+                data: { 'material' : material,
                         'description' : description,
                         'icon' : icon,
                         'license' : license,
-                        'project' : project,
                         'url' : url
                     },
                 type: 'post',
@@ -104,9 +112,7 @@
                     _update_material_table();
                     $("#new-material-form").collapse('hide');
                     $('#new-material-form form').trigger("reset");
-                    $("#alert-success").fadeTo(1000, 500).slideUp(1500, function(){
-                        $("#alert-success").alert('close');
-                    });
+                    _show_success_msg('<?= $this->ee($this->text('dashboard-new-material-form-success'), 'js') ?>')
                 }
             });
         };
@@ -120,7 +126,7 @@
         });
 
         $('#UrlModal').on('shown.bs.modal', function () {
-            $('#UrlModal input:first').focus();
+            $('#UrlModal input:first').select();
         });
 
         $("#UrlModal").on('click', '#btn-save-url', function(){

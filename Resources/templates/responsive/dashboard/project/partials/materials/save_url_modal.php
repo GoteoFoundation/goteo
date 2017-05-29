@@ -13,6 +13,7 @@
             <form name="save-url-form" id="save-url-form" action="">
                 <input type="url" class="form-control" placeholder="<?= $this->text('dashboard-modal-placeholder-edit-url') ?>" id="edit-url" name="edit-url" value="" required>
                 <input type="hidden" value="" id="reward-id" >
+                <p class="text-danger hidden" id="reward-error"></p>
             </form>
           </div>
           <div class="modal-footer">

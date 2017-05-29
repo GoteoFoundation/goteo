@@ -1,9 +1,9 @@
  <table class="table social-commitment table-striped">
     <thead>
         <tr>
-            <th></th>
+            <th>&nbsp;</th>
             <th><?= $this->text('regular-license') ?></th>
-            <th></th>
+            <th>&nbsp;</th>
         </tr>
     </thead>
     <tbody id="materials-table">
@@ -15,7 +15,8 @@
                         <?= $reward->description ?>
                     </p>
                     <p>
-                        <button data-toggle="modal" data-target="#UrlModal" data-value="<?= $reward->url ?>" data-reward-id="<?= $reward->id ?>" class="btn green edit-url" ><?= $this->text('dashboard-edit-share-material-url') ?></button>
+                        <button data-toggle="modal" data-target="#UrlModal" data-url="<?= $reward->url ?>" data-reward="<?= $reward->id ?>" class="btn btn-green edit-url" ><i class="fa fa-link"></i> <?= $this->text('dashboard-edit-share-material-url') ?></button>
+                        <?= $reward->url ?>
                     </p>
                 </td>
                 <td>

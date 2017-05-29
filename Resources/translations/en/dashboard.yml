@@ -157,12 +157,11 @@ dashboard-my-wallet-contribute-button: Donate
 dashboard-my-wallet-modal-pool-info: 'Goteo’s virtual wallet is a feature of our platform that allows you to make a donation and later decide which project you’d like to support.<br> <p>Donations made through our platform pay you back in your income tax declaration, according to the Spanish regulation (Ley 49/2002, de 23 de diciembre, de régimen fiscal de las entidades sin fines lucrativos y de los incentivos fiscales al mecenazgo).</p> <p>When donating, you can download a certificate that validates towards the Tax Office your contribution to a non profit entity. You may access a compilation of your certificates in the past, associated with your previous donations in Goteo through your User Pannel, exactly in the section <a href="/dashboard/wallet/certificate" target="_blank">Certificado de donación</a>.</p><p> IMPORTANT NOTE: We remind you that the donations already reflected in a certificate from our Foundation can not be refunded. This means that if you have made a donation to a concrete project in our platform and that project does not reach its minimum tuning goal during the campaign, your donation will be transferred to your wallet but not back to your bank account. However, you may donate later that amount from your virtual wallet in Goteo.org to any other future project that you like, when you like, without introducing again your bank account number or PayPal user.</p>'
 dashboard-my-wallet-pool-info: 'More information on using your wallet'
 
-dashboard-modal-success-msg: 'The URL has been correctly updated'
+dashboard-modal-url-success-msg: 'The URL has been correctly updated'
 dashboard-add-new-share-material: 'New material'
 dashboard-edit-share-material-url: 'Editing the URL'
 dashboard-modal-edit-url: 'URL where the shared materials are'
 dashboard-modal-placeholder-edit-url: 'URL'
-dashboard-modal-success-msg: 'The URL has been correctly updated'
 
 dashboard-new-material-form-success: 'The new shared material has been added successfully.'
 dashboard-new-material-form-material: 'Material'

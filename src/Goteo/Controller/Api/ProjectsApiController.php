@@ -13,11 +13,16 @@ namespace Goteo\Controller\Api;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Goteo\Application\Exception\ControllerAccessDeniedException;
+use Goteo\Application\Exception\ModelNotFoundException;
+use Goteo\Application\Exception\ModelException;
 
+use Goteo\Application\Config;
 use Goteo\Model\Project;
 use Goteo\Model\Project\Image as ProjectImage;
+use Goteo\Model\Project\Reward;
 use Goteo\Model\Image;
 use Goteo\Library\Text;
+use Goteo\Console\UsersSend;
 
 
 class ProjectsApiController extends AbstractApiController {
@@ -258,4 +263,83 @@ class ProjectsApiController extends AbstractApiController {
         }
         return $this->jsonResponse(['msg' => $msg, 'gallery' => $result, 'result' => $success]);
     }
+
+    public function projectMaterialsAction($id, Request $request) {
+        $prj = Project::get($id);
+
+        // Security, first of all...
+        if(!$prj->userCanView($this->user)) {
+            throw new ControllerAccessDeniedException();
+        }
+
+        // Handle PUT requests: new element
+        if($request->isMethod('put')) {
+            if(!$prj->userCanEdit($this->user)) {
+                throw new ControllerAccessDeniedException();
+            }
+            // save new material
+            $url = $request->request->get('url');
+            $reward_id = $request->request->get('reward');
+
+            $reward = Reward::get($reward_id);
+            if(!$reward)
+                throw new ModelNotFoundException("Not found reward $reward_id");
+
+            $reward->url = $url;
+
+            $reward->updateURL();
+
+            $rol = Text::get('user-promoter');
+
+            // Send email to all default consultants
+            $consultants = $prj->getConsultants();
+            if($always_consultants = Config::get('mail.consultants')) {
+                $consultants += $always_consultants;
+            }
+
+            $prj->whodidit = $this->user->id;
+            $prj->whorole = $rol;
+
+            // For compatibility with old version of sendUsers
+            $_POST['reward'] = $reward_id;
+            $_POST['value'] = $url;
+
+            UsersSend::toConsultants('rewardfulfilled', $prj);
+
+            $prj->social_rewards[$reward->id] = $reward;
+        }
+
+        // Handles POST requests (new element)
+        if($request->isMethod('post')) {
+            if(!$prj->userCanEdit($this->user)) {
+                throw new ControllerAccessDeniedException();
+            }
+
+            $material = $request->request->get('material');
+            $description = $request->request->get('description');
+            $icon = $request->request->get('icon');
+            $license = $request->request->get('license');
+            $url = $request->request->get('url');
+
+            $reward = new Reward();
+
+            $reward->project = $prj->id;
+            $reward->reward = $material;
+            $reward->description = $description;
+            $reward->icon = $icon;
+            $reward->license = $license;
+            $reward->url = $url;
+            $reward->bonus = 1;
+            $reward->type = "social";
+
+            if(!$reward->save($errors)) {
+                throw new ModelException(implode(',', $errors));
+            }
+            $prj->social_rewards[$reward->id] = $reward;
+        }
+
+        $materials = $prj->social_rewards;
+        return $this->jsonResponse($materials);
+    }
 }
+

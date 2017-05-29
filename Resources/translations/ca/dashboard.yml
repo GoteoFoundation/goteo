@@ -153,7 +153,7 @@ user-profile-saved: 'Informació de perfil actualitzada'
 user-save-fail: 'Hi ha hagut algun problema en desar les dades'
 dashboard-my-wallet-contribute-button: Repartir
 
-dashboard-modal-success-msg: 'La URL s''ha actualitzat correctament'
+dashboard-modal-url-success-msg: 'La URL s''ha actualitzat correctament'
 dashboard-add-new-share-material: 'Nou material'
 dashboard-edit-share-material-url: 'Editar URL'
 dashboard-modal-edit-url: 'URL on es troba el material compartit'
@@ -178,5 +178,4 @@ project-upload-images-some-ko: "Algunes imatges no s'han pujat!"
 dashboard-project-default-image-confirm: 'Vols fer servir aquesta imatge per defecte del projecte?'
 dashboard-project-image-default-ko: "No se s'ha pogut posar la imatge per defecte!"
 dashboard-project-image-reorder-ko: "No se s'han pogut ordenar les imatges!"
-
 

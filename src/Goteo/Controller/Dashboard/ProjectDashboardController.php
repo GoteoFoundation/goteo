@@ -20,9 +20,7 @@ use Goteo\Model\Project\Reward;
 use Goteo\Model\Project\Image as ProjectImage;
 use Goteo\Application\Message;
 use Goteo\Library\Text;
-use Goteo\Model\License;
 use Goteo\Console\UsersSend;
-use Goteo\Controller\Dashboard;
 use Goteo\Application\Exception\ModelException;
 use Goteo\Application\Exception\ControllerAccessDeniedException;
 
@@ -110,7 +108,7 @@ class ProjectDashboardController extends \Goteo\Core\Controller {
     public function materialsAction($pid = null, Request $request)
     {
 
-        $project = $this->validateProject($pid, 'analytics');
+        $project = $this->validateProject($pid, 'materials');
         if($project instanceOf Response) return $project;
 
         $licenses_list = Reward::licenses();
@@ -124,128 +122,5 @@ class ProjectDashboardController extends \Goteo\Core\Controller {
             ]);
 
     }
-
-     /**
-     * Save material url
-     */
-    public function saveMaterialUrlAction(Request $request)
-    {
-        if($request->isXmlHttpRequest()) {
-
-            if ($request->isMethod('post'))
-            {
-                $url = $request->request->get('url');
-                $reward_id= $request->request->get('reward_id');
-                $project_id= $request->request->get('project');
-
-                $user = Session::getUser();
-
-                $reward=Reward::get($reward_id);
-
-                $reward->url=$url;
-
-                $reward->updateURL();
-
-                $reward=Reward::get($reward_id);
-
-                // For compatibility with old version of sendUsers
-                $_POST['reward']=$reward_id;
-                $_POST['value']=$url;
-
-                $who = $user->id;
-
-                $rol = "el usuario impulsor";
-
-                // Enviar correo informativo a los asesores del proyecto.
-                $project_obj = Project::getMini($project_id);
-
-                // TODO: arreglar esta chapuza..
-                // Añadir siempre a Olivier.
-                if (!in_array('olivier', array_keys($project_obj->getConsultants()))) {
-                    $project_obj->consultants['olivier'] = 'Olivier Schulbaum';
-                }
-
-                // Añadir siempre a Manuela.
-                if (!in_array('lamanuf', array_keys($project_obj->getConsultants()))) {
-                    $project_obj->consultants['lamanuf'] = 'Manuela Frudà';
-                }
-
-                $project_obj->whodidit = $who;
-                $project_obj->whorole = $rol;
-                UsersSend::toConsultants('rewardfulfilled', $project_obj);
-
-                return $this->viewResponse(
-                    'dashboard/project/partials/materials/save_url_modal_success'
-                );
-            }
-        }
-
-
-    }
-
-     /**
-     * Save new material
-     */
-    public function saveNewMaterialAction(Request $request)
-    {
-        if($request->isXmlHttpRequest()) {
-
-            if ($request->isMethod('post'))
-            {
-                $project = $request->request->get('project');
-                $material = $request->request->get('material');
-                $description= $request->request->get('description');
-                $icon= $request->request->get('icon');
-                $license= $request->request->get('license');
-                $url= $request->request->get('url');
-
-                $reward=new Reward();
-
-                $reward->project=$project;
-                $reward->reward=$material;
-                $reward->description=$description;
-                $reward->icon=$icon;
-                $reward->license=$license;
-                $reward->url=$url;
-                $reward->bonus=1;
-                $reward->type="social";
-
-                $reward->save();
-
-                return $this->viewResponse(
-                    'dashboard/project/partials/materials/new_material_form'
-                );
-            }
-        }
-
-
-    }
-
-    /**
-     * Update materials table
-     */
-    public function updateMaterialsTableAction(Request $request)
-    {
-        if($request->isXmlHttpRequest()) {
-
-            if ($request->isMethod('post'))
-            {
-                $licenses_list = Reward::licenses();
-                $project_id = $request->request->get('project_id');
-                $project=Project::get($project_id);
-
-                return $this->viewResponse(
-                    'dashboard/project/partials/materials/materials_table',
-                    [
-                        'project' => $project,
-                        'licenses_list' => $licenses_list
-                    ]
-                );
-            }
-        }
-
-
-    }
-
 
 }

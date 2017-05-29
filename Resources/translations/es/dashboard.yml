@@ -161,12 +161,11 @@ user-save-fail: 'Ha habido algún problema al guardar los datos'
 dashboard-project-analytics-ok: 'Tus identificadores para analítica se han guardado correctamente'
 dashboard-project-analytics-fail: 'Ha ocurrido un error al guardar tus identificadores para analítica'
 
-dashboard-modal-success-msg: 'La URL ha sido actualizada correctamente'
+dashboard-modal-url-success-msg: 'La URL ha sido actualizada correctamente'
 dashboard-add-new-share-material: 'Nuevo material'
 dashboard-edit-share-material-url: 'Editar URL'
 dashboard-modal-edit-url: 'Url donde se encuentra el material compartido'
 dashboard-modal-placeholder-edit-url: 'Url'
-dashboard-modal-success-msg: 'La URL ha sido actualizada correctamente'
 
 dashboard-new-material-form-success: 'El nuevo material compartido ha sido agregado correctamente.'
 dashboard-new-material-form-material: 'Material'
