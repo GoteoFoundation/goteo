@@ -199,13 +199,13 @@ namespace Goteo\Model\Project {
 
         public static function sections () {
             return array(
-                '' => 'Galería',
+                'play-video' => Text::get('overview-field-play-video'),
+                '' => Text::get('overview-field-main-gallery'),
                 'about' => Text::get('overview-field-about'),
                 'motivation' => Text::get('overview-field-motivation'),
                 'goal' => Text::get('overview-field-goal'),
                 'related' => Text::get('overview-field-related'),
-                'reward' => Text::get('overview-field-reward'),
-                'play-video' => Text::get('overview-field-play-video')
+                // 'reward' => Text::get('overview-field-reward')
             );
        }
 

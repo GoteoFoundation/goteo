@@ -31,6 +31,9 @@
   <li role="presentation"<?= $this->section === 'summary' ? ' class="active"' : '' ?>>
     <a href="/project/<?= $this->project->id ?>" target="_blank"><i class="fa fa-external-link"></i> <?= $this->text('regular-preview') ?></a>
   </li>
+  <li role="presentation"<?= $this->section === 'edit' ? ' class="active"' : '' ?>>
+    <a href="/project/edit/<?= $this->project->id ?>" target="_blank"><i class="fa fa-edit"></i> <?= $this->text('regular-edit') ?></a>
+  </li>
   <li role="presentation"<?= $this->section === 'images' ? ' class="active"' : '' ?>>
     <a href="/dashboard/project/<?= $this->project->id ?>/images"><i class="fa fa-image"></i> <?= $this->text('images-main-header') ?></a>
   </li>

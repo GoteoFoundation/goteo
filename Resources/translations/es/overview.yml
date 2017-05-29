@@ -15,6 +15,7 @@ overview-field-currency: 'Divisa original'
 overview-field-currently: 'Estado actual'
 overview-field-description: 'Breve descripción '
 overview-field-goal: 'Objetivos de la campaña de crowdfunding'
+overview-field-main-gallery: Galería principal
 overview-field-image_gallery: 'Imágenes actuales'
 overview-field-image_upload: 'Subir una imagen (2MB max.)'
 overview-field-keywords: 'Palabras clave del proyecto'
