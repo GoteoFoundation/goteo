@@ -4,7 +4,7 @@
 
     <!-- <h1><?= $this->text('project-share-materials') ?></h1> -->
 
-    <?php if(1||$this->project->status==4 || $this->project->status==5): ?>
+    <?php if($this->allowNewShare): ?>
 
         <div class="row spacer">
             <div class="col-xs-6 col-sm-3 col-md-2" id="button-container" data-toggle="collapse" data-target="#new-material-form">
@@ -138,13 +138,12 @@
             else
             {
                 $("#license-group").show();
-                $.ajax({
-                    url: "/dashboard/projects/icon-licenses",
-                    data: { 'icon' : icon   },
-                    type: 'post',
-                    success: function(result){
-                        $("#new-material-license").html(result);
-                    }
+                $.get("/api/licenses", { 'icon' : icon   }, function(data){
+                    var html = '';
+                    $.each(data, function(index, value) {
+                        html += '<option value="' + value.id + '">' + value.name + '</option>';
+                    });
+                    $("#new-material-license").html(html);
                 });
             }
         })

@@ -20,7 +20,7 @@ class LicensesApiController extends AbstractApiController {
      * Simple listing of license
      * GET filters:
      * ?icon=... filters by icon
-     * ?group=... filters by group (open|)
+     * ?group=... filters by group (open|regular)
      * @param  Request $request [description]
      * @return [type]           [description]
      */

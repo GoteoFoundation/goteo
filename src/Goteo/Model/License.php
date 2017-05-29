@@ -87,7 +87,9 @@ namespace Goteo\Model {
                     $different_select,
                     license.group as `group`,
                     license.order as `order`,
-                    GROUP_CONCAT(DIStINCT icon_license.icon SEPARATOR ' ') as icons
+                    " .
+                     ( $icon ? 'icon_license.icon as `icon`' : "GROUP_CONCAT(DIStINCT icon_license.icon SEPARATOR ' ') as icons")
+                     . "
                 FROM    license
                 LEFT JOIN license_lang
                     ON  license_lang.id = license.id
@@ -100,14 +102,14 @@ namespace Goteo\Model {
                 $cond = " WHERE ";
             }
 
-            if (!empty($icon)) {
+            if ($icon) {
                 // de un grupo o de todos
                 $sql .= "$cond icon_license.icon = :icon ";
                 $values[':icon'] = $icon;
                 $cond = ' AND ';
             }
 
-            if (!empty($group)) {
+            if ($group) {
                 if ($group == 'regular') {
                     // sin grupo
                     $sql .= "$cond (`group` = '' OR `group` IS NULL)
@@ -119,7 +121,9 @@ namespace Goteo\Model {
                     $values[':group'] = $group;
                 }
             }
-
+            if(!$icon) {
+                $sql .= ' GROUP BY license.id ';
+            }
             $sql .= "ORDER BY `order` ASC, name ASC
                 ";
 

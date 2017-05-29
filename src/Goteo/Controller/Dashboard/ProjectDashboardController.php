@@ -120,7 +120,7 @@ class ProjectDashboardController extends \Goteo\Core\Controller {
            'project' => $project,
             'licenses_list' => $licenses_list,
             'icons' => $icons,
-            'section' => 'materials'
+            'allowNewShare' => 1 || in_array($project->status, [Project::STATUS_FUNDED , Project::STATUS_FULFILLED])
             ]);
 
     }
