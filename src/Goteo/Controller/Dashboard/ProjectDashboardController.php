@@ -56,6 +56,33 @@ class ProjectDashboardController extends \Goteo\Core\Controller {
         return $project;
     }
 
+    public function summaryAction($pid = null, Request $request) {
+        $project = $this->validateProject($pid, 'summary');
+        if($project instanceOf Response) return $project;
+
+        $status_text = '';
+        // mensaje cuando, sin estar en campaña, tiene fecha de publicación
+        if ($project->status < Project::STATUS_IN_CAMPAIGN && !empty($project->published)) {
+            if ($project->published > date('Y-m-d')) {
+                // si la fecha es en el futuro, es que se publicará
+                $status_text = Text::get('project-willpublish', date('d/m/Y', strtotime($project->published)));
+            } else {
+                // si la fecha es en el pasado, es que la campaña ha sido cancelada
+                $status_text = Text::get('project-unpublished');
+            }
+        } elseif ($project->status < Project::STATUS_IN_CAMPAIGN) {
+            // mensaje de no publicado siempre que no esté en campaña
+            $status_text = Text::get('project-not_published');
+        }
+
+        return $this->viewResponse('dashboard/project/summary', [
+            'section' => 'summary',
+            'project' => $project,
+            'statuses' => Project::status(),
+            'status_text' => $status_text
+        ]);
+    }
+
     public function imagesAction($pid = null, Request $request)
     {
         $project = $this->validateProject($pid, 'images');
@@ -115,7 +142,8 @@ class ProjectDashboardController extends \Goteo\Core\Controller {
         $icons   = Reward::icons('social');
 
         return $this->viewResponse('dashboard/project/shared_materials', [
-           'project' => $project,
+            'section' => 'materials',
+            'project' => $project,
             'licenses_list' => $licenses_list,
             'icons' => $icons,
             'allowNewShare' => in_array($project->status, [Project::STATUS_FUNDED , Project::STATUS_FULFILLED])

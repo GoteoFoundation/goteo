@@ -57,6 +57,28 @@ $dash->add('dashboard-ajax-projects-materials-table', new Route(
 ));
 
 // Projects editing
+// Summary
+$dash->add('dashboard-project-summary', new Route(
+    '/project/{pid}/summary',
+    array('_controller' => 'Goteo\Controller\Dashboard\ProjectDashboardController::summaryAction',
+        )
+));
+// Route from menu
+$dash->add('dashboard-project-summary-redirect', new Route(
+    '/projects/summary',
+    array('_controller' => 'Goteo\Controller\Dashboard\ProjectDashboardController::summaryAction',
+        'pid' => null
+        )
+));
+// Route from menu
+$dash->add('dashboard-project-summary-redirect-2', new Route(
+    '/projects',
+    array('_controller' => 'Goteo\Controller\Dashboard\ProjectDashboardController::summaryAction',
+        'pid' => null
+        )
+));
+
+
 // Project image editing
 $dash->add('dashboard-project-images', new Route(
     '/project/{pid}/images',

@@ -50,6 +50,7 @@ dashboard-project-analytics-ok: 'Your analytics IDs have been saved correctly'
 dashboard-project-blog-fail: 'Contact us'
 dashboard-project-blog-inactive: 'Sorry, you can''t publish news on this project right now.'
 dashboard-project-blog-wrongstatus: 'Sorry, you can''t publish news about this project yet...'
+dashboard-project-delete: Delete the project
 dashboard-project-delete_alert: 'Are you sure you want to permanently delete this project?'
 dashboard-project-updates-delete_fail: 'Error while removing post'
 dashboard-project-updates-deleted: 'Post removed'
