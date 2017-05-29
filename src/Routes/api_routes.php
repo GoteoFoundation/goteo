@@ -85,5 +85,11 @@ $api->add('api-projects-images-reorder', new Route(
     array('POST') // methods
 ));
 
-// Projects
+// Licenses list
+$api->add('api-licenses', new Route(
+    '/licenses',
+    array('_controller' => 'Goteo\Controller\Api\LicensesApiController::licensesAction',
+        )
+));
+
 return $api;

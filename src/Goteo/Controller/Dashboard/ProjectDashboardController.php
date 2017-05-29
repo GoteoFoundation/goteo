@@ -175,7 +175,7 @@ class ProjectDashboardController extends \Goteo\Core\Controller {
                 UsersSend::toConsultants('rewardfulfilled', $project_obj);
 
                 return $this->viewResponse(
-                    'dashboard/project/partials/shared_materials/save_url_modal_success'
+                    'dashboard/project/partials/materials/save_url_modal_success'
                 );
             }
         }
@@ -213,7 +213,7 @@ class ProjectDashboardController extends \Goteo\Core\Controller {
                 $reward->save();
 
                 return $this->viewResponse(
-                    'dashboard/project/partials/shared_materials/new_material_form'
+                    'dashboard/project/partials/materials/new_material_form'
                 );
             }
         }
@@ -235,34 +235,11 @@ class ProjectDashboardController extends \Goteo\Core\Controller {
                 $project=Project::get($project_id);
 
                 return $this->viewResponse(
-                    'dashboard/project/partials/shared_materials/materials_table',
+                    'dashboard/project/partials/materials/materials_table',
                     [
                         'project' => $project,
                         'licenses_list' => $licenses_list
                     ]
-                );
-            }
-        }
-
-
-    }
-
-
-    /**
-     * Licenses by type
-     */
-    public function getLicensesIconAction(Request $request)
-    {
-        if($request->isXmlHttpRequest()) {
-
-            if ($request->isMethod('post'))
-            {
-                $icon = $request->request->get('icon');
-                $licenses=License::getAll($icon);
-
-                return $this->viewResponse(
-                    'dashboard/project/partials/shared_materials/license_options',
-                    ['licenses' => $licenses]
                 );
             }
         }
