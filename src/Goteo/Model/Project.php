@@ -2522,6 +2522,11 @@ namespace Goteo\Model {
             }
         }
 
+        public function getTextStatus() {
+            $statuses = self::status();
+            return $statuses[$this->status];
+        }
+
         /*
          * Lista de proyectos de un usuario
          * @return: array of Project

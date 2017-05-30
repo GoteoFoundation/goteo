@@ -1498,7 +1498,16 @@ div.new-material-success{
 	position: relative;
 	display: block;
 }
+.project-widget a.img-link .status-mark {
+    position: absolute;
+    bottom:0;
+    right:0;
+    background: rgba(0,0,0,0.4);
+    // height:25px;
+    width: 100%;
+    padding:5px;
 
+}
 .project-widget a.img-link div.call-mark{
 	width: 11%;
 	position: absolute;
@@ -1535,12 +1544,23 @@ div.new-material-success{
 	height: 270px;
 }
 
-.project-widget .title a
+.project-widget.mini .content {
+    height:auto;
+}
+
+.project-widget .title
 {
-	font-size:18px;
-	color:#58595B;
-	font-weight:bold;
-	margin-top: 10px;
+    font-size:18px;
+    color:#58595B;
+    margin-top: 10px;
+}
+.project-widget.mini .title {
+    line-height: 20px;
+    margin: 0;
+}
+.project-widget .title a {
+    color:#58595B;
+    font-weight:bold;
 }
 
 .project-widget .title a:hover{

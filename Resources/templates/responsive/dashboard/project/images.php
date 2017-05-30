@@ -123,6 +123,11 @@ $(function(){
         var $li = $(this).closest('li');
         var $list = $(this).closest('ul');
         var $error = $list.next();
+        // Check if it is default
+        if($li.find('.default-image').hasClass('btn-pink')) {
+            alert('<?= $this->ee($this->text('dashboard-project-delete-default-image'), 'js') ?>')
+            return false;
+        }
         if(confirm('<?= $this->ee($this->text('dashboard-project-delete-image-confirm'), 'js') ?>')) {
             $.ajax({
                 url: '/api/projects/<?= $this->project->id ?>/images/' + $li.data('name'),
@@ -160,7 +165,7 @@ $(function(){
                     $this.addClass('btn-pink').removeClass('btn-default');
                     $error.addClass('hidden');
                     // Autoupdate images covers with class auto-project-image
-                    $('img.auto-project-image').each(function() {
+                    $('#project-<?= $this->project->id ?> img.img-project').each(function() {
                         var src =  $(this).attr('src').split('/');
                         src[src.length - 1] = data.default;
                         $(this).attr('src', src.join('/'));

@@ -45,17 +45,17 @@ $this->section('content');
 
 		<div class="row">
 			<div class="col-sm-8">
-				<?= $this->insert('project/partials/media.php', ['project' => $project ]) ?>
+				<?= $this->insert('project/partials/media', ['project' => $project ]) ?>
 			</div>
 			<div class="col-sm-4">
-				<?= $this->insert('project/partials/meter.php', ['project' => $project ]) ?>
+				<?= $this->insert('project/partials/meter', ['project' => $project ]) ?>
 			</div>
 		</div>
 
 		<!-- Tags and share info -->
 		<div class="row">
 
-		<?= $this->insert('project/partials/main_extra.php', ['project' => $project ]) ?>
+		<?= $this->insert('project/partials/main_extra', ['project' => $project ]) ?>
 
 		</div>
 </div>
@@ -73,7 +73,7 @@ $this->section('content');
 
 	<div class="col-sm-4 side">
 
-	<?= $this->insert('project/partials/side.php', ['project' => $project]) ?>
+	<?= $this->insert('project/partials/side', ['project' => $project]) ?>
 
 	</div>
 
@@ -92,7 +92,7 @@ $this->section('content');
 	    <?php foreach ($this->related_projects as $related_project) : ?>
 
 	              <div class="col-sm-6 col-md-4 col-xs-12 spacer">
-	                <?= $this->insert('project/widget.php', ['project' => $related_project]) ?>
+	                <?= $this->insert('project/widgets/standard', ['project' => $related_project]) ?>
 	              </div>
 	    <?php endforeach; ?>
     	</div>

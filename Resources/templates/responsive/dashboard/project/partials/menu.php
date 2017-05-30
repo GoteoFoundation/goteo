@@ -20,8 +20,8 @@
 
 ?>
 
-<h4><?= $this->project->name ?></h4>
-<img class="img-responsive auto-project-image" src="<?= $this->project->image->getLink(150, 75, true); ?>">
+<?= $this->insert('project/widgets/mini', ['project' => $this->project, 'admin' => $this->project->userCanEdit($this->get_user())]) ?>
+
 <hr>
 
 <ul class="nav nav-pills nav-stacked">

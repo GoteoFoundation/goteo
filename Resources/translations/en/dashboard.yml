@@ -178,7 +178,8 @@ dashboard-project-images-desc: 'Drag and drop images as you like to organize the
 dashboard-project-default-image: 'Default image'
 dashboard-project-delete-image: 'Delete image'
 dashboard-project-delete-image-confirm: 'Are you sure to remove this image?'
-dashboard-project-dnd-image: 'Drag & drop an image here'
+dashboard-project-delete-default-image: "The default image cannot be deleted.\nPlease choose another image as default before remove this one."
+dashboard-project-dnd-image: 'Drag & drop one or more images here'
 dashboard-project-image-delete-ko: 'The image has not been deleted!'
 project-upload-images-some-ko: 'Some images has not been uploaded!'
 dashboard-project-default-image-confirm: 'Do you want to use this image as a default for the project?'
