@@ -40,16 +40,16 @@
     <a href="/dashboard/project/<?= $this->project->id ?>/images"><i class="fa fa-image" title="<?= $this->text('images-main-header') ?>"></i> <?= $this->text('images-main-header') ?></a>
   </li>
   <li role="presentation"<?= $this->section === 'updates' ? ' class="active"' : '' ?>>
-    <a href="/dashboard/projects/updates/select?project=<?= $this->project->id ?>" target="_blank"><i class="fa fa-edit" title="<?= $this->text('dashboard-menu-projects-updates') ?>"></i> <?= $this->text('dashboard-menu-projects-updates') ?></a>
+    <a href="/dashboard/projects/updates/select?project=<?= $this->project->id ?>" target="_blank"><i class="fa fa-file-text" title="<?= $this->text('dashboard-menu-projects-updates') ?>"></i> <?= $this->text('dashboard-menu-projects-updates') ?></a>
   </li>
   <li role="presentation"<?= $this->section === 'supports' ? ' class="active"' : '' ?>>
-    <a href="/dashboard/projects/supports/select?project=<?= $this->project->id ?>" target="_blank"><i class="fa fa-edit" title="<?= $this->text('dashboard-menu-projects-supports') ?>"></i> <?= $this->text('dashboard-menu-projects-supports') ?></a>
+    <a href="/dashboard/projects/supports/select?project=<?= $this->project->id ?>" target="_blank"><i class="fa fa-group" title="<?= $this->text('dashboard-menu-projects-supports') ?>"></i> <?= $this->text('dashboard-menu-projects-supports') ?></a>
   </li>
   <li role="presentation"<?= $this->section === 'rewards' ? ' class="active"' : '' ?>>
-    <a href="/dashboard/projects/rewards/select?project=<?= $this->project->id ?>" target="_blank"><i class="fa fa-edit" title="<?= $this->text('dashboard-menu-projects-rewards') ?>"></i> <?= $this->text('dashboard-menu-projects-rewards') ?></a>
+    <a href="/dashboard/projects/rewards/select?project=<?= $this->project->id ?>" target="_blank"><i class="fa fa-user" title="<?= $this->text('dashboard-menu-projects-rewards') ?>"></i> <?= $this->text('dashboard-menu-projects-rewards') ?></a>
   </li>
   <li role="presentation"<?= $this->section === 'messengers' ? ' class="active"' : '' ?>>
-    <a href="/dashboard/projects/messengers/select?project=<?= $this->project->id ?>" target="_blank"><i class="fa fa-edit" title="<?= $this->text('dashboard-menu-projects-messegers') ?>"></i> <?= $this->text('dashboard-menu-projects-messegers') ?></a>
+    <a href="/dashboard/projects/messengers/select?project=<?= $this->project->id ?>" target="_blank"><i class="fa fa-comments" title="<?= $this->text('dashboard-menu-projects-messegers') ?>"></i> <?= $this->text('dashboard-menu-projects-messegers') ?></a>
   </li>
   <li role="presentation"<?= $this->section === 'analytics' ? ' class="active"' : '' ?>>
     <a href="/dashboard/project/<?= $this->project->id ?>/analytics"><i class="fa fa-pie-chart" title="<?= $this->text('dashboard-menu-projects-analytics') ?>"></i> <?= $this->text('dashboard-menu-projects-analytics') ?></a>
