@@ -7,12 +7,14 @@
 
     <?php foreach($this->zones as $key => $zone): ?>
         <h4><?= $zone ?></h4>
-        <ul class="list-inline image-list-sortable" data-section="<?= $key ?>">
-        <?php foreach($this->images[$key] as $img): ?>
-            <?= $this->insert('dashboard/project/partials/image_list_item', ['image_url' => $img->getLink(300, 300, true), 'image_name' => $img->getName()]) ?>
-        <?php endforeach ?>
-            <li class="dragndrop"><div class="dropzone"></div></li>
-        </ul>
+        <div class="image-zone" data-section="<?= $key ?>">
+            <ul class="list-inline image-list-sortable">
+            <?php foreach($this->images[$key] as $img): ?>
+                <?= $this->insert('dashboard/project/partials/image_list_item', ['image_url' => $img->getLink(300, 300, true), 'image_name' => $img->getName()]) ?>
+            <?php endforeach ?>
+            </ul>
+            <div class="dragndrop"><div class="dropzone"></div></div>
+        </div>
         <p class="text-danger error-msg hidden"></p>
     <?php endforeach ?>
 
@@ -26,10 +28,10 @@
 $(function(){
     var saveCurrentOrder = function() {
         var gallery = {};
-        var $error = $('.image-list-sortable+.error-msg');
-        $('.image-list-sortable li:not(.dragndrop)').each(function(){
+        var $error = $('.image-zone+.error-msg');
+        $('.image-list-sortable li').each(function(){
             var name = $(this).data('name');
-            var section = $(this).closest('ul').data('section') ||  '_';
+            var section = $(this).closest('.image-zone').data('section') ||  '_';
             if(!$.isArray(gallery[section])) {
                 gallery[section] = [];
             }
@@ -52,10 +54,15 @@ $(function(){
 
     Dropzone.autoDiscover = false;
 
-    $('.image-list-sortable').each(function(){
-        Sortable.create($(this).get(0), {
+    $('.image-zone').each(function(){
+        var $zone = $(this);
+        var $list = $(this).find('.image-list-sortable');
+        var $error = $zone.next();
+        var element = $zone.find('.dragndrop>div').get(0);
+
+        Sortable.create($list.get(0), {
             group: 'project-images'
-            , filter: ".dragndrop"
+            // , filter: ".dragndrop"
             // Reorder actions
             , onEnd: function (evt) {
                 // evt.oldIndex;  // element's old index within parent
@@ -65,9 +72,6 @@ $(function(){
             }
         });
 
-        var $list = $(this);
-        var $error = $list.next();
-        var element = $list.find('.dragndrop>div').get(0);
         var dropzone = new Dropzone(element, {
             url:'/api/projects/<?= $this->project->id ?>/images',
             uploadMultiple: true,
@@ -113,7 +117,7 @@ $(function(){
         });
         dropzone.on("sending", function(file, xhr, formData) {
           // Will send the section value along with the file as POST data.
-          formData.append("section", $list.data('section'));
+          formData.append("section", $zone.data('section'));
         });
     });
 
@@ -121,8 +125,8 @@ $(function(){
     $('.image-list-sortable').on( 'click', '.delete-image', function(e) {
         e.preventDefault();
         var $li = $(this).closest('li');
-        var $list = $(this).closest('ul');
-        var $error = $list.next();
+        var $zone = $(this).closest('.image-zone');
+        var $error = $zone.next();
         // Check if it is default
         if($li.find('.default-image').hasClass('btn-pink')) {
             alert('<?= $this->ee($this->text('dashboard-project-delete-default-image'), 'js') ?>')
@@ -150,8 +154,8 @@ $(function(){
         e.preventDefault();
         var $li = $(this).closest('li');
         var $this = $(this);
-        var $list = $(this).closest('ul');
-        var $error = $list.next();
+        var $zone = $(this).closest('.image-zone');
+        var $error = $zone.next();
         if(confirm('<?= $this->ee($this->text('dashboard-project-default-image-confirm'), 'js') ?>')) {
             $.ajax({
                 url: '/api/projects/<?= $this->project->id ?>/images/' + $li.data('name'),
