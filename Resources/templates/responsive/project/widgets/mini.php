@@ -1,10 +1,10 @@
 <div class="project-widget mini" id="project-<?= $this->project->id ?>">
     <a class="img-link" href="/project/<?= $this->project->id ?>">
-        <img class="img-responsive img-project" src="<?= $this->project->image->getLink(240, 135, true); ?>">
+        <img class="img-project" src="<?= $this->project->image->getLink(240, 135, true); ?>">
         <div class="status-mark">
             <span class="label"><?= amount_format($this->project->invested) ?> / <?= amount_format($this->project->amount) ?></span>
         <?php if($this->admin): ?>
-            <span class="label label-danger pull-right"><?= $this->project->getTextStatus() ?></span>
+            <span class="label label-danger pull-right hidden-xs"><?= $this->project->getTextStatus() ?></span>
         <?php endif ?>
         </div>
     </a>

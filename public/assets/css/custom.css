@@ -34,6 +34,16 @@
 	margin: 0 auto;
 }
 
+.navbar-toggle {
+  background-color: #32BDB8;
+}
+
+.navbar-toggle .icon-bar{
+    background-color: #fff;
+    height: 5px !important;
+    width: 30px !important;
+}
+
  .main-color-background {
   background-color: #32BDB8;
  }
@@ -1299,13 +1309,15 @@ ul.dashboard-navbar > li.active > a, ul.dashboard-navbar li a:hover{
 
 .dashboard-sidebar {
 }
-.dashboard-sidebar > .nav {
+
+.dashboard-sidebar .nav {
     border-radius:5px;
     // background: #C7ECEC;
     background: #f9f9f9;
 }
-.dashboard-sidebar > .nav a{
-    color:#20B3B2;
+.dashboard-sidebar .nav a{
+    // color:#20B3B2;
+    color:#1f8f8d;;
 }
 
 ul.dashboard-navbar li a{
@@ -1428,17 +1440,27 @@ div.row.user-pool div.user-pool-info h2 span.pool-amount{
 }
 
 div.row.general-dashboard, div.container.general-dashboard{
-	background-color: #FFF;
-	padding: 2% 5%;
-	border-radius: 7px;
-	margin-bottom: 40px;
+    background-color: #FFF;
+    padding: 2% 5%;
+    margin-bottom: 40px;
+    border-radius: 7px;
 }
 .general-dashboard div.row.more-projects-button {
     display: flex;
     justify-content: center;
     margin-top: 40px;
 }
+@media (max-width: 767px) {
+    div.row.general-dashboard, div.container.general-dashboard{
+        background-color: #FFF;
+        padding: 2% 5%;
+        margin-right:0;
+        margin-left:0;
+        border-radius: none;
+        margin-bottom: 20px;
+    }
 
+}
 div.row.user-pool div.user-pool-info div.extra-info{
 	margin-left: 2px;
 	margin-top: 5%;
@@ -1505,7 +1527,6 @@ div.new-material-success{
 .project-widget {
     position: relative;
 }
-
 .project-widget a.img-link{
 	position: relative;
 	display: block;
@@ -1688,6 +1709,75 @@ div.new-material-success{
 		padding-top: 8%;
 		padding-bottom: 8%;
 	}
+
+}
+
+@media (min-width: 768px) {
+    .dashboard-sidebar.affix {
+        position: static;
+    }
+
+}
+@media (max-width: 767px) {
+    .dashboard-sidebar.affix {
+        z-index:1000;
+        width:100%;
+        top:0;
+        left:0;
+    }
+    .dashboard-sidebar .dashboard-project-navbar-nav {
+        position: relative;
+    }
+    .dashboard-sidebar .navbar-toggle {
+        position: absolute;
+        float:none;
+        right:0;
+        top:0;
+        margin:5px;
+    }
+    .dashboard-sidebar.affix .navbar-toggle {
+        margin-right:15px;
+    }
+
+
+    .project-widget.mini {
+        display: table;
+        width: 100%;
+    }
+    .project-widget.mini a.img-link{
+        display: table-cell;
+        width:96px;
+    }
+    .project-widget.mini .img-project {
+        width:96px;
+        height:54px;
+        border-bottom-left-radius: 5px;
+        border-bottom-right-radius: 5px;
+
+    }
+    .project-widget.mini .status-mark {
+        border-bottom-left-radius: 5px;
+        border-bottom-right-radius: 5px;
+    }
+    .project-widget.mini .content {
+        display: table-cell;
+        border-left:none;
+        // border-top:1px solid #D9D9DE;
+        border:none;
+        border-top-right-radius: 5px;
+        border-bottom-left-radius: 0;
+        padding:0 0 0 1em;
+    }
+    .dashboard-sidebar.affix .project-widget.mini .content {
+        background: #C7ECEC;
+        width: auto;
+        border-top-right-radius: 0;
+    }
+    .dashboard-sidebar.affix .project-widget.mini .img-project {
+        border-top-right-radius: 0;
+        border-top-left-radius: 0;
+        border-bottom-right-radius: 0;
+    }
 
 }
 

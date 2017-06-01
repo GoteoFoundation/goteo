@@ -20,11 +20,19 @@
 
 ?>
 
+<nav class="dashboard-project-navbar-nav">
 <?= $this->insert('project/widgets/mini', ['project' => $this->project, 'admin' => $this->project->userCanEdit($this->get_user())]) ?>
 
-<hr>
 
-<ul class="nav nav-pills nav-stacked">
+<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#dashboard-project-menu" aria-expanded="false" aria-controls="navbar">
+  <span class="sr-only">Menu</span>
+  <span class="icon-bar"></span>
+  <span class="icon-bar"></span>
+  <span class="icon-bar"></span>
+</button>
+
+<hr class="hidden-xs">
+<ul id="dashboard-project-menu" class="nav nav-pills nav-stacked navbar-collapse collapse">
   <?php $this->section('dashboard-project-menu-list') ?>
 
   <li role="presentation"<?= $this->section === 'summary' ? ' class="active"' : '' ?>>
@@ -67,3 +75,4 @@
 
 </ul>
 
+</nav>

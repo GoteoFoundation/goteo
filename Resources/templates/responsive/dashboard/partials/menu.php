@@ -7,14 +7,14 @@
 			</span>
       	</div>
         <div class="navbar-header">
-          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar-dashboard" aria-expanded="false" aria-controls="navbar-dashboard">
             <span class="sr-only">Menu</span>
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button>
         </div>
-        <div id="navbar" class="clear-both">
+        <div id="navbar-dashboard" class="clear-both navbar-collapse collapse">
           <ul class="nav navbar-nav dashboard-navbar">
 
             <li class="dropdown">
