@@ -241,86 +241,89 @@ class InvestListener extends AbstractListener {
         $replace = array($user->name, $project->name, Config::getUrl($lang) . '/project/' . $project->id, $invest->amount, $txt_rewards, $txt_address, $txt_droped, $txt_method);
         $content = str_replace($search, $replace, $template->parseText());
 
-        $mailHandler = new Mail();
-        $mailHandler->lang = $lang;
-        $mailHandler->reply = Config::get('mail.transport.name');
-        $mailHandler->replyName = Config::get('mail.transport.name');
-        $mailHandler->to = $user->email;
-        $mailHandler->toName = $user->name;
-        $mailHandler->subject = $subject;
-        $mailHandler->content = $content;
-        $mailHandler->html = true;
-        $mailHandler->template = $template->id;
-        $errors = [];
-        if ($mailHandler->send($errors)) {
-            Message::info(Text::get('project-invest-thanks_mail-success'));
-            $this->notice('Invest user mail sent', [$invest, $invest->getProject(), $invest->getFirstReward(), $invest->getUser(), $mailHandler]);
-        } else {
-            Message::error(Text::get('project-invest-thanks_mail-fail'));
-            Message::error(implode('<br />', $errors));
-            $this->warning('Invest user mail error', [$invest, $invest->getProject(), $invest->getFirstReward(), $invest->getUser(), $mailHandler, 'errors' => $errors]);
-        }
-        unset($mailHandler);
+        if(!$event->skipMail()) {
 
-        //         // si es un regalo
-        // if ($invest->address->regalo && !empty($invest->address->emaildest)) {
-        //     // Notificación al destinatario de regalo
-        //     $template = Template::get(Template::BAZAAR_RECEIVER, $comlang);
-        //     // Sustituimos los datos
-        //     $subject = str_replace('%USERNAME%', $user->name, $template->title);
+            $mailHandler = new Mail();
+            $mailHandler->lang = $lang;
+            $mailHandler->reply = Config::get('mail.transport.name');
+            $mailHandler->replyName = Config::get('mail.transport.name');
+            $mailHandler->to = $user->email;
+            $mailHandler->toName = $user->name;
+            $mailHandler->subject = $subject;
+            $mailHandler->content = $content;
+            $mailHandler->html = true;
+            $mailHandler->template = $template->id;
+            $errors = [];
+            if ($mailHandler->send($errors)) {
+                Message::info(Text::get('project-invest-thanks_mail-success'));
+                $this->notice('Invest user mail sent', [$invest, $invest->getProject(), $invest->getFirstReward(), $invest->getUser(), $mailHandler]);
+            } else {
+                Message::error(Text::get('project-invest-thanks_mail-fail'));
+                Message::error(implode('<br />', $errors));
+                $this->warning('Invest user mail error', [$invest, $invest->getProject(), $invest->getFirstReward(), $invest->getUser(), $mailHandler, 'errors' => $errors]);
+            }
+            unset($mailHandler);
 
-        //     // En el contenido:
-        //     $search  = array('%DESTNAME%', '%USERNAME%', '%MESSAGE%', '%PROJECTNAME%', '%PROJECTURL%', '%AMOUNT%', '%PROJAMOUNT%', '%PROJPER%', '%REWNAME%', '%ADDRESS%', '%DROPED%');
-        //     $replace = array($invest->address->namedest, $user->name, $invest->address->message, $projectData->name, $URL.'/project/'.$projectData->id, $invest->amount, $amount, $percent, $txt_rewards, $txt_destaddr, $txt_droped);
-        //     $content = \str_replace($search, $replace, $template->parseText());
+            //         // si es un regalo
+            // if ($invest->address->regalo && !empty($invest->address->emaildest)) {
+            //     // Notificación al destinatario de regalo
+            //     $template = Template::get(Template::BAZAAR_RECEIVER, $comlang);
+            //     // Sustituimos los datos
+            //     $subject = str_replace('%USERNAME%', $user->name, $template->title);
 
-        // $mailHandler = new Mail();
-        // $mailHandler->lang = $comlang;lang
-        // $mailHandler->to = $invest->address->emaildest;
-        // $mailHandler->toName = $invest->address->namedest;
-        // $mailHandler->subject = $subject;
-        // $mailHandler->content = $content;
-        // $mailHandler->html = true;
-        // $mailHandler->template = $template->id;
-        // if ($mailHandler->send($errors)) {
-        //     Message::info(Text::get('project-invest-friend_mail-success'));
-        // } else {
-        //     Message::error(Text::get('project-invest-friend_mail-fail'));
-        //     Message::error(implode('<br />', $errors));
-        // }
+            //     // En el contenido:
+            //     $search  = array('%DESTNAME%', '%USERNAME%', '%MESSAGE%', '%PROJECTNAME%', '%PROJECTURL%', '%AMOUNT%', '%PROJAMOUNT%', '%PROJPER%', '%REWNAME%', '%ADDRESS%', '%DROPED%');
+            //     $replace = array($invest->address->namedest, $user->name, $invest->address->message, $projectData->name, $URL.'/project/'.$projectData->id, $invest->amount, $amount, $percent, $txt_rewards, $txt_destaddr, $txt_droped);
+            //     $content = \str_replace($search, $replace, $template->parseText());
 
-        //     unset($mailHandler);
-        // }
+            // $mailHandler = new Mail();
+            // $mailHandler->lang = $comlang;lang
+            // $mailHandler->to = $invest->address->emaildest;
+            // $mailHandler->toName = $invest->address->namedest;
+            // $mailHandler->subject = $subject;
+            // $mailHandler->content = $content;
+            // $mailHandler->html = true;
+            // $mailHandler->template = $template->id;
+            // if ($mailHandler->send($errors)) {
+            //     Message::info(Text::get('project-invest-friend_mail-success'));
+            // } else {
+            //     Message::error(Text::get('project-invest-friend_mail-fail'));
+            //     Message::error(implode('<br />', $errors));
+            // }
 
-        // MAIL SENDING TO AUTHOR
-        //  idioma de preferencia
-        $original_lang = $lang = User::getPreferences($project->getOwner())->comlang;
+            //     unset($mailHandler);
+            // }
 
-        $template = Template::get(Template::OWNER_NEW_INVEST, $lang);
-        if($original_lang != $lang) {
-            $this->warning('Template lang changed', [$template, 'old_lang' => $original_lang, 'new_lang' => $lang, $invest, $invest->getProject(), $invest->getFirstReward(), $invest->getUser() ]);
-        }
-        // Sustituimos los datos
-        $subject = str_replace('%PROJECTNAME%', $project->name, $template->title);
+            // MAIL SENDING TO AUTHOR
+            //  idioma de preferencia
+            $original_lang = $lang = User::getPreferences($project->getOwner())->comlang;
 
-        // En el contenido:
-        $search = array('%OWNERNAME%', '%USERNAME%', '%PROJECTNAME%', '%SITEURL%', '%AMOUNT%', '%MESSAGEURL%', '%DROPED%');
-        $replace = array($project->user->name, $user->name, $project->name, $URL, $invest->amount, Config::getUrl() . '/user/profile/' . $user->id . '/message', $txt_droped);
-        $content = str_replace($search, $replace, $template->parseText());
+            $template = Template::get(Template::OWNER_NEW_INVEST, $lang);
+            if($original_lang != $lang) {
+                $this->warning('Template lang changed', [$template, 'old_lang' => $original_lang, 'new_lang' => $lang, $invest, $invest->getProject(), $invest->getFirstReward(), $invest->getUser() ]);
+            }
+            // Sustituimos los datos
+            $subject = str_replace('%PROJECTNAME%', $project->name, $template->title);
 
-        $mailHandler = new Mail();
-        $mailHandler->lang = $lang;
-        $mailHandler->to = $project->user->email;
-        $mailHandler->toName = $project->user->name;
-        $mailHandler->subject = $subject;
-        $mailHandler->content = $content;
-        $mailHandler->html = true;
-        $mailHandler->template = $template->id;
-        $errors = [];
-        if($mailHandler->send($errors)) {
-            $this->notice('Invest owner mail sent', [$invest, $invest->getProject(), $invest->getFirstReward(), $invest->getUser(), $mailHandler]);
-        } else {
-            $this->warning('Invest owner mail error', [$invest, $invest->getProject(), $invest->getFirstReward(), $invest->getUser(), 'method' => $method::getId(), $mailHandler, 'errors' => $errors]);
+            // En el contenido:
+            $search = array('%OWNERNAME%', '%USERNAME%', '%PROJECTNAME%', '%SITEURL%', '%AMOUNT%', '%MESSAGEURL%', '%DROPED%');
+            $replace = array($project->user->name, $user->name, $project->name, $URL, $invest->amount, Config::getUrl() . '/user/profile/' . $user->id . '/message', $txt_droped);
+            $content = str_replace($search, $replace, $template->parseText());
+
+            $mailHandler = new Mail();
+            $mailHandler->lang = $lang;
+            $mailHandler->to = $project->user->email;
+            $mailHandler->toName = $project->user->name;
+            $mailHandler->subject = $subject;
+            $mailHandler->content = $content;
+            $mailHandler->html = true;
+            $mailHandler->template = $template->id;
+            $errors = [];
+            if($mailHandler->send($errors)) {
+                $this->notice('Invest owner mail sent', [$invest, $invest->getProject(), $invest->getFirstReward(), $invest->getUser(), $mailHandler]);
+            } else {
+                $this->warning('Invest owner mail error', [$invest, $invest->getProject(), $invest->getFirstReward(), $invest->getUser(), 'method' => $method::getId(), $mailHandler, 'errors' => $errors]);
+            }
         }
 
         // Feed this succeeded payment
