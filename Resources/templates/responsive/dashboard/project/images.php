@@ -8,11 +8,13 @@
     <?php foreach($this->zones as $key => $zone): ?>
         <h4><?= $zone ?></h4>
         <div class="image-zone" data-section="<?= $key ?>">
-            <ul class="list-inline image-list-sortable">
-            <?php foreach($this->images[$key] as $img): ?>
-                <?= $this->insert('dashboard/project/partials/image_list_item', ['image_url' => $img->getLink(300, 300, true), 'image_name' => $img->getName()]) ?>
-            <?php endforeach ?>
-            </ul>
+            <ul class="list-inline image-list-sortable"><?php
+            foreach($this->images[$key] as $img) {
+                echo $this->insert('dashboard/project/partials/image_list_item', [
+                        'image_url' => $img->getLink(300, 300, true),
+                        'image_name' => $img->getName()]);
+            }
+            ?></ul>
             <div class="dragndrop"><div class="dropzone"></div></div>
         </div>
         <p class="text-danger error-msg hidden"></p>
@@ -108,7 +110,7 @@ $(function(){
             var img = '/img/300x300c/' + name;
             li = li.replace('{URL}', img);
             li = li.replace('{NAME}', name);
-            $list.find('.dragndrop').before(li);
+            $list.append(li);
             $error.addClass('hidden');
             // console.log('success', file, response, li);
         });

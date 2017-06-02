@@ -1363,6 +1363,7 @@ ul.image-list-sortable >li{
     line-height: 1em;
     padding:0;
     margin:0;
+    margin-right:5px;
 }
 ul.image-list-sortable >li .image{
     width:150px;
