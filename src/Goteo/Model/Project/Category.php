@@ -12,7 +12,7 @@ namespace Goteo\Model\Project {
 
     use Goteo\Application\Lang;
     use Goteo\Application\Config;
-    use Goteo\Model\Image;
+    // use Goteo\Model\Image;
 
     class Category extends \Goteo\Core\Model {
 
