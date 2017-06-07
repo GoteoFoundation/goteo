@@ -15,7 +15,7 @@ use Goteo\Model\Project;
 use Goteo\Model\Invest;
 use Goteo\Model\Icon;
 use Goteo\Model\Category as MainCategory;
-use Goteo\Model\Image;
+use Goteo\Model\Image as CategoryImage;
 use Goteo\Model\License;
 use Goteo\Application\Lang;
 use Goteo\Application\Config;
@@ -139,7 +139,7 @@ class Reward extends \Goteo\Core\Model {
                 if($type == 'social'&&$item->category)
                 {
                     $item->category=MainCategory::get($item->category);
-                    $item->category->image=new Image($item->category->image);
+                    $item->category->image=new CategoryImage($item->category->image);
                 }
 
                 $array[$item->id] = $item;
