@@ -13,7 +13,9 @@ namespace Goteo\Model {
     use Goteo\Library\Text,
         Goteo\Library\FileHandler\File,
         Intervention\Image\ImageManagerStatic as ImageManager,
-        Goteo\Library\Cacher;
+        Goteo\Library\Cacher,
+        Goteo\Application\Config;
+
 
     class Image extends \Goteo\Core\Model {
 
@@ -316,7 +318,7 @@ namespace Goteo\Model {
             else                          $link = SITE_URL . '/img/' . $path;
 
             if ($http && substr($link, 0, 2) == '//') {
-                $link = 'http:'.$link;
+                $link = (Config::get('ssl') ? 'https:' : 'http:').$link; 
             }
 
             return $link;

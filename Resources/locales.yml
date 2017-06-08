@@ -88,3 +88,9 @@ tr:
     public: false
     locale: tr_TR
     fallback: en
+sv:
+    name: Svenska
+    short: SV
+    public: true
+    locale: sv_SE
+    fallback: en

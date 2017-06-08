@@ -21,7 +21,9 @@ use Goteo\Application\Message;
 use Goteo\Application\Config;
 use Goteo\Application\Session;
 use Goteo\Application\Exception\ModelNotFountException;
+use Goteo\Application\Event\FilterInvestInitEvent;
 use Goteo\Application\Event\FilterInvestRefundEvent;
+use Goteo\Application\Event\FilterInvestRequestEvent;
 use Goteo\Util\Omnipay\Message\EmptySuccessfulResponse;
 use Goteo\Payment\Payment;
 use Goteo\Model\Invest;
@@ -390,15 +392,8 @@ class AccountsSubController extends AbstractSubController {
 
     // aportes manuales, cargamos la lista completa de usuarios, proyectos y campañas
     public function addAction() {
-        // listado de proyectos en campaña
-        if(Config::get('calls_enabled')) {
-            $calls = Model\Call::getAll();
-        } else {
-            $calls = [];
-        }
 
         // generar aporte manual
-        // TODO: reformular esto con eventos y metodo cash
         if ($this->isPost()) {
 
             $userData = User::get($this->getPost('user'));
@@ -421,17 +416,12 @@ class AccountsSubController extends AbstractSubController {
                     'admin'     => $this->user->id
                 )
             );
-            // si llega campaign, montar el $invest->called con instancia call para que el save genere el riego
-            if ($this->getPost('campaign')) {
-                $called = Model\Call::getMini($this->getPost('campaign'));
 
-                if ($called instanceof Model\Call) {
-                    $invest->called = $called;
-                }
-            }
-            // print_r($invest);print_r($this->getPost());die;
+
             $errors = array();
             if ($invest->save($errors)) {
+                // Event invest success
+
                 // Evento Feed
                 $log = new Feed();
                 $log->setTarget($projectData->id);
@@ -447,6 +437,28 @@ class AccountsSubController extends AbstractSubController {
 
                 Invest::setDetail($invest->id, 'admin-created', 'Este aporte ha sido creado manualmente por el admin ' . $this->user->name);
                 Message::info('Aporte manual creado correctamente, seleccionar recompensa y dirección de entrega.');
+
+                // New Invest Init Event
+                $method = $this->dispatch(AppEvents::INVEST_INIT, new FilterInvestInitEvent($invest, $invest->getMethod(), $this->request))->getMethod();
+
+                // go to the gateway, gets the response
+                $response = $method->purchase();
+                // New Invest Request Event
+                $response = $this->dispatch(AppEvents::INVEST_INIT_REQUEST, new FilterInvestRequestEvent($method, $response))->getResponse();
+
+                // Checks and redirects
+                if (!$response instanceof ResponseInterface) {
+                    throw new \RuntimeException('This response does not implements ResponseInterface.');
+                }
+
+                // On-sites can return a succesful response here
+                if ($response->isSuccessful()) {
+                    // Event invest success
+                    $filter = new FilterInvestRequestEvent($method, $response);
+                    $filter->skipMail(true);
+                    $this->dispatch(AppEvents::INVEST_SUCCEEDED, $filter);
+                }
+
                 return $this->redirect('/admin/rewards/edit/'.$invest->id);
             } else{
                 Message::error('Ha fallado algo al crear el aporte manual<br>'. implode(", ", $errors));

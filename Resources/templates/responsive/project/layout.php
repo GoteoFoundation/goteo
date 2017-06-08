@@ -11,13 +11,13 @@ if($this->is_pronto()):
 endif;
 
 if($project->gallery[0])
-    $meta_img=$project->secGallery['play-video'][0] ? $this->project->secGallery['play-video'][0]->imageData->getLink(780, 478) : $project->gallery[0]->imageData->getLink(700, 700);
+    $meta_img=$project->secGallery['play-video'][0] ? $this->project->secGallery['play-video'][0]->imageData->getLink(780, 478, false, true) : $project->gallery[0]->imageData->getLink(700, 700, false, true);
 
 
 $this->layout('layout', [
     'bodyClass' => 'project',
     'title' => $this->project->name,
-    'meta_description' => $this->project->subtitle.'1',
+    'meta_description' => $this->project->subtitle,
     'tw_image' => $meta_img,
     'og_image' => $meta_img
     ]);
@@ -327,6 +327,8 @@ $this->section('content');
 // @license-end
 </script>
 <?= $this->insert('project/partials/google_analytics.php', ['project' => $project]) ?>
+<?= $this->insert('project/partials/facebook_pixel.php', ['project' => $project]) ?>
+
 <?php $this->append() ?>
 
 
