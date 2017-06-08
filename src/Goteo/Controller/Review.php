@@ -30,7 +30,10 @@ namespace Goteo\Controller {
 
             $page = Page::get('review');
 
-            $message = \str_replace('%USER_NAME%', Session::getUser()->name, $page->parseContent());
+            //Always reviews page content is true before parseContent()
+            if ($page) {
+                $message = \str_replace('%USER_NAME%', Session::getUser()->name, $page->parseContent());
+            }
 
             $user = Session::getUser();
 
