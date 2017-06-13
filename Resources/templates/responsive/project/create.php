@@ -132,10 +132,10 @@ $terms=$this->terms;
     <div class="modal-content">
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        <h4 class="modal-title" id="myModalLabel"><?= $terms ? $terms->description : 'Howto page is missing!' ?></h4>
+        <h4 class="modal-title" id="myModalLabel"><?= $terms->description ?></h4>
       </div>
       <div class="modal-body">
-        <?= $terms ? $terms->parseContent() : 'Please create a howto page.' ?>
+        <?= $terms->parseContent() ?>
       </div>
     </div>
   </div>
