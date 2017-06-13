@@ -132,10 +132,10 @@ $terms=$this->terms;
     <div class="modal-content">
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        <h4 class="modal-title" id="myModalLabel"><?= $terms->description ?></h4>
+        <h4 class="modal-title" id="myModalLabel"><?= $terms ? $terms->description : 'Howto page is missing!' ?></h4>
       </div>
       <div class="modal-body">
-        <?= $terms->parseContent() ?>
+        <?= $terms ? $terms->parseContent() : 'Please create a howto page.' ?>
       </div>
     </div>
   </div>
@@ -233,13 +233,13 @@ $terms=$this->terms;
         });
 
         $("#project-form").on('keypress', "div.form-group input", function (e) {
-
-            if (e.keyCode == 10 || e.keyCode == 13) {
+            console.log(e.keyCode);
+            if (e.keyCode == 10 || e.keyCode == 13 || e.keyCode == 9) {
                 e.preventDefault();
                 var item_id=$(this).closest("div.form-group").attr('id');
                 var next=$('#'+item_id).next("div.form-group");
                 var next_id=$(next).attr('id');
-
+                console.log('next is', next_id);
                 $('#'+next_id).click();
 
                 return false;
