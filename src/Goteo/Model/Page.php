@@ -51,6 +51,11 @@ class Page extends Model{
 
         $page = $query->fetchObject(__CLASS__);
 
+        if (!$page instanceof \Goteo\Model\Page) {
+            // Create mock page
+            $page = new self(['id' => $id, 'name' => "Page [$id]", 'description' => "Missing page [$id]", "content" => "Please create the page [$id] with proper content!"]);
+        }
+
         return $page;
 	}
 

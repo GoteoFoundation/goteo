@@ -29,16 +29,6 @@ $this->layout('admin/layout') ?>
         </p>
 
         <p>
-            <label for="invest-campaign">Convocatoria:</label><br />
-            <select id="invest-campaign" name="campaign">
-                <option value="">Seleccionar la convocatoria que riega este aporte</option>
-            <?php foreach ($this->calls as $campaignId=>$campaignName) : ?>
-                <option value="<?= $campaignId ?>"><?= substr($campaignName, 0, 100) ?></option>
-            <?php endforeach ?>
-            </select>
-        </p>
-
-        <p>
             <label for="invest-anonymous">Aporte anónimo:</label><br />
             <input id="invest-anonymous" type="checkbox" name="anonymous" value="1">
         </p>

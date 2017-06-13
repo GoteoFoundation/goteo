@@ -26,12 +26,17 @@ namespace Goteo\Controller {
             $page = Page::get('news');
             $news = Model\News::getAll();
 
+            //Parse Content ONLY if data found on db
+            if ($page) {
+               $content = $page->parseContent();
+            } 
+
             return new View(
                 'news.html.php',
                 array(
                     'name' => $page->name,
                     'title' => $page->description,
-                    'content' => $page->parseContent(),
+                    'content' => $content,
                     'news' => $news
                 )
              );

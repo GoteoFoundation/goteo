@@ -119,6 +119,7 @@ class User extends \Goteo\Core\Model {
     public function save(&$errors = array(), $skip_validations = array()) {
         $data = array();
 
+
         if ($this->validate($errors, $skip_validations)) {
             // Nuevo usuario.
             if (empty($this->id)) {
@@ -128,8 +129,17 @@ class User extends \Goteo\Core\Model {
                 $data[':location'] = $this->location;
                 $data[':email'] = $this->email;
                 $data[':token'] = $token = md5(uniqid());
-                if (!in_array('password', $skip_validations)) {
-                    $data[':password'] = Password::encode($this->password);
+                // TODO: Do not save password here
+                // This can reencode passwords if Password library estimates
+                // a password is no longer secure
+                // use ->setPassword() instead
+                // To be removed when profile & register forms uses it
+                // Check if password is already encoded
+
+                if ($this->password && !in_array('password', $skip_validations)) {
+                    if(!Password::isBlowfish($this->password)) {
+                       $data[':password'] = Password::encode($this->password);
+                    }
                 }
 
                 $data[':created'] = date('Y-m-d H:i:s');
@@ -171,9 +181,17 @@ class User extends \Goteo\Core\Model {
                 }
 
                 // Contraseña
-                if (!empty($this->password)) {
-                    $data[':password'] = Password::encode($this->password);
-                    static::query('DELETE FROM user_login WHERE user= ?', $this->id);
+                // TODO: Do not save password here
+                // This can reencode passwords if Password library estimates
+                // a password is no longer secure
+                // use ->setPassword() instead
+                // To be removed when profile & register forms uses it
+                // Check if password is already encoded
+                if ($this->password && !in_array('password', $skip_validations)) {
+                    if(!Password::isBlowfish($this->password)) {
+                       $data[':password'] = Password::encode($this->password);
+                        static::query('DELETE FROM user_login WHERE user= ?', $this->id);
+                    }
                 }
 
                 if (!is_null($this->active)) {

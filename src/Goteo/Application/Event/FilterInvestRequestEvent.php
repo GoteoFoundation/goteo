@@ -21,6 +21,7 @@ class FilterInvestRequestEvent extends Event
     protected $method;
     protected $response;
     protected $http_response;
+    protected $skipMail = false;
 
     public function __construct(PaymentMethodInterface $method, ResponseInterface $response)
     {
@@ -50,6 +51,13 @@ class FilterInvestRequestEvent extends Event
     {
         $this->http_response = $response;
         return $this;
+    }
+
+    public function skipMail($skip = null) {
+        if(!is_null($skip)) {
+            $this->skip = (bool) $skip;
+        }
+        return $this->skip;
     }
 
 

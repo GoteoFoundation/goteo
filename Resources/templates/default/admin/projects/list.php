@@ -154,8 +154,7 @@ foreach ($filters as $key=>$value) {
                         $add[] = "Fecha publicación estimada: <strong>{$date_publishing}</strong>";
                     }
 
-
-
+                    
                     if ($project->getConsultants()) {
                         $consultants = array();
                         foreach($project->getConsultants() as $id => $name) {
@@ -167,8 +166,12 @@ foreach ($filters as $key=>$value) {
                             }
                         }
                         if($consultants) $add[] = "Asesorado por: " . implode(', ', $consultants);
-
                     }
+
+                    if ($project->project_location) {
+                        $add[] = "<strong>{$project->project_location}</strong>";
+                    }
+                    
                     echo implode(' | ', $add);
                 ?></td>
             </tr>
