@@ -2,8 +2,8 @@
 
 namespace Goteo\Model {
 
-    use Goteo\Core\ACL,
-        Goteo\Application\Config,
+    use Goteo\Application\Exception\ModelNotFoundException;
+    use Goteo\Application\Config,
         Goteo\Application\Lang,
         Goteo\Library\Check,
         Goteo\Library\Text,
@@ -237,7 +237,7 @@ namespace Goteo\Model {
                 $call = $query->fetchObject(__CLASS__);
 
                 if (!$call instanceof \Goteo\Model\Call) {
-                   return null;
+                    throw new ModelNotFoundException("[$id] not found");
                 }
 
                 if(!empty($lang) && $lang!=$call->lang)
