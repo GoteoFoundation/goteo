@@ -523,14 +523,16 @@ class ProjectController extends \Goteo\Core\Controller {
     }
 
 
-	private function view($id, $show, $post = null, Request $request) {
+	protected function view($project, $show, $post = null, Request $request) {
 		//activamos la cache para esta llamada
 		\Goteo\Core\DB::cache(true);
 
 		//Set the responsive theme
 		View::setTheme('responsive');
 
-		$project = Project::get($id, Lang::current(false));
+		if( !$project instanceOf Project ) {
+            $project = Project::get($project, Lang::current(false));
+        }
 		$user    = Session::getUser();
 
 		$show_allow=['home', 'updates', 'participate'];

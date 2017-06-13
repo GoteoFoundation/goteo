@@ -3,6 +3,7 @@
 extend/
 !extend/README.md
 !extend/goteo-dev
+!extend/private-zones
 
 /node_modules/
 /vendor/
