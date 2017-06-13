@@ -157,18 +157,19 @@ class AdminController extends \Goteo\Core\Controller {
 		];
 
 		// If menu is not allowed, throw exception
-		if (empty($menu) || ($option && !array_key_exists($option, $menu))) {
-			$zone = $menu[$option] ? $menu[$option] : $option;
-			if ($zone) {
-				$msg = 'Access denied to <strong>' . $zone . '</strong>';
-			} else {
-				$msg = 'Access denied!';
+		try {
+			if (empty($menu) || ($option && !array_key_exists($option, $menu))) {
+				$zone = $menu[$option] ? $menu[$option] : $option;
+				if ($zone) {
+					$msg = 'Access denied to <strong>' . $zone . '</strong>';
+				} else {
+					$msg = 'Access denied!';
+				}
+				throw new ControllerAccessDeniedException($msg);
 			}
-
-			Message::error($msg);
-			throw new ControllerAccessDeniedException($msg);
+		} catch (ControllerAccessDeniedException $e) {
+			Message::error($e->getMessage());
 		}
-
 		return $user;
 	}
 
