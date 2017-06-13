@@ -73,7 +73,7 @@ $terms=$this->terms;
                     <div class="row">
                         <div class="col-xs-6 col-sm-4 social-commitment-option text-left-important">
                             <label class="category" for="no-social">
-                                <input tabindex="-1" class="social-category" id="no-social" name="social" value="0" type="radio" required>
+                                <input tabindex="0" class="social-category" id="no-social" name="social" value="0" type="radio" required>
                                 <img class="img-responsive img-method align-center-margin" alt="<?= $category->name ?>" title="none" src="/assets/img/project/create/none.png">
                                 <span class="method-text">
                                 <?= $this->text('project-create-no-social-commitment') ?>
@@ -83,7 +83,7 @@ $terms=$this->terms;
                         <?php foreach($this->social_commitments as $key => $social): ?>
                         <div class="col-xs-6 col-sm-4 social-commitment-option text-left-important<?= ($key+1)%3==0 ? ' clear-both-md clear-both-sm' : '' ?><?= ($key+1)%2==0 ? ' clear-both-xs' : '' ?>">
                             <label class="category" for="<?= $key ?>-social">
-                                <input tabindex="<?= $key == 0 ? '0' : '-1' ?>" class="social-category" name="social" id="<?= $key ?>-social" value="<?= $social->id ?>" type="radio" required>
+                                <input class="social-category" name="social" id="<?= $key ?>-social" value="<?= $social->id ?>" type="radio" required>
                                 <img class="img-responsive img-method align-center-margin" alt="<?= $social->name ?>" title="<?= $social->description ?>" src="<?= $social->image->getLink(60, 60, false) ?>">
                                  <span class="method-text">
                                 <?= $social->name ?>
@@ -252,20 +252,16 @@ $terms=$this->terms;
             var last = $('#calendar').find(".datepicker-days tr td:last");
             var new_date = null;
             switch(e.keyCode) {
-                case 37:
-                    // left
+                case 37: // left
                     new_date = calendar.date().clone().subtract(1, 'd');
                     break;
-                case 38:
-                    // up
+                case 38: // up
                     new_date = calendar.date().clone().subtract(7, 'd');
                     break;
-                case 39:
-                    // right
+                case 39: // right
                     new_date = calendar.date().clone().add(1, 'd');
                     break;
-                case 40:
-                    // Down
+                case 40: // Down
                     new_date = calendar.date().clone().add(7, 'd');
                     break;
                 case 10:
@@ -274,12 +270,13 @@ $terms=$this->terms;
                     // Goto next
                     $(this).blur();
                     $(this).next('div.form-group').click();
-
                     break;
             }
             if(new_date) {
                 e.preventDefault();
                 calendar.date(new_date);
+                // Datepicker does'nt seem to update the UI
+                // if you dont hide/show when changing months
                 calendar.hide().show();
             }
         });
@@ -289,12 +286,6 @@ $terms=$this->terms;
                 $('#calendar-group').addClass('active');
                 $('#calendar-group').focus();
             }
-
-        };
-        var _deactivate_calendar = function() {
-            if($('#calendar-group').hasClass('active')) {
-                $(".form-group").removeClass("active");
-            }
         };
 
         $("#project-form").on('click', 'div.form-group', function(){
@@ -303,13 +294,11 @@ $terms=$this->terms;
 
             if(item_id === 'calendar-group')
                 _activate_calendar();
-            else
-                _deactivate_calendar();
 
             $(".form-group").removeClass("active");
             $(this).addClass("active");
 
-            if($("#"+item_id+' input:not([type="radio"])').length)
+            if($("#"+item_id+' input').length)
                 $("#"+item_id+" input:first").focus();
 
             $("#"+item_id+" .alert").fadeIn(1000);
