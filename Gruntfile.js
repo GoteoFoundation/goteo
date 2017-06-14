@@ -106,6 +106,7 @@ module.exports = function(grunt) {
             'clean:server',
             'copy:devel',
             'copy:plugins:devel',
+            'sass:devel',
             'php:livereload',
             'watch'
         ]);
@@ -124,6 +125,7 @@ module.exports = function(grunt) {
         'clean:dist',
         'copy:dist',
         'copy:plugins:dist',
+        'sass:dist'
     ]);
 
     //build and uploads
@@ -141,10 +143,12 @@ module.exports = function(grunt) {
         // 'newer:phplint',
 
         'copy:devel', // copy assets to .tmp for postprocessing
+        'sass:devel',
         'copy:plugins:devel',
 
         'copy:dist', // copy from to dist as well
         'copy:plugins:dist',
+        'sass:dist',
 
         // TODO: make usemin work for headers
         'useminPrepare',

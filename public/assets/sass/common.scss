@@ -1,0 +1,25 @@
+/*
+ * Custom CSS Goteo
+ *
+ *
+ */
+@import 'variables';
+
+body {
+    background-color:$background-light-grey;
+    font-family: $primary-font;
+    color: $primary-color;
+    margin-bottom: 0;
+}
+
+@import 'common/misc';
+@import 'common/header';
+@import 'common/footer';
+@import 'common/buttons';
+@import 'common/alerts';
+@import 'common/admin';
+
+// This will dissappear some day, cows may fly...
+@import 'common/unordered';
+
+

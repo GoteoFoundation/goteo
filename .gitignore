@@ -1,4 +1,5 @@
 .vagrant
+.sass-cache
 
 /extend/
 !/extend/README.md

@@ -1,0 +1,41 @@
+
+ /* Custom buttons */
+
+.btn-success{
+    background-color: $background-green !important;
+    border-color: $background-green !important;
+}
+.btn-pink{
+    background-color: $color-pink;
+    color: $color-white;
+}
+
+.btn-green{
+    background-color: $color-green;
+    color: $color-white;
+}
+.btn-grey {
+    background-color: $background-light-grey;
+    color: $color-light-grey;
+}
+.btn-dark {
+    background-color: $color-light-grey;
+    color: $color-white;
+}
+
+button.pink{
+    background-color: $background-pink;
+    font-size:1.2em;
+    color: $color-white;
+}
+button.custom-green{
+	background-color: $color-green;
+	font-size:1.2em;
+	color: $color-white;
+	font-weight: bold;
+}
+
+button.pink:hover, button.pink:focus, button.custom-green:hover,
+.btn-pink:hover, .btn-pink:focus, .btn-green:hover{
+	color:$color-white !important;
+}

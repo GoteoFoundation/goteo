@@ -51,7 +51,7 @@ module.exports = function(grunt) {
             dot: true,
             cwd: '<%= goteo.app %>',
             dest: '.tmp',
-            src: '**/*'
+            src: [ '*', 'assets/js/**/*', 'assets/vendor/**/*', 'templates/**/*', 'view/**/*' ]
         },
 
         dist: {
@@ -59,7 +59,7 @@ module.exports = function(grunt) {
             dot: true,
             cwd: '<%= goteo.app %>',
             dest: '<%= goteo.dist %>',
-            src: '**/*'
+            src: [ '*', 'assets/js/**/*', 'assets/vendor/**/*', 'templates/**/*', 'view/**/*' ]
         },
 
         // some files will be modified in order to add .js an .css revisioned files (minified, etc)

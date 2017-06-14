@@ -1,0 +1,23 @@
+  /* custom message alerts */
+
+ .custom-close {
+    font-size:30px !important;
+    opacity: 0.9 !important;
+    color: $color-white !important;
+ }
+
+ .alert{
+    font-size: 14px !important;
+    color: $color-white;
+ }
+
+ .alert-danger {
+    background-color: $background-red;
+
+    border-color: $background-red !important;
+}
+
+ .alert-success{
+    background-color: $background-light-green;
+    border-color: $background-light-green !important;
+ }
