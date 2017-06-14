@@ -9,6 +9,7 @@ namespace Goteo\Application\EventListener;
 
 use Goteo\Application\Exception\ControllerAccessDeniedException;
 use Goteo\Application\Config;
+use Goteo\Application\Session;
 use Goteo\Application\View;
 use Goteo\Library\Text;
 
@@ -63,6 +64,8 @@ class BasicAuthListener extends AbstractListener {
                     foreach($users as $u => $p) {
                         if($user === $u && $pass === $p) {
                             $login_successful = true;
+                            $auth = Session::get('PrivateZonesAuth', [$user]);
+                            Session::store('PrivateZonesAuth', $auth);
                             break;
                         }
                     }
