@@ -10,9 +10,11 @@ $this->section('content');
 
 ?>
 
-  <?= $this->supply('admin-menu', $this->insert('dashboard/partials/menu')) ?>
+<div class="dashboard">
+  <?= $this->supply('dashboard-menu', $this->insert('dashboard/partials/menu')) ?>
 
   <?= $this->supply('dashboard-content') ?>
+</div>
 
 <?php $this->replace() ?>
 

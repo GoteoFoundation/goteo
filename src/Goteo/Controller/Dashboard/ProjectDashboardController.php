@@ -31,6 +31,9 @@ class ProjectDashboardController extends \Goteo\Core\Controller {
         // changing to a responsive theme here
         View::setTheme('responsive');
         $this->user = Session::getUser();
+        $this->contextVars([
+            'section' => 'projects'
+        ]);
     }
 
     protected function validateProject($pid = null, $section = 'summary') {
@@ -76,7 +79,7 @@ class ProjectDashboardController extends \Goteo\Core\Controller {
         }
 
         return $this->viewResponse('dashboard/project/summary', [
-            'section' => 'summary',
+            'zone' => 'summary',
             'project' => $project,
             'statuses' => Project::status(),
             'status_text' => $status_text
@@ -97,7 +100,7 @@ class ProjectDashboardController extends \Goteo\Core\Controller {
             'project' => $project,
             'zones' => $zones,
             'images' => $images,
-            'section' => 'images'
+            'zone' => 'images'
             ]);
 
     }

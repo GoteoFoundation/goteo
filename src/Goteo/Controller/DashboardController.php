@@ -51,6 +51,7 @@ class DashboardController extends \Goteo\Core\Controller {
         $page = Page::get('dashboard');
 
         return $this->viewResponse('dashboard/activity', [
+            'section' => 'activity',
             'message' => str_replace('%USER_NAME%', $user->name, $page->parseContent()),
             'projects' => $projects,
             'projects_total' => $projects_total,
@@ -94,7 +95,7 @@ class DashboardController extends \Goteo\Core\Controller {
             'user_interests' => $user->interests,
             'interests' => $interests,
             'popular_projects' => $popular_projects,
-            'section' => 'pool',
+            'section' => 'wallet',
             'limit' => 6
              ]
         );

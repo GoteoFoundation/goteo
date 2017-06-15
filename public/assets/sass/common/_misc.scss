@@ -92,6 +92,59 @@ i.visible-xs {
         display:inline-block !important;
     }
 }
+.icon {
+    width: $font-size;
+    height: $font-size;
+    display: inline-block;
+    background-repeat: no-repeat;
+    background-size: auto 100%;
+    vertical-align: middle;
+    &.icon-2x {
+        width: $font-size * 2;
+        height: $font-size * 2;
+    }
+    &.icon-3x {
+        width: $font-size * 3;
+        height: $font-size * 3;
+    }
+    &.icon-4x {
+        width: $font-size * 4;
+        height: $font-size * 4;
+    }
+    &.icon-5x {
+        width: $font-size * 5;
+        height: $font-size * 5;
+    }
+    &.icon-6x {
+        width: $font-size * 6;
+        height: $font-size * 6;
+    }
+    &.icon-7x {
+        width: $font-size * 7;
+        height: $font-size * 7;
+    }
+    &.icon-8x {
+        width: $font-size * 8;
+        height: $font-size * 8;
+    }
+    &.icon-activity {
+        background-image: url(../img/dashboard/activity.svg);
+    }
+    &.icon-projects {
+        background-image: url(../img/dashboard/projects.svg);
+    }
+    &.icon-wallet {
+        background-image: url(../img/dashboard/wallet.svg);
+    }
+    &.icon-settings {
+        background-image: url(../img/dashboard/settings.svg);
+    }
+}
+
+
+.footable-toggle {
+  cursor: pointer;
+}
 
 
 div.tooltip-inner {

@@ -1,0 +1,330 @@
+/* Dashboard  */
+
+/* Menu dashboard */
+
+nav.dashboard-navbar-nav {
+  background-color: $background-light-cream;
+  padding-top: 20px;
+
+  div.user-info {
+    margin-top: 20px !important;
+    .panel-title {
+      margin-left: 10px;
+      font-size: 1.5em;
+      text-transform: uppercase;
+      font-weight: bold;
+    }
+  }
+}
+
+/* dashboard containers */
+.dashboard {
+    background: $background-light-cream;
+  .container {
+  }
+}
+
+ul.dashboard-navbar {
+  float: none;
+  padding-top: 15px;
+  > li {
+    margin-right: 1px;
+    &.active > a {
+      background-color: #1DB3B2 !important;
+      color: $color-white;
+    }
+  }
+  li a:hover {
+    background-color: #1DB3B2 !important;
+    color: $color-white;
+  }
+}
+
+.dashboard-sidebar .nav {
+  border-radius: 5px;
+  // background: #C7ECEC;
+  background: #f9f9f9;
+  a {
+    // color:#20B3B2;
+    color: #1f8f8d;
+  }
+}
+
+ul.dashboard-navbar {
+  li a {
+    margin-right: 5px;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    color: #20B3B2;
+    text-transform: uppercase;
+  }
+  > li > a {
+    background-color: #C7ECEC;
+  }
+}
+
+/* image sortable list*/
+
+.image-zone {
+  display: table;
+  width: 100%;
+  background: #f0f0f0;
+  padding: 10px;
+  border-radius: 5px;
+}
+
+ul.image-list-sortable {
+  min-height: 150px;
+  display: table-cell;
+  padding: 0;
+  margin: 0;
+  min-width: 150px;
+  > li {
+    position: relative;
+    line-height: 1em;
+    padding: 0;
+    margin: 0;
+    margin-right: 5px;
+    .image {
+      width: 150px;
+      height: 150px;
+      cursor: move;
+      background: #ddd;
+      background-position: 0 0;
+      background-size: 100% 100%;
+      background-repeat: no-repeat;
+    }
+  }
+}
+
+.image-zone {
+  .dragndrop {
+    width: 150px;
+    height: 150px;
+    position: relative;
+    display: table-cell;
+  }
+  .dropzone {
+    border: 5px dashed #ccc;
+    border-radius: 5px;
+    cursor: pointer;
+    background: #ddd;
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    max-height: 150px;
+    width: 100%;
+    color: #999;
+    overflow: hidden;
+    .dz-preview {
+      &.dz-image-preview {
+        background: none;
+      }
+      margin: -10px;
+    }
+  }
+}
+
+ul.image-list-sortable .options {
+  position: absolute;
+  width: 100%;
+  bottom: 0;
+  left: 0;
+  padding: 10px;
+  text-align: right;
+  /* background: rgba(0,0,0,0.5); */
+}
+
+div {
+  &.row {
+    &.user-pool {
+      margin-top: 50px;
+      margin-bottom: 50px;
+      display: -webkit-box;
+      display: -webkit-flex;
+      display: -ms-flexbox;
+      display: flex;
+      div {
+        &.img-pool {
+          max-width: 293px;
+        }
+        &.user-pool-info {
+          background-color: $background-white;
+          border-radius: 10px;
+          padding: 2%;
+          font-family: $primary-font;
+          h2 {
+            font-size: 2.2em;
+            color: #51C3C0;
+            font-weight: bold;
+            float: none;
+            span.pool-amount {
+              color: #BB4CAD;
+            }
+          }
+        }
+      }
+    }
+    &.general-dashboard {
+      background-color: $background-white;
+      padding: 2% 5%;
+      margin-bottom: 40px;
+      border-radius: 7px;
+    }
+  }
+  &.container.general-dashboard {
+    background-color: $background-white;
+    padding: 2% 5%;
+    margin-bottom: 40px;
+    border-radius: 7px;
+    &:first-child {
+      border-top-right-radius: none;
+      border-top-left-radius: none;
+    }
+  }
+}
+
+.general-dashboard div.row.more-projects-button {
+  display: flex;
+  justify-content: center;
+  margin-top: 40px;
+}
+
+@media (max-width: $breakpoint-sm - 1) {
+  div {
+    &.row.general-dashboard, &.container.general-dashboard {
+      background-color: $background-white;
+      padding: 2% 5%;
+      margin-right: 0;
+      margin-left: 0;
+      border-radius: none;
+      margin-bottom: 20px;
+    }
+  }
+}
+
+div {
+  &.row.user-pool div.user-pool-info div.extra-info {
+    margin-left: 2px;
+    margin-top: 5%;
+    .donor {
+      background-color: $background-pink;
+      font-size: 1.2em;
+      color: $color-white;
+      font-weight: bold;
+      width: 100%;
+    }
+    .chargue {
+      background-color: $background-dark-green;
+      font-size: 1.2em;
+      color: $color-white;
+      font-weight: bold;
+      width: 100%;
+    }
+  }
+  &.user-pool-info div.pool-conditions {
+    margin-bottom: 40px;
+    color: #B3B2B2;
+    a {
+      color: #B3B2B2;
+      text-decoration: underline;
+      font-weight: bold;
+    }
+  }
+}
+
+/* Social Commitment */
+
+table.social-commitment {
+  .glyphicon-ok {
+    color: #00C65B;
+  }
+  .glyphicon-remove {
+    color: #FF4848;
+  }
+  td:not(:first-child) {
+    vertical-align: middle;
+    text-align: center;
+  }
+  th {
+    text-align: center;
+  }
+}
+
+/* Shared materials */
+
+div.new-material-success {
+  margin-top: 20px;
+}
+
+
+
+@media (min-width: $breakpoint-sm) {
+  .dashboard-sidebar.affix {
+    position: static;
+  }
+}
+
+@media (max-width: $breakpoint-sm - 1) {
+  .dashboard-sidebar {
+    &.affix {
+      z-index: 1000;
+      width: 100%;
+      top: 0;
+      left: 0;
+    }
+    .dashboard-project-navbar-nav {
+      position: relative;
+    }
+    .navbar-toggle {
+      position: absolute;
+      float: none;
+      right: 0;
+      top: 0;
+      margin: 5px;
+    }
+    &.affix .navbar-toggle {
+      margin-right: 15px;
+    }
+  }
+  .project-widget.mini {
+    display: table;
+    width: 100%;
+    a.img-link {
+      display: table-cell;
+      width: 96px;
+    }
+    .img-project {
+      width: 96px;
+      height: 54px;
+      border-bottom-left-radius: 5px;
+      border-bottom-right-radius: 5px;
+    }
+    .status-mark {
+      border-bottom-left-radius: 5px;
+      border-bottom-right-radius: 5px;
+    }
+    .content {
+      display: table-cell;
+      border-left: none;
+      // border-top:1px solid #D9D9DE;
+      border: none;
+      border-top-right-radius: 5px;
+      border-bottom-left-radius: 0;
+      padding: 0 0 0 1em;
+    }
+  }
+  .dashboard-sidebar.affix .project-widget.mini {
+    .content {
+      background: #C7ECEC;
+      width: auto;
+      border-top-right-radius: 0;
+    }
+    .img-project {
+      border-top-right-radius: 0;
+      border-top-left-radius: 0;
+      border-bottom-right-radius: 0;
+    }
+  }
+}

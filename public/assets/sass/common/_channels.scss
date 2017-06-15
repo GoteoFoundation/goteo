@@ -1,0 +1,135 @@
+
+/* Channels */
+
+div {
+  &.jumbotron.channels {
+    margin-top: 20px;
+    text-align: center;
+  }
+  &.channels-container {
+    background-color: $background-white;
+    margin-bottom: 40px;
+  }
+  &.row.channels {
+    padding: 2%;
+  }
+  &.channel {
+    .name {
+      max-width: 60%;
+      height: auto;
+      position: absolute;
+      top: 0;
+      left: 0;
+      background-color: rgba(32, 179, 178, 0.85);
+      color: $color-white;
+      font-size: 1em;
+      padding: 5px 10px;
+      text-transform: uppercase;
+      font-weight: bold;
+    }
+    .projects {
+      height: auto;
+      position: absolute;
+      bottom: 5px;
+      right: 0;
+      background-color: rgba(255, 255, 255, 0.85);
+      font-size: 1em;
+      padding: 5px 10px;
+      text-transform: uppercase;
+      color: #20B2B3;
+      .eye {
+        height: 11px;
+        margin-right: 5px;
+      }
+    }
+    a.channel-link {
+      position: relative;
+      display: table;
+      margin: 0px auto;
+    }
+  }
+  &.jumbotron {
+    &.general {
+      padding-top: 20px;
+      padding-bottom: 20px;
+      font-family: $primary-font;
+    }
+    &.calculator-header {
+      color: $color-white;
+      background-color: #DAE0E8;
+      padding: 0;
+      margin: 0;
+      div.banner {
+        background-image: url('/assets/img/calculator/header_banner.jpg');
+        height: 353px;
+      }
+      h2 {
+        font-weight: bold;
+        font-size: 4.8em;
+        padding-top: 20px;
+        padding-left: 25px;
+      }
+      h3 {
+        &.slogan-1 {
+          font-size: 1.5em;
+          padding: 0 !important;
+          line-height: 1.4;
+        }
+        &.slogan-2 {
+          font-size: 2em;
+          padding: 0 !important;
+          padding-left: 25px !important;
+          line-height: 1.4;
+          span.line {
+            background-color: #54C1BE;
+            padding: 0 5px;
+          }
+        }
+      }
+    }
+  }
+  &.row.pool-main {
+    background-color: $background-white;
+    text-align: center;
+    h1 {
+      color: #218587;
+      font-size: 2.5em;
+      font-weight: bold;
+      margin-bottom: 20px;
+    }
+    h2 {
+      color: #b3b2b2;
+      font-size: 1.5em;
+      margin-top: 0 !important;
+      margin-bottom: 20px !important;
+    }
+  }
+  &.calculator {
+    color: #218587;
+    margin-top: 20px;
+    h2 {
+      font-size: 2em;
+    }
+    div {
+      &.invest-title {
+        font-size: 2em;
+        font-weight: bold;
+        padding: 0 !important;
+      }
+      &.amount {}
+    }
+    input.invest-amount {
+      height: 40px !important;
+      font-size: 1.75em;
+      color: #218587;
+      text-align: center;
+    }
+  }
+}
+
+@media (max-width: 769px) {
+  div.channel {
+    margin-bottom: 30px;
+    margin-top: 20px;
+  }
+}
