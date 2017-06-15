@@ -88,7 +88,9 @@
 }
 
 i.visible-xs {
-    display:inline-block !important;
+    @media(max-width: $breakpoint-sm - 1 ) {
+        display:inline-block !important;
+    }
 }
 
 

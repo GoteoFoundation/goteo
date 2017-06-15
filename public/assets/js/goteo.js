@@ -175,6 +175,7 @@ $(function(){
             inAnimation = 'flipInY';
             outAnimation = 'flipOutY';
         }
+        $('.sidebar-menu.active').find('.submenu.active').not($s).removeClass('active');
 
         if($s.hasClass('active')) {
             $s.animateCss(outAnimation, function() {
