@@ -159,7 +159,6 @@ class SessionListener extends AbstractListener {
         Session::addToMainMenu(Text::get('regular-header-about'), '/about');
         Session::addToMainMenu('<i class="fa fa-search"></i> ' . Text::get('regular-discover'), '/discover');
         Session::addToMainMenu('<i class="fa fa-question-circle"></i> ' . Text::get('regular-faq'), '/faq', 99);
-        Session::addToMainMenu('<i class="fa fa-sign-out"></i> ' . Text::get('regular-logout'), '/user/logout', 100);
 
         // Langs
         $langs = [];
@@ -176,6 +175,31 @@ class SessionListener extends AbstractListener {
             $currencies['?currency=' . $id] = $c['html'] . ' ' .$c['name'];
         }
         Session::addToMainMenu(Currency::get($currency, 'html') . ' ' . Currency::get($currency, 'name'), $currencies);
+
+        // Minimal User menu
+        Session::addToUserMenu(Text::get('dashboard-menu-main'), '/dashboard');
+        Session::addToUserMenu(Text::get('dashboard-menu-profile'), '/dashboard/profile');
+        Session::addToUserMenu(Text::get('dashboard-menu-pool'), '/dashboard/wallet');
+        Session::addToUserMenu(Text::get('dashboard-menu-activity'), '/dashboard/activity');
+        Session::addToUserMenu(Text::get('dashboard-menu-projects'), '/dashboard/projects');
+        Session::addToUserMenu(Text::get('dashboard-menu-profile-preferences'), '/dashboard/profile/preferences');
+
+        if($user = Session::getUser()) {
+            if ( isset($user->roles['translator']) ||  isset($user->roles['admin']) || isset($user->roles['superadmin']) ) {
+                Session::addToUserMenu(Text::get('regular-translate_board'), '/translate');
+            }
+
+            if ( isset($user->roles['checker']) ) {
+              Session::addToUserMenu(Text::get('regular-review_board'), '/review');
+            }
+
+            if ( Session::isAdmin() ) {
+              Session::addToUserMenu(Text::get('regular-admin_board'), '/admin');
+            }
+        }
+
+        Session::addToUserMenu('<i class="fa fa-sign-out"></i> ' . Text::get('regular-logout'), '/user/logout', 100);
+
         // Sessiono::addToUserMenu('#', '<i class="fa fa-hand"></i> User Item 1');
 
         // extend the life of the session
