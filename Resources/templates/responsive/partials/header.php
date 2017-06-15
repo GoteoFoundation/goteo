@@ -16,21 +16,11 @@
     </div>
 
     <div class="sidebar-menu" id="user-menu">
-      <ul class="nav">
-        <li><a href="#">Item 1</a></li>
-        <li><a href="#">Item 2</a></li>
-      </ul>
+      <?= $this->supply('global-user-menu', $this->insert('partials/header/menu', ['target' => 'user-menu', 'menu' => $this->get_user_menu()])) ?>
     </div>
 
     <div class="sidebar-menu" id="main-menu">
-      <div class="sidebar-header">
-        <a class="navbar-brand" href="<?= SITE_URL ?>"><img src="<?= SRC_URL ?>/goteo_logo.png" class="img-responsive logo" alt="Goteo"></a>
-        <button class="toggle-menu btn btn-link" data-target="main-menu" title="Close"><i class="fa fa-close"></i></button>
-      </div>
-      <ul class="nav">
-        <li><a href="#">MainItem 1</a></li>
-        <li><a href="#">MainItem 2</a></li>
-      </ul>
+      <?= $this->supply('global-main-menu', $this->insert('partials/header/menu', ['target' => 'main-menu', 'menu' => $this->get_main_menu(), 'bottom' => [['link' => '/project/create', 'class' => 'btn-fashion', 'text' => $this->text('regular-create')] ]])) ?>
     </div>
 
   </div><!--/.container -->

@@ -96,7 +96,7 @@
     // main menus
     .sidebar-menu {
         position: absolute;
-        top: 58px;
+        top: 60px;
         right: 0;
         min-width: 300px;
         background: $background-white;
@@ -108,21 +108,36 @@
         &.active {
             display: block;
         }
-        .nav > li {
-            > a {
-                color: $primary-color;
-                text-transform: uppercase;
-                font-weight: 600;
-                text-align: center;
-                font-size: $font-size * 1.2;
-                border-top: 2px solid $background-light;
-                margin:0 15px;
-                padding-top: 15px;
-                padding-bottom: 15px;
+        .nav {
+            > li {
+                > a {
+                    color: $primary-color;
+                    text-transform: uppercase;
+                    font-weight: 600;
+                    text-align: center;
+                    font-size: $font-size * 1.2;
+                    border-top: 2px solid $background-light;
+                    margin:0 15px;
+                    padding-top: 15px;
+                    padding-bottom: 15px;
+                    &.btn-fashion {
+                        margin:0;
+                        color: $color-white;
+                    }
+                }
+                &:first-child > a {
+                    @media (min-width: $breakpoint-sm) {
+                        border-top: none;
+                    }
+                }
             }
-            &:first-child > a {
-                @media (min-width: $breakpoint-sm) {
-                    border-top: none;
+            &.bottom {
+                @media (max-width: $breakpoint-sm - 1) {
+                    position: absolute;
+                    width: 100%;
+                    bottom: 0;
+                    > li > a {
+                    }
                 }
             }
         }

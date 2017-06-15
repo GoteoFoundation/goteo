@@ -114,11 +114,12 @@ $(function(){
     // Menu behaviour
     var toggleMenu = function(e) {
         e.preventDefault();
+        var that = this;
         var target = $(this).data('target');
         var $t = $('#' + target);
         var $show = $(this).find('.show-menu');
         var $hide = $(this).find('.hide-menu');
-        console.log($t.css('top'));
+        // xs devices has css top to 0px
         var flipHamburger = parseInt($t.css('top')) !== 0;
         if(!flipHamburger && $hide.length) {
             $hide.css('display', 'none');
@@ -126,6 +127,8 @@ $(function(){
         }
         var inAnimation = 'flipInY';
         var outAnimation = 'flipOutY';
+        // Close other opened
+        $('.sidebar-menu.active:not([id="' + target + '"])').removeClass('active');
 
         if($t.hasClass('active')) {
             if(flipHamburger) {
@@ -144,7 +147,11 @@ $(function(){
                     $hide.css('display', 'block').animateCss('flipInX');
                 });
             }
-            $t.addClass('active').animateCss(inAnimation);
+            $t.addClass('active').animateCss(inAnimation, function(){
+                $('#main-content').one('click', function(e){
+                    toggleMenu.call(that, e);
+                });
+            });
         }
     };
     $('.toggle-menu').on('click', toggleMenu);

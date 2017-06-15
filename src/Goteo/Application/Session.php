@@ -311,4 +311,16 @@ class Session {
     static public function getUser () {
         return (self::isLogged()) ? self::get('user') : null;
     }
+
+    static public function getMainMenu() {
+        $menu = [];
+        $menu['#11'] = '<i class="fa fa-hand"></i> Main Item 1';
+        return $menu;
+    }
+
+    static public function getUserMenu() {
+        $menu = [];
+        $menu['#21'] = '<i class="fa fa-user"></i> Item 1';
+        return $menu;
+    }
 }
