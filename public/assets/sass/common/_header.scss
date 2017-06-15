@@ -109,8 +109,43 @@
             display: block;
         }
         .nav {
-            > li {
-                > a {
+            &.bottom {
+                @media (max-width: $breakpoint-sm - 1) {
+                    position: absolute;
+                    width: 100%;
+                    bottom: 0;
+                }
+            }
+            &.submenu {
+                display: none;
+                position: absolute;
+                left: -300px;
+                width: 100%;
+                top: 0;
+                background: $background-white;
+                z-index: 1001;
+                &.active {
+                    display: block;
+
+                }
+                @media (min-width: $breakpoint-sm) {
+                    box-shadow: 1px 1px 3px 1px rgba(0,0,0,.3);
+                }
+
+                // Fullscreen on small devices
+                @media (max-width: $breakpoint-sm - 1) {
+                    position: fixed;
+                    left: 0;
+                    top: 60px;
+                    height: 100%;
+                }
+                li a.back {
+                    font-weight: bold;
+                }
+
+            }
+            li {
+                a {
                     color: $primary-color;
                     text-transform: uppercase;
                     font-weight: 600;
@@ -124,19 +159,16 @@
                         margin:0;
                         color: $color-white;
                     }
-                }
-                &:first-child > a {
-                    @media (min-width: $breakpoint-sm) {
-                        border-top: none;
+                    &.toggle-submenu {
+                        position:relative;
+                        .fa {
+                            font-weight: bold;
+                        }
                     }
                 }
-            }
-            &.bottom {
-                @media (max-width: $breakpoint-sm - 1) {
-                    position: absolute;
-                    width: 100%;
-                    bottom: 0;
-                    > li > a {
+                &:first-child a {
+                    @media (min-width: $breakpoint-sm) {
+                        border-top: none;
                     }
                 }
             }

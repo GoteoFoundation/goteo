@@ -98,11 +98,13 @@ function pageLoadError(e, error) {
 $.fn.extend({
     animateCss: function (animationName, callback) {
         var animationEnd = 'webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend animationend';
-        this.addClass('animated ' + animationName).one(animationEnd, function() {
+        this.off();
+        this.addClass('animated ' + animationName).on(animationEnd, function() {
             $(this).removeClass('animated ' + animationName);
             if($.isFunction(callback)) {
-                callback();
+                callback.call(this);
             }
+            $(this).off();
         });
     }
 });
@@ -113,15 +115,16 @@ $.fn.extend({
 $(function(){
     // Menu behaviour
     var toggleMenu = function(e) {
+        e.stopPropagation();
         e.preventDefault();
         var that = this;
         var target = $(this).data('target');
         var $t = $('#' + target);
         var $show = $(this).find('.show-menu');
         var $hide = $(this).find('.hide-menu');
-        // xs devices has css top to 0px
-        var flipHamburger = parseInt($t.css('top')) !== 0;
-        if(!flipHamburger && $hide.length) {
+        // xs devices has css position to fixed
+        var isDesktop = $t.css('position') === 'absolute';
+        if(!isDesktop && $hide.length) {
             $hide.css('display', 'none');
             $show.css('display', 'block');
         }
@@ -129,18 +132,22 @@ $(function(){
         var outAnimation = 'flipOutY';
         // Close other opened
         $('.sidebar-menu.active:not([id="' + target + '"])').removeClass('active');
+        $('#main-content').off();
 
         if($t.hasClass('active')) {
-            if(flipHamburger) {
+            if(isDesktop) {
                 $show.css('display', 'none');
                 $hide.css('display', 'block').animateCss('flipOutX', function() {
                     $hide.css('display', 'none');
                     $show.css('display', 'block').animateCss('flipInX');
                 });
             }
-            $t.animateCss(outAnimation, function(){ $t.removeClass('active'); });
+            $t.animateCss(outAnimation, function(){
+                $t.removeClass('active');
+                $t.find('.submenu.active').removeClass('active');
+            });
         } else {
-            if(flipHamburger) {
+            if(isDesktop) {
                 $hide.css('display', 'none');
                 $show.css('display', 'block').animateCss('flipOutX', function() {
                     $show.css('display', 'none');
@@ -148,13 +155,42 @@ $(function(){
                 });
             }
             $t.addClass('active').animateCss(inAnimation, function(){
-                $('#main-content').one('click', function(e){
+                $('#main-content').on('click', function(e){
                     toggleMenu.call(that, e);
+                    $(this).off();
                 });
             });
         }
     };
+
+    var toggleSubMenu = function(e) {
+        e.stopPropagation();
+        e.preventDefault();
+        var that = this;
+        var $s = $(this).next('.submenu');
+        var isDesktop = $s.css('position') === 'absolute';
+        var inAnimation = 'slideInRight';
+        var outAnimation = 'slideOutRight';
+        if(isDesktop) {
+            inAnimation = 'flipInY';
+            outAnimation = 'flipOutY';
+        }
+
+        if($s.hasClass('active')) {
+            $s.animateCss(outAnimation, function() {
+                $s.removeClass('active');
+            });
+        } else {
+            $s.find('li a.back').on('click', function(e) {
+                toggleSubMenu.call(that, e);
+            });
+            $s.addClass('active').animateCss(inAnimation);
+        }
+    };
+
     $('.toggle-menu').on('click', toggleMenu);
+    $('.sidebar-menu .toggle-submenu').on('click', toggleSubMenu);
+
 
     // Bind pronto events
     $(window).on("pronto.request", pageRequested)

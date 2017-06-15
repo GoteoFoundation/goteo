@@ -11,6 +11,7 @@
 namespace Goteo\Application;
 
 use Goteo\Model\User;
+use Goteo\Library\Text;
 use Symfony\Component\HttpFoundation\Request;
 
 /**
@@ -21,6 +22,8 @@ class Session {
     static protected $start_time = 0;
     static protected $triggers = array('session_expires' => null, 'session_destroyed' => null);
     static protected $request = null;
+    static protected $main_menu = [];
+    static protected $user_menu = [];
 
     /**
      * TODO:
@@ -312,15 +315,33 @@ class Session {
         return (self::isLogged()) ? self::get('user') : null;
     }
 
+    static public function addToMainMenu($item, $link = null) {
+        if(is_array($item)) {
+            self::$main_menu[] = $item;
+        } elseif(is_array($link)) {
+            // Submenus
+            self::$main_menu[] = [ 'text' => $item, 'submenu' => $link ];
+        } else {
+            self::$main_menu[$link] = $item;
+        }
+    }
+
+    static public function addToUserMenu($item, $link = null) {
+        if(is_array($item)) {
+            self::$user_menu[] = $item;
+        } elseif(is_array($link)) {
+            // Submenus
+            self::$main_menu[] = [ 'text' => $item, 'submenu' => $link ];
+        } else {
+            self::$user_menu[$link] = $item;
+        }
+    }
+
     static public function getMainMenu() {
-        $menu = [];
-        $menu['#11'] = '<i class="fa fa-hand"></i> Main Item 1';
-        return $menu;
+        return self::$main_menu;
     }
 
     static public function getUserMenu() {
-        $menu = [];
-        $menu['#21'] = '<i class="fa fa-user"></i> Item 1';
-        return $menu;
+        return self::$user_menu;
     }
 }

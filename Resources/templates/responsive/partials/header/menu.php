@@ -4,23 +4,15 @@
 </div>
 
 <ul class="nav">
-  <?php foreach($this->raw('menu') as $link => $text): ?>
-    <?php if(is_array($text)): ?>
-        <li><a href="<?= $text['link'] ?>" class="<?= $text['class'] ?>"><?= $text['text'] ?></a></li>
-    <?php else: ?>
-        <li><a href="<?= $link ?>"><?= $text ?></a></li>
-    <?php endif ?>
+  <?php foreach($this->raw('menu') as $link => $item): ?>
+    <?= $this->insert('partials/header/menu_item', ['link' => $link, 'item' => $item]) ?>
   <?php endforeach ?>
 </ul>
 
 <?php if($this->bottom): ?>
 <ul class="nav bottom">
-  <?php foreach($this->raw('bottom') as $link => $text): ?>
-    <?php if(is_array($text)): ?>
-        <li><a href="<?= $text['link'] ?>" class="<?= $text['class'] ?>"><?= $text['text'] ?></a></li>
-    <?php else: ?>
-        <li><a href="<?= $link ?>"><?= $text ?></a></li>
-    <?php endif ?>
+  <?php foreach($this->raw('bottom') as $link => $item): ?>
+    <?= $this->insert('partials/header/menu_item', ['link' => $link, 'item' => $item]) ?>
   <?php endforeach ?>
 </ul>
 <?php endif ?>
