@@ -68,18 +68,6 @@ class SessionListener extends AbstractListener {
         }
         Session::start('goteo-' . Config::get('env'), Config::get('session.time'));
 
-        // Default menus
-        Session::addToMainMenu(Text::get('regular-header-about'), '/about');
-        Session::addToMainMenu('<i class="fa fa-hand"></i> ' . Text::get('regular-logout'), '/user/logout');
-        $langs = [];
-        foreach (Lang::listAll('name', true) as $id => $lang) {
-            if (Lang::isActive($id)) continue;
-            $langs[Lang::getUrl($id)] = $lang;
-        }
-
-        Session::addToMainMenu('<i class="fa fa-globe"></i> ' . Lang::getName(), $langs);
-        // Sessiono::addToUserMenu('#', '<i class="fa fa-hand"></i> User Item 1');
-
         /**
          * Session.
          */
@@ -166,6 +154,29 @@ class SessionListener extends AbstractListener {
         //ensure is a valid currency
         $currency = Currency::get($currency, 'id');
         Session::store('currency', $currency); // depending on request
+
+        // Default menus
+        Session::addToMainMenu(Text::get('regular-header-about'), '/about');
+        Session::addToMainMenu('<i class="fa fa-search"></i> ' . Text::get('regular-discover'), '/discover');
+        Session::addToMainMenu('<i class="fa fa-question-circle"></i> ' . Text::get('regular-faq'), '/faq', 99);
+        Session::addToMainMenu('<i class="fa fa-sign-out"></i> ' . Text::get('regular-logout'), '/user/logout', 100);
+
+        // Langs
+        $langs = [];
+        foreach (Lang::listAll('name', true) as $id => $lang) {
+            if (Lang::isActive($id)) continue;
+            $langs[Lang::getUrl($id)] = $lang;
+        }
+        Session::addToMainMenu('<i class="fa fa-globe"></i> ' . Lang::getName(), $langs);
+
+        // Currencies
+        $currencies = [];
+        foreach(Currency::$currencies as $id => $c) {
+            if($id === $currency) continue;
+            $currencies['?currency=' . $id] = $c['html'] . ' ' .$c['name'];
+        }
+        Session::addToMainMenu(Currency::get($currency, 'html') . ' ' . Currency::get($currency, 'name'), $currencies);
+        // Sessiono::addToUserMenu('#', '<i class="fa fa-hand"></i> User Item 1');
 
         // extend the life of the session
         Session::renew();

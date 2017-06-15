@@ -315,26 +315,36 @@ class Session {
         return (self::isLogged()) ? self::get('user') : null;
     }
 
-    static public function addToMainMenu($item, $link = null) {
+    static public function addToMainMenu($item, $link = null, int $position = null) {
         if(is_array($item)) {
-            self::$main_menu[] = $item;
+            $parts = $item;
         } elseif(is_array($link)) {
             // Submenus
-            self::$main_menu[] = [ 'text' => $item, 'submenu' => $link ];
+            $parts = [ 'text' => $item, 'submenu' => $link ];
         } else {
-            self::$main_menu[$link] = $item;
+            $parts = [ 'text' => $item, 'link' => $link ];
         }
+        if(is_null($position)) {
+            $position = count(self::$main_menu);
+        }
+        self::$main_menu[$position] = $parts;
+        ksort(self::$main_menu);
     }
 
-    static public function addToUserMenu($item, $link = null) {
+    static public function addToUserMenu($item, $link = null, int $position = null) {
         if(is_array($item)) {
-            self::$user_menu[] = $item;
+            $parts = $item;
         } elseif(is_array($link)) {
             // Submenus
-            self::$main_menu[] = [ 'text' => $item, 'submenu' => $link ];
+            $parts = [ 'text' => $item, 'submenu' => $link ];
         } else {
-            self::$user_menu[$link] = $item;
+            $parts = [ 'text' => $item, 'link' => $link ];
         }
+        if(is_null($position)) {
+            $position = count(self::$user_menu);
+        }
+        self::$user_menu[$position] = $parts;
+        ksort(self::$user_menu);
     }
 
     static public function getMainMenu() {
