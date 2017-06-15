@@ -591,7 +591,7 @@ class ProjectController extends \Goteo\Core\Controller {
         // si lo puede ver
         if ($project->userCanView(Session::getUser())) {
 
-            $project->cat_names = Project\Category::getNames($id);
+            $project->cat_names = Project\Category::getNames($project->id);
 
             if ($show == 'home') {
                 // para el widget embed
