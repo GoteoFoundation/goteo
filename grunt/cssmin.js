@@ -10,7 +10,7 @@ module.exports = function(grunt) {
           expand: true,
           // cwd: '.tmp',
           cwd: '<%= goteo.dist %>',
-          src: ['**/*.css'],
+          src: ['assets/css/**/*.css'],
           dest: '<%= goteo.dist %>'
         }]
       }
