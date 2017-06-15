@@ -2,11 +2,11 @@
 
 <?php $this->section('dashboard-content') ?>
 
-<div class="container general-dashboard">
+<div class="general-dashboard">
     <?= $this->raw('message') ?>
 </div>
 
-<div class="container general-dashboard projects-container" id="my-projects-container">
+<div class="general-dashboard projects-container" id="my-projects-container">
     <h2><?= $this->text('profile-my_projects-header') ?></h2>
     <?= $this->insert('dashboard/partials/projects_interests.php', [
         'projects' => $this->projects,
@@ -17,7 +17,7 @@
         ]) ?>
 </div>
 
-<div class="container general-dashboard projects-container" id="projects-interests-container">
+<div class="general-dashboard projects-container" id="projects-interests-container">
     <h2><?= $this->text('profile-suggest-projects-interest') ?></h2>
     <?= $this->insert('dashboard/partials/projects_interests.php', [
         'projects' => $this->favourite,
@@ -28,7 +28,7 @@
         ]) ?>
 </div>
 
-<div class="container general-dashboard projects-container" id="projects-support-container">
+<div class="general-dashboard projects-container" id="projects-support-container">
     <h2><?= $this->text('profile-invest_on-header') ?></h2>
     <?= $this->insert('dashboard/partials/projects_interests.php', [
         'projects' => $this->invested,

@@ -1,6 +1,27 @@
 /* Dashboard  */
 
 /* Menu dashboard */
+.navbar-fixed-left {
+  width: $dashboard-sidebar-width;
+  position: fixed;
+  border-radius: 0;
+  height: 100%;
+}
+
+.navbar-fixed-left .navbar-nav > li {
+  float: none;  /* Cancel default li float: left */
+  width: $dashboard-sidebar-width - 1;
+}
+
+.navbar-fixed-left + .container, .navbar-fixed-left + .container-fluid {
+  padding-left: $dashboard-sidebar-width + 15;
+}
+
+/* On using dropdown menu (To right shift popuped) */
+.navbar-fixed-left .navbar-nav > li > .dropdown-menu {
+  margin-top: -50px;
+  margin-left: $dashboard-sidebar-width;
+}
 
 nav.dashboard-navbar-nav {
   background-color: $background-light-cream;
@@ -19,9 +40,20 @@ nav.dashboard-navbar-nav {
 
 /* dashboard containers */
 .dashboard {
-    background: $background-light-cream;
-  .container {
+  background: $background-light-cream;
+
+  .dashboard-menu {
+    background: $background-light-green;
+    z-index: 1000;
   }
+  .dashboard-content {
+    .general-dashboard {
+      background-color: $background-white;
+      padding: 15px;
+      margin: 0 -15px 40px -15px;
+    }
+  }
+
 }
 
 ul.dashboard-navbar {
