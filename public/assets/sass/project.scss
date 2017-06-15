@@ -280,7 +280,7 @@ div {
     margin-left: 15px;
   }
   &.favourite {
-    color: #bcbcbc;
+    color: $color-light-grey;
     font-size: 13px;
     font-weight: bold;
     cursor: pointer;
@@ -343,7 +343,7 @@ button {
     white-space: normal;
   }
   &.dark-grey {
-    background-color: #BCBCBC;
+    background-color: $color-light-grey;
     font-size: 14px;
     color: $color-white !important;
     border-radius: 10px;
@@ -487,7 +487,7 @@ div {
   }
   &.widget {
     background-color: #F4F6F6;
-    border: 1px solid #BCBCBC;
+    border: 1px solid $color-light-grey;
     margin-top: 20px !important;
     padding: 0 2.5%;
     border-radius: 10px !important;
@@ -619,7 +619,7 @@ div {
 /* Social commitment */
 
 h2.social-reward-title {
-  border-top: 1px solid #BCBCBC;
+  border-top: 1px solid $color-light-grey;
   padding-top: 35px;
   font-size: 18px;
   font-weight: bold;
@@ -635,7 +635,7 @@ ul.social-rewards {
 
 li.social-reward {
   &:not(:last-child) {
-    border-bottom: 1px solid #BCBCBC;
+    border-bottom: 1px solid $color-light-grey;
     padding-bottom: 20px;
   }
   h3.title {
@@ -804,7 +804,7 @@ div {
 
 .embed-legend {
   font-size: 12px;
-  color: #BCBCBC;
+  color: $color-light-grey;
   margin-top: 10px;
 }
 
@@ -862,7 +862,7 @@ div {
     }
     &.chart {
       padding: 15px 0px 20px 0px;
-      border-bottom: 1px solid #BCBCBC;
+      border-bottom: 1px solid $color-light-grey;
       div {
         &.green {
           background-color: #149290;
@@ -977,7 +977,7 @@ div {
 
 /* Responsive fixes */
 
-@media (min-width: 768px) and (max-width: 992px) {
+@media (min-width: $breakpoint-sm) and (max-width: $breakpoint-md) {
   h1.project-title {
     font-size: 32px !important;
   }
@@ -1051,7 +1051,7 @@ div {
   }
 }
 
-@media (max-width: 767px) {
+@media (max-width: $breakpoint-sm - 1) {
   .navbar {
     font-size: 14px !important;
   }
@@ -1182,15 +1182,15 @@ div {
     }
     &.favourite {
       background-color: #FFF;
-      border: 1px solid #BCBCBC !important;
-      color: #BCBCBC !important;
+      border: 1px solid $color-light-grey !important;
+      color: $color-light-grey !important;
       padding: 18px;
       margin-bottom: 25px;
       border-radius: 10px;
       font-size: 1.43em !important;
       &.active {
-        background-color: #BCBCBC;
-        border: 1px solid #BCBCBC !important;
+        background-color: $color-light-grey;
+        border: 1px solid $color-light-grey !important;
         color: $color-white !important;
         padding: 18px;
         border-radius: 10px;
@@ -1217,7 +1217,7 @@ div {
     &.rewards-collapsed {
       text-align: center;
       border-radius: 5px !important;
-      border: 1px solid #BCBCBC !important;
+      border: 1px solid $color-light-grey !important;
       border-radius: 10px !important;
       background-color: rgb(255, 255, 255);
     }
@@ -1282,7 +1282,7 @@ div {
   }
 }
 
-@media (max-width: 479px) {
+@media (max-width: $breakpoint-xs - 1) {
   body.project {
     font-size: 10px !important;
   }
@@ -1302,7 +1302,7 @@ div {
   }
 }
 
-@media (max-width: 384px) {
+@media (max-width: $breakpoint-xxs - 1) {
   body.project {
     font-size: 9px !important;
   }

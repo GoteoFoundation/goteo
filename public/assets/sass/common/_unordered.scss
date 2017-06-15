@@ -540,13 +540,13 @@ form.create-project-form {
   }
 }
 
-@media (min-width: 992px) {
+@media (min-width: $breakpoint-md) {
   .clear-both-md {
     clear: both !important;
   }
 }
 
-@media (min-width: 768px) {
+@media (min-width: $breakpoint-sm) {
   .row-form {
     padding-top: 40px;
     padding-bottom: 60px;
@@ -563,7 +563,7 @@ form.create-project-form {
       }*/
 }
 
-@media (max-width: 767px) {
+@media (max-width: $breakpoint-sm - 1) {
   .clear-both-xs {
     clear: both !important;
   }
@@ -1143,7 +1143,7 @@ div {
   margin-top: 40px;
 }
 
-@media (max-width: 767px) {
+@media (max-width: $breakpoint-sm - 1) {
   div {
     &.row.general-dashboard, &.container.general-dashboard {
       background-color: $background-white;
@@ -1374,13 +1374,13 @@ div.new-material-success {
   }
 }
 
-@media (min-width: 768px) {
+@media (min-width: $breakpoint-sm) {
   .dashboard-sidebar.affix {
     position: static;
   }
 }
 
-@media (max-width: 767px) {
+@media (max-width: $breakpoint-sm - 1) {
   .dashboard-sidebar {
     &.affix {
       z-index: 1000;

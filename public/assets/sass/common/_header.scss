@@ -1,21 +1,25 @@
 .navbar-toggle {
-    background-color: #32BDB8;
+    background-color: $background-light-green;
     .icon-bar{
-        background-color: #fff;
+        background-color: $background-white;
         height: 5px !important;
         width: 30px !important;
     }
 }
 
 .top-navbar {
-    background-color: #32BDB8;
+    background-color: $background-light-green;
+
+    >.container {
+        position: relative;
+    }
 
     &.navbar-default{
         border:none;
         .navbar-nav > li > a{
-            color:#FFF !important;
+            color: $color-white;
             > .open > a{
-                color:$color-dark !important;
+                color:$color-dark;
             }
         }
     }
@@ -23,6 +27,134 @@
     &.navbar{
         border-radius: 0px;
     }
+
+    .navbar-header {
+        float:left;
+    }
+
+
+    .animated.flipInY {
+      animation-duration: .3s;
+    }
+    .animated.flipOutY {
+      animation-duration: .5s;
+    }
+
+    @keyframes flipInY {
+      from {
+        transform: perspective(400px) rotate3d(0, 1, 0, -90deg);
+        animation-timing-function: ease-in;
+        opacity: 0;
+      }
+
+      // 40% {
+      //   transform: perspective(400px) rotate3d(0, 1, 0, -20deg);
+      //   animation-timing-function: ease-in;
+      // }
+
+      60% {
+        transform: perspective(400px) rotate3d(0, 1, 0, -10deg);
+        opacity: 1;
+      }
+
+      // 80% {
+      //   transform: perspective(400px) rotate3d(0, 1, 0, -5deg);
+      // }
+
+      to {
+        transform: perspective(400px);
+      }
+    }
+    // Permanent menus
+    .navbar-always {
+        float:right;
+
+        button, a {
+            margin: 15px 0 15px 15px;
+            padding:0;
+            border: none;
+            background: transparent;
+            color: $color-white;
+            img {
+                max-width: 28px;
+                vertical-align: text-bottom;
+            }
+        }
+    }
+
+    .navbar-always, .toggle-menu {
+        i {
+            &.fa {
+               font-size: $font-size * 2;
+            }
+            &.hide-menu {
+                display: none;
+            }
+        }
+    }
+
+    // main menus
+    .sidebar-menu {
+        position: absolute;
+        top: 58px;
+        right: 0;
+        min-width: 300px;
+        background: $background-white;
+        display: none;
+        z-index: 1000;
+        @media (min-width: $breakpoint-sm) {
+            box-shadow: 1px 1px 3px 1px rgba(0,0,0,.3);
+        }
+        &.active {
+            display: block;
+        }
+        .nav > li {
+            > a {
+                color: $primary-color;
+                text-transform: uppercase;
+                font-weight: 600;
+                text-align: center;
+                font-size: $font-size * 1.2;
+                border-top: 2px solid $background-light;
+                margin:0 15px;
+                padding-top: 15px;
+                padding-bottom: 15px;
+            }
+            &:first-child > a {
+                @media (min-width: $breakpoint-sm) {
+                    border-top: none;
+                }
+            }
+        }
+        // Fullscreen on small devices
+        @media (max-width: $breakpoint-sm - 1) {
+            top: 0;
+            left: 0;
+            right: auto;
+            width: 100%;
+            height: 100%;
+            min-width: auto;
+            position: fixed;
+        }
+
+        .sidebar-header {
+            position: relative;
+            display: none;
+            @media (max-width: $breakpoint-sm - 1) {
+                display: block;
+                margin: 15px;
+            }
+            .navbar-brand {
+                float: none;
+            }
+            .toggle-menu {
+                position: absolute;
+                right: 0;
+                top: 0;
+            }
+        }
+    }
+
 
     .navbar-toggle.general{
         padding: 5px !important;
@@ -33,7 +165,7 @@
         }
 
         .icon-bar{
-            background-color: #FFF !important;
+            background-color: $background-white !important;
         }
     }
 
@@ -51,10 +183,6 @@
 
 .navbar{
     margin-bottom: 0;
-}
-.navbar-element{
-    color:#333;
-    margin-top: 7px;
 }
 
 .navbar-default .navbar-nav > li > a {

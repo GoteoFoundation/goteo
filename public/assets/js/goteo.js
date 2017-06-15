@@ -95,10 +95,59 @@ function pageLoadError(e, error) {
     goteo.error("Error loading page", error);
 }
 
+$.fn.extend({
+    animateCss: function (animationName, callback) {
+        var animationEnd = 'webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend animationend';
+        this.addClass('animated ' + animationName).one(animationEnd, function() {
+            $(this).removeClass('animated ' + animationName);
+            if($.isFunction(callback)) {
+                callback();
+            }
+        });
+    }
+});
+
 /**
  * Document ready
  */
 $(function(){
+    // Menu behaviour
+    var toggleMenu = function(e) {
+        e.preventDefault();
+        var target = $(this).data('target');
+        var $t = $('#' + target);
+        var $show = $(this).find('.show-menu');
+        var $hide = $(this).find('.hide-menu');
+        console.log($t.css('top'));
+        var flipHamburger = parseInt($t.css('top')) !== 0;
+        if(!flipHamburger && $hide.length) {
+            $hide.css('display', 'none');
+            $show.css('display', 'block');
+        }
+        var inAnimation = 'flipInY';
+        var outAnimation = 'flipOutY';
+
+        if($t.hasClass('active')) {
+            if(flipHamburger) {
+                $show.css('display', 'none');
+                $hide.css('display', 'block').animateCss('flipOutX', function() {
+                    $hide.css('display', 'none');
+                    $show.css('display', 'block').animateCss('flipInX');
+                });
+            }
+            $t.animateCss(outAnimation, function(){ $t.removeClass('active'); });
+        } else {
+            if(flipHamburger) {
+                $hide.css('display', 'none');
+                $show.css('display', 'block').animateCss('flipOutX', function() {
+                    $show.css('display', 'none');
+                    $hide.css('display', 'block').animateCss('flipInX');
+                });
+            }
+            $t.addClass('active').animateCss(inAnimation);
+        }
+    };
+    $('.toggle-menu').on('click', toggleMenu);
 
     // Bind pronto events
     $(window).on("pronto.request", pageRequested)

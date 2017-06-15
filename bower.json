@@ -21,6 +21,7 @@
     "dropzone": "^4.3.0",
     "eonasdan-bootstrap-datetimepicker": "^4.17.47",
     "bootstrap-social": "^5.1.1",
-    "bootstrap-xxs": "^0.1.0"
+    "bootstrap-xxs": "^0.1.0",
+    "animate.css": "^3.5.2"
   }
 }
