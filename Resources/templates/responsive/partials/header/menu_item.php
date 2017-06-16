@@ -6,7 +6,7 @@
     // print_r($item);
 ?>
 <?php if(is_array($item)): ?>
-    <li>
+    <li<?= ($item['id'] === $this->active ? ' class="active"' : '') ?>>
         <?php if(is_array($item['submenu'])): ?>
             <a class="toggle-submenu" href="#" role="button" aria-haspopup="true" aria-expanded="false">
                 <i class="fa fa-angle-left hidden-xs"></i> &nbsp;

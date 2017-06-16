@@ -1,6 +1,6 @@
-<?php $this->layout('dashboard/project/layout') ?>
+<?php $this->layout('dashboard/layout') ?>
 
-<?php $this->section('dashboard-project-content') ?>
+<?php $this->section('dashboard-content') ?>
 
     <h1><?= $this->text('images-main-header') ?></h1>
     <blockquote><?= $this->text('dashboard-project-images-desc') ?></blockquote>

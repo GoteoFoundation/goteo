@@ -56,6 +56,18 @@ class ProjectDashboardController extends \Goteo\Core\Controller {
         if(!$project instanceOf Project || !$project->userCanEdit($this->user)) {
             throw new ControllerAccessDeniedException(Text::get('user-login-required-access'));
         }
+
+        // Create sidebar menu
+        Session::addToSidebarMenu('<i class="fa fa-eye"></i> ' . Text::get('dashboard-menu-activity-summary'), '/dashboard/project/' . $pid .'/summary', 'summary');
+        Session::addToSidebarMenu('<i class="fa fa-edit"></i> ' . Text::get('regular-edit'), '/project/edit/' . $pid, 'edit');
+        Session::addToSidebarMenu('<i class="fa fa-image"></i> ' . Text::get('images-main-header'), '/dashboard/project/' . $pid .'/images', 'images');
+        Session::addToSidebarMenu('<i class="fa fa-file-text"></i> ' . Text::get('dashboard-menu-projects-updates'), '/dashboard/projects/updates/select?project=' . $pid, 'updates');
+        Session::addToSidebarMenu('<i class="fa fa-group"></i> ' . Text::get('dashboard-menu-projects-supports'), '/dashboard/projects/supports/select?project=' . $pid , 'supports');
+        Session::addToSidebarMenu('<i class="fa fa-user"></i> ' . Text::get('dashboard-menu-projects-rewards'), '/dashboard/projects/rewards/select?project=' . $pid, 'rewards');
+        Session::addToSidebarMenu('<i class="fa fa-comments"></i> ' . Text::get('dashboard-menu-projects-messegers'), '/dashboard/projects/messengers/select?project=' . $pid, 'comments');
+        Session::addToSidebarMenu('<i class="fa fa-pie-chart"></i> ' . Text::get('dashboard-menu-projects-analytics'), '/dashboard/project/' . $pid . '/analytics', 'analytics');
+        Session::addToSidebarMenu('<i class="fa fa-beer"></i> ' . Text::get('project-share-materials'), '/dashboard/project/' . $pid .'/materials', 'materials');
+
         return $project;
     }
 

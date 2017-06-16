@@ -14,6 +14,12 @@ if($this->is_ajax()):
     return;
 endif;
 
+$sidebar = $this->get_sidebar_menu();
+$bodyClass = $this->bodyClass;
+if($sidebar) {
+    $bodyClass = $bodyClass ? "$bodyClass has-sidebar" : 'has-sidebar';
+}
+
 // Normal operation, show the full page
 ?><!DOCTYPE html>
 <html lang="<?= $this->lang_current() ?>">
@@ -68,9 +74,9 @@ endif;
 
     </head>
 
-    <body role="document" <?php if ($this->bodyClass) echo ' class="' . $this->bodyClass . '"' ?>>
+    <body role="document" <?php if ($bodyClass) echo ' class="' . $bodyClass . '"' ?>>
 
-      <?= $this->supply('sidebar', $this->insert("partials/sidebar", ['menu' => $this->get_sidebar_menu()])) ?>
+      <?= $this->supply('sidebar', $this->insert("partials/sidebar", ['menu' => $sidebar])) ?>
 
       <div id="main">
         <?= $this->supply('header', $this->insert("partials/header")) ?>

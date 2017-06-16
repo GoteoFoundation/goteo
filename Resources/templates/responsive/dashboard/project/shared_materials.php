@@ -1,8 +1,8 @@
-<?php $this->layout('dashboard/project/layout') ?>
+<?php $this->layout('dashboard/layout') ?>
 
-<?php $this->section('dashboard-project-content') ?>
+<?php $this->section('dashboard-content') ?>
 
-    <!-- <h1><?= $this->text('project-share-materials') ?></h1> -->
+    <h1><?= $this->text('project-share-materials') ?></h1>
 
     <?php if($this->allowNewShare): ?>
 

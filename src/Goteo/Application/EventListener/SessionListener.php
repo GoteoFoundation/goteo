@@ -156,9 +156,9 @@ class SessionListener extends AbstractListener {
         Session::store('currency', $currency); // depending on request
 
         // Default menus
-        Session::addToMainMenu(Text::get('regular-header-about'), '/about');
-        Session::addToMainMenu('<i class="fa fa-search"></i> ' . Text::get('regular-discover'), '/discover');
-        Session::addToMainMenu('<i class="fa fa-question-circle"></i> ' . Text::get('regular-faq'), '/faq', 99);
+        Session::addToMainMenu(Text::get('regular-header-about'), '/about', 'about');
+        Session::addToMainMenu('<i class="fa fa-search"></i> ' . Text::get('regular-discover'), '/discover', 'discover');
+        Session::addToMainMenu('<i class="fa fa-question-circle"></i> ' . Text::get('regular-faq'), '/faq', 'faq', 99);
 
         // Langs
         $langs = [];
@@ -166,7 +166,7 @@ class SessionListener extends AbstractListener {
             if (Lang::isActive($id)) continue;
             $langs[Lang::getUrl($id)] = $lang;
         }
-        Session::addToMainMenu('<i class="fa fa-globe"></i> ' . Lang::getName(), $langs);
+        Session::addToMainMenu('<i class="fa fa-globe"></i> ' . Lang::getName(), $langs, 'langs');
 
         // Currencies
         $currencies = [];
@@ -174,35 +174,34 @@ class SessionListener extends AbstractListener {
             if($id === $currency) continue;
             $currencies['?currency=' . $id] = $c['html'] . ' ' .$c['name'];
         }
-        Session::addToMainMenu(Currency::get($currency, 'html') . ' ' . Currency::get($currency, 'name'), $currencies);
+        Session::addToMainMenu(Currency::get($currency, 'html') . ' ' . Currency::get($currency, 'name'), $currencies, 'currencies');
 
         // Minimal User menu
-        Session::addToUserMenu(Text::get('dashboard-menu-main'), '/dashboard');
-        Session::addToUserMenu(Text::get('dashboard-menu-profile'), '/dashboard/profile');
-        Session::addToUserMenu(Text::get('dashboard-menu-pool'), '/dashboard/wallet');
-        Session::addToUserMenu(Text::get('dashboard-menu-activity'), '/dashboard/activity');
-        Session::addToUserMenu(Text::get('dashboard-menu-projects'), '/dashboard/projects');
-        Session::addToUserMenu(Text::get('dashboard-menu-profile-preferences'), '/dashboard/profile/preferences');
+        Session::addToUserMenu(Text::get('dashboard-menu-main'), '/dashboard', 'dashboard');
+        Session::addToUserMenu(Text::get('dashboard-menu-profile'), '/dashboard/profile', 'dashboard-profile');
+        Session::addToUserMenu(Text::get('dashboard-menu-pool'), '/dashboard/wallet', 'dashboard-wallet');
+        Session::addToUserMenu(Text::get('dashboard-menu-activity'), '/dashboard/activity', 'dashboard-activity');
+        Session::addToUserMenu(Text::get('dashboard-menu-projects'), '/dashboard/projects', 'dashboard-projects');
+        Session::addToUserMenu(Text::get('dashboard-menu-profile-preferences'), '/dashboard/profile/preferences', '/dashboard-preferences');
 
         if($user = Session::getUser()) {
             if ( isset($user->roles['translator']) ||  isset($user->roles['admin']) || isset($user->roles['superadmin']) ) {
-                Session::addToUserMenu(Text::get('regular-translate_board'), '/translate');
+                Session::addToUserMenu(Text::get('regular-translate_board'), '/translate', 'translate');
             }
 
             if ( isset($user->roles['checker']) ) {
-              Session::addToUserMenu(Text::get('regular-review_board'), '/review');
+              Session::addToUserMenu(Text::get('regular-review_board'), '/review', 'review');
             }
 
             if ( Session::isAdmin() ) {
-              Session::addToUserMenu(Text::get('regular-admin_board'), '/admin');
+              Session::addToUserMenu(Text::get('regular-admin_board'), '/admin', 'admin');
             }
         }
 
-        Session::addToUserMenu('<i class="fa fa-sign-out"></i> ' . Text::get('regular-logout'), '/user/logout', 100);
+        Session::addToUserMenu('<i class="fa fa-sign-out"></i> ' . Text::get('regular-logout'), '/user/logout', 'logout', 100);
 
         // Controllers may use the Sidebar menu on specific activites
-        Session::addToSidebarMenu('<i class="fa fa-heart"></i> Sidebar Item 1', '#');
-        Session::addToSidebarMenu('<i class="fa fa-heart"></i> Sidebar Item 2', '#');
+        // Session::addToSidebarMenu('<i class="fa fa-heart"></i> Sidebar Item 1', '#');
 
         // extend the life of the session
         Session::renew();

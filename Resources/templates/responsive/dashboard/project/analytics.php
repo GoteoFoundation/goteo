@@ -1,6 +1,6 @@
-<?php $this->layout('dashboard/project/layout') ?>
+<?php $this->layout('dashboard/layout') ?>
 
-<?php $this->section('dashboard-project-content') ?>
+<?php $this->section('dashboard-content') ?>
 
     <div class="row">
         <div class="col-md-6">

@@ -316,14 +316,16 @@ class Session {
         return (self::isLogged()) ? self::get('user') : null;
     }
 
-    static protected function addToMenu(array &$menu, $item, $link = null, $position = null) {
+    static protected function addToMenu(array &$menu, $item, $link = null, $id = null, $position = null) {
         if(is_array($item)) {
-                $parts = $item;
+            if($link && !isset($item['link'])) $item['link'] = $link;
+            if($id && !isset($item['id'])) $item['id'] = $id;
+            $parts = $item;
         } elseif(is_array($link)) {
             // Submenus
-            $parts = [ 'text' => $item, 'submenu' => $link ];
+            $parts = [ 'text' => $item, 'submenu' => $link, 'id' => $id ];
         } else {
-            $parts = [ 'text' => $item, 'link' => $link ];
+            $parts = [ 'text' => $item, 'link' => $link, 'id' => $id ];
         }
         if(is_null($position)) {
             $position = count($menu);
@@ -335,16 +337,16 @@ class Session {
         return $menu;
     }
 
-    static public function addToMainMenu($item, $link = null, $position = null) {
-        self::addToMenu(self::$main_menu, $item, $link, $position);
+    static public function addToMainMenu($item, $link = null, $id = null, $position = null) {
+        self::addToMenu(self::$main_menu, $item, $link, $id, $position);
     }
 
-    static public function addToUserMenu($item, $link = null, $position = null) {
-        self::addToMenu(self::$user_menu, $item, $link, $position);
+    static public function addToUserMenu($item, $link = null, $id = null, $position = null) {
+        self::addToMenu(self::$user_menu, $item, $link, $id, $position);
     }
 
-    static public function addToSidebarMenu($item, $link = null, $position = null) {
-        self::addToMenu(self::$sidebar_menu, $item, $link, $position);
+    static public function addToSidebarMenu($item, $link = null, $id = null, $position = null) {
+        self::addToMenu(self::$sidebar_menu, $item, $link, $id, $position);
     }
 
     static public function getMainMenu() {
