@@ -53,9 +53,7 @@ endif;
 
         <?= $this->insert('partials/header/metas') ?>
 
-        <?php $this->section('lang-metas') ?>
-            <?= $this->insert('partials/header/lang_metas') ?>
-        <?php $this->stop() ?>
+        <?= $this->supply('lang-metas', $this->insert('partials/header/lang_metas')) ?>
 
         <title><?= $this->title ?></title>
 
@@ -72,26 +70,27 @@ endif;
 
     <body role="document" <?php if ($this->bodyClass) echo ' class="' . $this->bodyClass . '"' ?>>
 
-    <?php $this->section('header') ?>
-        <?= $this->insert("partials/header") ?>
-    <?php $this->stop() ?>
+      <?= $this->supply('sidebar', $this->insert("partials/sidebar", ['menu' => $this->get_sidebar_menu()])) ?>
 
-    <?= $this->supply('messages', $this->insert("partials/header/messages")) ?>
+      <div id="main">
+        <?= $this->supply('header', $this->insert("partials/header")) ?>
 
-    <div id="main-content">
-    <?php $this->section('content') ?>
-    <?php $this->stop() ?>
-    </div>
+        <?= $this->supply('messages', $this->insert("partials/header/messages")) ?>
 
-    <?php $this->section('footer') ?>
 
-        <?= $this->insert('partials/footer') ?>
+        <div id="main-content">
+            <?= $this->supply('content') ?>
+        </div>
 
-        <?= $this->insert('partials/footer/analytics') ?>
+        <?php $this->section('footer') ?>
 
-        <?= $this->insert('partials/footer/javascript') ?>
+            <?= $this->insert('partials/footer') ?>
 
-    <?php $this->stop() ?>
+            <?= $this->insert('partials/footer/analytics') ?>
 
+            <?= $this->insert('partials/footer/javascript') ?>
+
+        <?php $this->stop() ?>
+      </div>
     </body>
 </html>

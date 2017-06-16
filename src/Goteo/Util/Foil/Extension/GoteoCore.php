@@ -58,6 +58,7 @@ class GoteoCore implements ExtensionInterface
           'get_user' => [$this, 'get_user'],
           'get_user_menu' => [$this, 'get_user_menu'],
           'get_main_menu' => [$this, 'get_main_menu'],
+          'get_sidebar_menu' => [$this, 'get_sidebar_menu'],
           'is_logged' => [$this, 'is_logged'],
           'has_role' => [$this, 'has_role'],
           'is_admin' => [$this, 'is_admin'],
@@ -163,6 +164,11 @@ class GoteoCore implements ExtensionInterface
     //User Global menu
     public function get_user_menu() {
         return Session::getUserMenu();
+    }
+
+    //User Sidebar menu
+    public function get_sidebar_menu() {
+        return Session::getSidebarMenu();
     }
 
     //Main Global menu

@@ -131,7 +131,7 @@ $(function(){
         var inAnimation = 'flipInY';
         var outAnimation = 'flipOutY';
         // Close other opened
-        $('.sidebar-menu.active:not([id="' + target + '"])').removeClass('active');
+        $('.top-menu.active:not([id="' + target + '"])').removeClass('active');
         $('#main-content').off();
 
         if($t.hasClass('active')) {
@@ -175,7 +175,7 @@ $(function(){
             inAnimation = 'flipInY';
             outAnimation = 'flipOutY';
         }
-        $('.sidebar-menu.active').find('.submenu.active').not($s).removeClass('active');
+        $('.top-menu.active').find('.submenu.active').not($s).removeClass('active');
 
         if($s.hasClass('active')) {
             $s.animateCss(outAnimation, function() {
@@ -189,8 +189,16 @@ $(function(){
         }
     };
 
+    var toggleSidebar = function(e) {
+        e.stopPropagation();
+        e.preventDefault();
+        $('body').toggleClass('sidebar-opened');
+    };
+
     $('.toggle-menu').on('click', toggleMenu);
-    $('.sidebar-menu .toggle-submenu').on('click', toggleSubMenu);
+    $('.top-menu .toggle-submenu').on('click', toggleSubMenu);
+    // Sidebar toggle
+    $('.toggle-sidebar').on('click', toggleSidebar);
 
 
     // Bind pronto events

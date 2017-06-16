@@ -200,7 +200,9 @@ class SessionListener extends AbstractListener {
 
         Session::addToUserMenu('<i class="fa fa-sign-out"></i> ' . Text::get('regular-logout'), '/user/logout', 100);
 
-        // Sessiono::addToUserMenu('#', '<i class="fa fa-hand"></i> User Item 1');
+        // Controllers may use the Sidebar menu on specific activites
+        Session::addToSidebarMenu('<i class="fa fa-heart"></i> Sidebar Item 1', '#');
+        Session::addToSidebarMenu('<i class="fa fa-heart"></i> Sidebar Item 2', '#');
 
         // extend the life of the session
         Session::renew();

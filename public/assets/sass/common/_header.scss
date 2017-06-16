@@ -94,7 +94,7 @@
     }
 
     // main menus
-    .sidebar-menu {
+    .top-menu {
         position: absolute;
         top: 60px;
         right: 0;
@@ -184,7 +184,7 @@
             position: fixed;
         }
 
-        .sidebar-header {
+        .menu-header {
             position: relative;
             display: none;
             @media (max-width: $breakpoint-sm - 1) {

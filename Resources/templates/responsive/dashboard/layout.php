@@ -12,15 +12,9 @@ $this->section('content');
 
 <div class="dashboard">
 
-  <div class="navbar dashboard-menu navbar-fixed-left">
-    <?= $this->supply('dashboard-menu', $this->insert('dashboard/partials/menu')) ?>
-  </div>
-
-  <div class="container-fluid dashboard-content">
     <?= $this->supply('dashboard-sections', $this->insert('dashboard/partials/sections')) ?>
 
     <?= $this->supply('dashboard-content') ?>
-  </div>
 
 </div>
 

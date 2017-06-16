@@ -1,0 +1,96 @@
+/* Menu dashboard */
+#main {
+    transition: margin-left .5s;
+    margin-left: 0;
+    @media(min-width: $breakpoint-sm) {
+        margin-left: $dashboard-sidebar-width;
+    }
+}
+
+/* The side navigation menu */
+#sidebar-menu {
+    height: 100%; /* 100% Full-height */
+    width: 0; /* 0 width - change this with JavaScript */
+    position: fixed; /* Stay in place */
+    z-index: 1000; /* Stay on top */
+    top: 0;
+    left: 0;
+    background-color: $background-black;
+    overflow-x: hidden; /* Disable horizontal scroll */
+    padding-top: 60px; /* Place content 60px from the top */
+    transition: 0.5s; /* 0.5 second transition effect to slide in the sidenav */
+    @media(min-width: $breakpoint-sm) {
+        width: $dashboard-sidebar-width;
+    }
+    a,button {
+        color: $color-white;
+        &:hover {
+            color: $color-dark;
+        }
+    }
+    .sidebar-header {
+        position: absolute;
+        top: 5px;
+        left: 5px;
+        height: $font-size * 3;
+        padding: 0;
+        .logo {
+            height: 100%;
+            width: auto;
+        }
+    }
+    button.toggle-sidebar {
+        position: absolute;
+        font-size: $font-size * 2;
+        font-weight: 300;
+        right: 0;
+        top: 0;
+    }
+}
+
+body.sidebar-opened {
+    #sidebar-menu {
+        width: $dashboard-sidebar-width;
+    }
+    @media(min-width: $breakpoint-sm) {
+        #main {
+            margin-left: $dashboard-sidebar-width;
+        }
+    }
+}
+@mixin blink-function() {
+      0% {opacity:1; color: $color-white;}
+      10% {opacity:0.8; color: $color-pink;}
+      20% {opacity:1; color: $color-white;}
+      100% {opacity:1; color: $color-white;}
+}
+@-webkit-keyframes blink {
+    @include blink-function();
+}
+@keyframes blink {
+    @include blink-function();
+}
+
+
+#sidebar-menu-toggle {
+    position: fixed;
+    top: 70px;
+    left: 0;
+    z-index: 999;
+    background-color: $background-black;
+    color: $color-white;
+    width: 30px;
+    height: 100px;
+    font-size: $font-size * 2;
+    padding-top: 30px;
+    padding-left: 5px;
+    box-shadow: 0px 0px 12px 5px rgba(0, 0, 0, 0.3);
+    border-top-right-radius: 5px;
+    border-bottom-right-radius: 5px;
+    cursor: pointer;
+    i {
+        -webkit-animation: blink 8s linear 1s 3;//infinite;
+        animation: blink 8s linear 1s 3;//infinite;
+    }
+
+}
