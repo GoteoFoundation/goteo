@@ -1,5 +1,5 @@
 <footer id="footer" class="footer">
-      <div class="container">
+      <div class="container-fluid">
 
           <div class="col-sm-5">
             <ul class="list-inline">

@@ -6,7 +6,7 @@ body {
         margin-left: 0;
     }
 
-    &.has-sidebar {
+    &.has-sidebar #main {
         @media(min-width: $breakpoint-sm) {
             margin-left: $dashboard-sidebar-width;
         }
