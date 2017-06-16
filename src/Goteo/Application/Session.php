@@ -24,6 +24,7 @@ class Session {
     static protected $request = null;
     static protected $main_menu = [];
     static protected $user_menu = [];
+    static protected $sidebar_menu = [];
 
     /**
      * TODO:
@@ -315,9 +316,9 @@ class Session {
         return (self::isLogged()) ? self::get('user') : null;
     }
 
-    static public function addToMainMenu($item, $link = null, int $position = null) {
+    static protected function addToMenu(array &$menu, $item, $link = null, $position = null) {
         if(is_array($item)) {
-            $parts = $item;
+                $parts = $item;
         } elseif(is_array($link)) {
             // Submenus
             $parts = [ 'text' => $item, 'submenu' => $link ];
@@ -325,26 +326,25 @@ class Session {
             $parts = [ 'text' => $item, 'link' => $link ];
         }
         if(is_null($position)) {
-            $position = count(self::$main_menu);
+            $position = count($menu);
+        } else {
+            $position = intval($position);
         }
-        self::$main_menu[$position] = $parts;
-        ksort(self::$main_menu);
+        $menu[$position] = $parts;
+        ksort($menu);
+        return $menu;
     }
 
-    static public function addToUserMenu($item, $link = null, int $position = null) {
-        if(is_array($item)) {
-            $parts = $item;
-        } elseif(is_array($link)) {
-            // Submenus
-            $parts = [ 'text' => $item, 'submenu' => $link ];
-        } else {
-            $parts = [ 'text' => $item, 'link' => $link ];
-        }
-        if(is_null($position)) {
-            $position = count(self::$user_menu);
-        }
-        self::$user_menu[$position] = $parts;
-        ksort(self::$user_menu);
+    static public function addToMainMenu($item, $link = null, $position = null) {
+        self::addToMenu(self::$main_menu, $item, $link, $position);
+    }
+
+    static public function addToUserMenu($item, $link = null, $position = null) {
+        self::addToMenu(self::$user_menu, $item, $link, $position);
+    }
+
+    static public function addToSidebarMenu($item, $link = null, $position = null) {
+        self::addToMenu(self::$sidebar_menu, $item, $link, $position);
     }
 
     static public function getMainMenu() {
@@ -353,5 +353,9 @@ class Session {
 
     static public function getUserMenu() {
         return self::$user_menu;
+    }
+
+    static public function getSidebarMenu() {
+        return self::$sidebar_menu;
     }
 }
