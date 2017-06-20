@@ -95,11 +95,32 @@ function pageLoadError(e, error) {
     goteo.error("Error loading page", error);
 }
 
+// Function from David Walsh: http://davidwalsh.name/css-animation-callback
+function whichTransitionEvent(){
+  var t,
+      el = document.createElement("fakeelement");
+
+  var transitions = {
+    "transition"      : "transitionend",
+    "OTransition"     : "oTransitionEnd",
+    "MozTransition"   : "transitionend",
+    "WebkitTransition": "webkitTransitionEnd"
+  };
+
+  for (t in transitions){
+    if (el.style[t] !== undefined){
+      return transitions[t];
+    }
+  }
+}
+
+var animationEnd = whichTransitionEvent();
+
 $.fn.extend({
     animateCss: function (animationName, callback) {
-        var animationEnd = 'webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend animationend';
         this.off();
         this.addClass('animated ' + animationName).on(animationEnd, function() {
+            console.log(this, $(this).attr('class'));
             $(this).removeClass('animated ' + animationName);
             if($.isFunction(callback)) {
                 callback.call(this);
@@ -190,15 +211,23 @@ $(function(){
     };
 
     var toggleSidebar = function(e) {
+        console.log('sidebar toggle', e);
         e.stopPropagation();
         e.preventDefault();
-        $('body').toggleClass('sidebar-opened');
+        $('body').toggleClass('sidebar-opened').one(animationEnd, function(e) {
+            console.log('end animation', e);
+        });
     };
 
     $('.toggle-menu').on('click', toggleMenu);
     $('.top-menu .toggle-submenu').on('click', toggleSubMenu);
     // Sidebar toggle
     $('.toggle-sidebar').on('click', toggleSidebar);
+    // Swipper detector
+    if('.toggle-sidebar') {
+        $('body').hammer({}).bind("swiperight", toggleSidebar);
+    }
+
 
 
     // Bind pronto events

@@ -7,6 +7,8 @@
 <script src="<?= SRC_URL ?>/assets/vendor/pronto/jquery.fs.pronto.min.js"></script>
 
 <script src="<?= SRC_URL ?>/assets/vendor/d3/d3.v3.min.js"></script>
+<script src="<?= SRC_URL ?>/assets/vendor/hammerjs/hammer.min.js"></script>
+<script src="<?= SRC_URL ?>/assets/vendor/jquery-hammerjs/jquery.hammer.js"></script>
 <script src="<?= SRC_URL ?>/assets/vendor/clipboard/clipboard.min.js"></script>
 <script src="<?= SRC_URL ?>/assets/vendor/moment/moment-locales.js"></script>
 <script src="<?= SRC_URL ?>/assets/vendor/eonasdan-bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min.js"></script>
