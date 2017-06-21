@@ -2,6 +2,8 @@
 
 <?php $this->section('dashboard-content') ?>
 
+  <div class="dashboard-content">
+
     <h1><?= $this->text('images-main-header') ?></h1>
     <blockquote><?= $this->text('dashboard-project-images-desc') ?></blockquote>
 
@@ -19,6 +21,8 @@
         </div>
         <p class="text-danger error-msg hidden"></p>
     <?php endforeach ?>
+
+  </div>
 
 <?php $this->replace() ?>
 
