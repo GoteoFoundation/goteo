@@ -1,7 +1,8 @@
 /* Dashboard  */
 
 .dashboard-sections {
-  background-color: $background-light-cream;
+  // background-color: $background-light-cream;
+  background-color: $background-light;
   padding-top: 20px;
   // Do not stack this nav in any screen width
   .nav-tabs.nav-justified > li {
@@ -99,13 +100,13 @@ ul.dashboard-navbar {
     }
   }
   .image-list-sortable {
-    min-height: 150px;
+    min-height: 170px;
     display: block;
     padding: 10px;
     margin: 0;
     min-width: 150px;
     &.over {
-      border:1px solid #339;
+      background-color: $background-pink;
     }
     > li {
       position: relative;

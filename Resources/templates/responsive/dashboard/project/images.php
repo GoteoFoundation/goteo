@@ -75,10 +75,11 @@ $(function(){
                 // evt.newIndex;  // element's new index within parent
                 // console.log(evt);
                 saveCurrentOrder();
+                $('.image-list-sortable').removeClass('over');
             }
             , onMove: function (evt) {
-                console.log('onMove', evt.related.id);
-                $('#' + evt.related.id).addClass('over');
+                $('.image-list-sortable').removeClass('over');
+                $(evt.to).addClass('over');
             }
         });
 

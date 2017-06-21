@@ -74,12 +74,7 @@ body {
     }
 }
 
-@mixin blink-function() {
-      0% {opacity:1; color: $color-white;}
-      10% {opacity:0.8; color: $color-pink;}
-      20% {opacity:1; color: $color-white;}
-      100% {opacity:1; color: $color-white;}
-}
+
 @-webkit-keyframes blink {
     @include blink-function();
 }

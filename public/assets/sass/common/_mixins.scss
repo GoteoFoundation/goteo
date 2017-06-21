@@ -1,0 +1,21 @@
+/* Used to animate sidebar right arrow */
+@mixin blink-function() {
+  0% {opacity:1; color: $color-white;}
+  10% {opacity:0.8; color: $color-pink;}
+  20% {opacity:1; color: $color-white;}
+  100% {opacity:1; color: $color-white;}
+}
+
+/* reduces icon sizes on small screens */
+@mixin icon-responsive($size) {
+    width: $font-size * $size;
+    height: $font-size * $size;
+    @media (max-width: $breakpoint-sm - 1) {
+        width: $font-size * $size / 1.5;
+        height: $font-size * $size / 1.5;
+    }
+    @media (max-width: $breakpoint-xs - 1) {
+        width: $font-size * $size / 2;
+        height: $font-size * $size / 2;
+    }
+}

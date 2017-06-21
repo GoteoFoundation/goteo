@@ -104,32 +104,25 @@ i.visible-xs {
     background-size: auto 100%;
     vertical-align: middle;
     &.icon-2x {
-        width: $font-size * 2;
-        height: $font-size * 2;
+        @include icon-responsive(2);
     }
     &.icon-3x {
-        width: $font-size * 3;
-        height: $font-size * 3;
+        @include icon-responsive(3);
     }
     &.icon-4x {
-        width: $font-size * 4;
-        height: $font-size * 4;
+        @include icon-responsive(4);
     }
     &.icon-5x {
-        width: $font-size * 5;
-        height: $font-size * 5;
+        @include icon-responsive(5);
     }
     &.icon-6x {
-        width: $font-size * 6;
-        height: $font-size * 6;
+        @include icon-responsive(6);
     }
     &.icon-7x {
-        width: $font-size * 7;
-        height: $font-size * 7;
+        @include icon-responsive(7);
     }
     &.icon-8x {
-        width: $font-size * 8;
-        height: $font-size * 8;
+        @include icon-responsive(8);
     }
     &.icon-activity {
         background-image: url(../img/dashboard/activity.svg);
