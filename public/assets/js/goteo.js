@@ -95,7 +95,7 @@ function pageLoadError(e, error) {
     goteo.error("Error loading page", error);
 }
 
-// Function from David Walsh: http://davidwalsh.name/css-animation-callback
+// // Function from David Walsh: http://davidwalsh.name/css-animation-callback
 function whichTransitionEvent(){
   var t,
       el = document.createElement("fakeelement");
@@ -114,11 +114,13 @@ function whichTransitionEvent(){
   }
 }
 
-var animationEnd = whichTransitionEvent();
+var transitionEnd = whichTransitionEvent();
+var animationEnd = 'webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend animationend';
 
 $.fn.extend({
     animateCss: function (animationName, callback) {
         this.off();
+
         this.addClass('animated ' + animationName).on(animationEnd, function() {
             console.log(this, $(this).attr('class'));
             $(this).removeClass('animated ' + animationName);
@@ -211,10 +213,13 @@ $(function(){
     };
 
     var toggleSidebar = function(e) {
+        var $body = $('body');
+        if($body.hasClass('animating')) return;
         console.log('sidebar toggle', e);
         e.stopPropagation();
         e.preventDefault();
-        $('body').toggleClass('sidebar-opened').one(animationEnd, function(e) {
+        $('body').toggleClass('animating sidebar-opened').one(transitionEnd, function(e) {
+            $(this).removeClass('animating');
             console.log('end animation', e);
         });
     };
@@ -225,7 +230,14 @@ $(function(){
     $('.toggle-sidebar').on('click', toggleSidebar);
     // Swipper detector
     if('.toggle-sidebar') {
-        $('body').hammer({}).bind("swiperight", toggleSidebar);
+        $('body').hammer().bind("swiperight", function(e){
+            if(!$('body').hasClass('sidebar-opened'))
+                toggleSidebar(e);
+        });
+        $('body').hammer().bind("swipeleft", function(e){
+            if($('body').hasClass('sidebar-opened'))
+                toggleSidebar(e);
+        });
     }
 
 

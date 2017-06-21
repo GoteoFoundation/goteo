@@ -8,7 +8,7 @@
     <?php foreach($this->zones as $key => $zone): ?>
         <h4><?= $zone ?></h4>
         <div class="image-zone" data-section="<?= $key ?>">
-            <ul class="list-inline image-list-sortable"><?php
+            <ul class="list-inline image-list-sortable" id="list-sortable-<?= $key ?>"><?php
             foreach($this->images[$key] as $img) {
                 echo $this->insert('dashboard/project/partials/image_list_item', [
                         'image_url' => $img->getLink(300, 300, true),
@@ -64,13 +64,21 @@ $(function(){
 
         Sortable.create($list.get(0), {
             group: 'project-images'
-            // , filter: ".dragndrop"
+            // , forceFallback: true
             // Reorder actions
+            , onChoose: function(evt) {
+                $('.dragndrop').hide();
+            }
             , onEnd: function (evt) {
+                $('.dragndrop').show();
                 // evt.oldIndex;  // element's old index within parent
                 // evt.newIndex;  // element's new index within parent
                 // console.log(evt);
                 saveCurrentOrder();
+            }
+            , onMove: function (evt) {
+                console.log('onMove', evt.related.id);
+                $('#' + evt.related.id).addClass('over');
             }
         });
 
