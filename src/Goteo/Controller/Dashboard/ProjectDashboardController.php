@@ -52,8 +52,8 @@ class ProjectDashboardController extends \Goteo\Core\Controller {
             }
         }
         // Get project
-        $project = Project::get( $pid );
-        if(!$project instanceOf Project || !$project->userCanEdit($this->user)) {
+        $this->project = Project::get( $pid );
+        if(!$this->project instanceOf Project || !$this->project->userCanEdit($this->user)) {
             throw new ControllerAccessDeniedException(Text::get('user-login-required-access'));
         }
 
@@ -68,7 +68,12 @@ class ProjectDashboardController extends \Goteo\Core\Controller {
         Session::addToSidebarMenu('<i class="fa fa-pie-chart"></i> ' . Text::get('dashboard-menu-projects-analytics'), '/dashboard/project/' . $pid . '/analytics', 'analytics');
         Session::addToSidebarMenu('<i class="fa fa-beer"></i> ' . Text::get('project-share-materials'), '/dashboard/project/' . $pid .'/materials', 'materials');
 
-        return $project;
+        $this->contextVars([
+            'project' => $this->project,
+            'sidebarBottom' => [ '/dashboard/projects' => '<i class="fa fa-reply" title="' . Text::get('profile-my_projects-header') . '"></i> ' . Text::get('profile-my_projects-header') ]
+        ]);
+
+        return $this->project;
     }
 
     public function summaryAction($pid = null, Request $request) {
@@ -92,7 +97,6 @@ class ProjectDashboardController extends \Goteo\Core\Controller {
 
         return $this->viewResponse('dashboard/project/summary', [
             'zone' => 'summary',
-            'project' => $project,
             'statuses' => Project::status(),
             'status_text' => $status_text
         ]);
@@ -109,7 +113,6 @@ class ProjectDashboardController extends \Goteo\Core\Controller {
             $images[$sec] = ProjectImage::get($project->id, $sec);
         }
         return $this->viewResponse('dashboard/project/images', [
-            'project' => $project,
             'zones' => $zones,
             'images' => $images,
             'zone' => 'images'
@@ -138,8 +141,7 @@ class ProjectDashboardController extends \Goteo\Core\Controller {
         // die("$pid {$project->id} {$project->name}");
 
         return $this->viewResponse('dashboard/project/analytics', [
-            'project' => $project,
-            'section' => 'analytics'
+            'zone' => 'analytics'
             ]);
 
     }
@@ -157,8 +159,7 @@ class ProjectDashboardController extends \Goteo\Core\Controller {
         $icons   = Reward::icons('social');
 
         return $this->viewResponse('dashboard/project/shared_materials', [
-            'section' => 'materials',
-            'project' => $project,
+            'zone' => 'materials',
             'licenses_list' => $licenses_list,
             'icons' => $icons,
             'allowNewShare' => in_array($project->status, [Project::STATUS_FUNDED , Project::STATUS_FULFILLED])

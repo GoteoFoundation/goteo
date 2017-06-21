@@ -76,7 +76,7 @@ if($sidebar) {
 
     <body role="document" <?php if ($bodyClass) echo ' class="' . $bodyClass . '"' ?>>
 
-      <?= $this->supply('sidebar', $this->insert("partials/sidebar", ['menu' => $sidebar])) ?>
+      <?= $this->supply('sidebar', $this->insert("partials/sidebar", ['sidebarMenu' => $sidebar])) ?>
 
       <div id="main">
         <?= $this->supply('header', $this->insert("partials/header")) ?>

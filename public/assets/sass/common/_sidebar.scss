@@ -41,16 +41,25 @@ body {
     @media(min-width: $breakpoint-sm) {
         width: $dashboard-sidebar-width;
     }
-    a,button {
+    li {
+      >a, >button {
         color: $color-white;
         &:hover {
             color: $color-dark;
         }
+
+      }
+      &.active {
+        >a, >button {
+            background-color: $background-white;
+            color: $color-dark;
+        }
+      }
     }
     .sidebar-header {
         position: absolute;
-        top: 5px;
-        left: 5px;
+        top: 0;
+        left: 0;
         height: $font-size * 3;
         padding: 0;
         .logo {
@@ -58,6 +67,17 @@ body {
             width: auto;
         }
     }
+    .sidebar-nav {
+        margin-top: 20px;
+    }
+    .sidebar-nav {
+      &.bottom {
+        position: absolute;
+        bottom: 0;
+        width: 100%;
+      }
+    }
+
     button.toggle-sidebar {
         position: absolute;
         font-size: $font-size * 2;
@@ -65,16 +85,28 @@ body {
         right: 0;
         top: 0;
     }
-    ul {
-        li {
-            &.active a {
-                background-color: $background-white;
-                color: $color-dark;
+}
+body.has-sidebar {
+    #sidebar-menu {
+        .sidebar-header {
+            .project-widget {
+                font-size: $font-size;
+                &.mini {
+                    .img-project {
+                        border-radius: 0;
+                    }
+                    .content {
+                        border-radius: 0;
+                    }
+                }
             }
         }
+        .sidebar-nav {
+            margin-top: 140px;
+        }
+
     }
 }
-
 
 @-webkit-keyframes blink {
     @include blink-function();

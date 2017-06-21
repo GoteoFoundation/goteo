@@ -1,6 +1,8 @@
-<?php $this->layout('dashboard/layout') ?>
+<?php $this->layout('dashboard/project/layout') ?>
 
 <?php $this->section('dashboard-content') ?>
+
+  <div class="dashboard-content">
 
     <h1><?= $this->text('dashboard-menu-activity-summary') ?></h1>
     <h1><?= $this->project->name ?></h1>
@@ -71,6 +73,7 @@
         </div>
     </div>
 
+  </div>
 
 <?php $this->replace() ?>
 

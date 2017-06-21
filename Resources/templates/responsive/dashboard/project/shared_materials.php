@@ -1,6 +1,8 @@
-<?php $this->layout('dashboard/layout') ?>
+<?php $this->layout('dashboard/project/layout') ?>
 
 <?php $this->section('dashboard-content') ?>
+
+  <div class="dashboard-content">
 
     <h1><?= $this->text('project-share-materials') ?></h1>
 
@@ -33,6 +35,7 @@
 
     <?= $this->insert('dashboard/project/partials/materials/save_url_modal') ?>
 
+  </div>
 
 <?php $this->replace() ?>
 
