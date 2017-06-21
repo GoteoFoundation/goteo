@@ -1,43 +1,18 @@
-/* Menu dashboard */
-body {
-
-    #main {
-        transition: margin-left .5s;
-        margin-left: 0;
-    }
-
-    &.has-sidebar #main {
-        @media(min-width: $breakpoint-sm) {
-            margin-left: $dashboard-sidebar-width;
-        }
-    }
-
-    &.sidebar-opened {
-        #sidebar-menu {
-            width: $dashboard-sidebar-width;
-        }
-        @media(min-width: $breakpoint-sm) {
-            #main {
-                margin-left: $dashboard-sidebar-width;
-            }
-        }
-    }
-
-}
 
 /* The side navigation menu */
 #sidebar-menu {
     height: 100%; /* 100% Full-height */
     width: 0; /* 0 width - change this with JavaScript */
     position: fixed; /* Stay in place */
-    z-index: 1000; /* Stay on top */
+    z-index: 1001; /* Stay on top */
     top: 0;
     left: 0;
     background-color: $background-black;
     overflow-x: hidden; /* Disable horizontal scroll */
-    padding-top: 60px; /* Place content 60px from the top */
     transition: 0.5s; /* 0.5 second transition effect to slide in the sidenav */
     font-size: $font-size * 1.3;
+
+
     @media(min-width: $breakpoint-sm) {
         width: $dashboard-sidebar-width;
     }
@@ -68,7 +43,7 @@ body {
         }
     }
     .sidebar-nav {
-        margin-top: 20px;
+        margin-top: 80px;
     }
     .sidebar-nav {
       &.bottom {
@@ -102,7 +77,7 @@ body.has-sidebar {
             }
         }
         .sidebar-nav {
-            margin-top: 140px;
+            margin-top: 200px;
         }
 
     }
@@ -120,7 +95,7 @@ body.has-sidebar {
     position: fixed;
     top: 70px;
     left: 0;
-    z-index: 999;
+    z-index: 1000;
     background-color: $background-black;
     color: $color-white;
     width: 30px;

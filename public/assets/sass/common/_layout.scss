@@ -1,0 +1,29 @@
+body {
+    background-color:$background-light-grey;
+    font-family: $primary-font;
+    color: $primary-color;
+    margin-bottom: 0;
+
+    &.has-sidebar #main {
+        @media(min-width: $breakpoint-sm) {
+            margin-left: $dashboard-sidebar-width;
+        }
+    }
+
+    &.sidebar-opened {
+        #sidebar-menu {
+            width: $dashboard-sidebar-width;
+        }
+        #main {
+            @media(min-width: $breakpoint-sm) {
+                margin-left: $dashboard-sidebar-width;
+            }
+        }
+    }
+
+    #main {
+        transition: margin-left .5s;
+        margin-left: 0;
+    }
+
+}

@@ -42,6 +42,25 @@ use Symfony\Component\HttpFoundation\Response;
 
 class ProjectController extends \Goteo\Core\Controller {
 
+    static function createSidebar(Project $project) {
+        // Create sidebar menu
+        Session::addToSidebarMenu('<i class="fa fa-eye"></i> ' . Text::get('dashboard-menu-activity-summary'), '/dashboard/project/' . $project->id .'/summary', 'summary');
+        Session::addToSidebarMenu('<i class="fa fa-edit"></i> ' . Text::get('regular-edit'), '/project/edit/' . $project->id, 'edit');
+        Session::addToSidebarMenu('<i class="fa fa-image"></i> ' . Text::get('images-main-header'), '/dashboard/project/' . $project->id .'/images', 'images');
+        Session::addToSidebarMenu('<i class="fa fa-file-text"></i> ' . Text::get('dashboard-menu-projects-updates'), '/dashboard/projects/updates/select?project=' . $project->id, 'updates');
+        Session::addToSidebarMenu('<i class="fa fa-group"></i> ' . Text::get('dashboard-menu-projects-supports'), '/dashboard/projects/supports/select?project=' . $project->id , 'supports');
+        Session::addToSidebarMenu('<i class="fa fa-user"></i> ' . Text::get('dashboard-menu-projects-rewards'), '/dashboard/projects/rewards/select?project=' . $project->id, 'rewards');
+        Session::addToSidebarMenu('<i class="fa fa-comments"></i> ' . Text::get('dashboard-menu-projects-messegers'), '/dashboard/projects/messengers/select?project=' . $project->id, 'comments');
+        Session::addToSidebarMenu('<i class="fa fa-pie-chart"></i> ' . Text::get('dashboard-menu-projects-analytics'), '/dashboard/project/' . $project->id . '/analytics', 'analytics');
+        Session::addToSidebarMenu('<i class="fa fa-beer"></i> ' . Text::get('project-share-materials'), '/dashboard/project/' . $project->id .'/materials', 'materials');
+
+        View::getEngine()->useData([
+            'project' => $project,
+            'sidebarBottom' => [ '/dashboard/projects' => '<i class="fa fa-reply" title="' . Text::get('profile-my_projects-header') . '"></i> ' . Text::get('profile-my_projects-header') ]
+        ]);
+
+    }
+
 	public function indexAction($id = null, $show = 'home', $post = null, Request $request) {
 
 		if ($id !== null) {
@@ -130,6 +149,9 @@ class ProjectController extends \Goteo\Core\Controller {
 			Application\Message::error(Text::get('user-login-required-access'));
 			return new RedirectResponse($goto);
 		}
+
+        self::createSidebar($project);
+
 
 		$currency_data = Library\Currency::$currencies[$project->currency];
 

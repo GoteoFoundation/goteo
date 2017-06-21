@@ -5,13 +5,8 @@
  */
 @import 'variables';
 
-body {
-    background-color:$background-light-grey;
-    font-family: $primary-font;
-    color: $primary-color;
-    margin-bottom: 0;
-}
 
+@import 'common/layout';
 @import 'common/misc';
 @import 'common/header';
 @import 'common/footer';

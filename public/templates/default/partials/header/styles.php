@@ -3,6 +3,10 @@
     <link rel="stylesheet" type="text/css" href="<?= SRC_URL ?>/view/css/goteo.css" />
     <!-- endbuild -->
 
+    <link href="<?= SRC_URL ?>/assets/vendor/font-awesome/css/font-awesome.min.css" rel="stylesheet">
+
+    <link rel="stylesheet" type="text/css" href="<?= SRC_URL ?>/assets/css/legacy_compat.css" />
+
     <!--[if IE]>
     <link href="<?= SRC_URL ?>/view/css/ie.css" media="screen" rel="stylesheet" type="text/css" />
     <![endif]-->
