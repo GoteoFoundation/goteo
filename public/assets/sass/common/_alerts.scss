@@ -8,16 +8,17 @@
 
  .alert{
     font-size: 14px !important;
-    color: $color-white;
  }
 
  .alert-danger {
+    color: $color-white;
     background-color: $background-red;
 
     border-color: $background-red !important;
 }
 
  .alert-success{
+    color: $color-white;
     background-color: $background-light-green;
     border-color: $background-light-green !important;
  }

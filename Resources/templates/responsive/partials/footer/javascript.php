@@ -2,15 +2,15 @@
 
 <script src="<?= SRC_URL ?>/assets/vendor/jquery-1.12.4.min.js"></script>
 <script src="<?= SRC_URL ?>/assets/vendor/jquery.mobile.custom.min.js"></script>
-<script src="<?= SRC_URL ?>/assets/vendor/bootstrap/js/bootstrap.min.js"></script>
-<script src="<?= SRC_URL ?>/assets/vendor/footable/footable.min.js"></script>
+<script src="<?= SRC_URL ?>/assets/vendor/bootstrap/dist/js/bootstrap.min.js"></script>
+<script src="<?= SRC_URL ?>/assets/vendor/footable/compiled/footable.min.js"></script>
 <script src="<?= SRC_URL ?>/assets/vendor/pronto/jquery.fs.pronto.min.js"></script>
 
 <script src="<?= SRC_URL ?>/assets/vendor/d3/d3.v3.min.js"></script>
 <script src="<?= SRC_URL ?>/assets/vendor/hammerjs/hammer.min.js"></script>
 <script src="<?= SRC_URL ?>/assets/vendor/jquery-hammerjs/jquery.hammer.js"></script>
 <script src="<?= SRC_URL ?>/assets/vendor/clipboard/clipboard.min.js"></script>
-<script src="<?= SRC_URL ?>/assets/vendor/moment/moment-locales.js"></script>
+<script src="<?= SRC_URL ?>/assets/vendor/moment/min/moment-with-locales.min.js"></script>
 <script src="<?= SRC_URL ?>/assets/vendor/eonasdan-bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min.js"></script>
 
 <!--script src="<?= SRC_URL ?>/assets/js/docs.min.js"></script-->

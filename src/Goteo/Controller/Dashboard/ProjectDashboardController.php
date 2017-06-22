@@ -18,6 +18,8 @@ use Goteo\Application\View;
 use Goteo\Model\Project;
 use Goteo\Model\Project\Reward;
 use Goteo\Model\Project\Image as ProjectImage;
+use Goteo\Model\Blog;
+use Goteo\Model\Blog\Post as BlogPost;
 use Goteo\Application\Message;
 use Goteo\Library\Text;
 use Goteo\Console\UsersSend;
@@ -37,12 +39,15 @@ class ProjectDashboardController extends \Goteo\Core\Controller {
     }
 
     static function createSidebar(Project $project, $zone = '') {
+        $user = Session::getUser();
+        if(!$project->userCanEdit($user)) return;
+
         // Create sidebar menu
         Session::addToSidebarMenu('<i class="fa fa-bar-chart"></i> ' . Text::get('dashboard-menu-activity-summary'), '/dashboard/project/' . $project->id .'/summary', 'summary');
         Session::addToSidebarMenu('<i class="fa fa-eye"></i> ' . Text::get('regular-preview'), '/project/' . $project->id, 'preview');
         Session::addToSidebarMenu('<i class="fa fa-edit"></i> ' . Text::get('regular-edit'), '/project/edit/' . $project->id, 'edit');
         Session::addToSidebarMenu('<i class="fa fa-image"></i> ' . Text::get('images-main-header'), '/dashboard/project/' . $project->id .'/images', 'images');
-        Session::addToSidebarMenu('<i class="fa fa-file-text"></i> ' . Text::get('dashboard-menu-projects-updates'), '/dashboard/projects/updates/select?project=' . $project->id, 'updates');
+        Session::addToSidebarMenu('<i class="fa fa-file-text"></i> ' . Text::get('dashboard-menu-projects-updates'), '/dashboard/project/' . $project->id .'/updates', 'updates');
         Session::addToSidebarMenu('<i class="fa fa-group"></i> ' . Text::get('dashboard-menu-projects-supports'), '/dashboard/projects/supports/select?project=' . $project->id , 'supports');
         Session::addToSidebarMenu('<i class="fa fa-user"></i> ' . Text::get('dashboard-menu-projects-rewards'), '/dashboard/projects/rewards/select?project=' . $project->id, 'rewards');
         Session::addToSidebarMenu('<i class="fa fa-comments"></i> ' . Text::get('dashboard-menu-projects-messegers'), '/dashboard/projects/messengers/select?project=' . $project->id, 'comments');
@@ -51,6 +56,7 @@ class ProjectDashboardController extends \Goteo\Core\Controller {
 
         View::getEngine()->useData([
             'project' => $project,
+            'admin' => $project->userCanEdit($user),
             'zone' => $zone,
             'sidebarBottom' => [ '/dashboard/projects' => '<i class="fa fa-reply" title="' . Text::get('profile-my_projects-header') . '"></i> ' . Text::get('profile-my_projects-header') ]
         ]);
@@ -135,6 +141,36 @@ class ProjectDashboardController extends \Goteo\Core\Controller {
             'images' => $images
             ]);
 
+    }
+
+    public function updatesAction($pid = null, Request $request)
+    {
+        // View::setTheme('default');
+        $project = $this->validateProject($pid, 'updates');
+        if($project instanceOf Response) return $project;
+
+        $posts = [];
+        $msg = '';
+        if ($project->status < 3) {
+            $msg = Text::get('dashboard-project-blog-wrongstatus');
+            Message::error($msg);
+            // return $this->redirect('/dashboard/projects/summary');
+        } else {
+            $blog = Blog::get($project->id);
+            if ($blog instanceOf Blog) {
+                if($blog->active) {
+                    $posts = BlogPost::getAll($blog->id, null, false);
+                }
+                else {
+                    Message::error(Text::get('dashboard-project-blog-inactive'));
+                }
+            }
+        }
+
+        return $this->viewResponse('dashboard/project/updates', [
+                'posts' => $posts,
+                'errorMsg' => $msg
+            ]);
     }
 
     /**

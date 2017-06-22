@@ -91,6 +91,20 @@ $dash->add('dashboard-project-images-redirect', new Route(
         )
 ));
 
+// Project updates editing
+$dash->add('dashboard-project-updates', new Route(
+    '/project/{pid}/updates',
+    array('_controller' => 'Goteo\Controller\Dashboard\ProjectDashboardController::updatesAction',
+        )
+));
+// Route from menu (if exists)
+$dash->add('dashboard-project-updates-redirect', new Route(
+    '/projects/updates',
+    array('_controller' => 'Goteo\Controller\Dashboard\ProjectDashboardController::updatesAction',
+        'pid' => null
+        )
+));
+
 $dash->add('dashboard-project-analytics', new Route(
     '/project/{pid}/analytics',
     array('_controller' => 'Goteo\Controller\Dashboard\ProjectDashboardController::analyticsAction',

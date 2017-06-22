@@ -43,6 +43,15 @@ namespace Goteo\Model\Blog {
             $num_comments = 0,
             $comments = array();
 
+        public static function sanitizeText($t) {
+            $t = strip_tags($t, '<br><a><strong><i><b><ul><li><ol><em><blockquote><p><img><code><pre><h1><h2><h3><h4><h5><h6><small>');
+            // agregamos html si es texto plano
+            if(strip_tags($t) == $t) {
+                $t = nl2br(Text::urlink($t));
+            }
+            return $t;
+        }
+
         /*
          *  Devuelve datos de una entrada
          */
@@ -135,8 +144,7 @@ namespace Goteo\Model\Blog {
             $post->tags = Post\Tag::getAll($id);
 
             //agregamos html si es texto plano
-            if(strip_tags($post->text) == $post->text)
-                $post->text = nl2br(Text::urlink($post->text));
+            $post->text = self::sanitizeText($post->text);
 
             return $post;
         }
@@ -293,10 +301,7 @@ namespace Goteo\Model\Blog {
 
                 $post->tags = Post\Tag::getAll($post->id);
 
-                // agregamos html si es texto plano
-                if(strip_tags($post->text) == $post->text)
-                    $post->text = nl2br(Text::urlink($post->text));
-
+                $post->text = self::sanitizeText($post->text);
                 $list[$post->id] = $post;
             }
 

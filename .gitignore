@@ -8,6 +8,7 @@
 
 /node_modules/
 /vendor/
+/public/assets/vendor/footable/releases/
 /bower_components/
 *.log
 .tmp
