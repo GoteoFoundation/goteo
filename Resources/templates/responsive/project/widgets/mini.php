@@ -4,7 +4,7 @@
         <div class="status-mark">
             <span class="label"><?= amount_format($this->project->invested) ?> / <?= amount_format($this->project->amount) ?></span>
         <?php if($this->admin): ?>
-            <span class="label label-danger pull-right hidden-xs"><?= $this->project->getTextStatus() ?></span>
+            <span class="label label-danger pull-right"><?= $this->project->getTextStatus() ?></span>
         <?php endif ?>
         </div>
     </a>

@@ -23,6 +23,10 @@ $this->layout( $this->is_ajax() ? 'content' : 'layout', [
     'meta_description' => $this->text('meta-description-create-project')
     ]);
 
+$this->section('sidebar-header');
+echo $this->insert(__DIR__ . '/../../responsive/project/widgets/mini.php', ['project' => $project, 'admin' => $project->userCanEdit($this->get_user())]);
+$this->replace();
+
 $this->section('content');
 ?>
 

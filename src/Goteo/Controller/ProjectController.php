@@ -42,9 +42,10 @@ use Symfony\Component\HttpFoundation\Response;
 
 class ProjectController extends \Goteo\Core\Controller {
 
-    static function createSidebar(Project $project) {
+    static function createSidebar(Project $project, $zone = '') {
         // Create sidebar menu
-        Session::addToSidebarMenu('<i class="fa fa-eye"></i> ' . Text::get('dashboard-menu-activity-summary'), '/dashboard/project/' . $project->id .'/summary', 'summary');
+        Session::addToSidebarMenu('<i class="fa fa-bar-chart"></i> ' . Text::get('dashboard-menu-activity-summary'), '/dashboard/project/' . $project->id .'/summary', 'summary');
+        Session::addToSidebarMenu('<i class="fa fa-eye"></i> ' . Text::get('regular-preview'), '/project/' . $project->id, 'preview');
         Session::addToSidebarMenu('<i class="fa fa-edit"></i> ' . Text::get('regular-edit'), '/project/edit/' . $project->id, 'edit');
         Session::addToSidebarMenu('<i class="fa fa-image"></i> ' . Text::get('images-main-header'), '/dashboard/project/' . $project->id .'/images', 'images');
         Session::addToSidebarMenu('<i class="fa fa-file-text"></i> ' . Text::get('dashboard-menu-projects-updates'), '/dashboard/projects/updates/select?project=' . $project->id, 'updates');
@@ -56,6 +57,7 @@ class ProjectController extends \Goteo\Core\Controller {
 
         View::getEngine()->useData([
             'project' => $project,
+            'zone' => $zone,
             'sidebarBottom' => [ '/dashboard/projects' => '<i class="fa fa-reply" title="' . Text::get('profile-my_projects-header') . '"></i> ' . Text::get('profile-my_projects-header') ]
         ]);
 
@@ -150,7 +152,7 @@ class ProjectController extends \Goteo\Core\Controller {
 			return new RedirectResponse($goto);
 		}
 
-        self::createSidebar($project);
+        self::createSidebar($project, 'edit');
 
 
 		$currency_data = Library\Currency::$currencies[$project->currency];
@@ -612,6 +614,8 @@ class ProjectController extends \Goteo\Core\Controller {
 
         // si lo puede ver
         if ($project->userCanView(Session::getUser())) {
+
+            self::createSidebar($project, 'preview');
 
             $project->cat_names = Project\Category::getNames($project->id);
 

@@ -22,8 +22,9 @@ $this->layout('layout', [
     'og_image' => $meta_img
     ]);
 
+
 $this->section('lang-metas');
-$langs = $this->project->getLangs();
+$langs = $project->getLangs();
 if (count($langs) > 1) {
     foreach($langs as $l => $lang) {
         if($l == $this->lang_current()) continue;
@@ -31,6 +32,12 @@ if (count($langs) > 1) {
     }
 }
 $this->replace();
+
+$this->section('sidebar-header');
+echo $this->insert('project/widgets/mini', ['project' => $project, 'admin' => $project->userCanEdit($this->get_user())]);
+$this->replace();
+
+
 
 $this->section('content');
 

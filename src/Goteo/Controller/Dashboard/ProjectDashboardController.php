@@ -58,7 +58,7 @@ class ProjectDashboardController extends \Goteo\Core\Controller {
             throw new ControllerAccessDeniedException(Text::get('user-login-required-access'));
         }
 
-        ProjectController::createSidebar($this->project);
+        ProjectController::createSidebar($this->project, $section);
 
         return $this->project;
     }
@@ -83,7 +83,6 @@ class ProjectDashboardController extends \Goteo\Core\Controller {
         }
 
         return $this->viewResponse('dashboard/project/summary', [
-            'zone' => 'summary',
             'statuses' => Project::status(),
             'status_text' => $status_text
         ]);
@@ -101,8 +100,7 @@ class ProjectDashboardController extends \Goteo\Core\Controller {
         }
         return $this->viewResponse('dashboard/project/images', [
             'zones' => $zones,
-            'images' => $images,
-            'zone' => 'images'
+            'images' => $images
             ]);
 
     }
@@ -127,9 +125,7 @@ class ProjectDashboardController extends \Goteo\Core\Controller {
         }
         // die("$pid {$project->id} {$project->name}");
 
-        return $this->viewResponse('dashboard/project/analytics', [
-            'zone' => 'analytics'
-            ]);
+        return $this->viewResponse('dashboard/project/analytics');
 
     }
 
@@ -146,7 +142,6 @@ class ProjectDashboardController extends \Goteo\Core\Controller {
         $icons   = Reward::icons('social');
 
         return $this->viewResponse('dashboard/project/shared_materials', [
-            'zone' => 'materials',
             'licenses_list' => $licenses_list,
             'icons' => $icons,
             'allowNewShare' => in_array($project->status, [Project::STATUS_FUNDED , Project::STATUS_FULFILLED])
