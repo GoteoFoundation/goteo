@@ -2,7 +2,9 @@
 
 <?php $this->section('dashboard-content') ?>
 
-<div class="container general-dashboard">
+<div class="dashboard-content">
+
+<div class="container">
     <div class="row user-pool">
 	   	<div class="col-sm-3 hidden-xs img-pool">
 	   		<img src="<?= SRC_URL . '/assets/img/dashboard/pool.png' ?>" class="img-responsive">
@@ -28,18 +30,18 @@
 	</div>
 </div>
 
-	<?php //if($this->projects_suggestion): ?>
+<div class="projects-container">
+    <h2><?= $this->text('profile-suggest-projects-interest') ?></h2>
+	<?= $this->insert('dashboard/partials/projects_interests', [
+        'projects' => $this->projects_suggestion,
+        'total' => $this->projects_suggestion_total,
+        'interests' => $this->interests,
+        'auto_update' => '/dashboard/ajax/projects/interests',
+        'limit' => $this->limit
+        ]) ?>
+</div>
 
-	<div class="container general-dashboard projects-container">
-        <h2><?= $this->text('profile-suggest-projects-interest') ?></h2>
-		<?= $this->insert('dashboard/partials/projects_interests', [
-            'projects' => $this->projects_suggestion,
-            'total' => $this->projects_suggestion_total,
-            'interests' => $this->interests,
-            'auto_update' => '/dashboard/ajax/projects/interests',
-            'limit' => $this->limit
-            ]) ?>
-	</div>
+</div>
 
 <!-- Modal -->
 <div class="modal fade" id="poolModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
@@ -55,5 +57,6 @@
     </div>
   </div>
 </div>
+
 <?php $this->replace() ?>
 

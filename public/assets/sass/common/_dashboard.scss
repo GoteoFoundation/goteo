@@ -8,6 +8,15 @@
   .nav-tabs.nav-justified > li {
       display: table-cell;
       width: 1%;
+      >a {
+        border:0;
+        margin-bottom:0;
+        border-bottom-right-radius: 0;
+        border-bottom-left-radius: 0;
+      }
+  }
+  .nav-tabs > li.active > a, .nav-tabs > li.active > a:focus, .nav-tabs > li.active > a:hover {
+    background-color:$background-light-cream;
   }
 }
 

@@ -23,7 +23,6 @@ use Goteo\Library\Text;
 use Goteo\Console\UsersSend;
 use Goteo\Application\Exception\ModelException;
 use Goteo\Application\Exception\ControllerAccessDeniedException;
-use Goteo\Controller\ProjectController;
 
 class ProjectDashboardController extends \Goteo\Core\Controller {
     protected $user;
@@ -35,6 +34,27 @@ class ProjectDashboardController extends \Goteo\Core\Controller {
         $this->contextVars([
             'section' => 'projects'
         ]);
+    }
+
+    static function createSidebar(Project $project, $zone = '') {
+        // Create sidebar menu
+        Session::addToSidebarMenu('<i class="fa fa-bar-chart"></i> ' . Text::get('dashboard-menu-activity-summary'), '/dashboard/project/' . $project->id .'/summary', 'summary');
+        Session::addToSidebarMenu('<i class="fa fa-eye"></i> ' . Text::get('regular-preview'), '/project/' . $project->id, 'preview');
+        Session::addToSidebarMenu('<i class="fa fa-edit"></i> ' . Text::get('regular-edit'), '/project/edit/' . $project->id, 'edit');
+        Session::addToSidebarMenu('<i class="fa fa-image"></i> ' . Text::get('images-main-header'), '/dashboard/project/' . $project->id .'/images', 'images');
+        Session::addToSidebarMenu('<i class="fa fa-file-text"></i> ' . Text::get('dashboard-menu-projects-updates'), '/dashboard/projects/updates/select?project=' . $project->id, 'updates');
+        Session::addToSidebarMenu('<i class="fa fa-group"></i> ' . Text::get('dashboard-menu-projects-supports'), '/dashboard/projects/supports/select?project=' . $project->id , 'supports');
+        Session::addToSidebarMenu('<i class="fa fa-user"></i> ' . Text::get('dashboard-menu-projects-rewards'), '/dashboard/projects/rewards/select?project=' . $project->id, 'rewards');
+        Session::addToSidebarMenu('<i class="fa fa-comments"></i> ' . Text::get('dashboard-menu-projects-messegers'), '/dashboard/projects/messengers/select?project=' . $project->id, 'comments');
+        Session::addToSidebarMenu('<i class="fa fa-pie-chart"></i> ' . Text::get('dashboard-menu-projects-analytics'), '/dashboard/project/' . $project->id . '/analytics', 'analytics');
+        Session::addToSidebarMenu('<i class="fa fa-beer"></i> ' . Text::get('project-share-materials'), '/dashboard/project/' . $project->id .'/materials', 'materials');
+
+        View::getEngine()->useData([
+            'project' => $project,
+            'zone' => $zone,
+            'sidebarBottom' => [ '/dashboard/projects' => '<i class="fa fa-reply" title="' . Text::get('profile-my_projects-header') . '"></i> ' . Text::get('profile-my_projects-header') ]
+        ]);
+
     }
 
     protected function validateProject($pid = null, $section = 'summary') {
@@ -58,9 +78,21 @@ class ProjectDashboardController extends \Goteo\Core\Controller {
             throw new ControllerAccessDeniedException(Text::get('user-login-required-access'));
         }
 
-        ProjectController::createSidebar($this->project, $section);
+        self::createSidebar($this->project, $section);
 
         return $this->project;
+    }
+
+    public function indexAction(Request $request) {
+
+        // mis proyectos
+        $projects = Project::ofmine($this->user->id, false, 0, 3);
+        $projects_total = Project::ofmine($this->user->id, false, 0, 0, true);
+
+        return $this->viewResponse('dashboard/projects', [
+            'projects' => $projects,
+            'projects_total' => $projects_total,
+        ]);
     }
 
     public function summaryAction($pid = null, Request $request) {

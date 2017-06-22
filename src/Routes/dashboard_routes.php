@@ -71,11 +71,9 @@ $dash->add('dashboard-project-summary-redirect', new Route(
         )
 ));
 // Route from menu
-$dash->add('dashboard-project-summary-redirect-2', new Route(
+$dash->add('dashboard-projects', new Route(
     '/projects',
-    array('_controller' => 'Goteo\Controller\Dashboard\ProjectDashboardController::summaryAction',
-        'pid' => null
-        )
+    array('_controller' => 'Goteo\Controller\Dashboard\ProjectDashboardController::indexAction')
 ));
 
 
@@ -118,6 +116,13 @@ $dash->add('dashboard-project-materials-redirect', new Route(
     '/projects/materials',
     array('_controller' => 'Goteo\Controller\Dashboard\ProjectDashboardController::materialsAction',
         'pid' => null
+        )
+));
+
+// Settings
+$dash->add('dashboard-settings', new Route(
+    '/settings',
+    array('_controller' => 'Goteo\Controller\Dashboard\SettingsDashboardController::indexAction',
         )
 ));
 

@@ -30,9 +30,6 @@ class DashboardController extends \Goteo\Core\Controller {
     public function activityAction(Request $request) {
         $user = Session::getUser();
 
-        // mis proyectos
-        $projects = Project::ofmine($user->id, false, 0, 3);
-        $projects_total = Project::ofmine($user->id, false, 0, 0, true);
         // proyectos que cofinancio
         $invested = User::invested($user->id, false, 0, 3);
         $invested_total = User::invested($user->id, false, 0, 0, true);
@@ -53,8 +50,6 @@ class DashboardController extends \Goteo\Core\Controller {
         return $this->viewResponse('dashboard/activity', [
             'section' => 'activity',
             'message' => str_replace('%USER_NAME%', $user->name, $page->parseContent()),
-            'projects' => $projects,
-            'projects_total' => $projects_total,
             'invested' => $invested,
             'invested_total' => $invested_total,
             'interests' => $interests,

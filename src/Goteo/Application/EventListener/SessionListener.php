@@ -177,12 +177,10 @@ class SessionListener extends AbstractListener {
         Session::addToMainMenu(Currency::get($currency, 'html') . ' ' . Currency::get($currency, 'name'), $currencies, 'currencies');
 
         // Minimal User menu
-        Session::addToUserMenu(Text::get('dashboard-menu-main'), '/dashboard', 'dashboard');
-        Session::addToUserMenu(Text::get('dashboard-menu-profile'), '/dashboard/profile', 'dashboard-profile');
-        Session::addToUserMenu(Text::get('dashboard-menu-pool'), '/dashboard/wallet', 'dashboard-wallet');
-        Session::addToUserMenu(Text::get('dashboard-menu-activity'), '/dashboard/activity', 'dashboard-activity');
-        Session::addToUserMenu(Text::get('dashboard-menu-projects'), '/dashboard/projects', 'dashboard-projects');
-        Session::addToUserMenu(Text::get('dashboard-menu-profile-preferences'), '/dashboard/profile/preferences', '/dashboard-preferences');
+        Session::addToUserMenu('<i class="icon icon-activity"></i> ' . Text::get('dashboard-menu-activity'), '/dashboard/activity', 'dashboard-activity');
+        Session::addToUserMenu('<i class="icon icon-projects"></i> ' . Text::get('dashboard-menu-projects'), '/dashboard/projects', 'dashboard-projects');
+        Session::addToUserMenu('<i class="icon icon-wallet"></i> ' . Text::get('dashboard-menu-pool'), '/dashboard/wallet', 'dashboard-wallet');
+        Session::addToUserMenu('<i class="icon icon-settings"></i> ' . Text::get('dashboard-menu-profile-preferences'), '/dashboard/settings', 'dashboard-setting');
 
         if($user = Session::getUser()) {
             if ( isset($user->roles['translator']) ||  isset($user->roles['admin']) || isset($user->roles['superadmin']) ) {
