@@ -8,7 +8,7 @@ $channel=$this->channel;
         </a>
     </div>
     <?php $this->section('channel-owner-info') ?>
-    <div class="info">
+    <div class="info" <?php if($channel->owner_font_color) echo 'style="color:'.$channel->owner_font_color.'"'; ?>>
 
         <!-- Nombre y texto presentación -->
         <h2 class="channel-name"><?= $channel->name ?></h2>
@@ -27,16 +27,16 @@ $channel=$this->channel;
     <!-- enlaces sociales  -->
     <ul class="social">
            <?php if ($channel->facebook): ?>
-           <li class="facebook"><a href="<?= $channel->facebook ?>" target="_blank">F</a></li>
+           <li class="facebook"><a <?= $channel->owner_social_color=='grey' ? 'class="grey"' : '' ?>  href="<?= $channel->facebook ?>" target="_blank">F</a></li>
             <?php endif ?>
             <?php if ($channel->google): ?>
-            <li class="google"><a href="<?= $channel->google ?>" target="_blank">G</a></li>
+            <li class="grey"><a <?= $channel->owner_social_color=='grey' ? 'class="grey"' : '' ?> href="<?= $channel->google ?>" target="_blank">G</a></li>
             <?php endif ?>
                <?php if ($channel->twitter): ?>
-            <li class="twitter"><a href="<?= $channel->twitter ?>" target="_blank">T</a></li>
+            <li class="twitter"><a <?= $channel->owner_social_color=='grey' ? 'class="grey"' : '' ?> href="<?= $channel->twitter ?>" target="_blank">T</a></li>
             <?php endif ?>
             <?php if ($channel->linkedin): ?>
-            <li class="linkedin"><a href="<?= $channel->linkedin ?>" target="_blank">L</a></li>
+            <li class="linkedin"><a <?= $channel->owner_social_color=='grey' ? 'class="grey"' : '' ?> href="<?= $channel->linkedin ?>" target="_blank">L</a></li>
             <?php endif ?>
     </ul>
 </div>

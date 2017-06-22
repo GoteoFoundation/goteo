@@ -46,3 +46,10 @@ ALTER TABLE `node` ADD `sponsors_limit` INT( 2 ) DEFAULT NULL COMMENT 'Número d
 
 -- contrains
 ALTER TABLE `node` CHANGE `default_consultant` `default_consultant` VARCHAR(50) CHARSET utf8 COLLATE utf8_general_ci NULL COMMENT 'Asesor por defecto para el proyecto', ADD FOREIGN KEY (`default_consultant`) REFERENCES `user`(`id`) ON UPDATE CASCADE ON DELETE SET NULL;
+
+-- owner font color
+ALTER TABLE `node` ADD `owner_font_color` VARCHAR( 255 ) NULL DEFAULT NULL COMMENT 'Color de fuente módulo owner';
+
+-- owner social color grey or white
+ALTER TABLE `node` ADD `owner_social_color` VARCHAR( 255 ) NULL DEFAULT NULL COMMENT 'Color de iconos sociales módulo owner';
+

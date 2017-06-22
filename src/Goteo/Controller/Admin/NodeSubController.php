@@ -69,7 +69,9 @@ class NodeSubController extends AbstractSubController {
                 'facebook',
                 'google',
                 'linkedin',
-                'owner_background'
+                'owner_background',
+                'owner_font_color',
+                'owner_social_color'
             );
 
             foreach ($fields as $field) {
