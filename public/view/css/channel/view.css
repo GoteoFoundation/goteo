@@ -545,6 +545,22 @@ div.owner-info ul.social li.google a {
 div.owner-info ul.social li.linkedin a {
     background-image: url('/view/css/linkedin_white.png');
 }
+
+div.owner-info ul.social li.twitter a.grey {
+    background-image: url('/view/css/twitter_grey.png');
+}
+
+div.owner-info ul.social li.facebook a.grey {
+    background-image: url('/view/css/facebook_grey.png');
+}
+
+div.owner-info ul.social li.google a.grey {
+    background-image: url('/view/css/google_grey.png');
+}
+
+div.owner-info ul.social li.linkedin a.grey {
+    background-image: url('/view/css/linkedin_grey.png');
+}
 /* Fin enlaces sociales */
 
 div.owner-info div.info {
