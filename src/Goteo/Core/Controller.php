@@ -14,11 +14,41 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\ResponseHeaderBag;
+use Symfony\Component\Form\Extension\HttpFoundation\HttpFoundationExtension;
+use Symfony\Component\Form\Extension\Core\Type\FormType;
+use Symfony\Component\Form\Extension\Templating\TemplatingExtension;
 use Symfony\Component\EventDispatcher\Event;
+
+use Symfony\Component\Templating\PhpEngine;
+use Symfony\Component\Templating\TemplateNameParser;
+use Symfony\Component\Templating\TemplateNameParserInterface;
+use Symfony\Component\Templating\TemplateReference;
+use Symfony\Component\Templating\Loader\FilesystemLoader;
+use Symfony\Bundle\FrameworkBundle\Templating\Helper\TranslatorHelper;
+use Symfony\Component\Translation\Translator;
+
+use Symfony\Component\Form\Forms;
 use Goteo\Application\App;
 use Goteo\Application\View;
 use Goteo\Core\Traits\LoggerTrait;
 
+class SimpleTemplateNameParser implements TemplateNameParserInterface
+{
+    private $root;
+    public function __construct($root)
+    {
+        $this->root = $root;
+    }
+    public function parse($name)
+    {
+        if (false !== strpos($name, ':')) {
+            $path = str_replace(':', '/', $name);
+        } else {
+            $path = $this->root . '/' . $name;
+        }
+        return new TemplateReference($path, 'php');
+    }
+}
 abstract class Controller {
     use LoggerTrait;
 
@@ -99,4 +129,32 @@ abstract class Controller {
     public function dispatch($eventName, Event $event = null) {
         return App::dispatch($eventName, $event);
     }
+
+    /**
+     * Handy method to get a form builder
+     * TODO: Do this initialization in the Service Container
+     * @return Symfony\Component\Form\FormFactory
+     */
+    public function createFormBuilder($defaults = null) {
+        $path =realpath(GOTEO_PATH . 'vendor/symfony/framework-bundle/Resources/views/Form');
+        // Set up the Translation component
+        $translator = new Translator('en');
+        $engine = new PhpEngine(new SimpleTemplateNameParser(GOTEO_PATH . 'Resources/templates/forms'), new FilesystemLoader(array()));
+        $engine->addHelpers(array(new TranslatorHelper($translator)));
+
+        $formFactory = Forms::createFormFactoryBuilder()
+            ->addExtension(new HttpFoundationExtension())
+            ->addExtension(new TemplatingExtension($engine, null, array(
+            $path
+        )))
+        // ->addExtension(new CsrfExtension($csrfTokenManager))
+        // ->addExtension(new ValidatorExtension($validator))
+        ->getFormFactory();
+
+        View::getEngine()->useData(['forms' => $engine->get('form')]);
+
+        return $formFactory->createBuilder(FormType::class, $defaults);
+    }
 }
+
+

@@ -64,6 +64,8 @@ $(function(){
     $('.toggle-sidebar').on('click', toggleSidebar);
     // Swipper detector
     if('.toggle-sidebar') {
+        // Enable text selection
+        delete Hammer.defaults.cssProps.userSelect;
         var $body = $('body.has-sidebar');
         $body.hammer().bind("swiperight", function(e){
             if(!$body.hasClass('sidebar-opened'))

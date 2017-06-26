@@ -179,7 +179,7 @@ class ProjectDashboardController extends \Goteo\Core\Controller {
             ]);
     }
 
-    public function updatesEditAction($pid, $uid = null, Request $request)
+    public function updatesEditAction($pid, $uid, Request $request)
     {
         // View::setTheme('default');
         $project = $this->validateProject($pid, 'updates');
@@ -188,8 +188,30 @@ class ProjectDashboardController extends \Goteo\Core\Controller {
         $post = BlogPost::get($uid);
         if(!$post) throw new ModelNotFoundException();
 
+
+        // Create our first form!
+        $form = $this->createFormBuilder()
+            ->add('firstName', 'text', array(
+            ))
+            ->add('lastName', 'text', array(
+            ))
+            ->add('gender', 'choice', array(
+                'choices' => array('m' => 'Male', 'f' => 'Female'),
+            ))
+            ->add('newsletter', 'checkbox', array(
+                'required' => false,
+            ))
+            ->getForm();
+
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+            $data = $form->getData();
+            print_r($data);die;
+        }
+
         return $this->viewResponse('dashboard/project/updates_edit', [
-            'post' => $post
+            'post' => $post,
+            'form' => $form->createView()
             ]);
 
     }
