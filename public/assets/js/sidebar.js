@@ -48,12 +48,12 @@ var transitionEnd = whichTransitionEvent();
 $(function(){
 
     var toggleSidebar = function(e) {
-        var $body = $('body');
+        var $body = $('body.has-sidebar');
         if($body.hasClass('animating')) return;
         // console.log('sidebar toggle', e);
         e.stopPropagation();
         e.preventDefault();
-        $('body').toggleClass('animating sidebar-opened').one(transitionEnd, function(e) {
+        $body.toggleClass('animating sidebar-opened').one(transitionEnd, function(e) {
             $(this).removeClass('animating');
             // console.log('end animation', e);
         });
@@ -64,12 +64,13 @@ $(function(){
     $('.toggle-sidebar').on('click', toggleSidebar);
     // Swipper detector
     if('.toggle-sidebar') {
-        $('body').hammer().bind("swiperight", function(e){
-            if(!$('body').hasClass('sidebar-opened'))
+        var $body = $('body.has-sidebar');
+        $body.hammer().bind("swiperight", function(e){
+            if(!$body.hasClass('sidebar-opened'))
                 toggleSidebar(e);
         });
-        $('body').hammer().bind("swipeleft", function(e){
-            if($('body').hasClass('sidebar-opened'))
+        $body.hammer().bind("swipeleft", function(e){
+            if($body.hasClass('sidebar-opened'))
                 toggleSidebar(e);
         });
     }

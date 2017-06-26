@@ -16,6 +16,7 @@
           <th data-type="number" data-breakpoints="xs">#</th>
           <th data-type="date" data-breakpoints="xs"><?= $this->text('regular-date') ?></th>
           <th><?= $this->text('regular-title') ?></th>
+          <th><?= $this->text('regular-actions') ?></th>
         </tr>
       </thead>
       <tbody>
@@ -26,6 +27,7 @@
           <td><?= $post->id ?></td>
           <td><?= date_formater($post->date) ?></td>
           <td><?= $post->title ?></td>
+          <td>...buttons...</td>
         </tr>
     <?php endforeach ?>
       </tbody>
