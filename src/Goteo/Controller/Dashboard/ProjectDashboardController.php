@@ -23,7 +23,7 @@ use Goteo\Model\Blog\Post as BlogPost;
 use Goteo\Application\Message;
 use Goteo\Library\Text;
 use Goteo\Console\UsersSend;
-use Goteo\Application\Exception\ModelException;
+use Goteo\Application\Exception\ModelNotFoundException;
 use Goteo\Application\Exception\ControllerAccessDeniedException;
 
 class ProjectDashboardController extends \Goteo\Core\Controller {
@@ -150,7 +150,10 @@ class ProjectDashboardController extends \Goteo\Core\Controller {
         if($project instanceOf Response) return $project;
 
         $posts = [];
+        $total = 0;
         $msg = '';
+        $limit = 4;
+        $offset = $limit * (int)$request->query->get('pag');
         if ($project->status < 3) {
             $msg = Text::get('dashboard-project-blog-wrongstatus');
             Message::error($msg);
@@ -159,7 +162,8 @@ class ProjectDashboardController extends \Goteo\Core\Controller {
             $blog = Blog::get($project->id);
             if ($blog instanceOf Blog) {
                 if($blog->active) {
-                    $posts = BlogPost::getAll($blog->id, null, false);
+                    $posts = BlogPost::getList((int)$blog->id, false, $offset, $limit);
+                    $total = BlogPost::getList((int)$blog->id, false, 0, 0, true);
                 }
                 else {
                     Message::error(Text::get('dashboard-project-blog-inactive'));
@@ -169,8 +173,25 @@ class ProjectDashboardController extends \Goteo\Core\Controller {
 
         return $this->viewResponse('dashboard/project/updates', [
                 'posts' => $posts,
+                'total' => $total,
+                'limit' => $limit,
                 'errorMsg' => $msg
             ]);
+    }
+
+    public function updatesEditAction($pid, $uid = null, Request $request)
+    {
+        // View::setTheme('default');
+        $project = $this->validateProject($pid, 'updates');
+        if($project instanceOf Response) return $project;
+
+        $post = BlogPost::get($uid);
+        if(!$post) throw new ModelNotFoundException();
+
+        return $this->viewResponse('dashboard/project/updates_edit', [
+            'post' => $post
+            ]);
+
     }
 
     /**

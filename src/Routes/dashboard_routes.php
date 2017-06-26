@@ -104,6 +104,12 @@ $dash->add('dashboard-project-updates-redirect', new Route(
         'pid' => null
         )
 ));
+// Edit update
+$dash->add('dashboard-project-updates-edit', new Route(
+    '/project/{pid}/updates/{uid}',
+    array('_controller' => 'Goteo\Controller\Dashboard\ProjectDashboardController::updatesEditAction',
+        )
+));
 
 $dash->add('dashboard-project-analytics', new Route(
     '/project/{pid}/analytics',

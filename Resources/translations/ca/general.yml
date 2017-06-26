@@ -77,6 +77,7 @@ regular-create: 'Crea un projecte'
 regular-days: dies
 regular-delete: Esborrar
 regular-discover: 'Descobreix projectes'
+regular-actions: Accions
 regular-edit: Editar
 regular-email: Email
 regular-facebook: Facebook
@@ -142,7 +143,8 @@ regular-thanks: Gràcies
 regular-total: Total
 regular-translate_board: 'Panell traductor'
 regular-twitter: Twitter
-regular-view_project: Projecte
+regular-view: Veure
+regular-view_project: Veure el projecte
 regular-web: Web
 regular-weeks: setmanes
 regular-yes: Sí

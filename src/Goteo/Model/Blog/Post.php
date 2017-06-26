@@ -313,7 +313,7 @@ namespace Goteo\Model\Blog {
          *  por tag
          * de mas nueva a mas antigua
          */
-        public static function getList ($filters = array(), $published = true) {
+        public static function getList ($filters = array(), $published = true, $offset = 0, $limit = 10, $count = false) {
             $lang = Lang::current();
             $values = array(':lang'=>$lang);
 
@@ -322,16 +322,22 @@ namespace Goteo\Model\Blog {
             if(self::default_lang($lang) === Config::get('lang')) {
                 $different_select=" IFNULL(post_lang.title, post.title) as title,
                                     IFNULL(post_lang.text, post.text) as `text`,
-                                    IFNULL(post_lang.legend, post.legend) as `legend`";
+                                    IFNULL(post_lang.legend, post.legend) as `legend`,
+                                    IFNULL(post_lang.media, post.media) as `media`";
                 }
             else {
                     $different_select=" IFNULL(post_lang.title, IFNULL(eng.title, post.title)) as title,
                                         IFNULL(post_lang.text, IFNULL(eng.text, post.text)) as `text`,
-                                        IFNULL(post_lang.legend, IFNULL(eng.legend, post.legend)) as `legend`";
+                                        IFNULL(post_lang.legend, IFNULL(eng.legend, post.legend)) as `legend`,
+                                        IFNULL(post_lang.media, IFNULL(eng.media, post.media)) as `media`";
                     $eng_join=" LEFT JOIN post_lang as eng
                                     ON  eng.id = post.id
                                     AND eng.lang = 'en'";
                 }
+
+
+            $offset = (int) $offset;
+            $limit = (int) $limit;
 
             $sql = "
                 SELECT
@@ -340,6 +346,7 @@ namespace Goteo\Model\Blog {
                     $different_select,
                     post.image as `image`,
                     post.media as `media`,
+                    post.date as `date`,
                     DATE_FORMAT(post.date, '%d-%m-%Y') as fecha,
                     post.publish as publish,
                     post.home as home,
@@ -371,41 +378,49 @@ namespace Goteo\Model\Blog {
                         AND blog.type = 'node'
                 ";
 
+            $sqlWhere = '';
+
+            if(!is_array($filters)) {
+                if(is_integer($filters))
+                    $filters = ['show' => 'all', 'blog' => $filters];
+                else
+                    $filters = ['show' => $filters];
+            }
             if (in_array($filters['show'], array('all', 'home', 'footer'))) {
-                $sql .= " WHERE blog.id IS NOT NULL
+                $sqlWhere = " WHERE blog.id IS NOT NULL
                 ";
             } elseif ($filters['show'] == 'updates') {
-                $sql .= " WHERE blog.type = 'project'
+                $sqlWhere = " WHERE blog.type = 'project'
                 ";
             } else {
-                $sql .= " WHERE blog.type = 'node'
+                $sqlWhere = " WHERE blog.type = 'node'
                 ";
             }
 
             if (!empty($filters['blog'])) {
-                $sql .= " AND post.blog = :blog
+                $sqlWhere = " WHERE post.blog = :blog
                 ";
                 $values[':blog'] = $filters['blog'];
             }
 
             if (!empty($filters['tag'])) {
-                $sql .= " AND post.id IN (SELECT post FROM post_tag WHERE tag = :tag)
+                $sqlWhere .= " AND post.id IN (SELECT post FROM post_tag WHERE tag = :tag)
                 ";
                 $values[':tag'] = $filters['tag'];
             }
 
             if (!empty($filters['author'])) {
-                $sql .= " AND post.author = :author
+                $sqlWhere .= " AND post.author = :author
                 ";
                 $values[':author'] = $filters['author'];
             }
 
             // solo las publicadas
             if ($published || $filters['show'] == 'published') {
-                $sql .= " AND post.publish = 1
+                $sqlWhere .= " AND post.publish = 1
                 ";
                 if (empty($filters['blog'])) {
-                $sql .= " AND blog.owner IN (SELECT id FROM node WHERE active = 1)
+                $sqlWhere .= " AND blog.owner IN (SELECT id FROM node WHERE active = 1)
                     AND blog.owner != 'testnode'
                 ";
                 }
@@ -413,7 +428,7 @@ namespace Goteo\Model\Blog {
 
             // solo las del propio blog
             if ($filters['show'] == 'owned') {
-                $sql .= " AND blog.owner = :node
+                $sqlWhere .= " AND blog.owner = :node
                 ";
                 $values[':node'] = $filters['node'];
             }
@@ -421,10 +436,10 @@ namespace Goteo\Model\Blog {
             // solo las de la portada
             if ($filters['show'] == 'home') {
                 if ($filters['node'] == \GOTEO_NODE) {
-                    $sql .= " AND post.home = 1
+                    $sqlWhere .= " AND post.home = 1
                     ";
                 } else {
-                    $sql .= " AND post.id IN (SELECT post FROM post_node WHERE node = :node)
+                    $sqlWhere .= " AND post.id IN (SELECT post FROM post_node WHERE node = :node)
                     ";
                     $values[':node'] = $filters['node'];
                 }
@@ -432,15 +447,27 @@ namespace Goteo\Model\Blog {
 
             if ($filters['show'] == 'footer') {
                 if ($filters['node'] == \GOTEO_NODE) {
-                    $sql .= " AND post.footer = 1
+                    $sqlWhere .= " AND post.footer = 1
                     ";
                 }
             }
 
-            $sql .= "
+            if($count) {
+                // Return count
+                unset($values[':lang']);
+                $sql = "SELECT COUNT(post.id)
+                    FROM post
+                    INNER JOIN blog ON  blog.id = post.blog
+                    $sqlWhere";
+                return (int) self::query($sql, $values)->fetchColumn();
+            }
+
+            $sql .= "$sqlWhere
                 ORDER BY post.date DESC, post.id DESC
+                LIMIT $offset, $limit
                 ";
 
+            // die(\sqldbg($sql, $values));
             $query = static::query($sql, $values);
 
             foreach ($query->fetchAll(\PDO::FETCH_CLASS, __CLASS__) as $post) {

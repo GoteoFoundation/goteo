@@ -27,11 +27,16 @@
           <td><?= $post->id ?></td>
           <td><?= date_formater($post->date) ?></td>
           <td><?= $post->title ?></td>
-          <td>...buttons...</td>
+          <td>
+            <a class="btn btn-default" title="<?= $this->text('regular-view') ?>" href="/project/<?= $this->project->id ?>/updates/<?= $post->id ?>#updates"><i class="fa fa-eye"></i></a>
+            <a class="btn btn-default" title="<?= $this->text('regular-edit') ?>" href="/dashboard/project/<?= $this->project->id ?>/updates/<?= $post->id ?>"><i class="fa fa-edit"></i></a>
+          </td>
         </tr>
     <?php endforeach ?>
       </tbody>
     </table>
+
+    <?= $this->insert('partials/utils/paginator', ['total' => $this->total, 'limit' => $this->limit]) ?>
 
     <?php else: ?>
         <?= $this->text('dashboard-project-blog-empty') ?>
