@@ -224,6 +224,7 @@ class Config {
 		View::getEngine()->loadExtension(new \Goteo\Util\Foil\Extension\TextUtils(), [], true);
 		View::getEngine()->loadExtension(new \Goteo\Util\Foil\Extension\ModelsData(), [], true);
         View::getEngine()->loadExtension(new \Goteo\Util\Foil\Extension\LangUtils(), [], true);
+        View::getEngine()->loadExtension(new \Goteo\Util\Foil\Extension\Forms(), [], true);
 
 		// Some defaults
 		View::getEngine()->useData([

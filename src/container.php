@@ -19,7 +19,7 @@ $sc = new DependencyInjection\ContainerBuilder();
 
 // Context and matcher
 $sc->register('context', 'Symfony\Component\Routing\RequestContext')
-    ->addMethodCall('fromRequest', array(App::getRequest()));
+   ->addMethodCall('fromRequest', array(App::getRequest()));
 $sc->register('matcher', 'Symfony\Component\Routing\Matcher\UrlMatcher')
    ->setArguments(array('%routes%', new Reference('context')))
 ;
@@ -79,18 +79,18 @@ $paylogger = $sc->register('paylogger', 'Monolog\Logger')
 
 // error mail send if defined
 if (Config::get('log.mail')) {
-	$sc->register('logger.mail_handler.formatter', 'Monolog\Formatter\HtmlFormatter');
-	$mailer = Goteo\Model\Mail::createFromHtml(Config::getMail('fail'), '', "WebApp error in [".Config::get('url.main')."]");
-	$mail   = $sc->register('logger.mail_handler', 'Goteo\Util\Monolog\Handler\MailHandler')
-	           ->setArguments(array($mailer, '', Monolog\Logger::DEBUG, true))// delayed sending
-	           ->addMethodCall('setFormatter', array(new Reference('logger.mail_handler.formatter')))
-	;
+  $sc->register('logger.mail_handler.formatter', 'Monolog\Formatter\HtmlFormatter');
+  $mailer = Goteo\Model\Mail::createFromHtml(Config::getMail('fail'), '', "WebApp error in [".Config::get('url.main')."]");
+  $mail   = $sc->register('logger.mail_handler', 'Goteo\Util\Monolog\Handler\MailHandler')
+             ->setArguments(array($mailer, '', Monolog\Logger::DEBUG, true))// delayed sending
+             ->addMethodCall('setFormatter', array(new Reference('logger.mail_handler.formatter')))
+  ;
 
-	$sc->register('logger.buffer_handler', 'Monolog\Handler\FingersCrossedHandler')
-	   ->setArguments(array(new Reference('logger.mail_handler'), monolog_level(Config::get('log.mail'))));
-	$paylogger->addMethodCall('pushHandler', array(new Reference('logger.buffer_handler')));
+  $sc->register('logger.buffer_handler', 'Monolog\Handler\FingersCrossedHandler')
+     ->setArguments(array(new Reference('logger.mail_handler'), monolog_level(Config::get('log.mail'))));
+  $paylogger->addMethodCall('pushHandler', array(new Reference('logger.buffer_handler')));
     $clilogger->addMethodCall('pushHandler', array(new Reference('logger.buffer_handler')));
-	$logger->addMethodCall('pushHandler', array(new Reference('logger.buffer_handler')));
+  $logger->addMethodCall('pushHandler', array(new Reference('logger.buffer_handler')));
 }
 
 // resolver for the HttpKernel handle()
@@ -127,23 +127,23 @@ $sc->register('app.listener.invest', 'Goteo\Application\EventListener\InvestList
 $sc->register('console.listener.milestone', 'Goteo\Console\EventListener\ConsoleMilestoneListener')
   ->setArguments(array(new Reference('console_logger')));
 
-  // Favourite listener
+// Favourite listener
 $sc->register('console.listener.favourite', 'Goteo\Console\EventListener\ConsoleFavouriteListener')
-	->setArguments(array(new Reference('console_logger')));
+  ->setArguments(array(new Reference('console_logger')));
 
 // Invest listener
 $sc->register('app.listener.poolinvest', 'Goteo\Application\EventListener\PoolInvestListener')
-	->setArguments(array(new Reference('paylogger')));
+  ->setArguments(array(new Reference('paylogger')));
 // Legacy Security ACL
 $sc->register('app.listener.acl', 'Goteo\Application\EventListener\AclListener')
    ->setArguments(array(new Reference('logger')));
 
 // Event Dispatcher object
 $sc->register('dispatcher', 'Symfony\Component\EventDispatcher\EventDispatcher')
-	->addMethodCall('addSubscriber', array(new Reference('app.listener.exception')))
-	->addMethodCall('addSubscriber', array(new Reference('app.listener.session')))
-	->addMethodCall('addSubscriber', array(new Reference('app.listener.auth')))
-	->addMethodCall('addSubscriber', array(new Reference('app.listener.project')))
+  ->addMethodCall('addSubscriber', array(new Reference('app.listener.exception')))
+  ->addMethodCall('addSubscriber', array(new Reference('app.listener.session')))
+  ->addMethodCall('addSubscriber', array(new Reference('app.listener.auth')))
+  ->addMethodCall('addSubscriber', array(new Reference('app.listener.project')))
   ->addMethodCall('addSubscriber', array(new Reference('app.listener.invest')))
   ->addMethodCall('addSubscriber', array(new Reference('app.listener.poolinvest')))
   ->addMethodCall('addSubscriber', array(new Reference('console.listener.milestone')))
@@ -152,9 +152,14 @@ $sc->register('dispatcher', 'Symfony\Component\EventDispatcher\EventDispatcher')
   ->addMethodCall('addSubscriber', array(new Reference('listener.router')))
   ->addMethodCall('addSubscriber', array(new Reference('listener.response')))
 ;
+
 // Goteo main app
 $sc->register('app', 'Goteo\Application\App')
    ->setArguments(array(new Reference('dispatcher'), new Reference('resolver')))
+;
+
+// Formbuilder
+$sc->register('app.forms', 'Goteo\Util\Forms\FormBuilder')
 ;
 
 // CONSOLE LISTENERS
