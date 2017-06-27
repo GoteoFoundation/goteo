@@ -15,14 +15,13 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormView;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
-use League\HTMLToMarkdown\HtmlConverter;
 
 /**
  *
  * This class creates a Symfony Form Type for Markdown editing (needs assets/js/forms.js)
  *
  */
-class MarkdownType extends AbstractType
+class DropfilesType extends AbstractType
 {
     /**
      * {@inheritdoc}
