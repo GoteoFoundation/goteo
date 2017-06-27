@@ -198,15 +198,19 @@ class ProjectDashboardController extends \Goteo\Core\Controller {
             ->add('title', 'text', array(
             ))
             ->add('date', 'datepicker', array(
-                // 'widget' => 'single_text'
+            ))
+            ->add('image', 'dropfiles', array(
             ))
             ->add('text', 'markdown', array(
             ))
             ->add('video', 'text', array(
             ))
-            ->add('allow', 'checkbox', array(
+            ->add('allow', 'boolean', array(
+                'label' => 'blog-allow-comments' // Form has integrated translations
             ))
-            ->add('publish', 'checkbox', array(
+            ->add('publish', 'boolean', array(
+                'label' => 'blog-publish', // Form has integrated translations
+                'color' => 'success', // bootstrap label-* (default, success, ...)
                 'required' => false,
             ))
             ->getForm();

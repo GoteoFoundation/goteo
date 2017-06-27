@@ -14,11 +14,11 @@ namespace Goteo\Util\Form\Type;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormView;
 use Symfony\Component\Form\FormInterface;
-use Symfony\Component\Form\Extension\Core\Type\TextareaType;
+use Symfony\Component\Form\Extension\Core\Type\FileType;
 
 /**
  *
- * This class creates a Symfony Form Type for Markdown editing (needs assets/js/forms.js)
+ * This class creates a Symfony Form Type uploading files using Dropzone (needs assets/js/forms.js)
  *
  */
 class DropfilesType extends AbstractType
@@ -28,11 +28,6 @@ class DropfilesType extends AbstractType
      */
     public function buildView(FormView $view, FormInterface $form, array $options)
     {
-        $view->vars['pattern'] = null;
-
-        // TODO: check backward compatibility of this
-        $converter = new HtmlConverter();
-        $view->vars['value'] = $converter->convert($view->vars['value']);
     }
 
     /**
@@ -40,7 +35,7 @@ class DropfilesType extends AbstractType
      */
     public function getParent()
     {
-        return TextareaType::class;
+        return FileType::class;
     }
 
     /**
@@ -56,6 +51,6 @@ class DropfilesType extends AbstractType
      */
     public function getBlockPrefix()
     {
-        return 'markdown';
+        return 'dropfiles';
     }
 }

@@ -8,3 +8,5 @@ blog-send_comment-header: 'Escribe tu comentario'
 blog-side-last_comments: 'Últimos comentarios'
 blog-side-last_posts: 'Últimas entradas'
 blog-side-tags: Categorías
+blog-allow-comments: Permite comentarios
+blog-publish: Publicar

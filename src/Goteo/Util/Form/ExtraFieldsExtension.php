@@ -26,6 +26,8 @@ class ExtraFieldsExtension extends AbstractExtension
         return array(
             new Type\MarkdownType(),
             new Type\DatepickerType(),
+            new Type\DropfilesType(),
+            new Type\BooleanType(),
         );
     }
 }

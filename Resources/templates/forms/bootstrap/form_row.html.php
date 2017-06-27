@@ -1,5 +1,9 @@
-<div class="form-group">
-    <?php echo $view['form']->label($form) ?>
-    <?php echo $view['form']->errors($form) ?>
-    <?php echo $view['form']->widget($form) ?>
+<?php
+$label_view = $label_position === 'none' ? '' : $view['form']->label($form);
+?>
+<div class="form-group<?= $row_class ? " $row_class" : '' ?>">
+    <?= $label_position === 'right' ? '' : $label_view ?>
+    <?= $view['form']->errors($form) ?>
+    <?= $view['form']->widget($form) ?>
+    <?= $label_position === 'right' ? $label_view : '' ?>
 </div>

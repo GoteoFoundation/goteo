@@ -24,6 +24,8 @@ for the JavaScript code in this page.
 */
 
 $(function(){
+    Dropzone.autoDiscover = false;
+
 
     // Create datepickers on date input types
     $('.autoform .datepicker, .autoform .datepicker > input').datetimepicker({
@@ -42,6 +44,19 @@ $(function(){
             spellChecker: false,
             promptURLs: true
          });
+    });
+
+    $('.autoform .dropfiles').each(function() {
+        var element = $(this).find('.dragndrop>div').get(0);
+        var dropzone = new Dropzone(element, {
+            url:'/api/projects/updates',
+            uploadMultiple: true,
+            createImageThumbnails: true,
+            maxFiles:10,
+            autoProcessQueue: true,
+            dictDefaultMessage: goteo.texts['dashboard-project-dnd-image']
+        });
+
     });
 
 });

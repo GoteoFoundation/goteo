@@ -10,12 +10,12 @@
 
 namespace Goteo\Util\Form;
 
+use Goteo\Application\Lang;
+use Goteo\Util\Form\SimpleTemplateNameParser;
 use Symfony\Component\Templating\PhpEngine;
 use Symfony\Component\Templating\Loader\FilesystemLoader;
-use Symfony\Bundle\FrameworkBundle\Templating\Helper\TranslatorHelper;
-use Symfony\Component\Translation\Translator;
+use Symfony\Bundle\FrameworkBundle\Templating\Helper\TranslatorHelper;;
 use Symfony\Component\Form\Forms;
-use Goteo\Util\Form\SimpleTemplateNameParser;
 use Symfony\Component\Form\Extension\HttpFoundation\HttpFoundationExtension;
 use Symfony\Component\Form\Extension\Core\Type\FormType;
 use Symfony\Component\Form\Extension\Templating\TemplatingExtension;
@@ -25,10 +25,9 @@ class FormBuilder {
     protected $formFactory;
 
     public function __construct() {
-        // Set up the Translation component
-        $translator = new Translator('en');
+
         $this->viewEngine = new PhpEngine(new SimpleTemplateNameParser(GOTEO_PATH . 'Resources/templates/forms'), new FilesystemLoader(array()));
-        $this->viewEngine->addHelpers(array(new TranslatorHelper($translator)));
+        $this->viewEngine->addHelpers(array(new TranslatorHelper(Lang::translator())));
 
         $this->formFactory = Forms::createFormFactoryBuilder()
             ->addExtension(new ExtraFieldsExtension())
