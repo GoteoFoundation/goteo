@@ -127,9 +127,9 @@ TODO:
                 <td><a href="<?= SRC_URL ?>/assets/vendor/datepicker/js/zebra_datepicker.src.js">zebra_datepicker.src.js</a></td>
             </tr>
             <tr>
-                <td><a href="<?= SRC_URL ?>/assets/vendor/simplemde-markdown/simplemde.min.js">simplemde.min.js</a></td>
+                <td><a href="<?= SRC_URL ?>/assets/vendor/simplemde/dist/simplemde.min.js">simplemde.min.js</a></td>
                 <td><a href="http://www.jclark.com/xml/copying.txt">Expat</a></td>
-                <td><a href="<?= SRC_URL ?>/assets/vendor/simplemde-markdown/src/js/simplemde.js">simplemde.js</a></td>
+                <td><a href="<?= SRC_URL ?>/assets/vendor/simplemde/src/js/simplemde.js">simplemde.js</a></td>
             </tr>
             <tr>
                 <td><a href="<?= SRC_URL ?>/assets/vendor/summernote/summernote.min.js">summernote.min.js</a></td>

@@ -27,6 +27,7 @@
 <?php
     echo 'goteo.debug = ' . (GOTEO_ENV !== 'real' ? 'true' : 'false') . ';';
     echo 'SRC_URL = "' . SRC_URL . '";';
+    echo "goteo.locale = '" . $this->lang_current() . "';";
 ?>
 // @license-end
 </script>

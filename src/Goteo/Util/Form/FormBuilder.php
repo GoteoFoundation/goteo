@@ -1,13 +1,21 @@
 <?php
+/*
+ * This file is part of the Goteo Package.
+ *
+ * (c) Platoniq y Fundación Goteo <fundacion@goteo.org>
+ *
+ * For the full copyright and license information, please view the README.md
+ * and LICENSE files that was distributed with this source code.
+ */
 
-namespace Goteo\Util\Forms;
+namespace Goteo\Util\Form;
 
 use Symfony\Component\Templating\PhpEngine;
 use Symfony\Component\Templating\Loader\FilesystemLoader;
 use Symfony\Bundle\FrameworkBundle\Templating\Helper\TranslatorHelper;
 use Symfony\Component\Translation\Translator;
 use Symfony\Component\Form\Forms;
-use Goteo\Util\Forms\SimpleTemplateNameParser;
+use Goteo\Util\Form\SimpleTemplateNameParser;
 use Symfony\Component\Form\Extension\HttpFoundation\HttpFoundationExtension;
 use Symfony\Component\Form\Extension\Core\Type\FormType;
 use Symfony\Component\Form\Extension\Templating\TemplatingExtension;
@@ -17,16 +25,16 @@ class FormBuilder {
     protected $formFactory;
 
     public function __construct() {
-        $path = realpath(GOTEO_PATH . 'vendor/symfony/framework-bundle/Resources/views/Form');
         // Set up the Translation component
         $translator = new Translator('en');
         $this->viewEngine = new PhpEngine(new SimpleTemplateNameParser(GOTEO_PATH . 'Resources/templates/forms'), new FilesystemLoader(array()));
         $this->viewEngine->addHelpers(array(new TranslatorHelper($translator)));
 
         $this->formFactory = Forms::createFormFactoryBuilder()
+            ->addExtension(new ExtraFieldsExtension())
             ->addExtension(new HttpFoundationExtension())
             ->addExtension(new TemplatingExtension($this->viewEngine, null, array(
-            $path,
+             GOTEO_PATH . 'vendor/symfony/framework-bundle/Resources/views/Form',
              GOTEO_PATH . 'Resources/templates/forms/bootstrap',
         )))
         // ->addExtension(new CsrfExtension($csrfTokenManager))
@@ -36,8 +44,8 @@ class FormBuilder {
     }
 
 
-    public function createBuilder($defaults = null) {
-        return $this->formFactory->createBuilder(FormType::class, $defaults);
+    public function createBuilder($defaults = null, $name = 'form', array $options = array()) {
+        return $this->formFactory->createNamedBuilder($name, FormType::class, $defaults, $options);
     }
 
     public function getFactory() {

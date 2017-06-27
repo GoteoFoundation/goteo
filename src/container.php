@@ -159,7 +159,7 @@ $sc->register('app', 'Goteo\Application\App')
 ;
 
 // Formbuilder
-$sc->register('app.forms', 'Goteo\Util\Forms\FormBuilder')
+$sc->register('app.forms', 'Goteo\Util\Form\FormBuilder')
 ;
 
 // CONSOLE LISTENERS

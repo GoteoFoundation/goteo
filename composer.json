@@ -62,7 +62,8 @@
         "omnipay/omnipay": "^2.3",
         "omnipay/paypal": "dev-master",
         "symfony/templating": "2.8",
-        "symfony/framework-bundle": "2.8"
+        "symfony/framework-bundle": "2.8",
+        "league/html-to-markdown": "^4.4"
 
     },
 

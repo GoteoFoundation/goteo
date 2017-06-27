@@ -188,17 +188,25 @@ class ProjectDashboardController extends \Goteo\Core\Controller {
         $post = BlogPost::get($uid);
         if(!$post) throw new ModelNotFoundException();
 
+        $defaults = $request->request->has('form') ? $request->request->all() : (array)$post;
+        $defaults['date'] = new \Datetime($defaults['date']);
+        $defaults['allow'] = (bool) $defaults['allow'];
+        $defaults['publish'] = (bool) $defaults['publish'];
 
         // Create our first form!
-        $form = $this->createFormBuilder()
-            ->add('firstName', 'text', array(
+        $form = $this->createFormBuilder($defaults)
+            ->add('title', 'text', array(
             ))
-            ->add('lastName', 'text', array(
+            ->add('date', 'datepicker', array(
+                // 'widget' => 'single_text'
             ))
-            ->add('gender', 'choice', array(
-                'choices' => array('m' => 'Male', 'f' => 'Female'),
+            ->add('text', 'markdown', array(
             ))
-            ->add('newsletter', 'checkbox', array(
+            ->add('video', 'text', array(
+            ))
+            ->add('allow', 'checkbox', array(
+            ))
+            ->add('publish', 'checkbox', array(
                 'required' => false,
             ))
             ->getForm();
