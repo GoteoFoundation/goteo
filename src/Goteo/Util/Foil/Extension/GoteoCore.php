@@ -177,8 +177,8 @@ class GoteoCore implements ExtensionInterface
     }
 
     //Currency
-    public function get_currency() {
-        return Currency::current('html');
+    public function get_currency($method = 'html') {
+        return Currency::current($method);
     }
 
     // Checks user role

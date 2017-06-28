@@ -26,6 +26,9 @@ use Goteo\Console\UsersSend;
 use Goteo\Application\Exception\ModelNotFoundException;
 use Goteo\Application\Exception\ControllerAccessDeniedException;
 
+use Symfony\Component\Validator\Constraints\Length;
+use Symfony\Component\Validator\Constraints\NotBlank;
+
 class ProjectDashboardController extends \Goteo\Core\Controller {
     protected $user;
 
@@ -188,7 +191,10 @@ class ProjectDashboardController extends \Goteo\Core\Controller {
         $post = BlogPost::get($uid);
         if(!$post) throw new ModelNotFoundException();
 
-        $defaults = $request->request->has('form') ? $request->request->all() : (array)$post;
+        $defaults = (array)$post;
+        // print_r($request->request->all());die;
+        // $defaults = $request->request->has('form') ? $request->request->all() : (array)$post;
+        // die($defaults['date']);
         $defaults['date'] = new \Datetime($defaults['date']);
         $defaults['allow'] = (bool) $defaults['allow'];
         $defaults['publish'] = (bool) $defaults['publish'];
@@ -196,31 +202,47 @@ class ProjectDashboardController extends \Goteo\Core\Controller {
         // Create our first form!
         $form = $this->createFormBuilder($defaults)
             ->add('title', 'text', array(
+                'required' => false,
+                'constraints' => array(
+                        new NotBlank(),
+                        // new Length(array('min' => 4)),
+                    ),
             ))
             ->add('date', 'datepicker', array(
+                'required' => false,
             ))
             ->add('image', 'dropfiles', array(
+                'required' => false
             ))
             ->add('text', 'markdown', array(
+                'required' => false,
             ))
             ->add('video', 'text', array(
+                'required' => false
             ))
             ->add('allow', 'boolean', array(
+                'required' => false,
                 'label' => 'blog-allow-comments' // Form has integrated translations
             ))
             ->add('publish', 'boolean', array(
+                'required' => false,
                 'label' => 'blog-publish', // Form has integrated translations
                 'color' => 'success', // bootstrap label-* (default, success, ...)
-                'required' => false,
+            ))
+            ->add('submit', 'submit', array(
             ))
             ->getForm();
+            // <button type="submit" class="btn btn-green"><?= $this->text('regular-submit') </button>
 
         $form->handleRequest($request);
-        if ($form->isSubmitted() && $form->isValid()) {
-            $data = $form->getData();
-            print_r($data);die;
+        if ($form->isSubmitted()) {
+            if($form->isValid()) {
+                $data = $form->getData();
+                print_r($data);die;
+            } else {
+                print_r($form->getErrors()->__toString());
+            }
         }
-
         return $this->viewResponse('dashboard/project/updates_edit', [
             'post' => $post,
             'form' => $form->createView()

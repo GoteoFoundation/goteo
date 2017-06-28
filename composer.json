@@ -63,7 +63,9 @@
         "omnipay/paypal": "dev-master",
         "symfony/templating": "2.8",
         "symfony/framework-bundle": "2.8",
-        "league/html-to-markdown": "^4.4"
+        "league/html-to-markdown": "^4.4",
+        "symfony/security-csrf": "2.8",
+        "symfony/validator": "2.8"
 
     },
 

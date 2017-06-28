@@ -107,7 +107,7 @@ class Lang {
         if(isset($all[$id])) {
             return str_replace(array_keys($parameters), array_values($parameters), $all[$id]);
         }
-        // Yaml files (message $domain)
+        // Yaml files (messages $domain)
         return static::$translator->trans($id, $parameters, null, $locale);
     }
 

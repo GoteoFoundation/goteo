@@ -33,6 +33,9 @@ $this->section('content');
     <script type="text/javascript" src="<?= SRC_URL ?>/assets/js/dashboard/ajax-utils.js"></script>
     <script type="text/javascript" src="<?= SRC_URL ?>/assets/vendor/simplemde/dist/simplemde.min.js"></script>
     <script type="text/javascript">
+        // Disable dropzone auto discover
+        Dropzone.autoDiscover = false;
+
         // Some used vars
         goteo.texts = goteo.texts || [];
         goteo.texts['dashboard-project-dnd-image'] = '<i style="font-size:2em" class="fa fa-plus"></i><br><br><?= $this->ee($this->text('dashboard-project-dnd-image'), 'js') ?>';

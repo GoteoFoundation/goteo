@@ -10,10 +10,12 @@
 
 namespace Goteo\Library;
 
+
 /*
 * Clase para gestionar las divisas
 */
 
+use Goteo\Application\Session;
 use Goteo\Library\Converter;
 
 class Currency {
@@ -61,7 +63,7 @@ class Currency {
 
     // Return current session currency
     static public function current($method = 'id') {
-        return self::get($_SESSION['currency'], $method);
+        return self::get(Session::get('currency'), $method);
     }
 
     // Return a currency from the array of currencies

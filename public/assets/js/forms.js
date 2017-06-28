@@ -24,12 +24,18 @@ for the JavaScript code in this page.
 */
 
 $(function(){
-    Dropzone.autoDiscover = false;
-
+    //material switch checkbox
+    $('.autoform .material-switch').on('click', function(e){
+        e.preventDefault();
+        var $checkbox = $(this).find('input[type="checkbox"]');
+        console.log('before',$checkbox[0].checked, $checkbox.attr('id'));
+        $checkbox.prop('checked', !$checkbox.prop('checked'));
+        console.log('after',$checkbox[0].checked);
+    });
 
     // Create datepickers on date input types
     $('.autoform .datepicker, .autoform .datepicker > input').datetimepicker({
-            format: 'MM/DD/YYYY',
+            format: 'DD/MM/YYYY',
             extraFormats: ['YYYY-MM-DD'],
             locale: goteo.locale,
         });

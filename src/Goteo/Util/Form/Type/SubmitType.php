@@ -11,7 +11,9 @@
 
 namespace Goteo\Util\Form\Type;
 
-use Symfony\Component\Form\Extension\Core\Type\DateType as SymfonyDateType;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType as SymfonySubmitType;
+use Symfony\Component\Form\FormView;
+use Symfony\Component\Form\FormInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
@@ -19,20 +21,17 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
  * This class creates overides Date to show always as the single_text option is activated
  *
  */
-class DatepickerType extends SymfonyDateType
+class SubmitType extends SymfonySubmitType
 {
+
     /**
      * {@inheritdoc}
      */
     public function configureOptions(OptionsResolver $resolver)
     {
         parent::configureOptions($resolver);
-        $resolver->setDefault('widget', 'single_text');
-        $resolver->setDefault('format', 'dd/MM/yyyy');
+        $resolver->setDefault('label',  'regular-submit');
+        $resolver->setDefault('attr',  ['class' => 'btn btn-green']);
     }
 
-    public function getName()
-    {
-        return 'datepicker';
-    }
 }

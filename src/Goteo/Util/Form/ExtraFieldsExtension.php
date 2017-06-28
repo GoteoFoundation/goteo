@@ -28,6 +28,7 @@ class ExtraFieldsExtension extends AbstractExtension
             new Type\DatepickerType(),
             new Type\DropfilesType(),
             new Type\BooleanType(),
+            new Type\SubmitType(),
         );
     }
 }
