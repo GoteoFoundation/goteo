@@ -4,6 +4,7 @@ form-add-button: Add
 form-ajax-info: 'This form is saved automatically while you fill it out'
 form-apply-button: Apply
 form-edit-button: Edit
+form-has-errors: 'The form contains errors, please check it and try again!'
 form-errors-info: 'Total: %s | At this step: %s'
 form-errors-total: 'There''s %s errors in total'
 form-footer-errors_title: Errors

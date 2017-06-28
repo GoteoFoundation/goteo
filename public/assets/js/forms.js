@@ -46,9 +46,10 @@ $(function(){
 
     $('.autoform .markdown > textarea').each(function() {
         var simplemde = new SimpleMDE({
-            element: $(this)[0],
+            element: this,
             spellChecker: false,
-            promptURLs: true
+            promptURLs: true,
+            forceSync: true
          });
     });
 

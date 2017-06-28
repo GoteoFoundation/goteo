@@ -15,6 +15,7 @@ use Goteo\Application\Session;
 use Goteo\Util\Form\SimpleTemplateNameParser;
 
 use Symfony\Component\Validator\Validation;
+use Symfony\Component\Validator\ValidatorBuilder;
 use Symfony\Component\Translation\Loader\XliffFileLoader;
 use Symfony\Component\Templating\PhpEngine;
 use Symfony\Component\Templating\Loader\FilesystemLoader;
@@ -47,18 +48,20 @@ class FormBuilder {
             $file1 = GOTEO_PATH . "vendor/symfony/form/Resources/translations/validators.$lang.xlf";
             $file2 = GOTEO_PATH . "vendor/symfony/validator/Resources/translations/validators.$lang.xlf";
             if(file_exists($file1)) {
-                $translator->addResource('xlf', $file1, $lang);
+                $translator->addResource('xlf', $file1, $lang, 'validators');
             }
             if(file_exists($file2)) {
-                $translator->addResource('xlf', $file2, $lang);
+                $translator->addResource('xlf', $file2, $lang, 'validators');
             }
         });
 
         $this->viewEngine = new PhpEngine(new SimpleTemplateNameParser(GOTEO_PATH . 'Resources/templates/forms'), new FilesystemLoader(array()));
         $this->viewEngine->addHelpers(array(new TranslatorHelper($translator)));
 
-        // Set up the Validator component
-        $validator = Validation::createValidator();
+        $builder = new ValidatorBuilder();
+        $builder->setTranslator($translator);
+        $builder->setTranslationDomain('validators');
+        $validator = $builder->getValidator();
 
         // We don't use this cause we need to put ExtraFieldsExtension BEFORE CoreExtension
         // so classes can be overwritten

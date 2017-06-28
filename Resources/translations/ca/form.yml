@@ -4,6 +4,7 @@ form-add-button: Afegir
 form-ajax-info: 'El formulari es va desant segons passis per cada camp'
 form-apply-button: Aplicar
 form-edit-button: Editar
+form-has-errors: 'El formulari conté errors, revisa''ls i torna-ho a provar!'
 form-errors-info: 'Total: %s | En aquesta passa: %s'
 form-errors-total: 'Hi ha %s errors en total'
 form-footer-errors_title: Errors

@@ -205,17 +205,23 @@ class ProjectDashboardController extends \Goteo\Core\Controller {
                 'required' => false,
                 'constraints' => array(
                         new NotBlank(),
-                        // new Length(array('min' => 4)),
+                        new Length(array('min' => 4)),
                     ),
             ))
             ->add('date', 'datepicker', array(
-                'required' => false,
+                'constraints' => array(
+                        new NotBlank(),
+                        // new Length(array('min' => 4)),
+                    ),
             ))
             ->add('image', 'dropfiles', array(
                 'required' => false
             ))
             ->add('text', 'markdown', array(
-                'required' => false,
+                'constraints' => array(
+                        new NotBlank(),
+                        // new Length(array('min' => 4)),
+                    ),
             ))
             ->add('video', 'text', array(
                 'required' => false
@@ -238,9 +244,9 @@ class ProjectDashboardController extends \Goteo\Core\Controller {
         if ($form->isSubmitted()) {
             if($form->isValid()) {
                 $data = $form->getData();
-                print_r($data);die;
+                print_r(nl2br($data['text']));
             } else {
-                print_r($form->getErrors()->__toString());
+                Message::error(Text::get('form-has-errors'));
             }
         }
         return $this->viewResponse('dashboard/project/updates_edit', [

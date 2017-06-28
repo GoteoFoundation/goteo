@@ -4,6 +4,7 @@ form-add-button: Añadir
 form-ajax-info: 'El formulario se va grabando segun pases por cada campo'
 form-apply-button: Aplicar
 form-edit-button: Editar
+form-has-errors: 'El formulario contiene errores, revísalos antes de continuar!'
 form-errors-info: 'Total: %s | En este paso: %s'
 form-errors-total: 'Hay %s errores en total'
 form-footer-errors_title: Errores
