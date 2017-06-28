@@ -77,7 +77,7 @@ class FormBuilder {
                  GOTEO_PATH . 'vendor/symfony/framework-bundle/Resources/views/Form',
                  GOTEO_PATH . 'Resources/templates/forms/bootstrap',
             )))
-            // ->addExtension(new CsrfExtension($csrfManager))
+            ->addExtension(new CsrfExtension($csrfManager))
         ;
     }
 
