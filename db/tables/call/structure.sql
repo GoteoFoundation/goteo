@@ -122,3 +122,6 @@ UPDATE `call` SET success_projects = null WHERE success_projects = 0;
 
 -- Los textos pueden ser muy largos...
 ALTER TABLE `call` CHANGE `description` `description` LONGTEXT NULL;
+
+-- Fee to apply in the financial report to the drop
+ALTER TABLE `call` ADD `fee_projects_drop` INT(2) NOT NULL DEFAULT 4 COMMENT 'Fee to apply in the financial report to the drop';

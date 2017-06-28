@@ -19,5 +19,9 @@ ALTER TABLE `project_account` ADD `fee` INT(1) NOT NULL DEFAULT 8 COMMENT 'porce
 ALTER TABLE `project_account` CHANGE `fee` `fee` INT( 1 ) NOT NULL DEFAULT '4' COMMENT 'porcentaje de comisión goteo';
 
 
+-- (Value Added Tax) to apply in the financial report
+ALTER TABLE `project_account` ADD `vat` INT(2) NOT NULL DEFAULT 21 COMMENT '(Value Added Tax) to apply in the financial report';
+
+
 -- constrains
 ALTER TABLE `project_account` ADD FOREIGN KEY (`project`) REFERENCES `project`(`id`) ON UPDATE CASCADE ON DELETE CASCADE;
