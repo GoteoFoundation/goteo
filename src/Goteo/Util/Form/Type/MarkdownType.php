@@ -32,7 +32,7 @@ class MarkdownType extends AbstractType
         $view->vars['pattern'] = null;
 
         // TODO: check backward compatibility of this
-        if(stripos($view->vars['value'], '<br') !== false) {
+        if(preg_match('/<br|<p|<a/i', $view->vars['value']) !== false) {
             $converter = new HtmlConverter();
             $view->vars['value'] = $converter->convert($view->vars['value']);
         }

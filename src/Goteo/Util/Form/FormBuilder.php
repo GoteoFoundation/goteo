@@ -14,7 +14,6 @@ use Goteo\Application\Lang;
 use Goteo\Application\Session;
 use Goteo\Util\Form\SimpleTemplateNameParser;
 
-use Symfony\Component\Validator\Validation;
 use Symfony\Component\Validator\ValidatorBuilder;
 use Symfony\Component\Translation\Loader\XliffFileLoader;
 use Symfony\Component\Templating\PhpEngine;

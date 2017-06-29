@@ -15,6 +15,7 @@ use Goteo\Library\FileHandler\File;
 use Intervention\Image\ImageManagerStatic as ImageManager;
 use Goteo\Library\Cacher;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
+use Symfony\Component\HttpFoundation\File\File as SymfonyFile;
 use Goteo\Application\Config;
 
 
@@ -153,24 +154,6 @@ class Image extends \Goteo\Core\Model {
 	}
 
 	/**
-	* Returns a secure name to store in file system, if the generated filename exists returns a non-existing one
-	* @param $name original name to be changed-sanitized
-	* @param $dir if specified, generated name will be changed if exists in that dir
-    * Esto ya lo hace la clase File con get_save_name
-    */
-    /*
-	public static function check_filename($name='',$dir=null){
-		$name = preg_replace("/[^a-z0-9_~\.-]+/","-",strtolower(self::idealiza($name, true)));
-		if(is_dir($dir)) {
-			while ( file_exists ( "$dir/$name" )) {
-				$name = preg_replace ( "/^(.+?)(_?)(\d*)(\.[^.]+)?$/e", "'\$1_'.(\$3+1).'\$4'", $name );
-			}
-		}
-		return $name;
-	}
-	*/
-
-	/**
 	 * (non-PHPdoc)
 	 * @see Goteo\Core.Model::validate()
 	 */
@@ -270,6 +253,10 @@ class Image extends \Goteo\Core\Model {
         $image->hash = md5($id);
 
         return $image;
+    }
+
+    public function getName() {
+        return $image->name;
     }
 
     /**
@@ -534,6 +521,16 @@ class Image extends \Goteo\Core\Model {
             //
             return false;
         }
+    }
+
+
+    /**
+     * Converts this instance to a
+     * Symfony\Component\HttpFoundation\File
+     * @return [type] [description]
+     */
+    public function toSymfonyFile() {
+        return new SymfonyFile($this->name, false);
     }
 
     /**

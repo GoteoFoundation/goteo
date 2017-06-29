@@ -107,7 +107,13 @@ abstract class Controller {
      * TODO: Do this initialization in the Service Container
      * @return Symfony\Component\Form\FormFactory
      */
-    public function createFormBuilder($defaults = null, $name = 'form', array $options = array('attr' => ['class' => 'autoform'])) {
+    public function createFormBuilder($defaults = null, $name = 'form', array $options = []) {
+        if(empty($options)) {
+            $options = [
+                'action' => App::getRequest()->getRequestUri(),
+                'attr' => ['class' => 'autoform']
+            ];
+        }
         return App::getService('app.forms')->createBuilder($defaults, $name, $options);
     }
 }

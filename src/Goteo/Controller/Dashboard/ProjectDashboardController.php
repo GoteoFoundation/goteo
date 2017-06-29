@@ -195,10 +195,10 @@ class ProjectDashboardController extends \Goteo\Core\Controller {
         // print_r($request->request->all());die;
         // $defaults = $request->request->has('form') ? $request->request->all() : (array)$post;
         // die($defaults['date']);
-        $defaults['date'] = new \Datetime($defaults['date']);
+        $defaults['date'] = new \Datetime($defaults['date']); // TODO: into the transformer datepickertype
         $defaults['allow'] = (bool) $defaults['allow'];
         $defaults['publish'] = (bool) $defaults['publish'];
-
+        // print_r($defaults);die;
         // Create our first form!
         $form = $this->createFormBuilder($defaults)
             ->add('title', 'text', array(
@@ -215,6 +215,9 @@ class ProjectDashboardController extends \Goteo\Core\Controller {
                     ),
             ))
             ->add('image', 'dropfiles', array(
+                'required' => false
+            ))
+            ->add('gallery', 'dropfiles', array(
                 'required' => false
             ))
             ->add('text', 'markdown', array(

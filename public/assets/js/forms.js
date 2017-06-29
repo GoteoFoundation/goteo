@@ -44,6 +44,7 @@ $(function(){
         //         $('#publishing-date').val(e.date.format('YYYY/MM/DD'));
         // });
 
+    // MarkdownType initialization
     $('.autoform .markdown > textarea').each(function() {
         var simplemde = new SimpleMDE({
             element: this,
@@ -53,17 +54,32 @@ $(function(){
          });
     });
 
+    var dropzones = [];
+    // Dropfiles initialization
     $('.autoform .dropfiles').each(function() {
         var element = $(this).find('.dragndrop>div').get(0);
-        var dropzone = new Dropzone(element, {
-            url:'/api/projects/updates',
-            uploadMultiple: true,
-            createImageThumbnails: true,
-            maxFiles:10,
-            autoProcessQueue: true,
-            dictDefaultMessage: goteo.texts['dashboard-project-dnd-image']
-        });
+        dropzones.push(
+            new Dropzone(element, {
+                url: $(this).data('url') ? $(this).data('url') : null,
+                uploadMultiple: !!$(this).data('multiple'),
+                createImageThumbnails: true,
+                parallelUploads: 100,
+                maxFiles: $(this).data('limit'),
+                autoProcessQueue: !!$(this).data('auto-process'),
+                dictDefaultMessage: $(this).data('text-upload')
+            })
+        );
 
     });
 
+    $('.autoform').on('submit', function(e){
+        e.preventDefault();
+        e.stopPropagation();
+        console.log('submit',dropzones);
+        // TODO: decide if to detect autoProcessedQueues and not send it
+        if(dropzones.length) {
+            // Process the first (will submit everything)
+            dropzones[0].processQueue();
+        }
+    });
 });
