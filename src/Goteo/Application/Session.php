@@ -178,7 +178,8 @@ class Session {
         // Compatibilize with legacy sessions
         // TODO: to be removed once legacy migration is completed
         $_SESSION[$key] = $value;
-        return self::getSession()->set($key, $value);
+        self::getSession()->set($key, $value);
+        return self::getSession()->has($key);
     }
 
     /**
