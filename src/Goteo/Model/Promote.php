@@ -66,7 +66,7 @@ namespace Goteo\Model {
             if(empty($lang)) $lang = Lang::current();
             $promos = array();
 
-            $sqlFilter = ($activeonly) ? " AND promote.active = 1" : '';
+            $sqlFilter = ($activeonly) ? " AND promote.active = 1 AND project.status=3" : '';
 
             if(self::default_lang($lang)=='es') {
                 $different_select=" IFNULL(promote_lang.title, promote.title) as title,
