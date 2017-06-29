@@ -88,7 +88,7 @@ class MilestonesSubController extends AbstractSubController {
 
     public function editAction($id) {
 
-        $milestone = Model\Milestone::get($id);
+        $milestone = Model\Milestone::get($id, Config::get('lang'));
 
         if ($milestone && $this->isPost()) {
 
