@@ -247,7 +247,7 @@ class ProjectDashboardController extends \Goteo\Core\Controller {
         if ($form->isSubmitted()) {
             if($form->isValid()) {
                 $data = $form->getData();
-                print_r(nl2br($data['text']));
+                var_dump($data);;die;
             } else {
                 Message::error(Text::get('form-has-errors'));
             }

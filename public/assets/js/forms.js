@@ -57,29 +57,44 @@ $(function(){
     var dropzones = [];
     // Dropfiles initialization
     $('.autoform .dropfiles').each(function() {
-        var element = $(this).find('.dragndrop>div').get(0);
+        var $dz = $(this);
+        var element = $dz.find('.dragndrop>div').get(0);
+        var $form = $dz.closest('form');
         dropzones.push(
             new Dropzone(element, {
-                url: $(this).data('url') ? $(this).data('url') : null,
-                uploadMultiple: !!$(this).data('multiple'),
+                url: $dz.data('url') ? $dz.data('url') : null,
+                uploadMultiple: !!$dz.data('multiple'),
                 createImageThumbnails: true,
                 parallelUploads: 100,
-                maxFiles: $(this).data('limit'),
-                autoProcessQueue: !!$(this).data('auto-process'),
-                dictDefaultMessage: $(this).data('text-upload')
+                maxFiles: $dz.data('limit'),
+                autoProcessQueue: !!$dz.data('auto-process'),
+                dictDefaultMessage: $dz.data('text-upload')
+            })
+            .on('addedfile', function(file) {
+                // Input node with selected files. It will be removed from document shortly in order to
+                // give user ability to choose another set of files.
+                var inputFile = this.hiddenFileInput;
+                // Append it to form after stack become empty, because if you append it earlier
+                // it will be removed from its parent node by Dropzone.js.
+                setTimeout(function(){
+                    // Set some unique name in order to submit data.
+                    inputFile.name = $dz.data('name');
+                    $form[0].appendChild(inputFile);
+                }, 0);
             })
         );
 
     });
 
-    $('.autoform').on('submit', function(e){
-        e.preventDefault();
-        e.stopPropagation();
-        console.log('submit',dropzones);
-        // TODO: decide if to detect autoProcessedQueues and not send it
-        if(dropzones.length) {
-            // Process the first (will submit everything)
-            dropzones[0].processQueue();
-        }
-    });
+    // $('.autoform').on('submit', function(e){
+    //     e.preventDefault();
+    //     e.stopPropagation();
+
+    //     console.log('submit');
+    //     if(dropzones.length) {
+    //         console.log('submit process');
+    //         // Process the first (will submit everything)
+    //         dropzones[0].processQueue();
+    //     }
+    // });
 });
