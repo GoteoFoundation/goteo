@@ -538,33 +538,39 @@ namespace Goteo\Model\Blog {
                 $this->dbInsertUpdate($fields);
 
                 // Luego la imagen
-                if (!empty($this->id) && is_array($this->image) && !empty($this->image['name'])) {
-                    $image = new Image($this->image);
+                if ($this->id) {
 
-                    if ($image->addToModelGallery('post', $this->id)) {
+                    // Will be an Upload if it's not Image
+                    if($this->image && !$this->image instanceOf Image) {
+                        $image = new Image($this->image);
+
+                        if ($image->addToModelGallery('post', $this->id) &&
+                            // Pre-calculated field
+                            $image->setModelImage('post', $this->id)) {
+                        }
+                        else {
+                            throw new \PDOException(Text::get('image-upload-fail'));
+                        }
                         $this->gallery[] = $image;
-                        // Pre-calculated field
-                        $this->gallery[0]->setModelImage('post', $this->id);
+                        $this->image = $image;
                     }
-                    else {
-                        Message::error(Text::get('image-upload-fail') . implode(', ', $errors));
+
+                    // y los tags, si hay
+                    if (is_array($this->tags)) {
+                        static::query('DELETE FROM post_tag WHERE post= ?', $this->id);
+                        foreach ($this->tags as $tag) {
+                            $new = new Post\Tag(
+                                    array(
+                                        'post' => $this->id,
+                                        'tag' => $tag
+                                    )
+                                );
+                            $new->assign($errors);
+                            unset($new);
+                        }
                     }
                 }
 
-                // y los tags, si hay
-                if (!empty($this->id) && is_array($this->tags)) {
-                    static::query('DELETE FROM post_tag WHERE post= ?', $this->id);
-                    foreach ($this->tags as $tag) {
-                        $new = new Post\Tag(
-                                array(
-                                    'post' => $this->id,
-                                    'tag' => $tag
-                                )
-                            );
-                        $new->assign($errors);
-                        unset($new);
-                    }
-                }
 
                 // actualizar campo calculado
                 if ( $this->publish == 1 && $this->owner_type == 'project' ) {
@@ -573,7 +579,7 @@ namespace Goteo\Model\Blog {
 
                 return true;
             } catch(\PDOException $e) {
-                $errors[] = "HA FALLADO!!! " . $e->getMessage();
+                $errors[] = $e->getMessage();
                 return false;
             }
         }

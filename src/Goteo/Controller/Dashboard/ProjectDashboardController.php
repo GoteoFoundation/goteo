@@ -217,9 +217,9 @@ class ProjectDashboardController extends \Goteo\Core\Controller {
             ->add('image', 'dropfiles', array(
                 'required' => false
             ))
-            ->add('gallery', 'dropfiles', array(
-                'required' => false
-            ))
+            // ->add('gallery', 'dropfiles', array(
+            //     'required' => false
+            // ))
             ->add('text', 'markdown', array(
                 'constraints' => array(
                         new NotBlank(),
@@ -241,13 +241,21 @@ class ProjectDashboardController extends \Goteo\Core\Controller {
             ->add('submit', 'submit', array(
             ))
             ->getForm();
-            // <button type="submit" class="btn btn-green"><?= $this->text('regular-submit') </button>
 
         $form->handleRequest($request);
         if ($form->isSubmitted()) {
             if($form->isValid()) {
                 $data = $form->getData();
-                var_dump($data);;die;
+                // var_dump($data);;die;
+                $post->rebuildData($data);
+                if($post->save($errors)) {
+                    // print_r($post);die;
+                    Message::info(Text::get('form-sent-success'));
+                    return $this->redirect();
+                } else {
+                    Message::error(Text::get('form-sent-error', implode(', ',$errors)));
+                }
+
             } else {
                 Message::error(Text::get('form-has-errors'));
             }

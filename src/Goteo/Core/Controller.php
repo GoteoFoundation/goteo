@@ -59,7 +59,10 @@ abstract class Controller {
     /**
      * Handy method to return a redirect response
      */
-    public function redirect($path, $status = 302) {
+    public function redirect($path = null, $status = 302) {
+        if($path === null) {
+            $path = App::getRequest()->getRequestUri();
+        }
         return new RedirectResponse($path, $status);
     }
 

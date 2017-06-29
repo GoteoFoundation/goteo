@@ -19,7 +19,7 @@ abstract class Model {
 
 	//Override in the model the table if different from the class name
 	protected $Table = null;
-	static $db = null;
+	static protected $db = null;
 
 	/**
 	 * Constructor.
@@ -45,8 +45,8 @@ abstract class Model {
 	}
 
 	public function rebuildData(Array $data) {
-		foreach ($data as $k => $v) {
-			$this->$k = $v;
+		foreach (\get_public_class_vars(get_called_class()) as $k => $v) {
+			if(array_key_exists($k, $data)) $this->$k = $data[$k];
 		}
 	}
 
