@@ -26,10 +26,10 @@ namespace Goteo\Model {
         /*
          *  Devuelve datos de un icono
          */
-        public static function get ($id) {
+        public static function get ($id, $lang = null) {
 
                 //Obtenemos el idioma de soporte
-                $lang=self::default_lang_by_id($id, 'icon_lang', Lang::current());
+                $lang=self::default_lang_by_id($id, 'icon_lang', $lang);
 
                 $query = static::query("
                     SELECT

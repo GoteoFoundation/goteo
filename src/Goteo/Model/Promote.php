@@ -31,10 +31,13 @@ namespace Goteo\Model {
         /*
          *  Devuelve datos de un destacado
          */
-        public static function get ($id) {
+        public static function get ($id, $lang = null) {
 
+                if(!$lang) {
+                    $lang = Lang::current();
+                }
                 //Obtenemos el idioma de soporte
-                $lang=self::default_lang_by_id($id, 'promote_lang', Lang::current());
+                $lang=self::default_lang_by_id($id, 'promote_lang', $lang);
 
                 $query = static::query("
                     SELECT

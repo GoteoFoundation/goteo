@@ -28,10 +28,10 @@ class SocialCommitment extends \Goteo\Core\Model {
      * @param   int    $id         social commitment id.
      * @return  Social commitment object
      */
-    static public function get($id) {
+    static public function get($id, $lang = null) {
 
         //Obtenemos el idioma de soporte
-        $lang=self::default_lang_by_id($id, "social_commitment_lang", Lang::current());
+        $lang=self::default_lang_by_id($id, "social_commitment_lang", $lang);
 
         $sql="SELECT
                     social_commitment.id,
