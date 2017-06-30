@@ -29,7 +29,6 @@ class Page extends Model{
         $type;
 
     static public function get ($id, $lang = null) {
-        if(empty($lang)) $lang = Lang::current();
 
         //Obtenemos el idioma de soporte
         $lang = self::default_lang_by_id($id, 'page_lang', $lang);

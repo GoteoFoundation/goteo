@@ -169,7 +169,7 @@ class OpenTagsSubController extends AbstractSubController {
 
             case 'edit':
 
-                $open_tag = Model\OpenTag::get($id);
+                $open_tag = Model\OpenTag::get($id, Config::get('lang'));
                     // elementos disponibles
                     $items = Model\Post::getAutocomplete();
 

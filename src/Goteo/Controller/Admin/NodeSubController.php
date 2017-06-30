@@ -12,8 +12,8 @@ namespace Goteo\Controller\Admin;
 
 use Symfony\Component\HttpFoundation\Request;
 use Goteo\Application\Config;
-use Goteo\Application\Message,
-    Goteo\Model;
+use Goteo\Application\Message;
+use Goteo\Model;
 
 class NodeSubController extends AbstractSubController {
 
@@ -41,7 +41,7 @@ class NodeSubController extends AbstractSubController {
     public function __construct($node, Model\User $user, Request $request) {
         parent::__construct($node, $user, $request);
         //Common data
-        $this->full_node = Model\Node::get($this->node);
+        $this->full_node = Model\Node::get($this->node, Config::get('lang'));
         $this->contextVars([
             'node' => $this->full_node,
             'translator' => $this->isTranslator(),

@@ -12,11 +12,11 @@
  */
 namespace Goteo\Controller\Admin;
 
-use Goteo\Library\Text,
-    Goteo\Application\Message,
-	Goteo\Application\Config,
-	Goteo\Library\Feed,
-    Goteo\Model;
+use Goteo\Library\Text;
+use Goteo\Application\Message;
+use Goteo\Application\Config;
+use Goteo\Library\Feed;
+use Goteo\Model;
 
 class TagsSubController extends AbstractSubController {
 
@@ -131,7 +131,7 @@ class TagsSubController extends AbstractSubController {
                         Message::error(implode('<br />', $errors));
                     }
                 } else {
-                    $item = $model::get($id);
+                    $item = $model::get($id, Config::get('lang'));
                 }
 
                 return array(

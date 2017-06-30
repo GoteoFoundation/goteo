@@ -30,9 +30,9 @@ class Milestone extends \Goteo\Core\Model {
     /*
      *  Get milestone
      */
-    public static function get ($id) {
+    public static function get ($id, $lang = null) {
 
-            $lang=self::default_lang_by_id($id, "milestone_lang", Lang::current());
+            $lang=self::default_lang_by_id($id, "milestone_lang", $lang);
 
             $query = static::query("
                 SELECT

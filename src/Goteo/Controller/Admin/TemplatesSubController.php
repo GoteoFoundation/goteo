@@ -13,9 +13,9 @@
 namespace Goteo\Controller\Admin;
 
 use Goteo\Application\Message;
-use Goteo\Application\Config,
-	Goteo\Library\Feed,
-    Goteo\Model\Template;
+use Goteo\Application\Config;
+use Goteo\Library\Feed;
+use Goteo\Model\Template;
 
 class TemplatesSubController extends AbstractSubController {
 
@@ -48,7 +48,7 @@ class TemplatesSubController extends AbstractSubController {
 
     public function editAction($id = null, $subaction = null, $filters=array()) {
         // si estamos editando una plantilla
-        $template = Template::get($id);
+        $template = Template::get($id, Config::get('lang'));
 
         // si llega post, vamos a guardar los cambios
         if ($this->isPost()) {

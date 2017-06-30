@@ -183,7 +183,7 @@ class CommonsSubController extends AbstractSubController {
                         $reward->project = $id;
                         $reward->bonus = 1;
                     } else {
-                        $reward = Model\Project\Reward::get($this->getGet('reward_id'));
+                        $reward = Model\Project\Reward::get($this->getGet('reward_id'), Config::get('lang'));
                     }
 
                     $stypes = Model\Project\Reward::icons('social');
@@ -234,7 +234,7 @@ class CommonsSubController extends AbstractSubController {
                     // eliminar retorno
                     if ($this->hasGet('reward_id')) {
                         $errors = array();
-                        $reward = Model\Project\Reward::get($this->getGet('reward_id'));
+                        $reward = Model\Project\Reward::get($this->getGet('reward_id'), Config::get('lang'));
 
                         if(!$reward->remove($errors)) {
                             Message::error(implode('<br />', $errors));
