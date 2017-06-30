@@ -250,10 +250,11 @@ class ProjectDashboardController extends \Goteo\Core\Controller {
         $form->handleRequest($request);
         if ($form->isSubmitted()) {
             if($form->isValid()) {
+                // var_dump($request->request->all());
                 $data = $form->getData();
                 $post->rebuildData($data);
+                // var_dump($data);die;
                 if($post->save($errors)) {
-                    // var_dump($post->text);die;
                     // print_r($post);die;
                     Message::info(Text::get('form-sent-success'));
                     // return $this->redirect();

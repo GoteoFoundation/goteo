@@ -46,7 +46,10 @@ abstract class Model {
 
 	public function rebuildData(Array $data) {
 		foreach (\get_public_class_vars(get_called_class()) as $k => $v) {
-			if(array_key_exists($k, $data)) $this->$k = $data[$k];
+			if(array_key_exists($k, $data)) {
+                print_r("\n<br>$k: " . $data[$k]);
+                $this->$k = $data[$k];
+            }
 		}
 	}
 

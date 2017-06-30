@@ -28,9 +28,7 @@ $(function(){
     $('.autoform .material-switch').on('click', function(e){
         e.preventDefault();
         var $checkbox = $(this).find('input[type="checkbox"]');
-        console.log('before',$checkbox[0].checked, $checkbox.attr('id'));
         $checkbox.prop('checked', !$checkbox.prop('checked'));
-        console.log('after',$checkbox[0].checked);
     });
 
     // Create datepickers on date input types

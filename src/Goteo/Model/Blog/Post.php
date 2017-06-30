@@ -34,11 +34,12 @@ class Post extends \Goteo\Core\Model {
         $media,
         $legend,
         $date,
-        $publish,
         $home,
         $footer,
         $author,
         $owner,
+        $allow = false,
+        $publish = false,
         $tags = array(),
         $gallery = array(), // array de instancias image de post_image
         $num_comments = 0,
