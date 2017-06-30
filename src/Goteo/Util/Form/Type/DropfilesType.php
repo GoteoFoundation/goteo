@@ -66,7 +66,7 @@ class DropfilesType extends FileType
                         // var_dump($image);
                         foreach($image as $i => $img) {
                             if(!$img instanceOf Image) {
-                                $image[$i] = new Image($img);
+                                $image[$i] = Image::get($img);
                             }
                         }
                     } elseif($image instanceOf File) {

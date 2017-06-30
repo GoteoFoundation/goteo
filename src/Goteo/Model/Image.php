@@ -17,6 +17,7 @@ use Goteo\Library\Cacher;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\File\File as SymfonyFile;
 use Goteo\Application\Config;
+use Goteo\Application\Exception\ModelException;
 
 
 class Image extends \Goteo\Core\Model {
@@ -110,18 +111,6 @@ class Image extends \Goteo\Core\Model {
             $this->original_name = $this->name;
             //nombre seguro
             $this->name = $this->fp->get_save_name($this->name);
-
-            if(!empty($this->name)) {
-                $data[':name'] = $this->name;
-            }
-
-            if(!empty($this->type)) {
-                $data[':type'] = $this->type;
-            }
-
-            if(!empty($this->size)) {
-                $data[':size'] = $this->size;
-            }
 
             try {
 
@@ -459,6 +448,7 @@ class Image extends \Goteo\Core\Model {
         }
         return null;
     }
+
     /**
      * Add current image to a Model gallery
      * @param string $model_table The Model table (post, glossary, project, etc)
@@ -472,7 +462,7 @@ class Image extends \Goteo\Core\Model {
         if($this->tmp && $this->name) $ok = $this->save();
         if($ok) {
             try {
-                self::query("INSERT INTO {$model_table}_image ({$model_table}, image) VALUES (:id, :image)", array(':id' => $model_id, ':image' => $this->id));
+                self::query("INSERT INTO `{$model_table}_image` (`{$model_table}`, image) VALUES (:id, :image)", array(':id' => $model_id, ':image' => $this->id));
             } catch(\PDOException $e) {
                 //
                 return false;
@@ -480,6 +470,42 @@ class Image extends \Goteo\Core\Model {
 
         }
         return $ok;
+    }
+
+    /**
+     * Removes the current gallery and puts the new one
+     * @param string $model_table The Model table (post, glossary, project, etc)
+     * @param string/integer $model_id    the ID of the Model
+     */
+    public static function replaceGallery($model_table, $model_id, array $gallery) {
+        if (!is_string($model_table) || !in_array($model_table, self::$types)) {
+            return false;
+        }
+        try {
+            $values = array(':id' => $model_id);
+            $ids = [];
+            $inserts = [];
+            foreach($gallery as $i => $img) {
+                $ok = !empty($img->name);
+                if($img->tmp && $img->name) $ok = $img->save($errors);
+                if($ok) {
+                    $values[":name_$i"] = $img->id ? $img->id : $img->name;
+                    $ids[] = ":name_$i";
+                    $inserts[] = "(:id, :name_$i)";
+                } else {
+                    // print_r($img);print_r($errors);die;
+                    throw new ModelException($img->name . ': ' . implode(", ", $errors['image']));
+                }
+            }
+            $sql = "DELETE FROM `{$model_table}_image` WHERE `{$model_table}` = :id AND image NOT IN (" . implode(", ", $ids) . ")";
+            self::query($sql, $values);
+            $sql = "INSERT IGNORE INTO `{$model_table}_image` (`{$model_table}`, image) VALUES " . implode(", ", $inserts);
+            self::query($sql, $values);
+        } catch(\PDOException $e) {
+            throw new ModelException($e->getMessage());
+            // return false;
+        }
+        return true;
     }
 
     /**
@@ -496,7 +522,7 @@ class Image extends \Goteo\Core\Model {
         if($ok) {
             try {
                 $sql = "UPDATE `$model_table` SET image = :image WHERE id = :id";
-                self::query($sql, array(':image'=>$this->id, ':id'=>$model_id));
+                self::query($sql, array(':image'=>$this->id, ':id' => $model_id));
             } catch(\PDOException $e) {
                 //
                 return false;
@@ -516,11 +542,12 @@ class Image extends \Goteo\Core\Model {
         }
         try {
             $sql = "UPDATE `$model_table` SET image = :image WHERE id = :id";
-            self::query($sql, array(':image'=>'', ':id'=>$model_id));
+            self::query($sql, array(':image'=>'', ':id' => $model_id));
         } catch(\PDOException $e) {
             //
             return false;
         }
+        return true;
     }
 
 
