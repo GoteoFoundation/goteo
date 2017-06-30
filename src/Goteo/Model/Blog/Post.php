@@ -541,18 +541,34 @@ namespace Goteo\Model\Blog {
                 if ($this->id) {
 
                     // Will be an Upload if it's not Image
-                    if($this->image && !$this->image instanceOf Image) {
-                        $image = new Image($this->image);
+                    if($this->image) {
+                        $replace = is_array($this->image);
+                        if($replace) {
+                            var_dump($this->image);die('IMPLEMENT!');
+                            if(!Image::resetGallery($this->image)) {
+                                throw new \PDOException(Text::get('image-upload-fail'));
+                            }
+                        } else {
+                            // Old behaviour, add the image to the gallery if
+                            // needed (it's an upload)
+                            if(!$img instanceOf Image) {
+                                $img = new Image($img);
+                            }
+                            if (!$img->addToModelGallery('post', $this->id)) {
+                                throw new \PDOException(Text::get('image-upload-fail'));
+                            }
+                        }
 
-                        if ($image->addToModelGallery('post', $this->id) &&
-                            // Pre-calculated field
-                            $image->setModelImage('post', $this->id)) {
+                        if($replace) {
+                            $this->gallery[] = $images;
+                            $this->image = $images ? $images[0] : null;
+                        } else {
+                            $this->gallery[] = $img;
+                            $this->image = $img;
                         }
-                        else {
-                            throw new \PDOException(Text::get('image-upload-fail'));
-                        }
-                        $this->gallery[] = $image;
-                        $this->image = $image;
+                        // Rebuild default image
+                        if($this->image) $this->image->setModelImage('post', $this->id);
+                        else             Image::deleteModelImage('post', $this->id);
                     }
 
                     // y los tags, si hay

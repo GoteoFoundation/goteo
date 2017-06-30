@@ -214,8 +214,12 @@ class ProjectDashboardController extends \Goteo\Core\Controller {
                         // new Length(array('min' => 4)),
                     ),
             ))
+            // saving images will add that images to the gallery
+            // let's show the gallery in the field with nice options
+            // for removing and reorder it
             ->add('image', 'dropfiles', array(
-                'required' => false
+                'required' => false,
+                'data' => $defaults['gallery']
             ))
             // ->add('gallery', 'dropfiles', array(
             //     'required' => false
@@ -242,16 +246,17 @@ class ProjectDashboardController extends \Goteo\Core\Controller {
             ))
             ->getForm();
 
+
         $form->handleRequest($request);
         if ($form->isSubmitted()) {
             if($form->isValid()) {
                 $data = $form->getData();
-                // var_dump($data);;die;
+                // var_dump($data);die;
                 $post->rebuildData($data);
                 if($post->save($errors)) {
                     // print_r($post);die;
                     Message::info(Text::get('form-sent-success'));
-                    return $this->redirect();
+                    // return $this->redirect();
                 } else {
                     Message::error(Text::get('form-sent-error', implode(', ',$errors)));
                 }

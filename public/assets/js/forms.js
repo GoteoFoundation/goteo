@@ -58,31 +58,71 @@ $(function(){
     // Dropfiles initialization
     $('.autoform .dropfiles').each(function() {
         var $dz = $(this);
-        var element = $dz.find('.dragndrop>div').get(0);
+        var $error = $dz.next();
+        var $list = $(this).find('.image-list-sortable');
+        var $dnd = $(this).find('.dragndrop');
         var $form = $dz.closest('form');
-        dropzones.push(
-            new Dropzone(element, {
-                url: $dz.data('url') ? $dz.data('url') : null,
-                uploadMultiple: !!$dz.data('multiple'),
-                createImageThumbnails: true,
-                parallelUploads: 100,
-                maxFiles: $dz.data('limit'),
-                autoProcessQueue: !!$dz.data('auto-process'),
-                dictDefaultMessage: $dz.data('text-upload')
-            })
-            .on('addedfile', function(file) {
-                // Input node with selected files. It will be removed from document shortly in order to
-                // give user ability to choose another set of files.
-                var inputFile = this.hiddenFileInput;
-                // Append it to form after stack become empty, because if you append it earlier
-                // it will be removed from its parent node by Dropzone.js.
-                setTimeout(function(){
-                    // Set some unique name in order to submit data.
-                    inputFile.name = $dz.data('name');
-                    $form[0].appendChild(inputFile);
-                }, 0);
-            })
-        );
+        var multiple = !!$dz.data('multiple');
+        var $template = $form.find('script.dropfile_item_template');
+        // ALlow drag&drop reorder of existing files
+        if(multiple) {
+           Sortable.create($list[0], {
+                // group: '',
+                // , forceFallback: true
+                // Reorder actions
+                onChoose: function(evt) {
+                    $dnd.hide();
+                },
+                onEnd: function (evt) {
+                    $dnd.show();
+                    $list.removeClass('over');
+                },
+                onMove: function (evt) {
+                    $list.removeClass('over');
+                    $(evt.to).addClass('over');
+                }
+            });
+        }
+        // Create the FILE upload
+
+        var drop = new Dropzone($dnd.contents('div')[0], {
+            url: $dz.data('url') ? $dz.data('url') : null,
+            uploadMultiple: multiple,
+            createImageThumbnails: true,
+            maxFiles: $dz.data('limit'),
+            autoProcessQueue: !!$dz.data('auto-process'), // no ajax post
+            dictDefaultMessage: $dz.data('text-upload')
+        })
+        .on('error', function(file, error) {
+            $error.html(error.error);
+            $error.removeClass('hidden');
+            // console.log('error', error);
+        })
+        .on('thumbnail', function(file, dataURL) {
+            // Add to list
+            file.$liElement.html( file.$liElement.html().replace('{URL}', dataURL));
+            console.log('thumbnail', file.$liElement);
+        })
+        .on('addedfile', function(file) {
+            console.log('added');
+            file.$liElement = $($template.html().replace('{NAME}', file.name));
+            // TODO put filetypes as default in URL
+            $list.append(file.$liElement);
+            $error.addClass('hidden');
+
+            // Input node with selected files. It will be removed from document shortly in order to
+            // give user ability to choose another set of files.
+            var inputFile = this.hiddenFileInput;
+            // Append it to form after stack become empty, because if you append it earlier
+            // it will be removed from its parent node by Dropzone.js.
+            setTimeout(function(){
+                // Set some unique name in order to submit data.
+                inputFile.name = $dz.data('name');
+                $form[0].appendChild(inputFile);
+                drop.removeFile(file);
+            }, 0);
+        });
+        dropzones.push(drop);
 
     });
 

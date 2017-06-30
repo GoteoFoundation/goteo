@@ -17,6 +17,8 @@ use Goteo\Library\Text;
 use Symfony\Component\Form\FormView;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
+use Symfony\Component\Form\Extension\Core\Type\CollectionType;
+use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\CallbackTransformer;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -35,21 +37,83 @@ class DropfilesType extends FileType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $builder->addViewTransformer(new CallbackTransformer(
-                function ($image) {
-                    // TODO: for any type of file
-                    if(is_array($image)) return $image;
+        // Current files
+        $builder->add('current', FileType::class, [
+            'multiple' => true,
+            'data' => $options['data'],
+            'data_class' => null
+        ]);
+        // New added files
+        $builder->add('uploads', FileType::class, ['multiple' => true]);
 
-                    if($image instanceOf File) return new Image($image);
-                    if($image instanceOf Image) return $image;
+        $builder->get('current')
+            ->addModelTransformer(new CallbackTransformer(
+                function ($image) {
+                    return $image;
+                    // print_r($image);die;
+                    // TODO: for any type of file
+                    // if(is_array($image)) {
+                    //     return $image;
+                    // }
+
+                    // if($image instanceOf File) return new Image($image);
+                    // if($image instanceOf Image) return $image;
 
                     return null;
                 },
-                function ($file) {
-                    return $file;
+                function ($image) {
+                    if(is_array($image)) {
+                        // var_dump($image);
+                        foreach($image as $i => $img) {
+                            if(!$img instanceOf Image) {
+                                $image[$i] = new Image($img);
+                            }
+                        }
+                    } elseif($image instanceOf File) {
+                        $image = new Image($image);
+                    }
+
+                    return $image;
                 }
-            ))
-        ;
+            ));
+        $builder->get('uploads')
+            ->addModelTransformer(new CallbackTransformer(
+                function($image) {
+                    return null;
+                    // return $image;
+                },
+                function($image) {
+                    if(is_array($image)) {
+                        foreach($image as $i => $img) {
+                            // Convert File to Image
+                            if(!$img instanceOf Image) {
+                                $image[$i] = new Image($img);
+                            }
+                        }
+                    }
+                    return $image;
+                }
+            ));
+
+        // General processing
+        $builder->addViewTransformer(new CallbackTransformer(
+            function($image) {
+                // var_dump($image);die;
+                return $image;
+            },
+            function($image) {
+                // Sum current + uploads
+                $img = $image['current'];
+                if($image['uploads']) {
+                    if(is_array($image['uploads'])) {
+                        $img = array_merge($img, $image['uploads']);
+                    }
+                }
+                // var_dump($img);
+                return $img;
+                // return null;
+            }
+        ));
     }
 
     /**
@@ -58,9 +122,10 @@ class DropfilesType extends FileType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults(array(
-            'compound' => false,
+            // 'compound' => false,
             'data_class' => null,
             'empty_data' => null,
+            'gallery' => [],
             'multiple' => false,
             'auto_process' => false, // auto process the sending of files
             'url' => null, // url parameter for dropzone (null implies default action)
@@ -68,7 +133,7 @@ class DropfilesType extends FileType
             'sortable' => true, // Allow dragndrop sort of multiple files
             'text_upload' => '<i style="font-size:2em" class="fa fa-plus"></i><br><br>' . Text::get('dashboard-project-dnd-image')
         ));
-
+        $resolver->setAllowedTypes('gallery', 'array');
     }
 
     /**
@@ -79,26 +144,37 @@ class DropfilesType extends FileType
      */
     public function buildView(FormView $view, FormInterface $form, array $options)
     {
+        // var_dump($view->vars);die;
         if(is_array($view->vars['value'])) {
             $options['multiple'] = true;
+            $view->vars['attr']['multiple'] = 'multiple';
         } else {
             $options['multiple'] = false;
             $options['limit'] = 1;
+        }
 
-            $view->vars = array_replace($view->vars, array(
-                'value' => [$view->vars['value']],
-            ));
-        }
-        if ($options['multiple']) {
-            $view->vars['full_name'] .= '[]';
-            $view->vars['attr']['multiple'] = 'multiple';
-        }
         $view->vars['text_upload'] = $options['text_upload'];
         $view->vars['limit'] = $options['limit'];
         $view->vars['multiple'] = $options['multiple'];
         $view->vars['auto_process'] = $options['auto_process'];
         $view->vars['url'] = $options['url'] ? $options['url'] : $view->parent->vars['action'];
-
+        // Rebuild the values from options
+        // $values = [];
+        // $original = is_array($options['data']) ? $options['data'] : [$options['data']];
+        // // print_r(count($options['value']));print_r(count($view->vars['value']));die;
+        // foreach($view->vars['value'] as $img) {
+        //     if(is_string($img)) {
+        //         foreach($original as $oim) {
+        //             if($oim->getName() === $img) {
+        //                 $values[] = $oim;
+        //             }
+        //         }
+        //     } else {
+        //         $values[] = $img;
+        //     }
+        // }
+        // $view->vars['value'] = $values;
+        // print_r($options['data']);print_r($view->vars['value']);die;
 
     }
 

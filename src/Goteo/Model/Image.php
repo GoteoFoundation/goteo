@@ -256,7 +256,7 @@ class Image extends \Goteo\Core\Model {
     }
 
     public function getName() {
-        return $image->name;
+        return $this->name;
     }
 
     /**
