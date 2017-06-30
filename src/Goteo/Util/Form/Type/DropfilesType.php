@@ -65,6 +65,7 @@ class DropfilesType extends FileType
                     if(is_array($image)) {
                         // var_dump($image);
                         foreach($image as $i => $img) {
+                            if(!$img) continue;
                             if(!$img instanceOf Image) {
                                 $image[$i] = Image::get($img);
                             }
@@ -85,6 +86,7 @@ class DropfilesType extends FileType
                 function($image) {
                     if(is_array($image)) {
                         foreach($image as $i => $img) {
+                            if(!$img) continue;
                             // Convert File to Image
                             if(!$img instanceOf Image) {
                                 $image[$i] = new Image($img);
@@ -139,9 +141,6 @@ class DropfilesType extends FileType
     /**
      * {@inheritdoc}
      */
-    /**
-     * {@inheritdoc}
-     */
     public function buildView(FormView $view, FormInterface $form, array $options)
     {
         // var_dump($view->vars);die;
@@ -158,41 +157,7 @@ class DropfilesType extends FileType
         $view->vars['multiple'] = $options['multiple'];
         $view->vars['auto_process'] = $options['auto_process'];
         $view->vars['url'] = $options['url'] ? $options['url'] : $view->parent->vars['action'];
-        // Rebuild the values from options
-        // $values = [];
-        // $original = is_array($options['data']) ? $options['data'] : [$options['data']];
-        // // print_r(count($options['value']));print_r(count($view->vars['value']));die;
-        // foreach($view->vars['value'] as $img) {
-        //     if(is_string($img)) {
-        //         foreach($original as $oim) {
-        //             if($oim->getName() === $img) {
-        //                 $values[] = $oim;
-        //             }
-        //         }
-        //     } else {
-        //         $values[] = $img;
-        //     }
-        // }
-        // $view->vars['value'] = $values;
-        // print_r($options['data']);print_r($view->vars['value']);die;
-
     }
-
-    // /**
-    //  * {@inheritdoc}
-    //  */
-    // public function getParent()
-    // {
-    //     return FileType::class;
-    // }
-
-    /**
-     * {@inheritdoc}
-     */
-    // public function getName()
-    // {
-    //     return $this->getBlockPrefix();
-    // }
 
     /**
      * {@inheritdoc}

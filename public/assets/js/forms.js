@@ -45,13 +45,24 @@ $(function(){
         // });
 
     // MarkdownType initialization
+    var markdowns = [];
     $('.autoform .markdown > textarea').each(function() {
+        var el = this;
+        console.log('found textarea', el);
         var simplemde = new SimpleMDE({
-            element: this,
-            spellChecker: false,
+            element: el,
+            forceSync: true,
+            autosave: false,
             promptURLs: true,
-            forceSync: true
-         });
+            spellChecker: false
+        });
+        // simplemde.codemirror.on('change', function() {
+        //     console.log(simplemde.value());
+        //     $(el).html(simplemde.value());
+        //     console.log(document.getElementById('autoform_text').innerHTML);
+        // });
+
+        markdowns.push(simplemde);
     });
 
     var dropzones = [];
@@ -144,6 +155,12 @@ $(function(){
     });
 
     // $('.autoform').on('submit', function(e){
+    //     markdowns.forEach(function(md) {
+    //         console.log(md.value(), md.element.innerHTML);
+    //         md.element.innerHTML = md.value();
+    //         console.log('after',md.element.innerHTML);
+    //     });
+    // });
     //     e.preventDefault();
     //     e.stopPropagation();
 

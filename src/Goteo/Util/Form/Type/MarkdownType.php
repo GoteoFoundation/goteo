@@ -22,17 +22,15 @@ use League\HTMLToMarkdown\HtmlConverter;
  * This class creates a Symfony Form Type for Markdown editing (needs assets/js/forms.js)
  *
  */
-class MarkdownType extends AbstractType
+class MarkdownType extends TextareaType
 {
     /**
      * {@inheritdoc}
      */
     public function buildView(FormView $view, FormInterface $form, array $options)
     {
-        $view->vars['pattern'] = null;
-
         // TODO: check backward compatibility of this
-        if(preg_match('/<br|<p|<a/i', $view->vars['value']) !== false) {
+        if(preg_match('/<br|<p|<a/i', $view->vars['value'])) {
             $converter = new HtmlConverter();
             $view->vars['value'] = $converter->convert($view->vars['value']);
         }
@@ -43,15 +41,7 @@ class MarkdownType extends AbstractType
      */
     public function getParent()
     {
-        return TextareaType::class;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getName()
-    {
-        return $this->getBlockPrefix();
+        return 'textarea';
     }
 
     /**
