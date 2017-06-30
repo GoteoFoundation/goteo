@@ -99,11 +99,13 @@
   .image-list-sortable {
     min-height: 170px;
     display: block;
-    padding: 10px 160px 5px 10px;
+    padding: 5px 155px 0 5px;
+    border: 5px solid #f0f0f0;
     margin: 0;
     min-width: 150px;
     &.over {
-      background-color: $background-pink;
+      // background-color: $background-pink;
+      border-color:$background-pink;
     }
     > li {
       position: relative;

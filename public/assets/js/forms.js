@@ -71,13 +71,16 @@ $(function(){
                 // , forceFallback: true
                 // Reorder actions
                 onChoose: function(evt) {
+                    console.log('choose');
                     $dnd.hide();
                 },
                 onEnd: function (evt) {
+                    console.log('end');
                     $dnd.show();
                     $list.removeClass('over');
                 },
                 onMove: function (evt) {
+                    console.log('move');
                     $list.removeClass('over');
                     $(evt.to).addClass('over');
                 }
@@ -100,14 +103,14 @@ $(function(){
         })
         .on('thumbnail', function(file, dataURL) {
             // Add to list
-            file.$liElement.html( file.$liElement.html().replace('{URL}', dataURL));
-            console.log('thumbnail', file.$liElement);
+            file.$li.html( file.$li.html().replace('{URL}', dataURL));
+            console.log('thumbnail', file.$li);
         })
         .on('addedfile', function(file) {
             console.log('added');
-            file.$liElement = $($template.html().replace('{NAME}', file.name));
+            file.$li = $($template.html().replace('{NAME}', file.name));
             // TODO put filetypes as default in URL
-            $list.append(file.$liElement);
+            $list.append(file.$li);
             $error.addClass('hidden');
 
             // Input node with selected files. It will be removed from document shortly in order to
@@ -118,12 +121,26 @@ $(function(){
             setTimeout(function(){
                 // Set some unique name in order to submit data.
                 inputFile.name = $dz.data('name');
-                $form[0].appendChild(inputFile);
+                file.$li.append(inputFile);
                 drop.removeFile(file);
             }, 0);
         });
         dropzones.push(drop);
 
+    });
+
+    // Delete actions
+    $('.autoform').on( 'click', '.image-list-sortable .delete-image', function(e) {
+        e.preventDefault();
+        e.stopPropagation();
+        console.log('remove');
+        var $li = $(this).closest('li');
+        var $zone = $(this).closest('.image-zone');
+        var $form = $(this).closest('form');
+        var $error = $zone.next();
+        $li.remove();
+        $error.addClass('hidden');
+        $form.find('.dragndrop').show();
     });
 
     // $('.autoform').on('submit', function(e){
