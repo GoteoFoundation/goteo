@@ -155,7 +155,7 @@ class ProjectDashboardController extends \Goteo\Core\Controller {
         $posts = [];
         $total = 0;
         $msg = '';
-        $limit = 4;
+        $limit = 10;
         $offset = $limit * (int)$request->query->get('pag');
         if ($project->status < 3) {
             $msg = Text::get('dashboard-project-blog-wrongstatus');
@@ -192,9 +192,6 @@ class ProjectDashboardController extends \Goteo\Core\Controller {
         if(!$post) throw new ModelNotFoundException();
 
         $defaults = (array)$post;
-        // print_r($request->request->all());die;
-        // $defaults = $request->request->has('form') ? $request->request->all() : (array)$post;
-        // die($defaults['date']);
         $defaults['date'] = new \Datetime($defaults['date']); // TODO: into the transformer datepickertype
         $defaults['allow'] = (bool) $defaults['allow'];
         $defaults['publish'] = (bool) $defaults['publish'];
@@ -257,7 +254,7 @@ class ProjectDashboardController extends \Goteo\Core\Controller {
                 if($post->save($errors)) {
                     // print_r($post);die;
                     Message::info(Text::get('form-sent-success'));
-                    // return $this->redirect();
+                    return $this->redirect('/dashboard/project/' . $this->project->id .'/updates');
                 } else {
                     Message::error(Text::get('form-sent-error', implode(', ',$errors)));
                 }
