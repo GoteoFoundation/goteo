@@ -150,7 +150,7 @@ static protected $label = 'criteria-lb';
                 );
                 break;
             case 'edit':
-                $criteria = Model\Criteria::get($id);
+                $criteria = Model\Criteria::get($id, Config::get('lang'));
 
                 $cuantos = Model\Criteria::next($criteria->section);
                 $criteria->cuantos = ($cuantos -1);

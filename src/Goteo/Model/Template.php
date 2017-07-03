@@ -108,10 +108,6 @@ class Template extends \Goteo\Core\Model {
 
     static public function get ($id, &$lang = null) {
 
-        // por si llega idioma vacio
-        if (empty($lang))
-            $lang = Lang::current();
-
         //Obtenemos el idioma de soporte
         $lang=static::default_lang_by_id($id, 'template_lang', $lang);
 

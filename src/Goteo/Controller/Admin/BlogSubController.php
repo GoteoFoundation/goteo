@@ -10,12 +10,12 @@
 
 namespace Goteo\Controller\Admin;
 
-use Goteo\Library\Text,
-	Goteo\Library\Feed,
-    Goteo\Application\Message,
-    Goteo\Application\Config,
-    Goteo\Application\Session,
-    Goteo\Model;
+use Goteo\Library\Text;
+use Goteo\Library\Feed;
+use Goteo\Application\Message;
+use Goteo\Application\Config;
+use Goteo\Application\Session;
+use Goteo\Model;
 
 class BlogSubController extends AbstractSubController {
 
@@ -164,7 +164,7 @@ class BlogSubController extends AbstractSubController {
                 $editing = false;
 
                 if (!empty($this->getPost('id'))) {
-                    $post = Model\Blog\Post::get($this->getPost('id'));
+                    $post = Model\Blog\Post::get($this->getPost('id'), Config::get('lang'));
                 } else {
                     $post = new Model\Blog\Post();
                 }
@@ -357,7 +357,7 @@ class BlogSubController extends AbstractSubController {
                     return $this->redirect('/admin/blog');
                     break;
                 } else {
-                    $post = Model\Blog\Post::get($id);
+                    $post = Model\Blog\Post::get($id, Config::get('lang'));
 
                     if (!$post instanceof Model\Blog\Post) {
                         Message::error('La entrada esta corrupta, contacte con nosotros.');

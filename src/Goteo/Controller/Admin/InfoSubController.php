@@ -85,7 +85,7 @@ class InfoSubController extends AbstractSubController {
                 $editing = false;
 
                 if ($this->getPost('id')) {
-                    $post = Model\Info::get($this->getPost('id'));
+                    $post = Model\Info::get($this->getPost('id'), Config::get('lang'));
                 } else {
                     $post = new Model\Info();
                 }
@@ -177,7 +177,7 @@ class InfoSubController extends AbstractSubController {
                 Model\Info::down($id);
                 break;
             case 'remove':
-                $tempData = Model\Info::get($id);
+                $tempData = Model\Info::get($id, Config::get('lang'));
                 // eliminar un término
                 if (Model\Info::delete($id)) {
                     Message::info('Entrada eliminada');
@@ -219,7 +219,7 @@ class InfoSubController extends AbstractSubController {
                     return $this->redirect('/admin/info');
                     break;
                 } else {
-                    $post = Model\Info::get($id);
+                    $post = Model\Info::get($id, Config::get('lang'));
 
                     if (!$post instanceof Model\Info) {
                         Message::error('La entrada esta corrupta, contacte con nosotros.');

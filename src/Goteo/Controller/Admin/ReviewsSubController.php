@@ -97,7 +97,7 @@ class ReviewsSubController extends AbstractSubController {
             case 'edit':
 
                 // el get se hace con el id del proyecto
-                $review = Model\Review::get($id);
+                $review = Model\Review::get($id, Config::get('lang'));
 
                 $project = Model\Project::getMini($review->project);
 
@@ -270,7 +270,7 @@ class ReviewsSubController extends AbstractSubController {
             case 'report':
                 // mostramos los detalles de revision
                 // ojo que este id es la id del proyecto, no de la revision
-                $review = Model\Review::get($id);
+                $review = Model\Review::get($id, Config::get('lang'));
                 $review = Model\Review::getData($review->id);
 
                 $evaluation = array();

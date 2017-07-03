@@ -377,6 +377,7 @@ namespace Goteo\Model\Call {
                     call.maxdrop as maxdrop,
                     call.maxproj as maxproj,
                     call.modemaxp as modemaxp,
+                    call.fee_projects_drop as fee_projects_drop,
                     call.used as used,
                     call.rest as rest,
                     call.applied as applied,
