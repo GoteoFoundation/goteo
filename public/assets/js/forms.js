@@ -46,7 +46,7 @@ $(function(){
     var markdowns = [];
     $('.autoform .markdown > textarea').each(function() {
         var el = this;
-        console.log('found textarea', el);
+        // console.log('found textarea', el);
         var simplemde = new SimpleMDE({
             element: el,
             forceSync: true,
@@ -80,16 +80,16 @@ $(function(){
                 // , forceFallback: true
                 // Reorder actions
                 onChoose: function(evt) {
-                    console.log('choose');
+                    // console.log('choose');
                     $dnd.hide();
                 },
                 onEnd: function (evt) {
-                    console.log('end');
+                    // console.log('end');
                     $dnd.show();
                     $list.removeClass('over');
                 },
                 onMove: function (evt) {
-                    console.log('move');
+                    // console.log('move');
                     $list.removeClass('over');
                     $(evt.to).addClass('over');
                 }
@@ -112,14 +112,19 @@ $(function(){
         })
         .on('thumbnail', function(file, dataURL) {
             // Add to list
-            file.$li.html( file.$li.html().replace('{URL}', dataURL));
-            console.log('thumbnail', file.$li);
+            var $img = $form.find('li[data-name="' + file.name + '"] .image');
+            $img.css({
+                backgroundImage:  'url(' + dataURL + ')',
+                backgroundSize: 'cover'
+            });
+            // console.log('thumbnail', file);
         })
         .on('addedfile', function(file) {
-            console.log('added');
-            file.$li = $($template.html().replace('{NAME}', file.name));
+            // console.log('added', file);
+            var $li = $($template.html().replace('{NAME}', file.name));
+            $li.find('.image').css({backgroundSize: '25%'});
+            $list.append($li);
             // TODO put filetypes as default in URL
-            $list.append(file.$li);
             $error.addClass('hidden');
 
             // Input node with selected files. It will be removed from document shortly in order to
@@ -130,9 +135,9 @@ $(function(){
             setTimeout(function(){
                 // Set some unique name in order to submit data.
                 inputFile.name = $dz.data('name');
-                console.log('adding file', $dz.data('name'), inputFile);
-                // file.$li.append(inputFile);
-                $list.find('li:last').append(inputFile);
+                // console.log('adding file', $dz.data('name'), inputFile);
+
+                $li.append(inputFile);
                 drop.removeFile(file);
             }, 0);
         });
@@ -144,7 +149,7 @@ $(function(){
     $('.autoform').on( 'click', '.image-list-sortable .delete-image', function(e) {
         e.preventDefault();
         e.stopPropagation();
-        console.log('remove');
+        // console.log('remove');
         var $li = $(this).closest('li');
         var $zone = $(this).closest('.image-zone');
         var $form = $(this).closest('form');
