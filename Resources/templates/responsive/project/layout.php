@@ -32,6 +32,12 @@ if (count($langs) > 1) {
 }
 $this->replace();
 
+$this->section('analytics-project');
+
+echo $this->insert('project/partials/google_analytics.php', ['project' => $project]);
+
+$this->replace();
+
 $this->section('content');
 
 ?>
@@ -326,7 +332,6 @@ $this->section('content');
 
 // @license-end
 </script>
-<?= $this->insert('project/partials/google_analytics.php', ['project' => $project]) ?>
 <?= $this->insert('project/partials/facebook_pixel.php', ['project' => $project]) ?>
 
 <?php $this->append() ?>
