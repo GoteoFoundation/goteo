@@ -13,10 +13,10 @@
 namespace Goteo\Controller\Admin;
 
 use Goteo\Application\Message;
-use Goteo\Application\Config,
-	Goteo\Application\Session,
-	Goteo\Library\Feed,
-    Goteo\Model;
+use Goteo\Application\Config;
+use Goteo\Application\Session;
+use Goteo\Library\Feed;
+use Goteo\Model;
 
 class BannersSubController extends AbstractSubController {
 
@@ -100,7 +100,7 @@ class BannersSubController extends AbstractSubController {
         if ($this->isPost()) {
 
             // objeto
-            $banner = $id ? Model\Banner::get($id) : new Model\Banner;
+            $banner = $id ? Model\Banner::get($id, Config::get('lang')) : new Model\Banner;
             $banner->node = $node;
             $banner->project = $this->getPost('item');
             $banner->title = $this->getPost('title');
@@ -210,7 +210,7 @@ class BannersSubController extends AbstractSubController {
                 );
                 break;
             case 'edit':
-                $banner = Model\Banner::get($id);
+                $banner = Model\Banner::get($id, Config::get('lang'));
 
                 return array(
                         'template' => 'admin/banners/edit',

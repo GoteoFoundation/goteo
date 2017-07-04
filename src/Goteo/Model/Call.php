@@ -22,6 +22,7 @@ namespace Goteo\Model {
         $maxdrop, // Limite al capital riego que puede provocar cada aporte
         $maxproj, // Limite al capital riego que puede conseguir un proyecto
         $modemaxp, // Modalidad del máximo por proyecto (importe o porcentaje sobre mínimo)
+        $fee_projects_drop, // Comisión a proyectos en la parte de riego
         $resources, // Recursos de capital riego
         $days, // Numero de dias para aplicación de proyectos
         $until = array('day' => '', 'month' => '', 'year' => ''), // para visualizar fecha limite en estado aplicación
@@ -594,6 +595,7 @@ namespace Goteo\Model {
                     'maxdrop',
                     'maxproj',
                     'modemaxp',
+                    'fee_projects_drop',
                     'days'
                 );
 
@@ -1874,7 +1876,7 @@ namespace Goteo\Model {
 
             $query = static::query("
                 SELECT
-                  amount, maxdrop, maxproj, modemaxp
+                  amount, maxdrop, maxproj, modemaxp, fee_projects_drop
                 FROM `call`
                 WHERE id = :id
                 ", array(':id' => $this->id));
@@ -1895,6 +1897,7 @@ namespace Goteo\Model {
             $dropconf['amount'] =  is_numeric($dropconf['amount']) ? $dropconf['amount'] : null ;  // presupuesto de la convocatoria
             $dropconf['maxdrop'] = is_numeric($dropconf['maxdrop']) ? $dropconf['maxdrop'] : null ; // riego máximo por aporte
             $dropconf['maxproj'] = is_numeric($dropconf['maxproj']) ? $dropconf['maxproj'] : null ; // riego máximo por proyecto
+            $dropconf['fee_projects_drop'] = is_numeric($dropconf['fee_projects_drop']) ? $dropconf['fee_projects_drop'] : null ; // comisión a aplicar en riego a proyectos
             $dropconf['modemaxp'] = !empty($dropconf['modemaxp']) ? $dropconf['modemaxp'] : 'imp' ; // modalidad de maximo por proyecto: importe (imp) o porcentaje (per)
 
 
@@ -1903,6 +1906,7 @@ namespace Goteo\Model {
                   'maxdrop', // riego máximo por aporte
                   'maxproj', // riego máximo por proyecto
                   'modemaxp', // modalidad de máximo por proyecto
+                  'fee_projects_drop'
             );
 
             $values = array();

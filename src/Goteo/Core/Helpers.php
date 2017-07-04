@@ -213,4 +213,12 @@ namespace {
         return str_replace(' ', '', ucwords(str_replace('_', ' ', $str)));
     }
 
+    // Running it simply outside the scope will get the public.
+    function get_public_class_vars($class) {
+        return get_class_vars($class);
+    }
+
+    function get_public_object_vars($object) {
+        return get_object_vars($object);
+    }
 }

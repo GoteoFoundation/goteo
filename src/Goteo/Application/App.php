@@ -41,7 +41,7 @@ class App extends HttpKernel\HttpKernel {
      */
     static public function setRequest(Request $request) {
         self::$_request = $request;
-        Session::factory($request);
+        // Session::factory($request);
     }
 
     /**

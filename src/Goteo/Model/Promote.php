@@ -31,10 +31,13 @@ namespace Goteo\Model {
         /*
          *  Devuelve datos de un destacado
          */
-        public static function get ($id) {
+        public static function get ($id, $lang = null) {
 
+                if(!$lang) {
+                    $lang = Lang::current();
+                }
                 //Obtenemos el idioma de soporte
-                $lang=self::default_lang_by_id($id, 'promote_lang', Lang::current());
+                $lang=self::default_lang_by_id($id, 'promote_lang', $lang);
 
                 $query = static::query("
                     SELECT
@@ -66,7 +69,7 @@ namespace Goteo\Model {
             if(empty($lang)) $lang = Lang::current();
             $promos = array();
 
-            $sqlFilter = ($activeonly) ? " AND promote.active = 1" : '';
+            $sqlFilter = ($activeonly) ? " AND promote.active = 1 AND project.status=3" : '';
 
             if(self::default_lang($lang)=='es') {
                 $different_select=" IFNULL(promote_lang.title, promote.title) as title,

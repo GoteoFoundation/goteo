@@ -4,6 +4,7 @@ form-add-button: Add
 form-ajax-info: 'This form is saved automatically while you fill it out'
 form-apply-button: Apply
 form-edit-button: Edit
+form-has-errors: 'The form contains errors, please check it and try again!'
 form-errors-info: 'Total: %s | At this step: %s'
 form-errors-total: 'There''s %s errors in total'
 form-footer-errors_title: Errors
@@ -34,3 +35,5 @@ project-one-round: 'Single 40-day round'
 project-personal-field-entity_name: 'The party on behalf of which you are acting (if applicable)'
 project-two-rounds: 'Two 40-day rounds'
 tooltip-project-personal-entity_name: 'If you represent an entity, this is the indicated place to let it be known.'
+form-sent-success: 'Data saved successfully!'
+form-sent-error: 'An error has occurred while saving data: [%s]'

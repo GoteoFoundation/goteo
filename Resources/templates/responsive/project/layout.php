@@ -24,17 +24,17 @@ $this->layout('layout', [
 
 
 $this->section('lang-metas');
-$langs = $project->getLangs();
-if (count($langs) > 1) {
-    foreach($langs as $l => $lang) {
-        if($l == $this->lang_current()) continue;
-        echo  "\n\t" . '<link rel="alternate" href="' . $this->lang_url($l) .'" hreflang="' . $l . '" />';
+    $langs = $project->getLangs();
+    if (count($langs) > 1) {
+        foreach($langs as $l => $lang) {
+            if($l == $this->lang_current()) continue;
+            echo  "\n\t" . '<link rel="alternate" href="' . $this->lang_url($l) .'" hreflang="' . $l . '" />';
+        }
     }
-}
 $this->replace();
 
 $this->section('sidebar-header');
-echo $this->insert('project/widgets/mini', ['project' => $project, 'admin' => $project->userCanEdit($this->get_user())]);
+    echo $this->insert('project/widgets/mini', ['project' => $project, 'admin' => $this->admin]);
 $this->replace();
 
 

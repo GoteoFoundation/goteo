@@ -15,9 +15,11 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\ResponseHeaderBag;
 use Symfony\Component\EventDispatcher\Event;
+
 use Goteo\Application\App;
 use Goteo\Application\View;
 use Goteo\Core\Traits\LoggerTrait;
+
 
 abstract class Controller {
     use LoggerTrait;
@@ -57,7 +59,10 @@ abstract class Controller {
     /**
      * Handy method to return a redirect response
      */
-    public function redirect($path, $status = 302) {
+    public function redirect($path = null, $status = 302) {
+        if($path === null) {
+            $path = App::getRequest()->getRequestUri();
+        }
         return new RedirectResponse($path, $status);
     }
 
@@ -99,4 +104,21 @@ abstract class Controller {
     public function dispatch($eventName, Event $event = null) {
         return App::dispatch($eventName, $event);
     }
+
+    /**
+     * Handy method to get a form builder
+     * TODO: Do this initialization in the Service Container
+     * @return Symfony\Component\Form\FormFactory
+     */
+    public function createFormBuilder($defaults = null, $name = 'autoform', array $options = []) {
+        if(empty($options)) {
+            $options = [
+                'action' => App::getRequest()->getRequestUri(),
+                'attr' => ['class' => 'autoform']
+            ];
+        }
+        return App::getService('app.forms')->createBuilder($defaults, $name, $options);
+    }
 }
+
+

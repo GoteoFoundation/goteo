@@ -170,7 +170,7 @@ class LicensesSubController extends AbstractSubController {
                 );
                 break;
             case 'edit':
-                $license = Model\License::get($id);
+                $license = Model\License::get($id, Config::get('lang'));
 
                 return array(
                         'folder' => 'licenses',

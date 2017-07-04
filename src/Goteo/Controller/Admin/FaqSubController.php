@@ -155,7 +155,7 @@ class FaqSubController extends AbstractSubController {
                 );
                 break;
             case 'edit':
-                $faq = Model\Faq::get($id);
+                $faq = Model\Faq::get($id, Config::get('lang'));
 
                 $cuantos = Model\Faq::next($faq->section);
                 $faq->cuantos = ($cuantos -1);

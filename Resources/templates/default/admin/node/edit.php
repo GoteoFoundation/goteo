@@ -4,6 +4,17 @@ use Goteo\Library\NormalForm;
 
 $node = $this->node;
 
+$colors = array(
+    array(
+        'value'     => 'white',
+        'label'     => 'Blanco'
+        ),
+    array(
+        'value'     => 'grey',
+        'label'     => 'Gris'
+        )
+);
+
 ?>
 <?php $this->layout('admin/node/layout') ?>
 
@@ -133,6 +144,20 @@ $node = $this->node;
                 'size'      => 10,
                 'title'     => 'Background color (Hex)',
                 'value'     => $node->owner_background,
+            ),
+
+            'owner_font_color' => array(
+                'type'      => 'TextBox',
+                'size'      => 10,
+                'title'     => 'Color de fuente (Hex)',
+                'value'     => $node->owner_font_color,
+            ),
+            'owner_social_color' => array(
+                'title'     => 'Color iconos sociales',
+                'type'      => 'Slider',
+                'options'   => $colors,
+                'class'     => 'currently cols_' . count($allow),
+                'value'     => $node->owner_social_color
             ),
 
             'twitter' => array(

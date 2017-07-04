@@ -120,7 +120,7 @@ class IconsSubController extends AbstractSubController {
 
         switch ($action) {
             case 'edit':
-                $icon = Model\Icon::get($id);
+                $icon = Model\Icon::get($id, Config::get('lang'));
 
                 return array(
                         'folder' => 'icons',
