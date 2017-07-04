@@ -20,10 +20,9 @@ namespace Goteo\Model {
         /*
          *  Devuelve datos de una agrupacion
          */
-        public static function get ($id) {
-
+        public static function get ($id, $lang = null) {
                 //Obtenemos el idioma de soporte
-                $lang=self::default_lang_by_id($id, 'open_tag_lang', Lang::current());
+                $lang=self::default_lang_by_id($id, 'open_tag_lang', $lang);
 
                 $query = static::query("
                     SELECT

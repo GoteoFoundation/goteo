@@ -184,7 +184,7 @@ class CategoriesSubController extends AbstractSubController {
                         Message::error(implode('<br />', $errors));
                     }
                 } else {
-                    $item = $model::get($id);
+                    $item = $model::get($id, Config::get('lang'));
                 }
 
                 return array(

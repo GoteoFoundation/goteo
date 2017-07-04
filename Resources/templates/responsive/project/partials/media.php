@@ -30,7 +30,7 @@ if ($project->media->url):
 elseif($project->image && $project->image->id):
 ?>
         <div class="project-media" style="position:relative;height:auto;" id="video_holder">
-            <img class="img-responsive" src="<?php echo $project->image->getLink(620, 380); ?>" />
+            <img class="img-responsive" src="<?php echo $project->image->getLink(780, 478); ?>" />
         </div>
 <?php
     // Eliminar de la galeria si ya se ha mostrado
