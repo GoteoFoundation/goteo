@@ -76,6 +76,7 @@ dashboard-my-wallet-pool-info: 'Més informació sobre l''ús del teu moneder'
 dashboard-password-recover-advice: 'Assegura''t de restablir la teva contrasenya'
 dashboard-project-blog-fail: 'Contacta amb nosaltres'
 dashboard-project-blog-inactive: 'Ho sentim, la publicació de novetats en aquest projecte està desactivada'
+dashboard-project-blog-empty: 'No hi ha publicacions encara.'
 dashboard-project-blog-wrongstatus: 'Ho sentim, encara no es poden publicar actualitzacions en aquest projecte'
 dashboard-project-delete: Esborra el projecte
 dashboard-project-delete_alert: 'Segur que desitges eliminar absoluta i definitivament aquest projecte?'

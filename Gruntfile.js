@@ -13,7 +13,7 @@ GOTEO = {
     templates: 'Resources/templates',
     src: 'src',
     dist: 'dist',
-    localURL: '0.0.0.0',
+    localHost: '0.0.0.0',
     localPort:8081,
     livePort:35729,
 
@@ -38,14 +38,27 @@ module.exports = function(grunt) {
     }
 
     var config = grunt.file.readYAML(GOTEO.configFile);
-    var port = parseInt(config.url.main.split(':')[1], 10);
+
+    var localHost = config.url.main;
+    var urlParts = localHost.split(':');
+    var host = urlParts[urlParts.length - 2];
+    if(host) {
+        host = host.substring(host.indexOf('//') + 2);
+
+        GOTEO.localHost = host;
+        grunt.log.warn('Using Host from settings: ' + host);
+    }
+
+    var port = parseInt(urlParts[urlParts.length - 1], 10);
     if(port) {
         GOTEO.localPort = port;
         grunt.log.warn('Using local port from settings: ' + port);
     }
-    var livePort = parseInt(config.liveport, 10);
+
+    var livePort = parseInt(config.livePort, 10);
     if(livePort) {
         GOTEO.livePort = livePort;
+        grunt.log.warn('Using livePort from settings: ' + livePort);
     }
 
     // Project configuration.

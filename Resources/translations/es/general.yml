@@ -67,6 +67,7 @@ regular-admin_board: 'Panel admin'
 regular-allsome: 'todos/algunos de'
 regular-anonymous: Anónimo
 regular-ask: Preguntar
+regular-submit: Enviar
 regular-by: 'Por:'
 regular-calendar: Calendar
 regular-cancel: Cancelar
@@ -83,6 +84,7 @@ regular-delete: Borrar
 regular-description: Descripción
 regular-discover: 'Descubre proyectos'
 regular-download: Descargar
+regular-actions: Acciones
 regular-edit: Editar
 regular-email: Email
 regular-facebook: Facebook

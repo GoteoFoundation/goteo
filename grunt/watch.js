@@ -11,7 +11,7 @@ module.exports = function(grunt) {
             tasks: ['newer:jshint'],
             options: {
                 livereload: {
-                    host: '<%= goteo.localURL %>',
+                    host: '<%= goteo.localHost %>',
                     port: '<%= goteo.livePort %>'
                 }
             }
@@ -20,7 +20,7 @@ module.exports = function(grunt) {
         livereload: {
             options: {
                 livereload: {
-                    host: '<%= goteo.localURL %>',
+                    host: '<%= goteo.localHost %>',
                     port: '<%= goteo.livePort %>'
                 }
             },

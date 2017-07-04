@@ -47,6 +47,9 @@
   }
   &.mini .content {
     height: auto;
+    background: transparent;
+    border: 0;
+    color: $color-grey;
   }
   .title {
     font-size: 18px;

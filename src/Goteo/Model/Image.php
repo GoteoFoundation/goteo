@@ -15,7 +15,9 @@ use Goteo\Library\FileHandler\File;
 use Intervention\Image\ImageManagerStatic as ImageManager;
 use Goteo\Library\Cacher;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
+use Symfony\Component\HttpFoundation\File\File as SymfonyFile;
 use Goteo\Application\Config;
+use Goteo\Application\Exception\ModelException;
 
 
 class Image extends \Goteo\Core\Model {
@@ -110,18 +112,6 @@ class Image extends \Goteo\Core\Model {
             //nombre seguro
             $this->name = $this->fp->get_save_name($this->name);
 
-            if(!empty($this->name)) {
-                $data[':name'] = $this->name;
-            }
-
-            if(!empty($this->type)) {
-                $data[':type'] = $this->type;
-            }
-
-            if(!empty($this->size)) {
-                $data[':size'] = $this->size;
-            }
-
             try {
 
                 if(!empty($this->tmp)) {
@@ -153,24 +143,6 @@ class Image extends \Goteo\Core\Model {
 	}
 
 	/**
-	* Returns a secure name to store in file system, if the generated filename exists returns a non-existing one
-	* @param $name original name to be changed-sanitized
-	* @param $dir if specified, generated name will be changed if exists in that dir
-    * Esto ya lo hace la clase File con get_save_name
-    */
-    /*
-	public static function check_filename($name='',$dir=null){
-		$name = preg_replace("/[^a-z0-9_~\.-]+/","-",strtolower(self::idealiza($name, true)));
-		if(is_dir($dir)) {
-			while ( file_exists ( "$dir/$name" )) {
-				$name = preg_replace ( "/^(.+?)(_?)(\d*)(\.[^.]+)?$/e", "'\$1_'.(\$3+1).'\$4'", $name );
-			}
-		}
-		return $name;
-	}
-	*/
-
-	/**
 	 * (non-PHPdoc)
 	 * @see Goteo\Core.Model::validate()
 	 */
@@ -193,8 +165,7 @@ class Image extends \Goteo\Core\Model {
                     $errors['image'][] = 'The uploaded file was only partially uploaded';
                     break;
                 case UPLOAD_ERR_NO_FILE:
-                    if (isset($_POST['upload']))
-                        $errors['image'][] = 'No file was uploaded';
+                    $errors['image'][] = 'No file was uploaded';
                     break;
                 case UPLOAD_ERR_NO_TMP_DIR:
                     $errors['image'][] = 'Missing a temporary folder';
@@ -270,6 +241,10 @@ class Image extends \Goteo\Core\Model {
         $image->hash = md5($id);
 
         return $image;
+    }
+
+    public function getName() {
+        return $this->name;
     }
 
     /**
@@ -472,6 +447,7 @@ class Image extends \Goteo\Core\Model {
         }
         return null;
     }
+
     /**
      * Add current image to a Model gallery
      * @param string $model_table The Model table (post, glossary, project, etc)
@@ -485,7 +461,7 @@ class Image extends \Goteo\Core\Model {
         if($this->tmp && $this->name) $ok = $this->save();
         if($ok) {
             try {
-                self::query("INSERT INTO {$model_table}_image ({$model_table}, image) VALUES (:id, :image)", array(':id' => $model_id, ':image' => $this->id));
+                self::query("INSERT INTO `{$model_table}_image` (`{$model_table}`, image) VALUES (:id, :image)", array(':id' => $model_id, ':image' => $this->id));
             } catch(\PDOException $e) {
                 //
                 return false;
@@ -493,6 +469,42 @@ class Image extends \Goteo\Core\Model {
 
         }
         return $ok;
+    }
+
+    /**
+     * Removes the current gallery and puts the new one
+     * @param string $model_table The Model table (post, glossary, project, etc)
+     * @param string/integer $model_id    the ID of the Model
+     */
+    public static function replaceGallery($model_table, $model_id, array $gallery) {
+        if (!is_string($model_table) || !in_array($model_table, self::$types)) {
+            return false;
+        }
+        try {
+            $values = array(':id' => $model_id);
+            $ids = [];
+            $inserts = [];
+            foreach($gallery as $i => $img) {
+                $ok = !empty($img->name);
+                if($img->tmp && $img->name) $ok = $img->save($errors);
+                if($ok) {
+                    $values[":name_$i"] = $img->id ? $img->id : $img->name;
+                    $ids[] = ":name_$i";
+                    $inserts[] = "(:id, :name_$i)";
+                } else {
+                    // print_r($img);print_r($errors);die;
+                    throw new ModelException($img->name . ': ' . implode(", ", $errors['image']));
+                }
+            }
+            $sql = "DELETE FROM `{$model_table}_image` WHERE `{$model_table}` = :id AND image NOT IN (" . implode(", ", $ids) . ")";
+            self::query($sql, $values);
+            $sql = "INSERT IGNORE INTO `{$model_table}_image` (`{$model_table}`, image) VALUES " . implode(", ", $inserts);
+            self::query($sql, $values);
+        } catch(\PDOException $e) {
+            throw new ModelException($e->getMessage());
+            // return false;
+        }
+        return true;
     }
 
     /**
@@ -509,7 +521,7 @@ class Image extends \Goteo\Core\Model {
         if($ok) {
             try {
                 $sql = "UPDATE `$model_table` SET image = :image WHERE id = :id";
-                self::query($sql, array(':image'=>$this->id, ':id'=>$model_id));
+                self::query($sql, array(':image'=>$this->id, ':id' => $model_id));
             } catch(\PDOException $e) {
                 //
                 return false;
@@ -529,11 +541,26 @@ class Image extends \Goteo\Core\Model {
         }
         try {
             $sql = "UPDATE `$model_table` SET image = :image WHERE id = :id";
-            self::query($sql, array(':image'=>'', ':id'=>$model_id));
+            self::query($sql, array(':image'=>'', ':id' => $model_id));
         } catch(\PDOException $e) {
             //
             return false;
         }
+        return true;
+    }
+
+
+    /**
+     * Converts this instance to a
+     * Symfony\Component\HttpFoundation\File
+     * @return [type] [description]
+     */
+    public function toSymfonyFile() {
+        return new SymfonyFile($this->name, false);
+    }
+
+    public function __toString() {
+        return $this->getName();
     }
 
     /**

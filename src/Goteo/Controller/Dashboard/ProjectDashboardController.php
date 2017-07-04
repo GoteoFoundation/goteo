@@ -18,11 +18,15 @@ use Goteo\Application\View;
 use Goteo\Model\Project;
 use Goteo\Model\Project\Reward;
 use Goteo\Model\Project\Image as ProjectImage;
+use Goteo\Model\Blog;
+use Goteo\Model\Blog\Post as BlogPost;
 use Goteo\Application\Message;
 use Goteo\Library\Text;
 use Goteo\Console\UsersSend;
-use Goteo\Application\Exception\ModelException;
+use Goteo\Application\Exception\ModelNotFoundException;
 use Goteo\Application\Exception\ControllerAccessDeniedException;
+
+use Symfony\Component\Validator\Constraints;
 
 class ProjectDashboardController extends \Goteo\Core\Controller {
     protected $user;
@@ -37,12 +41,15 @@ class ProjectDashboardController extends \Goteo\Core\Controller {
     }
 
     static function createSidebar(Project $project, $zone = '') {
+        $user = Session::getUser();
+        if(!$project->userCanEdit($user)) return;
+
         // Create sidebar menu
         Session::addToSidebarMenu('<i class="fa fa-bar-chart"></i> ' . Text::get('dashboard-menu-activity-summary'), '/dashboard/project/' . $project->id .'/summary', 'summary');
         Session::addToSidebarMenu('<i class="fa fa-eye"></i> ' . Text::get('regular-preview'), '/project/' . $project->id, 'preview');
         Session::addToSidebarMenu('<i class="fa fa-edit"></i> ' . Text::get('regular-edit'), '/project/edit/' . $project->id, 'edit');
         Session::addToSidebarMenu('<i class="fa fa-image"></i> ' . Text::get('images-main-header'), '/dashboard/project/' . $project->id .'/images', 'images');
-        Session::addToSidebarMenu('<i class="fa fa-file-text"></i> ' . Text::get('dashboard-menu-projects-updates'), '/dashboard/projects/updates/select?project=' . $project->id, 'updates');
+        Session::addToSidebarMenu('<i class="fa fa-file-text"></i> ' . Text::get('dashboard-menu-projects-updates'), '/dashboard/project/' . $project->id .'/updates', 'updates');
         Session::addToSidebarMenu('<i class="fa fa-group"></i> ' . Text::get('dashboard-menu-projects-supports'), '/dashboard/projects/supports/select?project=' . $project->id , 'supports');
         Session::addToSidebarMenu('<i class="fa fa-user"></i> ' . Text::get('dashboard-menu-projects-rewards'), '/dashboard/projects/rewards/select?project=' . $project->id, 'rewards');
         Session::addToSidebarMenu('<i class="fa fa-comments"></i> ' . Text::get('dashboard-menu-projects-messegers'), '/dashboard/projects/messengers/select?project=' . $project->id, 'comments');
@@ -51,6 +58,7 @@ class ProjectDashboardController extends \Goteo\Core\Controller {
 
         View::getEngine()->useData([
             'project' => $project,
+            'admin' => $project->userCanEdit($user),
             'zone' => $zone,
             'sidebarBottom' => [ '/dashboard/projects' => '<i class="fa fa-reply" title="' . Text::get('profile-my_projects-header') . '"></i> ' . Text::get('profile-my_projects-header') ]
         ]);
@@ -133,6 +141,141 @@ class ProjectDashboardController extends \Goteo\Core\Controller {
         return $this->viewResponse('dashboard/project/images', [
             'zones' => $zones,
             'images' => $images
+            ]);
+
+    }
+
+    public function updatesAction($pid = null, Request $request)
+    {
+        // View::setTheme('default');
+        $project = $this->validateProject($pid, 'updates');
+        if($project instanceOf Response) return $project;
+
+        $posts = [];
+        $total = 0;
+        $msg = '';
+        $limit = 10;
+        $offset = $limit * (int)$request->query->get('pag');
+        if ($project->status < 3) {
+            $msg = Text::get('dashboard-project-blog-wrongstatus');
+            Message::error($msg);
+            // return $this->redirect('/dashboard/projects/summary');
+        } else {
+            $blog = Blog::get($project->id);
+            if ($blog instanceOf Blog) {
+                if($blog->active) {
+                    $posts = BlogPost::getList((int)$blog->id, false, $offset, $limit);
+                    $total = BlogPost::getList((int)$blog->id, false, 0, 0, true);
+                }
+                else {
+                    Message::error(Text::get('dashboard-project-blog-inactive'));
+                }
+            }
+        }
+
+        return $this->viewResponse('dashboard/project/updates', [
+                'posts' => $posts,
+                'total' => $total,
+                'limit' => $limit,
+                'errorMsg' => $msg
+            ]);
+    }
+
+    public function updatesEditAction($pid, $uid, Request $request)
+    {
+        // View::setTheme('default');
+        $project = $this->validateProject($pid, 'updates');
+        if($project instanceOf Response) return $project;
+
+        $post = BlogPost::get($uid);
+        if(!$post) throw new ModelNotFoundException();
+
+        $defaults = (array)$post;
+        $defaults['date'] = new \Datetime($defaults['date']); // TODO: into the transformer datepickertype
+        $defaults['allow'] = (bool) $defaults['allow'];
+        $defaults['publish'] = (bool) $defaults['publish'];
+        // print_r($_FILES);die;
+        // Create the form
+        $form = $this->createFormBuilder($defaults)
+            ->add('title', 'text', array(
+                'required' => false,
+                'constraints' => array(
+                        new Constraints\NotBlank(),
+                        new Constraints\Length(array('min' => 4)),
+                    ),
+            ))
+            ->add('date', 'datepicker', array(
+                'constraints' => array(
+                        new Constraints\NotBlank(),
+                        // new Length(array('min' => 4)),
+                    ),
+            ))
+            // saving images will add that images to the gallery
+            // let's show the gallery in the field with nice options
+            // for removing and reorder it
+            ->add('image', 'dropfiles', array(
+                'required' => false,
+                'data' => $defaults['gallery'],
+                'constraints' => array(
+                    new Constraints\Count(array('max' => 10)),
+                    new Constraints\All(array(
+                        // 'groups' => 'Test',
+                        'constraints' => array(
+                            // new Constraints\File()
+                            // new NotNull(array('groups'=>'Test'))
+                        )
+                    ))
+                )
+            ))
+            // ->add('gallery', 'dropfiles', array(
+            //     'required' => false
+            // ))
+            ->add('text', 'markdown', array(
+                'constraints' => array(
+                        new Constraints\NotBlank(),
+                        // new Length(array('min' => 4)),
+                    ),
+            ))
+            ->add('video', 'text', array(
+                'required' => false
+            ))
+            ->add('allow', 'boolean', array(
+                'required' => false,
+                'label' => 'blog-allow-comments' // Form has integrated translations
+            ))
+            ->add('publish', 'boolean', array(
+                'required' => false,
+                'label' => 'blog-publish', // Form has integrated translations
+                'color' => 'success', // bootstrap label-* (default, success, ...)
+            ))
+            ->add('submit', 'submit', array(
+            ))
+            ->getForm();
+
+
+        $form->handleRequest($request);
+        if ($form->isSubmitted()) {
+            if($form->isValid()) {
+                print_r($_FILES);
+                // var_dump($request->request->all());
+                $data = $form->getData();
+                $post->rebuildData($data);
+                var_dump($data);die;
+                if($post->save($errors)) {
+                    // print_r($post);die;
+                    Message::info(Text::get('form-sent-success'));
+                    return $this->redirect('/dashboard/project/' . $this->project->id .'/updates');
+                } else {
+                    Message::error(Text::get('form-sent-error', implode(', ',$errors)));
+                }
+
+            } else {
+                Message::error(Text::get('form-has-errors'));
+            }
+        }
+        return $this->viewResponse('dashboard/project/updates_edit', [
+            'post' => $post,
+            'form' => $form->createView()
             ]);
 
     }

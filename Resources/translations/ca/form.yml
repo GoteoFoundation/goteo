@@ -4,6 +4,7 @@ form-add-button: Afegir
 form-ajax-info: 'El formulari es va desant segons passis per cada camp'
 form-apply-button: Aplicar
 form-edit-button: Editar
+form-has-errors: 'El formulari conté errors, revisa''ls i torna-ho a provar!'
 form-errors-info: 'Total: %s | En aquesta passa: %s'
 form-errors-total: 'Hi ha %s errors en total'
 form-footer-errors_title: Errors
@@ -34,3 +35,5 @@ project-one-round: 'Ronda única de 40 días'
 project-personal-field-entity_name: 'Entitat en nom de la qual actues (si procedeix)'
 project-two-rounds: 'Dos rondas de 40 días'
 tooltip-project-personal-entity_name: 'Si representes alguna entitat, indica el seu nom en aquest camp.'
+form-sent-success: 'S''han desat les dades correctament!'
+form-sent-error: 'Ha ocurregut un error al desar les dades: [%s]'

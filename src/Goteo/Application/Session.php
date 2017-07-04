@@ -13,11 +13,13 @@ namespace Goteo\Application;
 use Goteo\Model\User;
 use Goteo\Library\Text;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Session\Session as SymfonySession;
 
 /**
  * Class for dealing with $_SESSION related stuff
  */
 class Session {
+    static protected $session;
     static protected $session_expire_time = 3600;
     static protected $start_time = 0;
     static protected $triggers = array('session_expires' => null, 'session_destroyed' => null);
@@ -27,12 +29,25 @@ class Session {
     static protected $sidebar_menu = [];
 
     /**
-     * TODO:
      * Initializes session managem with Symfony Request object
+     * TODO: remove request as is not needed
      * @return [type] [description]
      */
-    static public function factory(Request $request) {
-        self::$request = $request;
+    static public function factory(Request $request = null) {
+        if($request) {
+            self::$request = $request;
+        }
+        if(!self::$session) {
+            self::$session = new SymfonySession();
+        }
+    }
+
+    /**
+     * Returns session object
+     */
+    static public function getSession() {
+        self::factory();
+        return self::$session;
     }
 
     /**
@@ -85,25 +100,22 @@ class Session {
      * @return [type]       [description]
      */
     static public function start($name = 'Goteo', $session_time = null) {
-        global $_SESSION;
-
-        if (!isset($_SESSION)) {
-            // If we are run from the command line interface then we do not care
-            // about headers sent using the session_start.
-            if (PHP_SAPI === 'cli') {
-                $_SESSION = array();
+     /*   global $_SESSION;
+        // Cli compatibility
+        if (PHP_SAPI === 'cli') {
+            $_SESSION = array();
+        }*/
+        try {
+            if(!self::getSession()->isStarted()) {
+                self::getSession()->setName($name);
+                self::getSession()->start();
             }
-            elseif (!headers_sent()) {
-                session_name($name);
-                if (!session_start()) {
-                   throw new Config\ConfigException(__METHOD__ . ' session_start failed.');
-                }
-                // Fix for session cookie time life
-                ini_set('session.cookie_lifetime', self::getSessionExpires());
-            } else {
-                throw new Config\ConfigException(__METHOD__ . ' Session started after headers sent.');
-            }
+            // Fixes session cookie time life
+            self::getSession()->migrate(false, self::getSessionExpires());
+        } catch(\RuntimeException $e) {
+            throw new Config\ConfigException($e->getMessage());
         }
+        // print_r($_SESSION);die;
         self::setStartTime(microtime(true));
 
         if(!self::exists('init_time')) {
@@ -123,10 +135,11 @@ class Session {
     }
 
     static public function getId() {
-        $id = session_id();
+        $id = self::getSession()->getId();
+
         if($id == 'deleted') {
-            session_regenerate_id();
-            $id = session_id();
+            self::getSession()->migrate();
+            $id = self::getSession()->getId();
         }
         if($id == 'deleted') {
             throw new Config\ConfigException(__METHOD__ . ' session_id failed.');
@@ -139,16 +152,16 @@ class Session {
      * @return [type] [description]
      */
     static public function destroy($throw_callback = true) {
-        global $_SESSION;
+    /*    global $_SESSION;
         if (PHP_SAPI === 'cli') {
             $_SESSION = array();
             unset($_SESSION);
         }
         else {
-            session_unset();
-            session_destroy();
-            session_write_close();
+            self::getSession()->invalidate();
         }
+    */
+        self::getSession()->invalidate();
         $callback = self::$triggers['session_destroyed'];
         if($throw_callback && is_callable($callback)) {
             $callback();
@@ -162,11 +175,11 @@ class Session {
      * @return [type]        [description]
      */
     static public function store($key, $value) {
-        global $_SESSION;
-        if (session_status() == PHP_SESSION_NONE) {
-            session_start();
-        }
-        return $_SESSION[$key] = $value;
+        // Compatibilize with legacy sessions
+        // TODO: to be removed once legacy migration is completed
+        $_SESSION[$key] = $value;
+        self::getSession()->set($key, $value);
+        return self::getSession()->has($key);
     }
 
     /**
@@ -175,9 +188,7 @@ class Session {
      * @return [type]      [description]
      */
     static public function get($key, $default = null) {
-        global $_SESSION;
-        if(isset($_SESSION[$key])) return $_SESSION[$key];
-        return $default;
+        return self::getSession()->get($key, $default);
     }
 
     /**
@@ -186,8 +197,7 @@ class Session {
      * @return [type]      [description]
      */
     static public function getAll() {
-        global $_SESSION;
-        return $_SESSION;
+        return self::getSession()->all();
     }
 
     /**
@@ -196,10 +206,7 @@ class Session {
      * @return [type]      [description]
      */
     static public function getAndDel($key) {
-        global $_SESSION;
-        $val = $_SESSION[$key];
-        unset($_SESSION[$key]);
-        return $val;
+        return self::getSession()->remove($key);
     }
 
     /**
@@ -208,9 +215,8 @@ class Session {
      * @return [type]      [description]
      */
     static public function del($key) {
-        global $_SESSION;
-        unset($_SESSION[$key]);
-        return !self::exists($key);
+        self::getSession()->remove($key);
+        return !self::getSession()->has($key);
     }
 
     /**
@@ -219,8 +225,7 @@ class Session {
      * @return [type]      [description]
      */
     static public function exists($key) {
-        global $_SESSION;
-        return is_array($_SESSION) && array_key_exists($key, $_SESSION);
+        return self::getSession()->has($key);
     }
 
     /**

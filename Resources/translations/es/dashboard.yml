@@ -83,6 +83,7 @@ dashboard-project-analytics-fail: 'Ha ocurrido un error al guardar tus identific
 dashboard-project-analytics-ok: 'Tus identificadores para analítica se han guardado correctamente'
 dashboard-project-blog-fail: 'Contacta con nosotr*s'
 dashboard-project-blog-inactive: 'Lo sentimos, la publicación de novedades en este proyecto está desactivada'
+dashboard-project-blog-empty: 'No hay publicaciones todavía.'
 dashboard-project-blog-wrongstatus: 'Lo sentimos, aún no se pueden publicar novedades en este proyecto...'
 dashboard-project-delete: Borrar el proyecto
 dashboard-project-delete_alert: '¿Seguro que deseas eliminar absoluta y definitivamente este proyecto?'
