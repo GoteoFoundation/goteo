@@ -130,7 +130,9 @@ $(function(){
             setTimeout(function(){
                 // Set some unique name in order to submit data.
                 inputFile.name = $dz.data('name');
-                file.$li.append(inputFile);
+                console.log('adding file', $dz.data('name'), inputFile);
+                // file.$li.append(inputFile);
+                $list.find('li:last').append(inputFile);
                 drop.removeFile(file);
             }, 0);
         });

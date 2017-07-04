@@ -47,7 +47,7 @@ abstract class Model {
 	public function rebuildData(Array $data) {
 		foreach (\get_public_class_vars(get_called_class()) as $k => $v) {
 			if(array_key_exists($k, $data)) {
-                print_r("\n<br>$k: " . $data[$k]);
+                // print_r("\n<br>$k: " . $data[$k]);
                 $this->$k = $data[$k];
             }
 		}
@@ -111,6 +111,17 @@ abstract class Model {
 	 */
 	abstract public function validate(&$errors = array());
 
+    /**
+     * Some data transformation for SQL field types
+     * @param  [type] $value [description]
+     * @return [type]        [description]
+     */
+    public function transformFieldValue($value) {
+        if($value instanceOf \DateTime) {
+            return $value->format('Y-m-d\TH:i:s');
+        }
+        return $value;
+    }
 	/**
 	 * insert to sql
 	 * @return [type] [description]
@@ -121,7 +132,7 @@ abstract class Model {
 			if (property_exists($this, $field)) {
 				$set[] = "`$field`";
 				$keys[] = ":$field";
-				$values[":$field"] = $this->$field;
+				$values[":$field"] = $this->transformFieldValue($this->$field);
 			}
 		}
 		if (empty($values)) {
@@ -143,14 +154,14 @@ abstract class Model {
 		foreach ($fields as $field) {
 			if (property_exists($this, $field)) {
 				$set[] = "`$field` = :$field";
-				$values[":$field"] = $this->$field;
+				$values[":$field"] = $this->transformFieldValue($this->$field);
 			}
 		}
 		$clause = [];
 		foreach ($where as $field) {
 			if (property_exists($this, $field)) {
 				$clause[] = "`$field` = :$field";
-				$values[":$field"] = $this->$field;
+				$values[":$field"] = $this->transformFieldValue($this->$field);
 			} else {
 				throw new \PDOException("Property $field does not exists!", 1);
 
@@ -161,7 +172,7 @@ abstract class Model {
 		}
 
 		$sql = 'UPDATE `' . $this->Table . '` SET ' . implode(',', $set) . ' WHERE ' . implode(' AND ', $clause);
-		// echo \sqldbg($sql, $values);
+		echo \sqldbg($sql, $values);
 		return self::query($sql, $values);
 	}
 

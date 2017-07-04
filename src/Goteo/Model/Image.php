@@ -165,8 +165,7 @@ class Image extends \Goteo\Core\Model {
                     $errors['image'][] = 'The uploaded file was only partially uploaded';
                     break;
                 case UPLOAD_ERR_NO_FILE:
-                    if (isset($_POST['upload']))
-                        $errors['image'][] = 'No file was uploaded';
+                    $errors['image'][] = 'No file was uploaded';
                     break;
                 case UPLOAD_ERR_NO_TMP_DIR:
                     $errors['image'][] = 'Missing a temporary folder';
@@ -558,6 +557,10 @@ class Image extends \Goteo\Core\Model {
      */
     public function toSymfonyFile() {
         return new SymfonyFile($this->name, false);
+    }
+
+    public function __toString() {
+        return $this->getName();
     }
 
     /**

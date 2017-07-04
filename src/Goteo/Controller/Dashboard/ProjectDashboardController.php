@@ -26,8 +26,7 @@ use Goteo\Console\UsersSend;
 use Goteo\Application\Exception\ModelNotFoundException;
 use Goteo\Application\Exception\ControllerAccessDeniedException;
 
-use Symfony\Component\Validator\Constraints\Length;
-use Symfony\Component\Validator\Constraints\NotBlank;
+use Symfony\Component\Validator\Constraints;
 
 class ProjectDashboardController extends \Goteo\Core\Controller {
     protected $user;
@@ -195,19 +194,19 @@ class ProjectDashboardController extends \Goteo\Core\Controller {
         $defaults['date'] = new \Datetime($defaults['date']); // TODO: into the transformer datepickertype
         $defaults['allow'] = (bool) $defaults['allow'];
         $defaults['publish'] = (bool) $defaults['publish'];
-        // print_r($defaults);die;
-        // Create our first form!
+        // print_r($_FILES);die;
+        // Create the form
         $form = $this->createFormBuilder($defaults)
             ->add('title', 'text', array(
                 'required' => false,
                 'constraints' => array(
-                        new NotBlank(),
-                        new Length(array('min' => 4)),
+                        new Constraints\NotBlank(),
+                        new Constraints\Length(array('min' => 4)),
                     ),
             ))
             ->add('date', 'datepicker', array(
                 'constraints' => array(
-                        new NotBlank(),
+                        new Constraints\NotBlank(),
                         // new Length(array('min' => 4)),
                     ),
             ))
@@ -216,14 +215,24 @@ class ProjectDashboardController extends \Goteo\Core\Controller {
             // for removing and reorder it
             ->add('image', 'dropfiles', array(
                 'required' => false,
-                'data' => $defaults['gallery']
+                'data' => $defaults['gallery'],
+                'constraints' => array(
+                    new Constraints\Count(array('max' => 10)),
+                    new Constraints\All(array(
+                        // 'groups' => 'Test',
+                        'constraints' => array(
+                            // new Constraints\File()
+                            // new NotNull(array('groups'=>'Test'))
+                        )
+                    ))
+                )
             ))
             // ->add('gallery', 'dropfiles', array(
             //     'required' => false
             // ))
             ->add('text', 'markdown', array(
                 'constraints' => array(
-                        new NotBlank(),
+                        new Constraints\NotBlank(),
                         // new Length(array('min' => 4)),
                     ),
             ))
@@ -247,10 +256,11 @@ class ProjectDashboardController extends \Goteo\Core\Controller {
         $form->handleRequest($request);
         if ($form->isSubmitted()) {
             if($form->isValid()) {
+                print_r($_FILES);
                 // var_dump($request->request->all());
                 $data = $form->getData();
                 $post->rebuildData($data);
-                // var_dump($data);die;
+                var_dump($data);die;
                 if($post->save($errors)) {
                     // print_r($post);die;
                     Message::info(Text::get('form-sent-success'));

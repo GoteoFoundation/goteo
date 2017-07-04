@@ -77,13 +77,15 @@ class DropfilesType extends FileType
                     return $image;
                 }
             ));
+
         $builder->get('uploads')
             ->addModelTransformer(new CallbackTransformer(
                 function($image) {
-                    return null;
-                    // return $image;
+                    // return null;
+                    return $image;
                 },
                 function($image) {
+                        // print_r($image);die;
                     if(is_array($image)) {
                         foreach($image as $i => $img) {
                             if(!$img) continue;
@@ -104,14 +106,15 @@ class DropfilesType extends FileType
                 return $image;
             },
             function($image) {
+                // var_dump($image);die;
                 // Sum current + uploads
-                $img = $image['current'];
+                $img = is_array($image['current']) ? $image['current'] : [];
                 if($image['uploads']) {
                     if(is_array($image['uploads'])) {
                         $img = array_merge($img, $image['uploads']);
                     }
                 }
-                // var_dump($img);
+                // var_dump($img);die;
                 return $img;
                 // return null;
             }

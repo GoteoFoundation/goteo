@@ -15,6 +15,7 @@
         <tr>
           <th data-type="number" data-breakpoints="xs">#</th>
           <th data-type="date" data-breakpoints="xs"><?= $this->text('regular-date') ?></th>
+          <th data-type="image" data-breakpoints="xs"><?= $this->text('regular-image') ?></th>
           <th><?= $this->text('regular-title') ?></th>
           <th><?= $this->text('regular-actions') ?></th>
         </tr>
@@ -26,6 +27,7 @@
         <tr>
           <td><?= $post->id ?></td>
           <td><?= date_formater($post->date) ?></td>
+          <td><img src="<?= $post->image ? $post->image->getLink(96, 72, true) : '' ?>" alt="<?= $post->image ?>" /></td>
           <td><?= $post->title ?></td>
           <td>
             <a class="btn btn-default" title="<?= $this->text('regular-view') ?>" href="/project/<?= $this->project->id ?>/updates/<?= $post->id ?>#updates"><i class="fa fa-eye"></i></a>

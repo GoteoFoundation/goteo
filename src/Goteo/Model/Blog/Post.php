@@ -110,7 +110,7 @@ class Post extends \Goteo\Core\Model {
 
         $values = array(':id' => $id, ':lang'=>$lang);
 
-        if ($debug) echo \sqldbg($sql, $values);
+        // die(\sqldbg($sql, $values));
 
         $query = static::query($sql, $values);
         $post = $query->fetchObject('\Goteo\Model\Blog\Post');
@@ -538,6 +538,7 @@ class Post extends \Goteo\Core\Model {
         try {
             //automatic $this->id assignation
             $this->dbInsertUpdate($fields);
+                    print_r($this->image);die;
 
             // Luego la imagen
             if ($this->id) {
