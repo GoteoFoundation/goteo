@@ -63,6 +63,9 @@ endif;
 
         <?= $this->insert('partials/header/styles') ?>
 
+        <?php $this->section('analytics-project') ?>
+        <?php $this->stop() ?>
+
         <?= $this->insert('partials/header/javascript') ?>
 
 
