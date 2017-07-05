@@ -236,7 +236,7 @@ class ProjectDashboardController extends \Goteo\Core\Controller {
                         // new Length(array('min' => 4)),
                     ),
             ))
-            ->add('video', 'text', array(
+            ->add('media', 'media', array(
                 'required' => false
             ))
             ->add('allow', 'boolean', array(
@@ -245,7 +245,7 @@ class ProjectDashboardController extends \Goteo\Core\Controller {
             ))
             ->add('publish', 'boolean', array(
                 'required' => false,
-                'label' => 'blog-publish', // Form has integrated translations
+                'label' => 'blog-published', // Form has integrated translations
                 'color' => 'success', // bootstrap label-* (default, success, ...)
             ))
             ->add('submit', 'submit', array(
@@ -256,11 +256,11 @@ class ProjectDashboardController extends \Goteo\Core\Controller {
         $form->handleRequest($request);
         if ($form->isSubmitted()) {
             if($form->isValid()) {
-                print_r($_FILES);
+                // print_r($_FILES);
                 // var_dump($request->request->all());
                 $data = $form->getData();
                 $post->rebuildData($data);
-                var_dump($data);die;
+                // var_dump($data);die;
                 if($post->save($errors)) {
                     // print_r($post);die;
                     Message::info(Text::get('form-sent-success'));

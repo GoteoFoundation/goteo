@@ -22,6 +22,35 @@ through which recipients can access the Corresponding Source.
 @licend  The above is the entire license notice
 for the JavaScript code in this page.
 */
+function parseVideoURL (url) {
+    // - Supported YouTube URL formats:
+    //   - http://www.youtube.com/watch?v=My2FRPA3Gf8
+    //   - http://youtu.be/My2FRPA3Gf8
+    //   - https://youtube.googleapis.com/v/My2FRPA3Gf8
+    //   - https://m.youtube.com/watch?v=My2FRPA3Gf8
+    // - Supported Vimeo URL formats:
+    //   - http://vimeo.com/25451551
+    //   - http://player.vimeo.com/video/25451551
+    // - Also supports relative URLs:
+    //   - //player.vimeo.com/video/25451551
+
+    url.match(/(http:|https:|)\/\/(player.|www.|m.)?(vimeo\.com|youtu(be\.com|\.be|be\.googleapis\.com))\/(video\/|embed\/|watch\?v=|v\/)?([A-Za-z0-9._%-]*)(\&\S+)?/);
+
+    var type, src;
+    if (RegExp.$3.indexOf('youtu') > -1) {
+        type = 'youtube';
+        src = '//youtube.com/embed/' +  RegExp.$6 + '?wmode=Opaque&autoplay=1';
+    } else if (RegExp.$3.indexOf('vimeo') > -1) {
+        type = 'vimeo';
+        src = '//player.vimeo.com/video/' + RegExp.$6 + '?title=0&byline=0&portrait=0&autoplay=1';
+    }
+
+    return {
+        type: type,
+        src: src,
+        id: RegExp.$6
+    };
+}
 
 $(function(){
     //material switch checkbox
@@ -42,11 +71,64 @@ $(function(){
         //         $('#publishing-date').val(e.date.format('YYYY/MM/DD'));
         // });
 
+    // Video
+    var _addVideo = function(e) {
+        var val = $(this).val();
+        if(!val) return;
+        var video = parseVideoURL(val);
+        var input = this;
+        var $container = $(this).closest('.media-container');
+        var $holder = $container.find('.video-holder');
+        var $embed = $container.find('.embed-responsive');
+
+        console.log('adding video', val, video,e);
+        // Add thumb
+        $container.removeClass('loaded').removeClass('playing').addClass('loading');
+
+        var putVideo = function(thumb) {
+            console.log('putting thumb');
+            $container.find('.cover-image').attr('src', thumb);
+            $container.removeClass('loading').addClass('loaded');
+            var iframe = $('<iframe>', {
+                src: video.src,
+                frameborder: 0,
+                allowfullscreen: true,
+                width: '100%',
+                height: '100%',
+            });
+            $container.find('.video-button').one('click', function() {
+                $embed.html(iframe);
+                $container.addClass('playing');
+            });
+        };
+         if (video.type === 'youtube') {
+            putVideo('https://img.youtube.com/vi/' + video.id + '/maxresdefault.jpg');
+        }
+        else if (video.type === 'vimeo') {
+            $.getJSON("https://vimeo.com/api/v2/video/"+ video.id + ".json")
+             .success(function(res) {
+                console.log('videmo ok', res);
+                putVideo(res[0].thumbnail_large);
+             })
+             .fail(function(e){
+                console.log('error vimeo', e.responseText);
+             });
+        }
+    };
+    $('.autoform input.online-video').on('paste', function(e){
+        var that = this;
+        setTimeout(function() {
+            _addVideo.call(that, e);
+        }, 100);
+    });
+    $('.autoform input.online-video').each(_addVideo);
+
+
     // MarkdownType initialization
     var markdowns = [];
     $('.autoform .markdown > textarea').each(function() {
         var el = this;
-        console.log('found textarea', el);
+        // console.log('found textarea', el);
         var simplemde = new SimpleMDE({
             element: el,
             forceSync: true,
@@ -80,16 +162,16 @@ $(function(){
                 // , forceFallback: true
                 // Reorder actions
                 onChoose: function(evt) {
-                    console.log('choose');
+                    // console.log('choose');
                     $dnd.hide();
                 },
                 onEnd: function (evt) {
-                    console.log('end');
+                    // console.log('end');
                     $dnd.show();
                     $list.removeClass('over');
                 },
                 onMove: function (evt) {
-                    console.log('move');
+                    // console.log('move');
                     $list.removeClass('over');
                     $(evt.to).addClass('over');
                 }
@@ -112,14 +194,19 @@ $(function(){
         })
         .on('thumbnail', function(file, dataURL) {
             // Add to list
-            file.$li.html( file.$li.html().replace('{URL}', dataURL));
-            console.log('thumbnail', file.$li);
+            var $img = $form.find('li[data-name="' + file.name + '"] .image');
+            $img.css({
+                backgroundImage:  'url(' + dataURL + ')',
+                backgroundSize: 'cover'
+            });
+            // console.log('thumbnail', file);
         })
         .on('addedfile', function(file) {
-            console.log('added');
-            file.$li = $($template.html().replace('{NAME}', file.name));
+            // console.log('added', file);
+            var $li = $($template.html().replace('{NAME}', file.name));
+            $li.find('.image').css({backgroundSize: '25%'});
+            $list.append($li);
             // TODO put filetypes as default in URL
-            $list.append(file.$li);
             $error.addClass('hidden');
 
             // Input node with selected files. It will be removed from document shortly in order to
@@ -130,9 +217,9 @@ $(function(){
             setTimeout(function(){
                 // Set some unique name in order to submit data.
                 inputFile.name = $dz.data('name');
-                console.log('adding file', $dz.data('name'), inputFile);
-                // file.$li.append(inputFile);
-                $list.find('li:last').append(inputFile);
+                // console.log('adding file', $dz.data('name'), inputFile);
+
+                $li.append(inputFile);
                 drop.removeFile(file);
             }, 0);
         });
@@ -144,7 +231,7 @@ $(function(){
     $('.autoform').on( 'click', '.image-list-sortable .delete-image', function(e) {
         e.preventDefault();
         e.stopPropagation();
-        console.log('remove');
+        // console.log('remove');
         var $li = $(this).closest('li');
         var $zone = $(this).closest('.image-zone');
         var $form = $(this).closest('form');
@@ -153,6 +240,7 @@ $(function(){
         $error.addClass('hidden');
         $form.find('.dragndrop').show();
     });
+
 
     // $('.autoform').on('submit', function(e){
     //     markdowns.forEach(function(md) {

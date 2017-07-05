@@ -63,11 +63,17 @@ $dash->add('dashboard-project-summary', new Route(
     array('_controller' => 'Goteo\Controller\Dashboard\ProjectDashboardController::summaryAction',
         )
 ));
-// Route from menu
+// Old Route from menu
 $dash->add('dashboard-project-summary-redirect', new Route(
     '/projects/summary',
     array('_controller' => 'Goteo\Controller\Dashboard\ProjectDashboardController::summaryAction',
         'pid' => null
+        )
+));
+// Redirect if no summary
+$dash->add('dashboard-project-summary-redirect', new Route(
+    '/project/{pid}',
+    array('_controller' => 'Goteo\Controller\Dashboard\ProjectDashboardController::summaryAction'
         )
 ));
 // Route from menu

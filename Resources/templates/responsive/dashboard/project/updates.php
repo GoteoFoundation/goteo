@@ -15,7 +15,8 @@
         <tr>
           <th data-type="number" data-breakpoints="xs">#</th>
           <th data-type="date" data-breakpoints="xs"><?= $this->text('regular-date') ?></th>
-          <th data-type="image" data-breakpoints="xs"><?= $this->text('regular-image') ?></th>
+          <th data-type="html"><?= $this->text('blog-published') ?></th>
+          <th data-type="html" data-breakpoints="xs"><?= $this->text('regular-image') ?></th>
           <th><?= $this->text('regular-title') ?></th>
           <th><?= $this->text('regular-actions') ?></th>
         </tr>
@@ -27,6 +28,7 @@
         <tr>
           <td><?= $post->id ?></td>
           <td><?= date_formater($post->date) ?></td>
+          <td><?= $this->insert('dashboard/project/partials/boolean', ['active' => $post->publish, 'label_type' => 'success']) ?></td>
           <td><img src="<?= $post->image ? $post->image->getLink(96, 72, true) : '' ?>" alt="<?= $post->image ?>" /></td>
           <td><?= $post->title ?></td>
           <td>

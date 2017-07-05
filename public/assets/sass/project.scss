@@ -112,14 +112,14 @@ span.label-sticky-item {
 /* Video cover cutomization */
 
 div {
-  &.video_button {
+  &.video-button {
     position: absolute;
     top: 38%;
     left: 45%;
     cursor: pointer;
     width: 15%;
   }
-  &#video_holder img {
+  &.video-holder img {
     margin: 0 auto;
   }
 }

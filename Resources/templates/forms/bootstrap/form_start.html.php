@@ -8,6 +8,6 @@
 <script class="dropfile_item_template" type="text/template">
 <?php
 // Template for dropfilesjs (javascript use)
-echo $view->render('bootstrap/dropfiles_item.html.php', ['file_url' => '{URL}', 'file_name' => '{NAME}']);
+echo $view->render('bootstrap/dropfiles_item.html.php', ['file_name' => '{NAME}']);
 ?>
 </script>
