@@ -22,6 +22,32 @@ through which recipients can access the Corresponding Source.
 @licend  The above is the entire license notice
 for the JavaScript code in this page.
 */
+function parseVideoURL (url) {
+    // - Supported YouTube URL formats:
+    //   - http://www.youtube.com/watch?v=My2FRPA3Gf8
+    //   - http://youtu.be/My2FRPA3Gf8
+    //   - https://youtube.googleapis.com/v/My2FRPA3Gf8
+    //   - https://m.youtube.com/watch?v=My2FRPA3Gf8
+    // - Supported Vimeo URL formats:
+    //   - http://vimeo.com/25451551
+    //   - http://player.vimeo.com/video/25451551
+    // - Also supports relative URLs:
+    //   - //player.vimeo.com/video/25451551
+
+    url.match(/(http:|https:|)\/\/(player.|www.|m.)?(vimeo\.com|youtu(be\.com|\.be|be\.googleapis\.com))\/(video\/|embed\/|watch\?v=|v\/)?([A-Za-z0-9._%-]*)(\&\S+)?/);
+
+    var type;
+    if (RegExp.$3.indexOf('youtu') > -1) {
+        type = 'youtube';
+    } else if (RegExp.$3.indexOf('vimeo') > -1) {
+        type = 'vimeo';
+    }
+
+    return {
+        type: type,
+        id: RegExp.$6
+    };
+}
 
 $(function(){
     //material switch checkbox
@@ -42,6 +68,32 @@ $(function(){
         //         $('#publishing-date').val(e.date.format('YYYY/MM/DD'));
         // });
 
+    // Video
+    var _addvideo = function(e) {
+        var video = parseVideoURL($(this).val());
+        var input = this;
+        console.log('adding video', $(this).val(), video,e);
+        // Add thumb
+        $(input).hide();
+        $(input).after('<img src="/assets/img/ring.gif">');
+        var putVideo = function(thumb) {
+            $(input).after('<img src="' + thumb + '">');
+        };
+         if (video.type === 'youtube') {
+            putVideo('https://img.youtube.com/vi/' + video.id + '/maxresdefault.jpg');
+        }
+        else if (video.type === 'vimeo') {
+            $.getJSON("https://vimeo.com/api/v2/video/"+ video.id + ".json")
+             .success(function(res) {
+                console.log('videmo ok', res);
+                putVideo(res[0].thumbnail_large);
+             })
+             .fail(function(e){
+                console.log('error vimeo', e.responseText);
+             });
+        }
+    };
+    $('.autoform input.online-video').on('paste', _addvideo);
     // MarkdownType initialization
     var markdowns = [];
     $('.autoform .markdown > textarea').each(function() {
@@ -158,6 +210,7 @@ $(function(){
         $error.addClass('hidden');
         $form.find('.dragndrop').show();
     });
+
 
     // $('.autoform').on('submit', function(e){
     //     markdowns.forEach(function(md) {
