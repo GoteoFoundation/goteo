@@ -36,15 +36,18 @@ function parseVideoURL (url) {
 
     url.match(/(http:|https:|)\/\/(player.|www.|m.)?(vimeo\.com|youtu(be\.com|\.be|be\.googleapis\.com))\/(video\/|embed\/|watch\?v=|v\/)?([A-Za-z0-9._%-]*)(\&\S+)?/);
 
-    var type;
+    var type, src;
     if (RegExp.$3.indexOf('youtu') > -1) {
         type = 'youtube';
+        src = '//youtube.com/embed/' +  RegExp.$6 + '?wmode=Opaque&autoplay=1';
     } else if (RegExp.$3.indexOf('vimeo') > -1) {
         type = 'vimeo';
+        src = '//player.vimeo.com/video/' + RegExp.$6 + '?title=0&byline=0&portrait=0&autoplay=1';
     }
 
     return {
         type: type,
+        src: src,
         id: RegExp.$6
     };
 }
@@ -69,15 +72,34 @@ $(function(){
         // });
 
     // Video
-    var _addvideo = function(e) {
-        var video = parseVideoURL($(this).val());
+    var _addVideo = function(e) {
+        var val = $(this).val();
+        if(!val) return;
+        var video = parseVideoURL(val);
         var input = this;
-        console.log('adding video', $(this).val(), video,e);
+        var $container = $(this).closest('.media-container');
+        var $holder = $container.find('.video-holder');
+        var $embed = $container.find('.embed-responsive');
+
+        console.log('adding video', val, video,e);
         // Add thumb
-        $(input).hide();
-        $(input).after('<img src="/assets/img/ring.gif">');
+        $container.removeClass('loaded').removeClass('playing').addClass('loading');
+
         var putVideo = function(thumb) {
-            $(input).after('<img src="' + thumb + '">');
+            console.log('putting thumb');
+            $container.find('.cover-image').attr('src', thumb);
+            $container.removeClass('loading').addClass('loaded');
+            var iframe = $('<iframe>', {
+                src: video.src,
+                frameborder: 0,
+                allowfullscreen: true,
+                width: '100%',
+                height: '100%',
+            });
+            $container.find('.video-button').one('click', function() {
+                $embed.html(iframe);
+                $container.addClass('playing');
+            });
         };
          if (video.type === 'youtube') {
             putVideo('https://img.youtube.com/vi/' + video.id + '/maxresdefault.jpg');
@@ -93,7 +115,15 @@ $(function(){
              });
         }
     };
-    $('.autoform input.online-video').on('paste', _addvideo);
+    $('.autoform input.online-video').on('paste', function(e){
+        var that = this;
+        setTimeout(function() {
+            _addVideo.call(that, e);
+        }, 100);
+    });
+    $('.autoform input.online-video').each(_addVideo);
+
+
     // MarkdownType initialization
     var markdowns = [];
     $('.autoform .markdown > textarea').each(function() {

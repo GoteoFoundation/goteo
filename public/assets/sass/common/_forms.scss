@@ -57,6 +57,62 @@
     .datepicker {
         width: 180px;
     }
+
+  .media-container {
+    .video-holder {
+      display: none;
+      position: relative;
+      max-width: 300px;
+      margin-bottom:10px;
+    }
+    .video-button {
+        display: none;
+    }
+    .embed-responsive {
+        display: none;
+    }
+    &.loading {
+      .video-holder {
+        background:url(/assets/img/ring.gif) no-repeat center;
+        display: block;
+        padding-bottom: 60px;
+        .cover-image {
+          display:none;
+        }
+
+      }
+    }
+    &.loaded {
+      .video-holder {
+        display: block;
+      }
+      .video-button {
+        display: block;
+      }
+      .embed-responsive {
+        display: none;
+      }
+      .cover-image {
+        display:block;
+      }
+    }
+    &.playing {
+      .video-holder {
+        display: block;
+      }
+      .video-button {
+        display: none;
+      }
+      .embed-responsive {
+        display: block;
+      }
+      .cover-image {
+        display:none;
+      }
+    }
+
+  }
+
 }
 
 /* image sortable list*/
@@ -135,4 +191,5 @@
   }
 
 }
+
 

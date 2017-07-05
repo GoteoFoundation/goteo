@@ -236,9 +236,8 @@ class ProjectDashboardController extends \Goteo\Core\Controller {
                         // new Length(array('min' => 4)),
                     ),
             ))
-            ->add('video', 'text', array(
-                'required' => false,
-                'attr' => ['class' => 'form-control online-video']
+            ->add('media', 'media', array(
+                'required' => false
             ))
             ->add('allow', 'boolean', array(
                 'required' => false,
