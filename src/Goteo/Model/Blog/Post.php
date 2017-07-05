@@ -538,7 +538,6 @@ class Post extends \Goteo\Core\Model {
         try {
             //automatic $this->id assignation
             $this->dbInsertUpdate($fields);
-                    print_r($this->image);die;
 
             // Luego la imagen
             if ($this->id) {
