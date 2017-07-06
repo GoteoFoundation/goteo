@@ -92,7 +92,7 @@ class ProjectsApiController extends AbstractApiController {
             throw new ControllerAccessDeniedException();
         }
         $ob = [];
-        foreach(['id', 'name', 'owner', 'subtitle', 'status', 'node', 'published', 'success', 'passed', 'closed', 'video', 'image', 'lang', 'currency'] as $k)
+        foreach(['id', 'name', 'owner', 'subtitle', 'description','status', 'node', 'published', 'success', 'passed', 'closed', 'video', 'image', 'lang', 'currency'] as $k)
                 $ob[$k] = $prj->$k;
         foreach(['amount', 'mincost', 'maxcost'] as $k)
                 $ob[$k] = (int)$prj->$k;
@@ -113,8 +113,6 @@ class ProjectsApiController extends AbstractApiController {
     }
     /**
      * Simple projects info data
-     * @param  Request $request [description]
-     * @return [type]           [description]
      */
     public function projectAction($id) {
         // $prj = Project::getMini($id);
@@ -128,37 +126,56 @@ class ProjectsApiController extends AbstractApiController {
     }
 
 
+    /**
+     * Individual project property checker/updater
+     * To update a property, use the PUT method
+     */
     public function projectPropertyAction($id, $prop, Request $request) {
         $prj = Project::get($id);
         $properties = $this->getSafeProject($prj);
+        $write_fields = ['name', 'subtitle', 'description'];
         if(!isset($properties[$prop])) {
             throw new ModelNotFoundException("Property [$prop] not found");
         }
-        if($request->isMethod('post')) {
+        if($request->isMethod('put')) {
             if(!$prj->userCanEdit($this->user)) {
                 throw new ControllerAccessDeniedException();
             }
+            if(!in_array($prop, $write_fields)) {
+                throw new ModelNotFoundException("Property [$prop] not writeable");
+            }
+            $prj->$prop = $request->request->get('value');
+
+            // do the SQL update
+            $prj->dbUpdate([$prop]);
+            $properties[$prop] = $prj->$prop;
+
             // TODO: do the SQL update
         }
         return $this->jsonResponse($properties[$prop]);
 
     }
 
+    /**
+     * Individual project updates property checker/updater
+     * To update a property, use the PUT method
+     */
     public function projectUpdatesPropertyAction($pid, $uid, $prop, Request $request) {
         $prj = Project::get($pid);
         $post = BlogPost::get($uid);
         if(!$post) throw new ModelNotFoundException();
         if($post->owner_id !== $prj->id) throw new ModelNotFoundException('Non matching update');
-        $valid_fields = ['title', 'text', 'media', 'date', 'author', 'allow', 'publish', 'image', 'gallery', 'owner_type', 'owner_id', 'owner_name', 'user_name'];
+        $read_fields = ['id', 'title', 'text', 'media', 'date', 'author', 'allow', 'publish', 'image', 'gallery', 'owner_type', 'owner_id', 'owner_name', 'user_name'];
+        $write_fields = ['title', 'text', 'date', 'allow', 'publish'];
         $properties = [];
-        foreach($valid_fields as $f) {
+        foreach($read_fields as $f) {
             if(isset($post->$f)) {
                 $val = $post->$f;
                 if($val instanceOf Image) {
                     $val = $val->getName();
                 }
                 if(is_array($val)) {
-                    foreach($val as $i => $sub) {
+                    foreach($val as $i => $ssub) {
                         if($sub instanceOf Image) {
                             $val[$i] = $sub->getName();
                         }
@@ -177,7 +194,13 @@ class ProjectsApiController extends AbstractApiController {
             if(!$prj->userCanEdit($this->user)) {
                 throw new ControllerAccessDeniedException();
             }
+            if(!in_array($prop, $write_fields)) {
+                throw new ModelNotFoundException("Property [$prop] not writeable");
+            }
             $post->$prop = $request->request->get('value');
+            if(in_array($prop, ['allow', 'publish'])) {
+                $post->$prop = (bool) $val;
+            }
             // do the SQL update
             $post->dbUpdate([$prop]);
             $properties[$prop] = $post->$prop;

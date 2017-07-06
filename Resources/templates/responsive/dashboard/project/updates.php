@@ -28,7 +28,7 @@
         <tr>
           <td><?= $post->id ?></td>
           <td><?= date_formater($post->date) ?></td>
-          <td><?= $this->insert('dashboard/project/partials/boolean', ['active' => $post->publish, 'label_type' => 'success']) ?></td>
+          <td><?= $this->insert('dashboard/project/partials/boolean', ['active' => $post->publish, 'label_type' => 'success', 'url' => '/api/projects/' . $post->owner_id . '/updates/' . $post->id . '/publish', 'confirm_yes' => $this->text('publish-confirm-yes'), 'confirm_no' => $this->text('publish-confirm-no') ]) ?></td>
           <td><img src="<?= $post->image ? $post->image->getLink(96, 72, true) : '' ?>" alt="<?= $post->image ?>" /></td>
           <td><?= $post->title ?></td>
           <td>

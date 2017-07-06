@@ -196,4 +196,5 @@ dashboard-max-files-reached: "Has alcanzado el número máximo de archivos!"
 dashboard-file-type-error: "Este tipo de archivo no está permitido!"
 all-files-uploaded: "Todos los archivos se han subido correctamente"
 uploaded-ok: "Subido correctamente"
-
+publish-confirm-yes: "Quieres publicar esta entrada?"
+publish-confirm-no: "Quieres despublicar esta entrada?"

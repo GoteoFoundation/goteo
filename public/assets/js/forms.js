@@ -54,11 +54,83 @@ function parseVideoURL (url) {
 
 $(function(){
     //material switch checkbox
-    $('.autoform .material-switch').on('click', function(e){
+    $('.material-switch').on('click', function(e){
         e.preventDefault();
+        var text_yes = $(this).data('confirm-yes');
+        var text_no = $(this).data('confirm-no');
         var $checkbox = $(this).find('input[type="checkbox"]');
-        $checkbox.prop('checked', !$checkbox.prop('checked'));
+        var current = $checkbox.prop('checked');
+        if(current && text_no) {
+            if(!confirm(text_no)) {
+                return;
+            }
+        }
+        if(!current && text_yes) {
+            if(!confirm(text_yes)) {
+                return;
+            }
+        }
+        $checkbox.prop('checked', !current);
+        $checkbox.change();
     });
+
+    /// AJAX auto updates fields
+    $('.auto-save-property').each(function() {
+        var $input = $(this);
+        if(!$input.is('input')) {
+            $input = $input.find('input');
+            if($input.length) {
+                $(this).contents('label').css('cursor', 'pointer');
+            }
+        }
+        var type = $(this).data('type');
+        var _getValue = function() {
+            var val = $(this).val();
+            if(type === 'boolean') {
+                val = $(this).prop('checked');
+            }
+            return val;
+        };
+        var _setValue = function(val) {
+            if(type === 'boolean') {
+                $(this).prop('checked', val);
+            } else {
+                $(this).val(val);
+            }
+        };
+        var url = $(this).data('url');
+        var original = _getValue.call($input[0]);
+        if(url && $input.is('input')) {
+            // save previous value
+            // $input.on('focus', function(e) {
+            //     original = _getValue.call($input[0]);
+            // });
+            $input.on('change', function(e) {
+                var val = _getValue.call($input[0]);
+                // console.log('change', val);
+                $.ajax({
+                    url: url,
+                    type: 'PUT',
+                    data: {value: val}
+                }).success(function(data) {
+                    original = _setvalue.call($input[0], data);
+
+                    console.log('saved', data, _getValue($input[0]));
+                }).fail(function(error) {
+                    var json = JSON.parse(error.responseText);
+                    var txt = json && json.error;
+                    _setValue.call($input[0], original);
+                    // console.log('fail', json, txt, error);
+                    alert(txt ? txt : error.responseText ? error.responseText : error);
+                });
+            });
+        }
+
+    });
+
+    //////////////////////////////////////////////
+    /// FORM with class "autoform"
+    ///////////////////////////////////////
 
     // Create datepickers on date input types
     $('.autoform .datepicker, .autoform .datepicker > input').datetimepicker({
