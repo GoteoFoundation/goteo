@@ -125,7 +125,7 @@ class ProjectsApiController extends AbstractApiController {
 
         $files = $request->files->get('file');
         if(!is_array($files)) $files = [$files];
-        $global_msg = 'all-files-uploaded';
+        $global_msg = Text::get('all-files-uploaded');
         $result = [];
 
         $add_to_gallery = $request->request->get('add_to_gallery');
@@ -138,7 +138,7 @@ class ProjectsApiController extends AbstractApiController {
         foreach($files as $file) {
             if(!$file instanceOf UploadedFile) continue;
             // Process image
-            $msg = 'uploaded-ok';
+            $msg = Text::get('uploaded-ok');
             $success = false;
             $image = new Image($file);
             $errors = [];

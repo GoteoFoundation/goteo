@@ -193,3 +193,7 @@ dashboard-project-image-reorder-ko: 'No se han podido ordenar las imágenes!'
 
 dashboard-project-send-to-markdown: "Introducir esta imagen en el texto"
 dashboard-max-files-reached: "Has alcanzado el número máximo de archivos!"
+dashboard-file-type-error: "Este tipo de archivo no está permitido!"
+all-files-uploaded: "Todos los archivos se han subido correctamente"
+uploaded-ok: "Subido correctamente"
+

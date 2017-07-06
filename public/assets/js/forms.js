@@ -155,6 +155,8 @@ $(function(){
         var $form = $dz.closest('form');
         var multiple = !!$dz.data('multiple');
         var limit = parseInt($dz.data('limit'));
+        var url = $dz.data('url') || null;
+        var accepted_files = $dz.data('accepted-files') ? $dz.data('accepted-files') : null;
         var $template = $form.find('script.dropfile_item_template');
         // ALlow drag&drop reorder of existing files
         if(multiple && limit > 1) {
@@ -182,32 +184,39 @@ $(function(){
             $dnd.hide();
         }
 
+        var _addImageCss = function($img, name, dataURL) {
+            var url = dataURL ? dataURL : '/img/300x300c/' + name;
+            $img.css({
+                backgroundImage:  'url(' + url + ')',
+                backgroundSize: 'cover'
+            });
+        };
+
         // Create the FILE upload
         var drop = new Dropzone($dnd.contents('div')[0], {
-            url: $dz.data('url') ? $dz.data('url') : null,
+            url: url ? url : $form.attr('action'),
             uploadMultiple: multiple,
             createImageThumbnails: true,
             maxFiles: limit,
-            autoProcessQueue: !!$dz.data('auto-process'), // no ajax post
-            dictDefaultMessage: $dz.data('text-upload')
+            autoProcessQueue: !!url, // no ajax post if no url
+            dictDefaultMessage: $dz.data('text-upload'),
+            acceptedFiles: accepted_files
         })
         .on('error', function(file, error) {
-            $error.html(error.error);
+            $error.html(error.error ? error.error : error);
             $error.removeClass('hidden');
+            drop.removeFile(file);
             // console.log('error', error);
         })
         .on('thumbnail', function(file, dataURL) {
             // Add to list
+            // console.log('thumbnail', file, dataURL);
             var $img = $form.find('li[data-name="' + file.name + '"] .image');
-            $img.css({
-                backgroundImage:  'url(' + dataURL + ')',
-                backgroundSize: 'cover'
-            });
-            // console.log('thumbnail', file);
+            _addImageCss($img, file.name, dataURL);
         })
-        .on('addedfile', function(file) {
+        .on(url ? 'success' : 'addedfile', function(file, response) {
             var total = $list.find('li').length;
-            // console.log('added', file, 'total', total, 'limit', limit);
+            // console.log(response ? 'success' : 'added', file, 'total', total, 'limit', limit, 'response', response);
             if(total >= limit) {
                 $error.html($dz.data('text-max-files-reached'));
                 $error.removeClass('hidden');
@@ -215,13 +224,60 @@ $(function(){
                 // console.log($dz.data('text-max-files-reached'), $error.html());
                 return false;
             }
-            var $li = $($template.html().replace('{NAME}', file.name));
-            $li.find('.image').css({backgroundSize: '25%'});
-            $list.append($li);
-            // TODO put filetypes as default in URL
+            if(!Dropzone.isValidFile(file, accepted_files)) {
+                // console.log('not accepted file', file, accepted_files);
+                $error.html($dz.data('text-file-type-error'));
+                drop.removeFile(file);
+                return false;
+            }
+            var name = file.name;
+            var i;
             $error.addClass('hidden');
+            // AJAX upload case, a response is defined
+            if(response) {
+                if(!response.success) {
+                    $error.html(response.msg);
+                    $error.removeClass('hidden');
+                    for(i in response.files) {
+                        if(!response.files[i].success)
+                            $error.append('<br>' + response.files[i].msg);
+                    }
+                }
+                for(i in response.files) {
+                    if(response.files[i].originalName === name) {
+                        name = response.files[i].name;
+                    }
+                }
+            }
+            var $li = $($template.html().replace('{NAME}', name));
+            var $img = $li.find('.image');
+
+            var re = /(?:\.([^.]+))?$/;
+            var ext = re.exec(name)[1];
+            $img.addClass('file-type-' + ext);
+            console.log('extension',ext,$img.attr('class'));
+
+            if(response) {
+                $li.append('<input type="hidden" name="' + $dz.data('current') + '" value="' + name + '">');
+                if($dz.data('markdown-link')) {
+                    $li.find('.add-to-markdown').data('target', $dz.data('markdown-link'));
+                    $li.find('.add-to-markdown').removeClass('hidden');
+                }
+                // AJAX does not create thumbnail
+                _addImageCss($img, name);
+            }
+            else {
+                $img.css({backgroundSize: '25%'});
+            }
+            $list.append($li);
+
             if(total >= limit - 1) {
                 $dnd.hide();
+            }
+            // On response, input[type=file] is already uploaded
+            if(response) {
+                drop.removeFile(file);
+                return;
             }
             // Input node with selected files. It will be removed from document shortly in order to
             // give user ability to choose another set of files.
@@ -272,7 +328,7 @@ $(function(){
         var target = $form.attr('name') + '_' + $(this).data('target');
         var md = markdowns[target];
         if(md) {
-            md.value(md.value().replace(/\s+$/g, '') + "\n\n![](" + SRC_URL + '/image/600x600/' + name + ")");
+            md.value(md.value().replace(/\s+$/g, '') + "\n\n![](" + SRC_URL + '/img/600x600/' + name + ")");
         }
     });
 

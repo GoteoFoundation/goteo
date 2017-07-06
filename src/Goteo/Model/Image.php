@@ -308,6 +308,19 @@ class Image extends \Goteo\Core\Model {
     }
 
     /**
+     * Returns the type of the file (or the extension if not defined)
+     */
+    public function getType() {
+        if(!$this->type) {
+            if(strpos($this->getName(), '.') !== false)
+                $this->type = pathinfo($this->getName(), PATHINFO_EXTENSION);
+            if(empty($this->type))
+                $this->type = 'bin';
+        }
+        return $this->type;
+    }
+
+    /**
      * Muestra la imagen en pantalla.
      * @param type int  $width
      * @param type int  $height

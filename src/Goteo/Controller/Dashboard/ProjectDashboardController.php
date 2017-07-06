@@ -220,6 +220,8 @@ class ProjectDashboardController extends \Goteo\Core\Controller {
                 'data' => $defaults['gallery'],
                 'label' => 'regular-image',
                 'markdown_link' => 'text',
+                'accepted_files' => 'image/jpeg,image/gif,image/png',
+                'url' => '/api/projects/' . $project->id . '/images',
                 'constraints' => array(
                     new Constraints\Count(array('max' => 10)),
                     new Constraints\All(array(

@@ -92,6 +92,7 @@ class DropfilesType extends FileType
                     if(is_array($image)) {
                         foreach($image as $i => $img) {
                             if(!$img) continue;
+
                             // Convert File to Image
                             if(!$img instanceOf Image) {
                                 $image[$i] = new Image($img);
@@ -136,14 +137,15 @@ class DropfilesType extends FileType
             'markdown_link' => '', // creates a button to send the image link to a markdown editor
             'empty_data' => null,
             'multiple' => true,
-            'auto_process' => false, // auto process the sending of files
-            'url' => null, // url parameter for dropzone (null implies default action)
+            'accepted_files' => null, // Eg.: image/*,application/pdf,.psd
+            'url' => null, // url parameter for dropzone (null implies no AJAX upload (form must be sent manually))
             'limit' => 10, // Max number of files in multiple uploads
             'sortable' => true, // Allow dragndrop sort of multiple files
             'text_upload' => '<i style="font-size:2em" class="fa fa-plus"></i><br><br>' . Text::get('dashboard-project-dnd-image'),
             'text_delete_image' => Text::get('dashboard-project-delete-image'),
             'text_send_to_markdown' => Text::get('dashboard-project-send-to-markdown'),
-            'text_max_files_reached' => Text::get('dashboard-max-files-reached')
+            'text_max_files_reached' => Text::get('dashboard-max-files-reached'),
+            'text_file_type_error' => Text::get('dashboard-file-type-error')
         ));
     }
 
@@ -163,10 +165,11 @@ class DropfilesType extends FileType
         $view->vars['text_delete_image'] = $options['text_delete_image'];
         $view->vars['text_send_to_markdown'] = $options['text_send_to_markdown'];
         $view->vars['text_max_files_reached'] = $options['text_max_files_reached'];
+        $view->vars['text_file_type_error'] = $options['text_file_type_error'];
         $view->vars['text_upload'] = $options['text_upload'];
+        $view->vars['accepted_files'] = $options['accepted_files'];
         $view->vars['limit'] = $options['limit'];
-        $view->vars['auto_process'] = $options['auto_process'];
-        $view->vars['url'] = $options['url'] ? $options['url'] : $view->parent->vars['action'];
+        $view->vars['url'] = $options['url'] ? $options['url'] : null;
     }
 
     /**
