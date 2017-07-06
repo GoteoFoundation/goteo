@@ -37,6 +37,11 @@ $this->section('sidebar-header');
     echo $this->insert('project/widgets/mini', ['project' => $project, 'admin' => $this->admin]);
 $this->replace();
 
+$this->section('analytics-project');
+
+echo $this->insert('project/partials/google_analytics.php', ['project' => $project]);
+
+$this->replace();
 
 
 $this->section('content');
@@ -333,7 +338,6 @@ $this->section('content');
 
 // @license-end
 </script>
-<?= $this->insert('project/partials/google_analytics.php', ['project' => $project]) ?>
 <?= $this->insert('project/partials/facebook_pixel.php', ['project' => $project]) ?>
 
 <?php $this->append() ?>
