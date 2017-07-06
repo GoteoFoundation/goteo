@@ -60,6 +60,8 @@ class Node extends \Goteo\Core\Model {
                 node.linkedin as linkedin,
                 node.google as google,
                 node.owner_background as owner_background,
+                node.owner_font_color as owner_font_color,
+                node.owner_social_color as owner_social_color,
                 node.default_consultant as default_consultant,
                 node.sponsors_limit as sponsors_limit
             FROM node
@@ -479,7 +481,9 @@ class Node extends \Goteo\Core\Model {
             'facebook',
             'google',
             'linkedin',
-            'owner_background'
+            'owner_background',
+            'owner_font_color',
+            'owner_social_color'
             );
 
         $values = array (':id' => $this->id);

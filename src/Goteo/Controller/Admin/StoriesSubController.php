@@ -242,7 +242,7 @@ class StoriesSubController extends AbstractSubController {
 
             case 'edit':
                 // datos del elemento
-                $story = Model\Stories::get($id);
+                $story = Model\Stories::get($id, Config::get('lang'));
                 // elementos disponibles
                 $items = Model\Post::getAutocomplete();
 
@@ -258,7 +258,7 @@ class StoriesSubController extends AbstractSubController {
 
                 case 'preview':
                         // datos del elemento
-                        $story = Model\Stories::get($id);
+                        $story = Model\Stories::get($id, Config::get('lang'));
 
                         return $this->response('admin/stories/preview', ['story' =>$story]);
         }

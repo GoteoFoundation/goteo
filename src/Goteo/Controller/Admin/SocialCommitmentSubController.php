@@ -42,7 +42,7 @@ class SocialCommitmentSubController extends AbstractSubController {
     public function editAction($id = null) {
 
         if(is_null($id)) $social_commitment = new SocialCommitment;
-        else             $social_commitment = SocialCommitment::get($id);
+        else             $social_commitment = SocialCommitment::get($id, Config::get('lang'));
 
         if ($social_commitment && $this->isPost()) {
             try {
