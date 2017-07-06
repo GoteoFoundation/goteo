@@ -163,8 +163,10 @@ class ProjectsApiController extends AbstractApiController {
     public function projectUpdatesPropertyAction($pid, $uid, $prop, Request $request) {
         $prj = Project::get($pid);
         $post = BlogPost::get($uid);
+
         if(!$post) throw new ModelNotFoundException();
         if($post->owner_id !== $prj->id) throw new ModelNotFoundException('Non matching update');
+
         $read_fields = ['id', 'title', 'text', 'media', 'date', 'author', 'allow', 'publish', 'image', 'gallery', 'owner_type', 'owner_id', 'owner_name', 'user_name'];
         $write_fields = ['title', 'text', 'date', 'allow', 'publish'];
         $properties = [];

@@ -197,7 +197,10 @@ class ProjectDashboardController extends \Goteo\Core\Controller {
                 'publish' => false,
                 'allow' => true
             ]);
+        } elseif($post->owner_id !== $project->id) {
+            throw new ModelNotFoundException("Non matching update for project [{$project->id}]");
         }
+
 
         $defaults = (array)$post;
         $defaults['date'] = new \Datetime($defaults['date']); // TODO: into the transformer datepickertype
@@ -209,16 +212,13 @@ class ProjectDashboardController extends \Goteo\Core\Controller {
             ->add('title', 'text', array(
                 'label' => 'regular-title',
                 'constraints' => array(
-                        new Constraints\NotBlank(),
-                        new Constraints\Length(array('min' => 4)),
-                    ),
+                    new Constraints\NotBlank(),
+                    new Constraints\Length(array('min' => 4)),
+                ),
             ))
             ->add('date', 'datepicker', array(
                 'label' => 'regular-date',
-                'constraints' => array(
-                        new Constraints\NotBlank(),
-                        // new Length(array('min' => 4)),
-                    ),
+                'constraints' => array(new Constraints\NotBlank()),
             ))
             // saving images will add that images to the gallery
             // let's show the gallery in the field with nice options
