@@ -128,6 +128,8 @@ class ProjectsApiController extends AbstractApiController {
         $global_msg = 'all-files-uploaded';
         $result = [];
 
+        $add_to_gallery = $request->request->get('add_to_gallery');
+
         $section = $request->request->get('section');
         if(!array_key_exists($section, ProjectImage::sections())) {
             $section = '';
@@ -141,16 +143,20 @@ class ProjectsApiController extends AbstractApiController {
             $image = new Image($file);
             $errors = [];
             if ($image->save($errors)) {
-                /**
-                 * Guarda la relación NM en la tabla 'project_image'.
-                 */
-                if(!empty($image->id)) {
-                    Project::query("REPLACE project_image (project, image, section) VALUES (:project, :image, :section)", array(':project' => $prj->id, ':image' => $image->id, ':section' => $section));
+
+                if($add_to_gallery === 'project_image') {
+                    /**
+                     * Guarda la relación NM en la tabla 'project_image'.
+                     */
+                    if(!empty($image->id)) {
+                        Project::query("REPLACE project_image (project, image, section) VALUES (:project, :image, :section)", array(':project' => $prj->id, ':image' => $image->id, ':section' => $section));
+                    }
+                    // recalculamos las galerias e imagen
+                    // getGallery en Project\Image  procesa todas las secciones
+                    // $galleries = Project\Image::getGalleries($this->id);
+                    // Project\Image::setImage($this->id, $galleries['']);
                 }
-                // recalculamos las galerias e imagen
-                // getGallery en Project\Image  procesa todas las secciones
-                // $galleries = Project\Image::getGalleries($this->id);
-                // Project\Image::setImage($this->id, $galleries['']);
+
                 $success = true;
             }
             else {

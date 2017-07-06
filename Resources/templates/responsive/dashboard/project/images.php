@@ -133,6 +133,7 @@ $(function(){
         dropzone.on("sending", function(file, xhr, formData) {
           // Will send the section value along with the file as POST data.
           formData.append("section", $zone.data('section'));
+          formData.append("add_to_gallery", 'project_image');
         });
     });
 

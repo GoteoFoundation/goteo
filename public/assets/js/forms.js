@@ -248,6 +248,7 @@ $(function(){
         var $li = $(this).closest('li');
         var name = $li.data('name');
         var $form = $(this).closest('form');
+        $form.find('.dragndrop').show();
         var target = $form.attr('name') + '_' + $(this).data('target');
         var md = markdowns[target];
         if(md) {
