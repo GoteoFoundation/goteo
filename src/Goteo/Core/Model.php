@@ -172,7 +172,7 @@ abstract class Model {
 		}
 
 		$sql = 'UPDATE `' . $this->Table . '` SET ' . implode(',', $set) . ' WHERE ' . implode(' AND ', $clause);
-		echo \sqldbg($sql, $values);
+		// echo \sqldbg($sql, $values);
 		return self::query($sql, $values);
 	}
 

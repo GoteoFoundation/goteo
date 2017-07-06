@@ -183,3 +183,10 @@ dashboard-project-default-image-confirm: 'Vols fer servir aquesta imatge per def
 dashboard-project-image-default-ko: "No se s'ha pogut posar la imatge per defecte!"
 dashboard-project-image-reorder-ko: "No se s'han pogut ordenar les imatges!"
 
+dashboard-project-send-to-markdown: "Introduïr la imatge al text"
+dashboard-max-files-reached: "Heu assolit el número màxim d'arxius!"
+dashboard-file-type-error: "Aquest tipus d'arxius no està permès!"
+all-files-uploaded: "Tots els arxius s'han pujat correctament"
+uploaded-ok: "Pujat correctament"
+publish-confirm-yes: "Vols publicar aquesta entrada?"
+publish-confirm-no: "Vols despublicar aquesta entrada?"

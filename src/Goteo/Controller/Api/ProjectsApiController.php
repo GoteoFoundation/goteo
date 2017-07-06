@@ -23,7 +23,8 @@ use Goteo\Model\Project\Reward;
 use Goteo\Model\Image;
 use Goteo\Library\Text;
 use Goteo\Console\UsersSend;
-
+use Goteo\Model\Blog;
+use Goteo\Model\Blog\Post as BlogPost;
 
 class ProjectsApiController extends AbstractApiController {
 
@@ -83,20 +84,17 @@ class ProjectsApiController extends AbstractApiController {
             ]);
     }
 
-    /**
-     * Simple projects info data
-     * @param  Request $request [description]
-     * @return [type]           [description]
-     */
-    public function projectAction($id) {
-        $prj = Project::getMini($id);
-        if(!$this->is_admin && !in_array($prj->status, [Project::STATUS_IN_CAMPAIGN, Project::STATUS_FUNDED, Project::STATUS_FULFILLED, Project::STATUS_UNFUNDED])) {
+    protected function getSafeProject($prj) {
+        if(!$prj instanceOf Project) $prj = Project::get($prj);
+
+        // Security, first of all...
+        if(!$prj->userCanView($this->user)) {
             throw new ControllerAccessDeniedException();
         }
         $ob = [];
-            foreach(['id', 'name', 'owner', 'subtitle', 'status', 'node', 'published', 'success', 'passed', 'closed', 'video', 'image', 'lang', 'currency'] as $k)
+        foreach(['id', 'name', 'owner', 'subtitle', 'description','status', 'node', 'published', 'success', 'passed', 'closed', 'video', 'image', 'lang', 'currency'] as $k)
                 $ob[$k] = $prj->$k;
-            foreach(['amount', 'mincost', 'maxcost'] as $k)
+        foreach(['amount', 'mincost', 'maxcost'] as $k)
                 $ob[$k] = (int)$prj->$k;
 
         if($prj->image instanceof Image) {
@@ -107,26 +105,120 @@ class ProjectsApiController extends AbstractApiController {
 
         //add costs
         $ob['costs'] = [];
-        foreach(Project\Cost::getAll($id) as $cost) {
+        foreach(Project\Cost::getAll($prj->id) as $cost) {
             if(!is_array($ob['costs'][$cost->type])) $ob['costs'][$cost->type] = [];
             $ob['costs'][$cost->type][$cost->id] = ['cost' => $cost->cost, 'description' => $cost->description, 'amount' => (int)$cost->amount, 'required' => (bool)$cost->required];
         }
+        return $ob;
+    }
+    /**
+     * Simple projects info data
+     */
+    public function projectAction($id) {
+        // $prj = Project::getMini($id);
+        // // if(!$this->is_admin && !in_array($prj->status, [Project::STATUS_IN_CAMPAIGN, Project::STATUS_FUNDED, Project::STATUS_FULFILLED, Project::STATUS_UNFUNDED])) {
+        // if(!$prj->userCanView($this->user)) {
+        //     throw new ControllerAccessDeniedException();
+        // }
+        $properties = $this->getSafeProject($id);
 
-        return $this->jsonResponse($ob);
+        return $this->jsonResponse($properties);
     }
 
-    public function projectUploadImagesAction($id, Request $request) {
-        $prj = Project::get($id);
 
-        // Security, first of all...
-        if(!$prj->userCanEdit($this->user)) {
-            throw new ControllerAccessDeniedException();
+    /**
+     * Individual project property checker/updater
+     * To update a property, use the PUT method
+     */
+    public function projectPropertyAction($id, $prop, Request $request) {
+        $prj = Project::get($id);
+        $properties = $this->getSafeProject($prj);
+        $write_fields = ['name', 'subtitle', 'description'];
+        if(!isset($properties[$prop])) {
+            throw new ModelNotFoundException("Property [$prop] not found");
         }
+        if($request->isMethod('put')) {
+            if(!$prj->userCanEdit($this->user)) {
+                throw new ControllerAccessDeniedException();
+            }
+            if(!in_array($prop, $write_fields)) {
+                throw new ModelNotFoundException("Property [$prop] not writeable");
+            }
+            $prj->$prop = $request->request->get('value');
+
+            // do the SQL update
+            $prj->dbUpdate([$prop]);
+            $properties[$prop] = $prj->$prop;
+
+            // TODO: do the SQL update
+        }
+        return $this->jsonResponse($properties[$prop]);
+
+    }
+
+    /**
+     * Individual project updates property checker/updater
+     * To update a property, use the PUT method
+     */
+    public function projectUpdatesPropertyAction($pid, $uid, $prop, Request $request) {
+        $prj = Project::get($pid);
+        $post = BlogPost::get($uid);
+        if(!$post) throw new ModelNotFoundException();
+        if($post->owner_id !== $prj->id) throw new ModelNotFoundException('Non matching update');
+        $read_fields = ['id', 'title', 'text', 'media', 'date', 'author', 'allow', 'publish', 'image', 'gallery', 'owner_type', 'owner_id', 'owner_name', 'user_name'];
+        $write_fields = ['title', 'text', 'date', 'allow', 'publish'];
+        $properties = [];
+        foreach($read_fields as $f) {
+            if(isset($post->$f)) {
+                $val = $post->$f;
+                if($val instanceOf Image) {
+                    $val = $val->getName();
+                }
+                if(is_array($val)) {
+                    foreach($val as $i => $ssub) {
+                        if($sub instanceOf Image) {
+                            $val[$i] = $sub->getName();
+                        }
+                    }
+                }
+                if(in_array($f, ['allow', 'publish'])) {
+                    $val = (bool) $val;
+                }
+                $properties[$f] = $val;
+            }
+        }
+        if(!array_key_exists($prop, $properties)) {
+            throw new ModelNotFoundException("Property [$prop] not found");
+        }
+        if($request->isMethod('put') && $request->request->has('value')) {
+            if(!$prj->userCanEdit($this->user)) {
+                throw new ControllerAccessDeniedException();
+            }
+            if(!in_array($prop, $write_fields)) {
+                throw new ModelNotFoundException("Property [$prop] not writeable");
+            }
+            $post->$prop = $request->request->get('value');
+            if(in_array($prop, ['allow', 'publish'])) {
+                $post->$prop = (bool) $val;
+            }
+            // do the SQL update
+            $post->dbUpdate([$prop]);
+            $properties[$prop] = $post->$prop;
+        }
+        return $this->jsonResponse($properties[$prop]);
+    }
+
+    /**
+     * AJAX upload image (Generic uploader with optional project gallery updater)
+     */
+    public function projectUploadImagesAction($id, Request $request) {
 
         $files = $request->files->get('file');
         if(!is_array($files)) $files = [$files];
-        $global_msg = 'all-files-uploaded';
+        $global_msg = Text::get('all-files-uploaded');
         $result = [];
+
+        $add_to_gallery = $request->request->get('add_to_gallery');
 
         $section = $request->request->get('section');
         if(!array_key_exists($section, ProjectImage::sections())) {
@@ -136,21 +228,25 @@ class ProjectsApiController extends AbstractApiController {
         foreach($files as $file) {
             if(!$file instanceOf UploadedFile) continue;
             // Process image
-            $msg = 'uploaded-ok';
+            $msg = Text::get('uploaded-ok');
             $success = false;
             $image = new Image($file);
             $errors = [];
             if ($image->save($errors)) {
-                /**
-                 * Guarda la relación NM en la tabla 'project_image'.
-                 */
-                if(!empty($image->id)) {
-                    Project::query("REPLACE project_image (project, image, section) VALUES (:project, :image, :section)", array(':project' => $prj->id, ':image' => $image->id, ':section' => $section));
+
+                if($add_to_gallery === 'project_image') {
+                    /**
+                     * Guarda la relación NM en la tabla 'project_image'.
+                     */
+                    if(!empty($image->id)) {
+                        Project::query("REPLACE project_image (project, image, section) VALUES (:project, :image, :section)", array(':project' => $prj->id, ':image' => $image->id, ':section' => $section));
+                    }
+                    // recalculamos las galerias e imagen
+                    // getGallery en Project\Image  procesa todas las secciones
+                    // $galleries = Project\Image::getGalleries($this->id);
+                    // Project\Image::setImage($this->id, $galleries['']);
                 }
-                // recalculamos las galerias e imagen
-                // getGallery en Project\Image  procesa todas las secciones
-                // $galleries = Project\Image::getGalleries($this->id);
-                // Project\Image::setImage($this->id, $galleries['']);
+
                 $success = true;
             }
             else {

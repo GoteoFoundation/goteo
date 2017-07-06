@@ -30,8 +30,8 @@ class SubmitType extends SymfonySubmitType
     public function configureOptions(OptionsResolver $resolver)
     {
         parent::configureOptions($resolver);
-        $resolver->setDefault('label',  'regular-submit');
-        $resolver->setDefault('attr',  ['class' => 'btn btn-green']);
+        $resolver->setDefault('label',  'regular-save');
+        $resolver->setDefault('attr',  ['class' => 'btn btn-green btn-lg']);
     }
 
 }

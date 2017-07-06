@@ -178,10 +178,11 @@
         width: 150px;
         height: 150px;
         cursor: move;
-        background: #ddd;
+        background-color: #ddd;
         background-position: 0 0;
         background-size: 100% 100%;
         background-repeat: no-repeat;
+        border-radius: 10px;
       }
     }
     .options {
