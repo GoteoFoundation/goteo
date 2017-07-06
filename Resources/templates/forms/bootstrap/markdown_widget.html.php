@@ -1,1 +1,1 @@
-<div class="markdown"><textarea <?php echo $view['form']->block($form, 'widget_attributes') ?>><?php echo $view->escape($value) ?></textarea></div>
+<div class="markdown"><textarea <?php echo $view['form']->block($form, 'widget_attributes', ['required' => false]) ?>><?php echo $view->escape($value) ?></textarea></div>

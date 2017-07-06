@@ -226,7 +226,7 @@ class ProjectDashboardController extends \Goteo\Core\Controller {
             ->add('image', 'dropfiles', array(
                 'required' => false,
                 'data' => $defaults['gallery'],
-                'label' => 'regular-image',
+                'label' => 'regular-images',
                 'markdown_link' => 'text',
                 'accepted_files' => 'image/jpeg,image/gif,image/png',
                 'url' => '/api/projects/' . $project->id . '/images',
@@ -247,6 +247,7 @@ class ProjectDashboardController extends \Goteo\Core\Controller {
             ->add('text', 'markdown', array(
                 'label' => 'regular-text',
                 'required' => false,
+                // 'constraints' => array(new Constraints\NotBlank()),
             ))
             ->add('media', 'media', array(
                 'label' => 'regular-media',
@@ -262,6 +263,7 @@ class ProjectDashboardController extends \Goteo\Core\Controller {
                 'color' => 'success', // bootstrap label-* (default, success, ...)
             ))
             ->add('submit', 'submit', array(
+                // 'icon_class' => null
             ))
             ->getForm();
 

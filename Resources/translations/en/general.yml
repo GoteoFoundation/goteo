@@ -153,6 +153,8 @@ regular-web: Site
 regular-weeks: weeks
 regular-yes: 'Yes'
 regular-description: 'Description'
+regular-image: Image
+regular-images: Images
 regular-url: 'URL'
 regular-load-more: 'Load more'
 session-about-to-expire: 'Your session will expire in 10 Minutes, do you want to reload?'

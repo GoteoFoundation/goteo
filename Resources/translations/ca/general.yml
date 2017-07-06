@@ -152,7 +152,9 @@ regular-view_project: Veure el projecte
 regular-web: Web
 regular-weeks: setmanes
 regular-yes: Sí
-regular-description: 'Descripció'
+regular-description: Descripció
+regular-image: Imatge
+regular-images: Imatges
 regular-url: 'URL'
 regular-load-more: 'Carregar-ne més'
 session-about-to-expire: 'Tu sesión expirará en 10 minutos. ¿Quieres recargar la página para renovarla?'

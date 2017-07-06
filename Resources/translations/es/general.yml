@@ -174,7 +174,8 @@ regular-yes: Sí
 regular-add: Nuevo registro
 regular-name: Nombre
 regular-description: Descripción
-regular-image: 'Imagen'
+regular-image: Imagen
+regular-images: Imágenes
 regular-content: Contenido
 regular-url: Enlace
 regular-date: Fecha
