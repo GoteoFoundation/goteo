@@ -40,6 +40,10 @@
       </tbody>
     </table>
 
+    <p>
+        <a href="#" class="btn btn-lg btn-green"><?= $this->text('form-add-button') ?></a>
+    </p>
+
     <?= $this->insert('partials/utils/paginator', ['total' => $this->total, 'limit' => $this->limit]) ?>
 
     <?php else: ?>

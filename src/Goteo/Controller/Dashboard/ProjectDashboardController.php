@@ -181,14 +181,23 @@ class ProjectDashboardController extends \Goteo\Core\Controller {
             ]);
     }
 
-    public function updatesEditAction($pid, $uid, Request $request)
+    public function updatesEditAction($pid, $uid = null, Request $request)
     {
-        // View::setTheme('default');
         $project = $this->validateProject($pid, 'updates');
         if($project instanceOf Response) return $project;
 
         $post = BlogPost::get($uid);
-        if(!$post) throw new ModelNotFoundException();
+        // if(!$post) throw new ModelNotFoundException();
+        if(!$post) {
+            $blog = Blog::get($project->id);
+            if(!$blog instanceOf Blog) throw new ModelException("Blog not found for project [{$project->id}]");
+            $post = new BlogPost([
+                'blog' => $blog->id,
+                'date' => date('Y-m-d'),
+                'publish' => false,
+                'allow' => true
+            ]);
+        }
 
         $defaults = (array)$post;
         $defaults['date'] = new \Datetime($defaults['date']); // TODO: into the transformer datepickertype
@@ -198,7 +207,6 @@ class ProjectDashboardController extends \Goteo\Core\Controller {
         // Create the form
         $form = $this->createFormBuilder($defaults)
             ->add('title', 'text', array(
-                'required' => false,
                 'label' => 'regular-title',
                 'constraints' => array(
                         new Constraints\NotBlank(),
@@ -238,10 +246,7 @@ class ProjectDashboardController extends \Goteo\Core\Controller {
             // ))
             ->add('text', 'markdown', array(
                 'label' => 'regular-text',
-                'constraints' => array(
-                        new Constraints\NotBlank(),
-                        // new Length(array('min' => 4)),
-                    ),
+                'required' => false,
             ))
             ->add('media', 'media', array(
                 'label' => 'regular-media',
