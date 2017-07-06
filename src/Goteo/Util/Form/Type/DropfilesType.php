@@ -41,7 +41,8 @@ class DropfilesType extends FileType
         $builder->add('current', FileType::class, [
             'multiple' => true,
             'data' => $options['data'],
-            'data_class' => null
+            'data_class' => null,
+            // 'markdown_link' => $options['markdown_link']
         ]);
         // New added files
         $builder->add('uploads', FileType::class, ['multiple' => true]);
@@ -129,8 +130,8 @@ class DropfilesType extends FileType
         $resolver->setDefaults(array(
             // 'compound' => false,
             'data_class' => null,
+            'markdown_link' => '', // creates a button to send the image link to a markdown editor
             'empty_data' => null,
-            'gallery' => [],
             'multiple' => false,
             'auto_process' => false, // auto process the sending of files
             'url' => null, // url parameter for dropzone (null implies default action)
@@ -138,7 +139,6 @@ class DropfilesType extends FileType
             'sortable' => true, // Allow dragndrop sort of multiple files
             'text_upload' => '<i style="font-size:2em" class="fa fa-plus"></i><br><br>' . Text::get('dashboard-project-dnd-image')
         ));
-        $resolver->setAllowedTypes('gallery', 'array');
     }
 
     /**
@@ -155,6 +155,7 @@ class DropfilesType extends FileType
             $options['limit'] = 1;
         }
 
+        $view->vars['markdown_link'] = $options['markdown_link'];
         $view->vars['text_upload'] = $options['text_upload'];
         $view->vars['limit'] = $options['limit'];
         $view->vars['multiple'] = $options['multiple'];

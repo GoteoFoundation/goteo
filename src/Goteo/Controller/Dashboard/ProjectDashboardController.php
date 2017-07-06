@@ -216,6 +216,7 @@ class ProjectDashboardController extends \Goteo\Core\Controller {
             ->add('image', 'dropfiles', array(
                 'required' => false,
                 'data' => $defaults['gallery'],
+                'markdown_link' => 'text',
                 'constraints' => array(
                     new Constraints\Count(array('max' => 10)),
                     new Constraints\All(array(
