@@ -137,7 +137,9 @@ class DropfilesType extends FileType
             'url' => null, // url parameter for dropzone (null implies default action)
             'limit' => 10, // Max number of files in multiple uploads
             'sortable' => true, // Allow dragndrop sort of multiple files
-            'text_upload' => '<i style="font-size:2em" class="fa fa-plus"></i><br><br>' . Text::get('dashboard-project-dnd-image')
+            'text_upload' => '<i style="font-size:2em" class="fa fa-plus"></i><br><br>' . Text::get('dashboard-project-dnd-image'),
+            'text_delete_image' => Text::get('dashboard-project-delete-image'),
+            'text_send_to_markdown' => Text::get('dashboard-project-send-to-markdown')
         ));
     }
 
@@ -156,6 +158,8 @@ class DropfilesType extends FileType
         }
 
         $view->vars['markdown_link'] = $options['markdown_link'];
+        $view->vars['text_delete_image'] = $options['text_delete_image'];
+        $view->vars['text_send_to_markdown'] = $options['text_send_to_markdown'];
         $view->vars['text_upload'] = $options['text_upload'];
         $view->vars['limit'] = $options['limit'];
         $view->vars['multiple'] = $options['multiple'];

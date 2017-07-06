@@ -125,7 +125,7 @@ $(function(){
 
 
     // MarkdownType initialization
-    var markdowns = [];
+    var markdowns = {};
     $('.autoform .markdown > textarea').each(function() {
         var el = this;
         // console.log('found textarea', el);
@@ -142,10 +142,10 @@ $(function(){
         //     console.log(document.getElementById('autoform_text').innerHTML);
         // });
 
-        markdowns.push(simplemde);
+        markdowns[$(this).attr('id')] = simplemde;
     });
 
-    var dropzones = [];
+    var dropzones = {};
     // Dropfiles initialization
     $('.autoform .dropfiles').each(function() {
         var $dz = $(this);
@@ -223,7 +223,7 @@ $(function(){
                 drop.removeFile(file);
             }, 0);
         });
-        dropzones.push(drop);
+        dropzones[$(this).attr('id')] = drop;
 
     });
 
@@ -241,22 +241,18 @@ $(function(){
         $form.find('.dragndrop').show();
     });
 
+    // Add to markdown
+    $('.autoform').on( 'click', '.image-list-sortable .add-to-markdown', function(e) {
+        e.preventDefault();
+        e.stopPropagation();
+        var $li = $(this).closest('li');
+        var name = $li.data('name');
+        var $form = $(this).closest('form');
+        var target = $form.attr('name') + '_' + $(this).data('target');
+        var md = markdowns[target];
+        if(md) {
+            md.value(md.value().replace(/\s+$/g, '') + "\n\n![](" + SRC_URL + '/image/600x600/' + name + ")");
+        }
+    });
 
-    // $('.autoform').on('submit', function(e){
-    //     markdowns.forEach(function(md) {
-    //         console.log(md.value(), md.element.innerHTML);
-    //         md.element.innerHTML = md.value();
-    //         console.log('after',md.element.innerHTML);
-    //     });
-    // });
-    //     e.preventDefault();
-    //     e.stopPropagation();
-
-    //     console.log('submit');
-    //     if(dropzones.length) {
-    //         console.log('submit process');
-    //         // Process the first (will submit everything)
-    //         dropzones[0].processQueue();
-    //     }
-    // });
 });

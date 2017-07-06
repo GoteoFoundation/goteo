@@ -191,4 +191,4 @@ dashboard-project-default-image-confirm: '¿Quieres poner esta imagen por defect
 dashboard-project-image-default-ko: 'No se ha podido poner la imagen por defecto!'
 dashboard-project-image-reorder-ko: 'No se han podido ordenar las imágenes!'
 
-
+dashboard-project-send-to-markdown: "Introducir esta imagen en el texto"

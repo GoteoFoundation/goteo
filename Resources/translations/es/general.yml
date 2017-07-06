@@ -158,6 +158,8 @@ regular-status: Estado
 regular-template: Plantilla
 regular-thanks: Gracias
 regular-title: Título
+regular-text: Texto
+regular-media: Vídeo (Youtube, Vimeo)
 regular-total: Total
 regular-translate: Traducir
 regular-translate_board: 'Panel traductor'
@@ -170,7 +172,6 @@ regular-weeks: semanas
 regular-year: Año
 regular-yes: Sí
 regular-add: Nuevo registro
-regular-title: Título
 regular-name: Nombre
 regular-description: Descripción
 regular-image: 'Imagen'

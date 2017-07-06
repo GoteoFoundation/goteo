@@ -199,12 +199,14 @@ class ProjectDashboardController extends \Goteo\Core\Controller {
         $form = $this->createFormBuilder($defaults)
             ->add('title', 'text', array(
                 'required' => false,
+                'label' => 'regular-title',
                 'constraints' => array(
                         new Constraints\NotBlank(),
                         new Constraints\Length(array('min' => 4)),
                     ),
             ))
             ->add('date', 'datepicker', array(
+                'label' => 'regular-date',
                 'constraints' => array(
                         new Constraints\NotBlank(),
                         // new Length(array('min' => 4)),
@@ -216,6 +218,7 @@ class ProjectDashboardController extends \Goteo\Core\Controller {
             ->add('image', 'dropfiles', array(
                 'required' => false,
                 'data' => $defaults['gallery'],
+                'label' => 'regular-image',
                 'markdown_link' => 'text',
                 'constraints' => array(
                     new Constraints\Count(array('max' => 10)),
@@ -232,12 +235,14 @@ class ProjectDashboardController extends \Goteo\Core\Controller {
             //     'required' => false
             // ))
             ->add('text', 'markdown', array(
+                'label' => 'regular-text',
                 'constraints' => array(
                         new Constraints\NotBlank(),
                         // new Length(array('min' => 4)),
                     ),
             ))
             ->add('media', 'media', array(
+                'label' => 'regular-media',
                 'required' => false
             ))
             ->add('allow', 'boolean', array(

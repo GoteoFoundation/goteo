@@ -188,3 +188,4 @@ dashboard-project-default-image-confirm: 'Do you want to use this image as a def
 dashboard-project-image-default-ko: 'The image has not been set as default!'
 dashboard-project-image-reorder-ko: 'The images have not been ordered!'
 
+dashboard-project-send-to-markdown: "Insert this image into the text field"
