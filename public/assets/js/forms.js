@@ -149,14 +149,15 @@ $(function(){
     // Dropfiles initialization
     $('.autoform .dropfiles').each(function() {
         var $dz = $(this);
-        var $error = $dz.next();
+        var $error = $dz.find('.error-msg');
         var $list = $(this).find('.image-list-sortable');
         var $dnd = $(this).find('.dragndrop');
         var $form = $dz.closest('form');
         var multiple = !!$dz.data('multiple');
+        var limit = parseInt($dz.data('limit'));
         var $template = $form.find('script.dropfile_item_template');
         // ALlow drag&drop reorder of existing files
-        if(multiple) {
+        if(multiple && limit > 1) {
            Sortable.create($list[0], {
                 // group: '',
                 // , forceFallback: true
@@ -177,13 +178,16 @@ $(function(){
                 }
             });
         }
-        // Create the FILE upload
+        if($list.find('li').length >= limit) {
+            $dnd.hide();
+        }
 
+        // Create the FILE upload
         var drop = new Dropzone($dnd.contents('div')[0], {
             url: $dz.data('url') ? $dz.data('url') : null,
             uploadMultiple: multiple,
             createImageThumbnails: true,
-            maxFiles: $dz.data('limit'),
+            maxFiles: limit,
             autoProcessQueue: !!$dz.data('auto-process'), // no ajax post
             dictDefaultMessage: $dz.data('text-upload')
         })
@@ -202,13 +206,23 @@ $(function(){
             // console.log('thumbnail', file);
         })
         .on('addedfile', function(file) {
-            // console.log('added', file);
+            var total = $list.find('li').length;
+            // console.log('added', file, 'total', total, 'limit', limit);
+            if(total >= limit) {
+                $error.html($dz.data('text-max-files-reached'));
+                $error.removeClass('hidden');
+                drop.removeFile(file);
+                // console.log($dz.data('text-max-files-reached'), $error.html());
+                return false;
+            }
             var $li = $($template.html().replace('{NAME}', file.name));
             $li.find('.image').css({backgroundSize: '25%'});
             $list.append($li);
             // TODO put filetypes as default in URL
             $error.addClass('hidden');
-
+            if(total >= limit - 1) {
+                $dnd.hide();
+            }
             // Input node with selected files. It will be removed from document shortly in order to
             // give user ability to choose another set of files.
             var inputFile = this.hiddenFileInput;
@@ -233,12 +247,18 @@ $(function(){
         e.stopPropagation();
         // console.log('remove');
         var $li = $(this).closest('li');
+        var $drop = $(this).closest('.dropfiles');
         var $zone = $(this).closest('.image-zone');
+        var $list = $(this).closest('.image-list-sortable');
         var $form = $(this).closest('form');
         var $error = $zone.next();
         $li.remove();
         $error.addClass('hidden');
-        $form.find('.dragndrop').show();
+        var limit = parseInt($drop.data('limit'));
+        var total = $list.find('li').length;
+        if(total < limit) {
+            $form.find('.dragndrop').show();
+        }
     });
 
     // Add to markdown

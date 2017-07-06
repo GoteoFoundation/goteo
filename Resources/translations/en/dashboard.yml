@@ -189,3 +189,4 @@ dashboard-project-image-default-ko: 'The image has not been set as default!'
 dashboard-project-image-reorder-ko: 'The images have not been ordered!'
 
 dashboard-project-send-to-markdown: "Insert this image into the text field"
+dashboard-max-files-reached: "The maximum number of files has been reached!"

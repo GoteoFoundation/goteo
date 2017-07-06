@@ -415,8 +415,9 @@ class Image extends \Goteo\Core\Model {
         }
 
         try {
-            $sql = "SELECT image FROM {$model_table}_image WHERE {$model_table} = ?";
+            $sql = "SELECT image FROM `{$model_table}_image` WHERE {$model_table} = ?";
             if ($model_table === 'project') $sql .= ' ORDER BY section ASC, `order` ASC';
+            else $sql .= ' ORDER BY `order` ASC';
             $query = self::query($sql, array($model_id));
             foreach ($query->fetchAll(\PDO::FETCH_OBJ) as $image) {
                 $gallery[] = self::get($image->image);
@@ -484,22 +485,28 @@ class Image extends \Goteo\Core\Model {
             $values = array(':id' => $model_id);
             $ids = [];
             $inserts = [];
+            $orders = [];
+            $order_values = [];
+            $index = 0;
             foreach($gallery as $i => $img) {
                 $ok = !empty($img->name);
                 if($img->tmp && $img->name) $ok = $img->save($errors);
                 if($ok) {
                     $values[":name_$i"] = $img->id ? $img->id : $img->name;
+                    $order_values[":order_$i"] = $index++;
                     $ids[] = ":name_$i";
-                    $inserts[] = "(:id, :name_$i)";
+                    $orders[] = "`order` = :order_$i";
+                    $inserts[] = "(:id, :name_$i, :order_$i)";
                 } else {
                     // print_r($img);print_r($errors);die;
                     throw new ModelException($img->name . ': ' . implode(", ", $errors['image']));
                 }
             }
-            $sql = "DELETE FROM `{$model_table}_image` WHERE `{$model_table}` = :id AND image NOT IN (" . implode(", ", $ids) . ")";
+            $sql = "DELETE FROM `{$model_table}_image` WHERE `{$model_table}` = :id AND `image` NOT IN (" . implode(", ", $ids) . ")";
             self::query($sql, $values);
-            $sql = "INSERT IGNORE INTO `{$model_table}_image` (`{$model_table}`, image) VALUES " . implode(", ", $inserts);
-            self::query($sql, $values);
+            $sql = "REPLACE `{$model_table}_image` (`{$model_table}`, `image`, `order`) VALUES " . implode(", ", $inserts);
+            // die(\sqldbg($sql, $values + $order_values));
+            self::query($sql, $values + $order_values);
         } catch(\PDOException $e) {
             throw new ModelException($e->getMessage());
             // return false;

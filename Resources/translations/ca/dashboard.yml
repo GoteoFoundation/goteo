@@ -184,3 +184,4 @@ dashboard-project-image-default-ko: "No se s'ha pogut posar la imatge per defect
 dashboard-project-image-reorder-ko: "No se s'han pogut ordenar les imatges!"
 
 dashboard-project-send-to-markdown: "Introduïr la imatge al text"
+dashboard-max-files-reached: "Heu assolit el número màxim d'arxius!"

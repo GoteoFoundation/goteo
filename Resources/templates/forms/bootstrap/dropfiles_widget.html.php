@@ -1,12 +1,12 @@
 <?php
 
-$current_name = $form['current']->vars['full_name'];
 $uploads_name = $form['uploads']->vars['full_name'];
+$current_name = $form['current']->vars['full_name'];
 $current_files = $value;
 
-
+// print_r($current_files);die;
 ?>
-<div class="dropfiles" data-text-upload="<?= $view->escape($text_upload) ?>" data-limit="<?= $limit ?>" data-auto-process="<?= $auto_process ?>" data-multiple="<?= $multiple ?>" data-url="<?= $view->escape($url) ?>" data-name="<?= $view->escape($uploads_name) ?>">
+<div class="dropfiles" data-text-upload="<?= $view->escape($text_upload) ?>" data-text-max-files-reached="<?= $view->escape($text_max_files_reached) ?>" data-limit="<?= $limit ?>" data-auto-process="<?= $auto_process ?>" data-multiple="<?= $attr['multiple'] ? 1 : 0 ?>" data-url="<?= $view->escape($url) ?>" data-name="<?= $view->escape($uploads_name) ?>">
     <div class="image-zone" data-section="<?= $key ?>">
         <ul class="list-inline image-list-sortable" id="list-sortable-<?= $key ?>">
           <?php foreach($current_files as $img) {
