@@ -47,7 +47,7 @@ class OriginListener extends AbstractListener {
 
         // var_dump($ua);
         if(!Session::exists('origin.ua')) {
-            Session::store('origin.ua', $referer);
+            Session::store('origin.ua', $ua);
             // echo "Saving ua";
         }
 
