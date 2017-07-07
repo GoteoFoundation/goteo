@@ -115,6 +115,9 @@ $sc->register('app.listener.session', 'Goteo\Application\EventListener\SessionLi
 // Auth listener
 $sc->register('app.listener.auth', 'Goteo\Application\EventListener\AuthListener')
    ->setArguments(array(new Reference('logger')));
+// Origin listener
+$sc->register('app.listener.origin', 'Goteo\Application\EventListener\OriginListener')
+   ->setArguments(array(new Reference('logger')));
 // Project listener
 $sc->register('app.listener.project', 'Goteo\Application\EventListener\ProjectListener')
     ->setArguments(array(new Reference('logger')));
@@ -141,7 +144,8 @@ $sc->register('app.listener.acl', 'Goteo\Application\EventListener\AclListener')
 $sc->register('dispatcher', 'Symfony\Component\EventDispatcher\EventDispatcher')
 	->addMethodCall('addSubscriber', array(new Reference('app.listener.exception')))
 	->addMethodCall('addSubscriber', array(new Reference('app.listener.session')))
-	->addMethodCall('addSubscriber', array(new Reference('app.listener.auth')))
+    ->addMethodCall('addSubscriber', array(new Reference('app.listener.auth')))
+	->addMethodCall('addSubscriber', array(new Reference('app.listener.origin')))
 	->addMethodCall('addSubscriber', array(new Reference('app.listener.project')))
   ->addMethodCall('addSubscriber', array(new Reference('app.listener.invest')))
   ->addMethodCall('addSubscriber', array(new Reference('app.listener.poolinvest')))
