@@ -33,42 +33,36 @@
         "paypal/adaptivepayments-sdk-php": "*",
         "paypal/merchant-sdk-php": "*",
 
-
-        "symfony/class-loader": "~2.6",
-
-
-        "symfony/http-foundation": "~2.6",
-
-
-        "symfony/routing": "~2.6",
-
-
-        "symfony/http-kernel": "~2.6",
-
-
-        "symfony/security": "^2.7",
-        "symfony/config": "^2.7",
-        "symfony/stopwatch": "^2.7",
-        "symfony/dependency-injection": "^2.7",
-        "symfony/debug": "^2.7",
+        "symfony/class-loader": "~2.8",
+        "symfony/http-foundation": "~2.8",
+        "symfony/routing": "~2.8",
+        "symfony/http-kernel": "~2.8",
+        "symfony/security": "^2.8",
+        "symfony/config": "^2.8",
+        "symfony/stopwatch": "^2.8",
+        "symfony/dependency-injection": "^2.8",
+        "symfony/debug": "^2.8",
+        "symfony/console": "^2.8",
+        "symfony/translation": "^2.8",
+        "symfony/finder": "^2.8",
+        "symfony/dom-crawler": "^2.8",
+        "symfony/css-selector": "^2.8",
+        "symfony/process": "^2.8",
+        "symfony/form": "2.8",
+        "monolog/monolog": "^1.17",
         "gregwar/captcha": "^1.1",
         "geoip2/geoip2": "~2.0",
-        "symfony/console": "^2.7",
-        "symfony/translation": "^2.7",
-        "symfony/finder": "^2.7",
-        "monolog/monolog": "^1.17",
-        "symfony/dom-crawler": "^2.7",
-        "symfony/css-selector": "^2.7",
         "openclerk/country-list": "^1.0",
         "mockery/mockery": "^0.9.4",
         "cron/cron": "1.0.*@dev",
-        "symfony/process": "^2.7",
         "bramus/monolog-colored-line-formatter": "~2.0",
         "setasign/fpdf": "1.8",
         "rych/phpass": "3.0.*@beta",
         "erusev/parsedown": "^1.6",
         "omnipay/omnipay": "^2.3",
-        "omnipay/paypal": "dev-master"
+        "omnipay/paypal": "dev-master",
+        "snowplow/referer-parser": "dev-master",
+        "ua-parser/uap-php": "^3.4"
 
     },
 
