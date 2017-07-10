@@ -57,12 +57,12 @@ class OriginListener extends AbstractListener {
         $ref = $request->headers->get('referer');
         $result = $parser->parse($ref, $request->getUri());
         // echo $ref .','. $request->getUri();
+        $referer = array(
+            'tag' => $result->getSource(),
+            'category' => $result->getMedium(),
+            'type' => 'referer'
+            );
         if ($result->isKnown()) {
-            $referer = array(
-                'tag' => $result->getSource(),
-                'category' => $result->getMedium(),
-                'type' => 'referer'
-                );
 
             // var_dump($referer);
             // Save if is visiting a project
