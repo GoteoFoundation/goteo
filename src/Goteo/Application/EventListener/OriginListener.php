@@ -55,7 +55,6 @@ class OriginListener extends AbstractListener {
         // https://github.com/snowplow/referer-parser/tree/master/php
         $parser = new RefererParser();
         $ref = $request->headers->get('referer');
-        $ref = 'https://t.co/mVJXgN1Wj0';
         $result = $parser->parse($ref, $request->getUri());
         // echo $ref .','. $request->getUri();
         if ($result->isKnown()) {
