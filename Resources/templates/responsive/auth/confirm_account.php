@@ -19,8 +19,8 @@ if(empty($username)) $username = strtok($email,"@");
 //Falta, si l'usuari existeix, suggerir un altre que estigui disponible...
 
 $this->layout('auth/layout', [
-    'alt_title' => $this->text('reset-password-title'),
-    'alt_description' => $this->text('reset-password-title')
+    'title' => $this->text('reset-password-title'),
+    'description' => $this->text('reset-password-title')
     ]);
 
 $this->section('inner-content');

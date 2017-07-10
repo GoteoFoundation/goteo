@@ -1,8 +1,8 @@
 <?php
 
 $this->layout('auth/layout', [
-    'alt_title' => $this->text('reset-password-title'),
-    'alt_description' => $this->text('reset-password-title')
+    'title' => $this->text('reset-password-title'),
+    'description' => $this->text('reset-password-title')
     ]);
 
 $this->section('inner-content');

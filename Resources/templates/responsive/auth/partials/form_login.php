@@ -1,4 +1,6 @@
-
+<?php
+$signup_link = $this->signup_link ? $this->raw('signup_link') : '/signup?return=' . urlencode($this->raw('return'));
+?>
     <div class="form-group">
         <div class="col-md-10 col-md-offset-1">
             <input type="text" class="form-control" placeholder="<?= $this->text('login-recover-email-field') ?>" name="username" value="<?= $this->username ?>" required>
@@ -21,6 +23,6 @@
             <a data-toggle="modal" data-target="#myModal" href=""><?= $this->text('login-recover-label') ?></a>
         </div>
         <div class="col-md-10 col-md-offset-1 standard-margin-top">
-            <a href="/signup?return=<?= urlencode($this->raw('return')) ?>" ><?= $this->text('login-new-user-label') ?></a>
+            <a href="<?= $signup_link ?>" ><?= $this->text('login-new-user-label') ?></a>
         </div>
     </div>

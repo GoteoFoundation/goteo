@@ -155,24 +155,18 @@ class InvestController extends \Goteo\Core\Controller {
             // A login is required here
             if(!Session::isLogged()) {
 
-                $login_return='/login?return='.urlencode($this->page . '/payment?' . $this->query);
+                // $login_return='/login?return='.urlencode($this->page . '/payment?' . $this->query);
                 // Custom login page
-                Message::info(Text::get('invest-login-alert', $login_return));
+                // Message::info(Text::get('invest-login-alert', $login_return));
 
                 // Message for login page
                 // Session::store('sub-header', $this->getViewEngine()->render('invest/partials/login_sub_header', ['amount' => $amount_original, 'url_return' => $login_return ]));
-                Session::store('alt_layout', GOTEO_PATH . 'Resources/templates/responsive/invest/layout.php');
-                Session::store('current_project', $project);
-                Session::store('current_step', 2);
-                Session::store('login-layout', 'invest/layout');
 
                 // or login page?
-                return $this->redirect('/signup?return=' . urlencode($this->page . '/payment?' . $this->query));
+                // return $this->redirect('/signup?return=' . urlencode($this->page . '/payment?' . $this->query));
+                return $this->redirect('/invest/' . $project->id . '/login?' . $this->query);
             }
             // Session::del('sub-header');
-            Session::del('alt_layout');
-            Session::del('current_project');
-            Session::del('current_step');
         }
 
         // If invest defined, check user session
@@ -213,6 +207,7 @@ class InvestController extends \Goteo\Core\Controller {
             'amount_formated' => Currency::format($amount_original, $currency),
             'currency' => $currency,
             'reward' => $reward,
+            'query' => $this->query,
             'invest' => $invest
         ]);
         // print_r($project);die;
@@ -240,6 +235,42 @@ class InvestController extends \Goteo\Core\Controller {
 
         // Aqui cambiar por escoger recompensa
         return $this->viewResponse('invest/select_reward', ['step' => 1]);
+
+    }
+
+    /**
+     * step1.5: login page
+     *
+     */
+    public function loginAction($project_id, Request $request)
+    {
+        $amount = $request->query->get('amount');
+        $reward = $this->validate($project_id, $request->query->get('reward'), $amount, null, false);
+
+        if($reward instanceOf Response) return $reward;
+
+        $result = AuthController::checkLogin($request);
+        if($result instanceOf Response) return $result;
+
+        return $this->viewResponse('invest/login', ['step' => 2, 'return' => $this->page . '/payment?' . $this->query]);
+
+    }
+
+    /**
+     * step1.5: signup page
+     *
+     */
+    public function signupAction($project_id, Request $request)
+    {
+        $amount = $request->query->get('amount');
+        $reward = $this->validate($project_id, $request->query->get('reward'), $amount, null, false);
+
+        if($reward instanceOf Response) return $reward;
+
+        $result = AuthController::checkSignup($request);
+        if($result instanceOf Response) return $result;
+
+        return $this->viewResponse('invest/signup', ['step' => 2, 'return' => $this->page . '/payment?' . $this->query]);
 
     }
 

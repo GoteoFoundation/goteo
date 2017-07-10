@@ -1,8 +1,8 @@
 <?php
 
 $this->layout('auth/layout', [
-    'alt_title' => $this->text('meta-title-register'),
-    'alt_description' => $this->text('meta-title-register')
+    'title' => $this->text('meta-title-register'),
+    'description' => $this->text('meta-title-register')
 ]);
 
 $this->section('inner-content');
@@ -26,23 +26,5 @@ $this->section('inner-content');
 <?php $this->append() ?>
 
 <?php $this->section('footer') ?>
-
-<script type='text/javascript'>
-
-$(function() {
-
-  $('#register_accept').change(function() {
-        $('#register_continue').attr('disabled', !this.checked);
-
-  });
-
-  $('#openid').change(function() {
-        $('#openid-link').attr('href', '/login/openid?return=<?= urlencode($this->raw('return')) ?>&u='+$(this).val());
-
-  });
-
-})
-
-</script>
-
+    <?= $this->insert('auth/partials/javascript_signup') ?>
 <?php $this->append() ?>
