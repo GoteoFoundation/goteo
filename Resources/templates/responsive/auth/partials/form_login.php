@@ -3,7 +3,7 @@ $signup_link = $this->signup_link ? $this->raw('signup_link') : '/signup?return=
 ?>
     <div class="form-group">
         <div class="col-md-10 col-md-offset-1">
-            <input type="text" class="form-control" placeholder="<?= $this->text('login-recover-email-field') ?>" name="username" value="<?= $this->username ?>" required>
+            <input type="email" class="form-control" placeholder="<?= $this->text('login-recover-email-field') ?>" name="username" value="<?= $this->username ?>" required>
         </div>
     </div>
 
@@ -14,15 +14,20 @@ $signup_link = $this->signup_link ? $this->raw('signup_link') : '/signup?return=
     </div>
 
 
-
     <div class="form-group">
         <div class="col-md-10 col-md-offset-1">
             <button type="submit" class="btn btn-block btn-success"><?= $this->text('login-title') ?></button>
         </div>
-        <div class="col-md-10 col-md-offset-1 standard-margin-top">
+    </div>
+
+    <div class="form-group">
+        <div class="col-md-10 col-md-offset-1">
             <a data-toggle="modal" data-target="#myModal" href=""><?= $this->text('login-recover-label') ?></a>
         </div>
-        <div class="col-md-10 col-md-offset-1 standard-margin-top">
+    </div>
+
+    <div class="form-group">
+        <div class="col-md-10 col-md-offset-1">
             <a href="<?= $signup_link ?>" ><?= $this->text('login-new-user-label') ?></a>
         </div>
     </div>

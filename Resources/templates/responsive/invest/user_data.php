@@ -16,8 +16,6 @@ $this->section('main-content');
 
                 <?= $this->insert('invest/partials/invest_header_form') ?>
 
-                <?= $this->supply('sub-header', $this->get_session('sub-header')) ?>
-
                 <form class="form-horizontal" id="make-sure-form" role="form" method="POST" action="/invest/<?= $this->project->id ?>/<?= $this->invest->id ?>">
 
                     <?= $this->supply('invest-form', $this->insert('invest/partials/invest_address_form')) ?>

@@ -24,7 +24,13 @@ $query = $this->query . '&amp;return=' . urlencode($this->raw('return')) . '&amp
 
                 <?= $this->insert('auth/partials/form_login', ['signup_link' => '/invest/' . $this->project->id . '/signup?' . $query]) ?>
 
-
+                <?php if($this->skip_login): ?>
+                <div class="form-group">
+                    <div class="col-md-10 col-md-offset-1">
+                        <a href="/invest/<?= $this->project->id ?>/payment?<?= $query ?>&skip_login" ><?= $this->text('invest-no-register') ?></a>
+                    </div>
+                </div>
+                <?php endif ?>
                 </form>
 
             </div>

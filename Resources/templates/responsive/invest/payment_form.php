@@ -27,8 +27,6 @@ $pay_method = $this->pay_method;
                 <?php endif; ?>
                 </div>
 
-                <?= $this->supply('sub-header', $this->get_session('sub-header')) ?>
-
 
                 <form class="form-horizontal" role="form" method="POST" action="">
                 <!-- TODO: hidden clases -->

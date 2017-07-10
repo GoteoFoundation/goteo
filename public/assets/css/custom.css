@@ -264,11 +264,12 @@ button.pink:hover, button.pink:focus, button.custom-green:hover{
 }
 
 .reminder{
-	padding: 1em;
+	padding: 0;
 	color: #58595B;
-	margin-bottom: 2em;
-	border-top: 3px solid #E7E7E7;
-	border-bottom: 3px solid #E7E7E7;
+    margin-top: 0;
+	margin-bottom: 1em;
+	// border-top: 3px solid #E7E7E7;
+	// border-bottom: 3px solid #E7E7E7;
 }
 
 .reminder .level-1{
@@ -291,6 +292,11 @@ button.pink:hover, button.pink:focus, button.custom-green:hover{
     color: #96238F;
 }
 
+.no-register {
+    background-color: #E7E7E7;
+    border-radius:10px;
+    padding:1em;
+}
 .invest-container{
 	max-width:800px;
 	margin: 0 auto;
@@ -362,9 +368,13 @@ label.label-disabled{
 }
 
 .pay-method{
-	text-align:center;
-	padding-right: 7px;
-	padding-left: 7px;
+    text-align:center;
+    padding-right: 0;
+    padding-left: 0;
+    margin-left: 7px;
+}
+.pay-method:first-child{
+    margin-left: 0;
 }
 
 .invest-button{

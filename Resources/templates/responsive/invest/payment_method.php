@@ -22,17 +22,23 @@ $this->section('main-content');
                         <?= $this->text('invest-alert-rewards') ?>
                         <strong class="text-uppercase"><?= $this->reward->reward ?></strong>
                     </div>
-                <?php endif; ?>
+                <?php endif ?>
                 </div>
-
-                <?= $this->supply('sub-header', $this->get_session('sub-header')) ?>
 
                 <form class="form-horizontal" role="form" method="GET" action="/invest/<?= $this->project->id ?>/form">
                 <input type="hidden" name="reward" value="<?= $this->reward ? $this->reward->id : '0' ?>">
                 <input type="hidden" name="amount" value="<?= $this->amount_original . $this->currency ?>">
 
-                <div class="row no-padding col-md-10 col-md-offset-1">
+                <?php if($this->skip_login): ?>
+                    <div class="col-md-10 col-md-offset-1">
+                        <div class="form-group no-register">
+                            <label><?= $this->text('regular-email') ?></label>
+                            <input type="email" class="form-control" placeholder="<?= $this->text('regular-email') ?>" name="email" value="<?= $this->email ?>" required>
+                        </div>
+                    </div>
+                <?php endif ?>
 
+                <div class="row no-padding col-md-10 col-md-offset-1">
                 <?php foreach($this->pay_methods as $method => $pay): ?>
                     <div class="col-xxs-6 col-tn-6 col-xs-3 pay-method<?= $pay->isActive() ? '' : ' disabled' ?>">
                         <label class="label-method <?= $pay->isActive($this->amount) ? '' : 'label-disabled' ?> <?= $this->default_method == $method ? ' method-choosen' : '' ?>" for="<?= $method ?>-method">

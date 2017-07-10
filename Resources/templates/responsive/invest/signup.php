@@ -17,11 +17,17 @@ $query = $this->query . '&amp;return=' . urlencode($this->raw('return')) . '&amp
 
                 <h2 class="col-md-offset-1 padding-bottom-6"> <?= $this->text('register-form-title') ?></h2>
 
-                <?= $this->supply('sub-header', $this->get_session('sub-header')) ?>
-
                 <form class="form-horizontal" role="form" method="post" action="/invest/<?= $this->project->id ?>/signup?<?= $query ?>">
 
                 <?= $this->insert('auth/partials/form_signup', ['login_link' => '/invest/' . $this->project->id . '/login?' . $query ]) ?>
+
+                <?php if($this->skip_login): ?>
+                <div class="form-group">
+                    <div class="col-md-10 col-md-offset-1">
+                        <a href="/invest/<?= $this->project->id ?>/payment?<?= $query ?>&skip_login" ><?= $this->text('invest-no-register') ?></a>
+                    </div>
+                </div>
+                <?php endif ?>
 
                 <?= $this->insert('auth/partials/social_login') ?>
 

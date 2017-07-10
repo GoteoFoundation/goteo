@@ -63,10 +63,9 @@ class InvestController extends \Goteo\Core\Controller {
     /**
      * Validates the project availability for investing (redirects or exceptions on failures)
      * Also sets common vars to be used in the views
-     * @param  [type] $project_id [description]
-     * @param  [type] $reward_id  [description]
-     * @param  [type] $amount_id  [description]
-     * @return [type]             [description]
+     *
+     * if $login_required is 'auto', login will be required depending on
+     * the skip_login variable from project configuration
      */
     private function validate($project_id, $reward_id = null, &$custom_amount = null, $invest = null, $login_required = true) {
 
@@ -82,6 +81,8 @@ class InvestController extends \Goteo\Core\Controller {
         $this->page = '/invest/' . $project_id;
         $this->query = http_build_query(['amount' => "$amount_original$currency", 'reward' => $reward_id]);
 
+        // Some projects may have activated a non-registering investion
+        $this->skip_login = true; // TODO: from config/project config
 
         // Security check
         if ($project->status != Project::STATUS_IN_CAMPAIGN) {
@@ -145,6 +146,7 @@ class InvestController extends \Goteo\Core\Controller {
             }
         }
 
+        if($login_required === 'auto') $login_required = !$this->skip_login;
         if($login_required) {
 
             // A reward is required here
@@ -198,6 +200,7 @@ class InvestController extends \Goteo\Core\Controller {
         // Set vars for all views
         $this->contextVars([
             'project' => $project,
+            'skip_login' => $this->skip_login,
             'project_categories' => $project_categories,
             'pay_methods' => $pay_methods,
             'default_method' => Payment::defaultMethod(),
@@ -287,7 +290,7 @@ class InvestController extends \Goteo\Core\Controller {
     public function selectPaymentMethodAction($project_id, Request $request)
     {
         $amount = $request->query->get('amount');
-        $reward = $this->validate($project_id, $request->query->get('reward'), $amount);
+        $reward = $this->validate($project_id, $request->query->get('reward'), $amount, null, 'auto');
 
         if($reward instanceOf Response) return $reward;
 
@@ -302,10 +305,15 @@ class InvestController extends \Goteo\Core\Controller {
      */
     public function paymentFormAction($project_id, Request $request) {
         $amount = $amount_original = $request->query->get('amount');
-        $reward = $this->validate($project_id, $request->query->get('reward'), $amount);
+        $reward = $this->validate($project_id, $request->query->get('reward'), $amount, null, 'auto');
         if($reward instanceOf Response) return $reward;
         // pay method required
         try {
+            $user = Session::getUserId();
+            if($this->skip_login && !$user) {
+                die("Auto create-user here");
+            }
+
             $method = Payment::getMethod($request->query->get('method'));
 
             // Creating the invest entry
@@ -315,7 +323,7 @@ class InvestController extends \Goteo\Core\Controller {
                     'amount_original' => $amount_original,
                     'currency' => Currency::current(),
                     'currency_rate' => Currency::rate(),
-                    'user' => Session::getUserId(),
+                    'user' => $user,
                     'project' => $project_id,
                     'method' => $method::getId(),
                     'status' => Invest::STATUS_PROCESSING,  // aporte en proceso

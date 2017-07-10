@@ -16,13 +16,10 @@ $this->section('main-content');
                 <?= $this->text('project-invest-ok') ?>
                 </div>
 
-                <?= $this->supply('sub-header', $this->get_session('sub-header')) ?>
-
                 <div class="row">
-
                     <h3 class="col-md-offset-1 col-md-10 clearfix padding-bottom-6"><?= $this->text('project-spread-header') ?></h3>
-
                 </div>
+
                 <div class="row">
                     <div class="col-sm-5 col-md-offset-1 margin-2">
                         <a href="<?= $this->facebook_url ?>" target="_blank" class="btn btn-block btn-social btn-facebook">

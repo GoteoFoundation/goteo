@@ -14,8 +14,6 @@ $this->section('main-content');
 
                 <h2 class="col-sm-offset-1 padding-bottom-2"><?= $this->text('invest-select-reward') ?></h2>
 
-                <?= $this->supply('sub-header', $this->get_session('sub-header')) ?>
-
                 <?= $this->insert('invest/partials/reward_box_resign') ?>
 
                 <?php foreach($this->rewards as $reward_item): ?>
