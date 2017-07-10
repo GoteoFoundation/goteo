@@ -1,18 +1,10 @@
 <?php
 
-$this->layout('layout', [
-    'bodyClass' => '',
-    'title' => 'Share the project :: Goteo.org',
-    'meta_description' => $this->text('meta-description-discover')
-    ]);
+$this->layout('invest/layout', ['invest_title' => $this->text('invest-share-title')]);
 
-$this->section('content');
+$this->section('main-content');
 
 ?>
-
-<?= $this->insert('invest/partials/project_info') ?>
-
-<?= $this->insert('invest/partials/steps_bar') ?>
 
 <div class="container">
 

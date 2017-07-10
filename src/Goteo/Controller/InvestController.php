@@ -235,6 +235,21 @@ class InvestController extends \Goteo\Core\Controller {
     }
 
     /**
+     * step1 + 1/2: Custom login form
+     */
+    public function loginAction($project_id, Request $request)
+    {
+        // TODO: add events
+        $amount = $request->query->get('amount');
+        $reward = $this->validate($project_id, $request->query->get('reward'), $amount, null, false);
+        if($reward instanceOf Response) return $reward;
+
+        // Aqui cambiar por escoger recompensa
+        return $this->viewResponse('invest/login', ['step' => 1]);
+
+    }
+
+    /**
      * step2: Choose payment method
      * This method will show a Form on the view that redirects to the payment gateway
      */
