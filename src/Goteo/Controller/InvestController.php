@@ -248,6 +248,9 @@ class InvestController extends \Goteo\Core\Controller {
         $reward = $this->validate($project_id, $request->query->get('reward'), $amount, null, false);
 
         if($reward instanceOf Response) return $reward;
+        if(!$request->query->has('return')) {
+            $request->query->set('return', $this->page . '/payment?' . $this->query);
+        }
 
         $result = AuthController::checkLogin($request);
         if($result instanceOf Response) return $result;
@@ -266,6 +269,9 @@ class InvestController extends \Goteo\Core\Controller {
         $reward = $this->validate($project_id, $request->query->get('reward'), $amount, null, false);
 
         if($reward instanceOf Response) return $reward;
+        if(!$request->query->has('return')) {
+            $request->query->set('return', $this->page . '/payment?' . $this->query);
+        }
 
         $result = AuthController::checkSignup($request);
         if($result instanceOf Response) return $result;
