@@ -1,6 +1,6 @@
 <?php
 
-$this->layout('invest/layout', ['invest_title' => $this->text('invest-make-sure-title')]);
+$this->layout('invest/layout', ['alt_title' => $this->text('invest-make-sure-title')]);
 
 $this->section('main-content');
 

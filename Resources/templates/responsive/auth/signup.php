@@ -1,12 +1,11 @@
 <?php
 
-$this->layout("layout", [
-    'bodyClass' => '',
-    'title' => $this->text('meta-title-register'),
-    'meta_description' => $this->text('meta-description-register')
-    ]);
+$this->layout('auth/layout', [
+    'alt_title' => $this->text('meta-title-register'),
+    'alt_description' => $this->text('meta-title-register')
+]);
 
-$this->section('content');
+$this->section('main-content');
 ?>
 <div class="container">
 

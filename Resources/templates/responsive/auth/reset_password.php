@@ -1,12 +1,11 @@
 <?php
 
-$this->layout("layout", [
-    'bodyClass' => '',
-    'title' => 'Establecer contraseña :: Goteo.org',
-    'meta_description' => $this->text('meta-description-discover')
+$this->layout('auth/layout', [
+    'alt_title' => $this->text('reset-password-title'),
+    'alt_description' => $this->text('reset-password-title')
     ]);
 
-$this->section('content');
+$this->section('main-content');
 ?>
 <div class="container">
 

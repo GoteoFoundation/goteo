@@ -18,13 +18,13 @@ if(is_numeric($username) || empty($username)) $username = \Goteo\Core\Model::ide
 if(empty($username)) $username = strtok($email,"@");
 //Falta, si l'usuari existeix, suggerir un altre que estigui disponible...
 
-$this->layout("layout", [
+$this->layout('auth/layout', [
     'bodyClass' => '',
-    'title' => 'Establecer contraseña :: Goteo.org',
-    'meta_description' => $this->text('meta-description-discover')
+    'alt_title' => $this->text('reset-password-title'),
+    'alt_description' => $this->text('reset-password-title')
     ]);
 
-$this->section('content');
+$this->section('main-content');
 ?>
 <div class="container">
 
@@ -43,7 +43,7 @@ $this->section('content');
 							<div><?= $user->name ?></div>
 							<div><?= $email ?></div>
 						</div>
-                	
+
                 	</div>
 
 					<form class="form-horizontal" role="form" method="POST" action="/signup/oauth">

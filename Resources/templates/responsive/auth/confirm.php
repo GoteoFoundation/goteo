@@ -18,7 +18,7 @@ if(is_numeric($username) || empty($username)) $username = $this->sanitize(str_re
 if(empty($username)) $username = strtok($email,"@");
 //Falta, si l'usuari existeix, suggerir un altre que estigui disponible...
 
-$this->layout('layout', [
+$this->layout('auth/layout', [
     'bodyClass' => 'user-login',
     ]);
 
@@ -93,7 +93,7 @@ $this->section('content');
 
                 	<div class="col-md-10 col-md-offset-1 no-padding">
 	                    <p><?= $this->text('oauth-login-imported-data') ?></p>
-                    
+
 						<?php
 						if($oauth->user_data['avatar']):
 						?>

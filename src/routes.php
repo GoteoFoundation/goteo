@@ -69,12 +69,6 @@ $routes->add('invest-select-payment', new Route(
     array('_controller' => 'Goteo\Controller\InvestController::selectPaymentMethodAction',
         )
 ));
-// Custom login for invest process
-$routes->add('invest-login', new Route(
-    '/invest/{project_id}/login',
-    array('_controller' => 'Goteo\Controller\InvestController::loginAction',
-        )
-));
 // ¿ optional step ? may skipped by javascript ?
 $routes->add('invest-show-form', new Route(
     '/invest/{project_id}/form',
