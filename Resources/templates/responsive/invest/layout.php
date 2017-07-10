@@ -7,6 +7,7 @@ $this->layout('layout', [
 
 $project = $this->project ? $this->project : $project = $this->get_session('current_project');
 $step = $this->step ? $this->step : $step = $this->get_session('current_step');
+
 $this->section('content');
 
 ?>
@@ -15,7 +16,19 @@ $this->section('content');
 
     <?= $this->insert('invest/partials/steps_bar', ['step' => $step]) ?>
 
-    <?= $this->supply('main-content') ?>
+    <?php $this->section('main-content') ?>
+
+        <div class="container">
+            <div class="row row-form">
+                <div class="panel panel-default invest-container">
+                    <div class="panel-body">
+                        <?= $this->supply('inner-content', 'def') ?>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    <?php $this->stop() ?>
 
 <?php $this->replace() ?>
 

@@ -8,25 +8,25 @@ $this->section('main-content');
 
 <div class="container">
 
-	<div class="row row-form">
-			<div class="panel panel-default invest-container">
-				<div class="panel-body">
+    <div class="row row-form">
+        <div class="panel panel-default invest-container">
+            <div class="panel-body">
 
-                    <h2 class="col-sm-offset-1 padding-bottom-2"><?= $this->text('invest-select-reward') ?></h2>
+                <h2 class="col-sm-offset-1 padding-bottom-2"><?= $this->text('invest-select-reward') ?></h2>
 
-                    <?= $this->supply('sub-header', $this->get_session('sub-header')) ?>
+                <?= $this->supply('sub-header', $this->get_session('sub-header')) ?>
 
-                    <?= $this->insert('invest/partials/reward_box_resign') ?>
+                <?= $this->insert('invest/partials/reward_box_resign') ?>
 
-                    <?php foreach($this->rewards as $reward_item): ?>
-                        <?= $this->insert('invest/partials/reward_box', ['reward_item' => $reward_item]) ?>
-					<?php endforeach ?>
+                <?php foreach($this->rewards as $reward_item): ?>
+                    <?= $this->insert('invest/partials/reward_box', ['reward_item' => $reward_item]) ?>
+                <?php endforeach ?>
 
-					</form>
-				</div>
-			</div>
+                </form>
+            </div>
+        </div>
 
-	</div>
+    </div>
 
 </div>
 
