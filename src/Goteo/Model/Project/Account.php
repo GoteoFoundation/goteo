@@ -20,6 +20,7 @@ class Account extends \Goteo\Core\Model {
         $bank_owner,
         $paypal,
         $paypal_owner,
+        $skip_login,
         $allowpp; // para permitir usar el boton paypal
 
 
@@ -66,9 +67,9 @@ class Account extends \Goteo\Core\Model {
         if (!$this->validate($errors)) return false;
 
 		try {
-            $sql = "REPLACE INTO project_account (project, bank, bank_owner, paypal, paypal_owner, allowpp, fee)
-             VALUES(:project, :bank, :bank_owner, :paypal, :paypal_owner, :allowpp, :fee)";
-            $values = array(':project'=>$this->project, ':bank'=>$this->bank, ':bank_owner'=>$this->bank_owner, ':paypal'=>$this->paypal, ':paypal_owner'=>$this->paypal_owner, ':allowpp'=>$this->allowpp, ':fee'=>$this->fee);
+            $sql = "REPLACE INTO project_account (project, bank, bank_owner, paypal, paypal_owner, allowpp, fee, skip_login)
+             VALUES(:project, :bank, :bank_owner, :paypal, :paypal_owner, :allowpp, :fee, :skip_login)";
+            $values = array(':project' => $this->project, ':bank' => $this->bank, ':bank_owner' => $this->bank_owner, ':paypal' => $this->paypal, ':paypal_owner' => $this->paypal_owner, ':allowpp' => $this->allowpp, ':fee' => $this->fee, ':skip_login' => $this->skip_login);
 			self::query($sql, $values);
 			return true;
 		} catch(\PDOException $e) {
