@@ -332,7 +332,7 @@ class InvestController extends \Goteo\Core\Controller {
                         'node' => Config::get('current_node')
                     ]);
                     if(!$user->save($errors, ['password'])) {
-                        Session::store('user-create-error', implode('<br />', $errors));
+                        Session::store('user-create-error', $errors['email']);
                         throw new \RuntimeException(Text::get('invest-create-error') . '<br />' . implode('<br />', $errors));
                     }
                 }
