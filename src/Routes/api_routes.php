@@ -20,6 +20,13 @@ $api->add('api-users', new Route(
         )
 ));
 
+// User id availability checkpoint
+$api->add('api-user-check', new Route(
+    '/login/check',
+    array('_controller' => 'Goteo\Controller\Api\UsersApiController::userCheckAction',
+        )
+));
+
 // Projects list
 $api->add('api-projects', new Route(
     '/projects',

@@ -14,9 +14,9 @@
             foreach ($this->project_categories as $key=>$value) :
             echo $sep.'<a href="/discover/results/'.$key.'/'.$value.'">'.$value.'</a>';
                  $sep = ', ';
-                  endforeach; ?>
+                  endforeach ?>
             </div>
-          <?php endif; ?>
+          <?php endif ?>
       </div>
     </div>
 </div>

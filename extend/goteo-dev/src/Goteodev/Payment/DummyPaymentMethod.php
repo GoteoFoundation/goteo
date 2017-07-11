@@ -115,7 +115,6 @@ class DummyPaymentMethod extends AbstractPaymentMethod {
                     'returnUrl' => $this->getCompleteUrl(),
                     'cancelUrl' => $this->getCompleteUrl(),
         ]);
-
         // set the dummy card as payment detail data
         $invest->setPayment($request->request->get('number'));
 

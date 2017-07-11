@@ -66,3 +66,4 @@ reset-password-new-password: 'Confirm new password'
 reset-password-old-password: 'Your new password'
 reset-password-save: Save
 reset-password-title: 'Establish a new password'
+login-alternate-ids: Other options

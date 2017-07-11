@@ -52,7 +52,6 @@ class FilterAuthEvent extends Event
         if($request && $request->query->get('return')) {
             $return = $request->query->get('return');
         }
-
         if (Session::get('jumpto')) {
             $return = Session::getAndDel('jumpto');
         }
