@@ -58,4 +58,35 @@ class UsersApiController extends AbstractApiController {
             ]);
     }
 
+    /**
+     * Returns the availability of user id or email
+     */
+    public function userCheckAction(Request $request) {
+        $userid = $request->query->get('userid');
+        $email = $request->query->get('email');
+        $name = $request->query->get('name');
+        $available = false;
+
+        $suggest = [];
+        if($email) {
+            if(!User::getByEmail($email)) {
+                $available = true;
+            }
+        }
+        elseif($userid) {
+            if(!User::get($userid)) {
+                $available = true;
+            }
+        }
+
+        $suggest = User::suggestUserId($email, $name, $userid);
+        return $this->jsonResponse([
+            'available' => $available,
+            'suggest' => $suggest,
+            'userid' => $userid,
+            'email' => $email,
+            'name' => $name
+        ]);
+    }
+
 }

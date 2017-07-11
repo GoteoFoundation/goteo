@@ -4,19 +4,13 @@ $login_link = $this->login_link ? $this->raw('login_link') : ('/login?return=' .
 
 <div class="form-group">
     <div class="col-md-10 col-md-offset-1">
-        <input type="text" class="form-control" placeholder="<?= $this->text('register-name-field') ?>" name="username" value="<?= $this->username ?>" required>
-    </div>
-</div>
-
-<div class="form-group">
-    <div class="col-md-10 col-md-offset-1">
         <input type="email" class="form-control" placeholder="<?= $this->text('register-email-field') ?>" name="email" value="<?= $this->email ?>" required>
     </div>
 </div>
 
 <div class="form-group">
     <div class="col-md-10 col-md-offset-1">
-        <input type="email" class="form-control" placeholder="<?= $this->text('register-email-confirm-field') ?>" name="remail" value="<?= $this->remail ?>" required>
+        <input type="text" class="form-control" placeholder="<?= $this->text('register-name-field') ?>" name="name" value="<?= $this->name ?>" required>
     </div>
 </div>
 

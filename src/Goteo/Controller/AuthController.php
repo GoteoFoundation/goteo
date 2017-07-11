@@ -126,16 +126,13 @@ class AuthController extends \Goteo\Core\Controller {
 
             $errors = array();
 
-            if (strcmp($vars['email'], $vars['remail']) !== 0) {
-                $errors['remail'] = Text::get('error-register-email-confirm');
-            }
             if (strcmp($vars['password'], $vars['rpassword']) !== 0) {
                 $errors['rpassword'] = Text::get('error-register-password-confirm');
             }
 
             $user = new User();
             $user->userid = $vars['userid'];
-            $user->name = $vars['username'];
+            $user->name = $vars['name'];
             $user->email = $vars['email'];
             $user->password = $vars['password'];
             $user->active = true;

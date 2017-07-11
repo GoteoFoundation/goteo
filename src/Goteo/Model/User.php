@@ -2079,4 +2079,53 @@ class User extends \Goteo\Core\Model {
         return !empty($is);
     }
 
+    /**
+     * Returns an array of suggested non-existing userid based on a string
+     */
+    public static function suggestUserId() {
+        $strings = func_get_args();
+
+        $suggest = [];
+        $originals = [];
+        foreach($strings as $string) {
+            $parts = preg_split("/[\s,\-\@\.]+/", $string);
+            $id = '';
+            foreach($parts as $part) {
+                $id .= self::idealiza($part);
+                if(strlen($id) < 4) continue;
+                if($id) {
+                    $originals[] = $id;
+
+                    $query = self::query("SELECT id FROM user WHERE id = ?", $id);
+                    if ($query->fetch()) {
+                        continue;
+                    }
+
+                    $suggest[] = $id;
+                    $id = '';
+                }
+            }
+        }
+        // print_r($originals);die;
+        // Fill with automatic
+        if($originals) {
+            foreach($originals as $id) {
+                do {
+                    $new =  preg_replace_callback( "|(\d+)|", function ($matches) {
+                            return ++$matches[1];
+                        }, $id);
+                    if($new === $id) {
+                        $new = $id . '1';
+                    }
+
+                    $query = self::query("SELECT id FROM user WHERE id = ?", $new);
+                    $id = $new;
+
+                } while($query->fetch());
+                if(!in_array($id, $suggest)) $suggest[] = $id;
+            }
+        }
+
+        return $suggest;
+    }
 }
