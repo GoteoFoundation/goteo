@@ -39,22 +39,23 @@ $suggest = $this->suggest ? $this->suggest : [];
     </div>
 </div>
 
-<div class="form-group">
+<div class="form-group<?= $err['register_accept'] ? ' has-error' : '' ?>">
     <div class="col-md-10 col-md-offset-1">
         <div class="checkbox">
             <label>
-                <input type="checkbox" id="register_accept" class="no-margin-checkbox big-checkbox" name="remember">
-                    <p class="label-checkbox">
-                    <?= $this->text('login-register-conditions') ?>
-                    </p>
+                <input type="checkbox" id="register_accept" class="no-margin-checkbox big-checkbox" name="register_accept"<?= $this->register_accept ? ' checked="checked"' : '' ?>>
+                <p class="label-checkbox">
+                <?= $this->text('login-register-conditions') ?>
+                </p>
             </label>
+            <?= ($err['register_accept'] ? '<span class="help-block info-block">' . $err['register_accept'] . '</span>' : '') ?>
         </div>
     </div>
 </div>
 
 <div class="form-group">
     <div class="col-md-10 col-md-offset-1">
-        <button type="submit" id="register_continue" disabled="disabled" class="btn btn-success"><?= $this->text('register-button-title') ?></button>
+        <button type="submit" id="register_continue" <?= $this->register_accept ? '' : ' disabled="disabled"' ?> class="btn btn-success"><?= $this->text('register-button-title') ?></button>
         <a class="btn btn-link" href="<?= $login_link ?>"><?= $this->text('register-question') ?></a>
     </div>
 </div>

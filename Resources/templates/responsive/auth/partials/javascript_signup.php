@@ -3,6 +3,8 @@
 $(function() {
 
   $('#register_accept').change(function() {
+    $(this).closest('.form-group').removeClass('has-error');
+    $(this).closest('.form-group').find('.info-block').remove();
     $('#register_continue').attr('disabled', !this.checked);
 
   });

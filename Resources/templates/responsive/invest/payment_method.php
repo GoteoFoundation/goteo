@@ -31,9 +31,10 @@ $this->section('main-content');
 
                 <?php if($this->skip_login): ?>
                     <div class="col-md-10 col-md-offset-1">
-                        <div class="form-group no-register">
+                        <div class="form-group no-register<?= $this->error ? ' has-error' : '' ?>">
                             <label><?= $this->text('regular-email') ?></label>
                             <input type="email" class="form-control" placeholder="<?= $this->text('regular-email') ?>" name="email" value="<?= $this->email ?>" required>
+                            <?= ($this->error ? '<span class="help-block">' . $this->error . '</span>' : '') ?>
                         </div>
                     </div>
                 <?php endif ?>

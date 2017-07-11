@@ -129,6 +129,10 @@ class AuthController extends \Goteo\Core\Controller {
             if (strcmp($vars['password'], $vars['rpassword']) !== 0) {
                 $errors['rpassword'] = Text::get('error-register-password-confirm');
             }
+            if(!isset($vars['register_accept'])) {
+                $errors['register_accept'] = Text::get('error-register-accept');
+            }
+            // print_r($vars);die;
 
             $user = new User();
             $user->userid = $vars['userid'];

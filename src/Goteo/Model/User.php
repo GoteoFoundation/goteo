@@ -483,6 +483,24 @@ class User extends \Goteo\Core\Model {
     }
 
     /**
+     * Returns true if user is "unregistered":
+     * ie: has no password, no social-login
+     */
+    public function isGhost() {
+        $password = $this->getPassword();
+
+        if(empty($password)) {
+            // check social login
+            $query = self::query('SELECT provider FROM user_login WHERE user = ?', array($this->id ? $this->id : $this->userid));
+            if ($query->fetchColumn()) {
+                return false;
+            }
+            return true;
+        }
+        return false;
+    }
+
+    /**
      * Este método actualiza directamente los campos de email y contraseña de un usuario (para gestión de superadmin)
      */
     public function update(&$errors = array()) {
@@ -1163,7 +1181,7 @@ class User extends \Goteo\Core\Model {
      */
     public function getPassword() {
         if($this->password) return $this->password;
-        $query = self::query('SELECT password FROM user WHERE id = :id', [':id' => $this->id]);
+        $query = self::query('SELECT password FROM user WHERE id = :id', [':id' => $this->id ? $this->id : $this->userid]);
         $this->password = $query->fetchColumn();
         return $this->password;
     }
