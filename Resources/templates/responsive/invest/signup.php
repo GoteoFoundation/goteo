@@ -24,7 +24,7 @@ $query = $this->query . '&amp;return=' . urlencode($this->raw('return')) . '&amp
                 <?php if($this->skip_login): ?>
                 <div class="form-group">
                     <div class="col-md-10 col-md-offset-1">
-                        <a href="/invest/<?= $this->project->id ?>/payment?<?= $query ?>&skip_login" ><i class="fa fa-sign-out"></i> <?= $this->text('invest-no-register') ?></a>
+                        <a href="/invest/<?= $this->project->id ?>/payment?<?= $query ?>&email" ><i class="fa fa-sign-out"></i> <?= $this->text('invest-no-register') ?></a>
                     </div>
                 </div>
                 <?php endif ?>
