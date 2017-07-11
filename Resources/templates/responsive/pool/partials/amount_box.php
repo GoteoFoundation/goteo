@@ -9,7 +9,7 @@
             <div class="amount-box">
                 <div class="row no-padding col-sm-10 col-sm-offset-2 margin-2" id="amount-container">
                     <div class="col-sm-1 col-sm-offset-1 no-padding col-xs-1">
-                        <strong class="reward-amount"><?= $this->get_currency('symbol') ?></strong>
+                        <strong class="reward-amount"><?= $this->get_currency('html') ?></strong>
                     </div>
                     <div class="no-padding container-input-amount col-md-4 col-sm-3 col-xs-10">
                         <input type="number" min="0" class="form-control input-amount" name="amount" value="<?= $this->amount ? $this->amount : '0' ?>" id="amount" required>

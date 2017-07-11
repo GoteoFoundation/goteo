@@ -3,7 +3,7 @@ $signup_link = $this->signup_link ? $this->raw('signup_link') : '/signup?return=
 ?>
     <div class="form-group">
         <div class="col-md-10 col-md-offset-1">
-            <input type="email" class="form-control" placeholder="<?= $this->text('login-recover-email-field') ?>" name="username" value="<?= $this->username ?>" required>
+            <input type="text" class="form-control" placeholder="<?= $this->text('login-recover-email-field') ?>" name="username" value="<?= $this->username ?>" required>
         </div>
     </div>
 

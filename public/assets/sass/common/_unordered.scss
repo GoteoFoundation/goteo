@@ -49,6 +49,12 @@
   }
 }
 
+.no-register {
+    background-color: $background-light;
+    border-radius:10px;
+    padding:1em;
+}
+
 .invest-container {
   max-width: 800px;
   margin: 0 auto;

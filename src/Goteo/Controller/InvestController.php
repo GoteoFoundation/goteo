@@ -78,6 +78,7 @@ class InvestController extends \Goteo\Core\Controller {
     private function validate($project_id, $reward_id = null, &$custom_amount = null, $invest = null, $login_required = true) {
 
         $project = Project::get($project_id, Lang::current());
+        $this->project = $project;
         $amount_original = (int)$custom_amount;
         $currency = (string)substr($custom_amount, strlen($amount_original));
         if(empty($currency)) $currency = Currency::current('id');
@@ -90,7 +91,9 @@ class InvestController extends \Goteo\Core\Controller {
         $this->query = http_build_query(['amount' => "$amount_original$currency", 'reward' => $reward_id]);
 
         // Some projects may have activated a non-registering investion
-        $this->skip_login = true; // TODO: from config/project config
+        $this->skip_login = Session::isLogged() ? false : $project->getAccount()->skip_login;
+
+
 
         // Security check
         if ($project->status != Project::STATUS_IN_CAMPAIGN) {
@@ -164,7 +167,7 @@ class InvestController extends \Goteo\Core\Controller {
         // A login or a fake login is required here
         if($login_required === 'auto') $login_required = !$this->skip_login;
         if($login_required && !$this->getUser()) {
-            return $this->redirect('/invest/' . $project->id . '/login?' . $this->query);
+            return $this->redirect('/invest/' . $project->id . '/signup?' . $this->query);
         }
 
         // If invest defined, check user session
@@ -287,7 +290,10 @@ class InvestController extends \Goteo\Core\Controller {
     {
         $amount = $request->query->get('amount');
         $email = $request->query->has('email');
-        $reward = $this->validate($project_id, $request->query->get('reward'), $amount, null, $email ? 'auto' : true);
+        $reward = $this->validate($project_id, $request->query->get('reward'), $amount, null, 'auto');
+        if(!($this->skip_login && $email) && !Session::isLogged()) {
+            return $this->redirect('/invest/' . $this->project->id . '/signup?' . $this->query);
+        }
 
         if($reward instanceOf Response) return $reward;
         $vars = ['step' => 2];
