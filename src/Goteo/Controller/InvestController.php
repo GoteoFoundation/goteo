@@ -286,13 +286,14 @@ class InvestController extends \Goteo\Core\Controller {
     public function selectPaymentMethodAction($project_id, Request $request)
     {
         $amount = $request->query->get('amount');
-        $reward = $this->validate($project_id, $request->query->get('reward'), $amount, null, 'auto');
+        $email = $request->query->has('email');
+        $reward = $this->validate($project_id, $request->query->get('reward'), $amount, null, $email ? 'auto' : true);
 
         if($reward instanceOf Response) return $reward;
         $vars = ['step' => 2];
         if($this->skip_login) {
             $vars['email'] = $this->getUser() ? $this->getUser()->email : '';
-            if($request->query->has('email')) {
+            if($request->query->get('email')) {
                 $vars['email'] = $request->query->get('email');
             }
             $vars['error'] = Session::getAndDel('user-create-error');
