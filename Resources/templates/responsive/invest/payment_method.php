@@ -34,7 +34,7 @@ $this->section('main-content');
                         <div class="form-group no-register<?= $this->error ? ' has-error' : '' ?>">
                             <label><?= $this->text('regular-email') ?></label>
                             <input type="email" class="form-control" placeholder="<?= $this->text('regular-email') ?>" name="email" value="<?= $this->email ?>" required>
-                            <?= ($this->error ? '<span class="help-block">' . $this->error . '</span>' : '') ?>
+                            <?= ($this->error ? '<span class="help-block">' . nl2br($this->error) . '</span>' : '') ?>
                         </div>
                     </div>
                 <?php endif ?>
