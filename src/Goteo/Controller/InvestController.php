@@ -279,7 +279,7 @@ class InvestController extends \Goteo\Core\Controller {
         $result = AuthController::checkSignup($request);
         if($result instanceOf Response) return $result;
 
-        return $this->viewResponse('invest/signup', ['step' => 2, 'return' => $this->page . '/payment?' . $this->query]);
+        return $this->viewResponse('invest/signup', $result + ['step' => 2, 'return' => $this->page . '/payment?' . $this->query]);
 
     }
 

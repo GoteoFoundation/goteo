@@ -155,6 +155,9 @@ class AuthController extends \Goteo\Core\Controller {
                 Message::error($text);
             }
             $vars['errors'] = $errors;
+            if(isset($errors['userid'])) {
+                $vars['suggest'] = User::suggestUserId($vars['email'], $vars['name'], $vars['userid']);
+            }
         }
 
         $vars['return'] = $request->query->get('return');
