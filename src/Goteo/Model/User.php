@@ -487,8 +487,9 @@ class User extends \Goteo\Core\Model {
      * ie: has no password, no social-login
      */
     public function isGhost() {
+        // If is hide or inactive is also a ghost
+        if(!$this->active || $this->hide) return true;
         $password = $this->getPassword();
-
         if(empty($password)) {
             // check social login
             $query = self::query('SELECT provider FROM user_login WHERE user = ?', array($this->id ? $this->id : $this->userid));

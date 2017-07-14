@@ -107,3 +107,4 @@ user-login-required-login: 'Si ya te has registrado debes <a href="%s">iniciar s
 warning_nojavascript: 'Habilita javascript desde la configuración de privacidad de tu navegador para poder seguir con el proceso de pago'
 invest-no-register: 'No me quiero registrar'
 invest-user-not-ghost: 'Este email pertenece a un usuario existente!'
+invest-user-name-or-anonymous: 'El nombre es obligatorio si no quieres hacer una aportación anónima'

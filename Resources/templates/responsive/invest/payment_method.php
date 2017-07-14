@@ -17,7 +17,7 @@ $this->section('main-content');
                     <div class="level-1">
                        <?= $this->text('invest-alert-investing') ?><span class="amount-reminder"><?= $this->raw('amount_formated') ?></span> <?= $this->text('invest-project') ?> <span class="uppercase"><?= $this->project->name ?></span>
                     </div>
-                      <?php if($this->reward): ?>
+                <?php if($this->reward): ?>
                     <div class="level-2">
                         <?= $this->text('invest-alert-rewards') ?>
                         <strong class="text-uppercase"><?= $this->reward->reward ?></strong>
@@ -29,17 +29,7 @@ $this->section('main-content');
                 <input type="hidden" name="reward" value="<?= $this->reward ? $this->reward->id : '0' ?>">
                 <input type="hidden" name="amount" value="<?= $this->amount_original . $this->currency ?>">
 
-                <?php if($this->skip_login): ?>
-                    <div class="col-md-10 col-md-offset-1">
-                        <div class="form-group no-register<?= $this->error ? ' has-error' : '' ?>">
-                            <label><?= $this->text('regular-email') ?></label>
-                            <input type="email" class="form-control" placeholder="<?= $this->text('regular-email') ?>" name="email" value="<?= $this->email ?>" required>
-                            <?= ($this->error ? '<span class="help-block">' . nl2br($this->error) . '</span>' : '') ?>
-                        </div>
-                    </div>
-                <?php endif ?>
-
-                <div class="row no-padding col-md-10 col-md-offset-1">
+                <div class="row no-padding col-md-10 col-md-offset-1 pay-methods">
                 <?php foreach($this->pay_methods as $method => $pay): ?>
                     <div class="col-xxs-6 col-tn-6 col-xs-3 pay-method<?= $pay->isActive() ? '' : ' disabled' ?>">
                         <label class="label-method <?= $pay->isActive($this->amount) ? '' : 'label-disabled' ?> <?= $this->default_method == $method ? ' method-choosen' : '' ?>" for="<?= $method ?>-method">
@@ -53,38 +43,43 @@ $this->section('main-content');
                 <?php endforeach ?>
                 </div>
 
-                    <div class="form-group">
-                        <div class="col-md-10 col-md-offset-1 method-conditions">
-                            <div class="checkbox">
-                                <label>
-                                    <input class="no-margin-checkbox big-checkbox" type="checkbox" name="anonymous" id="anonymous" value="1">
-                                        <p class="label-checkbox">
-                                        <?= $this->text('invest-anonymous') ?>
-                                        </p>
-                                </label>
+                <?php if($this->skip_login): ?>
+                    <?= $this->insert('invest/partials/noregister_form') ?>
+                <?php endif ?>
 
-                            </div>
 
-                            <?php if(array_key_exists('pool', $this->pay_methods)): ?>
-                            <div class="checkbox">
-                                <label>
-                                    <input class="no-margin-checkbox big-checkbox" type="checkbox" name="pool_on_fail" id="pool_on_fail" value="1">
-                                        <p class="label-checkbox">
-                                        <?= $this->text('invest-pool') ?><a data-toggle="modal" data-target="#myModal" href=""> <?= $this->text('invest-more-info') ?></a>
-                                        </p>
-                                </label>
-                            </div>
-                            <?php endif ?>
+                <div class="form-group">
+                    <div class="col-md-10 col-md-offset-1">
+                        <div class="checkbox">
+                            <label>
+                                <input class="no-margin-checkbox big-checkbox" type="checkbox" name="anonymous" id="anonymous" value="1"<?= $this->skip_login && !$this->name ? ' checked="checked"' : ''?>>
+                                    <p class="label-checkbox">
+                                    <?= $this->text('invest-anonymous') ?>
+                                    </p>
+                            </label>
 
                         </div>
-                    </div>
 
-
-                    <div class="form-group">
-                        <div class="col-md-4 col-md-offset-1 invest-button">
-                            <button type="submit" class="btn btn-block btn-success col-xs-3"><?= $this->text('invest-button') ?></button>
+                        <?php if(!$this->skip_login && array_key_exists('pool', $this->pay_methods)): ?>
+                        <div class="checkbox">
+                            <label>
+                                <input class="no-margin-checkbox big-checkbox" type="checkbox" name="pool_on_fail" id="pool_on_fail" value="1">
+                                    <p class="label-checkbox">
+                                    <?= $this->text('invest-pool') ?><a data-toggle="modal" data-target="#myModal" href=""> <?= $this->text('invest-more-info') ?></a>
+                                    </p>
+                            </label>
                         </div>
+                        <?php endif ?>
+
                     </div>
+                </div>
+
+
+                <div class="form-group">
+                    <div class="col-md-4 col-md-offset-1 invest-button">
+                        <button type="submit" class="btn btn-block btn-success col-xs-3"><?= $this->text('invest-button') ?></button>
+                    </div>
+                </div>
                 </form>
             </div>
         </div>
@@ -151,6 +146,16 @@ $(':radio').change(function(){
     })
 
 });
+
+<?php if($this->skip_login): ?>
+    $('input[name="name"]').on('change', function() {
+        var $anon = $('input[name="anonymous"]');
+        if($(this).val().trim().length) {
+            $anon.prop('checked', false);
+        }
+    });
+<?php endif ?>
+
 
 
 // @license-end
