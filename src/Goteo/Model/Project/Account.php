@@ -20,7 +20,8 @@ class Account extends \Goteo\Core\Model {
         $bank_owner,
         $paypal,
         $paypal_owner,
-        $skip_login,
+        $fee,
+        $skip_login = false,
         $allowpp; // para permitir usar el boton paypal
 
 

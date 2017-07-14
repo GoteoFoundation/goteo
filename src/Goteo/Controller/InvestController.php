@@ -94,7 +94,6 @@ class InvestController extends \Goteo\Core\Controller {
         $this->skip_login = Session::isLogged() ? false : $project->getAccount()->skip_login;
 
 
-
         // Security check
         if ($project->status != Project::STATUS_IN_CAMPAIGN) {
             Message::error(Text::get('project-invest-closed'));
@@ -302,7 +301,11 @@ class InvestController extends \Goteo\Core\Controller {
             if($request->query->get('email')) {
                 $vars['email'] = $request->query->get('email');
             }
-            $vars['error'] = Session::getAndDel('user-create-error');
+            $vars['name'] = $this->getUser() ? $this->getUser()->name : '';
+            if($request->query->get('name')) {
+                $vars['name'] = $request->query->get('name');
+            }
+            $vars['errors'] = Session::getAndDel('user-create-errors');
         }
         return $this->viewResponse('invest/payment_method', $vars);
 
@@ -318,8 +321,11 @@ class InvestController extends \Goteo\Core\Controller {
         $reward = $this->validate($project_id, $request->query->get('reward'), $amount, null, 'auto');
         if($reward instanceOf Response) return $reward;
 
-        if($this->skip_login && $request->query->has('email')) {
-            $this->query .= '&email=' . urlencode($request->query->get('email'));
+        if($this->skip_login) {
+            if($request->query->has('email'))
+                $this->query .= '&email=' . urlencode($request->query->get('email'));
+            if($request->query->has('name'))
+                $this->query .= '&name=' . urlencode($request->query->get('name'));
         }
 
         // pay method required
@@ -328,23 +334,32 @@ class InvestController extends \Goteo\Core\Controller {
             // No login registering, check if user exists and it's a ghost
             // (no password, no social-login)
             if($this->skip_login && !$user) {
+                $errors = [];
                 $email = $request->query->get('email');
+                $name = trim($request->query->get('name'));
+                if(!$request->query->has('anonymous') && !$name) {
+                    $errors['name'] = Text::get('invest-user-name-or-anonymous');
+                }
+                if(!$name) $name = ucfirst(strtok($email, '@'));
                 $suggest = User::suggestUserId($email);
                 if(!$user = User::getByEmail($email)) {
                     $user = new User([
                         'email' => $email,
-                        'name' => ucfirst(strtok($email, '@')),
+                        'name' => $name,
                         'userid' => $suggest[0],
                         'active' => true,
                         'node' => Config::get('current_node')
                     ]);
-                    if(!$user->save($errors, ['password'])) {
-                        Session::store('user-create-error', $errors['email']);
+                    if(!$user->save($errors, ['password', 'active'])) {
+                        Session::store('user-create-errors', $errors);
                         throw new \RuntimeException(Text::get('invest-create-error') . '<br />' . implode('<br />', $errors));
                     }
+                    // Remove newsletter options
+                    User::setPreferences($user->id, array('mailing' => 1));
+
                 }
                 if(!$user->isGhost()) {
-                    Session::store('user-create-error', Text::get('invest-user-not-ghost'));
+                    Session::store('user-create-errors', ['email' => Text::get('invest-user-not-ghost')]);
                     throw new \RuntimeException(Text::get('invest-user-not-ghost'));
                 }
                 Session::store('fake-user', $user);
