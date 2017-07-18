@@ -340,6 +340,13 @@ class InvestController extends \Goteo\Core\Controller {
                 if(!$request->query->has('anonymous') && !$name) {
                     $errors['name'] = Text::get('invest-user-name-or-anonymous');
                 }
+                if(!$request->query->has('register_accept') && !$name) {
+                    $errors['register_accept'] = Text::get('error-register-accept');
+                }
+                if($errors) {
+                    Session::store('user-create-errors', $errors);
+                    throw new \RuntimeException(Text::get('invest-create-error') . '<br />' . implode('<br />', $errors));
+                }
                 if(!$name) $name = ucfirst(strtok($email, '@'));
                 $suggest = User::suggestUserId($email);
                 if(!$user = User::getByEmail($email)) {
