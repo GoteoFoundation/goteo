@@ -25,7 +25,7 @@ register-id-field: 'Nombre de usuario'
 register-name-field: 'Nombre completo'
 register-password-confirm-field: 'Vuelve a escribir la contraseña'
 register-password-field: Contraseña
-register-question: '¿Ya te has registrado?'
+register-question: 'Ya soy usuario'
 user-activate-already-active: 'La cuenta de usuario ya está activada'
 user-activate-success: 'La cuenta de usuario se ha activado correctamente'
 validate-project-value-contract_email: 'La dirección de email no es correcta'

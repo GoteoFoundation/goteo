@@ -15,19 +15,20 @@ $query = $this->query . '&amp;return=' . urlencode($this->raw('return')) . '&amp
         <div class="panel panel-default invest-container">
             <div class="panel-body">
 
-                <h2 class="col-md-offset-1 padding-bottom-6"> <?= $this->text('register-form-title') ?></h2>
+                <h2 class="col-md-offset-1">
+                    <?= $this->text('register-form-title') ?>
+                    <small>| <a href="<?= '/invest/' . $this->project->id . '/login?' . $query ?>"><?= $this->text('register-question') ?></a></small>
+                </h2>
+                <?php if($this->skip_login): ?>
+                <p class="col-md-offset-1 padding-bottom-6">
+                <a href="/invest/<?= $this->project->id ?>/payment?<?= $query ?>&email" ><i class="fa fa-sign-out"></i> <?= $this->text('invest-no-register') ?></a>
+                </p>
+                <?php endif ?>
+
 
                 <form class="form-horizontal" role="form" method="post" action="/invest/<?= $this->project->id ?>/signup?<?= $query ?>">
 
-                <?= $this->insert('auth/partials/form_signup', ['login_link' => '/invest/' . $this->project->id . '/login?' . $query ]) ?>
-
-                <?php if($this->skip_login): ?>
-                <div class="form-group">
-                    <div class="col-md-10 col-md-offset-1">
-                        <a href="/invest/<?= $this->project->id ?>/payment?<?= $query ?>&email" ><i class="fa fa-sign-out"></i> <?= $this->text('invest-no-register') ?></a>
-                    </div>
-                </div>
-                <?php endif ?>
+                <?= $this->insert('auth/partials/form_signup') ?>
 
                 <?= $this->insert('auth/partials/social_login') ?>
 
