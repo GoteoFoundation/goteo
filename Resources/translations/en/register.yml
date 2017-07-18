@@ -25,7 +25,7 @@ register-id-field: 'Username '
 register-name-field: Name
 register-password-confirm-field: 'Confirm password'
 register-password-field: Password
-register-question: 'Already registered?'
+register-question: 'I''m already a user'
 user-activate-already-active: 'The account is already active.'
 user-activate-success: 'The account has been activated correctly.'
 validate-project-value-contract_email: 'The email address is incorrect.'

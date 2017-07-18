@@ -25,7 +25,7 @@ register-id-field: 'Nom d''usuari'
 register-name-field: 'Nom i cognoms'
 register-password-confirm-field: 'Torna a escriure la contrasenya'
 register-password-field: Contrasenya
-register-question: 'Ja t''has registrat?'
+register-question: 'Ja en sóc usuari'
 user-activate-already-active: 'El compte d''usuari ja es troba actiu'
 user-activate-success: 'El compte d''usuari s''ha activat correctament'
 validate-project-value-contract_email: 'L''adreça d''email no és correcta'

@@ -1,5 +1,5 @@
 <?php
-$login_link = $this->login_link ? $this->raw('login_link') : ('/login?return=' . urlencode($this->raw('return')) );
+
 $err = $this->errors ? $this->errors : [];
 $suggest = $this->suggest ? $this->suggest : [];
 ?>
@@ -56,7 +56,6 @@ $suggest = $this->suggest ? $this->suggest : [];
 <div class="form-group">
     <div class="col-md-10 col-md-offset-1">
         <button type="submit" id="register_continue" <?= $this->register_accept ? '' : ' disabled="disabled"' ?> class="btn btn-success"><?= $this->text('register-button-title') ?></button>
-        <a class="btn btn-link" href="<?= $login_link ?>"><?= $this->text('register-question') ?></a>
     </div>
 </div>
 
