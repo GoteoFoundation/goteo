@@ -12,7 +12,7 @@ $query = $this->query . '&amp;return=' . urlencode($this->raw('return')) . '&amp
 
 <div class="container">
     <div class="row row-form">
-        <div class="panel panel-default invest-container">
+        <div class="panel panel-default panel-form">
             <div class="panel-body">
 
                 <h2 class="col-md-offset-1">
