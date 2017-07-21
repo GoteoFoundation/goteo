@@ -22,6 +22,15 @@
     background-color: $color-light-grey;
     color: $color-white;
 }
+.btn-white {
+    background-color: $background-white;
+    color: $color-green;
+    font-weight: bold;  
+}
+.btn-light-green{
+    background-color: $background-light-green;
+    color:$color-white;
+}
 .btn-fashion {
     background: #d05bb4;
     background: -moz-linear-gradient(left, #d05bb4 28%, #fe373a 100%);
