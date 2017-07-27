@@ -25,3 +25,6 @@ ALTER TABLE `project_account` ADD `vat` INT(2) NOT NULL DEFAULT 21 COMMENT '(Val
 
 -- constrains
 ALTER TABLE `project_account` ADD FOREIGN KEY (`project`) REFERENCES `project`(`id`) ON UPDATE CASCADE ON DELETE CASCADE;
+
+-- Skip login for invest
+ALTER TABLE `project_account` ADD `skip_login` INT(1) DEFAULT 0 NOT NULL AFTER `vat`;

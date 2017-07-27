@@ -66,3 +66,4 @@ reset-password-new-password: 'Vuelve a escribir tu nueva contraseña'
 reset-password-old-password: 'Tu nueva contraseña'
 reset-password-save: Guardar
 reset-password-title: 'Establecer nueva contraseña'
+login-alternate-ids: Otras opciones

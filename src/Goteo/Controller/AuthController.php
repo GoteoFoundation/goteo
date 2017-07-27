@@ -11,8 +11,10 @@
 namespace Goteo\Controller;
 
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Goteo\Application\Exception\ControllerAccessDeniedException;
 
+use Goteo\Application\App;
 use Goteo\Application\Session;
 use Goteo\Application\Cookie;
 use Goteo\Application\Config;
@@ -40,11 +42,13 @@ class AuthController extends \Goteo\Core\Controller {
         return $this->redirect('/login?'.$request->getQueryString());
     }
 
-    public function loginAction(Request $request)
-    {
+    /**
+     * Reusable static login checker
+     */
+    public static function checkLogin(Request $request) {
         // Already logged?
         if (Session::isLogged()) {
-            return $this->dispatch(AppEvents::ALREADY_LOGGED, new FilterAuthEvent(Session::getUser()))->getUserRedirect($request);
+            return App::dispatch(AppEvents::ALREADY_LOGGED, new FilterAuthEvent(Session::getUser()))->getUserRedirect($request);
         }
 
         // check username/password
@@ -54,14 +58,22 @@ class AuthController extends \Goteo\Core\Controller {
             if (false !== ($user = (User::login($username, $password)))) {
                 if(Session::setUser($user, true)) {
                     //Everything ok, redirecting
-                    return $this->dispatch(AppEvents::LOGIN_SUCCEEDED, new FilterAuthEvent($user))->getUserRedirect($request);
+                    return App::dispatch(AppEvents::LOGIN_SUCCEEDED, new FilterAuthEvent($user))->getUserRedirect($request);
                 }
             }
 
             // A subscriber will register a message
-            $this->dispatch(AppEvents::LOGIN_FAILED, new FilterAuthEvent(new User(['id' => $username, 'password' => $password])));
+            App::dispatch(AppEvents::LOGIN_FAILED, new FilterAuthEvent(new User(['id' => $username, 'password' => $password])));
+            return false;
         }
 
+        return true;
+    }
+
+    public function loginAction(Request $request)
+    {
+        $result = self::checkLogin($request);
+        if($result instanceOf Response) return $result;
 
         return $this->viewResponse('auth/login', ['return' => $request->query->get('return')]);
 
@@ -94,11 +106,14 @@ class AuthController extends \Goteo\Core\Controller {
         return $this->redirect($url);
     }
 
-    public function signupAction(Request $request)
-    {
+
+    /**
+     * Reusable static signup checker
+     */
+    public static function checkSignup(Request $request) {
         // Already logged?
         if (Session::isLogged()) {
-            return $this->dispatch(AppEvents::ALREADY_LOGGED, new FilterAuthEvent(Session::getUser()))->getUserRedirect($request);
+            return App::dispatch(AppEvents::ALREADY_LOGGED, new FilterAuthEvent(Session::getUser()))->getUserRedirect($request);
         }
 
         $vars = [];
@@ -111,16 +126,17 @@ class AuthController extends \Goteo\Core\Controller {
 
             $errors = array();
 
-            if (strcmp($vars['email'], $vars['remail']) !== 0) {
-                $errors['remail'] = Text::get('error-register-email-confirm');
-            }
             if (strcmp($vars['password'], $vars['rpassword']) !== 0) {
                 $errors['rpassword'] = Text::get('error-register-password-confirm');
             }
+            if(!isset($vars['register_accept'])) {
+                $errors['register_accept'] = Text::get('error-register-accept');
+            }
+            // print_r($vars);die;
 
             $user = new User();
             $user->userid = $vars['userid'];
-            $user->name = $vars['username'];
+            $user->name = $vars['name'];
             $user->email = $vars['email'];
             $user->password = $vars['password'];
             $user->active = true;
@@ -132,21 +148,33 @@ class AuthController extends \Goteo\Core\Controller {
 
                 Message::info(Text::get('user-register-success'));
                 // no confirmation..., direct login
-                Session::setUser(User::get($user->id));
+                $user = User::get($user->id);
+                Session::setUser($user);
                 //Redirect
                  //Everything ok, redirecting
-                return $this->dispatch(AppEvents::LOGIN_SUCCEEDED, new FilterAuthEvent($user))->getUserRedirect($request);
+                return App::dispatch(AppEvents::LOGIN_SUCCEEDED, new FilterAuthEvent($user))->getUserRedirect($request);
 
             }
             foreach ($errors as $field => $text) {
                 Message::error($text);
             }
             $vars['errors'] = $errors;
+            if(isset($errors['userid'])) {
+                $vars['suggest'] = User::suggestUserId($vars['email'], $vars['name'], $vars['userid']);
+            }
         }
 
-         $vars['return'] = $request->query->get('return');
+        $vars['return'] = $request->query->get('return');
 
-        return $this->viewResponse('auth/signup', $vars);
+        return $vars;
+    }
+
+    public function signupAction(Request $request)
+    {
+        $result = self::checkSignup($request);
+        if($result instanceOf Response) return $result;
+
+        return $this->viewResponse('auth/signup', $result);
 
     }
 
@@ -350,8 +378,7 @@ class AuthController extends \Goteo\Core\Controller {
                 $user->confirmed = 1;
             }
 
-            $query = User::query('SELECT id,password FROM user WHERE email = ?', array($user->email));
-            if ($u = $query->fetchObject()) {
+            if ($u = User::getByEmail($user->email, null, true)) {
                 if ($u->password == sha1($request->request->get('password'))) {
                     //ok, login en goteo e importar datos
                     //y fuerza que pueda logear en caso de que no tenga contraseña o email sin confirmar

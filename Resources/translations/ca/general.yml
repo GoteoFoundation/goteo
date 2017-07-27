@@ -52,6 +52,7 @@ horizontal-project-percent: financiado
 horizontal-project-reached: conseguido
 invest-individual-header: 'Pots renunciar a rebre recompenses per la teva aportació, o seleccionar les que igualin o estiguin per sota de l''import que hagis introduït.'
 login-register-conditions: 'En registrar-te, confirmes la teva acceptació dels nostres <a href="/legal/terms">termes d''ús</a>, <a href="/legal/privacy">política de privacitat</a> i <a href="legal/cookies">política de cookies</a>.'
+login-accept-conditions: 'Accepto els <a href="/legal/terms">termes d''ús</a>, <a href="/legal/privacy">política de privacitat</a> i <a href="legal/cookies">política de cookies</a>.'
 mandatory-cost-field-type: 'És obligatori seleccionar el tipus de cost'
 mandatory-individual_reward-field-amount: 'És obligatori indicar l''import que permet obtenir la recompensa'
 mandatory-project-costs: 'Ha de desglossar-se com a mínim en dos costos.'

@@ -406,6 +406,7 @@ class ProjectsSubController extends AbstractSubController {
             $accounts->bank_owner = $this->getPost('bank_owner');
             $accounts->paypal = $this->getPost('paypal');
             $accounts->paypal_owner = $this->getPost('paypal_owner');
+            $accounts->skip_login = $this->getPost('skip_login') ? true : false;
             if ($accounts->save($errors)) {
                 Message::info('Se han actualizado las cuentas del proyecto '.$project->name);
             } else {

@@ -26,6 +26,13 @@
         <input type="text" id="account-paypal_owner" name="paypal_owner" value="<?= $this->accounts->paypal_owner; ?>" style="width: 475px;"/>
     </p>
 
+    <p>
+        <label for="account-skip_login">
+        <input type="checkbox" id="account-skip_login" name="skip_login" value="1" <?= $this->accounts->skip_login ? 'checked="checked"' : '' ?>/>
+        Permitir aportes sin registro
+        </label>
+    </p>
+
         <input type="submit" name="save-accounts" value="Guardar" />
 
     </form>

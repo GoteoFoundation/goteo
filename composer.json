@@ -64,6 +64,8 @@
         "symfony/templating": "2.8",
         "symfony/framework-bundle": "2.8",
         "league/html-to-markdown": "^4.4",
+        "snowplow/referer-parser": "dev-master",
+        "ua-parser/uap-php": "^3.4",
         "symfony/security-csrf": "2.8",
         "symfony/validator": "2.8"
 

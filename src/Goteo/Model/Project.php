@@ -21,7 +21,8 @@ namespace Goteo\Model {
         Goteo\Library\Check,
         Goteo\Library\Text,
         Goteo\Library\Feed,
-        Goteo\Library\Currency
+        Goteo\Library\Currency,
+        Goteo\Model\Project\Account
         ;
 
     class Project extends \Goteo\Core\Model {
@@ -686,6 +687,13 @@ namespace Goteo\Model {
             if($this->userInstance) return $this->userInstance;
             $this->userInstance = User::get($this->owner);
             return $this->userInstance;
+        }
+
+        // returns account vars
+        public function getAccount() {
+            if($this->accountInstance) return $this->accountInstance;
+            $this->accountInstance = Account::get($this->id);
+            return $this->accountInstance;
         }
 
         // Replace $this->investors with this call

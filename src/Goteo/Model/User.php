@@ -483,6 +483,25 @@ class User extends \Goteo\Core\Model {
     }
 
     /**
+     * Returns true if user is "unregistered":
+     * ie: has no password, no social-login
+     */
+    public function isGhost() {
+        // If is hide or inactive is also a ghost
+        if(!$this->active || $this->hide) return true;
+        $password = $this->getPassword();
+        if(empty($password)) {
+            // check social login
+            $query = self::query('SELECT provider FROM user_login WHERE user = ?', array($this->id ? $this->id : $this->userid));
+            if ($query->fetchColumn()) {
+                return false;
+            }
+            return true;
+        }
+        return false;
+    }
+
+    /**
      * Este método actualiza directamente los campos de email y contraseña de un usuario (para gestión de superadmin)
      */
     public function update(&$errors = array()) {
@@ -1163,7 +1182,7 @@ class User extends \Goteo\Core\Model {
      */
     public function getPassword() {
         if($this->password) return $this->password;
-        $query = self::query('SELECT password FROM user WHERE id = :id', [':id' => $this->id]);
+        $query = self::query('SELECT password FROM user WHERE id = :id', [':id' => $this->id ? $this->id : $this->userid]);
         $this->password = $query->fetchColumn();
         return $this->password;
     }
@@ -2097,4 +2116,53 @@ class User extends \Goteo\Core\Model {
         return !empty($is);
     }
 
+    /**
+     * Returns an array of suggested non-existing userid based on a string
+     */
+    public static function suggestUserId() {
+        $strings = func_get_args();
+
+        $suggest = [];
+        $originals = [];
+        foreach($strings as $string) {
+            $parts = preg_split("/[\s,\-\@\.]+/", $string);
+            $id = '';
+            foreach($parts as $part) {
+                $id .= self::idealiza($part);
+                if(strlen($id) < 4) continue;
+                if($id) {
+                    $originals[] = $id;
+
+                    $query = self::query("SELECT id FROM user WHERE id = ?", $id);
+                    if ($query->fetch()) {
+                        continue;
+                    }
+
+                    $suggest[] = $id;
+                    $id = '';
+                }
+            }
+        }
+        // print_r($originals);die;
+        // Fill with automatic
+        if($originals) {
+            foreach($originals as $id) {
+                do {
+                    $new =  preg_replace_callback( "|(\d+)|", function ($matches) {
+                            return ++$matches[1];
+                        }, $id);
+                    if($new === $id) {
+                        $new = $id . '1';
+                    }
+
+                    $query = self::query("SELECT id FROM user WHERE id = ?", $new);
+                    $id = $new;
+
+                } while($query->fetch());
+                if(!in_array($id, $suggest)) $suggest[] = $id;
+            }
+        }
+
+        return $suggest;
+    }
 }

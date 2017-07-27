@@ -10,10 +10,6 @@
 
 namespace Goteo\Model;
 
-use Goteo\Core\Model;
-use Goteo\Application\Lang;
-use Goteo\Application\Session;
-use Goteo\Application\Config;
 use Goteo\Application\Exception\ModelNotFoundException;
 use Goteo\Application\Exception\ModelException;
 use Goteo\Application\Exception\DuplicatedEventException;
@@ -73,7 +69,7 @@ class Event extends \Goteo\Core\Model {
             if( $event = $query->fetchObject(__CLASS__) )
                 return $event;
         }
-        throw new ModelException("Event [$id] not found");
+        throw new ModelNotFoundException("Event [$id] not found");
     }
 
     /**
