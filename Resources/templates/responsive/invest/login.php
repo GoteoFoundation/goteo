@@ -12,17 +12,17 @@ $query = $this->query . '&amp;return=' . urlencode($this->raw('return')) . '&amp
 
 <div class="container">
     <div class="row row-form">
-        <div class="panel panel-default invest-container">
+        <div class="panel panel-default panel-form">
             <div class="panel-body">
 
                 <h2 class="col-md-offset-1"><?= $this->text('login-title') ?></h2>
 
                 <form class="form-horizontal" role="form" method="POST" action="/invest/<?= $this->project->id ?>/login?<?= $query ?>">
 
-                <?= $this->insert('auth/partials/social_login') ?>
-                <hr>
 
                 <?= $this->insert('auth/partials/form_login', ['signup_link' => '/invest/' . $this->project->id . '/signup?' . $query]) ?>
+
+                <?= $this->insert('auth/partials/social_login') ?>
 
                 <?php if($this->skip_login): ?>
                 <div class="form-group">
