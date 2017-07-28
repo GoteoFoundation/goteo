@@ -22,7 +22,8 @@ $background-light-cream: #FAF8F8;
 $background-light: #E5F3F4;
 $background-light-body: #F0F9F8;
 $background-light-grey: #E8ECEC;
-$background-grey: #58595B;
+// $background-grey: #58595B;
+$background-grey: #555555;
 $background-white: #FFFFFF;
 // $background-light-green: #32BDB8; // header alternate?
 $background-light-green: #19B4B2;
@@ -31,9 +32,12 @@ $background-dark-green: #14AE84;
 $background-pink: #CD5EB3;
 $background-red: #B32928;
 $background-black: #111111;
+$background-sidebar-header: #2C2C2C;
 $background-sidebar: #3B3B3B;
+$background-sidebar-active: #727272;
 
 $color-white: #FFFFFF;
+$color-black: #000000;
 $color-pink: #CD5EB3;
 $color-green: #14AE84;
 $color-light-grey: #BCBCBC;
@@ -43,5 +47,7 @@ $color-cyan: #2BBBB7;
 $color-grey-cyan: #C1D9DB;
 
 $dashboard-sidebar-width: 240px;
+// $dashboard-sidebar-width: 20%;
+$dashboard-main-width: 80%;
 
 @import 'common/mixins';

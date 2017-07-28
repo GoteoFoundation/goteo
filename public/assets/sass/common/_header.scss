@@ -229,14 +229,6 @@
 }
 
 /*Navbar */
-body.has-sidebar {
-    @media(min-width: $breakpoint-sm) {
-        .navbar-header {
-            display: none;
-        }
-    }
-}
-
 .navbar{
     margin-bottom: 0;
 }

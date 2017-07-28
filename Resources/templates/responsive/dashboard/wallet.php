@@ -4,7 +4,7 @@
 
 <div class="dashboard-content">
 
-<div class="container">
+<div class="fluid-container">
     <div class="row user-pool">
         <div class="col-sm-3 hidden-xs img-pool">
             <img src="<?= SRC_URL . '/assets/img/dashboard/pool.png' ?>" class="img-responsive">

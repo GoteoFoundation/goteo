@@ -24,7 +24,7 @@ $this->layout( $this->is_ajax() ? 'content' : 'layout', [
     ]);
 
 $this->section('sidebar-header');
-echo $this->insert(__DIR__ . '/../../responsive/project/widgets/mini.php', ['project' => $project, 'admin' => $project->userCanEdit($this->get_user())]);
+echo $this->insert(__DIR__ . '/../../responsive/project/widgets/micro.php', ['project' => $project, 'admin' => $project->userCanEdit($this->get_user())]);
 $this->replace();
 
 $this->section('content');

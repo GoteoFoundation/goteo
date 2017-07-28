@@ -45,20 +45,22 @@
       height: 270px;
     }
   }
-  &.mini .content {
-    height: auto;
-    background: transparent;
-    border: 0;
-    color: $color-grey;
-  }
   .title {
     font-size: 18px;
     color: $color-grey;
     margin-top: 10px;
   }
-  &.mini .title {
-    line-height: 20px;
-    margin: 0;
+  &.mini, &.micro {
+    .content {
+        height: auto;
+        background: transparent;
+        border: 0;
+        color: $color-grey;
+      }
+      .title {
+        line-height: 20px;
+        margin: 0;
+      }
   }
   .title a {
     color: $color-grey;

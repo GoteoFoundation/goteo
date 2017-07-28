@@ -164,6 +164,11 @@ class ProjectsApiController extends AbstractApiController {
         $prj = Project::get($pid);
         $post = BlogPost::get($uid);
 
+        // Security, first of all...
+        if(!$prj->userCanEdit($this->user)) {
+            throw new ControllerAccessDeniedException();
+        }
+
         if(!$post) throw new ModelNotFoundException();
         if($post->owner_id !== $prj->id) throw new ModelNotFoundException('Non matching update');
 
@@ -214,6 +219,12 @@ class ProjectsApiController extends AbstractApiController {
      * AJAX upload image (Generic uploader with optional project gallery updater)
      */
     public function projectUploadImagesAction($id, Request $request) {
+        $prj = Project::get($id);
+
+        // Security, first of all...
+        if(!$prj->userCanEdit($this->user)) {
+            throw new ControllerAccessDeniedException();
+        }
 
         $files = $request->files->get('file');
         if(!is_array($files)) $files = [$files];

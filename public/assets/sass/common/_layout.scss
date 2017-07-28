@@ -4,26 +4,62 @@ body {
     color: $primary-color;
     margin-bottom: 0;
 
-    &.has-sidebar #main {
+    &.has-sidebar {
+      background: $background-sidebar;
+      .page-wrap {
+          display:flex;
+
+          #sidebar-menu {
+            -webkit-box-flex: 1;      /* OLD - iOS 6-, Safari 3.1-6 */
+            -moz-box-flex: 1;         /* OLD - Firefox 19- */
+            // width: $dashboard-sidebar-width; /* For old syntax, otherwise collapses. */
+            width: 0; /* For old syntax, otherwise collapses. */
+            -webkit-flex: 1;          /* Chrome */
+            -ms-flex: 1;              /* IE 10 */
+            flex: 1;                  /* NEW, Spec - Opera 12.1, Firefox 20+ */
+          }
+          #main {
+            // width: $dashboard-main-width;
+            width: 100%;
+            // margin-left:0;
+            // width: 80%;
+            @media(min-width: $breakpoint-sm) {
+                // margin-left: $dashboard-sidebar-width;
+            }
+          }
         @media(min-width: $breakpoint-sm) {
-            margin-left: $dashboard-sidebar-width;
+            #sidebar-menu {
+                width: $dashboard-sidebar-width;
+            }
+            #main {
+                width: $dashboard-main-width;
+            }
         }
+      }
     }
 
     &.sidebar-opened {
-        #sidebar-menu {
-            width: $dashboard-sidebar-width;
-        }
-        #main {
-            @media(min-width: $breakpoint-sm) {
-                margin-left: $dashboard-sidebar-width;
-            }
-        }
+      .page-wrap {
+          #sidebar-menu {
+              width: $dashboard-sidebar-width;
+              @media(max-width: $breakpoint-sm - 1) {
+                position: absolute;
+                flex: none;
+                z-index: 1001;
+                height: 100%;
+              }
+          }
+          #main {
+              @media(min-width: $breakpoint-sm) {
+                  width: $dashboard-main-width;
+              }
+          }
+      }
     }
 
     #main {
         transition: margin-left .5s;
-        margin-left: 0;
+        // margin-left: 0;
     }
 
 }

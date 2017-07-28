@@ -2,6 +2,6 @@
 
 <?php $this->section('sidebar-header') ?>
 
-<?= $this->insert('project/widgets/mini', ['project' => $this->project, 'admin' => $this->admin]) ?>
+<?= $this->insert('project/widgets/micro', ['project' => $this->project, 'admin' => $this->admin]) ?>
 
 <?php $this->replace() ?>

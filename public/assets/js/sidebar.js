@@ -46,7 +46,11 @@ function whichTransitionEvent(){
 var transitionEnd = whichTransitionEvent();
 
 $(function(){
-
+//     $('#sidebar-menu').height($(window.document).outerHeight(true));
+//     $(window.document).on('resize', function(){
+//         console.log('resize',$(window.document).outerHeight(true));
+//         $('#sidebar-menu').height($(window.document).outerHeight(true));
+//     });
     var toggleSidebar = function(e) {
         var $body = $('body.has-sidebar');
         if($body.hasClass('animating')) return;

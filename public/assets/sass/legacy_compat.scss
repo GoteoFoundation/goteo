@@ -39,6 +39,10 @@ body {
 @import 'common/sidebar';
 @import 'common/widgets';
 
+.top-navbar {
+    display:none;
+}
+
 #sidebar-menu {
 
     li >a {
