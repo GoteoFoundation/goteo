@@ -2,12 +2,12 @@
 
 <?php $this->section('dashboard-content') ?>
 
-<div class="dashboard-content">
+<div class="dashboard-content white">
 
-    <div class="well">
-        <?= $this->raw('message') ?>
-    </div>
+    <?= $this->raw('message') ?>
+</div>
 
+<div class="dashboard-content cyan">
     <div class="projects-container" id="projects-support-container">
         <h2><?= $this->text('profile-invest_on-header') ?></h2>
         <?= $this->insert('dashboard/partials/projects_interests', [

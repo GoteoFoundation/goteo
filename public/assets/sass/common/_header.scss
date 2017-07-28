@@ -7,6 +7,7 @@
     }
 }
 
+
 .top-navbar {
     background-color: $background-light-green;
 
@@ -70,14 +71,15 @@
         float:right;
 
         button, a {
-            margin: 15px 0 15px 15px;
+            margin: 13px 0 13px 15px;
             padding:0;
             border: none;
             background: transparent;
             color: $color-white;
             img {
-                max-width: 28px;
+                max-width: 32px;
                 vertical-align: text-bottom;
+                border: 2px solid $color-white;
             }
         }
     }
@@ -85,7 +87,7 @@
     .navbar-always, .toggle-menu {
         i {
             &.fa {
-               font-size: $font-size * 2;
+               font-size: 32px;
             }
             &.hide-menu {
                 display: none;
@@ -227,6 +229,13 @@
 }
 
 /*Navbar */
+body.has-sidebar {
+    @media(min-width: $breakpoint-sm) {
+        .navbar-header {
+            display: none;
+        }
+    }
+}
 
 .navbar{
     margin-bottom: 0;

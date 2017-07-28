@@ -1,7 +1,7 @@
 <?php
 
 $this->layout('layout', [
-    'bodyClass' => '',
+    'bodyClass' => 'dashboard',
     'title' => 'Dashboard :: Goteo.org',
     'meta_description' => $this->text('meta-description-discover')
     ]);

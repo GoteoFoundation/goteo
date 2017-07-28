@@ -6,33 +6,35 @@
 
 <div class="container">
     <div class="row user-pool">
-	   	<div class="col-sm-3 hidden-xs img-pool">
-	   		<img src="<?= SRC_URL . '/assets/img/dashboard/pool.png' ?>" class="img-responsive">
-	   	</div>
-	   	<div class="col-sm-9 col-xs-12 user-pool-info margin-2">
-	   		<h2 class="col-md-8 col-sm-12 col-xs-12"><?=  $this->text('dashboard-my-wallet-available', amount_format($this->pool->getAmount())) ?></h2>
-	   		<div class="pool-conditions col-md-8 col-sm-12 clear-both">
-	   		<?= $this->text('dashboard-my-wallet-pool-info') ?> <a data-toggle="modal" data-target="#poolModal" href=""><?= $this->text('regular-here') ?></a>
-	   		</div>
-	   		<div class="row extra-info margin-2 spacer clear-both">
-	   			<a href="/discover" class="text-decoration-none" >
-					<div class="col-xs-6 col-sm-3">
-						<button type="button" class="btn btn-block col-xs-3 margin-2 donor"><?= $this->text('dashboard-my-wallet-contribute-button') ?></button>
-					</div>
-				</a>
-				<a href="/pool" class="text-decoration-none">
-					<div class="col-xs-6 col-sm-3">
-						<button type="button" class="btn btn-block col-xs-3 margin-2 chargue"><?= $this->text('recharge-button') ?></button>
-					</div>
-				</a>
-	   		</div>
-	   	</div>
-	</div>
+        <div class="col-sm-3 hidden-xs img-pool">
+            <img src="<?= SRC_URL . '/assets/img/dashboard/pool.png' ?>" class="img-responsive">
+        </div>
+        <div class="col-sm-9 col-xs-12 user-pool-info margin-2">
+            <h2 class="col-md-8 col-sm-12 col-xs-12"><?=  $this->text('dashboard-my-wallet-available', amount_format($this->pool->getAmount())) ?></h2>
+            <div class="pool-conditions col-md-8 col-sm-12 clear-both">
+            <?= $this->text('dashboard-my-wallet-pool-info') ?> <a data-toggle="modal" data-target="#poolModal" href=""><?= $this->text('regular-here') ?></a>
+            </div>
+            <div class="row extra-info margin-2 spacer clear-both">
+                <a href="/discover" class="text-decoration-none" >
+                    <div class="col-xs-6 col-sm-3">
+                        <button type="button" class="btn btn-block col-xs-3 margin-2 donor"><?= $this->text('dashboard-my-wallet-contribute-button') ?></button>
+                    </div>
+                </a>
+                <a href="/pool" class="text-decoration-none">
+                    <div class="col-xs-6 col-sm-3">
+                        <button type="button" class="btn btn-block col-xs-3 margin-2 chargue"><?= $this->text('recharge-button') ?></button>
+                    </div>
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
 </div>
 
+<div class="dashboard-content cyan">
 <div class="projects-container">
     <h2><?= $this->text('profile-suggest-projects-interest') ?></h2>
-	<?= $this->insert('dashboard/partials/projects_interests', [
+    <?= $this->insert('dashboard/partials/projects_interests', [
         'projects' => $this->projects_suggestion,
         'total' => $this->projects_suggestion_total,
         'interests' => $this->interests,

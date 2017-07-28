@@ -1,35 +1,8 @@
 /* Dashboard  */
 
-.dashboard-sections {
-  // background-color: $background-light-cream;
-  background-color: $background-light;
-  padding-top: 20px;
-  // Do not stack this nav in any screen width
-  .nav-tabs.nav-justified > li {
-      display: table-cell;
-      width: 1%;
-      >a {
-        border:0;
-        margin-bottom:0;
-        border-bottom-right-radius: 0;
-        border-bottom-left-radius: 0;
-      }
-  }
-  .nav-tabs > li.active > a, .nav-tabs > li.active > a:focus, .nav-tabs > li.active > a:hover {
-    background-color:$background-light-cream;
-  }
-}
-
-.dashboard-content {
-  padding: 20px;
-  @media(max-width: $breakpoint-sm - 1) {
-    padding: 5px;
-  }
-}
-
 /* dashboard containers */
 .dashboard {
-  background: $background-light-cream;
+  background: $background-white;
 
   .general-dashboard {
     background-color: $background-white;
@@ -37,6 +10,53 @@
     margin: 0 -15px 40px -15px;
   }
 
+}
+
+.dashboard-sections {
+  // background-color: $background-light-cream;
+  background-color: $background-light;
+  padding-top: 10px;
+  padding-bottom: 10px;
+  // Do not stack this nav in any screen width
+  .nav-tabs.nav-justified > li {
+      display: table-cell;
+      width: 1%;
+      >a {
+        border-radius:10px;
+        text-transform: uppercase;
+        border:0;
+        margin-bottom:0;
+        color: $color-dark;
+        font-weight: 500;
+        >i {
+            background-color: $color-grey-cyan;
+            margin-bottom: 10px;
+        }
+        &:hover {
+            background-color:inherit;
+            >i {
+                background-color:$color-cyan;
+            }
+        }
+      }
+  }
+  .nav-tabs > li.active > a, .nav-tabs > li.active > a:focus, .nav-tabs > li.active > a:hover {
+    background-color:$background-white;
+    box-shadow: 0 1px 3px -2px $color-dark;
+    >i {
+        background-color: $color-cyan;
+    }
+  }
+}
+
+.dashboard-content {
+  &.cyan {
+    background: $background-light-body;
+  }
+  padding: 20px;
+  @media(max-width: $breakpoint-sm - 1) {
+    padding: 5px;
+  }
 }
 
 div {

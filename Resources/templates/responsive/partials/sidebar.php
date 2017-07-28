@@ -2,8 +2,10 @@
   <nav id="sidebar-menu">
     <button class="toggle-sidebar btn btn-link visible-xs" title="Close"><i class="fa fa-close"></i></button>
 
+    <div class="navbar top-navbar">
+        <a class="navbar-brand" href="<?= SITE_URL ?>"><img src="<?= SRC_URL ?>/assets/img/logo.svg" class="img-responsive logo" alt="Goteo"></a>
+    </div>
     <div class="sidebar-header">
-      <!-- <a href="<?= SITE_URL ?>"><img src="<?= SRC_URL ?>/goteo_logo.png" class="logo" alt="Goteo"></a> -->
       <?= $this->supply('sidebar-header') ?>
     </div>
 

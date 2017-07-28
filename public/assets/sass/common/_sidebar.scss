@@ -7,7 +7,7 @@
     z-index: 1001; /* Stay on top */
     top: 0;
     left: 0;
-    background-color: $background-black;
+    background-color: $background-sidebar;
     overflow-x: hidden; /* Disable horizontal scroll */
     transition: 0.5s; /* 0.5 second transition effect to slide in the sidenav */
     font-size: $font-size * 1.3;
@@ -71,14 +71,19 @@
         font-size: $font-size * 2;
         font-weight: 300;
         right: 0;
-        top: 0;
+        top: 60px;
         z-index: 1002;
-        background:$background-black;
+        // background:$background-sidebar;
+        background:transparent;
         color:$color-white;
         padding:6px 12px;
         margin:0;
         border:0;
         border-radius:0;
+    }
+
+    .navbar-brand {
+        margin-bottom: 8px;
     }
 }
 
@@ -95,7 +100,7 @@
     top: 70px;
     left: 0;
     z-index: 1000;
-    background-color: $background-black;
+    background-color: $background-sidebar;
     color: $color-white;
     // width: 30px;
     // height: 100px;

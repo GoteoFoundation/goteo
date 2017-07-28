@@ -19,3 +19,9 @@
         height: $font-size * $size / 2;
     }
 }
+/* allows to use a SVG as a background and colorize it */
+@mixin svg-background($svg) {
+    -webkit-mask-image: url($svg);
+    mask-image: url($svg);
+    background-color: $primary-color;
+}

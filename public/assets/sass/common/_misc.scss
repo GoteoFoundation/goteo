@@ -125,16 +125,16 @@ i.visible-xs {
         @include icon-responsive(8);
     }
     &.icon-activity {
-        background-image: url(../img/dashboard/activity.svg);
+        @include svg-background('../img/dashboard/activity.svg');
     }
     &.icon-projects {
-        background-image: url(../img/dashboard/projects.svg);
+        @include svg-background('../img/dashboard/projects.svg');
     }
     &.icon-wallet {
-        background-image: url(../img/dashboard/wallet.svg);
+        @include svg-background('../img/dashboard/wallet.svg');
     }
     &.icon-settings {
-        background-image: url(../img/dashboard/settings.svg);
+        @include svg-background('../img/dashboard/settings.svg');
     }
 }
 

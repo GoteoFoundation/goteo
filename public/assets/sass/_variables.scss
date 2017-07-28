@@ -2,7 +2,7 @@
 // <link href="https://fonts.googleapis.com/css?family=Roboto:400,700" rel="stylesheet" type="text/css">
 // <link href="https://fonts.googleapis.com/css?family=Open+Sans+Condensed:300" rel="stylesheet" type="text/css">
 
-@import url(https://fonts.googleapis.com/css?family=Roboto:400,700|Open+Sans+Condensed:300);
+@import url(https://fonts.googleapis.com/css?family=Roboto:400,500,700|Open+Sans+Condensed:300);
 
 // Bootstrap breakpoints
 $breakpoint-xxs: 385px;
@@ -18,7 +18,9 @@ $font-size: 14px;
 $primary-color: #3A3A3A;
 
 $background-light-cream: #FAF8F8;
-$background-light: #E7E7E7;
+// $background-light: #E7E7E7;
+$background-light: #E5F3F4;
+$background-light-body: #F0F9F8;
 $background-light-grey: #E8ECEC;
 $background-grey: #58595B;
 $background-white: #FFFFFF;
@@ -29,6 +31,7 @@ $background-dark-green: #14AE84;
 $background-pink: #CD5EB3;
 $background-red: #B32928;
 $background-black: #111111;
+$background-sidebar: #3B3B3B;
 
 $color-white: #FFFFFF;
 $color-pink: #CD5EB3;
@@ -36,6 +39,8 @@ $color-green: #14AE84;
 $color-light-grey: #BCBCBC;
 $color-grey: #58595B;
 $color-dark: #4D4D4D;
+$color-cyan: #2BBBB7;
+$color-grey-cyan: #C1D9DB;
 
 $dashboard-sidebar-width: 240px;
 
