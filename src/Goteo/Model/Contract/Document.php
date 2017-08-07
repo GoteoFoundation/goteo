@@ -110,8 +110,7 @@ namespace Goteo\Model\Contract {
                 // verificar que existe el directorio para documentos de este proyecto
 
                 $this->filedir = $this->contract.'/';
-                //nombre seguro (quitamos el path!)
-                $this->name = basename($this->fp->get_save_name($this->filedir.$this->name));
+                $this->name = $this->fp->get_save_name($this->name);
 
                 $data = array(
                     ':contract' => $this->contract,
