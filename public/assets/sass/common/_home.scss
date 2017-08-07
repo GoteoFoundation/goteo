@@ -12,6 +12,7 @@ div.section.main-slider{
         margin: 20px 30px 20px 0;
         li{
             margin-left: 20px;
+            text-transform: uppercase;
         }
         li a
         {
@@ -45,9 +46,11 @@ div.section.main-slider{
             font-size:26px;
             font-weight: bold;
         }
+        .btn{
+            text-transform: uppercase;
+        }
     }
 }
-
 
 .slider.fade{
     opacity:1;
@@ -72,4 +75,233 @@ div.section.main-slider{
     font-size: 13px;
 }
 
+.section.search{
+    padding-bottom: 40px;
+    .inner-addon { 
+    position: relative; 
+    display: inline-block;
+    }
+
+    /*Placeholder Colors*/
+    input::-webkit-input-placeholder {
+        color:#7C9BA0;
+    }
+    input:-moz-placeholder { /* Firefox 18- */
+        color:#7C9BA0;
+    }
+ 
+    input::-moz-placeholder { /* Firefox 19+ */
+        color:#7C9BA0;
+    }
+ 
+    input:-ms-input-placeholder {
+        color:#7C9BA0;
+    }
+
+    /* style icon */
+    .inner-addon .glyphicon {
+      position: absolute;
+      padding: 10px;
+      pointer-events: none;
+      color: #7C9BA0;
+    }
+    .glyphicon-search
+    {
+        font-size: 18px;
+    }
+    .glyphicon-map-marker{
+        font-size: 20px;
+    }
+
+    /* align icon */
+    .left-addon .glyphicon  { left:  0px;}
+    .right-addon .glyphicon { right: 0px;}
+
+    /* add padding  */
+    .left-addon input  { 
+        border: 1px transparent solid;
+        border-radius: 5px;
+        padding: 10px 0px 10px 35px;
+        margin-right: 10px; 
+    }
+    .btn-light-green{
+        padding:10px;
+        min-width: 150px;
+        text-transform: uppercase;
+    }
+    .btn-light-green:hover{
+        color: #FFF;
+    }
+}
+
+
+.call-action{
+    background-color: $background-light-green;
+    color: $color-white;
+    padding: 30px 0;
+    .row{
+        display: flex;
+    }
+    .row .col-button{
+        display: flex;
+        flex-direction: column;
+    }
+    .title{
+        text-transform: uppercase;
+    }
+    .description{
+        font-weight: bold;
+        font-size: 22px;
+    }
+    .col-button{
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+      .btn-white{
+        color: $color-grey;
+        padding: 13px 0px;
+        }  
+    }
+    
+}
+
+.section.search{
+    padding-bottom: 40px;
+}
+
+.section.adventages{
+    .nav-tabs > li{
+        width: 50%;
+        text-align: center;
+        margin-bottom: -3px;
+        a{
+            text-transform: uppercase;
+            padding: 20px 0;
+        }
+    }
+    .nav-tabs > li.donor a{
+        background-color: $background-green-donor !important;
+        color: #729499;
+        font-weight: bold;
+        line-height:40%;
+    }
+    .nav-tabs > li.owner a{
+        background-color: $background-green-owner !important;
+        color:#729499;
+        font-weight: bold;
+        line-height:40%;
+    }
+
+    .adventages-container 
+    {
+        padding:25px 10px;
+        .row.details{
+            padding-top:15px;
+            display: flex;
+            font-weight: bold;
+
+            .title{
+                img{
+                }
+                span.text{
+                    border: 1px solid #CAD7D8;
+                    font-size: 12px;
+                    padding: 7px;
+                    text-transform: uppercase;
+                    margin-left: 10px;
+                }
+            }
+            .description
+            {
+                padding: 15px 40px;
+                font-size: 24px;
+            }
+            .more-description
+            {
+                padding: 5px 40px 25px 40px;
+                font-size: 12px;
+                font-weight: normal;
+            }
+            .action a{
+                font-size: 13px;
+                padding: 0 40px;
+                color: #3A3A3A;
+                text-transform: uppercase;
+                .glyphicon{
+                    font-size: 18px;
+                    vertical-align: top;
+                    margin-left: 5px;
+                }
+            }
+        }
+
+        .row.more-information
+        {
+            padding:30px 0;
+            .action{
+                margin-top:15px;
+            }
+            .action a
+            {  
+                color: #729499;
+                font-size: 15px;
+                font-weight: bold;
+                border-bottom: 1px solid #CAD7D8;
+                padding-bottom: 30px;
+                text-transform: uppercase;
+                .glyphicon{
+                    font-size: 18px;
+                    vertical-align: top;
+                    margin-left: 5px;
+                }
+            }
+        }
+        .row.impact{
+            .title{
+                font-size: 24px;
+                font-weight: bold;
+                text-align: center;
+                padding-top:20px;
+            }
+        }
+        .row.impact-data{
+            .item{
+                margin-top: 25px;
+                text-align: center;
+                font-size: 30px;
+                font-weight: bold;
+                .description{
+                    font-size: 11px;
+                    font-weight: normal;
+                    text-transform: uppercase;
+                }
+            }
+        }
+    }
+    .adventage:not(:last-child)
+    {
+        border-right: 1px solid #CAD7D8;
+        padding-bottom: 15px;
+    }
+
+
+    .tab-pane.donor{
+        background-color: $background-green-donor !important;
+    }
+    .tab-pane.owner{
+        background-color: $background-green-owner !important;
+    }
+ 
+}
+
+//Fundation customization
+.adventages.foundation{
+    background-color: $background-yellow !important;
+    h2.title{
+        font-size: 24px;
+        font-weight: bold;
+        text-align: center;
+        padding-top: 20px;
+    }
+}
 

@@ -56,3 +56,4 @@
 <!-- geolocation -->
 <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?v=3.exp&amp;libraries=places"></script>
 <script type="text/javascript" src="<?= SRC_URL ?>/assets/js/geolocation.js"></script>
+<script type="text/javascript" src="<?= SRC_URL ?>/assets/js/counter.js"></script>

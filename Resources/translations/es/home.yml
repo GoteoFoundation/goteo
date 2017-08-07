@@ -5,3 +5,51 @@ home-patrons-header: Recomiendan
 home-promotes-header: Destacados
 home-stories-header: 'Casos de éxito'
 node-home-calls-header: Convocatorias
+
+home-menu-matchfunding: 'Matchfunding'
+home-menu-our-foundation: 'Nuestra Fundación'
+
+home-search-keyword: 'Busca por palabra clave'
+home-search-location: 'Provincia, ciudad, CP'
+
+home-adventages-donor-title: 'Descubre las ventajas<br>como donante'
+home-adventages-owner-title: 'Descubre las ventajas<br>como impulsor'
+home-adventages-wallet-title: 'Monedero'
+home-adventages-wallet-description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit'
+home-adventages-wallet-action: 'Ir al monedero virtual'
+home-adventages-certificates-title: 'Certificados'
+home-adventages-certificates-description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit'
+home-adventages-certificates-action: 'Ir a Certificados'
+home-adventages-calculator-title: 'Calculadora'
+home-adventages-calculator-description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit'
+home-adventages-calculator-action: 'Ir a la calculadora'
+home-adventages-donor-more-description: 'También puedes ver la tabla comparativa con otras plataformas'
+home-adventages-donor-more-action: 'Ver tabla'
+
+home-adventages-flex-calendar-title: 'Calendarios flexibles'
+home-adventages-flex-calendar-description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit'
+home-adventages-regular-action: 'Quiero saber más'
+home-adventages-fee-title: '% de comisión menor'
+home-adventages-fee-description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit'
+home-adventages-matchfunding-title: 'Matchfunding'
+home-adventages-matchfunding-description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit'
+
+home-adventages-impact-data-title: 'Datos de impacto'
+home-adventages-impact-data-money-label: 'Dinero recaudado'
+home-adventages-impact-data-success-projects-label: 'Proyectos exitosos'
+home-adventages-impact-data-invest-avg-label: 'Aporte medio a proyectos'
+
+home-foundation-title: 'Sobre la Fundación Goteo'
+home-foundation-stats-title: 'Estadísticas'
+home-foundation-stats-description: 'La transparencia es uno de nuestros pilares. Compruébalo'
+home-foundation-stats-more-description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin maximus semper metus. Nulla facilisi. Curabitur sed pharetra ipsum. Morbi imperdiet pulvinar nibh, ut rhoncus diam lacinia eget. Donec sollicitudin felis nec pharetra sodales.'
+home-foundation-stats-action: 'Ver stats'
+home-foundation-api-title: 'API para desarrolladores'
+home-foundation-api-description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit'
+home-foundation-api-more-description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin maximus semper metus. Nulla facilisi. Curabitur sed pharetra ipsum. Morbi imperdiet pulvinar nibh, ut rhoncus diam lacinia eget. Donec sollicitudin felis nec pharetra sodales.'
+home-foundation-api-action: 'Ver api'
+
+home-foundation-goteo-values-title: 'Los valores de Goteo'
+home-foundation-goteo-values-description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit'
+home-foundation-goteo-values-more-description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin maximus semper metus. Nulla facilisi. Curabitur sed pharetra ipsum. Morbi imperdiet pulvinar nibh, ut rhoncus diam lacinia eget. Donec sollicitudin felis nec pharetra sodales.'
+home-foundation-goteo-values-action: 'Saber más'
