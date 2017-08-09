@@ -136,7 +136,7 @@
                 		</div>
                 		<div class="col-md-3 adventage">
                 			<div class="title">
-                				<img src="/assets/img/home/calculadora.png" >
+                				<img src="/assets/img/home/calendar.png" >
                 				<span class="text">                				
                 				    <?= $this->text('home-adventages-flex-calendar-title') ?>
                 				</span>
@@ -153,7 +153,7 @@
                 		</div>
                 		<div class="col-md-3 adventage">
                 			<div class="title">
-                				<img src="/assets/img/home/calculadora.png" >
+                				<img src="/assets/img/home/fee.png" >
                 				<span class="text">                				
                 				<?= $this->text('home-adventages-fee-title') ?>
                 				</span>

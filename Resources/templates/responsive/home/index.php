@@ -14,6 +14,8 @@
 
 <?= $this->insert('home/partials/foundation') ?>
 
+<?= $this->insert('home/partials/tools') ?>
+
 
 <?php $this->replace() ?>
 

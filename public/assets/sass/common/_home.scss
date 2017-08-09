@@ -303,5 +303,155 @@ div.section.main-slider{
         text-align: center;
         padding-top: 20px;
     }
+
+    .slider{
+        background-color: $background-white;
+        color:$primary-color;
+        .info-container{
+            margin-left:20px;
+            max-width: 70%;
+        }
+        .type-container{
+            margin-top: 60px;
+            .type{
+                border: 1px solid #CAD7D8;
+                font-size: 12px;
+                padding: 7px;
+                text-transform: uppercase;
+                font-weight: bold;
+            }
+        }
+        .description
+        {
+            font-size: 21px;
+            margin: 35px 0 10px 0;
+            font-weight: bold;
+            .quote{
+                width: 12%;
+            }
+            .text{
+                width: 88%;
+            }
+        }
+        .fa{
+            border: 1px solid #CAD7D8;
+            padding: 7px;
+            border-radius:20px;
+            font-size: 16px;
+        }
+        .author{
+            padding-top: 10px;
+            font-size: 12px;
+            font-weight: bold;
+            color:$color-light-grey;
+            clear: both;
+            margin-left: 10%;
+        }
+        .slick-dots{
+            left:25%;
+            li.slick-active button::before{
+                color: $primary-color;
+            }
+
+            li button::before{
+                color: $color-light-grey;
+                opacity: 1;
+                font-size: 11px;
+            }
+
+        }
+
+        .slick-prev{
+             left:50%;
+             z-index: 100;
+        }
+        .slick-next{
+            right: 2%;
+            z-index: 100;
+        }
+
+        .slick-prev:before {
+            content: "";
+            font-family: 'FontAwesome';
+            font-size: 25px;
+            color:$color-light-grey;          
+        }
+        .slick-next:before {
+            content: "";
+            font-family: 'FontAwesome';
+            font-size: 25px;
+            color:$color-light-grey;        
+        }
+
+    }
+}
+
+div.section.tools{
+    background-color: $background-blue !important;
+    .row{
+        margin:20px 0 30px 0;
+        a.item{
+            text-align: center;
+            font-weight: bold;
+            color: $primary-color;
+            img{
+                max-height: 24px;
+                margin-right: 5px;
+            }
+        }
+    }
+}
+
+@media (max-width: $breakpoint-sm - 1) {
+    .section.search{
+        .inner-addon{
+            margin-top:10px;
+        }
+        .btn-light-green {
+            margin: 10px auto;
+            display: block;
+        }  
+    }
+
+    .call-action{
+        .row
+        {
+            display: block;
+        }
+        .col-button .btn-white{
+            margin: 15px 0;
+        }
+    }
+
+    .section.adventages .adventages-container{
+        .row.details{
+            display: block;
+        }
+    }
+
+    div.section.tools .row a.item{
+        margin-top: 15px;
+        display: block;
+    }
+
+    .adventages.foundation .slider .info-container{
+        max-width: 80%;
+        margin-left: 10%;
+        margin-bottom: 50px;
+    }
+
+    .adventages.foundation{
+        .slick-dots{
+            left:0 !important;
+        }
+        .slick-prev{
+            left:15px !important;
+            top:80% !important;
+        }
+        .slick-next{
+            right: 15px !important;
+            top:80% !important;
+        }
+    }
 }
 

@@ -34,7 +34,7 @@
 						<div class="image">
 							<img src="<?= $banner->image->getLink(1920, 600, true) ?>" >
 						</div>
-						<div class="main-info">
+						<div class="main-info hidden-xs">
 							<div class="container">
 								<div class="row">
 									<div class="col-md-6">
