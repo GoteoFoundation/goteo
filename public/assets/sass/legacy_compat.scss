@@ -22,8 +22,17 @@ body {
         margin-left: 0;
     }
 
-    &.has-sidebar #wrapper {
-        @include wrapper-props();
+    &.has-sidebar {
+        #sidebar-menu {
+            width: 0;
+            position: absolute;
+            height: 100%;
+            z-index: 1001;
+        }
+
+        #wrapper {
+            @include wrapper-props();
+        }
     }
 
     &.sidebar-opened {
