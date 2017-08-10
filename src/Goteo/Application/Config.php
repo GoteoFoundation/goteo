@@ -305,6 +305,15 @@ class Config {
 		define('OAUTH_LINKEDIN_ID', self::get('oauth.linkedin.id'));
 		define('OAUTH_LINKEDIN_SECRET', self::get('oauth.linkedin.secret'));
 
+        // analytics sanitize
+        // TODO: add others like facebook pixel or piwik
+        if($google = self::get('analytics.google')) {
+            if(!is_array($google)) $google = [$google];
+        } else {
+            $google = [];
+        }
+        self::set('analytics.google', $google);
+
 	}
 
 	/**
