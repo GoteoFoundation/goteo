@@ -87,9 +87,9 @@ endif;
 
         <?= $this->insert('partials/footer') ?>
 
-        <?= $this->insert('partials/footer/analytics') ?>
-
         <?= $this->insert('partials/footer/javascript') ?>
+
+        <?= $this->insert('partials/footer/analytics') ?>
 
     <?php $this->stop() ?>
 
