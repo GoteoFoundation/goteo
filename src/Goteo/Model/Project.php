@@ -2425,12 +2425,12 @@ namespace Goteo\Model {
 
                            // echo 'en transaccion <br />';
                             // mails
-                            $mails = self::query("SELECT * FROM mail WHERE content like :id", array(':id'=>"%{$this->id}%"));
+                            /*$mails = self::query("SELECT * FROM mail WHERE content like :id", array(':id'=>"%{$this->id}%"));
                             foreach ($mails->fetchAll(\PDO::FETCH_OBJ) as $mail) {
                                 $content = str_replace($this->id, $newid, $mail->content);
                                 self::query("UPDATE `mail` SET `content` = :content WHERE id = :id;", array(':content'=>$content, ':id'=>$mail->id));
 
-                            }
+                            }*/
                            // echo 'mails listos <br />';
 
                             // feed
