@@ -28,6 +28,26 @@
     text-transform: uppercase;
   }
 
+  table {
+    color: $secondary-color;
+    background: $background-light-body;
+    tr {
+        th,td {
+            padding: 10px 5px;
+            &:first-child {
+                padding-left:10px;
+            }
+        }
+    }
+  }
+  .btn {
+      border:none;
+      box-shadow: 1px 1px 4px -2px $color-dark;
+      &.btn-default,&.btn-danger,&.btn-cyan,&.btn-green {
+        box-shadow: 2px 2px 4px -2px $color-dark;
+      }
+  }
+
 }
 
 .dashboard-sections {

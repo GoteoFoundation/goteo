@@ -54,3 +54,9 @@ button.pink:hover, button.pink:focus, button.custom-green:hover,
 .btn-pink:hover, .btn-pink:focus, .btn-green:hover{
 	color:$color-white !important;
 }
+
+
+/* same for labels */
+.label-cyan {
+    background-color: $color-cyan;
+}

@@ -1,4 +1,4 @@
- <table class="table social-commitment table-striped">
+ <table class="table social-commitment">
     <thead>
         <tr>
             <th>&nbsp;</th>

@@ -10,7 +10,7 @@
         <div class="alert alert-info"><?= $this->errorMsg ?></div>
     <?php elseif($this->posts): ?>
 
-    <table class="footable table table-striped">
+    <table class="footable table">
       <thead>
         <tr>
           <th data-type="number" data-breakpoints="xs">#</th>
@@ -28,12 +28,12 @@
         <tr>
           <td><?= $post->id ?></td>
           <td><?= date_formater($post->date) ?></td>
-          <td><?= $this->insert('dashboard/project/partials/boolean', ['active' => $post->publish, 'label_type' => 'success', 'url' => '/api/projects/' . $post->owner_id . '/updates/' . $post->id . '/publish', 'confirm_yes' => $this->text('publish-confirm-yes'), 'confirm_no' => $this->text('publish-confirm-no') ]) ?></td>
+          <td><?= $this->insert('dashboard/project/partials/boolean', ['active' => $post->publish, 'label_type' => 'cyan', 'url' => '/api/projects/' . $post->owner_id . '/updates/' . $post->id . '/publish', 'confirm_yes' => $this->text('publish-confirm-yes'), 'confirm_no' => $this->text('publish-confirm-no') ]) ?></td>
           <td><img src="<?= $post->image ? $post->image->getLink(96, 72, true) : '' ?>" alt="<?= $post->image ?>" /></td>
           <td><?= $post->title ?></td>
           <td>
-            <a class="btn btn-default" title="<?= $this->text('regular-view') ?>" href="/project/<?= $this->project->id ?>/updates/<?= $post->id ?>#updates"><i class="fa fa-eye"></i></a>
-            <a class="btn btn-default" title="<?= $this->text('regular-edit') ?>" href="/dashboard/project/<?= $this->project->id ?>/updates/<?= $post->id ?>"><i class="fa fa-edit"></i></a>
+            <a class="btn btn-default" title="<?= $this->text('regular-view') ?>" href="/project/<?= $this->project->id ?>/updates/<?= $post->id ?>#updates"><i class="icon icon-1x icon-preview"></i></a>
+            <a class="btn btn-default" title="<?= $this->text('regular-edit') ?>" href="/dashboard/project/<?= $this->project->id ?>/updates/<?= $post->id ?>"><i class="icon icon-1x icon-edit"></i></a>
           </td>
         </tr>
     <?php endforeach ?>
@@ -41,7 +41,7 @@
     </table>
 
     <p>
-        <a href="#" class="btn btn-lg btn-green"><i class="fa fa-plus"></i> <?= $this->text('form-add-button') ?></a>
+        <a href="#" class="btn btn-lg btn-cyan"><i class="fa fa-plus"></i> <?= $this->text('form-add-button') ?></a>
     </p>
 
     <?= $this->insert('partials/utils/paginator', ['total' => $this->total, 'limit' => $this->limit]) ?>

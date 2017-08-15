@@ -98,6 +98,12 @@ i.visible-xs {
     background-repeat: no-repeat;
     background-size: auto 100%;
     vertical-align: middle;
+    &.icon-1x {
+        @include icon-responsive(1.5, 1.5);
+        &.icon-activity {
+            @include icon-responsive(1.5*1.5, 1.5);
+        }
+    }
     @for $i from 2 through 8 {
         &.icon-#{$i}x {
             @include icon-responsive($i, $i);
