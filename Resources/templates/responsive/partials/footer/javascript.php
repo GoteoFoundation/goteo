@@ -31,26 +31,6 @@
 ?>
 // @license-end
 </script>
-
-<script type="text/javascript">
-// @license magnet:?xt=urn:btih:0b31508aeb0634b347b8270c7bee4d411b5d4109&dn=agpl-3.0.txt
-
-  $(document).ready(function() {
-
-   var docHeight = $(window).height();
-   var footerHeight = $('#footer').height();
-   var footerTop = $('#footer').position().top + footerHeight;
-
-   if (footerTop < docHeight) {
-    $('#footer').css('margin-top', 10+ (docHeight - footerTop) + 'px');
-   }
-  });
-
-  $('table.footable').footable();
-
-// @license-end
-</script>
-
 <!-- geolocation -->
 <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?v=3.exp&amp;libraries=places"></script>
 <script type="text/javascript" src="<?= SRC_URL ?>/assets/js/geolocation.js"></script>

@@ -47,6 +47,105 @@ var transitionEnd = whichTransitionEvent();
 
 $(function(){
 
+    var $window = $(window);
+    var $sidebar = $('#sidebar-menu');
+    var $main = $('#main');
+    var $footer = $('#footer');
+
+    var isMobile = function() {
+        // xs devices has css position to absolute or fixed
+        return $sidebar.css('position') === 'absolute' || $sidebar.css('position') === 'fixed';
+    };
+
+    var dynamicFooterSidebar = function() {
+
+        // Footer position to the bottom
+        var docHeight = $window.height();
+        var footerHeight = $footer.outerHeight(true);
+        var footerTop = $footer.position() && $footer.position().top;
+
+        // Sidebar margin bottom adjust
+        var mainTop = $main.position() && $main.position().top;
+        var mainPaddingBottom = parseInt($main.css('padding-bottom'), 10);
+        var mainBottom = mainTop + $main.outerHeight(true);
+        var gap = Math.max(0, docHeight - mainBottom - footerHeight);
+        // increment main div
+        $main.css('padding-bottom', (mainPaddingBottom + gap) + 'px');
+        if ($sidebar.length > 0 && $sidebar.width() > 0) {
+            var originalHeight = $sidebar.data('height') || $sidebar.outerHeight();
+            $sidebar.data('height', originalHeight);
+            // Sidebar, increment both
+            var sidebarTop = $sidebar.position() && $sidebar.position().top;
+            var newHeight = docHeight - sidebarTop - footerHeight;
+            if(newHeight > originalHeight) {
+                $sidebar.outerHeight(newHeight);
+            }
+
+            if(isMobile()) {
+                $('.page-wrap').outerHeight($sidebar.outerHeight());
+            }
+        }
+    };
+
+    if ($sidebar.length > 0) {
+        var lastScrollTop = $window.scrollTop();
+        var wasScrollingDown = true;
+        var initialSidebarTop = $sidebar.position().top;
+        var scrollSidebar = function(event) {
+
+            if(isMobile()) {
+                var windowHeight = $window.height();
+                var sidebarHeight = $sidebar.outerHeight();
+
+                var scrollTop = $window.scrollTop();
+                var scrollBottom = scrollTop + windowHeight;
+
+                var sidebarTop = $sidebar.position().top;
+                var sidebarBottom = sidebarTop + sidebarHeight;
+
+                var heightDelta = Math.abs(windowHeight - sidebarHeight);
+                var scrollDelta = lastScrollTop - scrollTop;
+
+                var isScrollingDown = (scrollTop > lastScrollTop);
+                var isWindowLarger = (windowHeight > sidebarHeight);
+
+                if ((isWindowLarger && scrollTop > initialSidebarTop) || (!isWindowLarger && scrollTop > initialSidebarTop + heightDelta)) {
+                    $sidebar.addClass('fixed');
+                } else if (!isScrollingDown && scrollTop <= initialSidebarTop) {
+                    $sidebar.removeClass('fixed');
+                }
+
+                var dragBottomDown = (sidebarBottom <= scrollBottom && isScrollingDown);
+                var dragTopUp = (sidebarTop >= scrollTop && !isScrollingDown);
+
+                if (dragBottomDown) {
+                    if (isWindowLarger) {
+                        $sidebar.css('top', 0);
+                    } else {
+                        $sidebar.css('top', -heightDelta);
+                    }
+                } else if (dragTopUp) {
+                    $sidebar.css('top', 0);
+                } else if ($sidebar.hasClass('fixed')) {
+                    var currentTop = parseInt($sidebar.css('top'), 10);
+
+                    var minTop = -heightDelta;
+                    var scrolledTop = currentTop + scrollDelta;
+
+                    var isPageAtBottom = (scrollTop + windowHeight >= $(document).height());
+                    var newTop = (isPageAtBottom) ? minTop : scrolledTop;
+
+                    $sidebar.css('top', newTop);
+                }
+
+                lastScrollTop = scrollTop;
+                wasScrollingDown = isScrollingDown;
+            }
+        };
+
+        $window.scroll(scrollSidebar);
+    }
+
     var toggleSidebar = function(e) {
         var $body = $('body.has-sidebar');
         if($body.hasClass('animating')) return;
@@ -56,9 +155,10 @@ $(function(){
         $body.toggleClass('animating sidebar-opened').one(transitionEnd, function(e) {
             $(this).removeClass('animating');
             // console.log('end animation', e);
+            dynamicFooterSidebar();
+            scrollSidebar();
         });
     };
-
 
     // Sidebar toggle
     $('.toggle-sidebar').on('click', toggleSidebar);
@@ -76,4 +176,8 @@ $(function(){
                 toggleSidebar(e);
         });
     }
+
+    dynamicFooterSidebar();
+    $(window).on('resize', dynamicFooterSidebar);
+
 });

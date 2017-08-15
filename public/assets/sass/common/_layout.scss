@@ -5,27 +5,21 @@ body {
     margin-bottom: 0;
 
     &.has-sidebar {
-      background: $background-sidebar;
+      // background: $background-sidebar;
       .page-wrap {
-          display:flex;
+        display: flex;
 
-          #sidebar-menu {
+        #sidebar-menu {
             -webkit-box-flex: 1;      /* OLD - iOS 6-, Safari 3.1-6 */
             -moz-box-flex: 1;         /* OLD - Firefox 19- */
             width: 0; /* For old syntax, otherwise collapses. */
             -webkit-flex: 1;          /* Chrome */
             -ms-flex: 1;              /* IE 10 */
             flex: 1;                  /* NEW, Spec - Opera 12.1, Firefox 20+ */
-          }
-          #main {
-            // width: $dashboard-main-width;
+        }
+        #main {
             width: 100%;
-            // margin-left:0;
-            // width: 80%;
-            @media(min-width: $breakpoint-sm) {
-                // margin-left: $dashboard-sidebar-width;
-            }
-          }
+        }
         @media(min-width: $breakpoint-sm) {
             #sidebar-menu {
                 width: $dashboard-sidebar-width;
@@ -39,8 +33,13 @@ body {
             position: absolute;
             flex: none;
             z-index: 1001;
-            height: 100%;
             overflow: hidden;
+            min-height: 100%;
+            &.fixed {
+                position:fixed;
+                top:0;
+            }
+
           }
         }
       }
@@ -59,10 +58,6 @@ body {
       }
     }
 
-    #main {
-        // transition: width .5s;
-        // margin-left: 0;
-    }
     #sidebar-menu {
         transition: width .5s;
     }

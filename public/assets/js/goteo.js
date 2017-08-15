@@ -132,5 +132,8 @@ $(function(){
 
     pageRendered();
 
+    // Responsive tables initialization
+    $('table.footable').footable();
+
 });
 
