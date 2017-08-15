@@ -5,10 +5,10 @@
   <div class="dashboard-content">
 
     <h1><?= $this->text('images-main-header') ?></h1>
-    <blockquote><?= $this->text('dashboard-project-images-desc') ?></blockquote>
+    <h5><?= $this->text('dashboard-project-images-desc') ?></h5>
 
     <?php foreach($this->zones as $key => $zone): ?>
-        <h4><?= $zone ?></h4>
+        <h3><?= $zone ?></h3>
         <div class="image-zone" data-section="<?= $key ?>">
             <ul class="list-inline image-list-sortable" id="list-sortable-<?= $key ?>"><?php
             foreach($this->images[$key] as $img) {

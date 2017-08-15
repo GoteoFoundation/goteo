@@ -1,4 +1,14 @@
 /* Autoforms */
+.sortable-ghost {
+  opacity: .3;
+}
+.sortable-drag {
+  // TODO: it seems that
+  // firefox is scaling the draggable clone
+  // This should solve it
+  -moz-transform:scale(.5);
+}
+
 .autoform {
   .material-switch {
     > label {
@@ -24,7 +34,7 @@
     }
     &.loading {
       .video-holder {
-        background:url(/assets/img/ring.gif) no-repeat center;
+        background:url(../img/ring.gif) no-repeat center;
         display: block;
         padding-bottom: 60px;
         .cover-image {
@@ -125,7 +135,7 @@
 .image-zone {
   position: relative;
   width: 100%;
-  background: #f0f0f0;
+  background: $background-light-body;
   padding: 0;
   border-radius: 5px;
 
@@ -138,18 +148,22 @@
     right:10px;
   }
   .dropzone {
-    border: 5px dashed #ccc;
+    border: 2px dashed #667475;
     border-radius: 5px;
     cursor: pointer;
-    background: #ddd;
+    background: #EBF4F3;
     position: absolute;
     top: 0;
     left: 0;
     height: 100%;
     max-height: 150px;
     width: 100%;
-    color: #999;
+    color: #667475;
+    line-height:$font-size;
     overflow: hidden;
+    i {
+        color: $color-cyan;
+    }
     .dz-preview {
       &.dz-image-preview {
         background: none;
@@ -161,12 +175,13 @@
     min-height: 170px;
     display: block;
     padding: 5px 155px 0 5px;
-    border: 5px solid #f0f0f0;
+    border: 5px solid $background-light-body;
     margin: 0;
     min-width: 150px;
     &.over {
       // background-color: $background-pink;
-      border-color:$background-pink;
+      // border-color:$background-pink;
+      border-color:$color-cyan;
     }
     > li {
       position: relative;
@@ -174,6 +189,7 @@
       padding: 0;
       margin: 0;
       margin-right: 5px;
+
       .image {
         width: 150px;
         height: 150px;
@@ -182,7 +198,6 @@
         background-position: 0 0;
         background-size: 100% 100%;
         background-repeat: no-repeat;
-        border-radius: 10px;
       }
     }
     .options {

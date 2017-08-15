@@ -23,6 +23,7 @@
       background-color: $background-sidebar;
       >a, >button {
         color: $color-white;
+        padding-bottom:15px;
         border-top:2px solid $background-grey;
         &:hover {
             background-color:inherit;
@@ -105,7 +106,11 @@
         background-color: $background-sidebar-header;
         // width: 100%;
         li {
-              background-color: $background-sidebar-header;
+            background-color: $background-sidebar-header;
+            a {
+                min-height:70px;
+                padding-top:20px;
+            }
           }
       }
     }
