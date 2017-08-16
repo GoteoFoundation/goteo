@@ -8,6 +8,6 @@
 
     <?= $this->form_form($this->raw('form')) ?>
 
-  </div>
+</div>
 
 <?php $this->replace() ?>

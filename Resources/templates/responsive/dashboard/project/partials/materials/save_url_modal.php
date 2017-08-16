@@ -17,7 +17,7 @@
             </form>
           </div>
           <div class="modal-footer">
-            <button type="button" id="btn-save-url" class="btn btn-success"><?= $this->text('regular-save') ?></button>
+            <button type="button" id="btn-save-url" class="btn btn-cyan"><?= $this->text('regular-save') ?></button>
           </div>
         </div>
       </div>
