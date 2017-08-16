@@ -181,9 +181,10 @@ user-register-success: 'L''usuari s''ha registrat correctament. A continuació r
 validate-project-social_rewards: 'És obligatori indicar com a mínim un retorn col·lectiu'
 validate-project-total-costs: 'El cost òptim no pot superar en més d''un 40% el cost mínim. Has de revisar el desglossament de costos.'
 regular-cancel: Cancel·lar
-regular-cancel-back: 'Cancel·lar i tornar enrere'
+regular-cancel-back: 'Cancel·lar i torna enrere'
+regular-back: 'Torna enrere'
 regular-date: Data
-regular-download: Descarregar
+regular-download: Descarrega
 regular-female: Dona
 regular-instagram: Instagram
 regular-male: Home

@@ -131,12 +131,6 @@
   }
 }
 
-.projects-container .interests {
-  background-color: #DAE0E8;
-  margin: 40px 1px;
-  padding: 3%;
-  border-radius: 10px;
-}
 
 .media-project {
   padding: 10px;
@@ -149,7 +143,7 @@
   // padding-bottom: 20px;
 }
 
-@media (max-width: 480px) {
+@media (max-width: $breakpoint-xs) {
   .project-widget {
     margin-bottom: 40px;
     .content {
@@ -160,10 +154,5 @@
       margin-top: 30px;
       width: 100%;
     }
-  }
-  .projects-container .interests {
-    font-size: 0.8em;
-    padding-top: 8%;
-    padding-bottom: 8%;
   }
 }

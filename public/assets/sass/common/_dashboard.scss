@@ -10,20 +10,29 @@
     margin: 0 -15px 40px -15px;
   }
 
+  p {
+    color: $secondary-color;
+  }
+
   h1 {
     font-size: $font-size * 2;
+    color: $title-color;
   }
   h2 {
     font-size: $font-size * 1.6;
+    color: $title-color;
   }
   h3 {
     font-size: $font-size * 1.4;
+    color: $title-color;
   }
   h4 {
     font-size: $font-size * 1.2;
+    color: $title-color;
   }
-  h5 {
+  h5,.pool-desc {
     font-size: $font-size * 1;
+    color: $title-color;
     font-weight: normal;
     text-transform: uppercase;
   }
@@ -42,19 +51,28 @@
   }
   .btn {
       border:none;
+      text-transform: uppercase;
       box-shadow: 1px 1px 4px -2px $color-dark;
-      &.btn-default,&.btn-danger,&.btn-cyan,&.btn-green {
+      &.btn-danger,&.btn-cyan,&.btn-green,&.btn-pink {
         box-shadow: 2px 2px 4px -2px $color-dark;
       }
-  }
+      &.btn-link {
+        box-shadow: none;
+        color: $secondary-color;
+        font-weight: 500;
+      }
 
+  }
+  .pagination > .active > a {
+    background-color: $color-cyan;
+    border-color: $color-cyan;
+  }
 }
 
 .dashboard-sections {
   // background-color: $background-light-cream;
   background-color: $background-light;
-  padding-top: 10px;
-  padding-bottom: 10px;
+  padding: 10px;
   // Do not stack this nav in any screen width
   .nav-tabs.nav-justified > li {
       display: table-cell;
@@ -96,37 +114,46 @@
     padding: 5px;
   }
 }
+.user-pool {
+    text-align: center;
+    .pool-amount {
+      display:block;
+      font-size: $font-size * 3.5;
+    }
+    h1 {
+        font-weight: bold;
+    }
+    .btn {
+        padding-left:2em;
+        padding-right:2em;
+    }
+}
 
+
+.projects-container {
+  h2 {
+    font-weight: bold;
+    text-align: center;
+  }
+  .interests {
+    color: $secondary-color;
+    background-color: $background-white;
+    box-shadow: 1px 2px 6px -2px $color-dark;
+    margin: 40px 15%;
+    padding: 3%;
+    border-radius: 10px;
+    @media (max-width: $breakpoint-xs) {
+        font-size: 0.8em;
+        padding-top: 8%;
+        padding-bottom: 8%;
+        margin: 40px 2%;
+    }
+  }
+}
+
+// ? To remove ?
 div {
   &.row {
-    &.user-pool {
-      margin-top: 50px;
-      margin-bottom: 50px;
-      display: -webkit-box;
-      display: -webkit-flex;
-      display: -ms-flexbox;
-      display: flex;
-      div {
-        &.img-pool {
-          max-width: 293px;
-        }
-        &.user-pool-info {
-          background-color: $background-white;
-          border-radius: 10px;
-          padding: 2%;
-          font-family: $primary-font;
-          h2 {
-            font-size: 2.2em;
-            color: #51C3C0;
-            font-weight: bold;
-            float: none;
-            span.pool-amount {
-              color: #BB4CAD;
-            }
-          }
-        }
-      }
-    }
     &.general-dashboard {
       background-color: $background-white;
       padding: 2% 5%;

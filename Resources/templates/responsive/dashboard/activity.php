@@ -2,9 +2,12 @@
 
 <?php $this->section('dashboard-content') ?>
 
-<div class="dashboard-content white">
+<div class="dashboard-content row">
 
-    <?= $this->raw('message') ?>
+    <div class="col-md-offset-1 col-md-10">
+        <?= $this->raw('message') ?>
+    </div>
+
 </div>
 
 <div class="dashboard-content cyan">

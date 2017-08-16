@@ -1,41 +1,61 @@
 
  /* Custom buttons */
-
 .btn-success{
     background-color: $background-green !important;
     border-color: $background-green !important;
+    &:hover {
+        background-color:darken( $background-green, 10%);
+    }
 }
 .btn-pink{
     background-color: $color-pink;
     color: $color-white;
+    &:hover {
+        background-color:darken($color-pink, 10%);
+    }
 }
 
 .btn-green{
     background-color: $color-green;
     color: $color-white;
+    &:hover {
+        background-color:darken($color-green, 10%);
+    }
 }
 .btn-cyan{
     background-color: $color-cyan;
     color: $color-white;
+    &:hover {
+        background-color:darken($color-cyan, 10%);
+    }
 }
 .btn-grey {
     background-color: $background-light-grey;
     color: $color-light-grey;
+    &:hover {
+        background-color:darken( $background-light-grey, 10%);
+    }
 }
 .btn-dark {
     background-color: $color-light-grey;
     color: $color-white;
+    &:hover {
+        background-color:darken($color-light-grey, 10%);
+    }
 }
 .btn-fashion {
-    background: #d05bb4;
-    background: -moz-linear-gradient(left, #d05bb4 28%, #fe373a 100%);
-    background: -webkit-gradient(linear, left top, right top, color-stop(28%,#d05bb4), color-stop(100%,#fe373a));
-    background: -webkit-linear-gradient(left, #d05bb4 28%,#fe373a 100%);
-    background: -o-linear-gradient(left, #d05bb4 28%,#fe373a 100%);
-    background: -ms-linear-gradient(left, #d05bb4 28%,#fe373a 100%);
-    background: linear-gradient(to right, #d05bb4 28%,#fe373a 100%);
-    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#d05bb4', endColorstr='#fe373a',GradientType=1 );
+    background: $color-pink;
+    background: -moz-linear-gradient(left, $color-pink 28%, #fe373a 100%);
+    background: -webkit-gradient(linear, left top, right top, color-stop(28%,$color-pink), color-stop(100%,#fe373a));
+    background: -webkit-linear-gradient(left, $color-pink 28%,#fe373a 100%);
+    background: -o-linear-gradient(left, $color-pink 28%,#fe373a 100%);
+    background: -ms-linear-gradient(left, $color-pink 28%,#fe373a 100%);
+    background: linear-gradient(to right, $color-pink 28%,#fe373a 100%);
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='$color-pink', endColorstr='#fe373a',GradientType=1 );
     color: $color-white;
+    &:hover {
+        background-color:darken($color-pink, 10%);
+    }
 }
 
 button.pink{
@@ -51,7 +71,7 @@ button.custom-green{
 }
 
 button.pink:hover, button.pink:focus, button.custom-green:hover,
-.btn-pink:hover, .btn-pink:focus, .btn-green:hover{
+.btn-pink:hover, .btn-pink:focus, .btn-green:hover, .btn-cyan:hover{
 	color:$color-white !important;
 }
 
