@@ -8,8 +8,13 @@ $label_view = $label_position === 'none' ? '' : $view['form']->label($form);
 
     <?php if(!$no_input_wrap): ?><div class="input-wrap"><?php endif ?>
 
+
     <?= $view['form']->errors($form) ?>
     <?= $view['form']->widget($form) ?>
+
+    <?php if($attr['help']): ?>
+        <div class="help-text"><?= $attr['help'] ?></div>
+    <?php endif ?>
 
     <?php if(!$no_input_wrap): ?></div><?php endif ?>
 

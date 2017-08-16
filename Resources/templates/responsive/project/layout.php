@@ -34,7 +34,7 @@ $this->section('lang-metas');
 $this->replace();
 
 $this->section('sidebar-header');
-    echo $this->insert('project/widgets/mini', ['project' => $project, 'admin' => $this->admin]);
+    echo $this->insert('project/widgets/micro', ['project' => $project, 'admin' => $this->admin]);
 $this->replace();
 
 

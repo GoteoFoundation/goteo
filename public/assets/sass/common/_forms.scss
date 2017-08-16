@@ -42,6 +42,11 @@
       }
     }
   }
+  .help-text {
+    display: block;
+    margin: 10px 5px;
+    color: $color-grey;
+  }
   .material-switch {
     > label {
       cursor: pointer;

@@ -303,19 +303,51 @@ class ProjectDashboardController extends \Goteo\Core\Controller {
         $project = $this->validateProject($pid, 'analytics');
         if($project instanceOf Response) return $project;
 
-        if($request->isMethod('post')) {
-            $project->analytics_id = $request->request->get('analytics_id');
-            $project->facebook_pixel= $request->request->get('facebook_pixel');
+        // if($request->isMethod('post')) {
+        //     $project->analytics_id = $request->request->get('analytics_id');
+        //     $project->facebook_pixel= $request->request->get('facebook_pixel');
 
-            if ($project->save($errors))
-                Message::info(Text::get('dashboard-project-analytics-ok'));
-            else
-                Message::error(Text::get('dashboard-project-analytics-fail'));
+        //     if ($project->save($errors))
+        //         Message::info(Text::get('dashboard-project-analytics-ok'));
+        //     else
+        //         Message::error(Text::get('dashboard-project-analytics-fail'));
 
+        // }
+
+        $defaults = (array) $project;
+        $form = $this->createFormBuilder($defaults)
+            ->add('analytics_id', 'text', array(
+                'label' => 'regular-analytics',
+                'required' => false,
+                'attr' => ['help' => Text::get('help-user-analytics')],
+            ))
+            ->add('facebook_pixel', 'text', array(
+                'label' => 'regular-facebook-pixel',
+                'required' => false,
+                'attr' => ['help' => Text::get('help-user-facebook-pixel')],
+            ))
+            ->add('submit', 'submit', array(
+                // 'icon_class' => null
+            ))
+            ->getForm();
+        $form->handleRequest($request);
+        if ($form->isSubmitted()) {
+            if($form->isValid()) {
+                $data = $form->getData();
+                $project->rebuildData($data);
+                if($project->save($errors)) {
+                    // print_r($post);die;
+                    Message::info(Text::get('dashboard-project-analytics-ok'));
+                    return $this->redirect('/dashboard/project/' . $this->project->id .'/analytics');
+                } else {
+                    Message::error(Text::get('form-sent-error', implode(', ',$errors)));
+                }
+
+            } else {
+                Message::error(Text::get('form-has-errors'));
+            }
         }
-        // die("$pid {$project->id} {$project->name}");
-
-        return $this->viewResponse('dashboard/project/analytics');
+        return $this->viewResponse('dashboard/project/analytics', ['form' => $form->createView()]);
 
     }
 
