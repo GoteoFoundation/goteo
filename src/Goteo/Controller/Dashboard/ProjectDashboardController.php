@@ -260,7 +260,7 @@ class ProjectDashboardController extends \Goteo\Core\Controller {
             ->add('publish', 'boolean', array(
                 'required' => false,
                 'label' => 'blog-published', // Form has integrated translations
-                'color' => 'success', // bootstrap label-* (default, success, ...)
+                'color' => 'cyan', // bootstrap label-* (default, success, ...)
             ))
             ->add('submit', 'submit', array(
                 // 'icon_class' => null

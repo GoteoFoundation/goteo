@@ -136,7 +136,8 @@ $(function(){
     $('.autoform .datepicker, .autoform .datepicker > input').datetimepicker({
             format: 'DD/MM/YYYY',
             extraFormats: ['YYYY-MM-DD'],
-            locale: goteo.locale,
+            locale: goteo.locale
+            // ,debug: true
         });
         // .on('dp.change', function (e) {
         //         _activate_calendar();

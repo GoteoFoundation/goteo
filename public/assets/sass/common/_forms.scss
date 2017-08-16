@@ -11,13 +11,45 @@
 
 .autoform {
 
+  .form-group {
+    margin-bottom: 20px;
+    .input-wrap {
+      background: $background-light-body;
+      border-radius: 5px;
+      padding: 12px;
+      .form-control,
+      .input-group > .input-group-addon {
+        color: $secondary-color;
+        box-shadow: none;
+        border-color: $background-white;
+        background: $background-white;
+      }
+      .form-control:focus {
+        border-color: $color-cyan;
+        outline: 0;
+        -webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,.075), 0 0 8px rgba(102, 175, 233, .6);
+                box-shadow: inset 0 1px 1px rgba(0,0,0,.075), 0 0 8px rgba(102, 175, 233, .6);
+      }
+      >.datepicker {
+        max-width: 180px;
+        .bootstrap-datetimepicker-widget table td.active, .bootstrap-datetimepicker-widget table td.active:hover {
+          background-color: $color-cyan;
+        }
+      }
+      .editor-toolbar,.CodeMirror {
+        border: none;
+        color: $secondary-color;
+      }
+    }
+  }
   .material-switch {
     > label {
       cursor: pointer;
     }
-  }
-  .datepicker {
-      width: 180px;
+    & + label {
+      text-transform: uppercase;
+      font-weight: 500;
+    }
   }
 
   .media-container {
@@ -195,7 +227,7 @@
         width: 150px;
         height: 150px;
         cursor: move;
-        background-color: #ddd;
+        background-color: $color-cyan;
         background-position: 0 0;
         background-size: 100% 100%;
         background-repeat: no-repeat;

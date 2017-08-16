@@ -32,7 +32,7 @@ class SubmitType extends SymfonySubmitType
         parent::configureOptions($resolver);
         $resolver->setDefault('label',  'regular-save');
         $resolver->setDefault('icon_class',  'fa fa-save');
-        $resolver->setDefault('attr',  ['class' => 'btn btn-green btn-lg']);
+        $resolver->setDefault('attr',  ['class' => 'btn btn-cyan btn-lg']);
     }
 
     /**

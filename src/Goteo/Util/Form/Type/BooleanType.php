@@ -33,6 +33,7 @@ class BooleanType extends CheckboxType
         $resolver->setDefault('color', 'default'); // default, success, danger, warning...
         $resolver->setDefault('label_position', 'right');
         $resolver->setDefault('label_attr',  ['class' => 'control-label']);
+        $resolver->setDefault('no_input_wrap', true);
     }
 
     /**
@@ -44,6 +45,7 @@ class BooleanType extends CheckboxType
         // $view->vars['row_class'] = 'material-switch';
         // $view->vars['label_position'] = 'none';
         $view->vars['color'] = $options['color'];
+        $view->vars['no_input_wrap'] = $options['no_input_wrap'];
         $view->vars['label_position'] = $options['label_position'];
         $view->vars['label_attr'] = $options['label_attr'];
     }
