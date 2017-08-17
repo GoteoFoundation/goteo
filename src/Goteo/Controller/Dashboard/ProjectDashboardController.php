@@ -158,7 +158,6 @@ class ProjectDashboardController extends \Goteo\Core\Controller {
         $offset = $limit * (int)$request->query->get('pag');
         if ($project->status < 3) {
             $msg = Text::get('dashboard-project-blog-wrongstatus');
-            Message::error($msg);
             // return $this->redirect('/dashboard/projects/summary');
         } else {
             $blog = Blog::get($project->id);

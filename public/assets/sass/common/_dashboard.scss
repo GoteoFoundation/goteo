@@ -67,6 +67,62 @@
     background-color: $color-cyan;
     border-color: $color-cyan;
   }
+  .panel {
+    border: 0;
+    box-shadow: none;
+
+    h5 {
+      font-weight: 500;
+      font-size: $font-size * 0.9;
+    }
+
+    .panel-body {
+      background: $background-light-body;
+      border-radius: 5px;
+    }
+    .form-control {
+      background-color: $background-white;
+      border: none;
+      box-shadow: none;
+    }
+  }
+  .breadcrumb {
+    background-color: inherit;
+    > li + li::before {
+      content: '\203A';
+    }
+    li {
+      color: $secondary-color;
+    }
+    > .active {
+      font-weight: bold;
+    }
+  }
+  ul.data-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+
+    p {
+      color: $color-cyan;
+      font-weight: bold;
+      font-size: $font-size * 3;
+    }
+    > li {
+      float:left;
+      margin: 0;
+      padding: 0;
+      &.divider {
+        width: 2px;
+        background-color: #CDD6D5;
+        height: 50px;
+        margin-top: 40px;
+      }
+    }
+    > li + li {
+      margin-left: 20px;
+    }
+  }
 }
 
 .dashboard-sections {

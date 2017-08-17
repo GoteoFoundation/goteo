@@ -8,11 +8,15 @@ $this->layout('layout', [
 
 $this->section('content');
 
+// We include alert messages in this layout, so it will be processed before the
+// main layout. Therefore the main layout won't repeat them
 ?>
 
 <div class="dashboard">
 
     <?= $this->supply('dashboard-sections', $this->insert('dashboard/partials/sections')) ?>
+
+    <?= $this->supply('dashboard-messages', $this->insert("partials/header/messages")) ?>
 
     <?= $this->supply('dashboard-content') ?>
 

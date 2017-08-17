@@ -7,18 +7,23 @@
  }
 
  .alert{
-    font-size: 14px !important;
+    font-size: $font-size * 1.1;
+    font-weight: 500;
  }
 
- .alert-danger {
-    color: $color-white;
-    background-color: $background-red;
+.alert-danger, .alert-success {
+    color: $color-white !important;
+    p {
+        color: $color-white !important;
+    }
+}
 
+ .alert-danger {
+    background-color: $background-red;
     border-color: $background-red !important;
 }
 
  .alert-success{
-    color: $color-white;
     background-color: $background-light-green;
     border-color: $background-light-green !important;
- }
+}

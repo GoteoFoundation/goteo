@@ -82,10 +82,8 @@ if($sidebar) {
       <?= $this->supply('sidebar', $this->insert("partials/sidebar", ['sidebarMenu' => $sidebar])) ?>
       <div id="main">
 
-        <?= $this->supply('messages', $this->insert("partials/header/messages")) ?>
-
-
         <div id="main-content">
+            <?= $this->supply('messages', $this->insert("partials/header/messages")) ?>
             <?= $this->supply('content') ?>
         </div>
 

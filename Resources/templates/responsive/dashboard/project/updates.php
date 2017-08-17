@@ -7,7 +7,7 @@
     <h2><?= $this->text('dashboard-menu-projects-updates') ?></h2>
 
     <?php if($this->errorMsg): ?>
-        <div class="alert alert-info"><?= $this->errorMsg ?></div>
+        <div class="alert alert-danger"><?= $this->errorMsg ?></div>
     <?php elseif($this->posts): ?>
 
     <table class="footable table">
