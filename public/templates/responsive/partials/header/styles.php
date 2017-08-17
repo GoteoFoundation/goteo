@@ -7,6 +7,9 @@
 <link href="<?= SRC_URL ?>/assets/vendor/eonasdan-bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.min.css" rel="stylesheet">
 <link href="<?= SRC_URL ?>/assets/vendor/animate.css/animate.min.css" rel="stylesheet">
 
+<link rel="stylesheet" type="text/css" href="<?= SRC_URL ?>/assets/vendor/slick-carousel/slick/slick.css"/>
+<link rel="stylesheet" type="text/css" href="<?= SRC_URL ?>/assets/vendor/slick-carousel/slick/slick-theme.css"/>
+
 <!-- POST PROCESSING THIS CSS BY GRUNT -->
 
 <!-- build:css assets/css/all.css -->

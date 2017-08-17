@@ -43,6 +43,15 @@
         background-color:darken($color-light-grey, 10%);
     }
 }
+.btn-white {
+    background-color: $background-white;
+    color: $color-green;
+    font-weight: bold;  
+}
+.btn-light-green{
+    background-color: $background-light-green;
+    color:$color-white;
+}
 .btn-fashion {
     background: $color-pink;
     background: -moz-linear-gradient(left, $color-pink 28%, #fe373a 100%);
