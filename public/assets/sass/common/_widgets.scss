@@ -120,6 +120,61 @@
   &:hover .project-widget-admin {
     display: block;
   }
+  &.normal {
+    border-radius: 5px;
+    box-shadow: 1px 3px 5px -3px $color-dark;
+    .img-link {
+        position: relative;
+        h2 {
+            display: inline-block;
+            background-color: rgba(0, 0, 0, 0.1);
+            margin: 5px;
+            padding: 5px;
+            text-align: left;
+            font-size: 1.4 * $font-size;
+            color: $color-white;
+            position: absolute;
+            left: 0;
+            bottom: 0;
+            text-transform: lowercase;
+            &::first-letter {
+                text-transform: uppercase;
+            }
+        }
+    }
+    .content {
+        color: $secondary-color;
+        h4 {
+            font-size: $font-size;
+        }
+        a {
+            color: $color-cyan;
+        }
+    }
+    .percent {
+        position: absolute;
+        width: 100%;
+        padding: 0 5%;
+        bottom: 0;
+        left: 0;
+        .progress {
+            background-color: lighten($color-cyan, 50%);
+            box-shadow: none;
+            height: 10px;
+            border-radius: 5px;
+            margin-bottom: 0.5em;
+            .progress-bar {
+                background-color: $color-cyan;
+            }
+        }
+        p {
+            color: $color-cyan;
+            text-align: center;
+            margin: 0 0 1em 0;
+        }
+
+    }
+  }
 }
 
 .project-widget-admin-panel {
