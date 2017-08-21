@@ -103,7 +103,7 @@
         min-width: 300px;
         background: $background-white;
         display: none;
-        z-index: 1000;
+        z-index: 1100;
         @media (min-width: $breakpoint-sm) {
             box-shadow: 1px 1px 3px 1px rgba(0,0,0,.3);
         }
@@ -125,7 +125,7 @@
                 width: 100%;
                 top: 0;
                 background: $background-white;
-                z-index: 1001;
+                z-index: 1101;
                 &.active {
                     display: block;
 
