@@ -101,6 +101,10 @@
     top:15%;
 }
 
+.progress-bar-cyan {
+    background-color: $color-cyan;
+}
+
 i.visible-xs {
     @media(max-width: $breakpoint-sm - 1 ) {
         display:inline-block !important;
