@@ -23,22 +23,7 @@ through which recipients can access the Corresponding Source.
 for the JavaScript code in this page.
 */
 
-var animationEnd = 'webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend animationend';
-
-$.fn.extend({
-    animateCss: function (animationName, callback) {
-        this.off();
-
-        this.addClass('animated ' + animationName).on(animationEnd, function() {
-            console.log(this, $(this).attr('class'));
-            $(this).removeClass('animated ' + animationName);
-            if($.isFunction(callback)) {
-                callback.call(this);
-            }
-            $(this).off();
-        });
-    }
-});
+// This file requires jquery.animate-css.js
 
 $(function(){
     // Menu behaviour

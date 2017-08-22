@@ -14,6 +14,13 @@
         background-color:darken($color-pink, 10%);
     }
 }
+.btn-dark-pink{
+    background-color: $color-dark-pink;
+    color: $color-white;
+    &:hover {
+        background-color:darken($color-dark-pink, 10%);
+    }
+}
 
 .btn-green{
     background-color: $color-green;
