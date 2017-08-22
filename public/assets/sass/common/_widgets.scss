@@ -284,7 +284,7 @@
     left: 0;
     z-index: 3;
     border-radius: 5px;
-    padding: 5%;
+    padding: 5% 7%;
     &.admin {
         background: rgba(0 ,0, 0, 0.8);
         padding-top: 208px;
@@ -327,8 +327,18 @@
         box-shadow: 2px 5px 12px -6px $color-dark;
     }
 
+    h5 {
+        font-size: $font-size * 1;
+        color: $title-color;
+        font-weight: normal;
+        text-transform: uppercase;
+    }
+
     .data-list {
-        li {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+        > li {
             float: none;
             padding: 0;
             margin: 15px 0 5px 0;
@@ -373,7 +383,11 @@
                 padding: 0;
                 height: 2px;
                 width: 100%;
+                background-color: #CDD6D5;
             }
+        }
+        > li + li {
+          margin-left: 0;
         }
     }
     .invest {
