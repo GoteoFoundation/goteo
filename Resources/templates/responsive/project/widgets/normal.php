@@ -4,14 +4,29 @@ $percent = $this->project->getAmountPercent();
 $categories = $this->project->getCategories();
 // $social_rewards = $this->project->getSocialRewards();
 $social = $this->project->getSocialCommitment();
+$link = $this->link ? $this->link : '/project/' . $this->project->id;
+$tagmark = $this->project->getTagmark();
 
 ?><div class="project-widget normal" id="project-<?= $this->project->id ?>">
-    <a class="img-link" href="/project/<?= $this->project->id ?>">
+
+    <?php if($tagmark): ?>
+        <div class="status btn-orange">
+        <?php
+           if($tagmark === 'onrun-keepiton')
+                echo $this->text('regular-onrun_mark') . ' ' . $this->text('regular-keepiton_mark');
+            else
+                echo $this->text('regular-' . $tagmark . '_mark')
+        ?>
+        </div>
+    <?php endif; ?>
+
+
+    <a class="img-link" href="<?= $link ?>">
         <img class="img-project" src="<?= $this->project->image->getLink(300, 208, true); ?>">
         <h2><?= $this->text_truncate($this->project->name, 80); ?></h2>
     </a>
 
-    <a class="flip" href="#backflip-<?= $this->project->id ?>" title="<?= $this->text('regular-info') ?>">+</a>
+    <a class="flip" href="#backflip-<?= $this->project->id ?>" title="<?= $this->text('regular-more_info') ?>">+</a>
 
     <div class="content">
         <h4>

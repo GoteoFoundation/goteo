@@ -52,16 +52,31 @@
 }
 .btn-fashion {
     background: $color-pink;
-    background: -moz-linear-gradient(left, $color-pink 28%, #fe373a 100%);
-    background: -webkit-gradient(linear, left top, right top, color-stop(28%,$color-pink), color-stop(100%,#fe373a));
-    background: -webkit-linear-gradient(left, $color-pink 28%,#fe373a 100%);
-    background: -o-linear-gradient(left, $color-pink 28%,#fe373a 100%);
-    background: -ms-linear-gradient(left, $color-pink 28%,#fe373a 100%);
-    background: linear-gradient(to right, $color-pink 28%,#fe373a 100%);
-    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='$color-pink', endColorstr='#fe373a',GradientType=1 );
+    background: -moz-linear-gradient(left, $color-pink 28%, $color-red 100%);
+    background: -webkit-gradient(linear, left top, right top, color-stop(28%,$color-pink), color-stop(100%,$color-red));
+    background: -webkit-linear-gradient(left, $color-pink 28%,$color-red 100%);
+    background: -o-linear-gradient(left, $color-pink 28%,$color-red 100%);
+    background: -ms-linear-gradient(left, $color-pink 28%,$color-red 100%);
+    background: linear-gradient(to right, $color-pink 28%,$color-red 100%);
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='$color-pink', endColorstr='$color-red',GradientType=1 );
     color: $color-white;
     &:hover {
         background-color:darken($color-pink, 10%);
+    }
+}
+
+.btn-orange {
+    background: $color-orange;
+    background: -moz-linear-gradient(left, $color-orange 28%, $color-red 100%);
+    background: -webkit-gradient(linear, left top, right top, color-stop(28%,$color-orange), color-stop(100%,$color-red));
+    background: -webkit-linear-gradient(left, $color-orange 28%,$color-red 100%);
+    background: -o-linear-gradient(left, $color-orange 28%,$color-red 100%);
+    background: -ms-linear-gradient(left, $color-orange 28%,$color-red 100%);
+    background: linear-gradient(to right, $color-orange 28%,$color-red 100%);
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='$color-orange', endColorstr='$color-red',GradientType=1 );
+    color: $color-white;
+    &:hover {
+        background-color:darken($color-orange, 10%);
     }
 }
 

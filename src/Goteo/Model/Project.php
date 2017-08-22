@@ -1324,28 +1324,39 @@ namespace Goteo\Model {
 
         /*
          *  Para ver que tagmark le toca
+         *  compatibility function
          */
         public function setTagmark() {
-            // a ver que banderolo le toca
-            // "financiado" al final de los SEGUNDA_RONDA dias
-            if ($this->status == 4) :
-                $this->tagmark = 'gotit';
-            // "en marcha" cuando llega al optimo en primera o segunda ronda
-            elseif ($this->status == 3 && $this->amount >= $this->maxcost) :
-                $this->tagmark = 'onrun';
-            // "en marcha" y "aun puedes" cuando está en la segunda ronda
-            elseif ($this->status == 3 && $this->round == 2) :
-                $this->tagmark = 'onrun-keepiton';
-            // Obtiene el mínimo durante la primera ronda, "aun puedes seguir aportando"
-            elseif ($this->status == 3 && $this->round == 1 && $this->amount >= $this->mincost ) :
-                $this->tagmark = 'keepiton';
-            // tag de exitoso cuando es retorno cumplido
-            elseif ($this->status == 5) :
-                $this->tagmark = 'success';
-            // tag de caducado
-            elseif ($this->status == 6) :
-                $this->tagmark = 'fail';
-            endif;
+            $this->getTagmark();
+        }
+
+        /**
+         * returns motivation mark phrase
+         */
+        public function getTagmark() {
+            if(!$this->tagmark) {
+                // a ver que banderolo le toca
+                // "financiado" al final de los SEGUNDA_RONDA dias
+                if ($this->status == self::STATUS_FUNDED) :
+                    $this->tagmark = 'gotit';
+                // "en marcha" cuando llega al optimo en primera o segunda ronda
+                elseif ($this->status == self::STATUS_IN_CAMPAIGN && $this->amount >= $this->maxcost) :
+                    $this->tagmark = 'onrun';
+                // "en marcha" y "aun puedes" cuando está en la segunda ronda
+                elseif ($this->status == self::STATUS_IN_CAMPAIGN && $this->round == self::STATUS_REVIEWING) :
+                    $this->tagmark = 'onrun-keepiton';
+                // Obtiene el mínimo durante la primera ronda, "aun puedes seguir aportando"
+                elseif ($this->status == self::STATUS_IN_CAMPAIGN && $this->round == 1 && $this->amount >= $this->mincost ) :
+                    $this->tagmark = 'keepiton';
+                // tag de exitoso cuando es retorno cumplido
+                elseif ($this->status == self::STATUS_FULFILLED) :
+                    $this->tagmark = 'success';
+                // tag de caducado
+                elseif ($this->status == self::STATUS_UNFUNDED) :
+                    $this->tagmark = 'fail';
+                endif;
+            }
+            return $this->tagmark;
         }
 
         /*
