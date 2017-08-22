@@ -766,6 +766,8 @@ namespace Goteo\Model {
          * get a readable description of the amount of days left for the project
          */
         function getDaysLeft() {
+            $date = $this->created;
+
             switch ($this->status) {
                 case self::STATUS_IN_CAMPAIGN:
                     if ($this->days > 2) {
@@ -784,21 +786,17 @@ namespace Goteo\Model {
                     }
                     return $days_left . (is_integer($days_left) ? ' ' . Text::get('regular-days') : '' );
 
-                case self::STATUS_EDITING:
-                    $date = $this->date_created;
-                    break;
-
                 case self::STATUS_REVIEWING:
-                    $date = $this->date_updated;
+                    $date = $this->updated;
                     break;
 
                 case self::STATUS_FUNDED:
                 case self::STATUS_FULFILLED:
-                    $date = $this->date_success;
+                    $date = $this->success;
                     break;
 
                 case self::STATUS_UNFUNDED:
-                    $date = $this->date_closed;
+                    $date = $this->closed;
                     break;
             }
 

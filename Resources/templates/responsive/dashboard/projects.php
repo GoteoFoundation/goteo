@@ -13,7 +13,8 @@
             'total' => $this->projects_total,
             'interests' => null,
             'auto_update' => '/dashboard/ajax/projects/mine',
-            'limit' => $this->limit
+            'limit' => $this->limit,
+            'admin' => true
             ]) ?>
     </div>
 

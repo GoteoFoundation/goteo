@@ -50,6 +50,20 @@
         background-color:darken($color-light-grey, 10%);
     }
 }
+.btn-white {
+    background-color: $color-white;
+    color: $color-cyan;
+    &:hover {
+        background-color:darken($color-white, 10%);
+    }
+}
+.btn-cyan {
+    background-color: $color-cyan;
+    color: $color-white !important;
+    &:hover {
+        background-color:darken($color-cyan, 10%);
+    }
+}
 .btn-fashion {
     background: $color-pink;
     background: -moz-linear-gradient(left, $color-pink 28%, $color-red 100%);
