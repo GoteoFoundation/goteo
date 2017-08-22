@@ -2,6 +2,7 @@
 
 $percent = $this->project->getAmountPercent();
 $categories = $this->project->getCategories();
+// $social_rewards = $this->project->getSocialRewards();
 $social = $this->project->getSocialCommitment();
 
 ?><div class="project-widget normal" id="project-<?= $this->project->id ?>">

@@ -1949,6 +1949,8 @@ class User extends \Goteo\Core\Model {
                 project.image as image,
                 project.num_investors as num_investors,
                 project.num_messengers as num_messengers,
+                project.project_location as project_location,
+                project.social_commitment as social_commitment,
                 project.num_posts as num_posts,
                 project.days as days,
                 project.name as name,

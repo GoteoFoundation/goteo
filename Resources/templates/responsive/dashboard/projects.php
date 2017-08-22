@@ -4,6 +4,8 @@
 
 <div class="dashboard-content">
 
+  <div class="inner-container">
+
     <div class="projects-container" id="my-projects-container">
         <h2><?= $this->text('profile-my_projects-header') ?></h2>
         <?= $this->insert('dashboard/partials/projects_interests', [
@@ -15,6 +17,7 @@
             ]) ?>
     </div>
 
+  </div>
 </div>
 
 <?php $this->replace() ?>

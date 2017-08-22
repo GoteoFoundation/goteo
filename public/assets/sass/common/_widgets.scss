@@ -131,6 +131,10 @@
         border-top-right-radius: 5px;
         position: relative;
         height: 300px;
+        background: $background-light url(../img/ring.gif) no-repeat center;;
+        display: flex;
+        justify-content: center;
+        align-items: center;
         overflow: hidden;
         .img-project {
             height: 100%;
@@ -164,7 +168,7 @@
         text-align: left;
         border-radius: 50%;
         font-size: 50px;
-        padding: 5px 0 0 18px;
+        padding: 5px 0 0 17px;
         margin: 0;
         line-height: 50px;
         font-weight: 300;
@@ -314,6 +318,9 @@
                     text-transform: none;
                     font-size: $font-size * 1.2;
                     img {
+                        width: 50px;
+                        height: auto;
+                        margin:5px 10px 0 0;
                         -webkit-filter: hue-rotate(-106deg) grayscale(40%); /* Safari 6.0 - 9.0 */
                         filter: hue-rotate(-106deg) grayscale(40%);
                     }

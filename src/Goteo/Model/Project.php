@@ -785,20 +785,20 @@ namespace Goteo\Model {
                     return $days_left . (is_integer($days_left) ? ' ' . Text::get('regular-days') : '' );
 
                 case self::STATUS_EDITING:
-                    $date = $date_created;
+                    $date = $this->date_created;
                     break;
 
                 case self::STATUS_REVIEWING:
-                    $date = $date_updated;
+                    $date = $this->date_updated;
                     break;
 
                 case self::STATUS_FUNDED:
                 case self::STATUS_FULFILLED:
-                    $date = $date_success;
+                    $date = $this->date_success;
                     break;
 
                 case self::STATUS_UNFUNDED:
-                    $date = $date_closed;
+                    $date = $this->date_closed;
                     break;
             }
 

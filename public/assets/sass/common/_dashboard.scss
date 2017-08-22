@@ -4,11 +4,21 @@
 .dashboard {
   background: $background-white;
 
+  // TODO: check for removal
   .general-dashboard {
     background-color: $background-white;
     padding: 15px;
     margin: 0 -15px 40px -15px;
   }
+
+  .inner-container {
+      max-width: $breakpoint-md - 30;
+      min-width: $breakpoint-xxs;
+      padding-right: 15px;
+      padding-left: 15px;
+      margin-right: auto;
+      margin-left: auto;
+    }
 
   p {
     color: $secondary-color;
