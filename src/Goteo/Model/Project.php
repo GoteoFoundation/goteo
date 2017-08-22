@@ -707,6 +707,141 @@ namespace Goteo\Model {
             $filter = ['projects' => $this->id, 'status' => [Invest::STATUS_PENDING, Invest::STATUS_CHARGED, Invest::STATUS_PAID, Invest::STATUS_RETURNED, Invest::STATUS_TO_POOL]];
             return Invest::getList($filter, null, 0, 0, true);
         }
+
+        // retornos colectivos
+        public function getSocialRewards($lang = null) {
+            if(!$this->social_rewards) {
+                $this->social_rewards = Project\Reward::getAll($this->id, 'social', $lang);
+            }
+            return $this->social_rewards;
+        }
+
+        public function getIndividualRewards($lang = null) {
+            if(!$this->individual_rewards) {
+                // retornos individuales
+                $this->individual_rewards = Project\Reward::getAll($this->id, 'individual', $lang);
+            }
+            return $this->individual_rewards;
+        }
+
+        public function getSupports($lang = null) {
+            if(!$this->supports) {
+                // colaboraciones
+                $this->supports = Project\Support::getAll($this->id, $lang);
+            }
+            return $this->supports;
+        }
+
+        public function getSocialCommitment() {
+            if(!$this->social_commitmentData) {
+                if ($this->social_commitment) {
+                    $this->social_commitmentData = SocialCommitment::get($this->social_commitment);
+                    $this->social_commitmentData->image = Image::get($this->social_commitmentData->image);
+                }
+            }
+            return $this->social_commitmentData;
+        }
+
+        /**
+         * Return the currently achieved amount percent
+         */
+        function getAmountPercent() {
+            if ($this->mincost > 0) {
+                return floor(($this->amount / $this->mincost) * 100);
+            }
+            return 0;
+        }
+
+        /**
+         * Return project categories names
+         */
+        function getCategories() {
+            if(!$this->categoriesArray) {
+                $this->categoriesArray = Project\Category::getNames($this->id);
+            }
+            return $this->categoriesArray;
+        }
+
+        /**
+         * get a readable description of the amount of days left for the project
+         */
+        function getDaysLeft() {
+            switch ($this->status) {
+                case self::STATUS_IN_CAMPAIGN:
+                    if ($this->days > 2) {
+                        $days_left = number_format($this->days);
+                    } else {
+
+                        $part = strtotime($this->published);
+                        if ($this->round == 1) {
+                            $plus = $this->days_round1;
+                        }
+                        elseif ($this->round == 2) {
+                            $plus = $this->days_total;
+                        }
+                        $final_day = date('Y-m-d', mktime(0, 0, 0, date('m', $part), date('d', $part)+$plus, date('Y', $part)));
+                        $days_left = Check::time_togo($final_day, 1);
+                    }
+                    return $days_left . (is_integer($days_left) ? ' ' . Text::get('regular-days') : '' );
+
+                case self::STATUS_EDITING:
+                    $date = $date_created;
+                    break;
+
+                case self::STATUS_REVIEWING:
+                    $date = $date_updated;
+                    break;
+
+                case self::STATUS_FUNDED:
+                case self::STATUS_FULFILLED:
+                    $date = $date_success;
+                    break;
+
+                case self::STATUS_UNFUNDED:
+                    $date = $date_closed;
+                    break;
+            }
+
+            return date('d/m/Y', strtotime($date));
+
+        }
+
+        /**
+         * get a readable description of the status of the project
+         */
+        function getStatusDescription() {
+            switch ($this->status) {
+                case self::STATUS_EDITING:
+                    $text = 'project-view-metter-day_created';
+                    break;
+                case self::STATUS_REVIEWING:
+                    $text = 'project-view-metter-day_updated';
+                    break;
+                case self::STATUS_IN_CAMPAIGN:
+                    $text = 'project-view-metter-days';
+                    break;
+                case self::STATUS_FUNDED:
+                case self::STATUS_FULFILLED:
+                    $text = 'project-view-metter-day_success';
+                    break;
+                case self::STATUS_UNFUNDED: // archivado
+                    $text = 'project-view-metter-day_closed';
+                    break;
+            }
+            return strtolower(Text::get($text));
+        }
+
+        /**
+         * Get consultants for this project
+         * @return array array of user id that are consultants
+         */
+        public function getConsultants() {
+            if($this->consultants && is_array($this->consultants)) return $this->consultants;
+            $this->consultants = self::getConsultantsForProject($this);
+            return $this->consultants;
+        }
+
+
         /*
          *  Cargamos los datos mínimos de un proyecto: id, name, owner, comment, lang, status, user
          */
@@ -843,6 +978,8 @@ namespace Goteo\Model {
             $Widget->success = $project->success;
             $Widget->closed = $project->closed;
             $Widget->node = $project->node;
+            $Widget->project_location = $project->project_location;
+            $Widget->social_commitment = $project->social_commitment;
 
             // configuración de campaña
             // $project_conf = Project\Conf::get($Widget->id);  lo sacamos desde la consulta
@@ -939,25 +1076,6 @@ namespace Goteo\Model {
             return round(self::query($sql)->fetchColumn(), 2);
         }
 
-        /**
-         * Return the currently achieved amount percent
-         */
-        function getAmountPercent() {
-            if ($this->mincost > 0) {
-                return floor(($this->amount / $this->mincost) * 100);
-            }
-            return 0;
-        }
-
-        /**
-         * Get consultants for this project
-         * @return array array of user id that are consultants
-         */
-        public function getConsultants() {
-            if($this->consultants && is_array($this->consultants)) return $this->consultants;
-            $this->consultants = self::getConsultantsForProject($this);
-            return $this->consultants;
-        }
         /*
          * Static version
          * Array asociativo de los asesores de un proyecto
@@ -1112,6 +1230,16 @@ namespace Goteo\Model {
                 self::query("UPDATE project SET days = '{$daysleft}' WHERE id = ?", array($this->id));
                 $this->days = $daysleft;
             }
+        }
+
+        /**
+         * Gets the opentags in a more confortable way
+         */
+        public function getOpenTags() {
+            if(!$this->openTagsArray) {
+                $this->openTagsArray = self::getOpen_Tags($this->id);
+            }
+            return $this->openTagsArray;
         }
 
          /*
@@ -2691,6 +2819,8 @@ namespace Goteo\Model {
                     project.num_posts as num_posts,
                     project.days as days,
                     project.name as name,
+                    project.project_location as project_location,
+                    project.social_commitment AS social_commitment,
                     project.owner as owner,
                     user.id as user_id,
                     user.name as user_name,
@@ -2873,6 +3003,8 @@ namespace Goteo\Model {
                     project.num_posts AS num_posts,
                     project.days AS days,
                     project.popularity AS popularity,
+                    project.project_location AS project_location,
+                    project.social_commitment AS social_commitment,
                     user.id AS user_id,
                     user.name AS user_name,
                     project_conf.noinvest AS noinvest,

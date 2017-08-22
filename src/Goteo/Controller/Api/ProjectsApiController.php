@@ -69,7 +69,7 @@ class ProjectsApiController extends AbstractApiController {
         $total = Project::getList($filters, $node, 0, 0, true);
         $list = [];
         foreach(Project::getList($filters, $node, $offset, $limit) as $prj) {
-            foreach(['id', 'name', 'owner', 'subtitle', 'status', 'node', 'published', 'success', 'passed', 'closed', 'video', 'image', 'lang', 'currency'] as $k)
+            foreach(['id', 'name', 'owner', 'subtitle', 'status', 'node', 'published', 'project_location', 'success', 'passed', 'closed', 'video', 'image', 'lang', 'currency'] as $k)
                 $ob[$k] = $prj->$k;
             foreach(['amount', 'mincost', 'maxcost'] as $k)
                 $ob[$k] = (int)$prj->$k;
@@ -92,7 +92,7 @@ class ProjectsApiController extends AbstractApiController {
             throw new ControllerAccessDeniedException();
         }
         $ob = [];
-        foreach(['id', 'name', 'owner', 'subtitle', 'description','status', 'node', 'published', 'success', 'passed', 'closed', 'video', 'image', 'lang', 'currency'] as $k)
+        foreach(['id', 'name', 'owner', 'subtitle', 'description','status', 'node', 'published','project_location', 'success', 'passed', 'closed', 'video', 'image', 'lang', 'currency'] as $k)
                 $ob[$k] = $prj->$k;
         foreach(['amount', 'mincost', 'maxcost'] as $k)
                 $ob[$k] = (int)$prj->$k;
