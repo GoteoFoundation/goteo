@@ -4,11 +4,21 @@
 .dashboard {
   background: $background-white;
 
+  // TODO: check for removal
   .general-dashboard {
     background-color: $background-white;
     padding: 15px;
     margin: 0 -15px 40px -15px;
   }
+
+  .inner-container {
+      max-width: $breakpoint-md - 30;
+      min-width: $breakpoint-xxs;
+      padding-right: 15px;
+      padding-left: 15px;
+      margin-right: auto;
+      margin-left: auto;
+    }
 
   p {
     color: $secondary-color;
@@ -79,6 +89,27 @@
     .panel-body {
       background: $background-light-body;
       border-radius: 5px;
+    }
+    .widget-preview {
+      display: flex;
+      width: 100%;
+      .left {
+        width: 300px;
+        flex: 1;
+        order: -1;
+      }
+      .right {
+        margin-left: 20px;
+        width: 70%;
+      }
+      @media (max-width: $breakpoint-sm - 1) {
+        display: block;
+        .left,.right {
+          margin: 1em 0;
+          width: 100%;
+          flex: none;
+        }
+      }
     }
     .form-control {
       background-color: $background-white;

@@ -2,15 +2,16 @@
 
 <?php $this->section('dashboard-content') ?>
 
-<div class="dashboard-content row">
+<div class="dashboard-content">
 
-    <div class="col-md-offset-1 col-md-10">
+    <div class="inner-container">
         <?= $this->raw('message') ?>
     </div>
 
 </div>
 
 <div class="dashboard-content cyan">
+  <div class="inner-container">
     <div class="projects-container" id="projects-support-container">
         <h2><?= $this->text('profile-invest_on-header') ?></h2>
         <?= $this->insert('dashboard/partials/projects_interests', [
@@ -33,6 +34,7 @@
             ]) ?>
     </div>
 
+  </div>
 </div>
 
 <?php $this->replace() ?>

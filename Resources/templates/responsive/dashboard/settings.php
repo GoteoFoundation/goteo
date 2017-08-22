@@ -3,9 +3,10 @@
 <?php $this->section('dashboard-content') ?>
 
 <div class="dashboard-content">
+  <div class="inner-container">
+    Settings
 
-Settings
-
+  </div>
 </div>
 
 <?php $this->replace() ?>

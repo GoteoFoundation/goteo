@@ -2,8 +2,8 @@
 
 <?php $this->section('dashboard-content') ?>
 
-  <div class="dashboard-content">
-
+<div class="dashboard-content">
+  <div class="inner-container">
     <h1><?= $this->text('images-main-header') ?></h1>
     <h5><?= $this->text('dashboard-project-images-desc') ?></h5>
 
@@ -23,6 +23,7 @@
     <?php endforeach ?>
 
   </div>
+</div>
 
 <?php $this->replace() ?>
 

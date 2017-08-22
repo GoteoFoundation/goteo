@@ -417,7 +417,7 @@ class Text {
                 break;
             case 'project':
             default:
-                $code = '<iframe frameborder="0" height="480px" src="'.$url.'" width="250px" scrolling="no"></iframe>';
+                $code = '<iframe frameborder="0" height="492px" src="'.$url.'" width="300px" scrolling="no"></iframe>';
                 break;
         }
 

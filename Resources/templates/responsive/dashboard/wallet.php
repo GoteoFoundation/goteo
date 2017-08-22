@@ -3,7 +3,7 @@
 <?php $this->section('dashboard-content') ?>
 
 <div class="dashboard-content">
-
+  <div class="inner-container">
     <div class="user-pool">
         <h1><?=  $this->text('dashboard-my-wallet-available', amount_format($this->pool->getAmount())) ?></h2>
 
@@ -18,19 +18,21 @@
         </div>
       </div>
     </div>
-
+  </div>
 </div>
 
 <div class="dashboard-content cyan">
-  <div class="projects-container">
-    <h2><?= $this->text('profile-suggest-projects-interest') ?></h2>
-    <?= $this->insert('dashboard/partials/projects_interests', [
-        'projects' => $this->projects_suggestion,
-        'total' => $this->projects_suggestion_total,
-        'interests' => $this->interests,
-        'auto_update' => '/dashboard/ajax/projects/interests',
-        'limit' => $this->limit
-        ]) ?>
+  <div class="inner-container">
+      <div class="projects-container">
+        <h2><?= $this->text('profile-suggest-projects-interest') ?></h2>
+        <?= $this->insert('dashboard/partials/projects_interests', [
+            'projects' => $this->projects_suggestion,
+            'total' => $this->projects_suggestion_total,
+            'interests' => $this->interests,
+            'auto_update' => '/dashboard/ajax/projects/interests',
+            'limit' => $this->limit
+            ]) ?>
+      </div>
   </div>
 </div>
 

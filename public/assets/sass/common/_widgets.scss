@@ -126,11 +126,31 @@
     position: relative;
     border-radius: 5px;
     box-shadow: 1px 3px 5px -3px $color-dark;
+    min-height: 492px;
+    .status {
+        position: absolute;
+        top: 0;
+        left: 0;
+        border-top-left-radius: 5px;
+        max-width: 95%;
+        z-index: 3;
+        font-size: $font-size * 1.2;
+        font-weight: 500;
+        text-transform: uppercase;
+        padding: 5px 10px;
+        color: $color-white;
+        display: inline-block;
+    }
     .img-link {
         border-top-left-radius: 5px;
         border-top-right-radius: 5px;
         position: relative;
-        height: 300px;
+        // height: 300px;
+        height: 208px;
+        background: $background-light url(../img/ring.gif) no-repeat center;;
+        display: flex;
+        justify-content: center;
+        align-items: center;
         overflow: hidden;
         .img-project {
             height: 100%;
@@ -139,7 +159,7 @@
         h2 {
             display: inline-block;
             // background-color: rgba(0, 0, 0, 0.1);
-            text-shadow: 2px 1px 2px #999;
+            text-shadow: 1px 1px 2px #666;
             margin: 0 60px 0 0;
             padding: 5px;
             text-align: left;
@@ -154,32 +174,47 @@
             }
         }
     }
-    .flip {
+    .floating {
         position: absolute;
-        top: 268px;
-        right: 25px;
+        top: 179px;
+        right: 15px;
         height: 61px;
         width: 61px;
         z-index: 2;
         text-align: left;
         border-radius: 50%;
         font-size: 50px;
-        padding: 5px 0 0 18px;
+        padding: 3px 9px;
         margin: 0;
-        line-height: 50px;
+        line-height: 1;
         font-weight: 300;
-        background: $color-cyan;
         color: $color-white;
+        background: $color-cyan;
         background: radial-gradient(circle at 20% 50%, $color-cyan, lighten($color-cyan, 10%) 60%, lighten($color-cyan, 30%) 90%);
         box-shadow: 2px 5px 12px -6px darken($color-cyan, 20%);
         cursor: pointer;
+        &:hover {
+        background: darken($color-cyan, 10%);
+        background: radial-gradient(circle at 20% 50%, darken($color-cyan, 10%), $color-cyan 60%, lighten($color-cyan, 20%) 90%);
+        }
+
+        &.flip {
+            padding: 5px 0 0 17px;
+        }
+        .icon {
+            background-color: $color-white;
+            width: 100%;
+            height: 100%;
+        }
+
     }
 
     .content {
         color: $secondary-color;
         height: auto;
-        min-height: 240px;
-        padding-bottom: 70px;
+        min-height: 283px;
+        background: transparent;
+        border: none;
         h4 {
             font-size: $font-size;
         }
@@ -191,8 +226,14 @@
         color: $color-cyan;
         margin-top: 0.5em;
     }
+    .bottom {
+        position: absolute;
+        left: 0;
+        bottom: 0;
+        width: 100%;
+    }
     .amount {
-        margin-top: 1em;
+        // margin-top: 1em;
         ul {
             margin: 0;
             padding: 0;
@@ -216,17 +257,15 @@
         }
     }
     .percent {
-        position: absolute;
-        width: 100%;
+        margin-top: 1em;
         padding: 0 5%;
-        bottom: 0;
-        left: 0;
         .progress {
+            width: 100%;
             background-color: lighten($color-cyan, 40%);
             box-shadow: none;
             height: 10px;
             border-radius: 5px;
-            margin-bottom: 0.5em;
+            margin-bottom: 5px;
             .progress-bar {
                 background-color: $color-cyan;
             }
@@ -250,7 +289,17 @@
     left: 0;
     z-index: 3;
     border-radius: 5px;
-    padding: 5%;
+    padding: 5% 7%;
+    &.admin {
+        background: rgba(0 ,0, 0, 0.8);
+        padding-top: 208px;
+        .btn-block {
+            margin: 1em 0;
+        }
+        .bottom {
+            bottom: 15px;
+        }
+    }
     &.animated {
         &.flipInY {
           animation-duration: .3s;
@@ -262,12 +311,14 @@
     &.active {
         display: block;
     }
-    .flip {
+
+    .close {
         display: block;
         position: absolute;
         top : 10px;
         right : 10px;
         background: $primary-color;
+        opacity: 1;
         color: $color-white;
         font-size: 21px;
         line-height: 21px;
@@ -279,10 +330,23 @@
         padding: 8px 0 0 11px;
         margin: 0;
         box-shadow: 2px 5px 12px -6px $color-dark;
+        &:hover {
+            background: lighten($primary-color, 10%);
+        }
+    }
+
+    h5 {
+        font-size: $font-size * 1;
+        color: $title-color;
+        font-weight: normal;
+        text-transform: uppercase;
     }
 
     .data-list {
-        li {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+        > li {
             float: none;
             padding: 0;
             margin: 15px 0 5px 0;
@@ -314,6 +378,9 @@
                     text-transform: none;
                     font-size: $font-size * 1.2;
                     img {
+                        width: 50px;
+                        height: auto;
+                        margin:5px 10px 0 0;
                         -webkit-filter: hue-rotate(-106deg) grayscale(40%); /* Safari 6.0 - 9.0 */
                         filter: hue-rotate(-106deg) grayscale(40%);
                     }
@@ -324,7 +391,11 @@
                 padding: 0;
                 height: 2px;
                 width: 100%;
+                background-color: #CDD6D5;
             }
+        }
+        > li + li {
+          margin-left: 0;
         }
     }
     .invest {

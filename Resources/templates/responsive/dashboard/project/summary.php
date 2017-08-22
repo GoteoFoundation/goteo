@@ -2,8 +2,8 @@
 
 <?php $this->section('dashboard-content') ?>
 
-  <div class="dashboard-content">
-
+<div class="dashboard-content">
+  <div class="inner-container">
     <h1><?= $this->text('dashboard-menu-activity-summary') ?></h1>
     <h5><?= $this->project->name ?></h5>
 
@@ -57,15 +57,13 @@
 
     <div class="panel section-content">
         <h3><?= $this->text('project-spread-widget_title') ?></h3>
-        <div class="panel-body">
-            <div class="row">
-                <div class="col-md-4 col-xs-6 col-xxs-12">
-                    <iframe frameborder="0" height="480px" src="<?= $url ?>" width="250px" scrolling="no"></iframe>
-                </div>
-                <div class="col-md-8 col-xs-6 col-xxs-12">
-                    <h5 onclick="$(this).next().focus();$(this).next().select()"><?= $this->text('project-spread-embed_code') ?></h5>
-                    <textarea class="form-control" onclick="this.focus();this.select()" readonly="readonly"><?= $this->text_widget($url) ?></textarea>
-                </div>
+        <div class="panel-body widget-preview">
+            <div class="right">
+                <h5 onclick="$(this).next().focus();$(this).next().select()"><?= $this->text('project-spread-embed_code') ?></h5>
+                <textarea class="form-control" onclick="this.focus();this.select()" readonly="readonly"><?= $this->text_widget($url) ?></textarea>
+            </div>
+            <div class="left">
+                <iframe frameborder="0" height="492px" src="<?= $url ?>" width="300px" scrolling="no"></iframe>
             </div>
         </div>
     </div>
@@ -76,6 +74,7 @@
     </div>
 
   </div>
+</div>
 
 <?php $this->replace() ?>
 

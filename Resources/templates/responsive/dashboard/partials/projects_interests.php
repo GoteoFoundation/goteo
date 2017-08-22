@@ -17,7 +17,7 @@
 
 <?php if($this->projects): ?>
     <div class="row spacer elements-container">
-        <?= $this->insert('dashboard/partials/projects_widgets_list') ?>
+        <?= $this->insert('dashboard/partials/projects_widgets_list', ['admin' => (bool)$this->admin]) ?>
     </div>
 
     <div class="spacer-20 spacer-bottom text-center more-projects-button<?= $this->auto_update && $this->total > count($this->projects) ? '' : ' hidden' ?>">
