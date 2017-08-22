@@ -188,11 +188,16 @@
         margin: 0;
         line-height: 1;
         font-weight: 300;
-        background: $color-cyan;
         color: $color-white;
+        background: $color-cyan;
         background: radial-gradient(circle at 20% 50%, $color-cyan, lighten($color-cyan, 10%) 60%, lighten($color-cyan, 30%) 90%);
         box-shadow: 2px 5px 12px -6px darken($color-cyan, 20%);
         cursor: pointer;
+        &:hover {
+        background: darken($color-cyan, 10%);
+        background: radial-gradient(circle at 20% 50%, darken($color-cyan, 10%), $color-cyan 60%, lighten($color-cyan, 20%) 90%);
+        }
+
         &.flip {
             padding: 5px 0 0 17px;
         }
@@ -325,6 +330,9 @@
         padding: 8px 0 0 11px;
         margin: 0;
         box-shadow: 2px 5px 12px -6px $color-dark;
+        &:hover {
+            background: lighten($primary-color, 10%);
+        }
     }
 
     h5 {
