@@ -6,10 +6,15 @@ $categories = $this->project->getCategories();
 $social = $this->project->getSocialCommitment();
 $link = $this->link ? $this->link : '/project/' . $this->project->id;
 $tagmark = $this->project->getTagmark();
+$call = $this->project->getCall();
 
 ?><div class="project-widget normal" id="project-<?= $this->project->id ?>">
 
-    <?php if($tagmark): ?>
+    <?php if($call): ?>
+        <div class="status btn-lilac">
+            <i class="icon icon-call"></i> <?= $this->text('regular-call') ?> x<strong>2</strong>
+        </div>
+    <?php elseif($tagmark): ?>
         <div class="status btn-orange">
         <?php
            if($tagmark === 'onrun-keepiton')
@@ -65,6 +70,8 @@ $tagmark = $this->project->getTagmark();
 
   <?php if($this->admin): ?>
     <?= $this->insert('project/widgets/partials/backside_admin') ?>
+  <?php elseif($call): ?>
+    <?= $this->insert('project/widgets/partials/backside_call', ['call' => $call]) ?>
   <?php else: ?>
     <?= $this->insert('project/widgets/partials/backside_normal') ?>
   <?php endif ?>

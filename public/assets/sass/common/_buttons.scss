@@ -13,20 +13,18 @@
     &:hover {
         background-color:darken($color-pink, 10%);
     }
-}
-.btn-dark-pink{
-    background-color: $color-dark-pink;
-    color: $color-white !important;
-    &:hover {
-        background-color:darken($color-dark-pink, 10%);
+    .icon {
+        background-color: $color-white;
     }
 }
-
 .btn-green{
     background-color: $color-green;
     color: $color-white;
     &:hover {
         background-color:darken($color-green, 10%);
+    }
+    .icon {
+        background-color: $color-white;
     }
 }
 .btn-cyan{
@@ -34,6 +32,9 @@
     color: $color-white;
     &:hover {
         background-color:darken($color-cyan, 10%);
+    }
+    .icon {
+        background-color: $color-white;
     }
 }
 .btn-grey {
@@ -43,11 +44,24 @@
         background-color:darken( $background-light-grey, 10%);
     }
 }
+.btn-lilac {
+    background-color: $color-lilac;
+    color: $color-white;
+    &:hover {
+        background-color:darken( $color-lilac, 10%);
+    }
+    .icon {
+        background-color: $color-white;
+    }
+}
 .btn-dark {
     background-color: $color-light-grey;
     color: $color-white;
     &:hover {
         background-color:darken($color-light-grey, 10%);
+    }
+    .icon {
+        background-color: $color-white;
     }
 }
 .btn-white {
@@ -62,6 +76,9 @@
     color: $color-white !important;
     &:hover {
         background-color:darken($color-cyan, 10%);
+    }
+    .icon {
+        background-color: $color-white;
     }
 }
 .btn-fashion {
@@ -83,6 +100,9 @@
         background: -ms-linear-gradient(left, darken($color-pink, 10%) 28%,darken($color-red, 10%) 100%);
         background: linear-gradient(to right, darken($color-pink, 10%) 28%,darken($color-red, 10%) 100%);
         filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='darken($color-pink, 10%)', endColorstr='darken($color-red, 10%)',GradientType=1 );
+    }
+    .icon {
+        background-color: $color-white;
     }
 }
 
@@ -106,6 +126,9 @@
     background: linear-gradient(to right, darken($color-orange, 10%) 28%,darken($color-red, 10%) 100%);
     filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='darken($color-orange, 10%)', endColorstr='darken($color-red, 10%)',GradientType=1 );
     color: $color-white;
+    }
+    .icon {
+        background-color: $color-white;
     }
 }
 

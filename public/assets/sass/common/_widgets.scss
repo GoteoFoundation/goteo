@@ -140,6 +140,14 @@
         padding: 5px 10px;
         color: $color-white;
         display: inline-block;
+        .icon {
+          width: 30px;
+          height: 30px;
+        }
+        strong {
+          font-size: $font-size * 1.8;
+          line-height: $font-size * 1.8;
+        }
     }
     .img-link {
         border-top-left-radius: 5px;
@@ -300,6 +308,31 @@
             bottom: 15px;
         }
     }
+    &.call {
+      background: $color-lilac;
+      .data-list {
+        color: $color-white;
+        &.title {
+          .icon {
+            background: $color-white;
+            width: 24px;
+            height: 24px;
+          }
+          img {
+            margin: 5px 29px;
+          }
+          strong {
+            font-size: $font-size * 1.8;
+          }
+        }
+        p,h5,h6,a,strong {
+          color: $color-white;
+        }
+      }
+      .btn {
+        color: $color-lilac;
+      }
+    }
     &.animated {
         &.flipInY {
           animation-duration: .3s;
@@ -354,46 +387,46 @@
         list-style: none;
         margin: 0;
         padding: 0;
+        h5,h6,h6>a {
+            font-size: $font-size * 1.1;
+            font-weight: 600;
+            margin: 0;
+            padding: 0;
+            >a {
+                color: $primary-color;
+                text-decoration: underline;
+            }
+        }
+        p {
+            font-weight: 600;
+            color: $secondary-color;
+            font-size: $font-size * 1.8;
+            line-height: $font-size * 1.8;
+            margin: 5px 0 0 0;
+            padding: 0;
+            strong {
+                font-weight: 600;
+                color: $color-cyan;
+                line-height: $font-size * 2.5;
+                font-size: $font-size * 2.5;
+            }
+            &.social {
+                text-transform: none;
+                font-size: $font-size * 1.2;
+                img {
+                    width: 50px;
+                    height: auto;
+                    margin:5px 10px 0 0;
+                    -webkit-filter: hue-rotate(-106deg) grayscale(40%); /* Safari 6.0 - 9.0 */
+                    filter: hue-rotate(-106deg) grayscale(40%);
+                }
+            }
+        }
         > li {
             float: none;
             padding: 0;
             margin: 15px 0 5px 0;
             border: none;
-            h5,h6,h6>a {
-                font-size: $font-size * 1.1;
-                font-weight: 600;
-                margin: 0;
-                padding: 0;
-                >a {
-                    color: $primary-color;
-                    text-decoration: underline;
-                }
-            }
-            p {
-                font-weight: 600;
-                color: $secondary-color;
-                font-size: $font-size * 1.8;
-                line-height: $font-size * 1.8;
-                margin: 5px 0 0 0;
-                padding: 0;
-                strong {
-                    font-weight: 600;
-                    color: $color-cyan;
-                    line-height: $font-size * 2.5;
-                    font-size: $font-size * 2.5;
-                }
-                &.social {
-                    text-transform: none;
-                    font-size: $font-size * 1.2;
-                    img {
-                        width: 50px;
-                        height: auto;
-                        margin:5px 10px 0 0;
-                        -webkit-filter: hue-rotate(-106deg) grayscale(40%); /* Safari 6.0 - 9.0 */
-                        filter: hue-rotate(-106deg) grayscale(40%);
-                    }
-                }
-            }
             &.divider {
                 margin: 15px 0;
                 padding: 0;

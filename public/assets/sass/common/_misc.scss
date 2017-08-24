@@ -200,6 +200,9 @@ i.visible-xs {
     &.icon-drop {
         @include svg-background('../img/dashboard/drop.svg');
     }
+    &.icon-call {
+        @include svg-background('../img/dashboard/call.svg');
+    }
 }
 
 
