@@ -1,6 +1,6 @@
 <div class="menu-header">
     <a class="navbar-brand" href="<?= SITE_URL ?>"><img src="<?= SRC_URL ?>/goteo_logo.png" class="img-responsive logo" alt="Goteo"></a>
-    <button class="toggle-menu btn btn-link" data-target="<?= $this->target ?>" title="Close"><i class="fa fa-close"></i></button>
+    <button class="toggle-menu btn btn-link" data-target="<?= $this->target ?>" title="Close"><i class="icon icon-close"></i></button>
 </div>
 
 <ul class="nav">

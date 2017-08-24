@@ -191,6 +191,15 @@ i.visible-xs {
     &.icon-favourite {
         @include svg-background('../img/dashboard/favourite.svg');
     }
+    &.icon-close {
+        @include svg-background('../img/dashboard/close.svg');
+    }
+    &.icon-user {
+        @include svg-background('../img/dashboard/user.svg');
+    }
+    &.icon-drop {
+        @include svg-background('../img/dashboard/drop.svg');
+    }
 }
 
 

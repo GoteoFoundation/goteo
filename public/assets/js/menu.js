@@ -34,12 +34,12 @@ $(function(){
         var target = $(this).data('target');
         var $t = $('#' + target);
         var $show = $(this).find('.show-menu');
-        var $hide = $(this).find('.hide-menu');
+        var $close = $(this).find('.close-menu');
         // xs devices has css position to fixed
         var isDesktop = $t.css('position') === 'absolute';
-        if(!isDesktop && $hide.length) {
-            $hide.css('display', 'none');
-            $show.css('display', 'block');
+        if(!isDesktop && $close.length) {
+            $close.removeClass('active');
+            $show.addClass('active');
         }
         var inAnimation = 'slideInRight';
         var outAnimation = 'slideOutRight';
@@ -50,14 +50,16 @@ $(function(){
 
         // Close other opened
         $('.top-menu.active:not([id="' + target + '"])').removeClass('active');
+        $(this).parent().find('.close-menu').removeClass('active');
+        $(this).parent().find('.show-menu').addClass('active');
         $('#main-content').off();
 
         if($t.hasClass('active')) {
             if(isDesktop) {
-                $show.css('display', 'none');
-                $hide.css('display', 'block').animateCss('flipOutX', function() {
-                    $hide.css('display', 'none');
-                    $show.css('display', 'block').animateCss('flipInX');
+                $show.removeClass('active');
+                $close.addClass('active').animateCss('flipOutX', function() {
+                    $close.removeClass('active');
+                    $show.addClass('active').animateCss('flipInX');
                 });
             }
             $t.animateCss(outAnimation, function(){
@@ -66,10 +68,10 @@ $(function(){
             });
         } else {
             if(isDesktop) {
-                $hide.css('display', 'none');
-                $show.css('display', 'block').animateCss('flipOutX', function() {
-                    $show.css('display', 'none');
-                    $hide.css('display', 'block').animateCss('flipInX');
+                $close.removeClass('active');
+                $show.addClass('active').animateCss('flipOutX', function() {
+                    $show.removeClass('active');
+                    $close.addClass('active').animateCss('flipInX');
                 });
             }
             $t.addClass('active').animateCss(inAnimation, function(){

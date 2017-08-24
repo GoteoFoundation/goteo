@@ -69,10 +69,15 @@
     // Permanent menus
     .navbar-always {
         float:right;
+        margin-right: -15px;
 
         button, a {
-            margin: 13px 0 13px 15px;
-            padding:0;
+            margin:0;
+            padding: 13px 15px;
+            height: 60px;
+            width: 60px;
+            overflow: hidden;
+            vertical-align: middle;
             border: none;
             background: transparent;
             color: $color-white;
@@ -85,12 +90,34 @@
     }
 
     .navbar-always, .toggle-menu {
+        &.main-menu {
+            margin:0;
+            padding:0;
+            .show-menu,.close-menu {
+                display: none;
+                &.active {
+                    display: block;
+                }
+            }
+            .show-menu {
+                padding: 13px 15px;
+            }
+            .close-menu {
+                padding: 19px 15px;
+                background: $color-white;
+                .icon {
+                   background: $color-cyan;
+                }
+            }
+        }
+
         i {
             &.fa {
                font-size: 32px;
             }
-            &.hide-menu {
-                display: none;
+            &.icon {
+               width: 23px;
+               height: 23px;
             }
         }
     }
@@ -105,7 +132,7 @@
         display: none;
         z-index: 1100;
         @media (min-width: $breakpoint-sm) {
-            box-shadow: 1px 1px 3px 1px rgba(0,0,0,.3);
+            box-shadow: 1px 5px 8px 1px rgba(0,0,0,.3);
         }
         &.active {
             display: block;
@@ -148,23 +175,37 @@
             }
             li {
                 a {
-                    color: $primary-color;
-                    text-transform: uppercase;
+                    color: $secondary-color;
+                    // text-transform: uppercase;
                     font-weight: 600;
-                    text-align: center;
+                    text-align: left;
                     font-size: $font-size * 1.2;
                     border-top: 2px solid $background-light;
                     margin:0 15px;
                     padding-top: 15px;
                     padding-bottom: 15px;
+                    font-weight: 400;
                     &.btn-fashion {
-                        margin:0;
+                        margin:0 15px 15px 15px;
+                        border-radius: 5px;
                         color: $color-white;
+                        font-weight: 500;
+                        text-transform: uppercase;
+                        text-align: center;
                     }
                     &.toggle-submenu {
                         position:relative;
                         .fa {
                             font-weight: bold;
+                        }
+                    }
+                    i {
+                        height: 19px;
+                        width: 19px;
+                        color: $primary-color;
+                        font-style: normal;
+                        &.icon {
+                            background: $primary-color;
                         }
                     }
                 }
@@ -200,6 +241,10 @@
                 position: absolute;
                 right: 0;
                 top: 0;
+                background: white;
+                .icon {
+                    background: $color-cyan;
+                }
             }
         }
     }
@@ -221,8 +266,9 @@
     .navbar-brand{
         padding: 0 !important;
         img.logo {
-            height: 45px;
+            height: 40px;
             margin-left: 10px;
+            margin-top: 10px;
         }
     }
 

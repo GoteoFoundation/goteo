@@ -213,7 +213,7 @@
         color: $secondary-color;
         height: auto;
         min-height: 283px;
-        background: transparent;
+        background: $color-white;
         border: none;
         h4 {
             font-size: $font-size;
@@ -322,16 +322,21 @@
         color: $color-white;
         font-size: 21px;
         line-height: 21px;
-        height: 38px;
-        width: 38px;
+        height: 37px;
+        width: 37px;
         border-radius: 50%;
         font-weight: 300;
         text-align: left;
-        padding: 8px 0 0 11px;
+        padding: 7px 0 0 10px;
         margin: 0;
         box-shadow: 2px 5px 12px -6px $color-dark;
         &:hover {
             background: lighten($primary-color, 10%);
+        }
+        .icon {
+          background: $color-white;
+          width: 18px;
+          height: 18px;
         }
     }
 
@@ -342,6 +347,9 @@
         text-transform: uppercase;
     }
 
+    .content {
+      background: transparent;
+    }
     .data-list {
         list-style: none;
         margin: 0;

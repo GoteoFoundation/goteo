@@ -75,7 +75,14 @@
     filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='$color-pink', endColorstr='$color-red',GradientType=1 );
     color: $color-white;
     &:hover {
-        background-color:darken($color-pink, 10%);
+        background: darken($color-pink, 10%);
+        background: -moz-linear-gradient(left, darken($color-pink, 10%) 28%, darken($color-red, 10%) 100%);
+        background: -webkit-gradient(linear, left top, right top, color-stop(28%,darken($color-pink, 10%)), color-stop(100%,darken($color-red, 10%)));
+        background: -webkit-linear-gradient(left, darken($color-pink, 10%) 28%,darken($color-red, 10%) 100%);
+        background: -o-linear-gradient(left, darken($color-pink, 10%) 28%,darken($color-red, 10%) 100%);
+        background: -ms-linear-gradient(left, darken($color-pink, 10%) 28%,darken($color-red, 10%) 100%);
+        background: linear-gradient(to right, darken($color-pink, 10%) 28%,darken($color-red, 10%) 100%);
+        filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='darken($color-pink, 10%)', endColorstr='darken($color-red, 10%)',GradientType=1 );
     }
 }
 
@@ -90,7 +97,15 @@
     filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='$color-orange', endColorstr='$color-red',GradientType=1 );
     color: $color-white;
     &:hover {
-        background-color:darken($color-orange, 10%);
+    background: darken($color-orange, 10%);
+    background: -moz-linear-gradient(left, darken($color-orange, 10%) 28%, darken($color-red, 10%) 100%);
+    background: -webkit-gradient(linear, left top, right top, color-stop(28%,darken($color-orange, 10%)), color-stop(100%,darken($color-red, 10%)));
+    background: -webkit-linear-gradient(left, darken($color-orange, 10%) 28%,darken($color-red, 10%) 100%);
+    background: -o-linear-gradient(left, darken($color-orange, 10%) 28%,darken($color-red, 10%) 100%);
+    background: -ms-linear-gradient(left, darken($color-orange, 10%) 28%,darken($color-red, 10%) 100%);
+    background: linear-gradient(to right, darken($color-orange, 10%) 28%,darken($color-red, 10%) 100%);
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='darken($color-orange, 10%)', endColorstr='darken($color-red, 10%)',GradientType=1 );
+    color: $color-white;
     }
 }
 

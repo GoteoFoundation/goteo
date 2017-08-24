@@ -839,6 +839,12 @@ namespace Goteo\Model {
             return $this->consultants;
         }
 
+        /**
+         * Handy method to know if project is in campaing
+         */
+        public function inCampaign() {
+            return $this->status == self::STATUS_IN_CAMPAIGN;
+        }
 
         /*
          *  Cargamos los datos mínimos de un proyecto: id, name, owner, comment, lang, status, user
