@@ -16,6 +16,8 @@ use Symfony\Component\HttpFoundation\Response;
 use Goteo\Application\Session;
 use Goteo\Application\View;
 use Goteo\Library\Text;
+use Goteo\Application\Message;
+use Goteo\Model\User\Apikey;
 
 class SettingsDashboardController extends \Goteo\Core\Controller {
     protected $user;
@@ -38,7 +40,7 @@ class SettingsDashboardController extends \Goteo\Core\Controller {
         Session::addToSidebarMenu( '<i class="fa fa-user-secret"></i> ' . Text::get('dashboard-menu-profile-access'), '/dashboard/profile/access', 'access');
         Session::addToSidebarMenu( '<i class="fa fa-toggle-on"></i> ' . Text::get('dashboard-menu-profile-preferences'), '/dashboard/profile/preferences', 'preferences');
         Session::addToSidebarMenu( '<i class="fa fa-vcard"></i> ' . Text::get('dashboard-menu-profile-public'), '/dashboard/profile/public', 'public');
-        Session::addToSidebarMenu( '<i class="fa fa-key"></i> ' . Text::get('dashboard-menu-activity-apikey'), '/dashboard/profile/apikey', 'public');
+        Session::addToSidebarMenu( '<i class="fa fa-key"></i> ' . Text::get('dashboard-menu-activity-apikey'), '/dashboard/settings/apikey', 'apikey');
 
 
         View::getEngine()->useData([
@@ -55,6 +57,46 @@ class SettingsDashboardController extends \Goteo\Core\Controller {
     {
         self::createSidebar('index');
         return $this->viewResponse('dashboard/settings');
+    }
+
+    /**
+     * API key
+     */
+    public function apikeyAction(Request $request)
+    {
+        self::createSidebar('apikey');
+
+        $defaults = [
+            'user_id' => $this->user->id,
+            'key' => Apikey::get($this->user->id)
+        ];
+        // Create the form
+        $form = $this->createFormBuilder($defaults)
+            ->add('submit', 'submit', array(
+                'icon_class' => 'fa fa-plus',
+                'label' => 'api-key-generate-new'
+            ))
+            ->getForm();
+
+        $form->handleRequest($request);
+        if ($form->isSubmitted()) {
+            if($form->isValid()) {
+                $defaults['key'] = md5($this->user->id . date('dMYHis'));
+                $apikey = new Apikey($defaults);
+
+                if($apikey->save($errors)) {
+                    // print_r($post);die;
+                    Message::info(Text::get('form-sent-success'));
+                    return $this->redirect();
+                } else {
+                    Message::error(Text::get('form-sent-error', implode(', ',$errors)));
+                }
+
+            } else {
+                Message::error(Text::get('form-has-errors'));
+            }
+        }
+        return $this->viewResponse('dashboard/settings/apikey', $defaults + ['form' => $form->createView()]);
     }
 
 }
