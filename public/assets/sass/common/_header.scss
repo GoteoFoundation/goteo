@@ -175,6 +175,21 @@
 
             }
             li {
+                &:first-child a {
+                    @media (min-width: $breakpoint-sm) {
+                        border-top: none;
+                    }
+                }
+                &.ident {
+                    padding-left: 24px;
+                    a {
+                        border-top: none;
+                        // color: $primary-color;
+                    }
+                }
+                img {
+                    border-radius: 50%;
+                }
                 a {
                     color: $secondary-color;
                     // text-transform: uppercase;
@@ -208,11 +223,6 @@
                         &.icon {
                             background: $primary-color;
                         }
-                    }
-                }
-                &:first-child a {
-                    @media (min-width: $breakpoint-sm) {
-                        border-top: none;
                     }
                 }
             }
