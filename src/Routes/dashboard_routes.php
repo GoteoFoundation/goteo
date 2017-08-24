@@ -159,4 +159,11 @@ $dash->add('dashboard-settings', new Route(
         )
 ));
 
+// Settings
+$dash->add('dashboard-settings-apikey', new Route(
+    '/settings/apikey',
+    array('_controller' => 'Goteo\Controller\Dashboard\SettingsDashboardController::apikeyAction',
+        )
+));
+
 return $dash;

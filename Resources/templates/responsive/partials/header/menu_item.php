@@ -5,8 +5,13 @@
     // print_r($link);
     // print_r($item);
 ?>
-<?php if(is_array($item)): ?>
-    <li<?= ($item['id'] === $this->active ? ' class="active"' : '') ?>>
+<?php
+    if(is_array($item)):
+        $class = $item['class'];
+        if($item['id'] === $this->active) $class .= ' active';
+        $class = trim($class);
+?>
+    <li<?= ( $class ? ' class="' . $class . '"' : '') ?>>
         <?php if(is_array($item['submenu'])): ?>
             <a class="toggle-submenu" href="#" role="button" aria-haspopup="true" aria-expanded="false">
                 <i class="fa fa-angle-left hidden-xs"></i> &nbsp;
@@ -20,7 +25,7 @@
                 <?php endforeach ?>
             </ul>
         <?php else: ?>
-            <a href="<?= $item['link'] ?>" class="<?= $item['class'] ?>"><?= $item['text'] ?></a>
+            <a href="<?= $item['link'] ?>"><?= $item['text'] ?></a>
         <?php endif ?>
     </li>
 <?php else: ?>

@@ -191,6 +191,7 @@ regular-message-clipboard-fail: 'Selecciona y copia este enlace'
 regular-load-more: 'Cargar más'
 regular-analytics: 'Google Analytics'
 regular-facebook-pixel: 'Facebook Pixel'
+regular-call: Matchfunding
 session-about-to-expire: 'Tu sesión expirará en 10 minutos. ¿Quieres recargar la página para renovarla?'
 session-expired: 'Tu sesión en goteo ha expirado!'
 spread-about: 'Texto spread-about'
