@@ -156,7 +156,7 @@ class SessionListener extends AbstractListener {
         Session::store('currency', $currency); // depending on request
 
         // Default menus
-        Session::addToMainMenu(Text::get('regular-header-about'), '/about', 'about');
+        Session::addToMainMenu('<i class="icon icon-drop"></i> ' . Text::get('regular-header-about'), '/about', 'about');
         Session::addToMainMenu('<i class="fa fa-search"></i> ' . Text::get('regular-discover'), '/discover', 'discover');
         Session::addToMainMenu('<i class="fa fa-question-circle"></i> ' . Text::get('regular-faq'), '/faq', 'faq', 99);
 
@@ -174,7 +174,7 @@ class SessionListener extends AbstractListener {
             if($id === $currency) continue;
             $currencies['?currency=' . $id] = $c['html'] . ' ' .$c['name'];
         }
-        Session::addToMainMenu(Currency::get($currency, 'html') . ' ' . Currency::get($currency, 'name'), $currencies, 'currencies');
+        Session::addToMainMenu('<i>' . Currency::get($currency, 'html') . '</i> ' . Currency::get($currency, 'name'), $currencies, 'currencies');
 
         // Minimal User menu
         Session::addToUserMenu('<i class="icon icon-activity"></i> ' . Text::get('dashboard-menu-activity'), '/dashboard/activity', 'dashboard-activity');

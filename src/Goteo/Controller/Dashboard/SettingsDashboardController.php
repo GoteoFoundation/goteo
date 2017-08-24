@@ -32,7 +32,7 @@ class SettingsDashboardController extends \Goteo\Core\Controller {
 
     static function createSidebar($zone = '') {
         // Create sidebar menu
-        Session::addToSidebarMenu( '<i class="fa fa-user-circle-o"></i> ' . Text::get('dashboard-menu-profile-profile'), '/dashboard/profile/profile', 'profile');
+        Session::addToSidebarMenu( '<i class="icon icon-user"></i> ' . Text::get('dashboard-menu-profile-profile'), '/dashboard/profile/profile', 'profile');
         Session::addToSidebarMenu( '<i class="fa fa-legal"></i> ' . Text::get('dashboard-menu-profile-personal'), '/dashboard/profile/personal', 'personal');
         Session::addToSidebarMenu( '<i class="fa fa-location-arrow"></i> ' . Text::get('dashboard-menu-profile-location'), '/dashboard/profile/location', 'location');
         Session::addToSidebarMenu( '<i class="fa fa-user-secret"></i> ' . Text::get('dashboard-menu-profile-access'), '/dashboard/profile/access', 'access');
