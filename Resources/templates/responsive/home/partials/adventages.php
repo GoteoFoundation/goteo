@@ -117,23 +117,23 @@
             <div class="tab-pane adventages-container owner" id="tab-owner">
             	<div class="container">
                 	<div class="row details">
-                		<div class="col-md-3 adventage">
-                			<div class="title">
-                                <img src="/assets/img/home/calculadora.png" >
+                        <div class="col-md-3 adventage">
+                            <div class="title">
+                                <img src="/assets/img/home/fee.png" >
                                 <span class="text">                             
-                                    <?= $this->text('home-adventages-calculator-title') ?>
+                                <?= $this->text('home-adventages-fee-title') ?>
                                 </span>
                             </div>
                             <div class="description">
-                                <?= $this->text('home-adventages-calculator-description') ?>
+                                <?= $this->text('home-adventages-fee-description') ?>
                             </div>
                             <div class="action">
                                 <a href="/calculadora-fiscal" >
-                                    <?= $this->text('home-adventages-calculator-action') ?>
+                                    <?= $this->text('home-adventages-regular-action') ?>
                                     <span class="icon glyphicon glyphicon glyphicon-menu-right" aria-hidden="true"></span>
                                 </a>
                             </div>
-                		</div>
+                        </div>
                 		<div class="col-md-3 adventage">
                 			<div class="title">
                 				<img src="/assets/img/home/calendar.png" >
@@ -151,23 +151,23 @@
                 				</a>
                 			</div>
                 		</div>
-                		<div class="col-md-3 adventage">
-                			<div class="title">
-                				<img src="/assets/img/home/fee.png" >
-                				<span class="text">                				
-                				<?= $this->text('home-adventages-fee-title') ?>
-                				</span>
-                			</div>
-                			<div class="description">
-                				<?= $this->text('home-adventages-fee-description') ?>
-                			</div>
-                			<div class="action">
-                				<a href="/calculadora-fiscal" >
-	                				<?= $this->text('home-adventages-regular-action') ?>
-	                				<span class="icon glyphicon glyphicon glyphicon-menu-right" aria-hidden="true"></span>
-                				</a>
-                			</div>
-                		</div>
+                        <div class="col-md-3 adventage">
+                            <div class="title">
+                                <img src="/assets/img/home/calculadora.png" >
+                                <span class="text">                             
+                                    <?= $this->text('home-adventages-calculator-owner-title') ?>
+                                </span>
+                            </div>
+                            <div class="description">
+                                <?= $this->text('home-adventages-calculator-owner-description') ?>
+                            </div>
+                            <div class="action">
+                                <a href="/calculadora-fiscal" >
+                                    <?= $this->text('home-adventages-calculator-owner-action') ?>
+                                    <span class="icon glyphicon glyphicon glyphicon-menu-right" aria-hidden="true"></span>
+                                </a>
+                            </div>
+                        </div>
                 		<div class="col-md-3 adventage">
                 			<div class="title">
                 				<img src="/assets/img/home/matchfunding.png" >
