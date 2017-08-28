@@ -66,6 +66,11 @@ class Currency {
         return self::get(Session::get('currency'), $method);
     }
 
+    static public function listAll($method = 'array') {
+        if($method === 'array') return static::$currencies;
+        return array_column(static::$currencies, $method, 'id');
+    }
+
     // Return a currency from the array of currencies
     static public function get($cur = '', $method = 'array') {
         if(!array_key_exists($cur, self::$currencies)) {

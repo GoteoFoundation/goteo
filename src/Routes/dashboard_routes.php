@@ -160,6 +160,13 @@ $dash->add('dashboard-settings', new Route(
 ));
 
 // Settings
+$dash->add('dashboard-settings-preferences', new Route(
+    '/settings/preferences',
+    array('_controller' => 'Goteo\Controller\Dashboard\SettingsDashboardController::preferencesAction',
+        )
+));
+
+// Settings
 $dash->add('dashboard-settings-apikey', new Route(
     '/settings/apikey',
     array('_controller' => 'Goteo\Controller\Dashboard\SettingsDashboardController::apikeyAction',
