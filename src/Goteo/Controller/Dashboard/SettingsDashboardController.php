@@ -16,8 +16,11 @@ use Symfony\Component\HttpFoundation\Response;
 use Goteo\Application\Session;
 use Goteo\Application\View;
 use Goteo\Library\Text;
+use Goteo\Library\Currency;
 use Goteo\Application\Message;
 use Goteo\Model\User\Apikey;
+use Goteo\Model\User;
+use Goteo\Application\Lang;
 
 class SettingsDashboardController extends \Goteo\Core\Controller {
     protected $user;
@@ -38,7 +41,7 @@ class SettingsDashboardController extends \Goteo\Core\Controller {
         Session::addToSidebarMenu( '<i class="fa fa-legal"></i> ' . Text::get('dashboard-menu-profile-personal'), '/dashboard/profile/personal', 'personal');
         Session::addToSidebarMenu( '<i class="fa fa-location-arrow"></i> ' . Text::get('dashboard-menu-profile-location'), '/dashboard/profile/location', 'location');
         Session::addToSidebarMenu( '<i class="fa fa-user-secret"></i> ' . Text::get('dashboard-menu-profile-access'), '/dashboard/profile/access', 'access');
-        Session::addToSidebarMenu( '<i class="fa fa-toggle-on"></i> ' . Text::get('dashboard-menu-profile-preferences'), '/dashboard/profile/preferences', 'preferences');
+        Session::addToSidebarMenu( '<i class="fa fa-toggle-on"></i> ' . Text::get('dashboard-menu-profile-preferences'), '/dashboard/settings/preferences', 'preferences');
         Session::addToSidebarMenu( '<i class="fa fa-vcard"></i> ' . Text::get('dashboard-menu-profile-public'), '/dashboard/profile/public', 'public');
         Session::addToSidebarMenu( '<i class="fa fa-key"></i> ' . Text::get('dashboard-menu-activity-apikey'), '/dashboard/settings/apikey', 'apikey');
 
@@ -60,6 +63,69 @@ class SettingsDashboardController extends \Goteo\Core\Controller {
     }
 
     /**
+     * Settings
+     */
+    public function preferencesAction(Request $request)
+    {
+        self::createSidebar('preferences');
+
+        $defaults = (array)User::getPreferences($this->user);
+        $bools = ['updates', 'threads', 'rounds', 'mailing', 'email', 'tips'];
+        foreach($bools as $b) {
+            $defaults[$b] = (bool) $defaults[$b];
+        }
+
+        // Create the form
+        $builder = $this->createFormBuilder($defaults)
+            ->add('comlang', 'choice', [
+                'label' => 'user-preferences-comlang',
+                'choices' => Lang::listAll()
+            ]);
+
+        $currencies = Currency::listAll('name');
+        if(count($currencies) > 1) {
+            $builder->add('currency', 'choice', [
+                'label' => 'user-preferences-currency',
+                'choices' => $currencies
+            ]);
+        }
+
+
+        foreach($bools as $b) {
+            $builder
+                ->add($b, 'boolean', [
+                    'label' => 'user-preferences-' . $b,
+                    'color' => 'cyan',
+                    'required' => false
+                ]);
+        }
+
+        $form = $builder->add('submit', 'submit', [
+                // 'icon_class' => 'fa fa-plus',
+            ])->getForm();
+
+        $form->handleRequest($request);
+        if ($form->isSubmitted()) {
+            if($form->isValid()) {
+                $data = $form->getData();
+                // var_dump($data);die;
+
+                if (User::setPreferences($this->user, $data, $errors)) {
+                    Session::store('currency', $data['currency']);
+                    Message::info(Text::get('user-prefer-saved'));
+                    return $this->redirect('/dashboard/settings/preferences');
+                } else {
+                    Message::error(Text::get('form-sent-error', implode(', ',$errors)));
+                }
+            }
+        }
+        return $this->viewResponse('dashboard/settings/preferences', [
+            'form' => $form->createView()
+        ]);
+    }
+
+
+    /**
      * API key
      */
     public function apikeyAction(Request $request)
@@ -72,10 +138,10 @@ class SettingsDashboardController extends \Goteo\Core\Controller {
         ];
         // Create the form
         $form = $this->createFormBuilder($defaults)
-            ->add('submit', 'submit', array(
+            ->add('submit', 'submit', [
                 'icon_class' => 'fa fa-plus',
                 'label' => 'api-key-generate-new'
-            ))
+            ])
             ->getForm();
 
         $form->handleRequest($request);

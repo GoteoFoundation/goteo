@@ -1861,11 +1861,14 @@ class User extends \Goteo\Core\Model {
      * @return type booblean
      */
     public static function setPreferences($user, $data = array(), &$errors = array()) {
+        if($user instanceOf User) $user = $user->id;
 
+        $keys = ['updates', 'threads', 'rounds', 'mailing', 'email', 'tips', 'comlang', 'currency'];
         $values = array();
         $set = '';
 
         foreach ($data as $key => $value) {
+            if(!in_array($key, $keys)) continue;
             $values[":$key"] = $value;
             if ($set != '') {
                 $set .= ', ';
