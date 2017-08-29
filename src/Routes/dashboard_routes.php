@@ -159,14 +159,28 @@ $dash->add('dashboard-settings', new Route(
         )
 ));
 
-// Settings
+// Settings (preferences)
 $dash->add('dashboard-settings-preferences', new Route(
     '/settings/preferences',
     array('_controller' => 'Goteo\Controller\Dashboard\SettingsDashboardController::preferencesAction',
         )
 ));
 
-// Settings
+// Settings (personal data)
+$dash->add('dashboard-settings-personal', new Route(
+    '/settings/personal',
+    array('_controller' => 'Goteo\Controller\Dashboard\SettingsDashboardController::personalAction',
+        )
+));
+
+// Settings (access data)
+$dash->add('dashboard-settings-access', new Route(
+    '/settings/access',
+    array('_controller' => 'Goteo\Controller\Dashboard\SettingsDashboardController::accessAction',
+        )
+));
+
+// Settings (API key)
 $dash->add('dashboard-settings-apikey', new Route(
     '/settings/apikey',
     array('_controller' => 'Goteo\Controller\Dashboard\SettingsDashboardController::apikeyAction',

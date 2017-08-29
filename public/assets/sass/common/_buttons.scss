@@ -49,6 +49,7 @@
     color: $color-white;
     &:hover {
         background-color:darken( $color-lilac, 10%);
+        color: $color-white;
     }
     .icon {
         background-color: $color-white;
