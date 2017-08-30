@@ -23,7 +23,7 @@ class CategoriesApiController extends AbstractApiController {
     public function keywordsAction(Request $request) {
         $keywords = array_map(function($el) {
             return ['tag' => $el];
-        }, Category::getKeywords());
+        }, Category::getKeywords($request->query->get('s')));
 
         return $this->jsonResponse($keywords);
     }

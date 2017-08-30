@@ -217,27 +217,25 @@ namespace Goteo\Model {
          * can be of users, projects or  all
          *
          */
-		public static function getKeyWords () {
+		public static function getKeyWords ($search = null, $limit = 50) {
             $array = array ();
             try {
-
-                $sql = "SELECT DISTINCT
-                            keywords
+                $values = null;
+                $sql = "SELECT DISTINCT keywords
                         FROM project
                         WHERE status > 1
                         AND keywords IS NOT NULL
-                        AND keywords != ''
-                        ";
-/*
-                     UNION
-                        SELECT
-                            keywords
-                        FROM user
-                        WHERE keywords IS NOT NULL
-                        AND keywords != ''
-*
- */
-                $query = static::query($sql);
+                        AND keywords != ''";
+
+                if($search) {
+                    $sql .= " AND keywords LIKE ?";
+                    $values = array("%$search%");
+                }
+
+                $sql .= ' LIMIT ' . (int)$limit;
+
+                $query = static::query($sql, $values);
+                // die(\sqldbg($sql, $values));
                 $keywords = $query->fetchAll(\PDO::FETCH_ASSOC);
                 foreach ($keywords as $keyw) {
                     $kw = $keyw['keywords'];
@@ -248,6 +246,7 @@ namespace Goteo\Model {
 
                     foreach ($kwrds as $word) {
                         $tag = strtolower(trim($word));
+                        if($search && stripos($word, $search) === false) continue;
                         if(!in_array($tag, $array))
                             $array[] = $tag;
                     }

@@ -22,11 +22,15 @@
       border-radius: 5px;
       padding: 12px;
       .form-control,
-      .input-group > .input-group-addon {
+      .input-group > .input-group-addon,
+      .bootstrap-tagsinput {
         color: $secondary-color;
         box-shadow: none;
         border-color: $background-white;
         background: $background-white;
+      }
+      .bootstrap-tagsinput {
+        width: 100%;
       }
       .form-control:focus {
         border-color: $color-cyan;

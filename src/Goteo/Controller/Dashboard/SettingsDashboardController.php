@@ -142,7 +142,8 @@ class SettingsDashboardController extends \Goteo\Core\Controller {
             ->add('keywords', 'tags', [
                 'label' => 'profile-field-keywords',
                 'attr' => ['help' => Text::get('tooltip-user-keywords')],
-                'required' => false
+                'required' => false,
+                'url' => '/api/keywords?s=%QUERY'
             ])
             ->add('contribution', 'textarea', [
                 'label' => 'profile-field-contribution',

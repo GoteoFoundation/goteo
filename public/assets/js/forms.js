@@ -151,39 +151,39 @@ $(function(){
             // ,debug: true
         });
 
-    // Tags with autocomplete (optional)
-    tags = new Bloodhound({
-      datumTokenizer: function(datum) {
-        return Bloodhound.tokenizers.whitespace(datum.tag);
-      },
-      // datumTokenizer: Bloodhound.tokenizers.whitespace,
-      queryTokenizer: Bloodhound.tokenizers.whitespace,
-      prefetch: {
-        url: '/api/keywords',
-        cache: false
-        // filter: function(list) {
-        //     console.log('list', list);
-        //     return list;
-        //   // return $.map(list, function(tag) {
-        //   //   return { tag: tag }; });
-        // }
+    $('.autoform .tagsinput').each(function(){
+      // Tags with autocomplete (optional)
+      var $this = $(this);
+      var url = $this.data('url');
+      var ops = { tagClass: 'label label-lilac label-big' };
+      if(url) {
+        var tags = new Bloodhound({
+          datumTokenizer: function(datum) {
+            return Bloodhound.tokenizers.whitespace(datum.tag);
+          },
+          // datumTokenizer: Bloodhound.tokenizers.whitespace,
+          queryTokenizer: Bloodhound.tokenizers.whitespace,
+          remote: {
+            wildcard: '%QUERY',
+            url: url
+          }
+        });
+        tags.initialize();
+        ops.typeaheadjs = [
+          {
+            highlight: true,
+            //other options
+          },
+          {
+            name: 'tags',
+            displayKey: 'tag', //TODO: key/values configurable
+            valueKey: 'tag',
+            source: tags.ttAdapter()
+          }];
+        // console.log('tags', tags, tags.ttAdapter());
       }
-    });
-    tags.initialize();
-    console.log('tags', tags, tags.ttAdapter());
-    $('.autoform .tagsinput').tagsinput({
-      tagClass: 'label label-lilac label-big',
-      typeaheadjs: [
-        {
-          highlight: true,
-          //other options
-        },
-        {
-          name: 'tags',
-          displayKey: 'tag',
-          valueKey: 'tag',
-          source: tags.ttAdapter()
-        }]
+      $this.tagsinput(ops);
+
     });
 
     // Video
