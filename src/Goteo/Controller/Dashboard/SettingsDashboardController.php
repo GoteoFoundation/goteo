@@ -190,7 +190,8 @@ class SettingsDashboardController extends \Goteo\Core\Controller {
             ->add('identica', 'url', [
                 'label' => 'regular-identica',
                 'pre_addon' => '<i class="fa fa-comment-o"></i>',
-                'attr' => ['help' => Text::get('tooltip-user-identica')],
+                'attr' => ['help' => Text::get('tooltip-user-identica'),
+                           'placeholder' => Text::get('regular-identica-url')],
                 'required' => false
             ])
             ->add('submit', 'submit');
