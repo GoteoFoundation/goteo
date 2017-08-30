@@ -121,4 +121,11 @@ $api->add('api-licenses', new Route(
         )
 ));
 
+// Keywords list
+$api->add('api-keywords', new Route(
+    '/keywords',
+    array('_controller' => 'Goteo\Controller\Api\CategoriesApiController::keywordsAction',
+        )
+));
+
 return $api;

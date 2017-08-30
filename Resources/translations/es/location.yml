@@ -5,3 +5,4 @@ dashboard-user-location-located-title: 'Estás correctamente geolocalizado/a'
 dashboard-user-location-unlocate: 'No compartir mi ubicación'
 dashboard-user-location-unlocated-text: "Puede ser debido a que hayas puesto un lugar de residencia extraño, o porque en algún momento denegaste la petición del navegador para ubicar tu posición geográfica.\n\nPara Goteo es un dato importante, ya que nos permite generar información (anónima, sin revelar nunca a terceros tus datos personales) así como indicadores de impacto que hagan más eficaz\r\nnuestro trabajo y el apoyo a proyectos."
 dashboard-user-location-unlocated-title: 'El sistema no ha localizado tu ubicación'
+dashboard-user-location-help: "Tu posición geográfica es para Goteo un dato importante, ya que nos permite generar información (anónima, sin revelar nunca a terceros tus datos personales) así como indicadores de impacto que hagan más eficaz\r\nnuestro trabajo y el apoyo a proyectos."

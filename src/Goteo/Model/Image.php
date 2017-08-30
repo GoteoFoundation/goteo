@@ -65,8 +65,14 @@ class Image extends \Goteo\Core\Model {
      * @param type array	$file	Array $_FILES.
      */
     public function __construct ($file = null, $name = null) {
-
-        if($file instanceOf UploadedFile) {
+        if($file instanceOf Image) {
+            $this->name = $file->name;
+            $this->type = $file->type;
+            $this->tmp = $file->tmp;
+            $this->error = $file->error;
+            $this->size = $file->size;
+        }
+        elseif($file instanceOf UploadedFile) {
             $this->name = $file->getClientOriginalName();
             $this->type = $file->getMimeType();
             $this->tmp = $file->getPathName();

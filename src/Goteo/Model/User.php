@@ -207,8 +207,9 @@ class User extends \Goteo\Core\Model {
                 }
 
                 // Avatar
-                if (is_array($this->user_avatar) && !empty($this->user_avatar['name'])) {
+                if ((is_array($this->user_avatar) && !empty($this->user_avatar['name'])) || ($this->user_avatar instanceOf Image && $this->user_avatar->tmp)) {
                     $image = new Image($this->user_avatar);
+                    // print_r($image);$image->validate($errors);print_r($errors);die;
 
                     if ($image->save($errors)) {
                         $data[':avatar'] = $image->id;

@@ -221,7 +221,7 @@ namespace Goteo\Model {
             $array = array ();
             try {
 
-                $sql = "SELECT
+                $sql = "SELECT DISTINCT
                             keywords
                         FROM project
                         WHERE status > 1
@@ -244,14 +244,16 @@ namespace Goteo\Model {
 //                    $kw = str_replace('|', ',', $keyw['keywords']);
 //                    $kw = str_replace(array(' ','|'), ',', $keyw['keywords']);
 //                    $kw = str_replace(array('-','.'), '', $kw);
-                    $kwrds = explode(',', $kw);
+                    $kwrds = preg_split('/[,;]/', $kw);
 
                     foreach ($kwrds as $word) {
-                        $array[] = strtolower(trim($word));
+                        $tag = strtolower(trim($word));
+                        if(!in_array($tag, $array))
+                            $array[] = $tag;
                     }
                 }
 
-                asort($array);
+                sort($array);
 
                 return $array;
             } catch(\PDOException $e) {

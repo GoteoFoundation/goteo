@@ -154,4 +154,14 @@ button.pink:hover, button.pink:focus, button.custom-green:hover,
 /* same for labels */
 .label-cyan {
     background-color: $color-cyan;
+    color: $color-white;
+}
+.label-lilac {
+    background-color: $color-lilac;
+    color: $color-white;
+}
+.label-big {
+    font-size: $font-size;
+    font-weight: 400;
+    padding: 2px 4px;
 }

@@ -14,12 +14,16 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
 use Goteo\Application\Session;
+use Goteo\Application\Config;
 use Goteo\Application\View;
 use Goteo\Library\Text;
 use Goteo\Library\Check;
 use Goteo\Library\Currency;
 use Goteo\Application\Message;
 use Goteo\Model\User\Apikey;
+use Goteo\Model\User\Interest;
+use Goteo\Model\User\UserLocation;
+use Goteo\Model\User\Web;
 use Goteo\Model\User;
 use Goteo\Application\Lang;
 
@@ -36,20 +40,20 @@ class SettingsDashboardController extends \Goteo\Core\Controller {
     }
 
 
-    static function createSidebar($zone = '') {
+    protected function createSidebar($zone = '') {
         // Create sidebar menu
-        Session::addToSidebarMenu( '<i class="icon icon-user"></i> ' . Text::get('dashboard-menu-profile-profile'), '/dashboard/profile/profile', 'profile');
+        Session::addToSidebarMenu( '<i class="icon icon-user"></i> ' . Text::get('dashboard-menu-profile-profile'), '/dashboard/settings', 'profile');
         Session::addToSidebarMenu( '<i class="fa fa-legal"></i> ' . Text::get('dashboard-menu-profile-personal'), '/dashboard/settings/personal', 'personal');
-        Session::addToSidebarMenu( '<i class="fa fa-location-arrow"></i> ' . Text::get('dashboard-menu-profile-location'), '/dashboard/profile/location', 'location');
+        // Session::addToSidebarMenu( '<i class="fa fa-location-arrow"></i> ' . Text::get('dashboard-menu-profile-location'), '/dashboard/profile/location', 'location');
         Session::addToSidebarMenu( '<i class="fa fa-user-secret"></i> ' . Text::get('dashboard-menu-profile-access'), '/dashboard/settings/access', 'access');
         Session::addToSidebarMenu( '<i class="fa fa-toggle-on"></i> ' . Text::get('dashboard-menu-profile-preferences'), '/dashboard/settings/preferences', 'preferences');
-        Session::addToSidebarMenu( '<i class="fa fa-vcard"></i> ' . Text::get('dashboard-menu-profile-public'), '/dashboard/profile/public', 'public');
         Session::addToSidebarMenu( '<i class="fa fa-key"></i> ' . Text::get('dashboard-menu-activity-apikey'), '/dashboard/settings/apikey', 'apikey');
+        Session::addToSidebarMenu( '<i class="fa fa-vcard"></i> ' . Text::get('dashboard-menu-profile-public'), '/user/profile/' . $this->user->id, 'public');
 
 
         View::getEngine()->useData([
             'zone' => $zone,
-            'sidebarBottom' => [ '/dashboard/settings' => '<i class="fa fa-reply" title="' . Text::get('dashboard-menu-profile') . '"></i> ' . Text::get('dashboard-menu-profile') ]
+            // 'sidebarBottom' => [ '/dashboard/settings' => '<i class="fa fa-reply" title="' . Text::get('dashboard-menu-profile-profile') . '"></i> ' . Text::get('dashboard-menu-profile-profile') ]
         ]);
 
     }
@@ -59,8 +63,192 @@ class SettingsDashboardController extends \Goteo\Core\Controller {
      */
     public function indexAction(Request $request)
     {
-        self::createSidebar('index');
-        return $this->viewResponse('dashboard/settings');
+        $this->user = User::flush();
+        $this->createSidebar('profile');
+        $defaults = (array) $this->user;
+        $defaults['entity_type'] = (bool) $defaults['entity_type'];
+        $defaults['unlocable'] = UserLocation::isUnlocable($this->user->id);
+        $defaults['avatar'] = $this->user->user_avatar ? $this->user->avatar : null;
+        $defaults['webs'] = implode("\n", $this->user->webs);
+
+        $builder = $this->createFormBuilder($defaults)
+            ->add('name', 'text', [
+                'label' => 'profile-field-name'
+            ])
+            ->add('location', 'location', [
+                'label' => 'profile-field-location',
+                'type' => 'user',
+                'required' => false,
+                'pre_addon' => '<i class="fa fa-globe"></i>'
+            ])
+            ->add('unlocable', 'boolean', [
+                'label' => 'dashboard-user-location-unlocate',
+                'attr' => ['help' => Text::get('dashboard-user-location-help')],
+                'required' => false
+            ])
+            ->add('avatar', 'dropfiles', [
+                'label' => 'profile-fields-image-title',
+                'required' => false
+            ])
+            ;
+
+        if ($this->user->roles['vip']) {
+            // TODO: vip avatar
+        }
+
+        $builder
+            ->add('birthyear', 'year', [
+                'label' => 'invest-address-birthyear-field',
+                'required' => false
+            ])
+            ->add('gender', 'choice', [
+                'label' => 'invest-address-gender-field',
+                'choices' => [
+                    'F' => Text::get('regular-female'),
+                    'M' => Text::get('regular-male'),
+                    'X' => Text::get('regular-others')
+                ],
+                'required' => false
+            ])
+            ->add('legal_entity', 'choice', [
+                'label' => 'profile-field-legal-entity',
+                'choices' => [
+                    '0' => Text::get('profile-field-legal-entity-person'),
+                    '1' => Text::get('profile-field-legal-entity-self-employed'),
+                    '2' => Text::get('profile-field-legal-entity-ngo'),
+                    '3' => Text::get('profile-field-legal-entity-company'),
+                    '4' => Text::get('profile-field-legal-entity-cooperative'),
+                    '5' => Text::get('profile-field-legal-entity-asociation'),
+                    '6' => Text::get('profile-field-legal-entity-others')
+                ],
+                'required' => false
+            ])
+            ->add('entity_type', 'boolean', [
+                'label' => 'profile-field-entity-type-checkbox-public',
+                'required' => false
+            ])
+            ->add('about', 'textarea', [
+                'label' => 'profile-field-about',
+                'attr' => ['help' => Text::get('tooltip-user-about')]
+            ])
+            ->add('interests', 'choice', [
+                'multiple' => true,
+                'expanded' => true,
+                'label' => 'profile-field-interests',
+                'attr' => ['help' => Text::get('tooltip-user-interests')],
+                'choices' => Interest::getAll(),
+                'required' => false
+            ])
+            ->add('keywords', 'tags', [
+                'label' => 'profile-field-keywords',
+                'attr' => ['help' => Text::get('tooltip-user-keywords')],
+                'required' => false
+            ])
+            ->add('contribution', 'textarea', [
+                'label' => 'profile-field-contribution',
+                'attr' => ['help' => Text::get('tooltip-user-contribution')],
+                'required' => false
+            ])
+            ->add('webs', 'textarea', [
+                'label' => 'profile-field-websites',
+                'attr' => ['help' => Text::get('tooltip-user-webs')],
+                'required' => false
+            ])
+            ->add('social_title', 'title', [
+                'label' => 'profile-fields-social-title',
+                'required' => false
+            ])
+            ->add('facebook', 'url', [
+                'label' => 'regular-facebook',
+                'pre_addon' => '<i class="fa fa-facebook"></i>',
+                'attr' => ['help' => Text::get('tooltip-user-facebook'),
+                           'placeholder' => Text::get('regular-facebook-url')],
+                'required' => false
+            ])
+            ->add('twitter', 'url', [
+                'label' => 'regular-twitter',
+                'pre_addon' => '<i class="fa fa-twitter"></i>',
+                'attr' => ['help' => Text::get('tooltip-user-twitter'),
+                           'placeholder' => Text::get('regular-twitter-url')],
+                'required' => false
+            ])
+            ->add('google', 'url', [
+                'label' => 'regular-google',
+                'pre_addon' => '<i class="fa fa-google-plus"></i>',
+                'attr' => ['help' => Text::get('tooltip-user-google'),
+                           'placeholder' => Text::get('regular-google-url')],
+                'required' => false
+            ])
+            ->add('linkedin', 'url', [
+                'label' => 'regular-linkedin',
+                'pre_addon' => '<i class="fa fa-linkedin"></i>',
+                'attr' => ['help' => Text::get('tooltip-user-linkedin'),
+                           'placeholder' => Text::get('regular-linkedin-url')],
+                'required' => false
+            ])
+            ->add('identica', 'url', [
+                'label' => 'regular-identica',
+                'pre_addon' => '<i class="fa fa-comment-o"></i>',
+                'attr' => ['help' => Text::get('tooltip-user-identica')],
+                'required' => false
+            ])
+            ->add('submit', 'submit');
+
+        $form = $builder->getForm();
+
+        $form->handleRequest($request);
+        if ($form->isSubmitted()) {
+            if($form->isValid()) {
+                $errors = [];
+                $data = $form->getData();
+                // print_r($data);die;
+
+                // maintain test interest
+                if (in_array('15', $this->user->interests)) $data['interests'][] = '15';
+
+                // Process main image
+                if(is_array($data['avatar'])) {
+                    $data['avatar'] = current($data['avatar']);
+                }
+                $data['user_avatar'] = $data['avatar'];
+                unset($data['avatar']); // do not rebuild data using this
+
+                // Process webs
+                $data['webs'] = array_map(function($el) {
+                        $url = trim($el);
+                        if($url && stripos($url, 'http') !== 0) $url = 'http://' . $url;
+                        return new Web(['url' => $url]);
+                    }, explode("\n", $data['webs']));
+
+                // set locable bit
+                if(isset($data['unlocable'])) {
+                    UserLocation::setProperty($this->user->id, 'locable', !$data['unlocable'], $errors);
+                }
+                $this->user->rebuildData($data);
+                if ($this->user->save($errors)) {
+                    Message::info(Text::get('user-profile-saved'));
+                    // assign translation if no in the default language
+                    if ($this->user->lang != Config::get('lang')) {
+                        // if (!User::isTranslated($this->user->id, $this->user->lang)) {
+                            $this->user->about_lang = $this->user->about;
+                            $this->user->keywords_lang = $this->user->keywords;
+                            $this->user->contribution_lang = $this->user->contribution;
+                            $this->user->saveLang($errors);
+                        // }
+                    }
+                    $this->user = User::flush();
+                    if($errors) {
+                        Message::error(Text::get('form-sent-error', implode(',',array_map('implode',$errors))));
+                    }
+                    return $this->redirect('/dashboard/settings');
+                } else {
+                    Message::error(Text::get('form-sent-error', implode(',',array_map('implode',$errors))));
+                }
+            }
+        }
+        return $this->viewResponse('dashboard/settings', [
+            'form' => $form->createView()
+        ]);
     }
 
     /**
@@ -68,7 +256,7 @@ class SettingsDashboardController extends \Goteo\Core\Controller {
      */
     public function preferencesAction(Request $request)
     {
-        self::createSidebar('preferences');
+        $this->createSidebar('preferences');
 
         $defaults = (array)User::getPreferences($this->user);
         $bools = ['updates', 'threads', 'rounds', 'mailing', 'email', 'tips'];
@@ -130,7 +318,7 @@ class SettingsDashboardController extends \Goteo\Core\Controller {
      */
     public function personalAction(Request $request)
     {
-        self::createSidebar('personal');
+        $this->createSidebar('personal');
 
         $defaults = (array)User::getPersonal($this->user);
 
@@ -160,7 +348,7 @@ class SettingsDashboardController extends \Goteo\Core\Controller {
                 'label' => 'personal-field-location',
                 // 'attr' => ['help' => Text::get('tooltip-project-location')]
             ])
-            ->add('country', 'text', [
+            ->add('country', 'country', [
                 'label' => 'personal-field-country',
                 // 'attr' => ['help' => Text::get('tooltip-project-country')]
             ])
@@ -194,7 +382,7 @@ class SettingsDashboardController extends \Goteo\Core\Controller {
      */
     public function accessAction(Request $request)
     {
-        self::createSidebar('access');
+        $this->createSidebar('access');
 
         // Create the form
         $form1 = $this->createFormBuilder()
@@ -275,7 +463,7 @@ class SettingsDashboardController extends \Goteo\Core\Controller {
             }
         }
         if($errors) {
-            Message::error(Text::get('form-sent-error', implode(', ',$errors)));
+            Message::error(Text::get('form-sent-error', implode(',',array_map('implode',$errors))));
         }
         return $this->viewResponse('dashboard/settings/access', [
             'user_id' => $this->user->id,
@@ -291,7 +479,7 @@ class SettingsDashboardController extends \Goteo\Core\Controller {
      */
     public function apikeyAction(Request $request)
     {
-        self::createSidebar('apikey');
+        $this->createSidebar('apikey');
 
         $defaults = [
             'user_id' => $this->user->id,
