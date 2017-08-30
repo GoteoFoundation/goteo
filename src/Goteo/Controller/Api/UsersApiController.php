@@ -14,6 +14,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Goteo\Application\Exception\ControllerAccessDeniedException;
 
 use Goteo\Model\User;
+use Goteo\Model\Category;
 
 class UsersApiController extends AbstractApiController {
     /**

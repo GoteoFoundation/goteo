@@ -5,6 +5,7 @@ $categories = $this->project->getCategories();
 // $social_rewards = $this->project->getSocialRewards();
 $social = $this->project->getSocialCommitment();
 $link = $this->link ? $this->link : '/project/' . $this->project->id;
+if($this->admin && !$this->link) $link = '/dashboard' . $link;
 $tagmark = $this->project->getTagmark();
 $call = $this->project->getCall();
 

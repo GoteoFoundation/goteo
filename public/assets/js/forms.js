@@ -143,6 +143,48 @@ $(function(){
         //         _activate_calendar();
         //         $('#publishing-date').val(e.date.format('YYYY/MM/DD'));
         // });
+    // Year only datepickers
+    $('.autoform .datepicker-year, .autoform .datepicker-year > input').datetimepicker({
+            format: 'YYYY',
+            locale: goteo.locale,
+            viewMode: 'years'
+            // ,debug: true
+        });
+
+    $('.autoform .tagsinput').each(function(){
+      // Tags with autocomplete (optional)
+      var $this = $(this);
+      var url = $this.data('url');
+      var ops = { tagClass: 'label label-lilac label-big' };
+      if(url) {
+        var tags = new Bloodhound({
+          datumTokenizer: function(datum) {
+            return Bloodhound.tokenizers.whitespace(datum.tag);
+          },
+          // datumTokenizer: Bloodhound.tokenizers.whitespace,
+          queryTokenizer: Bloodhound.tokenizers.whitespace,
+          remote: {
+            wildcard: '%QUERY',
+            url: url
+          }
+        });
+        tags.initialize();
+        ops.typeaheadjs = [
+          {
+            highlight: true,
+            //other options
+          },
+          {
+            name: 'tags',
+            displayKey: 'tag', //TODO: key/values configurable
+            valueKey: 'tag',
+            source: tags.ttAdapter()
+          }];
+        // console.log('tags', tags, tags.ttAdapter());
+      }
+      $this.tagsinput(ops);
+
+    });
 
     // Video
     var _addVideo = function(e) {

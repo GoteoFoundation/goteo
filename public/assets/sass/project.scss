@@ -311,12 +311,14 @@ img.tags {
   margin-right: 7px;
 }
 
-.tag {
-  color: $color-dark !important;
-  font-weight: bold;
-  font-size: 14px;
-  text-decoration: underline;
-  text-decoration-color: #a6a6a6;
+.tags-location {
+    .tag {
+      color: $color-dark !important;
+      font-weight: bold;
+      font-size: 14px;
+      text-decoration: underline;
+      text-decoration-color: #a6a6a6;
+    }
 }
 
 div.location-container {

@@ -207,8 +207,9 @@ class User extends \Goteo\Core\Model {
                 }
 
                 // Avatar
-                if (is_array($this->user_avatar) && !empty($this->user_avatar['name'])) {
+                if ((is_array($this->user_avatar) && !empty($this->user_avatar['name'])) || ($this->user_avatar instanceOf Image && $this->user_avatar->tmp)) {
                     $image = new Image($this->user_avatar);
+                    // print_r($image);$image->validate($errors);print_r($errors);die;
 
                     if ($image->save($errors)) {
                         $data[':avatar'] = $image->id;
@@ -1735,7 +1736,9 @@ class User extends \Goteo\Core\Model {
      *
      * @return type array
      */
-    public static function getPersonal($id) {
+    public static function getPersonal($user) {
+        if($user instanceOf User) $user = $user->id;
+
         $query = self::query('SELECT
                                   contract_name,
                                   contract_name AS name,
@@ -1748,7 +1751,7 @@ class User extends \Goteo\Core\Model {
                                   country
                               FROM user_personal
                               WHERE user = ?'
-            , array($id));
+            , array($user));
 
         $data = $query->fetchObject();
 
@@ -1768,6 +1771,7 @@ class User extends \Goteo\Core\Model {
      * @return type booblean
      */
     public static function setPersonal($user, $data = array(), $force = false, &$errors = array()) {
+        if($user instanceOf User) $user = $user->id;
 
         if ($force) {
             // actualizamos los datos

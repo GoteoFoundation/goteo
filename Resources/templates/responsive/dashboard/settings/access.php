@@ -1,0 +1,69 @@
+<?php $this->layout('dashboard/layout') ?>
+
+<?php $this->section('dashboard-content') ?>
+
+<div class="dashboard-content">
+  <div class="inner-container">
+
+    <h1><?= $this->text('dashboard-menu-profile-access')?></h1>
+    <p><?= $this->text('guide-dashboard-user-access') ?></p>
+
+    <div class="panel section-content spacer">
+
+        <h5><i class="fa fa-user"></i> <?= $this->text('login-access-username-field') ?></h5>
+        <div class="panel-body">
+            <?= $this->user_id ?>
+        </div>
+
+        <h5 class="spacer-20"><i class="fa fa-envelope"></i> <?= $this->text('login-register-email-field') ?></h5>
+        <div class="panel-body">
+            <?= $this->user_email ?>
+        </div>
+
+
+        <div class="spacer-20 forms">
+            <p class="buttons">
+                <button class="show-form btn btn-cyan btn-lg" data-target="#form1"><i class="fa fa-envelope-o"></i> <?= $this->text('user-changeemail-title') ?></button>
+                <button class="show-form btn btn-cyan btn-lg" data-target="#form2"><i class="fa fa-key"></i> <?= $this->text('user-changepass-title') ?></button>
+            </p>
+
+            <blockquote id="form1" class="hidden">
+                <?= $this->form_form($this->raw('form1')) ?>
+                <button class="pull-right-form hide-form btn btn-default btn-lg" data-target="#form1"><i class="fa fa-ban"></i> <?= $this->text('regular-cancel') ?></button>
+            </blockquote>
+
+            <blockquote id="form2" class="hidden">
+                <?= $this->form_form($this->raw('form2')) ?>
+                <button class="pull-right-form hide-form btn btn-default btn-lg" data-target="#form2"><i class="fa fa-ban"></i> <?= $this->text('regular-cancel') ?></button>
+            </blockquote>
+        </div>
+
+    </div>
+
+  </div>
+</div>
+
+<?php $this->replace() ?>
+
+<?php $this->section('footer') ?>
+<script type="text/javascript">
+    $(function(){
+        $('.show-form').on('click', function(e){
+            e.preventDefault();
+            var $form = $($(this).data('target'));
+            var $btns = $('.buttons');
+            $btns.addClass('hidden');
+            $form.removeClass('hidden').animateCss('fadeInRight');
+        });
+        $('.hide-form').on('click', function(e){
+            e.preventDefault();
+            var $form = $($(this).data('target'));
+            var $btns = $('.buttons');
+            $form.animateCss('fadeOutRight', function() {
+                $form.addClass('hidden');
+                $btns.removeClass('hidden');
+            });
+        });
+    });
+</script>
+<?php $this->append() ?>

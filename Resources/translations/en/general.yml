@@ -187,5 +187,6 @@ validate-project-total-costs: 'The optimal cost cannot exceed the minimum cost b
 regular-female: Female
 regular-here: here
 regular-male: Male
+regular-others: Others
 regular-matchfunding: 'Match funding'
 user-promoter: "The promoter"

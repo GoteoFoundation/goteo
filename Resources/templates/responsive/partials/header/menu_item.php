@@ -25,7 +25,7 @@
                 <?php endforeach ?>
             </ul>
         <?php else: ?>
-            <a href="<?= $item['link'] ?>"><?= $item['text'] ?></a>
+            <a href="<?= $item['link'] ?>"<?= $item['a_class'] ? ' class="' . $item['a_class'] .'"' : '' ?>><?= $item['text'] ?></a>
         <?php endif ?>
     </li>
 <?php else: ?>

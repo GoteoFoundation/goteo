@@ -24,7 +24,7 @@
     </div>
 
     <div class="top-menu" id="main-menu">
-      <?= $this->supply('global-main-menu', $this->insert('partials/header/menu', ['target' => 'main-menu', 'menu' => $this->get_main_menu(), 'bottom' => [['link' => '/project/create', 'class' => 'btn-fashion', 'text' => $this->text('regular-create')] ]])) ?>
+      <?= $this->supply('global-main-menu', $this->insert('partials/header/menu', ['target' => 'main-menu', 'menu' => $this->get_main_menu(), 'bottom' => [['link' => '/project/create', 'a_class' => 'btn-fashion', 'text' => $this->text('regular-create')] ]])) ?>
     </div>
 
   </div><!--/.container -->
