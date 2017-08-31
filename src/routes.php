@@ -57,6 +57,11 @@ $project_routes = include __DIR__ . '/Routes/project_routes.php';
 $project_routes->addPrefix('/project');
 $routes->addCollection($project_routes);
 
+// Widgets
+$project_routes = include __DIR__ . '/Routes/widget_routes.php';
+$project_routes->addPrefix('/widget');
+$routes->addCollection($project_routes);
+
 // Auth routes (no prefix)
 $auth_routes = include __DIR__ . '/Routes/auth_routes.php';
 $routes->addCollection($auth_routes);

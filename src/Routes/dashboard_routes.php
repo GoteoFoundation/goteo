@@ -63,11 +63,17 @@ $dash->add('dashboard-project-summary', new Route(
     array('_controller' => 'Goteo\Controller\Dashboard\ProjectDashboardController::summaryAction',
         )
 ));
-// Route from menu
+// Old Route from menu
 $dash->add('dashboard-project-summary-redirect', new Route(
     '/projects/summary',
     array('_controller' => 'Goteo\Controller\Dashboard\ProjectDashboardController::summaryAction',
         'pid' => null
+        )
+));
+// Redirect if no summary
+$dash->add('dashboard-project-summary-redirect', new Route(
+    '/project/{pid}',
+    array('_controller' => 'Goteo\Controller\Dashboard\ProjectDashboardController::summaryAction'
         )
 ));
 // Route from menu
@@ -102,6 +108,13 @@ $dash->add('dashboard-project-updates-redirect', new Route(
     '/projects/updates',
     array('_controller' => 'Goteo\Controller\Dashboard\ProjectDashboardController::updatesAction',
         'pid' => null
+        )
+));
+// New update
+$dash->add('dashboard-project-updates-new', new Route(
+    '/project/{pid}/updates/_',
+    array('_controller' => 'Goteo\Controller\Dashboard\ProjectDashboardController::updatesEditAction',
+        'uid' => null
         )
 ));
 // Edit update
@@ -143,6 +156,34 @@ $dash->add('dashboard-project-materials-redirect', new Route(
 $dash->add('dashboard-settings', new Route(
     '/settings',
     array('_controller' => 'Goteo\Controller\Dashboard\SettingsDashboardController::indexAction',
+        )
+));
+
+// Settings (preferences)
+$dash->add('dashboard-settings-preferences', new Route(
+    '/settings/preferences',
+    array('_controller' => 'Goteo\Controller\Dashboard\SettingsDashboardController::preferencesAction',
+        )
+));
+
+// Settings (personal data)
+$dash->add('dashboard-settings-personal', new Route(
+    '/settings/personal',
+    array('_controller' => 'Goteo\Controller\Dashboard\SettingsDashboardController::personalAction',
+        )
+));
+
+// Settings (access data)
+$dash->add('dashboard-settings-access', new Route(
+    '/settings/access',
+    array('_controller' => 'Goteo\Controller\Dashboard\SettingsDashboardController::accessAction',
+        )
+));
+
+// Settings (API key)
+$dash->add('dashboard-settings-apikey', new Route(
+    '/settings/apikey',
+    array('_controller' => 'Goteo\Controller\Dashboard\SettingsDashboardController::apikeyAction',
         )
 ));
 

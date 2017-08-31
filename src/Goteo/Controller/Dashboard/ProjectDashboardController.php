@@ -45,22 +45,22 @@ class ProjectDashboardController extends \Goteo\Core\Controller {
         if(!$project->userCanEdit($user)) return;
 
         // Create sidebar menu
-        Session::addToSidebarMenu('<i class="fa fa-bar-chart"></i> ' . Text::get('dashboard-menu-activity-summary'), '/dashboard/project/' . $project->id .'/summary', 'summary');
-        Session::addToSidebarMenu('<i class="fa fa-eye"></i> ' . Text::get('regular-preview'), '/project/' . $project->id, 'preview');
-        Session::addToSidebarMenu('<i class="fa fa-edit"></i> ' . Text::get('regular-edit'), '/project/edit/' . $project->id, 'edit');
-        Session::addToSidebarMenu('<i class="fa fa-image"></i> ' . Text::get('images-main-header'), '/dashboard/project/' . $project->id .'/images', 'images');
-        Session::addToSidebarMenu('<i class="fa fa-file-text"></i> ' . Text::get('dashboard-menu-projects-updates'), '/dashboard/project/' . $project->id .'/updates', 'updates');
-        Session::addToSidebarMenu('<i class="fa fa-group"></i> ' . Text::get('dashboard-menu-projects-supports'), '/dashboard/projects/supports/select?project=' . $project->id , 'supports');
-        Session::addToSidebarMenu('<i class="fa fa-user"></i> ' . Text::get('dashboard-menu-projects-rewards'), '/dashboard/projects/rewards/select?project=' . $project->id, 'rewards');
-        Session::addToSidebarMenu('<i class="fa fa-comments"></i> ' . Text::get('dashboard-menu-projects-messegers'), '/dashboard/projects/messengers/select?project=' . $project->id, 'comments');
-        Session::addToSidebarMenu('<i class="fa fa-pie-chart"></i> ' . Text::get('dashboard-menu-projects-analytics'), '/dashboard/project/' . $project->id . '/analytics', 'analytics');
-        Session::addToSidebarMenu('<i class="fa fa-beer"></i> ' . Text::get('project-share-materials'), '/dashboard/project/' . $project->id .'/materials', 'materials');
+        Session::addToSidebarMenu('<i class="icon icon-2x icon-summary"></i> ' . Text::get('dashboard-menu-activity-summary'), '/dashboard/project/' . $project->id .'/summary', 'summary');
+        Session::addToSidebarMenu('<i class="icon icon-2x icon-preview"></i> ' . Text::get('regular-preview'), '/project/' . $project->id, 'preview');
+        Session::addToSidebarMenu('<i class="icon icon-2x icon-edit"></i> ' . Text::get('regular-edit'), '/project/edit/' . $project->id, 'edit');
+        Session::addToSidebarMenu('<i class="icon icon-2x icon-images"></i> ' . Text::get('images-main-header'), '/dashboard/project/' . $project->id .'/images', 'images');
+        Session::addToSidebarMenu('<i class="icon icon-2x icon-updates"></i> ' . Text::get('dashboard-menu-projects-updates'), '/dashboard/project/' . $project->id .'/updates', 'updates');
+        Session::addToSidebarMenu('<i class="icon icon-2x icon-supports"></i> ' . Text::get('dashboard-menu-projects-supports'), '/dashboard/projects/supports/select?project=' . $project->id , 'supports');
+        Session::addToSidebarMenu('<i class="icon icon-2x icon-donors"></i> ' . Text::get('dashboard-menu-projects-rewards'), '/dashboard/projects/rewards/select?project=' . $project->id, 'rewards');
+        Session::addToSidebarMenu('<i class="icon icon-2x icon-partners"></i> ' . Text::get('dashboard-menu-projects-messegers'), '/dashboard/projects/messengers/select?project=' . $project->id, 'comments');
+        Session::addToSidebarMenu('<i class="icon icon-2x icon-analytics"></i> ' . Text::get('dashboard-menu-projects-analytics'), '/dashboard/project/' . $project->id . '/analytics', 'analytics');
+        Session::addToSidebarMenu('<i class="icon icon-2x icon-shared"></i> ' . Text::get('project-share-materials'), '/dashboard/project/' . $project->id .'/materials', 'materials');
 
         View::getEngine()->useData([
             'project' => $project,
             'admin' => $project->userCanEdit($user),
             'zone' => $zone,
-            'sidebarBottom' => [ '/dashboard/projects' => '<i class="fa fa-reply" title="' . Text::get('profile-my_projects-header') . '"></i> ' . Text::get('profile-my_projects-header') ]
+            'sidebarBottom' => [ '/dashboard/projects' => '<i class="icon icon-3x icon-back" title="' . Text::get('profile-my_projects-header') . '"></i> ' . Text::get('profile-my_projects-header') ]
         ]);
 
     }
@@ -158,7 +158,6 @@ class ProjectDashboardController extends \Goteo\Core\Controller {
         $offset = $limit * (int)$request->query->get('pag');
         if ($project->status < 3) {
             $msg = Text::get('dashboard-project-blog-wrongstatus');
-            Message::error($msg);
             // return $this->redirect('/dashboard/projects/summary');
         } else {
             $blog = Blog::get($project->id);
@@ -181,14 +180,26 @@ class ProjectDashboardController extends \Goteo\Core\Controller {
             ]);
     }
 
-    public function updatesEditAction($pid, $uid, Request $request)
+    public function updatesEditAction($pid, $uid = null, Request $request)
     {
-        // View::setTheme('default');
         $project = $this->validateProject($pid, 'updates');
         if($project instanceOf Response) return $project;
 
         $post = BlogPost::get($uid);
-        if(!$post) throw new ModelNotFoundException();
+        // if(!$post) throw new ModelNotFoundException();
+        if(!$post) {
+            $blog = Blog::get($project->id);
+            if(!$blog instanceOf Blog) throw new ModelException("Blog not found for project [{$project->id}]");
+            $post = new BlogPost([
+                'blog' => $blog->id,
+                'date' => date('Y-m-d'),
+                'publish' => false,
+                'allow' => true
+            ]);
+        } elseif($post->owner_id !== $project->id) {
+            throw new ModelNotFoundException("Non matching update for project [{$project->id}]");
+        }
+
 
         $defaults = (array)$post;
         $defaults['date'] = new \Datetime($defaults['date']); // TODO: into the transformer datepickertype
@@ -198,17 +209,15 @@ class ProjectDashboardController extends \Goteo\Core\Controller {
         // Create the form
         $form = $this->createFormBuilder($defaults)
             ->add('title', 'text', array(
-                'required' => false,
+                'label' => 'regular-title',
                 'constraints' => array(
-                        new Constraints\NotBlank(),
-                        new Constraints\Length(array('min' => 4)),
-                    ),
+                    new Constraints\NotBlank(),
+                    new Constraints\Length(array('min' => 4)),
+                ),
             ))
             ->add('date', 'datepicker', array(
-                'constraints' => array(
-                        new Constraints\NotBlank(),
-                        // new Length(array('min' => 4)),
-                    ),
+                'label' => 'regular-date',
+                'constraints' => array(new Constraints\NotBlank()),
             ))
             // saving images will add that images to the gallery
             // let's show the gallery in the field with nice options
@@ -216,6 +225,10 @@ class ProjectDashboardController extends \Goteo\Core\Controller {
             ->add('image', 'dropfiles', array(
                 'required' => false,
                 'data' => $defaults['gallery'],
+                'label' => 'regular-images',
+                'markdown_link' => 'text',
+                'accepted_files' => 'image/jpeg,image/gif,image/png',
+                'url' => '/api/projects/' . $project->id . '/images',
                 'constraints' => array(
                     new Constraints\Count(array('max' => 10)),
                     new Constraints\All(array(
@@ -231,12 +244,12 @@ class ProjectDashboardController extends \Goteo\Core\Controller {
             //     'required' => false
             // ))
             ->add('text', 'markdown', array(
-                'constraints' => array(
-                        new Constraints\NotBlank(),
-                        // new Length(array('min' => 4)),
-                    ),
+                'label' => 'regular-text',
+                'required' => false,
+                // 'constraints' => array(new Constraints\NotBlank()),
             ))
-            ->add('video', 'text', array(
+            ->add('media', 'media', array(
+                'label' => 'regular-media',
                 'required' => false
             ))
             ->add('allow', 'boolean', array(
@@ -245,10 +258,11 @@ class ProjectDashboardController extends \Goteo\Core\Controller {
             ))
             ->add('publish', 'boolean', array(
                 'required' => false,
-                'label' => 'blog-publish', // Form has integrated translations
-                'color' => 'success', // bootstrap label-* (default, success, ...)
+                'label' => 'blog-published', // Form has integrated translations
+                'color' => 'cyan', // bootstrap label-* (default, success, ...)
             ))
             ->add('submit', 'submit', array(
+                // 'icon_class' => null
             ))
             ->getForm();
 
@@ -256,11 +270,11 @@ class ProjectDashboardController extends \Goteo\Core\Controller {
         $form->handleRequest($request);
         if ($form->isSubmitted()) {
             if($form->isValid()) {
-                print_r($_FILES);
+                // print_r($_FILES);
                 // var_dump($request->request->all());
                 $data = $form->getData();
                 $post->rebuildData($data);
-                var_dump($data);die;
+                // var_dump($data);die;
                 if($post->save($errors)) {
                     // print_r($post);die;
                     Message::info(Text::get('form-sent-success'));
@@ -288,19 +302,51 @@ class ProjectDashboardController extends \Goteo\Core\Controller {
         $project = $this->validateProject($pid, 'analytics');
         if($project instanceOf Response) return $project;
 
-        if($request->isMethod('post')) {
-            $project->analytics_id = $request->request->get('analytics_id');
-            $project->facebook_pixel= $request->request->get('facebook_pixel');
+        // if($request->isMethod('post')) {
+        //     $project->analytics_id = $request->request->get('analytics_id');
+        //     $project->facebook_pixel= $request->request->get('facebook_pixel');
 
-            if ($project->save($errors))
-                Message::info(Text::get('dashboard-project-analytics-ok'));
-            else
-                Message::error(Text::get('dashboard-project-analytics-fail'));
+        //     if ($project->save($errors))
+        //         Message::info(Text::get('dashboard-project-analytics-ok'));
+        //     else
+        //         Message::error(Text::get('dashboard-project-analytics-fail'));
 
+        // }
+
+        $defaults = (array) $project;
+        $form = $this->createFormBuilder($defaults)
+            ->add('analytics_id', 'text', array(
+                'label' => 'regular-analytics',
+                'required' => false,
+                'attr' => ['help' => Text::get('help-user-analytics')],
+            ))
+            ->add('facebook_pixel', 'text', array(
+                'label' => 'regular-facebook-pixel',
+                'required' => false,
+                'attr' => ['help' => Text::get('help-user-facebook-pixel')],
+            ))
+            ->add('submit', 'submit', array(
+                // 'icon_class' => null
+            ))
+            ->getForm();
+        $form->handleRequest($request);
+        if ($form->isSubmitted()) {
+            if($form->isValid()) {
+                $data = $form->getData();
+                $project->rebuildData($data);
+                if($project->save($errors)) {
+                    // print_r($post);die;
+                    Message::info(Text::get('dashboard-project-analytics-ok'));
+                    return $this->redirect('/dashboard/project/' . $this->project->id .'/analytics');
+                } else {
+                    Message::error(Text::get('form-sent-error', implode(', ',$errors)));
+                }
+
+            } else {
+                Message::error(Text::get('form-has-errors'));
+            }
         }
-        // die("$pid {$project->id} {$project->name}");
-
-        return $this->viewResponse('dashboard/project/analytics');
+        return $this->viewResponse('dashboard/project/analytics', ['form' => $form->createView()]);
 
     }
 

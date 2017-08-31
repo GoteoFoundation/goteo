@@ -52,6 +52,7 @@ horizontal-project-percent: financiado
 horizontal-project-reached: conseguido
 invest-individual-header: 'Pots renunciar a rebre recompenses per la teva aportació, o seleccionar les que igualin o estiguin per sota de l''import que hagis introduït.'
 login-register-conditions: 'En registrar-te, confirmes la teva acceptació dels nostres <a href="/legal/terms">termes d''ús</a>, <a href="/legal/privacy">política de privacitat</a> i <a href="legal/cookies">política de cookies</a>.'
+login-accept-conditions: 'Accepto els <a href="/legal/terms">termes d''ús</a>, <a href="/legal/privacy">política de privacitat</a> i <a href="legal/cookies">política de cookies</a>.'
 mandatory-cost-field-type: 'És obligatori seleccionar el tipus de cost'
 mandatory-individual_reward-field-amount: 'És obligatori indicar l''import que permet obtenir la recompensa'
 mandatory-project-costs: 'Ha de desglossar-se com a mínim en dos costos.'
@@ -141,6 +142,9 @@ regular-share-twitter: 'Segueix-nos a Twitter'
 regular-share_this: 'Compartir a:'
 regular-sorry: 'Ho sentim'
 regular-thanks: Gràcies
+regular-title: Títol
+regular-text: Text
+regular-media: Vídeo (Youtube, Vimeo)
 regular-total: Total
 regular-translate_board: 'Panell traductor'
 regular-twitter: Twitter
@@ -149,9 +153,14 @@ regular-view_project: Veure el projecte
 regular-web: Web
 regular-weeks: setmanes
 regular-yes: Sí
-regular-description: 'Descripció'
+regular-description: Descripció
+regular-image: Imatge
+regular-images: Imatges
 regular-url: 'URL'
 regular-load-more: 'Carregar-ne més'
+regular-analytics: 'Google Analytics'
+regular-facebook-pixel: 'Facebook Pixel'
+regular-call: Matchfunding
 session-about-to-expire: 'Tu sesión expirará en 10 minutos. ¿Quieres recargar la página para renovarla?'
 session-expired: 'Tu sesión en goteo ha expirado!'
 stories-user-project: "%s, del projecte: %s\r\n"
@@ -173,12 +182,14 @@ user-register-success: 'L''usuari s''ha registrat correctament. A continuació r
 validate-project-social_rewards: 'És obligatori indicar com a mínim un retorn col·lectiu'
 validate-project-total-costs: 'El cost òptim no pot superar en més d''un 40% el cost mínim. Has de revisar el desglossament de costos.'
 regular-cancel: Cancel·lar
-regular-cancel-back: 'Cancel·lar i tornar enrere'
+regular-cancel-back: 'Cancel·lar i torna enrere'
+regular-back: 'Torna enrere'
 regular-date: Data
-regular-download: Descarregar
+regular-download: Descarrega
 regular-female: Dona
 regular-instagram: Instagram
 regular-male: Home
+regular-others: Altres
 regular-matchfunding: 'Match funding'
 regular-spread: DIFUSIÓ
 regular-status: Estat

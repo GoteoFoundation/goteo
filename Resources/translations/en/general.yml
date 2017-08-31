@@ -52,6 +52,7 @@ horizontal-project-percent: financiado
 horizontal-project-reached: conseguido
 invest-individual-header: 'You can decline to receive rewards for your contribution, or select those that match or are under the amount that you have entered.'
 login-register-conditions: 'As you register, you accept our <a href="/legal/terms" target="_blank">terms & conditions</a>, <a href="/legal/privacy" target="_blank">Privacy</a> & <a href="legal/cookies" target="_blank">Cookies Policies</a>.'
+login-accept-conditions: 'I accept the <a href="/legal/terms" target="_blank">terms & conditions</a>, <a href="/legal/privacy" target="_blank">Privacy</a> & <a href="legal/cookies" target="_blank">Cookies Policies</a>.'
 mandatory-cost-field-type: 'You have to select the type of cost'
 mandatory-individual_reward-field-amount: 'You have to specify the amount that qualifies for the reward'
 mandatory-project-costs: 'These should be broken down into at least two groups.'
@@ -141,6 +142,9 @@ regular-share-twitter: 'Follow us on Twitter'
 regular-share_this: 'Share on:'
 regular-sorry: 'We are sorry'
 regular-thanks: 'Thank you'
+regular-title: 'Title'
+regular-text: 'Text'
+regular-media: Video (Youtube, Vimeo)
 regular-total: Total
 regular-translate_board: 'Translation panel'
 regular-twitter: Twitter
@@ -150,8 +154,16 @@ regular-web: Site
 regular-weeks: weeks
 regular-yes: 'Yes'
 regular-description: 'Description'
+regular-image: Image
+regular-images: Images
 regular-url: 'URL'
 regular-load-more: 'Load more'
+regular-analytics: 'Google Analytics'
+regular-facebook-pixel: 'Facebook Pixel'
+regular-cancel: 'Cancel'
+regular-cancel-back: 'Cancel & Go back'
+regular-back: 'Go back'
+regular-call: Matchfunding
 session-about-to-expire: 'Your session will expire in 10 Minutes, do you want to reload?'
 session-expired: 'Your session has expired'
 stories-user-project: '%s, from the project: %s'
@@ -175,5 +187,6 @@ validate-project-total-costs: 'The optimal cost cannot exceed the minimum cost b
 regular-female: Female
 regular-here: here
 regular-male: Male
+regular-others: Others
 regular-matchfunding: 'Match funding'
 user-promoter: "The promoter"

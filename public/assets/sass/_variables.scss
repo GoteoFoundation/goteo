@@ -2,7 +2,7 @@
 // <link href="https://fonts.googleapis.com/css?family=Roboto:400,700" rel="stylesheet" type="text/css">
 // <link href="https://fonts.googleapis.com/css?family=Open+Sans+Condensed:300" rel="stylesheet" type="text/css">
 
-@import url(https://fonts.googleapis.com/css?family=Roboto:400,700|Open+Sans+Condensed:300);
+@import url(https://fonts.googleapis.com/css?family=Roboto:300,400,500,700|Open+Sans+Condensed:300);
 
 // Bootstrap breakpoints
 $breakpoint-xxs: 385px;
@@ -16,11 +16,17 @@ $primary-font: 'Roboto', sans-serif;
 $font-size: 14px;
 
 $primary-color: #3A3A3A;
+// $secondary-color: #667475;
+$secondary-color: #537880; // TODO: confirm this color
+$title-color: #2D2B2C; // TODO: confirm this color
 
 $background-light-cream: #FAF8F8;
-$background-light: #E7E7E7;
+// $background-light: #E7E7E7;
+$background-light: #E5F3F4;
+$background-light-body: #F0F9F8;
 $background-light-grey: #E8ECEC;
-$background-grey: #58595B;
+// $background-grey: #58595B;
+$background-grey: #555555;
 $background-white: #FFFFFF;
 // $background-light-green: #32BDB8; // header alternate?
 $background-light-green: #19B4B2;
@@ -36,13 +42,26 @@ $background-green-owner: #CFEBEB;
 $background-yellow: #FCFDD2;
 $background-dark-yellow: #FBF9A4;
 $background-blue: #DDF2F2;
+$background-sidebar-header: #2C2C2C;
+$background-sidebar: #3B3B3B;
+$background-sidebar-active: #727272;
+
 $color-white: #FFFFFF;
+$color-black: #000000;
 $color-pink: #CD5EB3;
+$color-lilac: #A63C98;
+$color-orange: #FF6400;
+$color-red: #FF3936;
+// $color-red: #fe373a;
 $color-green: #14AE84;
 $color-light-grey: #BCBCBC;
 $color-grey: #58595B;
 $color-dark: #4D4D4D;
+$color-cyan: #2BBBB7;
+$color-grey-cyan: #C1D9DB;
 
 $dashboard-sidebar-width: 240px;
+// $dashboard-sidebar-width: 20%;
+$dashboard-main-width: 80%;
 
 @import 'common/mixins';

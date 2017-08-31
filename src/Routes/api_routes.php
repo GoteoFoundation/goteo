@@ -20,6 +20,13 @@ $api->add('api-users', new Route(
         )
 ));
 
+// User id availability checkpoint
+$api->add('api-user-check', new Route(
+    '/login/check',
+    array('_controller' => 'Goteo\Controller\Api\UsersApiController::userCheckAction',
+        )
+));
+
 // Projects list
 $api->add('api-projects', new Route(
     '/projects',
@@ -93,10 +100,31 @@ $api->add('api-projects-materials', new Route(
         )
 ));
 
+// Project property
+$api->add('api-projects-property', new Route(
+    '/projects/{id}/property/{prop}',
+    array('_controller' => 'Goteo\Controller\Api\ProjectsApiController::projectPropertyAction'
+        )
+));
+
+// Project updates property
+$api->add('api-projects-updates-property', new Route(
+    '/projects/{pid}/updates/{uid}/{prop}',
+    array('_controller' => 'Goteo\Controller\Api\ProjectsApiController::projectUpdatesPropertyAction'
+        )
+));
+
 // Licenses list
 $api->add('api-licenses', new Route(
     '/licenses',
     array('_controller' => 'Goteo\Controller\Api\LicensesApiController::licensesAction',
+        )
+));
+
+// Keywords list
+$api->add('api-keywords', new Route(
+    '/keywords',
+    array('_controller' => 'Goteo\Controller\Api\CategoriesApiController::keywordsAction',
         )
 ));
 

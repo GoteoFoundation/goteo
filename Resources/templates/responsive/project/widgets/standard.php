@@ -69,7 +69,7 @@ elseif (!empty($status)) {
 }
 
 ?>
-<div class="project-widget" id="project-<?= $this->project->id ?>">
+<div class="project-widget standard" id="project-<?= $this->project->id ?>">
     <?php if(!empty($this->project->image)): ?>
     <a class="img-link" href="/project/<?= $this->project->id ?>">
         <img class="img-responsive img-project" src="<?= $this->project->image->getLink(600, 250, true); ?>">

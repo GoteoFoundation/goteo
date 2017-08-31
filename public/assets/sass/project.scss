@@ -5,6 +5,10 @@
 
 @import 'variables';
 
+body.project {
+    background: $color-white;
+}
+
 /*
  * CSS Goteo Project
  *
@@ -112,14 +116,14 @@ span.label-sticky-item {
 /* Video cover cutomization */
 
 div {
-  &.video_button {
+  &.video-button {
     position: absolute;
     top: 38%;
     left: 45%;
     cursor: pointer;
     width: 15%;
   }
-  &#video_holder img {
+  &.video-holder img {
     margin: 0 auto;
   }
 }
@@ -307,12 +311,14 @@ img.tags {
   margin-right: 7px;
 }
 
-.tag {
-  color: $color-dark !important;
-  font-weight: bold;
-  font-size: 14px;
-  text-decoration: underline;
-  text-decoration-color: #a6a6a6;
+.tags-location {
+    .tag {
+      color: $color-dark !important;
+      font-weight: bold;
+      font-size: 14px;
+      text-decoration: underline;
+      text-decoration-color: #a6a6a6;
+    }
 }
 
 div.location-container {
@@ -1063,9 +1069,6 @@ div {
       bottom: 0;
       top: auto;
       z-index: 1000;
-    }
-    &.section-content {
-      padding: 0;
     }
     &.container-fluid.main-info div.header {
       margin-top: 20px;

@@ -1,10 +1,7 @@
-.sortable-ghost {
-  opacity: .3;
-  background: #f60;
-}
-
 /* GENERAL STYLES */
-
+blockquote {
+    font-size: inherit;
+}
 .spacer {
     margin-top: 40px;
 }
@@ -19,6 +16,21 @@
 
 .spacer-10{
     margin-top:10px !important;
+}
+.spacer-bottom {
+    margin-bottom: 40px;
+}
+
+.spacer-bottom-20{
+    margin-bottom:20px;
+}
+
+.spacer-bottom-5{
+    margin-bottom:5px;
+}
+
+.spacer-bottom-10{
+    margin-bottom:10px !important;
 }
 
 .cursor-pointer{
@@ -91,6 +103,10 @@
     top:15%;
 }
 
+.progress-bar-cyan {
+    background-color: $color-cyan;
+}
+
 i.visible-xs {
     @media(max-width: $breakpoint-sm - 1 ) {
         display:inline-block !important;
@@ -103,38 +119,91 @@ i.visible-xs {
     background-repeat: no-repeat;
     background-size: auto 100%;
     vertical-align: middle;
-    &.icon-2x {
-        @include icon-responsive(2);
+    &.icon-1x {
+        @include icon-responsive(1.5, 1.5);
+        &.icon-activity {
+            @include icon-responsive(1.5*1.5, 1.5);
+        }
     }
-    &.icon-3x {
-        @include icon-responsive(3);
-    }
-    &.icon-4x {
-        @include icon-responsive(4);
-    }
-    &.icon-5x {
-        @include icon-responsive(5);
-    }
-    &.icon-6x {
-        @include icon-responsive(6);
-    }
-    &.icon-7x {
-        @include icon-responsive(7);
-    }
-    &.icon-8x {
-        @include icon-responsive(8);
+    @for $i from 2 through 8 {
+        &.icon-#{$i}x {
+            @include icon-responsive($i, $i);
+            &.icon-activity {
+                @include icon-responsive($i*1.5, $i);
+            }
+        }
     }
     &.icon-activity {
-        background-image: url(../img/dashboard/activity.svg);
+        @include svg-background('../img/dashboard/activity.svg');
     }
     &.icon-projects {
-        background-image: url(../img/dashboard/projects.svg);
+        @include svg-background('../img/dashboard/projects.svg');
     }
     &.icon-wallet {
-        background-image: url(../img/dashboard/wallet.svg);
+        @include svg-background('../img/dashboard/wallet.svg');
     }
     &.icon-settings {
-        background-image: url(../img/dashboard/settings.svg);
+        @include svg-background('../img/dashboard/settings.svg');
+    }
+    &.icon-certificate {
+        @include svg-background('../img/dashboard/certificate.svg');
+    }
+    &.icon-wallet-sidebar {
+        @include svg-background('../img/dashboard/wallet_sidebar.svg');
+    }
+    &.icon-summary {
+        @include svg-background('../img/dashboard/summary.svg');
+    }
+    &.icon-preview {
+        @include svg-background('../img/dashboard/preview.svg');
+    }
+    &.icon-edit {
+        @include svg-background('../img/dashboard/edit.svg');
+    }
+    &.icon-images {
+        @include svg-background('../img/dashboard/images.svg');
+    }
+    &.icon-updates {
+        @include svg-background('../img/dashboard/updates.svg');
+    }
+    &.icon-supports {
+        @include svg-background('../img/dashboard/supports.svg');
+    }
+    &.icon-donors {
+        @include svg-background('../img/dashboard/donors.svg');
+    }
+    &.icon-partners {
+        @include svg-background('../img/dashboard/partners.svg');
+    }
+    &.icon-analytics {
+        @include svg-background('../img/dashboard/analytics.svg');
+    }
+    &.icon-shared {
+        @include svg-background('../img/dashboard/shared.svg');
+    }
+    &.icon-back {
+        // @include svg-background('../img/dashboard/back.svg');
+        background: url('../img/dashboard/back.svg') no-repeat;
+        background-size: 100% auto;
+        background-color: transparent !important;
+    }
+    &.icon-trash {
+        @include svg-background('../img/dashboard/trash.svg');
+    }
+    &.icon-favourite {
+        @include svg-background('../img/dashboard/favourite.svg');
+    }
+    &.icon-close {
+        @include svg-background('../img/dashboard/close.svg');
+    }
+    &.icon-user {
+        @include svg-background('../img/dashboard/user.svg');
+    }
+    &.icon-drop {
+        @include svg-background('../img/dashboard/drop.svg');
+    }
+    &.icon-call {
+        @include svg-background('../img/dashboard/call.svg');
     }
 }
 

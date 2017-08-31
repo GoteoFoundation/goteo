@@ -124,8 +124,8 @@ class Reward extends \Goteo\Core\Model {
                 //     $sql .= " ORDER BY reward.id ASC";
                 //     ORDERED BY AMOUNT
                 $sql .= " ORDER BY reward.amount ASC, reward.order ASC";
-            // die(\sqldbg($sql, $values));
             }
+            // die(\sqldbg($sql, $values));
             $query = self::query($sql, $values);
             foreach ($query->fetchAll(\PDO::FETCH_CLASS, __CLASS__) as $item) {
 

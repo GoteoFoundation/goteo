@@ -24,10 +24,18 @@ class ExtraFieldsExtension extends AbstractExtension
     protected function loadTypes()
     {
         return array(
+            new Type\TextType(),
+            new Type\TextareaType(),
+            new Type\UrlType(),
             new Type\MarkdownType(),
             new Type\DatepickerType(),
+            new Type\YearType(),
             new Type\DropfilesType(),
             new Type\BooleanType(),
+            new Type\MediaType(),
+            new Type\LocationType(),
+            new Type\TagsType(),
+            new Type\TitleType(),
             new Type\SubmitType(),
         );
     }

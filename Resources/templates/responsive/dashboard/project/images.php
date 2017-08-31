@@ -2,13 +2,13 @@
 
 <?php $this->section('dashboard-content') ?>
 
-  <div class="dashboard-content">
-
+<div class="dashboard-content">
+  <div class="inner-container">
     <h1><?= $this->text('images-main-header') ?></h1>
-    <blockquote><?= $this->text('dashboard-project-images-desc') ?></blockquote>
+    <h5><?= $this->text('dashboard-project-images-desc') ?></h5>
 
     <?php foreach($this->zones as $key => $zone): ?>
-        <h4><?= $zone ?></h4>
+        <h3><?= $zone ?></h3>
         <div class="image-zone" data-section="<?= $key ?>">
             <ul class="list-inline image-list-sortable" id="list-sortable-<?= $key ?>"><?php
             foreach($this->images[$key] as $img) {
@@ -23,6 +23,7 @@
     <?php endforeach ?>
 
   </div>
+</div>
 
 <?php $this->replace() ?>
 
@@ -101,6 +102,7 @@ $(function(){
             // console.log('error', error);
         });
         dropzone.on('success', function(file, response) {
+            $error.addClass('hidden');
             // see if all files are uploaded ok in response
             if(response && !response.success) {
                 $error.html(response.msg);
@@ -124,7 +126,6 @@ $(function(){
             li = li.replace('{URL}', img);
             li = li.replace('{NAME}', name);
             $list.append(li);
-            $error.addClass('hidden');
             // console.log('success', file, response, li);
         });
         dropzone.on("complete", function(file) {
@@ -133,6 +134,7 @@ $(function(){
         dropzone.on("sending", function(file, xhr, formData) {
           // Will send the section value along with the file as POST data.
           formData.append("section", $zone.data('section'));
+          formData.append("add_to_gallery", 'project_image');
         });
     });
 

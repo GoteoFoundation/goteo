@@ -34,7 +34,7 @@ $this->section('lang-metas');
 $this->replace();
 
 $this->section('sidebar-header');
-    echo $this->insert('project/widgets/mini', ['project' => $project, 'admin' => $this->admin]);
+    echo $this->insert('project/widgets/micro', ['project' => $project, 'admin' => $this->admin]);
 $this->replace();
 
 
@@ -185,8 +185,9 @@ $this->section('content');
 // @license magnet:?xt=urn:btih:0b31508aeb0634b347b8270c7bee4d411b5d4109&dn=agpl-3.0.txt
 
     $(function(){
-         $(window).on("pronto.request", function(e){
-         });
+         // $(window).on("pronto.request", function(e){
+         // });
+
          $(window).on("pronto.render", function(e){
             $("div.project-menu div.item, div.sticky-item").removeClass("current");
 
@@ -333,7 +334,7 @@ $this->section('content');
 
 // @license-end
 </script>
-<?= $this->insert('project/partials/google_analytics.php', ['project' => $project]) ?>
+
 <?= $this->insert('project/partials/facebook_pixel.php', ['project' => $project]) ?>
 
 <?php $this->append() ?>

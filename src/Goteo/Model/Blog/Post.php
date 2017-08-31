@@ -46,12 +46,7 @@ class Post extends \Goteo\Core\Model {
         $comments = array();
 
     public static function sanitizeText($t) {
-        $t = strip_tags($t, '<br><a><strong><i><b><ul><li><ol><em><blockquote><p><img><code><pre><h1><h2><h3><h4><h5><h6><small>');
-        // agregamos html si es texto plano
-        if(strip_tags($t) == $t) {
-            $t = nl2br(Text::urlink($t));
-        }
-        return $t;
+        return strip_tags($t, '<br><a><strong><i><b><ul><li><ol><em><blockquote><p><img><code><pre><h1><h2><h3><h4><h5><h6><small>');
     }
 
     /*
@@ -538,11 +533,9 @@ class Post extends \Goteo\Core\Model {
         try {
             //automatic $this->id assignation
             $this->dbInsertUpdate($fields);
-                    print_r($this->image);die;
 
             // Luego la imagen
             if ($this->id) {
-
                 // Will be an Upload if it's not Image
                 if($this->image) {
                     if(is_array($this->image)) {
@@ -551,8 +544,8 @@ class Post extends \Goteo\Core\Model {
                         } catch(ModelException $e) {
                             throw new \PDOException(Text::get('gallery-upload-fail')." (".$e->getMessage().")");
                         }
-                        $this->gallery[] = $images;
-                        $this->image = $images ? $images[0] : null;
+                        $this->gallery = $this->image;
+                        $this->image = $this->image ? $this->image[0] : null;
                     } else {
                         // Old behaviour, add the image to the gallery if
                         // needed (it's an upload)

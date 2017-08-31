@@ -62,9 +62,11 @@ class FormBuilder {
         $builder->setTranslationDomain('validators');
         $validator = $builder->getValidator();
 
-        // We don't use this cause we need to put ExtraFieldsExtension BEFORE CoreExtension
-        // so classes can be overwritten
+        // We don't use this:
         // $this->formFactory = Forms::createFormFactoryBuilder()
+        // because we need to put ExtraFieldsExtension BEFORE CoreExtension
+        // so classes can be overwritten
+        //
         // TODO: to service container so plugins can add extensions
         $this->formBuilder = new FormFactoryBuilder();
         $this->formBuilder

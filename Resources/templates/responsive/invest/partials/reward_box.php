@@ -36,7 +36,7 @@ $available = $reward->available();
 
                 <div class="row col-sm-10 col-sm-offset-2 margin-2" id="amount-container">
                     <div class="col-sm-1 col-sm-offset-1 no-padding col-xs-1">
-                        <strong class="reward-amount"><?= $this->get_currency('symbol') ?></strong>
+                        <strong class="reward-amount"><?= $this->get_currency('html') ?></strong>
                     </div>
                     <div class="no-padding container-input-amount col-sm-4 col-xs-10">
                         <input type="number" class="form-control input-amount" name="amount" value="<?= $this->amount ? $this->amount : amount_format($reward->amount, 0, true) ?>" id="amount" min="<?= amount_format($reward->amount, 0, true) ?>" required>

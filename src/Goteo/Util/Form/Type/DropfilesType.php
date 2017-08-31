@@ -40,61 +40,66 @@ class DropfilesType extends FileType
         // Current files
         $builder->add('current', FileType::class, [
             'multiple' => true,
-            'data' => $options['data'],
+            'data' => is_array($options['data']) ? $options['data'] : [$options['data']],
             'data_class' => null
         ]);
-        // New added files
-        $builder->add('uploads', FileType::class, ['multiple' => true]);
 
         $builder->get('current')
-            ->addModelTransformer(new CallbackTransformer(
-                function ($image) {
-                    return $image;
-                    // print_r($image);die;
-                    // TODO: for any type of file
-                    // if(is_array($image)) {
-                    //     return $image;
-                    // }
+        ->addModelTransformer(new CallbackTransformer(
+            function ($image) {
+                return $image;
+                // print_r($image);die;
+                // TODO: for any type of file
+                // if(is_array($image)) {
+                //     return $image;
+                // }
 
-                    // if($image instanceOf File) return new Image($image);
-                    // if($image instanceOf Image) return $image;
+                // if($image instanceOf File) return new Image($image);
+                // if($image instanceOf Image) return $image;
 
-                    return null;
-                },
-                function ($image) {
-                    if(is_array($image)) {
-                        // var_dump($image);
-                        foreach($image as $i => $img) {
-                            if(!$img) continue;
-                            if(!$img instanceOf Image) {
-                                $image[$i] = Image::get($img);
-                            }
+                return null;
+            },
+            function ($image) {
+                if(is_array($image)) {
+                    // var_dump($image);
+                    foreach($image as $i => $img) {
+                        if(!$img) continue;
+                        if(!$img instanceOf Image) {
+                            $image[$i] = Image::get($img);
                         }
-                    } elseif($image instanceOf File) {
-                        $image = new Image($image);
                     }
-
-                    return $image;
+                } elseif($image instanceOf File) {
+                    $image = new Image($image);
                 }
-            ));
+
+                return $image;
+            }
+        ));
+
+        // New added files
+        $builder->add('uploads', FileType::class, [
+            'multiple' => true
+        ]);
 
         $builder->get('uploads')
             ->addModelTransformer(new CallbackTransformer(
                 function($image) {
-                    // return null;
-                    return $image;
+                    return null;
+                    // return $image;
                 },
                 function($image) {
                         // print_r($image);die;
                     if(is_array($image)) {
                         foreach($image as $i => $img) {
                             if(!$img) continue;
+
                             // Convert File to Image
                             if(!$img instanceOf Image) {
                                 $image[$i] = new Image($img);
                             }
                         }
                     }
+                    // print_r($image);die;
                     return $image;
                 }
             ));
@@ -103,12 +108,12 @@ class DropfilesType extends FileType
         $builder->addViewTransformer(new CallbackTransformer(
             function($image) {
                 // var_dump($image);die;
-                return $image;
+                return is_array($image) ? $image : [$image];
             },
             function($image) {
                 // var_dump($image);die;
                 // Sum current + uploads
-                $img = is_array($image['current']) ? $image['current'] : [];
+                $img = isset($image['current']) && is_array($image['current']) ? $image['current'] : [];
                 if($image['uploads']) {
                     if(is_array($image['uploads'])) {
                         $img = array_merge($img, $image['uploads']);
@@ -129,16 +134,19 @@ class DropfilesType extends FileType
         $resolver->setDefaults(array(
             // 'compound' => false,
             'data_class' => null,
+            'markdown_link' => '', // creates a button to send the image link to a markdown editor
             'empty_data' => null,
-            'gallery' => [],
-            'multiple' => false,
-            'auto_process' => false, // auto process the sending of files
-            'url' => null, // url parameter for dropzone (null implies default action)
+            'multiple' => true,
+            'accepted_files' => null, // Eg.: image/*,application/pdf,.psd
+            'url' => null, // url parameter for dropzone (null implies no AJAX upload (form must be sent manually))
             'limit' => 10, // Max number of files in multiple uploads
             'sortable' => true, // Allow dragndrop sort of multiple files
-            'text_upload' => '<i style="font-size:2em" class="fa fa-plus"></i><br><br>' . Text::get('dashboard-project-dnd-image')
+            'text_upload' => '<i style="font-size:2em" class="fa fa-plus"></i><br><br>' . Text::get('dashboard-project-dnd-image'),
+            'text_delete_image' => Text::get('dashboard-project-delete-image'),
+            'text_send_to_markdown' => Text::get('dashboard-project-send-to-markdown'),
+            'text_max_files_reached' => Text::get('dashboard-max-files-reached'),
+            'text_file_type_error' => Text::get('dashboard-file-type-error')
         ));
-        $resolver->setAllowedTypes('gallery', 'array');
     }
 
     /**
@@ -147,19 +155,21 @@ class DropfilesType extends FileType
     public function buildView(FormView $view, FormInterface $form, array $options)
     {
         // var_dump($view->vars);die;
-        if(is_array($view->vars['value'])) {
-            $options['multiple'] = true;
-            $view->vars['attr']['multiple'] = 'multiple';
-        } else {
-            $options['multiple'] = false;
+        if(!is_array($view->vars['data'])) {
             $options['limit'] = 1;
         }
-
+        // var_dump($options);die;
+        $options['multiple'] = true;
+        $view->vars['attr']['multiple'] = 'multiple';
+        $view->vars['markdown_link'] = $options['markdown_link'];
+        $view->vars['text_delete_image'] = $options['text_delete_image'];
+        $view->vars['text_send_to_markdown'] = $options['text_send_to_markdown'];
+        $view->vars['text_max_files_reached'] = $options['text_max_files_reached'];
+        $view->vars['text_file_type_error'] = $options['text_file_type_error'];
         $view->vars['text_upload'] = $options['text_upload'];
+        $view->vars['accepted_files'] = $options['accepted_files'];
         $view->vars['limit'] = $options['limit'];
-        $view->vars['multiple'] = $options['multiple'];
-        $view->vars['auto_process'] = $options['auto_process'];
-        $view->vars['url'] = $options['url'] ? $options['url'] : $view->parent->vars['action'];
+        $view->vars['url'] = $options['url'] ? $options['url'] : null;
     }
 
     /**

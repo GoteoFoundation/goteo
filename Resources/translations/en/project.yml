@@ -89,6 +89,7 @@ project-chart-amount-reached: Acummulated
 project-chart-costs-reset: Back
 project-collaborations-available: 'Available crowdsourcing needs'
 project-collaborations-number: collaborators
+project-obtained: 'Obtained'
 project-general-information: 'General information'
 project-go-up: 'Back to top'
 project-hide-donors: 'Hide donors'
@@ -123,3 +124,4 @@ project-create-modal-no-social-title: 'Social commitment'
 project-create-modal-no-social-description: 'It is mandatory to have a social commitment for your project to be accepted at Goteo. If you don’t commit yourself by choosing one, the button for continue will not be activated.'
 project-share-materials: 'Shared materials'
 project-create-no-social-commitment: 'None'
+project-progress-title: How is the project going

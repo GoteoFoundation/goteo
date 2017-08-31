@@ -1,43 +1,69 @@
 
 /* The side navigation menu */
 #sidebar-menu {
-    height: 100%; /* 100% Full-height */
-    width: 0; /* 0 width - change this with JavaScript */
-    position: fixed; /* Stay in place */
-    z-index: 1001; /* Stay on top */
-    top: 0;
-    left: 0;
-    background-color: $background-black;
+    // height: 100%; /* 100% Full-height */
+    // width: 0; /* 0 width - change this with JavaScript */
+    // position: fixed; /* Stay in place */
+    // position: absolute;
+    // z-index: 1001; /* Stay on top */
+    // top: 0;
+    // left: 0;
+    background-color: $background-sidebar;
+    padding-bottom: 50px;
     overflow-x: hidden; /* Disable horizontal scroll */
     transition: 0.5s; /* 0.5 second transition effect to slide in the sidenav */
     font-size: $font-size * 1.3;
+    line-height: $font-size * 1.5;
 
-
-    @media(min-width: $breakpoint-sm) {
-        width: $dashboard-sidebar-width;
-    }
+    // @media(min-width: $breakpoint-sm) {
+    //     width: $dashboard-sidebar-width;
+    // }
     li {
+      padding: 0 15px;
+      background-color: $background-sidebar;
       >a, >button {
         color: $color-white;
+        padding-bottom:15px;
+        border-top:2px solid $background-grey;
         &:hover {
-            color: $color-dark;
+            background-color:inherit;
+            // color: $color-dark;
+        }
+        display: relative;
+        padding-left:45px;
+        >i:first-child {
+            position: absolute;
+            top:10px;
+            left:5px;
+            &.icon-back {
+                left:-5px;
+            }
         }
 
       }
-      &.active {
+      &:first-child {
         >a, >button {
-            background-color: $background-white;
-            color: $color-dark;
+            border-top-color:transparent;
+        }
+      }
+      &.active,&:hover {
+        background-color: $background-sidebar-active;
+
+        >a, >button {
+            border-top-color:transparent;
+        }
+        &+li {
+            >a, >button {
+                border-top:none;
+            }
         }
       }
     }
 
     .sidebar-header {
-        position: absolute;
-        top: 0;
-        left: 0;
-
-        padding: 0;
+        min-height: 200px;
+        padding-top: 20px;
+        background-color: $background-sidebar-header;
         .logo {
             height: 100%;
             width: auto;
@@ -45,24 +71,47 @@
 
         .project-widget {
             font-size: $font-size;
-            &.mini {
+            &.micro {
                 .img-project {
-                    border-radius: 0;
+                    width:60%;
+                    margin:0 20%;
+                    border-radius: 50%;
+                    border:4px solid $color-white;
+                    box-shadow:0 5px 20px 0px $color-black;
                 }
                 .content {
+                    margin:10px 15px 0 15px;
                     border-radius: 0;
+                    color:$color-white;
+                    a {
+                        color:$color-white;
+                        font-size:120%;
+                        line-height:120%;
+                    }
+                    .label {
+                        font-weight: normal;
+                        padding-top:.5em;
+                        text-transform: uppercase;
+                        font-size:100%;
+                        margin-bottom:10px;
+                        display:inline-block;
+                    }
                 }
             }
         }
     }
 
     .sidebar-nav {
-      margin-top: 200px;
-      // margin-top: 80px;
       &.bottom {
-        position: absolute;
-        bottom: 0;
-        width: 100%;
+        background-color: $background-sidebar-header;
+        // width: 100%;
+        li {
+            background-color: $background-sidebar-header;
+            a {
+                min-height:70px;
+                padding-top:20px;
+            }
+          }
       }
     }
 
@@ -73,12 +122,23 @@
         right: 0;
         top: 0;
         z-index: 1002;
-        background:$background-black;
+        // background:$background-sidebar;
+        background:transparent;
         color:$color-white;
         padding:6px 12px;
         margin:0;
         border:0;
         border-radius:0;
+    }
+
+    .navbar-brand {
+        margin-bottom: 8px;
+    }
+
+    .icon {
+        background-color:$color-white;
+        mask-size:100% auto;
+        -webkit-mask-size:100% auto;
     }
 }
 
@@ -95,7 +155,7 @@
     top: 70px;
     left: 0;
     z-index: 1000;
-    background-color: $background-black;
+    background-color: $background-sidebar;
     color: $color-white;
     // width: 30px;
     // height: 100px;

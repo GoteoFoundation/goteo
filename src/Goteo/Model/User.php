@@ -207,8 +207,9 @@ class User extends \Goteo\Core\Model {
                 }
 
                 // Avatar
-                if (is_array($this->user_avatar) && !empty($this->user_avatar['name'])) {
+                if ((is_array($this->user_avatar) && !empty($this->user_avatar['name'])) || ($this->user_avatar instanceOf Image && $this->user_avatar->tmp)) {
                     $image = new Image($this->user_avatar);
+                    // print_r($image);$image->validate($errors);print_r($errors);die;
 
                     if ($image->save($errors)) {
                         $data[':avatar'] = $image->id;
@@ -480,6 +481,25 @@ class User extends \Goteo\Core\Model {
         }
 
         return (empty($errors['email']) && empty($errors['password']));
+    }
+
+    /**
+     * Returns true if user is "unregistered":
+     * ie: has no password, no social-login
+     */
+    public function isGhost() {
+        // If is hide or inactive is also a ghost
+        if(!$this->active || $this->hide) return true;
+        $password = $this->getPassword();
+        if(empty($password)) {
+            // check social login
+            $query = self::query('SELECT provider FROM user_login WHERE user = ?', array($this->id ? $this->id : $this->userid));
+            if ($query->fetchColumn()) {
+                return false;
+            }
+            return true;
+        }
+        return false;
     }
 
     /**
@@ -1163,7 +1183,7 @@ class User extends \Goteo\Core\Model {
      */
     public function getPassword() {
         if($this->password) return $this->password;
-        $query = self::query('SELECT password FROM user WHERE id = :id', [':id' => $this->id]);
+        $query = self::query('SELECT password FROM user WHERE id = :id', [':id' => $this->id ? $this->id : $this->userid]);
         $this->password = $query->fetchColumn();
         return $this->password;
     }
@@ -1716,7 +1736,9 @@ class User extends \Goteo\Core\Model {
      *
      * @return type array
      */
-    public static function getPersonal($id) {
+    public static function getPersonal($user) {
+        if($user instanceOf User) $user = $user->id;
+
         $query = self::query('SELECT
                                   contract_name,
                                   contract_name AS name,
@@ -1729,7 +1751,7 @@ class User extends \Goteo\Core\Model {
                                   country
                               FROM user_personal
                               WHERE user = ?'
-            , array($id));
+            , array($user));
 
         $data = $query->fetchObject();
 
@@ -1749,6 +1771,7 @@ class User extends \Goteo\Core\Model {
      * @return type booblean
      */
     public static function setPersonal($user, $data = array(), $force = false, &$errors = array()) {
+        if($user instanceOf User) $user = $user->id;
 
         if ($force) {
             // actualizamos los datos
@@ -1842,11 +1865,14 @@ class User extends \Goteo\Core\Model {
      * @return type booblean
      */
     public static function setPreferences($user, $data = array(), &$errors = array()) {
+        if($user instanceOf User) $user = $user->id;
 
+        $keys = ['updates', 'threads', 'rounds', 'mailing', 'email', 'tips', 'comlang', 'currency'];
         $values = array();
         $set = '';
 
         foreach ($data as $key => $value) {
+            if(!in_array($key, $keys)) continue;
             $values[":$key"] = $value;
             if ($set != '') {
                 $set .= ', ';
@@ -1930,6 +1956,8 @@ class User extends \Goteo\Core\Model {
                 project.image as image,
                 project.num_investors as num_investors,
                 project.num_messengers as num_messengers,
+                project.project_location as project_location,
+                project.social_commitment as social_commitment,
                 project.num_posts as num_posts,
                 project.days as days,
                 project.name as name,
@@ -2097,4 +2125,53 @@ class User extends \Goteo\Core\Model {
         return !empty($is);
     }
 
+    /**
+     * Returns an array of suggested non-existing userid based on a string
+     */
+    public static function suggestUserId() {
+        $strings = func_get_args();
+
+        $suggest = [];
+        $originals = [];
+        foreach($strings as $string) {
+            $parts = preg_split("/[\s,\-\@\.]+/", $string);
+            $id = '';
+            foreach($parts as $part) {
+                $id .= self::idealiza($part);
+                if(strlen($id) < 4) continue;
+                if($id) {
+                    $originals[] = $id;
+
+                    $query = self::query("SELECT id FROM user WHERE id = ?", $id);
+                    if ($query->fetch()) {
+                        continue;
+                    }
+
+                    $suggest[] = $id;
+                    $id = '';
+                }
+            }
+        }
+        // print_r($originals);die;
+        // Fill with automatic
+        if($originals) {
+            foreach($originals as $id) {
+                do {
+                    $new =  preg_replace_callback( "|(\d+)|", function ($matches) {
+                            return ++$matches[1];
+                        }, $id);
+                    if($new === $id) {
+                        $new = $id . '1';
+                    }
+
+                    $query = self::query("SELECT id FROM user WHERE id = ?", $new);
+                    $id = $new;
+
+                } while($query->fetch());
+                if(!in_array($id, $suggest)) $suggest[] = $id;
+            }
+        }
+
+        return $suggest;
+    }
 }

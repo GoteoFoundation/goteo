@@ -605,6 +605,12 @@ class ProjectController extends \Goteo\Core\Controller {
                 $project->rewards = array_merge($project->social_rewards, $project->individual_rewards);
             }
 
+            // Add analytics to config
+            // TODO: do the same with facebook pixel (not done yet because f.pixel is only used in the project page)
+            if($project->analytics_id) {
+                Config::set('analytics.google', array_merge(Config::get('analytics.google'), [$project->analytics_id]));
+            }
+
             $viewData = array(
                 'project' => $project,
                 'show'    => $show,

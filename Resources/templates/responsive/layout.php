@@ -76,27 +76,29 @@ if($sidebar) {
 
     <body role="document" <?php if ($bodyClass) echo ' class="' . $bodyClass . '"' ?>>
 
+    <?= $this->supply('header', $this->insert("partials/header")) ?>
+
+    <div class="page-wrap">
       <?= $this->supply('sidebar', $this->insert("partials/sidebar", ['sidebarMenu' => $sidebar])) ?>
-
       <div id="main">
-        <?= $this->supply('header', $this->insert("partials/header")) ?>
-
-        <?= $this->supply('messages', $this->insert("partials/header/messages")) ?>
-
 
         <div id="main-content">
+            <?= $this->supply('messages', $this->insert("partials/header/messages")) ?>
             <?= $this->supply('content') ?>
         </div>
 
-        <?php $this->section('footer') ?>
-
-            <?= $this->insert('partials/footer') ?>
-
-            <?= $this->insert('partials/footer/analytics') ?>
-
-            <?= $this->insert('partials/footer/javascript') ?>
-
-        <?php $this->stop() ?>
       </div>
+    </div>
+
+    <?php $this->section('footer') ?>
+
+        <?= $this->insert('partials/footer') ?>
+
+        <?= $this->insert('partials/footer/javascript') ?>
+
+        <?= $this->insert('partials/footer/analytics') ?>
+
+    <?php $this->stop() ?>
+
     </body>
 </html>

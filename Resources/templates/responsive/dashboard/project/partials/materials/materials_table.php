@@ -1,4 +1,4 @@
- <table class="table social-commitment table-striped">
+ <table class="table spacer social-commitment">
     <thead>
         <tr>
             <th>&nbsp;</th>
@@ -15,7 +15,7 @@
                         <?= $reward->description ?>
                     </p>
                     <p>
-                        <button data-toggle="modal" data-target="#UrlModal" data-url="<?= $reward->url ?>" data-reward="<?= $reward->id ?>" class="btn btn-green edit-url" ><i class="fa fa-link"></i> <?= $this->text('dashboard-edit-share-material-url') ?></button>
+                        <button data-toggle="modal" data-target="#UrlModal" data-url="<?= $reward->url ?>" data-reward="<?= $reward->id ?>" class="btn btn-default edit-url" ><i class="fa fa-link"></i> <?= $this->text('dashboard-edit-share-material-url') ?></button>
                         <?= $reward->url ?>
                     </p>
                 </td>

@@ -2,27 +2,24 @@
 
 <?php $this->section('dashboard-content') ?>
 
-  <div class="dashboard-content">
-
+<div class="dashboard-content">
+  <div class="inner-container">
     <h1><?= $this->text('project-share-materials') ?></h1>
 
     <?php if($this->allowNewShare): ?>
 
-        <div class="row spacer">
-            <div class="col-xs-6 col-sm-3 col-md-2" id="button-container" data-toggle="collapse" data-target="#new-material-form">
-                <button id="add-new-material" class="btn btn-pink"><span class="glyphicon glyphicon-plus"></span> <?= $this->text('dashboard-add-new-share-material') ?></button>
+        <div class="spacer">
+            <div id="button-container" data-toggle="collapse" data-target="#new-material-form">
+                <button id="add-new-material" class="btn btn-cyan"><span class="glyphicon glyphicon-plus"></span> <?= $this->text('dashboard-add-new-share-material') ?></button>
             </div>
         </div>
 
     <?php endif; ?>
 
-    <div class="row">
-        <div class="col-md-6">
-            <div id="alert-success" class="new-material-success alert alert-success" style="display: none;">
-              <strong class="msg"></strong>
-            </div>
-            <?= $this->insert('dashboard/project/partials/materials/new_material_form') ?>
-        </div>
+    <div id="alert-success" class="new-material-success alert alert-success" style="display: none;">
+      <strong class="msg"></strong>
+    </div>
+    <?= $this->insert('dashboard/project/partials/materials/new_material_form') ?>
 
     <div id="materials-table">
         <?php if($this->project->social_rewards): ?>
@@ -36,6 +33,7 @@
     <?= $this->insert('dashboard/project/partials/materials/save_url_modal') ?>
 
   </div>
+</div>
 
 <?php $this->replace() ?>
 
@@ -95,20 +93,17 @@
 
         var _get_ajax_save_new_material_result = function() {
 
-            var material = $("#new-material-material").val();
-            var description = $("#new-material-description").val();
-            var icon = $("#new-material-icon").val();
-            var license = $("#new-material-license").val();
-            var url = $("#new-material-url").val();
+            var data = {
+                  material: $("#new-material-material").val()
+                , description: $("#new-material-description").val()
+                , icon: $("#new-material-icon").val()
+                , license: $("#new-material-license").val()
+                , url: $("#new-material-url").val()
+            };
 
             $.ajax({
                 url: '/api/projects/' + project + '/materials',
-                data: { 'material' : material,
-                        'description' : description,
-                        'icon' : icon,
-                        'license' : license,
-                        'url' : url
-                    },
+                data: data,
                 type: 'post',
                 success: function(result){
                     //update table
@@ -138,7 +133,7 @@
 
         $('#UrlModal').on('hidden.bs.modal', function () {
             $("#modal-content").html($("#modal-content-reset").html());
-        })
+        });
 
         $("#new-material-form").on('change', '#new-material-icon', function(){
             var icon=$("#new-material-icon").val();
@@ -155,10 +150,12 @@
                     $("#new-material-license").html(html);
                 });
             }
-        })
+        });
 
-        $("#new-material-form").on('click', '#btn-save-new-material', function(){
+        $("#new-material-form").on('submit', function(e){
+            e.preventDefault();
            _get_ajax_save_new_material_result();
+           return false;
         });
 
     });

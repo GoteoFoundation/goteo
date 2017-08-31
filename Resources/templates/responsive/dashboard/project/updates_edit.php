@@ -2,7 +2,8 @@
 
 <?php $this->section('dashboard-content') ?>
 
-  <div class="dashboard-content">
+<div class="dashboard-content">
+  <div class="inner-container">
 
     <h2><?= $this->post->title ?></h2>
 
@@ -15,5 +16,6 @@
 
 
   </div>
+</div>
 
 <?php $this->replace() ?>

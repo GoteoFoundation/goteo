@@ -49,6 +49,7 @@ header-about-side: 'Lo que nos mueve'
 home-posts-header: Novedades
 invest-individual-header: 'Puedes renunciar a recibir recompensas por tu aportación, o seleccionar las que igualen o estén por debajo del importe que hayas introducido.'
 login-register-conditions: 'Al registrarte, confirmas tu aceptación de nuestros <a href="/legal/terms">términos de uso</a>, <a href="/legal/privacy">política de privacidad</a> y <a href="legal/cookies">política de cookies</a>.'
+login-accept-conditions: 'Acepto los <a href="/legal/terms">términos de uso</a>, <a href="/legal/privacy">política de privacidad</a> y <a href="legal/cookies">política de cookies</a>.'
 mandatory-cost-field-type: 'Es obligatorio seleccionar el tipo de coste'
 mandatory-individual_reward-field-amount: 'Es obligatorio indicar el importe que permite obtener la recompensa'
 mandatory-project-costs: 'Debe desglosarse en al menos dos costes.'
@@ -72,6 +73,7 @@ regular-by: 'Por:'
 regular-calendar: Calendar
 regular-cancel: Cancelar
 regular-cancel-back: 'Cancelar y volver atrás'
+regular-back: 'Volver atrás'
 regular-collaborate: Colabora
 regular-content: Contenido
 regular-continue-question: '¿Continuar?'
@@ -118,6 +120,7 @@ regular-logout: 'Cerrar sesión'
 regular-looks_for: 'busca:'
 regular-main-header: Goteo.org
 regular-male: Hombre
+regular-others: Otros
 regular-manage_board: 'Panel Gestoría'
 regular-mandatory: 'Campo obligatorio!'
 regular-matchfunding: 'Match funding'
@@ -158,6 +161,8 @@ regular-status: Estado
 regular-template: Plantilla
 regular-thanks: Gracias
 regular-title: Título
+regular-text: Texto
+regular-media: Vídeo (Youtube, Vimeo)
 regular-total: Total
 regular-translate: Traducir
 regular-translate_board: 'Panel traductor'
@@ -170,10 +175,10 @@ regular-weeks: semanas
 regular-year: Año
 regular-yes: Sí
 regular-add: Nuevo registro
-regular-title: Título
 regular-name: Nombre
 regular-description: Descripción
-regular-image: 'Imagen'
+regular-image: Imagen
+regular-images: Imágenes
 regular-content: Contenido
 regular-url: Enlace
 regular-date: Fecha
@@ -185,6 +190,9 @@ regular-matchfunding: 'Match funding'
 regular-recent-activity: Actividad reciente
 regular-message-clipboard-fail: 'Selecciona y copia este enlace'
 regular-load-more: 'Cargar más'
+regular-analytics: 'Google Analytics'
+regular-facebook-pixel: 'Facebook Pixel'
+regular-call: Matchfunding
 session-about-to-expire: 'Tu sesión expirará en 10 minutos. ¿Quieres recargar la página para renovarla?'
 session-expired: 'Tu sesión en goteo ha expirado!'
 spread-about: 'Texto spread-about'

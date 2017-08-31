@@ -1,5 +1,10 @@
 api-key-no-generated: 'Aún no tienes una key generada'
 api-key-tool-tip: 'Con tu usuario y Api Key podrás realizar consultas a nuestra API'
+api-key-documentation: 'Ver la documentación de la API'
+api-key-user: 'Usuario'
+api-key-key: 'Clave'
+api-key-generate-new: 'Generar una nueva clave'
+api-key-generate-new-confirm: 'Esta acción borrará la clave actual y generará una nueva clave. ¿Continuar?'
 contract-data_title: 'Datos del contrato'
 dashboard-certificates-confirm: 'Confirmar datos'
 dashboard-certificates-confirm-checkbox: 'Confirmo que estos son mis datos legales reales y soy consciente de que no voy a poder modificar estos datos una vez confirmados'
@@ -73,7 +78,7 @@ dashboard-menu-review_board: Revisión
 dashboard-menu-translate_board: Traducción
 dashboard-menu-translates: 'Mis Traducciones'
 dashboard-messegers-mail-sendto: 'Enviado a %s los participantes:'
-dashboard-my-wallet-available: 'Actualmente, tienes <span class="pool-amount">%s</span><br>en tu monedero Goteo'
+dashboard-my-wallet-available: 'Actualmente, tienes <span class="pool-amount">%s</span> <span class="pool-desc">en tu monedero Goteo</span>'
 dashboard-my-wallet-contribute-button: Donar
 dashboard-my-wallet-modal-pool-info: "El monedero de Goteo es una funcionalidad de nuestra plataforma que te permite efectuar tu donación y decidir posteriormente a qué proyecto aportarla.<br> <p>Las donaciones que realizas a través de nuestra plataforma son fiscalmente desgravables, de acuerdo a la Ley 49/2002, de 23 de diciembre, de régimen fiscal de las entidades sin fines lucrativos y de los incentivos fiscales al mecenazgo.</p> <p>Cuando efectúas tu donación, puedes descargarte un certificado de donación que justifica ante Hacienda tu contribución a una entidad sin ánimo de lucro. Puedes acceder a un histórico de los certificados disponibles asociados a tus donaciones en Goteo en tu panel del usuario, concretamente en la sección <a href=\"/dashboard/wallet/certificate\" target=\"_blank\">Certificado de donación</a>.</p><p> NOTA IMPORTANTE: Te recordamos que todas las aportaciones por las que hayas obtenido un certificado de donación de nuestra Fundación no se devuelven.\r\nEsto significa que si has hecho una donación vinculada a un proyecto concreto dentro de nuestra plataforma y este no llega a su objetivo mínimo de financiación durante su campaña, tu aporte irá a tu monedero pero no volverá a tu cuenta corriente. Sin embargo podrás destinar ese importe desde tu monedero virtual en Goteo.org a cualquier otro proyecto activo que desees en el momento que tú elijas, sin necesidad de volver a introducir tus datos bancarios o de PayPal.</p>"
 dashboard-my-wallet-pool-info: 'Más información sobre el uso de tu monedero'
@@ -146,7 +151,7 @@ user-changepass-confirm: 'Confirmar nueva contraseña'
 user-changepass-new: 'Nueva contraseña'
 user-changepass-old: 'Contraseña actual'
 user-changepass-title: 'Cambiar contraseña'
-user-email-change-sended: 'Te hemos enviado un email para que confirmes el cambio de dirección electrónica'
+user-email-change-sent: 'Te hemos enviado un email para que confirmes el cambio de dirección electrónica'
 user-password-changed: 'Has cambiado tu contraseña'
 user-personal-saved: 'Datos personales actualizados'
 user-prefer-saved: 'Tus preferencias de notificación se han guardado correctamente'
@@ -191,4 +196,10 @@ dashboard-project-default-image-confirm: '¿Quieres poner esta imagen por defect
 dashboard-project-image-default-ko: 'No se ha podido poner la imagen por defecto!'
 dashboard-project-image-reorder-ko: 'No se han podido ordenar las imágenes!'
 
-
+dashboard-project-send-to-markdown: "Introducir esta imagen en el texto"
+dashboard-max-files-reached: "Has alcanzado el número máximo de archivos!"
+dashboard-file-type-error: "Este tipo de archivo no está permitido!"
+all-files-uploaded: "Todos los archivos se han subido correctamente"
+uploaded-ok: "Subido correctamente"
+publish-confirm-yes: "Quieres publicar esta entrada?"
+publish-confirm-no: "Quieres despublicar esta entrada?"

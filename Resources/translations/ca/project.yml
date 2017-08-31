@@ -87,7 +87,8 @@ project-about-title: 'Sobre aquest projecte'
 project-chart-amount-reached: Acumulat
 project-chart-costs-reset: Back
 project-collaborations-available: 'Col.laboracions disponibles'
-project-collaborations-number: Col.laboradors
+project-collaborations-number: col.laboradors
+project-obtained: 'Obtingut'
 project-general-information: 'Informació general'
 project-go-up: 'Tornar a dalt'
 project-hide-donors: 'Amagar comecenes'
@@ -122,3 +123,4 @@ project-create-modal-no-social-title: 'Compromís social'
 project-create-modal-no-social-description: 'És obligatori tenir un compromís social perquè el teu projecte pugui ser acceptat a Goteo. Si no et compromets seleccionant-ne un, no s''activarà el botó que et permet continuar :-('
 project-share-materials: 'Material compartit'
 project-create-no-social-commitment: 'No tinc'
+project-progress-title: Com va el projecte

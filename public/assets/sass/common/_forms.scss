@@ -1,70 +1,187 @@
 /* Autoforms */
-.autoform {
+.pull-right-form {
+    float: right;
+    margin-top: -44px;
+}
+.sortable-ghost {
+  opacity: .3;
+}
+.sortable-drag {
+  // TODO: it seems that
+  // firefox is scaling the draggable clone
+  // This should solve it
+  -moz-transform:scale(.5);
+}
 
-    .material-switch {
-        display:inline-block;
+.autoform, .form {
 
-        > input[type="checkbox"] {
-            display: none;
+  .form-group {
+    margin-bottom: 20px;
+    .input-wrap {
+      background: $background-light-body;
+      border-radius: 5px;
+      padding: 12px;
+      .form-control,
+      .input-group > .input-group-addon,
+      .bootstrap-tagsinput {
+        color: $secondary-color;
+        box-shadow: none;
+        border-color: $background-white;
+        background: $background-white;
+      }
+      .bootstrap-tagsinput {
+        width: 100%;
+      }
+      .form-control:focus {
+        border-color: $color-cyan;
+        outline: 0;
+        -webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,.075), 0 0 8px rgba(102, 175, 233, .6);
+                box-shadow: inset 0 1px 1px rgba(0,0,0,.075), 0 0 8px rgba(102, 175, 233, .6);
+      }
+      >.datepicker,>.datepicker-year {
+        max-width: 180px;
+        .bootstrap-datetimepicker-widget table td.active, .bootstrap-datetimepicker-widget table td.active:hover {
+          background-color: $color-cyan;
+        }
+      }
+      .editor-toolbar,.CodeMirror {
+        border: none;
+        color: $secondary-color;
+      }
+    }
+  }
+  .help-text {
+    display: block;
+    margin: 10px 5px;
+    color: $color-grey;
+  }
+  .material-switch {
+    > label {
+      cursor: pointer;
+    }
+    & + label {
+      text-transform: uppercase;
+      font-weight: 500;
+    }
+  }
+
+  .media-container {
+    .video-holder {
+      display: none;
+      position: relative;
+      max-width: 300px;
+      margin-bottom:10px;
+    }
+    .video-button {
+        display: none;
+    }
+    .embed-responsive {
+        display: none;
+    }
+    &.loading {
+      .video-holder {
+        background:url(../img/ring.gif) no-repeat center;
+        display: block;
+        padding-bottom: 60px;
+        .cover-image {
+          display:none;
         }
 
-        > label {
-            cursor: pointer;
-            height: 0px;
-            position: relative;
-            width: 40px;
-        }
-
-        > label::before {
-            background: rgb(0, 0, 0);
-            box-shadow: inset 0px 0px 10px rgba(0, 0, 0, 0.5);
-            border-radius: 8px;
-            content: '';
-            height: 16px;
-            margin-top: -8px;
-            position:absolute;
-            opacity: 0.3;
-            transition: all 0.4s ease-in-out;
-            width: 40px;
-        }
-        > label::after {
-            background: rgb(255, 255, 255);
-            border-radius: 16px;
-            box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.3);
-            content: '';
-            height: 24px;
-            left: -4px;
-            margin-top: -8px;
-            position: absolute;
-            top: -4px;
-            transition: all 0.3s ease-in-out;
-            width: 24px;
-        }
-        > input[type="checkbox"]:checked + label::before {
-            background: inherit;
-            opacity: 0.5;
-        }
-        > input[type="checkbox"]:checked + label::after {
-            background: inherit;
-            left: 20px;
-        }
-
-        + .control-label {
-            margin-left: 10px;
-        }
+      }
+    }
+    &.loaded {
+      .video-holder {
+        display: block;
+      }
+      .video-button {
+        display: block;
+      }
+      .embed-responsive {
+        display: none;
+      }
+      .cover-image {
+        display:block;
+      }
+    }
+    &.playing {
+      .video-holder {
+        display: block;
+      }
+      .video-button {
+        display: none;
+      }
+      .embed-responsive {
+        display: block;
+      }
+      .cover-image {
+        display:none;
+      }
     }
 
-    .datepicker {
-        width: 180px;
+  }
+
+}
+
+.material-switch {
+    display:inline-block;
+
+    > input[type="checkbox"] {
+        display: none;
+    }
+
+    > label {
+        // cursor: pointer;
+        height: 0px;
+        position: relative;
+        width: 40px;
+    }
+
+    > label::before {
+        background: rgb(0, 0, 0);
+        box-shadow: inset 0px 0px 10px rgba(0, 0, 0, 0.5);
+        border-radius: 8px;
+        content: '';
+        height: 16px;
+        margin-top: -8px;
+        position:absolute;
+        opacity: 0.3;
+        transition: all 0.4s ease-in-out;
+        width: 40px;
+    }
+    > label::after {
+        background: rgb(255, 255, 255);
+        border-radius: 16px;
+        box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.3);
+        content: '';
+        height: 24px;
+        left: -4px;
+        margin-top: -8px;
+        position: absolute;
+        top: -4px;
+        transition: all 0.3s ease-in-out;
+        width: 24px;
+    }
+    > input[type="checkbox"]:checked + label::before {
+        background: inherit;
+        opacity: 0.5;
+    }
+    > input[type="checkbox"]:checked + label::after {
+        background: inherit;
+        left: 20px;
+    }
+
+    + .control-label {
+        margin-left: 10px;
     }
 }
+
 
 /* image sortable list*/
 
 .image-zone {
   position: relative;
   width: 100%;
-  background: #f0f0f0;
+  background: $background-light-body;
   padding: 0;
   border-radius: 5px;
 
@@ -77,18 +194,22 @@
     right:10px;
   }
   .dropzone {
-    border: 5px dashed #ccc;
+    border: 2px dashed $secondary-color;
     border-radius: 5px;
     cursor: pointer;
-    background: #ddd;
+    background: #EBF4F3;
     position: absolute;
     top: 0;
     left: 0;
     height: 100%;
     max-height: 150px;
     width: 100%;
-    color: #999;
+    color: $secondary-color;
+    line-height:$font-size;
     overflow: hidden;
+    i {
+        color: $color-cyan;
+    }
     .dz-preview {
       &.dz-image-preview {
         background: none;
@@ -100,12 +221,13 @@
     min-height: 170px;
     display: block;
     padding: 5px 155px 0 5px;
-    border: 5px solid #f0f0f0;
+    border: 5px solid $background-light-body;
     margin: 0;
     min-width: 150px;
     &.over {
       // background-color: $background-pink;
-      border-color:$background-pink;
+      // border-color:$background-pink;
+      border-color:$color-cyan;
     }
     > li {
       position: relative;
@@ -113,11 +235,12 @@
       padding: 0;
       margin: 0;
       margin-right: 5px;
+
       .image {
         width: 150px;
         height: 150px;
         cursor: move;
-        background: #ddd;
+        background-color: $color-cyan;
         background-position: 0 0;
         background-size: 100% 100%;
         background-repeat: no-repeat;
@@ -135,4 +258,5 @@
   }
 
 }
+
 

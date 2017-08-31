@@ -17,6 +17,7 @@ use Goteo\Application\Message;
 use Goteo\Application\Session;
 use Goteo\Application\View;
 use Goteo\Core\Model;
+use Goteo\Model\Project;
 use Goteo\Library\Currency;
 use Goteo\Library\Text;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -156,7 +157,7 @@ class SessionListener extends AbstractListener {
         Session::store('currency', $currency); // depending on request
 
         // Default menus
-        Session::addToMainMenu(Text::get('regular-header-about'), '/about', 'about');
+        Session::addToMainMenu('<i class="icon icon-drop"></i> ' . Text::get('regular-header-about'), '/about', 'about');
         Session::addToMainMenu('<i class="fa fa-search"></i> ' . Text::get('regular-discover'), '/discover', 'discover');
         Session::addToMainMenu('<i class="fa fa-question-circle"></i> ' . Text::get('regular-faq'), '/faq', 'faq', 99);
 
@@ -174,25 +175,32 @@ class SessionListener extends AbstractListener {
             if($id === $currency) continue;
             $currencies['?currency=' . $id] = $c['html'] . ' ' .$c['name'];
         }
-        Session::addToMainMenu(Currency::get($currency, 'html') . ' ' . Currency::get($currency, 'name'), $currencies, 'currencies');
+        Session::addToMainMenu('<i>' . Currency::get($currency, 'html') . '</i> ' . Currency::get($currency, 'name'), $currencies, 'currencies');
 
         // Minimal User menu
-        Session::addToUserMenu('<i class="icon icon-activity"></i> ' . Text::get('dashboard-menu-activity'), '/dashboard/activity', 'dashboard-activity');
-        Session::addToUserMenu('<i class="icon icon-projects"></i> ' . Text::get('dashboard-menu-projects'), '/dashboard/projects', 'dashboard-projects');
-        Session::addToUserMenu('<i class="icon icon-wallet"></i> ' . Text::get('dashboard-menu-pool'), '/dashboard/wallet', 'dashboard-wallet');
-        Session::addToUserMenu('<i class="icon icon-settings"></i> ' . Text::get('dashboard-menu-profile-preferences'), '/dashboard/settings', 'dashboard-setting');
+        Session::addToUserMenu('<i class="icon icon-activity"></i> ' . Text::get('dashboard-menu-activity'), '/dashboard/activity', 'dashboard-activity', 20);
+        Session::addToUserMenu('<i class="icon icon-projects"></i> ' . Text::get('dashboard-menu-projects'), '/dashboard/projects', 'dashboard-projects', 30);
+        Session::addToUserMenu('<i class="icon icon-wallet"></i> ' . Text::get('dashboard-menu-pool'), '/dashboard/wallet', 'dashboard-wallet', 40);
+        Session::addToUserMenu('<i class="icon icon-settings"></i> ' . Text::get('dashboard-menu-profile-preferences'), '/dashboard/settings', 'dashboard-setting', 50);
 
         if($user = Session::getUser()) {
             if ( isset($user->roles['translator']) ||  isset($user->roles['admin']) || isset($user->roles['superadmin']) ) {
-                Session::addToUserMenu(Text::get('regular-translate_board'), '/translate', 'translate');
+                Session::addToUserMenu(Text::get('regular-translate_board'), '/translate', 'translate', 80);
             }
 
             if ( isset($user->roles['checker']) ) {
-              Session::addToUserMenu(Text::get('regular-review_board'), '/review', 'review');
+              Session::addToUserMenu(Text::get('regular-review_board'), '/review', 'review', 90);
             }
 
             if ( Session::isAdmin() ) {
-              Session::addToUserMenu(Text::get('regular-admin_board'), '/admin', 'admin');
+              Session::addToUserMenu(Text::get('regular-admin_board'), '/admin', 'admin', 90);
+            }
+
+            // Add last 2 owned projects
+            if($projects = Project::ofmine($user->id, false, 0, 2)) {
+                foreach($projects as $i => $prj) {
+                    Session::addToUserMenu('<img src="' . $prj->image->getLink(30,30) . '"> '.$prj->name, '/dashboard/project/' . $prj->id , 'project-' . $prj->id, 31 + $i, 'ident');
+                }
             }
         }
 

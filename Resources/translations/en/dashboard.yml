@@ -1,5 +1,10 @@
-api-key-no-generated: 'Aún no tienes una key generada'
+api-key-no-generated: 'No API key generated yet'
 api-key-tool-tip: 'With your Goteo user and API key you''re able to query any data trough our API'
+api-key-documentation: 'View API documentation'
+api-key-user: 'User'
+api-key-key: 'Key'
+api-key-generate-new: 'Generate a new key'
+api-key-generate-new-confirm: 'This action will remove the current key and will generate a new one. Continue?'
 contract-data_title: 'Contract details'
 dashboard-chart-days: '%s DAYS LEFT'
 dashboard-chart-invested: 'FINANÇAMENT OBTINGUT'
@@ -112,7 +117,7 @@ user-changepass-confirm: 'Confirm new password'
 user-changepass-new: 'New password'
 user-changepass-old: 'Current password'
 user-changepass-title: 'Change password'
-user-email-change-sended: 'We have sent you an email so that you can confirm the change of address'
+user-email-change-sent: 'We have sent you an email so that you can confirm the change of address'
 user-password-changed: 'You have changed your password'
 user-personal-saved: 'Updated personal information'
 user-prefer-saved: 'Your notification preferences were saved correctly'
@@ -155,7 +160,7 @@ dashboard-investors-mail-sent: 'Messages sent correctly'
 dashboard-menu-pool: 'My virtual wallet'
 dashboard-menu-pool-available: Remainder
 dashboard-menu-pool-conditions: Conditions
-dashboard-my-wallet-available: 'You currently have <span class="pool-amount">%s</span><br>in your virtual wallet in Goteo'
+dashboard-my-wallet-available: 'You currently have <span class="pool-amount">%s</span> <span class="pool-desc">in your virtual wallet in Goteo</span>'
 dashboard-my-wallet-contribute-button: Donate
 dashboard-my-wallet-modal-pool-info: 'Goteo’s virtual wallet is a feature of our platform that allows you to make a donation and later decide which project you’d like to support.<br> <p>Donations made through our platform pay you back in your income tax declaration, according to the Spanish regulation (Ley 49/2002, de 23 de diciembre, de régimen fiscal de las entidades sin fines lucrativos y de los incentivos fiscales al mecenazgo).</p> <p>When donating, you can download a certificate that validates towards the Tax Office your contribution to a non profit entity. You may access a compilation of your certificates in the past, associated with your previous donations in Goteo through your User Pannel, exactly in the section <a href="/dashboard/wallet/certificate" target="_blank">Certificado de donación</a>.</p><p> IMPORTANT NOTE: We remind you that the donations already reflected in a certificate from our Foundation can not be refunded. This means that if you have made a donation to a concrete project in our platform and that project does not reach its minimum tuning goal during the campaign, your donation will be transferred to your wallet but not back to your bank account. However, you may donate later that amount from your virtual wallet in Goteo.org to any other future project that you like, when you like, without introducing again your bank account number or PayPal user.</p>'
 dashboard-my-wallet-pool-info: 'More information on using your wallet'
@@ -187,4 +192,12 @@ project-upload-images-some-ko: 'Some images has not been uploaded!'
 dashboard-project-default-image-confirm: 'Do you want to use this image as a default for the project?'
 dashboard-project-image-default-ko: 'The image has not been set as default!'
 dashboard-project-image-reorder-ko: 'The images have not been ordered!'
+
+dashboard-project-send-to-markdown: "Insert this image into the text field"
+dashboard-max-files-reached: "The maximum number of files has been reached!"
+dashboard-file-type-error: "You can't upload files of this type!"
+all-files-uploaded: "All files uploaded successfully"
+uploaded-ok: "Uploaded successfully"
+publish-confirm-yes: "Do you want to publish this entry?"
+publish-confirm-no: "Do you want to unpublish this entry?"
 
