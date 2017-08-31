@@ -37,6 +37,10 @@ class IndexController extends \Goteo\Core\Controller
     public function indexAction()
     {
 
+        echo "here"; die();
+
+        View::setTheme('responsive');
+
         // orden de los elementos en portada
         $order = Home::getAll(Config::get('node'));
 
@@ -87,7 +91,7 @@ class IndexController extends \Goteo\Core\Controller
             );
 
 
-        return new Response(View::render('home/index', $vars));
+        return new Response(View::render('home/home', $vars));
     }
 
 }

@@ -13,6 +13,8 @@
 <script src="<?= SRC_URL ?>/assets/vendor/moment/min/moment-with-locales.min.js"></script>
 <script src="<?= SRC_URL ?>/assets/vendor/eonasdan-bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min.js"></script>
 
+<script type="text/javascript" src="/assets/vendor/slick-carousel/slick/slick.min.js"></script>
+
 <!--script src="<?= SRC_URL ?>/assets/js/docs.min.js"></script-->
 <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
 <!--script src="<?= SRC_URL ?>/assets/js/ie10-viewport-bug-workaround.js"></script-->
@@ -36,3 +38,4 @@
 <!-- geolocation -->
 <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?v=3.exp&amp;libraries=places"></script>
 <script type="text/javascript" src="<?= SRC_URL ?>/assets/js/geolocation.js"></script>
+<script type="text/javascript" src="<?= SRC_URL ?>/assets/js/counter.js"></script>
