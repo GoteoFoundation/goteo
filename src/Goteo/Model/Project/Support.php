@@ -12,6 +12,7 @@ namespace Goteo\Model\Project;
 
 use Goteo\Library\Text;
 use Goteo\Model\Project;
+use Goteo\Model\Message as Comment;
 
 class Support extends \Goteo\Core\Model {
 
@@ -169,6 +170,38 @@ class Support extends \Goteo\Core\Model {
 		}
 	}
 
+    /** Retrieve related messages to this support entry */
+    public function getThread() {
+        if($this->threadInstance instanceOf Comment) return $this->threadInstance;
+        if($this->thread) {
+            $this->threadInstance = Comment::get($this->thread);
+            return $this->threadInstance;
+        }
+        return null;
+    }
+
+    /* returns responses to this support from the message table */
+    public function getThreadResponses() {
+        if($thread = $this->getThread()) {
+            return $thread->responses;
+        }
+        return [];
+    }
+
+    /* returns number of responses to this support from the message table */
+    public function totalThreadResponses() {
+        if($this->total_thread_responses) return $this->total_thread_responses;
+        if($this->thread) {
+            $sql = "SELECT  COUNT(*) as total FROM message WHERE thread = ?";
+
+            $query = static::query($sql, [$this->thread]);
+            $this->total_thread_responses = (int)$query->fetchColumn();
+            return $this->total_thread_responses;
+        }
+        return 0;
+
+    }
+
 	/**
 	 * Quitar una colaboracion de un proyecto
 	 *
@@ -187,6 +220,7 @@ class Support extends \Goteo\Core\Model {
             self::query("DELETE FROM support WHERE id = :id AND project = :project", $values);
 
             //quitar el mensaje
+            //It may be removed, using CASCADE from MySQL instead
             self::query("DELETE FROM message WHERE id = ?", array($this->thread));
 
 

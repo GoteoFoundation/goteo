@@ -160,13 +160,13 @@ class Message extends \Goteo\Core\Model {
                 ", array($message->id));
 
             foreach ($query->fetchAll(\PDO::FETCH_CLASS) as $response) {
-                $message->responses[] = self::get($response->id);
+                $message->responses[$response->id] = self::get($response->id);
             }
 
 
 
 
-            $messages[] = $message;
+            $messages[$message->id] = $message;
         }
 
         return $messages;
@@ -192,6 +192,11 @@ class Message extends \Goteo\Core\Model {
             return false;
     }
 
+    public function getUser() {
+        if($this->user instanceOf User) return $this->user;
+        $this->user = User::get($this->user);
+        return $this->user;
+    }
     public function save (&$errors = array()) {
         if (!$this->validate($errors)) return false;
 

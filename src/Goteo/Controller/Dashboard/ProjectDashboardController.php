@@ -15,6 +15,7 @@ use Symfony\Component\HttpFoundation\Response;
 
 use Goteo\Application\Session;
 use Goteo\Application\View;
+use Goteo\Application\Message;
 use Goteo\Model\Project;
 use Goteo\Model\Project\Reward;
 use Goteo\Model\Project\Image as ProjectImage;
@@ -22,7 +23,6 @@ use Goteo\Model\Project\Support;
 use Goteo\Model\Blog;
 use Goteo\Model\Blog\Post as BlogPost;
 use Goteo\Model\Message as Comment;
-use Goteo\Application\Message;
 use Goteo\Library\Text;
 use Goteo\Console\UsersSend;
 use Goteo\Application\Exception\ModelNotFoundException;
@@ -307,10 +307,53 @@ class ProjectDashboardController extends \Goteo\Core\Controller {
         if($project instanceOf Response) return $project;
 
         $supports = Support::getAll($project);
-        $comments = Comment::getAll($project);
+
+        $editForm = $this->createFormBuilder()
+            ->add('support', 'text', [
+                'label' => 'supports-field-support',
+                'attr' => ['help' => Text::get('tooltip-project-support-support')],
+                'constraints' => array(new Constraints\NotBlank()),
+            ])
+            ->add('description', 'textarea', [
+                'label' => 'supports-field-description',
+                'attr' => ['help' => Text::get('tooltip-project-support-description')],
+                'constraints' => array(new Constraints\NotBlank()),
+            ])
+            ->add('id', 'hidden')
+            ->add('submit', 'submit')
+            ->getForm();
+
+        $editForm->handleRequest($request);
+        if ($editForm->isSubmitted()) {
+            if($editForm->isValid()) {
+                $errors = [];
+                $ok = false;
+                $data = $editForm->getData();
+                if($support = Support::get($data['id'])) {
+                    if($support->project === $this->project->id) {
+                        $support->rebuildData($data);
+                        // TODO: trigger save/update Comment inside save function
+                        // Add Feed item
+                        $ok = $support->save($errors);
+                    } else {
+                        $errors[] = Text::get('regular-no-edit-permissions');
+                    }
+
+                }
+                if($ok) {
+                    Message::info(Text::get('form-sent-success'));
+                    return $this->redirect('/dashboard/project/' . $this->project->id . '/supports');
+                } else {
+                    Message::error(Text::get('form-sent-error', implode(', ',$errors)));
+                }
+            }
+        }
+
         return $this->viewResponse('dashboard/project/supports', [
             'supports' => $supports,
-            'comments' => $comments
+            'editForm' => $editForm->createView(),
+            'editFormSubmitted' => $editForm->isSubmitted(),
+            'errors' => Message::getErrors(false)
         ]);
     }
 
