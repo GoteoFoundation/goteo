@@ -18,8 +18,10 @@ use Goteo\Application\View;
 use Goteo\Model\Project;
 use Goteo\Model\Project\Reward;
 use Goteo\Model\Project\Image as ProjectImage;
+use Goteo\Model\Project\Support;
 use Goteo\Model\Blog;
 use Goteo\Model\Blog\Post as BlogPost;
+use Goteo\Model\Message as Comment;
 use Goteo\Application\Message;
 use Goteo\Library\Text;
 use Goteo\Console\UsersSend;
@@ -44,17 +46,19 @@ class ProjectDashboardController extends \Goteo\Core\Controller {
         $user = Session::getUser();
         if(!$project->userCanEdit($user)) return;
 
+        $prefix = '/dashboard/project/' . $project->id ;
+
         // Create sidebar menu
-        Session::addToSidebarMenu('<i class="icon icon-2x icon-summary"></i> ' . Text::get('dashboard-menu-activity-summary'), '/dashboard/project/' . $project->id .'/summary', 'summary');
+        Session::addToSidebarMenu('<i class="icon icon-2x icon-summary"></i> ' . Text::get('dashboard-menu-activity-summary'), $prefix . '/summary', 'summary');
         Session::addToSidebarMenu('<i class="icon icon-2x icon-preview"></i> ' . Text::get('regular-preview'), '/project/' . $project->id, 'preview');
         Session::addToSidebarMenu('<i class="icon icon-2x icon-edit"></i> ' . Text::get('regular-edit'), '/project/edit/' . $project->id, 'edit');
-        Session::addToSidebarMenu('<i class="icon icon-2x icon-images"></i> ' . Text::get('images-main-header'), '/dashboard/project/' . $project->id .'/images', 'images');
-        Session::addToSidebarMenu('<i class="icon icon-2x icon-updates"></i> ' . Text::get('dashboard-menu-projects-updates'), '/dashboard/project/' . $project->id .'/updates', 'updates');
-        Session::addToSidebarMenu('<i class="icon icon-2x icon-supports"></i> ' . Text::get('dashboard-menu-projects-supports'), '/dashboard/projects/supports/select?project=' . $project->id , 'supports');
+        Session::addToSidebarMenu('<i class="icon icon-2x icon-images"></i> ' . Text::get('images-main-header'), $prefix .'/images', 'images');
+        Session::addToSidebarMenu('<i class="icon icon-2x icon-updates"></i> ' . Text::get('dashboard-menu-projects-updates'), $prefix .'/updates', 'updates');
+        Session::addToSidebarMenu('<i class="icon icon-2x icon-supports"></i> ' . Text::get('dashboard-menu-projects-supports'), $prefix . '/supports' , 'supports');
         Session::addToSidebarMenu('<i class="icon icon-2x icon-donors"></i> ' . Text::get('dashboard-menu-projects-rewards'), '/dashboard/projects/rewards/select?project=' . $project->id, 'rewards');
         Session::addToSidebarMenu('<i class="icon icon-2x icon-partners"></i> ' . Text::get('dashboard-menu-projects-messegers'), '/dashboard/projects/messengers/select?project=' . $project->id, 'comments');
-        Session::addToSidebarMenu('<i class="icon icon-2x icon-analytics"></i> ' . Text::get('dashboard-menu-projects-analytics'), '/dashboard/project/' . $project->id . '/analytics', 'analytics');
-        Session::addToSidebarMenu('<i class="icon icon-2x icon-shared"></i> ' . Text::get('project-share-materials'), '/dashboard/project/' . $project->id .'/materials', 'materials');
+        Session::addToSidebarMenu('<i class="icon icon-2x icon-analytics"></i> ' . Text::get('dashboard-menu-projects-analytics'), $prefix . '/analytics', 'analytics');
+        Session::addToSidebarMenu('<i class="icon icon-2x icon-shared"></i> ' . Text::get('project-share-materials'), $prefix .'/materials', 'materials');
 
         View::getEngine()->useData([
             'project' => $project,
@@ -295,23 +299,28 @@ class ProjectDashboardController extends \Goteo\Core\Controller {
     }
 
     /**
+    * Collaborations section
+    */
+    public function supportsAction($pid = null, Request $request)
+    {
+        $project = $this->validateProject($pid, 'supports');
+        if($project instanceOf Response) return $project;
+
+        $supports = Support::getAll($project);
+        $comments = Comment::getAll($project);
+        return $this->viewResponse('dashboard/project/supports', [
+            'supports' => $supports,
+            'comments' => $comments
+        ]);
+    }
+
+    /**
     * Analytics section
     */
     public function analyticsAction($pid = null, Request $request)
     {
         $project = $this->validateProject($pid, 'analytics');
         if($project instanceOf Response) return $project;
-
-        // if($request->isMethod('post')) {
-        //     $project->analytics_id = $request->request->get('analytics_id');
-        //     $project->facebook_pixel= $request->request->get('facebook_pixel');
-
-        //     if ($project->save($errors))
-        //         Message::info(Text::get('dashboard-project-analytics-ok'));
-        //     else
-        //         Message::error(Text::get('dashboard-project-analytics-fail'));
-
-        // }
 
         $defaults = (array) $project;
         $form = $this->createFormBuilder($defaults)

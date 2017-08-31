@@ -124,6 +124,20 @@ $dash->add('dashboard-project-updates-edit', new Route(
         )
 ));
 
+// Project supports list
+$dash->add('dashboard-project-supports', new Route(
+    '/project/{pid}/supports',
+    array('_controller' => 'Goteo\Controller\Dashboard\ProjectDashboardController::supportsAction',
+        )
+));
+// Project supports item editing
+$dash->add('dashboard-project-supports-edit', new Route(
+    '/project/{pid}/supports/{sid}',
+    array('_controller' => 'Goteo\Controller\Dashboard\ProjectDashboardController::supportsEditAction',
+        )
+));
+
+// Analytics
 $dash->add('dashboard-project-analytics', new Route(
     '/project/{pid}/analytics',
     array('_controller' => 'Goteo\Controller\Dashboard\ProjectDashboardController::analyticsAction',
