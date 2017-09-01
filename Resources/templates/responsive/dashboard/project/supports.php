@@ -22,7 +22,11 @@
               </p>
               <div class="comments collapse" id="comments-<?= $support->id ?>">
                 <?php if($comments): ?>
-                  <?= $this->insert('dashboard/project/partials/comments', ['comments' => $support->getThreadResponses()]) ?>
+                  <?= $this->insert('dashboard/project/partials/comments/full', [
+                        'comments' => $support->getThreadResponses(),
+                        'thread' => $support->thread,
+                        'project' => $support->project
+                        ]) ?>
                 <?php else: ?>
                     <p class="alert alert-danger"><?= $this->text('dashboard-project-support-no-responses') ?></p>
                 <?php endif ?>
