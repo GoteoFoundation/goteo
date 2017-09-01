@@ -60,3 +60,9 @@ home-foundation-goteo-values-more-description: 'Lorem ipsum dolor sit amet, cons
 home-foundation-goteo-values-action: 'Saber más'
 
 home-tools-title: 'Herramientas de Goteo'
+
+home-menu-sidebar-find-project: 'Encontrar un proyecto'
+home-menu-sidebar-load-wallet: 'Recargar mi monedero'
+home-menu-sidebar-download-certificate: 'Bajar mi certificado de donación'
+home-menu-sidebar-goteo-adventages: 'Conoce las ventajas de Goteo'
+home-menu-sidebar-matchfunding: 'Acceder a fondos complementarios'

@@ -45,6 +45,29 @@ body {
       }
     }
 
+     &.home.has-sidebar{
+      #sidebar-menu {
+            position: absolute;
+            flex: none;
+            z-index: 1001;
+            overflow: hidden;
+            .sidebar-header{
+              display: none;
+            }
+            &.fixed {
+                position:absolute;
+                top:50 !important;
+            }
+            .btn-home{
+              display: block;
+            }
+      }
+    }
+
+    .btn-home{
+      display: none;
+    }
+
     &.sidebar-opened {
       .page-wrap {
           #sidebar-menu {
