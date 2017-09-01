@@ -14,6 +14,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
 use Goteo\Application\Session;
+use Goteo\Application\AppEvents;
 use Goteo\Application\View;
 use Goteo\Application\Message;
 use Goteo\Model\Project;
@@ -27,6 +28,7 @@ use Goteo\Library\Text;
 use Goteo\Console\UsersSend;
 use Goteo\Application\Exception\ModelNotFoundException;
 use Goteo\Application\Exception\ControllerAccessDeniedException;
+use Goteo\Application\Event\FilterMessageEvent;
 
 use Symfony\Component\Validator\Constraints;
 
@@ -336,16 +338,18 @@ class ProjectDashboardController extends \Goteo\Core\Controller {
                 }
 
                 if($support) {
+                    $is_update = $support->thread ? true : false;
                     if($support->project === $this->project->id) {
                         $support->rebuildData($data);
                         if($ok = $support->save($errors)) {
                             // Create or update the Comment associated
                             $comment = new Comment([
-                                'id' => $support->thread ? $support->thread : null,
+                                'id' => $is_update ? $support->thread : null,
                                 'user' => $this->project->owner,
                                 'project' => $this->project->id,
                                 'blocked' => true,
-                                'message' => "{$support->support}: {$support->description}"
+                                'message' => "{$support->support}: {$support->description}",
+                                'date' => date('Y-m-d H:i:s')
                             ]);
                             $ok = $comment->save($errors);
                             // Update Support thread if needded
@@ -353,12 +357,16 @@ class ProjectDashboardController extends \Goteo\Core\Controller {
                                 $support->thread = $comment->id;
                                 $ok = $support->save($errors);
                             }
-                            // TODO: trigger here save/update Comment
-                            // to add a Feed item and send related emails
                         }
                     }
                 }
                 if($ok) {
+                    // Send and event to create the Feed and send emails
+                    if($is_update) {
+                        $this->dispatch(AppEvents::MESSAGE_UPDATED, new FilterMessageEvent($comment));
+                    } else {
+                        $this->dispatch(AppEvents::MESSAGE_CREATED, new FilterMessageEvent($comment));
+                    }
                     Message::info(Text::get('form-sent-success'));
                     return $this->redirect('/dashboard/project/' . $this->project->id . '/supports');
                 } else {

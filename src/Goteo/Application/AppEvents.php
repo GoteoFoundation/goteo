@@ -238,5 +238,25 @@ final class AppEvents
      */
     const PROJECT_PUBLISH = 'console.project.publish';
 
+    /**
+     * The message.created event is thrown when a new message/comments is created
+     *
+     * The event listener receives an
+     * Goteo\Application\Event\FilterMessageEvent instance.
+     *
+     * @var string
+     */
+    const MESSAGE_CREATED = 'message.created';
+
+    /**
+     * The message.created event is thrown when a new message/comments is updated
+     *
+     * The event listener receives an
+     * Goteo\Application\Event\FilterMessageEvent instance.
+     *
+     * @var string
+     */
+    const MESSAGE_UPDATED = 'message.updated';
+
 
 }

@@ -198,6 +198,13 @@ class Message extends \Goteo\Core\Model {
         return $this->user;
     }
 
+    public function getProject() {
+        if(!$this->project) return null;
+        if($this->projectInstance instanceOf Project) return $this->projectInstance;
+        $this->projectInstance = Project::get($this->project);
+        return $this->projectInstance;
+    }
+
     public function save (&$errors = array()) {
         if (!$this->validate($errors)) return false;
         if ($this->user instanceOf User) {

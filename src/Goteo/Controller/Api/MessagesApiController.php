@@ -16,6 +16,8 @@ use Goteo\Application\Exception\ModelException;
 use Goteo\Application\Exception\ModelNotFoundException;
 
 use Goteo\Application\View;
+use Goteo\Application\AppEvents;
+use Goteo\Application\Event\FilterMessageEvent;
 use Goteo\Model\User;
 use Goteo\Model\Project;
 use Goteo\Model\Message as Comment;
@@ -74,7 +76,7 @@ class MessagesApiController extends AbstractApiController {
             throw new ControllerAccessDeniedException('Parent is a child!');
         }
         $id = $request->request->get('id');
-        // Create or update the Comment associated
+        // Create the Comment associated (not updated allowed for the moment)
         if($id) {
             if(!$comment = Comment::get($id)) {
                 throw new ModelNotFoundException("Comment [$id] not found!");
@@ -94,6 +96,10 @@ class MessagesApiController extends AbstractApiController {
         if(!$comment->save($errors)) {
             throw new ModelException('Update failed '. implode(", ", $errors));
         }
+
+        // Send and event to create the Feed and send emails
+        $this->dispatch(AppEvents::MESSAGE_UPDATED, new FilterMessageEvent($comment));
+
         View::setTheme('responsive');
         return $this->jsonResponse([
             'id' => $comment->id,
