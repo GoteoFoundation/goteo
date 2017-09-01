@@ -128,4 +128,21 @@ $api->add('api-keywords', new Route(
         )
 ));
 
+// Messages list
+$api->add('api-messages-project', new Route(
+    '/projects/{pid}/comments',
+    array('_controller' => 'Goteo\Controller\Api\MessagesApiController::commentsAction',
+        )
+));
+
+$api->add('api-messages-edit', new Route(
+    '/comments',
+    array('_controller' => 'Goteo\Controller\Api\MessagesApiController::commentsEditAction'),
+    array(), // requirements
+    array(), // options
+    '', // host
+    array(), // schemes
+    array('POST') // methods
+));
+
 return $api;

@@ -155,6 +155,9 @@ $(function(){
       // Tags with autocomplete (optional)
       var $this = $(this);
       var url = $this.data('url');
+      var displayKey = $this.data('display-key') || 'tag';
+      var displayValue = $this.data('display-value') || 'tag';
+      var wildcard = $this.data('wilcard') || '%QUERY';
       var ops = { tagClass: 'label label-lilac label-big' };
       if(url) {
         var tags = new Bloodhound({
@@ -164,7 +167,7 @@ $(function(){
           // datumTokenizer: Bloodhound.tokenizers.whitespace,
           queryTokenizer: Bloodhound.tokenizers.whitespace,
           remote: {
-            wildcard: '%QUERY',
+            wildcard: wildcard,
             url: url
           }
         });
@@ -176,8 +179,8 @@ $(function(){
           },
           {
             name: 'tags',
-            displayKey: 'tag', //TODO: key/values configurable
-            valueKey: 'tag',
+            displayKey: displayKey,
+            valueKey: displayValue,
             source: tags.ttAdapter()
           }];
         // console.log('tags', tags, tags.ttAdapter());

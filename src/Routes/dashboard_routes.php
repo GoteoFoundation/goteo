@@ -19,14 +19,6 @@ $dash->add('dashboard-activity', new Route(
     array('_controller' => 'Goteo\Controller\DashboardController::activityAction',
         )
 ));
-// Old route Redirection
-$dash->add('dashboard-activity-sumary', new Route(
-    '/activity/summary',
-    array('_controller' => function () {
-        return new RedirectResponse("/dashboard/activity");
-    })
-));
-
 // Virtual wallet
 $dash->add('dashboard-wallet', new Route(
     '/wallet',
@@ -124,6 +116,20 @@ $dash->add('dashboard-project-updates-edit', new Route(
         )
 ));
 
+// Project supports list
+$dash->add('dashboard-project-supports', new Route(
+    '/project/{pid}/supports',
+    array('_controller' => 'Goteo\Controller\Dashboard\ProjectDashboardController::supportsAction',
+        )
+));
+// Project supports item editing
+$dash->add('dashboard-project-supports-edit', new Route(
+    '/project/{pid}/supports/{sid}',
+    array('_controller' => 'Goteo\Controller\Dashboard\ProjectDashboardController::supportsEditAction',
+        )
+));
+
+// Analytics
 $dash->add('dashboard-project-analytics', new Route(
     '/project/{pid}/analytics',
     array('_controller' => 'Goteo\Controller\Dashboard\ProjectDashboardController::analyticsAction',
@@ -186,5 +192,49 @@ $dash->add('dashboard-settings-apikey', new Route(
     array('_controller' => 'Goteo\Controller\Dashboard\SettingsDashboardController::apikeyAction',
         )
 ));
+
+// Redirection old routes
+// $dash->add('dashboard-old-sumary', new Route(
+//     '/activity/summary',
+//     array('_controller' => function () {
+//         return new RedirectResponse("/dashboard/activity");
+//     })
+// ));
+// $dash->add('dashboard-old-profile', new Route(
+//     '/profile',
+//     array('_controller' => function () {
+//         return new RedirectResponse("/dashboard/settings");
+//     })
+// ));
+// $dash->add('dashboard-old-profile-2', new Route(
+//     '/profile/profile',
+//     array('_controller' => function () {
+//         return new RedirectResponse("/dashboard/settings");
+//     })
+// ));
+// $dash->add('dashboard-old-preferences', new Route(
+//     '/profile/preferences',
+//     array('_controller' => function () {
+//         return new RedirectResponse("/dashboard/settings/preferences");
+//     })
+// ));
+// $dash->add('dashboard-old-location', new Route(
+//     '/profile/location',
+//     array('_controller' => function () {
+//         return new RedirectResponse("/dashboard/settings");
+//     })
+// ));
+// $dash->add('dashboard-old-personal', new Route(
+//     '/profile/personal',
+//     array('_controller' => function () {
+//         return new RedirectResponse("/dashboard/settings/personal");
+//     })
+// ));
+// $dash->add('dashboard-old-access', new Route(
+//     '/profile/access',
+//     array('_controller' => function () {
+//         return new RedirectResponse("/dashboard/settings/access");
+//     })
+// ));
 
 return $dash;

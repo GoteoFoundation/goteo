@@ -140,6 +140,9 @@ $sc->register('app.listener.poolinvest', 'Goteo\Application\EventListener\PoolIn
 // Legacy Security ACL
 $sc->register('app.listener.acl', 'Goteo\Application\EventListener\AclListener')
    ->setArguments(array(new Reference('logger')));
+// Messages
+$sc->register('app.listener.messages', 'Goteo\Application\EventListener\MessageListener')
+   ->setArguments(array(new Reference('logger')));
 
 // Event Dispatcher object
 $sc->register('dispatcher', 'Symfony\Component\EventDispatcher\EventDispatcher')
@@ -150,6 +153,7 @@ $sc->register('dispatcher', 'Symfony\Component\EventDispatcher\EventDispatcher')
   ->addMethodCall('addSubscriber', array(new Reference('app.listener.project')))
   ->addMethodCall('addSubscriber', array(new Reference('app.listener.invest')))
   ->addMethodCall('addSubscriber', array(new Reference('app.listener.poolinvest')))
+  ->addMethodCall('addSubscriber', array(new Reference('app.listener.messages')))
   ->addMethodCall('addSubscriber', array(new Reference('console.listener.milestone')))
   ->addMethodCall('addSubscriber', array(new Reference('console.listener.favourite')))
   ->addMethodCall('addSubscriber', array(new Reference('app.listener.acl')))

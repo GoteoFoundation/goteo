@@ -22,6 +22,9 @@
 
   p {
     color: $secondary-color;
+    &.text-danger {
+        color: $color-red;
+    }
   }
 
   h1 {
@@ -152,6 +155,19 @@
     }
     > li + li {
       margin-left: 20px;
+    }
+  }
+
+  .comments {
+    &.hidden {
+        height:0;
+    }
+    .media {
+        padding: 10px 5px;
+        &:first-child {
+            border-top: 0;
+        }
+        border-top: 2px solid #ddd;
     }
   }
 }

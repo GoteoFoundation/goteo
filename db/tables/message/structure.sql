@@ -18,3 +18,12 @@ ALTER TABLE `message` ADD `blocked` BOOLEAN NOT NULL DEFAULT '0' COMMENT 'No se 
 
 -- Para marcar si un mensaje (que sea el hilo) no se puede responder
 ALTER TABLE `message` ADD `closed` BOOLEAN NOT NULL DEFAULT '0' COMMENT 'No se puede responder';
+
+
+-- foreign indexs
+DELETE m.* FROM message m WHERE thread NOT IN (SELECT id FROM (SELECT id FROM message) n);
+ALTER TABLE `message` ADD FOREIGN KEY (`thread`) REFERENCES `message`(`id`) ON UPDATE CASCADE ON DELETE CASCADE;
+
+DELETE FROM message WHERE `user` NOT IN (SELECT id FROM `user`);
+DELETE FROM message WHERE `project` NOT IN (SELECT id FROM `project`);
+ALTER TABLE `message` ADD FOREIGN KEY (`user`) REFERENCES `user`(`id`) ON UPDATE CASCADE ON DELETE CASCADE, ADD FOREIGN KEY (`project`) REFERENCES `project`(`id`) ON UPDATE CASCADE ON DELETE CASCADE;
