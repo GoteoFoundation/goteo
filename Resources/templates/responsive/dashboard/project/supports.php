@@ -39,9 +39,6 @@
         <button class="btn btn-lg btn-cyan" data-toggle="modal" data-target="#edit-modal"><i class="fa fa-plus"></i> <?= $this->text('dashboard-project-support-add') ?></button>
     </p>
 
-
-    <h2><?= $this->text('dashboard-project-support-responses') ?></h2>
-
   </div>
 </div>
 

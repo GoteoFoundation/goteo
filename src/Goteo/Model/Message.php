@@ -197,17 +197,16 @@ class Message extends \Goteo\Core\Model {
         $this->user = User::get($this->user);
         return $this->user;
     }
+
     public function save (&$errors = array()) {
         if (!$this->validate($errors)) return false;
-
         if ($this->user instanceOf User) {
             $this->user = $this->user->id;
         }
-        else {
-            //TODO: por coherencia hacer algo asi:
-            // $errors[] = 'User must be defined!';
-            // return false;
-        }
+
+        // HTML tags cleaning
+        $this->message = Text::tags_filter($this->message);
+
 
         $fields = array(
             'id',
@@ -219,31 +218,15 @@ class Message extends \Goteo\Core\Model {
             'closed'
             );
 
-        $set = '';
-        $values = array();
-
-        foreach ($fields as $field) {
-            if (!empty($this->$field)) {
-                if ($set != '') $set .= ", ";
-                $set .= "`$field` = :$field ";
-                $values[":$field"] = $this->$field;
-            }
-        }
-
-        //eliminamos etiquetas script,iframe..
-        $values[':message']=Text::tags_filter($values[':message']);
-
         try {
-            $sql = "REPLACE INTO message SET " . $set;
-            self::query($sql, $values);
-            if (empty($this->id)) $this->id = self::insertId();
-
+            //automatic $this->id assignation
+            $this->dbInsertUpdate($fields);
             // actualizar campo calculado
             self::numMessengers($this->project);
 
             return true;
         } catch(\PDOException $e) {
-            $errors[] = "El mensaje no se ha grabado correctamente. Por favor, inténtelo de nuevo." . $e->getMessage();
+            $errors[] = "Support save error: " . $e->getMessage();
             return false;
         }
     }

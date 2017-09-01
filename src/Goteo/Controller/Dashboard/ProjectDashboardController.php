@@ -329,21 +329,42 @@ class ProjectDashboardController extends \Goteo\Core\Controller {
                 $errors = [];
                 $ok = false;
                 $data = $editForm->getData();
-                if($support = Support::get($data['id'])) {
+                if($data['id']) {
+                    $support = Support::get($data['id']);
+                } else {
+                    $support = new Support($data + ['project' => $this->project->id]);
+                }
+
+                if($support) {
                     if($support->project === $this->project->id) {
                         $support->rebuildData($data);
-                        // TODO: trigger save/update Comment inside save function
-                        // Add Feed item
-                        $ok = $support->save($errors);
-                    } else {
-                        $errors[] = Text::get('regular-no-edit-permissions');
+                        if($ok = $support->save($errors)) {
+                            // Create or update the Comment associated
+                            $comment = new Comment([
+                                'id' => $support->thread ? $support->thread : null,
+                                'user' => $this->project->owner,
+                                'project' => $this->project->id,
+                                'blocked' => true,
+                                'message' => "{$support->support}: {$support->description}"
+                            ]);
+                            $ok = $comment->save($errors);
+                            // Update Support thread if needded
+                            if($ok && !$support->thread) {
+                                $support->thread = $comment->id;
+                                $ok = $support->save($errors);
+                            }
+                            // TODO: trigger here save/update Comment
+                            // to add a Feed item and send related emails
+                        }
                     }
-
                 }
                 if($ok) {
                     Message::info(Text::get('form-sent-success'));
                     return $this->redirect('/dashboard/project/' . $this->project->id . '/supports');
                 } else {
+                    if(empty($errors)) {
+                        $errors[] = Text::get('regular-no-edit-permissions');
+                    }
                     Message::error(Text::get('form-sent-error', implode(', ',$errors)));
                 }
             }
