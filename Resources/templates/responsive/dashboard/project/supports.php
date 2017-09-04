@@ -20,7 +20,7 @@
                 <button class="btn pull-right btn-default" data-toggle="modal" data-target="#edit-modal"><i class="icon icon-1x icon-edit"></i> <?= $this->text('regular-edit') ?></button>
                 <button class="btn btn-<?= $comments ? 'lilac' : 'default' ?>" data-toggle="collapse"  data-target="#comments-<?= $support->id ?>"><i class="icon-1x icon icon-partners"></i> <?= $this->text('regular-num-comments', $comments) ?></button>
               </p>
-              <div class="comments collapse" id="comments-<?= $support->id ?>">
+              <div class="comments collapse" id="comments-<?= $support->thread ?>">
                 <?php if($comments): ?>
                   <?= $this->insert('dashboard/project/partials/comments/full', [
                         'comments' => $support->getThreadResponses(),
@@ -92,6 +92,13 @@ $(function(){
         $('#edit-modal').modal('show');
         $('#edit-modal').modal('show');
     <?php endif ?>
+
+    // Autoexpand comment-list if in hash
+    var $thread = $(location.hash);
+    if($thread.length) {
+      console.log('hash',location.hash);
+      $thread.collapse('show');
+    }
 });
 
 // @license-end

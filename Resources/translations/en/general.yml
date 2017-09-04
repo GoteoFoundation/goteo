@@ -165,6 +165,7 @@ regular-cancel-back: 'Cancel & Go back'
 regular-back: 'Go back'
 regular-call: Matchfunding
 regular-num-comments: '%s comments'
+regular-manage: 'Manage'
 regular-no-edit-permissions: Not enough permissions to edit this entry!
 session-about-to-expire: 'Your session will expire in 10 Minutes, do you want to reload?'
 session-expired: 'Your session has expired'

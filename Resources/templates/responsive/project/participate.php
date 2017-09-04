@@ -120,16 +120,11 @@
 					<div class="msg-content">
 					<?= $message->message ?>
 					</div>
-					<?php // puede borrar este mensaje si es el impulsor o un admin central o su nodo
-                        if ( $_SESSION['user']->id == $project->owner
-                            || ( isset($_SESSION['admin_node']) && $_SESSION['admin_node'] == \GOTEO_NODE )
-                            || ( isset($_SESSION['admin_node']) && $project->node == $_SESSION['admin_node'] )
-                            || isset($_SESSION['user']->roles['superadmin'])
-                        ) : ?>
-                            <a class="delete" href="/message/delete/<?php echo $message->id; ?>/<?php echo $project->id; ?>"><?= $this->text('regular-delete') ?></a>
+					<?php if ($project->userCanEdit($this->get_user())): ?>
+                        <a class="delete" href="/dashboard/project/<?= $project->id ?>/supports#comments-<?= $message->id ?>"><?= $this->text('regular-manage') ?></a>
                     <?php endif ?>
 				</div>
-				<?php if (!empty($_SESSION['user']) && $project->status >= 3) : ?>
+				<?php if ($this->is_logged() && $project->isApproved()) : ?>
 				<div class="row spacer-5 button-msg">
                     <div class="col-xs-5 main-button">
                        <button class="btn btn-block green"><?= $this->text('project-messages-answer_it') ?></button>
@@ -137,54 +132,27 @@
                     <div class="box clear-both normalize-padding">
                     	<div class="join-button pull-left" >
                     	</div>
-                    	<div class="text-area">
-                    		<form method="post" action="/message/<?= $project->id ?>">
-					            <input type="hidden" id="thread" name="thread" value="<?= $message->id ?>" />
-                    			<textarea id="message-text" name="message" class="message" required></textarea>
-                    			<div class="col-sm-2 pull-right no-padding">
-                       				<button class="btn btn-block green" type="submit"><?= $this->text('blog-send_comment-button') ?></button>
-                   				</div>
-                   			</form>
+                    	<div class="ajax-comments text-area" data-url="/api/comments" data-thread="<?= $message->id ?>" data-list="#comments-list-<?= $message->id ?>" data-project="<?= $project->id ?>">
+                			<textarea id="message-text" name="message" class="message" required></textarea>
+                            <p class="text-danger hidden error-message"></p>
+
+                			<div class="col-sm-2 pull-right no-padding">
+                   				<button class="btn btn-block green send-comment"><?= $this->text('blog-send_comment-button') ?></button>
+               				</div>
                     	</div>
                     </div>
                 </div>
                 <?php endif; ?>
 
-
-			<?php if (!empty($message->responses)) :
-                    foreach ($message->responses as $child) : ?>
-                    	<div id="child-msg-<?= $child->id ?>" class="row no-margin normalize-padding message child<?= ($child->user->id == $project->owner) ? ' owner' : ' no-owner' ?> no-margin normalize-padding">
-							<?php if($child->user->id != $project->owner): ?>
-							<div class="pull-left">
-								<a href="/user/<?= $child->user->id ?>"><img class="avatar" src="<?= $child->user->avatar->getLink(45, 45, true); ?>"></a>
-							</div>
-							<?php endif; ?>
-							<div class="pull-left user-name"><a href="/user/<?= $child->user->id ?>"><?= ucfirst($child->user->name) ?></a></div>
-							<div class="pull-right time-ago">
-								Hace <?= $child->timeago ?>
-							</div>
-							<div class="msg-content">
-								<?= $child->message ?>
-								<?php if ( $_SESSION['user']->id == $project->owner
-		                            || ( isset($_SESSION['admin_node']) && $_SESSION['admin_node'] == \GOTEO_NODE )
-		                            || ( isset($_SESSION['admin_node']) && $project->node == $_SESSION['admin_node'] )
-		                            || isset($_SESSION['user']->roles['superadmin'])
-		                        ) : ?>
-									<div>
-										<a class="delete" href="/message/delete/<?php echo $child->id; ?>/<?php echo $project->id; ?>"><?= $this->text('regular-delete') ?></a>
-									</div>
-								<?php endif; ?>
-							</div>
-
-						</div>
+                <div id="comments-list-<?= $message->id ?>">
+    			  <?php if (!empty($message->responses)) :
+                    foreach ($message->responses as $child): ?>
+                    	<?= $this->insert('project/partials/comment', ['comment' => $child, 'project' => $project]) ?>
             		<?php endforeach ?>
+                  <?php endif ?>
+                </div>
 
-            <?php endif; ?>
-            <!-- End responses -->
-
-
-
-            <?php endforeach; ?>
+            <?php endforeach ?>
             <!-- End messages -->
 
 			</div>
@@ -197,3 +165,45 @@
 
 
 <?php $this->replace() ?>
+
+
+<?php $this->section('footer') ?>
+
+<script type="text/javascript">
+// @license magnet:?xt=urn:btih:0b31508aeb0634b347b8270c7bee4d411b5d4109&dn=agpl-3.0.txt
+
+$(function(){
+    // Send comments
+    $(".ajax-comments").on('click', ".send-comment", function (e) {
+        e.preventDefault();
+        var $parent = $(this).closest('.ajax-comments');
+        var $list = $($parent.data('list'));
+        var url = $parent.data('url');
+        var $error = $parent.find('.error-message');
+        var $textarea = $parent.find('[name="message"]');
+        var data = {
+            message: $textarea.val(),
+            thread: $parent.data('thread'),
+            project: $parent.data('project'),
+            view: 'project'
+        }
+
+        $error.addClass('hidden').html('');
+        $.post(url, data, function(data) {
+            // console.log('ok!', data);
+            $list.append(data.html);
+            $textarea.val('');
+            $parent.closest('.box').hide();
+          }).fail(function(data) {
+            var error = JSON.parse(data.responseText);
+            // console.log('error', data, error)
+            $error.removeClass('hidden').html(error.error);
+          });
+    });
+
+});
+
+// @license-end
+</script>
+
+<?php $this->append() ?>

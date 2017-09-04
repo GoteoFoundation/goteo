@@ -100,19 +100,36 @@ class MessagesApiController extends AbstractApiController {
         // Send and event to create the Feed and send emails
         $this->dispatch(AppEvents::MESSAGE_UPDATED, new FilterMessageEvent($comment));
 
+        if($request->request->get('view') === 'dashboard') {
+            $view = 'dashboard/project/partials/comments/item';
+        }
+        else {
+            $view = 'project/partials/comment';
+        }
         View::setTheme('responsive');
         return $this->jsonResponse([
             'id' => $comment->id,
             'user' => $comment->user,
             'project' => $comment->project,
             'message' => $comment->message,
-            'html' => View::render('dashboard/project/partials/comments/item', [
-                'name' => $comment->getUser()->name,
-                'avatar' => $comment->getUser()->avatar->getLink(60, 60, true),
-                'date' => date_formater($comment->date, true),
-                'message' => $comment->message
-            ])
+            'html' => View::render($view, [ 'comment' => $comment, 'project' => $prj ])
         ]);
     }
 
+    public function commentsDeleteAction($cid, Request $request) {
+        if(!$this->user) {
+            throw new ControllerAccessDeniedException();
+        }
+        if( !$message = Comment::get($cid) ) {
+            throw new ModelNotFoundException("Message [$cid] not found");
+        }
+        if(!$prj = Project::get($message->project)) {
+            throw new ModelNotFoundException("Project for message [$cid] not found");
+        }
+        if(!$prj->userCanEdit($this->user)) {
+            throw new ControllerAccessDeniedException();
+        }
+        $message->dbDelete();
+        return $this->jsonResponse(['id' => $message->id]);
+    }
 }

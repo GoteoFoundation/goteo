@@ -1,11 +1,6 @@
 <div class="comments-list" id="comments-list-<?= $this->thread ?>">
   <?php foreach($this->comments as $comment): ?>
-    <?= $this->insert('dashboard/project/partials/comments/item', [
-        'name' => $comment->getUser()->name,
-        'avatar' => $comment->getUser()->avatar->getLink(60, 60, true),
-        'date' => date_formater($comment->date, true),
-        'message' => $comment->message
-        ]) ?>
+    <?= $this->insert('dashboard/project/partials/comments/item', ['comment' => $comment]) ?>
   <?php endforeach ?>
 </div>
 

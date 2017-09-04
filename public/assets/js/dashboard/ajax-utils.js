@@ -63,6 +63,7 @@ $(function(){
     });
 
 
+    // Send comments
     $(".ajax-comments").on('click', ".send-comment", function (e) {
         e.preventDefault();
         var $parent = $(this).closest('.ajax-comments');
@@ -73,7 +74,8 @@ $(function(){
         var data = {
             message: $textarea.val(),
             thread: $parent.data('thread'),
-            project: $parent.data('project')
+            project: $parent.data('project'),
+            view: 'dashboard'
         }
         $error.addClass('hidden').html('');
         $.post(url, data, function(data) {
@@ -84,7 +86,30 @@ $(function(){
             var error = JSON.parse(data.responseText);
             console.log('error', data, error)
             $error.removeClass('hidden').html(error.error);
-          })
+          });
     });
 
+    // Deltee comments
+    $(".comments-list").on('click', ".delete-comment", function (e) {
+        e.preventDefault();
+        var ask = $(this).data('confirm');
+        var url = $(this).data('url');
+        var $item = $(this).closest('.comment-item');
+        var $error = $item.find('.error-message');
+        if(confirm(ask)) {
+            console.log('delete',url);
+            $.ajax({
+                url: url,
+                type: 'DELETE',
+                success: function(data) {
+                  console.log('success', data);
+                  $item.remove();
+                }
+            }).fail(function(data) {
+              var error = JSON.parse(data.responseText);
+              console.log('error', data, error)
+              $error.removeClass('hidden').html(error.error);
+            });
+        }
+    });
 });
