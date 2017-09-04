@@ -28,9 +28,18 @@ class Message extends \Goteo\Core\Model {
         $date, // timestamp del momento en que se creó el mensaje
         $message, // el texto del mensaje en si
         $responses = array(), // array de instancias mensaje que son respuesta a este
+        $all_responses = [], // cache array
         $blocked = 0, //no se puede editar ni borrar (es un mensaje thread de colaboracion)
         $closed = 0, // no se puede responder
+        $private = 0, // private messages users message_url for searching recipients
+        $recipients = [], // Recipients if is a private message
         $timeago;
+
+    public function __construct() {
+        $args = func_get_args();
+        call_user_func_array(array('parent', '__construct'), $args);
+        $this->timeago = Feed::time_ago($this->date);
+    }
 
     /*
      *  Devuelve datos de un mensaje
@@ -44,8 +53,7 @@ class Message extends \Goteo\Core\Model {
                         user.email as user_email,
                         user.avatar as user_avatar
                 FROM    message
-                INNER JOIN user
-                ON user.id=message.user
+                INNER JOIN user ON user.id=message.user
                 WHERE   message.id = :id
                 ";
 
@@ -73,14 +81,13 @@ class Message extends \Goteo\Core\Model {
                     $query = self::query("
                         SELECT  *
                         FROM  message
-                        WHERE thread = ?
+                        WHERE
+                            private = false
+                            AND
+                            thread = ?
                         ", array($id));
 
                     foreach ($query->fetchAll(\PDO::FETCH_CLASS, __CLASS__) as $response) {
-
-                        //hace tanto
-                        $response->timeago = Feed::time_ago($response->date);
-
                         $message->responses[] = $response;
                     }
 
@@ -118,6 +125,7 @@ class Message extends \Goteo\Core\Model {
                 $different_select,
                 message.blocked as blocked,
                 message.closed as closed,
+                message.private as private,
                 user.id as user_id,
                 user.name as user_name,
                 user.email as user_email,
@@ -163,9 +171,6 @@ class Message extends \Goteo\Core\Model {
                 $message->responses[$response->id] = self::get($response->id);
             }
 
-
-
-
             $messages[$message->id] = $message;
         }
 
@@ -205,6 +210,48 @@ class Message extends \Goteo\Core\Model {
         return $this->projectInstance;
     }
 
+    public function getResponses(User $user = null) {
+        $user_id = '';
+        if($user) $user_id = $user->id;
+        $sql = "SELECT  * FROM  message
+                WHERE thread = :thread
+                AND (
+                    private = false
+                    OR (private = true
+                        AND
+                        :user IN (SELECT user_id FROM message_user WHERE message_id = message.id)
+                    )
+                )";
+        // echo \sqldbg($sql, [':user' => $user_id, ':thread' => $this->id]);
+        $query = self::query($sql, [':user' => $user_id, ':thread' => $this->id]);
+        return $query->fetchAll(\PDO::FETCH_CLASS, __CLASS__);
+    }
+
+    public function setRecipients(array $recipients = []) {
+        if($recipients) {
+            $this->private = true;
+            $this->save();
+            $values = [':message' => $this->id];
+            $i = 0;
+            foreach($recipients as $user) {
+                $sql = "INSERT INTO message_user (message_id, user_id) VALUES(:message, :user)";
+                self::query($sql, [':message' => $this->id ,':user' => $user]);
+                $values[":user$i"] = $user;
+                $i++;
+            }
+            $sql = 'DELETE FROM message_user WHERE message_id = :message AND user_id NOT IN (' . implode(',', array_keys($values)) . ')';
+            self::query($sql, $values);
+        }
+
+    }
+
+    public function getRecipients() {
+        if(!$this->recipients) {
+
+        }
+        return $this->recipients;
+    }
+
     public function save (&$errors = array()) {
         if (!$this->validate($errors)) return false;
         if ($this->user instanceOf User) {
@@ -214,7 +261,6 @@ class Message extends \Goteo\Core\Model {
         // HTML tags cleaning
         $this->message = Text::tags_filter($this->message);
 
-
         $fields = array(
             'id',
             'user',
@@ -222,7 +268,8 @@ class Message extends \Goteo\Core\Model {
             'thread',
             'message',
             'blocked',
-            'closed'
+            'closed',
+            'private'
             );
 
         try {

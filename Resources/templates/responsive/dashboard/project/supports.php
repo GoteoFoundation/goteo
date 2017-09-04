@@ -23,7 +23,7 @@
               <div class="comments collapse" id="comments-<?= $support->thread ?>">
                 <?php if($comments): ?>
                   <?= $this->insert('dashboard/project/partials/comments/full', [
-                        'comments' => $support->getThreadResponses(),
+                        'comments' => $support->getThreadResponses($this->get_user()),
                         'thread' => $support->thread,
                         'project' => $support->project
                         ]) ?>
@@ -96,7 +96,7 @@ $(function(){
     // Autoexpand comment-list if in hash
     var $thread = $(location.hash);
     if($thread.length) {
-      console.log('hash',location.hash);
+      // console.log('hash',location.hash);
       $thread.collapse('show');
     }
 });

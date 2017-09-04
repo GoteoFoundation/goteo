@@ -56,7 +56,7 @@ class MessagesApiController extends AbstractApiController {
             'list' => $list
             ]);
     }
-    public function commentsEditAction(Request $request) {
+    public function commentsAddAction(Request $request) {
         if(!$this->user) {
             throw new ControllerAccessDeniedException();
         }
@@ -84,7 +84,6 @@ class MessagesApiController extends AbstractApiController {
             $comment->message = $message;
         } else {
             $comment = new Comment([
-                'id' => $id,
                 'user' => $this->user,
                 'thread' => $thread,
                 'project' => $project,
@@ -95,6 +94,9 @@ class MessagesApiController extends AbstractApiController {
         }
         if(!$comment->save($errors)) {
             throw new ModelException('Update failed '. implode(", ", $errors));
+        }
+        if($recipients = $request->request->get('recipients')) {
+            $comment->setRecipients($recipients);
         }
 
         // Send and event to create the Feed and send emails

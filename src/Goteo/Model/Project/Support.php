@@ -12,6 +12,7 @@ namespace Goteo\Model\Project;
 
 use Goteo\Library\Text;
 use Goteo\Model\Project;
+use Goteo\Model\User;
 use Goteo\Model\Message as Comment;
 
 class Support extends \Goteo\Core\Model {
@@ -22,6 +23,7 @@ class Support extends \Goteo\Core\Model {
 		$support,
 		$description,
 		$type = 'task',
+        $total_thread_responses = [],
         $thread;
 
  	public static function get ($id) {
@@ -181,22 +183,30 @@ class Support extends \Goteo\Core\Model {
     }
 
     /* returns responses to this support from the message table */
-    public function getThreadResponses() {
+    public function getThreadResponses(User $user = null) {
         if($thread = $this->getThread()) {
-            return $thread->responses;
+            return $thread->getResponses($user);
         }
         return [];
     }
 
     /* returns number of responses to this support from the message table */
-    public function totalThreadResponses() {
-        if($this->total_thread_responses) return $this->total_thread_responses;
+    public function totalThreadResponses(User $user = null) {
+        $user_id = '';
+        if($user) $user_id = $user->id;
+        if($this->total_thread_responses[$user_id]) return $this->total_thread_responses[$user_id];
         if($this->thread) {
-            $sql = "SELECT  COUNT(*) as total FROM message WHERE thread = ?";
+            $sql = "SELECT  COUNT(*) as total FROM message
+            WHERE thread = :thread
+            AND (private = false
+                OR (private = true
+                    AND :user IN (select user_id FROM message_user WHERE message_id = message.id)
+                    )
+                )";
 
-            $query = static::query($sql, [$this->thread]);
-            $this->total_thread_responses = (int)$query->fetchColumn();
-            return $this->total_thread_responses;
+            $query = static::query($sql, [':thread' => $this->thread, ':user' => $user_id]);
+            $this->total_thread_responses[$user_id] = (int)$query->fetchColumn();
+            return $this->total_thread_responses[$user_id];
         }
         return 0;
 

@@ -135,9 +135,9 @@ $api->add('api-messages-project', new Route(
         )
 ));
 
-$api->add('api-messages-edit', new Route(
+$api->add('api-messages-add', new Route(
     '/comments',
-    array('_controller' => 'Goteo\Controller\Api\MessagesApiController::commentsEditAction'),
+    array('_controller' => 'Goteo\Controller\Api\MessagesApiController::commentsAddAction'),
     array(), // requirements
     array(), // options
     '', // host

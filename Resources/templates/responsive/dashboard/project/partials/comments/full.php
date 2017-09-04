@@ -12,7 +12,11 @@
         <div class="form-group">
             <textarea name="message" class="form-control" placeholder="<?= $this->text('project-messages-answer_it') ?>"></textarea>
         </div>
+        <div class="checkbox">
+            <label><input type="checkbox" name="private"> <?= $this->text('support-set-private-message') ?></label>
+        </div>
         <div class="form-group">
+            <p class="text-muted recipients" data-private="<?= $this->text('support-private-message') ?>" data-public="<?= $this->text('support-public-message') ?>"><span class="text"><?= $this->text('support-public-message') ?></span></p>
             <p class="text-danger hidden error-message"></p>
             <button class="btn btn-cyan send-comment"><i class="fa fa-paper-plane"></i> <?= $this->text('regular-send_message') ?></button>
         </div>
