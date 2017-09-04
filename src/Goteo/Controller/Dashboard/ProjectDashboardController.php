@@ -27,6 +27,7 @@ use Goteo\Model\Message as Comment;
 use Goteo\Library\Text;
 use Goteo\Console\UsersSend;
 use Goteo\Application\Exception\ModelNotFoundException;
+use Goteo\Application\Exception\ModelException;
 use Goteo\Application\Exception\ControllerAccessDeniedException;
 use Goteo\Application\Event\FilterMessageEvent;
 
@@ -322,15 +323,27 @@ class ProjectDashboardController extends \Goteo\Core\Controller {
                 'constraints' => array(new Constraints\NotBlank()),
             ])
             ->add('id', 'hidden')
+            ->add('delete', 'hidden')
             ->add('submit', 'submit')
             ->getForm();
 
         $editForm->handleRequest($request);
         if ($editForm->isSubmitted()) {
+            $data = $editForm->getData();
+            if($data['delete']) {
+                // print_r($data);die;
+                $support = Support::get($data['delete']);
+                if($support->totalThreadResponses($this->user)) {
+                    Message::error(Text::get('support-remove-error-messages'));
+                    return $this->redirect();
+                }
+                $support->dbDelete();
+                Message::info(Text::get('support-removed'));
+                return $this->redirect();
+            }
             if($editForm->isValid()) {
                 $errors = [];
                 $ok = false;
-                $data = $editForm->getData();
                 if($data['id']) {
                     $support = Support::get($data['id']);
                 } else {

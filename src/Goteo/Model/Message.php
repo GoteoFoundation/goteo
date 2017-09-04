@@ -77,6 +77,7 @@ class Message extends \Goteo\Core\Model {
                 //hace tanto
                 $message->timeago = Feed::time_ago($message->date);
 
+                // Deprecated: to be removed
                 if (empty($message->thread)) {
                     $query = self::query("
                         SELECT  *
@@ -210,6 +211,7 @@ class Message extends \Goteo\Core\Model {
         return $this->projectInstance;
     }
 
+    // TODO: cache this
     public function getResponses(User $user = null) {
         $user_id = '';
         if($user) $user_id = $user->id;
@@ -224,7 +226,10 @@ class Message extends \Goteo\Core\Model {
                 )";
         // echo \sqldbg($sql, [':user' => $user_id, ':thread' => $this->id]);
         $query = self::query($sql, [':user' => $user_id, ':thread' => $this->id]);
-        return $query->fetchAll(\PDO::FETCH_CLASS, __CLASS__);
+        if($resp = $query->fetchAll(\PDO::FETCH_CLASS, __CLASS__)) {
+            return $resp;
+        }
+        return [];
     }
 
     public function setRecipients(array $recipients = []) {

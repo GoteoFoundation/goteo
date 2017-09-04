@@ -145,11 +145,9 @@
                 <?php endif; ?>
 
                 <div id="comments-list-<?= $message->id ?>">
-    			  <?php if (!empty($message->responses)) :
-                    foreach ($message->responses as $child): ?>
+                    <?php foreach ($message->getResponses() as $child): ?>
                     	<?= $this->insert('project/partials/comment', ['comment' => $child, 'project' => $project]) ?>
             		<?php endforeach ?>
-                  <?php endif ?>
                 </div>
 
             <?php endforeach ?>

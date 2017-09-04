@@ -6,6 +6,7 @@ if(is_object($this->comment)) {
     $date = date_formater($this->comment->date, true);
     $message = $this->comment->message;
     $id = $this->comment->id;
+    $private = $this->comment->private;
 } else {
     $user = $this->user;
     $name = $this->name;
@@ -13,6 +14,7 @@ if(is_object($this->comment)) {
     $date = $this->date;
     $message = $this->message;
     $id = $this->id;
+    $private = $this->private;
 }
 ?><div class="media comment-item">
     <div class="media-left">
@@ -22,6 +24,9 @@ if(is_object($this->comment)) {
         <p>
             <strong><?= $name ?></strong>
             <em><?= $date ?></em>
+            <?php if($private): ?>
+                <span class="pull-right text-lilac"><i class="fa fa-user-secret"></i> <?= $this->text('support-is-private') ?></span>
+            <?php endif ?>
         </p>
         <p><?= nl2br($message) ?></p>
         <p class="text-danger hidden error-message"></p>

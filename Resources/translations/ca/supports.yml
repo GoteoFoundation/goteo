@@ -14,8 +14,12 @@ tooltip-project-support-support: 'Títol descriptiu sobre la col·laboració nec
 tooltip-project-support-type: 'Selecciona si el projecte necessita ajuda en tasques concretes o bé préstecs (de material, infraestructura, etc). '
 tooltip-project-supports: 'A Goteo els projectes poden rebre un altre tipus d''ajudes a més d''aportacions monetàries. Hi ha gent que potser no pugui ajudar econòmicament però sí amb el seu talent, temps, energia, etc.'
 
+support-sure-to-remove: 'Segur que vols esborrar aquesta petició?'
+support-remove-error-messages: 'No es pot esborrar aquesta petició perquè té respostes.<br>Si us plau, esborra les respostes abans!'
+support-removed: 'Petició esborrada correctament'
 support-sure-to-delete: 'Segur que vols esborrar aquest missatge?'
 support-public-message: 'Aquest missatge es publicarà a la pàgina web del projecte'
 support-private-message: 'Missatge privat per a:'
+support-is-private: 'Missatge privat'
 support-set-private-message: 'Envia només als participants d''aquest fil'
 support-send-private-message: 'Envia un missatge privat a aquest usuari'
