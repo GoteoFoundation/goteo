@@ -34,7 +34,7 @@ class MessageListener extends AbstractListener {
 
                new FeedBody(null, null, 'feed-message-message-published', [
                     '%USER%'    => Feed::item('user', $user->name, $user->id),
-                    '%TYPE%'    => Feed::item('message', 'dashboard-menu-projects-supports'),
+                    '%TYPE%'    => new FeedBody('message', null, 'message-project-support'),
                     '%PROJECT%' => Feed::item('project', $project->name, $project->id),
                     '%TITLE%'    => Feed::item('update', $title, $project->id . '/participate#message' . $message->id)
                 ]))

@@ -26,7 +26,8 @@
                   <?= $this->insert('dashboard/project/partials/comments/full', [
                         'comments' => $support->getThreadResponses($this->get_user()),
                         'thread' => $support->thread,
-                        'project' => $support->project
+                        'project' => $support->project,
+                        'admin' => true
                         ]) ?>
                 <?php else: ?>
                     <p class="alert alert-danger"><?= $this->text('dashboard-project-support-no-responses') ?></p>

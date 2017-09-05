@@ -81,6 +81,7 @@ $(function(){
             recipients: recipients,
             thread: $parent.data('thread'),
             project: $parent.data('project'),
+            admin: $parent.data('admin'),
             view: 'dashboard'
         }
         $error.addClass('hidden').html('');
@@ -88,6 +89,7 @@ $(function(){
             // console.log('ok!', data);
             $list.append(data.html);
             $textarea.val('');
+            $recipients.find('.text').html($recipients.data('public'));
           }).fail(function(data) {
             var error = JSON.parse(data.responseText);
             console.log('error', data, error)
@@ -103,12 +105,11 @@ $(function(){
         var $item = $(this).closest('.comment-item');
         var $error = $item.find('.error-message');
         if(confirm(ask)) {
-            console.log('delete',url);
             $.ajax({
                 url: url,
                 type: 'DELETE',
                 success: function(data) {
-                  console.log('success', data);
+                  // console.log('success', data);
                   $item.remove();
                 }
             }).fail(function(data) {

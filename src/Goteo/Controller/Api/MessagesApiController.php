@@ -114,7 +114,7 @@ class MessagesApiController extends AbstractApiController {
             'user' => $comment->user,
             'project' => $comment->project,
             'message' => $comment->message,
-            'html' => View::render($view, [ 'comment' => $comment, 'project' => $prj ])
+            'html' => View::render($view, [ 'comment' => $comment, 'project' => $prj, 'admin' => $request->request->get('admin') ])
         ]);
     }
 
