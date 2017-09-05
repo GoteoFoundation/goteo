@@ -235,18 +235,35 @@ class Message extends \Goteo\Core\Model {
         if($this->project) return $this->getProject()->name;
     }
 
+    /**
+     * response
+     * project-comment (project comment non related to support)
+     * project-comment-response (response for project comment non related to support)
+     * project-support (mirror message from support)
+     * project-support-response (support message response)
+     * @return string
+     */
     public function getType() {
         $type = '';
-        if($this->thread) {
-            $type = 'response';
-        }
-        elseif($this->project) {
+        if($this->project) {
             $type = 'project-comment';
             $sql = "SELECT id FROM support WHERE thread = :id";
-            $query = self::query($sql, array(':id'=>$this->id));
+            $values = [':id' => $this->id];
+            if($this->thread) {
+                $values[':id'] = $this->thread;
+            }
+            $query = self::query($sql, $values);
             if($query->fetchColumn()) {
                 $type = 'project-support';
             }
+            if($this->thread) {
+                $type .= '-response';
+            }
+        } else {
+            if($this->thread) {
+                $type = 'response';
+            }
+            // TODO: more types...
         }
         return $type;
     }

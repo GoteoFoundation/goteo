@@ -21,11 +21,12 @@ class MessageListener extends AbstractListener {
         $message = $event->getMessage();
         $project = $message->getProject();
         $user = $message->getUser();
+        $type = $message->getType();
         $this->info("Message created", ['project' => $message->project, 'message_id' => $message->id, 'message' => $message->message]);
 
+        $title = substr($message->message, 0, strpos($message->message, ':'));
         // Message created from support type
-        if($project && $user && !$message->thread && $message->blocked) {
-            $title = substr($message->message, 0, strpos($message->message, ':'));
+        if($type === 'project-support') {
             // Feed event
             $log = new Feed();
             $log->setTarget($project->id)
@@ -51,6 +52,33 @@ class MessageListener extends AbstractListener {
                     $user->avatar->id)
                     ->doPublic('community');
             }
+        }
+        if($type === 'project-support-response') {
+            $log = new Feed();
+            $log->setTarget($project->id)
+                ->populate('feed-message-new-project-response',
+                '/admin/projects',
+
+               new FeedBody(null, null, 'feed-message-support-response-published', [
+                    '%USER%'    => Feed::item('user', $user->name, $user->id),
+                    '%PROJECT%' => Feed::item('project', $project->name, $project->id),
+                    '%TITLE%'    => Feed::item('update', $title, $project->id . '/participate#message' . $message->id)
+                ]))
+                ->doAdmin('user');
+
+            // evento público, si el proyecto es público
+            $log->populate($user->name,
+                '/user/profile/' . $user->id,
+                new FeedBody(null, null, 'feed-message-support-response', [
+                    '%PROJECT%' => Feed::item('project', $project->name, $project->id),
+                    '%TITLE%' => Feed::item('update', $title, $project->id . '/participate#message' . $message->id)
+                ]),
+                $user->avatar->id)
+                ->doPublic('community');
+        }
+        if($type === 'project-comment') {
+        }
+        if($type === 'project-comment-response') {
         }
     }
 
