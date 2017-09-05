@@ -179,6 +179,25 @@ class Message extends \Goteo\Core\Model {
     }
 
 
+    public static function getUserMessages(User $user) {
+        $sql = "SELECT a.* FROM message a
+                WHERE a.id IN (
+                    SELECT thread FROM  message b
+                    WHERE
+                        (`user` = :user OR
+                        :user IN (SELECT user_id FROM message_user WHERE message_user.`message_id`=b.id)
+                        ) AND blocked=0
+                    ORDER BY DATE DESC, id DESC
+                    )
+                LIMIT 10";
+        $query = self::query($sql, [':user' => $user->id]);
+        if($resp = $query->fetchAll(\PDO::FETCH_CLASS, __CLASS__)) {
+            return $resp;
+        }
+        return [];
+
+    }
+
     public function validate (&$errors = array()) {
         if (empty($this->user))
             $errors[] = 'Falta usuario';
@@ -211,10 +230,34 @@ class Message extends \Goteo\Core\Model {
         return $this->projectInstance;
     }
 
-    // TODO: cache this
+    // Description title
+    public function getTitle() {
+        if($this->project) return $this->getProject()->name;
+    }
+
+    public function getType() {
+        $type = '';
+        if($this->thread) {
+            $type = 'response';
+        }
+        elseif($this->project) {
+            $type = 'project-comment';
+            $sql = "SELECT id FROM support WHERE thread = :id";
+            $query = self::query($sql, array(':id'=>$this->id));
+            if($query->fetchColumn()) {
+                $type = 'project-support';
+            }
+        }
+        return $type;
+    }
+
+    /* return all user responses
+    * TODO: page/limit this?
+    */
     public function getResponses(User $user = null) {
         $user_id = '';
         if($user) $user_id = $user->id;
+        if($this->all_responses[$user_id]) return $this->all_responses[$user_id];
         $sql = "SELECT  * FROM  message
                 WHERE thread = :thread
                 AND (
@@ -223,15 +266,37 @@ class Message extends \Goteo\Core\Model {
                         AND
                         :user IN (SELECT user_id FROM message_user WHERE message_id = message.id)
                     )
-                )";
+                )
+                ORDER BY date ASC, id ASC";
         // echo \sqldbg($sql, [':user' => $user_id, ':thread' => $this->id]);
         $query = self::query($sql, [':user' => $user_id, ':thread' => $this->id]);
         if($resp = $query->fetchAll(\PDO::FETCH_CLASS, __CLASS__)) {
-            return $resp;
+            $this->all_responses[$user_id] = $resp;
+            return $this->all_responses[$user_id];
+
         }
         return [];
     }
 
+    public function totalResponses(User $user = null) {
+        $user_id = '';
+        if($user) $user_id = $user->id;
+        if($this->total_thread_responses[$user_id]) return $this->total_thread_responses[$user_id];
+        if($this->id) {
+            $sql = "SELECT  COUNT(*) as total FROM message
+            WHERE thread = :thread
+            AND (private = false
+                OR (private = true
+                    AND :user IN (select user_id FROM message_user WHERE message_id = message.id)
+                    )
+                )";
+
+            $query = static::query($sql, [':thread' => $this->id, ':user' => $user_id]);
+            $this->total_thread_responses[$user_id] = (int)$query->fetchColumn();
+            return $this->total_thread_responses[$user_id];
+        }
+        return 0;
+    }
     public function setRecipients(array $recipients = []) {
         if($recipients) {
             $this->private = true;

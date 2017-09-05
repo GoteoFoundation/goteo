@@ -196,6 +196,7 @@ regular-call: Matchfunding
 regular-num-comments: '%s comentarios'
 regular-manage: 'Gestionar'
 regular-no-edit-permissions: No tienes permiso para editar esta entrada!
+regular-messages: Mensajes
 session-about-to-expire: 'Tu sesión expirará en 10 minutos. ¿Quieres recargar la página para renovarla?'
 session-expired: 'Tu sesión en goteo ha expirado!'
 spread-about: 'Texto spread-about'

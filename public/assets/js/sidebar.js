@@ -177,7 +177,7 @@ $(function(){
         });
     }
 
-    dynamicFooterSidebar();
+    // dynamicFooterSidebar();
     $(window).on('resize', dynamicFooterSidebar);
 
 });

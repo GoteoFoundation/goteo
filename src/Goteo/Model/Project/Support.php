@@ -192,24 +192,10 @@ class Support extends \Goteo\Core\Model {
 
     /* returns number of responses to this support from the message table */
     public function totalThreadResponses(User $user = null) {
-        $user_id = '';
-        if($user) $user_id = $user->id;
-        if($this->total_thread_responses[$user_id]) return $this->total_thread_responses[$user_id];
-        if($this->thread) {
-            $sql = "SELECT  COUNT(*) as total FROM message
-            WHERE thread = :thread
-            AND (private = false
-                OR (private = true
-                    AND :user IN (select user_id FROM message_user WHERE message_id = message.id)
-                    )
-                )";
-
-            $query = static::query($sql, [':thread' => $this->thread, ':user' => $user_id]);
-            $this->total_thread_responses[$user_id] = (int)$query->fetchColumn();
-            return $this->total_thread_responses[$user_id];
+        if($thread = $this->getThread()) {
+            return $thread->totalResponses($user);
         }
         return 0;
-
     }
 
 	/**

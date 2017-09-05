@@ -23,3 +23,7 @@ support-private-message: 'Missatge privat per a:'
 support-is-private: 'Missatge privat'
 support-set-private-message: 'Envia només als participants d''aquest fil'
 support-send-private-message: 'Envia un missatge privat a aquest usuari'
+
+message-response: 'Resposta'
+message-project-comment: 'Comentari al projecte'
+message-project-support: 'Col·laboració al projecte'
