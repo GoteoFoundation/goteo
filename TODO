@@ -1,5 +1,7 @@
 TODO:
 
 Dashboard todo:
-- user API for project comments (supports). Send related emails through events
+- Add Feed for messages
+- Send related emails through events for messages
+- rewards management
 - Translations

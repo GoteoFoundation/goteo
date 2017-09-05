@@ -23,6 +23,7 @@ namespace Goteo\Controller {
 
     class Message extends \Goteo\Core\Controller {
 
+        // Deprecated
         public function index ($project = null) {
             if (empty($project))
                 throw new Redirection('/discover', Redirection::PERMANENT);
@@ -182,6 +183,7 @@ namespace Goteo\Controller {
             throw new Redirection("/project/{$project}/participate#child-msg-".$message->id, Redirection::TEMPORARY);
         }
 
+        // DEPRECATED
         public function edit ($id, $project) {
 
             if (isset($_POST['message'])) {
@@ -195,6 +197,7 @@ namespace Goteo\Controller {
             throw new Redirection("/project/{$project}/messages", Redirection::TEMPORARY);
         }
 
+        // DEPRECATED
         public function delete ($id, $project) {
 
             $msg = Model\Message::get($id);

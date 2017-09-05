@@ -56,7 +56,7 @@ class MessagesApiController extends AbstractApiController {
             'list' => $list
             ]);
     }
-    public function commentsEditAction(Request $request) {
+    public function commentsAddAction(Request $request) {
         if(!$this->user) {
             throw new ControllerAccessDeniedException();
         }
@@ -84,7 +84,6 @@ class MessagesApiController extends AbstractApiController {
             $comment->message = $message;
         } else {
             $comment = new Comment([
-                'id' => $id,
                 'user' => $this->user,
                 'thread' => $thread,
                 'project' => $project,
@@ -96,23 +95,43 @@ class MessagesApiController extends AbstractApiController {
         if(!$comment->save($errors)) {
             throw new ModelException('Update failed '. implode(", ", $errors));
         }
+        if($recipients = $request->request->get('recipients')) {
+            $comment->setRecipients($recipients);
+        }
 
         // Send and event to create the Feed and send emails
-        $this->dispatch(AppEvents::MESSAGE_UPDATED, new FilterMessageEvent($comment));
+        $this->dispatch(AppEvents::MESSAGE_CREATED, new FilterMessageEvent($comment));
 
+        if($request->request->get('view') === 'dashboard') {
+            $view = 'dashboard/project/partials/comments/item';
+        }
+        else {
+            $view = 'project/partials/comment';
+        }
         View::setTheme('responsive');
         return $this->jsonResponse([
             'id' => $comment->id,
             'user' => $comment->user,
             'project' => $comment->project,
             'message' => $comment->message,
-            'html' => View::render('dashboard/project/partials/comments/item', [
-                'name' => $comment->getUser()->name,
-                'avatar' => $comment->getUser()->avatar->getLink(60, 60, true),
-                'date' => date_formater($comment->date, true),
-                'message' => $comment->message
-            ])
+            'html' => View::render($view, [ 'comment' => $comment, 'project' => $prj, 'admin' => $request->request->get('admin') ])
         ]);
     }
 
+    public function commentsDeleteAction($cid, Request $request) {
+        if(!$this->user) {
+            throw new ControllerAccessDeniedException();
+        }
+        if( !$message = Comment::get($cid) ) {
+            throw new ModelNotFoundException("Message [$cid] not found");
+        }
+        if(!$prj = Project::get($message->project)) {
+            throw new ModelNotFoundException("Project for message [$cid] not found");
+        }
+        if(!$prj->userCanEdit($this->user)) {
+            throw new ControllerAccessDeniedException();
+        }
+        $message->dbDelete();
+        return $this->jsonResponse(['id' => $message->id]);
+    }
 }

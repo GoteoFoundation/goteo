@@ -10,22 +10,24 @@
     <?php
     if($this->supports):
         foreach($this->supports as $support):
-            $comments = $support->totalThreadResponses();
+            $comments = $support->totalThreadResponses($this->get_user());
      ?>
         <div class="panel section-content" data-id="<?= $support->id ?>">
           <div class="panel-body">
             <h3 class="data-support"><?= $support->support ?></h3>
             <p class="data-description"><?= nl2br($support->description) ?></p>
               <p>
+                <button class="btn pull-right btn-default delete-support"><i class="icon icon-1x icon-trash"></i> <?= $this->text('regular-delete') ?></button>
                 <button class="btn pull-right btn-default" data-toggle="modal" data-target="#edit-modal"><i class="icon icon-1x icon-edit"></i> <?= $this->text('regular-edit') ?></button>
-                <button class="btn btn-<?= $comments ? 'lilac' : 'default' ?>" data-toggle="collapse"  data-target="#comments-<?= $support->id ?>"><i class="icon-1x icon icon-partners"></i> <?= $this->text('regular-num-comments', $comments) ?></button>
+                <button class="btn btn-<?= $comments ? 'lilac' : 'default' ?>" data-toggle="collapse"  data-target="#comments-<?= $support->thread ?>"><i class="icon-1x icon icon-partners"></i> <?= $this->text('regular-num-comments', $comments) ?></button>
               </p>
-              <div class="comments collapse" id="comments-<?= $support->id ?>">
+              <div class="comments collapse" id="comments-<?= $support->thread ?>">
                 <?php if($comments): ?>
                   <?= $this->insert('dashboard/project/partials/comments/full', [
-                        'comments' => $support->getThreadResponses(),
+                        'comments' => $support->getThreadResponses($this->get_user()),
                         'thread' => $support->thread,
-                        'project' => $support->project
+                        'project' => $support->project,
+                        'admin' => true
                         ]) ?>
                 <?php else: ?>
                     <p class="alert alert-danger"><?= $this->text('dashboard-project-support-no-responses') ?></p>
@@ -75,23 +77,41 @@
 
 $(function(){
     $('#edit-modal').on('show.bs.modal', function (event) {
-        var $modal = $(this)
-        var $button = $(event.relatedTarget) // Button that triggered the modal
-        var $section = $button.closest('.section-content');
-        if($section.length) {
-            $modal.find('#autoform_support').val($section.find('.data-support').text());
-            $modal.find('#autoform_description').val($section.find('.data-description').text())
-            $modal.find('#autoform_id').val($section.data('id'))
-        }
+      var $modal = $(this)
+      var $button = $(event.relatedTarget) // Button that triggered the modal
+      var $section = $button.closest('.section-content');
+      if($section.length) {
+        $modal.find('#autoform_support').val($section.find('.data-support').text());
+        $modal.find('#autoform_description').val($section.find('.data-description').text())
+        $modal.find('#autoform_id').val($section.data('id'))
+      }
     });
     $('#edit-modal').on('hidden.bs.modal', function () {
-        $(this).find('input,textarea').val('');
+      $(this).find('input,textarea').val('');
+    });
+
+    $('.delete-support').on('click', function (e) {
+      e.preventDefault();
+      var $form = $('#edit-modal').find('form');
+      var $section = $(this).closest('.section-content');
+      var id = $section.data('id');
+      if(confirm('<?= $this->ee($this->text('support-sure-to-remove'), 'js') ?>')) {
+        $form.find('#autoform_delete').val(id);
+        $form.submit();
+      }
     });
 
     <?php if($this->editFormSubmitted): ?>
-        $('#edit-modal').modal('show');
-        $('#edit-modal').modal('show');
+      $('#edit-modal').modal('show');
+      $('#edit-modal').modal('show');
     <?php endif ?>
+
+    // Autoexpand comment-list if in hash
+    var $thread = $(location.hash);
+    if($thread.length) {
+      // console.log('hash',location.hash);
+      $thread.collapse('show');
+    }
 });
 
 // @license-end

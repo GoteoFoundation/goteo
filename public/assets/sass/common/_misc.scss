@@ -137,76 +137,76 @@ i.visible-xs {
         }
     }
     &.icon-activity {
-        @include svg-background('../img/dashboard/activity.svg');
+        @include svg-background('../img/icons/activity.svg');
     }
     &.icon-projects {
-        @include svg-background('../img/dashboard/projects.svg');
+        @include svg-background('../img/icons/projects.svg');
     }
     &.icon-wallet {
-        @include svg-background('../img/dashboard/wallet.svg');
+        @include svg-background('../img/icons/wallet.svg');
     }
     &.icon-settings {
-        @include svg-background('../img/dashboard/settings.svg');
+        @include svg-background('../img/icons/settings.svg');
     }
     &.icon-certificate {
-        @include svg-background('../img/dashboard/certificate.svg');
+        @include svg-background('../img/icons/certificate.svg');
     }
     &.icon-wallet-sidebar {
-        @include svg-background('../img/dashboard/wallet_sidebar.svg');
+        @include svg-background('../img/icons/wallet_sidebar.svg');
     }
     &.icon-summary {
-        @include svg-background('../img/dashboard/summary.svg');
+        @include svg-background('../img/icons/summary.svg');
     }
     &.icon-preview {
-        @include svg-background('../img/dashboard/preview.svg');
+        @include svg-background('../img/icons/preview.svg');
     }
     &.icon-edit {
-        @include svg-background('../img/dashboard/edit.svg');
+        @include svg-background('../img/icons/edit.svg');
     }
     &.icon-images {
-        @include svg-background('../img/dashboard/images.svg');
+        @include svg-background('../img/icons/images.svg');
     }
     &.icon-updates {
-        @include svg-background('../img/dashboard/updates.svg');
+        @include svg-background('../img/icons/updates.svg');
     }
     &.icon-supports {
-        @include svg-background('../img/dashboard/supports.svg');
+        @include svg-background('../img/icons/supports.svg');
     }
     &.icon-donors {
-        @include svg-background('../img/dashboard/donors.svg');
+        @include svg-background('../img/icons/donors.svg');
     }
     &.icon-partners {
-        @include svg-background('../img/dashboard/partners.svg');
+        @include svg-background('../img/icons/partners.svg');
     }
     &.icon-analytics {
-        @include svg-background('../img/dashboard/analytics.svg');
+        @include svg-background('../img/icons/analytics.svg');
     }
     &.icon-shared {
-        @include svg-background('../img/dashboard/shared.svg');
+        @include svg-background('../img/icons/shared.svg');
     }
     &.icon-back {
-        // @include svg-background('../img/dashboard/back.svg');
-        background: url('../img/dashboard/back.svg') no-repeat;
+        // @include svg-background('../img/icons/back.svg');
+        background: url('../img/icons/back.svg') no-repeat;
         background-size: 100% auto;
         background-color: transparent !important;
     }
     &.icon-trash {
-        @include svg-background('../img/dashboard/trash.svg');
+        @include svg-background('../img/icons/trash.svg');
     }
     &.icon-favourite {
-        @include svg-background('../img/dashboard/favourite.svg');
+        @include svg-background('../img/icons/favourite.svg');
     }
     &.icon-close {
-        @include svg-background('../img/dashboard/close.svg');
+        @include svg-background('../img/icons/close.svg');
     }
     &.icon-user {
-        @include svg-background('../img/dashboard/user.svg');
+        @include svg-background('../img/icons/user.svg');
     }
     &.icon-drop {
-        @include svg-background('../img/dashboard/drop.svg');
+        @include svg-background('../img/icons/drop.svg');
     }
     &.icon-call {
-        @include svg-background('../img/dashboard/call.svg');
+        @include svg-background('../img/icons/call.svg');
     }
 }
 
