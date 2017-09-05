@@ -20,6 +20,10 @@
     </ul>
   <?php endif ?>
 
+  <div class="sidebar-footer">
+      <?= $this->supply('sidebar-footer') ?>
+  </div>
+
   </nav>
 
   <div id="sidebar-menu-toggle" class="toggle-sidebar visible-xs" title="Open menu">

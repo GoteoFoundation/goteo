@@ -18,6 +18,7 @@ $this->section('content');
 
 <?php $this->replace() ?>
 
+
 <?php $this->section('head') ?>
     <link rel="stylesheet" type="text/css" href="<?= SRC_URL ?>/assets/vendor/dropzone/dist/min/dropzone.min.css" />
     <link rel="stylesheet" href="<?= SRC_URL ?>/assets/vendor/simplemde/dist/simplemde.min.css" type="text/css" />

@@ -455,3 +455,72 @@ div.section.tools{
     }
 }
 
+/* Custom sidebar menu */
+
+body.home.has-sidebar{
+    #main {
+        width: 100%;
+    }
+      #sidebar-menu {
+            position: absolute;
+            flex: none;
+            z-index: 1001;
+            overflow: hidden;
+            width: 0;
+            height: auto !important;
+            margin-top:70px;
+            top:0;
+            font-size: $font-size;
+            padding-bottom: 0;
+            &.fixed {
+                position:fixed;
+                top:0;
+            }
+            .sidebar-header
+            {
+                background-color: $color-white;
+                min-height: 0;
+                padding: 15px 20px;
+                color: $color-light-green;
+                font-weight: bold;
+                text-transform: uppercase;
+            }
+            .fa-close{
+                color: $color-light-grey;
+            }
+            .sidebar-footer{
+                background-color: $background-sidebar-footer;
+                padding: 20px;
+                .btn-fashion{
+                    font-weight: 500;
+                    text-transform: uppercase;
+                    width: 47%;
+                    padding:10px;
+                }
+                .btn-light-black{
+                    margin-left:15px;
+                    padding: 10px;
+                    width: 47%;
+                    text-transform: uppercase;
+                    font-weight: 500;
+                }
+            }
+    }
+
+    &.sidebar-opened {
+        .page-wrap {
+            #sidebar-menu {
+                width: $home-sidebar-width;
+                .toggle-sidebar {
+                    display: block !important;
+                }
+            }
+        }
+    }
+
+    #sidebar-menu-toggle {
+        display: block !important;
+    }
+}
+
+
