@@ -23,6 +23,7 @@ namespace Goteo\Controller {
 
     class Message extends \Goteo\Core\Controller {
 
+        // Deprecated
         public function index ($project = null) {
             if (empty($project))
                 throw new Redirection('/discover', Redirection::PERMANENT);

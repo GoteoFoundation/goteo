@@ -33,6 +33,7 @@ class Message extends \Goteo\Core\Model {
         $closed = 0, // no se puede responder
         $private = 0, // private messages users message_url for searching recipients
         $recipients = [], // Recipients if is a private message
+        $participants = [], // All participants from a message (includes private recipients)
         $timeago;
 
     public function __construct() {
@@ -290,7 +291,6 @@ class Message extends \Goteo\Core\Model {
         if($resp = $query->fetchAll(\PDO::FETCH_CLASS, __CLASS__)) {
             $this->all_responses[$user_id] = $resp;
             return $this->all_responses[$user_id];
-
         }
         return [];
     }
@@ -334,9 +334,31 @@ class Message extends \Goteo\Core\Model {
 
     public function getRecipients() {
         if(!$this->recipients) {
+            $sql = "SELECT user.* FROM `user`
+                RIGHT JOIN message_user ON message_user.user_id = user.id
+                WHERE message_user.message_id = :id";
 
+            $query = self::query($sql, [':id' => $this->id]);
+            if($resp = $query->fetchAll(\PDO::FETCH_CLASS, '\Goteo\Model\User')) {
+                $this->recipients[$resp->id] = $resp;
+            }
         }
         return $this->recipients;
+    }
+
+    public function getParticipants() {
+        if(!$this->participants) {
+            $sql = "SELECT DISTINCT user.* FROM `user`
+                RIGHT JOIN message a ON a.user = user.id
+                WHERE a.thread IN ( SELECT id FROM message b WHERE b.id = :id )";
+
+            $query = self::query($sql, [':id' => $this->id]);
+            $this->participants = $this->getRecipients();
+            if($resp = $query->fetchAll(\PDO::FETCH_CLASS, '\Goteo\Model\User')) {
+                $this->participants[$resp->id] = $resp;
+            }
+        }
+        return $this->participants;
     }
 
     public function save (&$errors = array()) {

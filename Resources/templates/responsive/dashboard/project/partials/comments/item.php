@@ -16,7 +16,7 @@ if(is_object($this->comment)) {
     $id = $this->id;
     $private = $this->private;
 }
-?><div class="media comment-item"><?= $this->comment->getType() ?>
+?><div class="media comment-item">
     <div class="media-left">
         <img title="<?= $name ?>" src="<?= $avatar ?>" class="img-circle">
     </div>
