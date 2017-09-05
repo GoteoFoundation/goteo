@@ -143,7 +143,7 @@ class SettingsDashboardController extends \Goteo\Core\Controller {
                 'label' => 'profile-field-keywords',
                 'attr' => ['help' => Text::get('tooltip-user-keywords')],
                 'required' => false,
-                'url' => '/api/keywords?s=%QUERY'
+                'url' => '/api/keywords?q=%QUERY'
             ])
             ->add('contribution', 'textarea', [
                 'label' => 'profile-field-contribution',
@@ -350,7 +350,7 @@ class SettingsDashboardController extends \Goteo\Core\Controller {
                 'label' => 'personal-field-location',
                 // 'attr' => ['help' => Text::get('tooltip-project-location')]
             ])
-            ->add('country', 'country', [
+            ->add('country', 'text', [
                 'label' => 'personal-field-country',
                 // 'attr' => ['help' => Text::get('tooltip-project-country')]
             ])

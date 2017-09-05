@@ -13,3 +13,17 @@ tooltip-project-support-description: 'Briefly explain the kind of help that your
 tooltip-project-support-support: 'Descriptive title about the needed collaboration'
 tooltip-project-support-type: 'Choose if the project needs help with concrete tasks or rather loans of material, infrastructure, etc.'
 tooltip-project-supports: 'In Goteo, projects can be supported in other ways besides just monetary. There are people who can''t help economically but have plenty to offer in terms of their talent, time, energy, and more.'
+
+support-sure-to-remove: 'Are you sure to remove this petition?'
+support-remove-error-messages: 'This petition has responses and cannot be deleted.<br>Please, delete all the responses before!'
+support-removed: 'Petition delete successfully'
+support-sure-to-delete: 'Are you sure to remove this message?'
+support-public-message: 'It will be published in the project''s page'
+support-private-message: 'Private message for:'
+support-is-private: 'Private message'
+support-set-private-message: 'Send only to the participants of this thread'
+support-send-private-message: 'Send a private message to this user'
+
+message-response: 'Response'
+message-project-comment: 'Project comment'
+message-project-support: 'Project collaboration'
