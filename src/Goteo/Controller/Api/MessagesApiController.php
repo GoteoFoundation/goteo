@@ -100,7 +100,7 @@ class MessagesApiController extends AbstractApiController {
         }
 
         // Send and event to create the Feed and send emails
-        $this->dispatch(AppEvents::MESSAGE_UPDATED, new FilterMessageEvent($comment));
+        $this->dispatch(AppEvents::MESSAGE_CREATED, new FilterMessageEvent($comment));
 
         if($request->request->get('view') === 'dashboard') {
             $view = 'dashboard/project/partials/comments/item';

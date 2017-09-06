@@ -1,7 +1,7 @@
 <nav class="navbar navbar-default top-navbar">
   <div class="container-fluid">
     <div class="navbar-header">
-      <a class="navbar-brand" href="<?= SITE_URL ?>"><img src="<?= SRC_URL ?>/assets/img/goteo.svg" class="img-responsive logo" alt="Goteo"></a>
+      <a class="navbar-brand" href="<?= SITE_URL ?>"><img src="<?= SRC_URL ?>/assets/img/goteo-white.svg" class="img-responsive logo" alt="Goteo"></a>
     </div><!--/.navbar-header -->
 
     <div class="navbar-always">
