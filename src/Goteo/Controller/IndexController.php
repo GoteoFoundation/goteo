@@ -37,8 +37,6 @@ class IndexController extends \Goteo\Core\Controller
     public function indexAction()
     {
 
-        echo "here"; die();
-
         View::setTheme('responsive');
 
         // orden de los elementos en portada

@@ -1,96 +1,53 @@
 <?php
 
-// Views called by AJAX methods will return Bootstrap modal windows
-if($this->is_pronto()):
-    echo json_encode([
-        'title' => $this->title,
-        'content' => $this->supply('content')
-        ]);
-    return;
-endif;
-if($this->is_ajax()):
-    $this->section('content');
-    $this->stop();
-    return;
-endif;
+$this->layout('layout', [
+    'bodyClass' => 'home'
+    ]);
 
-$bodyClass = $this->bodyClass;
+$this->section('content');
 
-// Normal operation, show the full page
-?><!DOCTYPE html>
-<html lang="<?= $this->lang_current() ?>">
+// We include alert messages in this layout, so it will be processed before the
+// main layout. Therefore the main layout won't repeat them
+?>
 
-    <head>
-    <?php $this->section('head') ?>
-        <meta charset="utf-8">
-        <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
+<div class="home">
 
-        <script>
-        /*
-        @licstart  The following is the entire license notice for the
-        JavaScript code in this page.
+    <?= $this->supply('home-content') ?>
 
-        Copyright (C) 2010  Goteo Foundation
+</div>
 
-        The JavaScript code in this page is free software: you can
-        redistribute it and/or modify it under the terms of the GNU
-        General Public License (GNU GPL) as published by the Free Software
-        Foundation, either version 3 of the License, or (at your option)
-        any later version.  The code is distributed WITHOUT ANY WARRANTY;
-        without even the implied warranty of MERCHANTABILITY or FITNESS
-        FOR A PARTICULAR PURPOSE.  See the GNU GPL for more details.
-
-        As additional permission under GNU GPL version 3 section 7, you
-        may distribute non-source (e.g., minimized or compacted) forms of
-        that code without the copy of the GNU GPL normally required by
-        section 4, provided you include this license notice and a URL
-        through which recipients can access the Corresponding Source.
+<?php $this->replace() ?>
 
 
-        @licend  The above is the entire license notice
-        for the JavaScript code in this page.
-        */
-        </script>
+<?php $this->section('head') ?>
+    <link rel="stylesheet" type="text/css" href="<?= SRC_URL ?>/assets/vendor/dropzone/dist/min/dropzone.min.css" />
+    <link rel="stylesheet" href="<?= SRC_URL ?>/assets/vendor/simplemde/dist/simplemde.min.css" type="text/css" />
+    <link rel="stylesheet" href="<?= SRC_URL ?>/assets/vendor/bootstrap-tagsinput/dist/bootstrap-tagsinput.css" type="text/css" />
+    <link href="<?= SRC_URL ?>/assets/css/typeahead.css" rel="stylesheet">
+<?php $this->append() ?>
 
-        <?= $this->insert('partials/header/metas') ?>
+<?php $this->section('footer') ?>
 
-        <?= $this->supply('lang-metas', $this->insert('partials/header/lang_metas')) ?>
+    <script type="text/javascript" src="<?= SRC_URL ?>/assets/vendor/Sortable/Sortable.min.js"></script>
+    <script type="text/javascript" src="<?= SRC_URL ?>/assets/vendor/dropzone/dist/min/dropzone.min.js"></script>
+    <script type="text/javascript" src="<?= SRC_URL ?>/assets/js/forms.js"></script>
+    <script type="text/javascript" src="<?= SRC_URL ?>/assets/js/dashboard/ajax-utils.js"></script>
+    <script type="text/javascript" src="<?= SRC_URL ?>/assets/vendor/simplemde/dist/simplemde.min.js"></script>
+    <script type="text/javascript" src="<?= SRC_URL ?>/assets/vendor/bootstrap-tagsinput/dist/bootstrap-tagsinput.min.js"></script>
+    <script type="text/javascript" src="<?= SRC_URL ?>/assets/vendor/typeahead.js/dist/typeahead.bundle.min.js"></script>
+    <script>
+        $(document).ready(function(){
 
-        <title><?= $this->title ?></title>
+          $('.fade').slick({
+          dots: true,
+          infinite: true,
+          speed: 1500,
+          fade: true,
+          arrows: true,
+          cssEase: 'linear',
+            });
 
-        <link rel="icon" type="image/png" href="/favicon.ico" >
+        });
+    </script>
 
-        <?= $this->insert('partials/header/styles') ?>
-
-        <?= $this->insert('partials/header/javascript') ?>
-
-
-    <?php $this->stop() ?>
-
-    </head>
-
-    <body role="document" <?php if ($bodyClass) echo ' class="' . $bodyClass . '"' ?>>
-
-      <div id="main">
-        <?= $this->supply('header', $this->insert("partials/header")) ?>
-
-        <?= $this->supply('messages', $this->insert("partials/header/messages")) ?>
-
-
-        <div id="main-content">
-            <?= $this->supply('content') ?>
-        </div>
-
-        <?php $this->section('footer') ?>
-
-            <?= $this->insert('partials/footer') ?>
-
-            <?= $this->insert('partials/footer/analytics') ?>
-
-            <?= $this->insert('partials/footer/javascript') ?>
-
-        <?php $this->stop() ?>
-      </div>
-    </body>
-</html>
+<?php $this->append() ?>

@@ -1,6 +1,27 @@
 <?php $this->layout('home/layout') ?>
 
-<?php $this->section('content') ?>
+<?php $this->section('sidebar-header') ?>
+    <span class="header-title">
+    	<?= $this->text('home-menu-sidebar-header-title') ?>
+    </span>
+<?php $this->replace() ?>
+
+<?php $this->section('sidebar-footer') ?>
+    <a href="/project/create" class="btn btn-fashion">
+		<?= $this->text('regular-create') ?>		
+	</a>
+	<a href="/login" class="btn btn-light-black">
+		<?= $this->text('login-title') ?>		
+	</a>
+<?php $this->replace() ?>
+
+<?php $this->section('sidebar-menu-toggle') ?>
+    <?= $this->text('home-menu-toggle-label') ?> <i class="fa fa-angle-right"></i>
+<?php $this->replace() ?>
+
+
+
+<?php $this->section('home-content') ?>
 
 <!-- Banner section -->
 
@@ -18,24 +39,3 @@
 
 
 <?php $this->replace() ?>
-
-<?php $this->section('footer') ?>
-
-<script>
-
-$(document).ready(function(){
-
-  $('.fade').slick({
-  dots: true,
-  infinite: true,
-  speed: 1500,
-  fade: true,
-  arrows: true,
-  cssEase: 'linear',
-	});
-
-});
-
-</script>
-
-<?php $this->append() ?>

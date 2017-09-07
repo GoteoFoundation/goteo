@@ -20,9 +20,13 @@
     </ul>
   <?php endif ?>
 
+  <div class="sidebar-footer">
+      <?= $this->supply('sidebar-footer') ?>
+  </div>
+
   </nav>
 
   <div id="sidebar-menu-toggle" class="toggle-sidebar visible-xs" title="Open menu">
-    <i class="fa fa-angle-double-right"></i>
+      <?= $this->supply('sidebar-menu-toggle', '<i class="fa fa-angle-double-right"></i>') ?>
   </div>
 <?php endif ?>
