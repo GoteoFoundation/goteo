@@ -15,6 +15,12 @@
 	</a>
 <?php $this->replace() ?>
 
+<?php $this->section('sidebar-menu-toggle') ?>
+    <?= $this->text('home-menu-toggle-label') ?> <i class="fa fa-angle-right"></i>
+<?php $this->replace() ?>
+
+
+
 <?php $this->section('home-content') ?>
 
 <!-- Banner section -->

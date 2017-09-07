@@ -461,7 +461,21 @@ body.home.has-sidebar{
     #main {
         width: 100%;
     }
-      #sidebar-menu {
+        #sidebar-menu-toggle{
+            background: $color-white;
+            color: $color-light-green;
+            text-transform: uppercase;
+            padding: 15px 10px;
+            font-size: $font-size*1.3;
+            font-weight: bold;
+            .fa-angle-right{
+                font-size: $font-size*3;
+                margin-left: 10px;
+                transform: translateY(20)
+            }
+        }
+
+        #sidebar-menu {
             position: absolute;
             flex: none;
             z-index: 1001;
