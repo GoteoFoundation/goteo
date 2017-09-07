@@ -140,7 +140,7 @@ use Goteo\Library\Check;
 
 <?php if($project->called): ?>
 
-<a href="<?php echo SITE_URL ?>/call/<?php echo $project->called->id ?>" target="_blank">
+<a href="<?php echo SITE_URL ?>/call/<?php echo $project->called->id ?>/projects" target="_blank">
     <div class="row call-info visible-xs">
         <div class="col-xs-2 no-padding" >
             <img src="<?= SRC_URL . '/assets/img/project/drop.svg' ?>" class="img-responsive">
