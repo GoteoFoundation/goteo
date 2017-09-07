@@ -96,7 +96,8 @@
     color: $color-white;
     border: 1px solid $color-white;
     &:hover {
-        background-color:darken($background-sidebar-footer, 10%);
+        background-color:$background-light-green;
+        color: $color-white;
     }
 }
 .btn-fashion {

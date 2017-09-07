@@ -92,22 +92,19 @@
                 </div>
                 <div class="row impact-data">
                 	<div class="col-md-2 col-md-offset-3 item">
-                        <span class="timer count-title count-number" data-to="4503000" data-speed="1500"></span>
-                		  €
+                		4.503.000 €
                 		<div class="description">
                 		  <?= $this->text('home-adventages-impact-data-money-label') ?>
                 		</div>
                 	</div>
                 	<div class="col-md-2 item">
-                        <span class="timer count-title count-number" data-to="76" data-speed="1500"></span>
-                		%
+                        76 %
                 		<div class="description">
                 		  <?= $this->text('home-adventages-impact-data-success-projects-label') ?>
                 		</div>
                 	</div>
                 	<div class="col-md-2 item">
-                        <span class="timer count-title count-number" data-to="48" data-speed="1500"></span>
-                		 €
+                		48 €
                 		<div class="description">
                 		  <?= $this->text('home-adventages-impact-data-invest-avg-label') ?>
                 		</div>
@@ -194,22 +191,20 @@
                     </div>
                     <div class="row impact-data">
                         <div class="col-md-2 col-md-offset-3 item">
-                            <span class="timer count-title count-number" data-to="4503000" data-speed="1500"></span>
-                              €
+                            <span>
+                            4.503.000 €
                             <div class="description">
                               <?= $this->text('home-adventages-impact-data-money-label') ?>
                             </div>
                         </div>
                         <div class="col-md-2 item">
-                            <span class="timer count-title count-number" data-to="76" data-speed="1500"></span>
-                            %
+                            76 %
                             <div class="description">
                               <?= $this->text('home-adventages-impact-data-success-projects-label') ?>
                             </div>
                         </div>
                         <div class="col-md-2 item">
-                            <span class="timer count-title count-number" data-to="48" data-speed="1500"></span>
-                             €
+                            48 €
                             <div class="description">
                               <?= $this->text('home-adventages-impact-data-invest-avg-label') ?>
                             </div>
