@@ -27,9 +27,11 @@
 
 <?= $this->insert('home/partials/main_slider') ?>
 
-<?= $this->insert('home/partials/search') ?>
+<?= $this->insert('home/partials/projects') ?>
 
 <?= $this->insert('home/partials/call_to_action') ?>
+
+<?= $this->insert('home/partials/search') ?>
 
 <?= $this->insert('home/partials/adventages') ?>
 

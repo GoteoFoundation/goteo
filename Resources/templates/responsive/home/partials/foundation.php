@@ -1,9 +1,12 @@
 <div class="section adventages foundation" >
-    <h2 class="title">
-        <?= $this->text('home-foundation-title') ?>
-    </h2>
     <div class="container adventages-container">
-
+        <div class="row">
+            <div class="col-md-12">
+                <h2 class="title">
+                    <?= $this->text('home-foundation-title') ?>
+                </h2>
+            </div>
+        </div>
         <div class="slider fade">
             <div class="row">
                 <div class="col-md-6">
