@@ -80,7 +80,7 @@ div.section.main-slider{
 }
 
 .section.search{
-    padding-bottom: 40px;
+    padding: 40px 0;
     .inner-addon { 
     position: relative; 
     display: inline-block;
@@ -169,8 +169,15 @@ div.section.main-slider{
     
 }
 
+.section.projects{
+    padding: 40px 0;
+    .title{
+        padding-bottom: 30px;
+    }
+}
+
 .section.search{
-    padding-bottom: 40px;
+    padding: 40px 0;
 }
 
 .section.adventages{
@@ -305,7 +312,8 @@ div.section.main-slider{
         font-size: 24px;
         font-weight: bold;
         text-align: center;
-        padding-top: 20px;
+        margin-top: 0;
+        padding-bottom: 15px;
     }
 
     .slider{
