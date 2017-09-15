@@ -413,6 +413,7 @@ class ProjectsApiController extends AbstractApiController {
             $_POST['reward'] = $reward_id;
             $_POST['value'] = $url;
 
+            UsersSend::setURL(Config::getUrl($prj->lang));
             UsersSend::toConsultants('rewardfulfilled', $prj);
 
             $prj->social_rewards[$reward->id] = $reward;
