@@ -20,7 +20,7 @@ module.exports = function(grunt) {
                 upload_tmp_dir: absolute + '/var/php',
                 sys_temp_dir: absolute + '/var/php',
                 display_errors: 'On',
-                session: {save_path: absolute + '/var/php'},
+                session: {save_path: absolute + '/var/php', cookie_domain: '<%= goteo.localURL %>'},
                 allow_url_fopen: 'On'
 
             }
