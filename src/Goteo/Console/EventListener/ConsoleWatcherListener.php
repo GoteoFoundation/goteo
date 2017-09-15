@@ -10,6 +10,7 @@
 
 namespace Goteo\Console\EventListener;
 
+use Goteo\Application\Config;
 use Goteo\Application\EventListener\AbstractListener;
 use Goteo\Console\ConsoleEvents;
 use Goteo\Console\Event\FilterProjectEvent;
@@ -61,6 +62,7 @@ class ConsoleWatcherListener extends AbstractListener {
                 return;
             }
             $event->fire(function() use ($project, $template, $to) {
+                UsersSend::setURL(Config::getUrl($project->lang));
                 if('owner' === $to) UsersSend::toOwner($template, $project);
                 if('consultants' === $to) UsersSend::toConsultants($template, $project);
             });

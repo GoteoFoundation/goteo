@@ -317,6 +317,7 @@ class ProjectController extends \Goteo\Core\Controller {
 				if ($project->ready($errors)) {
 
 					Application\Message::info(Text::get('project-review-request_mail-success'));
+                    UsersSend::setURL(Config::getUrl($project->lang));
 
 					// email a los de goteo
 					if ($project->draft) {
