@@ -13,11 +13,14 @@
 
   .inner-container {
       max-width: $breakpoint-md - 30;
-      min-width: $breakpoint-xxs;
       padding-right: 15px;
       padding-left: 15px;
       margin-right: auto;
       margin-left: auto;
+      @media(max-width: $breakpoint-sm - 1) {
+          padding-right: 5px;
+          padding-left: 5px;
+      }
     }
 
   p {
@@ -204,6 +207,18 @@
             >i {
                 background-color:$color-cyan;
             }
+        }
+        @media(max-width: $breakpoint-sm - 1) {
+            padding-left: 5px;
+            padding-right: 5px;
+            // hide font on small devices
+            font-size: 0;
+            color:transparent;
+            line-height: 0;
+            >i {
+                margin-bottom: 0;
+            }
+
         }
       }
   }
