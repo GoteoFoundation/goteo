@@ -7,7 +7,7 @@
     <h2><?= $this->text('dashboard-menu-projects-rewards') ?></h2>
 
 
-    <h4><?= $this->project->inCampaign() ? $this->text('dashboard-rewards-notice') : $this->text('dashboard-rewards-investors_table', ['%URL%' => '/api/projects/' . $this->project->id . '/rewards/csv']) ?></h4>
+    <h4 class="exportcsv"><?= $this->project->inCampaign() ? $this->text('dashboard-rewards-notice') : $this->text('dashboard-rewards-investors_table', ['%URL%' => '/api/projects/' . $this->project->id . '/rewards/csv']) ?></h4>
 
     <?php if($this->invests): ?>
     <table class="footable table">
@@ -52,3 +52,20 @@
 </div>
 
 <?php $this->replace() ?>
+
+<?php $this->section('footer') ?>
+
+<script type="text/javascript">
+// @license magnet:?xt=urn:btih:0b31508aeb0634b347b8270c7bee4d411b5d4109&dn=agpl-3.0.txt
+
+$(function(){
+    $('.exportcsv a').on('click', function(){
+        alert('<?= $this->ee($this->text('dashboard-investors_table-disclaimer'), 'js') ?>');
+    });
+})
+
+// @license-end
+</script>
+
+<?php $this->append() ?>
+
