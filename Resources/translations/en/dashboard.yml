@@ -75,7 +75,7 @@ dashboard-rewards-date_order: 'By date'
 dashboard-rewards-fulfilled_filter: Fulfilled
 dashboard-rewards-fulfilled_status: Fulfilled
 dashboard-rewards-group_msg: 'message to this group'
-dashboard-rewards-investors_table: '<p>If you want to manage it offline, you can <a id="sacaexcel" href="/dashboard/projects/rewards/table" target="_blank">download the Table of Co-Financiers</a></p>'
+dashboard-rewards-investors_table: 'If you want to manage it offline, you can <a href="%URL%">download the Table of Co-Financiers</a>'
 dashboard-rewards-issue: Incidence!
 dashboard-rewards-massive_msg: 'Collective messages'
 dashboard-rewards-massive_msg-all: 'To all the co-financiers of this project'
@@ -205,3 +205,4 @@ dashboard-project-support-empty: 'No collaboration petitions yet.'
 dashboard-project-support-responses: 'Responses'
 dashboard-project-support-no-responses: 'No responses yet.'
 dashboard-project-support-add: 'Ask for a new collaboration'
+dashboard-invests-totals: %TOTAL_INVESTS% donations from %TOTAL_USERS% users. Total %TOTAL_AMOUNT%

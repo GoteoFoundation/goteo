@@ -64,6 +64,7 @@ admin-no: 'No'
 admin-percent: Porcentaje
 admin-project: Proyecto
 admin-projects: Proyectos
+admin-filters: 'Filtros'
 admin-remove-filters: 'Quitar filtros'
 admin-sponsors: Servicios
 admin-status: Estado

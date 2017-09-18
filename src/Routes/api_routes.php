@@ -114,6 +114,20 @@ $api->add('api-projects-updates-property', new Route(
         )
 ));
 
+// Project rewards invests fulfilled
+$api->add('api-projects-invests-fulfilled', new Route(
+    '/projects/{pid}/invests/{iid}/fulfilled',
+    array('_controller' => 'Goteo\Controller\Api\ProjectsApiController::projectInvestsFulfilledAction'
+        )
+));
+
+// Project CSV rewards invests
+$api->add('api-projects-invests-csv', new Route(
+    '/projects/{pid}/invests/csv',
+    array('_controller' => 'Goteo\Controller\Api\ProjectsApiController::projectInvestsCSVAction'
+        )
+));
+
 // Licenses list
 $api->add('api-licenses', new Route(
     '/licenses',

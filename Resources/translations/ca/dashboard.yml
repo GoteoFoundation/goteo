@@ -62,6 +62,7 @@ dashboard-menu-profile-preferences: Preferències
 dashboard-menu-profile-profile: 'Editar perfil'
 dashboard-menu-profile-public: 'Perfil públic'
 dashboard-menu-projects: Projectes
+dashboard-menu-projects-analytics: 'Analítica'
 dashboard-menu-projects-commons: Retorns
 dashboard-menu-projects-contract: Contracte
 dashboard-menu-projects-messegers: Participants
@@ -102,7 +103,7 @@ dashboard-rewards-date_order: 'Per data'
 dashboard-rewards-fulfilled_filter: Complertes
 dashboard-rewards-fulfilled_status: Complerta
 dashboard-rewards-group_msg: 'missatge a aquell grup'
-dashboard-rewards-investors_table: '<p>Si vols gestionar-lo offline pots <a id="sacaexcel" href="/dashboard/projects/rewards/table" target="_blank">baixar la Taula de Cofinanciadors</a></p>'
+dashboard-rewards-investors_table: 'Si vols gestionar-lo offline pots <a href="%URL%">baixar la Taula de Cofinanciadors</a>'
 dashboard-rewards-issue: Incidència!
 dashboard-rewards-massive_msg: 'Missatges col.lectius'
 dashboard-rewards-massive_msg-all: 'A totes les persones confinançadores d''aquest projecte'
@@ -200,4 +201,5 @@ dashboard-project-support-empty: No hi cap petició per col·laboracions encara.
 dashboard-project-support-responses: Respostes
 dashboard-project-support-no-responses: No hi ha respostes encara.
 dashboard-project-support-add: Afegir una nova petició de col·laboració
+dashboard-invests-totals: %TOTAL_INVESTS% aportacions de %TOTAL_USERS% usuaris. Total %TOTAL_AMOUNT%
 
