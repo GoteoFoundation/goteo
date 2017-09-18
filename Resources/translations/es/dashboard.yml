@@ -208,4 +208,4 @@ dashboard-project-support-empty: No hay ninguna petición de colaboraciones toda
 dashboard-project-support-responses: Respuestas
 dashboard-project-support-no-responses: No hay respuestas todavía.
 dashboard-project-support-add: Añadir una nueva petición de colaboración
-
+dashboard-invests-totals: %TOTAL_INVESTS% aportaciones de %TOTAL_USERS% usuarios. Total %TOTAL_AMOUNT%

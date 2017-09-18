@@ -466,12 +466,12 @@ class ProjectsApiController extends AbstractApiController {
 
         $limit = 10;
         $order = 'invested DESC';
-        $filter = ['projects' => $prj->id, 'status' => [Invest::STATUS_PENDING, Invest::STATUS_CHARGED, Invest::STATUS_PAID]];
+        $filter = ['projects' => $prj->id, 'status' => [Invest::STATUS_CHARGED, Invest::STATUS_PAID]];
         $total = Invest::getList($filter, null, 0, 0, true);
 
         $response = new StreamedResponse(function () use ($filter, $total, $limit, $order) {
             $buffer = fopen('php://output', 'w');
-            $data = [Text::get('regular-invest'),
+            $data = [Text::get('regular-input'),
                      Text::get('admin-user'),
                      Text::get('regular-name'),
                      Text::get('regular-email'),

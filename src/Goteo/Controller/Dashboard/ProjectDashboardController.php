@@ -412,13 +412,15 @@ class ProjectDashboardController extends \Goteo\Core\Controller {
         $limit = 25;
         $offset = $limit * (int)$request->query->get('pag');
         $order = 'invested DESC';
-        $filter = ['projects' => $project->id, 'status' => [Invest::STATUS_PENDING, Invest::STATUS_CHARGED, Invest::STATUS_PAID]];
+        $filter = ['projects' => $project->id, 'status' => [Invest::STATUS_CHARGED, Invest::STATUS_PAID]];
         $invests = Invest::getList($filter, null, $offset, $limit, false, $order);
-        $total = Invest::getList($filter, null, 0, 0, true);
+        $totals = Invest::getList($filter, null, 0, 0, 'all');
 
         return $this->viewResponse('dashboard/project/invests', [
             'invests' => $invests,
-            'total' => $total,
+            'total_invests' => $totals['invests'],
+            'total_users' => $totals['users'],
+            'total_amount' => $totals['amount'],
             'limit' => $limit
         ]);
     }

@@ -205,3 +205,4 @@ dashboard-project-support-empty: 'No collaboration petitions yet.'
 dashboard-project-support-responses: 'Responses'
 dashboard-project-support-no-responses: 'No responses yet.'
 dashboard-project-support-add: 'Ask for a new collaboration'
+dashboard-invests-totals: %TOTAL_INVESTS% donations from %TOTAL_USERS% users. Total %TOTAL_AMOUNT%

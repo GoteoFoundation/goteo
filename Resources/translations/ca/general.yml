@@ -166,7 +166,7 @@ regular-manage: 'Gestiona'
 regular-no-edit-permissions: No tens permís per editar aquesta entrada!
 regular-messages: Missatges
 regular-unknown: Desconegut
-regular-invest: Aportació
+regular-input: Aportació
 regular-amount: Import
 session-about-to-expire: 'Tu sesión expirará en 10 minutos. ¿Quieres recargar la página para renovarla?'
 session-expired: 'Tu sesión en goteo ha expirado!'
