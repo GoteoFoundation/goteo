@@ -102,7 +102,7 @@ dashboard-rewards-date_order: 'Per data'
 dashboard-rewards-fulfilled_filter: Complertes
 dashboard-rewards-fulfilled_status: Complerta
 dashboard-rewards-group_msg: 'missatge a aquell grup'
-dashboard-rewards-investors_table: '<p>Si vols gestionar-lo offline pots <a id="sacaexcel" href="/dashboard/projects/rewards/table" target="_blank">baixar la Taula de Cofinanciadors</a></p>'
+dashboard-rewards-investors_table: 'Si vols gestionar-lo offline pots <a href="%URL%">baixar la Taula de Cofinanciadors</a>'
 dashboard-rewards-issue: Incidència!
 dashboard-rewards-massive_msg: 'Missatges col.lectius'
 dashboard-rewards-massive_msg-all: 'A totes les persones confinançadores d''aquest projecte'

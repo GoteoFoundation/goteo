@@ -97,7 +97,7 @@ dashboard-rewards-date_order: 'Nach Datum'
 dashboard-rewards-fulfilled_filter: erfüllt
 dashboard-rewards-fulfilled_status: erfüllt
 dashboard-rewards-group_msg: 'Nachricht für diese Gruppe'
-dashboard-rewards-investors_table: '<p>Sie können es offline bearbeiten, indem Sie <a id="sacaexcel" href="/dashboard/projects/rewards/table" target="_blank">die Unterstützer-Tabelle downloaden.</a></p>'
+dashboard-rewards-investors_table: 'Sie können es offline bearbeiten, indem Sie <a href="%URL%">die Unterstützer-Tabelle downloaden.</a>'
 dashboard-rewards-issue: Ereignis!
 dashboard-rewards-massive_msg-all: 'An alle Unterstützer dieses Projektes'
 dashboard-rewards-massive_msg-all_alert: 'Alle bedeutet alle, es berücksichtigt nicht die restlichen markierten Objekte'

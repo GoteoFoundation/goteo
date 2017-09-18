@@ -17,6 +17,7 @@ use Goteo\Application\Session;
 use Goteo\Application\AppEvents;
 use Goteo\Application\View;
 use Goteo\Application\Message;
+use Goteo\Model\Invest;
 use Goteo\Model\Project;
 use Goteo\Model\Project\Reward;
 use Goteo\Model\Project\Image as ProjectImage;
@@ -408,10 +409,12 @@ class ProjectDashboardController extends \Goteo\Core\Controller {
         $project = $this->validateProject($pid, 'invests');
         if($project instanceOf Response) return $project;
 
-        $limit = 10;
+        $limit = 25;
         $offset = $limit * (int)$request->query->get('pag');
-        $invests = $project->getInvestions($offset, $limit);
-        $total = $project->getTotalInvestions();
+        $order = 'invested DESC';
+        $filter = ['projects' => $project->id, 'status' => [Invest::STATUS_PENDING, Invest::STATUS_CHARGED, Invest::STATUS_PAID]];
+        $invests = Invest::getList($filter, null, $offset, $limit, false, $order);
+        $total = Invest::getList($filter, null, 0, 0, true);
 
         return $this->viewResponse('dashboard/project/invests', [
             'invests' => $invests,
