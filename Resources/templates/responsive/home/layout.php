@@ -47,12 +47,72 @@ $this->section('content');
           cssEase: 'linear',
             });
 
-          $('.slider-projects').slick({
+
+          // Projects carrousel
+          var $carousel = $('.slider-projects');
+
+          var settings = {
+            dots: false,
+            arrows: true,
+            slide: '.widget-slide',
+            slidesToShow: 3,
+            slidesToScroll: 0,
+            centerMode: true,
+            centerPadding: '150px',
+            infinite: false,
+            responsive: [
+              {
+                breakpoint: 768,
+                settings: {
+                  arrows: false,
+                  centerMode: true,
+                  slidesToShow: 2,
+                  centerPadding: '100px',
+                }
+              },
+              {
+                breakpoint: 500,
+                settings: {
+                  arrows: false,
+                  centerMode: true,
+                  slidesToShow: 1,
+                  centerPadding: '75px',
+
+                }
+              }
+            ]
+          };
+
+          function setSlideVisibility() {
+            //Find the visible slides i.e. where aria-hidden="false"
+            var visibleSlides = $carousel.find('.slick-slideshow__slide[aria-hidden="false"]');
+            //Make sure all of the visible slides have an opacity of 1
+            $(visibleSlides).each(function() {
+              $(this).css('opacity', 1);
+            });
+
+            //Set the opacity of the first and last partial slides.
+            $(visibleSlides).first().prev().css('opacity', 0);
+          }
+
+          $carousel.slick(settings);
+          $carousel.slick('slickGoTo', 1);
+          setSlideVisibility();
+
+          $carousel.on('afterChange', function() {
+            setSlideVisibility();
+          });
+
+
+
+
+          /*$('.slider-projects').slick({
             slidesToShow: 3,
             slidesToScroll: 0,
             dots: false,
             centerMode: true,
             focusOnSelect: true,
+            infinite: false,
             responsive: [
               {
                 breakpoint: 768,
@@ -71,7 +131,10 @@ $this->section('content');
                 }
               }
             ]
-          });
+          });*/
+
+
+
         });
     </script>
 
