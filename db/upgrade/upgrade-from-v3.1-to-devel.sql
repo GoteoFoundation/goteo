@@ -23,3 +23,11 @@ ALTER TABLE `message` DROP INDEX `id`;
 -- adding private messages
 ALTER TABLE `message` ADD COLUMN `private` TINYINT(1) DEFAULT 0 NOT NULL AFTER `closed`;
 CREATE TABLE `message_user`( `message_id` BIGINT UNSIGNED NOT NULL, `user_id` CHAR(50) NOT NULL, PRIMARY KEY (`message_id`, `user_id`), FOREIGN KEY (`message_id`) REFERENCES `message`(`id`) ON UPDATE CASCADE ON DELETE CASCADE, FOREIGN KEY (`user_id`) REFERENCES `user`(`id`) ON UPDATE CASCADE ON DELETE CASCADE );
+
+-- Invest optimizations
+UPDATE invest SET anonymous=0 WHERE anonymous IS NULL;
+UPDATE invest SET resign=0 WHERE resign IS NULL;
+UPDATE invest SET campaign=0 WHERE campaign IS NULL;
+UPDATE invest SET pool=0 WHERE pool IS NULL;
+UPDATE invest SET issue=0 WHERE issue IS NULL;
+ALTER TABLE `invest` CHANGE `anonymous` `anonymous` BOOLEAN DEFAULT 0 NOT NULL, CHANGE `resign` `resign` BOOLEAN DEFAULT 0 NOT NULL, CHANGE `campaign` `campaign` BOOLEAN DEFAULT 0 NOT NULL COMMENT 'si es un aporte de capital riego', CHANGE `issue` `issue` BOOLEAN DEFAULT 0 NOT NULL COMMENT 'Problemas con el cobro del aporte', CHANGE `pool` `pool` BOOLEAN DEFAULT 0 NOT NULL COMMENT 'A reservar si el proyecto falla';

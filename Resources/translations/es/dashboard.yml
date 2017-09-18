@@ -65,7 +65,6 @@ dashboard-menu-projects: 'Mis proyectos'
 dashboard-menu-projects-analytics: Analítica
 dashboard-menu-projects-commons: Retornos
 dashboard-menu-projects-contract: Contrato
-dashboard-menu-projects-analytics: 'Analítica'
 dashboard-menu-projects-social-commitment: 'Compromiso social'
 dashboard-menu-projects-messegers: Participantes
 dashboard-menu-projects-preview: 'Página pública'
@@ -209,3 +208,11 @@ dashboard-project-support-responses: Respuestas
 dashboard-project-support-no-responses: No hay respuestas todavía.
 dashboard-project-support-add: Añadir una nueva petición de colaboración
 dashboard-invests-totals: %TOTAL_INVESTS% aportaciones de %TOTAL_USERS% usuarios. Total %TOTAL_AMOUNT%
+dashboard-project-filter-by-reward: Filtrar por recompensa
+dashboard-project-filter-by-others: Otros filtros
+dashboard-project-filter-by-donative: 'Ver sólo los que renuncian a recompensa'
+dashboard-project-filter-by-nondonative: 'Esconder los que renuncian a recompensa'
+dashboard-project-filter-by-drop: 'Ver sólo aportes de matchfunding'
+dashboard-project-filter-by-nondrop: 'Esconder aportes de matchfunding'
+dashboard-project-filter-by-pending: 'Ver sólo las pendientes'
+dashboard-project-filter-by-fulfilled: 'Ver sólo las completadas'

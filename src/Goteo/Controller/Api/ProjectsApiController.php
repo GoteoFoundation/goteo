@@ -455,8 +455,36 @@ class ProjectsApiController extends AbstractApiController {
         return $this->jsonResponse($materials);
     }
 
+    // Fulfilled status
+    public function projectInvestsFulfilledAction($pid, $iid, Request $request) {
+        $prj = Project::get($pid);
+
+        // Security, first of all...
+        if(!$prj->userCanEdit($this->user)) {
+            throw new ControllerAccessDeniedException();
+        }
+
+        $invest = Invest::get($iid);
+        if($invest->getProject()->id !== $prj->id) {
+            throw new ControllerAccessDeniedException("Invest [$iid] not in project [$pid]");
+        }
+
+        if($request->isMethod('put')) {
+            $fulfilled = (bool)$request->request->get('value');
+            // TODO: check who can set to false this property
+            if($fulfilled) {
+                $invest->fulfilled = Invest::setFulfilled($invest);
+                if($invest->fulfilled != $fulfilled) {
+                    throw new ModelException("Error setting invest as fulfilled");
+                }
+            }
+        }
+
+        return $this->jsonResponse((bool) $invest->fulfilled);
+    }
+
     // CSV Extraction
-    public function projectRewardsCSVAction($pid, Request $request) {
+    public function projectInvestsCSVAction($pid, Request $request) {
         $prj = Project::get($pid);
 
         // Security, first of all...
@@ -480,6 +508,7 @@ class ProjectsApiController extends AbstractApiController {
                      Text::get('dashboard-rewards-resigns'),
                      Text::get('regular-anonymous'),
                      Text::get('overview-field-reward'),
+                     Text::get('dashboard-rewards-fulfilled_status'),
                      Text::get('admin-address'),
                      Text::get('regular-date')];
             fputcsv($buffer, $data);
@@ -496,7 +525,7 @@ class ProjectsApiController extends AbstractApiController {
                     $email = $inv->getUser()->email;
                     $a = $inv->getAddress();
                     $address = $a->address . ', ' . $a->location . ', ' . $a->zipcode .' ' . $a->country;
-                    $reward = $inv->getRewards() ? $inv->getRewards()[0]->reward : '';
+                    $reward = $inv->getRewards() ? $inv->getRewards()[0]->getTitle() : '';
                     if($inv->resign) {
                         $reward = $address = '';
                         if($inv->anonymous) {
@@ -517,6 +546,7 @@ class ProjectsApiController extends AbstractApiController {
                              Text::get('regular-' . ($resign ? 'yes' : 'no')),
                              Text::get('regular-' . ($inv->anonymous ? 'yes' : 'no')),
                              $reward,
+                             Text::get('regular-' . ($inv->fulfilled ? 'yes' : 'no')),
                              $address,
                              date_formater($inv->invested) ];
                     fputcsv($buffer, $data);

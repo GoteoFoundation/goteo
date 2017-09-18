@@ -244,7 +244,7 @@ class Invest extends \Goteo\Core\Model {
                     $sqlFilter[] = "invest.issue = 1";
                     break;
                 case 'hide':
-                    $sqlFilter[] = "(invest.issue = 0 OR invest.issue IS NULL)";
+                    $sqlFilter[] = "invest.issue = 0";
                     break;
             }
         }
@@ -264,14 +264,21 @@ class Invest extends \Goteo\Core\Model {
                     break;
             }
         }
-        // else { $sqlFilter[] = "(invest.campaign = 0 OR invest.campaign IS NULL)"; }
+        // else { $sqlFilter[] = "invest.campaign = 0"; }
         if (!empty($filters['types'])) {
             switch ($filters['types']) {
                 case 'donative':
                     $sqlFilter[] = "invest.resign = 1";
                     break;
+                case 'nondonative':
+                    $sqlFilter[] = "invest.resign = 0";
+                    $sqlFilter[] = "invest.campaign = 0";
+                    break;
                 case 'anonymous':
                     $sqlFilter[] = "invest.anonymous = 1";
+                    break;
+                case 'nonanonymous':
+                    $sqlFilter[] = "invest.anonymous = 0";
                     break;
                 case 'manual':
                     $sqlFilter[] = "invest.admin IS NOT NULL";
@@ -282,11 +289,24 @@ class Invest extends \Goteo\Core\Model {
                 case 'drop':
                     $sqlFilter[] = "invest.campaign = 1";
                     break;
+                case 'nondrop':
+                    $sqlFilter[] = "invest.campaign = 0";
+                    break;
                 case 'pool':
                     $sqlFilter[] = "invest.pool = 1";
                     break;
                 case 'nopool':
-                    $sqlFilter[] = "(invest.pool = 0 OR ISNULL(invest.pool))";
+                    $sqlFilter[] = "invest.pool = 0";
+                    break;
+                case 'fulfilled':
+                    $sqlFilter[] = "invest_reward.fulfilled = 1";
+                    $sqlFilter[] = "invest.resign = 0";
+                    $sqlFilter[] = "invest.campaign = 0";
+                    break;
+                case 'pending':
+                    $sqlFilter[] = "invest_reward.fulfilled = 0";
+                    $sqlFilter[] = "invest.resign = 0";
+                    $sqlFilter[] = "invest.campaign = 0";
                     break;
             }
         }
@@ -319,6 +339,10 @@ class Invest extends \Goteo\Core\Model {
         }
         if (isset($filters['fulfilled'])) {
             $sqlFilter[] = "invest_reward.fulfilled=" . ($filters['fulfilled'] ? '1' : '0');
+        }
+
+        if ((int)$filters['reward']) {
+            $sqlFilter[] = "invest_reward.reward=" . (int)$filters['reward'];
         }
 
         if ($node) {
@@ -1015,7 +1039,7 @@ class Invest extends \Goteo\Core\Model {
                 AND project.status > 2
             INNER JOIN user
                 ON  user.id = invest.user
-            WHERE   (invest.campaign IS NULL OR invest.campaign = '' )
+            WHERE   invest.campaign = 0
             AND     invest.status IN (:s0, :s1, :s3, :s4, :s5)
             GROUP BY invest.user
             ORDER BY amount DESC
@@ -1115,7 +1139,7 @@ class Invest extends \Goteo\Core\Model {
             WHERE   user = :user
             AND     project = :project
             AND     invest.status IN (:s0, :s1, :s3, :s4, :s5)
-            AND     (anonymous = 0 OR anonymous IS NULL)
+            AND     anonymous = 0
             ORDER BY invested DESC";
 
         $query = self::query($sql, array(':user' => $user, ':project' => $project, ':s0' => self::STATUS_PENDING, ':s1' => self::STATUS_CHARGED, ':s3' => self::STATUS_PAID, ':s4' => self::STATUS_RETURNED, ':s5' => self::STATUS_TO_POOL));
@@ -1172,8 +1196,14 @@ class Invest extends \Goteo\Core\Model {
     /*
      * Marcar una recompensa como cumplida (o desmarcarla)
      */
-    public static function setFulfilled ($invest, $reward, $value = '1') {
+    public static function setFulfilled ($invest, $reward = null, $value = '1') {
 
+        if($invest instanceOf Invest) {
+            if(!$reward) {
+                $reward = $invest->getRewards() ? $invest->getRewards()[0]->id : null;
+            }
+            $invest = $invest->id;
+        }
         $values = array(
             ':value' => $value,
             ':invest' => $invest,
@@ -2005,7 +2035,7 @@ class Invest extends \Goteo\Core\Model {
             WHERE   invest.project = ?
             AND invest.method = 'paypal'
             AND invest.status = 0
-            AND (invest.campaign IS NULL OR invest.campaign = 0)
+            AND invest.campaign = 0
             ", array($project_id));
 
         return $query->fetchAll(\PDO::FETCH_CLASS, '\Goteo\Model\Invest');
