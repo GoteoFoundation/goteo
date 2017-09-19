@@ -36,6 +36,7 @@
                         'options' => $this->filters['others']
                     ]) ?>
       </span>
+      <input type="hidden" name="order" value="<?= $this->order ?>">
     </form>
 
     <h5><?= $this->text('dashboard-invests-totals', ['%TOTAL_INVESTS%' => '<strong>' . $this->total_invests . '</strong>', '%TOTAL_USERS%' => '<strong>' . $this->total_users . '</strong>', '%TOTAL_AMOUNT%' => '<strong>' . amount_format($this->total_amount) . '</strong>']) ?></h5>
@@ -43,12 +44,12 @@
     <table class="-footable table">
       <thead>
         <tr>
-          <th data-type="number" data-breakpoints="xs"><?= $this->text('regular-input') ?></th>
-          <th data-type="date" data-breakpoints="xs"><?= $this->text('regular-date') ?></th>
-          <th data-type="html" data-breakpoints="xs"><?= $this->text('admin-user') ?></th>
-          <th><?= $this->text('invest-amount') ?></th>
-          <th><?= $this->text('rewards-field-individual_reward-reward') ?></th>
-          <th><?= $this->text('dashboard-rewards-fulfilled_status') ?></th>
+          <th data-type="number" data-breakpoints="xs"><?= $this->insert('dashboard/partials/table_th', ['text' => '#', 'field' => 'id']) ?></th>
+          <th data-type="date" data-breakpoints="xs"><?= $this->insert('dashboard/partials/table_th', ['text' => $this->text('regular-date'), 'field' => 'invested']) ?></th>
+          <th data-type="html" data-breakpoints="xs"><?= $this->insert('dashboard/partials/table_th', ['text' => $this->text('admin-user'), 'field' => 'user']) ?></th>
+          <th><?= $this->insert('dashboard/partials/table_th', ['text' => $this->text('invest-amount'), 'field' => 'amount']) ?></th>
+          <th><?= $this->insert('dashboard/partials/table_th', ['text' => $this->text('rewards-field-individual_reward-reward'), 'field' => 'reward']) ?></th>
+          <th><?= $this->insert('dashboard/partials/table_th', ['text' => $this->text('dashboard-rewards-fulfilled_status'), 'field' => 'fulfilled']) ?></th>
           <th><?= $this->text('admin-address') ?></th>
           <th><?= $this->text('regular-actions') ?></th>
         </tr>
@@ -90,7 +91,9 @@
           <td><?= amount_format($invest->amount) ?></td>
           <td><?= $reward ?></td>
           <td>
-              <?php if($invest->fulfilled): ?>
+              <?php if($invest->resign): ?>
+                &nbsp;
+              <?php elseif($invest->fulfilled): ?>
                 <span class="label label-cyan"><?= $this->text('regular-yes') ?></span>
               <?php else: ?>
               <?= $this->insert('dashboard/project/partials/boolean', ['active' => $invest->fulfilled, 'name' => 'fulfilled-' . $invest->id, 'label_type' => 'cyan', 'url' => '/api/projects/' . $this->project->id . '/invests/' . $invest->id . '/fulfilled', 'confirm_yes' => $this->text('dashboard-rewards-process_alert') ]) ?>
@@ -103,7 +106,7 @@
         </tr>
       <?php endforeach ?>
     <?php else: ?>
-        <tr><td colspan="8"><p class="alert alert-danger"><?= $this->text('dashboard-chart-no-invested') ?></p></td></tr>
+        <tr><td colspan="8"><h4><?= $this->text('dashboard-project-no-invests') ?></h4></td></tr>
     <?php endif ?>
       </tbody>
     </table>

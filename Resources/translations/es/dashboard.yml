@@ -187,7 +187,7 @@ dashboard-project-images-desc: 'Organiza las imágenes como quieras arrastrando 
 dashboard-project-default-image: 'Imagen por defecto'
 dashboard-project-delete-image: 'Borrar imagen'
 dashboard-project-delete-image-confirm: '¿Seguro que quieres borrar esta imagen?'
-dashboard-project-delete-default-image: "La imagen por defecto no puede borrarse.\nEscoje otra imagen por defecto antes de borrar esta."
+dashboard-project-delete-default-image: "La imagen por defecto no puede borrarse.\nEscoge otra imagen por defecto antes de borrar esta."
 dashboard-project-dnd-image: 'Arrastra y suelta una o más imágenes aquí'
 dashboard-project-image-delete-ko: 'La imagen no se ha podido borrar!'
 project-upload-images-some-ko: 'Algunas imágenes no se han subido!'
@@ -203,16 +203,17 @@ uploaded-ok: "Subido correctamente"
 publish-confirm-yes: "Quieres publicar esta entrada?"
 publish-confirm-no: "Quieres despublicar esta entrada?"
 
-dashboard-project-support-empty: No hay ninguna petición de colaboraciones todavía.
+dashboard-project-support-empty: 'No hay ninguna petición de colaboraciones todavía.'
 dashboard-project-support-responses: Respuestas
-dashboard-project-support-no-responses: No hay respuestas todavía.
-dashboard-project-support-add: Añadir una nueva petición de colaboración
-dashboard-invests-totals: %TOTAL_INVESTS% aportaciones de %TOTAL_USERS% usuarios. Total %TOTAL_AMOUNT%
-dashboard-project-filter-by-reward: Filtrar por recompensa
-dashboard-project-filter-by-others: Otros filtros
+dashboard-project-support-no-responses: 'No hay respuestas todavía.'
+dashboard-project-support-add: 'Añadir una nueva petición de colaboración'
+dashboard-invests-totals: '%TOTAL_INVESTS% aportaciones de %TOTAL_USERS% usuarios. Total %TOTAL_AMOUNT%'
+dashboard-project-filter-by-reward: 'Filtrar por recompensa'
+dashboard-project-filter-by-others: 'Otros filtros'
 dashboard-project-filter-by-donative: 'Ver sólo los que renuncian a recompensa'
 dashboard-project-filter-by-nondonative: 'Esconder los que renuncian a recompensa'
 dashboard-project-filter-by-drop: 'Ver sólo aportes de matchfunding'
 dashboard-project-filter-by-nondrop: 'Esconder aportes de matchfunding'
 dashboard-project-filter-by-pending: 'Ver sólo las pendientes'
 dashboard-project-filter-by-fulfilled: 'Ver sólo las completadas'
+dashboard-project-no-invests: 'No hay aportes para este criterio de búsqueda'
