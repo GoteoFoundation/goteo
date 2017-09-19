@@ -411,7 +411,12 @@ class ProjectDashboardController extends \Goteo\Core\Controller {
 
         $limit = 10;
         $offset = $limit * (int)$request->query->get('pag');
+
         $order = 'invested DESC';
+        list($key, $dir) = explode(' ', $request->query->get('order'));
+        if(in_array($key, ['id', 'invested', 'user', 'amount', 'reward', 'fulfilled']) && in_array($dir, ['ASC', 'DESC'])) {
+            $order = "$key $dir";
+        }
 
         $filters =  [
             'reward' => ['' => Text::get('regular-see_all')],
@@ -451,6 +456,7 @@ class ProjectDashboardController extends \Goteo\Core\Controller {
             'total_invests' => $totals['invests'],
             'total_users' => $totals['users'],
             'total_amount' => $totals['amount'],
+            'order' => $order,
             'filters' => $filters,
             'filter' => $filter,
             'limit' => $limit
