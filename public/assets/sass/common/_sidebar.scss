@@ -25,7 +25,7 @@
         color: $color-white;
         padding-bottom:15px;
         border-top:2px solid $background-grey;
-        &:hover {
+        &:hover,&:active,&:focus {
             background-color:inherit;
             // color: $color-dark;
         }
@@ -46,7 +46,7 @@
             border-top-color:transparent;
         }
       }
-      &.active,&:hover {
+      &.active,&:hover,&:focus {
         background-color: $background-sidebar-active;
 
         >a, >button {
@@ -54,7 +54,7 @@
         }
         &+li {
             >a, >button {
-                border-top:none;
+                border-top-color:transparent;
             }
         }
       }

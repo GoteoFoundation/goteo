@@ -1,24 +1,15 @@
-    <form class="form-horizontal" role="form" method="GET" action="/pool/payment">
+<form class="form-horizontal" role="form" method="GET" action="/pool/payment">
 
-    <div class="row no-padding col-sm-10 col-sm-offset-1">
-        <label class="label-reward reward-choosen" for="reward-empty">
-            <div class="col-sm-11 no-padding">
-                <strong class="margin-left-2"><?= $this->text('pool-recharge-amount-text') ?></strong>
-            </div>
+    <div class="pool-box">
+        <h4><?= $this->text('pool-recharge-amount-text') ?></h4>
+        <label for="reward-pool">
 
-            <div class="amount-box">
-                <div class="row no-padding col-sm-10 col-sm-offset-2 margin-2" id="amount-container">
-                    <div class="col-sm-1 col-sm-offset-1 no-padding col-xs-1">
-                        <strong class="reward-amount"><?= $this->get_currency('html') ?></strong>
-                    </div>
-                    <div class="no-padding container-input-amount col-md-4 col-sm-3 col-xs-10">
-                        <input type="number" min="0" class="form-control input-amount" name="amount" value="<?= $this->amount ? $this->amount : '0' ?>" id="amount" required>
-                    </div>
-                    <div class="col-md-5 col-sm-4 col-md-offset-1 reward-button">
-                        <button type="submit" class="btn btn-block btn-success col-xs-3 margin-2"><?= $this->text('recharge-button') ?></button>
-                    </div>
-                </div>
-            </div>
+            <strong><?= $this->get_currency('html') ?></strong>
+
+            <input id="reward-pool" type="number" min="0" class="form-control input-amount" name="amount" value="<?= $this->amount ? $this->amount : '0' ?>" id="amount" required>
+
+            <button type="submit" class="btn btn-lg btn-cyan"><?= $this->text('recharge-button') ?></button>
+
         </label>
-    </div>
-    </form>
+      </div>
+</form>

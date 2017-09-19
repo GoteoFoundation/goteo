@@ -61,16 +61,16 @@ class Invest extends \Goteo\Core\Model {
         $method, // metodo de pago paypal/tpv/cash/drop/pool (ver Invest::methods() )
         $status, //estado en el que se encuentra esta aportación:
                 // -1 en proceso, 0 pendiente, 1 cobrado (charged), 2 devuelto (returned)
-        $issue, // aporte con incidencia
-        $anonymous, //no debe aparecer su careto ni su nombre, nivel, etc... pero si aparece en la cuenta de cofinanciadores y de aportes
-        $resign, //renuncia a cualquier recompensa
+        $issue = false, // aporte con incidencia
+        $anonymous = false, //no debe aparecer su careto ni su nombre, nivel, etc... pero si aparece en la cuenta de cofinanciadores y de aportes
+        $resign = false, //renuncia a cualquier recompensa
         $invested, //fecha en la que se ha iniciado el aporte
         $charged, //fecha en la que se ha cargado el importe del aporte a la cuenta del usuario
         $returned, //fecha en la que se ha devuelto el importe al usurio por cancelación bancaria
         $rewards = array(), //datos de las recompensas que le corresponden
         $address = null,  // dirección de envio de la recompensa y datos de regalo
         $call = null, // aportes que tienen capital riego asociado
-        $pool = null; // aportes a reservar si el proyecto falla
+        $pool = false; // aportes a reservar si el proyecto falla
 
     // añadir los datos del cargo
 

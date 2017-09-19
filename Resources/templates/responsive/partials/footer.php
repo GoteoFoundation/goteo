@@ -14,7 +14,7 @@
 
           <div class="col-sm-4 col-sm-offset-3">
             <ul class="list-inline">
-              <li class="label-img"><a href="#"><?=$this->text('footer-platoniq-iniciative') ?></li></a>
+              <li class="label-img"><a href="#"><?=$this->text('footer-platoniq-iniciative') ?></a></li>
               <li><a href="http://fundacion.goteo.org"><img src="/view/css/logoFG.png" class="img-responsive logo" alt="Fundación Goteo"></a></li>
             </ul>
           </div>

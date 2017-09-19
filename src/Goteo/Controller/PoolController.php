@@ -47,6 +47,7 @@ class PoolController extends \Goteo\Core\Controller {
         if(!Config::get('payments.pool.active')) {
             throw new PaymentException("Pool payment is not active!");
         }
+        DashboardController::createSidebar('recharge');
     }
 
      /**
