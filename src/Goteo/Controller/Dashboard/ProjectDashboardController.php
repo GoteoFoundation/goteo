@@ -409,7 +409,7 @@ class ProjectDashboardController extends \Goteo\Core\Controller {
         $project = $this->validateProject($pid, 'invests');
         if($project instanceOf Response) return $project;
 
-        $limit = 10;
+        $limit = 25;
         $offset = $limit * (int)$request->query->get('pag');
 
         $order = 'invested DESC';

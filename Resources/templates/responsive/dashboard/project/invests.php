@@ -106,7 +106,7 @@
         </tr>
       <?php endforeach ?>
     <?php else: ?>
-        <tr><td colspan="8"><p class="alert alert-danger"><?= $this->text('dashboard-chart-no-invested') ?></p></td></tr>
+        <tr><td colspan="8"><h4><?= $this->text('dashboard-project-no-invests') ?></h4></td></tr>
     <?php endif ?>
       </tbody>
     </table>
