@@ -171,6 +171,30 @@
     }
   }
 
+  .pool-box {
+    width: 100%;
+    padding:2%;
+    border-radius: 5px;
+    background:$background-white;
+    label {
+        display: block;
+        text-align: center;
+        strong {
+            display: inline-block;
+            vertical-align: middle;
+            font-size: $font-size * 2;
+        }
+    }
+    .form-control {
+        margin-left: 1em;
+        margin-right: 1em;
+        display: inline-block;
+        width: 150px;
+        font-size: $font-size * 1.5;
+        height: auto;
+        vertical-align: middle;
+    }
+  }
   .comments {
     &.hidden {
         height:0;
