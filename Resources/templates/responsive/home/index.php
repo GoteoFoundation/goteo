@@ -35,6 +35,8 @@
 
 <?= $this->insert('home/partials/adventages') ?>
 
+<?= $this->insert('home/partials/matchfunding') ?>
+
 <?= $this->insert('home/partials/foundation') ?>
 
 <?= $this->insert('home/partials/tools') ?>
