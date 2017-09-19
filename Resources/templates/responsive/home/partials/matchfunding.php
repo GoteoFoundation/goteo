@@ -114,25 +114,25 @@
     <div class="fluid-container data-container" >
         <div class="container">
             <div class="impact-title">
-                <?= $this->text('home-adventages-impact-data-title') ?>
+                <?= $this->text('home-advantages-impact-data-title') ?>
             </div>
             <div class="row impact-data">
                 <div class="col-md-2 col-md-offset-3 item">
                     4.503.000 €
                     <div class="description">
-                        <?= $this->text('home-adventages-impact-data-money-label') ?>
+                        <?= $this->text('home-advantages-impact-data-money-label') ?>
                     </div>
                 </div>
                 <div class="col-md-2 item">
                     76 %
                     <div class="description">
-                        <?= $this->text('home-adventages-impact-data-success-projects-label') ?>
+                        <?= $this->text('home-advantages-impact-data-success-projects-label') ?>
                     </div>
                 </div>
                 <div class="col-md-2 item">
                     48 €
                     <div class="description">
-                        <?= $this->text('home-adventages-impact-data-invest-avg-label') ?>
+                        <?= $this->text('home-advantages-impact-data-invest-avg-label') ?>
                     </div>
                 </div>
             </div>

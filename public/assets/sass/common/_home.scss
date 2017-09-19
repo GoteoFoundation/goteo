@@ -206,7 +206,7 @@ div.section.main-slider{
     padding: 40px 0;
 }
 
-.section.adventages{
+.section.advantages{
     .nav-tabs > li{
         width: 50%;
         text-align: center;
@@ -229,7 +229,7 @@ div.section.main-slider{
         line-height:40%;
     }
 
-    .adventages-container 
+    .advantages-container 
     {
         padding:25px 10px;
         .row.details{
@@ -334,7 +334,7 @@ div.section.main-slider{
 }
 
 //Fundation customization
-.adventages.foundation{
+.advantages.foundation{
     background-color: $background-yellow !important;
     h2.title{
         font-size: 24px;
@@ -539,7 +539,7 @@ div.section.tools{
         }
     }
 
-    .section.adventages .adventages-container{
+    .section.advantages .advantages-container{
         .row.details{
             display: block;
         }
@@ -550,13 +550,13 @@ div.section.tools{
         display: block;
     }
 
-    .adventages.foundation .slider .info-container{
+    .advantages.foundation .slider .info-container{
         max-width: 80%;
         margin-left: 10%;
         margin-bottom: 50px;
     }
 
-    .adventages.foundation{
+    .advantages.foundation{
         .slick-dots{
             left:0 !important;
         }
