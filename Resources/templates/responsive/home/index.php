@@ -33,7 +33,7 @@
 
 <?= $this->insert('home/partials/search') ?>
 
-<?= $this->insert('home/partials/adventages') ?>
+<?= $this->insert('home/partials/advantages') ?>
 
 <?= $this->insert('home/partials/matchfunding') ?>
 
