@@ -19,6 +19,8 @@
             <?= $this->text('home-matchfunding-finish') ?>
         </li>
     </ul>
+    
+    <!--
     <div class="container">
         <?php if($this->projects_popular): ?>
             <div class="row">
@@ -26,7 +28,7 @@
                     <div class="slider slider-projects">
                         <?php foreach ($this->projects_popular as $project) : ?>
                             <div class="widget-slide">
-                            <?= $this->insert('project/widgets/normal', [
+                            <?= $this->insert('call/widgets/normal', [
                                 'project' => $project
                                 ]) ?>
                             </div>
@@ -36,6 +38,9 @@
             </div>
         <?php endif ?>
     </div>
+
+    -->
+
     <div class="fluid-container details-container">
         <div class="container">
             <div class="row details-title">
@@ -87,6 +92,51 @@
                     </div>
                 </div>
             </div>
+            
+            <div class="row call-action">
+                <div class="col-md-9">
+                    <div class="title">
+                        Join the moviment
+                    </div>
+                    <div class="description">
+                        Únete a nuestra red de ayuntamientos y fundaciones.
+                    </div>
+                </div>
+                <div class="col-md-3 col-button">
+                    <a href="" class="btn btn-white">QUIERO HACER MATCH</a>
+                </div>
+            </div>
         </div>
     </div>
+
+    <!-- Impact data -->
+
+    <div class="fluid-container data-container" >
+        <div class="container">
+            <div class="impact-title">
+                <?= $this->text('home-adventages-impact-data-title') ?>
+            </div>
+            <div class="row impact-data">
+                <div class="col-md-2 col-md-offset-3 item">
+                    4.503.000 €
+                    <div class="description">
+                        <?= $this->text('home-adventages-impact-data-money-label') ?>
+                    </div>
+                </div>
+                <div class="col-md-2 item">
+                    76 %
+                    <div class="description">
+                        <?= $this->text('home-adventages-impact-data-success-projects-label') ?>
+                    </div>
+                </div>
+                <div class="col-md-2 item">
+                    48 €
+                    <div class="description">
+                        <?= $this->text('home-adventages-impact-data-invest-avg-label') ?>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
 </div>

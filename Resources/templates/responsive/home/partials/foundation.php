@@ -31,7 +31,9 @@
                         <div class="author" >
                             - David Cabo / Director Fundación Civio
                         </div> 
-                    </div>                   
+                    </div>   
+
+
                 </div>   
             </div>
             <div class="row">
@@ -126,10 +128,8 @@
             </div>
         </div> <!-- end row -->
 
-        <div class="row impact">
-            <div class="col-md-12 title">
+        <div class="impact-title">
                 <?= $this->text('home-adventages-impact-data-title') ?>
-            </div>
         </div>
 
         <div class="row impact-data">

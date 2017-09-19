@@ -71,10 +71,8 @@
                 		</div>
                 	</div> <!-- end row -->
 
-                    <div class="row impact">
-                        <div class="col-md-12 title">
+                    <div class="impact-title">                   
                             <?= $this->text('home-adventages-impact-data-title') ?>
-                        </div>
                     </div>
                     <div class="row impact-data">
                         <div class="col-md-2 col-md-offset-3 item">
@@ -174,10 +172,8 @@
                 		</div>
                 	</div>
 
-                    <div class="row impact">
-                        <div class="col-md-12 title">
+                    <div class="impact-title">
                             <?= $this->text('home-adventages-impact-data-title') ?>
-                        </div>
                     </div>
                     <div class="row impact-data">
                         <div class="col-md-2 col-md-offset-3 item">
