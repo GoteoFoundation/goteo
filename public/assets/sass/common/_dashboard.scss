@@ -58,6 +58,11 @@
     text-transform: uppercase;
   }
 
+  .fa.fa-2x {
+    width:30px;
+    font-size: 1.8em;
+  }
+
   table.footable , table.table {
     color: $secondary-color;
     background: $background-light-body;
@@ -73,9 +78,9 @@
   .btn {
       border:none;
       text-transform: uppercase;
-      box-shadow: 1px 1px 4px -2px $color-dark;
+      // box-shadow: 1px 1px 4px -2px $color-dark;
       &.btn-danger,&.btn-cyan,&.btn-green,&.btn-pink {
-        box-shadow: 2px 2px 4px -2px $color-dark;
+        // box-shadow: 2px 2px 4px -2px $color-dark;
       }
       &.btn-link {
         box-shadow: none;
@@ -194,7 +199,7 @@
       >a {
         border-radius:10px;
         text-transform: uppercase;
-        border:0;
+        border:1px solid transparent;
         margin-bottom:0;
         color: $color-dark;
         font-weight: 500;
