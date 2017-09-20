@@ -186,6 +186,7 @@ $(function(){
     // Message management
     $('#messageModal').on('shown.bs.modal', function (evt) {
         // console.log('modal evt', $(evt.relatedTarget).attr('class'), evt);
+        $('.ajax-message .error-message').addClass('hidden');
         var txt = '';
         var private = $(evt.relatedTarget).hasClass('send-private');
         var user_id = $(evt.relatedTarget).data('user');
@@ -230,7 +231,11 @@ $(function(){
     });
     $(document).on('message-sent', function(evt, data){
         console.log('message sent', data);
-        // TODO: close modal
+        $('.ajax-message input[name="reward"]').val('');
+        $('.ajax-message input[name="filter"]').val('');
+        $('.ajax-message input[name="users"]').val('');
+        // TODO: clear subject and body?
+        $('#messageModal').modal('hide');
     });
 })
 

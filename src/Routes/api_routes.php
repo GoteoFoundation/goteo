@@ -143,13 +143,13 @@ $api->add('api-keywords', new Route(
 ));
 
 // Messages list
-$api->add('api-messages-project', new Route(
+$api->add('api-comments-project', new Route(
     '/projects/{pid}/comments',
     array('_controller' => 'Goteo\Controller\Api\MessagesApiController::commentsAction',
         )
 ));
 
-$api->add('api-messages-add', new Route(
+$api->add('api-comments-add', new Route(
     '/comments',
     array('_controller' => 'Goteo\Controller\Api\MessagesApiController::commentsAddAction'),
     array(), // requirements
@@ -159,7 +159,7 @@ $api->add('api-messages-add', new Route(
     array('POST') // methods
 ));
 
-$api->add('api-messages-delete', new Route(
+$api->add('api-comments-delete', new Route(
     '/comments/{cid}',
     array('_controller' => 'Goteo\Controller\Api\MessagesApiController::commentsDeleteAction'),
     array(), // requirements
@@ -168,5 +168,23 @@ $api->add('api-messages-delete', new Route(
     array(), // schemes
     array('DELETE') // methods
 ));
+
+// Messages list
+$api->add('api-messages-project', new Route(
+    '/projects/{pid}/messages',
+    array('_controller' => 'Goteo\Controller\Api\MessagesApiController::messagesAction',
+        )
+));
+
+$api->add('api-messages-add', new Route(
+    '/messages',
+    array('_controller' => 'Goteo\Controller\Api\MessagesApiController::messagesAddAction'),
+    array(), // requirements
+    array(), // options
+    '', // host
+    array(), // schemes
+    array('POST') // methods
+));
+
 
 return $api;

@@ -2,7 +2,7 @@
     <div class="media-left">
         <img title="<?= $this->get_user()->name ?>" src="<?= $this->get_user()->avatar->getLink(60, 60, true) ?>" class="img-circle">
     </div>
-    <div class="media-body ajax-message" data-url="/api/messages">
+    <div class="media-body ajax-message" data-url="/api/messages" data-project="<?= $this->project ?>" data-admin="<?= (bool)$this->admin ?>">
         <div class="form-group">
             <input name="subject" required class="form-control" placeholder="<?= $this->text('contact-subject-field') ?>">
         </div>

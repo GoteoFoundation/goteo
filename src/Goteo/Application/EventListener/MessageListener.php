@@ -11,6 +11,7 @@
 namespace Goteo\Application\EventListener;
 
 use Goteo\Application\Event\FilterMessageEvent;
+use Goteo\Application\Exception\MailException;
 use Goteo\Application\AppEvents;
 use Goteo\Model\Template;
 use Goteo\Model\Message;
@@ -36,7 +37,13 @@ class MessageListener extends AbstractListener {
                 '%PROJECTURL%' => SITE_URL . '/project/' . $projectData->id . '/participate#message'.$message->id,
                 '%RESPONSEURL%' => SITE_URL . '/dashboard/activity#comments-' . $message->thread
                ], $lang)
+            // Either add a reply-to or put a link to respond in the platform
+            // ->setReply($owner->email, $owner->name)
+            ->setSubject($message->subject)
             ->send($errors);
+            if($errors) {
+                throw new MailException(implode("\n", $errors));
+            }
         }
 
         $this->notice('Message sent', [$message, 'recipients' => $recipients, 'errors' => $errors]);
@@ -47,7 +54,7 @@ class MessageListener extends AbstractListener {
         $project = $message->getProject();
         $user = $message->getUser();
         $type = $message->getType();
-        $this->info("Message created", ['project' => $message->project, 'message_id' => $message->id, 'message' => $message->message]);
+        $this->info("Message created", ['project' => $message->project, 'message_id' => $message->id, 'type' => $type, 'message' => $message->message]);
 
         $title = substr($message->message, 0, strpos($message->message, ':'));
         // Message created from support type
@@ -108,6 +115,7 @@ class MessageListener extends AbstractListener {
             $recipients[$project->getOwner()->id] = $project->getOwner();
             $this->sendMail($message, Template::THREAD_OWNER, $recipients);
         }
+
         if($type === 'project-comment') {
             $log = new Feed();
             $log->setTarget($project->id)
@@ -165,6 +173,23 @@ class MessageListener extends AbstractListener {
             $recipients[$project->getOwner()->id] = $project->getOwner();
             $this->sendMail($message, Template::THREAD_OWNER, $recipients);
 
+        }
+
+        if($type === 'project-private') {
+            $log = new Feed();
+            $log->setTarget($project->id)
+                ->populate('feed-message-new-project-response',
+                '/admin/projects',
+
+               new FeedBody(null, null, 'feed-message-thread-published', [
+                    '%USER%'    => Feed::item('user', $user->name, $user->id),
+                    '%PROJECT%' => Feed::item('project', $project->name, $project->id),
+                    '%TYPE%'    => new FeedBody('message', '/dashboard/' . $project->id . '/invests#message' . $message->id, 'project-menu-messages')
+                ]))
+                ->doAdmin('user');
+
+            // sent mail to recipients
+            $this->sendMail($message, Template::MESSAGE_DONORS, $message->getRecipients());
         }
     }
 

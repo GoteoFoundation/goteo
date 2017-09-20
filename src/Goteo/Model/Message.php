@@ -26,6 +26,7 @@ class Message extends \Goteo\Core\Model {
         $project,
         $thread, // hilo al que contesta, si es NULL es un hilo y tendrá respuestas ( o no)
         $date, // timestamp del momento en que se creó el mensaje
+        $subject, // if set, used as subject instead of template default subject (if this message is sent by mail)
         $message, // el texto del mensaje en si
         $responses = array(), // array de instancias mensaje que son respuesta a este
         $all_responses = [], // cache array
@@ -242,12 +243,18 @@ class Message extends \Goteo\Core\Model {
      * project-comment-response (response for project comment non related to support)
      * project-support (mirror message from support)
      * project-support-response (support message response)
+     * project-private (for donors communication)
+     * project-private-response (responses from donors communication)
      * @return string
      */
     public function getType() {
         $type = '';
         if($this->project) {
-            $type = 'project-comment';
+            if($this->private) {
+                $type = 'project-private';
+            } else {
+                $type = 'project-comment';
+            }
             $sql = "SELECT id FROM support WHERE thread = :id";
             $values = [':id' => $this->id];
             if($this->thread) {
@@ -321,10 +328,13 @@ class Message extends \Goteo\Core\Model {
             $values = [':message' => $this->id];
             $i = 0;
             foreach($recipients as $user) {
-                $sql = "INSERT INTO message_user (message_id, user_id) VALUES(:message, :user)";
-                self::query($sql, [':message' => $this->id ,':user' => $user]);
-                $values[":user$i"] = $user;
-                $i++;
+                $user = trim($user);
+                if($user) {
+                    $sql = "INSERT INTO message_user (message_id, user_id) VALUES(:message, :user)";
+                    self::query($sql, [':message' => $this->id ,':user' => $user]);
+                    $values[":user$i"] = $user;
+                    $i++;
+                }
             }
             $sql = 'DELETE FROM message_user WHERE message_id = :message AND user_id NOT IN (' . implode(',', array_keys($values)) . ')';
             self::query($sql, $values);
@@ -332,6 +342,7 @@ class Message extends \Goteo\Core\Model {
 
     }
 
+    // User in private messages
     public function getRecipients() {
         if(!$this->recipients) {
             $sql = "SELECT user.* FROM `user`
@@ -340,12 +351,15 @@ class Message extends \Goteo\Core\Model {
 
             $query = self::query($sql, [':id' => $this->id]);
             if($resp = $query->fetchAll(\PDO::FETCH_CLASS, '\Goteo\Model\User')) {
-                $this->recipients[$resp->id] = $resp;
+                foreach($resp as $user) {
+                    $this->recipients[$user->id] = $user;
+                }
             }
         }
         return $this->recipients;
     }
 
+    // Users on the same thread
     public function getParticipants() {
         if(!$this->participants) {
             $sql = "SELECT DISTINCT user.* FROM `user`
@@ -355,7 +369,9 @@ class Message extends \Goteo\Core\Model {
             $query = self::query($sql, [':id' => $this->id]);
             $this->participants = $this->getRecipients();
             if($resp = $query->fetchAll(\PDO::FETCH_CLASS, '\Goteo\Model\User')) {
-                $this->participants[$resp->id] = $resp;
+                foreach($resp as $user) {
+                    $this->participants[$user->id] = $user;
+                }
             }
         }
         return $this->participants;

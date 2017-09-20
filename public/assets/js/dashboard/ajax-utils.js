@@ -183,7 +183,7 @@ $(function(){
             body: $body.val(),
             reward: $reward.val(),
             filter: $filter.val(),
-            users: $body.val().split(','),
+            users: $users.val().split(','),
             project: $parent.data('project'),
             // view: 'dashboard'
         }
