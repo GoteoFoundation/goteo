@@ -8,3 +8,8 @@ regular-keepiton_mark: 'A por el óptimo'
 regular-oneround_mark: 'Ronda única'
 regular-onrun_mark: 'En marcha!'
 regular-success_mark: 'Misión cumplida!'
+
+call-tagmark-open: 'Convocatoria abierta'
+call-tagmark-active: 'Campaña activa!'
+call-tagmark-completed: 'Campaña finalizada'
+call-tagmark-archived: 'Convocatoria archivada'
