@@ -1,4 +1,4 @@
-<div class="section matchfunding" >
+<div class="section matchfunding" id="matchfunding" >
     <div class="drop-img-container">
         <img class="center-block drop-img" src="/assets/img/project/drop.svg" alt="matchfunding">
     </div>
@@ -6,13 +6,13 @@
         <?= $this->text('home-matchfunding-title') ?>
     </h2>
     <ul class="filters list-inline center-block text-center">
-        <li class="active">
+        <li>
             <?= $this->text('home-matchfunding-all') ?>
         </li>
-        <li>
+        <li class="active" >
             <?= $this->text('home-matchfunding-open') ?>
         </li>
-        <li>
+        <li class="active" >
             <?= $this->text('home-matchfunding-active') ?>
         </li>
         <li>
@@ -20,16 +20,15 @@
         </li>
     </ul>
     
-    <!--
     <div class="container">
-        <?php if($this->projects_popular): ?>
+        <?php if($this->calls): ?>
             <div class="row">
                 <div class="col-xs-12">
-                    <div class="slider slider-projects">
-                        <?php foreach ($this->projects_popular as $project) : ?>
+                    <div class="slider slider-calls">
+                        <?php foreach ($this->calls as $call) : ?>
                             <div class="widget-slide">
                             <?= $this->insert('call/widgets/normal', [
-                                'project' => $project
+                                'call' => $call
                                 ]) ?>
                             </div>
                         <?php endforeach ?>
@@ -39,7 +38,6 @@
         <?php endif ?>
     </div>
 
-    -->
 
     <div class="fluid-container details-container">
         <div class="container">

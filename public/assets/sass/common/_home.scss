@@ -58,11 +58,10 @@ div.section.main-slider{
 
 .slider.fade{
     opacity:1;
-}
-
-.slick-slide img {
-    display: block;
-    width: 100%;
+    .slick-slide img {
+        display: block;
+        width: 100%;
+    }
 }
 
 .slick-dots{
@@ -449,6 +448,13 @@ div.section.matchfunding{
             padding: 5px 15px;
             border-radius: 5px;
             cursor: none;
+        }
+    }
+
+    .slider-calls{
+        margin-bottom: 50px;
+        .widget-slide{
+            margin: 0 30px;
         }
     }
     .details-container{

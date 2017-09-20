@@ -13,6 +13,11 @@ namespace Goteo\Model {
 
     class Call extends \Goteo\Core\Model {
 
+        // CALL STATUS IDs
+        const STATUS_OPEN   = 3; //
+        const STATUS_ACTIVE = 4;
+        const STATUS_COMPLETED = 5;
+
         public
         $id = null,
         $owner, // User who created it
@@ -88,7 +93,9 @@ namespace Goteo\Model {
         $used, // comprometido
         $applied, // proyectos aplicados
         $running_projects, // proyectos seleccionados en campaña
-        $success_projects // proyectos seleccionados exitosos
+        $success_projects, // proyectos seleccionados exitosos
+        $tagmark = null  // banderolo a mostrar
+
         ;
 
         /**
@@ -472,6 +479,21 @@ namespace Goteo\Model {
                 }
 
                 return (int) $applied->cuantos;
+        }
+
+        public function getTagmark() {
+
+            if(!$this->tagmark) {
+                if ($this->status == self::STATUS_OPEN) :
+                    $this->tagmark = 'open';
+                elseif ($this->status == self::STATUS_ACTIVE) :
+                    $this->tagmark = 'active';
+                // "en marcha" y "aun puedes" cuando está en la segunda ronda
+                elseif ($this->status == self::STATUS_COMPLETED) :
+                    $this->tagmark = 'completed';
+                endif;
+            }
+            return $this->tagmark;
         }
 
 
@@ -970,7 +992,13 @@ namespace Goteo\Model {
             $list = array();
             $values = array(':lang'=>$lang);
 
-            if (in_array($status, array(3, 4, 5))) {
+
+            if(is_array($status))
+            {
+                $status = join("','",$status); 
+                $sqlFilter .= " WHERE call.status IN ('$status')";            
+            }
+            elseif (in_array($status, array(3, 4, 5))) {
                 $sqlFilter .= " WHERE call.status = $status"; // solo cierto estado
             } elseif ($all) {
                 $sqlFilter .= " WHERE call.status IN ('3', '4', '5')"; // desde aplicacion hasta exitosa
@@ -2008,6 +2036,17 @@ namespace Goteo\Model {
             }
 
             return $list;
+        }
+
+        /**
+         *
+         * Return main sphere
+         * 
+         */
+
+        public function getMainSphere()
+        {
+            return current($this->getSpheres($this->id));
         }
 
 
