@@ -262,7 +262,8 @@ class ProjectDashboardController extends \Goteo\Core\Controller {
             ))
             ->add('allow', 'boolean', array(
                 'required' => false,
-                'label' => 'blog-allow-comments' // Form has integrated translations
+                'label' => 'blog-allow-comments', // Form has integrated translations
+                'color' => 'cyan', // bootstrap label-* (default, success, ...)
             ))
             ->add('publish', 'boolean', array(
                 'required' => false,

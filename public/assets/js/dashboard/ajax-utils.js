@@ -90,10 +90,15 @@ $(function(){
             $list.append(data.html);
             $textarea.val('');
             $recipients.find('.text').html($recipients.data('public'));
-          }).fail(function(data) {
-            var error = JSON.parse(data.responseText);
-            console.log('error', data, error)
-            $error.removeClass('hidden').html(error.error);
+          }).fail(function(xhr) {
+            console.log('error', xhr);
+            var error;
+            try {
+                error = JSON.parse(xhr.responseText).error;
+            } catch(e) {
+                error = xhr.statusText;
+            }
+            $error.removeClass('hidden').html(error);
           });
     });
 
@@ -157,5 +162,45 @@ $(function(){
         $list.find('.send-private').each(function() {
             addRecipient($recipients, $(this).data('user'), $(this).data('name'));
         });
+    });
+
+
+    // messages handle
+    $(".ajax-message").on('click', ".send-message", function (e) {
+        e.preventDefault();
+        var $parent = $(this).closest('.ajax-message');
+        // var $list = $($parent.data('list'));
+        var url = $parent.data('url');
+        var $error = $parent.find('.error-message');
+        var $subject = $parent.find('[name="subject"]');
+        var $body = $parent.find('[name="body"]');
+        var $reward = $parent.find('[name="reward"]');
+        var $filter = $parent.find('[name="filter"]');
+        var $users = $parent.find('[name="users"]');
+
+        var data = {
+            subject: $subject.val(),
+            body: $body.val(),
+            reward: $reward.val(),
+            filter: $filter.val(),
+            users: $body.val().split(','),
+            project: $parent.data('project'),
+            // view: 'dashboard'
+        }
+        $error.addClass('hidden').html('');
+        $.post(url, data, function(data) {
+            console.log('ok!', data);
+            // $list.append(data.html);
+            $(document).trigger('message-sent', [data]);
+          }).fail(function(xhr) {
+            console.log('error', xhr);
+            var error;
+            try {
+                error = JSON.parse(xhr.responseText).error;
+            } catch(e) {
+                error = xhr.statusText;
+            }
+            $error.removeClass('hidden').html(error);
+          });
     });
 });

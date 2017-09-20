@@ -37,12 +37,12 @@
 </div>
 
 <!-- Modal -->
-<div class="modal fade" id="poolModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+<div class="modal fade" id="poolModal" tabindex="-1" role="dialog" aria-labelledby="poolModalLabel">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        <h4 class="modal-title" id="myModalLabel"><?= $this->text('invest-modal-pool-title') ?></h4>
+        <h4 class="modal-title" id="poolModalLabel"><?= $this->text('invest-modal-pool-title') ?></h4>
       </div>
       <div class="modal-body">
         <?= $this->text('dashboard-my-wallet-modal-pool-info') ?>

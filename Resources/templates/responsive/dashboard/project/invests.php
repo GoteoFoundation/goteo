@@ -7,7 +7,9 @@
     <h2><?= $this->text('dashboard-menu-projects-rewards') ?></h2>
 
 
-    <p class="exportcsv"><?= $this->project->inCampaign() ? $this->text('dashboard-rewards-notice') : $this->text('dashboard-rewards-investors_table', ['%URL%' => '/api/projects/' . $this->project->id . '/invests/csv']) ?></p>
+    <?php if($this->project->inCampaign()): ?>
+        <p><?= $this->text('dashboard-rewards-notice') ?></p>
+    <?php endif ?>
 
     <form id="filters" class="row">
       <span class="col-xs-6">
@@ -39,7 +41,16 @@
       <input type="hidden" name="order" value="<?= $this->order ?>">
     </form>
 
-    <h5><?= $this->text('dashboard-invests-totals', ['%TOTAL_INVESTS%' => '<strong>' . $this->total_invests . '</strong>', '%TOTAL_USERS%' => '<strong>' . $this->total_users . '</strong>', '%TOTAL_AMOUNT%' => '<strong>' . amount_format($this->total_amount) . '</strong>']) ?></h5>
+    <h5><?= $this->text('dashboard-search-invests-totals', ['%TOTAL_INVESTS%' => '<strong>' . $this->total_invests . '</strong>', '%TOTAL_USERS%' => '<strong>' . $this->total_users . '</strong>', '%TOTAL_AMOUNT%' => '<strong>' . amount_format($this->total_amount) . '</strong>']) ?></h5>
+
+    <div class="row spacer-bottom-20">
+        <div class="col-lg-6">
+        <a data-toggle="modal" href="#messageModal" class="btn btn-cyan"><i class="fa fa-paper-plane-o"></i> <?= $this->text('dashboard-search-invests-msg') ?></a>
+        </div>
+        <div class="col-lg-6 exportcsv" style="padding-top: 5px">
+            <?= $this->text('dashboard-rewards-investors_table', ['%URL%' => '/api/projects/' . $this->project->id . '/invests/csv']) ?>
+        </div>
+    </div>
 
     <table class="-footable table">
       <thead>
@@ -101,7 +112,7 @@
           </td>
           <td><?= $address ?></td>
           <td>
-            ...
+            <a data-toggle="modal" href="#messageModal" data-user="<?= $invest->getUser()->id ?>" data-name="<?= $invest->getUser()->name ?>" class="send-private" title="<?= $this->text('support-send-private-message') ?>"><i class="icon-1x icon icon-partners"></i></a>
           </td>
         </tr>
       <?php endforeach ?>
@@ -113,6 +124,27 @@
 
     <?= $this->insert('partials/utils/paginator', ['total' => $this->total_invests, 'limit' => $this->limit]) ?>
 
+  </div>
+</div>
+
+
+
+<!-- Modal -->
+<div class="modal fade" id="messageModal" tabindex="-1" role="dialog" aria-labelledby="messageModalLabel">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="messageModalLabel"><?= $this->text('dashboard-new-message-to-donors') ?></h4>
+      </div>
+      <div class="modal-body">
+        <?= $this->insert('dashboard/project/partials/message', [
+            'reward' => $this->filter['reward'],
+            'filter' => $this->filter['others'],
+            'project' => $this->project->id
+            ]) ?>
+      </div>
+    </div>
   </div>
 </div>
 
@@ -135,6 +167,70 @@ $(function(){
         if($(input).prop('checked')) {
             $(input).closest('.material-switch').replaceWith('<span class="label label-cyan"><?= $this->text('regular-yes') ?></span>');
         }
+    });
+
+    var texts = {
+        all: '<?= $this->ee($this->text('dashboard-rewards-massive_msg-all'), 'js') ?>',
+        donors: '<?= $this->ee($this->text('dashboard-message-donors-donors'), 'js') ?>',
+        and: '<?= $this->ee($this->text('dashboard-message-donors-and'), 'js') ?>',
+        reward: '<?= $this->ee($this->text('dashboard-message-donors-reward'), 'js') ?>',
+        donative: '<?= $this->ee($this->text('dashboard-message-donors-donative'), 'js') ?>',
+        nondonative: '<?= $this->ee($this->text('dashboard-message-donors-nondonative'), 'js') ?>',
+        pending: '<?= $this->ee($this->text('dashboard-message-donors-pending'), 'js') ?>',
+        fulfilled: '<?= $this->ee($this->text('dashboard-message-donors-fulfilled'), 'js') ?>',
+        error: '<?= $this->ee($this->text('dashboard-message-donors-error'), 'js') ?>',
+        total: '<?= $this->ee($this->text('dashboard-message-donors-total'), 'js') ?>'
+    };
+    var total_users = <?= (int)$this->total_users ?>;
+
+    // Message management
+    $('#messageModal').on('shown.bs.modal', function (evt) {
+        // console.log('modal evt', $(evt.relatedTarget).attr('class'), evt);
+        var txt = '';
+        var private = $(evt.relatedTarget).hasClass('send-private');
+        var user_id = $(evt.relatedTarget).data('user');
+        var user_txt = $(evt.relatedTarget).data('name');
+        var $recipients = $('.ajax-message .recipients');
+        var prefix = $recipients.data('private');
+        var reward_id = $('#filter-reward').val();
+        var reward_txt = $('#filter-reward option:selected').text();
+        var others_id = $('#filter-others').val();
+        var others_txt = $('#filter-others option:selected').text();
+        if(private) {
+            txt = '<span class="label label-lilac">' + user_txt + '</span>';
+            reward_id = '';
+            others_id = '';
+        } else if(!reward_id && !others_id) {
+            txt = '<span class="label label-lilac">' + texts.all + '</span>';
+        } else {
+            user_id = '';
+            if(reward_id) {
+                txt = texts.reward.replace('%s', '<span class="label label-lilac">' + reward_txt + '</span>');
+                if(others_id && $.inArray(others_id, ['drop', 'nondrop']) == -1) {
+                    txt += ' ' + texts.and + ' ';
+                    txt += '<span class="label label-lilac">' + texts[others_id] + '</span>';
+                }
+            }
+            else if(others_id && texts[others_id]) {
+                txt = texts.donors + ' ';
+                txt += '<span class="label label-lilac">' + texts[others_id] + '</span>';
+            }
+            else {
+                txt += '<span class="label label-danger">' + texts.error + '</span>';
+            }
+        }
+        if(!private) {
+            txt += ' - <span class="badge">' + texts.total.replace('%s', total_users) + '</span>';
+        }
+
+        $('.ajax-message input[name="reward"]').val(reward_id || '');
+        $('.ajax-message input[name="filter"]').val(others_id || '');
+        $('.ajax-message input[name="users"]').val(user_id || '');
+        $('.ajax-message .recipients').html(prefix + ' <strong>'+ txt + '</strong>');
+    });
+    $(document).on('message-sent', function(evt, data){
+        console.log('message sent', data);
+        // TODO: close modal
     });
 })
 
