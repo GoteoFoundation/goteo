@@ -13,11 +13,13 @@ namespace Goteo\Application\EventListener;
 use Goteo\Application\Event\FilterMessageEvent;
 use Goteo\Application\Exception\MailException;
 use Goteo\Application\AppEvents;
+use Goteo\Application\Config;
 use Goteo\Model\Template;
 use Goteo\Model\Message;
 use Goteo\Model\Mail;
 use Goteo\Model\Mail\Sender;
 use Goteo\Model\User;
+use Goteo\Library\Text;
 use Goteo\Library\Feed;
 use Goteo\Library\FeedBody;
 
@@ -45,7 +47,11 @@ class MessageListener extends AbstractListener {
             }
 
             // create the sender cue
-            $sender = new Sender(['mail' => $mail->id]);
+            $sender = new Sender([
+                'mail' => $mail->id,
+                'reply' => $owner->email,
+                'reply_name' => $project->name . ' ' . Text::get('regular-from') . ' ' . Config::get('mail.transport.name')
+            ]);
             if ( ! $sender->save($errors) ) { //persists in database
                 throw new MailException(implode("\n",$errors));
             }
