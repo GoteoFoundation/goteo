@@ -16,16 +16,45 @@ use Goteo\Application\AppEvents;
 use Goteo\Model\Template;
 use Goteo\Model\Message;
 use Goteo\Model\Mail;
+use Goteo\Model\Mail\Sender;
 use Goteo\Model\User;
 use Goteo\Library\Feed;
 use Goteo\Library\FeedBody;
 
 
 class MessageListener extends AbstractListener {
-    private function sendMail(Message $message, $template, array $recipients = []) {
-        // send mail to owner
-        $owner = $message->getProject()->getOwner();
 
+    private function sendMail(Message $message, $template, array $recipients = [], $delayed = false) {
+        // send mail to owner
+        $project = $message->getProject();
+        $owner = $project->getOwner();
+
+        if($delayed) {
+            // Send as a newsletter
+            $mail = Mail::createFromTemplate('any', '', $template, [
+                '%MESSAGE%' => $message->message,
+                '%OWNERNAME%' => $owner->name,
+                '%PROJECTNAME%' => $project->name,
+                '%PROJECTURL%' => SITE_URL . '/project/' . $project->id . '/participate#message'.$message->id,
+                '%RESPONSEURL%' => SITE_URL . '/dashboard/activity#comments-' . $message->thread
+               ])
+                ->setSubject($message->subject);
+
+            if ( ! $mail->save($errors) ) { //persists in database
+                throw new MailException(implode("\n",$errors));
+            }
+
+            // create the sender cue
+            $sender = new Sender(['mail' => $mail->id]);
+            if ( ! $sender->save($errors) ) { //persists in database
+                throw new MailException(implode("\n",$errors));
+            }
+
+            $sender->addSubscribers($recipients);
+            $sender->setActive(true);
+            $this->notice('Message set as massive', [$message, 'recipients' => $recipients, 'errors' => $errors]);
+            return;
+        }
 
         foreach($recipients as $user) {
             $lang = User::getPreferences($user)->comlang;
@@ -34,7 +63,7 @@ class MessageListener extends AbstractListener {
                 '%OWNERNAME%' => $owner->name,
                 '%USERNAME%' => $user->name,
                 '%PROJECTNAME%' => $project->name,
-                '%PROJECTURL%' => SITE_URL . '/project/' . $projectData->id . '/participate#message'.$message->id,
+                '%PROJECTURL%' => SITE_URL . '/project/' . $project->id . '/participate#message'.$message->id,
                 '%RESPONSEURL%' => SITE_URL . '/dashboard/activity#comments-' . $message->thread
                ], $lang)
             // Either add a reply-to or put a link to respond in the platform
@@ -189,7 +218,7 @@ class MessageListener extends AbstractListener {
                 ->doAdmin('user');
 
             // sent mail to recipients
-            $this->sendMail($message, Template::MESSAGE_DONORS, $message->getRecipients());
+            $this->sendMail($message, Template::MESSAGE_DONORS, $message->getRecipients(), $event->getDelayed());
         }
     }
 

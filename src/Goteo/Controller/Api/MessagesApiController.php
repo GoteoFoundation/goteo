@@ -20,6 +20,7 @@ use Goteo\Application\AppEvents;
 use Goteo\Application\Event\FilterMessageEvent;
 use Goteo\Model\User;
 use Goteo\Model\Project;
+use Goteo\Model\Invest;
 use Goteo\Library\Text;
 use Goteo\Model\Message as Comment;
 
@@ -188,7 +189,7 @@ class MessagesApiController extends AbstractApiController {
         }
 
         if($subject && $body) {
-            $message = "$subject<br>\n<br>\n$body";
+            $message = "<strong>$subject</strong><br>\n<br>\n$body";
         } else {
             throw new ModelException(Text::get('validate-donor-mandatory'));
         }
@@ -206,13 +207,22 @@ class MessagesApiController extends AbstractApiController {
         if(!$message->save($errors)) {
             throw new ModelException('Update failed '. implode(", ", $errors));
         }
+        $users = $request->request->get('users');
+        if(is_array($users)) $users = array_filter($users);
 
-        if($users = $request->request->get('users')) {
+        $evt = new FilterMessageEvent($message);
+        if($users) {
             $message->setRecipients($users);
         } else {
             // TODO: find recipients from filters
-            $reward = $request->request->get('reward');
-            $filter = $request->request->get('filter');
+            $filters = [
+                'projects' => $project,
+                'status' => [Invest::STATUS_CHARGED, Invest::STATUS_PAID],
+                'reward' => $request->request->get('reward'),
+                'types' => $request->request->get('filter')
+            ];
+            $message->setRecipients(Invest::getUsersList($filters));
+            $evt->setDelayed(true);
         }
 
         if(!$message->getRecipients()) {
@@ -220,7 +230,7 @@ class MessagesApiController extends AbstractApiController {
         }
 
         // Send and event to create the Feed and send emails
-        $this->dispatch(AppEvents::MESSAGE_CREATED, new FilterMessageEvent($message));
+        $this->dispatch(AppEvents::MESSAGE_CREATED, $evt);
 
         // if($request->request->get('view') === 'dashboard') {
         //     $view = 'dashboard/project/partials/comments/item';

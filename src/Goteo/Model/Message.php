@@ -328,6 +328,7 @@ class Message extends \Goteo\Core\Model {
             $values = [':message' => $this->id];
             $i = 0;
             foreach($recipients as $user) {
+                if($user instanceOf User) $user = $user->id;
                 $user = trim($user);
                 if($user) {
                     $sql = "INSERT INTO message_user (message_id, user_id) VALUES(:message, :user)";
