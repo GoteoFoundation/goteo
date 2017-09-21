@@ -58,11 +58,10 @@ div.section.main-slider{
 
 .slider.fade{
     opacity:1;
-}
-
-.slick-slide img {
-    display: block;
-    width: 100%;
+    .slick-slide img {
+        display: block;
+        width: 100%;
+    }
 }
 
 .slick-dots{
@@ -172,7 +171,33 @@ div.section.main-slider{
 .section.projects{
     padding: 40px 0;
     .title{
-        padding-bottom: 30px;
+    }
+    .filters{
+       margin:40px 0 35px 0;
+       li{
+        font-weight: bold;
+        padding: 0px 15px;
+        cursor: pointer;
+        }
+        .active{
+            background-color: $background-light-green;
+            padding: 5px 15px;
+            border-radius: 5px;
+            color: #FFF !important;
+            cursor: none;
+        }
+        .matchfunding{
+            color: $color-lilac;
+        }
+    }
+    .slick-list {
+        padding-left: 0px!important; // half partial
+        .widget-slide{
+            margin-left: 20px;
+            .project-widget.normal{
+                box-shadow: none;
+            }
+        }
     }
 }
 
@@ -180,7 +205,7 @@ div.section.main-slider{
     padding: 40px 0;
 }
 
-.section.adventages{
+.section.advantages{
     .nav-tabs > li{
         width: 50%;
         text-align: center;
@@ -203,7 +228,7 @@ div.section.main-slider{
         line-height:40%;
     }
 
-    .adventages-container 
+    .advantages-container 
     {
         padding:25px 10px;
         .row.details{
@@ -267,27 +292,6 @@ div.section.main-slider{
                 }
             }
         }
-        .row.impact{
-            .title{
-                font-size: 24px;
-                font-weight: bold;
-                text-align: center;
-                padding-top:20px;
-            }
-        }
-        .row.impact-data{
-            .item{
-                margin-top: 25px;
-                text-align: center;
-                font-size: 30px;
-                font-weight: bold;
-                .description{
-                    font-size: 11px;
-                    font-weight: normal;
-                    text-transform: uppercase;
-                }
-            }
-        }
     }
     .adventage:not(:last-child)
     {
@@ -305,8 +309,31 @@ div.section.main-slider{
  
 }
 
+// General impact module
+
+.impact-title{
+    font-size: $font-size*2;
+    font-weight: bold;
+    text-align: center;
+    padding-top:20px;
+}
+
+.row.impact-data{
+    .item{
+        margin-top: 25px;
+        text-align: center;
+        font-size: 30px;
+        font-weight: bold;
+        .description{
+            font-size: 11px;
+            font-weight: normal;
+            text-transform: uppercase;
+        }
+    }
+}
+
 //Fundation customization
-.adventages.foundation{
+.advantages.foundation{
     background-color: $background-yellow !important;
     h2.title{
         font-size: 24px;
@@ -360,7 +387,8 @@ div.section.main-slider{
             margin-left: 10%;
         }
         .slick-dots{
-            left:25%;
+            right: 4%;
+            width: 50%;
             li.slick-active button::before{
                 color: $primary-color;
             }
@@ -390,8 +418,94 @@ div.section.main-slider{
             font-size: 25px;
             color:$color-light-grey;        
         }
-
     }
+}
+
+div.section.matchfunding{
+    background-color: $background-white;
+    .title{
+        font-weight: bold;
+    }
+    .drop-img-container{
+        padding-top: 25px;
+        img.drop-img{
+            width: 35px;
+        }
+    }
+    .filters{
+       margin:40px 0 35px 0;
+       li{
+        font-weight: bold;
+        padding: 0px 15px;
+        cursor: pointer;
+        }
+        .active{
+            background-color: $background-green-owner;
+            padding: 5px 15px;
+            border-radius: 5px;
+            cursor: none;
+        }
+    }
+
+    .slider-calls{
+        margin-bottom: 50px;
+        .widget-slide{
+            margin: 0 30px;
+        }
+    }
+    .details-container{
+        background-color: $background-light-lilac;
+        color: $color-white;
+        font-weight: bold;
+        padding: 40px 0;
+        .row.details-title{  
+            .title{
+                text-align: center;
+                padding-top: 15px;
+            }
+        }
+        .row.details{
+            padding-top: 20px;
+            .detail-item{
+                border-radius: 50%;
+                width: 75px;
+                height: 75px;
+                background-color: $background-white;
+                box-shadow: 1px 3px 5px -3px #4D4D4D;
+            }
+            .item-1{
+                padding: 11px 8px;
+            }
+            .item-2{
+                padding: 13px 9px 5px 16px;
+            }
+            .item-3{
+                padding: 15px;
+            }
+            .item-4{
+                padding: 15px;
+            }
+            .item-5{
+                padding: 14px 12px 6px 11px;
+            }
+            .item-label{
+                margin-top: 10px;
+                text-transform: uppercase;
+            }
+        }
+        .call-action{
+            background: none !important;
+            margin-top: 50px;;
+        }
+    }
+
+    .data-container
+    {
+        background-color: $background-dark-lilac;
+        color: $color-white;
+        padding: 40px 0;
+    }
+    
 }
 
 div.section.tools{
@@ -431,7 +545,7 @@ div.section.tools{
         }
     }
 
-    .section.adventages .adventages-container{
+    .section.advantages .advantages-container{
         .row.details{
             display: block;
         }
@@ -442,13 +556,13 @@ div.section.tools{
         display: block;
     }
 
-    .adventages.foundation .slider .info-container{
+    .advantages.foundation .slider .info-container{
         max-width: 80%;
         margin-left: 10%;
         margin-bottom: 50px;
     }
 
-    .adventages.foundation{
+    .advantages.foundation{
         .slick-dots{
             left:0 !important;
         }
@@ -460,6 +574,10 @@ div.section.tools{
             right: 15px !important;
             top:80% !important;
         }
+    }
+
+    div.section.matchfunding .detail-item{
+        margin-top:20px;
     }
 }
 
