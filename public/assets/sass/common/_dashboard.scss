@@ -72,9 +72,20 @@
             &:first-child {
                 padding-left:10px;
             }
+            a.send-private {
+                color:$color-dark;
+                .icon {
+                    background-color: $color-dark;
+                }
+            }
         }
     }
   }
+  .loading {
+    background:url(../img/ring.gif) no-repeat center;
+    min-height: 60px;
+  }
+
   .btn {
       border:none;
       text-transform: uppercase;

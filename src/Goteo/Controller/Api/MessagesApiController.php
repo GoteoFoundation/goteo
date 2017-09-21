@@ -148,9 +148,6 @@ class MessagesApiController extends AbstractApiController {
      * TODO: according to permissions, filter this users
      */
     public function messagesAction($pid, Request $request) {
-        if(!$this->user) {
-            throw new ControllerAccessDeniedException();
-        }
         $prj = Project::get($pid);
 
         // Security, first of all...
@@ -167,6 +164,42 @@ class MessagesApiController extends AbstractApiController {
                    'date' => $msg->date,
                    'project' => $msg->project,
                    'user' => $msg->getUser()->id
+               ];
+            $list[] = $ob;
+        }
+
+        return $this->jsonResponse([
+            'list' => $list
+            ]);
+    }
+
+    /**
+     * List of user messages for a project
+     */
+    public function userMessagesAction($pid, $uid, Request $request) {
+        $prj = Project::get($pid);
+        $user = User::get($uid);
+
+        // Security, first of all...
+        if(!$prj->userCanView($this->user)) {
+            throw new ControllerAccessDeniedException();
+        }
+
+        $list = [];
+
+        // TODO: filter type
+        foreach(Comment::getUserPrivateMessages($user, $prj) as $msg) {
+            $ob = ['id' => $msg->id,
+                   'message' => $msg->message,
+                   // 'date' => date_formater($msg->date, true),
+                   'date' => $msg->date,
+                   'project' => $msg->project,
+                   'timeago' => $msg->timeago,
+                   'recipient' => $msg->recipient,
+                   'user' => $msg->user,
+                   'name' => $msg->getUser()->name,
+                   'avatar' => $msg->getUser()->avatar->getLink(60,60,c),
+                   'thread' => $msg->thread
                ];
             $list[] = $ob;
         }

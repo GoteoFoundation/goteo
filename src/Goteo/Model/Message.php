@@ -32,7 +32,7 @@ class Message extends \Goteo\Core\Model {
         $all_responses = [], // cache array
         $blocked = 0, //no se puede editar ni borrar (es un mensaje thread de colaboracion)
         $closed = 0, // no se puede responder
-        $private = 0, // private messages users message_url for searching recipients
+        $private = 0, // private messages uses table 'message_users' for searching recipients
         $recipients = [], // Recipients if is a private message
         $participants = [], // All participants from a message (includes private recipients)
         $timeago;
@@ -48,61 +48,61 @@ class Message extends \Goteo\Core\Model {
      */
     public static function get ($id) {
 
-            $sql="
-                SELECT  message.*,
-                        user.id as user_id,
-                        user.name as user_name,
-                        user.email as user_email,
-                        user.avatar as user_avatar
-                FROM    message
-                INNER JOIN user ON user.id=message.user
-                WHERE   message.id = :id
-                ";
+        $sql="
+            SELECT  message.*,
+                    user.id as user_id,
+                    user.name as user_name,
+                    user.email as user_email,
+                    user.avatar as user_avatar
+            FROM    message
+            INNER JOIN user ON user.id=message.user
+            WHERE   message.id = :id
+            ";
 
-            $query = self::query($sql, array(':id' => $id));
-            if($message = $query->fetchObject(__CLASS__)) {
+        $query = self::query($sql, array(':id' => $id));
+        if($message = $query->fetchObject(__CLASS__)) {
 
-                // datos del usuario. Eliminación de user::getMini
+            // datos del usuario. Eliminación de user::getMini
 
-                $user = new User;
-                $user->id = $message->user_id;
-                $user->name = $message->user_name;
-                $user->email = $message->user_email;
-                $user->avatar = Image::get($message->user_avatar);
+            $user = new User;
+            $user->id = $message->user_id;
+            $user->name = $message->user_name;
+            $user->email = $message->user_email;
+            $user->avatar = Image::get($message->user_avatar);
 
-                $message->user = $user;
+            $message->user = $user;
 
 
-                // reconocimiento de enlaces y saltos de linea
-                $message->message = nl2br(Text::urlink($message->message));
+            // reconocimiento de enlaces y saltos de linea
+            $message->message = nl2br(Text::urlink($message->message));
 
-                //hace tanto
-                $message->timeago = Feed::time_ago($message->date);
+            //hace tanto
+            $message->timeago = Feed::time_ago($message->date);
 
-                // Deprecated: to be removed
-                if (empty($message->thread)) {
-                    $query = self::query("
-                        SELECT  *
-                        FROM  message
-                        WHERE
-                            private = false
-                            AND
-                            thread = ?
-                        ", array($id));
+            // Deprecated: to be removed
+            if (empty($message->thread)) {
+                $query = self::query("
+                    SELECT  *
+                    FROM  message
+                    WHERE
+                        private = false
+                        AND
+                        thread = ?
+                    ", array($id));
 
-                    foreach ($query->fetchAll(\PDO::FETCH_CLASS, __CLASS__) as $response) {
-                        $message->responses[] = $response;
-                    }
-
+                foreach ($query->fetchAll(\PDO::FETCH_CLASS, __CLASS__) as $response) {
+                    $message->responses[] = $response;
                 }
+
             }
-            return $message;
+        }
+        return $message;
     }
 
     /*
      * Lista de hilos de un proyecto
      */
-    public static function getAll ($project, $lang = null) {
+    public static function getAll ($project, $lang = null, $with_private = false) {
         if($project instanceOf Project) $project = $project->id;
 
         if(empty($lang)) $lang = Lang::current();
@@ -142,6 +142,7 @@ class Message extends \Goteo\Core\Model {
             $eng_join
             WHERE   message.project = :project
             AND     message.thread IS NULL
+            " . ($with_private ? '' : ' AND private=0 ') . "
             ORDER BY date ASC, id ASC
             ";
         $query = static::query($sql, array(':project'=>$project, ':lang'=>$lang));
@@ -180,7 +181,26 @@ class Message extends \Goteo\Core\Model {
         return $messages;
     }
 
+    /**
+     * returns an array with user => total received messages
+     */
+    public static function countProjectMessages(Project $project) {
+        $sql = "SELECT message_user.user_id as user, COUNT(user_id) as total
+                FROM message
+                RIGHT JOIN message_user ON message_user.message_id=message.id
+                WHERE message.project = :project
+                #and message_user.user_id in ('ivan', 'test', 'mackeylime')
+                GROUP BY user_id";
+        $values = [':project' => $project->id];
+        if($query = static::query($sql, $values)) {
+            return array_column($query->fetchAll(\PDO::FETCH_OBJ), 'total', 'user');
+        }
+        return [];
+    }
 
+    /**
+     * Returns user messages
+     */
     public static function getUserMessages(User $user) {
         $sql = "SELECT a.* FROM message a
                 WHERE a.id IN (
@@ -193,6 +213,35 @@ class Message extends \Goteo\Core\Model {
                     )
                 LIMIT 10";
         $query = self::query($sql, [':user' => $user->id]);
+        if($resp = $query->fetchAll(\PDO::FETCH_CLASS, __CLASS__)) {
+            return $resp;
+        }
+        return [];
+
+    }
+
+    /**
+     * Returns user messages
+     */
+    public static function getUserPrivateMessages(User $user, Project $project = null) {
+        $addWhere = '';
+        $values = [':user' => $user->id];
+        if($project) {
+            $addWhere .= ' AND a.project = :project';
+            $values[':project'] = $project->id;
+        }
+        $sql = "SELECT a.*, b.id AS support_id, c.user_id AS recipient
+                FROM message a
+                LEFT JOIN support b ON b.thread = a.thread
+                LEFT JOIN message_user c ON c.message_id = a.id
+                WHERE blocked=0 AND private=1
+                AND (c.user_id = :user OR a.user = :user)
+                AND b.id IS NULL
+                $addWhere
+                ORDER BY DATE ASC, id ASC
+                LIMIT 5"; // TODO: offset and limit
+        // die(sqldbg($sql, $values));
+        $query = self::query($sql, $values);
         if($resp = $query->fetchAll(\PDO::FETCH_CLASS, __CLASS__)) {
             return $resp;
         }

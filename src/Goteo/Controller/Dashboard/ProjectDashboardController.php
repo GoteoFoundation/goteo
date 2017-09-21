@@ -452,11 +452,14 @@ class ProjectDashboardController extends \Goteo\Core\Controller {
 
         // TODO: save to session with current filter values?
 
+
+
         return $this->viewResponse('dashboard/project/invests', [
             'invests' => $invests,
             'total_invests' => $totals['invests'],
             'total_users' => $totals['users'],
             'total_amount' => $totals['amount'],
+            'messages' => Comment::countProjectMessages($project),
             'order' => $order,
             'filters' => $filters,
             'filter' => $filter,

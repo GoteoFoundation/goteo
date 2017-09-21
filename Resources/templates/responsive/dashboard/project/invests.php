@@ -69,6 +69,7 @@
     <?php if($this->invests): ?>
 
       <?php
+
         foreach($this->invests as $invest):
             $resign = $invest->resign;
             $uid = $invest->getUser()->id;
@@ -112,7 +113,7 @@
           </td>
           <td><?= $address ?></td>
           <td>
-            <a data-toggle="modal" href="#messageModal" data-user="<?= $invest->getUser()->id ?>" data-name="<?= $invest->getUser()->name ?>" class="send-private" title="<?= $this->text('support-send-private-message') ?>"><i class="icon-1x icon icon-partners"></i></a>
+            <a data-toggle="modal" href="#messageModal" data-user="<?= $invest->getUser()->id ?>" data-name="<?= $invest->getUser()->name ?>" class="send-private" title="<?= $this->text('support-send-private-message') ?>"><?= (int)$this->messages[$invest->getUser()->id] ?> <i class="icon-1x icon icon-partners"></i></a>
           </td>
         </tr>
       <?php endforeach ?>
@@ -138,6 +139,7 @@
         <h4 class="modal-title" id="messageModalLabel"><?= $this->text('dashboard-new-message-to-donors') ?></h4>
       </div>
       <div class="modal-body">
+        <div class="messages-list"></div>
         <?= $this->insert('dashboard/project/partials/message', [
             'reward' => $this->filter['reward'],
             'filter' => $this->filter['others'],
@@ -151,6 +153,24 @@
 <?php $this->replace() ?>
 
 <?php $this->section('footer') ?>
+
+<script class="item_message_template" type="text/template">
+
+  <div class="media comment-item">
+    <div class="media-left">
+        <img title="{name}" src="{avatar}" class="img-circle">
+    </div>
+    <div class="media-body">
+        <p>
+            <strong>{name}</strong>
+            <em>{date}</em>
+        </p>
+        <p>{message}</p>
+        <p class="text-danger hidden error-message"></p>
+    </div>
+  </div>
+
+</script>
 
 <script type="text/javascript">
 // @license magnet:?xt=urn:btih:0b31508aeb0634b347b8270c7bee4d411b5d4109&dn=agpl-3.0.txt
@@ -186,21 +206,46 @@ $(function(){
     // Message management
     $('#messageModal').on('shown.bs.modal', function (evt) {
         // console.log('modal evt', $(evt.relatedTarget).attr('class'), evt);
-        $('.ajax-message .error-message').addClass('hidden');
         var txt = '';
         var private = $(evt.relatedTarget).hasClass('send-private');
         var user_id = $(evt.relatedTarget).data('user');
         var user_txt = $(evt.relatedTarget).data('name');
-        var $recipients = $('.ajax-message .recipients');
+        var $list = $('#messageModal .messages-list');
+        var $recipients = $('#messageModal .ajax-message .recipients');
         var prefix = $recipients.data('private');
         var reward_id = $('#filter-reward').val();
         var reward_txt = $('#filter-reward option:selected').text();
         var others_id = $('#filter-others').val();
         var others_txt = $('#filter-others option:selected').text();
+
+        // Create form fields
+        $('#messageModal .ajax-message .error-message').addClass('hidden');
+        $list.removeClass('loading').html('');
         if(private) {
-            txt = '<span class="label label-lilac">' + user_txt + '</span>';
-            reward_id = '';
-            others_id = '';
+          // Create messages
+          var $template = $('script.item_message_template');
+          $list.addClass('loading');
+          $.getJSON('/api/projects/<?= $this->project->id ?>/messages/' + user_id, function(msgs) {
+            console.log('msgs', msgs);
+            if(msgs && msgs.list) {
+              $list.removeClass('loading');
+              $.each(msgs.list, function(i, item){
+                console.log(i, item);
+                var msg = $template.html()
+                            .replace(/\{name\}/g, item.name)
+                            .replace(/\{date\}/g, item.timeago)
+                            .replace(/\{avatar\}/g, item.avatar)
+                            .replace(/\{message\}/g, item.message);
+                $list.append(msg);
+              });
+            } else {
+              // error
+            }
+          });
+
+          txt = '<span class="label label-lilac">' + user_txt + '</span>';
+          reward_id = '';
+          others_id = '';
         } else if(!reward_id && !others_id) {
             txt = '<span class="label label-lilac">' + texts.all + '</span>';
         } else {

@@ -175,6 +175,12 @@ $api->add('api-messages-project', new Route(
     array('_controller' => 'Goteo\Controller\Api\MessagesApiController::messagesAction',
         )
 ));
+// User Messages list
+$api->add('api-messages-project', new Route(
+    '/projects/{pid}/messages/{uid}',
+    array('_controller' => 'Goteo\Controller\Api\MessagesApiController::userMessagesAction',
+        )
+));
 
 $api->add('api-messages-add', new Route(
     '/messages',
