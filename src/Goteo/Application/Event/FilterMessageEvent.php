@@ -16,15 +16,33 @@ use Goteo\Model\Message;
 class FilterMessageEvent extends Event
 {
     protected $message;
+    protected $delayed = false; // used to specify mail sending as a mailing
 
     public function __construct(Message $message)
     {
         $this->message = $message;
     }
 
-    public function getmessage()
+    public function setMessage(Message $message)
+    {
+        $this->message = $message;
+        return $this;
+    }
+
+    public function getMessage()
     {
         return $this->message;
+    }
+
+    public function setDelayed($bool)
+    {
+        $this->delayed = (bool) $bool;
+        return $this;
+    }
+
+    public function getDelayed()
+    {
+        return $this->delayed;
     }
 
 }

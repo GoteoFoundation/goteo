@@ -169,17 +169,7 @@ class Invest extends \Goteo\Core\Model {
     }
 
 
-    /**
-     * Lista de aportes individuales
-     *
-     * Los filtros vienen de la gestión de aportes
-     * Los datos que sacamos: usuario, proyecto, cantidad, estado de proyecto, estado de aporte, fecha de aporte, tipo de aporte, campaña
-     * .... anonimo, resign, etc...
-     * @param $count if true, counts the total. If it's 'money' sum all money instead, if 'users' gets the number of different users
-     */
-    public static function getList ($filters = array(), $node = null, $offset = 0, $limit = 10, $count = false, $order = 'id DESC') {
-
-        $list = [];
+    private static function getSQLFilter($filters = [], $node = null) {
         $values = [];
         $sqlFilter = [];
 
@@ -356,6 +346,22 @@ class Invest extends \Goteo\Core\Model {
             $sqlFilter = '';
         }
 
+        return [$sqlFilter, $values];
+    }
+
+    /**
+     * Lista de aportes individuales
+     *
+     * Los filtros vienen de la gestión de aportes
+     * Los datos que sacamos: usuario, proyecto, cantidad, estado de proyecto, estado de aporte, fecha de aporte, tipo de aporte, campaña
+     * .... anonimo, resign, etc...
+     * @param $count if true, counts the total. If it's 'money' sum all money instead, if 'users' gets the number of different users
+     */
+    public static function getList ($filters = array(), $node = null, $offset = 0, $limit = 10, $count = false, $order = 'id DESC') {
+
+        $list = [];
+        list($sqlFilter, $values) = self::getSQLFilter($filters, $node);
+
         if($count) {
             if($count === 'all') {
                 $what = 'SUM(invest.amount) AS total_amount, COUNT(invest.id) AS total_invests, COUNT(DISTINCT invest.user) AS total_users';
@@ -419,6 +425,30 @@ class Invest extends \Goteo\Core\Model {
         }
         return $list;
     }
+
+    /**
+     * Lists invests as distinct users
+     */
+    public static function getUsersList($filters = []) {
+        $list = [];
+        list($sqlFilter, $values) = self::getSQLFilter($filters);
+        $sql = "SELECT
+                    DISTINCT user.*
+                FROM invest
+                RIGHT JOIN user
+                    ON invest.user = user.id
+                LEFT JOIN project
+                    ON invest.project = project.id
+                LEFT JOIN invest_reward
+                    ON invest_reward.invest = invest.id
+                $sqlFilter
+                ";
+
+        // print_r($filters);echo sqldbg($sql, $values);die;
+        $query = self::query($sql, $values);
+        return $query->fetchAll(\PDO::FETCH_CLASS, '\Goteo\Model\User');
+    }
+
 
     // returns the current project
     public function getProject() {
@@ -1148,6 +1178,7 @@ class Invest extends \Goteo\Core\Model {
 
     /*
      * Numero de cofinanciadores que han optado por cierta recompensa
+     * TODO: remove this
      */
     public static function choosed ($reward) {
 

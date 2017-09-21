@@ -20,6 +20,8 @@ use Goteo\Application\AppEvents;
 use Goteo\Application\Event\FilterMessageEvent;
 use Goteo\Model\User;
 use Goteo\Model\Project;
+use Goteo\Model\Invest;
+use Goteo\Library\Text;
 use Goteo\Model\Message as Comment;
 
 class MessagesApiController extends AbstractApiController {
@@ -27,8 +29,6 @@ class MessagesApiController extends AbstractApiController {
     /**
      * Simple listing of messages for a project
      * TODO: according to permissions, filter this users
-     * @param  Request $request [description]
-     * @return [type]           [description]
      */
     public function commentsAction($pid, Request $request) {
         // if(!$this->user) {
@@ -56,6 +56,10 @@ class MessagesApiController extends AbstractApiController {
             'list' => $list
             ]);
     }
+
+    /**
+     * Add a comment over a support message
+     */
     public function commentsAddAction(Request $request) {
         if(!$this->user) {
             throw new ControllerAccessDeniedException();
@@ -118,6 +122,10 @@ class MessagesApiController extends AbstractApiController {
         ]);
     }
 
+
+    /**
+     * Delete a comment
+     */
     public function commentsDeleteAction($cid, Request $request) {
         if(!$this->user) {
             throw new ControllerAccessDeniedException();
@@ -133,5 +141,143 @@ class MessagesApiController extends AbstractApiController {
         }
         $message->dbDelete();
         return $this->jsonResponse(['id' => $message->id]);
+    }
+
+    /**
+     * Simple listing of messages for a project
+     * TODO: according to permissions, filter this users
+     */
+    public function messagesAction($pid, Request $request) {
+        $prj = Project::get($pid);
+
+        // Security, first of all...
+        if(!$prj->userCanView($this->user)) {
+            throw new ControllerAccessDeniedException();
+        }
+
+        $list = [];
+
+        // TODO: filter type
+        foreach(Comment::getAll($prj) as $msg) {
+            $ob = ['id' => $msg->id,
+                   'message' => $msg->message,
+                   'date' => $msg->date,
+                   'project' => $msg->project,
+                   'user' => $msg->getUser()->id
+               ];
+            $list[] = $ob;
+        }
+
+        return $this->jsonResponse([
+            'list' => $list
+            ]);
+    }
+
+    /**
+     * List of user messages for a project
+     */
+    public function userMessagesAction($pid, $uid, Request $request) {
+        $prj = Project::get($pid);
+        $user = User::get($uid);
+
+        // Security, first of all...
+        if(!$prj->userCanView($this->user)) {
+            throw new ControllerAccessDeniedException();
+        }
+
+        $list = [];
+
+        // TODO: filter type
+        foreach(Comment::getUserPrivateMessages($user, $prj) as $msg) {
+            $ob = ['id' => $msg->id,
+                   'message' => $msg->message,
+                   // 'date' => date_formater($msg->date, true),
+                   'date' => $msg->date,
+                   'project' => $msg->project,
+                   'timeago' => $msg->timeago,
+                   'recipient' => $msg->recipient,
+                   'user' => $msg->user,
+                   'name' => $msg->getUser()->name,
+                   'avatar' => $msg->getUser()->avatar->getLink(60,60,c),
+                   'thread' => $msg->thread
+               ];
+            $list[] = $ob;
+        }
+
+        return $this->jsonResponse([
+            'list' => $list
+            ]);
+    }
+
+    /**
+     * Add a comment over a support message
+     */
+    public function messagesAddAction(Request $request) {
+        $subject = trim($request->request->get('subject'));
+        $body = trim($request->request->get('body'));
+        $project = $request->request->get('project');
+        $prj = Project::get($project);
+        if(!$prj->userCanEdit($this->user)) {
+            throw new ControllerAccessDeniedException();
+        }
+
+        if($subject && $body) {
+            $message = "<strong>$subject</strong><br>\n<br>\n$body";
+        } else {
+            throw new ModelException(Text::get('validate-donor-mandatory'));
+        }
+
+        // Create the message
+        $message = new Comment([
+            'user' => $this->user,
+            'project' => $project,
+            'blocked' => false,
+            'private' => true,
+            'subject' => $subject,
+            'message' => $message,
+            'date' => date('Y-m-d H:i:s')
+        ]);
+        if(!$message->save($errors)) {
+            throw new ModelException('Update failed '. implode(", ", $errors));
+        }
+        $users = $request->request->get('users');
+        if(is_array($users)) $users = array_filter($users);
+
+        $evt = new FilterMessageEvent($message);
+        if($users) {
+            $message->setRecipients($users);
+        } else {
+            // TODO: find recipients from filters
+            $filters = [
+                'projects' => $project,
+                'status' => [Invest::STATUS_CHARGED, Invest::STATUS_PAID],
+                'reward' => $request->request->get('reward'),
+                'types' => $request->request->get('filter')
+            ];
+            $message->setRecipients(Invest::getUsersList($filters));
+            $evt->setDelayed(true);
+        }
+
+        if(!$message->getRecipients()) {
+            throw new ModelException(Text::get('dashboard-message-donors-error'));
+        }
+
+        // Send and event to create the Feed and send emails
+        $this->dispatch(AppEvents::MESSAGE_CREATED, $evt);
+
+        // if($request->request->get('view') === 'dashboard') {
+        //     $view = 'dashboard/project/partials/comments/item';
+        // }
+        // else {
+        //     $view = 'project/partials/comment';
+        // }
+        View::setTheme('responsive');
+        return $this->jsonResponse([
+            'id' => $message->id,
+            'user' => $comment->user,
+            'project' => $comment->project,
+            'message' => $comment->message,
+            // 'html' => View::render($view, [ 'comment' => $comment, 'project' => $prj, 'admin' => $request->request->get('admin') ])
+        ]);
     }
 }

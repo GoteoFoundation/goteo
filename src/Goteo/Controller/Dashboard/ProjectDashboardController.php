@@ -262,7 +262,8 @@ class ProjectDashboardController extends \Goteo\Core\Controller {
             ))
             ->add('allow', 'boolean', array(
                 'required' => false,
-                'label' => 'blog-allow-comments' // Form has integrated translations
+                'label' => 'blog-allow-comments', // Form has integrated translations
+                'color' => 'cyan', // bootstrap label-* (default, success, ...)
             ))
             ->add('publish', 'boolean', array(
                 'required' => false,
@@ -451,11 +452,14 @@ class ProjectDashboardController extends \Goteo\Core\Controller {
 
         // TODO: save to session with current filter values?
 
+
+
         return $this->viewResponse('dashboard/project/invests', [
             'invests' => $invests,
             'total_invests' => $totals['invests'],
             'total_users' => $totals['users'],
             'total_amount' => $totals['amount'],
+            'messages' => Comment::countProjectMessages($project),
             'order' => $order,
             'filters' => $filters,
             'filter' => $filter,

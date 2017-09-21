@@ -14,6 +14,7 @@ use Goteo\Application\Config;
 use Goteo\Application\Exception\ModelNotFoundException;
 use Goteo\Application\Exception\ModelException;
 use Goteo\Model\Mail;
+use Goteo\Model\User;
 
 /*
  * Clase para hacer envios masivos en segundo plano
@@ -155,6 +156,7 @@ class Sender extends \Goteo\Core\Model
         $sql = "SELECT * FROM mailer_send
                 WHERE mailing = ? $where$extra"
                 ;
+        // die(sqldbg($sql, [$this->id]));
 
         $query = static::query($sql, [$this->id]);
         if($query) {
@@ -396,9 +398,20 @@ class Sender extends \Goteo\Core\Model
         throw new ModelException('Inserting SQL [' . $sql .'] has failed!');
     }
 
-    static public function addSubscribers(Array $subscribers = []) {
-
+    public function addSubscribers(array $subscribers = []) {
+        foreach($subscribers as $user) {
+            if(!$user instanceOf User) {
+                throw new ModelException('[' . $user .'] is not an User instance!');
+            }
+            $sql = 'INSERT INTO `mailer_send` (`mailing`, `user`, `name`, `email`) VALUES (:id, :user, :name, :email) ';
+            $values = [':id' => $this->id, ':user' => $user->id, ':name' => $user->name, ':email' => $user->email];
+            if(!static::query($sql, $values)) {
+                throw new ModelException('Inserting SQL [' . $sql .'] has failed!');
+            }
+        }
     }
+
+
 
     /*
     *  Metodo para limpieza de envíos masivos enviados y sus destinatarios
