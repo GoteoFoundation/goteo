@@ -118,22 +118,9 @@
       }
     }
 
-    // .toggle-sidebar {
-    //     position: fixed;
-    //     font-size: 30px;
-    //     font-weight: 300;
-    //     right: 20px;
-    //     top: 20px;
-    //     z-index: 1002;
-    //     background:$background-sidebar-header;
-    //     color:$color-white;
-    //     padding:1px 11px;
-    //     margin:0;
-    //     border:0;
-    //     border-radius:50%;
-    //     width: 45px;
-    //     height: 45px;
-    // }
+    .toggle-sidebar {
+        display: none;
+    }
 
     .navbar-brand {
         margin-bottom: 8px;
