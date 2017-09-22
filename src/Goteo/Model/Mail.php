@@ -128,6 +128,16 @@ class Mail extends \Goteo\Core\Model {
             $this->log->$func($message, WebProcessor::processObject($context));
         }
     }
+
+    public function setReply($email, $name = '') {
+        $this->reply = $email;
+        $this->replyName = $name;
+        return $this;
+    }
+    public function setSubject($subject = null) {
+        if($subject) $this->subject = $subject;
+        return $this;
+    }
     public function getSubject() {
         if(!$this->subject && $this->template) {
             $tpl = Template::get($this->template);

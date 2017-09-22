@@ -103,10 +103,10 @@ dashboard-rewards-date_order: 'Per data'
 dashboard-rewards-fulfilled_filter: Complertes
 dashboard-rewards-fulfilled_status: Complerta
 dashboard-rewards-group_msg: 'missatge a aquell grup'
-dashboard-rewards-investors_table: 'Si vols gestionar-lo offline pots <a href="%URL%">baixar la Taula de Cofinanciadors</a>'
+dashboard-rewards-investors_table: 'Si vols gestionar-lo offline pots <a href="%URL%">baixar la Taula de cofinançadors</a>'
 dashboard-rewards-issue: Incidència!
 dashboard-rewards-massive_msg: 'Missatges col.lectius'
-dashboard-rewards-massive_msg-all: 'A totes les persones confinançadores d''aquest projecte'
+dashboard-rewards-massive_msg-all: 'A totes les persones cofinançadores d''aquest projecte'
 dashboard-rewards-massive_msg-all_alert: 'a tots és a tots, no té en compte la resta de marcats'
 dashboard-rewards-notice: 'AIXÒ ÉS UNA VISUALITZACIÓ DE LES OPCIONS DE RETORN QUE TRIEN ELS TEUS COFINANÇADORS.<br/> NO HAS DE GESTIONAR AQUESTS RETORNS FINS HAVER ARRIBAT AL MÍNIM DE LA QUANTITAT DESITJADA'
 dashboard-rewards-num_taken: Compromeses
@@ -137,7 +137,7 @@ form-project_waitfor-review: 'En breu ens posarem en contacte amb tu respecte al
 form-project_waitfor-success: 'Has aconseguit el mínim o més en aportacions de cofinançament pel projecte. De seguida et contactarem per parlar de diners :)'
 guide-dashboard-user-location: 'El sistema utilitza aquestes dades per geolocalitzar-te'
 guide-dashboard-user-preferences: 'Marca ''Sí'' a les notificacions automàtiques que vulguis bloquejar.'
-guide-dashboard-user-profile: 'Tant si vols presentar un projecte com incorporar-te com a cofinanciador/a, per formar part de la comunitat de Goteo et recomanem que escriguis el teu text de presentació, que afegeixis links rellevants sobre el que fas i pugis una imatge de perfil amb la qual t''identifiquis.'
+guide-dashboard-user-profile: 'Tant si vols presentar un projecte com incorporar-te com a cofinançador/a, per formar part de la comunitat de Goteo et recomanem que escriguis el teu text de presentació, que afegeixis links rellevants sobre el que fas i pugis una imatge de perfil amb la qual t''identifiquis.'
 guide-user-data: 'Text guia en l''edició de camps sensibles'
 user-changeemail-success: 'L''email s''ha canviat correctament ;)'
 user-changeemail-title: 'Canviar email'
@@ -181,7 +181,7 @@ dashboard-project-images-desc: 'Organitza les imatges com vulguis arrossegant i 
 dashboard-project-default-image: 'Imatge per defecte'
 dashboard-project-delete-image: 'Esborra la imatge'
 dashboard-project-delete-image-confirm: 'Segur que vols esborrar aquests imatge?'
-dashboard-project-delete-default-image: "L'imatge per defecte no es pot esborrar.\nEscull una altra imatge per defect abans d'esborrar aquesta."
+dashboard-project-delete-default-image: "L'imatge per defecte no es pot esborrar.\nEscull una altra imatge per defecte abans d'esborrar aquesta."
 dashboard-project-dnd-image: 'Arrastra una o varies imatges aquí'
 dashboard-project-image-delete-ko: "La imatge no s'ha pogut esborrar!"
 project-upload-images-some-ko: "Algunes imatges no s'han pujat!"
@@ -189,7 +189,7 @@ dashboard-project-default-image-confirm: 'Vols fer servir aquesta imatge per def
 dashboard-project-image-default-ko: "No se s'ha pogut posar la imatge per defecte!"
 dashboard-project-image-reorder-ko: "No se s'han pogut ordenar les imatges!"
 
-dashboard-project-send-to-markdown: "Introduïr la imatge al text"
+dashboard-project-send-to-markdown: "Introdueix la imatge al text"
 dashboard-max-files-reached: "Heu assolit el número màxim d'arxius!"
 dashboard-file-type-error: "Aquest tipus d'arxius no està permès!"
 all-files-uploaded: "Tots els arxius s'han pujat correctament"
@@ -201,7 +201,8 @@ dashboard-project-support-empty: 'No hi cap petició per col·laboracions encara
 dashboard-project-support-responses: 'Respostes'
 dashboard-project-support-no-responses: 'No hi ha respostes encara.'
 dashboard-project-support-add: 'Afegir una nova petició de col·laboració'
-dashboard-invests-totals: '%TOTAL_INVESTS% aportacions de %TOTAL_USERS% usuaris. Total %TOTAL_AMOUNT%'
+dashboard-search-invests-totals: 'En aquesta cerca: %TOTAL_INVESTS% aportacions de %TOTAL_USERS% usuaris. Total %TOTAL_AMOUNT%'
+dashboard-search-invests-msg: 'Envia un missatge als cofinançadors d''aquesta cerca'
 dashboard-project-filter-by-reward: 'Filtrar per recompensa'
 dashboard-project-filter-by-others: 'Altres filtres'
 dashboard-project-filter-by-donative: 'Veure només els que renuncien a recompensa'
@@ -211,4 +212,16 @@ dashboard-project-filter-by-nondrop: 'Amaga les aportacions de matchfunding'
 dashboard-project-filter-by-pending: 'Veure només les pendents'
 dashboard-project-filter-by-fulfilled: 'Veure només les completades'
 dashboard-project-no-invests: 'No hi ha aportacions per a aquest criteri de cerca'
+
+dashboard-new-message-to-donors: 'Nou missatge als cofinançadors'
+dashboard-message-donors-reward: 'Cofinançadors amb la recompensa %s'
+
+dashboard-message-donors-donors: 'Tots els cofinançadors que'
+dashboard-message-donors-and: 'i que també'
+dashboard-message-donors-donative: 'renuncien a recompensa'
+dashboard-message-donors-nondonative: 'han escollit alguna recompensa'
+dashboard-message-donors-pending: 'estan pendents'
+dashboard-message-donors-fulfilled: 'estan completats'
+dashboard-message-donors-error: 'No hi ha destinataris vàlids, no es pot enviar el missatge'
+dashboard-message-donors-total: '%s cofinançadors'
 

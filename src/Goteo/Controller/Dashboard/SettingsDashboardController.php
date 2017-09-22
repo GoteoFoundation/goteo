@@ -84,7 +84,8 @@ class SettingsDashboardController extends \Goteo\Core\Controller {
             ->add('unlocable', 'boolean', [
                 'label' => 'dashboard-user-location-unlocate',
                 'attr' => ['help' => Text::get('dashboard-user-location-help')],
-                'required' => false
+                'required' => false,
+                'color' => 'cyan'
             ])
             ->add('avatar', 'dropfiles', [
                 'label' => 'profile-fields-image-title',
@@ -125,7 +126,8 @@ class SettingsDashboardController extends \Goteo\Core\Controller {
             ])
             ->add('entity_type', 'boolean', [
                 'label' => 'profile-field-entity-type-checkbox-public',
-                'required' => false
+                'required' => false,
+                'color' => 'cyan'
             ])
             ->add('about', 'textarea', [
                 'label' => 'profile-field-about',
