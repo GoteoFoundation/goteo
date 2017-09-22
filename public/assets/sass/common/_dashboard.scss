@@ -22,27 +22,35 @@
 
   p {
     color: $secondary-color;
+    &.text-danger {
+        color: $color-red;
+    }
   }
 
   h1 {
     font-size: $font-size * 2;
     color: $title-color;
+    line-height: 1.5;
   }
   h2 {
     font-size: $font-size * 1.6;
     color: $title-color;
+    line-height: 1.5;
   }
   h3 {
     font-size: $font-size * 1.4;
     color: $title-color;
+    line-height: 1.5;
   }
   h4 {
     font-size: $font-size * 1.2;
     color: $title-color;
+    line-height: 1.5;
   }
   h5,.pool-desc {
     font-size: $font-size * 1;
     color: $title-color;
+    line-height: 1.5;
     font-weight: normal;
     text-transform: uppercase;
   }
@@ -152,6 +160,22 @@
     }
     > li + li {
       margin-left: 20px;
+    }
+  }
+
+  .comments {
+    &.hidden {
+        height:0;
+    }
+    .media {
+        padding: 10px 5px;
+        &:first-child {
+            border-top: 0;
+        }
+        border-top: 2px solid #ddd;
+    }
+    .label i {
+      cursor: pointer;
     }
   }
 }

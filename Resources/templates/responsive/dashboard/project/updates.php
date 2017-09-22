@@ -40,15 +40,15 @@
       </tbody>
     </table>
 
-    <p>
-        <a href="#" class="btn btn-lg btn-cyan"><i class="fa fa-plus"></i> <?= $this->text('form-add-button') ?></a>
-    </p>
-
     <?= $this->insert('partials/utils/paginator', ['total' => $this->total, 'limit' => $this->limit]) ?>
 
     <?php else: ?>
-        <?= $this->text('dashboard-project-blog-empty') ?>
+        <p class="alert alert-danger"><?= $this->text('dashboard-project-blog-empty') ?></p>
     <?php endif ?>
+
+    <p>
+        <a href="#" class="btn btn-lg btn-cyan"><i class="fa fa-plus"></i> <?= $this->text('form-add-button') ?></a>
+    </p>
 
   </div>
 </div>

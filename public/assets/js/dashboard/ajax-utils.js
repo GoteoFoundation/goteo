@@ -62,4 +62,100 @@ $(function(){
         });
     });
 
+
+    // Send comments
+    $(".ajax-comments").on('click', ".send-comment", function (e) {
+        e.preventDefault();
+        var $parent = $(this).closest('.ajax-comments');
+        var $list = $($parent.data('list'));
+        var url = $parent.data('url');
+        var $error = $parent.find('.error-message');
+        var $textarea = $parent.find('[name="message"]');
+        var $recipients = $('.ajax-comments .recipients');
+        var recipients = [];
+        $recipients.find('.label').each(function(){
+            recipients.push($(this).data('user'));
+        });
+        var data = {
+            message: $textarea.val(),
+            recipients: recipients,
+            thread: $parent.data('thread'),
+            project: $parent.data('project'),
+            admin: $parent.data('admin'),
+            view: 'dashboard'
+        }
+        $error.addClass('hidden').html('');
+        $.post(url, data, function(data) {
+            // console.log('ok!', data);
+            $list.append(data.html);
+            $textarea.val('');
+            $recipients.find('.text').html($recipients.data('public'));
+          }).fail(function(data) {
+            var error = JSON.parse(data.responseText);
+            console.log('error', data, error)
+            $error.removeClass('hidden').html(error.error);
+          });
+    });
+
+    // Delete comments
+    $('.comments-list').on('click', ".delete-comment", function (e) {
+        e.preventDefault();
+        var ask = $(this).data('confirm');
+        var url = $(this).data('url');
+        var $item = $(this).closest('.comment-item');
+        var $error = $item.find('.error-message');
+        if(confirm(ask)) {
+            $.ajax({
+                url: url,
+                type: 'DELETE',
+                success: function(data) {
+                  // console.log('success', data);
+                  $item.remove();
+                }
+            }).fail(function(data) {
+              var error = JSON.parse(data.responseText);
+              console.log('error', data, error)
+              $error.removeClass('hidden').html(error.error);
+            });
+        }
+    });
+
+    var addRecipient = function($recipients, user, name) {
+        $recipients.find('.text').html($recipients.data('private'));
+        if(!$recipients.find('[data-user="' + user +'"]').length) {
+            $recipients.append(' <span class="label label-lilac" data-user="' + user + '">' + name + ' <i class="fa fa-close"></i></span>');
+        }
+    };
+    // add to private list
+    $('.comments-list').on('click', '.send-private', function (e) {
+        e.preventDefault();
+        var user = $(this).data('user');
+        var name = $(this).data('name');
+        var $recipients = $(this).closest('.comments').find('.recipients');
+        addRecipient($recipients, user, name);
+    });
+
+    // remove from private list
+    $(".ajax-comments .recipients").on('click', ".label>i", function (e) {
+        // var $recipients = $(".ajax-comments .recipients");
+        var $recipients = $(this).closest('.recipients');
+        var $checkbox = $('.ajax-comments input[name="private"]');
+        $(this).parent().remove();
+        if(!$recipients.find('.label').length) {
+            // console.log('recipients',$recipients.find('.label'), $recipients.html());
+            $recipients.find('.text').html($recipients.data('public'));
+            $checkbox.prop('checked', false);
+        }
+    });
+
+    $(".ajax-comments").on('click', 'input[name="private"]', function (e) {
+        e.preventDefault();
+        var $recipients = $(this).closest('.ajax-comments').find('.recipients');
+        var $list = $(this).closest(".comments").find('.comments-list');
+
+        $(this).prop('checked', true);
+        $list.find('.send-private').each(function() {
+            addRecipient($recipients, $(this).data('user'), $(this).data('name'));
+        });
+    });
 });

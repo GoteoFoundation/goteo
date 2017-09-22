@@ -16,6 +16,7 @@ use Goteo\Application\Session;
 use Goteo\Application\Config;
 use Goteo\Application\View;
 use Goteo\Model\Project;
+use Goteo\Model\Message as Comment;
 use Goteo\Model\User;
 use Goteo\Model\User\Interest;
 use Goteo\Model\Page;
@@ -42,21 +43,23 @@ class DashboardController extends \Goteo\Core\Controller {
             $total_fav = Project::published('popular', null, 0, 0, true);
         }
 
-
+        $
         $interests = Interest::getAll();
 
-        $page = Page::get('dashboard');
+        // $page = Page::get('dashboard');
+        $messages = Comment::getUserMessages($user);
 
         return $this->viewResponse('dashboard/activity', [
             'section' => 'activity',
-            'message' => str_replace('%USER_NAME%', $user->name, $page->parseContent()),
+            // 'message' => str_replace('%USER_NAME%', $user->name, $page->parseContent()),
             'invested' => $invested,
             'invested_total' => $invested_total,
             'interests' => $interests,
             'user_interests' => $user->interests,
             'favourite' => $favourite,
             'favourite_total' => $total_fav,
-            'limit' => 3
+            'limit' => 3,
+            'messages' => $messages,
         ]);
     }
 

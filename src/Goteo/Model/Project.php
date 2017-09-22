@@ -846,6 +846,13 @@ namespace Goteo\Model {
             return $this->status == self::STATUS_IN_CAMPAIGN;
         }
 
+        /**
+         * Handy method to know if project is in approved for campaing
+         */
+        public function isApproved() {
+            return $this->status > self::STATUS_REVIEWING;
+        }
+
         /*
          *  Cargamos los datos mínimos de un proyecto: id, name, owner, comment, lang, status, user
          */

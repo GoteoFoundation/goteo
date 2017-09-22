@@ -91,6 +91,15 @@
     background-color: $background-light-green;
     color:$color-white;
 }
+.btn-light-black {
+    background-color: $background-sidebar-footer;
+    color: $color-white;
+    border: 1px solid $color-white;
+    &:hover {
+        background-color:$background-light-green;
+        color: $color-white;
+    }
+}
 .btn-fashion {
     background: $color-pink;
     background: -moz-linear-gradient(left, $color-pink 28%, $color-red 100%);
@@ -101,7 +110,11 @@
     background: linear-gradient(to right, $color-pink 28%,$color-red 100%);
     filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='$color-pink', endColorstr='$color-red',GradientType=1 );
     color: $color-white;
-    &:hover {
+    &.btn {
+        border: none;
+    }
+    &:hover,&.btn:hover {
+        color: $color-white;
         background: darken($color-pink, 10%);
         background: -moz-linear-gradient(left, darken($color-pink, 10%) 28%, darken($color-red, 10%) 100%);
         background: -webkit-gradient(linear, left top, right top, color-stop(28%,darken($color-pink, 10%)), color-stop(100%,darken($color-red, 10%)));
@@ -173,4 +186,12 @@ button.pink:hover, button.pink:focus, button.custom-green:hover,
     font-size: $font-size;
     font-weight: 400;
     padding: 2px 4px;
+}
+
+/* other helpers */
+.text-cyan {
+    color: $color-cyan;
+}
+.text-lilac {
+    color: $color-lilac;
 }

@@ -14,17 +14,22 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
 use Goteo\Application\Session;
+use Goteo\Application\AppEvents;
 use Goteo\Application\View;
+use Goteo\Application\Message;
 use Goteo\Model\Project;
 use Goteo\Model\Project\Reward;
 use Goteo\Model\Project\Image as ProjectImage;
+use Goteo\Model\Project\Support;
 use Goteo\Model\Blog;
 use Goteo\Model\Blog\Post as BlogPost;
-use Goteo\Application\Message;
+use Goteo\Model\Message as Comment;
 use Goteo\Library\Text;
 use Goteo\Console\UsersSend;
 use Goteo\Application\Exception\ModelNotFoundException;
+use Goteo\Application\Exception\ModelException;
 use Goteo\Application\Exception\ControllerAccessDeniedException;
+use Goteo\Application\Event\FilterMessageEvent;
 
 use Symfony\Component\Validator\Constraints;
 
@@ -44,17 +49,19 @@ class ProjectDashboardController extends \Goteo\Core\Controller {
         $user = Session::getUser();
         if(!$project->userCanEdit($user)) return;
 
+        $prefix = '/dashboard/project/' . $project->id ;
+
         // Create sidebar menu
-        Session::addToSidebarMenu('<i class="icon icon-2x icon-summary"></i> ' . Text::get('dashboard-menu-activity-summary'), '/dashboard/project/' . $project->id .'/summary', 'summary');
+        Session::addToSidebarMenu('<i class="icon icon-2x icon-summary"></i> ' . Text::get('dashboard-menu-activity-summary'), $prefix . '/summary', 'summary');
         Session::addToSidebarMenu('<i class="icon icon-2x icon-preview"></i> ' . Text::get('regular-preview'), '/project/' . $project->id, 'preview');
         Session::addToSidebarMenu('<i class="icon icon-2x icon-edit"></i> ' . Text::get('regular-edit'), '/project/edit/' . $project->id, 'edit');
-        Session::addToSidebarMenu('<i class="icon icon-2x icon-images"></i> ' . Text::get('images-main-header'), '/dashboard/project/' . $project->id .'/images', 'images');
-        Session::addToSidebarMenu('<i class="icon icon-2x icon-updates"></i> ' . Text::get('dashboard-menu-projects-updates'), '/dashboard/project/' . $project->id .'/updates', 'updates');
-        Session::addToSidebarMenu('<i class="icon icon-2x icon-supports"></i> ' . Text::get('dashboard-menu-projects-supports'), '/dashboard/projects/supports/select?project=' . $project->id , 'supports');
+        Session::addToSidebarMenu('<i class="icon icon-2x icon-images"></i> ' . Text::get('images-main-header'), $prefix .'/images', 'images');
+        Session::addToSidebarMenu('<i class="icon icon-2x icon-updates"></i> ' . Text::get('dashboard-menu-projects-updates'), $prefix .'/updates', 'updates');
+        Session::addToSidebarMenu('<i class="icon icon-2x icon-supports"></i> ' . Text::get('dashboard-menu-projects-supports'), $prefix . '/supports' , 'supports');
         Session::addToSidebarMenu('<i class="icon icon-2x icon-donors"></i> ' . Text::get('dashboard-menu-projects-rewards'), '/dashboard/projects/rewards/select?project=' . $project->id, 'rewards');
         Session::addToSidebarMenu('<i class="icon icon-2x icon-partners"></i> ' . Text::get('dashboard-menu-projects-messegers'), '/dashboard/projects/messengers/select?project=' . $project->id, 'comments');
-        Session::addToSidebarMenu('<i class="icon icon-2x icon-analytics"></i> ' . Text::get('dashboard-menu-projects-analytics'), '/dashboard/project/' . $project->id . '/analytics', 'analytics');
-        Session::addToSidebarMenu('<i class="icon icon-2x icon-shared"></i> ' . Text::get('project-share-materials'), '/dashboard/project/' . $project->id .'/materials', 'materials');
+        Session::addToSidebarMenu('<i class="icon icon-2x icon-analytics"></i> ' . Text::get('dashboard-menu-projects-analytics'), $prefix . '/analytics', 'analytics');
+        Session::addToSidebarMenu('<i class="icon icon-2x icon-shared"></i> ' . Text::get('project-share-materials'), $prefix .'/materials', 'materials');
 
         View::getEngine()->useData([
             'project' => $project,
@@ -295,23 +302,110 @@ class ProjectDashboardController extends \Goteo\Core\Controller {
     }
 
     /**
+    * Collaborations section
+    */
+    public function supportsAction($pid = null, Request $request)
+    {
+        $project = $this->validateProject($pid, 'supports');
+        if($project instanceOf Response) return $project;
+
+        $supports = Support::getAll($project);
+
+        $editForm = $this->createFormBuilder()
+            ->add('support', 'text', [
+                'label' => 'supports-field-support',
+                'attr' => ['help' => Text::get('tooltip-project-support-support')],
+                'constraints' => array(new Constraints\NotBlank()),
+            ])
+            ->add('description', 'textarea', [
+                'label' => 'supports-field-description',
+                'attr' => ['help' => Text::get('tooltip-project-support-description')],
+                'constraints' => array(new Constraints\NotBlank()),
+            ])
+            ->add('id', 'hidden')
+            ->add('delete', 'hidden')
+            ->add('submit', 'submit')
+            ->getForm();
+
+        $editForm->handleRequest($request);
+        if ($editForm->isSubmitted()) {
+            $data = $editForm->getData();
+            if($data['delete']) {
+                // print_r($data);die;
+                $support = Support::get($data['delete']);
+                if($support->totalThreadResponses($this->user)) {
+                    Message::error(Text::get('support-remove-error-messages'));
+                    return $this->redirect();
+                }
+                $support->dbDelete();
+                Message::info(Text::get('support-removed'));
+                return $this->redirect();
+            }
+            if($editForm->isValid()) {
+                $errors = [];
+                $ok = false;
+                if($data['id']) {
+                    $support = Support::get($data['id']);
+                } else {
+                    $support = new Support($data + ['project' => $this->project->id]);
+                }
+
+                if($support) {
+                    $is_update = $support->thread ? true : false;
+                    if($support->project === $this->project->id) {
+                        $support->rebuildData($data);
+                        if($ok = $support->save($errors)) {
+                            // Create or update the Comment associated
+                            $comment = new Comment([
+                                'id' => $is_update ? $support->thread : null,
+                                'user' => $this->project->owner,
+                                'project' => $this->project->id,
+                                'blocked' => true,
+                                'message' => "{$support->support}: {$support->description}",
+                                'date' => date('Y-m-d H:i:s')
+                            ]);
+                            $ok = $comment->save($errors);
+                            // Update Support thread if needded
+                            if($ok && !$support->thread) {
+                                $support->thread = $comment->id;
+                                $ok = $support->save($errors);
+                            }
+                        }
+                    }
+                }
+                if($ok) {
+                    // Send and event to create the Feed and send emails
+                    if($is_update) {
+                        $this->dispatch(AppEvents::MESSAGE_UPDATED, new FilterMessageEvent($comment));
+                    } else {
+                        $this->dispatch(AppEvents::MESSAGE_CREATED, new FilterMessageEvent($comment));
+                    }
+                    Message::info(Text::get('form-sent-success'));
+                    return $this->redirect('/dashboard/project/' . $this->project->id . '/supports');
+                } else {
+                    if(empty($errors)) {
+                        $errors[] = Text::get('regular-no-edit-permissions');
+                    }
+                    Message::error(Text::get('form-sent-error', implode(', ',$errors)));
+                }
+            }
+        }
+
+        return $this->viewResponse('dashboard/project/supports', [
+            'supports' => $supports,
+            'editForm' => $editForm->createView(),
+            'editFormSubmitted' => $editForm->isSubmitted(),
+            'errors' => Message::getErrors(false)
+        ]);
+    }
+
+    /**
     * Analytics section
     */
     public function analyticsAction($pid = null, Request $request)
     {
         $project = $this->validateProject($pid, 'analytics');
         if($project instanceOf Response) return $project;
-
-        // if($request->isMethod('post')) {
-        //     $project->analytics_id = $request->request->get('analytics_id');
-        //     $project->facebook_pixel= $request->request->get('facebook_pixel');
-
-        //     if ($project->save($errors))
-        //         Message::info(Text::get('dashboard-project-analytics-ok'));
-        //     else
-        //         Message::error(Text::get('dashboard-project-analytics-fail'));
-
-        // }
 
         $defaults = (array) $project;
         $form = $this->createFormBuilder($defaults)

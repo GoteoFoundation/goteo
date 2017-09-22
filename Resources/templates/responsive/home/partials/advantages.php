@@ -1,36 +1,36 @@
-<div class="section adventages" >
+<div class="section advantages" >
 	<div class="tabbable full-width-tabs">
         <ul class="nav nav-tabs">
             <li class="donor active">
             	<a href="#tab-donor" data-toggle="tab">
 	            		<img src="/assets/img/home/fill_3.png">
-                        <?= $this->text('home-adventages-donor-title') ?>
+                        <?= $this->text('home-advantages-donor-title') ?>
 	            </a>
             </li>
             <li class="owner">
                 <a href="#tab-owner" data-toggle="tab">
             	   <img src="/assets/img/home/icono_impulsor.png">
-                   <?= $this->text('home-adventages-owner-title') ?>
+                   <?= $this->text('home-advantages-owner-title') ?>
                 </a>
             </li>
         </ul>
         <div class="tab-content">
-            <div class="tab-pane adventages-container active donor" id="tab-donor">
+            <div class="tab-pane advantages-container active donor" id="tab-donor">
                 <div class="container">
                 	<div class="row details">
                 		<div class="col-md-4 adventage">
                 			<div class="title">
                 				<img src="/assets/img/home/monedero.png" >
                 				<span class="text">                				
-                				    <?= $this->text('home-adventages-wallet-title') ?>
+                				    <?= $this->text('home-advantages-wallet-title') ?>
                 				</span>
                 			</div>
                 			<div class="description">
-                				<?= $this->text('home-adventages-wallet-description') ?>
+                				<?= $this->text('home-advantages-wallet-description') ?>
                 			</div>
                 			<div class="action">
                 				<a href="/calculadora-fiscal" >
-	                				<?= $this->text('home-adventages-wallet-action') ?>
+	                				<?= $this->text('home-advantages-wallet-action') ?>
 	                				<span class="icon glyphicon glyphicon glyphicon-menu-right" aria-hidden="true"></span>
                 				</a>
                 			</div>
@@ -39,15 +39,15 @@
                 			<div class="title">
                 				<img src="/assets/img/home/certificados.png" >
                 				<span class="text">                				
-                				    <?= $this->text('home-adventages-certificates-title') ?>
+                				    <?= $this->text('home-advantages-certificates-title') ?>
                 				</span>
                 			</div>
                 			<div class="description">
-                				<?= $this->text('home-adventages-certificates-description') ?>
+                				<?= $this->text('home-advantages-certificates-description') ?>
                 			</div>
                 			<div class="action">
                 				<a href="/calculadora-fiscal" >
-	                				<?= $this->text('home-adventages-certificates-action') ?>
+	                				<?= $this->text('home-advantages-certificates-action') ?>
 	                				<span class="icon glyphicon glyphicon glyphicon-menu-right" aria-hidden="true"></span>
                 				</a>
                 			</div>
@@ -56,80 +56,65 @@
                 			<div class="title">
                 				<img src="/assets/img/home/calculadora.png" >
                 				<span class="text">                				
-                				    <?= $this->text('home-adventages-calculator-title') ?>
+                				    <?= $this->text('home-advantages-calculator-title') ?>
                 				</span>
                 			</div>
                 			<div class="description">
-                				<?= $this->text('home-adventages-calculator-description') ?>
+                				<?= $this->text('home-advantages-calculator-description') ?>
                 			</div>
                 			<div class="action">
                 				<a href="/calculadora-fiscal" >
-	                				<?= $this->text('home-adventages-calculator-action') ?>
+	                				<?= $this->text('home-advantages-calculator-action') ?>
 	                				<span class="icon glyphicon glyphicon glyphicon-menu-right" aria-hidden="true"></span>
                 				</a>
                 			</div>
                 		</div>
                 	</div> <!-- end row -->
-                <div class="row more-information">
-                		<div class="col-md-12">
-	                		<div class="text-center">
-	                		<?= $this->text('home-adventages-donor-more-description') ?>
-	                		</div>
-	                		<div class="text-center action">
-	                			<a href="/about#info12" >
-			                		<?= $this->text('home-adventages-donor-more-action') ?>
-			                		<span class="icon glyphicon glyphicon glyphicon-menu-right" aria-hidden="true">
-		                			</span>
-		                		</a>
-	                		</div>
-                		</div>
-                	</div>
-                </div>
-                <div class="row impact">
-                	<div class="col-md-12 title">
-                		<?= $this->text('home-adventages-impact-data-title') ?>
-                	</div>
-                </div>
-                <div class="row impact-data">
-                	<div class="col-md-2 col-md-offset-3 item">
-                        <span class="timer count-title count-number" data-to="4503000" data-speed="1500"></span>
-                		  €
-                		<div class="description">
-                		  <?= $this->text('home-adventages-impact-data-money-label') ?>
-                		</div>
-                	</div>
-                	<div class="col-md-2 item">
-                        <span class="timer count-title count-number" data-to="76" data-speed="1500"></span>
-                		%
-                		<div class="description">
-                		  <?= $this->text('home-adventages-impact-data-success-projects-label') ?>
-                		</div>
-                	</div>
-                	<div class="col-md-2 item">
-                        <span class="timer count-title count-number" data-to="48" data-speed="1500"></span>
-                		 €
-                		<div class="description">
-                		  <?= $this->text('home-adventages-impact-data-invest-avg-label') ?>
-                		</div>
-                	</div>
-                </div>
+
+                    <div class="impact-title">                   
+                            <?= $this->text('home-advantages-impact-data-title') ?>
+                    </div>
+                    <div class="row impact-data">
+                        <div class="col-md-2 col-md-offset-3 item">
+                            4.503.000 €
+                            <div class="description">
+                              <?= $this->text('home-advantages-impact-data-money-label') ?>
+                            </div>
+                        </div>
+                        <div class="col-md-2 item">
+                            76 %
+                            <div class="description">
+                              <?= $this->text('home-advantages-impact-data-success-projects-label') ?>
+                            </div>
+                        </div>
+                        <div class="col-md-2 item">
+                            48 €
+                            <div class="description">
+                              <?= $this->text('home-advantages-impact-data-invest-avg-label') ?>
+                            </div>
+                        </div>
+                    </div>
+
+                </div> <!-- end container -->
+                
             </div> <!-- end donor -->
-            <div class="tab-pane adventages-container owner" id="tab-owner">
+            <div class="tab-pane advantages-container owner" id="tab-owner">
             	<div class="container">
+
                 	<div class="row details">
                 		<div class="col-md-3 adventage">
                 			<div class="title">
                                 <img src="/assets/img/home/calculadora.png" >
                                 <span class="text">                             
-                                    <?= $this->text('home-adventages-calculator-title') ?>
+                                    <?= $this->text('home-advantages-calculator-title') ?>
                                 </span>
                             </div>
                             <div class="description">
-                                <?= $this->text('home-adventages-calculator-description') ?>
+                                <?= $this->text('home-advantages-calculator-description') ?>
                             </div>
                             <div class="action">
                                 <a href="/calculadora-fiscal" >
-                                    <?= $this->text('home-adventages-calculator-action') ?>
+                                    <?= $this->text('home-advantages-calculator-action') ?>
                                     <span class="icon glyphicon glyphicon glyphicon-menu-right" aria-hidden="true"></span>
                                 </a>
                             </div>
@@ -138,15 +123,15 @@
                 			<div class="title">
                 				<img src="/assets/img/home/calendar.png" >
                 				<span class="text">                				
-                				    <?= $this->text('home-adventages-flex-calendar-title') ?>
+                				    <?= $this->text('home-advantages-flex-calendar-title') ?>
                 				</span>
                 			</div>
                 			<div class="description">
-                				<?= $this->text('home-adventages-flex-calendar-description') ?>
+                				<?= $this->text('home-advantages-flex-calendar-description') ?>
                 			</div>
                 			<div class="action">
                 				<a href="/calculadora-fiscal" >
-	                				<?= $this->text('home-adventages-regular-action') ?>
+	                				<?= $this->text('home-advantages-regular-action') ?>
 	                				<span class="icon glyphicon glyphicon glyphicon-menu-right" aria-hidden="true"></span>
                 				</a>
                 			</div>
@@ -155,15 +140,15 @@
                 			<div class="title">
                 				<img src="/assets/img/home/fee.png" >
                 				<span class="text">                				
-                				<?= $this->text('home-adventages-fee-title') ?>
+                				<?= $this->text('home-advantages-fee-title') ?>
                 				</span>
                 			</div>
                 			<div class="description">
-                				<?= $this->text('home-adventages-fee-description') ?>
+                				<?= $this->text('home-advantages-fee-description') ?>
                 			</div>
                 			<div class="action">
                 				<a href="/calculadora-fiscal" >
-	                				<?= $this->text('home-adventages-regular-action') ?>
+	                				<?= $this->text('home-advantages-regular-action') ?>
 	                				<span class="icon glyphicon glyphicon glyphicon-menu-right" aria-hidden="true"></span>
                 				</a>
                 			</div>
@@ -172,50 +157,48 @@
                 			<div class="title">
                 				<img src="/assets/img/home/matchfunding.png" >
                 				<span class="text">                				
-                				<?= $this->text('home-adventages-matchfunding-title') ?>
+                				<?= $this->text('home-advantages-matchfunding-title') ?>
                 				</span>
                 			</div>
                 			<div class="description">
-                                <?= $this->text('home-adventages-matchfunding-description') ?>
+                                <?= $this->text('home-advantages-matchfunding-description') ?>
                 			</div>
                 			<div class="action">
                 				<a href="/calculadora-fiscal" >
-	                				<?= $this->text('home-adventages-regular-action') ?>
+	                				<?= $this->text('home-advantages-regular-action') ?>
 	                				<span class="icon glyphicon glyphicon glyphicon-menu-right" aria-hidden="true"></span>
                 				</a>
                 			</div>
                 		</div>
                 	</div>
 
-                    <div class="row impact">
-                        <div class="col-md-12 title">
-                            <?= $this->text('home-adventages-impact-data-title') ?>
-                        </div>
+                    <div class="impact-title">
+                            <?= $this->text('home-advantages-impact-data-title') ?>
                     </div>
                     <div class="row impact-data">
                         <div class="col-md-2 col-md-offset-3 item">
-                            <span class="timer count-title count-number" data-to="4503000" data-speed="1500"></span>
-                              €
+                            <span>
+                            4.503.000 €
                             <div class="description">
-                              <?= $this->text('home-adventages-impact-data-money-label') ?>
+                              <?= $this->text('home-advantages-impact-data-money-label') ?>
                             </div>
                         </div>
                         <div class="col-md-2 item">
-                            <span class="timer count-title count-number" data-to="76" data-speed="1500"></span>
-                            %
+                            76 %
                             <div class="description">
-                              <?= $this->text('home-adventages-impact-data-success-projects-label') ?>
+                              <?= $this->text('home-advantages-impact-data-success-projects-label') ?>
                             </div>
                         </div>
                         <div class="col-md-2 item">
-                            <span class="timer count-title count-number" data-to="48" data-speed="1500"></span>
-                             €
+                            48 €
                             <div class="description">
-                              <?= $this->text('home-adventages-impact-data-invest-avg-label') ?>
+                              <?= $this->text('home-advantages-impact-data-invest-avg-label') ?>
                             </div>
                         </div>
                     </div>
+
                 </div> 
+
             </div>  <!-- end owner -->
         </div> 
     </div> <!-- /tabbable -->

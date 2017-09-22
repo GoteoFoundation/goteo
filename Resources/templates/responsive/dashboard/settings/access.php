@@ -38,6 +38,8 @@
             </blockquote>
         </div>
 
+
+        <p class="spacer"><a href="/user/leave?email=<?= $this->get_user()->email ?>"><i class="fa fa-ban"></i> <?= $this->text('login-leave-header') ?></a></p>
     </div>
 
   </div>

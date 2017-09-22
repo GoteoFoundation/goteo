@@ -83,14 +83,14 @@ class GoteoCore implements ExtensionInterface
         return App::debug();
     }
 
-    public function messages()
+    public function messages($autoexpire = true)
     {
-        return Message::getMessages();
+        return Message::getMessages($autoexpire);
     }
 
-    public function errors()
+    public function errors($autoexpire = true)
     {
-        return Message::getErrors();
+        return Message::getErrors($autoexpire);
     }
 
     //Cookies

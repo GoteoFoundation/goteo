@@ -195,3 +195,9 @@ all-files-uploaded: "Tots els arxius s'han pujat correctament"
 uploaded-ok: "Pujat correctament"
 publish-confirm-yes: "Vols publicar aquesta entrada?"
 publish-confirm-no: "Vols despublicar aquesta entrada?"
+
+dashboard-project-support-empty: No hi cap petició per col·laboracions encara.
+dashboard-project-support-responses: Respostes
+dashboard-project-support-no-responses: No hi ha respostes encara.
+dashboard-project-support-add: Afegir una nova petició de col·laboració
+
