@@ -1,7 +1,7 @@
 <?php if($this->sidebarMenu || $this->sidebarBottom): ?>
   <nav id="sidebar-menu">
     <div class="sidebar-wrap">
-        <!-- <button class="toggle-sidebar btn btn-link" title="Close"><i class="fa fa-close"></i></button> -->
+        <button class="toggle-sidebar btn btn-link" title="Close"><i class="fa fa-close"></i></button>
 
         <div class="sidebar-header">
           <?= $this->supply('sidebar-header') ?>

@@ -59,14 +59,15 @@ $(function(){
 
     var toggleSidebar = function(e) {
         var $body = $('body.has-sidebar');
-        if($body.hasClass('animating')) return;
         // console.log('sidebar toggle', e);
         e.stopPropagation();
         e.preventDefault();
-        $body.toggleClass('animating sidebar-opened').one(transitionEnd, function(e) {
-            $(this).removeClass('animating');
-            // console.log('end animation', e);
-        });
+        $body.toggleClass('sidebar-opened');
+        // if($body.hasClass('animating')) return;
+        // $body.toggleClass('animating sidebar-opened').one(transitionEnd, function(e) {
+        //     $(this).removeClass('animating');
+        //     // console.log('end animation', e);
+        // });
     };
 
     // Sidebar toggle

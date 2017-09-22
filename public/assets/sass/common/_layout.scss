@@ -27,14 +27,17 @@ body {
         -ms-flex: 1;              /* IE 10 */
         flex: 1;                  /* NEW, Spec - Opera 12.1, Firefox 20+ */
 
+        padding: 0;
+        margin: 0;
         width: 0;
         background-color: rgba(0,0,0,0);
         transition: background-color .5s, width .5s;
         @include animation(sidebar-fade-back .5s);
         .sidebar-wrap {
+          @include animation(sidebar-width-back .5s);
+          height: 100%;
           overflow-x: hidden;
           transition: width .5s;
-          @include animation(sidebar-width-back .5s);
           width: 0;
         }
       }
@@ -43,10 +46,10 @@ body {
       }
       @media(min-width: $breakpoint-sm) {
           #sidebar-menu {
-              width: 100%;
+              width: $dashboard-sidebar-width;
               background-color: rgba(0,0,0,0.2);
               .sidebar-wrap {
-                  width: $dashboard-sidebar-width;
+                width: 100%;
               }
           }
           #main {
@@ -63,12 +66,6 @@ body {
           flex: 0;
           z-index: 1001;
           overflow: auto;
-          // min-height: 100%;
-          // &.fixed {
-          //     position:fixed;
-          //     top:0;
-          // }
-
         }
       }
     }
