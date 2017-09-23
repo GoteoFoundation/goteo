@@ -17,6 +17,7 @@ use Goteo\Application\Session;
 use Goteo\Application\AppEvents;
 use Goteo\Application\View;
 use Goteo\Application\Message;
+use Goteo\Model\Invest;
 use Goteo\Model\Project;
 use Goteo\Model\Project\Reward;
 use Goteo\Model\Project\Image as ProjectImage;
@@ -58,7 +59,7 @@ class ProjectDashboardController extends \Goteo\Core\Controller {
         Session::addToSidebarMenu('<i class="icon icon-2x icon-images"></i> ' . Text::get('images-main-header'), $prefix .'/images', 'images');
         Session::addToSidebarMenu('<i class="icon icon-2x icon-updates"></i> ' . Text::get('dashboard-menu-projects-updates'), $prefix .'/updates', 'updates');
         Session::addToSidebarMenu('<i class="icon icon-2x icon-supports"></i> ' . Text::get('dashboard-menu-projects-supports'), $prefix . '/supports' , 'supports');
-        Session::addToSidebarMenu('<i class="icon icon-2x icon-donors"></i> ' . Text::get('dashboard-menu-projects-rewards'), '/dashboard/projects/rewards/select?project=' . $project->id, 'rewards');
+        Session::addToSidebarMenu('<i class="icon icon-2x icon-donors"></i> ' . Text::get('dashboard-menu-projects-rewards'), $prefix .'/invests', 'invests');
         Session::addToSidebarMenu('<i class="icon icon-2x icon-partners"></i> ' . Text::get('dashboard-menu-projects-messegers'), '/dashboard/projects/messengers/select?project=' . $project->id, 'comments');
         Session::addToSidebarMenu('<i class="icon icon-2x icon-analytics"></i> ' . Text::get('dashboard-menu-projects-analytics'), $prefix . '/analytics', 'analytics');
         Session::addToSidebarMenu('<i class="icon icon-2x icon-shared"></i> ' . Text::get('project-share-materials'), $prefix .'/materials', 'materials');
@@ -261,7 +262,8 @@ class ProjectDashboardController extends \Goteo\Core\Controller {
             ))
             ->add('allow', 'boolean', array(
                 'required' => false,
-                'label' => 'blog-allow-comments' // Form has integrated translations
+                'label' => 'blog-allow-comments', // Form has integrated translations
+                'color' => 'cyan', // bootstrap label-* (default, success, ...)
             ))
             ->add('publish', 'boolean', array(
                 'required' => false,
@@ -396,6 +398,72 @@ class ProjectDashboardController extends \Goteo\Core\Controller {
             'editForm' => $editForm->createView(),
             'editFormSubmitted' => $editForm->isSubmitted(),
             'errors' => Message::getErrors(false)
+        ]);
+    }
+
+    /**
+     * Rewards/invest section
+     */
+    public function investsAction($pid = null, Request $request)
+    {
+        // View::setTheme('default');
+        $project = $this->validateProject($pid, 'invests');
+        if($project instanceOf Response) return $project;
+
+        $limit = 25;
+        $offset = $limit * (int)$request->query->get('pag');
+
+        $order = 'invested DESC';
+        list($key, $dir) = explode(' ', $request->query->get('order'));
+        if(in_array($key, ['id', 'invested', 'user', 'amount', 'reward', 'fulfilled']) && in_array($dir, ['ASC', 'DESC'])) {
+            $order = "$key $dir";
+        }
+
+        $filters =  [
+            'reward' => ['' => Text::get('regular-see_all')],
+            'others' => ['' => Text::get('regular-see_all'),
+                         'pending' => Text::get('dashboard-project-filter-by-pending'),
+                         'fulfilled' => Text::get('dashboard-project-filter-by-fulfilled'),
+                         'donative' => Text::get('dashboard-project-filter-by-donative'),
+                         'nondonative' => Text::get('dashboard-project-filter-by-nondonative')
+                        ]
+        ];
+        foreach($project->getIndividualRewards() as $reward) {
+            $filters['reward'][$reward->id] = $reward->getTitle();
+        }
+        if($project->getCall()) {
+            $filters['others']['drop'] = Text::Get('dashboard-project-filter-by-drop');
+            $filters['others']['nondrop'] = Text::Get('dashboard-project-filter-by-nondrop');
+        }
+
+        $filter_by = ['projects' => $project->id, 'status' => [Invest::STATUS_CHARGED, Invest::STATUS_PAID]];
+        $filter = $request->query->get('filter');
+        if(!is_array($filter)) $filter = [];
+
+        if((int)$filter['reward']) {
+            $filter_by['reward'] = $filter['reward'];
+        }
+        if(array_key_exists($filter['others'], $filters['others'])) {
+            $filter_by['types'] = $filter['others'];
+        }
+
+        $invests = Invest::getList($filter_by, null, $offset, $limit, false, $order);
+        $totals = Invest::getList($filter_by, null, 0, 0, 'all');
+
+        // TODO: save to session with current filter values?
+
+
+
+        return $this->viewResponse('dashboard/project/invests', [
+            'invests' => $invests,
+            'total_invests' => $totals['invests'],
+            'total_users' => $totals['users'],
+            'total_amount' => $totals['amount'],
+            'messages' => Comment::countProjectMessages($project),
+            'order' => $order,
+            'filters' => $filters,
+            'filter' => $filter,
+            'limit' => $limit
         ]);
     }
 

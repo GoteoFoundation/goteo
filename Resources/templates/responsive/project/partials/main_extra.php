@@ -114,7 +114,7 @@ $langs = $project->getLangs();
                         </div>
                         <!-- Call in sm version -->
                         <?php if($project->called): ?>
-                            <a href="<?= $this->get_url() ?>/call/<?php echo $project->called->id ?>" target="_blank">
+                            <a href="<?= $this->get_url() ?>/call/<?php echo $project->called->id ?>/projects" target="_blank">
                                 <div class="call-info-container visible-sm">
                                     <div class="row call-info col-lg-10 col-md-11 col-sm-12">
                                         <div class="col-xs-2 no-padding" >
@@ -168,7 +168,7 @@ $langs = $project->getLangs();
                 </div>
             </div>
             <?php if($project->called): ?>
-            <a href="<?= $this->get_url() ?>/call/<?php echo $project->called->id ?>" target="_blank">
+            <a href="<?= $this->get_url() ?>/call/<?php echo $project->called->id ?>/projects" target="_blank">
                 <div class="col-sm-4 call-info-container hidden-sm hidden-xs">
                     <div class="row call-info col-lg-10 col-md-11 col-sm-12">
                         <div class="col-xs-2 no-padding" >

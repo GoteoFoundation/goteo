@@ -18,6 +18,7 @@ use Goteo\Application\View;
 use Goteo\Model\Project;
 use Goteo\Model\Message as Comment;
 use Goteo\Model\User;
+use Goteo\Library\Text;
 use Goteo\Model\User\Interest;
 use Goteo\Model\Page;
 
@@ -63,6 +64,16 @@ class DashboardController extends \Goteo\Core\Controller {
         ]);
     }
 
+    public static function createSidebar($zone = '') {
+        Session::addToSidebarMenu('<i class="icon icon-2x icon-wallet-sidebar"></i> ' . Text::get('dashboard-menu-pool'), '/dashboard/wallet', 'wallet');
+        Session::addToSidebarMenu('<i class="fa fa-2x fa-fw fa-download"></i> ' . Text::get('recharge-button'), '/pool', 'recharge');
+        View::getEngine()->useData([
+            'zone' => $zone,
+            'section' => 'wallet'
+        ]);
+
+    }
+
     /**
      * Virtual wallet
      */
@@ -71,6 +82,8 @@ class DashboardController extends \Goteo\Core\Controller {
         if(!Config::get('payments.pool.active')) {
             throw new \RuntimeException("Pool payment is not active!");
         }
+
+        self::createSidebar('wallet');
 
         $user = Session::getUser();
         $pool = $user->getPool();

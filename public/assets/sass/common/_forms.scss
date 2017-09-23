@@ -133,28 +133,28 @@
         // cursor: pointer;
         height: 0px;
         position: relative;
-        width: 40px;
+        width: 55px;
     }
 
     > label::before {
         background: rgb(0, 0, 0);
-        box-shadow: inset 0px 0px 10px rgba(0, 0, 0, 0.5);
-        border-radius: 8px;
+        // box-shadow: inset 0px 0px 10px rgba(0, 0, 0, 0.5);
+        border-radius: 15px;
         content: '';
-        height: 16px;
-        margin-top: -8px;
+        height: 30px;
+        margin-top: -15px;
         position:absolute;
         opacity: 0.3;
         transition: all 0.4s ease-in-out;
-        width: 40px;
+        width: 52px;
     }
     > label::after {
         background: rgb(255, 255, 255);
         border-radius: 16px;
-        box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.3);
+        // box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.3);
         content: '';
         height: 24px;
-        left: -4px;
+        left: 4px;
         margin-top: -8px;
         position: absolute;
         top: -4px;
@@ -163,11 +163,11 @@
     }
     > input[type="checkbox"]:checked + label::before {
         background: inherit;
-        opacity: 0.5;
+        opacity: 1;
     }
     > input[type="checkbox"]:checked + label::after {
-        background: inherit;
-        left: 20px;
+        // background: inherit;
+        left: 24px;
     }
 
     + .control-label {

@@ -11,10 +11,10 @@
 
       <div class="row">
         <div class="col-xs-6 text-right">
-            <a href="/discover"  class="btn btn-lg btn-pink"><?= $this->text('recharge-button') ?></a>
+            <a href="/discover"  class="btn btn-lg btn-pink"><?= $this->text('dashboard-my-wallet-contribute-button') ?></a>
         </div>
         <div class="col-xs-6 text-left">
-            <a href="/pool"  class="btn btn-lg btn-cyan"><?= $this->text('dashboard-my-wallet-contribute-button') ?></a>
+            <a href="/pool"  class="btn btn-lg btn-cyan"><?= $this->text('recharge-button') ?></a>
         </div>
       </div>
     </div>
@@ -37,12 +37,12 @@
 </div>
 
 <!-- Modal -->
-<div class="modal fade" id="poolModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+<div class="modal fade" id="poolModal" tabindex="-1" role="dialog" aria-labelledby="poolModalLabel">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        <h4 class="modal-title" id="myModalLabel"><?= $this->text('invest-modal-pool-title') ?></h4>
+        <h4 class="modal-title" id="poolModalLabel"><?= $this->text('invest-modal-pool-title') ?></h4>
       </div>
       <div class="modal-body">
         <?= $this->text('dashboard-my-wallet-modal-pool-info') ?>

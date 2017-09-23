@@ -63,7 +63,7 @@ dashboard-rewards-date_order: 'Per data'
 dashboard-rewards-fulfilled_filter: Soddisfatta
 dashboard-rewards-fulfilled_status: Soddisfatta
 dashboard-rewards-group_msg: 'messaggio a questo gruppo'
-dashboard-rewards-investors_table: '<p>Se desideri gestirlo offline puoi  <a id="sacaexcel" href="/dashboard/projects/rewards/table" target="_blank">utilizzare la Tabella dei Co-finanziatori</a></p>'
+dashboard-rewards-investors_table: 'Se desideri gestirlo offline puoi <a href="%URL%">utilizzare la Tabella dei Co-finanziatori</a>'
 dashboard-rewards-issue: Errore!
 dashboard-rewards-massive_msg: 'Messaggi collettivi '
 dashboard-rewards-massive_msg-all: 'A tutti i co-finanziatori di questo progetto'

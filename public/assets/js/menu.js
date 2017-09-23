@@ -44,8 +44,8 @@ $(function(){
         var inAnimation = 'slideInRight';
         var outAnimation = 'slideOutRight';
         if(isDesktop) {
-            inAnimation = 'flipInY';
-            outAnimation = 'flipOutY';
+            inAnimation = 'fadeInDown';
+            outAnimation = 'fadeOutUp';
         }
 
         // Close other opened

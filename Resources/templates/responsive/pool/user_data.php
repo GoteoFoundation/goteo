@@ -1,20 +1,20 @@
 <?php
 
-$this->layout('layout', [
-    'bodyClass' => '',
+$this->layout('dashboard/layout', [
+    'bodyClass' => 'dashboard',
     'title' => 'Make sure :: Goteo.org',
     'meta_description' => $this->text('meta-description-discover')
     ]);
 
-$this->section('content');
+$this->section('dashboard-content');
 
 ?>
 
 <?= $this->insert('pool/partials/steps_bar') ?>
 
-<div class="container">
+<div class="dashboard-content cyan">
 
-	<div class="row row-form">
+	<div class="row">
 			<div class="panel panel-default invest-container">
 				<div class="panel-body">
 

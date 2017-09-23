@@ -1,7 +1,7 @@
 /* Used to animate sidebar right arrow */
 @mixin blink-function() {
   0% {opacity:1; color: $color-white;}
-  10% {opacity:0.8; color: $color-pink;}
+  10% {opacity:0.8; color: $color-cyan;}
   20% {opacity:1; color: $color-white;}
   100% {opacity:1; color: $color-white;}
 }

@@ -130,7 +130,7 @@ class SenderRecipient extends \Goteo\Core\Model
             array($this->user, $this->email, $this->name, SITE_URL),
             $mail->content
         );
-
+        echo "SENT " .$mail->id."\n\n";
         // send mail to recipient
         if($ok) {
             $ok = $mail->send($errors);

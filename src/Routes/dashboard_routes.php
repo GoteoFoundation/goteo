@@ -128,6 +128,12 @@ $dash->add('dashboard-project-supports-edit', new Route(
     array('_controller' => 'Goteo\Controller\Dashboard\ProjectDashboardController::supportsEditAction',
         )
 ));
+// Project invests list
+$dash->add('dashboard-project-invests', new Route(
+    '/project/{pid}/invests',
+    array('_controller' => 'Goteo\Controller\Dashboard\ProjectDashboardController::investsAction',
+        )
+));
 
 // Analytics
 $dash->add('dashboard-project-analytics', new Route(
