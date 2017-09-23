@@ -37,8 +37,7 @@ div.section.main-slider{
         width: 100%;
         span.title{
             border: 1px solid rgba(255, 255, 255, .5);
-            -webkit-background-clip: padding-box; /* for Safari */
-            background-clip: padding-box; /* for IE9+, Firefox 4+, Opera, Chrome */
+            @include background-clip(padding-box);
             font-size: 12px;
             padding: 7px;
             text-transform: uppercase;
@@ -538,7 +537,7 @@ div.section.tools{
         .btn-light-green {
             margin: 10px auto;
             display: block;
-        }  
+        }
     }
 
     .call-action{
@@ -594,7 +593,7 @@ body.home.has-sidebar {
         width: 100%;
     }
     #sidebar-menu-toggle {
-        transition: none;
+        @include transition(none);
         display: block !important;
         background: $color-white;
         color: $color-light-green;
@@ -606,40 +605,36 @@ body.home.has-sidebar {
         .fa-angle-right, .fa-angle-left {
             font-size: $font-size*2;
             margin-left: 10px;
-            transform: translateY(2px)
+            @include transform(translateY(2px));
         }
     }
 
     @include keyframes(home-sidebar-fade) {
-      0% { width: $home-sidebar-width; }
-      100% { width: $home-sidebar-width; }
+      0% { max-width: 100%; width: $home-sidebar-width; }
+      100% { max-width: 100%; width: $home-sidebar-width; }
     }
 
     @include keyframes(home-sidebar-fade-back) {
-      100% { width: $home-sidebar-width; }
-      0% { width: $home-sidebar-width; }
+      100% { max-width: 100%; width: $home-sidebar-width; }
+      0% { max-width: 100%; width: $home-sidebar-width; }
     }
     @include keyframes(home-sidebar-width) {
-      0% { width: 0; }
-      100% { width: $home-sidebar-width; }
+      0% { max-width: 0; width: 0; }
+      100% { max-width: 100%; width: $home-sidebar-width; }
     }
 
     @include keyframes(home-sidebar-width-back) {
-      100% { width: 0; }
-      0% { width: $home-sidebar-width; }
+      100% { max-width: 0; width: 0; }
+      0% { max-width: 100%; width: $home-sidebar-width; }
     }
 
     #sidebar-menu {
         position: fixed;
-        -webkit-box-flex: 0;
-        -moz-box-flex: 0;
-        -webkit-flex: 0;
-        -ms-flex: 0;
-        flex: 0;
+        @include flex(0);
         z-index: 1001;
         overflow: hidden;
         background-color: transparent;
-        transition: width .5s;
+        @include transition(width .5s, max-width .5s);
         height: auto;
         width: 0;
         @include animation(home-sidebar-fade-back .5s);
@@ -647,7 +642,7 @@ body.home.has-sidebar {
             width: 0;
             position: fixed;
             top: 70px;
-            transition: width .5s;
+            @include transition(width .5s, max-width .5s);
             @include animation(home-sidebar-width-back .5s);
             height: auto;
             position: relative;
@@ -695,10 +690,12 @@ body.home.has-sidebar {
         .page-wrap {
             #sidebar-menu {
                 width: $home-sidebar-width;
+                max-width: 100%;
                 @include animation(home-sidebar-fade .5s);
                 .sidebar-wrap {
                     @include animation(home-sidebar-width .5s);
                     width: $home-sidebar-width;
+                    max-width: 100%;
                 }
                 .toggle-sidebar {
                     display: block;
@@ -731,27 +728,14 @@ body.home.has-sidebar {
     height: 100%;
     background-color: rgba(25, 180, 178, 0.8);
 
-    -webkit-transition: all 0.5s ease-in-out;
-    -moz-transition: all 0.5s ease-in-out;
-    -o-transition: all 0.5s ease-in-out;
-    -ms-transition: all 0.5s ease-in-out;
-    transition: all 0.5s ease-in-out;
-
-    -webkit-transform: translate(0px, -100%) scale(0, 0);
-    -moz-transform: translate(0px, -100%) scale(0, 0);
-    -o-transform: translate(0px, -100%) scale(0, 0);
-    -ms-transform: translate(0px, -100%) scale(0, 0);
-    transform: translate(0px, -100%) scale(0, 0);
+    @include transition(all 0.5s ease-in-out);
+    @include transform(translate(0px, -100%) scale(0, 0));
 
     opacity: 0;
 }
 
 #search.open {
-    -webkit-transform: translate(0px, 0px) scale(1, 1);
-    -moz-transform: translate(0px, 0px) scale(1, 1);
-    -o-transform: translate(0px, 0px) scale(1, 1);
-    -ms-transform: translate(0px, 0px) scale(1, 1);
-    transform: translate(0px, 0px) scale(1, 1);
+    @include transform(translate(0px, 0px) scale(1, 1));
     opacity: 1;
     z-index: 1001;
 }
