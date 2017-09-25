@@ -1,4 +1,10 @@
+@import "compass/css3";
 /* GENERAL STYLES */
+
+// AnimatedCSS default velocity
+.animated {
+    @include animation-duration(.5s);
+}
 blockquote {
     font-size: inherit;
 }
