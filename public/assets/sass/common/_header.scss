@@ -12,7 +12,7 @@
 
 .top-navbar {
     background-color: $background-light-green;
-
+    min-height: 55px;
     >.container {
         position: relative;
     }
@@ -69,9 +69,7 @@
 
         button, a {
             margin:0;
-            padding: 13px 15px;
-            height: 60px;
-            width: 60px;
+            padding: 0;
             overflow: hidden;
             vertical-align: middle;
             border: none;
@@ -122,7 +120,7 @@
     // main menus
     .top-menu {
         position: absolute;
-        top: 60px;
+        top: 55px;
         right: 0;
         min-width: 300px;
         background: $background-white;
@@ -162,7 +160,7 @@
                 @media (max-width: $breakpoint-sm - 1) {
                     position: fixed;
                     left: 0;
-                    top: 60px;
+                    top: 55px;
                     height: 100%;
                 }
                 li a.back {
@@ -277,7 +275,7 @@
         img.logo {
             height: 40px;
             margin-left: 10px;
-            margin-top: 4px;
+            margin-top: 6px;
         }
     }
 
