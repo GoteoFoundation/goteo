@@ -63,13 +63,13 @@ class SettingsDashboardController extends \Goteo\Core\Controller {
      */
     public function profileAction(Request $request)
     {
-        $this->user = User::flush();
+        $user = User::get($this->user->id, Config::get('lang')); // default system lang
         $this->createSidebar('profile');
-        $defaults = (array) $this->user;
+        $defaults = (array) $user;
         $defaults['entity_type'] = (bool) $defaults['entity_type'];
-        $defaults['unlocable'] = UserLocation::isUnlocable($this->user->id);
-        $defaults['avatar'] = $this->user->user_avatar ? $this->user->avatar : null;
-        $defaults['webs'] = implode("\n", $this->user->webs);
+        $defaults['unlocable'] = UserLocation::isUnlocable($user->id);
+        $defaults['avatar'] = $user->user_avatar ? $user->avatar : null;
+        $defaults['webs'] = implode("\n", $user->webs);
 
         $builder = $this->createFormBuilder($defaults)
             ->add('name', 'text', [
@@ -93,7 +93,7 @@ class SettingsDashboardController extends \Goteo\Core\Controller {
             ])
             ;
 
-        if ($this->user->roles['vip']) {
+        if ($user->roles['vip']) {
             // TODO: vip avatar
         }
 
@@ -208,7 +208,7 @@ class SettingsDashboardController extends \Goteo\Core\Controller {
                 // print_r($data);die;
 
                 // maintain test interest
-                if (in_array('15', $this->user->interests)) $data['interests'][] = '15';
+                if (in_array('15', $user->interests)) $data['interests'][] = '15';
 
                 // Process main image
                 if(is_array($data['avatar'])) {
@@ -226,21 +226,21 @@ class SettingsDashboardController extends \Goteo\Core\Controller {
 
                 // set locable bit
                 if(isset($data['unlocable'])) {
-                    UserLocation::setProperty($this->user->id, 'locable', !$data['unlocable'], $errors);
+                    UserLocation::setProperty($user->id, 'locable', !$data['unlocable'], $errors);
                 }
-                $this->user->rebuildData($data);
-                if ($this->user->save($errors)) {
+                $user->rebuildData($data);
+                if ($user->save($errors)) {
                     Message::info(Text::get('user-profile-saved'));
                     // assign translation if no in the default language
-                    if ($this->user->lang != Config::get('lang')) {
+                    if ($user->lang != Config::get('lang')) {
                         // if (!User::isTranslated($this->user->id, $this->user->lang)) {
-                            $this->user->about_lang = $this->user->about;
-                            $this->user->keywords_lang = $this->user->keywords;
-                            $this->user->contribution_lang = $this->user->contribution;
-                            $this->user->saveLang($errors);
+                            $user->about_lang = $user->about;
+                            $user->keywords_lang = $user->keywords;
+                            $user->contribution_lang = $user->contribution;
+                            $user->saveLang($errors);
                         // }
                     }
-                    $this->user = User::flush();
+                    $user = User::flush();
                     if($errors) {
                         Message::error(Text::get('form-sent-error', implode(',',array_map('implode',$errors))));
                     }
@@ -252,7 +252,8 @@ class SettingsDashboardController extends \Goteo\Core\Controller {
         }
         return $this->viewResponse('dashboard/settings/profile', [
             'form' => $form->createView(),
-            'languages' => Lang::listAll('name', false)
+            'languages' => Lang::listAll('name', false),
+            'translated' => $translated = $user->getLangsAvailable()
         ]);
     }
 
@@ -261,13 +262,39 @@ class SettingsDashboardController extends \Goteo\Core\Controller {
      */
     public function profileTranslateAction($lang, Request $request)
     {
-        $this->user = User::flush();
-        $this->createSidebar('profile');
         $languages = Lang::listAll('name', false);
+        if(!isset($languages[$lang])) {
+            Message::error(Text::get('translator-lang-not-found'));
+            return $this->redirect('/dashboard/settings/profile');
+        }
+        $user = User::get($this->user->id, $lang);
+        $translated = $user->getLangsAvailable();
+        $this->createSidebar('profile');
+
+        $defaults = (array) $user; // TODO: BY lang!
+
+        $builder = $this->createFormBuilder($defaults)
+            ->add('name', 'text', [
+                'label' => 'profile-field-name'
+            ])
+            ->add('about', 'textarea', [
+                'label' => 'profile-field-about',
+                'attr' => ['help' => Text::get('tooltip-user-about')]
+            ])
+            ->add('contribution', 'textarea', [
+                'label' => 'profile-field-contribution',
+                'attr' => ['help' => Text::get('tooltip-user-contribution')],
+                'required' => false
+            ])
+            ->add('submit', 'submit');
+
+            ;
+        $form = $builder->getForm();
 
         return $this->viewResponse('dashboard/settings/translate', [
-            // 'form' => $form->createView(),
+            'form' => $form->createView(),
             'languages' => $languages,
+            'translated' => $translated,
             'current' => $lang,
         ]);
     }

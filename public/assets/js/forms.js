@@ -450,4 +450,16 @@ $(function(){
         }
     });
 
+    var formChanged = false;
+    $('form[data-confirm]').on('change', ':input', function(e){
+     //':input' selector get all form fields even textarea, input, or select
+      formChanged = $(this).closest('form').data('confirm');
+    });
+
+    $(window).on('beforeunload', function() {
+      if(formChanged){
+        console.log('changed', formChanged);
+         return formChanged;
+       }
+    });
 });

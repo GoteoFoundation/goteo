@@ -63,6 +63,22 @@
     font-size: 1.8em;
   }
 
+  .dropdown-menu {
+    a:focus, a:hover {
+      background-color: $background-light;
+    }
+    > .active {
+      > a {
+        background-color: $color-cyan;
+      }
+    }
+    > .available {
+      > a {
+        font-weight: bold;
+        text-decoration: underline;
+      }
+    }
+  }
   table.footable , table.table {
     color: $secondary-color;
     background: $background-light-body;
