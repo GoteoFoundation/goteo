@@ -287,7 +287,14 @@ class SettingsDashboardController extends \Goteo\Core\Controller {
                 'required' => false
             ])
             ->add('submit', 'submit')
-            ->add('remove', 'submit');
+            ->add('remove', 'submit', [
+                'label' => Text::get('translator-delete', $languages[$lang]),
+                'icon_class' => 'fa fa-trash',
+                'attr' => [
+                    'class' => 'pull-right-form hide-form btn btn-danger btn-lg',
+                    'data-confirm' => Text::get('translator-delete-sure', $languages[$lang])
+                    ]
+            ]);
 
             ;
         $form = $builder->getForm();
@@ -295,9 +302,20 @@ class SettingsDashboardController extends \Goteo\Core\Controller {
         if ($form->isSubmitted()) {
             if($form->isValid()) {
                 $errors = [];
+
+                // Check if we want to remove a translation
+                if($form->get('remove')->isClicked()) {
+                    if($user->removeLang($lang)) {
+                        Message::info(Text::get('translator-deleted-ok', $languages[$lang]));
+                    } else {
+                        Message::info(Text::get('translator-deleted-ko', $languages[$lang]));
+                    }
+                    return $this->redirect('/dashboard/settings/profile');
+                }
+
                 $data = $form->getData();
                 $user->lang = $lang;
-                // print_r($data);die;
+                // print_r($data);die($form->getClickedButton()->getName());
                 $user->name_lang = $data['name'];
                 $user->about_lang = $data['about'];
                 // $user->keywords_lang = $data['keywords'];

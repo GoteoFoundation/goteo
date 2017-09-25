@@ -450,6 +450,15 @@ $(function(){
         }
     });
 
+    // Handle buttons with confirmation
+    $('form.autoform').on( 'click', 'button[data-confirm]', function(e) {
+        if(!confirm($(this).data('confirm'))) {
+            e.preventDefault();
+            return false;
+        }
+    });
+
+    // Asks user before leave unsaved
     var formChanged = false;
     $('form[data-confirm]').on('change', ':input', function(){
      //':input' selector get all form fields even textarea, input, or select
