@@ -286,11 +286,32 @@ class SettingsDashboardController extends \Goteo\Core\Controller {
                 'attr' => ['help' => Text::get('tooltip-user-contribution')],
                 'required' => false
             ])
-            ->add('submit', 'submit');
+            ->add('submit', 'submit')
+            ->add('remove', 'submit');
 
             ;
         $form = $builder->getForm();
+        $form->handleRequest($request);
+        if ($form->isSubmitted()) {
+            if($form->isValid()) {
+                $errors = [];
+                $data = $form->getData();
+                $user->lang = $lang;
+                // print_r($data);die;
+                $user->name_lang = $data['name'];
+                $user->about_lang = $data['about'];
+                // $user->keywords_lang = $data['keywords'];
+                $user->keywords_lang = $user->keywords; // Do not translate keywords for the moment
+                $user->contribution_lang = $data['contribution'];
+                if($user->saveLang($errors)) {
+                    Message::info(Text::get('dashboard-translate-profile-ok', $languages[$lang]));
+                    return $this->redirect('/dashboard/settings/profile');
+                } else {
+                    Message::error(Text::get('form-sent-error', implode(',',array_map('implode',$errors))));
+                }
 
+            }
+        }
         return $this->viewResponse('dashboard/settings/translate', [
             'form' => $form->createView(),
             'languages' => $languages,

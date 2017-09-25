@@ -14,5 +14,9 @@
     ?>
         <li<?= $class ? ' class="' . $class . '"' : '' ?>><a href="<?= $this->base_link . $key ?>"><?= $lang ?></a></li>
     <?php endforeach ?>
+    <?php if($this->exit_link): ?>
+        <li role="separator" class="divider"></li>
+        <li><a href="<?= $this->exit_link ?>"><?= $this->exit ? $this->exit : $this->text('regular-cancel') ?></a></li>
+    <?php endif ?>
   </ul>
 </div>

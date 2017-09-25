@@ -451,9 +451,13 @@ $(function(){
     });
 
     var formChanged = false;
-    $('form[data-confirm]').on('change', ':input', function(e){
+    $('form[data-confirm]').on('change', ':input', function(){
      //':input' selector get all form fields even textarea, input, or select
       formChanged = $(this).closest('form').data('confirm');
+    });
+
+    $('form[data-confirm]').on('submit', function(){
+        formChanged = false;
     });
 
     $(window).on('beforeunload', function() {
