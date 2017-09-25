@@ -59,9 +59,9 @@ class SettingsDashboardController extends \Goteo\Core\Controller {
     }
 
     /**
-     * Settings
+     * Settings: profile edit
      */
-    public function indexAction(Request $request)
+    public function profileAction(Request $request)
     {
         $this->user = User::flush();
         $this->createSidebar('profile');
@@ -250,8 +250,25 @@ class SettingsDashboardController extends \Goteo\Core\Controller {
                 }
             }
         }
-        return $this->viewResponse('dashboard/settings', [
-            'form' => $form->createView()
+        return $this->viewResponse('dashboard/settings/profile', [
+            'form' => $form->createView(),
+            'languages' => Lang::listAll('name', false)
+        ]);
+    }
+
+    /**
+     * Settings: profile edit
+     */
+    public function profileTranslateAction($lang, Request $request)
+    {
+        $this->user = User::flush();
+        $this->createSidebar('profile');
+        $languages = Lang::listAll('name', false);
+
+        return $this->viewResponse('dashboard/settings/translate', [
+            // 'form' => $form->createView(),
+            'languages' => $languages,
+            'current' => $lang,
         ]);
     }
 

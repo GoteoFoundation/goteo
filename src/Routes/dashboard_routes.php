@@ -167,7 +167,22 @@ $dash->add('dashboard-project-materials-redirect', new Route(
 // Settings
 $dash->add('dashboard-settings', new Route(
     '/settings',
-    array('_controller' => 'Goteo\Controller\Dashboard\SettingsDashboardController::indexAction',
+     array('_controller' => function () {
+        return new RedirectResponse("/dashboard/settings/profile");
+    })
+));
+
+// Settings (profile)
+$dash->add('dashboard-settings-profile', new Route(
+    '/settings/profile',
+    array('_controller' => 'Goteo\Controller\Dashboard\SettingsDashboardController::profileAction',
+        )
+));
+
+// Settings (profile translatgions)
+$dash->add('dashboard-settings-profile-trans', new Route(
+    '/settings/profile/{lang}',
+    array('_controller' => 'Goteo\Controller\Dashboard\SettingsDashboardController::profileTranslateAction',
         )
 ));
 
