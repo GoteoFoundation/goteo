@@ -92,8 +92,12 @@ $(function(){
         var inAnimation = 'slideInRight';
         var outAnimation = 'slideOutRight';
         if(isDesktop) {
-            inAnimation = 'flipInY';
-            outAnimation = 'flipOutY';
+            // inAnimation = 'flipInY';
+            // outAnimation = 'flipOutY';
+            // inAnimation = 'fadeInDown';
+            // outAnimation = 'fadeOutUp';
+            inAnimation = 'fadeInRight';
+            outAnimation = 'fadeOutLeft';
         }
         $('.top-menu.active').find('.submenu.active').not($s).removeClass('active');
 

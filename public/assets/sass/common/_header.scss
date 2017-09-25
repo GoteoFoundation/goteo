@@ -1,3 +1,5 @@
+@import "compass/css3";
+
 .navbar-toggle {
     background-color: $background-light-green;
     .icon-bar{
@@ -34,36 +36,30 @@
     }
 
 
-    .animated.flipInY {
-      animation-duration: .3s;
-    }
-    .animated.flipOutY {
-      animation-duration: .5s;
+    .animated {
+        &.flipInY,&.flipOutY {
+            @include animation-duration(.3s);
+        }
+        &.fadeInDown,&.fadeOutUp,&.fadeInRight,&.fadeOutLeft {
+            @include animation-duration(.5s);
+        }
+        &.slideInRight,&.slideInLeft {
+            @include animation-duration(.5s);
+        }
     }
 
     @keyframes flipInY {
       from {
-        transform: perspective(400px) rotate3d(0, 1, 0, -90deg);
-        animation-timing-function: ease-in;
+        @include transform(perspective(400px) rotate3d(0, 1, 0, -90deg));
+        @include animation-timing-function(ease-in);
         opacity: 0;
       }
-
-      // 40% {
-      //   transform: perspective(400px) rotate3d(0, 1, 0, -20deg);
-      //   animation-timing-function: ease-in;
-      // }
-
       60% {
-        transform: perspective(400px) rotate3d(0, 1, 0, -10deg);
+        @include transform(perspective(400px) rotate3d(0, 1, 0, -10deg));
         opacity: 1;
       }
-
-      // 80% {
-      //   transform: perspective(400px) rotate3d(0, 1, 0, -5deg);
-      // }
-
       to {
-        transform: perspective(400px);
+        @include transform(perspective(400px));
       }
     }
     // Permanent menus
