@@ -637,11 +637,13 @@ body.home.has-sidebar {
         @include transition(width .5s, max-width .5s);
         height: auto;
         width: 0;
+        @media(min-width: $breakpoint-sm) {
+            top: 70px;
+        }
         @include animation(home-sidebar-fade-back .5s);
         .sidebar-wrap {
             width: 0;
             position: fixed;
-            top: 70px;
             @include transition(width .5s, max-width .5s);
             @include animation(home-sidebar-width-back .5s);
             height: auto;
