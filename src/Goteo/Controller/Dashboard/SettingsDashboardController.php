@@ -231,15 +231,18 @@ class SettingsDashboardController extends \Goteo\Core\Controller {
                 $user->rebuildData($data);
                 if ($user->save($errors)) {
                     Message::info(Text::get('user-profile-saved'));
-                    // assign translation if no in the default language
-                    if ($user->lang != Config::get('lang')) {
-                        // if (!User::isTranslated($this->user->id, $this->user->lang)) {
-                            $user->about_lang = $user->about;
-                            $user->keywords_lang = $user->keywords;
-                            $user->contribution_lang = $user->contribution;
-                            $user->saveLang($errors);
-                        // }
-                    }
+                    //
+                    // This is commented on purpose, see: Goteo\Model\User::get()
+                    //
+                    // // assign translation if no in the default language
+                    // if ($user->lang != Config::get('lang')) {
+                    //     // if (!User::isTranslated($this->user->id, $this->user->lang)) {
+                    //         $user->about_lang = $user->about;
+                    //         $user->keywords_lang = $user->keywords;
+                    //         $user->contribution_lang = $user->contribution;
+                    //         $user->saveLang($errors);
+                    //     // }
+                    // }
                     $user = User::flush();
                     if($errors) {
                         Message::error(Text::get('form-sent-error', implode(',',array_map('implode',$errors))));
@@ -253,7 +256,7 @@ class SettingsDashboardController extends \Goteo\Core\Controller {
         return $this->viewResponse('dashboard/settings/profile', [
             'form' => $form->createView(),
             'languages' => Lang::listAll('name', false),
-            'translated' => $translated = $user->getLangsAvailable()
+            'translated' => $user->getLangsAvailable()
         ]);
     }
 
