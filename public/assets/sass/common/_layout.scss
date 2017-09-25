@@ -11,7 +11,7 @@ body {
 
   // This will align the footer to the bottom
   display: flex;
-  flex-direction: column;
+  @include flex-direction(column);
   .page-wrap {
        flex: 1 0 auto;
   }

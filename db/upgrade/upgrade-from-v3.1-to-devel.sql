@@ -31,3 +31,7 @@ UPDATE invest SET campaign=0 WHERE campaign IS NULL;
 UPDATE invest SET pool=0 WHERE pool IS NULL;
 UPDATE invest SET issue=0 WHERE issue IS NULL;
 ALTER TABLE `invest` CHANGE `anonymous` `anonymous` BOOLEAN DEFAULT 0 NOT NULL, CHANGE `resign` `resign` BOOLEAN DEFAULT 0 NOT NULL, CHANGE `campaign` `campaign` BOOLEAN DEFAULT 0 NOT NULL COMMENT 'si es un aporte de capital riego', CHANGE `issue` `issue` BOOLEAN DEFAULT 0 NOT NULL COMMENT 'Problemas con el cobro del aporte', CHANGE `pool` `pool` BOOLEAN DEFAULT 0 NOT NULL COMMENT 'A reservar si el proyecto falla';
+
+-- foreign keys user
+DELETE FROM user_lang WHERE id NOT IN (SELECT id FROM USER);
+ALTER TABLE `user_lang` ADD FOREIGN KEY (`id`) REFERENCES `user`(`id`) ON UPDATE CASCADE ON DELETE CASCADE;

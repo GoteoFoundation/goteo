@@ -44,8 +44,8 @@ $(function(){
         var inAnimation = 'slideInRight';
         var outAnimation = 'slideOutRight';
         if(isDesktop) {
-            inAnimation = 'fadeInDown';
-            outAnimation = 'fadeOutUp';
+            inAnimation = 'foldInUp';
+            outAnimation = 'foldOutUp';
         }
 
         // Close other opened
@@ -92,8 +92,14 @@ $(function(){
         var inAnimation = 'slideInRight';
         var outAnimation = 'slideOutRight';
         if(isDesktop) {
-            inAnimation = 'flipInY';
-            outAnimation = 'flipOutY';
+            // inAnimation = 'flipInY';
+            // outAnimation = 'flipOutY';
+            // inAnimation = 'fadeInDown';
+            // outAnimation = 'fadeOutUp';
+            // inAnimation = 'fadeInRight';
+            // outAnimation = 'fadeOutLeft';
+            inAnimation = 'foldInUp';
+            outAnimation = 'foldOutUp';
         }
         $('.top-menu.active').find('.submenu.active').not($s).removeClass('active');
 

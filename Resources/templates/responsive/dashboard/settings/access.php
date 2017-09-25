@@ -55,13 +55,13 @@
             var $form = $($(this).data('target'));
             var $btns = $('.buttons');
             $btns.addClass('hidden');
-            $form.removeClass('hidden').animateCss('fadeInRight');
+            $form.removeClass('hidden').animateCss('foldInUp');
         });
         $('.hide-form').on('click', function(e){
             e.preventDefault();
             var $form = $($(this).data('target'));
             var $btns = $('.buttons');
-            $form.animateCss('fadeOutRight', function() {
+            $form.animateCss('foldOutUp', function() {
                 $form.addClass('hidden');
                 $btns.removeClass('hidden');
             });

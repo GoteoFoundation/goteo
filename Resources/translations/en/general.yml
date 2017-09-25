@@ -147,6 +147,8 @@ regular-text: 'Text'
 regular-media: Video (Youtube, Vimeo)
 regular-total: Total
 regular-translate_board: 'Translation panel'
+regular-translate: 'Translate'
+regular-translations: 'Translations'
 regular-twitter: Twitter
 regular-view: View
 regular-view_project: 'View project'
