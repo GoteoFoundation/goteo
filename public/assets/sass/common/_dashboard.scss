@@ -103,7 +103,10 @@
   }
 
   .btn {
-      border:none;
+      border-color:transparent;
+      &.btn-default {
+        border-color: inherit;
+      }
       text-transform: uppercase;
       // box-shadow: 1px 1px 4px -2px $color-dark;
       &.btn-danger,&.btn-cyan,&.btn-green,&.btn-pink {
