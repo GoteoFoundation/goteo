@@ -73,15 +73,27 @@ $(function(){
     // Sidebar toggle
     $('.toggle-sidebar').on('click', toggleSidebar);
     // Swipper detector
-    if('.toggle-sidebar') {
+    if($('body').hasClass('has-sidebar')) {
         // Enable text selection
         delete Hammer.defaults.cssProps.userSelect;
         var $body = $('body.has-sidebar');
+        var $slider = $('body.has-sidebar .slider');
+        var prevented = false;
+        $slider.on("mouseover", function(e){
+            // console.log('mouseover swipe', e);
+            prevented = true;
+        });
+        $slider.on("mouseout", function(e){
+            // console.log('mouseout swipe', e);
+            prevented = false;
+        });
         $body.hammer().bind("swiperight", function(e){
+            if(prevented) return;
             if(!$body.hasClass('sidebar-opened'))
                 toggleSidebar(e);
         });
         $body.hammer().bind("swipeleft", function(e){
+            if(prevented) return;
             if($body.hasClass('sidebar-opened'))
                 toggleSidebar(e);
         });

@@ -55,6 +55,7 @@ body {
       @media(max-width: $breakpoint-sm - 1) {
         #sidebar-menu {
           position: fixed;
+          top: 0;
           @include flex(0);
           z-index: 1001;
           overflow: auto;
