@@ -1,7 +1,8 @@
 <div class="btn-group<?= $this->class ? ' ' . $this->class : '' ?>">
   <button type="button" class="btn btn-cyan dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
     <i class="fa fa-language"></i> <?php
-        if($this->current) echo $this->a('languages')[$this->current];
+        if($this->title) echo $this->title;
+        elseif($this->current) echo $this->a('languages')[$this->current];
         else echo $this->text('regular-translations');
      ?> <span class="caret"></span>
   </button>
@@ -9,6 +10,7 @@
     <?php
     foreach($this->a('languages') as $key => $lang):
         $class = '';
+        if(in_array($key, $this->a('skip'))) continue;
         if(in_array($key, $this->a('translated'))) $class = 'available';
         if($this->current == $key) $class .= ' active';
     ?>

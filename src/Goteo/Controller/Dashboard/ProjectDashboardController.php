@@ -138,6 +138,9 @@ class ProjectDashboardController extends \Goteo\Core\Controller {
         ]);
     }
 
+    /**
+     * Index translator
+     */
     public function translateAction($pid, Request $request) {
         $project = $this->validateProject($pid, 'translate');
         if($project instanceOf Response) return $project;
@@ -148,6 +151,10 @@ class ProjectDashboardController extends \Goteo\Core\Controller {
         ]);
 
     }
+
+    /**
+     * Index translator
+     */
     public function translateZoneAction($pid, $lang = null, $current = null, Request $request) {
 
         $project = $this->validateProject($pid, 'translate');
@@ -156,7 +163,7 @@ class ProjectDashboardController extends \Goteo\Core\Controller {
         $languages = Lang::listAll('name', false);
         if(!isset($languages[$lang])) {
             Message::error(Text::get('translator-lang-not-found'));
-            // return $this->redirect('/dashboard/project/' . $project->id . '/translate');
+            return $this->redirect('/dashboard/project/' . $project->id . '/translate');
         }
 
         $zones = [
@@ -169,7 +176,7 @@ class ProjectDashboardController extends \Goteo\Core\Controller {
         ];
         if(!array_key_exists($current, $zones)) $current = 'overview';
 
-        return $this->viewResponse('dashboard/project/translate', [
+        return $this->viewResponse('dashboard/project/translate/zone', [
             'zones' => $zones,
             'current' => $current
         ]);

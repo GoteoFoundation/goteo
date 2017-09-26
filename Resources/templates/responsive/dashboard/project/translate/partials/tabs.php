@@ -2,7 +2,7 @@
 $zones = $this->a('zones');
 if(!$zones) return;
 ?>
-<<ul class="nav nav-tabs">
+<ul class="nav nav-tabs">
 <?php
     foreach($zones as $zone => $name):
 ?>

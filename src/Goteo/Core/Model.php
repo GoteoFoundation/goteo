@@ -445,18 +445,46 @@ abstract class Model {
 
     /**
      * Returns all translations available
-     * @return [type] [description]
      */
     public function getLangsAvailable() {
         $langs = [];
         try {
             if($query = static::query("SELECT GROUP_CONCAT(lang) AS langs FROM `{$this->Table}_lang` WHERE id = :id GROUP BY id", array(':id' => $this->id))) {
-                $langs = explode(',',$query->fetchColumn());
+                $res = $query->fetchColumn();
+                if($res) $langs = explode(',', $res);
             }
         } catch (\Exception $e) {
         }
         return $langs;
     }
+
+    /**
+     * Returns percent (from 0 to 100) translations
+     */
+    public function getLangsPercent($lang) {
+        try {
+            $sql = "SELECT * FROM `{$this->Table}_lang` WHERE id = :id AND lang = :lang";
+            $values = array(':id' => $this->id, ':lang' => $lang);
+            // die(\sqldbg($sql, $values));
+            if($query = static::query($sql, $values)) {
+                $ob = $query->fetchObject();
+                $filled = 0;
+                $total = 0;
+                foreach($ob as $key => $value) {
+                    if(in_array($key, ['id','lang','pending'])) continue;
+                    if(($value && $this->$key) || (!$value && !$this->key)) {
+                        $filled++;
+                    }
+                    // else echo "\n$key => [$value]|[{$this->$key}]\n";
+                    $total++;
+                }
+                if($total) return 100 * $filled / $total;
+            }
+        } catch (\Exception $e) {
+        }
+        return 0;
+    }
+
 	/**
 	 * Cuenta el numero de items y lo divide en páginas
 	 * @param type $sql

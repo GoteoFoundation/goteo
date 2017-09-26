@@ -235,4 +235,4 @@ dashboard-translate-profile-ok: 'Profile in %s translated successfully'
 
 dashboard-translate-project: 'Translate project'
 dashboard-translate-project-empty: 'Not translations yet for this project.'
-dashboard-translate-project-currents: 'This project is translated into %s languages:'
+dashboard-translate-project-currents: 'The original language of this project is %LANG% and is translated into %NUM% languages:'
