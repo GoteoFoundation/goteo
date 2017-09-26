@@ -39,14 +39,28 @@ class TextUtils implements ExtensionInterface
           'text_plain' => [$this, 'plain'],
           'text_url_link' => [$this, 'url_link'],
           'percent_span' => [$this, 'percent_span'],
+          'percent_badge' => [$this, 'percent_badge'],
           'sanitize' => [$this, 'sanitize']
         ];
     }
 
-    public function percent_span($percent, $decimals = 0, $text = '') {
+    /**
+     * Percent colorized html <span>
+     * @param  number  $percent  from 0 to 100
+     * @param  integer $decimals number of decimals
+     * @param  string  $text     text (otherwise just the n%)
+     * @param  string  $class    class assigned to the span
+     * @return string            html code
+     */
+    public function percent_span($percent, $decimals = 0, $text = '', $class = 'label label-percent') {
         $percent = number_format( (float) $percent, $decimals, ',', '');
-        return '<span class="label label-percent" style="background-color:hsl(' . (120 * $percent/100) . ',45%,50%);">' . ($text ? $text : "$percent %") .'</span>';
+        return '<span class="' . $class . '" style="background-color:hsl(' . (120 * $percent/100) . ',45%,50%);">' . ($text ? $text : "$percent %") .'</span>';
     }
+    // handy method to put a simplified percent badge
+    public function percent_badge($percent, $text = '') {
+        return self::percent_span($percent, 0, $text, 'badge');
+    }
+
     public function get()
     {
         return call_user_func_array ( 'Goteo\Library\Text::get' , func_get_args() );

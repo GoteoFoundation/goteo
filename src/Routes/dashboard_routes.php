@@ -82,10 +82,10 @@ $dash->add('dashboard-project-translate', new Route(
 ));
 // Project translate zone
 $dash->add('dashboard-project-translate-zone', new Route(
-    '/project/{pid}/translate/{lang}/{current}',
+    '/project/{pid}/translate/{current}/{lang}',
     array('_controller' => 'Goteo\Controller\Dashboard\ProjectDashboardController::translateZoneAction',
-        'lang' => null,
-        'current' => null
+        'current' => null,
+        'lang' => null
         )
 ));
 // Project image editing
