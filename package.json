@@ -23,7 +23,7 @@
     "grunt-contrib-imagemin": "^1.0.1",
     "grunt-contrib-jshint": "^1.1.0",
     "grunt-contrib-sass": "^1.0.0",
-    "grunt-contrib-uglify": "^2.2.0",
+    "grunt-contrib-uglify": "^3.1.0",
     "grunt-contrib-watch": "^1.0.0",
     "grunt-filerev": "^2.1.1",
     "grunt-newer": "^1.2.0",
@@ -36,5 +36,7 @@
     "matchdep": "^1.0.1",
     "time-grunt": "^1.0.0"
   },
-  "dependencies": {}
+  "dependencies": {
+    "uglify-save-license": "^0.4.1"
+  }
 }
