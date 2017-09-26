@@ -87,7 +87,16 @@ $(function(){
             // console.log('mouseout swipe', e);
             prevented = false;
         });
+        $slider.on("touchstart", function(e){
+            // console.log('touchstart swipe', e);
+            prevented = true;
+        });
+        $slider.on("touchend", function(e){
+            // console.log('touchend swipe', e);
+            setTimeout(function(){prevented = false;});
+        });
         $body.hammer().bind("swiperight", function(e){
+            // console.log('body swipe right', e);
             if(prevented) return;
             if(!$body.hasClass('sidebar-opened'))
                 toggleSidebar(e);
