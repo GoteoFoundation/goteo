@@ -274,7 +274,7 @@ class SettingsDashboardController extends \Goteo\Core\Controller {
         $translated = $user->getLangsAvailable();
         $this->createSidebar('profile');
 
-        $defaults = (array) $user; // TODO: BY lang!
+        $defaults = (array) $user;
 
         $builder = $this->createFormBuilder($defaults)
             ->add('name', 'text', [

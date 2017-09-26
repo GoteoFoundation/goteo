@@ -70,3 +70,5 @@ translator-workshop: Talleres
 translator-worthcracy: Meritocrácia
 translator-zone-not-found: 'Esta zona de traducción no es válida'
 translator-lang-not-found: 'Este idioma no está en la plataforma!'
+translator-percent: '%d&#37; traducido'
+translator-add-translation: 'Añadir una nueva traducción'
