@@ -232,3 +232,7 @@ dashboard-message-donors-total: '%s donors'
 dashboard-translate-profile: 'Translate profile'
 dashboard-translate-profile-desc: 'You are translating your personal profile to %LANG%. Users who visit your personal profile in this language will see this translation. All other languages will display the <a href="%URL%">default data</a> unless they also have an assigned translation.'
 dashboard-translate-profile-ok: 'Profile in %s translated successfully'
+
+dashboard-translate-project: 'Translate project'
+dashboard-translate-project-empty: 'Not translations yet for this project.'
+dashboard-translate-project-currents: 'This project is translated into %s languages:'

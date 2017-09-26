@@ -17,6 +17,7 @@ use Goteo\Application\Session;
 use Goteo\Application\AppEvents;
 use Goteo\Application\View;
 use Goteo\Application\Message;
+use Goteo\Application\Lang;
 use Goteo\Model\Invest;
 use Goteo\Model\Project;
 use Goteo\Model\Project\Reward;
@@ -56,6 +57,7 @@ class ProjectDashboardController extends \Goteo\Core\Controller {
         Session::addToSidebarMenu('<i class="icon icon-2x icon-summary"></i> ' . Text::get('dashboard-menu-activity-summary'), $prefix . '/summary', 'summary');
         Session::addToSidebarMenu('<i class="icon icon-2x icon-preview"></i> ' . Text::get('regular-preview'), '/project/' . $project->id, 'preview');
         Session::addToSidebarMenu('<i class="icon icon-2x icon-edit"></i> ' . Text::get('regular-edit'), '/project/edit/' . $project->id, 'edit');
+        Session::addToSidebarMenu('<i class="fa fa-2x fa-language"></i> ' . Text::get('regular-translations'), $prefix . '/translate', 'translate');
         Session::addToSidebarMenu('<i class="icon icon-2x icon-images"></i> ' . Text::get('images-main-header'), $prefix .'/images', 'images');
         Session::addToSidebarMenu('<i class="icon icon-2x icon-updates"></i> ' . Text::get('dashboard-menu-projects-updates'), $prefix .'/updates', 'updates');
         Session::addToSidebarMenu('<i class="icon icon-2x icon-supports"></i> ' . Text::get('dashboard-menu-projects-supports'), $prefix . '/supports' , 'supports');
@@ -135,6 +137,45 @@ class ProjectDashboardController extends \Goteo\Core\Controller {
             'status_text' => $status_text
         ]);
     }
+
+    public function translateAction($pid, Request $request) {
+        $project = $this->validateProject($pid, 'translate');
+        if($project instanceOf Response) return $project;
+
+        return $this->viewResponse('dashboard/project/translate/index', [
+            'languages' => Lang::listAll('name', false),
+            'available' => $project->getLangsAvailable()
+        ]);
+
+    }
+    public function translateZoneAction($pid, $lang = null, $current = null, Request $request) {
+
+        $project = $this->validateProject($pid, 'translate');
+        if($project instanceOf Response) return $project;
+
+        $languages = Lang::listAll('name', false);
+        if(!isset($languages[$lang])) {
+            Message::error(Text::get('translator-lang-not-found'));
+            // return $this->redirect('/dashboard/project/' . $project->id . '/translate');
+        }
+
+        $zones = [
+            // 'profile' => Text::get('step-1'),
+            'overview' => Text::get('step-3'),
+            'costs' => Text::get('step-4'),
+            'rewards' => Text::get('step-5'),
+            'supports' => Text::get('step-6'),
+            'updates' => Text::get('project-menu-updates')
+        ];
+        if(!array_key_exists($current, $zones)) $current = 'overview';
+
+        return $this->viewResponse('dashboard/project/translate', [
+            'zones' => $zones,
+            'current' => $current
+        ]);
+    }
+
+
 
     public function imagesAction($pid = null, Request $request)
     {

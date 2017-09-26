@@ -110,7 +110,9 @@ sudo apt-get install build-essential libssl-dev git
 sudo add-apt-repository ppa:chris-lea/node.js
 sudo apt-get update
 sudo apt-get install nodejs
-sudo apt-get install ruby-compass
+sudo apt-get install rubygems-integration
+sudo gem install sass -v 3.4.23
+sudo gem install compass
 sudo npm install -g grunt-cli
 ```
 

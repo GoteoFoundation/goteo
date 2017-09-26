@@ -75,6 +75,19 @@ $dash->add('dashboard-projects', new Route(
 ));
 
 
+// Project translate index
+$dash->add('dashboard-project-translate', new Route(
+    '/project/{pid}/translate',
+    array('_controller' => 'Goteo\Controller\Dashboard\ProjectDashboardController::translateAction')
+));
+// Project translate zone
+$dash->add('dashboard-project-translate-zone', new Route(
+    '/project/{pid}/translate/{lang}/{current}',
+    array('_controller' => 'Goteo\Controller\Dashboard\ProjectDashboardController::translateZoneAction',
+        'lang' => null,
+        'current' => null
+        )
+));
 // Project image editing
 $dash->add('dashboard-project-images', new Route(
     '/project/{pid}/images',
