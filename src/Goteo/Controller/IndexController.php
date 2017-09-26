@@ -10,11 +10,9 @@
 
 namespace Goteo\Controller;
 
-use Symfony\Component\HttpFoundation\Response;
-
 use Goteo\Application\Config;
 use Goteo\Application\View;
-use Goteo\Model;
+use Goteo\Model\Image;
 use Goteo\Model\Home;
 use Goteo\Model\Banner;
 use Goteo\Model\Stories;
@@ -69,7 +67,7 @@ class IndexController extends \Goteo\Core\Controller
         foreach ($news as $idNew => &$new) {
             //comprobamos si esta activo el campo banner prensa y si tiene imagen asociada
 
-            if ( ! $new->press_banner || ! $new->image instanceof \Goteo\Model\Image ) {
+            if ( ! $new->press_banner || ! $new->image instanceof Image ) {
                     unset($news[$idNew]);
             }
 
@@ -89,7 +87,7 @@ class IndexController extends \Goteo\Core\Controller
             );
 
 
-        return new Response(View::render('home/home', $vars));
+        return $this->viewResponse('home/index', $vars);
     }
 
 }
