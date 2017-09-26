@@ -18,7 +18,7 @@
 				</a>
 			</li>
 			<li>
-				<a href="">
+				<a href="#search" class="search">
 					<img src="/assets/img/home/icono_lupa_white.png" >
 				</a>
 			</li>
@@ -32,7 +32,10 @@
 				<?php if($banner->image): ?>
 					<div>
 						<div class="image">
-							<img src="<?= $banner->image->getLink(1920, 600, true) ?>" >
+							<img src="<?= $banner->image->getLink(1920, 500, true) ?>" class="display-none-important img-responsive  hidden-xs visible-up-1400">
+		                    <img src="<?= $banner->image->getLink(1400, 400, true) ?>" class="display-none-important img-responsive  hidden-xs visible-1051-1400">
+			                <img src="<?= $banner->image->getLink(1051, 438, true) ?>" class="display-none-important img-responsive  hidden-xs visible-768-1050">
+		                    <img src="<?= $banner->image->getLink(750, 550, true) ?>" class="img-responsive visible-xs">
 						</div>
 						<div class="main-info hidden-xs">
 							<div class="container">
@@ -59,4 +62,13 @@
 
 	<?php endif; ?>
 
+</div>
+
+<div id="search">
+    <button type="button" class="close">×</button>
+    <form action="/discover/results">
+        <input type="search" name="query" value="" placeholder="escribe tu búsqueda aquí" autocomplete="off"/>
+        <div class="tooltip">Entra tu búsqueda y pulsa enter</div>
+        <button type="submit" class="btn btn-white">Buscar</button>
+    </form>
 </div>
