@@ -163,15 +163,12 @@ module.exports = function(grunt) {
         'copy:plugins:dist',
         'sass:dist',
 
-        // TODO: make usemin work for headers
         'useminPrepare',
-
         // 'imagemin',
         'concat:generated',
-        // 'cssmin:generated', //Doesn't work with @imports clauses
-        // 'uglify:generated',
 
         'cssmin:dist', // manually minify css
+        'uglify:dist', // manually minify js
         'filerev:dist',
         'usemin'
     ]);
