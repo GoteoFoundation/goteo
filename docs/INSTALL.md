@@ -119,6 +119,8 @@ Once you got it, a minimal system must be created, import this 3 SQL scripts:
 - `db/install/data.sql`
 - `db/install/templates.sql`
 
+**NB:** Run `db/install/upgrade-to-v3.0.9.sql` first before `db/install/data.sql`
+
 Both scripts should be applied in a MySQL console:
 
 ```bash

@@ -24,6 +24,7 @@ dashboard-certificates-too-old: 'Aquest certificat és massa antic i no es pot m
 dashboard-certificates-totals: '%NUM% aportacions, %AMOUNT%'
 dashboard-certificates-unconfirmed: 'Per a descarregar aquest certificat has confirmar les dades primer!'
 dashboard-certificates-view-pending: 'Les teves aportacions a projectes que encara no han assolit el mínim no es mostren. Pots consultar-les %HERE%.'
+dashboard-certificates-no-invests: 'No es pot confirmar el certificat ja que no té aportacions!'
 dashboard-chart-days: 'QUEDEN %s DIES'
 dashboard-chart-invested: 'FINANÇAMENT OBTINGUT'
 dashboard-chart-investors: COFINANÇADORS
