@@ -114,6 +114,20 @@ $api->add('api-projects-updates-property', new Route(
         )
 ));
 
+// Project rewards invests fulfilled
+$api->add('api-projects-invests-fulfilled', new Route(
+    '/projects/{pid}/invests/{iid}/fulfilled',
+    array('_controller' => 'Goteo\Controller\Api\ProjectsApiController::projectInvestsFulfilledAction'
+        )
+));
+
+// Project CSV rewards invests
+$api->add('api-projects-invests-csv', new Route(
+    '/projects/{pid}/invests/csv',
+    array('_controller' => 'Goteo\Controller\Api\ProjectsApiController::projectInvestsCSVAction'
+        )
+));
+
 // Licenses list
 $api->add('api-licenses', new Route(
     '/licenses',
@@ -129,13 +143,13 @@ $api->add('api-keywords', new Route(
 ));
 
 // Messages list
-$api->add('api-messages-project', new Route(
+$api->add('api-comments-project', new Route(
     '/projects/{pid}/comments',
     array('_controller' => 'Goteo\Controller\Api\MessagesApiController::commentsAction',
         )
 ));
 
-$api->add('api-messages-add', new Route(
+$api->add('api-comments-add', new Route(
     '/comments',
     array('_controller' => 'Goteo\Controller\Api\MessagesApiController::commentsAddAction'),
     array(), // requirements
@@ -145,7 +159,7 @@ $api->add('api-messages-add', new Route(
     array('POST') // methods
 ));
 
-$api->add('api-messages-delete', new Route(
+$api->add('api-comments-delete', new Route(
     '/comments/{cid}',
     array('_controller' => 'Goteo\Controller\Api\MessagesApiController::commentsDeleteAction'),
     array(), // requirements
@@ -154,5 +168,29 @@ $api->add('api-messages-delete', new Route(
     array(), // schemes
     array('DELETE') // methods
 ));
+
+// Messages list
+$api->add('api-messages-project', new Route(
+    '/projects/{pid}/messages',
+    array('_controller' => 'Goteo\Controller\Api\MessagesApiController::messagesAction',
+        )
+));
+// User Messages list
+$api->add('api-messages-project', new Route(
+    '/projects/{pid}/messages/{uid}',
+    array('_controller' => 'Goteo\Controller\Api\MessagesApiController::userMessagesAction',
+        )
+));
+
+$api->add('api-messages-add', new Route(
+    '/messages',
+    array('_controller' => 'Goteo\Controller\Api\MessagesApiController::messagesAddAction'),
+    array(), // requirements
+    array(), // options
+    '', // host
+    array(), // schemes
+    array('POST') // methods
+));
+
 
 return $api;

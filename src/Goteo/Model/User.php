@@ -375,6 +375,7 @@ class User extends \Goteo\Core\Model {
 
         try {
             $sql = "REPLACE INTO user_lang SET " . $set;
+            // die(\sqldbg($sql, $values));
             self::query($sql, $values);
 
             return true;
@@ -663,8 +664,12 @@ class User extends \Goteo\Core\Model {
     public static function get($id, $lang = null, $with_password = false) {
         try {
 
-            //Obtenemos el idioma de soporte
-            $lang = self::default_lang_by_id($id, 'user_lang', $lang);
+            // This will ensure to have fallback translations in case $lang does not exists
+            // However, I find more personal to let the user choose how to present himself
+            // and handle his translations manually.
+            // Still, I left it here commented in case of further discussion
+            // Ivan Vergés  25/09/2017.
+            // $lang = self::default_lang_by_id($id, 'user_lang', $lang);
 
             $sql = "
                 SELECT

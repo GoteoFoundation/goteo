@@ -65,7 +65,6 @@ dashboard-menu-projects: 'Mis proyectos'
 dashboard-menu-projects-analytics: Analítica
 dashboard-menu-projects-commons: Retornos
 dashboard-menu-projects-contract: Contrato
-dashboard-menu-projects-analytics: 'Analítica'
 dashboard-menu-projects-social-commitment: 'Compromiso social'
 dashboard-menu-projects-messegers: Participantes
 dashboard-menu-projects-preview: 'Página pública'
@@ -109,7 +108,7 @@ dashboard-rewards-date_order: 'Por fecha'
 dashboard-rewards-fulfilled_filter: Cumplidas
 dashboard-rewards-fulfilled_status: Cumplida
 dashboard-rewards-group_msg: 'mensaje a ese grupo'
-dashboard-rewards-investors_table: '<p>Si quieres gestionarlo offline puedes <a id="sacaexcel" href="/dashboard/projects/rewards/table" target="_blank">sacar la Tabla de Cofinanciadores</a></p>'
+dashboard-rewards-investors_table: 'Si quieres gestionarlo offline puedes <a href="%URL%" target="_blank">sacar la Tabla de Cofinanciadores</a>'
 dashboard-rewards-issue: Incidencia!
 dashboard-rewards-massive_msg: 'Mensajes colectivos'
 dashboard-rewards-massive_msg-all: 'A todos los cofinanciadores de este proyecto'
@@ -188,7 +187,7 @@ dashboard-project-images-desc: 'Organiza las imágenes como quieras arrastrando 
 dashboard-project-default-image: 'Imagen por defecto'
 dashboard-project-delete-image: 'Borrar imagen'
 dashboard-project-delete-image-confirm: '¿Seguro que quieres borrar esta imagen?'
-dashboard-project-delete-default-image: "La imagen por defecto no puede borrarse.\nEscoje otra imagen por defecto antes de borrar esta."
+dashboard-project-delete-default-image: "La imagen por defecto no puede borrarse.\nEscoge otra imagen por defecto antes de borrar esta."
 dashboard-project-dnd-image: 'Arrastra y suelta una o más imágenes aquí'
 dashboard-project-image-delete-ko: 'La imagen no se ha podido borrar!'
 project-upload-images-some-ko: 'Algunas imágenes no se han subido!'
@@ -204,8 +203,34 @@ uploaded-ok: "Subido correctamente"
 publish-confirm-yes: "Quieres publicar esta entrada?"
 publish-confirm-no: "Quieres despublicar esta entrada?"
 
-dashboard-project-support-empty: No hay ninguna petición de colaboraciones todavía.
+dashboard-project-support-empty: 'No hay ninguna petición de colaboraciones todavía.'
 dashboard-project-support-responses: Respuestas
-dashboard-project-support-no-responses: No hay respuestas todavía.
-dashboard-project-support-add: Añadir una nueva petición de colaboración
+dashboard-project-support-no-responses: 'No hay respuestas todavía.'
+dashboard-project-support-add: 'Añadir una nueva petición de colaboración'
+dashboard-search-invests-totals: 'En esta búsqueda: %TOTAL_INVESTS% aportaciones de %TOTAL_USERS% usuarios. Total %TOTAL_AMOUNT%'
+dashboard-search-invests-msg: 'Enviar un mensaje a los cofinanciadores de esta búsqueda'
+dashboard-project-filter-by-reward: 'Filtrar por recompensa'
+dashboard-project-filter-by-others: 'Otros filtros'
+dashboard-project-filter-by-donative: 'Ver sólo los que renuncian a recompensa'
+dashboard-project-filter-by-nondonative: 'Esconder los que renuncian a recompensa'
+dashboard-project-filter-by-drop: 'Ver sólo aportes de matchfunding'
+dashboard-project-filter-by-nondrop: 'Esconder aportes de matchfunding'
+dashboard-project-filter-by-pending: 'Ver sólo las pendientes'
+dashboard-project-filter-by-fulfilled: 'Ver sólo las completadas'
 
+dashboard-project-no-invests: 'No hay aportes para este criterio de búsqueda'
+dashboard-new-message-to-donors: 'Nuevo mensaje a cofinanciadores'
+dashboard-message-donors-reward: 'Los cofinanciadores con la recompensa %s'
+
+dashboard-message-donors-donors: 'Todos los cofinanciadores que'
+dashboard-message-donors-and: 'y que además'
+dashboard-message-donors-donative: 'renuncian a recompensa'
+dashboard-message-donors-nondonative: 'han escogido con alguna recompensa'
+dashboard-message-donors-pending: 'están pendientes'
+dashboard-message-donors-fulfilled: 'están completados'
+dashboard-message-donors-error: 'No hay destinatarios válidos, no se puede enviar el mensaje'
+dashboard-message-donors-total: '%s cofinanciadores'
+
+dashboard-translate-profile: 'Traducir perfil'
+dashboard-translate-profile-desc: 'Estás traduciendo tu perfil personal al %LANG%. Los usuarios que visiten tu perfil personal en este idioma verán esta traducción. El resto de idiomas mostrarán los <a href="%URL%">datos por defecto</a> a menos que también tengan una traducción asignada.'
+dashboard-translate-profile-ok: 'Perfil traducido correctamente al %s'

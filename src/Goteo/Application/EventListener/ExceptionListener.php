@@ -214,11 +214,11 @@ class ExceptionListener extends AbstractListener {
 
         // TODO:: create a low level path and avoid changing theme here
         try {
-            View::setTheme('default');
+            View::setTheme('responsive');
             $view = View::render('errors/' . $template, ['title' => $exception->getMessage(), 'msg' => $info, 'code' => $code], $code);
 
         } catch (\Exception $e) {
-            View::addFolder(__DIR__ . '/../../../../Resources/templates/default');
+            View::addFolder(__DIR__ . '/../../../../Resources/templates/responsive');
             $view = View::render('errors/internal', ['msg' => $exception->getMessage(), 'file' => $file, 'code' => $code, 'info' => $e->getMessage() . "\n$info"], $code);
         }
 

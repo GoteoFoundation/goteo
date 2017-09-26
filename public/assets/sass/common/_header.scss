@@ -1,3 +1,5 @@
+@import "compass/css3";
+
 .navbar-toggle {
     background-color: $background-light-green;
     .icon-bar{
@@ -10,7 +12,7 @@
 
 .top-navbar {
     background-color: $background-light-green;
-
+    min-height: 55px;
     >.container {
         position: relative;
     }
@@ -34,36 +36,30 @@
     }
 
 
-    .animated.flipInY {
-      animation-duration: .3s;
-    }
-    .animated.flipOutY {
-      animation-duration: .5s;
+    .animated {
+        &.flipInY,&.flipOutY {
+            @include animation-duration(.3s);
+        }
+        &.fadeInDown,&.fadeOutUp,&.fadeInRight,&.fadeOutLeft {
+            @include animation-duration(.5s);
+        }
+        &.slideInRight,&.slideInLeft {
+            @include animation-duration(.5s);
+        }
     }
 
     @keyframes flipInY {
       from {
-        transform: perspective(400px) rotate3d(0, 1, 0, -90deg);
-        animation-timing-function: ease-in;
+        @include transform(perspective(400px) rotate3d(0, 1, 0, -90deg));
+        @include animation-timing-function(ease-in);
         opacity: 0;
       }
-
-      // 40% {
-      //   transform: perspective(400px) rotate3d(0, 1, 0, -20deg);
-      //   animation-timing-function: ease-in;
-      // }
-
       60% {
-        transform: perspective(400px) rotate3d(0, 1, 0, -10deg);
+        @include transform(perspective(400px) rotate3d(0, 1, 0, -10deg));
         opacity: 1;
       }
-
-      // 80% {
-      //   transform: perspective(400px) rotate3d(0, 1, 0, -5deg);
-      // }
-
       to {
-        transform: perspective(400px);
+        @include transform(perspective(400px));
       }
     }
     // Permanent menus
@@ -73,9 +69,7 @@
 
         button, a {
             margin:0;
-            padding: 13px 15px;
-            height: 60px;
-            width: 60px;
+            padding: 0;
             overflow: hidden;
             vertical-align: middle;
             border: none;
@@ -126,7 +120,7 @@
     // main menus
     .top-menu {
         position: absolute;
-        top: 60px;
+        top: 55px;
         right: 0;
         min-width: 300px;
         background: $background-white;
@@ -166,7 +160,7 @@
                 @media (max-width: $breakpoint-sm - 1) {
                     position: fixed;
                     left: 0;
-                    top: 60px;
+                    top: 55px;
                     height: 100%;
                 }
                 li a.back {
@@ -189,6 +183,8 @@
                 }
                 img {
                     border-radius: 50%;
+                    width: 30px;
+                    height: 30px;
                 }
                 a {
                     color: $secondary-color;
@@ -279,7 +275,7 @@
         img.logo {
             height: 40px;
             margin-left: 10px;
-            margin-top: 10px;
+            margin-top: 6px;
         }
     }
 

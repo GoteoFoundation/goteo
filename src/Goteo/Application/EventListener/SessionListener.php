@@ -199,7 +199,7 @@ class SessionListener extends AbstractListener {
             // Add last 2 owned projects
             if($projects = Project::ofmine($user->id, false, 0, 2)) {
                 foreach($projects as $i => $prj) {
-                    Session::addToUserMenu('<img src="' . $prj->image->getLink(30,30) . '"> '.$prj->name, '/dashboard/project/' . $prj->id , 'project-' . $prj->id, 31 + $i, 'ident');
+                    Session::addToUserMenu('<img src="' . $prj->image->getLink(30, 30, true) . '"> '.$prj->name, '/dashboard/project/' . $prj->id , 'project-' . $prj->id, 31 + $i, 'ident');
                 }
             }
         }

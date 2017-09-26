@@ -147,6 +147,8 @@ regular-text: Text
 regular-media: Vídeo (Youtube, Vimeo)
 regular-total: Total
 regular-translate_board: 'Panell traductor'
+regular-translate: 'Tradueix'
+regular-translations: 'Traduccions'
 regular-twitter: Twitter
 regular-view: Veure
 regular-view_project: Veure el projecte
@@ -165,6 +167,9 @@ regular-num-comments: '%s comentaris'
 regular-manage: 'Gestiona'
 regular-no-edit-permissions: No tens permís per editar aquesta entrada!
 regular-messages: Missatges
+regular-unknown: Desconegut
+regular-input: Aportació
+regular-amount: Import
 session-about-to-expire: 'Tu sesión expirará en 10 minutos. ¿Quieres recargar la página para renovarla?'
 session-expired: 'Tu sesión en goteo ha expirado!'
 stories-user-project: "%s, del projecte: %s\r\n"

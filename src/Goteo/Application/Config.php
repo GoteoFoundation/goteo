@@ -60,7 +60,7 @@ class Config {
 				throw $e;
 			}
 			$code = \Symfony\Component\HttpFoundation\Response::HTTP_FORBIDDEN;
-			\Goteo\Application\View::addFolder(__DIR__ . '/../../../Resources/templates/default');
+			\Goteo\Application\View::addFolder(__DIR__ . '/../../../Resources/templates/responsive');
 			// TODO: custom template
 			$info = '';
 			$trace = EventListener\ExceptionListener::jTraceEx($e);
@@ -68,6 +68,7 @@ class Config {
 				$info = '<pre>' . $trace . '</pre>';
 			}
 
+            \Goteo\Application\View::setTheme('responsive');
 			die(\Goteo\Application\View::render('errors/config', ['msg' => $e->getMessage(), 'info' => $info, 'file' => $file, 'code' => $code], $code));
 			return;
 		}

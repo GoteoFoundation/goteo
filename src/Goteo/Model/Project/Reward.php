@@ -402,6 +402,11 @@ class Reward extends \Goteo\Core\Model {
         return $this->projectObject;
     }
 
+    /** Returns a text respresentation of the reward */
+    public function getTitle() {
+        return amount_format($this->amount) . ' - ' . $this->reward;
+    }
+
 
     /**
      * Returns true if reward (Object or Id) has been choosen by the invest

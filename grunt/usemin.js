@@ -36,17 +36,10 @@ module.exports = function(grunt) {
 
             blockReplacements: {
               css: function (block) {
-                  // grunt.log.writeln('USEMIN CSS BLOCK');
-                  // for(var i in block) grunt.log.writeln(i,': ',block[i]);
-
                   return '<link href="<?= SRC_URL ?>/' + replaceRevmap(block.dest) + '" type="text/css" rel="stylesheet" />';
               },
               js: function (block) {
-                  var html = '<script type="text/javascript" src="<?= SRC_URL ?>' + replaceRevmap(block.dest) + '"></script>';
-                  if(Config.analytics) {
-                    html += '\n\n' + Config.analytics;
-                  }
-                  return html;
+                  return '<script type="text/javascript" src="<?= SRC_URL ?>/' + replaceRevmap(block.dest) + '"></script>';
               }
             }
         },

@@ -11,12 +11,15 @@
 namespace Goteo\Controller\Api;
 
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\ResponseHeaderBag;
+use Symfony\Component\HttpFoundation\StreamedResponse;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Goteo\Application\Exception\ControllerAccessDeniedException;
 use Goteo\Application\Exception\ModelNotFoundException;
 use Goteo\Application\Exception\ModelException;
 
 use Goteo\Application\Config;
+use Goteo\Model\Invest;
 use Goteo\Model\Project;
 use Goteo\Model\Project\Image as ProjectImage;
 use Goteo\Model\Project\Reward;
@@ -413,6 +416,7 @@ class ProjectsApiController extends AbstractApiController {
             $_POST['reward'] = $reward_id;
             $_POST['value'] = $url;
 
+            UsersSend::setURL(Config::getUrl($prj->lang));
             UsersSend::toConsultants('rewardfulfilled', $prj);
 
             $prj->social_rewards[$reward->id] = $reward;
@@ -449,6 +453,119 @@ class ProjectsApiController extends AbstractApiController {
 
         $materials = $prj->social_rewards;
         return $this->jsonResponse($materials);
+    }
+
+    // Fulfilled status
+    public function projectInvestsFulfilledAction($pid, $iid, Request $request) {
+        $prj = Project::get($pid);
+
+        // Security, first of all...
+        if(!$prj->userCanEdit($this->user)) {
+            throw new ControllerAccessDeniedException();
+        }
+
+        $invest = Invest::get($iid);
+        if($invest->getProject()->id !== $prj->id) {
+            throw new ControllerAccessDeniedException("Invest [$iid] not in project [$pid]");
+        }
+
+        if($request->isMethod('put')) {
+            $fulfilled = (bool)$request->request->get('value');
+            // TODO: check who can set to false this property
+            if($fulfilled) {
+                $invest->fulfilled = Invest::setFulfilled($invest);
+                if($invest->fulfilled != $fulfilled) {
+                    throw new ModelException("Error setting invest as fulfilled");
+                }
+            }
+        }
+
+        return $this->jsonResponse((bool) $invest->fulfilled);
+    }
+
+    // CSV Extraction
+    public function projectInvestsCSVAction($pid, Request $request) {
+        $prj = Project::get($pid);
+
+        // Security, first of all...
+        if(!$prj->userCanEdit($this->user)) {
+            throw new ControllerAccessDeniedException();
+        }
+
+        $limit = 10;
+        $order = 'invested DESC';
+        $filter = ['projects' => $prj->id, 'status' => [Invest::STATUS_CHARGED, Invest::STATUS_PAID]];
+        $total = Invest::getList($filter, null, 0, 0, true);
+
+        $response = new StreamedResponse(function () use ($filter, $total, $limit, $order) {
+            $buffer = fopen('php://output', 'w');
+            $data = [Text::get('regular-input'),
+                     Text::get('admin-user'),
+                     Text::get('regular-name'),
+                     Text::get('regular-email'),
+                     Text::get('regular-amount'),
+                     Text::get('dashboard-rewards-issue'),
+                     Text::get('dashboard-rewards-resigns'),
+                     Text::get('regular-anonymous'),
+                     Text::get('overview-field-reward'),
+                     Text::get('dashboard-rewards-fulfilled_status'),
+                     Text::get('admin-address'),
+                     Text::get('regular-date')];
+            fputcsv($buffer, $data);
+            flush();
+            fclose($buffer);
+            $offset = 0;
+            while ($results = Invest::getList($filter, null, $offset, $limit, false, $order)) {
+                // Open and close the buffer to save memory
+                $buffer = fopen('php://output', 'w');
+                foreach ($results as $inv) {
+                    $resign = $inv->resign;
+                    $id = $inv->getUser()->id;
+                    $name = $inv->getUser()->name;
+                    $email = $inv->getUser()->email;
+                    $a = $inv->getAddress();
+                    $address = $a->address . ', ' . $a->location . ', ' . $a->zipcode .' ' . $a->country;
+                    $reward = $inv->getRewards() ? $inv->getRewards()[0]->getTitle() : '';
+                    if($inv->resign) {
+                        $reward = $address = '';
+                        if($inv->anonymous) {
+                            $id = $name = $email = '';
+                        }
+                    }
+                    if($inv->campaign) {
+                        $email = $address = $reward = '';
+                        $name .= ' (' . Text::get('regular-matchfunding') . ')';
+                        $resign = true;
+                    }
+                    $data = [$inv->id,
+                             $id,
+                             $name,
+                             $email,
+                             number_format($inv->amount, 2, ',', ''),
+                             Text::get('regular-' . ($inv->issue ? 'yes' : 'no')),
+                             Text::get('regular-' . ($resign ? 'yes' : 'no')),
+                             Text::get('regular-' . ($inv->anonymous ? 'yes' : 'no')),
+                             $reward,
+                             Text::get('regular-' . ($inv->fulfilled ? 'yes' : 'no')),
+                             $address,
+                             date_formater($inv->invested) ];
+                    fputcsv($buffer, $data);
+                }
+                $offset += $limit;
+                flush();
+                fclose($buffer);
+            }
+        });
+
+        $d = $response->headers->makeDisposition(
+            ResponseHeaderBag::DISPOSITION_ATTACHMENT,
+            $prj->id . '_rewards_' . date('Y-m-d') . '.csv'
+        );
+
+        $response->headers->set('Content-Disposition', $d);
+        $response->headers->set('Content-Type', 'text/csv');
+
+        return $response;
     }
 }
 

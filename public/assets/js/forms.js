@@ -85,11 +85,11 @@ $(function(){
         }
         var type = $(this).data('type');
         var _getValue = function() {
-            var val = $(this).val();
             if(type === 'boolean') {
-                val = $(this).prop('checked');
+                return $(this).prop('checked');
+            } else {
+                return $(this).val();
             }
-            return val;
         };
         var _setValue = function(val) {
             if(type === 'boolean') {
@@ -113,9 +113,9 @@ $(function(){
                     type: 'PUT',
                     data: {value: val}
                 }).success(function(data) {
-                    original = _setvalue.call($input[0], data);
-
-                    console.log('saved', data, _getValue($input[0]));
+                    original = _setValue.call($input[0], data);
+                    $(document).trigger('form-boolean-changed', [$input[0]]);
+                    // console.log('saved', data);
                 }).fail(function(error) {
                     var json = JSON.parse(error.responseText);
                     var txt = json && json.error;
@@ -450,4 +450,29 @@ $(function(){
         }
     });
 
+    // Handle buttons with confirmation
+    $('form.autoform').on( 'click', 'button[data-confirm]', function(e) {
+        if(!confirm($(this).data('confirm'))) {
+            e.preventDefault();
+            return false;
+        }
+    });
+
+    // Asks user before leave unsaved
+    var formChanged = false;
+    $('form[data-confirm]').on('change', ':input', function(){
+     //':input' selector get all form fields even textarea, input, or select
+      formChanged = $(this).closest('form').data('confirm');
+    });
+
+    $('form[data-confirm]').on('submit', function(){
+        formChanged = false;
+    });
+
+    $(window).on('beforeunload', function() {
+      if(formChanged){
+        console.log('changed', formChanged);
+         return formChanged;
+       }
+    });
 });

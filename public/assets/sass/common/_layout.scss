@@ -1,65 +1,147 @@
+@import "compass/css3";
+
+html,body {
+    height: 100%;
+}
 body {
-    background-color:$background-light-grey;
-    font-family: $primary-font;
-    color: $primary-color;
-    margin-bottom: 0;
+  background-color:$background-light-grey;
+  font-family: $primary-font;
+  color: $primary-color;
+  margin-bottom: 0;
 
-    &.has-sidebar {
-      // background: $background-sidebar;
-      .page-wrap {
-        display: flex;
+  // This will align the footer to the bottom
+  display: flex;
+  @include flex-direction(column);
+  .page-wrap {
+       flex: 1 0 auto;
+  }
 
+  &.has-sidebar {
+    .page-wrap {
+      display: flex;
+
+      #sidebar-menu {
+        @include flex(1);
+
+        padding: 0;
+        margin: 0;
+        width: 0;
+        background-color: rgba(0,0,0,0);
+        @include transition(background-color .5s, width .5s);
+        @include animation(sidebar-fade-back .5s);
+        .sidebar-wrap {
+          @include animation(sidebar-width-back .5s);
+          height: 100%;
+          overflow-x: hidden;
+          @include transition(width .5s);
+          width: 0;
+        }
+      }
+      #main {
+          width: 100%;
+      }
+      @media(min-width: $breakpoint-sm) {
+          #sidebar-menu {
+              width: $dashboard-sidebar-width;
+              background-color: rgba(0,0,0,0.2);
+              .sidebar-wrap {
+                width: 100%;
+              }
+          }
+          #main {
+              width: $dashboard-main-width;
+          }
+      }
+      @media(max-width: $breakpoint-sm - 1) {
         #sidebar-menu {
-            width: 0; 
-            -webkit-box-flex: 1;      /* OLD - iOS 6-, Safari 3.1-6 */
-            -moz-box-flex: 1;         /* OLD - Firefox 19- */
-            -webkit-flex: 1;          /* Chrome */
-            -ms-flex: 1;              /* IE 10 */
-            flex: 1;                  /* NEW, Spec - Opera 12.1, Firefox 20+ */
+          position: fixed;
+          top: 0;
+          @include flex(0);
+          z-index: 1001;
+          overflow: auto;
+        }
+      }
+    }
+  }
+
+  &.sidebar-opened {
+    .page-wrap {
+        #sidebar-menu {
+          width: 100%;
+          background-color: rgba(0,0,0,0.2);
+          @include animation(sidebar-fade .5s);
+          .sidebar-wrap {
+            @include animation(sidebar-width .5s);
+            width: $dashboard-sidebar-width;
+          }
         }
         #main {
-            width: 100%;
-        }
-        @media(min-width: $breakpoint-sm) {
-            #sidebar-menu {
-                width: $dashboard-sidebar-width;
-            }
-            #main {
+            @media(min-width: $breakpoint-sm) {
                 width: $dashboard-main-width;
             }
         }
-        @media(max-width: $breakpoint-sm - 1) {
-          #sidebar-menu {
-            position: absolute;
-            flex: none;
-            z-index: 1001;
-            overflow: hidden;
-            min-height: 100%;
-            &.fixed {
-                position:fixed;
-                top:0;
+        #sidebar-menu-toggle {
+          left: $dashboard-sidebar-width;
+          i {
+            &.fa-angle-double-right {
+              display: none;
             }
-
+            &.fa-angle-double-left {
+              display: block;
+            }
           }
         }
-      }
+    }
+  }
+
+  @include keyframes(sidebar-fade) {
+      0% { background-color: rgba(0,0,0,0); width: 100%; }
+      100% { background-color: rgba(0,0,0,0.2); width: 100%; }
+  }
+
+  @include keyframes(sidebar-fade-back) {
+      100% { background-color: rgba(0,0,0,0); width: 100%; }
+      0% { background-color: rgba(0,0,0,0.2); width: 100%; }
+  }
+
+  @include keyframes(sidebar-width) {
+      0% { width: 0; }
+      100% { width: $dashboard-sidebar-width; }
+  }
+
+  @include keyframes(sidebar-width-back) {
+      100% { width: 0; }
+      0% { width: $dashboard-sidebar-width; }
+  }
+
+  @include keyframes(blink) {
+      @include blink-function();
+  }
+
+  #sidebar-menu-toggle {
+    position: fixed;
+    top: 70px;
+    left: 0;
+    @include transition(left .5s);
+    z-index: 1001;
+    background-color: $background-sidebar-header;
+    color: $color-white;
+    font-size: $font-size * 2;
+    padding: 30px 10px;
+    box-shadow: 6px 0px 6px 0px rgba(0, 0, 0, 0.3);
+    border-top-right-radius: 5px;
+    border-bottom-right-radius: 5px;
+    cursor: pointer;
+    i {
+        @include animation(blink 8s linear 1s 3); //infinite;
+        &.fa-angle-double-right {
+          display: block;
+        }
+        &.fa-angle-double-left {
+          display: none;
+        }
     }
 
-    &.sidebar-opened {
-      .page-wrap {
-          #sidebar-menu {
-              width: $dashboard-sidebar-width;
-          }
-          #main {
-              @media(min-width: $breakpoint-sm) {
-                  width: $dashboard-main-width;
-              }
-          }
-      }
-    }
-
-    #sidebar-menu {
-        transition: width .5s;
-    }
+  }
 
 }

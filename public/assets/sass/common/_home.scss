@@ -1,3 +1,5 @@
+@import "compass/css3";
+
   /* home styles */
 
 div.section.main-slider{
@@ -8,7 +10,7 @@ div.section.main-slider{
     	top: 0;
         right: 0;
     	width: 100%;
-    	z-index: 100;	
+    	z-index: 100;
         margin: 20px 30px 20px 0;
         li{
             margin-left: 20px;
@@ -35,8 +37,7 @@ div.section.main-slider{
         width: 100%;
         span.title{
             border: 1px solid rgba(255, 255, 255, .5);
-            -webkit-background-clip: padding-box; /* for Safari */
-            background-clip: padding-box; /* for IE9+, Firefox 4+, Opera, Chrome */
+            @include background-clip(padding-box);
             font-size: 12px;
             padding: 7px;
             text-transform: uppercase;
@@ -80,8 +81,8 @@ div.section.main-slider{
 
 .section.search{
     padding: 40px 0;
-    .inner-addon { 
-    position: relative; 
+    .inner-addon {
+    position: relative;
     display: inline-block;
     }
 
@@ -92,11 +93,11 @@ div.section.main-slider{
     input:-moz-placeholder { /* Firefox 18- */
         color:#7C9BA0;
     }
- 
+
     input::-moz-placeholder { /* Firefox 19+ */
         color:#7C9BA0;
     }
- 
+
     input:-ms-input-placeholder {
         color:#7C9BA0;
     }
@@ -121,11 +122,11 @@ div.section.main-slider{
     .right-addon .glyphicon { right: 0px;}
 
     /* add padding  */
-    .left-addon input  { 
+    .left-addon input  {
         border: 1px transparent solid;
         border-radius: 5px;
         padding: 10px 0px 10px 35px;
-        margin-right: 10px; 
+        margin-right: 10px;
     }
     .btn-light-green{
         padding:10px;
@@ -163,9 +164,9 @@ div.section.main-slider{
       .btn-white{
         color: $color-grey;
         padding: 13px 0px;
-        }  
+        }
     }
-    
+
 }
 
 .section.projects{
@@ -228,7 +229,7 @@ div.section.main-slider{
         line-height:40%;
     }
 
-    .advantages-container 
+    .advantages-container
     {
         padding:25px 10px;
         .row.details{
@@ -278,7 +279,7 @@ div.section.main-slider{
                 margin-top:15px;
             }
             .action a
-            {  
+            {
                 color: #729499;
                 font-size: 15px;
                 font-weight: bold;
@@ -306,7 +307,7 @@ div.section.main-slider{
     .tab-pane.owner{
         background-color: $background-green-owner !important;
     }
- 
+
 }
 
 // General impact module
@@ -414,13 +415,13 @@ div.section.main-slider{
             content: "";
             font-family: 'FontAwesome';
             font-size: 25px;
-            color:$color-light-grey;          
+            color:$color-light-grey;
         }
         .slick-next:before {
             content: "";
             font-family: 'FontAwesome';
             font-size: 25px;
-            color:$color-light-grey;        
+            color:$color-light-grey;
         }
     }
 }
@@ -462,7 +463,7 @@ div.section.matchfunding{
         color: $color-white;
         font-weight: bold;
         padding: 40px 0;
-        .row.details-title{  
+        .row.details-title{
             .title{
                 text-align: center;
                 padding-top: 15px;
@@ -509,7 +510,7 @@ div.section.matchfunding{
         color: $color-white;
         padding: 40px 0;
     }
-    
+
 }
 
 div.section.tools{
@@ -528,90 +529,325 @@ div.section.tools{
     }
 }
 
+@media (max-width: $breakpoint-sm - 1) {
+    .section.search{
+        .inner-addon{
+            margin-top:10px;
+        }
+        .btn-light-green {
+            margin: 10px auto;
+            display: block;
+        }
+    }
+
+    .call-action{
+        .row
+        {
+            display: block;
+        }
+        .col-button .btn-white{
+            margin: 15px 0;
+        }
+    }
+
+    .section.advantages .advantages-container{
+        .row.details{
+            display: block;
+        }
+    }
+
+    div.section.tools .row a.item{
+        margin-top: 15px;
+        display: block;
+    }
+
+    .advantages.foundation .slider .info-container{
+        max-width: 80%;
+        margin-left: 10%;
+        margin-bottom: 50px;
+    }
+
+    .advantages.foundation{
+        .slick-dots{
+            left:0 !important;
+        }
+        .slick-prev{
+            left:15px !important;
+            top:80% !important;
+        }
+        .slick-next{
+            right: 15px !important;
+            top:80% !important;
+        }
+    }
+
+    div.section.matchfunding .detail-item{
+        margin-top:20px;
+    }
+}
 
 /* Custom sidebar menu */
 
-body.home.has-sidebar{
+body.home.has-sidebar {
     #main {
         width: 100%;
     }
-        #sidebar-menu-toggle{
-            background: $color-white;
+    #sidebar-menu-toggle {
+        @include transition(none);
+        display: block !important;
+        background: $color-white;
+        color: $color-light-green;
+        text-transform: uppercase;
+        padding: 15px 10px;
+        font-size: $font-size*1.3;
+        font-weight: bold;
+        z-index: 1000;
+        .fa-angle-right, .fa-angle-left {
+            font-size: $font-size*2;
+            margin-left: 10px;
+            @include transform(translateY(2px));
+        }
+    }
+
+    @include keyframes(home-sidebar-fade) {
+      0% { max-width: 100%; width: $home-sidebar-width; }
+      100% { max-width: 100%; width: $home-sidebar-width; }
+    }
+
+    @include keyframes(home-sidebar-fade-back) {
+      100% { max-width: 100%; width: $home-sidebar-width; }
+      0% { max-width: 100%; width: $home-sidebar-width; }
+    }
+    @include keyframes(home-sidebar-width) {
+      0% { max-width: 0; width: 0; }
+      100% { max-width: 100%; width: $home-sidebar-width; }
+    }
+
+    @include keyframes(home-sidebar-width-back) {
+      100% { max-width: 0; width: 0; }
+      0% { max-width: 100%; width: $home-sidebar-width; }
+    }
+
+    #sidebar-menu {
+        position: fixed;
+        @include flex(0);
+        z-index: 1001;
+        overflow: hidden;
+        background-color: transparent;
+        @include transition(width .5s, max-width .5s);
+        height: auto;
+        width: 0;
+        @media(min-width: $breakpoint-sm) {
+            top: 70px;
+        }
+        @include animation(home-sidebar-fade-back .5s);
+        .sidebar-wrap {
+            width: 0;
+            position: fixed;
+            @include transition(width .5s, max-width .5s);
+            @include animation(home-sidebar-width-back .5s);
+            height: auto;
+            position: relative;
+        }
+
+        .sidebar-header
+        {
+            background-color: $color-white;
+            min-height: 0;
+            padding: 15px 20px;
             color: $color-light-green;
-            text-transform: uppercase;
-            padding: 15px 10px;
-            font-size: $font-size*1.3;
             font-weight: bold;
-            .fa-angle-right{
-                font-size: $font-size*2;
-                margin-left: 10px;
-                transform: translateY(2px)
+            text-transform: uppercase;
+        }
+        .fa-close{
+            color: $color-light-grey;
+        }
+        .sidebar-footer{
+            background-color: $background-sidebar-footer;
+            padding: 20px;
+            .btn-fashion{
+                font-weight: 500;
+                text-transform: uppercase;
+                width: 47%;
+                padding:10px;
+            }
+            .btn-light-black{
+                margin-left:15px;
+                padding: 10px;
+                width: 47%;
+                text-transform: uppercase;
+                font-weight: 500;
             }
         }
 
-        #sidebar-menu {
-            position: absolute;
-            flex: none;
-            z-index: 1001;
-            overflow: hidden;
-            width: 0;
-            height: auto !important;
-            margin-top:70px;
-            top:0;
-            font-size: $font-size;
-            padding-bottom: 0;
-            &.fixed {
-                position:fixed;
-                top:0;
-            }
-            .sidebar-header
-            {
-                background-color: $color-white;
-                min-height: 0;
-                padding: 15px 20px;
-                color: $color-light-green;
-                font-weight: bold;
-                text-transform: uppercase;
-            }
-            .fa-close{
-                color: $color-light-grey;
-            }
-            .sidebar-footer{
-                background-color: $background-sidebar-footer;
-                padding: 20px;
-                .btn-fashion{
-                    font-weight: 500;
-                    text-transform: uppercase;
-                    width: 47%;
-                    padding:10px;
-                }
-                .btn-light-black{
-                    margin-left:15px;
-                    padding: 10px;
-                    width: 47%;
-                    text-transform: uppercase;
-                    font-weight: 500;
-                }
-            }
-
-            li:hover {
-                background-color: $color-light-green;
-            }
+        li:hover {
+            background-color: $color-light-green;
+        }
     }
 
     &.sidebar-opened {
+        #sidebar-menu-toggle {
+            left: 0;
+        }
         .page-wrap {
             #sidebar-menu {
                 width: $home-sidebar-width;
+                max-width: 100%;
+                @include animation(home-sidebar-fade .5s);
+                .sidebar-wrap {
+                    @include animation(home-sidebar-width .5s);
+                    width: $home-sidebar-width;
+                    max-width: 100%;
+                }
                 .toggle-sidebar {
-                    display: block !important;
+                    display: block;
+                    position: absolute;
+                    font-size: 30px;
+                    font-weight: 300;
+                    right: 0;
+                    top: 0;
+                    z-index: 1002;
+                    background: 0 0;
+                    color: #fff;
+                    padding: 6px 12px;
+                    margin: 0;
+                    border: 0;
+                    border-radius: 0;
                 }
             }
         }
     }
+}
 
-    #sidebar-menu-toggle {
-        display: block !important;
+
+/* Search */
+
+#search {
+    position: fixed;
+    top: 0px;
+    left: 0px;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(25, 180, 178, 0.8);
+
+    @include transition(all 0.5s ease-in-out);
+    @include transform(translate(0px, -100%) scale(0, 0));
+
+    opacity: 0;
+}
+
+#search.open {
+    @include transform(translate(0px, 0px) scale(1, 1));
+    opacity: 1;
+    z-index: 1001;
+}
+
+#search input[type="search"] {
+    position: absolute;
+    top: 40%;
+    width: 80%;
+    color: rgb(255, 255, 255);
+    background: rgba(25, 180, 178, 0);
+    font-size: 60px;
+    font-weight: 300;
+    text-align: center;
+    border: 0px;
+    margin: 0px auto;
+    margin-top: -51px;
+    margin-left: 10%;
+    padding-left: 30px;
+    padding-right: 30px;
+    outline: none;
+    border-bottom: 2px solid #FFF;
+    font-weight: bold;
+
+}
+#search .btn {
+    position: absolute;
+    top: 40%;
+    left: 50%;
+    margin-top: 61px;
+    margin-left: -45px;
+    text-transform: uppercase;
+    font-weight: 400;
+    font-size: $font-size*2.4;
+    color: $primary-color;
+}
+#search .close {
+    position: fixed;
+    top: 40px;
+    right: 40px;
+    color: #fff;
+    border-color: #357ebd;
+    opacity: 1;
+    font-size: $font-size*3;
+}
+
+
+@media (max-width: $breakpoint-sm - 1) {
+    .section.search{
+        .inner-addon{
+            margin-top:10px;
+        }
+        .btn-light-green {
+            margin: 10px auto;
+            display: block;
+        }
+    }
+
+    .call-action{
+        .row
+        {
+            display: block;
+        }
+        .col-button .btn-white{
+            margin: 15px 0;
+        }
+    }
+
+    .section.advantages .advantages-container{
+        .row.details{
+            display: block;
+        }
+    }
+
+    div.section.tools .row a.item{
+        margin-top: 15px;
+        display: block;
+    }
+
+    .advantages.foundation .slider .info-container{
+        max-width: 80%;
+        margin-left: 10%;
+        margin-bottom: 50px;
+    }
+
+    .advantages.foundation{
+        .slick-dots{
+            left:0 !important;
+        }
+        .slick-prev{
+            left:15px !important;
+            top:80% !important;
+        }
+        .slick-next{
+            right: 15px !important;
+            top:80% !important;
+        }
+    }
+
+    div.section.matchfunding .detail-item{
+        margin-top:20px;
+    }
+
+    #search{
+        .btn{
+        font-size: $font-size*1.2;
+        margin-top: 5px;
+        }
+        input[type="search"]{
+            font-size: $font-size*1.2;
+        }
     }
 }
 

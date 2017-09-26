@@ -23,12 +23,22 @@ use Goteo\Model\Project;
 use Goteo\Model\Blog\Post;
 
 class UsersSend extends AbstractCommandController {
+    protected static $URL;
 
     // asesores por defecto si no un proyecto no tiene asesores
     // TODO: by config...
     public static $consultants = array(
         'root' => 'Root'
     );
+
+    public static function setURL($url) {
+        self::$URL = $url;
+    }
+
+    public static function getURL() {
+        if(self::$URL) return self::$URL;
+        return SITE_URL;
+    }
 
     static public function setConsultants(array $consultants) {
         self::$consultants = $consultants;
@@ -62,56 +72,56 @@ class UsersSend extends AbstractCommandController {
             case 'unique_pass': // template 20, proyecto finaliza la única ronda
                 $tpl = 60;
                 $search  = array('%USERNAME%', '%PROJECTNAME%', '%REWARDSURL%');
-                $replace = array($project->user->name, $project->name, SITE_URL . '/dashboard/projects/rewards');
+                $replace = array($project->user->name, $project->name, self::getURL() . '/dashboard/projects/rewards');
                 break;
 
             case 'r1_pass': // template 20, proyecto supera la primera ronda
                 $tpl = 20;
                 $search  = array('%USERNAME%', '%PROJECTNAME%', '%WIDGETURL%');
-                $replace = array($project->user->name, $project->name, SITE_URL . '/dashboard/projects/widgets');
+                $replace = array($project->user->name, $project->name, self::getURL() . '/dashboard/projects/widgets');
                 break;
 
             case 'fail': // template 21, caduca sin conseguir el mínimo
                 $tpl = 21;
                 $search  = array('%USERNAME%', '%PROJECTNAME%', '%SUMMARYURL%');
-                $replace = array($project->user->name, $project->name, SITE_URL . '/dashboard/projects/summary');
+                $replace = array($project->user->name, $project->name, self::getURL() . '/dashboard/projects/summary');
                 break;
 
             case 'r2_pass': // template 22, finaliza segunda ronda
                 $tpl = 22;
                 $search  = array('%USERNAME%', '%PROJECTNAME%', '%REWARDSURL%');
-                $replace = array($project->user->name, $project->name, SITE_URL . '/dashboard/projects/rewards');
+                $replace = array($project->user->name, $project->name, self::getURL() . '/dashboard/projects/rewards');
                 break;
 
             // Estos son avisos de auto-tips de /cron/daily
             case '8_days': // template 13, cuando faltan 8 días y no ha conseguido el mínimo
                 $tpl = 13;
                 $search  = array('%USERNAME%', '%PROJECTNAME%', '%WIDGETURL%');
-                $replace = array($project->user->name, $project->name, SITE_URL . '/dashboard/projects/widgets');
+                $replace = array($project->user->name, $project->name, self::getURL() . '/dashboard/projects/widgets');
                 break;
 
             case '2_days': // template 14, cuando faltan 2 días y no ha conseguido el mínimo
                 $tpl = 14;
                 $search  = array('%USERNAME%', '%PROJECTNAME%', '%WIDGETURL%');
-                $replace = array($project->user->name, $project->name, SITE_URL . '/dashboard/projects/widgets');
+                $replace = array($project->user->name, $project->name, self::getURL() . '/dashboard/projects/widgets');
                 break;
 
             case 'two_weeks': // template 19, "no bajes la guardia!" 25 días de campaña
                 $tpl = 19;
                 $search  = array('%USERNAME%', '%PROJECTNAME%', '%WIDGETURL%');
-                $replace = array($project->user->name, $project->name, SITE_URL . '/dashboard/projects/widgets');
+                $replace = array($project->user->name, $project->name, self::getURL() . '/dashboard/projects/widgets');
                 break;
 
             case 'no_updates': // template 23, 3 meses sin novedades
                 $tpl = 23;
                 $search  = array('%USERNAME%', '%PROJECTNAME%', '%UPDATESURL%');
-                $replace = array($project->user->name, $project->name, SITE_URL . '/dashboard/projects/updates');
+                $replace = array($project->user->name, $project->name, self::getURL() . '/dashboard/projects/updates');
                 break;
 
             case 'any_update': // template 24, no hay posts de novedades
                 $tpl = 24;
                 $search  = array('%USERNAME%', '%PROJECTNAME%', '%UPDATESURL%', '%NOVEDADES%');
-                $replace = array($project->user->name, $project->name, SITE_URL . '/dashboard/projects/updates', SITE_URL.'/project/'.$project->id.'/updates');
+                $replace = array($project->user->name, $project->name, self::getURL() . '/dashboard/projects/updates', self::getURL().'/project/'.$project->id.'/updates');
                 break;
 
             case '1d_after': // template 55, dia siguiente de financiado
@@ -123,19 +133,19 @@ class UsersSend extends AbstractCommandController {
             case '2m_after': // template 25, dos meses despues de financiado
                 $tpl = 25;
                 $search  = array('%USERNAME%', '%PROJECTNAME%', '%REWARDSURL%');
-                $replace = array($project->user->name, $project->name, SITE_URL . '/dashboard/projects/rewards');
+                $replace = array($project->user->name, $project->name, self::getURL() . '/dashboard/projects/rewards');
                 break;
 
             case '8m_after': // template 52, ocho meses despues de financiado
                 $tpl = 52;
                 $search  = array('%USERNAME%', '%PROJECTNAME%', '%COMMONSURL%');
-                $replace = array($project->user->name, $project->name, SITE_URL . '/dashboard/projects/shared-materials');
+                $replace = array($project->user->name, $project->name, self::getURL() . '/dashboard/projects/shared-materials');
                 break;
 
             case '20_backers': // template 46, "Apóyate en quienes te van apoyando "  (en cuanto se llega a los 20 backers
                 $tpl = 46;
                 $search  = array('%USERNAME%', '%PROJECTNAME%', '%PROJECTURL%', '%NUMBACKERS%');
-                $replace = array($project->user->name, $project->name, SITE_URL.'/project/'.$project->id, $project->num_investors);
+                $replace = array($project->user->name, $project->name, self::getURL().'/project/'.$project->id, $project->num_investors);
                 break;
 
             case 'project_to_review': // template 8, "Confirmacion de proyecto enviado".  template 62, "Al enviar tras la negociación"
@@ -143,7 +153,7 @@ class UsersSend extends AbstractCommandController {
                 $tpl = ($project->draft) ? 8 : 62;
 
                 $search  = array('%PROJECTNAME%', '%USERNAME%', '%PROJECTURL%', '%PROJECTEDITURL%', '%NOMBREASESOR%');
-                $replace = array($project->name, $project->user->name, SITE_URL.'/project/'.$project->id, SITE_URL.'/project/edit/'.$project->id, $consultants);
+                $replace = array($project->name, $project->user->name, self::getURL().'/project/'.$project->id, self::getURL().'/project/edit/'.$project->id, $consultants);
                 break;
 
             case 'project_created':
@@ -151,75 +161,75 @@ class UsersSend extends AbstractCommandController {
                 $tpl = Template::PROJECT_CREATED;
 
                 $search  = array('%PROJECTNAME%', '%USERNAME%', '%PROJECTURL%', '%PROJECTEDITURL%');
-                $replace = array($project->name, $project->user->name, SITE_URL.'/project/'.$project->id, SITE_URL.'/project/edit/'.$project->id, $consultants);
+                $replace = array($project->name, $project->user->name, self::getURL().'/project/'.$project->id, self::getURL().'/project/edit/'.$project->id, $consultants);
                 break;
 
             case 'tip_0':
                 $tpl = 57;
 
                 $search  = array('%USERNAME%', '%PROJECTNAME%', '%PROJECTURL%', '%NOMBREASESOR%');
-                $replace = array($project->user->name, $project->name, SITE_URL.'/project/'.$project->id, $consultants);
+                $replace = array($project->user->name, $project->name, self::getURL().'/project/'.$project->id, $consultants);
                 break;
 
             // consejos normales
             case 'tip_1': // template 41, "Difunde, difunde, difunde"
                 $tpl = 41;
                 $search  = array('%USERNAME%', '%PROJECTNAME%', '%PROJECTURL%', '%PORCENTAJE%');
-                $replace = array($project->user->name, $project->name, SITE_URL.'/project/'.$project->id, $project->percent);
+                $replace = array($project->user->name, $project->name, self::getURL().'/project/'.$project->id, $project->percent);
                 break;
 
             case 'tip_2': // template 42, "Comienza por lo más próximo"
                 $tpl = 42;
                 $search  = array('%USERNAME%', '%PROJECTNAME%', '%PROJECTURL%', '%PORCENTAJE%');
-                $replace = array($project->user->name, $project->name, SITE_URL.'/project/'.$project->id, $project->percent);
+                $replace = array($project->user->name, $project->name, self::getURL().'/project/'.$project->id, $project->percent);
                 break;
 
             case 'tip_3': // template 43, "Una acción a diario, por pequeña que sea"
                 $tpl = 43;
                 $search  = array('%USERNAME%', '%PROJECTNAME%', '%PROJECTURL%', '%AMOUNT%');
-                $replace = array($project->user->name, $project->name, SITE_URL.'/project/'.$project->id, $project->amount);
+                $replace = array($project->user->name, $project->name, self::getURL().'/project/'.$project->id, $project->amount);
                 break;
 
             case 'tip_4': // template 44, "Llama a todas las puertas"
                 $tpl = 44;
                 $search  = array('%USERNAME%', '%PROJECTNAME%', '%PROJECTURL%', '%BACKERSURL%');
-                $replace = array($project->user->name, $project->name, SITE_URL.'/project/'.$project->id, SITE_URL.'/project/'.$project->id.'/supporters');
+                $replace = array($project->user->name, $project->name, self::getURL().'/project/'.$project->id, self::getURL().'/project/'.$project->id.'/supporters');
                 break;
 
             case 'tip_5': // template 45, "Busca dónde está tu comunidad"
                 $tpl = 45;
                 $search  = array('%USERNAME%', '%PROJECTNAME%', '%PROJECTURL%', '%AMOUNT%', '%NUMBACKERS%');
-                $replace = array($project->user->name, $project->name, SITE_URL.'/project/'.$project->id, $project->amount, $project->num_investors);
+                $replace = array($project->user->name, $project->name, self::getURL().'/project/'.$project->id, $project->amount, $project->num_investors);
                 break;
 
             case 'tip_8': // template 47, "Agradece en público e individualmente"
                 $tpl = 47;
                 $search  = array('%USERNAME%', '%PROJECTNAME%', '%PROJECTURL%', '%MESSAGESURL%');
-                $replace = array($project->user->name, $project->name, SITE_URL.'/project/'.$project->id, SITE_URL.'/project/'.$project->id.'/messages');
+                $replace = array($project->user->name, $project->name, self::getURL().'/project/'.$project->id, self::getURL().'/project/'.$project->id.'/messages');
                 break;
 
             case 'tip_9': // template 48, "Busca prescriptores e implícalos"
                 $tpl = 48;
                 $search  = array('%USERNAME%', '%PROJECTNAME%', '%PROJECTURL%', '%PORCENTAJE%');
-                $replace = array($project->user->name, $project->name, SITE_URL.'/project/'.$project->id, $project->percent);
+                $replace = array($project->user->name, $project->name, self::getURL().'/project/'.$project->id, $project->percent);
                 break;
 
             case 'tip_10': // template 49, "Luce tus recompensas y retornos"
                 $tpl = 49;
                 $search  = array('%USERNAME%', '%PROJECTNAME%', '%PROJECTURL%', '%LOWREWARD%', '%HIGHREWARD%');
-                $replace = array($project->user->name, $project->name, SITE_URL.'/project/'.$project->id, $project->lower, $project->higher);
+                $replace = array($project->user->name, $project->name, self::getURL().'/project/'.$project->id, $project->lower, $project->higher);
                 break;
 
             case 'tip_11': // template 50, "Refresca tu mensaje de motivacion"
                 $tpl = 50;
                 $search  = array('%USERNAME%', '%PROJECTNAME%', '%PROJECTURL%');
-                $replace = array($project->user->name, $project->name, SITE_URL.'/project/'.$project->id);
+                $replace = array($project->user->name, $project->name, self::getURL().'/project/'.$project->id);
                 break;
 
             case 'tip_15': // template 51, "Sigue los avances y calcula lo que falta"
                 $tpl = 51;
                 $search  = array('%USERNAME%', '%PROJECTNAME%', '%PROJECTURL%', '%DIASCAMPAÑA%', '%DAYSTOGO%');
-                $replace = array($project->user->name, $project->name, SITE_URL.'/project/'.$project->id, $project->days, $project->days);
+                $replace = array($project->user->name, $project->name, self::getURL().'/project/'.$project->id, $project->days, $project->days);
                 break;
 
         }
@@ -304,7 +314,7 @@ class UsersSend extends AbstractCommandController {
                 $info_html = new View('admin/commons/contact.html.php', array('contact' => $contact));
 
                 $search  = array('%PROJECTNAME%', '%URL%', '%INFO%');
-                $replace = array($project->name, SITE_URL . '/admin/commons?project=' . $project->id, $info_html);
+                $replace = array($project->name, self::getURL() . '/admin/commons?project=' . $project->id, $info_html);
 
                 break;
 
@@ -312,13 +322,13 @@ class UsersSend extends AbstractCommandController {
                 $tpl = 57;
 
                 $search  = array('%USERNAME%', '%PROJECTNAME%', '%PROJECTURL%', '%NOMBREASESOR%');
-                $replace = array($project->user->name, $project->name, SITE_URL.'/project/'.$project->id, implode(', ', $consultants));
+                $replace = array($project->user->name, $project->name, self::getURL().'/project/'.$project->id, implode(', ', $consultants));
                 break;
 
             case 'rewardfulfilled': // template 58, "Aviso a asesores cuando un impulsor indica la url de retorno colectivo"
                 $tpl = 58;
 
-                $commons_url = SITE_URL . '/admin/commons/view/' . $project->id;
+                $commons_url = self::getURL() . '/admin/commons/view/' . $project->id;
                 $reward = Model\Project\Reward::get($_POST['reward']);
 
                 // También podríamos usar Session::getUser()->name
@@ -330,7 +340,7 @@ class UsersSend extends AbstractCommandController {
                 $tpl = 59;
 
                 $search  = array('%PROJECTNAME%', '%USERNAME%', '%PROJECTURL%', '%PROJECTEDITURL%', '%COMMENT%');
-                $replace = array($project->name, $project->user->name, SITE_URL.'/project/'.$project->id, SITE_URL.'/project/edit/'.$project->id, $project->comment);
+                $replace = array($project->name, $project->user->name, self::getURL().'/project/'.$project->id, self::getURL().'/project/edit/'.$project->id, $project->comment);
                 break;
 
             case 'project_preform_to_review_consultant': // template 63, "Aviso a asesores cuando un impulsor envia el proyecto a revisión desde preform"
@@ -346,7 +356,7 @@ class UsersSend extends AbstractCommandController {
                 if($project->help_cost) $help.=Text::get('help-cost-to-consultant').'<br>';
                 if($project->help_license) $help.=Text::get('help-license-to-consultant').'<br>';
                 $search  = array('%PROJECTNAME%', '%USERNAME%', '%PROJECTURL%', '%PROJECTEDITURL%', '%HELP%', '%SPREAD%', '%PROJECTDESCRIPTION%', '%PROJECTMIN%', '%COMMENT%', '%PUBLISHINGESTIMATION%');
-                $replace = array($project->name, $project->user->name, SITE_URL.'/project/'.$project->id, SITE_URL.'/project/edit/'.$project->id, $help, $project->spread, $project->description, $project->mincost, $project->comment, $date_publishing);
+                $replace = array($project->name, $project->user->name, self::getURL().'/project/'.$project->id, self::getURL().'/project/edit/'.$project->id, $help, $project->spread, $project->description, $project->mincost, $project->comment, $date_publishing);
                 break;
 
                 //Pasamos la difusión
@@ -420,30 +430,30 @@ class UsersSend extends AbstractCommandController {
             case 'unique_pass': // template 61, finaliza única ronda
                     $tpl = 61;
                     $search  = array('%PROJECTNAME%', '%PROJECTURL%');
-                    $replace = array($project->name, SITE_URL . '/project/' . $project->id);
+                    $replace = array($project->name, self::getURL() . '/project/' . $project->id);
                 break;
 
             case 'r1_pass': // template 15, proyecto supera la primera ronda
                     $tpl = 15;
                     $search  = array('%PROJECTNAME%', '%PROJECTURL%');
-                    $replace = array($project->name, SITE_URL . '/project/' . $project->id);
+                    $replace = array($project->name, self::getURL() . '/project/' . $project->id);
                 break;
 
             case 'fail': // template 17, proyecto no consigue el mínimo
                     $tpl = 17;
                     $search  = array('%PROJECTNAME%', '%DISCOVERURL%');
-                    $replace = array($project->name, SITE_URL . '/discover');
+                    $replace = array($project->name, self::getURL() . '/discover');
                 break;
 
             case 'r2_pass': // template 16, finaliza segunda ronda
                     $tpl = 16;
                     $search  = array('%PROJECTNAME%', '%PROJECTURL%');
-                    $replace = array($project->name, SITE_URL . '/project/' . $project->id);
+                    $replace = array($project->name, self::getURL() . '/project/' . $project->id);
                 break;
 
             case 'update': // template 18, publica novedad
                     $tpl = 18;
-                    $post_url = SITE_URL.'/project/'.$project->id.'/updates/'.$post->id;
+                    $post_url = self::getURL().'/project/'.$project->id.'/updates/'.$post->id;
                     // contenido del post
                     $post_content = "<p><strong>{$post->title}</strong><br />".  nl2br( Text::recorta($post->text, 500) )  ."</p>";
                     // y preparar los enlaces para compartir en redes sociales
@@ -589,7 +599,7 @@ class UsersSend extends AbstractCommandController {
                 $txt_rewards = Model\Project\Reward::txtRewards($investor->id);
 
                 $search  = array('%USERNAME%', '%DESTNAME%', '%PROJECTNAME%', '%URL%', '%REWNAME%');
-                $replace = array($investor->name, $investor->name, $project->name, SITE_URL, $txt_rewards);
+                $replace = array($investor->name, $investor->name, $project->name, self::getURL(), $txt_rewards);
 
                 // Obtenemos la plantilla para asunto y contenido
                 $template = Template::get(Template::PROJECT_FAILED_RECEIVERS, $comlang);
@@ -610,7 +620,7 @@ class UsersSend extends AbstractCommandController {
                 } else {
                     $anyfail = true;
                     @mail(Config::getMail('fail'),
-                        'Fallo al enviar email automaticamente al amigo ' . SITE_URL,
+                        'Fallo al enviar email automaticamente al amigo ' . self::getURL(),
                         'Fallo al enviar email automaticamente al amigo: <pre>' . print_r($mailHandler, true). '</pre>');
                 }
                 unset($mailHandler);

@@ -106,7 +106,7 @@ class Template extends \Goteo\Core\Model {
         $text;
 
 
-    static public function get ($id, &$lang = null) {
+    static public function get ($id, &$lang = null, $avoid_pending = true) {
 
         //Obtenemos el idioma de soporte
         $lang=static::default_lang_by_id($id, 'template_lang', $lang);
@@ -124,8 +124,9 @@ class Template extends \Goteo\Core\Model {
                  LEFT JOIN template_lang
                     ON  template_lang.id = template.id
                     AND template_lang.lang = :lang
+                    " . ($avoid_pending ? ' AND template_lang.pending=0' : '') . "
                  WHERE template.id = :id
-            ";
+                ";
         $values = array( ':id' => $id, ':lang' => $lang );
         // die(\sqldbg($sql, $values));
 		if($query = static::query($sql, $values)) {

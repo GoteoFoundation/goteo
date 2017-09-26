@@ -13,11 +13,14 @@
 
   .inner-container {
       max-width: $breakpoint-md - 30;
-      min-width: $breakpoint-xxs;
       padding-right: 15px;
       padding-left: 15px;
       margin-right: auto;
       margin-left: auto;
+      @media(max-width: $breakpoint-sm - 1) {
+          padding-right: 5px;
+          padding-left: 5px;
+      }
     }
 
   p {
@@ -55,6 +58,27 @@
     text-transform: uppercase;
   }
 
+  .fa.fa-2x {
+    width:30px;
+    font-size: 1.8em;
+  }
+
+  .dropdown-menu {
+    a:focus, a:hover {
+      background-color: $background-light;
+    }
+    > .active {
+      > a {
+        background-color: $color-cyan;
+      }
+    }
+    > .available {
+      > a {
+        font-weight: bold;
+        text-decoration: underline;
+      }
+    }
+  }
   table.footable , table.table {
     color: $secondary-color;
     background: $background-light-body;
@@ -64,15 +88,29 @@
             &:first-child {
                 padding-left:10px;
             }
+            a.send-private {
+                color:$color-dark;
+                .icon {
+                    background-color: $color-dark;
+                }
+            }
         }
     }
   }
+  .loading {
+    background:url(../img/ring.gif) no-repeat center;
+    min-height: 60px;
+  }
+
   .btn {
-      border:none;
+      border-color:transparent;
+      &.btn-default {
+        border-color: $color-light-grey;
+      }
       text-transform: uppercase;
-      box-shadow: 1px 1px 4px -2px $color-dark;
+      // box-shadow: 1px 1px 4px -2px $color-dark;
       &.btn-danger,&.btn-cyan,&.btn-green,&.btn-pink {
-        box-shadow: 2px 2px 4px -2px $color-dark;
+        // box-shadow: 2px 2px 4px -2px $color-dark;
       }
       &.btn-link {
         box-shadow: none;
@@ -163,6 +201,35 @@
     }
   }
 
+  .ajax-message {
+    .label {
+        font-size: 92%;
+    }
+  }
+  .pool-box {
+    width: 100%;
+    padding:2%;
+    border-radius: 5px;
+    background:$background-white;
+    label {
+        display: block;
+        text-align: center;
+        strong {
+            display: inline-block;
+            vertical-align: middle;
+            font-size: $font-size * 2;
+        }
+    }
+    .form-control {
+        margin-left: 1em;
+        margin-right: 1em;
+        display: inline-block;
+        width: 150px;
+        font-size: $font-size * 1.5;
+        height: auto;
+        vertical-align: middle;
+    }
+  }
   .comments {
     &.hidden {
         height:0;
@@ -191,7 +258,7 @@
       >a {
         border-radius:10px;
         text-transform: uppercase;
-        border:0;
+        border:1px solid transparent;
         margin-bottom:0;
         color: $color-dark;
         font-weight: 500;
@@ -204,6 +271,18 @@
             >i {
                 background-color:$color-cyan;
             }
+        }
+        @media(max-width: $breakpoint-sm - 1) {
+            padding-left: 5px;
+            padding-right: 5px;
+            // hide font on small devices
+            font-size: 0;
+            color:transparent;
+            line-height: 0;
+            >i {
+                margin-bottom: 0;
+            }
+
         }
       }
   }
