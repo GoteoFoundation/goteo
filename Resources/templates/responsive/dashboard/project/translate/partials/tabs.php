@@ -6,7 +6,7 @@ if(!$zones) return;
 <?php
     foreach($zones as $zone => $name):
 ?>
-  <li role="tab" <?= $this->current == $zone ? ' class="active"' : '' ?>><a href="/dashboard/project/<?= $this->project->id ?>/translate/<?= $this->lang ?>/<?= $zone ?>"><?= $name ?></a></li>
+  <li role="tab" <?= $this->current == $zone ? ' class="active"' : '' ?>><a href="/dashboard/project/<?= $this->project->id ?>/translate/<?= $zone ?>/<?= $this->lang ?>"><?= $name ?></a></li>
 <?php endforeach ?>
 
 </ul>

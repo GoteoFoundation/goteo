@@ -463,19 +463,15 @@ abstract class Model {
      */
     public function getLangsPercent($lang) {
         try {
-            $sql = "SELECT * FROM `{$this->Table}_lang` WHERE id = :id AND lang = :lang";
-            $values = array(':id' => $this->id, ':lang' => $lang);
-            // die(\sqldbg($sql, $values));
-            if($query = static::query($sql, $values)) {
-                $ob = $query->fetchObject();
+            if($ob = $this->getlang($lang)) {
                 $filled = 0;
                 $total = 0;
                 foreach($ob as $key => $value) {
                     if(in_array($key, ['id','lang','pending'])) continue;
-                    if(($value && $this->$key) || (!$value && !$this->key)) {
+                    if(($value && $this->$key) || (!$value && !$this->$key)) {
                         $filled++;
                     }
-                    // else echo "\n$key => [$value]|[{$this->$key}]\n";
+                    // echo "\n$key => [$value]|[{$this->$key}]\n";
                     $total++;
                 }
                 if($total) return 100 * $filled / $total;
@@ -483,6 +479,22 @@ abstract class Model {
         } catch (\Exception $e) {
         }
         return 0;
+    }
+
+    /**
+     * Returns lang object
+     */
+    public function getLang($lang) {
+        try {
+            $sql = "SELECT * FROM `{$this->Table}_lang` WHERE id = :id AND lang = :lang";
+            $values = array(':id' => $this->id, ':lang' => $lang);
+            // die(\sqldbg($sql, $values));
+            if($query = static::query($sql, $values)) {
+                return $query->fetchObject();
+            }
+        } catch (\Exception $e) {
+        }
+        return null;
     }
 
 	/**

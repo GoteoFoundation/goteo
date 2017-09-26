@@ -11,7 +11,7 @@
         <?php foreach($this->available as $lang):
             $percent = $this->project->getLangsPercent($lang);
         ?>
-                <a class="list-group-item" href="/dashboard/project/<?= $this->project->id ?>/translate/<?= $lang ?>">
+                <a class="list-group-item" href="/dashboard/project/<?= $this->project->id ?>/translate/overview/<?= $lang ?>">
                     <i class="icon icon-edit" title="<?= $this->text('regular-edit') ?>"></i>
                     <?= $this->languages[$lang] ?>
                     <?= $this->percent_badge($percent, $this->text('translator-percent', $percent)) ?>
@@ -27,9 +27,10 @@
     $skip[] = $this->project->lang;
 
     echo $this->insert('dashboard/partials/translate_menu', [
-            'title' => $this->text('translator-add-translation'),
-            'base_link' => '/dashboard/project/' .  $this->project->id . '/translate/',
+            'default_title' => $this->text('translator-add-translation'),
+            'base_link' => '/dashboard/project/' .  $this->project->id . '/translate/overview/',
             'languages' => $this->languages,
+            'lang' => null,
             'skip' => $skip]);
 ?>
 
