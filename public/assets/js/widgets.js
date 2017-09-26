@@ -45,6 +45,9 @@ $(function(){
                 $target.removeClass('active');
             });
         } else {
+            $('.project-widget .backside.active').animateCss(outAnimation, function(t) {
+                $(this).removeClass('active');
+            });
             $target.addClass('active').animateCss(inAnimation);
         }
     };
