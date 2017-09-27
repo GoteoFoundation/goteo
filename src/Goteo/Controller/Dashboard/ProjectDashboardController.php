@@ -183,11 +183,16 @@ class ProjectDashboardController extends \Goteo\Core\Controller {
             }
         }
 
+        $langs = Lang::listAll('name', false);
+        $languages = array_intersect_key($langs, array_flip($project->getLangsAvailable()));
+
         return $this->viewResponse('dashboard/project/updates', [
                 'posts' => $posts,
                 'total' => $total,
                 'limit' => $limit,
-                'errorMsg' => $msg
+                'errorMsg' => $msg,
+                'languages' => $languages,
+                'skip' => $project->lang
             ]);
     }
 
@@ -299,6 +304,7 @@ class ProjectDashboardController extends \Goteo\Core\Controller {
                 Message::error(Text::get('form-has-errors'));
             }
         }
+
         $langs = Lang::listAll('name', false);
         $languages = array_intersect_key($langs, array_flip($project->getLangsAvailable()));
 

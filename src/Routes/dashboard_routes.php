@@ -80,10 +80,24 @@ $dash->add('dashboard-project-translate', new Route(
     '/project/{pid}/translate',
     array('_controller' => 'Goteo\Controller\Dashboard\TranslateProjectDashboardController::translateAction')
 ));
-// Project translate zone
-$dash->add('dashboard-project-translate-zone', new Route(
+// Project translate overview
+$dash->add('dashboard-project-translate-overview', new Route(
     '/project/{pid}/translate/overview/{lang}',
     array('_controller' => 'Goteo\Controller\Dashboard\TranslateProjectDashboardController::overviewTranslateAction',
+        'lang' => null
+        )
+));
+// Project translate costs
+$dash->add('dashboard-project-translate-costs', new Route(
+    '/project/{pid}/translate/costs/{lang}',
+    array('_controller' => 'Goteo\Controller\Dashboard\TranslateProjectDashboardController::costsTranslateAction',
+        'lang' => null
+        )
+));
+// Project translate rewards
+$dash->add('dashboard-project-translate-rewards', new Route(
+    '/project/{pid}/translate/rewards/{lang}',
+    array('_controller' => 'Goteo\Controller\Dashboard\TranslateProjectDashboardController::rewardsTranslateAction',
         'lang' => null
         )
 ));

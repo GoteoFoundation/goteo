@@ -205,13 +205,36 @@ class TranslateProjectDashboardController extends \Goteo\Controller\Dashboard\Pr
         }
 
 
-        return $this->viewResponse('dashboard/project/translate/step', [
+        return $this->viewResponse('dashboard/project/translate/overview', [
             'form' => $form->createView(),
             'step' => 'overview',
             'lang' => $lang,
         ]);
     }
 
+    /**
+     * Project costs translator
+     */
+    public function costsTranslateAction($pid, $lang = null, Request $request) {
+
+        $project = $this->validateProject($pid, 'translate', null, $lang); // original lang
+        if($project instanceOf Response) return $project;
+
+        // $defaults = (array) $
+        $builder = $this->createFormBuilder($defaults);
+        $form = $builder->getForm();
+        $form->handleRequest($request);
+        if ($form->isSubmitted()) {
+        }
+
+        return $this->viewResponse('dashboard/project/translate/costs', [
+            'form' => $form->createView(),
+            'step' => 'costs',
+            'costs' => $this->project->costs,
+            'lang' => $lang,
+        ]);
+
+    }
 
     /**
      * Project updates translator

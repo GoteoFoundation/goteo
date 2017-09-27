@@ -5,7 +5,7 @@
     <?= $this->text('dashboard-translate-project-translating', ['%LANG%' => '<strong><em>' . $this->languages[$this->lang] . '</em></strong>', '%ORIGINAL%' => '<strong><em>' . $this->languages[$this->project->lang] . '</em></strong>']) ?>
 
     <?= $this->insert('dashboard/partials/translate_menu', [
-        'base_link' => '/dashboard/project/' .  $this->project->id . '/translate/' . $this->step . '/',
+        'base_link' => '/dashboard/project/' .  $this->project->id . '/translate/costs/',
         'languages' => $this->languages,
         'translated' => $this->translated,
         'lang' => $this->lang,

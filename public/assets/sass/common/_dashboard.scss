@@ -100,8 +100,16 @@
   }
 
   .dropdown-menu {
-    a:focus, a:hover {
-      background-color: $background-light;
+    a {
+      position: relative;
+      .badge {
+        position: absolute;
+        top: 5px;
+        right: 5px;
+      }
+      &:focus, &:hover {
+        background-color: $background-light;
+      }
     }
     > .active {
       > a {
