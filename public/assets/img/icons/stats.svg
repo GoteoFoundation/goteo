@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="33px" height="33px" viewBox="0 0 33 33" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 46.2 (44496) - http://www.bohemiancoding.com/sketch -->
+    <title>graph_2</title>
+    <desc>Created with Sketch.</desc>
+    <defs></defs>
+    <g id="HOME" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="Desktop-(ventajas-donante)" transform="translate(-72.000000, -4028.000000)" fill-rule="nonzero" fill="#2E2C2D">
+            <g id="transparencia" transform="translate(0.000000, 3976.000000)">
+                <g id="statistics" transform="translate(72.000000, 52.000000)">
+                    <g id="graph_2">
+                        <path d="M16.5,6.51851852 C10.98738,6.51851852 6.51851852,10.98738 6.51851852,16.5 C6.51851852,22.01262 10.98738,26.4814815 16.5,26.4814815 C22.01262,26.4814815 26.4814815,22.01262 26.4814815,16.5 L23.2521786,16.5 C23.2521786,20.2291253 20.2291253,23.2521786 16.5,23.2521786 C12.7708747,23.2521786 9.74782135,20.2291253 9.74782135,16.5 C9.74782135,12.7708747 12.7708747,9.74782135 16.5,9.74782135 L16.5,6.51851852 Z" id="Oval-3"></path>
+                        <path d="M16.5,0 C7.38730163,0 0,7.38730163 0,16.5 C0,25.6126984 7.38730163,33 16.5,33 C25.6126984,33 33,25.6126984 33,16.5 L27.6617647,16.5 C27.6617647,22.6644724 22.6644724,27.6617647 16.5,27.6617647 C10.3355276,27.6617647 5.33823529,22.6644724 5.33823529,16.5 C5.33823529,10.3355276 10.3355276,5.33823529 16.5,5.33823529 L16.5,0 Z" id="Oval-3" transform="translate(16.500000, 16.500000) rotate(-180.000000) translate(-16.500000, -16.500000) "></path>
+                    </g>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>

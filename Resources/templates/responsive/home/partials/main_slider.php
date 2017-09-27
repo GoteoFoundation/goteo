@@ -30,7 +30,7 @@
 		<div class="slider fade">
 			<?php foreach($this->banners as $banner): ?>
 				<?php if($banner->image): ?>
-					<div>
+					<div class="item">
 						<div class="image">
 							<img src="<?= $banner->image->getLink(1920, 500, true) ?>" class="display-none-important img-responsive  hidden-xs visible-up-1400">
 		                    <img src="<?= $banner->image->getLink(1400, 400, true) ?>" class="display-none-important img-responsive  hidden-xs visible-1051-1400">
