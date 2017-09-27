@@ -11,6 +11,7 @@
 namespace Goteo\Core;
 
 use Goteo\Application\App;
+use Goteo\Application\Exception\ModelException;
 use Goteo\Application\Config;
 use Goteo\Application\Lang;
 use Goteo\Library\Cacher;
@@ -459,22 +460,42 @@ abstract class Model {
     }
 
     /**
+     * Should return fore each model witch fields are translated
+     * @return array ['field1', 'field2', ...]
+     */
+    static public function getLangFields() {
+        return [];
+    }
+
+    /**
      * Returns percent (from 0 to 100) translations
      */
     public function getLangsPercent($lang) {
+        $fields = static::getLangFields();
+        if(!$fields) throw new ModelException('This method requires self::getLangFields() to return the fields to translate');
+
         try {
-            if($ob = $this->getlang($lang)) {
-                $filled = 0;
+            $conditions = array_map(function($el){
+                return "IF(m.$el IS NULL OR m.$el = '', 0, 1) AS $el,
+                        IF(l.$el IS NULL OR l.$el = '', 0, 1) AS {$el}_lang";
+            }, $fields);
+            $sql = "SELECT " . implode(',', $conditions) . "
+                    FROM `{$this->Table}_lang` l
+                    INNER JOIN `{$this->Table}` m ON m.id = l.id
+                    WHERE l.lang = :lang AND m.id = :id";
+            $values = [':lang' => $lang, ':id' => $this->id];
+            // die(\sqldbg($sql, $values));
+            if($query = static::query($sql, $values)) {
+                $translated = 0;
                 $total = 0;
-                foreach($ob as $key => $value) {
-                    if(in_array($key, ['id','lang','pending'])) continue;
-                    if(($value && $this->$key) || (!$value && !$this->$key)) {
-                        $filled++;
+                $ob = $query->fetchObject();
+                foreach($fields as $field) {
+                    if($ob->{$field}) {
+                        $translated += $ob->{$field.'_lang'};
+                        $total ++;
                     }
-                    // echo "\n$key => [$value]|[{$this->$key}]\n";
-                    $total++;
                 }
-                if($total) return 100 * $filled / $total;
+                if($total) return 100 * $translated / $total;
             }
         } catch (\Exception $e) {}
         return 0;
@@ -485,29 +506,36 @@ abstract class Model {
      * by grouping all items sharing some common keys
      */
     public function getLangsGroupPercent($lang, array $keys) {
+        $fields = static::getLangFields();
+        if(!$fields) throw new ModelException('This method requires self::getLangFields() to return the fields to translate');
+
         try {
-            $sql = "SELECT * FROM `{$this->Table}_lang` WHERE lang = :lang";
+            $conditions = array_map(function($el){
+                return "IF(m.$el IS NULL OR m.$el = '', 0, 1) AS $el,
+                        IF(l.$el IS NULL OR l.$el = '', 0, 1) AS {$el}_lang";
+            }, $fields);
+            $sql = "SELECT " . implode(',', $conditions) . "
+                    FROM `{$this->Table}_lang` l
+                    INNER JOIN `{$this->Table}` m ON m.id = l.id
+                    WHERE l.lang = :lang";
             $values = [':lang' => $lang];
             foreach($keys as $key) {
-                $sql .= " AND $key = :$key";
+                $sql .= " AND m.$key = :$key";
                 $values[":$key"] = $this->{$key};
             }
             // die(\sqldbg($sql, $values));
             if($query = static::query($sql, $values)) {
-                $filled = 0;
+                $translated = 0;
                 $total = 0;
-                $skip_keys = array_merge(['id','lang','pending'], $keys);
                 foreach($query->fetchAll(\PDO::FETCH_OBJ) as $ob) {
-                    foreach($ob as $key => $value) {
-                        if(in_array($key, $skip_keys)) continue;
-                        if(($value && $this->$key) || (!$value && !$this->$key)) {
-                            $filled++;
+                    foreach($fields as $field) {
+                        if($ob->{$field}) {
+                            $translated += $ob->{$field.'_lang'};
+                            $total ++;
                         }
-                        // echo "\n$key => [$value]|[{$this->$key}]\n";
-                        $total++;
                     }
                 }
-                if($total) return 100 * $filled / $total;
+                if($total) return 100 * $translated / $total;
             }
 
         } catch (\Exception $e) {}
@@ -527,6 +555,41 @@ abstract class Model {
             }
         } catch (\Exception $e) {}
         return null;
+    }
+
+    /**
+     * Save lang info in a generic way
+     */
+    public function setLang($lang, $data = [], array $errors = []) {
+
+        $fields = static::getLangFields();
+        if(!$fields) throw new ModelException('This method requires self::getLangFields() to return the fields to translate');
+
+        $update = ["`id` = :id", "`lang` = :lang"];
+        $insert = ["`id`" => ":id", "`lang`" => ":lang"];
+        $values[':id'] = $this->id;
+        $values[':lang'] = $lang;
+        foreach ($data as $key => $val) {
+            if(in_array($key, $fields) || isset($this->{$key})) {
+                $values[":$key"] = $val;
+                $update[] = "`$key` = :$key";
+                $insert["`$key`"] = ":$key";
+            }
+        }
+
+        try {
+            $sql = "INSERT INTO `{$this->Table}_lang`
+                (" . implode(', ', array_keys($insert)) . ")
+                VALUES (" . implode(', ', $insert) . ")
+                ON DUPLICATE KEY UPDATE " . implode(', ', $update);
+            // die(\sqldbg($sql, $values));
+            self::query($sql, $values);
+
+            return true;
+        } catch(\PDOException $e) {
+            $errors[] = "Error saving language data for {$this->Table}. " . $e->getMessage();
+            return false;
+        }
     }
 
 	/**

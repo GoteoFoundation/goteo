@@ -20,11 +20,14 @@
           <?php endforeach ?>
         </ul>
       <?php endif ?>
+
+      <div class="sidebar-footer">
+        <?= $this->supply('sidebar-footer') ?>
+      </div>
     </div>
   </nav>
 
   <div id="sidebar-menu-toggle" class="toggle-sidebar visible-xs" title="Open menu">
-    <i class="fa fa-angle-double-right"></i>
-    <i class="fa fa-angle-double-left"></i>
+      <?= $this->supply('sidebar-menu-toggle', '<i class="fa fa-angle-double-right"></i><i class="fa fa-angle-double-left"></i>') ?>
   </div>
 <?php endif ?>
