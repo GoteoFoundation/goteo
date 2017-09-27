@@ -69,3 +69,6 @@ translator-translations: Translations
 translator-workshop: Workshops
 translator-worthcracy: Meritocracy
 translator-zone-not-found: 'This translation area is invalid '
+translator-lang-not-found: 'This language is not configured in the platform!'
+translator-percent: '%d&#37; translated'
+translator-add-translation: 'Add a new translation'

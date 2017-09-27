@@ -99,7 +99,7 @@ $this->section('content');
 	    <?php foreach ($this->related_projects as $related_project) : ?>
 
 	              <div class="col-sm-6 col-md-4 col-xs-12 spacer">
-	                <?= $this->insert('project/widgets/standard', ['project' => $related_project]) ?>
+	                <?= $this->insert('project/widgets/normal', ['project' => $related_project]) ?>
 	              </div>
 	    <?php endforeach; ?>
     	</div>

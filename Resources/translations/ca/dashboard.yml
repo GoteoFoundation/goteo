@@ -225,3 +225,11 @@ dashboard-message-donors-fulfilled: 'estan completats'
 dashboard-message-donors-error: 'No hi ha destinataris vàlids, no es pot enviar el missatge'
 dashboard-message-donors-total: '%s cofinançadors'
 
+dashboard-translate-profile: 'Traduir perfil'
+dashboard-translate-profile-desc: 'Estàs traduint el teu perfil personal al %LANG%. Els usuaris que visitin el tu perfil personal en aquest idioma veuran aquesta traducció. La resta d''idiomes mostraran les <a href="%URL%">dades per defecte</a> a menys que també tinguin una traducció assignada.'
+dashboard-translate-profile-ok: 'Perfil traduït correctament al %s'
+
+dashboard-translate-project: 'Traduir el projecte'
+dashboard-translate-project-empty: 'No hi ha traduccions encara per a aquest projecte.'
+dashboard-translate-project-currents: 'L''idioma original d''aquest projecte és %LANG% i està traduït a %NUM% idiomes:'
+dashboard-translate-project-ok: '%ZONE% traduït correctament al %LANG%'

@@ -8,12 +8,15 @@
     // z-index: 1001; /* Stay on top */
     // top: 0;
     // left: 0;
-    background-color: $background-sidebar;
     padding-bottom: 50px;
     overflow-x: hidden; /* Disable horizontal scroll */
-    transition: 0.5s; /* 0.5 second transition effect to slide in the sidenav */
     font-size: 16px;
     line-height: 1.5;
+    height: 100%;
+    top: 0;
+    .sidebar-wrap {
+        background-color: $background-sidebar;
+    }
 
     // @media(min-width: $breakpoint-sm) {
     //     width: $dashboard-sidebar-width;
@@ -115,20 +118,8 @@
       }
     }
 
-    button.toggle-sidebar {
-        position: absolute;
-        font-size: $font-size * 2;
-        font-weight: 300;
-        right: 0;
-        top: 0;
-        z-index: 1002;
-        // background:$background-sidebar;
-        background:transparent;
-        color:$color-white;
-        padding:6px 12px;
-        margin:0;
-        border:0;
-        border-radius:0;
+    .toggle-sidebar {
+        display: none;
     }
 
     .navbar-brand {
@@ -142,32 +133,3 @@
     }
 }
 
-@-webkit-keyframes blink {
-    @include blink-function();
-}
-@keyframes blink {
-    @include blink-function();
-}
-
-
-#sidebar-menu-toggle {
-    position: fixed;
-    top: 70px;
-    left: 0;
-    z-index: 1000;
-    background-color: $background-sidebar;
-    color: $color-white;
-    // width: 30px;
-    // height: 100px;
-    font-size: $font-size * 2;
-    padding: 30px 10px;
-    box-shadow: 0px 0px 12px 5px rgba(0, 0, 0, 0.3);
-    border-top-right-radius: 5px;
-    border-bottom-right-radius: 5px;
-    cursor: pointer;
-    i {
-        -webkit-animation: blink 8s linear 1s 3;//infinite;
-        animation: blink 8s linear 1s 3;//infinite;
-    }
-
-}

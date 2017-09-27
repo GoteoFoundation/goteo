@@ -1,4 +1,4 @@
-<div class="section matchfunding" id="matchfunding" >
+<div class="section matchfunding auto-update-calls" id="matchfunding" >
     <div class="drop-img-container">
         <img class="center-block drop-img" src="/assets/img/project/drop.svg" alt="matchfunding">
     </div>
@@ -9,37 +9,33 @@
         <li>
             <?= $this->text('home-matchfunding-all') ?>
         </li>
-        <li class="active" >
+        <li class="active" data-status="3">
             <?= $this->text('home-matchfunding-open') ?>
         </li>
-        <li class="active" >
+        <li class="active" data-status="4">
             <?= $this->text('home-matchfunding-active') ?>
         </li>
-        <li>
+        <li data-status="5">
             <?= $this->text('home-matchfunding-finish') ?>
         </li>
     </ul>
     
     <div class="container">
         <?php if($this->calls): ?>
-            <div class="row">
-                <div class="col-xs-12">
-                    <div class="slider slider-calls">
-                        <?php foreach ($this->calls as $call) : ?>
-                            <div class="widget-slide">
-                            <?= $this->insert('call/widgets/normal', [
-                                'call' => $call
-                                ]) ?>
-                            </div>
-                        <?php endforeach ?>
+            <div class="slider slider-calls">
+                <?php foreach ($this->calls as $call) : ?>
+                    <div class="widget-slide">
+                        <?= $this->insert('call/widgets/normal', [
+                            'call' => $call
+                            ]) ?>
                     </div>
-                </div>
+                <?php endforeach ?>
             </div>
         <?php endif ?>
     </div>
 
 
-    <div class="fluid-container details-container">
+    <div class="fluid-container details-container" id="matchfunding-advantages">
         <div class="container">
             <div class="row details-title">
                 <div class="col-xs-12">

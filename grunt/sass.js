@@ -7,6 +7,10 @@ module.exports = function(grunt) {
 
     grunt.config('sass', {
         devel: {
+            options: {
+            // style: 'compressed',
+                compass: true
+            },
             files: [{
                 expand: true,
                 cwd: '<%= goteo.app %>/assets/sass',
@@ -16,6 +20,11 @@ module.exports = function(grunt) {
               }]
         },
         dist: {
+            options: {
+            // style: 'compressed',
+                compass: true
+            },
+
             files: [{
                 expand: true,
                 cwd: '<%= goteo.app %>/assets/sass',

@@ -1,0 +1,38 @@
+@import "compass/css3";
+
+/* custom animations */
+
+@keyframes foldInUp {
+  from {
+    opacity: 0;
+    @include transform(scale(1, 0) translateY(-100%));
+  }
+  55% {opacity: 1;}
+  to {
+    @include transform(none);
+  }
+}
+
+.foldInUp {
+  @include animation-name(foldInUp);
+  @include animation-timing-function(ease-out);
+  @include transform-origin(top);
+}
+
+@keyframes foldOutUp {
+  from {
+    opacity: 1;
+    @include transform(none);
+  }
+  55% {opacity: 1;}
+  to {
+    opacity: 0;
+    @include transform(scale(1, 0) translateY(-100%));
+  }
+}
+
+.foldOutUp {
+  @include animation-name(foldOutUp);
+  @include animation-timing-function(ease-out);
+  @include transform-origin(top);
+}

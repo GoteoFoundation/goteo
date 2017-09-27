@@ -63,6 +63,22 @@
     font-size: 1.8em;
   }
 
+  .dropdown-menu {
+    a:focus, a:hover {
+      background-color: $background-light;
+    }
+    > .active {
+      > a {
+        background-color: $color-cyan;
+      }
+    }
+    > .available {
+      > a {
+        font-weight: bold;
+        text-decoration: underline;
+      }
+    }
+  }
   table.footable , table.table {
     color: $secondary-color;
     background: $background-light-body;
@@ -87,7 +103,10 @@
   }
 
   .btn {
-      border:none;
+      border-color:transparent;
+      &.btn-default {
+        border-color: $color-light-grey;
+      }
       text-transform: uppercase;
       // box-shadow: 1px 1px 4px -2px $color-dark;
       &.btn-danger,&.btn-cyan,&.btn-green,&.btn-pink {

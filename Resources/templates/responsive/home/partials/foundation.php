@@ -1,4 +1,4 @@
-<div class="section advantages foundation" >
+<div class="section advantages foundation" id="foundation" >
     <div class="container advantages-container">
         <div class="row">
             <div class="col-md-12">
@@ -7,7 +7,7 @@
                 </h2>
             </div>
         </div>
-        <div class="slider fade">
+        <div class="slider fade" id="stories">
             <div class="row">
                 <div class="col-md-6">
                     <img class="img-responsive" src="/assets/img/home/davidcabo.jpg" >
@@ -64,7 +64,7 @@
             </div>    
         </div>
 
-        <div class="row details">
+        <div class="row details" id="foundation-advantages">
             <div class="col-md-4 adventage">
                 <div class="title">
                 	<img src="/assets/img/home/graph_2.png" >
