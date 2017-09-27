@@ -300,11 +300,14 @@ class ProjectDashboardController extends \Goteo\Core\Controller {
             }
         }
         $langs = Lang::listAll('name', false);
+        $languages = array_intersect_key($langs, array_flip($project->getLangsAvailable()));
+
         return $this->viewResponse('dashboard/project/updates_edit', [
             'post' => $post,
             'form' => $form->createView(),
-            'languages' => array_intersect_key($langs, array_flip($project->getLangsAvailable())),
-            'translated' => $post->getLangsAvailable()
+            'languages' => $languages,
+            'translated' => $post->getLangsAvailable(),
+            'skip' => $project->lang
             ]);
 
     }

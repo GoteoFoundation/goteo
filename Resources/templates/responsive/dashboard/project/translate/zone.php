@@ -1,18 +1,19 @@
 <?php $this->layout('dashboard/project/translate/layout') ?>
 
 <?php $this->section('dashboard-translate-project') ?>
-<?php
-    echo $this->insert('dashboard/partials/translate_menu', [
-            'base_link' => '/dashboard/project/' .  $this->project->id . '/translate/' . $this->current . '/',
-            'languages' => $this->languages,
-            'translated' => $this->available,
-            'lang' => $this->lang,
-            'class' => 'pull-right',
-            'skip' => [$this->project->lang],
-            'exit_link' => '/dashboard/project/' .  $this->project->id . '/translate'
-        ]);
-?>
-<blockquote><?= $this->text('dashboard-translate-project-translating', ['%LANG%' => '<strong><em>' . $this->languages[$this->lang] . '</em></strong>', '%ORIGINAL%' => '<strong><em>' . $this->languages[$this->project->lang] . '</em></strong>']) ?></blockquote>
+<blockquote class="padding-right">
+    <?= $this->text('dashboard-translate-project-translating', ['%LANG%' => '<strong><em>' . $this->languages[$this->lang] . '</em></strong>', '%ORIGINAL%' => '<strong><em>' . $this->languages[$this->project->lang] . '</em></strong>']) ?>
+
+    <?= $this->insert('dashboard/partials/translate_menu', [
+        'base_link' => '/dashboard/project/' .  $this->project->id . '/translate/' . $this->current . '/',
+        'languages' => $this->languages,
+        'translated' => $this->translated,
+        'lang' => $this->lang,
+        'class' => 'pull-right',
+        'skip' => [$this->project->lang],
+        'exit_link' => '/dashboard/project/' .  $this->project->id . '/translate'
+    ]) ?>
+</blockquote>
 
 <?= $this->form_form($this->raw('form')) ?>
 

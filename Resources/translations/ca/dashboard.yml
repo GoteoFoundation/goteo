@@ -235,6 +235,8 @@ dashboard-translate-profile-ok: 'Perfil traduït correctament al %s'
 dashboard-translate-project: 'Traduir el projecte'
 dashboard-translate-project-empty: 'No hi ha traduccions encara per a aquest projecte.'
 dashboard-translate-project-currents: 'L''idioma original d''aquest projecte és %LANG% i està traduït a %NUM% idiomes:'
+dashboard-translate-project-translating: 'Estàs traduint aquest projecte al %LANG%. L''idioma original és el %ORIGINAL%.'
 dashboard-translate-project-ok: '%ZONE% traduït correctament al %LANG%'
 
 dashboard-project-updates-translate-ok: 'Post %TITLE% traduït correctament al %LANG%'
+dashboard-project-updates-translating-post: 'Estàs traduint aquest post al %LANG%. L''idioma original és el %ORIGINAL%.'

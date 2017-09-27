@@ -2,13 +2,13 @@
 
 <?php $this->section('dashboard-translate-project') ?>
 
-    <?php if($this->available): ?>
+    <?php if($this->translated): ?>
         <p><?= $this->text('dashboard-translate-project-currents', [
                 '%LANG%' => '<strong><em>' . $this->languages[$this->project->lang] . '</em></strong>',
-                '%NUM%' => '<strong>' . count($this->available) . '</strong>'
+                '%NUM%' => '<strong>' . count($this->translated) . '</strong>'
                 ]) ?></p>
         <div class="list-group">
-        <?php foreach($this->available as $lang):
+        <?php foreach($this->translated as $lang):
             $percent = $this->project->getLangsPercent($lang);
         ?>
                 <a class="list-group-item" href="/dashboard/project/<?= $this->project->id ?>/translate/overview/<?= $lang ?>">
@@ -23,7 +23,7 @@
     <?php endif ?>
 
 <?php
-    $skip = $this->available;
+    $skip = $this->translated;
     $skip[] = $this->project->lang;
 
     echo $this->insert('dashboard/partials/translate_menu', [

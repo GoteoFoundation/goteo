@@ -241,6 +241,8 @@ dashboard-translate-profile-ok: 'Perfil traducido correctamente al %s'
 dashboard-translate-project: 'Traducir el proyecto'
 dashboard-translate-project-empty: 'No hay traducciones todavía para este proyecto.'
 dashboard-translate-project-currents: 'El idioma original de este proyecto es el %LANG% y está traducido a %NUM% idiomas:'
+dashboard-translate-project-translating: 'Estás traduciendo este proyecto al %LANG%. El idioma original es el %ORIGINAL%.'
 dashboard-translate-project-ok: '%ZONE% traducido correctamente al %LANG%'
 
 dashboard-project-updates-translate-ok: 'Post %TITLE% traducido correctamente al %LANG%'
+dashboard-project-updates-translating-post: 'Estás traduciendo este post al %LANG%. El idioma original es el %ORIGINAL%.'

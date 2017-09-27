@@ -37,6 +37,10 @@ use Symfony\Component\Validator\Constraints;
 
 class TranslateProjectDashboardController extends \Goteo\Controller\Dashboard\ProjectDashboardController {
 
+    public function createFormBuilder($defaults = null, $name = 'autoform', array $options = ['attr' => ['class' => 'autoform hide-help']]) {
+        return parent::createFormBuilder($defaults, $name, $options);
+    }
+
     /**
      * Index translator
      */
@@ -44,9 +48,10 @@ class TranslateProjectDashboardController extends \Goteo\Controller\Dashboard\Pr
         $project = $this->validateProject($pid, 'translate');
         if($project instanceOf Response) return $project;
 
+        $translated = array_diff($project->getLangsAvailable(), [$project->lang]);
         return $this->viewResponse('dashboard/project/translate/index', [
             'languages' => Lang::listAll('name', false),
-            'available' => $project->getLangsAvailable()
+            'translated' => $translated
         ]);
 
     }
@@ -77,7 +82,7 @@ class TranslateProjectDashboardController extends \Goteo\Controller\Dashboard\Pr
 
         $defaults = (array) $trans;
 
-        $builder = $this->createFormBuilder($defaults, 'autoform', ['attr' => ['class' => 'autoform hide-help']])
+        $builder = $this->createFormBuilder($defaults)
             ->add('subtitle', 'text', [
                 'label' => 'overview-field-subtitle',
                 'required' => false,
@@ -188,13 +193,14 @@ class TranslateProjectDashboardController extends \Goteo\Controller\Dashboard\Pr
 
         if(!array_key_exists($current, $zones)) $current = 'overview';
 
+        $translated = array_diff($project->getLangsAvailable(), [$project->lang]);
         return $this->viewResponse('dashboard/project/translate/zone', [
             'form' => $form->createView(),
             'zones' => $zones,
             'current' => $current,
             'lang' => $lang,
-            'languages' => Lang::listAll('name', false),
-            'available' => $project->getLangsAvailable()
+            'languages' => $languages,
+            'translated' => $translated
         ]);
     }
 
@@ -253,7 +259,7 @@ class TranslateProjectDashboardController extends \Goteo\Controller\Dashboard\Pr
                     } else {
                         Message::info(Text::get('translator-deleted-ko', $languages[$lang]));
                     }
-                    return $this->redirect('/dashboard/project/' . $project->id . '/updates/' . $uid);
+                    return $this->redirect('/dashboard/project/' . $project->id . '/updates');
                 }
 
                 $data = $form->getData();
@@ -266,7 +272,7 @@ class TranslateProjectDashboardController extends \Goteo\Controller\Dashboard\Pr
                         '%TITLE%' => '<strong>' . $post->title .'</strong>',
                         '%LANG%' => '<strong><em>' . $languages[$lang] . '</em></strong>'
                     ]));
-                    return $this->redirect('/dashboard/project/' . $project->id . '/updates/' . $uid);
+                    return $this->redirect('/dashboard/project/' . $project->id . '/updates');
                 } else {
                     Message::error(Text::get('form-sent-error', implode(', ',$errors)));
                 }
@@ -281,6 +287,7 @@ class TranslateProjectDashboardController extends \Goteo\Controller\Dashboard\Pr
             'lang' => $lang,
             'languages' => $languages,
             'translated' => $post->getLangsAvailable(),
+            'skip' => $project->lang,
             'exit_link' => '/dashboard/project/' . $project->id . '/updates/' . $uid
             ]);
 
