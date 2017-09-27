@@ -57,7 +57,57 @@
     font-weight: normal;
     text-transform: uppercase;
   }
+  blockquote {
+    background-color: $background-light;
+    padding: 20px;
+    border-left: none;
+    font-size: $font-size * 1.1;
+    &::after {
+        content: '';
+        clear: both;
+        display: block;
+    }
+    &.padding-right {
+        position: relative;
+        padding-right: 130px;
+        .pull-right {
+            top: 15px;
+            position: absolute;
+            right: 20px;
+            float: none;
+        }
+    }
+  }
 
+  .nav-tabs {
+    li.active > a {
+        background-color: $background-light;
+        border-bottom-color: $background-light;
+        font-weight: 500;
+    }
+    &.nav-justified > li {
+      // Adjust when to stack nav-justified
+      @media(min-width: $breakpoint-xs) {
+        display: table-cell;
+        width: 1%;
+      }
+    }
+  }
+
+  .nav-tabs, .dropdown-menu {
+    a {
+      position: relative;
+      .badge {
+        position: absolute;
+        top: 5px;
+        right: 5px;
+      }
+    }
+  }
+  .nav-tabs a .badge {
+    top: 10px;
+    right: 10px;
+  }
   .fa.fa-2x {
     width:30px;
     font-size: 1.8em;
@@ -127,6 +177,9 @@
     border: 0;
     box-shadow: none;
 
+    h3 {
+      margin-top:0;
+    }
     h5 {
       font-weight: 500;
       font-size: $font-size * 0.9;

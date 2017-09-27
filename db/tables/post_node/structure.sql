@@ -7,3 +7,5 @@ CREATE TABLE IF NOT EXISTS `post_node` (
 
 -- constrains
 ALTER TABLE `post_node` ADD FOREIGN KEY (`node`) REFERENCES `node`(`id`) ON UPDATE CASCADE ON DELETE RESTRICT;
+
+ALTER TABLE `post_node` ADD FOREIGN KEY (`post`) REFERENCES `post`(`id`) ON UPDATE CASCADE;
