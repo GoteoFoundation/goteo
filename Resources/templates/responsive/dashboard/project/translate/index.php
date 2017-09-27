@@ -15,6 +15,8 @@
             $percent1 = $this->project->getLangsPercent($lang);
             $cost = current($this->project->costs);
             $percent2 = $cost ? $cost->getLangsGroupPercent($lang, ['project']) : 0;
+            $reward = current($this->project->rewards);
+            $percent3 = $reward ? $reward->getLangsGroupPercent($lang, ['project']) : 0;
         ?>
                 <a class="list-group-item" href="/dashboard/project/<?= $this->project->id ?>/translate/overview/<?= $lang ?>">
                     <i class="icon icon-edit" title="<?= $this->text('regular-edit') ?>"></i>
