@@ -82,9 +82,8 @@ $dash->add('dashboard-project-translate', new Route(
 ));
 // Project translate zone
 $dash->add('dashboard-project-translate-zone', new Route(
-    '/project/{pid}/translate/{current}/{lang}',
-    array('_controller' => 'Goteo\Controller\Dashboard\TranslateProjectDashboardController::translateZoneAction',
-        'current' => null,
+    '/project/{pid}/translate/overview/{lang}',
+    array('_controller' => 'Goteo\Controller\Dashboard\TranslateProjectDashboardController::overviewTranslateAction',
         'lang' => null
         )
 ));

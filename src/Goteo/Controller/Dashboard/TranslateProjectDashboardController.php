@@ -37,6 +37,38 @@ use Symfony\Component\Validator\Constraints;
 
 class TranslateProjectDashboardController extends \Goteo\Controller\Dashboard\ProjectDashboardController {
 
+    /**
+     * Additional common context vars for the views
+     */
+    public function validateProject($pid = null, $section = 'summary', $lang = null, $lang_check = null) {
+        $project = parent::validateProject($pid, $section, $lang);
+        if(!$project instanceOf Project) return $project;
+
+        $languages = Lang::listAll('name', false);
+        if($lang_check && !isset($languages[$lang_check])) {
+            Message::error(Text::get('translator-lang-not-found'));
+            return $this->redirect('/dashboard/project/' . $project->id . '/translate');
+        }
+
+        View::getEngine()->useData([
+            'zones' => [
+                // 'profile' => Text::get('step-1'),
+                'overview' => Text::get('step-3'),
+                'costs' => Text::get('step-4'),
+                'rewards' => Text::get('step-5'),
+                'supports' => Text::get('step-6'),
+                // 'updates' => Text::get('project-menu-updates')
+            ],
+            'languages' => $languages,
+            'translated' => array_diff($project->getLangsAvailable(), [$project->lang])
+
+        ]);
+        return $project;
+    }
+
+    /**
+     * Some handy defaults for the form
+     */
     public function createFormBuilder($defaults = null, $name = 'autoform', array $options = ['attr' => ['class' => 'autoform hide-help']]) {
         return parent::createFormBuilder($defaults, $name, $options);
     }
@@ -48,39 +80,21 @@ class TranslateProjectDashboardController extends \Goteo\Controller\Dashboard\Pr
         $project = $this->validateProject($pid, 'translate');
         if($project instanceOf Response) return $project;
 
-        $translated = array_diff($project->getLangsAvailable(), [$project->lang]);
         return $this->viewResponse('dashboard/project/translate/index', [
-            'languages' => Lang::listAll('name', false),
-            'translated' => $translated
+            'zones' => null // no tabs here
         ]);
 
     }
 
     /**
-     * Index translator
+     * Project overview translator
      */
-    public function translateZoneAction($pid, $current = null, $lang = null, Request $request) {
+    public function overviewTranslateAction($pid, $lang = null, Request $request) {
 
-        $project = $this->validateProject($pid, 'translate', null); // original lang
+        $project = $this->validateProject($pid, 'translate', null, $lang); // original lang
         if($project instanceOf Response) return $project;
 
-        $languages = Lang::listAll('name', false);
-        if(!isset($languages[$lang])) {
-            Message::error(Text::get('translator-lang-not-found'));
-            return $this->redirect('/dashboard/project/' . $project->id . '/translate');
-        }
-        $zones = [
-            // 'profile' => Text::get('step-1'),
-            'overview' => Text::get('step-3'),
-            'costs' => Text::get('step-4'),
-            'rewards' => Text::get('step-5'),
-            'supports' => Text::get('step-6'),
-            'updates' => Text::get('project-menu-updates')
-        ];
-
-        $trans = $project->getLang($lang);
-
-        $defaults = (array) $trans;
+        $defaults = (array) $project->getLang($lang);
 
         $builder = $this->createFormBuilder($defaults)
             ->add('subtitle', 'text', [
@@ -178,7 +192,7 @@ class TranslateProjectDashboardController extends \Goteo\Controller\Dashboard\Pr
                 $project->contribution_lang = $data['contribution'];
                 if($project->saveLang($errors)) {
                     Message::info(Text::get('dashboard-translate-project-ok', [
-                        '%ZONE%' => '<strong>' . $zones[$this->current] . '</strong>',
+                        '%ZONE%' => '<strong>' . Text::get('step-3') . '</strong>',
                         '%LANG%' => '<strong><em>' . $languages[$lang] . '</em></strong>'
                     ]));
                     return $this->redirect('/dashboard/project/' . $project->id . '/translate');
@@ -191,23 +205,20 @@ class TranslateProjectDashboardController extends \Goteo\Controller\Dashboard\Pr
         }
 
 
-        if(!array_key_exists($current, $zones)) $current = 'overview';
-
-        $translated = array_diff($project->getLangsAvailable(), [$project->lang]);
-        return $this->viewResponse('dashboard/project/translate/zone', [
+        return $this->viewResponse('dashboard/project/translate/step', [
             'form' => $form->createView(),
-            'zones' => $zones,
-            'current' => $current,
+            'step' => 'overview',
             'lang' => $lang,
-            'languages' => $languages,
-            'translated' => $translated
         ]);
     }
 
 
+    /**
+     * Project updates translator
+     */
     public function updatesTranslateAction($pid, $uid, $lang, Request $request)
     {
-        $project = $this->validateProject($pid, 'updates');
+        $project = $this->validateProject($pid, 'updates', null, $lang);
         if($project instanceOf Response) return $project;
 
         $post = BlogPost::get($uid);
@@ -221,8 +232,7 @@ class TranslateProjectDashboardController extends \Goteo\Controller\Dashboard\Pr
             return $this->redirect('/dashboard/project/' . $project->id . '/updates/' . $uid);
         }
 
-        $defaults = (array)$post->getLang($lang);
-        // print_r($_FILES);die;
+        $defaults = (array) $post->getLang($lang);
         // Create the form
         $form = $this->createFormBuilder($defaults)
             ->add('title', 'text', array(
@@ -269,7 +279,7 @@ class TranslateProjectDashboardController extends \Goteo\Controller\Dashboard\Pr
                 $post->text_lang = $data['title'];
                 if($post->saveLang($errors)) {
                     Message::info(Text::get('dashboard-project-updates-translate-ok', [
-                        '%TITLE%' => '<strong>' . $post->title .'</strong>',
+                        '%TITLE%' => '<strong>#' . $post->id .'</strong>',
                         '%LANG%' => '<strong><em>' . $languages[$lang] . '</em></strong>'
                     ]));
                     return $this->redirect('/dashboard/project/' . $project->id . '/updates');
