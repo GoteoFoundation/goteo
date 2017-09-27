@@ -214,6 +214,21 @@ i.visible-xs {
     &.icon-call {
         @include svg-background('../img/icons/call.svg');
     }
+    &.icon-search {
+        @include svg-background('../img/icons/search.svg');
+    }
+    &.icon-home-certificate {
+        @include svg-background('../img/icons/home_certificate.svg');
+    }
+    &.icon-advantages {
+        @include svg-background('../img/icons/advantages.svg');
+    }
+    &.icon-stats {
+        @include svg-background('../img/icons/stats.svg');
+    }
+    &.icon-channels {
+        @include svg-background('../img/icons/channels.svg');
+    }
 }
 
 

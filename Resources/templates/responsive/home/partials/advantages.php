@@ -1,4 +1,4 @@
-<div class="section advantages" >
+<div class="section advantages" id="advantages" >
 	<div class="tabbable full-width-tabs">
         <ul class="nav nav-tabs">
             <li class="donor active">

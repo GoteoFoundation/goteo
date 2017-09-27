@@ -57,6 +57,33 @@ div.section.main-slider{
     }
 }
 
+// Hide while loading
+
+.fade{
+     visibility:hidden;
+     opacity:0;  
+     transition: opacity 1s;
+}
+
+.fade.slick-initialized{
+    visibility:visible;
+    opacity:1;
+}
+
+.fade .item{
+    display:none ;
+}
+
+.fade .item:first-child{
+    display:block; visibility:hidden;
+} 
+
+.fade.slick-initialized .item{
+    display:block;visibility:visible!important;
+}
+
+
+
 .slider.fade{
     opacity:1;
     .slick-slide img {
@@ -444,7 +471,6 @@ div.section.matchfunding{
             background-color: $background-green-owner;
             padding: 5px 15px;
             border-radius: 5px;
-            cursor: none;
         }
     }
 
@@ -511,6 +537,7 @@ div.section.matchfunding{
 
 div.section.tools{
     background-color: $background-blue !important;
+    padding: 30px;
     .row{
         margin:20px 0 30px 0;
         a.item{
