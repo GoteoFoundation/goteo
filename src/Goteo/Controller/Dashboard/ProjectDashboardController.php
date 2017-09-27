@@ -75,7 +75,7 @@ class ProjectDashboardController extends \Goteo\Core\Controller {
 
     }
 
-    protected function validateProject($pid = null, $section = 'summary') {
+    protected function validateProject($pid = null, $section = 'summary', $lang = null) {
 
         // Old Compatibility with session value
         if(!$pid) {
@@ -91,7 +91,7 @@ class ProjectDashboardController extends \Goteo\Core\Controller {
             }
         }
         // Get project
-        $this->project = Project::get( $pid );
+        $this->project = Project::get( $pid, $lang );
         if(!$this->project instanceOf Project || !$this->project->userCanEdit($this->user)) {
             throw new ControllerAccessDeniedException(Text::get('user-login-required-access'));
         }
@@ -138,6 +138,9 @@ class ProjectDashboardController extends \Goteo\Core\Controller {
         ]);
     }
 
+    /**
+     * Index translator
+     */
     public function translateAction($pid, Request $request) {
         $project = $this->validateProject($pid, 'translate');
         if($project instanceOf Response) return $project;
@@ -148,17 +151,20 @@ class ProjectDashboardController extends \Goteo\Core\Controller {
         ]);
 
     }
-    public function translateZoneAction($pid, $lang = null, $current = null, Request $request) {
 
-        $project = $this->validateProject($pid, 'translate');
+    /**
+     * Index translator
+     */
+    public function translateZoneAction($pid, $current = null, $lang = null, Request $request) {
+
+        $project = $this->validateProject($pid, 'translate', null); // original lang
         if($project instanceOf Response) return $project;
 
         $languages = Lang::listAll('name', false);
         if(!isset($languages[$lang])) {
             Message::error(Text::get('translator-lang-not-found'));
-            // return $this->redirect('/dashboard/project/' . $project->id . '/translate');
+            return $this->redirect('/dashboard/project/' . $project->id . '/translate');
         }
-
         $zones = [
             // 'profile' => Text::get('step-1'),
             'overview' => Text::get('step-3'),
@@ -167,11 +173,128 @@ class ProjectDashboardController extends \Goteo\Core\Controller {
             'supports' => Text::get('step-6'),
             'updates' => Text::get('project-menu-updates')
         ];
+
+        $trans = $project->getLang($lang);
+
+        $defaults = (array) $trans;
+
+        $builder = $this->createFormBuilder($defaults, 'autoform', ['attr' => ['class' => 'autoform hide-help']])
+            ->add('subtitle', 'text', [
+                'label' => 'overview-field-subtitle',
+                'required' => false,
+                'attr' => ['help' => $project->subtitle]
+            ])
+            ->add('description', 'textarea', [
+                'label' => 'overview-field-description',
+                'required' => false,
+                'attr' => ['help' => $project->description, 'rows' => 10]
+            ])
+            ->add('media', 'media', [
+                'label' => 'overview-field-media',
+                'required' => false,
+                'attr' => ['help' => $project->media]
+            ])
+            ->add('motivation', 'textarea', [
+                'label' => 'overview-field-motivation',
+                'required' => false,
+                'attr' => ['help' => $project->motivation, 'rows' => 10]
+            ])
+            ->add('video', 'media', [
+                'label' => 'overview-field-video',
+                'required' => false,
+                'attr' => ['help' => $project->video]
+            ])
+            ->add('about', 'textarea', [
+                'label' => 'overview-field-about',
+                'required' => false,
+                'attr' => ['help' => $project->about, 'rows' => 10]
+            ])
+            ->add('goal', 'textarea', [
+                'label' => 'overview-field-goal',
+                'required' => false,
+                'attr' => ['help' => $project->goal, 'rows' => 10]
+            ])
+            ->add('related', 'textarea', [
+                'label' => 'overview-field-related',
+                'required' => false,
+                'attr' => ['help' => $project->related, 'rows' => 10]
+            ])
+            // ->add('keywords', 'tags', [
+            //     'label' => 'overview-field-keywords',
+            //     'required' => false,
+            //     'attr' => ['help' => $project->keywords]
+            // ])
+            ->add('social_commitment_description', 'textarea', [
+                'label' => 'overview-field-social-description',
+                'required' => false,
+                'attr' => ['help' => $project->social_commitment_description, 'rows' => 10]
+            ])
+
+            ->add('submit', 'submit')
+            ->add('remove', 'submit', [
+                'label' => Text::get('translator-delete', $languages[$lang]),
+                'icon_class' => 'fa fa-trash',
+                'attr' => [
+                    'class' => 'pull-right-form hide-form btn btn-danger btn-lg',
+                    'data-confirm' => Text::get('translator-delete-sure', $languages[$lang])
+                    ]
+            ]);
+
+            ;
+        $form = $builder->getForm();
+        $form->handleRequest($request);
+        if ($form->isSubmitted()) {
+            if($form->isValid()) {
+                $errors = [];
+                $data = $form->getData();
+                // print_r($data);die($form->getClickedButton()->getName());
+                $project->lang = $lang;
+                // Check if we want to remove a translation
+                if($form->get('remove')->isClicked()) {
+                    if($project->removeLang($lang)) {
+                        Message::info(Text::get('translator-deleted-ok', $languages[$lang]));
+                    } else {
+                        Message::info(Text::get('translator-deleted-ko', $languages[$lang]));
+                    }
+                    return $this->redirect('/dashboard/project/' . $project->id . '/translate');
+                }
+
+                $data = $form->getData();
+                $project->lang_lang = $lang;
+                $project->subtitle_lang = $data['subtitle'];
+                $project->description_lang = $data['description'];
+                $project->media_lang = $data['media'];
+                $project->motivation_lang = $data['motivation'];
+                $project->video_lang = $data['video'];
+                $project->about_lang = $data['about'];
+                $project->goal_lang = $data['goal'];
+                $project->related_lang = $data['related'];
+                $project->social_commitment_description_lang = $data['social_commitment_description'];
+                // $project->keywords_lang = $data['keywords'];
+                $project->keywords_lang = $project->keywords; // Do not translate keywords for the moment
+                $project->contribution_lang = $data['contribution'];
+                if($project->saveLang($errors)) {
+                    Message::info(Text::get('dashboard-translate-project-ok', [
+                        '%ZONE%' => $zones[$this->current],
+                        '%LANG%' => $languages[$lang]
+                    ]));
+                    return $this->redirect('/dashboard/project/' . $project->id . '/translate');
+                } else {
+                    Message::error(Text::get('form-sent-error', implode(',',array_map('implode',$errors))));
+                }
+            }
+        }
+
+
         if(!array_key_exists($current, $zones)) $current = 'overview';
 
-        return $this->viewResponse('dashboard/project/translate', [
+        return $this->viewResponse('dashboard/project/translate/zone', [
+            'form' => $form->createView(),
             'zones' => $zones,
-            'current' => $current
+            'current' => $current,
+            'lang' => $lang,
+            'languages' => Lang::listAll('name', false),
+            'available' => $project->getLangsAvailable()
         ]);
     }
 

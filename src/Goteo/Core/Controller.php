@@ -111,13 +111,11 @@ abstract class Controller {
      * @return Symfony\Component\Form\FormFactory
      */
     public function createFormBuilder($defaults = null, $name = 'autoform', array $options = []) {
-        if(empty($options)) {
-            $options = [
-                'action' => App::getRequest()->getRequestUri(),
-                'attr' => ['class' => 'autoform']
-            ];
-        }
-        return App::getService('app.forms')->createBuilder($defaults, $name, $options);
+        $default_options = [
+            'action' => App::getRequest()->getRequestUri(),
+            'attr' => ['class' => 'autoform']
+        ];
+        return App::getService('app.forms')->createBuilder($defaults, $name, $options + $default_options);
     }
 }
 
