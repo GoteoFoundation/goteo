@@ -26,6 +26,10 @@ class Cost extends \Goteo\Core\Model {
         $from,
 		$until;
 
+    public static function getLangFields() {
+        return ['cost', 'description'];
+    }
+
  	public static function get ($id) {
         try {
             $query = static::query("SELECT * FROM cost WHERE id = :id", array(':id' => $id));
@@ -184,13 +188,10 @@ class Cost extends \Goteo\Core\Model {
 
 	public function saveLang (&$errors = array()) {
 
-		$fields = array(
-			'id'=>'id',
-			'project'=>'project',
-			'lang'=>'lang',
-			'cost'=>'cost_lang',
-			'description'=>'description_lang'
-			);
+        $fields = ['id'=>'id', 'project' => 'project', 'lang'=>'lang'];
+        foreach(self::getLangFields() as $key) {
+            $fields[$key] = $key . '_lang';
+        }
 
 		$set = '';
 		$values = array();

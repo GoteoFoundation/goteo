@@ -164,6 +164,7 @@ class TranslateProjectDashboardController extends \Goteo\Controller\Dashboard\Pr
                     ]
             ]);
 
+        $languages = Lang::listAll('name', false);
         $form = $builder->getForm();
         $form->handleRequest($request);
         if ($form->isSubmitted()) {
@@ -183,27 +184,15 @@ class TranslateProjectDashboardController extends \Goteo\Controller\Dashboard\Pr
                 }
 
                 $data = $form->getData();
-                $project->lang_lang = $lang;
-                $project->subtitle_lang = $data['subtitle'];
-                $project->description_lang = $data['description'];
-                $project->media_lang = $data['media'];
-                $project->motivation_lang = $data['motivation'];
-                $project->video_lang = $data['video'];
-                $project->about_lang = $data['about'];
-                $project->goal_lang = $data['goal'];
-                $project->related_lang = $data['related'];
-                $project->social_commitment_description_lang = $data['social_commitment_description'];
-                // $project->keywords_lang = $data['keywords'];
-                $project->keywords_lang = $project->keywords; // Do not translate keywords for the moment
-                $project->contribution_lang = $data['contribution'];
-                if($project->saveLang($errors)) {
+                $data['keywords'] = $project->keywords; // Do not translate keywords for the moment
+                if($project->setLang($lang, $data, $errors)) {
                     Message::info(Text::get('dashboard-translate-project-ok', [
-                        '%ZONE%' => '<strong>' . Text::get('step-3') . '</strong>',
+                        '%ZONE%' => '<strong>' . Text::get('step-main') . '</strong>',
                         '%LANG%' => '<strong><em>' . $languages[$lang] . '</em></strong>'
                     ]));
                     return $this->redirect('/dashboard/project/' . $project->id . '/translate');
                 } else {
-                    Message::error(Text::get('form-sent-error', implode(',',array_map('implode',$errors))));
+                    Message::error(Text::get('form-sent-error', implode(',',array_map('implode', $errors))));
                 }
             } else {
                 Message::error(Text::get('form-has-errors'));
