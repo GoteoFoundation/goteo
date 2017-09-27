@@ -51,7 +51,7 @@ class TranslateProjectDashboardController extends \Goteo\Controller\Dashboard\Pr
             return $this->redirect('/dashboard/project/' . $project->id . '/translate');
         }
 
-        View::getEngine()->useData([
+        $data = [
             'zones' => [
                 // 'profile' => Text::get('step-1'),
                 'overview' => Text::get('step-main'),
@@ -62,8 +62,16 @@ class TranslateProjectDashboardController extends \Goteo\Controller\Dashboard\Pr
             ],
             'languages' => $languages,
             'translated' => array_diff($project->getLangsAvailable(), [$project->lang])
+        ];
+        if($lang_check) {
+            $cost = current($project->costs);
+            $data['percents'] = [
+                'overview' => $project->getLangsPercent($lang_check),
+                'costs' => $cost ? $cost->getLangsGroupPercent($lang_check, ['project']) : 0
+            ];
+        }
 
-        ]);
+        View::getEngine()->useData($data);
         return $project;
     }
 
@@ -81,9 +89,7 @@ class TranslateProjectDashboardController extends \Goteo\Controller\Dashboard\Pr
         $project = $this->validateProject($pid, 'translate');
         if($project instanceOf Response) return $project;
 
-        return $this->viewResponse('dashboard/project/translate/index', [
-            'zones' => null // no tabs here
-        ]);
+        return $this->viewResponse('dashboard/project/translate/index');
 
     }
 

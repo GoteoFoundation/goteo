@@ -6,7 +6,7 @@
   <div class="inner-container">
     <h1><?= $this->text('dashboard-translate-' . ($this->step ? $this->step : 'project')) ?></h1>
 
-    <?= $this->insert('dashboard/project/translate/partials/tabs', ['zones' => $this->zones]) ?>
+    <?= $this->supply('dashboard-translate-tabs', $this->insert('dashboard/project/translate/partials/tabs', ['zones' => $this->zones])) ?>
 
     <?= $this->supply('dashboard-translate-project') ?>
 

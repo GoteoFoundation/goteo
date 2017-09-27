@@ -476,8 +476,41 @@ abstract class Model {
                 }
                 if($total) return 100 * $filled / $total;
             }
-        } catch (\Exception $e) {
-        }
+        } catch (\Exception $e) {}
+        return 0;
+    }
+
+    /**
+     * Returns percent (from 0 to 100) translations
+     * by grouping all items sharing some common keys
+     */
+    public function getLangsGroupPercent($lang, array $keys) {
+        try {
+            $sql = "SELECT * FROM `{$this->Table}_lang` WHERE lang = :lang";
+            $values = [':lang' => $lang];
+            foreach($keys as $key) {
+                $sql .= " AND $key = :$key";
+                $values[":$key"] = $this->{$key};
+            }
+            // die(\sqldbg($sql, $values));
+            if($query = static::query($sql, $values)) {
+                $filled = 0;
+                $total = 0;
+                $skip_keys = array_merge(['id','lang','pending'], $keys);
+                foreach($query->fetchAll(\PDO::FETCH_OBJ) as $ob) {
+                    foreach($ob as $key => $value) {
+                        if(in_array($key, $skip_keys)) continue;
+                        if(($value && $this->$key) || (!$value && !$this->$key)) {
+                            $filled++;
+                        }
+                        // echo "\n$key => [$value]|[{$this->$key}]\n";
+                        $total++;
+                    }
+                }
+                if($total) return 100 * $filled / $total;
+            }
+
+        } catch (\Exception $e) {}
         return 0;
     }
 
@@ -492,8 +525,7 @@ abstract class Model {
             if($query = static::query($sql, $values)) {
                 return $query->fetchObject();
             }
-        } catch (\Exception $e) {
-        }
+        } catch (\Exception $e) {}
         return null;
     }
 

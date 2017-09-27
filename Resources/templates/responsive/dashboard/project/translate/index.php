@@ -1,5 +1,8 @@
 <?php $this->layout('dashboard/project/translate/layout') ?>
 
+<?php $this->section('dashboard-translate-tabs') ?>
+<?php $this->replace() ?>
+
 <?php $this->section('dashboard-translate-project') ?>
 
     <?php if($this->translated): ?>
@@ -9,12 +12,15 @@
                 ]) ?></p>
         <div class="list-group">
         <?php foreach($this->translated as $lang):
-            $percent = $this->project->getLangsPercent($lang);
+            $percent1 = $this->project->getLangsPercent($lang);
+            $cost = current($this->project->costs);
+            $percent2 = $cost ? $cost->getLangsGroupPercent($lang, ['project']) : 0;
         ?>
                 <a class="list-group-item" href="/dashboard/project/<?= $this->project->id ?>/translate/overview/<?= $lang ?>">
                     <i class="icon icon-edit" title="<?= $this->text('regular-edit') ?>"></i>
                     <?= $this->languages[$lang] ?>
-                    <?= $this->percent_badge($percent, $this->text('translator-percent', $percent)) ?>
+                    <?= $this->percent_badge($percent1, $this->text('translator-percent', $percent1)) ?>
+                    <?= $this->percent_badge($percent2, $this->text('translator-percent', $percent2)) ?>
                 </a>
         <?php endforeach ?>
         </div>

@@ -94,12 +94,7 @@
     }
   }
 
-  .fa.fa-2x {
-    width:30px;
-    font-size: 1.8em;
-  }
-
-  .dropdown-menu {
+  .nav-tabs, .dropdown-menu {
     a {
       position: relative;
       .badge {
@@ -107,9 +102,20 @@
         top: 5px;
         right: 5px;
       }
-      &:focus, &:hover {
-        background-color: $background-light;
-      }
+    }
+  }
+  .nav-tabs a .badge {
+    top: 10px;
+    right: 10px;
+  }
+  .fa.fa-2x {
+    width:30px;
+    font-size: 1.8em;
+  }
+
+  .dropdown-menu {
+    a:focus, a:hover {
+      background-color: $background-light;
     }
     > .active {
       > a {
