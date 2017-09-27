@@ -16,6 +16,8 @@
             $percent1 = $this->project->getLangsPercent($lang);
             $cost = current($this->project->costs);
             $percent2 = $cost ? $cost->getLangsGroupPercent($lang, ['project']) : 0;
+            $reward = current($this->project->rewards);
+            $percent3 = $reward ? $reward->getLangsGroupPercent($lang, ['project']) : 0;
         ?>
                 <blockquote>
                     <h4><?= $this->languages[$lang] ?>

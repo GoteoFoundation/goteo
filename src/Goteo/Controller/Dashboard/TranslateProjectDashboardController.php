@@ -45,6 +45,7 @@ class TranslateProjectDashboardController extends \Goteo\Controller\Dashboard\Pr
         $project = parent::validateProject($pid, $section, $lang);
         if(!$project instanceOf Project) return $project;
 
+        $project->rewards = array_merge($project->individual_rewards, $project->social_rewards);
         $languages = Lang::listAll('name', false);
         if($lang_check && !isset($languages[$lang_check])) {
             Message::error(Text::get('translator-lang-not-found'));
@@ -65,9 +66,11 @@ class TranslateProjectDashboardController extends \Goteo\Controller\Dashboard\Pr
         ];
         if($lang_check) {
             $cost = current($project->costs);
+            $reward = current($project->rewards);
             $data['percents'] = [
                 'overview' => $project->getLangsPercent($lang_check),
-                'costs' => $cost ? $cost->getLangsGroupPercent($lang_check, ['project']) : 0
+                'costs' => $cost ? $cost->getLangsGroupPercent($lang_check, ['project']) : 0,
+                'rewards' => $reward ? $reward->getLangsGroupPercent($lang_check, ['project']) : 0
             ];
         }
 

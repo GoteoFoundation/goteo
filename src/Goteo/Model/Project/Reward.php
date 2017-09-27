@@ -34,6 +34,11 @@ class Reward extends \Goteo\Core\Model {
             $amount,
             $units;
 
+    public static function getLangFields() {
+        return ['reward', 'description', 'other'];
+    }
+
+
     public static function get($id) {
         try {
             $query = static::query("SELECT * FROM reward WHERE id = :id", array(':id' => $id));
