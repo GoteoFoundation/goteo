@@ -171,6 +171,9 @@
     border: 0;
     box-shadow: none;
 
+    h3 {
+      margin-top:0;
+    }
     h5 {
       font-weight: 500;
       font-size: $font-size * 0.9;

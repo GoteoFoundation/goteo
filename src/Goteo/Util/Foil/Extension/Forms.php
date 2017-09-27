@@ -32,18 +32,43 @@ class Forms implements ExtensionInterface
     {
         return [
           'form_form' => [$this, 'form'],
+          'form_start' => [$this, 'start'],
+          'form_end' => [$this, 'end'],
+          'form_rest' => [$this, 'rest'],
+          'form_row' => [$this, 'row'],
           'form_widget' => [$this, 'widget'],
+          'form_label' => [$this, 'label'],
 
         ];
     }
 
-    public function form(FormView $formView = null)
+    public function form(FormView $formView = null, array $variables = array())
     {
-        return App::getService('app.forms')->getForm()->form($formView);
+        return App::getService('app.forms')->getForm()->form($formView, $variables);
     }
 
-    public function widget(FormView $formView = null) {
-        return App::getService('app.forms')->getForm()->widget($formView);
+    public function start(FormView $formView = null, array $variables = array()) {
+        return App::getService('app.forms')->getForm()->start($formView, $variables);
+    }
+
+    public function end(FormView $formView = null, array $variables = array()) {
+        return App::getService('app.forms')->getForm()->end($formView, $variables);
+    }
+
+    public function rest(FormView $formView = null, array $variables = array()) {
+        return App::getService('app.forms')->getForm()->rest($formView, $variables);
+    }
+
+    public function row(FormView $formView = null, array $variables = array()) {
+        return App::getService('app.forms')->getForm()->row($formView, $variables);
+    }
+
+    public function widget(FormView $formView = null, array $variables = array()) {
+        return App::getService('app.forms')->getForm()->widget($formView, $variables);
+    }
+
+    public function label(FormView $formView = null, array $variables = array()) {
+        return App::getService('app.forms')->getForm()->label($formView, $variables);
     }
 
 

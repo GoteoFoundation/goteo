@@ -23,6 +23,7 @@ use Goteo\Model\Project;
 use Goteo\Model\Project\Reward;
 use Goteo\Model\Project\Image as ProjectImage;
 use Goteo\Model\Project\Support;
+use Goteo\Model\Project\Cost;
 use Goteo\Model\Blog;
 use Goteo\Model\Blog\Post as BlogPost;
 use Goteo\Model\Message as Comment;
@@ -53,10 +54,10 @@ class TranslateProjectDashboardController extends \Goteo\Controller\Dashboard\Pr
         View::getEngine()->useData([
             'zones' => [
                 // 'profile' => Text::get('step-1'),
-                'overview' => Text::get('step-3'),
+                'overview' => Text::get('step-main'),
                 'costs' => Text::get('step-4'),
                 'rewards' => Text::get('step-5'),
-                'supports' => Text::get('step-6'),
+                // 'supports' => Text::get('step-6'),
                 // 'updates' => Text::get('project-menu-updates')
             ],
             'languages' => $languages,
@@ -147,7 +148,6 @@ class TranslateProjectDashboardController extends \Goteo\Controller\Dashboard\Pr
                 'required' => false,
                 'attr' => ['help' => $project->social_commitment_description, 'rows' => 10]
             ])
-
             ->add('submit', 'submit')
             ->add('remove', 'submit', [
                 'label' => Text::get('translator-delete', $languages[$lang]),
@@ -220,11 +220,81 @@ class TranslateProjectDashboardController extends \Goteo\Controller\Dashboard\Pr
         $project = $this->validateProject($pid, 'translate', null, $lang); // original lang
         if($project instanceOf Response) return $project;
 
-        // $defaults = (array) $
-        $builder = $this->createFormBuilder($defaults);
+        $langs = Lang::listAll('name', false);
+        $languages = array_intersect_key($langs, array_flip($project->getLangsAvailable()));
+        if(!isset($languages[$lang])) {
+            Message::error(Text::get('translator-lang-not-found'));
+            return $this->redirect('/dashboard/project/' . $project->id . '/translate');
+        }
+
+        $builder = $this->createFormBuilder();
+        $costs = [];
+        foreach($project->costs as $cost) {
+            $suffix = "_{$cost->id}";
+            $costs[$cost->id] = $cost;
+            $builder
+                ->add("cost$suffix", 'text', [
+                    'label' => 'costs-field-cost',
+                    'required' => false,
+                ])
+                ->add("description$suffix", 'textarea', [
+                    'label' => 'costs-field-description',
+                    'required' => false,
+                ]);
+        }
+        $builder
+            ->add('submit', 'submit')
+            ->add('remove', 'submit', [
+                'label' => Text::get('translator-delete', $languages[$lang]),
+                'icon_class' => 'fa fa-trash',
+                'attr' => [
+                    'class' => 'pull-right-form hide-form btn btn-danger btn-lg',
+                    'data-confirm' => Text::get('translator-delete-sure', $languages[$lang])
+                    ]
+            ]);
+
         $form = $builder->getForm();
         $form->handleRequest($request);
         if ($form->isSubmitted()) {
+            if($form->isValid()) {
+                $errors = [];
+                $data = $form->getData();
+                // print_r($data);die($form->getClickedButton()->getName());
+
+                $errors = [];
+                foreach($data as $key => $val) {
+                    list($field, $id) = explode('_', $key);
+                    $cost = $costs[$id];
+                    $cost->lang = $lang;
+                    $cost->project = $project->id;
+                    $cost->{$field . '_lang'} = $val;
+                    // Check if we want to remove a translation
+                    if($form->get('remove')->isClicked()) {
+                        if(!$cost->removeLang($lang)) {
+                            $errors[] = "Cost #$cost->id not deleted";
+                        }
+                    } else {
+                        $cost->saveLang($errors);
+                    }
+                }
+                if($errors) {
+                    if($form->get('remove')->isClicked()) {
+                        Message::info(Text::get('translator-deleted-ko', $languages[$lang]));
+                    } else {
+                        Message::error(Text::get('form-sent-error', implode(',',array_map('implode',$errors))));
+                    }
+                } else {
+                    if($form->get('remove')->isClicked()) {
+                        Message::info(Text::get('translator-deleted-ok', $languages[$lang]));
+                    } else {
+                        Message::info(Text::get('dashboard-translate-project-ok', [
+                            '%ZONE%' => '<strong>' . Text::get('step-4') . '</strong>',
+                            '%LANG%' => '<strong><em>' . $languages[$lang] . '</em></strong>'
+                        ]));
+                    }
+                    return $this->redirect('/dashboard/project/' . $project->id . '/translate');
+                }
+            }
         }
 
         return $this->viewResponse('dashboard/project/translate/costs', [
@@ -232,6 +302,8 @@ class TranslateProjectDashboardController extends \Goteo\Controller\Dashboard\Pr
             'step' => 'costs',
             'costs' => $this->project->costs,
             'lang' => $lang,
+            'types' => Cost::types(),
+            'languages' => $languages,
         ]);
 
     }

@@ -240,3 +240,6 @@ dashboard-translate-project-ok: '%ZONE% traduït correctament al %LANG%'
 
 dashboard-project-updates-translate-ok: 'Post %TITLE% traduït correctament al %LANG%'
 dashboard-project-updates-translating-post: 'Estàs traduint aquest post al %LANG%. L''idioma original és el %ORIGINAL%.'
+
+dashboard-translate-overview: 'Traduir les dades principals del projecte'
+dashboard-translate-costs: 'Traduir els costos del projecte'
