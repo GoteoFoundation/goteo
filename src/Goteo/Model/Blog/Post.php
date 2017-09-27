@@ -589,6 +589,10 @@ class Post extends \Goteo\Core\Model {
         }
     }
 
+    public static function getLangFields() {
+        return ['title', 'text', 'media', 'legend'];
+    }
+
     public function saveLang (&$errors = array()) {
 
         $set = '';

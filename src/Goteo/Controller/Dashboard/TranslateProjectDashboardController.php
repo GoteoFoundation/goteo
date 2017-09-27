@@ -89,7 +89,15 @@ class TranslateProjectDashboardController extends \Goteo\Controller\Dashboard\Pr
         $project = $this->validateProject($pid, 'translate');
         if($project instanceOf Response) return $project;
 
-        return $this->viewResponse('dashboard/project/translate/index');
+        $translated = $project->getLangsAvailable();
+        if($cost = current($project->costs)) {
+            $translated = array_merge($translated, $cost->getLangsAvailable());
+        }
+        $translated = array_unique(array_diff($translated, [$project->lang]));
+
+        return $this->viewResponse('dashboard/project/translate/index', [
+            'translated' => $translated
+        ]);
 
     }
 
@@ -215,12 +223,14 @@ class TranslateProjectDashboardController extends \Goteo\Controller\Dashboard\Pr
         $project = $this->validateProject($pid, 'translate', null, $lang); // original lang
         if($project instanceOf Response) return $project;
 
-        $langs = Lang::listAll('name', false);
-        $languages = array_intersect_key($langs, array_flip($project->getLangsAvailable()));
-        if(!isset($languages[$lang])) {
-            Message::error(Text::get('translator-lang-not-found'));
-            return $this->redirect('/dashboard/project/' . $project->id . '/translate');
-        }
+        // $langs = Lang::listAll('name', false);
+        // $languages = array_intersect_key($langs, array_flip($project->getLangsAvailable()));
+        // if(!isset($languages[$lang])) {
+        //     Message::error(Text::get('translator-lang-not-found'));
+        //     return $this->redirect('/dashboard/project/' . $project->id . '/translate');
+        // }
+
+        $languages = Lang::listAll('name', false);
 
         $builder = $this->createFormBuilder();
         $costs = [];
@@ -255,21 +265,17 @@ class TranslateProjectDashboardController extends \Goteo\Controller\Dashboard\Pr
                 $errors = [];
                 $data = $form->getData();
                 // print_r($data);die($form->getClickedButton()->getName());
-
                 $errors = [];
                 foreach($data as $key => $val) {
                     list($field, $id) = explode('_', $key);
                     $cost = $costs[$id];
-                    $cost->lang = $lang;
-                    $cost->project = $project->id;
-                    $cost->{$field . '_lang'} = $val;
                     // Check if we want to remove a translation
                     if($form->get('remove')->isClicked()) {
                         if(!$cost->removeLang($lang)) {
                             $errors[] = "Cost #$cost->id not deleted";
                         }
                     } else {
-                        $cost->saveLang($errors);
+                        $cost->setLang($lang, ['project' => $project->id, $field => $val], $errors);
                     }
                 }
                 if($errors) {

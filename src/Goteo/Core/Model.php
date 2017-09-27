@@ -561,24 +561,27 @@ abstract class Model {
      * Save lang info in a generic way
      */
     public function setLang($lang, $data = [], array $errors = []) {
+
         $fields = static::getLangFields();
         if(!$fields) throw new ModelException('This method requires self::getLangFields() to return the fields to translate');
 
-        $fields[] = 'id';
-        $fields[] = 'lang';
-        $set = [];
-        $values = [':id' => $this->id, ':lang' => $lang];
-        foreach ($fields as $field) {
-            $set[] = "`$field` = :$field ";
-            if(array_key_exists($field, $data)) {
-                $values[":$field"] = $data[$field];
-            } else {
-                $values[":$field"] = $this->{$field};
+        $update = ["`id` = :id", "`lang` = :lang"];
+        $insert = ["`id`" => ":id", "`lang`" => ":lang"];
+        $values[':id'] = $this->id;
+        $values[':lang'] = $lang;
+        foreach ($data as $key => $val) {
+            if(in_array($key, $fields) || isset($this->{$key})) {
+                $values[":$key"] = $val;
+                $update[] = "`$key` = :$key";
+                $insert["`$key`"] = ":$key";
             }
         }
 
         try {
-            $sql = "REPLACE INTO {$this->Table}_lang SET " . implode(',', $set);
+            $sql = "INSERT INTO `{$this->Table}_lang`
+                (" . implode(', ', array_keys($insert)) . ")
+                VALUES (" . implode(', ', $insert) . ")
+                ON DUPLICATE KEY UPDATE " . implode(', ', $update);
             // die(\sqldbg($sql, $values));
             self::query($sql, $values);
 
