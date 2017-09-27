@@ -66,6 +66,9 @@ dashboard-project-updates-noblog: 'No blog was found for this project'
 dashboard-project-updates-nopost: 'Post not found'
 dashboard-project-updates-postcorrupt: 'There is a problem with the post. Please contact us.'
 dashboard-project-updates-saved: 'Post updated correctly'
+dashboard-project-updates-add: 'Add new post'
+dashboard-project-updates-editing: 'Editing post'
+dashboard-project-updates-translating: 'Translating post'
 dashboard-rewards-address: 'Delivery address:'
 dashboard-rewards-all_filter: All
 dashboard-rewards-amount_group: 'Contributions by '
@@ -238,4 +241,6 @@ dashboard-translate-project-empty: 'Not translations yet for this project.'
 dashboard-translate-project-currents: 'The original language of this project is %LANG% and is translated into %NUM% languages:'
 dashboard-translate-project-translating: 'You are translating this project to %LANG%. The original language is %ORIGINAL%.'
 dashboard-translate-project-ok: '%ZONE% successfully translated to %LANG%'
+
+dashboard-project-updates-translate-ok: 'Post %TITLE% successfully translated to %LANG%'
 

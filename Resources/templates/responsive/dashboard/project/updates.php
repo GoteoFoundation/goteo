@@ -4,7 +4,10 @@
 
 <div class="dashboard-content">
   <div class="inner-container">
-    <h2><?= $this->text('dashboard-menu-projects-updates') ?></h2>
+    <h2>
+        <?= $this->text('dashboard-menu-projects-updates') ?>
+        <a href="/dashboard/project/<?= $this->project->id ?>/updates/new" class="pull-right btn btn-cyan"><i class="fa fa-plus"></i> <?= $this->text('form-add-button') ?></a>
+    </h2>
 
     <?php if($this->errorMsg): ?>
         <div class="alert alert-danger"><?= $this->errorMsg ?></div>
@@ -47,7 +50,7 @@
     <?php endif ?>
 
     <p>
-        <a href="#" class="btn btn-lg btn-cyan"><i class="fa fa-plus"></i> <?= $this->text('form-add-button') ?></a>
+        <a href="/dashboard/project/<?= $this->project->id ?>/updates/new" class="btn btn-lg btn-cyan"><i class="fa fa-plus"></i> <?= $this->text('form-add-button') ?></a>
     </p>
 
   </div>

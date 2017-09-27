@@ -78,12 +78,12 @@ $dash->add('dashboard-projects', new Route(
 // Project translate index
 $dash->add('dashboard-project-translate', new Route(
     '/project/{pid}/translate',
-    array('_controller' => 'Goteo\Controller\Dashboard\ProjectDashboardController::translateAction')
+    array('_controller' => 'Goteo\Controller\Dashboard\TranslateProjectDashboardController::translateAction')
 ));
 // Project translate zone
 $dash->add('dashboard-project-translate-zone', new Route(
     '/project/{pid}/translate/{current}/{lang}',
-    array('_controller' => 'Goteo\Controller\Dashboard\ProjectDashboardController::translateZoneAction',
+    array('_controller' => 'Goteo\Controller\Dashboard\TranslateProjectDashboardController::translateZoneAction',
         'current' => null,
         'lang' => null
         )
@@ -102,7 +102,7 @@ $dash->add('dashboard-project-images-redirect', new Route(
         )
 ));
 
-// Project updates editing
+// Project updates editing list
 $dash->add('dashboard-project-updates', new Route(
     '/project/{pid}/updates',
     array('_controller' => 'Goteo\Controller\Dashboard\ProjectDashboardController::updatesAction',
@@ -117,7 +117,7 @@ $dash->add('dashboard-project-updates-redirect', new Route(
 ));
 // New update
 $dash->add('dashboard-project-updates-new', new Route(
-    '/project/{pid}/updates/_',
+    '/project/{pid}/updates/new',
     array('_controller' => 'Goteo\Controller\Dashboard\ProjectDashboardController::updatesEditAction',
         'uid' => null
         )
@@ -126,6 +126,13 @@ $dash->add('dashboard-project-updates-new', new Route(
 $dash->add('dashboard-project-updates-edit', new Route(
     '/project/{pid}/updates/{uid}',
     array('_controller' => 'Goteo\Controller\Dashboard\ProjectDashboardController::updatesEditAction',
+        )
+));
+// Project updates translate
+$dash->add('dashboard-project-updates-translate', new Route(
+    '/project/{pid}/updates/{uid}/{lang}',
+    array('_controller' => 'Goteo\Controller\Dashboard\TranslateProjectDashboardController::updatesTranslateAction',
+        'lang' => null
         )
 ));
 

@@ -54,8 +54,6 @@ class Post extends \Goteo\Core\Model {
      */
     public static function get ($id, $lang = null) {
 
-        $debug = false;
-
         //Obtenemos el idioma de soporte
 
         $lang=self::default_lang_by_id($id, 'post_lang', $lang);
@@ -110,13 +108,8 @@ class Post extends \Goteo\Core\Model {
         $query = static::query($sql, $values);
         $post = $query->fetchObject('\Goteo\Model\Blog\Post');
 
-        if ($debug) var_dump($post);
-
         if(!$post instanceof \Goteo\Model\Blog\Post) {
-
-            if ($debug) die(' no es \Goteo\Model\Blog\Post  ???');
             return false;
-
         }
 
         // autor
