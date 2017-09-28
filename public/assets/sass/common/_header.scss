@@ -35,16 +35,6 @@
         float:left;
     }
 
-
-    .animated {
-        &.slideInRight,&.slideInLeft {
-            @include animation-duration(.4s);
-        }
-        &.foldInUp,&.foldInDown {
-            @include animation-duration(.3s);
-        }
-    }
-
     // Permanent menus
     .navbar-always {
         float:right;

@@ -19,7 +19,9 @@
             <div class="btn-group pull-right">
                 <button class="btn btn-default" data-toggle="modal" data-target="#edit-modal"><i class="icon icon-1x icon-edit"></i> <?= $this->text('regular-edit') ?></button>
                 <button class="btn btn-default delete-support"><i class="icon icon-1x icon-trash"></i> <?= $this->text('regular-delete') ?></button>
-                <!-- TODO: add translate dropdown -->
+                <?php if($this->languages): ?>
+                  <?= $this->insert('dashboard/partials/translate_menu', ['no_title' => true, 'btn_class' => 'btn-default', 'base_link' => '/dashboard/project/' . $this->project->id . '/supports/' . $support->id . '/', 'translated' => $support->getLangsAvailable(), 'percentModel' => $support]) ?>
+                <?php endif ?>
             </div>
             <button class="btn btn-<?= $comments ? 'lilac' : 'default' ?>" data-toggle="collapse"  data-target="#comments-<?= $support->thread ?>"><i class="icon-1x icon icon-partners"></i> <?= $this->text('regular-num-comments', $comments) ?></button>
             <div class="comments collapse" id="comments-<?= $support->thread ?>">
@@ -88,7 +90,7 @@ $(function(){
       }
     });
     $('#edit-modal').on('hidden.bs.modal', function () {
-      $(this).find('input,textarea').val('');
+      $(this).find('input,textarea').not('[type="hidden"]').val('');
     });
 
     $('.delete-support').on('click', function (e) {

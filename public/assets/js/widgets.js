@@ -28,12 +28,12 @@ for the JavaScript code in this page.
 $(function(){
 
    // Project widget flip backside
-    var toggleProjectBackside = function(e) {
+    var toggleFlipWidgetBackside = function(e) {
         e.stopPropagation();
         e.preventDefault();
-        console.log('flip', e);
+        // console.log('flip', e);
         var $that = $(this);
-        $widget = $(this).closest('.project-widget');
+        $widget = $(this).closest('.flip-widget');
         $target = $($that.attr('href'));
         // if($target.length === 0)
         //     $target = $widget.find('.backside');
@@ -45,13 +45,13 @@ $(function(){
                 $target.removeClass('active');
             });
         } else {
-            $('.project-widget .backside.active').animateCss(outAnimation, function(t) {
+            $('.flip-widget .backside.active').animateCss(outAnimation, function(t) {
                 $(this).removeClass('active');
             });
             $target.addClass('active').animateCss(inAnimation);
         }
     };
 
-    $('body').on('click', '.project-widget .flip', toggleProjectBackside);
+    $('body').on('click', '.flip-widget .flip', toggleFlipWidgetBackside);
 
 });

@@ -9,7 +9,7 @@ if($this->admin && !$this->link) $link = '/dashboard' . $link;
 $tagmark = $this->project->getTagmark();
 $call = $this->project->getCall();
 
-?><div class="project-widget normal" id="project-<?= $this->project->id ?>">
+?><div class="project-widget flip-widget normal" id="project-<?= $this->project->id ?>">
 
     <?php if($call): ?>
         <div class="status btn-lilac">
