@@ -204,12 +204,11 @@ div.section.main-slider{
        margin:40px 0 35px 0;
        li{
         font-weight: bold;
-        padding: 0px 15px;
+        padding: 5px 15px;
         cursor: pointer;
         }
         .active{
             background-color: $background-light-green;
-            padding: 5px 15px;
             border-radius: 5px;
             color: #FFF !important;
             cursor: none;
@@ -468,20 +467,47 @@ div.section.matchfunding{
        margin:40px 0 35px 0;
        li{
         font-weight: bold;
-        padding: 0px 15px;
+        padding: 5px 15px;
         cursor: pointer;
         }
         .active{
             background-color: $background-green-owner;
-            padding: 5px 15px;
             border-radius: 5px;
         }
     }
 
     .slider-calls{
-        margin-bottom: 50px;
+        margin-bottom: 60px;
         .widget-slide{
             margin: 0 30px;
+        }
+        .custom-left-arrow{
+            top: 34%;
+            position: absolute;
+            font-size: $font-size*5;
+            left: -3%;
+            color: $background-light-green;
+            cursor: pointer;
+        }
+        .custom-right-arrow{
+            top: 34%;
+            position: absolute;
+            font-size: $font-size*5;
+            right: -3%;
+            color: $background-light-green;
+            cursor: pointer;
+        }
+        .slick-dots{
+            bottom: -40px;
+            li.slick-active button::before{
+                color: $background-dark-lilac;
+            }
+
+            li button::before{
+                color: $color-light-grey;
+                opacity: 1;
+                font-size: 11px;
+            }
         }
     }
     .details-container{

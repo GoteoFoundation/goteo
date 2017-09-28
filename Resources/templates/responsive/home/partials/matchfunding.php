@@ -6,9 +6,6 @@
         <?= $this->text('home-matchfunding-title') ?>
     </h2>
     <ul class="filters list-inline center-block text-center">
-        <li>
-            <?= $this->text('home-matchfunding-all') ?>
-        </li>
         <li class="active" data-status="3">
             <?= $this->text('home-matchfunding-open') ?>
         </li>

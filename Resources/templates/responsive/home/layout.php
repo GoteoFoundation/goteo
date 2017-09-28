@@ -110,6 +110,8 @@ $this->section('content');
               slidesToScroll: 1,
               arrows: true,
               dots: true,
+              prevArrow: '<div class="custom-left-arrow"><span class="fa fa-angle-left"></span><span class="sr-only">Prev</span></div>',
+              nextArrow: '<div class="custom-right-arrow"><span class="fa fa-angle-right"></span><span class="sr-only">Prev</span></div>',
               responsive: [
                 {
                   breakpoint: 768,
@@ -148,14 +150,13 @@ $this->section('content');
           });
 
           $(".auto-update-calls").on('click', ".filters li", function (e) {
-            if($(this).hasClass('active')){
-              $(this).removeClass('active');
-            }
-            else
-            {
-              $(this).addClass('active');
-            }
-
+              if($(this).hasClass('active')){
+                $(this).removeClass('active');
+              }
+              else
+              {
+                $(this).addClass('active');
+              }
             var $filters = $('.auto-update-calls .filters');
             var filters = [];
 
@@ -165,10 +166,12 @@ $this->section('content');
 
             var url = '/home/ajax/calls/filtered';
 
+          $('#calls-container').animateCss('fadeOut');
             $.post(url, { filters: filters }, function(result) {
-                destroySlickCalls()
+                destroySlickCalls();
                 $('#calls-container').html(result.html);
                 initSlickCalls();
+                $('#calls-container').removeClass('fadeOut').animateCss('fadeIn');
             });
 
           });
