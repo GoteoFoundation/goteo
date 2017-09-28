@@ -53,6 +53,6 @@ $(function(){
     };
 
 
-    $('body').on('click', '.call-widget .flip', toggleCallBackside);
+    $('body').on('click', '.flip-widget .flip', toggleFlipWidgetBackside);
 
 });
