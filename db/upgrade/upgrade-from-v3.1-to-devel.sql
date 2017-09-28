@@ -68,3 +68,9 @@ ALTER TABLE `reward` ADD FOREIGN KEY (`project`) REFERENCES `project`(`id`);
 DELETE FROM reward_lang WHERE id NOT IN (SELECT id FROM reward);
 UPDATE reward_lang a JOIN reward b ON a.id=b.id AND a.project != b.project SET a.project = b.project;
 ALTER TABLE `reward_lang` CHANGE `id` `id` BIGINT(20) UNSIGNED NOT NULL, ADD FOREIGN KEY (`id`) REFERENCES `reward`(`id`) ON UPDATE CASCADE ON DELETE CASCADE, ADD FOREIGN KEY (`project`) REFERENCES `project`(`id`) ON UPDATE CASCADE;
+
+
+-- support lang
+DELETE FROM support_lang WHERE id NOT IN (SELECT id FROM support);
+UPDATE support_lang a JOIN support b ON a.id=b.id AND a.project != b.project SET a.project = b.project;
+ALTER TABLE `support_lang` ADD FOREIGN KEY (`project`) REFERENCES `project`(`id`) ON UPDATE CASCADE;

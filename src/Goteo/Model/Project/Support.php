@@ -30,6 +30,11 @@ class Support extends \Goteo\Core\Model {
         return ['support', 'description'];
     }
 
+    public function setLang($lang, $data = [], array &$errors = []) {
+        $data['project'] = $this->project;
+        return parent::setLang($lang, $data, $errors);
+    }
+
  	public static function get ($id) {
         try {
             $query = static::query("SELECT * FROM support WHERE id = :id", array(':id' => $id));
