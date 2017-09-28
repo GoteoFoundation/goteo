@@ -16,12 +16,13 @@
           <div class="panel-body">
             <h3 class="data-support"><?= $support->support ?></h3>
             <p class="data-description"><?= nl2br($support->description) ?></p>
-              <p>
-                <button class="btn pull-right btn-default delete-support"><i class="icon icon-1x icon-trash"></i> <?= $this->text('regular-delete') ?></button>
-                <button class="btn pull-right btn-default" data-toggle="modal" data-target="#edit-modal"><i class="icon icon-1x icon-edit"></i> <?= $this->text('regular-edit') ?></button>
-                <button class="btn btn-<?= $comments ? 'lilac' : 'default' ?>" data-toggle="collapse"  data-target="#comments-<?= $support->thread ?>"><i class="icon-1x icon icon-partners"></i> <?= $this->text('regular-num-comments', $comments) ?></button>
-              </p>
-              <div class="comments collapse" id="comments-<?= $support->thread ?>">
+            <div class="btn-group pull-right">
+                <button class="btn btn-default" data-toggle="modal" data-target="#edit-modal"><i class="icon icon-1x icon-edit"></i> <?= $this->text('regular-edit') ?></button>
+                <button class="btn btn-default delete-support"><i class="icon icon-1x icon-trash"></i> <?= $this->text('regular-delete') ?></button>
+                <!-- TODO: add translate dropdown -->
+            </div>
+            <button class="btn btn-<?= $comments ? 'lilac' : 'default' ?>" data-toggle="collapse"  data-target="#comments-<?= $support->thread ?>"><i class="icon-1x icon icon-partners"></i> <?= $this->text('regular-num-comments', $comments) ?></button>
+            <div class="comments collapse" id="comments-<?= $support->thread ?>">
                 <?php if($comments): ?>
                   <?= $this->insert('dashboard/project/partials/comments/full', [
                         'comments' => $support->getThreadResponses($this->get_user()),
@@ -32,7 +33,7 @@
                 <?php else: ?>
                     <p class="alert alert-danger"><?= $this->text('dashboard-project-support-no-responses') ?></p>
                 <?php endif ?>
-              </div>
+            </div>
           </div>
         </div>
     <?php endforeach ?>

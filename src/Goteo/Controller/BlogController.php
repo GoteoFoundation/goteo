@@ -12,6 +12,7 @@ namespace Goteo\Controller;
 
 use Goteo\Library\Text;
 use Goteo\Application\Message;
+use Goteo\Application\Lang;
 use Goteo\Application\Config;
 use Goteo\Application\Session;
 use Goteo\Model;
@@ -71,7 +72,7 @@ class BlogController extends \Goteo\Core\Controller {
 
         if ($post && empty($blog->posts[$post])) {
             // para ver entradas de novedades de proyecto
-            $blog->posts[$post] = Model\Blog\Post::get($post);
+            $blog->posts[$post] = Model\Blog\Post::get($post, Lang::current());
 
             // si preview
             if (!$blog->posts[$post]->publish &&

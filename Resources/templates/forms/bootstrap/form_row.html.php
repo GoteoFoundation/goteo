@@ -14,6 +14,11 @@ if($type === 'title') {
 
 
     <?= $view['form']->errors($form) ?>
+
+  <?php if($type === 'markdown'): ?>
+      <div class="markdown">
+  <?php endif ?>
+
     <?= $view['form']->widget($form) ?>
 
     <?php if($label_position !== 'right' && $attr['help']): ?>
@@ -26,5 +31,9 @@ if($type === 'title') {
     <?php if($label_position === 'right' && $attr['help']): ?>
         <div class="help-text"><?= $attr['help'] ?></div>
     <?php endif ?>
+
+  <?php if($type === 'markdown'): ?>
+      </div>
+  <?php endif ?>
 
 </div>
