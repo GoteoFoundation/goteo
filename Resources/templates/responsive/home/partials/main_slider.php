@@ -3,12 +3,12 @@
 	<nav>
 		<ul class="list-inline navbar-right hidden-xs">
 			<li>
-				<a href="/about">
+				<a href="#foundation-advantages">
 					<?= $this->text('home-menu-our-foundation') ?>
 				</a>
 			</li>
 			<li>
-				<a href="/discover/calls" >
+				<a href="#matchfunding" >
 					<?= $this->text('home-menu-matchfunding') ?>
 				</a>
 			</li>
