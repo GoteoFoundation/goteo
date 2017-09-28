@@ -1,13 +1,6 @@
 
 /* The side navigation menu */
 #sidebar-menu {
-    // height: 100%; /* 100% Full-height */
-    // width: 0; /* 0 width - change this with JavaScript */
-    // position: fixed; /* Stay in place */
-    // position: absolute;
-    // z-index: 1001; /* Stay on top */
-    // top: 0;
-    // left: 0;
     padding-bottom: 50px;
     overflow-x: hidden; /* Disable horizontal scroll */
     font-size: 16px;
@@ -18,9 +11,6 @@
         background-color: $background-sidebar;
     }
 
-    // @media(min-width: $breakpoint-sm) {
-    //     width: $dashboard-sidebar-width;
-    // }
     li {
       padding: 0 15px;
       background-color: $background-sidebar;
@@ -51,7 +41,6 @@
       }
       &.active,&:hover,&:focus {
         background-color: $background-sidebar-active;
-
         >a, >button {
             border-top-color:transparent;
         }
@@ -59,6 +48,38 @@
             >a, >button {
                 border-top-color:transparent;
             }
+        }
+      }
+      &.sidebar {
+        &.active, &.selected {
+          background-color: $background-sidebar-header;
+        }
+        border-left: 3px solid $color-cyan;
+        >li {
+          padding-left: 12px;
+        }
+      }
+      &.active, &.selected {
+        .submenu {
+          display: block;
+          >li.active {
+            padding-left: 8px;
+            border-left: 3px solid $color-cyan;
+          }
+        }
+      }
+
+      .submenu {
+        margin:0 -15px;
+        display: none;
+        >li {
+          background-color: transparent;
+          &.active,&:hover,&:focus {
+            background-color: $background-sidebar-active;
+          }
+          a {
+            // border-top-color: transparent;
+          }
         }
       }
     }

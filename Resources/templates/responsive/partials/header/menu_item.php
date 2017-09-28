@@ -7,20 +7,38 @@
 ?>
 <?php
     if(is_array($item)):
-        $class = $item['class'];
-        if($item['id'] === $this->active) $class .= ' active';
-        $class = trim($class);
+        $class = explode(' ', $item['class']);
+        $submenu = $item['submenu'];
+        if($item['id'] === $this->active) {
+            $class[] = 'active';
+        } else {
+            if(is_array($submenu)) {
+                if(in_array($this->active, array_column($submenu, 'id'))) {
+                    $class[] = 'active';
+                    $class[] = 'selected';
+                }
+            }
+        }
 ?>
-    <li<?= ( $class ? ' class="' . $class . '"' : '') ?>>
-        <?php if(is_array($item['submenu'])): ?>
+    <li<?= ( $class ? ' class="' . implode(' ', $class) . '"' : '') ?>>
+        <?php if(is_array($submenu)): ?>
             <a class="toggle-submenu" href="#" role="button" aria-haspopup="true" aria-expanded="false">
-                <i class="fa fa-angle-left hidden-xs"></i> &nbsp;
+                <?php if(in_array('main', $class)): ?>
+                  <i class="fa fa-angle-left hidden-xs"></i> &nbsp;
+                <?php endif ?>
                 <?= $item['text'] ?>
-                &nbsp; <i class="fa fa-angle-right visible-xs"></i>
+                <?php if(in_array('main', $class)): ?>
+                  &nbsp; <i class="fa fa-angle-right visible-xs"></i>
+                <?php endif ?>
+                <?php if(in_array('sidebar', $class)): ?>
+                  &nbsp; <i class="fa fa-angle-down"></i>
+                <?php endif ?>
             </a>
             <ul class="nav submenu">
-                <li class="visible-xs"><a href="#" class="back"><i class="fa fa-angle-left"></i> <?= $this->text('regular-cancel') ?></a></li>
-                <?php foreach($item['submenu'] as $l => $i): ?>
+                <?php if($class == 'main'): ?>
+                    <li class="visible-xs"><a href="#" class="back"><i class="fa fa-angle-left"></i> <?= $this->text('regular-cancel') ?></a></li>
+                <?php endif ?>
+                <?php foreach($submenu as $l => $i): ?>
                     <?= $this->insert('partials/header/menu_item', ['link' => $l, 'item' => $i]) ?>
                 <?php endforeach ?>
             </ul>
