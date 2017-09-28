@@ -60,3 +60,11 @@ ALTER TABLE `cost` ADD FOREIGN KEY (`project`) REFERENCES `project`(`id`);
 DELETE FROM cost_lang WHERE id NOT IN (SELECT id FROM cost);
 UPDATE cost_lang a JOIN cost b ON a.id=b.id AND a.project != b.project SET a.project = b.project;
 ALTER TABLE `cost_lang` CHANGE `id` `id` BIGINT(20) UNSIGNED NOT NULL, ADD FOREIGN KEY (`id`) REFERENCES `cost`(`id`) ON UPDATE CASCADE ON DELETE CASCADE, ADD FOREIGN KEY (`project`) REFERENCES `project`(`id`) ON UPDATE CASCADE;
+
+-- rewards constrains
+DELETE FROM reward WHERE project NOT IN (SELECT id FROM project);
+ALTER TABLE `reward` ADD FOREIGN KEY (`project`) REFERENCES `project`(`id`);
+
+DELETE FROM reward_lang WHERE id NOT IN (SELECT id FROM reward);
+UPDATE reward_lang a JOIN reward b ON a.id=b.id AND a.project != b.project SET a.project = b.project;
+ALTER TABLE `reward_lang` CHANGE `id` `id` BIGINT(20) UNSIGNED NOT NULL, ADD FOREIGN KEY (`id`) REFERENCES `reward`(`id`) ON UPDATE CASCADE ON DELETE CASCADE, ADD FOREIGN KEY (`project`) REFERENCES `project`(`id`) ON UPDATE CASCADE;

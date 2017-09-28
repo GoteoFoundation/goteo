@@ -26,6 +26,10 @@ class Support extends \Goteo\Core\Model {
         $total_thread_responses = [],
         $thread;
 
+    public static function getLangFields() {
+        return ['support', 'description'];
+    }
+
  	public static function get ($id) {
         try {
             $query = static::query("SELECT * FROM support WHERE id = :id", array(':id' => $id));

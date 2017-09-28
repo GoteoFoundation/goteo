@@ -45,6 +45,7 @@ class TranslateProjectDashboardController extends \Goteo\Controller\Dashboard\Pr
         $project = parent::validateProject($pid, $section, $lang);
         if(!$project instanceOf Project) return $project;
 
+        $project->rewards = array_merge($project->individual_rewards, $project->social_rewards);
         $languages = Lang::listAll('name', false);
         if($lang_check && !isset($languages[$lang_check])) {
             Message::error(Text::get('translator-lang-not-found'));
@@ -65,9 +66,11 @@ class TranslateProjectDashboardController extends \Goteo\Controller\Dashboard\Pr
         ];
         if($lang_check) {
             $cost = current($project->costs);
+            $reward = current($project->rewards);
             $data['percents'] = [
                 'overview' => $project->getLangsPercent($lang_check),
-                'costs' => $cost ? $cost->getLangsGroupPercent($lang_check, ['project']) : 0
+                'costs' => $cost ? $cost->getLangsGroupPercent($lang_check, ['project']) : 0,
+                'rewards' => $reward ? $reward->getLangsGroupPercent($lang_check, ['project']) : 0
             ];
         }
 
@@ -89,7 +92,15 @@ class TranslateProjectDashboardController extends \Goteo\Controller\Dashboard\Pr
         $project = $this->validateProject($pid, 'translate');
         if($project instanceOf Response) return $project;
 
-        return $this->viewResponse('dashboard/project/translate/index');
+        $translated = $project->getLangsAvailable();
+        if($cost = current($project->costs)) {
+            $translated = array_merge($translated, $cost->getLangsAvailable());
+        }
+        $translated = array_unique(array_diff($translated, [$project->lang]));
+
+        return $this->viewResponse('dashboard/project/translate/index', [
+            'translated' => $translated
+        ]);
 
     }
 
@@ -164,6 +175,7 @@ class TranslateProjectDashboardController extends \Goteo\Controller\Dashboard\Pr
                     ]
             ]);
 
+        $languages = Lang::listAll('name', false);
         $form = $builder->getForm();
         $form->handleRequest($request);
         if ($form->isSubmitted()) {
@@ -183,27 +195,15 @@ class TranslateProjectDashboardController extends \Goteo\Controller\Dashboard\Pr
                 }
 
                 $data = $form->getData();
-                $project->lang_lang = $lang;
-                $project->subtitle_lang = $data['subtitle'];
-                $project->description_lang = $data['description'];
-                $project->media_lang = $data['media'];
-                $project->motivation_lang = $data['motivation'];
-                $project->video_lang = $data['video'];
-                $project->about_lang = $data['about'];
-                $project->goal_lang = $data['goal'];
-                $project->related_lang = $data['related'];
-                $project->social_commitment_description_lang = $data['social_commitment_description'];
-                // $project->keywords_lang = $data['keywords'];
-                $project->keywords_lang = $project->keywords; // Do not translate keywords for the moment
-                $project->contribution_lang = $data['contribution'];
-                if($project->saveLang($errors)) {
+                $data['keywords'] = $project->keywords; // Do not translate keywords for the moment
+                if($project->setLang($lang, $data, $errors)) {
                     Message::info(Text::get('dashboard-translate-project-ok', [
-                        '%ZONE%' => '<strong>' . Text::get('step-3') . '</strong>',
+                        '%ZONE%' => '<strong>' . Text::get('step-main') . '</strong>',
                         '%LANG%' => '<strong><em>' . $languages[$lang] . '</em></strong>'
                     ]));
                     return $this->redirect('/dashboard/project/' . $project->id . '/translate');
                 } else {
-                    Message::error(Text::get('form-sent-error', implode(',',array_map('implode',$errors))));
+                    Message::error(Text::get('form-sent-error', implode(',',array_map('implode', $errors))));
                 }
             } else {
                 Message::error(Text::get('form-has-errors'));
@@ -226,12 +226,14 @@ class TranslateProjectDashboardController extends \Goteo\Controller\Dashboard\Pr
         $project = $this->validateProject($pid, 'translate', null, $lang); // original lang
         if($project instanceOf Response) return $project;
 
-        $langs = Lang::listAll('name', false);
-        $languages = array_intersect_key($langs, array_flip($project->getLangsAvailable()));
-        if(!isset($languages[$lang])) {
-            Message::error(Text::get('translator-lang-not-found'));
-            return $this->redirect('/dashboard/project/' . $project->id . '/translate');
-        }
+        // $langs = Lang::listAll('name', false);
+        // $languages = array_intersect_key($langs, array_flip($project->getLangsAvailable()));
+        // if(!isset($languages[$lang])) {
+        //     Message::error(Text::get('translator-lang-not-found'));
+        //     return $this->redirect('/dashboard/project/' . $project->id . '/translate');
+        // }
+
+        $languages = Lang::listAll('name', false);
 
         $builder = $this->createFormBuilder();
         $costs = [];
@@ -266,21 +268,17 @@ class TranslateProjectDashboardController extends \Goteo\Controller\Dashboard\Pr
                 $errors = [];
                 $data = $form->getData();
                 // print_r($data);die($form->getClickedButton()->getName());
-
                 $errors = [];
                 foreach($data as $key => $val) {
                     list($field, $id) = explode('_', $key);
                     $cost = $costs[$id];
-                    $cost->lang = $lang;
-                    $cost->project = $project->id;
-                    $cost->{$field . '_lang'} = $val;
                     // Check if we want to remove a translation
                     if($form->get('remove')->isClicked()) {
                         if(!$cost->removeLang($lang)) {
                             $errors[] = "Cost #$cost->id not deleted";
                         }
                     } else {
-                        $cost->saveLang($errors);
+                        $cost->setLang($lang, ['project' => $project->id, $field => $val], $errors);
                     }
                 }
                 if($errors) {

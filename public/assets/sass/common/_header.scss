@@ -35,33 +35,6 @@
         float:left;
     }
 
-
-    .animated {
-        &.flipInY,&.flipOutY {
-            @include animation-duration(.3s);
-        }
-        &.fadeInDown,&.fadeOutUp,&.fadeInRight,&.fadeOutLeft {
-            @include animation-duration(.5s);
-        }
-        &.slideInRight,&.slideInLeft {
-            @include animation-duration(.5s);
-        }
-    }
-
-    @keyframes flipInY {
-      from {
-        @include transform(perspective(400px) rotate3d(0, 1, 0, -90deg));
-        @include animation-timing-function(ease-in);
-        opacity: 0;
-      }
-      60% {
-        @include transform(perspective(400px) rotate3d(0, 1, 0, -10deg));
-        opacity: 1;
-      }
-      to {
-        @include transform(perspective(400px));
-      }
-    }
     // Permanent menus
     .navbar-always {
         float:right;
