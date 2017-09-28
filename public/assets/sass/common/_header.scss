@@ -92,6 +92,8 @@
             padding:0;
             .show-menu,.close-menu {
                 display: none;
+                width: 56px;
+                height: 61px;
                 &.active {
                     display: block;
                 }

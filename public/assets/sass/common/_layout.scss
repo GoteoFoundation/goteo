@@ -27,14 +27,11 @@ body {
         margin: 0;
         width: 0;
         background-color: rgba(0,0,0,0);
-        @include transition(background-color .5s, width .5s);
-        @include animation(sidebar-fade-back .5s);
         .sidebar-wrap {
-          @include animation(sidebar-width-back .5s);
-          height: 100%;
+          position: relative;
           overflow-x: hidden;
-          @include transition(width .5s);
           width: 0;
+          min-height: 100%;
         }
       }
       #main {
@@ -45,11 +42,13 @@ body {
               width: $dashboard-sidebar-width;
               background-color: rgba(0,0,0,0.2);
               .sidebar-wrap {
+                // height: 100%;
                 width: 100%;
               }
           }
           #main {
               width: $dashboard-main-width;
+              width: calc(100% - #{$dashboard-sidebar-width});
           }
       }
       @media(max-width: $breakpoint-sm - 1) {
@@ -69,9 +68,7 @@ body {
         #sidebar-menu {
           width: 100%;
           background-color: rgba(0,0,0,0.2);
-          @include animation(sidebar-fade .5s);
           .sidebar-wrap {
-            @include animation(sidebar-width .5s);
             width: $dashboard-sidebar-width;
           }
         }
@@ -94,26 +91,6 @@ body {
     }
   }
 
-  @include keyframes(sidebar-fade) {
-      0% { background-color: rgba(0,0,0,0); width: 100%; }
-      100% { background-color: rgba(0,0,0,0.2); width: 100%; }
-  }
-
-  @include keyframes(sidebar-fade-back) {
-      100% { background-color: rgba(0,0,0,0); width: 100%; }
-      0% { background-color: rgba(0,0,0,0.2); width: 100%; }
-  }
-
-  @include keyframes(sidebar-width) {
-      0% { width: 0; }
-      100% { width: $dashboard-sidebar-width; }
-  }
-
-  @include keyframes(sidebar-width-back) {
-      100% { width: 0; }
-      0% { width: $dashboard-sidebar-width; }
-  }
-
   @include keyframes(blink) {
       @include blink-function();
   }
@@ -122,7 +99,6 @@ body {
     position: fixed;
     top: 70px;
     left: 0;
-    @include transition(left .5s);
     z-index: 1001;
     background-color: $background-sidebar-header;
     color: $color-white;
