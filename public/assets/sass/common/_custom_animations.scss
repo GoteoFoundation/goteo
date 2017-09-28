@@ -5,10 +5,11 @@
 @keyframes foldInUp {
   from {
     opacity: 0;
-    @include transform(scale(1, 0) translateY(-100%));
+    @include transform(scale(1, 0));
   }
-  55% {opacity: 1;}
+  80% {opacity: 0.5;}
   to {
+    opacity: 1;
     @include transform(none);
   }
 }
@@ -16,7 +17,7 @@
 .foldInUp {
   @include animation-name(foldInUp);
   @include animation-timing-function(ease-out);
-  @include transform-origin(top);
+  @include transform-origin(top, left);
 }
 
 @keyframes foldOutUp {
@@ -24,15 +25,17 @@
     opacity: 1;
     @include transform(none);
   }
-  55% {opacity: 1;}
+  60% {
+    opacity: 0;
+  }
   to {
     opacity: 0;
-    @include transform(scale(1, 0) translateY(-100%));
+    @include transform(scale(1, 0));
   }
 }
 
 .foldOutUp {
   @include animation-name(foldOutUp);
   @include animation-timing-function(ease-out);
-  @include transform-origin(top);
+  @include transform-origin(top, left);
 }
