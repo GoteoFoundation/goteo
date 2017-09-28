@@ -17,13 +17,13 @@
             <h3 class="data-support"><?= $support->support ?></h3>
             <p class="data-description"><?= nl2br($support->description) ?></p>
             <div class="btn-group pull-right">
-                <button class="btn btn-default" data-toggle="modal" data-target="#edit-modal"><i class="icon icon-1x icon-edit"></i> <?= $this->text('regular-edit') ?></button>
-                <button class="btn btn-default delete-support"><i class="icon icon-1x icon-trash"></i> <?= $this->text('regular-delete') ?></button>
+                <button class="btn btn-default" data-toggle="modal" data-target="#edit-modal"><i class="icon icon-edit"></i> <?= $this->text('regular-edit') ?></button>
+                <button class="btn btn-default delete-support"><i class="icon icon-trash"></i> <?= $this->text('regular-delete') ?></button>
                 <?php if($this->languages): ?>
                   <?= $this->insert('dashboard/partials/translate_menu', ['no_title' => true, 'btn_class' => 'btn-default', 'base_link' => '/dashboard/project/' . $this->project->id . '/supports/' . $support->id . '/', 'translated' => $support->getLangsAvailable(), 'percentModel' => $support]) ?>
                 <?php endif ?>
             </div>
-            <button class="btn btn-<?= $comments ? 'lilac' : 'default' ?>" data-toggle="collapse"  data-target="#comments-<?= $support->thread ?>"><i class="icon-1x icon icon-partners"></i> <?= $this->text('regular-num-comments', $comments) ?></button>
+            <button class="btn btn-<?= $comments ? 'lilac' : 'default' ?>" data-toggle="collapse"  data-target="#comments-<?= $support->thread ?>"><i class="icon icon-partners"></i> <?= $this->text('regular-num-comments', $comments) ?></button>
             <div class="comments collapse" id="comments-<?= $support->thread ?>">
                 <?php if($comments): ?>
                   <?= $this->insert('dashboard/project/partials/comments/full', [

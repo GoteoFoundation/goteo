@@ -169,8 +169,9 @@ class TranslateProjectDashboardController extends \Goteo\Controller\Dashboard\Pr
             ->add('remove', 'submit', [
                 'label' => Text::get('translator-delete', $languages[$lang]),
                 'icon_class' => 'fa fa-trash',
+                'span' => 'hidden-xs',
                 'attr' => [
-                    'class' => 'pull-right-form hide-form btn btn-danger btn-lg',
+                    'class' => 'pull-right-form btn btn-default btn-lg',
                     'data-confirm' => Text::get('translator-delete-sure', $languages[$lang])
                     ]
             ]);
@@ -255,8 +256,9 @@ class TranslateProjectDashboardController extends \Goteo\Controller\Dashboard\Pr
             ->add('remove', 'submit', [
                 'label' => Text::get('translator-delete', $languages[$lang]),
                 'icon_class' => 'fa fa-trash',
+                'span' => 'hidden-xs',
                 'attr' => [
-                    'class' => 'pull-right-form hide-form btn btn-danger btn-lg',
+                    'class' => 'pull-right-form btn btn-default btn-lg',
                     'data-confirm' => Text::get('translator-delete-sure', $languages[$lang])
                     ]
             ]);
@@ -362,8 +364,9 @@ class TranslateProjectDashboardController extends \Goteo\Controller\Dashboard\Pr
             ->add('remove', 'submit', [
                 'label' => Text::get('translator-delete', $languages[$lang]),
                 'icon_class' => 'fa fa-trash',
+                'span' => 'hidden-xs',
                 'attr' => [
-                    'class' => 'pull-right-form hide-form btn btn-danger btn-lg',
+                    'class' => 'pull-right-form btn btn-default btn-lg',
                     'data-confirm' => Text::get('translator-delete-sure', $languages[$lang])
                     ]
             ]);
@@ -457,8 +460,9 @@ class TranslateProjectDashboardController extends \Goteo\Controller\Dashboard\Pr
             ->add('remove', 'submit', [
                 'label' => Text::get('translator-delete', $languages[$lang]),
                 'icon_class' => 'fa fa-trash',
+                'span' => 'hidden-xs',
                 'attr' => [
-                    'class' => 'pull-right-form hide-form btn btn-danger btn-lg',
+                    'class' => 'pull-right-form btn btn-default btn-lg',
                     'data-confirm' => Text::get('translator-delete-sure', $languages[$lang])
                     ]
             ])
