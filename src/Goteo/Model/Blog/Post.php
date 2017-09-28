@@ -54,11 +54,12 @@ class Post extends \Goteo\Core\Model {
      */
     public static function get ($id, $lang = null) {
 
-        $debug = false;
+        // This model does not automaticalley request translation
+        // support language only if requested
+        // That's because Projects can be in any custom language and its
+        // corresponding blog will match the same language as main
 
-        //Obtenemos el idioma de soporte
-
-        $lang=self::default_lang_by_id($id, 'post_lang', $lang);
+        if($lang) $lang = self::default_lang_by_id($id, 'post_lang', $lang);
 
         $sql = "
             SELECT
@@ -110,13 +111,8 @@ class Post extends \Goteo\Core\Model {
         $query = static::query($sql, $values);
         $post = $query->fetchObject('\Goteo\Model\Blog\Post');
 
-        if ($debug) var_dump($post);
-
         if(!$post instanceof \Goteo\Model\Blog\Post) {
-
-            if ($debug) die(' no es \Goteo\Model\Blog\Post  ???');
             return false;
-
         }
 
         // autor
@@ -591,6 +587,10 @@ class Post extends \Goteo\Core\Model {
             $errors[] = $e->getMessage();
             return false;
         }
+    }
+
+    public static function getLangFields() {
+        return ['title', 'text', 'media', 'legend'];
     }
 
     public function saveLang (&$errors = array()) {

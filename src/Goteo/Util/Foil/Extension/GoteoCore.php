@@ -73,6 +73,7 @@ class GoteoCore implements ExtensionInterface
           'is_ajax' => [$this, 'is_ajax'],
           'is_pronto' => [$this, 'is_pronto'],
           'get_currency' => [$this, 'get_currency'],
+          'asset' => [$this, 'asset'],
           'debug' => [$this, 'debug'],
 
         ];
@@ -81,6 +82,10 @@ class GoteoCore implements ExtensionInterface
     public function debug()
     {
         return App::debug();
+    }
+
+    public function asset($asset) {
+        return SRC_URL . '/assets/' . $asset;
     }
 
     public function messages($autoexpire = true)

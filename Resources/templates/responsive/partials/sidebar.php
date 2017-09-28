@@ -21,8 +21,9 @@
         </ul>
       <?php endif ?>
 
-    <div class="sidebar-footer">
-      <?= $this->supply('sidebar-footer') ?>
+      <div class="sidebar-footer">
+        <?= $this->supply('sidebar-footer') ?>
+      </div>
     </div>
 
   </nav>

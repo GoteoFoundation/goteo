@@ -34,6 +34,7 @@ class MarkdownType extends TextareaType
             $converter = new HtmlConverter();
             $view->vars['value'] = $converter->convert($view->vars['value']);
         }
+        $view->vars['type'] = 'markdown';
     }
 
     /**

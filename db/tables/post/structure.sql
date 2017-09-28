@@ -41,3 +41,8 @@ ALTER TABLE `post` ADD COLUMN `num_comments` INT UNSIGNED NULL COMMENT 'Número 
 
 -- depreacted gallery field
 ALTER TABLE `post` DROP COLUMN `gallery`;
+
+-- constains
+DELETE FROM post WHERE blog NOT IN (SELECT id FROM blog);
+ALTER TABLE `post` ADD CONSTRAINT `post_ibfk_1` FOREIGN KEY (`blog`) REFERENCES `blog`(`id`);
+

@@ -1695,27 +1695,20 @@ namespace Goteo\Model {
             }
         }
 
+        public static function getLangFields() {
+            return ['subtitle', 'description', 'motivation', 'video', 'about', 'goal', 'related', 'reward', 'keywords', 'media', 'social_commitment_description'];
+        }
+
         /*
          * @return: boolean
          */
         public function saveLang (&$errors = array()) {
 
             try {
-                $fields = array(
-                    'id'=>'id',
-                    'lang'=>'lang_lang',
-                    'subtitle'=>'subtitle_lang',
-                    'description'=>'description_lang',
-                    'motivation'=>'motivation_lang',
-                    'video'=>'video_lang',
-                    'about'=>'about_lang',
-                    'goal'=>'goal_lang',
-                    'related'=>'related_lang',
-                    'reward'=>'reward_lang',
-                    'keywords'=>'keywords_lang',
-                    'media'=>'media_lang',
-                    'social_commitment_description'=>'social_commitment_description_lang'
-                    );
+                $fields = ['id'=>'id', 'lang'=>'lang_lang'];
+                foreach(self::getLangFields() as $key) {
+                    $fields[$key] = $key . '_lang';
+                }
 
                 $set = '';
                 $values = array();
