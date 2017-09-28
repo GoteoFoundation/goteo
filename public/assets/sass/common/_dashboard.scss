@@ -186,7 +186,14 @@
     }
 
     .panel-body {
-      background: $background-light-body;
+      &.lilac {
+        background-color: $background-lighter-lilac;
+        // Form tweack
+        .input-wrap {
+          background-color: $background-lighter-lilac;
+        }
+      }
+      background-color: $background-light-body;
       border-radius: 5px;
     }
     .widget-preview {

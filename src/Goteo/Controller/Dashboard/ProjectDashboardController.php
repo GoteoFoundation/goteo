@@ -78,6 +78,7 @@ class ProjectDashboardController extends \Goteo\Core\Controller {
     protected function validateProject($pid = null, $section = 'summary', $lang = null) {
 
         // Old Compatibility with session value
+        // TODO: remove this when legacy is removed
         if(!$pid) {
             $pid = Session::get('project');
 
@@ -92,6 +93,7 @@ class ProjectDashboardController extends \Goteo\Core\Controller {
         }
         // Get project
         $this->project = Project::get( $pid, $lang );
+        // TODO: implement translation permissions
         if(!$this->project instanceOf Project || !$this->project->userCanEdit($this->user)) {
             throw new ControllerAccessDeniedException(Text::get('user-login-required-access'));
         }

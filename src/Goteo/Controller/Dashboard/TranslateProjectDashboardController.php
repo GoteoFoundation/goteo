@@ -20,10 +20,10 @@ use Goteo\Application\Message;
 use Goteo\Application\Lang;
 use Goteo\Model\Invest;
 use Goteo\Model\Project;
-use Goteo\Model\Project\Reward;
 use Goteo\Model\Project\Image as ProjectImage;
 use Goteo\Model\Project\Support;
 use Goteo\Model\Project\Cost;
+use Goteo\Model\Project\Reward;
 use Goteo\Model\Blog;
 use Goteo\Model\Blog\Post as BlogPost;
 use Goteo\Model\Message as Comment;
@@ -309,6 +309,113 @@ class TranslateProjectDashboardController extends \Goteo\Controller\Dashboard\Pr
             'costs' => $this->project->costs,
             'lang' => $lang,
             'types' => Cost::types(),
+            'languages' => $languages,
+        ]);
+
+    }
+
+    /**
+     * Project costs translator
+     */
+    public function rewardsTranslateAction($pid, $lang = null, Request $request) {
+
+        $project = $this->validateProject($pid, 'translate', null, $lang); // original lang
+        if($project instanceOf Response) return $project;
+
+        // $langs = Lang::listAll('name', false);
+        // $languages = array_intersect_key($langs, array_flip($project->getLangsAvailable()));
+        // if(!isset($languages[$lang])) {
+        //     Message::error(Text::get('translator-lang-not-found'));
+        //     return $this->redirect('/dashboard/project/' . $project->id . '/translate');
+        // }
+
+        $languages = Lang::listAll('name', false);
+
+        $builder = $this->createFormBuilder();
+        $rewards = [];
+        foreach($project->individual_rewards as $reward) {
+            $suffix = "_{$reward->id}";
+            $rewards[$reward->id] = $reward;
+            $builder
+                ->add("reward$suffix", 'text', [
+                    'label' => 'rewards-field-individual_reward-reward',
+                    'required' => false,
+                ])
+                ->add("description$suffix", 'textarea', [
+                    'label' => 'rewards-field-individual_reward-description',
+                    'required' => false,
+                ]);
+        }
+        foreach($project->social_rewards as $reward) {
+            $suffix = "_{$reward->id}";
+            $rewards[$reward->id] = $reward;
+            $builder
+                ->add("reward$suffix", 'text', [
+                    'label' => 'rewards-field-social_reward-reward',
+                    'required' => false,
+                ])
+                ->add("description$suffix", 'textarea', [
+                    'label' => 'rewards-field-social_reward-description',
+                    'required' => false,
+                ]);
+        }
+        $builder
+            ->add('submit', 'submit')
+            ->add('remove', 'submit', [
+                'label' => Text::get('translator-delete', $languages[$lang]),
+                'icon_class' => 'fa fa-trash',
+                'attr' => [
+                    'class' => 'pull-right-form hide-form btn btn-danger btn-lg',
+                    'data-confirm' => Text::get('translator-delete-sure', $languages[$lang])
+                    ]
+            ]);
+
+        $form = $builder->getForm();
+        $form->handleRequest($request);
+        if ($form->isSubmitted()) {
+            if($form->isValid()) {
+                $errors = [];
+                $data = $form->getData();
+                // print_r($data);die($form->getClickedButton()->getName());
+                $errors = [];
+                foreach($data as $key => $val) {
+                    list($field, $id) = explode('_', $key);
+                    $reward = $rewards[$id];
+                    // Check if we want to remove a translation
+                    if($form->get('remove')->isClicked()) {
+                        if(!$reward->removeLang($lang)) {
+                            $errors[] = "Reward #$reward->id not deleted";
+                        }
+                    } else {
+                        $reward->setLang($lang, ['project' => $project->id, $field => $val], $errors);
+                    }
+                }
+                if($errors) {
+                    if($form->get('remove')->isClicked()) {
+                        Message::info(Text::get('translator-deleted-ko', $languages[$lang]));
+                    } else {
+                        Message::error(Text::get('form-sent-error', implode(',',array_map('implode',$errors))));
+                    }
+                } else {
+                    if($form->get('remove')->isClicked()) {
+                        Message::info(Text::get('translator-deleted-ok', $languages[$lang]));
+                    } else {
+                        Message::info(Text::get('dashboard-translate-project-ok', [
+                            '%ZONE%' => '<strong>' . Text::get('step-5') . '</strong>',
+                            '%LANG%' => '<strong><em>' . $languages[$lang] . '</em></strong>'
+                        ]));
+                    }
+                    return $this->redirect('/dashboard/project/' . $project->id . '/translate');
+                }
+            }
+        }
+
+        return $this->viewResponse('dashboard/project/translate/rewards', [
+            'form' => $form->createView(),
+            'step' => 'rewards',
+            'rewards' => $this->project->individual_rewards,
+            'social' => $this->project->social_rewards,
+            'lang' => $lang,
             'languages' => $languages,
         ]);
 
