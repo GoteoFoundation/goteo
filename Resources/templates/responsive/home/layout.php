@@ -103,56 +103,36 @@ $this->section('content');
             setSlideVisibility();
           });
 
-          $('.slider-calls').slick({
-            infinite: true,
-            slidesToShow: 3,
-            slidesToScroll: 1,
-            arrows: true,
-            dots: true,
-            responsive: [
-              {
-                breakpoint: 768,
-                settings: {
-                  slidesToShow: 2,
-                }
-              },
-              {
-                breakpoint: 500,
-                settings: {
-                  slidesToShow: 1,
-                }
-              }]    
+          function initSlickCalls() {
+            $('.slider-calls').slick({
+              infinite: true,
+              slidesToShow: 3,
+              slidesToScroll: 1,
+              arrows: true,
+              dots: true,
+              responsive: [
+                {
+                  breakpoint: 768,
+                  settings: {
+                    slidesToShow: 2,
+                  }
+                },
+                {
+                  breakpoint: 500,
+                  settings: {
+                    slidesToShow: 1,
+                  }
+                }]    
             });
+          }
 
+          function destroySlickCalls() {
+            if ($('.slider-calls').hasClass('slick-initialized')) {
+              $('.slider-calls').slick('destroy');
+            }      
+          }
 
-
-
-          /*$('.slider-projects').slick({
-            slidesToShow: 3,
-            slidesToScroll: 0,
-            dots: false,
-            centerMode: true,
-            focusOnSelect: true,
-            infinite: false,
-            responsive: [
-              {
-                breakpoint: 768,
-                settings: {
-                  arrows: false,
-                  centerMode: true,
-                  slidesToShow: 2
-                }
-              },
-              {
-                breakpoint: 480,
-                settings: {
-                  arrows: false,
-                  centerMode: true,
-                  slidesToShow: 1
-                }
-              }
-            ]
-          });*/
+          initSlickCalls();
 
           $('a[href="#search"]').on('click', function(event) {
               event.preventDefault();
@@ -176,24 +156,21 @@ $this->section('content');
               $(this).addClass('active');
             }
 
-            $filters.find('.auto-update-calls li .active').each(function(){
+            var $filters = $('.auto-update-calls .filters');
+            var filters = [];
+
+            $filters.find('li.active').each(function(){
               filters.push($(this).data('status'));
             });
-            /*var value = $(this).is(":checked") ? 1 : 0;
-            var id = $(this).attr('id');
-            var $parent = $(this).closest('.auto-update-projects');
-            var $button = $parent.find('.more-projects-button');
-            var url = $parent.data('url');
-            var limit = $parent.data('limit') || 6;
 
-            $.post(url + '?' + $.param({ limit: limit }), { 'id' : id, 'value' : value  }, function(result) {
-                if((result.offset + result.limit) >= result.total) {
-                    $button.addClass('hidden');
-                } else {
-                    $button.removeClass('hidden');
-                }
-                $parent.contents('.elements-container').html(result.html);
-            });*/
+            var url = '/home/ajax/calls/filtered';
+
+            $.post(url, { filters: filters }, function(result) {
+                destroySlickCalls()
+                $('#calls-container').html(result.html);
+                initSlickCalls();
+            });
+
           });
           
           

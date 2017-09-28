@@ -20,18 +20,10 @@
         </li>
     </ul>
     
-    <div class="container">
-        <?php if($this->calls): ?>
-            <div class="slider slider-calls">
-                <?php foreach ($this->calls as $call) : ?>
-                    <div class="widget-slide">
-                        <?= $this->insert('call/widgets/normal', [
-                            'call' => $call
-                            ]) ?>
-                    </div>
-                <?php endforeach ?>
-            </div>
-        <?php endif ?>
+    <div class="container" id="calls-container">
+        <?= $this->insert('home/partials/calls_list', [
+            'calls' => $this->calls
+        ]) ?>
     </div>
 
 
