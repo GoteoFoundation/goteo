@@ -61,7 +61,7 @@ div.section.main-slider{
 
 .fade{
      visibility:hidden;
-     opacity:0;  
+     opacity:0;
      transition: opacity 1s;
 }
 
@@ -76,7 +76,7 @@ div.section.main-slider{
 
 .fade .item:first-child{
     display:block; visibility:hidden;
-} 
+}
 
 .fade.slick-initialized .item{
     display:block;visibility:visible!important;
@@ -620,7 +620,6 @@ body.home.has-sidebar {
         width: 100%;
     }
     #sidebar-menu-toggle {
-        @include transition(none);
         display: block !important;
         background: $color-white;
         color: $color-light-green;
@@ -632,27 +631,7 @@ body.home.has-sidebar {
         .fa-angle-right, .fa-angle-left {
             font-size: $font-size*2;
             margin-left: 10px;
-            @include transform(translateY(2px));
         }
-    }
-
-    @include keyframes(home-sidebar-fade) {
-      0% { max-width: 100%; width: $home-sidebar-width; }
-      100% { max-width: 100%; width: $home-sidebar-width; }
-    }
-
-    @include keyframes(home-sidebar-fade-back) {
-      100% { max-width: 100%; width: $home-sidebar-width; }
-      0% { max-width: 100%; width: $home-sidebar-width; }
-    }
-    @include keyframes(home-sidebar-width) {
-      0% { max-width: 0; width: 0; }
-      100% { max-width: 100%; width: $home-sidebar-width; }
-    }
-
-    @include keyframes(home-sidebar-width-back) {
-      100% { max-width: 0; width: 0; }
-      0% { max-width: 100%; width: $home-sidebar-width; }
     }
 
     #sidebar-menu {
@@ -661,18 +640,15 @@ body.home.has-sidebar {
         z-index: 1001;
         overflow: hidden;
         background-color: transparent;
-        @include transition(width .5s, max-width .5s);
         height: auto;
+        min-height: 660px;
         width: 0;
         @media(min-width: $breakpoint-sm) {
             top: 70px;
         }
-        @include animation(home-sidebar-fade-back .5s);
         .sidebar-wrap {
             width: 0;
             position: fixed;
-            @include transition(width .5s, max-width .5s);
-            @include animation(home-sidebar-width-back .5s);
             height: auto;
             position: relative;
         }
@@ -720,9 +696,7 @@ body.home.has-sidebar {
             #sidebar-menu {
                 width: $home-sidebar-width;
                 max-width: 100%;
-                @include animation(home-sidebar-fade .5s);
                 .sidebar-wrap {
-                    @include animation(home-sidebar-width .5s);
                     width: $home-sidebar-width;
                     max-width: 100%;
                 }
@@ -888,7 +862,7 @@ body.home.has-sidebar {
     width: 100%;
     height: 100%;
     background-color: rgba(25, 180, 178, 0.8);
-    
+
     -webkit-transition: all 0.5s ease-in-out;
     -moz-transition: all 0.5s ease-in-out;
     -o-transition: all 0.5s ease-in-out;
@@ -900,7 +874,7 @@ body.home.has-sidebar {
     -o-transform: translate(0px, -100%) scale(0, 0);
     -ms-transform: translate(0px, -100%) scale(0, 0);
     transform: translate(0px, -100%) scale(0, 0);
-    
+
     opacity: 0;
 }
 
@@ -909,7 +883,7 @@ body.home.has-sidebar {
     -moz-transform: translate(0px, 0px) scale(1, 1);
     -o-transform: translate(0px, 0px) scale(1, 1);
     -ms-transform: translate(0px, 0px) scale(1, 1);
-    transform: translate(0px, 0px) scale(1, 1); 
+    transform: translate(0px, 0px) scale(1, 1);
     opacity: 1;
     z-index: 1001;
 }
@@ -964,7 +938,7 @@ body.home.has-sidebar {
         .btn-light-green {
             margin: 10px auto;
             display: block;
-        }  
+        }
     }
 
     .call-action{
