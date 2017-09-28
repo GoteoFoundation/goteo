@@ -89,6 +89,38 @@ $(function(){
         }
     };
 
+    var toggleSubMenu = function(e) {
+        e.stopPropagation();
+        e.preventDefault();
+        var that = this;
+        var $li = $(this).closest('li');
+        var $s = $(this).next('.submenu');
+        console.log($s);
+
+        var $others = $sidebar.find('li.active .submenu').not($s);
+            $others.slideUp(function() {
+                $others.closest('li.active').removeClass('active');
+            });
+
+
+        if($li.hasClass('active')) {
+            $s.slideUp(function() {
+                $li.removeClass('active');
+            });
+        } else {
+            $li.addClass('active');
+            $s.hide().slideDown();
+        }
+        // if($li.hasClass('active')) {
+        //     $s.animateCss('foldOutUp', function() {
+        //         $li.removeClass('active');
+        //     });
+        // } else {
+        //     $li.addClass('active');
+        //     $s.animateCss('foldInUp');
+        // }
+    };
+
     // Sidebar toggle
     $('body.has-sidebar').on('click', '.toggle-sidebar', toggleSidebar);
     // Swipper detector
@@ -124,6 +156,8 @@ $(function(){
             if($body.hasClass('sidebar-opened'))
                 toggleSidebar();
         });
+
+        $('#sidebar-menu .toggle-submenu').on('click', toggleSubMenu);
     }
 
 });

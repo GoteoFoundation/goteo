@@ -128,7 +128,6 @@
                 z-index: 1101;
                 &.active {
                     display: block;
-
                 }
                 @media (min-width: $breakpoint-sm) {
                     box-shadow: 1px 1px 3px 1px rgba(0,0,0,.3);
