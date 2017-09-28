@@ -48,63 +48,77 @@ var transitionEnd = whichTransitionEvent();
 $(function(){
 
     var $window = $(window);
+    var $body = $('body');
     var $sidebar = $('#sidebar-menu');
+    var $wrap = $('#sidebar-menu .sidebar-wrap');
+    var $toggle = $('#sidebar-menu-toggle');
     var $main = $('#main');
     var $footer = $('#footer');
+    // $body.addClass('loaded');
+    setTimeout(function(){$body.addClass('loaded');}, 500);
 
     var isMobile = function() {
         // xs devices has css position to absolute or fixed
         return $sidebar.css('position') === 'absolute' || $sidebar.css('position') === 'fixed';
     };
 
-    var toggleSidebar = function(e) {
-        var $body = $('body.has-sidebar');
-        // console.log('sidebar toggle', e);
-        e.stopPropagation();
-        e.preventDefault();
-        $body.toggleClass('sidebar-opened');
-        // if($body.hasClass('animating')) return;
-        // $body.toggleClass('animating sidebar-opened').one(transitionEnd, function(e) {
-        //     $(this).removeClass('animating');
-        //     // console.log('end animation', e);
-        // });
+    var toggleSidebar = function() {
+        console.log('toggle');
+        if($body.hasClass('has-sidebar')) {
+            console.log($body.attr('class'));
+            if($body.hasClass('sidebar-opened')) {
+                console.log('close');
+                $sidebar.animateCss('fadeOut');
+                $toggle.css('opacity', 0);
+                $wrap.animateCss('slideOutLeft', function() {
+                    $toggle.css('opacity', 1).animateCss('fadeIn');
+                    $body.removeClass('sidebar-opened');
+                });
+            } else {
+                $body.addClass('sidebar-opened');
+                $sidebar.animateCss('fadeIn');
+                $toggle.css('opacity', 0);
+                $wrap.animateCss('slideInLeft', function() {
+                    $toggle.css('opacity', 1).animateCss('fadeIn');
+                });
+            }
+        }
     };
 
     // Sidebar toggle
-    $('.toggle-sidebar').on('click', toggleSidebar);
+    $('body.has-sidebar').on('click', '.toggle-sidebar', toggleSidebar);
     // Swipper detector
-    if($('body').hasClass('has-sidebar')) {
+    if($body.hasClass('has-sidebar')) {
         // Enable text selection
         delete Hammer.defaults.cssProps.userSelect;
-        var $body = $('body.has-sidebar');
-        var $slider = $('body.has-sidebar .slider');
+        // var $slider = $('body.has-sidebar');
         var prevented = false;
-        $slider.on("mouseover", function(e){
+        $body.on('mouseover', '.slider', function(){
             // console.log('mouseover swipe', e);
             prevented = true;
         });
-        $slider.on("mouseout", function(e){
+        $body.on('mouseout', '.slider', function(){
             // console.log('mouseout swipe', e);
             prevented = false;
         });
-        $slider.on("touchstart", function(e){
+        $body.on('touchstart', '.slider', function(){
             // console.log('touchstart swipe', e);
             prevented = true;
         });
-        $slider.on("touchend", function(e){
+        $body.on('touchend', '.slider', function(){
             // console.log('touchend swipe', e);
             setTimeout(function(){prevented = false;});
         });
-        $body.hammer().bind("swiperight", function(e){
+        $body.hammer().bind("swiperight", function(){
             // console.log('body swipe right', e);
             if(prevented) return;
             if(!$body.hasClass('sidebar-opened'))
-                toggleSidebar(e);
+                toggleSidebar();
         });
-        $body.hammer().bind("swipeleft", function(e){
+        $body.hammer().bind("swipeleft", function(){
             if(prevented) return;
             if($body.hasClass('sidebar-opened'))
-                toggleSidebar(e);
+                toggleSidebar();
         });
     }
 
