@@ -31,8 +31,6 @@
 
 <?= $this->insert('home/partials/call_to_action') ?>
 
-<?= $this->insert('home/partials/search') ?>
-
 <?= $this->insert('home/partials/advantages') ?>
 
 <?= $this->insert('home/partials/matchfunding') ?>

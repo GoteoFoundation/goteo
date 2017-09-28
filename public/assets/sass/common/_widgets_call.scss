@@ -10,6 +10,7 @@
   // Set backgrounds depending on the status
 
   &.open{
+    color: $color-white;
     .status{
       background-color: $background-light-lilac;
     }
@@ -22,6 +23,7 @@
   }
 
   &.active{
+    color: $color-white;
     .status{
       background-color: $background-active-green;
     }
@@ -33,8 +35,17 @@
     }
   }
 
-  &.closed{
-
+  &.completed{
+      color: $primary-color;
+     .status{
+      background-color: $background-yellow;
+    }
+    .sphere{
+      background-color: $background-dark-yellow;
+    }
+    .content, .bottom{
+      background-color: $background-yellow;
+    }
   }
 
   .sphere{
@@ -56,7 +67,6 @@
     padding: 5%;
     border: 1px solid #D9D9DE;
     border-top: 0px;
-    color: #B3B2B2;
     border-bottom-left-radius: 5px;
     border-bottom-right-radius: 5px;
     height: 240px;
@@ -78,7 +88,6 @@
         height: auto;
         background: transparent;
         border: 0;
-        color: $color-grey;
       }
       .title {
         line-height: 20px;
@@ -105,7 +114,6 @@
   }
   div.call-amount {
     font-size: 13px;
-    color: $color-grey;
     margin-top: 15px;
   }
   ul {
@@ -115,7 +123,6 @@
       overflow: hidden;
       bottom: 0px;
       position: absolute;
-      color: $color-grey;
       font-size: 13px;
       width: 91.8%;
       border-top: 1px solid #C5C5C5;
@@ -157,7 +164,6 @@
         font-weight: 500;
         text-transform: uppercase;
         padding: 10px;
-        color: $color-white;
     }
 
     .floating {
@@ -196,7 +202,6 @@
     .content {
         height: auto;
         border: none;
-        color: $color-white;
         div.amount-label {
             font-size: $font-size*0.9;
             text-transform: uppercase;
@@ -226,6 +231,7 @@
         .location{
           float: right;
           padding-top: 15px;
+          max-width: 50%;
           .city{
             font-size: $font-size*1.3;
           }
@@ -247,7 +253,6 @@
                 margin: 0;
                 padding: 0;
                 width:  50%;
-                color: $primary-color;
                 float: left;
                 border-left: 2px solid #CDD6D5;
                 text-align: center;

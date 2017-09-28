@@ -6,9 +6,6 @@
         <?= $this->text('home-matchfunding-title') ?>
     </h2>
     <ul class="filters list-inline center-block text-center">
-        <li>
-            <?= $this->text('home-matchfunding-all') ?>
-        </li>
         <li class="active" data-status="3">
             <?= $this->text('home-matchfunding-open') ?>
         </li>
@@ -20,18 +17,10 @@
         </li>
     </ul>
     
-    <div class="container">
-        <?php if($this->calls): ?>
-            <div class="slider slider-calls">
-                <?php foreach ($this->calls as $call) : ?>
-                    <div class="widget-slide">
-                        <?= $this->insert('call/widgets/normal', [
-                            'call' => $call
-                            ]) ?>
-                    </div>
-                <?php endforeach ?>
-            </div>
-        <?php endif ?>
+    <div class="container" id="calls-container">
+        <?= $this->insert('home/partials/calls_list', [
+            'calls' => $this->calls
+        ]) ?>
     </div>
 
 
