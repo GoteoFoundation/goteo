@@ -415,15 +415,15 @@ class ProjectDashboardController extends \Goteo\Core\Controller {
         }
 
         // Translations
-        $transForm = $this->createFormBuilder(null, 'transform')
+        $transForm = $this->createFormBuilder(null, 'transform', ['attr' => ['class' => 'autoform hide-help']])
             ->add('support', 'text', [
                 'label' => 'supports-field-support',
-                'attr' => ['help' => 'original'],
+                'attr' => ['help' => Text::get('tooltip-project-support-support')],
                 'required' => false
             ])
             ->add('description', 'textarea', [
                 'label' => 'supports-field-description',
-                'attr' => ['help' => 'original'],
+                'attr' => ['help' => Text::get('tooltip-project-support-description')],
                 'required' => false
             ])
             ->add('id', 'hidden', [
@@ -443,17 +443,27 @@ class ProjectDashboardController extends \Goteo\Core\Controller {
                     ]
             ])
             ->getForm();
+
+        $langs = Lang::listAll('name', false);
+        $languages = array_intersect_key($langs, array_flip($project->getLangsAvailable()));
+        $languages[$project->lang] = $langs[$project->lang];
+
         $transForm->handleRequest($request);
         if ($transForm->isSubmitted()) {
             if($transForm->isValid()) {
                 $data = $transForm->getData();
                 $lang = $data['lang'];
-                // Check if we want to remove a translation
-                if($transForm->get('remove')->isClicked()) {
-                    die('remove');
-                }
                 foreach($project->supports as $support) {
                     if($support->id == $data['id']) break;
+                }
+                // Check if we want to remove a translation
+                if($transForm->get('remove')->isClicked()) {
+                    if($support->removeLang($lang)) {
+                        Message::info(Text::get('translator-deleted-ok', $languages[$lang]));
+                    } else {
+                        Message::info(Text::get('translator-deleted-ko', $languages[$lang]));
+                    }
+                    return $this->redirect('/dashboard/project/' . $project->id . '/supports');
                 }
                 if($support) {
                     $errors = [];
@@ -473,8 +483,6 @@ class ProjectDashboardController extends \Goteo\Core\Controller {
                 Message::error(Text::get('form-has-errors'));
             }
         }
-        $langs = Lang::listAll('name', false);
-        $languages = array_intersect_key($langs, array_flip($project->getLangsAvailable()));
 
         return $this->viewResponse('dashboard/project/supports', [
             'supports' => $supports,

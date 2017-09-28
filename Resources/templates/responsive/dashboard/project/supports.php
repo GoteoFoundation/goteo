@@ -26,7 +26,7 @@
                 <button class="btn btn-default" data-toggle="modal" data-target="#edit-modal"><i class="icon icon-edit"></i> <?= $this->text('regular-edit') ?></button>
                 <button class="btn btn-default delete-support"><i class="icon icon-trash"></i> <?= $this->text('regular-delete') ?></button>
                 <?php if($this->languages): ?>
-                  <?= $this->insert('dashboard/partials/translate_menu', ['no_title' => true, 'btn_class' => 'btn-default', 'class' =>'edit-translation', 'base_link' => '#trans-', 'translated' => $support->getLangsAvailable(), 'percentModel' => $support]) ?>
+                  <?= $this->insert('dashboard/partials/translate_menu', ['no_title' => true, 'btn_class' => 'btn-default', 'class' =>'edit-translation', 'base_link' => '#trans-', 'skip' => [$this->project->lang], 'translated' => $support->getLangsAvailable(), 'percentModel' => $support]) ?>
                 <?php endif ?>
             </div>
             <button class="btn btn-<?= $comments ? 'lilac' : 'default' ?>" data-toggle="collapse"  data-target="#comments-<?= $support->thread ?>"><i class="icon icon-partners"></i> <?= $this->text('regular-num-comments', $comments) ?></button>
@@ -82,8 +82,11 @@
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
         <h4 class="modal-title"><?= $this->text('dashboard-menu-projects-supports') ?></h4>
+
       </div>
       <div class="modal-body">
+        <p class="title-desc"><?= $this->text('dashboard-project-support-translating', ['%LANG%' => '<strong><em>%LANG%</em></strong>', '%ORIGINAL%' => '<strong><em>' . $this->languages[$this->project->lang] . '</em></strong>']) ?></p>
+
         <?php if($this->errors): ?>
             <div class="text-danger"><?= implode("\n<br>\n", $this->errors) ?></div>
         <?php endif ?>
@@ -110,18 +113,19 @@ $(function(){
     var $button = $(event.relatedTarget) // Button that triggered the modal
     var $section = $button.closest('.section-content');
     if($section.length) {
-      $modal.find('#autoform_support').val($section.find('.data-support').text());
-      $modal.find('#autoform_description').val($section.find('.data-description').text())
-      $modal.find('#autoform_id').val($section.data('id'))
+      $('#autoform_support').val($section.find('.data-support').text());
+      $('#autoform_description').val($section.find('.data-description').text())
+      $('#autoform_id').val($section.data('id'))
     }
   });
 
   var languages = <?= json_encode($this->languages) ?>;
   var txt_delete = $('#transform_remove > span').text();
   var txt_confirm = $('#transform_remove').data('confirm');
-  console.log(txt_delete.replace('%s', 'hi'), txt_confirm);
+  $('#trans-modal .help-text').attr('data-desc', '<?= $this->ee($this->text('translator-original-text'), 'js') ?>: ');
+
   // Translation edit
-  $('.edit-translation a').on('click', function(event){
+  $('.edit-translation a').on('click', function(event) {
     event.preventDefault();
     var $modal = $('#trans-modal');
     var $section = $(this).closest('.section-content');
@@ -129,14 +133,16 @@ $(function(){
     var support = $section.find('.data-support').data('lang-' + lang);
     var description = $section.find('.data-description').data('lang-' + lang);
     $modal.modal('show');
-    $modal.find('#transform_support').val(support);
-    $modal.find('#transform_description').val(description);
-    $modal.find('#transform_lang').val(lang);
-    $modal.find('#transform_id').val($section.data('id'));
-    $modal.find('#transform_remove>span').text(txt_delete.replace('%s', languages[lang]));
-    $modal.find('#transform_remove').data('confirm', txt_confirm.replace('%s', languages[lang]));
-
-    console.log('translate', lang, support, description);
+    $('#transform_support').val(support);
+    $('#transform_description').val(description);
+    $('#transform_lang').val(lang);
+    $('#transform_id').val($section.data('id'));
+    $('#transform_remove>span').text(txt_delete.replace('%s', languages[lang]));
+    $('#transform_remove').data('confirm', txt_confirm.replace('%s', languages[lang]));
+    $('#transform_support').next('.help-text').html($section.find('.data-support').text());
+    $('#transform_description').next('.help-text').html($section.find('.data-description').text());
+    // console.log('translate', lang, support, description);
+    $modal.find('.title-desc').html($modal.find('.title-desc').html().replace('%LANG%', languages[lang]));
   });
 
   $('#edit-modal').on('hidden.bs.modal', function () {
