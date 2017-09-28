@@ -11,16 +11,22 @@
     if($this->supports):
         foreach($this->supports as $support):
             $comments = $support->totalThreadResponses($this->get_user());
+            $data_support = [];
+            $data_description = [];
+            foreach($support->getAllLangs() as $trans) {
+              $data_support[] = 'data-lang-' . $trans->lang . '="' . $this->ee($trans->support) .'"';
+              $data_description[] = 'data-lang-' . $trans->lang . '="' . $this->ee($trans->description) .'"';
+            }
      ?>
         <div class="panel section-content" data-id="<?= $support->id ?>">
           <div class="panel-body">
-            <h3 class="data-support"><?= $support->support ?></h3>
-            <p class="data-description"><?= nl2br($support->description) ?></p>
+            <h3 class="data-support" <?= implode(' ', $data_support) ?>><?= $support->support ?></h3>
+            <p class="data-description"  <?= implode(' ', $data_description) ?>><?= nl2br($support->description) ?></p>
             <div class="btn-group pull-right">
                 <button class="btn btn-default" data-toggle="modal" data-target="#edit-modal"><i class="icon icon-edit"></i> <?= $this->text('regular-edit') ?></button>
                 <button class="btn btn-default delete-support"><i class="icon icon-trash"></i> <?= $this->text('regular-delete') ?></button>
                 <?php if($this->languages): ?>
-                  <?= $this->insert('dashboard/partials/translate_menu', ['no_title' => true, 'btn_class' => 'btn-default', 'base_link' => '/dashboard/project/' . $this->project->id . '/supports/' . $support->id . '/', 'translated' => $support->getLangsAvailable(), 'percentModel' => $support]) ?>
+                  <?= $this->insert('dashboard/partials/translate_menu', ['no_title' => true, 'btn_class' => 'btn-default', 'class' =>'edit-translation', 'base_link' => '#trans-', 'translated' => $support->getLangsAvailable(), 'percentModel' => $support]) ?>
                 <?php endif ?>
             </div>
             <button class="btn btn-<?= $comments ? 'lilac' : 'default' ?>" data-toggle="collapse"  data-target="#comments-<?= $support->thread ?>"><i class="icon icon-partners"></i> <?= $this->text('regular-num-comments', $comments) ?></button>
@@ -66,9 +72,28 @@
         <?= $this->form_form($this->raw('editForm')) ?>
 
         </div>
-    </div><!-- /.modal-content -->
-  </div><!-- /.modal-dialog -->
-</div><!-- /.modal -->
+    </div>
+  </div>
+</div>
+
+<div id="trans-modal" class="modal fade" tabindex="-1" role="dialog">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title"><?= $this->text('dashboard-menu-projects-supports') ?></h4>
+      </div>
+      <div class="modal-body">
+        <?php if($this->errors): ?>
+            <div class="text-danger"><?= implode("\n<br>\n", $this->errors) ?></div>
+        <?php endif ?>
+
+        <?= $this->form_form($this->raw('transForm')) ?>
+
+        </div>
+    </div>
+  </div>
+</div>
 
 <?php $this->replace() ?>
 
@@ -79,42 +104,69 @@
 // @license magnet:?xt=urn:btih:0b31508aeb0634b347b8270c7bee4d411b5d4109&dn=agpl-3.0.txt
 
 $(function(){
-    $('#edit-modal').on('show.bs.modal', function (event) {
-      var $modal = $(this)
-      var $button = $(event.relatedTarget) // Button that triggered the modal
-      var $section = $button.closest('.section-content');
-      if($section.length) {
-        $modal.find('#autoform_support').val($section.find('.data-support').text());
-        $modal.find('#autoform_description').val($section.find('.data-description').text())
-        $modal.find('#autoform_id').val($section.data('id'))
-      }
-    });
-    $('#edit-modal').on('hidden.bs.modal', function () {
-      $(this).find('input,textarea').not('[type="hidden"]').val('');
-    });
-
-    $('.delete-support').on('click', function (e) {
-      e.preventDefault();
-      var $form = $('#edit-modal').find('form');
-      var $section = $(this).closest('.section-content');
-      var id = $section.data('id');
-      if(confirm('<?= $this->ee($this->text('support-sure-to-remove'), 'js') ?>')) {
-        $form.find('#autoform_delete').val(id);
-        $form.submit();
-      }
-    });
-
-    <?php if($this->editFormSubmitted): ?>
-      $('#edit-modal').modal('show');
-      $('#edit-modal').modal('show');
-    <?php endif ?>
-
-    // Autoexpand comment-list if in hash
-    var $thread = $(location.hash);
-    if($thread.length) {
-      // console.log('hash',location.hash);
-      $thread.collapse('show');
+  // Normal edit
+  $('#edit-modal').on('show.bs.modal', function (event) {
+    var $modal = $(this)
+    var $button = $(event.relatedTarget) // Button that triggered the modal
+    var $section = $button.closest('.section-content');
+    if($section.length) {
+      $modal.find('#autoform_support').val($section.find('.data-support').text());
+      $modal.find('#autoform_description').val($section.find('.data-description').text())
+      $modal.find('#autoform_id').val($section.data('id'))
     }
+  });
+
+  var languages = <?= json_encode($this->languages) ?>;
+  var txt_delete = $('#transform_remove > span').text();
+  var txt_confirm = $('#transform_remove').data('confirm');
+  console.log(txt_delete.replace('%s', 'hi'), txt_confirm);
+  // Translation edit
+  $('.edit-translation a').on('click', function(event){
+    event.preventDefault();
+    var $modal = $('#trans-modal');
+    var $section = $(this).closest('.section-content');
+    var lang = $(this).attr('href').substr(7);
+    var support = $section.find('.data-support').data('lang-' + lang);
+    var description = $section.find('.data-description').data('lang-' + lang);
+    $modal.modal('show');
+    $modal.find('#transform_support').val(support);
+    $modal.find('#transform_description').val(description);
+    $modal.find('#transform_lang').val(lang);
+    $modal.find('#transform_id').val($section.data('id'));
+    $modal.find('#transform_remove>span').text(txt_delete.replace('%s', languages[lang]));
+    $modal.find('#transform_remove').data('confirm', txt_confirm.replace('%s', languages[lang]));
+
+    console.log('translate', lang, support, description);
+  });
+
+  $('#edit-modal').on('hidden.bs.modal', function () {
+    $(this).find('input,textarea').not('[type="hidden"]').val('');
+  });
+
+  $('.delete-support').on('click', function (e) {
+    e.preventDefault();
+    var $form = $('#edit-modal').find('form');
+    var $section = $(this).closest('.section-content');
+    var id = $section.data('id');
+    if(confirm('<?= $this->ee($this->text('support-sure-to-remove'), 'js') ?>')) {
+      $form.find('#autoform_delete').val(id);
+      $form.submit();
+    }
+  });
+
+  <?php if($this->editFormSubmitted): ?>
+    $('#edit-modal').modal('show');
+  <?php endif ?>
+  <?php if($this->transFormSubmitted): ?>
+    $('#trans-modal').modal('show');
+  <?php endif ?>
+
+  // Autoexpand comment-list if in hash
+  var $thread = $(location.hash);
+  if($thread.length) {
+    // console.log('hash',location.hash);
+    $thread.collapse('show');
+  }
 });
 
 // @license-end

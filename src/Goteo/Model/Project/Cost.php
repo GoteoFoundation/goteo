@@ -30,6 +30,11 @@ class Cost extends \Goteo\Core\Model {
         return ['cost', 'description'];
     }
 
+    public function setLang($lang, $data = [], array &$errors = []) {
+        $data['project'] = $this->project;
+        return parent::setLang($lang, $data, $errors);
+    }
+
  	public static function get ($id) {
         try {
             $query = static::query("SELECT * FROM cost WHERE id = :id", array(':id' => $id));

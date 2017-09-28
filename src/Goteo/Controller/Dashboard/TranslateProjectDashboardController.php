@@ -280,7 +280,7 @@ class TranslateProjectDashboardController extends \Goteo\Controller\Dashboard\Pr
                             $errors[] = "Cost #$cost->id not deleted";
                         }
                     } else {
-                        $cost->setLang($lang, ['project' => $project->id, $field => $val], $errors);
+                        $cost->setLang($lang, [$field => $val], $errors);
                     }
                 }
                 if($errors) {
@@ -388,7 +388,7 @@ class TranslateProjectDashboardController extends \Goteo\Controller\Dashboard\Pr
                             $errors[] = "Reward #$reward->id not deleted";
                         }
                     } else {
-                        $reward->setLang($lang, ['project' => $project->id, $field => $val], $errors);
+                        $reward->setLang($lang, [$field => $val], $errors);
                     }
                 }
                 if($errors) {
