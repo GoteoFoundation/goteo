@@ -39,6 +39,7 @@ tooltip-user-contribution: 'Explica breument les teves habilitats o els àmbits 
 tooltip-user-facebook: 'Aquesta xarxa social pot ajudar que difonguis projectes de Goteo que t''interessen entre amics i familiars.'
 tooltip-user-google: 'La xarxa social de Google+ és molt nova però també pots indicar el teu usuari si ja la fas servir :)'
 tooltip-user-identica: 'Aquest canal pot ajudar que difonguis projectes de Goteo entre la comunitat propera al programari lliure.'
+tooltip-user-instagram: 'Aquesta xarxa social pot ajudar que difonguis projectes de Goteo que t''interessen entre amics i familiars.'
 tooltip-user-interests: 'Indica el tipus de projectes que poden connectar amb els teus interessos per cofinançar-los i/o aportar amb altres recursos, coneixements o habilitats. Aquestes categories són transversals, pots seleccionar-ne més d''una.'
 tooltip-user-keywords: 'A mesura que introdueixis text el sistema et suggerirà paraules clau que ja han escrit altres usuaris. Aquestes categories ajuden a vincular el teu perfil amb altres persones i amb projectes concrets.'
 tooltip-user-linkedin: 'Aquesta xarxa social pot ajudar que difonguis projectes de Goteo que t''interessen entre contactes professionals.'

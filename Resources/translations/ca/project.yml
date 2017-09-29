@@ -6,9 +6,9 @@ project-chart-amount-end-round: 'Fi Ronda'
 project-costs-total: 'Total'
 project-collaborations-supertitle: 'Necessitats no monetàries'
 project-collaborations-title: Cercant
-project-error-main-lang: 'No es pot establir aquest idioma [%s] com a principal perquè ja està assignat a una traducció. Elimina la traducció existent en [%s], desde el panell de traducció, per introduïr-ne una de nova.'
+project-error-main-lang: 'No es pot establir aquest idioma [%s] com a principal perquè ja està assignat a una traducció. Elimina la traducció existent en [%s], des de el panell de traducció, per introduir-ne una de nova.'
 project-help-cost: 'Necessito ajuda per definir els costos'
-project-help-license: 'Necessito ajuda per definir els retorns col.lectius i les llicències'
+project-help-license: 'Necessito ajuda per definir els retorns col·lectius i les llicències'
 project-langs-header: 'Projecte en:'
 project-media-play_video: 'Veure vídeo'
 project-menu-home: Projecte
@@ -66,11 +66,11 @@ project-view-preview: 'Previsualització del projecte'
 project-willpublish: 'Aquest projecte es publicarà el %s'
 regular-new_project: 'Projecte nou'
 social_reward-access: Accedeix
-social_reward-access_title: 'Accedeix a aquest recurs col.lectiu'
+social_reward-access_title: 'Accedeix a aquest recurs col·lectiu'
 tooltip-project-bank: 'Si no vols posar-la ara podràs indicar-la més endavant quan formalitzem el contracte en cas d''èxit'
 tooltip-project-help-cost: 'Si no tens clar el desglossament de costos o vols consultar-nos alguna qüestió, marca aquesta opció. Hauràs de finalitzar i enviar-nos el formulari per poder rebre assessorament.'
-tooltip-project-help-license: 'Si tens dubtes sobre les llicències més adequades als retorns col.lectius del teu projecte, marca aquesta opció. Hauràs de finalitzar i enviar-nos el formulari per poder assessorar-te.'
-tooltip-project-paypal: "<p>A més de la pasarel.la de pagament bancari, a Goteo <strong>és possible rebre aportacions mitjançant PayPal</strong>. Per a això, has d'indicar aquí una adreça d'email associada a un compte PayPal degudament validat. No escriguis cap caràcter en aquest camp si no vols oferir l'opció de pagament via PayPal</p> <p>Tot i que no és obligatori oferir aquesta opció per rebre la recaptació del teu projecte, sí que és altament recomanable.</p>\r\n<p><strong>Si no indiques un compte PayPal, vàlid i verificat, abans de l'inici de la campanya, la gent usuària no podrà cofinançar mitjançant PayPal.</strong> </p> <p>Tingues present que no podràs modificar-lo posteriorment, hauràs de contactar amb nosaltres si vols canviar-lo.</p> <p><strong>IMPORTANT: Recorda que no es pot usar aquest mateix compte per fer aportacions al teu propi projecte ja que donaria un error de sistema.</strong></p>"
+tooltip-project-help-license: 'Si tens dubtes sobre les llicències més adequades als retorns col·lectius del teu projecte, marca aquesta opció. Hauràs de finalitzar i enviar-nos el formulari per poder assessorar-te.'
+tooltip-project-paypal: "<p>A més de la pasarel·la de pagament bancari, a Goteo <strong>és possible rebre aportacions mitjançant PayPal</strong>. Per a això, has d'indicar aquí una adreça d'email associada a un compte PayPal degudament validat. No escriguis cap caràcter en aquest camp si no vols oferir l'opció de pagament via PayPal</p> <p>Tot i que no és obligatori oferir aquesta opció per rebre la recaptació del teu projecte, sí que és altament recomanable.</p>\r\n<p><strong>Si no indiques un compte PayPal, vàlid i verificat, abans de l'inici de la campanya, la gent usuària no podrà cofinançar mitjançant PayPal.</strong> </p> <p>Tingues present que no podràs modificar-lo posteriorment, hauràs de contactar amb nosaltres si vols canviar-lo.</p> <p><strong>IMPORTANT: Recorda que no es pot usar aquest mateix compte per fer aportacions al teu propi projecte ja que donaria un error de sistema.</strong></p>"
 tooltip-project-rounds: 'Si eliges esta opción, tu proyecto solo tendrá una ronda de 40 días para conseguir la financiación necesaria: todo o nada.'
 tooltip-project-scope: 'Indica l''impacte geogràfic que aspira a tenir el projecte (cada categoria inclou l''anterior). '
 tooltip-project-spread: 'Explica''ns com penses difondre el projecte entre la teva comunitat: canals, tipus o to dels missatges, accions de difusió, calendari mínim...'
@@ -86,8 +86,8 @@ tooltip-updates-title: tooltip-updates-title
 project-about-title: 'Sobre aquest projecte'
 project-chart-amount-reached: Acumulat
 project-chart-costs-reset: Back
-project-collaborations-available: 'Col.laboracions disponibles'
-project-collaborations-number: col.laboradors
+project-collaborations-available: 'Col·laboracions disponibles'
+project-collaborations-number: col·laboradors
 project-obtained: 'Obtingut'
 project-general-information: 'Informació general'
 project-go-up: 'Tornar a dalt'
@@ -124,3 +124,4 @@ project-create-modal-no-social-description: 'És obligatori tenir un compromís 
 project-share-materials: 'Material compartit'
 project-create-no-social-commitment: 'No tinc'
 project-progress-title: Com va el projecte
+project-edit: Edita el projecte

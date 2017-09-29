@@ -31,9 +31,7 @@ class LocationType extends TextType
     {
         parent::configureOptions($resolver);
         $resolver->setDefault('type', null); // user, project, call, ...
-        $resolver->setDefault('attr',  [
-            'class' => 'form-control geo-autocomplete'
-        ]);
+        $resolver->setDefault('item', null); // if type requires item-id (project, call, ...)
     }
     /**
      * {@inheritdoc}
@@ -42,6 +40,14 @@ class LocationType extends TextType
     {
         parent::buildView($view, $form, $options);
         $view->vars['attr']['data-geocoder-type'] = $options['type'];
+        if($options['item']) {
+            $view->vars['attr']['data-geocoder-item'] = $options['item'];
+        }
+        if(empty($view->vars['attr']['class'])) {
+            $view->vars['attr']['class'] = 'form-control geo-autocomplete';
+        } elseif(strpos($view->vars['attr']['class'], 'geo-autocomplete') === false) {
+            $view->vars['attr']['class'] .= ' geo-autocomplete';
+        }
         $view->vars['privacy_control'] = $options['type'];
     }
 

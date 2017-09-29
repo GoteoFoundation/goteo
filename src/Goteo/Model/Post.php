@@ -356,15 +356,13 @@ namespace Goteo\Model {
                 'author'
                 );
 
-            $set = '';
-
             try {
                 //automatic $this->id assignation
                 $this->dbInsertUpdate($fields);
 
                 return true;
             } catch(\PDOException $e) {
-                $errors[] = "HA FALLADO!!! " . $e->getMessage();
+                $errors[] = "Error saving Post " . $e->getMessage();
                 return false;
             }
         }

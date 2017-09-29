@@ -55,6 +55,10 @@
           background-color: $background-sidebar-header;
         }
         border-left: 3px solid $color-cyan;
+        // + .sidebar {
+          margin-top: 3px;
+          // top: -3px;
+        // }
         >li {
           padding-left: 12px;
         }
