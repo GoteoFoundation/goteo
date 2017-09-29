@@ -81,6 +81,13 @@ $dash->add('dashboard-project-profile', new Route(
         )
 ));
 
+// Settings (personal)
+$dash->add('dashboard-project-personal', new Route(
+    '/project/{pid}/personal',
+    array('_controller' => 'Goteo\Controller\Dashboard\ProjectDashboardController::personalAction',
+        )
+));
+
 // Project image editing
 $dash->add('dashboard-project-images', new Route(
     '/project/{pid}/images',

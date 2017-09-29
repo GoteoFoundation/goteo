@@ -20,9 +20,11 @@ use Goteo\Application\Message;
 use Goteo\Application\Lang;
 use Goteo\Model\Invest;
 use Goteo\Model\Project;
+use Goteo\Model\Project\Account;
 use Goteo\Model\Project\Reward;
 use Goteo\Model\Project\Image as ProjectImage;
 use Goteo\Model\Project\Support;
+use Goteo\Model\User;
 use Goteo\Model\Blog;
 use Goteo\Model\Blog\Post as BlogPost;
 use Goteo\Model\Message as Comment;
@@ -59,7 +61,7 @@ class ProjectDashboardController extends \Goteo\Core\Controller {
 
         $submenu = [
             ['text' => '<i class="icon icon-2x icon-user"></i> ' . Text::get('step-1'), 'link' => $prefix . '/profile', 'id' => 'profile'],
-            ['text' => '<i class="fa fa-2x fa-id-card-o"></i> ' . Text::get('step-2'), 'link' => $prefix . '/translate', 'id' => 'translate'],
+            ['text' => '<i class="fa fa-2x fa-id-card-o"></i> ' . Text::get('step-2'), 'link' => $prefix . '/personal', 'id' => 'personal'],
         ];
         Session::addToSidebarMenu('<i class="fa fa-2x fa-id-badge"></i> ' . Text::get('profile-about-header'), $submenu, 'project', null, 'sidebar');
 
@@ -159,6 +161,98 @@ class ProjectDashboardController extends \Goteo\Core\Controller {
         ]);
     }
 
+    /**
+     * Settings (personal)
+     */
+    public function personalAction($pid, Request $request)
+    {
+        $project = $this->validateProject($pid, 'personal');
+        if($project instanceOf Response) return $project;
+
+        $user = $project->getOwner();
+        if($project->isApproved()) {
+            $redirect = '/dashboard/project/' . $pid . '/personal';
+        } else {
+            $redirect = '/dashboard/project/' . $pid . '/edit';
+            $submit_label = 'form-next-button';
+        }
+
+        $defaults = (array)User::getPersonal($user);
+        if($account = Account::get($project->id)) {
+            foreach($account as $k => $v) {
+                if($v) {
+                    $defaults[$k] = $v;
+                }
+            }
+        }
+
+        $defaults['contract_birthdate'] = new \Datetime($defaults['contract_birthdate']);
+        // Create the form
+        $builder = $this->createFormBuilder($defaults)
+            ->add('contract_name', 'text', [
+                'label' => 'personal-field-contract_name',
+                'constraints' => array(new Constraints\NotBlank()),
+                'attr' => ['help' => Text::get('tooltip-project-contract_name')]
+            ])
+            ->add('contract_nif', 'text', [
+                'label' => 'personal-field-contract_nif',
+                'constraints' => array(new Constraints\NotBlank()),
+                'attr' => ['help' => Text::get('tooltip-project-contract_nif')]
+            ])
+            ->add('contract_birthdate', 'datepicker', [
+                'label' => 'personal-field-contract_birthdate',
+                'constraints' => array(new Constraints\NotBlank()),
+                'attr' => ['help' => Text::get('tooltip-project-contract_birthdate')]
+            ])
+            ->add('phone', 'text', [
+                'label' => 'personal-field-phone',
+                'required' => false,
+                'attr' => ['help' => Text::get('tooltip-project-phone')]
+            ])
+            ->add('entity_name', 'text', [
+                'label' => 'project-personal-field-entity_name',
+                'required' => false,
+                'attr' => ['help' => Text::get('tooltip-project-personal-entity_name')]
+            ])
+            ->add('paypal', 'text', [
+                'label' => 'contract-paypal_account',
+                'required' => false,
+                'attr' => ['help' => Text::get('tooltip-project-paypal')]
+            ])
+            ->add('bank', 'text', [
+                'label' => 'contract-bank_account',
+                'required' => false,
+                'attr' => ['help' => Text::get('tooltip-project-bank')]
+            ])
+            ;
+
+        $form = $builder->add('submit', 'submit', [
+                'label' => $submit_label ? $submit_label : 'regular-submit'
+            ])->getForm();
+
+        $form->handleRequest($request);
+        if ($form->isSubmitted()) {
+            if($form->isValid()) {
+                $errors = [];
+                $data = $form->getData();
+                $project->rebuildData($data);
+                $account->rebuildData($data);
+
+                if ($project->save($errors) && $account->save($errors)) {
+                    Message::info(Text::get('user-personal-saved'));
+                    return $this->redirect($redirect);
+                } else {
+                    Message::error(Text::get('form-sent-error', implode(', ',$errors)));
+                }
+            } else {
+                Message::error(Text::get('form-has-errors'));
+            }
+
+        }
+        return $this->viewResponse('dashboard/project/personal', [
+            'form' => $form->createView()
+        ]);
+    }
 
     public function imagesAction($pid = null, Request $request)
     {
@@ -239,7 +333,7 @@ class ProjectDashboardController extends \Goteo\Core\Controller {
 
 
         $defaults = (array)$post;
-        $defaults['date'] = new \Datetime($defaults['date']); // TODO: into the transformer datepickertype
+        $defaults['date'] = new \Datetime($defaults['date']);
         $defaults['allow'] = (bool) $defaults['allow'];
         $defaults['publish'] = (bool) $defaults['publish'];
         // print_r($_FILES);die;
