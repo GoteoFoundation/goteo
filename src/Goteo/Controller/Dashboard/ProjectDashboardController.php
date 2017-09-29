@@ -29,13 +29,11 @@ use Goteo\Model\Blog;
 use Goteo\Model\Blog\Post as BlogPost;
 use Goteo\Model\Message as Comment;
 use Goteo\Library\Text;
-use Goteo\Library\Currency;
 use Goteo\Console\UsersSend;
 use Goteo\Application\Exception\ModelNotFoundException;
 use Goteo\Application\Exception\ModelException;
 use Goteo\Application\Exception\ControllerAccessDeniedException;
 use Goteo\Application\Event\FilterMessageEvent;
-
 use Symfony\Component\Validator\Constraints;
 
 class ProjectDashboardController extends \Goteo\Core\Controller {
@@ -191,47 +189,10 @@ class ProjectDashboardController extends \Goteo\Core\Controller {
             }
         }
 
-
         // Create the form
-        $builder = $this->createFormBuilder($defaults)
-            ->add('contract_name', 'text', [
-                'label' => 'personal-field-contract_name',
-                'constraints' => array(new Constraints\NotBlank()),
-                'attr' => ['help' => Text::get('tooltip-project-contract_name')]
-            ])
-            ->add('contract_nif', 'text', [
-                'label' => 'personal-field-contract_nif',
-                'constraints' => array(new Constraints\NotBlank()),
-                'attr' => ['help' => Text::get('tooltip-project-contract_nif')]
-            ])
-            ->add('contract_birthdate', 'datepicker', [
-                'label' => 'personal-field-contract_birthdate',
-                'constraints' => array(new Constraints\NotBlank()),
-                'attr' => ['help' => Text::get('tooltip-project-contract_birthdate')]
-            ])
-            ->add('phone', 'text', [
-                'label' => 'personal-field-phone',
-                'required' => false,
-                'attr' => ['help' => Text::get('tooltip-project-phone')]
-            ])
-            ->add('entity_name', 'text', [
-                'label' => 'project-personal-field-entity_name',
-                'required' => false,
-                'attr' => ['help' => Text::get('tooltip-project-personal-entity_name')]
-            ])
-            ->add('paypal', 'text', [
-                'label' => 'contract-paypal_account',
-                'required' => false,
-                'attr' => ['help' => Text::get('tooltip-project-paypal')]
-            ])
-            ->add('bank', 'text', [
-                'label' => 'contract-bank_account',
-                'required' => false,
-                'attr' => ['help' => Text::get('tooltip-project-bank')]
-            ])
-            ;
-
-        $form = $builder->add('submit', 'submit', [
+        $form = $this->getModelForm('ProjectPersonal', $project, $defaults)
+            ->getBuilder()
+            ->add('submit', 'submit', [
                 'label' => $submit_label ? $submit_label : 'regular-submit'
             ])->getForm();
 
@@ -275,46 +236,11 @@ class ProjectDashboardController extends \Goteo\Core\Controller {
         }
 
         $defaults = (array)$project;
-        $langs = Lang::listAll('name', false);
-        $currencies = Currency::listAll('name', false);
 
         // Create the form
-        $builder = $this->createFormBuilder($defaults)
-            ->add('name', 'text', [
-                'label' => 'overview-field-name',
-                'constraints' => array(new Constraints\NotBlank()),
-                'attr' => ['help' => Text::get('tooltip-project-name')]
-            ])
-            ->add('subtitle', 'text', [
-                'label' => 'overview-field-subtitle',
-                'required' => false,
-                'attr' => ['help' => Text::get('tooltip-project-subtitle')]
-            ])
-            ->add('lang', 'choice', [
-                'label' => 'overview-field-lang',
-                'choices' => $langs,
-                'attr' => ['help' => Text::get('tooltip-project-lang')]
-            ])
-            ->add('currency', 'choice', [
-                'label' => 'overview-field-currency',
-                'choices' => $currencies,
-                'attr' => ['help' => Text::get('tooltip-project-currency')]
-            ])
-            ->add('description', 'textarea', [
-                'label' => 'overview-field-description',
-                'required' => false,
-                'attr' => ['help' => Text::get('tooltip-project-description')]
-            ])
-            ->add('project_location', 'location', [
-                'label' => 'overview-field-project_location',
-                'type' => 'project',
-                'item' => $project->id,
-                'required' => false,
-                'pre_addon' => '<i class="fa fa-globe"></i>',
-                'attr' => ['help' => Text::get('tooltip-project-project_location')]
-            ])
-            ;
-        $form = $builder->add('submit', 'submit', [
+        $form = $this->getModelForm('ProjectEdit', $project, $defaults)
+            ->getBuilder()
+            ->add('submit', 'submit', [
                 'label' => $submit_label ? $submit_label : 'regular-submit'
             ])->getForm();
 
@@ -431,61 +357,8 @@ class ProjectDashboardController extends \Goteo\Core\Controller {
         $defaults['publish'] = (bool) $defaults['publish'];
         // print_r($_FILES);die;
         // Create the form
-        $form = $this->createFormBuilder($defaults)
-            ->add('title', 'text', array(
-                'label' => 'regular-title',
-                'constraints' => array(
-                    new Constraints\NotBlank(),
-                    new Constraints\Length(array('min' => 4)),
-                ),
-            ))
-            ->add('date', 'datepicker', array(
-                'label' => 'regular-date',
-                'constraints' => array(new Constraints\NotBlank()),
-            ))
-            // saving images will add that images to the gallery
-            // let's show the gallery in the field with nice options
-            // for removing and reorder it
-            ->add('image', 'dropfiles', array(
-                'required' => false,
-                'data' => $defaults['gallery'],
-                'label' => 'regular-images',
-                'markdown_link' => 'text',
-                'accepted_files' => 'image/jpeg,image/gif,image/png',
-                'url' => '/api/projects/' . $project->id . '/images',
-                'constraints' => array(
-                    new Constraints\Count(array('max' => 10)),
-                    new Constraints\All(array(
-                        // 'groups' => 'Test',
-                        'constraints' => array(
-                            // new Constraints\File()
-                            // new NotNull(array('groups'=>'Test'))
-                        )
-                    ))
-                )
-            ))
-            // ->add('gallery', 'dropfiles', array(
-            //     'required' => false
-            // ))
-            ->add('text', 'markdown', array(
-                'label' => 'regular-text',
-                'required' => false,
-                // 'constraints' => array(new Constraints\NotBlank()),
-            ))
-            ->add('media', 'media', array(
-                'label' => 'regular-media',
-                'required' => false
-            ))
-            ->add('allow', 'boolean', array(
-                'required' => false,
-                'label' => 'blog-allow-comments', // Form has integrated translations
-                'color' => 'cyan', // bootstrap label-* (default, success, ...)
-            ))
-            ->add('publish', 'boolean', array(
-                'required' => false,
-                'label' => 'blog-published', // Form has integrated translations
-                'color' => 'cyan', // bootstrap label-* (default, success, ...)
-            ))
+        $form = $this->getModelForm('ProjectPost', $post, $defaults, ['project' => $project])
+            ->getBuilder()
             ->add('submit', 'submit', array(
                 // 'icon_class' => null
             ))

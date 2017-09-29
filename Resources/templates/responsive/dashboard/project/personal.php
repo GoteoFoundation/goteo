@@ -1,4 +1,4 @@
-<?php $this->layout('dashboard/layout') ?>
+<?php $this->layout('dashboard/project/layout') ?>
 
 <?php $this->section('dashboard-content') ?>
 <?php
