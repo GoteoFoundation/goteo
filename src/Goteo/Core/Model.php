@@ -558,9 +558,24 @@ abstract class Model {
     }
 
     /**
+     * Returns lang object
+     */
+    public function getAllLangs() {
+        try {
+            $sql = "SELECT * FROM `{$this->Table}_lang` WHERE id = :id";
+            $values = array(':id' => $this->id);
+            // die(\sqldbg($sql, $values));
+            if($query = static::query($sql, $values)) {
+                return $query->fetchAll(\PDO::FETCH_OBJ);
+            }
+        } catch (\Exception $e) {}
+        return [];
+    }
+
+    /**
      * Save lang info in a generic way
      */
-    public function setLang($lang, $data = [], array $errors = []) {
+    public function setLang($lang, $data = [], array &$errors = []) {
 
         $fields = static::getLangFields();
         if(!$fields) throw new ModelException('This method requires self::getLangFields() to return the fields to translate');
@@ -587,6 +602,7 @@ abstract class Model {
 
             return true;
         } catch(\PDOException $e) {
+            // die($e->getMessage());
             $errors[] = "Error saving language data for {$this->Table}. " . $e->getMessage();
             return false;
         }

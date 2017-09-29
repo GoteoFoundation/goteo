@@ -169,8 +169,9 @@ class TranslateProjectDashboardController extends \Goteo\Controller\Dashboard\Pr
             ->add('remove', 'submit', [
                 'label' => Text::get('translator-delete', $languages[$lang]),
                 'icon_class' => 'fa fa-trash',
+                'span' => 'hidden-xs',
                 'attr' => [
-                    'class' => 'pull-right-form hide-form btn btn-danger btn-lg',
+                    'class' => 'pull-right-form btn btn-default btn-lg',
                     'data-confirm' => Text::get('translator-delete-sure', $languages[$lang])
                     ]
             ]);
@@ -255,8 +256,9 @@ class TranslateProjectDashboardController extends \Goteo\Controller\Dashboard\Pr
             ->add('remove', 'submit', [
                 'label' => Text::get('translator-delete', $languages[$lang]),
                 'icon_class' => 'fa fa-trash',
+                'span' => 'hidden-xs',
                 'attr' => [
-                    'class' => 'pull-right-form hide-form btn btn-danger btn-lg',
+                    'class' => 'pull-right-form btn btn-default btn-lg',
                     'data-confirm' => Text::get('translator-delete-sure', $languages[$lang])
                     ]
             ]);
@@ -278,7 +280,7 @@ class TranslateProjectDashboardController extends \Goteo\Controller\Dashboard\Pr
                             $errors[] = "Cost #$cost->id not deleted";
                         }
                     } else {
-                        $cost->setLang($lang, ['project' => $project->id, $field => $val], $errors);
+                        $cost->setLang($lang, [$field => $val], $errors);
                     }
                 }
                 if($errors) {
@@ -362,8 +364,9 @@ class TranslateProjectDashboardController extends \Goteo\Controller\Dashboard\Pr
             ->add('remove', 'submit', [
                 'label' => Text::get('translator-delete', $languages[$lang]),
                 'icon_class' => 'fa fa-trash',
+                'span' => 'hidden-xs',
                 'attr' => [
-                    'class' => 'pull-right-form hide-form btn btn-danger btn-lg',
+                    'class' => 'pull-right-form btn btn-default btn-lg',
                     'data-confirm' => Text::get('translator-delete-sure', $languages[$lang])
                     ]
             ]);
@@ -385,7 +388,7 @@ class TranslateProjectDashboardController extends \Goteo\Controller\Dashboard\Pr
                             $errors[] = "Reward #$reward->id not deleted";
                         }
                     } else {
-                        $reward->setLang($lang, ['project' => $project->id, $field => $val], $errors);
+                        $reward->setLang($lang, [$field => $val], $errors);
                     }
                 }
                 if($errors) {
@@ -457,8 +460,9 @@ class TranslateProjectDashboardController extends \Goteo\Controller\Dashboard\Pr
             ->add('remove', 'submit', [
                 'label' => Text::get('translator-delete', $languages[$lang]),
                 'icon_class' => 'fa fa-trash',
+                'span' => 'hidden-xs',
                 'attr' => [
-                    'class' => 'pull-right-form hide-form btn btn-danger btn-lg',
+                    'class' => 'pull-right-form btn btn-default btn-lg',
                     'data-confirm' => Text::get('translator-delete-sure', $languages[$lang])
                     ]
             ])

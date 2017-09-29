@@ -341,7 +341,9 @@ class ProjectDashboardController extends \Goteo\Core\Controller {
                 'attr' => ['help' => Text::get('tooltip-project-support-description')],
                 'constraints' => array(new Constraints\NotBlank()),
             ])
-            ->add('id', 'hidden')
+            ->add('id', 'hidden', [
+                'constraints' => array(new Constraints\NotBlank())
+            ])
             ->add('delete', 'hidden')
             ->add('submit', 'submit')
             ->getForm();
@@ -412,13 +414,82 @@ class ProjectDashboardController extends \Goteo\Core\Controller {
             }
         }
 
+        // Translations
+        $transForm = $this->createFormBuilder(null, 'transform', ['attr' => ['class' => 'autoform hide-help']])
+            ->add('support', 'text', [
+                'label' => 'supports-field-support',
+                'attr' => ['help' => Text::get('tooltip-project-support-support')],
+                'required' => false
+            ])
+            ->add('description', 'textarea', [
+                'label' => 'supports-field-description',
+                'attr' => ['help' => Text::get('tooltip-project-support-description')],
+                'required' => false
+            ])
+            ->add('id', 'hidden', [
+                'constraints' => array(new Constraints\NotBlank())
+            ])
+            ->add('lang', 'hidden', [
+                'constraints' => array(new Constraints\NotBlank())
+            ])
+            ->add('submit', 'submit')
+            ->add('remove', 'submit', [
+                'label' => Text::get('translator-delete'),
+                'icon_class' => 'fa fa-trash',
+                'span' => 'hidden-xs',
+                'attr' => [
+                    'class' => 'pull-right-form btn btn-default btn-lg',
+                    'data-confirm' => Text::get('translator-delete-sure')
+                    ]
+            ])
+            ->getForm();
+
         $langs = Lang::listAll('name', false);
         $languages = array_intersect_key($langs, array_flip($project->getLangsAvailable()));
+        $languages[$project->lang] = $langs[$project->lang];
+
+        $transForm->handleRequest($request);
+        if ($transForm->isSubmitted()) {
+            if($transForm->isValid()) {
+                $data = $transForm->getData();
+                $lang = $data['lang'];
+                foreach($project->supports as $support) {
+                    if($support->id == $data['id']) break;
+                }
+                // Check if we want to remove a translation
+                if($transForm->get('remove')->isClicked()) {
+                    if($support->removeLang($lang)) {
+                        Message::info(Text::get('translator-deleted-ok', $languages[$lang]));
+                    } else {
+                        Message::info(Text::get('translator-deleted-ko', $languages[$lang]));
+                    }
+                    return $this->redirect('/dashboard/project/' . $project->id . '/supports');
+                }
+                if($support) {
+                    $errors = [];
+                    if($support->setLang($lang, $data, $errors)) {
+                        Message::info(Text::get('dashboard-project-support-translate-ok', [
+                            '%ZONE%' => '<strong>' . Text::get('step-main') . '</strong>',
+                            '%LANG%' => '<strong><em>' . $languages[$lang] . '</em></strong>'
+                        ]));
+                        return $this->redirect('/dashboard/project/' . $project->id . '/supports');
+                    } else {
+                        Message::error(Text::get('form-sent-error', implode(',',$errors)));
+                    }
+                } else {
+                    Message::error(Text::get('form-sent-error', '-No support found-'));
+                }
+            } else {
+                Message::error(Text::get('form-has-errors'));
+            }
+        }
 
         return $this->viewResponse('dashboard/project/supports', [
             'supports' => $supports,
             'editForm' => $editForm->createView(),
             'editFormSubmitted' => $editForm->isSubmitted(),
+            'transForm' => $transForm->createView(),
+            // 'transFormSubmitted' => $transForm->isSubmitted(),
             'errors' => Message::getErrors(false),
             'languages' => $languages
         ]);

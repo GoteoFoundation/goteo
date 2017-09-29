@@ -37,6 +37,10 @@ class Reward extends \Goteo\Core\Model {
     public static function getLangFields() {
         return ['reward', 'description', 'other'];
     }
+    public function setLang($lang, $data = [], array &$errors = []) {
+        $data['project'] = $this->project;
+        return parent::setLang($lang, $data, $errors);
+    }
 
 
     public static function get($id) {
