@@ -13,6 +13,8 @@ namespace Goteo\Controller\Dashboard;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
+use Goteo\Application\Exception\ControllerAccessDeniedException;
+
 use Goteo\Application\Session;
 use Goteo\Application\Config;
 use Goteo\Application\View;
@@ -25,6 +27,7 @@ use Goteo\Model\User\Interest;
 use Goteo\Model\User\UserLocation;
 use Goteo\Model\User\Web;
 use Goteo\Model\User;
+use Goteo\Model\Project;
 use Goteo\Application\Lang;
 
 class SettingsDashboardController extends \Goteo\Core\Controller {
@@ -61,10 +64,33 @@ class SettingsDashboardController extends \Goteo\Core\Controller {
     /**
      * Settings: profile edit
      */
-    public function profileAction(Request $request)
+    public function profileAction($pid = null, Request $request)
     {
-        $user = User::get($this->user->id, Config::get('lang')); // default system lang
-        $this->createSidebar('profile');
+        if($pid) {
+            $project = Project::get( $pid );
+            // TODO: implement translation permissions
+            if(!$project instanceOf Project || !$project->userCanEdit($this->user)) {
+                throw new ControllerAccessDeniedException(Text::get('user-login-required-access'));
+            }
+
+            $user = $project->getOwner();
+            ProjectDashboardController::createSidebar($project, 'profile');
+            $this->contextVars([
+                'section' => 'projects'
+            ]);
+            if($project->isApproved()) {
+                $redirect = '/dashboard/project/' . $pid . '/profile';
+            } else {
+                $redirect = '/dashboard/project/' . $pid . '/personal';
+                $submit_label = 'form-next-button';
+            }
+
+        } else {
+            $user = User::get($this->user->id, Config::get('lang')); // default system lang
+            $redirect = '/dashboard/settings';
+            $this->createSidebar('profile');
+        }
+
         $defaults = (array) $user;
         $defaults['entity_type'] = (bool) $defaults['entity_type'];
         $defaults['unlocable'] = UserLocation::isUnlocable($user->id);
@@ -196,7 +222,9 @@ class SettingsDashboardController extends \Goteo\Core\Controller {
                            'placeholder' => Text::get('regular-identica-url')],
                 'required' => false
             ])
-            ->add('submit', 'submit');
+            ->add('submit', 'submit', [
+                'label' => $submit_label ? $submit_label : 'regular-submit'
+            ]);
 
         $form = $builder->getForm();
 
@@ -247,7 +275,7 @@ class SettingsDashboardController extends \Goteo\Core\Controller {
                     if($errors) {
                         Message::error(Text::get('form-sent-error', implode(',',array_map('implode',$errors))));
                     }
-                    return $this->redirect('/dashboard/settings');
+                    return $this->redirect($redirect);
                 } else {
                     Message::error(Text::get('form-sent-error', implode(',',array_map('implode',$errors))));
                 }
