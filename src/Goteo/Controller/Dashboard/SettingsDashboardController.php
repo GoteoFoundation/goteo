@@ -215,11 +215,18 @@ class SettingsDashboardController extends \Goteo\Core\Controller {
                            'placeholder' => Text::get('regular-linkedin-url')],
                 'required' => false
             ])
-            ->add('identica', 'url', [
-                'label' => 'regular-identica',
-                'pre_addon' => '<i class="fa fa-comment-o"></i>',
-                'attr' => ['help' => Text::get('tooltip-user-identica'),
-                           'placeholder' => Text::get('regular-identica-url')],
+            // ->add('identica', 'url', [
+            //     'label' => 'regular-identica',
+            //     'pre_addon' => '<i class="fa fa-comment-o"></i>',
+            //     'attr' => ['help' => Text::get('tooltip-user-identica'),
+            //                'placeholder' => Text::get('regular-identica-url')],
+            //     'required' => false
+            // ])
+            ->add('instagram', 'url', [
+                'label' => 'regular-instagram',
+                'pre_addon' => '<i class="fa fa-instagram"></i>',
+                'attr' => ['help' => Text::get('tooltip-user-instagram'),
+                           'placeholder' => Text::get('regular-instagram-url')],
                 'required' => false
             ])
             ->add('submit', 'submit', [
@@ -256,7 +263,7 @@ class SettingsDashboardController extends \Goteo\Core\Controller {
                 if(isset($data['unlocable'])) {
                     UserLocation::setProperty($user->id, 'locable', !$data['unlocable'], $errors);
                 }
-                $user->rebuildData($data);
+                $user->rebuildData($data, array_keys($form->all()));
                 if ($user->save($errors)) {
                     Message::info(Text::get('user-profile-saved'));
                     //

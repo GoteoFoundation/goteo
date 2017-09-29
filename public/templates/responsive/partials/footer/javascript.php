@@ -24,6 +24,7 @@
 <script type="text/javascript" src="<?= SRC_URL ?>/assets/js/menu.js"></script>
 <script type="text/javascript" src="<?= SRC_URL ?>/assets/js/sidebar.js"></script>
 <script type="text/javascript" src="<?= SRC_URL ?>/assets/js/widgets.js"></script>
+<script type="text/javascript" src="<?= SRC_URL ?>/assets/js/geolocation.js"></script>
 <!-- endbuild -->
 
 <script type="text/javascript">

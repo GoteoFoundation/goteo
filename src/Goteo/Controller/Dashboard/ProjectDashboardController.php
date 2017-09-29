@@ -29,6 +29,7 @@ use Goteo\Model\Blog;
 use Goteo\Model\Blog\Post as BlogPost;
 use Goteo\Model\Message as Comment;
 use Goteo\Library\Text;
+use Goteo\Library\Currency;
 use Goteo\Console\UsersSend;
 use Goteo\Application\Exception\ModelNotFoundException;
 use Goteo\Application\Exception\ModelException;
@@ -274,6 +275,8 @@ class ProjectDashboardController extends \Goteo\Core\Controller {
         }
 
         $defaults = (array)$project;
+        $langs = Lang::listAll('name', false);
+        $currencies = Currency::listAll('name', false);
 
         // Create the form
         $builder = $this->createFormBuilder($defaults)
@@ -281,6 +284,34 @@ class ProjectDashboardController extends \Goteo\Core\Controller {
                 'label' => 'overview-field-name',
                 'constraints' => array(new Constraints\NotBlank()),
                 'attr' => ['help' => Text::get('tooltip-project-name')]
+            ])
+            ->add('subtitle', 'text', [
+                'label' => 'overview-field-subtitle',
+                'required' => false,
+                'attr' => ['help' => Text::get('tooltip-project-subtitle')]
+            ])
+            ->add('lang', 'choice', [
+                'label' => 'overview-field-lang',
+                'choices' => $langs,
+                'attr' => ['help' => Text::get('tooltip-project-lang')]
+            ])
+            ->add('currency', 'choice', [
+                'label' => 'overview-field-currency',
+                'choices' => $currencies,
+                'attr' => ['help' => Text::get('tooltip-project-currency')]
+            ])
+            ->add('description', 'textarea', [
+                'label' => 'overview-field-description',
+                'required' => false,
+                'attr' => ['help' => Text::get('tooltip-project-description')]
+            ])
+            ->add('project_location', 'location', [
+                'label' => 'overview-field-project_location',
+                'type' => 'project',
+                'item' => $project->id,
+                'required' => false,
+                'pre_addon' => '<i class="fa fa-globe"></i>',
+                'attr' => ['help' => Text::get('tooltip-project-project_location')]
             ])
             ;
         $form = $builder->add('submit', 'submit', [
@@ -292,7 +323,7 @@ class ProjectDashboardController extends \Goteo\Core\Controller {
             if($form->isValid()) {
                 $errors = [];
                 $data = $form->getData();
-                $project->rebuildData($data);
+                $project->rebuildData($data, array_keys($form->all()));
 
                 if ($project->save($errors)) {
                     Message::info(Text::get('user-project-saved'));
@@ -467,7 +498,7 @@ class ProjectDashboardController extends \Goteo\Core\Controller {
                 // print_r($_FILES);
                 // var_dump($request->request->all());
                 $data = $form->getData();
-                $post->rebuildData($data);
+                $post->rebuildData($data, array_keys($form->all()));
                 // var_dump($data);die;
                 if($post->save($errors)) {
                     // print_r($post);die;
@@ -549,7 +580,7 @@ class ProjectDashboardController extends \Goteo\Core\Controller {
                 if($support) {
                     $is_update = $support->thread ? true : false;
                     if($support->project === $this->project->id) {
-                        $support->rebuildData($data);
+                        $support->rebuildData($data, array_keys($editForm->all()));
                         if($ok = $support->save($errors)) {
                             // Create or update the Comment associated
                             $comment = new Comment([
@@ -764,7 +795,7 @@ class ProjectDashboardController extends \Goteo\Core\Controller {
         if ($form->isSubmitted()) {
             if($form->isValid()) {
                 $data = $form->getData();
-                $project->rebuildData($data);
+                $project->rebuildData($data, array_keys($form->all()));
                 if($project->save($errors)) {
                     // print_r($post);die;
                     Message::info(Text::get('dashboard-project-analytics-ok'));
