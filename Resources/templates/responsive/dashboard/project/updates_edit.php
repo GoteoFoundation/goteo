@@ -31,7 +31,7 @@
     <?php endif ?>
 
 
-    <?= $this->form_form($this->raw('form')) ?>
+    <?= $this->supply('dashboard-content-form', function() {return $this->form_form($this->raw('form'));}) ?>
 
 
   </div>

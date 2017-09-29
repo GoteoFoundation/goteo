@@ -11,20 +11,13 @@
 
 namespace Goteo\Library\Forms\Model;
 
-use Goteo\Library\Forms\FormCreatorInterface;
-use Goteo\Library\Forms\AbstractFormCreator;
-use Symfony\Component\Form\FormBuilderInterface;
+use Goteo\Library\Forms\FormProcessorInterface;
+use Goteo\Library\Forms\AbstractFormProcessor;
 use Symfony\Component\Validator\Constraints;
-use Goteo\Model\Project;
 use Goteo\Library\Text;
 
 
-class ProjectPostForm extends AbstractFormCreator implements FormCreatorInterface {
-
-    public function getProject() {
-        return $this->getOption('project');
-    }
-
+class ProjectPostForm extends AbstractFormProcessor implements FormProcessorInterface {
 
     public function createForm() {
 
@@ -54,7 +47,7 @@ class ProjectPostForm extends AbstractFormCreator implements FormCreatorInterfac
                 'label' => 'regular-images',
                 'markdown_link' => 'text',
                 'accepted_files' => 'image/jpeg,image/gif,image/png',
-                'url' => '/api/projects/' . $this->getProject()->id . '/images',
+                'url' => '/api/projects/' . $this->getOption('project')->id . '/images',
                 'constraints' => array(
                     new Constraints\Count(array('max' => 10)),
                     new Constraints\All(array(

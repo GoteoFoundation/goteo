@@ -11,16 +11,15 @@
 
 namespace Goteo\Library\Forms\Model;
 
-use Goteo\Library\Forms\FormCreatorInterface;
-use Goteo\Library\Forms\AbstractFormCreator;
-use Symfony\Component\Form\FormBuilderInterface;
+use Goteo\Library\Forms\FormProcessorInterface;
+use Goteo\Library\Forms\AbstractFormProcessor;
 use Symfony\Component\Validator\Constraints;
 use Goteo\Application\Lang;
 use Goteo\Library\Text;
 use Goteo\Library\Currency;
 
 
-class ProjectEditForm extends AbstractFormCreator implements FormCreatorInterface {
+class ProjectEditForm extends AbstractFormProcessor implements FormProcessorInterface {
 
     public function createForm() {
         $currencies = Currency::listAll('name', false);
@@ -67,4 +66,5 @@ class ProjectEditForm extends AbstractFormCreator implements FormCreatorInterfac
             ]);
         return $this;
     }
+
 }

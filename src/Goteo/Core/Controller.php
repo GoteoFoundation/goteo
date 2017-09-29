@@ -120,15 +120,15 @@ abstract class Controller {
 
     /**
      * Handy method to get a form builder
-     * @return Goteo\Library\Forms\FormCreatorInterface
+     * @return Goteo\Library\Forms\FormProcessorInterface
      */
     public function getModelForm($form, Model $model, array $defaults = [], array $options = []) {
         $finder = App::getService('app.forms.finder');
         $finder->setModel($model);
         $finder->setBuilder($this->createFormBuilder($defaults));
-        $creator = $finder->getInstance($form, $options);
+        $processor = $finder->getInstance($form, $options);
 
-        return $creator->createForm();
+        return $processor->createForm();
     }
 }
 

@@ -35,6 +35,7 @@ use Goteo\Application\Exception\ModelException;
 use Goteo\Application\Exception\ControllerAccessDeniedException;
 use Goteo\Application\Event\FilterMessageEvent;
 use Symfony\Component\Validator\Constraints;
+use Goteo\Library\Forms\FormModelException;
 
 class ProjectDashboardController extends \Goteo\Core\Controller {
     protected $user;
@@ -190,31 +191,21 @@ class ProjectDashboardController extends \Goteo\Core\Controller {
         }
 
         // Create the form
-        $form = $this->getModelForm('ProjectPersonal', $project, $defaults)
-            ->getBuilder()
+        $processor = $this->getModelForm('ProjectPersonal', $project, $defaults, ['account' => $account]);
+        $form = $processor->getBuilder()
             ->add('submit', 'submit', [
                 'label' => $submit_label ? $submit_label : 'regular-submit'
             ])->getForm();
 
         $form->handleRequest($request);
         if ($form->isSubmitted()) {
-            if($form->isValid()) {
-                $errors = [];
-                $data = $form->getData();
-                $keys = array_keys($form->all());
-                $project->rebuildData($data, $keys);
-                $account->rebuildData($data, $keys);
-
-                if ($project->save($errors) && $account->save($errors)) {
-                    Message::info(Text::get('user-personal-saved'));
-                    return $this->redirect($redirect);
-                } else {
-                    Message::error(Text::get('form-sent-error', implode(', ',$errors)));
-                }
-            } else {
-                Message::error(Text::get('form-has-errors'));
+            try {
+                $processor->save($form);
+                Message::info(Text::get('user-personal-saved'));
+                return $this->redirect($redirect);
+            } catch(FormModelException $e) {
+                Message::error($e->getMessage());
             }
-
         }
         return $this->viewResponse('dashboard/project/personal', [
             'form' => $form->createView()
@@ -238,29 +229,21 @@ class ProjectDashboardController extends \Goteo\Core\Controller {
         $defaults = (array)$project;
 
         // Create the form
-        $form = $this->getModelForm('ProjectEdit', $project, $defaults)
-            ->getBuilder()
+        $processor = $this->getModelForm('ProjectEdit', $project, $defaults);
+        $form = $processor->getBuilder()
             ->add('submit', 'submit', [
                 'label' => $submit_label ? $submit_label : 'regular-submit'
             ])->getForm();
 
         $form->handleRequest($request);
         if ($form->isSubmitted()) {
-            if($form->isValid()) {
-                $errors = [];
-                $data = $form->getData();
-                $project->rebuildData($data, array_keys($form->all()));
-
-                if ($project->save($errors)) {
-                    Message::info(Text::get('user-project-saved'));
-                    return $this->redirect($redirect);
-                } else {
-                    Message::error(Text::get('form-sent-error', implode(', ',$errors)));
-                }
-            } else {
-                Message::error(Text::get('form-has-errors'));
+            try {
+                $processor->save($form);
+                Message::info(Text::get('user-project-saved'));
+                return $this->redirect($redirect);
+            } catch(FormModelException $e) {
+                Message::error($e->getMessage());
             }
-
         }
         return $this->viewResponse('dashboard/project/edit', [
             'form' => $form->createView()
@@ -357,8 +340,8 @@ class ProjectDashboardController extends \Goteo\Core\Controller {
         $defaults['publish'] = (bool) $defaults['publish'];
         // print_r($_FILES);die;
         // Create the form
-        $form = $this->getModelForm('ProjectPost', $post, $defaults, ['project' => $project])
-            ->getBuilder()
+        $processor = $this->getModelForm('ProjectPost', $post, $defaults, ['project' => $project]);
+        $form = $processor->getBuilder()
             ->add('submit', 'submit', array(
                 // 'icon_class' => null
             ))
@@ -367,22 +350,12 @@ class ProjectDashboardController extends \Goteo\Core\Controller {
 
         $form->handleRequest($request);
         if ($form->isSubmitted()) {
-            if($form->isValid()) {
-                // print_r($_FILES);
-                // var_dump($request->request->all());
-                $data = $form->getData();
-                $post->rebuildData($data, array_keys($form->all()));
-                // var_dump($data);die;
-                if($post->save($errors)) {
-                    // print_r($post);die;
-                    Message::info(Text::get('form-sent-success'));
-                    return $this->redirect('/dashboard/project/' . $this->project->id .'/updates');
-                } else {
-                    Message::error(Text::get('form-sent-error', implode(', ',$errors)));
-                }
-
-            } else {
-                Message::error(Text::get('form-has-errors'));
+            try {
+                $processor->save($form);
+                Message::info(Text::get('form-sent-success'));
+                return $this->redirect('/dashboard/project/' . $this->project->id .'/updates');
+            } catch(FormModelException $e) {
+                Message::error($e->getMessage());
             }
         }
 

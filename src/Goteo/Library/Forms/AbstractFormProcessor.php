@@ -12,11 +12,13 @@
 namespace Goteo\Library\Forms;
 
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Validator\Constraints;
 use Goteo\Core\Model;
+use Goteo\Library\Text;
 
 
-abstract class AbstractFormCreator implements FormCreatorInterface {
+abstract class AbstractFormProcessor implements FormProcessorInterface {
     private $builder;
     private $model;
     private $options;
@@ -63,5 +65,21 @@ abstract class AbstractFormCreator implements FormCreatorInterface {
 
     public function getOption($key) {
         return $this->options[$key];
+    }
+
+    public function save(FormInterface $form = null) {
+        if(!$form) $form = $this->getBuilder()->getForm();
+        if(!$form->isValid()) throw new FormModelException(Text::get('form-has-errors'));
+
+        $data = $form->getData();
+        $model = $this->getModel();
+        $model->rebuildData($data, array_keys($form->all()));
+
+        $errors = [];
+        if (!$model->save($errors)) {
+            throw new FormModelException(Text::get('form-sent-error', implode(', ',$errors)));
+        }
+
+        return true;
     }
 }

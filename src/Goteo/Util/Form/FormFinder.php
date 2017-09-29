@@ -36,10 +36,16 @@ class FormFinder {
         return $this->model;
     }
 
-    public function getInstance($form, array $options = []) {
+    public function resolve($form) {
         $class = '\Goteo\Library\Forms\Model\\' . $form . 'Form';
+        if(class_exists($class)) {
+            return $class;
+        }
+        throw new FormFinderException("$class not found");
+    }
 
+    public function getInstance($form, array $options = []) {
+        $class = $this->resolve($form);
         return new $class($this->builder, $this->model, $options);
-
     }
 }

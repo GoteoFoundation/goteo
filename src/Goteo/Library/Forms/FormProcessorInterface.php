@@ -11,10 +11,12 @@
 namespace Goteo\Library\Forms;
 
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\Form\FormInterface;
 use Goteo\Core\Model;
 
-interface FormCreatorInterface {
+interface FormProcessorInterface {
     public function createForm();
+    public function save(FormInterface $form = null);
     public function setBuilder(FormBuilderInterface $builder);
     public function getBuilder();
     public function setModel(Model $model);

@@ -252,3 +252,4 @@ dashboard-translate-rewards: 'Translate project rewards'
 dashboard-project-support-translate-ok: 'Support %TITLE% successfully translated to %LANG%'
 dashboard-project-support-translating: 'You are translating this support entry to %LANG%. The original language is %ORIGINAL%.'
 
+dashboard-project-saved: 'Project updated successfully'
