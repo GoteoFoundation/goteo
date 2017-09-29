@@ -142,7 +142,6 @@ $this->section('content');
               event.preventDefault();
               $('#search').addClass('open');
               $('#search > form > input[type="search"]').focus();
-              $('body').removeClass('sidebar-opened');
           });
           
           $('#search, #search button.close').on('click keyup', function(event) {
@@ -176,6 +175,15 @@ $this->section('content');
                 $('#calls-container').removeClass('fadeOut').animateCss('fadeIn');
             });
 
+          });
+
+
+          $(".sidebar-nav").on('click', "a", function (e) {
+            if(/^#/.test(href) === true) { 
+                $('body').removeClass('sidebar-opened');
+            } else {
+                alert("no anchor")
+            }
           });
           
           

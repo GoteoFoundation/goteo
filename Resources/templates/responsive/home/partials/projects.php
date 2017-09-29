@@ -22,7 +22,7 @@
                 <div class="col-xs-12">
                     <div class="slider slider-projects">
                         <?php foreach ($this->projects_popular as $project) : ?>
-                            <div class="widget-slide">
+                            <div class="item widget-slide">
                             <?= $this->insert('project/widgets/normal', [
                                 'project' => $project
                                 ]) ?>
