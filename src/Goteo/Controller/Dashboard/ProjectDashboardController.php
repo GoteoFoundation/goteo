@@ -162,7 +162,7 @@ class ProjectDashboardController extends \Goteo\Core\Controller {
     }
 
     /**
-     * Settings (personal)
+     * Project edit (personal)
      */
     public function personalAction($pid, Request $request)
     {
@@ -176,17 +176,21 @@ class ProjectDashboardController extends \Goteo\Core\Controller {
             $redirect = '/dashboard/project/' . $pid . '/edit';
             $submit_label = 'form-next-button';
         }
-
-        $defaults = (array)User::getPersonal($user);
+        $defaults = (array) $project;
+        $defaults['contract_birthdate'] = new \Datetime($defaults['contract_birthdate']);
         if($account = Account::get($project->id)) {
-            foreach($account as $k => $v) {
-                if($v) {
+            $defaults['paypal'] = $account->paypal;
+            $defaults['bank'] = $account->bank;
+        }
+        if($personal = (array)User::getPersonal($user)) {
+            foreach($personal as $k => $v) {
+                if(array_key_exists($k, $defaults) && empty($defaults[$k])) {
                     $defaults[$k] = $v;
                 }
             }
         }
 
-        $defaults['contract_birthdate'] = new \Datetime($defaults['contract_birthdate']);
+
         // Create the form
         $builder = $this->createFormBuilder($defaults)
             ->add('contract_name', 'text', [
@@ -235,8 +239,9 @@ class ProjectDashboardController extends \Goteo\Core\Controller {
             if($form->isValid()) {
                 $errors = [];
                 $data = $form->getData();
-                $project->rebuildData($data);
-                $account->rebuildData($data);
+                $keys = array_keys($form->all());
+                $project->rebuildData($data, $keys);
+                $account->rebuildData($data, $keys);
 
                 if ($project->save($errors) && $account->save($errors)) {
                     Message::info(Text::get('user-personal-saved'));
@@ -254,6 +259,60 @@ class ProjectDashboardController extends \Goteo\Core\Controller {
         ]);
     }
 
+    /**
+     * Project edit (edit)
+     */
+    public function editAction($pid, Request $request)
+    {
+        $project = $this->validateProject($pid, 'edit');
+        if($project instanceOf Response) return $project;
+        if($project->isApproved()) {
+            $redirect = '/dashboard/project/' . $pid . '/edit';
+        } else {
+            $redirect = '/dashboard/project/' . $pid . '/images';
+            $submit_label = 'form-next-button';
+        }
+
+        $defaults = (array)$project;
+
+        // Create the form
+        $builder = $this->createFormBuilder($defaults)
+            ->add('name', 'text', [
+                'label' => 'overview-field-name',
+                'constraints' => array(new Constraints\NotBlank()),
+                'attr' => ['help' => Text::get('tooltip-project-name')]
+            ])
+            ;
+        $form = $builder->add('submit', 'submit', [
+                'label' => $submit_label ? $submit_label : 'regular-submit'
+            ])->getForm();
+
+        $form->handleRequest($request);
+        if ($form->isSubmitted()) {
+            if($form->isValid()) {
+                $errors = [];
+                $data = $form->getData();
+                $project->rebuildData($data);
+
+                if ($project->save($errors)) {
+                    Message::info(Text::get('user-project-saved'));
+                    return $this->redirect($redirect);
+                } else {
+                    Message::error(Text::get('form-sent-error', implode(', ',$errors)));
+                }
+            } else {
+                Message::error(Text::get('form-has-errors'));
+            }
+
+        }
+        return $this->viewResponse('dashboard/project/edit', [
+            'form' => $form->createView()
+        ]);
+    }
+
+    /**
+     * Project edit (images)
+     */
     public function imagesAction($pid = null, Request $request)
     {
         $project = $this->validateProject($pid, 'images');
@@ -271,6 +330,9 @@ class ProjectDashboardController extends \Goteo\Core\Controller {
 
     }
 
+    /**
+     * Project edit (updates)
+     */
     public function updatesAction($pid = null, Request $request)
     {
         // View::setTheme('default');

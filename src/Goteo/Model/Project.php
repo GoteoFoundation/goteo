@@ -1507,28 +1507,15 @@ namespace Goteo\Model {
                     'social_commitment_description'
                     );
 
-                $set = '';
-                $values = array();
+                try {
+                    //automatic $this->id assignation
+                    $this->dbUpdate($fields);
 
-                foreach ($fields as $field) {
-                    if ($set != '') $set .= ', ';
-                    $set .= "$field = :$field";
-                    $values[":$field"] = $this->$field;
-                }
-
-                // Solamente marcamos updated cuando se envia a revision desde el superform o el admin
-//              $set .= ", updated = :updated";
-//              $values[':updated'] = date('Y-m-d');
-                $values[':id'] = $this->id;
-
-                $sql = "UPDATE project SET " . $set . " WHERE id = :id";
-
-                if (!self::query($sql, $values)) {
-                    $errors[] = $sql . '<pre>' . print_r($values, true) . '</pre>';
+                } catch(\PDOException $e) {
+                    $errors[] = "Error updating Project " . $e->getMessage();
                     $fail = true;
                 }
 
-//                echo "$sql<br />";
                 // y aquí todas las tablas relacionadas
                 // cada una con sus save, sus new y sus remove
                 // quitar las que tiene y no vienen

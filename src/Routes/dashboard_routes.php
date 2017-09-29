@@ -74,17 +74,24 @@ $dash->add('dashboard-projects', new Route(
     array('_controller' => 'Goteo\Controller\Dashboard\ProjectDashboardController::indexAction')
 ));
 
-// Settings (profile)
+// Project edit (profile)
 $dash->add('dashboard-project-profile', new Route(
     '/project/{pid}/profile',
     array('_controller' => 'Goteo\Controller\Dashboard\SettingsDashboardController::profileAction',
         )
 ));
 
-// Settings (personal)
+// Project edit (personal)
 $dash->add('dashboard-project-personal', new Route(
     '/project/{pid}/personal',
     array('_controller' => 'Goteo\Controller\Dashboard\ProjectDashboardController::personalAction',
+        )
+));
+
+// Project edit (main)
+$dash->add('dashboard-project-main', new Route(
+    '/project/{pid}/edit',
+    array('_controller' => 'Goteo\Controller\Dashboard\ProjectDashboardController::editAction',
         )
 ));
 
