@@ -1,4 +1,4 @@
-costs-field-select-rounds: Plazos
+costs-field-select-rounds: Plaços
 form-accept-button: Acceptar
 form-add-button: Afegir
 form-ajax-info: 'El formulari es va desant segons passis per cada camp'
@@ -8,7 +8,7 @@ form-has-errors: 'El formulari conté errors, revisa''ls i torna-ho a provar!'
 form-errors-info: 'Total: %s | En aquesta passa: %s'
 form-errors-total: 'Hi ha %s errors en total'
 form-footer-errors_title: Errors
-form-image_upload-button: 'Pujar imatge'
+form-image_upload-button: 'Puja una imatge'
 form-media_send-button: 'Posar vídeo'
 form-navigation_bar-header: 'Anar a'
 form-next-button: Següent
@@ -23,19 +23,19 @@ form-project_status-expired: Caducat
 form-project_status-fulfilled: 'Retorn complert'
 form-project_status-review: 'Pendent de valoració'
 form-project_status-success: Finançat
-form-remove-button: Eliminar
-form-self_review-button: Corregir
-form-send_review-button: Enviar
+form-remove-button: Elimina
+form-self_review-button: 'Corregeix'
+form-send_review-button: Envia
 form-upload-button: Pujar
 help-cost-to-consultant: '- Necessita ajuda per definir els costos<br/>'
 help-license-to-consultant: '- Necessita ajuda en retorns col.lectius i llicències<br/>'
 overview-extra-fields: 'Camps complementaris'
 project-form-header: Formulari
-project-one-round: 'Ronda única de 40 días'
+project-one-round: 'Ronda única de 40 dies'
 project-personal-field-entity_name: 'Entitat en nom de la qual actues (si procedeix)'
-project-two-rounds: 'Dos rondas de 40 días'
+project-two-rounds: 'Dues rondes de 40 dies'
 tooltip-project-personal-entity_name: 'Si representes alguna entitat, indica el seu nom en aquest camp.'
 form-sent-success: 'S''han desat les dades correctament!'
-form-sent-error: 'Ha ocurregut un error al desar les dades: [%s]'
+form-sent-error: 'Ha ocorregut un error al desar les dades: [%s]'
 form-confirm-exit: 'Es perdran les dades que no has desat\nSegur que vols sortir de la pàgina?'
 overview-extra-call: 'Camps complementaris per la convocatòria %s'

@@ -377,6 +377,53 @@ class ProjectDashboardController extends \Goteo\Core\Controller {
     }
 
     /**
+    * Costs section
+    */
+    public function costsAction($pid = null, Request $request)
+    {
+        $project = $this->validateProject($pid, 'costs');
+        if($project instanceOf Response) return $project;
+
+        $defaults = (array) $project;
+        // Create the form
+        $processor = $this->getModelForm('ProjectCosts', $project, $defaults);
+        $form = $processor->getBuilder()
+            ->add('submit', 'submit', [
+                'label' => $submit_label ? $submit_label : 'regular-submit'
+            ])->getForm();
+
+        $form->handleRequest($request);
+        if ($form->isSubmitted()) {
+            try {
+                $processor->save($form);
+                Message::info(Text::get('dashboard-project-saved'));
+                return $this->redirect($redirect);
+            } catch(FormModelException $e) {
+                Message::error($e->getMessage());
+            }
+        }
+
+        return $this->viewResponse('dashboard/project/costs', [
+            'costs' => $project->costs,
+            'form' => $form->createView()
+        ]);
+    }
+
+    /**
+    * Rewards section
+    */
+    public function rewardsAction($pid = null, Request $request)
+    {
+        $project = $this->validateProject($pid, 'rewards');
+        if($project instanceOf Response) return $project;
+
+        // $rewards = Support::getAll($project);
+
+        return $this->viewResponse('dashboard/project/rew,ards', [
+        ]);
+    }
+
+    /**
     * Collaborations section
     */
     public function supportsAction($pid = null, Request $request)
