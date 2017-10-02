@@ -21,6 +21,7 @@ use Goteo\Application\Lang;
 use Goteo\Model\Invest;
 use Goteo\Model\Project;
 use Goteo\Model\Project\Account;
+use Goteo\Model\Project\Cost;
 use Goteo\Model\Project\Reward;
 use Goteo\Model\Project\Image as ProjectImage;
 use Goteo\Model\Project\Support;
@@ -383,6 +384,12 @@ class ProjectDashboardController extends \Goteo\Core\Controller {
     {
         $project = $this->validateProject($pid, 'costs');
         if($project instanceOf Response) return $project;
+        if($project->isApproved()) {
+            $redirect = '/dashboard/project/' . $pid . '/costs';
+        } else {
+            $redirect = '/dashboard/project/' . $pid . '/rewards';
+            $submit_label = 'form-next-button';
+        }
 
         $defaults = (array) $project;
         // Create the form
@@ -405,6 +412,7 @@ class ProjectDashboardController extends \Goteo\Core\Controller {
 
         return $this->viewResponse('dashboard/project/costs', [
             'costs' => $project->costs,
+            'types' => Cost::types(),
             'form' => $form->createView()
         ]);
     }

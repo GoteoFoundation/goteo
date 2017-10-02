@@ -29,6 +29,8 @@ class UrlType extends SymfonyUrlType
     public function configureOptions(OptionsResolver $resolver)
     {
         parent::configureOptions($resolver);
+        $resolver->setDefault('pre_addon', '');
+        $resolver->setDefault('post_addon', '');
         $resolver->setDefault('row_class', '');
     }
 
@@ -47,5 +49,7 @@ class UrlType extends SymfonyUrlType
     {
         parent::buildView($view, $form, $options);
         $view->vars['row_class'] = $options['row_class'];
+        $view->vars['pre_addon'] = $options['pre_addon'];
+        $view->vars['post_addon'] = $options['post_addon'];
     }
 }

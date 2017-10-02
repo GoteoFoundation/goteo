@@ -11,6 +11,7 @@
 
 namespace Goteo\Util\Form\Type;
 
+use Symfony\Component\Form\Extension\Core\Type\NumberType as SymfonyNumberType;
 use Symfony\Component\Form\FormView;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -20,7 +21,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
  * This class creates overides Date to show always as the single_text option is activated
  *
  */
-class YearType extends TextType
+class NumberType extends SymfonyNumberType
 {
     /**
      * {@inheritdoc}
@@ -28,13 +29,10 @@ class YearType extends TextType
     public function configureOptions(OptionsResolver $resolver)
     {
         parent::configureOptions($resolver);
-        $resolver->setDefault('min', date('Y') - 100);
-        $resolver->setDefault('max', date('Y'));
         $resolver->setDefault('row_class', '');
         $resolver->setDefault('pre_addon', '');
         $resolver->setDefault('post_addon', '');
     }
-
     /**
      * {@inheritdoc}
      */
@@ -42,25 +40,7 @@ class YearType extends TextType
     {
         parent::buildView($view, $form, $options);
         $view->vars['row_class'] = $options['row_class'];
-        $view->vars['min'] = $options['min'];
-        $view->vars['max'] = $options['max'];
         $view->vars['pre_addon'] = $options['pre_addon'];
         $view->vars['post_addon'] = $options['post_addon'];
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getName()
-    {
-        return $this->getBlockPrefix();
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getBlockPrefix()
-    {
-        return 'year';
     }
 }

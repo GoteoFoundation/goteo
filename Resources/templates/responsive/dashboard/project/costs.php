@@ -7,7 +7,21 @@
     <h1><?= $this->text('costs-main-header') ?></h1>
     <p><?= $this->text('guide-project-costs') ?></p>
 
-    <?= $this->supply('dashboard-content-form', function() {return $this->form_form($this->raw('form'));}) ?>
+    <?= $this->supply('dashboard-content-form', function() {
+        $form = $this->raw('form');
+        echo $this->form_start($form);
+
+        echo $this->form_row($form['one_round']);
+        echo $this->form_row($form['title-costs']);
+
+
+        foreach($this->costs as $cost) {
+            echo $this->insert('dashboard/project/partials/cost_item', ['cost' => $cost, 'form' => $form]);
+        }
+
+        echo $this->form_end($form);
+
+    }) ?>
 
   </div>
 </div>

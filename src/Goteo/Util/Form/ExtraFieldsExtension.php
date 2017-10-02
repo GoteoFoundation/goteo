@@ -38,6 +38,7 @@ class ExtraFieldsExtension extends AbstractExtension
             new Type\TitleType(),
             new Type\SubmitType(),
             new Type\ChoiceType(),
+            new Type\NumberType(),
         );
     }
 }
