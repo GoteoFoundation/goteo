@@ -23,6 +23,14 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
  */
 class UrlType extends SymfonyUrlType
 {
+    /**
+     * {@inheritdoc}
+     */
+    public function configureOptions(OptionsResolver $resolver)
+    {
+        parent::configureOptions($resolver);
+        $resolver->setDefault('row_class', '');
+    }
 
     // /**
     //  * {@inheritdoc}
@@ -32,4 +40,12 @@ class UrlType extends SymfonyUrlType
         return __NAMESPACE__.'\TextType';
     }
 
+    /**
+     * {@inheritdoc}
+     */
+    public function buildView(FormView $view, FormInterface $form, array $options)
+    {
+        parent::buildView($view, $form, $options);
+        $view->vars['row_class'] = $options['row_class'];
+    }
 }

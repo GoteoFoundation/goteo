@@ -15,6 +15,8 @@ use Goteo\Library\Forms\FormProcessorInterface;
 use Goteo\Library\Forms\AbstractFormProcessor;
 use Symfony\Component\Validator\Constraints;
 use Goteo\Application\Lang;
+use Goteo\Model\Project;
+use Goteo\Model\SocialCommitment;
 use Goteo\Library\Text;
 use Goteo\Library\Currency;
 
@@ -54,7 +56,7 @@ class ProjectEditForm extends AbstractFormProcessor implements FormProcessorInte
             ->add('description', 'textarea', [
                 'label' => 'overview-field-description',
                 'required' => false,
-                'attr' => ['help' => Text::get('tooltip-project-description')]
+                'attr' => ['help' => Text::get('tooltip-project-description'), 'rows' => 8]
             ])
             ->add('project_location', 'location', [
                 'label' => 'overview-field-project_location',
@@ -63,7 +65,63 @@ class ProjectEditForm extends AbstractFormProcessor implements FormProcessorInte
                 'required' => false,
                 'pre_addon' => '<i class="fa fa-globe"></i>',
                 'attr' => ['help' => Text::get('tooltip-project-project_location')]
-            ]);
+            ])
+            ->add('related', 'textarea', [
+                'label' => 'overview-field-related',
+                'required' => false,
+                'attr' => ['help' => Text::get('tooltip-project-related'), 'rows' => 8]
+            ])
+            ->add('spread', 'textarea', [
+                'label' => 'overview-field-spread',
+                'required' => false,
+                'attr' => ['help' => Text::get('tooltip-project-spread'), 'rows' => 8]
+            ])
+            ->add('extra-title', 'title', [
+                'label' => 'overview-extra-fields',
+                'row_class' => 'extra'
+            ])
+            ->add('about', 'textarea', [
+                'label' => 'overview-field-about',
+                'required' => false,
+                'row_class' => 'extra',
+                'attr' => ['help' => Text::get('tooltip-project-about'), 'rows' => 8]
+            ])
+            ->add('motivation', 'textarea', [
+                'label' => 'overview-field-motivation',
+                'required' => false,
+                'row_class' => 'extra',
+                'attr' => ['help' => Text::get('tooltip-project-motivation'), 'rows' => 8]
+            ])
+            ->add('goal', 'textarea', [
+                'label' => 'overview-field-goal',
+                'required' => false,
+                'row_class' => 'extra',
+                'attr' => ['help' => Text::get('tooltip-project-goal'), 'rows' => 8]
+            ])
+            ->add('scope', 'choice', [
+                'label' => 'overview-field-scope',
+                'required' => true,
+                'wrap_class' => 'col-sm-3 col-xs-4',
+                'choices' => Project::scope(),
+                'expanded' => true,
+                'attr' => ['help' => Text::get('tooltip-project-scope')]
+            ])
+            ->add('social_commitment', 'choice', [
+                'label' => 'overview-field-social-category',
+                'required' => true,
+                // 'wrap_class' => 'col-sm-3 col-xs-4',
+                'choices' => array_map(function($el){
+                        return [$el->id => $el->name];
+                    }, SocialCommitment::getAll()),
+                'expanded' => true,
+                'attr' => ['help' => Text::get('tooltip-project-social-category')]
+            ])
+            ->add('social_commitment_description', 'textarea', [
+                'label' => 'overview-field-social-description',
+                'required' => false,
+                'attr' => ['help' => Text::get('tooltip-project-social-description'), 'rows' => 8]
+            ])
+            ;
         return $this;
     }
 

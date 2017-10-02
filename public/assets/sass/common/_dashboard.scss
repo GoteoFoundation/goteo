@@ -169,6 +169,24 @@
       }
 
   }
+  .form-group {
+    &.extra {
+      padding-left: 20px;
+      border-left: 4px solid $color-cyan;
+      margin-top: 0;
+      padding-top:20px;
+      &+.extra {
+        margin-top:-20px;
+      }
+    }
+    input[type="checkbox"], input[type="radio"] {
+      vertical-align: text-bottom;
+      display: inline-block;
+      width: auto;
+      height: auto;
+      margin-right: 5px;
+    }
+  }
   .pagination > .active > a {
     background-color: $color-cyan;
     border-color: $color-cyan;

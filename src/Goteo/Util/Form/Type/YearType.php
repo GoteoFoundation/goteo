@@ -30,6 +30,7 @@ class YearType extends TextType
         parent::configureOptions($resolver);
         $resolver->setDefault('min', date('Y') - 100);
         $resolver->setDefault('max', date('Y'));
+        $resolver->setDefault('row_class', '');
     }
 
     /**
@@ -38,6 +39,7 @@ class YearType extends TextType
     public function buildView(FormView $view, FormInterface $form, array $options)
     {
         parent::buildView($view, $form, $options);
+        $view->vars['row_class'] = $options['row_class'];
         $view->vars['min'] = $options['min'];
         $view->vars['max'] = $options['max'];
     }

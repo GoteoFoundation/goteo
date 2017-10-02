@@ -32,6 +32,7 @@ class LocationType extends TextType
         parent::configureOptions($resolver);
         $resolver->setDefault('type', null); // user, project, call, ...
         $resolver->setDefault('item', null); // if type requires item-id (project, call, ...)
+        $resolver->setDefault('row_class', '');
     }
     /**
      * {@inheritdoc}
@@ -49,6 +50,7 @@ class LocationType extends TextType
             $view->vars['attr']['class'] .= ' geo-autocomplete';
         }
         $view->vars['privacy_control'] = $options['type'];
+        $view->vars['row_class'] = $options['row_class'];
     }
 
     /**

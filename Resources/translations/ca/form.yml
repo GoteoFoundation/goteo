@@ -2,8 +2,8 @@ costs-field-select-rounds: Plazos
 form-accept-button: Acceptar
 form-add-button: Afegir
 form-ajax-info: 'El formulari es va desant segons passis per cada camp'
-form-apply-button: Aplicar
-form-edit-button: Editar
+form-apply-button: Aplica
+form-edit-button: Edita
 form-has-errors: 'El formulari conté errors, revisa''ls i torna-ho a provar!'
 form-errors-info: 'Total: %s | En aquesta passa: %s'
 form-errors-total: 'Hi ha %s errors en total'
@@ -29,7 +29,7 @@ form-send_review-button: Enviar
 form-upload-button: Pujar
 help-cost-to-consultant: '- Necessita ajuda per definir els costos<br/>'
 help-license-to-consultant: '- Necessita ajuda en retorns col.lectius i llicències<br/>'
-overview-extra-fields: 'Campos complementarios'
+overview-extra-fields: 'Camps complementaris'
 project-form-header: Formulari
 project-one-round: 'Ronda única de 40 días'
 project-personal-field-entity_name: 'Entitat en nom de la qual actues (si procedeix)'
