@@ -38,3 +38,4 @@ tooltip-project-personal-entity_name: 'Si representes alguna entitat, indica el 
 form-sent-success: 'S''han desat les dades correctament!'
 form-sent-error: 'Ha ocurregut un error al desar les dades: [%s]'
 form-confirm-exit: 'Es perdran les dades que no has desat\nSegur que vols sortir de la pàgina?'
+overview-extra-call: 'Camps complementaris per la convocatòria %s'

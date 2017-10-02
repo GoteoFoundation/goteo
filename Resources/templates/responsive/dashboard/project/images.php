@@ -22,6 +22,9 @@
         <p class="text-danger error-msg hidden"></p>
     <?php endforeach ?>
 
+    <?php if($this->next): ?>
+        <p class="spacer"><a class="btn btn-lg btn-cyan" href="<?= $this->next ?>"><?= $this->text('form-next-button') ?></a></p>
+    <?php endif ?>
   </div>
 </div>
 

@@ -178,6 +178,9 @@
       &+.extra {
         margin-top:-20px;
       }
+      &.call {
+        border-left-color: $color-lilac;
+      }
     }
     input[type="checkbox"], input[type="radio"] {
       vertical-align: text-bottom;

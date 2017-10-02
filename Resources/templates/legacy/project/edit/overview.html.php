@@ -223,14 +223,14 @@ if($project->call){
         'class' => 'inline media-upload'
     );
 
-    
+
 
 }
 
 else{
 
     $execution_plan_class='hidden';
-    
+
     $sustainability_model_class='hidden';
 
     $execution_plan = array(

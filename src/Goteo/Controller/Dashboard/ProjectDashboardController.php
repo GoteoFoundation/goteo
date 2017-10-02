@@ -239,7 +239,7 @@ class ProjectDashboardController extends \Goteo\Core\Controller {
         if ($form->isSubmitted()) {
             try {
                 $processor->save($form);
-                Message::info(Text::get('user-project-saved'));
+                Message::info(Text::get('dashboard-project-saved'));
                 return $this->redirect($redirect);
             } catch(FormModelException $e) {
                 Message::error($e->getMessage());
@@ -257,6 +257,9 @@ class ProjectDashboardController extends \Goteo\Core\Controller {
     {
         $project = $this->validateProject($pid, 'images');
         if($project instanceOf Response) return $project;
+        if(!$project->isApproved()) {
+            $next = '/dashboard/project/' . $pid . '/costs';
+        }
 
         $zones = ProjectImage::sections();
         $images = [];
@@ -265,7 +268,8 @@ class ProjectDashboardController extends \Goteo\Core\Controller {
         }
         return $this->viewResponse('dashboard/project/images', [
             'zones' => $zones,
-            'images' => $images
+            'images' => $images,
+            'next' => $next
             ]);
 
     }
