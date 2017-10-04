@@ -4,7 +4,7 @@
   $form = $this->raw('form');
 ?>
 <div class="panel section-content" data-id="<?= $cost->id ?>">
-  <div class="panel-body">
+  <div class="panel-body<?= $cost->required ? '' : ' lilac' ?>">
     <div class="pull-left" style="width: 85%;">
       <?= $this->form_row($form['cost_' . $cost->id], ['value' => $translated->cost, 'attr' => ['help' => $cost->cost]]) ?>
       <?= $this->form_row($form['description_' . $cost->id], ['value' => $translated->description, 'attr' => ['help' => $cost->description]]) ?>

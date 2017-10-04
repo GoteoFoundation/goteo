@@ -166,3 +166,5 @@ project-share-materials: 'Materiales compartidos'
 project-create-no-social-commitment: 'No tengo'
 project-progress-title: Cómo va el proyecto
 project-edit: Editar proyecto
+project-remove-cost-confirm: '¿Seguro que quieres eliminar este coste?'
+project-add-cost: 'Añadir coste'

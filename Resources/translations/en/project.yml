@@ -127,3 +127,5 @@ project-share-materials: 'Shared materials'
 project-create-no-social-commitment: 'None'
 project-progress-title: How is the project going
 project-edit: Edit project
+project-remove-cost-confirm: 'Are you sure to delete this cost?'
+project-add-cost: 'Add cost'

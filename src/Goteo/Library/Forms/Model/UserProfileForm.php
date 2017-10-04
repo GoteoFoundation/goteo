@@ -19,6 +19,7 @@ use Goteo\Library\Text;
 use Goteo\Model\User\Web;
 use Goteo\Model\User\Interest;
 use Goteo\Model\User\UserLocation;
+use Goteo\Library\Forms\FormModelException;
 
 class UserProfileForm extends AbstractFormProcessor implements FormProcessorInterface {
 
@@ -210,6 +211,6 @@ class UserProfileForm extends AbstractFormProcessor implements FormProcessorInte
             throw new FormModelException(Text::get('form-sent-error', implode(',',array_map('implode',$errors))));
         }
 
-        return true;
+        return $this;
     }
 }

@@ -15,7 +15,7 @@ use Goteo\Library\Forms\FormProcessorInterface;
 use Goteo\Library\Forms\AbstractFormProcessor;
 use Symfony\Component\Validator\Constraints;
 use Goteo\Library\Text;
-
+use Goteo\Library\Forms\FormModelException;
 
 class ProjectPostForm extends AbstractFormProcessor implements FormProcessorInterface {
 

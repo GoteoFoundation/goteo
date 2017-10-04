@@ -19,7 +19,7 @@ use Goteo\Model\Project;
 use Goteo\Model\SocialCommitment;
 use Goteo\Library\Text;
 use Goteo\Library\Currency;
-
+use Goteo\Library\Forms\FormModelException;
 
 class ProjectEditForm extends AbstractFormProcessor implements FormProcessorInterface {
 

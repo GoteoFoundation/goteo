@@ -393,18 +393,29 @@ class ProjectDashboardController extends \Goteo\Core\Controller {
 
         $defaults = (array) $project;
         // Create the form
+        // $empty = new Cost(['id' => '-']);
+        // $project->costs[] = new Cost(['id' => '--NEW--', 'required' => true, 'type' => 'task']);
+        // print_r($project->costs);die;
         $processor = $this->getModelForm('ProjectCosts', $project, $defaults);
-        $form = $processor->getBuilder()
+        $builder = $processor->getBuilder()
             ->add('submit', 'submit', [
                 'label' => $submit_label ? $submit_label : 'regular-submit'
-            ])->getForm();
+            ])
+            ->add('add-cost', 'submit', [
+                'label' => 'project-add-cost',
+                'attr' => ['class' => 'btn btn-default btn-lg']
+            ]);
 
+        $form = $builder->getForm();
         $form->handleRequest($request);
         if ($form->isSubmitted()) {
             try {
-                $processor->save($form);
+                $next = $form['submit']->isClicked();
+                $form = $processor->save($form)->getBuilder()->getForm();
                 Message::info(Text::get('dashboard-project-saved'));
-                return $this->redirect($redirect);
+                if($next) {
+                    return $this->redirect($redirect);
+                }
             } catch(FormModelException $e) {
                 Message::error($e->getMessage());
             }

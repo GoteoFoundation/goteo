@@ -80,6 +80,6 @@ abstract class AbstractFormProcessor implements FormProcessorInterface {
             throw new FormModelException(Text::get('form-sent-error', implode(', ',$errors)));
         }
 
-        return true;
+        return $this;
     }
 }

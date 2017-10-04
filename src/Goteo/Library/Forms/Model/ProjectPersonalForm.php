@@ -17,7 +17,7 @@ use Goteo\Library\Forms\FormModelException;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Validator\Constraints;
 use Goteo\Library\Text;
-
+use Goteo\Library\Forms\FormModelException;
 
 class ProjectPersonalForm extends AbstractFormProcessor implements FormProcessorInterface {
 
@@ -73,7 +73,7 @@ class ProjectPersonalForm extends AbstractFormProcessor implements FormProcessor
         if (!$account->save($errors)) {
             throw new FormModelException(Text::get('form-sent-error', implode(', ',$errors)));
         }
-        return true;
+        return $this;
     }
 
 

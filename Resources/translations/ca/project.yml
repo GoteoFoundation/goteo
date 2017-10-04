@@ -126,3 +126,4 @@ project-share-materials: 'Material compartit'
 project-create-no-social-commitment: 'No tinc'
 project-progress-title: Com va el projecte
 project-edit: Edita el projecte
+project-remove-cost-confirm: 'Segur que vols esborrar aquests cost?'

@@ -117,6 +117,9 @@ blockquote {
 .progress-bar-cyan {
     background-color: $color-cyan;
 }
+.progress-bar-lilac {
+    background-color: $color-lilac;
+}
 
 i.visible-xs {
     @media(max-width: $breakpoint-sm - 1 ) {
