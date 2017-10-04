@@ -11,6 +11,9 @@
         $form = $this->raw('form');
         echo $this->form_start($form);
 
+        $submit = $this->form_row($form['submit']);
+        echo '<div class="top-button">' . $submit . '</div>';
+
         echo $this->form_row($form['one_round']);
         echo $this->form_row($form['title-costs']);
 
@@ -25,6 +28,8 @@
         echo '<div class="form-group">'.$this->form_row($form['add-cost']).'</div>';
 
         echo $this->insert('dashboard/project/partials/costs_bar', ['minimum' => $min, 'optimum' => $opt]);
+
+        echo $submit;
 
         echo $this->form_end($form);
 

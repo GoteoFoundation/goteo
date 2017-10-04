@@ -195,6 +195,19 @@
     background-color: $color-cyan;
     border-color: $color-cyan;
   }
+  .top-button {
+    margin-top:-50px;
+    float:right;
+    &::after {
+      content: '';
+      display: block;
+      clear: both;
+    }
+    .btn-lg {
+      font-size: $font-size;
+      padding: 6px 12px;
+    }
+  }
   .panel {
     border: 0;
     box-shadow: none;

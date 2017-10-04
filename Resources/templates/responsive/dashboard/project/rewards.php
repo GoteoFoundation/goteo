@@ -11,6 +11,9 @@
         $form = $this->raw('form');
         echo $this->form_start($form);
 
+        $submit = $this->form_row($form['submit']);
+        echo '<div class="top-button">' . $submit . '</div>';
+
         // echo $this->form_row($form['title-rewards']);
 
         echo '<div class="reward-list">';
@@ -20,6 +23,7 @@
         echo '</div>';
         echo '<div class="form-group">'.$this->form_row($form['add-reward']).'</div>';
 
+        echo $submit;
 
         echo $this->form_end($form);
 
