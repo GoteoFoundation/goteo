@@ -225,7 +225,7 @@
       }
       background-color: $background-light-body;
       border-radius: 5px;
-      &.cost-item {
+      &.cost-item,&.reward-item {
         .row .form-group {
           display: inline-block;
         }
@@ -234,7 +234,7 @@
           min-width: 30px;
           float:right;
         }
-        .amount {
+        .amount,.units {
           .input-group, input,.input-group-addon {
             font-size: $font-size * 2;
             font-weight: bold;
@@ -256,7 +256,9 @@
           padding: 30px 30px 0 0;
         }
       }
-
+      &.reward-item .remove {
+          padding: 0 15px 0 0;
+      }
     }
     .widget-preview {
       display: flex;

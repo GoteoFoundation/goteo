@@ -418,7 +418,7 @@ class ProjectDashboardController extends \Goteo\Core\Controller {
                     $processor->addCost($cost);
                     return $this->viewResponse('dashboard/project/partials/cost_item', [
                         'form' => $processor->getBuilder()->getForm()->createView(),
-                        'types' => Cost::types(),
+                        // 'types' => Cost::types(),
                         'cost' => $cost
                     ]);
                 }
@@ -447,7 +447,7 @@ class ProjectDashboardController extends \Goteo\Core\Controller {
 
         return $this->viewResponse('dashboard/project/costs', [
             'costs' => $project->costs,
-            'types' => Cost::types(),
+            // 'types' => Cost::types(),
             'form' => $form->createView()
         ]);
     }
@@ -457,12 +457,73 @@ class ProjectDashboardController extends \Goteo\Core\Controller {
     */
     public function rewardsAction($pid = null, Request $request)
     {
+
         $project = $this->validateProject($pid, 'rewards');
         if($project instanceOf Response) return $project;
 
-        // $rewards = Support::getAll($project);
+        if($project->isApproved()) {
+            $redirect = '/dashboard/project/' . $pid . '/rewards';
+        } else {
+            $redirect = '/dashboard/project/' . $pid . '/summary';
+            $submit_label = 'form-next-button';
+        }
 
-        return $this->viewResponse('dashboard/project/rew,ards', [
+        $defaults = (array) $project;
+        // Create the form
+        $processor = $this->getModelForm('ProjectRewards', $project, $defaults);
+        $builder = $processor->getBuilder()
+            ->add('submit', 'submit', [
+                'label' => $submit_label ? $submit_label : 'regular-submit'
+            ])
+            ->add('add-reward', 'submit', [
+                'label' => 'project-add-reward',
+                'attr' => ['class' => 'btn btn-default btn-lg add-reward']
+            ]);
+
+        $form = $builder->getForm();
+        $form->handleRequest($request);
+        if ($form->isSubmitted()) {
+            // Handle AJAX calls manually
+            if($request->isXmlHttpRequest()) {
+                $button = $form->getClickedButton()->getName();
+                if($button === 'add-reward') {
+                    $reward = new Reward(['project' => $project->id, 'type' => 'individual']);
+                    $errors = [];
+                    if(!$reward->save($errors)) {
+                        return $this->rawResponse(Text::get('form-sent-error', implode(', ',$errors)), 'text/plain', 500);
+                    }
+                    $processor->addReward($reward);
+                    return $this->viewResponse('dashboard/project/partials/reward_item', [
+                        'form' => $processor->getBuilder()->getForm()->createView(),
+                        'reward' => $reward
+                    ]);
+                }
+                if(strpos($button, 'remove_') === 0) {
+                    try {
+                        $reward = Reward::get(substr($button, 7));
+                        $reward->dbDelete();
+                        return $this->rawResponse('deleted ' . $reward->id);
+                    } catch(\PDOExpection $e) {
+                        return $this->rawResponse(Text::get('form-sent-error', 'Reward not deleted'), 'text/plain', 500);
+                    }
+                }
+            }
+            try {
+                $next = $form['submit']->isClicked();
+                // Replace the form if delete/add buttons are pressed
+                $form = $processor->save($form)->getBuilder()->getForm();
+                Message::info(Text::get('dashboard-project-saved'));
+                if($next) {
+                    return $this->redirect($redirect);
+                }
+            } catch(FormModelException $e) {
+                Message::error($e->getMessage());
+            }
+        }
+
+        return $this->viewResponse('dashboard/project/rewards', [
+            'rewards' => $project->individual_rewards,
+            'form' => $form->createView()
         ]);
     }
 

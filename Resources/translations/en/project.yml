@@ -129,3 +129,5 @@ project-progress-title: How is the project going
 project-edit: Edit project
 project-remove-cost-confirm: 'Are you sure to delete this cost?'
 project-add-cost: 'Add cost'
+project-add-reward: 'Add reward'
+project-remove-reward-confirm: 'Are you sure to delete this reward?'

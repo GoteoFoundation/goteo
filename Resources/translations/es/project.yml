@@ -168,3 +168,5 @@ project-progress-title: Cómo va el proyecto
 project-edit: Editar proyecto
 project-remove-cost-confirm: '¿Seguro que quieres eliminar este coste?'
 project-add-cost: 'Añadir coste'
+project-add-reward: 'Añadir recompensa'
+project-remove-reward-confirm: '¿Seguro que quieres eliminar esta recompensa?'

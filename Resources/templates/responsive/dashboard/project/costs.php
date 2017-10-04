@@ -22,7 +22,6 @@
             echo $this->insert('dashboard/project/partials/cost_item', ['cost' => $cost, 'form' => $form]);
         }
         echo '</div>';
-        // echo '<div class="form-group"><button class="btn btn-default btn-lg add-cost"><i class="fa fa-plus"></i> ' . $this->text('project-add-cost') . '</button></div>';
         echo '<div class="form-group">'.$this->form_row($form['add-cost']).'</div>';
 
         echo $this->insert('dashboard/project/partials/costs_bar', ['minimum' => $min, 'optimum' => $opt]);
@@ -83,6 +82,7 @@ $(function(){
 
     $('.autoform').on('click', '.remove-cost', function(e){
         e.preventDefault();
+        if(e.isPropagationStopped()) return false;
         var $form = $(this).closest('form');
         var $list = $form.find('.cost-list');
         var serial = $form.serialize() + '&' + encodeURIComponent($(this).attr('name')) + '=';

@@ -127,3 +127,6 @@ project-create-no-social-commitment: 'No tinc'
 project-progress-title: Com va el projecte
 project-edit: Edita el projecte
 project-remove-cost-confirm: 'Segur que vols esborrar aquests cost?'
+project-add-cost: 'Afegeix un cost'
+project-add-reward: 'Afegeix una recompensa'
+project-remove-reward-confirm: 'Segur que vols esborrar aquesta recompensa?'
