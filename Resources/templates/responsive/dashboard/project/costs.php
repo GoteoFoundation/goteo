@@ -15,18 +15,13 @@
         echo $this->form_row($form['title-costs']);
 
         $min = $opt = 0;
+        echo '<div class="cost-list">';
         foreach($this->costs as $cost) {
             if($cost->required) $min += $cost->amount;
             else                $opt += $cost->amount;
-            if($cost->id == '--NEW--')  {
-                echo '<script id="cost-template" type="text/html">';
-            }
             echo $this->insert('dashboard/project/partials/cost_item', ['cost' => $cost, 'form' => $form]);
-            if($cost->id == '--NEW--')  {
-                echo '</script>';
-            }
         }
-
+        echo '</div>';
         // echo '<div class="form-group"><button class="btn btn-default btn-lg add-cost"><i class="fa fa-plus"></i> ' . $this->text('project-add-cost') . '</button></div>';
         echo '<div class="form-group">'.$this->form_row($form['add-cost']).'</div>';
 
@@ -59,14 +54,56 @@ $(function(){
         $(this).closest('.type').find('img').attr('src', '<?= $this->ee($this->asset('img/project/needs/'), 'js') ?>' + $(this).val() + '.png');
     });
 
+    // Send the form via AJAX
+    $('.autoform').on('click', '.add-cost', function(e){
+        e.preventDefault();
+        var $form = $(this).closest('form');
+        var $list = $form.find('.cost-list');
+        var serial = $form.serialize() + '&' + encodeURIComponent($(this).attr('name')) + '=';
+        console.log('add cost', serial);
 
-    // $('.autoform').on('click', '.add-cost', function(e){
-    //     e.preventDefault();
-    //     var $template = $('#cost-template');
-    //     var html = $template.html().replace(/--NEW--/g, '-' + $('.cost-item').size());
-    //     $template.after(html);
-    //     console.log('add', $template);
-    // });
+        $but = $(this).hide();
+        $list.find('>.text-danger').remove();
+        $list.append('<div class="loading"></div>');
+        $.ajax({
+            type: $form.attr('method'),
+            url: $form.attr('action'),
+            data: serial
+        }).done(function (data) {
+            var $data = $(data);
+            $list.append($data.hide());
+            $data.slideDown();
+        }).fail(function (data) {
+            $list.append('<p class="text-danger">' + data + '</p>');
+        }).always(function() {
+            $but.show();
+            $list.find('>.loading').remove();
+        });
+    });
+
+    $('.autoform').on('click', '.remove-cost', function(e){
+        e.preventDefault();
+        var $form = $(this).closest('form');
+        var $list = $form.find('.cost-list');
+        var serial = $form.serialize() + '&' + encodeURIComponent($(this).attr('name')) + '=';
+        var $item = $(this).closest('.panel');
+        $(this).replaceWith('<div class="loading"></div>');
+        $item.find(':input').attr('disabled', true);
+        console.log('del cost', serial);
+        $.ajax({
+            type: $form.attr('method'),
+            url: $form.attr('action'),
+            data: serial
+        }).done(function () {
+            $item.slideUp(function(){
+                $(this).remove();
+            });
+        }).fail(function (data) {
+            console.log('An error occurred.', data);
+            alert(data.responseText);
+        });
+    });
+
     var setBar = function() {
         var $panel = $(this).closest('.panel-body');
         var $container = $(this).closest('.inner-container');

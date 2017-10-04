@@ -23,7 +23,7 @@ use Goteo\Library\Forms\FormModelException;
 class ProjectCostsForm extends AbstractFormProcessor implements FormProcessorInterface {
     private $costs = [];
 
-    private function delCost($id) {
+    public function delCost($id) {
         unset($this->costs[$id]);
         $this->getBuilder()
             ->remove("amount_$id")
@@ -35,7 +35,7 @@ class ProjectCostsForm extends AbstractFormProcessor implements FormProcessorInt
             ;
     }
 
-    private function addCost(Cost $cost) {
+    public function addCost(Cost $cost) {
         $project = $this->getModel();
         $this->costs[$cost->id] = $cost;
         $suffix = "_{$cost->id}";
@@ -81,7 +81,7 @@ class ProjectCostsForm extends AbstractFormProcessor implements FormProcessorInt
                 'icon_class' => 'fa fa-trash',
                 'span' => 'hidden-xs',
                 'attr' => [
-                    'class' => 'pull-right btn btn-default',
+                    'class' => 'pull-right btn btn-default remove-cost',
                     'data-confirm' => Text::get('project-remove-cost-confirm')
                     ]
             ]);

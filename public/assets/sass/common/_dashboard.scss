@@ -150,6 +150,7 @@
   .loading {
     background:url(../img/ring.gif) no-repeat center;
     min-height: 60px;
+    background-size: contain;
   }
 
   .btn {
@@ -227,6 +228,11 @@
       &.cost-item {
         .row .form-group {
           display: inline-block;
+        }
+        .loading {
+          min-height: 30px;
+          min-width: 30px;
+          float:right;
         }
         .amount {
           .input-group, input,.input-group-addon {

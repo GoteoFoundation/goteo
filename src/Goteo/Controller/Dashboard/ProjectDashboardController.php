@@ -393,9 +393,6 @@ class ProjectDashboardController extends \Goteo\Core\Controller {
 
         $defaults = (array) $project;
         // Create the form
-        // $empty = new Cost(['id' => '-']);
-        // $project->costs[] = new Cost(['id' => '--NEW--', 'required' => true, 'type' => 'task']);
-        // print_r($project->costs);die;
         $processor = $this->getModelForm('ProjectCosts', $project, $defaults);
         $builder = $processor->getBuilder()
             ->add('submit', 'submit', [
@@ -403,14 +400,41 @@ class ProjectDashboardController extends \Goteo\Core\Controller {
             ])
             ->add('add-cost', 'submit', [
                 'label' => 'project-add-cost',
-                'attr' => ['class' => 'btn btn-default btn-lg']
+                'attr' => ['class' => 'btn btn-default btn-lg add-cost']
             ]);
 
         $form = $builder->getForm();
         $form->handleRequest($request);
         if ($form->isSubmitted()) {
+            // Handle AJAX calls manually
+            if($request->isXmlHttpRequest()) {
+                $button = $form->getClickedButton()->getName();
+                if($button === 'add-cost') {
+                    $cost = new Cost(['project' => $project->id]);
+                    $errors = [];
+                    if(!$cost->save($errors)) {
+                        return $this->rawResponse(Text::get('form-sent-error', implode(', ',$errors)), 'text/plain', 500);
+                    }
+                    $processor->addCost($cost);
+                    return $this->viewResponse('dashboard/project/partials/cost_item', [
+                        'form' => $processor->getBuilder()->getForm()->createView(),
+                        'types' => Cost::types(),
+                        'cost' => $cost
+                    ]);
+                }
+                if(strpos($button, 'remove_') === 0) {
+                    try {
+                        $cost = Cost::get(substr($button, 7));
+                        $cost->dbDelete();
+                        return $this->rawResponse('deleted ' . $cost->id);
+                    } catch(\PDOExpection $e) {
+                        return $this->rawResponse(Text::get('form-sent-error', 'Cost not deleted'), 'text/plain', 500);
+                    }
+                }
+            }
             try {
                 $next = $form['submit']->isClicked();
+                // Replace the form if delete/add buttons are pressed
                 $form = $processor->save($form)->getBuilder()->getForm();
                 Message::info(Text::get('dashboard-project-saved'));
                 if($next) {
