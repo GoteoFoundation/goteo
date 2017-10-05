@@ -11,11 +11,12 @@
         $form = $this->raw('form');
         echo $this->form_start($form);
 
-        $submit = $this->form_row($form['submit']);
-        echo '<div class="top-button">' . $submit . '</div>';
 
         echo $this->form_row($form['one_round']);
         echo $this->form_row($form['title-costs']);
+
+        $submit = $this->form_row($form['submit']);
+        echo '<div class="top-button">' . $submit . '</div>';
 
         $min = $opt = 0;
         echo '<div class="cost-list">';

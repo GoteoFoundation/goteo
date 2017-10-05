@@ -163,14 +163,16 @@ $sc->register('dispatcher', 'Symfony\Component\EventDispatcher\EventDispatcher')
 
 // Goteo main app
 $sc->register('app', 'Goteo\Application\App')
-   ->setArguments(array(new Reference('dispatcher'), new Reference('resolver')))
-;
+   ->setArguments(array(new Reference('dispatcher'), new Reference('resolver')));
 
 // Form builder
-$sc->register('app.forms', 'Goteo\Util\Form\FormBuilder')
-;
+$sc->register('app.forms', 'Goteo\Util\Form\FormBuilder');
 // Form Finder (create default forms)
-$sc->register('app.forms.finder', 'Goteo\Util\Form\FormFinder')
+$sc->register('app.forms.finder', 'Goteo\Util\Form\FormFinder');
+// Markdown parser
+$sc->register('app.md.parser', '\Parsedown')
+   ->addMethodCall('setBreaksEnabled', [true])
+   ->addMethodCall('setUrlsLinked', [true])
 ;
 
 // CONSOLE LISTENERS
