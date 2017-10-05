@@ -226,10 +226,11 @@ class TranslateProjectDashboardController extends \Goteo\Controller\Dashboard\Pr
                     }
                 }
                 if($errors) {
+                    // print_r($errors);die;
                     if($form->get('remove')->isClicked()) {
                         Message::info(Text::get('translator-deleted-ko', $languages[$lang]));
                     } else {
-                        Message::error(Text::get('form-sent-error', implode(',',array_map('implode',$errors))));
+                        Message::error(Text::get('form-sent-error', implode(',',$errors)));
                     }
                 } else {
                     if($form->get('remove')->isClicked()) {

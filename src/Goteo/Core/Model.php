@@ -595,7 +595,7 @@ abstract class Model {
         $values[':id'] = $this->id;
         $values[':lang'] = $lang;
         foreach ($data as $key => $val) {
-            if(in_array($key, $fields) && property_exists($this, $key)) {
+            if(in_array($key, $fields) || property_exists($this, $key)) {
                 $values[":$key"] = $val;
                 $update[] = "`$key` = :$key";
                 $insert["`$key`"] = ":$key";

@@ -86,10 +86,9 @@ class ProjectTranslateOverviewForm extends AbstractFormProcessor implements Form
         $project = $this->getModel();
         $lang = $this->getOption('lang');
 
-        $data = $form->getData();
+        $data = array_intersect_key($form->getData(), $form->all());
         $errors = [];
         $project->lang = $lang;
-
         $data['keywords'] = $project->keywords; // Do not translate keywords for the moment
         if(!$project->setLang($lang, $data, $errors)) {
             // throw new FormModelException(Text::get('form-sent-error', implode(',',array_map('implode', $errors))));
