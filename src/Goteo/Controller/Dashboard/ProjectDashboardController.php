@@ -66,7 +66,7 @@ class ProjectDashboardController extends \Goteo\Core\Controller {
         $submenu = [
             ['text' => '<i class="icon icon-2x icon-user"></i> 1. ' . Text::get('profile-about-header'), 'link' => $prefix . '/profile', 'id' => 'profile'],
             ['text' => '<i class="fa fa-2x fa-id-card-o"></i> 2. ' . Text::get('step-2'), 'link' => $prefix . '/personal', 'id' => 'personal'],
-            ['text' => '<i class="icon icon-2x icon-edit"></i> 3. ' . Text::get('step-3'), 'link' => $prefix . '/edit', 'id' => 'edit'],
+            ['text' => '<i class="icon icon-2x icon-edit"></i> 3. ' . Text::get('step-3'), 'link' => $prefix . '/overview', 'id' => 'overview'],
             ['text' => '<i class="icon icon-2x icon-images"></i> 4. ' . Text::get('step-3b'), 'link' => $prefix . '/images', 'id' => 'images'],
             ['text' => '<i class="fa fa-2x fa-tasks"></i> 5. ' . Text::get('step-4'), 'link' => $prefix . '/costs', 'id' => 'costs'],
             ['text' => '<i class="fa fa-2x fa-gift"></i> 6. ' . Text::get('step-5'), 'link' => $prefix . '/rewards', 'id' => 'rewards'],
@@ -173,7 +173,7 @@ class ProjectDashboardController extends \Goteo\Core\Controller {
         if($project->isApproved()) {
             $redirect = '/dashboard/project/' . $pid . '/personal';
         } else {
-            $redirect = '/dashboard/project/' . $pid . '/edit';
+            $redirect = '/dashboard/project/' . $pid . '/overview';
             $submit_label = 'form-next-button';
         }
         $defaults = (array) $project;
@@ -213,14 +213,14 @@ class ProjectDashboardController extends \Goteo\Core\Controller {
     }
 
     /**
-     * Project edit (edit)
+     * Project edit (overview)
      */
-    public function editAction($pid, Request $request)
+    public function overviewAction($pid, Request $request)
     {
-        $project = $this->validateProject($pid, 'edit');
+        $project = $this->validateProject($pid, 'overview');
         if($project instanceOf Response) return $project;
         if($project->isApproved()) {
-            $redirect = '/dashboard/project/' . $pid . '/edit';
+            $redirect = '/dashboard/project/' . $pid . '/overview';
         } else {
             $redirect = '/dashboard/project/' . $pid . '/images';
             $submit_label = 'form-next-button';
@@ -229,7 +229,7 @@ class ProjectDashboardController extends \Goteo\Core\Controller {
         $defaults = (array)$project;
 
         // Create the form
-        $processor = $this->getModelForm('ProjectEdit', $project, $defaults);
+        $processor = $this->getModelForm('ProjectOverview', $project, $defaults);
         $form = $processor->getBuilder()
             ->add('submit', 'submit', [
                 'label' => $submit_label ? $submit_label : 'regular-submit'
@@ -245,7 +245,7 @@ class ProjectDashboardController extends \Goteo\Core\Controller {
                 Message::error($e->getMessage());
             }
         }
-        return $this->viewResponse('dashboard/project/edit', [
+        return $this->viewResponse('dashboard/project/overview', [
             'form' => $form->createView()
         ]);
     }

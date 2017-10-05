@@ -14,6 +14,7 @@ namespace Goteo\Controller\Admin;
 
 use Symfony\Component\HttpFoundation\Request;
 use Goteo\Application\Exception\ModelException;
+use Goteo\Application\App;
 use Goteo\Application\Config;
 use Goteo\Application\Message;
 use Goteo\Application\Session;
@@ -137,8 +138,7 @@ class MailingSubController extends AbstractSubController {
         }
 
         if($type === 'md') {
-            $pd = new \Parsedown();
-            $content = $pd->text($content);
+            $content = App::getService('app.md.parser')->text($content);
         }
 
         // montamos el mailing

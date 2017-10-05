@@ -90,8 +90,8 @@ $dash->add('dashboard-project-personal', new Route(
 
 // Project edit (main)
 $dash->add('dashboard-project-main', new Route(
-    '/project/{pid}/edit',
-    array('_controller' => 'Goteo\Controller\Dashboard\ProjectDashboardController::editAction',
+    '/project/{pid}/overview',
+    array('_controller' => 'Goteo\Controller\Dashboard\ProjectDashboardController::overviewAction',
         )
 ));
 
