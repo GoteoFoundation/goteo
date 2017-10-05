@@ -8,8 +8,7 @@
     <h1><?= $this->text('overview-main-header') ?></h1>
     <p><?= $this->text('guide-project-description') ?></p>
 
-    <?= $this->form_form($this->raw('form')) ?>
-
+    <?= $this->supply('dashboard-content-form', function() {return $this->form_form($this->raw('form'));}) ?>
 
   </div>
 </div>

@@ -22,7 +22,7 @@ class Cost extends \Goteo\Core\Model {
 		$description,
         $type = 'task',
         $amount,
-        $required,
+        $required = true,
         $from,
 		$until;
 

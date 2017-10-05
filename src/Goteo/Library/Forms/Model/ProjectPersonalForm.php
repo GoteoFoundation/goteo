@@ -11,14 +11,15 @@
 
 namespace Goteo\Library\Forms\Model;
 
-use Goteo\Library\Forms\FormCreatorInterface;
-use Goteo\Library\Forms\AbstractFormCreator;
-use Symfony\Component\Form\FormBuilderInterface;
+use Goteo\Library\Forms\FormProcessorInterface;
+use Goteo\Library\Forms\AbstractFormProcessor;
+use Goteo\Library\Forms\FormModelException;
+use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Validator\Constraints;
 use Goteo\Library\Text;
+use Goteo\Library\Forms\FormModelException;
 
-
-class ProjectPersonalForm extends AbstractFormCreator implements FormCreatorInterface {
+class ProjectPersonalForm extends AbstractFormProcessor implements FormProcessorInterface {
 
     public function createForm() {
 
@@ -61,4 +62,19 @@ class ProjectPersonalForm extends AbstractFormCreator implements FormCreatorInte
             ;
         return $this;
     }
+
+    public function save(FormInterface $form = null) {
+        parent::save($form);
+
+        $account = $this->getOption('account');
+        $account->rebuildData($form->getData(), array_keys($form->all()));
+
+        $errors = [];
+        if (!$account->save($errors)) {
+            throw new FormModelException(Text::get('form-sent-error', implode(', ',$errors)));
+        }
+        return $this;
+    }
+
+
 }

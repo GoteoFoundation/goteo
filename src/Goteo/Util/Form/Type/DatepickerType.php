@@ -13,6 +13,8 @@ namespace Goteo\Util\Form\Type;
 
 use Symfony\Component\Form\Extension\Core\Type\DateType as SymfonyDateType;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Form\FormInterface;
+use Symfony\Component\Form\FormView;
 
 /**
  *
@@ -29,10 +31,21 @@ class DatepickerType extends SymfonyDateType
         parent::configureOptions($resolver);
         $resolver->setDefault('widget', 'single_text');
         $resolver->setDefault('format', 'dd/MM/yyyy');
+        $resolver->setDefault('row_class', '');
     }
 
     public function getName()
     {
         return 'datepicker';
+    }
+
+
+    /**
+     * {@inheritdoc}
+     */
+    public function buildView(FormView $view, FormInterface $form, array $options)
+    {
+        parent::buildView($view, $form, $options);
+        $view->vars['row_class'] = $options['row_class'];
     }
 }

@@ -109,6 +109,20 @@ $dash->add('dashboard-project-images-redirect', new Route(
         )
 ));
 
+// Project image editing
+$dash->add('dashboard-project-costs', new Route(
+    '/project/{pid}/costs',
+    array('_controller' => 'Goteo\Controller\Dashboard\ProjectDashboardController::costsAction',
+        )
+));
+
+// Project image editing
+$dash->add('dashboard-project-rewards', new Route(
+    '/project/{pid}/rewards',
+    array('_controller' => 'Goteo\Controller\Dashboard\ProjectDashboardController::rewardsAction',
+        )
+));
+
 
 
 
