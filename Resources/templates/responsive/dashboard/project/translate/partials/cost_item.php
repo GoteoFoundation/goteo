@@ -1,4 +1,4 @@
-<?
+<?php
   $cost = $this->cost;
   $translated = $cost->getLang($this->lang);
   $form = $this->raw('form');
