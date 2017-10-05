@@ -113,6 +113,7 @@ class TranslateProjectDashboardController extends \Goteo\Controller\Dashboard\Pr
         if($project instanceOf Response) return $project;
 
         $defaults = (array) $project->getLang($lang);
+        $languages = Lang::listAll('name', false);
 
         // Create the form
         $processor = $this->getModelForm('ProjectTranslateOverview', $project, $defaults, ['lang' => $lang]);
@@ -132,8 +133,7 @@ class TranslateProjectDashboardController extends \Goteo\Controller\Dashboard\Pr
         $form->handleRequest($request);
         if ($form->isSubmitted()) {
             // Check if we want to remove a translation
-            if($form->get('remove')->isClicked()) {
-                die('delete');
+            if($form->isValid() && $form->get('remove')->isClicked()) {
                 if($project->removeLang($lang)) {
                     Message::info(Text::get('translator-deleted-ok', $languages[$lang]));
                 } else {

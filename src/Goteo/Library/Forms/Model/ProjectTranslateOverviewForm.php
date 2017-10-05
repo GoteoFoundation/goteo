@@ -15,7 +15,6 @@ use Goteo\Library\Forms\FormProcessorInterface;
 use Symfony\Component\Form\FormInterface;
 use Goteo\Library\Forms\AbstractFormProcessor;
 use Symfony\Component\Validator\Constraints;
-use Goteo\Application\Lang;
 use Goteo\Model\Project;
 use Goteo\Library\Text;
 use Goteo\Library\Forms\FormModelException;
@@ -84,7 +83,6 @@ class ProjectTranslateOverviewForm extends AbstractFormProcessor implements Form
         if(!$form) $form = $this->getBuilder()->getForm();
         if(!$form->isValid()) throw new FormModelException(Text::get('form-has-errors'));
 
-        $languages = Lang::listAll('name', false);
         $project = $this->getModel();
         $lang = $this->getOption('lang');
 
