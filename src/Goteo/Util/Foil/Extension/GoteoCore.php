@@ -72,6 +72,7 @@ class GoteoCore implements ExtensionInterface
           'get_querystring' => [$this, 'get_querystring'],
           'is_ajax' => [$this, 'is_ajax'],
           'is_pronto' => [$this, 'is_pronto'],
+          'currency' => [$this, 'currency'],
           'get_currency' => [$this, 'get_currency'],
           'asset' => [$this, 'asset'],
           'debug' => [$this, 'debug'],
@@ -181,6 +182,10 @@ class GoteoCore implements ExtensionInterface
         return Session::getMainMenu();
     }
 
+    //Currency
+    public function currency($currency, $method = 'html') {
+        return Currency::get($currency, $method);
+    }
     //Currency
     public function get_currency($method = 'html') {
         return Currency::current($method);

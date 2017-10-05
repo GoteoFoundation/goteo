@@ -34,6 +34,7 @@ class Forms implements ExtensionInterface
           'form_form' => [$this, 'form'],
           'form_start' => [$this, 'start'],
           'form_end' => [$this, 'end'],
+          'form_errors' => [$this, 'errors'],
           'form_rest' => [$this, 'rest'],
           'form_row' => [$this, 'row'],
           'form_widget' => [$this, 'widget'],
@@ -53,6 +54,10 @@ class Forms implements ExtensionInterface
 
     public function end(FormView $formView = null, array $variables = array()) {
         return App::getService('app.forms')->getForm()->end($formView, $variables);
+    }
+
+    public function errors(FormView $formView = null, array $variables = array()) {
+        return App::getService('app.forms')->getForm()->errors($formView, $variables);
     }
 
     public function rest(FormView $formView = null, array $variables = array()) {

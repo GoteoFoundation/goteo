@@ -34,6 +34,7 @@ class SubmitType extends SymfonySubmitType
         $resolver->setDefault('icon_class',  'fa fa-save');
         $resolver->setDefault('span',  '');
         $resolver->setDefault('attr',  ['class' => 'btn btn-cyan btn-lg']);
+        $resolver->setDefault('row_class', '');
     }
 
     /**
@@ -44,6 +45,7 @@ class SubmitType extends SymfonySubmitType
         parent::buildView($view, $form, $options);
         $view->vars['icon_class'] = $options['icon_class'];
         $view->vars['span'] = $options['span'];
+        $view->vars['row_class'] = $options['row_class'];
     }
 
 }

@@ -145,7 +145,8 @@ class DropfilesType extends FileType
             'text_delete_image' => Text::get('dashboard-project-delete-image'),
             'text_send_to_markdown' => Text::get('dashboard-project-send-to-markdown'),
             'text_max_files_reached' => Text::get('dashboard-max-files-reached'),
-            'text_file_type_error' => Text::get('dashboard-file-type-error')
+            'text_file_type_error' => Text::get('dashboard-file-type-error'),
+            'row_class' => ''
         ));
     }
 
@@ -170,6 +171,7 @@ class DropfilesType extends FileType
         $view->vars['accepted_files'] = $options['accepted_files'];
         $view->vars['limit'] = $options['limit'];
         $view->vars['url'] = $options['url'] ? $options['url'] : null;
+        $view->vars['row_class'] = $options['row_class'];
     }
 
     /**

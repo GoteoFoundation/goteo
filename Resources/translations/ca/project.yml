@@ -6,9 +6,9 @@ project-chart-amount-end-round: 'Fi Ronda'
 project-costs-total: 'Total'
 project-collaborations-supertitle: 'Necessitats no monetàries'
 project-collaborations-title: Cercant
-project-error-main-lang: 'No es pot establir aquest idioma [%s] com a principal perquè ja està assignat a una traducció. Elimina la traducció existent en [%s], desde el panell de traducció, per introduïr-ne una de nova.'
+project-error-main-lang: 'No es pot establir aquest idioma [%s] com a principal perquè ja està assignat a una traducció. Elimina la traducció existent en [%s], des de el panell de traducció, per introduir-ne una de nova.'
 project-help-cost: 'Necessito ajuda per definir els costos'
-project-help-license: 'Necessito ajuda per definir els retorns col.lectius i les llicències'
+project-help-license: 'Necessito ajuda per definir els retorns col·lectius i les llicències'
 project-langs-header: 'Projecte en:'
 project-media-play_video: 'Veure vídeo'
 project-menu-home: Projecte
@@ -38,7 +38,7 @@ project-rewards-individual_reward-title: 'Recompenses individuals'
 project-rewards-individual_reward-units_left: 'Queden <span class="left">%s</span> unitats'
 project-rewards-social_reward-title: 'Retorn col·lectiu '
 project-rewards-supertitle: 'Què ofereix a canvi'
-project-rounds: 'Proyecto de una sola ronda'
+project-rounds: 'Projecte d''una sola ronda'
 project-share-header: 'Comparteix aquest projecte'
 project-share-pre_header: 'Fes saber a la teva xarxa que'
 project-side-investors-header: 'Ja han aportat'
@@ -66,12 +66,13 @@ project-view-preview: 'Previsualització del projecte'
 project-willpublish: 'Aquest projecte es publicarà el %s'
 regular-new_project: 'Projecte nou'
 social_reward-access: Accedeix
-social_reward-access_title: 'Accedeix a aquest recurs col.lectiu'
+social_reward-access_title: 'Accedeix a aquest recurs col·lectiu'
 tooltip-project-bank: 'Si no vols posar-la ara podràs indicar-la més endavant quan formalitzem el contracte en cas d''èxit'
 tooltip-project-help-cost: 'Si no tens clar el desglossament de costos o vols consultar-nos alguna qüestió, marca aquesta opció. Hauràs de finalitzar i enviar-nos el formulari per poder rebre assessorament.'
-tooltip-project-help-license: 'Si tens dubtes sobre les llicències més adequades als retorns col.lectius del teu projecte, marca aquesta opció. Hauràs de finalitzar i enviar-nos el formulari per poder assessorar-te.'
-tooltip-project-paypal: "<p>A més de la pasarel.la de pagament bancari, a Goteo <strong>és possible rebre aportacions mitjançant PayPal</strong>. Per a això, has d'indicar aquí una adreça d'email associada a un compte PayPal degudament validat. No escriguis cap caràcter en aquest camp si no vols oferir l'opció de pagament via PayPal</p> <p>Tot i que no és obligatori oferir aquesta opció per rebre la recaptació del teu projecte, sí que és altament recomanable.</p>\r\n<p><strong>Si no indiques un compte PayPal, vàlid i verificat, abans de l'inici de la campanya, la gent usuària no podrà cofinançar mitjançant PayPal.</strong> </p> <p>Tingues present que no podràs modificar-lo posteriorment, hauràs de contactar amb nosaltres si vols canviar-lo.</p> <p><strong>IMPORTANT: Recorda que no es pot usar aquest mateix compte per fer aportacions al teu propi projecte ja que donaria un error de sistema.</strong></p>"
-tooltip-project-rounds: 'Si eliges esta opción, tu proyecto solo tendrá una ronda de 40 días para conseguir la financiación necesaria: todo o nada.'
+tooltip-project-help-license: 'Si tens dubtes sobre les llicències més adequades als retorns col·lectius del teu projecte, marca aquesta opció. Hauràs de finalitzar i enviar-nos el formulari per poder assessorar-te.'
+tooltip-project-paypal: "<p>A més de la pasarel·la de pagament bancari, a Goteo <strong>és possible rebre aportacions mitjançant PayPal</strong>. Per a això, has d'indicar aquí una adreça d'email associada a un compte PayPal degudament validat. No escriguis cap caràcter en aquest camp si no vols oferir l'opció de pagament via PayPal</p> <p>Tot i que no és obligatori oferir aquesta opció per rebre la recaptació del teu projecte, sí que és altament recomanable.</p>\r\n<p><strong>Si no indiques un compte PayPal, vàlid i verificat, abans de l'inici de la campanya, la gent usuària no podrà cofinançar mitjançant PayPal.</strong> </p> <p>Tingues present que no podràs modificar-lo posteriorment, hauràs de contactar amb nosaltres si vols canviar-lo.</p> <p><strong>IMPORTANT: Recorda que no es pot usar aquest mateix compte per fer aportacions al teu propi projecte ja que donaria un error de sistema.</strong></p>"
+tooltip-project-2rounds: 'Si esculls aquesta opció, el teu projecte tindrà 2 rondes de finançament de 40 dies. Una para aconseguir el mínim i l''altre per l''òptim.'
+tooltip-project-rounds: 'Si esculls aquesta opció, el teu projecte només tindrà una ronda de 40 dies per aconseguir la finançament necesaria: tot o res.'
 tooltip-project-scope: 'Indica l''impacte geogràfic que aspira a tenir el projecte (cada categoria inclou l''anterior). '
 tooltip-project-spread: 'Explica''ns com penses difondre el projecte entre la teva comunitat: canals, tipus o to dels missatges, accions de difusió, calendari mínim...'
 tooltip-updates-allow_comments: tooltip-updates-allow_comments
@@ -86,12 +87,12 @@ tooltip-updates-title: tooltip-updates-title
 project-about-title: 'Sobre aquest projecte'
 project-chart-amount-reached: Acumulat
 project-chart-costs-reset: Back
-project-collaborations-available: 'Col.laboracions disponibles'
-project-collaborations-number: col.laboradors
+project-collaborations-available: 'Col·laboracions disponibles'
+project-collaborations-number: col·laboradors
 project-obtained: 'Obtingut'
 project-general-information: 'Informació general'
 project-go-up: 'Tornar a dalt'
-project-hide-donors: 'Amagar comecenes'
+project-hide-donors: 'Amagar cofinançadors'
 project-hide-needs: 'Amagar llistat de necessitats'
 project-invest: Aportació
 project-invest-msg: 'Missatge de suport:'
@@ -100,7 +101,7 @@ project-menu-participate: Participa
 project-regular-support: Cofinançar
 project-related: 'Projectes relacionats'
 project-rewards-side-title: Recompenses
-project-show-donors: 'Mostrar comecenes'
+project-show-donors: 'Mostrar cofinançadors'
 project-show-needs: 'Mostrar llistat de necessitats'
 project-view-metter-favourite: 'Recorda-m''ho'
 
@@ -109,8 +110,8 @@ project-create-title: 'Comença el projecte'
 project-create-subtitle-alert: '<strong>WOOOOW!</strong><p>Avancem!! Ara toca sintetitzar el teu projecte en poques paraules!</p>'
 project-create-minimum-field: 'Mínim (€)'
 project-create-minimum-calculate-button: 'Calcular'
-project-create-minimum-alert: '<strong>BRAVOOO!</strong><p>Seguim! Pensa els diners que necessites, clica calcular i et direm quants co-mecenes hauràs d''aconseguir, fent servir la nostra mitjana de donacions.</p>'
-project-create-minimum-calculated-alert: '<strong>BIEN!</strong><p>Et ves capaç d’aconseguir aproximadament aquest nombre de co-mecenes? Si és així, endavant! En cas contrari, pensa millor el teu mínim i torna a calcular!</p>'
+project-create-minimum-alert: '<strong>BRAVOOO!</strong><p>Seguim! Pensa els diners que necessites, clica calcular i et direm quants cofinançadors hauràs d''aconseguir, fent servir la nostra mitjana de donacions.</p>'
+project-create-minimum-calculated-alert: '<strong>BÉ!</strong><p>Et ves capaç d''aconseguir aproximadament aquest nombre de cofinançadors? Si és així, endavant! En cas contrari, pensa millor el teu mínim i torna a calcular!</p>'
 project-create-publishing-date-field: 'Quan voldries publicar el projecte?'
 project-create-social-select-field: 'Selecciona el teu compromís social'
 project-create-social-select-alert: '<strong>GOTEO-TASTIC!!</strong><p>A Goteo necessitem el teu compromís social, pensa en quin és el teu i selecciona''l!</p>'
@@ -124,3 +125,8 @@ project-create-modal-no-social-description: 'És obligatori tenir un compromís 
 project-share-materials: 'Material compartit'
 project-create-no-social-commitment: 'No tinc'
 project-progress-title: Com va el projecte
+project-edit: Edita el projecte
+project-remove-cost-confirm: 'Segur que vols esborrar aquests cost?'
+project-add-cost: 'Afegeix un cost'
+project-add-reward: 'Afegeix una recompensa'
+project-remove-reward-confirm: 'Segur que vols esborrar aquesta recompensa?'

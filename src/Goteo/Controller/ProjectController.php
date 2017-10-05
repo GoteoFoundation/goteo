@@ -882,9 +882,9 @@ class ProjectController extends \Goteo\Core\Controller {
         }
 
         // actualizamos estos datos en los personales del usuario
-        if (!empty($personalData)) {
-            Model\User::setPersonal($project->owner, $personalData, true);
-        }
+        // if (!empty($personalData)) {
+        //     Model\User::setPersonal($project->owner, $personalData, true);
+        // }
 
         // cuentas bancarias
         $ppacc   = (!empty($_POST['paypal']))?$_POST['paypal']:'';

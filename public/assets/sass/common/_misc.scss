@@ -1,6 +1,11 @@
 @import "compass/css3";
 /* GENERAL STYLES */
 
+
+// Remove firefox inner dotted on focus buttons
+:focus {outline:none;}
+::-moz-focus-inner {border:0;}
+
 // AnimatedCSS default velocity
 .animated {
     @include animation-duration(.5s);
@@ -111,6 +116,9 @@ blockquote {
 
 .progress-bar-cyan {
     background-color: $color-cyan;
+}
+.progress-bar-lilac {
+    background-color: $color-lilac;
 }
 
 i.visible-xs {

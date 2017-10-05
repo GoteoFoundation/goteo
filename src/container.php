@@ -166,8 +166,11 @@ $sc->register('app', 'Goteo\Application\App')
    ->setArguments(array(new Reference('dispatcher'), new Reference('resolver')))
 ;
 
-// Formbuilder
+// Form builder
 $sc->register('app.forms', 'Goteo\Util\Form\FormBuilder')
+;
+// Form Finder (create default forms)
+$sc->register('app.forms.finder', 'Goteo\Util\Form\FormFinder')
 ;
 
 // CONSOLE LISTENERS

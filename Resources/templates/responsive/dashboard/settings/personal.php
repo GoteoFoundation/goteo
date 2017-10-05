@@ -8,7 +8,7 @@
     <h1><?= $this->text('dashboard-menu-profile-personal')?></h1>
     <p><?= $this->text('guide-dashboard-user-personal') ?></p>
 
-    <?= $this->form_form($this->raw('form')) ?>
+    <?= $this->supply('dashboard-content-form', function() {return $this->form_form($this->raw('form'));}) ?>
 
 
   </div>

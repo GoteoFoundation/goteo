@@ -37,6 +37,7 @@ tooltip-user-analytics: 'Provide, in case you have it, your Google Analytics tra
 tooltip-user-avatar_upload: 'Tooltip text upload user image'
 tooltip-user-contribution: 'Briefly explain your skills and the areas in which you could help (translating, marketing, testing, programming, teaching, etc.)'
 tooltip-user-facebook: 'This social network can help you spread the word about Goteo projects that interest you with your friends and family.'
+tooltip-user-instagram: 'This social network can help you spread the word about Goteo projects that interest you with your friends and family.'
 tooltip-user-google: 'The Google+ social network is pretty new, but you can specify your user id if you use it already.'
 tooltip-user-identica: 'This channel can help you spread the word about Goteo projects in the open source community.'
 tooltip-user-interests: 'Indicate the kind of projects you might be interested in co-financing or in supporting with other resources, knowledge or skills. These categories cut across boundaries; you can select more than one.'
