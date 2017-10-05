@@ -20,15 +20,9 @@
         <?php if($this->projects_popular): ?>
             <div class="row">
                 <div class="col-xs-12">
-                    <div class="slider slider-projects">
-                        <?php foreach ($this->projects_popular as $project) : ?>
-                            <div class="item widget-slide">
-                            <?= $this->insert('project/widgets/normal', [
-                                'project' => $project
-                                ]) ?>
-                            </div>
-                        <?php endforeach ?>
-                    </div>
+                    <?= $this->insert('home/partials/projects_list', [
+                        'projects' => $this->projects
+                    ]) ?>
                 </div>
             </div>
         <?php endif ?>
