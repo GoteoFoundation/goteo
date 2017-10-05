@@ -1,4 +1,4 @@
-<?
+<?php
   $reward = $this->reward;
   $form = $this->raw('form');
 ?>

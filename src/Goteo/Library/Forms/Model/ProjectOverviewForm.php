@@ -21,7 +21,7 @@ use Goteo\Library\Text;
 use Goteo\Library\Currency;
 use Goteo\Library\Forms\FormModelException;
 
-class ProjectEditForm extends AbstractFormProcessor implements FormProcessorInterface {
+class ProjectOverviewForm extends AbstractFormProcessor implements FormProcessorInterface {
 
     public function createForm() {
         $currencies = Currency::listAll('name', false);
@@ -53,7 +53,7 @@ class ProjectEditForm extends AbstractFormProcessor implements FormProcessorInte
                 'required' => false,
                 'attr' => ['help' => Text::get('tooltip-project-media')]
             ))
-            ->add('description', 'textarea', [
+            ->add('description', 'markdown', [
                 'label' => 'overview-field-description',
                 'required' => false,
                 'attr' => ['help' => Text::get('tooltip-project-description'), 'rows' => 8]
@@ -66,7 +66,7 @@ class ProjectEditForm extends AbstractFormProcessor implements FormProcessorInte
                 'pre_addon' => '<i class="fa fa-globe"></i>',
                 'attr' => ['help' => Text::get('tooltip-project-project_location')]
             ])
-            ->add('related', 'textarea', [
+            ->add('related', 'markdown', [
                 'label' => 'overview-field-related',
                 'required' => false,
                 'attr' => ['help' => Text::get('tooltip-project-related'), 'rows' => 8]
@@ -80,19 +80,19 @@ class ProjectEditForm extends AbstractFormProcessor implements FormProcessorInte
                 'label' => 'overview-extra-fields',
                 'row_class' => 'extra'
             ])
-            ->add('about', 'textarea', [
+            ->add('about', 'markdown', [
                 'label' => 'overview-field-about',
                 'required' => false,
                 'row_class' => 'extra',
                 'attr' => ['help' => Text::get('tooltip-project-about'), 'rows' => 8]
             ])
-            ->add('motivation', 'textarea', [
+            ->add('motivation', 'markdown', [
                 'label' => 'overview-field-motivation',
                 'required' => false,
                 'row_class' => 'extra',
                 'attr' => ['help' => Text::get('tooltip-project-motivation'), 'rows' => 8]
             ])
-            ->add('goal', 'textarea', [
+            ->add('goal', 'markdown', [
                 'label' => 'overview-field-goal',
                 'required' => false,
                 'row_class' => 'extra',

@@ -13,6 +13,7 @@ namespace Goteo\Util\Foil\Extension;
 use Foil\Contracts\ExtensionInterface;
 
 use Goteo\Library\Text;
+use Goteo\Application\App;
 
 class TextUtils implements ExtensionInterface
 {
@@ -40,7 +41,8 @@ class TextUtils implements ExtensionInterface
           'text_url_link' => [$this, 'url_link'],
           'percent_span' => [$this, 'percent_span'],
           'percent_badge' => [$this, 'percent_badge'],
-          'sanitize' => [$this, 'sanitize']
+          'sanitize' => [$this, 'sanitize'],
+          'markdown' => [$this, 'markdown']
         ];
     }
 
@@ -97,5 +99,10 @@ class TextUtils implements ExtensionInterface
     public function sanitize($var = '')
     {
         return call_user_func_array ( 'Goteo\Core\Model::idealiza' , func_get_args() );
+    }
+
+    public function markdown($text = '')
+    {
+        return App::getService('app.md.parser')->text($text);
     }
 }

@@ -16,7 +16,7 @@ module.exports = function(grunt) {
             // bin: '/usr/bin/php56',
             directives: {
                 memory_limit: '128M',
-                short_open_tag: 'On',
+                short_open_tag: 'Off',
                 upload_tmp_dir: absolute + '/var/php',
                 sys_temp_dir: absolute + '/var/php',
                 display_errors: 'On',
