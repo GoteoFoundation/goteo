@@ -21,7 +21,7 @@ use Goteo\Library\Text;
 use Goteo\Library\Currency;
 use Goteo\Library\Forms\FormModelException;
 
-class ProjectEditForm extends AbstractFormProcessor implements FormProcessorInterface {
+class ProjectOverviewForm extends AbstractFormProcessor implements FormProcessorInterface {
 
     public function createForm() {
         $currencies = Currency::listAll('name', false);

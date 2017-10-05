@@ -1,4 +1,4 @@
-<?
+<?php
   $cost = $this->cost;
   $form = $this->raw('form');
 ?>
