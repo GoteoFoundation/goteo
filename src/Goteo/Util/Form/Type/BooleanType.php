@@ -32,6 +32,7 @@ class BooleanType extends CheckboxType
         parent::configureOptions($resolver);
         $resolver->setDefault('color', 'default'); // default, success, danger, warning...
         $resolver->setDefault('label_position', 'right');
+        $resolver->setDefault('row_class', '');
         $resolver->setDefault('label_attr',  ['class' => 'control-label']);
         $resolver->setDefault('no_input_wrap', true);
     }
@@ -48,6 +49,7 @@ class BooleanType extends CheckboxType
         $view->vars['no_input_wrap'] = $options['no_input_wrap'];
         $view->vars['label_position'] = $options['label_position'];
         $view->vars['label_attr'] = $options['label_attr'];
+        $view->vars['row_class'] = $options['row_class'];
     }
     /**
      * {@inheritdoc}

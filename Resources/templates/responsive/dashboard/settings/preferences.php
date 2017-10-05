@@ -7,8 +7,7 @@
 
     <h1><?= $this->text('dashboard-menu-profile-preferences')?></h1>
 
-
-    <?= $this->form_form($this->raw('form')) ?>
+    <?= $this->supply('dashboard-content-form', function() {return $this->form_form($this->raw('form'));}) ?>
 
 
   </div>

@@ -14,6 +14,7 @@ namespace Goteo\Util\Form\Type;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormView;
 use Symfony\Component\Form\FormInterface;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
  *
@@ -22,6 +23,14 @@ use Symfony\Component\Form\FormInterface;
  */
 class TitleType extends AbstractType
 {
+    /**
+     * {@inheritdoc}
+     */
+    public function configureOptions(OptionsResolver $resolver)
+    {
+        parent::configureOptions($resolver);
+        $resolver->setDefault('row_class', '');
+    }
 
     /**
      * {@inheritdoc}
@@ -29,6 +38,7 @@ class TitleType extends AbstractType
     public function buildView(FormView $view, FormInterface $form, array $options)
     {
         parent::buildView($view, $form, $options);
+        $view->vars['row_class'] = $options['row_class'];
         $view->vars['type'] = 'title';
     }
 

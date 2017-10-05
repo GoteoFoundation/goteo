@@ -45,9 +45,19 @@ abstract class Model {
 		}
 	}
 
-	public function rebuildData(Array $data) {
-		foreach (\get_public_class_vars(get_called_class()) as $k => $v) {
-			if(array_key_exists($k, $data)) {
+    /**
+     * Rebuilds model data
+     * sets all $data array to vars in the model
+     * if the var doesn't exist then it will be ignored.
+     *
+     * @param array keys if specified only this keys will processed
+     *                   otherwise, all public vars will be processed
+     */
+	public function rebuildData(array $data, array $keys = []) {
+        $public_vars = \get_public_class_vars(get_called_class());
+        if(!$keys) $keys = array_keys($public_vars);
+		foreach ($public_vars as $k => $v) {
+			if(array_key_exists($k, $data) && in_array($k, $keys)) {
                 // print_r("\n<br>$k: " . $data[$k]);
                 $this->$k = $data[$k];
             }

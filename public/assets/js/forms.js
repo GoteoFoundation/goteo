@@ -62,12 +62,12 @@ $(function(){
         var current = $checkbox.prop('checked');
         if(current && text_no) {
             if(!confirm(text_no)) {
-                return;
+                return false;
             }
         }
         if(!current && text_yes) {
             if(!confirm(text_yes)) {
-                return;
+                return false;
             }
         }
         $checkbox.prop('checked', !current);
@@ -454,6 +454,7 @@ $(function(){
     $('form.autoform').on( 'click', 'button[data-confirm]', function(e) {
         if(!confirm($(this).data('confirm'))) {
             e.preventDefault();
+            e.stopPropagation();
             return false;
         }
     });

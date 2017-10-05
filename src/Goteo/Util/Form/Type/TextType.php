@@ -31,6 +31,7 @@ class TextType extends SymfonyTextType
     {
         parent::configureOptions($resolver);
         $resolver->setDefault('pre_addon', '');
+        $resolver->setDefault('row_class', '');
         $resolver->setDefault('post_addon', '');
     }
 
@@ -40,10 +41,10 @@ class TextType extends SymfonyTextType
     public function buildView(FormView $view, FormInterface $form, array $options)
     {
         parent::buildView($view, $form, $options);
+        $view->vars['row_class'] = $options['row_class'];
         $view->vars['pre_addon'] = $options['pre_addon'];
         $view->vars['post_addon'] = $options['post_addon'];
     }
-
 
     // /**
     //  * {@inheritdoc}
