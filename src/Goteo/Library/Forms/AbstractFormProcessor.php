@@ -21,6 +21,7 @@ use Goteo\Library\Text;
 abstract class AbstractFormProcessor implements FormProcessorInterface {
     private $builder;
     private $model;
+    private $readonly = false;
     private $options;
 
     public function __construct(FormBuilderInterface $builder, Model $model, array $options = []) {
@@ -52,6 +53,15 @@ abstract class AbstractFormProcessor implements FormProcessorInterface {
 
     public function getModel() {
         return $this->model;
+    }
+
+    public function setReadonly($readonly) {
+        $this->readonly = $readonly;
+        return $this;
+    }
+
+    public function getReadonly() {
+        return $this->readonly;
     }
 
     public function setOptions(array $options) {

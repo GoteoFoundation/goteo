@@ -45,11 +45,11 @@ class ProjectTranslateOverviewForm extends AbstractFormProcessor implements Form
                 'required' => false,
                 'attr' => ['help' => $project->motivation, 'rows' => 8]
             ])
-            ->add('video', 'media', [
-                'label' => 'overview-field-video',
-                'required' => false,
-                'attr' => ['help' => $project->video]
-            ])
+            // ->add('video', 'media', [
+            //     'label' => 'overview-field-video',
+            //     'required' => false,
+            //     'attr' => ['help' => $project->video]
+            // ])
             ->add('about', 'markdown', [
                 'label' => 'overview-field-about',
                 'required' => false,

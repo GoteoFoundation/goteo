@@ -126,9 +126,7 @@ abstract class Controller {
         $finder = App::getService('app.forms.finder');
         $finder->setModel($model);
         $finder->setBuilder($this->createFormBuilder($defaults));
-        $processor = $finder->getInstance($form, $options);
-
-        return $processor->createForm();
+        return $finder->getInstance($form, $options);
     }
 }
 

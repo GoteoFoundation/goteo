@@ -117,6 +117,7 @@ class TranslateProjectDashboardController extends \Goteo\Controller\Dashboard\Pr
 
         // Create the form
         $processor = $this->getModelForm('ProjectTranslateOverview', $project, $defaults, ['lang' => $lang]);
+        $processor->createForm();
         $form = $processor->getBuilder()
             ->add('submit', 'submit')
             ->add('remove', 'submit', [

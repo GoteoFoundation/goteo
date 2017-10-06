@@ -16,6 +16,9 @@
       background-color: $background-sidebar;
       >a, >button {
         color: $color-white;
+        * {
+            color: $color-white;
+        }
         padding-bottom:15px;
         border-top:2px solid $background-grey;
         &:hover,&:active,&:focus {

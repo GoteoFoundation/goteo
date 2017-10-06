@@ -21,4 +21,6 @@ interface FormProcessorInterface {
     public function getBuilder();
     public function setModel(Model $model);
     public function getModel();
+    public function setReadonly($readonly);
+    public function getReadonly();
 }

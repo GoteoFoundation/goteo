@@ -98,6 +98,7 @@ class SettingsDashboardController extends \Goteo\Core\Controller {
 
 
         $processor = $this->getModelForm('UserProfile', $user, $defaults);
+        $processor->createForm();
         $form = $processor->getBuilder()
             ->add('submit', 'submit', [
                 'label' => $submit_label ? $submit_label : 'regular-submit'

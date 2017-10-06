@@ -23,8 +23,14 @@
       }
     }
 
-  p {
+  * {
     color: $secondary-color;
+  }
+  .label {
+    color: $color-white;
+  }
+
+  p {
     &.text-danger {
         color: $color-red;
     }
@@ -189,6 +195,9 @@
       width: auto;
       height: auto;
       margin-right: 5px;
+    }
+    label {
+        color: $primary-color;
     }
   }
   .pagination > .active > a {
