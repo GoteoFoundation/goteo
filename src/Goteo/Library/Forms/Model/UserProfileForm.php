@@ -16,6 +16,7 @@ use Symfony\Component\Form\FormInterface;
 use Goteo\Library\Forms\AbstractFormProcessor;
 use Symfony\Component\Validator\Constraints;
 use Goteo\Library\Text;
+use Goteo\Model\User;
 use Goteo\Model\User\Web;
 use Goteo\Model\User\Interest;
 use Goteo\Model\User\UserLocation;
@@ -195,7 +196,8 @@ class UserProfileForm extends AbstractFormProcessor implements FormProcessorInte
         if(is_array($data['avatar'])) {
             $data['avatar'] = current($data['avatar']);
         }
-        $data['user_avatar'] = $data['avatar'];
+        $user->user_avatar = $data['avatar'];
+        // $data['user_avatar'] = $data['avatar'];
         unset($data['avatar']); // do not rebuild data using this
 
         // Process webs
@@ -225,11 +227,11 @@ class UserProfileForm extends AbstractFormProcessor implements FormProcessorInte
         //         $user->saveLang($errors);
         //     // }
         // }
+        // if($errors) {
+        //     throw new FormModelException(Text::get('form-sent-error', implode(',',array_map('implode',$errors))));
+        // }
 
-        if($errors) {
-            throw new FormModelException(Text::get('form-sent-error', implode(',',array_map('implode',$errors))));
-        }
-
+        User::flush();
         return $this;
     }
 }

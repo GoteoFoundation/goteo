@@ -90,7 +90,7 @@ class ProjectDashboardController extends \Goteo\Core\Controller {
             'project' => $project,
             'admin' => $project->userCanEdit($user),
             'zone' => $zone,
-            'sidebarBottom' => [ '/dashboard/projects' => '<i class="icon icon-3x icon-back" title="' . Text::get('profile-my_projects-header') . '"></i> ' . Text::get('profile-my_projects-header') ]
+            'sidebarBottom' => [ '/dashboard/projects' => '<i class="icon icon-2x icon-back" title="' . Text::get('profile-my_projects-header') . '"></i> ' . Text::get('profile-my_projects-header') ]
         ]);
 
     }
