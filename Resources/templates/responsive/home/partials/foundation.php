@@ -147,7 +147,7 @@
                     </div>
                 </div>
                 <div class="col-md-2 col-button">
-                    <a href="https://fundacion.goteo.org/donaciones/" target="_blank" class="btn btn-white">DONAR</a>
+                    <a href="https://fundacion.goteo.org/donaciones/" target="_blank" class="btn btn-white">POR QUÉ DONAR</a>
                 </div>
             </div>
         </div>
