@@ -10,6 +10,6 @@
       </div>
       <?= $this->form_row($form['reward_' . $reward->id]) ?>
       <?= $this->form_row($form['description_' . $reward->id]) ?>
-     <div class="remove"><?= $this->form_row($form['remove_' . $reward->id]) ?></div>
+     <div class="remove"><?= $this->form_row($form['remove_' . $reward->id], [],  true) ?></div>
   </div>
 </div>

@@ -72,20 +72,19 @@ class ProjectDashboardController extends \Goteo\Core\Controller {
             ['text' => '<i class="fa fa-2x fa-gift"></i> 6. ' . Text::get('step-5'), 'link' => $prefix . '/rewards', 'id' => 'rewards'],
         ];
         Session::addToSidebarMenu('<i class="icon icon-2x icon-projects"></i> ' . Text::get('project-edit'), $submenu, 'project', null, 'sidebar');
-        // Session::addToSidebarMenu('<i class="fa fa-2x fa-language"></i> ' . Text::get('regular-translations'), $prefix . '/translate', 'translate');
-        // Session::addToSidebarMenu('<i class="icon icon-2x icon-images"></i> ' . Text::get('images-main-header'), $prefix .'/images', 'images');
-        Session::addToSidebarMenu('<i class="icon icon-2x icon-updates"></i> ' . Text::get('dashboard-menu-projects-updates'), $prefix .'/updates', 'updates');
+
         Session::addToSidebarMenu('<i class="icon icon-2x icon-supports"></i> ' . Text::get('dashboard-menu-projects-supports'), $prefix . '/supports' , 'supports');
-        Session::addToSidebarMenu('<i class="icon icon-2x icon-donors"></i> ' . Text::get('dashboard-menu-projects-rewards'), $prefix .'/invests', 'invests');
-        // Session::addToSidebarMenu('<i class="icon icon-2x icon-partners"></i> ' . Text::get('dashboard-menu-projects-messegers'), '/dashboard/projects/messengers/select?project=' . $project->id, 'comments');
+        if($project->isApproved()) {
+            Session::addToSidebarMenu('<i class="icon icon-2x icon-updates"></i> ' . Text::get('dashboard-menu-projects-updates'), $prefix .'/updates', 'updates');
+            Session::addToSidebarMenu('<i class="icon icon-2x icon-donors"></i> ' . Text::get('dashboard-menu-projects-rewards'), $prefix .'/invests', 'invests');
+            // Session::addToSidebarMenu('<i class="icon icon-2x icon-partners"></i> ' . Text::get('dashboard-menu-projects-messegers'), '/dashboard/projects/messengers/select?project=' . $project->id, 'comments');
+        }
          $submenu = [
             ['text' => '<i class="fa fa-2x fa-language"></i> ' . Text::get('regular-translations'), 'link' => $prefix . '/translate', 'id' => 'translate'],
             ['text' => '<i class="icon icon-2x icon-analytics"></i> ' . Text::get('dashboard-menu-projects-analytics'), 'link' => $prefix . '/analytics', 'id' => 'analytics'],
             ['text' => '<i class="icon icon-2x icon-shared"></i> ' . Text::get('project-share-materials'), 'link' => $prefix . '/materials', 'id' => 'materials']
         ];
         Session::addToSidebarMenu('<i class="icon icon-2x icon-settings"></i> ' . Text::get('footer-header-resources'), $submenu, 'comments', null, 'sidebar');
-        // Session::addToSidebarMenu('<i class="icon icon-2x icon-analytics"></i> ' . Text::get('dashboard-menu-projects-analytics'), $prefix . '/analytics', 'analytics');
-        // Session::addToSidebarMenu('<i class="icon icon-2x icon-shared"></i> ' . Text::get('project-share-materials'), $prefix .'/materials', 'materials');
 
         View::getEngine()->useData([
             'project' => $project,
@@ -192,6 +191,7 @@ class ProjectDashboardController extends \Goteo\Core\Controller {
 
         // Create the form
         $processor = $this->getModelForm('ProjectPersonal', $project, $defaults, ['account' => $account]);
+        $processor->setReadonly(!$project->userCanEdit($this->user, true))->createForm();
         $form = $processor->getBuilder()
             ->add('submit', 'submit', [
                 'label' => $submit_label ? $submit_label : 'regular-submit'
@@ -230,10 +230,17 @@ class ProjectDashboardController extends \Goteo\Core\Controller {
 
         // Create the form
         $processor = $this->getModelForm('ProjectOverview', $project, $defaults);
-        $form = $processor->getBuilder()
-            ->add('submit', 'submit', [
+        // For everyone
+        // $processor->setReadonly(!$project->isEditable())->createForm();
+        // Just for the owner
+        $processor->setReadonly(!$project->userCanEdit($this->user, true))->createForm();
+
+        if(!$processor->getReadonly()) {
+            $processor->getBuilder()->add('submit', 'submit', [
                 'label' => $submit_label ? $submit_label : 'regular-submit'
-            ])->getForm();
+            ]);
+        }
+        $form = $processor->getBuilder()->getForm();
 
         $form->handleRequest($request);
         if ($form->isSubmitted()) {
@@ -345,6 +352,7 @@ class ProjectDashboardController extends \Goteo\Core\Controller {
         // print_r($_FILES);die;
         // Create the form
         $processor = $this->getModelForm('ProjectPost', $post, $defaults, ['project' => $project]);
+        $processor->setReadonly(!$project->userCanEdit($this->user, true))->createForm();
         $form = $processor->getBuilder()
             ->add('submit', 'submit', array(
                 // 'icon_class' => null
@@ -393,15 +401,19 @@ class ProjectDashboardController extends \Goteo\Core\Controller {
         $defaults = (array) $project;
         // Create the form
         $processor = $this->getModelForm('ProjectCosts', $project, $defaults);
-        $builder = $processor->getBuilder()
-            ->add('submit', 'submit', [
-                'label' => $submit_label ? $submit_label : 'regular-submit'
-            ])
-            ->add('add-cost', 'submit', [
-                'label' => 'project-add-cost',
-                'icon_class' => 'fa fa-plus',
-                'attr' => ['class' => 'btn btn-orange btn-lg add-cost']
-            ]);
+        $processor->setReadonly(!$project->userCanEdit($this->user, true))->createForm();
+        $builder = $processor->getBuilder();
+        if(!$processor->getReadonly()) {
+            $builder
+                ->add('submit', 'submit', [
+                    'label' => $submit_label ? $submit_label : 'regular-submit'
+                ])
+                ->add('add-cost', 'submit', [
+                    'label' => 'project-add-cost',
+                    'icon_class' => 'fa fa-plus',
+                    'attr' => ['class' => 'btn btn-orange btn-lg add-cost']
+                ]);
+        }
 
         $form = $builder->getForm();
         $form->handleRequest($request);
@@ -410,6 +422,9 @@ class ProjectDashboardController extends \Goteo\Core\Controller {
             if($request->isXmlHttpRequest()) {
                 $button = $form->getClickedButton()->getName();
                 if($button === 'add-cost') {
+                    if($processor->getReadonly()) {
+                        return $this->rawResponse('Cost cannot be added', 'text/plain', 500);
+                    }
                     $cost = new Cost(['project' => $project->id]);
                     $errors = [];
                     if(!$cost->save($errors)) {
@@ -424,6 +439,9 @@ class ProjectDashboardController extends \Goteo\Core\Controller {
                 }
                 if(strpos($button, 'remove_') === 0) {
                     try {
+                        if($processor->getReadonly()) {
+                            return $this->rawResponse('Cost cannot be deleted', 'text/plain', 500);
+                        }
                         $cost = Cost::get(substr($button, 7));
                         $cost->dbDelete();
                         return $this->rawResponse('deleted ' . $cost->id);
@@ -471,6 +489,7 @@ class ProjectDashboardController extends \Goteo\Core\Controller {
         $defaults = (array) $project;
         // Create the form
         $processor = $this->getModelForm('ProjectRewards', $project, $defaults);
+        $processor->setReadonly(!$project->userCanEdit($this->user, true))->createForm();
         $builder = $processor->getBuilder()
             ->add('submit', 'submit', [
                 'label' => $submit_label ? $submit_label : 'regular-submit'
@@ -502,7 +521,11 @@ class ProjectDashboardController extends \Goteo\Core\Controller {
                 if(strpos($button, 'remove_') === 0) {
                     try {
                         $reward = Reward::get(substr($button, 7));
-                        $reward->dbDelete();
+                        if($reward->getTaken() === 0) {
+                            $reward->dbDelete();
+                        } else {
+                            return $this->rawResponse('Reward has invests. Cannot be deleted', 'text/plain', 500);
+                        }
                         return $this->rawResponse('deleted ' . $reward->id);
                     } catch(\PDOExpection $e) {
                         return $this->rawResponse(Text::get('form-sent-error', 'Reward not deleted'), 'text/plain', 500);

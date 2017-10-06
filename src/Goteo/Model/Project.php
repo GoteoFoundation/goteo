@@ -255,11 +255,16 @@ namespace Goteo\Model {
          * @param  Goteo\Model\User $user  the user to check
          * @return boolean          true if success, false otherwise
          */
-        public function userCanEdit(User $user = null) {
+        public function userCanEdit(User $user = null, $check_status = false) {
 
             if(empty($user)) return false;
             // owns the project
-            if($this->owner === $user->id) return true;
+            if($this->owner === $user->id) {
+                if($check_status) {
+                    return $this->isEditable();
+                }
+                return true;
+            }
             // is superadmin in the project node
             if($user->hasRoleInNode($this->node, ['superadmin', 'root'])) return true;
             // is a consultant
@@ -317,7 +322,7 @@ namespace Goteo\Model {
 
         /**
          * Check if the project is administrable by the user id
-         * Meaning touchgin sensitive data such as bank account, etc
+         * Meaning touching sensitive data such as bank account, etc
          * @param  Goteo\Model\User $user  the user to check
          * @return boolean          true if success, false otherwise
          */
@@ -844,6 +849,13 @@ namespace Goteo\Model {
          */
         public function inCampaign() {
             return $this->status == self::STATUS_IN_CAMPAIGN;
+        }
+
+        /**
+         * Handy method to know if project can be edited (not in campaing or finished)
+         */
+        public function isEditable() {
+            return $this->status < self::STATUS_IN_CAMPAIGN;
         }
 
         /**

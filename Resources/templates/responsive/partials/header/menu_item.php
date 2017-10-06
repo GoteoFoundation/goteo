@@ -31,7 +31,7 @@
                   &nbsp; <i class="fa fa-angle-right visible-xs"></i>
                 <?php endif ?>
                 <?php if(in_array('sidebar', $class)): ?>
-                  &nbsp; <i class="fa fa-angle-down"></i>
+                  &nbsp; <i class="fa fa-angle-down"></i><i class="fa fa-angle-up"></i>
                 <?php endif ?>
             </a>
             <ul class="nav submenu">

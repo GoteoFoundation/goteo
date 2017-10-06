@@ -5,7 +5,7 @@
 <div class="dashboard-content">
   <div class="inner-container">
     <h1><?= $this->text('images-main-header') ?></h1>
-    <h5><?= $this->text('dashboard-project-images-desc') ?></h5>
+    <p><?= $this->text('dashboard-project-images-desc') ?></p>
 
     <?php foreach($this->zones as $key => $zone): ?>
         <h3><?= $zone ?></h3>
@@ -74,7 +74,8 @@ $(function(){
             group: 'project-images'
             // , forceFallback: true
             // Reorder actions
-            , onChoose: function(evt) {
+            , onStart: function(evt) {
+                console.log('hide chooser', evt);
                 $('.dragndrop').hide();
             }
             , onEnd: function (evt) {
@@ -144,11 +145,13 @@ $(function(){
     // Delete actions
     $('.image-list-sortable').on( 'click', '.delete-image', function(e) {
         e.preventDefault();
+        e.stopPropagation();
+        console.log('delete');
         var $li = $(this).closest('li');
         var $zone = $(this).closest('.image-zone');
         var $error = $zone.next();
         // Check if it is default
-        if($li.find('.default-image').hasClass('btn-pink')) {
+        if($li.find('.default-image').hasClass('btn-cyan')) {
             alert('<?= $this->ee($this->text('dashboard-project-delete-default-image'), 'js') ?>')
             return false;
         }
@@ -185,8 +188,8 @@ $(function(){
                 // console.log('done',data);
                 if(data.result) {
                     // OK
-                    $('.image-list-sortable .default-image').removeClass('btn-pink').addClass('btn-default');
-                    $this.addClass('btn-pink').removeClass('btn-default');
+                    $('.image-list-sortable .default-image').removeClass('btn-cyan').addClass('btn-default');
+                    $this.addClass('btn-cyan').removeClass('btn-default');
                     $error.addClass('hidden');
                     // Autoupdate images covers with class auto-project-image
                     $('#project-<?= $this->project->id ?> img.img-project').each(function() {

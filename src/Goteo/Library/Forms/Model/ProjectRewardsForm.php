@@ -38,10 +38,13 @@ class ProjectRewardsForm extends AbstractFormProcessor implements FormProcessorI
         $project = $this->getModel();
         $this->rewards[$reward->id] = $reward;
         $suffix = "_{$reward->id}";
+        // readonly only if has no invests associated
+        $readonly = $this->getReadonly() && ($reward->getTaken() > 0);
         $this->getBuilder()
             ->add("amount$suffix", 'number', [
                 'label' => 'rewards-field-individual_reward-amount',
                 'data' => $reward->amount,
+                'disabled' => $readonly,
                 // 'pre_addon' => '<i class="fa fa-money"></i>',
                 'pre_addon' => Currency::get($project->currency, 'html'),
                 // 'post_addon' => Currency::get($project->currency, 'name'),
@@ -51,6 +54,7 @@ class ProjectRewardsForm extends AbstractFormProcessor implements FormProcessorI
             ->add("units$suffix", 'number', [
                 'label' => 'rewards-field-individual_reward-units',
                 'data' => $reward->amount,
+                'disabled' => $readonly,
                 'pre_addon' => '#',
                 'constraints' => array(new Constraints\NotBlank()),
                 'required' => false,
@@ -65,23 +69,28 @@ class ProjectRewardsForm extends AbstractFormProcessor implements FormProcessorI
             ->add("reward$suffix", 'text', [
                 'label' => 'rewards-field-individual_reward-reward',
                 'data' => $reward->reward,
+                'disabled' => $readonly,
                 'constraints' => array(new Constraints\NotBlank()),
                 'required' => false,
             ])
             ->add("description$suffix", 'textarea', [
                 'label' => 'rewards-field-individual_reward-description',
+                'disabled' => $readonly,
                 'data' => $reward->description,
                 'required' => false,
-            ])
-            ->add("remove$suffix", 'submit', [
-                'label' => Text::get('regular-delete'),
-                'icon_class' => 'fa fa-trash',
-                'span' => 'hidden-xs',
-                'attr' => [
-                    'class' => 'pull-right btn btn-default remove-reward',
-                    'data-confirm' => Text::get('project-remove-reward-confirm')
-                    ]
             ]);
+        if(!$readonly) {
+            $this->getBuilder()
+                ->add("remove$suffix", 'submit', [
+                    'label' => Text::get('regular-delete'),
+                    'icon_class' => 'fa fa-trash',
+                    'span' => 'hidden-xs',
+                    'attr' => [
+                        'class' => 'pull-right btn btn-default remove-reward',
+                        'data-confirm' => Text::get('project-remove-reward-confirm')
+                        ]
+                ]);
+        }
     }
 
     public function createForm() {

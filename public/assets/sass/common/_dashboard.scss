@@ -3,6 +3,7 @@
 /* dashboard containers */
 .dashboard {
   background: $background-white;
+  color: $secondary-color;
 
   // TODO: check for removal
   .general-dashboard {
@@ -23,8 +24,8 @@
       }
     }
 
+
   p {
-    color: $secondary-color;
     &.text-danger {
         color: $color-red;
     }
@@ -170,6 +171,12 @@
       }
 
   }
+  .progress-bar {
+    color: $color-white;
+    * {
+      color: $color-white;
+    }
+  }
   .form-group {
     &.extra {
       padding-left: 20px;
@@ -189,6 +196,9 @@
       width: auto;
       height: auto;
       margin-right: 5px;
+    }
+    label {
+        color: $primary-color;
     }
   }
   .pagination > .active > a {
