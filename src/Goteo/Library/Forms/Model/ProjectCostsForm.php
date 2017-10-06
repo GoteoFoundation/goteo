@@ -42,6 +42,7 @@ class ProjectCostsForm extends AbstractFormProcessor implements FormProcessorInt
         $this->getBuilder()
             ->add("amount$suffix", 'number', [
                 'label' => 'costs-field-amount',
+                'disabled' => $this->getReadonly(),
                 'data' => $cost->amount,
                 // 'pre_addon' => '<i class="fa fa-money"></i>',
                 'pre_addon' => Currency::get($project->currency, 'html'),
@@ -51,6 +52,7 @@ class ProjectCostsForm extends AbstractFormProcessor implements FormProcessorInt
             ])
             ->add("type$suffix", 'choice', [
                 'label' => 'costs-field-type',
+                'disabled' => $this->getReadonly(),
                 'data' => $cost->type,
                 'choices' => Cost::types(),
                 'constraints' => array(new Constraints\NotBlank()),
@@ -58,6 +60,7 @@ class ProjectCostsForm extends AbstractFormProcessor implements FormProcessorInt
             ])
             ->add("required$suffix", 'choice', [
                 'label' => 'costs-field-required_cost',
+                'disabled' => $this->getReadonly(),
                 'data' => (int)$cost->required,
                 'choices' => [
                     '1' => Text::get('costs-field-required_cost-yes'),
@@ -67,30 +70,36 @@ class ProjectCostsForm extends AbstractFormProcessor implements FormProcessorInt
             ])
             ->add("cost$suffix", 'text', [
                 'label' => 'costs-field-cost',
+                'disabled' => $this->getReadonly(),
                 'data' => $cost->cost,
                 'constraints' => array(new Constraints\NotBlank()),
                 'required' => false,
             ])
             ->add("description$suffix", 'textarea', [
                 'label' => 'costs-field-description',
+                'disabled' => $this->getReadonly(),
                 'data' => $cost->description,
                 'required' => false,
-            ])
-            ->add("remove$suffix", 'submit', [
-                'label' => Text::get('regular-delete'),
-                'icon_class' => 'fa fa-trash',
-                'span' => 'hidden-xs',
-                'attr' => [
-                    'class' => 'pull-right btn btn-default remove-cost',
-                    'data-confirm' => Text::get('project-remove-cost-confirm')
-                    ]
             ]);
+        if(!$this->getReadonly()) {
+            $this->getBuilder()
+                ->add("remove$suffix", 'submit', [
+                    'label' => Text::get('regular-delete'),
+                    'icon_class' => 'fa fa-trash',
+                    'span' => 'hidden-xs',
+                    'attr' => [
+                        'class' => 'pull-right btn btn-default remove-cost',
+                        'data-confirm' => Text::get('project-remove-cost-confirm')
+                        ]
+                ]);
+        }
     }
 
     public function createForm() {
         $project = $this->getModel();
         $builder = $this->getBuilder()
             ->add('one_round', 'choice', [
+                'disabled' => $this->getReadonly(),
                 'label' => 'costs-field-select-rounds',
                 'constraints' => array(new Constraints\NotBlank()),
                 'required' => true,

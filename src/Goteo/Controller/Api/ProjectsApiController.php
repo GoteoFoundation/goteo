@@ -241,6 +241,7 @@ class ProjectsApiController extends AbstractApiController {
             $section = '';
         }
 
+        $all_success = true;
         foreach($files as $file) {
             if(!$file instanceOf UploadedFile) continue;
             // Process image
@@ -281,10 +282,13 @@ class ProjectsApiController extends AbstractApiController {
                 'maxSize' => $file->getMaxFileSize(),
                 'errorMsg' => $file->getErrorMessage()
             ];
-            if(!$success) $global_msg = Text::get('project-upload-images-some-ko');
+            if(!$success) {
+                $global_msg = Text::get('project-upload-images-some-ko');
+                $all_success = false;
+            }
         }
 
-        return $this->jsonResponse(['files' => $result, 'msg' => $global_msg]);
+        return $this->jsonResponse(['files' => $result, 'msg' => $global_msg, 'success' => $all_success]);
     }
 
     public function projectDeleteImagesAction($id, $image, Request $request) {

@@ -24,12 +24,18 @@
       border-radius: 5px;
       padding: 12px;
       .form-control,
+      .form-control-static,
       .input-group > .input-group-addon,
       .bootstrap-tagsinput {
+        padding: 6px 12px;
         color: $secondary-color;
         @include box-shadow(none);
-        border-color: $background-white;
+        // border-color: $background-white;
+        border-color: darken($background-white, 5%);
         background: $background-white;
+        &[disabled],&.disabled {
+            background: darken($background-white, 3%);
+        }
       }
       .bootstrap-tagsinput {
         width: 100%;
@@ -255,12 +261,12 @@
       padding: 0;
       margin: 0;
       margin-right: 5px;
-
+        background: no-repeat darken($background-white, 5%) url(/assets/img/ring.gif) center;
       .image {
         width: 150px;
         height: 150px;
         cursor: move;
-        background-color: $color-cyan;
+        // background-color: $color-cyan;
         background-position: 0 0;
         background-size: 100% 100%;
         background-repeat: no-repeat;

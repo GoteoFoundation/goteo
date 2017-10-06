@@ -43,36 +43,43 @@ class Forms implements ExtensionInterface
         ];
     }
 
-    public function form(FormView $formView = null, array $variables = array())
-    {
+    public function form(FormView $formView = null, array $variables = [], $silent = false) {
+        if($silent && !$formView) return '';
         return App::getService('app.forms')->getForm()->form($formView, $variables);
     }
 
-    public function start(FormView $formView = null, array $variables = array()) {
+    public function start(FormView $formView = null, array $variables = [], $silent = false) {
+        if($silent && !$formView) return '';
         return App::getService('app.forms')->getForm()->start($formView, $variables);
     }
 
-    public function end(FormView $formView = null, array $variables = array()) {
+    public function end(FormView $formView = null, array $variables = [], $silent = false) {
+        if($silent && !$formView) return '';
         return App::getService('app.forms')->getForm()->end($formView, $variables);
     }
 
-    public function errors(FormView $formView = null, array $variables = array()) {
+    public function errors(FormView $formView = null, array $variables = [], $silent = false) {
+        if($silent && !$formView) return '';
         return App::getService('app.forms')->getForm()->errors($formView, $variables);
     }
 
-    public function rest(FormView $formView = null, array $variables = array()) {
+    public function rest(FormView $formView = null, array $variables = [], $silent = false) {
+        if($silent && !$formView) return '';
         return App::getService('app.forms')->getForm()->rest($formView, $variables);
     }
 
-    public function row(FormView $formView = null, array $variables = array()) {
+    public function row(FormView $formView = null, array $variables = [], $silent = false) {
+        if($silent && !$formView) return '';
         return App::getService('app.forms')->getForm()->row($formView, $variables);
     }
 
-    public function widget(FormView $formView = null, array $variables = array()) {
+    public function widget(FormView $formView = null, array $variables = [], $silent = false) {
+        if($silent && !$formView) return '';
         return App::getService('app.forms')->getForm()->widget($formView, $variables);
     }
 
-    public function label(FormView $formView = null, array $variables = array()) {
+    public function label(FormView $formView = null, array $variables = [], $silent = false) {
+        if($silent && !$formView) return '';
         return App::getService('app.forms')->getForm()->label($formView, $variables);
     }
 
