@@ -236,7 +236,7 @@ class ProjectDashboardController extends \Goteo\Core\Controller {
         $processor->setReadonly(!$project->userCanEdit($this->user, true))->createForm();
 
         if(!$processor->getReadonly()) {
-            $processor->add('submit', 'submit', [
+            $processor->getBuilder()->add('submit', 'submit', [
                 'label' => $submit_label ? $submit_label : 'regular-submit'
             ]);
         }

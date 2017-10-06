@@ -60,6 +60,43 @@ $(function(){
         $(this).closest('.type').find('img').attr('src', '<?= $this->ee($this->asset('img/project/needs/'), 'js') ?>' + $(this).val() + '.png');
     });
 
+    var setBar = function() {
+        var $container = $('.dashboard-content>.inner-container');
+        var $bar = $container.find('.progress');
+
+        var min = opt = 0;
+        $container.find('.amount input').each(function() {
+            var amount = parseInt($(this).closest('.panel-body').find('.amount input').val(), 10);
+            var required = parseInt($(this).closest('.panel-body').find('.required select').val(), 10);
+            if(amount) {
+                if(required) {
+                    min += amount;
+                } else {
+                    opt += amount;
+                }
+            }
+
+        });
+        console.log('calc', min, opt);
+        $bar.find('.minimum > span').html(min);
+        $bar.find('.optimum > span').html(opt);
+        $bar.find('.minimum').css('width', Math.round(100*min/(min+opt)) + '%');
+        $bar.find('.optimum').css('width', Math.round(100*opt/(min+opt)) + '%');
+    };
+
+    $('.autoform').on('change', '.cost-item .required select', function() {
+        var required = parseInt($(this).val(), 10);
+        var $panel = $(this).closest('.cost-item');
+        if(required) {
+            $panel.removeClass('lilac');
+        } else {
+            $panel.addClass('lilac');
+        }
+        setBar();
+    });
+
+    $('.autoform').on('change', '.cost-item .amount input', setBar);
+
     // Send the form via AJAX
     $('.autoform').on('click', '.add-cost', function(e){
         e.preventDefault();
@@ -105,6 +142,7 @@ $(function(){
         }).done(function () {
             $item.slideUp(function(){
                 $(this).remove();
+                setBar();
             });
         }).fail(function (data) {
             console.log('An error occurred.', data);
@@ -116,35 +154,6 @@ $(function(){
 
     });
 
-    var setBar = function() {
-        var $panel = $(this).closest('.panel-body');
-        var $container = $(this).closest('.inner-container');
-        var $bar = $container.find('.progress');
-
-        var required = parseInt($panel.find('.required select').val(), 10);
-        if(required) {
-            $panel.removeClass('lilac');
-        } else {
-            $panel.addClass('lilac');
-        }
-        var min = opt = 0;
-        $container.find('.amount input').each(function() {
-            var amount = parseInt($(this).closest('.panel-body').find('.amount input').val(), 10);
-            if(parseInt($(this).closest('.panel-body').find('.required select').val(), 10)) {
-                min += amount;
-            } else {
-                opt += amount;
-            }
-
-        });
-        $bar.find('.minimum > span').html(min);
-        $bar.find('.optimum > span').html(opt);
-        $bar.find('.minimum').css('width', Math.round(100*min/(min+opt)) + '%');
-        $bar.find('.optimum').css('width', Math.round(100*opt/(min+opt)) + '%');
-    };
-
-    $('.autoform').on('change', '.cost-item .required select', setBar);
-    $('.autoform').on('change', '.cost-item .amount input', setBar);
 });
 
 // @license-end
