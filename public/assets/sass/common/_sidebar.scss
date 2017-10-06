@@ -54,8 +54,26 @@
         }
       }
       &.sidebar {
+        .fa-angle-up {
+            display: none;
+        }
+        &.active {
+          .fa-angle-up {
+            display: inline-block;
+          }
+          .fa-angle-down {
+            display: none;
+          }
+        }
         &.active, &.selected {
-          background-color: $background-sidebar-header;
+          background-color: $background-sidebar;
+          >a, >button {
+            border-top-color: $background-grey;
+          }
+
+          .submenu {
+            background-color: $background-sidebar-header;
+          }
         }
         border-left: 3px solid $color-cyan;
         // + .sidebar {
