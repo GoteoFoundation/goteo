@@ -8,13 +8,12 @@
  * and LICENSE files that was distributed with this source code.
  */
 
-// TODO: this is really a model...
-
 namespace Goteo\Model;
 
 use Goteo\Application\Exception\ModelException;
 use Goteo\Application\Exception\ModelNotFoundException;
 use Goteo\Application\Lang;
+use Goteo\Application\App;
 
 /*
  * Clase para gestionar las plantillas de los emails automáticos
@@ -222,8 +221,7 @@ class Template extends \Goteo\Core\Model {
      */
     public function parseText() {
         if($this->type === 'md') {
-            $pd = new \Parsedown();
-            return $pd->text($this->text);
+            return App::getService('app.md.parser')->text($this->text);
         }
         return $this->text;
     }

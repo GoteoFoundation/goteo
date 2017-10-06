@@ -498,7 +498,7 @@ class ProjectController extends \Goteo\Core\Controller {
             $project->user=Session::getUser();
             $sent = UsersSend::toOwner('project_created', $project);
 
-            return new RedirectResponse('/project/edit/'.$project->id);
+            return new RedirectResponse('/dashboard/project/' . $project->id . '/profile');
         }
 
         return $this->viewResponse( 'project/create',

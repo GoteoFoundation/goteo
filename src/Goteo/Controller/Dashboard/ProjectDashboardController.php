@@ -60,18 +60,16 @@ class ProjectDashboardController extends \Goteo\Core\Controller {
         Session::addToSidebarMenu('<i class="icon icon-2x icon-summary"></i> ' . Text::get('dashboard-menu-activity-summary'), $prefix . '/summary', 'summary');
         Session::addToSidebarMenu('<i class="icon icon-2x icon-preview"></i> ' . Text::get('regular-preview'), '/project/' . $project->id, 'preview');
 
-        $submenu = [
-            ['text' => '<i class="icon icon-2x icon-user"></i> ' . Text::get('step-1'), 'link' => $prefix . '/profile', 'id' => 'profile'],
-            ['text' => '<i class="fa fa-2x fa-id-card-o"></i> ' . Text::get('step-2'), 'link' => $prefix . '/personal', 'id' => 'personal'],
-        ];
-        Session::addToSidebarMenu('<i class="fa fa-2x fa-id-badge"></i> ' . Text::get('profile-about-header'), $submenu, 'project', null, 'sidebar');
+        // $submenu = [];
+        // Session::addToSidebarMenu('<i class="fa fa-2x fa-id-badge"></i> ' . Text::get('profile-about-header'), $submenu, 'project', null, 'sidebar');
 
         $submenu = [
-            ['text' => '<i class="icon icon-2x icon-edit"></i> ' . Text::get('step-3'), 'link' => $prefix . '/edit', 'id' => 'edit'],
-            ['text' => '<i class="icon icon-2x icon-images"></i> ' . Text::get('step-3b'), 'link' => $prefix . '/images', 'id' => 'images'],
-            ['text' => '<i class="fa fa-2x fa-tasks"></i> ' . Text::get('step-4'), 'link' => $prefix . '/costs', 'id' => 'costs'],
-            ['text' => '<i class="fa fa-2x fa-gift"></i> ' . Text::get('step-5'), 'link' => $prefix . '/rewards', 'id' => 'rewards'],
-            ['text' => '<i class="fa fa-2x fa-language"></i> ' . Text::get('regular-translations'), 'link' => $prefix . '/translate', 'id' => 'translate'],
+            ['text' => '<i class="icon icon-2x icon-user"></i> 1. ' . Text::get('profile-about-header'), 'link' => $prefix . '/profile', 'id' => 'profile'],
+            ['text' => '<i class="fa fa-2x fa-id-card-o"></i> 2. ' . Text::get('step-2'), 'link' => $prefix . '/personal', 'id' => 'personal'],
+            ['text' => '<i class="icon icon-2x icon-edit"></i> 3. ' . Text::get('step-3'), 'link' => $prefix . '/overview', 'id' => 'overview'],
+            ['text' => '<i class="icon icon-2x icon-images"></i> 4. ' . Text::get('step-3b'), 'link' => $prefix . '/images', 'id' => 'images'],
+            ['text' => '<i class="fa fa-2x fa-tasks"></i> 5. ' . Text::get('step-4'), 'link' => $prefix . '/costs', 'id' => 'costs'],
+            ['text' => '<i class="fa fa-2x fa-gift"></i> 6. ' . Text::get('step-5'), 'link' => $prefix . '/rewards', 'id' => 'rewards'],
         ];
         Session::addToSidebarMenu('<i class="icon icon-2x icon-projects"></i> ' . Text::get('project-edit'), $submenu, 'project', null, 'sidebar');
         // Session::addToSidebarMenu('<i class="fa fa-2x fa-language"></i> ' . Text::get('regular-translations'), $prefix . '/translate', 'translate');
@@ -81,6 +79,7 @@ class ProjectDashboardController extends \Goteo\Core\Controller {
         Session::addToSidebarMenu('<i class="icon icon-2x icon-donors"></i> ' . Text::get('dashboard-menu-projects-rewards'), $prefix .'/invests', 'invests');
         // Session::addToSidebarMenu('<i class="icon icon-2x icon-partners"></i> ' . Text::get('dashboard-menu-projects-messegers'), '/dashboard/projects/messengers/select?project=' . $project->id, 'comments');
          $submenu = [
+            ['text' => '<i class="fa fa-2x fa-language"></i> ' . Text::get('regular-translations'), 'link' => $prefix . '/translate', 'id' => 'translate'],
             ['text' => '<i class="icon icon-2x icon-analytics"></i> ' . Text::get('dashboard-menu-projects-analytics'), 'link' => $prefix . '/analytics', 'id' => 'analytics'],
             ['text' => '<i class="icon icon-2x icon-shared"></i> ' . Text::get('project-share-materials'), 'link' => $prefix . '/materials', 'id' => 'materials']
         ];
@@ -174,7 +173,7 @@ class ProjectDashboardController extends \Goteo\Core\Controller {
         if($project->isApproved()) {
             $redirect = '/dashboard/project/' . $pid . '/personal';
         } else {
-            $redirect = '/dashboard/project/' . $pid . '/edit';
+            $redirect = '/dashboard/project/' . $pid . '/overview';
             $submit_label = 'form-next-button';
         }
         $defaults = (array) $project;
@@ -214,14 +213,14 @@ class ProjectDashboardController extends \Goteo\Core\Controller {
     }
 
     /**
-     * Project edit (edit)
+     * Project edit (overview)
      */
-    public function editAction($pid, Request $request)
+    public function overviewAction($pid, Request $request)
     {
-        $project = $this->validateProject($pid, 'edit');
+        $project = $this->validateProject($pid, 'overview');
         if($project instanceOf Response) return $project;
         if($project->isApproved()) {
-            $redirect = '/dashboard/project/' . $pid . '/edit';
+            $redirect = '/dashboard/project/' . $pid . '/overview';
         } else {
             $redirect = '/dashboard/project/' . $pid . '/images';
             $submit_label = 'form-next-button';
@@ -230,7 +229,7 @@ class ProjectDashboardController extends \Goteo\Core\Controller {
         $defaults = (array)$project;
 
         // Create the form
-        $processor = $this->getModelForm('ProjectEdit', $project, $defaults);
+        $processor = $this->getModelForm('ProjectOverview', $project, $defaults);
         $form = $processor->getBuilder()
             ->add('submit', 'submit', [
                 'label' => $submit_label ? $submit_label : 'regular-submit'
@@ -246,7 +245,7 @@ class ProjectDashboardController extends \Goteo\Core\Controller {
                 Message::error($e->getMessage());
             }
         }
-        return $this->viewResponse('dashboard/project/edit', [
+        return $this->viewResponse('dashboard/project/overview', [
             'form' => $form->createView()
         ]);
     }
@@ -400,7 +399,8 @@ class ProjectDashboardController extends \Goteo\Core\Controller {
             ])
             ->add('add-cost', 'submit', [
                 'label' => 'project-add-cost',
-                'attr' => ['class' => 'btn btn-default btn-lg add-cost']
+                'icon_class' => 'fa fa-plus',
+                'attr' => ['class' => 'btn btn-orange btn-lg add-cost']
             ]);
 
         $form = $builder->getForm();
@@ -477,7 +477,8 @@ class ProjectDashboardController extends \Goteo\Core\Controller {
             ])
             ->add('add-reward', 'submit', [
                 'label' => 'project-add-reward',
-                'attr' => ['class' => 'btn btn-default btn-lg add-reward']
+                'icon_class' => 'fa fa-plus',
+                'attr' => ['class' => 'btn btn-orange btn-lg add-reward']
             ]);
 
         $form = $builder->getForm();
