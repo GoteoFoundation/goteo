@@ -88,9 +88,9 @@ $(function(){
         var required = parseInt($(this).val(), 10);
         var $panel = $(this).closest('.cost-item');
         if(required) {
-            $panel.removeClass('lilac');
-        } else {
             $panel.addClass('lilac');
+        } else {
+            $panel.removeClass('lilac');
         }
         setBar();
     });

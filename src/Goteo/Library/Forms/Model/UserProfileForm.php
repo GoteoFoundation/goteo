@@ -112,12 +112,12 @@ class UserProfileForm extends AbstractFormProcessor implements FormProcessorInte
                 'required' => false,
                 'url' => '/api/keywords?q=%QUERY'
             ])
-            ->add('contribution', 'textarea', [
-                'label' => 'profile-field-contribution',
-                'disabled' => $this->getReadonly(),
-                'attr' => ['help' => Text::get('tooltip-user-contribution')],
-                'required' => false
-            ])
+            // ->add('contribution', 'textarea', [
+            //     'label' => 'profile-field-contribution',
+            //     'disabled' => $this->getReadonly(),
+            //     'attr' => ['help' => Text::get('tooltip-user-contribution')],
+            //     'required' => false
+            // ])
             ->add('webs', 'textarea', [
                 'label' => 'profile-field-websites',
                 'disabled' => $this->getReadonly(),
