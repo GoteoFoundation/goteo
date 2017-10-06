@@ -196,7 +196,7 @@ div.section.main-slider{
     }
     .description{
         font-weight: bold;
-        font-size: 22px;
+        font-size: $font-size*1.6;
     }
     .col-button{
         display: flex;
@@ -297,7 +297,7 @@ div.section.main-slider{
 
     .advantages-container
     {
-        padding:25px 10px;
+        padding:40px 10px;
         .row.details{
             padding-top:15px;
             display: flex;
@@ -489,6 +489,38 @@ div.section.main-slider{
             font-size: 25px;
             color:$color-light-grey;
         }
+    }
+    .data-container{
+        padding-bottom: 40px;
+    }
+    .donor-container{
+        background-color: $background-light-yellow;
+        padding-top: 30px;
+        .title{
+        text-transform: uppercase;
+        font-size: $font-size*0.8;
+        }
+        .description{
+            font-weight: bold;
+            font-size: $font-size*1.5;
+        }
+        .row{
+        display: flex;
+        }
+        .col-button{
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            padding-bottom: 20px;
+          .btn-white{
+            color: $color-grey;
+            padding: 13px 0px;
+            font-size: $font-size*1.2;
+            }
+        }
+
+
+
     }
 }
 
@@ -702,6 +734,7 @@ div.section.tools{
     div.section.matchfunding .detail-item{
         margin-top:20px;
     }
+
 }
 
 /* Custom sidebar menu */
@@ -940,6 +973,23 @@ body.home.has-sidebar {
         input[type="search"]{
             font-size: $font-size*1.2;
         }
+    }
+    .donor-container{
+        .title{
+        margin-top: 30px;
+        }
+        .row{
+        display: block !important;
+        }
+        .col-button{
+            
+          .btn-white{
+            
+            }
+        }
+
+
+
     }
 }
 
