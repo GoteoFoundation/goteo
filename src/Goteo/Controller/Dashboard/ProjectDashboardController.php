@@ -234,10 +234,13 @@ class ProjectDashboardController extends \Goteo\Core\Controller {
         // $processor->setReadonly(!$project->isEditable())->createForm();
         // Just for the owner
         $processor->setReadonly(!$project->userCanEdit($this->user, true))->createForm();
-        $form = $processor->getBuilder()
-            ->add('submit', 'submit', [
+
+        if(!$processor->getReadonly()) {
+            $processor->add('submit', 'submit', [
                 'label' => $submit_label ? $submit_label : 'regular-submit'
-            ])->getForm();
+            ]);
+        }
+        $form = $processor->getBuilder()->getForm();
 
         $form->handleRequest($request);
         if ($form->isSubmitted()) {
@@ -399,15 +402,18 @@ class ProjectDashboardController extends \Goteo\Core\Controller {
         // Create the form
         $processor = $this->getModelForm('ProjectCosts', $project, $defaults);
         $processor->setReadonly(!$project->userCanEdit($this->user, true))->createForm();
-        $builder = $processor->getBuilder()
-            ->add('submit', 'submit', [
-                'label' => $submit_label ? $submit_label : 'regular-submit'
-            ])
-            ->add('add-cost', 'submit', [
-                'label' => 'project-add-cost',
-                'icon_class' => 'fa fa-plus',
-                'attr' => ['class' => 'btn btn-orange btn-lg add-cost']
-            ]);
+        $builder = $processor->getBuilder();
+        if(!$processor->getReadonly()) {
+            $builder
+                ->add('submit', 'submit', [
+                    'label' => $submit_label ? $submit_label : 'regular-submit'
+                ])
+                ->add('add-cost', 'submit', [
+                    'label' => 'project-add-cost',
+                    'icon_class' => 'fa fa-plus',
+                    'attr' => ['class' => 'btn btn-orange btn-lg add-cost']
+                ]);
+        }
 
         $form = $builder->getForm();
         $form->handleRequest($request);
@@ -416,6 +422,9 @@ class ProjectDashboardController extends \Goteo\Core\Controller {
             if($request->isXmlHttpRequest()) {
                 $button = $form->getClickedButton()->getName();
                 if($button === 'add-cost') {
+                    if($processor->getReadonly()) {
+                        return $this->rawResponse('Cost cannot be added', 'text/plain', 500);
+                    }
                     $cost = new Cost(['project' => $project->id]);
                     $errors = [];
                     if(!$cost->save($errors)) {
@@ -430,6 +439,9 @@ class ProjectDashboardController extends \Goteo\Core\Controller {
                 }
                 if(strpos($button, 'remove_') === 0) {
                     try {
+                        if($processor->getReadonly()) {
+                            return $this->rawResponse('Cost cannot be deleted', 'text/plain', 500);
+                        }
                         $cost = Cost::get(substr($button, 7));
                         $cost->dbDelete();
                         return $this->rawResponse('deleted ' . $cost->id);
@@ -509,7 +521,11 @@ class ProjectDashboardController extends \Goteo\Core\Controller {
                 if(strpos($button, 'remove_') === 0) {
                     try {
                         $reward = Reward::get(substr($button, 7));
-                        $reward->dbDelete();
+                        if($reward->getTaken() === 0) {
+                            $reward->dbDelete();
+                        } else {
+                            return $this->rawResponse('Reward has invests. Cannot be deleted', 'text/plain', 500);
+                        }
                         return $this->rawResponse('deleted ' . $reward->id);
                     } catch(\PDOExpection $e) {
                         return $this->rawResponse(Text::get('form-sent-error', 'Reward not deleted'), 'text/plain', 500);

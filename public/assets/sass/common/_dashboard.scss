@@ -3,6 +3,7 @@
 /* dashboard containers */
 .dashboard {
   background: $background-white;
+  color: $secondary-color;
 
   // TODO: check for removal
   .general-dashboard {
@@ -23,12 +24,6 @@
       }
     }
 
-  * {
-    color: $secondary-color;
-  }
-  .label {
-    color: $color-white;
-  }
 
   p {
     &.text-danger {
@@ -175,6 +170,12 @@
         font-weight: 500;
       }
 
+  }
+  .progress-bar {
+    color: $color-white;
+    * {
+      color: $color-white;
+    }
   }
   .form-group {
     &.extra {

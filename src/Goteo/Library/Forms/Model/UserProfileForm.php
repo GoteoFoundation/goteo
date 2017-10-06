@@ -27,22 +27,26 @@ class UserProfileForm extends AbstractFormProcessor implements FormProcessorInte
 
         $builder = $this->getBuilder()
             ->add('name', 'text', [
+                'disabled' => $this->getReadonly(),
                 'label' => 'profile-field-name'
             ])
             ->add('location', 'location', [
                 'label' => 'profile-field-location',
+                'disabled' => $this->getReadonly(),
                 'type' => 'user',
                 'required' => false,
                 'pre_addon' => '<i class="fa fa-globe"></i>'
             ])
             ->add('unlocable', 'boolean', [
                 'label' => 'dashboard-user-location-unlocate',
+                'disabled' => $this->getReadonly(),
                 'attr' => ['help' => Text::get('dashboard-user-location-help')],
                 'required' => false,
                 'color' => 'cyan'
             ])
             ->add('avatar', 'dropfiles', [
                 'label' => 'profile-fields-image-title',
+                'disabled' => $this->getReadonly(),
                 'required' => false
             ])
             ;
@@ -54,10 +58,12 @@ class UserProfileForm extends AbstractFormProcessor implements FormProcessorInte
         $builder
             ->add('birthyear', 'year', [
                 'label' => 'invest-address-birthyear-field',
+                'disabled' => $this->getReadonly(),
                 'required' => false
             ])
             ->add('gender', 'choice', [
                 'label' => 'invest-address-gender-field',
+                'disabled' => $this->getReadonly(),
                 'choices' => [
                     'F' => Text::get('regular-female'),
                     'M' => Text::get('regular-male'),
@@ -67,6 +73,7 @@ class UserProfileForm extends AbstractFormProcessor implements FormProcessorInte
             ])
             ->add('legal_entity', 'choice', [
                 'label' => 'profile-field-legal-entity',
+                'disabled' => $this->getReadonly(),
                 'choices' => [
                     '0' => Text::get('profile-field-legal-entity-person'),
                     '1' => Text::get('profile-field-legal-entity-self-employed'),
@@ -80,34 +87,40 @@ class UserProfileForm extends AbstractFormProcessor implements FormProcessorInte
             ])
             ->add('entity_type', 'boolean', [
                 'label' => 'profile-field-entity-type-checkbox-public',
+                'disabled' => $this->getReadonly(),
                 'required' => false,
                 'color' => 'cyan'
             ])
             ->add('about', 'textarea', [
                 'label' => 'profile-field-about',
+                'disabled' => $this->getReadonly(),
                 'attr' => ['help' => Text::get('tooltip-user-about')]
             ])
             ->add('interests', 'choice', [
                 'multiple' => true,
                 'expanded' => true,
                 'label' => 'profile-field-interests',
+                'disabled' => $this->getReadonly(),
                 'attr' => ['help' => Text::get('tooltip-user-interests')],
                 'choices' => Interest::getAll(),
                 'required' => false
             ])
             ->add('keywords', 'tags', [
                 'label' => 'profile-field-keywords',
+                'disabled' => $this->getReadonly(),
                 'attr' => ['help' => Text::get('tooltip-user-keywords')],
                 'required' => false,
                 'url' => '/api/keywords?q=%QUERY'
             ])
             ->add('contribution', 'textarea', [
                 'label' => 'profile-field-contribution',
+                'disabled' => $this->getReadonly(),
                 'attr' => ['help' => Text::get('tooltip-user-contribution')],
                 'required' => false
             ])
             ->add('webs', 'textarea', [
                 'label' => 'profile-field-websites',
+                'disabled' => $this->getReadonly(),
                 'attr' => ['help' => Text::get('tooltip-user-webs')],
                 'required' => false
             ])
@@ -117,6 +130,7 @@ class UserProfileForm extends AbstractFormProcessor implements FormProcessorInte
             ])
             ->add('facebook', 'url', [
                 'label' => 'regular-facebook',
+                'disabled' => $this->getReadonly(),
                 'pre_addon' => '<i class="fa fa-facebook"></i>',
                 'attr' => ['help' => Text::get('tooltip-user-facebook'),
                            'placeholder' => Text::get('regular-facebook-url')],
@@ -124,6 +138,7 @@ class UserProfileForm extends AbstractFormProcessor implements FormProcessorInte
             ])
             ->add('twitter', 'url', [
                 'label' => 'regular-twitter',
+                'disabled' => $this->getReadonly(),
                 'pre_addon' => '<i class="fa fa-twitter"></i>',
                 'attr' => ['help' => Text::get('tooltip-user-twitter'),
                            'placeholder' => Text::get('regular-twitter-url')],
@@ -131,6 +146,7 @@ class UserProfileForm extends AbstractFormProcessor implements FormProcessorInte
             ])
             ->add('google', 'url', [
                 'label' => 'regular-google',
+                'disabled' => $this->getReadonly(),
                 'pre_addon' => '<i class="fa fa-google-plus"></i>',
                 'attr' => ['help' => Text::get('tooltip-user-google'),
                            'placeholder' => Text::get('regular-google-url')],
@@ -138,6 +154,7 @@ class UserProfileForm extends AbstractFormProcessor implements FormProcessorInte
             ])
             ->add('linkedin', 'url', [
                 'label' => 'regular-linkedin',
+                'disabled' => $this->getReadonly(),
                 'pre_addon' => '<i class="fa fa-linkedin"></i>',
                 'attr' => ['help' => Text::get('tooltip-user-linkedin'),
                            'placeholder' => Text::get('regular-linkedin-url')],
@@ -145,6 +162,7 @@ class UserProfileForm extends AbstractFormProcessor implements FormProcessorInte
             ])
             // ->add('identica', 'url', [
             //     'label' => 'regular-identica',
+            //     'disabled' => $this->getReadonly(),
             //     'pre_addon' => '<i class="fa fa-comment-o"></i>',
             //     'attr' => ['help' => Text::get('tooltip-user-identica'),
             //                'placeholder' => Text::get('regular-identica-url')],
@@ -152,6 +170,7 @@ class UserProfileForm extends AbstractFormProcessor implements FormProcessorInte
             // ])
             ->add('instagram', 'url', [
                 'label' => 'regular-instagram',
+                'disabled' => $this->getReadonly(),
                 'pre_addon' => '<i class="fa fa-instagram"></i>',
                 'attr' => ['help' => Text::get('tooltip-user-instagram'),
                            'placeholder' => Text::get('regular-instagram-url')],

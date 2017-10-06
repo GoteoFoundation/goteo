@@ -25,36 +25,43 @@ class ProjectPersonalForm extends AbstractFormProcessor implements FormProcessor
         $this->getBuilder()
             ->add('contract_name', 'text', [
                 'label' => 'personal-field-contract_name',
+                'disabled' => $this->getReadonly(),
                 'constraints' => array(new Constraints\NotBlank()),
                 'attr' => ['help' => Text::get('tooltip-project-contract_name')]
             ])
             ->add('contract_nif', 'text', [
                 'label' => 'personal-field-contract_nif',
+                'disabled' => $this->getReadonly(),
                 'constraints' => array(new Constraints\NotBlank()),
                 'attr' => ['help' => Text::get('tooltip-project-contract_nif')]
             ])
             ->add('contract_birthdate', 'datepicker', [
                 'label' => 'personal-field-contract_birthdate',
+                'disabled' => $this->getReadonly(),
                 'constraints' => array(new Constraints\NotBlank()),
                 'attr' => ['help' => Text::get('tooltip-project-contract_birthdate')]
             ])
             ->add('phone', 'text', [
                 'label' => 'personal-field-phone',
+                'disabled' => $this->getReadonly(),
                 'required' => false,
                 'attr' => ['help' => Text::get('tooltip-project-phone')]
             ])
             ->add('entity_name', 'text', [
                 'label' => 'project-personal-field-entity_name',
+                'disabled' => $this->getReadonly(),
                 'required' => false,
                 'attr' => ['help' => Text::get('tooltip-project-personal-entity_name')]
             ])
             ->add('paypal', 'text', [
                 'label' => 'contract-paypal_account',
+                'disabled' => $this->getReadonly(),
                 'required' => false,
                 'attr' => ['help' => Text::get('tooltip-project-paypal')]
             ])
             ->add('bank', 'text', [
                 'label' => 'contract-bank_account',
+                'disabled' => $this->getReadonly(),
                 'required' => false,
                 'attr' => ['help' => Text::get('tooltip-project-bank')]
             ])

@@ -34,7 +34,7 @@
         border-color: darken($background-white, 5%);
         background: $background-white;
         &[disabled],&.disabled {
-            background: darken($background-white, 2%);
+            background: darken($background-white, 3%);
         }
       }
       .bootstrap-tagsinput {

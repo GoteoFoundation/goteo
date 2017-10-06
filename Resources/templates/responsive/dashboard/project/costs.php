@@ -15,8 +15,8 @@
         echo $this->form_row($form['one_round']);
         echo $this->form_row($form['title-costs']);
 
-        $submit = $this->form_row($form['submit']);
-        echo '<div class="top-button">' . $submit . '</div>';
+        $submit = $form['submit'] ? $this->form_row($form['submit']) : '';
+        echo '<div class="top-button hidden">' . $submit . '</div>';
 
         $min = $opt = 0;
         echo '<div class="cost-list">';
@@ -26,7 +26,8 @@
             echo $this->insert('dashboard/project/partials/cost_item', ['cost' => $cost, 'form' => $form]);
         }
         echo '</div>';
-        echo '<div class="form-group">'.$this->form_row($form['add-cost']).'</div>';
+
+        echo '<div class="form-group">'.$this->form_row($form['add-cost'], [], true).'</div>';
 
         echo $this->insert('dashboard/project/partials/costs_bar', ['minimum' => $min, 'optimum' => $opt]);
 
@@ -79,7 +80,7 @@ $(function(){
             $list.append($data.hide());
             $data.slideDown();
         }).fail(function (data) {
-            $list.append('<p class="text-danger">' + data + '</p>');
+            $list.append('<p class="text-danger">' + data.responseText + '</p>');
         }).always(function() {
             $but.show();
             $list.find('>.loading').remove();
@@ -87,15 +88,16 @@ $(function(){
     });
 
     $('.autoform').on('click', '.remove-cost', function(e){
-        e.preventDefault();
         if(e.isPropagationStopped()) return false;
-        var $form = $(this).closest('form');
+        e.preventDefault();
+        var $but = $(this);
+        var $form = $but.closest('form');
         var $list = $form.find('.cost-list');
-        var serial = $form.serialize() + '&' + encodeURIComponent($(this).attr('name')) + '=';
-        var $item = $(this).closest('.panel');
-        $(this).replaceWith('<div class="loading"></div>');
+        var serial = $form.serialize() + '&' + encodeURIComponent($but.attr('name')) + '=';
+        var $item = $but.closest('.panel');
+        $but.hide().after('<div class="loading"></div>');
         $item.find(':input').attr('disabled', true);
-        console.log('del cost', serial);
+        // console.log('del cost', serial);
         $.ajax({
             type: $form.attr('method'),
             url: $form.attr('action'),
@@ -107,7 +109,11 @@ $(function(){
         }).fail(function (data) {
             console.log('An error occurred.', data);
             alert(data.responseText);
+        }).always(function() {
+            $but.show().next('.loading').remove();
         });
+
+
     });
 
     var setBar = function() {

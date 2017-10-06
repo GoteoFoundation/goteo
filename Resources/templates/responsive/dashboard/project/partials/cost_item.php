@@ -15,7 +15,7 @@
       <?= $this->form_row($form['description_' . $cost->id]) ?>
       <div class="row">
         <div class="col-xs-6 col-xxs-12 required"><?= $this->form_row($form['required_' . $cost->id]) ?></div>
-        <div class="col-xs-6 col-xxs-12 remove"><?= $this->form_row($form['remove_' . $cost->id]) ?></div>
+        <div class="col-xs-6 col-xxs-12 remove"><?= $this->form_row($form['remove_' . $cost->id], [], true) ?></div>
       </div>
   </div>
 </div>

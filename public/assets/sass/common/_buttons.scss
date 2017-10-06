@@ -3,9 +3,6 @@
     background-color: $background-green !important;
     border-color: $background-green !important;
     color: $color-white !important;
-    * {
-        color: $color-white !important;
-    }
     &:hover {
         background-color:darken( $background-green, 10%);
     }
@@ -13,9 +10,6 @@
 .btn-pink{
     background-color: $color-pink;
     color: $color-white !important;
-    * {
-        color: $color-white !important;
-    }
     &:hover {
         background-color:darken($color-pink, 10%);
     }
@@ -25,10 +19,7 @@
 }
 .btn-green{
     background-color: $color-green;
-    color: $color-white;
-    * {
-        color: $color-white;
-    }
+    color: $color-white !important;
     &:hover {
         background-color:darken($color-green, 10%);
     }
@@ -38,10 +29,7 @@
 }
 .btn-cyan{
     background-color: $color-cyan;
-    color: $color-white;
-    * {
-        color: $color-white;
-    }
+    color: $color-white !important;
     &:hover {
         background-color:darken($color-cyan, 10%);
     }
@@ -51,9 +39,9 @@
 }
 .btn-grey {
     background-color: $background-light-grey;
-    color: $color-light-grey;
+    color: $color-light-grey !important;
     * {
-        color: $color-light-grey;
+        color: $color-light-grey !important;
     }
     &:hover {
         background-color:darken( $background-light-grey, 10%);
@@ -61,15 +49,12 @@
 }
 .btn-lilac {
     background-color: $color-lilac;
-    color: $color-white;
-    * {
-        color: $color-white;
-    }
+    color: $color-white !important;
     &:hover {
         background-color:darken( $color-lilac, 10%);
-        color: $color-white;
+        color: $color-white !important;
         * {
-            color: $color-white;
+            color: $color-white !important;
         }
     }
     .icon {
@@ -78,10 +63,7 @@
 }
 .btn-dark {
     background-color: $color-light-grey;
-    color: $color-white;
-    * {
-        color: $color-white;
-    }
+    color: $color-white !important;
     &:hover {
         background-color:darken($color-light-grey, 10%);
     }
@@ -92,9 +74,6 @@
 .btn-white {
     background-color: $color-white;
     color: $color-cyan;
-    * {
-        color: $color-cyan;
-    }
     &:hover {
         background-color:darken($color-white, 10%);
     }
@@ -102,9 +81,6 @@
 .btn-cyan {
     background-color: $color-cyan;
     color: $color-white !important;
-    * {
-        color: $color-white !important;
-    }
     &:hover {
         background-color:darken($color-cyan, 10%);
     }
@@ -121,10 +97,7 @@
     background: -ms-linear-gradient(left, $color-pink 28%,$color-red 100%);
     background: linear-gradient(to right, $color-pink 28%,$color-red 100%);
     filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='$color-pink', endColorstr='$color-red',GradientType=1 );
-    color: $color-white;
-    * {
-        color: $color-white;
-    }
+    color: $color-white !important;
     &:hover {
         background: darken($color-pink, 10%);
         background: -moz-linear-gradient(left, darken($color-pink, 10%) 28%, darken($color-red, 10%) 100%);
@@ -149,10 +122,7 @@
     background: -ms-linear-gradient(left, $color-orange 28%,$color-red 100%);
     background: linear-gradient(to right, $color-orange 28%,$color-red 100%);
     filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='$color-orange', endColorstr='$color-red',GradientType=1 );
-    color: $color-white;
-    * {
-        color: $color-white;
-    }
+    color: $color-white !important;
     &:hover {
     background: darken($color-orange, 10%);
     background: -moz-linear-gradient(left, darken($color-orange, 10%) 28%, darken($color-red, 10%) 100%);
@@ -162,10 +132,7 @@
     background: -ms-linear-gradient(left, darken($color-orange, 10%) 28%,darken($color-red, 10%) 100%);
     background: linear-gradient(to right, darken($color-orange, 10%) 28%,darken($color-red, 10%) 100%);
     filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='darken($color-orange, 10%)', endColorstr='darken($color-red, 10%)',GradientType=1 );
-    color: $color-white;
-    * {
-        color: $color-white;
-    }
+    color: $color-white !important;
     }
     .icon {
         background-color: $color-white;
@@ -175,16 +142,13 @@
 button.pink{
     background-color: $background-pink;
     font-size:1.2em;
-    color: $color-white;
-    * {
-        color: $color-white;
-    }
+    color: $color-white !important;
 }
 button.custom-green{
-	background-color: $color-green;
-	font-size:1.2em;
-	color: $color-white;
-	font-weight: bold;
+    background-color: $color-green;
+    font-size:1.2em;
+    color: $color-white !important;
+    font-weight: bold;
 }
 
 button.pink:hover, button.pink:focus, button.custom-green:hover,
@@ -197,16 +161,10 @@ button.pink:hover, button.pink:focus, button.custom-green:hover,
 .label-cyan {
     background-color: $color-cyan;
     color: $color-white;
-    * {
-        color: $color-white;
-    }
 }
 .label-lilac {
     background-color: $color-lilac;
     color: $color-white;
-    * {
-        color: $color-white;
-    }
 }
 .label-big {
     font-size: $font-size;
@@ -217,13 +175,7 @@ button.pink:hover, button.pink:focus, button.custom-green:hover,
 /* other helpers */
 .text-cyan {
     color: $color-cyan;
-    * {
-        color: $color-cyan;
-    }
 }
 .text-lilac {
     color: $color-lilac;
-    * {
-        color: $color-lilac;
-    }
 }
