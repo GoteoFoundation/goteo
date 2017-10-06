@@ -1,4 +1,4 @@
-<?php $this->layout('dashboard/layout') ?>
+<?php $this->layout('dashboard/' . ($this->section === 'projects' ? 'project/' : '') . 'layout') ?>
 
 <?php $this->section('dashboard-content') ?>
 
@@ -10,7 +10,7 @@
     </h1>
     <p><?= $this->text('guide-dashboard-user-profile') ?></p>
 
-    <?= $this->form_form($this->raw('form')) ?>
+    <?= $this->supply('dashboard-content-form', function() {return $this->form_form($this->raw('form'));}) ?>
 
   </div>
 </div>

@@ -247,3 +247,5 @@ dashboard-translate-rewards: 'Traduir les recompenses del projecte'
 
 dashboard-project-support-translate-ok: 'Entrada de suport %TITLE% traduït correctament al %LANG%'
 dashboard-project-support-translating: 'Estàs traduint aquesta entrada de suport al %LANG%. L''idioma original és el %ORIGINAL%.'
+dashboard-project-saved: 'Projecte actualitzat correctament'
+

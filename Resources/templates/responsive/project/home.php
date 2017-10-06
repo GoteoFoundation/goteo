@@ -22,7 +22,7 @@
                         </h2>
                     </div>
                 </a>
-                
+
                 <div id="collapseOne" class="panel-collapse collapse">
                   <div class="panel-body">
 
@@ -65,7 +65,7 @@
                                 <?php endif; ?>
                             <?php endforeach ?>
                               </tbody>
-                              
+
                         </table>
                     <?php endforeach ?>
                     <!--
@@ -135,7 +135,8 @@
               <div class="panel-body">
 
                 <div class="general-text">
-                    <?= nl2br($this->text_url_link($project->description)) ?>
+                    <?php /* nl2br($this->text_url_link($project->description)) */ ?>
+                    <?= $this->markdown($project->description) ?>
                 </div>
 
                 <!-- carousel slider -->
@@ -178,7 +179,8 @@
                     </span>
                 </h2>
                 <div class="spacer-20 general-text">
-                <?= nl2br($this->text_url_link($project->about)) ?>
+                <?php /* nl2br($this->text_url_link($project->about)) */ ?>
+                <?= $this->markdown($project->about) ?>
                 </div>
 
                 <?php foreach($project->secGallery['about'] as $image): ?>
@@ -191,7 +193,8 @@
                     </span>
                 </h2>
                 <div class="spacer-20 general-text">
-                <?= nl2br($this->text_url_link($project->motivation)) ?>
+                <?php /* nl2br($this->text_url_link($project->motivation)) */ ?>
+                <?= $this->markdown($project->motivation) ?>
                 </div>
 
                 <?php foreach($project->secGallery['motivation'] as $image): ?>
@@ -204,7 +207,8 @@
                     </span>
                 </h2>
                 <div class="spacer-20 general-text">
-                <?= nl2br($this->text_url_link($project->goal)) ?>
+                <?php /* nl2br($this->text_url_link($project->goal)) */ ?>
+                <?= $this->markdown($project->goal) ?>
                 </div>
 
                 <?php foreach($project->secGallery['goal'] as $image): ?>
@@ -222,7 +226,8 @@
                     <?php endif; ?>
                 </h2>
                 <div class="spacer-20 general-text">
-                <?= nl2br($this->text_url_link($project->related)) ?>
+                <?php /* nl2br($this->text_url_link($project->related)) */ ?>
+                <?= $this->markdown($project->related) ?>
                 </div>
 
                 <?php foreach($project->secGallery['related'] as $image): ?>

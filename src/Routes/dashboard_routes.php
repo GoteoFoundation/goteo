@@ -74,6 +74,57 @@ $dash->add('dashboard-projects', new Route(
     array('_controller' => 'Goteo\Controller\Dashboard\ProjectDashboardController::indexAction')
 ));
 
+// Project edit (profile)
+$dash->add('dashboard-project-profile', new Route(
+    '/project/{pid}/profile',
+    array('_controller' => 'Goteo\Controller\Dashboard\SettingsDashboardController::profileAction',
+        )
+));
+
+// Project edit (personal)
+$dash->add('dashboard-project-personal', new Route(
+    '/project/{pid}/personal',
+    array('_controller' => 'Goteo\Controller\Dashboard\ProjectDashboardController::personalAction',
+        )
+));
+
+// Project edit (main)
+$dash->add('dashboard-project-main', new Route(
+    '/project/{pid}/overview',
+    array('_controller' => 'Goteo\Controller\Dashboard\ProjectDashboardController::overviewAction',
+        )
+));
+
+// Project image editing
+$dash->add('dashboard-project-images', new Route(
+    '/project/{pid}/images',
+    array('_controller' => 'Goteo\Controller\Dashboard\ProjectDashboardController::imagesAction',
+        )
+));
+// Route from menu (if exists)
+$dash->add('dashboard-project-images-redirect', new Route(
+    '/projects/images',
+    array('_controller' => 'Goteo\Controller\Dashboard\ProjectDashboardController::imagesAction',
+        'pid' => null
+        )
+));
+
+// Project image editing
+$dash->add('dashboard-project-costs', new Route(
+    '/project/{pid}/costs',
+    array('_controller' => 'Goteo\Controller\Dashboard\ProjectDashboardController::costsAction',
+        )
+));
+
+// Project image editing
+$dash->add('dashboard-project-rewards', new Route(
+    '/project/{pid}/rewards',
+    array('_controller' => 'Goteo\Controller\Dashboard\ProjectDashboardController::rewardsAction',
+        )
+));
+
+
+
 
 // Project translate index
 $dash->add('dashboard-project-translate', new Route(
@@ -101,19 +152,8 @@ $dash->add('dashboard-project-translate-rewards', new Route(
         'lang' => null
         )
 ));
-// Project image editing
-$dash->add('dashboard-project-images', new Route(
-    '/project/{pid}/images',
-    array('_controller' => 'Goteo\Controller\Dashboard\ProjectDashboardController::imagesAction',
-        )
-));
-// Route from menu (if exists)
-$dash->add('dashboard-project-images-redirect', new Route(
-    '/projects/images',
-    array('_controller' => 'Goteo\Controller\Dashboard\ProjectDashboardController::imagesAction',
-        'pid' => null
-        )
-));
+
+
 
 // Project updates editing list
 $dash->add('dashboard-project-updates', new Route(
@@ -149,6 +189,7 @@ $dash->add('dashboard-project-updates-translate', new Route(
         )
 ));
 
+
 // Project supports list
 $dash->add('dashboard-project-supports', new Route(
     '/project/{pid}/supports',
@@ -161,6 +202,8 @@ $dash->add('dashboard-project-supports-edit', new Route(
     array('_controller' => 'Goteo\Controller\Dashboard\ProjectDashboardController::supportsEditAction',
         )
 ));
+
+
 // Project invests list
 $dash->add('dashboard-project-invests', new Route(
     '/project/{pid}/invests',

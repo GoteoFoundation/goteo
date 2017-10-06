@@ -128,30 +128,58 @@
             </div>
         </div> <!-- end row -->
 
-        <div class="impact-title">
-                <?= $this->text('home-advantages-impact-data-title') ?>
-        </div>
+    </div>
+    <!-- Impact data -->
 
-        <div class="row impact-data">
-            <div class="col-md-2 col-md-offset-3 item">
-                4.503.000 €
-                <div class="description">
-                    <?= $this->text('home-advantages-impact-data-money-label') ?>
+    <!-- Donor module -->
+    <div class="fluid-container donor-container" >
+        <div class="container">
+            <div class="row">
+                <div class="col-md-5">
+                    <img src="<?= $this->asset('img/home/team.png') ?>" class="img-responsive">
                 </div>
-            </div>
-            <div class="col-md-2 item">
-                76 %
-                <div class="description">
-                    <?= $this->text('home-advantages-impact-data-success-projects-label') ?>
+                <div class="col-md-5">
+                    <div class="title">
+                    Lorem ipsum dolor
+                    </div>
+                    <div class="description">
+                        Lorem ipsum dolor sit amet consectetur
+                    </div>
                 </div>
-            </div>
-            <div class="col-md-2 item">
-                48 €
-                <div class="description">
-                    <?= $this->text('home-advantages-impact-data-invest-avg-label') ?>
+                <div class="col-md-2 col-button">
+                    <a href="https://fundacion.goteo.org/donaciones/" target="_blank" class="btn btn-white">DONAR</a>
                 </div>
             </div>
         </div>
+    </div>
+    <!-- end Donor mudule -->
 
+    <div class="fluid-container data-container" >
+        <div class="container">
+            <div class="impact-title">
+                    <?= $this->text('home-advantages-impact-data-title') ?>
+            </div>
+
+            <div class="row impact-data">
+                <div class="col-md-2 col-md-offset-3 item">
+                    4.503.000 €
+                    <div class="description">
+                        <?= $this->text('home-advantages-impact-data-money-label') ?>
+                    </div>
+                </div>
+                <div class="col-md-2 item">
+                    76 %
+                    <div class="description">
+                        <?= $this->text('home-advantages-impact-data-success-projects-label') ?>
+                    </div>
+                </div>
+                <div class="col-md-2 item">
+                    48 €
+                    <div class="description">
+                        <?= $this->text('home-advantages-impact-data-invest-avg-label') ?>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 </div>

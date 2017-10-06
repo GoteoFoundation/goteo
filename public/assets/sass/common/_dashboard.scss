@@ -150,6 +150,7 @@
   .loading {
     background:url(../img/ring.gif) no-repeat center;
     min-height: 60px;
+    background-size: contain;
   }
 
   .btn {
@@ -169,9 +170,43 @@
       }
 
   }
+  .form-group {
+    &.extra {
+      padding-left: 20px;
+      border-left: 4px solid $color-cyan;
+      margin-top: 0;
+      padding-top:20px;
+      &+.extra {
+        margin-top:-20px;
+      }
+      &.call {
+        border-left-color: $color-lilac;
+      }
+    }
+    input[type="checkbox"], input[type="radio"] {
+      vertical-align: text-bottom;
+      display: inline-block;
+      width: auto;
+      height: auto;
+      margin-right: 5px;
+    }
+  }
   .pagination > .active > a {
     background-color: $color-cyan;
     border-color: $color-cyan;
+  }
+  .top-button {
+    margin-top:-42px;
+    float:right;
+    &::after {
+      content: '';
+      display: block;
+      clear: both;
+    }
+    .btn-lg {
+      font-size: $font-size;
+      padding: 6px 12px;
+    }
   }
   .panel {
     border: 0;
@@ -186,6 +221,14 @@
     }
 
     .panel-body {
+      label {
+          padding:0 12px;
+          // margin:0;
+      }
+      .input-wrap {
+        padding:0 12px;
+      }
+
       &.lilac {
         background-color: $background-lighter-lilac;
         // Form tweack
@@ -195,6 +238,40 @@
       }
       background-color: $background-light-body;
       border-radius: 5px;
+      &.cost-item,&.reward-item {
+        .row .form-group {
+          display: inline-block;
+        }
+        .loading {
+          min-height: 30px;
+          min-width: 30px;
+          float:right;
+        }
+        .amount,.units {
+          .input-group, input,.input-group-addon {
+            font-size: $font-size * 2;
+            font-weight: bold;
+            height: auto;
+          }
+        }
+        .type {
+          img {
+            width:45px;
+            height: auto;
+          }
+          white-space: nowrap;
+          label {
+            margin-left: -60px;
+            margin-bottom: 15px;
+          }
+        }
+        .remove {
+          padding: 30px 30px 0 0;
+        }
+      }
+      &.reward-item .remove {
+          padding: 0 15px 0 0;
+      }
     }
     .widget-preview {
       display: flex;

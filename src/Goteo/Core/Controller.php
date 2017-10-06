@@ -19,6 +19,7 @@ use Symfony\Component\EventDispatcher\Event;
 use Goteo\Application\App;
 use Goteo\Application\View;
 use Goteo\Core\Traits\LoggerTrait;
+use Goteo\Core\Model;
 
 
 abstract class Controller {
@@ -107,7 +108,6 @@ abstract class Controller {
 
     /**
      * Handy method to get a form builder
-     * TODO: Do this initialization in the Service Container
      * @return Symfony\Component\Form\FormFactory
      */
     public function createFormBuilder($defaults = null, $name = 'autoform', array $options = []) {
@@ -116,6 +116,19 @@ abstract class Controller {
             'attr' => ['class' => 'autoform']
         ];
         return App::getService('app.forms')->createBuilder($defaults, $name, $options + $default_options);
+    }
+
+    /**
+     * Handy method to get a form builder
+     * @return Goteo\Library\Forms\FormProcessorInterface
+     */
+    public function getModelForm($form, Model $model, array $defaults = [], array $options = []) {
+        $finder = App::getService('app.forms.finder');
+        $finder->setModel($model);
+        $finder->setBuilder($this->createFormBuilder($defaults));
+        $processor = $finder->getInstance($form, $options);
+
+        return $processor->createForm();
     }
 }
 

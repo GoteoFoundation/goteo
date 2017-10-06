@@ -14,7 +14,7 @@ namespace Goteo\Util\Form\Type;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormView;
 use Symfony\Component\Form\FormInterface;
-use Symfony\Component\Form\Extension\Core\Type\TextareaType;
+// use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use League\HTMLToMarkdown\HtmlConverter;
 
 /**
@@ -24,6 +24,7 @@ use League\HTMLToMarkdown\HtmlConverter;
  */
 class MarkdownType extends TextareaType
 {
+
     /**
      * {@inheritdoc}
      */
@@ -35,6 +36,7 @@ class MarkdownType extends TextareaType
             $view->vars['value'] = $converter->convert($view->vars['value']);
         }
         $view->vars['type'] = 'markdown';
+        $view->vars['row_class'] = $options['row_class'];
     }
 
     /**

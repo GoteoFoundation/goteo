@@ -10,6 +10,7 @@
 namespace Goteo\Model;
 
 use Goteo\Core\Model;
+use Goteo\Application\App;
 use Goteo\Application\Lang;
 use Goteo\Application\Config;
 use Goteo\Core\Exception;
@@ -160,8 +161,7 @@ class Page extends Model{
      */
     public function parseContent() {
         if($this->type === 'md') {
-            $pd = new \Parsedown();
-            return $pd->text($this->content);
+            return App::getService('app.md.parser')->text($this->content);
         }
         return $this->content;
     }

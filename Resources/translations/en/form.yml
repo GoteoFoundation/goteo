@@ -38,3 +38,4 @@ tooltip-project-personal-entity_name: 'If you represent an entity, this is the i
 form-sent-success: 'Data saved successfully!'
 form-sent-error: 'An error has occurred while saving data: [%s]'
 form-confirm-exit: 'Unsaved data will be lost.\nDo you wish to continue?'
+overview-extra-call: 'Complementary fields for the call %s'

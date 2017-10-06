@@ -33,8 +33,8 @@ use Goteo\Application\Exception\ModelNotFoundException;
 use Goteo\Application\Exception\ModelException;
 use Goteo\Application\Exception\ControllerAccessDeniedException;
 use Goteo\Application\Event\FilterMessageEvent;
-
 use Symfony\Component\Validator\Constraints;
+use Goteo\Library\Forms\FormModelException;
 
 class TranslateProjectDashboardController extends \Goteo\Controller\Dashboard\ProjectDashboardController {
 
@@ -113,58 +113,11 @@ class TranslateProjectDashboardController extends \Goteo\Controller\Dashboard\Pr
         if($project instanceOf Response) return $project;
 
         $defaults = (array) $project->getLang($lang);
+        $languages = Lang::listAll('name', false);
 
-        $builder = $this->createFormBuilder($defaults)
-            ->add('subtitle', 'text', [
-                'label' => 'overview-field-subtitle',
-                'required' => false,
-                'attr' => ['help' => $project->subtitle]
-            ])
-            ->add('description', 'textarea', [
-                'label' => 'overview-field-description',
-                'required' => false,
-                'attr' => ['help' => $project->description, 'rows' => 10]
-            ])
-            ->add('media', 'media', [
-                'label' => 'overview-field-media',
-                'required' => false,
-                'attr' => ['help' => $project->media]
-            ])
-            ->add('motivation', 'textarea', [
-                'label' => 'overview-field-motivation',
-                'required' => false,
-                'attr' => ['help' => $project->motivation, 'rows' => 10]
-            ])
-            ->add('video', 'media', [
-                'label' => 'overview-field-video',
-                'required' => false,
-                'attr' => ['help' => $project->video]
-            ])
-            ->add('about', 'textarea', [
-                'label' => 'overview-field-about',
-                'required' => false,
-                'attr' => ['help' => $project->about, 'rows' => 10]
-            ])
-            ->add('goal', 'textarea', [
-                'label' => 'overview-field-goal',
-                'required' => false,
-                'attr' => ['help' => $project->goal, 'rows' => 10]
-            ])
-            ->add('related', 'textarea', [
-                'label' => 'overview-field-related',
-                'required' => false,
-                'attr' => ['help' => $project->related, 'rows' => 10]
-            ])
-            // ->add('keywords', 'tags', [
-            //     'label' => 'overview-field-keywords',
-            //     'required' => false,
-            //     'attr' => ['help' => $project->keywords]
-            // ])
-            ->add('social_commitment_description', 'textarea', [
-                'label' => 'overview-field-social-description',
-                'required' => false,
-                'attr' => ['help' => $project->social_commitment_description, 'rows' => 10]
-            ])
+        // Create the form
+        $processor = $this->getModelForm('ProjectTranslateOverview', $project, $defaults, ['lang' => $lang]);
+        $form = $processor->getBuilder()
             ->add('submit', 'submit')
             ->add('remove', 'submit', [
                 'label' => Text::get('translator-delete', $languages[$lang]),
@@ -174,43 +127,32 @@ class TranslateProjectDashboardController extends \Goteo\Controller\Dashboard\Pr
                     'class' => 'pull-right-form btn btn-default btn-lg',
                     'data-confirm' => Text::get('translator-delete-sure', $languages[$lang])
                     ]
-            ]);
+            ])
+            ->getForm();
 
-        $languages = Lang::listAll('name', false);
-        $form = $builder->getForm();
         $form->handleRequest($request);
         if ($form->isSubmitted()) {
-            if($form->isValid()) {
-                $errors = [];
-                $data = $form->getData();
-                // print_r($data);die($form->getClickedButton()->getName());
-                $project->lang = $lang;
-                // Check if we want to remove a translation
-                if($form->get('remove')->isClicked()) {
-                    if($project->removeLang($lang)) {
-                        Message::info(Text::get('translator-deleted-ok', $languages[$lang]));
-                    } else {
-                        Message::info(Text::get('translator-deleted-ko', $languages[$lang]));
-                    }
-                    return $this->redirect('/dashboard/project/' . $project->id . '/translate');
-                }
-
-                $data = $form->getData();
-                $data['keywords'] = $project->keywords; // Do not translate keywords for the moment
-                if($project->setLang($lang, $data, $errors)) {
-                    Message::info(Text::get('dashboard-translate-project-ok', [
-                        '%ZONE%' => '<strong>' . Text::get('step-main') . '</strong>',
-                        '%LANG%' => '<strong><em>' . $languages[$lang] . '</em></strong>'
-                    ]));
-                    return $this->redirect('/dashboard/project/' . $project->id . '/translate');
+            // Check if we want to remove a translation
+            if($form->isValid() && $form->get('remove')->isClicked()) {
+                if($project->removeLang($lang)) {
+                    Message::info(Text::get('translator-deleted-ok', $languages[$lang]));
                 } else {
-                    Message::error(Text::get('form-sent-error', implode(',',array_map('implode', $errors))));
+                    Message::info(Text::get('translator-deleted-ko', $languages[$lang]));
                 }
-            } else {
-                Message::error(Text::get('form-has-errors'));
+                return $this->redirect('/dashboard/project/' . $project->id . '/translate');
+            }
+
+            try {
+                $processor->save($form);
+                Message::info(Text::get('dashboard-translate-project-ok', [
+                    '%ZONE%' => '<strong>' . Text::get('step-main') . '</strong>',
+                    '%LANG%' => '<strong><em>' . $languages[$lang] . '</em></strong>'
+                ]));
+                return $this->redirect('/dashboard/project/' . $project->id . '/translate');
+            } catch(FormModelException $e) {
+                Message::error($e->getMessage());
             }
         }
-
 
         return $this->viewResponse('dashboard/project/translate/overview', [
             'form' => $form->createView(),
@@ -284,10 +226,11 @@ class TranslateProjectDashboardController extends \Goteo\Controller\Dashboard\Pr
                     }
                 }
                 if($errors) {
+                    // print_r($errors);die;
                     if($form->get('remove')->isClicked()) {
                         Message::info(Text::get('translator-deleted-ko', $languages[$lang]));
                     } else {
-                        Message::error(Text::get('form-sent-error', implode(',',array_map('implode',$errors))));
+                        Message::error(Text::get('form-sent-error', implode(',',$errors)));
                     }
                 } else {
                     if($form->get('remove')->isClicked()) {
