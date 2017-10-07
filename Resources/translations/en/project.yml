@@ -131,3 +131,10 @@ project-remove-cost-confirm: 'Are you sure to delete this cost?'
 project-add-cost: 'Add cost'
 project-add-reward: 'Add reward'
 project-remove-reward-confirm: 'Are you sure to delete this reward?'
+
+project-send-review: 'Send to review'
+project-validation-errors: 'The project is not yet complete!'
+project-validation-error-overview: 'There are empty fields in the project description'
+project-validation-error-costs: 'You need to add or complete costs'
+project-validation-error-rewards: 'You need to add or complete rewards'
+

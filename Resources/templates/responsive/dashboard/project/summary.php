@@ -1,7 +1,9 @@
 <?php $this->layout('dashboard/project/layout') ?>
 
 <?php $this->section('dashboard-content') ?>
-
+<?php
+    $validation = $this->project->getValidation();
+ ?>
 <div class="dashboard-content">
   <div class="inner-container">
     <h1><?= $this->text('dashboard-menu-activity-summary') ?></h1>
@@ -25,7 +27,9 @@
                 <div class="spacer alert alert-danger"><?= $this->status_text ?></div>
             <?php endif ?>
 
-            <?= $this->insert('project/widgets/percent_status', ['percent' => $this->project->progress]) ?>
+            <?php if(!$this->project->isApproved()): ?>
+                <?= $this->insert('project/widgets/validation', ['percent' => 0, 'validation' => $validation]) ?>
+            <?php endif ?>
 
         </div>
     </div>
@@ -82,7 +86,7 @@
 
 <?php $this->section('footer') ?>
 
-<?php if($this->project->inCampaign()): ?>
+<?php if($this->project->isApproved()): ?>
     <?= $this->insert('project/partials/chart_amount.php', ['project' => $this->project]) ?>
 <?php endif ?>
 
@@ -91,17 +95,16 @@
 
 $(function(){
     var $c100 = $('.c100');
-    var cls = $c100.attr('class');
-    var percent = parseInt(cls.substr(cls.indexOf('p') + 1), 10);
     var per = 0;
-    $c100.removeClass('p' + percent);
+    var percent = <?= $validation->global ?>;
+    $c100.removeClass('p0');
     (function animateCircle() {
         $c100.removeClass('p' + per);
         per++;
         $c100.addClass('p' + per);
         $c100.contents('span').text(per + '%');
         if(per < percent) {
-            setTimeout(animateCircle, 1 * per);
+            setTimeout(animateCircle, Math.ceil(per/5));
         }
     })();
 })

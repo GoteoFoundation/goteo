@@ -120,6 +120,7 @@ $circle-bg-color: #f5f5f5;
 	// circle to show the status
 	.bar {
 		@extend .pie;
+        // @include transition(transform 1s ease-in);
 	}
 
 

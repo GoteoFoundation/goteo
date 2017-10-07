@@ -20,9 +20,12 @@ use Goteo\Library\Text;
 
 abstract class AbstractFormProcessor implements FormProcessorInterface {
     private $builder;
+    private $form;
     private $model;
     private $readonly = false;
     private $options;
+    private $full_validation = false;
+    private $show_errors = false;
 
     public function __construct(FormBuilderInterface $builder, Model $model, array $options = []) {
         $this->setBuilder($builder);
@@ -46,6 +49,22 @@ abstract class AbstractFormProcessor implements FormProcessorInterface {
         return $this->builder;
     }
 
+    public function getDefaults($sanitize = true) {
+        $options = $this->builder->getOptions();
+        // var_dump($options);die;
+        if($sanitize) return array_intersect_key($options['data'], $this->builder->all());
+        return $options['data'];
+    }
+
+    public function getForm() {
+        if($this->form) return $this->form;
+        $this->form = $this->builder->getForm();
+        if($this->showErrors()) {
+            $this->form->submit($this->getDefaults(true), false);
+        }
+        return $this->form;
+    }
+
     public function setModel(Model $model) {
         $this->model = $model;
         return $this;
@@ -62,6 +81,20 @@ abstract class AbstractFormProcessor implements FormProcessorInterface {
 
     public function getReadonly() {
         return $this->readonly;
+    }
+
+    public function setFullValidation($full_validation, $show_errors = false) {
+        $this->full_validation = $full_validation;
+        $this->show_errors = $show_errors;
+        return $this;
+    }
+
+    public function getFullValidation() {
+        return $this->full_validation;
+    }
+
+    public function showErrors() {
+        return $this->show_errors;
     }
 
     public function setOptions(array $options) {

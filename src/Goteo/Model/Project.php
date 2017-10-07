@@ -2172,6 +2172,37 @@ namespace Goteo\Model {
                 array(':progress'=>$this->progress, ':id'=>$this->id));
         }
 
+        /**
+         * Gets the % of the filled project. 100% means it can be published
+         * @return stdClass Object with parts and globals percents
+         */
+        public function getValidation() {
+            $res = new \stdClass;
+            $errors = [];
+            $overview = ['name', 'subtitle', 'lang', 'currency', 'media', 'description', 'project_location', 'related', 'spread', 'extra', 'about', 'motivation', 'goal', 'scope', 'social_commitment', 'social_commitment_description'];
+
+            $total = count($overview);
+            $count = 0;
+            foreach($overview as $field) {
+                if(empty($this->{$field})) {
+                    $count++;
+                }
+            }
+            if($count !== $total) {
+                $errors[] = 'overview';
+            }
+            $res->overview = round(100 * $count/$total);
+
+            $count = 0;
+            foreach($res as $key => $percent) {
+                $count += $percent;
+            }
+            $res->global = round($count/count($res));
+            $res->errors = $errors;
+            $res->project = $this->id;
+            var_dump($res);
+            return $res;
+        }
 
         /*
          * Listo para revisión

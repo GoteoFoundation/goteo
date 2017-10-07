@@ -229,7 +229,7 @@ class ProjectDashboardController extends \Goteo\Core\Controller {
         $defaults = (array)$project;
 
         // Create the form
-        $processor = $this->getModelForm('ProjectOverview', $project, $defaults);
+        $processor = $this->getModelForm('ProjectOverview', $project, $defaults, [], $request);
         // For everyone
         // $processor->setReadonly(!$project->isEditable())->createForm();
         // Just for the owner
@@ -240,7 +240,7 @@ class ProjectDashboardController extends \Goteo\Core\Controller {
                 'label' => $submit_label ? $submit_label : 'regular-submit'
             ]);
         }
-        $form = $processor->getBuilder()->getForm();
+        $form = $processor->getForm();
 
         $form->handleRequest($request);
         if ($form->isSubmitted()) {
