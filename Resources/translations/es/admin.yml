@@ -75,3 +75,4 @@ admin-text-type-plain: 'Texto simple'
 admin-user: Usuario
 admin-users: Usuarios
 admin-yes: Si
+admin-impersonate-user: Suplantar a %s
