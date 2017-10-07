@@ -12,25 +12,22 @@
 
 $(function(){
 
-    <?php if($this->query_has('validate')): ?>
+<?php if($this->query_has('validate')): ?>
     // $('input[value=""],input:not([value])').first().focus();
-    $('input,select,textarea[name]').each(function(){
-    // $('textarea[name]').each(function(){
-        // console.log($(this), $(this).attr('id'), $(this).val());
-        if($(this).val() == '') {
-            if($(this).closest('div').hasClass('markdown')) {
-                // console.log(form.markdowns[$(this).attr('id')]);
-                form.markdowns[$(this).attr('id')].codemirror.focus();
-            } else {
-                $(this).focus();
-            }
-            $('html, body').animate({
-                scrollTop: $(this).closest('.form-group').offset().top
-            }, 800);
-            return false;
-        }
-    });
-    <?php endif ?>
+    var $group = $('.form-group.has-error:first');
+    $input = $group.find('input,select,textarea[name]');
+    // console.log($group, $input.attr('id'), $input.val());
+    if($group.find('div.markdown').length) {
+        // console.log('MD',form.markdowns[$input.attr('id')]);
+        form.markdowns[$input.attr('id')].codemirror.focus();
+    } else {
+        $input.focus();
+    }
+    $('html, body').animate({
+        scrollTop: $group.offset().top
+    }, 800);
+<?php endif ?>
+
 });
 
 // @license-end

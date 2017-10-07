@@ -1,5 +1,5 @@
 <?php
-$percent = intval($this->percent);
+$init_percent = intval($this->init_percent);
 $validation = $this->validation;
 $errors = [];
 if($validation->errors) {
@@ -14,7 +14,7 @@ else {
 ?>
 <div class="validation-widget">
     <div class="percent">
-        <?= $this->insert('project/widgets/percent_status', ['percent' => $percent]) ?>
+        <?= $this->insert('project/widgets/percent_status', ['percent' => $init_percent]) ?>
     </div>
     <div class="desc">
         <p><?= $desc ?></p>
@@ -23,6 +23,6 @@ else {
             <li><?= $err ?></li>
         <?php endforeach ?>
         </ul>
-        <a class="btn btn-lg btn-fashion<?= $percent == 100 ? '' : ' disabled' ?>"><i class="fa fa-paper-plane"></i> <?= $this->text('project-send-review') ?></a>
+        <a class="btn btn-lg btn-fashion<?= $validation->global < 100 ? ' disabled' : '' ?>"><i class="fa fa-paper-plane"></i> <?= $this->text('project-send-review') ?></a>
     </div>
 </div>

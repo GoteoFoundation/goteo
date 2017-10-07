@@ -2179,19 +2179,26 @@ namespace Goteo\Model {
         public function getValidation() {
             $res = new \stdClass;
             $errors = [];
-            $overview = ['name', 'subtitle', 'lang', 'currency', 'media', 'description', 'project_location', 'related', 'spread', 'extra', 'about', 'motivation', 'goal', 'scope', 'social_commitment', 'social_commitment_description'];
+            $fields = ['overview' => []];
+            $overview = ['name', 'subtitle', 'lang', 'currency', 'media', 'description', 'project_location', 'related', 'about', 'motivation', 'goal', 'scope', 'social_commitment', 'social_commitment_description'];
 
             $total = count($overview);
             $count = 0;
             foreach($overview as $field) {
-                if(empty($this->{$field})) {
-                    $count++;
+                if($field === 'description') {
+                    if(preg_match('/^\s*\S+(?:\s+\S+){79,}\s*$/', $this->{$field})) {
+                        continue;
+                    }
+                } elseif(!empty($this->{$field})) {
+                    continue;
                 }
+                $fields['overview'][] = $field;
+                $count++;
             }
-            if($count !== $total) {
+            if($count > 0) {
                 $errors[] = 'overview';
             }
-            $res->overview = round(100 * $count/$total);
+            $res->overview = round(100 * ($total - $count)/$total);
 
             $count = 0;
             foreach($res as $key => $percent) {
@@ -2199,8 +2206,9 @@ namespace Goteo\Model {
             }
             $res->global = round($count/count($res));
             $res->errors = $errors;
+            $res->fields = $fields;
             $res->project = $this->id;
-            var_dump($res);
+            // var_dump($res);
             return $res;
         }
 

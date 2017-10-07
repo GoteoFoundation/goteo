@@ -172,6 +172,7 @@ project-add-reward: 'Añadir recompensa'
 project-remove-reward-confirm: '¿Seguro que quieres eliminar esta recompensa?'
 
 project-send-review: 'Enviar a revisión'
+project-validation-ok: 'El proyecto está completo. Puedes mandarlo a revisión para empezar tu campaña.'
 project-validation-errors: 'El proyecto todavía no está completado!'
 project-validation-error-overview: 'Faltan campos por rellenar en la descripción del proyecto'
 project-validation-error-costs: 'Falta añadir o completar los costes'

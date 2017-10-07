@@ -28,7 +28,7 @@
             <?php endif ?>
 
             <?php if(!$this->project->isApproved()): ?>
-                <?= $this->insert('project/widgets/validation', ['percent' => 0, 'validation' => $validation]) ?>
+                <?= $this->insert('project/widgets/validation', ['init_percent' => 0, 'validation' => $validation]) ?>
             <?php endif ?>
 
         </div>
