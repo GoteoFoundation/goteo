@@ -27,41 +27,48 @@ class ProjectTranslateOverviewForm extends AbstractFormProcessor implements Form
         $this->getBuilder()
             ->add('subtitle', 'text', [
                 'label' => 'overview-field-subtitle',
+                'disabled' => $this->getReadonly(),
                 'required' => false,
                 'attr' => ['help' => $project->subtitle]
             ])
             ->add('description', 'markdown', [
                 'label' => 'overview-field-description',
+                'disabled' => $this->getReadonly(),
                 'required' => false,
                 'attr' => ['help' => $project->description, 'rows' => 8]
             ])
             ->add('media', 'media', [
                 'label' => 'overview-field-media',
+                'disabled' => $this->getReadonly(),
                 'required' => false,
                 'attr' => ['help' => $project->media]
             ])
             ->add('motivation', 'markdown', [
                 'label' => 'overview-field-motivation',
+                'disabled' => $this->getReadonly(),
                 'required' => false,
                 'attr' => ['help' => $project->motivation, 'rows' => 8]
             ])
-            ->add('video', 'media', [
-                'label' => 'overview-field-video',
-                'required' => false,
-                'attr' => ['help' => $project->video]
-            ])
+            // ->add('video', 'media', [
+            //     'label' => 'overview-field-video',
+            //     'required' => false,
+            //     'attr' => ['help' => $project->video]
+            // ])
             ->add('about', 'markdown', [
                 'label' => 'overview-field-about',
+                'disabled' => $this->getReadonly(),
                 'required' => false,
                 'attr' => ['help' => $project->about, 'rows' => 8]
             ])
             ->add('goal', 'markdown', [
                 'label' => 'overview-field-goal',
+                'disabled' => $this->getReadonly(),
                 'required' => false,
                 'attr' => ['help' => $project->goal, 'rows' => 8]
             ])
             ->add('related', 'markdown', [
                 'label' => 'overview-field-related',
+                'disabled' => $this->getReadonly(),
                 'required' => false,
                 'attr' => ['help' => $project->related, 'rows' => 8]
             ])
@@ -72,6 +79,7 @@ class ProjectTranslateOverviewForm extends AbstractFormProcessor implements Form
             // ])
             ->add('social_commitment_description', 'textarea', [
                 'label' => 'overview-field-social-description',
+                'disabled' => $this->getReadonly(),
                 'required' => false,
                 'attr' => ['help' => $project->social_commitment_description, 'rows' => 8]
             ])

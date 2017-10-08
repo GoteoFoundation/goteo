@@ -261,7 +261,7 @@ class SessionListener extends AbstractListener {
         //Are we shadowing some user? let's add a nice bar to return to the original user
         if ($shadowed_by = Session::get('shadowed_by')) {
             // die(print_r(Session::get('shadowed_by')));
-            $body = '<div class="user-shadowing-bar">Back to <a href="/user/logout">' . $shadowed_by[1] . '</a></div>';
+            $body = '<div class="user-shadowing-bar"><a href="/user/logout"><i class="fa fa-user-md"></i> Back to ' . $shadowed_by[1] . '</a></div>';
             $content = $response->getContent();
             $search = '<div id="header"';
 

@@ -1,7 +1,9 @@
 <?php $this->layout('dashboard/project/layout') ?>
 
 <?php $this->section('dashboard-content') ?>
-
+<?php
+    $validation = $this->project->getValidation();
+ ?>
 <div class="dashboard-content">
   <div class="inner-container">
     <h1><?= $this->text('dashboard-menu-activity-summary') ?></h1>
@@ -22,7 +24,11 @@
             </ol>
 
             <?php if ($this->status_text): ?>
-                <div class="alert alert-danger"><?= $this->status_text ?></div>
+                <div class="spacer alert alert-danger"><?= $this->status_text ?></div>
+            <?php endif ?>
+
+            <?php if(!$this->project->isApproved()): ?>
+                <?= $this->insert('project/widgets/validation', ['init_percent' => 0, 'validation' => $validation]) ?>
             <?php endif ?>
 
         </div>
@@ -80,13 +86,27 @@
 
 <?php $this->section('footer') ?>
 
-<?= $this->insert('project/partials/chart_amount.php', ['project' => $this->project]) ?>
+<?php if($this->project->isApproved()): ?>
+    <?= $this->insert('project/partials/chart_amount.php', ['project' => $this->project]) ?>
+<?php endif ?>
 
 <script type="text/javascript">
 // @license magnet:?xt=urn:btih:0b31508aeb0634b347b8270c7bee4d411b5d4109&dn=agpl-3.0.txt
 
 $(function(){
-
+    var $c100 = $('.c100');
+    var per = 0;
+    var percent = <?= $validation->global ?>;
+    $c100.removeClass('p0');
+    (function animateCircle() {
+        $c100.removeClass('p' + per);
+        per++;
+        $c100.addClass('p' + per);
+        $c100.contents('span').text(per + '%');
+        if(per < percent) {
+            setTimeout(animateCircle, Math.ceil(per/5));
+        }
+    })();
 })
 
 // @license-end

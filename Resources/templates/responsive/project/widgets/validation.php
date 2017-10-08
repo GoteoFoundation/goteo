@@ -1,0 +1,28 @@
+<?php
+$init_percent = intval($this->init_percent);
+$validation = $this->validation;
+$errors = [];
+if($validation->global < 100) {
+    $desc = $this->text('project-validation-errors');
+    foreach($validation->errors as $type => $err) {
+        $errors[] = '<a href="/dashboard/project/' . $validation->project . '/' .$type .'?validate"><i class="fa fa-hand-o-right"></i> ' .$this->text('project-validation-error-' . $err) .'</a>';
+    }
+}
+else {
+    $desc = $this->text('project-validation-ok');
+}
+?>
+<div class="validation-widget">
+    <div class="percent">
+        <?= $this->insert('project/widgets/percent_status', ['percent' => $init_percent]) ?>
+    </div>
+    <div class="desc">
+        <p><?= $desc ?></p>
+        <ul class="list-unstyled">
+        <?php foreach($errors as $err): ?>
+            <li><?= $err ?></li>
+        <?php endforeach ?>
+        </ul>
+        <a href="/dashboard/project/<?= $validation->project ?>/apply" class="btn btn-lg btn-fashion<?= $validation->global < 100 ? ' disabled' : '' ?>"><i class="fa fa-paper-plane"></i> <?= $this->text('project-send-review') ?></a>
+    </div>
+</div>

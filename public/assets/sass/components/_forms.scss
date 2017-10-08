@@ -24,12 +24,18 @@
       border-radius: 5px;
       padding: 12px;
       .form-control,
+      .form-control-static,
       .input-group > .input-group-addon,
       .bootstrap-tagsinput {
+        padding: 6px 12px;
         color: $secondary-color;
         @include box-shadow(none);
-        border-color: $background-white;
+        // border-color: $background-white;
+        border-color: darken($background-white, 5%);
         background: $background-white;
+        &[disabled],&.disabled {
+            background: darken($background-white, 3%);
+        }
       }
       .bootstrap-tagsinput {
         width: 100%;
@@ -50,11 +56,30 @@
         color: $secondary-color;
       }
     }
+    &.has-error {
+        .help-block {
+            color: darken($color-red, 10%);
+        }
+        .form-control, .CodeMirror {
+            border: 1px solid darken($color-red, 10%);
+        }
+        .form-control:focus, .CodeMirror-focused {
+          border-color: darken($color-red, 10%);
+          outline: 0;
+          @include box-shadow(inset 0 1px 1px rgba(0,0,0,.075), 0 0 8px rgba(200, 0, 0, .6));
+        }
+    }
   }
   .help-text {
     display: block;
-    margin: 10px 5px;
-    color: $color-grey;
+    margin: 10px 5px 0 5px;
+    color: lighten($color-grey, 10%);
+    font-size: $font-size - 2;
+    &::after {
+        display: block;
+        content: '';
+        clear: both;
+    }
   }
   .material-switch {
     > label {
@@ -124,7 +149,7 @@
   // With this class, help text are hidden are shown on focus
   &.hide-help {
     .help-text {
-      height: 1.2em;
+      height: $font-size + 4;
       overflow: hidden;
       white-space: pre-line;
       &::before {
@@ -145,7 +170,7 @@
     display:inline-block;
 
     > input[type="checkbox"] {
-        display: none;
+        display: none !important;
     }
 
     > label {
@@ -163,6 +188,8 @@
         height: 30px;
         margin-top: -15px;
         position:absolute;
+        left:0;
+        top:0;
         opacity: 0.3;
         @include transition(all 0.4s ease-in-out);
         width: 52px;
@@ -255,12 +282,12 @@
       padding: 0;
       margin: 0;
       margin-right: 5px;
-
+        background: no-repeat darken($background-white, 5%) url(/assets/img/ring.gif) center;
       .image {
         width: 150px;
         height: 150px;
         cursor: move;
-        background-color: $color-cyan;
+        // background-color: $color-cyan;
         background-position: 0 0;
         background-size: 100% 100%;
         background-repeat: no-repeat;

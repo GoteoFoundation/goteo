@@ -143,7 +143,8 @@ class UsersSubController extends AbstractSubController {
             });
             Session::destroy();
             Session::setUser($user);
-            Session::store('shadowed_by', [$this->user->id, $this->user->name, self::getUrl('impersonate', $id)]);
+            // Session::store('shadowed_by', [$this->user->id, $this->user->name, self::getUrl('impersonate', $id)]);
+            Session::store('shadowed_by', [$this->user->id, $this->user->name, $this->getReferer() ? $this->getReferer() : self::getUrl('impersonate', $id)]);
             // Evento Feed
             $log = new Feed();
             $log->setTarget(Session::getUserId(), 'user');
@@ -153,7 +154,7 @@ class UsersSubController extends AbstractSubController {
                 Feed::item('user', Session::getUser()->name, Session::getUserId())
             )));
             $log->doAdmin('user');
-            return $this->redirect('/dashboard');
+            return $this->redirect($this->getReferer() ? $this->getReferer() : '/dashboard');
         }
 
         // vista de acceso a suplantación de usuario

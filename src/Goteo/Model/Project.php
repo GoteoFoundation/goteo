@@ -255,11 +255,16 @@ namespace Goteo\Model {
          * @param  Goteo\Model\User $user  the user to check
          * @return boolean          true if success, false otherwise
          */
-        public function userCanEdit(User $user = null) {
+        public function userCanEdit(User $user = null, $check_status = false) {
 
             if(empty($user)) return false;
             // owns the project
-            if($this->owner === $user->id) return true;
+            if($this->owner === $user->id) {
+                if($check_status) {
+                    return $this->isEditable();
+                }
+                return true;
+            }
             // is superadmin in the project node
             if($user->hasRoleInNode($this->node, ['superadmin', 'root'])) return true;
             // is a consultant
@@ -317,7 +322,7 @@ namespace Goteo\Model {
 
         /**
          * Check if the project is administrable by the user id
-         * Meaning touchgin sensitive data such as bank account, etc
+         * Meaning touching sensitive data such as bank account, etc
          * @param  Goteo\Model\User $user  the user to check
          * @return boolean          true if success, false otherwise
          */
@@ -844,6 +849,13 @@ namespace Goteo\Model {
          */
         public function inCampaign() {
             return $this->status == self::STATUS_IN_CAMPAIGN;
+        }
+
+        /**
+         * Handy method to know if project can be edited (not in campaing or finished)
+         */
+        public function isEditable() {
+            return $this->status < self::STATUS_IN_CAMPAIGN;
         }
 
         /**
@@ -2160,6 +2172,161 @@ namespace Goteo\Model {
                 array(':progress'=>$this->progress, ':id'=>$this->id));
         }
 
+        /**
+         * Gets the % of the filled project. 100% means it can be published
+         * @return stdClass Object with parts and globals percents
+         */
+        public function getValidation() {
+            $res = new \stdClass;
+            $errors = [];
+            $fields = ['profile' => [], 'personal' => [], 'overview' => [], 'images' => [], 'costs' => [], 'rewards' => []];
+
+            // 1. profile
+            $profile = [ 'name', 'location', 'gender', 'about' ];
+            $total = count($profile);
+            $count = 0;
+            $owner = $this->getOwner();
+            foreach($profile as $field) {
+                if(!empty($owner->{$field})) {
+                    continue;
+                }
+                $fields['profile'][] = $field;
+                $count++;
+            }
+            if($count > 0) {
+                $errors['profile'] = 'profile';
+            }
+            $res->profile = round(100 * ($total - $count)/$total);
+            if(empty($owner->webs) && empty($owner->facebook) && empty($owner->twitter)) {
+                $errors['profile'] = 'profile_social';
+                $res->profile = ($total - 1) * $res->profile / $total;
+            }
+
+            // 2. personal
+            $personal = [ 'phone' ];
+            $count = 0;
+            $total = count($personal);
+            foreach($personal as $field) {
+                if(!empty($this->{$field})) {
+                    continue;
+                }
+                $fields['personal'][] = $field;
+                $count++;
+            }
+            if($count > 0) {
+                $errors['personal'] = 'personal';
+            }
+            $res->personal = round(100 * ($total - $count)/$total);
+
+
+            // 3. overview
+            $overview = ['name', 'subtitle', 'lang', 'currency', 'media', 'description', 'project_location', 'related', 'about', 'motivation', 'goal', 'scope', 'social_commitment', 'social_commitment_description'];
+
+            $total = count($overview);
+            $count = 0;
+            foreach($overview as $field) {
+                if($field === 'description') {
+                    if(preg_match('/^\s*\S+(?:\s+\S+){79,}\s*$/', $this->{$field})) {
+                        continue;
+                    }
+                } elseif(!empty($this->{$field})) {
+                    continue;
+                }
+                $fields['overview'][] = $field;
+                $count++;
+            }
+            if($count > 0) {
+                $errors['overview'] = 'overview';
+            }
+            $res->overview = round(100 * ($total - $count)/$total);
+
+            // 4. images
+            $res->images = 0;
+            if($this->image instanceOf Image) {
+                if($this->image->id) {
+                    $res->images = 100;
+                }
+            }
+            if($res->images < 100) {
+                $errors['images'] = 'images';
+            }
+
+            // 5. costs
+            $costs = ['cost', 'description', 'amount', 'type'];
+            $count1 = 0;
+            $requireds = 0;
+            foreach($this->costs as $cost) {
+                $count2 = 0;
+                foreach($costs as $field) {
+                    if($field === 'amount') {
+                        if(is_numeric($cost->{$field})) {
+                            continue;
+                        }
+                    } elseif(!empty($cost->{$field})) {
+                        continue;
+                    }
+                    $fields['costs'][] = $field;
+                    $count2++;
+                }
+                if($count2) {
+                    $count1++;
+                }
+                $requireds += $cost->required;
+            }
+            if($count1 > 0) {
+                $errors['costs'] = 'costs';
+            }
+            $total = count($this->costs);
+            $res->costs = round(100 * ($total - $count1)/$total);
+            if($requireds == $total || $requireds == 0) {
+                $errors['costs'] = 'costs_required';
+                $res->costs /= 2;
+            }
+            // 6. rewards
+            // 5. costs
+            $rewards = ['reward', 'description', 'amount', 'type'];
+            $count1 = 0;
+            $requireds = 0;
+            foreach($this->rewards as $reward) {
+                $count2 = 0;
+                foreach($rewards as $field) {
+                    if($field === 'amount') {
+                        if(is_numeric($reward->{$field})) {
+                            continue;
+                        }
+                    } elseif(!empty($reward->{$field})) {
+                        continue;
+                    }
+                    $fields['rewards'][] = $field;
+                    $count2++;
+                }
+                if($count2) {
+                    $count1++;
+                }
+                $requireds += $reward->required;
+            }
+            if($count1 > 0) {
+                $errors['rewards'] = 'rewards';
+            }
+            $total = count($this->individual_rewards);
+            $res->rewards = round(100 * ($total - $count1)/$total);
+            if($total < 3) {
+                $errors['rewards'] = 'rewards_required';
+                $res->rewards /= 2;
+            }
+            // Summary
+            $sum = $total = 0;
+            foreach($res as $key => $percent) {
+                $sum += (int)($percent);
+                $total++;
+            }
+            $res->global = round($sum/$total);
+            $res->errors = $errors;
+            $res->fields = $fields;
+            $res->project = $this->id;
+            // var_dump($res);
+            return $res;
+        }
 
         /*
          * Listo para revisión
@@ -2170,7 +2337,7 @@ namespace Goteo\Model {
                 $this->rebase();
 
                 $sql = "UPDATE project SET status = :status, updated = :updated WHERE id = :id";
-                self::query($sql, array(':status'=>2, ':updated'=>date('Y-m-d'), ':id'=>$this->id));
+                self::query($sql, array(':status'=> self::STATUS_REVIEWING, ':updated' => date('Y-m-d'), ':id' => $this->id));
 
                 // si está en una convocatoria hay que actualizar el numero de proyectos aplicados
                 if (isset($this->called)) {
@@ -2192,7 +2359,7 @@ namespace Goteo\Model {
         public function enable(&$errors = array()) {
             try {
                 $sql = "UPDATE project SET status = :status WHERE id = :id";
-                self::query($sql, array(':status'=>1, ':id'=>$this->id));
+                self::query($sql, array(':status' => self::STATUS_EDITING, ':id'=>$this->id));
                 return true;
             } catch (\PDOException $e) {
                 $errors[] = 'Fallo al habilitar para edición. ' . $e->getMessage();

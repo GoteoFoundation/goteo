@@ -3,6 +3,8 @@
 /* dashboard containers */
 .dashboard {
   background: $background-white;
+  color: $secondary-color;
+  margin-bottom: 20px;
 
   // TODO: check for removal
   .general-dashboard {
@@ -23,8 +25,8 @@
       }
     }
 
+
   p {
-    color: $secondary-color;
     &.text-danger {
         color: $color-red;
     }
@@ -170,6 +172,12 @@
       }
 
   }
+  .progress-bar {
+    color: $color-white;
+    * {
+      color: $color-white;
+    }
+  }
   .form-group {
     &.extra {
       padding-left: 20px;
@@ -189,6 +197,9 @@
       width: auto;
       height: auto;
       margin-right: 5px;
+    }
+    label {
+        color: $primary-color;
     }
   }
   .pagination > .active > a {
@@ -269,8 +280,47 @@
           padding: 30px 30px 0 0;
         }
       }
-      &.reward-item .remove {
-          padding: 0 15px 0 0;
+      &.reward-item {
+        .remove {
+            padding: 0 15px 0 0;
+        }
+        .row {
+            margin:0;
+            .amount {
+                float: left;
+                width: 45%;
+            }
+            .units {
+                float: left;
+                width: 35%;
+            }
+            .unlimited {
+                float: left;
+                width: 20%;
+                text-align: center;
+                .material-switch {
+                    margin-top:17px;
+                }
+
+            }
+            @media(max-width: $breakpoint-xxs) {
+                .amount {
+                    float: none;
+                    width: 100%;
+                }
+                .units {
+                    width: 60%;
+                }
+                .unlimited {
+                    width: 40%;
+                }
+            }
+            &::after {
+                display: block;
+                content: '';
+                clear: both;
+            }
+        }
       }
     }
     .widget-preview {

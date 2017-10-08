@@ -39,7 +39,7 @@
                         'admin' => true
                         ]) ?>
                 <?php else: ?>
-                    <p class="alert alert-danger"><?= $this->text('dashboard-project-support-no-responses') ?></p>
+                    <p class="spacer-10"><strong><?= $this->text('dashboard-project-support-no-responses') ?></strong></p>
                 <?php endif ?>
             </div>
           </div>
