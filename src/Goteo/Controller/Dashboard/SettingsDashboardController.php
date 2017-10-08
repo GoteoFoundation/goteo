@@ -97,16 +97,15 @@ class SettingsDashboardController extends \Goteo\Core\Controller {
         $defaults['webs'] = implode("\n", $user->webs);
 
 
-        $processor = $this->getModelForm('UserProfile', $user, $defaults);
+        $processor = $this->getModelForm('UserProfile', $user, $defaults, [], $request);
         $processor->createForm();
-        $form = $processor->getBuilder()
+        $processor->getBuilder()
             ->add('submit', 'submit', [
                 'label' => $submit_label ? $submit_label : 'regular-submit'
-            ])->getForm();
-
-
+            ]);
+        $form = $processor->getForm();
         $form->handleRequest($request);
-        if ($form->isSubmitted()) {
+        if ($form->isSubmitted() && $request->isMethod('post')) {
             try {
                 $processor->save($form);
                 Message::info(Text::get('user-profile-saved'));

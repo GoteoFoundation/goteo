@@ -22,7 +22,6 @@ use Goteo\Library\Currency;
 use Goteo\Library\Forms\FormModelException;
 
 class ProjectOverviewForm extends AbstractFormProcessor implements FormProcessorInterface {
-    private $validations = [];
 
     public function getConstraints($field) {
         $constraints = [];

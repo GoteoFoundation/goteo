@@ -51,15 +51,17 @@ abstract class AbstractFormProcessor implements FormProcessorInterface {
 
     public function getDefaults($sanitize = true) {
         $options = $this->builder->getOptions();
-        // var_dump($options);die;
-        if($sanitize) return array_intersect_key($options['data'], $this->builder->all());
-        return $options['data'];
+        $data = $options['data'];
+        if($sanitize) $data = array_intersect_key($data, $this->builder->all());
+        // var_dump($data);die;
+        return $data;
     }
 
     public function getForm() {
         if($this->form) return $this->form;
         $this->form = $this->builder->getForm();
         if($this->showErrors()) {
+            // var_dump($this->getDefaults(true));die;
             $this->form->submit($this->getDefaults(true), false);
         }
         return $this->form;

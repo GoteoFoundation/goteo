@@ -123,11 +123,14 @@ abstract class Controller {
      * Handy method to get a form builder
      * @return Goteo\Library\Forms\FormProcessorInterface
      */
-    public function getModelForm($form, Model $model, array $defaults = [], array $options = [], Request $request) {
+    public function getModelForm($form, Model $model, array $defaults = [], array $options = [], Request $request = null) {
         $finder = App::getService('app.forms.finder');
         $finder->setModel($model);
-        $validate = $request->query->has('validate');
-        $mock_validation = $validate && $request->isMethod('get');
+        $validate = $mock_validation = false;
+        if($request) {
+            $validate = $request->query->has('validate');
+            $mock_validation = $validate && $request->isMethod('get');
+        }
         // $finder->setBuilder($this->createFormBuilder($defaults, 'autoform', $mock_validation ? ['csrf_protection' => false] : []));
         // $finder->setBuilder($this->createFormBuilder($defaults));
         // TODO: a better way to create a csrf_protection without showing errors CSRF on mock_validation

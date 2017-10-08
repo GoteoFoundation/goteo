@@ -118,6 +118,22 @@
 
         .project-widget,.sidebar-widget {
             font-size: $font-size;
+            position: relative;
+            a.img-link {
+                padding-top: 60%;
+                position: relative;
+                width: 100%;
+                display: block;
+                img {
+                    background: #E5F3F4 url(../img/ring.gif) no-repeat center;
+                    position: absolute;
+                    height: 100%;
+                    top: 0;
+                    left: 0;
+                    right: 0;
+                    bottom: 0;
+                }
+            }
             .img-project,.img-circle {
                 width:60%;
                 margin:0 20%;
@@ -127,6 +143,7 @@
             }
             .content {
                 margin:10px 15px 0 15px;
+                padding:0 0 20px 0;
                 border-radius: 0;
                 color:$color-white;
                 a {

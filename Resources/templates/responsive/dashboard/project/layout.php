@@ -15,17 +15,19 @@ $(function(){
 <?php if($this->query_has('validate')): ?>
     // $('input[value=""],input:not([value])').first().focus();
     var $group = $('.form-group.has-error:first');
-    $input = $group.find('input,select,textarea[name]');
-    // console.log($group, $input.attr('id'), $input.val());
-    if($group.find('div.markdown').length) {
-        // console.log('MD',form.markdowns[$input.attr('id')]);
-        form.markdowns[$input.attr('id')].codemirror.focus();
-    } else {
-        $input.focus();
+    if($group.length) {
+        $input = $group.find('input,select,textarea[name]');
+        // console.log($group, $input.attr('id'), $input.val());
+        if($group.find('div.markdown').length) {
+            // console.log('MD',form.markdowns[$input.attr('id')]);
+            form.markdowns[$input.attr('id')].codemirror.focus();
+        } else {
+            $input.focus();
+        }
+        $('html, body').animate({
+            scrollTop: $group.offset().top
+        }, 800);
     }
-    $('html, body').animate({
-        scrollTop: $group.offset().top
-    }, 800);
 <?php endif ?>
 
 });

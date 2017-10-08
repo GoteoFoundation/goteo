@@ -11,7 +11,7 @@
 
 namespace Goteo\Library\Forms\Model;
 
-use Goteo\Library\Forms\FormProcessorInterface;
+use Symfony\Component\Validator\Context\ExecutionContextInterface;
 use Symfony\Component\Form\FormInterface;
 use Goteo\Library\Forms\AbstractFormProcessor;
 use Symfony\Component\Validator\Constraints;
@@ -21,18 +21,58 @@ use Goteo\Model\User\Web;
 use Goteo\Model\User\Interest;
 use Goteo\Model\User\UserLocation;
 use Goteo\Library\Forms\FormModelException;
+use Goteo\Library\Forms\FormProcessorInterface;
 
 class UserProfileForm extends AbstractFormProcessor implements FormProcessorInterface {
+
+    public function getConstraints($field) {
+        $constraints = [];
+        if($field === 'name') {
+            $constraints[] = new Constraints\NotBlank();
+        }
+        elseif($this->getFullValidation()) {
+            if(in_array($field, ['location', 'gender', 'about'])) {
+                $constraints[] = new Constraints\NotBlank();
+            }
+            if(in_array($field, ['webs', 'facebook', 'twitter'] )) {
+                $constraints[] = new Constraints\Callback(function($object, ExecutionContextInterface $context) use ($field) {
+                    $data = $context->getRoot()->getData();
+                    if(empty($data['webs']) && empty($data['facebook']) && empty($data['twitter'])) {
+                        $context->buildViolation(Text::get('project-validation-error-profile_social'))
+                        ->atPath($field)
+                        ->addViolation();
+                    }
+
+                });
+            }
+        }
+        return $constraints;
+    }
+
+    // Remove hidden category num. 15 (test)
+    public function getDefaults($sanitize = true) {
+        $data = parent::getDefaults($sanitize);
+        if(($key = array_search(15, $data['interests'])) !== false) {
+            unset($data['interests'][$key]);
+        }
+        // Do not test images
+        // var_dump($data);die;
+        unset($data['avatar']);
+        return $data;
+    }
+
 
     public function createForm() {
 
         $builder = $this->getBuilder()
             ->add('name', 'text', [
                 'disabled' => $this->getReadonly(),
+                'constraints' => $this->getConstraints('name'),
                 'label' => 'profile-field-name'
             ])
             ->add('location', 'location', [
                 'label' => 'profile-field-location',
+                'constraints' => $this->getConstraints('location'),
                 'disabled' => $this->getReadonly(),
                 'type' => 'user',
                 'required' => false,
@@ -40,6 +80,7 @@ class UserProfileForm extends AbstractFormProcessor implements FormProcessorInte
             ])
             ->add('unlocable', 'boolean', [
                 'label' => 'dashboard-user-location-unlocate',
+                'constraints' => $this->getConstraints('unlocable'),
                 'disabled' => $this->getReadonly(),
                 'attr' => ['help' => Text::get('dashboard-user-location-help')],
                 'required' => false,
@@ -47,6 +88,7 @@ class UserProfileForm extends AbstractFormProcessor implements FormProcessorInte
             ])
             ->add('avatar', 'dropfiles', [
                 'label' => 'profile-fields-image-title',
+                'constraints' => $this->getConstraints('avatar'),
                 'disabled' => $this->getReadonly(),
                 'required' => false
             ])
@@ -59,11 +101,13 @@ class UserProfileForm extends AbstractFormProcessor implements FormProcessorInte
         $builder
             ->add('birthyear', 'year', [
                 'label' => 'invest-address-birthyear-field',
+                'constraints' => $this->getConstraints('birthyear'),
                 'disabled' => $this->getReadonly(),
                 'required' => false
             ])
             ->add('gender', 'choice', [
                 'label' => 'invest-address-gender-field',
+                'constraints' => $this->getConstraints('gender'),
                 'disabled' => $this->getReadonly(),
                 'choices' => [
                     'F' => Text::get('regular-female'),
@@ -74,6 +118,7 @@ class UserProfileForm extends AbstractFormProcessor implements FormProcessorInte
             ])
             ->add('legal_entity', 'choice', [
                 'label' => 'profile-field-legal-entity',
+                'constraints' => $this->getConstraints('legal_entity'),
                 'disabled' => $this->getReadonly(),
                 'choices' => [
                     '0' => Text::get('profile-field-legal-entity-person'),
@@ -88,12 +133,14 @@ class UserProfileForm extends AbstractFormProcessor implements FormProcessorInte
             ])
             ->add('entity_type', 'boolean', [
                 'label' => 'profile-field-entity-type-checkbox-public',
+                'constraints' => $this->getConstraints('entity_type'),
                 'disabled' => $this->getReadonly(),
                 'required' => false,
                 'color' => 'cyan'
             ])
-            ->add('about', 'textarea', [
+            ->add('about', 'markdown', [
                 'label' => 'profile-field-about',
+                'constraints' => $this->getConstraints('about'),
                 'disabled' => $this->getReadonly(),
                 'attr' => ['help' => Text::get('tooltip-user-about')]
             ])
@@ -101,6 +148,7 @@ class UserProfileForm extends AbstractFormProcessor implements FormProcessorInte
                 'multiple' => true,
                 'expanded' => true,
                 'label' => 'profile-field-interests',
+                'constraints' => $this->getConstraints('interests'),
                 'disabled' => $this->getReadonly(),
                 'attr' => ['help' => Text::get('tooltip-user-interests')],
                 'choices' => Interest::getAll(),
@@ -108,6 +156,7 @@ class UserProfileForm extends AbstractFormProcessor implements FormProcessorInte
             ])
             ->add('keywords', 'tags', [
                 'label' => 'profile-field-keywords',
+                'constraints' => $this->getConstraints('keywords'),
                 'disabled' => $this->getReadonly(),
                 'attr' => ['help' => Text::get('tooltip-user-keywords')],
                 'required' => false,
@@ -115,12 +164,14 @@ class UserProfileForm extends AbstractFormProcessor implements FormProcessorInte
             ])
             // ->add('contribution', 'textarea', [
             //     'label' => 'profile-field-contribution',
+            //     'constraints' => $this->getConstraints('contribution'),
             //     'disabled' => $this->getReadonly(),
             //     'attr' => ['help' => Text::get('tooltip-user-contribution')],
             //     'required' => false
             // ])
             ->add('webs', 'textarea', [
                 'label' => 'profile-field-websites',
+                'constraints' => $this->getConstraints('webs'),
                 'disabled' => $this->getReadonly(),
                 'attr' => ['help' => Text::get('tooltip-user-webs')],
                 'required' => false
@@ -131,6 +182,7 @@ class UserProfileForm extends AbstractFormProcessor implements FormProcessorInte
             ])
             ->add('facebook', 'url', [
                 'label' => 'regular-facebook',
+                'constraints' => $this->getConstraints('facebook'),
                 'disabled' => $this->getReadonly(),
                 'pre_addon' => '<i class="fa fa-facebook"></i>',
                 'attr' => ['help' => Text::get('tooltip-user-facebook'),
@@ -139,6 +191,7 @@ class UserProfileForm extends AbstractFormProcessor implements FormProcessorInte
             ])
             ->add('twitter', 'url', [
                 'label' => 'regular-twitter',
+                'constraints' => $this->getConstraints('twitter'),
                 'disabled' => $this->getReadonly(),
                 'pre_addon' => '<i class="fa fa-twitter"></i>',
                 'attr' => ['help' => Text::get('tooltip-user-twitter'),
@@ -147,6 +200,7 @@ class UserProfileForm extends AbstractFormProcessor implements FormProcessorInte
             ])
             ->add('google', 'url', [
                 'label' => 'regular-google',
+                'constraints' => $this->getConstraints('google'),
                 'disabled' => $this->getReadonly(),
                 'pre_addon' => '<i class="fa fa-google-plus"></i>',
                 'attr' => ['help' => Text::get('tooltip-user-google'),
@@ -155,6 +209,7 @@ class UserProfileForm extends AbstractFormProcessor implements FormProcessorInte
             ])
             ->add('linkedin', 'url', [
                 'label' => 'regular-linkedin',
+                'constraints' => $this->getConstraints('linkedin'),
                 'disabled' => $this->getReadonly(),
                 'pre_addon' => '<i class="fa fa-linkedin"></i>',
                 'attr' => ['help' => Text::get('tooltip-user-linkedin'),
@@ -163,6 +218,7 @@ class UserProfileForm extends AbstractFormProcessor implements FormProcessorInte
             ])
             // ->add('identica', 'url', [
             //     'label' => 'regular-identica',
+            //     'constraints' => $this->getConstraints('identica'),
             //     'disabled' => $this->getReadonly(),
             //     'pre_addon' => '<i class="fa fa-comment-o"></i>',
             //     'attr' => ['help' => Text::get('tooltip-user-identica'),
@@ -171,6 +227,7 @@ class UserProfileForm extends AbstractFormProcessor implements FormProcessorInte
             // ])
             ->add('instagram', 'url', [
                 'label' => 'regular-instagram',
+                'constraints' => $this->getConstraints('instagram'),
                 'disabled' => $this->getReadonly(),
                 'pre_addon' => '<i class="fa fa-instagram"></i>',
                 'attr' => ['help' => Text::get('tooltip-user-instagram'),
@@ -203,6 +260,7 @@ class UserProfileForm extends AbstractFormProcessor implements FormProcessorInte
         // Process webs
         $data['webs'] = array_map(function($el) {
                 $url = trim($el);
+                if(!$url) return null;
                 if($url && stripos($url, 'http') !== 0) $url = 'http://' . $url;
                 return new Web(['url' => $url]);
             }, explode("\n", $data['webs']));
@@ -232,6 +290,7 @@ class UserProfileForm extends AbstractFormProcessor implements FormProcessorInte
         // }
 
         User::flush();
+
         return $this;
     }
 }

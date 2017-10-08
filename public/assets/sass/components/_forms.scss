@@ -164,7 +164,7 @@
     display:inline-block;
 
     > input[type="checkbox"] {
-        display: none;
+        display: none !important;
     }
 
     > label {

@@ -190,7 +190,7 @@ class ProjectDashboardController extends \Goteo\Core\Controller {
         }
 
         // Create the form
-        $processor = $this->getModelForm('ProjectPersonal', $project, $defaults, ['account' => $account]);
+        $processor = $this->getModelForm('ProjectPersonal', $project, $defaults, ['account' => $account], $request);
         $processor->setReadonly(!$project->userCanEdit($this->user, true))->createForm();
         $form = $processor->getBuilder()
             ->add('submit', 'submit', [
@@ -198,7 +198,7 @@ class ProjectDashboardController extends \Goteo\Core\Controller {
             ])->getForm();
 
         $form->handleRequest($request);
-        if ($form->isSubmitted()) {
+        if ($form->isSubmitted() && $request->isMethod('post')) {
             try {
                 $processor->save($form);
                 Message::info(Text::get('user-personal-saved'));
@@ -243,7 +243,7 @@ class ProjectDashboardController extends \Goteo\Core\Controller {
         $form = $processor->getForm();
 
         $form->handleRequest($request);
-        if ($form->isSubmitted()) {
+        if ($form->isSubmitted() && $request->isMethod('post')) {
             try {
                 $processor->save($form);
                 Message::info(Text::get('dashboard-project-saved'));
@@ -361,7 +361,7 @@ class ProjectDashboardController extends \Goteo\Core\Controller {
 
 
         $form->handleRequest($request);
-        if ($form->isSubmitted()) {
+        if ($form->isSubmitted() && $request->isMethod('post')) {
             try {
                 $processor->save($form);
                 Message::info(Text::get('form-sent-success'));
@@ -387,7 +387,7 @@ class ProjectDashboardController extends \Goteo\Core\Controller {
     /**
     * Costs section
     */
-    public function costsAction($pid = null, Request $request)
+    public function costsAction($pid, Request $request)
     {
         $project = $this->validateProject($pid, 'costs');
         if($project instanceOf Response) return $project;
@@ -400,7 +400,7 @@ class ProjectDashboardController extends \Goteo\Core\Controller {
 
         $defaults = (array) $project;
         // Create the form
-        $processor = $this->getModelForm('ProjectCosts', $project, $defaults);
+        $processor = $this->getModelForm('ProjectCosts', $project, $defaults, [], $request);
         $processor->setReadonly(!$project->userCanEdit($this->user, true))->createForm();
         $builder = $processor->getBuilder();
         if(!$processor->getReadonly()) {
@@ -415,9 +415,9 @@ class ProjectDashboardController extends \Goteo\Core\Controller {
                 ]);
         }
 
-        $form = $builder->getForm();
+        $form = $processor->getForm();
         $form->handleRequest($request);
-        if ($form->isSubmitted()) {
+        if ($form->isSubmitted() && $request->isMethod('post')) {
             // Handle AJAX calls manually
             if($request->isXmlHttpRequest()) {
                 $button = $form->getClickedButton()->getName();
@@ -453,6 +453,7 @@ class ProjectDashboardController extends \Goteo\Core\Controller {
             try {
                 $next = $form['submit']->isClicked();
                 // Replace the form if delete/add buttons are pressed
+                // $processor->save($form);
                 $form = $processor->save($form)->getBuilder()->getForm();
                 Message::info(Text::get('dashboard-project-saved'));
                 if($next) {
@@ -488,7 +489,7 @@ class ProjectDashboardController extends \Goteo\Core\Controller {
 
         $defaults = (array) $project;
         // Create the form
-        $processor = $this->getModelForm('ProjectRewards', $project, $defaults);
+        $processor = $this->getModelForm('ProjectRewards', $project, $defaults, [], $request);
         $processor->setReadonly(!$project->userCanEdit($this->user, true))->createForm();
         $builder = $processor->getBuilder()
             ->add('submit', 'submit', [
@@ -500,9 +501,9 @@ class ProjectDashboardController extends \Goteo\Core\Controller {
                 'attr' => ['class' => 'btn btn-orange btn-lg add-reward']
             ]);
 
-        $form = $builder->getForm();
+        $form = $processor->getForm();
         $form->handleRequest($request);
-        if ($form->isSubmitted()) {
+        if ($form->isSubmitted() && $request->isMethod('post')) {
             // Handle AJAX calls manually
             if($request->isXmlHttpRequest()) {
                 $button = $form->getClickedButton()->getName();
