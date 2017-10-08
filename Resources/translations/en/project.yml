@@ -131,6 +131,7 @@ project-remove-cost-confirm: 'Are you sure to delete this cost?'
 project-add-cost: 'Add cost'
 project-add-reward: 'Add reward'
 project-remove-reward-confirm: 'Are you sure to delete this reward?'
+project-reward-unlimited: 'Unlimited'
 
 project-send-review: 'Send to review'
 project-validation-ok: 'The project is completed. Send it to revision to start the campaign.'
@@ -145,3 +146,4 @@ project-validation-error-costs_required: 'You need at least one cost of each typ
 project-validation-error-rewards: 'You need to add or complete rewards'
 project-validation-error-rewards_required: 'You need at least 3 rewards'
 
+project-non-public-field: 'This field is not public'

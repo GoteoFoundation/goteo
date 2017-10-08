@@ -25,6 +25,7 @@ class ProjectRewardsForm extends AbstractFormProcessor implements FormProcessorI
 
     public function getConstraints($field) {
         $constraints = [];
+        if(strpos($field, 'units') === 0) return [];
         if($this->getFullValidation()) {
             $constraints[] = new Constraints\NotBlank();
         }
@@ -81,7 +82,7 @@ class ProjectRewardsForm extends AbstractFormProcessor implements FormProcessorI
             ])
             ->add("units$suffix", 'number', [
                 'label' => 'rewards-field-individual_reward-units',
-                'data' => $reward->amount,
+                'data' => (int)$reward->units,
                 'disabled' => $readonly,
                 'pre_addon' => '#',
                 'constraints' => $this->getConstraints("units$suffix"),
@@ -147,7 +148,7 @@ class ProjectRewardsForm extends AbstractFormProcessor implements FormProcessorI
 
         foreach($data as $key => $val) {
             list($field, $id) = explode('_', $key);
-            if(!in_array($field, ['amount', 'icon', 'required', 'reward', 'description'])) continue;
+            if(!in_array($field, ['amount', 'icon', 'units', 'reward', 'description'])) continue;
             $ids[$id] = $id;
 
             $reward = $this->rewards[$id];

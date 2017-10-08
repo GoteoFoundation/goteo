@@ -72,8 +72,14 @@
   }
   .help-text {
     display: block;
-    margin: 10px 5px;
-    color: $color-grey;
+    margin: 10px 5px 0 5px;
+    color: lighten($color-grey, 10%);
+    font-size: $font-size - 2;
+    &::after {
+        display: block;
+        content: '';
+        clear: both;
+    }
   }
   .material-switch {
     > label {
@@ -143,7 +149,7 @@
   // With this class, help text are hidden are shown on focus
   &.hide-help {
     .help-text {
-      height: 1.2em;
+      height: $font-size + 4;
       overflow: hidden;
       white-space: pre-line;
       &::before {
@@ -182,6 +188,8 @@
         height: 30px;
         margin-top: -15px;
         position:absolute;
+        left:0;
+        top:0;
         opacity: 0.3;
         @include transition(all 0.4s ease-in-out);
         width: 52px;

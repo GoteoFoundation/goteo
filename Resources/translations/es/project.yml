@@ -170,6 +170,7 @@ project-remove-cost-confirm: '¿Seguro que quieres eliminar este coste?'
 project-add-cost: 'Añadir coste'
 project-add-reward: 'Añadir recompensa'
 project-remove-reward-confirm: '¿Seguro que quieres eliminar esta recompensa?'
+project-reward-unlimited: 'Ilimitadas'
 
 project-send-review: 'Enviar a revisión'
 project-validation-ok: 'El proyecto está completo. Puedes mandarlo a revisión para empezar tu campaña.'
@@ -183,3 +184,5 @@ project-validation-error-costs: 'Falta añadir o completar los costes'
 project-validation-error-costs_required: 'Debes tener al menos un coste de cada tipo, imprescindible y opcional'
 project-validation-error-rewards: 'Falta añadir o completar las recompensas'
 project-validation-error-rewards_required: 'Debes tener al menos 3 recompensas'
+
+project-non-public-field: 'Este campo no es público'

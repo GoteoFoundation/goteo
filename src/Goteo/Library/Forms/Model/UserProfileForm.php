@@ -63,17 +63,18 @@ class UserProfileForm extends AbstractFormProcessor implements FormProcessorInte
 
 
     public function createForm() {
-
+        $non_public = '<em class="pull-right text-muted"><i class="fa fa-eye-slash"></i> '. Text::get('project-non-public-field') .'</em>';
         $builder = $this->getBuilder()
             ->add('name', 'text', [
                 'disabled' => $this->getReadonly(),
                 'constraints' => $this->getConstraints('name'),
-                'label' => 'profile-field-name'
+                'label' => 'regular-name'
             ])
             ->add('location', 'location', [
                 'label' => 'profile-field-location',
                 'constraints' => $this->getConstraints('location'),
                 'disabled' => $this->getReadonly(),
+                'attr' =>['help' => $non_public],
                 'type' => 'user',
                 'required' => false,
                 'pre_addon' => '<i class="fa fa-globe"></i>'
@@ -103,12 +104,14 @@ class UserProfileForm extends AbstractFormProcessor implements FormProcessorInte
                 'label' => 'invest-address-birthyear-field',
                 'constraints' => $this->getConstraints('birthyear'),
                 'disabled' => $this->getReadonly(),
+                'attr' =>['help' => $non_public],
                 'required' => false
             ])
             ->add('gender', 'choice', [
                 'label' => 'invest-address-gender-field',
                 'constraints' => $this->getConstraints('gender'),
                 'disabled' => $this->getReadonly(),
+                'attr' =>['help' => $non_public],
                 'choices' => [
                     'F' => Text::get('regular-female'),
                     'M' => Text::get('regular-male'),

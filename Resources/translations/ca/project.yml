@@ -130,6 +130,7 @@ project-remove-cost-confirm: 'Segur que vols esborrar aquests cost?'
 project-add-cost: 'Afegeix un cost'
 project-add-reward: 'Afegeix una recompensa'
 project-remove-reward-confirm: 'Segur que vols esborrar aquesta recompensa?'
+project-reward-unlimited: 'Il·limitades'
 
 project-send-review: 'Envia a revisió'
 project-validation-ok: 'El projecte està complet. Pots enviar-lo a revisió per començar la campanya.'
@@ -143,3 +144,5 @@ project-validation-error-costs: 'Falta afegir o completar els costos'
 project-validation-error-costs_required: 'Has de tenir al menys un cost de cada tipus, imprescindible i opcional'
 project-validation-error-rewards: 'Falta afegir o completar les recompenses'
 project-validation-error-rewards_required: 'Has de tenir al menys 3 recompenses'
+
+project-non-public-field: 'Aquest camp no és públic'

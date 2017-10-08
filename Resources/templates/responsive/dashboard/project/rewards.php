@@ -98,6 +98,23 @@ $(function(){
 
     });
 
+    //material switch checkbox
+    $('form.autoform').on('click', '.reward-item .material-switch', function(){
+        var $reward = $(this).closest('.reward-item');
+        var $input = $reward.find('input[type="checkbox"]');
+        var $units = $reward.find('.units input');
+        var $icon = $units.prev('.input-group-addon');
+
+        if($input.prop('checked')) {
+            $icon.addClass('disabled')
+            $units.val(0);
+            $units.prop('disabled', true);
+        } else {
+            $icon.removeClass('disabled')
+            $units.prop('disabled', false);
+            $units.select();
+        }
+    });
 });
 
 // @license-end

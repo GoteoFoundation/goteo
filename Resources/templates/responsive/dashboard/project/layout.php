@@ -13,7 +13,7 @@
 $(function(){
 
 <?php if($this->query_has('validate')): ?>
-    // $('input[value=""],input:not([value])').first().focus();
+    // Scrolls to last error if validate GET is available
     var $group = $('.form-group.has-error:first');
     if($group.length) {
         $input = $group.find('input,select,textarea[name]');
