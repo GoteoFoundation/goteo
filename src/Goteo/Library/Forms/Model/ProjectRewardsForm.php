@@ -23,12 +23,41 @@ use Goteo\Library\Forms\FormModelException;
 class ProjectRewardsForm extends AbstractFormProcessor implements FormProcessorInterface {
     private $rewards = [];
 
+    public function getConstraints($field) {
+        $constraints = [];
+        if(strpos($field, 'units') === 0) return [];
+        if($this->getFullValidation()) {
+            $constraints[] = new Constraints\NotBlank();
+        }
+        elseif(strpos($field, 'description') !== 0) {
+            $constraints[] = new Constraints\NotBlank();
+        }
+        return $constraints;
+    }
+
+    // override this to take into account rewards[] array
+    public function getDefaults($sanitize = true) {
+        $options = $this->getBuilder()->getOptions();
+        foreach($options['data']['individual_rewards'] as $reward) {
+            $suffix = "_{$reward->id}";
+            $options['data']["amount$suffix"] = $reward->amount;
+            // $options['data']["icon$suffix"] = $reward->icon;
+            $options['data']["units$suffix"] = $reward->units;
+            $options['data']["reward$suffix"] = $reward->reward;
+            $options['data']["description$suffix"] = $reward->description;
+        }
+        // print_r($options['data']);die;
+        if($sanitize) return array_intersect_key($options['data'], $this->getBuilder()->all());
+        return $options['data'];
+    }
+
     public function delReward($id) {
         unset($this->rewards[$id]);
         $this->getBuilder()
             ->remove("amount_$id")
-            ->remove("icon_$id")
+            // ->remove("icon_$id")
             ->remove("reward_$id")
+            ->remove("units_$id")
             ->remove("description_$id")
             ->remove("remove_$id")
             ;
@@ -48,15 +77,15 @@ class ProjectRewardsForm extends AbstractFormProcessor implements FormProcessorI
                 // 'pre_addon' => '<i class="fa fa-money"></i>',
                 'pre_addon' => Currency::get($project->currency, 'html'),
                 // 'post_addon' => Currency::get($project->currency, 'name'),
-                'constraints' => array(new Constraints\NotBlank()),
+                'constraints' => $this->getConstraints("amount$suffix"),
                 'required' => false,
             ])
             ->add("units$suffix", 'number', [
                 'label' => 'rewards-field-individual_reward-units',
-                'data' => $reward->amount,
+                'data' => (int)$reward->units,
                 'disabled' => $readonly,
                 'pre_addon' => '#',
-                'constraints' => array(new Constraints\NotBlank()),
+                'constraints' => $this->getConstraints("units$suffix"),
                 'required' => false,
             ])
             // ->add("icon$suffix", 'choice', [
@@ -70,13 +99,14 @@ class ProjectRewardsForm extends AbstractFormProcessor implements FormProcessorI
                 'label' => 'rewards-field-individual_reward-reward',
                 'data' => $reward->reward,
                 'disabled' => $readonly,
-                'constraints' => array(new Constraints\NotBlank()),
+                'constraints' => $this->getConstraints("reward$suffix"),
                 'required' => false,
             ])
             ->add("description$suffix", 'textarea', [
                 'label' => 'rewards-field-individual_reward-description',
                 'disabled' => $readonly,
                 'data' => $reward->description,
+                'constraints' => $this->getConstraints("description$suffix"),
                 'required' => false,
             ]);
         if(!$readonly) {
@@ -118,7 +148,7 @@ class ProjectRewardsForm extends AbstractFormProcessor implements FormProcessorI
 
         foreach($data as $key => $val) {
             list($field, $id) = explode('_', $key);
-            if(!in_array($field, ['amount', 'icon', 'required', 'reward', 'description'])) continue;
+            if(!in_array($field, ['amount', 'icon', 'units', 'reward', 'description'])) continue;
             $ids[$id] = $id;
 
             $reward = $this->rewards[$id];

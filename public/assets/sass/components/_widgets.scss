@@ -1,5 +1,26 @@
 /*Project widget */
-
+.validation-widget {
+    padding:20px;
+    .percent {
+        display:block;
+        float: left;
+        width: 25%;
+    }
+    .desc {
+        margin-left: 20px;
+        display:block;
+        float: left;
+        width: calc(75% - 20px);
+        ul, ul a {
+            color:$color-red;
+        }
+    }
+    &::after {
+        display: block;
+        clear: both;
+        content: '';
+    }
+}
 .project-widget {
   position: relative;
   a.img-link {

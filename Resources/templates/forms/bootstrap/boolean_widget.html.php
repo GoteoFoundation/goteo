@@ -1,4 +1,3 @@
-<!-- <input type="hidden" name="<?php echo $view->escape($full_name) ?>" value="0"> -->
 <div class="material-switch">
     <input type="checkbox"
         <?php echo $view['form']->block($form, 'widget_attributes', ['type' => 'checkbox']) ?>
