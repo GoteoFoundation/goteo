@@ -23,6 +23,6 @@ else {
             <li><?= $err ?></li>
         <?php endforeach ?>
         </ul>
-        <a href="/dashboard/project/<?= $validation->project ?>/send" class="btn btn-lg btn-fashion<?= $validation->global < 100 ? ' disabled' : '' ?>"><i class="fa fa-paper-plane"></i> <?= $this->text('project-send-review') ?></a>
+        <a href="/dashboard/project/<?= $validation->project ?>/apply" class="btn btn-lg btn-fashion<?= $validation->global < 100 ? ' disabled' : '' ?>"><i class="fa fa-paper-plane"></i> <?= $this->text('project-send-review') ?></a>
     </div>
 </div>
