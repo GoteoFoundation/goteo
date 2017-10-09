@@ -22,6 +22,9 @@ through which recipients can access the Corresponding Source.
 @licend  The above is the entire license notice
 for the JavaScript code in this page.
 */
+
+var form = {};
+
 function parseVideoURL (url) {
     // - Supported YouTube URL formats:
     //   - http://www.youtube.com/watch?v=My2FRPA3Gf8
@@ -243,7 +246,7 @@ $(function(){
 
 
     // MarkdownType initialization
-    var markdowns = {};
+    var markdowns = form.markdowns = {};
     $('.autoform .markdown > textarea').each(function() {
         var el = this;
         // console.log('found textarea', el);
@@ -263,7 +266,7 @@ $(function(){
         markdowns[$(this).attr('id')] = simplemde;
     });
 
-    var dropzones = {};
+    var dropzones = form.dropzones = {};
     // Dropfiles initialization
     $('.autoform .dropfiles').each(function() {
         var $dz = $(this);

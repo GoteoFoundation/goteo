@@ -45,8 +45,8 @@ body {
     }
 }
 
-@import 'common/sidebar';
-@import 'common/widgets';
+@import 'layouts/sidebar';
+@import 'components/widgets';
 
 .top-navbar {
     display:none;

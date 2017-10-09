@@ -12,7 +12,7 @@
         echo $this->form_start($form);
 
         $submit = $this->form_row($form['submit']);
-        echo '<div class="top-button">' . $submit . '</div>';
+        echo '<div class="top-button hidden">' . $submit . '</div>';
 
         // echo $this->form_row($form['title-rewards']);
 
@@ -21,7 +21,8 @@
             echo $this->insert('dashboard/project/partials/reward_item', ['reward' => $reward, 'form' => $form]);
         }
         echo '</div>';
-        echo '<div class="form-group">'.$this->form_row($form['add-reward']).'</div>';
+
+        echo '<div class="form-group">'.$this->form_row($form['add-reward'], [], true).'</div>';
 
         echo $submit;
 
@@ -62,7 +63,7 @@ $(function(){
             $list.append($data.hide());
             $data.slideDown();
         }).fail(function (data) {
-            $list.append('<p class="text-danger">' + data + '</p>');
+            $list.append('<p class="text-danger">' + data.responseText + '</p>');
         }).always(function() {
             $but.show();
             $list.find('>.loading').remove();
@@ -72,13 +73,14 @@ $(function(){
     $('form.autoform').on('click', '.remove-reward', function(e){
         if(e.isPropagationStopped()) return false;
         e.preventDefault();
-        var $form = $(this).closest('form');
+        var $but = $(this);
+        var $form = $but.closest('form');
         var $list = $form.find('.reward-list');
-        var serial = $form.serialize() + '&' + encodeURIComponent($(this).attr('name')) + '=';
-        var $item = $(this).closest('.panel');
-        $(this).replaceWith('<div class="loading"></div>');
+        var serial = $form.serialize() + '&' + encodeURIComponent($but.attr('name')) + '=';
+        var $item = $but.closest('.panel');
+        $but.hide().after('<div class="loading"></div>');
         $item.find(':input').attr('disabled', true);
-        console.log('del reward', serial);
+        // console.log('del reward', serial);
         $.ajax({
             type: $form.attr('method'),
             url: $form.attr('action'),
@@ -90,9 +92,29 @@ $(function(){
         }).fail(function (data) {
             console.log('An error occurred.', data);
             alert(data.responseText);
+        }).always(function() {
+            $but.show().next('.loading').remove();
         });
+
     });
 
+    //material switch checkbox
+    $('form.autoform').on('click', '.reward-item .material-switch', function(){
+        var $reward = $(this).closest('.reward-item');
+        var $input = $reward.find('input[type="checkbox"]');
+        var $units = $reward.find('.units input');
+        var $icon = $units.prev('.input-group-addon');
+
+        if($input.prop('checked')) {
+            $icon.addClass('disabled')
+            $units.val(0);
+            $units.prop('disabled', true);
+        } else {
+            $icon.removeClass('disabled')
+            $units.prop('disabled', false);
+            $units.select();
+        }
+    });
 });
 
 // @license-end

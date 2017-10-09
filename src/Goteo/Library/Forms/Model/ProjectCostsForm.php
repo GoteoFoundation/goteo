@@ -23,6 +23,32 @@ use Goteo\Library\Forms\FormModelException;
 class ProjectCostsForm extends AbstractFormProcessor implements FormProcessorInterface {
     private $costs = [];
 
+    public function getConstraints($field) {
+        $constraints = [];
+        if($this->getFullValidation()) {
+            $constraints[] = new Constraints\NotBlank();
+        }
+        elseif(strpos($field, 'description') !== 0) {
+            $constraints[] = new Constraints\NotBlank();
+        }
+        return $constraints;
+    }
+
+    // override this to take into account costs[] array
+    public function getDefaults($sanitize = true) {
+        $options = $this->getBuilder()->getOptions();
+        foreach($options['data']['costs'] as $cost) {
+            $suffix = "_{$cost->id}";
+            $options['data']["amount$suffix"] = $cost->amount;
+            $options['data']["cost$suffix"] = $cost->cost;
+            $options['data']["type$suffix"] = $cost->type;
+            $options['data']["required$suffix"] = $cost->required;
+            $options['data']["description$suffix"] = $cost->description;
+        }
+        if($sanitize) return array_intersect_key($options['data'], $this->getBuilder()->all());
+        return $options['data'];
+    }
+
     public function delCost($id) {
         unset($this->costs[$id]);
         $this->getBuilder()
@@ -42,22 +68,26 @@ class ProjectCostsForm extends AbstractFormProcessor implements FormProcessorInt
         $this->getBuilder()
             ->add("amount$suffix", 'number', [
                 'label' => 'costs-field-amount',
+                'disabled' => $this->getReadonly(),
                 'data' => $cost->amount,
                 // 'pre_addon' => '<i class="fa fa-money"></i>',
                 'pre_addon' => Currency::get($project->currency, 'html'),
                 // 'post_addon' => Currency::get($project->currency, 'name'),
-                'constraints' => array(new Constraints\NotBlank()),
+                // 'constraints' => array(new Constraints\NotBlank()),
+                'constraints' => $this->getConstraints("amount$suffix"),
                 'required' => false,
             ])
             ->add("type$suffix", 'choice', [
                 'label' => 'costs-field-type',
+                'disabled' => $this->getReadonly(),
                 'data' => $cost->type,
                 'choices' => Cost::types(),
-                'constraints' => array(new Constraints\NotBlank()),
+                'constraints' => $this->getConstraints("type$suffix"),
                 'required' => true,
             ])
             ->add("required$suffix", 'choice', [
                 'label' => 'costs-field-required_cost',
+                'disabled' => $this->getReadonly(),
                 'data' => (int)$cost->required,
                 'choices' => [
                     '1' => Text::get('costs-field-required_cost-yes'),
@@ -67,32 +97,39 @@ class ProjectCostsForm extends AbstractFormProcessor implements FormProcessorInt
             ])
             ->add("cost$suffix", 'text', [
                 'label' => 'costs-field-cost',
+                'disabled' => $this->getReadonly(),
                 'data' => $cost->cost,
-                'constraints' => array(new Constraints\NotBlank()),
+                'constraints' => $this->getConstraints("cost$suffix"),
                 'required' => false,
             ])
             ->add("description$suffix", 'textarea', [
                 'label' => 'costs-field-description',
+                'disabled' => $this->getReadonly(),
+                'constraints' => $this->getConstraints("description$suffix"),
                 'data' => $cost->description,
                 'required' => false,
-            ])
-            ->add("remove$suffix", 'submit', [
-                'label' => Text::get('regular-delete'),
-                'icon_class' => 'fa fa-trash',
-                'span' => 'hidden-xs',
-                'attr' => [
-                    'class' => 'pull-right btn btn-default remove-cost',
-                    'data-confirm' => Text::get('project-remove-cost-confirm')
-                    ]
             ]);
+        if(!$this->getReadonly()) {
+            $this->getBuilder()
+                ->add("remove$suffix", 'submit', [
+                    'label' => Text::get('regular-delete'),
+                    'icon_class' => 'fa fa-trash',
+                    'span' => 'hidden-xs',
+                    'attr' => [
+                        'class' => 'pull-right btn btn-default remove-cost',
+                        'data-confirm' => Text::get('project-remove-cost-confirm')
+                        ]
+                ]);
+        }
     }
 
     public function createForm() {
         $project = $this->getModel();
         $builder = $this->getBuilder()
             ->add('one_round', 'choice', [
+                'disabled' => $this->getReadonly(),
                 'label' => 'costs-field-select-rounds',
-                'constraints' => array(new Constraints\NotBlank()),
+                'constraints' => $this->getConstraints('one_round'),
                 'required' => true,
                 'expanded' => true,
                 'wrap_class' => 'col-xs-6',
@@ -139,7 +176,6 @@ class ProjectCostsForm extends AbstractFormProcessor implements FormProcessorInt
                 $validate = false;
             }
         }
-
         // Validate form here to avoid deleted elements
         if($validate && !$form->isValid()) throw new FormModelException(Text::get('form-has-errors'));
 

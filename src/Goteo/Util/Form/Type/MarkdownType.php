@@ -11,6 +11,7 @@
 
 namespace Goteo\Util\Form\Type;
 
+use Goteo\Application\App;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormView;
 use Symfony\Component\Form\FormInterface;
@@ -30,8 +31,11 @@ class MarkdownType extends TextareaType
      */
     public function buildView(FormView $view, FormInterface $form, array $options)
     {
+        if($view->vars['disabled']) {
+            $view->vars['value'] = App::getService('app.md.parser')->text($view->vars['value']);
+        }
+        elseif(preg_match('/<br|<p|<a/i', $view->vars['value'])) {
         // TODO: check backward compatibility of this
-        if(preg_match('/<br|<p|<a/i', $view->vars['value'])) {
             $converter = new HtmlConverter();
             $view->vars['value'] = $converter->convert($view->vars['value']);
         }

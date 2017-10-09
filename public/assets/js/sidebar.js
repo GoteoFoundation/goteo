@@ -95,7 +95,6 @@ $(function(){
         var that = this;
         var $li = $(this).closest('li');
         var $s = $(this).next('.submenu');
-        console.log($s);
 
         var $others = $sidebar.find('li.active .submenu').not($s);
             $others.slideUp(function() {

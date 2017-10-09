@@ -268,6 +268,14 @@ abstract class AbstractSubController extends \Goteo\Core\Controller {
     }
 
     /**
+     * Get the request referer
+     * @return boolean [description]
+     */
+    public function getReferer() {
+        return $this->request->headers->get('referer');
+    }
+
+    /**
      * Returns a redirection. By default to the module administration URL
      * @param  [type] $url [description]
      * @return [type]      [description]
