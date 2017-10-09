@@ -1,20 +1,28 @@
+<?php
+$approved = $this->project->isApproved();
+$label_color = $approved && !$this->project->isFailed() ? 'cyan' : 'danger';
+$validation = null;
+if(!$approved) {
+    $validation = $this->project->getValidation();
+}
+?>
 <div class="project-widget micro" id="project-<?= $this->project->id ?>">
     <a class="img-link" href="/project/<?= $this->project->id ?>">
         <img class="img-project" src="<?= $this->project->image->getLink(240, 240, true); ?>">
     </a>
     <div class="content">
         <?php if($this->admin): ?>
-            <span class="label label-danger"><?= $this->project->getTextStatus() ?></span>
-            <?php
-                if(!$this->project->isApproved()):
-                $val = $this->project->getValidation();
-                    if($val->global < 100):
-            ?>
-                <a href="/dashboard/project/<?= $this->project->id ?>/<?= key($val->errors) ?>?validate" title="<?= $this->text('project-validation-errors') ?>"><?= $this->percent_span($val->global) ?></a>
-            <?php
-                    endif;
-                endif
-            ?>
+            <?php if($validation): ?>
+                <?php if($validation->global < 100): ?>
+                <span class="label label-<?= $label_color ?>"><?= $this->project->getTextStatus() ?></span>
+                <a href="/dashboard/project/<?= $this->project->id ?>/<?= key($validation->errors) ?>?validate" title="<?= $this->text('project-validation-errors') ?>"><?= $this->percent_span($validation->global) ?></a>
+                <?php else: ?>
+                <a href="/dashboard/project/<?= $validation->project ?>/apply" class="btn btn-xs btn-fashion"><i class="fa fa-paper-plane"></i> <?= $this->text('project-send-review') ?></a>
+
+                <?php endif ?>
+            <?php else: ?>
+                <span class="label label-<?= $label_color ?>"><?= $this->project->getTextStatus() ?></span>
+            <?php endif ?>
             <?php if($this->is_admin()): ?>
                 <form method="post" action="/admin/users/impersonate/<?= $this->project->owner ?>" class="pull-right">
                     <input type="hidden" name="id" value="<?= $this->project->owner ?>">

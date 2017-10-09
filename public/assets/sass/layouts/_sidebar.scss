@@ -73,21 +73,18 @@
             background-color: $background-sidebar-header;
           }
         }
-        border-left: 3px solid $color-cyan;
-        // + .sidebar {
-          margin-top: 3px;
-          // top: -3px;
-        // }
+        border-left: 6px solid $color-cyan;
+        margin-top: 3px;
         >li {
-          padding-left: 12px;
+          padding-left: 9px;
         }
       }
       &.active, &.selected {
         .submenu {
           display: block;
           >li.active {
-            padding-left: 8px;
-            border-left: 3px solid $color-cyan;
+            padding-left: 5px;
+            border-left: 6px solid $color-cyan;
           }
         }
       }
