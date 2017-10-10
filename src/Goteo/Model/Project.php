@@ -2186,7 +2186,9 @@ namespace Goteo\Model {
         public function getValidation() {
             $res = new \stdClass;
             $errors = [];
-            $fields = ['profile' => [], 'personal' => [], 'overview' => [], 'images' => [], 'costs' => [], 'rewards' => []];
+            $fields = ['profile' => [],
+                // 'personal' => [],
+            'overview' => [], 'images' => [], 'costs' => [], 'rewards' => [], 'campaign' => []];
 
             // 1. profile
             $profile = [ 'name', 'location', 'gender', 'about' ];
@@ -2210,20 +2212,20 @@ namespace Goteo\Model {
             }
 
             // 2. personal
-            $personal = [ 'phone' ];
-            $count = 0;
-            $total = count($personal);
-            foreach($personal as $field) {
-                if(!empty($this->{$field})) {
-                    continue;
-                }
-                $fields['personal'][] = $field;
-                $count++;
-            }
-            if($count > 0) {
-                $errors['personal'] = 'personal';
-            }
-            $res->personal = round(100 * ($total - $count)/$total);
+            // $personal = [ 'phone' ];
+            // $count = 0;
+            // $total = count($personal);
+            // foreach($personal as $field) {
+            //     if(!empty($this->{$field})) {
+            //         continue;
+            //     }
+            //     $fields['personal'][] = $field;
+            //     $count++;
+            // }
+            // if($count > 0) {
+            //     $errors['personal'] = 'personal';
+            // }
+            // $res->personal = round(100 * ($total - $count)/$total);
 
 
             // 3. overview
@@ -2290,7 +2292,6 @@ namespace Goteo\Model {
                 $res->costs /= 2;
             }
             // 6. rewards
-            // 5. costs
             $rewards = ['reward', 'description', 'amount', 'type'];
             $count1 = 0;
             $requireds = 0;
@@ -2321,6 +2322,12 @@ namespace Goteo\Model {
                 $errors['rewards'] = 'rewards_required';
                 $res->rewards /= 2;
             }
+
+            // $campaign = [ ];
+            $res->campaign = 100;
+
+
+
             // Summary
             $sum = $total = 0;
             foreach($res as $key => $percent) {

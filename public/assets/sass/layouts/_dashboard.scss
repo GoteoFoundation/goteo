@@ -219,6 +219,14 @@
       color: $color-white;
     }
   }
+  .paypal {
+    max-height: 0;
+    overflow: hidden;
+    @include transition(max-height 0.5s ease);
+    &.show {
+      max-height: 600px;
+    }
+  }
   .form-group {
     &.extra {
       padding-left: 20px;

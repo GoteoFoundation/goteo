@@ -4,15 +4,16 @@
 
 <div class="dashboard-content">
   <div class="inner-container">
-    <h1><?= $this->text('costs-main-header') ?></h1>
-    <p><?= $this->text('guide-project-costs') ?></p>
+    <h1>4. <?= $this->text('costs-main-header') ?></h1>
+    <div class="auto-hide">
+        <div class="inner"><?= $this->text('guide-project-costs') ?></div>
+        <div class="more"><i class="fa fa-info-circle"></i> <?= $this->text('regular-help') ?></div>
+    </div>
 
     <?= $this->supply('dashboard-content-form', function() {
         $form = $this->raw('form');
         echo $this->form_start($form);
 
-
-        echo $this->form_row($form['one_round']);
         echo $this->form_row($form['title-costs']);
 
         $submit = $form['submit'] ? $this->form_row($form['submit']) : '';

@@ -4,8 +4,11 @@
 
 <div class="dashboard-content">
   <div class="inner-container">
-    <h1><?= $this->text('images-main-header') ?></h1>
-    <p><?= $this->text('dashboard-project-images-desc') ?></p>
+    <h1>3. <?= $this->text('images-main-header') ?></h1>
+    <div class="auto-hide">
+        <div class="inner"><?= $this->text('dashboard-project-images-desc') ?></div>
+        <!-- <div class="more"><i class="fa fa-info-circle"></i> <?= $this->text('regular-help') ?></div> -->
+    </div>
 
     <?php foreach($this->zones as $key => $zone): ?>
         <h3><?= $zone ?></h3>

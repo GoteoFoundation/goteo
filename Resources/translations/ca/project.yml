@@ -146,3 +146,6 @@ project-validation-error-rewards: 'Falta afegir o completar les recompenses'
 project-validation-error-rewards_required: 'Has de tenir al menys 3 recompenses'
 
 project-non-public-field: 'Aquest camp no és públic'
+project-campaign: 'Campanya'
+project-campaign-configuration: 'Configuració de campanya'
+project-campaign-use-paypal: 'Vull permetre que els usuaris pugin pagar mitjançant Paypal'

@@ -147,3 +147,6 @@ project-validation-error-rewards: 'You need to add or complete rewards'
 project-validation-error-rewards_required: 'You need at least 3 rewards'
 
 project-non-public-field: 'This field is not public'
+project-campaign: 'Campaign'
+project-campaign-configuration: 'Campaign configuration'
+project-campaign-use-paypal: 'I want to allow users to pay using Paypal'

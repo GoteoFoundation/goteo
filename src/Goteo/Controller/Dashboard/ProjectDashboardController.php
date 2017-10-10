@@ -76,6 +76,7 @@ class ProjectDashboardController extends \Goteo\Core\Controller {
                 ['text' => '<i class="icon icon-2x icon-images"></i> 3. ' . Text::get('step-3b'), 'link' => $prefix . '/images', 'id' => 'images', 'class' => $validation->images == 100 ? 'ok' : 'ko'],
                 ['text' => '<i class="fa fa-2x fa-tasks"></i> 4. ' . Text::get('step-4'), 'link' => $prefix . '/costs', 'id' => 'costs', 'class' => $validation->costs == 100 ? 'ok' : 'ko'],
                 ['text' => '<i class="fa fa-2x fa-gift"></i> 5. ' . Text::get('step-5'), 'link' => $prefix . '/rewards', 'id' => 'rewards', 'class' => $validation->rewards == 100 ? 'ok' : 'ko'],
+                ['text' => '<i class="fa fa-2x fa-gift"></i> 6. ' . Text::get('project-campaign'), 'link' => $prefix . '/campaign', 'id' => 'campaign', 'class' => $validation->campaign == 100 ? 'ok' : 'ko'],
             ];
             Session::addToSidebarMenu('<i class="icon icon-2x icon-projects"></i> ' . Text::get('project-edit'), $steps, 'project', null, 'sidebar');
 
@@ -163,6 +164,7 @@ class ProjectDashboardController extends \Goteo\Core\Controller {
 
     /**
      * Project edit (personal)
+     * NOTE: Step removed, maintaining the method just in case
      */
     public function personalAction($pid, Request $request)
     {
@@ -484,7 +486,7 @@ class ProjectDashboardController extends \Goteo\Core\Controller {
         if($project->isApproved()) {
             $redirect = '/dashboard/project/' . $pid . '/rewards';
         } else {
-            $redirect = '/dashboard/project/' . $pid . '/summary';
+            $redirect = '/dashboard/project/' . $pid . '/campaign';
             $submit_label = 'form-next-button';
         }
 
@@ -549,6 +551,63 @@ class ProjectDashboardController extends \Goteo\Core\Controller {
 
         return $this->viewResponse('dashboard/project/rewards', [
             'rewards' => $project->individual_rewards,
+            'form' => $form->createView()
+        ]);
+    }
+
+
+ /**
+     * Project edit (overview)
+     */
+    public function campaignAction($pid, Request $request)
+    {
+        $project = $this->validateProject($pid, 'campaign');
+        if($project instanceOf Response) return $project;
+        if($project->isApproved()) {
+            $redirect = '/dashboard/project/' . $pid . '/campaign';
+        } else {
+            $redirect = '/dashboard/project/' . $pid . '/summary';
+            $submit_label = 'form-next-button';
+        }
+
+        $defaults = (array)$project;
+        if($account = Account::get($project->id)) {
+            $defaults['paypal'] = $account->paypal;
+            // $defaults['bank'] = $account->bank;
+        }
+        if($personal = (array)User::getPersonal($user)) {
+            foreach($personal as $k => $v) {
+                if(array_key_exists($k, $defaults) && empty($defaults[$k])) {
+                    $defaults[$k] = $v;
+                }
+            }
+        }
+
+        // Create the form
+        $processor = $this->getModelForm('ProjectCampaign', $project, $defaults, ['account' => $account, 'user' => $this->user], $request);
+        // For everyone
+        // $processor->setReadonly(!$project->isEditable())->createForm();
+        // Just for the owner
+        $processor->setReadonly(!$project->userCanEdit($this->user, true))->createForm();
+
+        if(!$processor->getReadonly()) {
+            $processor->getBuilder()->add('submit', 'submit', [
+                'label' => $submit_label ? $submit_label : 'regular-submit'
+            ]);
+        }
+        $form = $processor->getForm();
+
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $request->isMethod('post')) {
+            try {
+                $processor->save($form);
+                Message::info(Text::get('dashboard-project-saved'));
+                return $this->redirect($redirect);
+            } catch(FormModelException $e) {
+                Message::error($e->getMessage());
+            }
+        }
+        return $this->viewResponse('dashboard/project/campaign', [
             'form' => $form->createView()
         ]);
     }
