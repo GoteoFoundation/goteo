@@ -27,9 +27,14 @@ $label_view = $label_position === 'none' ? '' : $view['form']->label($form);
         <div class="help-text"><?= $attr['help'] ?></div>
     <?php endif ?>
 
+    <?php if($attr['info']): ?>
+        <div class="help-text info"><?= $attr['info'] ?></div>
+    <?php endif ?>
+
     <?php if(!$no_input_wrap): ?></div><?php endif ?>
 
     <?= $label_position === 'right' ? $label_view : '' ?>
+
     <?php if($label_position === 'right' && $attr['help']): ?>
         <div class="help-text"><?= $attr['help'] ?></div>
     <?php endif ?>
