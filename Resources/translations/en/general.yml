@@ -196,6 +196,7 @@ validate-project-social_rewards: 'You have to specify at least one collective be
 validate-project-total-costs: 'The optimal cost cannot exceed the minimum cost by more than 50%. You have to either raise the essential costs or lower the supplemental costs. '
 regular-female: Female
 regular-here: here
+regular-help: Help
 regular-male: Male
 regular-others: Others
 regular-matchfunding: 'Match funding'
