@@ -24,6 +24,10 @@ for the JavaScript code in this page.
 */
 
 $(function(){
+    $('.auto-hide .more').on('click', function(e) {
+        e.preventDefault();
+        $(this).closest('.auto-hide').toggleClass('show');
+    });
 
     $(".auto-update-projects").on('change', ".interest", function (e) {
         var value = $(this).is(":checked") ? 1 : 0;
