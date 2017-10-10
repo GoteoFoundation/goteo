@@ -184,6 +184,7 @@ project-validation-error-costs: 'Falta añadir o completar los costes'
 project-validation-error-costs_required: 'Debes tener al menos un coste de cada tipo, imprescindible y opcional'
 project-validation-error-rewards: 'Falta añadir o completar las recompensas'
 project-validation-error-rewards_required: 'Debes tener al menos 3 recompensas'
+project-validation-error-overview: 'Faltan campos por rellenar en la configuración de campaña'
 
 project-non-public-field: 'Este campo no es público'
 project-campaign: 'Campaña'

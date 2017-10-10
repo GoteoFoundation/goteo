@@ -145,6 +145,7 @@ project-validation-error-costs: 'You need to add or complete costs'
 project-validation-error-costs_required: 'You need at least one cost of each type, necessary and supplemental'
 project-validation-error-rewards: 'You need to add or complete rewards'
 project-validation-error-rewards_required: 'You need at least 3 rewards'
+project-validation-error-overview: 'There are empty fields in the campaign configuration'
 
 project-non-public-field: 'This field is not public'
 project-campaign: 'Campaign'

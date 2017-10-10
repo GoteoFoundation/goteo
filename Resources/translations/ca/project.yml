@@ -1,4 +1,3 @@
-contract-paypal_account: 'Email del teu compte PayPal:'
 currency-switch: CANVIAR
 overview-field-spread: Difusió
 personal-field-accounts: 'Comptes del projecte'
@@ -144,6 +143,7 @@ project-validation-error-costs: 'Falta afegir o completar els costos'
 project-validation-error-costs_required: 'Has de tenir al menys un cost de cada tipus, imprescindible i opcional'
 project-validation-error-rewards: 'Falta afegir o completar les recompenses'
 project-validation-error-rewards_required: 'Has de tenir al menys 3 recompenses'
+project-validation-error-campaign: 'Falten camps per omplir a la configuració de campanya'
 
 project-non-public-field: 'Aquest camp no és públic'
 project-campaign: 'Campanya'

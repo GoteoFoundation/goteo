@@ -2295,7 +2295,7 @@ namespace Goteo\Model {
             $rewards = ['reward', 'description', 'amount', 'type'];
             $count1 = 0;
             $requireds = 0;
-            foreach($this->rewards as $reward) {
+            foreach($this->individual_rewards as $reward) {
                 $count2 = 0;
                 foreach($rewards as $field) {
                     if($field === 'amount') {
@@ -2323,9 +2323,23 @@ namespace Goteo\Model {
                 $res->rewards /= 2;
             }
 
-            // $campaign = [ ];
-            $res->campaign = 100;
+            $campaign = [ ];
 
+            // 6. campaign
+            $campaign = [ 'phone' ];
+            $count = 0;
+            $total = count($campaign);
+            foreach($campaign as $field) {
+                if(!empty($this->{$field})) {
+                    continue;
+                }
+                $fields['campaign'][] = $field;
+                $count++;
+            }
+            if($count > 0) {
+                $errors['campaign'] = 'campaign';
+            }
+            $res->campaign = round(100 * ($total - $count)/$total);
 
 
             // Summary
