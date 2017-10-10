@@ -49,41 +49,8 @@ $this->section('content');
             nextArrow: '<div class="custom-right-arrow"><span class="fa fa-angle-right"></span><span class="sr-only">Prev</span></div>',
           });
 
-
           // Projects carrousel
           var $carousel = $('.slider-projects');
-
-          var settings = {
-            dots: false,
-            arrows: true,
-            slide: '.widget-slide',
-            slidesToShow: 3,
-            slidesToScroll: 0,
-            centerMode: true,
-            centerPadding: '150px',
-            infinite: false,
-            responsive: [
-              {
-                breakpoint: 768,
-                settings: {
-                  arrows: false,
-                  centerMode: true,
-                  slidesToShow: 2,
-                  centerPadding: '100px',
-                }
-              },
-              {
-                breakpoint: 500,
-                settings: {
-                  arrows: false,
-                  centerMode: true,
-                  slidesToShow: 1,
-                  centerPadding: '75px',
-
-                }
-              }
-            ]
-          };
 
           function setSlideVisibility() {
             //Find the visible slides i.e. where aria-hidden="false"
@@ -97,9 +64,49 @@ $this->section('content');
             $(visibleSlides).first().prev().css('opacity', 0);
           }
 
-          $carousel.slick(settings);
-          $carousel.slick('slickGoTo', 1);
-          setSlideVisibility();
+          function initSlickProjects(){
+            var settings = {
+              dots: false,
+              arrows: true,
+              slide: '.widget-slide',
+              slidesToShow: 3,
+              slidesToScroll: 0,
+              centerMode: true,
+              centerPadding: '150px',
+              infinite: false,
+              responsive: [
+                {
+                  breakpoint: 768,
+                  settings: {
+                    arrows: false,
+                    centerMode: true,
+                    slidesToShow: 2,
+                    centerPadding: '100px',
+                  }
+                },
+                {
+                  breakpoint: 500,
+                  settings: {
+                    arrows: false,
+                    centerMode: true,
+                    slidesToShow: 1,
+                    centerPadding: '75px',
+
+                  }
+                }
+              ]
+            };
+
+              $carousel.slick(settings);
+              $carousel.slick('slickGoTo', 1);
+              setSlideVisibility();
+          }
+
+          function destroySlickProjects() {
+            if ($('.slider-projects').hasClass('slick-initialized')) {
+              $('.slider-projects').slick('destroy');
+            }      
+          }
 
           $carousel.on('afterChange', function() {
             setSlideVisibility();
@@ -138,6 +145,8 @@ $this->section('content');
 
           initSlickCalls();
 
+          initSlickProjects();
+
           $('a[href="#search"]').on('click', function(event) {
               event.preventDefault();
               $('#search').addClass('open');
@@ -157,7 +166,12 @@ $this->section('content');
               else
               {
                 $(this).addClass('active');
+
+
               }
+
+              $(this).toogleClass('active');
+              
             var $filters = $('.auto-update-calls .filters');
             var filters = [];
 
@@ -174,6 +188,27 @@ $this->section('content');
                 initSlickCalls();
                 $('#calls-container').removeClass('fadeOut').animateCss('fadeIn');
             });
+
+          });
+
+          $(".auto-update-projects").on('click', ".filters li", function (e) {
+            
+            $(".auto-update-projects .filters li").each(function(){
+              $(this).removeClass('active');
+            });
+            $(this).addClass('active');
+              
+            var filter=$(this).data('status');
+            
+            var url = '/home/ajax/projects/filtered';
+
+          //$('#projects-container').animateCss('fadeOut');
+            $.post(url, { filter: filter }, function(result) {
+                 destroySlickProjects();
+                 $('#projects-container').html(result.html);
+                 initSlickProjects();
+                 //$('#projects-container').removeClass('fadeOut').animateCss('fadeIn');
+             });
 
           });
 
