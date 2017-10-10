@@ -865,6 +865,13 @@ namespace Goteo\Model {
             return $this->status > self::STATUS_REVIEWING;
         }
 
+        /**
+         * Handy method to know if project is unfunded (ie: archived, failed)
+         */
+        public function isFailed() {
+            return $this->status == self::STATUS_UNFUNDED;
+        }
+
         /*
          *  Cargamos los datos mínimos de un proyecto: id, name, owner, comment, lang, status, user
          */

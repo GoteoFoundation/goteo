@@ -63,7 +63,7 @@ class UserProfileForm extends AbstractFormProcessor implements FormProcessorInte
 
 
     public function createForm() {
-        $non_public = '<em class="pull-right text-muted"><i class="fa fa-eye-slash"></i> '. Text::get('project-non-public-field') .'</em>';
+        $non_public = '<i class="fa fa-eye-slash"></i> '. Text::get('project-non-public-field');
         $builder = $this->getBuilder()
             ->add('name', 'text', [
                 'disabled' => $this->getReadonly(),
@@ -74,7 +74,7 @@ class UserProfileForm extends AbstractFormProcessor implements FormProcessorInte
                 'label' => 'profile-field-location',
                 'constraints' => $this->getConstraints('location'),
                 'disabled' => $this->getReadonly(),
-                'attr' =>['help' => $non_public],
+                'attr' =>['info' => $non_public],
                 'type' => 'user',
                 'required' => false,
                 'pre_addon' => '<i class="fa fa-globe"></i>'
@@ -104,14 +104,14 @@ class UserProfileForm extends AbstractFormProcessor implements FormProcessorInte
                 'label' => 'invest-address-birthyear-field',
                 'constraints' => $this->getConstraints('birthyear'),
                 'disabled' => $this->getReadonly(),
-                'attr' =>['help' => $non_public],
+                'attr' =>['info' => $non_public],
                 'required' => false
             ])
             ->add('gender', 'choice', [
                 'label' => 'invest-address-gender-field',
                 'constraints' => $this->getConstraints('gender'),
                 'disabled' => $this->getReadonly(),
-                'attr' =>['help' => $non_public],
+                'attr' =>['info' => $non_public],
                 'choices' => [
                     'F' => Text::get('regular-female'),
                     'M' => Text::get('regular-male'),
@@ -273,6 +273,8 @@ class UserProfileForm extends AbstractFormProcessor implements FormProcessorInte
             UserLocation::setProperty($user->id, 'locable', !$data['unlocable'], $errors);
         }
         $user->rebuildData($data, array_keys($form->all()));
+        $user->location = $data['location'] ? $data['location'] : '';
+
         if (!$user->save($errors)) {
             throw new FormModelException(Text::get('form-sent-error', implode(',',array_map('implode',$errors))));
         }

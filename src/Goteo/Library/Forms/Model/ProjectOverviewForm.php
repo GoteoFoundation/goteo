@@ -112,7 +112,7 @@ class ProjectOverviewForm extends AbstractFormProcessor implements FormProcessor
                 'disabled' => $this->getReadonly(),
                 'constraints' => $this->getConstraints('spread'),
                 'required' => false,
-                'attr' => ['help' => Text::get('tooltip-project-spread') . '<br><em class="pull-right text-muted"><i class="fa fa-eye-slash"></i> '. Text::get('project-non-public-field') .'</em>', 'rows' => 8]
+                'attr' => ['help' => Text::get('tooltip-project-spread'), 'info' => '<i class="fa fa-eye-slash"></i> '. Text::get('project-non-public-field'), 'rows' => 8]
             ])
             ->add('extra-title', 'title', [
                 'label' => 'overview-extra-fields',

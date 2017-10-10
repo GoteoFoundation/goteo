@@ -6,7 +6,10 @@
   <div class="inner-container">
 
     <h1><?= $this->text('overview-main-header') ?></h1>
-    <p><?= $this->text('guide-project-description') ?></p>
+    <div class="auto-hide">
+        <div class="inner"><?= $this->text('guide-project-description') ?></div>
+        <div class="more"><i class="fa fa-info-circle"></i> <?= $this->text('regular-more_info') ?></div>
+    </div>
 
     <?= $this->supply('dashboard-content-form', function() {return $this->form_form($this->raw('form'));}) ?>
 
