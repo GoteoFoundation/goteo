@@ -16,6 +16,7 @@ if(!$approved) {
                 <?php if($validation->global < 100): ?>
                 <span class="label label-<?= $label_color ?>"><?= $this->project->getTextStatus() ?></span>
                 <a href="/dashboard/project/<?= $this->project->id ?>/<?= key($validation->errors) ?>?validate" title="<?= $this->text('project-validation-errors') ?>"><?= $this->percent_span($validation->global) ?></a>
+                <p class="error"><a href="/dashboard/project/<?= $this->project->id ?>/<?= key($validation->errors) ?>?validate" title="<?= $this->text('project-validation-errors') ?>"><?= $this->text('project-validation-error-' . current($validation->errors)) ?></a></p>
                 <?php else: ?>
                 <a href="/dashboard/project/<?= $validation->project ?>/apply" class="btn btn-xs btn-fashion"><i class="fa fa-paper-plane"></i> <?= $this->text('project-send-review') ?></a>
 

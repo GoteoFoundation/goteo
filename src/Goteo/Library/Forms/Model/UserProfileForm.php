@@ -273,6 +273,8 @@ class UserProfileForm extends AbstractFormProcessor implements FormProcessorInte
             UserLocation::setProperty($user->id, 'locable', !$data['unlocable'], $errors);
         }
         $user->rebuildData($data, array_keys($form->all()));
+        $user->location = $data['location'] ? $data['location'] : '';
+
         if (!$user->save($errors)) {
             throw new FormModelException(Text::get('form-sent-error', implode(',',array_map('implode',$errors))));
         }

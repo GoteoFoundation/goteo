@@ -53,7 +53,6 @@ class ProjectDashboardController extends \Goteo\Core\Controller {
     static function createSidebar(Project $project, $zone = '') {
         $user = Session::getUser();
         if(!$project->userCanEdit($user)) return;
-
         $prefix = '/dashboard/project/' . $project->id ;
 
         // Create sidebar menu
@@ -63,21 +62,23 @@ class ProjectDashboardController extends \Goteo\Core\Controller {
         // $submenu = [];
         // Session::addToSidebarMenu('<i class="fa fa-2x fa-id-badge"></i> ' . Text::get('profile-about-header'), $submenu, 'project', null, 'sidebar');
 
-        $submenu = [
-            ['text' => '<i class="icon icon-2x icon-user"></i> 1. ' . Text::get('profile-about-header'), 'link' => $prefix . '/profile', 'id' => 'profile'],
-            ['text' => '<i class="fa fa-2x fa-id-card-o"></i> 2. ' . Text::get('step-2'), 'link' => $prefix . '/personal', 'id' => 'personal'],
-            ['text' => '<i class="icon icon-2x icon-edit"></i> 3. ' . Text::get('step-3'), 'link' => $prefix . '/overview', 'id' => 'overview'],
-            ['text' => '<i class="icon icon-2x icon-images"></i> 4. ' . Text::get('step-3b'), 'link' => $prefix . '/images', 'id' => 'images'],
-            ['text' => '<i class="fa fa-2x fa-tasks"></i> 5. ' . Text::get('step-4'), 'link' => $prefix . '/costs', 'id' => 'costs'],
-            ['text' => '<i class="fa fa-2x fa-gift"></i> 6. ' . Text::get('step-5'), 'link' => $prefix . '/rewards', 'id' => 'rewards'],
-        ];
-        Session::addToSidebarMenu('<i class="icon icon-2x icon-projects"></i> ' . Text::get('project-edit'), $submenu, 'project', null, 'sidebar');
-
         Session::addToSidebarMenu('<i class="icon icon-2x icon-supports"></i> ' . Text::get('dashboard-menu-projects-supports'), $prefix . '/supports' , 'supports');
         if($project->isApproved()) {
             Session::addToSidebarMenu('<i class="icon icon-2x icon-updates"></i> ' . Text::get('dashboard-menu-projects-updates'), $prefix .'/updates', 'updates');
             Session::addToSidebarMenu('<i class="icon icon-2x icon-donors"></i> ' . Text::get('dashboard-menu-projects-rewards'), $prefix .'/invests', 'invests');
             // Session::addToSidebarMenu('<i class="icon icon-2x icon-partners"></i> ' . Text::get('dashboard-menu-projects-messegers'), '/dashboard/projects/messengers/select?project=' . $project->id, 'comments');
+        } else {
+            $validation = $project->getValidation();
+            $steps = [
+                ['text' => '<i class="icon icon-2x icon-user"></i> 1. ' . Text::get('profile-about-header'), 'link' => $prefix . '/profile', 'id' => 'profile', 'class' => $validation->profile == 100 ? 'ok' : 'ko'],
+                // ['text' => '<i class="fa fa-2x fa-id-card-o"></i> 2. ' . Text::get('step-2'), 'link' => $prefix . '/personal', 'id' => 'personal'],
+                ['text' => '<i class="icon icon-2x icon-edit"></i> 2. ' . Text::get('step-3'), 'link' => $prefix . '/overview', 'id' => 'overview', 'class' => $validation->overview == 100 ? 'ok' : 'ko'],
+                ['text' => '<i class="icon icon-2x icon-images"></i> 3. ' . Text::get('step-3b'), 'link' => $prefix . '/images', 'id' => 'images', 'class' => $validation->images == 100 ? 'ok' : 'ko'],
+                ['text' => '<i class="fa fa-2x fa-tasks"></i> 4. ' . Text::get('step-4'), 'link' => $prefix . '/costs', 'id' => 'costs', 'class' => $validation->costs == 100 ? 'ok' : 'ko'],
+                ['text' => '<i class="fa fa-2x fa-gift"></i> 5. ' . Text::get('step-5'), 'link' => $prefix . '/rewards', 'id' => 'rewards', 'class' => $validation->rewards == 100 ? 'ok' : 'ko'],
+            ];
+            Session::addToSidebarMenu('<i class="icon icon-2x icon-projects"></i> ' . Text::get('project-edit'), $steps, 'project', null, 'sidebar');
+
         }
          $submenu = [
             ['text' => '<i class="fa fa-2x fa-globe"></i> ' . Text::get('regular-translations'), 'link' => $prefix . '/translate', 'id' => 'translate'],

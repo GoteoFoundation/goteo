@@ -1,3 +1,5 @@
+@import "compass/css3";
+
 /* Dashboard  */
 
 /* dashboard containers */
@@ -131,6 +133,45 @@
       }
     }
   }
+
+  .auto-hide {
+    position: relative;
+    margin-bottom: 20px;
+    .inner {
+      max-height: $font-size + 4;
+      overflow: hidden;
+      @include transition (max-height 0.5s ease-out);
+      // white-space: pre-line;
+    }
+    .more {
+      position: absolute;
+      top: 0px;
+      right: 20px;
+      background:$color-dark;
+      color:$color-white;
+      cursor: pointer;
+      padding: 0 5px;
+      @include transition (top 0.25s ease);
+      &::after{
+        font-family: FontAwesome;
+        content: "\f0d7";
+        margin: 0 5px;
+      }
+    }
+    &.show {
+      .inner {
+        max-height: 600px;
+        @include transition (max-height 0.5s ease-in);
+      }
+      .more {
+        top: -20px;
+        &::after {
+          content: "\f0d8";
+        }
+      }
+    }
+  }
+
   table.footable , table.table {
     color: $secondary-color;
     background: $background-light-body;
