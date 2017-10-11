@@ -306,8 +306,7 @@
       line-height: 1em;
       // padding: 5px 0 0 5px;
       padding: 0;
-      margin: 0;
-      margin-right: 5px;
+      margin: 0 0 5px 5px;
       background: no-repeat darken($background-white, 5%) url(/assets/img/ring.gif) center;
       &:last-child {
         margin-right: 0;

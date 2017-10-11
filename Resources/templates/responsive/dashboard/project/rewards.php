@@ -4,7 +4,7 @@
 
 <div class="dashboard-content">
   <div class="inner-container">
-    <h1>5. <?= $this->text('rewards-main-header') ?></h1>
+    <h1><?= $this->project->isApproved() ? '' : '5. ' ?><?= $this->text('rewards-main-header') ?></h1>
     <div class="auto-hide">
         <div class="inner"><?= $this->text('guide-project-rewards') ?></div>
         <!-- <div class="more"><i class="fa fa-info-circle"></i> <?= $this->text('regular-help') ?></div> -->

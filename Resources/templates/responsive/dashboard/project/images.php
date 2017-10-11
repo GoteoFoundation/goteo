@@ -4,7 +4,7 @@
 
 <div class="dashboard-content">
   <div class="inner-container">
-    <h1>3. <?= $this->text('images-main-header') ?></h1>
+    <h1><?= $this->next ? '3. ' : '' ?><?= $this->text('images-main-header') ?></h1>
     <div class="auto-hide">
         <div class="inner"><?= $this->text('dashboard-project-images-desc') ?></div>
         <!-- <div class="more"><i class="fa fa-info-circle"></i> <?= $this->text('regular-help') ?></div> -->
@@ -17,9 +17,9 @@
         <div class="image-zone" data-section="<?= $key ?>">
             <ul class="list-inline image-list-sortable" id="list-sortable-<?= $key ?>"><?php
             foreach($this->images[$key] as $img) {
-                echo $this->insert('dashboard/project/partials/image_list_item', [
+                echo trim($this->insert('dashboard/project/partials/image_list_item', [
                         'image_url' => $img->getLink(300, 300, true),
-                        'image_name' => $img->getName()]);
+                        'image_name' => $img->getName()]));
             }
             ?></ul>
             <div class="dragndrop"><div class="dropzone"></div></div>
