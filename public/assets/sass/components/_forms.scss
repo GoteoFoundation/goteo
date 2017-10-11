@@ -86,6 +86,7 @@
         display: block;
         content: '';
         clear: both;
+        line-height:0;
     }
     &.info {
         text-align: right;
@@ -242,7 +243,7 @@
   position: relative;
   width: 100%;
   background: $background-light-body;
-  padding: 0;
+  padding: 5px;
   border-radius: 5px;
   &::after {
     display: block;
@@ -256,7 +257,7 @@
     position: relative;
     display: block;
     float: left;
-    margin-top:10px;
+    margin: 5px;
   }
   .dropzone {
     border: 2px dashed $secondary-color;
@@ -283,10 +284,11 @@
     }
   }
   .image-list-sortable {
-    min-height: 170px;
+    min-height: 160px;
     display: block;
     border: 5px solid $background-light-body;
     margin: 0;
+    line-height: 0;
     float: left;
 
     // min-width: 150px;
@@ -302,10 +304,14 @@
     > li {
       position: relative;
       line-height: 1em;
-      padding: 5px 0 0 5px;
+      // padding: 5px 0 0 5px;
+      padding: 0;
       margin: 0;
       margin-right: 5px;
-        background: no-repeat darken($background-white, 5%) url(/assets/img/ring.gif) center;
+      background: no-repeat darken($background-white, 5%) url(/assets/img/ring.gif) center;
+      &:last-child {
+        margin-right: 0;
+      }
       .image {
         width: 150px;
         height: 150px;
@@ -327,6 +333,14 @@
     }
   }
 
+}
+
+.input-wrap .image-zone {
+    padding:0;
+    .image-list-sortable {
+        border:0;
+        min-height: 150px;
+    }
 }
 
 

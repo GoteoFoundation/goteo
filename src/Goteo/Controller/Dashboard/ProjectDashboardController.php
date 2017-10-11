@@ -61,12 +61,9 @@ class ProjectDashboardController extends \Goteo\Core\Controller {
         // $submenu = [];
         // Session::addToSidebarMenu('<i class="fa fa-2x fa-id-badge"></i> ' . Text::get('profile-about-header'), $submenu, 'project', null, 'sidebar');
 
-        if($project->isApproved()) {
-            Session::addToSidebarMenu('<i class="icon icon-2x icon-updates"></i> ' . Text::get('dashboard-menu-projects-updates'), $prefix .'/updates', 'updates');
-            Session::addToSidebarMenu('<i class="icon icon-2x icon-donors"></i> ' . Text::get('dashboard-menu-projects-rewards'), $prefix .'/invests', 'invests');
-            // Session::addToSidebarMenu('<i class="icon icon-2x icon-partners"></i> ' . Text::get('dashboard-menu-projects-messegers'), '/dashboard/projects/messengers/select?project=' . $project->id, 'comments');
-        } else {
-            $validation = $project->getValidation();
+        $validation = $project->isApproved() ? false : $project->getValidation();
+
+        if($validation) {
             $steps = [
                 ['text' => '<i class="icon icon-2x icon-user"></i> 1. ' . Text::get('profile-about-header'), 'link' => $prefix . '/profile', 'id' => 'profile', 'class' => $validation->profile == 100 ? 'ok' : 'ko'],
                 // ['text' => '<i class="fa fa-2x fa-id-card-o"></i> 2. ' . Text::get('step-2'), 'link' => $prefix . '/personal', 'id' => 'personal'],
@@ -77,8 +74,12 @@ class ProjectDashboardController extends \Goteo\Core\Controller {
                 ['text' => '<i class="fa fa-2x fa-sliders"></i> 6. ' . Text::get('project-campaign'), 'link' => $prefix . '/campaign', 'id' => 'campaign', 'class' => $validation->campaign == 100 ? 'ok' : 'ko'],
             ];
             Session::addToSidebarMenu('<i class="icon icon-2x icon-projects"></i> ' . Text::get('project-edit'), $steps, 'project', null, 'sidebar');
-
+        } else {
+            Session::addToSidebarMenu('<i class="icon icon-2x icon-updates"></i> ' . Text::get('dashboard-menu-projects-updates'), $prefix .'/updates', 'updates');
+            Session::addToSidebarMenu('<i class="icon icon-2x icon-donors"></i> ' . Text::get('dashboard-menu-projects-rewards'), $prefix .'/invests', 'invests');
+            // Session::addToSidebarMenu('<i class="icon icon-2x icon-partners"></i> ' . Text::get('dashboard-menu-projects-messegers'), '/dashboard/projects/messengers/select?project=' . $project->id, 'comments');
         }
+
         Session::addToSidebarMenu('<i class="icon icon-2x icon-supports"></i> ' . Text::get('dashboard-menu-projects-supports'), $prefix . '/supports' , 'supports');
 
          $submenu = [
@@ -90,6 +91,13 @@ class ProjectDashboardController extends \Goteo\Core\Controller {
         Session::addToSidebarMenu('<i class="icon icon-2x icon-settings"></i> ' . Text::get('footer-header-resources'), $submenu, 'comments', null, 'sidebar');
 
         Session::addToSidebarMenu('<i class="icon icon-2x icon-preview"></i> ' . Text::get('regular-preview'), '/project/' . $project->id, 'preview');
+
+        if($validation && $validation->global == 100) {
+
+            Session::addToSidebarMenu('<i class="fa fa-2x fa-paper-plane"></i> ' . Text::get('project-send-review'), '/dashboard/project/' . $project->id . '/apply', 'apply', null, 'flat', 'btn btn-fashion');
+
+        }
+
 
         View::getEngine()->useData([
             'project' => $project,
@@ -167,27 +175,32 @@ class ProjectDashboardController extends \Goteo\Core\Controller {
 
     /**
      * Returns the link where to redirect after a form submission
-     * cicles betwen steps if project is not approved yet
-     * returns to summary if is approved
-     * goto error step if validate GET is present
+     * goto next step with errors
+     * returns to summary if is approved or no errors
      */
     protected function getEditRedirect($current = null, Request $request = null) {
         $goto = 'summary';
         $validate = $request && $request->query->has('validate');
         if(!$this->project->isApproved()) {
-            if($validate) {
-                $validation = $this->project->getValidation();
-                $next = $validation->errors && key($valitation->errors);
-                if($next) $goto = $next;
+            $validation = $this->project->getValidation();
+            $steps = ['profile' , 'overview', 'images', 'costs', 'rewards', 'campaign'];
+            $pos = array_search($current, $steps);
+            if($pos > 0) {
+                $steps = array_merge(
+                        array_slice($steps, $pos + 1),
+                        array_slice($steps, 0, $pos)
+                    );
             }
-            if(!$next) {
-                $steps = ['profile' , 'overview', 'images', 'costs', 'rewards', 'campaign'];
-                if($current = array_search($current, $steps) !== false) {
-                    $next = $current + 1;
-                    if($next == count($steps)) $next = 0;
-                    $goto = $steps[$next];
+            // print_r($steps);die;
+            if($validation->global < 100) {
+                foreach($steps as $i => $step) {
+                    if($validation->{$step} < 100) {
+                        $goto = $step;
+                        break;
+                    }
                 }
             }
+
         }
         return '/dashboard/project/' . $this->project->id . '/' . $goto . ($validate ? '?validate' : '');
     }
