@@ -79,14 +79,16 @@ namespace Goteo\Model\Call {
         /*
          * Lista de patrocinadores
          */
-        public static function getList ($call, $type='') {
+        public static function getList ($call, $type=null) {
 
             $list = array();
 
             if($type=="main")
                 $type_filter=" AND `main`=1";
-            else
+            elseif($type=="collaborator")
                 $type_filter=" AND `main`=0";
+            else
+                $type_filter="";
 
             $sql = static::query("
                 SELECT
