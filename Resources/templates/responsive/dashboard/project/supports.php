@@ -5,7 +5,10 @@
 <div class="dashboard-content">
   <div class="inner-container">
     <h2><?= $this->text('dashboard-menu-projects-supports') ?></h2>
-    <p><?= $this->text('guide-project-supports') ?></p>
+    <div class="auto-hide">
+        <div class="inner"><?= $this->text('guide-project-supports') ?></div>
+        <div class="more"><i class="fa fa-info-circle"></i> <?= $this->text('regular-help') ?></div>
+    </div>
 
     <?php
     if($this->supports):

@@ -80,7 +80,7 @@ class SettingsDashboardController extends \Goteo\Core\Controller {
             if($project->isApproved()) {
                 $redirect = '/dashboard/project/' . $pid . '/profile';
             } else {
-                $redirect = '/dashboard/project/' . $pid . '/personal';
+                $redirect = '/dashboard/project/' . $pid . '/overview';
                 $submit_label = 'form-next-button';
             }
 

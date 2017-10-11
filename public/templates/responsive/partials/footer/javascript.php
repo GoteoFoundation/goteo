@@ -12,8 +12,8 @@
 <script src="<?= SRC_URL ?>/assets/vendor/clipboard/clipboard.min.js"></script>
 <script src="<?= SRC_URL ?>/assets/vendor/moment/min/moment-with-locales.min.js"></script>
 <script src="<?= SRC_URL ?>/assets/vendor/eonasdan-bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min.js"></script>
+<script src="<?= SRC_URL ?>/assets/vendor/slick-carousel/slick/slick.min.js"></script>
 
-<script type="text/javascript" src="/assets/vendor/slick-carousel/slick/slick.min.js"></script>
 
 <!-- Goteo utils: Debug functions, Session keeper -->
 <!-- POST PROCESSING THIS CSS BY GRUNT -->

@@ -20,20 +20,11 @@ $this->section('content');
 
 
 <?php $this->section('head') ?>
-    <link rel="stylesheet" type="text/css" href="<?= SRC_URL ?>/assets/vendor/dropzone/dist/min/dropzone.min.css" />
-    <link rel="stylesheet" href="<?= SRC_URL ?>/assets/vendor/simplemde/dist/simplemde.min.css" type="text/css" />
-    <link rel="stylesheet" href="<?= SRC_URL ?>/assets/vendor/bootstrap-tagsinput/dist/bootstrap-tagsinput.css" type="text/css" />
     <link href="<?= SRC_URL ?>/assets/css/typeahead.css" rel="stylesheet">
 <?php $this->append() ?>
 
 <?php $this->section('footer') ?>
 
-    <script type="text/javascript" src="<?= SRC_URL ?>/assets/vendor/Sortable/Sortable.min.js"></script>
-    <script type="text/javascript" src="<?= SRC_URL ?>/assets/vendor/dropzone/dist/min/dropzone.min.js"></script>
-    <script type="text/javascript" src="<?= SRC_URL ?>/assets/js/forms.js"></script>
-    <script type="text/javascript" src="<?= SRC_URL ?>/assets/js/dashboard/ajax-utils.js"></script>
-    <script type="text/javascript" src="<?= SRC_URL ?>/assets/vendor/simplemde/dist/simplemde.min.js"></script>
-    <script type="text/javascript" src="<?= SRC_URL ?>/assets/vendor/bootstrap-tagsinput/dist/bootstrap-tagsinput.min.js"></script>
     <script type="text/javascript" src="<?= SRC_URL ?>/assets/vendor/typeahead.js/dist/typeahead.bundle.min.js"></script>
     <script>
         $(document).ready(function(){
@@ -105,7 +96,7 @@ $this->section('content');
           function destroySlickProjects() {
             if ($('.slider-projects').hasClass('slick-initialized')) {
               $('.slider-projects').slick('destroy');
-            }      
+            }
           }
 
           $carousel.on('afterChange', function() {
@@ -133,14 +124,14 @@ $this->section('content');
                   settings: {
                     slidesToShow: 1,
                   }
-                }]    
+                }]
             });
           }
 
           function destroySlickCalls() {
             if ($('.slider-calls').hasClass('slick-initialized')) {
               $('.slider-calls').slick('destroy');
-            }      
+            }
           }
 
           initSlickCalls();
@@ -152,7 +143,7 @@ $this->section('content');
               $('#search').addClass('open');
               $('#search > form > input[type="search"]').focus();
           });
-          
+
           $('#search, #search button.close').on('click keyup', function(event) {
               if (event.target == this || event.target.className == 'close' || event.keyCode == 27) {
                   $(this).removeClass('open');
@@ -171,7 +162,7 @@ $this->section('content');
               }
 
               $(this).toogleClass('active');
-              
+
             var $filters = $('.auto-update-calls .filters');
             var filters = [];
 
@@ -192,14 +183,14 @@ $this->section('content');
           });
 
           $(".auto-update-projects").on('click', ".filters li", function (e) {
-            
+
             $(".auto-update-projects .filters li").each(function(){
               $(this).removeClass('active');
             });
             $(this).addClass('active');
-              
+
             var filter=$(this).data('status');
-            
+
             var url = '/home/ajax/projects/filtered';
 
           //$('#projects-container').animateCss('fadeOut');
@@ -214,14 +205,14 @@ $this->section('content');
 
 
           $(".sidebar-nav").on('click', "a", function (e) {
-            if(/^#/.test(href) === true) { 
+            if(/^#/.test(href) === true) {
                 $('body').removeClass('sidebar-opened');
             } else {
                 alert("no anchor")
             }
           });
-          
-          
+
+
         });
     </script>
 

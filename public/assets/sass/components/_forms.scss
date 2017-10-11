@@ -86,6 +86,7 @@
         display: block;
         content: '';
         clear: both;
+        line-height:0;
     }
     &.info {
         text-align: right;
@@ -242,16 +243,21 @@
   position: relative;
   width: 100%;
   background: $background-light-body;
-  padding: 0;
+  padding: 5px;
   border-radius: 5px;
+  &::after {
+    display: block;
+    content: '';
+    clear: both;
+  }
 
   .dragndrop {
     width: 150px;
     height: 150px;
-    position: absolute;
+    position: relative;
     display: block;
-    top:10px;
-    right:10px;
+    float: left;
+    margin: 5px;
   }
   .dropzone {
     border: 2px dashed $secondary-color;
@@ -278,24 +284,33 @@
     }
   }
   .image-list-sortable {
-    min-height: 170px;
+    min-height: 160px;
     display: block;
-    padding: 5px 155px 0 5px;
     border: 5px solid $background-light-body;
     margin: 0;
-    min-width: 150px;
+    line-height: 0;
+    float: left;
+
+    // min-width: 150px;
     &.over {
       // background-color: $background-pink;
       // border-color:$background-pink;
       border-color:$color-cyan;
     }
+    &.choose {
+        width: 100%;
+        // float:
+    }
     > li {
       position: relative;
       line-height: 1em;
+      // padding: 5px 0 0 5px;
       padding: 0;
-      margin: 0;
-      margin-right: 5px;
-        background: no-repeat darken($background-white, 5%) url(/assets/img/ring.gif) center;
+      margin: 0 0 5px 5px;
+      background: no-repeat darken($background-white, 5%) url(/assets/img/ring.gif) center;
+      &:last-child {
+        margin-right: 0;
+      }
       .image {
         width: 150px;
         height: 150px;
@@ -317,6 +332,14 @@
     }
   }
 
+}
+
+.input-wrap .image-zone {
+    padding:0;
+    .image-list-sortable {
+        border:0;
+        min-height: 150px;
+    }
 }
 
 

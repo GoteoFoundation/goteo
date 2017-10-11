@@ -1,18 +1,18 @@
 ID_DEL_TEXTO: 'Text ID_DEL_TEXTO'
 admin_no_permission: 'No tens permisos per accedir a <strong>%s</strong>'
-bazar-description-seo: 'Regalos solidarios crowdfunding en Goteo.org.'
-bazar-title-seo: 'Regalos Solidarios :: Goteo.org'
+bazar-description-seo: 'Regals solidaris crowdfunding a Goteo.org.'
+bazar-title-seo: 'Regals solidaris :: Goteo.org'
 blog-comments: Comentaris
 blog-main-header: 'Blog de Goteo'
-calendar-calls-category: Convocatorias
-calendar-events-category: Eventos
+calendar-calls-category: 'Convocatòries'
+calendar-events-category: 'Events'
 calendar-home-hour: a
-calendar-home-title: 'Próximo evento'
-calendar-net-category: 'Red y política'
+calendar-home-title: 'Proper event'
+calendar-net-category: 'Xarxa i política'
 calendar-projects-category: Proyectos
 calendar-share: Compartir
 calendar-workshops-category: Talleres
-couldn: 'Text couldn'
+couldn: 'No s''ha pogut'
 error-contact-email-invalid: 'El correu electrònic que has escrit no és vàlid'
 error-image-name: 'Error en el nom de l''arxiu'
 error-image-size: 'Error en la mida de l''arxiu'
@@ -95,6 +95,7 @@ regular-header-faq: FAQ
 regular-header-glossary: 'Principis per a una economia oberta'
 regular-hello: Hola
 regular-here: aquí
+regular-help: Ajuda
 regular-home: Inici
 regular-identica: Identi.ca
 regular-im: Sóc
@@ -113,7 +114,8 @@ regular-manage_board: 'Panell gestoria'
 regular-mandatory: 'Camp obligatori!'
 regular-media_legend: Llegenda
 regular-menu: Menú
-regular-message-clipboard-fail: 'Sel·lecciona i copia aquest enllaç'
+regular-menu-personal: Menú personal
+regular-message-clipboard-fail: 'Selecciona i copia aquest enllaç'
 regular-message_fail: 'Hi ha hagut algun error en enviar el missatge'
 regular-message_success: 'Missatge enviat correctament'
 regular-months: 'mesos '
@@ -171,10 +173,10 @@ regular-messages: Missatges
 regular-unknown: Desconegut
 regular-input: Aportació
 regular-amount: Import
-session-about-to-expire: 'Tu sesión expirará en 10 minutos. ¿Quieres recargar la página para renovarla?'
-session-expired: 'Tu sesión en goteo ha expirado!'
+session-about-to-expire: 'La teva sessió expirarà en 10 minuts. ¿Vols recarregar la pàgina per renovar-la?'
+session-expired: 'La teva sessió ha expirat!'
 stories-user-project: "%s, del projecte: %s\r\n"
-tooltip: 'Text tooltip'
+tooltip: 'Text d''ajuda'
 tooltip-dashboard-user-access_data: 'Aquestes són les teves dades actuals d''accés. L''única cosa que no es pot canviar és el login o nom d''usuari.'
 tooltip-dashboard-user-change_email: 'Des d''aquí pots canviar l''adreça de correu electrònic on reps els missatges de Goteo.'
 tooltip-dashboard-user-change_password: 'Des d''aquí pots canviar la contrasenya amb que accedeixes a Goteo.'
@@ -184,7 +186,7 @@ tooltip-dashboard-user-new_email: 'Indica la nova adreça de correu electrònic 
 tooltip-dashboard-user-new_password: 'Escriu la nova contrasenya amb que vols accedir a Goteo.'
 tooltip-dashboard-user-user_password: 'Escriu la contrasenya actual amb que accedeixes a Goteo.'
 tooltip-project-schedule: 'Visualització de com queda l''agenda de producció del teu projecte. Recorda que només has d''assenyalar les noves tasques a realitzar, no les que ja s''hagin dut a terme.'
-translate-home-guide: 'Message pour le traducteur'
+translate-home-guide: 'Missatge pel traductor'
 user-account-inactive: 'El compte està desactivat. Has de recuperar la contrasenya per activar-lo de nou'
 user-activate-fail: 'Error en activar el compte d''usuari'
 user-changeemail-fail: 'Error en canviar l''email'
