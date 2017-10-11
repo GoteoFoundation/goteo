@@ -344,6 +344,8 @@ namespace Goteo\Model {
                 }
 
                 $call->sponsors = Call\Sponsor::getList($id);
+                $call->sponsors_main = Call\Sponsor::getList($id,'main');
+                $call->sponsors_collaborator = Call\Sponsor::getList($id, 'collaborator');
                 $call->banners  = Call\Banner::getList($id, $lang);
 
                 //$call->logo = Image::get($call->logo);
