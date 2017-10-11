@@ -41,6 +41,19 @@ class ProjectCampaignForm extends AbstractFormProcessor implements FormProcessor
         $project = $this->getModel();
 
         $this->getBuilder()
+            ->add('one_round', 'choice', [
+                'disabled' => $this->getReadonly(),
+                'label' => 'costs-field-select-rounds',
+                'constraints' => $this->getConstraints('one_round'),
+                'required' => true,
+                'expanded' => true,
+                'wrap_class' => 'col-xs-6',
+                'choices' => [
+                    '1' => Text::get('project-one-round'),
+                    '0' => Text::get('project-two-rounds')
+                ],
+                'attr' => ['help' => '<span class="' . ($project->one_round ? '': 'hidden') . '">' . Text::get('tooltip-project-rounds') . '</span><span class="' . ($project->one_round ? 'hidden': '') . '">' . Text::get('tooltip-project-2rounds') . '</span>']
+            ])
             ->add('phone', 'text', [
                 'label' => 'personal-field-phone',
                 'disabled' => $this->getReadonly(),
@@ -54,19 +67,6 @@ class ProjectCampaignForm extends AbstractFormProcessor implements FormProcessor
                 'disabled' => $this->getReadonly(),
                 'required' => false,
                 'attr' => ['help' => Text::get('tooltip-project-paypal')]
-            ])
-            ->add('one_round', 'choice', [
-                'disabled' => $this->getReadonly(),
-                'label' => 'costs-field-select-rounds',
-                'constraints' => $this->getConstraints('one_round'),
-                'required' => true,
-                'expanded' => true,
-                'wrap_class' => 'col-xs-6',
-                'choices' => [
-                    '1' => Text::get('project-one-round'),
-                    '0' => Text::get('project-two-rounds')
-                ],
-                'attr' => ['help' => '<span class="' . ($project->one_round ? '': 'hidden') . '">' . Text::get('tooltip-project-rounds') . '</span><span class="' . ($project->one_round ? 'hidden': '') . '">' . Text::get('tooltip-project-2rounds') . '</span>']
             ])
             ;
         return $this;

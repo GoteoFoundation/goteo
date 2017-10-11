@@ -127,6 +127,7 @@ regular-mandatory: 'Campo obligatorio!'
 regular-matchfunding: 'Match funding'
 regular-media_legend: Leyenda
 regular-menu: Menú
+regular-menu-personal: Menú personal
 regular-message-clipboard-fail: 'Selecciona y copia este enlace'
 regular-message_fail: 'Ha habido algun error al enviar el mensaje'
 regular-message_success: 'Mensaje enviado correctamente'

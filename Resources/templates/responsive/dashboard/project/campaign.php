@@ -16,6 +16,7 @@
         $form = $this->raw('form');
         echo $this->form_start($form);
 
+        echo $this->form_row($form['one_round']);
 
         echo $this->form_row($form['phone']);
 
@@ -31,7 +32,6 @@
             echo $this->form_row($form['paypal']);
         echo '</div>';
 
-        echo $this->form_row($form['one_round']);
 
         echo $this->form_row($form['submit']);
 

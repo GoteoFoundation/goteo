@@ -38,16 +38,50 @@
     // Permanent menus
     .navbar-always {
         float:right;
-        margin-right: -15px;
+        height: 55px;
+        &::after {
+            display: block;
+            content: '';
+            clear: both;
+        }
 
-        button, a {
-            &.user-menu {
-                margin-left: 15px;
+        .main-menu {
+            // margin:0;
+            .show-menu {
+              display: inline-block;
             }
-            margin:0;
-            padding: 0;
-            overflow: hidden;
-            vertical-align: middle;
+            .close-menu {
+                display: none;
+                margin: 0px -23px 0 0;
+                padding: 13px 30px 0 15px;
+                background: $color-white;
+                .icon {
+                   background: $color-cyan;
+                   margin-top:-6px;
+                }
+            }
+            &.active {
+              padding:0;
+              .show-menu {
+                display: none;
+              }
+              .close-menu {
+                display: inline-block;
+              }
+            }
+        }
+
+        >a, >button {
+            min-width: 55px;
+            height: 55px;
+            line-height: 32px;
+            outline: 0;
+            text-align: center;
+            display: inline-block;
+            padding: 12px 6px;
+            margin: 0;
+            // overflow: hidden;
+            vertical-align: top;
             border: none;
             background: transparent;
             color: $color-white;
@@ -56,42 +90,21 @@
                 vertical-align: text-bottom;
                 border: 2px solid $color-white;
             }
-        }
-    }
 
-    .navbar-always, .toggle-menu {
-        &.main-menu {
-            margin:0;
-            padding:0;
-            .show-menu,.close-menu {
-                display: none;
-                width: 56px;
-                height: 61px;
-                &.active {
-                    display: block;
+
+            i {
+                &.fa {
+                   font-size: 32px;
                 }
-            }
-            .show-menu {
-                padding: 13px 15px;
-            }
-            .close-menu {
-                padding: 19px 15px;
-                background: $color-white;
-                .icon {
-                   background: $color-cyan;
+                &.icon {
+                   background: $color-white;
+                   width: 32px;
+                   height: 32px;
                 }
             }
         }
-
-        i {
-            &.fa {
-               font-size: 32px;
-            }
-            &.icon {
-                background: $color-white;
-               width: 23px;
-               height: 23px;
-            }
+        >button {
+          line-height: 43px;
         }
     }
 

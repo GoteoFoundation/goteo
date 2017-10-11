@@ -114,6 +114,7 @@ regular-manage_board: 'Panell gestoria'
 regular-mandatory: 'Camp obligatori!'
 regular-media_legend: Llegenda
 regular-menu: Menú
+regular-menu-personal: Menú personal
 regular-message-clipboard-fail: 'Selecciona i copia aquest enllaç'
 regular-message_fail: 'Hi ha hagut algun error en enviar el missatge'
 regular-message_success: 'Missatge enviat correctament'

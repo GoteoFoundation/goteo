@@ -113,6 +113,7 @@ regular-manage_board: 'Processing Agency Panel'
 regular-mandatory: 'Required field!'
 regular-media_legend: Key
 regular-menu: Menu
+regular-menu-personal: Personal menu
 regular-message-clipboard-fail: 'Select and copy this link'
 regular-message_fail: 'There was an error sending the message'
 regular-message_success: 'Message sent correctly'

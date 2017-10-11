@@ -24,9 +24,11 @@
       }
       &.ko::after{
         font-family: FontAwesome;
-        content: "\f00d";
+        // content: "\f00d";
+        content: "\f111";
+        font-size:50%;
         position: absolute;
-        top: 15px;
+        top: 21px;
         right: 15px;
         color: $color-red;
         display: block;
