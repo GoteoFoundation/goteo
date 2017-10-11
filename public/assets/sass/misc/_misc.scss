@@ -3,9 +3,8 @@
 
 
 // Remove firefox inner dotted on focus buttons
-// TODO: check this, problems with Codemirror focus borders
-// :focus {outline:none;}
-// ::-moz-focus-inner {border:0;}
+a:focus {outline:none;}
+a::-moz-focus-inner {border:0;}
 
 // AnimatedCSS default velocity
 .animated {
