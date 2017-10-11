@@ -165,6 +165,19 @@ class ProjectDashboardController extends \Goteo\Core\Controller {
         ]);
     }
 
+    protected function getEditRedirect($current = null) {
+        $goto = 'summary';
+        if(!$project->isApproved()) {
+            $steps = ['profile' , 'overview', 'images', 'costs', 'rewards', 'campaign'];
+            if($current = array_search($current) !== false) {
+                $next = $current + 1;
+                if($next == count($steps)) $next = 0;
+                $goto = $steps[$next];
+            }
+        }
+        return '/dashboard/project/' . $this->project->id . '/' . $goto;
+    }
+
     /**
      * Project edit (personal)
      * NOTE: Step removed, maintaining the method just in case
@@ -175,12 +188,6 @@ class ProjectDashboardController extends \Goteo\Core\Controller {
         if($project instanceOf Response) return $project;
 
         $user = $project->getOwner();
-        if($project->isApproved()) {
-            $redirect = '/dashboard/project/' . $pid . '/personal';
-        } else {
-            $redirect = '/dashboard/project/' . $pid . '/overview';
-            $submit_label = 'form-next-button';
-        }
         $defaults = (array) $project;
         $defaults['contract_birthdate'] = new \Datetime($defaults['contract_birthdate']);
         if($account = Account::get($project->id)) {
@@ -200,7 +207,7 @@ class ProjectDashboardController extends \Goteo\Core\Controller {
         $processor->setReadonly(!$project->userCanEdit($this->user, true))->createForm();
         $form = $processor->getBuilder()
             ->add('submit', 'submit', [
-                'label' => $submit_label ? $submit_label : 'regular-submit'
+                'label' => $project->isApproved() ? 'regular-submit' : 'form-next-button'
             ])->getForm();
 
         $form->handleRequest($request);
@@ -208,7 +215,7 @@ class ProjectDashboardController extends \Goteo\Core\Controller {
             try {
                 $processor->save($form);
                 Message::info(Text::get('user-personal-saved'));
-                return $this->redirect($redirect);
+                return $this->redirect($this->getEditRedirect('personal'));
             } catch(FormModelException $e) {
                 Message::error($e->getMessage());
             }
@@ -225,12 +232,6 @@ class ProjectDashboardController extends \Goteo\Core\Controller {
     {
         $project = $this->validateProject($pid, 'overview');
         if($project instanceOf Response) return $project;
-        if($project->isApproved()) {
-            $redirect = '/dashboard/project/' . $pid . '/overview';
-        } else {
-            $redirect = '/dashboard/project/' . $pid . '/images';
-            $submit_label = 'form-next-button';
-        }
 
         $defaults = (array)$project;
 
@@ -243,7 +244,7 @@ class ProjectDashboardController extends \Goteo\Core\Controller {
 
         if(!$processor->getReadonly()) {
             $processor->getBuilder()->add('submit', 'submit', [
-                'label' => $submit_label ? $submit_label : 'regular-submit'
+                'label' => $project->isApproved() ? 'regular-submit' : 'form-next-button'
             ]);
         }
         $form = $processor->getForm();
@@ -253,7 +254,7 @@ class ProjectDashboardController extends \Goteo\Core\Controller {
             try {
                 $processor->save($form);
                 Message::info(Text::get('dashboard-project-saved'));
-                return $this->redirect($redirect);
+                return $this->redirect($this->getEditRedirect('overview'));
             } catch(FormModelException $e) {
                 Message::error($e->getMessage());
             }
@@ -398,12 +399,6 @@ class ProjectDashboardController extends \Goteo\Core\Controller {
     {
         $project = $this->validateProject($pid, 'costs');
         if($project instanceOf Response) return $project;
-        if($project->isApproved()) {
-            $redirect = '/dashboard/project/' . $pid . '/costs';
-        } else {
-            $redirect = '/dashboard/project/' . $pid . '/rewards';
-            $submit_label = 'form-next-button';
-        }
 
         $defaults = (array) $project;
         // Create the form
@@ -413,7 +408,7 @@ class ProjectDashboardController extends \Goteo\Core\Controller {
         if(!$processor->getReadonly()) {
             $builder
                 ->add('submit', 'submit', [
-                    'label' => $submit_label ? $submit_label : 'regular-submit'
+                    'label' => $project->isApproved() ? 'regular-submit' : 'form-next-button'
                 ])
                 ->add('add-cost', 'submit', [
                     'label' => 'project-add-cost',
@@ -464,7 +459,7 @@ class ProjectDashboardController extends \Goteo\Core\Controller {
                 $form = $processor->save($form)->getBuilder()->getForm();
                 Message::info(Text::get('dashboard-project-saved'));
                 if($next) {
-                    return $this->redirect($redirect);
+                    return $this->redirect($this->getEditRedirect('costs'));
                 }
             } catch(FormModelException $e) {
                 Message::error($e->getMessage());
@@ -487,20 +482,13 @@ class ProjectDashboardController extends \Goteo\Core\Controller {
         $project = $this->validateProject($pid, 'rewards');
         if($project instanceOf Response) return $project;
 
-        if($project->isApproved()) {
-            $redirect = '/dashboard/project/' . $pid . '/rewards';
-        } else {
-            $redirect = '/dashboard/project/' . $pid . '/campaign';
-            $submit_label = 'form-next-button';
-        }
-
         $defaults = (array) $project;
         // Create the form
         $processor = $this->getModelForm('ProjectRewards', $project, $defaults, [], $request);
         $processor->setReadonly(!$project->userCanEdit($this->user, true))->createForm();
         $builder = $processor->getBuilder()
             ->add('submit', 'submit', [
-                'label' => $submit_label ? $submit_label : 'regular-submit'
+                'label' => $project->isApproved() ? 'regular-submit' : 'form-next-button'
             ])
             ->add('add-reward', 'submit', [
                 'label' => 'project-add-reward',
@@ -546,7 +534,7 @@ class ProjectDashboardController extends \Goteo\Core\Controller {
                 $form = $processor->save($form)->getBuilder()->getForm();
                 Message::info(Text::get('dashboard-project-saved'));
                 if($next) {
-                    return $this->redirect($redirect);
+                    return $this->redirect($this->getEditRedirect('rewards'));
                 }
             } catch(FormModelException $e) {
                 Message::error($e->getMessage());
@@ -567,12 +555,6 @@ class ProjectDashboardController extends \Goteo\Core\Controller {
     {
         $project = $this->validateProject($pid, 'campaign');
         if($project instanceOf Response) return $project;
-        if($project->isApproved()) {
-            $redirect = '/dashboard/project/' . $pid . '/campaign';
-        } else {
-            $redirect = '/dashboard/project/' . $pid . '/summary';
-            $submit_label = 'form-next-button';
-        }
 
         $defaults = (array)$project;
         if($account = Account::get($project->id)) {
@@ -596,7 +578,7 @@ class ProjectDashboardController extends \Goteo\Core\Controller {
 
         if(!$processor->getReadonly()) {
             $processor->getBuilder()->add('submit', 'submit', [
-                'label' => $submit_label ? $submit_label : 'regular-submit'
+                'label' => $project->isApproved() ? 'regular-submit' : 'form-next-button'
             ]);
         }
         $form = $processor->getForm();
@@ -606,7 +588,7 @@ class ProjectDashboardController extends \Goteo\Core\Controller {
             try {
                 $processor->save($form);
                 Message::info(Text::get('dashboard-project-saved'));
-                return $this->redirect($redirect);
+                return $this->redirect($this->getEditRedirect('campaign'));
             } catch(FormModelException $e) {
                 Message::error($e->getMessage());
             }
