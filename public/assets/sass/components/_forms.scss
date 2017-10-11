@@ -244,14 +244,19 @@
   background: $background-light-body;
   padding: 0;
   border-radius: 5px;
+  &::after {
+    display: block;
+    content: '';
+    clear: both;
+  }
 
   .dragndrop {
     width: 150px;
     height: 150px;
-    position: absolute;
+    position: relative;
     display: block;
-    top:10px;
-    right:10px;
+    float: left;
+    margin-top:10px;
   }
   .dropzone {
     border: 2px dashed $secondary-color;
@@ -280,19 +285,24 @@
   .image-list-sortable {
     min-height: 170px;
     display: block;
-    padding: 5px 155px 0 5px;
     border: 5px solid $background-light-body;
     margin: 0;
-    min-width: 150px;
+    float: left;
+
+    // min-width: 150px;
     &.over {
       // background-color: $background-pink;
       // border-color:$background-pink;
       border-color:$color-cyan;
     }
+    &.choose {
+        width: 100%;
+        // float:
+    }
     > li {
       position: relative;
       line-height: 1em;
-      padding: 0;
+      padding: 5px 0 0 5px;
       margin: 0;
       margin-right: 5px;
         background: no-repeat darken($background-white, 5%) url(/assets/img/ring.gif) center;

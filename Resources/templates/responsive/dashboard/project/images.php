@@ -10,7 +10,9 @@
         <!-- <div class="more"><i class="fa fa-info-circle"></i> <?= $this->text('regular-help') ?></div> -->
     </div>
 
-    <?php foreach($this->zones as $key => $zone): ?>
+    <?php foreach($this->zones as $key => $zone):
+        if(!is_array($this->images[$key])) continue;
+     ?>
         <h3><?= $zone ?></h3>
         <div class="image-zone" data-section="<?= $key ?>">
             <ul class="list-inline image-list-sortable" id="list-sortable-<?= $key ?>"><?php
@@ -70,6 +72,7 @@ $(function(){
     $('.image-zone').each(function(){
         var $zone = $(this);
         var $list = $(this).find('.image-list-sortable');
+        var $all = $('.image-list-sortable');
         var $error = $zone.next();
         var element = $zone.find('.dragndrop>div').get(0);
 
@@ -78,11 +81,13 @@ $(function(){
             // , forceFallback: true
             // Reorder actions
             , onStart: function(evt) {
-                console.log('hide chooser', evt);
+                // console.log('hide chooser', evt);
                 $('.dragndrop').hide();
+                $all.addClass('choose');
             }
             , onEnd: function (evt) {
                 $('.dragndrop').show();
+                $all.removeClass('choose');
                 // evt.oldIndex;  // element's old index within parent
                 // evt.newIndex;  // element's new index within parent
                 // console.log(evt);

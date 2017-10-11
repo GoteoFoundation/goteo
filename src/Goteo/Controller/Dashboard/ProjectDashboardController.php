@@ -165,17 +165,31 @@ class ProjectDashboardController extends \Goteo\Core\Controller {
         ]);
     }
 
-    protected function getEditRedirect($current = null) {
+    /**
+     * Returns the link where to redirect after a form submission
+     * cicles betwen steps if project is not approved yet
+     * returns to summary if is approved
+     * goto error step if validate GET is present
+     */
+    protected function getEditRedirect($current = null, Request $request = null) {
         $goto = 'summary';
-        if(!$project->isApproved()) {
-            $steps = ['profile' , 'overview', 'images', 'costs', 'rewards', 'campaign'];
-            if($current = array_search($current) !== false) {
-                $next = $current + 1;
-                if($next == count($steps)) $next = 0;
-                $goto = $steps[$next];
+        $validate = $request && $request->query->has('validate');
+        if(!$this->project->isApproved()) {
+            if($validate) {
+                $validation = $this->project->getValidation();
+                $next = $validation->errors && key($valitation->errors);
+                if($next) $goto = $next;
+            }
+            if(!$next) {
+                $steps = ['profile' , 'overview', 'images', 'costs', 'rewards', 'campaign'];
+                if($current = array_search($current, $steps) !== false) {
+                    $next = $current + 1;
+                    if($next == count($steps)) $next = 0;
+                    $goto = $steps[$next];
+                }
             }
         }
-        return '/dashboard/project/' . $this->project->id . '/' . $goto;
+        return '/dashboard/project/' . $this->project->id . '/' . $goto . ($validate ? '?validate' : '');
     }
 
     /**
@@ -215,7 +229,7 @@ class ProjectDashboardController extends \Goteo\Core\Controller {
             try {
                 $processor->save($form);
                 Message::info(Text::get('user-personal-saved'));
-                return $this->redirect($this->getEditRedirect('personal'));
+                return $this->redirect($this->getEditRedirect('personal', $request));
             } catch(FormModelException $e) {
                 Message::error($e->getMessage());
             }
@@ -254,7 +268,7 @@ class ProjectDashboardController extends \Goteo\Core\Controller {
             try {
                 $processor->save($form);
                 Message::info(Text::get('dashboard-project-saved'));
-                return $this->redirect($this->getEditRedirect('overview'));
+                return $this->redirect($this->getEditRedirect('overview', $request));
             } catch(FormModelException $e) {
                 Message::error($e->getMessage());
             }
@@ -271,9 +285,6 @@ class ProjectDashboardController extends \Goteo\Core\Controller {
     {
         $project = $this->validateProject($pid, 'images');
         if($project instanceOf Response) return $project;
-        if(!$project->isApproved()) {
-            $next = '/dashboard/project/' . $pid . '/costs';
-        }
 
         $zones = ProjectImage::sections();
         $images = [];
@@ -284,7 +295,7 @@ class ProjectDashboardController extends \Goteo\Core\Controller {
         return $this->viewResponse('dashboard/project/images', [
             'zones' => $zones,
             'images' => $images,
-            'next' => $next
+            'next' => $this->getEditRedirect('images', $request)
             ]);
 
     }
@@ -459,7 +470,7 @@ class ProjectDashboardController extends \Goteo\Core\Controller {
                 $form = $processor->save($form)->getBuilder()->getForm();
                 Message::info(Text::get('dashboard-project-saved'));
                 if($next) {
-                    return $this->redirect($this->getEditRedirect('costs'));
+                    return $this->redirect($this->getEditRedirect('costs', $request));
                 }
             } catch(FormModelException $e) {
                 Message::error($e->getMessage());
@@ -534,7 +545,7 @@ class ProjectDashboardController extends \Goteo\Core\Controller {
                 $form = $processor->save($form)->getBuilder()->getForm();
                 Message::info(Text::get('dashboard-project-saved'));
                 if($next) {
-                    return $this->redirect($this->getEditRedirect('rewards'));
+                    return $this->redirect($this->getEditRedirect('rewards', $request));
                 }
             } catch(FormModelException $e) {
                 Message::error($e->getMessage());
@@ -588,7 +599,7 @@ class ProjectDashboardController extends \Goteo\Core\Controller {
             try {
                 $processor->save($form);
                 Message::info(Text::get('dashboard-project-saved'));
-                return $this->redirect($this->getEditRedirect('campaign'));
+                return $this->redirect($this->getEditRedirect('campaign', $request));
             } catch(FormModelException $e) {
                 Message::error($e->getMessage());
             }
