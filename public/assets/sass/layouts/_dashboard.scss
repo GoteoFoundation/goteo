@@ -146,7 +146,7 @@
     .more {
       position: absolute;
       top: 0px;
-      right: 20px;
+      right: 0px;
       background:$color-dark;
       color:$color-white;
       cursor: pointer;
@@ -217,6 +217,14 @@
     color: $color-white;
     * {
       color: $color-white;
+    }
+  }
+  .paypal {
+    max-height: 0;
+    overflow: hidden;
+    @include transition(max-height 0.5s ease);
+    &.show {
+      max-height: 600px;
     }
   }
   .form-group {

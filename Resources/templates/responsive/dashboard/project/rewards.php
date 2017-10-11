@@ -4,8 +4,11 @@
 
 <div class="dashboard-content">
   <div class="inner-container">
-    <h1><?= $this->text('rewards-main-header') ?></h1>
-    <p><?= $this->text('guide-project-rewards') ?></p>
+    <h1><?= $this->project->isApproved() ? '' : '5. ' ?><?= $this->text('rewards-main-header') ?></h1>
+    <div class="auto-hide">
+        <div class="inner"><?= $this->text('guide-project-rewards') ?></div>
+        <!-- <div class="more"><i class="fa fa-info-circle"></i> <?= $this->text('regular-help') ?></div> -->
+    </div>
 
     <?= $this->supply('dashboard-content-form', function() {
         $form = $this->raw('form');

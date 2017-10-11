@@ -126,19 +126,6 @@ class ProjectCostsForm extends AbstractFormProcessor implements FormProcessorInt
     public function createForm() {
         $project = $this->getModel();
         $builder = $this->getBuilder()
-            ->add('one_round', 'choice', [
-                'disabled' => $this->getReadonly(),
-                'label' => 'costs-field-select-rounds',
-                'constraints' => $this->getConstraints('one_round'),
-                'required' => true,
-                'expanded' => true,
-                'wrap_class' => 'col-xs-6',
-                'choices' => [
-                    '1' => Text::get('project-one-round'),
-                    '0' => Text::get('project-two-rounds')
-                ],
-                'attr' => ['help' => '<span class="' . ($project->one_round ? '': 'hidden') . '">' . Text::get('tooltip-project-rounds') . '</span><span class="' . ($project->one_round ? 'hidden': '') . '">' . Text::get('tooltip-project-2rounds') . '</span>']
-            ])
             ->add('title-costs', 'title', ['label' => 'costs-fields-main-title'])
             ;
         foreach($project->costs as $cost) {
@@ -154,7 +141,7 @@ class ProjectCostsForm extends AbstractFormProcessor implements FormProcessorInt
         $data = array_intersect_key($form->getData(), $form->all());
         // print_r($data);die;
         $project = $this->getModel();
-        $project->one_round = (bool) $data['one_round'];
+        // $project->one_round = (bool) $data['one_round'];
 
         $errors = [];
         $ids = [];

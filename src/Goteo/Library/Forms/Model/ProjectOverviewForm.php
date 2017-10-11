@@ -28,17 +28,20 @@ class ProjectOverviewForm extends AbstractFormProcessor implements FormProcessor
         if($field === 'name') {
             $constraints[] = new Constraints\NotBlank();
         }
-        elseif($this->getFullValidation()) {
+        if($field === 'subtitle') {
+            $constraints[] = new Constraints\Length(['max' => 140]);
+        }
+        if($field === 'description') {
+            // Minimal 80 words
+            $constraints[] = new Constraints\Regex([
+                'pattern' => '/^\s*\S+(?:\s+\S+){79,}\s*$/',
+                'message' => Text::get('validate-project-field-description')
+            ]);
+        }
+        if($this->getFullValidation()) {
             if($field !== 'spread') {
                 // all fields
                 $constraints[] = new Constraints\NotBlank();
-                if($field === 'description') {
-                    // Minimal 80 words
-                    $constraints[] = new Constraints\Regex([
-                        'pattern' => '/^\s*\S+(?:\s+\S+){79,}\s*$/',
-                        'message' => Text::get('validate-project-field-description')
-                    ]);
-                }
             }
         }
         return $constraints;
@@ -61,6 +64,16 @@ class ProjectOverviewForm extends AbstractFormProcessor implements FormProcessor
                 'disabled' => $this->getReadonly(),
                 'required' => false,
                 'attr' => ['help' => Text::get('tooltip-project-subtitle')]
+            ])
+            ->add('project_location', 'location', [
+                'label' => 'overview-field-project_location',
+                'constraints' => $this->getConstraints('project_location'),
+                'type' => 'project',
+                'disabled' => $this->getReadonly(),
+                'item' => $this->getModel()->id,
+                'required' => false,
+                'pre_addon' => '<i class="fa fa-globe"></i>',
+                'attr' => ['help' => Text::get('tooltip-project-project_location')]
             ])
             ->add('lang', 'choice', [
                 'label' => 'overview-field-lang',
@@ -90,15 +103,21 @@ class ProjectOverviewForm extends AbstractFormProcessor implements FormProcessor
                 'required' => false,
                 'attr' => ['help' => Text::get('tooltip-project-description'), 'rows' => 8]
             ])
-            ->add('project_location', 'location', [
-                'label' => 'overview-field-project_location',
-                'constraints' => $this->getConstraints('project_location'),
-                'type' => 'project',
+            ->add('about', 'markdown', [
+                'label' => 'overview-field-about',
+                'constraints' => $this->getConstraints('about'),
                 'disabled' => $this->getReadonly(),
-                'item' => $this->getModel()->id,
                 'required' => false,
-                'pre_addon' => '<i class="fa fa-globe"></i>',
-                'attr' => ['help' => Text::get('tooltip-project-project_location')]
+                // 'row_class' => 'extra',
+                'attr' => ['help' => Text::get('tooltip-project-about'), 'rows' => 8]
+            ])
+            ->add('motivation', 'markdown', [
+                'label' => 'overview-field-motivation',
+                'constraints' => $this->getConstraints('motivation'),
+                'disabled' => $this->getReadonly(),
+                'required' => false,
+                // 'row_class' => 'extra',
+                'attr' => ['help' => Text::get('tooltip-project-motivation'), 'rows' => 8]
             ])
             ->add('related', 'markdown', [
                 'label' => 'overview-field-related',
@@ -114,35 +133,19 @@ class ProjectOverviewForm extends AbstractFormProcessor implements FormProcessor
                 'required' => false,
                 'attr' => ['help' => Text::get('tooltip-project-spread'), 'info' => '<i class="fa fa-eye-slash"></i> '. Text::get('project-non-public-field'), 'rows' => 8]
             ])
-            ->add('extra-title', 'title', [
-                'label' => 'overview-extra-fields',
-                'disabled' => $this->getReadonly(),
-                'row_class' => 'extra'
-            ])
-            ->add('about', 'markdown', [
-                'label' => 'overview-field-about',
-                'constraints' => $this->getConstraints('about'),
-                'disabled' => $this->getReadonly(),
-                'required' => false,
-                'row_class' => 'extra',
-                'attr' => ['help' => Text::get('tooltip-project-about'), 'rows' => 8]
-            ])
-            ->add('motivation', 'markdown', [
-                'label' => 'overview-field-motivation',
-                'constraints' => $this->getConstraints('motivation'),
-                'disabled' => $this->getReadonly(),
-                'required' => false,
-                'row_class' => 'extra',
-                'attr' => ['help' => Text::get('tooltip-project-motivation'), 'rows' => 8]
-            ])
-            ->add('goal', 'markdown', [
-                'label' => 'overview-field-goal',
-                'disabled' => $this->getReadonly(),
-                'constraints' => $this->getConstraints('goal'),
-                'required' => false,
-                'row_class' => 'extra',
-                'attr' => ['help' => Text::get('tooltip-project-goal'), 'rows' => 8]
-            ])
+            // ->add('extra-title', 'title', [
+            //     'label' => 'overview-extra-fields',
+            //     'disabled' => $this->getReadonly(),
+            //     'row_class' => 'extra'
+            // ])
+            // ->add('goal', 'markdown', [
+            //     'label' => 'overview-field-goal',
+            //     'disabled' => $this->getReadonly(),
+            //     'constraints' => $this->getConstraints('goal'),
+            //     'required' => false,
+            //     // 'row_class' => 'extra',
+            //     'attr' => ['help' => Text::get('tooltip-project-goal'), 'rows' => 8]
+            // ])
             ->add('scope', 'choice', [
                 'label' => 'overview-field-scope',
                 'disabled' => $this->getReadonly(),

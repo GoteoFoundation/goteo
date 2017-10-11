@@ -30,16 +30,17 @@ $(function(){
     var toggleMenu = function(e) {
         e.stopPropagation();
         e.preventDefault();
-        var that = this;
-        var target = $(this).data('target');
+        var button = this;
+        var $button = $(this);
+        console.log($button.attr('class'));
+        var target = $button.data('target');
         var $t = $('#' + target);
-        var $show = $(this).find('.show-menu');
-        var $close = $(this).find('.close-menu');
+        var $show = $button.find('.show-menu');
+        var $close = $button.find('.close-menu');
         // xs devices has css position to fixed
         var isDesktop = $t.css('position') === 'absolute';
         if(!isDesktop && $close.length) {
-            $close.removeClass('active');
-            $show.addClass('active');
+            $button.addClass('active');
         }
         var inAnimation = 'slideInRight';
         var outAnimation = 'slideOutRight';
@@ -50,16 +51,14 @@ $(function(){
 
         // Close other opened
         $('.top-menu.active:not([id="' + target + '"])').removeClass('active');
-        $(this).parent().find('.close-menu').removeClass('active');
-        $(this).parent().find('.show-menu').addClass('active');
+        $button.siblings('.active').removeClass('active');
         $('#main-content').off();
 
         if($t.hasClass('active')) {
             if(isDesktop) {
-                $show.removeClass('active');
-                $close.addClass('active').animateCss('flipOutX', function() {
-                    $close.removeClass('active');
-                    $show.addClass('active').animateCss('flipInX');
+                $close.animateCss('flipOutX', function() {
+                    $button.removeClass('active');
+                    $show.animateCss('flipInX');
                 });
             }
             $t.animateCss(outAnimation, function(){
@@ -68,15 +67,14 @@ $(function(){
             });
         } else {
             if(isDesktop) {
-                $close.removeClass('active');
-                $show.addClass('active').animateCss('flipOutX', function() {
-                    $show.removeClass('active');
-                    $close.addClass('active').animateCss('flipInX');
+                $show.animateCss('flipOutX', function() {
+                    $button.addClass('active');
+                    $close.animateCss('flipInX');
                 });
             }
             $t.addClass('active').animateCss(inAnimation, function(){
                 $('#main-content').on('click', function(e){
-                    toggleMenu.call(that, e);
+                    toggleMenu.call(button, e);
                     $(this).off();
                 });
             });

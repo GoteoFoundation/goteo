@@ -4,17 +4,22 @@
 
 <div class="dashboard-content">
   <div class="inner-container">
-    <h1><?= $this->text('images-main-header') ?></h1>
-    <p><?= $this->text('dashboard-project-images-desc') ?></p>
+    <h1><?= $this->next ? '3. ' : '' ?><?= $this->text('images-main-header') ?></h1>
+    <div class="auto-hide">
+        <div class="inner"><?= $this->text('dashboard-project-images-desc') ?></div>
+        <!-- <div class="more"><i class="fa fa-info-circle"></i> <?= $this->text('regular-help') ?></div> -->
+    </div>
 
-    <?php foreach($this->zones as $key => $zone): ?>
+    <?php foreach($this->zones as $key => $zone):
+        if(!is_array($this->images[$key])) continue;
+     ?>
         <h3><?= $zone ?></h3>
         <div class="image-zone" data-section="<?= $key ?>">
             <ul class="list-inline image-list-sortable" id="list-sortable-<?= $key ?>"><?php
             foreach($this->images[$key] as $img) {
-                echo $this->insert('dashboard/project/partials/image_list_item', [
+                echo trim($this->insert('dashboard/project/partials/image_list_item', [
                         'image_url' => $img->getLink(300, 300, true),
-                        'image_name' => $img->getName()]);
+                        'image_name' => $img->getName()]));
             }
             ?></ul>
             <div class="dragndrop"><div class="dropzone"></div></div>
@@ -67,6 +72,7 @@ $(function(){
     $('.image-zone').each(function(){
         var $zone = $(this);
         var $list = $(this).find('.image-list-sortable');
+        var $all = $('.image-list-sortable');
         var $error = $zone.next();
         var element = $zone.find('.dragndrop>div').get(0);
 
@@ -75,11 +81,13 @@ $(function(){
             // , forceFallback: true
             // Reorder actions
             , onStart: function(evt) {
-                console.log('hide chooser', evt);
+                // console.log('hide chooser', evt);
                 $('.dragndrop').hide();
+                $all.addClass('choose');
             }
             , onEnd: function (evt) {
                 $('.dragndrop').show();
+                $all.removeClass('choose');
                 // evt.oldIndex;  // element's old index within parent
                 // evt.newIndex;  // element's new index within parent
                 // console.log(evt);
