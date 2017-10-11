@@ -98,7 +98,7 @@ class ProjectDashboardController extends \Goteo\Core\Controller {
 
         Session::addToSidebarMenu('<i class="icon icon-2x icon-settings"></i> ' . Text::get('footer-header-resources'), $submenu, 'comments', null, 'sidebar');
 
-        Session::addToSidebarMenu('<i class="icon icon-2x icon-preview"></i> ' . Text::get('regular-preview'), '/project/' . $project->id, 'preview');
+        Session::addToSidebarMenu('<i class="icon icon-2x icon-preview"></i> ' . Text::get($validation ? 'regular-preview' : 'dashboard-menu-projects-preview'), '/project/' . $project->id, 'preview');
 
         if($validation && $validation->global == 100) {
 
