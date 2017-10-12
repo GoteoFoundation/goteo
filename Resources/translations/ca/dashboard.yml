@@ -252,3 +252,4 @@ dashboard-project-support-translate-ok: 'Entrada de suport %TITLE% traduït corr
 dashboard-project-support-translating: 'Estàs traduint aquesta entrada de suport al %LANG%. L''idioma original és el %ORIGINAL%.'
 dashboard-project-saved: 'Projecte actualitzat correctament'
 
+dashboard-project-not-alive-yet: 'Aquest apartat estarà disponible quan el teu projecte entri en campanya'

@@ -256,3 +256,5 @@ dashboard-project-support-translate-ok: 'Support %TITLE% successfully translated
 dashboard-project-support-translating: 'You are translating this support entry to %LANG%. The original language is %ORIGINAL%.'
 
 dashboard-project-saved: 'Project updated successfully'
+
+dashboard-project-not-alive-yet: 'This section will be available when your project begins the campaign'

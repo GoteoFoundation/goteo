@@ -252,7 +252,7 @@ class ProjectDashboardController extends \Goteo\Core\Controller {
 
     /**
      * Project edit (personal)
-     * NOTE: Step removed, maintaining the method just in case
+     * NOTE: Step removed, maintaining the method just in case is comming back some day
      */
     public function personalAction($pid, Request $request) {
         $project = $this->validateProject($pid, 'personal');
@@ -909,11 +909,13 @@ class ProjectDashboardController extends \Goteo\Core\Controller {
     /**
      * Rewards/invest section
      */
-    public function investsAction($pid = null, Request $request)
-    {
-        // View::setTheme('default');
+    public function investsAction($pid = null, Request $request) {
         $project = $this->validateProject($pid, 'invests');
         if($project instanceOf Response) return $project;
+
+        if(!$project->isApproved()) {
+            return $this->viewResponse('dashboard/project/invests_idle');
+        }
 
         $limit = 25;
         $offset = $limit * (int)$request->query->get('pag');

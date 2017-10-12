@@ -4,15 +4,12 @@
 
 <div class="dashboard-content">
   <div class="inner-container">
-    <h2>
-        <?= $this->text('dashboard-menu-projects-updates') ?>
-    </h2>
+    <h2><?= $this->text('dashboard-menu-projects-rewards') ?></h2>
 
-    <p><?= $this->text('guide-project-updates') ?></p>
+    <p><?= $this->text('guide-project-invests') ?></p>
 
 
     <blockquote>
-        <small><?= $this->text('dashboard-project-blog-wrongstatus') ?></small>
         <?= $this->text('dashboard-project-not-alive-yet') ?>
     </blockquote>
 
