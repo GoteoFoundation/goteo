@@ -86,3 +86,10 @@ ALTER TABLE `project_category` CHANGE `category` `category` INT(10) UNSIGNED NOT
 DELETE FROM review WHERE project NOT IN (SELECT id FROM project);
 ALTER TABLE `review` ADD FOREIGN KEY (`project`) REFERENCES `project`(`id`) ON UPDATE CASCADE ON DELETE CASCADE;
 ALTER TABLE `project_lang` ADD FOREIGN KEY (`id`) REFERENCES `project`(`id`) ON UPDATE CASCADE ON DELETE CASCADE;
+
+
+-- delete project from call
+ALTER TABLE `call_project` DROP FOREIGN KEY `call_project_ibfk_1`;
+ALTER TABLE `call_project` ADD CONSTRAINT `call_project_ibfk_1` FOREIGN KEY (`call`) REFERENCES `call`(`id`) ON UPDATE CASCADE ON DELETE CASCADE;
+ALTER TABLE `call_project` DROP FOREIGN KEY `call_project_ibfk_2`;
+ALTER TABLE `call_project` ADD CONSTRAINT `call_project_ibfk_2` FOREIGN KEY (`project`) REFERENCES `project`(`id`) ON UPDATE CASCADE ON DELETE CASCADE;

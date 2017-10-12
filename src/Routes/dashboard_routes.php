@@ -131,10 +131,17 @@ $dash->add('dashboard-project-campaign', new Route(
         )
 ));
 
-// Project send to rewview
+// Send project to review
 $dash->add('dashboard-project-apply', new Route(
     '/project/{pid}/apply',
     array('_controller' => 'Goteo\Controller\Dashboard\ProjectDashboardController::applyAction',
+        )
+));
+
+// Delete project
+$dash->add('dashboard-project-delete', new Route(
+    '/project/{pid}/delete',
+    array('_controller' => 'Goteo\Controller\Dashboard\ProjectDashboardController::deleteAction',
         )
 ));
 

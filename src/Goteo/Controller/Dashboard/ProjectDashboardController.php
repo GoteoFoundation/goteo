@@ -190,19 +190,22 @@ class ProjectDashboardController extends \Goteo\Core\Controller {
                 if ($project->published > date('Y-m-d')) {
                     // si la fecha es en el futuro, es que se publicará
                     $status_text = Text::get('project-willpublish', date('d/m/Y', strtotime($project->published)));
+                    $status_class = 'orange';
                 } else {
                     // si la fecha es en el pasado, es que la campaña ha sido cancelada
                     $status_text = Text::get('project-unpublished');
+                    $status_class = 'danger';
                 }
             } else {
                 // Not published yet
-                $status_class = 'lilac';
                 if($project->inReview()) {
+                    $status_class = 'lilac';
                     $desc = Text::get('form-project_waitfor-review');
                     $status_text = Text::get('project-reviewing');
                 }
                 else {
                     $status_text = Text::get('project-not_published');
+                    $status_class = 'danger';
                 }
             }
         }
@@ -609,7 +612,7 @@ class ProjectDashboardController extends \Goteo\Core\Controller {
 
     /** Send the project to review */
     public function applyAction($pid, Request $request) {
-        $project = $this->validateProject($pid, 'supports', null, $form);
+        $project = $this->validateProject($pid, 'summary', null, $form);
         if($project instanceOf Response) return $project;
 
         $referer = $request->headers->get('referer');
@@ -643,6 +646,28 @@ class ProjectDashboardController extends \Goteo\Core\Controller {
             Message::error(Text::get('project-review-request_mail-fail'));
         }
 
+        return $this->redirect($referer);
+    }
+
+    /** Delete project */
+    public function deleteAction($pid, Request $request = null) {
+        $project = $this->validateProject($pid);
+        if($project instanceOf Response) return $project;
+
+        $referer = $request->headers->get('referer');
+        if(!$referer) $referer ='/dashboard/projects';
+
+        if (!$project->userCanDelete($this->user)) {
+            Message::error(Text::get('dashboard-project-delete-no-perms'));
+            return $this->redirect($referer);
+        }
+
+        $errors = [];
+        if ($project->remove($errors)) {
+            Message::info('dashboard-project-delete-ok', '<strong>' . $project->name . '</strong>');
+        } else {
+            Message::error('dashboard-project-delete-ko', '<strong>' . $project->name . '</strong>. ' . implode("\n", $errors));
+        }
         return $this->redirect($referer);
     }
 

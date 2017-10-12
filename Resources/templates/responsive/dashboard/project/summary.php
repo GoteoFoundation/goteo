@@ -80,10 +80,12 @@
         </div>
     </div>
 
+    <?php if($this->project->userCanDelete($this->get_user())): ?>
     <div class="panel section-content">
         <h3><?= $this->text('dashboard-project-delete') ?></h3>
         <a class="btn btn-danger" href="/dashboard/project/<?= $this->project->id ?>/delete" onclick="return confirm('<?= $this->ee($this->text('dashboard-project-delete_alert'), 'js') ?>')"><i class="fa fa-trash"></i> <?= $this->text('regular-delete') ?></a>
     </div>
+    <?php endif ?>
 
   </div>
 </div>

@@ -2584,7 +2584,7 @@ namespace Goteo\Model {
          */
         public function remove(&$errors = array()) {
 
-            if ($this->status > 1) {
+            if ($this->status > self::STATUS_EDITING) {
                 $errors[] = "El proyecto no esta descartado ni en edicion";
                 return false;
             }
