@@ -61,7 +61,7 @@ class ProjectDashboardController extends \Goteo\Core\Controller {
         // Create sidebar menu
         Session::addToSidebarMenu('<i class="icon icon-2x icon-summary"></i> ' . Text::get('dashboard-menu-activity-summary'), $prefix . '/summary', 'summary');
 
-        $validation = $project->isEditable() ? $project->getValidation() : false;
+        $validation = $project->inEdition() ? $project->getValidation() : false;
 
         if($validation) {
             $steps = [
@@ -308,7 +308,7 @@ class ProjectDashboardController extends \Goteo\Core\Controller {
         // Create the form
         $processor = $this->getModelForm('ProjectOverview', $project, $defaults, [], $request);
         // For everyone
-        // $processor->setReadonly(!$project->isEditable())->createForm();
+        // $processor->setReadonly(!$project->inEdition())->createForm();
         // Just for the owner
         $processor->setReadonly(!$project->userCanEdit($this->user, true))->createForm();
 
@@ -369,30 +369,25 @@ class ProjectDashboardController extends \Goteo\Core\Controller {
         $msg = '';
         $limit = 10;
         $offset = $limit * (int)$request->query->get('pag');
-        if ($project->status < 3) {
-            $msg = Text::get('dashboard-project-blog-wrongstatus');
-            // return $this->redirect('/dashboard/projects/summary');
-        } else {
-            $blog = Blog::get($project->id);
-            if ($blog instanceOf Blog) {
-                if($blog->active) {
-                    $posts = BlogPost::getList((int)$blog->id, false, $offset, $limit);
-                    $total = BlogPost::getList((int)$blog->id, false, 0, 0, true);
-                }
-                else {
-                    Message::error(Text::get('dashboard-project-blog-inactive'));
-                }
+
+        $blog = Blog::get($project->id);
+        if ($blog instanceOf Blog) {
+            if($blog->active) {
+                $posts = BlogPost::getList((int)$blog->id, false, $offset, $limit);
+                $total = BlogPost::getList((int)$blog->id, false, 0, 0, true);
+            }
+            else {
+                Message::error(Text::get('dashboard-project-blog-inactive'));
             }
         }
 
         $langs = Lang::listAll('name', false);
         $languages = array_intersect_key($langs, array_flip($project->getLangsAvailable()));
 
-        return $this->viewResponse('dashboard/project/updates', [
+        return $this->viewResponse('dashboard/project/updates' . ($project->isApproved() ? '' : '_idle'), [
                 'posts' => $posts,
                 'total' => $total,
                 'limit' => $limit,
-                'errorMsg' => $msg,
                 'languages' => $languages,
                 'skip' => $project->lang
             ]);
@@ -401,12 +396,29 @@ class ProjectDashboardController extends \Goteo\Core\Controller {
     public function updatesEditAction($pid, $uid, Request $request) {
         $project = $this->validateProject($pid, 'updates');
         if($project instanceOf Response) return $project;
+        $redirect = '/dashboard/project/' . $this->project->id .'/updates';
+
+        if(!$project->isApproved()) {
+            Message::error(Text::get('dashboard-project-blog-wrongstatus'));
+            return $this->redirect($redirect);
+        }
 
         $post = BlogPost::get($uid);
-
         if(!$post && is_null($uid)) {
             $blog = Blog::get($project->id);
-            if(!$blog instanceOf Blog) throw new ModelException("Blog not found for project [{$project->id}]");
+
+            if(!$blog instanceOf Blog) {
+                // Create the main blog
+                $blog = new Blog([
+                    'type' => 'project',
+                    'owner' => $project->id,
+                    'active' => true
+                ]);
+                if (!$blog->save($errors)) {
+                    Message::error(Text::get('dashboard-project-blog-fail'). "\n" .implode("\n", $errors));
+                    return $this->redirect($redirect);
+                }
+            }
             $post = new BlogPost([
                 'blog' => $blog->id,
                 'date' => date('Y-m-d'),
@@ -438,7 +450,7 @@ class ProjectDashboardController extends \Goteo\Core\Controller {
             try {
                 $processor->save($form);
                 Message::info(Text::get('form-sent-success'));
-                return $this->redirect('/dashboard/project/' . $this->project->id .'/updates');
+                return $this->redirect($redirect);
             } catch(FormModelException $e) {
                 Message::error($e->getMessage());
             }
@@ -694,7 +706,7 @@ class ProjectDashboardController extends \Goteo\Core\Controller {
         // Create the form
         $processor = $this->getModelForm('ProjectCampaign', $project, $defaults, ['account' => $account, 'user' => $this->user], $request);
         // For everyone
-        // $processor->setReadonly(!$project->isEditable())->createForm();
+        // $processor->setReadonly(!$project->inEdition())->createForm();
         // Just for the owner
         $processor->setReadonly(!$project->userCanEdit($this->user, true))->createForm();
 

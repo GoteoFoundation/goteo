@@ -261,7 +261,7 @@ namespace Goteo\Model {
             // owns the project
             if($this->owner === $user->id) {
                 if($check_status) {
-                    return $this->isEditable();
+                    return $this->inEdition();
                 }
                 return true;
             }
@@ -845,6 +845,13 @@ namespace Goteo\Model {
         }
 
         /**
+         * Handy method to know if project can be edited (not in campaing or finished)
+         */
+        public function inEdition() {
+            return $this->status < self::STATUS_REVIEWING;
+        }
+
+        /**
          * Handy method to know if project is in review status
          */
         public function inReview() {
@@ -870,13 +877,6 @@ namespace Goteo\Model {
         }
 
         /**
-         * Handy method to know if project can be edited (not in campaing or finished)
-         */
-        public function isEditable() {
-            return $this->status < self::STATUS_REVIEWING;
-        }
-
-        /**
          * Handy method to know if project is in approved for campaing
          */
         public function isApproved() {
@@ -884,10 +884,31 @@ namespace Goteo\Model {
         }
 
         /**
+         * Handy method to know if project is approved and not failed
+         */
+        public function isAlive() {
+            return in_array($this->status, [self::STATUS_IN_CAMPAIGN, self::STATUS_FUNDED, self::STATUS_FULFILLED]);
+        }
+
+        /**
          * Handy method to know if project is unfunded (ie: archived, failed)
          */
-        public function isFailed() {
+        public function hasFailed() {
             return $this->status == self::STATUS_UNFUNDED;
+        }
+
+        /**
+         * Handy method to know if project is funded
+         */
+        public function isFunded() {
+            return in_array($this->status, [self::STATUS_FUNDED, self::STATUS_FULFILLED]);
+        }
+
+        /**
+         * Handy method to know if project is funded and fulfilled the social return
+         */
+        public function isFulfilled() {
+            return $this->status == self::STATUS_FULFILLED;
         }
 
         /*
