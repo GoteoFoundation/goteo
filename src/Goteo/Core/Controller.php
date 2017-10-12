@@ -116,7 +116,7 @@ abstract class Controller {
             'action' => App::getRequest()->getRequestUri(),
             'attr' => ['class' => 'autoform']
         ];
-        return App::getService('app.forms')->createBuilder($defaults, $name, $options + $default_options);
+        return $this->getService('app.forms')->createBuilder($defaults, $name, $options + $default_options);
     }
 
     /**
@@ -124,7 +124,7 @@ abstract class Controller {
      * @return Goteo\Library\Forms\FormProcessorInterface
      */
     public function getModelForm($form, Model $model, array $defaults = [], array $options = [], Request $request = null) {
-        $finder = App::getService('app.forms.finder');
+        $finder = $this->getService('app.forms.finder');
         $finder->setModel($model);
         $validate = $mock_validation = false;
         if($request) {

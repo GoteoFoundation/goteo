@@ -228,15 +228,25 @@ final class AppEvents
      */
     const INVEST_RETURN_FAILED = 'invest.refund.failed';
 
+   /**
+     * The project.publish event is thrown when a project is in a REVIEW status and has to be published (manually)
+     *
+     * The event listener receives an
+     * Goteo\Console\Event\FilterProjectEvent instance.
+     *
+     * @var string
+     */
+    const PROJECT_PUBLISH = 'project.publish';
+
     /**
-     * The project.publish event is thrown when a project is in a REVIEW status and has to be published this day
+     * The project.ready event is thrown when a project is in a EDIT status and has to be changed to REVIEW
      *
      * The event listener receives an
      * Goteo\Application\Event\FilterProjectEvent instance.
      *
      * @var string
      */
-    const PROJECT_PUBLISH = 'console.project.publish';
+    const PROJECT_READY = 'project.ready';
 
     /**
      * The message.created event is thrown when a new message/comments is created

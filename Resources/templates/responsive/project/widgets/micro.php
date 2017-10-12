@@ -1,8 +1,10 @@
 <?php
-$approved = $this->project->isApproved();
-$label_color = $approved && !$this->project->isFailed() ? 'cyan' : 'danger';
+
+$label_color = 'danger';
+if($this->project->isApproved() && !$this->project->isFailed()) $label_color = 'cyan';
+if($this->project->inReview()) $label_color = 'orange';
 $validation = null;
-if(!$approved) {
+if($this->project->isEditable()) {
     $validation = $this->project->getValidation();
 }
 ?>

@@ -131,6 +131,13 @@ $dash->add('dashboard-project-campaign', new Route(
         )
 ));
 
+// Project send to rewview
+$dash->add('dashboard-project-apply', new Route(
+    '/project/{pid}/apply',
+    array('_controller' => 'Goteo\Controller\Dashboard\ProjectDashboardController::applyAction',
+        )
+));
+
 
 
 

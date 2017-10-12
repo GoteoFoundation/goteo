@@ -39,7 +39,7 @@ namespace Goteo\Model {
 
         public
             $id = null,
-            $draft, // indica si el id es un md5 [0-9a-f]{32}
+            $draft, // indica si el id es un md5 [0-9a-f]{32} (TODO: to remove)
             $dontsave = false,
             $owner, // User who created it
             $node, // Node this project belongs to
@@ -359,7 +359,7 @@ namespace Goteo\Model {
                  if (!empty($callData->user->node)) {
                      $node = $callData->user->node;
                      // también movemos al impulsor a ese nodo
-                    self::query("UPDATE user SET node = :node WHERE id = :id", array(':node'=>$node, ':id'=>$user));
+                    self::query("UPDATE user SET node = :node WHERE id = :id", array(':node' => $node, ':id' => $user));
                  }
             }
 
@@ -475,7 +475,7 @@ namespace Goteo\Model {
                 WHERE project.id = :id
                 ";
 
-                $values = array(':id'=>$id,':lang'=>$lang);
+                $values = array(':id' => $id,':lang' => $lang);
                 // echo \sqldbg($sql, $values);
                 $query = self::query($sql, $values);
                 $project = $query->fetchObject(__CLASS__);
@@ -511,7 +511,7 @@ namespace Goteo\Model {
                         ";
                     // no veo que haga falta cambiar el idioma a la instancia del proyecto
                     //, IFNULL(project_lang.lang, project.lang) as lang
-                    $query = self::query($sql, array(':id'=>$id, ':lang'=>$trans_lang));
+                    $query = self::query($sql, array(':id' => $id, ':lang' => $trans_lang));
 
                     foreach ($query->fetch(\PDO::FETCH_ASSOC) as $field=>$value) {
                         $project->$field = $value;
@@ -845,6 +845,13 @@ namespace Goteo\Model {
         }
 
         /**
+         * Handy method to know if project is in review status
+         */
+        public function inReview() {
+            return $this->status == self::STATUS_REVIEWING;
+        }
+
+        /**
          * Handy method to know if project is in campaing
          */
         public function inCampaign() {
@@ -852,10 +859,21 @@ namespace Goteo\Model {
         }
 
         /**
+         * Checks if project is a draft (must be in a EDIT/REVIEW status)
+         * @return boolean [description]
+         */
+        function isDraft() {
+            if($this->status > self::STATUS_REVIEWING) return false;
+            $md5 = $this->id;
+            // alternative: preg_match('/^[a-f0-9]{32}$/', $md5);
+            return strlen($md5) == 32 && ctype_xdigit($md5);
+        }
+
+        /**
          * Handy method to know if project can be edited (not in campaing or finished)
          */
         public function isEditable() {
-            return $this->status < self::STATUS_IN_CAMPAIGN;
+            return $this->status < self::STATUS_REVIEWING;
         }
 
         /**
@@ -939,7 +957,7 @@ namespace Goteo\Model {
                 WHERE project.id = :id";
 
                 // metemos los datos del proyecto en la instancia
-                $values = array(':id'=>$id);
+                $values = array(':id' => $id);
                 $query = self::query($sql, $values);
                 $project = $query->fetchObject(__CLASS__);
 
@@ -967,7 +985,7 @@ namespace Goteo\Model {
                             AND project_lang.lang = :lang
                         WHERE project.id = :id
                         ";
-                    $query = self::query($sql, array(':id'=>$id, ':lang'=>$lang));
+                    $query = self::query($sql, array(':id' => $id, ':lang' => $lang));
                     foreach ($query->fetch(\PDO::FETCH_ASSOC) as $field=>$value) {
                         $project->$field = $value;
                     }
@@ -1163,7 +1181,7 @@ namespace Goteo\Model {
          */
         public function assignConsultant ($user, &$errors = array()) {
 
-            $values = array(':user'=>$user, ':project'=>$this->id);
+            $values = array(':user' => $user, ':project' => $this->id);
 
             try {
                 $sql = "REPLACE INTO user_project (`user`, `project`) VALUES(:user, :project)";
@@ -1186,8 +1204,8 @@ namespace Goteo\Model {
          */
         public function unassignConsultant ($user, &$errors = array()) {
             $values = array (
-                ':user'=>$user,
-                ':project'=>$this->id,
+                ':user' => $user,
+                ':project' => $this->id,
             );
 
             try {
@@ -1312,7 +1330,7 @@ namespace Goteo\Model {
          */
         public function assignOpen_tag ($open_tag, &$errors = array()) {
 
-            $values = array(':open_tag'=>$open_tag, ':project'=>$this->id);
+            $values = array(':open_tag' => $open_tag, ':project' => $this->id);
 
             try {
                 $sql = "REPLACE INTO project_open_tag (`project`, `open_tag`) VALUES(:project, :open_tag)";
@@ -1336,8 +1354,8 @@ namespace Goteo\Model {
          */
         public function unassignOpen_tag ($open_tag, &$errors = array()) {
             $values = array (
-                ':open_tag'=>$open_tag,
-                ':project'=>$this->id,
+                ':open_tag' => $open_tag,
+                ':project' => $this->id,
             );
 
             try {
@@ -1559,8 +1577,8 @@ namespace Goteo\Model {
                 foreach ($quita as $key=>$item) {
                     $category = new Project\Category(
                         array(
-                            'id'=>$item,
-                            'project'=>$this->id)
+                            'id' => $item,
+                            'project' => $this->id)
                     );
                     if (!$category->remove($errors))
                         $fail = true;
@@ -2176,7 +2194,7 @@ namespace Goteo\Model {
             $this->progress = $progress;
             // actualizar el registro
             self::query("UPDATE project SET progress = :progress WHERE id = :id",
-                array(':progress'=>$this->progress, ':id'=>$this->id));
+                array(':progress' => $this->progress, ':id' => $this->id));
         }
 
         /**
@@ -2364,20 +2382,20 @@ namespace Goteo\Model {
             try {
                 $this->rebase();
 
+                $updated = date('Y-m-d');
                 $sql = "UPDATE project SET status = :status, updated = :updated WHERE id = :id";
-                self::query($sql, array(':status'=> self::STATUS_REVIEWING, ':updated' => date('Y-m-d'), ':id' => $this->id));
-
-                // si está en una convocatoria hay que actualizar el numero de proyectos aplicados
-                if (isset($this->called)) {
-                    Call\Project::addOneApplied($this->called->id, $this->called->applied);
+                if(self::query($sql, array(':status'=> self::STATUS_REVIEWING, ':updated' => $updated, ':id' => $this->id))) {
+                    $this->status = self::STATUS_REVIEWING;
+                    $this->updated = $updated;
+                    return true;
+                } else {
+                    $errors[] = 'SQL error while setting reviewing status';
                 }
 
-                return true;
-
             } catch (\PDOException $e) {
-                $errors[] = 'Fallo al habilitar para revisión. ' . $e->getMessage();
-                return false;
+                $errors[] = 'Error on setting project to review. ' . $e->getMessage();
             }
+            return false;
         }
 
         /*
@@ -2387,7 +2405,7 @@ namespace Goteo\Model {
         public function enable(&$errors = array()) {
             try {
                 $sql = "UPDATE project SET status = :status WHERE id = :id";
-                self::query($sql, array(':status' => self::STATUS_EDITING, ':id'=>$this->id));
+                self::query($sql, array(':status' => self::STATUS_EDITING, ':id' => $this->id));
                 return true;
             } catch (\PDOException $e) {
                 $errors[] = 'Fallo al habilitar para edición. ' . $e->getMessage();
@@ -2433,7 +2451,7 @@ namespace Goteo\Model {
                     if ($msg->save()) {
                         // asignado a la colaboracion como thread inicial
                         $sql = "UPDATE support SET thread = :message WHERE id = :support";
-                        self::query($sql, array(':message'=>$msg->id, ':support'=>$support->id));
+                        self::query($sql, array(':message' => $msg->id, ':support' => $support->id));
                     }
                     unset($msg);
                 }
@@ -2462,7 +2480,7 @@ namespace Goteo\Model {
         public function cancel(&$errors = array()) {
             try {
                 $sql = "UPDATE project SET status = :status, closed = :closed WHERE id = :id";
-                self::query($sql, array(':status'=>0, ':closed'=>date('Y-m-d'), ':id'=>$this->id));
+                self::query($sql, array(':status'=>0, ':closed'=>date('Y-m-d'), ':id' => $this->id));
                 return true;
             } catch (\PDOException $e) {
                 $errors[] = 'Fallo al cerrar el proyecto. ' . $e->getMessage();
@@ -2477,7 +2495,7 @@ namespace Goteo\Model {
         public function fail(&$errors = array()) {
             try {
                 $sql = "UPDATE project SET status = :status, closed = :closed WHERE id = :id";
-                self::query($sql, array(':status'=>6, ':closed'=>date('Y-m-d'), ':id'=>$this->id));
+                self::query($sql, array(':status'=>6, ':closed'=>date('Y-m-d'), ':id' => $this->id));
                 return true;
             } catch (\PDOException $e) {
                 $errors[] = 'Fallo al cerrar el proyecto. ' . $e->getMessage();
@@ -2493,7 +2511,7 @@ namespace Goteo\Model {
             try {
                 $sql = "UPDATE project SET status = :status, success = :success WHERE id = :id";
                 $date = date('Y-m-d');
-                if(self::query($sql, array(':status'=>self::STATUS_FUNDED, ':success'=>$date, ':id'=>$this->id))) {
+                if(self::query($sql, array(':status'=>self::STATUS_FUNDED, ':success' => $date, ':id' => $this->id))) {
                     $this->status = self::STATUS_FUNDED;
                     $this->success = $date;
                 }
@@ -2531,7 +2549,7 @@ namespace Goteo\Model {
         public function satisfied(&$errors = array()) {
             try {
                 $sql = "UPDATE project SET status = :status WHERE id = :id";
-                self::query($sql, array(':status'=>self::STATUS_FULFILLED, ':id'=>$this->id));
+                self::query($sql, array(':status'=>self::STATUS_FULFILLED, ':id' => $this->id));
 
                 // si está en una convocatoria hay que actualizar el numero de proyectos en marcha
                 if (isset($this->called)) {
@@ -2552,7 +2570,7 @@ namespace Goteo\Model {
         public function rollback(&$errors = array()) {
             try {
                 $sql = "UPDATE project SET status = :status WHERE id = :id";
-                self::query($sql, array(':status'=>self::STATUS_FUNDED, ':id'=>$this->id));
+                self::query($sql, array(':status'=>self::STATUS_FUNDED, ':id' => $this->id));
                 return true;
             } catch (\PDOException $e) {
                 $errors[] = 'Fallo al dar el retorno pendiente para el proyecto. ' . $e->getMessage();
@@ -2588,7 +2606,7 @@ namespace Goteo\Model {
             } catch (\PDOException $e) {
                 self::query("ROLLBACK");
                 $sql = "UPDATE project SET status = :status WHERE id = :id";
-                self::query($sql, array(':status'=>self::STATUS_REJECTED, ':id'=>$this->id));
+                self::query($sql, array(':status'=>self::STATUS_REJECTED, ':id' => $this->id));
                 $errors[] = "Fallo en la transaccion, el proyecto ha quedado como descartado";
                 return false;
             }
@@ -2707,108 +2725,70 @@ namespace Goteo\Model {
          * solo si es md5
          * @return: boolean
          */
-        public function rebase($newid = null, &$errors = array()) {
+        public function rebase($newid = null, &$errors = array(), $force = false) {
             try {
-                if (preg_match('/^[A-Fa-f0-9]{32}$/',$this->id)) {
-                    // idealizar el nombre
+                if(!$force && !$newid && !$this->isDraft()) {
+                    throw new Exception\ModelException('Automatic rebase failed. Current project id is already ok. Provide a new ID or force to overwrite');
+                }
+                if(!$newid) {
+                    // Automatic new great ID
                     $newid = self::checkId(self::idealiza($this->name));
-                    if ($newid == false) return false; //TODO: ???? Esto no pasa nunca, checkId lanza una excepcion...
-
-                    // actualizar las tablas relacionadas en una transacción
-                    $fail = false;
-                    if (self::query("START TRANSACTION")) {
-                        try {
-                            // Project_conf, project_image se actualiza solo (foreing key CASCADE)
-                            self::query("UPDATE project_category SET project = :newid WHERE project = :id", array(':newid'=>$newid, ':id'=>$this->id));
-                            self::query("UPDATE cost SET project = :newid WHERE project = :id", array(':newid'=>$newid, ':id'=>$this->id));
-                            self::query("UPDATE reward SET project = :newid WHERE project = :id", array(':newid'=>$newid, ':id'=>$this->id));
-                            self::query("UPDATE support SET project = :newid WHERE project = :id", array(':newid'=>$newid, ':id'=>$this->id));
-                            self::query("UPDATE message SET project = :newid WHERE project = :id", array(':newid'=>$newid, ':id'=>$this->id));
-                            self::query("UPDATE invest SET project = :newid WHERE project = :id", array(':newid'=>$newid, ':id'=>$this->id));
-                            self::query("UPDATE review SET project = :newid WHERE project = :id", array(':newid'=>$newid, ':id'=>$this->id));
-                            self::query("UPDATE project_lang SET id = :newid WHERE id = :id", array(':newid'=>$newid, ':id'=>$this->id));
-                            self::query("UPDATE blog SET owner = :newid WHERE owner = :id AND type='project'", array(':newid'=>$newid, ':id'=>$this->id));
-                            self::query("UPDATE project SET id = :newid WHERE id = :id", array(':newid'=>$newid, ':id'=>$this->id));
-
-                            // si todo va bien, commit y cambio el id de la instancia
-                            self::query("COMMIT");
-                            $this->id = $newid;
-                            return true;
-
-                        } catch (\PDOException $e) {
-                            self::query("ROLLBACK");
-                            throw $e;
-                        }
-                    } else {
-                        throw new Exception\ModelException('Fallo al iniciar transaccion rebase. ');
-                    }
-                } elseif (!empty ($newid)) {
-                  // echo "Cambiando id proyecto: de {$this->id} a {$newid}<br /><br />";
-
-                    if (self::query("START TRANSACTION")) {
-                        try {
-
-                           // echo 'en transaccion <br />';
-                            // mails
-                            /*$mails = self::query("SELECT * FROM mail WHERE content like :id", array(':id'=>"%{$this->id}%"));
-                            foreach ($mails->fetchAll(\PDO::FETCH_OBJ) as $mail) {
-                                $content = str_replace($this->id, $newid, $mail->content);
-                                self::query("UPDATE `mail` SET `content` = :content WHERE id = :id;", array(':content'=>$content, ':id'=>$mail->id));
-
-                            }*/
-                           // echo 'mails listos <br />';
-
-                            // feed
-                            $feeds = self::query("SELECT * FROM feed WHERE url like :id", array(':id'=>"%{$this->id}%"));
-                            foreach ($feeds->fetchAll(\PDO::FETCH_OBJ) as $feed) {
-                                $title = str_replace($this->id, $newid, $feed->title);
-                                $html = str_replace($this->id, $newid, $feed->html);
-                               self::query("UPDATE `feed` SET `title` = :title, `html` = :html  WHERE id = :id", array(':title'=>$title, ':html'=>$html, ':id'=>$feed->id));
-
-                            }
-
-                            // feed
-                            $feeds2 = self::query("SELECT * FROM feed WHERE target_type = 'project' AND target_id = :id", array(':id'=>$this->id));
-                            foreach ($feeds2->fetchAll(\PDO::FETCH_OBJ) as $feed2) {
-                                self::query("UPDATE `feed` SET `target_id` = '{$newid}'  WHERE id = '{$feed2->id}';");
-
-                            }
-
-                            // traductores
-                            $sql = "UPDATE `user_translate` SET `item` = '{$newid}' WHERE `user_translate`.`type` = 'project' AND `user_translate`.`item` = :id;";
-                            self::query($sql, array(':id'=>$this->id));
-
-                            self::query("UPDATE cost SET project = :newid WHERE project = :id", array(':newid'=>$newid, ':id'=>$this->id));
-                            self::query("UPDATE message SET project = :newid WHERE project = :id", array(':newid'=>$newid, ':id'=>$this->id));
-                            self::query("UPDATE project_category SET project = :newid WHERE project = :id", array(':newid'=>$newid, ':id'=>$this->id));
-                            self::query("UPDATE project_lang SET id = :newid WHERE id = :id", array(':newid'=>$newid, ':id'=>$this->id));
-                            self::query("UPDATE reward SET project = :newid WHERE project = :id", array(':newid'=>$newid, ':id'=>$this->id));
-                            self::query("UPDATE support SET project = :newid WHERE project = :id", array(':newid'=>$newid, ':id'=>$this->id));
-                            self::query("UPDATE invest SET project = :newid WHERE project = :id", array(':newid'=>$newid, ':id'=>$this->id));
-                            self::query("UPDATE invest SET project = :newid WHERE project = :id", array(':newid'=>$newid, ':id'=>$this->id));
-                            self::query("UPDATE project SET id = :newid WHERE id = :id", array(':newid'=>$newid, ':id'=>$this->id));
-
-
-                            // si todo va bien, commit y cambio el id de la instancia
-                            self::query("COMMIT");
-                            $this->id = $newid;
-                            return true;
-
-                        } catch (\PDOException $e) {
-                            self::query("ROLLBACK");
-                            throw $e;
-
-                        }
-                    } else {
-                        throw new Exception\ModelException('Fallo al iniciar transaccion rebase. ');
-                    }
                 }
 
-                return true;
+                self::query("START TRANSACTION");
+                try {
+
+                    self::query("UPDATE project SET id = :newid WHERE id = :id", array(':newid' => $newid, ':id' => $this->id));
+
+                    // At this point this should trigger the FOREIGN KEYS UPDATE on these tables:
+                    // project_conf, project_image, project_category,
+                    // costs, reward, support, message, invest, review, project_lang
+
+                   // echo 'en transaccion <br />';
+                    // mails
+                    /*$mails = self::query("SELECT * FROM mail WHERE content like :id", array(':id'=>"%{$this->id}%"));
+                    foreach ($mails->fetchAll(\PDO::FETCH_OBJ) as $mail) {
+                        $content = str_replace($this->id, $newid, $mail->content);
+                        self::query("UPDATE `mail` SET `content` = :content WHERE id = :id;", array(':content' => $content, ':id' => $mail->id));
+
+                    }*/
+                   // echo 'mails listos <br />';
+
+                    // feed
+                    $feeds = self::query("SELECT * FROM feed WHERE url like :id", array(':id'=>"%{$this->id}%"));
+                    foreach ($feeds->fetchAll(\PDO::FETCH_OBJ) as $feed) {
+                        $title = str_replace($this->id, $newid, $feed->title);
+                        $html = str_replace($this->id, $newid, $feed->html);
+                       self::query("UPDATE `feed` SET `title` = :title, `html` = :html  WHERE id = :id", array(':title' => $title, ':html' => $html, ':id' => $feed->id));
+
+                    }
+
+                    // feed
+                    $feeds2 = self::query("SELECT * FROM feed WHERE target_type = 'project' AND target_id = :id", array(':id' => $this->id));
+                    foreach ($feeds2->fetchAll(\PDO::FETCH_OBJ) as $feed2) {
+                        self::query("UPDATE `feed` SET `target_id` = :newid  WHERE id = :id;", [':newid' => $newid, ':id' => $feed2->id]);
+
+                    }
+
+                    self::query("UPDATE blog SET owner = :newid WHERE owner = :id AND type='project'", array(':newid' => $newid, ':id'=> $this->id));
+
+                    // traductores
+                    $sql = "UPDATE `user_translate` SET `item` = :newid WHERE `user_translate`.`type` = 'project' AND `user_translate`.`item` = :id;";
+                    self::query($sql, array(':newid' => $newid, ':id'=> $this->id));
+
+                    self::query("COMMIT");
+                    $this->id = $newid;
+                    return true;
+                } catch (\PDOException $e) {
+                    self::query("ROLLBACK");
+                    throw $e;
+                }
+
             } catch (\PDOException $e) {
-                throw new Exception\ModelException('Fallo rebase id temporal. ' . $e->getMessage());
+                throw new Exception\ModelException("Rebase project [{$this->id}] to [$newid] failed: " . $e->getMessage());
             }
 
+            return true;
         }
 
         /*
@@ -2817,7 +2797,7 @@ namespace Goteo\Model {
         public static function checkId($id, $num = 1) {
             try
             {
-                $query = self::query("SELECT id FROM project WHERE id = :id", array(':id'=>$id));
+                $query = self::query("SELECT id FROM project WHERE id = :id", array(':id' => $id));
                 $exist = $query->fetchObject();
                 // si  ya existe, cambiar las últimas letras por un número
                 if (!empty($exist->id)) {
@@ -2832,7 +2812,7 @@ namespace Goteo\Model {
                 return $id;
             }
             catch (\PDOException $e) {
-                throw new Exception\ModelException('Fallo al verificar id única para el proyecto. ' . $e->getMessage());
+                throw new Exception\ModelException("Failed auto-id for project [$id]. " . $e->getMessage());
             }
         }
 

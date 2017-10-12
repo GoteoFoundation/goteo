@@ -35,7 +35,7 @@ ALTER TABLE `cost` DROP INDEX `id`, ADD INDEX (`order`);
 
 -- constrains
 DELETE FROM cost WHERE project NOT IN (SELECT id FROM project);
-ALTER TABLE `cost` ADD FOREIGN KEY (`project`) REFERENCES `project`(`id`);
+ALTER TABLE `cost` ADD FOREIGN KEY (`project`) REFERENCES `project`(`id`) ON UPDATE CASCADE ON DELETE CASCADE;
 
 DELETE FROM cost_lang WHERE id NOT IN (SELECT id FROM cost);
 UPDATE cost_lang a JOIN cost b ON a.id=b.id AND a.project != b.project SET a.project = b.project;
