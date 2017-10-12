@@ -259,3 +259,4 @@ dashboard-project-support-translating: 'Estás traduciendo esta entrada de sopor
 dashboard-project-saved: 'Proyecto actualizado correctamente'
 
 dashboard-project-not-alive-yet: 'Este apartado estará disponible cuando tu proyecto entre en campaña'
+dashboard-project-reward-cannot: 'Ahora no se pueden introducir nuevas recompensas. Durante la campaña es posible introducir nuevas recompensas (pero no borrar las que ya existen)'

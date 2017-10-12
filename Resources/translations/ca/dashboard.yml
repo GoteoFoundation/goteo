@@ -253,3 +253,4 @@ dashboard-project-support-translating: 'Estàs traduint aquesta entrada de supor
 dashboard-project-saved: 'Projecte actualitzat correctament'
 
 dashboard-project-not-alive-yet: 'Aquest apartat estarà disponible quan el teu projecte entri en campanya'
+dashboard-project-reward-cannot: 'Ara no es poden introduir noves recompenses. Durant la campanya es possible introduir noves recompenses (però no esborrar les que ja existeixen)'

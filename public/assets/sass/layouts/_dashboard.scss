@@ -352,6 +352,9 @@
                 width: 35%;
             }
             .unlimited {
+                >label {
+                    display: block;
+                }
                 float: left;
                 width: 20%;
                 text-align: center;

@@ -258,3 +258,4 @@ dashboard-project-support-translating: 'You are translating this support entry t
 dashboard-project-saved: 'Project updated successfully'
 
 dashboard-project-not-alive-yet: 'This section will be available when your project begins the campaign'
+dashboard-project-reward-cannot: 'New rewards can not be added now. During the campaign, adding new rewards is possible (but not to delete those that already exist)'

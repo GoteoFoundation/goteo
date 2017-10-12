@@ -275,7 +275,8 @@ class ProjectDashboardController extends \Goteo\Core\Controller {
 
         // Create the form
         $processor = $this->getModelForm('ProjectPersonal', $project, $defaults, ['account' => $account], $request);
-        $processor->setReadonly(!$project->userCanEdit($this->user, true))->createForm();
+        // $processor->setReadonly(!$project->userCanEdit($this->user, true))->createForm();
+        $processor->setReadonly(!$project->inEdition())->createForm();
         $form = $processor->getBuilder()
             ->add('submit', 'submit', [
                 'label' => $project->isApproved() ? 'regular-submit' : 'form-next-button'
@@ -308,9 +309,9 @@ class ProjectDashboardController extends \Goteo\Core\Controller {
         // Create the form
         $processor = $this->getModelForm('ProjectOverview', $project, $defaults, [], $request);
         // For everyone
-        // $processor->setReadonly(!$project->inEdition())->createForm();
+        $processor->setReadonly(!$project->inEdition())->createForm();
         // Just for the owner
-        $processor->setReadonly(!$project->userCanEdit($this->user, true))->createForm();
+        // $processor->setReadonly(!$project->userCanEdit($this->user, true))->createForm();
 
         if(!$processor->getReadonly()) {
             $processor->getBuilder()->add('submit', 'submit', [
@@ -437,7 +438,8 @@ class ProjectDashboardController extends \Goteo\Core\Controller {
         // print_r($_FILES);die;
         // Create the form
         $processor = $this->getModelForm('ProjectPost', $post, $defaults, ['project' => $project]);
-        $processor->setReadonly(!$project->userCanEdit($this->user, true))->createForm();
+        // $processor->setReadonly(!$project->userCanEdit($this->user, true))->createForm();
+        $processor->setReadonly(!$project->inEdition())->createForm();
         $form = $processor->getBuilder()
             ->add('submit', 'submit', array(
                 // 'icon_class' => null
@@ -479,7 +481,8 @@ class ProjectDashboardController extends \Goteo\Core\Controller {
         $defaults = (array) $project;
         // Create the form
         $processor = $this->getModelForm('ProjectCosts', $project, $defaults, [], $request);
-        $processor->setReadonly(!$project->userCanEdit($this->user, true))->createForm();
+        // $processor->setReadonly(!$project->userCanEdit($this->user, true))->createForm();
+        $processor->setReadonly(!$project->inEdition())->createForm();
         $builder = $processor->getBuilder();
         if(!$processor->getReadonly()) {
             $builder
@@ -560,10 +563,16 @@ class ProjectDashboardController extends \Goteo\Core\Controller {
         $defaults = (array) $project;
         // Create the form
         $processor = $this->getModelForm('ProjectRewards', $project, $defaults, [], $request);
-        $processor->setReadonly(!$project->userCanEdit($this->user, true))->createForm();
-        $builder = $processor->getBuilder()
+        // $processor->setReadonly(!$project->userCanEdit($this->user, true))->createForm();
+        $processor->setReadonly(!$project->inEdition());
+        // Rewards can be added durint campaign
+        if($project->inCampaign() || $project->inReview()) {
+            $processor->setFullValidation(true);
+        }
+
+        $builder = $processor->createForm()->getBuilder()
             ->add('submit', 'submit', [
-                'label' => $project->isApproved() ? 'regular-submit' : 'form-next-button'
+                'label' => $project->inEdition() ? 'form-next-button' : 'regular-submit'
             ])
             ->add('add-reward', 'submit', [
                 'label' => 'project-add-reward',
@@ -576,6 +585,9 @@ class ProjectDashboardController extends \Goteo\Core\Controller {
         if ($form->isSubmitted() && $request->isMethod('post')) {
             // Handle AJAX calls manually
             if($request->isXmlHttpRequest()) {
+                if(!$project->inEdition() && !$project->isAlive()) {
+                    return $this->rawResponse(Text::get('dashboard-project-reward-cannot'), 'text/plain', 500);
+                }
                 $button = $form->getClickedButton()->getName();
                 if($button === 'add-reward') {
                     $reward = new Reward(['project' => $project->id, 'type' => 'individual']);
@@ -592,10 +604,10 @@ class ProjectDashboardController extends \Goteo\Core\Controller {
                 if(strpos($button, 'remove_') === 0) {
                     try {
                         $reward = Reward::get(substr($button, 7));
-                        if($reward->getTaken() === 0) {
+                        if($reward->isDraft()) {
                             $reward->dbDelete();
                         } else {
-                            return $this->rawResponse('Reward has invests. Cannot be deleted', 'text/plain', 500);
+                            return $this->rawResponse('Error: Reward has invests or cannot be deleted', 'text/plain', 500);
                         }
                         return $this->rawResponse('deleted ' . $reward->id);
                     } catch(\PDOExpection $e) {
@@ -706,9 +718,9 @@ class ProjectDashboardController extends \Goteo\Core\Controller {
         // Create the form
         $processor = $this->getModelForm('ProjectCampaign', $project, $defaults, ['account' => $account, 'user' => $this->user], $request);
         // For everyone
-        // $processor->setReadonly(!$project->inEdition())->createForm();
+        $processor->setReadonly(!$project->inEdition())->createForm();
         // Just for the owner
-        $processor->setReadonly(!$project->userCanEdit($this->user, true))->createForm();
+        // $processor->setReadonly(!$project->userCanEdit($this->user, true))->createForm();
 
         if(!$processor->getReadonly()) {
             $processor->getBuilder()->add('submit', 'submit', [
