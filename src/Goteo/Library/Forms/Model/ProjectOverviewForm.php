@@ -50,8 +50,10 @@ class ProjectOverviewForm extends AbstractFormProcessor implements FormProcessor
     public function createForm() {
         $currencies = Currency::listAll('name', false);
         $langs = Lang::listAll('name', false);
+        $project = $this->getModel();
 
-        $this->getBuilder()
+        $builder = $this->getBuilder();
+        $builder
             ->add('name', 'text', [
                 'label' => 'overview-field-name',
                 'constraints' => $this->getConstraints('name'),
@@ -132,20 +134,25 @@ class ProjectOverviewForm extends AbstractFormProcessor implements FormProcessor
                 'constraints' => $this->getConstraints('spread'),
                 'required' => false,
                 'attr' => ['help' => Text::get('tooltip-project-spread'), 'info' => '<i class="fa fa-eye-slash"></i> '. Text::get('project-non-public-field'), 'rows' => 8]
-            ])
+            ]);
+
             // ->add('extra-title', 'title', [
             //     'label' => 'overview-extra-fields',
             //     'disabled' => $this->getReadonly(),
             //     'row_class' => 'extra'
             // ])
-            // ->add('goal', 'markdown', [
-            //     'label' => 'overview-field-goal',
-            //     'disabled' => $this->getReadonly(),
-            //     'constraints' => $this->getConstraints('goal'),
-            //     'required' => false,
-            //     // 'row_class' => 'extra',
-            //     'attr' => ['help' => Text::get('tooltip-project-goal'), 'rows' => 8]
-            // ])
+        if($project->goal) {
+            $builder
+                ->add('goal', 'markdown', [
+                    'label' => 'overview-field-goal',
+                    'disabled' => $this->getReadonly(),
+                    'constraints' => $this->getConstraints('goal'),
+                    'required' => false,
+                    // 'row_class' => 'extra',
+                    'attr' => ['help' => Text::get('tooltip-project-goal'), 'rows' => 8]
+                ]);
+        }
+        $builder
             ->add('scope', 'choice', [
                 'label' => 'overview-field-scope',
                 'disabled' => $this->getReadonly(),

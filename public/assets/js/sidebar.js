@@ -147,11 +147,13 @@ $(function(){
         $body.hammer().bind("swiperight", function(){
             // console.log('body swipe right', e);
             if(prevented) return;
+            if(!isMobile()) return;
             if(!$body.hasClass('sidebar-opened'))
                 toggleSidebar();
         });
         $body.hammer().bind("swipeleft", function(){
             if(prevented) return;
+            if(!isMobile()) return;
             if($body.hasClass('sidebar-opened'))
                 toggleSidebar();
         });
