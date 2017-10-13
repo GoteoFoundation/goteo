@@ -108,6 +108,7 @@ class ProjectDashboardController extends \Goteo\Core\Controller {
 
         View::getEngine()->useData([
             'project' => $project,
+            'validation' => $validation,
             'admin' => $project->userCanEdit($user),
             'zone' => $zone,
             'sidebarBottom' => [ '/dashboard/projects' => '<i class="icon icon-2x icon-back" title="' . Text::get('profile-my_projects-header') . '"></i> ' . Text::get('profile-my_projects-header') ]
@@ -320,6 +321,7 @@ class ProjectDashboardController extends \Goteo\Core\Controller {
             if($sec === 'goal') continue;
             $images[$sec] = ProjectImage::get($project->id, $sec);
         }
+
         $editable = $project->inEdition() || $project->isAlive();
         return $this->viewResponse('dashboard/project/images' . ($editable ? '' : '_idle'), [
             'zones' => $zones,
@@ -576,7 +578,7 @@ class ProjectDashboardController extends \Goteo\Core\Controller {
                 if(strpos($button, 'remove_') === 0) {
                     try {
                         $reward = Reward::get(substr($button, 7));
-                        if($reward->isDraft()) {
+                        if(!$reward->isDraft()) {
                             $reward->dbDelete();
                         } else {
                             return $this->rawResponse('Error: Reward has invests or cannot be deleted', 'text/plain', 500);

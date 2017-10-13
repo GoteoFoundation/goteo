@@ -18,7 +18,7 @@ use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\File\File as SymfonyFile;
 use Goteo\Application\Config;
 use Goteo\Application\Exception\ModelException;
-
+use Symfony\Component\HttpFoundation\File\Exception\FileNotFoundException;
 
 class Image extends \Goteo\Core\Model {
 
@@ -73,11 +73,14 @@ class Image extends \Goteo\Core\Model {
             $this->size = $file->size;
         }
         elseif($file instanceOf UploadedFile) {
-            $this->name = $file->getClientOriginalName();
-            $this->type = $file->getMimeType();
-            $this->tmp = $file->getPathName();
-            $this->error = $file->getError();
-            $this->size = $file->getSize();
+            try {
+                $this->error = $file->getError();
+                $this->name = $file->getClientOriginalName();
+                $this->tmp = $file->getPathName();
+                $this->type = $file->getMimeType();
+                $this->size = $file->getSize();
+            } catch(FileNotFoundException $e) {
+            }
         }
         elseif(is_array($file)) {
             $this->name = $file['name'];
@@ -148,6 +151,75 @@ class Image extends \Goteo\Core\Model {
         return false;
 	}
 
+    static public function getUploadErrorText($error) {
+        if($error === UPLOAD_ERR_OK) return '';
+        switch($error) {
+            case UPLOAD_ERR_INI_SIZE:
+                return Text::get('error-image-size-too-large');
+                break;
+            case UPLOAD_ERR_FORM_SIZE:
+                return 'The uploaded file exceeds the MAX_FILE_SIZE directive that was specified in the HTML form';
+                break;
+            case UPLOAD_ERR_PARTIAL:
+                return 'The uploaded file was only partially uploaded';
+                break;
+            case UPLOAD_ERR_NO_FILE:
+                return 'No file was uploaded';
+                break;
+            case UPLOAD_ERR_NO_TMP_DIR:
+                return 'Missing a temporary folder';
+                break;
+            case UPLOAD_ERR_CANT_WRITE:
+                return 'Failed to write file to disk';
+                break;
+            case UPLOAD_ERR_EXTENSION:
+                return 'A PHP extension stopped the file upload. PHP does not provide a way to ascertain which extension caused the file upload to stop; examining the list of loaded extensions';
+                break;
+            default:
+                return 'Unknown error: ' . $error;
+        }
+    }
+
+    public function getUploadError() {
+        return self::getUploadErrorText($this->error);
+    }
+
+    /**
+    * Detects max size of file cab be uploaded to server
+    *
+    * Based on php.ini parameters "upload_max_filesize", "post_max_size" &
+    * "memory_limit". Valid for single file upload form. May be used
+    * as MAX_FILE_SIZE hidden input or to inform user about max allowed file size.
+    *
+    * @return int Max file size in bytes
+    * From: http://www.kavoir.com/2010/02/php-get-the-file-uploading-limit-max-file-size-allowed-to-upload.html
+    */
+    static public function getSystemMaxFileSize($units = 'bytes') {
+        /**
+        * Converts shorthands like "2M" or "512K" to bytes
+        *
+        * @param $size
+        * @return mixed
+        */
+        $normalize = function($size) {
+            if (preg_match('/^([\d\.]+)([KMG])$/i', $size, $match)) {
+                $pos = array_search($match[2], array("K", "M", "G"));
+                if ($pos !== false) {
+                    $size = $match[1] * pow(1024, $pos + 1);
+                }
+            }
+            return $size;
+        };
+        $max_upload = $normalize(ini_get('upload_max_filesize'));
+        $max_post = $normalize(ini_get('post_max_size'));
+        $memory_limit = $normalize(ini_get('memory_limit'));
+        $maxFileSize = min($max_upload, $max_post, $memory_limit);
+        $div = 1;
+        if($units == 'kb') $div = 1024;
+        elseif($units == 'mb') $div = 1024 * 1024;
+        return round($maxFileSize / $div);
+    }
+
 	/**
 	 * (non-PHPdoc)
 	 * @see Goteo\Core.Model::validate()
@@ -160,31 +232,7 @@ class Image extends \Goteo\Core\Model {
 
         // checkeo de errores de $_FILES
         if($this->error && $this->error !== UPLOAD_ERR_OK) {
-            switch($this->error) {
-                case UPLOAD_ERR_INI_SIZE:
-                    $errors['image'][] = Text::get('error-image-size-too-large');
-                    break;
-                case UPLOAD_ERR_FORM_SIZE:
-                    $errors['image'][] = 'The uploaded file exceeds the MAX_FILE_SIZE directive that was specified in the HTML form';
-                    break;
-                case UPLOAD_ERR_PARTIAL:
-                    $errors['image'][] = 'The uploaded file was only partially uploaded';
-                    break;
-                case UPLOAD_ERR_NO_FILE:
-                    $errors['image'][] = 'No file was uploaded';
-                    break;
-                case UPLOAD_ERR_NO_TMP_DIR:
-                    $errors['image'][] = 'Missing a temporary folder';
-                    break;
-                case UPLOAD_ERR_CANT_WRITE:
-                    $errors['image'][] = 'Failed to write file to disk';
-                    break;
-                case UPLOAD_ERR_EXTENSION:
-                    $errors['image'][] = 'A PHP extension stopped the file upload. PHP does not provide a way to ascertain which extension caused the file upload to stop; examining the list of loaded extensions';
-                    break;
-                default:
-                    $errors['image'][] = 'Unknown error: ' . $this->error;
-            }
+            $errors['image'][] = self::getUploadErrorText($this->error);
             return false;
         }
 

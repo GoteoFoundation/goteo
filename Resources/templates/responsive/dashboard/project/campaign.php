@@ -32,11 +32,9 @@
             echo $this->form_row($form['paypal']);
         echo '</div>';
 
-
-        echo $this->form_row($form['submit']);
-
         echo $this->form_end($form);
 
+print_r($this->project->getValidation());
     }) ?>
 
   </div>

@@ -215,6 +215,7 @@
         display: none;
     }
     &.loading {
+      background: none;
       .video-holder {
         background:url(../img/ring.gif) no-repeat center;
         display: block;

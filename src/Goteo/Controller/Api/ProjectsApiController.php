@@ -255,29 +255,34 @@ class ProjectsApiController extends AbstractApiController {
             // Process image
             $msg = Text::get('uploaded-ok');
             $success = false;
-            $image = new Image($file);
-            $errors = [];
-            if ($image->save($errors)) {
+            if($err = Image::getUploadErrorText($file->getError())) {
+                $success = false;
+                $msg = $err;
+            } else {
+                $image = new Image($file);
+                $errors = [];
+                if ($image->save($errors)) {
 
-                if($add_to_gallery === 'project_image') {
-                    /**
-                     * Guarda la relación NM en la tabla 'project_image'.
-                     */
-                    if($image->id) {
-                        Project::query("REPLACE project_image (project, image, section) VALUES (:project, :image, :section)", array(':project' => $prj->id, ':image' => $image->id, ':section' => $section));
-                        if(!$prj->image->id) {
-                            // Set default image
-                            Project\Image::setImage($prj->id, $image);
-                            $cover = $image->id;
+                    if($add_to_gallery === 'project_image') {
+                        /**
+                         * Guarda la relación NM en la tabla 'project_image'.
+                         */
+                        if($image->id) {
+                            Project::query("REPLACE project_image (project, image, section) VALUES (:project, :image, :section)", array(':project' => $prj->id, ':image' => $image->id, ':section' => $section));
+                            if(!$prj->image->id) {
+                                // Set default image
+                                Project\Image::setImage($prj->id, $image);
+                                $cover = $image->id;
+                            }
                         }
                     }
-                }
 
-                $success = true;
-            }
-            else {
-                $msg = implode(', ',$errors['image']);
-                // print_r($errors);
+                    $success = true;
+                }
+                else {
+                    $msg = implode(', ',$errors['image']);
+                    // print_r($errors);
+                }
             }
 
             $result[] = [

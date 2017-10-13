@@ -320,6 +320,7 @@ $(function(){
             uploadMultiple: multiple,
             createImageThumbnails: true,
             maxFiles: limit,
+            maxFilesize: MAX_FILE_SIZE,
             autoProcessQueue: !!url, // no ajax post if no url
             dictDefaultMessage: $dz.data('text-upload'),
             acceptedFiles: accepted_files

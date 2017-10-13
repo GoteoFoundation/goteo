@@ -17,7 +17,7 @@ else {
         <?= $this->insert('project/widgets/percent_status', ['percent' => $init_percent]) ?>
     </div>
     <div class="desc">
-        <p><?= $desc ?></p>
+        <h4><?= $desc ?></h4>
 
         <?php if($errors): ?>
             <ul class="list-unstyled">

@@ -68,6 +68,13 @@ class ProjectCampaignForm extends AbstractFormProcessor implements FormProcessor
                 'required' => false,
                 'attr' => ['help' => Text::get('tooltip-project-paypal')]
             ])
+            ->add('spread', 'textarea', [
+                'label' => 'overview-field-spread',
+                'disabled' => $this->getReadonly(),
+                'constraints' => $this->getConstraints('spread'),
+                'required' => false,
+                'attr' => ['help' => Text::get('tooltip-project-spread'), 'info' => '<i class="fa fa-eye-slash"></i> '. Text::get('project-non-public-field'), 'rows' => 8]
+            ])
             ;
         return $this;
     }

@@ -13,6 +13,8 @@
 
     <?= $this->supply('dashboard-content-form', function() {return $this->form_form($this->raw('form'));}) ?>
 
+    <?= $this->insert('dashboard/project/partials/partial_validation') ?>
+
   </div>
 </div>
 

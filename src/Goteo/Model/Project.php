@@ -2357,11 +2357,11 @@ namespace Goteo\Model {
                 $errors['rewards'] = 'rewards';
                 $res->rewards = round(100 * ($total - $count1)/$total);
             } else {
-                $this->rewards = 0;
+                $res->rewards = 100;
             }
             if($total < 3) {
                 $errors['rewards'] = 'rewards_required';
-                $res->rewards /= 2;
+                $res->rewards *= $total / 3;
             }
 
             $campaign = [ ];
