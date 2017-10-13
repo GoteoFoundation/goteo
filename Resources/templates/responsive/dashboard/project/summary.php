@@ -1,9 +1,7 @@
 <?php $this->layout('dashboard/project/layout') ?>
 
 <?php $this->section('dashboard-content') ?>
-<?php
-    $validation = $this->project->getValidation();
- ?>
+
 <div class="dashboard-content">
   <div class="inner-container">
     <h1><?= $this->text('dashboard-menu-activity-summary') ?></h1>
@@ -23,15 +21,10 @@
             <?php endforeach ?>
             </ol>
 
-            <?php if ($this->status_text): ?>
-                <div class="spacer alert alert-<?= $this->status_class ?>"><?= $this->status_text ?></div>
-            <?php endif ?>
-            <?php if ($this->desc): ?>
-                <blockquote><?= $this->desc ?></blockquote>
-            <?php endif ?>
+            <?= $this->insert('dashboard/project/partials/summary_status', ['project' => $this->project]) ?>
 
             <?php if($this->project->inEdition()): ?>
-                <?= $this->insert('project/widgets/validation', ['init_percent' => 0, 'validation' => $validation]) ?>
+                <?= $this->insert('project/widgets/validation', ['init_percent' => 0, 'validation' => $this->validation]) ?>
             <?php endif ?>
 
         </div>

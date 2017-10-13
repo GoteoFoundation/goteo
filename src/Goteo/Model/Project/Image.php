@@ -158,11 +158,15 @@ namespace Goteo\Model\Project {
          * Recalcular imagen principal
          */
         public static function setImage ($id, $gallery) {
-            if(!$gallery) {
+            if($gallery instanceOf Model\Image) {
+                $image = $gallery;
+            } else {
+                // sacar objeto imagen de la galeria
+                $image = $gallery[0]->imageData;
+            }
+            if(!$image instanceOf Model\Image) {
                 return new Model\Image();
             }
-            // sacar objeto imagen de la galeria
-            $image = $gallery[0]->imageData;
 
             // guardar en la base de datos
             $sql = "UPDATE project SET image = :image WHERE id = :id";

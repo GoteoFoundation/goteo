@@ -108,6 +108,7 @@ class ProjectDashboardController extends \Goteo\Core\Controller {
 
         View::getEngine()->useData([
             'project' => $project,
+            'validation' => $validation,
             'admin' => $project->userCanEdit($user),
             'zone' => $zone,
             'sidebarBottom' => [ '/dashboard/projects' => '<i class="icon icon-2x icon-back" title="' . Text::get('profile-my_projects-header') . '"></i> ' . Text::get('profile-my_projects-header') ]
@@ -180,35 +181,6 @@ class ProjectDashboardController extends \Goteo\Core\Controller {
     public function summaryAction($pid = null, Request $request) {
         $project = $this->validateProject($pid, 'summary');
         if($project instanceOf Response) return $project;
-
-        $status_text = '';
-        $status_class = 'cyan';
-        $desc = '';
-        if (!$project->isApproved()){
-            // Project will be published automatically if date is present
-            if(!empty($project->published)) {
-                if ($project->published > date('Y-m-d')) {
-                    // si la fecha es en el futuro, es que se publicará
-                    $status_text = Text::get('project-willpublish', date('d/m/Y', strtotime($project->published)));
-                    $status_class = 'orange';
-                } else {
-                    // si la fecha es en el pasado, es que la campaña ha sido cancelada
-                    $status_text = Text::get('project-unpublished');
-                    $status_class = 'danger';
-                }
-            } else {
-                // Not published yet
-                if($project->inReview()) {
-                    $status_class = 'lilac';
-                    $desc = Text::get('form-project_waitfor-review');
-                    $status_text = Text::get('project-reviewing');
-                }
-                else {
-                    $status_text = Text::get('project-not_published');
-                    $status_class = 'danger';
-                }
-            }
-        }
 
         return $this->viewResponse('dashboard/project/summary', [
             'statuses' => Project::status(),
@@ -285,7 +257,7 @@ class ProjectDashboardController extends \Goteo\Core\Controller {
         $form->handleRequest($request);
         if ($form->isSubmitted() && $request->isMethod('post')) {
             try {
-                $processor->save($form);
+                $processor->save($form, true);
                 Message::info(Text::get('user-personal-saved'));
                 return $this->redirect($this->getEditRedirect('personal', $request));
             } catch(FormModelException $e) {
@@ -323,7 +295,7 @@ class ProjectDashboardController extends \Goteo\Core\Controller {
         $form->handleRequest($request);
         if ($form->isSubmitted() && $request->isMethod('post')) {
             try {
-                $processor->save($form);
+                $processor->save($form, true);
                 Message::info(Text::get('dashboard-project-saved'));
                 return $this->redirect($this->getEditRedirect('overview', $request));
             } catch(FormModelException $e) {
@@ -349,10 +321,12 @@ class ProjectDashboardController extends \Goteo\Core\Controller {
             if($sec === 'goal') continue;
             $images[$sec] = ProjectImage::get($project->id, $sec);
         }
-        return $this->viewResponse('dashboard/project/images', [
+
+        $editable = $project->inEdition() || $project->isAlive();
+        return $this->viewResponse('dashboard/project/images' . ($editable ? '' : '_idle'), [
             'zones' => $zones,
             'images' => $images,
-            'next' => $approved ? '' : $this->getEditRedirect('images', $request)
+            'next' => $approved || !$editable ? '' : $this->getEditRedirect('images', $request)
             ]);
 
     }
@@ -534,8 +508,7 @@ class ProjectDashboardController extends \Goteo\Core\Controller {
             try {
                 $next = $form['submit']->isClicked();
                 // Replace the form if delete/add buttons are pressed
-                // $processor->save($form);
-                $form = $processor->save($form)->getBuilder()->getForm();
+                $form = $processor->save($form, true)->getBuilder()->getForm();
                 Message::info(Text::get('dashboard-project-saved'));
                 if($next) {
                     return $this->redirect($this->getEditRedirect('costs', $request));
@@ -604,7 +577,7 @@ class ProjectDashboardController extends \Goteo\Core\Controller {
                 if(strpos($button, 'remove_') === 0) {
                     try {
                         $reward = Reward::get(substr($button, 7));
-                        if($reward->isDraft()) {
+                        if(!$reward->isDraft()) {
                             $reward->dbDelete();
                         } else {
                             return $this->rawResponse('Error: Reward has invests or cannot be deleted', 'text/plain', 500);
@@ -618,7 +591,7 @@ class ProjectDashboardController extends \Goteo\Core\Controller {
             try {
                 $next = $form['submit']->isClicked();
                 // Replace the form if delete/add buttons are pressed
-                $form = $processor->save($form)->getBuilder()->getForm();
+                $form = $processor->save($form, true)->getBuilder()->getForm();
                 Message::info(Text::get('dashboard-project-saved'));
                 if($next) {
                     return $this->redirect($this->getEditRedirect('rewards', $request));
@@ -732,7 +705,7 @@ class ProjectDashboardController extends \Goteo\Core\Controller {
         $form->handleRequest($request);
         if ($form->isSubmitted() && $request->isMethod('post')) {
             try {
-                $processor->save($form);
+                $processor->save($form, true);
                 Message::info(Text::get('dashboard-project-saved'));
                 return $this->redirect($this->getEditRedirect('campaign', $request));
             } catch(FormModelException $e) {
@@ -765,7 +738,7 @@ class ProjectDashboardController extends \Goteo\Core\Controller {
                 'constraints' => array(new Constraints\NotBlank()),
             ])
             ->add('id', 'hidden', [
-                'constraints' => array(new Constraints\NotBlank())
+                // 'constraints' => array(new Constraints\NotBlank())
             ])
             ->add('delete', 'hidden')
             ->add('submit', 'submit')
@@ -773,9 +746,15 @@ class ProjectDashboardController extends \Goteo\Core\Controller {
 
         $editForm->handleRequest($request);
         if ($editForm->isSubmitted()) {
+            if(!$project->inEdition() && !$project->isAlive()) {
+                Message::error(Text::get('dashboard-project-not-alive-yet'));
+                return $this->redirect();
+            }
+
             $data = $editForm->getData();
+
+            // print_r($data);die;
             if($data['delete']) {
-                // print_r($data);die;
                 $support = Support::get($data['delete']);
                 if($support->totalThreadResponses($this->user)) {
                     Message::error(Text::get('support-remove-error-messages'));
@@ -1046,7 +1025,7 @@ class ProjectDashboardController extends \Goteo\Core\Controller {
         return $this->viewResponse('dashboard/project/shared_materials', [
             'licenses_list' => $licenses_list,
             'icons' => $icons,
-            'allowNewShare' => in_array($project->status, [Project::STATUS_FUNDED , Project::STATUS_FULFILLED])
+            'allowNewShare' => $project->isFunded()
             ]);
 
     }

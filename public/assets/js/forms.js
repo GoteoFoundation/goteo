@@ -162,7 +162,7 @@ $(function(){
       var displayKey = $this.data('display-key') || 'tag';
       var displayValue = $this.data('display-value') || 'tag';
       var wildcard = $this.data('wilcard') || '%QUERY';
-      var ops = { tagClass: 'label label-lilac label-big' };
+      var ops = { tagClass: 'label label-lilac' };
       if(url) {
         var tags = new Bloodhound({
           datumTokenizer: function(datum) {
@@ -320,6 +320,7 @@ $(function(){
             uploadMultiple: multiple,
             createImageThumbnails: true,
             maxFiles: limit,
+            maxFilesize: MAX_FILE_SIZE,
             autoProcessQueue: !!url, // no ajax post if no url
             dictDefaultMessage: $dz.data('text-upload'),
             acceptedFiles: accepted_files

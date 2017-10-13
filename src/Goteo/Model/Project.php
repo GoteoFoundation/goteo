@@ -2224,10 +2224,9 @@ namespace Goteo\Model {
          */
         public function getValidation() {
             $res = new \stdClass;
-            $errors = [];
-            $fields = ['profile' => [],
+            $errors =  $fields = ['profile' => [],
                 // 'personal' => [],
-            'overview' => [], 'images' => [], 'costs' => [], 'rewards' => [], 'campaign' => []];
+                    'overview' => [], 'images' => [], 'costs' => [], 'rewards' => [], 'campaign' => []];
 
             // 1. profile
             $profile = [ 'name', 'location', 'gender', 'about' ];
@@ -2242,11 +2241,11 @@ namespace Goteo\Model {
                 $count++;
             }
             if($count > 0) {
-                $errors['profile'] = 'profile';
+                $errors['profile'][] = 'profile';
             }
             $res->profile = round(100 * ($total - $count)/$total);
             if(empty($owner->webs) && empty($owner->facebook) && empty($owner->twitter)) {
-                $errors['profile'] = 'profile_social';
+                $errors['profile'][] = 'profile_social';
                 $res->profile = ($total - 1) * $res->profile / $total;
             }
 
@@ -2262,13 +2261,13 @@ namespace Goteo\Model {
             //     $count++;
             // }
             // if($count > 0) {
-            //     $errors['personal'] = 'personal';
+            //     $errors['personal'][] = 'personal';
             // }
             // $res->personal = round(100 * ($total - $count)/$total);
 
 
             // 3. overview
-            $overview = ['name', 'subtitle', 'lang', 'currency', 'media', 'description', 'project_location', 'related', 'about', 'motivation', 'goal', 'scope', 'social_commitment', 'social_commitment_description'];
+            $overview = ['name', 'subtitle', 'lang', 'currency', 'media', 'description', 'project_location', 'related', 'about', 'motivation', 'scope', 'social_commitment', 'social_commitment_description'];
 
             $total = count($overview);
             $count = 0;
@@ -2284,7 +2283,7 @@ namespace Goteo\Model {
                 $count++;
             }
             if($count > 0) {
-                $errors['overview'] = 'overview';
+                $errors['overview'][] = 'overview';
             }
             $res->overview = round(100 * ($total - $count)/$total);
 
@@ -2296,7 +2295,7 @@ namespace Goteo\Model {
                 }
             }
             if($res->images < 100) {
-                $errors['images'] = 'images';
+                $errors['images'][] = 'images';
             }
 
             // 5. costs
@@ -2322,12 +2321,16 @@ namespace Goteo\Model {
                 $requireds += $cost->required;
             }
             if($count1 > 0) {
-                $errors['costs'] = 'costs';
+                $errors['costs'][] = 'costs';
             }
             $total = count($this->costs);
-            $res->costs = round(100 * ($total - $count1)/$total);
+            if($total > 0) {
+                $res->costs = round(100 * ($total - $count1)/$total);
+            } else {
+                $res->costs = 0;
+            }
             if($requireds == $total || $requireds == 0) {
-                $errors['costs'] = 'costs_required';
+                $errors['costs'][] = 'costs_required';
                 $res->costs /= 2;
             }
             // 6. rewards
@@ -2354,14 +2357,14 @@ namespace Goteo\Model {
             }
             $total = count($this->individual_rewards);
             if($count1 > 0) {
-                $errors['rewards'] = 'rewards';
+                $errors['rewards'][] = 'rewards';
                 $res->rewards = round(100 * ($total - $count1)/$total);
             } else {
-                $this->rewards = 0;
+                $res->rewards = 100;
             }
             if($total < 3) {
-                $errors['rewards'] = 'rewards_required';
-                $res->rewards /= 2;
+                $errors['rewards'][] = 'rewards_required';
+                $res->rewards *= $total / 3;
             }
 
             $campaign = [ ];
@@ -2378,7 +2381,7 @@ namespace Goteo\Model {
                 $count++;
             }
             if($count > 0) {
-                $errors['campaign'] = 'campaign';
+                $errors['campaign'][] = 'campaign';
             }
             $res->campaign = round(100 * ($total - $count)/$total);
 

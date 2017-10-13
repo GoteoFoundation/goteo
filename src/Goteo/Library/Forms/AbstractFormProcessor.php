@@ -112,9 +112,9 @@ abstract class AbstractFormProcessor implements FormProcessorInterface {
         return $this->options[$key];
     }
 
-    public function save(FormInterface $form = null) {
+    public function save(FormInterface $form = null, $force_save = false) {
         if(!$form) $form = $this->getBuilder()->getForm();
-        if(!$form->isValid()) throw new FormModelException(Text::get('form-has-errors'));
+        if(!$form->isValid() && !$force_save) throw new FormModelException(Text::get('form-has-errors'));
 
         $data = $form->getData();
         $model = $this->getModel();
@@ -124,6 +124,8 @@ abstract class AbstractFormProcessor implements FormProcessorInterface {
         if (!$model->save($errors)) {
             throw new FormModelException(Text::get('form-sent-error', implode(', ',$errors)));
         }
+
+        if(!$form->isValid()) throw new FormModelException(Text::get('form-has-errors'));
 
         return $this;
     }

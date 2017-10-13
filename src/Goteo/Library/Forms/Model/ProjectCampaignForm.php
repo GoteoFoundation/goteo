@@ -68,12 +68,30 @@ class ProjectCampaignForm extends AbstractFormProcessor implements FormProcessor
                 'required' => false,
                 'attr' => ['help' => Text::get('tooltip-project-paypal')]
             ])
+            ->add('spread', 'textarea', [
+                'label' => 'overview-field-spread',
+                'disabled' => $this->getReadonly(),
+                'constraints' => $this->getConstraints('spread'),
+                'required' => false,
+                'attr' => ['help' => Text::get('tooltip-project-spread'), 'info' => '<i class="fa fa-eye-slash"></i> '. Text::get('project-non-public-field'), 'rows' => 8]
+            ])
             ;
         return $this;
     }
 
-    public function save(FormInterface $form = null) {
-        parent::save($form);
+    public function save(FormInterface $form = null, $force_save = false) {
+
+        if(!$form) $form = $this->getBuilder()->getForm();
+        if(!$form->isValid() && !$force_save) throw new FormModelException(Text::get('form-has-errors'));
+
+        $data = $form->getData();
+        $project = $this->getModel();
+        $project->rebuildData($data, array_keys($form->all()));
+
+        $errors = [];
+        if (!$project->save($errors)) {
+            throw new FormModelException(Text::get('form-sent-error', implode(', ',$errors)));
+        }
 
         $data = $form->getData();
         $account = $this->getOption('account');
@@ -87,6 +105,9 @@ class ProjectCampaignForm extends AbstractFormProcessor implements FormProcessor
         if(!User::setPersonal($user, ['phone' => $data['phone']], true, $errors)) {
             throw new FormModelException(Text::get('form-sent-error', implode(', ',$errors)));
         }
+
+        if(!$form->isValid()) throw new FormModelException(Text::get('form-has-errors'));
+
         return $this;
     }
 

@@ -20,7 +20,7 @@
             }
         }
 ?>
-    <li<?= ( $class ? ' class="' . implode(' ', $class) . '"' : '') ?>>
+    <li<?= ( $class ? ' class="' . implode(' ', $class) . '"' : '') ?> id="menu-item-<?= $item['id'] ?>">
         <?php if(is_array($submenu)): ?>
             <a class="toggle-submenu" href="#" role="button" aria-haspopup="true" aria-expanded="false">
                 <?php if(in_array('main', $class)): ?>
