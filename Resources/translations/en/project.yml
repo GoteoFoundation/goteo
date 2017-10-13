@@ -134,6 +134,7 @@ project-remove-reward-confirm: 'Are you sure to delete this reward?'
 project-reward-unlimited: 'Unlimited'
 
 project-send-review: 'Send to review'
+project-reviewing: 'We are evaluating and reviewing your project'
 project-validation-ok: 'The project is completed. Send it to revision to start the campaign.'
 project-validation-errors: 'The project is not yet complete!'
 project-validation-error-profile: 'There are empty fields in the project profile'
@@ -153,3 +154,5 @@ project-campaign-configuration: 'Campaign configuration'
 project-campaign-use-paypal: 'I want to allow users to pay using Paypal'
 project-manage: 'Manage'
 project-manage-campaign: 'Manage campaign'
+
+project-widget-not-visible: 'This widget will not be visible until the project is public'

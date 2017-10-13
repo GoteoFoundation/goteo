@@ -45,6 +45,8 @@ guide-project-rewards: '<strong>In this section, you should establish what the p
 guide-project-support: guide-project-support
 guide-project-supports: '<strong>In this section you will specify what other support, apart from financing, that you will need in order to complete the project.</strong><br><br>They can consist of collaboration or assistance from other people (translations, organization, promotion, etc.) or perhaps specific loans (of material, transportation, hardware, etc.)'
 guide-project-updates: '<b>It''s very important that the projects keep their co-financiers and other potentially interested people up to date about how the campaign is progressing. Use this section like a blog to publish updates about the project.</b>On Goteo, after you''ve achieved the minimum financing, and as you go into the second round, it''s essential to periodically explain how the production, progress, problems, etc. are going in order to allow the most transparency possible in order to generate even more interest and community.'
+guide-project-invests: 'In this section you will be able to manage your co-financiers, the rewards they have chosen and contact them if you need to.'
+
 header-about-side: 'What inspires us'
 home-posts-header: News
 horizontal-project-investors: cofinanciadores

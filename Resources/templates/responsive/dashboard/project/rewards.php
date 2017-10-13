@@ -105,6 +105,7 @@ $(function(){
     $('form.autoform').on('click', '.reward-item .material-switch', function(){
         var $reward = $(this).closest('.reward-item');
         var $input = $reward.find('input[type="checkbox"]');
+        if($input.prop('disabled')) return;
         var $units = $reward.find('.units input');
         var $icon = $units.prev('.input-group-addon');
 

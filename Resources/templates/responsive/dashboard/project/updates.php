@@ -9,9 +9,12 @@
         <a href="/dashboard/project/<?= $this->project->id ?>/updates/new" class="pull-right btn btn-cyan"><i class="fa fa-plus"></i> <?= $this->text('form-add-button') ?></a>
     </h2>
 
-    <?php if($this->errorMsg): ?>
-        <div class="alert alert-danger"><?= $this->errorMsg ?></div>
-    <?php elseif($this->posts): ?>
+    <div class="auto-hide">
+        <div class="inner"><?= $this->text('guide-project-updates') ?></div>
+        <div class="more"><i class="fa fa-info-circle"></i> <?= $this->text('regular-help') ?></div>
+    </div>
+
+    <?php if($this->posts): ?>
 
     <table class="-footable table">
       <thead>
@@ -52,7 +55,9 @@
     <?= $this->insert('partials/utils/paginator', ['total' => $this->total, 'limit' => $this->limit]) ?>
 
     <?php else: ?>
-        <p class="alert alert-danger"><?= $this->text('dashboard-project-blog-empty') ?></p>
+        <blockquote>
+            <?= $this->text('dashboard-project-blog-empty') ?>
+        </blockquote>
     <?php endif ?>
 
     <p>

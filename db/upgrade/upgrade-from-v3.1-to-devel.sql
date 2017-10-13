@@ -59,7 +59,7 @@ ALTER TABLE `post_tag` ADD FOREIGN KEY (`tag`) REFERENCES `tag`(`id`) ON UPDATE 
 
 -- costs constrains
 DELETE FROM cost WHERE project NOT IN (SELECT id FROM project);
-ALTER TABLE `cost` ADD FOREIGN KEY (`project`) REFERENCES `project`(`id`);
+ALTER TABLE `cost` ADD FOREIGN KEY (`project`) REFERENCES `project`(`id`) ON UPDATE CASCADE ON DELETE CASCADE;
 
 DELETE FROM cost_lang WHERE id NOT IN (SELECT id FROM cost);
 UPDATE cost_lang a JOIN cost b ON a.id=b.id AND a.project != b.project SET a.project = b.project;
@@ -67,7 +67,7 @@ ALTER TABLE `cost_lang` CHANGE `id` `id` BIGINT(20) UNSIGNED NOT NULL, ADD FOREI
 
 -- rewards constrains
 DELETE FROM reward WHERE project NOT IN (SELECT id FROM project);
-ALTER TABLE `reward` ADD FOREIGN KEY (`project`) REFERENCES `project`(`id`);
+ALTER TABLE `reward` ADD FOREIGN KEY (`project`) REFERENCES `project`(`id`) ON UPDATE CASCADE;
 
 DELETE FROM reward_lang WHERE id NOT IN (SELECT id FROM reward);
 UPDATE reward_lang a JOIN reward b ON a.id=b.id AND a.project != b.project SET a.project = b.project;
@@ -78,3 +78,18 @@ ALTER TABLE `reward_lang` CHANGE `id` `id` BIGINT(20) UNSIGNED NOT NULL, ADD FOR
 DELETE FROM support_lang WHERE id NOT IN (SELECT id FROM support);
 UPDATE support_lang a JOIN support b ON a.id=b.id AND a.project != b.project SET a.project = b.project;
 ALTER TABLE `support_lang` ADD FOREIGN KEY (`project`) REFERENCES `project`(`id`) ON UPDATE CASCADE;
+
+
+-- project related missing foreign keys
+ALTER TABLE `project_category` CHANGE `category` `category` INT(10) UNSIGNED NOT NULL, ADD FOREIGN KEY (`project`) REFERENCES `project`(`id`) ON UPDATE CASCADE ON DELETE CASCADE, ADD FOREIGN KEY (`category`) REFERENCES `category`(`id`) ON UPDATE CASCADE ON DELETE CASCADE;
+
+DELETE FROM review WHERE project NOT IN (SELECT id FROM project);
+ALTER TABLE `review` ADD FOREIGN KEY (`project`) REFERENCES `project`(`id`) ON UPDATE CASCADE ON DELETE CASCADE;
+ALTER TABLE `project_lang` ADD FOREIGN KEY (`id`) REFERENCES `project`(`id`) ON UPDATE CASCADE ON DELETE CASCADE;
+
+
+-- delete project from call
+ALTER TABLE `call_project` DROP FOREIGN KEY `call_project_ibfk_1`;
+ALTER TABLE `call_project` ADD CONSTRAINT `call_project_ibfk_1` FOREIGN KEY (`call`) REFERENCES `call`(`id`) ON UPDATE CASCADE ON DELETE CASCADE;
+ALTER TABLE `call_project` DROP FOREIGN KEY `call_project_ibfk_2`;
+ALTER TABLE `call_project` ADD CONSTRAINT `call_project_ibfk_2` FOREIGN KEY (`project`) REFERENCES `project`(`id`) ON UPDATE CASCADE ON DELETE CASCADE;

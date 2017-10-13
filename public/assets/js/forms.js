@@ -59,9 +59,10 @@ $(function(){
     //material switch checkbox
     $('.material-switch').on('click', function(e){
         e.preventDefault();
+        var $checkbox = $(this).find('input[type="checkbox"]');
+        if($checkbox.prop('disabled')) return;
         var text_yes = $(this).data('confirm-yes');
         var text_no = $(this).data('confirm-no');
-        var $checkbox = $(this).find('input[type="checkbox"]');
         var current = $checkbox.prop('checked');
         if(current && text_no) {
             if(!confirm(text_no)) {

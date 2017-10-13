@@ -132,6 +132,7 @@ project-remove-reward-confirm: 'Segur que vols esborrar aquesta recompensa?'
 project-reward-unlimited: 'Il·limitades'
 
 project-send-review: 'Envia a revisió'
+project-reviewing: 'Estem valorant i revisant el teu projecte'
 project-validation-ok: 'El projecte està complet. Pots enviar-lo a revisió per començar la campanya.'
 project-validation-errors: 'El projecte encara no està completat!'
 project-validation-error-profile: 'Falten camps per omplir al teu perfil d''usuari'
@@ -151,3 +152,5 @@ project-campaign-configuration: 'Configuració de campanya'
 project-campaign-use-paypal: 'Vull permetre que els usuaris pugin pagar mitjançant Paypal'
 project-manage: 'Gestiona'
 project-manage-campaign: 'Gestiona la campanya'
+
+project-widget-not-visible: 'Aquest widget no serà visible fins que el projecte sigui públic'

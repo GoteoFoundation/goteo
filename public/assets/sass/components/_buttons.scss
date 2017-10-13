@@ -186,10 +186,26 @@ button.pink:hover, button.pink:focus, button.custom-green:hover,
     background-color: $color-lilac;
     color: $color-white;
 }
+.label-orange {
+    background-color: $color-orange;
+    color: $color-white;
+}
 .label-big {
     font-size: $font-size;
     font-weight: 400;
     padding: 2px 4px;
+}
+.alert-cyan {
+    background-color: $color-cyan;
+    color: $color-white;
+}
+.alert-lilac {
+    background-color: $color-lilac;
+    color: $color-white;
+}
+.alert-orange {
+    background-color: $color-orange;
+    color: $color-white;
 }
 
 /* other helpers */
@@ -198,4 +214,7 @@ button.pink:hover, button.pink:focus, button.custom-green:hover,
 }
 .text-lilac {
     color: $color-lilac;
+}
+.text-orange {
+    color: $color-orange;
 }
