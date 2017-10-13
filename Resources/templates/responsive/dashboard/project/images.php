@@ -58,6 +58,11 @@ $(function(){
             'method': 'POST',
             data: {gallery: gallery}
         })
+        .fail(function(data) {
+            var error = JSON.parse(data.responseText);
+            $error.html(error.error);
+            $error.removeClass('hidden');
+        })
         .done(function(data){
             // console.log(data);
             if(!data.result) {
@@ -88,11 +93,11 @@ $(function(){
             , onEnd: function (evt) {
                 $('.dragndrop').show();
                 $all.removeClass('choose');
+                $('.image-list-sortable').removeClass('over');
                 // evt.oldIndex;  // element's old index within parent
                 // evt.newIndex;  // element's new index within parent
                 // console.log(evt);
                 saveCurrentOrder();
-                $('.image-list-sortable').removeClass('over');
             }
             , onMove: function (evt) {
                 $('.image-list-sortable').removeClass('over');
@@ -168,6 +173,11 @@ $(function(){
                 url: '/api/projects/<?= $this->project->id ?>/images/' + $li.data('name'),
                 'method': 'DELETE'
             })
+            .fail(function(data) {
+                var error = JSON.parse(data.responseText);
+                $error.html(error.error);
+                $error.removeClass('hidden');
+            })
             .done(function(data) {
                 // console.log('done',data);
                 if(data.result) {
@@ -191,6 +201,11 @@ $(function(){
             $.ajax({
                 url: '/api/projects/<?= $this->project->id ?>/images/' + $li.data('name'),
                 'method': 'PUT'
+            })
+            .fail(function(data) {
+                var error = JSON.parse(data.responseText);
+                $error.html(error.error);
+                $error.removeClass('hidden');
             })
             .done(function(data) {
                 // console.log('done',data);

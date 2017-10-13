@@ -6,21 +6,54 @@
     .percent {
         display:block;
         float: left;
-        width: 25%;
+        width: 120px;
+        margin-right: 20px;
     }
     .desc {
-        margin-left: 20px;
         display:block;
         float: left;
-        width: calc(75% - 20px);
-        ul, ul a {
-            color:$color-red;
+        width: calc(100% - 140px);
+        ul {
+            margin: 20px 0;
+            background-color: $background-light;
+            padding: 15px;
+            border-left: 4px solid $color-cyan;
+
+            li {
+                line-height: 1.1em;
+                margin-bottom: 10px;
+            }
+            a {
+                color:$color-red;
+                &::before {
+                    font-family: fontAwesome;
+                    content: '\f0a4';
+                    display: inline-block;
+                    margin-right: 5px;
+                }
+            }
         }
     }
     &::after {
         display: block;
         clear: both;
         content: '';
+    }
+    @media(max-width: $breakpoint-xs) {
+        padding: 0;
+        .percent, .desc {
+            float: none;
+            width: auto;
+        }
+        .desc {
+            p {
+                padding-top: 30px;
+                min-height: 130px;
+            }
+            ul {
+                margin-top: 0;
+            }
+        }
     }
 }
 .project-widget {

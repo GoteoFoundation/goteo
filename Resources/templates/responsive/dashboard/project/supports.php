@@ -50,11 +50,11 @@
     <?php endforeach ?>
 
     <?php else: ?>
-        <p class="alert alert-danger"><?= $this->text('dashboard-project-support-empty') ?></p>
+        <blockquote><?= $this->text('dashboard-project-support-empty') ?></blockquote>
     <?php endif ?>
 
     <p>
-        <button class="btn btn-lg btn-cyan" data-toggle="modal" data-target="#edit-modal"><i class="fa fa-plus"></i> <?= $this->text('dashboard-project-support-add') ?></button>
+        <button class="btn btn-lg btn-orange" data-toggle="modal" data-target="#edit-modal"><i class="fa fa-plus"></i> <?= $this->text('dashboard-project-support-add') ?></button>
     </p>
 
   </div>
