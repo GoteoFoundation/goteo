@@ -97,7 +97,7 @@
 $(function(){
     var $c100 = $('.c100');
     var per = 0;
-    var percent = <?= $validation->global ?>;
+    var percent = <?= (int)$validation->global ?>;
     $c100.removeClass('p0');
     (function animateCircle() {
         $c100.removeClass('p' + per);
@@ -108,7 +108,7 @@ $(function(){
             setTimeout(animateCircle, Math.ceil(per/5));
         }
     })();
-})
+});
 
 // @license-end
 </script>
