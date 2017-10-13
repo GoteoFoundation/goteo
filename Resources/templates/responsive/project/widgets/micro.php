@@ -6,6 +6,12 @@ elseif($this->project->inReview()) $label_color = 'orange';
 $validation = null;
 if($this->project->inEdition()) {
     $validation = $this->project->getValidation();
+    foreach($validation->errors as $key => $val) {
+        if($val && is_array($val) && $val[0]) {
+            $error = $this->text('project-validation-error-' . $val[0]);
+            break;
+        }
+    }
 }
 ?>
 <div class="project-widget micro" id="project-<?= $this->project->id ?>">
@@ -16,9 +22,9 @@ if($this->project->inEdition()) {
         <?php if($this->admin): ?>
             <?php if($validation): ?>
                 <span class="label label-<?= $label_color ?>"><?= $this->project->getTextStatus() ?></span>
-                <a href="/dashboard/project/<?= $this->project->id ?>/<?= key($validation->errors) ?>?validate" title="<?= $this->text('project-validation-errors') ?>"><?= $this->percent_span($validation->global) ?></a>
-                <?php if($validation->global < 100): ?>
-                    <p class="error"><a href="/dashboard/project/<?= $this->project->id ?>/<?= key($validation->errors) ?>?validate" title="<?= $this->text('project-validation-errors') ?>"><?= $this->text('project-validation-error-' . current($validation->errors)) ?></a></p>
+                <a href="/dashboard/project/<?= $this->project->id ?>/<?= $key ?>?validate" title="<?= $this->text('project-validation-errors') ?>"><?= $this->percent_span($validation->global) ?></a>
+                <?php if($validation->global < 100 && $error): ?>
+                    <p class="error"><a href="/dashboard/project/<?= $this->project->id ?>/<?= $key ?>?validate" title="<?= $this->text('project-validation-errors') ?>"><?= $error ?></a></p>
                 <?php endif ?>
             <?php else: ?>
                 <span class="label label-<?= $label_color ?>"><?= $this->project->getTextStatus() ?></span>

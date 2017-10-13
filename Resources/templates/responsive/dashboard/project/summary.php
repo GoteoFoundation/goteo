@@ -97,7 +97,7 @@
 $(function(){
     var $c100 = $('.c100');
     var per = 0;
-    var percent = <?= (int)$validation->global ?>;
+    var percent = <?= (int)$this->validation->global ?>;
     $c100.removeClass('p0');
     (function animateCircle() {
         $c100.removeClass('p' + per);
