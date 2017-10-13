@@ -257,3 +257,5 @@ dashboard-project-not-funded-yet: 'Aquest apartat estarà disponible quan el tu 
 dashboard-project-reward-cannot: 'Ara no es poden introduir noves recompenses. Durant la campanya es possible introduir noves recompenses (però no esborrar les que ja existeixen)'
 
 dashboard-project-add-translations: 'Mentrestant, pots afegir traduccions al teu projecte si consideres que t''ajudarà a incrementar-ne la visibilitat.'
+
+dashboard-project-goto-first-error: 'Ves al primer error'

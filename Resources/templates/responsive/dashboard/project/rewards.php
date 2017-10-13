@@ -10,6 +10,8 @@
         <!-- <div class="more"><i class="fa fa-info-circle"></i> <?= $this->text('regular-help') ?></div> -->
     </div>
 
+    <?= $this->insert('dashboard/project/partials/goto_first_error') ?>
+
     <?= $this->supply('dashboard-content-form', function() {
         $form = $this->raw('form');
         echo $this->form_start($form);

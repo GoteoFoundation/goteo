@@ -37,10 +37,11 @@
 
 $(function(){
 
-<?php if($this->query_has('validate')): ?>
-    // Scrolls to last error if validate GET is available
-    var $group = $('.form-group.has-error:first');
-    if($group.length) {
+    var gotoFirstError = function() {
+
+      // Scrolls to last error if validate GET is available
+      var $group = $('.form-group.has-error:first');
+      if($group.length) {
         $input = $group.find('input,select,textarea[name]');
         // console.log($group, $input.attr('id'), $input.val());
         if($group.find('div.markdown').length) {
@@ -52,8 +53,12 @@ $(function(){
         $('html, body').animate({
             scrollTop: $group.offset().top
         }, 800);
-    }
-<?php endif ?>
+      }
+    };
+    $('.goto-first-error').on('click', function(e) {
+        e.preventDefault();
+        gotoFirstError();
+    });
 
     // Apply project
     $('a.apply-project').on('click', function(e){

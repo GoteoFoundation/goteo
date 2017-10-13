@@ -263,3 +263,5 @@ dashboard-project-not-funded-yet: 'Este apartado estará disponible cuando tu pr
 dashboard-project-reward-cannot: 'Ahora no se pueden introducir nuevas recompensas. Durante la campaña es posible introducir nuevas recompensas (pero no borrar las que ya existen)'
 
 dashboard-project-add-translations: 'Mientras tanto, puedes añadir traducciones a tu proyecto si consideras que te ayudará a incrementar su visibilidad.'
+
+dashboard-project-goto-first-error: 'Ir al primer error'

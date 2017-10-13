@@ -4,8 +4,10 @@ $validation = $this->validation;
 $errors = [];
 if($validation->global < 100) {
     $desc = $this->text('project-validation-errors');
-    foreach($validation->errors as $type => $err) {
-        $errors[] = '<a href="/dashboard/project/' . $validation->project . '/' .$type .'?validate">' .$this->text('project-validation-error-' . $err) .'</a>';
+    foreach($validation->errors as $type => $errs) {
+        foreach($errs as $err) {
+            $errors[] = '<a href="/dashboard/project/' . $validation->project . '/' .$type .'?validate">' .$this->text('project-validation-error-' . $err) .'</a>';
+        }
     }
 }
 else {

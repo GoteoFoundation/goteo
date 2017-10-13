@@ -10,6 +10,8 @@
     </h1>
     <p><?= $this->text('guide-dashboard-user-profile') ?></p>
 
+    <?= $this->insert('dashboard/project/partials/goto_first_error') ?>
+
     <?= $this->supply('dashboard-content-form', function() {return $this->form_form($this->raw('form'));}) ?>
 
     <?= $this->insert('dashboard/project/partials/partial_validation') ?>
