@@ -176,3 +176,18 @@ button.pink:hover, button.pink:focus, button.custom-green:hover,
 .text-orange {
     color: $color-orange;
 }
+
+.progress-bar-cyan {
+    background-color: $color-cyan;
+}
+.progress-bar-lilac {
+    background-color: $color-lilac;
+}
+
+.progress-bar-light {
+    background-color: darken($background-light-body, 10%);
+}
+.progress-bar-light-lilac {
+    background-color: darken($background-lighter-lilac, 10%);
+}
+

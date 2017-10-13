@@ -349,10 +349,11 @@ class ProjectDashboardController extends \Goteo\Core\Controller {
             if($sec === 'goal') continue;
             $images[$sec] = ProjectImage::get($project->id, $sec);
         }
-        return $this->viewResponse('dashboard/project/images', [
+        $editable = $project->inEdition() || $project->isAlive();
+        return $this->viewResponse('dashboard/project/images' . ($editable ? '' : '_idle'), [
             'zones' => $zones,
             'images' => $images,
-            'next' => $approved ? '' : $this->getEditRedirect('images', $request)
+            'next' => $approved || !$editable ? '' : $this->getEditRedirect('images', $request)
             ]);
 
     }
@@ -765,7 +766,7 @@ class ProjectDashboardController extends \Goteo\Core\Controller {
                 'constraints' => array(new Constraints\NotBlank()),
             ])
             ->add('id', 'hidden', [
-                'constraints' => array(new Constraints\NotBlank())
+                // 'constraints' => array(new Constraints\NotBlank())
             ])
             ->add('delete', 'hidden')
             ->add('submit', 'submit')
@@ -773,9 +774,15 @@ class ProjectDashboardController extends \Goteo\Core\Controller {
 
         $editForm->handleRequest($request);
         if ($editForm->isSubmitted()) {
+            if(!$project->inEdition() && !$project->isAlive()) {
+                Message::error(Text::get('dashboard-project-not-alive-yet'));
+                return $this->redirect();
+            }
+
             $data = $editForm->getData();
+
+            // print_r($data);die;
             if($data['delete']) {
-                // print_r($data);die;
                 $support = Support::get($data['delete']);
                 if($support->totalThreadResponses($this->user)) {
                     Message::error(Text::get('support-remove-error-messages'));
