@@ -23,20 +23,7 @@
             <?php endforeach ?>
             </ol>
 
-            <?php if ($this->status_text): ?>
-                <div class="spacer alert alert-<?= $this->status_class ?>"><?= $this->status_text ?></div>
-            <?php endif ?>
-            <?php if ($this->desc): ?>
-                <blockquote><?= $this->desc ?></blockquote>
-                <?php if($this->project->inReview()): ?>
-                    <blockquote>
-                        <p><?= $this->text('dashboard-project-add-translations') ?></p>
-
-                        <p><a href="/dashboard/project/<?= $this->project->id ?>/translate"><i class="fa fa-hand-o-right"></i> <?= $this->text('form-navigation_bar-header') ?> <?= $this->text('regular-translations') ?></a></p>
-                    </blockquote>
-                <?php endif ?>
-
-            <?php endif ?>
+            <?= $this->insert('dashboard/project/partials/summary_status', ['project' => $this->project]) ?>
 
             <?php if($this->project->inEdition()): ?>
                 <?= $this->insert('project/widgets/validation', ['init_percent' => 0, 'validation' => $validation]) ?>
