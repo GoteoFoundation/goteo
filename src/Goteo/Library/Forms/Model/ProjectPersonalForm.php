@@ -83,8 +83,18 @@ class ProjectPersonalForm extends AbstractFormProcessor implements FormProcessor
         return $this;
     }
 
-    public function save(FormInterface $form = null) {
-        parent::save($form);
+    public function save(FormInterface $form = null, $force_save = false) {
+        if(!$form) $form = $this->getBuilder()->getForm();
+        if(!$form->isValid() && !$force_save) throw new FormModelException(Text::get('form-has-errors'));
+
+        $data = $form->getData();
+        $user = $this->getModel();
+        $user->rebuildData($data, array_keys($form->all()));
+
+        $errors = [];
+        if (!$user->save($errors)) {
+            throw new FormModelException(Text::get('form-sent-error', implode(', ',$errors)));
+        }
 
         $account = $this->getOption('account');
         $account->rebuildData($form->getData(), array_keys($form->all()));
@@ -93,6 +103,9 @@ class ProjectPersonalForm extends AbstractFormProcessor implements FormProcessor
         if (!$account->save($errors)) {
             throw new FormModelException(Text::get('form-sent-error', implode(', ',$errors)));
         }
+
+        if(!$form->isValid()) throw new FormModelException(Text::get('form-has-errors'));
+
         return $this;
     }
 

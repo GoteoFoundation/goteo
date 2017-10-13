@@ -60,12 +60,12 @@ class ProjectTranslateOverviewForm extends AbstractFormProcessor implements Form
                 'required' => false,
                 'attr' => ['help' => $project->about, 'rows' => 8]
             ])
-            ->add('goal', 'markdown', [
-                'label' => 'overview-field-goal',
-                'disabled' => $this->getReadonly(),
-                'required' => false,
-                'attr' => ['help' => $project->goal, 'rows' => 8]
-            ])
+            // ->add('goal', 'markdown', [
+            //     'label' => 'overview-field-goal',
+            //     'disabled' => $this->getReadonly(),
+            //     'required' => false,
+            //     'attr' => ['help' => $project->goal, 'rows' => 8]
+            // ])
             ->add('related', 'markdown', [
                 'label' => 'overview-field-related',
                 'disabled' => $this->getReadonly(),
@@ -87,9 +87,9 @@ class ProjectTranslateOverviewForm extends AbstractFormProcessor implements Form
         return $this;
     }
 
-    public function save(FormInterface $form = null) {
+    public function save(FormInterface $form = null, $force_save = false) {
         if(!$form) $form = $this->getBuilder()->getForm();
-        if(!$form->isValid()) throw new FormModelException(Text::get('form-has-errors'));
+        if(!$form->isValid() && !$force_save) throw new FormModelException(Text::get('form-has-errors'));
 
         $project = $this->getModel();
         $lang = $this->getOption('lang');
@@ -102,6 +102,7 @@ class ProjectTranslateOverviewForm extends AbstractFormProcessor implements Form
             // throw new FormModelException(Text::get('form-sent-error', implode(',',array_map('implode', $errors))));
             throw new FormModelException(Text::get('form-sent-error', implode(',',$errors)));
         }
+        if(!$form->isValid()) throw new FormModelException(Text::get('form-has-errors'));
         return $this;
     }
 }

@@ -33,6 +33,8 @@
 
     }) ?>
 
+    <?= $this->insert('dashboard/project/partials/partial_validation') ?>
+
   </div>
 </div>
 

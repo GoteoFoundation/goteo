@@ -16,7 +16,7 @@ use Goteo\Core\Model;
 
 interface FormProcessorInterface {
     public function createForm();
-    public function save(FormInterface $form = null);
+    public function save(FormInterface $form = null, $force_save = false);
     public function setBuilder(FormBuilderInterface $builder);
     public function getBuilder();
     public function getDefaults($sanitize = true);

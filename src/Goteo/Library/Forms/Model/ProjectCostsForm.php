@@ -135,7 +135,7 @@ class ProjectCostsForm extends AbstractFormProcessor implements FormProcessorInt
         return $this;
     }
 
-    public function save(FormInterface $form = null) {
+    public function save(FormInterface $form = null, $force_save = false) {
         if(!$form) $form = $this->getBuilder()->getForm();
 
         $data = array_intersect_key($form->getData(), $form->all());
@@ -164,7 +164,7 @@ class ProjectCostsForm extends AbstractFormProcessor implements FormProcessorInt
             }
         }
         // Validate form here to avoid deleted elements
-        if($validate && !$form->isValid()) throw new FormModelException(Text::get('form-has-errors'));
+        if($validate && !$form->isValid() && !$force_save) throw new FormModelException(Text::get('form-has-errors'));
 
         // Add cost
         if($form['add-cost']->isClicked()) {
@@ -180,6 +180,8 @@ class ProjectCostsForm extends AbstractFormProcessor implements FormProcessorInt
         if (!$project->save($errors)) {
             throw new FormModelException(Text::get('form-sent-error', implode(', ',$errors)));
         }
+
+        if($validate && !$form->isValid()) throw new FormModelException(Text::get('form-has-errors'));
 
         return $this;
     }

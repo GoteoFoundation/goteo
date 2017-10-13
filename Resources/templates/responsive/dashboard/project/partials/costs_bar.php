@@ -2,8 +2,12 @@
 
 $min = $this->minimum ? $this->minimum : '0';
 $opt = $this->optimum ? $this->optimum : '0';
-$left = round(100 * $min / ($min + $opt));
-$right = round(100 * $opt / ($min + $opt));
+$total = $min + $opt;
+$right = $left = 0;
+if($total) {
+    $left = round(100 * $min / $total);
+    $right = round(100 * $opt / $total);
+}
 
 ?>
 

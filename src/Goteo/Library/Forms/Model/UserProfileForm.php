@@ -240,9 +240,9 @@ class UserProfileForm extends AbstractFormProcessor implements FormProcessorInte
         return $this;
     }
 
-    public function save(FormInterface $form = null) {
+    public function save(FormInterface $form = null, $force_save = false) {
         if(!$form) $form = $this->getBuilder()->getForm();
-        if(!$form->isValid()) throw new FormModelException(Text::get('form-has-errors'));
+        if(!$form->isValid() && !$force_save) throw new FormModelException(Text::get('form-has-errors'));
 
         $errors = [];
         $data = $form->getData();
@@ -283,6 +283,7 @@ class UserProfileForm extends AbstractFormProcessor implements FormProcessorInte
         if (!$user->save($errors)) {
             throw new FormModelException(Text::get('form-sent-error', implode(',',array_map('implode',$errors))));
         }
+
         //
         // This is commented on purpose, see: Goteo\Model\User::get()
         //
@@ -300,6 +301,7 @@ class UserProfileForm extends AbstractFormProcessor implements FormProcessorInte
         // }
 
         User::flush();
+        if(!$form->isValid()) throw new FormModelException(Text::get('form-has-errors'));
 
         return $this;
     }
