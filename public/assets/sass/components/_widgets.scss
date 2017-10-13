@@ -13,14 +13,36 @@
         display:block;
         float: left;
         width: calc(75% - 20px);
-        ul, ul a {
-            color:$color-red;
+        ul {
+            li {
+                line-height: 1.1em;
+                margin-bottom: 10px;
+            }
+            a {
+                color:$color-red;
+                &::before {
+                    font-family: fontAwesome;
+                    content: '\f0a4';
+                    display: inline-block;
+                    margin-right: 5px;
+                }
+            }
         }
     }
     &::after {
         display: block;
         clear: both;
         content: '';
+    }
+    @media(max-width: $breakpoint-xs) {
+        .percent, .desc {
+            float: none;
+            width: auto;
+        }
+        .desc p {
+            padding-top: 30px;
+            min-height: 130px;
+        }
     }
 }
 .project-widget {
