@@ -2352,11 +2352,13 @@ namespace Goteo\Model {
                 }
                 $requireds += $reward->required;
             }
+            $total = count($this->individual_rewards);
             if($count1 > 0) {
                 $errors['rewards'] = 'rewards';
+                $res->rewards = round(100 * ($total - $count1)/$total);
+            } else {
+                $this->rewards = 0;
             }
-            $total = count($this->individual_rewards);
-            $res->rewards = round(100 * ($total - $count1)/$total);
             if($total < 3) {
                 $errors['rewards'] = 'rewards_required';
                 $res->rewards /= 2;
