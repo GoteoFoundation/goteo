@@ -103,6 +103,9 @@
       text-transform: uppercase;
       font-weight: 500;
     }
+    > input[disabled] + label {
+        opacity: 0.7;
+    }
   }
 
   .media-container {

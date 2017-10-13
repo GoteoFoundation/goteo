@@ -1,3 +1,5 @@
+@import "compass/css3";
+
 /* Custom buttons */
 .btn-success{
     background-color: $background-green !important;
@@ -108,23 +110,11 @@
 }
 .btn-fashion {
     background: $color-pink;
-    background: -moz-linear-gradient(left, $color-pink 28%, $color-red 100%);
-    background: -webkit-gradient(linear, left top, right top, color-stop(28%,$color-pink), color-stop(100%,$color-red));
-    background: -webkit-linear-gradient(left, $color-pink 28%,$color-red 100%);
-    background: -o-linear-gradient(left, $color-pink 28%,$color-red 100%);
-    background: -ms-linear-gradient(left, $color-pink 28%,$color-red 100%);
-    background: linear-gradient(to right, $color-pink 28%,$color-red 100%);
-    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='$color-pink', endColorstr='$color-red',GradientType=1 );
+    @include background(linear-gradient(to right, $color-pink 28%,$color-red 100%));
     color: $color-white !important;
     &:hover {
         background: darken($color-pink, 10%);
-        background: -moz-linear-gradient(left, darken($color-pink, 10%) 28%, darken($color-red, 10%) 100%);
-        background: -webkit-gradient(linear, left top, right top, color-stop(28%,darken($color-pink, 10%)), color-stop(100%,darken($color-red, 10%)));
-        background: -webkit-linear-gradient(left, darken($color-pink, 10%) 28%,darken($color-red, 10%) 100%);
-        background: -o-linear-gradient(left, darken($color-pink, 10%) 28%,darken($color-red, 10%) 100%);
-        background: -ms-linear-gradient(left, darken($color-pink, 10%) 28%,darken($color-red, 10%) 100%);
-        background: linear-gradient(to right, darken($color-pink, 10%) 28%,darken($color-red, 10%) 100%);
-        filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='darken($color-pink, 10%)', endColorstr='darken($color-red, 10%)',GradientType=1 );
+        @include background(linear-gradient(to right, darken($color-pink, 10%) 28%,darken($color-red, 10%) 100%));
     }
     .icon {
         background-color: $color-white;
@@ -133,23 +123,11 @@
 
 .btn-orange {
     background: $color-orange;
-    background: -moz-linear-gradient(left, $color-orange 28%, $color-red 100%);
-    background: -webkit-gradient(linear, left top, right top, color-stop(28%,$color-orange), color-stop(100%,$color-red));
-    background: -webkit-linear-gradient(left, $color-orange 28%,$color-red 100%);
-    background: -o-linear-gradient(left, $color-orange 28%,$color-red 100%);
-    background: -ms-linear-gradient(left, $color-orange 28%,$color-red 100%);
-    background: linear-gradient(to right, $color-orange 28%,$color-red 100%);
-    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='$color-orange', endColorstr='$color-red',GradientType=1 );
+    @include background(linear-gradient(to right, $color-orange 28%,$color-red 100%));
     color: $color-white !important;
     &:hover {
     background: darken($color-orange, 10%);
-    background: -moz-linear-gradient(left, darken($color-orange, 10%) 28%, darken($color-red, 10%) 100%);
-    background: -webkit-gradient(linear, left top, right top, color-stop(28%,darken($color-orange, 10%)), color-stop(100%,darken($color-red, 10%)));
-    background: -webkit-linear-gradient(left, darken($color-orange, 10%) 28%,darken($color-red, 10%) 100%);
-    background: -o-linear-gradient(left, darken($color-orange, 10%) 28%,darken($color-red, 10%) 100%);
-    background: -ms-linear-gradient(left, darken($color-orange, 10%) 28%,darken($color-red, 10%) 100%);
-    background: linear-gradient(to right, darken($color-orange, 10%) 28%,darken($color-red, 10%) 100%);
-    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='darken($color-orange, 10%)', endColorstr='darken($color-red, 10%)',GradientType=1 );
+    @include background(linear-gradient(to right, darken($color-orange, 10%) 28%,darken($color-red, 10%) 100%));
     color: $color-white !important;
     }
     .icon {
@@ -184,10 +162,26 @@ button.pink:hover, button.pink:focus, button.custom-green:hover,
     background-color: $color-lilac;
     color: $color-white;
 }
+.label-orange {
+    background-color: $color-orange;
+    color: $color-white;
+}
 .label-big {
     font-size: $font-size;
     font-weight: 400;
     padding: 2px 4px;
+}
+.alert-cyan {
+    background-color: $color-cyan;
+    color: $color-white;
+}
+.alert-lilac {
+    background-color: $color-lilac;
+    color: $color-white;
+}
+.alert-orange {
+    background-color: $color-orange;
+    color: $color-white;
 }
 
 /* other helpers */
@@ -196,4 +190,7 @@ button.pink:hover, button.pink:focus, button.custom-green:hover,
 }
 .text-lilac {
     color: $color-lilac;
+}
+.text-orange {
+    color: $color-orange;
 }

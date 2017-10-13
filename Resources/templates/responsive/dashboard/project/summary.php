@@ -24,10 +24,13 @@
             </ol>
 
             <?php if ($this->status_text): ?>
-                <div class="spacer alert alert-danger"><?= $this->status_text ?></div>
+                <div class="spacer alert alert-<?= $this->status_class ?>"><?= $this->status_text ?></div>
+            <?php endif ?>
+            <?php if ($this->desc): ?>
+                <blockquote><?= $this->desc ?></blockquote>
             <?php endif ?>
 
-            <?php if(!$this->project->isApproved()): ?>
+            <?php if($this->project->inEdition()): ?>
                 <?= $this->insert('project/widgets/validation', ['init_percent' => 0, 'validation' => $validation]) ?>
             <?php endif ?>
 
@@ -65,8 +68,11 @@
         <h3><?= $this->text('project-spread-widget_title') ?></h3>
         <div class="panel-body widget-preview">
             <div class="right">
+                <?php if(!$this->project->isApproved()): ?>
+                    <div class="alert alert-orange"><i class="fa fa-exclamation-triangle"></i> <?= $this->text('project-widget-not-visible') ?></div>
+                <?php endif ?>
                 <h5 onclick="$(this).next().focus();$(this).next().select()"><?= $this->text('project-spread-embed_code') ?></h5>
-                <textarea class="form-control" onclick="this.focus();this.select()" readonly="readonly"><?= $this->text_widget($url) ?></textarea>
+                <textarea class="form-control" onclick="this.focus();this.select()" rows="4" readonly="readonly"><?= $this->text_widget($url) ?></textarea>
             </div>
             <div class="left">
                 <iframe frameborder="0" height="492px" src="<?= $url ?>" width="300px" scrolling="no"></iframe>
@@ -74,10 +80,12 @@
         </div>
     </div>
 
+    <?php if($this->project->userCanDelete($this->get_user())): ?>
     <div class="panel section-content">
         <h3><?= $this->text('dashboard-project-delete') ?></h3>
-        <a class="btn btn-danger" href="/project/delete/<?= $this->project->id ?>" onclick="return confirm('<?= $this->ee($this->text('dashboard-project-delete_alert'), 'js') ?>')"><i class="fa fa-trash"></i> <?= $this->text('regular-delete') ?></a>
+        <a class="btn btn-danger" href="/dashboard/project/<?= $this->project->id ?>/delete" onclick="return confirm('<?= $this->ee($this->text('dashboard-project-delete_alert'), 'js') ?>')"><i class="fa fa-trash"></i> <?= $this->text('regular-delete') ?></a>
     </div>
+    <?php endif ?>
 
   </div>
 </div>

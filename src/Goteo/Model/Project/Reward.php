@@ -37,11 +37,21 @@ class Reward extends \Goteo\Core\Model {
     public static function getLangFields() {
         return ['reward', 'description', 'other'];
     }
+
     public function setLang($lang, $data = [], array &$errors = []) {
         $data['project'] = $this->project;
         return parent::setLang($lang, $data, $errors);
     }
 
+    /**
+     * Returns if the project is empty (not be shown yet)
+     * Meaning it has some field to fill and has not been choosen by any invest
+     * @return boolean [description]
+     */
+    public function isDraft() {
+        $empty = !$this->amount || !$this->reward || !$this->description;
+        return $empty && $this->getTaken() == 0;
+    }
 
     public static function get($id) {
         try {
@@ -126,13 +136,14 @@ class Reward extends \Goteo\Core\Model {
                     $sqlFilter
                     ";
 
+            $sql .= ' ORDER BY ISNULL(reward.amount) ASC, ISNULL(reward.reward) ASC, ISNULL(reward.description) ASC';
             if ($type == 'social') {
-                $sql .= " ORDER BY reward.order ASC";
+                $sql .= ", reward.order ASC";
             }
             else {
-                //     $sql .= " ORDER BY reward.id ASC";
+                //     $sql .= ", reward.id ASC";
                 //     ORDERED BY AMOUNT
-                $sql .= " ORDER BY reward.amount ASC, reward.order ASC";
+                $sql .= ", reward.amount ASC, reward.order ASC";
             }
             // die(\sqldbg($sql, $values));
             $query = self::query($sql, $values);

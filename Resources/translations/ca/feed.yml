@@ -58,3 +58,7 @@ feed-message-message-published: '%USER% ha publicat una nova %TYPE% en el projec
 feed-message-new-project-response: 'usuari participa amb un missatge/resposta al projecte'
 feed-message-support-response-published: 'Nova col·laboració de %USER% amb %TITLE% al projecte %PROJECT%'
 feed-message-response-published: '%USER% ha contestat en %TYPE% del projecte %PROJECT%'
+
+feed-project-ready-sent: 'Projecte enviat a revisió'
+feed-project-ready-ko: 'Error de %USER% al enviar el projecte %PROJECT% a <span class="red">revisió</span>'
+feed-project-ready-ok: '%USER% ha enviat el projecte %PROJECT% a <span class="red">revisió</span>'

@@ -14,6 +14,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
 use Goteo\Application\Session;
+use Goteo\Application\App;
 use Goteo\Application\AppEvents;
 use Goteo\Application\View;
 use Goteo\Application\Message;
@@ -37,6 +38,7 @@ use Goteo\Application\Exception\ControllerAccessDeniedException;
 use Goteo\Application\Event\FilterMessageEvent;
 use Symfony\Component\Validator\Constraints;
 use Goteo\Library\Forms\FormModelException;
+use Goteo\Application\Event\FilterProjectEvent;
 
 class ProjectDashboardController extends \Goteo\Core\Controller {
     protected $user;
@@ -45,6 +47,7 @@ class ProjectDashboardController extends \Goteo\Core\Controller {
         // changing to a responsive theme here
         View::setTheme('responsive');
         $this->user = Session::getUser();
+
         $this->contextVars([
             'section' => 'projects'
         ]);
@@ -58,10 +61,7 @@ class ProjectDashboardController extends \Goteo\Core\Controller {
         // Create sidebar menu
         Session::addToSidebarMenu('<i class="icon icon-2x icon-summary"></i> ' . Text::get('dashboard-menu-activity-summary'), $prefix . '/summary', 'summary');
 
-        // $submenu = [];
-        // Session::addToSidebarMenu('<i class="fa fa-2x fa-id-badge"></i> ' . Text::get('profile-about-header'), $submenu, 'project', null, 'sidebar');
-
-        $validation = $project->isApproved() ? false : $project->getValidation();
+        $validation = $project->inEdition() ? $project->getValidation() : false;
 
         if($validation) {
             $steps = [
@@ -102,10 +102,9 @@ class ProjectDashboardController extends \Goteo\Core\Controller {
 
         if($validation && $validation->global == 100) {
 
-            Session::addToSidebarMenu('<i class="fa fa-2x fa-paper-plane"></i> ' . Text::get('project-send-review'), '/dashboard/project/' . $project->id . '/apply', 'apply', null, 'flat', 'btn btn-fashion');
+            Session::addToSidebarMenu('<i class="fa fa-2x fa-paper-plane"></i> ' . Text::get('project-send-review'), '/dashboard/project/' . $project->id . '/apply', 'apply', null, 'flat', 'btn btn-fashion apply-project');
 
         }
-
 
         View::getEngine()->useData([
             'project' => $project,
@@ -116,7 +115,7 @@ class ProjectDashboardController extends \Goteo\Core\Controller {
 
     }
 
-    protected function validateProject($pid = null, $section = 'summary', $lang = null) {
+    protected function validateProject($pid = null, $section = 'summary', $lang = null, &$form = null) {
 
         // Old Compatibility with session value
         // TODO: remove this when legacy is removed
@@ -141,6 +140,28 @@ class ProjectDashboardController extends \Goteo\Core\Controller {
 
         self::createSidebar($this->project, $section);
 
+        // Create a global form to send to review
+        $builder = $this->createFormBuilder([ 'message' => $this->project->comment ],
+            'applyform',
+            [ 'action' => '/dashboard/project/' . $this->project->id . '/apply' ]);
+
+        $form = $builder
+            ->add('message', 'textarea', [
+                'label' => 'preview-send-comment',
+                'required' => false,
+                // 'attr' => ['help' => Text::get('tooltip-project-support-description')]
+            ])
+            ->add('submit', 'submit', [
+                'label' => 'project-send-review',
+                'attr' => ['class' => 'btn btn-fashion btn-lg'],
+                'icon_class' => 'fa fa-paper-plane'
+            ])
+            ->getForm();
+
+        $this->contextVars([
+            'applyForm' => $form->createView()
+        ]);
+
         return $this->project;
     }
 
@@ -161,23 +182,39 @@ class ProjectDashboardController extends \Goteo\Core\Controller {
         if($project instanceOf Response) return $project;
 
         $status_text = '';
-        // mensaje cuando, sin estar en campaña, tiene fecha de publicación
-        if ($project->status < Project::STATUS_IN_CAMPAIGN && !empty($project->published)) {
-            if ($project->published > date('Y-m-d')) {
-                // si la fecha es en el futuro, es que se publicará
-                $status_text = Text::get('project-willpublish', date('d/m/Y', strtotime($project->published)));
+        $status_class = 'cyan';
+        $desc = '';
+        if (!$project->isApproved()){
+            // Project will be published automatically if date is present
+            if(!empty($project->published)) {
+                if ($project->published > date('Y-m-d')) {
+                    // si la fecha es en el futuro, es que se publicará
+                    $status_text = Text::get('project-willpublish', date('d/m/Y', strtotime($project->published)));
+                    $status_class = 'orange';
+                } else {
+                    // si la fecha es en el pasado, es que la campaña ha sido cancelada
+                    $status_text = Text::get('project-unpublished');
+                    $status_class = 'danger';
+                }
             } else {
-                // si la fecha es en el pasado, es que la campaña ha sido cancelada
-                $status_text = Text::get('project-unpublished');
+                // Not published yet
+                if($project->inReview()) {
+                    $status_class = 'lilac';
+                    $desc = Text::get('form-project_waitfor-review');
+                    $status_text = Text::get('project-reviewing');
+                }
+                else {
+                    $status_text = Text::get('project-not_published');
+                    $status_class = 'danger';
+                }
             }
-        } elseif ($project->status < Project::STATUS_IN_CAMPAIGN) {
-            // mensaje de no publicado siempre que no esté en campaña
-            $status_text = Text::get('project-not_published');
         }
 
         return $this->viewResponse('dashboard/project/summary', [
             'statuses' => Project::status(),
-            'status_text' => $status_text
+            'status_text' => $status_text,
+            'status_class' => $status_class,
+            'desc' => $desc
         ]);
     }
 
@@ -215,10 +252,9 @@ class ProjectDashboardController extends \Goteo\Core\Controller {
 
     /**
      * Project edit (personal)
-     * NOTE: Step removed, maintaining the method just in case
+     * NOTE: Step removed, maintaining the method just in case is comming back some day
      */
-    public function personalAction($pid, Request $request)
-    {
+    public function personalAction($pid, Request $request) {
         $project = $this->validateProject($pid, 'personal');
         if($project instanceOf Response) return $project;
 
@@ -239,7 +275,8 @@ class ProjectDashboardController extends \Goteo\Core\Controller {
 
         // Create the form
         $processor = $this->getModelForm('ProjectPersonal', $project, $defaults, ['account' => $account], $request);
-        $processor->setReadonly(!$project->userCanEdit($this->user, true))->createForm();
+        // $processor->setReadonly(!$project->userCanEdit($this->user, true))->createForm();
+        $processor->setReadonly(!$project->inEdition())->createForm();
         $form = $processor->getBuilder()
             ->add('submit', 'submit', [
                 'label' => $project->isApproved() ? 'regular-submit' : 'form-next-button'
@@ -263,8 +300,7 @@ class ProjectDashboardController extends \Goteo\Core\Controller {
     /**
      * Project edit (overview)
      */
-    public function overviewAction($pid, Request $request)
-    {
+    public function overviewAction($pid, Request $request) {
         $project = $this->validateProject($pid, 'overview');
         if($project instanceOf Response) return $project;
 
@@ -273,9 +309,9 @@ class ProjectDashboardController extends \Goteo\Core\Controller {
         // Create the form
         $processor = $this->getModelForm('ProjectOverview', $project, $defaults, [], $request);
         // For everyone
-        // $processor->setReadonly(!$project->isEditable())->createForm();
+        $processor->setReadonly(!$project->inEdition())->createForm();
         // Just for the owner
-        $processor->setReadonly(!$project->userCanEdit($this->user, true))->createForm();
+        // $processor->setReadonly(!$project->userCanEdit($this->user, true))->createForm();
 
         if(!$processor->getReadonly()) {
             $processor->getBuilder()->add('submit', 'submit', [
@@ -302,8 +338,7 @@ class ProjectDashboardController extends \Goteo\Core\Controller {
     /**
      * Project edit (images)
      */
-    public function imagesAction($pid = null, Request $request)
-    {
+    public function imagesAction($pid = null, Request $request) {
         $project = $this->validateProject($pid, 'images');
         if($project instanceOf Response) return $project;
         $approved = $project->isApproved();
@@ -325,9 +360,8 @@ class ProjectDashboardController extends \Goteo\Core\Controller {
     /**
      * Project edit (updates)
      */
-    public function updatesAction($pid = null, Request $request)
-    {
-        // View::setTheme('default');
+    public function updatesAction($pid = null, Request $request) {
+
         $project = $this->validateProject($pid, 'updates');
         if($project instanceOf Response) return $project;
 
@@ -336,45 +370,56 @@ class ProjectDashboardController extends \Goteo\Core\Controller {
         $msg = '';
         $limit = 10;
         $offset = $limit * (int)$request->query->get('pag');
-        if ($project->status < 3) {
-            $msg = Text::get('dashboard-project-blog-wrongstatus');
-            // return $this->redirect('/dashboard/projects/summary');
-        } else {
-            $blog = Blog::get($project->id);
-            if ($blog instanceOf Blog) {
-                if($blog->active) {
-                    $posts = BlogPost::getList((int)$blog->id, false, $offset, $limit);
-                    $total = BlogPost::getList((int)$blog->id, false, 0, 0, true);
-                }
-                else {
-                    Message::error(Text::get('dashboard-project-blog-inactive'));
-                }
+
+        $blog = Blog::get($project->id);
+        if ($blog instanceOf Blog) {
+            if($blog->active) {
+                $posts = BlogPost::getList((int)$blog->id, false, $offset, $limit);
+                $total = BlogPost::getList((int)$blog->id, false, 0, 0, true);
+            }
+            else {
+                Message::error(Text::get('dashboard-project-blog-inactive'));
             }
         }
 
         $langs = Lang::listAll('name', false);
         $languages = array_intersect_key($langs, array_flip($project->getLangsAvailable()));
 
-        return $this->viewResponse('dashboard/project/updates', [
+        return $this->viewResponse('dashboard/project/updates' . ($project->isApproved() ? '' : '_idle'), [
                 'posts' => $posts,
                 'total' => $total,
                 'limit' => $limit,
-                'errorMsg' => $msg,
                 'languages' => $languages,
                 'skip' => $project->lang
             ]);
     }
 
-    public function updatesEditAction($pid, $uid, Request $request)
-    {
+    public function updatesEditAction($pid, $uid, Request $request) {
         $project = $this->validateProject($pid, 'updates');
         if($project instanceOf Response) return $project;
+        $redirect = '/dashboard/project/' . $this->project->id .'/updates';
+
+        if(!$project->isApproved()) {
+            Message::error(Text::get('dashboard-project-blog-wrongstatus'));
+            return $this->redirect($redirect);
+        }
 
         $post = BlogPost::get($uid);
-
         if(!$post && is_null($uid)) {
             $blog = Blog::get($project->id);
-            if(!$blog instanceOf Blog) throw new ModelException("Blog not found for project [{$project->id}]");
+
+            if(!$blog instanceOf Blog) {
+                // Create the main blog
+                $blog = new Blog([
+                    'type' => 'project',
+                    'owner' => $project->id,
+                    'active' => true
+                ]);
+                if (!$blog->save($errors)) {
+                    Message::error(Text::get('dashboard-project-blog-fail'). "\n" .implode("\n", $errors));
+                    return $this->redirect($redirect);
+                }
+            }
             $post = new BlogPost([
                 'blog' => $blog->id,
                 'date' => date('Y-m-d'),
@@ -393,7 +438,8 @@ class ProjectDashboardController extends \Goteo\Core\Controller {
         // print_r($_FILES);die;
         // Create the form
         $processor = $this->getModelForm('ProjectPost', $post, $defaults, ['project' => $project]);
-        $processor->setReadonly(!$project->userCanEdit($this->user, true))->createForm();
+        // $processor->setReadonly(!$project->userCanEdit($this->user, true))->createForm();
+        $processor->setReadonly(!$project->inEdition())->createForm();
         $form = $processor->getBuilder()
             ->add('submit', 'submit', array(
                 // 'icon_class' => null
@@ -406,7 +452,7 @@ class ProjectDashboardController extends \Goteo\Core\Controller {
             try {
                 $processor->save($form);
                 Message::info(Text::get('form-sent-success'));
-                return $this->redirect('/dashboard/project/' . $this->project->id .'/updates');
+                return $this->redirect($redirect);
             } catch(FormModelException $e) {
                 Message::error($e->getMessage());
             }
@@ -428,15 +474,15 @@ class ProjectDashboardController extends \Goteo\Core\Controller {
     /**
     * Costs section
     */
-    public function costsAction($pid, Request $request)
-    {
+    public function costsAction($pid, Request $request) {
         $project = $this->validateProject($pid, 'costs');
         if($project instanceOf Response) return $project;
 
         $defaults = (array) $project;
         // Create the form
         $processor = $this->getModelForm('ProjectCosts', $project, $defaults, [], $request);
-        $processor->setReadonly(!$project->userCanEdit($this->user, true))->createForm();
+        // $processor->setReadonly(!$project->userCanEdit($this->user, true))->createForm();
+        $processor->setReadonly(!$project->inEdition())->createForm();
         $builder = $processor->getBuilder();
         if(!$processor->getReadonly()) {
             $builder
@@ -509,8 +555,7 @@ class ProjectDashboardController extends \Goteo\Core\Controller {
     /**
     * Rewards section
     */
-    public function rewardsAction($pid = null, Request $request)
-    {
+    public function rewardsAction($pid = null, Request $request) {
 
         $project = $this->validateProject($pid, 'rewards');
         if($project instanceOf Response) return $project;
@@ -518,10 +563,16 @@ class ProjectDashboardController extends \Goteo\Core\Controller {
         $defaults = (array) $project;
         // Create the form
         $processor = $this->getModelForm('ProjectRewards', $project, $defaults, [], $request);
-        $processor->setReadonly(!$project->userCanEdit($this->user, true))->createForm();
-        $builder = $processor->getBuilder()
+        // $processor->setReadonly(!$project->userCanEdit($this->user, true))->createForm();
+        $processor->setReadonly(!$project->inEdition());
+        // Rewards can be added durint campaign
+        if($project->inCampaign() || $project->inReview()) {
+            $processor->setFullValidation(true);
+        }
+
+        $builder = $processor->createForm()->getBuilder()
             ->add('submit', 'submit', [
-                'label' => $project->isApproved() ? 'regular-submit' : 'form-next-button'
+                'label' => $project->inEdition() ? 'form-next-button' : 'regular-submit'
             ])
             ->add('add-reward', 'submit', [
                 'label' => 'project-add-reward',
@@ -534,6 +585,9 @@ class ProjectDashboardController extends \Goteo\Core\Controller {
         if ($form->isSubmitted() && $request->isMethod('post')) {
             // Handle AJAX calls manually
             if($request->isXmlHttpRequest()) {
+                if(!$project->inEdition() && !$project->isAlive()) {
+                    return $this->rawResponse(Text::get('dashboard-project-reward-cannot'), 'text/plain', 500);
+                }
                 $button = $form->getClickedButton()->getName();
                 if($button === 'add-reward') {
                     $reward = new Reward(['project' => $project->id, 'type' => 'individual']);
@@ -550,10 +604,10 @@ class ProjectDashboardController extends \Goteo\Core\Controller {
                 if(strpos($button, 'remove_') === 0) {
                     try {
                         $reward = Reward::get(substr($button, 7));
-                        if($reward->getTaken() === 0) {
+                        if($reward->isDraft()) {
                             $reward->dbDelete();
                         } else {
-                            return $this->rawResponse('Reward has invests. Cannot be deleted', 'text/plain', 500);
+                            return $this->rawResponse('Error: Reward has invests or cannot be deleted', 'text/plain', 500);
                         }
                         return $this->rawResponse('deleted ' . $reward->id);
                     } catch(\PDOExpection $e) {
@@ -580,12 +634,71 @@ class ProjectDashboardController extends \Goteo\Core\Controller {
         ]);
     }
 
+    /** Send the project to review */
+    public function applyAction($pid, Request $request) {
+        $project = $this->validateProject($pid, 'summary', null, $form);
+        if($project instanceOf Response) return $project;
 
- /**
+        $referer = $request->headers->get('referer');
+        if(!$referer || strpos($referer, '/dashboard/') === false) $referer ='/dashboard/project/' . $project->id . '/summary';
+
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+            $data = $form->getData();
+            $project->comment = $data['message'];
+            $errors = [];
+
+            try {
+                if (!$project->save($errors)) {
+                    throw new FormModelException(Text::get('form-sent-error', implode(', ',$errors)));
+                }
+
+                // READY EVENT
+                $old_id = $project->id;
+                $this->dispatch(AppEvents::PROJECT_READY, new FilterProjectEvent($project));
+
+                Message::info(Text::get('project-review-request_mail-success'));
+                Message::info(Text::get('project-review-confirm_mail-success'));
+                if(strpos($referer, $old_id) !== false) $referer = '/dashboard/project/' . $project->id . '/summary';
+
+            } catch(\Exception $e) {
+                if($project->inReview()) Message::info(Text::get('project-review-request_mail-success'));
+                Message::error(Text::get('project-review-request_mail-fail') . "\n" . $e->getMessage());
+            }
+
+        } else {
+            Message::error(Text::get('project-review-request_mail-fail'));
+        }
+
+        return $this->redirect($referer);
+    }
+
+    /** Delete project */
+    public function deleteAction($pid, Request $request = null) {
+        $project = $this->validateProject($pid);
+        if($project instanceOf Response) return $project;
+
+        $referer = $request->headers->get('referer');
+        if(!$referer) $referer ='/dashboard/projects';
+
+        if (!$project->userCanDelete($this->user)) {
+            Message::error(Text::get('dashboard-project-delete-no-perms'));
+            return $this->redirect($referer);
+        }
+
+        $errors = [];
+        if ($project->remove($errors)) {
+            Message::info('dashboard-project-delete-ok', '<strong>' . $project->name . '</strong>');
+        } else {
+            Message::error('dashboard-project-delete-ko', '<strong>' . $project->name . '</strong>. ' . implode("\n", $errors));
+        }
+        return $this->redirect($referer);
+    }
+
+    /**
      * Project edit (overview)
      */
-    public function campaignAction($pid, Request $request)
-    {
+    public function campaignAction($pid, Request $request) {
         $project = $this->validateProject($pid, 'campaign');
         if($project instanceOf Response) return $project;
 
@@ -605,9 +718,9 @@ class ProjectDashboardController extends \Goteo\Core\Controller {
         // Create the form
         $processor = $this->getModelForm('ProjectCampaign', $project, $defaults, ['account' => $account, 'user' => $this->user], $request);
         // For everyone
-        // $processor->setReadonly(!$project->isEditable())->createForm();
+        $processor->setReadonly(!$project->inEdition())->createForm();
         // Just for the owner
-        $processor->setReadonly(!$project->userCanEdit($this->user, true))->createForm();
+        // $processor->setReadonly(!$project->userCanEdit($this->user, true))->createForm();
 
         if(!$processor->getReadonly()) {
             $processor->getBuilder()->add('submit', 'submit', [
@@ -634,8 +747,7 @@ class ProjectDashboardController extends \Goteo\Core\Controller {
     /**
     * Collaborations section
     */
-    public function supportsAction($pid = null, Request $request)
-    {
+    public function supportsAction($pid = null, Request $request) {
         $project = $this->validateProject($pid, 'supports');
         if($project instanceOf Response) return $project;
 
@@ -809,11 +921,13 @@ class ProjectDashboardController extends \Goteo\Core\Controller {
     /**
      * Rewards/invest section
      */
-    public function investsAction($pid = null, Request $request)
-    {
-        // View::setTheme('default');
+    public function investsAction($pid = null, Request $request) {
         $project = $this->validateProject($pid, 'invests');
         if($project instanceOf Response) return $project;
+
+        if(!$project->isApproved()) {
+            return $this->viewResponse('dashboard/project/invests_idle');
+        }
 
         $limit = 25;
         $offset = $limit * (int)$request->query->get('pag');

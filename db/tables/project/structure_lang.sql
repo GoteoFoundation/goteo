@@ -23,3 +23,5 @@ ALTER TABLE `project_lang` ADD `pending` INT( 1 ) NULL DEFAULT '0' COMMENT 'Debe
 
 ALTER TABLE `project_lang` ADD `social_commitment_description` TEXT COMMENT 'Social commitment of the project';
 
+-- constrains
+ALTER TABLE `project_lang` ADD FOREIGN KEY (`id`) REFERENCES `project`(`id`) ON UPDATE CASCADE ON DELETE CASCADE;

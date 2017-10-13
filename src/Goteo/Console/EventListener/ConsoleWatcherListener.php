@@ -79,7 +79,10 @@ class ConsoleWatcherListener extends AbstractListener {
         $project = $event->getProject();
         $this->info("Automatic publish of project", [$project]);
 
-        $res = $project->publish();
+        $errors = [];
+        if(!$res = $project->publish($errors)) {
+            $this->error('Error publishing project! '.implode("\n", $errors), [$project]);
+        }
 
         // Admin Feed
         $log = new Feed();
@@ -91,9 +94,8 @@ class ConsoleWatcherListener extends AbstractListener {
                     '%PROJECT%' => Feed::item('project', $project->name, $project->id),
                     '%DAYS%'    => $project->days,
                     '%ROUND%'   => $project->round
-                ]
-            ),
-            $project->image)
+                ]),
+                $project->image)
             ->doAdmin('admin');
 
         $this->logFeedEntry($log);

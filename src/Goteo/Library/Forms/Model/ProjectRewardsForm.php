@@ -52,6 +52,9 @@ class ProjectRewardsForm extends AbstractFormProcessor implements FormProcessorI
     }
 
     public function delReward($id) {
+        if($this->getReadonly() && !$this->rewards[$id]->isDraft()) {
+            return false;
+        }
         unset($this->rewards[$id]);
         $this->getBuilder()
             ->remove("amount_$id")
@@ -68,7 +71,8 @@ class ProjectRewardsForm extends AbstractFormProcessor implements FormProcessorI
         $this->rewards[$reward->id] = $reward;
         $suffix = "_{$reward->id}";
         // readonly only if has no invests associated
-        $readonly = $this->getReadonly() && ($reward->getTaken() > 0);
+        $readonly = $this->getReadonly() && !$reward->isDraft();
+
         $this->getBuilder()
             ->add("amount$suffix", 'number', [
                 'label' => 'rewards-field-individual_reward-amount',
@@ -168,7 +172,7 @@ class ProjectRewardsForm extends AbstractFormProcessor implements FormProcessorI
         if($validate && !$form->isValid()) throw new FormModelException(Text::get('form-has-errors'));
 
         // Add reward
-        if($form['add-reward']->isClicked()) {
+        if($form['add-reward']->isClicked() && (!$this->getReadonly() || $project->isAlive())) {
             $reward = new Reward(['project' => $project->id, 'type' => 'individual']);
             if(!$reward->save($errors)) {
                 throw new FormModelException(Text::get('form-sent-error', implode(', ',$errors)));
