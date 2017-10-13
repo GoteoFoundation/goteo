@@ -28,6 +28,14 @@
             <?php endif ?>
             <?php if ($this->desc): ?>
                 <blockquote><?= $this->desc ?></blockquote>
+                <?php if($this->project->inReview()): ?>
+                    <blockquote>
+                        <p><?= $this->text('dashboard-project-add-translations') ?></p>
+
+                        <p><a href="/dashboard/project/<?= $this->project->id ?>/translate"><i class="fa fa-hand-o-right"></i> <?= $this->text('form-navigation_bar-header') ?> <?= $this->text('regular-translations') ?></a></p>
+                    </blockquote>
+                <?php endif ?>
+
             <?php endif ?>
 
             <?php if($this->project->inEdition()): ?>

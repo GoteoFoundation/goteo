@@ -37,7 +37,7 @@
         <?php endforeach ?>
         <!-- </div> -->
     <?php else: ?>
-        <p class="text-danger"><strong><?= $this->text('dashboard-translate-project-empty') ?></strong></p>
+        <blockquote><?= $this->text('dashboard-translate-project-empty') ?></blockquote>
     <?php endif ?>
 
 <?php

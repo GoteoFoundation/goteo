@@ -1053,7 +1053,7 @@ class ProjectDashboardController extends \Goteo\Core\Controller {
         return $this->viewResponse('dashboard/project/shared_materials', [
             'licenses_list' => $licenses_list,
             'icons' => $icons,
-            'allowNewShare' => in_array($project->status, [Project::STATUS_FUNDED , Project::STATUS_FULFILLED])
+            'allowNewShare' => $project->isFunded()
             ]);
 
     }

@@ -411,7 +411,7 @@ class ProjectsApiController extends AbstractApiController {
             if(!$prj->userCanEdit($this->user)) {
                 throw new ControllerAccessDeniedException();
             }
-            if(!$prj->inEdition() || !$prj->isAlive()) {
+            if(!$prj->isFunded()) {
                 throw new ControllerAccessDeniedException(Text::get('dashboard-project-not-alive-yet'));
             }
             // save new material
