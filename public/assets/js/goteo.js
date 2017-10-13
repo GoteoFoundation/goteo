@@ -23,9 +23,6 @@ through which recipients can access the Corresponding Source.
 for the JavaScript code in this page.
 */
 
-//Main goteo object
-var goteo = { debug : false };
-
 /**
  * Console debug function on non LIVE sites
  * @param {string} msg description
