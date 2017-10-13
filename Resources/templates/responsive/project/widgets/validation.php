@@ -18,11 +18,14 @@ else {
     </div>
     <div class="desc">
         <p><?= $desc ?></p>
-        <ul class="list-unstyled">
-        <?php foreach($errors as $err): ?>
-            <li><?= $err ?></li>
-        <?php endforeach ?>
-        </ul>
+
+        <?php if($errors): ?>
+            <ul class="list-unstyled">
+            <?php foreach($errors as $err): ?>
+                <li><?= $err ?></li>
+            <?php endforeach ?>
+            </ul>
+        <?php endif ?>
         <a href="/dashboard/project/<?= $validation->project ?>/apply" class="btn btn-lg btn-fashion apply-project<?= $validation->global < 100 ? ' disabled' : '' ?>"><i class="fa fa-paper-plane"></i> <?= $this->text('project-send-review') ?></a>
     </div>
 </div>
