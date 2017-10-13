@@ -55,6 +55,10 @@
         border: none;
         color: $secondary-color;
       }
+      .editor-toolbar:before {
+        margin:0;
+        content: none;
+      }
     }
     &.has-error {
         .help-block {
@@ -81,11 +85,14 @@
             + span::before {
                 content: '\f096';
                 font-family: FontAwesome;
-                font-weight: 400;
+                font-weight: normal;
+                font-size: 17px;
                 margin-right: 6px;
                 width: 12px;
                 display: inline-block;
-                vertical-align: top;
+                vertical-align: middle;
+                height: 19px;
+                line-height: 1;
             }
             &:checked + span::before {
                 content: '\f046';
@@ -99,11 +106,14 @@
             + span::before {
                 content: '\f10c';
                 font-family: FontAwesome;
-                font-weight: 400;
+                font-weight: normal;
+                font-size: 17px;
                 margin-right: 6px;
                 width: 12px;
                 display: inline-block;
-                vertical-align: top;
+                vertical-align: middle;
+                height: 19px;
+                line-height: 1;
             }
             &:checked + span::before {
                 content: '\f05d';
