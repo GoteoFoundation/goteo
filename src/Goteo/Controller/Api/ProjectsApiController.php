@@ -144,7 +144,7 @@ class ProjectsApiController extends AbstractApiController {
             if(!$prj->userCanEdit($this->user)) {
                 throw new ControllerAccessDeniedException();
             }
-            if(!$prj->inEdition() || !$prj->isAlive()) {
+            if(!$prj->inEdition()) {
                 throw new ControllerAccessDeniedException(Text::get('dashboard-project-not-alive-yet'));
             }
 
@@ -175,7 +175,7 @@ class ProjectsApiController extends AbstractApiController {
         if(!$prj->userCanEdit($this->user)) {
             throw new ControllerAccessDeniedException();
         }
-        if(!$prj->inEdition() || !$prj->isAlive()) {
+        if(!$prj->isAlive()) {
             throw new ControllerAccessDeniedException(Text::get('dashboard-project-not-alive-yet'));
         }
 
@@ -232,7 +232,7 @@ class ProjectsApiController extends AbstractApiController {
         if(!$prj->userCanEdit($this->user)) {
             throw new ControllerAccessDeniedException();
         }
-        if(!$prj->inEdition() || !$prj->isAlive()) {
+        if(!$prj->inEdition() && !$prj->isAlive()) {
             throw new ControllerAccessDeniedException(Text::get('dashboard-project-not-alive-yet'));
         }
 
@@ -248,6 +248,7 @@ class ProjectsApiController extends AbstractApiController {
             $section = '';
         }
 
+        $cover = $prj->image->id ? $prj->image->id : null;
         $all_success = true;
         foreach($files as $file) {
             if(!$file instanceOf UploadedFile) continue;
@@ -262,13 +263,14 @@ class ProjectsApiController extends AbstractApiController {
                     /**
                      * Guarda la relación NM en la tabla 'project_image'.
                      */
-                    if(!empty($image->id)) {
+                    if($image->id) {
                         Project::query("REPLACE project_image (project, image, section) VALUES (:project, :image, :section)", array(':project' => $prj->id, ':image' => $image->id, ':section' => $section));
+                        if(!$prj->image->id) {
+                            // Set default image
+                            Project\Image::setImage($prj->id, $image);
+                            $cover = $image->id;
+                        }
                     }
-                    // recalculamos las galerias e imagen
-                    // getGallery en Project\Image  procesa todas las secciones
-                    // $galleries = Project\Image::getGalleries($this->id);
-                    // Project\Image::setImage($this->id, $galleries['']);
                 }
 
                 $success = true;
@@ -276,7 +278,6 @@ class ProjectsApiController extends AbstractApiController {
             else {
                 $msg = implode(', ',$errors['image']);
                 // print_r($errors);
-                // Si hay errores al colgar una imagen, mostrar error correspondiente
             }
 
             $result[] = [
@@ -295,7 +296,7 @@ class ProjectsApiController extends AbstractApiController {
             }
         }
 
-        return $this->jsonResponse(['files' => $result, 'msg' => $global_msg, 'success' => $all_success]);
+        return $this->jsonResponse(['files' => $result, 'cover' => $cover,  'msg' => $global_msg, 'success' => $all_success]);
     }
 
     public function projectDeleteImagesAction($id, $image, Request $request) {
@@ -305,7 +306,7 @@ class ProjectsApiController extends AbstractApiController {
         if(!$prj->userCanEdit($this->user)) {
             throw new ControllerAccessDeniedException();
         }
-        if(!$prj->inEdition() || !$prj->isAlive()) {
+        if(!$prj->inEdition() && !$prj->isAlive()) {
             throw new ControllerAccessDeniedException(Text::get('dashboard-project-not-alive-yet'));
         }
 
@@ -327,7 +328,7 @@ class ProjectsApiController extends AbstractApiController {
         if(!$prj->userCanEdit($this->user)) {
             throw new ControllerAccessDeniedException();
         }
-        if(!$prj->inEdition() || !$prj->isAlive()) {
+        if(!$prj->inEdition() && !$prj->isAlive()) {
             throw new ControllerAccessDeniedException(Text::get('dashboard-project-not-alive-yet'));
         }
 
@@ -361,7 +362,7 @@ class ProjectsApiController extends AbstractApiController {
         if(!$prj->userCanEdit($this->user)) {
             throw new ControllerAccessDeniedException();
         }
-        if(!$prj->inEdition() || !$prj->isAlive()) {
+        if(!$prj->inEdition() && !$prj->isAlive()) {
             throw new ControllerAccessDeniedException(Text::get('dashboard-project-not-alive-yet'));
         }
 
@@ -449,12 +450,6 @@ class ProjectsApiController extends AbstractApiController {
 
         // Handles POST requests (new element)
         if($request->isMethod('post')) {
-            if(!$prj->userCanEdit($this->user)) {
-                throw new ControllerAccessDeniedException();
-            }
-            if(!$prj->inEdition() || !$prj->isAlive()) {
-                throw new ControllerAccessDeniedException(Text::get('dashboard-project-not-alive-yet'));
-            }
 
             $material = $request->request->get('material');
             $description = $request->request->get('description');

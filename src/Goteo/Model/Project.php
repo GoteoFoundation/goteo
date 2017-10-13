@@ -2268,7 +2268,7 @@ namespace Goteo\Model {
 
 
             // 3. overview
-            $overview = ['name', 'subtitle', 'lang', 'currency', 'media', 'description', 'project_location', 'related', 'about', 'motivation', 'goal', 'scope', 'social_commitment', 'social_commitment_description'];
+            $overview = ['name', 'subtitle', 'lang', 'currency', 'media', 'description', 'project_location', 'related', 'about', 'motivation', 'scope', 'social_commitment', 'social_commitment_description'];
 
             $total = count($overview);
             $count = 0;

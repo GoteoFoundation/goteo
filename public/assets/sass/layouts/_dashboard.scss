@@ -83,6 +83,13 @@
     }
   }
 
+  .bootstrap-tagsinput .tag {
+    display: inline-block;
+    font-size: $font-size;
+    font-weight: 400;
+    margin-bottom: 2px;
+  }
+
   .nav-tabs {
     li.active > a {
         background-color: $background-light;

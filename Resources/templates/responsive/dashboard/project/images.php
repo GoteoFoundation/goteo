@@ -143,6 +143,9 @@ $(function(){
             li = li.replace('{URL}', img);
             li = li.replace('{NAME}', name);
             $list.append(li);
+            if(response.cover) {
+                $('#menu-item-images').removeClass('ko').addClass('ok');
+            }
             // console.log('success', file, response, li);
         });
         dropzone.on("complete", function(file) {
@@ -220,6 +223,7 @@ $(function(){
                         src[src.length - 1] = data.default;
                         $(this).attr('src', src.join('/'));
                     });
+                    $('#menu-item-images').removeClass('ko').addClass('ok');
                 } else {
                     $error.html(data.msg);
                     $error.removeClass('hidden');

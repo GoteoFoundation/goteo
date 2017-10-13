@@ -1113,8 +1113,10 @@ div {
       margin: 15px auto;
     }
   }
-  .tag {
-    font-size: 1.29em !important;
+  .tags-location {
+      .tag {
+        font-size: 1.29em !important;
+      }
   }
   div {
     &.responsive-meter div {
