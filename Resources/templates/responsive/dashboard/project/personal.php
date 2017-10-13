@@ -11,6 +11,8 @@
     <h2><?= $this->text('personal-field-contract_data') ?></h2>
     <p><?= $this->text('tooltip-project-contract_data') ?></p>
 
+    <?= $this->insert('dashboard/project/partials/goto_first_error') ?>
+
     <?= $this->supply('dashboard-content-form', function() {
         $form = $this->raw('form');
         $ret = $this->form_start($form);
