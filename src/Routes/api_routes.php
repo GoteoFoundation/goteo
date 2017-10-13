@@ -42,9 +42,16 @@ $api->add('api-project', new Route(
 ));
 
 // One Project chart preprocessed data (costs)
-$api->add('api-chart-project', new Route(
+$api->add('api-chart-project-costs', new Route(
     '/charts/{id}/costs',
     array('_controller' => 'Goteo\Controller\Api\ChartsApiController::projectCostsAction',
+        )
+));
+
+// One Project chart preprocessed data (invests)
+$api->add('api-chart-project-invests', new Route(
+    '/charts/{id}/invests',
+    array('_controller' => 'Goteo\Controller\Api\ChartsApiController::projectInvestsAction',
         )
 ));
 
