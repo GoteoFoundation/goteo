@@ -144,7 +144,7 @@ class ProjectsApiController extends AbstractApiController {
             if(!$prj->userCanEdit($this->user)) {
                 throw new ControllerAccessDeniedException();
             }
-            if(!$prj->inEdition() || !$prj->isAlive()) {
+            if(!$prj->inEdition()) {
                 throw new ControllerAccessDeniedException(Text::get('dashboard-project-not-alive-yet'));
             }
 
@@ -175,7 +175,7 @@ class ProjectsApiController extends AbstractApiController {
         if(!$prj->userCanEdit($this->user)) {
             throw new ControllerAccessDeniedException();
         }
-        if(!$prj->inEdition() || !$prj->isAlive()) {
+        if(!$prj->isAlive()) {
             throw new ControllerAccessDeniedException(Text::get('dashboard-project-not-alive-yet'));
         }
 
@@ -232,7 +232,7 @@ class ProjectsApiController extends AbstractApiController {
         if(!$prj->userCanEdit($this->user)) {
             throw new ControllerAccessDeniedException();
         }
-        if(!$prj->inEdition() || !$prj->isAlive()) {
+        if(!$prj->inEdition() && !$prj->isAlive()) {
             throw new ControllerAccessDeniedException(Text::get('dashboard-project-not-alive-yet'));
         }
 
@@ -305,7 +305,7 @@ class ProjectsApiController extends AbstractApiController {
         if(!$prj->userCanEdit($this->user)) {
             throw new ControllerAccessDeniedException();
         }
-        if(!$prj->inEdition() || !$prj->isAlive()) {
+        if(!$prj->inEdition() && !$prj->isAlive()) {
             throw new ControllerAccessDeniedException(Text::get('dashboard-project-not-alive-yet'));
         }
 
@@ -327,7 +327,7 @@ class ProjectsApiController extends AbstractApiController {
         if(!$prj->userCanEdit($this->user)) {
             throw new ControllerAccessDeniedException();
         }
-        if(!$prj->inEdition() || !$prj->isAlive()) {
+        if(!$prj->inEdition() && !$prj->isAlive()) {
             throw new ControllerAccessDeniedException(Text::get('dashboard-project-not-alive-yet'));
         }
 
@@ -361,7 +361,7 @@ class ProjectsApiController extends AbstractApiController {
         if(!$prj->userCanEdit($this->user)) {
             throw new ControllerAccessDeniedException();
         }
-        if(!$prj->inEdition() || !$prj->isAlive()) {
+        if(!$prj->inEdition() && !$prj->isAlive()) {
             throw new ControllerAccessDeniedException(Text::get('dashboard-project-not-alive-yet'));
         }
 
@@ -449,12 +449,6 @@ class ProjectsApiController extends AbstractApiController {
 
         // Handles POST requests (new element)
         if($request->isMethod('post')) {
-            if(!$prj->userCanEdit($this->user)) {
-                throw new ControllerAccessDeniedException();
-            }
-            if(!$prj->inEdition() || !$prj->isAlive()) {
-                throw new ControllerAccessDeniedException(Text::get('dashboard-project-not-alive-yet'));
-            }
 
             $material = $request->request->get('material');
             $description = $request->request->get('description');
