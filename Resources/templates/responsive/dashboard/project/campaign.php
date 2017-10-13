@@ -34,8 +34,10 @@
 
         echo $this->form_end($form);
 
-print_r($this->project->getValidation());
+
     }) ?>
+
+    <?= $this->insert('dashboard/project/partials/partial_validation') ?>
 
   </div>
 </div>

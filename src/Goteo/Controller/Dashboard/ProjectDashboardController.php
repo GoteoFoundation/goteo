@@ -257,7 +257,7 @@ class ProjectDashboardController extends \Goteo\Core\Controller {
         $form->handleRequest($request);
         if ($form->isSubmitted() && $request->isMethod('post')) {
             try {
-                $processor->save($form);
+                $processor->save($form, true);
                 Message::info(Text::get('user-personal-saved'));
                 return $this->redirect($this->getEditRedirect('personal', $request));
             } catch(FormModelException $e) {
@@ -295,7 +295,7 @@ class ProjectDashboardController extends \Goteo\Core\Controller {
         $form->handleRequest($request);
         if ($form->isSubmitted() && $request->isMethod('post')) {
             try {
-                $processor->save($form);
+                $processor->save($form, true);
                 Message::info(Text::get('dashboard-project-saved'));
                 return $this->redirect($this->getEditRedirect('overview', $request));
             } catch(FormModelException $e) {
@@ -508,8 +508,7 @@ class ProjectDashboardController extends \Goteo\Core\Controller {
             try {
                 $next = $form['submit']->isClicked();
                 // Replace the form if delete/add buttons are pressed
-                // $processor->save($form);
-                $form = $processor->save($form)->getBuilder()->getForm();
+                $form = $processor->save($form, true)->getBuilder()->getForm();
                 Message::info(Text::get('dashboard-project-saved'));
                 if($next) {
                     return $this->redirect($this->getEditRedirect('costs', $request));
@@ -592,7 +591,7 @@ class ProjectDashboardController extends \Goteo\Core\Controller {
             try {
                 $next = $form['submit']->isClicked();
                 // Replace the form if delete/add buttons are pressed
-                $form = $processor->save($form)->getBuilder()->getForm();
+                $form = $processor->save($form, true)->getBuilder()->getForm();
                 Message::info(Text::get('dashboard-project-saved'));
                 if($next) {
                     return $this->redirect($this->getEditRedirect('rewards', $request));
@@ -706,7 +705,7 @@ class ProjectDashboardController extends \Goteo\Core\Controller {
         $form->handleRequest($request);
         if ($form->isSubmitted() && $request->isMethod('post')) {
             try {
-                $processor->save($form);
+                $processor->save($form, true);
                 Message::info(Text::get('dashboard-project-saved'));
                 return $this->redirect($this->getEditRedirect('campaign', $request));
             } catch(FormModelException $e) {

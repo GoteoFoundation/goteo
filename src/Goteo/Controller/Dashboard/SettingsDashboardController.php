@@ -107,7 +107,7 @@ class SettingsDashboardController extends \Goteo\Core\Controller {
         $form->handleRequest($request);
         if ($form->isSubmitted() && $request->isMethod('post')) {
             try {
-                $processor->save($form);
+                $processor->save($form, true);
                 Message::info(Text::get('user-profile-saved'));
                 return $this->redirect($redirect);
             } catch(FormModelException $e) {

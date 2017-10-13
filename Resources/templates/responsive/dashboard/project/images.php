@@ -29,6 +29,9 @@
     <?php if($this->next): ?>
         <p class="spacer"><a class="btn btn-lg btn-cyan" href="<?= $this->next ?>"><?= $this->text('form-next-button') ?></a></p>
     <?php endif ?>
+
+    <?= $this->insert('dashboard/project/partials/partial_validation') ?>
+
   </div>
 </div>
 

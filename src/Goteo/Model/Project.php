@@ -2325,7 +2325,11 @@ namespace Goteo\Model {
                 $errors['costs'] = 'costs';
             }
             $total = count($this->costs);
-            $res->costs = round(100 * ($total - $count1)/$total);
+            if($total > 0) {
+                $res->costs = round(100 * ($total - $count1)/$total);
+            } else {
+                $res->costs = 0;
+            }
             if($requireds == $total || $requireds == 0) {
                 $errors['costs'] = 'costs_required';
                 $res->costs /= 2;
