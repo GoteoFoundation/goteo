@@ -108,6 +108,7 @@ class ProjectDashboardController extends \Goteo\Core\Controller {
 
         View::getEngine()->useData([
             'project' => $project,
+            'validation' => $validation,
             'admin' => $project->userCanEdit($user),
             'zone' => $zone,
             'sidebarBottom' => [ '/dashboard/projects' => '<i class="icon icon-2x icon-back" title="' . Text::get('profile-my_projects-header') . '"></i> ' . Text::get('profile-my_projects-header') ]

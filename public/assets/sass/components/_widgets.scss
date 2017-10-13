@@ -2,17 +2,19 @@
 @import "compass/css3";
 
 .validation-widget {
-    padding:20px;
+    // padding:20px;
     .percent {
         display:block;
         float: left;
         width: 120px;
         margin-right: 20px;
+        & + .desc {
+            display:block;
+            float: left;
+            width: calc(100% - 140px);
+        }
     }
     .desc {
-        display:block;
-        float: left;
-        width: calc(100% - 140px);
         ul {
             margin: 20px 0;
             background-color: $background-light;
