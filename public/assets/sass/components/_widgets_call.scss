@@ -1,6 +1,5 @@
 /*Project widget */
-
-
+@import "compass/css3";
 
 .call-widget {
   position: relative;
@@ -51,8 +50,7 @@
   .sphere{
     padding: 20px 0;
     img{
-     -webkit-filter: brightness(0.55) saturate(3) grayscale(100%);; /* Safari 6.0 - 9.0 */
-      filter: brightness(0.55) saturate(3) grayscale(100%);; 
+      @include filter(brightness(0.55) saturate(3) grayscale(100%));
     }
     .name{
       text-align: center;
@@ -212,7 +210,7 @@
             text-align: center;
             line-height: 1.1;
         }
-        
+
     }
     .categories {
         color: $color-cyan;
@@ -396,8 +394,7 @@
                     width: 50px;
                     height: auto;
                     margin:5px 10px 0 0;
-                    -webkit-filter: hue-rotate(-106deg) grayscale(40%); /* Safari 6.0 - 9.0 */
-                    filter: hue-rotate(-106deg) grayscale(40%);
+                    @include filter(hue-rotate(-106deg) grayscale(40%));
                 }
             }
         }

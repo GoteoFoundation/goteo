@@ -1,4 +1,6 @@
 /*Project widget */
+@import "compass/css3";
+
 .validation-widget {
     padding:20px;
     .percent {
@@ -454,8 +456,7 @@
                     width: 50px;
                     height: auto;
                     margin:5px 10px 0 0;
-                    -webkit-filter: hue-rotate(-106deg) grayscale(40%); /* Safari 6.0 - 9.0 */
-                    filter: hue-rotate(-106deg) grayscale(40%);
+                    @include filter(hue-rotate(-106deg) grayscale(40%));
                 }
             }
         }
