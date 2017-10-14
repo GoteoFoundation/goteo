@@ -152,7 +152,7 @@ class Image extends \Goteo\Core\Model {
 	}
 
     static public function getUploadErrorText($error) {
-        if($error === UPLOAD_ERR_OK) return '';
+        if(!$error || $error === UPLOAD_ERR_OK) return '';
         switch($error) {
             case UPLOAD_ERR_INI_SIZE:
                 return Text::get('error-image-size-too-large');
