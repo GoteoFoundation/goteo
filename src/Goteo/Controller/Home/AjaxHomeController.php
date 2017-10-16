@@ -36,11 +36,10 @@ class AjaxHomeController extends \Goteo\Core\Controller {
             $filter = $request->request->get('filter');           
         }
 
-        //If no filters show all: open, active and completed
         $projects = Project::published($filter, "Goteo", 0, 33);
 
         return $this->jsonResponse([
-            'filters' => $filters,
+            'filter' => $filter,
             'html' => View::render( 'home/partials/projects_list', ['projects' => $projects] )
         ]);
     }

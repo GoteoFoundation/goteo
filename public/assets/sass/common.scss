@@ -6,23 +6,14 @@
 @import 'variables';
 
 
-@import 'common/custom_animations';
-@import 'common/layout';
-@import 'common/misc';
-@import 'common/header';
-@import 'common/footer';
-@import 'common/sidebar';
-@import 'common/buttons';
-@import 'common/alerts';
-@import 'common/project';
-@import 'common/channels';
-@import 'common/widgets';
-@import 'common/dashboard';
-@import 'common/home';
-@import 'common/widgets_call';
-@import 'common/admin';
-@import 'common/forms';
+@import 'components/custom_animations';
+@import 'components/buttons';
+@import 'components/alerts';
+@import 'components/widgets';
+@import 'components/widgets_call';
+@import 'components/forms';
 
+@import 'misc/mixins';
 @import 'misc/misc';
 // This will dissappear some day, cows may fly...
 @import 'misc/unordered';
