@@ -652,7 +652,7 @@ class ProjectDashboardController extends \Goteo\Core\Controller {
         if($project instanceOf Response) return $project;
 
         $referer = $request->headers->get('referer');
-        if(!$referer) $referer ='/dashboard/projects';
+        if(!$referer || strpos($referer, $project->id) !== false) $referer ='/dashboard/projects';
 
         if (!$project->userCanDelete($this->user)) {
             Message::error(Text::get('dashboard-project-delete-no-perms'));
