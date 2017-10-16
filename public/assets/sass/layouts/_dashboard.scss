@@ -82,13 +82,17 @@
             float: none;
         }
     }
+    ol,ul {
+        li {
+            margin-bottom: 1em;
+        }
+    }
     ol {
         counter-reset: list;
     }
     ol > li {
         list-style: none;
         position: relative;
-        margin-bottom: 1em;
     }
     ol > li:before {
         counter-increment: list;
