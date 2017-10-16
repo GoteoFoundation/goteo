@@ -63,4 +63,4 @@ validate-user-field-web: 'Please enter the address (URL) of the website'
 validate-user-field-webs: 'Enter the address of your website to help us evaluate your project and determine if it is suitable for publishing on Goteo.'
 help-user-analytics: 'Provide, in case you have it, your Google Analytics track ID to enable Google Analytics for your project.<br>The ID should be in this format: <strong>UA-000000-01</strong> (ID example)<br><a href="https://analytics.google.com" target="_blank">Go to Google Analytics</a>'
 help-user-facebook-pixel: 'Provide your Facebook Pixel ID to keep track of conversions from a campaign in Facebook.<br><a href="https://www.facebook.com/ads/manager/pixel/facebook_pixel" target="_blank">Go to Facebook Pixel</a>'
-
+tooltip-user-instagram: 'This social network can help you spread the word about Goteo projects that interest you with your friends and family.'

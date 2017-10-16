@@ -62,7 +62,7 @@ mandatory-register-field-email: 'You have to enter an email address'
 mark-pending: 'Mark as pending translation'
 meta-description-index: 'Goteo is an open network for crowdfunding, collaborations and training, leader in social innovation. With 2 rounds and fiscal advantages for donors!'
 node-menu-home: Node
-overview-field-about: 'Main features'
+overview-field-about: 'Main features and goals of the crowdfunding campaign'
 overview-field-motivation: 'Why this is important'
 profile-about-header: 'About me'
 project-invest-total: 'Total contributions'
