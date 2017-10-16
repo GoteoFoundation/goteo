@@ -20,47 +20,61 @@ use Goteo\Library\Text;
 
 class ProjectPersonalForm extends AbstractFormProcessor implements FormProcessorInterface {
 
+    public function getConstraints($field) {
+        $constraints = [];
+        if($this->getFullValidation()) {
+            if($field === 'phone') {
+                $constraints[] = new Constraints\NotBlank();
+            }
+        }
+        return $constraints;
+    }
+
     public function createForm() {
 
         $this->getBuilder()
             ->add('contract_name', 'text', [
                 'label' => 'personal-field-contract_name',
                 'disabled' => $this->getReadonly(),
-                'constraints' => array(new Constraints\NotBlank()),
+                'constraints' => $this->getConstraints('contract_name'),
                 'attr' => ['help' => Text::get('tooltip-project-contract_name')]
             ])
             ->add('contract_nif', 'text', [
                 'label' => 'personal-field-contract_nif',
                 'disabled' => $this->getReadonly(),
-                'constraints' => array(new Constraints\NotBlank()),
+                'constraints' => $this->getConstraints('contract_nif'),
                 'attr' => ['help' => Text::get('tooltip-project-contract_nif')]
             ])
             ->add('contract_birthdate', 'datepicker', [
                 'label' => 'personal-field-contract_birthdate',
                 'disabled' => $this->getReadonly(),
-                'constraints' => array(new Constraints\NotBlank()),
+                'constraints' => $this->getConstraints('contract_birthdate'),
                 'attr' => ['help' => Text::get('tooltip-project-contract_birthdate')]
             ])
             ->add('phone', 'text', [
                 'label' => 'personal-field-phone',
                 'disabled' => $this->getReadonly(),
+                'constraints' => $this->getConstraints('phone'),
                 'required' => false,
                 'attr' => ['help' => Text::get('tooltip-project-phone')]
             ])
             ->add('entity_name', 'text', [
                 'label' => 'project-personal-field-entity_name',
                 'disabled' => $this->getReadonly(),
+                'constraints' => $this->getConstraints('entity_name'),
                 'required' => false,
                 'attr' => ['help' => Text::get('tooltip-project-personal-entity_name')]
             ])
             ->add('paypal', 'text', [
                 'label' => 'contract-paypal_account',
+                'constraints' => $this->getConstraints('paypal'),
                 'disabled' => $this->getReadonly(),
                 'required' => false,
                 'attr' => ['help' => Text::get('tooltip-project-paypal')]
             ])
             ->add('bank', 'text', [
                 'label' => 'contract-bank_account',
+                'constraints' => $this->getConstraints('bank'),
                 'disabled' => $this->getReadonly(),
                 'required' => false,
                 'attr' => ['help' => Text::get('tooltip-project-bank')]
@@ -69,8 +83,18 @@ class ProjectPersonalForm extends AbstractFormProcessor implements FormProcessor
         return $this;
     }
 
-    public function save(FormInterface $form = null) {
-        parent::save($form);
+    public function save(FormInterface $form = null, $force_save = false) {
+        if(!$form) $form = $this->getBuilder()->getForm();
+        if(!$form->isValid() && !$force_save) throw new FormModelException(Text::get('form-has-errors'));
+
+        $data = $form->getData();
+        $user = $this->getModel();
+        $user->rebuildData($data, array_keys($form->all()));
+
+        $errors = [];
+        if (!$user->save($errors)) {
+            throw new FormModelException(Text::get('form-sent-error', implode(', ',$errors)));
+        }
 
         $account = $this->getOption('account');
         $account->rebuildData($form->getData(), array_keys($form->all()));
@@ -79,6 +103,9 @@ class ProjectPersonalForm extends AbstractFormProcessor implements FormProcessor
         if (!$account->save($errors)) {
             throw new FormModelException(Text::get('form-sent-error', implode(', ',$errors)));
         }
+
+        if(!$form->isValid()) throw new FormModelException(Text::get('form-has-errors'));
+
         return $this;
     }
 

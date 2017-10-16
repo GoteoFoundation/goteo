@@ -45,6 +45,8 @@ guide-project-rewards: "<strong>En este apartado debes establecer qué ofrece el
 guide-project-support: guide-project-support
 guide-project-supports: '<strong>En este apartado puedes especificar qué otras ayudas, aparte de donaciones, pueden ser necesarias para llevar a cabo el proyecto.</strong><br><br> Pueden ser tareas o acciones a cargo de otras personas (traducciones, gestiones, difusión, etc), o bien préstamos específicos (de material, transporte, hardware, etc).'
 guide-project-updates: "<b>Es muy importante que los proyectos mantengan informados a sus cofinanciadores y el resto de personas potencialmente interesadas sobre cómo avanza su campaña. Desde este apartado puedes publicar mensajes de actualización sobre el proyecto, como una especie de blog público.</b>\r\n\r\nEn Goteo además, una vez se han logrado los fondos mínimos, para la segunda ronda de cofinanciación es crítico explicar regularmente cómo ha arrancado la producción, avances, problemas, etc que permitan la mayor transparencia posible y saber cómo evoluciona el inicio del proyecto, para así tratar de generar más interés y comunidad en torno al mismo."
+guide-project-invests: 'Desde este apartado podrás gestionar a tus cofinanciadores, las recompenses que han escogido y también ponerte en contacto con ellos si lo consideras necesario.'
+
 header-about-side: 'Lo que nos mueve'
 home-posts-header: Novedades
 invest-individual-header: 'Puedes renunciar a recibir recompensas por tu aportación, o seleccionar las que igualen o estén por debajo del importe que hayas introducido.'
@@ -57,7 +59,7 @@ mandatory-register-field-email: 'Tienes que indicar un email'
 mark-pending: 'Marcar como pendiente de traducir'
 meta-description-index: 'Goteo es la red abierta de crowdfunding, colaboraciones y formación, líder en proyectos de innovación social. Con 2 rondas y ventajas fiscales para donantes!'
 node-menu-home: Node
-overview-field-about: 'Características básicas'
+overview-field-about: 'Características básicas y objetivos'
 overview-field-motivation: 'Motivación y a quién va dirigido el proyecto'
 profile-about-header: 'Sobre mí'
 project-invest-total: 'Total de aportaciones'
@@ -85,6 +87,7 @@ regular-days: días
 regular-delete: Borrar
 regular-description: Descripción
 regular-discover: 'Descubre proyectos'
+regular-download-pdf: 'Descargar PDF'
 regular-download: Descargar
 regular-actions: Acciones
 regular-edit: Editar
@@ -104,6 +107,7 @@ regular-header-faq: FAQ
 regular-header-glossary: 'Principios para una economía abierta'
 regular-hello: Hola
 regular-here: aquí
+regular-help: Ayuda
 regular-home: Inicio
 regular-identica: Identi.ca
 regular-im: Soy
@@ -126,6 +130,7 @@ regular-mandatory: 'Campo obligatorio!'
 regular-matchfunding: 'Match funding'
 regular-media_legend: Leyenda
 regular-menu: Menú
+regular-menu-personal: Menú personal
 regular-message-clipboard-fail: 'Selecciona y copia este enlace'
 regular-message_fail: 'Ha habido algun error al enviar el mensaje'
 regular-message_success: 'Mensaje enviado correctamente'

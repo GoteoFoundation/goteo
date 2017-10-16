@@ -60,16 +60,18 @@ class ProjectListener extends AbstractListener {
             }
             $event->fire(function() use ($project, $template, $to) {
                 UsersSend::setURL(Config::getUrl($project->lang));
-                if('owner' === $to) UsersSend::toOwner($template, $project);
-                if('consultants' === $to) UsersSend::toConsultants($template, $project);
+                if('owner' === $to) $ok = UsersSend::toOwner($template, $project);
+                if('consultants' === $to) $ok = UsersSend::toConsultants($template, $project);
+
+                if($ok) $this->notice("Sent message to $to", [$project, 'event' => "$to:$template"]);
+                else    $this->error("Error sending message to $to", [$project, 'event' => "$to:$template"]);
             });
 
-            $this->notice("Sent message to $to", [$project, 'event' => "$to:$template"]);
         }
     }
 
     /**
-     * Automatically publishes projects
+     * Manually publishes projects
      * @param  FilterProjectEvent $event
      */
     public function onProjectPublish(FilterProjectEvent $event) {
@@ -81,6 +83,8 @@ class ProjectListener extends AbstractListener {
         $res = $project->publish($errors);
         if ($res) {
             $this->send($project, 'tip_0', ['owner', 'consultants']);
+        } else {
+            $this->error('Error publishing project! '.implode("\n", $errors), [$project]);
         }
         // Admin Feed
         $log = new Feed();
@@ -113,9 +117,61 @@ class ProjectListener extends AbstractListener {
         }
     }
 
+    /**
+     * Set project ready state
+     * @param  FilterProjectEvent $event
+     */
+    public function onProjectReady(FilterProjectEvent $event) {
+        $project = $event->getProject();
+        $user = $event->getUser();
+        $this->info("Project to review", [$project]);
+
+        $errors = [];
+        $res = $project->ready($errors);
+
+        // Admin Feed
+        $log = new Feed();
+        // We don't want to repeat this feed
+        $log->setTarget($project->id)
+            ->populate('feed-project-ready-sent',
+                '/project/'.$project->id,
+                new FeedBody(null, null, 'feed-project-ready-' . ($res ? 'ok' : 'ko'), [
+                    '%PROJECT%' => Feed::item('project', $project->name, $project->id),
+                    '%USER%' => Feed::item('user', $project->user->name, $project->user->id)
+                ]),
+                $project->image)
+            ->doAdmin('project');
+
+        $this->logFeedEntry($log);
+
+        // This is not an unique event, sending manually
+        UsersSend::setURL(Config::getUrl($project->lang));
+
+        // email a los de goteo
+        if ($project->isDraft()) {
+            $sent1 = UsersSend::toConsultants('project_preform_to_review_consultant', $project);
+        } else {
+            $sent1 = UsersSend::toConsultants('project_to_review_consultant', $project);
+        }
+
+        // email al autor
+        $sent2 = UsersSend::toOwner('project_to_review', $project);
+
+        if (!$sent1 || !$sent2) {
+            $errors[] = Text::get('project-review-confirm_mail-fail');
+        }
+
+        if ($errors) {
+            $this->error('Error sending project to review! '.implode("\n", $errors), [$project]);
+            throw new \LogicException(implode("\n", $errors));
+        }
+
+    }
+
 	public static function getSubscribedEvents() {
 		return array(
             AppEvents::PROJECT_PUBLISH    => 'onProjectPublish',
+            AppEvents::PROJECT_READY    => 'onProjectReady',
 		);
 	}
 }

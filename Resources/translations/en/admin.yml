@@ -1,2 +1,3 @@
 admin-filters: Filters
 admin-remove-filters: 'Remove filters'
+admin-impersonate-user: Impersonate %s

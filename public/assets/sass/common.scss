@@ -22,9 +22,19 @@
 @import 'common/widgets_call';
 @import 'common/admin';
 @import 'common/forms';
-@import 'common/file_types';
 
+@import 'misc/misc';
 // This will dissappear some day, cows may fly...
-@import 'common/unordered';
+@import 'misc/unordered';
+
+@import 'layouts/layout';
+@import 'layouts/header';
+@import 'layouts/footer';
+@import 'layouts/sidebar';
+@import 'layouts/project';
+@import 'layouts/channels';
+@import 'layouts/dashboard';
+@import 'layouts/admin';
+
 
 

@@ -3,7 +3,7 @@
     <div class="<?= $form->vars['wrap_class'] ?>">
         <label>
         <?php echo $view['form']->widget($child) ?>
-        <?php echo $view->escape(false !== $choice_translation_domain ? $view['translator']->trans($child->vars['label'], array(), $choice_translation_domain) : $label) ?>
+        <span><?php echo $view->escape(false !== $choice_translation_domain ? $view['translator']->trans($child->vars['label'], array(), $choice_translation_domain) : $label) ?></span>
         </label>
     </div>
 <?php endforeach ?>

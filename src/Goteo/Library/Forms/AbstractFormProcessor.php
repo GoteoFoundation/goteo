@@ -20,9 +20,12 @@ use Goteo\Library\Text;
 
 abstract class AbstractFormProcessor implements FormProcessorInterface {
     private $builder;
+    private $form;
     private $model;
     private $readonly = false;
     private $options;
+    private $full_validation = false;
+    private $show_errors = false;
 
     public function __construct(FormBuilderInterface $builder, Model $model, array $options = []) {
         $this->setBuilder($builder);
@@ -46,6 +49,24 @@ abstract class AbstractFormProcessor implements FormProcessorInterface {
         return $this->builder;
     }
 
+    public function getDefaults($sanitize = true) {
+        $options = $this->builder->getOptions();
+        $data = $options['data'];
+        if($sanitize) $data = array_intersect_key($data, $this->builder->all());
+        // var_dump($data);die;
+        return $data;
+    }
+
+    public function getForm() {
+        if($this->form) return $this->form;
+        $this->form = $this->builder->getForm();
+        if($this->showErrors()) {
+            // var_dump($this->getDefaults(true));die;
+            $this->form->submit($this->getDefaults(true), false);
+        }
+        return $this->form;
+    }
+
     public function setModel(Model $model) {
         $this->model = $model;
         return $this;
@@ -64,6 +85,20 @@ abstract class AbstractFormProcessor implements FormProcessorInterface {
         return $this->readonly;
     }
 
+    public function setFullValidation($full_validation, $show_errors = false) {
+        $this->full_validation = $full_validation;
+        $this->show_errors = $show_errors;
+        return $this;
+    }
+
+    public function getFullValidation() {
+        return $this->full_validation;
+    }
+
+    public function showErrors() {
+        return $this->show_errors;
+    }
+
     public function setOptions(array $options) {
         $this->options = $options;
         return $this;
@@ -77,9 +112,9 @@ abstract class AbstractFormProcessor implements FormProcessorInterface {
         return $this->options[$key];
     }
 
-    public function save(FormInterface $form = null) {
+    public function save(FormInterface $form = null, $force_save = false) {
         if(!$form) $form = $this->getBuilder()->getForm();
-        if(!$form->isValid()) throw new FormModelException(Text::get('form-has-errors'));
+        if(!$form->isValid() && !$force_save) throw new FormModelException(Text::get('form-has-errors'));
 
         $data = $form->getData();
         $model = $this->getModel();
@@ -89,6 +124,8 @@ abstract class AbstractFormProcessor implements FormProcessorInterface {
         if (!$model->save($errors)) {
             throw new FormModelException(Text::get('form-sent-error', implode(', ',$errors)));
         }
+
+        if(!$form->isValid()) throw new FormModelException(Text::get('form-has-errors'));
 
         return $this;
     }

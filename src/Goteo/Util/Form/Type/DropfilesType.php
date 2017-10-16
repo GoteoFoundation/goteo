@@ -47,8 +47,8 @@ class DropfilesType extends FileType
         $builder->get('current')
         ->addModelTransformer(new CallbackTransformer(
             function ($image) {
+                // var_dump($image);die;
                 return $image;
-                // print_r($image);die;
                 // TODO: for any type of file
                 // if(is_array($image)) {
                 //     return $image;
@@ -60,6 +60,7 @@ class DropfilesType extends FileType
                 return null;
             },
             function ($image) {
+                // var_dump($image);die;
                 if(is_array($image)) {
                     // var_dump($image);
                     foreach($image as $i => $img) {
@@ -88,7 +89,7 @@ class DropfilesType extends FileType
                     // return $image;
                 },
                 function($image) {
-                        // print_r($image);die;
+                    // var_dump($image);die;
                     if(is_array($image)) {
                         foreach($image as $i => $img) {
                             if(!$img) continue;
@@ -98,6 +99,8 @@ class DropfilesType extends FileType
                                 $image[$i] = new Image($img);
                             }
                         }
+                    // } elseif($img instanceOf Image) {
+                    //     return [$img];
                     }
                     // print_r($image);die;
                     return $image;
@@ -172,6 +175,7 @@ class DropfilesType extends FileType
         $view->vars['limit'] = $options['limit'];
         $view->vars['url'] = $options['url'] ? $options['url'] : null;
         $view->vars['row_class'] = $options['row_class'];
+        // var_dump($view->vars['value']);var_dump($options['value']);die;
     }
 
     /**

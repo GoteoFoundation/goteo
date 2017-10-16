@@ -95,7 +95,6 @@ $(function(){
         var that = this;
         var $li = $(this).closest('li');
         var $s = $(this).next('.submenu');
-        console.log($s);
 
         var $others = $sidebar.find('li.active .submenu').not($s);
             $others.slideUp(function() {
@@ -148,11 +147,13 @@ $(function(){
         $body.hammer().bind("swiperight", function(){
             // console.log('body swipe right', e);
             if(prevented) return;
+            if(!isMobile()) return;
             if(!$body.hasClass('sidebar-opened'))
                 toggleSidebar();
         });
         $body.hammer().bind("swipeleft", function(){
             if(prevented) return;
+            if(!isMobile()) return;
             if($body.hasClass('sidebar-opened'))
                 toggleSidebar();
         });

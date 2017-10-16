@@ -1,9 +1,12 @@
+@import "compass/css3";
+
 /* Dashboard  */
 
 /* dashboard containers */
 .dashboard {
   background: $background-white;
   color: $secondary-color;
+  margin-bottom: 20px;
 
   // TODO: check for removal
   .general-dashboard {
@@ -78,6 +81,31 @@
             float: none;
         }
     }
+    ol,ul {
+        li {
+            margin-bottom: 1em;
+        }
+    }
+    ol {
+        counter-reset: list;
+    }
+    ol > li {
+        list-style: none;
+        position: relative;
+    }
+    ol > li:before {
+        counter-increment: list;
+        content: counter(list, lower-alpha) ") ";
+        position: absolute;
+        left: -1.4em;
+    }
+  }
+
+  .bootstrap-tagsinput .tag {
+    display: inline-block;
+    font-size: $font-size;
+    font-weight: 400;
+    margin-bottom: 2px;
   }
 
   .nav-tabs {
@@ -130,6 +158,58 @@
       }
     }
   }
+
+  .auto-hide {
+    position: relative;
+    margin-bottom: 20px;
+    .inner {
+      max-height: $font-size + 4;
+      overflow: hidden;
+      @include transition (max-height 0.5s ease-out);
+      // white-space: pre-line;
+    }
+    .more {
+      position: absolute;
+      top: 0px;
+      right: 0px;
+      background:$color-dark;
+      color:$color-white;
+      cursor: pointer;
+      padding: 0 5px;
+      width: 85px;
+      @include transition (top 0.25s ease);
+      &::after{
+        font-family: FontAwesome;
+        content: "\f0d7";
+        margin: 0 5px;
+      }
+      &::before {
+        display: block;
+        position: absolute;
+        content: '';
+        width: 200px;
+        height: 22px;
+        top: 0;
+        right: 85px;
+        // background: linear-gradient(to right, rgba(255,255,255,0.1) 28%,#fff 100%);
+        @include background-image(linear-gradient( to right, rgba(255,255,255,0.1) 28%,#fff 100%));
+        z-index: 0;
+      }
+    }
+    &.show {
+      .inner {
+        max-height: 600px;
+        @include transition (max-height 0.5s ease-in);
+      }
+      .more {
+        top: -20px;
+        &::after {
+          content: "\f0d8";
+        }
+      }
+    }
+  }
+
   table.footable , table.table {
     color: $secondary-color;
     background: $background-light-body;
@@ -175,6 +255,14 @@
     color: $color-white;
     * {
       color: $color-white;
+    }
+  }
+  .paypal {
+    max-height: 0;
+    overflow: hidden;
+    @include transition(max-height 0.5s ease);
+    &.show {
+      max-height: 600px;
     }
   }
   .form-group {
@@ -238,6 +326,14 @@
       .input-wrap {
         padding:0 12px;
       }
+      blockquote {
+        background: inherit;
+        padding: 5px 11px;
+        border-left: 4px solid $color-cyan;
+        &.lilac {
+            border-left-color: $color-lilac;
+        }
+      }
 
       &.lilac {
         background-color: $background-lighter-lilac;
@@ -279,8 +375,50 @@
           padding: 30px 30px 0 0;
         }
       }
-      &.reward-item .remove {
-          padding: 0 15px 0 0;
+      &.reward-item {
+        .remove {
+            padding: 0 15px 0 0;
+        }
+        .row {
+            margin:0;
+            .amount {
+                float: left;
+                width: 45%;
+            }
+            .units {
+                float: left;
+                width: 35%;
+            }
+            .unlimited {
+                >label {
+                    display: block;
+                }
+                float: left;
+                width: 20%;
+                text-align: center;
+                .material-switch {
+                    margin-top:17px;
+                }
+
+            }
+            @media(max-width: $breakpoint-xxs) {
+                .amount {
+                    float: none;
+                    width: 100%;
+                }
+                .units {
+                    width: 60%;
+                }
+                .unlimited {
+                    width: 40%;
+                }
+            }
+            &::after {
+                display: block;
+                content: '';
+                clear: both;
+            }
+        }
       }
     }
     .widget-preview {
@@ -390,6 +528,29 @@
     }
     .label i {
       cursor: pointer;
+    }
+  }
+  .costs-bar {
+    .min, .opt, .total {
+        color: $color-dark;
+        float: left;
+        min-width: 101px;
+        max-width: 80%;
+        max-width: calc(100% - 202px);
+        &.total {
+            float: right;
+            text-align: right;
+        }
+        >span {
+            display: block;
+            font-weight: bold;
+            font-size: $font-size * 2;
+            line-height: 1;
+            margin-bottom: 10px;
+        }
+    }
+    .progress {
+        clear: both;
     }
   }
 }

@@ -1,39 +1,70 @@
 /*Project widget */
+@import "compass/css3";
 
-.project-widget {
+.call-widget {
   position: relative;
-  a.img-link {
-    position: relative;
-    display: block;
-    .status-mark {
-      position: absolute;
-      bottom: 0;
-      right: 0;
-      background: rgba(0, 0, 0, 0.4);
-      // height:25px;
-      width: 100%;
-      padding: 5px;
-      color:$color-white;
+  color: $color-white;
+  font-weight: bold;
+
+  // Set backgrounds depending on the status
+
+  &.open{
+    color: $color-white;
+    .status{
+      background-color: $background-light-lilac;
     }
-    div.call-mark {
-      width: 11%;
-      position: absolute;
-      top: 0;
-      left: 4%;
-      padding: 12px 4px 9px 4px;
-      background-color: $background-white;
+    .sphere{
+      background-color: $background-dark-lilac;
+    }
+    .content, .bottom{
+      background-color: $background-light-lilac;
     }
   }
-  .img-project {
-    border-top-left-radius: 5px;
-    border-top-right-radius: 5px;
-    width: 100%;
+
+  &.active{
+    color: $color-white;
+    .status{
+      background-color: $background-active-green;
+    }
+    .sphere{
+      background-color: $background-active-dark-green;
+    }
+    .content, .bottom{
+      background-color: $background-active-green;
+    }
   }
+
+  &.completed{
+      color: $primary-color;
+     .status{
+      background-color: $background-yellow;
+    }
+    .sphere{
+      background-color: $background-dark-yellow;
+    }
+    .content, .bottom{
+      background-color: $background-yellow;
+    }
+  }
+
+  .sphere{
+    padding: 20px 0;
+    img{
+      @include filter(brightness(0.55) saturate(3) grayscale(100%));
+    }
+    .name{
+      text-align: center;
+      margin-top: 10px;
+      font-size: $font-size*1.3;
+      text-transform: uppercase;
+      font-weight: 500;
+    }
+  }
+
   .content {
     padding: 5%;
     border: 1px solid #D9D9DE;
     border-top: 0px;
-    color: #B3B2B2;
     border-bottom-left-radius: 5px;
     border-bottom-right-radius: 5px;
     height: 240px;
@@ -55,28 +86,11 @@
         height: auto;
         background: transparent;
         border: 0;
-        color: $color-grey;
       }
       .title {
         line-height: 20px;
         margin: 0;
       }
-  }
-  &.micro {
-    a.img-link {
-        padding-top: 60%;
-        position: relative;
-        width: 100%;
-        img {
-            background: $background-light url(../img/ring.gif) no-repeat center;
-            position: absolute;
-            height:100%;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-        }
-    }
   }
   &.standard {
       .title a {
@@ -98,7 +112,6 @@
   }
   div.call-amount {
     font-size: 13px;
-    color: $color-grey;
     margin-top: 15px;
   }
   ul {
@@ -108,7 +121,6 @@
       overflow: hidden;
       bottom: 0px;
       position: absolute;
-      color: $color-grey;
       font-size: 13px;
       width: 91.8%;
       border-top: 1px solid #C5C5C5;
@@ -141,89 +153,41 @@
   &.normal {
     position: relative;
     border-radius: 5px;
-    box-shadow: 1px 3px 5px -3px $color-dark;
-    min-height: 492px;
+    //box-shadow: 1px 3px 5px -3px $color-dark;
+    min-height: 300px;
     .status {
-        position: absolute;
-        top: 0;
-        left: 0;
-        border-top-left-radius: 5px;
-        max-width: 95%;
-        z-index: 3;
-        font-size: $font-size * 1.2;
-        font-weight: 500;
-        text-transform: uppercase;
-        padding: 5px 10px;
-        color: $color-white;
-        display: inline-block;
-        .icon {
-          width: 30px;
-          height: 30px;
-        }
-        strong {
-          font-size: $font-size * 1.8;
-          line-height: $font-size * 1.8;
-        }
-    }
-    .img-link {
         border-top-left-radius: 5px;
         border-top-right-radius: 5px;
-        position: relative;
-        // height: 300px;
-        height: 208px;
-        background: $background-light url(../img/ring.gif) no-repeat center;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        overflow: hidden;
-        .img-project {
-            height: 100%;
-            width: auto;
-        }
-        h2 {
-            display: inline-block;
-            // background-color: rgba(0, 0, 0, 0.1);
-            text-shadow: 1px 1px 2px #666;
-            margin: 0 60px 0 0;
-            padding: 5px;
-            text-align: left;
-            font-size: 1.4 * $font-size;
-            color: $color-white;
-            position: absolute;
-            left: 15px;
-            bottom: 15px;
-            text-transform: lowercase;
-            &::first-letter {
-                text-transform: uppercase;
-            }
-        }
+        font-size: $font-size;
+        font-weight: 500;
+        text-transform: uppercase;
+        padding: 10px;
     }
+
     .floating {
         position: absolute;
-        top: 179px;
+        top: 146px;
         right: 15px;
-        height: 61px;
-        width: 61px;
+        height: 50px;
+        width: 50px;
         z-index: 2;
         text-align: left;
         border-radius: 50%;
-        font-size: 50px;
+        font-size: 40px;
         padding: 3px 9px;
         margin: 0;
         line-height: 1;
         font-weight: 300;
-        color: $color-white;
-        background: $color-cyan;
-        background: radial-gradient(circle at 20% 50%, $color-cyan, lighten($color-cyan, 10%) 60%, lighten($color-cyan, 30%) 90%);
-        box-shadow: 2px 5px 12px -6px darken($color-cyan, 20%);
+        color: $color-cyan;
+        background: $background-white;
+        box-shadow: 2px 5px 12px -6px darken($background-white, 20%);
         cursor: pointer;
         &:hover {
-        background: darken($color-cyan, 10%);
-        background: radial-gradient(circle at 20% 50%, darken($color-cyan, 10%), $color-cyan 60%, lighten($color-cyan, 20%) 90%);
+        background: darken($background-white, 10%);
         }
 
         &.flip {
-            padding: 5px 0 0 17px;
+            padding: 5px 0 0 14px;
         }
         .icon {
             background-color: $color-white;
@@ -234,27 +198,47 @@
     }
 
     .content {
-        color: $secondary-color;
         height: auto;
-        min-height: 283px;
-        background: $color-white;
         border: none;
-        h4 {
-            font-size: $font-size;
+        div.amount-label {
+            font-size: $font-size*0.9;
+            text-transform: uppercase;
+            text-align: center;
         }
-        a {
-            color: $color-cyan;
+        div.amount{
+            font-size: $font-size*3.5;
+            text-align: center;
+            line-height: 1.1;
         }
+
     }
     .categories {
         color: $color-cyan;
         margin-top: 0.5em;
     }
     .bottom {
-        position: absolute;
-        left: 0;
-        bottom: 0;
         width: 100%;
+        margin-top: 10px;
+        img{
+          border-radius: 50%;
+          width: 60px;
+          height: 60px;
+          padding: 10px;
+          background-color: #FFF;
+        }
+        .location{
+          float: right;
+          padding-top: 15px;
+          max-width: 50%;
+          .city{
+            font-size: $font-size*1.3;
+          }
+          .region{
+            font-size: $font-size;
+            line-height: 0.8;
+            text-align: right;
+          }
+        }
     }
     .amount {
         // margin-top: 1em;
@@ -267,7 +251,6 @@
                 margin: 0;
                 padding: 0;
                 width:  50%;
-                color: $primary-color;
                 float: left;
                 border-left: 2px solid #CDD6D5;
                 text-align: center;
@@ -304,7 +287,7 @@
   }
 
   >.backside {
-    background: $background-light;
+    background: $background-light-lilac;
     position: absolute;
     display: none;
     width: 100%;
@@ -313,7 +296,6 @@
     left: 0;
     z-index: 3;
     border-radius: 5px;
-    padding: 5% 7%;
     &.admin {
         background: rgba(0 ,0, 0, 0.8);
         padding-top: 208px;
@@ -324,31 +306,7 @@
             bottom: 15px;
         }
     }
-    &.call {
-      background: $color-lilac;
-      .data-list {
-        color: $color-white;
-        &.title {
-          .icon {
-            background: $color-white;
-            width: 24px;
-            height: 24px;
-          }
-          img {
-            margin: 5px 29px;
-          }
-          strong {
-            font-size: $font-size * 1.8;
-          }
-        }
-        p,h5,h6,a,strong {
-          color: $color-white;
-        }
-      }
-      .btn {
-        color: $color-lilac;
-      }
-    }
+
     &.animated {
         &.flipInY {
           animation-duration: .3s;
@@ -399,6 +357,9 @@
     .content {
       background: transparent;
     }
+    .sphere{
+      padding: 5%;
+    }
     .data-list {
         list-style: none;
         margin: 0;
@@ -433,8 +394,7 @@
                     width: 50px;
                     height: auto;
                     margin:5px 10px 0 0;
-                    -webkit-filter: hue-rotate(-106deg) grayscale(40%); /* Safari 6.0 - 9.0 */
-                    filter: hue-rotate(-106deg) grayscale(40%);
+                    @include filter(hue-rotate(-106deg) grayscale(40%));
                 }
             }
         }

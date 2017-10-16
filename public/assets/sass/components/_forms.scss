@@ -55,12 +55,138 @@
         border: none;
         color: $secondary-color;
       }
+      .editor-toolbar:before {
+        margin:0;
+        content: none;
+      }
+    }
+    &.has-error {
+        .help-block {
+            color: darken($color-red, 10%);
+        }
+        .form-control, .CodeMirror {
+            border: 1px solid darken($color-red, 10%);
+        }
+        .form-control:focus, .CodeMirror-focused {
+          border-color: darken($color-red, 10%);
+          outline: 0;
+          @include box-shadow(inset 0 1px 1px rgba(0,0,0,.075), 0 0 8px rgba(200, 0, 0, .6));
+        }
+    }
+
+    label {
+        /* FontAwesome style */
+        // /*
+        > input[type="checkbox"] {
+            display:none;
+            + span {
+                cursor: pointer;
+            }
+            + span::before {
+                content: '\f096';
+                font-family: FontAwesome;
+                font-weight: normal;
+                font-size: 17px;
+                margin-right: 6px;
+                width: 12px;
+                display: inline-block;
+                vertical-align: middle;
+                height: 19px;
+                line-height: 1;
+            }
+            &:checked + span::before {
+                content: '\f046';
+            }
+        }
+        > input[type="radio"] {
+            display:none;
+            + span {
+                cursor: pointer;
+            }
+            + span::before {
+                content: '\f10c';
+                font-family: FontAwesome;
+                font-weight: normal;
+                font-size: 17px;
+                margin-right: 6px;
+                width: 12px;
+                display: inline-block;
+                vertical-align: middle;
+                height: 19px;
+                line-height: 1;
+            }
+            &:checked + span::before {
+                content: '\f05d';
+            }
+        }
+        //
+        /* https://webdesign.tutsplus.com/articles/quick-tip-easy-css3-checkboxes-and-radio-buttons--webdesign-8953 */
+        /*
+        > input[type="checkbox"] {
+            display:none;
+            + span {
+                cursor: pointer;
+            }
+            + span::before {
+                content: '';
+                display: inline-block;
+                width:19px;
+                height:19px;
+                margin-right: 4px;
+                // margin:-2px 10px 0 0;
+                vertical-align: top;
+                background:url(../img/icons/check_radio_sheet.png) left top no-repeat;
+            }
+            &:checked + span::before {
+                background:url(../img/icons/check_radio_sheet.png) -19px top no-repeat;
+            }
+        }
+        > input[type="radio"] {
+            display:none;
+            + span {
+                cursor: pointer;
+            }
+            + span::before {
+                content: '';
+                display: inline-block;
+                width:19px;
+                height:19px;
+                margin-right: 4px;
+                // margin:-2px 10px 0 0;
+                vertical-align: top;
+                background:url(../img/icons/check_radio_sheet.png) -38px top no-repeat;
+            }
+            &:checked + span::before {
+                background:url(../img/icons/check_radio_sheet.png) -57px top no-repeat;
+            }
+        }
+        */
     }
   }
   .help-text {
     display: block;
-    margin: 10px 5px;
-    color: $color-grey;
+    margin: 10px 5px 0 5px;
+    color: lighten($color-grey, 10%);
+    font-size: $font-size - 2;
+    font-style: italic;
+    &::before {
+        font-family: FontAwesome;
+        content: "\f05a";
+        margin-right: 5px;
+        font-style: normal;
+    }
+    &::after {
+        display: block;
+        content: '';
+        clear: both;
+        line-height:0;
+    }
+    &.info {
+        text-align: right;
+        &::before {
+            content:none;
+        }
+    }
   }
   .material-switch {
     > label {
@@ -69,6 +195,9 @@
     & + label {
       text-transform: uppercase;
       font-weight: 500;
+    }
+    > input[disabled] + label {
+        opacity: 0.7;
     }
   }
 
@@ -86,6 +215,7 @@
         display: none;
     }
     &.loading {
+      background: none;
       .video-holder {
         background:url(../img/ring.gif) no-repeat center;
         display: block;
@@ -130,7 +260,7 @@
   // With this class, help text are hidden are shown on focus
   &.hide-help {
     .help-text {
-      height: 1.2em;
+      height: $font-size + 4;
       overflow: hidden;
       white-space: pre-line;
       &::before {
@@ -151,7 +281,7 @@
     display:inline-block;
 
     > input[type="checkbox"] {
-        display: none;
+        display: none !important;
     }
 
     > label {
@@ -169,6 +299,8 @@
         height: 30px;
         margin-top: -15px;
         position:absolute;
+        left:0;
+        top:0;
         opacity: 0.3;
         @include transition(all 0.4s ease-in-out);
         width: 52px;
@@ -208,16 +340,21 @@
   position: relative;
   width: 100%;
   background: $background-light-body;
-  padding: 0;
+  padding: 5px;
   border-radius: 5px;
+  &::after {
+    display: block;
+    content: '';
+    clear: both;
+  }
 
   .dragndrop {
     width: 150px;
     height: 150px;
-    position: absolute;
+    position: relative;
     display: block;
-    top:10px;
-    right:10px;
+    float: left;
+    margin: 5px;
   }
   .dropzone {
     border: 2px dashed $secondary-color;
@@ -244,24 +381,33 @@
     }
   }
   .image-list-sortable {
-    min-height: 170px;
+    min-height: 160px;
     display: block;
-    padding: 5px 155px 0 5px;
     border: 5px solid $background-light-body;
     margin: 0;
-    min-width: 150px;
+    line-height: 0;
+    float: left;
+
+    // min-width: 150px;
     &.over {
       // background-color: $background-pink;
       // border-color:$background-pink;
       border-color:$color-cyan;
     }
+    &.choose {
+        width: 100%;
+        // float:
+    }
     > li {
       position: relative;
       line-height: 1em;
+      // padding: 5px 0 0 5px;
       padding: 0;
-      margin: 0;
-      margin-right: 5px;
-        background: no-repeat darken($background-white, 5%) url(/assets/img/ring.gif) center;
+      margin: 0 0 5px 5px;
+      background: no-repeat darken($background-white, 5%) url(/assets/img/ring.gif) center;
+      &:last-child {
+        margin-right: 0;
+      }
       .image {
         width: 150px;
         height: 150px;
@@ -283,6 +429,14 @@
     }
   }
 
+}
+
+.input-wrap .image-zone {
+    padding:0;
+    .image-list-sortable {
+        border:0;
+        min-height: 150px;
+    }
 }
 
 

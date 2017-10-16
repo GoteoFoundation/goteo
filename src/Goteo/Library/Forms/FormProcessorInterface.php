@@ -16,11 +16,16 @@ use Goteo\Core\Model;
 
 interface FormProcessorInterface {
     public function createForm();
-    public function save(FormInterface $form = null);
+    public function save(FormInterface $form = null, $force_save = false);
     public function setBuilder(FormBuilderInterface $builder);
     public function getBuilder();
+    public function getDefaults($sanitize = true);
+    public function getForm();
     public function setModel(Model $model);
     public function getModel();
     public function setReadonly($readonly);
     public function getReadonly();
+    public function setFullValidation($full_validation, $show_errors = false);
+    public function getFullValidation();
+    public function showErrors();
 }

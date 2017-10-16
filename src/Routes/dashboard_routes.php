@@ -56,7 +56,7 @@ $dash->add('dashboard-project-summary', new Route(
         )
 ));
 // Old Route from menu
-$dash->add('dashboard-project-summary-redirect', new Route(
+$dash->add('dashboard-project-old-summary-redirect', new Route(
     '/projects/summary',
     array('_controller' => 'Goteo\Controller\Dashboard\ProjectDashboardController::summaryAction',
         'pid' => null
@@ -82,11 +82,12 @@ $dash->add('dashboard-project-profile', new Route(
 ));
 
 // Project edit (personal)
-$dash->add('dashboard-project-personal', new Route(
-    '/project/{pid}/personal',
-    array('_controller' => 'Goteo\Controller\Dashboard\ProjectDashboardController::personalAction',
-        )
-));
+// Not used for the moment
+// $dash->add('dashboard-project-personal', new Route(
+//     '/project/{pid}/personal',
+//     array('_controller' => 'Goteo\Controller\Dashboard\ProjectDashboardController::personalAction',
+//         )
+// ));
 
 // Project edit (main)
 $dash->add('dashboard-project-main', new Route(
@@ -109,17 +110,38 @@ $dash->add('dashboard-project-images-redirect', new Route(
         )
 ));
 
-// Project image editing
+// Project costs editing
 $dash->add('dashboard-project-costs', new Route(
     '/project/{pid}/costs',
     array('_controller' => 'Goteo\Controller\Dashboard\ProjectDashboardController::costsAction',
         )
 ));
 
-// Project image editing
+// Project rewards editing
 $dash->add('dashboard-project-rewards', new Route(
     '/project/{pid}/rewards',
     array('_controller' => 'Goteo\Controller\Dashboard\ProjectDashboardController::rewardsAction',
+        )
+));
+
+// Project campaign editing
+$dash->add('dashboard-project-campaign', new Route(
+    '/project/{pid}/campaign',
+    array('_controller' => 'Goteo\Controller\Dashboard\ProjectDashboardController::campaignAction',
+        )
+));
+
+// Send project to review
+$dash->add('dashboard-project-apply', new Route(
+    '/project/{pid}/apply',
+    array('_controller' => 'Goteo\Controller\Dashboard\ProjectDashboardController::applyAction',
+        )
+));
+
+// Delete project
+$dash->add('dashboard-project-delete', new Route(
+    '/project/{pid}/delete',
+    array('_controller' => 'Goteo\Controller\Dashboard\ProjectDashboardController::deleteAction',
         )
 ));
 

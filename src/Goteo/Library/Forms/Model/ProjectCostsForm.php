@@ -23,6 +23,32 @@ use Goteo\Library\Forms\FormModelException;
 class ProjectCostsForm extends AbstractFormProcessor implements FormProcessorInterface {
     private $costs = [];
 
+    public function getConstraints($field) {
+        $constraints = [];
+        if($this->getFullValidation()) {
+            $constraints[] = new Constraints\NotBlank();
+        }
+        elseif(strpos($field, 'description') !== 0) {
+            $constraints[] = new Constraints\NotBlank();
+        }
+        return $constraints;
+    }
+
+    // override this to take into account costs[] array
+    public function getDefaults($sanitize = true) {
+        $options = $this->getBuilder()->getOptions();
+        foreach($options['data']['costs'] as $cost) {
+            $suffix = "_{$cost->id}";
+            $options['data']["amount$suffix"] = $cost->amount;
+            $options['data']["cost$suffix"] = $cost->cost;
+            $options['data']["type$suffix"] = $cost->type;
+            $options['data']["required$suffix"] = $cost->required;
+            $options['data']["description$suffix"] = $cost->description;
+        }
+        if($sanitize) return array_intersect_key($options['data'], $this->getBuilder()->all());
+        return $options['data'];
+    }
+
     public function delCost($id) {
         unset($this->costs[$id]);
         $this->getBuilder()
@@ -47,7 +73,8 @@ class ProjectCostsForm extends AbstractFormProcessor implements FormProcessorInt
                 // 'pre_addon' => '<i class="fa fa-money"></i>',
                 'pre_addon' => Currency::get($project->currency, 'html'),
                 // 'post_addon' => Currency::get($project->currency, 'name'),
-                'constraints' => array(new Constraints\NotBlank()),
+                // 'constraints' => array(new Constraints\NotBlank()),
+                'constraints' => $this->getConstraints("amount$suffix"),
                 'required' => false,
             ])
             ->add("type$suffix", 'choice', [
@@ -55,7 +82,7 @@ class ProjectCostsForm extends AbstractFormProcessor implements FormProcessorInt
                 'disabled' => $this->getReadonly(),
                 'data' => $cost->type,
                 'choices' => Cost::types(),
-                'constraints' => array(new Constraints\NotBlank()),
+                'constraints' => $this->getConstraints("type$suffix"),
                 'required' => true,
             ])
             ->add("required$suffix", 'choice', [
@@ -72,12 +99,13 @@ class ProjectCostsForm extends AbstractFormProcessor implements FormProcessorInt
                 'label' => 'costs-field-cost',
                 'disabled' => $this->getReadonly(),
                 'data' => $cost->cost,
-                'constraints' => array(new Constraints\NotBlank()),
+                'constraints' => $this->getConstraints("cost$suffix"),
                 'required' => false,
             ])
             ->add("description$suffix", 'textarea', [
                 'label' => 'costs-field-description',
                 'disabled' => $this->getReadonly(),
+                'constraints' => $this->getConstraints("description$suffix"),
                 'data' => $cost->description,
                 'required' => false,
             ]);
@@ -98,19 +126,6 @@ class ProjectCostsForm extends AbstractFormProcessor implements FormProcessorInt
     public function createForm() {
         $project = $this->getModel();
         $builder = $this->getBuilder()
-            ->add('one_round', 'choice', [
-                'disabled' => $this->getReadonly(),
-                'label' => 'costs-field-select-rounds',
-                'constraints' => array(new Constraints\NotBlank()),
-                'required' => true,
-                'expanded' => true,
-                'wrap_class' => 'col-xs-6',
-                'choices' => [
-                    '1' => Text::get('project-one-round'),
-                    '0' => Text::get('project-two-rounds')
-                ],
-                'attr' => ['help' => '<span class="' . ($project->one_round ? '': 'hidden') . '">' . Text::get('tooltip-project-rounds') . '</span><span class="' . ($project->one_round ? 'hidden': '') . '">' . Text::get('tooltip-project-2rounds') . '</span>']
-            ])
             ->add('title-costs', 'title', ['label' => 'costs-fields-main-title'])
             ;
         foreach($project->costs as $cost) {
@@ -120,13 +135,13 @@ class ProjectCostsForm extends AbstractFormProcessor implements FormProcessorInt
         return $this;
     }
 
-    public function save(FormInterface $form = null) {
+    public function save(FormInterface $form = null, $force_save = false) {
         if(!$form) $form = $this->getBuilder()->getForm();
 
         $data = array_intersect_key($form->getData(), $form->all());
         // print_r($data);die;
         $project = $this->getModel();
-        $project->one_round = (bool) $data['one_round'];
+        // $project->one_round = (bool) $data['one_round'];
 
         $errors = [];
         $ids = [];
@@ -148,9 +163,8 @@ class ProjectCostsForm extends AbstractFormProcessor implements FormProcessorInt
                 $validate = false;
             }
         }
-
         // Validate form here to avoid deleted elements
-        if($validate && !$form->isValid()) throw new FormModelException(Text::get('form-has-errors'));
+        if($validate && !$form->isValid() && !$force_save) throw new FormModelException(Text::get('form-has-errors'));
 
         // Add cost
         if($form['add-cost']->isClicked()) {
@@ -166,6 +180,8 @@ class ProjectCostsForm extends AbstractFormProcessor implements FormProcessorInt
         if (!$project->save($errors)) {
             throw new FormModelException(Text::get('form-sent-error', implode(', ',$errors)));
         }
+
+        if($validate && !$form->isValid()) throw new FormModelException(Text::get('form-has-errors'));
 
         return $this;
     }

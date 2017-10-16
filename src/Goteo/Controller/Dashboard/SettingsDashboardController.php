@@ -80,7 +80,7 @@ class SettingsDashboardController extends \Goteo\Core\Controller {
             if($project->isApproved()) {
                 $redirect = '/dashboard/project/' . $pid . '/profile';
             } else {
-                $redirect = '/dashboard/project/' . $pid . '/personal';
+                $redirect = '/dashboard/project/' . $pid . '/overview';
                 $submit_label = 'form-next-button';
             }
 
@@ -97,18 +97,17 @@ class SettingsDashboardController extends \Goteo\Core\Controller {
         $defaults['webs'] = implode("\n", $user->webs);
 
 
-        $processor = $this->getModelForm('UserProfile', $user, $defaults);
+        $processor = $this->getModelForm('UserProfile', $user, $defaults, [], $request);
         $processor->createForm();
-        $form = $processor->getBuilder()
+        $processor->getBuilder()
             ->add('submit', 'submit', [
                 'label' => $submit_label ? $submit_label : 'regular-submit'
-            ])->getForm();
-
-
+            ]);
+        $form = $processor->getForm();
         $form->handleRequest($request);
-        if ($form->isSubmitted()) {
+        if ($form->isSubmitted() && $request->isMethod('post')) {
             try {
-                $processor->save($form);
+                $processor->save($form, true);
                 Message::info(Text::get('user-profile-saved'));
                 return $this->redirect($redirect);
             } catch(FormModelException $e) {
@@ -132,25 +131,28 @@ class SettingsDashboardController extends \Goteo\Core\Controller {
             Message::error(Text::get('translator-lang-not-found'));
             return $this->redirect('/dashboard/settings/profile');
         }
-        $user = User::get($this->user->id, $lang);
+        // $user = User::get($this->user->id);
+        $user = $this->user;
         $translated = $user->getLangsAvailable();
         $this->createSidebar('profile');
 
-        $defaults = (array) $user;
+        $defaults = (array) $user->getLang($lang);
+        if(empty($defaults['name'])) $defaults['name'] = $user->name;
 
-        $builder = $this->createFormBuilder($defaults)
+        $builder = $this->createFormBuilder($defaults, 'autoform', ['attr' => ['class' => 'autoform hide-help']])
             ->add('name', 'text', [
-                'label' => 'profile-field-name'
+                'label' => 'regular-name',
+                'attr' => ['help' => $user->name]
             ])
             ->add('about', 'textarea', [
                 'label' => 'profile-field-about',
-                'attr' => ['help' => Text::get('tooltip-user-about')]
+                'attr' => ['help' => $user->about]
             ])
-            ->add('contribution', 'textarea', [
-                'label' => 'profile-field-contribution',
-                'attr' => ['help' => Text::get('tooltip-user-contribution')],
-                'required' => false
-            ])
+            // ->add('contribution', 'textarea', [
+            //     'label' => 'profile-field-contribution',
+            //     'attr' => ['help' => Text::get('tooltip-user-contribution')],
+            //     'required' => false
+            // ])
             ->add('submit', 'submit')
             ->add('remove', 'submit', [
                 'label' => Text::get('translator-delete', $languages[$lang]),
@@ -185,7 +187,7 @@ class SettingsDashboardController extends \Goteo\Core\Controller {
                 $user->about_lang = $data['about'];
                 // $user->keywords_lang = $data['keywords'];
                 $user->keywords_lang = $user->keywords; // Do not translate keywords for the moment
-                $user->contribution_lang = $data['contribution'];
+                // $user->contribution_lang = $data['contribution'];
                 if($user->saveLang($errors)) {
                     Message::info(Text::get('dashboard-translate-profile-ok', $languages[$lang]));
                     return $this->redirect('/dashboard/settings/profile');

@@ -4,17 +4,21 @@
 
 <div class="dashboard-content">
   <div class="inner-container">
-    <h1><?= $this->text('images-main-header') ?></h1>
-    <p><?= $this->text('dashboard-project-images-desc') ?></p>
+    <h1><?= $this->next ? '3. ' : '' ?><?= $this->text('images-main-header') ?></h1>
+    <div class="auto-hide">
+        <div class="inner"><?= $this->text('dashboard-project-images-desc') ?></div>
+        <!-- <div class="more"><i class="fa fa-info-circle"></i> <?= $this->text('regular-help') ?></div> -->
+    </div>
 
-    <?php foreach($this->zones as $key => $zone): ?>
-        <h3><?= $zone ?></h3>
+    <?php foreach($this->images as $key => $gallery):
+     ?>
+        <h3><?= $this->zones[$key] ?></h3>
         <div class="image-zone" data-section="<?= $key ?>">
             <ul class="list-inline image-list-sortable" id="list-sortable-<?= $key ?>"><?php
-            foreach($this->images[$key] as $img) {
-                echo $this->insert('dashboard/project/partials/image_list_item', [
+            foreach($gallery as $img) {
+                echo trim($this->insert('dashboard/project/partials/image_list_item', [
                         'image_url' => $img->getLink(300, 300, true),
-                        'image_name' => $img->getName()]);
+                        'image_name' => $img->getName()]));
             }
             ?></ul>
             <div class="dragndrop"><div class="dropzone"></div></div>
@@ -25,6 +29,9 @@
     <?php if($this->next): ?>
         <p class="spacer"><a class="btn btn-lg btn-cyan" href="<?= $this->next ?>"><?= $this->text('form-next-button') ?></a></p>
     <?php endif ?>
+
+    <?= $this->insert('dashboard/project/partials/partial_validation') ?>
+
   </div>
 </div>
 
@@ -53,6 +60,11 @@ $(function(){
             'method': 'POST',
             data: {gallery: gallery}
         })
+        .fail(function(data) {
+            var error = JSON.parse(data.responseText);
+            $error.html(error.error);
+            $error.removeClass('hidden');
+        })
         .done(function(data){
             // console.log(data);
             if(!data.result) {
@@ -67,6 +79,7 @@ $(function(){
     $('.image-zone').each(function(){
         var $zone = $(this);
         var $list = $(this).find('.image-list-sortable');
+        var $all = $('.image-list-sortable');
         var $error = $zone.next();
         var element = $zone.find('.dragndrop>div').get(0);
 
@@ -75,16 +88,18 @@ $(function(){
             // , forceFallback: true
             // Reorder actions
             , onStart: function(evt) {
-                console.log('hide chooser', evt);
+                // console.log('hide chooser', evt);
                 $('.dragndrop').hide();
+                $all.addClass('choose');
             }
             , onEnd: function (evt) {
                 $('.dragndrop').show();
+                $all.removeClass('choose');
+                $('.image-list-sortable').removeClass('over');
                 // evt.oldIndex;  // element's old index within parent
                 // evt.newIndex;  // element's new index within parent
                 // console.log(evt);
                 saveCurrentOrder();
-                $('.image-list-sortable').removeClass('over');
             }
             , onMove: function (evt) {
                 $('.image-list-sortable').removeClass('over');
@@ -97,13 +112,14 @@ $(function(){
             uploadMultiple: true,
             createImageThumbnails: true,
             maxFiles:10,
+            maxFilesize: MAX_FILE_SIZE,
             autoProcessQueue: true,
             dictDefaultMessage: '<i style="font-size:2em" class="fa fa-plus"></i><br><br><?= $this->ee($this->text('dashboard-project-dnd-image'), 'js') ?>'
         });
         dropzone.on('error', function(file, error) {
             $error.html(error.error);
             $error.removeClass('hidden');
-            // console.log('error', error);
+            console.log('error', error);
         });
         dropzone.on('success', function(file, response) {
             $error.addClass('hidden');
@@ -115,7 +131,7 @@ $(function(){
                     if(!response.files[i].success)
                         $error.append('<br>' + response.files[i].msg);
                 }
-                // return;
+                return;
             }
             // Add to list
             var li = '<?= $this->ee($this->insert('dashboard/project/partials/image_list_item', ['image_url' => '{URL}', 'image_name' => '{NAME}']), 'js') ?>';
@@ -130,6 +146,9 @@ $(function(){
             li = li.replace('{URL}', img);
             li = li.replace('{NAME}', name);
             $list.append(li);
+            if(response.cover) {
+                $('#menu-item-images').removeClass('ko').addClass('ok');
+            }
             // console.log('success', file, response, li);
         });
         dropzone.on("complete", function(file) {
@@ -160,6 +179,11 @@ $(function(){
                 url: '/api/projects/<?= $this->project->id ?>/images/' + $li.data('name'),
                 'method': 'DELETE'
             })
+            .fail(function(data) {
+                var error = JSON.parse(data.responseText);
+                $error.html(error.error);
+                $error.removeClass('hidden');
+            })
             .done(function(data) {
                 // console.log('done',data);
                 if(data.result) {
@@ -184,6 +208,11 @@ $(function(){
                 url: '/api/projects/<?= $this->project->id ?>/images/' + $li.data('name'),
                 'method': 'PUT'
             })
+            .fail(function(data) {
+                var error = JSON.parse(data.responseText);
+                $error.html(error.error);
+                $error.removeClass('hidden');
+            })
             .done(function(data) {
                 // console.log('done',data);
                 if(data.result) {
@@ -197,6 +226,7 @@ $(function(){
                         src[src.length - 1] = data.default;
                         $(this).attr('src', src.join('/'));
                     });
+                    $('#menu-item-images').removeClass('ko').addClass('ok');
                 } else {
                     $error.html(data.msg);
                     $error.removeClass('hidden');

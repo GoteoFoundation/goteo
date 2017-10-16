@@ -1,11 +1,10 @@
-
 /* The side navigation menu */
 #sidebar-menu {
     padding-bottom: 50px;
     overflow-x: hidden; /* Disable horizontal scroll */
     font-size: 16px;
     line-height: 1.5;
-    height: 100%;
+    // height: 100%;
     top: 0;
     .sidebar-wrap {
         background-color: $background-sidebar;
@@ -14,28 +13,50 @@
     li {
       padding: 0 15px;
       background-color: $background-sidebar;
+      &.ok::after{
+        font-family: FontAwesome;
+        content: "\f00c";
+        position: absolute;
+        top: 15px;
+        right: 15px;
+        color: $color-cyan;
+        display: block;
+      }
+      &.ko::after{
+        font-family: FontAwesome;
+        // content: "\f00d";
+        content: "\f111";
+        font-size:50%;
+        position: absolute;
+        top: 21px;
+        right: 15px;
+        color: $color-red;
+        display: block;
+      }
       >a, >button {
         color: $color-white;
-        * {
-            color: $color-white;
-        }
-        padding-bottom:15px;
+        padding-bottom:13px;
+        padding-top:12px;
         border-top:2px solid $background-grey;
+        display: relative;
+        padding-left:45px;
         &:hover,&:active,&:focus {
             background-color:inherit;
             // color: $color-dark;
         }
-        display: relative;
-        padding-left:45px;
+        &.btn {
+            border-top: 0;
+            margin: 2px 0 10px 0;
+            text-align: left;
+        }
         >i:first-child {
             position: absolute;
             top:10px;
             left:5px;
             &.icon-back {
-                left:-5px;
+                top:15px;
             }
         }
-
       }
       &:first-child {
         >a, >button {
@@ -44,6 +65,9 @@
       }
       &.active,&:hover,&:focus {
         background-color: $background-sidebar-active;
+        &.flat {
+            background-color: inherit;
+        }
         >a, >button {
             border-top-color:transparent;
         }
@@ -54,6 +78,9 @@
         }
       }
       &.sidebar {
+        > a {
+            white-space: nowrap;
+        }
         .fa-angle-up {
             display: none;
         }
@@ -75,21 +102,18 @@
             background-color: $background-sidebar-header;
           }
         }
-        border-left: 3px solid $color-cyan;
-        // + .sidebar {
-          margin-top: 3px;
-          // top: -3px;
-        // }
+        border-left: 6px solid $color-cyan;
+        margin-top: 3px;
         >li {
-          padding-left: 12px;
+          padding-left: 9px;
         }
       }
       &.active, &.selected {
         .submenu {
           display: block;
           >li.active {
-            padding-left: 8px;
-            border-left: 3px solid $color-cyan;
+            padding-left: 5px;
+            border-left: 6px solid $color-cyan;
           }
         }
       }
@@ -118,33 +142,55 @@
             width: auto;
         }
 
-        .project-widget {
+        .project-widget,.sidebar-widget {
             font-size: $font-size;
-            &.micro {
-                .img-project {
-                    width:60%;
-                    margin:0 20%;
-                    border-radius: 50%;
-                    border:4px solid $color-white;
-                    box-shadow:0 5px 20px 0px $color-black;
+            position: relative;
+            a.img-link {
+                padding-top: 60%;
+                position: relative;
+                width: 100%;
+                display: block;
+                img {
+                    background: #E5F3F4 url(../img/ring.gif) no-repeat center;
+                    position: absolute;
+                    height: 100%;
+                    top: 0;
+                    left: 0;
+                    right: 0;
+                    bottom: 0;
                 }
-                .content {
-                    margin:10px 15px 0 15px;
-                    border-radius: 0;
+            }
+            .img-project,.img-circle {
+                width:60%;
+                margin:0 20%;
+                border-radius: 50%;
+                border:4px solid $color-white;
+                box-shadow:0 5px 20px 0px $color-black;
+            }
+            .content {
+                margin:10px 15px 0 15px;
+                padding:0 0 20px 0;
+                border-radius: 0;
+                color:$color-white;
+                a {
                     color:$color-white;
+                }
+                .error {
+                    margin: 5px 0;
+                    font-size: 12px;
+                    line-height: 12px;
                     a {
-                        color:$color-white;
-                        font-size:120%;
-                        line-height:120%;
+                        color: $color-red;
                     }
-                    .label {
-                        font-weight: normal;
-                        padding-top:.5em;
-                        text-transform: uppercase;
-                        font-size:100%;
-                        margin-bottom:10px;
-                        display:inline-block;
-                    }
+                }
+
+                .label {
+                    font-weight: normal;
+                    padding-top:.5em;
+                    text-transform: uppercase;
+                    // font-size:100%;
+                    // margin-bottom:10px;
+                    display:inline-block;
                 }
             }
         }
@@ -157,8 +203,8 @@
         li {
             background-color: $background-sidebar-header;
             a {
-                min-height:70px;
-                padding-top:20px;
+                min-height:67px;
+                padding-top:19px;
             }
           }
       }

@@ -54,3 +54,4 @@ admin-users: Usuaris
 admin-yes: Si
 admin-filters: Filtres
 admin-remove-filters: 'Treure filtres'
+admin-impersonate-user: Suplanta a %s

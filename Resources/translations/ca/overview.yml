@@ -31,12 +31,12 @@ overview-field-options-scope_global: 'Global '
 overview-field-options-scope_local: Local
 overview-field-options-scope_nacional: Nacional
 overview-field-options-scope_regional: Regional
-overview-field-play-video: 'Dins vídeo'
+overview-field-play-video: 'Caràtula del vídeo'
 overview-field-project_location: Ubicació
 overview-field-related: 'Experiència prèvia i equip '
 overview-field-reward: Recompenses
 overview-field-scope: 'Abast del projecte'
-overview-field-subtitle: 'Frase de resum'
+overview-field-subtitle: 'Subtítol'
 overview-field-usubs: 'Carregar amb Universal Subtitles'
 overview-field-video: 'Vídeo addicional sobre motivació'
 overview-fields-images-title: 'Imatges del projecte'
@@ -46,7 +46,7 @@ step-main: Dades principals
 step-3b: Imatges
 step-images: 'Passa: Imatges del projecte'
 step-overview: 'Pas: Descripció del projecte'
-tooltip-project-about: 'Descriu breument el projecte de manera conceptual, tècnica o pràctica. Per exemple detallant les seves característiques de funcionament, o en quines parts consistirà. Pensa com serà una vegada acabat i tot el que la gent podrà fer amb ell.'
+tooltip-project-about: 'Descriu breument les característiques més importants del teu projecte i per que es diferencia de la resta. Enumera també que objectius es volen aconseguir amb ell (escriu-ho de forma clara i usant l''infinitiu)'
 tooltip-project-category: 'Selecciona tantes categories com creguis necessari per descriure el projecte, basant-te en tot el que has descrit amunt. Mitjançant aquestes paraules clau ho podrem fer arribar a diferents usuaris de Goteo.'
 tooltip-project-currency: 'Indica en qué divisa calculas los costes del proyecto.'
 tooltip-project-currently: 'Indica a quina fase es troba el projecte actualment respecte al seu procés de creació o execució.'
@@ -55,14 +55,14 @@ tooltip-project-goal: 'Enumera les metes principals del projecte, a curt i llarg
 tooltip-project-image: 'Poden ser esquemes, captures de pantalla, fotografies, il·lustracions, storyboards, etc. (la seva llicència d''autoria ha de ser compatible amb la que seleccions a l''apartat 5). Et recomanem que siguin diverses i de bona qualitat (uns 900 píxels d''amplada com a màxim / 2MB Max). Pots pujar tantes com vulguis!'
 tooltip-project-image_upload: ESBORRAR
 tooltip-project-keywords: 'A mesura que introdueixis text el sistema et suggerirà paraules clau que ja han escrit altres usuaris. Aquestes categories ajuden a vincular el teu projecte amb persones afins.'
-tooltip-project-lang: 'Indica en quina llengua omples el formulari del projecte.'
-tooltip-project-media: 'Còpia i enganxa l''adreça URL d''un vídeo de presentació del projecte, publicat prèviament a Youtube o Vimeo. Aquesta part és fonamental per atreure l''atenció de potencials cofinançadors i col·laboradors, i com més original sigui millor. Et recomanem que tingui una durada d''entre 2 i 4 minuts. '
+tooltip-project-lang: 'Més endavant pots traduir el teu projecte a altres idiomes des del panell de traducció.'
+tooltip-project-media: 'El vídeo de presentació és una part fonamental per atreure l''atenció de la comunitat així que com més original sigui millor. És imprescindible que tingui una durada màxima de 4 minuts. Puja''l a Youtube o Vimeo i enganxa l''adreça URL aquí.'
 tooltip-project-motivation: 'Explica quins motius o circumstàncies t''han portat a idear el projecte, així com les comunitats o usuaris a qui va destinat. T''ajudarà a connectar amb persones mogudes per aquest mateix tipus d''interessos, problemàtiques o gustos.'
-tooltip-project-name: 'Escull un nom per al projecte (ni massa curt, ni massa llarg :) que permeti fer-se una idea mínima de per a què serveix o en què consisteix. Pensa que apareixerà a molts llocs de la web!'
-tooltip-project-project_location: 'Indica en quina ciutat o província vols localitzar aquest projecte.'
+tooltip-project-name: 'Com més breu millor, per fer-lo més descriptiu pots ampliar-lo en el següent apartat.'
+tooltip-project-project_location: 'dica l''àrea geogràfica on el teu projecte tindrà impacte.'
 tooltip-project-related: 'Resumeix la teva trajectòria o la del grup impulsor del projecte. Quina experiència tens relacionada amb la proposta? Amb quin equip de persones, recursos i/o infraestructures compta? '
 tooltip-project-reward: 'Aquí expliquem tot allò bo que té en quant a recompenses'
-tooltip-project-subtitle: 'Defineix amb una frase un subtítol que acabi d''explicar en què consistirà la iniciativa, que permeti fer-se una idea mínima de per a què serveix o en què consisteix. Apareixerà al costat del títol del projecte.'
+tooltip-project-subtitle: 'Descriu el teu projecte en 140 caràcters com a màxim de forma clara i concisa. Aquest text es farà servir per difondre en xarxes socials.'
 tooltip-project-usubs: 'Marca la casella en cas que hagis subtitulat a altres idiomes el vídeo mitjançant Universal Subtitles: http://www.universalsubtitles.org/'
 tooltip-project-video: 'Considera aquí la possibilitat de publicar i enllaçar un vídeo (a Youtube o Vimeo) on expliquis breument a la càmera el perquè del teu projecte. Es tracta de quelcom que pugui complementar el vídeo principal, amb una persona que transmeti la seva necessitat o originalitat, de la manera més directa possible. Si et dóna tall parlar a càmera, també pot ser alguna persona que coneixes i segueix el projecte o la idea i pugui fer aquesta aportació com a "fan". L''empatia i necessitat de veure algú a l''altre costat del projecte és molt important para determinat tipus de cofinançadors.  '
 validate-project-field-about: 'L''explicació del projecte és massa curta'

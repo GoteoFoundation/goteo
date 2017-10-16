@@ -31,3 +31,7 @@ feed-message-message-published: '%USER% has published a new %TYPE% in the projec
 feed-message-new-project-response: 'user participates with a message/response in a project'
 feed-message-support-response-published: 'New collaboration from %USER% with %TITLE% in the project %PROJECT%'
 feed-message-response-published: '%USER% has responded to %TYPE% at project %PROJECT%'
+
+feed-project-ready-sent: 'Project sent to review'
+feed-project-ready-ko: 'Error from %USER% while sending the project %PROJECT% to <span class="red">review</span>'
+feed-project-ready-ok: '%USER% has sent the project %PROJECT% to <span class="red">review</span>'

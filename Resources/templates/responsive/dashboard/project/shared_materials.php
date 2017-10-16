@@ -13,8 +13,9 @@
                 <button id="add-new-material" class="btn btn-cyan"><span class="glyphicon glyphicon-plus"></span> <?= $this->text('dashboard-add-new-share-material') ?></button>
             </div>
         </div>
-
-    <?php endif; ?>
+    <?php else: ?>
+        <blockquote><?= $this->text('dashboard-project-not-funded-yet') ?></blockquote>
+    <?php endif ?>
 
     <div id="alert-success" class="new-material-success alert alert-success" style="display: none;">
       <strong class="msg"></strong>
@@ -26,7 +27,7 @@
             <?= $this->insert('dashboard/project/partials/materials/materials_table') ?>
         <?php else: ?>
             <h3><?= $this->text('project-no-share-material') ?></h3>
-        <?php endif; ?>
+        <?php endif ?>
     </div>
 
 

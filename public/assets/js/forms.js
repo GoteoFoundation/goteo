@@ -22,6 +22,9 @@ through which recipients can access the Corresponding Source.
 @licend  The above is the entire license notice
 for the JavaScript code in this page.
 */
+
+var form = {};
+
 function parseVideoURL (url) {
     // - Supported YouTube URL formats:
     //   - http://www.youtube.com/watch?v=My2FRPA3Gf8
@@ -56,9 +59,10 @@ $(function(){
     //material switch checkbox
     $('.material-switch').on('click', function(e){
         e.preventDefault();
+        var $checkbox = $(this).find('input[type="checkbox"]');
+        if($checkbox.prop('disabled')) return;
         var text_yes = $(this).data('confirm-yes');
         var text_no = $(this).data('confirm-no');
-        var $checkbox = $(this).find('input[type="checkbox"]');
         var current = $checkbox.prop('checked');
         if(current && text_no) {
             if(!confirm(text_no)) {
@@ -158,7 +162,7 @@ $(function(){
       var displayKey = $this.data('display-key') || 'tag';
       var displayValue = $this.data('display-value') || 'tag';
       var wildcard = $this.data('wilcard') || '%QUERY';
-      var ops = { tagClass: 'label label-lilac label-big' };
+      var ops = { tagClass: 'label label-lilac' };
       if(url) {
         var tags = new Bloodhound({
           datumTokenizer: function(datum) {
@@ -243,7 +247,7 @@ $(function(){
 
 
     // MarkdownType initialization
-    var markdowns = {};
+    var markdowns = form.markdowns = {};
     $('.autoform .markdown > textarea').each(function() {
         var el = this;
         // console.log('found textarea', el);
@@ -263,7 +267,7 @@ $(function(){
         markdowns[$(this).attr('id')] = simplemde;
     });
 
-    var dropzones = {};
+    var dropzones = form.dropzones = {};
     // Dropfiles initialization
     $('.autoform .dropfiles').each(function() {
         var $dz = $(this);
@@ -316,6 +320,7 @@ $(function(){
             uploadMultiple: multiple,
             createImageThumbnails: true,
             maxFiles: limit,
+            maxFilesize: MAX_FILE_SIZE,
             autoProcessQueue: !!url, // no ajax post if no url
             dictDefaultMessage: $dz.data('text-upload'),
             acceptedFiles: accepted_files

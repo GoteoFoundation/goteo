@@ -4,15 +4,18 @@
 
 <div class="dashboard-content">
   <div class="inner-container">
-    <h1><?= $this->text('costs-main-header') ?></h1>
-    <p><?= $this->text('guide-project-costs') ?></p>
+    <h1>4. <?= $this->text('costs-main-header') ?></h1>
+    <div class="auto-hide">
+        <div class="inner"><?= $this->text('guide-project-costs') ?></div>
+        <div class="more"><i class="fa fa-info-circle"></i> <?= $this->text('regular-help') ?></div>
+    </div>
+
+    <?= $this->insert('dashboard/project/partials/goto_first_error') ?>
 
     <?= $this->supply('dashboard-content-form', function() {
         $form = $this->raw('form');
         echo $this->form_start($form);
 
-
-        echo $this->form_row($form['one_round']);
         echo $this->form_row($form['title-costs']);
 
         $submit = $form['submit'] ? $this->form_row($form['submit']) : '';
@@ -36,6 +39,8 @@
         echo $this->form_end($form);
 
     }) ?>
+
+    <?= $this->insert('dashboard/project/partials/partial_validation') ?>
 
   </div>
 </div>
@@ -62,7 +67,7 @@ $(function(){
 
     var setBar = function() {
         var $container = $('.dashboard-content>.inner-container');
-        var $bar = $container.find('.progress');
+        var $bar = $container.find('.costs-bar');
 
         var min = opt = 0;
         $container.find('.amount input').each(function() {
@@ -77,11 +82,14 @@ $(function(){
             }
 
         });
+        var per_min = Math.round(100*min/(min+opt)) + '%';
+        var per_opt = Math.round(100*opt/(min+opt)) + '%';
         console.log('calc', min, opt);
-        $bar.find('.minimum > span').html(min);
-        $bar.find('.optimum > span').html(opt);
-        $bar.find('.minimum').css('width', Math.round(100*min/(min+opt)) + '%');
-        $bar.find('.optimum').css('width', Math.round(100*opt/(min+opt)) + '%');
+        $bar.find('.amount-min').html(min);
+        $bar.find('.amount-opt').html(opt);
+        $bar.find('.amount-total').html(min + opt);
+        $bar.find('.bar-min').css('width', per_min).html(per_min);
+        $bar.find('.bar-opt').css('width', per_opt).html(per_opt);
     };
 
     $('.autoform').on('change', '.cost-item .required select', function() {

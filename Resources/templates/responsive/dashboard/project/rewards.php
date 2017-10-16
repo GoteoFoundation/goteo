@@ -4,8 +4,13 @@
 
 <div class="dashboard-content">
   <div class="inner-container">
-    <h1><?= $this->text('rewards-main-header') ?></h1>
-    <p><?= $this->text('guide-project-rewards') ?></p>
+    <h1><?= $this->project->isApproved() ? '' : '5. ' ?><?= $this->text('rewards-main-header') ?></h1>
+    <div class="auto-hide">
+        <div class="inner"><?= $this->text('guide-project-rewards') ?></div>
+        <!-- <div class="more"><i class="fa fa-info-circle"></i> <?= $this->text('regular-help') ?></div> -->
+    </div>
+
+    <?= $this->insert('dashboard/project/partials/goto_first_error') ?>
 
     <?= $this->supply('dashboard-content-form', function() {
         $form = $this->raw('form');
@@ -29,6 +34,8 @@
         echo $this->form_end($form);
 
     }) ?>
+
+    <?= $this->insert('dashboard/project/partials/partial_validation') ?>
 
   </div>
 </div>
@@ -98,6 +105,24 @@ $(function(){
 
     });
 
+    //material switch checkbox
+    $('form.autoform').on('click', '.reward-item .material-switch', function(){
+        var $reward = $(this).closest('.reward-item');
+        var $input = $reward.find('input[type="checkbox"]');
+        if($input.prop('disabled')) return;
+        var $units = $reward.find('.units input');
+        var $icon = $units.prev('.input-group-addon');
+
+        if($input.prop('checked')) {
+            $icon.addClass('disabled')
+            $units.val(0);
+            $units.prop('disabled', true);
+        } else {
+            $icon.removeClass('disabled')
+            $units.prop('disabled', false);
+            $units.select();
+        }
+    });
 });
 
 // @license-end
