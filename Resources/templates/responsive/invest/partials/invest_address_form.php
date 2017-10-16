@@ -1,11 +1,11 @@
-<h3 class="clear-both col-md-offset-1 padding-bottom-2 clear-both"><?= $this->text('invest-address-title') ?></h3>
+<h3 class="clear-both padding-bottom-2 clear-both"><?= $this->text('invest-address-title') ?></h3>
 
 
 <?php foreach(['name', 'address', 'location', 'zipcode'] as $part): ?>
 
     <div class="form-group<?= in_array($part, $this->a('invest_errors')) ? ' has-error' : '' ?>">
-        <label for="invest-<?= $part ?>" class="col-md-10 col-md-offset-1"><?= $this->text('invest-address-' . $part . '-field') ?></label>
-        <div class="col-md-7 col-md-offset-1">
+        <label for="invest-<?= $part ?>"><?= $this->text('invest-address-' . $part . '-field') ?></label>
+        <div class="input-wrap">
             <input type="text" class="form-control<?php
             if($part == 'address') {
                 echo ' geo-autocomplete" data-geocoder-populate-address="#invest-address" data-geocoder-populate-city="#invest-location" data-geocoder-populate-region="#invest-region" data-geocoder-populate-zipcode="#invest-zipcode" data-geocoder-populate-country_code="#invest-country" data-geocoder-populate-latitude="#invest-latitude" data-geocoder-populate-longitude="#invest-longitude';
@@ -20,8 +20,8 @@
 <?php endforeach ?>
 
     <div class="form-group<?= in_array('country', $this->a('invest_errors')) ? ' has-error' : '' ?>">
-        <label for="invest-country" class="col-md-10 col-md-offset-1"><?= $this->text('invest-address-country-field') ?></label>
-        <div class="col-md-7 col-md-offset-1">
+        <label for="invest-country"><?= $this->text('invest-address-country-field') ?></label>
+        <div class="input-wrap">
             <?= $this->html('input',
                     ['type' => 'select',
                     'name' => 'invest[country]',

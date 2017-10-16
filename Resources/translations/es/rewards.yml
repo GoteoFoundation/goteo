@@ -5,7 +5,7 @@ mandatory-social_reward-field-description: 'Es obligatorio poner alguna descripc
 mandatory-social_reward-field-icon: 'Es obligatorio seleccionar el tipo de retorno'
 mandatory-social_reward-field-name: 'Es obligatorio especificar el compromiso social'
 mandatory-social_reward-field-category: 'Es obligatorio especificar el comprimiso social'
-rewards-field-individual_reward-amount: 'Importe financiado'
+rewards-field-individual_reward-amount: 'Importe'
 rewards-field-individual_reward-description: Descripción
 rewards-field-individual_reward-other: 'Especificar el tipo de recompensa'
 rewards-field-individual_reward-reward: Recompensa

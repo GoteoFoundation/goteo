@@ -310,7 +310,12 @@
   .panel {
     border: 0;
     box-shadow: none;
-
+    border-radius: 5px;
+    background-color: $background-light-body;
+    &.panel-default {
+        background-color: $background-white;
+        border:1px solid #ddd;
+    }
     h3 {
       margin-top:0;
     }
@@ -325,7 +330,7 @@
           // margin:0;
       }
       .input-wrap {
-        padding:0 12px;
+        // padding:0 12px;
       }
       blockquote {
         background: inherit;
@@ -343,8 +348,7 @@
           background-color: $background-lighter-lilac;
         }
       }
-      background-color: $background-light-body;
-      border-radius: 5px;
+
       &.cost-item,&.reward-item {
         .row .form-group {
           display: inline-block;
@@ -493,27 +497,29 @@
     }
   }
   .pool-box {
-    width: 100%;
-    padding:2%;
-    border-radius: 5px;
-    background:$background-white;
-    label {
+    // width: 100%;
+    // padding:2%;
+    // border-radius: 5px;
+    // background:$background-white;
+    /* label {
         display: block;
         text-align: center;
+        margin: 20px 0;
         strong {
             display: inline-block;
             vertical-align: middle;
             font-size: $font-size * 2;
         }
-    }
+    } */
     .form-control {
-        margin-left: 1em;
-        margin-right: 1em;
-        display: inline-block;
-        width: 150px;
-        font-size: $font-size * 1.5;
-        height: auto;
-        vertical-align: middle;
+        // margin-left: 1em;
+        // margin-right: 1em;
+        // display: inline-block;
+        // width: 150px;
+        // font-size: $font-size * 1.5;
+        // height: auto;
+        // vertical-align: middle;
+        border: 1px solid #ccc;
     }
   }
   .comments {
@@ -611,6 +617,11 @@
   padding: 20px;
   @media(max-width: $breakpoint-sm - 1) {
     padding: 5px;
+  }
+  .panel {
+      .panel-body {
+        // background: $background-white;
+      }
   }
 }
 .user-pool {

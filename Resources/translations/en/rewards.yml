@@ -4,7 +4,7 @@ mandatory-individual_reward-field-name: 'You must enter a reward'
 mandatory-social_reward-field-description: 'You must enter a description for the benefit'
 mandatory-social_reward-field-icon: 'You must choose the type of benefit'
 mandatory-social_reward-field-name: 'You must specify the benefit'
-rewards-field-individual_reward-amount: 'Amount financed'
+rewards-field-individual_reward-amount: 'Amount'
 rewards-field-individual_reward-description: Description
 rewards-field-individual_reward-other: 'Specify the type of reward'
 rewards-field-individual_reward-reward: Reward
