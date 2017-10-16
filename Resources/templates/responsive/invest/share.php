@@ -11,17 +11,17 @@ $this->section('main-content');
     <div class="row row-form">
         <div class="panel panel-default invest-container">
             <div class="panel-body">
-                <h2 class="col-sm-offset-1 padding-bottom-2"><?= $this->text('invest-share-title') ?></h2>
-                <div class="reminder col-md-10 col-md-offset-1">
+                <h2 class="col-sm-offset-1 col-sm-10 padding-bottom-2"><?= $this->text('invest-share-title') ?></h2>
+                <div class="reminder col-sm-10 col-sm-offset-1">
                 <?= $this->text('project-invest-ok') ?>
                 </div>
 
                 <div class="row">
-                    <h3 class="col-md-offset-1 col-md-10 clearfix padding-bottom-6"><?= $this->text('project-spread-header') ?></h3>
+                    <h3 class="col-sm-offset-1 col-sm-10 clearfix padding-bottom-6"><?= $this->text('project-spread-header') ?></h3>
                 </div>
 
                 <div class="row">
-                    <div class="col-sm-5 col-md-offset-1 margin-2">
+                    <div class="col-sm-5 col-sm-offset-1 margin-2">
                         <a href="<?= $this->facebook_url ?>" target="_blank" class="btn btn-block btn-social btn-facebook">
                             <i class="fa fa-facebook"></i> <?= $this->text('spread-facebook') ?>
                         </a>
@@ -36,16 +36,16 @@ $this->section('main-content');
 
                 <hr class="share">
 
-                <h3 class="col-md-offset-1 standard-margin-top padding-bottom-6" ><?= $this->text('project-messages-send_direct-header') ?></h3>
+                <h3 class="col-sm-offset-1 col-sm-10 standard-margin-top padding-bottom-6" ><?= $this->text('project-messages-send_direct-header') ?></h3>
 
                 <div class="row standard-margin-top" id="container-msg-form">
-                    <form class="col-md-10 col-md-offset-1" name="msg-form" id="msg-form" action="">
+                    <form class="col-sm-10 col-sm-offset-1" name="msg-form" id="msg-form" action="">
                         <div class="alert alert-danger" role="alert" id="error" style="display:none;">
 
                         </div>
                         <textarea class="form-control" id="support-msg" rows="4" required></textarea>
-                        <div class="col-sm-4 no-padding margin-2 standard-margin-top">
-                            <button type="button" class="btn btn-block btn-success" id="send-msg" value=""><?= $this->text('project-messages-send_message-button') ?></button>
+                        <div class="margin-2 standard-margin-top">
+                            <button type="button" class="btn btn-lg btn-cyan" id="send-msg" value=""><i class="fa fa-paper-plane-o"></i> <?= $this->text('project-messages-send_message-button') ?></button>
                         </div>
                     </form>
                 </div>
