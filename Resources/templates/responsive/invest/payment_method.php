@@ -108,7 +108,14 @@ $this->section('main-content');
 // @license magnet:?xt=urn:btih:0b31508aeb0634b347b8270c7bee4d411b5d4109&dn=agpl-3.0.txt
 $(function(){
 
-<?php if(array_key_exists('pool', $this->pay_methods)): ?>
+<?php if($this->skip_login): ?>
+    $('input[name="name"]').on('change', function() {
+        var $anon = $('input[name="anonymous"]');
+        if($(this).val().trim().length) {
+            $anon.prop('checked', false);
+        }
+    });
+<?php elseif(array_key_exists('pool', $this->pay_methods)): ?>
     $('#pool_on_fail').get(0).originalStatus = $('#pool_on_fail').prop('checked');
 
     $('input[name="method"]').on('change', function(){
@@ -141,16 +148,6 @@ $(':radio').change(function(){
     })
 
 });
-
-<?php if($this->skip_login): ?>
-    $('input[name="name"]').on('change', function() {
-        var $anon = $('input[name="anonymous"]');
-        if($(this).val().trim().length) {
-            $anon.prop('checked', false);
-        }
-    });
-<?php endif ?>
-
 
 
 // @license-end
