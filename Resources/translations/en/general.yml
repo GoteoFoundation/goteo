@@ -81,6 +81,7 @@ regular-create: 'Create a project'
 regular-days: days
 regular-delete: Erase
 regular-discover: 'Discover projects'
+regular-download-pdf: 'Download PDF'
 regular-actions: Actions
 regular-edit: Edit
 regular-email: Email
