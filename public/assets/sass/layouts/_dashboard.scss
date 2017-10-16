@@ -66,6 +66,7 @@
     padding: 20px;
     border-left: none;
     font-size: $font-size * 1.1;
+    font-weight: normal;
     &::after {
         content: '';
         clear: both;
@@ -80,6 +81,20 @@
             right: 20px;
             float: none;
         }
+    }
+    ol {
+        counter-reset: list;
+    }
+    ol > li {
+        list-style: none;
+        position: relative;
+        margin-bottom: 1em;
+    }
+    ol > li:before {
+        counter-increment: list;
+        content: counter(list, lower-alpha) ") ";
+        position: absolute;
+        left: -1.4em;
     }
   }
 

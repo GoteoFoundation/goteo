@@ -17,7 +17,7 @@ $prjs = new RouteCollection();
 /// TODO: more methods... ///
 
 $prjs->add('project-edit', new Route(
-    '/edit/{id}/{step}',
+    '/edit/{pid}/{step}',
     array(
         '_controller' => 'Goteo\Controller\ProjectController::editAction',
         'step' => 'userProfile'
@@ -32,7 +32,7 @@ $prjs->add('project-create', new Route(
 // Favourite project
 
 $prjs->add('project-favourite', new Route(
-    '/favourite/{project_id}',
+    '/favourite/{pid}',
     array('_controller' => 'Goteo\Controller\ProjectController::favouriteAction')
 ));
 
@@ -53,17 +53,17 @@ $prjs->add('project-investors-required', new Route(
 
 //TODO: quitar esta guarrada:
 $prjs->add('project-raw', new Route(
-    '/raw/{id}',
+    '/raw/{pid}',
     array('_controller' => 'Goteo\Controller\ProjectController::rawAction')
 ));
 
 $prjs->add('project-delete', new Route(
-    '/delete/{id}',
+    '/delete/{pid}',
     array('_controller' => 'Goteo\Controller\ProjectController::deleteAction')
 ));
 
 $prjs->add('project-sections', new Route(
-    '/{id}/{show}/{post}',
+    '/{pid}/{show}/{post}',
     array('_controller' => 'Goteo\Controller\ProjectController::indexAction',
         'id' => null, //optional
         'show' => 'home', //default
