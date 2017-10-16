@@ -53,3 +53,13 @@ ALTER TABLE `contract_status` ADD `closed_user` VARCHAR( 50 ) CHARACTER SET utf8
 
 -- constrains
 ALTER TABLE `contract_status` ADD FOREIGN KEY (`contract`) REFERENCES `contract`(`project`) ON UPDATE CASCADE ON DELETE RESTRICT;
+
+
+-- constrains and spelling fix
+ALTER TABLE `contract_status` CHANGE `recieved` `received` INT(1) DEFAULT 0 NOT NULL COMMENT 'Se ha recibido el contrato firmado', CHANGE `recieved_date` `received_date` DATE NULL COMMENT 'Fecha que se cambia el flag', CHANGE `recieved_user` `received_user` VARCHAR(50) CHARSET utf8 COLLATE utf8_general_ci NULL COMMENT 'Usuario que cambia el flag', ADD FOREIGN KEY (`owner_user`) REFERENCES `user`(`id`) ON UPDATE CASCADE;
+ALTER TABLE `contract_status` ADD FOREIGN KEY (`admin_user`) REFERENCES `user`(`id`) ON UPDATE CASCADE;
+ALTER TABLE `contract_status` ADD FOREIGN KEY (`pdf_user`) REFERENCES `user`(`id`) ON UPDATE CASCADE;
+ALTER TABLE `contract_status` ADD FOREIGN KEY (`payed_user`) REFERENCES `user`(`id`) ON UPDATE CASCADE;
+ALTER TABLE `contract_status` ADD FOREIGN KEY (`prepay_user`) REFERENCES `user`(`id`) ON UPDATE CASCADE, ADD FOREIGN KEY (`closed_user`) REFERENCES `user`(`id`) ON UPDATE CASCADE;
+ALTER TABLE `contract_status` ADD FOREIGN KEY (`ready_user`) REFERENCES `user`(`id`) ON UPDATE CASCADE;
+ALTER TABLE `contract_status` ADD FOREIGN KEY (`received_user`) REFERENCES `user`(`id`) ON UPDATE CASCADE;

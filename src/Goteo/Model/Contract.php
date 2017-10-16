@@ -704,7 +704,7 @@ En caso de conseguir el presupuesto óptimo, la recaudación cubriría los gasto
                 'admin' => 'Datos en revision',
                 'ready' => 'Listo para imprimir',
                 'pdf' => 'Pdf descargado',
-                'recieved' => 'Sobre recibido',
+                'received' => 'Sobre recibido',
                 'prepay' => 'Pago adelantado',
                 'payed' => 'Pagos realizados',
                 'closed' => 'Contrato cumplido'
@@ -720,7 +720,7 @@ En caso de conseguir el presupuesto óptimo, la recaudación cubriría los gasto
 
             $nexts = array();
 
-            $estados = array( 'owner', 'admin', 'ready', 'pdf', 'recieved', 'payed', 'closed' );
+            $estados = array( 'owner', 'admin', 'ready', 'pdf', 'received', 'payed', 'closed' );
 
             $ya = false;
 
