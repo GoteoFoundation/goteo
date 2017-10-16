@@ -19,6 +19,7 @@ namespace Goteo\Model {
             // datos del representante
             $name,
             $nif,
+            $birthdate,
             $office, // Cargo en la asociación o empresa
             $address,
             $location,
@@ -273,7 +274,7 @@ namespace Goteo\Model {
                     'project_invest',
                     'project_return'
                 );
-
+                // print_r((array)$this);die;
                 if(static::get($this->project)) {
                     $ok = $this->dbUpdate($fields, ['project']);
                 } else {
