@@ -24,14 +24,14 @@ $terms=$this->terms;
             <div class="col-md-6 col-md-offset-3">
                 <div class="form-group col-sm-12 active" id="name-group">
                     <label><?= $this->text('overview-field-name') ?></label>
-                    <input tabindex="0" class="form-control" name="name" value="" type="text" required>
+                    <input autocomplete="off" tabindex="0" class="form-control" name="name" value="" type="text" required>
                 </div>
                 <div class="form-group col-sm-12" id="subtitle-group">
                     <div class="alert alert-success">
                         <?= $this->text('project-create-subtitle-alert') ?>
                     </div>
                     <label><?= $this->text('overview-field-subtitle') ?></label>
-                    <input tabindex="0" class="form-control" name="subtitle" value="" type="text" required>
+                    <input autocomplete="off" tabindex="0" class="form-control" name="subtitle" value="" type="text" required>
                 </div>
                 <div class="form-group col-sm-12" id="minimum-group">
                     <div class="alert alert-success">
@@ -98,7 +98,7 @@ $terms=$this->terms;
                         <?= $this->text('project-create-social-text-alert') ?>
                     </div>
                     <label><?= $this->text('project-create-social-text-field') ?></label>
-                    <input tabindex="0" class="form-control" name="social-description" value="" required>
+                    <input autocomplete="off" tabindex="0" class="form-control" name="social-description" value="" required>
                 </div>
                 <div class="form-group col-sm-12" id="accept-group" >
                     <label class="terms">

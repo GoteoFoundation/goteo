@@ -4,7 +4,7 @@ mandatory-individual_reward-field-name: 'Saria idaztea derrigorrekoa da.'
 mandatory-social_reward-field-description: 'Itzulerako nolabaiteko deskribapena jartzea derrigorrekoa da.'
 mandatory-social_reward-field-icon: 'Iztulera mota aukeratzea derrigorrekoa da.'
 mandatory-social_reward-field-name: 'Itzulera zehaztea derrigorrekoa da.'
-rewards-field-individual_reward-amount: 'Finantzatutako zenbatekoa'
+rewards-field-individual_reward-amount: 'Zenbatekoa'
 rewards-field-individual_reward-description: Deskribapena
 rewards-field-individual_reward-other: 'Sari mota zehaztu'
 rewards-field-individual_reward-reward: Saria
