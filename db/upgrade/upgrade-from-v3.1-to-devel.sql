@@ -103,3 +103,6 @@ ALTER TABLE `contract_status` ADD FOREIGN KEY (`payed_user`) REFERENCES `user`(`
 ALTER TABLE `contract_status` ADD FOREIGN KEY (`prepay_user`) REFERENCES `user`(`id`) ON UPDATE CASCADE, ADD FOREIGN KEY (`closed_user`) REFERENCES `user`(`id`) ON UPDATE CASCADE;
 ALTER TABLE `contract_status` ADD FOREIGN KEY (`ready_user`) REFERENCES `user`(`id`) ON UPDATE CASCADE;
 ALTER TABLE `contract_status` ADD FOREIGN KEY (`received_user`) REFERENCES `user`(`id`) ON UPDATE CASCADE;
+
+-- mime type for documents
+ALTER TABLE `document` CHANGE `type` `type` VARCHAR(120) CHARSET utf8 COLLATE utf8_general_ci NULL;

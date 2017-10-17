@@ -6,23 +6,27 @@ use Symfony\Component\Form\DataTransformerInterface;
 use Symfony\Component\Form\Exception\TransformationFailedException;
 use Goteo\Model\Image;
 
-class FileToModelImageTransformer implements DataTransformerInterface {
+class ModelImageTransformer implements DataTransformerInterface {
 
     public function transform($image) {
-        return null;
+        return $image;
     }
 
     public function reverseTransform($image) {
         if(is_array($image)) {
+            // var_dump($image);
             foreach($image as $i => $img) {
                 if(!$img) continue;
-
-                // Convert File to Image
                 if(!$img instanceOf Image) {
-                    $image[$i] = new Image($img);
+                    $image[$i] = Image::get($img);
                 }
             }
+        } elseif($image instanceOf File) {
+            $image = new Image($image);
         }
+
         return $image;
+
     }
 }
+

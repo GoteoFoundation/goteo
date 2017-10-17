@@ -33,13 +33,12 @@ class Document extends \Goteo\Core\Model {
      * @param type array	$file	Array $_FILES.
      */
     public function __construct ($file = null) {
-
-        if(is_array($file)) {
-            $this->name = $file['name'];
-            $this->type = $file['type'];
-            $this->tmp = $file['tmp_name'];
-            $this->error = $file['error'];
-            $this->size = $file['size'];
+        if($file instanceOf Document) {
+            $this->name = $file->name;
+            $this->type = $file->type;
+            $this->tmp = $file->tmp;
+            $this->error = $file->error;
+            $this->size = $file->size;
         }
         elseif($file instanceOf UploadedFile) {
             try {
@@ -47,14 +46,24 @@ class Document extends \Goteo\Core\Model {
                 $this->name = $file->getClientOriginalName();
                 $this->tmp = $file->getPathName();
                 $this->type = $file->getMimeType();
+                if($this->type === 'application/octet-stream')
+                    $this->type = $file->getClientMimeType();
+
                 $this->size = $file->getSize();
             } catch(FileNotFoundException $e) {
             }
         }
+        elseif(is_array($file)) {
+            $this->name = $file['name'];
+            $this->type = $file['type'];
+            $this->tmp = $file['tmp_name'];
+            $this->error = $file['error'];
+            $this->size = $file['size'];
+        }
         elseif(is_string($file)) {
             $this->name = basename($file);
-            $this->tmp = $file;
         }
+        if($name) $this->name = $name;
 
         $this->fp = File::factory(array('bucket' => AWS_S3_BUCKET_DOCUMENT));
         $this->fp->setPath($this->dir);
@@ -90,6 +99,7 @@ class Document extends \Goteo\Core\Model {
         return empty($errors);
 	}
 
+
     /**
      * Solo graba, no actualiza
      * (non-PHPdoc)
@@ -103,7 +113,7 @@ class Document extends \Goteo\Core\Model {
             // verificar que existe el directorio para documentos de este proyecto
 
             $this->filedir = $this->contract.'/';
-            $this->name = $this->fp->get_save_name($this->name);
+            $this->name = $this->fp->get_save_name($this->filedir . $this->name);
 
             $data = array(
                 ':contract' => $this->contract,
@@ -116,9 +126,9 @@ class Document extends \Goteo\Core\Model {
             try {
 
                 //si es un archivo que se sube
-                if (!empty($this->tmp)) {
+                if ($this->isUploadedFile()) {
                     //subimos archivo con permisos privados
-                    $uploaded = $this->fp->upload($this->tmp, $this->filedir.$this->name, array('auto_create_dirs' => true, 'perms' => 'bucket-owner-full-control'));
+                    $uploaded = $this->fp->upload($this->tmp, $this->filedir . $this->name, array('auto_create_dirs' => true, 'perms' => 'bucket-owner-full-control'));
 
                     //@FIXME falta checkear que la imagen se ha subido correctamente
                     if (!$uploaded) {
@@ -151,6 +161,10 @@ class Document extends \Goteo\Core\Model {
 
     }
 
+    public function isUploadedFile() {
+        return !empty($this->tmp);
+    }
+
     public function getName() {
         return $this->name;
     }
@@ -166,11 +180,7 @@ class Document extends \Goteo\Core\Model {
 
     public function getLink ($http = false) {
 
-        $path = $doc->dir . $doc->contract . '/' . $this->name;
-
-        //Si existe la constante GOTEO_DATA_URL la usaremos en vez de SITE_URL
-        if(defined('GOTEO_DATA_URL')) $link = GOTEO_DATA_URL . '/' . $path;
-        else                          $link = SITE_URL . $path;
+        $link = '/document/' . $this->id . '/' . $this->name;
 
         if ($http && substr($link, 0, 2) == '//') {
             $link = (Config::get('ssl') ? 'https:' : 'http:').$link;
@@ -187,9 +197,10 @@ class Document extends \Goteo\Core\Model {
             if(strpos($this->getName(), '.') !== false)
                 $this->type = pathinfo($this->getName(), PATHINFO_EXTENSION);
             if(empty($this->type))
-                $this->type = 'bin';
+                $this->type = 'application/octet-stream';
         }
-        return $this->type;
+
+        return end(explode('/', $this->type));
     }
 
     /**
