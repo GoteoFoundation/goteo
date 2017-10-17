@@ -14,7 +14,7 @@
 .file-type-gif {
     background-image: url(../img/file-types/gif.svg);
 }
-.file-type-doc, .file-type-docx, .file-type-odt {
+.file-type-doc, .file-type-docx, .file-type-odt, .file-type-vnd\.oasis\.opendocument\.text {
     background-image: url(../img/file-types/doc.svg);
 }
 .file-type-rtf {
@@ -23,7 +23,7 @@
 .file-type-pdf {
     background-image: url(../img/file-types/pdf.svg);
 }
-.file-type-csv, .file-type-xls, .file-type-xlsx {
+.file-type-csv, .file-type-xls, .file-type-xlsx, .file-type-vnd\.openxmlformats-officedocument\.spreadsheetml\.sheet {
     background-image: url(../img/file-types/csv.svg);
 }
 .file-type-html, .file-type-htm {

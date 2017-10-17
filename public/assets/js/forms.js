@@ -285,7 +285,7 @@ $(function(){
                 // group: '',
                 // , forceFallback: true
                 // Reorder actions
-                onChoose: function(evt) {
+                onStart: function(evt) {
                     // console.log('choose');
                     $dnd.hide();
                 },
@@ -389,7 +389,7 @@ $(function(){
                 _addImageCss($img, name);
             }
             else {
-                $img.css({backgroundSize: '25%'});
+                // $img.css({backgroundSize: '25%'});
             }
             $list.append($li);
 

@@ -185,8 +185,8 @@ project-no-share-material: 'No hi ha materials guardats per aquest projecte'
 
 dashboard-project-images-desc: 'Organitza les imatges com vulguis arrossegant i deixant anar, fins i tot entre zones.'
 dashboard-project-default-image: 'Imatge per defecte'
-dashboard-project-delete-image: 'Esborra la imatge'
-dashboard-project-delete-image-confirm: 'Segur que vols esborrar aquests imatge?'
+dashboard-project-delete-image: 'Esborra l''arxiu'
+dashboard-project-delete-image-confirm: 'Segur que vols esborrar aquest arxiu?'
 dashboard-project-delete-default-image: "L'imatge per defecte no es pot esborrar.\nEscull una altra imatge per defecte abans d'esborrar aquesta."
 dashboard-project-dnd-image: 'Arrastra una o varies imatges aquí'
 dashboard-project-image-delete-ko: "La imatge no s'ha pogut esborrar!"

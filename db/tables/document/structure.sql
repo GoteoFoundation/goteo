@@ -10,3 +10,6 @@ CREATE TABLE IF NOT EXISTS `document` (
 
 
 ALTER TABLE `document` ADD FOREIGN KEY (`contract`) REFERENCES `contract`(`project`) ON UPDATE CASCADE ON DELETE RESTRICT;
+
+-- mime type for documents
+ALTER TABLE `document` CHANGE `type` `type` VARCHAR(120) CHARSET utf8 COLLATE utf8_general_ci NULL;

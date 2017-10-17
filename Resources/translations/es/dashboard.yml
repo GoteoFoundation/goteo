@@ -191,8 +191,8 @@ project-no-share-material: 'No hay materiales compartidos por el proyecto'
 
 dashboard-project-images-desc: 'Organiza las imágenes como quieras arrastrando y soltando entre zonas incluso.'
 dashboard-project-default-image: 'Imagen por defecto'
-dashboard-project-delete-image: 'Borrar imagen'
-dashboard-project-delete-image-confirm: '¿Seguro que quieres borrar esta imagen?'
+dashboard-project-delete-image: 'Borrar archivo'
+dashboard-project-delete-image-confirm: '¿Seguro que quieres borrar este archivo?'
 dashboard-project-delete-default-image: "La imagen por defecto no puede borrarse.\nEscoge otra imagen por defecto antes de borrar esta."
 dashboard-project-dnd-image: 'Arrastra y suelta una o más imágenes aquí'
 dashboard-project-image-delete-ko: 'La imagen no se ha podido borrar!'
