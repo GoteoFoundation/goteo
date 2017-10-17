@@ -20,13 +20,13 @@ $this->section('content');
 
 
 <?php $this->section('head') ?>
-    <link href="<?= SRC_URL ?>/assets/css/typeahead.css" rel="stylesheet">
+    <?= $this->insert('home/partials/styles') ?>
 <?php $this->append() ?>
 
 <?php $this->section('footer') ?>
+    <?= $this->insert('home/partials/javascript') ?>
 
-    <script type="text/javascript" src="<?= SRC_URL ?>/assets/vendor/typeahead.js/dist/typeahead.bundle.min.js"></script>
-    <script>
+    <script type="text/javascript">
         $(document).ready(function(){
 
           $('.fade').slick({
