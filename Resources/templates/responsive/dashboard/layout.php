@@ -31,10 +31,7 @@ $this->section('content');
 <?php $this->replace() ?>
 
 <?php $this->section('head') ?>
-    <link rel="stylesheet" type="text/css" href="<?= SRC_URL ?>/assets/vendor/dropzone/dist/min/dropzone.min.css" />
-    <link rel="stylesheet" href="<?= SRC_URL ?>/assets/vendor/simplemde/dist/simplemde.min.css" type="text/css" />
-    <link rel="stylesheet" href="<?= SRC_URL ?>/assets/vendor/bootstrap-tagsinput/dist/bootstrap-tagsinput.css" type="text/css" />
-    <link href="<?= SRC_URL ?>/assets/css/typeahead.css" rel="stylesheet">
+    <?= $this->insert('dashboard/partials/styles') ?>
 <?php $this->append() ?>
 
 <?php $this->section('footer') ?>
