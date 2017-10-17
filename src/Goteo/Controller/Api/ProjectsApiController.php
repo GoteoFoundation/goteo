@@ -216,7 +216,8 @@ class ProjectsApiController extends AbstractApiController {
             $post->$prop = $request->request->get('value');
 
             if(in_array($prop, ['allow', 'publish'])) {
-                if($post->$prop == 'false') $post->$prop = 0;
+                if($post->$prop == 'false') $post->$prop = false;
+                if($post->$prop == 'true') $post->$prop = true;
                 $post->$prop = (bool) $post->$prop;
             }
 
