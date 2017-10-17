@@ -174,7 +174,7 @@ project-reward-unlimited: 'Ilimitadas'
 
 project-send-review: 'Enviar a revisión'
 project-reviewing: 'Estamos valorando y revisando tu proyecto'
-project-validation-ok: 'El proyecto está completo. Puedes mandarlo a revisión para empezar tu campaña.'
+project-validation-ok: 'Has completado el formulario. ¡Genial! Puedes clicar al siguiente botón para que nuestros asesores revisen tu proyecto.'
 project-validation-errors: 'El proyecto todavía no está completado!'
 project-validation-error-profile: 'Faltan campos por rellenar en tu perfil de usuario'
 project-validation-error-profile_social: 'Debes rellenar alguno de los campos de Web, Facebook o Twitter'
