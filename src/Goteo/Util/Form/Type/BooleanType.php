@@ -15,6 +15,8 @@ use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\FormView;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\Form\CallbackTransformer;
 
 /**
  *
@@ -23,6 +25,23 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
  */
 class BooleanType extends CheckboxType
 {
+    /**
+     * {@inheritdoc}
+     */
+    public function buildForm(FormBuilderInterface $builder, array $options)
+    {
+        // transform to datetime if not already
+        $builder->addViewTransformer(new CallbackTransformer(
+            function ($bool) {
+                return (bool) $bool;
+            },
+            function ($bool) {
+                return $bool;
+            }
+        ));
+        parent::buildForm($builder, $options);
+    }
+
 
     /**
      * {@inheritdoc}

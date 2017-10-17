@@ -223,6 +223,106 @@ namespace Goteo\Model {
             return true;
         }
 
+        /**
+         * Gets the % of the filled project. 100% means it can be published
+         * @return stdClass Object with parts and globals percents
+         */
+        public function getValidation() {
+            $res = new \stdClass;
+            $errors =  $fields = ['promoter' => [], 'entity' => [], 'accounts' => [], 'documents' => []];
+
+
+            // 1. promoter
+            $promoter = [ 'name', 'nif', 'address', 'location', 'region', 'zipcode', 'country' ];
+            $total = count($promoter);
+            $count = 0;
+            foreach($promoter as $field) {
+                if(!empty($this->{$field})) {
+                    continue;
+                }
+                $fields['promoter'][] = $field;
+                $count++;
+            }
+            if($count > 0) {
+                $errors['promoter'][] = 'promoter';
+            }
+            // if(!Check::nif($this->nif)) {
+            //     $count++;
+            //     $errors['promoter'][] = 'promoter_nif';
+            // }
+            $res->promoter = round(100 * ($total - $count)/$total);
+
+            // 2. entity
+            if($this->type > 0) {
+                $entity = ['entity_name', 'entity_cif', 'office', 'entity_address', 'entity_location', 'entity_region', 'entity_zipcode', 'entity_country'];
+                $entity[] = 'reg_name';
+                $entity[] = 'reg_number';
+                if($this->type == 2) {
+                    $entity[] = 'reg_date';
+                    $entity[] = 'reg_id';
+                    $entity[] = 'reg_idname';
+                    $entity[] = 'reg_idloc';
+                }
+                $count = 0;
+                foreach($entity as $field) {
+                    if(!empty($this->{$field})) {
+                        continue;
+                    }
+                    $fields['entity'][] = $field;
+                    $count++;
+                }
+                if($count > 0) {
+                    $errors['entity'][] = 'entity';
+                }
+                if(!Check::nif($this->entity_nif)) {
+                    $count++;
+                    $errors['entity'][] = 'promoter_nif';
+                }
+
+                $res->entity = round(100 * ($total - $count)/$total);
+            } else {
+                $res->entity = 100;
+            }
+
+            // 3. accounts
+            $accounts = ['bank', 'bank_owner'];
+            if ($this->paypal) {
+                $accounts[] = 'paypal_owner';
+            }
+            $count = 0;
+            foreach($accounts as $field) {
+                if(!empty($this->{$field})) {
+                    continue;
+                }
+                $fields['accounts'][] = $field;
+                $count++;
+            }
+            if($count > 0) {
+                $errors['accounts'][] = 'accounts';
+            }
+            $res->accounts = round(100 * ($total - $count)/$total);
+
+            // 4. documents
+            if(!$this->docs) {
+                $errors['documents'][] = 'documents';
+                $res->documents = 0;
+            } else {
+                $res->documents = 100;
+            }
+            // Summary
+            $sum = $total = 0;
+            foreach($res as $key => $percent) {
+                $sum += (int)($percent);
+                $total++;
+            }
+            $res->global = round($sum/$total);
+            $res->errors = $errors;
+            $res->fields = $fields;
+            $res->project = $this->id;
+            // var_dump($res);
+            return $res;
+        }
+
 
         /*
          * Segun sie s una grabación parcial de impulsor o una grabación completa de admin

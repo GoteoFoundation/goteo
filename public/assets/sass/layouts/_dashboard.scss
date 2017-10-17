@@ -61,6 +61,11 @@
     font-weight: normal;
     text-transform: uppercase;
   }
+  dl {
+    dd {
+        margin-bottom: 1em;
+    }
+  }
   blockquote {
     background-color: $background-light;
     padding: 20px;
@@ -275,8 +280,11 @@
       &+.extra {
         margin-top:-20px;
       }
-      &.call {
+      &.call, &.lilac {
         border-left-color: $color-lilac;
+      }
+      &.orange {
+        border-left-color: $color-orange;
       }
     }
     input[type="checkbox"], input[type="radio"] {
