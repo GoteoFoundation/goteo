@@ -83,50 +83,10 @@ class DropfilesType extends FileType
         ]);
 
         $builder->get('uploads')
-            ->addModelTransformer(new CallbackTransformer(
-                function($image) {
-                    return null;
-                    // return $image;
-                },
-                function($image) {
-                    // var_dump($image);die;
-                    if(is_array($image)) {
-                        foreach($image as $i => $img) {
-                            if(!$img) continue;
-
-                            // Convert File to Image
-                            if(!$img instanceOf Image) {
-                                $image[$i] = new Image($img);
-                            }
-                        }
-                    // } elseif($img instanceOf Image) {
-                    //     return [$img];
-                    }
-                    // print_r($image);die;
-                    return $image;
-                }
-            ));
+            ->addModelTransformer(new $options['model_transformer']);
 
         // General processing
-        $builder->addViewTransformer(new CallbackTransformer(
-            function($image) {
-                // var_dump($image);die;
-                return is_array($image) ? $image : [$image];
-            },
-            function($image) {
-                // var_dump($image);die;
-                // Sum current + uploads
-                $img = isset($image['current']) && is_array($image['current']) ? $image['current'] : [];
-                if($image['uploads']) {
-                    if(is_array($image['uploads'])) {
-                        $img = array_merge($img, $image['uploads']);
-                    }
-                }
-                // var_dump($img);die;
-                return $img;
-                // return null;
-            }
-        ));
+        $builder->addViewTransformer(new $options['view_transformer']);
     }
 
     /**
@@ -149,7 +109,9 @@ class DropfilesType extends FileType
             'text_send_to_markdown' => Text::get('dashboard-project-send-to-markdown'),
             'text_max_files_reached' => Text::get('dashboard-max-files-reached'),
             'text_file_type_error' => Text::get('dashboard-file-type-error'),
-            'row_class' => ''
+            'row_class' => '',
+            'model_transformer' => 'Goteo\Util\Form\DataTransformer\FileToModelImageTransformer',
+            'view_transformer' => 'Goteo\Util\Form\DataTransformer\ModelImageToArrayTransformer'
         ));
     }
 
