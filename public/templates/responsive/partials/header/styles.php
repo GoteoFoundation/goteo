@@ -7,9 +7,6 @@
 <link href="<?= SRC_URL ?>/assets/vendor/animate.css/animate.css" rel="stylesheet">
 <!-- endbuild -->
 
-<link rel="stylesheet" type="text/css" href="<?= SRC_URL ?>/assets/vendor/slick-carousel/slick/slick.css"/>
-<link rel="stylesheet" type="text/css" href="<?= SRC_URL ?>/assets/vendor/slick-carousel/slick/slick-theme.css"/>
-
 <!-- POST PROCESSING THIS CSS BY GRUNT -->
 
 <!-- build:css assets/css/all.css -->
