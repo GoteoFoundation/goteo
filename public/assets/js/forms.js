@@ -142,11 +142,10 @@ $(function(){
             extraFormats: ['YYYY-MM-DD'],
             locale: goteo.locale
             // ,debug: true
+        }).on('dp.change', function (e) {
+            console.log(e);
+            // $('#publishing-date').val(e.date.format('YYYY/MM/DD'));
         });
-        // .on('dp.change', function (e) {
-        //         _activate_calendar();
-        //         $('#publishing-date').val(e.date.format('YYYY/MM/DD'));
-        // });
     // Year only datepickers
     $('.autoform .datepicker-year, .autoform .datepicker-year > input').datetimepicker({
             format: 'YYYY',

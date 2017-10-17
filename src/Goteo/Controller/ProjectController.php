@@ -44,10 +44,10 @@ use Goteo\Controller\Dashboard\ProjectDashboardController;
 
 class ProjectController extends \Goteo\Core\Controller {
 
-	public function indexAction($id = null, $show = 'home', $post = null, Request $request) {
+	public function indexAction($pid = null, $show = 'home', $post = null, Request $request) {
 
-		if ($id !== null) {
-			return $this->view($id, $show, $post, $request);
+		if ($pid !== null) {
+			return $this->view($pid, $show, $post, $request);
 		}
 		if ($request->query->has('create')) {
 			return new RedirectResponse('/project/create');
@@ -56,9 +56,9 @@ class ProjectController extends \Goteo\Core\Controller {
 	}
 
 	//** esto es una guarrada **/
-	public function rawAction($id) {
+	public function rawAction($pid) {
 
-		$project = Project::get($id, Lang::current());
+		$project = Project::get($pid, Lang::current());
 
 		if (!$project->userCanEdit(Session::getUser())) {
 			throw new ControllerAccessDeniedException(Text::get('user-login-required-access'));
@@ -72,7 +72,7 @@ class ProjectController extends \Goteo\Core\Controller {
 		die;
 	}
 
-	public function deleteAction($id) {
+	public function deleteAction($pid) {
 
 		$user = Session::getUser();
 
@@ -80,7 +80,7 @@ class ProjectController extends \Goteo\Core\Controller {
 		$goto = isset($user->roles['admin'])?'/admin/projects':'/dashboard/projects';
 
 		try {
-			$project = Project::get($id);
+			$project = Project::get($pid);
 
 		} catch (ModelException $e) {
 			Application\Message::error('Project error!');
@@ -99,7 +99,7 @@ class ProjectController extends \Goteo\Core\Controller {
 		$errors = array();
 		if ($project->remove($errors)) {
 			Application\Message::info("Has borrado los datos del proyecto '<strong>{$project->name}</strong>' correctamente");
-			if (Session::get('project') === $id) {
+			if (Session::get('project') === $pid) {
 				Session::del('project');
 			}
 		} else {
@@ -109,7 +109,7 @@ class ProjectController extends \Goteo\Core\Controller {
 	}
 
 	//Aunque no esté en estado edición un admin siempre podrá editar un proyecto
-	public function editAction($id, $step = 'userProfile', Request $request) {
+	public function editAction($pid, $step = 'userProfile', Request $request) {
 
 		$user = Session::getUser();
 
@@ -118,7 +118,7 @@ class ProjectController extends \Goteo\Core\Controller {
 
 		// preveer posible cambio de id
 		try {
-			$project = Project::get($id);
+			$project = Project::get($pid);
 
 		} catch (ModelException $e) {
 			Application\Message::error('Project integrity error!');
@@ -203,7 +203,7 @@ class ProjectController extends \Goteo\Core\Controller {
 
 		if ($step == 'images') {
 			// para que tenga todas las imágenes al procesar el post
-			$project->images = Model\Image::getAll($id, 'project');
+			$project->images = Model\Image::getAll($pid, 'project');
 		}
 
         // variables para la vista
@@ -1285,17 +1285,17 @@ class ProjectController extends \Goteo\Core\Controller {
 
     // A user mark a project as favourite
 
-    public function favouriteAction($project_id, Request $request) {
+    public function favouriteAction($pid, Request $request) {
 
         if (!Session::isLogged()) {
-            return $this->redirect('/user/login?return='.urldecode('/project/favourite/'.$project_id));
+            return $this->redirect('/user/login?return='.urldecode('/project/favourite/'.$pid));
         }
 
         $user=Session::getUser()->id;
 
         //Calculate the date to send mail
 
-        $project=Project::get($project_id, Lang::current(false));
+        $project=Project::get($pid, Lang::current(false));
 
         if( ($project->days>1) && ($project->round==1) && ($project->amount<$project->mincost) )
         {
@@ -1309,7 +1309,7 @@ class ProjectController extends \Goteo\Core\Controller {
         }
 
         $favourite=new Favourite(array(
-            'project' => $project_id, 'user' => $user, 'date_send' => $date_send
+            'project' => $pid, 'user' => $user, 'date_send' => $date_send
         ));
 
         $favourite->save($errors);
@@ -1317,7 +1317,7 @@ class ProjectController extends \Goteo\Core\Controller {
         if ($request->isMethod('post'))
             return $this->jsonResponse(['result' => $favourite]);
 
-        return $this->redirect('/project/' . $project_id);;
+        return $this->redirect('/project/' . $pid);;
     }
 
     // A user unmark a project as favourite

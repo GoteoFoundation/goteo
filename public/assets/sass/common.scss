@@ -6,14 +6,17 @@
 @import 'variables';
 
 
+
 @import 'components/custom_animations';
+@import 'components/icons';
 @import 'components/buttons';
+@import 'components/file_types';
+@import 'components/circle';
 @import 'components/alerts';
 @import 'components/widgets';
 @import 'components/widgets_call';
 @import 'components/forms';
 
-@import 'misc/mixins';
 @import 'misc/misc';
 // This will dissappear some day, cows may fly...
 @import 'misc/unordered';

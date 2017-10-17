@@ -65,3 +65,47 @@ tooltip-project-contract_entity: 'Selecciona "En tu propio nombre y derecho" en 
 tooltip-project-contract_name: 'Debes escribir tu nombre y tus dos apellidos reales.Ten en cuenta que figurarás como responsable del proyecto. Tu nombre y tu firma serán las que constarán en el contrato.'
 tooltip-project-contract_nif: 'Tu número de NIF o NIE con cifras y letra.'
 validate-project-value-contract_nif: 'El NIF no es correcto.'
+
+contract-admin-fields: 'Campos administrativos (a rellenar por equipo Goteo)'
+contract-funding-goal: 'Objetivos de financiación'
+contract-committed-return: 'Retornos comprometidos'
+
+
+contract-final-name: 'Nombre y apellidos (propios o representante)'
+contract-final-nif: 'NIF (propio o representante)'
+contract-final-office: 'Cargo en la asociación o entidad mercantil (solo si representa a una asociación o entidad mercantil)'
+contract-final-address: 'Domicilio (propio o representante)'
+contract-final-location: 'Municipio (propio o representante)'
+contract-final-region: 'Provincia (propio o representante)'
+contract-final-zipcode: 'Código postal (propio o representante)'
+contract-final-country: 'País (propio o representante)'
+
+contract-final-entity_name: 'Nombre o razón social (de la asociación o entidad mercantil)'
+contract-final-entity_cif: 'CIF (de la asociación o entidad mercantil)'
+contract-final-entity_address: 'Domicilio social (de la asociación o entidad mercantil)'
+contract-final-entity_location: 'Municipio (de la asociación o entidad mercantil)'
+contract-final-entity_region: 'Provincia (de la asociación o entidad mercantil)'
+contract-final-entity_zipcode: 'Código postal (de la asociación o entidad mercantil)'
+contract-final-entity_country: 'País (de la asociación o entidad mercantil)'
+
+contract-final-reg_name: 'Registro en el que se inscribió la entidad/asociación'
+contract-final-reg_date: 'Fecha en que se otorgó la escritura pública de la empresa (solo si entidad mercantil)'
+contract-final-reg_number: 'Número de Registro (si asociación o entidad mercantil)'
+contract-final-reg_id: 'Número del protocolo del notario (solo si entidad mercantil)'
+contract-final-reg_idname: 'Nombre  del notario que  otorgó la escritura pública de la empresa (si entidad mercantil)'
+contract-final-reg_idloc: 'Ciudad de actuación del notario (solo si entidad mercantil)'
+
+contract-final-paypal: 'Cuenta PayPal del proyecto'
+contract-final-paypal_owner: 'Titular de la cuenta PayPal'
+contract-final-bank: 'Cuenta bancaria del proyecto'
+contract-final-bank_owner: 'Titular de la cuenta bancaria'
+
+contract-final-close: 'Cerrar datos y procesar el contrato'
+
+contract-validation-ok: El contrato parece correcto. Por favor, revisa los datos y finaliza el proceso cerrando los datos. '
+contract-validation-errors: El contrato todavía no está completado!'
+contract-validation-error-promoter: 'Faltan campos para llenar en el promotor'
+contract-validation-error-promoter_nif: 'El NIF no es correcto.'
+contract-validation-error-entity: 'Faltan campos para llenar en la entidad'
+contract-validation-error-accounts: 'Faltan campos para llenar en las cuentas'
+contract-validation-error-documentos: 'Falta documentación'
