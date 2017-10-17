@@ -5,6 +5,9 @@ module.exports = function(grunt) {
     'use strict';
 
     grunt.config('cssmin', {
+      options: {
+        keepSpecialComments: 0
+      },
       dist: {
         files: [{
           expand: true,
