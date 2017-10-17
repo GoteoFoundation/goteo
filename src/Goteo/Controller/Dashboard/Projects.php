@@ -220,7 +220,7 @@ namespace Goteo\Controller\Dashboard {
                 'closed' => 3,
                 'review' => 4,
                 'ready' => 5,
-                'recieved' => 6,
+                'received' => 6,
                 'payed' => 7,
                 'fulfilled' => 8,
                 'separador' => 9,

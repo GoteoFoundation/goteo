@@ -1,11 +1,11 @@
 <!-- Bootstrap core CSS -->
+<!-- build:css assets/css/vendor.css -->
 <link href="<?= SRC_URL ?>/assets/vendor/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
 <link href="<?= SRC_URL ?>/assets/vendor/bootstrap-xxs/bootstrap-xxs.min.css" rel="stylesheet">
 <link href="<?= SRC_URL ?>/assets/vendor/bootstrap-social/bootstrap-social.css" rel="stylesheet">
 <link href="<?= SRC_URL ?>/assets/vendor/font-awesome/css/font-awesome.min.css" rel="stylesheet">
-<link href="<?= SRC_URL ?>/assets/vendor/footable/compiled/footable.bootstrap.min.css" rel="stylesheet">
-<link href="<?= SRC_URL ?>/assets/vendor/eonasdan-bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.min.css" rel="stylesheet">
 <link href="<?= SRC_URL ?>/assets/vendor/animate.css/animate.min.css" rel="stylesheet">
+<!-- endbuild -->
 
 <link rel="stylesheet" type="text/css" href="<?= SRC_URL ?>/assets/vendor/slick-carousel/slick/slick.css"/>
 <link rel="stylesheet" type="text/css" href="<?= SRC_URL ?>/assets/vendor/slick-carousel/slick/slick-theme.css"/>

@@ -123,7 +123,7 @@ class Image extends \Goteo\Core\Model {
 
             try {
 
-                if(!empty($this->tmp)) {
+                if($this->isUploadedFile()) {
                     $uploaded = $this->fp->upload($this->tmp, $this->name);
 
                     //@FIXME falta checkear que la imagen se ha subido correctamente
@@ -295,6 +295,10 @@ class Image extends \Goteo\Core\Model {
         $image->hash = md5($id);
 
         return $image;
+    }
+
+    public function isUploadedFile() {
+        return !empty($this->tmp) && !empty($this->size);
     }
 
     public function getName() {

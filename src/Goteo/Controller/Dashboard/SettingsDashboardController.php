@@ -91,7 +91,6 @@ class SettingsDashboardController extends \Goteo\Core\Controller {
         }
 
         $defaults = (array) $user;
-        $defaults['entity_type'] = (bool) $defaults['entity_type'];
         $defaults['unlocable'] = UserLocation::isUnlocable($user->id);
         $defaults['avatar'] = $user->user_avatar ? $user->avatar : null;
         $defaults['webs'] = implode("\n", $user->webs);

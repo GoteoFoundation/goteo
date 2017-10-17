@@ -133,7 +133,7 @@ project-reward-unlimited: 'Il·limitades'
 
 project-send-review: 'Envia a revisió'
 project-reviewing: 'Estem valorant i revisant el teu projecte'
-project-validation-ok: 'El projecte està complet. Pots enviar-lo a revisió per començar la campanya.'
+project-validation-ok: 'Has completat el formulari. Genial! Pots clicar al següent botó perquè els nostres assessors revisin el teu projecte.'
 project-validation-errors: 'El projecte encara no està completat!'
 project-validation-error-profile: 'Falten camps per omplir al teu perfil d''usuari'
 project-validation-error-profile_social: 'Has d''omplir algun dels camps de Web, Facebook o Twitter'

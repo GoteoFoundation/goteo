@@ -22,7 +22,6 @@ use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\CallbackTransformer;
 use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\HttpFoundation\File\File;
 
 /**
  *
@@ -45,37 +44,7 @@ class DropfilesType extends FileType
         ]);
 
         $builder->get('current')
-        ->addModelTransformer(new CallbackTransformer(
-            function ($image) {
-                // var_dump($image);die;
-                return $image;
-                // TODO: for any type of file
-                // if(is_array($image)) {
-                //     return $image;
-                // }
-
-                // if($image instanceOf File) return new Image($image);
-                // if($image instanceOf Image) return $image;
-
-                return null;
-            },
-            function ($image) {
-                // var_dump($image);die;
-                if(is_array($image)) {
-                    // var_dump($image);
-                    foreach($image as $i => $img) {
-                        if(!$img) continue;
-                        if(!$img instanceOf Image) {
-                            $image[$i] = Image::get($img);
-                        }
-                    }
-                } elseif($image instanceOf File) {
-                    $image = new Image($image);
-                }
-
-                return $image;
-            }
-        ));
+            ->addModelTransformer(new $options['model_transformer']);
 
         // New added files
         $builder->add('uploads', FileType::class, [
@@ -83,37 +52,14 @@ class DropfilesType extends FileType
         ]);
 
         $builder->get('uploads')
-            ->addModelTransformer(new CallbackTransformer(
-                function($image) {
-                    return null;
-                    // return $image;
-                },
-                function($image) {
-                    // var_dump($image);die;
-                    if(is_array($image)) {
-                        foreach($image as $i => $img) {
-                            if(!$img) continue;
-
-                            // Convert File to Image
-                            if(!$img instanceOf Image) {
-                                $image[$i] = new Image($img);
-                            }
-                        }
-                    // } elseif($img instanceOf Image) {
-                    //     return [$img];
-                    }
-                    // print_r($image);die;
-                    return $image;
-                }
-            ));
+            ->addModelTransformer(new $options['upload_transformer']);
 
         // General processing
         $builder->addViewTransformer(new CallbackTransformer(
             function($image) {
-                // var_dump($image);die;
                 return is_array($image) ? $image : [$image];
             },
-            function($image) {
+            function ($image) {
                 // var_dump($image);die;
                 // Sum current + uploads
                 $img = isset($image['current']) && is_array($image['current']) ? $image['current'] : [];
@@ -125,8 +71,7 @@ class DropfilesType extends FileType
                 // var_dump($img);die;
                 return $img;
                 // return null;
-            }
-        ));
+            }));
     }
 
     /**
@@ -149,7 +94,11 @@ class DropfilesType extends FileType
             'text_send_to_markdown' => Text::get('dashboard-project-send-to-markdown'),
             'text_max_files_reached' => Text::get('dashboard-max-files-reached'),
             'text_file_type_error' => Text::get('dashboard-file-type-error'),
-            'row_class' => ''
+            'text_download' => Text::get('regular-download'),
+            'row_class' => '',
+            'model_transformer' => 'Goteo\Util\Form\DataTransformer\ModelImageTransformer',
+            'upload_transformer' => 'Goteo\Util\Form\DataTransformer\UploadImageTransformer',
+            'type' => 'image'
         ));
     }
 
@@ -170,12 +119,17 @@ class DropfilesType extends FileType
         $view->vars['text_send_to_markdown'] = $options['text_send_to_markdown'];
         $view->vars['text_max_files_reached'] = $options['text_max_files_reached'];
         $view->vars['text_file_type_error'] = $options['text_file_type_error'];
+        $view->vars['text_download'] = $options['text_download'];
         $view->vars['text_upload'] = $options['text_upload'];
         $view->vars['accepted_files'] = $options['accepted_files'];
         $view->vars['limit'] = $options['limit'];
         $view->vars['url'] = $options['url'] ? $options['url'] : null;
         $view->vars['row_class'] = $options['row_class'];
         // var_dump($view->vars['value']);var_dump($options['value']);die;
+        $view->vars['type'] = $options['type'];
+        if($options['model_transformer'] !== 'Goteo\Util\Form\DataTransformer\ModelImageTransformer') {
+            $view->vars['type'] = 'file';
+        }
     }
 
     /**

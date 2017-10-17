@@ -65,3 +65,48 @@ tooltip-project-contract_entity: 'Choose “Person” if you are the project pro
 tooltip-project-contract_name: 'Please use your real first name and surname. Note that you will be listed as the project leader.'
 tooltip-project-contract_nif: 'Your NIF, NIE or VAT number with digits and the letter'
 validate-project-value-contract_nif: 'The NIF is incorrect'
+
+contract-admin-fields: 'Administrative fields (filled by the Goteo team)'
+contract-funding-goal: 'Funding goals'
+contract-committed-return: 'Committed rewards'
+
+contract-final-name: 'Name and surname (own or representative)'
+contract-final-nif: 'NIF (own or representative)'
+contract-final-office: 'Charge in the association or commercial entity (only if it represents an association or commercial entity)'
+contract-final-address: 'Address (own or representative)'
+contract-final-location: 'Municipality (own or representative)'
+contract-final-region: 'Province (own or representative)'
+contract-final-zipcode: 'Postal code (own or representative)'
+contract-final-country: 'Country (own or representative)'
+
+contract-final-entity_name: 'Name or company name (of association or business entity)'
+contract-final-entity_cif: 'CIF (of the association or commercial entity)'
+contract-final-entity_address: 'Registered address (of association or business entity)'
+contract-final-entity_location: 'Municipality (of association or business entity)'
+contract-final-entity_region: 'Province (of association or business entity)'
+contract-final-entity_zipcode: 'Postal code (of association or business entity)'
+contract-final-entity_country: 'Country (of association or business entity)'
+
+contract-final-reg_name: 'Registration in which the entity / association was registered'
+contract-final-reg_date: 'Date the public deed of the company was granted (only if a commercial entity)'
+contract-final-reg_number: 'Registration Number (if association or business entity)'
+contract-final-reg_id: 'Notary protocol number (only if commercial entity)'
+contract-final-reg_idname: 'Name of the notary who granted the public deed of the company (if commercial entity)'
+contract-final-reg_idloc: 'City of performance of the notary (only if commercial entity)'
+
+contract-final-paypal: 'PayPal project account'
+contract-final-paypal_owner: 'PayPal account holder'
+contract-final-bank: 'Project bank account'
+contract-final-bank_owner: 'Account holder'
+
+contract-final-close: 'Close data and process the contract'
+
+contract-validation-ok: The contract seems correct. Please review the data and finalize the process by closing the data. '
+contract-validation-errors: The contract is not yet complete!'
+contract-validation-error-promoter: 'There are missing fields in the promoter'
+contract-validation-error-promoter_nif: 'The NIF is incorrect'
+contract-validation-error-entity: 'There are missing fields in the entity'
+contract-validation-error-accounts: 'There are missing fields in accounts'
+contract-validation-error-documents: 'Missing documentation'
+
+contract-already-processed: 'Contract already processed.'

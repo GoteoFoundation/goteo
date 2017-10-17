@@ -9,8 +9,8 @@ module.exports = function(grunt) {
     grunt.config('filerev', {
         dist: {
             src: [
-                '<%= goteo.dist %>/assets/css/all.css',
-                '<%= goteo.dist %>/assets/js/all.js'
+                '<%= goteo.dist %>/assets/css/**/*.css',
+                '<%= goteo.dist %>/assets/js/**/*.js'
             ]
         }
 

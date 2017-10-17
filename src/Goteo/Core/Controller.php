@@ -139,6 +139,7 @@ abstract class Controller {
         // Set full validation if required in Request
         // Do a fake submit of the form on create to test errors (only on GET requests)
         $processor->setFullValidation($validate, $mock_validation);
+
         return $processor;
     }
 }

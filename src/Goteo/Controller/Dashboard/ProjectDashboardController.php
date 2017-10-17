@@ -39,6 +39,7 @@ use Goteo\Application\Event\FilterMessageEvent;
 use Symfony\Component\Validator\Constraints;
 use Goteo\Library\Forms\FormModelException;
 use Goteo\Application\Event\FilterProjectEvent;
+use Goteo\Application\Event\FilterProjectPostEvent;
 
 class ProjectDashboardController extends \Goteo\Core\Controller {
     protected $user;
@@ -55,7 +56,7 @@ class ProjectDashboardController extends \Goteo\Core\Controller {
 
     static function createSidebar(Project $project, $zone = '') {
         $user = Session::getUser();
-        if(!$project->userCanEdit($user)) return;
+        if(!$project->userCanEdit($user)) return false;
         $prefix = '/dashboard/project/' . $project->id ;
 
         // Create sidebar menu
@@ -96,7 +97,7 @@ class ProjectDashboardController extends \Goteo\Core\Controller {
             ['text' => '<i class="icon icon-2x icon-shared"></i> ' . Text::get('project-share-materials'), 'link' => $prefix . '/materials', 'id' => 'materials']
         ];
 
-        Session::addToSidebarMenu('<i class="icon icon-2x icon-settings"></i> ' . Text::get('footer-header-resources'), $submenu, 'comments', null, 'sidebar');
+        Session::addToSidebarMenu('<i class="icon icon-2x icon-settings"></i> ' . Text::get('footer-header-resources'), $submenu, 'resources', null, 'sidebar');
 
         Session::addToSidebarMenu('<i class="icon icon-2x icon-preview"></i> ' . Text::get($validation ? 'regular-preview' : 'dashboard-menu-projects-preview'), '/project/' . $project->id, 'preview');
 
@@ -113,7 +114,7 @@ class ProjectDashboardController extends \Goteo\Core\Controller {
             'zone' => $zone,
             'sidebarBottom' => [ '/dashboard/projects' => '<i class="icon icon-2x icon-back" title="' . Text::get('profile-my_projects-header') . '"></i> ' . Text::get('profile-my_projects-header') ]
         ]);
-
+        return true;
     }
 
     protected function validateProject($pid = null, $section = 'summary', $lang = null, &$form = null) {
@@ -139,7 +140,7 @@ class ProjectDashboardController extends \Goteo\Core\Controller {
             throw new ControllerAccessDeniedException(Text::get('user-login-required-access'));
         }
 
-        self::createSidebar($this->project, $section);
+        static::createSidebar($this->project, $section);
 
         // Create a global form to send to review
         $builder = $this->createFormBuilder([ 'message' => $this->project->comment ],
@@ -232,7 +233,7 @@ class ProjectDashboardController extends \Goteo\Core\Controller {
 
         $user = $project->getOwner();
         $defaults = (array) $project;
-        $defaults['contract_birthdate'] = new \Datetime($defaults['contract_birthdate']);
+
         if($account = Account::get($project->id)) {
             $defaults['paypal'] = $account->paypal;
             $defaults['bank'] = $account->bank;
@@ -249,10 +250,12 @@ class ProjectDashboardController extends \Goteo\Core\Controller {
         $processor = $this->getModelForm('ProjectPersonal', $project, $defaults, ['account' => $account], $request);
         // $processor->setReadonly(!$project->userCanEdit($this->user, true))->createForm();
         $processor->setReadonly(!$project->inEdition())->createForm();
-        $form = $processor->getBuilder()
+        $processor->getBuilder()
             ->add('submit', 'submit', [
                 'label' => $project->isApproved() ? 'regular-submit' : 'form-next-button'
-            ])->getForm();
+            ]);
+
+        $form = $processor->getForm();
 
         $form->handleRequest($request);
         if ($form->isSubmitted() && $request->isMethod('post')) {
@@ -406,9 +409,6 @@ class ProjectDashboardController extends \Goteo\Core\Controller {
 
 
         $defaults = (array)$post;
-        $defaults['date'] = new \Datetime($defaults['date']);
-        $defaults['allow'] = (bool) $defaults['allow'];
-        $defaults['publish'] = (bool) $defaults['publish'];
         // print_r($_FILES);die;
         // Create the form
         $processor = $this->getModelForm('ProjectPost', $post, $defaults, ['project' => $project]);
@@ -425,6 +425,7 @@ class ProjectDashboardController extends \Goteo\Core\Controller {
         if ($form->isSubmitted() && $request->isMethod('post')) {
             try {
                 $processor->save($form);
+                $this->dispatch(AppEvents::PROJECT_POST, new FilterProjectPostEvent($processor->getModel()));
                 Message::info(Text::get('form-sent-success'));
                 return $this->redirect($redirect);
             } catch(FormModelException $e) {
