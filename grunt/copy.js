@@ -62,6 +62,15 @@ module.exports = function(grunt) {
             cwd: '<%= goteo.app %>',
             dest: '<%= goteo.dist %>',
             src: [ '*', 'assets/vendor/**/*', 'assets/img/**/*', 'templates/**/*', 'view/**/*' ]
+        },
+
+        fonts: {
+            expand: true,
+            flatten: true,
+            dot: true,
+            cwd: '<%= goteo.app %>/assets/vendor/',
+            dest: '<%= goteo.dist %>/assets/fonts/',
+            src: [ '**/fonts/*' ]
         }
     });
     grunt.loadNpmTasks('grunt-contrib-copy');
