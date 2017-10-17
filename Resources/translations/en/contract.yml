@@ -108,3 +108,5 @@ contract-validation-error-promoter_nif: 'The NIF is incorrect'
 contract-validation-error-entity: 'There are missing fields in the entity'
 contract-validation-error-accounts: 'There are missing fields in accounts'
 contract-validation-error-documents: 'Missing documentation'
+
+contract-already-processed: 'Contract already processed.'

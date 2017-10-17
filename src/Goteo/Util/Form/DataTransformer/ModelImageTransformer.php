@@ -5,6 +5,7 @@ namespace Goteo\Util\Form\DataTransformer;
 use Symfony\Component\Form\DataTransformerInterface;
 use Symfony\Component\Form\Exception\TransformationFailedException;
 use Goteo\Model\Image;
+use Symfony\Component\HttpFoundation\File\File;
 
 class ModelImageTransformer implements DataTransformerInterface {
 

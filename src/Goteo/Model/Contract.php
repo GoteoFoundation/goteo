@@ -274,7 +274,7 @@ namespace Goteo\Model {
                 if($count > 0) {
                     $errors['entity'][] = 'entity';
                 }
-                if(!Check::nif($this->entity_nif)) {
+                if(!Check::nif($this->entity_cif)) {
                     $count++;
                     $errors['entity'][] = 'promoter_nif';
                 }

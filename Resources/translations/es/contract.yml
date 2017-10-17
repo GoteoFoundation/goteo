@@ -109,3 +109,5 @@ contract-validation-error-promoter_nif: 'El NIF no es correcto.'
 contract-validation-error-entity: 'Faltan campos para llenar en la entidad'
 contract-validation-error-accounts: 'Faltan campos para llenar en las cuentas'
 contract-validation-error-documentos: 'Falta documentación'
+
+contract-already-processed: 'El contrato ya ha sido procesado.'

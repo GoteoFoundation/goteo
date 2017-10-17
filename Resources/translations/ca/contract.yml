@@ -108,3 +108,5 @@ contract-validation-error-promoter_nif: 'El NIF no és correcte'
 contract-validation-error-entity: 'Falten camps per omplir a l''entitat'
 contract-validation-error-accounts: 'Falten camps per omplir al comptes'
 contract-validation-error-documents: 'Falta documentació'
+
+contract-already-processed: 'El contracte ja ha sigut processat.'
