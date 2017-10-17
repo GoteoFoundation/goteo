@@ -19,6 +19,8 @@ use Goteo\Application\Exception\ModelNotFoundException;
 use Goteo\Application\Exception\ModelException;
 
 use Goteo\Application\Config;
+use Goteo\Application\AppEvents;
+use Goteo\Application\Event\FilterProjectPostEvent;
 use Goteo\Model\Invest;
 use Goteo\Model\Project;
 use Goteo\Model\Project\Image as ProjectImage;
@@ -212,12 +214,16 @@ class ProjectsApiController extends AbstractApiController {
                 throw new ModelNotFoundException("Property [$prop] not writeable");
             }
             $post->$prop = $request->request->get('value');
+
             if(in_array($prop, ['allow', 'publish'])) {
-                $post->$prop = (bool) $val;
+                if($post->$prop == 'false') $post->$prop = 0;
+                $post->$prop = (bool) $post->$prop;
             }
+
             // do the SQL update
             $post->dbUpdate([$prop]);
             $properties[$prop] = $post->$prop;
+            $this->dispatch(AppEvents::PROJECT_POST, new FilterProjectPostEvent($post));
         }
         return $this->jsonResponse($properties[$prop]);
     }
