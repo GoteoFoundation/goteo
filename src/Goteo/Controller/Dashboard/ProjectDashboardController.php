@@ -39,6 +39,7 @@ use Goteo\Application\Event\FilterMessageEvent;
 use Symfony\Component\Validator\Constraints;
 use Goteo\Library\Forms\FormModelException;
 use Goteo\Application\Event\FilterProjectEvent;
+use Goteo\Application\Event\FilterProjectPostEvent;
 
 class ProjectDashboardController extends \Goteo\Core\Controller {
     protected $user;
@@ -424,6 +425,7 @@ class ProjectDashboardController extends \Goteo\Core\Controller {
         if ($form->isSubmitted() && $request->isMethod('post')) {
             try {
                 $processor->save($form);
+                $this->dispatch(AppEvents::PROJECT_POST, new FilterProjectPostEvent($processor->getModel()));
                 Message::info(Text::get('form-sent-success'));
                 return $this->redirect($redirect);
             } catch(FormModelException $e) {
