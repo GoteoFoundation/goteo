@@ -109,7 +109,7 @@ class TranslateProjectDashboardController extends \Goteo\Controller\Dashboard\Pr
      */
     public function overviewTranslateAction($pid, $lang = null, Request $request) {
 
-        $project = $this->validateProject($pid, 'translate', null, null, $lang); // original lang
+        $project = $this->validateProject($pid, 'translate', null, $form, $lang); // original lang
         if($project instanceOf Response) return $project;
 
         $defaults = (array) $project->getLang($lang);
@@ -167,7 +167,7 @@ class TranslateProjectDashboardController extends \Goteo\Controller\Dashboard\Pr
      */
     public function costsTranslateAction($pid, $lang = null, Request $request) {
 
-        $project = $this->validateProject($pid, 'translate', null, null, $lang); // original lang
+        $project = $this->validateProject($pid, 'translate', null, $form, $lang); // original lang
         if($project instanceOf Response) return $project;
 
         // $langs = Lang::listAll('name', false);
@@ -263,7 +263,7 @@ class TranslateProjectDashboardController extends \Goteo\Controller\Dashboard\Pr
      */
     public function rewardsTranslateAction($pid, $lang = null, Request $request) {
 
-        $project = $this->validateProject($pid, 'translate', null,null, $lang); // original lang
+        $project = $this->validateProject($pid, 'translate', null, $form, $lang); // original lang
         if($project instanceOf Response) return $project;
 
         // $langs = Lang::listAll('name', false);
@@ -371,7 +371,7 @@ class TranslateProjectDashboardController extends \Goteo\Controller\Dashboard\Pr
      */
     public function updatesTranslateAction($pid, $uid, $lang, Request $request)
     {
-        $project = $this->validateProject($pid, 'updates', null, null, $lang);
+        $project = $this->validateProject($pid, 'updates', null, $form, $lang);
         if($project instanceOf Response) return $project;
 
         $post = BlogPost::get($uid);

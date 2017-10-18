@@ -259,13 +259,14 @@
 
   // With this class, help text are hidden are shown on focus
   &.hide-help {
-    .help-text {
+    .help-text[data-desc] {
       height: $font-size + 4;
       overflow: hidden;
       white-space: pre-line;
       &::before {
-          content: attr(data-desc);
-          font-weight: bold;
+        font-family: $primary-font;
+        content: attr(data-desc);
+        font-weight: bold;
       }
     }
     .form-control:focus, .CodeMirror-focused, .CodeMirror-focused ~ .editor-statusbar {
