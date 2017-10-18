@@ -54,7 +54,7 @@ class ProjectDashboardController extends \Goteo\Core\Controller {
         ]);
     }
 
-    static function createSidebar(Project $project, $zone = '') {
+    static function createSidebar(Project $project, $zone = '', &$form) {
         $user = Session::getUser();
         if(!$project->userCanEdit($user)) return false;
         $prefix = '/dashboard/project/' . $project->id ;
@@ -107,7 +107,30 @@ class ProjectDashboardController extends \Goteo\Core\Controller {
 
         }
 
+        // Create a global form to send to review
+        $builder = App::getService('app.forms')->createBuilder(
+            [ 'message' => $project->comment ],
+            'applyform',
+            [
+              'action' => '/dashboard/project/' . $project->id . '/apply',
+              'attr' => ['class' => 'autoform']
+            ]);
+
+        $form = $builder
+            ->add('message', 'textarea', [
+                'label' => 'preview-send-comment',
+                'required' => false,
+                // 'attr' => ['help' => Text::get('tooltip-project-support-description')]
+            ])
+            ->add('submit', 'submit', [
+                'label' => 'project-send-review',
+                'attr' => ['class' => 'btn btn-fashion btn-lg'],
+                'icon_class' => 'fa fa-paper-plane'
+            ])
+            ->getForm();
+
         View::getEngine()->useData([
+            'applyForm' => $form->createView(),
             'project' => $project,
             'validation' => $validation,
             'admin' => $project->userCanEdit($user),
@@ -140,29 +163,7 @@ class ProjectDashboardController extends \Goteo\Core\Controller {
             throw new ControllerAccessDeniedException(Text::get('user-login-required-access'));
         }
 
-        static::createSidebar($this->project, $section);
-
-        // Create a global form to send to review
-        $builder = $this->createFormBuilder([ 'message' => $this->project->comment ],
-            'applyform',
-            [ 'action' => '/dashboard/project/' . $this->project->id . '/apply' ]);
-
-        $form = $builder
-            ->add('message', 'textarea', [
-                'label' => 'preview-send-comment',
-                'required' => false,
-                // 'attr' => ['help' => Text::get('tooltip-project-support-description')]
-            ])
-            ->add('submit', 'submit', [
-                'label' => 'project-send-review',
-                'attr' => ['class' => 'btn btn-fashion btn-lg'],
-                'icon_class' => 'fa fa-paper-plane'
-            ])
-            ->getForm();
-
-        $this->contextVars([
-            'applyForm' => $form->createView()
-        ]);
+        static::createSidebar($this->project, $section, $form);
 
         return $this->project;
     }
