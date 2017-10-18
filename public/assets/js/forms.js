@@ -423,7 +423,7 @@ $(function(){
     $('.autoform').on( 'click', '.image-list-sortable .delete-image', function(e) {
         e.preventDefault();
         e.stopPropagation();
-        // console.log('remove');
+        console.log('remove');
         var $li = $(this).closest('li');
         var $drop = $(this).closest('.dropfiles');
         var $zone = $(this).closest('.image-zone');
@@ -443,6 +443,7 @@ $(function(){
     $('.autoform').on( 'click', '.image-list-sortable .add-to-markdown', function(e) {
         e.preventDefault();
         e.stopPropagation();
+        console.log('add to markdown');
         var $li = $(this).closest('li');
         var name = $li.data('name');
         var $form = $(this).closest('form');
@@ -456,6 +457,7 @@ $(function(){
 
     // Handle buttons with confirmation
     $('form.autoform').on( 'click', 'button[data-confirm]', function(e) {
+        console.log('btn auto confirm');
         if(!confirm($(this).data('confirm'))) {
             e.preventDefault();
             e.stopPropagation();
@@ -471,6 +473,7 @@ $(function(){
     });
 
     $('form[data-confirm]').on('submit', function(){
+        console.log('form submit');
         formChanged = false;
     });
 

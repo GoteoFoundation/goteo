@@ -618,7 +618,9 @@ class ProjectDashboardController extends \Goteo\Core\Controller {
         if(!$referer || strpos($referer, '/dashboard/') === false) $referer ='/dashboard/project/' . $project->id . '/summary';
 
         $form->handleRequest($request);
-        if ($form->isSubmitted() && $form->isValid()) {
+        $validation = $project->inEdition() && $project->getValidation();
+
+        if ($validation && $validation->global == 100 & $form->isSubmitted() && $form->isValid()) {
             $data = $form->getData();
             $project->comment = $data['message'];
             $errors = [];
