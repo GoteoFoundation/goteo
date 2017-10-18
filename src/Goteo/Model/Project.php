@@ -2408,7 +2408,9 @@ namespace Goteo\Model {
          */
         public function ready(&$errors = array()) {
             try {
-                $this->rebase();
+                if($this->isDraft()) {
+                    $this->rebase();
+                }
 
                 $updated = date('Y-m-d');
                 $sql = "UPDATE project SET status = :status, updated = :updated WHERE id = :id";
@@ -2753,7 +2755,7 @@ namespace Goteo\Model {
          * solo si es md5
          * @return: boolean
          */
-        public function rebase($newid = null, &$errors = array(), $force = false) {
+        public function rebase($newid = null, $force = false) {
             try {
                 if(!$force && !$newid && !$this->isDraft()) {
                     throw new Exception\ModelException('Automatic rebase failed. Current project id is already ok. Provide a new ID or force to overwrite');
