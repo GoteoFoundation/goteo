@@ -1,5 +1,34 @@
 body.project {
     #main {
         background-color: $background-light-grey;
+        #main-content {
+            background-color: $background-white;
+        }
     }
+
+    background: $color-white;
+    .container-fluid {
+        @media(min-width: $breakpoint-sm) {
+            max-width: 750px;
+        }
+        @media(min-width: $breakpoint-md) {
+            max-width: 970px;
+        }
+        @media(min-width: $breakpoint-lg) {
+            max-width: 1170px;
+        }
+    }
+
+  @media (max-width: $breakpoint-sm - 1) {
+    padding-bottom: 57px;
+  }
+
+  @media (max-width: $breakpoint-xs - 1) {
+    font-size: 10px !important;
+  }
+
+  @media (max-width: $breakpoint-xxs - 1) {
+    font-size: 9px !important;
+  }
+
 }
