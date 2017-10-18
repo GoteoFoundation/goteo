@@ -39,7 +39,7 @@ class ProjectOverviewForm extends AbstractFormProcessor implements FormProcessor
             ]);
         }
         if($this->getFullValidation()) {
-            if(in_array($field, ['media', 'spread'])) {
+            if(!in_array($field, ['media', 'spread'])) {
                 // all fields
                 $constraints[] = new Constraints\NotBlank();
             }
