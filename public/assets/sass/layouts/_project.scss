@@ -5,6 +5,13 @@ body.project {
             background-color: $background-white;
         }
     }
+    &.create {
+        #main {
+            #main-content {
+                background-color: $background-light-grey;
+            }
+        }
+    }
 
     background: $color-white;
     .container-fluid {
