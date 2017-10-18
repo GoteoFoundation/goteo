@@ -748,8 +748,8 @@ class ProjectDashboardController extends \Goteo\Core\Controller {
 
         $editForm->handleRequest($request);
         if ($editForm->isSubmitted()) {
-            if(!$project->inEdition() && !$project->isAlive()) {
-                Message::error(Text::get('dashboard-project-not-alive-yet'));
+            if($project->isDead()) {
+                Message::error(Text::get('dashboard-project-is-dead'));
                 return $this->redirect();
             }
 
