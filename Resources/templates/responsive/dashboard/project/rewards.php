@@ -23,11 +23,11 @@
 
         echo '<div class="reward-list">';
         foreach($this->rewards as $reward) {
-            echo $this->insert('dashboard/project/partials/reward_item', ['reward' => $reward, 'form' => $form]);
+            echo $this->insert('dashboard/project/partials/reward_item', ['reward' => $reward, 'form' => $form, 'show_taken' => $this->project->isApproved()]);
         }
         echo '</div>';
 
-        echo '<div class="form-group">'.$this->form_row($form['add-reward'], [], true).'</div>';
+        echo '<div class="form-group pull-right">'.$this->form_row($form['add-reward'], [], true).'</div>';
 
         echo $submit;
 
