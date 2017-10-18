@@ -2,7 +2,7 @@
 
 
 $this->layout('layout', [
-    'bodyClass' => 'project',
+    'bodyClass' => 'project create',
     'title' => $this->text('meta-title-create-project'),
     'meta_description' => $this->text('meta-description-create-project')
     ]);
