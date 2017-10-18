@@ -19,5 +19,8 @@
       <?= $this->form_row($form["reward_$id"]) ?>
       <?= $this->form_row($form["description_$id"]) ?>
      <div class="remove"><?= $this->form_row($form["remove_$id"], [],  true) ?></div>
+    <?php if($this->show_taken): ?>
+         <p class="text-muted"><i class="fa fa-hand-o-right"></i> <?= $this->text('project-donors-with-reward', $this->reward->getTaken()) ?></p>
+     <?php endif ?>
   </div>
 </div>

@@ -30,7 +30,7 @@ $.fn.extend({
         this.off();
 
         this.addClass('animated ' + animationName).on(animationEnd, function() {
-            // console.log(this, $(this).attr('class'));
+            console.log(this, $(this).attr('class'));
             $(this).removeClass('animated ' + animationName);
             if($.isFunction(callback)) {
                 callback.call(this);

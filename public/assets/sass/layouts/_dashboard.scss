@@ -552,9 +552,9 @@
     .min, .opt, .total {
         color: $color-dark;
         float: left;
-        min-width: 101px;
+        // min-width: 101px;
         max-width: 80%;
-        max-width: calc(100% - 202px);
+        // max-width: calc(100% - 202px);
         &.total {
             float: right;
             text-align: right;
@@ -565,10 +565,25 @@
             font-size: $font-size * 2;
             line-height: 1;
             margin-bottom: 10px;
+            white-space: nowrap;
         }
     }
     .progress {
         clear: both;
+    }
+    @media(max-width: $breakpoint-xs - 1) {
+        .min, .opt, .total {
+            >span {
+                font-size: 15px;
+            }
+        }
+    }
+    @media(min-width: $breakpoint-xs) and (max-width: $breakpoint-md - 1) {
+        .min, .opt, .total {
+            >span {
+                font-size: 20px;
+            }
+        }
     }
   }
 }

@@ -185,6 +185,7 @@ project-validation-error-costs: 'Falta añadir o completar los costes'
 project-validation-error-costs_required: 'Debes tener al menos un coste de cada tipo, imprescindible y opcional'
 project-validation-error-rewards: 'Falta añadir o completar las recompensas'
 project-validation-error-rewards_required: 'Debes tener al menos 3 recompensas'
+project-validation-error-rewards_units: 'La recompensa debe tener almenos %s unidades'
 project-validation-error-campaign: 'Faltan campos por rellenar en la configuración de campaña'
 
 project-non-public-field: 'Este campo no es público'
@@ -195,3 +196,4 @@ project-manage: 'Gestionar'
 project-manage-campaign: 'Gestionar campaña'
 
 project-widget-not-visible: 'Este widget no será visible hasta que el proyecto sea público'
+project-donors-with-reward: '%s cofinanciadores han escogido esta recompensa'
