@@ -27,10 +27,13 @@ class DashboardController extends \Goteo\Core\Controller {
     public function __construct() {
         // changing to a responsive theme here
         View::setTheme('responsive');
+        $this->user = Session::getUser();
     }
 
     public function activityAction(Request $request) {
-        $user = Session::getUser();
+        $user = $this->user;
+
+        self::createSidebar('activity', 'activity');
 
         // proyectos que cofinancio
         $invested = User::invested($user->id, false, 0, 3);
@@ -44,12 +47,9 @@ class DashboardController extends \Goteo\Core\Controller {
             $total_fav = Project::published('popular', null, 0, 0, true);
         }
 
-        $
         $interests = Interest::getAll();
 
         // $page = Page::get('dashboard');
-        $messages = Comment::getUserMessages($user);
-
         return $this->viewResponse('dashboard/activity', [
             'section' => 'activity',
             // 'message' => str_replace('%USER_NAME%', $user->name, $page->parseContent()),
@@ -59,17 +59,35 @@ class DashboardController extends \Goteo\Core\Controller {
             'user_interests' => $user->interests,
             'favourite' => $favourite,
             'favourite_total' => $total_fav,
-            'limit' => 3,
-            'messages' => $messages,
+            'limit' => 3
         ]);
     }
 
-    public static function createSidebar($zone = '') {
-        Session::addToSidebarMenu('<i class="icon icon-2x icon-wallet-sidebar"></i> ' . Text::get('dashboard-menu-pool'), '/dashboard/wallet', 'wallet');
-        Session::addToSidebarMenu('<i class="fa fa-2x fa-fw fa-download"></i> ' . Text::get('recharge-button'), '/pool', 'recharge');
+    public function messagesAction(Request $request) {
+
+        $messages = Comment::getUserThreads($this->user);
+        self::createSidebar('activity', 'messages');
+
+        return $this->viewResponse('dashboard/messages', [
+            'section' => 'activity',
+            'messages' => $messages
+        ]);
+    }
+
+    public static function createSidebar($section, $zone = '') {
+        $total_messages = Comment::getUserThreads(Session::getUser(), 0, 0, true);
+        if($total_messages > 0 && $section === 'activity') {
+            Session::addToSidebarMenu('<i class="icon icon-2x icon-activity"></i> ' . Text::get('dashboard-menu-activity'), '/dashboard/activity', 'activity');
+            Session::addToSidebarMenu('<i class="icon icon-2x icon-partners"></i> ' . Text::get('regular-messages') .' <span class="badge">' . $total_messages . '</span>', '/dashboard/messages', 'messages');
+        }
+        if($section === 'wallet') {
+            Session::addToSidebarMenu('<i class="icon icon-2x icon-wallet-sidebar"></i> ' . Text::get('dashboard-menu-pool'), '/dashboard/wallet', 'wallet');
+            Session::addToSidebarMenu('<i class="fa fa-2x fa-fw fa-download"></i> ' . Text::get('recharge-button'), '/pool', 'recharge');
+        }
         View::getEngine()->useData([
             'zone' => $zone,
-            'section' => 'wallet'
+            'section' => $section,
+            'total_messages' => $total_messages
         ]);
 
     }
@@ -83,9 +101,9 @@ class DashboardController extends \Goteo\Core\Controller {
             throw new \RuntimeException("Pool payment is not active!");
         }
 
-        self::createSidebar('wallet');
+        self::createSidebar('wallet', 'wallet');
 
-        $user = Session::getUser();
+        $user = $this->user;
         $pool = $user->getPool();
         $interests = Interest::getAll();
 

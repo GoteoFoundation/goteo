@@ -19,6 +19,11 @@ $dash->add('dashboard-activity', new Route(
     array('_controller' => 'Goteo\Controller\DashboardController::activityAction',
         )
 ));
+$dash->add('dashboard-messages', new Route(
+    '/messages',
+    array('_controller' => 'Goteo\Controller\DashboardController::messagesAction',
+        )
+));
 // Virtual wallet
 $dash->add('dashboard-wallet', new Route(
     '/wallet',

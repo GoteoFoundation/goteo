@@ -235,6 +235,9 @@ dashboard-message-donors-fulfilled: 'are completed'
 dashboard-message-donors-error: 'No valid recipients, message cannot be sent'
 dashboard-message-donors-total: '%s donors'
 
+dashboard-message-no-message: 'No messages for you yet.'
+dashboard-message-threads: 'You have %s message threads'
+
 dashboard-translate-profile: 'Translate profile'
 dashboard-translate-profile-desc: 'You are translating your personal profile to %LANG%. Users who visit your personal profile in this language will see this translation. All other languages will display the <a href="%URL%">default data</a> unless they also have an assigned translation.'
 dashboard-translate-profile-ok: 'Profile successfully translated to %s'
