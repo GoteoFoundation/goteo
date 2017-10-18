@@ -41,7 +41,7 @@ class TranslateProjectDashboardController extends \Goteo\Controller\Dashboard\Pr
     /**
      * Additional common context vars for the views
      */
-    public function validateProject($pid = null, $section = 'summary', $lang = null, $lang_check = null) {
+    public function validateProject($pid = null, $section = 'summary', $lang = null, &$form = null, $lang_check = null) {
         $project = parent::validateProject($pid, $section, $lang);
         if(!$project instanceOf Project) return $project;
 
@@ -109,7 +109,7 @@ class TranslateProjectDashboardController extends \Goteo\Controller\Dashboard\Pr
      */
     public function overviewTranslateAction($pid, $lang = null, Request $request) {
 
-        $project = $this->validateProject($pid, 'translate', null, $lang); // original lang
+        $project = $this->validateProject($pid, 'translate', null, null, $lang); // original lang
         if($project instanceOf Response) return $project;
 
         $defaults = (array) $project->getLang($lang);
@@ -167,7 +167,7 @@ class TranslateProjectDashboardController extends \Goteo\Controller\Dashboard\Pr
      */
     public function costsTranslateAction($pid, $lang = null, Request $request) {
 
-        $project = $this->validateProject($pid, 'translate', null, $lang); // original lang
+        $project = $this->validateProject($pid, 'translate', null, null, $lang); // original lang
         if($project instanceOf Response) return $project;
 
         // $langs = Lang::listAll('name', false);
@@ -263,7 +263,7 @@ class TranslateProjectDashboardController extends \Goteo\Controller\Dashboard\Pr
      */
     public function rewardsTranslateAction($pid, $lang = null, Request $request) {
 
-        $project = $this->validateProject($pid, 'translate', null, $lang); // original lang
+        $project = $this->validateProject($pid, 'translate', null,null, $lang); // original lang
         if($project instanceOf Response) return $project;
 
         // $langs = Lang::listAll('name', false);
@@ -371,7 +371,7 @@ class TranslateProjectDashboardController extends \Goteo\Controller\Dashboard\Pr
      */
     public function updatesTranslateAction($pid, $uid, $lang, Request $request)
     {
-        $project = $this->validateProject($pid, 'updates', null, $lang);
+        $project = $this->validateProject($pid, 'updates', null, null, $lang);
         if($project instanceOf Response) return $project;
 
         $post = BlogPost::get($uid);
