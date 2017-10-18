@@ -8,3 +8,11 @@ preview-send-comment: 'Additional notes for the administrator'
 step-7: Preview
 step-preview: 'Project / Preview'
 tooltip-project-comment: 'Do you have any doubts or comments for the Goteo administrator? This is the place to mention some part of what you have written that you''re not sure about, to suggest improvements, etc.'
+project-send-review-desc: >
+    Once you send it, you will not be able to make changes until we open the edition again.
+
+
+    We will contact you soon to comment on the campaign proposal and continue with its optimization and publication process.
+
+
+    **Do not forget to check your SPAM tray**, sometimes the technology can''t appreciate the affection we give to our projects.

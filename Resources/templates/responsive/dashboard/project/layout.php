@@ -17,7 +17,7 @@
         <h4 class="modal-title"><?= $this->text('project-send-review') ?></h4>
       </div>
       <div class="modal-body">
-        <p><?= $this->text('guide-project-preview') ?></p>
+        <p><?= $this->markdown($this->text('project-send-review-desc')) ?></p>
         <?php if($this->errors): ?>
             <div class="text-danger"><?= implode("\n<br>\n", $this->errors) ?></div>
         <?php endif ?>
