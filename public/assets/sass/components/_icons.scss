@@ -11,14 +11,14 @@
     &.icon-1x {
         @include icon-responsive(1.5, 1.5);
         &.icon-activity {
-            @include icon-responsive(1.5*1.5, 1.5);
+            @include icon-responsive(1.5*1.1, 1.5);
         }
     }
     @for $i from 2 through 8 {
         &.icon-#{$i}x {
             @include icon-responsive($i, $i);
             &.icon-activity {
-                @include icon-responsive($i*1.5, $i);
+                @include icon-responsive($i*1.1, $i);
             }
         }
     }

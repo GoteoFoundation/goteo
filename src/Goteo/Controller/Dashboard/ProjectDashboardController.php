@@ -578,7 +578,8 @@ class ProjectDashboardController extends \Goteo\Core\Controller {
                 if(strpos($button, 'remove_') === 0) {
                     try {
                         $reward = Reward::get(substr($button, 7));
-                        if(!$reward->isDraft()) {
+
+                        if($project->inEdition() || $reward->isDraft()) {
                             $reward->dbDelete();
                         } else {
                             return $this->rawResponse('Error: Reward has invests or cannot be deleted', 'text/plain', 500);
