@@ -893,7 +893,7 @@ namespace Goteo\Model {
         /**
          * Handy method to know if project is unfunded (ie: archived, failed)
          */
-        public function hasFailed() {
+        public function isDead() {
             return $this->status == self::STATUS_UNFUNDED;
         }
 

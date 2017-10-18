@@ -255,6 +255,7 @@ dashboard-project-support-translate-ok: 'Entrada de suport %TITLE% traduït corr
 dashboard-project-support-translating: 'Estàs traduint aquesta entrada de suport al %LANG%. L''idioma original és el %ORIGINAL%.'
 dashboard-project-saved: 'Projecte actualitzat correctament'
 
+dashboard-project-is-dead: 'El projecte està arxivat i no es pot editar'
 dashboard-project-not-alive-yet: 'Aquest apartat estarà disponible quan el teu projecte entri en campanya'
 dashboard-project-not-funded-yet: 'Aquest apartat estarà disponible quan el tu projecte acabi la campanya amb èxit'
 dashboard-project-reward-cannot: 'Ara no es poden introduir noves recompenses. Durant la campanya es possible introduir noves recompenses (però no esborrar les que ja existeixen)'
