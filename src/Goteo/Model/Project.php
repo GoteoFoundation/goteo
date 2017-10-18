@@ -2267,7 +2267,9 @@ namespace Goteo\Model {
 
 
             // 3. overview
-            $overview = ['name', 'subtitle', 'lang', 'currency', 'media', 'description', 'project_location', 'related', 'about', 'motivation', 'scope', 'social_commitment', 'social_commitment_description'];
+            $overview = ['name', 'subtitle', 'lang', 'currency',
+            // 'media',
+             'description', 'project_location', 'related', 'about', 'motivation', 'scope', 'social_commitment', 'social_commitment_description'];
 
             $total = count($overview);
             $count = 0;
@@ -2406,7 +2408,9 @@ namespace Goteo\Model {
          */
         public function ready(&$errors = array()) {
             try {
-                $this->rebase();
+                if($this->isDraft()) {
+                    $this->rebase();
+                }
 
                 $updated = date('Y-m-d');
                 $sql = "UPDATE project SET status = :status, updated = :updated WHERE id = :id";
@@ -2751,7 +2755,7 @@ namespace Goteo\Model {
          * solo si es md5
          * @return: boolean
          */
-        public function rebase($newid = null, &$errors = array(), $force = false) {
+        public function rebase($newid = null, $force = false) {
             try {
                 if(!$force && !$newid && !$this->isDraft()) {
                     throw new Exception\ModelException('Automatic rebase failed. Current project id is already ok. Provide a new ID or force to overwrite');
