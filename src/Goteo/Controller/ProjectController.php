@@ -497,7 +497,8 @@ class ProjectController extends \Goteo\Core\Controller {
             $conf->save();
 
             // CREATED EVENT
-            $event = $this->dispatch(AppEvents::PROJECT_CREATED, new FilterProjectEvent($project));
+            $response = $this->dispatch(AppEvents::PROJECT_CREATED, new FilterProjectEvent($project))->getResponse();
+            if($response instanceOf Response) return $response;
 
             return new RedirectResponse('/dashboard/project/' . $project->id . '/profile');
         }
