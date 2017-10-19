@@ -192,6 +192,7 @@ class Message extends \Goteo\Core\Model {
                 #and message_user.user_id in ('ivan', 'test', 'mackeylime')
                 GROUP BY user_id";
         $values = [':project' => $project->id];
+        // die(\sqldbg($sql, $values));
         if($query = static::query($sql, $values)) {
             return array_column($query->fetchAll(\PDO::FETCH_OBJ), 'total', 'user');
         }

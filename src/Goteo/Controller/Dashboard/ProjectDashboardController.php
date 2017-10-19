@@ -54,7 +54,7 @@ class ProjectDashboardController extends \Goteo\Core\Controller {
         ]);
     }
 
-    static function createSidebar(Project $project, $zone = '', &$form) {
+    static function createSidebar(Project $project, $zone = '', &$form = null) {
         $user = Session::getUser();
         if(!$project->userCanEdit($user)) return false;
         $prefix = '/dashboard/project/' . $project->id ;
@@ -64,15 +64,10 @@ class ProjectDashboardController extends \Goteo\Core\Controller {
 
         $validation = false;
         $admin = false;
-        if($project->inEdition()) {
-            $validation = $project->getValidation();
-        }
-        if(!$validation && $project->userCanModerate($user)) {
-            $validation = $project->getValidation();
-            $admin = true;
-        }
+        $validation = $project->getValidation();
+        $admin = $project->userCanModerate($user) && !$project->inEdition();
 
-        if($validation) {
+        if($project->inEdition() || $admin) {
             $steps = [
                 ['text' => '<i class="icon icon-2x icon-user"></i> 1. ' . Text::get('profile-about-header'), 'link' => $prefix . '/profile', 'id' => 'profile', 'class' => $validation->profile == 100 ? 'ok' : 'ko'],
                 // ['text' => '<i class="fa fa-2x fa-id-card-o"></i> 2. ' . Text::get('step-2'), 'link' => $prefix . '/personal', 'id' => 'personal'],
@@ -84,7 +79,9 @@ class ProjectDashboardController extends \Goteo\Core\Controller {
                 ['text' => '<i class="icon icon-2x icon-supports"></i> ' . Text::get('dashboard-menu-projects-supports'), 'link' => $prefix . '/supports', 'id' => 'supports'],
             ];
             Session::addToSidebarMenu('<i class="icon icon-2x icon-projects"></i> ' . Text::get('project-edit'), $steps, 'project', null, 'sidebar' . ($admin ? ' admin' : ''));
-        } else {
+        }
+
+        if($project->isApproved()) {
             $submenu = [
                 // ['text' => '<i class="icon icon-2x icon-updates"></i> ' . Text::get('dashboard-menu-projects-updates'), 'link' => $prefix . '/updates', 'id' => 'updates'],
                 ['text' => '<i class="icon icon-2x icon-updates"></i> ' . Text::get('regular-header-blog'), 'link' => $prefix . '/updates', 'id' => 'updates'],
@@ -107,9 +104,9 @@ class ProjectDashboardController extends \Goteo\Core\Controller {
 
         Session::addToSidebarMenu('<i class="icon icon-2x icon-settings"></i> ' . Text::get('footer-header-resources'), $submenu, 'resources', null, 'sidebar');
 
-        Session::addToSidebarMenu('<i class="icon icon-2x icon-preview"></i> ' . Text::get($validation ? 'regular-preview' : 'dashboard-menu-projects-preview'), '/project/' . $project->id, 'preview');
+        Session::addToSidebarMenu('<i class="icon icon-2x icon-preview"></i> ' . Text::get($project->isApproved() ? 'dashboard-menu-projects-preview' : 'regular-preview' ), '/project/' . $project->id, 'preview');
 
-        if($project->inEdition() && $validation && $validation->global == 100) {
+        if($project->inEdition() && $validation->global == 100) {
 
             Session::addToSidebarMenu('<i class="fa fa-2x fa-paper-plane"></i> ' . Text::get('project-send-review'), '/dashboard/project/' . $project->id . '/apply', 'apply', null, 'flat', 'btn btn-fashion apply-project');
 
@@ -966,13 +963,14 @@ class ProjectDashboardController extends \Goteo\Core\Controller {
         // TODO: save to session with current filter values?
 
 
-
+        $messages = Comment::countProjectMessages($project);
+        // print_r($messages);die;
         return $this->viewResponse('dashboard/project/invests', [
             'invests' => $invests,
             'total_invests' => $totals['invests'],
             'total_users' => $totals['users'],
             'total_amount' => $totals['amount'],
-            'messages' => Comment::countProjectMessages($project),
+            'messages' => $messages,
             'order' => $order,
             'filters' => $filters,
             'filter' => $filter,

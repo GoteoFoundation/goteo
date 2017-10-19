@@ -15,7 +15,9 @@ use Goteo\Library\Forms\FormProcessorInterface;
 use Goteo\Library\Forms\AbstractFormProcessor;
 use Symfony\Component\Validator\Constraints;
 use Goteo\Library\Text;
+use Goteo\Model\Image;
 use Goteo\Library\Forms\FormModelException;
+use Symfony\Component\Form\FormInterface;
 
 class ProjectPostForm extends AbstractFormProcessor implements FormProcessorInterface {
 
@@ -23,7 +25,7 @@ class ProjectPostForm extends AbstractFormProcessor implements FormProcessorInte
 
         $builder = $this->getBuilder();
         $options = $builder->getOptions();
-        $model = $this->getModel();
+        $post = $this->getModel();
         $data = $options['data'];
 
         $builder
@@ -84,4 +86,38 @@ class ProjectPostForm extends AbstractFormProcessor implements FormProcessorInte
             ;
         return $this;
     }
+
+    public function save(FormInterface $form = null, $force_save = false) {
+        if(!$form) $form = $this->getBuilder()->getForm();
+        if(!$form->isValid() && !$force_save) throw new FormModelException(Text::get('form-has-errors'));
+
+        $data = $form->getData();
+        $post = $this->getModel();
+        $post->rebuildData($data, array_keys($form->all()));
+        $gallery = Image::getModelGallery('post', $post->id);
+        $post->image = $data['image'];
+        $current = array_column($post->image, 'id');
+        // print_r($gallery);
+        if(is_array($gallery)) {
+            foreach($gallery as $img) {
+                if(!in_array($img->id, $current)) {
+                    // Delete from model if exists
+                    Image::deleteModelImage('post', $post->id);
+                    // delete from gallery if exists
+                    $img->delFromModelGallery('post', $post->id);
+                }
+            }
+        }
+        // print_r($current);die;
+
+        $errors = [];
+        if (!$post->save($errors)) {
+            throw new FormModelException(Text::get('form-sent-error', implode(', ',$errors)));
+        }
+
+        if(!$form->isValid()) throw new FormModelException(Text::get('form-has-errors'));
+
+        return $this;
+    }
+
 }

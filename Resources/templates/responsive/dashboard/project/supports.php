@@ -129,6 +129,7 @@ $(function(){
 
   // Translation edit
   $('.edit-translation a').on('click', function(event) {
+    if($this.closest('li').hasClass('no-bind')) return;
     event.preventDefault();
     var $modal = $('#trans-modal');
     var $section = $(this).closest('.section-content');

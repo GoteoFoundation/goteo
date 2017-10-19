@@ -192,10 +192,10 @@ $(function(){
             // view: 'dashboard'
         }
         $error.addClass('hidden').html('');
-        $.post(url, data, function(data) {
-            // console.log('ok!', data);
-            // $list.append(data.html);
-            $(document).trigger('message-sent', [data]);
+        $.post(url, data, function(response) {
+            // console.log('ok!', response);
+            // $list.append(response.html);
+            $(document).trigger('message-sent', [data, response]);
           }).fail(function(xhr) {
             // console.log('error', xhr);
             var error;
