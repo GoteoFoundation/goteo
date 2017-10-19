@@ -4,6 +4,19 @@ body.project {
         #main-content {
             background-color: $background-white;
         }
+
+        .container-fluid {
+            @media(min-width: $breakpoint-sm) {
+                max-width: 750px;
+            }
+            @media(min-width: $breakpoint-md) {
+                max-width: 970px;
+            }
+            @media(min-width: $breakpoint-lg) {
+                max-width: 1170px;
+            }
+        }
+
     }
     &.create {
         #main {
@@ -14,17 +27,6 @@ body.project {
     }
 
     background: $color-white;
-    .container-fluid {
-        @media(min-width: $breakpoint-sm) {
-            max-width: 750px;
-        }
-        @media(min-width: $breakpoint-md) {
-            max-width: 970px;
-        }
-        @media(min-width: $breakpoint-lg) {
-            max-width: 1170px;
-        }
-    }
 
   @media (max-width: $breakpoint-sm - 1) {
     padding-bottom: 57px;

@@ -1563,7 +1563,7 @@ class User extends \Goteo\Core\Model {
 
             // Sustituimos los datos
             $subject = $template->title;
-
+            $errors = [];
             // En el contenido:
             $search = array('%USERNAME%', '%URL%');
             $replace = array($row->name, SEC_URL . '/user/leave/' . \mybase64_encode($token));

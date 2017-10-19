@@ -18,7 +18,8 @@ namespace Goteo\Model\Call {
             $url,
             $image,
             $order,
-            $amount;
+            $amount,
+            $main;
 
         /*
          *  Devuelve datos de un destacado
@@ -32,6 +33,7 @@ namespace Goteo\Model\Call {
                         url,
                         image,
                         amount,
+                        main,
                         `order`
                     FROM    call_sponsor
                     WHERE id = :id
@@ -60,6 +62,7 @@ namespace Goteo\Model\Call {
                     url,
                     image,
                     amount,
+                    main,
                     `order`
                 FROM    call_sponsor
                 WHERE `call` = :call
@@ -76,9 +79,16 @@ namespace Goteo\Model\Call {
         /*
          * Lista de patrocinadores
          */
-        public static function getList ($call) {
+        public static function getList ($call, $type=null) {
 
             $list = array();
+
+            if($type=="main")
+                $type_filter=" AND `main`=1";
+            elseif($type=="collaborator")
+                $type_filter=" AND `main`=0";
+            else
+                $type_filter="";
 
             $sql = static::query("
                 SELECT
@@ -88,9 +98,11 @@ namespace Goteo\Model\Call {
                     url,
                     image,
                     amount,
+                    main,
                     `order`
                 FROM    call_sponsor
                 WHERE `call` = :call
+                $type_filter
                 ORDER BY `order` ASC, name ASC
                 ", array(':call'=>$call));
 
@@ -146,7 +158,8 @@ namespace Goteo\Model\Call {
                 'url',
                 'image',
                 'order',
-                'amount'
+                'amount',
+                'main'
                 );
 
             $set = '';

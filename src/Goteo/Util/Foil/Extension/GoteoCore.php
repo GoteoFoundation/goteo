@@ -176,7 +176,9 @@ class GoteoCore implements ExtensionInterface
 
     //User
     public function get_user() {
-        return Session::getUser();
+        $user = Session::getUser();
+        if($user instanceOf User) return $user;
+        return null;
     }
 
     //User Global menu
