@@ -113,7 +113,7 @@
           </td>
           <td><?= $address ?></td>
           <td>
-            <a data-toggle="modal" href="#messageModal" data-user="<?= $invest->getUser()->id ?>" data-name="<?= $invest->getUser()->name ?>" class="send-private" title="<?= $this->text('support-send-private-message') ?>"><?= (int)$this->messages[$invest->getUser()->id] ?> <i class="icon-1x icon icon-partners"></i></a>
+            <a data-toggle="modal" href="#messageModal" data-user="<?= $invest->getUser()->id ?>" data-name="<?= $invest->getUser()->name ?>" class="send-private" title="<?= $this->text('support-send-private-message') ?>"><span><?= (int)$this->messages[$invest->getUser()->id] ?></span> <i class="icon-1x icon icon-partners"></i></a>
           </td>
         </tr>
       <?php endforeach ?>
@@ -274,13 +274,23 @@ $(function(){
         $('.ajax-message input[name="users"]').val(user_id || '');
         $('.ajax-message .recipients').html(prefix + ' <strong>'+ txt + '</strong>');
     });
-    $(document).on('message-sent', function(evt, data){
-        console.log('message sent', data);
+    $(document).on('message-sent', function(evt, request, response){
+        // console.log('message sent', request, response);
         $('.ajax-message input[name="reward"]').val('');
         $('.ajax-message input[name="filter"]').val('');
         $('.ajax-message input[name="users"]').val('');
-        // TODO: clear subject and body?
+        // Clear subject and body?
+        $('.ajax-message input[name="subject"]').val('');
+        $('.ajax-message textarea[name="body"]').val('');
+
         $('#messageModal').modal('hide');
+        if(request.users) {
+            for(var i in request.users) {
+                console.log(request.users[i]);
+                $span = $('a.send-private[data-user="' +  request.users[i] + '"]>span');
+                $span.text(parseInt($span.text()) + 1);
+            }
+        }
     });
 })
 

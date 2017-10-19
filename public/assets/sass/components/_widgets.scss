@@ -235,7 +235,10 @@
         overflow: hidden;
         .img-project {
             // height: 100%;
-            width: auto;
+            // width: auto;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
         }
         h2 {
             display: inline-block;
