@@ -666,9 +666,9 @@ class ProjectDashboardController extends \Goteo\Core\Controller {
 
         $errors = [];
         if ($project->remove($errors)) {
-            Message::info('dashboard-project-delete-ok', '<strong>' . $project->name . '</strong>');
+            Message::info(Text::get('dashboard-project-delete-ok', '<strong>' . $project->name . '</strong>'));
         } else {
-            Message::error('dashboard-project-delete-ko', '<strong>' . $project->name . '</strong>. ' . implode("\n", $errors));
+            Message::error(Text::get('dashboard-project-delete-ko', '<strong>' . $project->name . '</strong>. ') . implode("\n", $errors));
         }
         return $this->redirect($referer);
     }

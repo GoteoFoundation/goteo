@@ -199,5 +199,10 @@ $api->add('api-messages-add', new Route(
     array('POST') // methods
 ));
 
+$api->add('api-stats-investors-required', new Route(
+    '/stats/investors-required',
+    array('_controller' => 'Goteo\Controller\Api\StatsApiController::investorsRequiredAction')
+));
+
 
 return $api;
