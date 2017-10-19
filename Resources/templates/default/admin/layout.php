@@ -38,7 +38,7 @@ $this->layout('layout', [
 
 <link rel="stylesheet" href="<?= SRC_URL ?>/assets/vendor/typeahead/jquery.typeahead.min.css" type="text/css" />
 <link rel="stylesheet" href="<?= SRC_URL ?>/assets/vendor/datepicker/css/bootstrap.css" type="text/css" />
-<link rel="stylesheet" href="<?= SRC_URL ?>/assets/vendor/simplemde-markdown/simplemde.min.css" type="text/css" />
+<link rel="stylesheet" href="<?= SRC_URL ?>/assets/vendor/simplemde/dist/simplemde.min.css" type="text/css" />
 <style type="text/css">
 
     /* Tuning Markdown editor */
@@ -126,7 +126,7 @@ $this->layout('layout', [
 
 <?php $this->section('footer') ?>
 
-<script type="text/javascript" src="<?= SRC_URL ?>/assets/vendor/simplemde-markdown/simplemde.min.js"></script>
+<script type="text/javascript" src="<?= SRC_URL ?>/assets/vendor/simplemde/dist/simplemde.min.js"></script>
 
 <?php if($this->debug()): ?>
 <script type="text/javascript" src="<?= SRC_URL ?>/assets/vendor/typeahead/jquery.typeahead.js"></script>

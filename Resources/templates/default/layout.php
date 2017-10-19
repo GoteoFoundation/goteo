@@ -1,4 +1,12 @@
-<!DOCTYPE html>
+<?php
+
+$sidebar = $this->get_sidebar_menu();
+$bodyClass = $this->bodyClass;
+if($sidebar) {
+    $bodyClass = $bodyClass ? "$bodyClass has-sidebar" : 'has-sidebar';
+}
+
+?><!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" lang="<?= $this->lang_current() ?>">
 
     <head>
@@ -22,7 +30,9 @@
 
     </head>
 
-    <body<?php if ($this->bodyClass) echo ' class="' . $this->bodyClass . '"' ?>>
+    <body<?php if ($bodyClass) echo ' class="' . $bodyClass . '"' ?>>
+
+    <?= $this->supply('sidebar', $this->insert("partials/sidebar", ['sidebarMenu' => $sidebar])) ?>
 
     <div id="wrapper">
 

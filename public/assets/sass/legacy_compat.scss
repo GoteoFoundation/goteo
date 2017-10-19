@@ -1,0 +1,116 @@
+/*
+ * Custom CSS Goteo
+ *
+ *
+ */
+@import 'variables';
+$breakpoint-sm: $dashboard-sidebar-width + 940;
+
+
+@mixin wrapper-props() {
+    @media(min-width: $breakpoint-sm) {
+        margin-left: $dashboard-sidebar-width;
+        min-width: $dashboard-sidebar-width;
+        // #main {
+        //     margin:0 20px;
+        // }
+    }
+}
+body {
+    #wrapper {
+        transition: margin-left .5s;
+        margin-left: 0;
+    }
+
+    &.has-sidebar {
+        #sidebar-menu {
+            width: 0;
+            position: absolute;
+            height: 100%;
+            z-index: 1001;
+        }
+
+        #wrapper {
+            @include wrapper-props();
+        }
+    }
+
+    &.sidebar-opened {
+        #sidebar-menu {
+            width: $dashboard-sidebar-width;
+        }
+        #wrapper {
+            @include wrapper-props();
+        }
+    }
+}
+
+@import 'layouts/sidebar';
+@import 'components/widgets';
+
+.top-navbar {
+    display:none;
+}
+
+#sidebar-menu {
+
+    li >a {
+        font-size: $font-size * 1.3 !important;
+        font-family: $primary-font;
+        line-height: 1.42857143;
+        text-decoration: none;
+    }
+
+    @media(min-width: $breakpoint-sm) {
+       button.toggle-sidebar {
+            display: none;
+        }
+    }
+
+    .nav {
+        padding-left: 0;
+        margin-bottom: 0;
+        list-style: none;
+        & >li {
+            position: relative;
+            display: block;
+        }
+        & >li >a {
+            position: relative;
+            display: block;
+            padding: 10px 15px;
+        }
+
+
+    }
+}
+
+.project-widget {
+    * {
+        font-family: $primary-font;
+        font-size: $font-size;
+    }
+    a.img-link .status-mark {
+        width: 99%;
+    }
+    .title a {
+        font-size: 18px;
+        text-decoration: none;
+    }
+}
+
+.label {
+    display: inline;
+    padding: .2em .6em .3em;
+    font-size: 75%;
+    font-weight: 700;
+    line-height: 1;
+    color: #fff;
+    text-align: center;
+    white-space: nowrap;
+    vertical-align: baseline;
+    border-radius: .25em;
+}
+.label-danger {
+    background-color: #d9534f;
+}

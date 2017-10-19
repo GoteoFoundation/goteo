@@ -6,14 +6,12 @@ $currencies = Currency::$currencies;
 
 $num_currencies=count($currencies);
 
-$select_currency=Currency::$currencies[$_SESSION['currency']]['html'];
-
 $langs = $this->lang_list('short');
 
 ?>
                         <ul class="currency">
                             <?php foreach ($currencies as $ccyId => $ccy): ?>
-                                <?php if ($ccyId == $_SESSION['currency']) continue; ?>
+                                <?php if ($ccyId == $this->get_currency('id')) continue; ?>
                                 <li>
                                 <a href="?currency=<?= $ccyId ?>"><?= $ccy['html'].' '.$ccyId ?></a>
                                 </li>
@@ -43,7 +41,7 @@ $langs = $this->lang_list('short');
                     <li><a href="/blog"><?=$this->text('regular-header-blog')?></a></li>
                     <li><a href="/faq"><?=$this->text('regular-header-faq')?></a></li>
                     <?php if($num_currencies>1) { ?>
-                    <li id="currency"><a href="#" ><?= $select_currency." ".$_SESSION['currency'] ?></a>
+                    <li id="currency"><a href="#" ><?= $this->get_currency()." ".$this->get_currency('id') ?></a>
 
                         <?php // TODO: UL CURRENCY AQUI ?>
 

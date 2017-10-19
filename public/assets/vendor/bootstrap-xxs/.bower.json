@@ -1,0 +1,32 @@
+{
+  "name": "bootstrap-xxs",
+  "homepage": "https://github.com/sirap-group/bootstrap-xxs",
+  "authors": [
+    "Rémi Becheras <rbecheras@sirap.fr>"
+  ],
+  "description": "Breakpoints at 480px and 384px for Bootstrap 3",
+  "main": "bootstrap-xxs-tn.css",
+  "keywords": [
+    "bootstrap",
+    "bootstrap-xss"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "version": "0.1.0",
+  "_release": "0.1.0",
+  "_resolution": {
+    "type": "version",
+    "tag": "0.1.0",
+    "commit": "b1fffb5ac2160ad5dfded6cee2ecde1b23e9ba19"
+  },
+  "_source": "https://github.com/sirap-group/bootstrap-xxs.git",
+  "_target": "^0.1.0",
+  "_originalSource": "bootstrap-xxs",
+  "_direct": true
+}

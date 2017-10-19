@@ -36,7 +36,7 @@ translator-glossary: 'Glosario de términos'
 translator-home: Portada
 translator-icon: 'Tipos de retorno/recompensa'
 translator-info: 'Ideas de about'
-translator-lang-no-perms: 'No tienes permiso para adminstrar este idioma'
+translator-lang-no-perms: 'No tienes permiso para administrar este idioma'
 translator-license: Licencias
 translator-milestone: Hitos
 translator-more-langs: Otros
@@ -69,3 +69,6 @@ translator-translations: Traducciones
 translator-workshop: Talleres
 translator-worthcracy: Meritocrácia
 translator-zone-not-found: 'Esta zona de traducción no es válida'
+translator-lang-not-found: 'Este idioma no está en la plataforma!'
+translator-percent: '%d&#37; traducido'
+translator-add-translation: 'Añadir una nueva traducción'

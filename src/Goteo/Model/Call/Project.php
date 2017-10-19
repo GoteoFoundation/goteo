@@ -44,13 +44,31 @@ namespace Goteo\Model\Call {
                 }
 
                 $and = "WHERE";
-                if (!isset($filters['all'])) {
+
+                if($filters['all']) $filters['status'] = 'all';
+                if($filters['published']) $filters['status'] = 'published';
+
+                $statuses = array();
+                $all = [Model\Project::STATUS_DRAFT, Model\Project::STATUS_REJECTED, Model\Project::STATUS_EDITING, Model\Project::STATUS_REVIEWING, Model\Project::STATUS_IN_CAMPAIGN, Model\Project::STATUS_FUNDED, Model\Project::STATUS_FULFILLED, Model\Project::STATUS_UNFUNDED];
+                if($filters['status'] == 'published') {
+                        $statuses = [Model\Project::STATUS_IN_CAMPAIGN, Model\Project::STATUS_FUNDED, Model\Project::STATUS_FULFILLED, Model\Project::STATUS_UNFUNDED];
+                }
+                elseif($filters['status'] == 'all') {
+                        $statuses = $all;
+                } elseif($filters['status']) {
+                    $ss = is_array($filters['status']) ? $filters['status'] : [$filters['status']];
+                    foreach($ss as $s) {
+                        if(in_array($s, $all)) {
+                            $statuses[] = $s;
+                        }
+                    }
+                }
+
+                if (empty($statuses)) {
                     $sqlFilter .= " $and (project.status > 1  OR (project.status = 1 AND project.id NOT REGEXP '[0-9a-f]{32}') )";
                     $and = "AND";
-                }
-                if (isset($filters['published'])) {
-                    $sqlFilter .= " $and project.status >= 3";
-                    $and = "AND";
+                } else {
+                    $sqlFilter .= " $and (project.status IN (" . implode(",", $statuses) . ") )";
                 }
 
                 // Lang
@@ -63,8 +81,6 @@ namespace Goteo\Model\Call {
                                     ON  eng.id = project.id
                                     AND eng.lang = 'en'";
                 }
-
-
 
 
 
@@ -161,16 +177,31 @@ namespace Goteo\Model\Call {
                 }
 
                 $and = "WHERE";
-                if (!isset($filters['all'])) {
-                    $sqlFilter .= " $and (project.status > 1  OR (project.status = 1 AND project.id NOT REGEXP '[0-9a-f]{32}') )";
-                    $and = "AND";
-                    $sql_draft ="project.id REGEXP '[0-9a-f]{32}' as draft,";
+                if($filters['all']) $filters['status'] = 'all';
+                if($filters['published']) $filters['status'] = 'published';
+
+                $statuses = array();
+                $all = [Model\Project::STATUS_DRAFT, Model\Project::STATUS_REJECTED, Model\Project::STATUS_EDITING, Model\Project::STATUS_REVIEWING, Model\Project::STATUS_IN_CAMPAIGN, Model\Project::STATUS_FUNDED, Model\Project::STATUS_FULFILLED, Model\Project::STATUS_UNFUNDED];
+                if($filters['status'] == 'published') {
+                        $statuses = [Model\Project::STATUS_IN_CAMPAIGN, Model\Project::STATUS_FUNDED, Model\Project::STATUS_FULFILLED, Model\Project::STATUS_UNFUNDED];
                 }
-                if (isset($filters['published'])) {
-                    $sqlFilter .= " $and project.status >= 3";
-                    $and = "AND";
+                elseif($filters['status'] == 'all') {
+                        $statuses = $all;
+                } elseif($filters['status']) {
+                    $ss = is_array($filters['status']) ? $filters['status'] : [$filters['status']];
+                    foreach($ss as $s) {
+                        if(in_array($s, $all)) {
+                            $statuses[] = $s;
+                        }
+                    }
                 }
 
+                if (empty($statuses)) {
+                    $sqlFilter .= " $and (project.status > 1  OR (project.status = 1 AND project.id NOT REGEXP '[0-9a-f]{32}') )";
+                    $and = "AND";
+                } else {
+                    $sqlFilter .= " $and (project.status IN (" . implode(",", $statuses) . ") )";
+                }
 
                 $sql = "SELECT
                             project.id as id,
@@ -187,7 +218,6 @@ namespace Goteo\Model\Call {
                         GROUP BY project.id
                         ORDER BY project.name ASC
                         ";
-
                 $query = static::query($sql, $values);
                 $items = $query->fetchAll(\PDO::FETCH_OBJ);
 

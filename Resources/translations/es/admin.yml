@@ -1,3 +1,4 @@
+admin-action: 'Acción de adminstrador'
 admin-NO: 'NO'
 admin-YES: SI
 admin-account-amount: 'Cantidad aportada'
@@ -64,6 +65,7 @@ admin-no: 'No'
 admin-percent: Porcentaje
 admin-project: Proyecto
 admin-projects: Proyectos
+admin-filters: 'Filtros'
 admin-remove-filters: 'Quitar filtros'
 admin-sponsors: Servicios
 admin-status: Estado
@@ -74,3 +76,4 @@ admin-text-type-plain: 'Texto simple'
 admin-user: Usuario
 admin-users: Usuarios
 admin-yes: Si
+admin-impersonate-user: Suplantar a %s

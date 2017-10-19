@@ -60,7 +60,7 @@ class Config {
 				throw $e;
 			}
 			$code = \Symfony\Component\HttpFoundation\Response::HTTP_FORBIDDEN;
-			\Goteo\Application\View::addFolder(__DIR__ . '/../../../Resources/templates/default');
+			\Goteo\Application\View::addFolder(__DIR__ . '/../../../Resources/templates/responsive');
 			// TODO: custom template
 			$info = '';
 			$trace = EventListener\ExceptionListener::jTraceEx($e);
@@ -68,6 +68,7 @@ class Config {
 				$info = '<pre>' . $trace . '</pre>';
 			}
 
+            \Goteo\Application\View::setTheme('responsive');
 			die(\Goteo\Application\View::render('errors/config', ['msg' => $e->getMessage(), 'info' => $info, 'file' => $file, 'code' => $code], $code));
 			return;
 		}
@@ -223,7 +224,8 @@ class Config {
 		View::getEngine()->loadExtension(new \Goteo\Util\Foil\Extension\GoteoCore(), [], true);
 		View::getEngine()->loadExtension(new \Goteo\Util\Foil\Extension\TextUtils(), [], true);
 		View::getEngine()->loadExtension(new \Goteo\Util\Foil\Extension\ModelsData(), [], true);
-		View::getEngine()->loadExtension(new \Goteo\Util\Foil\Extension\LangUtils(), [], true);
+        View::getEngine()->loadExtension(new \Goteo\Util\Foil\Extension\LangUtils(), [], true);
+        View::getEngine()->loadExtension(new \Goteo\Util\Foil\Extension\Forms(), [], true);
 
 		// Some defaults
 		View::getEngine()->useData([

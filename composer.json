@@ -56,13 +56,18 @@
         "mockery/mockery": "^0.9.4",
         "cron/cron": "1.0.*@dev",
         "bramus/monolog-colored-line-formatter": "~2.0",
-        "setasign/fpdf": "1.8",
+        "setasign/fpdf": ">=1.8.1",
         "rych/phpass": "3.0.*@beta",
         "erusev/parsedown": "^1.6",
         "omnipay/omnipay": "^2.3",
         "omnipay/paypal": "dev-master",
+        "symfony/templating": "2.8",
+        "symfony/framework-bundle": "2.8",
+        "league/html-to-markdown": "^4.4",
         "snowplow/referer-parser": "dev-master",
-        "ua-parser/uap-php": "^3.4"
+        "ua-parser/uap-php": "^3.4",
+        "symfony/security-csrf": "2.8",
+        "symfony/validator": "2.8"
 
     },
 

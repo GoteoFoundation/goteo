@@ -1,0 +1,46 @@
+Index: css/bootstrap.css
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- css/bootstrap.css	(revision )
++++ css/bootstrap.css	(revision )
+@@ -6013,7 +6013,7 @@
+ .visible-lg-inline-block {
+   display: none !important;
+ }
+-@media (max-width: 767px) {
++@media (min-width: 480px) and (max-width: 767px) {
+   .visible-xs {
+     display: block !important;
+   }
+@@ -6028,17 +6028,17 @@
+     display: table-cell !important;
+   }
+ }
+-@media (max-width: 767px) {
++@media (min-width: 480px) and (max-width: 767px) {
+   .visible-xs-block {
+     display: block !important;
+   }
+ }
+-@media (max-width: 767px) {
++@media (min-width: 480px) and (max-width: 767px) {
+   .visible-xs-inline {
+     display: inline !important;
+   }
+ }
+-@media (max-width: 767px) {
++@media (min-width: 480px) and (max-width: 767px) {
+   .visible-xs-inline-block {
+     display: inline-block !important;
+   }
+@@ -6133,7 +6133,7 @@
+     display: inline-block !important;
+   }
+ }
+-@media (max-width: 767px) {
++@media (min-width: 480px) and (max-width: 767px) {
+   .hidden-xs {
+     display: none !important;
+   }

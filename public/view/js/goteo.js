@@ -79,7 +79,7 @@ $(function() {
         $('.tipsy').tipsy();
     }
     /* Rolover sobre los cuadros de color */
-    $("li").hover(
+    $("#menu li").hover(
             function () { $(this).addClass('active'); },
             function () { $(this).removeClass('active'); }
     );

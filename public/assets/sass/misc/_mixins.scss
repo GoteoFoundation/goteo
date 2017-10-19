@@ -1,0 +1,35 @@
+/* Used to animate sidebar right arrow */
+@mixin blink-function() {
+  0% {opacity:1; color: $color-white;}
+  10% {opacity:0.8; color: $color-cyan;}
+  20% {opacity:1; color: $color-white;}
+  100% {opacity:1; color: $color-white;}
+}
+
+/* reduces icon sizes on small screens */
+@mixin icon-responsive($size_w, $size_h) {
+    width: $font-size * $size_w;
+    height: $font-size * $size_h;
+    @media (max-width: $breakpoint-sm - 1) {
+        width: $font-size * $size_w / 1.5;
+        height: $font-size * $size_h / 1.5;
+    }
+    @media (max-width: $breakpoint-xs - 1) {
+        width: $font-size * $size_w / 2;
+        height: $font-size * $size_h / 2;
+    }
+}
+/* allows to use a SVG as a background and colorize it */
+@mixin svg-background($svg) {
+    background-color: $primary-color;
+    -webkit-mask-image: url($svg);
+    -webkit-mask-repeat: no-repeat;
+    -webkit-mask-position: center;
+    -webkit-mask-size: 90% auto;
+    // -webkit-mask-size:auto 100%;
+    mask-image: url($svg);
+    mask-repeat: no-repeat;
+    mask-position: center;
+    mask-size: 90% auto;
+    // mask-size: auto 100%;
+}

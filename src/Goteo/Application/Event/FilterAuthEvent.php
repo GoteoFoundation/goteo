@@ -56,7 +56,7 @@ class FilterAuthEvent extends Event
             $return = Session::getAndDel('jumpto');
         }
 
-    // die($request->query->get('return'));
+        // die($return);
 
         return new RedirectResponse($return);
     }

@@ -11,12 +11,23 @@
 namespace Goteo\Application\Event;
 
 use Goteo\Application\Session;
+use Symfony\Component\HttpFoundation\Response;
 
 class FilterProjectEvent extends \Goteo\Console\Event\FilterProjectEvent
 {
     protected $user;
+    protected $response = null;
 
     public function getUser() {
         return Session::getUser();
+    }
+
+    public function setResponse(Response $response) {
+        $this->response = $response;
+        return $this;
+    }
+
+    public function getResponse() {
+        return $this->response;
     }
 }

@@ -1,18 +1,18 @@
 ID_DEL_TEXTO: 'Text ID_DEL_TEXTO'
 admin_no_permission: 'No tens permisos per accedir a <strong>%s</strong>'
-bazar-description-seo: 'Regalos solidarios crowdfunding en Goteo.org.'
-bazar-title-seo: 'Regalos Solidarios :: Goteo.org'
+bazar-description-seo: 'Regals solidaris crowdfunding a Goteo.org.'
+bazar-title-seo: 'Regals solidaris :: Goteo.org'
 blog-comments: Comentaris
 blog-main-header: 'Blog de Goteo'
-calendar-calls-category: Convocatorias
-calendar-events-category: Eventos
+calendar-calls-category: 'Convocatòries'
+calendar-events-category: 'Events'
 calendar-home-hour: a
-calendar-home-title: 'Próximo evento'
-calendar-net-category: 'Red y política'
+calendar-home-title: 'Proper event'
+calendar-net-category: 'Xarxa i política'
 calendar-projects-category: Proyectos
 calendar-share: Compartir
 calendar-workshops-category: Talleres
-couldn: 'Text couldn'
+couldn: 'No s''ha pogut'
 error-contact-email-invalid: 'El correu electrònic que has escrit no és vàlid'
 error-image-name: 'Error en el nom de l''arxiu'
 error-image-size: 'Error en la mida de l''arxiu'
@@ -37,14 +37,16 @@ goteo-return-button: 'Tornar a Goteo'
 guide-dashboard-user-access: 'Des d''aquí pots modificar les dades amb que accedeixes al teu compte de Goteo.'
 guide-dashboard-user-personal: 'Només has d''omplir aquestes dades si has creat un projecte i vols que sigui cofinançat i recolzat mitjançant Goteo. La informació d''aquest apartat és necessària per contactar-te en cas que obtinguis el finançament, i que així es pugui fer efectiu l''ingrés.'
 guide-project-comment: guide-project-comment
-guide-project-contract-information: "<b>A partir d'aquest pas només has d'emplenar les dades si vols que el teu projecte sigui cofinançat i recolzat mitjançant Goteo.</b>\r\n<br><br>\r\nLa informació d'aquest apartat és necessària per contactar-te en cas que obtinguis el finançament requerit, i que així es pugui efectuar l'ingrés."
+guide-project-contract-information: "La informació d'aquest apartat és necessària per contactar-te en cas que obtinguis el finançament requerit, i que així es pugui efectuar l'ingrés."
 guide-project-costs: "<b>En aquesta secció has d'elaborar un petit pressupost basat en els costos que calculis tindrà la realització del projecte.</b><br>\r\n<br>\r\nHas d'especificar segons tasques, infraestructura o materials. Intenta ser realista en els costos i explicar breument per a què necessites cobrir cadascun d'ells. Tingues en compte que per norma general, la major part del projecte haurà de ser realitzat directament per la persona o equip que promou el projecte, i no subcontractat a tercers. Al càlcul també has de tenir en compte les comissions de prestació de serveis de Goteo i de transacció, que sumen entre un 4'8% i un 6% aprox., depenent de si activeu l'opció de pagament via Paypal o no (<a href=\"/faq/sponsor#q98\" target=\"new\">+ info a les nostres FAQ)</a>.<br><br>\r\n<b>Molt important</b>: A Goteo diferenciem entre costos imprescindibles i costos addicionals. Els primers han d'aconseguir-se íntegrament per poder obtenir el finançament, mentre que els segon se sol·liciten i obtenen directament en una campanya posterior, una vegada està en marxa el projecte, per poder poder cobrir costos d'optimització del mateix (difusió, disseny, abast, més unitats, etc). Aquests costos addicionals no poden superar la meitat dels costos totals del projecte."
 guide-project-description: '<strong>Aquest és l''apartat on explicar amb detall els aspectes conceptuals del projecte.</strong><br><br>És la primera informació amb que qualsevol usuari de la xarxa es trobarà, així que tingues cura de la redacció i evita les faltes d''ortografia. Veuràs que hi ha camps obligatoris com incloure un vídeo o pujar imatges. Això és així perquè els considerem imprescindibles per començar amb èxit una campanya de recaptació de fons a Goteo.<br><br> Tingues en compte que el més valorat en Goteo és: la informació o coneixement lliure d''interès general que el teu projecte aportarà a la comunitat, l''originalitat, aspirar a resoldre una demanda social, el potencial per atreure a una comunitat àmplia de persones interessades, deixar clar que l''equip promotor posseeix les capacitats i experiència per poder portar-ho a bon termini. Per tant no perdis de vista informar sobre aquests aspectes.'
 guide-project-images: 'Aquest és l''apartat per afegir les imatges del projecte. Poden ser esquemes, captures de pantalla, fotografies, il·lustracions, storyboards, etc. (la seva llicència d''autoria ha de ser compatible amb la que seleccions a l''apartat 5). Pots pujar tantes com vulguis!'
 guide-project-rewards: '<strong>En aquest apartat has d''establir què ofereix el projecte a canvi als seus cofinançadors.</strong>'
 guide-project-support: guide-project-support
 guide-project-supports: '<strong>En aquest apartat pots especificar quines altres ajudes, a part de finançament, es necessiten per dur a terme el projecte.</strong><br><br>Poden ser tasques o accions a càrrec d''altres persones (traduccions, gestions, difusió, etc), o bé préstecs específics (de material, transport, maquinari, etc).'
-guide-project-updates: '<b>És molt important que els projectes mantinguin informats els seus cofinançadors i la resta de persones potencialment interessades sobre com avança la seva campanya. Des d''aquest apartat pots publicar missatges d''actualització sobre el projecte, com una espècie de blog públic.</b> A Goteo a més, una vegada s''han aconseguit els fons mínims, per a la segona ronda de cofinançament és crític explicar regularment com ha arrencat la producció, avenços, problemes, etc que permetin la major transparència possible i saber com evoluciona l''inici del projecte, per així tractar de generar més interès i comunitat al seu voltant.'
+guide-project-updates: '<b>És molt important que els projectes mantinguin informats els seus cofinançadors i la resta de persones potencialment interessades sobre com avança la seva campanya. Des d''aquest apartat pots publicar missatges d''actualització sobre el projecte, com una mena de blog públic.</b> A Goteo a més, una vegada s''han aconseguit els fons mínims, per a la segona ronda de cofinançament és crític explicar regularment com ha arrencat la producció, avenços, problemes, etc que permetin la major transparència possible i saber com evoluciona l''inici del projecte, per així tractar de generar més interès i comunitat al seu voltant.'
+guide-project-invests: 'Des d''aquest apartat podràs gestionar els teus cofinançadors, les recompenses que han triat i també posar-te en contacte amb ells si ho consideres necessari.'
+
 header-about-side: 'Allò que ens mou'
 home-posts-header: Novetats
 horizontal-project-investors: cofinanciadores
@@ -60,7 +62,7 @@ mandatory-register-field-email: 'Has d''indicar un email'
 mark-pending: 'Marcar com a pendent de traduir'
 meta-description-index: 'Goteo és la xarxa oberta de crowdfunding, col·laboracions i formació, líder en projectes d''innovació social. Amb 2 rondes i avantatges fiscals per a donants!'
 node-menu-home: Node
-overview-field-about: 'Característiques bàsiques'
+overview-field-about: 'Característiques bàsiques i objectius'
 overview-field-motivation: 'Motivació i a qui va dirigit el projecte '
 profile-about-header: 'Sobre mi'
 project-invest-total: 'Total d''aportacions'
@@ -70,15 +72,18 @@ regular-admin_board: 'Panell admin'
 regular-allsome: 'tots/alguns de'
 regular-anonymous: Anònim
 regular-ask: Preguntar
+regular-submit: Envia
 regular-by: 'Per:'
 regular-calendar: Calendar
 regular-channel: Canal
 regular-collaborate: 'Col·labora '
 regular-create: 'Crea un projecte'
 regular-days: dies
-regular-delete: Esborrar
+regular-delete: Elimina
 regular-discover: 'Descobreix projectes'
-regular-edit: Editar
+regular-download-pdf: 'Descarrega el PDF'
+regular-actions: Accions
+regular-edit: Edita
 regular-email: Email
 regular-facebook: Facebook
 regular-faq: 'Preguntes freqüents '
@@ -93,6 +98,7 @@ regular-header-faq: FAQ
 regular-header-glossary: 'Principis per a una economia oberta'
 regular-hello: Hola
 regular-here: aquí
+regular-help: Ajuda
 regular-home: Inici
 regular-identica: Identi.ca
 regular-im: Sóc
@@ -111,12 +117,14 @@ regular-manage_board: 'Panell gestoria'
 regular-mandatory: 'Camp obligatori!'
 regular-media_legend: Llegenda
 regular-menu: Menú
-regular-message-clipboard-fail: 'Sel·lecciona i copia aquest enllaç'
+regular-menu-personal: Menú personal
+regular-message-clipboard-fail: 'Selecciona i copia aquest enllaç'
 regular-message_fail: 'Hi ha hagut algun error en enviar el missatge'
 regular-message_success: 'Missatge enviat correctament'
 regular-months: 'mesos '
 regular-more_info: '+ info'
 regular-news: 'Notícies: '
+regular-name: Nom
 regular-no: 'No'
 regular-of: de
 regular-preview: 'Previsualitzar '
@@ -140,19 +148,38 @@ regular-share-twitter: 'Segueix-nos a Twitter'
 regular-share_this: 'Compartir a:'
 regular-sorry: 'Ho sentim'
 regular-thanks: Gràcies
+regular-title: Títol
+regular-text: Text
+regular-media: Vídeo (Youtube, Vimeo)
 regular-total: Total
 regular-translate_board: 'Panell traductor'
+regular-translate: 'Tradueix'
+regular-translations: 'Traduccions'
 regular-twitter: Twitter
-regular-view_project: Projecte
+regular-view: Veure
+regular-view_project: Veure el projecte
 regular-web: Web
 regular-weeks: setmanes
 regular-yes: Sí
-regular-description: 'Descripció'
+regular-description: Descripció
+regular-image: Imatge
+regular-images: Imatges
 regular-url: 'URL'
-session-about-to-expire: 'Tu sesión expirará en 10 minutos. ¿Quieres recargar la página para renovarla?'
-session-expired: 'Tu sesión en goteo ha expirado!'
+regular-load-more: 'Carregar-ne més'
+regular-analytics: 'Google Analytics'
+regular-facebook-pixel: 'Facebook Pixel'
+regular-call: Matchfunding
+regular-num-comments: '%s comentaris'
+regular-manage: 'Gestiona'
+regular-no-edit-permissions: No tens permís per editar aquesta entrada!
+regular-messages: Missatges
+regular-unknown: Desconegut
+regular-input: Aportació
+regular-amount: Import
+session-about-to-expire: 'La teva sessió expirarà en 10 minuts. ¿Vols recarregar la pàgina per renovar-la?'
+session-expired: 'La teva sessió ha expirat!'
 stories-user-project: "%s, del projecte: %s\r\n"
-tooltip: 'Text tooltip'
+tooltip: 'Text d''ajuda'
 tooltip-dashboard-user-access_data: 'Aquestes són les teves dades actuals d''accés. L''única cosa que no es pot canviar és el login o nom d''usuari.'
 tooltip-dashboard-user-change_email: 'Des d''aquí pots canviar l''adreça de correu electrònic on reps els missatges de Goteo.'
 tooltip-dashboard-user-change_password: 'Des d''aquí pots canviar la contrasenya amb que accedeixes a Goteo.'
@@ -162,7 +189,7 @@ tooltip-dashboard-user-new_email: 'Indica la nova adreça de correu electrònic 
 tooltip-dashboard-user-new_password: 'Escriu la nova contrasenya amb que vols accedir a Goteo.'
 tooltip-dashboard-user-user_password: 'Escriu la contrasenya actual amb que accedeixes a Goteo.'
 tooltip-project-schedule: 'Visualització de com queda l''agenda de producció del teu projecte. Recorda que només has d''assenyalar les noves tasques a realitzar, no les que ja s''hagin dut a terme.'
-translate-home-guide: 'Message pour le traducteur'
+translate-home-guide: 'Missatge pel traductor'
 user-account-inactive: 'El compte està desactivat. Has de recuperar la contrasenya per activar-lo de nou'
 user-activate-fail: 'Error en activar el compte d''usuari'
 user-changeemail-fail: 'Error en canviar l''email'
@@ -170,14 +197,17 @@ user-register-success: 'L''usuari s''ha registrat correctament. A continuació r
 validate-project-social_rewards: 'És obligatori indicar com a mínim un retorn col·lectiu'
 validate-project-total-costs: 'El cost òptim no pot superar en més d''un 40% el cost mínim. Has de revisar el desglossament de costos.'
 regular-cancel: Cancel·lar
-regular-cancel-back: 'Cancel·lar i tornar enrere'
+regular-cancel-back: 'Cancel·lar i torna enrere'
+regular-back: 'Torna enrere'
 regular-date: Data
-regular-download: Descarregar
+regular-download: Descarrega
 regular-female: Dona
 regular-instagram: Instagram
 regular-male: Home
+regular-others: Altres
 regular-matchfunding: 'Match funding'
 regular-spread: DIFUSIÓ
 regular-status: Estat
 regular-year: Any
 support-our-mission: 'Dóna suport a la nostra missió'
+user-promoter: "L'usuari impulsor"

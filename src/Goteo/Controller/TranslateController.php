@@ -199,7 +199,7 @@ class TranslateController extends \Goteo\Core\Controller {
                         "/translate/$zone/$id",
                         new FeedBody(null, null, 'translator-feed-translated-desc', [
                                 '%USER%'    => Feed::item('user', Session::getUser()->name, Session::getUser()->id),
-                                '%LINK%'  => Feed::item('translate', ucfirst($zone) . '/' . $id, $id ),
+                                '%LINK%'  => Feed::item('translate', ucfirst($zone) . '/' . $id, $zone . '/' . $id ),
                                 '%LANGS%'  => '<strong>'.implode('</strong>, <strong>', $langs_ok) .'</strong>',
                             ])
                     )

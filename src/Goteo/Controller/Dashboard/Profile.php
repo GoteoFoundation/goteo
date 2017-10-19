@@ -195,7 +195,7 @@ namespace Goteo\Controller\Dashboard {
                     $user->email = $_POST['user_nemail'];
                     unset($_POST['user_nemail']);
                     unset($_POST['user_remail']);
-                    Message::info(Text::get('user-email-change-sended'));
+                    Message::info(Text::get('user-email-change-sent'));
 
                     $log_action = 'Cambiado su email'; //feed admin
                 }

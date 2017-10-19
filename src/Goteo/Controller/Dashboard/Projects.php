@@ -61,8 +61,8 @@ namespace Goteo\Controller\Dashboard {
 
             try {
                 // si está seleccionando otro proyecto
-                if ( $action == 'select' && !empty($_POST['project']) ) {
-                    $_SESSION['project'] = $_POST['project'];
+                if ( $action == 'select' && !empty($_REQUEST['project']) ) {
+                    $_SESSION['project'] = $_REQUEST['project'];
                     throw new Redirection('/dashboard/projects/'.$option);
 
                 } elseif ( !empty($_SESSION['project']) ) {
@@ -220,7 +220,7 @@ namespace Goteo\Controller\Dashboard {
                 'closed' => 3,
                 'review' => 4,
                 'ready' => 5,
-                'recieved' => 6,
+                'received' => 6,
                 'payed' => 7,
                 'fulfilled' => 8,
                 'separador' => 9,

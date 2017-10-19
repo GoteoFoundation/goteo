@@ -149,7 +149,6 @@ class ExceptionListener extends AbstractListener {
             return;
         }
 
-        if(!$request->isXmlHttpRequest()) {
             // redirect to login on acces denied exception if not logged already
             if ($exception instanceof ControllerAccessDeniedException) {
                 $error = $exception->getMessage() ? $exception->getMessage() : Text::get('user-login-required-access');
@@ -159,6 +158,7 @@ class ExceptionListener extends AbstractListener {
                     return;
                 }
 
+            if(!$request->isXmlHttpRequest()) {
                 Message::error($error);
                 if (!Session::isLogged()) {
                     $event->setResponse(new RedirectResponse('/user/login?return=' . rawurlencode($request->getPathInfo())));
@@ -214,11 +214,11 @@ class ExceptionListener extends AbstractListener {
 
         // TODO:: create a low level path and avoid changing theme here
         try {
-            View::setTheme('default');
+            View::setTheme('responsive');
             $view = View::render('errors/' . $template, ['title' => $exception->getMessage(), 'msg' => $info, 'code' => $code], $code);
 
         } catch (\Exception $e) {
-            View::addFolder(__DIR__ . '/../../../../Resources/templates/default');
+            View::addFolder(__DIR__ . '/../../../../Resources/templates/responsive');
             $view = View::render('errors/internal', ['msg' => $exception->getMessage(), 'file' => $file, 'code' => $code, 'info' => $e->getMessage() . "\n$info"], $code);
         }
 

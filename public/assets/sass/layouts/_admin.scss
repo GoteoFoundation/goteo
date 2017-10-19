@@ -1,0 +1,13 @@
+/* DIV impersonator */
+.user-shadowing-bar {
+    font-weight: 700;
+    background: #D9534F;
+    color:$color-white;
+    white-space: nowrap;
+    text-align: center;
+    vertical-align: baseline;
+    padding: 0.3em 0.6em 0.3em;
+    a {
+        color: $color-white;
+    }
+}

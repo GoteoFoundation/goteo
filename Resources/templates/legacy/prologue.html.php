@@ -42,11 +42,12 @@ use Goteo\Library\Text,
 
 // Incluir la nueva plantilla compilada (del nuevo sistema de vistas, no hay problema, es simple php)
 // Version "dist"
+
 if(is_file(GOTEO_WEB_PATH . 'templates/partials/header/styles.php')) {
     include GOTEO_WEB_PATH . 'templates/partials/header/styles.php';
 }
 else {
-    include GOTEO_PATH . 'Resources/templates/default/partials/header/styles.php';
+    include GOTEO_PATH . 'public/templates/default/partials/header/styles.php';
 }
  ?>
 

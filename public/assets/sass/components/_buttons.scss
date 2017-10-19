@@ -1,0 +1,201 @@
+@import "compass/css3";
+
+/* Custom buttons */
+.btn-info {
+    .icon {
+        background-color: $color-white;
+    }
+}
+.btn-success{
+    background-color: $background-green !important;
+    border-color: $background-green !important;
+    color: $color-white !important;
+    &:hover {
+        background-color:darken( $background-green, 10%);
+    }
+    .icon {
+        background-color: $color-white;
+    }
+}
+.btn-pink{
+    background-color: $color-pink;
+    color: $color-white !important;
+    &:hover {
+        background-color:darken($color-pink, 10%);
+    }
+    .icon {
+        background-color: $color-white;
+    }
+}
+.btn-green{
+    background-color: $color-green;
+    color: $color-white !important;
+    &:hover {
+        background-color:darken($color-green, 10%);
+    }
+    .icon {
+        background-color: $color-white;
+    }
+}
+.btn-cyan{
+    background-color: $color-cyan;
+    color: $color-white !important;
+    &:hover {
+        background-color:darken($color-cyan, 10%);
+    }
+    .icon {
+        background-color: $color-white;
+    }
+}
+.btn-grey {
+    background-color: $background-light-grey;
+    color: $color-light-grey !important;
+    * {
+        color: $color-light-grey !important;
+    }
+    &:hover {
+        background-color:darken( $background-light-grey, 10%);
+    }
+}
+.btn-lilac {
+    background-color: $color-lilac;
+    color: $color-white !important;
+    &:hover {
+        background-color:darken( $color-lilac, 10%);
+        color: $color-white !important;
+        * {
+            color: $color-white !important;
+        }
+    }
+    .icon {
+        background-color: $color-white;
+    }
+}
+.btn-dark {
+    background-color: $color-light-grey;
+    color: $color-white !important;
+    &:hover {
+        background-color:darken($color-light-grey, 10%);
+    }
+    .icon {
+        background-color: $color-white;
+    }
+}
+.btn-white {
+    background-color: $color-white;
+    color: $color-cyan;
+    &:hover {
+        background-color:darken($color-white, 10%);
+    }
+}
+.btn-cyan {
+    background-color: $color-cyan;
+    color: $color-white !important;
+    &:hover {
+        background-color:darken($color-cyan, 10%);
+    }
+    .icon {
+        background-color: $color-white;
+    }
+}
+.btn-fashion {
+    background: $color-pink;
+    @include background(linear-gradient(to right, $color-pink 28%,$color-red 100%));
+    color: $color-white !important;
+    &:hover {
+        background: darken($color-pink, 10%);
+        @include background(linear-gradient(to right, darken($color-pink, 10%) 28%,darken($color-red, 10%) 100%));
+    }
+    .icon {
+        background-color: $color-white;
+    }
+}
+
+.btn-orange {
+    background: $color-orange;
+    @include background(linear-gradient(to right, $color-orange 28%,$color-red 100%));
+    color: $color-white !important;
+    &:hover {
+    background: darken($color-orange, 10%);
+    @include background(linear-gradient(to right, darken($color-orange, 10%) 28%,darken($color-red, 10%) 100%));
+    color: $color-white !important;
+    }
+    .icon {
+        background-color: $color-white;
+    }
+}
+
+button.pink{
+    background-color: $background-pink;
+    font-size:1.2em;
+    color: $color-white !important;
+}
+button.custom-green{
+    background-color: $color-green;
+    font-size:1.2em;
+    color: $color-white !important;
+    font-weight: bold;
+}
+
+button.pink:hover, button.pink:focus, button.custom-green:hover,
+.btn-pink:hover, .btn-pink:focus, .btn-green:hover, .btn-cyan:hover{
+	color:$color-white !important;
+}
+
+
+/* same for labels */
+.label-cyan {
+    background-color: $color-cyan;
+    color: $color-white;
+}
+.label-lilac {
+    background-color: $color-lilac;
+    color: $color-white;
+}
+.label-orange {
+    background-color: $color-orange;
+    color: $color-white;
+}
+.label-big {
+    font-size: $font-size;
+    font-weight: 400;
+    padding: 2px 4px;
+}
+.alert-cyan {
+    background-color: $color-cyan;
+    color: $color-white;
+}
+.alert-lilac {
+    background-color: $color-lilac;
+    color: $color-white;
+}
+.alert-orange {
+    background-color: $color-orange;
+    color: $color-white;
+}
+
+/* other helpers */
+.text-cyan {
+    color: $color-cyan;
+}
+.text-lilac {
+    color: $color-lilac;
+}
+.text-orange {
+    color: $color-orange;
+}
+
+.progress-bar-cyan {
+    background-color: $color-cyan;
+}
+.progress-bar-lilac {
+    background-color: $color-lilac;
+}
+
+.progress-bar-light {
+    background-color: darken($background-light-body, 10%);
+}
+.progress-bar-light-lilac {
+    background-color: darken($background-lighter-lilac, 10%);
+}
+

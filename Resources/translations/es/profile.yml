@@ -30,8 +30,6 @@ profile-fields-image-title: 'Imagen de perfil'
 profile-fields-social-title: 'Perfiles sociales'
 profile-main-header: 'Datos de perfil'
 profile-suggest-projects-interest: 'Quizás quieras apoyar proyectos de categorías similares'
-regular-analytics: 'Google Analytics'
-regular-facebook-pixel: 'Facebook Pixel'
 step-1: Perfil
 step-userProfile: 'Paso: Usuario / Perfil'
 tooltip-user-about: "Como red social, Goteo pretende ayudar a difundir y financiar proyectos interesantes entre el máximo de gente posible. Para eso es importante la información que puedas compartir sobre tus habilidades o experiencia (profesional, académica, aficiones, etc).\r\n"
@@ -64,3 +62,5 @@ validate-user-field-name: 'Pon tu nombre completo para mejorar la valoración de
 validate-user-field-twitter: 'El usuario de Twitter no es válido'
 validate-user-field-web: 'Debes poner la dirección (URL) de la web'
 validate-user-field-webs: 'Pon tu página web para mejorar la valoración del proyecto de cara a determinar si publicarlo en Goteo.'
+help-user-analytics: 'Ingresa, en caso de que dispongas de uno, tu ID de seguimiento de Google Analytics para habilitar Google Analytics en tu proyecto.<br>El ID debe estar en este formato: <strong>UA-000000-01</strong> (ejemplo de ID)<br><a href="https://analytics.google.com" target="_blank">Ir a Google Analytics</a>'
+help-user-facebook-pixel: 'Ingresa el ID de tu Facebook Pixel, si quieres medir las conversiones de una campaña en Facebook.<br><a href="https://www.facebook.com/ads/manager/pixel/facebook_pixel" target="_blank">Ir a Píxel de Facebook</a>'

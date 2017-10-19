@@ -107,7 +107,7 @@ class Lang {
         if(isset($all[$id])) {
             return str_replace(array_keys($parameters), array_values($parameters), $all[$id]);
         }
-        // Yaml files (message $domain)
+        // Yaml files (messages $domain)
         return static::$translator->trans($id, $parameters, null, $locale);
     }
 
@@ -272,6 +272,31 @@ class Lang {
      */
     static public function isActive($lang, $public_only = true) {
         return static::current($public_only) === $lang;
+    }
+
+    static public function getUrl($lang) {
+        $url = Config::get('url.main');
+        $url_lang = Config::get('url.url_lang');
+        $path = '/';
+        if($request = App::getRequest()) {
+            // $path = $request->getRequestUri();
+            $path = $request->getBaseUrl().$request->getPathInfo();
+            $get = $request->query->all();
+            if(isset($get['lang'])) unset($get['lang']);
+            if(!$url_lang) {
+                $get['lang'] = $lang;
+            }
+            if ($get) {
+                $path .= '?' . http_build_query($get);
+            }
+        }
+        // echo "[$url][$url_lang] [$path]";die;
+        if($url_lang) {
+            $url = (Config::get('ssl') ? 'https://' : 'http://');
+            $url .= ( Config::get('lang') == $lang ? 'www' : $lang) . '.';
+            $url .= $url_lang;
+        }
+        return $url . $path;
     }
 
     static public function setFromGlobals(Request $request = null) {

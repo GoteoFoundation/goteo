@@ -1,0 +1,4 @@
+admin-action: 'Administrator action'
+admin-filters: Filters
+admin-remove-filters: 'Remove filters'
+admin-impersonate-user: Impersonate %s

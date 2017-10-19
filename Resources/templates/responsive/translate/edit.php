@@ -121,7 +121,7 @@ $default_lang = $this->get_query('hl');
 
 <?php $this->section('translate-head') ?>
   <link href="<?= SRC_URL ?>/assets/vendor/summernote/summernote.css" rel="stylesheet">
-  <link rel="stylesheet" href="<?= SRC_URL ?>/assets/vendor/simplemde-markdown/simplemde.min.css" type="text/css" />
+  <link rel="stylesheet" href="<?= SRC_URL ?>/assets/vendor/simplemde/dist/simplemde.min.css" type="text/css" />
 <?php $this->append() ?>
 
 
@@ -131,7 +131,7 @@ $default_lang = $this->get_query('hl');
   <?php if($translator->getType() === 'html'): ?>
     <script src="<?= SRC_URL ?>/assets/vendor/summernote/summernote.js"></script>
   <?php elseif($translator->getType() === 'md'): ?>
-    <script type="text/javascript" src="<?= SRC_URL ?>/assets/vendor/simplemde-markdown/simplemde.min.js"></script>
+    <script type="text/javascript" src="<?= SRC_URL ?>/assets/vendor/simplemde/dist/simplemde.min.js"></script>
   <?php endif ?>
 
 <script type="text/javascript">

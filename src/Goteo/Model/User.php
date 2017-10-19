@@ -207,8 +207,9 @@ class User extends \Goteo\Core\Model {
                 }
 
                 // Avatar
-                if (is_array($this->user_avatar) && !empty($this->user_avatar['name'])) {
+                if ((is_array($this->user_avatar) && !empty($this->user_avatar['name'])) || ($this->user_avatar instanceOf Image && $this->user_avatar->tmp)) {
                     $image = new Image($this->user_avatar);
+                    // print_r($image);$image->validate($errors);print_r($errors);die;
 
                     if ($image->save($errors)) {
                         $data[':avatar'] = $image->id;
@@ -337,6 +338,7 @@ class User extends \Goteo\Core\Model {
                     }
                     $query = substr($query, 0, -2) . " WHERE id = :id";
                 }
+                // die(\sqldbg($query, $data));
                 // Ejecuta SQL.
                 if (self::query($query, $data)) {
                     return true;
@@ -374,6 +376,7 @@ class User extends \Goteo\Core\Model {
 
         try {
             $sql = "REPLACE INTO user_lang SET " . $set;
+            // die(\sqldbg($sql, $values));
             self::query($sql, $values);
 
             return true;
@@ -662,8 +665,12 @@ class User extends \Goteo\Core\Model {
     public static function get($id, $lang = null, $with_password = false) {
         try {
 
-            //Obtenemos el idioma de soporte
-            $lang = self::default_lang_by_id($id, 'user_lang', $lang);
+            // This will ensure to have fallback translations in case $lang does not exists
+            // However, I find more personal to let the user choose how to present himself
+            // and handle his translations manually.
+            // Still, I left it here commented in case of further discussion
+            // Ivan Vergés  25/09/2017.
+            // $lang = self::default_lang_by_id($id, 'user_lang', $lang);
 
             $sql = "
                 SELECT
@@ -1735,7 +1742,9 @@ class User extends \Goteo\Core\Model {
      *
      * @return type array
      */
-    public static function getPersonal($id) {
+    public static function getPersonal($user) {
+        if($user instanceOf User) $user = $user->id;
+
         $query = self::query('SELECT
                                   contract_name,
                                   contract_name AS name,
@@ -1748,7 +1757,7 @@ class User extends \Goteo\Core\Model {
                                   country
                               FROM user_personal
                               WHERE user = ?'
-            , array($id));
+            , array($user));
 
         $data = $query->fetchObject();
 
@@ -1768,6 +1777,7 @@ class User extends \Goteo\Core\Model {
      * @return type booblean
      */
     public static function setPersonal($user, $data = array(), $force = false, &$errors = array()) {
+        if($user instanceOf User) $user = $user->id;
 
         if ($force) {
             // actualizamos los datos
@@ -1861,11 +1871,14 @@ class User extends \Goteo\Core\Model {
      * @return type booblean
      */
     public static function setPreferences($user, $data = array(), &$errors = array()) {
+        if($user instanceOf User) $user = $user->id;
 
+        $keys = ['updates', 'threads', 'rounds', 'mailing', 'email', 'tips', 'comlang', 'currency'];
         $values = array();
         $set = '';
 
         foreach ($data as $key => $value) {
+            if(!in_array($key, $keys)) continue;
             $values[":$key"] = $value;
             if ($set != '') {
                 $set .= ', ';
@@ -1893,7 +1906,7 @@ class User extends \Goteo\Core\Model {
     /*
                  * Lista de proyectos cofinanciados
     */
-    public static function invested($user, $publicOnly = true) {
+    public static function invested($user, $publicOnly = true, $offset = 0, $limit = 12, $count = false) {
         $debug = false;
         $lang = Lang::current();
         $projects = array();
@@ -1914,6 +1927,25 @@ class User extends \Goteo\Core\Model {
             $sqlFilter = " AND project.status > 2";
         }
 
+        if($count) {
+            $sql = "
+            SELECT COUNT(project.id) FROM project
+            INNER JOIN invest
+                ON project.id = invest.project
+                AND invest.user = :user
+                AND invest.status IN ('0', '1', '3', '4')
+            INNER JOIN user
+                ON user.id = project.owner
+            WHERE project.status < 7
+            $sqlFilter
+            ";
+            return (int) self::query($sql, [':user' => $user])->fetchColumn();
+        }
+
+        if($limit) {
+            $sql_limit = ' LIMIT ' . (int)$offset . ','. (int)$limit;
+        }
+
         $sql = "
             SELECT
                 project.id as project,
@@ -1930,6 +1962,8 @@ class User extends \Goteo\Core\Model {
                 project.image as image,
                 project.num_investors as num_investors,
                 project.num_messengers as num_messengers,
+                project.project_location as project_location,
+                project.social_commitment as social_commitment,
                 project.num_posts as num_posts,
                 project.days as days,
                 project.name as name,
@@ -1955,9 +1989,8 @@ class User extends \Goteo\Core\Model {
             WHERE project.status < 7
             $sqlFilter
             ORDER BY  project.status ASC, project.created DESC
+            $sql_limit
             ";
-
-        $sql .= "LIMIT 12";
 
         if ($debug) {
             echo \trace($values);

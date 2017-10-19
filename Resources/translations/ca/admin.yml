@@ -1,3 +1,4 @@
+admin-action: 'Acció d''adminstrador'
 admin-NO: 'NO'
 admin-account-amount: 'Quantitat aportada'
 admin-account-detail: 'Detalls de la transacció'
@@ -52,3 +53,6 @@ admin-status: Estat
 admin-user: Usuari
 admin-users: Usuaris
 admin-yes: Si
+admin-filters: Filtres
+admin-remove-filters: 'Treure filtres'
+admin-impersonate-user: Suplanta a %s

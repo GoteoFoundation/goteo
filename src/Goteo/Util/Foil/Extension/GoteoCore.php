@@ -56,6 +56,9 @@ class GoteoCore implements ExtensionInterface
           'get_session' => [$this, 'get_session'],
           'get_config' => [$this, 'get_config'],
           'get_user' => [$this, 'get_user'],
+          'get_user_menu' => [$this, 'get_user_menu'],
+          'get_main_menu' => [$this, 'get_main_menu'],
+          'get_sidebar_menu' => [$this, 'get_sidebar_menu'],
           'is_logged' => [$this, 'is_logged'],
           'has_role' => [$this, 'has_role'],
           'is_admin' => [$this, 'is_admin'],
@@ -63,13 +66,17 @@ class GoteoCore implements ExtensionInterface
           'is_master_node' => [$this, 'is_master_node'],
           'get_query' => [$this, 'get_query'],
           'get_post' => [$this, 'get_post'],
+          'query_has' => [$this, 'query_has'],
+          'post_has' => [$this, 'post_has'],
           'get_uri' => [$this, 'get_uri'],
           'get_url' => [$this, 'get_url'],
           'get_pathinfo' => [$this, 'get_pathinfo'],
           'get_querystring' => [$this, 'get_querystring'],
           'is_ajax' => [$this, 'is_ajax'],
           'is_pronto' => [$this, 'is_pronto'],
+          'currency' => [$this, 'currency'],
           'get_currency' => [$this, 'get_currency'],
+          'asset' => [$this, 'asset'],
           'debug' => [$this, 'debug'],
 
         ];
@@ -80,14 +87,18 @@ class GoteoCore implements ExtensionInterface
         return App::debug();
     }
 
-    public function messages()
-    {
-        return Message::getMessages();
+    public function asset($asset) {
+        return SRC_URL . '/assets/' . $asset;
     }
 
-    public function errors()
+    public function messages($autoexpire = true)
     {
-        return Message::getErrors();
+        return Message::getMessages($autoexpire);
+    }
+
+    public function errors($autoexpire = true)
+    {
+        return Message::getErrors($autoexpire);
     }
 
     //Cookies
@@ -128,6 +139,16 @@ class GoteoCore implements ExtensionInterface
         return self::getRequest()->request->all();
     }
 
+    //Request (_GET) has var
+    public function query_has($var) {
+        return self::getRequest()->query->has($var);
+    }
+
+    //Request (_POST) has var
+    public function post_has($var) {
+        return self::getRequest()->request->has($var);
+    }
+
     //pathinfo
     public function get_uri() {
         return self::getRequest()->getUri();
@@ -158,9 +179,28 @@ class GoteoCore implements ExtensionInterface
         return Session::getUser();
     }
 
+    //User Global menu
+    public function get_user_menu() {
+        return Session::getUserMenu();
+    }
+
+    //User Sidebar menu
+    public function get_sidebar_menu() {
+        return Session::getSidebarMenu();
+    }
+
+    //Main Global menu
+    public function get_main_menu() {
+        return Session::getMainMenu();
+    }
+
     //Currency
-    public function get_currency() {
-        return Currency::current('html');
+    public function currency($currency, $method = 'html') {
+        return Currency::get($currency, $method);
+    }
+    //Currency
+    public function get_currency($method = 'html') {
+        return Currency::current($method);
     }
 
     // Checks user role

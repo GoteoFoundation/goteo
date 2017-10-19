@@ -27,7 +27,7 @@ namespace Goteo\Model\User {
          * @param varcahr(50) $id user identifier
          * @return array of interests identifiers
          */
-        public static function get ($id, $lang = null)
+        public static function get($id, $lang = null)
         {
             $array = array();
             try {

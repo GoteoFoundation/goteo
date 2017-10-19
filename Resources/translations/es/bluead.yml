@@ -1,6 +1,7 @@
 assign-call-success: 'El proyecto ha sido asignado a la convocatoria %s'
 dashboard-donor-remember: 'Recuerda confirmar tus datos fiscales para el certificado de donativo.'
 image-upload-fail: 'Fallo al subir la imagen'
+gallery-upload-fail: 'Fallo al subir la galería'
 invest-amount-error: 'Tienes que indicar el importe'
 invest-create-error: 'Ha habido algun problema al inicializar la transacción'
 invest-data-error: 'No se han recibido los datos necesarios'

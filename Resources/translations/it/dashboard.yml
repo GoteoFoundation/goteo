@@ -63,7 +63,7 @@ dashboard-rewards-date_order: 'Per data'
 dashboard-rewards-fulfilled_filter: Soddisfatta
 dashboard-rewards-fulfilled_status: Soddisfatta
 dashboard-rewards-group_msg: 'messaggio a questo gruppo'
-dashboard-rewards-investors_table: '<p>Se desideri gestirlo offline puoi  <a id="sacaexcel" href="/dashboard/projects/rewards/table" target="_blank">utilizzare la Tabella dei Co-finanziatori</a></p>'
+dashboard-rewards-investors_table: 'Se desideri gestirlo offline puoi <a href="%URL%">utilizzare la Tabella dei Co-finanziatori</a>'
 dashboard-rewards-issue: Errore!
 dashboard-rewards-massive_msg: 'Messaggi collettivi '
 dashboard-rewards-massive_msg-all: 'A tutti i co-finanziatori di questo progetto'
@@ -105,7 +105,7 @@ user-changepass-confirm: 'Confermare nuova password'
 user-changepass-new: 'Nuova password'
 user-changepass-old: 'Password vigente'
 user-changepass-title: 'Cambiare la password '
-user-email-change-sended: 'Ti abbiamo mandato un mail perché ci confermi il cambio di indirizzo mail.'
+user-email-change-sent: 'Ti abbiamo mandato un mail perché ci confermi il cambio di indirizzo mail.'
 user-password-changed: 'Hai cambiato la tua password'
 user-personal-saved: 'Dati personali aggiornati'
 user-prefer-saved: 'Le tue notifiche preferite si sono salvate correttamente'

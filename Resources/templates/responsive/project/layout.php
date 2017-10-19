@@ -22,15 +22,21 @@ $this->layout('layout', [
     'og_image' => $meta_img
     ]);
 
+
 $this->section('lang-metas');
-$langs = $this->project->getLangs();
-if (count($langs) > 1) {
-    foreach($langs as $l => $lang) {
-        if($l == $this->lang_current()) continue;
-        echo  "\n\t" . '<link rel="alternate" href="' . $this->lang_url($l) .'" hreflang="' . $l . '" />';
+    $langs = $project->getLangs();
+    if (count($langs) > 1) {
+        foreach($langs as $l => $lang) {
+            if($l == $this->lang_current()) continue;
+            echo  "\n\t" . '<link rel="alternate" href="' . $this->lang_url($l) .'" hreflang="' . $l . '" />';
+        }
     }
-}
 $this->replace();
+
+$this->section('sidebar-header');
+    echo $this->insert('project/widgets/micro', ['project' => $project, 'admin' => $this->admin]);
+$this->replace();
+
 
 
 $this->section('content');
@@ -38,7 +44,7 @@ $this->section('content');
 ?>
 
 <div class="container-fluid main-info"  >
-	<div class="container">
+	<div class="container-fluid">
 		<div class="row header text-center">
 			<h1 class="project-title"><?= $project->name ?></h1>
 			<div class="project-by"><a href="/user/<?= $project->owner ?>"><?= $project->user->name; ?></a></div>
@@ -46,24 +52,24 @@ $this->section('content');
 
 		<div class="row">
 			<div class="col-sm-8">
-				<?= $this->insert('project/partials/media.php', ['project' => $project ]) ?>
+				<?= $this->insert('project/partials/media', ['project' => $project ]) ?>
 			</div>
 			<div class="col-sm-4">
-				<?= $this->insert('project/partials/meter.php', ['project' => $project ]) ?>
+				<?= $this->insert('project/partials/meter', ['project' => $project ]) ?>
 			</div>
 		</div>
 
 		<!-- Tags and share info -->
 		<div class="row">
 
-		<?= $this->insert('project/partials/main_extra.php', ['project' => $project ]) ?>
+		<?= $this->insert('project/partials/main_extra', ['project' => $project ]) ?>
 
 		</div>
 </div>
 
 <!-- End container fluid -->
 
-<div class="container section">
+<div class="container-fluid section">
 	<div class="col-sm-8 section-content" id="project-tabs">
 
 	<?= $this->supply('main-content') ?>
@@ -74,7 +80,7 @@ $this->section('content');
 
 	<div class="col-sm-4 side">
 
-	<?= $this->insert('project/partials/side.php', ['project' => $project]) ?>
+	<?= $this->insert('project/partials/side', ['project' => $project]) ?>
 
 	</div>
 
@@ -82,9 +88,8 @@ $this->section('content');
 
 </div>
 
-<aside class="container-fluid related-projects">
-	<div class="container normalize-padding">
-
+<aside class="related-projects">
+    <div class="container-fluid">
 		<h2 class="green-title">
 		<?= $this->text('project-related') ?>
 		</h2>
@@ -93,19 +98,19 @@ $this->section('content');
 	    <?php foreach ($this->related_projects as $related_project) : ?>
 
 	              <div class="col-sm-6 col-md-4 col-xs-12 spacer">
-	                <?= $this->insert('project/widget.php', ['project' => $related_project]) ?>
+	                <?= $this->insert('project/widgets/normal', ['project' => $related_project]) ?>
 	              </div>
 	    <?php endforeach; ?>
     	</div>
 
-	</div>
-
+    </div>
 </aside>
+
 
 <!-- sticky menu -->
 
 <div class="sticky-menu" data-offset-top="880" data-spy="affix">
-	<div class="container">
+	<div class="container-fluid">
 		<div class="row">
 			<a href="/project/<?= $project->id ?>" data-pronto-target="#project-tabs">
 				<div class="home col-sm-2 hidden-xs sticky-item <?= $this->show=='home' ? 'current' : '' ?>">

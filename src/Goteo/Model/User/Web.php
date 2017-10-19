@@ -84,6 +84,10 @@ namespace Goteo\Model\User {
 			}
 		}
 
+        public function __toString() {
+            return $this->url;
+        }
+
 	}
 
 }

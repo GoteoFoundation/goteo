@@ -11,3 +11,7 @@ PRIMARY KEY ( `id` )
 
 -- alters
 ALTER TABLE `review` CHANGE `status` `status` TINYINT( 1 ) NOT NULL DEFAULT '1';
+
+-- constrains
+DELETE FROM review WHERE project NOT IN (SELECT id FROM project);
+ALTER TABLE `review` ADD FOREIGN KEY (`project`) REFERENCES `project`(`id`) ON UPDATE CASCADE ON DELETE CASCADE;

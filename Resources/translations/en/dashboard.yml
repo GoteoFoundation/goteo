@@ -1,5 +1,10 @@
-api-key-no-generated: 'Aún no tienes una key generada'
+api-key-no-generated: 'No API key generated yet'
 api-key-tool-tip: 'With your Goteo user and API key you''re able to query any data trough our API'
+api-key-documentation: 'View API documentation'
+api-key-user: 'User'
+api-key-key: 'Key'
+api-key-generate-new: 'Generate a new key'
+api-key-generate-new-confirm: 'This action will remove the current key and will generate a new one. Continue?'
 contract-data_title: 'Contract details'
 dashboard-chart-days: '%s DAYS LEFT'
 dashboard-chart-invested: 'FINANÇAMENT OBTINGUT'
@@ -49,8 +54,13 @@ dashboard-project-analytics-fail: 'Error while saving analytics IDs'
 dashboard-project-analytics-ok: 'Your analytics IDs have been saved correctly'
 dashboard-project-blog-fail: 'Contact us'
 dashboard-project-blog-inactive: 'Sorry, you can''t publish news on this project right now.'
+dashboard-project-blog-empty: 'No publications yet.'
 dashboard-project-blog-wrongstatus: 'Sorry, you can''t publish news about this project yet...'
+dashboard-project-delete: Delete the project
 dashboard-project-delete_alert: 'Are you sure you want to permanently delete this project?'
+dashboard-project-delete-no-perms: 'You don''t have permission to delete this project'
+dashboard-project-delete-ko: 'The project %s could not be deleted!'
+dashboard-project-delete-ok: 'The project %s has been completely removed'
 dashboard-project-updates-delete_fail: 'Error while removing post'
 dashboard-project-updates-deleted: 'Post removed'
 dashboard-project-updates-fail: 'There was a problem saving the data'
@@ -59,6 +69,9 @@ dashboard-project-updates-noblog: 'No blog was found for this project'
 dashboard-project-updates-nopost: 'Post not found'
 dashboard-project-updates-postcorrupt: 'There is a problem with the post. Please contact us.'
 dashboard-project-updates-saved: 'Post updated correctly'
+dashboard-project-updates-add: 'Add new post'
+dashboard-project-updates-editing: 'Editing post'
+dashboard-project-updates-translating: 'Translating post'
 dashboard-rewards-address: 'Delivery address:'
 dashboard-rewards-all_filter: All
 dashboard-rewards-amount_group: 'Contributions by '
@@ -68,7 +81,7 @@ dashboard-rewards-date_order: 'By date'
 dashboard-rewards-fulfilled_filter: Fulfilled
 dashboard-rewards-fulfilled_status: Fulfilled
 dashboard-rewards-group_msg: 'message to this group'
-dashboard-rewards-investors_table: '<p>If you want to manage it offline, you can <a id="sacaexcel" href="/dashboard/projects/rewards/table" target="_blank">download the Table of Co-Financiers</a></p>'
+dashboard-rewards-investors_table: 'If you want to manage it offline, you can <a href="%URL%">download the Table of Co-Financiers</a>'
 dashboard-rewards-issue: Incidence!
 dashboard-rewards-massive_msg: 'Collective messages'
 dashboard-rewards-massive_msg-all: 'To all the co-financiers of this project'
@@ -110,7 +123,7 @@ user-changepass-confirm: 'Confirm new password'
 user-changepass-new: 'New password'
 user-changepass-old: 'Current password'
 user-changepass-title: 'Change password'
-user-email-change-sended: 'We have sent you an email so that you can confirm the change of address'
+user-email-change-sent: 'We have sent you an email so that you can confirm the change of address'
 user-password-changed: 'You have changed your password'
 user-personal-saved: 'Updated personal information'
 user-prefer-saved: 'Your notification preferences were saved correctly'
@@ -131,7 +144,7 @@ dashboard-certificates-confirmed: Confirmed
 dashboard-certificates-confirmed-ok: 'Your fiscal data are confirmed now. If your certificate does not download automatically, please click %HERE%'
 dashboard-certificates-data-alert: 'Keep in mind that once confirmed, the data can not be modified!'
 dashboard-certificates-data-desc: 'Please make sure the data in the form is correct and confirm the form'
-dashboard-certificates-data-download-all: 'Download and present all the certificates of the current fiscal year in your annual income tax declaration'
+dashboard-certificates-data-download-all: 'Please confirm your certificates in order to active your deduction. Afterward, you can download a copy of them. Once a year, Goteo Foundation notifies all your confirmed donations to the tax office.'
 dashboard-certificates-data-new-invests: 'And hey, don''t worry! Any further donation you make through Goteo will generate a new certificate'
 dashboard-certificates-desc: 'These certificates will allow a deduction in your income tax declaration only if you are a taxpayer in Spain.'
 dashboard-certificates-details: 'Show details'
@@ -147,25 +160,24 @@ dashboard-certificates-summary: 'Certificate %ID%, Year %YEAR%'
 dashboard-certificates-too-old: 'This certificate is too old and can''t be modified. In case you have any question, please contact us'
 dashboard-certificates-totals: '%NUM% donations, %AMOUNT%'
 dashboard-certificates-unconfirmed: 'For downloading this certificate, you need to confirm the data first!'
-dashboard-certificates-view-pending: 'Your donations to projects still in campaign that haven''t reached the minimum aren''t listed yet. You can check them %HERE%'
+dashboard-certificates-view-pending: 'Donations to projects which have still not reached the minimum budget are not displayed, as long as they have been paid through virtual wallet. You can check them %HERE%:'
 dashboard-certificates-no-invests: 'Certificate cannote be confirmed without any donation!'
 dashboard-investors-mail-sent: 'Messages sent correctly'
 dashboard-menu-pool: 'My virtual wallet'
 dashboard-menu-pool-available: Remainder
 dashboard-menu-pool-conditions: Conditions
-dashboard-my-wallet-available: 'You currently have <span class="pool-amount">%s</span><br>in your virtual wallet in Goteo'
+dashboard-my-wallet-available: 'You currently have <span class="pool-amount">%s</span> <span class="pool-desc">in your virtual wallet in Goteo</span>'
 dashboard-my-wallet-contribute-button: Donate
 dashboard-my-wallet-modal-pool-info: 'Goteo’s virtual wallet is a feature of our platform that allows you to make a donation and later decide which project you’d like to support.<br> <p>Donations made through our platform pay you back in your income tax declaration, according to the Spanish regulation (Ley 49/2002, de 23 de diciembre, de régimen fiscal de las entidades sin fines lucrativos y de los incentivos fiscales al mecenazgo).</p> <p>When donating, you can download a certificate that validates towards the Tax Office your contribution to a non profit entity. You may access a compilation of your certificates in the past, associated with your previous donations in Goteo through your User Pannel, exactly in the section <a href="/dashboard/wallet/certificate" target="_blank">Certificado de donación</a>.</p><p> IMPORTANT NOTE: We remind you that the donations already reflected in a certificate from our Foundation can not be refunded. This means that if you have made a donation to a concrete project in our platform and that project does not reach its minimum tuning goal during the campaign, your donation will be transferred to your wallet but not back to your bank account. However, you may donate later that amount from your virtual wallet in Goteo.org to any other future project that you like, when you like, without introducing again your bank account number or PayPal user.</p>'
 dashboard-my-wallet-pool-info: 'More information on using your wallet'
 
-dashboard-modal-success-msg: 'The URL has been correctly updated'
+dashboard-modal-url-success-msg: 'The URL has been correctly updated'
 dashboard-add-new-share-material: 'New material'
 dashboard-edit-share-material-url: 'Editing the URL'
 dashboard-modal-edit-url: 'URL where the shared materials are'
 dashboard-modal-placeholder-edit-url: 'URL'
-dashboard-modal-success-msg: 'The URL has been correctly updated'
 
-dashboard-new-material-form-success: 'El nuevo material compartido ha sido agregado correctamente.'
+dashboard-new-material-form-success: 'The new shared material has been added successfully.'
 dashboard-new-material-form-material: 'Material'
 dashboard-new-material-form-description: 'Description'
 dashboard-new-material-form-url: 'URL'
@@ -173,3 +185,87 @@ dashboard-new-material-form-type: 'Materials type'
 dashboard-new-material-form-license: 'Files licence'
 dashboard-menu-projects-shared-materials: 'Files'
 project-no-share-material: 'There are not shared materials for this project'
+
+dashboard-project-images-desc: 'Drag and drop images as you like to organize them, even between areas. On finish, remember to save the changes.'
+
+dashboard-project-default-image: 'Default image'
+dashboard-project-delete-image: 'Delete file'
+dashboard-project-delete-image-confirm: 'Are you sure to remove this file?'
+dashboard-project-delete-default-image: "The default image cannot be deleted.\nPlease choose another image as default before remove this one."
+dashboard-project-dnd-image: 'Drag & drop one or more images here'
+dashboard-project-image-delete-ko: 'The image has not been deleted!'
+project-upload-images-some-ko: 'Some images has not been uploaded!'
+dashboard-project-default-image-confirm: 'Do you want to use this image as a default for the project?'
+dashboard-project-image-default-ko: 'The image has not been set as default!'
+dashboard-project-image-reorder-ko: 'The images have not been ordered!'
+
+dashboard-project-send-to-markdown: "Insert this image into the text field"
+dashboard-max-files-reached: "The maximum number of files has been reached!"
+dashboard-file-type-error: "You can't upload files of this type!"
+all-files-uploaded: "All files uploaded successfully"
+uploaded-ok: "Uploaded successfully"
+publish-confirm-yes: "Do you want to publish this entry?"
+publish-confirm-no: "Do you want to unpublish this entry?"
+
+dashboard-project-support-empty: 'No collaboration petitions yet.'
+dashboard-project-support-responses: 'Responses'
+dashboard-project-support-no-responses: 'No responses yet.'
+dashboard-project-support-add: 'Ask for a new collaboration'
+dashboard-search-invests-totals: 'In this search: %TOTAL_INVESTS% donations from %TOTAL_USERS% users. Total %TOTAL_AMOUNT%'
+dashboard-search-invests-msg: 'Send a message to all donors in this search'
+dashboard-project-filter-by-reward: 'Filter by reward'
+dashboard-project-filter-by-others: 'Other filters'
+dashboard-project-filter-by-donative: 'Show only donatives'
+dashboard-project-filter-by-nondonative: 'Hide donatives'
+dashboard-project-filter-by-drop: 'Show only matchfunding donations'
+dashboard-project-filter-by-nondrop: 'Hide matchfunding donations'
+dashboard-project-filter-by-pending: 'Show only pending'
+dashboard-project-filter-by-fulfilled: 'Show only completed'
+dashboard-project-no-invests: 'No entries for the current search criteria'
+
+dashboard-new-message-to-donors: 'New message to donors'
+dashboard-message-donors-reward: 'Donors with the reward %s'
+
+dashboard-message-donors-donors: 'All donors that'
+dashboard-message-donors-and: 'and also'
+dashboard-message-donors-donative: 'renounce a reward (donatives)'
+dashboard-message-donors-nondonative: 'have any reward chosen'
+dashboard-message-donors-pending: 'are pending'
+dashboard-message-donors-fulfilled: 'are completed'
+dashboard-message-donors-error: 'No valid recipients, message cannot be sent'
+dashboard-message-donors-total: '%s donors'
+
+dashboard-message-no-message: 'No messages for you yet.'
+dashboard-message-threads: 'You have %s message threads'
+
+dashboard-translate-profile: 'Translate profile'
+dashboard-translate-profile-desc: 'You are translating your personal profile to %LANG%. Users who visit your personal profile in this language will see this translation. All other languages will display the <a href="%URL%">default data</a> unless they also have an assigned translation.'
+dashboard-translate-profile-ok: 'Profile successfully translated to %s'
+
+dashboard-translate-project: 'Translate project'
+dashboard-translate-empty: 'No translations yet.'
+dashboard-translate-project-empty: 'Not translations yet for this project.'
+dashboard-translate-project-currents: 'The original language of this project is %LANG% and is translated into %NUM% languages:'
+dashboard-translate-project-translating: 'You are translating this project to %LANG%. The original language is %ORIGINAL%.'
+dashboard-translate-project-ok: '%ZONE% successfully translated to %LANG%'
+
+dashboard-project-updates-translate-ok: 'Post %TITLE% successfully translated to %LANG%'
+dashboard-project-updates-translating-post: 'You are translating this post to %LANG%. The original language is %ORIGINAL%.'
+
+dashboard-translate-overview: 'Translate project main data'
+dashboard-translate-costs: 'Translate project costs'
+dashboard-translate-rewards: 'Translate project rewards'
+
+dashboard-project-support-translate-ok: 'Support %TITLE% successfully translated to %LANG%'
+dashboard-project-support-translating: 'You are translating this support entry to %LANG%. The original language is %ORIGINAL%.'
+
+dashboard-project-saved: 'Project updated successfully'
+
+dashboard-project-is-dead: 'The project is archived and cannot be edited'
+dashboard-project-not-alive-yet: 'This section will be available when your project begins the campaign'
+dashboard-project-not-alive-yet: 'This section will be available when your project successfully completes the campaign'
+dashboard-project-reward-cannot: 'New rewards can not be added now. During the campaign, adding new rewards is possible (but not to delete those that already exist)'
+
+dashboard-project-add-translations: 'In the meantime, you can add translations to your project, this might help you to increase its visibility.'
+
+dashboard-project-goto-first-error: 'Go to the first error'

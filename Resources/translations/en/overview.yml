@@ -15,6 +15,7 @@ overview-field-currency: 'Original currency'
 overview-field-currently: 'Current status'
 overview-field-description: 'Brief description'
 overview-field-goal: 'Goals of the crowdfunding campaign'
+overview-field-main-gallery: Main gallery
 overview-field-image_gallery: 'Current images'
 overview-field-image_upload: 'Upload an image (2MB max.)'
 overview-field-keywords: 'Key words for the project'
@@ -30,21 +31,22 @@ overview-field-options-scope_global: Global
 overview-field-options-scope_local: Local
 overview-field-options-scope_nacional: National
 overview-field-options-scope_regional: Regional
-overview-field-play-video: 'Cue video'
+overview-field-play-video: 'Video cover'
 overview-field-project_location: Location
 overview-field-related: 'Team and experience'
 overview-field-reward: Rewards
 overview-field-scope: 'Project reach'
-overview-field-subtitle: Summary
+overview-field-subtitle: 'Subtitle'
 overview-field-usubs: 'Publish with Universal Subtitles'
 overview-field-video: 'Additional video about motivation'
 overview-fields-images-title: 'Images from the project'
 overview-main-header: 'Project description'
 step-3: Description
+step-main: Main data
 step-3b: Pictures
 step-images: 'Step: Pictures of the project'
 step-overview: 'Step: Project description'
-tooltip-project-about: 'Briefly describe the project in conceptual, technical, or practical terms. For example, by detailing how it works or what it is made up of. Think about what it will be like when it''s done, and what people will be able to do with it.'
+tooltip-project-about: 'Briefly describe the most important characteristics of your project and why it differs from the rest. List also what goals you want to achieve with it (write it clearly and using the infinitive)'
 tooltip-project-category: 'Choose as many categories as you deem necessary in order to describe the project, based on everything you''ve written above. Your choices will help us get your project out to interested Goteo users.'
 tooltip-project-currency: 'Indicate the currency you are calculating the project''s costs in.'
 tooltip-project-currently: 'Which phase is the project currently in with respect to the process of creation or execution?'
@@ -53,14 +55,14 @@ tooltip-project-goal: 'List the project''s principal goals, in the long and shor
 tooltip-project-image: 'These might be outlines, screenshots, photographs, illustrations, storyboards, etc. (their authoring license should be compatible with what you choose in section 5). Use a variety, and at a decent resolution (around 900 pixels width maximum / 2MB Max). You can upload as many as you like.'
 tooltip-project-image_upload: ERASE
 tooltip-project-keywords: 'As you enter text, the system will suggest key words that other users have written. These categories help to link your project with other similar ones.'
-tooltip-project-lang: 'Indicate the language in which you''re filling out the project form.'
-tooltip-project-media: 'Copy and paste the URL address of the project''s presentation video, previously published on YouTube, Vimeo or Giss.tv. This is an essential step in attracting the attention of potential co-financiers and collaborators, and the more original it is, the better. Videos should last between 2 and 4 minutes.'
+tooltip-project-lang: 'You can translate your project to other languages from the translation panel later on.'
+tooltip-project-media: 'The video presentation is a fundamental part to attract the attention of the community so the more original the better. It should last between 2 and 4 minutes. Upload it to Youtube or Vimeo and paste the URL here.'
 tooltip-project-motivation: 'Explain the reasons or circumstances that led you do think of this project, as well as the communities or users to whom it is geared. It will help you connect with people who are moving in this same circle of interests, problems, and tastes.'
 tooltip-project-name: 'Enter a title for your project. The shorter the better, you can add description in the following field.'
-tooltip-project-project_location: 'Indicates the city and/or province where this project is located.'
+tooltip-project-project_location: 'Indicate the geographical area where your project will impact.'
 tooltip-project-related: 'Summarize how you or the promoting group got to this point. What experience do you have that relates to the proposal? Tell us about your team, resources, and infrastructure. '
 tooltip-project-reward: 'Here we explain what''s good about it in terms of rewards'
-tooltip-project-subtitle: 'Create a single phrase for the subtitle that explains just what your initiative is about, that gives a taste of what it''s for and what it consists of. It will appear together with the project title.'
+tooltip-project-subtitle: 'Create a single phrase for the subtitle that explains just what your initiative is about, that gives a taste of what it''s for and what it consists of in less than 140 characters. It will be used in social networks.'
 tooltip-project-usubs: 'Check if you subtitled the video to other languages with Universal Subtitles: http://www.universalsubtitles.org/'
 tooltip-project-video: 'Consider publishing and linking a video (YouTube, Vimeo or Giss.tv) where you briefly explain to the camera your vision for your project. This is something that might compliment the principal video, by letting you transmit your need or originality in the most direct way possible. If you find it hard speaking to the camera, maybe there''s someone else you know and who is following the project that might complete this step as a "fan". Feeling empathy for and seeing the person on the other side of the project is a key component for certain kinds of co-financiers.'
 validate-project-field-about: 'The project description is too short'

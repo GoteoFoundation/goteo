@@ -15,9 +15,9 @@ module.exports = function(grunt) {
 
     'use strict';
 
-    // Quita PHP de las rutas de archivo
-    // por ejemplo:
-    // src="<?php echo SRC_URL ?>" sera src=""
+    // removes PHP code from html tags
+    // ie:
+    // src="<?php echo SRC_URL ?>" will become src=""
     var replaceAssetsPath = function (context) {
         var generated = context.options.generated;
         for(var i in generated.files) {
@@ -33,10 +33,9 @@ module.exports = function(grunt) {
         options: {
             dest: '<%= goteo.dist %>',
             root: '.tmp',
-            // root: '{.tmp,<%= goteo.templates %>}',
             flow: {
               steps: {
-                js: ['concat', 'uglifyjs'],
+                js: ['concat'],
                 css: ['concat']
               },
               post: {
@@ -60,6 +59,5 @@ module.exports = function(grunt) {
 
     grunt.loadNpmTasks('grunt-usemin');
     grunt.loadNpmTasks('grunt-contrib-concat');
-    grunt.loadNpmTasks('grunt-contrib-cssmin');
-    grunt.loadNpmTasks('grunt-contrib-uglify');
+
 };

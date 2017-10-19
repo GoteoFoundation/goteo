@@ -89,7 +89,7 @@ $templates = $this->templates
 
 <?php $this->section('footer') ?>
 
-<script type="text/javascript" src="<?= SRC_URL ?>/assets/vendor/simplemde-markdown/simplemde.min.js"></script>
+<!-- <script type="text/javascript" src="<?= SRC_URL ?>/assets/vendor/simplemde/dist/simplemde.min.js"></script> -->
 
 <script type="text/javascript">
 // @license magnet:?xt=urn:btih:0b31508aeb0634b347b8270c7bee4d411b5d4109&dn=agpl-3.0.txt

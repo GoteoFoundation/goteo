@@ -80,7 +80,7 @@ namespace Goteo\Model\Project {
                     ORDER BY `order` ASC, image DESC";
 
                 $query = static::query($sql, $values);
-                $images = $query->fetchAll(\PDO::FETCH_OBJ);
+                $images = $query->fetchAll(\PDO::FETCH_CLASS, __CLASS__);
 
                 foreach ($images as $image) {
                     $image->imageData = Model\Image::get($image->image);
@@ -158,11 +158,15 @@ namespace Goteo\Model\Project {
          * Recalcular imagen principal
          */
         public static function setImage ($id, $gallery) {
-            if(!$gallery) {
+            if($gallery instanceOf Model\Image) {
+                $image = $gallery;
+            } else {
+                // sacar objeto imagen de la galeria
+                $image = $gallery[0]->imageData;
+            }
+            if(!$image instanceOf Model\Image) {
                 return new Model\Image();
             }
-            // sacar objeto imagen de la galeria
-            $image = $gallery[0]->imageData;
 
             // guardar en la base de datos
             $sql = "UPDATE project SET image = :image WHERE id = :id";
@@ -199,16 +203,24 @@ namespace Goteo\Model\Project {
 
         public static function sections () {
             return array(
-                '' => 'Galería',
+                'play-video' => Text::get('overview-field-play-video'),
+                '' => Text::get('overview-field-main-gallery'),
                 'about' => Text::get('overview-field-about'),
                 'motivation' => Text::get('overview-field-motivation'),
                 'goal' => Text::get('overview-field-goal'),
                 'related' => Text::get('overview-field-related'),
-                'reward' => Text::get('overview-field-reward'),
-                'play-video' => Text::get('overview-field-play-video')
+                // 'reward' => Text::get('overview-field-reward')
             );
        }
 
+        // Helpers
+        public function getLink() {
+            $args = func_get_args();
+            return call_user_func_array(array($this->imageData, 'getLink'), $args);
+        }
+        public function getName() {
+            return $this->imageData->name;
+        }
     }
 
 }

@@ -10,14 +10,18 @@
 
 namespace Goteo\Core;
 
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\ResponseHeaderBag;
 use Symfony\Component\EventDispatcher\Event;
+
 use Goteo\Application\App;
 use Goteo\Application\View;
 use Goteo\Core\Traits\LoggerTrait;
+use Goteo\Core\Model;
+
 
 abstract class Controller {
     use LoggerTrait;
@@ -57,7 +61,10 @@ abstract class Controller {
     /**
      * Handy method to return a redirect response
      */
-    public function redirect($path, $status = 302) {
+    public function redirect($path = null, $status = 302) {
+        if($path === null) {
+            $path = App::getRequest()->getRequestUri();
+        }
         return new RedirectResponse($path, $status);
     }
 
@@ -99,4 +106,42 @@ abstract class Controller {
     public function dispatch($eventName, Event $event = null) {
         return App::dispatch($eventName, $event);
     }
+
+    /**
+     * Handy method to get a form builder
+     * @return Symfony\Component\Form\FormFactory
+     */
+    public function createFormBuilder($defaults = null, $name = 'autoform', array $options = []) {
+        $default_options = [
+            'action' => App::getRequest()->getRequestUri(),
+            'attr' => ['class' => 'autoform']
+        ];
+        return $this->getService('app.forms')->createBuilder($defaults, $name, $options + $default_options);
+    }
+
+    /**
+     * Handy method to get a form builder
+     * @return Goteo\Library\Forms\FormProcessorInterface
+     */
+    public function getModelForm($form, Model $model, array $defaults = [], array $options = [], Request $request = null) {
+        $finder = $this->getService('app.forms.finder');
+        $finder->setModel($model);
+        $validate = $mock_validation = false;
+        if($request) {
+            $validate = $request->query->has('validate');
+            $mock_validation = $validate && $request->isMethod('get');
+        }
+        // $finder->setBuilder($this->createFormBuilder($defaults, 'autoform', $mock_validation ? ['csrf_protection' => false] : []));
+        // $finder->setBuilder($this->createFormBuilder($defaults));
+        // TODO: a better way to create a csrf_protection without showing errors CSRF on mock_validation
+        $finder->setBuilder($this->createFormBuilder($defaults, 'autoform', ['csrf_protection' => false]));
+        $processor = $finder->getInstance($form, $options);
+        // Set full validation if required in Request
+        // Do a fake submit of the form on create to test errors (only on GET requests)
+        $processor->setFullValidation($validate, $mock_validation);
+
+        return $processor;
+    }
 }
+
+

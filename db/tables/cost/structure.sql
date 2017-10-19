@@ -32,3 +32,11 @@ CHANGE `description` `description` TEXT CHARACTER SET utf8 COLLATE utf8_general_
 -- add order to cost
 ALTER TABLE `cost` ADD COLUMN `order` INT UNSIGNED DEFAULT 1 NOT NULL AFTER `until`;
 ALTER TABLE `cost` DROP INDEX `id`, ADD INDEX (`order`);
+
+-- constrains
+DELETE FROM cost WHERE project NOT IN (SELECT id FROM project);
+ALTER TABLE `cost` ADD FOREIGN KEY (`project`) REFERENCES `project`(`id`) ON UPDATE CASCADE ON DELETE CASCADE;
+
+DELETE FROM cost_lang WHERE id NOT IN (SELECT id FROM cost);
+UPDATE cost_lang a JOIN cost b ON a.id=b.id AND a.project != b.project SET a.project = b.project;
+ALTER TABLE `cost_lang` CHANGE `id` `id` BIGINT(20) UNSIGNED NOT NULL, ADD FOREIGN KEY (`id`) REFERENCES `cost`(`id`) ON UPDATE CASCADE ON DELETE CASCADE, ADD FOREIGN KEY (`project`) REFERENCES `project`(`id`) ON UPDATE CASCADE;

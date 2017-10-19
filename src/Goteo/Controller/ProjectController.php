@@ -11,6 +11,8 @@
 namespace Goteo\Controller;
 
 use Goteo\Application;
+use Goteo\Application\AppEvents;
+use Goteo\Application\Event\FilterProjectEvent;
 use Goteo\Application\Config;
 use Goteo\Application\Exception\ControllerAccessDeniedException;
 use Goteo\Application\Exception\ControllerException;
@@ -39,13 +41,15 @@ use Goteo\Model\Blog\Post;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Goteo\Controller\Dashboard\ProjectDashboardController;
+
 
 class ProjectController extends \Goteo\Core\Controller {
 
-	public function indexAction($id = null, $show = 'home', $post = null, Request $request) {
+	public function indexAction($pid = null, $show = 'home', $post = null, Request $request) {
 
-		if ($id !== null) {
-			return $this->view($id, $show, $post, $request);
+		if ($pid !== null) {
+			return $this->view($pid, $show, $post, $request);
 		}
 		if ($request->query->has('create')) {
 			return new RedirectResponse('/project/create');
@@ -54,9 +58,9 @@ class ProjectController extends \Goteo\Core\Controller {
 	}
 
 	//** esto es una guarrada **/
-	public function rawAction($id) {
+	public function rawAction($pid) {
 
-		$project = Project::get($id, Lang::current());
+		$project = Project::get($pid, Lang::current());
 
 		if (!$project->userCanEdit(Session::getUser())) {
 			throw new ControllerAccessDeniedException(Text::get('user-login-required-access'));
@@ -70,7 +74,7 @@ class ProjectController extends \Goteo\Core\Controller {
 		die;
 	}
 
-	public function deleteAction($id) {
+	public function deleteAction($pid) {
 
 		$user = Session::getUser();
 
@@ -78,7 +82,7 @@ class ProjectController extends \Goteo\Core\Controller {
 		$goto = isset($user->roles['admin'])?'/admin/projects':'/dashboard/projects';
 
 		try {
-			$project = Project::get($id);
+			$project = Project::get($pid);
 
 		} catch (ModelException $e) {
 			Application\Message::error('Project error!');
@@ -97,7 +101,7 @@ class ProjectController extends \Goteo\Core\Controller {
 		$errors = array();
 		if ($project->remove($errors)) {
 			Application\Message::info("Has borrado los datos del proyecto '<strong>{$project->name}</strong>' correctamente");
-			if (Session::get('project') === $id) {
+			if (Session::get('project') === $pid) {
 				Session::del('project');
 			}
 		} else {
@@ -107,7 +111,7 @@ class ProjectController extends \Goteo\Core\Controller {
 	}
 
 	//Aunque no esté en estado edición un admin siempre podrá editar un proyecto
-	public function editAction($id, $step = 'userProfile', Request $request) {
+	public function editAction($pid, $step = 'userProfile', Request $request) {
 
 		$user = Session::getUser();
 
@@ -116,7 +120,7 @@ class ProjectController extends \Goteo\Core\Controller {
 
 		// preveer posible cambio de id
 		try {
-			$project = Project::get($id);
+			$project = Project::get($pid);
 
 		} catch (ModelException $e) {
 			Application\Message::error('Project integrity error!');
@@ -130,6 +134,9 @@ class ProjectController extends \Goteo\Core\Controller {
 			Application\Message::error(Text::get('user-login-required-access'));
 			return new RedirectResponse($goto);
 		}
+
+        ProjectDashboardController::createSidebar($project, 'edit');
+
 
 		$currency_data = Library\Currency::$currencies[$project->currency];
 
@@ -198,7 +205,7 @@ class ProjectController extends \Goteo\Core\Controller {
 
 		if ($step == 'images') {
 			// para que tenga todas las imágenes al procesar el post
-			$project->images = Model\Image::getAll($id, 'project');
+			$project->images = Model\Image::getAll($pid, 'project');
 		}
 
         // variables para la vista
@@ -460,7 +467,7 @@ class ProjectController extends \Goteo\Core\Controller {
             return $this->redirect('/user/login?return='.urldecode('/project/create'));
         }
 
-        if ($request->getMethod() == 'POST') {
+        if ($request->isMethod('post')) {
 
         	$social_commitment=$request->request->get('social');
 
@@ -489,11 +496,11 @@ class ProjectController extends \Goteo\Core\Controller {
             $conf->publishing_estimation = $request->request->get('publishing_date');
             $conf->save();
 
-            // Send a mail to the creator
-            $project->user=Session::getUser();
-            $sent = UsersSend::toOwner('project_created', $project);
+            // CREATED EVENT
+            $response = $this->dispatch(AppEvents::PROJECT_CREATED, new FilterProjectEvent($project))->getResponse();
+            if($response instanceOf Response) return $response;
 
-            return new RedirectResponse('/project/edit/'.$project->id);
+            return new RedirectResponse('/dashboard/project/' . $project->id . '/profile');
         }
 
         return $this->viewResponse( 'project/create',
@@ -502,27 +509,6 @@ class ProjectController extends \Goteo\Core\Controller {
                                      ]);
 
 	}
-
-     /**
-     * Calculate de investors required for the minimum
-     */
-
-    public function investorsRequiredAction(Request $request) {
-
-        if ($request->isMethod('post')) {
-            $minimum = $request->request->get('minimum');
-        }
-
-        //Get the investors
-
-        $average=Project::getInvestAverage();
-
-        $investors=ceil($minimum/$average);
-
-        return $this->jsonResponse($investors);
-
-    }
-
 
 	protected function view($project, $show, $post = null, Request $request) {
 		//activamos la cache para esta llamada
@@ -591,6 +577,8 @@ class ProjectController extends \Goteo\Core\Controller {
 
         // si lo puede ver
         if ($project->userCanView(Session::getUser())) {
+
+            ProjectDashboardController::createSidebar($project, 'preview');
 
             $project->cat_names = Project\Category::getNames($project->id);
 
@@ -875,9 +863,9 @@ class ProjectController extends \Goteo\Core\Controller {
         }
 
         // actualizamos estos datos en los personales del usuario
-        if (!empty($personalData)) {
-            Model\User::setPersonal($project->owner, $personalData, true);
-        }
+        // if (!empty($personalData)) {
+        //     Model\User::setPersonal($project->owner, $personalData, true);
+        // }
 
         // cuentas bancarias
         $ppacc   = (!empty($_POST['paypal']))?$_POST['paypal']:'';
@@ -1278,17 +1266,17 @@ class ProjectController extends \Goteo\Core\Controller {
 
     // A user mark a project as favourite
 
-    public function favouriteAction($project_id, Request $request) {
+    public function favouriteAction($pid, Request $request) {
 
         if (!Session::isLogged()) {
-            return $this->redirect('/user/login?return='.urldecode('/project/favourite/'.$project_id));
+            return $this->redirect('/user/login?return='.urldecode('/project/favourite/'.$pid));
         }
 
         $user=Session::getUser()->id;
 
         //Calculate the date to send mail
 
-        $project=Project::get($project_id, Lang::current(false));
+        $project=Project::get($pid, Lang::current(false));
 
         if( ($project->days>1) && ($project->round==1) && ($project->amount<$project->mincost) )
         {
@@ -1302,7 +1290,7 @@ class ProjectController extends \Goteo\Core\Controller {
         }
 
         $favourite=new Favourite(array(
-            'project' => $project_id, 'user' => $user, 'date_send' => $date_send
+            'project' => $pid, 'user' => $user, 'date_send' => $date_send
         ));
 
         $favourite->save($errors);
@@ -1310,7 +1298,7 @@ class ProjectController extends \Goteo\Core\Controller {
         if ($request->isMethod('post'))
             return $this->jsonResponse(['result' => $favourite]);
 
-        return $this->redirect('/project/' . $project_id);;
+        return $this->redirect('/project/' . $pid);;
     }
 
     // A user unmark a project as favourite

@@ -103,6 +103,18 @@ Please refer to the official guide to grunt to install it:
 
 http://gruntjs.com/getting-started
 
+If you want to install grunt on Ubuntu 16.04 for the very first time just do:
+
+```bash
+sudo apt-get install build-essential libssl-dev git
+sudo apt-get update
+sudo apt-get install nodejs npm
+sudo apt-get ruby-dev install rubygems-integration
+sudo gem install sass -v 3.4.23
+sudo gem install compass
+sudo npm install -g grunt-cli
+```
+
 If you want to install grunt on Ubuntu 12.04 o4 14.04 for the very first time just do:
 
 ```bash
@@ -110,6 +122,9 @@ sudo apt-get install build-essential libssl-dev git
 sudo add-apt-repository ppa:chris-lea/node.js
 sudo apt-get update
 sudo apt-get install nodejs
+sudo apt-get install rubygems-integration
+sudo gem install sass -v 3.4.23
+sudo gem install compass
 sudo npm install -g grunt-cli
 ```
 
@@ -117,7 +132,7 @@ Additionally, you may remove the configuration npm user directory to avoid
 unexpected permissions problems when using npm as non root user afterwards:
 
 ```bash
-sudo rm ~/.npm -rf 
+sudo rm ~/.npm -rf
 ```
 
 ## Installing composer

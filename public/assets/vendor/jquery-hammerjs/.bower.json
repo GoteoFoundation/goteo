@@ -1,0 +1,20 @@
+{
+  "name": "jquery-hammerjs",
+  "version": "2.0.0",
+  "main": "jquery.hammer.js",
+  "dependencies": {
+    "hammerjs": "2.0.x",
+    "jquery": "2.1.x"
+  },
+  "homepage": "https://github.com/EightMedia/jquery.hammer.js",
+  "_release": "2.0.0",
+  "_resolution": {
+    "type": "version",
+    "tag": "2.0.0",
+    "commit": "e7049b9e51e1caad5dafd96c9ae50f77db4f9356"
+  },
+  "_source": "https://github.com/EightMedia/jquery.hammer.js.git",
+  "_target": "^2.0.0",
+  "_originalSource": "jquery-hammerjs",
+  "_direct": true
+}

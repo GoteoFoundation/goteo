@@ -4,6 +4,7 @@ form-add-button: Añadir
 form-ajax-info: 'El formulario se va grabando segun pases por cada campo'
 form-apply-button: Aplicar
 form-edit-button: Editar
+form-has-errors: 'El formulario contiene errores, revísalos antes de continuar!'
 form-errors-info: 'Total: %s | En este paso: %s'
 form-errors-total: 'Hay %s errores en total'
 form-footer-errors_title: Errores
@@ -34,3 +35,7 @@ project-one-round: 'Ronda única de 40 días'
 project-personal-field-entity_name: 'Entidad en nombre de la que se actúa (si procede)'
 project-two-rounds: 'Dos rondas de 40 días'
 tooltip-project-personal-entity_name: 'Si representas a alguna entidad, indica su nombre en este campo.'
+form-sent-success: 'Los datos se han guardado correctamente!'
+form-sent-error: 'Ha ocurrido un error al guardar los datos: [%s]'
+form-confirm-exit: 'Se van a perder los datos que no has guardado\n¿Seguro que quieres salir de la página?'
+overview-extra-call: 'Campos complementarios para la convocatoria %s'

@@ -14,6 +14,12 @@ if($this->is_ajax()):
     return;
 endif;
 
+$sidebar = $this->get_sidebar_menu();
+$bodyClass = $this->bodyClass;
+if($sidebar) {
+    $bodyClass = $bodyClass ? "$bodyClass has-sidebar" : 'has-sidebar';
+}
+
 // Normal operation, show the full page
 ?><!DOCTYPE html>
 <html lang="<?= $this->lang_current() ?>">
@@ -53,13 +59,11 @@ endif;
 
         <?= $this->insert('partials/header/metas') ?>
 
-        <?php $this->section('lang-metas') ?>
-            <?= $this->insert('partials/header/lang_metas') ?>
-        <?php $this->stop() ?>
+        <?= $this->supply('lang-metas', $this->insert('partials/header/lang_metas')) ?>
 
         <title><?= $this->title ?></title>
 
-        <link rel="icon" type="image/png" href="/favicon.ico" >
+        <link rel="icon" type="image/x-icon" href="/favicon.ico" >
 
         <?= $this->insert('partials/header/styles') ?>
 
@@ -70,17 +74,20 @@ endif;
 
     </head>
 
-    <body role="document" <?php if ($this->bodyClass) echo ' class="' . $this->bodyClass . '"' ?>>
+    <body role="document" <?php if ($bodyClass) echo ' class="' . $bodyClass . '"' ?>>
 
-    <?php $this->section('header') ?>
-        <?= $this->insert("partials/header") ?>
-    <?php $this->stop() ?>
+    <?= $this->supply('header', $this->insert("partials/header")) ?>
 
-    <?= $this->supply('messages', $this->insert("partials/header/messages")) ?>
+    <div class="page-wrap">
+      <?= $this->supply('sidebar', $this->insert("partials/sidebar", ['sidebarMenu' => $sidebar])) ?>
+      <div id="main">
 
-    <div id="main-content">
-    <?php $this->section('content') ?>
-    <?php $this->stop() ?>
+        <div id="main-content">
+            <?= $this->supply('messages', $this->insert("partials/header/messages")) ?>
+            <?= $this->supply('content') ?>
+        </div>
+
+      </div>
     </div>
 
     <?php $this->section('footer') ?>
