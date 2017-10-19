@@ -1970,10 +1970,11 @@ namespace Goteo\Model {
 
             $list = array();
             $lang = Lang::current();
-
+            $values = array(':lang'=>$lang);
             $sqlFilter = "";
             if (!empty($call)) {
-                $sqlFilter .= " WHERE call_sphere.call = '{$call}'";
+                $values[':call'] = $call;
+                $sqlFilter .= " WHERE call_sphere.call = :call";
 
                 if(self::default_lang($lang) === Config::get('lang')) {
                     $different_select=" IFNULL(sphere_lang.name, sphere.name) as name";
@@ -1987,9 +1988,7 @@ namespace Goteo\Model {
 
             }
 
-
-            $query = static::query("
-                SELECT
+            $sql = "SELECT
                     DISTINCT(call_sphere.sphere) as sphere,
                     sphere.image as image,
                     $different_select
@@ -2001,9 +2000,9 @@ namespace Goteo\Model {
                     AND sphere_lang.lang = :lang
                 $eng_join
                 $sqlFilter
-                ORDER BY sphere.name ASC
-                ", array(':lang'=>$lang));
-
+                ORDER BY sphere.name ASC";
+            // die(\sqldbg($sql, $values));
+            $query = static::query($sql, $values);
             foreach ($query->fetchAll(\PDO::FETCH_OBJ) as $item) {
                 $list[$item->sphere]['name'] = $item->name;
                 $list[$item->sphere]['image'] = Image::get($item->image);
