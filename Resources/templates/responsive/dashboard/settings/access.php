@@ -9,16 +9,12 @@
     <p><?= $this->text('guide-dashboard-user-access') ?></p>
 
     <div class="panel section-content spacer">
+      <div class="panel-body">
+            <h5><i class="fa fa-user"></i> <?= $this->text('login-access-username-field') ?></h5>
+            <p><?= $this->user_id ?></p>
 
-        <h5><i class="fa fa-user"></i> <?= $this->text('login-access-username-field') ?></h5>
-        <div class="panel-body">
-            <?= $this->user_id ?>
-        </div>
-
-        <h5 class="spacer-20"><i class="fa fa-envelope"></i> <?= $this->text('login-register-email-field') ?></h5>
-        <div class="panel-body">
-            <?= $this->user_email ?>
-        </div>
+            <h5 class="spacer-20"><i class="fa fa-envelope"></i> <?= $this->text('login-register-email-field') ?></h5>
+            <p><?= $this->user_email ?></p>
 
 
         <div class="spacer-20 forms">
@@ -40,6 +36,7 @@
 
 
         <p class="spacer"><a href="/user/leave?email=<?= $this->get_user()->email ?>"><i class="fa fa-ban"></i> <?= $this->text('login-leave-header') ?></a></p>
+      </div>
     </div>
 
   </div>

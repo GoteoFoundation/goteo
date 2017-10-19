@@ -189,12 +189,14 @@
     }
   }
   .material-switch {
+    display: table-cell;
     > label {
       cursor: pointer;
     }
     & + label {
       text-transform: uppercase;
       font-weight: 500;
+      display: table-cell;
     }
     > input[disabled] + label {
         opacity: 0.7;
@@ -290,6 +292,7 @@
         height: 0px;
         position: relative;
         width: 55px;
+        display: inline-block;
     }
 
     > label::before {
