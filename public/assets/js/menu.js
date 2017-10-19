@@ -32,7 +32,7 @@ $(function(){
         e.preventDefault();
         var button = this;
         var $button = $(this);
-        console.log($button.attr('class'));
+        // console.log($button.attr('class'));
         var target = $button.data('target');
         var $t = $('#' + target);
         var $show = $button.find('.show-menu');

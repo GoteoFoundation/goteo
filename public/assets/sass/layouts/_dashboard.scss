@@ -255,8 +255,14 @@
         color: $secondary-color;
         font-weight: 500;
       }
-
   }
+  .buttons {
+    .btn {
+        margin-bottom: 10px;
+        margin-right: 10px;
+    }
+  }
+
   .progress-bar {
     color: $color-white;
     * {
@@ -499,6 +505,11 @@
     }
     > li + li {
       margin-left: 20px;
+    }
+    @media(max-width: $breakpoint-xs - 1) {
+        h5 {
+            font-size: 12px;
+        }
     }
   }
 

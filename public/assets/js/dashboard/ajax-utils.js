@@ -95,7 +95,7 @@ $(function(){
             $textarea.val('');
             $recipients.find('.text').html($recipients.data('public'));
           }).fail(function(xhr) {
-            console.log('error', xhr);
+            // console.log('error', xhr);
             var error;
             try {
                 error = JSON.parse(xhr.responseText).error;
@@ -123,7 +123,7 @@ $(function(){
                 }
             }).fail(function(data) {
               var error = JSON.parse(data.responseText);
-              console.log('error', data, error)
+              // console.log('error', data, error)
               $error.removeClass('hidden').html(error.error);
             });
         }
@@ -193,11 +193,11 @@ $(function(){
         }
         $error.addClass('hidden').html('');
         $.post(url, data, function(data) {
-            console.log('ok!', data);
+            // console.log('ok!', data);
             // $list.append(data.html);
             $(document).trigger('message-sent', [data]);
           }).fail(function(xhr) {
-            console.log('error', xhr);
+            // console.log('error', xhr);
             var error;
             try {
                 error = JSON.parse(xhr.responseText).error;
