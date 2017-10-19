@@ -62,8 +62,15 @@ class ProjectDashboardController extends \Goteo\Core\Controller {
         // Create sidebar menu
         Session::addToSidebarMenu('<i class="icon icon-2x icon-summary"></i> ' . Text::get('dashboard-menu-activity-summary'), $prefix . '/summary', 'summary');
 
-        $admin = $project->userCanModerate($user);
-        $validation = ($project->inEdition() || $admin) ? $project->getValidation() : false;
+        $validation = false;
+        $admin = false;
+        if($project->inEdition()) {
+            $validation = $project->getValidation();
+        }
+        if(!$validation && $project->userCanModerate($user)) {
+            $validation = $project->getValidation();
+            $admin = true;
+        }
 
         if($validation) {
             $steps = [
