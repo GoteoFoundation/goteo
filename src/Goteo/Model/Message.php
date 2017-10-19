@@ -223,6 +223,7 @@ class Message extends \Goteo\Core\Model {
         $limit = (int) $limit;
         $sql .= " LIMIT $offset, $limit";
 
+        // die(\sqldbg($sql, $values));
         $query = self::query($sql, $values);
         if($resp = $query->fetchAll(\PDO::FETCH_CLASS, __CLASS__)) {
             return $resp;

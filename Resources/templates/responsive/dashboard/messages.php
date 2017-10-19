@@ -23,6 +23,7 @@
               <?= $this->insert('dashboard/project/partials/comments/full', [
                     'comments' => $message->getResponses($this->get_user()),
                     'thread' => $message->id,
+                    'private' => $message->private,
                     'project' => $message->project
                     ]) ?>
             <?php else: ?>

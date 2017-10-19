@@ -210,12 +210,13 @@ class MessagesApiController extends AbstractApiController {
     }
 
     /**
-     * Add a comment over a support message
+     * Add a comment over a project
      */
     public function messagesAddAction(Request $request) {
         $subject = trim($request->request->get('subject'));
         $body = trim($request->request->get('body'));
         $project = $request->request->get('project');
+        $thread = $request->request->get('thread');
         $prj = Project::get($project);
         if(!$prj->userCanEdit($this->user)) {
             throw new ControllerAccessDeniedException();
@@ -227,10 +228,12 @@ class MessagesApiController extends AbstractApiController {
             throw new ModelException(Text::get('validate-donor-mandatory'));
         }
 
+
         // Create the message
         $message = new Comment([
             'user' => $this->user,
             'project' => $project,
+            'thread' => $thread ? $thread : null,
             'blocked' => false,
             'private' => true,
             'subject' => $subject,
