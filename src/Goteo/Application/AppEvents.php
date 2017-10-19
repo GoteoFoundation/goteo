@@ -229,6 +229,16 @@ final class AppEvents
     const INVEST_RETURN_FAILED = 'invest.refund.failed';
 
    /**
+     * The project.created event is thrown when a project is created
+     *
+     * The event listener receives an
+     * Goteo\Console\Event\FilterProjectEvent instance.
+     *
+     * @var string
+     */
+    const PROJECT_CREATED = 'project.created';
+
+   /**
      * The project.publish event is thrown when a project is in a REVIEW status and has to be published (manually)
      *
      * The event listener receives an

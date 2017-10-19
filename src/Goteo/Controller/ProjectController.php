@@ -11,6 +11,8 @@
 namespace Goteo\Controller;
 
 use Goteo\Application;
+use Goteo\Application\AppEvents;
+use Goteo\Application\Event\FilterProjectEvent;
 use Goteo\Application\Config;
 use Goteo\Application\Exception\ControllerAccessDeniedException;
 use Goteo\Application\Exception\ControllerException;
@@ -465,7 +467,7 @@ class ProjectController extends \Goteo\Core\Controller {
             return $this->redirect('/user/login?return='.urldecode('/project/create'));
         }
 
-        if ($request->getMethod() == 'POST') {
+        if ($request->isMethod('post')) {
 
         	$social_commitment=$request->request->get('social');
 
@@ -494,9 +496,8 @@ class ProjectController extends \Goteo\Core\Controller {
             $conf->publishing_estimation = $request->request->get('publishing_date');
             $conf->save();
 
-            // Send a mail to the creator
-            $project->user=Session::getUser();
-            $sent = UsersSend::toOwner('project_created', $project);
+            // CREATED EVENT
+            $event = $this->dispatch(AppEvents::PROJECT_CREATED, new FilterProjectEvent($project));
 
             return new RedirectResponse('/dashboard/project/' . $project->id . '/profile');
         }

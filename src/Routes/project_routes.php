@@ -10,6 +10,7 @@
 
 use Symfony\Component\Routing\Route;
 use Symfony\Component\Routing\RouteCollection;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 
 $prjs = new RouteCollection();
 
@@ -18,11 +19,31 @@ $prjs = new RouteCollection();
 
 $prjs->add('project-edit', new Route(
     '/edit/{pid}/{step}',
-    array(
-        '_controller' => 'Goteo\Controller\ProjectController::editAction',
-        'step' => 'userProfile'
-        )
+    // array(
+    //     '_controller' => 'Goteo\Controller\ProjectController::editAction',
+    //     'step' => 'userProfile'
+    //     )
+    // redirects to dashbaord editing
+    array('_controller' => function ($pid, $step = null) {
+        if($step == 'userProfile') $step = 'profile';
+        if($step == 'userPersonal') $step = 'profile';
+        if(!$step) $step = 'summary';
+
+        return new RedirectResponse("/dashboard/project/$pid/$step");
+    },
+        'step' => null
+    )
+
 ));
+
+$prjs->add('project-delete', new Route(
+    '/delete/{pid}',
+    // array('_controller' => 'Goteo\Controller\ProjectController::deleteAction')
+    array('_controller' => function ($pid) {
+        return new RedirectResponse("/dashboard/project/$pid/delete");
+    })
+));
+
 
 $prjs->add('project-create', new Route(
     '/create',
@@ -49,17 +70,6 @@ $prjs->add('project-investors-required', new Route(
     '/investors-required',
     array('_controller' => 'Goteo\Controller\ProjectController::investorsRequiredAction',
         )
-));
-
-//TODO: quitar esta guarrada:
-$prjs->add('project-raw', new Route(
-    '/raw/{pid}',
-    array('_controller' => 'Goteo\Controller\ProjectController::rawAction')
-));
-
-$prjs->add('project-delete', new Route(
-    '/delete/{pid}',
-    array('_controller' => 'Goteo\Controller\ProjectController::deleteAction')
 ));
 
 $prjs->add('project-sections', new Route(
