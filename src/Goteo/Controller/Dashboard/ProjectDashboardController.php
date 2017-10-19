@@ -42,7 +42,7 @@ use Goteo\Application\Event\FilterProjectEvent;
 use Goteo\Application\Event\FilterProjectPostEvent;
 
 class ProjectDashboardController extends \Goteo\Core\Controller {
-    protected $user;
+    protected $user, $admin = false;
 
     public function __construct() {
         // changing to a responsive theme here
@@ -62,7 +62,8 @@ class ProjectDashboardController extends \Goteo\Core\Controller {
         // Create sidebar menu
         Session::addToSidebarMenu('<i class="icon icon-2x icon-summary"></i> ' . Text::get('dashboard-menu-activity-summary'), $prefix . '/summary', 'summary');
 
-        $validation = $project->inEdition() ? $project->getValidation() : false;
+        $admin = $project->userCanModerate($user);
+        $validation = ($project->inEdition() || $admin) ? $project->getValidation() : false;
 
         if($validation) {
             $steps = [
@@ -75,7 +76,7 @@ class ProjectDashboardController extends \Goteo\Core\Controller {
                 ['text' => '<i class="fa fa-2x fa-sliders"></i> 6. ' . Text::get('project-campaign'), 'link' => $prefix . '/campaign', 'id' => 'campaign', 'class' => $validation->campaign == 100 ? 'ok' : 'ko'],
                 ['text' => '<i class="icon icon-2x icon-supports"></i> ' . Text::get('dashboard-menu-projects-supports'), 'link' => $prefix . '/supports', 'id' => 'supports'],
             ];
-            Session::addToSidebarMenu('<i class="icon icon-2x icon-projects"></i> ' . Text::get('project-edit'), $steps, 'project', null, 'sidebar');
+            Session::addToSidebarMenu('<i class="icon icon-2x icon-projects"></i> ' . Text::get('project-edit'), $steps, 'project', null, 'sidebar' . ($admin ? ' admin' : ''));
         } else {
             $submenu = [
                 // ['text' => '<i class="icon icon-2x icon-updates"></i> ' . Text::get('dashboard-menu-projects-updates'), 'link' => $prefix . '/updates', 'id' => 'updates'],
@@ -101,7 +102,7 @@ class ProjectDashboardController extends \Goteo\Core\Controller {
 
         Session::addToSidebarMenu('<i class="icon icon-2x icon-preview"></i> ' . Text::get($validation ? 'regular-preview' : 'dashboard-menu-projects-preview'), '/project/' . $project->id, 'preview');
 
-        if($validation && $validation->global == 100) {
+        if($project->inEdition() && $validation && $validation->global == 100) {
 
             Session::addToSidebarMenu('<i class="fa fa-2x fa-paper-plane"></i> ' . Text::get('project-send-review'), '/dashboard/project/' . $project->id . '/apply', 'apply', null, 'flat', 'btn btn-fashion apply-project');
 
@@ -164,6 +165,8 @@ class ProjectDashboardController extends \Goteo\Core\Controller {
         }
 
         static::createSidebar($this->project, $section, $form);
+
+        $this->admin = $this->project->userCanModerate($this->user);
 
         return $this->project;
     }
@@ -250,7 +253,7 @@ class ProjectDashboardController extends \Goteo\Core\Controller {
         // Create the form
         $processor = $this->getModelForm('ProjectPersonal', $project, $defaults, ['account' => $account], $request);
         // $processor->setReadonly(!$project->userCanEdit($this->user, true))->createForm();
-        $processor->setReadonly(!$project->inEdition())->createForm();
+        $processor->setReadonly(!($this->admin || $project->inEdition()))->createForm();
         $processor->getBuilder()
             ->add('submit', 'submit', [
                 'label' => $project->isApproved() ? 'regular-submit' : 'form-next-button'
@@ -285,7 +288,7 @@ class ProjectDashboardController extends \Goteo\Core\Controller {
         // Create the form
         $processor = $this->getModelForm('ProjectOverview', $project, $defaults, [], $request);
         // For everyone
-        $processor->setReadonly(!$project->inEdition())->createForm();
+        $processor->setReadonly(!($this->admin || $project->inEdition()))->createForm();
         // Just for the owner
         // $processor->setReadonly(!$project->userCanEdit($this->user, true))->createForm();
 
@@ -414,7 +417,7 @@ class ProjectDashboardController extends \Goteo\Core\Controller {
         // Create the form
         $processor = $this->getModelForm('ProjectPost', $post, $defaults, ['project' => $project]);
         // $processor->setReadonly(!$project->userCanEdit($this->user, true))->createForm();
-        $processor->setReadonly(!$project->inEdition())->createForm();
+        $processor->setReadonly(!($this->admin || $project->inEdition()))->createForm();
         $form = $processor->getBuilder()
             ->add('submit', 'submit', array(
                 // 'icon_class' => null
@@ -458,7 +461,7 @@ class ProjectDashboardController extends \Goteo\Core\Controller {
         // Create the form
         $processor = $this->getModelForm('ProjectCosts', $project, $defaults, [], $request);
         // $processor->setReadonly(!$project->userCanEdit($this->user, true))->createForm();
-        $processor->setReadonly(!$project->inEdition())->createForm();
+        $processor->setReadonly(!($this->admin || $project->inEdition()))->createForm();
         $builder = $processor->getBuilder();
         if(!$processor->getReadonly()) {
             $builder
@@ -539,7 +542,7 @@ class ProjectDashboardController extends \Goteo\Core\Controller {
         // Create the form
         $processor = $this->getModelForm('ProjectRewards', $project, $defaults, [], $request);
         // $processor->setReadonly(!$project->userCanEdit($this->user, true))->createForm();
-        $processor->setReadonly(!$project->inEdition());
+        $processor->setReadonly(!($this->admin || $project->inEdition()));
         // Rewards can be added durint campaign
         if($project->inCampaign() || $project->inReview()) {
             $processor->setFullValidation(true);
@@ -696,7 +699,7 @@ class ProjectDashboardController extends \Goteo\Core\Controller {
         // Create the form
         $processor = $this->getModelForm('ProjectCampaign', $project, $defaults, ['account' => $account, 'user' => $this->user], $request);
         // For everyone
-        $processor->setReadonly(!$project->inEdition())->createForm();
+        $processor->setReadonly(!($this->admin || $project->inEdition()))->createForm();
         // Just for the owner
         // $processor->setReadonly(!$project->userCanEdit($this->user, true))->createForm();
 
