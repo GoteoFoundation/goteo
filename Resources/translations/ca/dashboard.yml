@@ -239,6 +239,7 @@ dashboard-translate-profile-desc: 'Estàs traduint el teu perfil personal al %LA
 dashboard-translate-profile-ok: 'Perfil traduït correctament al %s'
 
 dashboard-translate-project: 'Traduir el projecte'
+dashboard-translate-empty: 'No hi ha traduccions encara.'
 dashboard-translate-project-empty: 'No hi ha traduccions encara per a aquest projecte.'
 dashboard-translate-project-currents: 'L''idioma original d''aquest projecte és %LANG% i està traduït a %NUM% idiomes:'
 dashboard-translate-project-translating: 'Estàs traduint aquest projecte al %LANG%. L''idioma original és el %ORIGINAL%.'
