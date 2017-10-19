@@ -100,6 +100,20 @@ $terms=$this->terms;
                     <label><?= $this->text('project-create-social-text-field') ?></label>
                     <input autocomplete="off" tabindex="0" class="form-control" name="social-description" value="" required>
                 </div>
+                <div class="form-group col-sm-12" id="location-group">
+                    <div class="alert alert-success">
+                        <?= $this->text('project-create-social-text-alert') ?>
+                    </div>
+                    <label><?= $this->text('project-create-social-text-field') ?></label>
+                    <input type="text" id="location" class="geo-autocomplete form-control" data-geocoder-populate-city="#save-city" data-geocoder-populate-region="#save-region" data-geocoder-populate-country_code="#save-country" data-geocoder-populate-latitude="#save-latitude" data-geocoder-populate-longitude="#save-longitude" name="location" value="" style="width: 99%;"/>
+
+                    <input type="hidden" name="latitude" id="save-latitude" value="<?= $location->latitude ?>" />
+                    <input type="hidden" name="longitude" id="save-longitude" value="<?= $location->longitude ?>" />
+                    <input type="hidden" name="city" id="save-city" value="<?= $location->city ?>" />
+                    <input type="hidden" name="region" id="save-region" value="<?= $location->region ?>" />
+                    <input type="hidden" name="country" id="save-country" value="<?= $location->country ?>" />
+
+                </div>
                 <div class="form-group col-sm-12" id="accept-group" >
                     <label class="terms">
                         <input tabindex="0" class="" type="checkbox" name="create-accept" id="create-accept" value="1">
