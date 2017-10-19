@@ -509,27 +509,6 @@ class ProjectController extends \Goteo\Core\Controller {
 
 	}
 
-     /**
-     * Calculate de investors required for the minimum
-     */
-
-    public function investorsRequiredAction(Request $request) {
-
-        if ($request->isMethod('post')) {
-            $minimum = $request->request->get('minimum');
-        }
-
-        //Get the investors
-
-        $average=Project::getInvestAverage();
-
-        $investors=ceil($minimum/$average);
-
-        return $this->jsonResponse($investors);
-
-    }
-
-
 	protected function view($project, $show, $post = null, Request $request) {
 		//activamos la cache para esta llamada
 		\Goteo\Core\DB::cache(true);

@@ -190,7 +190,7 @@ $terms=$this->terms;
             var minimum=$("#minimum").val();
 
             $.ajax({
-                url: "/project/investors-required",
+                url: "/api/stats/investors-required",
                 data: { 'minimum' : minimum },
                 type: 'post',
                 success: function(result){

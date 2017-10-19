@@ -17,6 +17,7 @@ $prjs = new RouteCollection();
 //// PROJECT /////
 /// TODO: more methods... ///
 
+// Project edit (old route compatibility)
 $prjs->add('project-edit', new Route(
     '/edit/{pid}/{step}',
     // array(
@@ -36,6 +37,7 @@ $prjs->add('project-edit', new Route(
 
 ));
 
+// Project delete (old route compatibility)
 $prjs->add('project-delete', new Route(
     '/delete/{pid}',
     // array('_controller' => 'Goteo\Controller\ProjectController::deleteAction')
@@ -64,13 +66,6 @@ $prjs->add('project-delete-favourite', new Route(
     array('_controller' => 'Goteo\Controller\ProjectController::DeletefavouriteAction')
 ));
 
-// Calculate investors average
-
-$prjs->add('project-investors-required', new Route(
-    '/investors-required',
-    array('_controller' => 'Goteo\Controller\ProjectController::investorsRequiredAction',
-        )
-));
 
 $prjs->add('project-sections', new Route(
     '/{pid}/{show}/{post}',
