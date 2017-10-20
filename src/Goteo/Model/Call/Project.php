@@ -859,17 +859,19 @@ namespace Goteo\Model\Call {
             $tot_female = 0;
             $tot_gender= 0;
 
-            foreach($projects as $project)
-            {
-                if($project->user->gender=="M")
+            if(is_array($projects)) {
+                foreach($projects as $project)
                 {
-                    $tot_male++;
-                    $tot_gender++;
-                }
-                elseif($project->user->gender=="F")
-                {
-                    $tot_female++;
-                    $tot_gender++;
+                    if($project->user->gender=="M")
+                    {
+                        $tot_male++;
+                        $tot_gender++;
+                    }
+                    elseif($project->user->gender=="F")
+                    {
+                        $tot_female++;
+                        $tot_gender++;
+                    }
                 }
             }
 
