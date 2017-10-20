@@ -268,7 +268,7 @@ namespace Goteo\Model {
                 return true;
             }
             // is superadmin in the project node
-            if($user->hasRoleInNode($this->node, ['superadmin', 'root'])) return true;
+            if($user->hasRoleInNode($this->node, ['manager', 'superadmin', 'root'])) return true;
             // is a consultant
             if($user->hasRoleInNode($this->node, ['consultant', 'admin']) && array_key_exists($user->id, $this->getConsultants())) return true;
             // is reviewer
