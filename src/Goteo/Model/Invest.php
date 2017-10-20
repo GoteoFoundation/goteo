@@ -69,8 +69,9 @@ class Invest extends \Goteo\Core\Model {
         $returned, //fecha en la que se ha devuelto el importe al usurio por cancelación bancaria
         $rewards = array(), //datos de las recompensas que le corresponden
         $address = null,  // dirección de envio de la recompensa y datos de regalo
-        $drops = null, // aportes que tienen capital riego asociado
-        $droped = null, // aportes que tienen capital riego asociado
+        $drops = null, // id del aporte que provoca este riego
+        $droped = null, // id del riego generado por este aporte
+        $campaign = false, // si es un aporte de capital riego
         $call = null, // aportes que tienen capital riego asociado
         $pool = false; // aportes a reservar si el proyecto falla
 
