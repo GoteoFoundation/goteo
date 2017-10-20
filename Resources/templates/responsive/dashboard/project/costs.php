@@ -82,16 +82,27 @@ $(function(){
             }
 
         });
-        var per_min = Math.round(100*min/(min+opt)) + '%';
-        var per_opt = Math.round(100*opt/(min+opt)) + '%';
-        console.log('calc', min, opt);
         $bar.find('.amount-min').html(min);
         $bar.find('.amount-opt').html(opt);
         $bar.find('.amount-total').html(min + opt);
-        $bar.find('.bar-min').css('width', per_min).html(per_min);
-        $bar.find('.bar-opt').css('width', per_opt).html(per_opt);
+        var per_min = Math.round(100*min/(min+opt));
+        var per_opt = Math.round(100*opt/(min+opt));
+        var min_w = parseInt($bar.find('.min').css('width', 'auto').width());
+        var opt_w = parseInt($bar.find('.opt').css('width', 'auto').width());
+        var total_w = parseInt($bar.find('.total').css('width', 'auto').width());
+        console.log('calc', min+'€', opt+'€',per_min+'%',per_opt+'%',min_w+'px',opt_w+'px',total_w+'px');
+        $bar.find('.min').css('width', per_min + '%').css({
+            minWidth: min_w + 'px',
+            maxWidth: 'calc(' + per_min + '% - ' + (total_w + opt_w) + 'px)'
+        });
+        $bar.find('.opt').css('width', (per_opt * 0.8) + '%').css({
+            minWidth: opt_w + 'px',
+            maxWidth: 'calc(' + per_opt + '% - ' + (total_w + min_w) + 'px)'
+        });
+        $bar.find('.bar-min').css('width', per_min + '%').html(per_min + '%');
+        $bar.find('.bar-opt').css('width', per_opt + '%').html(per_opt + '%');
     };
-
+    setBar();
     $('.autoform').on('change', '.cost-item .required select', function() {
         var required = parseInt($(this).val(), 10);
         var $panel = $(this).closest('.cost-item');

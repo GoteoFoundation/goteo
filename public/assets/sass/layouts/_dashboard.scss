@@ -574,9 +574,24 @@
         color: $color-dark;
         float: left;
         // min-width: 101px;
-        max-width: 80%;
+        // max-width: 80%;
         // max-width: calc(100% - 202px);
+        transition: width .6s ease, min-width .6s ease, max-width .6s ease;
+
+        &.min {
+            width: 45%;
+            >span {
+                margin-right: 10px;
+            }
+        }
+        &.opt {
+            width: 30%;
+            >span {
+                margin-right: 10px;
+            }
+        }
         &.total {
+            width: auto;
             float: right;
             text-align: right;
         }

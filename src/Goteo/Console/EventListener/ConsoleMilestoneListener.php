@@ -108,7 +108,7 @@ class ConsoleMilestoneListener extends AbstractListener {
         $this->info("Creating milestones on invest");
 
         //Milestones by percentage
-        $percentage=($project->invested/$project->mincost)*100;
+        $percentage = $project->mincost ? ($project->invested / $project->mincost) * 100 : 0;
 
         if($percentage>=20&&$percentage<50)
             $type='20-percent-reached';
