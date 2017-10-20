@@ -62,6 +62,7 @@ class MessageListener extends AbstractListener {
             return;
         }
 
+        $errors = [];
         foreach($recipients as $user) {
             $lang = User::getPreferences($user)->comlang;
             $mail = Mail::createFromTemplate($user->email, $user->name, $template, [
