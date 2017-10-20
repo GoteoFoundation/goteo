@@ -193,6 +193,7 @@ dashboard-project-delete-image: 'Delete file'
 dashboard-project-delete-image-confirm: 'Are you sure to remove this file?'
 dashboard-project-delete-default-image: "The default image cannot be deleted.\nPlease choose another image as default before remove this one."
 dashboard-project-dnd-image: 'Drag & drop one or more images here'
+dashboard-project-dnd-file: 'Drag & drop one or more files here'
 dashboard-project-image-delete-ko: 'The image has not been deleted!'
 project-upload-images-some-ko: 'Some images has not been uploaded!'
 dashboard-project-default-image-confirm: 'Do you want to use this image as a default for the project?'
