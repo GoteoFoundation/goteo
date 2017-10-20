@@ -210,6 +210,8 @@ $(function(){
         var private = $(evt.relatedTarget).hasClass('send-private');
         var user_id = $(evt.relatedTarget).data('user');
         var user_txt = $(evt.relatedTarget).data('name');
+        var $span = $(evt.relatedTarget).find('>span');
+        var $subject = $('#messageModal input[name="subject"]').closest('.form-group');
         var $list = $('#messageModal .messages-list');
         var $recipients = $('#messageModal .ajax-message .recipients');
         var prefix = $recipients.data('private');
@@ -221,16 +223,20 @@ $(function(){
         // Create form fields
         $('#messageModal .ajax-message .error-message').addClass('hidden');
         $list.removeClass('loading').html('');
+        $subject.show();
         if(private) {
+          if(parseInt($span.text()) > 0) {
+            $subject.hide();
+          }
           // Create messages
           var $template = $('script.item_message_template');
           $list.addClass('loading');
           $.getJSON('/api/projects/<?= $this->project->id ?>/messages/' + user_id, function(msgs) {
-            console.log('msgs', msgs);
+            // console.log('msgs', msgs);
             if(msgs && msgs.list) {
               $list.removeClass('loading');
               $.each(msgs.list, function(i, item){
-                console.log(i, item);
+                // console.log(i, item);
                 var msg = $template.html()
                             .replace(/\{name\}/g, item.name)
                             .replace(/\{date\}/g, item.timeago)
@@ -274,6 +280,7 @@ $(function(){
         $('.ajax-message input[name="users"]').val(user_id || '');
         $('.ajax-message .recipients').html(prefix + ' <strong>'+ txt + '</strong>');
     });
+
     $(document).on('message-sent', function(evt, request, response){
         // console.log('message sent', request, response);
         $('.ajax-message input[name="reward"]').val('');
@@ -287,7 +294,7 @@ $(function(){
         if(request.users) {
             for(var i in request.users) {
                 console.log(request.users[i]);
-                $span = $('a.send-private[data-user="' +  request.users[i] + '"]>span');
+                var $span = $('a.send-private[data-user="' +  request.users[i] + '"]>span');
                 $span.text(parseInt($span.text()) + 1);
             }
         }

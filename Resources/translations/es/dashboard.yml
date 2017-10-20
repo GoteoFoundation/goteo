@@ -195,6 +195,7 @@ dashboard-project-delete-image: 'Borrar archivo'
 dashboard-project-delete-image-confirm: '¿Seguro que quieres borrar este archivo?'
 dashboard-project-delete-default-image: "La imagen por defecto no puede borrarse.\nEscoge otra imagen por defecto antes de borrar esta."
 dashboard-project-dnd-image: 'Arrastra y suelta una o más imágenes aquí'
+dashboard-project-dnd-file: 'Arrastra y suelta uno o más archivos aquí'
 dashboard-project-image-delete-ko: 'La imagen no se ha podido borrar!'
 project-upload-images-some-ko: 'Algunas imágenes no se han subido!'
 dashboard-project-default-image-confirm: '¿Quieres poner esta imagen por defecto del proyecto?'

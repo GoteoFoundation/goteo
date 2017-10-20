@@ -233,11 +233,12 @@ namespace Goteo\Model {
          * @param  Goteo\Model\User $user  the user to check (if empty checks )
          * @return boolean          true if success, false otherwise
          */
-        public function userCanView(User $user = null) {
+        public function userCanView($user = null) {
 
             // already published:
             if($this->status >= self::STATUS_IN_CAMPAIGN) return true;
             if(empty($user)) return false;
+            if(!$user instanceOf User) return false;
             // owns the project
             if($this->owner === $user->id) return true;
             // is admin in the project node
@@ -255,9 +256,10 @@ namespace Goteo\Model {
          * @param  Goteo\Model\User $user  the user to check
          * @return boolean          true if success, false otherwise
          */
-        public function userCanEdit(User $user = null, $check_status = false) {
+        public function userCanEdit($user = null, $check_status = false) {
 
             if(empty($user)) return false;
+            if(!$user instanceOf User) return false;
             // owns the project
             if($this->owner === $user->id) {
                 if($check_status) {
@@ -279,8 +281,9 @@ namespace Goteo\Model {
          * @param  Goteo\Model\User $user  the user to check
          * @return boolean          true if success, false otherwise
          */
-        public function userCanDelete(User $user = null) {
+        public function userCanDelete($user = null) {
             if(empty($user)) return false;
+            if(!$user instanceOf User) return false;
             if(!in_array($this->status, array(self::STATUS_DRAFT, self::STATUS_REJECTED, self::STATUS_EDITING))) return false;
             // owns the project
             if($this->owner === $user->id) return true;
@@ -295,8 +298,9 @@ namespace Goteo\Model {
          * @param  Goteo\Model\User $user  the user to check
          * @return boolean          true if success, false otherwise
          */
-        public function userCanModerate(User $user = null) {
+        public function userCanModerate($user = null) {
             if(empty($user)) return false;
+            if(!$user instanceOf User) return false;
 
             // is superadmin in the project node
             if($user->hasRoleInNode($this->node, ['superadmin', 'root'])) return true;
@@ -311,8 +315,9 @@ namespace Goteo\Model {
          * @param  Goteo\Model\User $user  the user to check
          * @return boolean          true if success, false otherwise
          */
-        public function userCanManage(User $user = null) {
+        public function userCanManage($user = null) {
             if(empty($user)) return false;
+            if(!$user instanceOf User) return false;
 
             // is manager or superadmin in the project node
             if($user->hasRoleInNode($this->node, ['manager', 'superadmin', 'root'])) return true;
@@ -326,8 +331,9 @@ namespace Goteo\Model {
          * @param  Goteo\Model\User $user  the user to check
          * @return boolean          true if success, false otherwise
          */
-        public function userCanAdmin(User $user = null, $include_admins = false) {
+        public function userCanAdmin($user = null, $include_admins = false) {
             if(empty($user)) return false;
+            if(!$user instanceOf User) return false;
 
             $roles = ['superadmin', 'root'];
             if($include_admins) $roles[] = 'admin';

@@ -17,6 +17,7 @@ use Goteo\Model\Image;
 use Goteo\Model\Project;
 use Goteo\Application\Lang;
 use Goteo\Application\Config;
+use Goteo\Application\Exception\ModelException;
 
 class Message extends \Goteo\Core\Model {
 
@@ -182,47 +183,38 @@ class Message extends \Goteo\Core\Model {
     }
 
     /**
-     * returns an array with user => total received messages
-     */
-    public static function countProjectMessages(Project $project) {
-        $sql = "SELECT message_user.user_id as user, COUNT(user_id) as total
-                FROM message
-                RIGHT JOIN message_user ON message_user.message_id=message.id
-                WHERE message.project = :project
-                #and message_user.user_id in ('ivan', 'test', 'mackeylime')
-                GROUP BY user_id";
-        $values = [':project' => $project->id];
-        // die(\sqldbg($sql, $values));
-        if($query = static::query($sql, $values)) {
-            return array_column($query->fetchAll(\PDO::FETCH_OBJ), 'total', 'user');
-        }
-        return [];
-    }
-
-    /**
      * Returns user messages
      */
-    public static function getUserThreads(User $user, $offset = 0, $limit = 10, $count = false, $order = 'date DESC, id DESC') {
+    public static function getUserThreads($user, $offset = 0, $limit = 10, $count = false, $order = 'date DESC, id DESC') {
+
+        $id = $user instanceOf User ? $user->id : $user;
         if($count) $order = '';
 
-        $where = 'a.id IN (
-                    SELECT thread FROM message b
-                    WHERE (b.user = :user OR
-                        :user IN (SELECT user_id FROM message_user c WHERE c.message_id=b.id)
-                        ) AND b.blocked=0'
-                  . ($order ? " ORDER BY $order" : '') . ')';
+        $sql = 'FROM message a
+                  LEFT JOIN message_user d ON d.message_id=a.id
+                  WHERE (
+                    a.id IN (
+                        SELECT thread FROM message b
+                        WHERE (b.user = :user OR
+                            :user IN (SELECT user_id FROM message_user c WHERE c.message_id=b.id)
+                            ) AND b.blocked=0)
+                    OR d.user_id = :user)
+                    AND ISNULL(a.thread)
+                    ';
 
-        $values = [':user' => $user->id];
+        $values = [':user' => $id];
 
         if($count) {
-            return self::query("SELECT COUNT(a.id) FROM message a WHERE $where", $values)->fetchColumn();
+            return (int) self::query("SELECT COUNT(DISTINCT a.id) $sql", $values)->fetchColumn();
         }
 
-        $sql = "SELECT a.* FROM message a WHERE $where";
+        $sql = "SELECT DISTINCT a.* $sql";
         $offset = (int) $offset;
         $limit = (int) $limit;
+        $sql .=  $order ? " ORDER BY $order" : '';
         $sql .= " LIMIT $offset, $limit";
 
+        // die(\sqldbg($sql, $values));
         $query = self::query($sql, $values);
         if($resp = $query->fetchAll(\PDO::FETCH_CLASS, __CLASS__)) {
             return $resp;
@@ -234,23 +226,32 @@ class Message extends \Goteo\Core\Model {
     /**
      * Returns user messages
      */
-    public static function getUserPrivateMessages(User $user, Project $project = null) {
+    public static function getUserMessages($user, $project = null, $offset = 0, $limit = 10, $count = false) {
+        $id = $user instanceOf User ? $user->id : $user;
+        $pid = $project instanceOf Project ? $project->id : $project;
+
         $addWhere = '';
-        $values = [':user' => $user->id];
+        $values = [':user' => $id];
         if($project) {
             $addWhere .= ' AND a.project = :project';
-            $values[':project'] = $project->id;
+            $values[':project'] = $pid;
         }
-        $sql = "SELECT a.*, b.id AS support_id, c.user_id AS recipient
-                FROM message a
+        $sql = "FROM message a
                 LEFT JOIN support b ON b.thread = a.thread
                 LEFT JOIN message_user c ON c.message_id = a.id
-                WHERE blocked=0 AND private=1
+                WHERE blocked=0
                 AND (c.user_id = :user OR a.user = :user)
                 AND b.id IS NULL
-                $addWhere
-                ORDER BY DATE ASC, id ASC
-                LIMIT 5"; // TODO: offset and limit
+                $addWhere";
+        if($count) {
+            return (int) self::query("SELECT COUNT(a.id) $sql", $values)->fetchColumn();
+        }
+
+        $offset = (int) $offset;
+        $limit = (int) $limit;
+        $sql = "SELECT a.*, b.id AS support_id, c.user_id AS recipient $sql ORDER BY date DESC, id DESC LIMIT $offset, $limit";
+
+        $sql = "SELECT * FROM ($sql) rev ORDER BY date ASC, id ASC ";
         // die(sqldbg($sql, $values));
         $query = self::query($sql, $values);
         if($resp = $query->fetchAll(\PDO::FETCH_CLASS, __CLASS__)) {
@@ -258,6 +259,25 @@ class Message extends \Goteo\Core\Model {
         }
         return [];
 
+    }
+
+    /**
+     * Assigns thread
+     * In mode 'auto' search for the most recent parent thread with
+     * the same caracteristics: same user in the replies and same project
+     * ONLY works for one user (the first)
+     * @param [type] $thread [description]
+     */
+    public function setThread($thread) {
+        if($thread === 'auto') {
+            $user = current($this->getRecipients());
+            if($last = static::getUserThreads($user, 0, 1)) {
+                $this->thread = $last[0]->id;
+            }
+        } else {
+            $this->thread = $thread;
+        }
+        return $this;
     }
 
     public function validate (&$errors = array()) {
@@ -336,24 +356,33 @@ class Message extends \Goteo\Core\Model {
         return $type;
     }
 
-    /* return all user responses
-    * TODO: page/limit this?
+    /**
+     * return all user responses
     */
-    public function getResponses(User $user = null) {
-        $user_id = '';
-        if($user) $user_id = $user->id;
-        if($this->all_responses[$user_id]) return $this->all_responses[$user_id];
-        $sql = "SELECT a.* FROM  message a
-                LEFT JOIN message_user b ON b.message_id = a.id AND b.user_id=:user
-                WHERE a.thread = :thread
-                ORDER BY date ASC, id ASC";
-        // echo \sqldbg($sql, [':user' => $user_id, ':thread' => $this->id]);
-        $query = self::query($sql, [':user' => $user_id, ':thread' => $this->id]);
+    public function getResponsesStatic($thread, $user = null, $offset = 0, $limit = 10, $count = false) {
+        $user_id = $user instanceOf User ? $user->id : null;
+
+        $sql = "LEFT JOIN message_user b ON b.message_id = a.id AND b.user_id=:user
+                WHERE a.thread = :thread";
+
+        $values = [':user' => $user_id, ':thread' => $thread];
+        if($count) {
+            return (int) self::query("SELECT COUNT(a.id) FROM message a $sql", $values)->fetchColumn();
+        }
+        $offset = (int) $offset;
+        $limit = (int) $limit;
+        $sql = "SELECT a.* FROM message a $sql ORDER BY date DESC, id DESC LIMIT $offset, $limit";
+        $sql = "SELECT * FROM ($sql) rev ORDER BY date ASC, id ASC ";
+        // echo \sqldbg($sql, $values);
+        $query = self::query($sql, $values);
         if($resp = $query->fetchAll(\PDO::FETCH_CLASS, __CLASS__)) {
-            $this->all_responses[$user_id] = $resp;
-            return $this->all_responses[$user_id];
+            return $resp;
         }
         return [];
+    }
+
+    public function getResponses($user = null, $offset = 0, $limit = 10, $count = false, $order = 'date ASC, id ASC') {
+        return static::getResponsesStatic($this->id, $user, $offset, $limit, $count, $order);
     }
 
     public function totalResponses(User $user = null) {
@@ -361,16 +390,12 @@ class Message extends \Goteo\Core\Model {
         if($user) $user_id = $user->id;
         if($this->total_thread_responses[$user_id]) return $this->total_thread_responses[$user_id];
         if($this->id) {
-            $sql = "SELECT  COUNT(*) as total FROM message a
-            LEFT JOIN message_user b ON b.message_id = a.id AND b.user_id=:user
-            WHERE a.thread = :thread";
-
-            $query = static::query($sql, [':thread' => $this->id, ':user' => $user_id]);
-            $this->total_thread_responses[$user_id] = (int)$query->fetchColumn();
+            $this->total_thread_responses[$user_id] = $this->getResponses($user, 0, 0, true);
             return $this->total_thread_responses[$user_id];
         }
         return 0;
     }
+
     public function setRecipients(array $recipients = []) {
         if($recipients) {
             $this->private = true;

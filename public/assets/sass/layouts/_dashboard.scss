@@ -255,6 +255,16 @@
         color: $secondary-color;
         font-weight: 500;
       }
+      &[data-toggle="collapse"] {
+        &::after {
+          margin-left: 6px;
+          content: '\f0d7';
+          font-family: FontAwesome;
+        }
+        &[aria-expanded="true"]::after {
+          content: '\f0d8';
+        }
+      }
   }
   .buttons {
     .btn {

@@ -185,6 +185,7 @@ $(function(){
         var data = {
             subject: $subject.val(),
             body: $body.val(),
+            thread: $parent.data('thread'),
             reward: $reward.val(),
             filter: $filter.val(),
             users: $users.val().split(','),
