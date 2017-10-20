@@ -96,7 +96,11 @@ class ProjectPostForm extends AbstractFormProcessor implements FormProcessorInte
         $post->rebuildData($data, array_keys($form->all()));
         $gallery = Image::getModelGallery('post', $post->id);
         $post->image = $data['image'];
-        $current = array_column($post->image, 'id');
+        // $current = array_column($post->image, 'id');
+        $current = array_map(function($e) {
+                return is_object($e) ? $e->id : $e['id'];
+            }, $post->image);
+
         // print_r($gallery);
         if(is_array($gallery)) {
             foreach($gallery as $img) {
