@@ -190,20 +190,25 @@ class Message extends \Goteo\Core\Model {
         $id = $user instanceOf User ? $user->id : $user;
         if($count) $order = '';
 
-        $where = 'a.id IN (
-                    SELECT thread FROM message b
-                    WHERE (b.user = :user OR
-                        :user IN (SELECT user_id FROM message_user c WHERE c.message_id=b.id)
-                        ) AND b.blocked=0)
-                        AND ISNULL(a.thread)';
+        $sql = 'FROM message a
+                  LEFT JOIN message_user d ON d.message_id=a.id
+                  WHERE (
+                    a.id IN (
+                        SELECT thread FROM message b
+                        WHERE (b.user = :user OR
+                            :user IN (SELECT user_id FROM message_user c WHERE c.message_id=b.id)
+                            ) AND b.blocked=0)
+                    OR d.user_id = :user)
+                    AND ISNULL(a.thread)
+                    ';
 
         $values = [':user' => $id];
 
         if($count) {
-            return (int) self::query("SELECT COUNT(a.id) FROM message a WHERE $where", $values)->fetchColumn();
+            return (int) self::query("SELECT COUNT(DISTINCT a.id) $sql", $values)->fetchColumn();
         }
 
-        $sql = "SELECT a.* FROM message a WHERE $where";
+        $sql = "SELECT DISTINCT a.* $sql";
         $offset = (int) $offset;
         $limit = (int) $limit;
         $sql .=  $order ? " ORDER BY $order" : '';

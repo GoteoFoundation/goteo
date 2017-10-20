@@ -37,7 +37,7 @@ if(is_object($this->comment)) {
       <?php if($this->admin): ?>
         <button class="btn btn-default delete-comment" data-url="/api/comments/<?= $id ?>" data-confirm="<?= $this->text('support-sure-to-delete') ?>" title="<?= $this->text('regular-delete') ?>"><i class="fa fa-fw fa-trash"></i></button>
       <?php endif ?>
-      <?php echo $type;if($type == 'project-support-response'): ?>
+      <?php if($type == 'project-support-response'): ?>
         <button class="btn btn-default send-private" data-user="<?= $user ?>" data-name="<?= $name ?>" title="<?= $this->text('support-send-private-message') ?>"><i class="fa fa-fw fa-paper-plane"></i></button>
       <?php endif ?>
     </div>
