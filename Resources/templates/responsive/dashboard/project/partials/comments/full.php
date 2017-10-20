@@ -4,7 +4,7 @@ $default_message = 'support-' . ($this->private ? 'private_all' : 'public') . '-
 
 ?><div class="comments-list" id="comments-list-<?= $this->thread ?>">
   <?php foreach($this->comments as $comment): ?>
-    <?= $this->insert('dashboard/project/partials/comments/item', ['comment' => $comment, 'admin' => $this->admin]) ?>
+    <?= $this->insert('dashboard/project/partials/comments/item', ['comment' => $comment, 'admin' => $this->admin, 'type' => $this->type]) ?>
   <?php endforeach ?>
 </div>
 

@@ -328,6 +328,35 @@ $this->section('content');
         });
 
 
+        // Send comments
+        $(document).on('click', '.ajax-comments .send-comment', function (e) {
+            e.preventDefault();
+            var $parent = $(this).closest('.ajax-comments');
+            var $list = $($parent.data('list'));
+            var url = $parent.data('url');
+            var $error = $parent.find('.error-message');
+            var $textarea = $parent.find('[name="message"]');
+            var data = {
+                message: $textarea.val(),
+                thread: $parent.data('thread'),
+                project: $parent.data('project'),
+                view: 'project'
+            }
+
+            $error.addClass('hidden').html('');
+            $.post(url, data, function(data) {
+                // console.log('ok!', data);
+                $list.append(data.html);
+                $textarea.val('');
+                $parent.closest('.box').hide();
+              }).fail(function(data) {
+                var error = JSON.parse(data.responseText);
+                // console.log('error', data, error)
+                $error.removeClass('hidden').html(error.error);
+              });
+        });
+
+
 
     });
 

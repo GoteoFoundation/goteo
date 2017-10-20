@@ -263,7 +263,6 @@ class UserProfileForm extends AbstractFormProcessor implements FormProcessorInte
             throw new FormModelException(Text::get('form-sent-error', $err));
 
         }
-
         // $data['user_avatar'] = $data['avatar'];
         unset($data['avatar']); // do not rebuild data using this
 

@@ -962,8 +962,11 @@ class ProjectDashboardController extends \Goteo\Core\Controller {
 
         // TODO: save to session with current filter values?
 
+        $messages = [];
+        foreach($invests as $invest) {
+            $messages[$invest->user] = Comment::getUserMessages($invest->user, $invest->project, 0, 0, true);
+        }
 
-        $messages = Comment::countProjectMessages($project);
         // print_r($messages);die;
         return $this->viewResponse('dashboard/project/invests', [
             'invests' => $invests,
