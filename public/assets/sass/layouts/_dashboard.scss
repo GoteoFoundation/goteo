@@ -528,6 +528,16 @@
         font-size: 92%;
     }
   }
+  .pool-container {
+    padding-left:5%;
+    padding-right:5%;
+    .pool-box {
+        input[type="number"] {
+            margin-right: 10px;
+            max-width: 190px;
+        }
+    }
+  }
   .pool-box {
     // width: 100%;
     // padding:2%;
