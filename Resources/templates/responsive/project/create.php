@@ -102,16 +102,17 @@ $terms=$this->terms;
                 </div>
                 <div class="form-group col-sm-12" id="location-group">
                     <div class="alert alert-success">
-                        <?= $this->text('project-create-social-text-alert') ?>
+                        <?= $this->text('project-create-location-text-alert') ?>
                     </div>
-                    <label><?= $this->text('project-create-social-text-field') ?></label>
-                    <input type="text" id="location" class="geo-autocomplete form-control" data-geocoder-populate-city="#save-city" data-geocoder-populate-region="#save-region" data-geocoder-populate-country_code="#save-country" data-geocoder-populate-latitude="#save-latitude" data-geocoder-populate-longitude="#save-longitude" name="location" value="" style="width: 99%;"/>
+                    <label><?= $this->text('overview-field-project_location') ?></label>
+                    <input required type="text" id="location" class="geo-autocomplete form-control" data-geocoder-populate-city="#save-city" data-geocoder-populate-region="#save-region" data-geocoder-populate-country_code="#save-country-code" data-geocoder-populate-country="#save-country" data-geocoder-populate-latitude="#save-latitude" data-geocoder-populate-longitude="#save-longitude" name="location" value="" >
 
-                    <input type="hidden" name="latitude" id="save-latitude" value="<?= $location->latitude ?>" />
-                    <input type="hidden" name="longitude" id="save-longitude" value="<?= $location->longitude ?>" />
-                    <input type="hidden" name="city" id="save-city" value="<?= $location->city ?>" />
-                    <input type="hidden" name="region" id="save-region" value="<?= $location->region ?>" />
-                    <input type="hidden" name="country" id="save-country" value="<?= $location->country ?>" />
+                    <input type="hidden" name="latitude" id="save-latitude" value="" >
+                    <input type="hidden" name="longitude" id="save-longitude" value="" >
+                    <input type="hidden" name="city" id="save-city" value="" >
+                    <input type="hidden" name="region" id="save-region" value="" >
+                    <input type="hidden" name="country" id="save-country" value="" >
+                    <input type="hidden" name="country_code" id="save-country-code" value="" >
 
                 </div>
                 <div class="form-group col-sm-12" id="accept-group" >

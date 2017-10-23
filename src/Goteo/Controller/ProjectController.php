@@ -30,6 +30,7 @@ use Goteo\Library\Text;
 use Goteo\Library\Worth;
 use Goteo\Model;
 use Goteo\Model\Project;
+use Goteo\Model\Project\ProjectLocation;
 use Goteo\Model\Invest;
 use Goteo\Model\Project\Favourite;
 use Goteo\Model\Project\Conf;
@@ -475,7 +476,8 @@ class ProjectController extends \Goteo\Core\Controller {
                 'name'         => $request->request->get('name'),
                 'subtitle'   => $request->request->get('subtitle'),
                 'social_commitment'   => $social_commitment,
-                'social_description' => $request->request->get('social-description')
+                'social_description' => $request->request->get('social-description'),
+                'location'			=> $request->request->get('location')
             ];
 
             $project = Project::createNewProject($data, Session::getUser(), Config::get('current_node'));
@@ -490,6 +492,23 @@ class ProjectController extends \Goteo\Core\Controller {
         		$category->save();
         	}
 
+        	// Save location
+
+        	$loc = new ProjectLocation(
+        			[
+                    'id'         => $project->id,
+                    'city'         => $request->request->get('city'),
+                    'region'       => $request->request->get('region'),
+                    'country'      => $request->request->get('country'),
+                    'country_code' => $request->request->get('country_code'),
+                    'longitude'    => $request->request->get('longitude'),
+                    'latitude'     => $request->request->get('latitude'),
+                    'method'       => 'manual'
+                ]
+            );
+            
+            $loc->save($errors);
+                                
             // Save publishing day and min required estimation
             $conf = Project\Conf::get($project->id);
             $conf->mincost_estimation = $request->request->get('minimum');
