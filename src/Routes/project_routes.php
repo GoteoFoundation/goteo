@@ -24,7 +24,7 @@ $prjs->add('project-edit', new Route(
     //     '_controller' => 'Goteo\Controller\ProjectController::editAction',
     //     'step' => 'userProfile'
     //     )
-    // redirects to dashbaord editing
+    // redirects to dashboard editing
     array('_controller' => function ($pid, $step = null) {
         if($step == 'userProfile') $step = 'profile';
         if($step == 'userPersonal') $step = 'profile';
