@@ -1,6 +1,6 @@
 <?php
 $zones = $this->a('zones');
-$percent = $this->a('percents');
+$percents = $this->a('percents');
 if(!$zones) return;
 ?>
 <ul class="nav nav-tabs nav-justified">
