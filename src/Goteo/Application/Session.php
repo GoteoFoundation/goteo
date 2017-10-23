@@ -10,6 +10,7 @@
 
 namespace Goteo\Application;
 
+use Goteo\Application\App;
 use Goteo\Model\User;
 use Goteo\Library\Text;
 use Symfony\Component\HttpFoundation\Request;
@@ -111,7 +112,7 @@ class Session {
                 self::getSession()->start();
             }
             // Fixes session cookie time life
-            // self::getSession()->migrate(false, self::getSessionExpires());
+            self::getSession()->migrate(false, self::getSessionExpires());
         } catch(\RuntimeException $e) {
             throw new Config\ConfigException($e->getMessage());
         }
@@ -124,14 +125,15 @@ class Session {
         if($session_time) {
             self::setSessionExpires($session_time);
         }
-        // if( self::getStartTime() > self::get('init_time') + self::getSessionExpires() ) {
-        //     // expires session
-        //     self::destroy(false);
-        //     $callback = self::$triggers['session_expires'];
-        //     if(is_callable($callback)) {
-        //         $callback();
-        //     }
-        // }
+        if( self::getStartTime() > self::get('init_time') + self::getSessionExpires() ) {
+            App::getService('logger')->err('destroying session: expired', ['init_time' => self::get('init_time'), 'expires_time' => self::getSessionExpires(), 'start_time' => self::getStartTime()]);
+            // expires session
+            self::destroy(false);
+            $callback = self::$triggers['session_expires'];
+            if(is_callable($callback)) {
+                $callback();
+            }
+        }
     }
 
     static public function getId() {
