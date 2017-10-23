@@ -154,7 +154,9 @@ class UsersSubController extends AbstractSubController {
                 Feed::item('user', Session::getUser()->name, Session::getUserId())
             )));
             $log->doAdmin('user');
-            return $this->redirect($this->getReferer() ? $this->getReferer() : '/dashboard');
+            $referer = $this->getReferer();
+            if(!$referer || strpos($referer, '/admin')) $referer = '/dashboard';
+            return $this->redirect($referer);
         }
 
         // vista de acceso a suplantación de usuario
