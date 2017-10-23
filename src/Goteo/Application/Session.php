@@ -111,7 +111,7 @@ class Session {
                 self::getSession()->start();
             }
             // Fixes session cookie time life
-            self::getSession()->migrate(false, self::getSessionExpires());
+            // self::getSession()->migrate(false, self::getSessionExpires());
         } catch(\RuntimeException $e) {
             throw new Config\ConfigException($e->getMessage());
         }
@@ -124,14 +124,14 @@ class Session {
         if($session_time) {
             self::setSessionExpires($session_time);
         }
-        if( self::getStartTime() > self::get('init_time') + self::getSessionExpires() ) {
-            // expires session
-            self::destroy(false);
-            $callback = self::$triggers['session_expires'];
-            if(is_callable($callback)) {
-                $callback();
-            }
-        }
+        // if( self::getStartTime() > self::get('init_time') + self::getSessionExpires() ) {
+        //     // expires session
+        //     self::destroy(false);
+        //     $callback = self::$triggers['session_expires'];
+        //     if(is_callable($callback)) {
+        //         $callback();
+        //     }
+        // }
     }
 
     static public function getId() {
