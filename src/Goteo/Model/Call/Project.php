@@ -369,18 +369,7 @@ namespace Goteo\Model\Call {
 
                 $sql = "
                   SELECT
-                    call.id as id,
-                    call.name as name,
-                    call.owner as owner,
-                    call.lang as lang,
-                    call.amount as amount,
-                    call.maxdrop as maxdrop,
-                    call.maxproj as maxproj,
-                    call.modemaxp as modemaxp,
-                    call.fee_projects_drop as fee_projects_drop,
-                    call.used as used,
-                    call.rest as rest,
-                    call.applied as applied,
+                    `call`.*,
                     user.name as user_name,
                     user.email as user_email,
                     user.avatar as user_avatar,
@@ -394,6 +383,7 @@ namespace Goteo\Model\Call {
                   WHERE call_project.project = :project
                   LIMIT 1
                   ";
+
                 // metemos los datos del convocatoria en la instancia
                 $query = self::query($sql, array(':project'=>$project));
                 if ($call = $query->fetchObject('\Goteo\Model\Call')) {
