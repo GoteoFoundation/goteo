@@ -29,11 +29,11 @@ invest-amount-in-pool: 'Tens %s al teu moneder virtual'
 invest-amount-tooltip: 'Introdueix la quantitat amb que recolzaràs el projecte'
 invest-anonymous: "Vull que la meva aportació sigui anònima \r\n"
 invest-button: Aportar
-invest-called-allready: 'A aquest projecte ja li has donat <span class="riego">Capital ''Riego''</span> de la convocatòria <span class="call">%s</span>, no n''obtindrà més pels teus aports'
+invest-called-allready: 'A aquest projecte ja li has donat <strong>Matchfunding</strong> de la convocatòria %s, no n''obtindrà més pels teus aports'
 invest-called-maxdrop: 'Fins a un màxim de <strong>%s &euro;</strong>'
-invest-called-maxproj: 'El projecte al que has donat suport ja ha aconseguit el màxim de <span class="riego">Capital ''Riego''</span> possible en la convocatòria <span class="call">%s</span>'
-invest-called-nodrop: 'Actualment no hi ha més <span class="riego">Capital ''Riego''</span> disponible a la convocatòria <span class="call">%s</span>'
-invest-called-rest: 'Només queden <strong>%s €</strong> de <span class="riego">Capital ''Riego''</span> a la convocatòria <span class="call">%s</span>'
+invest-called-maxproj: 'El projecte al que has donat suport ja ha aconseguit el màxim de <strong>Matchfunding</strong> possible en la convocatòria %s'
+invest-called-nodrop: 'Actualment no hi ha més <strong>Matchfunding</stron> disponible a la convocatòria %s'
+invest-called-rest: 'Només queden <strong>%s €</strong> de <strong>Matchfunding</strong> a la convocatòria %s'
 invest-card-method: Targeta
 invest-donation-header: 'Introdueix les dades fiscals per al donatiu'
 invest-fiscal-skip: 'Prefereixo omplir aquestes dades en un altre moment'
