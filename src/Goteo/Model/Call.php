@@ -391,11 +391,7 @@ namespace Goteo\Model {
 
                 $sql = "
                   SELECT
-                    call.id as id,
-                    call.name as name,
-                    call.owner as owner,
-                    call.lang as lang,
-                    call.status as status,
+                    `call`.*,
                     user.name as user_name,
                     user.email as user_email,
                     user.avatar as user_avatar,

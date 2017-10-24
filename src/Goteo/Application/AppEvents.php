@@ -13,6 +13,17 @@ namespace Goteo\Application;
 final class AppEvents
 {
     /**
+     * The view.render event is thrown each time a Goteo\Application\View is rendered
+     * it allows to add or change completely the view
+     *
+     * The event listener receives an
+     * Goteo\Application\Event\FilterViewEvent instance.
+     *
+     * @var string
+     */
+    const VIEW_RENDER = 'view.render';
+
+    /**
      * The auth.login.success event is thrown each time a user does a successful login
      *
      * The event listener receives an
