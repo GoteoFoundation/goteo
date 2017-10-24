@@ -265,7 +265,133 @@ $(function(){
             forceSync: true,
             autosave: false,
             promptURLs: true,
-            spellChecker: false
+            spellChecker: false,
+            toolbar: [
+                {
+                    name: "bold",
+                    action: SimpleMDE.toggleBold,
+                    className: "fa fa-bold",
+                    title: goteo.texts['form-editor-bold'] ? goteo.texts['form-editor-bold'] : 'Bold'
+                },
+                {
+                    name: "italic",
+                    action: SimpleMDE.toggleItalic,
+                    className: "fa fa-italic",
+                    title: goteo.texts['form-editor-italic'] ? goteo.texts['form-editor-italic'] : "Italic"
+                },
+                {
+                    name: "strikethrough",
+                    action: SimpleMDE.toggleStrikethrough,
+                    className: "fa fa-strikethrough",
+                    title: goteo.texts['form-editor-strikethrough'] ? goteo.texts['form-editor-strikethrough'] : "Strikethrough"
+                },
+                {
+                    name: "heading",
+                    action: SimpleMDE.toggleHeadingSmaller,
+                    className: "fa fa-header",
+                    title: goteo.texts['form-editor-heading'] ? goteo.texts['form-editor-heading'] : "Heading"
+                },
+                {
+                    name: "heading-smaller",
+                    action: SimpleMDE.toggleHeadingSmaller,
+                    className: "fa fa-header fa-header-x fa-header-smaller",
+                    title: goteo.texts['form-editor-smaller_heading'] ? goteo.texts['form-editor-smaller_heading'] : "Smaller Heading"
+                },
+                {
+                    name: "heading-bigger",
+                    action: SimpleMDE.toggleHeadingBigger,
+                    className: "fa fa-header fa-header-x fa-header-bigger",
+                    title: goteo.texts['form-editor-bigger_heading'] ? goteo.texts['form-editor-bigger_heading'] : "Bigger Heading"
+                },
+                '|',
+                {
+                    name: "code",
+                    action: SimpleMDE.toggleCodeBlock,
+                    className: "fa fa-code",
+                    title: goteo.texts['form-editor-code'] ? goteo.texts['form-editor-code'] : "Code"
+                },
+                {
+                    name: "quote",
+                    action: SimpleMDE.toggleBlockquote,
+                    className: "fa fa-quote-left",
+                    title: goteo.texts['form-editor-quote'] ? goteo.texts['form-editor-quote'] : "Quote"
+                },
+                {
+                    name: "unordered-list",
+                    action: SimpleMDE.toggleUnorderedList,
+                    className: "fa fa-list-ul",
+                    title: goteo.texts['form-editor-generic_list'] ? goteo.texts['form-editor-generic_list'] : "Generic List"
+                },
+                {
+                    name: "ordered-list",
+                    action: SimpleMDE.toggleOrderedList,
+                    className: "fa fa-list-ol",
+                    title: goteo.texts['form-editor-numbered_list'] ? goteo.texts['form-editor-numbered_list'] : "Numbered List"
+                },
+                '|',
+                {
+                    name: "link",
+                    action: SimpleMDE.drawLink,
+                    className: "fa fa-link",
+                    title: goteo.texts['form-editor-create_link'] ? goteo.texts['form-editor-create_link'] : "Create Link"
+                },
+                {
+                    name: "image",
+                    action: SimpleMDE.drawImage,
+                    className: "fa fa-picture-o",
+                    title: goteo.texts['form-editor-insert_image'] ? goteo.texts['form-editor-insert_image'] : "Insert Image"
+                },
+                {
+                    name: "table",
+                    action: SimpleMDE.drawTable,
+                    className: "fa fa-table",
+                    title: goteo.texts['form-editor-insert_table'] ? goteo.texts['form-editor-insert_table'] : "Insert Table"
+                },
+                {
+                    name: "horizontal-rule",
+                    action: SimpleMDE.drawHorizontalRule,
+                    className: "fa fa-minus",
+                    title: goteo.texts['form-editor-insert_horizontal_line'] ? goteo.texts['form-editor-insert_horizontal_line'] : "Insert Horizontal Line"
+                },
+                '|',
+                {
+                    name: "preview",
+                    action: SimpleMDE.togglePreview,
+                    className: "fa fa-eye no-disable",
+                    title: goteo.texts['form-editor-toggle_preview'] ? goteo.texts['form-editor-toggle_preview'] : "Toggle Preview"
+                },
+                {
+                    name: "side-by-side",
+                    action: SimpleMDE.toggleSideBySide,
+                    className: "fa fa-columns no-disable no-mobile",
+                    title: goteo.texts['form-editor-toggle_side_by_side'] ? goteo.texts['form-editor-toggle_side_by_side'] : "Toggle Side by Side"
+                },
+                {
+                    name: "fullscreen",
+                    action: SimpleMDE.toggleFullScreen,
+                    className: "fa fa-arrows-alt no-disable no-mobile",
+                    title: goteo.texts['form-editor-toggle_fullscreen'] ? goteo.texts['form-editor-toggle_fullscreen'] : "Toggle Fullscreen"
+                },
+                '|',
+                {
+                    name: "guide",
+                    action: "https://simplemde.com/markdown-guide",
+                    className: "fa fa-question-circle",
+                    title: goteo.texts['form-editor-markdown_guide'] ? goteo.texts['form-editor-markdown_guide'] : "Markdown Guide"
+                },
+                '|',
+                {
+                    name: "undo",
+                    action: SimpleMDE.undo,
+                    className: "fa fa-undo no-disable",
+                    title: goteo.texts['form-editor-undo'] ? goteo.texts['form-editor-undo'] : "Undo"
+                },
+                {
+                    name: "redo",
+                    action: SimpleMDE.redo,
+                    className: "fa fa-repeat no-disable",
+                    title: goteo.texts['form-editor-redo'] ? goteo.texts['form-editor-redo'] : "Redo"
+                }]
         });
         // simplemde.codemirror.on('change', function() {
         //     console.log(simplemde.value());

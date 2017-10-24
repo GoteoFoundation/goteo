@@ -57,3 +57,8 @@ $pay_method = $this->pay_method;
 </div>
 
 <?php $this->replace() ?>
+
+
+<?php $this->section('facebook-pixel') ?>
+    <?= $this->insert('project/partials/facebook_pixel', ['pixel' => $this->project->facebook_pixel, 'track' => ['PageView', 'AddPaymentInfo']]) ?>
+<?php $this->replace() ?>
