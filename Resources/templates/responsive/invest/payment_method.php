@@ -104,7 +104,7 @@ $this->section('main-content');
 <?php $this->replace() ?>
 
 <?php $this->section('facebook-pixel') ?>
-    <?= $this->insert('project/partials/facebook_pixel', ['pixel' => $this->project->facebook_pixel, 'track' => ['PageView', 'InitiateCheckout']]) ?>
+    <?= $this->insert('partials/facebook_pixel', ['pixel' => $this->project->facebook_pixel, 'track' => ['PageView', 'InitiateCheckout']]) ?>
 <?php $this->replace() ?>
 
 <?php $this->section('footer') ?>

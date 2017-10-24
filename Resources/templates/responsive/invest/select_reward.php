@@ -32,7 +32,7 @@ $this->section('main-content');
 <?php $this->replace() ?>
 
 <?php $this->section('facebook-pixel') ?>
-    <?= $this->insert('project/partials/facebook_pixel', ['pixel' => $this->project->facebook_pixel, 'track' => ['PageView', 'AddToCart']]) ?>
+    <?= $this->insert('partials/facebook_pixel', ['pixel' => $this->project->facebook_pixel, 'track' => ['PageView', 'AddToCart']]) ?>
 <?php $this->replace() ?>
 
 
