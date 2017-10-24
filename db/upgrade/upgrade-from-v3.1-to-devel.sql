@@ -106,3 +106,6 @@ ALTER TABLE `contract_status` ADD FOREIGN KEY (`received_user`) REFERENCES `user
 
 -- mime type for documents
 ALTER TABLE `document` CHANGE `type` `type` VARCHAR(120) CHARSET utf8 COLLATE utf8_general_ci NULL;
+
+-- add facebook_pixel for calls
+ALTER TABLE `call` ADD COLUMN `facebook_pixel` varchar(20)  COLLATE utf8_general_ci NULL after `fee_projects_drop`;
