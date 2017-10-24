@@ -55,12 +55,6 @@
 
 $(function(){
 
-    $('#autoform_one_round input[type="radio"]').on('change', function() {
-        var $help = $(this).closest('.input-wrap').find('.help-text');
-        $active = $help.find('span').eq(1-$(this).val()).removeClass('hidden');
-        $help.find('span').not($active).addClass('hidden');
-    });
-
     $('.autoform').on('change', '.cost-item .type select', function() {
         $(this).closest('.type').find('img').attr('src', '<?= $this->ee($this->asset('img/project/needs/'), 'js') ?>' + $(this).val() + '.png');
     });

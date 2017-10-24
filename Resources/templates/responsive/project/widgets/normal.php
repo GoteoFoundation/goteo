@@ -27,7 +27,7 @@ $call = $this->project->getCall();
     <?php endif; ?>
 
 
-    <a class="img-link" href="<?= $link ?>">
+    <a class="img-link" href="<?= $link ?>" target="_blank">
         <img class="img-project" src="<?= $this->project->image->getLink(600, 416, true); ?>">
         <h2><?= $this->text_truncate($this->project->name, 80); ?></h2>
     </a>
@@ -45,7 +45,7 @@ $call = $this->project->getCall();
         <?php // TODO: add links here?
         if($categories): ?>
         <div class="categories">
-            <i class="fa fa-tag"></i> <?= implode(", ", $categories) ?>
+            <i class="fa fa-tag"></i> <?= implode(', ', $categories) ?>
         </div>
         <?php endif ?>
 

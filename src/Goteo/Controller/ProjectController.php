@@ -57,23 +57,6 @@ class ProjectController extends \Goteo\Core\Controller {
 		return new RedirectResponse('/discover');
 	}
 
-	//** esto es una guarrada **/
-	public function rawAction($pid) {
-
-		$project = Project::get($pid, Lang::current());
-
-		if (!$project->userCanEdit(Session::getUser())) {
-			throw new ControllerAccessDeniedException(Text::get('user-login-required-access'));
-		}
-
-		$steps = array('userProfile', 'userPersonal', 'overview', 'images', 'costs', 'rewards', 'supports');
-
-		$project->check($steps);
-		\trace($project->called);
-		\trace($project);
-		die;
-	}
-
 	public function deleteAction($pid) {
 
 		$user = Session::getUser();
@@ -560,19 +543,19 @@ class ProjectController extends \Goteo\Core\Controller {
         }
 
         // mensaje cuando, sin estar en campaña, tiene fecha de publicación
-        if ($project->status < Project::STATUS_IN_CAMPAIGN && !empty($project->published)) {
-
-            if ($project->published > date('Y-m-d')) {
-                // si la fecha es en el futuro, es que se publicará
-                Application\Message::info(Text::get('project-willpublish', date('d/m/Y', strtotime($project->published))));
+        if (!$project->isApproved()) {
+            if (!empty($project->published)) {
+                if ($project->published > date('Y-m-d')) {
+                    // si la fecha es en el futuro, es que se publicará
+                    Application\Message::info(Text::get('project-willpublish', date('d/m/Y', strtotime($project->published))));
+                } else {
+                    // si la fecha es en el pasado, es que la campaña ha sido cancelada
+                    Application\Message::info(Text::get('project-unpublished'));
+                }
             } else {
-                // si la fecha es en el pasado, es que la campaña ha sido cancelada
-                Application\Message::info(Text::get('project-unpublished'));
+                // mensaje de no publicado siempre que no esté en campaña
+                Application\Message::info(Text::get('project-not_published'));
             }
-
-        } elseif ($project->status < 3) {
-            // mensaje de no publicado siempre que no esté en campaña
-            Application\Message::info(Text::get('project-not_published'));
         }
 
         // si lo puede ver
@@ -697,7 +680,14 @@ class ProjectController extends \Goteo\Core\Controller {
                 Application\Message::info(Text::get('project-messages-closed'));
             }
 
-            return new Response(View::render('project/'.$show, $viewData));
+            $response = new Response(View::render('project/'.$show, $viewData));
+            // Force no cache if not approved
+            if(!$project->isApproved()) {
+                $response->headers->set('Pragma', 'no-cache');
+                $response->headers->set('Cache-Control', 'no-cache, must-revalidate');
+                $response->headers->set('Expires', 'Mon, 26 Jul 1997 05:00:00 GMT');
+            }
+            return $response;
 
         } else {
             Application\Message::info('Project not public yet!');

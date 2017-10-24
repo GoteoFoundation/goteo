@@ -5,7 +5,7 @@
 
     <?php if($this->project->inCampaign()): ?>
     <div class="invest">
-        <a class="btn btn-lg btn-block btn-lilac" href="/invest/<?= $this->project->id ?>"><?= $this->text('project-regular-support') ?></a>
+        <a class="btn btn-lg btn-block btn-lilac" target="_blank" href="/invest/<?= $this->project->id ?>"><?= $this->text('project-regular-support') ?></a>
     </div>
     <?php endif ?>
 </div>
