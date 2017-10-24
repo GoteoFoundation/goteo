@@ -363,7 +363,7 @@ $this->section('content');
 // @license-end
 </script>
 
-<?= $this->insert('project/partials/facebook_pixel', ['pixel' => $this->project->facebook_pixel]) ?>
+<?= $this->insert('partials/facebook_pixel', ['pixel' => $this->project->facebook_pixel]) ?>
 
 <?php $this->append() ?>
 

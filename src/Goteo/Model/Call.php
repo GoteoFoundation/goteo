@@ -88,7 +88,10 @@ namespace Goteo\Model {
         $used, // comprometido
         $applied, // proyectos aplicados
         $running_projects, // proyectos seleccionados en campaña
-        $success_projects // proyectos seleccionados exitosos
+        $success_projects, // proyectos seleccionados exitosos
+
+        // Facebook pixel for facebook ads
+        $facebook_pixel
         ;
 
         /**
@@ -598,6 +601,7 @@ namespace Goteo\Model {
                     'maxproj',
                     'modemaxp',
                     'fee_projects_drop',
+                    'facebook_pixel',
                     'days'
                 );
 
