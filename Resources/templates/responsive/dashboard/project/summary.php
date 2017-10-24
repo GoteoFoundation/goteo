@@ -21,6 +21,8 @@
             <?php endforeach ?>
             </ol>
 
+            <?= $this->supply('sub-header') ?>
+
             <?= $this->insert('dashboard/project/partials/summary_status', ['project' => $this->project]) ?>
 
             <?php if($this->project->inEdition()): ?>
