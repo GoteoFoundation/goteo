@@ -10,7 +10,7 @@
 
 namespace Goteo\Controller;
 
-use Goteo\Application;
+use Goteo\Application\Message;
 use Goteo\Application\AppEvents;
 use Goteo\Application\Event\FilterProjectEvent;
 use Goteo\Application\Config;
@@ -21,14 +21,10 @@ use Goteo\Application\Exception\ModelNotFoundException;
 use Goteo\Application\Lang;
 use Goteo\Application\Session;
 use Goteo\Application\View;
-use Goteo\Console\UsersSend;
-use Goteo\Library;
-use Goteo\Library\Check;
-use Goteo\Library\Feed;
 use Goteo\Model\Page;
 use Goteo\Library\Text;
 use Goteo\Library\Worth;
-use Goteo\Model;
+use Goteo\Model\Message as SupportMessage;
 use Goteo\Model\Project;
 use Goteo\Model\Invest;
 use Goteo\Model\Project\Favourite;
@@ -37,7 +33,8 @@ use Goteo\Model\Project\ProjectMilestone;
 use Goteo\Model\Project\Category;
 use Goteo\Model\License;
 use Goteo\Model\SocialCommitment;
-use Goteo\Model\Blog\Post;
+use Goteo\Model\Blog;
+use Goteo\Model\Blog\Post as BlogPost;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -75,7 +72,7 @@ class ProjectController extends \Goteo\Core\Controller {
         $terms = Page::get('howto');
 
         if (!Session::isLogged()) {
-            Application\Message::info(Text::get('user-login-required-to_create'));
+            Message::info(Text::get('user-login-required-to_create'));
             return $this->redirect('/user/login?return='.urldecode('/project/create'));
         }
 
@@ -173,14 +170,14 @@ class ProjectController extends \Goteo\Core\Controller {
             if (!empty($project->published)) {
                 if ($project->published > date('Y-m-d')) {
                     // si la fecha es en el futuro, es que se publicará
-                    Application\Message::info(Text::get('project-willpublish', date('d/m/Y', strtotime($project->published))));
+                    Message::info(Text::get('project-willpublish', date('d/m/Y', strtotime($project->published))));
                 } else {
                     // si la fecha es en el pasado, es que la campaña ha sido cancelada
-                    Application\Message::info(Text::get('project-unpublished'));
+                    Message::info(Text::get('project-unpublished'));
                 }
             } else {
                 // mensaje de no publicado siempre que no esté en campaña
-                Application\Message::info(Text::get('project-not_published'));
+                Message::info(Text::get('project-not_published'));
             }
         }
 
@@ -255,22 +252,22 @@ class ProjectController extends \Goteo\Core\Controller {
                 //if is an individual post page
                 if($post)
                 {
-                    $post=Post::get($post);
+                    $post=BlogPost::get($post, Lang::current(), $project->lang);
                     $viewData['post']  = $post;
 
                     $show  = 'updates_post';
                 }
 
                 // sus entradas de novedades
-                $blog = Model\Blog::get($project->id);
+                $blog = Blog::get($project->id);
                 // si está en modo preview, ponemos  todas las entradas, incluso las no publicadas
                 if (isset($_GET['preview']) && $_GET['preview'] == $user->id) {
-                    $blog->posts = Model\Blog\Post::getAll($blog->id, null, false);
+                    $blog->posts = BlogPost::getAll($blog->id, null, false, $project->lang);
                 }
 
                 // Get milestones, included posts
 
-                $milestones = ProjectMilestone::getAll($project->id);
+                $milestones = ProjectMilestone::getAll($project->id, Lang::current(), $project->lang);
 
                 $viewData['milestones']=$milestones;
 
@@ -282,7 +279,7 @@ class ProjectController extends \Goteo\Core\Controller {
 
 
                 if (empty($user)) {
-                    Application\Message::info(Text::html('user-login-required'));
+                    Message::info(Text::html('user-login-required'));
                 }
             }
 
@@ -294,16 +291,16 @@ class ProjectController extends \Goteo\Core\Controller {
                 $viewData['investors_limit'] = $limit;
 
                 //Colaborations
-                $viewData['messages'] = Model\Message::getAll($project->id);
+                $viewData['messages'] = SupportMessage::getAll($project->id);
 
                 if (empty($user)) {
-                    Application\Message::info(Text::html('user-login-required'));
+                    Message::info(Text::html('user-login-required'));
                 }
 
             }
 
             if ($show == 'messages' && $project->status < 3) {
-                Application\Message::info(Text::get('project-messages-closed'));
+                Message::info(Text::get('project-messages-closed'));
             }
 
             $response = new Response(View::render('project/'.$show, $viewData));
@@ -316,7 +313,7 @@ class ProjectController extends \Goteo\Core\Controller {
             return $response;
 
         } else {
-            Application\Message::info('Project not public yet!');
+            Message::info('Project not public yet!');
             // no lo puede ver
             return new RedirectResponse('/');
         }

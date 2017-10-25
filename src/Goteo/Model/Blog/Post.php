@@ -52,14 +52,14 @@ class Post extends \Goteo\Core\Model {
     /*
      *  Devuelve datos de una entrada
      */
-    public static function get ($id, $lang = null) {
+    public static function get ($id, $lang = null, $support_lang = null) {
 
         // This model does not automaticalley request translation
         // support language only if requested
         // That's because Projects can be in any custom language and its
         // corresponding blog will match the same language as main
 
-        if($lang) $lang = self::default_lang_by_id($id, 'post_lang', $lang);
+        if($lang !== $support_lang) $lang = self::default_lang_by_id($id, 'post_lang', $lang);
 
         $sql = "
             SELECT
@@ -106,7 +106,7 @@ class Post extends \Goteo\Core\Model {
 
         $values = array(':id' => $id, ':lang'=>$lang);
 
-        // die(\sqldbg($sql, $values));
+        // die("[$lang]".\sqldbg($sql, $values));
 
         $query = static::query($sql, $values);
         $post = $query->fetchObject('\Goteo\Model\Blog\Post');
@@ -186,13 +186,13 @@ class Post extends \Goteo\Core\Model {
      * de mas nueva a mas antigua
      * // si es portada son los que se meten por la gestion de entradas en portada que llevan el tag 1 'Portada'
      */
-    public static function getAll ($blog = null, $limit = null, $published = true) {
+    public static function getAll ($blog = null, $limit = null, $published = true, $support_lang = null) {
         $lang = Lang::current();
         $list = array();
 
         $values = array(':lang'=>$lang);
 
-        if(self::default_lang($lang) === Config::get('lang')) {
+        if(self::default_lang($lang) === $support_lang ? $support_lang : Config::get('lang')) {
             $different_select=" IFNULL(post_lang.title, post.title) as title,
                                 IFNULL(post_lang.text, post.text) as `text`,
                                 IFNULL(post_lang.legend, post.legend) as `legend`,
