@@ -10,8 +10,8 @@
 
 namespace Goteo\Controller\Api;
 
+use Symfony\Component\HttpFoundation\Request;
 use Goteo\Application\Exception\ControllerAccessDeniedException;
-
 use Goteo\Library\Text;
 use Goteo\Library\Currency;
 use Goteo\Model\Project;
@@ -39,7 +39,7 @@ class ChartsApiController extends AbstractApiController {
      * @param  Request $request [description]
      * @return [type]           [description]
      */
-    public function projectCostsAction($id) {
+    public function projectCostsAction($id, Request $request) {
         $prj = $this->getProject($id);
         $mincost = (int) Currency::amount($prj->mincost);
         $maxcost = (int) Currency::amount($prj->maxcost);
@@ -87,7 +87,7 @@ class ChartsApiController extends AbstractApiController {
      * @param  Request $request [description]
      * @return [type]           [description]
      */
-    public function projectInvestsAction($id) {
+    public function projectInvestsAction($id, Request $request) {
         $prj = $this->getProject($id);
         $mincost = (int) Currency::amount($prj->mincost);
         $maxcost = (int) Currency::amount($prj->maxcost);

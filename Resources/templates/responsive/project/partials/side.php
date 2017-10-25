@@ -14,11 +14,11 @@
 
             <div class="amount"><?= $this->text('regular-investing').' '.amount_format($individual->amount); ?></div>
             <div class="text-bold spacer-20"><?= $individual->reward ?></div>
-            <div class="spacer-20"><?= $individual->description ?></div>
+            <div class="spacer-20"><?= $this->text_url_link($individual->description) ?></div>
 
             <div class="investors">
                 <div><?= '> '.sprintf("%02d", $individual->taken).' '.$this->text('project-view-metter-investors') ?></div>
-                <?php if ($project->status==3): ?>
+                <?php if ($project->inCampaign()): ?>
 
                 <?php if (!$available):  ?>
                     <div class="left"><?= ' > '.$this->text('invest-reward-none') ?></div>
@@ -32,7 +32,7 @@
             </div>
 
 
-            <?php if ($project->status==3): ?>
+            <?php if ($project->inCampaign()): ?>
 
                 <div class="row spacer-5">
                     <div class="col-md-6 col-sm-8">
