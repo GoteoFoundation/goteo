@@ -65,8 +65,8 @@ class TranslateProjectDashboardController extends \Goteo\Controller\Dashboard\Pr
             'translated' => array_diff($project->getLangsAvailable(), [$project->lang])
         ];
         if($lang_check) {
-            $cost = current($project->costs);
-            $reward = current($project->rewards);
+            $cost = reset($project->costs);
+            $reward = reset($project->rewards);
             $data['percents'] = [
                 'overview' => $project->getLangsPercent($lang_check),
                 'costs' => $cost ? $cost->getLangsGroupPercent($lang_check, ['project']) : 0,
@@ -116,7 +116,7 @@ class TranslateProjectDashboardController extends \Goteo\Controller\Dashboard\Pr
         if($project instanceOf Response) return $project;
 
         $translated = $project->getLangsAvailable();
-        if($cost = current($project->costs)) {
+        if($cost = reset($project->costs)) {
             $translated = array_merge($translated, $cost->getLangsAvailable());
         }
         $translated = array_unique(array_diff($translated, [$project->lang]));

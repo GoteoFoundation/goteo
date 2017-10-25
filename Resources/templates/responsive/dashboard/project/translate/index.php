@@ -14,9 +14,9 @@
         <!-- <div class="list-group"> -->
         <?php foreach($this->translated as $lang):
             $percent1 = $this->project->getLangsPercent($lang);
-            $cost = current($this->project->costs);
+            $cost = reset($this->project->costs);
             $percent2 = $cost ? $cost->getLangsGroupPercent($lang, ['project']) : 0;
-            $reward = current($this->project->rewards);
+            $reward = reset($this->project->rewards);
             $percent3 = $reward ? $reward->getLangsGroupPercent($lang, ['project']) : 0;
         ?>
                 <blockquote>

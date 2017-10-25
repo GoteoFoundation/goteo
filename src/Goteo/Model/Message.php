@@ -270,7 +270,7 @@ class Message extends \Goteo\Core\Model {
      */
     public function setThread($thread) {
         if($thread === 'auto') {
-            $user = current($this->getRecipients());
+            $user = reset($this->getRecipients());
             if($last = static::getUserThreads($user, 0, 1)) {
                 $this->thread = $last[0]->id;
             }

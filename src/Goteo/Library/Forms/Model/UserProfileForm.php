@@ -256,7 +256,7 @@ class UserProfileForm extends AbstractFormProcessor implements FormProcessorInte
 
         // Process main image
         if(is_array($data['avatar'])) {
-            $data['avatar'] = current($data['avatar']);
+            $data['avatar'] = reset($data['avatar']);
         }
         $user->user_avatar = $data['avatar'];
         if($user->user_avatar && $err = $user->user_avatar->getUploadError()) {

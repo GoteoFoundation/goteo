@@ -640,7 +640,7 @@ class Invest extends \Goteo\Core\Model {
      */
     public function getFirstReward() {
         $rewards = $this->getRewards();
-        return current($rewards);
+        return reset($rewards);
     }
 
     public function validate (&$errors = array()) {
