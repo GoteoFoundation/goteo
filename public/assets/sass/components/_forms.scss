@@ -163,6 +163,7 @@
         */
     }
   }
+
   .help-text {
     display: block;
     margin: 10px 5px 0 5px;
@@ -188,6 +189,7 @@
         }
     }
   }
+
   .material-switch {
     display: table-cell;
     > label {
@@ -278,6 +280,27 @@
     }
   }
 
+  // Exit fullscreen button
+  .editor-toolbar {
+    &.fullscreen {
+      a.exit-fullscreen {
+        display: inline-block;
+        pointer-events: auto !important;
+      }
+    }
+    a.exit-fullscreen {
+      display: none;
+      background-color: $color-cyan !important;
+      color: $color-white !important;
+      width: auto;
+      padding: 0 5px;
+      &::after {
+          content: attr(title);
+          font-family: $primary-font;
+          margin-left: 5px;
+      }
+    }
+  }
 }
 
 .material-switch {

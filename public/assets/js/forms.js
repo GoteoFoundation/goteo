@@ -268,6 +268,18 @@ $(function(){
             spellChecker: false,
             toolbar: [
                 {
+                    name: "close",
+                    // action: SimpleMDE.toggleFullScreen,
+                    action: function customFunction(editor){
+                        var cm = editor.codemirror;
+                        if(cm.getOption('fullScreen')) {
+                            SimpleMDE.toggleFullScreen(editor);
+                        }
+                    },
+                    className: "fa fa-close exit-fullscreen",
+                    title: goteo.texts['form-editor-close'] ? goteo.texts['form-editor-close'] : "Close"
+                },
+                {
                     name: "bold",
                     action: SimpleMDE.toggleBold,
                     className: "fa fa-bold",
