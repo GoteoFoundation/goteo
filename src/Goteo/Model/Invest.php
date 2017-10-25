@@ -97,7 +97,32 @@ class Invest extends \Goteo\Core\Model {
         } else {
             return $array;
         }
+    }
 
+    /* handy methods */
+    public function isCharged() {
+        return in_array($this->status, [self::STATUS_PROCESSING, self::STATUS_PENDING, self::STATUS_CHARGED, self::STATUS_PAID]);
+    }
+
+    public function isReturned() {
+        return in_array($this->status, [self::STATUS_RELOCATED, self::STATUS_RETURNED, self::STATUS_TO_POOL]);
+    }
+
+    public function isCancelled() {
+        return $this->status === self::STATUS_CANCELLED;
+    }
+
+    public function getStatusText($simple = false) {
+        $status = $this->status;
+        if($simple) {
+            if($this->isReturned()) {
+                $status = self::STATUS_RETURNED;
+            }
+            if($this->isCharged()) {
+                $status = self::STATUS_CHARGED;
+            }
+        }
+        return self::status($status);
     }
 
     /*

@@ -220,6 +220,11 @@
     color: $secondary-color;
     background: $background-light-body;
     tr {
+        &.strikethrough {
+            td {
+                text-decoration: line-through;
+            }
+        }
         th,td {
             padding: 10px 5px;
             &:first-child {
