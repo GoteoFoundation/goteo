@@ -402,6 +402,7 @@ class TranslateProjectDashboardController extends \Goteo\Controller\Dashboard\Pr
 
         $langs = Lang::listAll('name', false);
         $languages = array_intersect_key($langs, array_flip($project->getLangsAvailable()));
+        $languages[$project->lang] = $langs[$project->lang];
 
         if(!isset($languages[$lang])) {
             Message::error(Text::get('translator-lang-not-found'));
@@ -453,7 +454,7 @@ class TranslateProjectDashboardController extends \Goteo\Controller\Dashboard\Pr
                 // var_dump($data);die;
                 $post->lang = $lang;
                 $post->title_lang = $data['title'];
-                $post->text_lang = $data['title'];
+                $post->text_lang = $data['text'];
                 if($post->saveLang($errors)) {
                     Message::info(Text::get('dashboard-project-updates-translate-ok', [
                         '%TITLE%' => '<strong>#' . $post->id .'</strong>',
