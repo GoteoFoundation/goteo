@@ -359,7 +359,7 @@ class ProjectDashboardController extends \Goteo\Core\Controller {
         $blog = Blog::get($project->id);
         if ($blog instanceOf Blog) {
             if($blog->active) {
-                $posts = BlogPost::getList((int)$blog->id, false, $offset, $limit);
+                $posts = BlogPost::getList((int)$blog->id, false, $offset, $limit, false, $project->lang);
                 $total = BlogPost::getList((int)$blog->id, false, 0, 0, true);
             }
             else {
