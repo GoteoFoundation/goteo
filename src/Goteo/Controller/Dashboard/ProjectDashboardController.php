@@ -409,7 +409,8 @@ class ProjectDashboardController extends \Goteo\Core\Controller {
                 'blog' => $blog->id,
                 'date' => date('Y-m-d'),
                 'publish' => false,
-                'allow' => true
+                'allow' => true,
+                'owner_id' => $project->id
             ]);
         } elseif($post->owner_id !== $project->id) {
             throw new ModelNotFoundException("Non matching update for project [{$project->id}]");

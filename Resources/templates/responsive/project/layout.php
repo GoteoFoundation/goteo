@@ -192,10 +192,11 @@ $this->section('content');
 
             $('table.footable').footable();
             var url = e.currentTarget.location.href;
-            var section=url.split('/').pop();
+            var section = 'home';
+            if(url.indexOf('/updates') !== -1) section = 'updates';
+            if(url.indexOf('/participate') !== -1) section = 'participate';
+            // console.log('section', section);
 
-            if(section!="updates" && section!="participate" )
-                section="home";
             $("."+section).addClass("current");
 
             $("a.accordion-toggle").click(function(){

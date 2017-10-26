@@ -38,12 +38,14 @@ class Post extends \Goteo\Core\Model {
         $footer,
         $author,
         $owner,
+        $owner_id,
         $allow = false,
         $publish = false,
         $tags = array(),
         $gallery = array(), // array de instancias image de post_image
         $num_comments = 0,
         $comments = array();
+
 
     public static function sanitizeText($t) {
         return strip_tags($t, '<br><a><strong><i><b><ul><li><ol><em><blockquote><p><img><code><pre><h1><h2><h3><h4><h5><h6><small>');
@@ -271,7 +273,7 @@ class Post extends \Goteo\Core\Model {
             $sql .= "LIMIT $limit";
         }
 
-//            die(\sqldbg($sql, $values));
+           // die(\sqldbg($sql, $values));
 
         $query = static::query($sql, $values);
 
