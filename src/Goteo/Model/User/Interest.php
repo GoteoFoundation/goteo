@@ -18,7 +18,7 @@ namespace Goteo\Model\User {
     {
 
         public
-            $id,
+            $interest,
             $user;
 
 
@@ -31,10 +31,9 @@ namespace Goteo\Model\User {
         {
             $array = array();
             try {
-                $query = static::query("SELECT interest FROM user_interest WHERE user = ?", array($id));
-                $interests = $query->fetchAll();
-                foreach ($interests as $int) {
-                    $array[$int[0]] = $int[0];
+                $query = static::query("SELECT * FROM user_interest WHERE user = ?", array($id));
+                foreach ($query->fetchAll(\PDO::FETCH_CLASS, __CLASS__) as $interest) {
+                    $array[$interest->interest] = $interest;
                 }
 
                 return $array;
@@ -99,36 +98,16 @@ namespace Goteo\Model\User {
             }
         }
 
-        public function validate(&$errors = array())
-        {
-            // Estos son errores que no permiten continuar
-            if (empty($this->id))
-                $errors[] = 'No hay ningun interes para guardar';
-            //Text::get('validate-interest-noid');
-
-            if (empty($this->user))
-                $errors[] = 'No hay ningun usuario al que asignar';
-            //Text::get('validate-interest-nouser');
-
-            //cualquiera de estos errores hace fallar la validación
-            if (!empty($errors))
-                return false;
-            else
-                return true;
-        }
-
         public function save(&$errors = array())
         {
-            if (!$this->validate($errors)) return false;
-
-            $values = array(':user' => $this->user, ':interest' => $this->id);
+            $values = array(':user' => $this->user, ':interest' => $this->interest);
 
             try {
                 $sql = "REPLACE INTO user_interest (user, interest) VALUES(:user, :interest)";
                 self::query($sql, $values);
                 return true;
             } catch (\PDOException $e) {
-                $errors[] = "El interés {$this->id} no se ha asignado correctamente. Por favor, revise los datos." . $e->getMessage();
+                $errors[] = "El interés {$this->interest} no se ha asignado correctamente. Por favor, revise los datos." . $e->getMessage();
                 return false;
             }
 
@@ -146,14 +125,14 @@ namespace Goteo\Model\User {
         {
             $values = array(
                 ':user' => $this->user,
-                ':interest' => $this->id,
+                ':interest' => $this->interest,
             );
 
             try {
                 self::query("DELETE FROM user_interest WHERE interest = :interest AND user = :user", $values);
                 return true;
             } catch (\PDOException $e) {
-                $errors[] = 'No se ha podido quitar el interes ' . $this->id . ' del usuario ' . $this->user . ' ' . $e->getMessage();
+                $errors[] = 'No se ha podido quitar el interes ' . $this->interest . ' del usuario ' . $this->user . ' ' . $e->getMessage();
                 //Text::get('remove-interest-fail');
                 return false;
             }

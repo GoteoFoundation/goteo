@@ -344,14 +344,12 @@ $terms=$this->terms;
         $("form").submit(function(e){
             var form = this;
             e.preventDefault();
-            $("#submit-alert .alert").fadeIn(1000);
             $('html, body').animate({
               scrollTop: ($("#submit-alert").offset().top)
               },500);
-            setTimeout(function () {
-                    form.submit();
-            }, 3000); // in milliseconds
-
+            $("#submit-alert .alert").fadeIn(1000, function() {
+                form.submit();
+            });
         });
 
     });
