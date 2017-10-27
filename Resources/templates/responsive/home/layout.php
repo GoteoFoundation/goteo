@@ -40,12 +40,10 @@ $this->section('content');
             nextArrow: '<div class="custom-right-arrow"><span class="fa fa-angle-right"></span><span class="sr-only">Prev</span></div>',
           });
 
-          // Projects carrousel
-          var $carousel = $('.slider-projects');
 
           function setSlideVisibility() {
             //Find the visible slides i.e. where aria-hidden="false"
-            var visibleSlides = $carousel.find('.slick-slideshow__slide[aria-hidden="false"]');
+            var visibleSlides = $('.slider-projects').find('.slick-slideshow__slide[aria-hidden="false"]');
             //Make sure all of the visible slides have an opacity of 1
             $(visibleSlides).each(function() {
               $(this).css('opacity', 1);
@@ -88,8 +86,8 @@ $this->section('content');
               ]
             };
 
-              $carousel.slick(settings);
-              $carousel.slick('slickGoTo', 1);
+              $('.slider-projects').slick(settings);
+              $('.slider-projects').slick('slickGoTo', 1);
               setSlideVisibility();
           }
 
@@ -99,7 +97,7 @@ $this->section('content');
             }
           }
 
-          $carousel.on('afterChange', function() {
+          $('.slider-projects').on('afterChange', function() {
             setSlideVisibility();
           });
 
@@ -151,17 +149,8 @@ $this->section('content');
           });
 
           $(".auto-update-calls").on('click', ".filters li", function (e) {
-              if($(this).hasClass('active')){
-                $(this).removeClass('active');
-              }
-              else
-              {
-                $(this).addClass('active');
-
-
-              }
-
-              $(this).toogleClass('active');
+              
+              $(this).toggleClass('active');
 
             var $filters = $('.auto-update-calls .filters');
             var filters = [];
@@ -187,6 +176,7 @@ $this->section('content');
             $(".auto-update-projects .filters li").each(function(){
               $(this).removeClass('active');
             });
+
             $(this).addClass('active');
 
             var filter=$(this).data('status');
