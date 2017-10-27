@@ -255,6 +255,7 @@ namespace Goteo\Model {
             // 2. entity
             if($this->type > 0) {
                 $entity = ['entity_name', 'entity_cif', 'office', 'entity_address', 'entity_location', 'entity_region', 'entity_zipcode', 'entity_country'];
+                $total = count($entity);
                 $entity[] = 'reg_name';
                 $entity[] = 'reg_number';
                 if($this->type == 2) {
@@ -289,6 +290,7 @@ namespace Goteo\Model {
             if ($this->paypal) {
                 $accounts[] = 'paypal_owner';
             }
+            $total = count($accounts);
             $count = 0;
             foreach($accounts as $field) {
                 if(!empty($this->{$field})) {
