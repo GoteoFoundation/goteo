@@ -63,7 +63,7 @@ if($sidebar) {
 
         <title><?= $this->title ?></title>
 
-        <link rel="icon" type="image/png" href="/favicon.ico" >
+        <link rel="icon" type="image/x-icon" href="/favicon.ico" >
 
         <?= $this->insert('partials/header/styles') ?>
 

@@ -61,11 +61,11 @@ $dash->add('dashboard-project-summary', new Route(
         )
 ));
 // Old Route from menu
-$dash->add('dashboard-project-old-summary-redirect', new Route(
-    '/projects/summary',
-    array('_controller' => 'Goteo\Controller\Dashboard\ProjectDashboardController::summaryAction',
-        'pid' => null
-        )
+$dash->add('dashboard-project-empty', new Route(
+    '/project',
+    array('_controller' => function() {
+        return new RedirectResponse('/dashboard/projects');
+    })
 ));
 // Redirect if no summary
 $dash->add('dashboard-project-summary-redirect', new Route(
@@ -318,47 +318,90 @@ $dash->add('dashboard-settings-apikey', new Route(
 ));
 
 // Redirection old routes
-// $dash->add('dashboard-old-sumary', new Route(
-//     '/activity/summary',
-//     array('_controller' => function () {
-//         return new RedirectResponse("/dashboard/activity");
-//     })
-// ));
-// $dash->add('dashboard-old-profile', new Route(
-//     '/profile',
-//     array('_controller' => function () {
-//         return new RedirectResponse("/dashboard/settings");
-//     })
-// ));
-// $dash->add('dashboard-old-profile-2', new Route(
-//     '/profile/profile',
-//     array('_controller' => function () {
-//         return new RedirectResponse("/dashboard/settings");
-//     })
-// ));
-// $dash->add('dashboard-old-preferences', new Route(
-//     '/profile/preferences',
-//     array('_controller' => function () {
-//         return new RedirectResponse("/dashboard/settings/preferences");
-//     })
-// ));
-// $dash->add('dashboard-old-location', new Route(
-//     '/profile/location',
-//     array('_controller' => function () {
-//         return new RedirectResponse("/dashboard/settings");
-//     })
-// ));
-// $dash->add('dashboard-old-personal', new Route(
-//     '/profile/personal',
-//     array('_controller' => function () {
-//         return new RedirectResponse("/dashboard/settings/personal");
-//     })
-// ));
-// $dash->add('dashboard-old-access', new Route(
-//     '/profile/access',
-//     array('_controller' => function () {
-//         return new RedirectResponse("/dashboard/settings/access");
-//     })
-// ));
+$dash->add('dashboard-old-sumary', new Route(
+    '/activity/summary',
+    array('_controller' => function () {
+        return new RedirectResponse("/dashboard/activity");
+    })
+));
+$dash->add('dashboard-old-apikey', new Route(
+    '/activity/apikey',
+    array('_controller' => function () {
+        return new RedirectResponse("/dashboard/settings/apikey");
+    })
+));
+$dash->add('dashboard-old-profile', new Route(
+    '/profile',
+    array('_controller' => function () {
+        return new RedirectResponse("/dashboard/settings");
+    })
+));
+$dash->add('dashboard-old-profile-2', new Route(
+    '/profile/profile',
+    array('_controller' => function () {
+        return new RedirectResponse("/dashboard/settings");
+    })
+));
+$dash->add('dashboard-old-preferences', new Route(
+    '/profile/preferences',
+    array('_controller' => function () {
+        return new RedirectResponse("/dashboard/settings/preferences");
+    })
+));
+$dash->add('dashboard-old-location', new Route(
+    '/profile/location',
+    array('_controller' => function () {
+        return new RedirectResponse("/dashboard/settings");
+    })
+));
+$dash->add('dashboard-old-personal', new Route(
+    '/profile/personal',
+    array('_controller' => function () {
+        return new RedirectResponse("/dashboard/settings/personal");
+    })
+));
+$dash->add('dashboard-old-access', new Route(
+    '/profile/access',
+    array('_controller' => function () {
+        return new RedirectResponse("/dashboard/settings/access");
+    })
+));
+
+$dash->add('dashboard-old-projects', new Route(
+    '/projects/{zone}/{action}',
+    array('_controller' => function ($zone = null, $action = null) {
+        $project = $_SESSION['project'];
+        if($zone == 'shared-materials') $zone = 'materials';
+        if($zone == 'messengers') $zone = 'supports';
+        if($zone == 'overview') $zone = 'summary';
+        if($project)
+            return new RedirectResponse("/dashboard/project/$project/$zone");
+        else
+            return new RedirectResponse("/dashboard/projects");
+    },
+    'zone' => null,
+    'action' => null,
+    )
+));
+
+$dash->add('dashboard-old-translate', new Route(
+    '/translates/{zone}/{action}',
+    array('_controller' => function ($zone = null, $action = null) {
+        $project = $_SESSION['translate_project'];
+        $call = $_SESSION['translate_call'];
+        $node = $_SESSION['translate_node'];
+        $type = $_SESSION['translate_type'];
+        if(empty($type)) $type = $zone;
+        // print_r($project);die("[$type]");
+        if($type === 'project' && is_object($project)) {
+            return new RedirectResponse("/dashboard/project/" . $project->id . '/translate');
+        }
+        // TODO: calls & nodes
+        return new RedirectResponse("/dashboard/settings/profile");
+    },
+    'zone' => null,
+    'action' => null,
+    )
+));
 
 return $dash;

@@ -255,8 +255,24 @@
         color: $secondary-color;
         font-weight: 500;
       }
-
+      &[data-toggle="collapse"] {
+        &::after {
+          margin-left: 6px;
+          content: '\f0d7';
+          font-family: FontAwesome;
+        }
+        &[aria-expanded="true"]::after {
+          content: '\f0d8';
+        }
+      }
   }
+  .buttons {
+    .btn {
+        margin-bottom: 10px;
+        margin-right: 10px;
+    }
+  }
+
   .progress-bar {
     color: $color-white;
     * {
@@ -500,6 +516,11 @@
     > li + li {
       margin-left: 20px;
     }
+    @media(max-width: $breakpoint-xs - 1) {
+        h5 {
+            font-size: 12px;
+        }
+    }
   }
 
   .ajax-message {
@@ -552,9 +573,9 @@
     .min, .opt, .total {
         color: $color-dark;
         float: left;
-        min-width: 101px;
+        // min-width: 101px;
         max-width: 80%;
-        max-width: calc(100% - 202px);
+        // max-width: calc(100% - 202px);
         &.total {
             float: right;
             text-align: right;
@@ -565,10 +586,25 @@
             font-size: $font-size * 2;
             line-height: 1;
             margin-bottom: 10px;
+            white-space: nowrap;
         }
     }
     .progress {
         clear: both;
+    }
+    @media(max-width: $breakpoint-xs - 1) {
+        .min, .opt, .total {
+            >span {
+                font-size: 15px;
+            }
+        }
+    }
+    @media(min-width: $breakpoint-xs) and (max-width: $breakpoint-md - 1) {
+        .min, .opt, .total {
+            >span {
+                font-size: 20px;
+            }
+        }
     }
   }
 }

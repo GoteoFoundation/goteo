@@ -156,24 +156,24 @@ class ProjectCostsForm extends AbstractFormProcessor implements FormProcessorInt
         }
 
         // Check if we want to remove a cost
-        $validate = true;
-        foreach($ids as $id) {
-            if($form->get("remove_$id")->isClicked()) {
-                $this->delCost($id);
-                $validate = false;
-            }
-        }
+        // $validate = true;
+        // foreach($ids as $id) {
+        //     if($form->get("remove_$id")->isClicked()) {
+        //         $this->delCost($id);
+        //         $validate = false;
+        //     }
+        // }
         // Validate form here to avoid deleted elements
         if($validate && !$form->isValid() && !$force_save) throw new FormModelException(Text::get('form-has-errors'));
 
         // Add cost
-        if($form['add-cost']->isClicked()) {
-            $cost = new Cost(['project' => $project->id]);
-            if(!$cost->save($errors)) {
-                throw new FormModelException(Text::get('form-sent-error', implode(', ',$errors)));
-            }
-            $this->addCost($cost);
-        }
+        // if($form['add-cost']->isClicked()) {
+        //     $cost = new Cost(['project' => $project->id]);
+        //     if(!$cost->save($errors)) {
+        //         throw new FormModelException(Text::get('form-sent-error', implode(', ',$errors)));
+        //     }
+        //     $this->addCost($cost);
+        // }
 
         $project->costs = $this->costs;
         // var_dump($project->costs);die;

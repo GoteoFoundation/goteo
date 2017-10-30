@@ -18,6 +18,7 @@ use Goteo\Application\AppEvents;
 use Goteo\Application\View;
 use Goteo\Application\Message;
 use Goteo\Application\Lang;
+use Goteo\Core\Model;
 use Goteo\Model\Invest;
 use Goteo\Model\Project;
 use Goteo\Model\Project\Image as ProjectImage;
@@ -41,10 +42,9 @@ class TranslateProjectDashboardController extends \Goteo\Controller\Dashboard\Pr
     /**
      * Additional common context vars for the views
      */
-    public function validateProject($pid = null, $section = 'summary', $lang = null, $lang_check = null) {
-        $project = parent::validateProject($pid, $section, $lang);
+    public function validateProject($pid = null, $section = 'summary', $lang = null, &$form = null, $lang_check = null) {
+        $project = parent::validateProject($pid, $section, $lang, $form);
         if(!$project instanceOf Project) return $project;
-
         $project->rewards = array_merge($project->individual_rewards, $project->social_rewards);
         $languages = Lang::listAll('name', false);
         if($lang_check && !isset($languages[$lang_check])) {
@@ -84,6 +84,29 @@ class TranslateProjectDashboardController extends \Goteo\Controller\Dashboard\Pr
     public function createFormBuilder($defaults = null, $name = 'autoform', array $options = ['attr' => ['class' => 'autoform hide-help']]) {
         return parent::createFormBuilder($defaults, $name, $options);
     }
+    /**
+     * Handy method to get a form builder
+     * @return Goteo\Library\Forms\FormProcessorInterface
+     */
+    public function getModelForm($form, Model $model, array $defaults = [], array $options = [], Request $request = null) {
+        $finder = $this->getService('app.forms.finder');
+        $finder->setModel($model);
+        $validate = $mock_validation = false;
+        if($request) {
+            $validate = $request->query->has('validate');
+            $mock_validation = $validate && $request->isMethod('get');
+        }
+        // $finder->setBuilder($this->createFormBuilder($defaults, 'autoform', $mock_validation ? ['csrf_protection' => false] : []));
+        // $finder->setBuilder($this->createFormBuilder($defaults));
+        // TODO: a better way to create a csrf_protection without showing errors CSRF on mock_validation
+        $finder->setBuilder($this->createFormBuilder($defaults, 'autoform', ['csrf_protection' => false, 'attr' => ['class' => 'autoform hide-help']]));
+        $processor = $finder->getInstance($form, $options);
+        // Set full validation if required in Request
+        // Do a fake submit of the form on create to test errors (only on GET requests)
+        $processor->setFullValidation($validate, $mock_validation);
+
+        return $processor;
+    }
 
     /**
      * Index translator
@@ -109,16 +132,16 @@ class TranslateProjectDashboardController extends \Goteo\Controller\Dashboard\Pr
      */
     public function overviewTranslateAction($pid, $lang = null, Request $request) {
 
-        $project = $this->validateProject($pid, 'translate', null, $lang); // original lang
+        $project = $this->validateProject($pid, 'translate', null, $form, $lang); // original lang
         if($project instanceOf Response) return $project;
 
         $defaults = (array) $project->getLang($lang);
         $languages = Lang::listAll('name', false);
 
         // Create the form
-        $processor = $this->getModelForm('ProjectTranslateOverview', $project, $defaults, ['lang' => $lang]);
+        $processor = $this->getModelForm('ProjectTranslateOverview', $project, $defaults, ['lang' => $lang], $request);
         $processor->createForm();
-        $form = $processor->getBuilder()
+        $processor->getBuilder()
             ->add('submit', 'submit')
             ->add('remove', 'submit', [
                 'label' => Text::get('translator-delete', $languages[$lang]),
@@ -128,9 +151,8 @@ class TranslateProjectDashboardController extends \Goteo\Controller\Dashboard\Pr
                     'class' => 'pull-right-form btn btn-default btn-lg',
                     'data-confirm' => Text::get('translator-delete-sure', $languages[$lang])
                     ]
-            ])
-            ->getForm();
-
+            ]);
+        $form = $processor->getForm();
         $form->handleRequest($request);
         if ($form->isSubmitted()) {
             // Check if we want to remove a translation
@@ -155,6 +177,7 @@ class TranslateProjectDashboardController extends \Goteo\Controller\Dashboard\Pr
             }
         }
 
+
         return $this->viewResponse('dashboard/project/translate/overview', [
             'form' => $form->createView(),
             'step' => 'overview',
@@ -167,7 +190,7 @@ class TranslateProjectDashboardController extends \Goteo\Controller\Dashboard\Pr
      */
     public function costsTranslateAction($pid, $lang = null, Request $request) {
 
-        $project = $this->validateProject($pid, 'translate', null, $lang); // original lang
+        $project = $this->validateProject($pid, 'translate', null, $form, $lang); // original lang
         if($project instanceOf Response) return $project;
 
         // $langs = Lang::listAll('name', false);
@@ -263,7 +286,7 @@ class TranslateProjectDashboardController extends \Goteo\Controller\Dashboard\Pr
      */
     public function rewardsTranslateAction($pid, $lang = null, Request $request) {
 
-        $project = $this->validateProject($pid, 'translate', null, $lang); // original lang
+        $project = $this->validateProject($pid, 'translate', null, $form, $lang); // original lang
         if($project instanceOf Response) return $project;
 
         // $langs = Lang::listAll('name', false);
@@ -371,7 +394,7 @@ class TranslateProjectDashboardController extends \Goteo\Controller\Dashboard\Pr
      */
     public function updatesTranslateAction($pid, $uid, $lang, Request $request)
     {
-        $project = $this->validateProject($pid, 'updates', null, $lang);
+        $project = $this->validateProject($pid, 'updates', null, $form, $lang);
         if($project instanceOf Response) return $project;
 
         $post = BlogPost::get($uid);

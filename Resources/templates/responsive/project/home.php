@@ -201,15 +201,17 @@
                     <img src="<?= $image->imageData->getLink(700, 0) ?>" class="spacer-5 img-responsive">
                 <?php endforeach ?>
 
-                <h2 class="pink-title spacer" >
-                    <span class="anchor-mark" id="goal">
-                    <?= $this->text('overview-field-goal') ?>
-                    </span>
-                </h2>
-                <div class="spacer-20 general-text">
-                <?php /* nl2br($this->text_url_link($project->goal)) */ ?>
-                <?= $this->markdown($project->goal) ?>
-                </div>
+                <?php /* Goal is being deprecated */ if($project->goal): ?>
+                    <h2 class="pink-title spacer" >
+                        <span class="anchor-mark" id="goal">
+                        <?= $this->text('overview-field-goal') ?>
+                        </span>
+                    </h2>
+                    <div class="spacer-20 general-text">
+                    <?php /* nl2br($this->text_url_link($project->goal)) */ ?>
+                    <?= $this->markdown($project->goal) ?>
+                    </div>
+                <?php endif ?>
 
                 <?php foreach($project->secGallery['goal'] as $image): ?>
                     <img src="<?= $image->imageData->getLink(700, 0) ?>" class="spacer-5 img-responsive">

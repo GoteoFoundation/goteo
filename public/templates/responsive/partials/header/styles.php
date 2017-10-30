@@ -5,6 +5,7 @@
 <link href="<?= SRC_URL ?>/assets/vendor/bootstrap-social/bootstrap-social.css" rel="stylesheet">
 <link href="<?= SRC_URL ?>/assets/vendor/font-awesome/css/font-awesome.css" rel="stylesheet">
 <link href="<?= SRC_URL ?>/assets/vendor/animate.css/animate.css" rel="stylesheet">
+<link href="<?= SRC_URL ?>/assets/vendor/eonasdan-bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.css" rel="stylesheet">
 <!-- endbuild -->
 
 <!-- POST PROCESSING THIS CSS BY GRUNT -->

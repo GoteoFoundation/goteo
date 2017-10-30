@@ -40,7 +40,7 @@
 
         <title><?= $this->title ?></title>
 
-        <link rel="icon" type="image/png" href="/favicon.ico" >
+        <link rel="icon" type="image/x-icon" href="/favicon.ico" >
 
         <?= $this->insert('partials/header/styles') ?>
 
@@ -64,11 +64,7 @@
 
         <!-- Bootstrap core JavaScript -->
 
-        <script src="<?= SRC_URL ?>/assets/vendor/jquery-1.12.4.min.js"></script>
-        <!-- <script src="<?= SRC_URL ?>/assets/vendor/bootstrap/dist/js/bootstrap.min.js"></script> -->
-
-        <script type="text/javascript" src="<?= SRC_URL ?>/assets/js/jquery.animate-css.js"></script>
-        <script type="text/javascript" src="<?= SRC_URL ?>/assets/js/widgets.js"></script>
+        <?= $this->insert('partials/footer/widgets_javascript') ?>
 
         <?= $this->insert('partials/footer/analytics') ?>
 

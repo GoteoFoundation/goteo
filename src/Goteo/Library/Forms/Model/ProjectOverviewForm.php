@@ -39,7 +39,7 @@ class ProjectOverviewForm extends AbstractFormProcessor implements FormProcessor
             ]);
         }
         if($this->getFullValidation()) {
-            if($field !== 'spread') {
+            if(!in_array($field, ['media', 'spread'])) {
                 // all fields
                 $constraints[] = new Constraints\NotBlank();
             }
@@ -158,7 +158,7 @@ class ProjectOverviewForm extends AbstractFormProcessor implements FormProcessor
                 'label' => 'overview-field-scope',
                 'disabled' => $this->getReadonly(),
                 'constraints' => $this->getConstraints('choice'),
-                'required' => true,
+                'required' => false,
                 'wrap_class' => 'col-sm-3 col-xs-4',
                 'choices' => Project::scope(),
                 'expanded' => true,
@@ -168,7 +168,7 @@ class ProjectOverviewForm extends AbstractFormProcessor implements FormProcessor
                 'label' => 'overview-field-social-category',
                 'disabled' => $this->getReadonly(),
                 'constraints' => $this->getConstraints('social_commitment'),
-                'required' => true,
+                'required' => false,
                 // 'wrap_class' => 'col-sm-3 col-xs-4',
                 'choices' => array_map(function($el){
                         return [$el->id => $el->name];

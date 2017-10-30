@@ -170,7 +170,7 @@ abstract class LocationItem extends \Goteo\Core\Model implements LocationInterfa
     public static function setProperty($id, $prop, $value, &$errors = array()) {
         $clas = get_called_class();
         $ob = $clas::get($id);
-        if(property_exists($ob, $prop)) {
+        if($ob && property_exists($ob, $prop)) {
             $ob->$prop = $value;
             return $ob->save($errors);
         }
@@ -190,7 +190,7 @@ abstract class LocationItem extends \Goteo\Core\Model implements LocationInterfa
     public static function getProperty($id, $prop, &$errors = array()) {
         $clas = get_called_class();
         $ob = $clas::get($id);
-        if(property_exists($ob, $prop)) {
+        if($ob && property_exists($ob, $prop)) {
             return $ob->$prop;
         }
         else {

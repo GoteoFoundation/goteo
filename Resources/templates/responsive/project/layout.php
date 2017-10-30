@@ -44,7 +44,7 @@ $this->section('content');
 ?>
 
 <div class="container-fluid main-info"  >
-	<div class="container">
+	<div class="container-fluid">
 		<div class="row header text-center">
 			<h1 class="project-title"><?= $project->name ?></h1>
 			<div class="project-by"><a href="/user/<?= $project->owner ?>"><?= $project->user->name; ?></a></div>
@@ -69,7 +69,7 @@ $this->section('content');
 
 <!-- End container fluid -->
 
-<div class="container section">
+<div class="container-fluid section">
 	<div class="col-sm-8 section-content" id="project-tabs">
 
 	<?= $this->supply('main-content') ?>
@@ -88,9 +88,8 @@ $this->section('content');
 
 </div>
 
-<aside class="container-fluid related-projects">
-	<div class="container normalize-padding">
-
+<aside class="related-projects">
+    <div class="container-fluid">
 		<h2 class="green-title">
 		<?= $this->text('project-related') ?>
 		</h2>
@@ -104,14 +103,14 @@ $this->section('content');
 	    <?php endforeach; ?>
     	</div>
 
-	</div>
-
+    </div>
 </aside>
+
 
 <!-- sticky menu -->
 
 <div class="sticky-menu" data-offset-top="880" data-spy="affix">
-	<div class="container">
+	<div class="container-fluid">
 		<div class="row">
 			<a href="/project/<?= $project->id ?>" data-pronto-target="#project-tabs">
 				<div class="home col-sm-2 hidden-xs sticky-item <?= $this->show=='home' ? 'current' : '' ?>">
@@ -326,6 +325,35 @@ $this->section('content');
         $("div.row.call-info").hover(function(){
             $(".info-default-call").toggle();
             $(".info-hover-call").toggle();
+        });
+
+
+        // Send comments
+        $(document).on('click', '.ajax-comments .send-comment', function (e) {
+            e.preventDefault();
+            var $parent = $(this).closest('.ajax-comments');
+            var $list = $($parent.data('list'));
+            var url = $parent.data('url');
+            var $error = $parent.find('.error-message');
+            var $textarea = $parent.find('[name="message"]');
+            var data = {
+                message: $textarea.val(),
+                thread: $parent.data('thread'),
+                project: $parent.data('project'),
+                view: 'project'
+            }
+
+            $error.addClass('hidden').html('');
+            $.post(url, data, function(data) {
+                // console.log('ok!', data);
+                $list.append(data.html);
+                $textarea.val('');
+                $parent.closest('.box').hide();
+              }).fail(function(data) {
+                var error = JSON.parse(data.responseText);
+                // console.log('error', data, error)
+                $error.removeClass('hidden').html(error.error);
+              });
         });
 
 

@@ -128,24 +128,24 @@ $(function(){
         delete Hammer.defaults.cssProps.userSelect;
         // var $slider = $('body.has-sidebar');
         var prevented = false;
-        $body.on('mouseover', '.slider', function(){
-            // console.log('mouseover swipe', e);
+        $body.on('mouseover', '.slider,.material-switch', function(){
+            // console.log('mouseover swipe');
             prevented = true;
         });
-        $body.on('mouseout', '.slider', function(){
-            // console.log('mouseout swipe', e);
+        $body.on('mouseout', '.slider,.material-switch', function(){
+            // console.log('mouseout swipe');
             prevented = false;
         });
-        $body.on('touchstart', '.slider', function(){
+        $body.on('touchstart', '.slider,.material-switch', function(e){
             // console.log('touchstart swipe', e);
             prevented = true;
         });
-        $body.on('touchend', '.slider', function(){
-            // console.log('touchend swipe', e);
+        $body.on('touchend', '.slider,.material-switch', function(){
+            // console.log('touchend swipe');
             setTimeout(function(){prevented = false;});
         });
         $body.hammer().bind("swiperight", function(){
-            // console.log('body swipe right', e);
+            // console.log('body swipe right, prevented: ', prevented);
             if(prevented) return;
             if(!isMobile()) return;
             if(!$body.hasClass('sidebar-opened'))

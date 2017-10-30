@@ -95,7 +95,7 @@ $(function(){
             $textarea.val('');
             $recipients.find('.text').html($recipients.data('public'));
           }).fail(function(xhr) {
-            console.log('error', xhr);
+            // console.log('error', xhr);
             var error;
             try {
                 error = JSON.parse(xhr.responseText).error;
@@ -123,7 +123,7 @@ $(function(){
                 }
             }).fail(function(data) {
               var error = JSON.parse(data.responseText);
-              console.log('error', data, error)
+              // console.log('error', data, error)
               $error.removeClass('hidden').html(error.error);
             });
         }
@@ -185,6 +185,7 @@ $(function(){
         var data = {
             subject: $subject.val(),
             body: $body.val(),
+            thread: $parent.data('thread'),
             reward: $reward.val(),
             filter: $filter.val(),
             users: $users.val().split(','),
@@ -192,12 +193,12 @@ $(function(){
             // view: 'dashboard'
         }
         $error.addClass('hidden').html('');
-        $.post(url, data, function(data) {
-            console.log('ok!', data);
-            // $list.append(data.html);
-            $(document).trigger('message-sent', [data]);
+        $.post(url, data, function(response) {
+            // console.log('ok!', response);
+            // $list.append(response.html);
+            $(document).trigger('message-sent', [data, response]);
           }).fail(function(xhr) {
-            console.log('error', xhr);
+            // console.log('error', xhr);
             var error;
             try {
                 error = JSON.parse(xhr.responseText).error;

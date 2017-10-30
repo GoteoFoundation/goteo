@@ -5,10 +5,6 @@
 
 @import 'variables';
 
-body.project {
-    background: $color-white;
-}
-
 /*
  * CSS Goteo Project
  *
@@ -74,7 +70,7 @@ div {
     background-color: $background-white;
     width: 100%;
     div {
-      &.container {
+      &.container,&.container-fluid {
         div.row {
           margin-left: 20px;
         }
@@ -107,6 +103,13 @@ div {
   }
 }
 
+@media(min-width: $breakpoint-sm) {
+    body.has-sidebar {
+        div.sticky-menu {
+            width: calc(100% - #{$dashboard-sidebar-width});
+        }
+    }
+}
 /* Sticky menu */
 
 span.label-sticky-item {
@@ -443,8 +446,10 @@ div {
       margin-left: 5px;
     }
   }
-  &.container.section {
-    padding-top: 30px;
+  &.container,&.container-fluid {
+    &.section {
+      padding-top: 30px;
+    }
   }
 }
 
@@ -1045,7 +1050,7 @@ div {
       font-size: 10px;
       margin-right: 5%;
     }
-    &.sticky-menu div.container a div.sticky-item {
+    &.sticky-menu a div.sticky-item {
       font-size: 14px !important;
     }
   }
@@ -1061,9 +1066,7 @@ div {
   .navbar {
     font-size: 14px !important;
   }
-  body.project {
-    padding-bottom: 57px;
-  }
+
   div {
     &.sticky-menu {
       bottom: 0;
@@ -1288,9 +1291,7 @@ div {
 }
 
 @media (max-width: $breakpoint-xs - 1) {
-  body.project {
-    font-size: 10px !important;
-  }
+
   div {
     &.label-call {
       width: 100%;
@@ -1308,14 +1309,11 @@ div {
 }
 
 @media (max-width: $breakpoint-xxs - 1) {
-  body.project {
-    font-size: 9px !important;
-  }
   div {
     &.row.new div.date div.extra {
       top: 99px !important;
     }
-    &.sticky-menu div.container div.sticky-button {
+    &.sticky-menu div.sticky-button {
       margin-left: 0 !important;
     }
     &.project-menu div.item {

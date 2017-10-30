@@ -189,6 +189,7 @@ dashboard-project-delete-image: 'Esborra l''arxiu'
 dashboard-project-delete-image-confirm: 'Segur que vols esborrar aquest arxiu?'
 dashboard-project-delete-default-image: "L'imatge per defecte no es pot esborrar.\nEscull una altra imatge per defecte abans d'esborrar aquesta."
 dashboard-project-dnd-image: 'Arrastra una o varies imatges aquí'
+dashboard-project-dnd-file: 'Arrastra un o més arxius aquí'
 dashboard-project-image-delete-ko: "La imatge no s'ha pogut esborrar!"
 project-upload-images-some-ko: "Algunes imatges no s'han pujat!"
 dashboard-project-default-image-confirm: 'Vols fer servir aquesta imatge per defecte del projecte?'
@@ -239,6 +240,7 @@ dashboard-translate-profile-desc: 'Estàs traduint el teu perfil personal al %LA
 dashboard-translate-profile-ok: 'Perfil traduït correctament al %s'
 
 dashboard-translate-project: 'Traduir el projecte'
+dashboard-translate-empty: 'No hi ha traduccions encara.'
 dashboard-translate-project-empty: 'No hi ha traduccions encara per a aquest projecte.'
 dashboard-translate-project-currents: 'L''idioma original d''aquest projecte és %LANG% i està traduït a %NUM% idiomes:'
 dashboard-translate-project-translating: 'Estàs traduint aquest projecte al %LANG%. L''idioma original és el %ORIGINAL%.'
@@ -255,6 +257,7 @@ dashboard-project-support-translate-ok: 'Entrada de suport %TITLE% traduït corr
 dashboard-project-support-translating: 'Estàs traduint aquesta entrada de suport al %LANG%. L''idioma original és el %ORIGINAL%.'
 dashboard-project-saved: 'Projecte actualitzat correctament'
 
+dashboard-project-is-dead: 'El projecte està arxivat i no es pot editar'
 dashboard-project-not-alive-yet: 'Aquest apartat estarà disponible quan el teu projecte entri en campanya'
 dashboard-project-not-funded-yet: 'Aquest apartat estarà disponible quan el tu projecte acabi la campanya amb èxit'
 dashboard-project-reward-cannot: 'Ara no es poden introduir noves recompenses. Durant la campanya es possible introduir noves recompenses (però no esborrar les que ja existeixen)'

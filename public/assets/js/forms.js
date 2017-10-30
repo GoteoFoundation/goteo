@@ -78,6 +78,16 @@ $(function(){
         $checkbox.change();
     });
 
+    $('.material-switch').hammer().bind('swiperight', function() {
+        // console.log('material right', this);
+        $(this).find('input[type="checkbox"]').prop('checked', true);
+    });
+
+    $('.material-switch').hammer().bind('swipeleft', function() {
+        // console.log('material left', this);
+        $(this).find('input[type="checkbox"]').prop('checked', false);
+    });
+
     /// AJAX auto updates fields
     $('.auto-save-property').each(function() {
         var $input = $(this);
@@ -143,7 +153,7 @@ $(function(){
             locale: goteo.locale
             // ,debug: true
         }).on('dp.change', function (e) {
-            console.log(e);
+            // console.log(e);
             // $('#publishing-date').val(e.date.format('YYYY/MM/DD'));
         });
     // Year only datepickers
@@ -202,12 +212,12 @@ $(function(){
         var $holder = $container.find('.video-holder');
         var $embed = $container.find('.embed-responsive');
 
-        console.log('adding video', val, video,e);
+        // console.log('adding video', val, video,e);
         // Add thumb
         $container.removeClass('loaded').removeClass('playing').addClass('loading');
 
         var putVideo = function(thumb) {
-            console.log('putting thumb');
+            // console.log('putting thumb');
             $container.find('.cover-image').attr('src', thumb);
             $container.removeClass('loading').addClass('loaded');
             var iframe = $('<iframe>', {
@@ -228,11 +238,11 @@ $(function(){
         else if (video.type === 'vimeo') {
             $.getJSON("https://vimeo.com/api/v2/video/"+ video.id + ".json")
              .success(function(res) {
-                console.log('videmo ok', res);
+                // console.log('videmo ok', res);
                 putVideo(res[0].thumbnail_large);
              })
              .fail(function(e){
-                console.log('error vimeo', e.responseText);
+                // console.log('error vimeo', e.responseText);
              });
         }
     };
@@ -377,7 +387,7 @@ $(function(){
             var re = /(?:\.([^.]+))?$/;
             var ext = re.exec(name)[1];
             $img.addClass('file-type-' + ext);
-            console.log('extension',ext,$img.attr('class'));
+            // console.log('extension',ext,$img.attr('class'));
 
             if(response) {
                 $li.append('<input type="hidden" name="' + $dz.data('current') + '" value="' + name + '">');
@@ -443,6 +453,7 @@ $(function(){
     $('.autoform').on( 'click', '.image-list-sortable .add-to-markdown', function(e) {
         e.preventDefault();
         e.stopPropagation();
+        // console.log('add to markdown');
         var $li = $(this).closest('li');
         var name = $li.data('name');
         var $form = $(this).closest('form');
@@ -456,6 +467,7 @@ $(function(){
 
     // Handle buttons with confirmation
     $('form.autoform').on( 'click', 'button[data-confirm]', function(e) {
+        // console.log('btn auto confirm');
         if(!confirm($(this).data('confirm'))) {
             e.preventDefault();
             e.stopPropagation();
@@ -471,12 +483,13 @@ $(function(){
     });
 
     $('form[data-confirm]').on('submit', function(){
+        // console.log('form submit');
         formChanged = false;
     });
 
     $(window).on('beforeunload', function() {
       if(formChanged){
-        console.log('changed', formChanged);
+        // console.log('changed', formChanged);
          return formChanged;
        }
     });

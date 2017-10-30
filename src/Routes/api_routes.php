@@ -158,7 +158,7 @@ $api->add('api-comments-project', new Route(
 
 $api->add('api-comments-add', new Route(
     '/comments',
-    array('_controller' => 'Goteo\Controller\Api\MessagesApiController::commentsAddAction'),
+    array('_controller' => 'Goteo\Controller\Api\MessagesApiController::addCommentAction'),
     array(), // requirements
     array(), // options
     '', // host
@@ -168,7 +168,7 @@ $api->add('api-comments-add', new Route(
 
 $api->add('api-comments-delete', new Route(
     '/comments/{cid}',
-    array('_controller' => 'Goteo\Controller\Api\MessagesApiController::commentsDeleteAction'),
+    array('_controller' => 'Goteo\Controller\Api\MessagesApiController::deleteCommentAction'),
     array(), // requirements
     array(), // options
     '', // host
@@ -191,12 +191,17 @@ $api->add('api-messages-project', new Route(
 
 $api->add('api-messages-add', new Route(
     '/messages',
-    array('_controller' => 'Goteo\Controller\Api\MessagesApiController::messagesAddAction'),
+    array('_controller' => 'Goteo\Controller\Api\MessagesApiController::addMessageAction'),
     array(), // requirements
     array(), // options
     '', // host
     array(), // schemes
     array('POST') // methods
+));
+
+$api->add('api-stats-investors-required', new Route(
+    '/stats/investors-required',
+    array('_controller' => 'Goteo\Controller\Api\StatsApiController::investorsRequiredAction')
 ));
 
 

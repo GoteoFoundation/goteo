@@ -6,7 +6,7 @@ $errors = $this->get_errors();
 if(!$messages && !$errors) return '';
 ?>
 
-<div class="container-fluid spacer-20">
+<div class="container-fluid padding-20">
 <?php
 if($messages):
 ?>

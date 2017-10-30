@@ -117,7 +117,16 @@
           }
         }
       }
-
+      &.admin {
+        a {
+            .fa {
+                color: $color-red;
+            }
+            .icon {
+                background-color: $color-red;
+            }
+        }
+      }
       .submenu {
         margin:0 -15px;
         display: none;

@@ -234,8 +234,11 @@
         align-items: center;
         overflow: hidden;
         .img-project {
+            // height: 100%;
+            // width: auto;
+            width: 100%;
             height: 100%;
-            width: auto;
+            object-fit: cover;
         }
         h2 {
             display: inline-block;

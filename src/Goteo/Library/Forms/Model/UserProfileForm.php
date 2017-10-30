@@ -64,6 +64,7 @@ class UserProfileForm extends AbstractFormProcessor implements FormProcessorInte
 
     public function createForm() {
         $non_public = '<i class="fa fa-eye-slash"></i> '. Text::get('project-non-public-field');
+        $user = $this->getModel();
         $builder = $this->getBuilder()
             ->add('name', 'text', [
                 'disabled' => $this->getReadonly(),
@@ -79,10 +80,11 @@ class UserProfileForm extends AbstractFormProcessor implements FormProcessorInte
                 'required' => false,
                 'pre_addon' => '<i class="fa fa-globe"></i>'
             ])
-            ->add('unlocable', 'boolean', [
-                'label' => 'dashboard-user-location-unlocate',
+            ->add('locable', 'boolean', [
+                'label' => 'dashboard-user-location-locate',
                 'constraints' => $this->getConstraints('unlocable'),
                 'disabled' => $this->getReadonly(),
+                'data' => !$user->unlocable,
                 'attr' => ['help' => Text::get('dashboard-user-location-help')],
                 'required' => false,
                 'color' => 'cyan'
@@ -261,7 +263,6 @@ class UserProfileForm extends AbstractFormProcessor implements FormProcessorInte
             throw new FormModelException(Text::get('form-sent-error', $err));
 
         }
-
         // $data['user_avatar'] = $data['avatar'];
         unset($data['avatar']); // do not rebuild data using this
 
@@ -274,8 +275,8 @@ class UserProfileForm extends AbstractFormProcessor implements FormProcessorInte
             }, explode("\n", $data['webs']));
 
         // set locable bit
-        if(isset($data['unlocable'])) {
-            UserLocation::setProperty($user->id, 'locable', !$data['unlocable'], $errors);
+        if(isset($data['locable'])) {
+            UserLocation::setProperty($user->id, 'locable', (bool)$data['locable'], $errors);
         }
         $user->rebuildData($data, array_keys($form->all()));
         $user->location = $data['location'] ? $data['location'] : '';

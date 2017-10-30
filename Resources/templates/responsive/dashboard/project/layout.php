@@ -7,7 +7,7 @@
 <?php $this->replace() ?>
 
 
-<?= $this->section('content') ?>
+<?= $this->section('content'); ?>
 
 <div id="apply-modal" class="modal fade" tabindex="-1" role="dialog">
   <div class="modal-dialog" role="document">
@@ -17,12 +17,12 @@
         <h4 class="modal-title"><?= $this->text('project-send-review') ?></h4>
       </div>
       <div class="modal-body">
-        <p><?= $this->text('guide-project-preview') ?></p>
+        <p><?= $this->markdown($this->text('project-send-review-desc')) ?></p>
         <?php if($this->errors): ?>
             <div class="text-danger"><?= implode("\n<br>\n", $this->errors) ?></div>
         <?php endif ?>
 
-        <?= $this->form_form($this->raw('applyForm'), [], true) ?>
+        <?= $this->form_form($this->raw('applyForm'), [], true); ?>
 
         </div>
     </div>
