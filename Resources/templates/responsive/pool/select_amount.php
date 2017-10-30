@@ -1,31 +1,18 @@
 <?php
-$this->layout('dashboard/layout', [
-    'bodyClass' => 'dashboard',
-    'title' => $this->text('meta-title-pool-method'),
-    'meta_description' => $this->text('invest-method-title')
-    ]);
+$this->layout('pool/layout');
 
-$this->section('dashboard-content');
+$this->section('dashboard-content-pool');
 
 ?>
 
-<?= $this->insert('pool/partials/steps_bar') ?>
+<div class="col-sm-offset-1 col-sm-10">
+    <h2><?= $this->text('pool-recharge-title') ?></h2>
+    <div class="pool-conditions clear-both">
+    	<p><?= $this->text('dashboard-my-wallet-pool-info') ?> <a data-toggle="modal" data-target="#poolModal" href=""><?= $this->text('regular-here') ?></a></p>
+    </div>
 
-<div class="dashboard-content cyan">
-  <div class="inner-container">
-      <div class="row">
-          <div class="col-sm-10 col-sm-offset-1">
+    <?= $this->insert('pool/partials/amount_box') ?>
 
-            <h2><?= $this->text('pool-recharge-title') ?></h2>
-            <div class="pool-conditions clear-both">
-    			<p><?= $this->text('dashboard-my-wallet-pool-info') ?> <a data-toggle="modal" data-target="#poolModal" href=""><?= $this->text('regular-here') ?></a></p>
-    		</div>
-
-            <?= $this->insert('pool/partials/amount_box') ?>
-
-            </div>
-        </div>
-	</div>
 </div>
 
 <!-- Modal -->

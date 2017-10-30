@@ -135,7 +135,7 @@ project-reward-unlimited: 'Unlimited'
 
 project-send-review: 'Send to review'
 project-reviewing: 'We are evaluating and reviewing your project'
-project-validation-ok: 'The project is completed. Send it to revision to start the campaign.'
+project-validation-ok: 'You have completed the form. Great! Click the next button to get the project reviewed by our consultants.'
 project-validation-errors: 'The project is not yet complete!'
 project-validation-error-profile: 'There are empty fields in the project profile'
 project-validation-error-profile_social: 'You need to fill at least one of the fields Web, Facebook or Twitter'

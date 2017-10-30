@@ -19,13 +19,13 @@ use Goteo\Library\Text;
 
 
 abstract class AbstractFormProcessor implements FormProcessorInterface {
-    private $builder;
-    private $form;
-    private $model;
-    private $readonly = false;
-    private $options;
-    private $full_validation = false;
-    private $show_errors = false;
+    protected $builder;
+    protected $form;
+    protected $model;
+    protected $readonly = false;
+    protected $options;
+    protected $full_validation = false;
+    protected $show_errors = false;
 
     public function __construct(FormBuilderInterface $builder, Model $model, array $options = []) {
         $this->setBuilder($builder);
@@ -54,6 +54,7 @@ abstract class AbstractFormProcessor implements FormProcessorInterface {
         $data = $options['data'];
         if($sanitize) $data = array_intersect_key($data, $this->builder->all());
         // var_dump($data);die;
+        // print_r(array_keys($data));
         return $data;
     }
 
@@ -62,6 +63,7 @@ abstract class AbstractFormProcessor implements FormProcessorInterface {
         $this->form = $this->builder->getForm();
         if($this->showErrors()) {
             // var_dump($this->getDefaults(true));die;
+            // print_r(array_keys($this->form->all()));
             $this->form->submit($this->getDefaults(true), false);
         }
         return $this->form;

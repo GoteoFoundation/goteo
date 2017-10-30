@@ -3152,9 +3152,15 @@ namespace Goteo\Model {
                 }
                 $order = 'promote.order ASC, name ASC';
             }
+            elseif($filter['type']==='matchfunding'){
+                $where[] = 'project.id IN (
+                                SELECT project
+                                FROM call_project)';
+            }
             elseif($filter['type'] === 'random') {
                 $order = 'RAND()';
             }
+
 
             // filter by category?
             if(array_key_exists('category', $filter)) {

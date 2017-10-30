@@ -556,8 +556,8 @@ namespace Goteo\Controller {
                             $show = 'fulfilled'; // se ha finiquitado el contrato
                         } elseif ($contract->status->payed) {
                             $show = 'payed'; // ya se ha realizado el pago
-                        } elseif ($contract->status->recieved) {
-                            $show = 'recieved'; // goteo ha recibido el contrato firmado
+                        } elseif ($contract->status->received) {
+                            $show = 'received'; // goteo ha recibido el contrato firmado
                         } elseif ($contract->status->ready) {
                             $show = 'ready'; // el pdf está listo para descargarse
                         } elseif ($contract->status->admin) {

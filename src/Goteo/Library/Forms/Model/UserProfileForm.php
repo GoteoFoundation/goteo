@@ -257,7 +257,7 @@ class UserProfileForm extends AbstractFormProcessor implements FormProcessorInte
             $data['avatar'] = current($data['avatar']);
         }
         $user->user_avatar = $data['avatar'];
-        if($err = $user->user_avatar->getUploadError()) {
+        if($user->user_avatar && $err = $user->user_avatar->getUploadError()) {
             throw new FormModelException(Text::get('form-sent-error', $err));
 
         }

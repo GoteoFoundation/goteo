@@ -123,6 +123,13 @@ $(function(){
             $units.select();
         }
     });
+
+    $('form.autoform').on('change', '.reward-item .units input', function(){
+        var $reward = $(this).closest('.reward-item');
+        var $material = $reward.find('.material-switch');
+        var $input = $material.find('input[type="checkbox"]');
+        $input.prop('checked', $(this).val() == 0);
+    });
 });
 
 // @license-end

@@ -557,3 +557,118 @@
     }
   }
 }
+
+/* Steps bar */
+
+.bs-wizard {
+  max-width: 1030px;
+  margin: 10px auto;
+  // border-bottom: solid 1px #e0e0e0;
+  > {
+    .active .bs-wizard-stepnum {
+      color: #20B3B2 !important;
+      font-weight: bold;
+    }
+    .bs-wizard-step {
+      padding: 0;
+      position: relative;
+      + .bs-wizard-step {}
+      .bs-wizard-stepnum {
+        color: #b2b0b1;
+        font-size: 16px;
+        margin-bottom: 5px;
+      }
+      .bs-wizard-info {
+        color: #999;
+        font-size: 14px;
+      }
+      > {
+        .bs-wizard-dot {
+          position: absolute;
+          width: 30px;
+          height: 30px;
+          display: block;
+          background: #B5DADA;
+          top: 45px;
+          left: 50%;
+          margin-top: -15px;
+          margin-left: -15px;
+          border-radius: 50%;
+          &:after {
+            content: ' ';
+            width: 14px;
+            height: 14px;
+            background: #2FB6B5;
+            border-radius: 50px;
+            position: absolute;
+            top: 8px;
+            left: 8px;
+          }
+        }
+        .progress {
+          position: relative;
+          border-radius: 0px;
+          height: 8px;
+          box-shadow: none;
+          margin: 20px 0;
+          > .progress-bar {
+            width: 0px;
+            box-shadow: none;
+            background: #B5DADA;
+          }
+        }
+      }
+      &.complete > .progress > .progress-bar {
+        width: 100%;
+      }
+      &.active > .progress > .progress-bar {
+        width: 50%;
+      }
+      &:first-child.active > .progress > .progress-bar {
+        width: 0%;
+      }
+      &:last-child.active > .progress > .progress-bar {
+        width: 100%;
+      }
+      &.disabled, &.inactive {
+        > .bs-wizard-dot {
+            background-color: #f5f5f5;
+            &:after {
+              opacity: 0;
+            }
+        }
+      }
+      &:first-child > .progress {
+        left: 50%;
+        width: 50%;
+      }
+      &:last-child > .progress {
+        width: 50%;
+      }
+      &.disabled a.bs-wizard-dot {
+        pointer-events: none;
+      }
+    }
+  }
+
+  &.steps-2 > .bs-wizard-step {
+    float: left;
+    width: 50%;
+  }
+  &.steps-3 > .bs-wizard-step {
+    float: left;
+    width: 33.3%;
+  }
+  &.steps-4 > .bs-wizard-step {
+    float: left;
+    width: 25%;
+  }
+  &.steps-5 > .bs-wizard-step {
+    float: left;
+    width: 20%;
+  }
+  &.steps-6 > .bs-wizard-step {
+    float: left;
+    width: 16.6%;
+  }
+}

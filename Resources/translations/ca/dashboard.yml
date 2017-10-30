@@ -185,8 +185,8 @@ project-no-share-material: 'No hi ha materials guardats per aquest projecte'
 
 dashboard-project-images-desc: 'Organitza les imatges com vulguis arrossegant i deixant anar, fins i tot entre zones.'
 dashboard-project-default-image: 'Imatge per defecte'
-dashboard-project-delete-image: 'Esborra la imatge'
-dashboard-project-delete-image-confirm: 'Segur que vols esborrar aquests imatge?'
+dashboard-project-delete-image: 'Esborra l''arxiu'
+dashboard-project-delete-image-confirm: 'Segur que vols esborrar aquest arxiu?'
 dashboard-project-delete-default-image: "L'imatge per defecte no es pot esborrar.\nEscull una altra imatge per defecte abans d'esborrar aquesta."
 dashboard-project-dnd-image: 'Arrastra una o varies imatges aquí'
 dashboard-project-image-delete-ko: "La imatge no s'ha pogut esborrar!"
@@ -230,6 +230,9 @@ dashboard-message-donors-pending: 'estan pendents'
 dashboard-message-donors-fulfilled: 'estan completats'
 dashboard-message-donors-error: 'No hi ha destinataris vàlids, no es pot enviar el missatge'
 dashboard-message-donors-total: '%s cofinançadors'
+
+dashboard-message-no-message: 'No tens cap missatge encara.'
+dashboard-message-threads: 'Tens %s fils de missatges'
 
 dashboard-translate-profile: 'Traduir perfil'
 dashboard-translate-profile-desc: 'Estàs traduint el teu perfil personal al %LANG%. Els usuaris que visitin el tu perfil personal en aquest idioma veuran aquesta traducció. La resta d''idiomes mostraran les <a href="%URL%">dades per defecte</a> a menys que també tinguin una traducció assignada.'

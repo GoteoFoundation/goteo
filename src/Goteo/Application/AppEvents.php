@@ -249,6 +249,16 @@ final class AppEvents
     const PROJECT_READY = 'project.ready';
 
     /**
+     * The project.post event is thrown when a project edits a post
+     *
+     * The event listener receives an
+     * Goteo\Application\Event\FilterProjectPostEvent instance.
+     *
+     * @var string
+     */
+    const PROJECT_POST = 'project.post';
+
+    /**
      * The message.created event is thrown when a new message/comments is created
      *
      * The event listener receives an

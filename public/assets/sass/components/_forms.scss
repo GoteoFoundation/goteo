@@ -347,7 +347,11 @@
     content: '';
     clear: both;
   }
-
+  &.file {
+    .image-list-sortable > li {
+        background-image: none;
+    }
+  }
   .dragndrop {
     width: 150px;
     height: 150px;

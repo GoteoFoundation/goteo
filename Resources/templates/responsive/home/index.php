@@ -8,10 +8,10 @@
 
 <?php $this->section('sidebar-footer') ?>
     <a href="/project/create" class="btn btn-fashion">
-		<?= $this->text('regular-create') ?>		
+		<?= $this->text('regular-create') ?>
 	</a>
 	<a href="/login" class="btn btn-light-black">
-		<?= $this->text('login-title') ?>		
+		<?= $this->text('login-title') ?>
 	</a>
 <?php $this->replace() ?>
 
