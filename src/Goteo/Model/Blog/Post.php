@@ -536,7 +536,7 @@ class Post extends \Goteo\Core\Model {
             if ($this->id) {
                 // Will be an Upload if it's not Image
                 if($this->image) {
-                    if(is_array($this->image)) {
+                    if(is_array($this->image) && !$this->image['tmp_name']) {
                         try {
                             Image::replaceGallery('post', $this->id, $this->image);
                         } catch(ModelException $e) {
@@ -547,6 +547,7 @@ class Post extends \Goteo\Core\Model {
                     } else {
                         // Old behaviour, add the image to the gallery if
                         // needed (it's an upload)
+                        $img = $this->image;
                         if(!$img instanceOf Image) {
                             $img = new Image($img);
                         }

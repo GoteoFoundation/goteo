@@ -90,9 +90,9 @@ class Image extends \Goteo\Core\Model {
             $this->size = $file['size'];
         }
         elseif(is_string($file)) {
-			$this->name = basename($file);
-			$this->tmp = $file;
-		}
+            $this->name = basename($file);
+            $this->tmp = $file;
+        }
         if($name) $this->name = $name;
 
         $this->fp = File::factory(array('bucket' => AWS_S3_BUCKET_STATIC));
