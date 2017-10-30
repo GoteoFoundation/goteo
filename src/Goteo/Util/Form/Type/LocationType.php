@@ -32,6 +32,7 @@ class LocationType extends TextType
         parent::configureOptions($resolver);
         $resolver->setDefault('type', null); // user, project, call, ...
         $resolver->setDefault('item', null); // if type requires item-id (project, call, ...)
+        $resolver->setDefault('show_coordinates', false); // Whether to show or hide lat/lng coordinates (LocationItem class)
         $resolver->setDefault('row_class', '');
     }
     /**
@@ -51,6 +52,7 @@ class LocationType extends TextType
         }
         $view->vars['privacy_control'] = $options['type'];
         $view->vars['row_class'] = $options['row_class'];
+        $view->vars['show_coordinates'] = $options['show_coordinates'];
     }
 
     /**
