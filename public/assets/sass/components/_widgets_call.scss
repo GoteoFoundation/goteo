@@ -17,7 +17,7 @@
       background-color: $background-dark-lilac;
     }
     .content, .bottom{
-      background-color: $background-light-lilac;
+      background-color: $background-light-lilac !important;
     }
   }
 
@@ -30,7 +30,7 @@
       background-color: $background-active-dark-green;
     }
     .content, .bottom{
-      background-color: $background-active-green;
+      background-color: $background-active-green !important;
     }
   }
 
@@ -43,12 +43,13 @@
       background-color: $background-dark-yellow;
     }
     .content, .bottom{
-      background-color: $background-yellow;
+      background-color: $background-yellow !important;
     }
   }
 
   .sphere{
     padding: 20px 0;
+    min-height: 150px;
     img{
       @include filter(brightness(0.55) saturate(3) grayscale(100%));
     }
@@ -161,7 +162,7 @@
         font-size: $font-size;
         font-weight: 500;
         text-transform: uppercase;
-        padding: 10px;
+        padding: 10px 33px 10px 10px;
     }
 
     .floating {
@@ -209,6 +210,26 @@
             font-size: $font-size*3.5;
             text-align: center;
             line-height: 1.1;
+        }
+        div.date, div.applied{
+          width: 49%;
+          float: left;
+          text-transform: uppercase;
+        }
+        div.date{
+          margin-top: 20px;
+          .date-data{
+            text-transform: capitalize;
+            font-size: $font-size*1.4;
+            margin-top: 5px;
+          }
+        }
+        div.applied{
+          margin-left: 2%;
+          div.applied-data{
+            font-size: $font-size*1.4;
+            margin-top: 5px;
+          }
         }
 
     }
@@ -327,14 +348,14 @@
         background: $primary-color;
         opacity: 1;
         color: $color-white;
-        font-size: 21px;
+        font-size: 5px;
         line-height: 21px;
-        height: 37px;
-        width: 37px;
+        height: 21px;
+        width: 21px;
         border-radius: 50%;
         font-weight: 300;
         text-align: left;
-        padding: 7px 0 0 10px;
+        padding: 0 0 0 5px;
         margin: 0;
         box-shadow: 2px 5px 12px -6px $color-dark;
         &:hover {
@@ -342,8 +363,8 @@
         }
         .icon {
           background: $color-white;
-          width: 18px;
-          height: 18px;
+          width: 10px;
+          height: 10px;
         }
     }
 
@@ -356,6 +377,7 @@
 
     .content {
       background: transparent;
+      min-height: 182px;
     }
     .sphere{
       padding: 5%;
