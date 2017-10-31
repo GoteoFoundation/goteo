@@ -2000,7 +2000,7 @@ namespace Goteo\Model {
                     AND sphere_lang.lang = :lang
                 $eng_join
                 $sqlFilter
-                ORDER BY sphere.name ASC";
+                ORDER BY call_sphere.order ASC";
             // die(\sqldbg($sql, $values));
             $query = static::query($sql, $values);
             foreach ($query->fetchAll(\PDO::FETCH_OBJ) as $item) {
