@@ -169,8 +169,35 @@
     }
   }
 
-  .map {
-    height: 450px;
+  .modal-map {
+    .map {
+      height: 450px;
+    }
+    .input-block {
+      .form-group {
+        display: inline-block;
+        width: 100%;
+      }
+      .form-group-radius {
+        display: none;
+      }
+      &.show-radius {
+        .form-group-search {
+          width: 80%;
+          width: calc(100% - 115px);
+          margin-right: 10px;
+        }
+        .form-group-radius {
+          display: inline-block;
+          width: 100px;
+          .form-control {
+            display: inline-block;
+            width: 60px;
+          }
+        }
+      }
+    }
+
   }
   .location_desc {
     font-style: italic;

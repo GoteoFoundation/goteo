@@ -75,6 +75,7 @@ class ProjectOverviewForm extends AbstractFormProcessor implements FormProcessor
                 'disabled' => $this->getReadonly(),
                 'location_object' => ProjectLocation::get($project),
                 'location_class' => 'Goteo\Model\Project\ProjectLocation',
+                // 'location_radius' => 10,
                 'required' => false,
                 'pre_addon' => '<i class="fa fa-globe"></i>',
                 'attr' => ['help' => Text::get('tooltip-project-project_location')]

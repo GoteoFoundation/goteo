@@ -23,8 +23,11 @@ echo $view->render('bootstrap/dropfiles_item.html.php', ['file_name' => '{NAME}'
         <div id="geo-autocomplete-success-<?= $name ?>" class="text-success success-msg"><?php echo $view->escape(false !== $translation_domain ? $view['translator']->trans('form-editor-success-locating', array(), $translation_domain) : 'form-editor-success-locating') ?></div>
       </div>
       <div class="modal-body">
-        <div class="form-group">
-            <input id="geo-autocomplete-<?= $name ?>" onfocus="this.select()" class="form-control geo-autocomplete" name="address" value="">
+        <div class="input-block">
+          <div class="form-group form-group-search">
+            <input type="text" id="geo-autocomplete-<?= $name ?>" onfocus="this.select()" class="form-control geo-autocomplete" name="address" value="">
+          </div>
+          <div class="form-group form-group-radius">R: <input type="number" id="geo-autocomplete-radius-<?= $name ?>" onfocus="this.select()" class="form-control geo-autocomplete-radius" name="radius" value="">Km</div>
         </div>
         <div id="geo-map-<?= $name ?>" data-autocomplete-target="#geo-autocomplete-<?= $name ?>" data-autocomplete-error="#geo-autocomplete-error-<?= $name ?>" data-autocomplete-success="#geo-autocomplete-success-<?= $name ?>" class="map"></div>
 

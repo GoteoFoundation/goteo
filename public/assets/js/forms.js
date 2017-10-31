@@ -607,21 +607,29 @@ $(function(){
     // handle exact geolocation
     $('.autoform').on('click', '.exact-location', function(e) {
         e.preventDefault();
-        var lat,lng,formatted_address;
+        var lat,lng,formatted_address,radius;
         var $form = $(this).closest('form');
         var $modal = $('#modal-map-' + $form.attr('name'));
         var $map = $modal.find('.map');
+        var $wrap = $modal.find('.input-block');
         var $search = $modal.find('.geo-autocomplete');
+        var $radius = $modal.find('.geo-autocomplete-radius');
         var $input = $($(this).attr('href'));
         var title = $input.closest('.form-group').find('label:first').text();
         $modal.find('.modal-title').text(title);
 
-        $(['address', 'city', 'region', 'zipcode', 'country_code', 'country', 'latitude', 'longitude', 'formatted_address']).each(function(i, el){
+        $(['address', 'city', 'region', 'zipcode', 'country_code', 'country', 'latitude', 'longitude', 'formatted_address', 'radius']).each(function(i, el){
             var el_dest = $input.data('geocoder-populate-' +  el);
             var $val = $(el_dest);
             var val = $val.text();
             if($val.is(':input')) val = $val.val();
-            $search.data('geocoder-populate-' +  el, el_dest);
+
+            if(el === 'radius') {
+                radius = parseInt(val, 10) || 0;
+                $radius.data('geocoder-populate-' +  el, el_dest);
+            } else {
+                $search.data('geocoder-populate-' +  el, el_dest);
+            }
             if(el === 'latitude') {
                 lat = parseFloat(val) || 0;
             }
@@ -636,6 +644,11 @@ $(function(){
         $map.data('map-longitude', lng);
         if(!lat || !lng) {
             $map.data('map-address', $input.val());
+        }
+        if(radius) {
+            $map.data('map-radius', radius);
+            $radius.val(radius);
+            $wrap.addClass('show-radius');
         }
         $search.val((lat && lng) ? formatted_address : $input.val());
 

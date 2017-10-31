@@ -352,7 +352,7 @@ locator.setGoogleMapPoint = function (obj, iteration) {
     //look for data-map-* attributes:
     var lat = parseFloat($(obj).data('map-latitude')) || 0;
     var lng = parseFloat($(obj).data('map-longitude')) || 0;
-    var radius = parseFloat($(obj).data('map-radius')) || 0;
+    var radius = parseInt($(obj).data('map-radius'), 10) || 0;
     var address = $(obj).data('map-address');
     if(lat && lng) {
         this.trace('Found printable geomap, map_id: ', map_id, ' lat,lng: ', lat, lng, ' radius;', radius, ' content', $(obj).data('map-content'));
@@ -467,7 +467,7 @@ locator.changePlace = function(id, place) {
         locator.saveGeolocationData($(id).data('geocoder-type'), $(id).is('[data-geocoder-item]') ? $(id).data('geocoder-item') : '', data);
     }
     // populate the address fields in the form if available.
-    var fields = ['address', 'city', 'region', 'zipcode', 'country_code', 'country', 'latitude', 'longitude', 'formatted_address'];
+    var fields = ['address', 'city', 'region', 'zipcode', 'country_code', 'country', 'latitude', 'longitude', 'formatted_address', 'radius'];
 
     // Do not update fields if already filled
     if($(id).data('geocoder-skip-population')) {
@@ -616,8 +616,10 @@ $(function(){
     $('input.geo-autocomplete-radius').change(function(){
         if(locator.map && locator.circle) {
             locator.circle.setRadius($(this).val() * 1000);
-            if($(this).is('[data-geocoder-populate-radius]')) {
-                $($(this).data('geocoder-populate-radius')).val($(this).val());
+            var radius = $(this).data('geocoder-populate-radius');
+            locator.trace('set radius', radius, $(this).val());
+            if(radius) {
+                $(radius).val($(this).val());
             }
         }
     });
