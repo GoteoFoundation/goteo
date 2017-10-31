@@ -603,6 +603,51 @@ $(function(){
         }
     });
 
+
+    // handle exact geolocation
+    $('.autoform').on('click', '.exact-location', function(e) {
+        e.preventDefault();
+        var lat,lng,formatted_address;
+        var $form = $(this).closest('form');
+        var $modal = $('#modal-map-' + $form.attr('name'));
+        var $map = $modal.find('.map');
+        var $search = $modal.find('.geo-autocomplete');
+        var $input = $($(this).attr('href'));
+        var title = $input.closest('.form-group').find('label:first').text();
+        $modal.find('.modal-title').text(title);
+
+        $(['address', 'city', 'region', 'zipcode', 'country_code', 'country', 'latitude', 'longitude', 'formatted_address']).each(function(i, el){
+            var el_dest = $input.data('geocoder-populate-' +  el);
+            var $val = $(el_dest);
+            var val = $val.text();
+            if($val.is(':input')) val = $val.val();
+            $search.data('geocoder-populate-' +  el, el_dest);
+            if(el === 'latitude') {
+                lat = parseFloat(val) || 0;
+            }
+            if(el === 'longitude') {
+                lng = parseFloat(val) || 0;
+            }
+            if(el === 'formatted_address') {
+                formatted_address = val;
+            }
+        });
+        $map.data('map-latitude', lat);
+        $map.data('map-longitude', lng);
+        if(!lat || !lng) {
+            $map.data('map-address', $input.val());
+        }
+        $search.val((lat && lng) ? formatted_address : $input.val());
+
+        $modal.modal('show');
+        locator.setGoogleMapPoint($map[0]);
+        locator.setGoogleAutocomplete('#' + $search.attr('id'));
+    });
+    $(".autoform .modal-map").on("shown.bs.modal", function () {
+        goteo.trace('shown locator map', locator);
+        google.maps.event.trigger(locator.map, "resize");
+        locator.map.setCenter(locator.marker.getPosition());
+    });
     // Handle buttons with confirmation
     $('form.autoform').on( 'click', 'button[data-confirm]', function(e) {
         // console.log('btn auto confirm');

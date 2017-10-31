@@ -37,4 +37,4 @@ var goteo = {};
 <!-- endbuild -->
 
 <!-- geolocation -->
-<script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?v=3.exp&amp;libraries=places"></script>
+<script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=<?= $this->ee($this->get_config('geolocation.google_maps_key')) ?>&amp;v=3.exp&amp;libraries=places"></script>

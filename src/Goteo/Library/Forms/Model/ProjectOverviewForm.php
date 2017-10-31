@@ -20,6 +20,7 @@ use Goteo\Model\SocialCommitment;
 use Goteo\Library\Text;
 use Goteo\Library\Currency;
 use Goteo\Library\Forms\FormModelException;
+use Goteo\Model\Project\ProjectLocation;
 
 class ProjectOverviewForm extends AbstractFormProcessor implements FormProcessorInterface {
 
@@ -51,7 +52,6 @@ class ProjectOverviewForm extends AbstractFormProcessor implements FormProcessor
         $currencies = Currency::listAll('name', false);
         $langs = Lang::listAll('name', false);
         $project = $this->getModel();
-
         $builder = $this->getBuilder();
         $builder
             ->add('name', 'text', [
@@ -70,9 +70,11 @@ class ProjectOverviewForm extends AbstractFormProcessor implements FormProcessor
             ->add('project_location', 'location', [
                 'label' => 'overview-field-project_location',
                 'constraints' => $this->getConstraints('project_location'),
-                'type' => 'project',
+                // 'type' => 'project', // JSON geoloc
+                // 'item' => $this->getModel()->id,
                 'disabled' => $this->getReadonly(),
-                'item' => $this->getModel()->id,
+                'location_object' => ProjectLocation::get($project),
+                'location_class' => 'Goteo\Model\Project\ProjectLocation',
                 'required' => false,
                 'pre_addon' => '<i class="fa fa-globe"></i>',
                 'attr' => ['help' => Text::get('tooltip-project-project_location')]
