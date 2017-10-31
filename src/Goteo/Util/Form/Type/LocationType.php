@@ -37,8 +37,9 @@ class LocationType extends TextType
         $resolver->setDefault('item', null); // if type requires item-id (project, call, ...)
         $resolver->setDefault('location_object', null); // Whether to show or hide lat/lng coordinates (Has to be a LocationItem instance)
         $resolver->setDefault('location_class', 'Goteo\Model\Project\ProjectLocation'); // LocationItem implementing class
+        $resolver->setDefault('location_radius', 0); // if > 0, radius will be added as an option in the map
         $resolver->setDefault('row_class', '');
-        $resolver->setDefault('populate_fields', ['address', 'city', 'region', 'zipcode', 'country_code', 'country', 'latitude', 'longitude']);
+        $resolver->setDefault('populate_fields', ['address', 'city', 'region', 'zipcode', 'country_code', 'country', 'latitude', 'longitude', 'radius']);
         $resolver->setDefault('always_populate', 'auto'); // If false, exact location only will be executed if empty
                                                           //'auto' will behave as false if location_object is present, true otherwise
     }
@@ -52,7 +53,15 @@ class LocationType extends TextType
         if($options['location_object'] !== null) {
             $ob = $options['location_object'];
             foreach($options['populate_fields'] as $field) {
-                $builder->add($field, TextType::class, ['data' => $ob ? $ob->{$field} : '']);
+                $val = $ob ? $ob->{$field} : '';
+                if($field === 'radius') {
+                    if($options['location_radius']) {
+                        $val = max($val, 1);
+                    } else {
+                        $val = 0;
+                    }
+                }
+                $builder->add($field, TextType::class, ['data' => $val]);
             }
             // print_r($ob->getFormatted());die;
             $builder->add('formatted_address', TextType::class, ['data' => $ob ? $ob->getFormatted() : '']);
@@ -86,25 +95,39 @@ class LocationType extends TextType
     public function buildView(FormView $view, FormInterface $form, array $options)
     {
         parent::buildView($view, $form, $options);
-        if($options['type']) {
-            $view->vars['attr']['data-geocoder-type'] = $options['type'];
-        }
-        if($options['item']) {
-            $view->vars['attr']['data-geocoder-item'] = $options['item'];
-        }
-        if(empty($view->vars['attr']['class'])) {
-            $view->vars['attr']['class'] = 'form-control geo-autocomplete';
-        } elseif(strpos($view->vars['attr']['class'], 'geo-autocomplete') === false) {
-            $view->vars['attr']['class'] .= ' geo-autocomplete';
-        }
         $view->vars['row_class'] = $options['row_class'];
 
         $view->vars['always_populate'] = $options['always_populate'];
         if($options['location_object'] !== null) {
             $view->vars['populate_fields'] = $options['populate_fields'];
             $view->vars['location_object'] = $options['location_object'];
+            if($options['location_radius']) {
+                $view->vars['location_radius'] = $options['location_radius'];
+                // $view->vars['populate_fields'][] = 'radius';
+            }
         }
     }
+
+
+    /**
+     * {@inheritdoc}
+     */
+    public function finishView(FormView $view, FormInterface $form, array $options) {
+        if($options['type']) {
+            $view->children['location']->vars['attr']['data-geocoder-type'] = $options['type'];
+        }
+        if($options['item']) {
+            $view->children['location']->vars['attr']['data-geocoder-item'] = $options['item'];
+        }
+        if(empty($view->children['location']->vars['attr']['class'])) {
+            $view->children['location']->vars['attr']['class'] = 'form-control geo-autocomplete';
+        } elseif(strpos($view->children['location']->vars['attr']['class'], 'geo-autocomplete') === false) {
+            $view->children['location']->vars['attr']['class'] .= ' geo-autocomplete';
+        }
+        $view->children['location']->vars['pre_addon'] = $view->vars['pre_addon'];
+        $view->children['location']->vars['post_addon'] = $view->vars['post_addon'];
+    }
+
 
     /**
      * {@inheritdoc}
