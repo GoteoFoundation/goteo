@@ -15,6 +15,11 @@
   -moz-transform:scale(.5);
 }
 
+// Google maps autocomplete fix for modals
+.pac-container {
+  z-index: 1051 !important;
+}
+
 .autoform, .form {
 
   .form-group {
@@ -164,6 +169,14 @@
     }
   }
 
+  .map {
+    height: 450px;
+  }
+  .location_desc {
+    font-style: italic;
+    margin-left: 10px;
+    margin-right: 10px;
+  }
   .help-text {
     display: block;
     margin: 10px 5px 0 5px;

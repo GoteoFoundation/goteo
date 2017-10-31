@@ -230,6 +230,8 @@ geolocation:
     # Un comment next 2 lines if you have it installed and working:
     # maxmind:
     #    cities: /usr/share/GeoIP/GeoLite2-City.mmdb
+    google_maps_key: # Google Maps Key
+                     # Ge one here: https://developers.google.com/maps/documentation/javascript/get-api-key
 
 # Social Login Services
 # Fill an uncomment the needed one's

@@ -29,6 +29,7 @@ abstract class LocationItem extends \Goteo\Core\Model implements LocationInterfa
                  // browser = automatic provided by browser,
                  // manual    = manually provided by any method
         $locable = true, //if is or not locable
+        $location,
         $city,
         $region,
         $country,
@@ -46,7 +47,7 @@ abstract class LocationItem extends \Goteo\Core\Model implements LocationInterfa
         $this->locable = (bool) $this->locable;
         // alternative location names
         if(empty($this->city) && $this->location) $this->city = $this->location;
-        $this->name = $this->city ? ($this->region ? $this->city . ' (' .$this->region . ')' : $this->city) : ($this->region ? $this->region : $this->country);
+        $this->name = $this->getFormatted();
         $this->radius = (int) $this->radius;
     }
 
@@ -152,12 +153,23 @@ abstract class LocationItem extends \Goteo\Core\Model implements LocationInterfa
 
         try {
             $sql = "REPLACE INTO " . $this->Table . " (id, method, locable, info, city, region, country, country_code, longitude, latitude, radius) VALUES (:id, :method, :locable, :info, :city, :region, :country, :country_code, :longitude, :latitude, :radius)";
+            // die(\sqldbg($sql, $values));
             self::query($sql, $values);
         } catch(\PDOException $e) {
             $errors[] = "Error updating location for id. " . $e->getMessage();
             return false;
         }
         return true;
+    }
+
+    public function getFormatted($latlng = false) {
+        $txt = $this->city;
+        if($this->region && $this->region !== $this->city) $txt .= ', ' .$this->region;
+        if($this->country) $txt .= ', ' .$this->country;
+        if($latlng) {
+            $txt .= ' (' . \euro_format($this->latitude, 2) . 'º / ' . \euro_format($this->longitude, 2) . 'º)';
+        }
+        return $txt;
     }
 
     /**
