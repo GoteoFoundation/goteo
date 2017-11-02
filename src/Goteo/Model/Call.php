@@ -940,6 +940,7 @@ namespace Goteo\Model {
          * Lista de convocatorias de un usuario
          */
         public static function ofmine($owner, $published = false) {
+            if($owner instanceOf User) $owner = $owner->id;
             $calls = array();
 
             $sql = "SELECT * FROM `call` WHERE owner = ?";
