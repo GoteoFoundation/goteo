@@ -254,6 +254,20 @@ $(function(){
     });
     $('.autoform input.online-video').each(_addVideo);
 
+    // HTML editors
+    $('.autoform .summernote > textarea').summernote({
+        toolbar: [
+        ['tag', ['style']],
+        ['style', ['bold', 'italic', 'underline', 'clear']],
+        ['font', ['strikethrough', 'superscript', 'subscript']],
+        // ['fontsize', ['fontsize']],
+        ['color', ['color']],
+        ['para', ['ul', 'ol', 'paragraph']],
+        // ['height', ['height']],
+        ['insert', ['link', 'picture', 'video', 'hr', 'table']],
+        ['misc', ['fullscreen', 'codeview', 'help']]
+      ]
+    });
 
     // MarkdownType initialization
     var markdowns = form.markdowns = {};

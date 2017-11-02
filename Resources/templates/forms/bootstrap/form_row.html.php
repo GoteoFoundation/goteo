@@ -17,8 +17,8 @@ $label_view = $label_position === 'none' ? '' : $view['form']->label($form);
 
     <?= $view['form']->errors($form) ?>
 
-  <?php if($type === 'markdown'): ?>
-      <div class="markdown">
+  <?php if(in_array($type, ['markdown', 'summernote'])): ?>
+      <div class="<?= $type ?>">
   <?php endif ?>
 
     <?= $view['form']->widget($form) ?>
@@ -39,7 +39,7 @@ $label_view = $label_position === 'none' ? '' : $view['form']->label($form);
         <div class="help-text"><?= $attr['help'] ?></div>
     <?php endif ?>
 
-  <?php if($type === 'markdown'): ?>
+  <?php if(in_array($type, ['markdown', 'summernote'])): ?>
       </div>
   <?php endif ?>
 
