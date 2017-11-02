@@ -391,24 +391,24 @@ $dash->add('dashboard-old-projects', new Route(
     )
 ));
 
-// $dash->add('dashboard-old-translate', new Route(
-//     '/translates/{zone}/{action}',
-//     array('_controller' => function ($zone = null, $action = null) {
-//         $project = $_SESSION['translate_project'];
-//         $call = $_SESSION['translate_call'];
-//         $node = $_SESSION['translate_node'];
-//         $type = $_SESSION['translate_type'];
-//         if(empty($type)) $type = $zone;
-//         // print_r($project);die("[$type]");
-//         if($type === 'project' && is_object($project)) {
-//             return new RedirectResponse("/dashboard/project/" . $project->id . '/translate');
-//         }
-//         // TODO: calls & nodes
-//         return new RedirectResponse("/dashboard/settings/profile");
-//     },
-//     'zone' => null,
-//     'action' => null,
-//     )
-// ));
+$dash->add('dashboard-old-translate', new Route(
+    '/translates/{zone}/{action}',
+    array('_controller' => function ($zone = null, $action = null) {
+        $project = $_SESSION['translate_project'];
+        $call = $_SESSION['translate_call'];
+        $node = $_SESSION['translate_node'];
+        $type = $_SESSION['translate_type'];
+        if(empty($type)) $type = $zone;
+        // print_r($project);die("[$type]");
+        if($type === 'project' && is_object($project)) {
+            return new RedirectResponse("/dashboard/project/" . $project->id . '/translate');
+        }
+        // TODO: calls & nodes
+        return new RedirectResponse("/dashboard/settings/profile");
+    },
+    'zone' => null,
+    'action' => null,
+    )
+));
 
 return $dash;
