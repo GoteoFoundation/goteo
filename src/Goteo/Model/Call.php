@@ -13,6 +13,15 @@ namespace Goteo\Model {
 
     class Call extends \Goteo\Core\Model {
 
+        // CALL STATUS IDs
+        const STATUS_EDITING     = 1;  // edicion
+        const STATUS_REVIEWING   = 2; // en revisión
+        const STATUS_APPLYING    = 3; // en campaña de inscripción
+        const STATUS_PUBLISHED   = 4; // en campaña de repartir dinero
+        const STATUS_SUCCEEDED   = 5; // se acabo el dinero
+        const STATUS_EXPIRED     = 6; // la hemos cancelado
+
+
         public
         $id = null,
         $owner, // User who created it
@@ -93,35 +102,6 @@ namespace Goteo\Model {
         // Facebook pixel for facebook ads
         $facebook_pixel
         ;
-
-        /**
-         * Sobrecarga de métodos 'getter'.
-         *
-         * @param type string $name
-         * @return type mixed
-
-         *
-         * Estos campos han sido optimizados con Campos Calculados
-         *
-        public function __get($name) {
-            switch ($name) {
-                case "rest":
-                    return $this->getRest();
-                    break;
-                case "used":
-                    return $this->getRest(true);
-                    break;
-                case "applied":
-                    // número de proyectos presentados a la campaña
-                    $applied = $this->getConf('applied');
-                    return (isset($applied)) ? $applied : $this->getApplied();
-                    break;
-
-                default:
-                    return $this->$name;
-            }
-        }
-         */
 
         /**
          * Inserta un convocatoria con los datos mínimos
@@ -420,6 +400,49 @@ namespace Goteo\Model {
             } catch (\PDOException $e) {
                 throw \Goteo\Core\Exception($e->getMessage());
             }
+        }
+
+
+        /**
+         * Handy method to know if call can be edited
+         */
+        public function inEdition() {
+            return $this->status < self::STATUS_REVIEWING;
+        }
+
+        /**
+         * Handy method to know if call is in review status
+         */
+        public function inReview() {
+            return $this->status == self::STATUS_REVIEWING;
+        }
+
+        /**
+         * Handy method to know if call is applying
+         */
+        public function inApply() {
+            return $this->status == self::STATUS_APPLYING;
+        }
+
+        /**
+         * Check if the project is editable by the user id
+         * @param  Goteo\Model\User $user  the user to check
+         * @return boolean          true if success, false otherwise
+         */
+        public function userCanEdit($user = null, $check_status = false) {
+
+            if(empty($user)) return false;
+            if(!$user instanceOf User) return false;
+            // owns the project
+            if($this->owner === $user->id) {
+                if($check_status) {
+                    return $this->inEdition();
+                }
+                return true;
+            }
+            // is superadmin in the project node
+            if($user->hasRoleInNode($this->node, ['manager', 'superadmin', 'root'])) return true;
+            return false;
         }
 
         /*
