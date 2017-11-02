@@ -256,17 +256,28 @@ $(function(){
 
     // HTML editors
     $('.autoform .summernote > textarea').summernote({
+        height: 300,
         toolbar: [
-        ['tag', ['style']],
-        ['style', ['bold', 'italic', 'underline', 'clear']],
-        ['font', ['strikethrough', 'superscript', 'subscript']],
-        // ['fontsize', ['fontsize']],
-        ['color', ['color']],
-        ['para', ['ul', 'ol', 'paragraph']],
-        // ['height', ['height']],
-        ['insert', ['link', 'picture', 'video', 'hr', 'table']],
-        ['misc', ['fullscreen', 'codeview', 'help']]
-      ]
+            ['tag', ['style']],
+            ['style', ['bold', 'italic', 'underline', 'clear']],
+            // ['font', ['strikethrough', 'superscript', 'subscript']],
+            // ['fontsize', ['fontsize']],
+            ['color', ['color']],
+            ['para', ['ul', 'ol', 'paragraph']],
+            // ['height', ['height']],
+            ['insert', ['link', 'picture', 'video', 'hr', 'table']],
+            ['misc', ['fullscreen', 'codeview', 'help']]
+          ],
+        callbacks: {
+            onFocus: function() {
+              console.log('Editable area is focused');
+              $(this).closest('.summernote').addClass('focused');
+            },
+            onBlur: function() {
+              console.log('Editable area loses focus');
+              $(this).closest('.summernote').removeClass('focused');
+            }
+        }
     });
 
     // MarkdownType initialization
