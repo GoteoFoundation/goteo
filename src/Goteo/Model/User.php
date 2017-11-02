@@ -108,6 +108,11 @@ class User extends \Goteo\Core\Model {
         return $this->$name;
     }
 
+
+    public static function getLangFields() {
+        return ['name', 'about'];
+    }
+
     /**
      * Guardar usuario.
      * Guarda los valores de la instancia del usuario en la tabla.

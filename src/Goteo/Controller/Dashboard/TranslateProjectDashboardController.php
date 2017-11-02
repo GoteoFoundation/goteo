@@ -86,6 +86,7 @@ class TranslateProjectDashboardController extends \Goteo\Controller\Dashboard\Pr
     public function createFormBuilder($defaults = null, $name = 'autoform', array $options = ['attr' => ['class' => 'autoform hide-help']]) {
         return parent::createFormBuilder($defaults, $name, $options);
     }
+
     /**
      * Handy method to get a form builder
      * @return Goteo\Library\Forms\FormProcessorInterface
