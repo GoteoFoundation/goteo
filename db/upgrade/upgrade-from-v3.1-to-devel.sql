@@ -114,6 +114,8 @@ ALTER TABLE `call` ADD COLUMN `facebook_pixel` varchar(20)  COLLATE utf8_general
 DELETE FROM user_interest WHERE `user` NOT IN (SELECT id FROM `user`);
 ALTER TABLE `user_interest` CHANGE `interest` `interest` INT(10) UNSIGNED NOT NULL, ADD FOREIGN KEY (`user`) REFERENCES `user`(`id`) ON UPDATE CASCADE ON DELETE CASCADE, ADD FOREIGN KEY (`interest`) REFERENCES `category`(`id`) ON UPDATE CASCADE ON DELETE CASCADE;
 
+-- Sphere order
+ALTER TABLE `call_sphere` ADD `order` SMALLINT UNSIGNED NOT NULL DEFAULT '1' AFTER `sphere`;
 
 -- call constrains
 ALTER TABLE `call` ADD FOREIGN KEY (`owner`) REFERENCES `user`(`id`) ON UPDATE CASCADE;
