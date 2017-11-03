@@ -333,7 +333,7 @@ class ProjectDashboardController extends \Goteo\Core\Controller {
             $images[$sec] = ProjectImage::get($project->id, $sec);
         }
 
-        $editable = $project->inEdition() || $project->isAlive();
+        $editable = $this->admin || $project->inEdition() || $project->isAlive();
         return $this->viewResponse('dashboard/project/images' . ($editable ? '' : '_idle'), [
             'zones' => $zones,
             'images' => $images,

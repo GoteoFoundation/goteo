@@ -19,17 +19,17 @@
 
     // Forms process
     $(function(){
-        $('.autoform .help-text').attr('data-desc', '<?= $this->ee($this->text('translator-original-text'), 'js') ?>: ');
-        $('.autoform .help-text').wrapInner('<span></span>').prepend('<i class="fa fa-clipboard"></i> ');
+        $('.autoform.hide-help .help-text').attr('data-desc', '<?= $this->ee($this->text('translator-original-text'), 'js') ?>: ');
+        $('.autoform.hide-help .help-text').wrapInner('<span></span>').prepend('<i class="fa fa-clipboard"></i> ');
 
         var clipboard = new Clipboard('.autoform .help-text .fa-clipboard', {
             text: function(trigger) {
                 return $(trigger).next('span').html();
             }
         });
-        console.log(clipboard);
+
         clipboard.on('success', function(e){
-            console.log('success', e.action, e.trigger, e.text);
+            // console.log('success', e.action, e.trigger, e.text);
             $(e.trigger).tooltip({
                 title: '<?= $this->ee($this->text('regular-copied'), 'js') ?>',
                 trigger: 'manual'
