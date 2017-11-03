@@ -141,7 +141,7 @@
 
                 <!-- carousel slider -->
 
-                <div id="infoCarousel" class="carousel slide spacer-20" data-ride="carousel">
+                <div id="infoCarousel" class="carousel slide spacer-20" data-ride="carousel" data-interval="false">
 
                  <!-- Indicators -->
                   <ol class="carousel-indicators">

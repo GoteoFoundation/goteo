@@ -10,7 +10,7 @@
         background-color: $background-sidebar;
     }
 
-    li {
+    .sidebar-nav li {
       padding: 0 15px;
       background-color: $background-sidebar;
       &.ok::after{
@@ -183,6 +183,13 @@
                 color:$color-white;
                 a {
                     color:$color-white;
+                }
+                ul.dropdown-menu {
+                    color:$primary-color;
+                    a {
+                        color:$primary-color;
+                    }
+
                 }
                 .error {
                     margin: 5px 0;
