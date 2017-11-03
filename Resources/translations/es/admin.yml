@@ -77,3 +77,10 @@ admin-user: Usuario
 admin-users: Usuarios
 admin-yes: Si
 admin-impersonate-user: Suplantar a %s
+admin-project-express-discard: 'Rechazo express'
+admin-project-express-discard-desc: 'Pasa el proyecto a estado Descartado y manda un mail'
+admin-project-express-discard-sure: 'Se va a enviar un mail automáticamente y pasará a estado descartado, ok?'
+admin-project-to-review: 'A revisión'
+admin-project-to-review-desc: 'Pasa el proyecto al estado Pendiente de valoración'
+admin-project-to-review-sure: 'El creador no podrá editarlo más, ok?'
+admin-project-view-in-admin: 'Ver en el admin'

@@ -154,7 +154,7 @@ foreach ($filters as $key=>$value) {
                         $add[] = "Fecha publicación estimada: <strong>{$date_publishing}</strong>";
                     }
 
-                    
+
                     if ($project->getConsultants()) {
                         $consultants = array();
                         foreach($project->getConsultants() as $id => $name) {
@@ -171,7 +171,7 @@ foreach ($filters as $key=>$value) {
                     if ($project->project_location) {
                         $add[] = "<strong>{$project->project_location}</strong>";
                     }
-                    
+
                     echo implode(' | ', $add);
                 ?></td>
             </tr>
@@ -221,7 +221,7 @@ foreach ($filters as $key=>$value) {
                 <td colspan="7">
                     ACCIONES:&nbsp;
                     <?php if ($project->status == 0) : ?><a href="<?php echo "/admin/projects/enable/{$project->id}" ?>" title="Pasa el proyecto al estado Editándose">[Reabrir edición]</a><?php endif ?>
-                    <?php if ($project->status < 2) : ?><a href="<?php echo "/admin/projects/review/{$project->id}" ?>" title="Pasa el proyecto al estado Pendiente de valoración" onclick="return confirm('El creador no podrá editarlo más, ok?');">[A revisión]</a><?php endif ?>
+                    <?php if ($project->inEdition()): ?><a href="<?php echo "/admin/projects/review/{$project->id}" ?>" title="<?= $this->text('admin-project-to-review-desc') ?>" onclick="return confirm('<?= $this->ee($this->text('admin-project-to-review-sure'), 'js') ?>');">[<?= $this->text('admin-project-to-review') ?>]</a><?php endif ?>
                     <?php if ($project->status < 3 && $project->status > 0) : ?><a href="<?php echo "/admin/projects/publish/{$project->id}" ?>" title="Pasa el proyecto al estado En campaña" onclick="return confirm('El proyecto va a comenzar su campaña, ¿comenzamos?');">[Publicar]</a><?php endif ?>
                     <?php if ($project->status > 1 && $project->status < 4) : ?><a href="<?php echo "/admin/projects/enable/{$project->id}" ?>" title="Pasa el proyecto al estado Editándose" <?php if ($project->status == 3) : ?>onclick="return confirm('ALERTA!! El proyecto esta en campaña! Con esto lo vamos a despublicar ¿Ok?');"<?php endif ?>>[A negociación]</a><?php endif ?>
                     <?php if ($project->status == 4) : ?><a href="<?php echo "/admin/projects/fulfill/{$project->id}" ?>" title="Pasa el proyecto al estado Retorno cumplido" onclick="return confirm('El proyecto pasara a ser un caso de éxito, ok?');">[Retorno Cumplido]</a><?php endif ?>
@@ -235,7 +235,7 @@ foreach ($filters as $key=>$value) {
                     <?php } else { ?>
                         <a href="<?php echo "/admin/projects/watch/{$project->id}" ?>" title="Los asesores recibirán copia de las notificaciones automáticas al impulsor">[Vigilar]</a>
                     <?php } ?>
-                    <?php if ($project->status < 3) : ?><a href="<?php echo "/admin/projects/reject/{$project->id}" ?>" title="Pasa el proyecto a estado Descartado y manda un mail" onclick="return confirm('Se va a enviar un mail automáticamente y pasará a estado descartado, ok?');">[Rechazo express]</a><?php endif ?>
+                    <?php if (!$project->isApproved()) : ?><a href="<?php echo "/admin/projects/reject/{$project->id}" ?>" title="<?= $this->text('admin-project-express-discard-desc') ?>" onclick="return confirm('<?= $this->ee($this->text('admin-project-express-discard-sure'),'js') ?>');">[<?= $this->text('admin-project-express-discard') ?>]</a><?php endif ?>
                 </td>
               </tr>
             <?php endif ?>
