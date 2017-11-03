@@ -41,6 +41,8 @@ class ChannelController extends \Goteo\Core\Controller {
     {
         $channel = Node::get($id);
 
+        View::setTheme('responsive');
+
         //Check if the user can access to the channel
         $user = Session::getUser();
 
