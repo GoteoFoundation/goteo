@@ -452,7 +452,7 @@ class Call extends \Goteo\Core\Model {
             return true;
         }
         // is superadmin in the project node
-        if($user->hasRoleInNode($this->node, ['manager', 'superadmin', 'root'])) return true;
+        if($user->hasRoleInNode(Config::get('current_node'), ['manager', 'superadmin', 'root'])) return true;
         return false;
     }
 
@@ -465,14 +465,13 @@ class Call extends \Goteo\Core\Model {
 
         $query = static::query("
             SELECT
-                call.id as id,
-                call.name as name
+                `call`.*
             FROM `call`
-            ORDER BY call.name ASC
+            ORDER BY call.opened DESC
             ");
 
-        foreach ($query->fetchAll(\PDO::FETCH_CLASS) as $item) {
-            $list[$item->id] = $item->name;
+        foreach ($query->fetchAll(\PDO::FETCH_CLASS, __CLASS__) as $item) {
+            $list[$item->id] = $item;
         }
 
         return $list;
