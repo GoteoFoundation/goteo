@@ -303,6 +303,9 @@
 
   // With this class, help text are hidden are shown on focus
   &.hide-help {
+    .help-text .fa-clipboard {
+        cursor: pointer;
+    }
     .help-text[data-desc] {
       height: $font-size + 4;
       overflow: hidden;

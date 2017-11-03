@@ -30,6 +30,7 @@
     "dropzone": "enyo/dropzone#^5.1.1",
     "bootstrap-tagsinput": "tagsinput#^0.8.0",
     "typeahead.js": "^0.11.1",
-    "summernote": "^0.8.8"
+    "summernote": "^0.8.8",
+    "clipboard": "^1.7.1"
   }
 }

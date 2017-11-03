@@ -334,7 +334,7 @@ class Call extends \Goteo\Core\Model {
             $call->sponsors = Call\Sponsor::getList($id);
             $call->sponsors_main = Call\Sponsor::getList($id,'main');
             $call->sponsors_collaborator = Call\Sponsor::getList($id, 'collaborator');
-            $call->banners  = Call\Banner::getList($id, $lang);
+            $call->banners  = Call\Banner::getList($id, $lang, $call->lang);
 
             //$call->logo = Image::get($call->logo);
 
@@ -414,6 +414,12 @@ class Call extends \Goteo\Core\Model {
         return $this->userInstance;
     }
 
+    public function getBanners($lang = null) {
+        if($this->banners) return $this->banners;
+        $this->banners = Call\Banner::getList($this->id, $lang, $this->lang);;
+        return $this->banners;
+    }
+
     /**
      * Handy method to know if call can be edited
      */
@@ -452,7 +458,7 @@ class Call extends \Goteo\Core\Model {
             return true;
         }
         // is superadmin in the project node
-        if($user->hasRoleInNode($this->node, ['manager', 'superadmin', 'root'])) return true;
+        if($user->hasRoleInNode(Config::get('current_node'), ['manager', 'superadmin', 'root'])) return true;
         return false;
     }
 
@@ -465,14 +471,13 @@ class Call extends \Goteo\Core\Model {
 
         $query = static::query("
             SELECT
-                call.id as id,
-                call.name as name
+                `call`.*
             FROM `call`
-            ORDER BY call.name ASC
+            ORDER BY call.opened DESC
             ");
 
-        foreach ($query->fetchAll(\PDO::FETCH_CLASS) as $item) {
-            $list[$item->id] = $item->name;
+        foreach ($query->fetchAll(\PDO::FETCH_CLASS, __CLASS__) as $item) {
+            $list[$item->id] = $item;
         }
 
         return $list;
