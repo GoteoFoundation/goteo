@@ -14,6 +14,7 @@ use Foil\Contracts\ExtensionInterface;
 
 use Goteo\Library\Text;
 use Goteo\Application\App;
+use Goteo\Model\Image;
 
 class TextUtils implements ExtensionInterface
 {
@@ -42,7 +43,8 @@ class TextUtils implements ExtensionInterface
           'percent_span' => [$this, 'percent_span'],
           'percent_badge' => [$this, 'percent_badge'],
           'sanitize' => [$this, 'sanitize'],
-          'markdown' => [$this, 'markdown']
+          'markdown' => [$this, 'markdown'],
+          'image_src' => [$this, 'image_src']
         ];
     }
 
@@ -104,5 +106,15 @@ class TextUtils implements ExtensionInterface
     public function markdown($text = '')
     {
         return App::getService('app.md.parser')->text($text);
+    }
+
+    public function image_src($img, $w, $h, $ops = []) {
+      if(!$img instanceof Image) {
+        $img = new Image($img);
+      }
+
+      $src = $img->getLink($w, $h);
+
+      return $src;
     }
 }
