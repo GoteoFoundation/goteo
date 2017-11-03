@@ -334,7 +334,7 @@ class Call extends \Goteo\Core\Model {
             $call->sponsors = Call\Sponsor::getList($id);
             $call->sponsors_main = Call\Sponsor::getList($id,'main');
             $call->sponsors_collaborator = Call\Sponsor::getList($id, 'collaborator');
-            $call->banners  = Call\Banner::getList($id, $lang);
+            $call->banners  = Call\Banner::getList($id, $lang, $call->lang);
 
             //$call->logo = Image::get($call->logo);
 
@@ -412,6 +412,12 @@ class Call extends \Goteo\Core\Model {
         if($this->userInstance) return $this->userInstance;
         $this->userInstance = User::get($this->owner);
         return $this->userInstance;
+    }
+
+    public function getBanners($lang = null) {
+        if($this->banners) return $this->banners;
+        $this->banners = Call\Banner::getList($this->id, $lang, $this->lang);;
+        return $this->banners;
     }
 
     /**

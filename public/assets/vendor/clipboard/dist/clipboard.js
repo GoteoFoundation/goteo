@@ -1,33 +1,5 @@
-/*
-@licstart  The following is the entire license notice for the
-JavaScript code in this page.
-
-Copyright (c) 1998, 1999, 2000 Thai Open Source Software Center Ltd
-
-Permission is hereby granted, free of charge, to any person obtaining
-a copy of this software and associated documentation files (the
-"Software"), to deal in the Software without restriction, including
-without limitation the rights to use, copy, modify, merge, publish,
-distribute, sublicense, and/or sell copies of the Software, and to
-permit persons to whom the Software is furnished to do so, subject to
-the following conditions:
-
-The above copyright notice and this permission notice shall be included
-in all copies or substantial portions of the Software.
-
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
-EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
-MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
-IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY
-CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,
-TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
-SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
-
-@licend  The above is the entire license notice
-for the JavaScript code in this page.
-*/
 /*!
- * clipboard.js v1.5.16
+ * clipboard.js v1.7.1
  * https://zenorocha.github.io/clipboard.js
  *
  * Licensed MIT © Zeno Rocha
@@ -38,7 +10,7 @@ var DOCUMENT_NODE_TYPE = 9;
 /**
  * A polyfill for Element.matches()
  */
-if (Element && !Element.prototype.matches) {
+if (typeof Element !== 'undefined' && !Element.prototype.matches) {
     var proto = Element.prototype;
 
     proto.matches = proto.matchesSelector ||
@@ -57,7 +29,10 @@ if (Element && !Element.prototype.matches) {
  */
 function closest (element, selector) {
     while (element && element.nodeType !== DOCUMENT_NODE_TYPE) {
-        if (element.matches(selector)) return element;
+        if (typeof element.matches === 'function' &&
+            element.matches(selector)) {
+          return element;
+        }
         element = element.parentNode;
     }
 }
@@ -268,8 +243,18 @@ function select(element) {
         selectedText = element.value;
     }
     else if (element.nodeName === 'INPUT' || element.nodeName === 'TEXTAREA') {
-        element.focus();
+        var isReadOnly = element.hasAttribute('readonly');
+
+        if (!isReadOnly) {
+            element.setAttribute('readonly', '');
+        }
+
+        element.select();
         element.setSelectionRange(0, element.value.length);
+
+        if (!isReadOnly) {
+            element.removeAttribute('readonly');
+        }
 
         selectedText = element.value;
     }
@@ -438,6 +423,7 @@ module.exports = E;
                 var options = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
 
                 this.action = options.action;
+                this.container = options.container;
                 this.emitter = options.emitter;
                 this.target = options.target;
                 this.text = options.text;
@@ -466,7 +452,7 @@ module.exports = E;
                 this.fakeHandlerCallback = function () {
                     return _this.removeFake();
                 };
-                this.fakeHandler = document.body.addEventListener('click', this.fakeHandlerCallback) || true;
+                this.fakeHandler = this.container.addEventListener('click', this.fakeHandlerCallback) || true;
 
                 this.fakeElem = document.createElement('textarea');
                 // Prevent zooming on iOS
@@ -480,13 +466,12 @@ module.exports = E;
                 this.fakeElem.style[isRTL ? 'right' : 'left'] = '-9999px';
                 // Move element to the same position vertically
                 var yPosition = window.pageYOffset || document.documentElement.scrollTop;
-                this.fakeElem.addEventListener('focus', window.scrollTo(0, yPosition));
                 this.fakeElem.style.top = yPosition + 'px';
 
                 this.fakeElem.setAttribute('readonly', '');
                 this.fakeElem.value = this.text;
 
-                document.body.appendChild(this.fakeElem);
+                this.container.appendChild(this.fakeElem);
 
                 this.selectedText = (0, _select2.default)(this.fakeElem);
                 this.copyText();
@@ -495,13 +480,13 @@ module.exports = E;
             key: 'removeFake',
             value: function removeFake() {
                 if (this.fakeHandler) {
-                    document.body.removeEventListener('click', this.fakeHandlerCallback);
+                    this.container.removeEventListener('click', this.fakeHandlerCallback);
                     this.fakeHandler = null;
                     this.fakeHandlerCallback = null;
                 }
 
                 if (this.fakeElem) {
-                    document.body.removeChild(this.fakeElem);
+                    this.container.removeChild(this.fakeElem);
                     this.fakeElem = null;
                 }
             }
@@ -537,8 +522,8 @@ module.exports = E;
         }, {
             key: 'clearSelection',
             value: function clearSelection() {
-                if (this.target) {
-                    this.target.blur();
+                if (this.trigger) {
+                    this.trigger.focus();
                 }
 
                 window.getSelection().removeAllRanges();
@@ -620,6 +605,12 @@ module.exports = E;
         };
     }
 
+    var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) {
+        return typeof obj;
+    } : function (obj) {
+        return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj;
+    };
+
     function _classCallCheck(instance, Constructor) {
         if (!(instance instanceof Constructor)) {
             throw new TypeError("Cannot call a class as a function");
@@ -700,6 +691,7 @@ module.exports = E;
                 this.action = typeof options.action === 'function' ? options.action : this.defaultAction;
                 this.target = typeof options.target === 'function' ? options.target : this.defaultTarget;
                 this.text = typeof options.text === 'function' ? options.text : this.defaultText;
+                this.container = _typeof(options.container) === 'object' ? options.container : document.body;
             }
         }, {
             key: 'listenClick',
@@ -723,6 +715,7 @@ module.exports = E;
                     action: this.action(trigger),
                     target: this.target(trigger),
                     text: this.text(trigger),
+                    container: this.container,
                     trigger: trigger,
                     emitter: this
                 });
@@ -755,6 +748,20 @@ module.exports = E;
                     this.clipboardAction.destroy();
                     this.clipboardAction = null;
                 }
+            }
+        }], [{
+            key: 'isSupported',
+            value: function isSupported() {
+                var action = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : ['copy', 'cut'];
+
+                var actions = typeof action === 'string' ? [action] : action;
+                var support = !!document.queryCommandSupported;
+
+                actions.forEach(function (action) {
+                    support = support && !!document.queryCommandSupported(action);
+                });
+
+                return support;
             }
         }]);
 
