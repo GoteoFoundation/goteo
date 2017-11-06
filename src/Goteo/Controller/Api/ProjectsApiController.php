@@ -229,19 +229,27 @@ class ProjectsApiController extends AbstractApiController {
         return $this->jsonResponse($properties[$prop]);
     }
 
+    private function validateProject($pid) {
+        $prj = Project::get($pid);
+
+        if(!$prj->userCanEdit($this->user)) {
+            throw new ControllerAccessDeniedException();
+        }
+
+        $this->admin = $prj->userCanModerate($this->user);
+
+        if($this->admin || $prj->inEdition() || $prj->isAlive()) {
+            return $prj;
+        }
+
+        throw new ControllerAccessDeniedException(Text::get('dashboard-project-not-alive-yet'));
+    }
+
     /**
      * AJAX upload image (Generic uploader with optional project gallery updater)
      */
     public function projectUploadImagesAction($id, Request $request) {
-        $prj = Project::get($id);
-
-        // Security, first of all...
-        if(!$prj->userCanEdit($this->user)) {
-            throw new ControllerAccessDeniedException();
-        }
-        if(!$prj->inEdition() && !$prj->isAlive()) {
-            throw new ControllerAccessDeniedException(Text::get('dashboard-project-not-alive-yet'));
-        }
+        $prj = $this->validateProject($id);
 
         $files = $request->files->get('file');
         if(!is_array($files)) $files = [$files];
@@ -312,15 +320,7 @@ class ProjectsApiController extends AbstractApiController {
     }
 
     public function projectDeleteImagesAction($id, $image, Request $request) {
-        $prj = Project::get($id);
-
-        // Security, first of all...
-        if(!$prj->userCanEdit($this->user)) {
-            throw new ControllerAccessDeniedException();
-        }
-        if(!$prj->inEdition() && !$prj->isAlive()) {
-            throw new ControllerAccessDeniedException(Text::get('dashboard-project-not-alive-yet'));
-        }
+        $prj = $this->validateProject($id);
 
         $vars = array(':project' => $prj->id, ':image' => $image);
         Project::query("DELETE FROM project_image WHERE project = :project AND image = :image", $vars);
@@ -334,15 +334,7 @@ class ProjectsApiController extends AbstractApiController {
     }
 
     public function projectDefaultImagesAction($id, $image, Request $request) {
-        $prj = Project::get($id);
-
-        // Security, first of all...
-        if(!$prj->userCanEdit($this->user)) {
-            throw new ControllerAccessDeniedException();
-        }
-        if(!$prj->inEdition() && !$prj->isAlive()) {
-            throw new ControllerAccessDeniedException(Text::get('dashboard-project-not-alive-yet'));
-        }
+        $prj = $this->validateProject($id);
 
         $success = false;
         $msg = Text::get('dashboard-project-image-default-ko');
@@ -368,15 +360,7 @@ class ProjectsApiController extends AbstractApiController {
     public function projectReorderImagesAction($id, Request $request) {
         $gallery = $request->request->get('gallery');
 
-        $prj = Project::get($id);
-
-        // Security, first of all...
-        if(!$prj->userCanEdit($this->user)) {
-            throw new ControllerAccessDeniedException();
-        }
-        if(!$prj->inEdition() && !$prj->isAlive()) {
-            throw new ControllerAccessDeniedException(Text::get('dashboard-project-not-alive-yet'));
-        }
+        $prj = $this->validateProject($id);
 
         $success = false;
         $result = [];
