@@ -137,3 +137,8 @@ ALTER TABLE `call_sponsor` ADD FOREIGN KEY (`call`) REFERENCES `call`(`id`) ON U
 ALTER TABLE `campaign` ADD FOREIGN KEY (`call`) REFERENCES `call`(`id`) ON UPDATE CASCADE ON DELETE CASCADE;
 
 ALTER TABLE `category_lang` CHANGE `id` `id` INT(10) UNSIGNED NOT NULL, ADD FOREIGN KEY (`id`) REFERENCES `category`(`id`) ON UPDATE CASCADE ON DELETE CASCADE;
+
+-- project milestones constrains
+DELETE FROM project_milestone WHERE post NOT IN (SELECT id FROM post);
+DELETE FROM project_milestone WHERE project NOT IN (SELECT id FROM project);
+ALTER TABLE `project_milestone` CHANGE `milestone` `milestone` BIGINT(20) UNSIGNED NULL, CHANGE `post` `post` BIGINT(20) UNSIGNED NULL, ADD FOREIGN KEY (`project`) REFERENCES `project`(`id`) ON UPDATE CASCADE ON DELETE CASCADE, ADD FOREIGN KEY (`milestone`) REFERENCES `milestone`(`id`) ON UPDATE CASCADE ON DELETE CASCADE, ADD FOREIGN KEY (`post`) REFERENCES `post`(`id`) ON UPDATE CASCADE ON DELETE CASCADE;
