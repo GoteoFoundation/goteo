@@ -142,16 +142,16 @@
   }
 
   .dropdown-menu {
-    a:focus, a:hover {
+    a:focus, a:hover, button:focus, button:hover {
       background-color: $background-light;
     }
     > .active {
-      > a {
+      > a, >button {
         background-color: $color-cyan;
       }
     }
     > .available {
-      > a {
+      > a, >button {
         font-weight: bold;
         text-decoration: underline;
       }
