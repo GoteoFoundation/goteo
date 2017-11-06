@@ -177,8 +177,8 @@ class ProjectsApiController extends AbstractApiController {
         if(!$prj->userCanEdit($this->user)) {
             throw new ControllerAccessDeniedException();
         }
-        if(!$prj->isAlive()) {
-            throw new ControllerAccessDeniedException(Text::get('dashboard-project-not-alive-yet'));
+        if(!$prj->isApproved()) {
+            throw new ControllerAccessDeniedException(Text::get('dashboard-project-blog-wrongstatus'));
         }
 
         if(!$post) throw new ModelNotFoundException();
