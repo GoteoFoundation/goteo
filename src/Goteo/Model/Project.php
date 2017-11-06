@@ -918,6 +918,36 @@ namespace Goteo\Model {
             return $this->status == self::STATUS_FULFILLED;
         }
 
+
+        /*
+         * Checks if the project has reached the minimum amount (without status checking)
+         * @return: boolean
+         */
+        public function isSuccessful() {
+            $sql = "SELECT
+                            id,
+                            (SELECT  SUM(amount)
+                            FROM    cost
+                            WHERE   project = project.id
+                            AND     required = 1
+                            ) as `mincost`,
+                            (SELECT  SUM(amount)
+                            FROM    invest
+                            WHERE   project = project.id
+                            AND     invest.status IN ('0', '1', '3', '4')
+                            ) as `getamount`
+                    FROM project
+                    WHERE project.id = :id
+                    HAVING getamount >= mincost
+                    LIMIT 1
+                    ";
+
+            $values = [':id' => $this->id];
+            $query = self::query($sql, $values);
+            return ($query->fetchColumn() == $this->id);
+        }
+
+
         /*
          *  Cargamos los datos mínimos de un proyecto: id, name, owner, comment, lang, status, user
          */
@@ -3751,34 +3781,6 @@ namespace Goteo\Model {
                 }
             }
             return $costs;
-        }
-
-
-        /*
-         * Para saber si ha conseguido el mínimo
-         * @return: boolean
-         */
-        public static function isSuccessful($id) {
-            $sql = "SELECT
-                            id,
-                            (SELECT  SUM(amount)
-                            FROM    cost
-                            WHERE   project = project.id
-                            AND     required = 1
-                            ) as `mincost`,
-                            (SELECT  SUM(amount)
-                            FROM    invest
-                            WHERE   project = project.id
-                            AND     invest.status IN ('0', '1', '3', '4')
-                            ) as `getamount`
-                    FROM project
-                    WHERE project.id = ?
-                    HAVING getamount >= mincost
-                    LIMIT 1
-                    ";
-
-            $query = self::query($sql, array($id));
-            return ($query->fetchColumn() == $id);
         }
 
         /*
