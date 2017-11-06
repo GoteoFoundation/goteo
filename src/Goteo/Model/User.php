@@ -1429,9 +1429,9 @@ class User extends \Goteo\Core\Model {
                 $non_administrable_roles = ['superadmin', 'root'];
             }
 
-            // echo "<br>[$node => $role] againts [$to_node $to_role]";
+            // echo "<br>[role '$role' in '$node'] againts [role '$to_role' in '$to_node']";
             if (($node === $to_node || $node === '') && !in_array($to_role, $non_administrable_roles)) {
-                // echo " OK [$to_role $to_node]\n";
+                // echo " OK [role '$to_role' in '$to_node']\n";
                 return true;
             }
         }
