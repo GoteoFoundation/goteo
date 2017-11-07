@@ -30,6 +30,8 @@ class Matcher extends \Goteo\Core\Model {
            $created,
            $modified_at;
 
+    public static $statuses = ['pending', 'accepted', 'active', 'rejected'];
+
     public function __construct() {
         $args = func_get_args();
         call_user_func_array(array('parent', '__construct'), $args);
@@ -45,9 +47,27 @@ class Matcher extends \Goteo\Core\Model {
             if( $matcher = $query->fetchObject(__CLASS__) )
                 return $matcher;
         }
-        throw new ModelNotFoundException("Matcher [$id] not found");
+        return null;
     }
 
+    /**
+     * Get an instance of a Matcher by one of the projects involved
+     * @param  [type] $pid Project or id
+     */
+    static public function getFromProject($pid, $valid_only = true) {
+        if($pid instanceOf Project) $pid = $pid->id;
+        $sql = "SELECT a.* FROM `matcher` a
+            RIGHT JOIN `matcher_project` b ON a.id = b.matcher_id
+            WHERE b.project_id = ?";
+        if($valid_only) {
+            $sql .= " AND b.status = 'active'";
+        }
+        if ($query = static::query($sql, $pid)) {
+            if( $matcher = $query->fetchObject(__CLASS__) )
+                return $matcher;
+        }
+        return null;
+    }
 
     /**
      * Save.
@@ -104,7 +124,7 @@ class Matcher extends \Goteo\Core\Model {
         $sql = "SELECT
                 COUNT(*) AS total
                 FROM matcher_project
-                WHERE matcher_project.matcher_id = :match AND matcher_project.active = 1";
+                WHERE matcher_project.matcher_id = :match AND matcher_project.status = 'active'";
         // echo \sqldbg($sql, [':match' => $this->id]);
         return (int) self::query($sql, [':match' => $this->id])->fetchColumn();
     }
@@ -205,22 +225,27 @@ class Matcher extends \Goteo\Core\Model {
      * Add projects
      * @param [type]  $projects  project or array of projects
      * @param boolean $active if active, the project will receive funding
+     * @param boolean $banned if banned, the project will no receive funding (rejected by)
      */
-    public function addProjects($projects, $active = false) {
+    public function addProjects($projects, $status = 'pending') {
         if(!is_array($projects)) $projects = [$projects];
+        if(!in_array($status, self::$statuses)) {
+            throw new ModelException("Status [$status] not valid");
+        }
+
         $inserts = [];
-        $values = [':matcher' => $this->id, ':active' => (bool) $active];
+        $values = [':matcher' => $this->id, ':status' => $status];
         $i = 0;
         foreach($projects as $project) {
             if($project instanceOf project) {
                 $project = $project->id;
             }
-            $inserts[] = "(:matcher, :project$i, :active)";
+            $inserts[] = "(:matcher, :project$i, :status)";
             $values[":project$i"] = $project;
             $i++;
         }
 
-        $sql = "REPLACE `matcher_project` (matcher_id, project_id, active) VALUES " . implode(', ', $inserts);
+        $sql = "REPLACE `matcher_project` (matcher_id, project_id, status) VALUES " . implode(', ', $inserts);
         try {
             self::query($sql, $values);
         } catch (\PDOException $e) {
@@ -283,23 +308,29 @@ class Matcher extends \Goteo\Core\Model {
     }
 
     /**
-     * [activateProject description]
+     * [setProjectStatus description]
      * @param [type] $project [description]
      * @param [type] $bool [description]
      */
-    public function activateProject($project, $bool) {
+    public function setProjectStatus($project, $status = 'pending') {
         if($project instanceOf Project) $project = $project->id;
-        $sql = "UPDATE matcher_project SET active = :active WHERE matcher_id = :matcher AND project_id = :project";
+        if(!in_array($status, self::$statuses)) {
+            throw new ModelException("Status [$status] not valid");
+        }
+
+        $sql = "UPDATE matcher_project SET status = :status WHERE matcher_id = :matcher AND project_id = :project";
         try {
-            self::query($sql, [':matcher' => $this->id, ':project' => $project, ':active' => (bool) $bool]);
+            self::query($sql, [':matcher' => $this->id, ':project' => $project, ':status' => $status]);
             $errors = [];
             if(!$this->save($errors)) {
                 throw new ModelException("Error updating totals: " . implode("\n", $errors));
             }
 
         } catch (\PDOException $e) {
-            throw new ModelException('Failed to change project active status: ' . $e->getMessage());
+            throw new ModelException('Failed to change project matcher status: ' . $e->getMessage());
         }
         return $this;
     }
+
+
 }
