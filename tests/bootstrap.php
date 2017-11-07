@@ -139,7 +139,7 @@ function get_test_project() {
     }
     $errors = array();
     $project = new \Goteo\Model\Project($data);
-    if( ! $project->create($data['node'], $errors)) {
+    if( ! $project->create($data, $errors)) {
         error_log("Error creating test project! " . print_r($errors, 1));
         return false;
     }

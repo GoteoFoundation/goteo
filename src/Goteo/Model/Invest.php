@@ -197,6 +197,9 @@ class Invest extends \Goteo\Core\Model {
     }
 
 
+    /**
+     * reusable sql filters for searching in invests table
+     */
     private static function getSQLFilter($filters = [], $node = null) {
         $values = [];
         $sqlFilter = [];
@@ -206,8 +209,16 @@ class Invest extends \Goteo\Core\Model {
             $values[':id'] = $filters['id'];
         }
         if (!empty($filters['methods'])) {
-            $sqlFilter[] = "invest.method = :methods";
-            $values[':methods'] = $filters['methods'];
+            $i = 0;
+            $parts = [];
+            if(!is_array($filters['methods'])) $filters['methods'] = [$filters['methods']];
+            foreach($filters['methods'] as $u) {
+                $parts[] = ":method$i";
+                $values[":method$i"] = is_object($u) ? $u->id : $u;
+                $i++;
+            }
+            $sqlFilter[] = 'invest.method IN(' . implode(',', $parts) . ')';
+
         }
         if (is_numeric($filters['projectStatus'])) {
             $sqlFilter[] = "project.status = :projectStatus";
@@ -245,8 +256,15 @@ class Invest extends \Goteo\Core\Model {
             $values[':maxamount'] = $filters['maxamount'];
         }
         if (!empty($filters['users'])) {
-            $sqlFilter[] = "invest.user = :users";
-            $values[':users'] = $filters['users'];
+            $i = 0;
+            $parts = [];
+            if(!is_array($filters['users'])) $filters['users'] = [$filters['users']];
+            foreach($filters['users'] as $u) {
+                $parts[] = ":user$i";
+                $values[":user$i"] = is_object($u) ? $u->id : $u;
+                $i++;
+            }
+            $sqlFilter[] = 'invest.user IN(' . implode(',', $parts) . ')';
         }
         if (!empty($filters['name'])) {
             $sqlFilter[] = "invest.user IN (SELECT id FROM user WHERE (name LIKE :name OR email LIKE :name))";

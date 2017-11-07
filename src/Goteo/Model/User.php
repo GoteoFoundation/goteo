@@ -829,6 +829,11 @@ class User extends \Goteo\Core\Model {
                 ) ";
             $values[':role'] = $filters['role'];
         }
+        // Has or not has money in the pool
+        if (isset($filters['pool'])) {
+            $sqlFilter[] = 'id IN (SELECT `user` FROM user_pool WHERE user_pool.amount ' . ($filters['pool'] ? '>'  : '=') .' 0)';
+        }
+
 
         // un admin de central puede filtrar usuarios de nodo
         if ($subnodes) {
