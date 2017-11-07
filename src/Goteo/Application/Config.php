@@ -198,6 +198,11 @@ class Config {
 		// Set routes into service container
 		App::getServiceContainer()->setParameter('routes', App::getRoutes());
 
+        // TODO: add a generic matcher processor that uses Symfony Expression Language
+        // http://symfony.com/doc/current/components/expression_language/syntax.html
+        //
+        // App::getService('app.matcher.finder')->addProcessor('Goteo\Util\MatcherProcessor\ExpressionLanguageProcessor');
+
 		//Cache dir in libs
 		\Goteo\Library\Cacher::setCacheDir(GOTEO_CACHE_PATH);
 

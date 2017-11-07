@@ -8,13 +8,13 @@
  * and LICENSE files that was distributed with this source code.
  */
 
-namespace Goteo\Util\Form;
+namespace Goteo\Util\MatcherProcessor;
 
 /**
- * FormFinderException.
+ * MatcherFinderException.
  *
  */
-class FormFinderException extends \RuntimeException
+class MatcherFinderException extends \RuntimeException
 {
 
 }

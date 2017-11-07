@@ -1,4 +1,12 @@
 <?php
+/*
+ * This file is part of the Goteo Package.
+ *
+ * (c) Platoniq y Fundación Goteo <fundacion@goteo.org>
+ *
+ * For the full copyright and license information, please view the README.md
+ * and LICENSE files that was distributed with this source code.
+ */
 
 
 namespace Goteo\Model\Tests;
@@ -113,7 +121,10 @@ class MatcherTest extends TestCase {
 
         $this->assertEquals(1, $ob->getTotalProjects());
         $this->assertGreaterThan(0, $ob->getTotalProjects());
-        $ob2 = Matcher::getFromProject($pob);
+        $list = Matcher::getFromProject($pob);
+        $this->assertTrue(is_array($list));
+        $this->assertCount(1, $list);
+        $ob2 = $list[0];
         $this->assertInstanceOf('\Goteo\Model\Matcher', $ob2);
         $this->assertEquals($ob->id, $ob2->id);
         $this->assertEquals($ob->name, $ob2->name);

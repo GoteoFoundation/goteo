@@ -177,6 +177,9 @@ $sc->register('app', 'Goteo\Application\App')
 $sc->register('app.forms', 'Goteo\Util\Form\FormBuilder');
 // Form Finder (create default forms)
 $sc->register('app.forms.finder', 'Goteo\Util\Form\FormFinder');
+// Matcher processor Finder (handles custom matchfunding cases)
+$sc->register('app.matcher.finder', 'Goteo\Util\MatcherProcessor\MatcherFinder');
+
 // Markdown parser
 $sc->register('app.md.parser', '\Parsedown')
    ->addMethodCall('setBreaksEnabled', [true])
