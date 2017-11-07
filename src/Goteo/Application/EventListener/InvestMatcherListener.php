@@ -1,7 +1,17 @@
 <?php
+/*
+ * This file is part of the Goteo Package.
+ *
+ * (c) Platoniq y Fundación Goteo <fundacion@goteo.org>
+ *
+ * For the full copyright and license information, please view the README.md
+ * and LICENSE files that was distributed with this source code.
+ */
+
 
 namespace Goteo\Application\EventListener;
 
+use Goteo\Application\App;
 use Goteo\Application\AppEvents;
 use Goteo\Application\Event\FilterInvestRequestEvent;
 use Goteo\Library\Feed;
@@ -10,6 +20,7 @@ use Goteo\Library\Text;
 use Goteo\Model\Invest;
 use Goteo\Model\Matcher;
 use Goteo\Model\User;
+use Goteo\Util\MatcherProcessor\MatcherProcessorException;
 
 //
 
@@ -27,10 +38,22 @@ class InvestMatcherListener extends AbstractListener {
         }
 
         // Check if project is in a matcher campaign
-        if($matcher = Matcher::getFromProject($project)) {
-            print_r($matcher);
-            die($matcher->getTotalAmount());
-            // TODO: find processor, and execute it
+        if($matchers = Matcher::getFromProject($project)) {
+            foreach($matchers as $matcher) {
+                // find processor, and execute it
+                if($processor = App::getService('app.matcher.finder')->getProcessor($matcher)) {
+                    $processor->setInvest($invest);
+                    $processor->setProject($project);
+                    $processor->setMethod($method);
+                    try {
+                        $invests = $processor->getInvests();
+                        print_r($invests);die;
+                        $this->notice("Matcher has invests", [$matcher, $invest]);
+                    } catch(MatcherProcessorException $e) {
+                        $this->info("No invests for Matcher", [$matcher, $invest, 'reason' => $e->getMessage()]);
+                    }
+                }
+            }
         }
 	}
 

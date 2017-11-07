@@ -50,10 +50,12 @@ class View {
     /**
      * Renders a template view
      */
-    static public function render($view, $vars = []) {
-        $event = App::dispatch(AppEvents::VIEW_RENDER, new FilterViewEvent($view, $vars));
-        $view = $event->getView();
-        $vars = $event->getVars();
+    static public function render($view, $vars = [], $fire_event = true) {
+        if($fire_event) {
+            $event = App::dispatch(AppEvents::VIEW_RENDER, new FilterViewEvent($view, $vars));
+            $view = $event->getView();
+            $vars = $event->getVars();
+        }
         //por compatibilidad
         // self::$engine->vars = $vars;
         return self::getEngine()->render($view, $vars + array('vars' => $vars)); //por compatibilidad

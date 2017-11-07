@@ -69,7 +69,7 @@ class Config {
 			}
 
             \Goteo\Application\View::setTheme('responsive');
-			die(\Goteo\Application\View::render('errors/config', ['msg' => $e->getMessage(), 'info' => $info, 'file' => $file, 'code' => $code], $code));
+			die(\Goteo\Application\View::render('errors/config', ['msg' => $e->getMessage(), 'info' => $info, 'file' => $file, 'code' => $code], false));
 			return;
 		}
 	}
@@ -197,6 +197,11 @@ class Config {
 
 		// Set routes into service container
 		App::getServiceContainer()->setParameter('routes', App::getRoutes());
+
+        // TODO: add a generic matcher processor that uses Symfony Expression Language
+        // http://symfony.com/doc/current/components/expression_language/syntax.html
+        //
+        // App::getService('app.matcher.finder')->addProcessor('Goteo\Util\MatcherProcessor\ExpressionLanguageProcessor');
 
 		//Cache dir in libs
 		\Goteo\Library\Cacher::setCacheDir(GOTEO_CACHE_PATH);
