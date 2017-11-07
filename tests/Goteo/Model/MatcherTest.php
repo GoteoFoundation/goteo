@@ -109,10 +109,17 @@ class MatcherTest extends TestCase {
         $this->assertInstanceOf('\Goteo\Model\Project', $pob);
 
         self::$project = $pob;
-        $this->assertInstanceOf('\Goteo\Model\Matcher', $ob->addProjects($pob, true));
+        $this->assertInstanceOf('\Goteo\Model\Matcher', $ob->addProjects($pob, 'active'));
 
         $this->assertEquals(1, $ob->getTotalProjects());
         $this->assertGreaterThan(0, $ob->getTotalProjects());
+        $ob2 = Matcher::getFromProject($pob);
+        $this->assertInstanceOf('\Goteo\Model\Matcher', $ob2);
+        $this->assertEquals($ob->id, $ob2->id);
+        $this->assertEquals($ob->name, $ob2->name);
+        $this->assertEquals($ob->getTotalAmount(), $ob2->getTotalAmount());
+        $this->assertEquals($ob->getTotalProjects(), $ob2->getTotalProjects());
+
         return $ob;
     }
 
@@ -121,9 +128,13 @@ class MatcherTest extends TestCase {
      */
     public function testChangeProjects($ob) {
         $total = $ob->getTotalProjects();
-        $this->assertInstanceOf('\Goteo\Model\Matcher', $ob->activateProject(self::$project, false));
+        $this->assertInstanceOf('\Goteo\Model\Matcher', $ob->setProjectStatus(self::$project, 'pending'));
         $this->assertEquals(0, $ob->getTotalProjects());
-        $this->assertInstanceOf('\Goteo\Model\Matcher', $ob->activateProject(self::$project, true));
+        $this->assertInstanceOf('\Goteo\Model\Matcher', $ob->setProjectStatus(self::$project, 'active'));
+        $this->assertEquals($total, $ob->getTotalProjects());
+        $this->assertInstanceOf('\Goteo\Model\Matcher', $ob->setProjectStatus(self::$project, 'rejected'));
+        $this->assertEquals(0, $ob->getTotalProjects());
+        $this->assertInstanceOf('\Goteo\Model\Matcher', $ob->setProjectStatus(self::$project, 'active'));
         $this->assertEquals($total, $ob->getTotalProjects());
         return $ob;
     }
@@ -158,11 +169,8 @@ class MatcherTest extends TestCase {
      * @depends testDelete
      */
     public function testNonExisting($ob) {
-        try {
-            $ob = Matcher::get(self::$data['id']);
-        } catch(\Exception $e) {
-            $this->assertInstanceOf('\Goteo\Application\Exception\ModelNotFoundException', $e);
-        }
+        $ob = Matcher::get(self::$data['id']);
+        $this->assertNull($ob);
     }
 
     public function testCleanUsers() {
