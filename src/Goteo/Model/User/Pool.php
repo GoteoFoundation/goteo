@@ -25,7 +25,6 @@ class Pool extends \Goteo\Core\Model {
     protected $Table = 'user_pool';
     public
         $user,
-        $id,
         $amount;
 
 
