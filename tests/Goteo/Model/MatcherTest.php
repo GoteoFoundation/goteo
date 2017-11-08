@@ -12,7 +12,6 @@
 namespace Goteo\Model\Tests;
 
 use Goteo\TestCase;
-use Goteo\Application\Exception\ModelNotFoundException;
 use Goteo\Model\Matcher;
 use Goteo\Model\User;
 use Goteo\Model\Project;
@@ -108,6 +107,7 @@ class MatcherTest extends TestCase {
 
         $this->assertEquals($total, $ob->getTotalAmount());
         $this->assertGreaterThan(0, $ob->getTotalAmount());
+        $this->assertCount(2, $ob->getUsers());
         return $ob;
     }
 
@@ -148,6 +148,7 @@ class MatcherTest extends TestCase {
         $this->assertEquals($ob->getTotalAmount(), $ob2->getTotalAmount());
         $this->assertEquals($ob->getTotalProjects(), $ob2->getTotalProjects());
 
+        $this->assertCount(1, $ob->getProjects());
         return $ob;
     }
 

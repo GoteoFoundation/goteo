@@ -48,9 +48,9 @@ class InvestMatcherListener extends AbstractListener {
                     try {
                         $invests = $processor->getInvests();
                         print_r($invests);die;
-                        $this->notice("Matcher has invests", [$matcher, $invest]);
+                        $this->notice("Matcher has invests", [$matcher, $invest, 'matcher_processor' => $matcher->processor]);
                     } catch(MatcherProcessorException $e) {
-                        $this->info("No invests for Matcher", [$matcher, $invest, 'reason' => $e->getMessage()]);
+                        $this->notice("No invests for Matcher", [$matcher, $invest, 'matcher_processor' => $matcher->processor, 'reason' => $e->getMessage()]);
                     }
                 }
             }
