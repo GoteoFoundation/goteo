@@ -37,7 +37,7 @@ class DuplicateInvestMatcherProcessor extends AbstractMatcherProcessor {
      * Checks if this invests has to be multiplied and
      * returns the amount to be added
      */
-    public function getAmount() {
+    public function getAmount(&$error = '') {
         $invest = $this->getInvest();
         $project = $this->getProject();
         $matcher = $this->getMatcher();
@@ -48,19 +48,22 @@ class DuplicateInvestMatcherProcessor extends AbstractMatcherProcessor {
             $amount = $vars['max_amount_per_invest'];
         }
 
-        $invested = Invest::getList(['methods' => 'pool', 'projects' => $project,'users' => $matcher->getUsers()], null, 0, 0, 'money');
-        // echo "[$invested]";
+        $invested = Invest::getList(['methods' => 'pool', 'status' => [Invest::STATUS_PROCESSING, Invest::STATUS_PENDING, Invest::STATUS_CHARGED, Invest::STATUS_PAID], 'projects' => $project,'users' => $matcher->getUsers()], null, 0, 0, 'money');
+
+        // check if current invested amount is over the maxim per project allowed
         if($invested + $amount > $vars['max_amount_per_project']) {
             $amount = max(0, $vars['max_amount_per_project'] - $invested);
         }
-        $count = Invest::getList(['projects' => $project, 'users' => $invest->user], null, 0, 0, 'user');
+        $count = Invest::getList(['projects' => $project, 'status' => [Invest::STATUS_PROCESSING, Invest::STATUS_PENDING, Invest::STATUS_CHARGED, Invest::STATUS_PAID], 'users' => $invest->user], null, 0, 0, 'user');
 
         if($count >= $vars['max_invests_per_user']) {
+            $error = 'Max invests per user reached';
             $amount = 0;
         }
 
         // Check if there's enough total to extract from user's pool
         if($matcher->getTotalAmount() < $amount) {
+            $error = 'Matcher funds exhausted';
             $amount = $matcher->getTotalAmount();
         }
 

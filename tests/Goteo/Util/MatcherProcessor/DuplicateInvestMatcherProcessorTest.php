@@ -209,6 +209,9 @@ class DuplicateInvestMatcherProcessorTest extends TestCase {
             'status' => Invest::STATUS_CHARGED,
             'amount' => 5
         ]);
+        $errors = [];
+        $this->assertTrue($invest->save($errors), implode("\n", $errors));
+
         $processor->setInvest($invest);
         $processor->setProject(get_test_project());
         $this->assertEquals(0, $processor->getAmount());

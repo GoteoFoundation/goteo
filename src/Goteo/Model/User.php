@@ -130,7 +130,8 @@ class User extends \Goteo\Core\Model {
             // Nuevo usuario.
             if (empty($this->id)) {
                 $insert = true;
-                $data[':id'] = $this->id = static::idealiza($this->userid);
+                $this->id = static::idealiza($this->userid);
+                $data[':id'] = $this->id;
                 $data[':name'] = $this->name;
                 $data[':location'] = $this->location;
                 $data[':email'] = $this->email;

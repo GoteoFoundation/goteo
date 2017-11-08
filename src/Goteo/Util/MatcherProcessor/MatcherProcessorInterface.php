@@ -97,9 +97,10 @@ interface MatcherProcessorInterface {
 
     /**
      * Returns the total amount to be added
+     * @param string $error reason why is zero (if zero)
      * @return int amount to add in form of extra invests
      */
-    public function getAmount();
+    public function getAmount(&$error = '');
 
     /**
      * Returns a list of additional invests corresponding to the totalAmount
