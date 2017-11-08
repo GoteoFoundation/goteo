@@ -25,6 +25,9 @@ class Matcher extends \Goteo\Core\Model {
            $name,
            $logo,
            $lang,
+           $terms,
+           $processor = '',
+           $vars = [],
            $amount = 0, // Calculated field with the sum of all pools in the Matcher
            $projects = 0, // Calculated field with the total number of active projects in the Matcher
            $created,
@@ -88,9 +91,9 @@ class Matcher extends \Goteo\Core\Model {
 
         try {
             if(empty($this->modified_at))
-                $this->dbInsert(['id', 'name', 'logo', 'lang', 'amount', 'projects', 'created']);
+                $this->dbInsert(['id', 'name', 'logo', 'lang', 'terms', 'processor', 'vars', 'amount', 'projects', 'created']);
             else
-                $this->dbUpdate(['name', 'logo', 'lang', 'amount', 'projects', 'created']);
+                $this->dbUpdate(['name', 'logo', 'lang', 'terms', 'processor', 'vars', 'amount', 'projects', 'created']);
             return true;
         }
         catch(\PDOException $e) {
@@ -136,6 +139,16 @@ class Matcher extends \Goteo\Core\Model {
     /**
      * Getters & setters
      */
+
+    public function setVars(array $vars) {
+        $this->vars = $vars ? json_encode($vars) : '';
+        return $this;
+    }
+
+    public function getVars() {
+        if($this->vars) return json_decode($this->vars);
+        return [];
+    }
 
     /**
      * Use to ensure a valid value of total amount
