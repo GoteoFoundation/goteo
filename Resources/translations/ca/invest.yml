@@ -115,3 +115,10 @@ matcher-duplicateinvest-rules: >
     Aquest processador multiplica x2 qualsevol aportació de qualsevol usuari
 
     El total màxim por projecte, la quantitat màxima por aportació i el número màxim d'aportacions per usuari es poden configurar
+
+
+matcher-drop: 'Capital matchfunding'
+matcher-feed-invest: 'Ha aportat %AMOUNT% de %DROP% al projecte %PROJECT% a través de la campanya "match" %MATCHER%'
+matcher-feed-invest-by: 'Aportació matchfunding %s'
+matcher-feed-user-invest: 'La campanya "match" %MATCHER% ha aportat %AMOUNT% al projecte %PROJECT% gràcies a %USER% que va aportar mitjançant %METHOD%'
+matcher-feed-user-invest-error: 'Hi ha hagut un <span class="red">ERROR de la campanya "match" %MATCHER% [%MESSAGE%]</span> en l''aportació al projecte %PROJECT% de %USER% de %amount% mitjançant %METHOD%'

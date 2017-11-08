@@ -14,6 +14,7 @@ namespace Goteo\Application\EventListener;
 use Goteo\Application\App;
 use Goteo\Application\AppEvents;
 use Goteo\Application\Event\FilterInvestRequestEvent;
+use Goteo\Library\Currency;
 use Goteo\Library\Feed;
 use Goteo\Library\FeedBody;
 use Goteo\Library\Text;
@@ -47,7 +48,66 @@ class InvestMatcherListener extends AbstractListener {
                     $processor->setMethod($method);
                     try {
                         $invests = $processor->getInvests();
-                        print_r($invests);die;
+                        foreach($invests as $drop) {
+                            $errors = [];
+                            // se actualiza el registro de convocatoria
+                            if ($drop->save($errors)) {
+                                Invest::query("UPDATE invest SET droped = :drop, `matcher`= :matcher WHERE id = :id",
+                                    array(':id' => $invest->id, ':drop' => $drop->id, ':matcher' => $matcher->id));
+                                $invest->droped = $drop->id;
+                                $invest->matcher = $matcher->id;
+
+                                // recalcular campos en cache
+                                Invest::invested($project->id, 'users');
+
+                            } else {
+                                $this->critical('Error in Invest dropped by matcher', ['errors' => $errors, $matcher, 'drop' => $drop->id, 'drop_amount' => $drop_amount, 'drop_user' => $drop->user, $invest, $invest->getProject(), $invest->getUser()]);
+
+                            }
+
+                            $this->info('Invest dropped by matcher', [$matcher, 'drop' => $drop->id, 'drop_amount' => $drop_amount, 'drop_user' => $drop->user, $invest, $invest->getProject(), $invest->getUser()]);
+
+                            // Feed this failed payment
+                            // Admin Feed
+                            $coin = Currency::getDefault('html');
+                            $log  = new Feed();
+                            $user = $drop->getUser();
+                            $log->setTarget($project->id)
+                                ->populate(
+                                Text::sys('matcher-feed-invest-by', strtoupper($method::getId())),
+                                '/admin/invests',
+                                new FeedBody(null, null, 'matcher-feed-user-invest', [
+                                        '%MESSAGE%' => $response->getMessage(),
+                                        '%USER%'    => Feed::item('user', $user->name, $user->id),
+                                        '%MATCHER%' => Feed::item('matcher', $matcher->name, $matcher->id),
+                                        '%AMOUNT%'  => Feed::item('money', $drop->amount.' '.$coin),
+                                        '%PROJECT%' => Feed::item('project', $project->name, $project->id),
+                                        '%METHOD%'  => strtoupper($method::getId())
+                                   ])
+                            )
+                                ->doAdmin('money');
+
+                            // Public Feed
+                            $log_html = new FeedBody(null, null, 'matcher-feed-invest', [
+                                    '%AMOUNT%'  => Feed::item('money', $drop->amount.' '.$coin),
+                                    '%DROP%'    => Feed::item('drop', Text::get('matcher-drop'), '/service/resources'),
+                                    '%PROJECT%' => Feed::item('project', $project->name, $project->id),
+                                    '%MATCHER%' => Feed::item('matcher', $matcher->name, $matcher->id)
+                                ]);
+                            if ($invest->anonymous) {
+                                $log->populate('regular-anonymous',
+                                    '/user/profile/anonymous',
+                                    $log_html,
+                                    1);
+                            } else {
+                                $log->populate($user->name,
+                                    '/user/profile/'.$user->id,
+                                    $log_html,
+                                    $user->avatar->id);
+                            }
+                            $log->doPublic('community');
+
+                        }
                         $this->notice("Matcher has invests", [$matcher, $invest, 'matcher_processor' => $matcher->processor]);
                     } catch(MatcherProcessorException $e) {
                         $this->notice("No invests for Matcher", [$matcher, $invest, 'matcher_processor' => $matcher->processor, 'reason' => $e->getMessage()]);
@@ -59,8 +119,7 @@ class InvestMatcherListener extends AbstractListener {
 
 	public static function getSubscribedEvents() {
 		return array(
-            AppEvents::INVEST_SUCCEEDED => ['onInvestSuccess', -2], // low priority (after general processing)
-            // AppEvents::INVEST_INIT_REQUEST => ['onInvestSuccess', -2], // for testing only
+            AppEvents::INVEST_SUCCEEDED => ['onInvestSuccess', -2] // low priority (after general processing)
 		);
 	}
 }
