@@ -73,6 +73,7 @@ class Invest extends \Goteo\Core\Model {
         $droped = null, // id del riego generado por este aporte
         $campaign = false, // si es un aporte de capital riego
         $call = null, // aportes que tienen capital riego asociado
+        $matcher = null, // invests with matcher funding associated
         $pool = false; // aportes a reservar si el proyecto falla
 
     // añadir los datos del cargo
@@ -243,7 +244,7 @@ class Invest extends \Goteo\Core\Model {
             if(!is_array($filters['projects'])) $filters['projects'] = [$filters['projects']];
             foreach($filters['projects'] as $i => $prj) {
                 $parts[] = ':prj' . $i;
-                $values[':prj' . $i] = $prj;
+                $values[':prj' . $i] = is_object($prj) ? $prj->id : $prj;
             }
             $sqlFilter[] = "invest.project IN (" . implode(',', $parts) . ")";
         }
@@ -432,6 +433,7 @@ class Invest extends \Goteo\Core\Model {
                     ON invest_reward.invest = invest.id
                 $sqlFilter";
 
+                // echo sqldbg($sql, $values);
 
             if($count === 'all') {
                 $ob = self::query($sql, $values)->fetchObject();
@@ -729,6 +731,7 @@ class Invest extends \Goteo\Core\Model {
             'admin',
             'campaign',
             'call',
+            'matcher',
             'drops',
             'pool'
             );
@@ -952,8 +955,14 @@ class Invest extends \Goteo\Core\Model {
      * Obtenido por un proyecto
      */
     public static function invested ($project, $scope = null, $call = null) {
+        if($project instanceOf Project) $project = $project->id;
 
-        $values = array(':project' => $project, ':s0' => self::STATUS_PENDING, ':s1' => self::STATUS_CHARGED, ':s3' => self::STATUS_PAID, ':s4' => self::STATUS_RETURNED, ':s5' => self::STATUS_TO_POOL);
+        $values = array(':project' => $project,
+                    ':s0' => self::STATUS_PENDING,
+                    ':s1' => self::STATUS_CHARGED,
+                    ':s3' => self::STATUS_PAID,
+                    ':s4' => self::STATUS_RETURNED,
+                    ':s5' => self::STATUS_TO_POOL);
 
         $sql = "SELECT  SUM(amount) as much
             FROM    invest

@@ -179,3 +179,8 @@ CREATE TABLE `matcher_user` (
   CONSTRAINT `matcher_user_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `matcher_user_ibfk_2` FOREIGN KEY (`matcher_id`) REFERENCES `matcher` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB CHARACTER SET utf8 COLLATE utf8_general_ci;
+
+-- invests matcher
+ALTER TABLE `invest` ADD COLUMN `matcher` VARCHAR(50) NULL AFTER `call`,
+    ADD FOREIGN KEY (`call`) REFERENCES `call`(`id`) ON UPDATE CASCADE,
+    ADD FOREIGN KEY (`matcher`) REFERENCES `matcher`(`id`) ON UPDATE CASCADE;

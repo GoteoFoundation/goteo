@@ -90,8 +90,10 @@ class Matcher extends \Goteo\Core\Model {
         $this->projects = $this->calculateProjects();
 
         try {
-            if(empty($this->modified_at))
-                $this->dbInsert(['id', 'name', 'logo', 'lang', 'terms', 'processor', 'vars', 'amount', 'projects', 'created']);
+            if(empty($this->modified_at)) {
+                $this->modified_at = date('Y-m-d H:i:s');
+                $this->dbInsert(['id', 'name', 'logo', 'lang', 'terms', 'processor', 'vars', 'amount', 'projects', 'created', 'modified_at']);
+            }
             else
                 $this->dbUpdate(['name', 'logo', 'lang', 'terms', 'processor', 'vars', 'amount', 'projects', 'created']);
             return true;
@@ -146,7 +148,7 @@ class Matcher extends \Goteo\Core\Model {
     }
 
     public function getVars() {
-        if($this->vars) return json_decode($this->vars);
+        if($this->vars) return json_decode($this->vars, true);
         return [];
     }
 
@@ -203,6 +205,25 @@ class Matcher extends \Goteo\Core\Model {
             throw new ModelException('Failed to add users: ' . $e->getMessage());
         }
         return $this;
+    }
+
+    /**
+     * Return users
+     * @return [type] [description]
+     */
+    public function getUsers($width_pool = true) {
+        $sql = "SELECT * FROM user a
+                RIGHT JOIN matcher_user b ON a.id = b.user_id
+                WHERE b.matcher_id = :matcher " . ($width_pool ? ' AND b.pool = 1' : '');
+        $values = [':matcher' => $this->id];
+
+        // die(\sqldbg($sql, $values));
+        if($query = self::query($sql, $values)) {
+            if( $users = $query->fetchAll(\PDO::FETCH_CLASS, 'Goteo\Model\User') ) {
+                return $users;
+            }
+        }
+        return [];
     }
 
     /**
@@ -268,6 +289,31 @@ class Matcher extends \Goteo\Core\Model {
             throw new ModelException('Failed to add projects: ' . $e->getMessage());
         }
         return $this;
+    }
+
+    /**
+     * Return projects
+     * @return [type] [description]
+     */
+    public function getProjects($status = 'active') {
+        $sql = "SELECT * FROM project a
+                RIGHT JOIN matcher_project b ON a.id = b.project_id
+                WHERE b.matcher_id = :matcher ";
+        $values = [':matcher' => $this->id];
+        if($status) {
+            if(!in_array($status, self::$statuses)) {
+                throw new ModelException("Status [$status] not valid");
+            }
+            $sql .= ' AND b.status = :status';
+            $values[':status'] = $status;
+        }
+        // die(\sqldbg($sql, $values));
+        if($query = self::query($sql, $values)) {
+            if( $projects = $query->fetchAll(\PDO::FETCH_CLASS, 'Goteo\Model\Project') ) {
+                return $projects;
+            }
+        }
+        return [];
     }
 
     /**

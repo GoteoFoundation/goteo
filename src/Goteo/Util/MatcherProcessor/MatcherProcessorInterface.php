@@ -18,6 +18,12 @@ use Goteo\Payment\Method\PaymentMethodInterface;
 interface MatcherProcessorInterface {
 
     /**
+     * Returns the unique ID for this processor
+     * @return string ID
+     */
+    static public function getId();
+
+    /**
      * Checks if the processor handles a $matcher cammpaign
      * @return bool true | false
      */
@@ -29,6 +35,17 @@ interface MatcherProcessorInterface {
      */
     static public function create(Matcher $matcher);
 
+    /**
+     * Array of variable_name => description_text of the custom vars used
+     * @return array
+     */
+    static public function getVarLabels();
+
+    /**
+     * Gets the current custom vars for this processor (defaults or from Matcher model if exists)
+     * @return array custom vars
+     */
+    public function getVars();
 
     /**
      * Sets the matcher
