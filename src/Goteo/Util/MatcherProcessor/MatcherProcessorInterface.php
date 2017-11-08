@@ -24,7 +24,19 @@ interface MatcherProcessorInterface {
     static public function getId();
 
     /**
-     * Checks if the processor handles a $matcher cammpaign
+     * Returns a friendly name for this processor
+     * @return string name
+     */
+    static public function getName();
+
+    /**
+     * Returns a human understandable full description for the rules of this processor
+     * @return string name
+     */
+    static public function getDesc();
+
+    /**
+     * Checks if the processor handles a $matcher campaign
      * @return bool true | false
      */
     static public function is(Matcher $matcher);
