@@ -94,7 +94,7 @@ class SettingsDashboardController extends \Goteo\Core\Controller {
         $defaults['unlocable'] = UserLocation::isUnlocable($user->id);
         $defaults['avatar'] = $user->user_avatar ? $user->avatar : null;
         $defaults['webs'] = implode("\n", $user->webs);
-
+        $defaults['interests'] = array_map(function($i){ return $i->interest; }, $user->interests);
 
         $processor = $this->getModelForm('UserProfile', $user, $defaults, [], $request);
         $processor->createForm();

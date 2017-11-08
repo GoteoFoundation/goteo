@@ -32,6 +32,7 @@ namespace Goteo\Model {
             $author,
             $order,
             $publish,
+            $home = false,
             $node;  // las entradas en portada para nodos se guardan en la tabla post_node con unos metodos alternativos
 
         /*

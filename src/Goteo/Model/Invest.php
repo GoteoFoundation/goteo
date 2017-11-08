@@ -69,6 +69,9 @@ class Invest extends \Goteo\Core\Model {
         $returned, //fecha en la que se ha devuelto el importe al usurio por cancelación bancaria
         $rewards = array(), //datos de las recompensas que le corresponden
         $address = null,  // dirección de envio de la recompensa y datos de regalo
+        $drops = null, // id del aporte que provoca este riego
+        $droped = null, // id del riego generado por este aporte
+        $campaign = false, // si es un aporte de capital riego
         $call = null, // aportes que tienen capital riego asociado
         $pool = false; // aportes a reservar si el proyecto falla
 
@@ -94,7 +97,32 @@ class Invest extends \Goteo\Core\Model {
         } else {
             return $array;
         }
+    }
 
+    /* handy methods */
+    public function isCharged() {
+        return in_array($this->status, [self::STATUS_PROCESSING, self::STATUS_PENDING, self::STATUS_CHARGED, self::STATUS_PAID]);
+    }
+
+    public function isReturned() {
+        return in_array($this->status, [self::STATUS_RELOCATED, self::STATUS_RETURNED, self::STATUS_TO_POOL]);
+    }
+
+    public function isCancelled() {
+        return $this->status === self::STATUS_CANCELLED;
+    }
+
+    public function getStatusText($simple = false) {
+        $status = $this->status;
+        if($simple) {
+            if($this->isReturned()) {
+                $status = self::STATUS_RETURNED;
+            }
+            if($this->isCharged()) {
+                $status = self::STATUS_CHARGED;
+            }
+        }
+        return self::status($status);
     }
 
     /*
@@ -637,7 +665,7 @@ class Invest extends \Goteo\Core\Model {
      */
     public function getFirstReward() {
         $rewards = $this->getRewards();
-        return current($rewards);
+        return reset($rewards);
     }
 
     public function validate (&$errors = array()) {

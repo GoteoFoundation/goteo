@@ -359,7 +359,7 @@ class ProjectDashboardController extends \Goteo\Core\Controller {
         $blog = Blog::get($project->id);
         if ($blog instanceOf Blog) {
             if($blog->active) {
-                $posts = BlogPost::getList((int)$blog->id, false, $offset, $limit);
+                $posts = BlogPost::getList((int)$blog->id, false, $offset, $limit, false, $project->lang);
                 $total = BlogPost::getList((int)$blog->id, false, 0, 0, true);
             }
             else {
@@ -409,7 +409,8 @@ class ProjectDashboardController extends \Goteo\Core\Controller {
                 'blog' => $blog->id,
                 'date' => date('Y-m-d'),
                 'publish' => false,
-                'allow' => true
+                'allow' => true,
+                'owner_id' => $project->id
             ]);
         } elseif($post->owner_id !== $project->id) {
             throw new ModelNotFoundException("Non matching update for project [{$project->id}]");
@@ -946,7 +947,11 @@ class ProjectDashboardController extends \Goteo\Core\Controller {
             $filters['others']['nondrop'] = Text::Get('dashboard-project-filter-by-nondrop');
         }
 
-        $filter_by = ['projects' => $project->id, 'status' => [Invest::STATUS_CHARGED, Invest::STATUS_PAID]];
+        $status = [Invest::STATUS_CHARGED, Invest::STATUS_PAID];
+        if($project->isDead()) {
+            $status = [Invest::STATUS_RETURNED, Invest::STATUS_RELOCATED, Invest::STATUS_TO_POOL];
+        }
+        $filter_by = ['projects' => $project->id, 'status' => $status];
         $filter = $request->query->get('filter');
         if(!is_array($filter)) $filter = [];
 

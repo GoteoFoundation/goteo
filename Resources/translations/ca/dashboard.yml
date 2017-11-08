@@ -252,6 +252,7 @@ dashboard-project-updates-translating-post: 'Estàs traduint aquest post al %LAN
 dashboard-translate-overview: 'Traduir les dades principals del projecte'
 dashboard-translate-costs: 'Traduir els costos del projecte'
 dashboard-translate-rewards: 'Traduir les recompenses del projecte'
+dashboard-translate-supports: 'Traduir les col·laboracions del projecte'
 
 dashboard-project-support-translate-ok: 'Entrada de suport %TITLE% traduït correctament al %LANG%'
 dashboard-project-support-translating: 'Estàs traduint aquesta entrada de suport al %LANG%. L''idioma original és el %ORIGINAL%.'

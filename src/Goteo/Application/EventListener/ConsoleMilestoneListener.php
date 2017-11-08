@@ -38,26 +38,30 @@ class ConsoleMilestoneListener extends AbstractListener {
         $pid = $post->owner_id;
         // Get de post Milestone
         $post_milestone = ProjectMilestone::get($pid, $post->id);
-
+        $errors = [];
         if($post->publish && !$post_milestone)
         {
             $this->info("Creating milestone for publish post", [$post]);
             //Insert milestone
-            $project_milestone= new ProjectMilestone;
-            $project_milestone->project=$pid;
-            $project_milestone->post=$post->id;
-            $project_milestone->date=$post->date;
+            $project_milestone = new ProjectMilestone;
+            $project_milestone->project = $pid;
+            $project_milestone->post = $post->id;
+            $project_milestone->date = $post->date;
             $project_milestone->save($errors);
+            // print_r($project_milestone);print_r($errors);die;
         }
         elseif(!$post->publish)
         {
             $this->info("Deleting milestone for publish post", [$post]);
             //Delete milestone
-            $project_milestone= new ProjectMilestone;
-            $project_milestone->project=$pid;
-            $project_milestone->post=$post->id;
+            $project_milestone = new ProjectMilestone;
+            $project_milestone->project = $pid;
+            $project_milestone->post = $post->id;
             $project_milestone->removePostMilestone($errors);
 
+        }
+        if($errors) {
+            $this->error("Error creating milestone for publish post", [$post, $project_milestone, 'errors' => $errors]);
         }
 
     }

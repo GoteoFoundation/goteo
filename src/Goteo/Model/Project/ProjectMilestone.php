@@ -50,7 +50,7 @@ namespace Goteo\Model\Project {
                 return false;
         }
 
-		public static function getAll ($project, $lang = null) {
+		public static function getAll ($project, $lang = null, $model_lang = null) {
             try {
 
                 $values = [':project'=>$project];
@@ -73,7 +73,7 @@ namespace Goteo\Model\Project {
                     else
                     {
                         $item->type='post';
-                        $item->post=Post::get($item->post, $lang);
+                        $item->post=Post::get($item->post, $lang, $model_lang);
                     }
 
                         $array[] = $item;

@@ -211,6 +211,8 @@ mail:
     quota:
         total: 50000  # Maximum sending quota in 24 hours time (useful for SMTP servers like Amazon SES)
         sender: 40000 # Part of this quota used by newsletter mailing
+        send_rate: 10  # Maximum number of mails per second to be send in mailing
+        concurrency: 10 # Maximum number of processes to be executed in parallel to send mailing
 
     # Amazon SNS key to process automatic bounces: 'arn:aws:sns:us-east-1:XXXXXXXXX:amazon-ses-bounces'
     # URL mus be: goteo_url.tld/aws-sns.php
@@ -228,6 +230,8 @@ geolocation:
     # Un comment next 2 lines if you have it installed and working:
     # maxmind:
     #    cities: /usr/share/GeoIP/GeoLite2-City.mmdb
+    google_maps_key: # Google Maps Key
+                     # Ge one here: https://developers.google.com/maps/documentation/javascript/get-api-key
 
 # Social Login Services
 # Fill an uncomment the needed one's

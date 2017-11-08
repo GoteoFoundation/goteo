@@ -41,6 +41,8 @@ class ChannelController extends \Goteo\Core\Controller {
     {
         $channel = Node::get($id);
 
+        View::setTheme('responsive');
+
         //Check if the user can access to the channel
         $user = Session::getUser();
 
@@ -105,7 +107,7 @@ class ChannelController extends \Goteo\Core\Controller {
         }
         else {
             // if no promotes let's show some random projects...
-            $limit = 10;
+            $limit = 9;
             $total = $limit;
             $list = Project::published(['type' => 'random'], $id, 0, $limit);
         }
@@ -133,7 +135,7 @@ class ChannelController extends \Goteo\Core\Controller {
     {
         $this->setChannelContext($id);
 
-        $limit = 10;
+        $limit = 9;
         $status=[3,4,5];
         $filter = ['type' => $type, 'popularity' => 5, 'status' => $status ];
 

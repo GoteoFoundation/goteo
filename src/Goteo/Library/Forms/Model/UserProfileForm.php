@@ -65,7 +65,12 @@ class UserProfileForm extends AbstractFormProcessor implements FormProcessorInte
     public function createForm() {
         $non_public = '<i class="fa fa-eye-slash"></i> '. Text::get('project-non-public-field');
         $user = $this->getModel();
-        $builder = $this->getBuilder()
+
+        $builder = $this->getBuilder();
+        $options = $builder->getOptions();
+        $defaults = $options['data'];
+        // print_r($defaults);die;
+        $builder
             ->add('name', 'text', [
                 'disabled' => $this->getReadonly(),
                 'constraints' => $this->getConstraints('name'),
@@ -250,13 +255,9 @@ class UserProfileForm extends AbstractFormProcessor implements FormProcessorInte
         $data = $form->getData();
         $user = $this->getModel();
         // print_r($data);die;
-
-        // maintain test interest
-        if (in_array('15', $user->interests)) $data['interests'][] = '15';
-
         // Process main image
         if(is_array($data['avatar'])) {
-            $data['avatar'] = current($data['avatar']);
+            $data['avatar'] = reset($data['avatar']);
         }
         $user->user_avatar = $data['avatar'];
         if($user->user_avatar && $err = $user->user_avatar->getUploadError()) {
@@ -265,6 +266,13 @@ class UserProfileForm extends AbstractFormProcessor implements FormProcessorInte
         }
         // $data['user_avatar'] = $data['avatar'];
         unset($data['avatar']); // do not rebuild data using this
+
+        // Process interests
+        // Add "test" interes to those who already have it
+        if (array_key_exists('15', $user->interests)) $data['interests'][] = '15';
+        $data['interests'] = array_map(function($el) {
+                return new Interest(['interest' => $el]);
+            }, $data['interests']);
 
         // Process webs
         $data['webs'] = array_map(function($el) {

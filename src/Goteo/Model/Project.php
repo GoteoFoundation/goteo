@@ -22,7 +22,8 @@ namespace Goteo\Model {
         Goteo\Library\Text,
         Goteo\Library\Feed,
         Goteo\Library\Currency,
-        Goteo\Model\Project\Account
+        Goteo\Model\Project\Account,
+        Goteo\Model\Project\ProjectLocation
         ;
 
     class Project extends \Goteo\Core\Model {
@@ -268,7 +269,7 @@ namespace Goteo\Model {
                 return true;
             }
             // is superadmin in the project node
-            if($user->hasRoleInNode($this->node, ['superadmin', 'root'])) return true;
+            if($user->hasRoleInNode($this->node, ['manager', 'superadmin', 'root'])) return true;
             // is a consultant
             if($user->hasRoleInNode($this->node, ['consultant', 'admin']) && array_key_exists($user->id, $this->getConsultants())) return true;
             // is reviewer
@@ -1519,6 +1520,16 @@ namespace Goteo\Model {
                 // lang, currency, currency_rate
                 $this->setCurrency();
 
+                if($this->project_location instanceOf ProjectLocation) {
+                    $this->project_location->id = $this->id;
+                    if($this->project_location->save($errors)) {
+                        $this->project_location = $this->project_location->location ? $this->project_location->location : $this->project_location->name;
+                    } else {
+                        $fail = true;
+                        unset($this->project_location);
+                    }
+
+                }
 
                 $fields = array(
                     'contract_name',

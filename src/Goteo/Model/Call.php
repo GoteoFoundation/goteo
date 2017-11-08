@@ -395,11 +395,7 @@ namespace Goteo\Model {
 
                 $sql = "
                   SELECT
-                    call.id as id,
-                    call.name as name,
-                    call.owner as owner,
-                    call.lang as lang,
-                    call.status as status,
+                    `call`.*,
                     user.name as user_name,
                     user.email as user_email,
                     user.avatar as user_avatar,
@@ -620,6 +616,7 @@ namespace Goteo\Model {
                     'maxproj',
                     'modemaxp',
                     'fee_projects_drop',
+                    'facebook_pixel',
                     'days'
                 );
 
@@ -2028,7 +2025,7 @@ namespace Goteo\Model {
                     AND sphere_lang.lang = :lang
                 $eng_join
                 $sqlFilter
-                ORDER BY sphere.name ASC";
+                ORDER BY call_sphere.order ASC";
             // die(\sqldbg($sql, $values));
             $query = static::query($sql, $values);
             foreach ($query->fetchAll(\PDO::FETCH_OBJ) as $item) {

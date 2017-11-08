@@ -220,6 +220,11 @@
     color: $secondary-color;
     background: $background-light-body;
     tr {
+        &.strikethrough {
+            td {
+                text-decoration: line-through;
+            }
+        }
         th,td {
             padding: 10px 5px;
             &:first-child {
@@ -528,6 +533,16 @@
         font-size: 92%;
     }
   }
+  .pool-container {
+    padding-left:5%;
+    padding-right:5%;
+    .pool-box {
+        input[type="number"] {
+            margin-right: 10px;
+            max-width: 190px;
+        }
+    }
+  }
   .pool-box {
     // width: 100%;
     // padding:2%;
@@ -574,9 +589,24 @@
         color: $color-dark;
         float: left;
         // min-width: 101px;
-        max-width: 80%;
+        // max-width: 80%;
         // max-width: calc(100% - 202px);
+        transition: width .6s ease, min-width .6s ease, max-width .6s ease;
+
+        &.min {
+            width: 45%;
+            >span {
+                margin-right: 10px;
+            }
+        }
+        &.opt {
+            width: 30%;
+            >span {
+                margin-right: 10px;
+            }
+        }
         &.total {
+            width: auto;
             float: right;
             text-align: right;
         }

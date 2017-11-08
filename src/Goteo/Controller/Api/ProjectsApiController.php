@@ -529,13 +529,13 @@ class ProjectsApiController extends AbstractApiController {
         if(!$prj->userCanEdit($this->user)) {
             throw new ControllerAccessDeniedException();
         }
-        if(!$prj->isAlive()) {
+        if(!$prj->isApproved()) {
             throw new ControllerAccessDeniedException(Text::get('dashboard-project-not-alive-yet'));
         }
 
         $limit = 10;
         $order = 'invested DESC';
-        $filter = ['projects' => $prj->id, 'status' => [Invest::STATUS_CHARGED, Invest::STATUS_PAID]];
+        $filter = ['projects' => $prj->id, 'status' => [Invest::STATUS_CHARGED, Invest::STATUS_PAID, Invest::STATUS_RETURNED, Invest::STATUS_RELOCATED, Invest::STATUS_TO_POOL]];
         $total = Invest::getList($filter, null, 0, 0, true);
 
         $response = new StreamedResponse(function () use ($filter, $total, $limit, $order) {
@@ -545,6 +545,7 @@ class ProjectsApiController extends AbstractApiController {
                      Text::get('regular-name'),
                      Text::get('regular-email'),
                      Text::get('regular-amount'),
+                     Text::get('regular-status'),
                      Text::get('dashboard-rewards-issue'),
                      Text::get('dashboard-rewards-resigns'),
                      Text::get('regular-anonymous'),
@@ -583,6 +584,7 @@ class ProjectsApiController extends AbstractApiController {
                              $name,
                              $email,
                              number_format($inv->amount, 2, ',', ''),
+                             $inv->getStatusText(true),
                              Text::get('regular-' . ($inv->issue ? 'yes' : 'no')),
                              Text::get('regular-' . ($resign ? 'yes' : 'no')),
                              Text::get('regular-' . ($inv->anonymous ? 'yes' : 'no')),

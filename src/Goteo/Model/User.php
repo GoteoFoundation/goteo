@@ -27,6 +27,7 @@ use Goteo\Model\Template;
 use Goteo\Model\User\Pool as UserPool;
 use Goteo\Model\User\UserLocation;
 use Goteo\Model\User\Web as UserWeb;
+use Goteo\Model\User\Interest as UserInterest;
 
 class User extends \Goteo\Core\Model {
 
@@ -282,26 +283,17 @@ class User extends \Goteo\Core\Model {
                     $data[':legal_entity'] = $this->legal_entity;
                 }
 
-                // Intereses
-                $interests = User\Interest::get($this->id);
+                // Interests
+                static::query('DELETE FROM user_interest WHERE user= ?', $this->id);
                 if (!empty($this->interests)) {
                     foreach ($this->interests as $interest) {
-                        if (!in_array($interest, $interests)) {
-                            $_interest = new User\Interest();
-                            $_interest->id = $interest;
-                            $_interest->user = $this->id;
-                            $_interest->save($errors);
-                            $interests[] = $_interest;
+                        if ($interest instanceof UserInterest) {
+                            $interest->user = $this->id;
+                            $interest->save($errors);
                         }
                     }
-                }
-                foreach ($interests as $key => $interest) {
-                    if (!in_array($interest, $this->interests)) {
-                        $_interest = new User\Interest();
-                        $_interest->id = $interest;
-                        $_interest->user = $this->id;
-                        $_interest->remove($errors);
-                    }
+                    $this->interests = UserInterest::get($this->id);
+                    // print_r($this->interests);die;
                 }
 
                 // Webs
@@ -725,7 +717,7 @@ class User extends \Goteo\Core\Model {
 
             $user->roles = $user->getRoles();
             $user->avatar = Image::get($user->user_avatar);
-            $user->interests = User\Interest::get($id);
+            $user->interests = UserInterest::get($id);
 
             // campo calculado tipo lista para las webs del usuario
             $user->webs = UserWeb::get($id);

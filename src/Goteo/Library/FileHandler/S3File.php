@@ -387,7 +387,9 @@ namespace Goteo\Library\FileHandler {
             $remote = $this->get_path($name);
             $info = $this->link->getObjectInfo($this->bucket, $remote);
             while($info !== false) {
-                $name = preg_replace ( "/^(.+?)(_|-?)(\d*)(\.[^.]+)?$/e", "'\$1-'.(\$3+1).'\$4'", $name );
+                $name = preg_replace_callback("/^(.+?)(_|-?)(\d*)(\.[^.]+)?$/", function($matches) {
+                        return $matches[1] . '-' . ($matches[3] + 1) . '.' . $matches[4];
+                    }, $name);
                 $remote = $this->get_path($name);
                 $info = $this->link->getObjectInfo($this->bucket, $remote);
             }

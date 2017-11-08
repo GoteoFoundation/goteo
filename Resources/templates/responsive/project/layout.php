@@ -192,10 +192,11 @@ $this->section('content');
 
             $('table.footable').footable();
             var url = e.currentTarget.location.href;
-            var section=url.split('/').pop();
+            var section = 'home';
+            if(url.indexOf('/updates') !== -1) section = 'updates';
+            if(url.indexOf('/participate') !== -1) section = 'participate';
+            // console.log('section', section);
 
-            if(section!="updates" && section!="participate" )
-                section="home";
             $("."+section).addClass("current");
 
             $("a.accordion-toggle").click(function(){
@@ -363,7 +364,7 @@ $this->section('content');
 // @license-end
 </script>
 
-<?= $this->insert('project/partials/facebook_pixel.php', ['project' => $project]) ?>
+<?= $this->insert('partials/facebook_pixel', ['pixel' => $this->project->facebook_pixel]) ?>
 
 <?php $this->append() ?>
 

@@ -6,6 +6,7 @@ $this->section('dashboard-content-pool');
 
 ?>
 
+<div class="pool-container">
 
 	<h2 class="padding-bottom-2"><?= $this->text('pool-share-title') ?></h2>
 	<div class="reminder">
@@ -45,5 +46,7 @@ $this->section('dashboard-content-pool');
   		</div>
 
 		</div>
+
+</div>
 
 <?php $this->replace() ?>

@@ -96,14 +96,16 @@
 
 
       ?>
-        <tr>
+        <tr<?= $invest->isCharged() ? '' : ' class="strikethrough"'?>>
           <td><?= $invest->id ?></td>
           <td><?= date_formater($invest->invested) ?></td>
           <td><?php if($uid): ?><img src="<?= $invest->getUser()->avatar->getLink(30, 30, true) ?>" alt="<?= $name ?>" class="img-circle"> <?= $name ?><?php else: ?><?= $this->text('regular-anonymous') ?><?php endif ?> </td>
           <td><?= amount_format($invest->amount) ?></td>
           <td><?= $reward ?></td>
           <td>
-              <?php if($invest->resign): ?>
+              <?php if(!$invest->isCharged()): ?>
+                <span class="label label-danger"><?= $invest->getStatusText(true) ?></span>
+              <?php elseif($invest->resign): ?>
                 &nbsp;
               <?php elseif($invest->fulfilled): ?>
                 <span class="label label-cyan"><?= $this->text('regular-yes') ?></span>

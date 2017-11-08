@@ -19,7 +19,7 @@ use Goteo\Application\View;
 use Goteo\Model\Project;
 use Goteo\Model\Project\Reward;
 use Goteo\Model\User;
-use Goteo\Model\User\Interest;
+use Goteo\Model\User\Interest as UserInterest;
 
 class AjaxDashboardController extends \Goteo\Core\Controller {
 
@@ -38,19 +38,19 @@ class AjaxDashboardController extends \Goteo\Core\Controller {
         $limit = (int)$request->query->get('limit');
         if(empty($limit)) $limit = 6;
 
-        $user = Session::getUser();
-
-        $interests = Interest::getAll();
+        $user = User::get(Session::getUserId());
 
         if ($request->isMethod('post')) {
             $interest = $request->request->get('id');
             $value = $request->request->get('value');
             if($value) {
-                $user->interests[$interest] = $interest;
+                $user->interests[$interest] = new UserInterest(['interest' => $interest]);
             } else {
                 unset($user->interests[$interest]);
             }
+            // print_r($user->interests);die("$interest $value");
             $user->save();
+            User::flush();
         }
 
         //proyectos que coinciden con mis intereses

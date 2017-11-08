@@ -10,6 +10,7 @@ $this->section('content');
         <div class="panel-heading"><h3 class="panel-title"><?= $this->raw('title') ?></h3></div>
         <div class="panel-body">
             <?= $this->supply('error-debug') ?>
+            <p class="text-muted"><?= $this->get_uri() ?></p>
         </div>
     </div>
 
