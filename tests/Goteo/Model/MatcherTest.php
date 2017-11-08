@@ -63,6 +63,23 @@ class MatcherTest extends TestCase {
 
         return $ob;
     }
+    /**
+     * @depends testCreate
+     */
+    public function testVars($ob) {
+        $vars = ['var1' => 'Var 1', 'var2' => 'Var 2'];
+        $this->assertTrue($ob->setVars($vars)->save());
+        $this->assertCount(2, (array)$ob->getVars());
+        $this->assertEquals('Var 1', $ob->getVars()->var1);
+        $this->assertEquals('Var 2', $ob->getVars()->var2);
+        $ob2 = Matcher::get($ob->id);
+        $this->assertInstanceOf('\Goteo\Model\Matcher', $ob2);
+        $this->assertCount(2, (array)$ob2->getVars());
+        $this->assertEquals('Var 1', $ob2->getVars()->var1);
+        $this->assertEquals('Var 2', $ob2->getVars()->var2);
+        // $ob2 = Matcher
+        return $ob;
+    }
 
     /**
      * @depends testCreate
