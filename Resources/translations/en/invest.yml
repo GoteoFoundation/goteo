@@ -108,3 +108,11 @@ project-see-msg: 'See your message'
 invest-no-register: 'Skip this step, I just want to contribute'
 invest-user-not-ghost: 'This email belongs to an existing user!'
 invest-user-name-or-anonymous: 'Name is mandatory unless you want to donate anonymously'
+
+matcher-duplicateinvest-max_amount_per_project: 'Maximum total amount to be donated per project'
+matcher-duplicateinvest-max_amount_per_invest: 'Maximum multiply per invest'
+matcher-duplicateinvest-max_invests_per_user: 'Maximum number of invests per user that will be multiplied'
+matcher-duplicateinvest-rules: >
+    This processor multiplies x2 any invest by any user
+
+    Maximum total amount per project, maximum amount per invest and max number of invests per user can be configured

@@ -107,3 +107,11 @@ invest-status-to-pool: 'Al moneder'
 invest-no-register: 'Saltar aquest pas, només vull contribuir'
 invest-user-not-ghost: 'Aquest email pertany a un usuari existent!'
 invest-user-name-or-anonymous: 'El nom és obligatori si no vols fer una aportació anònima'
+
+matcher-duplicateinvest-max_amount_per_project: 'Quantitat màxima que es donarà per projecte'
+matcher-duplicateinvest-max_amount_per_invest: 'Quantitat màxima per aportació'
+matcher-duplicateinvest-max_invests_per_user: 'Número màxim d''aportacions por usuari que es multiplicaran'
+matcher-duplicateinvest-rules: >
+    Aquest processador multiplica x2 qualsevol aportació de qualsevol usuari
+
+    El total màxim por projecte, la quantitat màxima por aportació i el número màxim d'aportacions per usuari es poden configurar

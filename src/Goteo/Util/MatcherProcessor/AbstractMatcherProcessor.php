@@ -28,9 +28,25 @@ abstract class AbstractMatcherProcessor implements MatcherProcessorInterface {
         $this->setMatcher($matcher);
     }
 
+    /**
+     * Default implementation is just the name of the class simplified
+     */
     static public function getId() {
         $parts = explode('\\', get_called_class());
         return preg_replace('/(matcherprocessor$)/', '', strtolower(array_pop($parts)));
+    }
+
+    /**
+     * Default implementation is the name of the class made human readable
+     */
+    static public function getName() {
+        $parts = explode('\\', get_called_class());
+        $name = preg_replace('/(MatcherProcessor$)/', '', array_pop($parts));
+        return preg_replace('/(?!^)[[:upper:]]+/',' \0', $name);
+    }
+
+    static public function getDesc() {
+        return '';
     }
 
     static public function is(Matcher $matcher) {
@@ -128,7 +144,7 @@ abstract class AbstractMatcherProcessor implements MatcherProcessorInterface {
                     'resign'    => false,
                     'campaign'  => true,
                     'drops'     => $invest->id,
-                    // 'matcher'      => $matcher->id
+                    'matcher'   => $matcher->id
                 ]);
             }
             return $list;

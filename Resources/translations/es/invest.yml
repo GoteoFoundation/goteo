@@ -108,3 +108,11 @@ warning_nojavascript: 'Habilita javascript desde la configuración de privacidad
 invest-no-register: 'Saltar este paso, sólo quiero aportar'
 invest-user-not-ghost: 'Este email pertenece a un usuario existente!'
 invest-user-name-or-anonymous: 'El nombre es obligatorio si no quieres hacer una aportación anónima'
+
+matcher-duplicateinvest-max_amount_per_project: 'Cantidad máxima que se donará por proyecto'
+matcher-duplicateinvest-max_amount_per_invest: 'Cantidad máxima por aporte'
+matcher-duplicateinvest-max_invests_per_user: 'Número máximo de aportes por usuario que se multiplicarán'
+matcher-duplicateinvest-rules: >
+    Este procesador multiplica x2 cualquier aporte de cualquier usuario
+
+    El total máximo por proyecto, la cantidad máxima por aporte y el número máximo de aportes por usuario se pueden configurar

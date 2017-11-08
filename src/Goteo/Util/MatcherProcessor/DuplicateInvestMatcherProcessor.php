@@ -13,6 +13,7 @@ namespace Goteo\Util\MatcherProcessor;
 use Goteo\Util\MatcherProcessor\AbstractMatcherProcessor;
 use Goteo\Util\MatcherProcessor\MatcherProcessorException;
 use Goteo\Model\Matcher;
+use Goteo\Library\Text;
 use Goteo\Model\Invest;
 
 /**
@@ -27,10 +28,14 @@ class DuplicateInvestMatcherProcessor extends AbstractMatcherProcessor {
 
     static public function getVarLabels() {
         return [
-            'max_amount_per_project' => 'Maximum total amount to be multiplied per project',
-            'max_amount_per_invest' => 'Maximum multiply per invest',
-            'max_invests_per_user' => 'Maximum number of invests per user in the project'
+            'max_amount_per_project' => Text::get('matcher-duplicateinvest-max_amount_per_project'),
+            'max_amount_per_invest' => Text::get('matcher-duplicateinvest-max_amount_per_invest'),
+            'max_invests_per_user' => Text::get('matcher-duplicateinvest-max_invests_per_user')
         ];
+    }
+
+    static public function getDesc() {
+        return Text::get('matcher-duplicateinvest-rules');
     }
 
     /**

@@ -60,7 +60,7 @@ class InvestMatcherListener extends AbstractListener {
 	public static function getSubscribedEvents() {
 		return array(
             AppEvents::INVEST_SUCCEEDED => ['onInvestSuccess', -2], // low priority (after general processing)
-            AppEvents::INVEST_INIT_REQUEST => ['onInvestSuccess', -2], // for testing only
+            // AppEvents::INVEST_INIT_REQUEST => ['onInvestSuccess', -2], // for testing only
 		);
 	}
 }

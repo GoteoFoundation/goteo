@@ -17,6 +17,7 @@ use Goteo\Model\Matcher;
 use Goteo\Model\User;
 use Goteo\Model\Project;
 use Goteo\Model\Invest;
+use Goteo\Library\Text;
 
 class DuplicateInvestMatcherProcessorTest extends TestCase {
     private static $data = ['id' => 'matchertest', 'name' => 'Matcher test', 'processor' => 'duplicateinvest'];
@@ -100,6 +101,15 @@ class DuplicateInvestMatcherProcessorTest extends TestCase {
     public function testId($processor) {
         $this->assertEquals('duplicateinvest', $processor::getId());
         $this->assertTrue($processor::is($processor->getMatcher()));
+    }
+
+
+    /**
+     * @depends testInstance
+     */
+    public function testName($processor) {
+        $this->assertEquals('Duplicate Invest', $processor::getName());
+        $this->assertEquals(Text::get('matcher-duplicateinvest-rules'), $processor::getDesc());
     }
 
     /**
@@ -228,13 +238,13 @@ class DuplicateInvestMatcherProcessorTest extends TestCase {
      * @depends testCreate
      */
     public function testDelete($matcher) {
+        // Delete invests
+        Matcher::query("DELETE FROM invest WHERE project=?", get_test_project()->id);
         $this->assertTrue($matcher->dbDelete());
 
         return $matcher;
     }
     public function testCleanUsers() {
-        // Delete invests
-        Matcher::query("DELETE FROM invest WHERE project=?", get_test_project()->id);
 
         foreach(self::$user_data as $user) {
             echo "\nDeleting user [{$user[userid]}]";
