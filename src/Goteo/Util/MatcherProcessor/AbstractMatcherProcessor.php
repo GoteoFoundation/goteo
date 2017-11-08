@@ -105,7 +105,8 @@ abstract class AbstractMatcherProcessor implements MatcherProcessorInterface {
         $vars = $this->getVars();
 
         // Ensure is enough amount
-        if($amount = $this->getAmount()) {
+        $error = '';
+        if($amount = $this->getAmount($error)) {
 
             // Check if there's enough total to extract from user's pool
             if($matcher->getTotalAmount() < $amount) {
@@ -133,7 +134,7 @@ abstract class AbstractMatcherProcessor implements MatcherProcessorInterface {
             return $list;
 
         }
-        throw new MatcherProcessorException("Amount to match is zero due internal rules");
+        throw new MatcherProcessorException("No amount for this matcher: " . $error);
     }
 
     public function setMatcher(Matcher $matcher) {

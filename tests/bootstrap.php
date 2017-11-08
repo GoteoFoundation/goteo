@@ -125,12 +125,11 @@ function delete_test_user() {
 function get_test_project() {
     $data = array(
         'id' => '012-simulated-project-test-210',
-        'name' => '012 Simulated Project Test 210'
+        'name' => '012 Simulated Project Test 210',
+        'node' => get_test_node()->id,
+        'owner' => get_test_user()->id
     );
-    $data['node'] = get_test_node()->id;
-    $data['owner'] = get_test_user()->id;
     // if exists, return the project
-
     try {
         return \Goteo\Model\Project::get($data['id']);
     }
