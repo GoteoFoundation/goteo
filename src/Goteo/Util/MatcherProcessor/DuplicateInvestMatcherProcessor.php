@@ -14,7 +14,6 @@ use Goteo\Util\MatcherProcessor\AbstractMatcherProcessor;
 use Goteo\Util\MatcherProcessor\MatcherProcessorException;
 use Goteo\Model\Matcher;
 use Goteo\Model\Invest;
-use Goteo\Payment\Method\PoolPaymentMethod;
 
 /**
  * This Processor duplicates invests with some (customizable) limits
@@ -33,12 +32,6 @@ class DuplicateInvestMatcherProcessor extends AbstractMatcherProcessor {
             'max_invests_per_user' => 'Maximum number of invests per user in the project'
         ];
     }
-
-    /**
-     */
-    // public function getAmount() {
-
-    // }
 
     /**
      * Checks if this invests has to be multiplied and
@@ -66,51 +59,13 @@ class DuplicateInvestMatcherProcessor extends AbstractMatcherProcessor {
             $amount = 0;
         }
 
+        // Check if there's enough total to extract from user's pool
         if($matcher->getTotalAmount() < $amount) {
             $amount = $matcher->getTotalAmount();
         }
 
         return $amount;
 
-    }
-
-    public function getInvests() {
-        $matcher = $this->getMatcher();
-        $invest = $this->getInvest();
-        $project = $this->getProject();
-        // $method = $this->getMethod();
-        $vars = $this->getVars();
-
-        // Ensure is enough amount
-        if($amount = $this->getAmount()) {
-
-            // Check if there's enough total to extract from user's pool
-            if($matcher->getTotalAmount() < $amount) {
-                throw new MatcherProcessorException("Not enough amount to match");
-            }
-
-            $list = [];
-            foreach($this->getUserAmounts($amount) as $user_id => $user_amount) {
-                $list[] = new Invest([
-                    'amount'    => $user_amount,
-                    'user'      => $user_id,
-                    'currency'  => $invest->currency,
-                    'currency_rate' => $invest->currency_rate,
-                    'project'   => $project->id,
-                    'method'    => PoolPaymentMethod::getId(),
-                    'status'    => $invest->status,
-                    'invested'  => date('Y-m-d'),
-                    'anonymous' => false,
-                    'resign'    => false,
-                    'campaign'  => true,
-                    'drops'     => $invest->id,
-                    // 'matcher'      => $matcher->id
-                ]);
-            }
-            return $list;
-
-        }
-        throw new MatcherProcessorException("Amount to match is zero due internal rules");
     }
 
 }

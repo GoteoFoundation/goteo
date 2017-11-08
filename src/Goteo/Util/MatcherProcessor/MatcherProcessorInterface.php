@@ -96,7 +96,13 @@ interface MatcherProcessorInterface {
     public function getMethod();
 
     /**
-     * Returns a list of additional invests if matcher logic applies
+     * Returns the total amount to be added
+     * @return int amount to add in form of extra invests
+     */
+    public function getAmount();
+
+    /**
+     * Returns a list of additional invests corresponding to the totalAmount
      * @return array lists of invests
      */
     public function getInvests();
