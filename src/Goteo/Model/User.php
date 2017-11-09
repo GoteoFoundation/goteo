@@ -1279,7 +1279,6 @@ class User extends \Goteo\Core\Model {
         if (!is_array($check_roles)) {
             $check_roles = [(string) $check_roles];
         }
-
         foreach ($this->getAllNodeRoles() as $n => $roles) {
             if ($node === $n && array_intersect($roles, $check_roles)) {
                 return true;
