@@ -69,7 +69,7 @@ class Config {
 			}
 
             \Goteo\Application\View::setTheme('responsive');
-			die(\Goteo\Application\View::render('errors/config', ['msg' => $e->getMessage(), 'info' => $info, 'file' => $file, 'code' => $code], $code));
+			die(\Goteo\Application\View::render('errors/config', ['msg' => $e->getMessage(), 'info' => $info, 'file' => $file, 'code' => $code], false));
 			return;
 		}
 	}
