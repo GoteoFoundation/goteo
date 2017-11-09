@@ -154,6 +154,8 @@ CREATE TABLE `matcher` (
   `processor` varchar(50) NOT NULL DEFAULT '' COMMENT 'ID for the MatcherProcessor that handles the logic of this matcher',
   `vars` text NOT NULL COMMENT 'Customizable vars to be used in the processor',
   `amount` int(10) unsigned NOT NULL DEFAULT '0',
+  `used` int(10) unsigned NOT NULL DEFAULT '0',
+  `crowd` int(10) unsigned NOT NULL DEFAULT '0',
   `projects` int(10) unsigned NOT NULL DEFAULT '0',
   `created` date DEFAULT NULL,
   `modified_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,

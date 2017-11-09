@@ -1,3 +1,4 @@
+<?php if(!$this->summary) return; ?>
 <div class="summary-matchfunding-section" >
 	<div class="container-fluid summary">
 		<!--<h2 class="section-title">
