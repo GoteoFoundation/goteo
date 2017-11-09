@@ -125,6 +125,15 @@
     }
 }
 
+.btn-transparent {
+    background-color: transparent;
+    color: $color-white;
+    border: 1px solid $color-white;
+    &:hover {
+        background-color:darken($color-white, 10%);
+    }
+}
+
 button.pink{
     background-color: $background-pink;
     font-size:1.2em;

@@ -3,10 +3,23 @@
 /* Channel */
 
 body.channel {
+
+    .top-navbar{
+      background-color: $color-white;
+    }
+    .top-navbar .navbar-always > a, .top-navbar .navbar-always > a i.icon, .top-navbar .navbar-always > button{
+      color: $primary-color;
+      background-color: transparent;
+    }
+
+    .top-navbar .navbar-always > a i.icon{
+      background-color: $primary-color;
+    }
+
     #main {
-        background-color: $background-light-grey;
+        background-color: $background-light-body;
         #main-content {
-            background-color: $background-white;
+            background-color: $background-light-body;
         }
 
         .container-fluid {
@@ -30,33 +43,212 @@ body.channel {
   }
 
   @media (max-width: $breakpoint-xs - 1) {
-    font-size: 10px !important;
+    //font-size: 10px !important;
   }
 
   @media (max-width: $breakpoint-xxs - 1) {
-    font-size: 9px !important;
+    //font-size: 9px !important;
   }
 
-  .owner-info{
-        margin-top: 20px;
-        color: #FFF;
-        position: relative;
+  .section-title{
+    font-size: $font-size*2.2;
+    font-weight: 700;
+    text-align: center;
+    padding-top: 20px;
+  }
 
-        .row{
-          display: flex;
-          .col-center{
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-          }
+  .summary-matchfunding-section{
+    background-color: $color-white;
+    .summary{
+      padding-bottom: 40px;
+      padding-top: 10px;
+      .item{
+        margin-top: 25px;
+        text-align: center;
+        font-size: $font-size*2.7;
+        font-weight: 700;
+        &.matchfunding{
+          color: $color-lilac;
+          font-weight: bold;
         }
-
-        .social{
-          position: absolute;
-          top:30px;
-          right: 30px;           
-        }
+      }
+      .description{
+        font-size: $font-size*0.8;
+        font-weight: 400;
+        text-transform: uppercase;
+      }
     }
+  }
+
+  .owner-section{
+    background-color: $background-white;
+    padding:40px 0;
+    .owner-info{
+          color: #FFF;
+          margin-bottom: 0;
+
+          .channel-name{
+            font-size: $font-size*2.1;
+          }
+
+          .channel-description{
+            font-size: $font-size*1.2;
+            max-width: 80%;
+          }
+
+          .channel-location{
+            font-size: $font-size*1.5;
+            float: left;
+          }
+
+          .row{
+            display: flex;
+            .col-center{
+              display: flex;
+              flex-direction: column;
+              justify-content: center;
+            }
+          }
+
+          .social{
+            float: right;
+            top:30px;
+            right: 30px;           
+          }
+    }
+  }
+
+  .call-action-section{
+    padding: 30px 0;
+    opacity: 0.8;
+    .row{
+      display: flex;
+      color: $color-white;
+      .title {
+        text-transform: uppercase;
+      }
+      .description {
+          font-weight: 700;
+          font-size: $font-size*1.8;
+      }
+      .col-button{
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+      }
+
+    }
+
+  }
+
+  .matchfunding-money-section{
+    background: linear-gradient(to bottom,#b065aa ,#c56093);
+    color: #fff;
+    padding: 30px;
+    height: 170px;
+    h3.title {
+      margin-top: 0;
+      font-size: 20px;
+      font-weight: 700;
+    }
+    div.amount {
+      color: #333;
+      font-size: 35px;
+      font-weight: 700;
+    }
+  }
+
+  .projects-section{
+    padding-bottom: 40px;
+    .filters {
+      margin: 40px 0 35px 0;
+      a > li {
+          font-weight: 700;
+          padding: 5px 15px;
+          cursor: pointer;
+          display: inline-block;
+          color: $primary-color;
+          &.active{
+            background-color: #19b4b2;
+            border-radius: 5px;
+            color: $color-white !important;
+          }
+      }
+    }
+  }
+
+  .box{
+    background-color: $background-white;
+    box-shadow: 1px 2px 6px -2px $color-dark;
+    padding: 3%;
+    border-radius: 10px;
+    width: 100%;
+  }
+
+  .pagination{
+    clear: both;
+    margin-left: 15px;
+    padding-top: 30px;
+    display: block;
+  }
+
+  .modal-dialog{
+    width: 760px;
+  }
+
+  @media (max-width: $breakpoint-xs - 1) {
+    .modal-dialog {
+      width: auto;
+    }
+    .owner-section{
+      .owner-info{
+            .channel-name{     
+            }
+
+            .channel-description{
+              max-width: 100%;
+            }
+
+            .channel-location{
+              display: block;
+              float: none;
+            }
+
+            .row{
+              display: block;
+              text-align: center;
+              .col-center{
+                display: block;
+              }
+            }
+
+            .social{
+              float: none;
+              top:30px;
+              right: 30px;           
+            }
+      }
+    }
+
+    .call-action-section{
+      .row{
+        display: block;
+        text-align: center;
+        .title {
+          font-size: $font-size*1.2;
+        }
+        .description {
+        }
+        .col-button{
+          display: block;
+          margin-top: 20px;
+        }
+
+      }
+    }
+
+
+  }
 
 }
 
