@@ -31,6 +31,27 @@ class Node extends \Goteo\Core\Model {
         $sponsors_limit;
 
 
+    public function __construct() {
+        $args = func_get_args();
+        call_user_func_array(array('parent', '__construct'), $args);
+
+        // y sus administradores
+        $this->admins = self::getAdmins($this->id);
+        // pojects
+
+        $this->summary = $this->getSummary();
+
+        // logo
+        $this->logo = (!empty($this->logo)) ? Image::get($this->logo) : null;
+
+        // label
+        $this->label = (!empty($this->label)) ? Image::get($this->label) : null;
+
+        // home img
+        $this->home_img = (!empty($this->home_img)) ? Image::get($this->home_img) : $this->logo;
+
+    }
+
 
     /**
      * Obtener datos de un nodo
@@ -75,18 +96,6 @@ class Node extends \Goteo\Core\Model {
         if (!$item instanceof Node) {
             throw new Exception\ModelNotFoundException(Text::get('fatal-error-node'));
         }
-
-        // y sus administradores
-        $item->admins = self::getAdmins($id);
-
-        // logo
-        $item->logo = (!empty($item->logo)) ? Image::get($item->logo) : null;
-
-        // label
-        $item->label = (!empty($item->label)) ? Image::get($item->label) : null;
-
-        // label
-        $item->home_img = (!empty($item->home_img)) ? Image::get($item->home_img) : null;
 
         return $item;
     }
@@ -149,7 +158,7 @@ class Node extends \Goteo\Core\Model {
         }
 
         if (!empty($filters['type'])) {
-                if($filters['type'] == 'channel') 
+                if($filters['type'] == 'channel')
                     $sqlFilter .= " AND url = ''";
                 else
                     $sqlFilter .= " AND url != ''";
@@ -173,22 +182,7 @@ class Node extends \Goteo\Core\Model {
             ORDER BY `name` ASC
             ");
 
-        foreach ($sql->fetchAll(\PDO::FETCH_CLASS, __CLASS__) as $item) {
-            // y sus administradores
-            $item->admins = self::getAdmins($item->id);
-
-            if (!empty($item->home_img)) {
-                    $item->home_img = Image::get($item->home_img);
-                }
-
-            // pojects
-           
-            $item->summary = $item->getSummary();
-
-            $list[] = $item;
-        }
-
-        return $list;
+        return $sql->fetchAll(\PDO::FETCH_CLASS, __CLASS__);
     }
 
     /*
