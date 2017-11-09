@@ -268,6 +268,7 @@ namespace Goteo\Model {
                 }
                 return true;
             }
+
             // is superadmin in the project node
             if($user->hasRoleInNode($this->node, ['manager', 'superadmin', 'root'])) return true;
             // is a consultant
@@ -667,7 +668,7 @@ namespace Goteo\Model {
         }
 
         /**
-         * Transitional function. Util if Call plugin is active
+         * Gets the call instance if exists
          * @return [type] [description]
          */
         public function getCall() {
@@ -692,6 +693,16 @@ namespace Goteo\Model {
                 }
             }
             return $this->callInstance;
+        }
+
+        /**
+         * Gets an array of Matcher instances if exists in any of them
+         * @return [type] [description]
+         */
+        public function getMatchers() {
+            if($this->matcherInstances) return $this->matcherInstances;
+            $this->matcherInstances = Matcher::getFromProject($this->id);
+            return $this->matcherInstances;
         }
 
         // returns the current user

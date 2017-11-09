@@ -130,6 +130,15 @@ $channel_routes = include __DIR__ . '/Routes/channel_routes.php';
 $channel_routes->addPrefix('/channel');
 $routes->addCollection($channel_routes);
 
+///// MATCHERS /////
+$routes->add('matcher', new Route(
+    '/matcher/{id}',
+    array('_controller' => function($id) {
+        // Temporary redirect to a channel with the same name
+        return new RedirectResponse('/channel/' .$id);
+    })
+));
+
 
 // Images processing (no prefix)
 $images_routes = include __DIR__ . '/Routes/images_routes.php';

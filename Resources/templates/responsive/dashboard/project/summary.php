@@ -21,7 +21,16 @@
             <?php endforeach ?>
             </ol>
 
-            <?= $this->supply('sub-header') ?>
+            <?= $this->section('sub-header') ?>
+                <?php
+                if($matchers = $this->project->getMatchers()):
+                    foreach($matchers as $matcher):
+                ?>
+                    <blockquote><i class="fa fa-hand-o-right"></i> <?= $this->text('matcher-apply-current', '<a href="/matcher/' . $matcher->id . '"><strong>' . $matcher->name . '</strong></a>') ?></blockquote>
+
+                <?php endforeach ?>
+                <?php endif ?>
+            <?= $this->stop() ?>
 
             <?= $this->insert('dashboard/project/partials/summary_status', ['project' => $this->project]) ?>
 
