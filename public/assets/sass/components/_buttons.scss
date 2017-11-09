@@ -102,9 +102,13 @@
     background: $color-pink;
     @include background(linear-gradient(to right, $color-pink 28%,$color-red 100%));
     color: $color-white !important;
+    border-left-color: $color-pink !important;
+    border-right-color: $color-red !important;
     &:hover {
+        border-left-color: darken($color-pink, 10%) !important;
+        border-right-color: darken($color-red, 10%) !important;
         background: darken($color-pink, 10%);
-        @include background(linear-gradient(to right, darken($color-pink, 10%) 28%,darken($color-red, 10%) 100%));
+        @include background(linear-gradient(to right, darken($color-pink, 10%) 28%, darken($color-red, 10%) 100%));
     }
     .icon {
         background-color: $color-white;
@@ -115,10 +119,14 @@
     background: $color-orange;
     @include background(linear-gradient(to right, $color-orange 28%,$color-red 100%));
     color: $color-white !important;
+    border-left-color: $color-orange !important;
+    border-right-color: $color-red !important;
     &:hover {
-    background: darken($color-orange, 10%);
-    @include background(linear-gradient(to right, darken($color-orange, 10%) 28%,darken($color-red, 10%) 100%));
-    color: $color-white !important;
+        border-left-color: darken($color-orange, 10%) !important;
+        border-right-color: darken($color-red, 10%) !important;
+        background: darken($color-orange, 10%);
+        @include background(linear-gradient(to right, darken($color-orange, 10%) 28%, darken($color-red, 10%) 100%));
+        color: $color-white !important;
     }
     .icon {
         background-color: $color-white;

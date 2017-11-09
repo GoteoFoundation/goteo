@@ -35,20 +35,22 @@ class Node extends \Goteo\Core\Model {
         $args = func_get_args();
         call_user_func_array(array('parent', '__construct'), $args);
 
-        // y sus administradores
-        $this->admins = self::getAdmins($this->id);
-        // pojects
+        if($this->id) {
+            // y sus administradores
+            $this->admins = self::getAdmins($this->id);
+            // pojects
 
-        $this->summary = $this->getSummary();
+            $this->summary = $this->getSummary();
 
-        // logo
-        $this->logo = (!empty($this->logo)) ? Image::get($this->logo) : null;
+            // logo
+            $this->logo = (!empty($this->logo)) ? Image::get($this->logo) : null;
 
-        // label
-        $this->label = (!empty($this->label)) ? Image::get($this->label) : null;
+            // label
+            $this->label = (!empty($this->label)) ? Image::get($this->label) : null;
 
-        // home img
-        $this->home_img = (!empty($this->home_img)) ? Image::get($this->home_img) : $this->logo;
+            // home img
+            $this->home_img = (!empty($this->home_img)) ? Image::get($this->home_img) : $this->logo;
+        }
 
     }
 
