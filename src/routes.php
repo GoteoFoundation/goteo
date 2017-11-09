@@ -13,7 +13,6 @@ use Symfony\Component\Routing\RouteCollection;
 use Goteo\Application\View;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 
-
 $routes = new RouteCollection();
 $routes->add('home', new Route(
     '/',
