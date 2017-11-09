@@ -77,7 +77,6 @@ class ChannelController extends \Goteo\Core\Controller {
             $sponsors = Sponsor::getList($id);
         }
 
-
         $this->contextVars([
             'channel'     => $channel,
             'side_order' => $side_order,
