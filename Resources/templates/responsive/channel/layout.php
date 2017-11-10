@@ -16,12 +16,20 @@ $this->replace();
 
 $this->section('content');
 
+$background = $this->channel->owner_background;
+
 ?>
 
-
-    <?= $this->insert("channel/partials/owner_info") ?>
-
-    <?= $this->supply('channel-header', $this->insert("channel/partials/join_action")) ?>
+    <div class="heading-section">
+        <div class="owner-section"<?php if($background) echo ' style="background-color:' . $background . '"'; ?>>
+            <?= $this->insert("channel/partials/owner_info") ?>
+        </div>
+        <?php $this->section('channel-header') ?>
+        <div class="matcher-action-section"<?php if($background) echo ' style="background-color:' . $this->to_rgba($background, 0.8) . '"'; ?>>
+            <?= $this->insert("channel/partials/join_action", ['color' => $background]) ?>
+        </div>
+        <?php $this->stop() ?>
+    </div>
 
     <div class="projects-section">
         <div class="container-fluid">

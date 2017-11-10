@@ -1,3 +1,6 @@
+channel-join: 'Uneix-te'
+channel-join-desc: 'Vols formar part d''aquest canal?'
+
 matcher-apply-current: 'Aquest projecte està inscrit a la campanya matchfunding %s'
 
 matcher-duplicateinvest-max_amount_per_project: 'Quantitat màxima que es donarà per projecte'

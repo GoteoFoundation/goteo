@@ -1,7 +1,7 @@
 <?php if(!$this->summary) return; ?>
-<div class="summary-matchfunding-section" >
+<div class="summary-section">
 	<div class="container-fluid summary">
-		<!--<h2 class="section-title">
+		<!--<h2 class="title-section">
 			<?= $this->text('node-stats-title') ?>
 		</h2>-->
 		<div class="row">
