@@ -444,7 +444,7 @@ class Matcher extends \Goteo\Core\Model {
             $i++;
         }
 
-        $sql = "REPLACE `matcher_project` (matcher_id, project_id, status) VALUES " . implode(', ', $inserts);
+        $sql = "INSERT INTO `matcher_project` (matcher_id, project_id, status) VALUES " . implode(', ', $inserts);
         try {
             self::query($sql, $values);
         } catch (\PDOException $e) {
