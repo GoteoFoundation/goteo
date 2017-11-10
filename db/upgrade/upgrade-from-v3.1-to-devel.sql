@@ -143,7 +143,6 @@ DELETE FROM project_milestone WHERE post NOT IN (SELECT id FROM post);
 DELETE FROM project_milestone WHERE project NOT IN (SELECT id FROM project);
 ALTER TABLE `project_milestone` CHANGE `milestone` `milestone` BIGINT(20) UNSIGNED NULL, CHANGE `post` `post` BIGINT(20) UNSIGNED NULL, ADD FOREIGN KEY (`project`) REFERENCES `project`(`id`) ON UPDATE CASCADE ON DELETE CASCADE, ADD FOREIGN KEY (`milestone`) REFERENCES `milestone`(`id`) ON UPDATE CASCADE ON DELETE CASCADE, ADD FOREIGN KEY (`post`) REFERENCES `post`(`id`) ON UPDATE CASCADE ON DELETE CASCADE;
 
-
 -- matcher tables
 CREATE TABLE `matcher` (
   `id` varchar(50) NOT NULL,
@@ -158,7 +157,7 @@ CREATE TABLE `matcher` (
   `used` int(10) unsigned NOT NULL DEFAULT '0',
   `crowd` int(10) unsigned NOT NULL DEFAULT '0',
   `projects` int(10) unsigned NOT NULL DEFAULT '0',
-  `active` tinyint(1) NOT NULL DEFAULT '1'
+  `active` tinyint(1) NOT NULL DEFAULT '1',
   `created` date DEFAULT NULL,
   `modified_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`),

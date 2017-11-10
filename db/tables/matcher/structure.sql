@@ -11,7 +11,7 @@ CREATE TABLE `matcher` (
   `used` int(10) unsigned NOT NULL DEFAULT '0',
   `crowd` int(10) unsigned NOT NULL DEFAULT '0',
   `projects` int(10) unsigned NOT NULL DEFAULT '0',
-  `active` tinyint(1) NOT NULL DEFAULT '1'
+  `active` tinyint(1) NOT NULL DEFAULT '1',
   `created` date DEFAULT NULL,
   `modified_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`),
