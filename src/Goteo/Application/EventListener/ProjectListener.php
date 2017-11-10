@@ -77,7 +77,7 @@ class ProjectListener extends AbstractListener {
     public function onProjectCreated(FilterProjectEvent $event) {
         $project = $event->getProject();
         $user = $event->getUser();
-        $this->info("Manual publish of project", [$project, $user]);
+        $this->info("New project created", [$project, $user]);
 
         // This is not an unique event, sending manually
         // Send a mail to the creator
@@ -188,9 +188,9 @@ class ProjectListener extends AbstractListener {
 
 	public static function getSubscribedEvents() {
 		return array(
-            AppEvents::PROJECT_CREATED    => 'onProjectCreated',
-            AppEvents::PROJECT_PUBLISH    => 'onProjectPublish',
-            AppEvents::PROJECT_READY    => 'onProjectReady',
+            AppEvents::PROJECT_CREATED => 'onProjectCreated',
+            AppEvents::PROJECT_PUBLISH => 'onProjectPublish',
+            AppEvents::PROJECT_READY   => 'onProjectReady',
 		);
 	}
 }
