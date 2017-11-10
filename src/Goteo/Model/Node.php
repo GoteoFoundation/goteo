@@ -618,17 +618,21 @@ class Node extends \Goteo\Core\Model {
             WHERE node = :node
             LIMIT 1
             ";
-        $query = self::query($sql, array(':node' => $this->id));
-        $data = $query->fetch(\PDO::FETCH_ASSOC);
+        try {
+            $query = self::query($sql, array(':node' => $this->id));
+            $data = $query->fetch(\PDO::FETCH_ASSOC);
 
-        // si el calculo tiene más de 30 minutos (ojo, timeago son segundos) , calculamos de nuevo
-        if (empty($data) || $data['timeago'] > (30*60)) {
-            if ($newdata = $this->updateData()) {
-                return $newdata;
+            // si el calculo tiene más de 30 minutos (ojo, timeago son segundos) , calculamos de nuevo
+            if (empty($data) || $data['timeago'] > (30*60)) {
+                if ($newdata = $this->updateData()) {
+                    return $newdata;
+                }
             }
-        }
+            return $data;
+        } catch(\PDOException $e) {
 
-        return $data;
+        }
+        return [];
     }
 
     /** Resumen convocatorias: (destacadas por el nodo)

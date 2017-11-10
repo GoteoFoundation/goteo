@@ -221,7 +221,7 @@ abstract class Model {
 		}
 
 		$sql = 'DELETE FROM `' . $this->Table . '` WHERE ' . implode(' AND ', $clause);
-
+        // echo \sqldbg($sql, $values);
 		self::query($sql, $values);
 		return true;
 	}

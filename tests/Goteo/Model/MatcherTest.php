@@ -41,6 +41,9 @@ class MatcherTest extends TestCase {
         $this->assertFalse($ob->validate());
         $this->assertFalse($ob->save());
         $ob = new Matcher(self::$data);
+        $this->assertFalse($ob->save());
+        self::$data['owner'] = get_test_user()->id;
+        $ob = new Matcher(self::$data);
         $this->assertTrue($ob->validate());
         return $ob;
     }
@@ -50,6 +53,22 @@ class MatcherTest extends TestCase {
      */
     public function testCreate($ob) {
         $errors = [];
+        $ob->active = false;
+        $this->assertTrue($ob->save($errors), implode("\n", $errors));
+        $ob = Matcher::get($ob->id);
+        $this->assertNull($ob);
+        $ob = Matcher::get(self::$data['id'], false);
+        $this->assertInstanceOf('\Goteo\Model\Matcher', $ob);
+
+        $this->assertEquals(0, Matcher::getList(['owner' => get_test_user()->id, 'active' => true],0,0,true));
+        $this->assertEquals(1, Matcher::getList(['owner' => get_test_user()->id],0,0,true));
+        $this->assertEquals(1, Matcher::getList(['owner' => get_test_user()->id, 'active' => false],0,0,true));
+        $this->assertCount(0, Matcher::getList(['owner' => get_test_user()->id],0,0));
+        $this->assertCount(1, Matcher::getList(['name' => '%test', 'owner' => get_test_user()->id]));
+        $list = Matcher::getList([],0,1);
+        $this->assertCount(1, $list);
+        $this->assertInstanceOf('\Goteo\Model\Matcher', $list[0]);
+        $ob->active = true;
         $this->assertTrue($ob->save($errors), implode("\n", $errors));
         $ob = Matcher::get($ob->id);
         $this->assertInstanceOf('\Goteo\Model\Matcher', $ob);
@@ -59,23 +78,27 @@ class MatcherTest extends TestCase {
         }
 
         $this->assertEquals($ob->created, date('Y-m-d'));
-
+        $this->assertEquals(get_test_user(), $ob->getOwner());
+        $this->assertTrue($ob->userCanView(get_test_user()));
         return $ob;
     }
+
     /**
      * @depends testCreate
      */
     public function testVars($ob) {
         $vars = ['var1' => 'Var 1', 'var2' => 'Var 2'];
         $this->assertTrue($ob->setVars($vars)->save());
-        $this->assertCount(2, (array)$ob->getVars());
-        $this->assertEquals('Var 1', $ob->getVars()->var1);
-        $this->assertEquals('Var 2', $ob->getVars()->var2);
+        $vars = $ob->getVars();
+        $this->assertCount(2, $vars);
+        $this->assertEquals('Var 1', $vars['var1']);
+        $this->assertEquals('Var 2', $vars['var2']);
         $ob2 = Matcher::get($ob->id);
         $this->assertInstanceOf('\Goteo\Model\Matcher', $ob2);
-        $this->assertCount(2, (array)$ob2->getVars());
-        $this->assertEquals('Var 1', $ob2->getVars()->var1);
-        $this->assertEquals('Var 2', $ob2->getVars()->var2);
+        $vars = $ob2->getVars();
+        $this->assertCount(2, $vars);
+        $this->assertEquals('Var 1', $vars['var1']);
+        $this->assertEquals('Var 2', $vars['var2']);
         // $ob2 = Matcher
         return $ob;
     }
@@ -138,8 +161,16 @@ class MatcherTest extends TestCase {
 
         $this->assertEquals(1, $ob->getTotalProjects());
         $this->assertGreaterThan(0, $ob->getTotalProjects());
+        $ob->active = false;
+        $ob->save();
         $list = Matcher::getFromProject($pob);
         $this->assertTrue(is_array($list));
+        $this->assertCount(0, $list);
+        $list = Matcher::getFromProject($pob, false);
+        $this->assertCount(1, $list);
+        $ob->active = true;
+        $ob->save();
+        $list = Matcher::getFromProject($pob);
         $this->assertCount(1, $list);
         $ob2 = $list[0];
         $this->assertInstanceOf('\Goteo\Model\Matcher', $ob2);
@@ -215,6 +246,7 @@ class MatcherTest extends TestCase {
      * Some cleanup
      */
     static function tearDownAfterClass() {
+        Matcher::query("DELETE FROM matcher WHERE `id` = ?", self::$data['id']);
         delete_test_project();
         delete_test_user();
         delete_test_node();

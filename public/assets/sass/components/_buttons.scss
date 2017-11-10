@@ -186,6 +186,10 @@ button.pink:hover, button.pink:focus, button.custom-green:hover,
     background-color: $color-lilac;
     color: $color-white;
 }
+.alert-info {
+    background-color: lighten($color-cyan, 40%);
+    color: $primary-color;
+}
 .alert-orange {
     background-color: $color-orange;
     color: $color-white;

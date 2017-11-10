@@ -701,7 +701,7 @@ namespace Goteo\Model {
          */
         public function getMatchers() {
             if($this->matcherInstances) return $this->matcherInstances;
-            $this->matcherInstances = Matcher::getFromProject($this->id);
+            $this->matcherInstances = Matcher::getFromProject($this->id, false);
             return $this->matcherInstances;
         }
 

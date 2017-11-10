@@ -8,8 +8,8 @@
     <h5><?= $this->project->name ?></h5>
 
     <div class="panel section-content">
-        <h3><?= $this->text('form-project-status-title') ?></h3>
         <div class="panel-body">
+            <h3><?= $this->text('form-project-status-title') ?></h3>
 
             <ol class="breadcrumb">
             <?php foreach ($this->statuses as $i => $s): ?>
@@ -25,8 +25,20 @@
                 <?php
                 if($matchers = $this->project->getMatchers()):
                     foreach($matchers as $matcher):
+                        $status = $matcher->getProjectStatus($this->project);
+                        if(!in_array($status, ['pending', 'active'])) continue;
+
                 ?>
-                    <blockquote><i class="fa fa-hand-o-right"></i> <?= $this->text('matcher-apply-current', '<a href="/matcher/' . $matcher->id . '"><strong>' . $matcher->name . '</strong></a>') ?></blockquote>
+                    <blockquote>
+                        <p><i class="fa fa-hand-o-right"></i> <?= $this->text('matcher-apply-' . $status, '<a href="/matcher/' . $matcher->id . '"><strong>' . $matcher->name . '</strong></a>') ?></p>
+                        <?php if($status === 'pending'): ?>
+                            <p><?= $this->text('matcher-apply-pending-desc', '<a href="/matcher/' . $matcher->id . '"><strong>' . $this->text('matcher-terms') . '</strong></a>') ?>:</p>
+                            <p>
+                                <a href="#" class="btn btn-orange btn-lg"><i class="fa fa-thumbs-o-up"></i> <?= $this->text('matcher-apply-accept') ?></a>
+                                <a href="#" class="btn btn-default btn-lg"><i class="fa fa-thumbs-o-down"></i> <?= $this->text('matcher-apply-reject') ?></a>
+                            </p>
+                        <?php endif ?>
+                    </blockquote>
 
                 <?php endforeach ?>
                 <?php endif ?>
@@ -42,9 +54,8 @@
     </div>
 
     <div class="panel section-content">
-        <h3><?= $this->text('project-progress-title') ?></h3>
-
         <div class="panel-body">
+            <h3><?= $this->text('project-progress-title') ?></h3>
             <ul class="data-list">
                 <li>
                     <h5><?= $this->text('project-obtained') ?></h5>
@@ -69,7 +80,9 @@
     <?php $url = $this->get_url() . '/widget/project/' . $this->project->id; ?>
 
     <div class="panel section-content">
-        <h3><?= $this->text('project-spread-widget_title') ?></h3>
+        <div class="panel-heading">
+            <h3><?= $this->text('project-spread-widget_title') ?></h3>
+        </div>
         <div class="panel-body widget-preview">
             <div class="right">
                 <?php if(!$this->project->isApproved()): ?>

@@ -204,5 +204,15 @@ $api->add('api-stats-investors-required', new Route(
     array('_controller' => 'Goteo\Controller\Api\StatsApiController::investorsRequiredAction')
 ));
 
+// Matcher routes
+$api->add('api-matcher-list', new Route(
+    '/matchers',
+    array('_controller' => 'Goteo\Controller\Api\MatchersApiController::matchersAction')
+));
+// Matcher detail
+$api->add('api-matcher-item', new Route(
+    '/matchers/{mid}',
+    array('_controller' => 'Goteo\Controller\Api\MatchersApiController::matcherAction')
+));
 
 return $api;
