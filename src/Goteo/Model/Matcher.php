@@ -26,6 +26,7 @@ class Matcher extends \Goteo\Core\Model {
            $name,
            $logo,
            $lang,
+           $owner,
            $terms,
            $processor = '',
            $vars = [],
@@ -33,6 +34,7 @@ class Matcher extends \Goteo\Core\Model {
            $used = 0, // Calculated field with the sum of all invests made by the matching
            $amount = 0, // Calculated field with the sum of all pools in the Matcher
            $projects = 0, // Calculated field with the total number of active projects in the Matcher
+           $active = true,
            $created,
            $modified_at;
 
@@ -48,8 +50,14 @@ class Matcher extends \Goteo\Core\Model {
      * Get instance of matcher already in the table by action
      * @return [type] [description]
      */
-    static public function get($id) {
-        if ($query = static::query("SELECT * FROM `matcher` WHERE `id` = ?", $id)) {
+    static public function get($id, $active_only = true) {
+        $values = [':id' => $id];
+        $sql = "SELECT * FROM `matcher` WHERE id = :id";
+        if($active_only) {
+            $sql .= " AND active=:active";
+            $values[':active'] = true;
+        }
+        if ($query = static::query($sql, $values)) {
             if( $matcher = $query->fetchObject(__CLASS__) )
                 return $matcher;
         }
@@ -67,7 +75,7 @@ class Matcher extends \Goteo\Core\Model {
             RIGHT JOIN `matcher_project` b ON a.id = b.matcher_id
             WHERE b.project_id = ?";
         if($valid_only) {
-            $sql .= " AND b.status = 'active'";
+            $sql .= " AND a.active=1 AND b.status = 'active'";
         }
         $list = [];
         if ($query = static::query($sql, $pid)) {
@@ -76,6 +84,52 @@ class Matcher extends \Goteo\Core\Model {
             }
         }
         return $list;
+    }
+
+    /**
+     * Lists available matchers
+     * @param  array   $filters [description]
+     * @param  [type]  $offset  [description]
+     * @param  integer $limit   [description]
+     * @param  boolean $count   [description]
+     * @return array
+     */
+    static public function getList($filters = [], $offset = 0, $limit = 10, $count = false) {
+        $values = [];
+        $filter = [];
+        foreach(['owner', 'active', 'processor'] as $key) {
+            if (isset($filters[$key])) {
+                $filter[] = "matcher.$key = :$key";
+                $values[":$key"] = $filters[$key];
+            }
+        }
+        foreach(['id', 'name', 'terms'] as $key) {
+            if (isset($filters[$key])) {
+                $filter[] = "matcher.$key LIKE :$key";
+                $values[":$key"] = $filters[$key];
+            }
+        }
+
+        if($filter) {
+            $sql = " WHERE " . implode(' AND ', $filter);
+        }
+
+        if($count) {
+            // Return count
+            $sql = "SELECT COUNT(id) FROM matcher$sql";
+            // echo \sqldbg($sql, $values);
+            return (int) self::query($sql, $values)->fetchColumn();
+        }
+
+        $offset = (int) $offset;
+        $limit = (int) $limit;
+        $sql = "SELECT * FROM matcher$sql LIMIT $offset,$limit";
+
+        // echo \sqldbg($sql, $values);
+        if($query = self::query($sql, $values)) {
+            return $query->fetchAll(\PDO::FETCH_CLASS, __CLASS__);
+        }
+        return [];
     }
 
     /**
@@ -93,13 +147,15 @@ class Matcher extends \Goteo\Core\Model {
         $this->amount = $this->calculatePoolAmount();
         $this->projects = $this->calculateProjects();
 
+        $fields = ['name', 'logo', 'lang', 'owner', 'terms', 'processor', 'vars', 'amount', 'used', 'crowd', 'active', 'projects', 'created'];
         try {
             if(empty($this->modified_at)) {
                 $this->modified_at = date('Y-m-d H:i:s');
-                $this->dbInsert(['id', 'name', 'logo', 'lang', 'terms', 'processor', 'vars', 'amount', 'used', 'crowd', 'projects', 'created', 'modified_at']);
+                $fields[] = 'id';
+                $this->dbInsert($fields);
             }
             else
-                $this->dbUpdate(['name', 'logo', 'lang', 'terms', 'processor', 'vars', 'amount', 'used', 'crowd', 'projects', 'created']);
+                $this->dbUpdate($fields);
             return true;
         }
         catch(\PDOException $e) {
@@ -184,10 +240,39 @@ class Matcher extends \Goteo\Core\Model {
         return (int) self::query($sql, [':match' => $this->id])->fetchColumn();
     }
 
+    /**
+     * Permissions check
+     */
+    /**
+     * Check if the matcher is can be seen by the user id
+     * @param  Goteo\Model\User $user  the user to check (if empty checks )
+     * @return boolean          true if success, false otherwise
+     */
+    public function userCanView($user = null) {
+
+        // already published:
+        if($this->active) return true;
+        if(empty($user)) return false;
+        if(!$user instanceOf User) return false;
+        // owns the match
+        if($this->owner === $user->id) return true;
+        // is admin in the project node
+        if($user->hasRoleInNode(null, ['admin', 'superadmin', 'root'])) return true;
+
+        return false;
+    }
+
 
     /**
      * Getters & setters
      */
+
+    // returns the current user
+    public function getOwner() {
+        if($this->userInstance) return $this->userInstance;
+        $this->userInstance = User::get($this->owner);
+        return $this->userInstance;
+    }
 
     public function setVars(array $vars) {
         $this->vars = $vars ? json_encode($vars) : '';
@@ -288,10 +373,10 @@ class Matcher extends \Goteo\Core\Model {
      * Return users
      * @return [type] [description]
      */
-    public function getUsers($width_pool = true) {
-        $sql = "SELECT * FROM user a
+    public function getUsers($with_pool = true) {
+        $sql = "SELECT a.*,b.pool as use_pool FROM user a
                 RIGHT JOIN matcher_user b ON a.id = b.user_id
-                WHERE b.matcher_id = :matcher " . ($width_pool ? ' AND b.pool = 1' : '');
+                WHERE b.matcher_id = :matcher " . ($with_pool ? ' AND b.pool = 1' : '');
         $values = [':matcher' => $this->id];
 
         // die(\sqldbg($sql, $values));
@@ -373,11 +458,11 @@ class Matcher extends \Goteo\Core\Model {
      * @return [type] [description]
      */
     public function getProjects($status = 'active') {
-        $sql = "SELECT * FROM project a
+        $sql = "SELECT a.*,b.status AS matcher_status FROM project a
                 RIGHT JOIN matcher_project b ON a.id = b.project_id
                 WHERE b.matcher_id = :matcher ";
         $values = [':matcher' => $this->id];
-        if($status) {
+        if($status && $status !== 'all') {
             if(!in_array($status, self::$statuses)) {
                 throw new ModelException("Status [$status] not valid");
             }
@@ -391,6 +476,16 @@ class Matcher extends \Goteo\Core\Model {
             }
         }
         return [];
+    }
+
+    public function getProjectStatus($pid) {
+        if($pid instanceOf Project) $pid = $pid->id;
+        $sql = "SELECT status FROM matcher_project WHERE project_id = :pid AND matcher_id = :match";
+        $values = [':pid' => $pid, ':match' => $this->id];
+        if($query = self::query($sql, $values)) {
+            return $query->fetchColumn();
+        }
+        throw new ModelException('This project has no matcher assigned');
     }
 
     /**

@@ -14,3 +14,5 @@ matcher-feed-invest-by: 'Matchfunding input %s'
 matcher-feed-user-invest: 'The "match" campaign %MATCHER% has contributed %AMOUNT% to the project %PROJECT% thanks to %USER% using %METHOD% '
 matcher-feed-invest: 'Has contributed %AMOUNT% of %DROP% to the project %PROJECT% through the "match" campaign %MATCHER%'
 matcher-feed-user-invest-error: 'An <span class="red">ERROR in the "match" campaign %MATCHER% [%MESSAGE%]</span> has ocurred in the contribution to the project %PROJECT% from %USER% by %AMOUNT% using %METHOD%'
+
+matcher-discard-project: 'Discard project'

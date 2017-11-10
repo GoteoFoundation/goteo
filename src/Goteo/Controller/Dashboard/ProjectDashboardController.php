@@ -56,6 +56,7 @@ class ProjectDashboardController extends \Goteo\Core\Controller {
 
     static function createSidebar(Project $project, $zone = '', &$form = null) {
         $user = Session::getUser();
+
         if(!$project->userCanEdit($user)) return false;
         $prefix = '/dashboard/project/' . $project->id ;
 
@@ -66,6 +67,7 @@ class ProjectDashboardController extends \Goteo\Core\Controller {
         $admin = false;
         $validation = $project->getValidation();
         $admin = $project->userCanModerate($user) && !$project->inEdition();
+
 
         if($project->inEdition() || $admin) {
             $steps = [
@@ -94,7 +96,6 @@ class ProjectDashboardController extends \Goteo\Core\Controller {
             Session::addToSidebarMenu('<i class="icon icon-2x icon-projects"></i> ' . Text::get('project-manage-campaign'), $submenu, 'project', null, 'sidebar');
         }
 
-        // Session::addToSidebarMenu('<i class="icon icon-2x icon-supports"></i> ' . Text::get('dashboard-menu-projects-supports'), $prefix . '/supports' , 'supports');
 
          $submenu = [
             ['text' => '<i class="fa fa-2x fa-globe"></i> ' . Text::get('regular-translations'), 'link' => $prefix . '/translate', 'id' => 'translate'],

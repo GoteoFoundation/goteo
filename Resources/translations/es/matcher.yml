@@ -1,4 +1,11 @@
-matcher-apply-current: 'Este proyecto está inscrito en la campaña matchfunding %s'
+matcher-apply-pending: 'Este proyecto está preseleccionado para la campaña matchfunding %s'
+matcher-apply-active: 'Este proyecto está inscrito en la campaña matchfunding %s'
+matcher-apply-pending-desc: 'Si te interesa optar al dinero extra que se ofrece debes aceptar las %s'
+matcher-terms: 'bases de la campaña'
+matcher-apply-accept: 'Sí, me apunto'
+matcher-apply-reject: 'No gracias, renuncio a la campaña'
+
+matcher-discard-project: 'Descartar el proyecto'
 
 matcher-duplicateinvest-max_amount_per_project: 'Cantidad máxima que se donará por proyecto'
 matcher-duplicateinvest-max_amount_per_invest: 'Cantidad máxima por aporte'
@@ -13,3 +20,4 @@ matcher-feed-invest-by: 'Aporte matchfunding %s'
 matcher-feed-user-invest: 'La campaña "match" %MATCHER% ha aportado %AMOUNT% al proyecto %PROJECT% gracias a %USER% que aportó mediante %METHOD% '
 matcher-feed-invest: 'Ha aportado %AMOUNT% de %DROP% al proyecto %PROJECT% a través de la campaña "match" %MATCHER%'
 matcher-feed-user-invest-error: 'Ha habido un <span class="red">ERROR de la campaña "match" %MATCHER% [%MESSAGE%]</span> en el aporte al proyecto %PROJECT% de %USER% de %AMOUNT% mediante %METHOD%'
+

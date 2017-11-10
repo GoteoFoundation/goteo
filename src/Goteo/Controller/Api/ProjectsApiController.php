@@ -116,6 +116,7 @@ class ProjectsApiController extends AbstractApiController {
         }
         return $ob;
     }
+
     /**
      * Simple projects info data
      */
