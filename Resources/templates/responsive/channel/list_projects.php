@@ -9,17 +9,17 @@ $this->section('channel-content');
 
 ?>
     <div class="content_widget channel-projects rounded-corners">
-        <h2 class="section-title"><?= $this->text('node-projects-title') ?>
+        <h2 class="title-section"><?= $this->text('node-projects-title') ?>
         </h2>
         <ul class="filters list-inline center-block text-center">
             <a href="<?= '/channel/' . $this->channel->id ?>">
                 <li <?= ''==$this->type ? 'class="active"' : '' ?> >
-                    <?= $this->text('node-side-searcher-promote') ?>        
+                    <?= $this->text('node-side-searcher-promote') ?>
                 </li>
             </a>
             <a href="<?= '/channel/' . $this->channel->id . '/available' ?>">
                 <li <?= 'available' == $this->type ? 'class="active"' : '' ?> >
-                    <?= $this->text('regular-see_all') ?>     
+                    <?= $this->text('regular-see_all') ?>
                 </li>
             </a>
             <?php foreach ($this->types as $type) : ?>

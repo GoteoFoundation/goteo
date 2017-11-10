@@ -1,3 +1,6 @@
+channel-join: 'Únete'
+channel-join-desc: '¿Quieres participar en el canal?'
+
 matcher-apply-pending: 'Este proyecto está preseleccionado para la campaña matchfunding %s'
 matcher-apply-active: 'Este proyecto está inscrito en la campaña matchfunding %s'
 matcher-apply-pending-desc: 'Si te interesa optar al dinero extra que se ofrece debes aceptar las %s'

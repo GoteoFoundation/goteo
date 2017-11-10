@@ -1,17 +1,15 @@
-<div class="call-action-section" <?php if($this->channel->owner_background) echo 'style="background-color:'.$this->channel->owner_background.'"'; ?>>
-    <div class="container-fluid">
-        <div class="row">
-            <div class="col-md-5">
-                <div class="title">
-                    Únete
-                </div>
-                <div class="description">
-                    ¿Quieres participar en el canal?
-                </div>
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-xs-12 col-sm-8">
+            <div class="title">
+                <?= $this->text('channel-join') ?>
             </div>
-            <div class="col-md-3 col-md-offset-4 col-button">
-                <a href="/channel/<?= $this->channel->id ?>/create" class="btn btn-white">CREAR PROYECTO</a>
+            <div class="description">
+                <?= $this->text('channel-join-desc') ?>
             </div>
+        </div>
+        <div class="col-xs-12 col-sm-3 col-sm-offset-1 col-button">
+            <a href="/channel/<?= $this->channel->id ?>/create" class="btn btn-white"<?php if($this->color) echo ' style="color:' . $this->color . '"'; ?>><?= $this->text('regular-create') ?></a>
         </div>
     </div>
 </div>

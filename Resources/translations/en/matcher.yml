@@ -1,3 +1,6 @@
+channel-join: 'Join channel'
+channel-join-desc: 'Want to join this channel?'
+
 matcher-apply-current: 'This project is registered in the matchfunding campaign %s'
 
 matcher-duplicateinvest-max_amount_per_project: 'Maximum total amount to be donated per project'
