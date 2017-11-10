@@ -83,7 +83,7 @@ if($sidebar) {
       <div id="main">
 
         <div id="main-content">
-            <?= $this->supply('messages', $this->insert("partials/header/messages")) ?>
+            <?= $this->supply('flash-messages', $this->insert("partials/header/messages"))?>
             <?= $this->supply('content') ?>
         </div>
 
