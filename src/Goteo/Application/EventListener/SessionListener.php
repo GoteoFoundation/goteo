@@ -18,6 +18,7 @@ use Goteo\Application\Session;
 use Goteo\Application\View;
 use Goteo\Core\Model;
 use Goteo\Model\Project;
+use Goteo\Model\Node;
 use Goteo\Library\Currency;
 use Goteo\Library\Text;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -160,6 +161,14 @@ class SessionListener extends AbstractListener {
         Session::addToMainMenu('<i class="icon icon-drop"></i> ' . Text::get('regular-header-about'), '/about', 'about');
         Session::addToMainMenu('<i class="fa fa-search"></i> ' . Text::get('regular-discover'), '/discover', 'discover');
         Session::addToMainMenu('<i class="fa fa-question-circle"></i> ' . Text::get('regular-faq'), '/faq', 'faq', 99);
+
+        // Channels
+        $nodes = [];
+        foreach (Node::getAll(['status' => 'active']) as $node) {
+            if($node->id === Config::get('node')) continue;
+            $nodes['/channel/' . $node->id] = $node->name;
+        }
+        Session::addToMainMenu('<i class="fa fa-sitemap"></i> ' . Text::get('home-channels-header'), $nodes, 'channels', null, 'main');
 
         // Langs
         $langs = [];
