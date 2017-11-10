@@ -2,15 +2,17 @@ channel-join: 'Join channel'
 channel-join-desc: 'Want to join this channel?'
 
 matcher-apply-pending: 'This project is pre-selected for the matchfunding campaign %s'
+matcher-apply-accepted: 'This project is pending of approval for the matchfunding campaign %s'
 matcher-apply-active: 'This project is registered in the matchfunding campaign %s'
 matcher-apply-pending-desc: 'If you are interested in access for the extra offered money you must accept the %s'
 matcher-terms: 'terms & conditions'
 matcher-terms-desc: 'Terms & conditions to join the campaign'
 matcher-apply-accept: 'Yes, I''m in'
-matcher-apply-reject: 'No thanks, I give up'
+matcher-apply-reject: 'No thanks, I resign'
+matcher-apply-reject-sure: 'This matchfunding campaign can provide you additional funds. Are you sure to resign?'
+matcher-apply-discard: 'Discard project'
+matcher-apply-discard-sure: 'This project will no longer participate in the campaign %s. Continue?'
 
-
-matcher-discard-project: 'Discard project'
 
 matcher-duplicateinvest-max_amount_per_project: 'Maximum total amount to be donated per project'
 matcher-duplicateinvest-max_amount_per_invest: 'Maximum multiply per invest'
@@ -27,3 +29,8 @@ matcher-feed-invest-by: 'Matchfunding input %s'
 matcher-feed-user-invest: 'The "match" campaign %MATCHER% has contributed %AMOUNT% to the project %PROJECT% thanks to %USER% using %METHOD% '
 matcher-feed-user-invest-error: 'An <span class="red">ERROR in the "match" campaign %MATCHER% [%MESSAGE%]</span> has ocurred in the contribution to the project %PROJECT% from %USER% by %AMOUNT% using %METHOD%'
 
+
+matcher-project-accept: 'Congratulations! Your project is now part of the campaign %s'
+matcher-project-reject: 'Your project has been removed from the campaign %s'
+matcher-project-discard: 'El project has been discarded from the campaign %s'
+matcher-project-activate: 'El project has been activated at the campaign %s'

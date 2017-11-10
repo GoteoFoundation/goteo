@@ -21,28 +21,7 @@
             <?php endforeach ?>
             </ol>
 
-            <?= $this->section('sub-header') ?>
-                <?php
-                if($matchers = $this->project->getMatchers()):
-                    foreach($matchers as $matcher):
-                        $status = $matcher->getProjectStatus($this->project);
-                        if(!in_array($status, ['pending', 'active'])) continue;
-
-                ?>
-                    <blockquote>
-                        <p><i class="fa fa-hand-o-right"></i> <?= $this->text('matcher-apply-' . $status, '<a href="/matcher/' . $matcher->id . '"><strong>' . $matcher->name . '</strong></a>') ?></p>
-                        <?php if($status === 'pending'): ?>
-                            <p><?= $this->text('matcher-apply-pending-desc', '<a href="/matcher/' . $matcher->id . '"><strong>' . $this->text('matcher-terms') . '</strong></a>') ?>:</p>
-                            <p>
-                                <a href="#" class="btn btn-orange btn-lg"><i class="fa fa-thumbs-o-up"></i> <?= $this->text('matcher-apply-accept') ?></a>
-                                <a href="#" class="btn btn-default btn-lg"><i class="fa fa-thumbs-o-down"></i> <?= $this->text('matcher-apply-reject') ?></a>
-                            </p>
-                        <?php endif ?>
-                    </blockquote>
-
-                <?php endforeach ?>
-                <?php endif ?>
-            <?= $this->stop() ?>
+            <?= $this->supply('matcher-section', $this->insert('dashboard/project/partials/matcher_section')) ?>
 
             <?= $this->insert('dashboard/project/partials/summary_status', ['project' => $this->project]) ?>
 

@@ -2,14 +2,17 @@ channel-join: 'Uneix-te'
 channel-join-desc: 'Vols formar part d''aquest canal?'
 
 matcher-apply-pending: 'Aquest projecte està pre-seleccionat per a la campanya matchfunding %s'
+matcher-apply-accepted: 'Aquest projecte està pendent d''aprovació per la campanya matchfunding %s'
 matcher-apply-active: 'Aquest projecte està inscrit en la campanya matchfunding %s'
 matcher-apply-pending-desc: 'Si t''interessa optar als diners extra que s''ofereixen has d''acceptar les %s'
 matcher-terms: 'bases de la campanya'
 matcher-terms-desc: 'Bases per participar en la campanya'
 matcher-apply-accept: 'Si, m''apunto'
 matcher-apply-reject: 'No gracies, renuncio a la campanya'
+matcher-apply-reject-sure: 'Aquesta campanya de matchfunding pot proporcionar-te fons addicionals. Estàs segur de renunciar-hi?'
+matcher-apply-discard: 'Descarta el projecte'
+matcher-apply-discard-sure: 'Aquest projecte ja no participarà de la campanya %s Continuar?'
 
-matcher-discard-project: 'Descarta el projecte'
 
 matcher-duplicateinvest-max_amount_per_project: 'Quantitat màxima que es donarà per projecte'
 matcher-duplicateinvest-max_amount_per_invest: 'Quantitat màxima per aportació'
@@ -24,3 +27,8 @@ matcher-feed-invest: 'Ha aportat %AMOUNT% de %DROP% al projecte %PROJECT% a trav
 matcher-feed-invest-by: 'Aportació matchfunding %s'
 matcher-feed-user-invest: 'La campanya "match" %MATCHER% ha aportat %AMOUNT% al projecte %PROJECT% gràcies a %USER% que va aportar mitjançant %METHOD%'
 matcher-feed-user-invest-error: 'Hi ha hagut un <span class="red">ERROR de la campanya "match" %MATCHER% [%MESSAGE%]</span> en l''aportació al projecte %PROJECT% de %USER% de %amount% mitjançant %METHOD%'
+
+matcher-project-accept: 'Felicitats! El teu projecte ja forma part de la campanya %s'
+matcher-project-reject: 'El teu projecte has sigut eliminat de la campanya %s'
+matcher-project-discard: 'El projecte ha sigut descartat de la campanya %s'
+matcher-project-activate: 'El projecte ha sigut activat en la campanya %s'

@@ -122,5 +122,4 @@ class MatchersApiController extends AbstractApiController {
         return $this->jsonResponse($properties);
     }
 
-
 }

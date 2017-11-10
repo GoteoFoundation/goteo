@@ -38,7 +38,7 @@ class Matcher extends \Goteo\Core\Model {
            $created,
            $modified_at;
 
-    public static $statuses = ['pending', 'accepted', 'active', 'rejected'];
+    public static $statuses = ['pending', 'accepted', 'rejected', 'active', 'discarded'];
 
     public function __construct() {
         $args = func_get_args();
@@ -478,6 +478,30 @@ class Matcher extends \Goteo\Core\Model {
         return [];
     }
 
+    /**
+     * [findProject description]
+     * @return [type] [description]
+     */
+    public function findProject($pid, $status = 'active') {
+        if($pid instanceOf Project) $pid = $pid->id;
+        $sql = "SELECT a.*,b.status AS matcher_status FROM project a
+                RIGHT JOIN matcher_project b ON a.id = b.project_id
+                WHERE b.matcher_id = :matcher AND b.project_id = :project";
+        $values = [':matcher' => $this->id, ':project' => $pid];
+        if($status && $status !== 'all') {
+            if(!in_array($status, self::$statuses)) {
+                throw new ModelException("Status [$status] not valid");
+            }
+            $sql .= ' AND b.status = :status';
+            $values[':status'] = $status;
+        }
+        // die(\sqldbg($sql, $values));
+        if($query = self::query($sql, $values)) {
+            return $query->fetchObject('Goteo\Model\Project');
+        }
+        return null;
+    }
+
     public function getProjectStatus($pid) {
         if($pid instanceOf Project) $pid = $pid->id;
         $sql = "SELECT status FROM matcher_project WHERE project_id = :pid AND matcher_id = :match";
@@ -546,20 +570,23 @@ class Matcher extends \Goteo\Core\Model {
      * @param [type] $project [description]
      * @param [type] $bool [description]
      */
-    public function setProjectStatus($project, $status = 'pending') {
-        if($project instanceOf Project) $project = $project->id;
+    public function setProjectStatus($pid, $status = 'pending') {
+        if($pid instanceOf Project) $pid = $pid->id;
         if(!in_array($status, self::$statuses)) {
             throw new ModelException("Status [$status] not valid");
         }
 
         $sql = "UPDATE matcher_project SET status = :status WHERE matcher_id = :matcher AND project_id = :project";
+        $values = [':matcher' => $this->id, ':project' => $pid, ':status' => $status];
         try {
-            self::query($sql, [':matcher' => $this->id, ':project' => $project, ':status' => $status]);
+            self::query($sql, $values);
+            if($this->getProjectStatus($pid) !== $status) {
+                throw new ModelException("Error setting status [$status] with project [$pid]");
+            }
             $errors = [];
             if(!$this->save($errors)) {
                 throw new ModelException("Error updating totals: " . implode("\n", $errors));
             }
-
         } catch (\PDOException $e) {
             throw new ModelException('Failed to change project matcher status: ' . $e->getMessage());
         }
