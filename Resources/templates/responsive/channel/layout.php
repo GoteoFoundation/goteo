@@ -24,11 +24,9 @@ $background = $this->channel->owner_background;
         <div class="owner-section"<?php if($background) echo ' style="background-color:' . $background . '"'; ?>>
             <?= $this->insert("channel/partials/owner_info") ?>
         </div>
-        <?php $this->section('channel-header') ?>
-        <div class="matcher-action-section"<?php if($background) echo ' style="background-color:' . $this->to_rgba($background, 0.8) . '"'; ?>>
-            <?= $this->insert("channel/partials/join_action", ['color' => $background]) ?>
-        </div>
-        <?php $this->stop() ?>
+
+        <?= $this->supply('channel-header', $this->insert("channel/partials/join_action", ['color' => $background])) ?>
+
     </div>
 
     <div class="projects-section">
