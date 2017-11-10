@@ -32,6 +32,7 @@ class DuplicateInvestMatcherProcessorTest extends TestCase {
     public function testCreate() {
         \Goteo\Core\DB::cache(false);
         $errors = [];
+        self::$data['owner'] = get_test_user()->id;
         $matcher = new Matcher(self::$data);
         $this->assertTrue($matcher->validate());
         $this->assertTrue($matcher->save($errors), implode("\n", $errors));

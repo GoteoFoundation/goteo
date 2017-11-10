@@ -204,7 +204,7 @@ class Matcher extends \Goteo\Core\Model {
                 invest.matcher = :match
                 AND invest.method = :method
                 AND invest.campaign = 1
-                AND invest.status IN (" . implode(', ', Invest::ACTIVE_STATUSES) . ") ";
+                AND invest.status IN (" . implode(', ', Invest::$ACTIVE_STATUSES) . ") ";
         $values = [':match' => $this->id, ':method' => PoolPaymentMethod::getId()];
         // echo \sqldbg($sql, $values);
         return (int) self::query($sql, $values)->fetchColumn();
@@ -221,7 +221,7 @@ class Matcher extends \Goteo\Core\Model {
                 RIGHT JOIN matcher_project ON matcher_project.project_id = invest.project
                 WHERE matcher_project.matcher_id = :match AND matcher_project.status = 'active'
                 AND invest.campaign = 0
-                AND invest.status IN (" . implode(', ', Invest::ACTIVE_STATUSES) . ") ";
+                AND invest.status IN (" . implode(', ', Invest::$ACTIVE_STATUSES) . ") ";
         $values = [':match' => $this->id];
         // echo \sqldbg($sql, $values);
         return (int) self::query($sql, $values)->fetchColumn();
