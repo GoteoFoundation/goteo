@@ -18,6 +18,9 @@ use Goteo\Application\Session;
 use Goteo\Application\Config;
 use Goteo\Application\View;
 use Goteo\Application\Message;
+use Goteo\Application\AppEvents;
+use Goteo\Application\Event\FilterMatcherProjectEvent;
+
 use Goteo\Model\Project;
 use Goteo\Model\Project\Reward;
 use Goteo\Model\User;
@@ -179,6 +182,9 @@ class AjaxDashboardController extends \Goteo\Core\Controller {
                 }
                 if($status) {
                     $matcher->setProjectStatus($pid, $status);
+
+                    $this->dispatch(AppEvents::MATCHER_PROJECT, new FilterMatcherProjectEvent($matcher, $project));
+
                     Message::info(Text::get("matcher-project-$action", '<strong>' . $matcher->name . '</strong>'));
                 } else {
                     throw new ControllerAccessDeniedException("Action [$action] not allowed");
