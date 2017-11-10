@@ -11,6 +11,9 @@ body.channel {
       color: $primary-color;
       background-color: transparent;
     }
+    .top-navbar .navbar-always > button img {
+      border-color: lighten($primary-color, 50%);
+    }
 
     .top-navbar .navbar-always > a i.icon{
       background-color: $primary-color;

@@ -30,7 +30,7 @@ matcher-feed-user-invest: 'The "match" campaign %MATCHER% has contributed %AMOUN
 matcher-feed-user-invest-error: 'An <span class="red">ERROR in the "match" campaign %MATCHER% [%MESSAGE%]</span> has ocurred in the contribution to the project %PROJECT% from %USER% by %AMOUNT% using %METHOD%'
 
 
-matcher-project-accept: 'Congratulations! Your project is now part of the campaign %s'
+matcher-project-accept: 'Congratulations! Your project has been added to the campaign %s. Their promoters have to approve it now.'
 matcher-project-reject: 'Your project has been removed from the campaign %s'
 matcher-project-discard: 'El project has been discarded from the campaign %s'
 matcher-project-activate: 'El project has been activated at the campaign %s'
