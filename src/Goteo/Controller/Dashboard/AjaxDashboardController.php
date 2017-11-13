@@ -21,6 +21,7 @@ use Goteo\Application\Message;
 use Goteo\Application\AppEvents;
 use Goteo\Application\Event\FilterMatcherProjectEvent;
 
+use Goteo\Controller\DashboardController;
 use Goteo\Model\Project;
 use Goteo\Model\Project\Reward;
 use Goteo\Model\User;
@@ -28,13 +29,7 @@ use Goteo\Model\User\Interest as UserInterest;
 use Goteo\Model\Matcher;
 use Goteo\Library\Text;
 
-class AjaxDashboardController extends \Goteo\Core\Controller {
-
-    public function __construct() {
-        // changing to a responsive theme here
-        View::setTheme('responsive');
-        $this->user = Session::getUser();
-    }
+class AjaxDashboardController extends DashboardController {
 
     /**
      * Projects suggestion by user interests (categories)
