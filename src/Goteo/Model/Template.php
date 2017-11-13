@@ -95,6 +95,7 @@ class Template extends \Goteo\Core\Model {
     const COMMUNICATION = 72;    // Multi-purpose communication
     const PROJECT_CREATED = 73;    // Project created
     const MATCHER_PROJECT_ADDED = 'matcher_project_added';    // a new project is added to a matcher
+    const MATCHER_PROJECT_ADDED_ADMIN = 'matcher_project_added_admin';    // a new project is added to a matcher
 
     public
         $id,

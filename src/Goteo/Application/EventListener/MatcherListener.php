@@ -34,20 +34,26 @@ class MatcherListener extends AbstractListener {
         $matcher = $event->getMatcher();
         $project = $event->getProject();
         $user = $project->getOwner();
+        $admin = $matcher->getOwner();
         $original_lang = $lang = User::getPreferences($user)->comlang;
+        $original_lang_admin = $lang_admin = User::getPreferences($admin)->comlang;
 
         $vars = [
+            '%PROJECTNAME%' => $project->name,
+            '%PROJECTSUMMARYURL%' => Lang::getUrl($lang) . 'dashboard/project/' . $project->id . '/summary',
+            '%PROJECTURL%' => Lang::getUrl($lang) . 'dashboard/project/' . $project->id,
             '%CALLNAME%' => $matcher->name,
-            '%PROJECTURL%' => Lang::getUrl($lang) . 'dashboard/project/' . $project->id . '/summary',
             '%CALLURL%' => Lang::getUrl($lang) . 'matcher/' . $matcher->id,
         ];
 
-        $mail = $tpl = null;
+        $mail = $mail_admin = $tpl = $tpl_admin = null;
         switch($matcher->getProjectStatus($project)) {
             case 'pending':
                 // Send mail to owner and admin: added project to review
                 $tpl = Template::MATCHER_PROJECT_ADDED;
                 $mail = Mail::createFromTemplate($user->email, $user->name, $tpl, $vars, $lang);
+                $tpl_admin = Template::MATCHER_PROJECT_ADDED_ADMIN;
+                $mail_admin = Mail::createFromTemplate($admin->email, $admin->name, $tpl_admin, $vars, $lang_admin);
                 break;
             case 'accepted':
                 // Send mail to admin: accepted project to review
@@ -56,6 +62,7 @@ class MatcherListener extends AbstractListener {
             case 'discarded':
                 // Send mail to owner: project not accepted in the Matcher
         }
+
         if($mail) {
             // if project is being watched, add bcc with the consultas
             $monitors = [];
@@ -73,7 +80,15 @@ class MatcherListener extends AbstractListener {
             } else {
                 $this->critical("ERROR sending communication to owner", ['type' => 'matcher_project', $project, 'email' => $user->email, 'bcc' => $monitors, 'template' => $tpl, 'errors' => $errors]);
             }
+        }
 
+        if($mail_admin) {
+            $errors = [];
+            if ($mail_admin->send($errors)) {
+                $this->notice("Communication sent successfully to admin", ['type' => 'matcher_project', $project, 'email' => $admin->email, 'template' => $tpl_admin]);
+            } else {
+                $this->critical("ERROR sending communication to admin", ['type' => 'matcher_project', $project, 'email' => $admin->email, 'template' => $tpl_admin, 'errors' => $errors]);
+            }
         }
     }
 
