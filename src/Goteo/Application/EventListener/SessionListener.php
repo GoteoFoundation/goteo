@@ -158,9 +158,9 @@ class SessionListener extends AbstractListener {
         Session::store('currency', $currency); // depending on request
 
         // Default menus
-        Session::addToMainMenu('<i class="icon icon-drop"></i> ' . Text::get('regular-header-about'), '/about', 'about');
-        Session::addToMainMenu('<i class="fa fa-search"></i> ' . Text::get('regular-discover'), '/discover', 'discover');
-        Session::addToMainMenu('<i class="fa fa-question-circle"></i> ' . Text::get('regular-faq'), '/faq', 'faq', 99);
+        Session::addToMainMenu('<i class="icon icon-drop"></i> ' . Text::get('regular-header-about'), '/about', 'about', 10);
+        Session::addToMainMenu('<i class="fa fa-search"></i> ' . Text::get('regular-discover'), '/discover', 'discover', 20);
+        Session::addToMainMenu('<i class="fa fa-question-circle"></i> ' . Text::get('regular-faq'), '/faq', 'faq', 100);
 
         // Channels
         $nodes = [];
@@ -168,7 +168,7 @@ class SessionListener extends AbstractListener {
             if($node->id === Config::get('node')) continue;
             $nodes['/channel/' . $node->id] = $node->name;
         }
-        Session::addToMainMenu('<i class="fa fa-sitemap"></i> ' . Text::get('home-channels-header'), $nodes, 'channels', null, 'main');
+        Session::addToMainMenu('<i class="fa fa-sitemap"></i> ' . Text::get('home-channels-header'), $nodes, 'channels', 30, 'main');
 
         // Langs
         $langs = [];
@@ -176,7 +176,7 @@ class SessionListener extends AbstractListener {
             if (Lang::isActive($id)) continue;
             $langs[Lang::getUrl($id)] = $lang;
         }
-        Session::addToMainMenu('<i class="fa fa-globe"></i> ' . Lang::getName(), $langs, 'langs', null, 'main');
+        Session::addToMainMenu('<i class="fa fa-globe"></i> ' . Lang::getName(), $langs, 'langs', 40, 'main');
 
         // Currencies
         $currencies = [];
@@ -184,7 +184,7 @@ class SessionListener extends AbstractListener {
             if($id === $currency) continue;
             $currencies['?currency=' . $id] = $c['html'] . ' ' .$c['name'];
         }
-        Session::addToMainMenu('<i>' . Currency::get($currency, 'html') . '</i> ' . Currency::get($currency, 'name'), $currencies, 'currencies', null, 'main');
+        Session::addToMainMenu('<i>' . Currency::get($currency, 'html') . '</i> ' . Currency::get($currency, 'name'), $currencies, 'currencies', 50, 'main');
 
         // Minimal User menu
         Session::addToUserMenu('<i class="icon icon-activity"></i> ' . Text::get('dashboard-menu-activity'), '/dashboard/activity', 'dashboard-activity', 20);
