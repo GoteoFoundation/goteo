@@ -398,7 +398,7 @@ div {
     font-weight: bold;
     text-transform: uppercase;
     margin: 0;
-    margin-top: 55px !important;
+    margin-top: 20px !important;
     color: $primary-color !important;
     div.label-call {
       line-height: 1.1;
@@ -417,6 +417,21 @@ div {
     font-weight: bold;
     margin-left: 0px;
     margin-right: 0px;
+  }
+}
+
+/* Channel module */
+
+.channel{
+  margin-top: 10px;
+  .channel-label{
+    width: 15%;
+  }
+  .btn{
+    margin-left: 5px;
+    color: $color-white !important;
+    padding: 3px 40px;
+    width: 65%;
   }
 }
 
@@ -1287,6 +1302,20 @@ div {
   }
   h2.pink-title {
     font-size: 2em;
+  }
+
+  .channel{
+    margin-top: 10px;
+    .channel-label{
+      width: 20%;
+      font-size: 1.3em;
+    }
+    .btn{
+      margin-left: 5px;
+      color: $color-white !important;
+      padding: 3px 40px;
+      width: 80%;
+    }
   }
 }
 

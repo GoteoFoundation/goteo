@@ -458,6 +458,7 @@ namespace Goteo\Model {
                                 node.url as node_url,
                                 node.label as node_label,
                                 node.active as node_active,
+                                node.owner_background as node_owner_background,
                                 project_conf.*,
                                 user.name as user_name,
                                 user.email as user_email,
@@ -531,6 +532,7 @@ namespace Goteo\Model {
                 $project->nodeData->id = $project->node;
                 $project->nodeData->name = $project->node_name;
                 $project->nodeData->url = '/channel/' . $project->node;
+                $project->nodeData->owner_background = $project->node_owner_background;
                 if($project->node_url) $project->nodeData->url = $project->node_url;
                 $project->nodeData->active = $project->node_active;
 

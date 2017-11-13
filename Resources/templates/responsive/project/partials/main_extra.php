@@ -46,13 +46,6 @@ $langs = $project->getLangs();
                                 <img class="location" src="<?= SRC_URL . '/assets/img/project/location.png' ?>">
                                 <span class="tag"><?= $project->project_location ?></span>
                             </div>
-                            <?php if ($project->node !== $this->get_config('current_node')&&($project->nodeData->active)) : ?>
-                                <div class="pull-left">
-                                    <a href="<?= $project->nodeData->url ?>">
-                                        <button class="btn btn-block grey text-uppercase"><?= $this->text('regular-channel') .' '. $project->nodeData->name ?></button>
-                                    </a>
-                                </div>
-                            <?php endif; ?>
                         </div>
 
                         <?php if (count($langs) > 1) : ?>
@@ -140,6 +133,7 @@ $langs = $project->getLangs();
                             </a>
                         <?php endif; ?>
                         <!-- end call in sm version -->
+
                     </div>
                 </div>
 
@@ -189,6 +183,20 @@ $langs = $project->getLangs();
                     </div>
                 </div>
             </a>
+            <?php endif; ?>
+
+            <?php if ($project->node !== $this->get_config('current_node')&&($project->nodeData->active)) : ?>
+
+                    <div class="col-sm-4 hidden-sm hidden-xs channel" style="<?= !$project->called ? 'margin-top: 55px;' : '' ?>">
+                        <span class="channel-label">
+                            <img src="/assets/img/project/channel.svg" width="20"> <?= $this->text('regular-channel') ?> 
+                        </span>
+                        <a href="<?= $project->nodeData->url ?>">
+                            <button class="btn" style="<?= $project->nodeData->owner_background ? 'background-color: '.$project->nodeData->owner_background :  '' ?>" > 
+                            <?= $project->nodeData->name ?>    
+                            </button>
+                        </a>
+                    </div>
             <?php endif; ?>
 
              <div class="panel panel-default widget rewards rewards-collapsed visible-xs">
