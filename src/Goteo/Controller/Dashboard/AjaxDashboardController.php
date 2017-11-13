@@ -159,7 +159,7 @@ class AjaxDashboardController extends \Goteo\Core\Controller {
         if(!$referer) $referer = "/dashboard/project/$pid/summary";
 
         try {
-            if($matcher = Matcher::get($mid)) {
+            if($matcher = Matcher::get($mid, false)) {
                 // find project in matching
                 if( ! $project = $matcher->findProject($pid, 'all') ) {
                     throw new ModelNotFoundException("Not found project [$pid] in matcher [$mid]");
@@ -169,13 +169,13 @@ class AjaxDashboardController extends \Goteo\Core\Controller {
                 switch($action) {
                     case 'accept': // accepted by the user
                     case 'reject': // rejected by the user
-                        if($project->matcher_status === 'pending' && $project->userCanEdit($this->user)) {
+                        if($matcher->active && $project->matcher_status === 'pending' && $project->userCanEdit($this->user)) {
                             $status = $action . 'ed';
                         }
                         break;
                     case 'discard': // rejected by an admin
                     case 'activate': // activated by an admin
-                        if($project->matcher_status !== 'active' && $project->userCanAdmin($this->user, true)) {
+                        if(!in_array($project->matcher_status, ['rejected', 'active']) && $project->userCanAdmin($this->user, true)) {
                             $status = $action === 'discard' ? 'discarded' : 'active';
                         }
                         break;

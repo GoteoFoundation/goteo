@@ -1,6 +1,7 @@
 <?php
 if($matchers = $this->project->getMatchers()):
     foreach($matchers as $matcher):
+        if(!$matcher->active) continue;
         $status = $matcher->getProjectStatus($this->project);
         if(!in_array($status, ['pending', 'accepted', 'active'])) continue;
 
