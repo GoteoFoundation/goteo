@@ -114,7 +114,7 @@ sudo gem install compass
 sudo npm install -g grunt-cli
 ```
 
-If you want to install grunt on Ubuntu 12.04 o4 14.04 for the very first time just do:
+If you want to install grunt on Ubuntu 12.04 or 14.04 for the very first time just do:
 
 ```bash
 sudo apt-get install build-essential libssl-dev git

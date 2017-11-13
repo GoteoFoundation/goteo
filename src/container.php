@@ -122,11 +122,14 @@ $sc->register('app.listener.origin', 'Goteo\Application\EventListener\OriginList
 // Project listener
 $sc->register('app.listener.project', 'Goteo\Application\EventListener\ProjectListener')
     ->setArguments(array(new Reference('logger')));
+// Matcher listener
+$sc->register('app.listener.matcher', 'Goteo\Application\EventListener\MatcherListener')
+    ->setArguments(array(new Reference('logger')));
 // Invest listener
 $sc->register('app.listener.invest', 'Goteo\Application\EventListener\InvestListener')
   ->setArguments(array(new Reference('paylogger')));
 // Invest Matcher listener
-$sc->register('app.listener.matcher', 'Goteo\Application\EventListener\InvestMatcherListener')
+$sc->register('app.listener.invest_matcher', 'Goteo\Application\EventListener\InvestMatcherListener')
   ->setArguments(array(new Reference('paylogger')));
 
 // Milestone listener
@@ -157,8 +160,9 @@ $sc->register('dispatcher', 'Symfony\Component\EventDispatcher\EventDispatcher')
   ->addMethodCall('addSubscriber', array(new Reference('app.listener.auth')))
   ->addMethodCall('addSubscriber', array(new Reference('app.listener.origin')))
   ->addMethodCall('addSubscriber', array(new Reference('app.listener.project')))
-  ->addMethodCall('addSubscriber', array(new Reference('app.listener.invest')))
   ->addMethodCall('addSubscriber', array(new Reference('app.listener.matcher')))
+  ->addMethodCall('addSubscriber', array(new Reference('app.listener.invest')))
+  ->addMethodCall('addSubscriber', array(new Reference('app.listener.invest_matcher')))
   ->addMethodCall('addSubscriber', array(new Reference('app.listener.poolinvest')))
   ->addMethodCall('addSubscriber', array(new Reference('app.listener.messages')))
   ->addMethodCall('addSubscriber', array(new Reference('app.listener.milestone')))

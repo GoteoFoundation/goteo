@@ -21,7 +21,6 @@ use Goteo\Application\Session;
 class ACL {
     protected static $resources = array(
         //  role,      URL prefix          Active
-        '/message' => ['user'],
         '/community' => ['user'],
 
         '/message' => ['user'],

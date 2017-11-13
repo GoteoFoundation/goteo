@@ -70,6 +70,9 @@
     &.icon-shared {
         @include svg-background('../img/icons/shared.svg');
     }
+    &.icon-channel {
+        @include svg-background('../img/icons/channel.svg');
+    }
     &.icon-back {
         // @include svg-background('../img/icons/back.svg');
         background: url('../img/icons/back.svg') no-repeat;

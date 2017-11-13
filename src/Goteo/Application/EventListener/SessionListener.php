@@ -168,13 +168,13 @@ class SessionListener extends AbstractListener {
             if($node->id === Config::get('node')) continue;
             $nodes['/channel/' . $node->id] = $node->name;
         }
-        Session::addToMainMenu('<i class="fa fa-sitemap"></i> ' . Text::get('home-channels-header'), $nodes, 'channels', 30, 'main');
+        Session::addToMainMenu('<i class="icon icon-channel"></i> ' . Text::get('home-channels-header'), $nodes, 'channels', 30, 'main');
 
         // Langs
         $langs = [];
         foreach (Lang::listAll('name', true) as $id => $lang) {
             if (Lang::isActive($id)) continue;
-            $langs[Lang::getUrl($id)] = $lang;
+            $langs[Lang::getUrl($id, $request)] = $lang;
         }
         Session::addToMainMenu('<i class="fa fa-globe"></i> ' . Lang::getName(), $langs, 'langs', 40, 'main');
 

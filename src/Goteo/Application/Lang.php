@@ -274,12 +274,11 @@ class Lang {
         return static::current($public_only) === $lang;
     }
 
-    static public function getUrl($lang) {
+    static public function getUrl($lang, Request $request = null) {
         $url = Config::get('url.main');
         $url_lang = Config::get('url.url_lang');
         $path = '/';
-        if($request = App::getRequest()) {
-            // $path = $request->getRequestUri();
+        if($request) {
             $path = $request->getBaseUrl().$request->getPathInfo();
             $get = $request->query->all();
             if(isset($get['lang'])) unset($get['lang']);

@@ -189,3 +189,7 @@ CREATE TABLE `matcher_user` (
 ALTER TABLE `invest` ADD COLUMN `matcher` VARCHAR(50) NULL AFTER `call`,
     ADD FOREIGN KEY (`call`) REFERENCES `call`(`id`) ON UPDATE CASCADE,
     ADD FOREIGN KEY (`matcher`) REFERENCES `matcher`(`id`) ON UPDATE CASCADE;
+
+
+-- remove template constrains from mail as it can come from yaml sources now
+ALTER TABLE `mail` CHANGE `template` `template` VARCHAR(100) NULL, DROP FOREIGN KEY `mail_ibfk_3`;
