@@ -106,10 +106,9 @@ http://gruntjs.com/getting-started
 If you want to install grunt on Ubuntu 16.04 for the very first time just do:
 
 ```bash
-sudo apt-get install build-essential libssl-dev git
-sudo apt-get update
-sudo apt-get install nodejs npm
-sudo apt-get ruby-dev install rubygems-integration
+sudo apt install build-essential libssl-dev git
+sudo apt install nodejs npm
+sudo apt install ruby-dev rubygems-integration
 sudo gem install sass -v 3.4.23
 sudo gem install compass
 sudo npm install -g grunt-cli
