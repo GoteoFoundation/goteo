@@ -8,7 +8,7 @@ Installation
 Server requirements
 -------------------
 
-- PHP v5.6 or later with most common extension activated (GD, mcrypt, etc)
+- PHP v5.6 (PHP 7 recommended) or later with extensions `gd`, `mcrypt`, `curl`, `mbstring`, `json`, `mysql` activated
 - Apache, Nginx or any other server with ModRewrite activated
 - MySQL 5.6 or later
 
