@@ -41,8 +41,8 @@ class ChannelController extends \Goteo\Core\Controller {
     // Set the global vars to all the channel views
     private function setChannelContext($id)
     {
-        $channel = Node::get($id);
 
+        $channel = Node::get($id);
         View::setTheme('responsive');
 
         //Check if the user can access to the channel

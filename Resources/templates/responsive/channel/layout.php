@@ -8,7 +8,7 @@ $this->layout('layout', [
 $this->section('header-navbar-brand');
 
 ?>
-    <a class="navbar-brand" href="<?= SITE_URL ?>"><img src="<?= $this->asset('img/goteo.svg') ?>" class="logo" alt="Goteo"></a>
+    <a class="navbar-brand" href="<?= $this->get_config('url.main') ?>"><img src="<?= $this->asset('img/goteo.svg') ?>" class="logo" alt="Goteo"></a>
 
 <?php
 

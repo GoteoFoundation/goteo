@@ -12,6 +12,7 @@ namespace Goteo\Controller;
 
 use Symfony\Component\HttpFoundation\Request;
 
+use Goteo\Application\Exception\ControllerAccessDeniedException;
 use Goteo\Application\Session;
 use Goteo\Application\Config;
 use Goteo\Application\View;
@@ -28,6 +29,10 @@ class DashboardController extends \Goteo\Core\Controller {
         // changing to a responsive theme here
         View::setTheme('responsive');
         $this->user = Session::getUser();
+        if(!$this->user) {
+            throw new ControllerAccessDeniedException(Text::get('user-login-required-access'));
+        }
+
     }
 
     public static function createSidebar($section, $zone = '') {

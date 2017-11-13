@@ -40,21 +40,20 @@ use Symfony\Component\Validator\Constraints;
 use Goteo\Library\Forms\FormModelException;
 use Goteo\Application\Event\FilterProjectEvent;
 use Goteo\Application\Event\FilterProjectPostEvent;
+use Goteo\Controller\DashboardController;
 
-class ProjectDashboardController extends \Goteo\Core\Controller {
+class ProjectDashboardController extends DashboardController {
     protected $user, $admin = false;
 
     public function __construct() {
-        // changing to a responsive theme here
-        View::setTheme('responsive');
-        $this->user = Session::getUser();
+        parent::__construct();
 
         $this->contextVars([
             'section' => 'projects'
         ]);
     }
 
-    static function createSidebar(Project $project, $zone = '', &$form = null) {
+    static function createProjectSidebar(Project $project, $zone = '', &$form = null) {
         $user = Session::getUser();
 
         if(!$project->userCanEdit($user)) return false;
@@ -169,7 +168,7 @@ class ProjectDashboardController extends \Goteo\Core\Controller {
             throw new ControllerAccessDeniedException(Text::get('user-login-required-access'));
         }
 
-        static::createSidebar($this->project, $section, $form);
+        static::createProjectSidebar($this->project, $section, $form);
 
         $this->admin = $this->project->userCanModerate($this->user);
 
