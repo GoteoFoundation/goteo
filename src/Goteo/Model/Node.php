@@ -151,40 +151,44 @@ class Node extends \Goteo\Core\Model {
      */
     public static function getAll ($filters = array()) {
 
-        $list = array();
-
-        $sqlFilter = "";
+        $sqlFilter = [];
+        $values = [];
 
         if (!empty($filters['name'])) {
-            $sqlFilter .= " AND ( name LIKE ('%{$filters['name']}%') OR id = '{$filters['name']}' )";
+            $sqlFilter[] = "( name LIKE :name OR id = :id )";
+            $values[':name'] = '%' . $filters['name'] . '%';
+            $values[':id'] = $filters['name'];
         }
 
         if (!empty($filters['type'])) {
                 if($filters['type'] == 'channel')
-                    $sqlFilter .= " AND url = ''";
+                    $sqlFilter[] = "url = ''";
                 else
-                    $sqlFilter .= " AND url != ''";
+                    $sqlFilter[] = "url != ''";
         }
 
         if (!empty($filters['status'])) {
             $active = $filters['status'] == 'active' ? '1' : '0';
-            $sqlFilter .= " AND active = '$active'";
+            $sqlFilter[] = "active = '$active'";
         }
 
         if (!empty($filters['admin'])) {
-            $sqlFilter .= " AND id IN (SELECT node_id FROM user_role WHERE user_id = '{$filters['admin']}')";
+            $sqlFilter[] = "id IN (SELECT node_id FROM user_role WHERE user_id = :user)";
+            $values[':user'] = $filters['admin'];
         }
 
-        $sql = static::query("
-            SELECT
-                *
-            FROM node
-            WHERE id IS NOT NULL
-                $sqlFilter
-            ORDER BY `name` ASC
-            ");
+        if (!empty($filters['available'])) {
+            $sqlFilter[] = "(active=1 OR id IN (SELECT node_id FROM user_role WHERE user_id = :user))";
+            $values[':user'] = $filters['available'];
+        }
 
-        return $sql->fetchAll(\PDO::FETCH_CLASS, __CLASS__);
+        if($sqlFilter) $sqlFilter = ' WHERE '. implode(' AND ', $sqlFilter);
+        $sql = "SELECT * FROM node $sqlFilter ORDER BY `name` ASC";
+        // die(\sqldbg($sql, $values));
+        if($query = static::query($sql, $values)) {
+            return $query->fetchAll(\PDO::FETCH_CLASS, __CLASS__);
+        }
+        return [];
     }
 
     /*

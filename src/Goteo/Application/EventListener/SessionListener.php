@@ -164,7 +164,7 @@ class SessionListener extends AbstractListener {
 
         // Channels
         $nodes = [];
-        foreach (Node::getAll(['status' => 'active']) as $node) {
+        foreach (Node::getAll(['available' => Session::getUserId()]) as $node) {
             if($node->id === Config::get('node')) continue;
             $nodes['/channel/' . $node->id] = $node->name;
         }
