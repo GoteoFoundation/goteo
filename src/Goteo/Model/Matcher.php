@@ -69,16 +69,20 @@ class Matcher extends \Goteo\Core\Model {
      * @param  mixed $pid Project or id
      * @return array of Matchers available for the project
      */
-    static public function getFromProject($pid, $valid_only = true) {
+    static public function getFromProject($pid, $status = true) {
         if($pid instanceOf Project) $pid = $pid->id;
+        $values = [':pid' => $pid];
         $sql = "SELECT a.* FROM `matcher` a
             RIGHT JOIN `matcher_project` b ON a.id = b.matcher_id
-            WHERE b.project_id = ?";
-        if($valid_only) {
+            WHERE b.project_id = :pid";
+        if(is_bool($status)) {
             $sql .= " AND a.active=1 AND b.status = 'active'";
+        } else {
+            $sql .= " AND a.active=1 AND b.status = :status";
+            $values[':status'] = $status;
         }
         $list = [];
-        if ($query = static::query($sql, $pid)) {
+        if ($query = static::query($sql, $values)) {
             if( $matcher = $query->fetchAll(\PDO::FETCH_CLASS, __CLASS__) ) {
                 return $matcher;
             }

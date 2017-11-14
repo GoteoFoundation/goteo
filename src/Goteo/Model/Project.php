@@ -701,11 +701,13 @@ namespace Goteo\Model {
          * Gets an array of Matcher instances if exists in any of them
          * @return [type] [description]
          */
-        public function getMatchers() {
-            if($this->matcherInstances) return $this->matcherInstances;
-            $this->matcherInstances = Matcher::getFromProject($this->id, false);
-            return $this->matcherInstances;
+        public function getMatchers($status = 'active') {
+            if(!$this->matcherInstances) $this->matcherInstances = [];
+            if($this->matcherInstances[$status]) return $this->matcherInstances[$status];
+            $this->matcherInstances[$status] = Matcher::getFromProject($this->id, $status);
+            return $this->matcherInstances[$status];
         }
+
 
         // returns the current user
         public function getOwner() {

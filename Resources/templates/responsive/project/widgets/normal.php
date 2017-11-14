@@ -13,14 +13,25 @@ if($this->admin && !$this->link) {
     $link = '/dashboard' . $link;
     $target = '';
 }
-$tagmark = $this->project->getTagmark();
-$call = $this->project->getCall();
+if(!($label = $this->label)) {
+    $tagmark = $this->project->getTagmark();
+    $call = $this->project->getCall();
+    $matchers = $this->project->getMatchers('active');
+}
 
 ?><div class="project-widget flip-widget normal" id="project-<?= $this->project->id ?>">
 
-    <?php if($call): ?>
+    <?php if($label): ?>
+        <div class="status btn-lilac">
+            <?= $label ?>
+        </div>
+    <?php elseif($call): ?>
         <div class="status btn-lilac">
             <i class="icon icon-call"></i> <?= $this->text('regular-call') ?> x<strong>2</strong>
+        </div>
+    <?php elseif($matchers): ?>
+        <div class="status btn-lilac">
+            <i class="icon icon-call"></i> <?= $matchers[0]->name ?>
         </div>
     <?php elseif($tagmark): ?>
         <div class="status btn-orange">

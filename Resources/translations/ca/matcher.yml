@@ -1,5 +1,6 @@
 channel-join: 'Uneix-te'
 channel-join-desc: 'Vols formar part d''aquest canal?'
+channel-join-reviewing: 'En avaluació...'
 
 matcher-apply-pending: 'Aquest projecte està pre-seleccionat per a la convocatòria matchfunding %s'
 matcher-apply-accepted: 'Aquest projecte està pendent d''aprovació per la convocatòria matchfunding %s'
