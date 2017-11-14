@@ -40,7 +40,7 @@ class InvestMatcherListener extends AbstractMatcherListener {
             foreach($matchers as $matcher) {
 
                 // Do not execute this listener if not required by the processor
-                if(!$this->processorHasListener($matcher)) continue;
+                if(!$this->hasAppListener($matcher)) continue;
 
                 // find processor, and execute it
                 if($processor = $this->getService('app.matcher.finder')->getProcessor($matcher)) {

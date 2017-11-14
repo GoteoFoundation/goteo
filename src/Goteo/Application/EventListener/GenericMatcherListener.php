@@ -10,13 +10,9 @@
 
 namespace Goteo\Application\EventListener;
 
-use Goteo\Application\EventListener\AbstractListener;
 use Goteo\Application\AppEvents;
 use Goteo\Application\Lang;
-use Goteo\Library\Feed;
-use Goteo\Library\FeedBody;
 
-use Goteo\Application\Exception\DuplicatedEventException;
 use Goteo\Model\Template;
 use Goteo\Model\User;
 use Goteo\Model\Mail;
@@ -31,7 +27,7 @@ class GenericMatcherListener extends AbstractMatcherListener {
         $project = $event->getProject();
 
         // Do not execute this listener if not required by the processor
-        if(!$this->processorHasListener($matcher)) return;
+        if(!$this->hasAppListener($matcher)) return;
 
         $user = $project->getOwner();
         $admin = $matcher->getOwner();

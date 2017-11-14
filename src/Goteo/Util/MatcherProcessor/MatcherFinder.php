@@ -54,7 +54,7 @@ class MatcherFinder {
     public function addListenerToDispatcher($dispatcher = 'dispatcher', $listener, $arguments = []) {
         $sc = $this->container;
         $index = count($this->listeners);
-        $id = "app.listener.matcher.$index";
+        $id = "matcher.listener.$index";
         if(in_array($listener, $this->listeners)) return;
 
         $sc->register($id, $listener)
