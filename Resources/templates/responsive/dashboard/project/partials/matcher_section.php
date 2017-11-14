@@ -9,7 +9,7 @@ if($matchers = $this->project->getMatchers()):
     <blockquote>
         <p><i class="fa fa-hand-o-right"></i> <?= $this->text('matcher-apply-' . $status, '<a href="/matcher/' . $matcher->id . '"><strong>' . $matcher->name . '</strong></a>') ?></p>
         <?php if($status === 'pending'): ?>
-            <p><?= $this->text('matcher-apply-pending-desc', '<a data-toggle="modal" data-target="#termsModal-' . $matcher->id . '" href="/matcher/' . $matcher->id . '"><strong>' . $this->text('matcher-terms') . '</strong></a>') ?>:</p>
+            <p><?= $this->text('matcher-apply-pending-desc', '<a data-toggle="modal" data-target="#termsModal-' . $matcher->id . '" href="#"><strong>' . $this->text('matcher-terms') . '</strong></a>') ?>:</p>
             <p>
                 <a href="/dashboard/ajax/matchers/<?= $matcher->id ?>/accept/<?= $this->project->id ?>" class="btn btn-orange btn-lg"><i class="fa fa-thumbs-o-up"></i> <?= $this->text('matcher-apply-accept') ?></a>
                 <a href="/dashboard/ajax/matchers/<?= $matcher->id ?>/reject/<?= $this->project->id ?>" class="btn btn-default btn-lg" onclick="return confirm('<?= $this->ee($this->text('matcher-apply-reject-sure'))?>')"><i class="fa fa-thumbs-o-down"></i> <?= $this->text('matcher-apply-reject') ?></a>

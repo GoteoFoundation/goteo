@@ -44,6 +44,7 @@ class MatcherListener extends AbstractListener {
             '%PROJECTURL%' => Lang::getUrl($lang) . 'dashboard/project/' . $project->id,
             '%CALLNAME%' => $matcher->name,
             '%CALLURL%' => Lang::getUrl($lang) . 'matcher/' . $matcher->id,
+            '%ADMINMAIL%' => $matcher->getOwner()->email
         ];
 
         $mail = $mail_admin = $tpl = $tpl_admin = null;
@@ -57,10 +58,15 @@ class MatcherListener extends AbstractListener {
                 break;
             case 'accepted':
                 // Send mail to admin: accepted project to review
+                // TODO: maybe in the future
             case 'active':
                 // Send mail to owner: project accepted in the Matcher
+                $tpl = Template::MATCHER_PROJECT_ACTIVATED;
+                $mail = Mail::createFromTemplate($user->email, $user->name, $tpl, $vars, $lang);
             case 'discarded':
                 // Send mail to owner: project not accepted in the Matcher
+                $tpl = Template::MATCHER_PROJECT_DISCARDED;
+                $mail = Mail::createFromTemplate($user->email, $user->name, $tpl, $vars, $lang);
         }
 
         if($mail) {
