@@ -420,20 +420,6 @@ div {
   }
 }
 
-/* Channel module */
-
-.channel{
-  margin-top: 10px;
-  .channel-label{
-    width: 15%;
-  }
-  .btn{
-    margin-left: 5px;
-    color: $color-white !important;
-    padding: 3px 40px;
-    width: 65%;
-  }
-}
 
 /* Menu */
 
@@ -1304,19 +1290,7 @@ div {
     font-size: 2em;
   }
 
-  .channel{
-    margin-top: 10px;
-    .channel-label{
-      width: 20%;
-      font-size: 1.3em;
-    }
-    .btn{
-      margin-left: 5px;
-      color: $color-white !important;
-      padding: 3px 40px;
-      width: 80%;
-    }
-  }
+  
 }
 
 @media (max-width: $breakpoint-xs - 1) {
