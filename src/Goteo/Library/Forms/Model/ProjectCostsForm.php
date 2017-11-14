@@ -96,7 +96,8 @@ class ProjectCostsForm extends AbstractFormProcessor implements FormProcessorInt
                 'required' => true,
             ])
             ->add("cost$suffix", 'text', [
-                'label' => 'costs-field-cost',
+                // 'label' => 'costs-field-cost',
+                'label' => 'regular-title',
                 'disabled' => $this->getReadonly(),
                 'data' => $cost->cost,
                 'constraints' => $this->getConstraints("cost$suffix"),
