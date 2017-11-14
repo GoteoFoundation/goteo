@@ -1,5 +1,5 @@
 <?php
-if($matchers = $this->project->getMatchers()):
+if($this->project && $matchers = $this->project->getMatchers()):
     foreach($matchers as $matcher):
         if(!$matcher->active) continue;
         $status = $matcher->getProjectStatus($this->project);

@@ -12,10 +12,23 @@ namespace Goteo\Application;
 
 use Foil;
 use Goteo\Application\Event\FilterViewEvent;
+use Foil\Contracts\ExtensionInterface;
 
 class View {
     static protected $engine;
     static protected $theme = 'default';
+
+
+    static public function createEngine() {
+        $engine = Foil\engine();
+        // Register default Goteo extensions
+        $engine->loadExtension(new \Goteo\Util\Foil\Extension\GoteoCore(), [], true);
+        $engine->loadExtension(new \Goteo\Util\Foil\Extension\TextUtils(), [], true);
+        $engine->loadExtension(new \Goteo\Util\Foil\Extension\ModelsData(), [], true);
+        $engine->loadExtension(new \Goteo\Util\Foil\Extension\LangUtils(), [], true);
+        $engine->loadExtension(new \Goteo\Util\Foil\Extension\Forms(), [], true);
+        return $engine;
+    }
 
     /**
      * Initializes Foil View system
@@ -23,7 +36,7 @@ class View {
      */
     static public function factory() {
         if(!self::$engine) {
-            self::$engine = Foil\engine();
+            self::$engine = static::createEngine();
         }
     }
 
@@ -43,9 +56,19 @@ class View {
     static public function prependFolder($path, $name) {
         self::factory();
         self::$engine->setFolders(array_merge([$name => $path] , self::$engine->finder()->dirs()));
-
     }
 
+    /**
+     * Returns folders
+     */
+    static public function getFolders() {
+        self::factory();
+        return self::$engine->finder()->dirs();
+    }
+
+    static public function loadExtension(ExtensionInterface $extension) {
+        self::$engine->loadExtension($extension);
+    }
 
     /**
      * Renders a template view
@@ -57,7 +80,6 @@ class View {
             $vars = $event->getVars();
         }
         //por compatibilidad
-        // self::$engine->vars = $vars;
         return self::getEngine()->render($view, $vars + array('vars' => $vars)); //por compatibilidad
     }
 

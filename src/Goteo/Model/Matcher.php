@@ -75,13 +75,15 @@ class Matcher extends \Goteo\Core\Model {
         $sql = "SELECT a.* FROM `matcher` a
             RIGHT JOIN `matcher_project` b ON a.id = b.matcher_id
             WHERE b.project_id = :pid";
-        if(is_bool($status)) {
+
+        if((is_bool($status) && $status) || $status == 'all') {
             $sql .= " AND a.active=1 AND b.status = 'active'";
-        } else {
+        } elseif(in_array($status, self::$statuses)) {
             $sql .= " AND a.active=1 AND b.status = :status";
             $values[':status'] = $status;
         }
         $list = [];
+        // print(\sqldbg($sql, $values));
         if ($query = static::query($sql, $values)) {
             if( $matcher = $query->fetchAll(\PDO::FETCH_CLASS, __CLASS__) ) {
                 return $matcher;

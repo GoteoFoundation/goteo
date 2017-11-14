@@ -699,9 +699,10 @@ namespace Goteo\Model {
 
         /**
          * Gets an array of Matcher instances if exists in any of them
+         * @param $status to boolean false to return all status
          * @return [type] [description]
          */
-        public function getMatchers($status = 'active') {
+        public function getMatchers($status = false) {
             if(!$this->matcherInstances) $this->matcherInstances = [];
             if($this->matcherInstances[$status]) return $this->matcherInstances[$status];
             $this->matcherInstances[$status] = Matcher::getFromProject($this->id, $status);

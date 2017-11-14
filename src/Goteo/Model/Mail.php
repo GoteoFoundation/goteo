@@ -478,12 +478,15 @@ class Mail extends \Goteo\Core\Model {
         if ($plain) {
             return strip_tags($this->content) . ($extra_vars['alternate'] ? "\n\n" . $extra_vars['alternate'] : '');
         }
+        // Render in a separate instance of Foil to avoid some unexpected problems
+        $engine = View::createEngine();
+        $engine->setFolders(View::getFolders());
         // para plantilla boletin
         if ($this->template == Template::NEWSLETTER) {
             $extra_vars['unsubscribe'] = SITE_URL . '/user/unsubscribe/' . $this->getToken(); // ????
-            return View::render('email/newsletter', $extra_vars);
+            return $engine->render('email/newsletter', $extra_vars, false);
         }
-        return View::render('email/default', $extra_vars);
+        return $engine->render('email/default', $extra_vars, false);
     }
 
     /**
