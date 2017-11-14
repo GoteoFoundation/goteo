@@ -11,7 +11,6 @@
 
 namespace Goteo\Application\EventListener;
 
-use Goteo\Application\App;
 use Goteo\Application\AppEvents;
 use Goteo\Application\Event\FilterInvestRequestEvent;
 use Goteo\Library\Currency;
@@ -25,7 +24,7 @@ use Goteo\Util\MatcherProcessor\MatcherProcessorException;
 
 //
 
-class InvestMatcherListener extends AbstractListener {
+class InvestMatcherListener extends AbstractMatcherListener {
 
 	public function onInvestSuccess(FilterInvestRequestEvent $event) {
 		$method   = $event->getMethod();
@@ -34,15 +33,17 @@ class InvestMatcherListener extends AbstractListener {
 		$project  = $invest->getProject();
 
         // Only for invests on projects
-        if(!$project) {
-            return;
-        }
+        if(!$project) return;
 
         // Check if project is in a matcher campaign
         if($matchers = Matcher::getFromProject($project)) {
             foreach($matchers as $matcher) {
+
+                // Do not execute this listener if not required by the processor
+                if(!$this->processorHasListener($matcher)) continue;
+
                 // find processor, and execute it
-                if($processor = App::getService('app.matcher.finder')->getProcessor($matcher)) {
+                if($processor = $this->getService('app.matcher.finder')->getProcessor($matcher)) {
                     $processor->setInvest($invest);
                     $processor->setProject($project);
                     $processor->setMethod($method);

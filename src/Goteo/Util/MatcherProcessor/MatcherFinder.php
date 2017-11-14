@@ -11,9 +11,17 @@
 namespace Goteo\Util\MatcherProcessor;
 
 use Goteo\Model\Matcher;
+use Symfony\Component\DependencyInjection\ContainerBuilder;
+use Symfony\Component\DependencyInjection\Reference;
 
 class MatcherFinder {
+    protected $container = null;
     protected $processors = [];
+    protected $listeners = [];
+
+    public function __construct(ContainerBuilder $container) {
+        $this->container = $container;
+    }
 
     public function addProcessor($processor) {
         if(!class_exists($processor)) {
@@ -24,7 +32,38 @@ class MatcherFinder {
             throw new MatcherFinderException("[$processor] should implement [Goteo\Util\MatcherProcessor\MatcherProcessorInterface]");
         }
         $this->processors[] = $processor;
+
+        if($listeners = $processor::getAppEventListeners()) {
+            foreach($listeners as $listener => $arguments) {
+                $this->addListenerToDispatcher('dispatcher', $listener);
+            }
+        }
+        if($listeners = $processor::getConsoleEventListeners()) {
+            foreach($listeners as $listener => $arguments) {
+                $this->addListenerToDispatcher('console_dispatcher', $listener);
+            }
+        }
         return $this;
+    }
+
+
+    /**
+     * Adds to the dispatcher the listeners defined in the processor
+     * @param [type] $listener [description]
+     */
+    public function addListenerToDispatcher($dispatcher = 'dispatcher', $listener, $arguments = []) {
+        $sc = $this->container;
+        $index = count($this->listeners);
+        $id = "app.listener.matcher.$index";
+        if(in_array($listener, $this->listeners)) return;
+
+        $sc->register($id, $listener)
+           ->setArguments(array_map(function($arg) {return new Reference($arg);}, $arguments));
+
+        $sc->getDefinition($dispatcher)
+           ->addMethodCall('addSubscriber', array(new Reference($id)));
+
+        $this->listeners[$id] = $listener;
     }
 
     /**

@@ -10,6 +10,7 @@
 
 namespace Goteo\Util\MatcherProcessor;
 
+use Goteo\Application\AppEvents;
 use Goteo\Model\Matcher;
 use Goteo\Model\Project;
 use Goteo\Model\Invest;
@@ -196,6 +197,23 @@ abstract class AbstractMatcherProcessor implements MatcherProcessorInterface {
             throw new MatcherProcessorException('No payment method defined in matcher');
         }
         return $this->method;
+    }
+
+
+    /**
+     * Defaults event listeners for this processor
+     * GenericMatcherListener: Sends mails on project matcher status changes
+     * InvestMatcherListener: Processes the matchfunding payments on invests events
+     */
+    static public function getAppEventListeners() {
+        return [
+            'Goteo\Application\EventListener\GenericMatcherListener' => ['logger'],
+            'Goteo\Application\EventListener\InvestMatcherListener'  => ['pay_logger']
+        ];
+    }
+
+    static public function getConsoleEventListeners() {
+        return [];
     }
 
 }

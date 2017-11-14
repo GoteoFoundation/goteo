@@ -13,9 +13,6 @@ namespace Goteo\Application\EventListener;
 use Goteo\Application\EventListener\AbstractListener;
 use Goteo\Application\AppEvents;
 use Goteo\Application\Lang;
-use Goteo\Application\Config;
-use Goteo\Application\Event\FilterProjectEvent;
-use Goteo\Console\UsersSend;
 use Goteo\Library\Feed;
 use Goteo\Library\FeedBody;
 
@@ -27,12 +24,15 @@ use Goteo\Model\Project\Conf as ProjectConf;
 
 use Goteo\Application\Event\FilterMatcherProjectEvent;
 
-class MatcherListener extends AbstractListener {
-
+class GenericMatcherListener extends AbstractMatcherListener {
 
     public function onMatcherProject(FilterMatcherProjectEvent $event) {
         $matcher = $event->getMatcher();
         $project = $event->getProject();
+
+        // Do not execute this listener if not required by the processor
+        if(!$this->processorHasListener($matcher)) return;
+
         $user = $project->getOwner();
         $admin = $matcher->getOwner();
         $original_lang = $lang = User::getPreferences($user)->comlang;

@@ -120,4 +120,20 @@ interface MatcherProcessorInterface {
      */
     public function getInvests();
 
+    /**
+     * Returns an array of eventListeners to be added to the App Service Container
+     * Array of [key => [values]] where:
+     *   - keys is a class implementing Symfony\Component\EventDispatcher\EventSubscriberInterface
+     *   - values are Symfony\Component\DependencyInjection\Reference in the service contanier
+     *     that will be passed to the constructor (logger most of the times)
+     * @return array list of classes [EventSubscriberInterface => [reference1, reference2, ...]
+     */
+    static public function getAppEventListeners();
+
+    /**
+     * Same as getAppEventListeners for the console dispatcher (cron triggered)
+     *
+     * @return array list of classes [EventSubscriberInterface => [reference1, reference2, ...]
+     */
+    static public function getConsoleEventListeners();
 }
