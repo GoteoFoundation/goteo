@@ -133,6 +133,15 @@
     }
 }
 
+.btn-transparent {
+    background-color: transparent;
+    color: $color-white;
+    border: 1px solid $color-white;
+    &:hover {
+        background-color:darken($color-white, 10%);
+    }
+}
+
 button.pink{
     background-color: $background-pink;
     font-size:1.2em;
@@ -176,6 +185,10 @@ button.pink:hover, button.pink:focus, button.custom-green:hover,
 .alert-lilac {
     background-color: $color-lilac;
     color: $color-white;
+}
+.alert-info {
+    background-color: lighten($color-cyan, 40%);
+    color: $primary-color;
 }
 .alert-orange {
     background-color: $color-orange;

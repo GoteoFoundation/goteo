@@ -1,5 +1,5 @@
 <div class="menu-header">
-    <a class="navbar-brand" href="<?= SITE_URL ?>"><img src="<?= $this->asset('img/goteo.svg') ?>" class="img-responsive logo" alt="Goteo"></a>
+    <a class="navbar-brand" href="<?= $this->get_config('url.main') ?>"><img src="<?= $this->asset('img/goteo.svg') ?>" class="img-responsive logo" alt="Goteo"></a>
     <button class="toggle-menu btn btn-link" data-target="<?= $this->target ?>" title="Close"><i class="icon icon-close"></i></button>
 </div>
 

@@ -1194,7 +1194,13 @@ class Call extends \Goteo\Core\Model {
         }
 
         if (!empty($filters['admin'])) {
-            $sqlFilter .= " AND id IN (SELECT `call` FROM user_call WHERE user = '{$filters['admin']}')";
+            $sqlFilter .= " AND id IN (SELECT `call` FROM user_call WHERE user = :user)";
+            $values[':user'] = $filters['admin'];
+        }
+
+        if (!empty($filters['available'])) {
+            $sqlFilter .= " AND (status IN (3,4) OR id IN (SELECT `call` FROM user_call WHERE user = :user))";
+            $values[':user'] = $filters['available'];
         }
 
         //el Order

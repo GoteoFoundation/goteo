@@ -81,10 +81,12 @@ regular-create: 'Crea un projecte'
 regular-days: dies
 regular-delete: Elimina
 regular-discover: 'Descobreix projectes'
+regular-discard: 'Descarta'
 regular-download-pdf: 'Descarrega el PDF'
 regular-actions: Accions
 regular-edit: Edita
 regular-email: Email
+regular-join: 'Uneix-te'
 regular-facebook: Facebook
 regular-faq: 'Preguntes freqüents '
 regular-first: Primera

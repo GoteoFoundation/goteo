@@ -268,6 +268,7 @@ namespace Goteo\Model {
                 }
                 return true;
             }
+
             // is superadmin in the project node
             if($user->hasRoleInNode($this->node, ['manager', 'superadmin', 'root'])) return true;
             // is a consultant
@@ -669,7 +670,7 @@ namespace Goteo\Model {
         }
 
         /**
-         * Transitional function. Util if Call plugin is active
+         * Gets the call instance if exists
          * @return [type] [description]
          */
         public function getCall() {
@@ -694,6 +695,16 @@ namespace Goteo\Model {
                 }
             }
             return $this->callInstance;
+        }
+
+        /**
+         * Gets an array of Matcher instances if exists in any of them
+         * @return [type] [description]
+         */
+        public function getMatchers() {
+            if($this->matcherInstances) return $this->matcherInstances;
+            $this->matcherInstances = Matcher::getFromProject($this->id, false);
+            return $this->matcherInstances;
         }
 
         // returns the current user
@@ -919,6 +930,36 @@ namespace Goteo\Model {
         public function isFulfilled() {
             return $this->status == self::STATUS_FULFILLED;
         }
+
+
+        /*
+         * Checks if the project has reached the minimum amount (without status checking)
+         * @return: boolean
+         */
+        public function isSuccessful() {
+            $sql = "SELECT
+                            id,
+                            (SELECT  SUM(amount)
+                            FROM    cost
+                            WHERE   project = project.id
+                            AND     required = 1
+                            ) as `mincost`,
+                            (SELECT  SUM(amount)
+                            FROM    invest
+                            WHERE   project = project.id
+                            AND     invest.status IN ('0', '1', '3', '4')
+                            ) as `getamount`
+                    FROM project
+                    WHERE project.id = :id
+                    HAVING getamount >= mincost
+                    LIMIT 1
+                    ";
+
+            $values = [':id' => $this->id];
+            $query = self::query($sql, $values);
+            return ($query->fetchColumn() == $this->id);
+        }
+
 
         /*
          *  Cargamos los datos mínimos de un proyecto: id, name, owner, comment, lang, status, user
@@ -3753,34 +3794,6 @@ namespace Goteo\Model {
                 }
             }
             return $costs;
-        }
-
-
-        /*
-         * Para saber si ha conseguido el mínimo
-         * @return: boolean
-         */
-        public static function isSuccessful($id) {
-            $sql = "SELECT
-                            id,
-                            (SELECT  SUM(amount)
-                            FROM    cost
-                            WHERE   project = project.id
-                            AND     required = 1
-                            ) as `mincost`,
-                            (SELECT  SUM(amount)
-                            FROM    invest
-                            WHERE   project = project.id
-                            AND     invest.status IN ('0', '1', '3', '4')
-                            ) as `getamount`
-                    FROM project
-                    WHERE project.id = ?
-                    HAVING getamount >= mincost
-                    LIMIT 1
-                    ";
-
-            $query = self::query($sql, array($id));
-            return ($query->fetchColumn() == $id);
         }
 
         /*

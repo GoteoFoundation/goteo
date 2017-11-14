@@ -184,7 +184,7 @@ class ProjectController extends \Goteo\Core\Controller {
         // si lo puede ver
         if ($project->userCanView(Session::getUser())) {
 
-            ProjectDashboardController::createSidebar($project, 'preview');
+            ProjectDashboardController::createProjectSidebar($project, 'preview');
 
             $project->cat_names = Project\Category::getNames($project->id);
 

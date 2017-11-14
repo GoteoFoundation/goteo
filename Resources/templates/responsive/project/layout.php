@@ -38,7 +38,6 @@ $this->section('sidebar-header');
 $this->replace();
 
 
-
 $this->section('content');
 
 ?>

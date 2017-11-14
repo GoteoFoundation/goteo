@@ -142,3 +142,50 @@ ALTER TABLE `category_lang` CHANGE `id` `id` INT(10) UNSIGNED NOT NULL, ADD FORE
 DELETE FROM project_milestone WHERE post NOT IN (SELECT id FROM post);
 DELETE FROM project_milestone WHERE project NOT IN (SELECT id FROM project);
 ALTER TABLE `project_milestone` CHANGE `milestone` `milestone` BIGINT(20) UNSIGNED NULL, CHANGE `post` `post` BIGINT(20) UNSIGNED NULL, ADD FOREIGN KEY (`project`) REFERENCES `project`(`id`) ON UPDATE CASCADE ON DELETE CASCADE, ADD FOREIGN KEY (`milestone`) REFERENCES `milestone`(`id`) ON UPDATE CASCADE ON DELETE CASCADE, ADD FOREIGN KEY (`post`) REFERENCES `post`(`id`) ON UPDATE CASCADE ON DELETE CASCADE;
+
+-- matcher tables
+CREATE TABLE `matcher` (
+  `id` varchar(50) NOT NULL,
+  `name` varchar(255) NOT NULL,
+  `logo` varchar(255) DEFAULT NULL,
+  `lang` varchar(2) NOT NULL,
+  `owner` varchar(50) NOT NULL,
+  `terms` longtext NULL,
+  `processor` varchar(50) NOT NULL DEFAULT '' COMMENT 'ID for the MatcherProcessor that handles the logic of this matcher',
+  `vars` text NOT NULL COMMENT 'Customizable vars to be used in the processor',
+  `amount` int(10) unsigned NOT NULL DEFAULT '0',
+  `used` int(10) unsigned NOT NULL DEFAULT '0',
+  `crowd` int(10) unsigned NOT NULL DEFAULT '0',
+  `projects` int(10) unsigned NOT NULL DEFAULT '0',
+  `active` tinyint(1) NOT NULL DEFAULT '1',
+  `created` date DEFAULT NULL,
+  `modified_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`),
+  KEY `owner` (`owner`),
+  CONSTRAINT `matcher_ibfk_1` FOREIGN KEY (`owner`) REFERENCES `user` (`id`) ON UPDATE CASCADE
+) ENGINE=InnoDB CHARACTER SET utf8 COLLATE utf8_general_ci;
+
+CREATE TABLE `matcher_project` (
+  `matcher_id` varchar(50) NOT NULL,
+  `project_id` varchar(50) NOT NULL,
+  `status` varchar(10) NOT NULL DEFAULT 'pending' COMMENT 'pending, accepted, active (funding ok), rejected (discarded by user), discarded (by admin)',
+  PRIMARY KEY (`matcher_id`,`project_id`),
+  KEY `project_id` (`project_id`),
+  CONSTRAINT `matcher_project_ibfk_1` FOREIGN KEY (`project_id`) REFERENCES `project` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `matcher_project_ibfk_2` FOREIGN KEY (`matcher_id`) REFERENCES `matcher` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB CHARACTER SET utf8 COLLATE utf8_general_ci;
+
+CREATE TABLE `matcher_user` (
+  `matcher_id` varchar(50) NOT NULL COMMENT 'Matcher campaign',
+  `user_id` varchar(50) NOT NULL COMMENT 'User owner',
+  `pool` tinyint(1) NOT NULL DEFAULT '1' COMMENT 'Use owner''s pool as funding source',
+  PRIMARY KEY (`matcher_id`,`user_id`),
+  KEY `matcher_user_ibfk_1` (`user_id`),
+  CONSTRAINT `matcher_user_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `matcher_user_ibfk_2` FOREIGN KEY (`matcher_id`) REFERENCES `matcher` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB CHARACTER SET utf8 COLLATE utf8_general_ci;
+
+-- invests matcher
+ALTER TABLE `invest` ADD COLUMN `matcher` VARCHAR(50) NULL AFTER `call`,
+    ADD FOREIGN KEY (`call`) REFERENCES `call`(`id`) ON UPDATE CASCADE,
+    ADD FOREIGN KEY (`matcher`) REFERENCES `matcher`(`id`) ON UPDATE CASCADE;

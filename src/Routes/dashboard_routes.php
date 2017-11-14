@@ -53,6 +53,13 @@ $dash->add('dashboard-ajax-projects-materials-table', new Route(
         )
 ));
 
+// join action for a project in when selected for a matcher
+$dash->add('dashboard-ajax-matcher-action', new Route(
+    '/ajax/matchers/{mid}/{action}/{pid}',
+    array('_controller' => 'Goteo\Controller\Dashboard\AjaxDashboardController::joinMatcherAction')
+));
+
+
 // Projects editing
 // Summary
 $dash->add('dashboard-project-summary', new Route(

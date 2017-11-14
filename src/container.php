@@ -125,6 +125,9 @@ $sc->register('app.listener.project', 'Goteo\Application\EventListener\ProjectLi
 // Invest listener
 $sc->register('app.listener.invest', 'Goteo\Application\EventListener\InvestListener')
   ->setArguments(array(new Reference('paylogger')));
+// Invest Matcher listener
+$sc->register('app.listener.matcher', 'Goteo\Application\EventListener\InvestMatcherListener')
+  ->setArguments(array(new Reference('paylogger')));
 
 // Milestone listener
 $sc->register('app.listener.milestone', 'Goteo\Application\EventListener\ConsoleMilestoneListener')
@@ -155,6 +158,7 @@ $sc->register('dispatcher', 'Symfony\Component\EventDispatcher\EventDispatcher')
   ->addMethodCall('addSubscriber', array(new Reference('app.listener.origin')))
   ->addMethodCall('addSubscriber', array(new Reference('app.listener.project')))
   ->addMethodCall('addSubscriber', array(new Reference('app.listener.invest')))
+  ->addMethodCall('addSubscriber', array(new Reference('app.listener.matcher')))
   ->addMethodCall('addSubscriber', array(new Reference('app.listener.poolinvest')))
   ->addMethodCall('addSubscriber', array(new Reference('app.listener.messages')))
   ->addMethodCall('addSubscriber', array(new Reference('app.listener.milestone')))
@@ -173,6 +177,9 @@ $sc->register('app', 'Goteo\Application\App')
 $sc->register('app.forms', 'Goteo\Util\Form\FormBuilder');
 // Form Finder (create default forms)
 $sc->register('app.forms.finder', 'Goteo\Util\Form\FormFinder');
+// Matcher processor Finder (handles custom matchfunding cases)
+$sc->register('app.matcher.finder', 'Goteo\Util\MatcherProcessor\MatcherFinder');
+
 // Markdown parser
 $sc->register('app.md.parser', '\Parsedown')
    ->addMethodCall('setBreaksEnabled', [true])
