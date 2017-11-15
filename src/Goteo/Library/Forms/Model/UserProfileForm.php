@@ -94,10 +94,17 @@ class UserProfileForm extends AbstractFormProcessor implements FormProcessorInte
                 'required' => false,
                 'color' => 'cyan'
             ])
+            // ->add('avatar', 'dropfiles', [
+            //     'label' => 'profile-fields-image-title',
+            //     'constraints' => $this->getConstraints('avatar'),
+            //     'disabled' => $this->getReadonly(),
+            //     'required' => false
+            // ])
             ->add('avatar', 'dropfiles', [
                 'label' => 'profile-fields-image-title',
                 'constraints' => $this->getConstraints('avatar'),
                 'disabled' => $this->getReadonly(),
+                'url' => '/api/users/' . $user->id . '/avatar',
                 'required' => false
             ])
             ;
@@ -199,7 +206,7 @@ class UserProfileForm extends AbstractFormProcessor implements FormProcessorInte
                            'placeholder' => Text::get('regular-facebook-url')],
                 'required' => false
             ])
-            ->add('twitter', 'url', [
+            ->add('twitter', 'text', [
                 'label' => 'regular-twitter',
                 'constraints' => $this->getConstraints('twitter'),
                 'disabled' => $this->getReadonly(),

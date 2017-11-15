@@ -479,6 +479,7 @@ $(function(){
         }
 
         var _addImageCss = function($img, name, dataURL) {
+          console.log('AJAX Success', $img, name, dataURL);
             var url = dataURL ? dataURL : '/img/300x300c/' + name;
             $img.css({
                 backgroundImage:  'url(' + url + ')',
@@ -525,6 +526,7 @@ $(function(){
                 drop.removeFile(file);
                 return false;
             }
+
             var name = file.name;
             var i;
             $error.addClass('hidden');
@@ -574,6 +576,7 @@ $(function(){
                 drop.removeFile(file);
                 return;
             }
+
             // Input node with selected files. It will be removed from document shortly in order to
             // give user ability to choose another set of files.
             var inputFile = this.hiddenFileInput;
@@ -582,9 +585,14 @@ $(function(){
             setTimeout(function(){
                 // Set some unique name in order to submit data.
                 inputFile.name = $dz.data('name');
-                // console.log('adding file', $dz.data('name'), inputFile);
-
-                $li.append(inputFile);
+                if(inputFile.files && inputFile.files.length) {
+                  // console.log('adding file', $dz.data('name'), inputFile, inputFile.files);
+                  $li.append(inputFile);
+                } else {
+                  alert(goteo.texts['form-dragndrop-unsupported']);
+                  $li.remove();
+                  $dnd.show();
+                }
                 drop.removeFile(file);
             }, 0);
         });

@@ -27,7 +27,7 @@
     "bootstrap": "^3.3.7",
     "moment": "^2.18.1",
     "simplemde": "^1.11.2",
-    "dropzone": "enyo/dropzone#^5.1.1",
+    "dropzone": "enyo/dropzone#7a21136c6d4fe89bbb3a8f690cf7b573824b624f",
     "bootstrap-tagsinput": "tagsinput#^0.8.0",
     "typeahead.js": "^0.11.1",
     "summernote": "^0.8.8",

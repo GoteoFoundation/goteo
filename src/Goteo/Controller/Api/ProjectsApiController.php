@@ -309,7 +309,7 @@ class ProjectsApiController extends AbstractApiController {
                 'error' => $file->getError(),
                 'size' => $file->getSize(),
                 'maxSize' => $file->getMaxFileSize(),
-                'errorMsg' => $file->getErrorMessage()
+                'errorMsg' => $file->getError() ? $file->getErrorMessage() : ''
             ];
             if(!$success) {
                 $global_msg = Text::get('project-upload-images-some-ko');

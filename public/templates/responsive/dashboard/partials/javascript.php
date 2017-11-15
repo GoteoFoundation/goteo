@@ -16,6 +16,7 @@
     <?php foreach(['bold', 'italic', 'strikethrough', 'heading', 'smaller_heading', 'bigger_heading', 'code', 'quote', 'generic_list', 'numbered_list', 'create_link', 'insert_image', 'insert_table', 'insert_horizontal_line', 'toggle_preview', 'toggle_side_by_side', 'toggle_fullscreen', 'markdown_guide', 'undo', 'redo', 'close'] as $key): ?>
         goteo.texts['form-editor-<?= $key ?>'] = '<?= $this->ee($this->text('form-editor-' . $key), 'js') ?>';
     <?php endforeach ?>
+    goteo.texts['form-dragndrop-unsupported'] = '<?= $this->ee($this->text('form-dragndrop-unsupported'), 'js') ?>';
 
     // Forms process
     $(function(){
