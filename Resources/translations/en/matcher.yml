@@ -26,9 +26,13 @@ matcher-duplicateinvest-rules: >
 
 matcher-drop: 'Matchfunding funds'
 matcher-feed-invest: 'Has contributed %AMOUNT% of %DROP% to the project %PROJECT% through the "match" call %MATCHER%'
-matcher-feed-invest-by: 'Matchfunding input %s'
+matcher-feed-invest-by: 'Matchfunding contribution %s'
 matcher-feed-user-invest: 'The "match" call %MATCHER% has contributed %AMOUNT% to the project %PROJECT% thanks to %USER% using %METHOD% '
 matcher-feed-user-invest-error: 'An <span class="red">ERROR in the "match" call %MATCHER% [%MESSAGE%]</span> has ocurred in the contribution to the project %PROJECT% from %USER% by %AMOUNT% using %METHOD%'
+matcher-feed-invest-standalone: 'Automatic matchfunding contribution'
+matcher-feed-standalone-invest: 'The "match" call %MATCHER% has contributed %AMOUNT% to the project %PROJECT% without reference contribution'
+matcher-feed-standalone-invest-error: 'Han <span class="red">ERROR in the "match" call %MATCHER% [%MESSAGE%]</span> has occurred while investing in the project %PROJECT% without reference contribution'
+
 
 
 matcher-project-accept: 'Congratulations! Your project has been added to the call %s. Their promoters have to approve it now.'

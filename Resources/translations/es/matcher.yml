@@ -27,7 +27,10 @@ matcher-drop: 'Capital matchfunding'
 matcher-feed-invest: 'Ha aportado %AMOUNT% de %DROP% al proyecto %PROJECT% a través de la convocatoria "match" %MATCHER%'
 matcher-feed-invest-by: 'Aporte matchfunding %s'
 matcher-feed-user-invest: 'La convocatoria "match" %MATCHER% ha aportado %AMOUNT% al proyecto %PROJECT% gracias a %USER% que aportó mediante %METHOD% '
-matcher-feed-user-invest-error: 'Ha habido un <span class="red">ERROR de la convocatoria "match" %MATCHER% [%MESSAGE%]</span> en el aporte al proyecto %PROJECT% de %USER% de %AMOUNT% mediante %METHOD%'
+matcher-feed-user-invest-error: 'Ha ocurrido un <span class="red">ERROR de la convocatoria "match" %MATCHER% [%MESSAGE%]</span> en el aporte al proyecto %PROJECT% de %USER% de %AMOUNT% mediante %METHOD%'
+matcher-feed-invest-standalone: 'Aporte matchfunding automático'
+matcher-feed-standalone-invest: 'La convocatoria "match" %MATCHER% ha aportado %AMOUNT% al proyecto %PROJECT% sin aporte de referencia'
+matcher-feed-standalone-invest-error: 'Ha ocurrido un <span class="red">ERROR de la convocatoria "match" %MATCHER% [%MESSAGE%]</span> en el aporte al proyecto %PROJECT% sin aporte de referencia'
 
 
 matcher-project-accept: 'Felicidades! Tu proyecto ha sido añadido a la convocatoria %s. Ahora está pendiente de aprobación por parte de los promotores.'

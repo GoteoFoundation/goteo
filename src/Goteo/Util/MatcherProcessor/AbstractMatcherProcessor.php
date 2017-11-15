@@ -14,6 +14,7 @@ use Goteo\Application\AppEvents;
 use Goteo\Model\Matcher;
 use Goteo\Model\Project;
 use Goteo\Model\Invest;
+use Goteo\Library\Currency;
 use Goteo\Payment\Method\PaymentMethodInterface;
 use Goteo\Payment\Method\PoolPaymentMethod;
 
@@ -135,16 +136,16 @@ abstract class AbstractMatcherProcessor implements MatcherProcessorInterface {
                 $list[] = new Invest([
                     'amount'    => $user_amount,
                     'user'      => $user_id,
-                    'currency'  => $invest->currency,
-                    'currency_rate' => $invest->currency_rate,
+                    'currency' => Currency::current(),
+                    'currency_rate' => Currency::rate(),
                     'project'   => $project->id,
                     'method'    => PoolPaymentMethod::getId(),
-                    'status'    => $invest->status,
+                    'status'    => Invest::STATUS_CHARGED,
                     'invested'  => date('Y-m-d'),
                     'anonymous' => false,
-                    'resign'    => false,
+                    'resign'    => true,
                     'campaign'  => true,
-                    'drops'     => $invest->id,
+                    'drops'     => $invest ? $invest->id : null,
                     'matcher'   => $matcher->id
                 ]);
             }
@@ -181,9 +182,6 @@ abstract class AbstractMatcherProcessor implements MatcherProcessorInterface {
     }
 
     public function getInvest() {
-        if( ! $this->invest instanceOf Invest ) {
-            throw new MatcherProcessorException('No invest defined in matcher');
-        }
         return $this->invest;
     }
 
@@ -193,9 +191,6 @@ abstract class AbstractMatcherProcessor implements MatcherProcessorInterface {
     }
 
     public function getMethod() {
-        if( ! $this->method instanceOf PaymentMethodInterface ) {
-            throw new MatcherProcessorException('No payment method defined in matcher');
-        }
         return $this->method;
     }
 

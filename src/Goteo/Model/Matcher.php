@@ -67,6 +67,10 @@ class Matcher extends \Goteo\Core\Model {
     /**
      * Get an instance of a Matcher by one of the projects involved
      * @param  mixed $pid Project or id
+     * @param  status   if true: list active projects in active matchers
+     *                  if false: list all projects in all matchers
+     *                  if 'string' search for that status in active matchers
+     *                  if 'array' search for all of that statuses in active matchers
      * @return array of Matchers available for the project
      */
     static public function getFromProject($pid, $status = true) {
@@ -78,12 +82,19 @@ class Matcher extends \Goteo\Core\Model {
 
         if((is_bool($status) && $status) || $status == 'all') {
             $sql .= " AND a.active=1 AND b.status = 'active'";
-        } elseif(in_array($status, self::$statuses)) {
-            $sql .= " AND a.active=1 AND b.status = :status";
-            $values[':status'] = $status;
+        } elseif($status) {
+            if(!is_array($status)) $status = [$status];
+            $keys = [];
+            foreach($status as $i => $s) {
+                if(in_array($s, self::$statuses)) {
+                    $keys[] = ":status$i";
+                    $values[":status$i"] = $s;
+                }
+            }
+            $sql .= " AND a.active=1 AND b.status IN (" . implode(',', $keys) . ")";
         }
         $list = [];
-        // print(\sqldbg($sql, $values));
+        // print(\sqldbg($sql, $values));die;
         if ($query = static::query($sql, $values)) {
             if( $matcher = $query->fetchAll(\PDO::FETCH_CLASS, __CLASS__) ) {
                 return $matcher;

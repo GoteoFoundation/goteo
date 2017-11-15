@@ -28,6 +28,10 @@ matcher-feed-invest: 'Ha aportat %AMOUNT% de %DROP% al projecte %PROJECT% a trav
 matcher-feed-invest-by: 'Aportació matchfunding %s'
 matcher-feed-user-invest: 'La convocatòria "match" %MATCHER% ha aportat %AMOUNT% al projecte %PROJECT% gràcies a %USER% que va aportar mitjançant %METHOD%'
 matcher-feed-user-invest-error: 'Hi ha hagut un <span class="red">ERROR de la convocatòria "match" %MATCHER% [%MESSAGE%]</span> en l''aportació al projecte %PROJECT% de %USER% de %amount% mitjançant %METHOD%'
+matcher-feed-invest-standalone: 'Aportació matchfunding automàtica'
+matcher-feed-standalone-invest: 'La convocatòria "match" %MATCHER% ha aportat %AMOUNT% al projecte %PROJECT% sense aportació de referencia'
+matcher-feed-standalone-invest-error: 'Ha ocorregut un <span class="red">ERROR en la convocatòria "match" %MATCHER% [%MESSAGE%]</span> en l''aportació al projecte %PROJECT% sense aportació de referencia'
+
 
 matcher-project-accept: 'Felicitats! El teu projecte ha sigut afegit a la convocatòria %s. Ara està pendent d''aprovació per part dels promotors.'
 matcher-project-reject: 'El teu projecte has sigut eliminat de la convocatòria %s'

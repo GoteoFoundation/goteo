@@ -21,10 +21,121 @@ use Goteo\Model\Invest;
 use Goteo\Model\Matcher;
 use Goteo\Model\User;
 use Goteo\Util\MatcherProcessor\MatcherProcessorException;
+use Goteo\Util\MatcherProcessor\MatcherProcessorInterface;
 
 //
 
 class InvestMatcherListener extends AbstractMatcherListener {
+
+    public function processPayments(Matcher $matcher, MatcherProcessorInterface $processor, Invest $invest = null) {
+        try {
+            $project = $processor->getProject();
+
+            $invests = $processor->getInvests();
+
+            $this->notice("Matcher has invests", [$matcher, 'matcher_processor' => $matcher->processor]);
+
+            foreach($invests as $drop) {
+                $errors = [];
+                $log = [$matcher, 'drop' => $drop->id, 'drop_amount' => $drop_amount, 'drop_user' => $drop->user];
+                if($invest) {
+                    $log[] = $invest;
+                    $log[] = $invest->getProject();
+                    $log[] = $invest->getUser();
+                }
+                // se actualiza el registro de convocatoria
+                if ($drop->save($errors)) {
+                    // recalcular campos en cache
+                    Invest::invested($project->id, 'users');
+
+                    $this->info('Invest dropped by matcher', $log);
+
+                    // Feed this payment
+                    // Admin Feed
+                    $coin = Currency::getDefault('html');
+                    $log  = new Feed();
+                    $log->setTarget($project->id);
+                    if($invest) {
+                        $user = $invest->getUser();
+                        $method = $invest->getMethod();
+                        $log->populate(
+                            Text::sys('matcher-feed-invest-by', strtoupper($method::getId())),
+                            '/admin/invests',
+                            new FeedBody(null, null, 'matcher-feed-user-invest', [
+                                '%USER%'    => Feed::item('user', $user->name, $user->id),
+                                '%MATCHER%' => Feed::item('matcher', $matcher->name, $matcher->id),
+                                '%AMOUNT%'  => Feed::item('money', $drop->amount.' '.$coin),
+                                '%PROJECT%' => Feed::item('project', $project->name, $project->id),
+                                '%METHOD%'  => strtoupper($method::getId())
+                           ])
+                        );
+                    } else {
+                        $log->populate(
+                            Text::sys('matcher-feed-invest-standalone'),
+                            '/admin/invests',
+                            new FeedBody(null, null, 'matcher-feed-standalone-invest', [
+                                '%MATCHER%' => Feed::item('matcher', $matcher->name, $matcher->id),
+                                '%AMOUNT%'  => Feed::item('money', $drop->amount.' '.$coin),
+                                '%PROJECT%' => Feed::item('project', $project->name, $project->id)
+                           ])
+                        );
+                    }
+                    $user = $drop->getUser();
+                    $log->doAdmin('money')
+                        // Public Feed
+                        ->populate($user->name,
+                            '/user/profile/'.$user->id,
+                            new FeedBody(null, null, 'matcher-feed-invest', [
+                                '%AMOUNT%'  => Feed::item('money', $drop->amount.' '.$coin),
+                                '%DROP%'    => Feed::item('drop', Text::get('matcher-drop'), '/service/resources'),
+                                '%PROJECT%' => Feed::item('project', $project->name, $project->id),
+                                '%MATCHER%' => Feed::item('matcher', $matcher->name, $matcher->id)
+                            ]),
+                            $user->avatar->id
+                        )
+                        ->doPublic('community');
+
+                } else {
+                    $log['errors'] = $errors;
+                    $this->critical('Error in Invest dropped by matcher', $log);
+                    if($invest) {
+                        $user = $invest->getUser();
+                        $method = $invest->getMethod();
+                        $log->populate(
+                            Text::sys('matcher-feed-invest-by', strtoupper($method::getId())),
+                            '/admin/invests',
+                            new FeedBody(null, null, 'matcher-feed-user-invest-error', [
+                                '%MESSAGE%' => implode(', ', $errors),
+                                '%USER%'    => Feed::item('user', $user->name, $user->id),
+                                '%MATCHER%' => Feed::item('matcher', $matcher->name, $matcher->id),
+                                '%AMOUNT%'  => Feed::item('money', $drop->amount.' '.$coin),
+                                '%PROJECT%' => Feed::item('project', $project->name, $project->id),
+                                '%METHOD%'  => strtoupper($method::getId())
+                           ])
+                        );
+                    } else {
+                        $log->populate(
+                            Text::sys('matcher-feed-invest-standalone'),
+                            '/admin/invests',
+                            new FeedBody(null, null, 'matcher-feed-standalone-invest-error', [
+                                '%MESSAGE%' => implode(', ', $errors),
+                                '%MATCHER%' => Feed::item('matcher', $matcher->name, $matcher->id),
+                                '%AMOUNT%'  => Feed::item('money', $drop->amount.' '.$coin),
+                                '%PROJECT%' => Feed::item('project', $project->name, $project->id)
+                           ])
+                        );
+                    }
+
+                }
+
+
+            }
+
+        } catch(MatcherProcessorException $e) {
+            $this->notice("No invests for Matcher", [$matcher, 'matcher_processor' => $matcher->processor, 'reason' => $e->getMessage()]);
+        }
+
+    }
 
 	public function onInvestSuccess(FilterInvestRequestEvent $event) {
 		$method   = $event->getMethod();
@@ -44,75 +155,13 @@ class InvestMatcherListener extends AbstractMatcherListener {
 
                 // find processor, and execute it
                 if($processor = $this->getService('app.matcher.finder')->getProcessor($matcher)) {
-                    $processor->setInvest($invest);
                     $processor->setProject($project);
-                    $processor->setMethod($method);
-                    try {
-                        $invests = $processor->getInvests();
-                        foreach($invests as $drop) {
-                            $errors = [];
-                            // se actualiza el registro de convocatoria
-                            if ($drop->save($errors)) {
-                                Invest::query("UPDATE invest SET droped = :drop, `matcher`= :matcher WHERE id = :id",
-                                    array(':id' => $invest->id, ':drop' => $drop->id, ':matcher' => $matcher->id));
-                                $invest->droped = $drop->id;
-                                $invest->matcher = $matcher->id;
+                    $this->processPayments($matcher, $processor, $invest);
 
-                                // recalcular campos en cache
-                                Invest::invested($project->id, 'users');
-
-                            } else {
-                                $this->critical('Error in Invest dropped by matcher', ['errors' => $errors, $matcher, 'drop' => $drop->id, 'drop_amount' => $drop_amount, 'drop_user' => $drop->user, $invest, $invest->getProject(), $invest->getUser()]);
-
-                            }
-
-                            $this->info('Invest dropped by matcher', [$matcher, 'drop' => $drop->id, 'drop_amount' => $drop_amount, 'drop_user' => $drop->user, $invest, $invest->getProject(), $invest->getUser()]);
-
-                            // Feed this failed payment
-                            // Admin Feed
-                            $coin = Currency::getDefault('html');
-                            $log  = new Feed();
-                            $user = $drop->getUser();
-                            $log->setTarget($project->id)
-                                ->populate(
-                                Text::sys('matcher-feed-invest-by', strtoupper($method::getId())),
-                                '/admin/invests',
-                                new FeedBody(null, null, 'matcher-feed-user-invest', [
-                                        '%MESSAGE%' => $response->getMessage(),
-                                        '%USER%'    => Feed::item('user', $user->name, $user->id),
-                                        '%MATCHER%' => Feed::item('matcher', $matcher->name, $matcher->id),
-                                        '%AMOUNT%'  => Feed::item('money', $drop->amount.' '.$coin),
-                                        '%PROJECT%' => Feed::item('project', $project->name, $project->id),
-                                        '%METHOD%'  => strtoupper($method::getId())
-                                   ])
-                            )
-                                ->doAdmin('money');
-
-                            // Public Feed
-                            $log_html = new FeedBody(null, null, 'matcher-feed-invest', [
-                                    '%AMOUNT%'  => Feed::item('money', $drop->amount.' '.$coin),
-                                    '%DROP%'    => Feed::item('drop', Text::get('matcher-drop'), '/service/resources'),
-                                    '%PROJECT%' => Feed::item('project', $project->name, $project->id),
-                                    '%MATCHER%' => Feed::item('matcher', $matcher->name, $matcher->id)
-                                ]);
-                            if ($invest->anonymous) {
-                                $log->populate('regular-anonymous',
-                                    '/user/profile/anonymous',
-                                    $log_html,
-                                    1);
-                            } else {
-                                $log->populate($user->name,
-                                    '/user/profile/'.$user->id,
-                                    $log_html,
-                                    $user->avatar->id);
-                            }
-                            $log->doPublic('community');
-
-                        }
-                        $this->notice("Matcher has invests", [$matcher, $invest, 'matcher_processor' => $matcher->processor]);
-                    } catch(MatcherProcessorException $e) {
-                        $this->notice("No invests for Matcher", [$matcher, $invest, 'matcher_processor' => $matcher->processor, 'reason' => $e->getMessage()]);
-                    }
+                    Invest::query("UPDATE invest SET droped = :drop, `matcher`= :matcher WHERE id = :id",
+                            array(':id' => $invest->id, ':drop' => $drop->id, ':matcher' => $matcher->id));
+                    $invest->droped = $drop->id;
+                    $invest->matcher = $matcher->id;
                 }
             }
         }
