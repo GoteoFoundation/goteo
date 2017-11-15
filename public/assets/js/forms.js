@@ -270,11 +270,11 @@ $(function(){
           ],
         callbacks: {
             onFocus: function() {
-              console.log('Editable area is focused');
+              // console.log('Editable area is focused');
               $(this).closest('.summernote').addClass('focused');
             },
             onBlur: function() {
-              console.log('Editable area loses focus');
+              // console.log('Editable area loses focus');
               $(this).closest('.summernote').removeClass('focused');
             }
         }
@@ -479,122 +479,135 @@ $(function(){
         }
 
         var _addImageCss = function($img, name, dataURL) {
-          console.log('AJAX Success', $img, name, dataURL);
-            var url = dataURL ? dataURL : '/img/300x300c/' + name;
-            $img.css({
-                backgroundImage:  'url(' + url + ')',
-                backgroundSize: 'cover'
-            });
+          // console.log('AJAX Success', $img, name, dataURL);
+          var url = dataURL ? dataURL : '/img/300x300c/' + name;
+          $img.css({
+              backgroundImage:  'url(' + url + ')',
+              backgroundSize: 'cover'
+          });
         };
 
         // Create the FILE upload
         var drop = new Dropzone($dnd.contents('div')[0], {
-            url: url ? url : $form.attr('action'),
-            uploadMultiple: multiple,
-            createImageThumbnails: true,
-            maxFiles: limit,
-            maxFilesize: MAX_FILE_SIZE,
-            autoProcessQueue: !!url, // no ajax post if no url
-            dictDefaultMessage: $dz.data('text-upload'),
-            acceptedFiles: accepted_files
+          url: url ? url : $form.attr('action'),
+          uploadMultiple: multiple,
+          createImageThumbnails: true,
+          maxFiles: limit,
+          maxFilesize: MAX_FILE_SIZE,
+          autoProcessQueue: !!url, // no ajax post if no url
+          dictDefaultMessage: $dz.data('text-upload'),
+          acceptedFiles: accepted_files
         })
         .on('error', function(file, error) {
-            $error.html(error.error ? error.error : error);
-            $error.removeClass('hidden');
-            drop.removeFile(file);
-            // console.log('error', error);
+          $error.html(error.error ? error.error : error);
+          $error.removeClass('hidden');
+          drop.removeFile(file);
+          // console.log('error', error);
         })
         .on('thumbnail', function(file, dataURL) {
-            // Add to list
-            // console.log('thumbnail', file, dataURL);
-            var $img = $form.find('li[data-name="' + file.name + '"] .image');
-            _addImageCss($img, file.name, dataURL);
+          // Add to list
+          var $img = $form.find('li[data-name="' + file.name + '"] .image');
+          _addImageCss($img, file.name, dataURL);
         })
         .on(url ? 'success' : 'addedfile', function(file, response) {
-            var total = $list.find('li').length;
-            // console.log(response ? 'success' : 'added', file, 'total', total, 'limit', limit, 'response', response);
-            if(total >= limit) {
-                $error.html($dz.data('text-max-files-reached'));
-                $error.removeClass('hidden');
-                drop.removeFile(file);
-                // console.log($dz.data('text-max-files-reached'), $error.html());
-                return false;
-            }
-            if(!Dropzone.isValidFile(file, accepted_files)) {
-                // console.log('not accepted file', file, accepted_files);
-                $error.html($dz.data('text-file-type-error'));
-                drop.removeFile(file);
-                return false;
-            }
+          var total = $list.find('li').length;
+          // console.log(response ? 'success' : 'added', file, 'total', total, 'limit', limit, 'response', response);
+          if(total >= limit) {
+            $error.html($dz.data('text-max-files-reached'));
+            $error.removeClass('hidden');
+            drop.removeFile(file);
+            // console.log($dz.data('text-max-files-reached'), $error.html());
+            return false;
+          }
+          if(!Dropzone.isValidFile(file, accepted_files)) {
+            // console.log('not accepted file', file, accepted_files);
+            $error.html($dz.data('text-file-type-error'));
+            drop.removeFile(file);
+            return false;
+          }
 
-            var name = file.name;
-            var i;
-            $error.addClass('hidden');
-            // AJAX upload case, a response is defined
-            if(response) {
-                if(!response.success) {
-                    $error.html(response.msg);
-                    $error.removeClass('hidden');
-                    for(i in response.files) {
-                        if(!response.files[i].success)
-                            $error.append('<br>' + response.files[i].msg);
-                    }
-                }
-                for(i in response.files) {
-                    if(response.files[i].originalName === name) {
-                        name = response.files[i].name;
-                    }
-                }
+          var name = file.name;
+          var type = '';
+          var download_url = '';
+          var i;
+          $error.addClass('hidden');
+          // AJAX upload case, a response is defined
+          if(response) {
+            if(!response.success) {
+              $error.html(response.msg);
+              $error.removeClass('hidden');
+              for(i in response.files) {
+                if(!response.files[i].success)
+                  $error.append('<br>' + response.files[i].msg);
+              }
             }
-            var $li = $($template.html().replace('{NAME}', name));
-            var $img = $li.find('.image');
+            for(i in response.files) {
+              if(response.files[i].originalName === name) {
+                // console.log('found file', response.files[i]);
+                name = response.files[i].name;
+                type = response.files[i].regularFile && response.files[i].type;
+                download_url = response.files[i].downloadUrl;
+              }
+            }
+          }
+          var $li = $($template.html().replace('{NAME}', name));
+          var $img = $li.find('.image');
 
-            var re = /(?:\.([^.]+))?$/;
-            var ext = re.exec(name)[1];
-            $img.addClass('file-type-' + ext);
-            // console.log('extension',ext,$img.attr('class'));
+          var re = /(?:\.([^.]+))?$/;
+          var ext = re.exec(name)[1];
+          $img.addClass('file-type-' + ext);
+          // console.log('extension',ext,$img.attr('class'));
 
-            if(response) {
-                $li.append('<input type="hidden" name="' + $dz.data('current') + '" value="' + name + '">');
-                if($dz.data('markdown-link')) {
-                    $li.find('.add-to-markdown').data('target', $dz.data('markdown-link'));
-                    $li.find('.add-to-markdown').removeClass('hidden');
-                }
-                // AJAX does not create thumbnail
-                _addImageCss($img, name);
+          if(response) {
+            $li.append('<input type="hidden" name="' + $dz.data('current') + '" value="' + name + '">');
+            if($dz.data('markdown-link')) {
+              $li.find('.add-to-markdown').data('target', $dz.data('markdown-link'));
+              $li.find('.add-to-markdown').removeClass('hidden');
             }
-            else {
-                // $img.css({backgroundSize: '25%'});
+            // console.log('thumbnail', file, $li);
+            if(download_url) {
+              $li.find('.download-url').attr('href', download_url);
+              $li.find('.download-url').removeClass('hidden');
             }
-            $list.append($li);
+            if(type) {
+              $img.addClass('file-type-' + type);
+            } else {
+              // AJAX does not create thumbnail
+              _addImageCss($img, name);
+            }
+          }
+          else {
+              // $img.css({backgroundSize: '25%'});
+          }
+          $list.append($li);
 
-            if(total >= limit - 1) {
-                $dnd.hide();
-            }
-            // On response, input[type=file] is already uploaded
-            if(response) {
-                drop.removeFile(file);
-                return;
-            }
+          if(total >= limit - 1) {
+              $dnd.hide();
+          }
+          // On response, input[type=file] is already uploaded
+          if(response) {
+              drop.removeFile(file);
+              return;
+          }
 
-            // Input node with selected files. It will be removed from document shortly in order to
-            // give user ability to choose another set of files.
-            var inputFile = this.hiddenFileInput;
-            // Append it to form after stack become empty, because if you append it earlier
-            // it will be removed from its parent node by Dropzone.js.
-            setTimeout(function(){
-                // Set some unique name in order to submit data.
-                inputFile.name = $dz.data('name');
-                if(inputFile.files && inputFile.files.length) {
-                  // console.log('adding file', $dz.data('name'), inputFile, inputFile.files);
-                  $li.append(inputFile);
-                } else {
-                  alert(goteo.texts['form-dragndrop-unsupported']);
-                  $li.remove();
-                  $dnd.show();
-                }
-                drop.removeFile(file);
-            }, 0);
+          // Input node with selected files. It will be removed from document shortly in order to
+          // give user ability to choose another set of files.
+          var inputFile = this.hiddenFileInput;
+          // Append it to form after stack become empty, because if you append it earlier
+          // it will be removed from its parent node by Dropzone.js.
+          setTimeout(function(){
+            // Set some unique name in order to submit data.
+            inputFile.name = $dz.data('name');
+            if(inputFile.files && inputFile.files.length) {
+              // console.log('adding file', $dz.data('name'), inputFile, inputFile.files);
+              $li.append(inputFile);
+            } else {
+              alert(goteo.texts['form-dragndrop-unsupported']);
+              $li.remove();
+              $dnd.show();
+            }
+            drop.removeFile(file);
+          }, 0);
         });
         dropzones[$(this).attr('id')] = drop;
 
