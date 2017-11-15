@@ -230,7 +230,7 @@ class ProjectsApiController extends AbstractApiController {
         return $this->jsonResponse($properties[$prop]);
     }
 
-    private function validateProject($pid) {
+    protected function validateProject($pid) {
         $prj = Project::get($pid);
 
         if(!$prj->userCanEdit($this->user)) {
