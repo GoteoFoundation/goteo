@@ -566,9 +566,9 @@ class User extends \Goteo\Core\Model {
     }
 
     /**
-     * This method change the user password
+     * This method changes the user password
      */
-    public function setPassword($password, $raw = false) {
+    public function setPassword($password, &$errors = [], $raw = false) {
 
         $values = array(':id' => $this->id);
         if($raw) {
@@ -589,6 +589,7 @@ class User extends \Goteo\Core\Model {
 
         try {
             $sql = "UPDATE user SET `password` = :password WHERE id = :id";
+            // die(\sqldbg($sql, $values));
             if(self::query($sql, $values)) {
                 if($this->password) $this->password = $password;
                 return true;

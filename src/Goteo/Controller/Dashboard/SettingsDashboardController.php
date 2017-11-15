@@ -400,8 +400,11 @@ class SettingsDashboardController extends DashboardController {
                 } elseif (strcmp($data['npassword'], $data['rpassword']) !== 0) {
                     $errors['password_retry'] = Text::get('error-user-password-confirm');
                 } else {
-                    $this->user->password = $data['password'];
-                    $change['password'] = Text::get('user-password-changed');
+                    if($this->user->setPassword($data['npassword'], $errors)) {
+                        $change['password'] = Text::get('user-password-changed');
+                        // Migrate session
+                        Session::getSession()->migrate(false, Session::getSessionExpires());
+                    }
                 }
             }
         }
