@@ -9,8 +9,9 @@
  * and LICENSE files that was distributed with this source code.
  */
 
-// set to run indefinitely if needed
-set_time_limit(0);
+// set to run almost indefinitely
+set_time_limit(3600);
+ini_set('max_execution_time', 3600);
 
 //Public Web path
 define('GOTEO_WEB_PATH', dirname(__DIR__) . '/public/');

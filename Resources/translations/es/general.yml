@@ -50,8 +50,8 @@ guide-project-invests: 'Desde este apartado podrás gestionar a tus cofinanciado
 header-about-side: 'Lo que nos mueve'
 home-posts-header: Novedades
 invest-individual-header: 'Puedes renunciar a recibir recompensas por tu aportación, o seleccionar las que igualen o estén por debajo del importe que hayas introducido.'
-login-register-conditions: 'Al registrarte, confirmas tu aceptación de nuestros <a href="/legal/terms">términos de uso</a>, <a href="/legal/privacy">política de privacidad</a> y <a href="legal/cookies">política de cookies</a>.'
-login-accept-conditions: 'Acepto los <a href="/legal/terms">términos de uso</a>, <a href="/legal/privacy">política de privacidad</a> y <a href="legal/cookies">política de cookies</a>.'
+login-register-conditions: 'Al registrarte, confirmas tu aceptación de nuestros <a href="/legal/terms">términos de uso</a>, <a href="/legal/privacy">política de privacidad</a> y <a href="/legal/cookies">política de cookies</a>.'
+login-accept-conditions: 'Acepto los <a href="/legal/terms">términos de uso</a>, <a href="/legal/privacy">política de privacidad</a> y <a href="/legal/cookies">política de cookies</a>.'
 mandatory-cost-field-type: 'Es obligatorio seleccionar el tipo de coste'
 mandatory-individual_reward-field-amount: 'Es obligatorio indicar el importe que permite obtener la recompensa'
 mandatory-project-costs: 'Debe desglosarse en al menos dos costes.'

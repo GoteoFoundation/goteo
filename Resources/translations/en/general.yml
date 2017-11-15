@@ -53,8 +53,8 @@ horizontal-project-investors: cofinanciadores
 horizontal-project-percent: financiado
 horizontal-project-reached: conseguido
 invest-individual-header: 'You can decline to receive rewards for your contribution, or select those that match or are under the amount that you have entered.'
-login-register-conditions: 'As you register, you accept our <a href="/legal/terms" target="_blank">terms & conditions</a>, <a href="/legal/privacy" target="_blank">Privacy</a> & <a href="legal/cookies" target="_blank">Cookies Policies</a>.'
-login-accept-conditions: 'I accept the <a href="/legal/terms" target="_blank">terms & conditions</a>, <a href="/legal/privacy" target="_blank">Privacy</a> & <a href="legal/cookies" target="_blank">Cookies Policies</a>.'
+login-register-conditions: 'As you register, you accept our <a href="/legal/terms" target="_blank">terms & conditions</a>, <a href="/legal/privacy" target="_blank">Privacy</a> & <a href="/legal/cookies" target="_blank">Cookies Policies</a>.'
+login-accept-conditions: 'I accept the <a href="/legal/terms" target="_blank">terms & conditions</a>, <a href="/legal/privacy" target="_blank">Privacy</a> & <a href="/legal/cookies" target="_blank">Cookies Policies</a>.'
 mandatory-cost-field-type: 'You have to select the type of cost'
 mandatory-individual_reward-field-amount: 'You have to specify the amount that qualifies for the reward'
 mandatory-project-costs: 'These should be broken down into at least two groups.'
