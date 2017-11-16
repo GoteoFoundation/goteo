@@ -4,7 +4,7 @@
 	<div class="row">
 		<div class="col-md-3 col-center">
 			<a class="img-responsive" href="/channel/<?= $this->channel->id ?>">
-        		<img src="<?= $channel->logo->getlink(200,0) ?>" alt="<?= $channel->name ?>"/>
+        		<img src="<?= $channel->logo ? $channel->logo->getlink(200,0) : '' ?>" alt="<?= $channel->name ?>"/>
     		</a>
 		</div>
 		<div class="col-md-9 info col-center" <?php if($channel->owner_font_color) echo 'style="color:'.$channel->owner_font_color.'"'; ?>>
