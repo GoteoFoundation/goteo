@@ -3,7 +3,7 @@ $this->layout('layout', [
     'bodyClass' => 'channel',
     'title' =>  $this->text('regular-channel').' '.$this->channel->name,
     'meta_description' => $this->channel->description,
-    'tw_image' =>  $this->channel->logo ? $this->channel->logo->getlink(400,0) : ''
+    'tw_image' =>  $this->channel->logo ? $this->channel->logo->getlink(400,0, false, true) : ''
     ]);
 
 $this->section('header-navbar-brand');
