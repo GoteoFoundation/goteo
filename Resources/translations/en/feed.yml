@@ -34,3 +34,6 @@ feed-message-response-published: '%USER% has responded to %TYPE% at project %PRO
 feed-project-ready-sent: 'Project sent to review'
 feed-project-ready-ko: 'Error from %USER% while sending the project %PROJECT% to <span class="red">review</span>'
 feed-project-ready-ok: '%USER% has sent the project %PROJECT% to <span class="red">review</span>'
+
+feed-project-new-post: 'User publishes an update in his project (dashboard)'
+feed-project-post-published: '%USER% has published a new post in %BLOG% about the project %PROJECT%, titled "%TITLE%"'

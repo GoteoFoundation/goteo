@@ -58,22 +58,7 @@ admin-users: Benutzer
 admin-yes: 'Ja'
 admin-mailing-back-to-list: 'Volver a comuncaciones / Zurück zu Kommunikation'
 admin-mailing-view-message: 'Nachricht ansehen'
-admin-mailing-communicating-with: 'Buscábamos comunicarnos con %DESC%'
-admin-mailing-new-massive: 'Se ha creado un nuevo mailing masivo a %TOTAL% usuarios'
 admin-mailing-subject: 'Betreff'
 admin-mailing-created: 'Erstellt'
 admin-mailing-status: 'Status des automatischen Mailversands'
-admin-mailing-view-and-activate: 'Ver en el admin del boletín para activar el envio'
-admin-mailing-view-in-newsletter: 'Ver en el admin del boletín'
-admin-mailing-view-in-sent: 'Ver en el historial de envíos (estadísticas)'
 admin-no: 'No'
-admin-project: Proyecto
-admin-projects: Proyectos
-admin-sponsors: Servicios
-admin-status: Estado
-admin-user: Usuario
-admin-users: Usuarios
-admin-yes: Si
-admin-percent: Porcentaje
-admin-empty-list: 'No se han encontrado registros'
-admin-items: 'entradas'

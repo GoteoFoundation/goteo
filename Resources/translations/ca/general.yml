@@ -9,8 +9,8 @@ calendar-events-category: 'Events'
 calendar-home-hour: a
 calendar-home-title: 'Proper event'
 calendar-net-category: 'Xarxa i política'
-calendar-projects-category: Proyectos
-calendar-share: Compartir
+calendar-projects-category: 'Projectes'
+calendar-share: 'Comparteix'
 calendar-workshops-category: Talleres
 couldn: 'No s''ha pogut'
 error-contact-email-invalid: 'El correu electrònic que has escrit no és vàlid'
@@ -49,9 +49,9 @@ guide-project-invests: 'Des d''aquest apartat podràs gestionar els teus cofinan
 
 header-about-side: 'Allò que ens mou'
 home-posts-header: Novetats
-horizontal-project-investors: cofinanciadores
-horizontal-project-percent: financiado
-horizontal-project-reached: conseguido
+horizontal-project-investors: 'cofinançadors'
+horizontal-project-percent: 'finançat'
+horizontal-project-reached: 'aconseguit'
 invest-individual-header: 'Pots renunciar a rebre recompenses per la teva aportació, o seleccionar les que igualin o estiguin per sota de l''import que hagis introduït.'
 login-register-conditions: 'En registrar-te, confirmes la teva acceptació dels nostres <a href="/legal/terms">termes d''ús</a>, <a href="/legal/privacy">política de privacitat</a> i <a href="/legal/cookies">política de cookies</a>.'
 login-accept-conditions: 'Accepto els <a href="/legal/terms">termes d''ús</a>, <a href="/legal/privacy">política de privacitat</a> i <a href="/legal/cookies">política de cookies</a>.'
@@ -208,7 +208,7 @@ regular-female: Dona
 regular-instagram: Instagram
 regular-male: Home
 regular-others: Altres
-regular-matchfunding: 'Match funding'
+regular-matchfunding: 'Matchfunding'
 regular-spread: DIFUSIÓ
 regular-status: Estat
 regular-year: Any

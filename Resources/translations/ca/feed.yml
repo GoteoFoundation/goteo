@@ -61,3 +61,6 @@ feed-message-response-published: '%USER% ha contestat en %TYPE% del projecte %PR
 feed-project-ready-sent: 'Projecte enviat a revisió'
 feed-project-ready-ko: 'Error de %USER% al enviar el projecte %PROJECT% a <span class="red">revisió</span>'
 feed-project-ready-ok: '%USER% ha enviat el projecte %PROJECT% a <span class="red">revisió</span>'
+
+feed-project-new-post: 'Usuari publica una novetat al seu projecte (dashboard)'
+feed-project-post-published: '%USER% ha publicat un nou post a %BLOG% sobre el projecte %PROJECT%, amb el títol "%TITLE%"'
