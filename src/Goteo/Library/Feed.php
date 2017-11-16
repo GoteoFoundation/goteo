@@ -136,6 +136,10 @@ class Feed {
         }
         return $this;
     }
+    public function setUnique($unique) {
+        $this->unique = (bool) $unique;
+        return $this;
+    }
 
     /**
      * Metodo que establece el elemento al que afecta el evento

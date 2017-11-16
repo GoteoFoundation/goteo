@@ -127,14 +127,8 @@ $sc->register('app.listener.invest', 'Goteo\Application\EventListener\InvestList
   ->setArguments(array(new Reference('paylogger')));
 
 // Milestone listener
-$sc->register('app.listener.milestone', 'Goteo\Application\EventListener\ConsoleMilestoneListener')
+$sc->register('app.listener.milestone', 'Goteo\Application\EventListener\ProjectPostListener')
   ->setArguments(array(new Reference('logger')));
-$sc->register('console.listener.milestone', 'Goteo\Console\EventListener\ConsoleMilestoneListener')
-  ->setArguments(array(new Reference('console_logger')));
-
-// Favourite listener
-$sc->register('console.listener.favourite', 'Goteo\Console\EventListener\ConsoleFavouriteListener')
-  ->setArguments(array(new Reference('console_logger')));
 
 // Invest listener
 $sc->register('app.listener.poolinvest', 'Goteo\Application\EventListener\PoolInvestListener')
@@ -185,6 +179,13 @@ $sc->register('app', 'Goteo\Application\App')
    ->setArguments(array(new Reference('dispatcher'), new Reference('resolver')));
 
 // CONSOLE LISTENERS
+$sc->register('console.listener.milestone', 'Goteo\Console\EventListener\ConsoleMilestoneListener')
+  ->setArguments(array(new Reference('console_logger')));
+
+// Favourite listener
+$sc->register('console.listener.favourite', 'Goteo\Console\EventListener\ConsoleFavouriteListener')
+  ->setArguments(array(new Reference('console_logger')));
+
 // Options addons and exception processiongs
 $sc->register('console.listener.exception', 'Goteo\Console\EventListener\ConsoleExceptionListener')
    ->setArguments(array(new Reference('console_logger')));

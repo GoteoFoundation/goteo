@@ -1,5 +1,5 @@
 feed-new_project: '<span class="red">Neues Goteo Projekt</span>, Sie haben 40 Tage ab heute, um dieses Projekt zu unterstützen.'
-feed-new_update: '%s Neuer Post in %s über %s'
+feed-new_update: '%USER% Neuer Post in %BLOG% über %PROJECT%'
 feed-project_fail: 'Das Projekt, %s, ist <span class="red">geschlossen</span> Es hat leider nur <span class="violet">%s ? (%s %) vom Mindestbetrag erhalten</span>'
 feed-project_finish: 'Das Projekt, %s, wurde <span class="red">in der zweiten Runde erfolgreich abgeschlossen</span> Es hat <span class="violet">%s ? (%s %) vom Mindestbetrag erhalten</span>'
 feed-project_finish_unique: 'Projekt %s hat seine Kampagne vollendet, reaching %s € (%s %) of contributions against its minimum budget'
