@@ -145,26 +145,6 @@ class ProjectController extends \Goteo\Core\Controller {
 
         $widget_code = Text::widget($url . $lsuf);
 
-        // recompensas
-        foreach ($project->individual_rewards as $reward) {
-            $reward->none  = false;
-            $reward->taken = $reward->getTaken();// cofinanciadores quehan optado por esta recompensas
-            // si controla unidades de esta recompensa, mirar si quedan
-            if ($reward->units > 0 && $reward->taken >= $reward->units) {
-                $reward->none = true;
-            }
-        }
-
-        // retornos adicionales (bonus)
-        $project->bonus_rewards = array();
-        foreach ($project->social_rewards as $key => &$reward) {
-
-            if ($reward->bonus) {
-                $project->bonus_rewards[$key] = $reward;
-                unset($project->social_rewards[$key]);
-            }
-        }
-
         // mensaje cuando, sin estar en campaña, tiene fecha de publicación
         if (!$project->isApproved()) {
             if (!empty($project->published)) {
@@ -206,6 +186,32 @@ class ProjectController extends \Goteo\Core\Controller {
                 'related_projects' => $related_projects,
                 'widget_code' => $widget_code
             );
+
+            // recompensas
+            $viewData['individual_rewards'] = [];
+            foreach ($project->getIndividualRewards() as $reward) {
+                $reward->none  = false;
+                $reward->taken = $reward->getTaken();// cofinanciadores quehan optado por esta recompensas
+                // si controla unidades de esta recompensa, mirar si quedan
+                if ($reward->units > 0 && $reward->taken >= $reward->units) {
+                    $reward->none = true;
+                }
+                $viewData['individual_rewards'][] = $reward;
+            }
+
+            // retornos adicionales (bonus)
+            $viewData['bonus_rewards'] = [];
+            $viewData['social_rewards'] = [];
+            foreach ($project->getSocialRewards() as $reward) {
+                if($reward->url && stripos($reward->url, 'http') !== 0) {
+                    $reward->url = 'http://' .  $reward->url;
+                }
+                if ($reward->bonus) {
+                    $viewData['bonus_rewards'][] = $reward;
+                } else {
+                    $viewData['social_rewards'][] = $reward;
+                }
+            }
 
             // Custom view data
 

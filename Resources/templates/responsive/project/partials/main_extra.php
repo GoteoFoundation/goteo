@@ -105,9 +105,10 @@ $langs = $project->getLangs();
                         <div class="row no-margin spacer-10" id="link-box" style="display:none;">
                             <input type="text" class="form-control" value="<?= $share_url ?>" >
                         </div>
+
                         <!-- Call in sm version -->
                         <?php if($project->called): ?>
-                            <a href="<?= $this->get_url() ?>/call/<?php echo $project->called->id ?>/projects" target="_blank">
+                            <a href="<?= $this->get_url() ?>/call/<?= $project->called->id ?>/projects" target="_blank">
                                 <div class="call-info-container visible-sm">
                                     <div class="row call-info col-lg-10 col-md-11 col-sm-12">
                                         <div class="col-xs-2 no-padding" >
@@ -161,6 +162,7 @@ $langs = $project->getLangs();
                     </a>
                 </div>
             </div>
+
             <?php if($project->called): ?>
             <a href="<?= $this->get_url() ?>/call/<?php echo $project->called->id ?>/projects" target="_blank">
                 <div class="col-sm-4 call-info-container hidden-sm hidden-xs">
@@ -189,11 +191,11 @@ $langs = $project->getLangs();
 
                     <div class="col-sm-4 hidden-sm hidden-xs channel" style="<?= !$project->called ? 'margin-top: 55px;' : '' ?>">
                         <span class="channel-label">
-                            <img src="/assets/img/project/channel.svg" width="20"> <?= $this->text('regular-channel') ?> 
+                            <img src="/assets/img/project/channel.svg" width="20"> <?= $this->text('regular-channel') ?>
                         </span>
                         <a href="<?= $project->nodeData->url ?>">
-                            <button class="btn" style="<?= $project->nodeData->owner_background ? 'background-color: '.$project->nodeData->owner_background :  '' ?>" > 
-                            <?= $project->nodeData->name ?>    
+                            <button class="btn" style="<?= $project->nodeData->owner_background ? 'background-color: '.$project->nodeData->owner_background :  '' ?>" >
+                            <?= $project->nodeData->name ?>
                             </button>
                         </a>
                     </div>
@@ -211,7 +213,7 @@ $langs = $project->getLangs();
                 <div id="collapseRewards" class="panel-collapse collapse">
                    <div class="panel-body">
 
-                        <?php foreach ($project->individual_rewards as $individual) : ?>
+                        <?php foreach ($this->individual_rewards as $individual) : ?>
                         <div class="side-widget">
 
                             <div class="amount"><?= $this->text('regular-investing').' '.amount_format($individual->amount); ?></div>
