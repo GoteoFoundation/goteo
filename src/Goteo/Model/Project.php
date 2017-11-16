@@ -800,7 +800,7 @@ namespace Goteo\Model {
             switch ($this->status) {
                 case self::STATUS_IN_CAMPAIGN:
                     if ($this->days > 2) {
-                        $days_left = number_format($this->days);
+                        $days_left = (int) $this->days;
                     } else {
 
                         $part = strtotime($this->published);

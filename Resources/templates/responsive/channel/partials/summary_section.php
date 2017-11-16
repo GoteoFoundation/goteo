@@ -31,7 +31,7 @@
 			</div>
 			<div class="col-sm-3 item">
 				 <div>
-				 	<?= amount_format($this->summary['amount'], 0, true) ?>
+				 	<?= amount_format($this->summary['amount']) ?>
 				 </div>
 				 <div class="description">
 				 	<?= $this->text('node-side-summary-amount'); ?>
