@@ -617,7 +617,7 @@ namespace Goteo\Model {
                 //TODO: to be removed, very ineficient
                 $project->investors = Invest::investors($id, false, false, 0, null);
 
-                if($project->status >= 3 && empty($project->amount)) {
+                if($project->isApproved() && empty($project->amount)) {
                     $project->amount = Invest::invested($id);
                 }
                 $project->invested = $project->amount; // compatibilidad, ->invested no debe usarse
@@ -626,19 +626,19 @@ namespace Goteo\Model {
                 // campos calculados para los números del menu
 
                 //consultamos y actualizamos el numero de inversores
-                if($project->status >= 3 && $project->amount > 0 && !isset($project->num_investors)) {
+                if($project->isApproved() && $project->amount > 0 && empty($project->num_investors)) {
                     $project->num_investors = Invest::numInvestors($id);
                 }
 
                 //mensajes y mensajeros
                 // solo cargamos mensajes en la vista mensajes
-                if ($project->status >= 3 && !isset($project->num_messengers)) {
-                    $project->num_messengers = Message::numMessengers($id);
+                if ($project->isApproved() && empty($project->num_messengers)) {
+                    $project->num_messengers = Message::numMessengers($project);
                 }
 
                 // novedades
                 // solo cargamos blog en la vista novedades
-                if ($project->status >= 3 && !isset($project->num_posts)) {
+                if ($project->isApproved() && empty($project->num_posts)) {
                     $project->num_posts =  Blog\Post::numPosts($id);
                 }
 
