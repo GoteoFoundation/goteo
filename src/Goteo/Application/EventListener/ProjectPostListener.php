@@ -12,6 +12,7 @@ namespace Goteo\Application\EventListener;
 
 use Goteo\Application\EventListener\AbstractListener;
 use Goteo\Application\AppEvents;
+use Goteo\Application\Config;
 use Goteo\Console\UsersSend;
 use Goteo\Library\Feed;
 use Goteo\Library\FeedBody;
@@ -21,7 +22,6 @@ use Goteo\Application\Exception\DuplicatedEventException;
 use Goteo\Application\Session;
 use Goteo\Model\Project;
 use Goteo\Model\Blog\Post as BlogPost;
-use Goteo\Model\User;
 use Goteo\Model\Event;
 use Goteo\Model\Project\ProjectMilestone;
 
@@ -65,6 +65,14 @@ class ProjectPostListener extends AbstractListener {
                 ]),
                 $image)
             ->doPublic('projects');
+
+        // si no ha encontrado otro, lanzamos la notificación a cofinanciadores
+        // y el post no es demasiado viejo
+
+        if (!$log->unique_issue && $project->num_investors && (new \DateTime('-1 week')) <  (new \DateTime($post->date))) {
+            UsersSend::setURL(Config::getUrl($project->lang));
+            UsersSend::toInvestors('update', $project, null, $post);
+        }
     }
 
     /**
