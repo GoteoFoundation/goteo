@@ -704,9 +704,10 @@ namespace Goteo\Model {
          */
         public function getMatchers($status = false) {
             if(!$this->matcherInstances) $this->matcherInstances = [];
-            if($this->matcherInstances[$status]) return $this->matcherInstances[$status];
-            $this->matcherInstances[$status] = Matcher::getFromProject($this->id, $status);
-            return $this->matcherInstances[$status];
+            if(is_array($status)) $key = serialize($status);
+            if($this->matcherInstances[$key]) return $this->matcherInstances[$key];
+            $this->matcherInstances[$key] = Matcher::getFromProject($this->id, $status);
+            return $this->matcherInstances[$key];
         }
 
 
