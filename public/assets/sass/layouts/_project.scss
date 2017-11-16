@@ -68,4 +68,20 @@ body.project {
     font-size: 9px !important;
   }
 
+
+  .side {
+    .btn-block {
+        text-transform: uppercase;
+        font-weight: bold;
+        @media (min-width: $breakpoint-sm) and (max-width: $breakpoint-md - 1) {
+            max-width: 80%;
+        }
+        @media (min-width: $breakpoint-md) and (max-width: $breakpoint-lg - 1) {
+            max-width: 70%;
+        }
+        @media (min-width: $breakpoint-lg) {
+            max-width: 60%;
+        }
+    }
+  }
 }

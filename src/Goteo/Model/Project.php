@@ -594,10 +594,11 @@ namespace Goteo\Model {
                 $project->costs = Project\Cost::getAll($id, $lang);
                 $project->minmax();
 
+                // compatibility initialization
                 // retornos colectivos
-                $project->social_rewards = Project\Reward::getAll($id, 'social', $lang);
+                $project->getSocialRewards();
                 // retornos individuales
-                $project->individual_rewards = Project\Reward::getAll($id, 'individual', $lang);
+                $project->getIndividualRewards();
 
                 // colaboraciones
                 $project->supports = Project\Support::getAll($id, $lang);

@@ -130,9 +130,12 @@ $this->section('content');
 				</div>
 			</a>
 
-			<div class="col-xs-6 col-sm-3 col-md-2 col-md-offset-2 col-xs-offset-1 sticky-button">
-                <a href="/invest/<?= $project->id ?>"><button class="btn btn-block side-pink"><?= $this->text('project-regular-support') ?></button></a>
+            <div class="col-xs-6 col-sm-3 col-md-2 col-md-offset-2 col-xs-offset-1 sticky-button">
+                <?php if($project->inCampaign()): ?>
+                    <a href="/invest/<?= $project->id ?>"><button class="btn btn-block side-pink"><?= $this->text('project-regular-support') ?></button></a>
+                <?php endif ?>
             </div>
+
             <?php if(!$this->get_user() ): ?>
         		<a href="/project/favourite/<?= $project->id ?>">
     		<?php endif; ?>
