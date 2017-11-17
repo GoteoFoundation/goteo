@@ -47,6 +47,8 @@ Console::add(new Command\MailingCommand());
 Console::add(new Command\SendmailCommand());
 Console::add(new Command\CronCommand());
 Console::add(new Command\ToolkitCommand());
+Console::add(new Command\LocationCommand());
+Console::add(new Command\SqlMigrationCommand());
 
 // Plugins can add commands by running
 // Console::add(new Command...);
