@@ -25,6 +25,17 @@ This is a list of (still most work-in-progress) of the new features:
 - Using grunt for developing
 - Better translations
 
+#### Version 3.2
+
+- Includes a new full responsive dashboard for users
+- PHP7 updated
+- Added migrate CLI command to smooth databases migrations
+- Improved install from the scratch
+- Updated vagrant to use ubuntu 16.04
+- Added Matcher model for custom matchfunding operations
+- Plugin improvements
+- Lot of fixes
+
 ## Credits
 
 **On version 3**
