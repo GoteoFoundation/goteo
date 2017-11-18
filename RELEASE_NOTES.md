@@ -4,7 +4,7 @@ currentMenu: release_notes
 GOTEO VERSION 3
 ===============
 
-This is a beta-release of The [Goteo Crowdfunding Platform](http://goteo.org)
+This is source code of the open source [Goteo Crowdfunding Platform](http://goteo.org)
 
 Please read the docs for more information.
 

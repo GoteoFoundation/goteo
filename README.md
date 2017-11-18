@@ -8,8 +8,9 @@ This is the source code of the [Crowdfunding platform Goteo](http://goteo.org)
 
 > This is a web app that allows the receipt, review and publishing of collective campaigns for their collective funding and the receiving of collaborations as well as the dynamic visualization of the support received, classification of initiatives and campaign tracking. The system also permits secure and distributed communication with users and between users, administration of highlighted projects on the home page and the creation of periodical publications such as blogs, a FAQ section and static pages.
 
+Current version: **3.2**
 
-Although you can try to install it in order to create your own crowdfunding platform, this won't be a *Wordpress*-like installation (probably never will). This release is mostly for developers and for those who want to collaborate with the code.
+Although you can try to install it in order to create your own crowdfunding platform, this won't be a *Wordpress*-like installation (probably never will). This releases are mostly for developers and for those who want to collaborate with the code.
 
 Full developers documentation is still work in progress!
 Some folders may have its own README.md file with comments. However, we will try to compile all the documents here:
