@@ -44,43 +44,36 @@ You need to log into the virtual machine to start the development server:
 
 ```bash
 vagrant ssh
-cd /home/vagrant/goteo
 ```
 
-First time (or when dependencies are updated), you need to run:
+The first time, a vagrant local config file will be create a a `config/local-vagrant-settings.yml`. The env variable GOTEO_CONFIG_FILE will be append to the .bashrc file in vagrant poining to that file. Database will be autocreated and dependencies installed.
 
-Node and composer dependencies:
-
-```bash
-npm install
-composer install
-```
-
-Create a settings file:
-
-```bash
-cp config/vagrant-settings.yml config/settings.yml
-```
-
-Import a starting database to the server:
-
-```bash
-mysql -u your_user -p your_password < db/install/structure.sql
-mysql -u your_user -p your_password < db/install/data.sql
-```
-
-
-```
-mysql ...
-```
-
-Start the development server:
+You just need to log into vagrant and start the development server:
 
 ```bash
 grunt serve
 ```
 
-You can do the last command in your own machine, then vagrant will be used for mysql only.
+**Code updates**
+
+To update composer or npm dependencies when code is updated, you just need to log into vagrant (`vagrant ssh`) and run these commands:
+
+Node and composer dependencies:
+
+```bash
+cd /home/ubuntu/goteo
+npm install
+composer install
+```
+
+It's also safe to run the MySQL migration tool to ensure database version is up to date:
+
+```bash
+./bin/console migrate all
+```
+
+
+You can do the `grunt serve` command in your own machine, then vagrant will be used for mysql only.
 
 Now you can open your favorite browser on your machine and go to:
 

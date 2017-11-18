@@ -28,10 +28,11 @@ class Config {
 	/**
 	 * Loads all configurations
 	 */
-	static public function load($config_file = 'settings.yml') {
+	static public function load($config_file) {
 		try {
+            if(!is_file($config_file)) $config_file = __DIR__ . '/../../../config/' . $config_file;
 			// load the main config
-			self::$config = self::loadFromYaml(__DIR__ . '/../../../config/' . $config_file);
+			self::$config = self::loadFromYaml($config_file);
 			//Timezone
 			if (self::get('timezone')) {
 				date_default_timezone_set(self::get('timezone'));
@@ -69,7 +70,7 @@ class Config {
 			}
 
             \Goteo\Application\View::setTheme('responsive');
-			die(\Goteo\Application\View::render('errors/config', ['msg' => $e->getMessage(), 'info' => $info, 'file' => $file, 'code' => $code], false));
+			die(\Goteo\Application\View::render('errors/config', ['msg' => $e->getMessage(), 'info' => $info, 'file' => $config_file, 'code' => $code], false));
 			return;
 		}
 	}

@@ -9,6 +9,7 @@ Server requirements
 -------------------
 
 - PHP v5.6 (PHP 7 recommended) or later with extensions `gd`, `mcrypt`, `curl`, `mbstring`, `json`, `mysql` activated
+- Access to the terminal in the webserver and cron.
 - Apache, Nginx or any other server with ModRewrite activated
 - MySQL 5.6 or later
 
@@ -28,13 +29,21 @@ Server requirements
 > npm install
 > ```
 >
+> Create and edit your confinguration:
+>
+> ```bash
+> cp config/demo-settings.yml config/settings.yml
+>```
+>
 > Create the compiled minimized system:
 >
 > ```bash
-> grunt build
+> grunt build:dist
 > ```
 >
-> Alternatively, use  `grunt build:devel` for javascript/css debugging.
+> Point your web server to handle all request by the file `goteo/dist/index.php`
+>
+> Alternatively, use  `grunt build:devel` for javascript/css debugging and point the webserver to `goteo/dist/index_dev.php`
 
 Goteo configuration
 -------------
@@ -47,6 +56,12 @@ Particularly you must configure the `db:` section with the proper **username/pas
 
 You can specify a different `dev-settings.yml` file which will be used by `public/index_dev.php`
 
+It is also possible to define a custom settings file with the env var `GOTEO_CONFIG_FILE`, ie:
+
+```bash
+export GOTEO_CONFIG_FILE='/my/path/my-settings.yml'
+grunt serve
+```
 
 Example installation `config/settings.yml`:
 

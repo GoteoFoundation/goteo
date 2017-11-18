@@ -23,7 +23,11 @@ define('LANG', 'es');
 define('SITE_URL', 'http://localhost');
 
 // Config file...
-Config::load();
+$config = getenv('GOTEO_TEST_CONFIG_FILE');
+if(!is_file($config)) $config = getenv('GOTEO_CONFIG_FILE');
+if(!is_file($config)) $config = __DIR__ . '/../config/test-settings.yml';
+if(!is_file($config)) $config = __DIR__ . '/../config/settings.yml';
+Config::load($config);
 
 // TODO: mock service container logger...
 

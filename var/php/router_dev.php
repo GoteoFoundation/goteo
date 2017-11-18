@@ -18,6 +18,7 @@ if (call_user_func(function() {
         if($ext === 'ttf') $mime = 'application/font-sfnt';
         if($ext === 'svg') $mime = 'image/svg+xml';
         if($ext === 'woff') $mime = 'application/font-woff';
+        if($ext === 'woff2') $mime = 'application/font-woff2';
         if($mime) {
             header("Content-type: $mime");
             header('Access-Control-Allow-Origin: *');

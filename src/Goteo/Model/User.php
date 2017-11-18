@@ -1169,7 +1169,8 @@ class User extends \Goteo\Core\Model {
 
             // Re-encode password and save it to database if it's considered non-secure
             if(!$pass->isSecure()) {
-                $user->setPassword(Password::encode($password), true);
+                $errors = [];
+                $user->setPassword(Password::encode($password), $errors, true);
             }
 
             if ($user->active) {
