@@ -17,6 +17,7 @@ use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Finder\Finder;
 
 use Goteo\Application\Config;
+use Goteo\Core\Model;
 
 use LibMigration\Migration;
 use LibMigration\Config as MigrationConfig;
@@ -58,6 +59,7 @@ Commands:
   migrate         : Executes all migrations pending. (same as -u option)
   up              : Executes only the next migration pending.
   down            : Executes the next migration down.
+  install         : Installs the system from the scratch
 
 EOT
 );
@@ -98,6 +100,15 @@ EOT
         if($input->getOption('config')) {
             $migration->listConfig();
         }
+        elseif('all' === $input->getArgument('cmd') || $input->getOption('update')) {
+            $migration->migrate($databases);
+        }
+        elseif('up' === $input->getArgument('cmd')) {
+            $migration->up($databases);
+        }
+        elseif('down' === $input->getArgument('cmd')) {
+            $migration->down($databases);
+        }
         elseif('status' === $input->getArgument('cmd')) {
             $migration->status($databases);
         }
@@ -107,14 +118,21 @@ EOT
             }
           $migration ->create($name, $databases);
         }
-        elseif('up' === $input->getArgument('cmd')) {
-            $migration->up($databases);
-        }
-        elseif('down' === $input->getArgument('cmd')) {
-            $migration->down($databases);
-        }
-        elseif('create' === $input->getArgument('cmd') || $input->getOption('update')) {
+        elseif('install' === $input->getArgument('cmd')) {
+            $res = Model::query("select count(*) from information_schema.tables where table_type = 'BASE TABLE' and table_schema = ?", $databases[0]);
+            if($res->fetchColumn()) throw new \Exception("Database {$databases[0]} is not empty! Cannot install\n\nYou may want to execute:\nphp bin/console migrate all");
+
+            $output->writeln("<comment>Installing database structure into <info>[{$dsatabases[0]}]</info> ...</comment>");
+            Model::query(file_get_contents(GOTEO_PATH . 'db/migrations/init-v3.2.sql'));
+            $output->writeln('<info>Done</info>');
+
+            $output->writeln('<comment>Installing initial data...</comment>');
+            Model::query(file_get_contents(GOTEO_PATH . 'db/migrations/data-v3.2.sql'));
+            $output->writeln('<info>Done</info>');
+
+            $output->writeln('<comment>Upgrading database...</comment>');
             $migration->migrate($databases);
+            $output->writeln('<info>All done!</info>');
         }
     }
 }

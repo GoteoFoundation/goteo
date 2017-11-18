@@ -24,10 +24,6 @@ ALTER TABLE `message` ADD FOREIGN KEY (`user`) REFERENCES `user`(`id`) ON UPDATE
 
 ALTER TABLE `message` DROP INDEX `id`;
 
--- adding private messages
-ALTER TABLE `message` ADD COLUMN `private` TINYINT(1) DEFAULT 0 NOT NULL AFTER `closed`;
-CREATE TABLE `message_user`( `message_id` BIGINT UNSIGNED NOT NULL, `user_id` CHAR(50) NOT NULL, PRIMARY KEY (`message_id`, `user_id`), FOREIGN KEY (`message_id`) REFERENCES `message`(`id`) ON UPDATE CASCADE ON DELETE CASCADE, FOREIGN KEY (`user_id`) REFERENCES `user`(`id`) ON UPDATE CASCADE ON DELETE CASCADE );
-
 -- Invest optimizations
 UPDATE invest SET anonymous=0 WHERE anonymous IS NULL;
 UPDATE invest SET resign=0 WHERE resign IS NULL;
@@ -193,3 +189,63 @@ ALTER TABLE `invest` ADD COLUMN `matcher` VARCHAR(50) NULL AFTER `call`,
 
 -- remove template constrains from mail as it can come from yaml sources now
 ALTER TABLE `mail` CHANGE `template` `template` VARCHAR(100) NULL, DROP FOREIGN KEY `mail_ibfk_3`;
+
+
+/*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
+
+/* Alter table in target */
+ALTER TABLE `call_sponsor`
+    ADD COLUMN `main` tinyint(1)   NOT NULL DEFAULT 1 COMMENT 'Sponsor main' after `amount` ;
+
+/* Alter table in target */
+ALTER TABLE `node`
+    ADD COLUMN `owner_font_color` varchar(255)  COLLATE utf8_general_ci NULL COMMENT 'Color de fuente módulo owner' after `home_img` ,
+    ADD COLUMN `owner_social_color` varchar(255)  COLLATE utf8_general_ci NULL COMMENT 'Color de iconos sociales módulo owner' after `owner_font_color` ;
+
+/* Create table in target */
+CREATE TABLE `origin`(
+    `id` int(10) unsigned NOT NULL  auto_increment ,
+    `tag` char(50) COLLATE utf8_general_ci NOT NULL  ,
+    `category` char(50) COLLATE utf8_general_ci NOT NULL  ,
+    `type` enum('referer','ua') COLLATE utf8_general_ci NOT NULL  COMMENT 'referer, ua' ,
+    `project_id` char(50) COLLATE utf8_general_ci NULL  ,
+    `invest_id` bigint(20) unsigned NULL  ,
+    `call_id` char(50) COLLATE utf8_general_ci NULL  ,
+    `counter` int(10) unsigned NOT NULL  DEFAULT 0 ,
+    `created_at` datetime NULL  ,
+    `modified_at` timestamp NOT NULL  DEFAULT CURRENT_TIMESTAMP on update CURRENT_TIMESTAMP ,
+    PRIMARY KEY (`id`) ,
+    UNIQUE KEY `project`(`tag`,`project_id`,`type`,`category`) ,
+    KEY `project_id`(`project_id`) ,
+    KEY `invest_id`(`invest_id`) ,
+    KEY `call_id`(`call_id`) ,
+    KEY `call`(`tag`,`category`,`type`,`call_id`) ,
+    KEY `invest`(`tag`,`category`,`type`,`invest_id`) ,
+    CONSTRAINT `origin_ibfk_1`
+    FOREIGN KEY (`project_id`) REFERENCES `project` (`id`) ON DELETE CASCADE ON UPDATE CASCADE ,
+    CONSTRAINT `origin_ibfk_2`
+    FOREIGN KEY (`invest_id`) REFERENCES `invest` (`id`) ON DELETE CASCADE ON UPDATE CASCADE ,
+    CONSTRAINT `origin_ibfk_3`
+    FOREIGN KEY (`call_id`) REFERENCES `call` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET='utf8' COLLATE='utf8_general_ci';
+
+
+/* Alter table in target */
+ALTER TABLE `post_tag`
+    ADD KEY `post_tag_ibfk_2`(`tag`) ,
+    DROP KEY `tag` ,
+    DROP FOREIGN KEY `post_tag_ibfk_1`  ;
+ALTER TABLE `post_tag`
+    ADD CONSTRAINT `post_tag_ibfk_1`
+    FOREIGN KEY (`post`) REFERENCES `post` (`id`) ON DELETE CASCADE ON UPDATE CASCADE ,
+    ADD CONSTRAINT `post_tag_ibfk_2`
+    FOREIGN KEY (`tag`) REFERENCES `tag` (`id`) ON DELETE CASCADE ON UPDATE CASCADE ;
+
+
+/* Alter table in target */
+ALTER TABLE `project_account`
+    ADD COLUMN `skip_login` int(1)   NOT NULL DEFAULT 0 after `vat` ;
+
+DROP TABLE `lang`;
+
+/*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;

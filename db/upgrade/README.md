@@ -1,3 +1,5 @@
+DEPRECATED
+==========
 
 This directory contains the historical SQL commmand updater.
 It won't be updated anymore
@@ -9,5 +11,4 @@ The prefered way to update the database is now:
 ./bin/console migrate all
 ```
 
-Referer to the *Console/SQL migration* section for further documentation.
-
+Referer to the *UPGRADE* section in docs for further documentation.

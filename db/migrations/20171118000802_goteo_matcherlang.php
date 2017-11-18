@@ -2,7 +2,7 @@
 /**
  * Migration Task class.
  */
-class GoteoTest
+class GoteoMatcherlang
 {
   public function preUp()
   {
