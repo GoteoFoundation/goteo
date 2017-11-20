@@ -33,7 +33,7 @@ class InvestMatcherListener extends AbstractMatcherListener {
 
             $invests = $processor->getInvests();
 
-            $this->notice("Matcher has invests", [$matcher, 'matcher_processor' => $matcher->processor]);
+            $this->notice("Matcher has invests", [$matcher, 'matcher_processor' => $matcher->processor, $project]);
 
             foreach($invests as $drop) {
                 $errors = [];
@@ -42,6 +42,8 @@ class InvestMatcherListener extends AbstractMatcherListener {
                     $log[] = $invest;
                     $log[] = $invest->getProject();
                     $log[] = $invest->getUser();
+                } else {
+                    $log[] = $project;
                 }
                 // se actualiza el registro de convocatoria
                 if ($drop->save($errors)) {
@@ -132,7 +134,7 @@ class InvestMatcherListener extends AbstractMatcherListener {
             }
 
         } catch(MatcherProcessorException $e) {
-            $this->notice("No invests for Matcher", [$matcher, 'matcher_processor' => $matcher->processor, 'reason' => $e->getMessage()]);
+            $this->notice("No invests for Matcher", [$matcher, 'matcher_processor' => $matcher->processor, $project, 'reason' => $e->getMessage()]);
         }
 
     }

@@ -46,7 +46,7 @@ class Invest extends \Goteo\Core\Model {
     const STATUS_RELOCATED  = 5;  // deprecated status
     const STATUS_TO_POOL    = 6;  // refunded to user's pool
 
-    static $ACTIVE_STATUSES = [self::STATUS_PROCESSING, self::STATUS_PENDING, self::STATUS_CHARGED, self::STATUS_PAID];
+    static $ACTIVE_STATUSES = [self::STATUS_PENDING, self::STATUS_CHARGED, self::STATUS_PAID];
     static $FAILED_STATUSES = [self::STATUS_RELOCATED, self::STATUS_RETURNED, self::STATUS_TO_POOL, self::STATUS_CANCELLED];
 
     public

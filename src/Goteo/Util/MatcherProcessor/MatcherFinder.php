@@ -35,12 +35,12 @@ class MatcherFinder {
 
         if($listeners = $processor::getAppEventListeners()) {
             foreach($listeners as $listener => $arguments) {
-                $this->addListenerToDispatcher('dispatcher', $listener);
+                $this->addListenerToDispatcher('dispatcher', $listener, $arguments);
             }
         }
         if($listeners = $processor::getConsoleEventListeners()) {
             foreach($listeners as $listener => $arguments) {
-                $this->addListenerToDispatcher('console_dispatcher', $listener);
+                $this->addListenerToDispatcher('console_dispatcher', $listener, $arguments);
             }
         }
         return $this;
