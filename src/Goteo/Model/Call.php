@@ -473,10 +473,10 @@ class Call extends \Goteo\Core\Model {
 
         if (isset($filters['available'])) {
             if($filters['available']) {
-                $sqlFilter[] = " AND (status IN (3,4) OR id IN (SELECT `call` FROM user_call WHERE user = :user))";
+                $sqlFilter[] = "(status IN (3,4) OR id IN (SELECT `call` FROM user_call WHERE user = :user))";
                 $values[':user'] = $filters['available'];
             } else {
-                $sqlFilter[] = " AND status IN (3,4)";
+                $sqlFilter[] = "status IN (3,4)";
             }
         }
 
