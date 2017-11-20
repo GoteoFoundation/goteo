@@ -203,7 +203,7 @@ abstract class AbstractMatcherProcessor implements MatcherProcessorInterface {
     static public function getAppEventListeners() {
         return [
             'Goteo\Application\EventListener\GenericMatcherListener' => ['logger'],
-            'Goteo\Application\EventListener\InvestMatcherListener'  => ['pay_logger']
+            'Goteo\Application\EventListener\InvestMatcherListener'  => ['paylogger']
         ];
     }
 
