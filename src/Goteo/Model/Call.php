@@ -465,16 +465,29 @@ class Call extends \Goteo\Core\Model {
     /*
      * Listado simple de todos los convocatorias
      */
-    public static function getAll() {
+    public static function getAll($filters = []) {
 
         $list = array();
+        $values = [];
+        $sqlFilter = [];
+
+        if (isset($filters['available'])) {
+            if($filters['available']) {
+                $sqlFilter[] = " AND (status IN (3,4) OR id IN (SELECT `call` FROM user_call WHERE user = :user))";
+                $values[':user'] = $filters['available'];
+            } else {
+                $sqlFilter[] = " AND status IN (3,4)";
+            }
+        }
+
 
         $query = static::query("
             SELECT
                 `call`.*
             FROM `call`
+            " . ($sqlFilter ? 'WHERE '. implode(" AND ", $sqlFilter) : '') . "
             ORDER BY call.opened DESC
-            ");
+            ", $values);
 
         foreach ($query->fetchAll(\PDO::FETCH_CLASS, __CLASS__) as $item) {
             $list[$item->id] = $item;
