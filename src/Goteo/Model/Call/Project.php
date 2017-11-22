@@ -652,8 +652,12 @@ namespace Goteo\Model\Call {
             // que no supere el máximo por proyecto
             $maxdrop = min($maxdrop, $call->maxproj);
 
+            // If fullunlimite the limit is only the max invest set by conf
+            if($call->conf == 'fullunlimited')
+                $maxdrop=$call->maxdrop;
+
             //if unlimited, not take into account the original max
-            if($call->conf != 'unlimited')
+            elseif($call->conf != 'unlimited')
                 // y no supere lo que puede llegar a conseguir de la convocatoria (máximo original menos lo ya conseguido)
                 $maxdrop = min($maxdrop, ($call->rawmaxproj - $project->amount_call));
 
