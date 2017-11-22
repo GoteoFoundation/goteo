@@ -18,6 +18,8 @@ class WebProcessor
     private $uid;
     static private $fields = [
                 'owner' => 'str',
+                'name' => 'str',
+                'title' => 'str',
                 'method' => 'str',
                 'amount' => 'int',
                 'status' => 'int',
