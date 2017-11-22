@@ -11,6 +11,7 @@
 namespace Goteo\Application\EventListener;
 
 use Goteo\Application\AppEvents;
+use Goteo\Console\ConsoleEvents;
 use Goteo\Application\Lang;
 
 use Goteo\Model\Template;
@@ -22,7 +23,8 @@ use Goteo\Model\Project\Conf as ProjectConf;
 use Goteo\Model\Event;
 
 use Goteo\Application\Event\FilterMatcherProjectEvent;
-use Goteo\Application\Event\FilterProjectEvent;
+use Goteo\Application\Event\FilterProjectEvent as AppFilterProjectEvent;
+use Goteo\Console\Event\FilterProjectEvent;
 use Goteo\Application\Exception\DuplicatedEventException;
 
 class MailingMatcherListener extends AbstractMatcherListener {
@@ -44,7 +46,7 @@ class MailingMatcherListener extends AbstractMatcherListener {
             $event = new Event($action);
 
         } catch(DuplicatedEventException $e) {
-            $this->warning('Duplicated event', [$project, 'event' => "$to:$template"]);
+            $this->warning('Duplicated event', ['action' => $e->getMessage(), $project, $mail, 'event' => "$to:$template"]);
             return;
         }
         $event->fire(function() use ($project, $template, $dest, $mail) {
@@ -123,14 +125,19 @@ class MailingMatcherListener extends AbstractMatcherListener {
 
     /**
      * Send mails on project publish if required
+     * This is compatible for both Application and Console PROJECT_PUBLISH event
      */
     public function onProjectPublish(FilterProjectEvent $event) {
         $project = $event->getProject();
-        $user = $event->getUser();
         if($matchers = Matcher::getFromProject($project, ['pending', 'accepted'])) {
             foreach($matchers as $matcher) {
+
                 // Do not execute this listener if not required by the processor
-                if(!$this->hasAppListener($matcher)) continue;
+                if($event instanceOf AppFilterProjectEvent) {
+                    if(!$this->hasAppListener($matcher)) continue;
+                } else {
+                    if(!$this->hasConsoleListener($matcher)) continue;
+                }
 
                 $admin = $matcher->getOwner();
                 $original_lang_admin = $lang_admin = User::getPreferences($admin)->comlang;
@@ -154,7 +161,8 @@ class MailingMatcherListener extends AbstractMatcherListener {
 	public static function getSubscribedEvents() {
 		return array(
             AppEvents::MATCHER_PROJECT => 'onMatcherProject',
-            AppEvents::PROJECT_PUBLISH => 'onProjectPublish'
+            AppEvents::PROJECT_PUBLISH => 'onProjectPublish',
+            ConsoleEvents::PROJECT_PUBLISH => 'onProjectPublish'
 		);
 	}
 }
