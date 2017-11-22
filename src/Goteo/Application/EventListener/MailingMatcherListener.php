@@ -28,7 +28,7 @@ use Goteo\Console\Event\FilterProjectEvent;
 use Goteo\Application\Exception\DuplicatedEventException;
 
 class MailingMatcherListener extends AbstractMatcherListener {
- /**
+    /**
      * Executes the action of sending a message to the targets
      * Ensures that the sending is a unique event so no duplicates messages arrives to the user
      *
