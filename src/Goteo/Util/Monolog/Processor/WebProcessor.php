@@ -28,6 +28,7 @@ class WebProcessor
                 'one_round' => 'int',
                 'mincost' => 'int',
                 'maxcost' => 'int',
+                'date' => 'date',
                 'published' => 'date',
                 'passed' => 'date',
                 'success' => 'date',
