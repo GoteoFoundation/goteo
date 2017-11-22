@@ -88,3 +88,7 @@ admin-project-view-in-admin: 'Ver en el admin'
 admin-project-to-negotiation: 'A negociación'
 admin-project-to-negotiation-desc: 'Pasa el proyecto al estado Editándose'
 admin-project-to-negotiation-sure: 'ALERTA!! El proyecto esta en campaña! Con esto lo vamos a despublicar ¿Ok?'
+
+admin-project-to-publish: 'Publicar'
+admin-project-to-publish-desc: 'Pasa el proyecto al estado "En campaña"'
+admin-project-to-publish-sure: 'El proyecto va a comenzar su campaña, ¿comenzamos?'

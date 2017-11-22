@@ -14,3 +14,7 @@ admin-project-view-in-admin: 'View in admin'
 admin-project-to-negotiation: 'To negotiation'
 admin-project-to-negotiation-desc: 'Change the project status to Editing'
 admin-project-to-negotiation-sure: 'ALERT! The project is in campaign! This action will unpublish the project, Ok?'
+
+admin-project-to-publish: 'Publish'
+admin-project-to-publish-desc: 'Change the project status to "In campaign"'
+admin-project-to-publish-sure: 'Project is going to start its campaign, ok?'
