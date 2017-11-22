@@ -53,9 +53,11 @@ class MatcherFinder {
      */
     public function addListenerToDispatcher($dispatcher = 'dispatcher', $listener, $arguments = []) {
         $sc = $this->container;
-        $index = count($this->listeners);
-        $id = "matcher.listener.$index";
-        if(in_array($listener, $this->listeners)) return;
+        if(!isset($this->listeners[$dispatcher]) || !is_array($this->listeners[$dispatcher])) $this->listeners[$dispatcher] = [];
+
+        $index = count($this->listeners[$dispatcher]);
+        $id = "matcher.$dispatcher.listener.$index";
+        if(in_array($listener, $this->listeners[$dispatcher])) return;
 
         $sc->register($id, $listener)
            ->setArguments(array_map(function($arg) {return new Reference($arg);}, $arguments));
@@ -63,7 +65,7 @@ class MatcherFinder {
         $sc->getDefinition($dispatcher)
            ->addMethodCall('addSubscriber', array(new Reference($id)));
 
-        $this->listeners[$id] = $listener;
+        $this->listeners[$dispatcher][$id] = $listener;
     }
 
     /**

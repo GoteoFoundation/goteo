@@ -55,7 +55,7 @@ class ProjectListener extends AbstractListener {
                 $event = new Event($action);
 
             } catch(DuplicatedEventException $e) {
-                $this->warning('Duplicated event', [$project, 'event' => "$to:$template"]);
+                $this->warning('Duplicated event', ['action' => $e->getMessage(), $project, 'event' => "$to:$template"]);
                 return;
             }
             $event->fire(function() use ($project, $template, $to) {

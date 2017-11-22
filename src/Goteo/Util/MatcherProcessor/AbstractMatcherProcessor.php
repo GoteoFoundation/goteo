@@ -208,7 +208,9 @@ abstract class AbstractMatcherProcessor implements MatcherProcessorInterface {
     }
 
     static public function getConsoleEventListeners() {
-        return [];
+        return [
+            'Goteo\Application\EventListener\MailingMatcherListener' => ['console_logger']
+        ];
     }
 
 }
