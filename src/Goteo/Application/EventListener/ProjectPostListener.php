@@ -68,10 +68,13 @@ class ProjectPostListener extends AbstractListener {
 
         // si no ha encontrado otro, lanzamos la notificación a cofinanciadores
         // y el post no es demasiado viejo
-
-        if (!$log->unique_issue && $project->num_investors && (new \DateTime('-1 week')) <  (new \DateTime($post->date))) {
+        $current = ($post->date instanceOf \DateTime) ? $post->date : new \DateTime($post->date);
+        if (!$log->unique_issue && $project->num_investors && (new \DateTime('-1 week')) <  $current) {
+            $this->notice("Sending massive mailing for publish post", [['unique' => $log->unique_issue, 'num_investors' => $project->num_investors], $post, $project]);
             UsersSend::setURL(Config::getUrl($project->lang));
             UsersSend::toInvestors('update', $project, null, $post);
+        } else {
+            $this->warning("NOT sending massive mailing for publish post", [['unique' => $log->unique_issue, 'num_investors' => $project->num_investors], $post, $project]);
         }
     }
 
@@ -87,23 +90,23 @@ class ProjectPostListener extends AbstractListener {
         $errors = [];
         if($post->publish && !$post_milestone)
         {
-            $this->info("Creating milestone for publish post", [$post]);
             //Insert milestone
             $project_milestone = new ProjectMilestone();
             $project_milestone->project = $pid;
             $project_milestone->post = $post->id;
             $project_milestone->date = $post->date;
             $project_milestone->save($errors);
+            $this->info("Creating milestone for publish post", [$post, $project_milestone]);
             // print_r($project_milestone);print_r($errors);die;
             $this->createFeed($post);
         }
         elseif(!$post->publish)
         {
-            $this->info("Deleting milestone for publish post", [$post]);
             //Delete milestone
             $project_milestone = new ProjectMilestone();
             $project_milestone->project = $pid;
             $project_milestone->post = $post->id;
+            $this->info("Deleting milestone for publish post", [$post, $project_milestone]);
             $project_milestone->removePostMilestone($errors);
 
         }
