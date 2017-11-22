@@ -68,3 +68,7 @@ admin-project-view-in-admin: 'Veure a l''admin'
 admin-project-to-negotiation: 'A negociació'
 admin-project-to-negotiation-desc: 'Passa el projecte a l''estat Editant-se'
 admin-project-to-negotiation-sure: 'ALERTA!! El projecte està en campanya! Amb això el des-publicarem, Ok?'
+
+admin-project-to-publish: 'Publica'
+admin-project-to-publish-desc: 'Passa el projecte a l''estat "En campanya"'
+admin-project-to-publish-sure: 'El projecte començarà la campanya, ok?'
