@@ -21,9 +21,8 @@ use Goteo\Model\User\Web;
 use Goteo\Model\User\Interest;
 use Goteo\Model\User\UserLocation;
 use Goteo\Library\Forms\FormModelException;
-use Goteo\Library\Forms\FormProcessorInterface;
 
-class UserProfileForm extends AbstractFormProcessor implements FormProcessorInterface {
+class UserProfileForm extends AbstractFormProcessor {
 
     public function getConstraints($field) {
         $constraints = [];
@@ -31,7 +30,7 @@ class UserProfileForm extends AbstractFormProcessor implements FormProcessorInte
             $constraints[] = new Constraints\NotBlank();
         }
         elseif($this->getFullValidation()) {
-            if(in_array($field, ['location', 'gender', 'about'])) {
+            if(in_array($field, ['gender', 'about'])) {
                 $constraints[] = new Constraints\NotBlank();
             }
             if(in_array($field, ['webs', 'facebook', 'twitter'] )) {
@@ -58,6 +57,9 @@ class UserProfileForm extends AbstractFormProcessor implements FormProcessorInte
         // Do not test images
         // var_dump($data);die;
         unset($data['avatar']);
+
+        if(empty($data['location'])) $data['location'] = null;
+
         return $data;
     }
 
@@ -76,6 +78,7 @@ class UserProfileForm extends AbstractFormProcessor implements FormProcessorInte
                 'constraints' => $this->getConstraints('name'),
                 'label' => 'regular-name'
             ])
+// ;return $this;$builder
             ->add('location', 'location', [
                 'label' => 'profile-field-location',
                 'constraints' => $this->getConstraints('location'),
@@ -261,7 +264,7 @@ class UserProfileForm extends AbstractFormProcessor implements FormProcessorInte
         $errors = [];
         $data = $form->getData();
         $user = $this->getModel();
-        // print_r($data);die;
+        // var_dump($data);die;
         // Process main image
         if(is_array($data['avatar'])) {
             $data['avatar'] = reset($data['avatar']);

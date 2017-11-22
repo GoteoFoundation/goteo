@@ -2294,7 +2294,7 @@ namespace Goteo\Model {
                     'overview' => [], 'images' => [], 'costs' => [], 'rewards' => [], 'campaign' => []];
 
             // 1. profile
-            $profile = [ 'name', 'location', 'gender', 'about' ];
+            $profile = [ 'name', 'gender', 'about' ];
             $total = count($profile);
             $count = 0;
             $owner = $this->getOwner();

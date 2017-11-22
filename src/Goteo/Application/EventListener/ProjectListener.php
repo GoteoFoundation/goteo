@@ -189,7 +189,7 @@ class ProjectListener extends AbstractListener {
 	public static function getSubscribedEvents() {
 		return array(
             AppEvents::PROJECT_CREATED => 'onProjectCreated',
-            AppEvents::PROJECT_PUBLISH => 'onProjectPublish',
+            AppEvents::PROJECT_PUBLISH => ['onProjectPublish', 100], // high priority
             AppEvents::PROJECT_READY   => 'onProjectReady',
 		);
 	}
