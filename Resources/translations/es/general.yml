@@ -49,6 +49,9 @@ guide-project-invests: 'Desde este apartado podrás gestionar a tus cofinanciado
 
 header-about-side: 'Lo que nos mueve'
 home-posts-header: Novedades
+horizontal-project-investors: 'cofinanciadores'
+horizontal-project-percent: 'financiado'
+horizontal-project-reached: 'conseguido'
 invest-individual-header: 'Puedes renunciar a recibir recompensas por tu aportación, o seleccionar las que igualen o estén por debajo del importe que hayas introducido.'
 login-register-conditions: 'Al registrarte, confirmas tu aceptación de nuestros <a href="/legal/terms">términos de uso</a>, <a href="/legal/privacy">política de privacidad</a> y <a href="/legal/cookies">política de cookies</a>.'
 login-accept-conditions: 'Acepto los <a href="/legal/terms">términos de uso</a>, <a href="/legal/privacy">política de privacidad</a> y <a href="/legal/cookies">política de cookies</a>.'
