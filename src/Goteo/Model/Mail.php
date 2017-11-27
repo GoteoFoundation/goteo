@@ -430,8 +430,8 @@ class Mail extends \Goteo\Core\Model {
         $token = $this->getToken();
         return $this->render($plain, [
                     'alternate' => SITE_URL . '/mail/' . $token,
-                    'tracker' => SITE_URL . '/mail/track/' . $token . '.gif' ]
-                );
+                    'tracker' => SITE_URL . '/mail/track/' . $token . '.gif'
+                ]);
 
     }
 
