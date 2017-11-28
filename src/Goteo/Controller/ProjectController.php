@@ -189,7 +189,7 @@ class ProjectController extends \Goteo\Core\Controller {
 
             // recompensas
             $viewData['individual_rewards'] = [];
-            foreach ($project->getIndividualRewards() as $reward) {
+            foreach ($project->getIndividualRewards(Lang::current(false)) as $reward) {
                 $reward->none  = false;
                 $reward->taken = $reward->getTaken();// cofinanciadores quehan optado por esta recompensas
                 // si controla unidades de esta recompensa, mirar si quedan

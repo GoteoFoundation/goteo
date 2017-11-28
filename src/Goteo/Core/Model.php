@@ -19,7 +19,8 @@ use Goteo\Library\Cacher;
 abstract class Model {
 
 	//Override in the model the table if different from the class name
-	protected $Table = null;
+    protected $Table = null;
+	static protected $Table_static = null;
 	static protected $db = null;
 
 	/**
@@ -77,19 +78,34 @@ abstract class Model {
 	 * Get the table name
 	 * @return string Table name
 	 */
-	public function getTable() {
-		return $this->Table;
+    public function getTable() {
+        return $this->Table;
+    }
+	static public function getTableStatic() {
+        if(empty(static::$Table_static)) {
+            $table = strtolower(get_called_class());
+            if (strrpos($table, '\\') !== false) {
+                return substr($table, strrpos($table, '\\') + 1);
+            }
+        }
+		return static::$Table_static;
 	}
 	/**
 	 * Sets the table name
 	 * @param string $table Table name
 	 */
-	public function setTable($table = null) {
-		if ($table) {
-			$this->Table = $table;
-		}
+    public function setTable($table = null) {
+        if ($table) {
+            $this->Table = $table;
+        }
 
-		return $this;
+        return $this;
+    }
+
+	static public function setTableStatic($table = null) {
+		if ($table) {
+			static::$Table_static = $table;
+		}
 	}
 
 	/**
@@ -475,6 +491,42 @@ abstract class Model {
      */
     static public function getLangFields() {
         return [];
+    }
+
+    /**
+     * Returns the fields and Join parts to use in a SQL query
+     * by
+     * @param  string $lang if null, assumes the model has his own language in table
+     * @return array  [fields, joins]
+     */
+    static public function getLangsSQLJoins($lang, $lang_model=null, $model_join_id=null) {
+        $fields = static::getLangFields();
+        if(!$fields) throw new ModelException('This method requires self::getLangFields() to return the fields to translate');
+
+        $table = static::getTableStatic();
+        if(!$lang) {
+            return ["`$table`.`".implode("`,\n`$table`.`", $fields).'`', ''];
+        }
+        $support_lang = Lang::getDefault($lang);
+        $default_lang = ($lang_model && !$model_join_id) ? $lang_model : Config::get($lang);
+        $sql_fields = [];
+        $sql_joins = [];
+        foreach($fields as $field) {
+            if($lang_model && $model_join_id) {
+                $sql_fields[] = "IF(m.lang='$lang', `$table`.`$field`, IFNULL(IFNULL(b.`$field`,c.`$field`), `$table`.`$field`)) AS `$field`";
+            } else {
+                $sql_fields[] = "IF('$default_lang'='$lang', `$table`.`$field`, IFNULL(IFNULL(b.`$field`,c.`$field`), `$table`.`$field`)) AS `$field`";
+            }
+        }
+        if($lang_model && $model_join_id) {
+            $sql_joins[] = "RIGHT JOIN `{$lang_model}` m ON m.id=`$table`.`$model_join_id`";
+            $sql_joins[] = "LEFT JOIN `{$table}_lang` b ON `$table`.id=b.id AND b.lang='$lang' AND b.lang!=m.lang";
+            $sql_joins[] = "LEFT JOIN `{$table}_lang` c ON `$table`.id=c.id AND c.lang='$support_lang' AND c.lang!=m.lang";
+        } else {
+            $sql_joins[] = "LEFT JOIN `{$table}_lang` b ON `$table`.id=b.id AND b.lang='$lang' AND b.lang!='$default_lang'";
+            $sql_joins[] = "LEFT JOIN `{$table}_lang` c ON `$table`.id=c.id AND c.lang='$support_lang' AND c.lang!='$default_lang'";
+        }
+        return [implode(",\n", $sql_fields), implode("\n", $sql_joins)];
     }
 
     /**

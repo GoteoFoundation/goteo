@@ -577,28 +577,15 @@ namespace Goteo\Model {
                     $project->social_commitmentData->image = Image::get($project->social_commitmentData->image);
                 }
 
-
-                // @FIXME #42 : para contenidos adicionales (cost, reward, support) se está suponiendo erroneamente que el contenido original es español
-                // no se está teniendo en cuenta el idioma original del proyecto
-                // @TODO :
-                //        o pasamos el idioma original a estos getAll y modificamos el código
-                //        o modificamos registro _lang para idioma original  al modificarse estos contenidos (no arregla casos ya existentes)
-
-                // si se está solicitando el mismo idioma del proyecto, queremos que estos getAll nos den el contenido original
-                // para eso hacemos $lang = null ya que luego ya no se usa mas esta variable
-                if ($lang == $project->lang) {
-                    $lang = null;
-                }
-
                 // costes y los sumammos
                 $project->costs = Project\Cost::getAll($id, $lang);
                 $project->minmax();
 
                 // compatibility initialization
                 // retornos colectivos
-                $project->getSocialRewards();
+                $project->getSocialRewards($lang);
                 // retornos individuales
-                $project->getIndividualRewards();
+                $project->getIndividualRewards($lang);
 
                 // colaboraciones
                 $project->supports = Project\Support::getAll($id, $lang);

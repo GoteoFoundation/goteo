@@ -69,10 +69,17 @@ class Reward extends \Goteo\Core\Model {
             $icons = Icon::getList();
 
             $values = array(
-                ':project' => $project,
-                ':type' => $type,
-                ':lang' => $lang
+                ':type' => $type
             );
+
+            if($project instanceOf Project) {
+                $values[':project'] = $project->id;
+                list($fields, $joins) = self::getLangsSQLJoins($lang, $project->lang);
+            }
+            else {
+                $values[':project'] = $project;
+                list($fields, $joins) = self::getLangsSQLJoins($lang, 'project', 'project');
+            }
 
             $sqlFilter = "";
             if (!empty($fulfilled)) {
@@ -84,41 +91,10 @@ class Reward extends \Goteo\Core\Model {
                 $values[':icon'] = $icon;
             }
 
-            // FIXES #42
-            $join = " LEFT JOIN reward_lang
-                        ON  reward_lang.id = reward.id
-                        AND reward_lang.project = :project
-                        AND reward_lang.lang = :lang
-            ";
-            $eng_join = '';
-
-            // tener en cuenta si se solicita el contenido original
-            if (!isset($lang)) {
-                $different_select=" reward.reward as reward,
-                                    reward.description as description,
-                                    reward.other as other";
-                $join = '';
-                unset($values[':lang']);
-
-            } elseif(self::default_lang($lang) == Config::get('lang')) {
-                $different_select=" IFNULL(reward_lang.reward, reward.reward) as reward,
-                                    IFNULL(reward_lang.description, reward.description) as description,
-                                    IFNULL(reward_lang.other, reward.other) as other";
-
-            } else {
-                    $different_select=" IFNULL(reward_lang.reward, IFNULL(eng.reward, reward.reward)) as reward,
-                                        IFNULL(reward_lang.description, IFNULL(eng.description, reward.description)) as description,
-                                        IFNULL(reward_lang.other, IFNULL(eng.other, reward.other)) as other";
-                    $eng_join=" LEFT JOIN reward_lang as eng
-                                    ON  eng.id = reward.id
-                                    AND eng.project = :project
-                                    AND eng.lang = 'en'";
-                }
-
             $sql = "SELECT
                         reward.id as id,
                         reward.project as project,
-                        {$different_select} ,
+                        $fields,
                         reward.type as type,
                         reward.icon as icon,
                         reward.license as license,
@@ -129,8 +105,7 @@ class Reward extends \Goteo\Core\Model {
                         reward.bonus,
                         reward.category
                     FROM    reward
-                    {$join}
-                    {$eng_join}
+                    $joins
                     WHERE   reward.project = :project
                         AND type= :type
                     $sqlFilter
@@ -145,7 +120,7 @@ class Reward extends \Goteo\Core\Model {
                 //     ORDERED BY AMOUNT
                 $sql .= ", reward.amount ASC, reward.order ASC";
             }
-            // die(\sqldbg($sql, $values));
+            // if($lang) die("[$lang] ".\sqldbg($sql, $values));
             $query = self::query($sql, $values);
             foreach ($query->fetchAll(\PDO::FETCH_CLASS, __CLASS__) as $item) {
 
