@@ -66,6 +66,8 @@ namespace Goteo\Model\Project {
                         $eng_join
                         ORDER BY name ASC ";
 
+                // die(\sqldbg($sql));
+
                 $query = static::query($sql, array(':lang'=>$lang));
                 $open_tags = $query->fetchAll();
                 foreach ($open_tags as $cat) {

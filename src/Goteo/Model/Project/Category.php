@@ -74,6 +74,7 @@ namespace Goteo\Model\Project {
                     ORDER BY name ASC
                         ";
 
+                // die(\sqldbg($sql));
                 $query = static::query($sql, array(':lang'=>Lang::current()));
 
 

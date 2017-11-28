@@ -512,13 +512,18 @@ abstract class Model {
         $sql_fields = [];
         $sql_joins = [];
         foreach($fields as $field) {
-            if($lang_model && $model_join_id) {
+            if(!$lang_model && !$model_join_id) {
+                $sql_fields[] = "IF(`$table`.lang='$lang', `$table`.`$field`, IFNULL(IFNULL(b.`$field`,c.`$field`), `$table`.`$field`)) AS `$field`";
+            } elseif($lang_model && $model_join_id) {
                 $sql_fields[] = "IF(m.lang='$lang', `$table`.`$field`, IFNULL(IFNULL(b.`$field`,c.`$field`), `$table`.`$field`)) AS `$field`";
             } else {
                 $sql_fields[] = "IF('$default_lang'='$lang', `$table`.`$field`, IFNULL(IFNULL(b.`$field`,c.`$field`), `$table`.`$field`)) AS `$field`";
             }
         }
-        if($lang_model && $model_join_id) {
+        if(!$lang_model && !$model_join_id) {
+            $sql_joins[] = "LEFT JOIN `{$table}_lang` b ON `$table`.id=b.id AND b.lang='$lang' AND b.lang!=`$table`.lang";
+            $sql_joins[] = "LEFT JOIN `{$table}_lang` c ON `$table`.id=c.id AND c.lang='$support_lang' AND c.lang!=`$table`.lang";
+        } elseif($lang_model && $model_join_id) {
             $sql_joins[] = "RIGHT JOIN `{$lang_model}` m ON m.id=`$table`.`$model_join_id`";
             $sql_joins[] = "LEFT JOIN `{$table}_lang` b ON `$table`.id=b.id AND b.lang='$lang' AND b.lang!=m.lang";
             $sql_joins[] = "LEFT JOIN `{$table}_lang` c ON `$table`.id=c.id AND c.lang='$support_lang' AND c.lang!=m.lang";
