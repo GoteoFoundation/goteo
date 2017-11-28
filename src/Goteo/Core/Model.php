@@ -495,8 +495,14 @@ abstract class Model {
 
     /**
      * Returns the fields and Join parts to use in a SQL query
-     * by
-     * @param  string $lang if null, assumes the model has his own language in table
+     * Check Model\Project::get, Model\Project\Reward::getAll for examples on how to use this
+     *
+     * @param  string $lang to obtain the data for (will return a fallback language if not exists)
+     * @param  string $lang_model  if empty and $model_join_id is also empty the fallback lang will be used from the main model
+     *                             if defined and $model_join_id is empty, will be used as the fallback language
+     *                             if defined and $model_join_id is also defined,
+     *                                will be used as the name of the table to JOIN to get the fallback language
+     * @param  string $model_join_id the field in the table_lang to use with the JOIN table.id
      * @return array  [fields, joins]
      */
     static public function getLangsSQLJoins($lang, $lang_model=null, $model_join_id=null) {
@@ -507,7 +513,7 @@ abstract class Model {
         if(!$lang) {
             return ["`$table`.`".implode("`,\n`$table`.`", $fields).'`', ''];
         }
-        $support_lang = Lang::getDefault($lang);
+        $fallback_lang = Lang::getDefault($lang);
         $default_lang = ($lang_model && !$model_join_id) ? $lang_model : Config::get($lang);
         $sql_fields = [];
         $sql_joins = [];
@@ -522,14 +528,14 @@ abstract class Model {
         }
         if(!$lang_model && !$model_join_id) {
             $sql_joins[] = "LEFT JOIN `{$table}_lang` b ON `$table`.id=b.id AND b.lang='$lang' AND b.lang!=`$table`.lang";
-            $sql_joins[] = "LEFT JOIN `{$table}_lang` c ON `$table`.id=c.id AND c.lang='$support_lang' AND c.lang!=`$table`.lang";
+            $sql_joins[] = "LEFT JOIN `{$table}_lang` c ON `$table`.id=c.id AND c.lang='$fallback_lang' AND c.lang!=`$table`.lang";
         } elseif($lang_model && $model_join_id) {
             $sql_joins[] = "RIGHT JOIN `{$lang_model}` m ON m.id=`$table`.`$model_join_id`";
             $sql_joins[] = "LEFT JOIN `{$table}_lang` b ON `$table`.id=b.id AND b.lang='$lang' AND b.lang!=m.lang";
-            $sql_joins[] = "LEFT JOIN `{$table}_lang` c ON `$table`.id=c.id AND c.lang='$support_lang' AND c.lang!=m.lang";
+            $sql_joins[] = "LEFT JOIN `{$table}_lang` c ON `$table`.id=c.id AND c.lang='$fallback_lang' AND c.lang!=m.lang";
         } else {
             $sql_joins[] = "LEFT JOIN `{$table}_lang` b ON `$table`.id=b.id AND b.lang='$lang' AND b.lang!='$default_lang'";
-            $sql_joins[] = "LEFT JOIN `{$table}_lang` c ON `$table`.id=c.id AND c.lang='$support_lang' AND c.lang!='$default_lang'";
+            $sql_joins[] = "LEFT JOIN `{$table}_lang` c ON `$table`.id=c.id AND c.lang='$fallback_lang' AND c.lang!='$default_lang'";
         }
         return [implode(",\n", $sql_fields), implode("\n", $sql_joins)];
     }
