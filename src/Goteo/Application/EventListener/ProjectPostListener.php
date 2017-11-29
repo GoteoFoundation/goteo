@@ -13,9 +13,11 @@ namespace Goteo\Application\EventListener;
 use Goteo\Application\EventListener\AbstractListener;
 use Goteo\Application\AppEvents;
 use Goteo\Application\Config;
+use Goteo\Application\Message;
 use Goteo\Console\UsersSend;
 use Goteo\Library\Feed;
 use Goteo\Library\FeedBody;
+use Goteo\Library\Text;
 
 use Goteo\Application\Event\FilterProjectPostEvent;
 use Goteo\Application\Exception\DuplicatedEventException;
@@ -73,8 +75,15 @@ class ProjectPostListener extends AbstractListener {
             $this->notice("Sending massive mailing for publish post", [['unique' => $log->unique_issue, 'num_investors' => $project->num_investors], $post, $project]);
             UsersSend::setURL(Config::getUrl($project->lang));
             UsersSend::toInvestors('update', $project, null, $post);
+            Message::info(Text::get('dashboard-project-updates-sent-to-investors'));
+
         } else {
             $this->warning("NOT sending massive mailing for publish post", [['unique' => $log->unique_issue, 'num_investors' => $project->num_investors], $post, $project]);
+
+            if($log->unique_issue) $reason = Text::get('dashboard-project-updates-sent-reason-no-unique');
+            elseif(!$project->num_investors) $reason = Text::get('dashboard-project-updates-sent-reason-no-investors');
+            else $reason = Text::get('dashboard-project-updates-sent-reason-too-old');
+            Message::error(Text::get('dashboard-project-updates-sent-to-investors-error', $reason));
         }
     }
 
