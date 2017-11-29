@@ -453,7 +453,9 @@ namespace Goteo\Model {
                 // metemos los datos del proyecto en la instancia
                 list($fields, $joins) = self::getLangsSQLJoins($lang);
 
-                $sql = "SELECT project.id,
+                $sql = "SELECT
+                    project.id,
+                    project.name,
                     $fields,
                     project.lang,
                     project.currency,
