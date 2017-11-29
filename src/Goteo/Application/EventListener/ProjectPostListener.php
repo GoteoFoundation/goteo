@@ -69,7 +69,7 @@ class ProjectPostListener extends AbstractListener {
         // si no ha encontrado otro, lanzamos la notificación a cofinanciadores
         // y el post no es demasiado viejo
         $current = ($post->date instanceOf \DateTime) ? $post->date : new \DateTime($post->date);
-        if (!$log->unique_issue && $project->num_investors && (new \DateTime('-1 week')) <  $current) {
+        if (!$log->unique_issue && $project->num_investors && (new \DateTime('-2 week')) <  $current) {
             $this->notice("Sending massive mailing for publish post", [['unique' => $log->unique_issue, 'num_investors' => $project->num_investors], $post, $project]);
             UsersSend::setURL(Config::getUrl($project->lang));
             UsersSend::toInvestors('update', $project, null, $post);
