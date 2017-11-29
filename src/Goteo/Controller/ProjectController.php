@@ -167,7 +167,6 @@ class ProjectController extends \Goteo\Core\Controller {
             ProjectDashboardController::createProjectSidebar($project, 'preview');
 
             $project->cat_names = Project\Category::getNames($project->id);
-            print_r($project->cat_names);die;
 
             if ($show == 'home') {
                 // para el widget embed
