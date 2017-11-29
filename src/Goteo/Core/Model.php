@@ -499,7 +499,9 @@ abstract class Model {
      *
      * @param  string $lang to obtain the data for (will return a fallback language if not exists)
      * @param  string $lang_model  if empty and $model_join_id is also empty the fallback lang will be used from the main model
+     *                             (this means the model MUST have the `lang` field)
      *                             if defined and $model_join_id is empty, will be used as the fallback language
+     *                             (usually, just pass Config::get('lang') for fallback)
      *                             if defined and $model_join_id is also defined,
      *                                will be used as the name of the table to JOIN to get the fallback language
      * @param  string $model_join_id the field in the table_lang to use with the JOIN table.id
