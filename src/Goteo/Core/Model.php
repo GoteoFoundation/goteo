@@ -505,13 +505,17 @@ abstract class Model {
      *                             if defined and $model_join_id is also defined,
      *                                will be used as the name of the table to JOIN to get the fallback language
      * @param  string $model_join_id the field in the table_lang to use with the JOIN table.id
+     * @param string $model must be a valid Goteo\Model\SomeModel defaults to calling model
      * @return array  [fields, joins]
      */
-    static public function getLangsSQLJoins($lang, $lang_model=null, $model_join_id=null) {
-        $fields = static::getLangFields();
+    static public function getLangsSQLJoins($lang, $lang_model=null, $model_join_id=null, $model = null) {
+        if($model) $fields = $model::getLangFields();
+        else       $fields = static::getLangFields();
         if(!$fields) throw new ModelException('This method requires self::getLangFields() to return the fields to translate');
 
-        $table = static::getTableStatic();
+        if($model) $table = $model::getTableStatic();
+        else       $table = static::getTableStatic();
+
         if(!$lang) {
             return ["`$table`.`".implode("`,\n`$table`.`", $fields).'`', ''];
         }

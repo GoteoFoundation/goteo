@@ -1103,6 +1103,7 @@ namespace Goteo\Model {
 
         /*
          *  Datos extra para un widget de proyectos
+         *  TODO: get rid of this
          */
         public static function getWidget(Project $project, $lang = null) {
             if(empty($lang)) $lang = Lang::current();
@@ -1139,7 +1140,7 @@ namespace Goteo\Model {
 
             // @TODO : hay que hacer campos calculados conn traducción para esto
             $Widget->cat_names = Project\Category::getNames($Widget->id, 2, $lang);
-            $Widget->rewards = Project\Reward::getWidget($Widget->id);
+            $Widget->rewards = Project\Reward::getWidget($Widget->id, $lang);
 
             if(!empty($project->mincost) && !empty($project->maxcost)) {
                 $Widget->mincost = $project->mincost;

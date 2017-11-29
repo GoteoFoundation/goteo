@@ -11,6 +11,7 @@
 namespace Goteo\Model\Project;
 
 use Goteo\Application\Exception\ModelNotFoundException;
+use Goteo\Application\Exception\ModelException;
 use Goteo\Model\Project;
 use Goteo\Model\Invest;
 use Goteo\Model\Icon;
@@ -58,7 +59,7 @@ class Reward extends \Goteo\Core\Model {
             $query = static::query("SELECT * FROM reward WHERE id = :id", array(':id' => $id));
             return $query->fetchObject(__CLASS__);
         } catch (\PDOException $e) {
-            throw new \Goteo\Core\Exception($e->getMessage());
+            throw new ModelException($e->getMessage());
         }
     }
 
@@ -133,7 +134,7 @@ class Reward extends \Goteo\Core\Model {
 
                 if($type == 'social'&&$item->category)
                 {
-                    $item->category=MainCategory::get($item->category);
+                    $item->category=MainCategory::get($item->category, $lang);
                     $item->category->image=new CategoryImage($item->category->image);
                 }
 
@@ -142,50 +143,41 @@ class Reward extends \Goteo\Core\Model {
             // print_r($array);
             return $array;
         } catch (\PDOException $e) {
-            throw new \Goteo\Core\Exception($e->getMessage());
+            throw new ModelException($e->getMessage());
         }
     }
 
     public static function getWidget($project, $lang = null) {
         if(empty($lang)) $lang = Lang::current();
-        $debug = false;
 
         try {
             $array = array();
 
-            $values = array(
-                ':project' => $project,
-                ':lang' => $lang
-            );
+            $values = array(':project' => $project);
 
             $icons = Icon::getList();
             // die(\trace($icons));
 
 
-            if(self::default_lang($lang)=='es') {
-                $different_select=" IFNULL(reward_lang.reward, reward.reward) as reward";
-                }
+            if($project instanceOf Project) {
+                $values[':project'] = $project->id;
+                list($fields, $joins) = self::getLangsSQLJoins($lang, $project->lang);
+            }
             else {
-                    $different_select=" IFNULL(reward_lang.reward, IFNULL(eng.reward, reward.reward)) as reward";
-                    $eng_join=" LEFT JOIN reward_lang as eng
-                                    ON  eng.id = reward.id
-                                    AND eng.project = :project
-                                    AND eng.lang = 'en'";
-                }
+                $values[':project'] = $project;
+                list($fields, $joins) = self::getLangsSQLJoins($lang, 'project', 'project');
+            }
+
 
             $sql = "SELECT
                         reward.id as id,
                         reward.project as project,
-                        $different_select,
+                        $fields,
                         reward.type as type,
                         reward.icon as icon,
                         reward.amount as amount
                     FROM    reward
-                    LEFT JOIN reward_lang
-                        ON  reward_lang.id = reward.id
-                        AND reward_lang.project = :project
-                        AND reward_lang.lang = :lang
-                    $eng_join
+                    $joins
                     WHERE   reward.project = :project
                     ";
 
@@ -196,13 +188,6 @@ class Reward extends \Goteo\Core\Model {
             // limite
             $sql .= " LIMIT 4";
 
-            if ($debug) {
-                echo \trace($values);
-                echo $sql;
-                die;
-            }
-
-
             $query = self::query($sql, $values);
             foreach ($query->fetchAll(\PDO::FETCH_CLASS, __CLASS__) as $item) {
 
@@ -212,7 +197,7 @@ class Reward extends \Goteo\Core\Model {
             }
             return $array;
         } catch (\PDOException $e) {
-            throw new \Goteo\Core\Exception($e->getMessage());
+            throw new ModelException($e->getMessage());
         }
     }
 
@@ -570,7 +555,7 @@ class Reward extends \Goteo\Core\Model {
             }
             return $array;
         } catch (\PDOException $e) {
-            throw new \Goteo\Core\Exception($e->getMessage());
+            throw new ModelException($e->getMessage());
         }
     }
 
