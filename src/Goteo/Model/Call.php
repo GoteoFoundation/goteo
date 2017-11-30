@@ -1042,8 +1042,8 @@ class Call extends \Goteo\Core\Model {
 
 
         if(is_array($status)) {
-            $status = join("','",$status); 
-            $sqlFilter .= " WHERE call.status IN ('$status')";            
+            $status = join("','",$status);
+            $sqlFilter .= " WHERE call.status IN ('$status')";
         } elseif (in_array($status, array(3, 4, 5))) {
             $sqlFilter .= " WHERE call.status = $status"; // solo cierto estado
         } elseif ($all) {
@@ -1599,7 +1599,7 @@ class Call extends \Goteo\Core\Model {
         $used = $query->fetchColumn();
 
         // actualizar el campo calculado
-        if ($used != $this->used) {
+        if ((int) $used != (int) $this->used) {
             static::query("UPDATE `call` SET used = :new WHERE id = :call", array(':new' => (int) $used, ':call'=>$this->id));
         }
 
@@ -2096,7 +2096,7 @@ class Call extends \Goteo\Core\Model {
     /**
      *
      * Return main sphere
-     * 
+     *
      */
 
     public function getMainSphere()
