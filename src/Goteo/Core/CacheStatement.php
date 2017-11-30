@@ -63,7 +63,7 @@ class CacheStatement extends \PDOStatement {
         $this->execute = parent::execute($input_parameters);
         $query_time = round(microtime(true) - $t, 4);
         self::$query_stats[$this->dbh->type][2] += $query_time;
-        if($this->debug) self::$queries[$this->dbh->type][0][] = array(self::$query_stats[$this->dbh->type][0], $this->queryString, $this->input_parameters, $query_time);
+        if($this->debug) self::$queries[$this->dbh->type][0][] = array(self::$query_stats[$this->dbh->type][0], $this->queryString, $input_parameters, $query_time);
         return $this->execute;
     }
 
@@ -80,7 +80,7 @@ class CacheStatement extends \PDOStatement {
                 $this->execute =  parent::execute($params);
                 $query_time = round(microtime(true) - $t, 4);
                 self::$query_stats[$this->dbh->type][2] += $query_time;
-                if($this->debug) self::$queries[$this->dbh->type][0][] = array(self::$query_stats[$this->dbh->type][0], $this->queryString, $this->input_parameters, $query_time);
+                if($this->debug) self::$queries[$this->dbh->type][0][] = array(self::$query_stats[$this->dbh->type][0], $this->queryString, $params, $query_time);
             }
             return $this->execute;
         } catch (\PDOException $e) {

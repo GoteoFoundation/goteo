@@ -115,48 +115,76 @@ $duration = microtime(true) - $this->starttime;
         <p>Total master queries:  <strong><?= $this->queries['total_master'] ?></strong> Time: <strong><?= round( 1000 * $this->queries['time_master']) ?> ms</strong></p>
         <p>Total replica queries: <strong><?= $this->queries['total_replica'] ?></strong> Time: <strong><?= round( 1000 * $this->queries['time_replica']) ?> ms</strong></p>
     </div>
+    <?php
+
+function print_cached_sql($sqls) {
+    $ret = '';
+    foreach($sqls as $sql) {
+        $ret .= "<li>
+        Num: <strong>{$sql[0]}</strong><br>
+        <span class=\"-pre\">{$sql[1]}</span><br>
+        <strong>" . print_r($sql[2], true) . "</strong>
+        </li>";
+    }
+    return $ret;
+}
+function print_sql($sqls) {
+    $ret = '';
+    $processed = [];
+    foreach($sqls as $sql) {
+        $query = trim($sql[1]);
+        if($processed[$query]) {
+            $processed[$query][1][] = $sql[2];
+            $processed[$query][2] += $sql[3];
+            $processed[$query][3]++;
+            continue;
+        }
+        $processed[$query] = [$sql[0], [$sql[2]], $sql[3], 1];
+    }
+    foreach($processed as $query => $sql) {
+        // $clas = 'pre';
+        $c1 = $c2 = '';
+        if(strpos($query, 'SELECT') === 0) $c1 = 'text-success';
+        elseif(strpos($query, 'UPDATE') === 0) $c1 = 'text-danger';
+        elseif(strpos($query, 'DELETE') === 0) $c1 = 'text-warning';
+        else $c1 .= 'text-info';
+        if($sql[3] > 1) $c2 = 'text-warning';
+        if($sql[3] > 10) $c2 = 'text-danger';
+        $ret .= "<li>
+        Num: <strong>{$sql[0]}</strong> Time: <strong>" . round( 1000 * $sql[2]) . " ms</strong> Repetitions: <strong class=\"$c2\">{$sql[3]}</strong><br>
+        <span class=\"code $c1\">{$query}</span><br>
+        <div class=\"pre\">";
+        foreach($sql[1] as $i => $s) {
+            $ret .= "Query $i:\t";
+            foreach($s as $k => $v) {
+                $ret .= "$k = <strong>$v</strong> ";
+            }
+            $ret .= "\n";
+        }
+        $ret .= "</div>
+        </li>";
+    }
+    return $ret;
+}
+    ?>
     <div class="queries_cached">
         <h2>Master queries</h2>
         <ul>
-        <?php foreach($this->queries['sql_master_cached'] as $sql): ?>
-            <li>
-            Num: <strong><?= $sql[0] ?></strong><br>
-            <span class="-pre"><?= $sql[1] ?></span><br>
-            <strong><?= print_r($sql[2], true) ?></strong>
-            </li>
-        <?php endforeach ?>
+        <?= print_cached_sql($this->queries['sql_master_cached']) ?>
         </ul>
         <h2>Replica queries</h2>
         <ul>
-        <?php foreach($this->queries['sql_replica_cached'] as $sql): ?>
-            <li>
-            Num: <strong><?= $sql[0] ?></strong><br>
-            <span class="-pre"><?= $sql[1] ?></span><br>
-            <strong><?= print_r($sql[2], true) ?></strong>
-            </li>
-        <?php endforeach ?>
+        <?= print_cached_sql($this->queries['sql_replica_cached']) ?>
         </ul>
     </div>
     <div class="queries_non_cached">
         <h2>Master queries</h2>
         <ul>
-        <?php foreach($this->queries['sql_master_non_cached'] as $sql): ?>
-            <li>
-            Num: <strong><?= $sql[0] ?></strong> Time: <strong><?= round( 1000 * $sql[3]) ?> ms</strong><br>
-            <span class="-pre"><?= $sql[1] ?></span><br>
-            <strong><?= print_r($sql[2], true) ?></strong>
-            </li>
-        <?php endforeach ?>
+        <?= print_sql($this->queries['sql_master_non_cached']) ?>
         </ul>
         <h2>Replica queries</h2>
         <ul>
-        <?php foreach($this->queries['sql_replica_non_cached'] as $sql): ?>
-            <li>
-            Num: <strong><?= $sql[0] ?></strong> Time: <strong><?= round( 1000 * $sql[3]) ?> ms</strong><br>
-            <span class="-pre"><?= $sql[1] ?></span><br>
-            <strong><?= print_r($sql[2], true) ?></strong>
-            </li>
-        <?php endforeach ?>
+        <?= print_sql($this->queries['sql_replica_non_cached']) ?>
         </ul>
     </div>
     <div class="queries_long">
