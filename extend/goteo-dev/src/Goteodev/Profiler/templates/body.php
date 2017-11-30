@@ -117,17 +117,6 @@ $duration = microtime(true) - $this->starttime;
     </div>
     <?php
 
-function print_cached_sql($sqls) {
-    $ret = '';
-    foreach($sqls as $sql) {
-        $ret .= "<li>
-        Num: <strong>{$sql[0]}</strong><br>
-        <span class=\"-pre\">{$sql[1]}</span><br>
-        <strong>" . print_r($sql[2], true) . "</strong>
-        </li>";
-    }
-    return $ret;
-}
 function print_sql($sqls) {
     $ret = '';
     $processed = [];
@@ -141,6 +130,10 @@ function print_sql($sqls) {
         }
         $processed[$query] = [$sql[0], [$sql[2]], $sql[3], 1];
     }
+    uasort($processed, function($a, $b) {
+        if( $a[2] === $b[2]) return 0;
+        return ($a[2] > $b[2]) ? -1 : 1;
+    });
     foreach($processed as $query => $sql) {
         // $clas = 'pre';
         $c1 = $c2 = '';
@@ -154,12 +147,23 @@ function print_sql($sqls) {
         Num: <strong>{$sql[0]}</strong> Time: <strong>" . round( 1000 * $sql[2]) . " ms</strong> Repetitions: <strong class=\"$c2\">{$sql[3]}</strong><br>
         <span class=\"code $c1\">{$query}</span><br>
         <div class=\"pre\">";
+
+        $values = [];
         foreach($sql[1] as $i => $s) {
-            $ret .= "Query $i:\t";
+            $vals = [];
             foreach($s as $k => $v) {
-                $ret .= "$k = <strong>$v</strong> ";
+                $vals[] = "$k => <strong>$v</strong>";
             }
-            $ret .= "\n";
+            $val = '[' . implode(', ', $vals) . ']';
+
+            if(isset($values[$val])) {
+                $values[$val]++;
+                continue;
+            }
+            $values[$val] = 1;
+        }
+        foreach($values as $val => $n) {
+            $ret .= "<strong>$n</strong> times:\t$val\n";
         }
         $ret .= "</div>
         </li>";
@@ -170,11 +174,11 @@ function print_sql($sqls) {
     <div class="queries_cached">
         <h2>Master queries</h2>
         <ul>
-        <?= print_cached_sql($this->queries['sql_master_cached']) ?>
+        <?= print_sql($this->queries['sql_master_cached']) ?>
         </ul>
         <h2>Replica queries</h2>
         <ul>
-        <?= print_cached_sql($this->queries['sql_replica_cached']) ?>
+        <?= print_sql($this->queries['sql_replica_cached']) ?>
         </ul>
     </div>
     <div class="queries_non_cached">

@@ -27,6 +27,7 @@ class CacheStatement extends \PDOStatement {
     static $query_stats = array('replica' => array(0, 0, 0), 'master' => array(0, 0, 0)); // array(num-non-cached, num-cached, total-time-non-cached )
     static $queries = array('replica' => array(array(), array()), 'master' => array(array(), array()));
     static $queries_time = 0;
+    static $in_memory_cache = [];
     public $debug = false; //si debug es 1, se recojeran en el array las queries no cacheadas
                            //si debug es 2, se recojeran todas las queries
 
@@ -46,15 +47,13 @@ class CacheStatement extends \PDOStatement {
         $query = $this->queryString;
 
         // echo '['.$this->dbh->type.':'.intval($this->is_select).']';
-        if($this->cache && $this->cache_active) {
-            //Solo aplicamos el cache en sentencias SELECT
-            if($this->is_select) {
-                $this->cache_key        = $query . serialize($input_parameters);
-                $this->input_parameters = $input_parameters;
-                //tiempo de cache
-                //salimos, la ejecución de execute se hará cuando se pida el valor
-                return true;
-            }
+        // Apply cache in SELECT sql
+        if($this->is_select) {
+            $this->cache_key        = $query . serialize($input_parameters);
+            $this->input_parameters = $input_parameters;
+            //tiempo de cache
+            //salimos, la ejecución de execute se hará cuando se pida el valor
+            return true;
         }
         //incrementar queries no cacheadas
         self::$query_stats[$this->dbh->type][0]++;
@@ -103,9 +102,18 @@ class CacheStatement extends \PDOStatement {
      * Ejecución del método deseado con cache
      */
     public function _cachedMethod($method, $args=null) {
-        if($this->cache && $this->is_select && $this->cache_time && $this->cache_active) {
-            $key = $this->cache->getKey($this->cache_key . serialize($args), $method);
-            $value = $this->cache->retrieve($key);
+        if($this->is_select) {
+            $value = false;
+            if($this->cache && $this->cache_time && $this->cache_active) {
+                $key = $this->cache->getKey($this->cache_key . serialize($args), $method);
+                $value = $this->cache->retrieve($key);
+            } else {
+                $key = $this->cache_key . serialize($args) .'-'. $method;
+                // In memory cache
+                if(array_key_exists($key, self::$in_memory_cache)) {
+                    $value = self::$in_memory_cache[$key];
+                }
+            }
 
             if($value !== false) {
                 //incrementar queries cacheadas
@@ -124,9 +132,14 @@ class CacheStatement extends \PDOStatement {
         //obtener el valor
         $value = call_user_func_array(array($this, "parent::$method"), $args);
 
-        if($this->cache && $this->is_select && $this->cache_time && $this->cache_active) {
-            //guardar en cache
-            $this->cache->store($key, $value, $this->cache_time);
+        if($this->is_select) {
+            if($this->cache && $this->cache_time && $this->cache_active) {
+                //guardar en cache
+                $this->cache->store($key, $value, $this->cache_time);
+            } else {
+                // In-memory cache
+                self::$in_memory_cache[$key] = $value;
+            }
         }
 
         return $value;
