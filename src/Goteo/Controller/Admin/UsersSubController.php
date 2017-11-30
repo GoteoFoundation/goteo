@@ -277,6 +277,7 @@ class UsersSubController extends AbstractSubController {
                 'location'=> UserLocation::get($user),
                 'poolAmount' => $user->getPool()->getAmount(),
                 'nodes' => $nodes,
+                'all_nodes' => $all_nodes,
                 'node_roles' => $user->getAllNodeRolesRaw(),
                 'new_roles' => User::getRolesList($this->user->getNodeRole($this->node)),
                 'langs' => Lang::listAll('name', false)

@@ -398,7 +398,7 @@ div {
     font-weight: bold;
     text-transform: uppercase;
     margin: 0;
-    margin-top: 55px !important;
+    margin-top: 20px !important;
     color: $primary-color !important;
     div.label-call {
       line-height: 1.1;
@@ -419,6 +419,7 @@ div {
     margin-right: 0px;
   }
 }
+
 
 /* Menu */
 
@@ -615,6 +616,7 @@ div {
   }
   &.social-commitment {
     margin-top: 10px;
+    padding-bottom: 20px;
     img.social-img {
       margin: 0 auto;
     }
@@ -1288,6 +1290,8 @@ div {
   h2.pink-title {
     font-size: 2em;
   }
+
+
 }
 
 @media (max-width: $breakpoint-xs - 1) {

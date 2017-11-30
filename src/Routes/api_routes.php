@@ -27,6 +27,17 @@ $api->add('api-user-check', new Route(
         )
 ));
 
+// User images upload (POST method only)
+$api->add('api-user-avatar-upload', new Route(
+    '/users/{id}/avatar',
+    array('_controller' => 'Goteo\Controller\Api\UsersApiController::userUploadAvatarAction'),
+    array(), // requirements
+    array(), // options
+    '', // host
+    array(), // schemes
+    array('POST') // methods
+));
+
 // Projects list
 $api->add('api-projects', new Route(
     '/projects',
@@ -183,7 +194,7 @@ $api->add('api-messages-project', new Route(
         )
 ));
 // User Messages list
-$api->add('api-messages-project', new Route(
+$api->add('api-messages-project-user', new Route(
     '/projects/{pid}/messages/{uid}',
     array('_controller' => 'Goteo\Controller\Api\MessagesApiController::userMessagesAction',
         )
@@ -204,5 +215,16 @@ $api->add('api-stats-investors-required', new Route(
     array('_controller' => 'Goteo\Controller\Api\StatsApiController::investorsRequiredAction')
 ));
 
+// Matcher routes
+$api->add('api-matcher-list', new Route(
+    '/matchers',
+    array('_controller' => 'Goteo\Controller\Api\MatchersApiController::matchersAction')
+));
+
+// Matcher detail
+$api->add('api-matcher-item', new Route(
+    '/matchers/{mid}',
+    array('_controller' => 'Goteo\Controller\Api\MatchersApiController::matcherAction')
+));
 
 return $api;

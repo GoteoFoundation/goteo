@@ -533,10 +533,10 @@ namespace Goteo\Model {
          * @param string $value  nombre del archivo
          * @return bool si ok
          */
-        public static function setPdf($id, $pdf) {
+        public function setPdf($name) {
 
-            $sql = "UPDATE contract SET pdf = :pdf WHERE contract = :id";
-            $values = array(':id' => $id, ':pdf'=>$pdf);
+            $sql = "UPDATE contract SET pdf = :pdf WHERE project = :id";
+            $values = array(':id' => $this->project, ':pdf' => $name);
 
             return (static::query($sql, $values)) ? true : false;
         }

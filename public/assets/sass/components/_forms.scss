@@ -45,7 +45,7 @@
       .bootstrap-tagsinput {
         width: 100%;
       }
-      .form-control:focus, .CodeMirror-focused {
+      .form-control:focus, .CodeMirror-focused, .summernote.focused .note-editor {
         border-color: $color-cyan;
         outline: 0;
         @include box-shadow(inset 0 1px 1px rgba(0,0,0,.075), 0 0 8px rgba(102, 175, 233, .6));
@@ -72,7 +72,7 @@
         .form-control, .CodeMirror {
             border: 1px solid darken($color-red, 10%);
         }
-        .form-control:focus, .CodeMirror-focused {
+        .form-control:focus, .CodeMirror-focused, .summernote.focused .note-editor {
           border-color: darken($color-red, 10%);
           outline: 0;
           @include box-shadow(inset 0 1px 1px rgba(0,0,0,.075), 0 0 8px rgba(200, 0, 0, .6));
@@ -169,8 +169,35 @@
     }
   }
 
-  .map {
-    height: 450px;
+  .modal-map {
+    .map {
+      height: 450px;
+    }
+    .input-block {
+      .form-group {
+        display: inline-block;
+        width: 100%;
+      }
+      .form-group-radius {
+        display: none;
+      }
+      &.show-radius {
+        .form-group-search {
+          width: 80%;
+          width: calc(100% - 115px);
+          margin-right: 10px;
+        }
+        .form-group-radius {
+          display: inline-block;
+          width: 100px;
+          .form-control {
+            display: inline-block;
+            width: 60px;
+          }
+        }
+      }
+    }
+
   }
   .location_desc {
     font-style: italic;
@@ -276,6 +303,9 @@
 
   // With this class, help text are hidden are shown on focus
   &.hide-help {
+    .help-text .fa-clipboard {
+        cursor: pointer;
+    }
     .help-text[data-desc] {
       height: $font-size + 4;
       overflow: hidden;
@@ -286,7 +316,7 @@
         font-weight: bold;
       }
     }
-    .form-control:focus, .CodeMirror-focused, .CodeMirror-focused ~ .editor-statusbar {
+    .form-control:focus, .CodeMirror-focused, .CodeMirror-focused ~ .editor-statusbar, .summernote.focused .note-editor {
       + .help-text {
           height: auto;
       }

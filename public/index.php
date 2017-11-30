@@ -28,7 +28,9 @@ error_reporting(E_ALL & ~E_NOTICE & ~E_USER_DEPRECATED); // for symfony user dep
 set_error_handler('Goteo\Application\App::errorHandler');
 
 // Config file...
-Config::load();
+$config = getenv('GOTEO_CONFIG_FILE');
+if(!is_file($config)) $config = __DIR__ . '/../config/settings.yml';
+Config::load($config);
 
 // Error traces
 if(Config::get('debug')) {

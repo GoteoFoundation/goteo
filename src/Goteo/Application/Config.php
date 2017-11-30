@@ -21,17 +21,18 @@ use Symfony\Component\Routing\Route;
 
 class Config {
     // Initial translation groups (groupped in yml files into Resources/translations/)
-    static public $trans_groups = ['home', 'public_profile', 'project', 'labels', 'form', 'profile', 'personal', 'overview', 'costs', 'rewards', 'supports', 'preview', 'dashboard', 'register', 'login', 'discover', 'community', 'general', 'blog', 'faq', 'contact', 'widget', 'invest', 'types', 'banners', 'footer', 'social', 'review', 'translate', 'menu', 'feed', 'mailer', 'bluead', 'error', 'wof', 'node_public', 'contract', 'donor', 'text_groups', 'template', 'admin', 'translator', 'metas', 'location', 'url', 'pool', 'dates'];
+    static public $trans_groups = ['home', 'public_profile', 'project', 'labels', 'form', 'profile', 'personal', 'overview', 'costs', 'rewards', 'supports', 'preview', 'dashboard', 'register', 'login', 'discover', 'community', 'general', 'blog', 'faq', 'contact', 'widget', 'invest', 'matcher', 'types', 'banners', 'footer', 'social', 'review', 'translate', 'menu', 'feed', 'mailer', 'bluead', 'error', 'wof', 'node_public', 'contract', 'donor', 'text_groups', 'template', 'admin', 'translator', 'metas', 'location', 'url', 'pool', 'dates'];
 	static protected $loader;
 	static protected $config;
 
 	/**
 	 * Loads all configurations
 	 */
-	static public function load($config_file = 'settings.yml') {
+	static public function load($config_file) {
 		try {
+            if(!is_file($config_file)) $config_file = __DIR__ . '/../../../config/' . $config_file;
 			// load the main config
-			self::$config = self::loadFromYaml(__DIR__ . '/../../../config/' . $config_file);
+			self::$config = self::loadFromYaml($config_file);
 			//Timezone
 			if (self::get('timezone')) {
 				date_default_timezone_set(self::get('timezone'));
@@ -69,7 +70,7 @@ class Config {
 			}
 
             \Goteo\Application\View::setTheme('responsive');
-			die(\Goteo\Application\View::render('errors/config', ['msg' => $e->getMessage(), 'info' => $info, 'file' => $file, 'code' => $code], $code));
+			die(\Goteo\Application\View::render('errors/config', ['msg' => $e->getMessage(), 'info' => $info, 'file' => $config_file, 'code' => $code], false));
 			return;
 		}
 	}
@@ -198,6 +199,12 @@ class Config {
 		// Set routes into service container
 		App::getServiceContainer()->setParameter('routes', App::getRoutes());
 
+        // TODO: add a generic matcher processor that uses Symfony Expression Language
+        // http://symfony.com/doc/current/components/expression_language/syntax.html
+        //
+        // App::getService('app.matcher.finder')->addProcessor('Goteo\Util\MatcherProcessor\ExpressionLanguageProcessor');
+        App::getService('app.matcher.finder')->addProcessor('Goteo\Util\MatcherProcessor\DuplicateInvestMatcherProcessor');
+
 		//Cache dir in libs
 		\Goteo\Library\Cacher::setCacheDir(GOTEO_CACHE_PATH);
 
@@ -219,13 +226,6 @@ class Config {
 
 		// Default theme in templates/default
 		View::setTheme('default');
-
-		// views function registering
-		View::getEngine()->loadExtension(new \Goteo\Util\Foil\Extension\GoteoCore(), [], true);
-		View::getEngine()->loadExtension(new \Goteo\Util\Foil\Extension\TextUtils(), [], true);
-		View::getEngine()->loadExtension(new \Goteo\Util\Foil\Extension\ModelsData(), [], true);
-        View::getEngine()->loadExtension(new \Goteo\Util\Foil\Extension\LangUtils(), [], true);
-        View::getEngine()->loadExtension(new \Goteo\Util\Foil\Extension\Forms(), [], true);
 
 		// Some defaults
 		View::getEngine()->useData([

@@ -268,6 +268,7 @@ namespace Goteo\Model {
                 }
                 return true;
             }
+
             // is superadmin in the project node
             if($user->hasRoleInNode($this->node, ['manager', 'superadmin', 'root'])) return true;
             // is a consultant
@@ -450,26 +451,91 @@ namespace Goteo\Model {
 
             try {
                 // metemos los datos del proyecto en la instancia
-                $sql = "SELECT project.*,
-                                project.id REGEXP '[0-9a-f]{32}' as draft,
-                                IFNULL(project.updated, project.created) as updated,
-                                node.name as node_name,
-                                node.url as node_url,
-                                node.label as node_label,
-                                node.active as node_active,
-                                project_conf.*,
-                                user.name as user_name,
-                                user.email as user_email,
-                                user.avatar as user_avatar,
-                                IFNULL(user_lang.about, user.about) as user_about,
-                                user.location as user_location,
-                                user.id as user_id,
-                                user.twitter as user_twitter,
-                                user.linkedin as user_linkedin,
-                                user.identica as user_identica,
-                                user.google as user_google,
-                                user.facebook as user_facebook
+                list($fields, $joins) = self::getLangsSQLJoins($lang);
+
+                $sql = "SELECT
+                    project.id,
+                    project.name,
+                    $fields,
+                    project.lang,
+                    project.currency,
+                    project.currency_rate,
+                    project.status,
+                    project.translate,
+                    project.progress,
+                    project.owner,
+                    project.node,
+                    project.amount,
+                    project.mincost,
+                    project.maxcost,
+                    project.days,
+                    project.num_investors,
+                    project.popularity,
+                    project.num_messengers,
+                    project.num_posts,
+                    project.created,
+                    project.updated,
+                    project.published,
+                    project.success,
+                    project.closed,
+                    project.passed,
+                    project.contract_name,
+                    project.contract_nif,
+                    project.phone,
+                    project.contract_email,
+                    project.address,
+                    project.zipcode,
+                    project.location,
+                    project.country,
+                    project.image,
+                    project.video_usubs,
+                    project.category,
+                    project.media_usubs,
+                    project.currently,
+                    project.project_location,
+                    project.scope,
+                    project.resource,
+                    project.comment,
+                    project.contract_entity,
+                    project.entity_office,
+                    project.entity_name,
+                    project.entity_cif,
+                    project.post_address,
+                    project.secondary_address,
+                    project.post_zipcode,
+                    project.post_location,
+                    project.post_country,
+                    project.amount_users,
+                    project.amount_call,
+                    project.maxproj,
+                    project.analytics_id,
+                    project.facebook_pixel,
+                    project.social_commitment,
+                    project.execution_plan,
+                    project.execution_plan_url,
+                    project.sustainability_model,
+                    project.sustainability_model_url,
+                    project.id REGEXP '[0-9a-f]{32}' as draft,
+                    IFNULL(project.updated, project.created) as updated,
+                    node.name as node_name,
+                    node.url as node_url,
+                    node.label as node_label,
+                    node.active as node_active,
+                    node.owner_background as node_owner_background,
+                    project_conf.*,
+                    user.name as user_name,
+                    user.email as user_email,
+                    user.avatar as user_avatar,
+                    IFNULL(user_lang.about, user.about) as user_about,
+                    user.location as user_location,
+                    user.id as user_id,
+                    user.twitter as user_twitter,
+                    user.linkedin as user_linkedin,
+                    user.identica as user_identica,
+                    user.google as user_google,
+                    user.facebook as user_facebook
                 FROM project
+                $joins
                 LEFT JOIN project_conf
                     ON project_conf.project = project.id
                 LEFT JOIN node
@@ -483,7 +549,8 @@ namespace Goteo\Model {
                 ";
 
                 $values = array(':id' => $id,':lang' => $lang);
-                // echo \sqldbg($sql, $values);
+                // if($lang) die(\sqldbg($sql, $values));
+
                 $query = self::query($sql, $values);
                 $project = $query->fetchObject(__CLASS__);
 
@@ -491,45 +558,12 @@ namespace Goteo\Model {
                     throw new Exception\ModelNotFoundException(Text::get('fatal-error-project'));
                 }
 
-                // si nos estan pidiendo el idioma original no traducimos nada, damos lo que sacamos de
-                if(!empty($lang) && $lang!=$project->lang)
-                {
-                    //Obtenemos el idioma de soporte segun si está traducido  a ese idioma o no
-                    $trans_lang=self::default_lang_by_id($id, 'project_lang', $lang);
-
-                    $sql = "
-                        SELECT
-                            IFNULL(project_lang.description, project.description) as description,
-                            IFNULL(project_lang.motivation, project.motivation) as motivation,
-                            IFNULL(project_lang.video, project.video) as video,
-                            IFNULL(project_lang.about, project.about) as about,
-                            IFNULL(project_lang.goal, project.goal) as goal,
-                            IFNULL(project_lang.related, project.related) as related,
-                            IFNULL(project_lang.reward, project.reward) as reward,
-                            IFNULL(project_lang.keywords, project.keywords) as keywords,
-                            IFNULL(project_lang.media, project.media) as media,
-                            IFNULL(project_lang.subtitle, project.subtitle) as subtitle,
-                            IFNULL(project_lang.social_commitment_description, project.social_commitment_description) as social_commitment_description
-                        FROM project
-                        LEFT JOIN project_lang
-                            ON  project_lang.id = project.id
-                            AND project_lang.lang = :lang
-                        WHERE project.id = :id
-                        ";
-                    // no veo que haga falta cambiar el idioma a la instancia del proyecto
-                    //, IFNULL(project_lang.lang, project.lang) as lang
-                    $query = self::query($sql, array(':id' => $id, ':lang' => $trans_lang));
-
-                    foreach ($query->fetch(\PDO::FETCH_ASSOC) as $field=>$value) {
-                        $project->$field = $value;
-                    }
-                }
-
                 // datos del nodo
                 $project->nodeData = new Node;
                 $project->nodeData->id = $project->node;
                 $project->nodeData->name = $project->node_name;
                 $project->nodeData->url = '/channel/' . $project->node;
+                $project->nodeData->owner_background = $project->node_owner_background;
                 if($project->node_url) $project->nodeData->url = $project->node_url;
                 $project->nodeData->active = $project->node_active;
 
@@ -574,27 +608,15 @@ namespace Goteo\Model {
                     $project->social_commitmentData->image = Image::get($project->social_commitmentData->image);
                 }
 
-
-                // @FIXME #42 : para contenidos adicionales (cost, reward, support) se está suponiendo erroneamente que el contenido original es español
-                // no se está teniendo en cuenta el idioma original del proyecto
-                // @TODO :
-                //        o pasamos el idioma original a estos getAll y modificamos el código
-                //        o modificamos registro _lang para idioma original  al modificarse estos contenidos (no arregla casos ya existentes)
-
-                // si se está solicitando el mismo idioma del proyecto, queremos que estos getAll nos den el contenido original
-                // para eso hacemos $lang = null ya que luego ya no se usa mas esta variable
-                if ($lang == $project->lang) {
-                    $lang = null;
-                }
-
                 // costes y los sumammos
                 $project->costs = Project\Cost::getAll($id, $lang);
                 $project->minmax();
 
+                // compatibility initialization
                 // retornos colectivos
-                $project->social_rewards = Project\Reward::getAll($id, 'social', $lang);
+                $project->getSocialRewards($lang);
                 // retornos individuales
-                $project->individual_rewards = Project\Reward::getAll($id, 'individual', $lang);
+                $project->getIndividualRewards($lang);
 
                 // colaboraciones
                 $project->supports = Project\Support::getAll($id, $lang);
@@ -614,7 +636,7 @@ namespace Goteo\Model {
                 //TODO: to be removed, very ineficient
                 $project->investors = Invest::investors($id, false, false, 0, null);
 
-                if($project->status >= 3 && empty($project->amount)) {
+                if($project->isApproved() && empty($project->amount)) {
                     $project->amount = Invest::invested($id);
                 }
                 $project->invested = $project->amount; // compatibilidad, ->invested no debe usarse
@@ -623,19 +645,19 @@ namespace Goteo\Model {
                 // campos calculados para los números del menu
 
                 //consultamos y actualizamos el numero de inversores
-                if($project->status >= 3 && $project->amount > 0 && !isset($project->num_investors)) {
+                if($project->isApproved() && $project->amount > 0 && empty($project->num_investors)) {
                     $project->num_investors = Invest::numInvestors($id);
                 }
 
                 //mensajes y mensajeros
                 // solo cargamos mensajes en la vista mensajes
-                if ($project->status >= 3 && !isset($project->num_messengers)) {
-                    $project->num_messengers = Message::numMessengers($id);
+                if ($project->isApproved() && empty($project->num_messengers)) {
+                    $project->num_messengers = Message::numMessengers($project);
                 }
 
                 // novedades
                 // solo cargamos blog en la vista novedades
-                if ($project->status >= 3 && !isset($project->num_posts)) {
+                if ($project->isApproved() && empty($project->num_posts)) {
                     $project->num_posts =  Blog\Post::numPosts($id);
                 }
 
@@ -667,7 +689,7 @@ namespace Goteo\Model {
         }
 
         /**
-         * Transitional function. Util if Call plugin is active
+         * Gets the call instance if exists
          * @return [type] [description]
          */
         public function getCall() {
@@ -693,6 +715,20 @@ namespace Goteo\Model {
             }
             return $this->callInstance;
         }
+
+        /**
+         * Gets an array of Matcher instances if exists in any of them
+         * @param $status to boolean false to return all status
+         * @return [type] [description]
+         */
+        public function getMatchers($status = false) {
+            if(!$this->matcherInstances) $this->matcherInstances = [];
+            if(is_array($status)) $key = serialize($status);
+            if($this->matcherInstances[$key]) return $this->matcherInstances[$key];
+            $this->matcherInstances[$key] = Matcher::getFromProject($this->id, $status);
+            return $this->matcherInstances[$key];
+        }
+
 
         // returns the current user
         public function getOwner() {
@@ -783,7 +819,7 @@ namespace Goteo\Model {
             switch ($this->status) {
                 case self::STATUS_IN_CAMPAIGN:
                     if ($this->days > 2) {
-                        $days_left = number_format($this->days);
+                        $days_left = (int) $this->days;
                     } else {
 
                         $part = strtotime($this->published);
@@ -918,6 +954,36 @@ namespace Goteo\Model {
             return $this->status == self::STATUS_FULFILLED;
         }
 
+
+        /*
+         * Checks if the project has reached the minimum amount (without status checking)
+         * @return: boolean
+         */
+        public function isSuccessful() {
+            $sql = "SELECT
+                            id,
+                            (SELECT  SUM(amount)
+                            FROM    cost
+                            WHERE   project = project.id
+                            AND     required = 1
+                            ) as `mincost`,
+                            (SELECT  SUM(amount)
+                            FROM    invest
+                            WHERE   project = project.id
+                            AND     invest.status IN ('0', '1', '3', '4')
+                            ) as `getamount`
+                    FROM project
+                    WHERE project.id = :id
+                    HAVING getamount >= mincost
+                    LIMIT 1
+                    ";
+
+            $values = [':id' => $this->id];
+            $query = self::query($sql, $values);
+            return ($query->fetchColumn() == $this->id);
+        }
+
+
         /*
          *  Cargamos los datos mínimos de un proyecto: id, name, owner, comment, lang, status, user
          */
@@ -1039,6 +1105,7 @@ namespace Goteo\Model {
 
         /*
          *  Datos extra para un widget de proyectos
+         *  TODO: get rid of this
          */
         public static function getWidget(Project $project, $lang = null) {
             if(empty($lang)) $lang = Lang::current();
@@ -1075,7 +1142,7 @@ namespace Goteo\Model {
 
             // @TODO : hay que hacer campos calculados conn traducción para esto
             $Widget->cat_names = Project\Category::getNames($Widget->id, 2, $lang);
-            $Widget->rewards = Project\Reward::getWidget($Widget->id);
+            $Widget->rewards = Project\Reward::getWidget($Widget->id, $lang);
 
             if(!empty($project->mincost) && !empty($project->maxcost)) {
                 $Widget->mincost = $project->mincost;
@@ -2246,7 +2313,7 @@ namespace Goteo\Model {
                     'overview' => [], 'images' => [], 'costs' => [], 'rewards' => [], 'campaign' => []];
 
             // 1. profile
-            $profile = [ 'name', 'location', 'gender', 'about' ];
+            $profile = [ 'name', 'gender', 'about' ];
             $total = count($profile);
             $count = 0;
             $owner = $this->getOwner();
@@ -3757,34 +3824,6 @@ namespace Goteo\Model {
                 }
             }
             return $costs;
-        }
-
-
-        /*
-         * Para saber si ha conseguido el mínimo
-         * @return: boolean
-         */
-        public static function isSuccessful($id) {
-            $sql = "SELECT
-                            id,
-                            (SELECT  SUM(amount)
-                            FROM    cost
-                            WHERE   project = project.id
-                            AND     required = 1
-                            ) as `mincost`,
-                            (SELECT  SUM(amount)
-                            FROM    invest
-                            WHERE   project = project.id
-                            AND     invest.status IN ('0', '1', '3', '4')
-                            ) as `getamount`
-                    FROM project
-                    WHERE project.id = ?
-                    HAVING getamount >= mincost
-                    LIMIT 1
-                    ";
-
-            $query = self::query($sql, array($id));
-            return ($query->fetchColumn() == $id);
         }
 
         /*

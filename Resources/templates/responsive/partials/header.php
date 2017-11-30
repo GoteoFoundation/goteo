@@ -2,7 +2,7 @@
   <div class="container-fluid">
     <div class="navbar-header">
       <?php $this->section('header-navbar-brand') ?>
-        <a class="navbar-brand" href="<?= SITE_URL ?>"><img src="<?= $this->asset('img/goteo-white.svg') ?>" class="logo" alt="Goteo"></a>
+        <a class="navbar-brand" href="<?= $this->get_config('url.main') ?>"><img src="<?= $this->asset('img/goteo-white.svg') ?>" class="logo" alt="Goteo"></a>
       <?php $this->stop(); ?>
     </div><!--/.navbar-header -->
 

@@ -290,7 +290,7 @@ final class AppEvents
     const MESSAGE_CREATED = 'message.created';
 
     /**
-     * The message.created event is thrown when a new message/comments is updated
+     * The message.updated event is thrown when a new message/comments is updated
      *
      * The event listener receives an
      * Goteo\Application\Event\FilterMessageEvent instance.
@@ -298,6 +298,16 @@ final class AppEvents
      * @var string
      */
     const MESSAGE_UPDATED = 'message.updated';
+
+    /**
+     * The matcher.project event is thrown when a project is add to a Matcher or its status changes
+     *
+     * The event listener receives an
+     * Goteo\Application\Event\FilterMatcherProjectEvent instance.
+     *
+     * @var string
+     */
+    const MATCHER_PROJECT = 'matcher.project';
 
 
 }

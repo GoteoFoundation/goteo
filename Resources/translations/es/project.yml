@@ -7,9 +7,9 @@ project-call-got: 'El proyecto ya ha conseguido <strong>%s</strong> de <strong>%
 project-chart-amount-end-round: 'Fin Ronda'
 project-chart-amount-ideal: Ideal
 project-chart-amount-reached: Acumulado
-project-chart-costs-reset: Back
+project-chart-costs-reset: 'Volver'
 project-collaborations-available: 'colaboraciones disponibles'
-project-collaborations-number: colaboradores
+project-collaborations-number: 'colaboradores'
 project-collaborations-supertitle: 'Necesidades no monetarias'
 project-collaborations-title: 'Se busca'
 project-comment-start-sesion: 'Inicia sesión'
@@ -110,22 +110,8 @@ project-about-title: 'Sobre este proyecto'
 project-rewards-side-title: 'Recompensas'
 project-general-information: 'Información general'
 project-go-up: 'volver arriba'
-project-collaborations-number: 'colaboradores'
 project-obtained: 'Obtenido'
-project-collaborations-available: 'colaboraciones disponibles'
-project-invest: 'Aportación'
 
-project-invest-msg: 'Mensaje de apoyo:'
-project-hide-needs: 'Ocultar listado de necesidades'
-project-show-needs: 'Mostrar listado de necesidades'
-project-hide-donors: 'Ocultar cofinanciadores'
-project-show-donors: 'Mostrar cofinanciadores'
-project-related: 'Proyectos relacionados'
-project-regular-support: 'Cofinanciar'
-project-chart-costs-reset: 'Volver'
-project-chart-amount-reached: 'Acumulado'
-project-chart-amount-ideal: 'Ideal'
-project-chart-amount-end-round: 'Fin Ronda'
 project-costs-total: 'Total'
 
 

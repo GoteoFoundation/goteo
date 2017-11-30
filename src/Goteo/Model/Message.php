@@ -18,6 +18,7 @@ use Goteo\Model\Project;
 use Goteo\Application\Lang;
 use Goteo\Application\Config;
 use Goteo\Application\Exception\ModelException;
+use Goteo\Application\Exception\ModelNotFoundException;
 
 class Message extends \Goteo\Core\Model {
 
@@ -577,29 +578,28 @@ class Message extends \Goteo\Core\Model {
      * Numero de usuarios mensajeros de un proyecto
      */
     public static function numMessengers ($project) {
-
-        $debug = false;
-
-        $values = array(':project' => $project);
+        try {
+            if( ! $project instanceOf Project ) $project = Project::getMini($project);
+        } catch(ModelNotFoundException $e) {
+            return 0;
+        }
+        $values = array(':project' => $project->id, ':user' => $project->getOwner()->id);
 
         $sql = "SELECT  COUNT(*) as messengers, project.num_messengers as num, project.num_investors as pop
             FROM    message
             INNER JOIN project
                 ON project.id = message.project
             WHERE   message.project = :project
+            AND message.user != :user
             ";
 
-        if ($debug) {
-            echo \trace($values);
-            echo $sql;
-            die;
-        }
+        // die(\sqldbg($sql, $values));
 
         $query = static::query($sql, $values);
         if($got = $query->fetchObject()) {
             // si ha cambiado, actualiza el numero de inversores en proyecto
             if ($got->messengers != $got->num) {
-                static::query("UPDATE project SET num_messengers = :num, popularity = :pop WHERE id = :project", array(':num' => (int) $got->messengers, 'pop' => ( $got->messengers + $got->pop), ':project' => $project));
+                static::query("UPDATE project SET num_messengers = :num, popularity = :pop WHERE id = :project", array(':num' => (int) $got->messengers, 'pop' => ( $got->messengers + $got->pop), ':project' => $project->id));
             }
         }
 

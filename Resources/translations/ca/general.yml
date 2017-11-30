@@ -9,8 +9,8 @@ calendar-events-category: 'Events'
 calendar-home-hour: a
 calendar-home-title: 'Proper event'
 calendar-net-category: 'Xarxa i política'
-calendar-projects-category: Proyectos
-calendar-share: Compartir
+calendar-projects-category: 'Projectes'
+calendar-share: 'Comparteix'
 calendar-workshops-category: Talleres
 couldn: 'No s''ha pogut'
 error-contact-email-invalid: 'El correu electrònic que has escrit no és vàlid'
@@ -49,12 +49,12 @@ guide-project-invests: 'Des d''aquest apartat podràs gestionar els teus cofinan
 
 header-about-side: 'Allò que ens mou'
 home-posts-header: Novetats
-horizontal-project-investors: cofinanciadores
-horizontal-project-percent: financiado
-horizontal-project-reached: conseguido
+horizontal-project-investors: 'cofinançadors'
+horizontal-project-percent: 'finançat'
+horizontal-project-reached: 'aconseguit'
 invest-individual-header: 'Pots renunciar a rebre recompenses per la teva aportació, o seleccionar les que igualin o estiguin per sota de l''import que hagis introduït.'
-login-register-conditions: 'En registrar-te, confirmes la teva acceptació dels nostres <a href="/legal/terms">termes d''ús</a>, <a href="/legal/privacy">política de privacitat</a> i <a href="legal/cookies">política de cookies</a>.'
-login-accept-conditions: 'Accepto els <a href="/legal/terms">termes d''ús</a>, <a href="/legal/privacy">política de privacitat</a> i <a href="legal/cookies">política de cookies</a>.'
+login-register-conditions: 'En registrar-te, confirmes la teva acceptació dels nostres <a href="/legal/terms">termes d''ús</a>, <a href="/legal/privacy">política de privacitat</a> i <a href="/legal/cookies">política de cookies</a>.'
+login-accept-conditions: 'Accepto els <a href="/legal/terms">termes d''ús</a>, <a href="/legal/privacy">política de privacitat</a> i <a href="/legal/cookies">política de cookies</a>.'
 mandatory-cost-field-type: 'És obligatori seleccionar el tipus de cost'
 mandatory-individual_reward-field-amount: 'És obligatori indicar l''import que permet obtenir la recompensa'
 mandatory-project-costs: 'Ha de desglossar-se com a mínim en dos costos.'
@@ -81,10 +81,12 @@ regular-create: 'Crea un projecte'
 regular-days: dies
 regular-delete: Elimina
 regular-discover: 'Descobreix projectes'
+regular-discard: 'Descarta'
 regular-download-pdf: 'Descarrega el PDF'
 regular-actions: Accions
 regular-edit: Edita
 regular-email: Email
+regular-join: 'Uneix-te'
 regular-facebook: Facebook
 regular-faq: 'Preguntes freqüents '
 regular-first: Primera
@@ -176,6 +178,7 @@ regular-messages: Missatges
 regular-unknown: Desconegut
 regular-input: Aportació
 regular-amount: Import
+regular-copied: 'Copiat al porta-retalls!'
 session-about-to-expire: 'La teva sessió expirarà en 10 minuts. ¿Vols recarregar la pàgina per renovar-la?'
 session-expired: 'La teva sessió ha expirat!'
 stories-user-project: "%s, del projecte: %s\r\n"
@@ -205,7 +208,7 @@ regular-female: Dona
 regular-instagram: Instagram
 regular-male: Home
 regular-others: Altres
-regular-matchfunding: 'Match funding'
+regular-matchfunding: 'Matchfunding'
 regular-spread: DIFUSIÓ
 regular-status: Estat
 regular-year: Any

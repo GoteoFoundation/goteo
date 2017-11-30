@@ -127,8 +127,9 @@ $(function(){
                     type: 'PUT',
                     data: {value: val}
                 }).success(function(data) {
-                    original = _setValue.call($input[0], data);
+                    original = _setValue.call($input[0], data.value);
                     $(document).trigger('form-boolean-changed', [$input[0]]);
+                    if(data.message) alert(data.message);
                     // console.log('saved', data);
                 }).fail(function(error) {
                     var json = JSON.parse(error.responseText);
@@ -254,6 +255,31 @@ $(function(){
     });
     $('.autoform input.online-video').each(_addVideo);
 
+    // HTML editors
+    $('.autoform .summernote > textarea').summernote({
+        height: 300,
+        toolbar: [
+            ['tag', ['style']],
+            ['style', ['bold', 'italic', 'underline', 'clear']],
+            // ['font', ['strikethrough', 'superscript', 'subscript']],
+            // ['fontsize', ['fontsize']],
+            ['color', ['color']],
+            ['para', ['ul', 'ol', 'paragraph']],
+            // ['height', ['height']],
+            ['insert', ['link', 'picture', 'video', 'hr', 'table']],
+            ['misc', ['fullscreen', 'codeview', 'help']]
+          ],
+        callbacks: {
+            onFocus: function() {
+              // console.log('Editable area is focused');
+              $(this).closest('.summernote').addClass('focused');
+            },
+            onBlur: function() {
+              // console.log('Editable area loses focus');
+              $(this).closest('.summernote').removeClass('focused');
+            }
+        }
+    });
 
     // MarkdownType initialization
     var markdowns = form.markdowns = {};
@@ -454,114 +480,135 @@ $(function(){
         }
 
         var _addImageCss = function($img, name, dataURL) {
-            var url = dataURL ? dataURL : '/img/300x300c/' + name;
-            $img.css({
-                backgroundImage:  'url(' + url + ')',
-                backgroundSize: 'cover'
-            });
+          // console.log('AJAX Success', $img, name, dataURL);
+          var url = dataURL ? dataURL : '/img/300x300c/' + name;
+          $img.css({
+              backgroundImage:  'url(' + url + ')',
+              backgroundSize: 'cover'
+          });
         };
 
         // Create the FILE upload
         var drop = new Dropzone($dnd.contents('div')[0], {
-            url: url ? url : $form.attr('action'),
-            uploadMultiple: multiple,
-            createImageThumbnails: true,
-            maxFiles: limit,
-            maxFilesize: MAX_FILE_SIZE,
-            autoProcessQueue: !!url, // no ajax post if no url
-            dictDefaultMessage: $dz.data('text-upload'),
-            acceptedFiles: accepted_files
+          url: url ? url : $form.attr('action'),
+          uploadMultiple: multiple,
+          createImageThumbnails: true,
+          maxFiles: limit,
+          maxFilesize: MAX_FILE_SIZE,
+          autoProcessQueue: !!url, // no ajax post if no url
+          dictDefaultMessage: $dz.data('text-upload'),
+          acceptedFiles: accepted_files
         })
         .on('error', function(file, error) {
-            $error.html(error.error ? error.error : error);
-            $error.removeClass('hidden');
-            drop.removeFile(file);
-            // console.log('error', error);
+          $error.html(error.error ? error.error : error);
+          $error.removeClass('hidden');
+          drop.removeFile(file);
+          // console.log('error', error);
         })
         .on('thumbnail', function(file, dataURL) {
-            // Add to list
-            // console.log('thumbnail', file, dataURL);
-            var $img = $form.find('li[data-name="' + file.name + '"] .image');
-            _addImageCss($img, file.name, dataURL);
+          // Add to list
+          var $img = $form.find('li[data-name="' + file.name + '"] .image');
+          _addImageCss($img, file.name, dataURL);
         })
         .on(url ? 'success' : 'addedfile', function(file, response) {
-            var total = $list.find('li').length;
-            // console.log(response ? 'success' : 'added', file, 'total', total, 'limit', limit, 'response', response);
-            if(total >= limit) {
-                $error.html($dz.data('text-max-files-reached'));
-                $error.removeClass('hidden');
-                drop.removeFile(file);
-                // console.log($dz.data('text-max-files-reached'), $error.html());
-                return false;
-            }
-            if(!Dropzone.isValidFile(file, accepted_files)) {
-                // console.log('not accepted file', file, accepted_files);
-                $error.html($dz.data('text-file-type-error'));
-                drop.removeFile(file);
-                return false;
-            }
-            var name = file.name;
-            var i;
-            $error.addClass('hidden');
-            // AJAX upload case, a response is defined
-            if(response) {
-                if(!response.success) {
-                    $error.html(response.msg);
-                    $error.removeClass('hidden');
-                    for(i in response.files) {
-                        if(!response.files[i].success)
-                            $error.append('<br>' + response.files[i].msg);
-                    }
-                }
-                for(i in response.files) {
-                    if(response.files[i].originalName === name) {
-                        name = response.files[i].name;
-                    }
-                }
-            }
-            var $li = $($template.html().replace('{NAME}', name));
-            var $img = $li.find('.image');
+          var total = $list.find('li').length;
+          // console.log(response ? 'success' : 'added', file, 'total', total, 'limit', limit, 'response', response);
+          if(total >= limit) {
+            $error.html($dz.data('text-max-files-reached'));
+            $error.removeClass('hidden');
+            drop.removeFile(file);
+            // console.log($dz.data('text-max-files-reached'), $error.html());
+            return false;
+          }
+          if(!Dropzone.isValidFile(file, accepted_files)) {
+            // console.log('not accepted file', file, accepted_files);
+            $error.html($dz.data('text-file-type-error'));
+            drop.removeFile(file);
+            return false;
+          }
 
-            var re = /(?:\.([^.]+))?$/;
-            var ext = re.exec(name)[1];
-            $img.addClass('file-type-' + ext);
-            // console.log('extension',ext,$img.attr('class'));
+          var name = file.name;
+          var type = '';
+          var download_url = '';
+          var i;
+          $error.addClass('hidden');
+          // AJAX upload case, a response is defined
+          if(response) {
+            if(!response.success) {
+              $error.html(response.msg);
+              $error.removeClass('hidden');
+              for(i in response.files) {
+                if(!response.files[i].success)
+                  $error.append('<br>' + response.files[i].msg);
+              }
+            }
+            for(i in response.files) {
+              if(response.files[i].originalName === name) {
+                // console.log('found file', response.files[i]);
+                name = response.files[i].name;
+                type = response.files[i].regularFile && response.files[i].type;
+                download_url = response.files[i].downloadUrl;
+              }
+            }
+          }
+          var $li = $($template.html().replace('{NAME}', name));
+          var $img = $li.find('.image');
 
-            if(response) {
-                $li.append('<input type="hidden" name="' + $dz.data('current') + '" value="' + name + '">');
-                if($dz.data('markdown-link')) {
-                    $li.find('.add-to-markdown').data('target', $dz.data('markdown-link'));
-                    $li.find('.add-to-markdown').removeClass('hidden');
-                }
-                // AJAX does not create thumbnail
-                _addImageCss($img, name);
-            }
-            else {
-                // $img.css({backgroundSize: '25%'});
-            }
-            $list.append($li);
+          var re = /(?:\.([^.]+))?$/;
+          var ext = re.exec(name)[1];
+          $img.addClass('file-type-' + ext);
+          // console.log('extension',ext,$img.attr('class'));
 
-            if(total >= limit - 1) {
-                $dnd.hide();
+          if(response) {
+            $li.append('<input type="hidden" name="' + $dz.data('current') + '" value="' + name + '">');
+            if($dz.data('markdown-link')) {
+              $li.find('.add-to-markdown').data('target', $dz.data('markdown-link'));
+              $li.find('.add-to-markdown').removeClass('hidden');
             }
-            // On response, input[type=file] is already uploaded
-            if(response) {
-                drop.removeFile(file);
-                return;
+            // console.log('thumbnail', file, $li);
+            if(download_url) {
+              $li.find('.download-url').attr('href', download_url);
+              $li.find('.download-url').removeClass('hidden');
             }
-            // Input node with selected files. It will be removed from document shortly in order to
-            // give user ability to choose another set of files.
-            var inputFile = this.hiddenFileInput;
-            // Append it to form after stack become empty, because if you append it earlier
-            // it will be removed from its parent node by Dropzone.js.
-            setTimeout(function(){
-                // Set some unique name in order to submit data.
-                inputFile.name = $dz.data('name');
-                // console.log('adding file', $dz.data('name'), inputFile);
+            if(type) {
+              $img.addClass('file-type-' + type);
+            } else {
+              // AJAX does not create thumbnail
+              _addImageCss($img, name);
+            }
+          }
+          else {
+              // $img.css({backgroundSize: '25%'});
+          }
+          $list.append($li);
 
-                $li.append(inputFile);
-                drop.removeFile(file);
-            }, 0);
+          if(total >= limit - 1) {
+              $dnd.hide();
+          }
+          // On response, input[type=file] is already uploaded
+          if(response) {
+              drop.removeFile(file);
+              return;
+          }
+
+          // Input node with selected files. It will be removed from document shortly in order to
+          // give user ability to choose another set of files.
+          var inputFile = this.hiddenFileInput;
+          // Append it to form after stack become empty, because if you append it earlier
+          // it will be removed from its parent node by Dropzone.js.
+          setTimeout(function(){
+            // Set some unique name in order to submit data.
+            inputFile.name = $dz.data('name');
+            if(inputFile.files && inputFile.files.length) {
+              // console.log('adding file', $dz.data('name'), inputFile, inputFile.files);
+              $li.append(inputFile);
+            } else {
+              alert(goteo.texts['form-dragndrop-unsupported']);
+              $li.remove();
+              $dnd.show();
+            }
+            drop.removeFile(file);
+          }, 0);
         });
         dropzones[$(this).attr('id')] = drop;
 
@@ -607,21 +654,29 @@ $(function(){
     // handle exact geolocation
     $('.autoform').on('click', '.exact-location', function(e) {
         e.preventDefault();
-        var lat,lng,formatted_address;
+        var lat,lng,formatted_address,radius;
         var $form = $(this).closest('form');
         var $modal = $('#modal-map-' + $form.attr('name'));
         var $map = $modal.find('.map');
+        var $wrap = $modal.find('.input-block');
         var $search = $modal.find('.geo-autocomplete');
+        var $radius = $modal.find('.geo-autocomplete-radius');
         var $input = $($(this).attr('href'));
         var title = $input.closest('.form-group').find('label:first').text();
         $modal.find('.modal-title').text(title);
 
-        $(['address', 'city', 'region', 'zipcode', 'country_code', 'country', 'latitude', 'longitude', 'formatted_address']).each(function(i, el){
+        $(['address', 'city', 'region', 'zipcode', 'country_code', 'country', 'latitude', 'longitude', 'formatted_address', 'radius']).each(function(i, el){
             var el_dest = $input.data('geocoder-populate-' +  el);
             var $val = $(el_dest);
             var val = $val.text();
             if($val.is(':input')) val = $val.val();
-            $search.data('geocoder-populate-' +  el, el_dest);
+
+            if(el === 'radius') {
+                radius = parseInt(val, 10) || 0;
+                $radius.data('geocoder-populate-' +  el, el_dest);
+            } else {
+                $search.data('geocoder-populate-' +  el, el_dest);
+            }
             if(el === 'latitude') {
                 lat = parseFloat(val) || 0;
             }
@@ -636,6 +691,11 @@ $(function(){
         $map.data('map-longitude', lng);
         if(!lat || !lng) {
             $map.data('map-address', $input.val());
+        }
+        if(radius) {
+            $map.data('map-radius', radius);
+            $radius.val(radius);
+            $wrap.addClass('show-radius');
         }
         $search.val((lat && lng) ? formatted_address : $input.val());
 

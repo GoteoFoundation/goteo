@@ -31,3 +31,5 @@ ALTER TABLE `mail` CHANGE `html` `content` LONGTEXT CHARSET utf8 COLLATE utf8_ge
 ALTER TABLE `mail` ADD COLUMN `sent` TINYINT NULL AFTER `lang`, ADD COLUMN `error` TINYTEXT NULL AFTER `sent`;
 ALTER TABLE `mail` ADD COLUMN `subject` CHAR(255) NULL AFTER `email`;
 
+-- remove template constrains from mail as it can come from yaml sources now
+ALTER TABLE `mail` CHANGE `template` `template` VARCHAR(100) NULL, DROP FOREIGN KEY `mail_ibfk_3`;

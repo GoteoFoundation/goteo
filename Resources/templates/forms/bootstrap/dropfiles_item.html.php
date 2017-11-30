@@ -6,9 +6,8 @@
 
         <a class="add-to-markdown btn btn-default<?= $markdown_link ? '' : ' hidden' ?>" data-target="<?= $view->escape($markdown_link) ?>" title="<?= $view->escape($text_send_to_markdown) ?>"><i class="fa fa-send"></i></a>
 
-    <?php if($download_url): ?>
-        <a class="btn btn-default" href="<?= $download_url ?>"><i class="fa fa-external-link" target="_blank" title="<?= $view->escape($text_download) ?>"></i></a>
-    <?php endif ?>
+        <a class="download-url btn btn-default<?= $download_url ? '' : ' hidden' ?>" href="<?= $download_url ?>" target="_blank" title="<?= $view->escape($text_download) ?>"><i class="fa fa-external-link"></i></a>
+
         <a class="delete-image btn btn-default" title="<?= $view->escape($text_delete_image) ?>"><i class="fa fa-trash"></i></a>
     </div>
 

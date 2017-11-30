@@ -8,13 +8,6 @@
   color: $secondary-color;
   margin-bottom: 20px;
 
-  // TODO: check for removal
-  .general-dashboard {
-    background-color: $background-white;
-    padding: 15px;
-    margin: 0 -15px 40px -15px;
-  }
-
   .inner-container {
       max-width: $breakpoint-md - 30;
       padding-right: 15px;
@@ -149,16 +142,16 @@
   }
 
   .dropdown-menu {
-    a:focus, a:hover {
+    a:focus, a:hover, button:focus, button:hover {
       background-color: $background-light;
     }
     > .active {
-      > a {
+      > a, >button {
         background-color: $color-cyan;
       }
     }
     > .available {
-      > a {
+      > a, >button {
         font-weight: bold;
         text-decoration: underline;
       }
@@ -734,47 +727,6 @@
         padding-top: 8%;
         padding-bottom: 8%;
         margin: 40px 2%;
-    }
-  }
-}
-
-// ? To remove ?
-div {
-  &.row {
-    &.general-dashboard {
-      background-color: $background-white;
-      padding: 2% 5%;
-      margin-bottom: 40px;
-      border-radius: 7px;
-    }
-  }
-  &.container.general-dashboard {
-    background-color: $background-white;
-    padding: 2% 5%;
-    margin-bottom: 40px;
-    border-radius: 7px;
-    &:first-child {
-      border-top-right-radius: none;
-      border-top-left-radius: none;
-    }
-  }
-}
-
-.general-dashboard div.row.more-projects-button {
-  display: flex;
-  justify-content: center;
-  margin-top: 40px;
-}
-
-@media (max-width: $breakpoint-sm - 1) {
-  div {
-    &.row.general-dashboard, &.container.general-dashboard {
-      background-color: $background-white;
-      padding: 2% 5%;
-      margin-right: 0;
-      margin-left: 0;
-      border-radius: none;
-      margin-bottom: 20px;
     }
   }
 }

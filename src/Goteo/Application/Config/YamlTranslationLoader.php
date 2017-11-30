@@ -12,7 +12,6 @@ namespace Goteo\Application\Config;
 
 use Symfony\Component\Config\ConfigCache;
 use Symfony\Component\Translation\Loader\YamlFileLoader;
-use Symfony\Component\Yaml\Yaml;
 
 use Goteo\Application\App;
 

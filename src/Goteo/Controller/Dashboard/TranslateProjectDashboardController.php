@@ -36,8 +36,9 @@ use Goteo\Application\Exception\ControllerAccessDeniedException;
 use Goteo\Application\Event\FilterMessageEvent;
 use Symfony\Component\Validator\Constraints;
 use Goteo\Library\Forms\FormModelException;
+use Goteo\Controller\Dashboard\ProjectDashboardController;
 
-class TranslateProjectDashboardController extends \Goteo\Controller\Dashboard\ProjectDashboardController {
+class TranslateProjectDashboardController extends ProjectDashboardController {
 
     /**
      * Additional common context vars for the views
@@ -86,6 +87,7 @@ class TranslateProjectDashboardController extends \Goteo\Controller\Dashboard\Pr
     public function createFormBuilder($defaults = null, $name = 'autoform', array $options = ['attr' => ['class' => 'autoform hide-help']]) {
         return parent::createFormBuilder($defaults, $name, $options);
     }
+
     /**
      * Handy method to get a form builder
      * @return Goteo\Library\Forms\FormProcessorInterface

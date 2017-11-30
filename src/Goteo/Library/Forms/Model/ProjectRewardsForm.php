@@ -117,7 +117,8 @@ class ProjectRewardsForm extends AbstractFormProcessor implements FormProcessorI
             //     'required' => true,
             // ])
             ->add("reward$suffix", 'text', [
-                'label' => 'rewards-field-individual_reward-reward',
+                // 'label' => 'rewards-field-individual_reward-reward',
+                'label' => 'regular-title',
                 'data' => $reward->reward,
                 'disabled' => $readonly,
                 'constraints' => $this->getConstraints("reward$suffix"),

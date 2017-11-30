@@ -15,9 +15,11 @@ use Symfony\Component\HttpFoundation\ResponseHeaderBag;
 use Symfony\Component\HttpFoundation\StreamedResponse;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Goteo\Application\Exception\ControllerAccessDeniedException;
+use Goteo\Application\Exception\ControllerException;
 use Goteo\Application\Exception\ModelNotFoundException;
 use Goteo\Application\Exception\ModelException;
 
+use Goteo\Application\Message;
 use Goteo\Application\Config;
 use Goteo\Application\AppEvents;
 use Goteo\Application\Event\FilterProjectPostEvent;
@@ -116,6 +118,7 @@ class ProjectsApiController extends AbstractApiController {
         }
         return $ob;
     }
+
     /**
      * Simple projects info data
      */
@@ -142,6 +145,9 @@ class ProjectsApiController extends AbstractApiController {
         if(!isset($properties[$prop])) {
             throw new ModelNotFoundException("Property [$prop] not found");
         }
+
+        $result = ['value' => $properties[$prop], 'error' => false];
+
         if($request->isMethod('put')) {
             if(!$prj->userCanEdit($this->user)) {
                 throw new ControllerAccessDeniedException();
@@ -153,15 +159,13 @@ class ProjectsApiController extends AbstractApiController {
             if(!in_array($prop, $write_fields)) {
                 throw new ModelNotFoundException("Property [$prop] not writeable");
             }
-            $prj->$prop = $request->request->get('value');
+            $prj->{$prop} = $request->request->get('value');
 
             // do the SQL update
             $prj->dbUpdate([$prop]);
-            $properties[$prop] = $prj->$prop;
-
-            // TODO: do the SQL update
+            $result['value'] = $prj->{$prop};
         }
-        return $this->jsonResponse($properties[$prop]);
+        return $this->jsonResponse($result);
 
     }
 
@@ -177,8 +181,8 @@ class ProjectsApiController extends AbstractApiController {
         if(!$prj->userCanEdit($this->user)) {
             throw new ControllerAccessDeniedException();
         }
-        if(!$prj->isAlive()) {
-            throw new ControllerAccessDeniedException(Text::get('dashboard-project-not-alive-yet'));
+        if(!$prj->isApproved()) {
+            throw new ControllerAccessDeniedException(Text::get('dashboard-project-blog-wrongstatus'));
         }
 
         if(!$post) throw new ModelNotFoundException();
@@ -188,8 +192,8 @@ class ProjectsApiController extends AbstractApiController {
         $write_fields = ['title', 'text', 'date', 'allow', 'publish'];
         $properties = [];
         foreach($read_fields as $f) {
-            if(isset($post->$f)) {
-                $val = $post->$f;
+            if(isset($post->{$f})) {
+                $val = $post->{$f};
                 if($val instanceOf Image) {
                     $val = $val->getName();
                 }
@@ -209,39 +213,57 @@ class ProjectsApiController extends AbstractApiController {
         if(!array_key_exists($prop, $properties)) {
             throw new ModelNotFoundException("Property [$prop] not found");
         }
+        $result = ['value' => $properties[$prop], 'error' => false];
         if($request->isMethod('put') && $request->request->has('value')) {
             if(!in_array($prop, $write_fields)) {
                 throw new ModelNotFoundException("Property [$prop] not writeable");
             }
-            $post->$prop = $request->request->get('value');
+            $post->{$prop} = $request->request->get('value');
 
             if(in_array($prop, ['allow', 'publish'])) {
-                if($post->$prop == 'false') $post->$prop = false;
-                if($post->$prop == 'true') $post->$prop = true;
-                $post->$prop = (bool) $post->$prop;
+                if($post->{$prop} == 'false') $post->{$prop} = false;
+                if($post->{$prop} == 'true') $post->{$prop} = true;
+                $post->{$prop} = (bool) $post->{$prop};
             }
 
             // do the SQL update
             $post->dbUpdate([$prop]);
-            $properties[$prop] = $post->$prop;
+            $result['value'] = $post->{$prop};
             $this->dispatch(AppEvents::PROJECT_POST, new FilterProjectPostEvent($post));
+            // if($errors = Message::getErrors()) throw new ControllerException(implode("\n",$errors));
+            if($errors = Message::getErrors()) {
+                $result['error'] = true;
+                $result['message'] = implode("\n", $errors);
+            }
+            if($messages = Message::getMessages()) {
+                $result['message'] = implode("\n", $messages);
+            }
+
         }
-        return $this->jsonResponse($properties[$prop]);
+        return $this->jsonResponse($result);
+    }
+
+    protected function validateProject($pid) {
+        $prj = Project::get($pid);
+
+        if(!$prj->userCanEdit($this->user)) {
+            throw new ControllerAccessDeniedException();
+        }
+
+        $this->admin = $prj->userCanModerate($this->user);
+
+        if($this->admin || $prj->inEdition() || $prj->isAlive()) {
+            return $prj;
+        }
+
+        throw new ControllerAccessDeniedException(Text::get('dashboard-project-not-alive-yet'));
     }
 
     /**
      * AJAX upload image (Generic uploader with optional project gallery updater)
      */
     public function projectUploadImagesAction($id, Request $request) {
-        $prj = Project::get($id);
-
-        // Security, first of all...
-        if(!$prj->userCanEdit($this->user)) {
-            throw new ControllerAccessDeniedException();
-        }
-        if(!$prj->inEdition() && !$prj->isAlive()) {
-            throw new ControllerAccessDeniedException(Text::get('dashboard-project-not-alive-yet'));
-        }
+        $prj = $this->validateProject($id);
 
         $files = $request->files->get('file');
         if(!is_array($files)) $files = [$files];
@@ -300,7 +322,7 @@ class ProjectsApiController extends AbstractApiController {
                 'error' => $file->getError(),
                 'size' => $file->getSize(),
                 'maxSize' => $file->getMaxFileSize(),
-                'errorMsg' => $file->getErrorMessage()
+                'errorMsg' => $file->getError() ? $file->getErrorMessage() : ''
             ];
             if(!$success) {
                 $global_msg = Text::get('project-upload-images-some-ko');
@@ -312,15 +334,7 @@ class ProjectsApiController extends AbstractApiController {
     }
 
     public function projectDeleteImagesAction($id, $image, Request $request) {
-        $prj = Project::get($id);
-
-        // Security, first of all...
-        if(!$prj->userCanEdit($this->user)) {
-            throw new ControllerAccessDeniedException();
-        }
-        if(!$prj->inEdition() && !$prj->isAlive()) {
-            throw new ControllerAccessDeniedException(Text::get('dashboard-project-not-alive-yet'));
-        }
+        $prj = $this->validateProject($id);
 
         $vars = array(':project' => $prj->id, ':image' => $image);
         Project::query("DELETE FROM project_image WHERE project = :project AND image = :image", $vars);
@@ -334,15 +348,7 @@ class ProjectsApiController extends AbstractApiController {
     }
 
     public function projectDefaultImagesAction($id, $image, Request $request) {
-        $prj = Project::get($id);
-
-        // Security, first of all...
-        if(!$prj->userCanEdit($this->user)) {
-            throw new ControllerAccessDeniedException();
-        }
-        if(!$prj->inEdition() && !$prj->isAlive()) {
-            throw new ControllerAccessDeniedException(Text::get('dashboard-project-not-alive-yet'));
-        }
+        $prj = $this->validateProject($id);
 
         $success = false;
         $msg = Text::get('dashboard-project-image-default-ko');
@@ -368,15 +374,7 @@ class ProjectsApiController extends AbstractApiController {
     public function projectReorderImagesAction($id, Request $request) {
         $gallery = $request->request->get('gallery');
 
-        $prj = Project::get($id);
-
-        // Security, first of all...
-        if(!$prj->userCanEdit($this->user)) {
-            throw new ControllerAccessDeniedException();
-        }
-        if(!$prj->inEdition() && !$prj->isAlive()) {
-            throw new ControllerAccessDeniedException(Text::get('dashboard-project-not-alive-yet'));
-        }
+        $prj = $this->validateProject($id);
 
         $success = false;
         $result = [];
@@ -518,7 +516,7 @@ class ProjectsApiController extends AbstractApiController {
             }
         }
 
-        return $this->jsonResponse((bool) $invest->fulfilled);
+        return $this->jsonResponse(['value' => (bool) $invest->fulfilled]);
     }
 
     // CSV Extraction

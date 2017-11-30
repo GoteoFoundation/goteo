@@ -2,3 +2,19 @@ admin-action: 'Administrator action'
 admin-filters: Filters
 admin-remove-filters: 'Remove filters'
 admin-impersonate-user: Impersonate %s
+admin-project-express-discard: 'Express discard'
+admin-project-express-discard-desc: 'Change the project status to Discard and sends an email'
+admin-project-express-discard-sure: 'The project will be discarded and the owner will receive an email, ok?'
+
+admin-project-to-review: 'To review'
+admin-project-to-review-desc: 'Change the project status to Review pending'
+admin-project-to-review-sure: 'The owner won''t be able to edit the project anymore, ok?'
+admin-project-view-in-admin: 'View in admin'
+
+admin-project-to-negotiation: 'To negotiation'
+admin-project-to-negotiation-desc: 'Change the project status to Editing'
+admin-project-to-negotiation-sure: 'ALERT! The project is in campaign! This action will unpublish the project, Ok?'
+
+admin-project-to-publish: 'Publish'
+admin-project-to-publish-desc: 'Change the project status to "In campaign"'
+admin-project-to-publish-sure: 'Project is going to start its campaign, ok?'

@@ -40,22 +40,22 @@ use Symfony\Component\Validator\Constraints;
 use Goteo\Library\Forms\FormModelException;
 use Goteo\Application\Event\FilterProjectEvent;
 use Goteo\Application\Event\FilterProjectPostEvent;
+use Goteo\Controller\DashboardController;
 
-class ProjectDashboardController extends \Goteo\Core\Controller {
+class ProjectDashboardController extends DashboardController {
     protected $user, $admin = false;
 
     public function __construct() {
-        // changing to a responsive theme here
-        View::setTheme('responsive');
-        $this->user = Session::getUser();
+        parent::__construct();
 
         $this->contextVars([
             'section' => 'projects'
         ]);
     }
 
-    static function createSidebar(Project $project, $zone = '', &$form = null) {
+    static function createProjectSidebar(Project $project, $zone = '', &$form = null) {
         $user = Session::getUser();
+
         if(!$project->userCanEdit($user)) return false;
         $prefix = '/dashboard/project/' . $project->id ;
 
@@ -66,6 +66,7 @@ class ProjectDashboardController extends \Goteo\Core\Controller {
         $admin = false;
         $validation = $project->getValidation();
         $admin = $project->userCanModerate($user) && !$project->inEdition();
+
 
         if($project->inEdition() || $admin) {
             $steps = [
@@ -94,7 +95,6 @@ class ProjectDashboardController extends \Goteo\Core\Controller {
             Session::addToSidebarMenu('<i class="icon icon-2x icon-projects"></i> ' . Text::get('project-manage-campaign'), $submenu, 'project', null, 'sidebar');
         }
 
-        // Session::addToSidebarMenu('<i class="icon icon-2x icon-supports"></i> ' . Text::get('dashboard-menu-projects-supports'), $prefix . '/supports' , 'supports');
 
          $submenu = [
             ['text' => '<i class="fa fa-2x fa-globe"></i> ' . Text::get('regular-translations'), 'link' => $prefix . '/translate', 'id' => 'translate'],
@@ -168,7 +168,7 @@ class ProjectDashboardController extends \Goteo\Core\Controller {
             throw new ControllerAccessDeniedException(Text::get('user-login-required-access'));
         }
 
-        static::createSidebar($this->project, $section, $form);
+        static::createProjectSidebar($this->project, $section, $form);
 
         $this->admin = $this->project->userCanModerate($this->user);
 
@@ -333,7 +333,7 @@ class ProjectDashboardController extends \Goteo\Core\Controller {
             $images[$sec] = ProjectImage::get($project->id, $sec);
         }
 
-        $editable = $project->inEdition() || $project->isAlive();
+        $editable = $this->admin || $project->inEdition() || $project->isAlive();
         return $this->viewResponse('dashboard/project/images' . ($editable ? '' : '_idle'), [
             'zones' => $zones,
             'images' => $images,

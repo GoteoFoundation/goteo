@@ -1,6 +1,7 @@
-<div class="summary-matchfunding-section" >
+<?php if(!$this->summary) return; ?>
+<div class="summary-section">
 	<div class="container-fluid summary">
-		<!--<h2 class="section-title">
+		<!--<h2 class="title-section">
 			<?= $this->text('node-stats-title') ?>
 		</h2>-->
 		<div class="row">
@@ -30,7 +31,7 @@
 			</div>
 			<div class="col-sm-3 item">
 				 <div>
-				 	<?= amount_format($this->summary['amount'], 0, true) ?>
+				 	<?= amount_format($this->summary['amount']) ?>
 				 </div>
 				 <div class="description">
 				 	<?= $this->text('node-side-summary-amount'); ?>

@@ -108,6 +108,11 @@ class User extends \Goteo\Core\Model {
         return $this->$name;
     }
 
+
+    public static function getLangFields() {
+        return ['name', 'about'];
+    }
+
     /**
      * Guardar usuario.
      * Guarda los valores de la instancia del usuario en la tabla.
@@ -125,7 +130,8 @@ class User extends \Goteo\Core\Model {
             // Nuevo usuario.
             if (empty($this->id)) {
                 $insert = true;
-                $data[':id'] = $this->id = static::idealiza($this->userid);
+                $this->id = static::idealiza($this->userid);
+                $data[':id'] = $this->id;
                 $data[':name'] = $this->name;
                 $data[':location'] = $this->location;
                 $data[':email'] = $this->email;
@@ -560,9 +566,9 @@ class User extends \Goteo\Core\Model {
     }
 
     /**
-     * This method change the user password
+     * This method changes the user password
      */
-    public function setPassword($password, $raw = false) {
+    public function setPassword($password, &$errors = [], $raw = false) {
 
         $values = array(':id' => $this->id);
         if($raw) {
@@ -583,6 +589,7 @@ class User extends \Goteo\Core\Model {
 
         try {
             $sql = "UPDATE user SET `password` = :password WHERE id = :id";
+            // die(\sqldbg($sql, $values));
             if(self::query($sql, $values)) {
                 if($this->password) $this->password = $password;
                 return true;
@@ -824,6 +831,11 @@ class User extends \Goteo\Core\Model {
                 ) ";
             $values[':role'] = $filters['role'];
         }
+        // Has or not has money in the pool
+        if (isset($filters['pool'])) {
+            $sqlFilter[] = 'id IN (SELECT `user` FROM user_pool WHERE user_pool.amount ' . ($filters['pool'] ? '>'  : '=') .' 0)';
+        }
+
 
         // un admin de central puede filtrar usuarios de nodo
         if ($subnodes) {
@@ -1157,7 +1169,8 @@ class User extends \Goteo\Core\Model {
 
             // Re-encode password and save it to database if it's considered non-secure
             if(!$pass->isSecure()) {
-                $user->setPassword(Password::encode($password), true);
+                $errors = [];
+                $user->setPassword(Password::encode($password), $errors, true);
             }
 
             if ($user->active) {
@@ -1268,7 +1281,6 @@ class User extends \Goteo\Core\Model {
         if (!is_array($check_roles)) {
             $check_roles = [(string) $check_roles];
         }
-
         foreach ($this->getAllNodeRoles() as $n => $roles) {
             if ($node === $n && array_intersect($roles, $check_roles)) {
                 return true;
@@ -1424,9 +1436,9 @@ class User extends \Goteo\Core\Model {
                 $non_administrable_roles = ['superadmin', 'root'];
             }
 
-            // echo "<br>[$node => $role] againts [$to_node $to_role]";
+            // echo "<br>[role '$role' in '$node'] againts [role '$to_role' in '$to_node']";
             if (($node === $to_node || $node === '') && !in_array($to_role, $non_administrable_roles)) {
-                // echo " OK [$to_role $to_node]\n";
+                // echo " OK [role '$to_role' in '$to_node']\n";
                 return true;
             }
         }
@@ -1902,18 +1914,10 @@ class User extends \Goteo\Core\Model {
         $debug = false;
         $lang = Lang::current();
         $projects = array();
-        $values = array();
-        $values[':lang'] = $lang;
-        $values[':user'] = $user;
+        $values = array(':user' => $user);
 
-        if (self::default_lang($lang) === Config::get('lang')) {
-            $different_select = " IFNULL(project_lang.description, project.description) as description";
-        } else {
-            $different_select = " IFNULL(project_lang.description, IFNULL(eng.description, project.description)) as description";
-            $eng_join = " LEFT JOIN project_lang as eng
-                            ON  eng.id = project.id
-                            AND eng.lang = 'en'";
-        }
+
+        list($fields, $joins) = self::getLangsSQLJoins($lang, 'project', 'id', 'Goteo\Model\Project');
 
         if ($publicOnly) {
             $sqlFilter = " AND project.status > 2";
@@ -1941,7 +1945,7 @@ class User extends \Goteo\Core\Model {
         $sql = "
             SELECT
                 project.id as project,
-                $different_select,
+                $fields,
                 project.status as status,
                 project.published as published,
                 project.created as created,
@@ -1974,25 +1978,17 @@ class User extends \Goteo\Core\Model {
                 ON user.id = project.owner
             LEFT JOIN project_conf
                 ON project_conf.project = project.id
-            LEFT JOIN project_lang
-                ON  project_lang.id = project.id
-                AND project_lang.lang = :lang
-            $eng_join
+            $joins
             WHERE project.status < 7
             $sqlFilter
             ORDER BY  project.status ASC, project.created DESC
             $sql_limit
             ";
-
-        if ($debug) {
-            echo \trace($values);
-            echo $sql;
-            die;
-        }
+        // die(\sqldbg($sql, $values));
 
         $query = self::query($sql, $values);
         foreach ($query->fetchAll(\PDO::FETCH_CLASS, 'Goteo\Model\Project') as $proj) {
-            $projects[] = Project::getWidget($proj);
+            $projects[] = Project::getWidget($proj, $lang);
         }
         return $projects;
     }

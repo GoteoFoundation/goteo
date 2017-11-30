@@ -1,7 +1,7 @@
 costs-field-select-rounds: Plazos
 form-accept-button: Aceptar
 form-add-button: Añadir
-form-ajax-info: 'El formulario se va grabando segun pases por cada campo'
+form-ajax-info: 'El formulario se va grabando según pases por cada campo'
 form-apply-button: Aplicar
 form-edit-button: Editar
 form-has-errors: 'El formulario contiene errores, revísalos antes de continuar!'
@@ -9,7 +9,7 @@ form-errors-info: 'Total: %s | En este paso: %s'
 form-errors-total: 'Hay %s errores en total'
 form-footer-errors_title: Errores
 form-image_upload-button: 'Subir imagen'
-form-media_send-button: 'Poner video'
+form-media_send-button: 'Poner vídeo'
 form-navigation_bar-header: 'Ir a'
 form-next-button: Siguiente
 form-project-info_status-title: 'Estado global de la información'
@@ -66,3 +66,4 @@ form-editor-change-unlocated: 'Sin localizar'
 form-editor-fine-locate: 'Puedes afinar la localización arrastrando y soltando la marca.'
 form-editor-error-locating: 'No se ha encontrado una dirección!'
 form-editor-success-locating: 'Se ha encontrado una dirección válida'
+form-dragndrop-unsupported: 'Ha ocurrido un problema al arrastrar y soltar archivos. Por favor, inténtalo de nuevo haciendo clic al botón de subir archivos'

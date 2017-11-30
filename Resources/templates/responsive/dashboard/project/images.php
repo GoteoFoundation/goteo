@@ -121,6 +121,9 @@ $(function(){
             $error.removeClass('hidden');
             console.log('error', error);
         });
+        dropzone.on('addedfile', function(file, response) {
+            console.log(this.hiddenFileInput.files);
+        });
         dropzone.on('success', function(file, response) {
             $error.addClass('hidden');
             // see if all files are uploaded ok in response

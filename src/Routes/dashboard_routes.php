@@ -53,6 +53,13 @@ $dash->add('dashboard-ajax-projects-materials-table', new Route(
         )
 ));
 
+// join action for a project in when selected for a matcher
+$dash->add('dashboard-ajax-matcher-action', new Route(
+    '/ajax/matchers/{mid}/{action}/{pid}',
+    array('_controller' => 'Goteo\Controller\Dashboard\AjaxDashboardController::joinMatcherAction')
+));
+
+
 // Projects editing
 // Summary
 $dash->add('dashboard-project-summary', new Route(
@@ -403,7 +410,10 @@ $dash->add('dashboard-old-translate', new Route(
         if($type === 'project' && is_object($project)) {
             return new RedirectResponse("/dashboard/project/" . $project->id . '/translate');
         }
-        // TODO: calls & nodes
+        if($type === 'call') {
+            return new RedirectResponse("/dashboard/calls");
+        }
+        // TODO: nodes
         return new RedirectResponse("/dashboard/settings/profile");
     },
     'zone' => null,
