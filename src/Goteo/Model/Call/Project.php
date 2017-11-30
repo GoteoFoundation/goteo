@@ -71,42 +71,75 @@ namespace Goteo\Model\Call {
                     $sqlFilter .= " $and (project.status IN (" . implode(",", $statuses) . ") )";
                 }
 
-                // Lang
-                if(self::default_lang($lang) === Config::get('lang')) {
-                $lang_select = ' IFNULL(project_lang.description, project.description) AS description';
-                }
-                else {
-                    $lang_select = ' IFNULL(project_lang.description, IFNULL(eng.description, project.description)) AS description';
-                    $lang_join = " LEFT JOIN project_lang AS eng
-                                    ON  eng.id = project.id
-                                    AND eng.lang = 'en'";
-                }
 
+                // metemos los datos del proyecto en la instancia
+                list($fields, $joins) = self::getLangsSQLJoins($lang, null, null, 'Goteo\Model\Project');
 
 
                 $sql = "SELECT
-                            project.id as id,
-                            project.name as name,
-                            $lang_select,
-                            project.status as status,
-                            project.published as published,
-                            project.created as created,
-                            project.updated as updated,
-                            project.success as success,
-                            project.closed as closed,
-                            project.node as node,
-                            project.owner as owner,
-                            project.amount as amount,
-                            project.mincost as mincost,
-                            project.maxcost as maxcost,
-                            project.project_location as location,
-                            project.subtitle as subtitle,
-                            project.image as image,
-                            project.maxproj as maxproj,
-                            project.amount_users as amount_users,
-                            project.amount_call as amount_call,
-                            project.id REGEXP '[0-9a-f]{32}' as draft,
-                            IF(project.passed IS NULL, 1, 2) as round,
+                    project.id,
+                    project.name,
+                    $fields,
+                    project.lang,
+                    project.currency,
+                    project.currency_rate,
+                    project.status,
+                    project.translate,
+                    project.progress,
+                    project.owner,
+                    project.node,
+                    project.amount,
+                    project.mincost,
+                    project.maxcost,
+                    project.days,
+                    project.num_investors,
+                    project.popularity,
+                    project.num_messengers,
+                    project.num_posts,
+                    project.created,
+                    project.updated,
+                    project.published,
+                    project.success,
+                    project.closed,
+                    project.passed,
+                    project.contract_name,
+                    project.contract_nif,
+                    project.phone,
+                    project.contract_email,
+                    project.address,
+                    project.zipcode,
+                    project.location,
+                    project.country,
+                    project.image,
+                    project.video_usubs,
+                    project.category,
+                    project.media_usubs,
+                    project.currently,
+                    project.project_location,
+                    project.scope,
+                    project.resource,
+                    project.comment,
+                    project.contract_entity,
+                    project.entity_office,
+                    project.entity_name,
+                    project.entity_cif,
+                    project.post_address,
+                    project.secondary_address,
+                    project.post_zipcode,
+                    project.post_location,
+                    project.post_country,
+                    project.amount_users,
+                    project.amount_call,
+                    project.maxproj,
+                    project.analytics_id,
+                    project.facebook_pixel,
+                    project.social_commitment,
+                    project.execution_plan,
+                    project.execution_plan_url,
+                    project.sustainability_model,
+                    project.sustainability_model_url,
+                    project.id REGEXP '[0-9a-f]{32}' as draft,
+                    IFNULL(project.updated, project.created) as updated,
                             user.id as user_id,
                             user.name as user_name,
                             user.gender as user_gender,
@@ -119,10 +152,7 @@ namespace Goteo\Model\Call {
                             ON user.id = project.owner
                         LEFT JOIN project_conf
                             ON project_conf.project = project.id
-                        LEFT JOIN project_lang
-                            ON  project_lang.id = project.id
-                            AND project_lang.lang = :lang
-                        $lang_join
+                        $joins
                         INNER JOIN call_project
                             ON  call_project.project = project.id
                             AND call_project.call = :call
@@ -130,8 +160,6 @@ namespace Goteo\Model\Call {
                         GROUP BY project.id
                         ORDER BY project.name ASC
                         ";
-
-                $values[':lang'] = $lang;
 
                 // echo \sqldbg($sql, $values);
                 $query = static::query($sql, $values);
