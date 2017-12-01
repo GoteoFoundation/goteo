@@ -112,9 +112,9 @@ class CacheStatement extends \PDOStatement {
      * Ejecución del método deseado con cache
      */
     public function _cachedMethod($method, $args=null) {
-        if($this->is_select && !$this->skip_cache) {
+        if($this->is_select && !$this->skip_cache && $this->cache_active) {
             $value = false;
-            if($this->cache && $this->cache_time && $this->cache_active) {
+            if($this->cache && $this->cache_time) {
                 $key = $this->cache->getKey($this->cache_key . serialize($args), $method);
                 $value = $this->cache->retrieve($key);
             } else {
@@ -143,8 +143,8 @@ class CacheStatement extends \PDOStatement {
         //obtener el valor
         $value = call_user_func_array(array($this, "parent::$method"), $args);
 
-        if($this->is_select && !$this->skip_cache) {
-            if($this->cache && $this->cache_time && $this->cache_active) {
+        if($this->is_select && !$this->skip_cache && $this->cache_active) {
+            if($this->cache && $this->cache_time) {
                 //guardar en cache
                 $this->cache->store($key, $value, $this->cache_time);
             } else {
