@@ -13,9 +13,11 @@ namespace Goteo\Application\EventListener;
 use Goteo\Application\EventListener\AbstractListener;
 use Goteo\Application\AppEvents;
 use Goteo\Application\Config;
+use Goteo\Application\Message;
 use Goteo\Application\Event\FilterProjectEvent;
 use Goteo\Console\UsersSend;
 use Goteo\Library\Feed;
+use Goteo\Library\Text;
 use Goteo\Library\FeedBody;
 
 use Goteo\Application\Exception\DuplicatedEventException;
@@ -55,7 +57,7 @@ class ProjectListener extends AbstractListener {
                 $event = new Event($action);
 
             } catch(DuplicatedEventException $e) {
-                $this->warning('Duplicated event', [$project, 'event' => "$to:$template"]);
+                $this->warning('Duplicated event', ['action' => $e->getMessage(), $project, 'event' => "$to:$template"]);
                 return;
             }
             $event->fire(function() use ($project, $template, $to) {
@@ -175,6 +177,12 @@ class ProjectListener extends AbstractListener {
         // email al autor
         $sent2 = UsersSend::toOwner('project_to_review', $project);
 
+        if($sent1) {
+            Message::info(Text::get('project-review-request_mail-success'));
+        }
+        if($sent2) {
+            Message::info(Text::get('project-review-confirm_mail-success'));
+        }
         if (!$sent1 || !$sent2) {
             $errors[] = Text::get('project-review-confirm_mail-fail');
         }
@@ -189,7 +197,7 @@ class ProjectListener extends AbstractListener {
 	public static function getSubscribedEvents() {
 		return array(
             AppEvents::PROJECT_CREATED => 'onProjectCreated',
-            AppEvents::PROJECT_PUBLISH => 'onProjectPublish',
+            AppEvents::PROJECT_PUBLISH => ['onProjectPublish', 100], // high priority
             AppEvents::PROJECT_READY   => 'onProjectReady',
 		);
 	}

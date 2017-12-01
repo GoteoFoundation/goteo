@@ -177,9 +177,13 @@ class Node extends \Goteo\Core\Model {
             $values[':user'] = $filters['admin'];
         }
 
-        if (!empty($filters['available'])) {
-            $sqlFilter[] = "(active=1 OR id IN (SELECT node_id FROM user_role WHERE user_id = :user))";
-            $values[':user'] = $filters['available'];
+        if (isset($filters['available'])) {
+            if($filters['available']) {
+                $sqlFilter[] = "(active=1 OR id IN (SELECT node_id FROM user_role WHERE user_id = :user))";
+                $values[':user'] = $filters['available'];
+            } else {
+                $sqlFilter[] = "active=1";
+            }
         }
 
         if($sqlFilter) $sqlFilter = ' WHERE '. implode(' AND ', $sqlFilter);

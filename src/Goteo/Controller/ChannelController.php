@@ -51,7 +51,7 @@ class ChannelController extends \Goteo\Core\Controller {
         if(!$channel->active && (!$user || !$channel->userCanView($user)))
             throw new ControllerAccessDeniedException("You don't have permissions to access to this channel!");
 
-        $categories = Category::getList();
+        $categories = Category::getNames();
 
         $side_order = Home::getAll($id, 'side'); // side order
 

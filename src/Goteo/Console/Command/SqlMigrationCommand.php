@@ -34,9 +34,9 @@ class SqlMigrationCommand extends AbstractCommand {
              ->setDefinition(array(
                     new InputArgument('cmd', InputArgument::OPTIONAL, 'Command to execute. Try --help for info', 'status'),
                     new InputArgument('name', InputArgument::OPTIONAL, 'Name of the task file if command is "create"'),
-                    new InputOption('update', 'u', InputOption::VALUE_NONE, 'Executes all migrations pending'),
+                    new InputOption('update', 'u', InputOption::VALUE_NONE, 'Executes all pending migrations'),
                     new InputOption('debug', 'd', InputOption::VALUE_NONE, 'Switch the debug mode to output log on the debug level'),
-                    new InputOption('config', 'c', InputOption::VALUE_NONE, 'Switch the debug mode to output log on the debug level'),
+                    new InputOption('config', 'c', InputOption::VALUE_NONE, 'List configurations'),
                 ))
              ->setHelp(<<<EOT
 LibMigration is a minimum database migration library and framework for MySQL. version 1.1.0
@@ -51,15 +51,15 @@ Options:
   -d         : Switch the debug mode to output log on the debug level.
   -h         : List available command line options (this page).
   -c         : List configurations.
-  -u         : Executes all migrations pending
+  -u         : Executes all pending migrations
 
 Commands:
   create NAME     : Create new skeleton migration task file.
-  status          : List the migrations yet to be executed.
-  migrate         : Executes all migrations pending. (same as -u option)
-  up              : Executes only the next migration pending.
-  down            : Executes the next migration down.
-  install         : Installs the system from the scratch
+  status          : List the migrations yet to be executed (same as non options).
+  all             : Executes all pending migrations. (same as -u option)
+  up              : Executes only the next pending migration up.
+  down            : Executes the next migration down (reverts to a previous state).
+  install         : Installs the system from the scratch (only works on empty databases)
 
 EOT
 );

@@ -46,7 +46,7 @@ class Invest extends \Goteo\Core\Model {
     const STATUS_RELOCATED  = 5;  // deprecated status
     const STATUS_TO_POOL    = 6;  // refunded to user's pool
 
-    static $ACTIVE_STATUSES = [self::STATUS_PROCESSING, self::STATUS_PENDING, self::STATUS_CHARGED, self::STATUS_PAID];
+    static $ACTIVE_STATUSES = [self::STATUS_PENDING, self::STATUS_CHARGED, self::STATUS_PAID];
     static $FAILED_STATUSES = [self::STATUS_RELOCATED, self::STATUS_RETURNED, self::STATUS_TO_POOL, self::STATUS_CANCELLED];
 
     public
@@ -967,7 +967,7 @@ class Invest extends \Goteo\Core\Model {
                     ':s4' => self::STATUS_RETURNED,
                     ':s5' => self::STATUS_TO_POOL);
 
-        $sql = "SELECT  SUM(amount) as much
+        $sql = "SELECT  SUM(amount) as mutch
             FROM    invest
             WHERE   project = :project
             AND     invest.status IN (:s0, :s1, :s3, :s4, :s5)
@@ -991,20 +991,21 @@ class Invest extends \Goteo\Core\Model {
         $query = static::query($sql, $values);
         $got = $query->fetchObject();
 
-        if ($scope == 'users') {
-            // actualiza el amount invertido por los usuarios
-            static::query("UPDATE project SET amount_users = :num WHERE id = :project", array(':num' => (int) $got->much, ':project' => $project));
+        if($mutch = (int) $got->mutch) {
+            if ($scope == 'users') {
+                // actualiza el amount invertido por los usuarios
+                static::query("UPDATE project SET amount_users = :num WHERE id = :project", array(':num' => $mutch, ':project' => $project));
 
-        } elseif ($scope == 'call' && !empty($call)) {
-            // actualiza el amount invertido por el convocador
-            static::query("UPDATE project SET amount_call = :num WHERE id = :project", array(':num' => (int) $got->much, ':project' => $project));
-        } else {
-            //actualiza el el amount en proyecto (aunque se quede a cero)
-            static::query("UPDATE project SET amount = :num WHERE id = :project", array(':num' => (int) $got->much, ':project' => $project));
+            } elseif ($scope == 'call' && !empty($call)) {
+                // actualiza el amount invertido por el convocador
+                static::query("UPDATE project SET amount_call = :num WHERE id = :project", array(':num' => $mutch, ':project' => $project));
+            } else {
+                //actualiza el el amount en proyecto (aunque se quede a cero)
+                static::query("UPDATE project SET amount = :num WHERE id = :project", array(':num' => $mutch, ':project' => $project));
+            }
         }
 
-
-        return (int) $got->much;
+        return $mutch;
     }
 
     /*

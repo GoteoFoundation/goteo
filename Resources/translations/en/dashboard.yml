@@ -72,6 +72,13 @@ dashboard-project-updates-saved: 'Post updated correctly'
 dashboard-project-updates-add: 'Add new post'
 dashboard-project-updates-editing: 'Editing post'
 dashboard-project-updates-translating: 'Translating post'
+
+dashboard-project-updates-sent-to-investors: 'An email has been sent to all donors with this post content.'
+dashboard-project-updates-sent-to-investors-error: 'No email has been sent to donors: %s'
+dashboard-project-updates-sent-reason-no-investors: 'No donors yet!'
+dashboard-project-updates-sent-reason-no-unique: 'A previous email has been sent with the same post!'
+dashboard-project-updates-sent-reason-too-old: 'The post date is too old!'
+
 dashboard-rewards-address: 'Delivery address:'
 dashboard-rewards-all_filter: All
 dashboard-rewards-amount_group: 'Contributions by '
@@ -81,7 +88,7 @@ dashboard-rewards-date_order: 'By date'
 dashboard-rewards-fulfilled_filter: Fulfilled
 dashboard-rewards-fulfilled_status: Fulfilled
 dashboard-rewards-group_msg: 'message to this group'
-dashboard-rewards-investors_table: 'If you want to manage it offline, you can <a href="%URL%">download the Table of Co-Financiers</a>'
+dashboard-rewards-investors_table: 'If you want to manage it off-line, you can <a href="%URL%">download the Table of Co-Financiers</a>'
 dashboard-rewards-issue: Incidence!
 dashboard-rewards-massive_msg: 'Collective messages'
 dashboard-rewards-massive_msg-all: 'To all the co-financiers of this project'

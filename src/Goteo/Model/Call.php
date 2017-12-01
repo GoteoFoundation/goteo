@@ -15,10 +15,10 @@ class Call extends \Goteo\Core\Model {
 
     // CALL STATUS IDs
     const STATUS_EDITING     = 1;  // edicion
-    const STATUS_REVIEWING   = 2; // en revisión
-    const STATUS_APPLYING    = 3; // en campaña de inscripción
-    const STATUS_PUBLISHED   = 4; // en campaña de repartir dinero
-    const STATUS_SUCCEEDED   = 5; // se acabo el dinero
+    const STATUS_REVIEWING   = 2; // en revisFión
+    const STATUS_OPEN        = 3; // en campaña de inscripción
+    const STATUS_ACTIVE      = 4; // en campaña de repartir dinero
+    const STATUS_COMPLETED   = 5; // se acabo el dinero
     const STATUS_EXPIRED     = 6; // la hemos cancelado
 
 
@@ -437,8 +437,15 @@ class Call extends \Goteo\Core\Model {
     /**
      * Handy method to know if call is applying
      */
-    public function inApply() {
-        return $this->status == self::STATUS_APPLYING;
+    public function isOpen() {
+        return $this->status == self::STATUS_OPEN;
+    }
+
+    /**
+     * Handy method to know if call is dropping
+     */
+    public function isActive() {
+        return $this->status == self::STATUS_ACTIVE;
     }
 
     /**
@@ -465,16 +472,29 @@ class Call extends \Goteo\Core\Model {
     /*
      * Listado simple de todos los convocatorias
      */
-    public static function getAll() {
+    public static function getAll($filters = []) {
 
         $list = array();
+        $values = [];
+        $sqlFilter = [];
+
+        if (isset($filters['available'])) {
+            if($filters['available']) {
+                $sqlFilter[] = "(status IN (3,4) OR id IN (SELECT `call` FROM user_call WHERE user = :user))";
+                $values[':user'] = $filters['available'];
+            } else {
+                $sqlFilter[] = "status IN (3,4)";
+            }
+        }
+
 
         $query = static::query("
             SELECT
                 `call`.*
             FROM `call`
+            " . ($sqlFilter ? 'WHERE '. implode(" AND ", $sqlFilter) : '') . "
             ORDER BY call.opened DESC
-            ");
+            ", $values);
 
         foreach ($query->fetchAll(\PDO::FETCH_CLASS, __CLASS__) as $item) {
             $list[$item->id] = $item;
@@ -513,6 +533,21 @@ class Call extends \Goteo\Core\Model {
 
             return (int) $applied->cuantos;
     }
+
+        public function getTagmark() {
+
+            if(!$this->tagmark) {
+                if ($this->status == self::STATUS_OPEN) :
+                    $this->tagmark = 'open';
+                elseif ($this->status == self::STATUS_ACTIVE) :
+                    $this->tagmark = 'active';
+                // "en marcha" y "aun puedes" cuando está en la segunda ronda
+                elseif ($this->status == self::STATUS_COMPLETED) :
+                    $this->tagmark = 'completed';
+                endif;
+            }
+            return $this->tagmark;
+        }
 
 
     /*
@@ -1012,7 +1047,11 @@ class Call extends \Goteo\Core\Model {
         $list = array();
         $values = array(':lang'=>$lang);
 
-        if (in_array($status, array(3, 4, 5))) {
+
+        if(is_array($status)) {
+            $status = join("','",$status);
+            $sqlFilter .= " WHERE call.status IN ('$status')";
+        } elseif (in_array($status, array(3, 4, 5))) {
             $sqlFilter .= " WHERE call.status = $status"; // solo cierto estado
         } elseif ($all) {
             $sqlFilter .= " WHERE call.status IN ('3', '4', '5')"; // desde aplicacion hasta exitosa
@@ -1198,9 +1237,13 @@ class Call extends \Goteo\Core\Model {
             $values[':user'] = $filters['admin'];
         }
 
-        if (!empty($filters['available'])) {
-            $sqlFilter .= " AND (status IN (3,4) OR id IN (SELECT `call` FROM user_call WHERE user = :user))";
-            $values[':user'] = $filters['available'];
+        if (isset($filters['available'])) {
+            if($filters['available']) {
+                $sqlFilter .= " AND (status IN (3,4) OR id IN (SELECT `call` FROM user_call WHERE user = :user))";
+                $values[':user'] = $filters['available'];
+            } else {
+                $sqlFilter .= " AND status IN (3,4)";
+            }
         }
 
         //el Order
@@ -1563,7 +1606,7 @@ class Call extends \Goteo\Core\Model {
         $used = $query->fetchColumn();
 
         // actualizar el campo calculado
-        if ($used != $this->used) {
+        if ((int) $used != (int) $this->used) {
             static::query("UPDATE `call` SET used = :new WHERE id = :call", array(':new' => (int) $used, ':call'=>$this->id));
         }
 
@@ -2055,6 +2098,17 @@ class Call extends \Goteo\Core\Model {
         }
 
         return $list;
+    }
+
+    /**
+     *
+     * Return main sphere
+     *
+     */
+
+    public function getMainSphere()
+    {
+        return current($this->getSpheres($this->id));
     }
 
 

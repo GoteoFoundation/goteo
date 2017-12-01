@@ -46,7 +46,7 @@ $this->section('content');
 	<div class="container-fluid">
 		<div class="row header text-center">
 			<h1 class="project-title"><?= $project->name ?></h1>
-			<div class="project-by"><a href="/user/<?= $project->owner ?>"><?= $project->user->name; ?></a></div>
+			<div class="project-by"><a href="/user/<?= $project->owner ?>"><?= $project->user->name ?></a></div>
 		</div>
 
 		<div class="row">
@@ -97,9 +97,9 @@ $this->section('content');
 	    <?php foreach ($this->related_projects as $related_project) : ?>
 
 	              <div class="col-sm-6 col-md-4 col-xs-12 spacer">
-	                <?= $this->insert('project/widgets/normal', ['project' => $related_project]) ?>
+	                <?= $this->insert('project/widgets/normal', ['project' => $related_project, 'admin' => false]) ?>
 	              </div>
-	    <?php endforeach; ?>
+	    <?php endforeach ?>
     	</div>
 
     </div>
@@ -138,14 +138,14 @@ $this->section('content');
 
             <?php if(!$this->get_user() ): ?>
         		<a href="/project/favourite/<?= $project->id ?>">
-    		<?php endif; ?>
+    		<?php endif ?>
 	            <div class="pull-left text-right favourite <?= $this->get_user()&&$this->get_user()->isFavouriteProject($project->id) ? 'active' : '' ?>" >
 	                <span class="heart-icon glyphicon glyphicon-heart" aria-hidden="true"></span>
 	                <span> <?= $this->text('project-view-metter-favourite') ?></span>
 	            </div>
             <?php if(!$this->get_user() ): ?>
         		</a>
-    		<?php endif; ?>
+    		<?php endif ?>
 		</div>
 	</div>
 </div>

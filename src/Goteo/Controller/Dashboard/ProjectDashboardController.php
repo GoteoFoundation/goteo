@@ -643,8 +643,6 @@ class ProjectDashboardController extends DashboardController {
                 $old_id = $project->id;
                 $this->dispatch(AppEvents::PROJECT_READY, new FilterProjectEvent($project));
 
-                Message::info(Text::get('project-review-request_mail-success'));
-                Message::info(Text::get('project-review-confirm_mail-success'));
                 if(strpos($referer, $old_id) !== false) $referer = '/dashboard/project/' . $project->id . '/summary';
 
             } catch(\Exception $e) {

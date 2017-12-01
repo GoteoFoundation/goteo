@@ -1914,18 +1914,10 @@ class User extends \Goteo\Core\Model {
         $debug = false;
         $lang = Lang::current();
         $projects = array();
-        $values = array();
-        $values[':lang'] = $lang;
-        $values[':user'] = $user;
+        $values = array(':user' => $user);
 
-        if (self::default_lang($lang) === Config::get('lang')) {
-            $different_select = " IFNULL(project_lang.description, project.description) as description";
-        } else {
-            $different_select = " IFNULL(project_lang.description, IFNULL(eng.description, project.description)) as description";
-            $eng_join = " LEFT JOIN project_lang as eng
-                            ON  eng.id = project.id
-                            AND eng.lang = 'en'";
-        }
+
+        list($fields, $joins) = self::getLangsSQLJoins($lang, 'project', 'id', 'Goteo\Model\Project');
 
         if ($publicOnly) {
             $sqlFilter = " AND project.status > 2";
@@ -1953,7 +1945,7 @@ class User extends \Goteo\Core\Model {
         $sql = "
             SELECT
                 project.id as project,
-                $different_select,
+                $fields,
                 project.status as status,
                 project.published as published,
                 project.created as created,
@@ -1986,25 +1978,17 @@ class User extends \Goteo\Core\Model {
                 ON user.id = project.owner
             LEFT JOIN project_conf
                 ON project_conf.project = project.id
-            LEFT JOIN project_lang
-                ON  project_lang.id = project.id
-                AND project_lang.lang = :lang
-            $eng_join
+            $joins
             WHERE project.status < 7
             $sqlFilter
             ORDER BY  project.status ASC, project.created DESC
             $sql_limit
             ";
-
-        if ($debug) {
-            echo \trace($values);
-            echo $sql;
-            die;
-        }
+        // die(\sqldbg($sql, $values));
 
         $query = self::query($sql, $values);
         foreach ($query->fetchAll(\PDO::FETCH_CLASS, 'Goteo\Model\Project') as $proj) {
-            $projects[] = Project::getWidget($proj);
+            $projects[] = Project::getWidget($proj, $lang);
         }
         return $projects;
     }

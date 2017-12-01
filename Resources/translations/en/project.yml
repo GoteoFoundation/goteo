@@ -85,6 +85,7 @@ tooltip-updates-tags: 'Tooltip text updates-tags'
 tooltip-updates-text: tooltip-updates-text
 tooltip-updates-title: tooltip-updates-title
 project-about-title: 'About this project'
+project-call-got: 'The project already has raised <strong>%s</strong> from <strong>%s</strong>'
 project-chart-amount-ideal: Ideal
 project-chart-amount-reached: Acummulated
 project-chart-costs-reset: Back

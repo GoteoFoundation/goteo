@@ -100,6 +100,13 @@ dashboard-project-updates-saved: 'L''entrada s''ha actualitzat correctament'
 dashboard-project-updates-add: 'Nou post'
 dashboard-project-updates-editing: 'Editant post'
 dashboard-project-updates-translating: 'Traduint post'
+
+dashboard-project-updates-sent-to-investors: 'S''ha enviat un email a tots els cofinançadors amb el contingut d''aquest post.'
+dashboard-project-updates-sent-to-investors-error: 'No s''ha enviat cap email als cofinançadors: %s'
+dashboard-project-updates-sent-reason-no-investors: 'No hi ha cofinançadors encara!'
+dashboard-project-updates-sent-reason-no-unique: 'Ja s''ha enviat un email amb aquest post anteriorment!'
+dashboard-project-updates-sent-reason-too-old: 'La data del post es massa antiga!'
+
 dashboard-rewards-address: 'Adreça de lliurament'
 dashboard-rewards-all_filter: Totes
 dashboard-rewards-amount_group: 'Aportacions de'

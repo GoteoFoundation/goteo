@@ -105,6 +105,13 @@ dashboard-project-updates-saved: 'La entrada se ha actualizado correctamente'
 dashboard-project-updates-add: 'Nuevo post'
 dashboard-project-updates-editing: 'Editando post'
 dashboard-project-updates-translating: 'Traduciendo post'
+
+dashboard-project-updates-sent-to-investors: 'Se ha enviado un email a todos los cofinanciadores con el contenido de este post.'
+dashboard-project-updates-sent-to-investors-error: 'No se ha enviado ningún email a los cofinanciadores: %s'
+dashboard-project-updates-sent-reason-no-investors: 'No hay cofinanciadores todavía!'
+dashboard-project-updates-sent-reason-no-unique: 'Ya se ha enviado un email con este post anteriormente!'
+dashboard-project-updates-sent-reason-too-old: 'La fecha del post es demasiado antigua!'
+
 dashboard-rewards-address: 'Dirección de entrega:'
 dashboard-rewards-all_filter: Todas
 dashboard-rewards-amount_group: 'Aportaciones de '

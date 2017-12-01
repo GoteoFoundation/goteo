@@ -278,7 +278,7 @@ class UsersSend extends AbstractCommandController {
         $mailHandler->html = true;
         $mailHandler->template = $template->id;
         if ($mailHandler->send($errors)) {
-            static::info("Communication sent successfully to owner", ['type' => $type, $project, 'email' => $project->user->email, 'bcc' => $monitors, 'template' => $tpl]);
+            static::notice("Communication sent successfully to owner", ['type' => $type, $project, 'email' => $project->user->email, 'bcc' => $monitors, 'template' => $tpl]);
         } else {
             static::critical("ERROR sending communication to owner", ['type' => $type, $project, 'email' => $project->user->email, 'bcc' => $monitors, 'template' => $tpl, 'errors' => $errors]);
             $error_sending = true;
@@ -392,16 +392,14 @@ class UsersSend extends AbstractCommandController {
             $mailHandler->content = $content;
             $mailHandler->html = true;
             $mailHandler->template = $template->id;
-
             if ($mailHandler->send($errors)) {
-                static::info("Communication sent successfully to owner", ['type' => $type, 'consultant' => $id, 'name' => $name, 'email' => $consultant->email, $project, 'template' => $tpl]);
+                static::notice("Communication sent successfully to owner", ['type' => $type, 'consultant' => $id, 'name' => $name, 'email' => $consultant->email, $project, 'template' => $tpl]);
             } else {
                 static::critical("ERROR sending communication to consultant", ['type' => $type, 'consultant' => $id, 'name' => $name, 'email' => $consultant->email, $project, 'template' => $tpl, 'errors' => $errors]);
                 $error_sending = true;
             }
 
         }
-
         return !$error_sending;
     }
 

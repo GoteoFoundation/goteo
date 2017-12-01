@@ -11,6 +11,7 @@
 namespace Goteo\Model\Project;
 
 use Goteo\Application\Exception\ModelNotFoundException;
+use Goteo\Application\Exception\ModelException;
 use Goteo\Model\Project;
 use Goteo\Model\Invest;
 use Goteo\Model\Icon;
@@ -58,7 +59,7 @@ class Reward extends \Goteo\Core\Model {
             $query = static::query("SELECT * FROM reward WHERE id = :id", array(':id' => $id));
             return $query->fetchObject(__CLASS__);
         } catch (\PDOException $e) {
-            throw new \Goteo\Core\Exception($e->getMessage());
+            throw new ModelException($e->getMessage());
         }
     }
 
@@ -69,10 +70,17 @@ class Reward extends \Goteo\Core\Model {
             $icons = Icon::getList();
 
             $values = array(
-                ':project' => $project,
-                ':type' => $type,
-                ':lang' => $lang
+                ':type' => $type
             );
+
+            if($project instanceOf Project) {
+                $values[':project'] = $project->id;
+                list($fields, $joins) = self::getLangsSQLJoins($lang, $project->lang);
+            }
+            else {
+                $values[':project'] = $project;
+                list($fields, $joins) = self::getLangsSQLJoins($lang, 'project', 'project');
+            }
 
             $sqlFilter = "";
             if (!empty($fulfilled)) {
@@ -84,41 +92,10 @@ class Reward extends \Goteo\Core\Model {
                 $values[':icon'] = $icon;
             }
 
-            // FIXES #42
-            $join = " LEFT JOIN reward_lang
-                        ON  reward_lang.id = reward.id
-                        AND reward_lang.project = :project
-                        AND reward_lang.lang = :lang
-            ";
-            $eng_join = '';
-
-            // tener en cuenta si se solicita el contenido original
-            if (!isset($lang)) {
-                $different_select=" reward.reward as reward,
-                                    reward.description as description,
-                                    reward.other as other";
-                $join = '';
-                unset($values[':lang']);
-
-            } elseif(self::default_lang($lang) == Config::get('lang')) {
-                $different_select=" IFNULL(reward_lang.reward, reward.reward) as reward,
-                                    IFNULL(reward_lang.description, reward.description) as description,
-                                    IFNULL(reward_lang.other, reward.other) as other";
-
-            } else {
-                    $different_select=" IFNULL(reward_lang.reward, IFNULL(eng.reward, reward.reward)) as reward,
-                                        IFNULL(reward_lang.description, IFNULL(eng.description, reward.description)) as description,
-                                        IFNULL(reward_lang.other, IFNULL(eng.other, reward.other)) as other";
-                    $eng_join=" LEFT JOIN reward_lang as eng
-                                    ON  eng.id = reward.id
-                                    AND eng.project = :project
-                                    AND eng.lang = 'en'";
-                }
-
             $sql = "SELECT
                         reward.id as id,
                         reward.project as project,
-                        {$different_select} ,
+                        $fields,
                         reward.type as type,
                         reward.icon as icon,
                         reward.license as license,
@@ -129,8 +106,7 @@ class Reward extends \Goteo\Core\Model {
                         reward.bonus,
                         reward.category
                     FROM    reward
-                    {$join}
-                    {$eng_join}
+                    $joins
                     WHERE   reward.project = :project
                         AND type= :type
                     $sqlFilter
@@ -145,7 +121,7 @@ class Reward extends \Goteo\Core\Model {
                 //     ORDERED BY AMOUNT
                 $sql .= ", reward.amount ASC, reward.order ASC";
             }
-            // die(\sqldbg($sql, $values));
+            // if($lang) die("[$lang] ".\sqldbg($sql, $values));
             $query = self::query($sql, $values);
             foreach ($query->fetchAll(\PDO::FETCH_CLASS, __CLASS__) as $item) {
 
@@ -158,7 +134,7 @@ class Reward extends \Goteo\Core\Model {
 
                 if($type == 'social'&&$item->category)
                 {
-                    $item->category=MainCategory::get($item->category);
+                    $item->category=MainCategory::get($item->category, $lang);
                     $item->category->image=new CategoryImage($item->category->image);
                 }
 
@@ -167,50 +143,41 @@ class Reward extends \Goteo\Core\Model {
             // print_r($array);
             return $array;
         } catch (\PDOException $e) {
-            throw new \Goteo\Core\Exception($e->getMessage());
+            throw new ModelException($e->getMessage());
         }
     }
 
     public static function getWidget($project, $lang = null) {
         if(empty($lang)) $lang = Lang::current();
-        $debug = false;
 
         try {
             $array = array();
 
-            $values = array(
-                ':project' => $project,
-                ':lang' => $lang
-            );
+            $values = array(':project' => $project);
 
             $icons = Icon::getList();
             // die(\trace($icons));
 
 
-            if(self::default_lang($lang)=='es') {
-                $different_select=" IFNULL(reward_lang.reward, reward.reward) as reward";
-                }
+            if($project instanceOf Project) {
+                $values[':project'] = $project->id;
+                list($fields, $joins) = self::getLangsSQLJoins($lang, $project->lang);
+            }
             else {
-                    $different_select=" IFNULL(reward_lang.reward, IFNULL(eng.reward, reward.reward)) as reward";
-                    $eng_join=" LEFT JOIN reward_lang as eng
-                                    ON  eng.id = reward.id
-                                    AND eng.project = :project
-                                    AND eng.lang = 'en'";
-                }
+                $values[':project'] = $project;
+                list($fields, $joins) = self::getLangsSQLJoins($lang, 'project', 'project');
+            }
+
 
             $sql = "SELECT
                         reward.id as id,
                         reward.project as project,
-                        $different_select,
+                        $fields,
                         reward.type as type,
                         reward.icon as icon,
                         reward.amount as amount
                     FROM    reward
-                    LEFT JOIN reward_lang
-                        ON  reward_lang.id = reward.id
-                        AND reward_lang.project = :project
-                        AND reward_lang.lang = :lang
-                    $eng_join
+                    $joins
                     WHERE   reward.project = :project
                     ";
 
@@ -221,13 +188,6 @@ class Reward extends \Goteo\Core\Model {
             // limite
             $sql .= " LIMIT 4";
 
-            if ($debug) {
-                echo \trace($values);
-                echo $sql;
-                die;
-            }
-
-
             $query = self::query($sql, $values);
             foreach ($query->fetchAll(\PDO::FETCH_CLASS, __CLASS__) as $item) {
 
@@ -237,7 +197,7 @@ class Reward extends \Goteo\Core\Model {
             }
             return $array;
         } catch (\PDOException $e) {
-            throw new \Goteo\Core\Exception($e->getMessage());
+            throw new ModelException($e->getMessage());
         }
     }
 
@@ -595,7 +555,7 @@ class Reward extends \Goteo\Core\Model {
             }
             return $array;
         } catch (\PDOException $e) {
-            throw new \Goteo\Core\Exception($e->getMessage());
+            throw new ModelException($e->getMessage());
         }
     }
 

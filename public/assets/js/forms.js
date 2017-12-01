@@ -127,8 +127,9 @@ $(function(){
                     type: 'PUT',
                     data: {value: val}
                 }).success(function(data) {
-                    original = _setValue.call($input[0], data);
+                    original = _setValue.call($input[0], data.value);
                     $(document).trigger('form-boolean-changed', [$input[0]]);
+                    if(data.message) alert(data.message);
                     // console.log('saved', data);
                 }).fail(function(error) {
                     var json = JSON.parse(error.responseText);

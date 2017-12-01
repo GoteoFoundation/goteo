@@ -616,6 +616,7 @@ div {
   }
   &.social-commitment {
     margin-top: 10px;
+    padding-bottom: 20px;
     img.social-img {
       margin: 0 auto;
     }
@@ -1290,7 +1291,7 @@ div {
     font-size: 2em;
   }
 
-  
+
 }
 
 @media (max-width: $breakpoint-xs - 1) {

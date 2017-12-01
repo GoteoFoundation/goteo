@@ -197,18 +197,20 @@ abstract class AbstractMatcherProcessor implements MatcherProcessorInterface {
 
     /**
      * Defaults event listeners for this processor
-     * GenericMatcherListener: Sends mails on project matcher status changes
+     * MailingMatcherListener: Sends mails on project matcher status changes
      * InvestMatcherListener: Processes the matchfunding payments on invests events
      */
     static public function getAppEventListeners() {
         return [
-            'Goteo\Application\EventListener\GenericMatcherListener' => ['logger'],
-            'Goteo\Application\EventListener\InvestMatcherListener'  => ['pay_logger']
+            'Goteo\Application\EventListener\MailingMatcherListener' => ['logger'],
+            'Goteo\Application\EventListener\InvestMatcherListener'  => ['paylogger']
         ];
     }
 
     static public function getConsoleEventListeners() {
-        return [];
+        return [
+            'Goteo\Application\EventListener\MailingMatcherListener' => ['console_logger']
+        ];
     }
 
 }

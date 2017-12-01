@@ -66,7 +66,7 @@ class LocationType extends TextType
             // print_r($ob->getFormatted());die;
             $builder->add('formatted_address', TextType::class, ['data' => $ob ? $ob->getFormatted() : '']);
         }
-
+        // var_dump($options);die;
         $builder->add('location', TextType::class);
 
         $builder->addViewTransformer(new CallbackTransformer(
