@@ -55,9 +55,16 @@ class MailStats extends \Goteo\Core\Model
 
         $obj = $query->fetchObject(__CLASS__);
         if(! ($obj instanceOf \Goteo\Model\Mail\MailStats) ) {
-            if($auto_create) { $obj = new self(['metric_id' => $metric->id, 'mail_id' => $mail_id, 'email' => $email, 'created_at' => date("Y-m-d H:i:s")]);
+            if($auto_create) {
+                $obj = new self([
+                    'metric_id' => $metric->id,
+                    'mail_id' => $mail_id,
+                    'email' => $email,
+                    'created_at' => date("Y-m-d H:i:s")
+                ]);
             }
-            else {             return false;
+            else {
+                return false;
             }
         }
         return $obj;
@@ -132,6 +139,10 @@ class MailStats extends \Goteo\Core\Model
 
         try {
             $this->dbInsertUpdate(['mail_id', 'email', 'metric_id', 'counter'], ['mail_id', 'email', 'metric_id']);
+            // ensure id is correct
+            if($s = self::getStat($this->mail_id, $this->email, $this->getMetric(), false)) {
+                $this->id = $s->id;
+            }
             return true;
         }
         catch(\PDOException $e) {

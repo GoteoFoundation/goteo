@@ -48,7 +48,7 @@ class Mail extends \Goteo\Core\Model {
         $html = true,
         $massive = false,
         $template = null,
-        $sent,
+        $sent = null,
         $error = '',
         $log,
         $status = 'pending',
@@ -458,7 +458,7 @@ class Mail extends \Goteo\Core\Model {
                         if (! $stat->save($errors) ) {
                             throw new ModelException(implode("\n", $errors));
                         }
-
+                        // var_dump($stat);die;
                         $new = SITE_URL . '/mail/link/' . $stat->id;
                     } catch(ModelException $e) {
                         $this->logger('Error creating MailStats, fallback to base64', ['error' => $e->getMessage()], 'error');
