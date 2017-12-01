@@ -109,6 +109,7 @@ class CacheStatement extends \PDOStatement {
                 $value = $this->cache->retrieve($key);
             } else {
                 $key = $this->cache_key . serialize($args) .'-'. $method;
+                // echo "[$key]";
                 // In memory cache
                 if(array_key_exists($key, self::$in_memory_cache)) {
                     $value = self::$in_memory_cache[$key];

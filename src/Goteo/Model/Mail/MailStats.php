@@ -139,10 +139,6 @@ class MailStats extends \Goteo\Core\Model
 
         try {
             $this->dbInsertUpdate(['mail_id', 'email', 'metric_id', 'counter'], ['mail_id', 'email', 'metric_id']);
-            // ensure id is correct
-            if($s = self::getStat($this->mail_id, $this->email, $this->getMetric(), false)) {
-                $this->id = $s->id;
-            }
             return true;
         }
         catch(\PDOException $e) {

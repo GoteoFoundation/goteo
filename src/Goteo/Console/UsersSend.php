@@ -400,7 +400,6 @@ class UsersSend extends AbstractCommandController {
             }
 
         }
-
         return !$error_sending;
     }
 
