@@ -3808,7 +3808,7 @@ namespace Goteo\Model {
                         ) as `maxcost`
                 FROM project
                 WHERE id =?", array($id));
-            if($costs = $cost_query->fetchObject()) {
+            if($costs = $cost_query->skipCache()->fetchObject()) {
                 if($costs->mincost != $costs->oldmincost || $costs->maxcost != $costs->oldmaxcost) {
                     self::query("UPDATE
                         project SET
