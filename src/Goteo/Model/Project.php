@@ -511,6 +511,7 @@ namespace Goteo\Model {
                     project.analytics_id,
                     project.facebook_pixel,
                     project.social_commitment,
+                    project.spread,
                     project.execution_plan,
                     project.execution_plan_url,
                     project.sustainability_model,
