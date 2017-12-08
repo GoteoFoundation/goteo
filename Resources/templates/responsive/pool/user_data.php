@@ -1,41 +1,26 @@
 <?php
 
-$this->layout('layout', [
-    'bodyClass' => '',
-    'title' => 'Make sure :: Goteo.org',
-    'meta_description' => $this->text('meta-description-discover')
-    ]);
+$this->layout('pool/layout');
 
-$this->section('content');
+$this->section('dashboard-content-pool');
 
 ?>
 
-<?= $this->insert('pool/partials/steps_bar') ?>
+<div class="pool-container">
 
-<div class="container">
+    <h2 class="padding-bottom-2"><?= $this->text('pool-make-sure-title') ?></h2>
 
-	<div class="row row-form">
-			<div class="panel panel-default invest-container">
-				<div class="panel-body">
+    <?= $this->insert('pool/partials/invest_header_form') ?>
 
-                    <h2 class="col-sm-offset-1 padding-bottom-2"><?= $this->text('pool-make-sure-title') ?></h2>
+    <?= $this->supply('sub-header', $this->get_session('sub-header')) ?>
 
-                    <?= $this->insert('pool/partials/invest_header_form') ?>
+    <form class="form" id="make-sure-form" role="form" method="POST" action="/pool/<?= $this->invest->id ?>">
 
-                    <?= $this->supply('sub-header', $this->get_session('sub-header')) ?>
+        <?= $this->supply('invest-form', $this->insert('invest/partials/invest_address_form')) ?>
 
-                    <form class="form-horizontal" id="make-sure-form" role="form" method="POST" action="/pool/<?= $this->invest->id ?>">
+        <?= $this->insert('invest/partials/invest_submit_form') ?>
 
-                        <?= $this->supply('invest-form', $this->insert('invest/partials/invest_address_form')) ?>
-
-                        <?= $this->insert('invest/partials/invest_submit_form') ?>
-
-					</form>
-
-
-				</div>
-			</div>
-	</div>
+	</form>
 
 </div>
 

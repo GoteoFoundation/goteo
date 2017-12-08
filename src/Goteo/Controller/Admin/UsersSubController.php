@@ -143,7 +143,8 @@ class UsersSubController extends AbstractSubController {
             });
             Session::destroy();
             Session::setUser($user);
-            Session::store('shadowed_by', [$this->user->id, $this->user->name, self::getUrl('impersonate', $id)]);
+            // Session::store('shadowed_by', [$this->user->id, $this->user->name, self::getUrl('impersonate', $id)]);
+            Session::store('shadowed_by', [$this->user->id, $this->user->name, $this->getReferer() ? $this->getReferer() : self::getUrl('impersonate', $id)]);
             // Evento Feed
             $log = new Feed();
             $log->setTarget(Session::getUserId(), 'user');
@@ -153,7 +154,9 @@ class UsersSubController extends AbstractSubController {
                 Feed::item('user', Session::getUser()->name, Session::getUserId())
             )));
             $log->doAdmin('user');
-            return $this->redirect('/dashboard');
+            $referer = $this->getReferer();
+            if(!$referer || strpos($referer, '/admin')) $referer = '/dashboard';
+            return $this->redirect($referer);
         }
 
         // vista de acceso a suplantación de usuario
@@ -274,6 +277,7 @@ class UsersSubController extends AbstractSubController {
                 'location'=> UserLocation::get($user),
                 'poolAmount' => $user->getPool()->getAmount(),
                 'nodes' => $nodes,
+                'all_nodes' => $all_nodes,
                 'node_roles' => $user->getAllNodeRolesRaw(),
                 'new_roles' => User::getRolesList($this->user->getNodeRole($this->node)),
                 'langs' => Lang::listAll('name', false)

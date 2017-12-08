@@ -78,7 +78,7 @@ class GlossarySubController extends AbstractSubController {
                 $editing = false;
 
                 if ($this->getPost('id')) {
-                    $post = Model\Glossary::get($this->getPost('id'));
+                    $post = Model\Glossary::get($this->getPost('id'), Config::get('lang'));
                 } else {
                     $post = new Model\Glossary();
                 }
@@ -165,7 +165,7 @@ class GlossarySubController extends AbstractSubController {
                     return $this->redirect('/admin/glossary');
                     break;
                 } else {
-                    $post = Model\Glossary::get($id);
+                    $post = Model\Glossary::get($id, Config::get('lang'));
 
                     if (!$post instanceof Model\Glossary) {
                         Message::error('La entrada esta corrupta, contacte con nosotros.');

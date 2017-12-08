@@ -93,6 +93,9 @@ class DB extends \PDO {
 	public function prepare($statement, $driver_options = array(), $select_from_replica = true) {
 
 		$this->is_select = (strtolower(rtrim(substr(ltrim($statement), 0, 7))) == 'select');
+        if(stripos($statement, 'FROM') === false) $this->is_select = false;
+        if(stripos($statement, 'LAST_INSERT_ID') !== false) $this->is_select = false;
+
 		if ($this->read_replica && $this->is_select && $select_from_replica) {
 			$this->read_replica->is_select = true;
 			//usamos el objecto replica

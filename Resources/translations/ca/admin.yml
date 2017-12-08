@@ -1,3 +1,4 @@
+admin-action: 'Acció d''administrador'
 admin-NO: 'NO'
 admin-account-amount: 'Quantitat aportada'
 admin-account-detail: 'Detalls de la transacció'
@@ -52,3 +53,22 @@ admin-status: Estat
 admin-user: Usuari
 admin-users: Usuaris
 admin-yes: Si
+admin-filters: Filtres
+admin-remove-filters: 'Treure filtres'
+admin-impersonate-user: Suplanta a %s
+admin-project-express-discard: 'Rebuig express'
+admin-project-express-discard-desc: 'Passa el projecte a estat Descartat i envia un email'
+admin-project-express-discard-sure: 'S''enviarà un email automàtic i es passarà a estat descartat,Ook?'
+
+admin-project-to-review: 'A revisió'
+admin-project-to-review-desc: 'Passa el projecte a l''estat Pendent de valoració'
+admin-project-to-review-sure: 'El creador no podrà editar més el projecte, ok?'
+admin-project-view-in-admin: 'Veure a l''admin'
+
+admin-project-to-negotiation: 'A negociació'
+admin-project-to-negotiation-desc: 'Passa el projecte a l''estat Editant-se'
+admin-project-to-negotiation-sure: 'ALERTA!! El projecte està en campanya! Amb això el des-publicarem, Ok?'
+
+admin-project-to-publish: 'Publica'
+admin-project-to-publish-desc: 'Passa el projecte a l''estat "En campanya"'
+admin-project-to-publish-sure: 'El projecte començarà la campanya, ok?'

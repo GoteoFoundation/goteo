@@ -15,3 +15,7 @@ ADD INDEX ( `project` );
 
 -- rellenar este campo
 UPDATE support_lang SET support_lang.project = (SELECT support.project FROM support WHERE support.id = support_lang.id);
+
+-- create foreign indexs
+DELETE FROM support_lang WHERE id NOT IN (SELECT id FROM support);
+ALTER TABLE `support_lang` CHANGE `id` `id` BIGINT(20) UNSIGNED NOT NULL, ADD FOREIGN KEY (`id`) REFERENCES `support`(`id`) ON UPDATE CASCADE ON DELETE CASCADE;

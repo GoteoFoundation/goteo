@@ -17,3 +17,6 @@ ALTER TABLE `project_category`
     FOREIGN KEY (`category`) REFERENCES `category` (`id`) ,
     ADD CONSTRAINT `fk_project`
     FOREIGN KEY (`project`) REFERENCES `project` (`id`) ;
+
+-- Fix foreign keys
+ALTER TABLE `project_category` CHANGE `category` `category` INT(10) UNSIGNED NOT NULL, ADD FOREIGN KEY (`project`) REFERENCES `project`(`id`) ON UPDATE CASCADE ON DELETE CASCADE, ADD FOREIGN KEY (`category`) REFERENCES `category`(`id`) ON UPDATE CASCADE ON DELETE CASCADE;

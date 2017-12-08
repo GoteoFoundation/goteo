@@ -13,11 +13,12 @@
 namespace Goteo\Controller\Admin;
 
 use Goteo\Application\Exception\ControllerAccessDeniedException;
+use Goteo\Application\Config;
 use Goteo\Application\Exception;
-use Goteo\Library\Feed,
-    Goteo\Application\Message,
-	Goteo\Application\Session,
-    Goteo\Model;
+use Goteo\Library\Feed;
+use Goteo\Application\Message;
+use Goteo\Application\Session;
+use Goteo\Model;
 
 class PromoteSubController extends AbstractSubController {
 
@@ -41,7 +42,7 @@ class PromoteSubController extends AbstractSubController {
     public function editAction($id) {
         $this->checkItemPermission($id);
 
-        $promo = Model\Promote::get($id);
+        $promo = Model\Promote::get($id, Config::get('lang'));
         if ($promo && $this->isPost()) {
 
             try {
@@ -152,7 +153,7 @@ class PromoteSubController extends AbstractSubController {
                         Model\Project::STATUS_FULFILLED]];
 
         $node=$this->isMasterNode() ? null :  $this->node;
-        
+
         return array(
                 'template' => 'admin/promote/edit',
                 'action' => '/admin/promote/add',

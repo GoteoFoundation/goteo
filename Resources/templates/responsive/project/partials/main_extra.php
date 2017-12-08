@@ -46,13 +46,6 @@ $langs = $project->getLangs();
                                 <img class="location" src="<?= SRC_URL . '/assets/img/project/location.png' ?>">
                                 <span class="tag"><?= $project->project_location ?></span>
                             </div>
-                            <?php if ($project->node !== $this->get_config('current_node')&&($project->nodeData->active)) : ?>
-                                <div class="pull-left">
-                                    <a href="<?= $project->nodeData->url ?>">
-                                        <button class="btn btn-block grey text-uppercase"><?= $this->text('regular-channel') .' '. $project->nodeData->name ?></button>
-                                    </a>
-                                </div>
-                            <?php endif; ?>
                         </div>
 
                         <?php if (count($langs) > 1) : ?>
@@ -112,9 +105,10 @@ $langs = $project->getLangs();
                         <div class="row no-margin spacer-10" id="link-box" style="display:none;">
                             <input type="text" class="form-control" value="<?= $share_url ?>" >
                         </div>
+
                         <!-- Call in sm version -->
                         <?php if($project->called): ?>
-                            <a href="<?= $this->get_url() ?>/call/<?php echo $project->called->id ?>" target="_blank">
+                            <a href="<?= $this->get_url() ?>/call/<?= $project->called->id ?>/projects" target="_blank">
                                 <div class="call-info-container visible-sm">
                                     <div class="row call-info col-lg-10 col-md-11 col-sm-12">
                                         <div class="col-xs-2 no-padding" >
@@ -140,6 +134,7 @@ $langs = $project->getLangs();
                             </a>
                         <?php endif; ?>
                         <!-- end call in sm version -->
+
                     </div>
                 </div>
 
@@ -167,8 +162,9 @@ $langs = $project->getLangs();
                     </a>
                 </div>
             </div>
+
             <?php if($project->called): ?>
-            <a href="<?= $this->get_url() ?>/call/<?php echo $project->called->id ?>" target="_blank">
+            <a href="<?= $this->get_url() ?>/call/<?php echo $project->called->id ?>/projects" target="_blank">
                 <div class="col-sm-4 call-info-container hidden-sm hidden-xs">
                     <div class="row call-info col-lg-10 col-md-11 col-sm-12">
                         <div class="col-xs-2 no-padding" >
@@ -191,6 +187,20 @@ $langs = $project->getLangs();
             </a>
             <?php endif; ?>
 
+            <?php if ($project->node !== $this->get_config('current_node')&&($project->nodeData->active)) : ?>
+
+                    <div class="col-sm-4 hidden-sm hidden-xs channel" style="<?= !$project->called ? 'margin-top: 55px;' : '' ?>">
+                        <span class="channel-label">
+                            <img src="/assets/img/project/channel.svg" width="20"> <?= $this->text('regular-channel') ?>
+                        </span>
+                        <a href="<?= $project->nodeData->url ?>">
+                            <button class="btn" style="<?= $project->nodeData->owner_background ? 'background-color: '.$project->nodeData->owner_background :  '' ?>" >
+                            <?= $project->nodeData->name ?>
+                            </button>
+                        </a>
+                    </div>
+            <?php endif; ?>
+
              <div class="panel panel-default widget rewards rewards-collapsed visible-xs">
                 <a class="accordion-toggle collapsed" data-toggle="collapse" data-target="#collapseRewards">
                     <div class="panel-heading">
@@ -203,12 +213,12 @@ $langs = $project->getLangs();
                 <div id="collapseRewards" class="panel-collapse collapse">
                    <div class="panel-body">
 
-                        <?php foreach ($project->individual_rewards as $individual) : ?>
+                        <?php foreach ($this->individual_rewards as $individual) : ?>
                         <div class="side-widget">
 
                             <div class="amount"><?= $this->text('regular-investing').' '.amount_format($individual->amount); ?></div>
                             <div class="text-bold spacer-20"><?= $individual->reward ?></div>
-                            <div class="spacer-20"><?= $individual->description ?></div>
+                            <div class="spacer-20"><?= $this->text_url_link($individual->description) ?></div>
 
                             <div class="investors">
                                 <?= '> '.sprintf("%02d", $individual->taken).' '.$this->text('project-view-metter-investors') ?>

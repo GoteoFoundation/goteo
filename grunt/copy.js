@@ -51,7 +51,9 @@ module.exports = function(grunt) {
             dot: true,
             cwd: '<%= goteo.app %>',
             dest: '.tmp',
-            src: '**/*'
+            // CSS is copied by SASS plugin
+            src: [ '*', 'assets/js/**/*', 'assets/vendor/**/*', 'assets/img/**/*', 'templates/**/*', 'view/**/*' ]
+
         },
 
         dist: {
@@ -59,16 +61,25 @@ module.exports = function(grunt) {
             dot: true,
             cwd: '<%= goteo.app %>',
             dest: '<%= goteo.dist %>',
-            src: '**/*'
+            src: [ '*', 'assets/vendor/**/*', 'assets/img/**/*', 'templates/**/*', 'view/**/*' ]
         },
 
-        // some files will be modified in order to add .js an .css revisioned files (minified, etc)
-        headers: {
-            expand: true,
-            dot: true,
-            cwd: '<%= goteo.templates %>/default/',
-            dest: '<%= goteo.dist %>/templates/',
-            src: '**/templates/**/styles.php'
+        fonts: {
+            files: [{
+                expand: true,
+                flatten: true,
+                dot: true,
+                cwd: '<%= goteo.app %>/assets/vendor/',
+                dest: '<%= goteo.dist %>/assets/fonts/',
+                src: [ '**/fonts/*' ]
+            },{
+                expand: true,
+                flatten: true,
+                dot: true,
+                cwd: '<%= goteo.app %>/assets/vendor/summernote/dist/font/',
+                dest: '<%= goteo.dist %>/assets/css/font/',
+                src: [ '*' ]
+            }]
         }
     });
     grunt.loadNpmTasks('grunt-contrib-copy');

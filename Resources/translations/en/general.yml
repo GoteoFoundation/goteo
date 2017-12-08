@@ -37,7 +37,7 @@ goteo-return-button: 'Back to Goteo'
 guide-dashboard-user-access: 'You can change the information with which you log in to your Goteo account.'
 guide-dashboard-user-personal: 'You should only fill in this data if you have created a project and you want it to be co-financed and supported through Goteo. The information in this section is necessary so that we can contact you in the event that you obtain the necessary co-financing, and make the corresponding deposit.'
 guide-project-comment: guide-project-comment
-guide-project-contract-information: '<strong>The only thing left is to fill in your data if you want your project to be co-financed and supported through Goteo.</strong><br><br>The information in this section is necessary so that we can contact you if you get the required financing, and be able to make the deposit. In the case of organizations, we recommend that the representative of the organization be formally accredited (for example, by way of the statutes or a certificate of the secretary with an OK from the president, in the case of associations).'
+guide-project-contract-information: 'The information in this section is necessary so that we can contact you if you get the required financing, and be able to make the deposit. In the case of organizations, we recommend that the representative of the organization be formally accredited (for example, by way of the statutes or a certificate of the secretary with an OK from the president, in the case of associations).'
 guide-project-costs: '<strong>In this section, you should fill out a short business plan based on the estimated costs for your project.</strong><br><br>You should break down the numbers by tasks, infrastructure, or materials. Try to be realistic about the costs and briefly explain why you need each one. Keep in mind that, as a general rule, the better part of the project will have to be undertaken by the person or team that is promoting the project, and not subcontracted to third parties. For the calculation, also keep in mind the commissions for Goteo''s provision of services and transaction, which add up to around 4''8%-6%, depending on the activation -or not- of the Paypal payment option (<a href="/faq/sponsor#q98" target="new">+ info in our FAQ</a>). <br><br><strong>Very important</strong>: On Goteo, we differentiate between necessary and supplemental costs. The former must be totally covered in order to obtain funding, while the latter can be obtained as part of a second campaign once the project is underway, in order to cover optimization costs (promotion, design, outreach, additional units, etc.) These supplemental costs can not be more than one half of the total cost of the project.'
 guide-project-description: '<strong>Use this section to explain the conceptual aspects of the project</strong><br><br>This is the first information that a visitor to the site will see. For that reason, we recommend being careful with editing and avoiding typos. You will see that there are required fields, including one for video and images. We believe that these are essential for starting a campaign to raise funds via Goteo.<br><br>Keep in mind that the most valuable thing to Goteo is: the free information and general knowledge that your project will bring to the community, the originality, the desire to answer a social need, the power to attract a wide community of interested people, making it clear that the promotion team has the capacity and experience to bring the project to fruition. So don''t forget to give us information about all of these points.'
 guide-project-images: 'Pictures might be photographs, screenshots, outlines, illustrations, storyboards, etc. (their authoring license should be compatible with what you choose in section. You can upload as many as you like'
@@ -45,13 +45,16 @@ guide-project-rewards: '<strong>In this section, you should establish what the p
 guide-project-support: guide-project-support
 guide-project-supports: '<strong>In this section you will specify what other support, apart from financing, that you will need in order to complete the project.</strong><br><br>They can consist of collaboration or assistance from other people (translations, organization, promotion, etc.) or perhaps specific loans (of material, transportation, hardware, etc.)'
 guide-project-updates: '<b>It''s very important that the projects keep their co-financiers and other potentially interested people up to date about how the campaign is progressing. Use this section like a blog to publish updates about the project.</b>On Goteo, after you''ve achieved the minimum financing, and as you go into the second round, it''s essential to periodically explain how the production, progress, problems, etc. are going in order to allow the most transparency possible in order to generate even more interest and community.'
+guide-project-invests: 'In this section you will be able to manage your co-financiers, the rewards they have chosen and contact them if you need to.'
+
 header-about-side: 'What inspires us'
 home-posts-header: News
-horizontal-project-investors: cofinanciadores
-horizontal-project-percent: financiado
-horizontal-project-reached: conseguido
+horizontal-project-investors: 'co-financiers'
+horizontal-project-percent: 'funded'
+horizontal-project-reached: 'reached'
 invest-individual-header: 'You can decline to receive rewards for your contribution, or select those that match or are under the amount that you have entered.'
-login-register-conditions: 'As you register, you accept our <a href="/legal/terms" target="_blank">terms & conditions</a>, <a href="/legal/privacy" target="_blank">Privacy</a> & <a href="legal/cookies" target="_blank">Cookies Policies</a>.'
+login-register-conditions: 'As you register, you accept our <a href="/legal/terms" target="_blank">terms & conditions</a>, <a href="/legal/privacy" target="_blank">Privacy</a> & <a href="/legal/cookies" target="_blank">Cookies Policies</a>.'
+login-accept-conditions: 'I accept the <a href="/legal/terms" target="_blank">terms & conditions</a>, <a href="/legal/privacy" target="_blank">Privacy</a> & <a href="/legal/cookies" target="_blank">Cookies Policies</a>.'
 mandatory-cost-field-type: 'You have to select the type of cost'
 mandatory-individual_reward-field-amount: 'You have to specify the amount that qualifies for the reward'
 mandatory-project-costs: 'These should be broken down into at least two groups.'
@@ -59,7 +62,7 @@ mandatory-register-field-email: 'You have to enter an email address'
 mark-pending: 'Mark as pending translation'
 meta-description-index: 'Goteo is an open network for crowdfunding, collaborations and training, leader in social innovation. With 2 rounds and fiscal advantages for donors!'
 node-menu-home: Node
-overview-field-about: 'Main features'
+overview-field-about: 'Main features and goals of the crowdfunding campaign'
 overview-field-motivation: 'Why this is important'
 profile-about-header: 'About me'
 project-invest-total: 'Total contributions'
@@ -69,6 +72,7 @@ regular-admin_board: 'Admin panel'
 regular-allsome: 'all/some of'
 regular-anonymous: Anonymous
 regular-ask: Ask
+regular-submit: Send
 regular-by: 'By:'
 regular-calendar: Calendar
 regular-channel: Canal
@@ -77,8 +81,12 @@ regular-create: 'Create a project'
 regular-days: days
 regular-delete: Erase
 regular-discover: 'Discover projects'
+regular-discard: 'Discard'
+regular-download-pdf: 'Download PDF'
+regular-actions: Actions
 regular-edit: Edit
 regular-email: Email
+regular-join: 'Join'
 regular-facebook: Facebook
 regular-faq: 'Frequently asked questions'
 regular-first: First
@@ -110,12 +118,14 @@ regular-manage_board: 'Processing Agency Panel'
 regular-mandatory: 'Required field!'
 regular-media_legend: Key
 regular-menu: Menu
+regular-menu-personal: Personal menu
 regular-message-clipboard-fail: 'Select and copy this link'
 regular-message_fail: 'There was an error sending the message'
 regular-message_success: 'Message sent correctly'
 regular-months: months
 regular-more_info: 'Plus d''info'
 regular-news: News
+regular-name: Name
 regular-no: 'No'
 regular-of: of
 regular-preview: Preview
@@ -139,15 +149,38 @@ regular-share-twitter: 'Follow us on Twitter'
 regular-share_this: 'Share on:'
 regular-sorry: 'We are sorry'
 regular-thanks: 'Thank you'
+regular-title: 'Title'
+regular-text: 'Text'
+regular-media: Video (Youtube, Vimeo)
 regular-total: Total
 regular-translate_board: 'Translation panel'
+regular-translate: 'Translate'
+regular-translations: 'Translations'
 regular-twitter: Twitter
-regular-view_project: 'See project'
+regular-view: View
+regular-view_project: 'View project'
 regular-web: Site
 regular-weeks: weeks
 regular-yes: 'Yes'
 regular-description: 'Description'
+regular-image: Image
+regular-images: Images
 regular-url: 'URL'
+regular-load-more: 'Load more'
+regular-analytics: 'Google Analytics'
+regular-facebook-pixel: 'Facebook Pixel'
+regular-cancel: 'Cancel'
+regular-cancel-back: 'Cancel & Go back'
+regular-back: 'Go back'
+regular-call: Matchfunding
+regular-num-comments: '%s comments'
+regular-manage: 'Manage'
+regular-no-edit-permissions: Not enough permissions to edit this entry!
+regular-messages: Messages
+regular-unknown: Unknown
+regular-input: Input
+regular-amount: Amount
+regular-copied: 'Copied to clipboard!'
 session-about-to-expire: 'Your session will expire in 10 Minutes, do you want to reload?'
 session-expired: 'Your session has expired'
 stories-user-project: '%s, from the project: %s'
@@ -170,5 +203,8 @@ validate-project-social_rewards: 'You have to specify at least one collective be
 validate-project-total-costs: 'The optimal cost cannot exceed the minimum cost by more than 50%. You have to either raise the essential costs or lower the supplemental costs. '
 regular-female: Female
 regular-here: here
+regular-help: Help
 regular-male: Male
+regular-others: Others
 regular-matchfunding: 'Match funding'
+user-promoter: "The promoter"

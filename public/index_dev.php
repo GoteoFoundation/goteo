@@ -28,6 +28,9 @@ define('GOTEO_WEB_PATH', __DIR__ .'/');
 
 require_once __DIR__ .'/../src/autoload.php';
 
+// Create first the request object (to avoid other classes reading from php://input specially)
+$request = Request::createFromGlobals();
+
 // Error reporting
 App::debug(true);
 // Too much notices...
@@ -41,11 +44,13 @@ error_reporting(E_ALL & ~E_NOTICE & ~E_USER_DEPRECATED); // for symfony user dep
 set_error_handler('Goteo\Application\App::errorHandler');
 
 // Config file...
-
-Config::load(is_file(__DIR__ .'/../config/dev-settings.yml')?'dev-settings.yml':'settings.yml');
+$config = getenv('GOTEO_CONFIG_FILE');
+if(!is_file($config)) $config = __DIR__ . '/../config/dev-settings.yml';
+if(!is_file($config)) $config = __DIR__ . '/../config/settings.yml';
+Config::load($config);
 
 //Get from globals defaults
-App::setRequest(Request::createFromGlobals());
+App::setRequest($request);
 
 $handler = new Monolog\Handler\StreamHandler('php://stdout', Monolog\Logger::DEBUG);
 $handler->setFormatter(new Bramus\Monolog\Formatter\ColoredLineFormatter());

@@ -1,0 +1,100 @@
+.fa.icon-1x {
+    font-size: 1.4em;
+}
+.icon {
+    width: $font-size;
+    height: $font-size;
+    display: inline-block;
+    background-repeat: no-repeat;
+    background-size: auto 100%;
+    vertical-align: middle;
+    &.icon-1x {
+        @include icon-responsive(1.5, 1.5);
+        &.icon-activity {
+            @include icon-responsive(1.5*1.1, 1.5);
+        }
+    }
+    @for $i from 2 through 8 {
+        &.icon-#{$i}x {
+            @include icon-responsive($i, $i);
+            &.icon-activity {
+                @include icon-responsive($i*1.1, $i);
+            }
+        }
+    }
+    &.icon-activity {
+        @include svg-background('../img/icons/activity.svg');
+    }
+    &.icon-projects {
+        @include svg-background('../img/icons/projects.svg');
+    }
+    &.icon-wallet {
+        @include svg-background('../img/icons/wallet.svg');
+    }
+    &.icon-settings {
+        @include svg-background('../img/icons/settings.svg');
+    }
+    &.icon-certificate {
+        @include svg-background('../img/icons/certificate.svg');
+    }
+    &.icon-wallet-sidebar {
+        @include svg-background('../img/icons/wallet_sidebar.svg');
+    }
+    &.icon-summary {
+        @include svg-background('../img/icons/summary.svg');
+    }
+    &.icon-preview {
+        @include svg-background('../img/icons/preview.svg');
+    }
+    &.icon-edit {
+        @include svg-background('../img/icons/edit.svg');
+    }
+    &.icon-images {
+        @include svg-background('../img/icons/images.svg');
+    }
+    &.icon-updates {
+        @include svg-background('../img/icons/updates.svg');
+    }
+    &.icon-supports {
+        @include svg-background('../img/icons/supports.svg');
+    }
+    &.icon-donors {
+        @include svg-background('../img/icons/donors.svg');
+    }
+    &.icon-partners {
+        @include svg-background('../img/icons/partners.svg');
+    }
+    &.icon-analytics {
+        @include svg-background('../img/icons/analytics.svg');
+    }
+    &.icon-shared {
+        @include svg-background('../img/icons/shared.svg');
+    }
+    &.icon-channel {
+        @include svg-background('../img/icons/channel.svg');
+    }
+    &.icon-back {
+        // @include svg-background('../img/icons/back.svg');
+        background: url('../img/icons/back.svg') no-repeat;
+        background-size: 100% auto;
+        background-color: transparent !important;
+    }
+    &.icon-trash {
+        @include svg-background('../img/icons/trash.svg');
+    }
+    &.icon-favourite {
+        @include svg-background('../img/icons/favourite.svg');
+    }
+    &.icon-close {
+        @include svg-background('../img/icons/close.svg');
+    }
+    &.icon-user {
+        @include svg-background('../img/icons/user.svg');
+    }
+    &.icon-drop {
+        @include svg-background('../img/icons/drop.svg');
+    }
+    &.icon-call {
+        @include svg-background('../img/icons/call.svg');
+    }
+}

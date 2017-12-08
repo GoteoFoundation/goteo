@@ -19,6 +19,7 @@ namespace Goteo\Model {
             // datos del representante
             $name,
             $nif,
+            $birthdate,
             $office, // Cargo en la asociación o empresa
             $address,
             $location,
@@ -222,6 +223,108 @@ namespace Goteo\Model {
             return true;
         }
 
+        /**
+         * Gets the % of the filled project. 100% means it can be published
+         * @return stdClass Object with parts and globals percents
+         */
+        public function getValidation() {
+            $res = new \stdClass;
+            $errors =  $fields = ['promoter' => [], 'entity' => [], 'accounts' => [], 'documents' => []];
+
+
+            // 1. promoter
+            $promoter = [ 'name', 'nif', 'address', 'location', 'region', 'zipcode', 'country' ];
+            $total = count($promoter);
+            $count = 0;
+            foreach($promoter as $field) {
+                if(!empty($this->{$field})) {
+                    continue;
+                }
+                $fields['promoter'][] = $field;
+                $count++;
+            }
+            if($count > 0) {
+                $errors['promoter'][] = 'promoter';
+            }
+            // if(!Check::nif($this->nif)) {
+            //     $count++;
+            //     $errors['promoter'][] = 'promoter_nif';
+            // }
+            $res->promoter = round(100 * ($total - $count)/$total);
+
+            // 2. entity
+            if($this->type > 0) {
+                $entity = ['entity_name', 'entity_cif', 'office', 'entity_address', 'entity_location', 'entity_region', 'entity_zipcode', 'entity_country'];
+                $total = count($entity);
+                $entity[] = 'reg_name';
+                $entity[] = 'reg_number';
+                if($this->type == 2) {
+                    $entity[] = 'reg_date';
+                    $entity[] = 'reg_id';
+                    $entity[] = 'reg_idname';
+                    $entity[] = 'reg_idloc';
+                }
+                $count = 0;
+                foreach($entity as $field) {
+                    if(!empty($this->{$field})) {
+                        continue;
+                    }
+                    $fields['entity'][] = $field;
+                    $count++;
+                }
+                if($count > 0) {
+                    $errors['entity'][] = 'entity';
+                }
+                if(!Check::nif($this->entity_cif)) {
+                    $count++;
+                    $errors['entity'][] = 'promoter_nif';
+                }
+
+                $res->entity = round(100 * ($total - $count)/$total);
+            } else {
+                $res->entity = 100;
+            }
+
+            // 3. accounts
+            $accounts = ['bank', 'bank_owner'];
+            if ($this->paypal) {
+                $accounts[] = 'paypal_owner';
+            }
+            $total = count($accounts);
+            $count = 0;
+            foreach($accounts as $field) {
+                if(!empty($this->{$field})) {
+                    continue;
+                }
+                $fields['accounts'][] = $field;
+                $count++;
+            }
+            if($count > 0) {
+                $errors['accounts'][] = 'accounts';
+            }
+            $res->accounts = round(100 * ($total - $count)/$total);
+
+            // 4. documents
+            if(!$this->docs) {
+                $errors['documents'][] = 'documents';
+                $res->documents = 0;
+            } else {
+                $res->documents = 100;
+            }
+            // Summary
+            $sum = $total = 0;
+            foreach($res as $key => $percent) {
+                $sum += (int)($percent);
+                $total++;
+            }
+            $res->global = round($sum/$total);
+            $res->errors = $errors;
+            $res->fields = $fields;
+            $res->project = $this->id;
+            // var_dump($res);
+            return $res;
+        }
+
 
         /*
          * Segun sie s una grabación parcial de impulsor o una grabación completa de admin
@@ -273,7 +376,7 @@ namespace Goteo\Model {
                     'project_invest',
                     'project_return'
                 );
-
+                // print_r((array)$this);die;
                 if(static::get($this->project)) {
                     $ok = $this->dbUpdate($fields, ['project']);
                 } else {
@@ -430,10 +533,10 @@ namespace Goteo\Model {
          * @param string $value  nombre del archivo
          * @return bool si ok
          */
-        public static function setPdf($id, $pdf) {
+        public function setPdf($name) {
 
-            $sql = "UPDATE contract SET pdf = :pdf WHERE contract = :id";
-            $values = array(':id' => $id, ':pdf'=>$pdf);
+            $sql = "UPDATE contract SET pdf = :pdf WHERE project = :id";
+            $values = array(':id' => $this->project, ':pdf' => $name);
 
             return (static::query($sql, $values)) ? true : false;
         }
@@ -704,7 +807,7 @@ En caso de conseguir el presupuesto óptimo, la recaudación cubriría los gasto
                 'admin' => 'Datos en revision',
                 'ready' => 'Listo para imprimir',
                 'pdf' => 'Pdf descargado',
-                'recieved' => 'Sobre recibido',
+                'received' => 'Sobre recibido',
                 'prepay' => 'Pago adelantado',
                 'payed' => 'Pagos realizados',
                 'closed' => 'Contrato cumplido'
@@ -720,7 +823,7 @@ En caso de conseguir el presupuesto óptimo, la recaudación cubriría los gasto
 
             $nexts = array();
 
-            $estados = array( 'owner', 'admin', 'ready', 'pdf', 'recieved', 'payed', 'closed' );
+            $estados = array( 'owner', 'admin', 'ready', 'pdf', 'received', 'payed', 'closed' );
 
             $ya = false;
 

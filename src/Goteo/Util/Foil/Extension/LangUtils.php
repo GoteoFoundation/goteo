@@ -4,6 +4,7 @@ namespace Goteo\Util\Foil\Extension;
 
 use Symfony\Component\HttpFoundation\Request;
 use Foil\Contracts\ExtensionInterface;
+use Goteo\Application\App;
 use Goteo\Application\Lang;
 use Goteo\Application\Config;
 
@@ -19,7 +20,7 @@ class LangUtils implements ExtensionInterface
 
     public static function getRequest() {
         if(!self::$request)
-            self::$request = Request::create();
+            self::$request = App::getRequest();
         return self::$request;
     }
 
@@ -83,28 +84,7 @@ class LangUtils implements ExtensionInterface
 
     public function lang_url($lang)
     {
-        $url = Config::get('url.main');
-        $url_lang = Config::get('url.url_lang');
-        $path = '/';
-        if($request = GoteoCore::getRequest()) {
-            // $path = $request->getRequestUri();
-            $path = $request->getBaseUrl().$request->getPathInfo();
-            $get = $request->query->all();
-            if(isset($get['lang'])) unset($get['lang']);
-            if(!$url_lang) {
-                $get['lang'] = $lang;
-            }
-            if ($get) {
-                $path .= '?' . http_build_query($get);
-            }
-        }
-        // echo "[$url][$url_lang] [$path]";die;
-        if($url_lang) {
-            $url = (Config::get('ssl') ? 'https://' : 'http://');
-            $url .= ( Config::get('lang') == $lang ? 'www' : $lang) . '.';
-            $url .= $url_lang;
-        }
-        return $url . $path;
+        return Lang::getUrl($lang, self::getRequest());
     }
 
 }

@@ -31,6 +31,29 @@ class Node extends \Goteo\Core\Model {
         $sponsors_limit;
 
 
+    public function __construct() {
+        $args = func_get_args();
+        call_user_func_array(array('parent', '__construct'), $args);
+
+        if($this->id) {
+            // y sus administradores
+            $this->admins = self::getAdmins($this->id);
+            // pojects
+
+            $this->summary = $this->getSummary();
+
+            // logo
+            $this->logo = (!empty($this->logo)) ? Image::get($this->logo) : null;
+
+            // label
+            $this->label = (!empty($this->label)) ? Image::get($this->label) : null;
+
+            // home img
+            $this->home_img = (!empty($this->home_img)) ? Image::get($this->home_img) : $this->logo;
+        }
+
+    }
+
 
     /**
      * Obtener datos de un nodo
@@ -60,6 +83,8 @@ class Node extends \Goteo\Core\Model {
                 node.linkedin as linkedin,
                 node.google as google,
                 node.owner_background as owner_background,
+                node.owner_font_color as owner_font_color,
+                node.owner_social_color as owner_social_color,
                 node.default_consultant as default_consultant,
                 node.sponsors_limit as sponsors_limit
             FROM node
@@ -73,18 +98,6 @@ class Node extends \Goteo\Core\Model {
         if (!$item instanceof Node) {
             throw new Exception\ModelNotFoundException(Text::get('fatal-error-node'));
         }
-
-        // y sus administradores
-        $item->admins = self::getAdmins($id);
-
-        // logo
-        $item->logo = (!empty($item->logo)) ? Image::get($item->logo) : null;
-
-        // label
-        $item->label = (!empty($item->label)) ? Image::get($item->label) : null;
-
-        // label
-        $item->home_img = (!empty($item->home_img)) ? Image::get($item->home_img) : null;
 
         return $item;
     }
@@ -138,55 +151,48 @@ class Node extends \Goteo\Core\Model {
      */
     public static function getAll ($filters = array()) {
 
-        $list = array();
-
-        $sqlFilter = "";
+        $sqlFilter = [];
+        $values = [];
 
         if (!empty($filters['name'])) {
-            $sqlFilter .= " AND ( name LIKE ('%{$filters['name']}%') OR id = '{$filters['name']}' )";
+            $sqlFilter[] = "( name LIKE :name OR id = :id )";
+            $values[':name'] = '%' . $filters['name'] . '%';
+            $values[':id'] = $filters['name'];
         }
 
         if (!empty($filters['type'])) {
-                if($filters['type'] == 'channel') 
-                    $sqlFilter .= " AND url = ''";
+                if($filters['type'] == 'channel')
+                    $sqlFilter[] = "url = ''";
                 else
-                    $sqlFilter .= " AND url != ''";
+                    $sqlFilter[] = "url != ''";
         }
 
         if (!empty($filters['status'])) {
             $active = $filters['status'] == 'active' ? '1' : '0';
-            $sqlFilter .= " AND active = '$active'";
+            $sqlFilter[] = "active = '$active'";
         }
 
         if (!empty($filters['admin'])) {
-            $sqlFilter .= " AND id IN (SELECT node_id FROM user_role WHERE user_id = '{$filters['admin']}')";
+            $sqlFilter[] = "id IN (SELECT node_id FROM user_role WHERE user_id = :user)";
+            $values[':user'] = $filters['admin'];
         }
 
-        $sql = static::query("
-            SELECT
-                *
-            FROM node
-            WHERE id IS NOT NULL
-                $sqlFilter
-            ORDER BY `name` ASC
-            ");
-
-        foreach ($sql->fetchAll(\PDO::FETCH_CLASS, __CLASS__) as $item) {
-            // y sus administradores
-            $item->admins = self::getAdmins($item->id);
-
-            if (!empty($item->home_img)) {
-                    $item->home_img = Image::get($item->home_img);
-                }
-
-            // pojects
-           
-            $item->summary = $item->getSummary();
-
-            $list[] = $item;
+        if (isset($filters['available'])) {
+            if($filters['available']) {
+                $sqlFilter[] = "(active=1 OR id IN (SELECT node_id FROM user_role WHERE user_id = :user))";
+                $values[':user'] = $filters['available'];
+            } else {
+                $sqlFilter[] = "active=1";
+            }
         }
 
-        return $list;
+        if($sqlFilter) $sqlFilter = ' WHERE '. implode(' AND ', $sqlFilter);
+        $sql = "SELECT * FROM node $sqlFilter ORDER BY `name` ASC";
+        // die(\sqldbg($sql, $values));
+        if($query = static::query($sql, $values)) {
+            return $query->fetchAll(\PDO::FETCH_CLASS, __CLASS__);
+        }
+        return [];
     }
 
     /*
@@ -479,7 +485,9 @@ class Node extends \Goteo\Core\Model {
             'facebook',
             'google',
             'linkedin',
-            'owner_background'
+            'owner_background',
+            'owner_font_color',
+            'owner_social_color'
             );
 
         $values = array (':id' => $this->id);
@@ -618,17 +626,21 @@ class Node extends \Goteo\Core\Model {
             WHERE node = :node
             LIMIT 1
             ";
-        $query = self::query($sql, array(':node' => $this->id));
-        $data = $query->fetch(\PDO::FETCH_ASSOC);
+        try {
+            $query = self::query($sql, array(':node' => $this->id));
+            $data = $query->fetch(\PDO::FETCH_ASSOC);
 
-        // si el calculo tiene más de 30 minutos (ojo, timeago son segundos) , calculamos de nuevo
-        if (empty($data) || $data['timeago'] > (30*60)) {
-            if ($newdata = $this->updateData()) {
-                return $newdata;
+            // si el calculo tiene más de 30 minutos (ojo, timeago son segundos) , calculamos de nuevo
+            if (empty($data) || $data['timeago'] > (30*60)) {
+                if ($newdata = $this->updateData()) {
+                    return $newdata;
+                }
             }
-        }
+            return $data;
+        } catch(\PDOException $e) {
 
-        return $data;
+        }
+        return [];
     }
 
     /** Resumen convocatorias: (destacadas por el nodo)

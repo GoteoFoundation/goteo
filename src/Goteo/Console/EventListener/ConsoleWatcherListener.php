@@ -10,6 +10,7 @@
 
 namespace Goteo\Console\EventListener;
 
+use Goteo\Application\Config;
 use Goteo\Application\EventListener\AbstractListener;
 use Goteo\Console\ConsoleEvents;
 use Goteo\Console\Event\FilterProjectEvent;
@@ -28,7 +29,7 @@ use Goteo\Model\Event;
 
 class ConsoleWatcherListener extends AbstractListener {
 
-	private function logFeedEntry(Feed $log) {
+	private function logFeedEntry(Feed $log, Project $project) {
 		if ($log->unique_issue) {
 			$this->warning("Duplicated feed", [$project, $log]);
 		} else {
@@ -57,10 +58,11 @@ class ConsoleWatcherListener extends AbstractListener {
                 $event = new Event($action);
 
             } catch(DuplicatedEventException $e) {
-                $this->warning('Duplicated event', [$project, 'event' => "$to:$template"]);
+                $this->warning('Duplicated event', ['action' => $e->getMessage(), $project, 'event' => "$to:$template"]);
                 return;
             }
             $event->fire(function() use ($project, $template, $to) {
+                UsersSend::setURL(Config::getUrl($project->lang));
                 if('owner' === $to) UsersSend::toOwner($template, $project);
                 if('consultants' === $to) UsersSend::toConsultants($template, $project);
             });
@@ -77,7 +79,10 @@ class ConsoleWatcherListener extends AbstractListener {
         $project = $event->getProject();
         $this->info("Automatic publish of project", [$project]);
 
-        $res = $project->publish();
+        $errors = [];
+        if(!$res = $project->publish($errors)) {
+            $this->error('Error publishing project! '.implode("\n", $errors), [$project]);
+        }
 
         // Admin Feed
         $log = new Feed();
@@ -89,12 +94,11 @@ class ConsoleWatcherListener extends AbstractListener {
                     '%PROJECT%' => Feed::item('project', $project->name, $project->id),
                     '%DAYS%'    => $project->days,
                     '%ROUND%'   => $project->round
-                ]
-            ),
-            $project->image)
+                ]),
+                $project->image)
             ->doAdmin('admin');
 
-        $this->logFeedEntry($log);
+        $this->logFeedEntry($log, $project);
 
         if($res) {
             $log->unique = true;
@@ -105,7 +109,7 @@ class ConsoleWatcherListener extends AbstractListener {
             $log->setBody(new FeedBody(null, null, 'feed-new_project'));
             $log->doPublic('projects');
 
-            $this->logFeedEntry($log);
+            $this->logFeedEntry($log, $project);
         }
     }
 
@@ -134,14 +138,14 @@ class ConsoleWatcherListener extends AbstractListener {
             $project->image)
             ->doAdmin('project');
 
-        $this->logFeedEntry($log);
+        $this->logFeedEntry($log, $project);
         $log->unique_issue = false;
         // Public event
         $log->title = $project->name;
         $log->url   = '/project/'.$project->id;
         $log->doPublic('projects');
 
-        $this->logFeedEntry($log);
+        $this->logFeedEntry($log, $project);
     }
 
     /**
@@ -430,7 +434,7 @@ class ConsoleWatcherListener extends AbstractListener {
 
 	public static function getSubscribedEvents() {
 		return array(
-            ConsoleEvents::PROJECT_PUBLISH    => 'onProjectPublish',
+            ConsoleEvents::PROJECT_PUBLISH    => ['onProjectPublish', 100],
             ConsoleEvents::PROJECT_ENDING    => 'onProjectEnding',
             ConsoleEvents::PROJECT_ACTIVE    => 'onProjectActive',
 			ConsoleEvents::PROJECT_WATCH    => 'onProjectWatch',

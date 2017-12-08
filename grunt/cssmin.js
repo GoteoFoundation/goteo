@@ -5,12 +5,15 @@ module.exports = function(grunt) {
     'use strict';
 
     grunt.config('cssmin', {
+      options: {
+        keepSpecialComments: 0
+      },
       dist: {
         files: [{
           expand: true,
           // cwd: '.tmp',
           cwd: '<%= goteo.dist %>',
-          src: ['**/*.css'],
+          src: ['assets/css/**/*.css'],
           dest: '<%= goteo.dist %>'
         }]
       }

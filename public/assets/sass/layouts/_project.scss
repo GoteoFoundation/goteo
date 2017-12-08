@@ -1,0 +1,87 @@
+body.project {
+    #main {
+        background-color: $background-light-grey;
+        #main-content {
+            background-color: $background-white;
+        }
+
+        .container-fluid {
+            @media(min-width: $breakpoint-sm) {
+                max-width: 750px;
+            }
+            @media(min-width: $breakpoint-md) {
+                max-width: 970px;
+            }
+            @media(min-width: $breakpoint-lg) {
+                max-width: 1170px;
+            }
+        }
+
+    }
+    &.create {
+        #main {
+            #main-content {
+                background-color: $background-light-grey;
+            }
+        }
+    }
+
+    /* Channel module */
+
+    .channel{
+      margin-top: 10px;
+      .channel-label{
+        width: 15%;
+      }
+      .btn{
+        margin-left: 5px;
+        color: $color-white !important;
+        padding: 3px 40px;
+        width: 65%;
+      }
+    }
+
+    background: $color-white;
+
+  @media (max-width: $breakpoint-sm - 1) {
+    padding-bottom: 57px;
+    .channel{
+        margin-top: 10px;
+        .channel-label{
+          width: 20%;
+          font-size: 1.3em;
+        }
+        .btn{
+          margin-left: 5px;
+          color: $color-white !important;
+          padding: 3px 40px;
+          width: 80%;
+        }
+    }
+  }
+
+  @media (max-width: $breakpoint-xs - 1) {
+    font-size: 10px !important;
+  }
+
+  @media (max-width: $breakpoint-xxs - 1) {
+    font-size: 9px !important;
+  }
+
+
+  .side {
+    .btn-block {
+        text-transform: uppercase;
+        font-weight: bold;
+        @media (min-width: $breakpoint-sm) and (max-width: $breakpoint-md - 1) {
+            max-width: 80%;
+        }
+        @media (min-width: $breakpoint-md) and (max-width: $breakpoint-lg - 1) {
+            max-width: 70%;
+        }
+        @media (min-width: $breakpoint-lg) {
+            max-width: 60%;
+        }
+    }
+  }
+}

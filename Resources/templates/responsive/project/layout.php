@@ -22,47 +22,53 @@ $this->layout('layout', [
     'og_image' => $meta_img
     ]);
 
+
 $this->section('lang-metas');
-$langs = $this->project->getLangs();
-if (count($langs) > 1) {
-    foreach($langs as $l => $lang) {
-        if($l == $this->lang_current()) continue;
-        echo  "\n\t" . '<link rel="alternate" href="' . $this->lang_url($l) .'" hreflang="' . $l . '" />';
+    $langs = $project->getLangs();
+    if (count($langs) > 1) {
+        foreach($langs as $l => $lang) {
+            if($l == $this->lang_current()) continue;
+            echo  "\n\t" . '<link rel="alternate" href="' . $this->lang_url($l) .'" hreflang="' . $l . '" />';
+        }
     }
-}
 $this->replace();
+
+$this->section('sidebar-header');
+    echo $this->insert('project/widgets/micro', ['project' => $project, 'admin' => $this->admin]);
+$this->replace();
+
 
 $this->section('content');
 
 ?>
 
 <div class="container-fluid main-info"  >
-	<div class="container">
+	<div class="container-fluid">
 		<div class="row header text-center">
 			<h1 class="project-title"><?= $project->name ?></h1>
-			<div class="project-by"><a href="/user/<?= $project->owner ?>"><?= $project->user->name; ?></a></div>
+			<div class="project-by"><a href="/user/<?= $project->owner ?>"><?= $project->user->name ?></a></div>
 		</div>
 
 		<div class="row">
 			<div class="col-sm-8">
-				<?= $this->insert('project/partials/media.php', ['project' => $project ]) ?>
+				<?= $this->insert('project/partials/media', ['project' => $project ]) ?>
 			</div>
 			<div class="col-sm-4">
-				<?= $this->insert('project/partials/meter.php', ['project' => $project ]) ?>
+				<?= $this->insert('project/partials/meter', ['project' => $project ]) ?>
 			</div>
 		</div>
 
 		<!-- Tags and share info -->
 		<div class="row">
 
-		<?= $this->insert('project/partials/main_extra.php', ['project' => $project ]) ?>
+		<?= $this->insert('project/partials/main_extra', ['project' => $project ]) ?>
 
 		</div>
 </div>
 
 <!-- End container fluid -->
 
-<div class="container section">
+<div class="container-fluid section">
 	<div class="col-sm-8 section-content" id="project-tabs">
 
 	<?= $this->supply('main-content') ?>
@@ -73,7 +79,7 @@ $this->section('content');
 
 	<div class="col-sm-4 side">
 
-	<?= $this->insert('project/partials/side.php', ['project' => $project]) ?>
+	<?= $this->insert('project/partials/side', ['project' => $project]) ?>
 
 	</div>
 
@@ -81,9 +87,8 @@ $this->section('content');
 
 </div>
 
-<aside class="container-fluid related-projects">
-	<div class="container normalize-padding">
-
+<aside class="related-projects">
+    <div class="container-fluid">
 		<h2 class="green-title">
 		<?= $this->text('project-related') ?>
 		</h2>
@@ -92,19 +97,19 @@ $this->section('content');
 	    <?php foreach ($this->related_projects as $related_project) : ?>
 
 	              <div class="col-sm-6 col-md-4 col-xs-12 spacer">
-	                <?= $this->insert('project/widget.php', ['project' => $related_project]) ?>
+	                <?= $this->insert('project/widgets/normal', ['project' => $related_project, 'admin' => false]) ?>
 	              </div>
-	    <?php endforeach; ?>
+	    <?php endforeach ?>
     	</div>
 
-	</div>
-
+    </div>
 </aside>
+
 
 <!-- sticky menu -->
 
 <div class="sticky-menu" data-offset-top="880" data-spy="affix">
-	<div class="container">
+	<div class="container-fluid">
 		<div class="row">
 			<a href="/project/<?= $project->id ?>" data-pronto-target="#project-tabs">
 				<div class="home col-sm-2 hidden-xs sticky-item <?= $this->show=='home' ? 'current' : '' ?>">
@@ -125,19 +130,22 @@ $this->section('content');
 				</div>
 			</a>
 
-			<div class="col-xs-6 col-sm-3 col-md-2 col-md-offset-2 col-xs-offset-1 sticky-button">
-                <a href="/invest/<?= $project->id ?>"><button class="btn btn-block side-pink"><?= $this->text('project-regular-support') ?></button></a>
+            <div class="col-xs-6 col-sm-3 col-md-2 col-md-offset-2 col-xs-offset-1 sticky-button">
+                <?php if($project->inCampaign()): ?>
+                    <a href="/invest/<?= $project->id ?>"><button class="btn btn-block side-pink"><?= $this->text('project-regular-support') ?></button></a>
+                <?php endif ?>
             </div>
+
             <?php if(!$this->get_user() ): ?>
         		<a href="/project/favourite/<?= $project->id ?>">
-    		<?php endif; ?>
+    		<?php endif ?>
 	            <div class="pull-left text-right favourite <?= $this->get_user()&&$this->get_user()->isFavouriteProject($project->id) ? 'active' : '' ?>" >
 	                <span class="heart-icon glyphicon glyphicon-heart" aria-hidden="true"></span>
 	                <span> <?= $this->text('project-view-metter-favourite') ?></span>
 	            </div>
             <?php if(!$this->get_user() ): ?>
         		</a>
-    		<?php endif; ?>
+    		<?php endif ?>
 		</div>
 	</div>
 </div>
@@ -178,17 +186,19 @@ $this->section('content');
 // @license magnet:?xt=urn:btih:0b31508aeb0634b347b8270c7bee4d411b5d4109&dn=agpl-3.0.txt
 
     $(function(){
-         $(window).on("pronto.request", function(e){
-         });
+         // $(window).on("pronto.request", function(e){
+         // });
+
          $(window).on("pronto.render", function(e){
             $("div.project-menu div.item, div.sticky-item").removeClass("current");
 
             $('table.footable').footable();
             var url = e.currentTarget.location.href;
-            var section=url.split('/').pop();
+            var section = 'home';
+            if(url.indexOf('/updates') !== -1) section = 'updates';
+            if(url.indexOf('/participate') !== -1) section = 'participate';
+            // console.log('section', section);
 
-            if(section!="updates" && section!="participate" )
-                section="home";
             $("."+section).addClass("current");
 
             $("a.accordion-toggle").click(function(){
@@ -321,13 +331,42 @@ $this->section('content');
         });
 
 
+        // Send comments
+        $(document).on('click', '.ajax-comments .send-comment', function (e) {
+            e.preventDefault();
+            var $parent = $(this).closest('.ajax-comments');
+            var $list = $($parent.data('list'));
+            var url = $parent.data('url');
+            var $error = $parent.find('.error-message');
+            var $textarea = $parent.find('[name="message"]');
+            var data = {
+                message: $textarea.val(),
+                thread: $parent.data('thread'),
+                project: $parent.data('project'),
+                view: 'project'
+            }
+
+            $error.addClass('hidden').html('');
+            $.post(url, data, function(data) {
+                // console.log('ok!', data);
+                $list.append(data.html);
+                $textarea.val('');
+                $parent.closest('.box').hide();
+              }).fail(function(data) {
+                var error = JSON.parse(data.responseText);
+                // console.log('error', data, error)
+                $error.removeClass('hidden').html(error.error);
+              });
+        });
+
+
 
     });
 
 // @license-end
 </script>
-<?= $this->insert('project/partials/google_analytics.php', ['project' => $project]) ?>
-<?= $this->insert('project/partials/facebook_pixel.php', ['project' => $project]) ?>
+
+<?= $this->insert('partials/facebook_pixel', ['pixel' => $this->project->facebook_pixel]) ?>
 
 <?php $this->append() ?>
 

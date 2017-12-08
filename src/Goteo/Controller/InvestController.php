@@ -17,6 +17,7 @@ use Omnipay\Common\Message\ResponseInterface;
 use Goteo\Application\Exception\ControllerAccessDeniedException;
 
 use Goteo\Application\App;
+use Goteo\Application\Config;
 use Goteo\Application\Session;
 use Goteo\Application\Message;
 use Goteo\Application\View;
@@ -25,6 +26,7 @@ use Goteo\Application\AppEvents;
 use Goteo\Application\Event\FilterInvestInitEvent;
 use Goteo\Application\Event\FilterInvestRequestEvent;
 use Goteo\Application\Event\FilterInvestFinishEvent;
+use Goteo\Application\Event\FilterAuthEvent;
 use Goteo\Library\Text;
 use Goteo\Library\Currency;
 use Goteo\Model\Project;
@@ -58,18 +60,31 @@ class InvestController extends \Goteo\Core\Controller {
         }
     }
 
+    protected function getUser() {
+        $user = Session::getUser();
+        if(!$user) {
+            $user = Session::get('fake-user');
+        }
+        return $user;
+    }
 
     /**
      * Validates the project availability for investing (redirects or exceptions on failures)
      * Also sets common vars to be used in the views
-     * @param  [type] $project_id [description]
-     * @param  [type] $reward_id  [description]
-     * @param  [type] $amount_id  [description]
-     * @return [type]             [description]
+     *
+     * if $login_required is 'auto', login will be required depending on
+     * the skip_login variable from project configuration
      */
     private function validate($project_id, $reward_id = null, &$custom_amount = null, $invest = null, $login_required = true) {
 
         $project = Project::get($project_id, Lang::current());
+        // Add analytics to config
+        // TODO: do the same with facebook pixel (not done yet because f.pixel is only used in the project page)
+        if($project->analytics_id) {
+            Config::set('analytics.google', array_merge(Config::get('analytics.google'), [$project->analytics_id]));
+        }
+
+        $this->project = $project;
         $amount_original = (int)$custom_amount;
         $currency = (string)substr($custom_amount, strlen($amount_original));
         if(empty($currency)) $currency = Currency::current('id');
@@ -80,6 +95,9 @@ class InvestController extends \Goteo\Core\Controller {
         $project_categories = Project\Category::getNames($project_id);
         $this->page = '/invest/' . $project_id;
         $this->query = http_build_query(['amount' => "$amount_original$currency", 'reward' => $reward_id]);
+
+        // Some projects may have activated a non-registering investion
+        $this->skip_login = Session::isLogged() ? false : $project->getAccount()->skip_login;
 
 
         // Security check
@@ -124,7 +142,6 @@ class InvestController extends \Goteo\Core\Controller {
             $custom_amount = $amount;
             $amount_original = Currency::amount($amount, $currency);
         }
-
         if(!$reward && $reward_id) {
             Message::error(Text::get('invest-reward-not-found'));
             return $this->redirect('/invest/' . $project_id);
@@ -145,31 +162,23 @@ class InvestController extends \Goteo\Core\Controller {
         }
 
         if($login_required) {
-
             // A reward is required here
             if(!$invest && empty($reward) && $custom_amount == 0) {
                 Message::error(Text::get('invest-reward-first'));
                 return $this->redirect('/invest/' . $project_id);
             }
-            // A login is required here
-            if(!Session::isLogged()) {
+        }
 
-                $login_return='/login?return='.urlencode($this->page . '/payment?' . $this->query);
-                Message::info(Text::get('invest-login-alert', $login_return));
-
-                // Message for login page
-                Session::store('sub-header', $this->getViewEngine()->render('invest/partials/login_sub_header', ['amount' => $amount_original, 'url_return' => $login_return ]));
-
-                // or login page?
-                return $this->redirect('/signup?return=' . urlencode($this->page . '/payment?' . $this->query));
-            }
-            Session::del('sub-header');
+        // A login or a fake login is required here
+        if($login_required === 'auto') $login_required = !$this->skip_login;
+        if($login_required && !$this->getUser()) {
+            return $this->redirect('/invest/' . $project->id . '/signup?' . $this->query);
         }
 
         // If invest defined, check user session
         if($invest instanceOf Invest) {
             // user session must be the same as the invest
-            if(Session::getUser()->id !== $invest->user) {
+            if($this->getUser()->id !== $invest->user) {
                 Message::error(Text::get('auth-access-forbbiden'));
                 return $this->redirect('/invest/' . $project_id);
             }
@@ -195,6 +204,7 @@ class InvestController extends \Goteo\Core\Controller {
         // Set vars for all views
         $this->contextVars([
             'project' => $project,
+            'skip_login' => $this->skip_login,
             'project_categories' => $project_categories,
             'pay_methods' => $pay_methods,
             'default_method' => Payment::defaultMethod(),
@@ -204,6 +214,7 @@ class InvestController extends \Goteo\Core\Controller {
             'amount_formated' => Currency::format($amount_original, $currency),
             'currency' => $currency,
             'reward' => $reward,
+            'query' => $this->query,
             'invest' => $invest
         ]);
         // print_r($project);die;
@@ -235,17 +246,74 @@ class InvestController extends \Goteo\Core\Controller {
     }
 
     /**
+     * step1.5: login page
+     *
+     */
+    public function loginAction($project_id, Request $request)
+    {
+        $amount = $request->query->get('amount');
+        $reward = $this->validate($project_id, $request->query->get('reward'), $amount, null, false);
+
+        if($reward instanceOf Response) return $reward;
+        if(!$request->query->has('return')) {
+            $request->query->set('return', $this->page . '/payment?' . $this->query);
+        }
+
+        $result = AuthController::checkLogin($request);
+        if($result instanceOf Response) return $result;
+
+        return $this->viewResponse('invest/login', ['step' => 2, 'return' => $this->page . '/payment?' . $this->query]);
+
+    }
+
+    /**
+     * step1.5: signup page
+     *
+     */
+    public function signupAction($project_id, Request $request)
+    {
+        $amount = $request->query->get('amount');
+        $reward = $this->validate($project_id, $request->query->get('reward'), $amount, null, false);
+
+        if($reward instanceOf Response) return $reward;
+        if(!$request->query->has('return')) {
+            $request->query->set('return', $this->page . '/payment?' . $this->query);
+        }
+
+        $result = AuthController::checkSignup($request);
+        if($result instanceOf Response) return $result;
+
+        return $this->viewResponse('invest/signup', $result + ['step' => 2, 'return' => $this->page . '/payment?' . $this->query]);
+
+    }
+
+    /**
      * step2: Choose payment method
      * This method will show a Form on the view that redirects to the payment gateway
      */
     public function selectPaymentMethodAction($project_id, Request $request)
     {
         $amount = $request->query->get('amount');
-        $reward = $this->validate($project_id, $request->query->get('reward'), $amount);
+        $email = $request->query->has('email');
+        $reward = $this->validate($project_id, $request->query->get('reward'), $amount, null, 'auto');
+        if(!($this->skip_login && $email) && !Session::isLogged()) {
+            return $this->redirect('/invest/' . $this->project->id . '/signup?' . $this->query);
+        }
 
         if($reward instanceOf Response) return $reward;
-
-        return $this->viewResponse('invest/payment_method', ['step' => 2]);
+        $vars = ['step' => 2];
+        if($this->skip_login) {
+            $vars['email'] = $this->getUser() ? $this->getUser()->email : '';
+            if($request->query->get('email')) {
+                $vars['email'] = $request->query->get('email');
+            }
+            $vars['name'] = $this->getUser() ? $this->getUser()->name : '';
+            if($request->query->get('name')) {
+                $vars['name'] = $request->query->get('name');
+            }
+            $vars['errors'] = Session::getAndDel('user-create-errors');
+        }
+        return $this->viewResponse('invest/payment_method', $vars);
 
     }
 
@@ -256,10 +324,60 @@ class InvestController extends \Goteo\Core\Controller {
      */
     public function paymentFormAction($project_id, Request $request) {
         $amount = $amount_original = $request->query->get('amount');
-        $reward = $this->validate($project_id, $request->query->get('reward'), $amount);
+        $reward = $this->validate($project_id, $request->query->get('reward'), $amount, null, 'auto');
         if($reward instanceOf Response) return $reward;
+
+        if($this->skip_login) {
+            if($request->query->has('email'))
+                $this->query .= '&email=' . urlencode($request->query->get('email'));
+            if($request->query->has('name'))
+                $this->query .= '&name=' . urlencode($request->query->get('name'));
+        }
+
         // pay method required
         try {
+            $user = Session::getUser();
+            // No login registering, check if user exists and it's a ghost
+            // (no password, no social-login)
+            if($this->skip_login && !$user) {
+                $errors = [];
+                $email = $request->query->get('email');
+                $name = trim($request->query->get('name'));
+                if(!$request->query->has('anonymous') && !$name) {
+                    $errors['name'] = Text::get('invest-user-name-or-anonymous');
+                }
+                if(!$request->query->has('register_accept') && !$name) {
+                    $errors['register_accept'] = Text::get('error-register-accept');
+                }
+                if($errors) {
+                    Session::store('user-create-errors', $errors);
+                    throw new \RuntimeException(Text::get('invest-create-error') . '<br />' . implode('<br />', $errors));
+                }
+                if(!$name) $name = ucfirst(strtok($email, '@'));
+                $suggest = User::suggestUserId($email);
+                if(!$user = User::getByEmail($email)) {
+                    $user = new User([
+                        'email' => $email,
+                        'name' => $name,
+                        'userid' => $suggest[0],
+                        'active' => true,
+                        'node' => Config::get('current_node')
+                    ]);
+                    if(!$user->save($errors, ['password', 'active'])) {
+                        Session::store('user-create-errors', $errors);
+                        throw new \RuntimeException(Text::get('invest-create-error') . '<br />' . implode('<br />', $errors));
+                    }
+                    // Remove newsletter options
+                    User::setPreferences($user->id, array('mailing' => 1));
+
+                }
+                if(!$user->isGhost()) {
+                    Session::store('user-create-errors', ['email' => Text::get('invest-user-not-ghost')]);
+                    throw new \RuntimeException(Text::get('invest-user-not-ghost'));
+                }
+                Session::store('fake-user', $user);
+            }
+
             $method = Payment::getMethod($request->query->get('method'));
 
             // Creating the invest entry
@@ -269,7 +387,7 @@ class InvestController extends \Goteo\Core\Controller {
                     'amount_original' => $amount_original,
                     'currency' => Currency::current(),
                     'currency_rate' => Currency::rate(),
-                    'user' => Session::getUserId(),
+                    'user' => $user->id,
                     'project' => $project_id,
                     'method' => $method::getId(),
                     'status' => Invest::STATUS_PROCESSING,  // aporte en proceso
@@ -390,8 +508,8 @@ class InvestController extends \Goteo\Core\Controller {
     public function completePaymentAction($project_id, $invest_id, Request $request) {
         $invest = Invest::get($invest_id);
         $reward = $this->validate($project_id, null, $_dummy, $invest);
-        if($reward instanceOf Response) return $reward;
 
+        if($reward instanceOf Response) return $reward;
         if($invest->status != Invest::STATUS_PROCESSING) {
             Message::info(Text::get('invest-process-completed'));
             return $this->redirect('/invest/' . $project_id . '/' . $invest->id);
@@ -400,6 +518,7 @@ class InvestController extends \Goteo\Core\Controller {
             $method = $invest->getMethod();
             $method = $this->dispatch(AppEvents::INVEST_COMPLETE, new FilterInvestInitEvent($invest, $method, $request))->getMethod();
             // Ending transaction
+        // var_dump($invest);die;
             $response = $method->completePurchase();
             // New Invest Request Event
             $response = $this->dispatch(AppEvents::INVEST_COMPLETE_REQUEST, new FilterInvestRequestEvent($method, $response))->getResponse();

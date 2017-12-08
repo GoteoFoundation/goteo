@@ -122,3 +122,12 @@ UPDATE `call` SET success_projects = null WHERE success_projects = 0;
 
 -- Los textos pueden ser muy largos...
 ALTER TABLE `call` CHANGE `description` `description` LONGTEXT NULL;
+
+-- Fee to apply in the financial report to the drop
+ALTER TABLE `call` ADD `fee_projects_drop` INT(2) NOT NULL DEFAULT 4 COMMENT 'Fee to apply in the financial report to the drop';
+
+-- add facebook_pixel
+ALTER TABLE `call` ADD COLUMN `facebook_pixel` varchar(20)  COLLATE utf8_general_ci NULL after `fee_projects_drop`;
+
+-- constrains
+ALTER TABLE `call` ADD FOREIGN KEY (`owner`) REFERENCES `user`(`id`) ON UPDATE CASCADE;

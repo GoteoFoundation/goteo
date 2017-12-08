@@ -11,9 +11,14 @@
 namespace Goteo\Controller\Api;
 
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Goteo\Application\Exception\ControllerAccessDeniedException;
+use Goteo\Application\Exception\ModelNotFoundException;
 
 use Goteo\Model\User;
+use Goteo\Model\Category;
+use Goteo\Model\Image;
+use Goteo\Library\Text;
 
 class UsersApiController extends AbstractApiController {
     /**
@@ -56,6 +61,101 @@ class UsersApiController extends AbstractApiController {
             'page' => $page,
             'limit' => $limit
             ]);
+    }
+
+    /**
+     * Returns the availability of user id or email
+     */
+    public function userCheckAction(Request $request) {
+        $seed = $request->query->get('seed');
+        if(!is_array($seed)) $seed = [$seed];
+        $userid = $request->query->get('userid');
+        $email = $request->query->get('email');
+        $name = $request->query->get('name');
+        $available = false;
+
+        $suggest = [];
+        if($email) {
+            if(!User::getByEmail($email)) {
+                $available = true;
+            }
+        }
+        elseif($userid) {
+            if(!User::get($userid)) {
+                $available = true;
+            }
+        }
+        elseif($name) {
+            $available = true; // names can be repeated
+        }
+
+        $suggest = User::suggestUserId(implode(" ", $seed), $email, $name, $userid);
+        return $this->jsonResponse([
+            'available' => $available,
+            'suggest' => $suggest,
+            'userid' => $userid,
+            'email' => $email,
+            'name' => $name
+        ]);
+    }
+
+    /**
+     * AJAX upload image to profile
+     */
+    public function userUploadAvatarAction($id, Request $request) {
+        if(!$this->user) {
+            throw new ControllerAccessDeniedException();
+        }
+        if(!($user = User::get($id))) {
+            throw new ModelNotFoundException();
+        }
+        if($user->id !== $user->id && !$this->user->hasRoleInNode($user->node, ['superadmin', 'root'])) {
+            throw new ControllerAccessDeniedException();
+        }
+
+        $files = $request->files->get('file');
+        if(!is_array($files)) $files = [$files];
+        $global_msg = Text::get('all-files-uploaded');
+        $result = [];
+
+        $avatar = $user->avatar->id ? $user->avatar->id : null;
+        $all_success = true;
+        foreach($files as $file) {
+            if(!$file instanceOf UploadedFile) continue;
+            // Process image
+            $msg = Text::get('uploaded-ok');
+            $success = false;
+            if($err = Image::getUploadErrorText($file->getError())) {
+                $success = false;
+                $msg = $err;
+            } else {
+                $user->user_avatar = new Image($file);
+                $errors = [];
+                if ($user->save($errors)) {
+                    $success = true;
+                } else {
+                    $msg = implode(', ',$errors['image']);
+                    // print_r($errors);
+                }
+            }
+
+            $result[] = [
+                'originalName' => $file->getClientOriginalName(),
+                'name' => $user->avatar->id,
+                'success' => $success,
+                'msg' => $msg,
+                'error' => $file->getError(),
+                'size' => $file->getSize(),
+                'maxSize' => $file->getMaxFileSize(),
+                'errorMsg' => $file->getError() ? $file->getErrorMessage() : ''
+            ];
+            if(!$success) {
+                $global_msg = Text::get('project-upload-images-some-ko');
+                $all_success = false;
+            }
+        }
+
+        return $this->jsonResponse(['files' => $result, 'avatar' => $avatar,  'msg' => $global_msg, 'success' => $all_success]);
     }
 
 }

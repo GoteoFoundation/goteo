@@ -29,9 +29,6 @@ use Symfony\Component\Process\Process;
 
 class MailingCommand extends AbstractCommand {
 
-	const MAIL_MAX_RATE        = 20;// envios por segundo máximos
-	const MAIL_MAX_CONCURRENCY = 20;//numero máximo de procesos simultaneos para enviar mail (pero no se llegará a esta cifra si el ratio de envios es mayor que MAIL_MAX_RATE)
-
 	protected function configure() {
 		$this->setName("mailing")
 		     ->setDescription("Send massive mail")
@@ -77,20 +74,22 @@ EOT
 		}
 
 		// Limite para sender, (deja margen para envios individuales)
-		$limit = Config::get('mail.quota.sender');
+        $LIMIT = Config::get('mail.quota.sender', true);
+        $SEND_RATE = Config::get('mail.quota.send_rate', true);
+		$CONCURRENCY = Config::get('mail.quota.concurrency', true);
 
 		// check the limit
-		if ($limit && !Mail::checkLimit(null, false, $limit)) {
-			// throw new \RuntimeException("Quota exceeded for today", [$mailing, 'quota' => $limit]);
+		if ($LIMIT && !Mail::checkLimit(null, false, $LIMIT)) {
+			// throw new \RuntimeException("Quota exceeded for today", [$mailing, 'quota' => $LIMIT]);
 			$mailing = $this->dispatch(ConsoleEvents::MAILING_ABORTED, new FilterMailingEvent($mailing, "Quota exceeded for today"))->getSender();
 		}
 
 		if (!$mailing->active) {
             if($massive) {
-                $this->debug("No mailing to send", ['quota' => $limit]);
+                $this->debug("No mailing to send", ['quota' => $LIMIT]);
                 return;
             }
-			$this->warning("Mailing is inactive. ABORTING SENDING", [$mailing, 'quota' => $limit]);
+			$this->warning("Mailing is inactive. ABORTING SENDING", [$mailing, 'quota' => $LIMIT]);
 			return;
 		}
 
@@ -100,20 +99,20 @@ EOT
 		}
 
 		if ($mailing->blocked) {
-			$this->error("Mailing is blocked. ABORTING SENDING", [$mailing, 'quota' => $limit]);
+			$this->error("Mailing is blocked. ABORTING SENDING", [$mailing, 'quota' => $LIMIT]);
             return;
         }
 
         // Total receivers
         $total_users   = $mailing->getRecipients(0, 0, true);
         if($total_users == 0) {
-            $this->error("Mailing has no recipients. ABORTING SENDING", [$mailing, 'quota' => $limit]);
+            $this->error("Mailing has no recipients. ABORTING SENDING", [$mailing, 'quota' => $LIMIT]);
 			return;
         }
 
 
         if (!$force) {
-            $this->info("Locking massive mailing", [$mailing, 'quota' => $limit]);
+            $this->info("Locking massive mailing", [$mailing, 'quota' => $LIMIT]);
             if (!$mailing->setLock(true)->blocked) {
                 throw new \RuntimeException("Error locking mailing [{$mailing->id}]");
             }
@@ -126,7 +125,7 @@ EOT
 		if ($total_pending == 0 && $update) {
 			$mailing = $this->dispatch(ConsoleEvents::MAILING_FINISHED, new FilterMailingEvent($mailing))->getSender();
 		} else {
-			$this->notice("Sending massive mailing", [$mailing, 'total_pending' => $total_pending, 'total_users' => $total_users, 'quota' => $limit]);
+			$this->notice("Sending massive mailing", [$mailing, 'total_pending' => $total_pending, 'total_users' => $total_users, 'quota' => $LIMIT]);
 
 			try {
 				$itime               = microtime(true);
@@ -139,7 +138,7 @@ EOT
 				// Lock temporary
 				while ($users = $mailing->getPendingRecipients(0, $current_concurrency, false, true)) {
 					// check the limit
-					if ($limit && !Mail::checkLimit(null, false, $limit)) {
+					if ($LIMIT && !Mail::checkLimit(null, false, $LIMIT)) {
 						throw new \RuntimeException("Quota exceeded for today");
 					}
 
@@ -179,17 +178,17 @@ EOT
 					$process_time = microtime(true)-$stime;
 					$current_rate = round($j/$process_time, 2);
 					$this->info("Quota left for today: [$rest] emails, Quota limit: [$LIMIT]");
-					$this->info("Rate sending (per second): $current_rate - Rate limit: [" .static ::MAIL_MAX_RATE."]");
+					$this->info("Rate sending (per second): $current_rate - Rate limit: [$SEND_RATE]");
 
 					//aumentamos la concurrencia si el ratio es menor que el 75% de máximo
-					if ($current_rate < static ::MAIL_MAX_RATE*0.75 && $current_concurrency < static ::MAIL_MAX_CONCURRENCY) {
+					if ($current_rate < $SEND_RATE*0.75 && $current_concurrency < $CONCURRENCY) {
 						$current_concurrency += 2;
 						$this->debug("Ratio less than 75% from maximum, raising concurrency to [$current_concurrency]");
 					}
 
 					//disminuimos la concurrencia si llegamos al 90% del ratio máximo
-					if ($current_rate > static ::MAIL_MAX_RATE*0.9) {
-						$wait_time = ceil($current_rate-static ::MAIL_MAX_RATE*0.9);
+					if ($current_rate > $SEND_RATE*0.9) {
+						$wait_time = ceil($current_rate - $SEND_RATE*0.9);
 						$current_concurrency--;
 						$this->debug("Ratio overpassing 90% from maximum, waiting [$wait_time] seconds, lowering concurrency to [$current_concurrency]");
 						sleep($wait_time);
@@ -213,7 +212,7 @@ EOT
 		}
 
 		if (!$force) {
-			$this->info("Unlocking massive mailing", [$mailing, 'quota' => $limit]);
+			$this->info("Unlocking massive mailing", [$mailing, 'quota' => $LIMIT]);
 			if ($mailing->setLock(false)->blocked) {
 				throw new \RuntimeException("Error unlocking mailing [{$mailing->id}]");
 			}

@@ -29,11 +29,11 @@ invest-amount-in-pool: 'Tens %s al teu moneder virtual'
 invest-amount-tooltip: 'Introdueix la quantitat amb que recolzaràs el projecte'
 invest-anonymous: "Vull que la meva aportació sigui anònima \r\n"
 invest-button: Aportar
-invest-called-allready: 'A aquest projecte ja li has donat <span class="riego">Capital ''Riego''</span> de la convocatòria <span class="call">%s</span>, no n''obtindrà més pels teus aports'
+invest-called-allready: 'A aquest projecte ja li has donat <strong>Matchfunding</strong> de la convocatòria %s, no n''obtindrà més pels teus aports'
 invest-called-maxdrop: 'Fins a un màxim de <strong>%s &euro;</strong>'
-invest-called-maxproj: 'El projecte al que has donat suport ja ha aconseguit el màxim de <span class="riego">Capital ''Riego''</span> possible en la convocatòria <span class="call">%s</span>'
-invest-called-nodrop: 'Actualment no hi ha més <span class="riego">Capital ''Riego''</span> disponible a la convocatòria <span class="call">%s</span>'
-invest-called-rest: 'Només queden <strong>%s €</strong> de <span class="riego">Capital ''Riego''</span> a la convocatòria <span class="call">%s</span>'
+invest-called-maxproj: 'El projecte al que has donat suport ja ha aconseguit el màxim de <strong>Matchfunding</strong> possible en la convocatòria %s'
+invest-called-nodrop: 'Actualment no hi ha més <strong>Matchfunding</stron> disponible a la convocatòria %s'
+invest-called-rest: 'Només queden <strong>%s €</strong> de <strong>Matchfunding</strong> a la convocatòria %s'
 invest-card-method: Targeta
 invest-donation-header: 'Introdueix les dades fiscals per al donatiu'
 invest-fiscal-skip: 'Prefereixo omplir aquestes dades en un altre moment'
@@ -82,6 +82,7 @@ project-invest-guest: Fantàstic!
 project-invest-ok: 'S''ha tramitat la teva aportació per cofinançar aquest projecte :) '
 project-invest-pool-button: 'Fer servir el meu moneder virtual'
 project-invest-start: 'Estàs a un pas de cofinançar aquest projecte...'
+project-return-button: 'Torna al projecte'
 spread-facebook: 'Difon a Facebook'
 spread-twitter: 'Difon a Twitter'
 user-login-required-login: 'Si ja t''has registrat has <a href="%s">d''iniciar sessió</a>; si no, has de crear un nou usuari. (En cas que vulguis fer una aportació anònima, podràs seleccionar l''opció més endavant)'
@@ -94,7 +95,7 @@ invest-drop-method: Regadiu
 invest-fiscal-fail: 'Hi ha camps buits o amb errors, comprova el formulari fiscal perquè puguis desgravar la teva aportació!'
 invest-login-alert: 'T''has de registrar o <a href="%s">iniciar sessió</a> per poder realitzar l''aportació'
 invest-method: 'Mètode de pagament'
-invest-reward-first: '<br>Recorda que la quantitat a aportar ha de ser més gran que 0'
+invest-reward-first: 'Recorda que la quantitat a aportar ha de ser més gran que 0'
 invest-status-cancelled: Cancel·lat
 invest-status-charged: Cobrat
 invest-status-paid: 'Pagat al projecte'
@@ -103,3 +104,7 @@ invest-status-processing: Incomplet
 invest-status-relocated: Reubicat
 invest-status-returned: 'Retornat (arxivat)'
 invest-status-to-pool: 'Al moneder'
+invest-no-register: 'Saltar aquest pas, només vull contribuir'
+invest-user-not-ghost: 'Aquest email pertany a un usuari existent!'
+invest-user-name-or-anonymous: 'El nom és obligatori si no vols fer una aportació anònima'
+

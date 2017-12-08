@@ -19,13 +19,18 @@ define('GOTEO_WEB_PATH', __DIR__ . '/');
 
 require_once __DIR__ . '/../src/autoload.php';
 
+// Create first the request object (to avoid other classes reading from php://input specially)
+$request = Request::createFromGlobals();
+
 ini_set('display_errors', 0);
 error_reporting(E_ALL & ~E_NOTICE & ~E_USER_DEPRECATED); // for symfony user deprecated errors
 // error handle needs to go after autoload
 set_error_handler('Goteo\Application\App::errorHandler');
 
 // Config file...
-Config::load();
+$config = getenv('GOTEO_CONFIG_FILE');
+if(!is_file($config)) $config = __DIR__ . '/../config/settings.yml';
+Config::load($config);
 
 // Error traces
 if(Config::get('debug')) {
@@ -34,7 +39,7 @@ if(Config::get('debug')) {
 }
 
 //Get from globals defaults
-App::setRequest(Request::createFromGlobals());
+App::setRequest($request);
 
 // Get the app
 $app = App::get();

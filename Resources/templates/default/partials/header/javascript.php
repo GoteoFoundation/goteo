@@ -10,7 +10,9 @@
     <?php if ($this->jquery == 'latest') : ?>
         <script type="text/javascript" src="<?php echo SRC_URL ?>/assets/vendor/jquery-1.12.4.min.js"></script>
     <?php else: ?>
-        <script type="text/javascript" src="<?php echo SRC_URL ?>/view/js/jquery-1.6.4.min.js"></script>
+        <!-- <script type="text/javascript" src="<?php echo SRC_URL ?>/view/js/jquery-1.6.4.min.js"></script> -->
+        <script type="text/javascript" src="<?php echo SRC_URL ?>/assets/vendor/jquery-1.12.4.min.js"></script>
+        <script type="text/javascript" src="<?php echo SRC_URL ?>/view/js/jquery-migrate-1.4.1.js"></script>
         <!-- fancybox-->
         <script type="text/javascript" src="<?php echo SRC_URL ?>/view/js/jquery.fancybox.min.js"></script>
         <link rel="stylesheet" type="text/css" href="<?php echo SRC_URL ?>/view/css/fancybox/jquery.fancybox.min.css" media="screen" />

@@ -152,9 +152,17 @@ EOT
                 if($update) {
                     $query = Project::query("DELETE FROM mailer_content WHERE mail = :id", [':id' => $mail->id]);
                     if($query = Project::query("DELETE FROM mail WHERE id = :id", [':id' => $mail->id])) {
+                        Project::query("DELETE FROM mail_stats WHERE mail_id = :id", [':id' => $mail->id]);
                         $fixes ++;
                     }
                 }
+            }
+            if($update) {
+                // Project::query("DELETE FROM mail_stats_location WHERE id NOT IN (SELECT id FROM mail_stats)");
+                // Project::query("OPTIMIZE TABLE mail");
+                // Project::query("OPTIMIZE TABLE mail_content");
+                // Project::query("OPTIMIZE TABLE mail_stats");
+                // Project::query("OPTIMIZE TABLE mail_stats_location");
             }
             $query = Project::query("SELECT count(*) as total FROM mail");
             $total = $query->fetchColumn();

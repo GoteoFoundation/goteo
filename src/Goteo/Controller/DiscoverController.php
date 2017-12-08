@@ -42,7 +42,7 @@ class DiscoverController extends \Goteo\Core\Controller {
 
         //assign common variables to all views containing the word "discover/"
         View::getEngine()->useContext('discover/', [
-            'categories' => Category::getList(),   // categorias que se usan en proyectos
+            'categories' => Category::getNames(),   // categorias que se usan en proyectos
             'locations' => Project::getProjLocs(),  //localizaciones de royectos
             'rewards' => Icon::getList() // iconos que se usan en proyectos
             ]);

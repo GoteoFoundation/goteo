@@ -22,15 +22,17 @@ use Goteo\Model\Node;
 use Goteo\Model\Home;
 use Goteo\Model\Project;
 use Goteo\Model\Sponsor;
-use // convocatorias en portada
-    Goteo\Model\Call,
-    Goteo\Model\User;
+// convocatorias en portada
+use Goteo\Model\Call;
+use Goteo\Model\User;
 use Goteo\Model\Category;
 use Goteo\Library\Text;
 use Goteo\Model\Page;
 use Goteo\Model\Project\Conf;
 use Goteo\Model\SocialCommitment;
 use Goteo\Console\UsersSend;
+use Goteo\Application\AppEvents;
+use Goteo\Application\Event\FilterProjectEvent;
 
 
 
@@ -39,7 +41,9 @@ class ChannelController extends \Goteo\Core\Controller {
     // Set the global vars to all the channel views
     private function setChannelContext($id)
     {
+
         $channel = Node::get($id);
+        View::setTheme('responsive');
 
         //Check if the user can access to the channel
         $user = Session::getUser();
@@ -47,7 +51,7 @@ class ChannelController extends \Goteo\Core\Controller {
         if(!$channel->active && (!$user || !$channel->userCanView($user)))
             throw new ControllerAccessDeniedException("You don't have permissions to access to this channel!");
 
-        $categories = Category::getList();
+        $categories = Category::getNames();
 
         $side_order = Home::getAll($id, 'side'); // side order
 
@@ -74,7 +78,6 @@ class ChannelController extends \Goteo\Core\Controller {
             // Patrocinadores del nodo
             $sponsors = Sponsor::getList($id);
         }
-
 
         $this->contextVars([
             'channel'     => $channel,
@@ -105,7 +108,7 @@ class ChannelController extends \Goteo\Core\Controller {
         }
         else {
             // if no promotes let's show some random projects...
-            $limit = 10;
+            $limit = 9;
             $total = $limit;
             $list = Project::published(['type' => 'random'], $id, 0, $limit);
         }
@@ -133,7 +136,7 @@ class ChannelController extends \Goteo\Core\Controller {
     {
         $this->setChannelContext($id);
 
-        $limit = 10;
+        $limit = 9;
         $status=[3,4,5];
         $filter = ['type' => $type, 'popularity' => 5, 'status' => $status ];
 
@@ -214,11 +217,11 @@ class ChannelController extends \Goteo\Core\Controller {
             $conf->publishing_estimation = $request->request->get('publishing_date');
             $conf->save();
 
-            // Send a mail to the creator
-            $project->user=Session::getUser();
-            $sent = UsersSend::toOwner('project_created', $project);
+            // CREATED EVENT
+            $response = $this->dispatch(AppEvents::PROJECT_CREATED, new FilterProjectEvent($project))->getResponse();
+            if($response instanceOf Response) return $response;
 
-            return new RedirectResponse('/project/edit/'.$project->id);
+            return new RedirectResponse('/dashboard/project/' . $project->id . '/profile');
         }
 
         return $this->viewResponse( 'project/create',

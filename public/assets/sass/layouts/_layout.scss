@@ -1,0 +1,125 @@
+@import "compass/css3";
+
+html,body {
+    height: 100%;
+}
+body {
+  background-color:$background-light-grey;
+  font-family: $primary-font;
+  color: $primary-color;
+  margin-bottom: 0;
+
+  // This will align the footer to the bottom
+  display: flex;
+  @include flex-direction(column);
+  .page-wrap {
+       flex: 1 0 auto;
+  }
+
+  &.has-sidebar {
+    .page-wrap {
+      display: flex;
+
+      #sidebar-menu {
+        @include flex(1);
+
+        padding: 0;
+        margin: 0;
+        width: 0;
+        // height: auto;
+        background-color: rgba(0,0,0,0);
+        .sidebar-wrap {
+          position: relative;
+          overflow-x: hidden;
+          width: 0;
+          min-height: 100%;
+        }
+      }
+      #main {
+          width: 100%;
+      }
+      @media(min-width: $breakpoint-sm) {
+          #sidebar-menu {
+              width: $dashboard-sidebar-width;
+              background-color: rgba(0,0,0,0.2);
+              .sidebar-wrap {
+                // height: 100%;
+                width: 100%;
+              }
+          }
+          #main {
+              width: $dashboard-main-width;
+              width: calc(100% - #{$dashboard-sidebar-width});
+          }
+      }
+      @media(max-width: $breakpoint-sm - 1) {
+        #sidebar-menu {
+          position: fixed;
+          top: 0;
+          height: 100%;
+          @include flex(0);
+          z-index: 1001;
+          overflow: auto;
+        }
+      }
+    }
+  }
+
+  &.sidebar-opened {
+    .page-wrap {
+        #sidebar-menu {
+          width: 100%;
+          background-color: rgba(0,0,0,0.2);
+          .sidebar-wrap {
+            width: $dashboard-sidebar-width;
+          }
+        }
+        #main {
+            @media(min-width: $breakpoint-sm) {
+                width: $dashboard-main-width;
+            }
+        }
+        #sidebar-menu-toggle {
+          left: $dashboard-sidebar-width;
+          i {
+            &.fa-angle-double-right {
+              display: none;
+            }
+            &.fa-angle-double-left {
+              display: block;
+            }
+          }
+        }
+    }
+  }
+
+  @include keyframes(blink) {
+      @include blink-function();
+  }
+
+  #sidebar-menu-toggle {
+    position: fixed;
+    top: 70px;
+    left: 0;
+    z-index: 1001;
+    background-color: $background-sidebar-header;
+    color: $color-white;
+    font-size: $font-size * 2;
+    padding: 30px 10px;
+    box-shadow: 6px 0px 6px 0px rgba(0, 0, 0, 0.3);
+    border-top-right-radius: 5px;
+    border-bottom-right-radius: 5px;
+    cursor: pointer;
+    i {
+        @include animation(blink 8s linear 1s 3); //infinite;
+        &.fa-angle-double-right {
+          display: block;
+        }
+        &.fa-angle-double-left {
+          display: none;
+        }
+    }
+
+  }
+
+}

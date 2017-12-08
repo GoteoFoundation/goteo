@@ -13,8 +13,9 @@ mandatory-project-field-related: 'Es obligatorio explicar en la descripción del
 overview-field-categories: Categorías
 overview-field-currency: 'Divisa original'
 overview-field-currently: 'Estado actual'
-overview-field-description: 'Breve descripción '
+overview-field-description: 'Descripción'
 overview-field-goal: 'Objetivos de la campaña de crowdfunding'
+overview-field-main-gallery: Galería principal
 overview-field-image_gallery: 'Imágenes actuales'
 overview-field-image_upload: 'Subir una imagen (2MB max.)'
 overview-field-keywords: 'Palabras clave del proyecto'
@@ -30,12 +31,12 @@ overview-field-options-scope_global: Global
 overview-field-options-scope_local: Local
 overview-field-options-scope_nacional: Nacional
 overview-field-options-scope_regional: Regional
-overview-field-play-video: 'Dentro vídeo'
+overview-field-play-video: 'Carátula del vídeo'
 overview-field-project_location: Ubicación
 overview-field-related: 'Experiencia previa y equipo'
 overview-field-reward: Recompensas
 overview-field-scope: 'Alcance geográfico del proyecto'
-overview-field-subtitle: 'Frase de resumen'
+overview-field-subtitle: 'Subtítulo'
 overview-field-usubs: 'Cargar con Universal Subtitles'
 overview-field-video: 'Vídeo adicional sobre motivación'
 overview-field-social-category: 'Compromiso social'
@@ -43,10 +44,11 @@ overview-field-social-description: 'Descripción Compromiso Social'
 overview-fields-images-title: 'Imágenes del proyecto'
 overview-main-header: 'Descripción del proyecto'
 step-3: Descripción
+step-main: Datos principales
 step-3b: Imágenes
 step-images: 'Paso: Imágenes del proyecto'
 step-overview: 'Paso: Descripción del proyecto'
-tooltip-project-about: 'Describe brevemente el proyecto de modo conceptual, técnico o práctico. Por ejemplo detallando sus características de funcionamiento, o en qué partes consistirá. Piensa en cómo será una vez acabado y todo lo que la gente podrá hacer con él.'
+tooltip-project-about: 'Describe brevemente las características más importantes de tu proyecto y por que se diferencia del resto. Enumera también que objetivos se quieren conseguir con él (redáctalos de forma clara y usando el infinitivo)'
 tooltip-project-category: 'Selecciona tantas categorías como creas necesario para describir el proyecto, basándote en todo lo que has descrito arriba. Mediante estas palabras clave lo podremos hacer llegar a diferentes usuarios/as de Goteo.'
 tooltip-project-currency: 'Indica en qué divisa calculas los costes del proyecto.'
 tooltip-project-currently: 'Indica en qué fase se encuentra el proyecto actualmente respecto a su proceso de creación o ejecución.'
@@ -55,14 +57,14 @@ tooltip-project-goal: 'Enumera las metas principales del proyecto, a corto y lar
 tooltip-project-image: 'Te recomendamos que sean diversas y de buena calidad, aunque no demasiado grandes (unos 900 píxeles de ancho / 2MB Max).'
 tooltip-project-image_upload: BORRAR
 tooltip-project-keywords: 'A medida que introduzcas texto el sistema te sugerirá palabras clave que ya han escrito otros usuarios. Estas categorías ayudan a vincular tu proyecto con personas afines.'
-tooltip-project-lang: 'Indica en qué idioma cumplimentas el formulario del proyecto.'
-tooltip-project-media: 'Copia y pega la dirección URL de un vídeo de presentación del proyecto, publicado previamente en Youtube, Vimeo o Giss.tv.  Esta parte es fundamental para atraer la atención de potenciales cofinanciadores y colaboradores, y cuanto más original sea mejor. Te recomendamos que tenga una duración de entre 2 y 4 minutos. '
+tooltip-project-lang: 'Más adelante puedes traducir tu proyecto a otros idiomas desde el panel de traducción.'
+tooltip-project-media: 'El vídeo de presentación es una parte fundamental para atraer la atención de la comunidad así que cuanto más original sea mejor. Es imprescindible que tenga una duración máxima de 4 minutos. Súbelo a Youtube o Vimeo y pega la dirección URL aquí.'
 tooltip-project-motivation: 'Explica qué motivos o circunstancias te han llevado a idear el proyecto, así como las comunidades o usuarios/as a las que va destinado. Te ayudará a conectar con personas movidas por ese mismo tipo de intereses, problemáticas o gustos.'
-tooltip-project-name: 'Escribe un nombre para titular el proyecto. Cuanto más breve mejor, para hacerlo más descriptivo puedes ampliarlo en el siguiente apartado.'
-tooltip-project-project_location: 'Indica en qué dirección exacta se ubica tu proyecto, o indica en qué ciudad y/o provincia tiene su impacto'
+tooltip-project-name: 'Cuanto más breve mejor, para hacerlo más descriptivo puedes ampliarlo en el siguiente apartado.'
+tooltip-project-project_location: 'Indica el área geográfica donde tu proyecto tendrá impacto'
 tooltip-project-related: 'Resume tu trayectoria o la del grupo impulsor del proyecto. ¿Qué experiencia tiene relacionada con la propuesta? ¿Con qué equipo de personas, recursos y/o infraestructuras cuenta? '
 tooltip-project-reward: 'Aquí explicamos lo bueno que tiene en cuanto a recompensas'
-tooltip-project-subtitle: 'Define con una frase un subtítulo que acabe de explicar en qué consistirá la iniciativa, que permita hacerse una idea mínima de para qué sirve o en qué consiste. Aparecerá junto al título del proyecto.'
+tooltip-project-subtitle: 'Describe tu proyecto en 140 carácteres de forma clara y concisa. Este texto se usará para difundir en redes sociales.'
 tooltip-project-usubs: 'Marca la casilla en caso de que hayas subtitulado a otros idiomas el vídeo mediante Universal Subtitles: http://www.universalsubtitles.org/'
 tooltip-project-video: 'Considera aquí la posibilidad de publicar y enlazar un vídeo (en Youtube, Vimeo o Giss.tv) donde expliques brevemente a la cámara el porqué de tu proyecto. Se trata de algo que pueda complementar el vídeo principal, con una persona que transmita su necesidad u originalidad, del modo más directo posible. Si te da corte hablar a la cámara, también puede ser alguna persona que conoces y sigue el proyecto o la idea y pueda hacer esta aportación como "fan". La empatía y necesidad de ver a alguien al otro lado del proyecto es muy importante para determinado tipo de cofinanciadores. '
 tooltip-project-social-category: 'Selecciona tu compromiso social de entre los que te mostramos'

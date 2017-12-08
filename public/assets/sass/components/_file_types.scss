@@ -1,0 +1,44 @@
+[class^="file-type-"], [class*=" file-type-"] {
+    background-image: url(../img/file-types/bin.svg);
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: 90%;
+}
+
+.file-type-jpg, .file-type-jpeg {
+    background-image: url(../img/file-types/jpeg.svg);
+}
+.file-type-png {
+    background-image: url(../img/file-types/png.svg);
+}
+.file-type-gif {
+    background-image: url(../img/file-types/gif.svg);
+}
+.file-type-doc, .file-type-docx, .file-type-odt, .file-type-vnd\.oasis\.opendocument\.text {
+    background-image: url(../img/file-types/doc.svg);
+}
+.file-type-rtf {
+    background-image: url(../img/file-types/rtf.svg);
+}
+.file-type-pdf {
+    background-image: url(../img/file-types/pdf.svg);
+}
+.file-type-csv, .file-type-xls, .file-type-xlsx, .file-type-vnd\.openxmlformats-officedocument\.spreadsheetml\.sheet {
+    background-image: url(../img/file-types/csv.svg);
+}
+.file-type-html, .file-type-htm {
+    background-image: url(../img/file-types/html.scg);
+}
+.file-type-xml {
+    background-image: url(../img/file-types/xml.svg);
+}
+.file-type-mp3 {
+    background-image: url(../img/file-types/mp3.svg);
+}
+.file-type-txt, .file-type-text {
+    background-image: url(../img/file-types/text.svg);
+}
+.file-type-zip, .file-type-gz, .file-type-tar.gz {
+    background-image: url(../img/file-types/zip.svg);
+}
+

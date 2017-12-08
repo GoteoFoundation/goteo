@@ -1,0 +1,22 @@
+CREATE TABLE `origin` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `tag` char(50) NOT NULL,
+  `category` char(50) NOT NULL,
+  `type` enum('referer','ua') NOT NULL COMMENT 'referer, ua',
+  `project_id` char(50) DEFAULT NULL,
+  `invest_id` bigint(20) unsigned DEFAULT NULL,
+  `call_id` char(50) DEFAULT NULL,
+  `counter` int(10) unsigned NOT NULL DEFAULT '0',
+  `created_at` datetime DEFAULT NULL,
+  `modified_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `project` (`tag`,`project_id`,`type`,`category`),
+  KEY `project_id` (`project_id`),
+  KEY `invest_id` (`invest_id`),
+  KEY `call_id` (`call_id`),
+  KEY `call` (`tag`,`category`,`type`,`call_id`),
+  KEY `invest` (`tag`,`category`,`type`,`invest_id`),
+  CONSTRAINT `origin_ibfk_1` FOREIGN KEY (`project_id`) REFERENCES `project` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `origin_ibfk_2` FOREIGN KEY (`invest_id`) REFERENCES `invest` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `origin_ibfk_3` FOREIGN KEY (`call_id`) REFERENCES `call` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB AUTO_INCREMENT=16 DEFAULT CHARSET=utf8

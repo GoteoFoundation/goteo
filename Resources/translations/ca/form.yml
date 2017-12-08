@@ -1,13 +1,14 @@
-costs-field-select-rounds: Plazos
+costs-field-select-rounds: Plaços
 form-accept-button: Acceptar
 form-add-button: Afegir
 form-ajax-info: 'El formulari es va desant segons passis per cada camp'
-form-apply-button: Aplicar
-form-edit-button: Editar
+form-apply-button: Aplica
+form-edit-button: Edita
+form-has-errors: 'El formulari conté errors, revisa''ls i torna-ho a provar!'
 form-errors-info: 'Total: %s | En aquesta passa: %s'
 form-errors-total: 'Hi ha %s errors en total'
 form-footer-errors_title: Errors
-form-image_upload-button: 'Pujar imatge'
+form-image_upload-button: 'Puja una imatge'
 form-media_send-button: 'Posar vídeo'
 form-navigation_bar-header: 'Anar a'
 form-next-button: Següent
@@ -22,15 +23,47 @@ form-project_status-expired: Caducat
 form-project_status-fulfilled: 'Retorn complert'
 form-project_status-review: 'Pendent de valoració'
 form-project_status-success: Finançat
-form-remove-button: Eliminar
-form-self_review-button: Corregir
-form-send_review-button: Enviar
+form-remove-button: Elimina
+form-self_review-button: 'Corregeix'
+form-send_review-button: Envia
 form-upload-button: Pujar
 help-cost-to-consultant: '- Necessita ajuda per definir els costos<br/>'
 help-license-to-consultant: '- Necessita ajuda en retorns col.lectius i llicències<br/>'
-overview-extra-fields: 'Campos complementarios'
+overview-extra-fields: 'Camps complementaris'
 project-form-header: Formulari
-project-one-round: 'Ronda única de 40 días'
+project-one-round: 'Ronda única de 40 dies'
 project-personal-field-entity_name: 'Entitat en nom de la qual actues (si procedeix)'
-project-two-rounds: 'Dos rondas de 40 días'
+project-two-rounds: 'Dues rondes de 40 dies'
 tooltip-project-personal-entity_name: 'Si representes alguna entitat, indica el seu nom en aquest camp.'
+form-sent-success: 'S''han desat les dades correctament!'
+form-sent-error: 'Ha ocorregut un error al desar les dades: [%s]'
+form-confirm-exit: 'Es perdran les dades que no has desat\nSegur que vols sortir de la pàgina?'
+overview-extra-call: 'Camps complementaris per la convocatòria %s'
+form-editor-bold: 'Negreta'
+form-editor-italic: 'Cursiva'
+form-editor-strikethrough: 'Tatxat'
+form-editor-heading: 'Encapçalament'
+form-editor-smaller_heading: 'Disminueix l''encapçalament'
+form-editor-bigger_heading: 'Augmenta l''encapçalament'
+form-editor-code: 'Codi'
+form-editor-quote: 'Cita'
+form-editor-generic_list: 'Llista genèrica'
+form-editor-numbered_list: 'Llista ordenada'
+form-editor-create_link: 'Crea un enllaç'
+form-editor-insert_image: 'Insereix una imatge'
+form-editor-insert_table: 'Insereix una taula'
+form-editor-insert_horizontal_line: 'Línia horitzontal'
+form-editor-toggle_preview: 'Commuta la pre-visualització'
+form-editor-toggle_side_by_side: 'Commuta la vista paral·lela'
+form-editor-toggle_fullscreen: 'Commuta la pantalla completa'
+form-editor-markdown_guide: 'Guia markdown'
+form-editor-undo: 'Desfer'
+form-editor-redo: 'Refer'
+form-editor-close: 'Tanca'
+form-editor-exact-location: 'Localització exacte'
+form-editor-change-location: 'Canvia'
+form-editor-change-unlocated: 'Sense localitzar'
+form-editor-fine-locate: 'Pots afinar la localització arrossegant i deixant anar la marca.'
+form-editor-error-locating: 'No s''ha trobat una adreça!'
+form-editor-success-locating: 'S''ha trobat una adreça vàlida'
+form-dragndrop-unsupported: 'Hi ha hagut un problema amb l''arrossegament d''arxius. Si us plau, intenta-ho de nou fent click al botó de pujar arxius'

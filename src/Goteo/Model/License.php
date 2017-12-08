@@ -26,9 +26,9 @@ namespace Goteo\Model {
         /*
          *  Devuelve datos de un destacado
          */
-        public static function get ($id) {
+        public static function get ($id, $lang = null) {
             //Obtenemos el idioma de soporte
-            $lang=self::default_lang_by_id($id, 'license_lang', Lang::current());
+            $lang=self::default_lang_by_id($id, 'license_lang', $lang);
 
             $query = static::query("
                 SELECT
@@ -86,39 +86,48 @@ namespace Goteo\Model {
                     license.id as id,
                     $different_select,
                     license.group as `group`,
-                    license.order as `order`
+                    license.order as `order`,
+                    " .
+                     ( $icon ? 'icon_license.icon as `icon`' : "GROUP_CONCAT(DIStINCT icon_license.icon SEPARATOR ' ') as icons")
+                     . "
                 FROM    license
                 LEFT JOIN license_lang
                     ON  license_lang.id = license.id
                     AND license_lang.lang = :lang
                 $eng_join
-                ";
-
-            if (!empty($icon)) {
-                // de un grupo o de todos
-                $sql .= "INNER JOIN icon_license
+                LEFT JOIN icon_license
                     ON icon_license.license = license.id
-                    AND icon_license.icon = :icon
-                    ";
-                $values[':icon'] = $icon;
+                ";
+            if($icon || $group) {
+                $cond = " WHERE ";
             }
 
-            if (!empty($group)) {
+            if ($icon) {
+                // de un grupo o de todos
+                $sql .= "$cond icon_license.icon = :icon ";
+                $values[':icon'] = $icon;
+                $cond = ' AND ';
+            }
+
+            if ($group) {
                 if ($group == 'regular') {
                     // sin grupo
-                    $sql .= "WHERE (`group` = '' OR `group` IS NULL)
+                    $sql .= "$cond (`group` = '' OR `group` IS NULL)
                         ";
                 } else {
                     // de un grupo
-                    $sql .= "WHERE `group` = :group
+                    $sql .= "$cond `group` = :group
                         ";
                     $values[':group'] = $group;
                 }
             }
-
+            if(!$icon) {
+                $sql .= ' GROUP BY license.id ';
+            }
             $sql .= "ORDER BY `order` ASC, name ASC
                 ";
 
+            // die(\sqldbg($sql, $values));
             $query = static::query($sql, $values);
 
             return $query->fetchAll(\PDO::FETCH_CLASS, __CLASS__);

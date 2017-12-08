@@ -3,7 +3,7 @@
         <p><?= $this->text('dashboard-certificates-no-pending') ?></p>
     <?php return; endif ?>
 
-    <table class="footable table table-striped">
+    <table class="footable table">
       <thead>
         <tr>
           <th data-type="number" data-breakpoints="xs">#</th>

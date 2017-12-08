@@ -26,3 +26,7 @@ ALTER TABLE `call_lang` ADD `pending` INT( 1 ) NULL DEFAULT '0' COMMENT 'Debe re
 
 -- Los textos pueden ser muy largos...
 ALTER TABLE `call_lang` CHANGE `description` `description` LONGTEXT NULL;
+
+
+DELETE FROM call_lang WHERE id NOT IN (SELECT id FROM `call`);
+ALTER TABLE `call_lang` ADD FOREIGN KEY (`id`) REFERENCES `call`(`id`) ON UPDATE CASCADE ON DELETE CASCADE;

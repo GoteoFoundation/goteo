@@ -1,0 +1,122 @@
+/* Costs chart */
+
+div {
+  &.chart-costs {
+    font-size: 20px;
+    padding: 20px;
+    path {
+      stroke: #fff;
+      fill-rule: evenodd;
+      cursor: pointer;
+    }
+    text {
+      font-size: 75%;
+      cursor: pointer;
+    }
+    image {
+      cursor: pointer;
+    }
+  }
+  &.chart-amount {
+    svg {
+      font-size: 80% !important;
+    }
+    .axis path {
+      fill: none;
+      stroke: #000;
+      shape-rendering: crispEdges;
+    }
+  }
+}
+
+// TODO: check if this is needed
+@import url(//fonts.googleapis.com/css?family=Open+Sans:400,700);
+
+.axis line {
+  fill: none;
+  stroke: #000;
+  shape-rendering: crispEdges;
+}
+
+div.chart-amount {
+  .axis {
+    text {
+      fill: #000;
+    }
+    .tick line {
+      stroke: rgba(0, 0, 0, 0.1);
+    }
+  }
+  .area {
+    stroke-width: 1;
+    &.outer {
+      fill: rgba(230, 230, 255, 0.8);
+      stroke: rgba(216, 216, 255, 0.8);
+    }
+  }
+  .legend .outer {
+    fill: rgba(230, 230, 255, 0.8);
+    stroke: rgba(216, 216, 255, 0.8);
+  }
+  .area.inner, .legend .inner {
+    fill: rgba(127, 127, 255, 0.8);
+    stroke: rgba(96, 96, 255, 0.8);
+  }
+  .median-line, .legend .median-line, .ideal-line {
+    fill: none;
+    stroke: #149290;
+    stroke-width: 3;
+  }
+  .legend {
+    .ideal-line {
+      fill: none;
+      stroke: #149290;
+      stroke-width: 3;
+    }
+    .legend-bg {
+      fill: rgba(0, 0, 0, 0.5);
+      stroke: rgba(0, 0, 0, 0.5);
+    }
+  }
+  .marker {
+    &.client {
+      .marker-bg, path {
+        fill: rgba(255, 127, 0, 0.8);
+        stroke: rgba(255, 127, 0, 0.8);
+        stroke-width: 3;
+      }
+    }
+    &.server {
+      .marker-bg, path {
+        fill: rgba(0, 153, 51, 0.8);
+        stroke: rgba(0, 153, 51, 0.8);
+        stroke-width: 3;
+      }
+    }
+    path {
+      fill: none;
+    }
+  }
+  .legend text {
+    fill: #fff;
+    font-weight: bold;
+  }
+  .marker {
+    text {
+      fill: #fff;
+      font-weight: bold;
+      text-anchor: middle;
+    }
+    &.ronda .marker-bg {
+      fill: rgba(196, 96, 188, 0.8);
+      stroke: rgba(196, 96, 188, 0.8);
+      stroke-width: 3;
+    }
+  }
+}
+
+.marker.ronda path {
+  fill: rgba(196, 96, 188, 0.8);
+  stroke: rgba(196, 96, 188, 0.8);
+  stroke-width: 3;
+}

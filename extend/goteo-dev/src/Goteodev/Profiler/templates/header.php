@@ -64,6 +64,10 @@
         white-space: pre-wrap;
         font-size:10px;
     }
+    #g_profiler_info>div .code, #g_profiler_info>div .code * {
+        font-family: monospace;
+        font-size:10px;
+    }
     #g_profiler a {
         color:#000;
         text-decoration: none;
@@ -84,7 +88,7 @@
         float:left;
         padding: 5px 10px;
         margin: 5px;
-        height:15px;
+        height:22px;
         overflow: hidden;
         list-style: none;
         border-radius:10px;

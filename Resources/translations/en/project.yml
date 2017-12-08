@@ -48,7 +48,7 @@ project-spread-pre_widget: 'Spread the word'
 project-spread-social: 'I am backing %s project #goteo #crowdfunding'
 project-spread-widget: 'Project''s widget'
 project-spread-widget_legend: 'Copy and paste the code in your website or blog to help spread the word about this project'
-project-spread-widget_title: 'publish the project widget'
+project-spread-widget_title: 'Publish the project widget'
 project-support-supertitle: 'Economic needs'
 project-unpublished: 'This project''s campaign has been canceled.'
 project-view-categories-title: Categories
@@ -71,6 +71,7 @@ tooltip-project-bank: 'If you don''t want to add it now, you will be able to add
 tooltip-project-help-cost: 'For any help about the costs breakdown, check this box. Send us the complete form to receive our advice.'
 tooltip-project-help-license: 'For any help about which licenses fit better to the collective returns of your project, check this box. Send us the complete form to receive our advice.'
 tooltip-project-paypal: "<p>Besides our secure bank payment gateway, you may receive contributions through PayPal</strong>. To do so, please write here an email address vinculated to an enabled PayPal account.</p>\r\n<p>Although it is not compulsory to have a PayPal account to receive the collected funds for your project, it is highly recommended. <strong>If you don't submit an enabled and verified PayPal account before we publish your campaign, contributions via PayPal won't be allowed.</strong></p>\r\n<p>This account cannot be changed later. Contact us if you need to modify it.</p>\r\n<p><strong>IMPORTANT: Note that you cannot use this same PayPal account to make contributions to your own project as it would generate a system error.</strong></p>"
+tooltip-project-2rounds: 'If you choose this option, your project will have two 40-days funding rounds. One to reach the minimum and another for the optimum.'
 tooltip-project-rounds: 'If you choose this option, your project will only have a single 40-day round to obtain the necessary funding: all or nothing.'
 tooltip-project-scope: 'Specify the geographic impact that you hope this project will have (each category includes the previous one)'
 tooltip-project-spread: 'Tell us how you''ll spread the project among your community: channels, type of messages, dissemination actions, minimum schedule...'
@@ -84,11 +85,13 @@ tooltip-updates-tags: 'Tooltip text updates-tags'
 tooltip-updates-text: tooltip-updates-text
 tooltip-updates-title: tooltip-updates-title
 project-about-title: 'About this project'
+project-call-got: 'The project already has raised <strong>%s</strong> from <strong>%s</strong>'
 project-chart-amount-ideal: Ideal
 project-chart-amount-reached: Acummulated
 project-chart-costs-reset: Back
 project-collaborations-available: 'Available crowdsourcing needs'
 project-collaborations-number: collaborators
+project-obtained: 'Obtained'
 project-general-information: 'General information'
 project-go-up: 'Back to top'
 project-hide-donors: 'Hide donors'
@@ -123,3 +126,36 @@ project-create-modal-no-social-title: 'Social commitment'
 project-create-modal-no-social-description: 'It is mandatory to have a social commitment for your project to be accepted at Goteo. If you don’t commit yourself by choosing one, the button for continue will not be activated.'
 project-share-materials: 'Shared materials'
 project-create-no-social-commitment: 'None'
+project-progress-title: How is the project going
+project-edit: Edit project
+project-remove-cost-confirm: 'Are you sure to delete this cost?'
+project-add-cost: 'Add cost'
+project-add-reward: 'Add reward'
+project-remove-reward-confirm: 'Are you sure to delete this reward?'
+project-reward-unlimited: 'Unlimited'
+
+project-send-review: 'Send to review'
+project-reviewing: 'We are evaluating and reviewing your project'
+project-validation-ok: 'You have completed the form. Great! Click the next button to get the project reviewed by our consultants.'
+project-validation-errors: 'The project is not yet complete!'
+project-validation-error-profile: 'There are empty fields in the project profile'
+project-validation-error-profile_social: 'You need to fill at least one of the fields Web, Facebook or Twitter'
+project-validation-error-personal: 'There are empty fields in the project accounts'
+project-validation-error-overview: 'There are empty fields in the project description'
+project-validation-error-images: 'At least one image is needed for the project'
+project-validation-error-costs: 'You need to add or complete costs'
+project-validation-error-costs_required: 'You need at least one cost of each type, necessary and supplemental'
+project-validation-error-rewards: 'You need to add or complete rewards'
+project-validation-error-rewards_required: 'You need at least 3 rewards'
+project-validation-error-rewards_units: 'The reward must have at least %s units'
+project-validation-error-campaign: 'There are empty fields in the campaign configuration'
+
+project-non-public-field: 'This field is not public'
+project-campaign: 'Configuration'
+project-campaign-configuration: 'Campaign configuration'
+project-campaign-use-paypal: 'I want to allow users to pay using Paypal'
+project-manage: 'Manage'
+project-manage-campaign: 'Manage campaign'
+
+project-widget-not-visible: 'This widget will not be visible until the project is public'
+project-donors-with-reward: '%s donors have chosen this reward'

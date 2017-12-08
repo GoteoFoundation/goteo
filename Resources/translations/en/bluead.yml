@@ -1,6 +1,7 @@
 assign-call-success: 'The project has been assigned to the call %s'
 dashboard-donor-remember: 'Remember to confirm your tax details for the donation certificate.'
 image-upload-fail: 'Error uploading image'
+gallery-upload-fail: 'Error uploading gallery'
 invest-amount-error: 'You have to write an amount'
 invest-create-error: 'There has been a problem when processing the payment'
 invest-data-error: 'Necessary data missing'

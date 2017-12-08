@@ -11,6 +11,7 @@
 namespace Goteo\Core;
 
 use Goteo\Application\App;
+use Goteo\Application\Exception\ModelException;
 use Goteo\Application\Config;
 use Goteo\Application\Lang;
 use Goteo\Library\Cacher;
@@ -18,8 +19,9 @@ use Goteo\Library\Cacher;
 abstract class Model {
 
 	//Override in the model the table if different from the class name
-	protected $Table = null;
-	static $db = null;
+    protected $Table = null;
+	static protected $Table_static = null;
+	static protected $db = null;
 
 	/**
 	 * Constructor.
@@ -44,9 +46,22 @@ abstract class Model {
 		}
 	}
 
-	public function rebuildData(Array $data) {
-		foreach ($data as $k => $v) {
-			$this->$k = $v;
+    /**
+     * Rebuilds model data
+     * sets all $data array to vars in the model
+     * if the var doesn't exist then it will be ignored.
+     *
+     * @param array keys if specified only this keys will processed
+     *                   otherwise, all public vars will be processed
+     */
+	public function rebuildData(array $data, array $keys = []) {
+        $public_vars = \get_public_class_vars(get_called_class());
+        if(!$keys) $keys = array_keys($public_vars);
+		foreach ($public_vars as $k => $v) {
+			if(array_key_exists($k, $data) && in_array($k, $keys)) {
+                // print_r("\n<br>$k: " . $data[$k]);
+                $this->$k = $data[$k];
+            }
 		}
 	}
 
@@ -63,19 +78,34 @@ abstract class Model {
 	 * Get the table name
 	 * @return string Table name
 	 */
-	public function getTable() {
-		return $this->Table;
+    public function getTable() {
+        return $this->Table;
+    }
+	static public function getTableStatic() {
+        if(empty(static::$Table_static)) {
+            $table = strtolower(get_called_class());
+            if (strrpos($table, '\\') !== false) {
+                return substr($table, strrpos($table, '\\') + 1);
+            }
+        }
+		return static::$Table_static;
 	}
 	/**
 	 * Sets the table name
 	 * @param string $table Table name
 	 */
-	public function setTable($table = null) {
-		if ($table) {
-			$this->Table = $table;
-		}
+    public function setTable($table = null) {
+        if ($table) {
+            $this->Table = $table;
+        }
 
-		return $this;
+        return $this;
+    }
+
+	static public function setTableStatic($table = null) {
+		if ($table) {
+			static::$Table_static = $table;
+		}
 	}
 
 	/**
@@ -108,6 +138,17 @@ abstract class Model {
 	 */
 	abstract public function validate(&$errors = array());
 
+    /**
+     * Some data transformation for SQL field types
+     * @param  [type] $value [description]
+     * @return [type]        [description]
+     */
+    public function transformFieldValue($value) {
+        if($value instanceOf \DateTime) {
+            return $value->format('Y-m-d\TH:i:s');
+        }
+        return $value;
+    }
 	/**
 	 * insert to sql
 	 * @return [type] [description]
@@ -118,7 +159,7 @@ abstract class Model {
 			if (property_exists($this, $field)) {
 				$set[] = "`$field`";
 				$keys[] = ":$field";
-				$values[":$field"] = $this->$field;
+				$values[":$field"] = $this->transformFieldValue($this->$field);
 			}
 		}
 		if (empty($values)) {
@@ -140,14 +181,14 @@ abstract class Model {
 		foreach ($fields as $field) {
 			if (property_exists($this, $field)) {
 				$set[] = "`$field` = :$field";
-				$values[":$field"] = $this->$field;
+				$values[":$field"] = $this->transformFieldValue($this->$field);
 			}
 		}
 		$clause = [];
 		foreach ($where as $field) {
 			if (property_exists($this, $field)) {
 				$clause[] = "`$field` = :$field";
-				$values[":$field"] = $this->$field;
+				$values[":$field"] = $this->transformFieldValue($this->$field);
 			} else {
 				throw new \PDOException("Property $field does not exists!", 1);
 
@@ -196,7 +237,7 @@ abstract class Model {
 		}
 
 		$sql = 'DELETE FROM `' . $this->Table . '` WHERE ' . implode(' AND ', $clause);
-
+        // echo \sqldbg($sql, $values);
 		self::query($sql, $values);
 		return true;
 	}
@@ -303,8 +344,7 @@ abstract class Model {
 			//prevenimos que lea de replicas
 			$query = static::query("SELECT LAST_INSERT_ID();", null, false);
 			//no queremos que lea de cache
-			$query->cacheTime(0);
-			return $query->fetchColumn();
+			return $query->skipCache()->fetchColumn();
 		} catch (\Exception $e) {
 			return 0;
 		}
@@ -431,18 +471,221 @@ abstract class Model {
 
     /**
      * Returns all translations available
-     * @return [type] [description]
      */
     public function getLangsAvailable() {
         $langs = [];
         try {
             if($query = static::query("SELECT GROUP_CONCAT(lang) AS langs FROM `{$this->Table}_lang` WHERE id = :id GROUP BY id", array(':id' => $this->id))) {
-                $langs = explode(',',$query->fetchColumn());
+                $res = $query->fetchColumn();
+                if($res) $langs = explode(',', $res);
             }
         } catch (\Exception $e) {
         }
         return $langs;
     }
+
+    /**
+     * Should return fore each model witch fields are translated
+     * @return array ['field1', 'field2', ...]
+     */
+    static public function getLangFields() {
+        return [];
+    }
+
+    /**
+     * Returns the fields and Join parts to use in a SQL query
+     * Check Model\Project::get, Model\Project\Reward::getAll for examples on how to use this
+     *
+     * @param  string $lang to obtain the data for (will return a fallback language if not exists)
+     * @param  string $lang_model  if empty and $model_join_id is also empty the fallback lang will be used from the main model
+     *                             (this means the model MUST have the `lang` field)
+     *                             if defined and $model_join_id is empty, will be used as the fallback language
+     *                             (usually, just pass Config::get('lang') for fallback)
+     *                             if defined and $model_join_id is also defined,
+     *                                will be used as the name of the table to JOIN to get the fallback language
+     * @param  string $model_join_id the field in the table_lang to use with the JOIN table.id
+     * @param string $model must be a valid Goteo\Model\SomeModel defaults to calling model
+     * @return array  [fields, joins]
+     */
+    static public function getLangsSQLJoins($lang, $lang_model=null, $model_join_id=null, $model = null) {
+        if($model) $fields = $model::getLangFields();
+        else       $fields = static::getLangFields();
+        if(!$fields) throw new ModelException('This method requires self::getLangFields() to return the fields to translate');
+
+        if($model) $table = $model::getTableStatic();
+        else       $table = static::getTableStatic();
+
+        if(!$lang) {
+            return ["`$table`.`".implode("`,\n`$table`.`", $fields).'`', ''];
+        }
+        $fallback_lang = Lang::getDefault($lang);
+        $default_lang = ($lang_model && !$model_join_id) ? $lang_model : Config::get($lang);
+        $sql_fields = [];
+        $sql_joins = [];
+        foreach($fields as $field) {
+            if(!$lang_model && !$model_join_id) {
+                $sql_fields[] = "IF(`$table`.lang='$lang', `$table`.`$field`, IFNULL(IFNULL(b.`$field`,c.`$field`), `$table`.`$field`)) AS `$field`";
+            } elseif($lang_model && $model_join_id) {
+                $sql_fields[] = "IF(m.lang='$lang', `$table`.`$field`, IFNULL(IFNULL(b.`$field`,c.`$field`), `$table`.`$field`)) AS `$field`";
+            } else {
+                $sql_fields[] = "IF('$default_lang'='$lang', `$table`.`$field`, IFNULL(IFNULL(b.`$field`,c.`$field`), `$table`.`$field`)) AS `$field`";
+            }
+        }
+        if(!$lang_model && !$model_join_id) {
+            $sql_joins[] = "LEFT JOIN `{$table}_lang` b ON `$table`.id=b.id AND b.lang='$lang' AND b.lang!=`$table`.lang";
+            $sql_joins[] = "LEFT JOIN `{$table}_lang` c ON `$table`.id=c.id AND c.lang='$fallback_lang' AND c.lang!=`$table`.lang";
+        } elseif($lang_model && $model_join_id) {
+            $sql_joins[] = "RIGHT JOIN `{$lang_model}` m ON m.id=`$table`.`$model_join_id`";
+            $sql_joins[] = "LEFT JOIN `{$table}_lang` b ON `$table`.id=b.id AND b.lang='$lang' AND b.lang!=m.lang";
+            $sql_joins[] = "LEFT JOIN `{$table}_lang` c ON `$table`.id=c.id AND c.lang='$fallback_lang' AND c.lang!=m.lang";
+        } else {
+            $sql_joins[] = "LEFT JOIN `{$table}_lang` b ON `$table`.id=b.id AND b.lang='$lang' AND b.lang!='$default_lang'";
+            $sql_joins[] = "LEFT JOIN `{$table}_lang` c ON `$table`.id=c.id AND c.lang='$fallback_lang' AND c.lang!='$default_lang'";
+        }
+        return [implode(",\n", $sql_fields), implode("\n", $sql_joins)];
+    }
+
+    /**
+     * Returns percent (from 0 to 100) translations
+     */
+    public function getLangsPercent($lang) {
+        $fields = static::getLangFields();
+        if(!$fields) throw new ModelException('This method requires self::getLangFields() to return the fields to translate');
+
+        try {
+            $conditions = array_map(function($el){
+                return "IF(m.$el IS NULL OR m.$el = '', 0, 1) AS $el,
+                        IF(l.$el IS NULL OR l.$el = '', 0, 1) AS {$el}_lang";
+            }, $fields);
+            $sql = "SELECT " . implode(',', $conditions) . "
+                    FROM `{$this->Table}_lang` l
+                    INNER JOIN `{$this->Table}` m ON m.id = l.id
+                    WHERE l.lang = :lang AND m.id = :id";
+            $values = [':lang' => $lang, ':id' => $this->id];
+            // die(\sqldbg($sql, $values));
+            if($query = static::query($sql, $values)) {
+                $translated = 0;
+                $total = 0;
+                $ob = $query->fetchObject();
+                foreach($fields as $field) {
+                    if($ob->{$field}) {
+                        $translated += $ob->{$field.'_lang'};
+                        $total ++;
+                    }
+                }
+                if($total) return 100 * $translated / $total;
+            }
+        } catch (\Exception $e) {}
+        return 0;
+    }
+
+    /**
+     * Returns percent (from 0 to 100) translations
+     * by grouping all items sharing some common keys
+     */
+    public function getLangsGroupPercent($lang, array $keys) {
+        $fields = static::getLangFields();
+        if(!$fields) throw new ModelException('This method requires self::getLangFields() to return the fields to translate');
+
+        try {
+            $conditions = array_map(function($el){
+                return "IF(m.$el IS NULL OR m.$el = '', 0, 1) AS $el,
+                        IF(l.$el IS NULL OR l.$el = '', 0, 1) AS {$el}_lang";
+            }, $fields);
+            $sql = "SELECT " . implode(',', $conditions) . "
+                    FROM `{$this->Table}_lang` l
+                    INNER JOIN `{$this->Table}` m ON m.id = l.id
+                    WHERE l.lang = :lang";
+            $values = [':lang' => $lang];
+            foreach($keys as $key) {
+                $sql .= " AND m.$key = :$key";
+                $values[":$key"] = $this->{$key};
+            }
+            // die(\sqldbg($sql, $values));
+            if($query = static::query($sql, $values)) {
+                $translated = 0;
+                $total = 0;
+                foreach($query->fetchAll(\PDO::FETCH_OBJ) as $ob) {
+                    foreach($fields as $field) {
+                        if($ob->{$field}) {
+                            $translated += $ob->{$field.'_lang'};
+                            $total ++;
+                        }
+                    }
+                }
+                if($total) return 100 * $translated / $total;
+            }
+
+        } catch (\Exception $e) {}
+        return 0;
+    }
+
+    /**
+     * Returns lang object
+     */
+    public function getLang($lang) {
+        try {
+            $sql = "SELECT * FROM `{$this->Table}_lang` WHERE id = :id AND lang = :lang";
+            $values = array(':id' => $this->id, ':lang' => $lang);
+            // die(\sqldbg($sql, $values));
+            if($query = static::query($sql, $values)) {
+                return $query->fetchObject();
+            }
+        } catch (\Exception $e) {}
+        return null;
+    }
+
+    /**
+     * Returns lang object
+     */
+    public function getAllLangs() {
+        try {
+            $sql = "SELECT * FROM `{$this->Table}_lang` WHERE id = :id";
+            $values = array(':id' => $this->id);
+            // die(\sqldbg($sql, $values));
+            if($query = static::query($sql, $values)) {
+                return $query->fetchAll(\PDO::FETCH_OBJ);
+            }
+        } catch (\Exception $e) {}
+        return [];
+    }
+
+    /**
+     * Save lang info in a generic way
+     */
+    public function setLang($lang, $data = [], array &$errors = []) {
+
+        $fields = static::getLangFields();
+        if(!$fields) throw new ModelException('This method requires self::getLangFields() to return the fields to translate');
+
+        $update = ["`id` = :id", "`lang` = :lang"];
+        $insert = ["`id`" => ":id", "`lang`" => ":lang"];
+        $values[':id'] = $this->id;
+        $values[':lang'] = $lang;
+        foreach ($data as $key => $val) {
+            if(in_array($key, $fields) || property_exists($this, $key)) {
+                $values[":$key"] = $val;
+                $update[] = "`$key` = :$key";
+                $insert["`$key`"] = ":$key";
+            }
+        }
+
+        try {
+            $sql = "INSERT INTO `{$this->Table}_lang`
+                (" . implode(', ', array_keys($insert)) . ")
+                VALUES (" . implode(', ', $insert) . ")
+                ON DUPLICATE KEY UPDATE " . implode(', ', $update);
+            // die(\sqldbg($sql, $values));
+            self::query($sql, $values);
+
+            return true;
+        } catch(\PDOException $e) {
+            // die($e->getMessage());
+            $errors[] = "Error saving language data for {$this->Table}. " . $e->getMessage();
+            return false;
+        }
+    }
+
 	/**
 	 * Cuenta el numero de items y lo divide en páginas
 	 * @param type $sql

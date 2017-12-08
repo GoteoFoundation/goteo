@@ -24,6 +24,7 @@ namespace Goteo\Model {
         public
             $id,
             $title,
+            $date,
             $text,
             $image,
             $gallery = array(), // array de instancias image de post_image
@@ -31,24 +32,25 @@ namespace Goteo\Model {
             $author,
             $order,
             $publish,
+            $home = false,
             $node;  // las entradas en portada para nodos se guardan en la tabla post_node con unos metodos alternativos
 
         /*
          *  Devuelve datos de una entrada
          */
-        public static function get ($id) {
+        public static function get ($id, $lang = null) {
 
                 //Obtenemos el idioma de soporte
-                $lang=self::default_lang_by_id($id, 'post_lang', Lang::current());
+                $lang=self::default_lang_by_id($id, 'post_lang', $lang);
 
-                $query = static::query("
-                    SELECT
+                $sql = "SELECT
                         post.id as id,
                         IFNULL(post_lang.title, post.title) as title,
                         IFNULL(post_lang.text, post.text) as `text`,
                         post.blog as blog,
                         post.image as image,
                         post.media as `media`,
+                        post.date as `date`,
                         DATE_FORMAT(post.date, '%d | %m | %Y') as fecha,
                         post.author as author,
                         post.order as `order`,
@@ -65,7 +67,10 @@ namespace Goteo\Model {
                     LEFT JOIN user
                         ON user.id=post.author
                     WHERE post.id = :id
-                    ", array(':id' => $id, ':lang'=>$lang));
+                    ";
+                $values = array(':id' => $id, ':lang'=>$lang);
+                // die(\sqldbg($sql, $values));
+                $query = static::query($sql, $values);
 
                 $post = $query->fetchObject(__CLASS__);
 
@@ -342,6 +347,7 @@ namespace Goteo\Model {
                 'blog',
                 'title',
                 'text',
+                'date',
                 'media',
                 'legend',
                 'order',
@@ -351,15 +357,13 @@ namespace Goteo\Model {
                 'author'
                 );
 
-            $set = '';
-
             try {
                 //automatic $this->id assignation
                 $this->dbInsertUpdate($fields);
 
                 return true;
             } catch(\PDOException $e) {
-                $errors[] = "HA FALLADO!!! " . $e->getMessage();
+                $errors[] = "Error saving Post " . $e->getMessage();
                 return false;
             }
         }

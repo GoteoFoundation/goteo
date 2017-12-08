@@ -10,8 +10,8 @@
 
 namespace Goteo\Controller\Api;
 
+use Symfony\Component\HttpFoundation\Request;
 use Goteo\Application\Exception\ControllerAccessDeniedException;
-
 use Goteo\Library\Text;
 use Goteo\Library\Currency;
 use Goteo\Model\Project;
@@ -21,8 +21,10 @@ use Goteo\Model\Image;
 
 class ChartsApiController extends AbstractApiController {
 
-    private function getProject($id) {
-        $prj = Project::get($id);
+    protected function getProject($prj) {
+        if( ! $prj instanceOf Project) {
+            $prj = Project::get($prj);
+        }
         $is_visible = in_array($prj->status, [Project::STATUS_IN_CAMPAIGN, Project::STATUS_FUNDED, Project::STATUS_FULFILLED, Project::STATUS_UNFUNDED]);
         $is_mine = $prj->owner === $this->user->id;
         if(!$this->is_admin && !$is_mine && !$is_visible) {
@@ -37,7 +39,7 @@ class ChartsApiController extends AbstractApiController {
      * @param  Request $request [description]
      * @return [type]           [description]
      */
-    public function projectCostsAction($id) {
+    public function projectCostsAction($id, Request $request) {
         $prj = $this->getProject($id);
         $mincost = (int) Currency::amount($prj->mincost);
         $maxcost = (int) Currency::amount($prj->maxcost);
@@ -85,7 +87,7 @@ class ChartsApiController extends AbstractApiController {
      * @param  Request $request [description]
      * @return [type]           [description]
      */
-    public function projectInvestsAction($id) {
+    public function projectInvestsAction($id, Request $request) {
         $prj = $this->getProject($id);
         $mincost = (int) Currency::amount($prj->mincost);
         $maxcost = (int) Currency::amount($prj->maxcost);

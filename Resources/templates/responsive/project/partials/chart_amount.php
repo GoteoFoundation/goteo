@@ -177,7 +177,8 @@ function startTransitions (svg, chartWidth, chartHeight, rectClip, markers, x) {
 }
 
 function makeChart (data, markers) {
-  var windowWidth = parseInt($('#project-tabs').width())
+  var windowWidth = parseInt($('.section-content').width() || 400);
+  // console.log('width',windowWidth);
   // var svgWidth  = 700,
   var svgWidth  = windowWidth - 30,
       svgHeight = 400,
@@ -240,7 +241,7 @@ d3.json('/api/charts/<?= $this->project->id ?>/invests', function (error, rawDat
 
   var data = rawData.map(function (d) {
     return {
-      date:  parseDate(d.date),
+      date:  d.date ? parseDate(d.date) : '',
       cumulative: d.cumulative,
       ideal: d.ideal
       /*pct50: d.pct50 / 1000,

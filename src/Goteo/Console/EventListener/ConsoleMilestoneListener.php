@@ -41,7 +41,7 @@ class ConsoleMilestoneListener extends AbstractListener {
             $event = new Event($action, 'milestone');
 
             } catch(DuplicatedEventException $e) {
-                $this->warning('Duplicated event', [$project, 'event' => ""]);
+                $this->warning('Duplicated event', ['action' => $e->getMessage(), $project, 'event' => "milestone:$type"]);
                 return;
             }
 
@@ -49,10 +49,11 @@ class ConsoleMilestoneListener extends AbstractListener {
             $project_milestone->save($errors);
         });
     }
-     /**
-     * Automatically publishes projects
-     * @param  FilterProjectEvent $event
-     */
+
+    /**
+    * Sets the milestone for published projects
+    * @param  FilterProjectEvent $event
+    */
     public function onProjectPublish(FilterProjectEvent $event) {
         $project = $event->getProject();
         $type = 'on-publish';
@@ -108,7 +109,7 @@ class ConsoleMilestoneListener extends AbstractListener {
         $this->info("Creating milestones on invest");
 
         //Milestones by percentage
-        $percentage=($project->invested/$project->mincost)*100;
+        $percentage = $project->mincost ? ($project->invested / $project->mincost) * 100 : 0;
 
         if($percentage>=20&&$percentage<50)
             $type='20-percent-reached';

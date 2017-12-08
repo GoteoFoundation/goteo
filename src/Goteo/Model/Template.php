@@ -8,13 +8,13 @@
  * and LICENSE files that was distributed with this source code.
  */
 
-// TODO: this is really a model...
-
 namespace Goteo\Model;
 
 use Goteo\Application\Exception\ModelException;
 use Goteo\Application\Exception\ModelNotFoundException;
 use Goteo\Application\Lang;
+use Goteo\Application\App;
+use Symfony\Component\Yaml\Yaml;
 
 /*
  * Clase para gestionar las plantillas de los emails automáticos
@@ -93,7 +93,11 @@ class Template extends \Goteo\Core\Model {
     const CONTACT_AUTO_REPLY_DEV = 70;    // Dev
     const CONTACT_AUTO_REPLY_RELIEF = 71;    // Relief
     const COMMUNICATION = 72;    // Multi-purpose communication
-    const PROJECT_CREATED = 73;    // Multi-purpose communication
+    const PROJECT_CREATED = 73;    // Project created
+    const MATCHER_PROJECT_ADDED = 'matcher_project_added';    // inform to owner that a new project is added to a matcher
+    const MATCHER_PROJECT_ACTIVATED = 'matcher_project_activated';    // inform to owner that a new project is activated in a matcher
+    const MATCHER_PROJECT_DISCARDED = 'matcher_project_discarded';    // inform to owner that a new project is discarded from a matcher
+    const MATCHER_PROJECT_ADDED_ADMIN = 'matcher_project_added_admin';    // inform to admin that a new project is added to a matcher
 
     public
         $id,
@@ -106,11 +110,7 @@ class Template extends \Goteo\Core\Model {
         $text;
 
 
-    static public function get ($id, &$lang = null) {
-
-        // por si llega idioma vacio
-        if (empty($lang))
-            $lang = Lang::current();
+    static public function get ($id, &$lang = null, $avoid_pending = true) {
 
         //Obtenemos el idioma de soporte
         $lang=static::default_lang_by_id($id, 'template_lang', $lang);
@@ -128,18 +128,42 @@ class Template extends \Goteo\Core\Model {
                  LEFT JOIN template_lang
                     ON  template_lang.id = template.id
                     AND template_lang.lang = :lang
+                    " . ($avoid_pending ? ' AND template_lang.pending=0' : '') . "
                  WHERE template.id = :id
-            ";
+                ";
         $values = array( ':id' => $id, ':lang' => $lang );
         // die(\sqldbg($sql, $values));
 		if($query = static::query($sql, $values)) {
-		  $template = $query->fetchObject(__CLASS__);
+		  if($template = $query->fetchObject(__CLASS__)) {
+            return $template;
+          }
         }
-        if(!$template) {
-            throw new ModelNotFoundException('Not found template [' . $id . ']');
+        // search default from yaml
+        return static::getDefault($id, $lang);
+    }
+
+    /**
+     * Finds a template from the filesystem defaults (YAML format)
+     * @param  [type] $id    [description]
+     * @param  [type] &$lang [description]
+     * @return [type]        [description]
+     */
+    static public function getDefault($id, &$lang = null) {
+        $fallback = Lang::getFallback($lang);
+
+        // Find the right template
+        foreach([$lang, $fallback] as $lang) {
+            $file = GOTEO_PATH . "Resources/mailing/$lang/$id.yml";
+            if(is_file($file)) {
+                $yaml = Yaml::parse(file_get_contents($file));
+                $yaml['id'] = $id;
+                $yaml['lang'] = $lang;
+                return new self($yaml);
+            }
         }
-        return $template;
-	}
+
+        throw new ModelNotFoundException('Not found template [' . $id . ']');
+    }
 
 	/*
 	 *  Metodo para la lista de páginas
@@ -225,8 +249,7 @@ class Template extends \Goteo\Core\Model {
      */
     public function parseText() {
         if($this->type === 'md') {
-            $pd = new \Parsedown();
-            return $pd->text($this->text);
+            return App::getService('app.md.parser')->text($this->text);
         }
         return $this->text;
     }

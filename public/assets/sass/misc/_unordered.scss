@@ -1,0 +1,745 @@
+/* Original RAW CSS
+ ... to be organized and split in smaller scss
+ */
+
+/* Nav pills colors */
+
+.nav-pills > li.active > a {
+  background-color: $background-pink;
+  &:focus, &:hover {
+    background-color: $background-pink;
+  }
+}
+
+.avatar-link {
+  padding-top: 5px !important;
+  padding-bottom: 5px !important;
+}
+
+.avatar-arrow {
+  margin-top: 7px;
+}
+
+.avatar-radius {
+  border-radius: 5px;
+}
+
+.reminder {
+  padding: 0;
+  margin-top: 0;
+  margin-bottom: 1em;
+  color: $color-grey;
+  // border-top: 3px solid $background-light;
+  // border-bottom: 3px solid $background-light;
+  .level-1 {
+    font-size: 18px;
+  }
+  .level-2 {
+    font-size: 15px;
+    color: #B2B0B1;
+  }
+  .amount-reminder {
+    color: #96238F;
+    font-size: 20px;
+    font-weight: bold;
+    margin-left: 5px;
+  }
+  .level-2 a, .level-1 a {
+    color: #96238F;
+  }
+}
+
+.no-register {
+    background-color: $background-light;
+    border-radius:10px;
+    padding:1em;
+}
+
+.invest-container {
+  max-width: 800px;
+  margin: 0 auto;
+  div.pool-conditions {
+    margin-bottom: 40px;
+    color: #B3B2B2;
+    a {
+      color: #B3B2B2;
+      text-decoration: underline;
+      font-weight: bold;
+    }
+  }
+}
+
+.label-method {
+  padding-top: 10px;
+  background-color: $background-light;
+  border-radius: 10px;
+  font-weight: normal;
+  color: $color-grey;
+  height: auto;
+  width: 100% !important;
+}
+
+label {
+  &.label-method:hover, &.method-choosen {
+    cursor: pointer;
+    cursor: hand;
+    background-color: #2cb2b2;
+    font-weight: bold;
+    color: $color-white !important;
+  }
+  &.label-disabled {
+    pointer-events: none;
+    opacity: 0.5;
+  }
+}
+
+.check-method:checked + label {
+  color: red;
+  font-style: normal;
+}
+
+.method-text {}
+
+.pool-info {
+  margin-left: 15px;
+  background-color: $background-white;
+  font-size: 12px;
+  padding: 13px 13px 13px 0px;
+  border-radius: 7px;
+}
+
+.confirm-checkbox {
+  margin-top: 4px;
+}
+
+.pay-method {
+  text-align: center;
+  padding-right: 7px;
+  padding-left: 7px;
+  &:first-child {
+    padding-left: 15px;
+  }
+  &:last-child {
+    padding-right: 15px;
+  }
+
+}
+
+.invest-button {
+  margin-top: 20px;
+}
+
+.img-method {
+  display: block;
+  max-width: 100%;
+  height: auto;
+  padding: 4% 10% 10%;
+}
+
+.method-caption {
+  background-color: $background-white;
+  border-radius: 10px;
+}
+
+.pay-methods{
+    margin-bottom: 1.6%;
+}
+
+.make-sure {
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.share {
+  max-width: 650px;
+  margin: 0 auto;
+}
+
+h4.embed-code {
+  background: url("/view/css/social/embed.png") no-repeat scroll 0% 0% transparent;
+  min-height: 20px;
+  text-transform: uppercase;
+  padding: 3px 0px 0px 25px;
+  font-size: 15px;
+}
+
+textarea.widget-code {
+  width: 250px;
+  height: 130px;
+}
+
+.margin-bottom-4 {
+  margin-bottom: 4%;
+}
+
+.text-decoration-none {
+  text-decoration: none !important;
+}
+
+.reward {
+  padding-right: 7px;
+  padding-left: 7px;
+}
+
+.label-reward {
+  padding: 2%;
+  background-color: $background-light;
+  border-radius: 10px;
+  font-weight: normal;
+  color: $color-grey;
+  width: 100%;
+}
+
+label {
+  &.label-reward:hover {
+    cursor: pointer;
+    cursor: hand;
+    background-color: #2cb2b2;
+    color: $color-white !important;
+  }
+  &.reward-choosen {
+    background-color: #2cb2b2;
+    color: $color-white !important;
+  }
+}
+
+.amount-box {
+  display: none;
+}
+
+.reward-choosen .amount-box {
+  display: block;
+}
+
+.reward-amount {
+  color: #96238F;
+  font-size: 1.8em;
+  margin-left: 10%;
+  vertical-align: middle;
+}
+
+.reward-icon {
+  padding: 10%;
+}
+
+.input-amount {
+  font-size: 1.3em;
+  text-align: center;
+}
+
+.container-input-amount {
+  padding-top: 3.5px;
+  margin-top: 2.5px;
+}
+
+.display-none {
+  display: none;
+}
+
+.display-none-important {
+  display: none !important;
+}
+
+#amount-container {
+  background-color: $background-white;
+  margin-top: 10px;
+  padding: 2% 0;
+}
+
+.reward-button {
+  margin-top: 2.5px;
+}
+
+.limit-reward {
+  color: #2CB2B2;
+}
+
+label {
+  &.reward-choosen .limit-reward, &.label-reward:hover .limit-reward {
+    color: $color-grey;
+  }
+  &.reward-choosen {
+    .limit-reward-number, .reward-amount {
+      color: $color-grey;
+    }
+  }
+  &.label-reward:hover .reward-amount {
+    color: $color-grey;
+  }
+}
+
+hr {
+  &.share, &.make-sure {
+    margin: 8%;
+  }
+}
+
+/*Form Wizard*/
+
+/*END Form Wizard*/
+
+/* End steps bar */
+
+/* Forms checkboxs */
+
+.no-margin-checkbox {
+  margin-top: 0px !important;
+}
+
+.label-checkbox {
+  font-size: 0.9em;
+  margin: 0;
+}
+
+/* Project info bar */
+
+div {
+  &.jumbotron {
+    margin-bottom: 40px;
+    &.project-info {
+      background: none repeat scroll 0% 0% #FAF8F8;
+      padding-top: 20px;
+      padding-bottom: 20px;
+    }
+    .project-name {
+      padding-top: 0;
+      margin-top: 0;
+      font-weight: bold;
+      font-size: 2em;
+      text-transform: uppercase;
+      margin-bottom: 5px;
+      a {
+        color: $color-grey !important;
+        &:hover {
+          text-decoration: none;
+        }
+      }
+    }
+    .project-subtitle {
+      font-size: 16px;
+      font-weight: 400;
+      font-style: normal;
+      margin-bottom: 5px;
+    }
+    .project-owner {
+      font-size: 12px !important;
+      a {
+        color: #20B3B2 !important;
+        font-weight: 400;
+        font-size: 12px !important;
+        text-decoration: none;
+      }
+    }
+    .project-tags {
+      margin-left: 18px;
+      font-size: 12px;
+      a {
+        text-decoration: none;
+        font-size: 12px;
+        color: $color-grey;
+      }
+      &:before {
+        content: "";
+        display: block;
+        width: 13px;
+        height: 13px;
+        float: left;
+        margin-right: 6px;
+        background: url("/view/css/tags.png") no-repeat scroll 0px (0px / 13px) 13px transparent;
+      }
+    }
+  }
+  &.create-form {
+    /*background-color:#FFF;*/
+    margin-top: 50px;
+    padding-bottom: 30px;
+    margin-bottom: 50px;
+    font-size: 18px;
+    h1 {
+      font-size: 36px;
+      font-weight: 700;
+      color: #149290;
+      margin-top: 60px;
+    }
+  }
+}
+
+/* Create project form */
+
+form.create-project-form {
+  div {
+    &.form-group {
+      opacity: 0.3;
+      padding-top: 70px;
+      &.active {
+        opacity: 1;
+      }
+    }
+    &#calculated-msg {
+      display: none;
+    }
+  }
+  label.category {
+    margin-top: 30px;
+    cursor: pointer;
+    font-weight: normal;
+  }
+  .datepicker {
+    border-radius: 10px;
+    padding: 15px 5px;
+    margin-top: 15px;
+    background-color: $background-white;
+  }
+  .bootstrap-datetimepicker-widget {
+    table td {
+      &.active {
+        background-color: $background-pink !important;
+      }
+      &:hover {
+        /*background-color: $background-white;*/
+      }
+    }
+    .picker-switch {
+      text-transform: uppercase;
+    }
+    .glyphicon {
+      color: #149290;
+    }
+  }
+  table thead tr:first-child th:hover {
+    background: #FFF !important;
+  }
+  .bootstrap-datetimepicker-widget table td span.active {
+    background-color: $background-pink !important;
+  }
+  input {
+    outline: 0 !important;
+    border-width: 0 0 2px 0 !important;
+    border-color: $color-pink !important;
+    border-radius: 0 !important;
+    box-shadow: none !important;
+    font-size: 20px;
+    background-color: transparent !important;
+    &.minimum {
+      display: inline;
+    }
+  }
+  button.pink, .btn-pink {
+    font-size: 1em;
+    margin-top: 25px;
+  }
+  select {
+    display: block;
+  }
+  .alert {
+    margin-top: 30px;
+    display: none;
+    strong {
+      font-size: 24px;
+    }
+  }
+  input:focus {
+    border-color: $color-pink !important;
+  }
+  div.investors {
+    font-size: 25px;
+    display: inline;
+    margin-left: 20px;
+    display: none;
+    margin-top: 25px;
+  }
+  label.terms {
+    font-size: 14px;
+    font-weight: normal;
+  }
+  button#create-continue {
+    font-size: 18px;
+  }
+}
+
+@media (min-width: $breakpoint-md) {
+  .clear-both-md {
+    clear: both !important;
+  }
+}
+
+@media (min-width: $breakpoint-sm) {
+  .row-form {
+    padding-top: 40px;
+    padding-bottom: 60px;
+  }
+  .no-padding {
+    padding: 0;
+  }
+}
+
+@media (min-height: 850px) {
+  /*.footer{
+          position: fixed;
+          bottom:0;
+      }*/
+}
+
+@media (max-width: $breakpoint-sm - 1) {
+  .clear-both-xs {
+    clear: both !important;
+  }
+  .sm-display-none {
+    display: none;
+  }
+  .margin-2 {
+    margin: 2%;
+  }
+  .label-method:hover, label.method-choosen {
+    font-weight: normal !important;
+  }
+  input.big-checkbox {
+    -webkit-transform: scale(1.3, 1.3);
+    -moz-transform: scale(1.3, 1.3);
+    -o-transform: scale(1.3, 1.3);
+  }
+  div {
+    &.story {
+      margin-top: 30px;
+    }
+    &.jumbotron.calculator-header {
+      h2 {
+        font-size: 3em !important;
+      }
+      h3.slogan-2 {
+        font-size: 2em !important;
+      }
+    }
+    &.user-pool-info div.pool-conditions {
+      margin-bottom: 5px;
+    }
+    &.padding-sm {
+      padding: 0 15px !important;
+    }
+  }
+}
+
+@media (min-width: 480px) and (max-width: 600px) {
+  .label-method {
+    font-size: 0.75em !important;
+  }
+}
+
+@media (max-width: 968px) {
+  div.story {
+    margin-top: 30px;
+    max-width: 360px;
+  }
+}
+
+@media (min-width: 480px) and (max-width: 600px) {
+  .label-method {
+    font-size: 0.75em !important;
+  }
+  div.jumbotron.calculator-header {
+    h2 {
+      font-size: 3em !important;
+    }
+    h3.slogan-2 {
+      font-size: 2em !important;
+    }
+  }
+}
+
+@media (max-width: 480px) {
+  div.jumbotron.calculator-header {
+    div.banner {
+      background-image: url('/assets/img/calculator/header_banner_xs.jpg') !important;
+      height: 308px !important;
+    }
+    h2 {
+      font-size: 2.3em !important;
+    }
+    h3.slogan-2 {
+      font-size: 1.3em !important;
+    }
+  }
+}
+
+/* Relief calculator landing */
+
+span.input-group-addon.symbol {
+  color: #7B7B7B;
+  font-size: 1.7em;
+}
+
+div {
+  &.calculator {
+    div {
+      &.row.select-amount {
+        margin-top: 20px;
+        margin-bottom: 30px;
+      }
+      &.type {}
+    }
+    select.type {
+      height: 40px !important;
+      font-size: 1.4em;
+      color: #218587;
+      text-align: center;
+      padding: 0 12px;
+    }
+    option {
+      &:not(:checked) {
+        background-color: #218587;
+        color: $color-white;
+      }
+      &:hover {
+        background-color: #000;
+        color: $color-white;
+      }
+    }
+    div.button-calculate {}
+    button {
+      &.calculate {
+        background-color: $background-dark-green;
+        font-size: 1.2em;
+        color: $color-white;
+        font-weight: bold;
+      }
+      &.donor {
+        background-color: $background-pink;
+        font-size: 1.2em;
+        color: $color-white;
+        font-weight: bold;
+      }
+    }
+  }
+  &.stories button.donor {
+    background-color: $background-pink;
+    font-size: 1.2em;
+    color: $color-white;
+    font-weight: bold;
+  }
+  &.calculator div {
+    &.show-taxes-calculate {
+      background-color: $background-white;
+      margin-top: 20px;
+      margin-bottom: 50px;
+      border-radius: 10px;
+      h2 {
+        color: #7b7b7b;
+        font-size: 2.3em;
+        font-weight: bold;
+        padding-top: 30px;
+        margin-top: 0;
+      }
+    }
+    &.relief-amount {
+      color: #7b7b7b;
+      font-size: 4em;
+      font-weight: bold;
+    }
+    &.show-taxes-calculate {
+      hr {
+        width: 90%;
+        &.down {
+          margin-bottom: 10px !important;
+        }
+      }
+      div.legal-regions {
+        padding: 0 4.1%;
+      }
+      .more-info {
+        padding-bottom: 10px;
+        color: #BB4CAD;
+        font-weight: bold;
+        font-size: 1.1em;
+        cursor: pointer;
+      }
+    }
+  }
+  &.container-more-info {
+    text-align: left;
+    clear: both;
+    padding: 0;
+    margin-bottom: 50px;
+    color: #75787F;
+    p {
+      font-size: 0.8em;
+    }
+    hr {
+      border-color: #B3B2B2;
+    }
+  }
+  &.stories {
+    background-color: $background-white;
+    margin-bottom: 50px;
+  }
+}
+
+h4.stories-title {
+  color: #B3B2B2;
+  font-size: 22px;
+  margin-top: 25px;
+  font-weight: bold;
+}
+
+div {
+  &.story h2 {
+    color: #218587;
+    font-weight: bold;
+    margin-top: 0;
+    margin-bottom: 5px;
+  }
+  &.stories div.row.stories {
+    margin-bottom: 25px;
+  }
+  &.story div {
+    &.review {
+      color: #B3B2B2;
+      padding: 15px 0;
+    }
+    &.author {
+      color: #7B7B7B;
+      font-weight: bold;
+      a {
+        color: #7B7B7B;
+        font-weight: bold;
+      }
+    }
+  }
+  &.show-taxes-calculate {
+    h3 {
+      color: #B3B2B2;
+      font-size: 2em;
+      font-weight: bold;
+      margin-top: 5px;
+    }
+    div {
+      &.explain {
+        font-size: 1.2em;
+        margin-bottom: 15px;
+      }
+      &.container-donor-button-reminder {
+        margin-bottom: 25px;
+      }
+    }
+  }
+  &.container-donor-button-projects {
+    margin-bottom: 25px;
+  }
+  &.container.target {
+    margin-bottom: 50px;
+    font-family: $primary-font;
+    div {
+      &.title {
+        font-size: 2em;
+        color: #218587;
+        font-weight: bold;
+      }
+      &.description {
+        padding-top: 15px;
+        font-size: 1.2em;
+        color: #75787F;
+      }
+    }
+  }
+}
+
+

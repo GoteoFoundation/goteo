@@ -1,3 +1,4 @@
+admin-action: 'Acción de administrador'
 admin-NO: 'NO'
 admin-YES: SI
 admin-account-amount: 'Cantidad aportada'
@@ -64,6 +65,7 @@ admin-no: 'No'
 admin-percent: Porcentaje
 admin-project: Proyecto
 admin-projects: Proyectos
+admin-filters: 'Filtros'
 admin-remove-filters: 'Quitar filtros'
 admin-sponsors: Servicios
 admin-status: Estado
@@ -74,3 +76,19 @@ admin-text-type-plain: 'Texto simple'
 admin-user: Usuario
 admin-users: Usuarios
 admin-yes: Si
+admin-impersonate-user: Suplantar a %s
+admin-project-express-discard: 'Rechazo express'
+admin-project-express-discard-desc: 'Pasa el proyecto a estado Descartado y manda un mail'
+admin-project-express-discard-sure: 'Se va a enviar un mail automáticamente y pasará a estado descartado, ok?'
+admin-project-to-review: 'A revisión'
+admin-project-to-review-desc: 'Pasa el proyecto al estado Pendiente de valoración'
+admin-project-to-review-sure: 'El creador no podrá editarlo más, ok?'
+admin-project-view-in-admin: 'Ver en el admin'
+
+admin-project-to-negotiation: 'A negociación'
+admin-project-to-negotiation-desc: 'Pasa el proyecto al estado Editándose'
+admin-project-to-negotiation-sure: 'ALERTA!! El proyecto esta en campaña! Con esto lo vamos a despublicar ¿Ok?'
+
+admin-project-to-publish: 'Publicar'
+admin-project-to-publish-desc: 'Pasa el proyecto al estado "En campaña"'
+admin-project-to-publish-sure: 'El proyecto va a comenzar su campaña, ¿comenzamos?'

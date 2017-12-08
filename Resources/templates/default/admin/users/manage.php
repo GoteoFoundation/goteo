@@ -90,7 +90,7 @@ $url = '/' . $this->template . '/' . $user->id;
         <?php foreach($this->node_roles as $node => $roles): foreach($roles as $role): ?>
             <tr>
                 <td><?= $this->all_roles[$role] ?></td>
-                <td><?= $this->nodes[$node] ?></td>
+                <td><?= $this->all_nodes[$node] ?></td>
                 <td><a href="<?= $url ?>?<?= http_build_query(array('del_role' => $role, 'from_node' => $node)) ?>">[Eliminar]</a></td>
             </tr>
         <?php endforeach; endforeach ?>

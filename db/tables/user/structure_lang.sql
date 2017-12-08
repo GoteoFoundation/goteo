@@ -10,3 +10,7 @@ CREATE TABLE IF NOT EXISTS `user_lang` (
 -- user name translate
 ALTER TABLE `user_lang`
   ADD COLUMN `name` varchar(100) COLLATE utf8_general_ci DEFAULT NULL AFTER `about`;
+
+  -- foreign keys user
+DELETE FROM user_lang WHERE id NOT IN (SELECT id FROM USER);
+ALTER TABLE `user_lang` ADD FOREIGN KEY (`id`) REFERENCES `user`(`id`) ON UPDATE CASCADE ON DELETE CASCADE;

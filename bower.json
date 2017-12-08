@@ -1,0 +1,36 @@
+{
+  "name": "goteo",
+  "description": "Open Source Crowdfunding Platform",
+  "main": "",
+  "authors": [
+    "Fundación Goteo"
+  ],
+  "license": "AGPL-3.0",
+  "homepage": "https://github.com/GoteoFoundation/goteo",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "public/vendor/",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "Sortable": "sortablejs#^1.5.1",
+    "font-awesome": "fontawesome#^4.7.0",
+    "eonasdan-bootstrap-datetimepicker": "^4.17.47",
+    "bootstrap-social": "^5.1.1",
+    "bootstrap-xxs": "^0.1.0",
+    "animate.css": "^3.5.2",
+    "jquery-hammerjs": "^2.0.0",
+    "footable": "^3.1.4",
+    "bootstrap": "^3.3.7",
+    "moment": "^2.18.1",
+    "simplemde": "^1.11.2",
+    "dropzone": "enyo/dropzone#7a21136c6d4fe89bbb3a8f690cf7b573824b624f",
+    "bootstrap-tagsinput": "tagsinput#^0.8.0",
+    "typeahead.js": "^0.11.1",
+    "summernote": "^0.8.8",
+    "clipboard": "^1.7.1"
+  }
+}

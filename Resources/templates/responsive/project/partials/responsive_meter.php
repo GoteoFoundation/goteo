@@ -140,7 +140,7 @@ use Goteo\Library\Check;
 
 <?php if($project->called): ?>
 
-<a href="<?php echo SITE_URL ?>/call/<?php echo $project->called->id ?>" target="_blank">
+<a href="<?php echo SITE_URL ?>/call/<?php echo $project->called->id ?>/projects" target="_blank">
     <div class="row call-info visible-xs">
         <div class="col-xs-2 no-padding" >
             <img src="<?= SRC_URL . '/assets/img/project/drop.svg' ?>" class="img-responsive">
@@ -161,6 +161,23 @@ use Goteo\Library\Check;
 </a>
 
 <?php endif; ?>
+
+ <?php if ($project->node !== $this->get_config('current_node')&&($project->nodeData->active)) : ?>
+
+    <div class="visible-xs channel" >
+        <span class="channel-label">
+            <img src="/assets/img/project/channel.svg" width="20"> <?= $this->text('regular-channel') ?> 
+        </span>
+        <a href="<?= $project->nodeData->url ?>">
+            <button class="btn" style="<?= $project->nodeData->owner_background ? 'background-color: '.$project->nodeData->owner_background :  '' ?>" > 
+                <?= $project->nodeData->name ?>    
+            </button>
+        </a>
+    </div>
+
+<?php endif; ?>
+
+
 
 <div class="row visible-xs extra-responsive-meter">
     <?php if(!$this->get_user() ): ?>

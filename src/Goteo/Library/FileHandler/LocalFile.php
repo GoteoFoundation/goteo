@@ -354,7 +354,7 @@ class LocalFile extends BaseFile implements FileInterface {
 
         while ( file_exists ( $remote )) {
             $name = preg_replace_callback( '/^(.+?)(_?)(\d*)(\.[^.]+)?$/', function($m){
-                return $m[1] .'-' . ($m[3]+1) . $m[4];
+                return $m[1] .'-' . ((int)$m[3]+1) . $m[4];
             }, $name );
             $remote = $this->get_path($dir . $name);
         }

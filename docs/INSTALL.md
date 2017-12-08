@@ -8,14 +8,11 @@ Installation
 Server requirements
 -------------------
 
-- PHP v5.6 or later with most common extension activated (GD, mcrypt, etc)
+- PHP v5.6 (PHP 7 recommended) or later with extensions `gd`, `mcrypt`, `curl`, `mbstring`, `json`, `mysql` activated
+- Access to the terminal in the webserver and cron.
 - Apache, Nginx or any other server with ModRewrite activated
 - MySQL 5.6 or later
 
-Server configuration
----------------------
-
-Goteo has been tested under Nginx and Apache configurations.
 
 > At this point, there are still no production-ready releases. Please refer to the [developers](developers/environment.html) documentation for more info.
 >
@@ -32,149 +29,39 @@ Goteo has been tested under Nginx and Apache configurations.
 > npm install
 > ```
 >
+> Create and edit your confinguration:
+>
+> ```bash
+> cp config/demo-settings.yml config/settings.yml
+>```
+>
 > Create the compiled minimized system:
 >
 > ```bash
-> grunt build
+> grunt build:dist
 > ```
 >
-> Alternatively, use  `grunt build:devel` for javascript/css debugging.
-
-
-
-### Apache config:
-
-Modrewrite must be enabled for apache below 2.2.16:
-
-```apache
-<IfModule mod_rewrite.c>
-    Options -MultiViews
-
-    RewriteEngine On
-    #RewriteBase /path/to/goteo-folder/dist
-    RewriteCond %{REQUEST_FILENAME} !-f
-    RewriteRule ^ index.php [QSA,L]
-</IfModule>
-```
-
-Alternatively, if you use Apache 2.2.16 or higher, you can use the FallbackResource directive to make your .htaccess even easier:
-
-```apache
-FallbackResource /index.php
-```
-
-> **NOTE:**
-> - If you want to debug the site, you must point the server to the `index_dev.php` file instead of `index.php`. This way error traces will be shown in the error pages
-> - If you cannot configure the server to point to the `dist/` folder, the `.htaccess` file on the root folder can be used as alternative (using this solution will force the use of an assets URL pointing to the dist/ folder.)
-
-### Nginx config:
-
-```nginxs
-server {
-    server_name domain.tld www.domain.tld;
-    root /var/www/goteo-folder/dist;
-
-    location / {
-        # try to serve file directly, fallback to front controller
-        try_files $uri /index.php$is_args$args;
-    }
-
-    # If you have 2 front controllers for dev|prod use the following line instead
-    # location ~ ^/(index|index_dev)\.php(/|$) {
-    location ~ ^/index\.php(/|$) {
-        # the ubuntu default
-        fastcgi_pass   unix:/var/run/php5-fpm.sock;
-        # for running on centos
-        #fastcgi_pass   unix:/var/run/php-fpm/www.sock;
-
-        fastcgi_split_path_info ^(.+\.php)(/.*)$;
-        include fastcgi_params;
-        fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
-        fastcgi_param HTTPS off;
-
-        # Prevents URIs that include the front controller. This will 404:
-        # http://domain.tld/index.php/some-path
-        # Enable the internal directive to disable URIs like this
-        # internal;
-    }
-
-    #return 404 for all php files as we do have a front controller
-    location ~ \.php$ {
-        return 404;
-    }
-
-    error_log /var/log/nginx/project_error.log;
-    access_log /var/log/nginx/project_access.log;
-}
-```
-
-Database configuration
-----------------------
-
-First you'll need an empty database (**your_goteo_db**) with user (**your_user**) and password (**your_password**).
-
-Once you got it, a minimal system must be created, import this 3 SQL scripts:
-
-- `db/install/structure.sql`
-- `db/install/data.sql`
-- `db/install/templates.sql`
-
-**NB:** Run `db/install/upgrade-to-v3.0.9.sql` first before `db/install/data.sql`
-
-Both scripts should be applied in a MySQL console:
-
-```bash
-mysql -u your_user -pyour_password your_goteo_db < db/install/structure.sql
-```
-
-Then, apply the minor-version update:
-
-```bash
-mysql -u your_user -pyour_password your_goteo_db < db/install/upgrade-to-v3.0.9.sql
-```
-
-And, finally, import some bare data (glossary and faq may be optional, or you can delete date afterwards):
-
-```bash
-mysql -u your_user -pyour_password your_goteo_db < db/install/data.sql
-mysql -u your_user -pyour_password your_goteo_db < db/install/templates.sql
-mysql -u your_user -pyour_password your_goteo_db < db/install/glossary.sql
-mysql -u your_user -pyour_password your_goteo_db < db/install/faq.sql
-```
-
-
-This should give you an empty system with only one user "root".
-
-Login with user **"root"** and password **"root"** (no quotes).
-Go `http://your.intallation.site/admin/users/edit/root` to change the password and email
-Try login with that password and manage the contents at http://your.intallation.site/admin
-
-The `data.sql` script also creates demo project, you can remove all demo data by using the command `./bin/console dev:statusinit --erase'` from the [dev-plugin](developers/extend.html#dev-plugin).
-
-However, we haven't tested it in any production database and very likely errors will be thrown. Debugging info will be appreciated.
-
-Cron configuration
----------------------
-
-You will need to add a cron/crontab line in order to process severals project related events:
-
-```cron
-* * * * *   nice /usr/bin/php /path/to/installation/bin/console cron --lock --logmail > /dev/null 2>&1
-```
-
-Refer to the **Console scripts** documentation for more info
+> Point your web server to handle all request by the file `goteo/dist/index.php`
+>
+> Alternatively, use  `grunt build:devel` for javascript/css debugging and point the webserver to `goteo/dist/index_dev.php`
 
 Goteo configuration
 -------------
 
-Place in here a non-git-tracked copy of your `settings.yml`
+You will need to create a new file in the folder `config` named `settings.yml`
 
 Use `demo-settings.yml` or `vagrant-settings.yml` as a example.
 
-Particularly you must configure the `db:` section with the proper MySQL username/password on settings.yml
+Particularly you must configure the `db:` section with the proper **username/password** for MySQL in the file `config/settings.yml`
 
 You can specify a different `dev-settings.yml` file which will be used by `public/index_dev.php`
 
+It is also possible to define a custom settings file with the env var `GOTEO_CONFIG_FILE`, ie:
+
+```bash
+export GOTEO_CONFIG_FILE='/my/path/my-settings.yml'
+grunt serve
+```
 
 Example installation `config/settings.yml`:
 
@@ -215,7 +102,7 @@ url:
     assets: //example.com
     #optional, configure this as hostname only (ex: example.com) if you want languages to be selected as subdomains (es.example.com, en.example.com)
     url_lang: example.com
-    
+
     # If you want to use a CDN or another web server to serve the cached images
     # You can define this constants. All cached images links will point to this
     # Url, event if don't exists yet.
@@ -445,3 +332,111 @@ oauth:
 
 
 ```
+
+
+Database install
+----------------
+
+First you'll need an empty database and have your `config/settings.yml` file with the section **db** properly configured with your database parameters.
+
+Once you got it, install the database schema and a minimal data set is easy: In a terminal, in the root directory where Goteo code is, run the command `migrate`:
+
+
+```bash
+php bin/console migrate install
+```
+
+
+This should give you an empty system with only one user "root".
+
+Login with user **"root"** and password **"root"** (no quotes).
+Go `http://your.intallation.site/admin/users/edit/root` to change the password and email
+Try login with that password and manage the contents at http://your.intallation.site/admin
+
+The install script also creates demo project, you can remove all demo data by using the command `./bin/console dev:statusinit --erase'` from the [dev-plugin](developers/extend.html#dev-plugin).
+
+
+Cron configuration
+---------------------
+
+You will need to add a cron/crontab line in order to process severals project related events:
+
+```cron
+* * * * *   nice /usr/bin/php /path/to/installation/bin/console cron --lock --logmail > /dev/null 2>&1
+```
+
+Refer to the **Console scripts** documentation for more info
+
+
+Server configuration
+---------------------
+
+Goteo has been tested under Nginx and Apache configurations.
+
+### Apache config:
+
+Modrewrite must be enabled for apache below 2.2.16:
+
+```apache
+<IfModule mod_rewrite.c>
+    Options -MultiViews
+
+    RewriteEngine On
+    #RewriteBase /path/to/goteo-folder/dist
+    RewriteCond %{REQUEST_FILENAME} !-f
+    RewriteRule ^ index.php [QSA,L]
+</IfModule>
+```
+
+Alternatively, if you use Apache 2.2.16 or higher, you can use the FallbackResource directive to make your .htaccess even easier:
+
+```apache
+FallbackResource /index.php
+```
+
+> **NOTE:**
+> - If you want to debug the site, you must point the server to the `index_dev.php` file instead of `index.php`. This way error traces will be shown in the error pages
+> - If you cannot configure the server to point to the `dist/` folder, the `.htaccess` file on the root folder can be used as alternative (using this solution will force the use of an assets URL pointing to the dist/ folder.)
+
+### Nginx config:
+
+```nginxs
+server {
+    server_name domain.tld www.domain.tld;
+    root /var/www/goteo-folder/dist;
+
+    location / {
+        # try to serve file directly, fallback to front controller
+        try_files $uri /index.php$is_args$args;
+    }
+
+    # If you have 2 front controllers for dev|prod use the following line instead
+    # location ~ ^/(index|index_dev)\.php(/|$) {
+    location ~ ^/index\.php(/|$) {
+        # the ubuntu default
+        fastcgi_pass   unix:/var/run/php/php7.0-fpm.sock;
+        # for running on centos
+        #fastcgi_pass   unix:/var/run/php-fpm/www.sock;
+
+        fastcgi_split_path_info ^(.+\.php)(/.*)$;
+        include fastcgi_params;
+        fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
+        fastcgi_param HTTPS off;
+
+        # Prevents URIs that include the front controller. This will 404:
+        # http://domain.tld/index.php/some-path
+        # Enable the internal directive to disable URIs like this
+        # internal;
+    }
+
+    #return 404 for all php files as we do have a front controller
+    location ~ \.php$ {
+        return 404;
+    }
+
+    error_log /var/log/nginx/project_error.log;
+    access_log /var/log/nginx/project_access.log;
+}
+```
+
+

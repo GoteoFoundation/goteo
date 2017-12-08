@@ -1,0 +1,29 @@
+  /* custom message alerts */
+
+ .custom-close {
+    font-size:30px !important;
+    opacity: 0.9 !important;
+    color: $color-white !important;
+ }
+
+ .alert{
+    font-size: $font-size * 1.1;
+    font-weight: 500;
+ }
+
+.alert-danger, .alert-success {
+    color: $color-white !important;
+    p {
+        color: $color-white !important;
+    }
+}
+
+ .alert-danger {
+    background-color: $background-red;
+    border-color: $background-red !important;
+}
+
+ .alert-success{
+    background-color: $background-light-green;
+    border-color: $background-light-green !important;
+}

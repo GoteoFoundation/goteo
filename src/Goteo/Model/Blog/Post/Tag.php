@@ -17,15 +17,18 @@ namespace Goteo\Model\Blog\Post {
 
         public
             $id,
-            $name;
+            $name,
+            $post,
+            $tag;
+
 
         /*
          *  Devuelve datos de una comentario
          */
-        public static function get ($id) {
+        public static function get ($id, $lang = null) {
 
                 //Obtenemos el idioma de soporte
-                $lang=self::default_lang_by_id($id, 'tag_lang', Lang::current());
+                $lang=self::default_lang_by_id($id, 'tag_lang', $lang);
                 $query = static::query("
                     SELECT
                         tag.id as id,

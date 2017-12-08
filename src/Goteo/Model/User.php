@@ -27,6 +27,7 @@ use Goteo\Model\Template;
 use Goteo\Model\User\Pool as UserPool;
 use Goteo\Model\User\UserLocation;
 use Goteo\Model\User\Web as UserWeb;
+use Goteo\Model\User\Interest as UserInterest;
 
 class User extends \Goteo\Core\Model {
 
@@ -107,6 +108,11 @@ class User extends \Goteo\Core\Model {
         return $this->$name;
     }
 
+
+    public static function getLangFields() {
+        return ['name', 'about'];
+    }
+
     /**
      * Guardar usuario.
      * Guarda los valores de la instancia del usuario en la tabla.
@@ -124,7 +130,8 @@ class User extends \Goteo\Core\Model {
             // Nuevo usuario.
             if (empty($this->id)) {
                 $insert = true;
-                $data[':id'] = $this->id = static::idealiza($this->userid);
+                $this->id = static::idealiza($this->userid);
+                $data[':id'] = $this->id;
                 $data[':name'] = $this->name;
                 $data[':location'] = $this->location;
                 $data[':email'] = $this->email;
@@ -207,10 +214,11 @@ class User extends \Goteo\Core\Model {
                 }
 
                 // Avatar
-                if (is_array($this->user_avatar) && !empty($this->user_avatar['name'])) {
+                if ((is_array($this->user_avatar) && !empty($this->user_avatar['name'])) || ($this->user_avatar instanceOf Image && $this->user_avatar->tmp)) {
                     $image = new Image($this->user_avatar);
 
-                    if ($image->save($errors)) {
+                    // print_r($image);$image->validate($errors);print_r($errors);die;
+                    if ($image->save($errors, false)) {
                         $data[':avatar'] = $image->id;
                         $this->avatar = $image;
                     } else {
@@ -281,26 +289,17 @@ class User extends \Goteo\Core\Model {
                     $data[':legal_entity'] = $this->legal_entity;
                 }
 
-                // Intereses
-                $interests = User\Interest::get($this->id);
+                // Interests
+                static::query('DELETE FROM user_interest WHERE user= ?', $this->id);
                 if (!empty($this->interests)) {
                     foreach ($this->interests as $interest) {
-                        if (!in_array($interest, $interests)) {
-                            $_interest = new User\Interest();
-                            $_interest->id = $interest;
-                            $_interest->user = $this->id;
-                            $_interest->save($errors);
-                            $interests[] = $_interest;
+                        if ($interest instanceof UserInterest) {
+                            $interest->user = $this->id;
+                            $interest->save($errors);
                         }
                     }
-                }
-                foreach ($interests as $key => $interest) {
-                    if (!in_array($interest, $this->interests)) {
-                        $_interest = new User\Interest();
-                        $_interest->id = $interest;
-                        $_interest->user = $this->id;
-                        $_interest->remove($errors);
-                    }
+                    $this->interests = UserInterest::get($this->id);
+                    // print_r($this->interests);die;
                 }
 
                 // Webs
@@ -337,6 +336,7 @@ class User extends \Goteo\Core\Model {
                     }
                     $query = substr($query, 0, -2) . " WHERE id = :id";
                 }
+                // die(\sqldbg($query, $data));
                 // Ejecuta SQL.
                 if (self::query($query, $data)) {
                     return true;
@@ -374,6 +374,7 @@ class User extends \Goteo\Core\Model {
 
         try {
             $sql = "REPLACE INTO user_lang SET " . $set;
+            // die(\sqldbg($sql, $values));
             self::query($sql, $values);
 
             return true;
@@ -483,6 +484,25 @@ class User extends \Goteo\Core\Model {
     }
 
     /**
+     * Returns true if user is "unregistered":
+     * ie: has no password, no social-login
+     */
+    public function isGhost() {
+        // If is hide or inactive is also a ghost
+        if(!$this->active || $this->hide) return true;
+        $password = $this->getPassword();
+        if(empty($password)) {
+            // check social login
+            $query = self::query('SELECT provider FROM user_login WHERE user = ?', array($this->id ? $this->id : $this->userid));
+            if ($query->fetchColumn()) {
+                return false;
+            }
+            return true;
+        }
+        return false;
+    }
+
+    /**
      * Este método actualiza directamente los campos de email y contraseña de un usuario (para gestión de superadmin)
      */
     public function update(&$errors = array()) {
@@ -546,9 +566,9 @@ class User extends \Goteo\Core\Model {
     }
 
     /**
-     * This method change the user password
+     * This method changes the user password
      */
-    public function setPassword($password, $raw = false) {
+    public function setPassword($password, &$errors = [], $raw = false) {
 
         $values = array(':id' => $this->id);
         if($raw) {
@@ -569,6 +589,7 @@ class User extends \Goteo\Core\Model {
 
         try {
             $sql = "UPDATE user SET `password` = :password WHERE id = :id";
+            // die(\sqldbg($sql, $values));
             if(self::query($sql, $values)) {
                 if($this->password) $this->password = $password;
                 return true;
@@ -643,8 +664,12 @@ class User extends \Goteo\Core\Model {
     public static function get($id, $lang = null, $with_password = false) {
         try {
 
-            //Obtenemos el idioma de soporte
-            $lang = self::default_lang_by_id($id, 'user_lang', $lang);
+            // This will ensure to have fallback translations in case $lang does not exists
+            // However, I find more personal to let the user choose how to present himself
+            // and handle his translations manually.
+            // Still, I left it here commented in case of further discussion
+            // Ivan Vergés  25/09/2017.
+            // $lang = self::default_lang_by_id($id, 'user_lang', $lang);
 
             $sql = "
                 SELECT
@@ -699,7 +724,7 @@ class User extends \Goteo\Core\Model {
 
             $user->roles = $user->getRoles();
             $user->avatar = Image::get($user->user_avatar);
-            $user->interests = User\Interest::get($id);
+            $user->interests = UserInterest::get($id);
 
             // campo calculado tipo lista para las webs del usuario
             $user->webs = UserWeb::get($id);
@@ -806,6 +831,11 @@ class User extends \Goteo\Core\Model {
                 ) ";
             $values[':role'] = $filters['role'];
         }
+        // Has or not has money in the pool
+        if (isset($filters['pool'])) {
+            $sqlFilter[] = 'id IN (SELECT `user` FROM user_pool WHERE user_pool.amount ' . ($filters['pool'] ? '>'  : '=') .' 0)';
+        }
+
 
         // un admin de central puede filtrar usuarios de nodo
         if ($subnodes) {
@@ -1139,7 +1169,8 @@ class User extends \Goteo\Core\Model {
 
             // Re-encode password and save it to database if it's considered non-secure
             if(!$pass->isSecure()) {
-                $user->setPassword(Password::encode($password), true);
+                $errors = [];
+                $user->setPassword(Password::encode($password), $errors, true);
             }
 
             if ($user->active) {
@@ -1163,7 +1194,7 @@ class User extends \Goteo\Core\Model {
      */
     public function getPassword() {
         if($this->password) return $this->password;
-        $query = self::query('SELECT password FROM user WHERE id = :id', [':id' => $this->id]);
+        $query = self::query('SELECT password FROM user WHERE id = :id', [':id' => $this->id ? $this->id : $this->userid]);
         $this->password = $query->fetchColumn();
         return $this->password;
     }
@@ -1250,7 +1281,6 @@ class User extends \Goteo\Core\Model {
         if (!is_array($check_roles)) {
             $check_roles = [(string) $check_roles];
         }
-
         foreach ($this->getAllNodeRoles() as $n => $roles) {
             if ($node === $n && array_intersect($roles, $check_roles)) {
                 return true;
@@ -1406,9 +1436,9 @@ class User extends \Goteo\Core\Model {
                 $non_administrable_roles = ['superadmin', 'root'];
             }
 
-            // echo "<br>[$node => $role] againts [$to_node $to_role]";
+            // echo "<br>[role '$role' in '$node'] againts [role '$to_role' in '$to_node']";
             if (($node === $to_node || $node === '') && !in_array($to_role, $non_administrable_roles)) {
-                // echo " OK [$to_role $to_node]\n";
+                // echo " OK [role '$to_role' in '$to_node']\n";
                 return true;
             }
         }
@@ -1537,7 +1567,7 @@ class User extends \Goteo\Core\Model {
 
             // Sustituimos los datos
             $subject = $template->title;
-
+            $errors = [];
             // En el contenido:
             $search = array('%USERNAME%', '%URL%');
             $replace = array($row->name, SEC_URL . '/user/leave/' . \mybase64_encode($token));
@@ -1716,7 +1746,9 @@ class User extends \Goteo\Core\Model {
      *
      * @return type array
      */
-    public static function getPersonal($id) {
+    public static function getPersonal($user) {
+        if($user instanceOf User) $user = $user->id;
+
         $query = self::query('SELECT
                                   contract_name,
                                   contract_name AS name,
@@ -1729,7 +1761,7 @@ class User extends \Goteo\Core\Model {
                                   country
                               FROM user_personal
                               WHERE user = ?'
-            , array($id));
+            , array($user));
 
         $data = $query->fetchObject();
 
@@ -1749,6 +1781,7 @@ class User extends \Goteo\Core\Model {
      * @return type booblean
      */
     public static function setPersonal($user, $data = array(), $force = false, &$errors = array()) {
+        if($user instanceOf User) $user = $user->id;
 
         if ($force) {
             // actualizamos los datos
@@ -1842,11 +1875,14 @@ class User extends \Goteo\Core\Model {
      * @return type booblean
      */
     public static function setPreferences($user, $data = array(), &$errors = array()) {
+        if($user instanceOf User) $user = $user->id;
 
+        $keys = ['updates', 'threads', 'rounds', 'mailing', 'email', 'tips', 'comlang', 'currency'];
         $values = array();
         $set = '';
 
         foreach ($data as $key => $value) {
+            if(!in_array($key, $keys)) continue;
             $values[":$key"] = $value;
             if ($set != '') {
                 $set .= ', ';
@@ -1874,31 +1910,42 @@ class User extends \Goteo\Core\Model {
     /*
                  * Lista de proyectos cofinanciados
     */
-    public static function invested($user, $publicOnly = true) {
+    public static function invested($user, $publicOnly = true, $offset = 0, $limit = 12, $count = false) {
         $debug = false;
         $lang = Lang::current();
         $projects = array();
-        $values = array();
-        $values[':lang'] = $lang;
-        $values[':user'] = $user;
+        $values = array(':user' => $user);
 
-        if (self::default_lang($lang) === Config::get('lang')) {
-            $different_select = " IFNULL(project_lang.description, project.description) as description";
-        } else {
-            $different_select = " IFNULL(project_lang.description, IFNULL(eng.description, project.description)) as description";
-            $eng_join = " LEFT JOIN project_lang as eng
-                            ON  eng.id = project.id
-                            AND eng.lang = 'en'";
-        }
+
+        list($fields, $joins) = self::getLangsSQLJoins($lang, 'project', 'id', 'Goteo\Model\Project');
 
         if ($publicOnly) {
             $sqlFilter = " AND project.status > 2";
         }
 
+        if($count) {
+            $sql = "
+            SELECT COUNT(project.id) FROM project
+            INNER JOIN invest
+                ON project.id = invest.project
+                AND invest.user = :user
+                AND invest.status IN ('0', '1', '3', '4')
+            INNER JOIN user
+                ON user.id = project.owner
+            WHERE project.status < 7
+            $sqlFilter
+            ";
+            return (int) self::query($sql, [':user' => $user])->fetchColumn();
+        }
+
+        if($limit) {
+            $sql_limit = ' LIMIT ' . (int)$offset . ','. (int)$limit;
+        }
+
         $sql = "
             SELECT
                 project.id as project,
-                $different_select,
+                $fields,
                 project.status as status,
                 project.published as published,
                 project.created as created,
@@ -1911,6 +1958,8 @@ class User extends \Goteo\Core\Model {
                 project.image as image,
                 project.num_investors as num_investors,
                 project.num_messengers as num_messengers,
+                project.project_location as project_location,
+                project.social_commitment as social_commitment,
                 project.num_posts as num_posts,
                 project.days as days,
                 project.name as name,
@@ -1929,26 +1978,17 @@ class User extends \Goteo\Core\Model {
                 ON user.id = project.owner
             LEFT JOIN project_conf
                 ON project_conf.project = project.id
-            LEFT JOIN project_lang
-                ON  project_lang.id = project.id
-                AND project_lang.lang = :lang
-            $eng_join
+            $joins
             WHERE project.status < 7
             $sqlFilter
             ORDER BY  project.status ASC, project.created DESC
+            $sql_limit
             ";
-
-        $sql .= "LIMIT 12";
-
-        if ($debug) {
-            echo \trace($values);
-            echo $sql;
-            die;
-        }
+        // die(\sqldbg($sql, $values));
 
         $query = self::query($sql, $values);
         foreach ($query->fetchAll(\PDO::FETCH_CLASS, 'Goteo\Model\Project') as $proj) {
-            $projects[] = Project::getWidget($proj);
+            $projects[] = Project::getWidget($proj, $lang);
         }
         return $projects;
     }
@@ -2079,4 +2119,53 @@ class User extends \Goteo\Core\Model {
         return !empty($is);
     }
 
+    /**
+     * Returns an array of suggested non-existing userid based on a string
+     */
+    public static function suggestUserId() {
+        $strings = func_get_args();
+
+        $suggest = [];
+        $originals = [];
+        foreach($strings as $string) {
+            $parts = preg_split("/[\s,\-\@\.]+/", $string);
+            $id = '';
+            foreach($parts as $part) {
+                $id .= self::idealiza($part);
+                if(strlen($id) < 4) continue;
+                if($id) {
+                    $originals[] = $id;
+
+                    $query = self::query("SELECT id FROM user WHERE id = ?", $id);
+                    if ($query->fetch()) {
+                        continue;
+                    }
+
+                    $suggest[] = $id;
+                    $id = '';
+                }
+            }
+        }
+        // print_r($originals);die;
+        // Fill with automatic
+        if($originals) {
+            foreach($originals as $id) {
+                do {
+                    $new =  preg_replace_callback( "|(\d+)|", function ($matches) {
+                            return ++$matches[1];
+                        }, $id);
+                    if($new === $id) {
+                        $new = $id . '1';
+                    }
+
+                    $query = self::query("SELECT id FROM user WHERE id = ?", $new);
+                    $id = $new;
+
+                } while($query->fetch());
+                if(!in_array($id, $suggest)) $suggest[] = $id;
+            }
+        }
+
+        return $suggest;
+    }
 }

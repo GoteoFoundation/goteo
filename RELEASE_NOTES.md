@@ -4,7 +4,7 @@ currentMenu: release_notes
 GOTEO VERSION 3
 ===============
 
-This is a beta-release of The [Goteo Crowdfunding Platform](http://goteo.org)
+This is source code of the open source [Goteo Crowdfunding Platform](http://goteo.org)
 
 Please read the docs for more information.
 
@@ -24,6 +24,17 @@ This is a list of (still most work-in-progress) of the new features:
 - Extendibility (custom functionality can added by external plugins)
 - Using grunt for developing
 - Better translations
+
+#### Version 3.2
+
+- Includes a new full responsive dashboard for users
+- PHP7 updated
+- Added migrate CLI command to smooth databases migrations
+- Improved install from the scratch
+- Updated vagrant to use ubuntu 16.04
+- Added Matcher model for custom matchfunding operations
+- Plugin improvements
+- Lot of fixes
 
 ## Credits
 

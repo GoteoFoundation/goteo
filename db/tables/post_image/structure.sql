@@ -10,3 +10,6 @@ ALTER TABLE `post_image` CHANGE `image` `image` VARCHAR( 255 ) NULL DEFAULT NULL
 ALTER TABLE `post_image` CHANGE `post` `post` BIGINT(20) UNSIGNED NOT NULL;
 DELETE FROM `post_image` WHERE `post` NOT IN (SELECT `id` FROM `post`);
 ALTER TABLE `post_image` ADD FOREIGN KEY (`post`) REFERENCES `post`(`id`) ON UPDATE CASCADE ON DELETE CASCADE;
+
+-- order
+ALTER TABLE `post_image` ADD COLUMN `order` TINYINT(4) DEFAULT 1 NOT NULL AFTER `image`;

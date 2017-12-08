@@ -6,6 +6,8 @@
  *
  * For the full copyright and license information, please view the README.md
  * and LICENSE files that was distributed with this source code.
+ *
+ * @DEPRECATED
  */
 
 namespace Goteo\Controller\Dashboard {

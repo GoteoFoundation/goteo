@@ -46,6 +46,9 @@ class Invest extends \Goteo\Core\Model {
     const STATUS_RELOCATED  = 5;  // deprecated status
     const STATUS_TO_POOL    = 6;  // refunded to user's pool
 
+    static $ACTIVE_STATUSES = [self::STATUS_PENDING, self::STATUS_CHARGED, self::STATUS_PAID];
+    static $FAILED_STATUSES = [self::STATUS_RELOCATED, self::STATUS_RETURNED, self::STATUS_TO_POOL, self::STATUS_CANCELLED];
+
     public
         $id,
         $user,
@@ -61,16 +64,20 @@ class Invest extends \Goteo\Core\Model {
         $method, // metodo de pago paypal/tpv/cash/drop/pool (ver Invest::methods() )
         $status, //estado en el que se encuentra esta aportación:
                 // -1 en proceso, 0 pendiente, 1 cobrado (charged), 2 devuelto (returned)
-        $issue, // aporte con incidencia
-        $anonymous, //no debe aparecer su careto ni su nombre, nivel, etc... pero si aparece en la cuenta de cofinanciadores y de aportes
-        $resign, //renuncia a cualquier recompensa
+        $issue = false, // aporte con incidencia
+        $anonymous = false, //no debe aparecer su careto ni su nombre, nivel, etc... pero si aparece en la cuenta de cofinanciadores y de aportes
+        $resign = false, //renuncia a cualquier recompensa
         $invested, //fecha en la que se ha iniciado el aporte
         $charged, //fecha en la que se ha cargado el importe del aporte a la cuenta del usuario
         $returned, //fecha en la que se ha devuelto el importe al usurio por cancelación bancaria
         $rewards = array(), //datos de las recompensas que le corresponden
         $address = null,  // dirección de envio de la recompensa y datos de regalo
+        $drops = null, // id del aporte que provoca este riego
+        $droped = null, // id del riego generado por este aporte
+        $campaign = false, // si es un aporte de capital riego
         $call = null, // aportes que tienen capital riego asociado
-        $pool = null; // aportes a reservar si el proyecto falla
+        $matcher = null, // invests with matcher funding associated
+        $pool = false; // aportes a reservar si el proyecto falla
 
     // añadir los datos del cargo
 
@@ -94,7 +101,32 @@ class Invest extends \Goteo\Core\Model {
         } else {
             return $array;
         }
+    }
 
+    /* handy methods */
+    public function isCharged() {
+        return in_array($this->status, self::$ACTIVE_STATUSES);
+    }
+
+    public function isReturned() {
+        return in_array($this->status, [self::STATUS_RELOCATED, self::STATUS_RETURNED, self::STATUS_TO_POOL]);
+    }
+
+    public function isCancelled() {
+        return $this->status === self::STATUS_CANCELLED;
+    }
+
+    public function getStatusText($simple = false) {
+        $status = $this->status;
+        if($simple) {
+            if($this->isReturned()) {
+                $status = self::STATUS_RETURNED;
+            }
+            if($this->isCharged()) {
+                $status = self::STATUS_CHARGED;
+            }
+        }
+        return self::status($status);
     }
 
     /*
@@ -170,16 +202,9 @@ class Invest extends \Goteo\Core\Model {
 
 
     /**
-     * Lista de aportes individuales
-     *
-     * Los filtros vienen de la gestión de aportes
-     * Los datos que sacamos: usuario, proyecto, cantidad, estado de proyecto, estado de aporte, fecha de aporte, tipo de aporte, campaña
-     * .... anonimo, resign, etc...
-     * @param $count if true, counts the total. If it's 'money' sum all money instead, if 'users' gets the number of different users
+     * reusable sql filters for searching in invests table
      */
-    public static function getList ($filters = array(), $node = null, $offset = 0, $limit = 10, $count = false, $order = 'id DESC') {
-
-        $list = [];
+    private static function getSQLFilter($filters = [], $node = null) {
         $values = [];
         $sqlFilter = [];
 
@@ -188,8 +213,16 @@ class Invest extends \Goteo\Core\Model {
             $values[':id'] = $filters['id'];
         }
         if (!empty($filters['methods'])) {
-            $sqlFilter[] = "invest.method = :methods";
-            $values[':methods'] = $filters['methods'];
+            $i = 0;
+            $parts = [];
+            if(!is_array($filters['methods'])) $filters['methods'] = [$filters['methods']];
+            foreach($filters['methods'] as $u) {
+                $parts[] = ":method$i";
+                $values[":method$i"] = is_object($u) ? $u->id : $u;
+                $i++;
+            }
+            $sqlFilter[] = 'invest.method IN(' . implode(',', $parts) . ')';
+
         }
         if (is_numeric($filters['projectStatus'])) {
             $sqlFilter[] = "project.status = :projectStatus";
@@ -214,7 +247,7 @@ class Invest extends \Goteo\Core\Model {
             if(!is_array($filters['projects'])) $filters['projects'] = [$filters['projects']];
             foreach($filters['projects'] as $i => $prj) {
                 $parts[] = ':prj' . $i;
-                $values[':prj' . $i] = $prj;
+                $values[':prj' . $i] = is_object($prj) ? $prj->id : $prj;
             }
             $sqlFilter[] = "invest.project IN (" . implode(',', $parts) . ")";
         }
@@ -227,8 +260,15 @@ class Invest extends \Goteo\Core\Model {
             $values[':maxamount'] = $filters['maxamount'];
         }
         if (!empty($filters['users'])) {
-            $sqlFilter[] = "invest.user = :users";
-            $values[':users'] = $filters['users'];
+            $i = 0;
+            $parts = [];
+            if(!is_array($filters['users'])) $filters['users'] = [$filters['users']];
+            foreach($filters['users'] as $u) {
+                $parts[] = ":user$i";
+                $values[":user$i"] = is_object($u) ? $u->id : $u;
+                $i++;
+            }
+            $sqlFilter[] = 'invest.user IN(' . implode(',', $parts) . ')';
         }
         if (!empty($filters['name'])) {
             $sqlFilter[] = "invest.user IN (SELECT id FROM user WHERE (name LIKE :name OR email LIKE :name))";
@@ -244,7 +284,7 @@ class Invest extends \Goteo\Core\Model {
                     $sqlFilter[] = "invest.issue = 1";
                     break;
                 case 'hide':
-                    $sqlFilter[] = "(invest.issue = 0 OR invest.issue IS NULL)";
+                    $sqlFilter[] = "invest.issue = 0";
                     break;
             }
         }
@@ -264,14 +304,21 @@ class Invest extends \Goteo\Core\Model {
                     break;
             }
         }
-        // else { $sqlFilter[] = "(invest.campaign = 0 OR invest.campaign IS NULL)"; }
+        // else { $sqlFilter[] = "invest.campaign = 0"; }
         if (!empty($filters['types'])) {
             switch ($filters['types']) {
                 case 'donative':
                     $sqlFilter[] = "invest.resign = 1";
                     break;
+                case 'nondonative':
+                    $sqlFilter[] = "invest.resign = 0";
+                    $sqlFilter[] = "invest.campaign = 0";
+                    break;
                 case 'anonymous':
                     $sqlFilter[] = "invest.anonymous = 1";
+                    break;
+                case 'nonanonymous':
+                    $sqlFilter[] = "invest.anonymous = 0";
                     break;
                 case 'manual':
                     $sqlFilter[] = "invest.admin IS NOT NULL";
@@ -282,11 +329,24 @@ class Invest extends \Goteo\Core\Model {
                 case 'drop':
                     $sqlFilter[] = "invest.campaign = 1";
                     break;
+                case 'nondrop':
+                    $sqlFilter[] = "invest.campaign = 0";
+                    break;
                 case 'pool':
                     $sqlFilter[] = "invest.pool = 1";
                     break;
                 case 'nopool':
-                    $sqlFilter[] = "(invest.pool = 0 OR ISNULL(invest.pool))";
+                    $sqlFilter[] = "invest.pool = 0";
+                    break;
+                case 'fulfilled':
+                    $sqlFilter[] = "invest_reward.fulfilled = 1";
+                    $sqlFilter[] = "invest.resign = 0";
+                    $sqlFilter[] = "invest.campaign = 0";
+                    break;
+                case 'pending':
+                    $sqlFilter[] = "invest_reward.fulfilled = 0";
+                    $sqlFilter[] = "invest.resign = 0";
+                    $sqlFilter[] = "invest.campaign = 0";
                     break;
             }
         }
@@ -321,6 +381,10 @@ class Invest extends \Goteo\Core\Model {
             $sqlFilter[] = "invest_reward.fulfilled=" . ($filters['fulfilled'] ? '1' : '0');
         }
 
+        if ((int)$filters['reward']) {
+            $sqlFilter[] = "invest_reward.reward=" . (int)$filters['reward'];
+        }
+
         if ($node) {
             $sqlFilter[] = "(project.node = :node OR ISNULL(invest.project))";
             $values[':node'] = $node;
@@ -331,6 +395,22 @@ class Invest extends \Goteo\Core\Model {
         } else {
             $sqlFilter = '';
         }
+
+        return [$sqlFilter, $values];
+    }
+
+    /**
+     * Lista de aportes individuales
+     *
+     * Los filtros vienen de la gestión de aportes
+     * Los datos que sacamos: usuario, proyecto, cantidad, estado de proyecto, estado de aporte, fecha de aporte, tipo de aporte, campaña
+     * .... anonimo, resign, etc...
+     * @param $count if true, counts the total. If it's 'money' sum all money instead, if 'users' gets the number of different users
+     */
+    public static function getList ($filters = array(), $node = null, $offset = 0, $limit = 10, $count = false, $order = 'id DESC') {
+
+        $list = [];
+        list($sqlFilter, $values) = self::getSQLFilter($filters, $node);
 
         if($count) {
             if($count === 'all') {
@@ -356,6 +436,7 @@ class Invest extends \Goteo\Core\Model {
                     ON invest_reward.invest = invest.id
                 $sqlFilter";
 
+                // echo sqldbg($sql, $values);
 
             if($count === 'all') {
                 $ob = self::query($sql, $values)->fetchObject();
@@ -395,6 +476,30 @@ class Invest extends \Goteo\Core\Model {
         }
         return $list;
     }
+
+    /**
+     * Lists invests as distinct users
+     */
+    public static function getUsersList($filters = []) {
+        $list = [];
+        list($sqlFilter, $values) = self::getSQLFilter($filters);
+        $sql = "SELECT
+                    DISTINCT user.*
+                FROM invest
+                RIGHT JOIN user
+                    ON invest.user = user.id
+                LEFT JOIN project
+                    ON invest.project = project.id
+                LEFT JOIN invest_reward
+                    ON invest_reward.invest = invest.id
+                $sqlFilter
+                ";
+
+        // print_r($filters);echo sqldbg($sql, $values);die;
+        $query = self::query($sql, $values);
+        return $query->fetchAll(\PDO::FETCH_CLASS, '\Goteo\Model\User');
+    }
+
 
     // returns the current project
     public function getProject() {
@@ -583,7 +688,7 @@ class Invest extends \Goteo\Core\Model {
      */
     public function getFirstReward() {
         $rewards = $this->getRewards();
-        return current($rewards);
+        return reset($rewards);
     }
 
     public function validate (&$errors = array()) {
@@ -629,6 +734,7 @@ class Invest extends \Goteo\Core\Model {
             'admin',
             'campaign',
             'call',
+            'matcher',
             'drops',
             'pool'
             );
@@ -852,10 +958,16 @@ class Invest extends \Goteo\Core\Model {
      * Obtenido por un proyecto
      */
     public static function invested ($project, $scope = null, $call = null) {
+        if($project instanceOf Project) $project = $project->id;
 
-        $values = array(':project' => $project, ':s0' => self::STATUS_PENDING, ':s1' => self::STATUS_CHARGED, ':s3' => self::STATUS_PAID, ':s4' => self::STATUS_RETURNED, ':s5' => self::STATUS_TO_POOL);
+        $values = array(':project' => $project,
+                    ':s0' => self::STATUS_PENDING,
+                    ':s1' => self::STATUS_CHARGED,
+                    ':s3' => self::STATUS_PAID,
+                    ':s4' => self::STATUS_RETURNED,
+                    ':s5' => self::STATUS_TO_POOL);
 
-        $sql = "SELECT  SUM(amount) as much
+        $sql = "SELECT  SUM(amount) as mutch
             FROM    invest
             WHERE   project = :project
             AND     invest.status IN (:s0, :s1, :s3, :s4, :s5)
@@ -879,20 +991,21 @@ class Invest extends \Goteo\Core\Model {
         $query = static::query($sql, $values);
         $got = $query->fetchObject();
 
-        if ($scope == 'users') {
-            // actualiza el amount invertido por los usuarios
-            static::query("UPDATE project SET amount_users = :num WHERE id = :project", array(':num' => (int) $got->much, ':project' => $project));
+        if($mutch = (int) $got->mutch) {
+            if ($scope == 'users') {
+                // actualiza el amount invertido por los usuarios
+                static::query("UPDATE project SET amount_users = :num WHERE id = :project", array(':num' => $mutch, ':project' => $project));
 
-        } elseif ($scope == 'call' && !empty($call)) {
-            // actualiza el amount invertido por el convocador
-            static::query("UPDATE project SET amount_call = :num WHERE id = :project", array(':num' => (int) $got->much, ':project' => $project));
-        } else {
-            //actualiza el el amount en proyecto (aunque se quede a cero)
-            static::query("UPDATE project SET amount = :num WHERE id = :project", array(':num' => (int) $got->much, ':project' => $project));
+            } elseif ($scope == 'call' && !empty($call)) {
+                // actualiza el amount invertido por el convocador
+                static::query("UPDATE project SET amount_call = :num WHERE id = :project", array(':num' => $mutch, ':project' => $project));
+            } else {
+                //actualiza el el amount en proyecto (aunque se quede a cero)
+                static::query("UPDATE project SET amount = :num WHERE id = :project", array(':num' => $mutch, ':project' => $project));
+            }
         }
 
-
-        return (int) $got->much;
+        return $mutch;
     }
 
     /*
@@ -1015,7 +1128,7 @@ class Invest extends \Goteo\Core\Model {
                 AND project.status > 2
             INNER JOIN user
                 ON  user.id = invest.user
-            WHERE   (invest.campaign IS NULL OR invest.campaign = '' )
+            WHERE   invest.campaign = 0
             AND     invest.status IN (:s0, :s1, :s3, :s4, :s5)
             GROUP BY invest.user
             ORDER BY amount DESC
@@ -1115,7 +1228,7 @@ class Invest extends \Goteo\Core\Model {
             WHERE   user = :user
             AND     project = :project
             AND     invest.status IN (:s0, :s1, :s3, :s4, :s5)
-            AND     (anonymous = 0 OR anonymous IS NULL)
+            AND     anonymous = 0
             ORDER BY invested DESC";
 
         $query = self::query($sql, array(':user' => $user, ':project' => $project, ':s0' => self::STATUS_PENDING, ':s1' => self::STATUS_CHARGED, ':s3' => self::STATUS_PAID, ':s4' => self::STATUS_RETURNED, ':s5' => self::STATUS_TO_POOL));
@@ -1124,6 +1237,7 @@ class Invest extends \Goteo\Core\Model {
 
     /*
      * Numero de cofinanciadores que han optado por cierta recompensa
+     * TODO: remove this
      */
     public static function choosed ($reward) {
 
@@ -1172,8 +1286,14 @@ class Invest extends \Goteo\Core\Model {
     /*
      * Marcar una recompensa como cumplida (o desmarcarla)
      */
-    public static function setFulfilled ($invest, $reward, $value = '1') {
+    public static function setFulfilled ($invest, $reward = null, $value = '1') {
 
+        if($invest instanceOf Invest) {
+            if(!$reward) {
+                $reward = $invest->getRewards() ? $invest->getRewards()[0]->id : null;
+            }
+            $invest = $invest->id;
+        }
         $values = array(
             ':value' => $value,
             ':invest' => $invest,
@@ -2005,7 +2125,7 @@ class Invest extends \Goteo\Core\Model {
             WHERE   invest.project = ?
             AND invest.method = 'paypal'
             AND invest.status = 0
-            AND (invest.campaign IS NULL OR invest.campaign = 0)
+            AND invest.campaign = 0
             ", array($project_id));
 
         return $query->fetchAll(\PDO::FETCH_CLASS, '\Goteo\Model\Invest');

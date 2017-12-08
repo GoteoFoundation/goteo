@@ -1,0 +1,255 @@
+/* The side navigation menu */
+#sidebar-menu {
+    padding-bottom: 50px;
+    overflow-x: hidden; /* Disable horizontal scroll */
+    font-size: 16px;
+    line-height: 1.5;
+    // height: 100%;
+    top: 0;
+    .sidebar-wrap {
+        background-color: $background-sidebar;
+    }
+
+    .sidebar-nav li {
+      padding: 0 15px;
+      background-color: $background-sidebar;
+      &.ok::after{
+        font-family: FontAwesome;
+        content: "\f00c";
+        position: absolute;
+        top: 15px;
+        right: 15px;
+        color: $color-cyan;
+        display: block;
+      }
+      &.ko::after{
+        font-family: FontAwesome;
+        // content: "\f00d";
+        content: "\f111";
+        font-size:50%;
+        position: absolute;
+        top: 21px;
+        right: 15px;
+        color: $color-red;
+        display: block;
+      }
+      >a, >button {
+        color: $color-white;
+        padding-bottom:13px;
+        padding-top:12px;
+        border-top:2px solid $background-grey;
+        display: relative;
+        padding-left:45px;
+        &:hover,&:active,&:focus {
+            background-color:inherit;
+            // color: $color-dark;
+        }
+        &.btn {
+            border-top: 0;
+            margin: 2px 0 10px 0;
+            text-align: left;
+        }
+        >i:first-child {
+            position: absolute;
+            top:10px;
+            left:5px;
+            &.icon-back {
+                top:15px;
+            }
+        }
+      }
+      &:first-child {
+        >a, >button {
+            border-top-color:transparent;
+        }
+      }
+      &.active,&:hover,&:focus {
+        background-color: $background-sidebar-active;
+        &.flat {
+            background-color: inherit;
+        }
+        >a, >button {
+            border-top-color:transparent;
+        }
+        &+li {
+            >a, >button {
+                border-top-color:transparent;
+            }
+        }
+      }
+      &.active+li {
+        >a, >button {
+            &.btn {
+                margin-top: 10px;
+            }
+        }
+      }
+      &.sidebar {
+        > a {
+            white-space: nowrap;
+        }
+        .fa-angle-up {
+            display: none;
+        }
+        &.active {
+          .fa-angle-up {
+            display: inline-block;
+          }
+          .fa-angle-down {
+            display: none;
+          }
+        }
+        &.active, &.selected {
+          background-color: $background-sidebar;
+          >a, >button {
+            border-top-color: $background-grey;
+          }
+
+          .submenu {
+            background-color: $background-sidebar-header;
+          }
+        }
+        border-left: 6px solid $color-cyan;
+        margin-top: 3px;
+        >li {
+          padding-left: 9px;
+        }
+      }
+      &.active, &.selected {
+        .submenu {
+          display: block;
+          >li.active {
+            padding-left: 5px;
+            border-left: 6px solid $color-cyan;
+          }
+        }
+      }
+      &.admin {
+        a {
+            .fa {
+                color: $color-red;
+            }
+            .icon {
+                background-color: $color-red;
+            }
+        }
+      }
+      .submenu {
+        margin:0 -15px;
+        display: none;
+        >li {
+          background-color: transparent;
+          &.active,&:hover,&:focus {
+            background-color: $background-sidebar-active;
+          }
+          a {
+            // border-top-color: transparent;
+          }
+        }
+      }
+    }
+
+    .sidebar-header {
+        min-height: 200px;
+        padding-top: 20px;
+        background-color: $background-sidebar-header;
+        .logo {
+            height: 100%;
+            width: auto;
+        }
+
+        .project-widget,.sidebar-widget {
+            font-size: $font-size;
+            position: relative;
+            a.img-link {
+                padding-top: 60%;
+                position: relative;
+                width: 100%;
+                display: block;
+                img {
+                    background: #E5F3F4 url(../img/ring.gif) no-repeat center;
+                    position: absolute;
+                    height: 100%;
+                    top: 0;
+                    left: 0;
+                    right: 0;
+                    bottom: 0;
+                }
+            }
+            .img-project,.img-circle {
+                width:60%;
+                margin:0 20%;
+                border-radius: 50%;
+                border:4px solid $color-white;
+                box-shadow:0 5px 20px 0px $color-black;
+            }
+            .content {
+                margin:10px 15px 0 15px;
+                padding:0 0 20px 0;
+                border-radius: 0;
+                color:$color-white;
+                a,button {
+                    color:$color-white;
+                    border: 0;
+                    background-color: transparent;
+                    &:hover {
+                        background-color: $background-light;
+                    }
+                }
+                ul.dropdown-menu {
+                    color:$primary-color;
+                    a,button {
+                        color:$primary-color;
+                    }
+
+                }
+                .error {
+                    margin: 5px 0;
+                    font-size: 12px;
+                    line-height: 12px;
+                    a,button {
+                        color: $color-red;
+                    }
+                }
+
+                .label {
+                    font-weight: normal;
+                    padding-top:.5em;
+                    text-transform: uppercase;
+                    // font-size:100%;
+                    // margin-bottom:10px;
+                    display:inline-block;
+                }
+            }
+        }
+    }
+
+    .sidebar-nav {
+      &.bottom {
+        background-color: $background-sidebar-header;
+        // width: 100%;
+        li {
+            background-color: $background-sidebar-header;
+            a {
+                min-height:67px;
+                padding-top:19px;
+            }
+          }
+      }
+    }
+
+    .toggle-sidebar {
+        display: none;
+    }
+
+    .navbar-brand {
+        margin-bottom: 8px;
+    }
+
+    .icon {
+        background-color:$color-white;
+        mask-size:100% auto;
+        -webkit-mask-size:100% auto;
+    }
+}
+
