@@ -103,6 +103,7 @@ contract-final-bank_owner: 'Titular de la cuenta bancaria'
 contract-final-close: 'Cerrar datos y procesar el contrato'
 
 contract-validation-ok: El contrato parece correcto. Por favor, revisa los datos y finaliza el proceso cerrando los datos. '
+contract-non-available: 'El contrato todavía no está disponible!'
 contract-validation-errors: El contrato todavía no está completado!'
 contract-validation-error-promoter: 'Faltan campos para llenar en el promotor'
 contract-validation-error-promoter_nif: 'El NIF no es correcto.'
