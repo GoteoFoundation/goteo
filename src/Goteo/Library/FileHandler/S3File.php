@@ -377,6 +377,7 @@ class S3File extends BaseFile implements FileInterface {
         if(empty($remote_original)) return false;
 
         $dir = dirname($remote_original);
+        if($dir === '.') $dir = '';
         if($dir) $dir = "$dir/";
         $name = basename($remote_original);
         $name = preg_replace("/[^a-z0-9_~\.-]+/","-",strtolower(Model::idealiza($name, true)));
