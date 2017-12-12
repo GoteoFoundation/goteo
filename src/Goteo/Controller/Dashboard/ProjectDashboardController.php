@@ -588,7 +588,7 @@ class ProjectDashboardController extends DashboardController {
                     try {
                         $reward = Reward::get(substr($button, 7));
 
-                        if($project->inEdition() || $reward->isDraft()) {
+                        if($project->inEdition() || $reward->isDraft() || ($reward->getTaken() === 0 && $project->userCanModerate($this->user))) {
                             $reward->dbDelete();
                         } else {
                             return $this->rawResponse('Error: Reward has invests or cannot be deleted', 'text/plain', 403);
