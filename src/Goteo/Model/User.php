@@ -1190,7 +1190,7 @@ class User extends \Goteo\Core\Model {
     }
 
     /**
-     * Returns the current pool for the user
+     * Returns the current password for the user
      * @return [type] [description]
      */
     public function getPassword() {
@@ -1198,6 +1198,14 @@ class User extends \Goteo\Core\Model {
         $query = self::query('SELECT password FROM user WHERE id = :id', [':id' => $this->id ? $this->id : $this->userid]);
         $this->password = $query->fetchColumn();
         return $this->password;
+    }
+
+    /**
+     * Checks if a password is valid for the user
+     */
+    public function validatePassword($password) {
+        $pass = new Password($this->getPassword());
+        return $pass->isPasswordValid($password);
     }
 
     /**

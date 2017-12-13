@@ -340,6 +340,10 @@ class SettingsDashboardController extends DashboardController {
 
         // Create the form
         $form1 = $this->createFormBuilder()
+            ->add('password', 'password', [
+                'label' => 'user-changepass-old',
+                'attr' => ['help' => Text::get('tooltip-dashboard-user-user_password')]
+            ])
             ->add('nemail', 'email', [
                 'label' => 'login-register-email-field',
                 'attr' => ['help' => Text::get('tooltip-dashboard-user-new_email')]
@@ -353,6 +357,10 @@ class SettingsDashboardController extends DashboardController {
             ])->getForm();
 
         $form2 = $this->createFormBuilder()
+            ->add('password', 'password', [
+                'label' => 'user-changepass-old',
+                'attr' => ['help' => Text::get('tooltip-dashboard-user-user_password')]
+            ])
             ->add('npassword', 'password', [
                 'label' => 'user-changepass-new',
                 'attr' => ['help' => Text::get('tooltip-dashboard-user-new_password')]
@@ -371,7 +379,9 @@ class SettingsDashboardController extends DashboardController {
             if($form1->isValid()) {
                 $data = $form1->getData();
 
-                if (empty($data['nemail'])) {
+                if(!$this->user->validatePassword($data['password'])) {
+                    $errors['password'] = Text::get('error-user-wrong-password');
+                } elseif (empty($data['nemail'])) {
                     $errors['email'] = Text::get('error-user-email-empty');
                 } elseif (!Check::mail($data['nemail'])) {
                     $errors['email'] = Text::get('error-user-email-invalid');
@@ -389,7 +399,9 @@ class SettingsDashboardController extends DashboardController {
             if($form2->isValid()) {
                 $data = $form2->getData();
 
-                if (empty($data['npassword'])) {
+                if(!$this->user->validatePassword($data['password'])) {
+                    $errors['password'] = Text::get('error-user-wrong-password');
+                } elseif (empty($data['npassword'])) {
                     $errors['password_new'] = Text::get('error-user-password-empty');
                 } elseif (!Check::password($data['npassword'])) {
                     $errors['password_new'] = Text::get('error-user-password-invalid');
