@@ -945,10 +945,11 @@ class ProjectDashboardController extends DashboardController {
             $filters['others']['nondrop'] = Text::Get('dashboard-project-filter-by-nondrop');
         }
 
-        $status = [Invest::STATUS_CHARGED, Invest::STATUS_PAID];
-        if($project->isDead()) {
-            $status = [Invest::STATUS_RETURNED, Invest::STATUS_RELOCATED, Invest::STATUS_TO_POOL];
-        }
+        // $status = [Invest::STATUS_CHARGED, Invest::STATUS_PAID];
+        // if($project->isDead()) {
+        //     $status = [Invest::STATUS_RETURNED, Invest::STATUS_RELOCATED, Invest::STATUS_TO_POOL];
+        // }
+        $status = [Invest::STATUS_CHARGED, Invest::STATUS_PAID, Invest::STATUS_RETURNED, Invest::STATUS_RELOCATED, Invest::STATUS_TO_POOL];
         $filter_by = ['projects' => $project->id, 'status' => $status];
         $filter = $request->query->get('filter');
         if(!is_array($filter)) $filter = [];
