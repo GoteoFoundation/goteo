@@ -15,6 +15,7 @@ use Goteo\Library\Feed;
 use Goteo\Model\User;
 use Goteo\Model\Image;
 use Goteo\Model\Project;
+use Goteo\Application\App;
 use Goteo\Application\Lang;
 use Goteo\Application\Config;
 use Goteo\Application\Exception\ModelException;
@@ -43,6 +44,7 @@ class Message extends \Goteo\Core\Model {
         $args = func_get_args();
         call_user_func_array(array('parent', '__construct'), $args);
         $this->timeago = Feed::time_ago($this->date);
+        // $this->message = nl2br(Text::urlink($this->message));
     }
 
     /*
@@ -76,10 +78,10 @@ class Message extends \Goteo\Core\Model {
 
 
             // reconocimiento de enlaces y saltos de linea
-            $message->message = nl2br(Text::urlink($message->message));
+            // $message->message = nl2br(Text::urlink($message->message));
 
-            //hace tanto
-            $message->timeago = Feed::time_ago($message->date);
+            // //hace tanto
+            // $message->timeago = Feed::time_ago($message->date);
 
             // Deprecated: to be removed
             if (empty($message->thread)) {
@@ -313,9 +315,19 @@ class Message extends \Goteo\Core\Model {
         return $this->projectInstance;
     }
 
-    // Description title
+    // Description title from project
     public function getTitle() {
         if($this->project) return $this->getProject()->name;
+    }
+
+    // Get the message content parsed as html
+    public function getHtml() {
+        return App::getService('app.md.parser')->text($this->message);
+    }
+
+    public function getSubject() {
+        if($this->subject) return $this->subject;
+        return trim(str_replace('## ', '', strtok($this->message, "\n")));
     }
 
     /**

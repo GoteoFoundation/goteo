@@ -227,7 +227,7 @@ class MessagesApiController extends AbstractApiController {
             throw new ModelException(Text::get('validate-donor-mandatory'));
         }
         if($subject) {
-            $body = "<strong>$subject</strong><br>\n$body";
+            $body = "## $subject\n\n$body";
         }
 
 
