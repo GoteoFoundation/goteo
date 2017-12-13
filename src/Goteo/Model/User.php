@@ -136,13 +136,8 @@ class User extends \Goteo\Core\Model {
                 $data[':location'] = $this->location;
                 $data[':email'] = $this->email;
                 $data[':token'] = $token = md5(uniqid());
-                // TODO: Do not save password here
-                // This can reencode passwords if Password library estimates
-                // a password is no longer secure
-                // use ->setPassword() instead
-                // To be removed when profile & register forms uses it
-                // Check if password is already encoded
 
+                // Check if password is already encoded
                 if ($this->password && !in_array('password', $skip_validations)) {
                     if(!Password::isBlowfish($this->password)) {
                        $data[':password'] = Password::encode($this->password);
@@ -150,15 +145,17 @@ class User extends \Goteo\Core\Model {
                 }
 
                 $data[':created'] = date('Y-m-d H:i:s');
-                $data[':active'] = true;
+                $data[':active'] = false;
                 $data[':confirmed'] = false;
                 $data[':lang'] = Lang::current();
                 $data[':node'] = $this->node;
 
                 //active = 1 si no se quiere comprovar
                 if (in_array('active', $skip_validations) && $this->active) {
-                    $data[':active'] = 1;
+                    $data[':active'] = true;
                 } else {
+                    // Activate all users by default. TODO: by config
+                    $data[':active'] = true;
                     if (Mail::createFromTemplate($this->email, $this->name, Template::CONFIRM_REGISTER, [
                         '%USERNAME%' => $this->name,
                         '%USERID%' => $this->id,
@@ -173,33 +170,6 @@ class User extends \Goteo\Core\Model {
                 }
             } else {
                 $data[':id'] = $this->id;
-
-                // E-mail
-                if (!empty($this->email)) {
-                    if (count($tmp = explode('¬', $this->email)) > 1) {
-                        $data[':email'] = $tmp[1];
-                        $data[':token'] = null;
-                    } else {
-                        $query = self::query('SELECT email FROM user WHERE id = ?', array($this->id));
-                        if ($this->email !== $query->fetchColumn()) {
-                            $this->setToken(md5(uniqid()) . '¬' . $this->email . '¬' . date('Y-m-d'));
-                        }
-                    }
-                }
-
-                // Contraseña
-                // TODO: Do not save password here
-                // This can reencode passwords if Password library estimates
-                // a password is no longer secure
-                // use ->setPassword() instead
-                // To be removed when profile & register forms uses it
-                // Check if password is already encoded
-                if ($this->password && !in_array('password', $skip_validations)) {
-                    if(!Password::isBlowfish($this->password)) {
-                       $data[':password'] = Password::encode($this->password);
-                        static::query('DELETE FROM user_login WHERE user= ?', $this->id);
-                    }
-                }
 
                 if (!is_null($this->active)) {
                     $data[':active'] = $this->active;
@@ -342,7 +312,7 @@ class User extends \Goteo\Core\Model {
                     return true;
                 }
             } catch (\PDOException $e) {
-                $errors[] = "Error al actualizar los datos del usuario: " . $e->getMessage();
+                $errors[] = "Error updating user's data: " . $e->getMessage();
                 return false;
             }
         }
@@ -563,6 +533,37 @@ class User extends \Goteo\Core\Model {
             return false;
         }
 
+    }
+
+
+    /**
+     * Prepares/sets a new email on existing user
+     */
+    public function setEmail($email, &$errors = [], $update_email = false) {
+        $query = self::query('SELECT email FROM user WHERE email = ?', $email);
+        if ($query->fetchColumn() == $email) {
+            $errors['email'] = Text::get('error-register-email-exists');
+            return false;
+        }
+
+        if(!$update_email) {
+            $this->setToken(md5(uniqid()) . '¬' . $email . '¬' . date('Y-m-d'));
+            return true;
+        }
+
+        try{
+            $values = [':id' => $this->id, ':email' => $email];
+            $sql = "UPDATE user SET `email` = :email, `token` = '' WHERE id = :id";
+            // die(\sqldbg($sql, $values));
+            if(self::query($sql, $values)) {
+                $this->email = $email;
+                return true;
+            }
+        } catch (\PDOException $e) {
+            $errors[] = "Error setting email" . $e->getMessage();
+        }
+
+        return false;
     }
 
     /**
@@ -1640,13 +1641,19 @@ class User extends \Goteo\Core\Model {
      *
      * @return type string
      */
-    public function getToken() {
-        if ($this->token) {
-            return $this->token;
+    public function getToken($email_only = false) {
+        if (!$this->token) {
+            $query = self::query('SELECT token FROM user WHERE id = ?', array($this->id));
+            $this->token = $query->fetchColumn();
         }
 
-        $query = self::query('SELECT token FROM user WHERE id = ?', array($this->id));
-        $this->token = $query->fetchColumn(0);
+        if($email_only) {
+            if (count($tmp = explode('¬', $this->token)) > 1) {
+                return $tmp[1];
+            }
+            return false;
+        }
+
         return $this->token;
     }
 

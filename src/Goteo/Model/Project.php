@@ -747,7 +747,6 @@ namespace Goteo\Model {
 
         // Replace $this->investors with this call
         public function getInvestions($offset = 0, $limit = 10, $order = 'invested ASC') {
-            if($this->projectInvestions) return $this->projectInvestions;
             $filter = ['projects' => $this->id, 'status' => [Invest::STATUS_PENDING, Invest::STATUS_CHARGED, Invest::STATUS_PAID, Invest::STATUS_RETURNED, Invest::STATUS_TO_POOL]];
             return Invest::getList($filter, null, $offset, $limit, false, $order);
         }

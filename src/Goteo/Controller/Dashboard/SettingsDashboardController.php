@@ -379,9 +379,7 @@ class SettingsDashboardController extends DashboardController {
                     $errors['email_retry'] = Text::get('error-user-email-empty');
                 } elseif (strcmp($data['nemail'], $data['remail']) !== 0) {
                     $errors['email_retry'] = Text::get('error-user-email-confirm');
-                } else {
-                    // var_dump($data);die;
-                    $this->user->email = $data['email'];
+                } elseif ($this->user->setEmail($data['nemail'], $errors)) {
                     $change['email'] = Text::get('user-email-change-sent');
                 }
             }
@@ -410,18 +408,20 @@ class SettingsDashboardController extends DashboardController {
         }
 
         if($change) {
-            if ($this->user->save($errors)) {
-                foreach($change as $t) {
-                    Message::info($t);
-                }
-
-                $this->user = User::flush();
-                return $this->redirect('/dashboard/settings/access');
+            foreach($change as $t) {
+                Message::info($t);
             }
+
+            if($this->user->id === Session::getUserId()) {
+                $this->user = User::flush();
+            }
+            return $this->redirect('/dashboard/settings/access');
         }
+
         if($errors) {
-            Message::error(Text::get('form-sent-error', implode(',',array_map('implode',$errors))));
+            Message::error(Text::get('form-sent-error', implode(',',$errors)));
         }
+
         return $this->viewResponse('dashboard/settings/access', [
             'user_id' => $this->user->id,
             'user_email' => $this->user->email,
