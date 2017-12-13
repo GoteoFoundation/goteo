@@ -327,7 +327,7 @@ class Message extends \Goteo\Core\Model {
 
     public function getSubject() {
         if($this->subject) return $this->subject;
-        return trim(str_replace('## ', '', strtok($this->message, "\n")));
+        return trim(str_replace('### ', '', strtok($this->message, "\n")));
     }
 
     /**
