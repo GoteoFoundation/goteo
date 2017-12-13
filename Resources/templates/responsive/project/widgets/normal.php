@@ -4,16 +4,34 @@ $percent = $this->project->getAmountPercent();
 $categories = $this->project->getCategories();
 // $social_rewards = $this->project->getSocialRewards();
 $social = $this->project->getSocialCommitment();
-$link = $this->link ? $this->link : '/project/' . $this->project->id;
-if($this->admin && !$this->link) $link = '/dashboard' . $link;
-$tagmark = $this->project->getTagmark();
-$call = $this->project->getCall();
+$target = 'target="_blank"';
+$link = $this->link;
+if(!$link) {
+    $link = '/project/' . $this->project->id;
+}
+if($this->admin && !$this->link) {
+    $link = '/dashboard' . $link;
+    $target = '';
+}
+if(!($label = $this->label)) {
+    $tagmark = $this->project->getTagmark();
+    $call = $this->project->getCall();
+    $matchers = $this->project->getMatchers('active');
+}
 
 ?><div class="project-widget flip-widget normal" id="project-<?= $this->project->id ?>">
 
-    <?php if($call): ?>
+    <?php if($label): ?>
+        <div class="status btn-lilac">
+            <?= $label ?>
+        </div>
+    <?php elseif($call): ?>
         <div class="status btn-lilac">
             <i class="icon icon-call"></i> <?= $this->text('regular-call') ?> x<strong>2</strong>
+        </div>
+    <?php elseif($matchers): ?>
+        <div class="status btn-lilac">
+            <i class="icon icon-call"></i> <?= $matchers[0]->name ?>
         </div>
     <?php elseif($tagmark): ?>
         <div class="status btn-orange">
@@ -27,7 +45,7 @@ $call = $this->project->getCall();
     <?php endif; ?>
 
 
-    <a class="img-link" href="<?= $link ?>">
+    <a class="img-link" href="<?= $link ?>" <?= $target ?>>
         <img class="img-project" src="<?= $this->project->image->getLink(600, 416, true); ?>">
         <h2><?= $this->text_truncate($this->project->name, 80); ?></h2>
     </a>
@@ -36,7 +54,7 @@ $call = $this->project->getCall();
 
     <div class="content">
         <h4>
-            <a href="/user/profile/<?= $this->project->user->id?>" target="_blank"><?= $this->text('regular-by').' '.$this->project->user->name ?></a>
+            <a href="/user/profile/<?= $this->project->user->id?>" <?= $target ?>><?= $this->text('regular-by').' '.$this->project->user->name ?></a>
         </h4>
         <div class="description">
             <?= $this->text_truncate($this->project->description, 140) ?>
@@ -45,7 +63,7 @@ $call = $this->project->getCall();
         <?php // TODO: add links here?
         if($categories): ?>
         <div class="categories">
-            <i class="fa fa-tag"></i> <?= implode(", ", $categories) ?>
+            <i class="fa fa-tag"></i> <?= implode(', ', $categories) ?>
         </div>
         <?php endif ?>
 

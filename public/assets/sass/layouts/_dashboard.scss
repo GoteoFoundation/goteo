@@ -8,13 +8,6 @@
   color: $secondary-color;
   margin-bottom: 20px;
 
-  // TODO: check for removal
-  .general-dashboard {
-    background-color: $background-white;
-    padding: 15px;
-    margin: 0 -15px 40px -15px;
-  }
-
   .inner-container {
       max-width: $breakpoint-md - 30;
       padding-right: 15px;
@@ -149,16 +142,16 @@
   }
 
   .dropdown-menu {
-    a:focus, a:hover {
+    a:focus, a:hover, button:focus, button:hover {
       background-color: $background-light;
     }
     > .active {
-      > a {
+      > a, >button {
         background-color: $color-cyan;
       }
     }
     > .available {
-      > a {
+      > a, >button {
         font-weight: bold;
         text-decoration: underline;
       }
@@ -220,6 +213,11 @@
     color: $secondary-color;
     background: $background-light-body;
     tr {
+        &.strikethrough {
+            td {
+                text-decoration: line-through;
+            }
+        }
         th,td {
             padding: 10px 5px;
             &:first-child {
@@ -255,8 +253,24 @@
         color: $secondary-color;
         font-weight: 500;
       }
-
+      &[data-toggle="collapse"] {
+        &::after {
+          margin-left: 6px;
+          content: '\f0d7';
+          font-family: FontAwesome;
+        }
+        &[aria-expanded="true"]::after {
+          content: '\f0d8';
+        }
+      }
   }
+  .buttons {
+    .btn {
+        margin-bottom: 10px;
+        margin-right: 10px;
+    }
+  }
+
   .progress-bar {
     color: $color-white;
     * {
@@ -500,11 +514,26 @@
     > li + li {
       margin-left: 20px;
     }
+    @media(max-width: $breakpoint-xs - 1) {
+        h5 {
+            font-size: 12px;
+        }
+    }
   }
 
   .ajax-message {
     .label {
         font-size: 92%;
+    }
+  }
+  .pool-container {
+    padding-left:5%;
+    padding-right:5%;
+    .pool-box {
+        input[type="number"] {
+            margin-right: 10px;
+            max-width: 190px;
+        }
     }
   }
   .pool-box {
@@ -552,10 +581,25 @@
     .min, .opt, .total {
         color: $color-dark;
         float: left;
-        min-width: 101px;
-        max-width: 80%;
-        max-width: calc(100% - 202px);
+        // min-width: 101px;
+        // max-width: 80%;
+        // max-width: calc(100% - 202px);
+        transition: width .6s ease, min-width .6s ease, max-width .6s ease;
+
+        &.min {
+            width: 45%;
+            >span {
+                margin-right: 10px;
+            }
+        }
+        &.opt {
+            width: 30%;
+            >span {
+                margin-right: 10px;
+            }
+        }
         &.total {
+            width: auto;
             float: right;
             text-align: right;
         }
@@ -565,10 +609,25 @@
             font-size: $font-size * 2;
             line-height: 1;
             margin-bottom: 10px;
+            white-space: nowrap;
         }
     }
     .progress {
         clear: both;
+    }
+    @media(max-width: $breakpoint-xs - 1) {
+        .min, .opt, .total {
+            >span {
+                font-size: 15px;
+            }
+        }
+    }
+    @media(min-width: $breakpoint-xs) and (max-width: $breakpoint-md - 1) {
+        .min, .opt, .total {
+            >span {
+                font-size: 20px;
+            }
+        }
     }
   }
 }
@@ -668,47 +727,6 @@
         padding-top: 8%;
         padding-bottom: 8%;
         margin: 40px 2%;
-    }
-  }
-}
-
-// ? To remove ?
-div {
-  &.row {
-    &.general-dashboard {
-      background-color: $background-white;
-      padding: 2% 5%;
-      margin-bottom: 40px;
-      border-radius: 7px;
-    }
-  }
-  &.container.general-dashboard {
-    background-color: $background-white;
-    padding: 2% 5%;
-    margin-bottom: 40px;
-    border-radius: 7px;
-    &:first-child {
-      border-top-right-radius: none;
-      border-top-left-radius: none;
-    }
-  }
-}
-
-.general-dashboard div.row.more-projects-button {
-  display: flex;
-  justify-content: center;
-  margin-top: 40px;
-}
-
-@media (max-width: $breakpoint-sm - 1) {
-  div {
-    &.row.general-dashboard, &.container.general-dashboard {
-      background-color: $background-white;
-      padding: 2% 5%;
-      margin-right: 0;
-      margin-left: 0;
-      border-radius: none;
-      margin-bottom: 20px;
     }
   }
 }

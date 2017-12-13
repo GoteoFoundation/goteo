@@ -13,7 +13,6 @@ use Symfony\Component\Routing\RouteCollection;
 use Goteo\Application\View;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 
-
 $routes = new RouteCollection();
 $routes->add('home', new Route(
     '/',
@@ -136,6 +135,15 @@ $routes->add('channel-list', new Route(
 $channel_routes = include __DIR__ . '/Routes/channel_routes.php';
 $channel_routes->addPrefix('/channel');
 $routes->addCollection($channel_routes);
+
+///// MATCHERS /////
+$routes->add('matcher', new Route(
+    '/matcher/{id}',
+    array('_controller' => function($id) {
+        // Temporary redirect to a channel with the same name
+        return new RedirectResponse('/channel/' .$id);
+    })
+));
 
 
 // Images processing (no prefix)

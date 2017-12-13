@@ -85,6 +85,7 @@ tooltip-updates-tags: 'Tooltip text updates-tags'
 tooltip-updates-text: tooltip-updates-text
 tooltip-updates-title: tooltip-updates-title
 project-about-title: 'About this project'
+project-call-got: 'The project already has raised <strong>%s</strong> from <strong>%s</strong>'
 project-chart-amount-ideal: Ideal
 project-chart-amount-reached: Acummulated
 project-chart-costs-reset: Back
@@ -146,6 +147,7 @@ project-validation-error-costs: 'You need to add or complete costs'
 project-validation-error-costs_required: 'You need at least one cost of each type, necessary and supplemental'
 project-validation-error-rewards: 'You need to add or complete rewards'
 project-validation-error-rewards_required: 'You need at least 3 rewards'
+project-validation-error-rewards_units: 'The reward must have at least %s units'
 project-validation-error-campaign: 'There are empty fields in the campaign configuration'
 
 project-non-public-field: 'This field is not public'
@@ -156,3 +158,4 @@ project-manage: 'Manage'
 project-manage-campaign: 'Manage campaign'
 
 project-widget-not-visible: 'This widget will not be visible until the project is public'
+project-donors-with-reward: '%s donors have chosen this reward'

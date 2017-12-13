@@ -35,11 +35,11 @@
 						<div class="row info">
 							<div class="pull-left">
 								<?php if($invest->user!= 'anonymous'): ?>
-									<a href="/user/<?= $invest->user ?>"><img class="avatar" src="<?= $invest->avatar->getLink(45, 45, true); ?>">
+									<a href="/user/<?= $invest->user ?>"><img class="avatar" src="<?= $invest->avatar->getLink(45, 45, true) ?>">
 									</a>
 								<?php else: ?>
-									<img class="avatar" src="<?= $invest->avatar->getLink(45, 45, true); ?>">
-								<?php endif; ?>
+									<img class="avatar" src="<?= $invest->avatar->getLink(45, 45, true) ?>">
+								<?php endif ?>
 							</div>
 							<div class="pull-left personal">
 								<h3 class="name" id="invest-<?= $invest->id ?>">
@@ -49,18 +49,20 @@
 									<?= ucfirst($invest->name) ?>
 								<?php endif;?>
 								</h3>
-								<div class="worth"><?= $this->worthcracy[$invest->worth]->name; ?></div>
+								<div class="worth"><?= $this->worthcracy[$invest->worth]->name ?></div>
 							</div>
-							<?php if ($invest->droped || $invest->campaign) : ?>
-								<div class="pull-right text-right drop">
-									<div>
-										<img width="30" src="<?= SRC_URL . '/assets/img/project/drop.svg' ?>">
-									</div>
+                            <?php if ($invest->droped || $invest->campaign) : ?>
+                                <div class="pull-right text-right drop">
+                                    <div>
+                                        <img width="30" src="<?= SRC_URL . '/assets/img/project/drop.svg' ?>">
+                                    </div>
+							      <?php if ($invest->method === 'drop'): ?>
 									<div class="x2">
 									x2
 									</div>
-								</div>
-							<?php endif; ?>
+							       <?php endif ?>
+                                </div>
+                            <?php endif ?>
 							<div class="pull-right text-right">
 								<div>
 								<?= $this->text('project-invest') ?>
@@ -81,11 +83,11 @@
 								<div class="msg-label"><?= $this->text('project-invest-msg') ?></div>
 								<div class="text-font-normal"><?= $invest->msg ?></div>
 							</div>
-							<?php endif; ?>
+							<?php endif ?>
 						</div>
 
 					</div>
-				<?php endforeach; ?>
+				<?php endforeach ?>
 
 				<?=$this->insert('partials/utils/paginator', ['total' => $this->investors_total, 'limit' => $this->investors_limit ? $this->investors_limit : 10])?>
 
@@ -142,7 +144,7 @@
                     	</div>
                     </div>
                 </div>
-                <?php endif; ?>
+                <?php endif ?>
 
                 <div id="comments-list-<?= $message->id ?>">
                     <?php foreach ($message->getResponses() as $child): ?>
@@ -163,45 +165,3 @@
 
 
 <?php $this->replace() ?>
-
-
-<?php $this->section('footer') ?>
-
-<script type="text/javascript">
-// @license magnet:?xt=urn:btih:0b31508aeb0634b347b8270c7bee4d411b5d4109&dn=agpl-3.0.txt
-
-$(function(){
-    // Send comments
-    $(".ajax-comments").on('click', ".send-comment", function (e) {
-        e.preventDefault();
-        var $parent = $(this).closest('.ajax-comments');
-        var $list = $($parent.data('list'));
-        var url = $parent.data('url');
-        var $error = $parent.find('.error-message');
-        var $textarea = $parent.find('[name="message"]');
-        var data = {
-            message: $textarea.val(),
-            thread: $parent.data('thread'),
-            project: $parent.data('project'),
-            view: 'project'
-        }
-
-        $error.addClass('hidden').html('');
-        $.post(url, data, function(data) {
-            // console.log('ok!', data);
-            $list.append(data.html);
-            $textarea.val('');
-            $parent.closest('.box').hide();
-          }).fail(function(data) {
-            var error = JSON.parse(data.responseText);
-            // console.log('error', data, error)
-            $error.removeClass('hidden').html(error.error);
-          });
-    });
-
-});
-
-// @license-end
-</script>
-
-<?php $this->append() ?>

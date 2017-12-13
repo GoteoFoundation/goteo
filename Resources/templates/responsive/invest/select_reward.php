@@ -14,6 +14,8 @@ $this->section('main-content');
 
                 <h2 class="col-sm-offset-1 padding-bottom-2"><?= $this->text('invest-select-reward') ?></h2>
 
+                <?= $this->supply('sub-header') ?>
+
                 <?= $this->insert('invest/partials/reward_box_resign') ?>
 
                 <?php foreach($this->rewards as $reward_item): ?>
@@ -31,6 +33,9 @@ $this->section('main-content');
 
 <?php $this->replace() ?>
 
+<?php $this->section('facebook-pixel') ?>
+    <?= $this->insert('partials/facebook_pixel', ['pixel' => $this->project->facebook_pixel, 'track' => ['PageView', 'AddToCart']]) ?>
+<?php $this->replace() ?>
 
 
 <?php $this->section('footer') ?>

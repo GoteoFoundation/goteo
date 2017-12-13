@@ -1,7 +1,11 @@
 <?php $this->layout('project/layout') ?>
 <?php $this->section('main-content') ?>
 
-<?php $project = $this->project ?>
+<?php
+    $project = $this->project;
+    $social_rewards = $this->social_rewards;
+    $bonus_rewards = $this->bonus_rewards;
+ ?>
 
 <h2 class="green-title">
         <?= $this->text('project-about-title') ?>
@@ -62,7 +66,7 @@
                                             <?= amount_format($project->maxcost) ?>
                                         </td>
                                     </tr>
-                                <?php endif; ?>
+                                <?php endif ?>
                             <?php endforeach ?>
                               </tbody>
 
@@ -141,7 +145,7 @@
 
                 <!-- carousel slider -->
 
-                <div id="infoCarousel" class="carousel slide spacer-20" data-ride="carousel">
+                <div id="infoCarousel" class="carousel slide spacer-20" data-ride="carousel" data-interval="false">
 
                  <!-- Indicators -->
                   <ol class="carousel-indicators">
@@ -201,15 +205,17 @@
                     <img src="<?= $image->imageData->getLink(700, 0) ?>" class="spacer-5 img-responsive">
                 <?php endforeach ?>
 
-                <h2 class="pink-title spacer" >
-                    <span class="anchor-mark" id="goal">
-                    <?= $this->text('overview-field-goal') ?>
-                    </span>
-                </h2>
-                <div class="spacer-20 general-text">
-                <?php /* nl2br($this->text_url_link($project->goal)) */ ?>
-                <?= $this->markdown($project->goal) ?>
-                </div>
+                <?php /* Goal is being deprecated */ if($project->goal): ?>
+                    <h2 class="pink-title spacer" >
+                        <span class="anchor-mark" id="goal">
+                        <?= $this->text('overview-field-goal') ?>
+                        </span>
+                    </h2>
+                    <div class="spacer-20 general-text">
+                    <?php /* nl2br($this->text_url_link($project->goal)) */ ?>
+                    <?= $this->markdown($project->goal) ?>
+                    </div>
+                <?php endif ?>
 
                 <?php foreach($project->secGallery['goal'] as $image): ?>
                     <img src="<?= $image->imageData->getLink(700, 0) ?>" class="spacer-5 img-responsive">
@@ -223,7 +229,7 @@
                         <div class="embed-responsive embed-responsive-16by9 spacer-20" >
                         <?= $project->video->getEmbedCode(); ?>
                         </div>
-                    <?php endif; ?>
+                    <?php endif ?>
                 </h2>
                 <div class="spacer-20 general-text">
                 <?php /* nl2br($this->text_url_link($project->related)) */ ?>
@@ -277,12 +283,12 @@
                                 </div>
                             </div>
 
-                        <?php endif; ?>
+                        <?php endif ?>
 
-                        <?php if($project->social_rewards): ?>
+                        <?php if($social_rewards || $bonus_rewards): ?>
                             <h2 class="social-reward-title"><?= $this->text('project-share-materials') ?></h2>
                             <ul class="list-unstyled social-rewards" >
-                                <?php foreach ($project->social_rewards as $social): ?>
+                                <?php foreach ($social_rewards as $social): ?>
                                 <li class="social-reward">
                                     <h3 class="title"><?= $social->reward ?></h3>
                                     <div class="description"><?= $social->description ?></div>
@@ -293,7 +299,7 @@
                                             <a href="<?= $social->url ?>" target="_blank" title="<?= $this->text('social_reward-access_title') ?>"><button class="btn btn-block green"><?= $this->text('social_reward-access') ?></button></a>
                                         </div>
                                      </div>
-                                    <?php endif; ?>
+                                    <?php endif ?>
 
                                     <!-- License -->
                                     <?php if (!empty($social->license) && array_key_exists($social->license, $this->licenses)): ?>
@@ -311,43 +317,39 @@
                                     <?php endif ?>
                                 </li>
                                 <?php endforeach ?>
-                                <?php if($project->bonus_rewards): ?>
 
-                                    <?php foreach ($project->bonus_rewards as $social): ?>
-                                    <li class="social-reward">
-                                        <h3 class="title"><?= $social->reward ?></h3>
-                                        <div class="description"><?= $social->description ?></div>
-                                         <!-- Social reward link -->
-                                        <?php if ($social->url) : ?>
-                                         <div class="row spacer-10">
-                                            <div class="col-md-3 col-sm-4">
-                                                <a href="<?= $social->url ?>" target="_blank" title="<?= $this->text('social_reward-access_title') ?>"><button class="btn btn-block green"><?= $this->text('social_reward-access') ?></button></a>
-                                            </div>
-                                         </div>
-                                        <?php endif; ?>
-
-                                        <!-- License -->
-                                        <?php if (!empty($social->license) && array_key_exists($social->license, $this->licenses)): ?>
-                                        <h3 class="title">
-                                        <?= $this->licenses[$social->license]->name ?>
-                                        </h3>
-                                        <div class="row">
-                                            <div class="col-xs-2 license-img">
-                                                <img class="img-responsive" src="<?= SRC_URL . '/assets/img/project/license/'.$social->license.'.png' ?> ">
-                                            </div>
-                                            <div class="col-xs-10 description">
-                                            <?= $this->licenses[$social->license]->description ?>
-                                            </div>
+                                <?php foreach ($bonus_rewards as $social): ?>
+                                <li class="social-reward">
+                                    <h3 class="title"><?= $social->reward ?></h3>
+                                    <div class="description"><?= $social->description ?></div>
+                                     <!-- Social reward link -->
+                                    <?php if ($social->url) : ?>
+                                     <div class="row spacer-10">
+                                        <div class="col-md-3 col-sm-4">
+                                            <a href="<?= $social->url ?>" target="_blank" title="<?= $this->text('social_reward-access_title') ?>"><button class="btn btn-block green"><?= $this->text('social_reward-access') ?></button></a>
                                         </div>
-                                        <?php endif ?>
-                                    </li>
-                                    <?php endforeach ?>
+                                     </div>
+                                    <?php endif ?>
 
-                                <?php endif; ?>
-
+                                    <!-- License -->
+                                    <?php if (!empty($social->license) && array_key_exists($social->license, $this->licenses)): ?>
+                                    <h3 class="title">
+                                    <?= $this->licenses[$social->license]->name ?>
+                                    </h3>
+                                    <div class="row">
+                                        <div class="col-xs-2 license-img">
+                                            <img class="img-responsive" src="<?= SRC_URL . '/assets/img/project/license/'.$social->license.'.png' ?> ">
+                                        </div>
+                                        <div class="col-xs-10 description">
+                                        <?= $this->licenses[$social->license]->description ?>
+                                        </div>
+                                    </div>
+                                    <?php endif ?>
+                                </li>
+                                <?php endforeach ?>
                             </ul>
 
-                        <?php endif; ?>
+                        <?php endif ?>
                    </div>
                 </div>
 

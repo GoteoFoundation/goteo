@@ -9,8 +9,9 @@
  * and LICENSE files that was distributed with this source code.
  */
 
-// set to run indefinitely if needed
-set_time_limit(0);
+// set to run almost indefinitely
+set_time_limit(3600);
+ini_set('max_execution_time', 3600);
 
 //Public Web path
 define('GOTEO_WEB_PATH', dirname(__DIR__) . '/public/');
@@ -26,7 +27,10 @@ use Goteo\Console\Console;
 // do not use cached files
 App::debug(true);
 // Config file...
-Config::load();
+$config = getenv('GOTEO_CONFIG_FILE');
+if(!is_file($config)) $config = __DIR__ . '/../config/settings.yml';
+Config::load($config);
+
 App::debug(false);
 
 
@@ -46,6 +50,8 @@ Console::add(new Command\MailingCommand());
 Console::add(new Command\SendmailCommand());
 Console::add(new Command\CronCommand());
 Console::add(new Command\ToolkitCommand());
+Console::add(new Command\LocationCommand());
+Console::add(new Command\SqlMigrationCommand());
 
 // Plugins can add commands by running
 // Console::add(new Command...);

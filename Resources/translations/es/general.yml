@@ -49,9 +49,12 @@ guide-project-invests: 'Desde este apartado podrás gestionar a tus cofinanciado
 
 header-about-side: 'Lo que nos mueve'
 home-posts-header: Novedades
+horizontal-project-investors: 'cofinanciadores'
+horizontal-project-percent: 'financiado'
+horizontal-project-reached: 'conseguido'
 invest-individual-header: 'Puedes renunciar a recibir recompensas por tu aportación, o seleccionar las que igualen o estén por debajo del importe que hayas introducido.'
-login-register-conditions: 'Al registrarte, confirmas tu aceptación de nuestros <a href="/legal/terms">términos de uso</a>, <a href="/legal/privacy">política de privacidad</a> y <a href="legal/cookies">política de cookies</a>.'
-login-accept-conditions: 'Acepto los <a href="/legal/terms">términos de uso</a>, <a href="/legal/privacy">política de privacidad</a> y <a href="legal/cookies">política de cookies</a>.'
+login-register-conditions: 'Al registrarte, confirmas tu aceptación de nuestros <a href="/legal/terms">términos de uso</a>, <a href="/legal/privacy">política de privacidad</a> y <a href="/legal/cookies">política de cookies</a>.'
+login-accept-conditions: 'Acepto los <a href="/legal/terms">términos de uso</a>, <a href="/legal/privacy">política de privacidad</a> y <a href="/legal/cookies">política de cookies</a>.'
 mandatory-cost-field-type: 'Es obligatorio seleccionar el tipo de coste'
 mandatory-individual_reward-field-amount: 'Es obligatorio indicar el importe que permite obtener la recompensa'
 mandatory-project-costs: 'Debe desglosarse en al menos dos costes.'
@@ -87,11 +90,13 @@ regular-days: días
 regular-delete: Borrar
 regular-description: Descripción
 regular-discover: 'Descubre proyectos'
+regular-discard: 'Descartar'
 regular-download-pdf: 'Descargar PDF'
 regular-download: Descargar
 regular-actions: Acciones
 regular-edit: Editar
 regular-email: Email
+regular-join: 'Únete'
 regular-facebook: Facebook
 regular-faq: 'Preguntas frecuentes'
 regular-female: Mujer
@@ -206,6 +211,7 @@ regular-messages: Mensajes
 regular-unknown: Desconocido
 regular-input: Aporte
 regular-amount: Importe
+regular-copied: 'Copiado al portapapeles!'
 session-about-to-expire: 'Tu sesión expirará en 10 minutos. ¿Quieres recargar la página para renovarla?'
 session-expired: 'Tu sesión en goteo ha expirado!'
 spread-about: 'Texto spread-about'
@@ -224,6 +230,7 @@ tooltip-project-schedule: 'Visualización de cómo queda la agenda de producció
 translate-home-guide: 'Mensaje para el traductor'
 user-account-inactive: 'La cuenta está desactivada. Debes recuperar la contraseña para activarla de nuevo'
 user-activate-fail: 'Error al activar la cuenta de usuario'
+user-changeemail-invalid-token: 'Esta acción ha caducado o bien ya se ha ejecutado anteriormente'
 user-changeemail-fail: 'Error al cambiar el email'
 user-register-success: 'El usuario se ha registrado correctamente. A continuación recibirás un mensaje de correo para activarlo.'
 validate-project-social_rewards: 'Es obligatorio indicar como mínimo un retorno colectivo '

@@ -90,9 +90,9 @@ class Image extends \Goteo\Core\Model {
             $this->size = $file['size'];
         }
         elseif(is_string($file)) {
-			$this->name = basename($file);
-			$this->tmp = $file;
-		}
+            $this->name = basename($file);
+            $this->tmp = $file;
+        }
         if($name) $this->name = $name;
 
         $this->fp = File::factory(array('bucket' => AWS_S3_BUCKET_STATIC));
@@ -544,6 +544,28 @@ class Image extends \Goteo\Core\Model {
     }
 
     /**
+     * deletes and main image from a Model gallery
+     * @param string $model_table The Model table (post, glossary, project, etc)
+     * @param string/integer $model_id    the ID of the Model
+     */
+    public function delFromModelGallery($model_table, $model_id) {
+        if (!is_string($model_table) || !in_array($model_table, self::$types)) {
+            return false;
+        }
+        try {
+            $values = array(':image'=> $this->id, ':id' => $model_id);
+            $sql = "DELETE FROM `{$model_table}_image` WHERE `{$model_table}` = :id AND image = :image";
+            // die(\sqldbg($sql, $values));
+            self::query($sql, $values);
+        } catch(\PDOException $e) {
+            //
+            return false;
+        }
+        return true;
+    }
+
+
+    /**
      * Removes the current gallery and puts the new one
      * @param string $model_table The Model table (post, glossary, project, etc)
      * @param string/integer $model_id    the ID of the Model
@@ -618,8 +640,10 @@ class Image extends \Goteo\Core\Model {
             return false;
         }
         try {
+            $values = array(':image'=>'', ':id' => $model_id);
             $sql = "UPDATE `$model_table` SET image = :image WHERE id = :id";
-            self::query($sql, array(':image'=>'', ':id' => $model_id));
+            // die(\sqldbg($sql, $values));
+            self::query($sql, $values);
         } catch(\PDOException $e) {
             //
             return false;

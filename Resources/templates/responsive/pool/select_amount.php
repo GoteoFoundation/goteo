@@ -5,7 +5,7 @@ $this->section('dashboard-content-pool');
 
 ?>
 
-<div class="col-sm-offset-1 col-sm-10">
+<div class="pool-container">
     <h2><?= $this->text('pool-recharge-title') ?></h2>
     <div class="pool-conditions clear-both">
     	<p><?= $this->text('dashboard-my-wallet-pool-info') ?> <a data-toggle="modal" data-target="#poolModal" href=""><?= $this->text('regular-here') ?></a></p>

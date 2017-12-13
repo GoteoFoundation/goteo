@@ -13,6 +13,17 @@ namespace Goteo\Application;
 final class AppEvents
 {
     /**
+     * The view.render event is thrown each time a Goteo\Application\View is rendered
+     * it allows to add or change completely the view
+     *
+     * The event listener receives an
+     * Goteo\Application\Event\FilterViewEvent instance.
+     *
+     * @var string
+     */
+    const VIEW_RENDER = 'view.render';
+
+    /**
      * The auth.login.success event is thrown each time a user does a successful login
      *
      * The event listener receives an
@@ -229,6 +240,16 @@ final class AppEvents
     const INVEST_RETURN_FAILED = 'invest.refund.failed';
 
    /**
+     * The project.created event is thrown when a project is created
+     *
+     * The event listener receives an
+     * Goteo\Console\Event\FilterProjectEvent instance.
+     *
+     * @var string
+     */
+    const PROJECT_CREATED = 'project.created';
+
+   /**
      * The project.publish event is thrown when a project is in a REVIEW status and has to be published (manually)
      *
      * The event listener receives an
@@ -269,7 +290,7 @@ final class AppEvents
     const MESSAGE_CREATED = 'message.created';
 
     /**
-     * The message.created event is thrown when a new message/comments is updated
+     * The message.updated event is thrown when a new message/comments is updated
      *
      * The event listener receives an
      * Goteo\Application\Event\FilterMessageEvent instance.
@@ -277,6 +298,16 @@ final class AppEvents
      * @var string
      */
     const MESSAGE_UPDATED = 'message.updated';
+
+    /**
+     * The matcher.project event is thrown when a project is add to a Matcher or its status changes
+     *
+     * The event listener receives an
+     * Goteo\Application\Event\FilterMatcherProjectEvent instance.
+     *
+     * @var string
+     */
+    const MATCHER_PROJECT = 'matcher.project';
 
 
 }

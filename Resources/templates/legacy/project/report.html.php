@@ -5,6 +5,8 @@ use Goteo\Model\Invest;
 $project = $vars['project'];
 $account = $vars['account']; // cuentas del proyecto, para tener el porcentaje de comisión
 
+$matchers=$project->getMatchers('active');
+
 $called = $project->called;
 
 // comisión goteo para este proyecto
@@ -129,6 +131,18 @@ $cName = "P-{$cNum}-{$cDate}";
             <td>-&nbsp;&nbsp;&nbsp;&nbsp;Total Capital Riego: <strong><?php echo \amount_format($sumData['drop']); ?></strong> (Transferencia del convocador '<?php echo $project->called->user->name ?>' directamente al impulsor)</td>
         </tr>
         <?php endif; ?>
+
+         <?php if ($matchers) : ?>
+            <?php foreach($matchers as $matcher): ?>
+                <?php $matchfunding_invest=Invest::getList(['projects' => $project->id, 'users' => $matcher->owner, 'types' => 'drop', 'status' => Invest::$ACTIVE_STATUSES
+                        ], null, 0, 0, 'money');
+                ?>
+                <tr>
+                    <td>-&nbsp;&nbsp;&nbsp;&nbsp;Riego obtenido del <strong>Canal <?= $matcher->name ?></strong>: <strong><?= amount_format($matchfunding_invest)  ?></strong> (Ya está incluido en el total de la recaudación del proyecto)</td>
+                </tr>
+            <?php endforeach; ?>
+        <?php endif; ?>
+
         <?php if (!empty($sumData['ghost'])) : ?>
         <tr>
             <td>-&nbsp;&nbsp;&nbsp;&nbsp;Otro recibido: <strong><?php echo \amount_format($sumData['ghost']); ?></strong> (Aporte manual sin ingreso bancario)</td>

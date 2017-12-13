@@ -11,3 +11,10 @@ CREATE TABLE `milestone` (
 `facebook_msg_owner` TEXT NULL DEFAULT NULL,
 PRIMARY KEY ( `id` )
 ) ENGINE = InnoDB CHARACTER SET utf8 COLLATE utf8_general_ci COMMENT = 'Milestones';
+
+
+-- constrains
+
+DELETE FROM project_milestone WHERE post NOT IN (SELECT id FROM post);
+DELETE FROM project_milestone WHERE project NOT IN (SELECT id FROM project);
+ALTER TABLE `project_milestone` CHANGE `milestone` `milestone` BIGINT(20) UNSIGNED NULL, CHANGE `post` `post` BIGINT(20) UNSIGNED NULL, ADD FOREIGN KEY (`project`) REFERENCES `project`(`id`) ON UPDATE CASCADE ON DELETE CASCADE, ADD FOREIGN KEY (`milestone`) REFERENCES `milestone`(`id`) ON UPDATE CASCADE ON DELETE CASCADE, ADD FOREIGN KEY (`post`) REFERENCES `post`(`id`) ON UPDATE CASCADE ON DELETE CASCADE;

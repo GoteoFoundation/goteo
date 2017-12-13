@@ -6,7 +6,7 @@
 <script src="<?= SRC_URL ?>/assets/vendor/pronto/jquery.fs.pronto.min.js"></script>
 <script src="<?= SRC_URL ?>/assets/vendor/hammerjs/hammer.min.js"></script>
 <script src="<?= SRC_URL ?>/assets/vendor/jquery-hammerjs/jquery.hammer.js"></script>
-<script src="<?= SRC_URL ?>/assets/vendor/clipboard/clipboard.min.js"></script>
+<script src="<?= SRC_URL ?>/assets/vendor/clipboard/dist/clipboard.min.js"></script>
 <script src="<?= SRC_URL ?>/assets/vendor/moment/min/moment-with-locales.min.js"></script>
 <script src="<?= SRC_URL ?>/assets/vendor/eonasdan-bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min.js"></script>
 <script src="<?= SRC_URL ?>/assets/vendor/d3/d3.v3.min.js"></script>
@@ -37,4 +37,4 @@ var goteo = {};
 <!-- endbuild -->
 
 <!-- geolocation -->
-<script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?v=3.exp&amp;libraries=places"></script>
+<script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=<?= $this->ee($this->get_config('geolocation.google_maps_key')) ?>&amp;v=3.exp&amp;libraries=places"></script>

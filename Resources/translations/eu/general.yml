@@ -34,7 +34,7 @@ guide-project-updates: '<b>Oso garrantzitsua da proiektuak beraien finantzakidea
 header-about-side: 'Mugitzen gaituena'
 home-posts-header: Berriak
 invest-individual-header: 'Uko egin ahal duzu ez baduzu nahi saririk jaso zure jartzearen truke, edo beste sari bat aukeratu dezakezu, sari hori zure jartzearekin konparatuz maila berdinean edo beherago baldin badago.'
-login-register-conditions: 'Erregistratzerakoan, berresten duzu onartzen dituzula gure <a href="/legal/terms">erabilera baldintzak</a>, <a href="/legal/privacy">pribatutasun politika</a> y <a href="legal/cookies">cookien politika</a>.'
+login-register-conditions: 'Erregistratzerakoan, berresten duzu onartzen dituzula gure <a href="/legal/terms">erabilera baldintzak</a>, <a href="/legal/privacy">pribatutasun politika</a> y <a href="/legal/cookies">cookien politika</a>.'
 mandatory-cost-field-type: 'Gastu mota adieraztea derrigorrekoa da'
 mandatory-individual_reward-field-amount: 'Saria jasotzeko diru kopurua adieraztea derrigorrekoa da'
 mandatory-project-costs: 'Bi gastuetan gutxienez banakatu behar da.'

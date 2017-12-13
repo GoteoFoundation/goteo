@@ -28,21 +28,20 @@ use Goteo\Model\User;
 use Goteo\Model\Project;
 use Goteo\Application\Lang;
 use Goteo\Library\Forms\FormModelException;
+use Goteo\Controller\DashboardController;
 
-class SettingsDashboardController extends \Goteo\Core\Controller {
+class SettingsDashboardController extends DashboardController {
     protected $user;
 
     public function __construct() {
-        // changing to a responsive theme here
-        View::setTheme('responsive');
-        $this->user = Session::getUser();
+        parent::__construct();
         $this->contextVars([
             'section' => 'settings'
         ]);
     }
 
 
-    protected function createSidebar($zone = '') {
+    protected function createSettingsSidebar($zone = '') {
         // Create sidebar menu
         Session::addToSidebarMenu( '<i class="icon icon-2x icon-user"></i> ' . Text::get('dashboard-menu-profile-profile'), '/dashboard/settings', 'profile');
         Session::addToSidebarMenu( '<i class="fa fa-2x fa-fw fa-legal"></i> ' . Text::get('dashboard-menu-profile-personal'), '/dashboard/settings/personal', 'personal');
@@ -73,7 +72,7 @@ class SettingsDashboardController extends \Goteo\Core\Controller {
             }
 
             $user = $project->getOwner();
-            ProjectDashboardController::createSidebar($project, 'profile');
+            ProjectDashboardController::createProjectSidebar($project, 'profile');
             $this->contextVars([
                 'section' => 'projects'
             ]);
@@ -87,14 +86,14 @@ class SettingsDashboardController extends \Goteo\Core\Controller {
         } else {
             $user = User::get($this->user->id, Config::get('lang')); // default system lang
             $redirect = '/dashboard/settings';
-            $this->createSidebar('profile');
+            $this->createSettingsSidebar('profile');
         }
 
         $defaults = (array) $user;
         $defaults['unlocable'] = UserLocation::isUnlocable($user->id);
         $defaults['avatar'] = $user->user_avatar ? $user->avatar : null;
         $defaults['webs'] = implode("\n", $user->webs);
-
+        $defaults['interests'] = array_map(function($i){ return $i->interest; }, $user->interests);
 
         $processor = $this->getModelForm('UserProfile', $user, $defaults, [], $request);
         $processor->createForm();
@@ -133,7 +132,7 @@ class SettingsDashboardController extends \Goteo\Core\Controller {
         // $user = User::get($this->user->id);
         $user = $this->user;
         $translated = $user->getLangsAvailable();
-        $this->createSidebar('profile');
+        $this->createSettingsSidebar('profile');
 
         $defaults = (array) $user->getLang($lang);
         if(empty($defaults['name'])) $defaults['name'] = $user->name;
@@ -156,10 +155,12 @@ class SettingsDashboardController extends \Goteo\Core\Controller {
             ->add('remove', 'submit', [
                 'label' => Text::get('translator-delete', $languages[$lang]),
                 'icon_class' => 'fa fa-trash',
+                'span' => 'hidden-xs',
                 'attr' => [
-                    'class' => 'pull-right-form hide-form btn btn-danger btn-lg',
+                    'class' => 'pull-right-form btn btn-default btn-lg',
                     'data-confirm' => Text::get('translator-delete-sure', $languages[$lang])
                     ]
+
             ]);
 
             ;
@@ -209,7 +210,7 @@ class SettingsDashboardController extends \Goteo\Core\Controller {
      */
     public function preferencesAction(Request $request)
     {
-        $this->createSidebar('preferences');
+        $this->createSettingsSidebar('preferences');
 
         $defaults = (array)User::getPreferences($this->user);
         $bools = ['updates', 'threads', 'rounds', 'mailing', 'email', 'tips'];
@@ -271,7 +272,7 @@ class SettingsDashboardController extends \Goteo\Core\Controller {
      */
     public function personalAction(Request $request)
     {
-        $this->createSidebar('personal');
+        $this->createSettingsSidebar('personal');
 
         $defaults = (array)User::getPersonal($this->user);
 
@@ -335,10 +336,14 @@ class SettingsDashboardController extends \Goteo\Core\Controller {
      */
     public function accessAction(Request $request)
     {
-        $this->createSidebar('access');
+        $this->createSettingsSidebar('access');
 
         // Create the form
         $form1 = $this->createFormBuilder()
+            ->add('password', 'password', [
+                'label' => 'user-changepass-old',
+                'attr' => ['help' => Text::get('tooltip-dashboard-user-user_password')]
+            ])
             ->add('nemail', 'email', [
                 'label' => 'login-register-email-field',
                 'attr' => ['help' => Text::get('tooltip-dashboard-user-new_email')]
@@ -352,6 +357,10 @@ class SettingsDashboardController extends \Goteo\Core\Controller {
             ])->getForm();
 
         $form2 = $this->createFormBuilder()
+            ->add('password', 'password', [
+                'label' => 'user-changepass-old',
+                'attr' => ['help' => Text::get('tooltip-dashboard-user-user_password')]
+            ])
             ->add('npassword', 'password', [
                 'label' => 'user-changepass-new',
                 'attr' => ['help' => Text::get('tooltip-dashboard-user-new_password')]
@@ -370,7 +379,9 @@ class SettingsDashboardController extends \Goteo\Core\Controller {
             if($form1->isValid()) {
                 $data = $form1->getData();
 
-                if (empty($data['nemail'])) {
+                if(!$this->user->validatePassword($data['password'])) {
+                    $errors['password'] = Text::get('error-user-wrong-password');
+                } elseif (empty($data['nemail'])) {
                     $errors['email'] = Text::get('error-user-email-empty');
                 } elseif (!Check::mail($data['nemail'])) {
                     $errors['email'] = Text::get('error-user-email-invalid');
@@ -378,9 +389,7 @@ class SettingsDashboardController extends \Goteo\Core\Controller {
                     $errors['email_retry'] = Text::get('error-user-email-empty');
                 } elseif (strcmp($data['nemail'], $data['remail']) !== 0) {
                     $errors['email_retry'] = Text::get('error-user-email-confirm');
-                } else {
-                    // var_dump($data);die;
-                    $this->user->email = $data['email'];
+                } elseif ($this->user->setEmail($data['nemail'], $errors)) {
                     $change['email'] = Text::get('user-email-change-sent');
                 }
             }
@@ -390,7 +399,9 @@ class SettingsDashboardController extends \Goteo\Core\Controller {
             if($form2->isValid()) {
                 $data = $form2->getData();
 
-                if (empty($data['npassword'])) {
+                if(!$this->user->validatePassword($data['password'])) {
+                    $errors['password'] = Text::get('error-user-wrong-password');
+                } elseif (empty($data['npassword'])) {
                     $errors['password_new'] = Text::get('error-user-password-empty');
                 } elseif (!Check::password($data['npassword'])) {
                     $errors['password_new'] = Text::get('error-user-password-invalid');
@@ -399,25 +410,30 @@ class SettingsDashboardController extends \Goteo\Core\Controller {
                 } elseif (strcmp($data['npassword'], $data['rpassword']) !== 0) {
                     $errors['password_retry'] = Text::get('error-user-password-confirm');
                 } else {
-                    $this->user->password = $data['password'];
-                    $change['password'] = Text::get('user-password-changed');
+                    if($this->user->setPassword($data['npassword'], $errors)) {
+                        $change['password'] = Text::get('user-password-changed');
+                        // Migrate session
+                        Session::getSession()->migrate(false, Session::getSessionExpires());
+                    }
                 }
             }
         }
 
         if($change) {
-            if ($this->user->save($errors)) {
-                foreach($change as $t) {
-                    Message::info($t);
-                }
-
-                $this->user = User::flush();
-                return $this->redirect('/dashboard/settings/access');
+            foreach($change as $t) {
+                Message::info($t);
             }
+
+            if($this->user->id === Session::getUserId()) {
+                $this->user = User::flush();
+            }
+            return $this->redirect('/dashboard/settings/access');
         }
+
         if($errors) {
-            Message::error(Text::get('form-sent-error', implode(',',array_map('implode',$errors))));
+            Message::error(Text::get('form-sent-error', implode(',',$errors)));
         }
+
         return $this->viewResponse('dashboard/settings/access', [
             'user_id' => $this->user->id,
             'user_email' => $this->user->email,
@@ -432,7 +448,7 @@ class SettingsDashboardController extends \Goteo\Core\Controller {
      */
     public function apikeyAction(Request $request)
     {
-        $this->createSidebar('apikey');
+        $this->createSettingsSidebar('apikey');
 
         $defaults = [
             'user_id' => $this->user->id,

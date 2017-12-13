@@ -8,8 +8,8 @@
     <h5><?= $this->project->name ?></h5>
 
     <div class="panel section-content">
-        <h3><?= $this->text('form-project-status-title') ?></h3>
         <div class="panel-body">
+            <h3><?= $this->text('form-project-status-title') ?></h3>
 
             <ol class="breadcrumb">
             <?php foreach ($this->statuses as $i => $s): ?>
@@ -21,6 +21,8 @@
             <?php endforeach ?>
             </ol>
 
+            <?= $this->supply('matcher-section', $this->insert('dashboard/project/partials/matcher_section')) ?>
+
             <?= $this->insert('dashboard/project/partials/summary_status', ['project' => $this->project]) ?>
 
             <?php if($this->project->inEdition()): ?>
@@ -31,9 +33,8 @@
     </div>
 
     <div class="panel section-content">
-        <h3><?= $this->text('project-progress-title') ?></h3>
-
         <div class="panel-body">
+            <h3><?= $this->text('project-progress-title') ?></h3>
             <ul class="data-list">
                 <li>
                     <h5><?= $this->text('project-obtained') ?></h5>
@@ -58,7 +59,9 @@
     <?php $url = $this->get_url() . '/widget/project/' . $this->project->id; ?>
 
     <div class="panel section-content">
-        <h3><?= $this->text('project-spread-widget_title') ?></h3>
+        <div class="panel-heading">
+            <h3><?= $this->text('project-spread-widget_title') ?></h3>
+        </div>
         <div class="panel-body widget-preview">
             <div class="right">
                 <?php if(!$this->project->isApproved()): ?>

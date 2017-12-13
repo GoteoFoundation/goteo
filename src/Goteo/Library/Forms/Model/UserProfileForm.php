@@ -21,9 +21,8 @@ use Goteo\Model\User\Web;
 use Goteo\Model\User\Interest;
 use Goteo\Model\User\UserLocation;
 use Goteo\Library\Forms\FormModelException;
-use Goteo\Library\Forms\FormProcessorInterface;
 
-class UserProfileForm extends AbstractFormProcessor implements FormProcessorInterface {
+class UserProfileForm extends AbstractFormProcessor {
 
     public function getConstraints($field) {
         $constraints = [];
@@ -31,7 +30,7 @@ class UserProfileForm extends AbstractFormProcessor implements FormProcessorInte
             $constraints[] = new Constraints\NotBlank();
         }
         elseif($this->getFullValidation()) {
-            if(in_array($field, ['location', 'gender', 'about'])) {
+            if(in_array($field, ['gender', 'about'])) {
                 $constraints[] = new Constraints\NotBlank();
             }
             if(in_array($field, ['webs', 'facebook', 'twitter'] )) {
@@ -58,18 +57,28 @@ class UserProfileForm extends AbstractFormProcessor implements FormProcessorInte
         // Do not test images
         // var_dump($data);die;
         unset($data['avatar']);
+
+        if(empty($data['location'])) $data['location'] = null;
+
         return $data;
     }
 
 
     public function createForm() {
         $non_public = '<i class="fa fa-eye-slash"></i> '. Text::get('project-non-public-field');
-        $builder = $this->getBuilder()
+        $user = $this->getModel();
+
+        $builder = $this->getBuilder();
+        $options = $builder->getOptions();
+        $defaults = $options['data'];
+        // print_r($defaults);die;
+        $builder
             ->add('name', 'text', [
                 'disabled' => $this->getReadonly(),
                 'constraints' => $this->getConstraints('name'),
                 'label' => 'regular-name'
             ])
+// ;return $this;$builder
             ->add('location', 'location', [
                 'label' => 'profile-field-location',
                 'constraints' => $this->getConstraints('location'),
@@ -79,18 +88,26 @@ class UserProfileForm extends AbstractFormProcessor implements FormProcessorInte
                 'required' => false,
                 'pre_addon' => '<i class="fa fa-globe"></i>'
             ])
-            ->add('unlocable', 'boolean', [
-                'label' => 'dashboard-user-location-unlocate',
+            ->add('locable', 'boolean', [
+                'label' => 'dashboard-user-location-locate',
                 'constraints' => $this->getConstraints('unlocable'),
                 'disabled' => $this->getReadonly(),
+                'data' => !$user->unlocable,
                 'attr' => ['help' => Text::get('dashboard-user-location-help')],
                 'required' => false,
                 'color' => 'cyan'
             ])
+            // ->add('avatar', 'dropfiles', [
+            //     'label' => 'profile-fields-image-title',
+            //     'constraints' => $this->getConstraints('avatar'),
+            //     'disabled' => $this->getReadonly(),
+            //     'required' => false
+            // ])
             ->add('avatar', 'dropfiles', [
                 'label' => 'profile-fields-image-title',
                 'constraints' => $this->getConstraints('avatar'),
                 'disabled' => $this->getReadonly(),
+                'url' => '/api/users/' . $user->id . '/avatar',
                 'required' => false
             ])
             ;
@@ -192,7 +209,7 @@ class UserProfileForm extends AbstractFormProcessor implements FormProcessorInte
                            'placeholder' => Text::get('regular-facebook-url')],
                 'required' => false
             ])
-            ->add('twitter', 'url', [
+            ->add('twitter', 'text', [
                 'label' => 'regular-twitter',
                 'constraints' => $this->getConstraints('twitter'),
                 'disabled' => $this->getReadonly(),
@@ -247,23 +264,25 @@ class UserProfileForm extends AbstractFormProcessor implements FormProcessorInte
         $errors = [];
         $data = $form->getData();
         $user = $this->getModel();
-        // print_r($data);die;
-
-        // maintain test interest
-        if (in_array('15', $user->interests)) $data['interests'][] = '15';
-
+        // var_dump($data);die;
         // Process main image
         if(is_array($data['avatar'])) {
-            $data['avatar'] = current($data['avatar']);
+            $data['avatar'] = reset($data['avatar']);
         }
         $user->user_avatar = $data['avatar'];
         if($user->user_avatar && $err = $user->user_avatar->getUploadError()) {
             throw new FormModelException(Text::get('form-sent-error', $err));
 
         }
-
         // $data['user_avatar'] = $data['avatar'];
         unset($data['avatar']); // do not rebuild data using this
+
+        // Process interests
+        // Add "test" interes to those who already have it
+        if (array_key_exists('15', $user->interests)) $data['interests'][] = '15';
+        $data['interests'] = array_map(function($el) {
+                return new Interest(['interest' => $el]);
+            }, $data['interests']);
 
         // Process webs
         $data['webs'] = array_map(function($el) {
@@ -274,8 +293,8 @@ class UserProfileForm extends AbstractFormProcessor implements FormProcessorInte
             }, explode("\n", $data['webs']));
 
         // set locable bit
-        if(isset($data['unlocable'])) {
-            UserLocation::setProperty($user->id, 'locable', !$data['unlocable'], $errors);
+        if(isset($data['locable'])) {
+            UserLocation::setProperty($user->id, 'locable', (bool)$data['locable'], $errors);
         }
         $user->rebuildData($data, array_keys($form->all()));
         $user->location = $data['location'] ? $data['location'] : '';

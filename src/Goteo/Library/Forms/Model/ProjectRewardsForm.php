@@ -11,6 +11,7 @@
 
 namespace Goteo\Library\Forms\Model;
 
+use Symfony\Component\Validator\Context\ExecutionContextInterface;
 use Goteo\Library\Forms\FormProcessorInterface;
 use Goteo\Library\Forms\AbstractFormProcessor;
 use Symfony\Component\Form\FormInterface;
@@ -25,8 +26,19 @@ class ProjectRewardsForm extends AbstractFormProcessor implements FormProcessorI
 
     public function getConstraints($field) {
         $constraints = [];
-        if(strpos($field, 'units') === 0) return [];
-        if($this->getFullValidation()) {
+        if(strpos($field, 'units') === 0) {
+            $constraints[] = new Constraints\Callback(function($object, ExecutionContextInterface $context) use ($field){
+                list($key, $id) = explode('_', $field);
+                $reward = $this->rewards[$id];
+                $taken = $reward ? $reward->getTaken() : 0;
+                if($object && $taken > $object) {
+                    $context->buildViolation(Text::get('project-validation-error-rewards_units', $taken))
+                    ->atPath($field)
+                    ->addViolation();
+                }
+            });
+        }
+        elseif($this->getFullValidation()) {
             $constraints[] = new Constraints\NotBlank();
         }
         elseif(strpos($field, 'description') !== 0) {
@@ -69,9 +81,14 @@ class ProjectRewardsForm extends AbstractFormProcessor implements FormProcessorI
     public function addReward(Reward $reward) {
         $project = $this->getModel();
         $this->rewards[$reward->id] = $reward;
+        $project = $this->getModel();
         $suffix = "_{$reward->id}";
         // readonly only if has no invests associated
-        $readonly = $this->getReadonly() && !$reward->isDraft();
+        $units_readonly = $readonly = $this->getReadonly() && !$reward->isDraft();
+        // Readonly allows edit number of rewards if project in campaign
+        if($project->inCampaign()) {
+            $units_readonly = false;
+        }
 
         $this->getBuilder()
             ->add("amount$suffix", 'number', [
@@ -87,7 +104,7 @@ class ProjectRewardsForm extends AbstractFormProcessor implements FormProcessorI
             ->add("units$suffix", 'number', [
                 'label' => 'rewards-field-individual_reward-units',
                 'data' => (int)$reward->units,
-                'disabled' => $readonly,
+                'disabled' => $units_readonly,
                 'pre_addon' => '#',
                 'constraints' => $this->getConstraints("units$suffix"),
                 'required' => false,
@@ -100,7 +117,8 @@ class ProjectRewardsForm extends AbstractFormProcessor implements FormProcessorI
             //     'required' => true,
             // ])
             ->add("reward$suffix", 'text', [
-                'label' => 'rewards-field-individual_reward-reward',
+                // 'label' => 'rewards-field-individual_reward-reward',
+                'label' => 'regular-title',
                 'data' => $reward->reward,
                 'disabled' => $readonly,
                 'constraints' => $this->getConstraints("reward$suffix"),
@@ -156,29 +174,35 @@ class ProjectRewardsForm extends AbstractFormProcessor implements FormProcessorI
             $ids[$id] = $id;
 
             $reward = $this->rewards[$id];
+            $taken = $reward ? $reward->getTaken() : 0;
             $reward->{$field} = $val;
+            if($field == 'units') {
+                if($val && $val < $taken) {
+                    throw new FormModelException(Text::get('form-has-errors'));
+                }
+            }
         }
 
         // Check if we want to remove a reward
         $validate = true;
-        foreach($ids as $id) {
-            if($form->get("remove_$id")->isClicked()) {
-                $this->delReward($id);
-                $validate = false;
-            }
-        }
+        // foreach($ids as $id) {
+        //     if($form->get("remove_$id")->isClicked()) {
+        //         $this->delReward($id);
+        //         $validate = false;
+        //     }
+        // }
 
         // Validate form here to avoid deleted elements
         if($validate && !$form->isValid() && !$force_save) throw new FormModelException(Text::get('form-has-errors'));
 
         // Add reward
-        if($form['add-reward']->isClicked() && (!$this->getReadonly() || $project->isAlive())) {
-            $reward = new Reward(['project' => $project->id, 'type' => 'individual']);
-            if(!$reward->save($errors)) {
-                throw new FormModelException(Text::get('form-sent-error', implode(', ',$errors)));
-            }
-            $this->addReward($reward);
-        }
+        // if($form['add-reward']->isClicked() && (!$this->getReadonly() || $project->isAlive())) {
+        //     $reward = new Reward(['project' => $project->id, 'type' => 'individual']);
+        //     if(!$reward->save($errors)) {
+        //         throw new FormModelException(Text::get('form-sent-error', implode(', ',$errors)));
+        //     }
+        //     $this->addReward($reward);
+        // }
 
         $project->individual_rewards = $this->rewards;
         // var_dump($project->rewards);die;

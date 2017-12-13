@@ -1,0 +1,21 @@
+group: project
+name: 'Project discarded from a Matchfunding call'
+purpose: 'Mail template to be sent to a project owner when his project has been discarded from a Matcher call'
+type: 'md'
+title: 'Tu proyecto NO ha sido aceptado en la convocatoria %CALLNAME%'
+text: >
+    # Lo sentimos, la convocatoria matchfunding **%CALLNAME%** NO ha aceptado tu proyecto **%PROJECTNAME%**!
+
+    Te recordamos que esta convocatoria no está relacionada con a la Fundación Goteo y, como tal,
+    la Fundación no ha sido partícipe de los procesos que han llevado a tomar esta decisión.
+
+
+    Para contactar con los convocadores puedes dirigirte al siguiente email:
+
+    %ADMINMAIL%
+
+
+    Si quieres consultar las bases de la convocatoria, dirígete aquí:
+
+
+    [%CALLURL%](%CALLURL%)

@@ -15,6 +15,11 @@
   -moz-transform:scale(.5);
 }
 
+// Google maps autocomplete fix for modals
+.pac-container {
+  z-index: 1051 !important;
+}
+
 .autoform, .form {
 
   .form-group {
@@ -40,7 +45,7 @@
       .bootstrap-tagsinput {
         width: 100%;
       }
-      .form-control:focus, .CodeMirror-focused {
+      .form-control:focus, .CodeMirror-focused, .summernote.focused .note-editor {
         border-color: $color-cyan;
         outline: 0;
         @include box-shadow(inset 0 1px 1px rgba(0,0,0,.075), 0 0 8px rgba(102, 175, 233, .6));
@@ -67,7 +72,7 @@
         .form-control, .CodeMirror {
             border: 1px solid darken($color-red, 10%);
         }
-        .form-control:focus, .CodeMirror-focused {
+        .form-control:focus, .CodeMirror-focused, .summernote.focused .note-editor {
           border-color: darken($color-red, 10%);
           outline: 0;
           @include box-shadow(inset 0 1px 1px rgba(0,0,0,.075), 0 0 8px rgba(200, 0, 0, .6));
@@ -163,6 +168,42 @@
         */
     }
   }
+
+  .modal-map {
+    .map {
+      height: 450px;
+    }
+    .input-block {
+      .form-group {
+        display: inline-block;
+        width: 100%;
+      }
+      .form-group-radius {
+        display: none;
+      }
+      &.show-radius {
+        .form-group-search {
+          width: 80%;
+          width: calc(100% - 115px);
+          margin-right: 10px;
+        }
+        .form-group-radius {
+          display: inline-block;
+          width: 100px;
+          .form-control {
+            display: inline-block;
+            width: 60px;
+          }
+        }
+      }
+    }
+
+  }
+  .location_desc {
+    font-style: italic;
+    margin-left: 10px;
+    margin-right: 10px;
+  }
   .help-text {
     display: block;
     margin: 10px 5px 0 5px;
@@ -188,13 +229,16 @@
         }
     }
   }
+
   .material-switch {
+    display: table-cell;
     > label {
       cursor: pointer;
     }
     & + label {
       text-transform: uppercase;
       font-weight: 500;
+      display: table-cell;
     }
     > input[disabled] + label {
         opacity: 0.7;
@@ -259,22 +303,47 @@
 
   // With this class, help text are hidden are shown on focus
   &.hide-help {
-    .help-text {
+    .help-text .fa-clipboard {
+        cursor: pointer;
+    }
+    .help-text[data-desc] {
       height: $font-size + 4;
       overflow: hidden;
       white-space: pre-line;
       &::before {
-          content: attr(data-desc);
-          font-weight: bold;
+        font-family: $primary-font;
+        content: attr(data-desc);
+        font-weight: bold;
       }
     }
-    .form-control:focus, .CodeMirror-focused, .CodeMirror-focused ~ .editor-statusbar {
+    .form-control:focus, .CodeMirror-focused, .CodeMirror-focused ~ .editor-statusbar, .summernote.focused .note-editor {
       + .help-text {
           height: auto;
       }
     }
   }
 
+  // Exit fullscreen button
+  .editor-toolbar {
+    &.fullscreen {
+      a.exit-fullscreen {
+        display: inline-block;
+        pointer-events: auto !important;
+      }
+    }
+    a.exit-fullscreen {
+      display: none;
+      background-color: $color-cyan !important;
+      color: $color-white !important;
+      width: auto;
+      padding: 0 5px;
+      &::after {
+          content: attr(title);
+          font-family: $primary-font;
+          margin-left: 5px;
+      }
+    }
+  }
 }
 
 .material-switch {
@@ -289,6 +358,7 @@
         height: 0px;
         position: relative;
         width: 55px;
+        display: inline-block;
     }
 
     > label::before {

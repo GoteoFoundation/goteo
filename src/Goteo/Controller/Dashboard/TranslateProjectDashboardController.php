@@ -18,6 +18,7 @@ use Goteo\Application\AppEvents;
 use Goteo\Application\View;
 use Goteo\Application\Message;
 use Goteo\Application\Lang;
+use Goteo\Core\Model;
 use Goteo\Model\Invest;
 use Goteo\Model\Project;
 use Goteo\Model\Project\Image as ProjectImage;
@@ -35,16 +36,16 @@ use Goteo\Application\Exception\ControllerAccessDeniedException;
 use Goteo\Application\Event\FilterMessageEvent;
 use Symfony\Component\Validator\Constraints;
 use Goteo\Library\Forms\FormModelException;
+use Goteo\Controller\Dashboard\ProjectDashboardController;
 
-class TranslateProjectDashboardController extends \Goteo\Controller\Dashboard\ProjectDashboardController {
+class TranslateProjectDashboardController extends ProjectDashboardController {
 
     /**
      * Additional common context vars for the views
      */
-    public function validateProject($pid = null, $section = 'summary', $lang = null, $lang_check = null) {
-        $project = parent::validateProject($pid, $section, $lang);
+    public function validateProject($pid = null, $section = 'summary', $lang = null, &$form = null, $lang_check = null) {
+        $project = parent::validateProject($pid, $section, $lang, $form);
         if(!$project instanceOf Project) return $project;
-
         $project->rewards = array_merge($project->individual_rewards, $project->social_rewards);
         $languages = Lang::listAll('name', false);
         if($lang_check && !isset($languages[$lang_check])) {
@@ -58,19 +59,21 @@ class TranslateProjectDashboardController extends \Goteo\Controller\Dashboard\Pr
                 'overview' => Text::get('step-main'),
                 'costs' => Text::get('step-4'),
                 'rewards' => Text::get('step-5'),
-                // 'supports' => Text::get('step-6'),
+                'supports' => Text::get('step-6'),
                 // 'updates' => Text::get('project-menu-updates')
             ],
             'languages' => $languages,
             'translated' => array_diff($project->getLangsAvailable(), [$project->lang])
         ];
         if($lang_check) {
-            $cost = current($project->costs);
-            $reward = current($project->rewards);
+            $cost = reset($project->costs);
+            $reward = reset($project->rewards);
+            $support = reset($project->supports);
             $data['percents'] = [
                 'overview' => $project->getLangsPercent($lang_check),
                 'costs' => $cost ? $cost->getLangsGroupPercent($lang_check, ['project']) : 0,
-                'rewards' => $reward ? $reward->getLangsGroupPercent($lang_check, ['project']) : 0
+                'rewards' => $reward ? $reward->getLangsGroupPercent($lang_check, ['project']) : 0,
+                'supports' => $support ? $support->getLangsGroupPercent($lang_check, ['project']) : 0
             ];
         }
 
@@ -86,6 +89,30 @@ class TranslateProjectDashboardController extends \Goteo\Controller\Dashboard\Pr
     }
 
     /**
+     * Handy method to get a form builder
+     * @return Goteo\Library\Forms\FormProcessorInterface
+     */
+    public function getModelForm($form, Model $model, array $defaults = [], array $options = [], Request $request = null) {
+        $finder = $this->getService('app.forms.finder');
+        $finder->setModel($model);
+        $validate = $mock_validation = false;
+        if($request) {
+            $validate = $request->query->has('validate');
+            $mock_validation = $validate && $request->isMethod('get');
+        }
+        // $finder->setBuilder($this->createFormBuilder($defaults, 'autoform', $mock_validation ? ['csrf_protection' => false] : []));
+        // $finder->setBuilder($this->createFormBuilder($defaults));
+        // TODO: a better way to create a csrf_protection without showing errors CSRF on mock_validation
+        $finder->setBuilder($this->createFormBuilder($defaults, 'autoform', ['csrf_protection' => false, 'attr' => ['class' => 'autoform hide-help']]));
+        $processor = $finder->getInstance($form, $options);
+        // Set full validation if required in Request
+        // Do a fake submit of the form on create to test errors (only on GET requests)
+        $processor->setFullValidation($validate, $mock_validation);
+
+        return $processor;
+    }
+
+    /**
      * Index translator
      */
     public function translateAction($pid, Request $request) {
@@ -93,13 +120,27 @@ class TranslateProjectDashboardController extends \Goteo\Controller\Dashboard\Pr
         if($project instanceOf Response) return $project;
 
         $translated = $project->getLangsAvailable();
-        if($cost = current($project->costs)) {
+        if($cost = reset($project->costs)) {
             $translated = array_merge($translated, $cost->getLangsAvailable());
         }
         $translated = array_unique(array_diff($translated, [$project->lang]));
 
+        $cost = reset($project->costs);
+        $reward = reset($project->rewards);
+        $support = reset($project->supports);
+        $percents = [];
+        foreach($translated as $lang) {
+            $percents[$lang] = [
+                'overview' => $project->getLangsPercent($lang),
+                'costs' => $cost ? $cost->getLangsGroupPercent($lang, ['project']) : 0,
+                'rewards' => $reward ? $reward->getLangsGroupPercent($lang, ['project']) : 0,
+                'supports' => $support ? $support->getLangsGroupPercent($lang, ['project']) : 0
+            ];
+        }
+
         return $this->viewResponse('dashboard/project/translate/index', [
-            'translated' => $translated
+            'translated' => $translated,
+            'percents' => $percents
         ]);
 
     }
@@ -109,16 +150,16 @@ class TranslateProjectDashboardController extends \Goteo\Controller\Dashboard\Pr
      */
     public function overviewTranslateAction($pid, $lang = null, Request $request) {
 
-        $project = $this->validateProject($pid, 'translate', null, $lang); // original lang
+        $project = $this->validateProject($pid, 'translate', null, $form, $lang); // original lang
         if($project instanceOf Response) return $project;
 
         $defaults = (array) $project->getLang($lang);
         $languages = Lang::listAll('name', false);
 
         // Create the form
-        $processor = $this->getModelForm('ProjectTranslateOverview', $project, $defaults, ['lang' => $lang]);
+        $processor = $this->getModelForm('ProjectTranslateOverview', $project, $defaults, ['lang' => $lang], $request);
         $processor->createForm();
-        $form = $processor->getBuilder()
+        $processor->getBuilder()
             ->add('submit', 'submit')
             ->add('remove', 'submit', [
                 'label' => Text::get('translator-delete', $languages[$lang]),
@@ -128,9 +169,8 @@ class TranslateProjectDashboardController extends \Goteo\Controller\Dashboard\Pr
                     'class' => 'pull-right-form btn btn-default btn-lg',
                     'data-confirm' => Text::get('translator-delete-sure', $languages[$lang])
                     ]
-            ])
-            ->getForm();
-
+            ]);
+        $form = $processor->getForm();
         $form->handleRequest($request);
         if ($form->isSubmitted()) {
             // Check if we want to remove a translation
@@ -155,6 +195,7 @@ class TranslateProjectDashboardController extends \Goteo\Controller\Dashboard\Pr
             }
         }
 
+
         return $this->viewResponse('dashboard/project/translate/overview', [
             'form' => $form->createView(),
             'step' => 'overview',
@@ -167,7 +208,7 @@ class TranslateProjectDashboardController extends \Goteo\Controller\Dashboard\Pr
      */
     public function costsTranslateAction($pid, $lang = null, Request $request) {
 
-        $project = $this->validateProject($pid, 'translate', null, $lang); // original lang
+        $project = $this->validateProject($pid, 'translate', null, $form, $lang); // original lang
         if($project instanceOf Response) return $project;
 
         // $langs = Lang::listAll('name', false);
@@ -184,14 +225,19 @@ class TranslateProjectDashboardController extends \Goteo\Controller\Dashboard\Pr
         foreach($project->costs as $cost) {
             $suffix = "_{$cost->id}";
             $costs[$cost->id] = $cost;
+            $translated = $cost->getLang($lang);
             $builder
                 ->add("cost$suffix", 'text', [
                     'label' => 'costs-field-cost',
+                    'data' => $translated->cost,
                     'required' => false,
+                    'attr' => ['help' => $cost->cost]
                 ])
                 ->add("description$suffix", 'textarea', [
                     'label' => 'costs-field-description',
+                    'data' => $translated->description,
                     'required' => false,
+                    'attr' => ['help' => $cost->description]
                 ]);
         }
         $builder
@@ -250,7 +296,7 @@ class TranslateProjectDashboardController extends \Goteo\Controller\Dashboard\Pr
         return $this->viewResponse('dashboard/project/translate/costs', [
             'form' => $form->createView(),
             'step' => 'costs',
-            'costs' => $this->project->costs,
+            'costs' => $project->costs,
             'lang' => $lang,
             'types' => Cost::types(),
             'languages' => $languages,
@@ -259,11 +305,11 @@ class TranslateProjectDashboardController extends \Goteo\Controller\Dashboard\Pr
     }
 
     /**
-     * Project costs translator
+     * Project rewards translator
      */
     public function rewardsTranslateAction($pid, $lang = null, Request $request) {
 
-        $project = $this->validateProject($pid, 'translate', null, $lang); // original lang
+        $project = $this->validateProject($pid, 'translate', null, $form, $lang); // original lang
         if($project instanceOf Response) return $project;
 
         // $langs = Lang::listAll('name', false);
@@ -280,27 +326,37 @@ class TranslateProjectDashboardController extends \Goteo\Controller\Dashboard\Pr
         foreach($project->individual_rewards as $reward) {
             $suffix = "_{$reward->id}";
             $rewards[$reward->id] = $reward;
+            $translated = $reward->getLang($lang);
             $builder
                 ->add("reward$suffix", 'text', [
                     'label' => 'rewards-field-individual_reward-reward',
+                    'data' => $translated->reward,
                     'required' => false,
+                    'attr' => ['help' => $reward->reward]
                 ])
                 ->add("description$suffix", 'textarea', [
                     'label' => 'rewards-field-individual_reward-description',
+                    'data' => $translated->description,
                     'required' => false,
+                    'attr' => ['help' => $reward->description]
                 ]);
         }
         foreach($project->social_rewards as $reward) {
             $suffix = "_{$reward->id}";
             $rewards[$reward->id] = $reward;
+            $translated = $reward->getLang($lang);
             $builder
                 ->add("reward$suffix", 'text', [
                     'label' => 'rewards-field-social_reward-reward',
+                    'data' => $translated->reward,
                     'required' => false,
+                    'attr' => ['help' => $reward->reward]
                 ])
                 ->add("description$suffix", 'textarea', [
                     'label' => 'rewards-field-social_reward-description',
+                    'data' => $translated->description,
                     'required' => false,
+                    'attr' => ['help' => $reward->description]
                 ]);
         }
         $builder
@@ -358,8 +414,107 @@ class TranslateProjectDashboardController extends \Goteo\Controller\Dashboard\Pr
         return $this->viewResponse('dashboard/project/translate/rewards', [
             'form' => $form->createView(),
             'step' => 'rewards',
-            'rewards' => $this->project->individual_rewards,
-            'social' => $this->project->social_rewards,
+            'rewards' => $project->individual_rewards,
+            'social' => $project->social_rewards,
+            'lang' => $lang,
+            'languages' => $languages,
+        ]);
+
+    }
+
+    /**
+     * Project supports translator
+     */
+    public function supportsTranslateAction($pid, $lang = null, Request $request) {
+
+        $project = $this->validateProject($pid, 'translate', null, $form, $lang); // original lang
+        if($project instanceOf Response) return $project;
+
+        // $langs = Lang::listAll('name', false);
+        // $languages = array_intersect_key($langs, array_flip($project->getLangsAvailable()));
+        // if(!isset($languages[$lang])) {
+        //     Message::error(Text::get('translator-lang-not-found'));
+        //     return $this->redirect('/dashboard/project/' . $project->id . '/translate');
+        // }
+
+        $languages = Lang::listAll('name', false);
+
+        $builder = $this->createFormBuilder();
+        $supports = [];
+        foreach($project->supports as $support) {
+            $suffix = "_{$support->id}";
+            $supports[$support->id] = $support;
+            $translated = $support->getLang($lang);
+            $builder
+                ->add("support$suffix", 'text', [
+                    'label' => 'supports-field-support',
+                    'data' => $translated->support,
+                    'required' => false,
+                    'attr' => ['help' => $support->support]
+                ])
+                ->add("description$suffix", 'textarea', [
+                    'label' => 'supports-field-description',
+                    'data' => $translated->description,
+                    'required' => false,
+                    'attr' => ['help' => $support->description]
+                ]);
+        }
+        $builder
+            ->add('submit', 'submit')
+            ->add('remove', 'submit', [
+                'label' => Text::get('translator-delete', $languages[$lang]),
+                'icon_class' => 'fa fa-trash',
+                'span' => 'hidden-xs',
+                'attr' => [
+                    'class' => 'pull-right-form btn btn-default btn-lg',
+                    'data-confirm' => Text::get('translator-delete-sure', $languages[$lang])
+                    ]
+            ]);
+
+        $form = $builder->getForm();
+        $form->handleRequest($request);
+        if ($form->isSubmitted()) {
+            if($form->isValid()) {
+                $errors = [];
+                $data = $form->getData();
+                // print_r($data);die($form->getClickedButton()->getName());
+                $errors = [];
+                foreach($data as $key => $val) {
+                    list($field, $id) = explode('_', $key);
+                    $support = $supports[$id];
+                    // Check if we want to remove a translation
+                    if($form->get('remove')->isClicked()) {
+                        if(!$support->removeLang($lang)) {
+                            $errors[] = "Reward #$support->id not deleted";
+                        }
+                    } else {
+                        $support->setLang($lang, [$field => $val], $errors);
+                    }
+                }
+                if($errors) {
+                    if($form->get('remove')->isClicked()) {
+                        Message::info(Text::get('translator-deleted-ko', $languages[$lang]));
+                    } else {
+                        Message::error(Text::get('form-sent-error', implode(',',array_map('implode',$errors))));
+                    }
+                } else {
+                    if($form->get('remove')->isClicked()) {
+                        Message::info(Text::get('translator-deleted-ok', $languages[$lang]));
+                    } else {
+                        Message::info(Text::get('dashboard-translate-project-ok', [
+                            '%ZONE%' => '<strong>' . Text::get('step-6') . '</strong>',
+                            '%LANG%' => '<strong><em>' . $languages[$lang] . '</em></strong>'
+                        ]));
+                    }
+                    return $this->redirect('/dashboard/project/' . $project->id . '/translate');
+                }
+            }
+        }
+
+        return $this->viewResponse('dashboard/project/translate/supports', [
+            'form' => $form->createView(),
+            'step' => 'supports',
+            'supports' => $project->supports,
             'lang' => $lang,
             'languages' => $languages,
         ]);
@@ -371,7 +526,7 @@ class TranslateProjectDashboardController extends \Goteo\Controller\Dashboard\Pr
      */
     public function updatesTranslateAction($pid, $uid, $lang, Request $request)
     {
-        $project = $this->validateProject($pid, 'updates', null, $lang);
+        $project = $this->validateProject($pid, 'updates', null, $form, $lang);
         if($project instanceOf Response) return $project;
 
         $post = BlogPost::get($uid);
@@ -379,6 +534,7 @@ class TranslateProjectDashboardController extends \Goteo\Controller\Dashboard\Pr
 
         $langs = Lang::listAll('name', false);
         $languages = array_intersect_key($langs, array_flip($project->getLangsAvailable()));
+        $languages[$project->lang] = $langs[$project->lang];
 
         if(!isset($languages[$lang])) {
             Message::error(Text::get('translator-lang-not-found'));
@@ -430,7 +586,7 @@ class TranslateProjectDashboardController extends \Goteo\Controller\Dashboard\Pr
                 // var_dump($data);die;
                 $post->lang = $lang;
                 $post->title_lang = $data['title'];
-                $post->text_lang = $data['title'];
+                $post->text_lang = $data['text'];
                 if($post->saveLang($errors)) {
                     Message::info(Text::get('dashboard-project-updates-translate-ok', [
                         '%TITLE%' => '<strong>#' . $post->id .'</strong>',

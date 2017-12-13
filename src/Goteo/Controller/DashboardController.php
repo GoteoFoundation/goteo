@@ -12,6 +12,7 @@ namespace Goteo\Controller;
 
 use Symfony\Component\HttpFoundation\Request;
 
+use Goteo\Application\Exception\ControllerAccessDeniedException;
 use Goteo\Application\Session;
 use Goteo\Application\Config;
 use Goteo\Application\View;
@@ -28,6 +29,28 @@ class DashboardController extends \Goteo\Core\Controller {
         // changing to a responsive theme here
         View::setTheme('responsive');
         $this->user = Session::getUser();
+        if(!$this->user) {
+            throw new ControllerAccessDeniedException(Text::get('user-login-required-access'));
+        }
+
+    }
+
+    public static function createSidebar($section, $zone = '') {
+        $total_messages = Comment::getUserThreads(Session::getUser(), 0, 0, true);
+        if($total_messages > 0 && $section === 'activity') {
+            Session::addToSidebarMenu('<i class="icon icon-2x icon-activity"></i> ' . Text::get('dashboard-menu-activity'), '/dashboard/activity', 'activity');
+            Session::addToSidebarMenu('<i class="icon icon-2x icon-partners"></i> ' . Text::get('regular-messages') .' <span class="badge">' . $total_messages . '</span>', '/dashboard/messages', 'messages');
+        }
+        if($section === 'wallet') {
+            Session::addToSidebarMenu('<i class="icon icon-2x icon-wallet-sidebar"></i> ' . Text::get('dashboard-menu-pool'), '/dashboard/wallet', 'wallet');
+            Session::addToSidebarMenu('<i class="fa fa-2x fa-fw fa-download"></i> ' . Text::get('recharge-button'), '/pool', 'recharge');
+        }
+        View::getEngine()->useData([
+            'zone' => $zone,
+            'section' => $section,
+            'total_messages' => $total_messages
+        ]);
+
     }
 
     public function activityAction(Request $request) {
@@ -66,6 +89,7 @@ class DashboardController extends \Goteo\Core\Controller {
     public function messagesAction(Request $request) {
 
         $messages = Comment::getUserThreads($this->user);
+
         self::createSidebar('activity', 'messages');
 
         return $this->viewResponse('dashboard/messages', [
@@ -73,25 +97,6 @@ class DashboardController extends \Goteo\Core\Controller {
             'messages' => $messages
         ]);
     }
-
-    public static function createSidebar($section, $zone = '') {
-        $total_messages = Comment::getUserThreads(Session::getUser(), 0, 0, true);
-        if($total_messages > 0 && $section === 'activity') {
-            Session::addToSidebarMenu('<i class="icon icon-2x icon-activity"></i> ' . Text::get('dashboard-menu-activity'), '/dashboard/activity', 'activity');
-            Session::addToSidebarMenu('<i class="icon icon-2x icon-partners"></i> ' . Text::get('regular-messages') .' <span class="badge">' . $total_messages . '</span>', '/dashboard/messages', 'messages');
-        }
-        if($section === 'wallet') {
-            Session::addToSidebarMenu('<i class="icon icon-2x icon-wallet-sidebar"></i> ' . Text::get('dashboard-menu-pool'), '/dashboard/wallet', 'wallet');
-            Session::addToSidebarMenu('<i class="fa fa-2x fa-fw fa-download"></i> ' . Text::get('recharge-button'), '/pool', 'recharge');
-        }
-        View::getEngine()->useData([
-            'zone' => $zone,
-            'section' => $section,
-            'total_messages' => $total_messages
-        ]);
-
-    }
-
     /**
      * Virtual wallet
      */

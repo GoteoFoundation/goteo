@@ -78,6 +78,16 @@ $(function(){
         $checkbox.change();
     });
 
+    $('.material-switch').hammer().bind('swiperight', function() {
+        // console.log('material right', this);
+        $(this).find('input[type="checkbox"]').prop('checked', true);
+    });
+
+    $('.material-switch').hammer().bind('swipeleft', function() {
+        // console.log('material left', this);
+        $(this).find('input[type="checkbox"]').prop('checked', false);
+    });
+
     /// AJAX auto updates fields
     $('.auto-save-property').each(function() {
         var $input = $(this);
@@ -117,8 +127,9 @@ $(function(){
                     type: 'PUT',
                     data: {value: val}
                 }).success(function(data) {
-                    original = _setValue.call($input[0], data);
+                    original = _setValue.call($input[0], data.value);
                     $(document).trigger('form-boolean-changed', [$input[0]]);
+                    if(data.message) alert(data.message);
                     // console.log('saved', data);
                 }).fail(function(error) {
                     var json = JSON.parse(error.responseText);
@@ -143,7 +154,7 @@ $(function(){
             locale: goteo.locale
             // ,debug: true
         }).on('dp.change', function (e) {
-            console.log(e);
+            // console.log(e);
             // $('#publishing-date').val(e.date.format('YYYY/MM/DD'));
         });
     // Year only datepickers
@@ -202,12 +213,12 @@ $(function(){
         var $holder = $container.find('.video-holder');
         var $embed = $container.find('.embed-responsive');
 
-        console.log('adding video', val, video,e);
+        // console.log('adding video', val, video,e);
         // Add thumb
         $container.removeClass('loaded').removeClass('playing').addClass('loading');
 
         var putVideo = function(thumb) {
-            console.log('putting thumb');
+            // console.log('putting thumb');
             $container.find('.cover-image').attr('src', thumb);
             $container.removeClass('loading').addClass('loaded');
             var iframe = $('<iframe>', {
@@ -228,11 +239,11 @@ $(function(){
         else if (video.type === 'vimeo') {
             $.getJSON("https://vimeo.com/api/v2/video/"+ video.id + ".json")
              .success(function(res) {
-                console.log('videmo ok', res);
+                // console.log('videmo ok', res);
                 putVideo(res[0].thumbnail_large);
              })
              .fail(function(e){
-                console.log('error vimeo', e.responseText);
+                // console.log('error vimeo', e.responseText);
              });
         }
     };
@@ -244,6 +255,31 @@ $(function(){
     });
     $('.autoform input.online-video').each(_addVideo);
 
+    // HTML editors
+    $('.autoform .summernote > textarea').summernote({
+        height: 300,
+        toolbar: [
+            ['tag', ['style']],
+            ['style', ['bold', 'italic', 'underline', 'clear']],
+            // ['font', ['strikethrough', 'superscript', 'subscript']],
+            // ['fontsize', ['fontsize']],
+            ['color', ['color']],
+            ['para', ['ul', 'ol', 'paragraph']],
+            // ['height', ['height']],
+            ['insert', ['link', 'picture', 'video', 'hr', 'table']],
+            ['misc', ['fullscreen', 'codeview', 'help']]
+          ],
+        callbacks: {
+            onFocus: function() {
+              // console.log('Editable area is focused');
+              $(this).closest('.summernote').addClass('focused');
+            },
+            onBlur: function() {
+              // console.log('Editable area loses focus');
+              $(this).closest('.summernote').removeClass('focused');
+            }
+        }
+    });
 
     // MarkdownType initialization
     var markdowns = form.markdowns = {};
@@ -255,7 +291,145 @@ $(function(){
             forceSync: true,
             autosave: false,
             promptURLs: true,
-            spellChecker: false
+            spellChecker: false,
+            toolbar: [
+                {
+                    name: "close",
+                    // action: SimpleMDE.toggleFullScreen,
+                    action: function customFunction(editor){
+                        var cm = editor.codemirror;
+                        if(cm.getOption('fullScreen')) {
+                            SimpleMDE.toggleFullScreen(editor);
+                        }
+                    },
+                    className: "fa fa-close exit-fullscreen",
+                    title: goteo.texts['form-editor-close'] ? goteo.texts['form-editor-close'] : "Close"
+                },
+                {
+                    name: "bold",
+                    action: SimpleMDE.toggleBold,
+                    className: "fa fa-bold",
+                    title: goteo.texts['form-editor-bold'] ? goteo.texts['form-editor-bold'] : 'Bold'
+                },
+                {
+                    name: "italic",
+                    action: SimpleMDE.toggleItalic,
+                    className: "fa fa-italic",
+                    title: goteo.texts['form-editor-italic'] ? goteo.texts['form-editor-italic'] : "Italic"
+                },
+                {
+                    name: "strikethrough",
+                    action: SimpleMDE.toggleStrikethrough,
+                    className: "fa fa-strikethrough",
+                    title: goteo.texts['form-editor-strikethrough'] ? goteo.texts['form-editor-strikethrough'] : "Strikethrough"
+                },
+                {
+                    name: "heading",
+                    action: SimpleMDE.toggleHeadingSmaller,
+                    className: "fa fa-header",
+                    title: goteo.texts['form-editor-heading'] ? goteo.texts['form-editor-heading'] : "Heading"
+                },
+                {
+                    name: "heading-smaller",
+                    action: SimpleMDE.toggleHeadingSmaller,
+                    className: "fa fa-header fa-header-x fa-header-smaller",
+                    title: goteo.texts['form-editor-smaller_heading'] ? goteo.texts['form-editor-smaller_heading'] : "Smaller Heading"
+                },
+                {
+                    name: "heading-bigger",
+                    action: SimpleMDE.toggleHeadingBigger,
+                    className: "fa fa-header fa-header-x fa-header-bigger",
+                    title: goteo.texts['form-editor-bigger_heading'] ? goteo.texts['form-editor-bigger_heading'] : "Bigger Heading"
+                },
+                '|',
+                {
+                    name: "code",
+                    action: SimpleMDE.toggleCodeBlock,
+                    className: "fa fa-code",
+                    title: goteo.texts['form-editor-code'] ? goteo.texts['form-editor-code'] : "Code"
+                },
+                {
+                    name: "quote",
+                    action: SimpleMDE.toggleBlockquote,
+                    className: "fa fa-quote-left",
+                    title: goteo.texts['form-editor-quote'] ? goteo.texts['form-editor-quote'] : "Quote"
+                },
+                {
+                    name: "unordered-list",
+                    action: SimpleMDE.toggleUnorderedList,
+                    className: "fa fa-list-ul",
+                    title: goteo.texts['form-editor-generic_list'] ? goteo.texts['form-editor-generic_list'] : "Generic List"
+                },
+                {
+                    name: "ordered-list",
+                    action: SimpleMDE.toggleOrderedList,
+                    className: "fa fa-list-ol",
+                    title: goteo.texts['form-editor-numbered_list'] ? goteo.texts['form-editor-numbered_list'] : "Numbered List"
+                },
+                '|',
+                {
+                    name: "link",
+                    action: SimpleMDE.drawLink,
+                    className: "fa fa-link",
+                    title: goteo.texts['form-editor-create_link'] ? goteo.texts['form-editor-create_link'] : "Create Link"
+                },
+                {
+                    name: "image",
+                    action: SimpleMDE.drawImage,
+                    className: "fa fa-picture-o",
+                    title: goteo.texts['form-editor-insert_image'] ? goteo.texts['form-editor-insert_image'] : "Insert Image"
+                },
+                {
+                    name: "table",
+                    action: SimpleMDE.drawTable,
+                    className: "fa fa-table",
+                    title: goteo.texts['form-editor-insert_table'] ? goteo.texts['form-editor-insert_table'] : "Insert Table"
+                },
+                {
+                    name: "horizontal-rule",
+                    action: SimpleMDE.drawHorizontalRule,
+                    className: "fa fa-minus",
+                    title: goteo.texts['form-editor-insert_horizontal_line'] ? goteo.texts['form-editor-insert_horizontal_line'] : "Insert Horizontal Line"
+                },
+                '|',
+                {
+                    name: "preview",
+                    action: SimpleMDE.togglePreview,
+                    className: "fa fa-eye no-disable",
+                    title: goteo.texts['form-editor-toggle_preview'] ? goteo.texts['form-editor-toggle_preview'] : "Toggle Preview"
+                },
+                {
+                    name: "side-by-side",
+                    action: SimpleMDE.toggleSideBySide,
+                    className: "fa fa-columns no-disable no-mobile",
+                    title: goteo.texts['form-editor-toggle_side_by_side'] ? goteo.texts['form-editor-toggle_side_by_side'] : "Toggle Side by Side"
+                },
+                {
+                    name: "fullscreen",
+                    action: SimpleMDE.toggleFullScreen,
+                    className: "fa fa-arrows-alt no-disable no-mobile",
+                    title: goteo.texts['form-editor-toggle_fullscreen'] ? goteo.texts['form-editor-toggle_fullscreen'] : "Toggle Fullscreen"
+                },
+                '|',
+                {
+                    name: "guide",
+                    action: "https://simplemde.com/markdown-guide",
+                    className: "fa fa-question-circle",
+                    title: goteo.texts['form-editor-markdown_guide'] ? goteo.texts['form-editor-markdown_guide'] : "Markdown Guide"
+                },
+                '|',
+                {
+                    name: "undo",
+                    action: SimpleMDE.undo,
+                    className: "fa fa-undo no-disable",
+                    title: goteo.texts['form-editor-undo'] ? goteo.texts['form-editor-undo'] : "Undo"
+                },
+                {
+                    name: "redo",
+                    action: SimpleMDE.redo,
+                    className: "fa fa-repeat no-disable",
+                    title: goteo.texts['form-editor-redo'] ? goteo.texts['form-editor-redo'] : "Redo"
+                }]
         });
         // simplemde.codemirror.on('change', function() {
         //     console.log(simplemde.value());
@@ -306,114 +480,135 @@ $(function(){
         }
 
         var _addImageCss = function($img, name, dataURL) {
-            var url = dataURL ? dataURL : '/img/300x300c/' + name;
-            $img.css({
-                backgroundImage:  'url(' + url + ')',
-                backgroundSize: 'cover'
-            });
+          // console.log('AJAX Success', $img, name, dataURL);
+          var url = dataURL ? dataURL : '/img/300x300c/' + name;
+          $img.css({
+              backgroundImage:  'url(' + url + ')',
+              backgroundSize: 'cover'
+          });
         };
 
         // Create the FILE upload
         var drop = new Dropzone($dnd.contents('div')[0], {
-            url: url ? url : $form.attr('action'),
-            uploadMultiple: multiple,
-            createImageThumbnails: true,
-            maxFiles: limit,
-            maxFilesize: MAX_FILE_SIZE,
-            autoProcessQueue: !!url, // no ajax post if no url
-            dictDefaultMessage: $dz.data('text-upload'),
-            acceptedFiles: accepted_files
+          url: url ? url : $form.attr('action'),
+          uploadMultiple: multiple,
+          createImageThumbnails: true,
+          maxFiles: limit,
+          maxFilesize: MAX_FILE_SIZE,
+          autoProcessQueue: !!url, // no ajax post if no url
+          dictDefaultMessage: $dz.data('text-upload'),
+          acceptedFiles: accepted_files
         })
         .on('error', function(file, error) {
-            $error.html(error.error ? error.error : error);
-            $error.removeClass('hidden');
-            drop.removeFile(file);
-            // console.log('error', error);
+          $error.html(error.error ? error.error : error);
+          $error.removeClass('hidden');
+          drop.removeFile(file);
+          // console.log('error', error);
         })
         .on('thumbnail', function(file, dataURL) {
-            // Add to list
-            // console.log('thumbnail', file, dataURL);
-            var $img = $form.find('li[data-name="' + file.name + '"] .image');
-            _addImageCss($img, file.name, dataURL);
+          // Add to list
+          var $img = $form.find('li[data-name="' + file.name + '"] .image');
+          _addImageCss($img, file.name, dataURL);
         })
         .on(url ? 'success' : 'addedfile', function(file, response) {
-            var total = $list.find('li').length;
-            // console.log(response ? 'success' : 'added', file, 'total', total, 'limit', limit, 'response', response);
-            if(total >= limit) {
-                $error.html($dz.data('text-max-files-reached'));
-                $error.removeClass('hidden');
-                drop.removeFile(file);
-                // console.log($dz.data('text-max-files-reached'), $error.html());
-                return false;
-            }
-            if(!Dropzone.isValidFile(file, accepted_files)) {
-                // console.log('not accepted file', file, accepted_files);
-                $error.html($dz.data('text-file-type-error'));
-                drop.removeFile(file);
-                return false;
-            }
-            var name = file.name;
-            var i;
-            $error.addClass('hidden');
-            // AJAX upload case, a response is defined
-            if(response) {
-                if(!response.success) {
-                    $error.html(response.msg);
-                    $error.removeClass('hidden');
-                    for(i in response.files) {
-                        if(!response.files[i].success)
-                            $error.append('<br>' + response.files[i].msg);
-                    }
-                }
-                for(i in response.files) {
-                    if(response.files[i].originalName === name) {
-                        name = response.files[i].name;
-                    }
-                }
-            }
-            var $li = $($template.html().replace('{NAME}', name));
-            var $img = $li.find('.image');
+          var total = $list.find('li').length;
+          // console.log(response ? 'success' : 'added', file, 'total', total, 'limit', limit, 'response', response);
+          if(total >= limit) {
+            $error.html($dz.data('text-max-files-reached'));
+            $error.removeClass('hidden');
+            drop.removeFile(file);
+            // console.log($dz.data('text-max-files-reached'), $error.html());
+            return false;
+          }
+          if(!Dropzone.isValidFile(file, accepted_files)) {
+            // console.log('not accepted file', file, accepted_files);
+            $error.html($dz.data('text-file-type-error'));
+            drop.removeFile(file);
+            return false;
+          }
 
-            var re = /(?:\.([^.]+))?$/;
-            var ext = re.exec(name)[1];
-            $img.addClass('file-type-' + ext);
-            console.log('extension',ext,$img.attr('class'));
+          var name = file.name;
+          var type = '';
+          var download_url = '';
+          var i;
+          $error.addClass('hidden');
+          // AJAX upload case, a response is defined
+          if(response) {
+            if(!response.success) {
+              $error.html(response.msg);
+              $error.removeClass('hidden');
+              for(i in response.files) {
+                if(!response.files[i].success)
+                  $error.append('<br>' + response.files[i].msg);
+              }
+            }
+            for(i in response.files) {
+              if(response.files[i].originalName === name) {
+                // console.log('found file', response.files[i]);
+                name = response.files[i].name;
+                type = response.files[i].regularFile && response.files[i].type;
+                download_url = response.files[i].downloadUrl;
+              }
+            }
+          }
+          var $li = $($template.html().replace('{NAME}', name));
+          var $img = $li.find('.image');
 
-            if(response) {
-                $li.append('<input type="hidden" name="' + $dz.data('current') + '" value="' + name + '">');
-                if($dz.data('markdown-link')) {
-                    $li.find('.add-to-markdown').data('target', $dz.data('markdown-link'));
-                    $li.find('.add-to-markdown').removeClass('hidden');
-                }
-                // AJAX does not create thumbnail
-                _addImageCss($img, name);
-            }
-            else {
-                // $img.css({backgroundSize: '25%'});
-            }
-            $list.append($li);
+          var re = /(?:\.([^.]+))?$/;
+          var ext = re.exec(name)[1];
+          $img.addClass('file-type-' + ext);
+          // console.log('extension',ext,$img.attr('class'));
 
-            if(total >= limit - 1) {
-                $dnd.hide();
+          if(response) {
+            $li.append('<input type="hidden" name="' + $dz.data('current') + '" value="' + name + '">');
+            if($dz.data('markdown-link')) {
+              $li.find('.add-to-markdown').data('target', $dz.data('markdown-link'));
+              $li.find('.add-to-markdown').removeClass('hidden');
             }
-            // On response, input[type=file] is already uploaded
-            if(response) {
-                drop.removeFile(file);
-                return;
+            // console.log('thumbnail', file, $li);
+            if(download_url) {
+              $li.find('.download-url').attr('href', download_url);
+              $li.find('.download-url').removeClass('hidden');
             }
-            // Input node with selected files. It will be removed from document shortly in order to
-            // give user ability to choose another set of files.
-            var inputFile = this.hiddenFileInput;
-            // Append it to form after stack become empty, because if you append it earlier
-            // it will be removed from its parent node by Dropzone.js.
-            setTimeout(function(){
-                // Set some unique name in order to submit data.
-                inputFile.name = $dz.data('name');
-                // console.log('adding file', $dz.data('name'), inputFile);
+            if(type) {
+              $img.addClass('file-type-' + type);
+            } else {
+              // AJAX does not create thumbnail
+              _addImageCss($img, name);
+            }
+          }
+          else {
+              // $img.css({backgroundSize: '25%'});
+          }
+          $list.append($li);
 
-                $li.append(inputFile);
-                drop.removeFile(file);
-            }, 0);
+          if(total >= limit - 1) {
+              $dnd.hide();
+          }
+          // On response, input[type=file] is already uploaded
+          if(response) {
+              drop.removeFile(file);
+              return;
+          }
+
+          // Input node with selected files. It will be removed from document shortly in order to
+          // give user ability to choose another set of files.
+          var inputFile = this.hiddenFileInput;
+          // Append it to form after stack become empty, because if you append it earlier
+          // it will be removed from its parent node by Dropzone.js.
+          setTimeout(function(){
+            // Set some unique name in order to submit data.
+            inputFile.name = $dz.data('name');
+            if(inputFile.files && inputFile.files.length) {
+              // console.log('adding file', $dz.data('name'), inputFile, inputFile.files);
+              $li.append(inputFile);
+            } else {
+              alert(goteo.texts['form-dragndrop-unsupported']);
+              $li.remove();
+              $dnd.show();
+            }
+            drop.removeFile(file);
+          }, 0);
         });
         dropzones[$(this).attr('id')] = drop;
 
@@ -443,6 +638,7 @@ $(function(){
     $('.autoform').on( 'click', '.image-list-sortable .add-to-markdown', function(e) {
         e.preventDefault();
         e.stopPropagation();
+        // console.log('add to markdown');
         var $li = $(this).closest('li');
         var name = $li.data('name');
         var $form = $(this).closest('form');
@@ -454,8 +650,67 @@ $(function(){
         }
     });
 
+
+    // handle exact geolocation
+    $('.autoform').on('click', '.exact-location', function(e) {
+        e.preventDefault();
+        var lat,lng,formatted_address,radius;
+        var $form = $(this).closest('form');
+        var $modal = $('#modal-map-' + $form.attr('name'));
+        var $map = $modal.find('.map');
+        var $wrap = $modal.find('.input-block');
+        var $search = $modal.find('.geo-autocomplete');
+        var $radius = $modal.find('.geo-autocomplete-radius');
+        var $input = $($(this).attr('href'));
+        var title = $input.closest('.form-group').find('label:first').text();
+        $modal.find('.modal-title').text(title);
+
+        $(['address', 'city', 'region', 'zipcode', 'country_code', 'country', 'latitude', 'longitude', 'formatted_address', 'radius']).each(function(i, el){
+            var el_dest = $input.data('geocoder-populate-' +  el);
+            var $val = $(el_dest);
+            var val = $val.text();
+            if($val.is(':input')) val = $val.val();
+
+            if(el === 'radius') {
+                radius = parseInt(val, 10) || 0;
+                $radius.data('geocoder-populate-' +  el, el_dest);
+            } else {
+                $search.data('geocoder-populate-' +  el, el_dest);
+            }
+            if(el === 'latitude') {
+                lat = parseFloat(val) || 0;
+            }
+            if(el === 'longitude') {
+                lng = parseFloat(val) || 0;
+            }
+            if(el === 'formatted_address') {
+                formatted_address = val;
+            }
+        });
+        $map.data('map-latitude', lat);
+        $map.data('map-longitude', lng);
+        if(!lat || !lng) {
+            $map.data('map-address', $input.val());
+        }
+        if(radius) {
+            $map.data('map-radius', radius);
+            $radius.val(radius);
+            $wrap.addClass('show-radius');
+        }
+        $search.val((lat && lng) ? formatted_address : $input.val());
+
+        $modal.modal('show');
+        locator.setGoogleMapPoint($map[0]);
+        locator.setGoogleAutocomplete('#' + $search.attr('id'));
+    });
+    $(".autoform .modal-map").on("shown.bs.modal", function () {
+        goteo.trace('shown locator map', locator);
+        google.maps.event.trigger(locator.map, "resize");
+        locator.map.setCenter(locator.marker.getPosition());
+    });
     // Handle buttons with confirmation
     $('form.autoform').on( 'click', 'button[data-confirm]', function(e) {
+        // console.log('btn auto confirm');
         if(!confirm($(this).data('confirm'))) {
             e.preventDefault();
             e.stopPropagation();
@@ -471,12 +726,13 @@ $(function(){
     });
 
     $('form[data-confirm]').on('submit', function(){
+        // console.log('form submit');
         formChanged = false;
     });
 
     $(window).on('beforeunload', function() {
       if(formChanged){
-        console.log('changed', formChanged);
+        // console.log('changed', formChanged);
          return formChanged;
        }
     });

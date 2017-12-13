@@ -34,13 +34,13 @@ class MessageListener extends AbstractListener {
         if($delayed) {
             // Send as a newsletter
             $mail = Mail::createFromTemplate('any', '', $template, [
-                '%MESSAGE%' => $message->message,
+                '%MESSAGE%' => $message->getHtml(),
                 '%OWNERNAME%' => $owner->name,
                 '%PROJECTNAME%' => $project->name,
                 '%PROJECTURL%' => SITE_URL . '/project/' . $project->id . '/participate#message'.$message->id,
                 '%RESPONSEURL%' => SITE_URL . '/dashboard/activity#comments-' . $message->thread
                ])
-                ->setSubject($message->subject);
+                ->setSubject($message->getSubject());
 
             if ( ! $mail->save($errors) ) { //persists in database
                 throw new MailException(implode("\n",$errors));
@@ -62,10 +62,11 @@ class MessageListener extends AbstractListener {
             return;
         }
 
+        $errors = [];
         foreach($recipients as $user) {
             $lang = User::getPreferences($user)->comlang;
             $mail = Mail::createFromTemplate($user->email, $user->name, $template, [
-                '%MESSAGE%' => $message->message,
+                '%MESSAGE%' => $message->getHtml(),
                 '%OWNERNAME%' => $owner->name,
                 '%USERNAME%' => $user->name,
                 '%PROJECTNAME%' => $project->name,
@@ -74,7 +75,7 @@ class MessageListener extends AbstractListener {
                ], $lang)
             // Either add a reply-to or put a link to respond in the platform
             // ->setReply($owner->email, $owner->name)
-            ->setSubject($message->subject)
+            ->setSubject($message->getSubject())
             ->send($errors);
             if($errors) {
                 throw new MailException(implode("\n", $errors));
@@ -91,7 +92,7 @@ class MessageListener extends AbstractListener {
         $type = $message->getType();
         $this->info("Message created", ['project' => $message->project, 'message_id' => $message->id, 'type' => $type, 'message' => $message->message]);
 
-        $title = substr($message->message, 0, strpos($message->message, ':'));
+        $title = $message->getSubject();
         // Message created from support type
         if($type === 'project-support') {
             // Feed event

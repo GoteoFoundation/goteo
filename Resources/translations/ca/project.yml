@@ -84,8 +84,10 @@ tooltip-updates-tags: 'Text tooltip-updates-tags'
 tooltip-updates-text: tooltip-updates-text
 tooltip-updates-title: tooltip-updates-title
 project-about-title: 'Sobre aquest projecte'
+project-call-got: 'El projecte ja ha aconseguit <strong>%s</strong> de <strong>%s</strong>'
 project-chart-amount-reached: Acumulat
-project-chart-costs-reset: Back
+project-chart-costs-reset: Torna
+project-chart-amount-ideal: Ideal
 project-collaborations-available: 'Col·laboracions disponibles'
 project-collaborations-number: col·laboradors
 project-obtained: 'Obtingut'
@@ -144,6 +146,7 @@ project-validation-error-costs: 'Falta afegir o completar els costos'
 project-validation-error-costs_required: 'Has de tenir al menys un cost de cada tipus, imprescindible i opcional'
 project-validation-error-rewards: 'Falta afegir o completar les recompenses'
 project-validation-error-rewards_required: 'Has de tenir al menys 3 recompenses'
+project-validation-error-rewards_units: 'La recompensa ha de tenir almenys %s unitats'
 project-validation-error-campaign: 'Falten camps per omplir a la configuració de campanya'
 
 project-non-public-field: 'Aquest camp no és públic'
@@ -154,3 +157,4 @@ project-manage: 'Gestiona'
 project-manage-campaign: 'Gestiona la campanya'
 
 project-widget-not-visible: 'Aquest widget no serà visible fins que el projecte sigui públic'
+project-donors-with-reward: '%s cofinançadors han escollit aquesta recompensa'

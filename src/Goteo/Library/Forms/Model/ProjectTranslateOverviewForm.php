@@ -24,7 +24,7 @@ class ProjectTranslateOverviewForm extends AbstractFormProcessor implements Form
     public function createForm() {
         $project = $this->getModel();
 
-        $this->getBuilder()
+        $builder = $this->getBuilder()
             ->add('subtitle', 'text', [
                 'label' => 'overview-field-subtitle',
                 'disabled' => $this->getReadonly(),
@@ -59,13 +59,18 @@ class ProjectTranslateOverviewForm extends AbstractFormProcessor implements Form
                 'disabled' => $this->getReadonly(),
                 'required' => false,
                 'attr' => ['help' => $project->about, 'rows' => 8]
-            ])
-            // ->add('goal', 'markdown', [
-            //     'label' => 'overview-field-goal',
-            //     'disabled' => $this->getReadonly(),
-            //     'required' => false,
-            //     'attr' => ['help' => $project->goal, 'rows' => 8]
-            // ])
+            ]);
+        if($project->goal) {
+            $builder
+                ->add('goal', 'markdown', [
+                    'label' => 'overview-field-goal',
+                    'disabled' => $this->getReadonly(),
+                    'required' => false,
+                    'attr' => ['help' => $project->goal, 'rows' => 8]
+                ]);
+        }
+
+        $builder
             ->add('related', 'markdown', [
                 'label' => 'overview-field-related',
                 'disabled' => $this->getReadonly(),

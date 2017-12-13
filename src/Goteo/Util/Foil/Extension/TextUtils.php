@@ -14,6 +14,7 @@ use Foil\Contracts\ExtensionInterface;
 
 use Goteo\Library\Text;
 use Goteo\Application\App;
+use Goteo\Model\Image;
 
 class TextUtils implements ExtensionInterface
 {
@@ -42,7 +43,9 @@ class TextUtils implements ExtensionInterface
           'percent_span' => [$this, 'percent_span'],
           'percent_badge' => [$this, 'percent_badge'],
           'sanitize' => [$this, 'sanitize'],
-          'markdown' => [$this, 'markdown']
+          'markdown' => [$this, 'markdown'],
+          'to_rgba' => [$this, 'to_rgba'],
+          'image_src' => [$this, 'image_src']
         ];
     }
 
@@ -105,4 +108,28 @@ class TextUtils implements ExtensionInterface
     {
         return App::getService('app.md.parser')->text($text);
     }
+
+    public function image_src($img, $w, $h, $ops = []) {
+      if(!$img instanceof Image) {
+        $img = new Image($img);
+      }
+
+      $src = $img->getLink($w, $h);
+
+      return $src;
+    }
+
+    /**
+     * converts a #xxyyzz HEX color to rgba(xx,yy,zz,opacity)
+     * @param  string $color HEX color
+     * @param  float $opacity level of opacity
+     */
+    public function to_rgba($hex, $opacity = 1) {
+        if($hex{0} === '#') $hex = substr($hex, 1);
+        if(strlen($hex) == 3) $hex = $hex{0}.$hex{0}.$hex{1}.$hex{1}.$hex{2}.$hex{2};
+
+        return "#$hex" . dechex(256 * $opacity);
+        // return "rgba(${hex[0]}${hex[1]}, ${hex[2]}${hex[3]}, ${hex[4]}${hex[5]}, $opacity)";
+    }
+
 }

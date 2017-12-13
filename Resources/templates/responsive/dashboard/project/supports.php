@@ -125,10 +125,10 @@ $(function(){
   var languages = <?= json_encode($this->languages) ?>;
   var txt_delete = $('#transform_remove > span').text();
   var txt_confirm = $('#transform_remove').data('confirm');
-  $('#trans-modal .help-text').attr('data-desc', '<?= $this->ee($this->text('translator-original-text'), 'js') ?>: ');
 
   // Translation edit
   $('.edit-translation a').on('click', function(event) {
+    if($(this).closest('li').hasClass('no-bind')) return;
     event.preventDefault();
     var $modal = $('#trans-modal');
     var $section = $(this).closest('.section-content');

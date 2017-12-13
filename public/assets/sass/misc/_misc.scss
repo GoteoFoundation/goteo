@@ -21,6 +21,10 @@ blockquote {
     margin-top:20px;
 }
 
+.padding-20{
+    padding-top:20px;
+}
+
 .spacer-5{
     margin-top:5px;
 }
@@ -110,9 +114,9 @@ blockquote {
     max-width: 375px;
 }
 
-.modal{
-    top:15%;
-}
+// .modal{
+//     top:15%;
+// }
 
 i.visible-xs {
     @media(max-width: $breakpoint-sm - 1 ) {

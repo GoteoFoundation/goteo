@@ -255,6 +255,7 @@ namespace Goteo\Model {
             // 2. entity
             if($this->type > 0) {
                 $entity = ['entity_name', 'entity_cif', 'office', 'entity_address', 'entity_location', 'entity_region', 'entity_zipcode', 'entity_country'];
+                $total = count($entity);
                 $entity[] = 'reg_name';
                 $entity[] = 'reg_number';
                 if($this->type == 2) {
@@ -289,6 +290,7 @@ namespace Goteo\Model {
             if ($this->paypal) {
                 $accounts[] = 'paypal_owner';
             }
+            $total = count($accounts);
             $count = 0;
             foreach($accounts as $field) {
                 if(!empty($this->{$field})) {
@@ -531,10 +533,10 @@ namespace Goteo\Model {
          * @param string $value  nombre del archivo
          * @return bool si ok
          */
-        public static function setPdf($id, $pdf) {
+        public function setPdf($name) {
 
-            $sql = "UPDATE contract SET pdf = :pdf WHERE contract = :id";
-            $values = array(':id' => $id, ':pdf'=>$pdf);
+            $sql = "UPDATE contract SET pdf = :pdf WHERE project = :id";
+            $values = array(':id' => $this->project, ':pdf' => $name);
 
             return (static::query($sql, $values)) ? true : false;
         }

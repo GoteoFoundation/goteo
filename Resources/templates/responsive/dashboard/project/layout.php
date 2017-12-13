@@ -7,7 +7,7 @@
 <?php $this->replace() ?>
 
 
-<?= $this->section('content') ?>
+<?php $this->section('footer') ?>
 
 <div id="apply-modal" class="modal fade" tabindex="-1" role="dialog">
   <div class="modal-dialog" role="document">
@@ -17,21 +17,18 @@
         <h4 class="modal-title"><?= $this->text('project-send-review') ?></h4>
       </div>
       <div class="modal-body">
-        <p><?= $this->text('guide-project-preview') ?></p>
+        <p><?= $this->markdown($this->text('project-send-review-desc')) ?></p>
         <?php if($this->errors): ?>
             <div class="text-danger"><?= implode("\n<br>\n", $this->errors) ?></div>
         <?php endif ?>
 
-        <?= $this->form_form($this->raw('applyForm'), [], true) ?>
+        <?= $this->form_form($this->raw('applyForm'), [], true); ?>
 
         </div>
     </div>
   </div>
 </div>
-<?php $this->append() ?>
 
-
-<?php $this->section('footer') ?>
 <script type="text/javascript">
 // @license magnet:?xt=urn:btih:0b31508aeb0634b347b8270c7bee4d411b5d4109&dn=agpl-3.0.txt
 

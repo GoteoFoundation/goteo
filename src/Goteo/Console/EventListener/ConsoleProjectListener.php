@@ -19,12 +19,13 @@ use Goteo\Library\Feed;
 use Goteo\Library\FeedBody;
 
 use Goteo\Model\Invest;
+use Goteo\Model\Project;
 
 //
 
 class ConsoleProjectListener extends AbstractListener {
 
-	private function logFeedEntry(Feed $log) {
+	private function logFeedEntry(Feed $log, Project $project) {
 		if ($log->unique_issue) {
 			$this->warning("Duplicated feed", [$project, $log]);
 		} else {
@@ -65,7 +66,7 @@ class ConsoleProjectListener extends AbstractListener {
 			$project->image)
 			->doAdmin('project');
 
-		$this->logFeedEntry($log);
+		$this->logFeedEntry($log, $project);
 		// public event
 		$log->unique_issue = false;
 		$log->title        = $project->name;
@@ -79,7 +80,7 @@ class ConsoleProjectListener extends AbstractListener {
 
 		$log->doPublic('projects');
 
-		$this->logFeedEntry($log);
+		$this->logFeedEntry($log, $project);
 		// Email de proyecto fallido al autor, inversores y destinatarios de recompensa
 		UsersSend::toOwner('fail', $project);
 		UsersSend::toInvestors('fail', $project, [Invest::STATUS_CHARGED]);
@@ -137,7 +138,7 @@ class ConsoleProjectListener extends AbstractListener {
 			$project->image
 		)
 			->doAdmin('project');
-		$this->logFeedEntry($log);
+		$this->logFeedEntry($log, $project);
 		// public event
 		$log->unique_issue = false;
 		$log->title        = $project->name;
@@ -151,7 +152,7 @@ class ConsoleProjectListener extends AbstractListener {
 
 		$log->doPublic('projects');
 
-		$this->logFeedEntry($log);
+		$this->logFeedEntry($log, $project);
 		// Email de proyecto finaliza su única ronda al autor y a los inversores
 		UsersSend::toOwner('unique_pass', $project);
 		UsersSend::toInvestors('unique_pass', $project);
@@ -198,7 +199,7 @@ class ConsoleProjectListener extends AbstractListener {
 			$project->image
 		)
 			->doAdmin('project');
-		$this->logFeedEntry($log);
+		$this->logFeedEntry($log, $project);
 		// public event
 		$log->unique_issue = false;
 		$log->title        = $project->name;
@@ -212,7 +213,7 @@ class ConsoleProjectListener extends AbstractListener {
 
 		$log->doPublic('projects');
 
-		$this->logFeedEntry($log);
+		$this->logFeedEntry($log, $project);
 		// Email de proyecto pasa a segunda ronda al autor y a los inversores
 		UsersSend::toOwner('r1_pass', $project);
 		UsersSend::toInvestors('r1_pass', $project);
@@ -260,7 +261,7 @@ class ConsoleProjectListener extends AbstractListener {
 			$project->image
 		)
 			->doAdmin('project');
-		$this->logFeedEntry($log);
+		$this->logFeedEntry($log, $project);
 		// public event
 		$log->unique_issue = false;
 		$log->title        = $project->name;
@@ -274,7 +275,7 @@ class ConsoleProjectListener extends AbstractListener {
 
 		$log->doPublic('projects');
 
-		$this->logFeedEntry($log);
+		$this->logFeedEntry($log, $project);
 		//Email de proyecto final segunda ronda al autor y a los inversores
 		UsersSend::toOwner('r2_pass', $project);
 		UsersSend::toInvestors('r2_pass', $project);

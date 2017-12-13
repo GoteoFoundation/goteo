@@ -114,6 +114,7 @@
         background: transparent;
         border: 0;
         color: $color-grey;
+        overflow: unset;
       }
       .title {
         line-height: 20px;
@@ -183,6 +184,11 @@
       }
     }
   }
+  ul.dropdown-menu {
+    li {
+        padding: 2px;
+    }
+  }
   .project-widget-admin {
     position: absolute;
     top: 0;
@@ -234,8 +240,11 @@
         align-items: center;
         overflow: hidden;
         .img-project {
+            // height: 100%;
+            // width: auto;
+            width: 100%;
             height: 100%;
-            width: auto;
+            object-fit: cover;
         }
         h2 {
             display: inline-block;

@@ -13,20 +13,23 @@ namespace Goteo\Controller\Dashboard;
 use Symfony\Component\HttpFoundation\Request;
 
 use Goteo\Application\Exception\ControllerAccessDeniedException;
+use Goteo\Application\Exception\ModelNotFoundException;
 use Goteo\Application\Session;
 use Goteo\Application\Config;
 use Goteo\Application\View;
+use Goteo\Application\Message;
+use Goteo\Application\AppEvents;
+use Goteo\Application\Event\FilterMatcherProjectEvent;
+
+use Goteo\Controller\DashboardController;
 use Goteo\Model\Project;
 use Goteo\Model\Project\Reward;
 use Goteo\Model\User;
-use Goteo\Model\User\Interest;
+use Goteo\Model\User\Interest as UserInterest;
+use Goteo\Model\Matcher;
+use Goteo\Library\Text;
 
-class AjaxDashboardController extends \Goteo\Core\Controller {
-
-    public function __construct() {
-        // changing to a responsive theme here
-        View::setTheme('responsive');
-    }
+class AjaxDashboardController extends DashboardController {
 
     /**
      * Projects suggestion by user interests (categories)
@@ -38,19 +41,19 @@ class AjaxDashboardController extends \Goteo\Core\Controller {
         $limit = (int)$request->query->get('limit');
         if(empty($limit)) $limit = 6;
 
-        $user = Session::getUser();
-
-        $interests = Interest::getAll();
+        $user = User::get(Session::getUserId());
 
         if ($request->isMethod('post')) {
             $interest = $request->request->get('id');
             $value = $request->request->get('value');
             if($value) {
-                $user->interests[$interest] = $interest;
+                $user->interests[$interest] = new UserInterest(['interest' => $interest]);
             } else {
                 unset($user->interests[$interest]);
             }
+            // print_r($user->interests);die("$interest $value");
             $user->save();
+            User::flush();
         }
 
         //proyectos que coinciden con mis intereses
@@ -127,7 +130,7 @@ class AjaxDashboardController extends \Goteo\Core\Controller {
     public function projectMaterialsTableAction($id, Request $request)
     {
         $project = Project::get($id);
-        if(!$project->userCanView(Session::getUser())) {
+        if(!$project->userCanView($this->user)) {
             throw new ControllerAccessDeniedException();
         }
 
@@ -143,5 +146,52 @@ class AjaxDashboardController extends \Goteo\Core\Controller {
 
     }
 
+    /**
+     * Accepts, rejects, activates or discards a project
+     */
+    public function joinMatcherAction($mid, $action, $pid, Request $request) {
+        $referer = $request->headers->get('referer');
+        if(!$referer) $referer = "/dashboard/project/$pid/summary";
+
+        try {
+            if($matcher = Matcher::get($mid, false)) {
+                // find project in matching
+                if( ! $project = $matcher->findProject($pid, 'all') ) {
+                    throw new ModelNotFoundException("Not found project [$pid] in matcher [$mid]");
+                }
+
+                $status = '';
+                switch($action) {
+                    case 'accept': // accepted by the user
+                    case 'reject': // rejected by the user
+                        if($matcher->active && $project->matcher_status === 'pending' && $project->userCanEdit($this->user)) {
+                            $status = $action . 'ed';
+                        }
+                        break;
+                    case 'discard': // rejected by an admin
+                    case 'activate': // activated by an admin
+                        if(!in_array($project->matcher_status, ['rejected', 'active']) && $project->userCanAdmin($this->user, true)) {
+                            $status = $action === 'discard' ? 'discarded' : 'active';
+                        }
+                        break;
+                }
+                if($status) {
+                    $matcher->setProjectStatus($pid, $status);
+
+                    $this->dispatch(AppEvents::MATCHER_PROJECT, new FilterMatcherProjectEvent($matcher, $project));
+
+                    Message::info(Text::get("matcher-project-$action", '<strong>' . $matcher->name . '</strong>'));
+                } else {
+                    throw new ControllerAccessDeniedException("Action [$action] not allowed");
+                }
+            } else {
+                throw new ModelNotFoundException("Inactive or not found matcher [$mid]");
+
+            }
+        } catch(\Exception $e) {
+            Message::error($e->getMessage());
+        }
+        return $this->redirect($referer);
+    }
 
 }

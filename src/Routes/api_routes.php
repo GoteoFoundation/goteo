@@ -27,6 +27,17 @@ $api->add('api-user-check', new Route(
         )
 ));
 
+// User images upload (POST method only)
+$api->add('api-user-avatar-upload', new Route(
+    '/users/{id}/avatar',
+    array('_controller' => 'Goteo\Controller\Api\UsersApiController::userUploadAvatarAction'),
+    array(), // requirements
+    array(), // options
+    '', // host
+    array(), // schemes
+    array('POST') // methods
+));
+
 // Projects list
 $api->add('api-projects', new Route(
     '/projects',
@@ -158,7 +169,7 @@ $api->add('api-comments-project', new Route(
 
 $api->add('api-comments-add', new Route(
     '/comments',
-    array('_controller' => 'Goteo\Controller\Api\MessagesApiController::commentsAddAction'),
+    array('_controller' => 'Goteo\Controller\Api\MessagesApiController::addCommentAction'),
     array(), // requirements
     array(), // options
     '', // host
@@ -168,7 +179,7 @@ $api->add('api-comments-add', new Route(
 
 $api->add('api-comments-delete', new Route(
     '/comments/{cid}',
-    array('_controller' => 'Goteo\Controller\Api\MessagesApiController::commentsDeleteAction'),
+    array('_controller' => 'Goteo\Controller\Api\MessagesApiController::deleteCommentAction'),
     array(), // requirements
     array(), // options
     '', // host
@@ -183,7 +194,7 @@ $api->add('api-messages-project', new Route(
         )
 ));
 // User Messages list
-$api->add('api-messages-project', new Route(
+$api->add('api-messages-project-user', new Route(
     '/projects/{pid}/messages/{uid}',
     array('_controller' => 'Goteo\Controller\Api\MessagesApiController::userMessagesAction',
         )
@@ -191,7 +202,7 @@ $api->add('api-messages-project', new Route(
 
 $api->add('api-messages-add', new Route(
     '/messages',
-    array('_controller' => 'Goteo\Controller\Api\MessagesApiController::messagesAddAction'),
+    array('_controller' => 'Goteo\Controller\Api\MessagesApiController::addMessageAction'),
     array(), // requirements
     array(), // options
     '', // host
@@ -199,5 +210,21 @@ $api->add('api-messages-add', new Route(
     array('POST') // methods
 ));
 
+$api->add('api-stats-investors-required', new Route(
+    '/stats/investors-required',
+    array('_controller' => 'Goteo\Controller\Api\StatsApiController::investorsRequiredAction')
+));
+
+// Matcher routes
+$api->add('api-matcher-list', new Route(
+    '/matchers',
+    array('_controller' => 'Goteo\Controller\Api\MatchersApiController::matchersAction')
+));
+
+// Matcher detail
+$api->add('api-matcher-item', new Route(
+    '/matchers/{mid}',
+    array('_controller' => 'Goteo\Controller\Api\MatchersApiController::matcherAction')
+));
 
 return $api;

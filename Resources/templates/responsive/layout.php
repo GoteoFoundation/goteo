@@ -63,7 +63,7 @@ if($sidebar) {
 
         <title><?= $this->title ?></title>
 
-        <link rel="icon" type="image/png" href="/favicon.ico" >
+        <link rel="icon" type="image/x-icon" href="/favicon.ico" >
 
         <?= $this->insert('partials/header/styles') ?>
 
@@ -83,7 +83,7 @@ if($sidebar) {
       <div id="main">
 
         <div id="main-content">
-            <?= $this->supply('messages', $this->insert("partials/header/messages")) ?>
+            <?= $this->supply('flash-messages', $this->insert("partials/header/messages"))?>
             <?= $this->supply('content') ?>
         </div>
 

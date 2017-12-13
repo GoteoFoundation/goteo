@@ -127,15 +127,8 @@ $sc->register('app.listener.invest', 'Goteo\Application\EventListener\InvestList
   ->setArguments(array(new Reference('paylogger')));
 
 // Milestone listener
-$sc->register('app.listener.milestone', 'Goteo\Application\EventListener\ConsoleMilestoneListener')
+$sc->register('app.listener.milestone', 'Goteo\Application\EventListener\ProjectPostListener')
   ->setArguments(array(new Reference('logger')));
-
-$sc->register('console.listener.milestone', 'Goteo\Console\EventListener\ConsoleMilestoneListener')
-  ->setArguments(array(new Reference('console_logger')));
-
-// Favourite listener
-$sc->register('console.listener.favourite', 'Goteo\Console\EventListener\ConsoleFavouriteListener')
-  ->setArguments(array(new Reference('console_logger')));
 
 // Invest listener
 $sc->register('app.listener.poolinvest', 'Goteo\Application\EventListener\PoolInvestListener')
@@ -146,6 +139,22 @@ $sc->register('app.listener.acl', 'Goteo\Application\EventListener\AclListener')
 // Messages
 $sc->register('app.listener.messages', 'Goteo\Application\EventListener\MessageListener')
    ->setArguments(array(new Reference('logger')));
+
+// Form builder
+$sc->register('app.forms', 'Goteo\Util\Form\FormBuilder');
+// Form Finder (create default forms)
+$sc->register('app.forms.finder', 'Goteo\Util\Form\FormFinder');
+
+// Matcher processor Finder (handles custom matchfunding cases)
+// This finder may add listeners to the dispatcher
+$sc->register('app.matcher.finder', 'Goteo\Util\MatcherProcessor\MatcherFinder')
+    ->setArguments(array($sc));
+
+// Markdown parser
+$sc->register('app.md.parser', '\Parsedown')
+   ->addMethodCall('setBreaksEnabled', [true])
+   ->addMethodCall('setUrlsLinked', [true])
+;
 
 // Event Dispatcher object
 $sc->register('dispatcher', 'Symfony\Component\EventDispatcher\EventDispatcher')
@@ -169,17 +178,14 @@ $sc->register('dispatcher', 'Symfony\Component\EventDispatcher\EventDispatcher')
 $sc->register('app', 'Goteo\Application\App')
    ->setArguments(array(new Reference('dispatcher'), new Reference('resolver')));
 
-// Form builder
-$sc->register('app.forms', 'Goteo\Util\Form\FormBuilder');
-// Form Finder (create default forms)
-$sc->register('app.forms.finder', 'Goteo\Util\Form\FormFinder');
-// Markdown parser
-$sc->register('app.md.parser', '\Parsedown')
-   ->addMethodCall('setBreaksEnabled', [true])
-   ->addMethodCall('setUrlsLinked', [true])
-;
-
 // CONSOLE LISTENERS
+$sc->register('console.listener.milestone', 'Goteo\Console\EventListener\ConsoleMilestoneListener')
+  ->setArguments(array(new Reference('console_logger')));
+
+// Favourite listener
+$sc->register('console.listener.favourite', 'Goteo\Console\EventListener\ConsoleFavouriteListener')
+  ->setArguments(array(new Reference('console_logger')));
+
 // Options addons and exception processiongs
 $sc->register('console.listener.exception', 'Goteo\Console\EventListener\ConsoleExceptionListener')
    ->setArguments(array(new Reference('console_logger')));

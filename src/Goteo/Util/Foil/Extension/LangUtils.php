@@ -4,6 +4,7 @@ namespace Goteo\Util\Foil\Extension;
 
 use Symfony\Component\HttpFoundation\Request;
 use Foil\Contracts\ExtensionInterface;
+use Goteo\Application\App;
 use Goteo\Application\Lang;
 use Goteo\Application\Config;
 
@@ -19,7 +20,7 @@ class LangUtils implements ExtensionInterface
 
     public static function getRequest() {
         if(!self::$request)
-            self::$request = Request::create();
+            self::$request = App::getRequest();
         return self::$request;
     }
 
@@ -83,7 +84,7 @@ class LangUtils implements ExtensionInterface
 
     public function lang_url($lang)
     {
-        return Lang::getUrl($lang);
+        return Lang::getUrl($lang, self::getRequest());
     }
 
 }
