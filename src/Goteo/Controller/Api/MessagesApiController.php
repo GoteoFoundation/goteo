@@ -227,7 +227,7 @@ class MessagesApiController extends AbstractApiController {
             throw new ModelException(Text::get('validate-donor-mandatory'));
         }
         if($subject) {
-            $body = "<strong>$subject</strong><br>\n$body";
+            $body = "## $subject\n\n$body";
         }
 
 
@@ -255,7 +255,8 @@ class MessagesApiController extends AbstractApiController {
             // TODO: find recipients from filters
             $filters = [
                 'projects' => $project,
-                'status' => [Invest::STATUS_CHARGED, Invest::STATUS_PAID],
+                // 'status' => [Invest::STATUS_CHARGED, Invest::STATUS_PAID],
+                'status' => [Invest::STATUS_CHARGED, Invest::STATUS_PAID, Invest::STATUS_RETURNED, Invest::STATUS_RELOCATED, Invest::STATUS_TO_POOL],
                 'reward' => $request->request->get('reward'),
                 'types' => $request->request->get('filter')
             ];

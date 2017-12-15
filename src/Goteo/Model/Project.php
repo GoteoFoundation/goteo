@@ -511,6 +511,7 @@ namespace Goteo\Model {
                     project.analytics_id,
                     project.facebook_pixel,
                     project.social_commitment,
+                    project.spread,
                     project.execution_plan,
                     project.execution_plan_url,
                     project.sustainability_model,
@@ -746,7 +747,6 @@ namespace Goteo\Model {
 
         // Replace $this->investors with this call
         public function getInvestions($offset = 0, $limit = 10, $order = 'invested ASC') {
-            if($this->projectInvestions) return $this->projectInvestions;
             $filter = ['projects' => $this->id, 'status' => [Invest::STATUS_PENDING, Invest::STATUS_CHARGED, Invest::STATUS_PAID, Invest::STATUS_RETURNED, Invest::STATUS_TO_POOL]];
             return Invest::getList($filter, null, $offset, $limit, false, $order);
         }
@@ -3814,7 +3814,7 @@ namespace Goteo\Model {
                         ) as `maxcost`
                 FROM project
                 WHERE id =?", array($id));
-            if($costs = $cost_query->fetchObject()) {
+            if($costs = $cost_query->skipCache()->fetchObject()) {
                 if($costs->mincost != $costs->oldmincost || $costs->maxcost != $costs->oldmaxcost) {
                     self::query("UPDATE
                         project SET

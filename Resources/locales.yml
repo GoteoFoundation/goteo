@@ -55,7 +55,7 @@ nl:
 de:
     name: Deutsch
     short: DE
-    public: false
+    public: true
     locale: de_DE
     fallback: en
 el:

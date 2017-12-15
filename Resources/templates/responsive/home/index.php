@@ -37,7 +37,8 @@
 
 <?= $this->insert('home/partials/foundation') ?>
 
-<?= $this->insert('home/partials/tools') ?>
+<?= $this->insert('home/partials/channels') ?>
 
+<?= $this->insert('home/partials/tools') ?>
 
 <?php $this->replace() ?>

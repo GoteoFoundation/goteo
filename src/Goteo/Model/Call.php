@@ -15,10 +15,10 @@ class Call extends \Goteo\Core\Model {
 
     // CALL STATUS IDs
     const STATUS_EDITING     = 1;  // edicion
-    const STATUS_REVIEWING   = 2; // en revisión
-    const STATUS_APPLYING    = 3; // en campaña de inscripción
-    const STATUS_PUBLISHED   = 4; // en campaña de repartir dinero
-    const STATUS_SUCCEEDED   = 5; // se acabo el dinero
+    const STATUS_REVIEWING   = 2; // en revisFión
+    const STATUS_OPEN        = 3; // en campaña de inscripción
+    const STATUS_ACTIVE      = 4; // en campaña de repartir dinero
+    const STATUS_COMPLETED   = 5; // se acabo el dinero
     const STATUS_EXPIRED     = 6; // la hemos cancelado
 
 
@@ -437,8 +437,15 @@ class Call extends \Goteo\Core\Model {
     /**
      * Handy method to know if call is applying
      */
-    public function inApply() {
-        return $this->status == self::STATUS_APPLYING;
+    public function isOpen() {
+        return $this->status == self::STATUS_OPEN;
+    }
+
+    /**
+     * Handy method to know if call is dropping
+     */
+    public function isActive() {
+        return $this->status == self::STATUS_ACTIVE;
     }
 
     /**

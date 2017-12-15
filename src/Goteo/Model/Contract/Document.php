@@ -141,8 +141,8 @@ class Document extends \Goteo\Core\Model {
                 }
 
                 // Construye SQL.
-                $query = "INSERT INTO document (id, contract, name, type, size)
-                    VALUES ('', :contract, :name, :type, :size)";
+                $query = "INSERT INTO document (contract, name, type, size)
+                    VALUES (:contract, :name, :type, :size)";
                 // Ejecuta SQL.
                 if (self::query($query, $data)) {
                     $this->id = self::insertId();

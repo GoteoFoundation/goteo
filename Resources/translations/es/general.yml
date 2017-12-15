@@ -230,6 +230,7 @@ tooltip-project-schedule: 'Visualización de cómo queda la agenda de producció
 translate-home-guide: 'Mensaje para el traductor'
 user-account-inactive: 'La cuenta está desactivada. Debes recuperar la contraseña para activarla de nuevo'
 user-activate-fail: 'Error al activar la cuenta de usuario'
+user-changeemail-invalid-token: 'Esta acción ha caducado o bien ya se ha ejecutado anteriormente'
 user-changeemail-fail: 'Error al cambiar el email'
 user-register-success: 'El usuario se ha registrado correctamente. A continuación recibirás un mensaje de correo para activarlo.'
 validate-project-social_rewards: 'Es obligatorio indicar como mínimo un retorno colectivo '

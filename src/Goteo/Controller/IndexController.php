@@ -20,6 +20,7 @@ use Goteo\Model\News;
 use Goteo\Model\Post;
 use Goteo\Model\Promote;
 use Goteo\Library\Feed;
+use Goteo\Model\Node;
 
 // para sacar el contenido de about
 
@@ -73,6 +74,8 @@ class IndexController extends \Goteo\Core\Controller
 
         }
 
+        $channels=Node::getAll(['status' => 'active', 'type' => 'channel']);
+
 
         // Banners siempre
         $banners   = Banner::getAll(true);
@@ -83,7 +86,8 @@ class IndexController extends \Goteo\Core\Controller
                 'promotes'  => $promotes,
                 'feed'      => $feed,
                 'news'      => $news,
-                'order'     => $order
+                'order'     => $order,
+                'channels'  => $channels
             );
 
 

@@ -488,12 +488,12 @@ class ProjectDashboardController extends DashboardController {
                 $button = $form->getClickedButton()->getName();
                 if($button === 'add-cost') {
                     if($processor->getReadonly()) {
-                        return $this->rawResponse('Cost cannot be added', 'text/plain', 500);
+                        return $this->rawResponse('Cost cannot be added', 'text/plain', 403);
                     }
                     $cost = new Cost(['project' => $project->id]);
                     $errors = [];
                     if(!$cost->save($errors)) {
-                        return $this->rawResponse(Text::get('form-sent-error', implode(', ',$errors)), 'text/plain', 500);
+                        return $this->rawResponse(Text::get('form-sent-error', implode(', ',$errors)), 'text/plain', 403);
                     }
                     $processor->addCost($cost);
                     return $this->viewResponse('dashboard/project/partials/cost_item', [
@@ -505,13 +505,13 @@ class ProjectDashboardController extends DashboardController {
                 if(strpos($button, 'remove_') === 0) {
                     try {
                         if($processor->getReadonly()) {
-                            return $this->rawResponse('Cost cannot be deleted', 'text/plain', 500);
+                            return $this->rawResponse('Cost cannot be deleted', 'text/plain', 403);
                         }
                         $cost = Cost::get(substr($button, 7));
                         $cost->dbDelete();
                         return $this->rawResponse('deleted ' . $cost->id);
                     } catch(\PDOExpection $e) {
-                        return $this->rawResponse(Text::get('form-sent-error', 'Cost not deleted'), 'text/plain', 500);
+                        return $this->rawResponse(Text::get('form-sent-error', 'Cost not deleted'), 'text/plain', 403);
                     }
                 }
             }
@@ -569,14 +569,14 @@ class ProjectDashboardController extends DashboardController {
             // Handle AJAX calls manually
             if($request->isXmlHttpRequest()) {
                 if(!$project->inEdition() && !$project->isAlive()) {
-                    return $this->rawResponse(Text::get('dashboard-project-reward-cannot'), 'text/plain', 500);
+                    return $this->rawResponse(Text::get('dashboard-project-reward-cannot'), 'text/plain', 403);
                 }
                 $button = $form->getClickedButton()->getName();
                 if($button === 'add-reward') {
                     $reward = new Reward(['project' => $project->id, 'type' => 'individual']);
                     $errors = [];
                     if(!$reward->save($errors)) {
-                        return $this->rawResponse(Text::get('form-sent-error', implode(', ',$errors)), 'text/plain', 500);
+                        return $this->rawResponse(Text::get('form-sent-error', implode(', ',$errors)), 'text/plain', 403);
                     }
                     $processor->addReward($reward);
                     return $this->viewResponse('dashboard/project/partials/reward_item', [
@@ -588,14 +588,14 @@ class ProjectDashboardController extends DashboardController {
                     try {
                         $reward = Reward::get(substr($button, 7));
 
-                        if($project->inEdition() || $reward->isDraft()) {
+                        if($project->inEdition() || $reward->isDraft() || ($reward->getTaken() === 0 && $project->userCanModerate($this->user))) {
                             $reward->dbDelete();
                         } else {
-                            return $this->rawResponse('Error: Reward has invests or cannot be deleted', 'text/plain', 500);
+                            return $this->rawResponse('Error: Reward has invests or cannot be deleted', 'text/plain', 403);
                         }
                         return $this->rawResponse('deleted ' . $reward->id);
                     } catch(\PDOExpection $e) {
-                        return $this->rawResponse(Text::get('form-sent-error', 'Reward not deleted'), 'text/plain', 500);
+                        return $this->rawResponse(Text::get('form-sent-error', 'Reward not deleted'), 'text/plain', 403);
                     }
                 }
             }
@@ -643,8 +643,6 @@ class ProjectDashboardController extends DashboardController {
                 $old_id = $project->id;
                 $this->dispatch(AppEvents::PROJECT_READY, new FilterProjectEvent($project));
 
-                Message::info(Text::get('project-review-request_mail-success'));
-                Message::info(Text::get('project-review-confirm_mail-success'));
                 if(strpos($referer, $old_id) !== false) $referer = '/dashboard/project/' . $project->id . '/summary';
 
             } catch(\Exception $e) {
@@ -947,10 +945,11 @@ class ProjectDashboardController extends DashboardController {
             $filters['others']['nondrop'] = Text::Get('dashboard-project-filter-by-nondrop');
         }
 
-        $status = [Invest::STATUS_CHARGED, Invest::STATUS_PAID];
-        if($project->isDead()) {
-            $status = [Invest::STATUS_RETURNED, Invest::STATUS_RELOCATED, Invest::STATUS_TO_POOL];
-        }
+        // $status = [Invest::STATUS_CHARGED, Invest::STATUS_PAID];
+        // if($project->isDead()) {
+        //     $status = [Invest::STATUS_RETURNED, Invest::STATUS_RELOCATED, Invest::STATUS_TO_POOL];
+        // }
+        $status = [Invest::STATUS_CHARGED, Invest::STATUS_PAID, Invest::STATUS_RETURNED, Invest::STATUS_RELOCATED, Invest::STATUS_TO_POOL];
         $filter_by = ['projects' => $project->id, 'status' => $status];
         $filter = $request->query->get('filter');
         if(!is_array($filter)) $filter = [];

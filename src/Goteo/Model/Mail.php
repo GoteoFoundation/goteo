@@ -48,7 +48,7 @@ class Mail extends \Goteo\Core\Model {
         $html = true,
         $massive = false,
         $template = null,
-        $sent,
+        $sent = null,
         $error = '',
         $log,
         $status = 'pending',
@@ -451,20 +451,8 @@ class Mail extends \Goteo\Core\Model {
                 "/(<a.*)href=(')([^']*)'([^>]*)>/U"
                 ],
                 function ($matches){
-                    // create metric for it
-                    try {
-                        $stat = MailStats::getStat($this->id, $this->to, Metric::getMetric($matches[3]));
-                        $errors = [];
-                        if (! $stat->save($errors) ) {
-                            throw new ModelException(implode("\n", $errors));
-                        }
-
-                        $new = SITE_URL . '/mail/link/' . $stat->id;
-                    } catch(ModelException $e) {
-                        $this->logger('Error creating MailStats, fallback to base64', ['error' => $e->getMessage()], 'error');
-                        $url = $matches[3];
-                        $new = SITE_URL . '/mail/url/' . \mybase64_encode(md5(Config::get('secret') . '-' . $this->to . '-' . $this->id. '-' . $url) . '¬' . $this->to  . '¬' . $this->id . '¬' . $url);
-                    }
+                    $url = $matches[3];
+                    $new = SITE_URL . '/mail/url/' . \mybase64_encode(md5(Config::get('secret') . '-' . $this->to . '-' . $this->id. '-' . $url) . '¬' . $this->to  . '¬' . $this->id . '¬' . $url);
                     return $matches[1] . 'href="' . $new . '"'. $matches[4] . '>';
                 },
                 $content);

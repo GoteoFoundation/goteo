@@ -102,6 +102,7 @@ contract-final-bank_owner: 'Titular del compte bancari'
 contract-final-close: 'Tanca les dades i processa el contracte'
 
 contract-validation-ok: 'El contracte sembla correcte. Si us plau, revisa les dades i finalitza el proces tancant les dades.'
+contract-non-available: 'El contracte encara no està disponible!'
 contract-validation-errors: 'El contracte encara no està completat!'
 contract-validation-error-promoter: 'Falten camps per omplir al promotor'
 contract-validation-error-promoter_nif: 'El NIF no és correcte'

@@ -344,8 +344,7 @@ abstract class Model {
 			//prevenimos que lea de replicas
 			$query = static::query("SELECT LAST_INSERT_ID();", null, false);
 			//no queremos que lea de cache
-			$query->cacheTime(0);
-			return $query->fetchColumn();
+			return $query->skipCache()->fetchColumn();
 		} catch (\Exception $e) {
 			return 0;
 		}

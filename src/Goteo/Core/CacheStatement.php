@@ -22,6 +22,7 @@ class CacheStatement extends \PDOStatement {
     private $cache_active = true;
     public $is_select = false;
     public $cache_key = '';
+    public $skip_cache = false;
     public $input_parameters = null;
     public $execute = null;
     static $query_stats = array('replica' => array(0, 0, 0), 'master' => array(0, 0, 0)); // array(num-non-cached, num-cached, total-time-non-cached )
@@ -99,16 +100,26 @@ class CacheStatement extends \PDOStatement {
     }
 
     /**
+     * Skips any kind of cache for the next execution
+     * @return [type] [description]
+     */
+    public function skipCache() {
+        $this->skip_cache = true;
+        return $this;
+    }
+
+    /**
      * Ejecución del método deseado con cache
      */
     public function _cachedMethod($method, $args=null) {
-        if($this->is_select) {
+        if($this->is_select && !$this->skip_cache && $this->cache_active) {
             $value = false;
-            if($this->cache && $this->cache_time && $this->cache_active) {
+            if($this->cache && $this->cache_time) {
                 $key = $this->cache->getKey($this->cache_key . serialize($args), $method);
                 $value = $this->cache->retrieve($key);
             } else {
                 $key = $this->cache_key . serialize($args) .'-'. $method;
+                // echo "[$key]";
                 // In memory cache
                 if(array_key_exists($key, self::$in_memory_cache)) {
                     $value = self::$in_memory_cache[$key];
@@ -121,7 +132,7 @@ class CacheStatement extends \PDOStatement {
                 if($this->debug>1) self::$queries[$this->dbh->type][1][] = array(self::$query_stats[$this->dbh->type][1], $this->queryString, $this->input_parameters);
 
                 // echo "[cached [$method $class_name] cache time: [{$this->cache_time}s]";
-
+                $this->skip_cache = false;
                 //devolver el valor cacheado
                 return $value;
             }
@@ -132,8 +143,8 @@ class CacheStatement extends \PDOStatement {
         //obtener el valor
         $value = call_user_func_array(array($this, "parent::$method"), $args);
 
-        if($this->is_select) {
-            if($this->cache && $this->cache_time && $this->cache_active) {
+        if($this->is_select && !$this->skip_cache && $this->cache_active) {
+            if($this->cache && $this->cache_time) {
                 //guardar en cache
                 $this->cache->store($key, $value, $this->cache_time);
             } else {
