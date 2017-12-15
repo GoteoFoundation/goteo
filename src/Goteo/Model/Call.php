@@ -549,21 +549,6 @@ class Call extends \Goteo\Core\Model {
             return $this->tagmark;
         }
 
-        public function getTagmark() {
-
-            if(!$this->tagmark) {
-                if ($this->status == self::STATUS_OPEN) :
-                    $this->tagmark = 'open';
-                elseif ($this->status == self::STATUS_ACTIVE) :
-                    $this->tagmark = 'active';
-                // "en marcha" y "aun puedes" cuando está en la segunda ronda
-                elseif ($this->status == self::STATUS_COMPLETED) :
-                    $this->tagmark = 'completed';
-                endif;
-            }
-            return $this->tagmark;
-        }
-
 
     /*
      *  Para validar los campos del convocatoria que son NOT NULL en la tabla
