@@ -1821,7 +1821,6 @@ class User extends \Goteo\Core\Model {
         );
 
         $values = array();
-        $set = '';
         $insert = [];
         foreach($fields as $key) {
             if(isset($data[$key])) {
