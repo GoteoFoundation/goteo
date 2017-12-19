@@ -1822,22 +1822,18 @@ class User extends \Goteo\Core\Model {
 
         $values = array();
         $set = '';
-
-        foreach ($data as $key => $value) {
-            if (in_array($key, $fields)) {
-                $values[":$key"] = $value;
-                if ($set != '') {
-                    $set .= ', ';
-                }
-
-                $set .= "$key = :$key";
+        $insert = [];
+        foreach($fields as $key) {
+            if(isset($data[$key])) {
+                $insert[] = "$key = :$key";
+                $values[":$key"] = $data[$key];
             }
         }
 
-        if (!empty($values) && $set != '') {
+        if ($values) {
             $values[':user'] = $user;
-            $sql = "$ins INTO user_personal SET user = :user, " . $set;
-
+            $sql = "$ins INTO user_personal SET user = :user, " . implode(',', $insert);
+            // die(\sqldbg($sql, $values));
             try {
                 self::query($sql, $values);
                 return true;
