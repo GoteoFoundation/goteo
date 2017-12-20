@@ -21,6 +21,7 @@ use Goteo\Application\AppEvents;
 use Goteo\Application\Message;
 use Goteo\Application\Config;
 use Goteo\Application\Session;
+use Goteo\Application\Exception\ModelException;
 use Goteo\Application\Exception\ModelNotFountException;
 use Goteo\Application\Event\FilterInvestInitEvent;
 use Goteo\Application\Event\FilterInvestRefundEvent;
