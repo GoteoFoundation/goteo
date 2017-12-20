@@ -229,7 +229,7 @@ final class AppEvents
     const INVEST_RETURNED = 'invest.refund.return';
 
     /**
-     * The invest.refund.cancel event is thrown a refund process
+     * The invest.refund.failed event is thrown a refund process
      * due the project related is archived/failed fails
      *
      * The event listener receives an
@@ -238,6 +238,16 @@ final class AppEvents
      * @var string
      */
     const INVEST_RETURN_FAILED = 'invest.refund.failed';
+
+    /**
+     * The invest.modify event is thrown when a Invest changes in some way not related to the money (ie: change owner)
+     *
+     * The event listener receives an
+     * Goteo\Application\Event\FilterInvestRefundEvent instance.
+     *
+     * @var string
+     */
+    const INVEST_MODIFY = 'invest.modify';
 
    /**
      * The project.created event is thrown when a project is created

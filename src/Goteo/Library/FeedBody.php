@@ -26,7 +26,8 @@ class FeedBody {
         'message' => '/project/',
         'system' => '/admin/',
         'update' => '/project/',
-        'translate' => '/translate/'
+        'translate' => '/translate/',
+        'money' => '/admin/accounts/details/'
     );
 
     static public $color = array(
