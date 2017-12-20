@@ -2183,4 +2183,22 @@ class User extends \Goteo\Core\Model {
 
         return $suggest;
     }
+
+    /*
+    * Return the number of active users in Goteo
+    */
+
+    static public function getTotalUsers() {
+        $sql="SELECT
+                    COUNT('user.id') as total
+              FROM user
+              WHERE user.active = 1";
+        $query = static::query($sql);
+
+        $item = $query->fetchObject(__CLASS__);
+
+        return $item->total;
+
+    }
+
 }

@@ -48,6 +48,7 @@ class Invest extends \Goteo\Core\Model {
 
     static $ACTIVE_STATUSES = [self::STATUS_PENDING, self::STATUS_CHARGED, self::STATUS_PAID];
     static $FAILED_STATUSES = [self::STATUS_RELOCATED, self::STATUS_RETURNED, self::STATUS_TO_POOL, self::STATUS_CANCELLED];
+    static $RAISED_STATUSES = [self::STATUS_PENDING, self::STATUS_CHARGED, self::STATUS_PAID, self::STATUS_RETURNED, self::STATUS_TO_POOL];
 
     public
         $id,
@@ -227,6 +228,16 @@ class Invest extends \Goteo\Core\Model {
         if (is_numeric($filters['projectStatus'])) {
             $sqlFilter[] = "project.status = :projectStatus";
             $values[':projectStatus'] = $filters['projectStatus'];
+        }
+        elseif (is_array($filters['projectStatus'])) {
+            $parts = [];
+            foreach(array_values($filters['projectStatus']) as $i => $status) {
+                if(is_numeric($status)) {
+                    $parts[] = ':projectStatus' . $i;
+                    $values[':projectStatus' . $i] = $status;
+                }
+            }
+            if($parts) $sqlFilter[] = "project.status IN (" . implode(',', $parts) . ")";
         }
         if (is_numeric($filters['status'])) {
             $sqlFilter[] = "invest.status = :status";
@@ -2191,4 +2202,13 @@ class Invest extends \Goteo\Core\Model {
 
     }
 
+    /**
+    * Return total funded money
+    **/
+    public static function getTotalMoneyFunded(){
+
+        $status_published=[Project::STATUS_IN_CAMPAIGN, Project::STATUS_FUNDED, Project::STATUS_FULFILLED, Project::STATUS_UNFUNDED];
+        return self::getList(['status' => Invest::$RAISED_STATUSES, 'projectStatus' => $status_published], null, 0, 0, 'money');
+
+    }
 }

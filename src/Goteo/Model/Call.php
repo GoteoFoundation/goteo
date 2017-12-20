@@ -1197,15 +1197,28 @@ class Call extends \Goteo\Core\Model {
      * @param array filters
      * @return array of call instances
      */
-    public static function getList($filters = array()) {
+    public static function getList($filters = array(), $count= false) {
         $calls = array();
 
         // los filtros
         $sqlFilter = "";
-        if (!empty($filters['status'])) {
+
+        if (is_array($filters['status'])) {
+            $parts = [];
+            foreach(array_values($filters['status']) as $i => $status) {
+                if(is_numeric($status)) {
+                    $parts[] = ':status' . $i;
+                    $values[':status' . $i] = $status;
+                }
+            }
+            if($parts) $sqlFilter .= " AND status IN (" . implode(',', $parts) . ")";
+        }
+
+        elseif (!empty($filters['status'])) {
             $sqlFilter .= " AND status = :status";
             $values[':status'] = $filters['status'];
         }
+
         if (!empty($filters['caller'])) {
             $sqlFilter .= " AND owner = :caller";
             $values[':caller'] = $filters['caller'];
@@ -1261,20 +1274,43 @@ class Call extends \Goteo\Core\Model {
             }
         }
 
-        // la select
-        $sql = "SELECT
-                    id
-                FROM `call`
-                WHERE status > 0
-                    $sqlFilter
-                    $sqlOrder
-                ";
+        if($count) {
+            
+            $what = 'SUM(amount)';
 
-        $query = self::query($sql, $values);
-        foreach ($query->fetchAll(\PDO::FETCH_ASSOC) as $call) {
-            $calls[] = self::get($call['id']);
+            $sql = "SELECT
+                        $what
+                    FROM `call`
+                    WHERE status > 0
+                        $sqlFilter
+                        $sqlOrder
+                    ";
+
+            $query = self::query($sql, $values);
+
+            $total = self::query($sql, $values)->fetchColumn();
+           
+            return (int) $total;
         }
-        return $calls;
+
+        else
+        {
+
+            // la select
+            $sql = "SELECT
+                        id
+                    FROM `call`
+                    WHERE status > 0
+                        $sqlFilter
+                        $sqlOrder
+                    ";
+
+            $query = self::query($sql, $values);
+            foreach ($query->fetchAll(\PDO::FETCH_ASSOC) as $call) {
+                $calls[] = self::get($call['id']);
+            }
+            return $calls;
+        }
     }
 
     /**
@@ -2156,6 +2192,14 @@ class Call extends \Goteo\Core\Model {
             $errors[] = 'No se ha podido quitar el ambito {$sphere} a la convocatoria {$this->id}. ' . $e->getMessage();
             return false;
         }
+    }
+
+    /*
+     *   Total raised by calls
+     */
+    public function getTotalRaised(){
+        $status_active=[self::STATUS_OPEN, self::STATUS_ACTIVE, self::STATUS_COMPLETED];
+        return self::getList(['status' => $status_active], true);
     }
 
 }

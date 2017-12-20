@@ -1219,6 +1219,30 @@ namespace Goteo\Model {
             return round(self::query($sql)->fetchColumn(), 2);
         }
 
+         /*
+         * Average of invests 
+         * @return: float number
+         */
+        public static function getTotalInvestAverage() {
+
+            $sql = "
+               SELECT AVG(anon_1.amount) AS avg_1
+                FROM (
+                SELECT AVG(invest.amount) AS amount
+                FROM invest INNER JOIN project ON project.id = invest.project
+                WHERE
+                invest.status IN (0, 1, 3, 4, 6)
+                AND invest.project = project.id
+                AND project.status
+                IN (4, 5, 6, 3)
+                AND invest.status > 0
+                GROUP BY invest.user
+                ) AS anon_1
+                ";
+
+            return round(self::query($sql)->fetchColumn(), 2);
+        }
+
         /*
          * Static version
          * Array asociativo de los asesores de un proyecto
@@ -3465,7 +3489,24 @@ namespace Goteo\Model {
             if (!empty($filters['multistatus'])) {
                 $sqlFilter .= " AND project.status IN ({$filters['multistatus']})";
             }
-            if ($filters['status'] > -1) {
+
+            if (is_array($filters['status'])) {
+                $parts = [];
+                foreach(array_values($filters['status']) as $i => $status) {
+                    if(is_numeric($status)) {
+                        $parts[] = ':status' . $i;
+                        $values[':status' . $i] = $status;
+                    }
+                }
+                if($parts) $sqlFilter .= " AND project.status IN (" . implode(',', $parts) . ")";
+            }
+
+            /*if(!empty($filters['draft']))
+            {
+                $sqlFilter .= " AND project.id NOT REGEXP '[0-9a-f]{32}')";
+            }*/
+
+            elseif ($filters['status'] > -1) {
                 $sqlFilter .= " AND project.status = :status";
                 $values[':status'] = $filters['status'];
             } elseif ($filters['status'] == -2) {
@@ -3944,6 +3985,65 @@ namespace Goteo\Model {
             );
 
             return $errors;
+        }
+
+ 
+        /*
+        * Return the number of active users in Goteo
+        */
+
+        static public function getSucessfulPercentage($matchfunding=false) {
+
+            $status_published=[self::STATUS_FUNDED, self::STATUS_FULFILLED, self::STATUS_UNFUNDED];
+
+            $status_succesful=[self::STATUS_FUNDED, self::STATUS_FULFILLED];
+
+            $filters_published=['status' => $status_published];
+            $filters_succesful=['status' => $status_succesful];
+
+            if($matchfunding)
+            {
+                $filters_published['called']='all';
+                $filters_succesful['called']='all';
+            }
+
+            $num_published_projects=self::getList($filters_published, null, 0, 0, true);
+
+            $num_successful_projects=self::getList($filters_succesful, null, 0, 0, true);
+
+            $succesful_percentage=round(($num_successful_projects/$num_published_projects)*100,2);
+
+            return $succesful_percentage;
+
+        }
+
+        /*
+        * Return the number of active users in Goteo
+        */
+
+        static public function getAdvisedProjects() {
+
+            $filters=[  'status' => [self::STATUS_REVIEWING, self::STATUS_IN_CAMPAIGN, self::STATUS_FUNDED, self::STATUS_FULFILLED, self::STATUS_UNFUNDED]
+                     ];
+
+            $num_advised_projects=self::getList($filters, null, 0, 0, true);
+
+            return $num_advised_projects;
+
+        }
+
+        /*
+        * Return the number of active users in Goteo
+        */
+
+        static public function getFundedProjects() {
+
+            $filters=['status' => [self::STATUS_FUNDED, self::STATUS_FULFILLED]];
+
+            $num_projects=self::getList($filters, null, 0, 0, true);
+
+            return $num_projects;
+
         }
 
     }

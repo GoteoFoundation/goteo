@@ -22,15 +22,15 @@
                 			<div class="title">
                 				<img src="/assets/img/home/monedero.png" >
                 				<span class="text">                				
-                				    <?= $this->text('home-advantages-wallet-title') ?>
+                				    <?= $this->text('home-adventages-savetheworld-title') ?>
                 				</span>
                 			</div>
                 			<div class="description">
-                				<?= $this->text('home-advantages-wallet-description') ?>
+                				<?= $this->text('home-adventages-savetheworld-description') ?>
                 			</div>
                 			<div class="action">
                 				<a href="/calculadora-fiscal" >
-	                				<?= $this->text('home-advantages-wallet-action') ?>
+	                				<?= $this->text('home-adventages-savetheworld-action') ?>
 	                				<span class="icon glyphicon glyphicon glyphicon-menu-right" aria-hidden="true"></span>
                 				</a>
                 			</div>
@@ -76,21 +76,21 @@
                     </div>
                     <div class="row impact-data">
                         <div class="col-md-2 col-md-offset-3 item">
-                            4.503.000 €
+                            <?= amount_format($this->stats->getTotalUsers(), 0, true) ?>
                             <div class="description">
-                              <?= $this->text('home-advantages-impact-data-money-label') ?>
+                              <?= $this->text('home-adventages-impact-data-users-number') ?>
                             </div>
                         </div>
                         <div class="col-md-2 item">
-                            76 %
+                            <?= amount_format($this->stats->getSucessfulPercentage(), 1, true).'%' ?>
                             <div class="description">
                               <?= $this->text('home-advantages-impact-data-success-projects-label') ?>
                             </div>
                         </div>
                         <div class="col-md-2 item">
-                            48 €
+                             <?= amount_format($this->stats->getTotalMoneyFunded(), 0, false) ?>
                             <div class="description">
-                              <?= $this->text('home-advantages-impact-data-invest-avg-label') ?>
+                              <?= $this->text('home-advantages-impact-data-money-label') ?>
                             </div>
                         </div>
                     </div>
@@ -106,15 +106,15 @@
                 			<div class="title">
                                 <img src="/assets/img/home/calculadora.png" >
                                 <span class="text">                             
-                                    <?= $this->text('home-advantages-calculator-title') ?>
+                                    <?= $this->text('home-advantages-calculator-owner-title') ?>
                                 </span>
                             </div>
                             <div class="description">
-                                <?= $this->text('home-advantages-calculator-description') ?>
+                                <?= $this->text('home-advantages-calculator-owner-description') ?>
                             </div>
                             <div class="action">
                                 <a href="/calculadora-fiscal" >
-                                    <?= $this->text('home-advantages-calculator-action') ?>
+                                    <?= $this->text('home-advantages-calculator-owner-action') ?>
                                     <span class="icon glyphicon glyphicon glyphicon-menu-right" aria-hidden="true"></span>
                                 </a>
                             </div>
@@ -178,19 +178,19 @@
                     <div class="row impact-data">
                         <div class="col-md-2 col-md-offset-3 item">
                             <span>
-                            4.503.000 €
+                            <?= amount_format($this->stats->getTotalMoneyFunded(), 0, false) ?>
                             <div class="description">
                               <?= $this->text('home-advantages-impact-data-money-label') ?>
                             </div>
                         </div>
                         <div class="col-md-2 item">
-                            76 %
+                            <?= amount_format($this->stats->getSucessfulPercentage(), 1, true).'%' ?>
                             <div class="description">
-                              <?= $this->text('home-advantages-impact-data-success-projects-label') ?>
+                                <?= $this->text('home-advantages-impact-data-success-projects-label') ?>
                             </div>
                         </div>
                         <div class="col-md-2 item">
-                            48 €
+                            <?= amount_format($this->stats->getTotalInvestAverage(), 1, false) ?>
                             <div class="description">
                               <?= $this->text('home-advantages-impact-data-invest-avg-label') ?>
                             </div>

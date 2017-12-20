@@ -131,7 +131,14 @@ class Matcher extends \Goteo\Core\Model {
             $sql = " WHERE " . implode(' AND ', $filter);
         }
 
-        if($count) {
+        if($count==='money')
+        {
+             // Return count
+            $sql = "SELECT SUM(amount) FROM matcher$sql";
+            // echo \sqldbg($sql, $values);
+            return (int) self::query($sql, $values)->fetchColumn();
+        }
+        elseif($count) {
             // Return count
             $sql = "SELECT COUNT(id) FROM matcher$sql";
             // echo \sqldbg($sql, $values);
@@ -351,6 +358,15 @@ class Matcher extends \Goteo\Core\Model {
             $this->projects = $this->calculateProjects();
         }
         return $this->projects;
+    }
+
+    /**
+     * All the money raised
+     * @return [type] [amount]
+     */
+    public function getTotalRaised() {
+        
+        return self::getList([], 0, 10, 'money');
     }
 
     /**
