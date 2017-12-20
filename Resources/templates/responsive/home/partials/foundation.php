@@ -162,21 +162,21 @@
 
             <div class="row impact-data">
                 <div class="col-md-2 col-md-offset-3 item">
-                    4.503.000 €
+                    <?= $this->stats->getAdvisedProjects() ?>
                     <div class="description">
-                        <?= $this->text('home-advantages-impact-data-money-label') ?>
+                        <?= $this->text('home-adventages-impact-data-advised-projects') ?>
                     </div>
                 </div>
                 <div class="col-md-2 item">
-                    76 %
+                    1000
                     <div class="description">
-                        <?= $this->text('home-advantages-impact-data-success-projects-label') ?>
+                        <?= $this->text('home-adventages-impact-data-workshops-participants') ?>
                     </div>
                 </div>
                 <div class="col-md-2 item">
-                    48 €
+                    <?= $this->stats->getFundedProjects() ?>
                     <div class="description">
-                        <?= $this->text('home-advantages-impact-data-invest-avg-label') ?>
+                        <?= $this->text('home-adventages-impact-data-funded-projects') ?>
                     </div>
                 </div>
             </div>

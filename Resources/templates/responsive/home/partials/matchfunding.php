@@ -101,21 +101,21 @@
             </div>
             <div class="row impact-data">
                 <div class="col-md-2 col-md-offset-3 item">
-                    4.503.000 €
+                    <?= amount_format($this->stats->getMatchfundingRaised(), 0, false) ?>
                     <div class="description">
-                        <?= $this->text('home-advantages-impact-data-money-label') ?>
+                        <?= $this->text('home-adventages-impact-data-matchfunding-raised') ?>
                     </div>
                 </div>
                 <div class="col-md-2 item">
-                    76 %
+                     <?= amount_format($this->stats->getMatchfundingSucessfulPercentage(), 0, true).'%' ?>
                     <div class="description">
-                        <?= $this->text('home-advantages-impact-data-success-projects-label') ?>
+                        <?= $this->text('home-adventages-impact-data-success-projects-matchfunding') ?>
                     </div>
                 </div>
                 <div class="col-md-2 item">
-                    48 €
+                    --
                     <div class="description">
-                        <?= $this->text('home-advantages-impact-data-invest-avg-label') ?>
+                        Género
                     </div>
                 </div>
             </div>
