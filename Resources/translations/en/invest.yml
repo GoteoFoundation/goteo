@@ -108,3 +108,6 @@ project-see-msg: 'See your message'
 invest-no-register: 'Skip this step, I just want to contribute'
 invest-user-not-ghost: 'This email belongs to an existing user!'
 invest-user-name-or-anonymous: 'Name is mandatory unless you want to donate anonymously'
+
+invest-created-manually-ok: 'Manual invest created successfully, select reward and address now'
+invest-created-manually-ko: 'Error on creating manual invest [%s]'

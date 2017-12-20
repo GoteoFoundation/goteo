@@ -14,16 +14,19 @@ namespace Goteo\Controller\Admin;
 
 use Goteo\Library\Paypal;
 use Goteo\Library\Feed;
+use Goteo\Library\FeedBody;
 use Goteo\Library\Text;
 use Goteo\Library\Currency;
 use Goteo\Application\AppEvents;
 use Goteo\Application\Message;
 use Goteo\Application\Config;
 use Goteo\Application\Session;
+use Goteo\Application\Exception\ModelException;
 use Goteo\Application\Exception\ModelNotFountException;
 use Goteo\Application\Event\FilterInvestInitEvent;
 use Goteo\Application\Event\FilterInvestRefundEvent;
 use Goteo\Application\Event\FilterInvestRequestEvent;
+use Goteo\Application\Event\FilterInvestModifyEvent;
 use Goteo\Util\Omnipay\Message\EmptySuccessfulResponse;
 use Goteo\Payment\Payment;
 use Goteo\Model\Invest;
@@ -173,12 +176,12 @@ class AccountsSubController extends AbstractSubController {
                     $log = new Feed();
                     $log->setTarget($project->id)
                         ->populate(
-                            Text::sys('feed-admin-invest-' . ($returned ? 'returned' : 'cancelled') . '-subject'),
+                            'feed-admin-invest-' . ($returned ? 'returned' : 'cancelled') . '-subject',
                             '/admin/accounts',
-                            Text::sys('feed-admin-invest-' . ($returned ? 'returned' : 'cancelled'), [
+                            new FeedBody(null,null, 'feed-admin-invest-' . ($returned ? 'returned' : 'cancelled'), [
                                 '%ADMIN%' => Feed::item('user', $this->user->name, $this->user->id),
                                 '%USER%' => Feed::item('user', $invest->getUser()->name, $invest->getUser()->id),
-                                '%AMOUNT%' => Feed::item('money', $invest->amount.' '.$coin),
+                                '%AMOUNT%' => Feed::item('money', $invest->amount.' '.$coin, $invest->id),
                                 '%METHOD%' => strtoupper($invest->method),
                                 '%INVEST%' => Feed::item('system', $invest->id),
                                 '%PROJECT%' => Feed::item('project', $invest->getProject()->name, $invest->getProject()->id),
@@ -287,12 +290,12 @@ class AccountsSubController extends AbstractSubController {
                 // Evento Feed
                 $log = new Feed();
                 $log->setTarget($project->id)
-                    ->populate(Text::sys('feed-admin-invest-' . ($returned ? 'returned' : 'cancelled') . '-pool-subject'),
+                    ->populate('feed-admin-invest-' . ($returned ? 'returned' : 'cancelled') . '-pool-subject',
                                '/admin/accounts',
-                        Text::sys('feed-admin-invest-' . ($returned ? 'returned' : 'cancelled') .'-pool', [
+                        new FeedBody(null,null,'feed-admin-invest-' . ($returned ? 'returned' : 'cancelled') .'-pool', [
                             '%ADMIN%' => Feed::item('user', $this->user->name, $this->user->id),
                             '%USER%' => Feed::item('user', $invest->getUser()->name, $invest->getUser()->id),
-                            '%AMOUNT%' => Feed::item('money', $invest->amount.' &euro;'),
+                            '%AMOUNT%' => Feed::item('money', $invest->amount.' &euro;', $invest->id),
                             '%METHOD%' => strtoupper($invest->method),
                             '%INVEST%' => Feed::item('system', $invest->id),
                             '%PROJECT%' => Feed::item('project', $project->name, $project->id),
@@ -376,15 +379,17 @@ class AccountsSubController extends AbstractSubController {
             return $this->redirect('/admin/accounts/details/' . $id);
         }
 
+        $event = new FilterInvestModifyEvent($invest);
+        $invest = $event->getNewInvest();
         $invest->node = $user->node;
         $invest->user = $user->id;
         $invest->address = $invest->getAddress();
 
-        $errors = [];
-        if($invest->save($errors)) {
+        try {
+            $this->dispatch(AppEvents::INVEST_MODIFY, $event);
             Message::info(Text::get('admin-account-user-changed-successfully', ['%ID%' => $id, '%NAME%' => $user->name]));
-        } else {
-            Message::error(Text::get('admin-account-user-changed-error', ['%ID%' => $id, '%NAME%' => $user->name]) . "<br>" . implode(", ", $errors));
+        } catch(ModelException $e) {
+            Message::error(Text::get('admin-account-user-changed-error', ['%ID%' => $id, '%NAME%' => $user->name]) . "<br>" . $e->getMessage());
         }
 
         return $this->redirect('/admin/accounts/details/' . $id);
@@ -424,19 +429,19 @@ class AccountsSubController extends AbstractSubController {
 
                 // Evento Feed
                 $log = new Feed();
-                $log->setTarget($projectData->id);
-                $log->populate('Aporte manual (admin)', '/admin/accounts',
-                    \vsprintf("%s ha aportado %s al proyecto %s en nombre de %s", array(
-                        Feed::item('user', $this->user->name, $this->user->id),
-                        Feed::item('money', $invest->amount.' &euro;'),
-                        Feed::item('project', $projectData->name, $projectData->id),
-                        Feed::item('user', $userData->name, $userData->id)
-                )));
-                $log->doAdmin('money');
-                unset($log);
+                $log->setTarget($projectData->id)
+                    ->populate('feed-admin-invest-manual-subject',
+                    '/admin/accounts',
+                    new FeedBody(null, null, 'feed-admin-invest-manual', [
+                        '%ADMIN%' => Feed::item('user', $this->user->name, $this->user->id),
+                        '%AMOUNT%' => Feed::item('money', $invest->amount.' &euro;', $invest->id),
+                        '%PROJECT%' => Feed::item('project', $projectData->name, $projectData->id),
+                        '%USER%' => Feed::item('user', $userData->name, $userData->id)
+                    ]))
+                   ->doAdmin('money');
 
-                Invest::setDetail($invest->id, 'admin-created', 'Este aporte ha sido creado manualmente por el admin ' . $this->user->name);
-                Message::info('Aporte manual creado correctamente, seleccionar recompensa y dirección de entrega.');
+                Invest::setDetail($invest->id, 'admin-created', 'Invest created manually by the admin ' . $this->user->name);
+                Message::info(Text::get('invest-created-manually-ok'));
 
                 // New Invest Init Event
                 $method = $this->dispatch(AppEvents::INVEST_INIT, new FilterInvestInitEvent($invest, $invest->getMethod(), $this->request))->getMethod();
@@ -461,7 +466,7 @@ class AccountsSubController extends AbstractSubController {
 
                 return $this->redirect('/admin/rewards/edit/'.$invest->id);
             } else{
-                Message::error('Ha fallado algo al crear el aporte manual<br>'. implode(", ", $errors));
+                Message::error(Text::get('invest-created-manually-ko', implode(", ", $errors)));
             }
 
         }

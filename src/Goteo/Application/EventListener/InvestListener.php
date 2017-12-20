@@ -16,9 +16,11 @@ use Goteo\Application\Event\FilterInvestInitEvent;
 use Goteo\Application\Event\FilterInvestRefundEvent;
 use Goteo\Application\Event\FilterInvestRequestEvent;
 use Goteo\Application\Event\FilterInvestFinishEvent;
+use Goteo\Application\Event\FilterInvestModifyEvent;
 use Goteo\Application\Lang;
 use Goteo\Application\Message;
 use Goteo\Application\Session;
+use Goteo\Application\Exception\ModelException;
 use Goteo\Library\Currency;
 use Goteo\Library\Feed;
 use Goteo\Library\FeedBody;
@@ -141,11 +143,11 @@ class InvestListener extends AbstractListener {
             new FeedBody(null, null, 'feed-user-invest-error', [
                     '%MESSAGE%' => $response->getMessage(),
                     '%USER%'    => Feed::item('user', $user->name, $user->id),
-                    '%AMOUNT%'  => Feed::item('money', $invest->amount.' '.$coin),
+                    '%AMOUNT%'  => Feed::item('money', $invest->amount.' '.$coin, $invest->id),
                     '%PROJECT%' => Feed::item('project', $project->name, $project->id),
                     '%METHOD%'  => strtoupper($method::getId())
                 ])
-        )
+            )
             ->doAdmin('money');
 
         Invest::setDetail($invest->id, 'confirm-fail', 'Invest process failed. Gateway error: '.$response->getMessage());
@@ -338,7 +340,7 @@ class InvestListener extends AbstractListener {
                 '/admin/invests',
                 new FeedBody(null, null, 'feed-user-invest', [
                         '%USER%' => Feed::item('user', $user->name, $user->id),
-                        '%AMOUNT%' => Feed::item('money', $invest->amount . ' ' . $coin),
+                        '%AMOUNT%' => Feed::item('money', $invest->amount . ' ' . $coin, $invest->id),
                         '%PROJECT%' => Feed::item('project', $project->name, $project->id),
                         '%METHOD%' => strtoupper($method::getId())
                     ])
@@ -347,7 +349,7 @@ class InvestListener extends AbstractListener {
 
         // Public Feed
         $log_html = new FeedBody(null, null, 'feed-invest', [
-                '%AMOUNT%' => Feed::item('money', $invest->amount . ' ' . $coin),
+                '%AMOUNT%' => Feed::item('money', $invest->amount . ' ' . $coin, $invest->id),
                 '%PROJECT%' => Feed::item('project', $project->name, $project->id)
                 ]);
         if ($invest->anonymous) {
@@ -459,6 +461,44 @@ class InvestListener extends AbstractListener {
 
     }
 
+
+    /**
+     * Saves a modified Invest
+     * @param  FilterInvestFinishEvent $event [description]
+     * @return [type]                         [description]
+     */
+    public function onInvestModify(FilterInvestModifyEvent $event) {
+        $invest = $event->getNewInvest();
+        $project = $invest->getProject();
+        $user = $invest->getUser();
+        $old_invest = $event->getOldInvest();
+        $old_user = $old_invest->getUser();
+        $admin = Session::getUser();
+        $errors = [];
+        if($invest->save($errors)) {
+            $this->notice('Invest modified successfully', [$invest, $old_invest]);
+            $log = new Feed();
+            $log->setTarget($project->id)
+                ->populate('feed-admin-invest-modified-subject',
+                    '/admin/accounts',
+                    new FeedBody(null, null, 'feed-admin-invest-modified', [
+                        '%ADMIN%'    => Feed::item('user', $admin->name, $admin->id),
+                        '%INVEST%'   => Feed::item('system', $invest->id),
+                        '%AMOUNT%'   => Feed::item('money', $invest->amount.' &euro;', $invest->id),
+                        '%OLDUSER%'  => Feed::item('user', $old_user->name, $old_user->id),
+                        '%NEWUSER%'  => Feed::item('user', $user->name, $user->id)
+                    ])
+                )
+                ->doAdmin('money');
+
+
+        } else {
+            $this->warning('Error modifying invest', [$invest, $invest->getOldInvest(), 'errors' => $errors]);
+            throw new ModelException(implode(", ", $errors));
+        }
+
+    }
+
     /**
      * Response should not be manipulated for controller Invest and method notifiy
      * @param  FilterResponseEvent $event [description]
@@ -489,6 +529,7 @@ class InvestListener extends AbstractListener {
             AppEvents::INVEST_RETURNED         => 'onInvestRefundReturn',
             AppEvents::INVEST_RETURN_FAILED    => 'onInvestRefundFailed',
             AppEvents::INVEST_FINISHED         => 'onInvestFinished',
+            AppEvents::INVEST_MODIFY           => 'onInvestModify',
             KernelEvents::RESPONSE             => array('onKernelResponse', 100),
         );
     }
