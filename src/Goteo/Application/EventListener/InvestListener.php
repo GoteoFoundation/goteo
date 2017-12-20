@@ -143,7 +143,7 @@ class InvestListener extends AbstractListener {
             new FeedBody(null, null, 'feed-user-invest-error', [
                     '%MESSAGE%' => $response->getMessage(),
                     '%USER%'    => Feed::item('user', $user->name, $user->id),
-                    '%AMOUNT%'  => Feed::item('money', $invest->amount.' '.$coin),
+                    '%AMOUNT%'  => Feed::item('money', $invest->amount.' '.$coin, $invest->id),
                     '%PROJECT%' => Feed::item('project', $project->name, $project->id),
                     '%METHOD%'  => strtoupper($method::getId())
                 ])
@@ -340,7 +340,7 @@ class InvestListener extends AbstractListener {
                 '/admin/invests',
                 new FeedBody(null, null, 'feed-user-invest', [
                         '%USER%' => Feed::item('user', $user->name, $user->id),
-                        '%AMOUNT%' => Feed::item('money', $invest->amount . ' ' . $coin),
+                        '%AMOUNT%' => Feed::item('money', $invest->amount . ' ' . $coin, $invest->id),
                         '%PROJECT%' => Feed::item('project', $project->name, $project->id),
                         '%METHOD%' => strtoupper($method::getId())
                     ])
@@ -349,7 +349,7 @@ class InvestListener extends AbstractListener {
 
         // Public Feed
         $log_html = new FeedBody(null, null, 'feed-invest', [
-                '%AMOUNT%' => Feed::item('money', $invest->amount . ' ' . $coin),
+                '%AMOUNT%' => Feed::item('money', $invest->amount . ' ' . $coin, $invest->id),
                 '%PROJECT%' => Feed::item('project', $project->name, $project->id)
                 ]);
         if ($invest->anonymous) {

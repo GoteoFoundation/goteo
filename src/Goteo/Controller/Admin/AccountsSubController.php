@@ -180,7 +180,7 @@ class AccountsSubController extends AbstractSubController {
                             new FeedBody(null,null, 'feed-admin-invest-' . ($returned ? 'returned' : 'cancelled'), [
                                 '%ADMIN%' => Feed::item('user', $this->user->name, $this->user->id),
                                 '%USER%' => Feed::item('user', $invest->getUser()->name, $invest->getUser()->id),
-                                '%AMOUNT%' => Feed::item('money', $invest->amount.' '.$coin),
+                                '%AMOUNT%' => Feed::item('money', $invest->amount.' '.$coin, $invest->id),
                                 '%METHOD%' => strtoupper($invest->method),
                                 '%INVEST%' => Feed::item('system', $invest->id),
                                 '%PROJECT%' => Feed::item('project', $invest->getProject()->name, $invest->getProject()->id),
@@ -294,7 +294,7 @@ class AccountsSubController extends AbstractSubController {
                         new FeedBody(null,null,'feed-admin-invest-' . ($returned ? 'returned' : 'cancelled') .'-pool', [
                             '%ADMIN%' => Feed::item('user', $this->user->name, $this->user->id),
                             '%USER%' => Feed::item('user', $invest->getUser()->name, $invest->getUser()->id),
-                            '%AMOUNT%' => Feed::item('money', $invest->amount.' &euro;'),
+                            '%AMOUNT%' => Feed::item('money', $invest->amount.' &euro;', $invest->id),
                             '%METHOD%' => strtoupper($invest->method),
                             '%INVEST%' => Feed::item('system', $invest->id),
                             '%PROJECT%' => Feed::item('project', $project->name, $project->id),
@@ -433,7 +433,7 @@ class AccountsSubController extends AbstractSubController {
                     '/admin/accounts',
                     new FeedBody(null, null, 'feed-admin-invest-manual', [
                         '%ADMIN%' => Feed::item('user', $this->user->name, $this->user->id),
-                        '%AMOUNT%' => Feed::item('money', $invest->amount.' &euro;'),
+                        '%AMOUNT%' => Feed::item('money', $invest->amount.' &euro;', $invest->id),
                         '%PROJECT%' => Feed::item('project', $projectData->name, $projectData->id),
                         '%USER%' => Feed::item('user', $userData->name, $userData->id)
                     ]))
