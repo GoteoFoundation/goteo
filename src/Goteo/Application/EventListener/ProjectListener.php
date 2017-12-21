@@ -146,6 +146,7 @@ class ProjectListener extends AbstractListener {
         $user = $event->getUser();
         $this->info("Project to review", [$project]);
 
+        $isDraft = $project->isDraft();
         $errors = [];
         $res = $project->ready($errors);
 
@@ -168,7 +169,7 @@ class ProjectListener extends AbstractListener {
         UsersSend::setURL(Config::getUrl($project->lang));
 
         // email a los de goteo
-        if ($project->isDraft()) {
+        if ($isDraft) {
             $sent1 = UsersSend::toConsultants('project_preform_to_review_consultant', $project);
         } else {
             $sent1 = UsersSend::toConsultants('project_to_review_consultant', $project);

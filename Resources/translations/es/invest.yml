@@ -108,3 +108,6 @@ warning_nojavascript: 'Habilita javascript desde la configuración de privacidad
 invest-no-register: 'Saltar este paso, sólo quiero aportar'
 invest-user-not-ghost: 'Este email pertenece a un usuario existente!'
 invest-user-name-or-anonymous: 'El nombre es obligatorio si no quieres hacer una aportación anónima'
+
+invest-created-manually-ok: 'Aporte manual creado correctamente, seleccionar recompensa y dirección de entrega.'
+invest-created-manually-ko: 'Error al crear el aporte manual [%s]'

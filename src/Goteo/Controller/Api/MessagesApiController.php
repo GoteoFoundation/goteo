@@ -161,7 +161,7 @@ class MessagesApiController extends AbstractApiController {
         // TODO: filter type
         foreach(Comment::getAll($prj) as $msg) {
             $ob = ['id' => $msg->id,
-                   'message' => $msg->message,
+                   'message' => $msg->getHtml(),
                    'date' => $msg->date,
                    'project' => $msg->project,
                    'user' => $msg->getUser()->id
@@ -191,7 +191,7 @@ class MessagesApiController extends AbstractApiController {
         // TODO: filter type
         foreach(Comment::getUserMessages($user, $prj) as $msg) {
             $ob = ['id' => $msg->id,
-                   'message' => $msg->message,
+                   'message' => $msg->getHtml(),
                    // 'date' => date_formater($msg->date, true),
                    'date' => $msg->date,
                    'project' => $msg->project,
@@ -227,7 +227,7 @@ class MessagesApiController extends AbstractApiController {
             throw new ModelException(Text::get('validate-donor-mandatory'));
         }
         if($subject) {
-            $body = "## $subject\n\n$body";
+            $body = "### $subject\n\n$body";
         }
 
 
