@@ -22,7 +22,7 @@
             <small><em><?= date_formater($message->date, true) ?></em></small>
             <small class="pull-right"><?= $this->text('message-'. $type ) ?></small>
         </h4>
-          <p class="data-description"><?= $this->markdown($message->message) ?></p>
+          <p class="data-description"><?= $message->getHtml() ?></p>
           <p>
               <button class="btn btn-xs btn-<?= $comments ? 'info' : 'default' ?>" data-toggle="collapse"  data-target="#comments-<?= $message->id ?>"><i class="icon-1x icon icon-partners"></i> <?= $this->text('regular-num-comments', $comments) ?></button>
 

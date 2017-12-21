@@ -76,7 +76,7 @@ EOT
             'databases' => [
               Config::get('db.database') => [
                   // PDO Connection settings.
-                  'database_dsn'      => 'mysql:dbname=' . Config::get('db.database') . ';host=' . Config::get('db.host'),
+                  'database_dsn'      => 'mysql:dbname=' . Config::get('db.database') . ';host=' . Config::get('db.host') . ';charset=UTF8',
                   'database_user'     => Config::get('db.username'),
                   'database_password' => Config::get('db.password'),
 

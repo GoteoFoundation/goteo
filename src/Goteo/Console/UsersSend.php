@@ -356,7 +356,7 @@ class UsersSend extends AbstractCommandController {
                 if($project->help_cost) $help.=Text::get('help-cost-to-consultant').'<br>';
                 if($project->help_license) $help.=Text::get('help-license-to-consultant').'<br>';
                 $search  = array('%PROJECTNAME%', '%USERNAME%', '%PROJECTURL%', '%PROJECTEDITURL%', '%HELP%', '%SPREAD%', '%PROJECTDESCRIPTION%', '%PROJECTMIN%', '%COMMENT%', '%PUBLISHINGESTIMATION%');
-                $replace = array($project->name, $project->user->name, self::getURL().'/project/'.$project->id, self::getURL().'/project/edit/'.$project->id, $help, $project->spread, $project->description, $project->mincost, $project->comment, $date_publishing);
+                $replace = array($project->name, $project->user->name, self::getURL().'/project/'.$project->id, self::getURL().'/project/edit/'.$project->id, $help, $project->spread, nl2br($project->description), $project->mincost, $project->comment, $date_publishing);
                 break;
 
                 //Pasamos la difusión

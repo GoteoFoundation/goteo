@@ -8,7 +8,7 @@
             <?= $this->text('home-channels-title') ?>
         </h2>    
         <div class="container" id="channel-container">
-            <div class="row">
+            <div class="row slider slider-channels">
             <?php foreach($this->channels as $channel): ?>
                 <?php $summary = $channel->getSummary(); ?>
                 <?php $background = $channel->owner_background; ?>
@@ -30,7 +30,7 @@
                         </div>
                         -->
                         <div class="description">
-                            <?= $this->text_truncate($channel->description, 130) ?>
+                            <?= $this->text_truncate($channel->description, 120) ?>
                         </div>
                     </div>
                 </div>

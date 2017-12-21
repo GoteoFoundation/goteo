@@ -34,7 +34,7 @@
                 </div>
             </div>
             <div class="row details">
-                <div class="col-md-2 col-md-offset-1">
+                <div class="col-sm-2 col-sm-offset-1">
                         <div class="detail-item item-1 center-block">
                             <img class="img-responsive" src="/assets/img/home/icon_1.png" >
                         </div>
@@ -42,7 +42,7 @@
                             <?= $this->text('home-matchfunding-details-participation') ?>
                         </div>
                 </div>
-                <div class="col-md-2">
+                <div class="col-sm-2">
                     <div class="detail-item item-2 center-block">
                         <img class="img-responsive" src="/assets/img/home/icon_2.png" >
                     </div>
@@ -50,7 +50,7 @@
                         <?= $this->text('home-matchfunding-details-transparent') ?>
                     </div>
                 </div>
-                <div class="col-md-2">
+                <div class="col-sm-2">
                      <div class="detail-item item-3 center-block">
                             <img class="img-responsive" src="/assets/img/home/icon_3.png" >
                         </div>
@@ -58,7 +58,7 @@
                         <?= $this->text('home-matchfunding-details-legacy') ?>
                     </div>
                 </div>
-                <div class="col-md-2">
+                <div class="col-sm-2">
                     <div class="detail-item item-4 center-block">
                         <img class="img-responsive" src="/assets/img/home/icon_4.png" >
                     </div>
@@ -66,7 +66,7 @@
                         <?= $this->text('home-matchfunding-details-learning') ?>
                     </div>
                 </div>
-                <div class="col-md-2">
+                <div class="col-sm-2">
                     <div class="detail-item item-5 center-block">
                         <img class="img-responsive" src="/assets/img/home/icon_5.png" >
                     </div>
@@ -77,7 +77,7 @@
             </div>
             
             <div class="row call-action">
-                <div class="col-md-9">
+                <div class="col-sm-9">
                     <div class="title">
                         Join the moviment
                     </div>
@@ -85,7 +85,7 @@
                         Únete a nuestra red de ayuntamientos y fundaciones.
                     </div>
                 </div>
-                <div class="col-md-3 col-button">
+                <div class="col-sm-3 col-button">
                     <a href="" class="btn btn-white">QUIERO HACER MATCH</a>
                 </div>
             </div>
@@ -100,23 +100,26 @@
                 <?= $this->text('home-advantages-impact-data-title') ?>
             </div>
             <div class="row impact-data">
-                <div class="col-md-2 col-md-offset-3 item">
+                <div class="col-sm-4 col-md-2 col-md-offset-3 item">
                     <?= amount_format($this->stats->getMatchfundingRaised(), 0, false) ?>
                     <div class="description">
                         <?= $this->text('home-adventages-impact-data-matchfunding-raised') ?>
                     </div>
                 </div>
-                <div class="col-md-2 item">
+                <div class="col-sm-3 col-md-2 item">
                      <?= amount_format($this->stats->getMatchfundingSucessfulPercentage(), 0, true).'%' ?>
                     <div class="description">
                         <?= $this->text('home-adventages-impact-data-success-projects-matchfunding') ?>
                     </div>
                 </div>
-                <div class="col-md-2 item">
-                    --
-                    <div class="description">
-                        Género
-                    </div>
+                <div class="col-sm-5 col-md-3 item gender">
+                     <?php $gender=$this->stats->getMatchfundingOwnersGender(); ?>
+                     <strong>
+                        <i class="fa fa-venus" aria-hidden="true"></i>
+                        <span class="number" ><?= $gender['percent_female'] ?></span><span class="percent">%</span>
+                        <i class="fa fa-mars " aria-hidden="true"></i>
+                        <span class="number" ><?= $gender['percent_male'] ?></span><span class="percent">%</span>
+                     </strong>
                 </div>
             </div>
         </div>
