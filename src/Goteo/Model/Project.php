@@ -3607,6 +3607,12 @@ namespace Goteo\Model {
                 $sqlFilter .= " AND project.id NOT IN (SELECT id FROM project_location)";
             }
 
+            if(!empty($filters['gender']))
+            {
+                $sqlFilter .= " AND user.gender = :gender";
+                $values[':gender'] = $filters['gender'];
+            }
+
             //el Order
             if ($filters['order'] === 'updated') {
                 $sqlOrder = " ORDER BY project.updated DESC";
@@ -3631,10 +3637,12 @@ namespace Goteo\Model {
 
             if($count) {
                 // Return count
-                $sql = "SELECT COUNT(id)
+                $sql = "SELECT COUNT(project.id)
                     FROM project
                     LEFT JOIN project_conf
                     ON project_conf.project=project.id
+                    LEFT JOIN user
+                    ON user.id=project.owner
                     $sqlConsultantFilter
                     WHERE $where";
                 return (int) self::query($sql, $values)->fetchColumn();
@@ -4044,6 +4052,34 @@ namespace Goteo\Model {
 
             return $num_projects;
 
+        }
+
+        /*
+        * Return the owners gender in matchfunding calls 
+        */
+
+        static public function getMatchfundingOwnersGender() {
+
+
+            $tot_female=self::getList(['called' => 'all', 'gender' => 'F'], null, 0, 0, true);
+            $tot_male=self::getList(['called' => 'all', 'gender' => 'M'], null, 0, 0, true);
+
+            $tot_gender=$tot_male+$tot_female;
+
+            if($tot_gender)
+            {
+                $percent_male=round(($tot_male/$tot_gender)*100);
+                $percent_female=round(($tot_female/$tot_gender)*100);
+            }
+
+            else
+            {
+                $percent_male=0;
+                $percent_female=0;
+            }
+
+            return ['percent_male' => $percent_male, 'percent_female' => $percent_female ];
+            
         }
 
     }

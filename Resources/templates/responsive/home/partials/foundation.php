@@ -65,7 +65,7 @@
         </div>
 
         <div class="row details" id="foundation-advantages">
-            <div class="col-md-4 adventage">
+            <div class="col-sm-12 col-md-4 adventage">
                 <div class="title">
                 	<img src="/assets/img/home/graph_2.png" >
                 	<span class="text">                				
@@ -86,7 +86,7 @@
                 	</a>
                 </div>
             </div>
-            <div class="col-md-4 adventage">
+            <div class="col-sm-12 col-md-4 adventage">
                 <div class="title">
                 	<img src="/assets/img/home/api.png" >
                 	<span class="text">                				
@@ -106,7 +106,7 @@
                 	</a>
                 </div>
             </div>
-            <div class="col-md-4 adventage">
+            <div class="col-sm-12 col-md-4 adventage">
                 <div class="title">
                 	<img src="/assets/img/home/goteo_logo.png" >
                 	<span class="text">                				
@@ -135,10 +135,10 @@
     <div class="fluid-container donor-container" >
         <div class="container">
             <div class="row">
-                <div class="col-md-5">
+                <div class="col-sm-12 col-md-5">
                     <img src="<?= $this->asset('img/home/team.png') ?>" class="img-responsive">
                 </div>
-                <div class="col-md-5">
+                <div class="col-sm-9 col-md-5">
                     <div class="title">
                     Lorem ipsum dolor
                     </div>
@@ -146,13 +146,13 @@
                         Lorem ipsum dolor sit amet consectetur
                     </div>
                 </div>
-                <div class="col-md-2 col-button">
+                <div class="col-sm-3 col-md-2 col-button">
                     <a href="https://fundacion.goteo.org/donaciones/" target="_blank" class="btn btn-white">POR QUÉ DONAR</a>
                 </div>
             </div>
         </div>
     </div>
-    <!-- end Donor mudule -->
+    <!-- end Donor module -->
 
     <div class="fluid-container data-container" >
         <div class="container">
@@ -161,19 +161,19 @@
             </div>
 
             <div class="row impact-data">
-                <div class="col-md-2 col-md-offset-3 item">
+                <div class="col-sm-4 col-md-2 col-md-offset-3 item">
                     <?= $this->stats->getAdvisedProjects() ?>
                     <div class="description">
                         <?= $this->text('home-adventages-impact-data-advised-projects') ?>
                     </div>
                 </div>
-                <div class="col-md-2 item">
-                    1000
+                <div class="col-sm-4 col-md-2 item">
+                    1042
                     <div class="description">
                         <?= $this->text('home-adventages-impact-data-workshops-participants') ?>
                     </div>
                 </div>
-                <div class="col-md-2 item">
+                <div class="col-sm-4 col-md-2 item">
                     <?= $this->stats->getFundedProjects() ?>
                     <div class="description">
                         <?= $this->text('home-adventages-impact-data-funded-projects') ?>

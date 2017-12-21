@@ -65,7 +65,7 @@ $this->section('content');
               infinite: false,
               responsive: [
                 {
-                  breakpoint: 768,
+                  breakpoint: 769,
                   settings: {
                     arrows: false,
                     centerMode: true,
@@ -112,7 +112,7 @@ $this->section('content');
               nextArrow: '<div class="custom-right-arrow"><span class="fa fa-angle-right"></span><span class="sr-only">Prev</span></div>',
               responsive: [
                 {
-                  breakpoint: 768,
+                  breakpoint: 769,
                   settings: {
                     slidesToShow: 2,
                   }
@@ -126,6 +126,33 @@ $this->section('content');
             });
           }
 
+          function initSlickChannels() {
+            $('.slider-channels').slick({
+              infinite: false,
+              slidesToShow: 3,
+              slidesToScroll: 1,
+              arrows: true,
+              dots: true,
+              prevArrow: '<div class="custom-left-arrow"><span class="fa fa-angle-left"></span><span class="sr-only">Prev</span></div>',
+              nextArrow: '<div class="custom-right-arrow"><span class="fa fa-angle-right"></span><span class="sr-only">Prev</span></div>',
+              responsive: [
+                {
+                  breakpoint: 769,
+                  settings: {
+                    slidesToShow: 2,
+                    arrows:false
+                  }
+                },
+                {
+                  breakpoint: 500,
+                  settings: {
+                    slidesToShow: 1,
+                  }
+                }]
+            });
+          }
+
+
           function destroySlickCalls() {
             if ($('.slider-calls').hasClass('slick-initialized')) {
               $('.slider-calls').slick('destroy');
@@ -135,6 +162,8 @@ $this->section('content');
           initSlickCalls();
 
           initSlickProjects();
+
+          initSlickChannels();
 
           $('a[href="#search"]').on('click', function(event) {
               event.preventDefault();
@@ -166,7 +195,7 @@ $this->section('content');
                 destroySlickCalls();
                 $('#calls-container').html(result.html);
                 initSlickCalls();
-                $('#calls-container').removeClass('fadeOut').animateCss('fadeIn');
+                //$('#calls-container').removeClass('fadeOut').animateCss('fadeIn');
             });
 
           });

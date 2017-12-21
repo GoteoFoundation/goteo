@@ -46,6 +46,10 @@ class Stats {
 	public function getFundedProjects() {
 		return Project::getFundedProjects();
 	}
+
+	public function getMatchfundingOwnersGender() {
+		return Project::getMatchfundingOwnersGender();;
+	}
 	
 
 }
