@@ -178,8 +178,15 @@ class Matcher extends \Goteo\Core\Model {
                 $fields[] = 'id';
                 $this->dbInsert($fields);
             }
-            else
+            else {
                 $this->dbUpdate($fields);
+            }
+
+            // Update pool amounts
+            foreach($this->getUserPools() as $pool) {
+                $pool->calculate()->save($errors);
+            }
+
             return true;
         }
         catch(\PDOException $e) {
@@ -200,6 +207,20 @@ class Matcher extends \Goteo\Core\Model {
         return empty($errors);
     }
 
+
+    /**
+     * Obtains matcher donating user pools
+     * @return [type] [description]
+     */
+    public function getUserPools() {
+        $sql = "SELECT
+            matcher_user.user_id AS user, user_pool.amount
+            FROM user_pool
+            RIGHT JOIN matcher_user ON matcher_user.user_id = user_pool.user
+            WHERE matcher_user.matcher_id = :match AND matcher_user.pool = 1";
+        return self::query($sql, [':match' => $this->id])
+                    ->fetchAll(\PDO::FETCH_CLASS, '\Goteo\Model\User\Pool');
+    }
 
     /**
      * Gets the total amount available fot the matching by adding up they users pool
