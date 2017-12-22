@@ -57,8 +57,12 @@ class AuthController extends \Goteo\Core\Controller {
             $password = $request->request->get('password');
             if (false !== ($user = (User::login($username, $password)))) {
                 if(Session::setUser($user, true)) {
+                    $event = new FilterAuthEvent($user);
+                    if($request->request->has('rememberme')) {
+                        $event->setProvider('rememberme');
+                    }
                     //Everything ok, redirecting
-                    return App::dispatch(AppEvents::LOGIN_SUCCEEDED, new FilterAuthEvent($user))->getUserRedirect($request);
+                    return App::dispatch(AppEvents::LOGIN_SUCCEEDED, $event)->getUserRedirect($request);
                 }
             }
 

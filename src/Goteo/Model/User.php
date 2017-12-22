@@ -61,6 +61,7 @@ class User extends \Goteo\Core\Model {
     $instagram,
     $amount,
     $worth,
+    $rememberme,
     $created,
     $modified,
     $interests = array(),

@@ -18,8 +18,14 @@ use Goteo\Library\Text;
 class AuthListener extends AbstractListener {
 	public function loginSuccess(FilterAuthEvent $event) {
 		$user = $event->getUser();
-		// $this->info('LOGIN FAILED', [$user, 'password' => $user->password]);
-		$this->notice('Login succedeed', [$user, 'provider' => $event->getProvider()]);
+        $provider = $event->getProvider();
+
+        // Check remember me, add cookie if required
+        if($provider === 'rememberme') {
+            die('cookie');
+        }
+
+		$this->notice('Login succedeed', [$user, 'provider' => $provider]);
 	}
 
 	public function logout(FilterAuthEvent $event) {
@@ -34,7 +40,6 @@ class AuthListener extends AbstractListener {
 
 	public function loginFail(FilterAuthEvent $event) {
 		$user = $event->getUser();
-		// $this->info('LOGIN FAILED', [$user, 'password' => $user->password]);
 		$this->info('Login failed', [$user, 'provider' => $event->getProvider()]);
 
 		Message::error(Text::get('login-fail'));
@@ -43,7 +48,6 @@ class AuthListener extends AbstractListener {
 
 	public function signupFail(FilterAuthEvent $event) {
 		$user = $event->getUser();
-		// $this->info('LOGIN FAILED', [$user, 'password' => $user->password]);
 		$this->info('Signup failed', [$user, 'provider' => $event->getProvider()]);
 
 		Message::error(Text::get('login-fail'));

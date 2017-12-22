@@ -1,13 +1,13 @@
 <div class="form-group margin-top-7">
-<div class="col-md-10 col-md-offset-1">
   <?php if($this->get_config('oauth.facebook.active')): ?>
+    <div class="">
     <a href="/login/facebook?return=<?= urlencode($this->raw('return')) ?>" class="btn btn-block btn-social btn-facebook">
         <i class="fa fa-facebook"></i> <?= $this->text('login-signin-facebook') ?>
         </a>
     </div>
   <?php endif ?>
 
-    <div class="col-md-10 col-md-offset-1 standard-margin-top">
+    <div class="standard-margin-top">
 
       <?php if($this->get_config('oauth.twitter.active')): ?>
         <a href="/login/twitter?return=<?= urlencode($this->raw('return')) ?>" class="btn btn-social-icon btn-twitter">
