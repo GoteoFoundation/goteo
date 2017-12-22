@@ -68,7 +68,8 @@
         "ua-parser/uap-php": "^3.4",
         "symfony/security-csrf": "2.8",
         "symfony/validator": "2.8",
-        "kohkimakimoto/lib-migration": "^1.2"
+        "kohkimakimoto/lib-migration": "^1.2",
+        "sensiolabs/ansi-to-html": "^1.1"
 
     },
 

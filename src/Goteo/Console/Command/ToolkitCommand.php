@@ -383,6 +383,7 @@ EOT
                 $output->writeln("<info>Repaired $fixes projects</info>");
             } else {
                 $output->writeln("<info>Execute with --update option to fix the problems</info>");
+                return 1;
             }
         }
         return;

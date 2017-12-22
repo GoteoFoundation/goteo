@@ -12,15 +12,22 @@ namespace Goteo\Console\Command;
 
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\Console\Output\BufferedOutput;
+
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputOption;
+use Symfony\Component\Console\Input\ArrayInput;
 
+use SensioLabs\AnsiConverter\AnsiToHtmlConverter;
+use Goteo\Util\AnsiConverter\Theme\SolarizedLightTheme;
+
+use Goteo\Application\Config;
 use Goteo\Model\Project;
 use Goteo\Model\Template;
+use Goteo\Model\Mail;
 
 /**
- *  Proceso que verifica si los preapprovals han sido coancelados
- *  Solamente trata transacciones paypal pendientes de proyectos en campaña
+ *  Several database checks
  *
  *  CRON SUGGESTED LINE:
  *  5 3 * * *       www-data        /usr/bin/php /..path.../bin/console dbverify --update  > /..path.../var/logs/last-cli-dbverify.log
@@ -37,7 +44,7 @@ class DBVerifierCommand extends AbstractCommand {
              ->setDefinition(array(
                       new InputOption('update', 'u', InputOption::VALUE_NONE, 'Actually does the cleaning action, read-only operation otherwise'),
                       new InputOption('days', 'd', InputOption::VALUE_REQUIRED, 'Number of days that a record is considered "old" (120 by default, 365 for mails)', -1),
-                      new InputOption('scope', 's', InputOption::VALUE_REQUIRED, 'Optional operation scope (default all): [all|feed|token|mailing|blocked]', 'all')
+                      new InputArgument('scope', InputArgument::OPTIONAL, 'Optional operation scope (default all): [all|feed|token|mailing|blocked|toolkit]', 'all')
                 ))
 
              ->setHelp(<<<EOT
@@ -49,7 +56,24 @@ Also removes old generated tokens (by password change for example)
 Usage:
 
 User the --update option to actually make changes to the database
-<info>./console dbverify [--update]</info>
+<info>./console dbverify all|feed|mailing|token|blocked|toolkit [--update]</info>
+
+Examples:
+
+Delete feed entries older than 60 days
+<info>./console dbverify feed -d 60 -u</info>
+
+Delete mail entries older than 120 days
+<info>./console dbverify mailing -d 120 -u</info>
+
+Delete email change tokens older than 4 days
+<info>./console dbverify token -u</info>
+
+Delete blocked emails (due complains from AmazonSES) older than 40 days
+<info>./console dbverify blocked -d 40 -u</info>
+
+Use the <info>toolkit</info> command to check several potencial issues in the database
+<info>./console dbverify toolkit </info>
 
 EOT
 );
@@ -58,8 +82,8 @@ EOT
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $update = $input->getOption('update');
-        $scope = $input->getOption('scope');
-        if(!in_array($scope, ['all', 'feed', 'mailing', 'token', 'blocked'])) {
+        $scope = $input->getArgument('scope');
+        if(!in_array($scope, ['all', 'feed', 'mailing', 'token', 'blocked', 'toolkit'])) {
             throw new \Exception('Scope is not valid!');
         }
 
@@ -200,11 +224,50 @@ EOT
             $index += $found;
         }
 
+        if(in_array($scope, ['all', 'toolkit'])) {
+            $html = "<h2>Commands executed</h2>";
+
+            $converter = new AnsiToHtmlConverter(new SolarizedLightTheme());
+            $nerrors = 0;
+
+            $scopes = ['poolamount' => "Checking pool amounts in users...",
+                       'project' => "Checking projects calculated amounts...",
+                       'comments' => "Checking number of comments in posts..."];
+            $command = $this->getApplication()->find('toolkit');
+            // $out = new BufferedOutput($output->getVerbosity(), $output->isDecorated());
+            $out = new BufferedOutput(BufferedOutput::VERBOSITY_VERBOSE, true);
+            foreach($scopes as $key => $text) {
+                $output->writeln($text);
+                $output->writeln('<comment>'.$_SERVER['argv'][0] ." toolkit $key</comment>");
+                $args = new ArrayInput(['command' => 'toolkit', 'scope' => $key]);
+                if($command->run($args, $out) !== 0) {
+                    $nerrors++;
+                }
+                $html .= "<h3>bin/console toolkit $key</h3>\n";
+                $html .= '<p>'.nl2br($converter->convert($out->fetch())).'</p>';
+                if($output->isVerbose()) {
+                    $output->writeln(strip_tags($html));
+                }
+            }
+
+            if($nerrors) {
+                $output->writeln("<error>Errors found!</error>");
+                $index = $nerrors;
+                $mailer = Mail::createFromHtml(Config::getMail('fail'), '', "DATABASE INCONSISTENCY in [" .Config::get('url.main')."]", $html);
+                $errors = [];
+                if(!$mailer->send($errors)) {
+                    throw new \RuntimeException('Error sending email: ' . implode("\n", $errors));
+                }
+            } else {
+                $output->writeln("<info>Everything ok</info>");
+            }
+        }
+
         if($index == 0) {
             $output->writeln("<info>No cleaning needed</info>");
         }
         else {
-            $output->writeln("<error>Found $index records to clean!</error>");
+            $output->writeln("<error>Found $index issues!</error>");
             if($fixes) {
                 $output->writeln("<info>Deleted $fixes records</info>");
             } else {
