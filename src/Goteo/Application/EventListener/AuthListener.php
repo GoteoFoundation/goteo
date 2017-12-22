@@ -10,19 +10,57 @@
 
 namespace Goteo\Application\EventListener;
 
+use Symfony\Component\HttpKernel\KernelEvents;
+use Symfony\Component\HttpKernel\Event\GetResponseEvent;
+
+use Goteo\Application\App;
 use Goteo\Application\AppEvents;
 use Goteo\Application\Event\FilterAuthEvent;
 use Goteo\Application\Message;
+use Goteo\Application\Session;
+use Goteo\Application\Cookie;
+use Goteo\Application\Config;
 use Goteo\Library\Text;
+use Goteo\Model\User;
 
 class AuthListener extends AbstractListener {
+
+    // Checks remember-me cookie
+    public function onRequest(GetResponseEvent $event) {
+        if(!Session::isLogged() && $rememberme = Cookie::get('rememberme')) {
+
+            list($id, $token) = explode('.', $rememberme);
+            $user = User::get($id);
+            $signature = hash('sha256', $token . '-'. Config::get('secret') . '-' . $user->id . '-'. $user->getPassword());
+            if($user->rememberme === $signature) {
+                // valid, login & renew cookie
+                Session::setUser($user, true);
+                $event = new FilterAuthEvent($user);
+                $event->setProvider('rememberme');
+                $this->loginSuccess($event);
+
+            } else {
+                // Remove cookie
+                Cookie::del('rememberme');
+                Message::error('Automatic login failed!');
+                $this->warning('Rememberme login failed', [$user]);
+            }
+        }
+    }
+
 	public function loginSuccess(FilterAuthEvent $event) {
 		$user = $event->getUser();
         $provider = $event->getProvider();
 
         // Check remember me, add cookie if required
         if($provider === 'rememberme') {
-            die('cookie');
+            // Cookie valid for a month
+            $token = hash('sha256', Config::get('secret') . '-' . bin2hex(openssl_random_pseudo_bytes(100)));
+            $signature = hash('sha256', $token . '-'. Config::get('secret') . '-' . $user->id . '-'. $user->getPassword());
+            if(User::setProperty($user->id, $signature, 'rememberme')) {
+                Cookie::del('rememberme');
+                Cookie::store('rememberme', $user->id . '.' . $token, 3600 * 24 * 30);
+            }
         }
 
 		$this->notice('Login succedeed', [$user, 'provider' => $provider]);
@@ -30,6 +68,10 @@ class AuthListener extends AbstractListener {
 
 	public function logout(FilterAuthEvent $event) {
 		$user = $event->getUser();
+
+        Cookie::del('rememberme');
+        User::setProperty($user->id, '', 'rememberme');
+
 		$this->info('Logout', [$user, 'provider' => $event->getProvider()]);
 	}
 
@@ -76,6 +118,7 @@ class AuthListener extends AbstractListener {
 			AppEvents::SIGNUP_FAILED    => 'signupFail',
 			AppEvents::ALREADY_LOGGED   => 'loginRedundant',
 			AppEvents::RESET_PASSWORD   => 'resetPassword',
+            KernelEvents::REQUEST       => 'onRequest',
 		);
 	}
 }

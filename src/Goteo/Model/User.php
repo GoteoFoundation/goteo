@@ -704,7 +704,8 @@ class User extends \Goteo\Core\Model {
                     user.birthyear as birthyear,
                     user.entity_type as entity_type,
                     user.legal_entity as legal_entity,
-                    user.gender as gender
+                    user.gender as gender,
+                    user.rememberme as rememberme
                 FROM user
                 LEFT JOIN user_lang
                     ON  user_lang.id = user.id
@@ -2019,7 +2020,7 @@ class User extends \Goteo\Core\Model {
     }
 
     public static function setProperty($userId, $value, $param = 'active') {
-        if (in_array($param, array('active', 'hide'))) {
+        if (in_array($param, array('active', 'hide', 'rememberme'))) {
             if (self::query("UPDATE user SET user.$param = :value WHERE id = :id", array(':id' => $userId, ':value' => $value))) {
                 return true;
             }
