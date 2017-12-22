@@ -141,8 +141,17 @@ class MatcherTest extends TestCase {
         $total = $ob->getTotalAmount();
         $this->assertInstanceOf('\Goteo\Model\Matcher', $ob->useUserPool(self::$user_data[1]['userid'], false));
         $this->assertEquals(self::$user_data[0]['pool'], $ob->getTotalAmount());
+
+        $pools = $ob->getUserPools();
+        $this->assertCount(1, $pools);
+        $this->assertInstanceOf('\Goteo\Model\User\Pool', $pools[0]);
+        $this->assertEquals(self::$user_data[0]['userid'], $pools[0]->user);
+        $this->assertEquals(self::$user_data[0]['pool'], $pools[0]->amount);
+
         $this->assertInstanceOf('\Goteo\Model\Matcher', $ob->useUserPool(self::$user_data[1]['ob'], true));
         $this->assertEquals($total, $ob->getTotalAmount());
+        $pools = $ob->getUserPools();
+        $this->assertCount(2, $pools);
         return $ob;
     }
 
