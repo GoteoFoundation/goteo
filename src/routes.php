@@ -62,6 +62,13 @@ $routes->add('dashboard-activity-empty', new Route(
 $project_routes = include __DIR__ . '/Routes/project_routes.php';
 $project_routes->addPrefix('/project');
 $routes->addCollection($project_routes);
+// default widget compatibility
+$routes->add('widget-project-empty', new Route(
+    '/widget/{id}',
+    array('_controller' => function($id) {
+        return new RedirectResponse("/widget/project/$id");
+    })
+));
 // old wof compatibility
 $routes->add('widget-wof-empty', new Route(
     '/wof/{id}',
