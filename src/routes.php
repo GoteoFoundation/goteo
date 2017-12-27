@@ -50,6 +50,13 @@ $routes->addCollection($pool_routes);
 $dash_routes = include __DIR__ . '/Routes/dashboard_routes.php';
 $dash_routes->addPrefix('/dashboard');
 $routes->addCollection($dash_routes);
+// empty dashboard
+$routes->add('dashboard-activity-empty', new Route(
+    '/dashboard',
+    array('_controller' => function() {
+        return new RedirectResponse('/dashboard/activity');
+    })
+));
 
 // Project view
 $project_routes = include __DIR__ . '/Routes/project_routes.php';
