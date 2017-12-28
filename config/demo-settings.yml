@@ -15,7 +15,6 @@ secret: --a-very-secret-string---
 env: local # set to real to send emails
 debug: true # whether to show trace for errors or not
             # This is always true for local or beta env
-#liveport: 35729 # Local development only livereload port (optional)
 
 # main node
 node: goteo
@@ -62,6 +61,7 @@ url:
 plugins:
     goteo-dev:
         active: true # plugin should be active=true to be loaded
+        #liveport: 35729 # Local development only livereload port (optional)
 
 # Payment methods, must be registered as classes implementing Goteo\Payment\Method\PaymentMethodInterface
 payments:

@@ -35,7 +35,7 @@ class GoteoUtf8mb4
   {
     $db = Config::get('db.database');
      return "
-        ALTER DATABASE $db CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci;
+        ALTER DATABASE `$db` CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci;
         ALTER TABLE `banner` CHARSET=utf8mb4, COLLATE=utf8mb4_unicode_ci;
         ALTER TABLE `banner_lang` CHARSET=utf8mb4, COLLATE=utf8mb4_unicode_ci;
         ALTER TABLE `blog` CHARSET=utf8mb4, COLLATE=utf8mb4_unicode_ci;

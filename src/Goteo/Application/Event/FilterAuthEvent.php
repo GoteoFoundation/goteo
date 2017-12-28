@@ -37,6 +37,18 @@ class FilterAuthEvent extends Event
         return $this->provider;
     }
 
+    public function setUser(User $user)
+    {
+        $this->user = $user;
+        return $this;
+    }
+
+    public function setProvider($provider)
+    {
+        $this->provider = $provider;
+        return $this;
+    }
+
     /**
      * Returns the appropiate place to redirect a logged user
      */
