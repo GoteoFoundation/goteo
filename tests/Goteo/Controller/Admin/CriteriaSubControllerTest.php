@@ -12,7 +12,7 @@ class CriteriaSubControllerTest extends \PHPUnit_Framework_TestCase {
     public function testInstance() {
         $user = new User();
         $node = 'test';
-        $request = Request::create();
+        $request = Request::create('/admin');
 
         $controller = new CriteriaSubController($node, $user, $request);
 

@@ -22,13 +22,13 @@ class Converter {
 
 
     const
-        ECB_URL = 'http://www.ecb.europa.eu/stats/eurofxref/eurofxref-daily.xml',
-        TMC_URL =  'http://themoneyconverter.com/rss-feed/$BASE$/rss.xml',
+        ECB_URL = 'https://www.ecb.europa.eu/stats/eurofxref/eurofxref-daily.xml',
+        FLR_URL =  'https://www.floatrates.com/daily/$BASE$.xml',
         TEXT_RequestRatesFailed = 'Unable to fetch the currency rates feed.';
 
     private $debug = false; // activate on dev phase only
     private $cache = null;
-    private $source = 'ecb'; // 'tmc' = themoneyconverter.com
+    private $source = 'ecb'; // 'flr' = floatrates.com
 
     public function __construct() {
         //TODO: mejor pasar la dependencia por el constructor?
@@ -70,7 +70,7 @@ class Converter {
 
         // European central bank is just for euro
         if ($base != 'EUR' && $this->source == 'ecb') {
-            $this->source = 'tmc';
+            $this->source = 'flr';
         }
 
         $rates = array();
@@ -80,23 +80,23 @@ class Converter {
             case 'ecb': // european central bank
                 //the file is updated daily between 2.15 p.m. and 3.00 p.m. CET
                 $feed_url = self::ECB_URL;
-
                 if( ini_get('allow_url_fopen') ) {
                     $XML=simplexml_load_file($feed_url);
                     $response['body'] = $XML;
                 } else {
                     $response = self::doRequest($feed_url); //@TODO
-                    $file = '<?xml version="1.0" encoding="UTF-8" ?> '.$response['body'];
+                    $file = $response['body'];
                     @$XML=simplexml_load_string($file);
                 }
 
                 break;
 
-            case 'tmc': // the money converter . com
+            case 'flr': // the money converter . com
                 // feed request
-                $feed_url = str_replace('$BASE$', $base, self::TMC_URL);
+                $feed_url = str_replace('$BASE$', $base, self::FLR_URL);
+
                 $response = self::doRequest($feed_url); //@TODO
-                $file = '<?xml version="1.0" encoding="UTF-8" ?> '.$response['body'];
+                $file = $response['body'];
                 @$XML=simplexml_load_string($file);
                 break;
         }
@@ -148,18 +148,15 @@ class Converter {
 
                 break;
 
-            case 'tmc': // the money converter . com
-                foreach($XML->channel->item as $rate) {
-                    $tc = explode('/',$rate->title);
-                    $ex = explode(' = ',$rate->description);
-                    list($val,$name) = explode(' ',$ex[1],2);
+            case 'flr': // the money converter . com
+                foreach($XML->item as $rate) {
 
-                    if ( empty($val) ) {
+                    if ( empty($rate->exchangeRate) ) {
                         // mail de aviso
                         $mailHandler = new Mail();
                         $mailHandler->to = Config::getMail('fail');
                         $mailHandler->subject = 'No coge divisas';
-                        $mailHandler->content = 'Library\Converter->getData tmc no obtiene valor para '.$tc[0].'</pre>';
+                        $mailHandler->content = 'Library\Converter->getData flr no obtiene valor para '.$rate->targetCurrency.'</pre>';
                         $mailHandler->html = false;
                         $mailHandler->template = null;
                         $mailHandler->send();
@@ -168,7 +165,9 @@ class Converter {
                         continue;
                     }
 
-                    $rates[$tc[0]] = $val;
+                    $curId = (string) $rate->targetCurrency;
+                    $curVal = (string) $rate->exchangeRate;
+                    $rates[$curId] = $curVal;
                 }
                 break;
         }
@@ -192,7 +191,6 @@ class Converter {
             $key = $this->cache->getKey($base, 'rates');
             $rates = $this->cache->retrieve($key);
         }
-
         if(empty($rates)) {
             $rates = $this->getData($base);
             // sets cache

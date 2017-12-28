@@ -3,19 +3,17 @@
 
 use Goteo\Application\App;
 use Goteo\Application\Config;
+use Goteo\Core\Model;
 
 
 //Public Web path
-define('GOTEO_WEB_PATH', dirname(__DIR__) . '/app/');
+define('GOTEO_WEB_PATH', dirname(__DIR__) . '/public/');
 
 require_once __DIR__ . '/../src/autoload.php';
 
 App::debug(true);
 error_reporting(E_ALL & ~E_NOTICE & ~E_STRICT & ~E_USER_DEPRECATED);
 ini_set("display_errors", 1);
-
-//ensures we have cache to test
-define('SQL_CACHE_TIME', 1);
 
 //TODO: to be deprecate
 define('HTTPS_ON', false);
@@ -28,7 +26,8 @@ if(!is_file($config)) $config = getenv('GOTEO_CONFIG_FILE');
 if(!is_file($config)) $config = __DIR__ . '/../config/test-settings.yml';
 if(!is_file($config)) $config = __DIR__ . '/../config/settings.yml';
 Config::load($config);
-
+Config::set('db.cache.time', 1);
+Model::factory();
 // TODO: mock service container logger...
 
 
@@ -142,7 +141,7 @@ function get_test_project() {
     }
     $errors = array();
     $project = new \Goteo\Model\Project($data);
-    if( ! $project->create($data, $errors)) {
+    if( ! $project->create($data, get_test_node()->id, $errors)) {
         error_log("Error creating test project! " . print_r($errors, 1));
         return false;
     }

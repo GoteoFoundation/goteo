@@ -21,6 +21,7 @@ namespace Goteo\Model {
             $name,
             $description,
             $group,
+            $icons = [],
             $order;
 
         /*

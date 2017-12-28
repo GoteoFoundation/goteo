@@ -57,11 +57,32 @@ $routes->addCollection($pool_routes);
 $dash_routes = include __DIR__ . '/Routes/dashboard_routes.php';
 $dash_routes->addPrefix('/dashboard');
 $routes->addCollection($dash_routes);
+// empty dashboard
+$routes->add('dashboard-activity-empty', new Route(
+    '/dashboard',
+    array('_controller' => function() {
+        return new RedirectResponse('/dashboard/activity');
+    })
+));
 
 // Project view
 $project_routes = include __DIR__ . '/Routes/project_routes.php';
 $project_routes->addPrefix('/project');
 $routes->addCollection($project_routes);
+// default widget compatibility
+$routes->add('widget-project-empty', new Route(
+    '/widget/{id}',
+    array('_controller' => function($id) {
+        return new RedirectResponse("/widget/project/$id");
+    })
+));
+// old wof compatibility
+$routes->add('widget-wof-empty', new Route(
+    '/wof/{id}',
+    array('_controller' => function($id) {
+        return new RedirectResponse("/widget/wof/$id");
+    })
+));
 
 // Widgets
 $project_routes = include __DIR__ . '/Routes/widget_routes.php';
