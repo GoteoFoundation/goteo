@@ -34,6 +34,9 @@ class AjaxHomeController extends \Goteo\Core\Controller {
     public function projectsFilterAction(Request $request)
     {
 
+        $filter = $request->query->get('filter'); 
+        $latitude = $request->query->get('latitude'); 
+        $longitude = $request->query->get('longitude'); 
         if ($request->isMethod('post')) {
             $filter = $request->request->get('filter'); 
             $latitude = $request->request->get('latitude'); 
@@ -53,7 +56,7 @@ class AjaxHomeController extends \Goteo\Core\Controller {
 
             $projects=[];
 
-            foreach($projects_locations as $distance => $project_location)
+            foreach($projects_locations as $project_location)
             {
                 $projects[] = Project::get($project_location->id);
             }
