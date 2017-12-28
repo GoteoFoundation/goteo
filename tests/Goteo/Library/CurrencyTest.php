@@ -40,7 +40,7 @@ class CurrencyTest extends \PHPUnit_Framework_TestCase {
         // to pound
         Session::store('currency', 'GBP');
         $format = Currency::amount_format($amount);
-        echo $format."\n";
+        // echo $format."\n";
         // format must have , for miliar
         $this->assertRegExp('/\d?\,{1}\d?/', $format, $format);
         $this->assertContains('£', $format);
