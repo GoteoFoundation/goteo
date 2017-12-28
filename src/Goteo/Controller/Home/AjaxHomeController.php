@@ -49,7 +49,14 @@ class AjaxHomeController extends \Goteo\Core\Controller {
                 $location=new UserLocation([ 'latitude' => $latitude, 'longitude' => $longitude ]);
 
             //$projects = ProjectLocation::getNearby(UserLocation::createByIp(null, $request->getClientIp()), 1);
-            $projects = ProjectLocation::getNearby($location, 1);
+            $projects_locations = ProjectLocation::getNearby($location, 1);
+
+            $projects=[];
+
+            foreach($projects_locations as $distance => $project_location)
+            {
+                $projects[] = Project::get($project_location->id);
+            }
         }
 
         else
