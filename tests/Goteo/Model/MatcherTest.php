@@ -103,6 +103,17 @@ class MatcherTest extends TestCase {
         return $ob;
     }
 
+    private function mockUsersPool() {
+        foreach(self::$user_data as $i => $user) {
+            if(!isset($user['pool'])) continue;
+            echo "\nSetting user's pool [{$user[userid]}]";
+            $sql = "REPLACE user_pool (`user`, amount) VALUES (:user, :amount)";
+            $values = [':user' => $user['userid'], ':amount' => $user['pool']];
+            // echo \sqldbg($sql, $values);
+            Matcher::query($sql, $values);
+            $this->assertEquals($user['pool'], $user['ob']->getPool()->amount);
+        }
+    }
     /**
      * @depends testCreate
      */
@@ -119,15 +130,15 @@ class MatcherTest extends TestCase {
             $this->assertInstanceOf('\Goteo\Model\User', $uob, print_r($errors, 1));
 
             self::$user_data[$i]['ob'] = $uob;
-            echo "\nSetting user's pool [{$user[userid]}]";
-            Matcher::query("REPLACE user_pool (`user`, amount) VALUES (:user, :amount)", [':user' => $user['userid'], ':amount' => $user['pool']]);
-            $this->assertEquals($user['pool'], $uob->getPool()->amount);
-
-            $this->assertInstanceOf('\Goteo\Model\Matcher', $ob->addUsers($uob));
+            if(isset($user['pool'])) {
+                $this->assertInstanceOf('\Goteo\Model\Matcher', $ob->addUsers($uob));
+            }
 
             $total += $user['pool'];
-        }
+        }        // Forcing false pool amount in users (savin matcher object reset these values)
+        $this->mockUsersPool();
 
+        $ob->amount = 0;
         $this->assertEquals($total, $ob->getTotalAmount());
         $this->assertGreaterThan(0, $ob->getTotalAmount());
         $this->assertCount(2, $ob->getUsers());
@@ -141,6 +152,8 @@ class MatcherTest extends TestCase {
         $total = $ob->getTotalAmount();
         $this->assertInstanceOf('\Goteo\Model\Matcher', $ob->useUserPool(self::$user_data[1]['userid'], false));
         $this->assertEquals(self::$user_data[0]['pool'], $ob->getTotalAmount());
+
+        $this->mockUsersPool();
 
         $pools = $ob->getUserPools();
         $this->assertCount(1, $pools);
@@ -214,11 +227,13 @@ class MatcherTest extends TestCase {
      */
     public function testRemoveUsers($ob) {
         $this->assertInstanceOf('\Goteo\Model\Matcher', $ob->removeUsers(self::$user_data[0]['userid']));
+        $this->mockUsersPool();
+
         $this->assertEquals(self::$user_data[1]['pool'], $ob->getTotalAmount());
     }
 
     /**
-     * @depends testAddProjecs
+     * @depends testAddProjects
      */
     public function testRemoveProjects($ob) {
         $this->assertInstanceOf('\Goteo\Model\Matcher', $ob->removeProjects(self::$project));
