@@ -31,6 +31,7 @@ class SponsorTest extends TestCase {
     public function testCreate() {
         self::$data['node'] = get_test_node()->id;
         $ob = new Sponsor(self::$data);
+        $errors = [];
         $this->assertTrue($ob->validate($errors), print_r($errors, 1));
         $this->assertTrue($ob->save($errors), print_r($errors, 1));
         $ob = Sponsor::get($ob->id);

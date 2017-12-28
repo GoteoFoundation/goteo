@@ -43,7 +43,8 @@ class MailStatsTest extends \PHPUnit_Framework_TestCase {
         $tpl = Template::get(Template::NEWSLETTER);
         $mail = Mail::createFromTemplate('test@goteo.org', 'Test', Template::NEWSLETTER);
         $mail->buildMessage();
-        $this->assertTrue($mail->save($errors), implode("\n", $errors));
+        $errors = [];
+        $this->assertTrue($mail->save($errors), print_r($errors, 1));
 
         $stat = MailStats::incMetric($mail->id, 'test@goteo.org', 'TEST_STAT_METRIC');
 

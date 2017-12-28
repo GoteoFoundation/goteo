@@ -24,7 +24,8 @@ namespace Goteo\Model {
             $node,
             $project,
             $image,
-            $order;
+            $order,
+            $active = false;
 
         /*
          *  Devuelve datos de un banner de proyecto

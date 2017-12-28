@@ -47,7 +47,7 @@ class CallTest extends \PHPUnit_Framework_TestCase {
         try {
             $ob = Call::get('non-existing-call');
         }catch(\Exception $e) {
-            $this->assertInstanceOf('\Goteo\Core\Error', $e);
+            $this->assertInstanceOf('\Goteo\Application\Exception\ModelNotFoundException', $e);
 
         }
     }

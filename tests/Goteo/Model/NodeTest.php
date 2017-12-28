@@ -20,7 +20,6 @@ class NodeTest extends TestCase {
                     'node_lang' => 'id',
                     'invest_node' => ['user_node', 'project_node', 'invest_node'],
                     'patron' => 'node',
-                    'page_node' => 'node',
                     'post_node' => 'node',
                     'sponsor' => 'node',
                     'stories' => 'node',
@@ -29,7 +28,7 @@ class NodeTest extends TestCase {
     private static $data = array('id' => 'testnode2', 'name' => 'Test node 2');
 
     public function testInstance() {
-
+        \Goteo\Core\DB::cache(false);
         $ob = new Node();
 
         $this->assertInstanceOf('\Goteo\Model\Node', $ob);
@@ -101,8 +100,9 @@ class NodeTest extends TestCase {
         $this->assertTrue($node->rebase($testnode->id));
         $u = get_test_user();
         $p = get_test_project();
+
+        $this->assertTrue($node->rebase('testnode2'));
         try {
-            $node->rebase('testnode2');
         }
         catch(\Exception $e) {
             $this->assertInstanceOf('\Goteo\Application\Exception\ModelException', $e);
@@ -152,6 +152,7 @@ class NodeTest extends TestCase {
             }
         }
     }
+
     /**
      * Some cleanup
      */

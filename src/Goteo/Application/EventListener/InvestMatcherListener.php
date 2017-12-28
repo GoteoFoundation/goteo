@@ -130,9 +130,8 @@ class InvestMatcherListener extends AbstractMatcherListener {
 
                 }
             }
-            // Update matcher data stats
+            // Update matcher data stats and pool amounts in matcher-users
             $matcher->save();
-
 
         } catch(MatcherProcessorException $e) {
             $this->notice("No invests for Matcher", [$matcher, 'matcher_processor' => $matcher->processor, $project, 'reason' => $e->getMessage()]);

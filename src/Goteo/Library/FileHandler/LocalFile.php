@@ -123,7 +123,7 @@ class LocalFile extends BaseFile implements FileInterface {
 
         $auto_delete_dirs = $extra['auto_delete_dirs'];
 
-        if(unlink($remote)) {
+        if(@unlink($remote)) {
             $ok = true;
             if($auto_delete_dirs) {
     			$this->delete_empty_dir(dirname($remote), is_string($auto_delete_dirs) ? $auto_delete_dirs : false);

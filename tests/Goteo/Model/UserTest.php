@@ -73,6 +73,7 @@ class UserTest extends TestCase {
     public function testCreateUser() {
         // TODO: more tests...
         $user = new User(self::$user);
+        $errors = [];
         $user->save($errors, array('password'));
         $this->assertInstanceOf('\Goteo\Model\Image', $user->avatar);
         $user = User::get(self::$user['userid']);

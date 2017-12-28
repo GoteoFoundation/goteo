@@ -1,43 +1,35 @@
-<div class="form-group margin-top-7">
-<div class="col-md-10 col-md-offset-1">
-  <?php if($this->get_config('oauth.facebook.active')): ?>
-    <a href="/login/facebook?return=<?= urlencode($this->raw('return')) ?>" class="btn btn-block btn-social btn-facebook">
-        <i class="fa fa-facebook"></i> <?= $this->text('login-signin-facebook') ?>
-        </a>
-    </div>
-  <?php endif ?>
+<?php
+$providers = ['facebook', 'twitter', 'google', 'yahoo', 'linkedin', 'openid'];
+$goteo_oauth_provider = $this->get_cookie('goteo_oauth_provider');
+if($goteo_oauth_provider) {
+    $providers = array_diff($providers, [$goteo_oauth_provider]);
+    array_unshift($providers, $goteo_oauth_provider);
+}
 
-    <div class="col-md-10 col-md-offset-1 standard-margin-top">
+?><div class="form-group margin-top-7">
+    <?php foreach($providers as $i => $provider):
+        if($this->get_config("oauth.$provider.active")):
+            $url = "/login/$provider";
+            if($provider === 'openid') $url = '#openIdModal" data-toggle="modal"';
+            if($provider === 'Yahoo') $url = "/login/Yahoo";
+            if($url) $url .= "?return=" . urlencode($this->raw('return'));
+            $text = $this->text("login-signin-$provider");
+            if($i === 0):
+    ?>
+            <div>
+              <a href="<?= $url ?>" class="btn btn-block btn-social btn-<?= $provider ?>">
+                <i class="fa fa-<?= $provider ?>"></i> <?= $text ?>
+              </a>
+            </div>
 
-      <?php if($this->get_config('oauth.twitter.active')): ?>
-        <a href="/login/twitter?return=<?= urlencode($this->raw('return')) ?>" class="btn btn-social-icon btn-twitter">
-        <i class="fa fa-twitter"></i>
-        </a>
+            <div class="standard-margin-top">
+          <?php else: ?>
+              <a href="<?= $url ?>" title="<?= $text ?>" class="btn btn-social-icon btn-<?= $provider ?>">
+                <i class="fa fa-<?= $provider ?>"></i>
+              </a>
+          <?php endif ?>
       <?php endif ?>
-
-      <?php if($this->get_config('oauth.google.active')): ?>
-        <a href="/login/google?return=<?= urlencode($this->raw('return')) ?>" class="btn btn-social-icon btn-google">
-        <i class="fa fa-google-plus"></i>
-        </a>
-      <?php endif ?>
-
-      <?php if($this->get_config('oauth.yahoo.active')): ?>
-        <a href="/login/Yahoo?return=<?= urlencode($this->raw('return')) ?>" class="btn btn-social-icon btn-yahoo">
-        <i class="fa fa-yahoo"></i>
-        </a>
-      <?php endif ?>
-
-      <?php if($this->get_config('oauth.linkedin.active')): ?>
-        <a href="/login/linkedin?return=<?= urlencode($this->raw('return')) ?>" class="btn btn-social-icon btn-linkedin">
-        <i class="fa fa-linkedin"></i>
-        </a>
-      <?php endif ?>
-
-      <?php if($this->get_config('oauth.openid.active')): ?>
-        <a href="" data-toggle="modal" data-target="#openIdModal" class="btn btn-social-icon btn-openid">
-        <i class="fa fa-openid"></i>
-        </a>
-      <?php endif ?>
-
+    <?php endforeach ?>
+            </div>
     </div>
 </div>
