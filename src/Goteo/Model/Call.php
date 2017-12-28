@@ -2197,7 +2197,7 @@ class Call extends \Goteo\Core\Model {
     /*
      *   Total raised by calls
      */
-    public function getTotalRaised(){
+    public static function getTotalRaised(){
         $status_active=[self::STATUS_OPEN, self::STATUS_ACTIVE, self::STATUS_COMPLETED];
         return self::getList(['status' => $status_active], true);
     }

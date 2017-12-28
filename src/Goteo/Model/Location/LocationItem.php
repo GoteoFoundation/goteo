@@ -299,16 +299,16 @@ abstract class LocationItem extends \Goteo\Core\Model implements LocationInterfa
 
         // Creating a square "first cut" to not do the calculation over the full table
 
-        $lat = $location->latitude;  // latitude of centre of bounding circle in degrees
-        $lon = $location->longitude; // longitude of centre of bounding circle in degrees
+        $lat = floatval($location->latitude);  // latitude of centre of bounding circle in degrees
+        $lon = floatval($location->longitude); // longitude of centre of bounding circle in degrees
         $R   = 6371;             // earth's mean radius, km
-
+        print_r("$lat - $lon {$location->longitude}");
         // first-cut bounding box (in degrees)
         $maxLat = $lat + rad2deg($distance/$R);
         $minLat = $lat - rad2deg($distance/$R);
         // compensate for degrees longitude getting smaller with increasing latitude
-        $maxLon = $lon + rad2deg($distance/$R/cos(deg2rad($lat)));
-        $minLon = $lon - rad2deg($distance/$R/cos(deg2rad($lat)));
+        $maxLon = $lon + rad2deg($distance / ($R / cos(deg2rad($lat))));
+        $minLon = $lon - rad2deg($distance / ($R / cos(deg2rad($lat))));
 
         $params = array(
             ':lat'    => deg2rad($lat),
@@ -335,14 +335,14 @@ abstract class LocationItem extends \Goteo\Core\Model implements LocationInterfa
         if(get_class($location) === $clas) {
             $firstCut .= ' AND id != :id';
         }
-
+        // print_r(\sqldbg($firstCut, $params));
         $sql = "SELECT id, latitude, longitude, method, locable, city, region, country, country_code, info, modified,
                 ACOS(SIN(:lat)*SIN(RADIANS(latitude)) + COS(:lat)*COS(RADIANS(latitude))*COS(RADIANS(longitude)-:lon)) * :R AS Distance
                 FROM ($firstCut) AS FirstCut
                 WHERE ACOS(SIN(:lat)*SIN(RADIANS(latitude)) + COS(:lat)*COS(RADIANS(latitude))*COS(RADIANS(longitude)-:lon)) * :R < :rad
                 ORDER BY Distance
                 LIMIT $offset,$limit";
-        // echo $sql;
+        print_r(\sqldbg($sql, $params));
         $ret = array();
 
         if($query = $clas::query($sql, $params)) {

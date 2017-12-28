@@ -17,6 +17,8 @@ use Goteo\Application\Session;
 use Goteo\Application\Config;
 use Goteo\Application\View;
 use Goteo\Model\Project;
+use Goteo\Model\Project\ProjectLocation;
+use Goteo\Model\User\UserLocation;
 use Goteo\Model\User;
 
 class AjaxHomeController extends \Goteo\Core\Controller {
@@ -33,10 +35,32 @@ class AjaxHomeController extends \Goteo\Core\Controller {
     {
 
         if ($request->isMethod('post')) {
-            $filter = $request->request->get('filter');           
+            $filter = $request->request->get('filter'); 
+            $latitude = $request->request->get('latitude'); 
+            $longitude = $request->request->get('longitude'); 
+
         }
 
-        $projects = Project::published($filter, "Goteo", 0, 33);
+        if($filter=='near')
+        {
+            // $location=UserLocation::createByIp(null, $request->getClientIp());
+
+            // if($location==false)
+                $location=new UserLocation([ 'latitude' => $latitude, 'longitude' => $longitude ]);
+
+            //$projects = ProjectLocation::getNearby(UserLocation::createByIp(null, $request->getClientIp()), 1);
+            $projects_locations = ProjectLocation::getNearby($location, 1);
+
+            $projects=[];
+
+            foreach($projects_locations as $distance => $project_location)
+            {
+                $projects[] = Project::get($project_location->id);
+            }
+        }
+
+        else
+            $projects = Project::published($filter, "Goteo", 0, 33);
 
         return $this->jsonResponse([
             'filter' => $filter,
