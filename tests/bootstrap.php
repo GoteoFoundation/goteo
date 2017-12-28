@@ -7,7 +7,7 @@ use Goteo\Core\Model;
 
 
 //Public Web path
-define('GOTEO_WEB_PATH', dirname(__DIR__) . '/app/');
+define('GOTEO_WEB_PATH', dirname(__DIR__) . '/public/');
 
 require_once __DIR__ . '/../src/autoload.php';
 

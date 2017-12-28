@@ -23,7 +23,6 @@ class ProjectTest extends TestCase {
                     'project_location' => 'id',
                     'project_open_tag' => 'project',
                     // 'banner' => 'project', => investigar, parece que hay banners que pueden no tener proyecto
-                    'bazar' => 'project',
                     // 'blog' => 'owner', => el campo type indica la tabla del owner, se deberia cambiar
                     'call_project' => 'project',
                     'contract' => 'project',
@@ -131,7 +130,7 @@ class ProjectTest extends TestCase {
         $errors = array();
         $project = new Project(self::$data);
         $this->assertTrue($project->validate($errors), print_r($errors, 1));
-        $this->assertNotFalse($project->create($node->id, $errors), print_r($errors, 1));
+        $this->assertNotFalse($project->create(self::$data, $node->id, $errors), print_r($errors, 1));
 // die($project->id);
         $project = Project::get($project->id);
         $this->assertInstanceOf('\Goteo\Model\Project', $project);
@@ -161,7 +160,7 @@ class ProjectTest extends TestCase {
         $this->assertInternalType('array', $project->all_galleries);
         $this->assertInternalType('array', $project->gallery);
         $this->assertCount(2, $project->gallery);
-        $this->assertCount(7, $project->all_galleries);
+        $this->assertCount(6, $project->all_galleries);
         $this->assertCount(2, $project->all_galleries['']);
         $this->assertEquals($project->image, $project->gallery[0]->imageData);
         $this->assertEquals($project->owner, $user->id);

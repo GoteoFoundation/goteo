@@ -28,7 +28,8 @@ class MailTest extends \PHPUnit_Framework_TestCase {
         $this->assertFalse($mail->validate());
 
         $mail->to = 'test@goteo.org';
-        $this->assertTrue($mail->validate($errors), implode("\n", $errors));
+        $errors = [];
+        $this->assertTrue($mail->validate($errors), print_r($errors, 1));
 
         return $mail;
     }
@@ -42,7 +43,7 @@ class MailTest extends \PHPUnit_Framework_TestCase {
 
         $this->assertEquals('test@goteo.org', $mailer->getToAddresses()[0][0]);
 
-        $this->assertContains('<img src="' . SITE_URL . '/goteo_logo.png" alt="Logo" />', $mailer->Body);
+        $this->assertContains('/goteo_logo.png" alt="Logo" />', $mailer->Body);
         $this->assertContains('<title>' . $mail->subject . '</title>', $mailer->Body);
     }
 
@@ -54,10 +55,13 @@ class MailTest extends \PHPUnit_Framework_TestCase {
         $mailer = $mail->buildMessage();
         // este test no funciona si no hay base de datos
         $this->assertContains('/user/unsubscribe', $mailer->Body);
-        $this->assertContains('<img src="' . SITE_URL . '/goteo_logo.png" alt="Logo" />', $mailer->Body);
+        $this->assertContains('/goteo_logo.png" alt="Logo" />', $mailer->Body);
         $this->assertContains($mail->subject . '</title>', $mailer->Body);
     }
 
+    /**
+     * @depends testValidate
+     */
     public function testToken($mail) {
         $mail = new Mail();
         $mail->to = 'test@goteo.org';

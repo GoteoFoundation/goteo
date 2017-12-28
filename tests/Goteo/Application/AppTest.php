@@ -25,10 +25,10 @@ class AppTest extends TestCase {
         $this->assertNull($this->getAttribute($app, '_request'));
         $this->assertNull($this->getAttribute($app, '_sc'));
 
-        App::setRoutes($this->getMock('Symfony\Component\Routing\RouteCollection'));
+        App::setRoutes($this->createMock('Symfony\Component\Routing\RouteCollection'));
         $this->assertInstanceOf('Symfony\Component\Routing\RouteCollection', App::getRoutes());
 
-        App::setRequest($this->getMock('Symfony\Component\HttpFoundation\Request'));
+        App::setRequest($this->createMock('Symfony\Component\HttpFoundation\Request'));
         $this->assertInstanceOf('Symfony\Component\HttpFoundation\Request', App::getRequest());
 
         App::setServiceContainer(new DependencyInjection\ContainerBuilder());
