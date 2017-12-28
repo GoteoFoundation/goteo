@@ -87,12 +87,12 @@ class DBTest extends \PHPUnit_Framework_TestCase {
     /**
      * Testing cached sql
      */
-    public function testCachedSelect($db){
+    public function testCachedSelect(){
         $db = new DB(new Cacher('sql', 1));
         DB::cache(true);
         $this->assertTrue(DB::cache());
 
-        $sql = "SELECT RAND() as num";
+        $sql = "SELECT RAND() as num FROM node";
 
         $query = $db->prepare($sql);
         $this->assertEquals(1, $query->cacheTime());

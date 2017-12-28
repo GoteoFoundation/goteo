@@ -3,6 +3,7 @@
 
 use Goteo\Application\App;
 use Goteo\Application\Config;
+use Goteo\Core\Model;
 
 
 //Public Web path
@@ -13,9 +14,6 @@ require_once __DIR__ . '/../src/autoload.php';
 App::debug(true);
 error_reporting(E_ALL & ~E_NOTICE & ~E_STRICT & ~E_USER_DEPRECATED);
 ini_set("display_errors", 1);
-
-//ensures we have cache to test
-define('SQL_CACHE_TIME', 1);
 
 //TODO: to be deprecate
 define('HTTPS_ON', false);
@@ -28,7 +26,8 @@ if(!is_file($config)) $config = getenv('GOTEO_CONFIG_FILE');
 if(!is_file($config)) $config = __DIR__ . '/../config/test-settings.yml';
 if(!is_file($config)) $config = __DIR__ . '/../config/settings.yml';
 Config::load($config);
-
+Config::set('db.cache.time', 1);
+Model::factory();
 // TODO: mock service container logger...
 
 

@@ -39,7 +39,7 @@ class Pool extends \Goteo\Core\Model {
         } else {
             $user = User::get($id);
         }
-        if( ! $id instanceOf User) {
+        if( ! $user instanceOf User) {
             throw new ModelException("User [$id] not found!");
         }
         try {
