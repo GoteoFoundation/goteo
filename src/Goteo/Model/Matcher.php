@@ -364,7 +364,7 @@ class Matcher extends \Goteo\Core\Model {
      * All the money raised
      * @return [type] [amount]
      */
-    public function getTotalRaised() {
+    public static function getTotalRaised() {
         
         return self::getList([], 0, 10, 'money');
     }

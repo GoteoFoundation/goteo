@@ -211,14 +211,24 @@ $this->section('content');
             var filter=$(this).data('status');
 
             var url = '/home/ajax/projects/filtered';
-
-          //$('#projects-container').animateCss('fadeOut');
-            $.post(url, { filter: filter }, function(result) {
+            var drawProjects = function(lat, lng) {
+              $.post(url, { filter: filter, latitude: lat, longitude: lng }, function(result) {
                  destroySlickProjects();
                  $('#projects-container').html(result.html);
                  initSlickProjects();
                  //$('#projects-container').removeClass('fadeOut').animateCss('fadeIn');
              });
+
+            };
+            if(filter=='near')
+            {
+              locator.getLocationFromBrowser(function(success, data) {
+                locator.trace('success: ' + success, data.city, data.region, data.country, data.country_code, data.latitude, data.longitude);
+                drawProjects(data.latitude, data.longitude);
+              });
+            } else {
+                drawProjects();
+            }
 
           });
 
