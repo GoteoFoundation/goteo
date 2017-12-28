@@ -302,7 +302,6 @@ abstract class LocationItem extends \Goteo\Core\Model implements LocationInterfa
         $lat = floatval($location->latitude);  // latitude of centre of bounding circle in degrees
         $lon = floatval($location->longitude); // longitude of centre of bounding circle in degrees
         $R   = 6371;             // earth's mean radius, km
-        print_r("$lat - $lon {$location->longitude}");
         // first-cut bounding box (in degrees)
         $maxLat = $lat + rad2deg($distance/$R);
         $minLat = $lat - rad2deg($distance/$R);
@@ -342,7 +341,6 @@ abstract class LocationItem extends \Goteo\Core\Model implements LocationInterfa
                 WHERE ACOS(SIN(:lat)*SIN(RADIANS(latitude)) + COS(:lat)*COS(RADIANS(latitude))*COS(RADIANS(longitude)-:lon)) * :R < :rad
                 ORDER BY Distance
                 LIMIT $offset,$limit";
-        print_r(\sqldbg($sql, $params));
         $ret = array();
 
         if($query = $clas::query($sql, $params)) {
