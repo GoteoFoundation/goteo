@@ -66,6 +66,24 @@ $api->add('api-chart-project-invests', new Route(
         )
 ));
 
+// One Project chart preprocessed data (origin)
+$api->add('api-chart-project-referer', new Route(
+    '/charts/{id}/referer/{type}',
+    array('_controller' => 'Goteo\Controller\Api\ChartsApiController::projectOriginAction',
+        'type' => 'project',
+        'group' => 'referer'
+        )
+));
+
+// One Project chart preprocessed data (origin)
+$api->add('api-chart-project-device', new Route(
+    '/charts/{id}/device/{type}',
+    array('_controller' => 'Goteo\Controller\Api\ChartsApiController::projectOriginAction',
+        'type' => 'project',
+        'group' => 'ua'
+        )
+));
+
 // Project images upload (POST method only)
 $api->add('api-projects-images-upload', new Route(
     '/projects/{id}/images',
