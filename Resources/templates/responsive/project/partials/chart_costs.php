@@ -4,6 +4,7 @@
 function printCosts() {
 
     var container =  "div.chart-costs .svg-container";
+    if(!$(container).length) return;
 
     // Clear if defined
     $(container).contents().remove();
@@ -30,7 +31,7 @@ function printCosts() {
     var svg = d3.select(container).append("svg")
         // .attr("width", width) // no widh/height definition so it's responsive
         // .attr("height", height)
-        .attr("preserveAspectRatio", "xMidYMid meet")
+        .attr("preserveAspectRatio", "xMidYMid")
         .attr("viewBox", "0 0 600 600")
         .classed("svg-content", true)
         .append("g")

@@ -27,7 +27,7 @@
                     </div>
                 </a>
 
-                <div id="collapseOne" class="panel-collapse -collapse">
+                <div id="collapseOne" class="panel-collapse collapse">
                   <div class="panel-body">
 
 
