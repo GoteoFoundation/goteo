@@ -17,6 +17,7 @@ use Goteo\Library\Currency;
 use Goteo\Model\Project;
 use Goteo\Model\Invest;
 use Goteo\Model\Image;
+use Goteo\Model\Origin;
 
 
 class ChartsApiController extends AbstractApiController {
@@ -149,6 +150,27 @@ class ChartsApiController extends AbstractApiController {
             $ret[] = $v;
             $last = $v;
         }
+        return $this->jsonResponse($ret);
+    }
+
+    /**
+     * Simple projects origins data
+     * @param  Request $request [description]
+     */
+    public function projectOriginAction($id, $type = 'project', $group = 'referer', Request $request) {
+        $prj = $this->getProject($id);
+
+        $ret = Origin::getProjectStats($prj->id, $type, $group);
+
+        $ret = array_map(function($ob) {
+            return [
+                'tag' => $ob->tag,
+                'category' => $ob->category,
+                'counter' => (int) $ob->counter,
+                'created' => $ob->created,
+                'updated' => $ob->updated
+            ];
+            }, $ret);
         return $this->jsonResponse($ret);
     }
 }
