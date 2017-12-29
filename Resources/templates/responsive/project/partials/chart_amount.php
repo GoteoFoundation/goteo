@@ -186,7 +186,7 @@ function makeChart (data, markers) {
       chartWidth  = svgWidth  - margin.left - margin.right,
       chartHeight = svgHeight - margin.top  - margin.bottom;
 
-  var x = d3.time.scale().range([0, chartWidth])
+  var x = d3.scaleTime().range([0, chartWidth])
             .domain(d3.extent(data, function (d) { return d.date; })),
       y = d3.scale.linear().range([chartHeight, 0])
             .domain([0, d3.max(data, function (d) { return d.ideal*1.5; })]);
@@ -232,66 +232,50 @@ function printAmount() {
     // Cleaning
     $("div.chart-amount").html('');
 
-var parseDate  = d3.time.format('%Y-%m-%d').parse;
-d3.json('/api/charts/<?= $this->project->id ?>/invests', function (error, rawData) {
-  if (error) {
-    console.error(error);
-    return;
-  }
+    var parseDate  = d3.timeParse('%Y-%m-%d');
+    d3.json('/api/charts/<?= $this->project->id ?>/invests', function (error, rawData) {
+      if (error) {
+        console.error(error);
+        return;
+      }
 
-  var data = rawData.map(function (d) {
-    return {
-      date:  d.date ? parseDate(d.date) : '',
-      cumulative: d.cumulative,
-      ideal: d.ideal
-      /*pct50: d.pct50 / 1000,
-      pct75: d.pct75 / 1000,
-      pct95: d.pct95 / 1000*/
-    };
-  });
+      var data = rawData.map(function (d) {
+        return {
+          date:  d.date ? parseDate(d.date) : '',
+          cumulative: d.cumulative,
+          ideal: d.ideal
+          /*pct50: d.pct50 / 1000,
+          pct75: d.pct75 / 1000,
+          pct95: d.pct95 / 1000*/
+        };
+      });
 
-  // TODO: create round markers
-  var markers = [];
-   var markers = [{date:parseDate('<?= $this->project->willpass ?>'),type:"<?= $this->text('project-chart-amount-end-round') ?>" , version: "1"}];
-//   d3.json('/assets/markers.json', function (error, markerData) {
-//     if (error) {
-//       console.error(error);
-//       return;
-//     }
+      var markers = [];
+       var markers = [{date:parseDate('<?= $this->project->willpass ?>'),type:"<?= $this->text('project-chart-amount-end-round') ?>" , version: "1"}];
 
-//     var markers = markerData.map(function (marker) {
-//       return {
-//         date: parseDate(marker.date),
-//         type: marker.type,
-//         version: marker.version
-//       };
-//     });
-//     makeChart(data, markers);
-//   });
-    makeChart(data, markers);
+        makeChart(data, markers);
 
+       var cachedWidth = $(window).width();
+        $(window).resize(function(e){
+            var newWidth = $(window).width();
+            if(newWidth !== cachedWidth){
+              try{
+                clearTimeout(amountTIMEOUT);
+              }catch(e){}
+              amountTIMEOUT = setTimeout(function(){printAmount()}, 100);
+              cachedWidth = newWidth;
+            }
+        });
 
-   var cachedWidth = $(window).width();
-    $(window).resize(function(e){
-        var newWidth = $(window).width();
-        if(newWidth !== cachedWidth){
-          try{
+      /*$(window).one("resize", function(e) {
+        try{
             clearTimeout(amountTIMEOUT);
-          }catch(e){}
-          amountTIMEOUT = setTimeout(function(){printAmount()}, 100);
-          cachedWidth = newWidth;
-        }
+        }catch(e){}
+        amountTIMEOUT = setTimeout(function(){printAmount()}, 100);
+      });*/
+
+
     });
-
-  /*$(window).one("resize", function(e) {
-    try{
-        clearTimeout(amountTIMEOUT);
-    }catch(e){}
-    amountTIMEOUT = setTimeout(function(){printAmount()}, 100);
-  });*/
-
-
-});
 }
 
 $(function(){
