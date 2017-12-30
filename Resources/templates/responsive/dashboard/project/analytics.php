@@ -17,50 +17,31 @@
 
 
 <?php $this->section('footer') ?>
+<script type="text/javascript" src="<?php echo SRC_URL ?>/assets/js/charts/responsive_pie.js"></script>
 <script type="text/javascript">
 
 $(function(){
-    var makePie = function(selector, data) {
-        var svg = d3.select(selector),
-        width = +svg.attr("width"),
-        height = +svg.attr("height"),
-        radius = Math.min(width, height) / 2,
-        g = svg.append("g").attr("transform", "translate(" + width / 2 + "," + height / 2 + ")");
+    $('.d3-chart.percent-pie').each(function(){
+        var self = $(this)[0];
+        console.log('source', $(this).data('source'));
+        d3.json($(this).data('source'), function (error, data) {
+            if(error) throw error;
+            console.log('data', data);
+            var pieData = data.map(function(x){
+                var tag = x.tag ? x.tag : 'Unknown';
+                var title = x.category + ': ' + tag;
+                return {title:title, label:title, value: x.counter};
+            });
+            var pie = d3.goteo.piechart();
+            d3.select(self).datum(pieData).call(pie);
 
-        var color = d3.scaleOrdinal(["#98abc5", "#8a89a6", "#7b6888", "#6b486b", "#a05d56", "#d0743c", "#ff8c00"]);
+            // Filling the Legend
+            // data.forEach(function(item, i){
+            //     var button = "<a href='#' class='button tiny' style='background-color:" + colors(i) + ";'>&nbsp</a>";
+            //     $("#pieLegend").append("<li>" + button + " " + item.value + " years (" + item.percentage + "%)</li>");
+            // });
 
-        var pie = d3.pie()
-            .sort(null)
-            .value(function(d) { return d.population; });
-
-        var path = d3.arc()
-            .outerRadius(radius - 10)
-            .innerRadius(0);
-
-        var label = d3.arc()
-            .outerRadius(radius - 40)
-            .innerRadius(radius - 40);
-
-
-      var arc = g.selectAll(".arc")
-        .data(pie(data))
-        .enter().append("g")
-          .attr("class", "arc");
-
-      arc.append("path")
-          .attr("d", path)
-          .attr("fill", function(d) { return color(d.data.counter); });
-
-      arc.append("text")
-          .attr("transform", function(d) { return "translate(" + label.centroid(d) + ")"; })
-          .attr("dy", "0.35em")
-          .text(function(d) { return d.data.counter; });
-    };
-
-    // var parseDate  = d3.time.format('%Y-%m-%d').parse;
-    d3.json('/api/charts/<?= $this->project->id ?>/referer/project', function (error, data) {
-        if (error) throw error;
-        makePie('svg.d3-chart.percent-pie', data);
+        });
     });
 });
 
