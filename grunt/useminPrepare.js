@@ -20,6 +20,9 @@ module.exports = function(grunt) {
     // src="<?php echo SRC_URL ?>" will become src=""
     var replaceAssetsPath = function (context) {
         var generated = context.options.generated;
+        generated.options = {
+            separator: "\n"
+        }
         for(var i in generated.files) {
             // grunt.log.writeln(generated.files[i].src);
             for(var k in generated.files[i].src) {

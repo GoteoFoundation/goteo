@@ -150,7 +150,6 @@ module.exports = function(grunt) {
         'copy:dist',
         'copy:plugins:dist',
         'copy:fonts',
-        'copy:fonts2',
         'sass:dist'
     ]);
 
@@ -175,7 +174,6 @@ module.exports = function(grunt) {
         'copy:dist', // copy from to dist as well
         'copy:plugins:dist',
         'copy:fonts',
-        'copy:fonts2',
         'sass:dist',
 
         'useminPrepare',
