@@ -55,7 +55,7 @@ module.exports = function(grunt) {
         grunt.log.warn('Using local port from settings: ' + port);
     }
 
-    var livePort = parseInt(config.livePort, 10);
+    var livePort = parseInt(config.plugins['goteo-dev'].liveport, 10);
     if(livePort) {
         GOTEO.livePort = livePort;
         grunt.log.warn('Using livePort from settings: ' + livePort);

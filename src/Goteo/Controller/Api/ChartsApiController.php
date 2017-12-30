@@ -22,11 +22,13 @@ use Goteo\Model\Origin;
 
 class ChartsApiController extends AbstractApiController {
 
-    protected function getProject($prj) {
+    protected function getProject($prj, $private = false) {
         if( ! $prj instanceOf Project) {
             $prj = Project::get($prj);
         }
-        $is_visible = in_array($prj->status, [Project::STATUS_IN_CAMPAIGN, Project::STATUS_FUNDED, Project::STATUS_FULFILLED, Project::STATUS_UNFUNDED]);
+
+        $is_visible = in_array($prj->status, [Project::STATUS_IN_CAMPAIGN, Project::STATUS_FUNDED, Project::STATUS_FULFILLED, Project::STATUS_UNFUNDED]) && !$private;
+
         $is_mine = $prj->owner === $this->user->id;
         if(!$this->is_admin && !$is_mine && !$is_visible) {
             throw new ControllerAccessDeniedException();
@@ -158,7 +160,7 @@ class ChartsApiController extends AbstractApiController {
      * @param  Request $request [description]
      */
     public function projectOriginAction($id, $type = 'project', $group = 'referer', Request $request) {
-        $prj = $this->getProject($id);
+        $prj = $this->getProject($id, true);
 
         $ret = Origin::getProjectStats($prj->id, $type, $group);
 

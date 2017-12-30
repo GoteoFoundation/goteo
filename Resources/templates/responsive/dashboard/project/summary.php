@@ -52,7 +52,7 @@
                 </li>
             </ul>
 
-            <div class="chart-amount text-center"></div>
+            <div class="chart-amount"></div>
         </div>
     </div>
 

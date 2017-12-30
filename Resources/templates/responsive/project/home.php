@@ -112,10 +112,8 @@
                             </div>
                     </div>
 
-                    <div class="row">
-                        <div class="chart-costs col-sm-6 col-sm-offset-3">
-                        </div>
-                    </div>
+                    <div class="chart-costs"></div>
+
                     <div class="row">
                          <div id="reset-chart" class="chart-reset-button text-center col-xs-4 col-xs-offset-4 col-md-2 col-md-offset-5">
                             <button class="btn btn-default" type="button" id="reset-button"> <span class="glyphicon glyphicon-repeat"> </span> <?= $this->text('project-chart-costs-reset') ?></button>
