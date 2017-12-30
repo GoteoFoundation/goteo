@@ -1,17 +1,3 @@
-.svg-container {
-    display: inline-block;
-    position: relative;
-    width: 100%;
-    padding-bottom: 100%;
-    vertical-align: top;
-    overflow: hidden;
-}
-.svg-content {
-    display: inline-block;
-    position: absolute;
-    top: 0;
-    left: 0;
-}
 
 /* Costs chart */
 .chart-costs {
@@ -33,7 +19,7 @@
 
 
 // TODO: check if this is needed
-@import url(//fonts.googleapis.com/css?family=Open+Sans:400,700);
+// @import url(//fonts.googleapis.com/css?family=Open+Sans:400,700);
 
 .axis line {
   fill: none;

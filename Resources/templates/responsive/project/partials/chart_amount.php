@@ -3,7 +3,7 @@
 
 function printAmount() {
 
-    var container =  "div.chart-amount .svg-container";
+    var container =  "div.chart-amount";
     if(!$(container).length) return;
 
     // Clear if defined
@@ -152,8 +152,8 @@ function printAmount() {
 
     function makeChart (data, markers) {
       var svgWidth  = 600,
-          svgHeight = 600,
-          margin = { top: 20, right: 20, bottom: 40, left: 40 },
+          svgHeight = 400,
+          margin = { top: 20, right: 20, bottom: 40, left: 50 },
           chartWidth  = svgWidth  - margin.left - margin.right,
           chartHeight = svgHeight - margin.top  - margin.bottom;
 
@@ -170,9 +170,8 @@ function printAmount() {
       var svg = d3.select(container).append('svg')
         // .attr('width',  svgWidth)
         // .attr('height', svgHeight)
-        .attr("preserveAspectRatio", "xMidYMid")
-        .attr("viewBox", "0 0 600 600")
-        .classed("svg-content", true)
+        .attr("preserveAspectRatio", "xMidYMid meet")
+        .attr("viewBox", "0 0 " + svgWidth + ' ' + svgHeight)
         .append('g')
         .attr('transform', 'translate(' + margin.left + ',' + margin.top + ')');
 

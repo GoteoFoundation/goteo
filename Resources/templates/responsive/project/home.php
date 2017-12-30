@@ -112,9 +112,7 @@
                             </div>
                     </div>
 
-                    <div class="chart-costs">
-                        <div class="svg-container"></div>
-                    </div>
+                    <div class="chart-costs"></div>
 
                     <div class="row">
                          <div id="reset-chart" class="chart-reset-button text-center col-xs-4 col-xs-offset-4 col-md-2 col-md-offset-5">

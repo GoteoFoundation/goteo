@@ -52,7 +52,7 @@
                 </li>
             </ul>
 
-            <div class="chart-amount"><div class="svg-container"></div></div>
+            <div class="chart-amount"></div>
         </div>
     </div>
 

@@ -14,9 +14,7 @@
 			<h2 class="panel-title grey-title spacer-10" >
 				<?= $project->num_messengers.' '.$this->text('project-collaborations-number') ?>
 			</h2>
-            <div class="chart-amount">
-                <div class="svg-container"></div>
-            </div>
+            <div class="chart-amount"></div>
 
             <a class="accordion-toggle" data-toggle="collapse" data-target="#collapseTwo">
 		        <h2 class="panel-title green-title text-center accordion-title" >
