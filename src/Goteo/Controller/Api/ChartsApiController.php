@@ -169,7 +169,7 @@ class ChartsApiController extends AbstractApiController {
             $label = $ob->tag ? $ob->tag : 'unknown';
             if($group_by === 'category') $label = $ob->category ? $ob->category : 'unknown';
             return [
-                'label' => $label,
+                'label' => ucfirst($label),
                 'counter' => (int) $ob->counter,
                 'created' => $ob->created,
                 'updated' => $ob->updated

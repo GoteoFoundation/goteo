@@ -15,11 +15,13 @@ module.exports = function(grunt) {
             files: ['<%= goteo.app %>/view/js/{,*/}*.js',
                     '<%= goteo.app %>/assets/js/{,*/}*.js'],
             tasks: ['newer:jshint'],
-            // options: {
-            //     livereload: {
+            options: {
+                livereload: {
+                    host: '<%= goteo.localHost %>',
+                    port: '<%= goteo.livePort %>'
             //         files: ['.tmp/{assets,view}/js/**/*.js']
-            //     }
-            // }
+                }
+            }
         },
 
         php: {
@@ -27,7 +29,13 @@ module.exports = function(grunt) {
                 'Resources/templates/**/*.php',
                 'extend/**/templates/**/*.php',
             ],
-            // 'tasks': ['copy:devel', 'copy:plugins:devel']
+            // tasks: ['copy:devel', 'copy:plugins:devel']
+            options: {
+                livereload: {
+                    host: '<%= goteo.localHost %>',
+                    port: '<%= goteo.livePort %>'
+                }
+            }
         },
 
         assets: {
@@ -36,22 +44,28 @@ module.exports = function(grunt) {
                 '<%= goteo.app %>/assets/**/*.{php,js,css,gif,jpeg,jpg,png,svg,webp}',
                 '<%= goteo.app %>/**/view/**/*.{js,css,gif,jpeg,jpg,png,svg,webp}'
             ],
-            'tasks': ['copy:devel', 'copy:plugins:devel']
+            tasks: ['copy:devel', 'copy:plugins:devel'],
+            options: {
+                livereload: {
+                    host: '<%= goteo.localHost %>',
+                    port: '<%= goteo.livePort %>'
+                }
+            }
         },
 
         sass: {
             files: [
-                '<%= goteo.app %>/assets/**/*.{scss}',
-                '<%= goteo.app %>/**/view/**/*.{scss}',
+                '<%= goteo.app %>/assets/sass/**/*.scss'
             ],
-            'tasks': ['sass:devel'],
-            // options: {
-            //     livereload: {
+            tasks: ['sass:devel'],
+            options: {
+                livereload: {
+                    host: '<%= goteo.localHost %>',
+                    port: '<%= goteo.livePort %>'
             //         files: ['.tmp/assets/css/**/*.css']
-            //     }
-            // }
+                }
+            }
         }
-
     });
     grunt.loadNpmTasks('grunt-contrib-watch');
 };
