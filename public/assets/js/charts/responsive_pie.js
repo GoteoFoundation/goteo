@@ -35,7 +35,9 @@ d3.goteo.piechart = function(){
 
   var _colors = d3.scaleOrdinal(d3.schemeCategory20c);
   var colors = function(d, i) {
-    console.log(d, i, _colors(i));
+    var label = d.label || d.data.label;
+    if(label == 'Other' || label == 'Unknown') return '#BCBCBC';
+    // console.log(label, d, i, _colors(i));
     return _colors(i);
   };
   function generator(selection){
@@ -47,9 +49,7 @@ d3.goteo.piechart = function(){
 		var viewBox = "0 0 " + width + " " + height;
 		var svg = d3.select(this)
 		            .append("svg")
-		            // .attr("class", "svg-content")
-                    .attr("viewBox", viewBox)
-                    // .attr("preserveAspectRatio", "xMidYMid meet")
+                .attr("viewBox", viewBox)
 		            .attr("preserveAspectRatio", "xMinYMin meet");
 
 		var arc = d3.arc()
@@ -65,20 +65,27 @@ d3.goteo.piechart = function(){
 
   		arcs.append("path").attr("fill", colors)
   			    .attr("d", arc)
-                .on("mouseover",function(e){
-                    d3.select(this)
-                    .attr("fill-opacity", ".8")
-                    .style("stroke", "white")
-                    .style("stroke-width", "1px");
-                })
-                .on("mouseout",function(e){
-                    d3.select(this)
-                    .attr("fill-opacity", "1")
-                    .style("stroke-width", "0px");
-                })
-                .attr("style","cursor:pointer;")
-                .append("svg:title")
-                    .text(function(d) { return d.data.label; });
+            .on("mouseover",function(e){
+                d3.select(this)
+                .attr("fill-opacity", ".8")
+                .style("stroke", "white")
+                .style("stroke-width", "1px");
+            })
+            .on("mouseout",function(e){
+                d3.select(this)
+                .attr("fill-opacity", "1")
+                .style("stroke-width", "0px");
+            })
+            .transition()
+            .duration(1000)
+            .attrTween('d', function(d) {
+                var interpolate = d3.interpolate({startAngle: 0, endAngle: 0}, d);
+                return function(t) {
+                    return arc(interpolate(t));
+                };
+            });
+        arcs.append("svg:title")
+                .text(function(d) { return d.data.label; });
         arcs.append("svg:text")
             .attr("transform", function(d){
                 // d.innerRadius = outerRadius/2;

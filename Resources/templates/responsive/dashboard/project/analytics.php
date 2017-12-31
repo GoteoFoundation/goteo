@@ -23,6 +23,7 @@
 $(function(){
     $('.d3-chart.percent-pie').each(function(){
         var self = $(this)[0];
+        $(this).css('cursor', 'pointer');
         // console.log('source', $(this).data('source'));
         d3.json($(this).data('source'), function (error, data) {
             if(error) throw error;
