@@ -162,12 +162,14 @@ class ChartsApiController extends AbstractApiController {
     public function projectOriginAction($id, $type = 'project', $group = 'referer', Request $request) {
         $prj = $this->getProject($id, true);
 
-        $ret = Origin::getProjectStats($prj->id, $type, $group);
+        $group_by = $request->query->get('group_by');
+        $ret = Origin::getProjectStats($prj->id, $type, $group, $group_by);
 
-        $ret = array_map(function($ob) {
+        $ret = array_map(function($ob) use ($group_by) {
+            $label = $ob->tag ? $ob->tag : 'unknown';
+            if($group_by === 'category') $label = $ob->category ? $ob->category : 'unknown';
             return [
-                'tag' => $ob->tag,
-                'category' => $ob->category,
+                'label' => $label,
                 'counter' => (int) $ob->counter,
                 'created' => $ob->created,
                 'updated' => $ob->updated

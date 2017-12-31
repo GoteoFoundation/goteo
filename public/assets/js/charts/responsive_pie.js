@@ -75,7 +75,7 @@ d3.goteo.piechart = function(){
                 })
                 .attr("style","cursor:pointer;")
                 .append("svg:title")
-                    .text(function(d) { return d.data.title; });
+                    .text(function(d) { return d.data.label; });
         arcs.append("svg:text")
             .attr("transform", function(d){
                 // d.innerRadius = outerRadius/2;

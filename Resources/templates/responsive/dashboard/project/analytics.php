@@ -28,9 +28,7 @@ $(function(){
             if(error) throw error;
             console.log('data', data);
             var pieData = data.map(function(x){
-                var tag = x.tag ? x.tag : 'Unknown';
-                var title = x.category + ': ' + tag;
-                return {title:title, label:title, value: x.counter};
+                return {label:x.label, value: x.counter};
             });
             var pie = d3.goteo.piechart();
             d3.select(self).datum(pieData).call(pie);

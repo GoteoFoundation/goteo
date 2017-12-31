@@ -17,7 +17,7 @@ module.exports = function(grunt) {
             }
         },
 
-        livereload: {
+        php: {
             options: {
                 livereload: {
                     host: '<%= goteo.localHost %>',
@@ -27,12 +27,39 @@ module.exports = function(grunt) {
             files: [
                 'Resources/templates/**/*.php',
                 'extend/**/templates/**/*.php',
-                'extend/**/*.{js,css,gif,jpeg,jpg,png,svg,webp}',
-                '<%= goteo.app %>/assets/**/*.{js,css,scss,gif,jpeg,jpg,png,svg,webp}',
-                '<%= goteo.app %>/**/view/**/*.{js,css,scss,gif,jpeg,jpg,png,svg,webp}',
             ],
-            'tasks': ['copy:devel', 'copy:plugins:devel', 'sass:devel']
+            // 'tasks': ['copy:devel', 'copy:plugins:devel']
+        },
+
+        assets: {
+            options: {
+                livereload: {
+                    host: '<%= goteo.localHost %>',
+                    port: '<%= goteo.livePort %>'
+                }
+            },
+            files: [
+                'extend/**/*.{js,css,gif,jpeg,jpg,png,svg,webp}',
+                '<%= goteo.app %>/assets/**/*.{php,js,css,gif,jpeg,jpg,png,svg,webp}',
+                '<%= goteo.app %>/**/view/**/*.{js,css,gif,jpeg,jpg,png,svg,webp}'
+            ],
+            'tasks': ['copy:devel', 'copy:plugins:devel']
+        },
+
+        css: {
+            options: {
+                livereload: {
+                    host: '<%= goteo.localHost %>',
+                    port: '<%= goteo.livePort %>'
+                }
+            },
+            files: [
+                '<%= goteo.app %>/assets/**/*.{scss}',
+                '<%= goteo.app %>/**/view/**/*.{scss}',
+            ],
+            'tasks': ['sass:devel']
         }
+
     });
     grunt.loadNpmTasks('grunt-contrib-watch');
 };
