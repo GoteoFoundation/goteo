@@ -10,7 +10,7 @@ module.exports = function(grunt) {
         dist: {
             src: [
                 '<%= goteo.dist %>/assets/css/**/*.css',
-                '<%= goteo.dist %>/assets/js/**/*.js'
+                '<%= goteo.dist %>/assets/js/*.js'
             ]
         }
 

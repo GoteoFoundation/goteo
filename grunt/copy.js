@@ -61,7 +61,7 @@ module.exports = function(grunt) {
             dot: true,
             cwd: '<%= goteo.app %>',
             dest: '<%= goteo.dist %>',
-            src: [ '*', 'assets/vendor/**/*', 'assets/img/**/*', 'templates/**/*', 'view/**/*' ]
+            src: [ '*', 'assets/js/*/*', 'assets/vendor/**/*', 'assets/img/**/*', 'templates/**/*', 'view/**/*' ]
         },
 
         fonts: {
