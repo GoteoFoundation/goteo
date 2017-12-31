@@ -22,7 +22,7 @@ module.exports = function(grunt) {
         var generated = context.options.generated;
         generated.options = {
             separator: "\n"
-        }
+        };
         for(var i in generated.files) {
             // grunt.log.writeln(generated.files[i].src);
             for(var k in generated.files[i].src) {
@@ -56,7 +56,7 @@ module.exports = function(grunt) {
         // Processing files under dist/templates directory.
         // Plugins can copy files by using manifest.yml
         html: [
-            '<%= goteo.dist %>/templates/**/*.php',
+            '<%= goteo.dist %>/templates/**/*.php'
         ]
     });
 
