@@ -2,6 +2,11 @@
 
 .d3-chart {
     max-width: 300px;
+    transition: all 0.5s ease;
+    font-size:16px;
+
+    text {
+    }
     .legend rect {
         fill:white;
         opacity:0.4;
@@ -12,6 +17,18 @@
     }
 
     .slice-label {
+        text-shadow: 1px 1px 2px #666;
         cursor: pointer;
     }
 }
+
+.d3-chart-wide {
+    width: 100%;
+    // transition: all 0.5s ease;
+    .d3-chart {
+        max-width: 100%;
+        font-size: 10px;
+        transition: all 0.5s ease;
+    }
+}
+

@@ -4,23 +4,22 @@ module.exports = function(grunt) {
 
     'use strict';
 
-    grunt.file.mkdir('/tmp/nginx/client_temp');
-    grunt.file.mkdir('/tmp/nginx/cache');
-
-    var dir = process.cwd();
-    console.log('CURRENT DIR',dir);
-
     grunt.config('run', {
         options: {
+            wait: false
             },
         fpm: {
             cmd: 'php-fpm7.0',
-            args: ['-p', dir, '-y', dir +'/var/php/php-fpm.conf']
+            args: ['-p', '<%= goteo.dir %>', '-y', '<%= goteo.dir %>/var/php/php-fpm.conf']
         },
         nginx: {
             cmd: 'nginx',
-            args: ['-p', dir, '-c', dir +'/var/php/nginx.conf']
+            args: ['-p', '<%= goteo.dir %>', '-c', '<%= goteo.dir %>/var/php/nginx.conf']
         },
+        fpmlog: {
+            cmd: 'tail',
+            args: ['-f', '<%= goteo.dir %>/php.log']
+        }
     });
     grunt.loadNpmTasks('grunt-run');
 };

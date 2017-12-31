@@ -14,6 +14,7 @@ use Goteo\Core\Model;
 use Goteo\Application\Exception\ModelNotFoundException;
 use Goteo\Application\Exception\ModelException;
 use Goteo\Model\Project;
+use Goteo\Model\Invest;
 
 /**
  * Origin Model
@@ -136,11 +137,13 @@ class Origin extends \Goteo\Core\Model {
         return $query->fetchAll(\PDO::FETCH_CLASS, __CLASS__);
     }
 
-    public function getProjectStats($pid, $stat = 'project', $group = 'referer') {
+    static public function getProjectStats($pid, $stat = 'project', $group = 'referer', $group_by = 'tag') {
         if($pid instanceOf Project) $pid = $pid->id;
 
         $values = [':project' => $pid, ':type' => $group];
         $join = '';
+
+        $group_by = ($group_by === 'category') ? 'category' : 'tag';
 
         if($stat === 'invests') {
             // Project invests stats
@@ -152,8 +155,8 @@ class Origin extends \Goteo\Core\Model {
                 IF (SUM(origin.counter), SUM(origin.counter), COUNT(invest.id)) AS counter
                 FROM invest
                 LEFT JOIN origin ON origin.invest_id = invest.id AND origin.type = :type
-                WHERE invest.project = :project
-                GROUP BY origin.tag ORDER BY counter DESC";
+                WHERE invest.status IN (". implode(',', Invest::$ACTIVE_STATUSES) . ") AND invest.project = :project
+                GROUP BY origin.$group_by ORDER BY counter DESC";
 
         } else {
             // Project visit stats by default
@@ -165,7 +168,7 @@ class Origin extends \Goteo\Core\Model {
             SUM(origin.counter) AS counter
             FROM origin
             WHERE origin.project_id = :project AND origin.type = :type
-            GROUP by origin.tag ORDER BY counter DESC";
+            GROUP by origin.$group_by ORDER BY counter DESC";
 
         }
 

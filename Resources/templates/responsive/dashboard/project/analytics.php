@@ -17,31 +17,28 @@
 
 
 <?php $this->section('footer') ?>
-<script type="text/javascript" src="<?php echo SRC_URL ?>/assets/js/charts/responsive_pie.js"></script>
+<script type="text/javascript" src="<?= SRC_URL ?>/assets/js/charts/responsive_pie.js"></script>
 <script type="text/javascript">
 
 $(function(){
     $('.d3-chart.percent-pie').each(function(){
         var self = $(this)[0];
-        console.log('source', $(this).data('source'));
+        $(this).css('cursor', 'pointer');
+        // console.log('source', $(this).data('source'));
         d3.json($(this).data('source'), function (error, data) {
             if(error) throw error;
-            console.log('data', data);
+            // console.log('data', data);
             var pieData = data.map(function(x){
-                var tag = x.tag ? x.tag : 'Unknown';
-                var title = x.category + ': ' + tag;
-                return {title:title, label:title, value: x.counter};
+                return {label:x.label, value: x.counter};
             });
             var pie = d3.goteo.piechart();
             d3.select(self).datum(pieData).call(pie);
-
-            // Filling the Legend
-            // data.forEach(function(item, i){
-            //     var button = "<a href='#' class='button tiny' style='background-color:" + colors(i) + ";'>&nbsp</a>";
-            //     $("#pieLegend").append("<li>" + button + " " + item.value + " years (" + item.percentage + "%)</li>");
-            // });
-
         });
+    });
+    $('.d3-chart').on('click', function(e) {
+        e.preventDefault();
+        var $wrap = $(this).closest('.chart-wrapper');
+        $wrap.toggleClass('d3-chart-wide');
     });
 });
 
