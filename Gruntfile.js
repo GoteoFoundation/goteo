@@ -137,6 +137,7 @@ module.exports = function(grunt) {
                 'nginx_prepare',
                 'run:fpm',
                 'run:nginx',
+                'run:fpmlog',
                 'watch'
             ]);
         }

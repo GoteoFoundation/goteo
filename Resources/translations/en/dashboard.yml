@@ -278,3 +278,12 @@ dashboard-project-reward-cannot: 'New rewards can not be added now. During the c
 dashboard-project-add-translations: 'In the meantime, you can add translations to your project, this might help you to increase its visibility.'
 
 dashboard-project-goto-first-error: 'Go to the first error'
+
+
+dashboard-origin-project-referer: 'Origin of visits to the project page'
+dashboard-origin-invests-referer: 'Origin of visits in successful contributions'
+dashboard-origin-project-device: 'Device used on the project page'
+dashboard-origin-invests-device: 'Device used in successful contributions'
+dashboard-origin-disclaimer: '⚠ *These data are indicative and do not include all visits due to technical limitations.*
+
+> We recommend you to configure Google Analytics or Facebook Pixel for a better detailed data'

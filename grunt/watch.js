@@ -5,25 +5,24 @@ module.exports = function(grunt) {
     'use strict';
 
     grunt.config('watch', {
+        options: {
+            livereload: {
+                host: '<%= goteo.localHost %>',
+                port: '<%= goteo.livePort %>'
+            }
+        },
         js: {
             files: ['<%= goteo.app %>/view/js/{,*/}*.js',
                     '<%= goteo.app %>/assets/js/{,*/}*.js'],
             tasks: ['newer:jshint'],
-            options: {
-                livereload: {
-                    host: '<%= goteo.localHost %>',
-                    port: '<%= goteo.livePort %>'
-                }
-            }
+            // options: {
+            //     livereload: {
+            //         files: ['.tmp/{assets,view}/js/**/*.js']
+            //     }
+            // }
         },
 
         php: {
-            options: {
-                livereload: {
-                    host: '<%= goteo.localHost %>',
-                    port: '<%= goteo.livePort %>'
-                }
-            },
             files: [
                 'Resources/templates/**/*.php',
                 'extend/**/templates/**/*.php',
@@ -32,12 +31,6 @@ module.exports = function(grunt) {
         },
 
         assets: {
-            options: {
-                livereload: {
-                    host: '<%= goteo.localHost %>',
-                    port: '<%= goteo.livePort %>'
-                }
-            },
             files: [
                 'extend/**/*.{js,css,gif,jpeg,jpg,png,svg,webp}',
                 '<%= goteo.app %>/assets/**/*.{php,js,css,gif,jpeg,jpg,png,svg,webp}',
@@ -46,18 +39,17 @@ module.exports = function(grunt) {
             'tasks': ['copy:devel', 'copy:plugins:devel']
         },
 
-        css: {
-            options: {
-                livereload: {
-                    host: '<%= goteo.localHost %>',
-                    port: '<%= goteo.livePort %>'
-                }
-            },
+        sass: {
             files: [
                 '<%= goteo.app %>/assets/**/*.{scss}',
                 '<%= goteo.app %>/**/view/**/*.{scss}',
             ],
-            'tasks': ['sass:devel']
+            'tasks': ['sass:devel'],
+            // options: {
+            //     livereload: {
+            //         files: ['.tmp/assets/css/**/*.css']
+            //     }
+            // }
         }
 
     });

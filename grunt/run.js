@@ -16,6 +16,10 @@ module.exports = function(grunt) {
             cmd: 'nginx',
             args: ['-p', '<%= goteo.dir %>', '-c', '<%= goteo.dir %>/var/php/nginx.conf']
         },
+        fpmlog: {
+            cmd: 'tail',
+            args: ['-f', '<%= goteo.dir %>/php.log']
+        }
     });
     grunt.loadNpmTasks('grunt-run');
 };
