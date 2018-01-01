@@ -100,7 +100,7 @@
                    <?= $this->text('home-foundation-api-more-description') ?>
                 </div>
                 <div class="action">
-                	<a href="https//developers.goteo.org" >
+                	<a href="https://developers.goteo.org" >
 	                	<?= $this->text('home-foundation-api-action') ?>
 	                	<span class="icon glyphicon glyphicon glyphicon-menu-right" aria-hidden="true"></span>
                 	</a>

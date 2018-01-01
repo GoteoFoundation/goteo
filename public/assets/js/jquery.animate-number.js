@@ -79,8 +79,8 @@ for the JavaScript code in this page.
                     decimal: ".",
                     thousand: ",",
                     rest: 'auto', // number of decimals
-                    steps: 100,
-                    velocity: 50, // ms
+                    steps: 50,
+                    velocity: 100, // ms
                     suffix: null,
                     prefix: null,
                     start: 'onViewport' // onLoad, onViewport
@@ -109,18 +109,16 @@ for the JavaScript code in this page.
                 // console.log('animate number', settings, this, text, number);
                 var started = false;
                 if(settings.start === 'onViewport') {
-                    if(isInViewport($el)) {
-                        started = true;
-                        writeNumber($el, number, settings);
-                    }
-                    // TODO: optimize this
-                    $(window).on('resize scroll', function() {
-                        if (isInViewport($el) && !started) {
+                    // Wait until element is visible
+                    var writeOnViewport = function() {
+                        if(!started && isInViewport($el)) {
                             started = true;
                             writeNumber($el, number, settings);
+                            $(window).off('resize scroll', writeOnViewport);
                         }
-                    });
-                    // Wait until element is visible
+                    };
+                    $(window).on('resize scroll', writeOnViewport);
+                    writeOnViewport();
                 } else {
                     started = true;
                     writeNumber($el, number, settings);
