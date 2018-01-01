@@ -30,6 +30,7 @@ var goteo = {};
 <!-- build:js assets/js/all.js -->
 <script type="text/javascript" src="<?= SRC_URL ?>/assets/js/goteo.js"></script>
 <script type="text/javascript" src="<?= SRC_URL ?>/assets/js/jquery.animate-css.js"></script>
+<script type="text/javascript" src="<?= SRC_URL ?>/assets/js/jquery.animate-number.js"></script>
 <script type="text/javascript" src="<?= SRC_URL ?>/assets/js/menu.js"></script>
 <script type="text/javascript" src="<?= SRC_URL ?>/assets/js/sidebar.js"></script>
 <script type="text/javascript" src="<?= SRC_URL ?>/assets/js/widgets.js"></script>

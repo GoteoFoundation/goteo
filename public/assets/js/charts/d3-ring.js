@@ -23,20 +23,9 @@ through which recipients can access the Corresponding Source.
 for the JavaScript code in this page.
 */
 
-var animationEnd = 'webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend animationend';
+d3.goteo = d3.goteo || {};
 
-$.fn.extend({
-    animateCss: function (animationName, callback) {
-        this.off();
 
-        this.addClass('animated ' + animationName).on(animationEnd, function() {
-            // console.log(this, $(this).attr('class'));
-            $(this).removeClass('animated ' + animationName);
-            if($.isFunction(callback)) {
-                callback.call(this);
-            }
-            $(this).off();
-        });
-        return this;
-    }
-});
+d3.goteo.ringchart = function(){
+
+};

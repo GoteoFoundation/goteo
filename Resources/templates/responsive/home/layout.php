@@ -29,6 +29,13 @@ $this->section('content');
     <script type="text/javascript">
         $(document).ready(function(){
 
+          // Animate numbers
+          $('.animate-number').animateNumber({
+            decimal: '<?= $this->get_currency('dec') ?>',
+            thousand: '<?= $this->get_currency('thou') ?>',
+            steps: 50
+          });
+
           $('.fade').slick({
             dots: true,
             infinite: true,
@@ -178,7 +185,7 @@ $this->section('content');
           });
 
           $(".auto-update-calls").on('click', ".filters li", function (e) {
-              
+
               $(this).toggleClass('active');
 
             var $filters = $('.auto-update-calls .filters');

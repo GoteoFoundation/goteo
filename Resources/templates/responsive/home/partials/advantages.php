@@ -21,7 +21,7 @@
                 		<div class="col-sm-12 col-md-4 adventage">
                 			<div class="title">
                 				<img src="/assets/img/home/monedero.png" >
-                				<span class="text">                				
+                				<span class="text">
                 				    <?= $this->text('home-adventages-savetheworld-title') ?>
                 				</span>
                 			</div>
@@ -38,7 +38,7 @@
                 		<div class="col-sm-12 col-md-4 adventage">
                 			<div class="title">
                 				<img src="/assets/img/home/certificados.png" >
-                				<span class="text">                				
+                				<span class="text">
                 				    <?= $this->text('home-advantages-certificates-title') ?>
                 				</span>
                 			</div>
@@ -55,7 +55,7 @@
                 		<div class="col-sm-12 col-md-4 adventage">
                 			<div class="title">
                 				<img src="/assets/img/home/calculadora.png" >
-                				<span class="text">                				
+                				<span class="text">
                 				    <?= $this->text('home-advantages-calculator-title') ?>
                 				</span>
                 			</div>
@@ -71,24 +71,24 @@
                 		</div>
                 	</div> <!-- end row -->
 
-                    <div class="impact-title">                   
+                    <div class="impact-title">
                             <?= $this->text('home-advantages-impact-data-title') ?>
                     </div>
                     <div class="row impact-data">
                         <div class="col-sm-4 col-md-2 col-md-offset-3 item">
-                            <?= amount_format($this->stats->getTotalUsers(), 0, true) ?>
+                            <span class="animate-number"><?= amount_format($this->stats->getTotalUsers(), 0, true) ?></span>
                             <div class="description">
                               <?= $this->text('home-adventages-impact-data-users-number') ?>
                             </div>
                         </div>
                         <div class="col-sm-4 col-md-2 item">
-                            <?= amount_format($this->stats->getSucessfulPercentage(), 1, true).'%' ?>
+                            <span class="animate-number"><?= amount_format($this->stats->getSucessfulPercentage(), 1, true).'%' ?></span>
                             <div class="description">
                               <?= $this->text('home-advantages-impact-data-success-projects-label') ?>
                             </div>
                         </div>
                         <div class="col-sm-4 col-md-2 item">
-                             <?= amount_format($this->stats->getTotalMoneyFunded(), 0, false) ?>
+                             <span class="animate-number"><?= amount_format($this->stats->getTotalMoneyFunded(), 0, false) ?></span>
                             <div class="description">
                               <?= $this->text('home-advantages-impact-data-money-label') ?>
                             </div>
@@ -96,7 +96,7 @@
                     </div>
 
                 </div> <!-- end container -->
-                
+
             </div> <!-- end donor -->
             <div class="tab-pane advantages-container owner" id="tab-owner">
             	<div class="container">
@@ -105,7 +105,7 @@
                 		<div class="col-sm-12 col-md-3 adventage">
                 			<div class="title">
                                 <img src="/assets/img/home/calculadora.png" >
-                                <span class="text">                             
+                                <span class="text">
                                     <?= $this->text('home-advantages-calculator-owner-title') ?>
                                 </span>
                             </div>
@@ -122,7 +122,7 @@
                 		<div class="col-sm-12 col-md-3 adventage">
                 			<div class="title">
                 				<img src="/assets/img/home/calendar.png" >
-                				<span class="text">                				
+                				<span class="text">
                 				    <?= $this->text('home-advantages-flex-calendar-title') ?>
                 				</span>
                 			</div>
@@ -139,7 +139,7 @@
                 		<div class="col-sm-12 col-md-3 adventage">
                 			<div class="title">
                 				<img src="/assets/img/home/fee.png" >
-                				<span class="text">                				
+                				<span class="text">
                 				<?= $this->text('home-advantages-fee-title') ?>
                 				</span>
                 			</div>
@@ -156,7 +156,7 @@
                 		<div class="col-sm-12 col-md-3 adventage">
                 			<div class="title">
                 				<img src="/assets/img/home/matchfunding.png" >
-                				<span class="text">                				
+                				<span class="text">
                 				<?= $this->text('home-advantages-matchfunding-title') ?>
                 				</span>
                 			</div>
@@ -177,29 +177,28 @@
                     </div>
                     <div class="row impact-data">
                         <div class="col-sm-4 col-md-2 col-md-offset-3 item">
-                            <span>
-                            <?= amount_format($this->stats->getTotalMoneyFunded(), 0, false) ?>
+                            <span class="animate-number"><?= amount_format($this->stats->getTotalMoneyFunded(), 0, false) ?></span>
                             <div class="description">
                               <?= $this->text('home-advantages-impact-data-money-label') ?>
                             </div>
                         </div>
                         <div class="col-sm-4 col-md-2 item">
-                            <?= amount_format($this->stats->getSucessfulPercentage(), 1, true).'%' ?>
+                            <span class="animate-number"><?= amount_format($this->stats->getSucessfulPercentage(), 1, true).'%' ?></span>
                             <div class="description">
                                 <?= $this->text('home-advantages-impact-data-success-projects-label') ?>
                             </div>
                         </div>
                         <div class="col-sm-4 col-md-2 item">
-                            <?= amount_format($this->stats->getTotalInvestAverage(), 1, false) ?>
+                            <span class="animate-number"><?= amount_format($this->stats->getTotalInvestAverage(), 1, false) ?></span>
                             <div class="description">
                               <?= $this->text('home-advantages-impact-data-invest-avg-label') ?>
                             </div>
                         </div>
                     </div>
 
-                </div> 
+                </div>
 
             </div>  <!-- end owner -->
-        </div> 
+        </div>
     </div> <!-- /tabbable -->
 </div>

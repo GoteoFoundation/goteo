@@ -17,7 +17,6 @@
 
 
 <?php $this->section('footer') ?>
-<script type="text/javascript" src="<?= SRC_URL ?>/assets/js/charts/responsive_pie.js"></script>
 <script type="text/javascript">
 
 $(function(){
