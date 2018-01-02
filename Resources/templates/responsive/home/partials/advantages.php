@@ -28,12 +28,6 @@
                 			<div class="description">
                 				<?= $this->text('home-adventages-savetheworld-description') ?>
                 			</div>
-                			<div class="action">
-                				<a href="/calculadora-fiscal" >
-	                				<?= $this->text('home-adventages-savetheworld-action') ?>
-	                				<span class="icon glyphicon glyphicon glyphicon-menu-right" aria-hidden="true"></span>
-                				</a>
-                			</div>
                 		</div>
                 		<div class="col-sm-12 col-md-4 adventage">
                 			<div class="title">
@@ -129,12 +123,6 @@
                 			<div class="description">
                 				<?= $this->text('home-advantages-flex-calendar-description') ?>
                 			</div>
-                			<div class="action">
-                				<a href="/calculadora-fiscal" >
-	                				<?= $this->text('home-advantages-regular-action') ?>
-	                				<span class="icon glyphicon glyphicon glyphicon-menu-right" aria-hidden="true"></span>
-                				</a>
-                			</div>
                 		</div>
                 		<div class="col-sm-12 col-md-3 adventage">
                 			<div class="title">
@@ -145,12 +133,6 @@
                 			</div>
                 			<div class="description">
                 				<?= $this->text('home-advantages-fee-description') ?>
-                			</div>
-                			<div class="action">
-                				<a href="/calculadora-fiscal" >
-	                				<?= $this->text('home-advantages-regular-action') ?>
-	                				<span class="icon glyphicon glyphicon glyphicon-menu-right" aria-hidden="true"></span>
-                				</a>
                 			</div>
                 		</div>
                 		<div class="col-sm-12 col-md-3 adventage">

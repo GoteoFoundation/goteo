@@ -1113,6 +1113,7 @@ namespace Goteo\Model {
             $Widget->id = (!empty($project->project)) ? $project->project : $project->id;
             $Widget->status = $project->status;
             $Widget->name = $project->name;
+            $Widget->subtitle = $project->subtitle;
             $Widget->owner = $project->owner;
             $Widget->description = $project->description;
             $Widget->published = $project->published;

@@ -162,6 +162,10 @@ body.home {
             }
         }
 
+        .slick-slider{
+            margin-bottom: 0;
+        }
+
     }
 
     // Hide while loading
@@ -323,6 +327,7 @@ body.home {
     .section.projects{
         padding: 40px 0;
         .title{
+            margin-top: 0;
         }
         .filters{
            margin:40px 0 35px 0;
@@ -492,7 +497,8 @@ body.home {
         font-size: $font-size*2;
         font-weight: bold;
         text-align: center;
-        padding-top:20px;
+        padding-top: 0;
+        margin-top: 0;
     }
 
     .row.impact-data{
@@ -606,7 +612,7 @@ body.home {
             }
         }
         .data-container{
-            padding-bottom: 30px;
+            padding: 40px 0;
         }
         .donor-container{
             background-color: $background-light-yellow;
@@ -618,6 +624,7 @@ body.home {
             .description{
                 font-weight: bold;
                 font-size: $font-size*1.5;
+                line-height: 1.1;
             }
             .row{
             display: flex;
@@ -722,15 +729,24 @@ body.home {
                 }
             }
         }
-        .details-container{
+
+        .matchfunding-call-to-action{
             background-color: $background-light-lilac;
+            .call-action{
+                background: none !important;
+            }
+        }
+
+        .details-container{
+            background-color: $background-dark-lilac;
             color: $color-white;
             font-weight: bold;
             padding: 40px 0;
             .row.details-title{
                 .title{
                     text-align: center;
-                    padding-top: 15px;
+                    padding-top: 0;
+                    margin-top: 0;
                 }
             }
             .row.details{
@@ -762,15 +778,11 @@ body.home {
                     text-transform: uppercase;
                 }
             }
-            .call-action{
-                background: none !important;
-                margin-top: 50px;;
-            }
         }
 
         .data-container
         {
-            background-color: $background-dark-lilac;
+            background-color: $background-light-lilac;
             color: $color-white;
             padding: 40px 0;
         }

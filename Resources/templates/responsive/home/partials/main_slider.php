@@ -3,7 +3,7 @@
 	<nav>
 		<ul class="list-inline navbar-right hidden-xs">
 			<li>
-				<a href="#foundation-advantages">
+				<a href="#foundation">
 					<?= $this->text('home-menu-our-foundation') ?>
 				</a>
 			</li>
@@ -32,7 +32,7 @@
 				<?php if($banner->image): ?>
 					<div class="item">
 						<div class="image">
-							<img src="<?= $banner->image->getLink(1920, 500, true) ?>" class="display-none-important img-responsive  hidden-xs visible-up-1400">
+							<img src="<?= $banner->image->getLink(1920, 600, true) ?>" class="display-none-important img-responsive  hidden-xs visible-up-1400">
 		                    <img src="<?= $banner->image->getLink(1400, 400, true) ?>" class="display-none-important img-responsive  hidden-xs visible-1051-1400">
 			                <img src="<?= $banner->image->getLink(1051, 438, true) ?>" class="display-none-important img-responsive  hidden-xs visible-768-1050">
 		                    <img src="<?= $banner->image->getLink(750, 550, true) ?>" class="img-responsive visible-xs">
