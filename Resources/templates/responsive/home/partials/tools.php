@@ -1,7 +1,8 @@
 <div class="section tools" >
-    <h2 class="title text-center">
+    <!--<h2 class="title text-center">
         <?= $this->text('home-tools-title') ?>
     </h2>
+    -->
     <div class="container">
         <div class="row">
             <div class="col-sm-2 text-center">
