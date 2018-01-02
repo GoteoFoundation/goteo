@@ -26,6 +26,19 @@
 
     <div class="fluid-container details-container" id="matchfunding-advantages">
         <div class="container">
+            <div class="row call-action">
+                <div class="col-sm-9">
+                    <div class="title">
+                        <?= $this->text('home-matchfunding-call-to-action-title') ?>
+                    </div>
+                    <div class="description">
+                        <?= $this->text('Únete a nuestra red de ayuntamientos, fundaciones e instituciones') ?>
+                    </div>
+                </div>
+                <div class="col-sm-3 col-button">
+                    <a href="" class="btn btn-white"><?= $this->text('QUIERO HACER MATCH') ?></a>
+                </div>
+            </div>
             <div class="row details-title">
                 <div class="col-xs-12">
                     <h2 class="title text center">
@@ -76,19 +89,6 @@
                 </div>
             </div>
 
-            <div class="row call-action">
-                <div class="col-sm-9">
-                    <div class="title">
-                        <?= $this->text('home-matchfunding-call-to-action-title') ?>
-                    </div>
-                    <div class="description">
-                        <?= $this->text('Únete a nuestra red de ayuntamientos, fundaciones e instituciones') ?>
-                    </div>
-                </div>
-                <div class="col-sm-3 col-button">
-                    <a href="" class="btn btn-white"><?= $this->text('QUIERO HACER MATCH') ?></a>
-                </div>
-            </div>
         </div>
     </div>
 
