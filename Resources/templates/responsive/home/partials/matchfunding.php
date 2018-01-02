@@ -47,7 +47,7 @@
                 </div>
             </div>
             <div class="row details">
-                <div class="col-sm-2 col-sm-offset-1">
+                <div class="col-xs-6 col-sm-2 col-sm-offset-1">
                         <div class="detail-item item-1 center-block">
                             <img class="img-responsive" src="/assets/img/home/icon_1.png">
                         </div>
@@ -55,7 +55,7 @@
                             <?= $this->text('home-matchfunding-details-participation') ?>
                         </div>
                 </div>
-                <div class="col-sm-2">
+                <div class="col-xs-6 col-sm-2">
                     <div class="detail-item item-2 center-block">
                         <img class="img-responsive" src="/assets/img/home/icon_2.png">
                     </div>
@@ -63,7 +63,7 @@
                         <?= $this->text('home-matchfunding-details-transparent') ?>
                     </div>
                 </div>
-                <div class="col-sm-2">
+                <div class="col-xs-6 col-sm-2">
                      <div class="detail-item item-3 center-block">
                             <img class="img-responsive" src="/assets/img/home/icon_3.png">
                         </div>
@@ -71,7 +71,7 @@
                         <?= $this->text('home-matchfunding-details-legacy') ?>
                     </div>
                 </div>
-                <div class="col-sm-2">
+                <div class="col-xs-6 col-sm-2">
                     <div class="detail-item item-4 center-block">
                         <img class="img-responsive" src="/assets/img/home/icon_4.png">
                     </div>
@@ -79,7 +79,7 @@
                         <?= $this->text('home-matchfunding-details-learning') ?>
                     </div>
                 </div>
-                <div class="col-sm-2">
+                <div class="col-xs-12 col-sm-2">
                     <div class="detail-item item-5 center-block">
                         <img class="img-responsive" src="/assets/img/home/icon_5.png">
                     </div>
