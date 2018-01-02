@@ -354,7 +354,7 @@ class LocalFile extends BaseFile implements FileInterface {
         $remote = $this->get_path($dir . $name);
 
         while ( file_exists ( $remote )) {
-            $name = preg_replace_callback( '/^(.+?)(_?)(\d*)(\.[^.]+)?$/', function($m){
+            $name = preg_replace_callback( '/^(.+?)(\-?)(\d*)(\.[^.]+)?$/', function($m){
                 return $m[1] .'-' . ((int)$m[3]+1) . $m[4];
             }, $name );
             $remote = $this->get_path($dir . $name);
@@ -368,7 +368,7 @@ class LocalFile extends BaseFile implements FileInterface {
     public function setPath($path) {
         while(substr($path,0,1) == DIRECTORY_SEPARATOR) $path = substr($path, 1);
 
-        $this->path = static::$base_dir . DIRECTORY_SEPARATOR . $path;
+        $this->path = static::$base_dir . $path;
         if(!is_dir($this->path)) @mkdir($this->path, 0777, true);
     }
 

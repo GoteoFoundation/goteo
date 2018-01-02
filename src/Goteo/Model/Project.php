@@ -10,21 +10,21 @@
 
 namespace Goteo\Model {
 
-    use Goteo\Application\Exception,
-        Goteo\Application\Config,
-        Goteo\Application\Session,
-        Goteo\Application,
-        Goteo\Model\Message,
-        Goteo\Application\Lang,
-        Goteo\Model\Mail,
-        Goteo\Model\SocialCommitment,
-        Goteo\Library\Check,
-        Goteo\Library\Text,
-        Goteo\Library\Feed,
-        Goteo\Library\Currency,
-        Goteo\Model\Project\Account,
-        Goteo\Model\Project\ProjectLocation
-        ;
+    use Goteo\Application\Exception;
+    use Goteo\Application\Config;
+    use Goteo\Application\Session;
+    use Goteo\Application;
+    use Goteo\Model\Message;
+    use Goteo\Application\Lang;
+    use Goteo\Model\Mail;
+    use Goteo\Model\SocialCommitment;
+    use Goteo\Library\Check;
+    use Goteo\Library\Text;
+    use Goteo\Library\Feed;
+    use Goteo\Library\Currency;
+    use Goteo\Model\Project\Account;
+    use Goteo\Model\Project\ProjectLocation;
+    use Goteo\Model\Location\LocationInterface;
 
     class Project extends \Goteo\Core\Model {
 
@@ -182,6 +182,12 @@ namespace Goteo\Model {
 
         ;
 
+
+        public function __construct() {
+            $args = func_get_args();
+            call_user_func_array(array('parent', '__construct'), $args);
+            if(empty($this->updated)) $this->updated = $this->created;
+        }
 
         /**
          * Sobrecarga de métodos 'getter'.
@@ -517,7 +523,6 @@ namespace Goteo\Model {
                     project.sustainability_model,
                     project.sustainability_model_url,
                     project.id REGEXP '[0-9a-f]{32}' as draft,
-                    IFNULL(project.updated, project.created) as updated,
                     node.name as node_name,
                     node.url as node_url,
                     node.label as node_label,
@@ -1221,7 +1226,7 @@ namespace Goteo\Model {
         }
 
          /*
-         * Average of invests 
+         * Average of invests
          * @return: float number
          */
         public static function getTotalInvestAverage() {
@@ -3561,6 +3566,14 @@ namespace Goteo\Model {
                     )";
                 $values[':category'] = $filters['category'];
             }
+            if (!empty($filters['location']) && $filters['location'] instanceOf LocationInterface) {
+                $loc = $filters['location'];
+                $distance = $loc->radius ? $loc->radius : 50; // seasrch in 50 km by default
+                $sqlConsultantFilter .= "INNER JOIN project_location ON project_location.id = project.id";
+                $location_parts = ProjectLocation::getSQLFilterParts($loc, $distance);
+                $sqlFilter .= " AND ({$location_parts[firstcut_where]})" ;
+                $values = array_merge($values, $location_parts['params']);
+            }
             if (!empty($filters['called'])) {
 
                 switch ($filters['called']) {
@@ -3636,14 +3649,15 @@ namespace Goteo\Model {
                       $sqlFilter
                       $sqlOrder";
 
-            if($count) {
-                // Return count
-                $sql = "SELECT COUNT(project.id)
-                    FROM project
+            $from = "FROM project
                     LEFT JOIN project_conf
                     ON project_conf.project=project.id
                     LEFT JOIN user
-                    ON user.id=project.owner
+                    ON user.id=project.owner";
+            if($count) {
+                // Return count
+                $sql = "SELECT COUNT(project.id)
+                    $from
                     $sqlConsultantFilter
                     WHERE $where";
                 return (int) self::query($sql, $values)->fetchColumn();
@@ -3652,37 +3666,35 @@ namespace Goteo\Model {
             $offset = (int) $offset;
             $limit = (int) $limit;
             // la select
-            //@Javier: esto es de admin pero meter los campos en la select y no usar getMedium ni getWidget.
-            // Si la lista de proyectos necesita campos calculados lo añadimos aqui  (ver view/admin/projects/list.html.php)
-            // como los consultores
-            $sql = "SELECT
-                        project.*,
-                        project.id REGEXP '[0-9a-f]{32}' as draft,
-                        IFNULL(project.updated, project.created) as updated,
-                        user.email as user_email,
-                        user.name as user_name,
-                        user.lang as user_lang,
-                        user.id as user_id,
-                        project_conf.*
-                    FROM project
-                    LEFT JOIN project_conf
-                    ON project_conf.project=project.id
-                    LEFT JOIN user
-                    ON user.id=project.owner
 
-                    $sqlConsultantFilter
-                    WHERE $where
-                    LIMIT $offset, $limit
-                    ";
+            $sql_fields = ['id', 'status', 'contract_name', 'contract_nif', 'contract_email', 'contract_entity', 'contract_birthdate', 'entity_office', 'entity_name', 'entity_cif', 'phone', 'address', 'zipcode', 'location', 'country', 'secondary_address', 'post_address', 'post_zipcode', 'post_location', 'post_country', 'name', 'subtitle', 'lang', 'currency', 'currency_rate', 'description', 'motivation', 'video', 'video_usubs', 'about', 'goal', 'related', 'spread', 'execution_plan', 'execution_plan_url', 'sustainability_model', 'sustainability_model_url', 'reward', 'keywords', 'media', 'media_usubs', 'currently', 'project_location', 'scope', 'resource', 'comment', 'analytics_id', 'facebook_pixel', 'social_commitment', 'social_commitment_description',
+                // extra
+                'draft', 'updated',
+                // from user table
+                'user_email', 'user_name', 'user_lang', 'user_id',
+                // from project_conf
+                'noinvest', 'watch', 'days_round1', 'days_round2', 'one_round', 'help_license', 'help_cost', 'mincost_estimation', 'publishing_estimation'];
+            $fields = "project.*,
+                    project.id REGEXP '[0-9a-f]{32}' as draft,
+                    user.email as user_email,
+                    user.name as user_name,
+                    user.lang as user_lang,
+                    user.id as user_id,
+                    project_conf.*";
 
+            if($location_parts) {
+                $sql .= "SELECT {$location_parts[distance]} AS Distance, `" . implode('`,`', $sql_fields) . "`
+                FROM (SELECT $fields,project_location.latitude,project_location.longitude $from $sqlConsultantFilter WHERE $where) as FirstCut
+                WHERE {$location_parts[where]} LIMIT $offset, $limit";
+            } else {
+                $sql = "SELECT $fields $from $sqlConsultantFilter WHERE $where LIMIT $offset, $limit";
+            }
 
-             //echo \sqldbg($sql, $values);print_r($filters);die;
+            // echo \sqldbg($sql, $values);print_r($filters);die;
 
 
             $query = self::query($sql, $values);
             foreach ($query->fetchAll(\PDO::FETCH_CLASS, __CLASS__) as $proj) {
-                //$the_proj = self::getMedium($proj['id']);
-
                 $proj->user = new User;
                 $proj->user->id = $proj->user_id;
                 $proj->user->name = $proj->user_name;
@@ -3996,7 +4008,7 @@ namespace Goteo\Model {
             return $errors;
         }
 
- 
+
         /*
         * Return the number of active users in Goteo
         */
@@ -4056,7 +4068,7 @@ namespace Goteo\Model {
         }
 
         /*
-        * Return the owners gender in matchfunding calls 
+        * Return the owners gender in matchfunding calls
         */
 
         static public function getMatchfundingOwnersGender() {
@@ -4080,7 +4092,7 @@ namespace Goteo\Model {
             }
 
             return ['percent_male' => $percent_male, 'percent_female' => $percent_female ];
-            
+
         }
 
     }

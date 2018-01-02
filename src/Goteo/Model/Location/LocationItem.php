@@ -23,6 +23,7 @@ use Goteo\Application\Config;
  */
 abstract class LocationItem extends \Goteo\Core\Model implements LocationInterface  {
     protected $Table; // this needs to be overwritten (MySQL Table) by the implementation
+    protected static $Table_static; // this needs to be overwritten (MySQL Table) by the implementation
     public
         $method, // latitude,longitude obtaining method
                  // ip      = auto detection from ip,
@@ -297,6 +298,31 @@ abstract class LocationItem extends \Goteo\Core\Model implements LocationInterfa
         // empty if no longitude/latitude
         if(is_null($location->latitude) || is_null($location->longitude)) return array();
 
+        $parts = self::getSQLFilterParts($location, $distance, $locable_only);
+        extract($parts);
+        $sql = "SELECT id, latitude, longitude, method, locable, city, region, country, country_code, info, modified,
+                $distance AS Distance
+                FROM ($firstcut) AS FirstCut
+                WHERE $where
+                ORDER BY Distance
+                LIMIT $offset,$limit";
+        // die(\sqldbg($sql, $params));
+        $ret = array();
+        $clas = get_called_class();
+        if($query = $clas::query($sql, $params)) {
+            foreach ($query->fetchAll(\PDO::FETCH_CLASS, $clas) as $ob) {
+                $key = (float)$ob->Distance;
+                while(array_key_exists((string)$key, $ret)) {
+                    $key = (float)$key + 0.001;
+                }
+                $ret[(string)$key] = $ob;
+            }
+        }
+
+        return $ret;
+    }
+
+    static public function getSQLFilterParts(LocationInterface $location, $distance = 100, $locable_only = true) {
         // Creating a square "first cut" to not do the calculation over the full table
 
         $lat = $location->latitude;  // latitude of centre of bounding circle in degrees
@@ -311,50 +337,36 @@ abstract class LocationItem extends \Goteo\Core\Model implements LocationInterfa
         $minLon = $lon - rad2deg($distance/$R/cos(deg2rad($lat)));
 
         $params = array(
-            ':lat'    => deg2rad($lat),
-            ':lon'    => deg2rad($lon),
-            ':minLat' => $minLat,
-            ':minLon' => $minLon,
-            ':maxLat' => $maxLat,
-            ':maxLon' => $maxLon,
-            ':rad'    => $distance,
-            ':R'      => $R,
-            ':id'     => $location->id
+            ':location_lat'    => deg2rad($lat),
+            ':location_lon'    => deg2rad($lon),
+            ':location_minLat' => $minLat,
+            ':location_minLon' => $minLon,
+            ':location_maxLat' => $maxLat,
+            ':location_maxLon' => $maxLon,
+            ':location_rad'    => $distance,
+            ':location_R'      => $R
         );
 
-        $clas = get_called_class();
-        $instance = new $clas;
-        $table = $instance->getTable();
-        $firstCut = "SELECT id, latitude, longitude, method, locable, city, region, country, country_code, info, modified
-                    FROM $table
-                    WHERE latitude BETWEEN :minLat AND :maxLat
-                      AND longitude BETWEEN :minLon AND :maxLon";
+        $table = self::getTableStatic();
+        $firstCutWhere = "$table.latitude BETWEEN :location_minLat AND :location_maxLat
+                      AND $table.longitude BETWEEN :location_minLon AND :location_maxLon";
         if($locable_only) {
-            $firstCut .= ' AND locable = 1';
+            $firstCutWhere .= " AND $table.locable = 1";
         }
-        if(get_class($location) === $clas) {
-            $firstCut .= ' AND id != :id';
-        }
-
-        $sql = "SELECT id, latitude, longitude, method, locable, city, region, country, country_code, info, modified,
-                ACOS(SIN(:lat)*SIN(RADIANS(latitude)) + COS(:lat)*COS(RADIANS(latitude))*COS(RADIANS(longitude)-:lon)) * :R AS Distance
-                FROM ($firstCut) AS FirstCut
-                WHERE ACOS(SIN(:lat)*SIN(RADIANS(latitude)) + COS(:lat)*COS(RADIANS(latitude))*COS(RADIANS(longitude)-:lon)) * :R < :rad
-                ORDER BY Distance
-                LIMIT $offset,$limit";
-        // echo $sql;
-        $ret = array();
-
-        if($query = $clas::query($sql, $params)) {
-            foreach ($query->fetchAll(\PDO::FETCH_CLASS, $clas) as $ob) {
-                $key = (float)$ob->Distance;
-                while(array_key_exists((string)$key, $ret)) {
-                    $key = (float)$key + 0.001;
-                }
-                $ret[(string)$key] = $ob;
-            }
+        if($location->id && get_class($location) === $clas) {
+            $firstCutWhere .= ' AND $table.id != :location_id';
+            $params[':location_id'] = $location->id;
         }
 
-        return $ret;
+        $firstCut = "SELECT $table.id, $table.latitude, $table.longitude, $table.method, $table.locable, $table.city, $table.region, $table.country, $table.country_code, $table.info, $table.modified
+                    FROM $table
+                    WHERE $firstCutWhere";
+        return [
+            'distance' => 'ACOS(SIN(:location_lat)*SIN(RADIANS(latitude)) + COS(:location_lat)*COS(RADIANS(latitude))*COS(RADIANS(longitude)-:location_lon)) * :location_R',
+            'params' => $params,
+            'firstcut' => $firstCut,
+            'firstcut_where' => $firstCutWhere,
+            'where' => 'ACOS(SIN(:location_lat)*SIN(RADIANS(latitude)) + COS(:location_lat)*COS(RADIANS(latitude))*COS(RADIANS(longitude)-:location_lon)) * :location_R < :location_rad'
+        ];
     }
 }

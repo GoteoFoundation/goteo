@@ -219,7 +219,6 @@ class ProjectTest extends TestCase {
         $this->assertEquals($widget->id, $id);
         $this->assertInstanceOf('\Goteo\Model\Image', $widget->image);
 
-
         return $project;
     }
     /**
