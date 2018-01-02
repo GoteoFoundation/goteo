@@ -56,23 +56,20 @@ class DuplicateInvestMatcherProcessorTest extends TestCase {
 
             self::$user_data[$i]['ob'] = $uob;
             if(isset($user['pool'])) {
+
+                echo "\nSetting user's pool [{$user[userid]}]";
+                Matcher::query("REPLACE invest (`user`, amount, status, method, invested, charged, pool) VALUES (:user, :amount, :status, 'dummy', NOW(), NOW(), 1)", [':user' => $user['userid'], ':amount' => $user['pool'], ':status' => Invest::STATUS_TO_POOL]);
+
+                Matcher::query("REPLACE user_pool (`user`, amount) VALUES (:user, :amount)", [':user' => $user['userid'], ':amount' => $user['pool']]);
+
+                $this->assertEquals($user['pool'], $uob->getPool()->amount);
+
                 $this->assertInstanceOf('\Goteo\Model\Matcher', $matcher->addUsers($uob));
             }
 
             $total += $user['pool'];
         }
-        // Forcing false pool amount in users (savin matcher object reset these values)
-        foreach(self::$user_data as $i => $user) {
-            if(!isset($user['pool'])) continue;
-            echo "\nSetting user's pool [{$user[userid]}]";
-            $sql = "REPLACE user_pool (`user`, amount) VALUES (:user, :amount)";
-            $values = [':user' => $user['userid'], ':amount' => $user['pool']];
-            // echo \sqldbg($sql, $values);
-            Matcher::query($sql, $values);
-            $this->assertEquals($user['pool'], $user['ob']->getPool()->amount);
-        }
 
-        $matcher->amount = 0;
         $this->assertEquals($total, $matcher->getTotalAmount());
         $this->assertGreaterThan(0, $matcher->getTotalAmount());
         return $matcher;
@@ -255,6 +252,7 @@ class DuplicateInvestMatcherProcessorTest extends TestCase {
     public function testCleanUsers() {
         foreach(self::$user_data as $user) {
             echo "\nDeleting user [{$user[userid]}]";
+            Matcher::query("DELETE FROM invest WHERE `user` = ?", $user['userid']);
             Matcher::query("DELETE FROM user_pool WHERE `user` = ?", $user['userid']);
             $user['ob']->dbDelete();
             $this->assertEquals(0, Matcher::query("SELECT COUNT(*) FROM `user` WHERE id = ?", $user['userid'])->fetchColumn(), "Unable to delete user [{$user[userid]}]. Please delete id manually");

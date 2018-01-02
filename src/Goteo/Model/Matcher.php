@@ -167,12 +167,18 @@ class Matcher extends \Goteo\Core\Model {
 
         if(!$this->created) $this->created = date('Y-m-d');
 
-        $this->used = $this->calculateUsedAmount();
-        $this->amount = $this->calculatePoolAmount();
-        $this->projects = $this->calculateProjects();
 
         $fields = ['name', 'logo', 'lang', 'owner', 'terms', 'processor', 'vars', 'amount', 'used', 'crowd', 'active', 'projects', 'created'];
         try {
+            // Update pool amounts
+            foreach($this->getUserPools() as $pool) {
+                $pool->calculate()->save($errors);
+            }
+
+            $this->used = $this->calculateUsedAmount();
+            $this->amount = $this->calculatePoolAmount() + $this->calculateUsedAmount();
+            $this->projects = $this->calculateProjects();
+
             if(empty($this->modified_at)) {
                 $this->modified_at = date('Y-m-d H:i:s');
                 $fields[] = 'id';
@@ -182,10 +188,6 @@ class Matcher extends \Goteo\Core\Model {
                 $this->dbUpdate($fields);
             }
 
-            // Update pool amounts
-            foreach($this->getUserPools() as $pool) {
-                $pool->calculate()->save($errors);
-            }
 
             return true;
         }
@@ -335,7 +337,8 @@ class Matcher extends \Goteo\Core\Model {
      */
     public function getTotalAmount() {
         if(empty($this->amount)) {
-            $this->amount = $this->calculatePoolAmount();
+            // Pool reflects the amount still available, not the total
+            $this->amount = $this->calculatePoolAmount() + $this->calculateUsedAmount();
         }
         return $this->amount;
     }
