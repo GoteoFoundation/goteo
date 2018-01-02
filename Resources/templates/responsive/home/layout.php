@@ -33,7 +33,7 @@ $this->section('content');
           $('.animate-number').animateNumber({
             decimal: '<?= $this->get_currency('dec') ?>',
             thousand: '<?= $this->get_currency('thou') ?>',
-            steps: 40
+            steps: 30
           });
 
           $('.fade').slick({
