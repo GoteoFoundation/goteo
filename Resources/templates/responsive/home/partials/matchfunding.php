@@ -24,7 +24,8 @@
     </div>
 
 
-    <div class="fluid-container details-container" id="matchfunding-advantages">
+    <!-- Matchfunding call-to-action -->
+    <div class="fluid-container matchfunding-call-to-action" id="matchfunding-advantages">
         <div class="container">
             <div class="row call-action">
                 <div class="col-sm-9">
@@ -39,6 +40,12 @@
                     <a href="" class="btn btn-white"><?= $this->text('QUIERO HACER MATCH') ?></a>
                 </div>
             </div>
+        </div>
+    </div>
+
+    <!-- Details module -->
+    <div class="fluid-container details-container">
+        <div class="container">
             <div class="row details-title">
                 <div class="col-xs-12">
                     <h2 class="title text center">

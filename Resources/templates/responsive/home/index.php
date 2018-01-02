@@ -2,7 +2,7 @@
 
 <?php $this->section('sidebar-header') ?>
     <span class="header-title">
-    	<?= $this->text('home-menu-sidebar-header-title') ?>
+    	<?= $this->text('home-menu-toggle-label') ?>
     </span>
 <?php $this->replace() ?>
 
