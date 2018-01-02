@@ -140,14 +140,16 @@
                 </div>
                 <div class="col-sm-9 col-md-5">
                     <div class="title">
-                    Lorem ipsum dolor
+                    <?= $this->text('home-foundation-team-title') ?>
                     </div>
                     <div class="description">
-                        Lorem ipsum dolor sit amet consectetur
+                        <?= $this->text('home-foundation-team-description') ?>
                     </div>
                 </div>
                 <div class="col-sm-3 col-md-2 col-button">
-                    <a href="https://fundacion.goteo.org/donaciones/" target="_blank" class="btn btn-white">POR QUÉ DONAR</a>
+                    <a href="https://fundacion.goteo.org/donaciones/" target="_blank" class="btn btn-white">
+                        <?= $this->text('home-foundation-team-action') ?>
+                    </a>
                 </div>
             </div>
         </div>
@@ -161,19 +163,19 @@
             </div>
 
             <div class="row impact-data">
-                <div class="col-sm-4 col-md-2 col-md-offset-3 item">
+                <div class="col-sm-4 col-md-4 item">
                     <?= $this->stats->getAdvisedProjects() ?>
                     <div class="description">
                         <?= $this->text('home-adventages-impact-data-advised-projects') ?>
                     </div>
                 </div>
-                <div class="col-sm-4 col-md-2 item">
+                <div class="col-sm-4 col-md-4 item">
                     1042
                     <div class="description">
                         <?= $this->text('home-adventages-impact-data-workshops-participants') ?>
                     </div>
                 </div>
-                <div class="col-sm-4 col-md-2 item">
+                <div class="col-sm-4 col-md-4 item">
                     <?= $this->stats->getFundedProjects() ?>
                     <div class="description">
                         <?= $this->text('home-adventages-impact-data-funded-projects') ?>

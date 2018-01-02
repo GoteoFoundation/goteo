@@ -79,14 +79,14 @@
             <div class="row call-action">
                 <div class="col-sm-9">
                     <div class="title">
-                        Join the moviment
+                        <?= $this->text('home-matchfunding-call-to-action-title') ?>
                     </div>
                     <div class="description">
-                        Únete a nuestra red de ayuntamientos y fundaciones.
+                        <?= $this->text('Únete a nuestra red de ayuntamientos, fundaciones e instituciones') ?>
                     </div>
                 </div>
                 <div class="col-sm-3 col-button">
-                    <a href="" class="btn btn-white">QUIERO HACER MATCH</a>
+                    <a href="" class="btn btn-white"><?= $this->text('QUIERO HACER MATCH') ?></a>
                 </div>
             </div>
         </div>
@@ -100,19 +100,19 @@
                 <?= $this->text('home-advantages-impact-data-title') ?>
             </div>
             <div class="row impact-data">
-                <div class="col-sm-4 col-md-2 col-md-offset-3 item">
+                <div class="col-sm-4 col-md-4  item">
                     <?= amount_format($this->stats->getMatchfundingRaised(), 0, false) ?>
                     <div class="description">
                         <?= $this->text('home-adventages-impact-data-matchfunding-raised') ?>
                     </div>
                 </div>
-                <div class="col-sm-3 col-md-2 item">
+                <div class="col-sm-3 col-md-4 item">
                      <?= amount_format($this->stats->getMatchfundingSucessfulPercentage(), 0, true).'%' ?>
                     <div class="description">
                         <?= $this->text('home-adventages-impact-data-success-projects-matchfunding') ?>
                     </div>
                 </div>
-                <div class="col-sm-5 col-md-3 item gender">
+                <div class="col-sm-5 col-md-4 item gender">
                      <?php $gender=$this->stats->getMatchfundingOwnersGender(); ?>
                      <strong>
                         <i class="fa fa-venus" aria-hidden="true"></i>
