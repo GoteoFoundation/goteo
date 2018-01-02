@@ -75,19 +75,19 @@
                             <?= $this->text('home-advantages-impact-data-title') ?>
                     </div>
                     <div class="row impact-data">
-                        <div class="col-sm-4 col-md-2 col-md-offset-3 item">
+                        <div class="col-sm-4 col-md-4 item">
                             <span class="animate-number"><?= amount_format($this->stats->getTotalUsers(), 0, true) ?></span>
                             <div class="description">
                               <?= $this->text('home-adventages-impact-data-users-number') ?>
                             </div>
                         </div>
-                        <div class="col-sm-4 col-md-2 item">
+                        <div class="col-sm-4 col-md-4 item">
                             <span class="animate-number"><?= amount_format($this->stats->getSucessfulPercentage(), 1, true).'%' ?></span>
                             <div class="description">
                               <?= $this->text('home-advantages-impact-data-success-projects-label') ?>
                             </div>
                         </div>
-                        <div class="col-sm-4 col-md-2 item">
+                        <div class="col-sm-4 col-md-4 item">
                              <span class="animate-number"><?= amount_format($this->stats->getTotalMoneyFunded(), 0, false) ?></span>
                             <div class="description">
                               <?= $this->text('home-advantages-impact-data-money-label') ?>
@@ -176,19 +176,19 @@
                             <?= $this->text('home-advantages-impact-data-title') ?>
                     </div>
                     <div class="row impact-data">
-                        <div class="col-sm-4 col-md-2 col-md-offset-3 item">
+                        <div class="col-sm-4 col-md-4 item">
                             <span class="animate-number"><?= amount_format($this->stats->getTotalMoneyFunded(), 0, false) ?></span>
                             <div class="description">
                               <?= $this->text('home-advantages-impact-data-money-label') ?>
                             </div>
                         </div>
-                        <div class="col-sm-4 col-md-2 item">
+                        <div class="col-sm-4 col-md-4 item">
                             <span class="animate-number"><?= amount_format($this->stats->getSucessfulPercentage(), 1, true).'%' ?></span>
                             <div class="description">
                                 <?= $this->text('home-advantages-impact-data-success-projects-label') ?>
                             </div>
                         </div>
-                        <div class="col-sm-4 col-md-2 item">
+                        <div class="col-sm-4 col-md-4 item">
                             <span class="animate-number"><?= amount_format($this->stats->getTotalInvestAverage(), 1, false) ?></span>
                             <div class="description">
                               <?= $this->text('home-advantages-impact-data-invest-avg-label') ?>

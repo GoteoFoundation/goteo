@@ -100,13 +100,13 @@
                 <?= $this->text('home-advantages-impact-data-title') ?>
             </div>
             <div class="row impact-data">
-                <div class="col-sm-4 col-md-2 col-md-offset-3 item">
+                <div class="col-sm-4 col-md-4 item">
                     <span class="animate-number"><?= amount_format($this->stats->getMatchfundingRaised(), 0, false) ?></span>
                     <div class="description">
                         <?= $this->text('home-adventages-impact-data-matchfunding-raised') ?>
                     </div>
                 </div>
-                <div class="col-sm-3 col-md-2 item">
+                <div class="col-sm-3 col-md-4 item">
                      <span class="animate-number"><?= amount_format($this->stats->getMatchfundingSucessfulPercentage(), 0, true).'%' ?></span>
                     <div class="description">
                         <?= $this->text('home-adventages-impact-data-success-projects-matchfunding') ?>

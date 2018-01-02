@@ -163,19 +163,19 @@
             </div>
 
             <div class="row impact-data">
-                <div class="col-sm-4 col-md-2 col-md-offset-3 item">
+                <div class="col-sm-4 col-md-4 item">
                     <span class="animate-number"><?= $this->stats->getAdvisedProjects() ?></span>
                     <div class="description">
                         <?= $this->text('home-adventages-impact-data-advised-projects') ?>
                     </div>
                 </div>
-                <div class="col-sm-4 col-md-2 item">
+                <div class="col-sm-4 col-md-4 item">
                     <span class="animate-number">1042</span>
                     <div class="description">
                         <?= $this->text('home-adventages-impact-data-workshops-participants') ?>
                     </div>
                 </div>
-                <div class="col-sm-4 col-md-2 item">
+                <div class="col-sm-4 col-md-4 item">
                     <span class="animate-number"><?= $this->stats->getFundedProjects() ?></span>
                     <div class="description">
                         <?= $this->text('home-adventages-impact-data-funded-projects') ?>
