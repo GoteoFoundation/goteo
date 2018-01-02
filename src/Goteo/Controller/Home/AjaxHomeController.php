@@ -34,34 +34,21 @@ class AjaxHomeController extends \Goteo\Core\Controller {
     public function projectsFilterAction(Request $request)
     {
 
-        $filter = $request->query->get('filter'); 
-        $latitude = $request->query->get('latitude'); 
-        $longitude = $request->query->get('longitude'); 
+        $filter = $request->query->get('filter');
+        $latitude = $request->query->get('latitude');
+        $longitude = $request->query->get('longitude');
         if ($request->isMethod('post')) {
-            $filter = $request->request->get('filter'); 
-            $latitude = $request->request->get('latitude'); 
-            $longitude = $request->request->get('longitude'); 
+            $filter = $request->request->get('filter');
+            $latitude = $request->request->get('latitude');
+            $longitude = $request->request->get('longitude');
 
         }
 
         if($filter=='near')
         {
-            // $location=UserLocation::createByIp(null, $request->getClientIp());
-
-            // if($location==false)
-                $location=new UserLocation([ 'latitude' => $latitude, 'longitude' => $longitude ]);
-
-            //$projects = ProjectLocation::getNearby(UserLocation::createByIp(null, $request->getClientIp()), 1);
-            $projects_locations = ProjectLocation::getNearby($location, 100, 0, 200);
-
-            $projects=[];
-
-            foreach($projects_locations as $project_location)
-            {
-                $project= Project::get($project_location->id);
-                if($project->status==Project::STATUS_IN_CAMPAIGN)
-                    $projects[] = $project;
-            }
+            // Nearby defined as 100Km distance
+            $location = new UserLocation([ 'latitude' => $latitude, 'longitude' => $longitude, 'radius' => 100 ]);
+            $projects = Project::getList(['location' => $location, 'status' => Project::STATUS_IN_CAMPAIGN]);
         }
 
         else

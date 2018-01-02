@@ -70,10 +70,10 @@ class Stats {
 	}
 
 	public function getMatchfundingRaised() {
-		$calls_raised=Call::getTotalRaised();
-		$matcher_raised=Matcher::getTotalRaised();
+		$calls_raised = Call::getTotalRaised();
+		$matcher_raised = Matcher::getTotalRaised();
 
-		return $calls_raised+$matcher_raised;
+		return $calls_raised + $matcher_raised;
 	}
 
 	public function getMatchfundingSucessfulPercentage() {

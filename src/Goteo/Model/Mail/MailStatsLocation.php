@@ -13,6 +13,7 @@ namespace Goteo\Model\Mail;
 class MailStatsLocation extends \Goteo\Model\Location\LocationItem
 {
     protected $Table = 'mail_stats_location';
+    protected static $Table_static = 'mail_stats_location';
     public $mail_stats;
 
     public function __construct()

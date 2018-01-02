@@ -386,7 +386,7 @@ class S3File extends BaseFile implements FileInterface {
         $info = $this->link->getObjectInfo($this->bucket, $remote);
 
         while($info !== false) {
-            $name = preg_replace_callback( '/^(.+?)(_?)(\d*)(\.[^.]+)?$/', function($m){
+            $name = preg_replace_callback( '/^(.+?)(\-?)(\d*)(\.[^.]+)?$/', function($m){
                 return $m[1] .'-' . ((int)$m[3]+1) . $m[4];
             }, $name );
             $remote = $this->get_path($dir . $name);
