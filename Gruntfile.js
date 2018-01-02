@@ -26,7 +26,7 @@ GOTEO = {
 
 module.exports = function(grunt) {
     if( ! grunt.file.exists(GOTEO.configFile)) {
-        grunt.log.fail( '################################################\n' +
+        grunt.fail.fatal( '################################################\n' +
                         'Please configure a settings file with this name:\n' +
                         GOTEO.configFile + '\n\n' +
                         'You can use the config/demo-settings.yml as a sample file\n' +
@@ -46,21 +46,25 @@ module.exports = function(grunt) {
         host = host.substring(host.indexOf('//') + 2);
 
         GOTEO.localHost = host;
-        grunt.log.warn('Using Host from settings: ' + host);
+        grunt.log.ok('Using Host from settings: ' + host);
     }
 
     var port = parseInt(urlParts[urlParts.length - 1], 10);
     if(port) {
         GOTEO.localPort = port;
-        grunt.log.warn('Using local port from settings: ' + port);
+        grunt.log.ok('Using local port from settings: ' + port);
     }
 
-    var livePort = parseInt(config.livePort, 10);
+    var livePort = parseInt(config.plugins['goteo-dev'].liveport, 10);
     if(livePort) {
         GOTEO.livePort = livePort;
-        grunt.log.warn('Using livePort from settings: ' + livePort);
+        grunt.log.ok('Using livePort from settings: ' + livePort);
     }
 
+    var dir = process.cwd();
+    grunt.log.ok('CURRENT DIR',dir);
+
+    GOTEO.dir = dir;
     // Project configuration.
     grunt.initConfig({
         // Metadata.
@@ -100,7 +104,14 @@ module.exports = function(grunt) {
     //  The server task is used to "start a server". If you are using php's built-in
     //  web server for development testing, it will be started up. We'll start watching
     //  any files that need to be watched for changes, and open a browser to our dev URL
-
+    grunt.registerTask('nginx_prepare', function() {
+        ['/var/php/tmp/nginx/client_temp', '/var/php/tmp/nginx/cache', '/var/php/sessions'].forEach(function(d) {
+            grunt.file.mkdir(dir + d);
+            if( !grunt.file.exists(dir + d)) {
+                grunt.fail.fatal('Not existing dir: '+ dir + d);
+            }
+        });
+    });
     grunt.registerTask('serve', function (target) {
         if (target === 'dist') {
             return grunt.task.run([
@@ -113,6 +124,21 @@ module.exports = function(grunt) {
                 'clean:server',
                 'build:devel',
                 'php:dist:keepalive']);
+        }
+
+        if (target === 'nginx') {
+
+            return grunt.task.run([
+                'clean:server',
+                'copy:devel',
+                'copy:plugins:devel',
+                'sass:devel',
+                'nginx_prepare',
+                'run:fpm',
+                'run:nginx',
+                'run:fpmlog',
+                'watch'
+            ]);
         }
 
         grunt.task.run([
@@ -139,7 +165,6 @@ module.exports = function(grunt) {
         'copy:dist',
         'copy:plugins:dist',
         'copy:fonts',
-        'copy:fonts2',
         'sass:dist'
     ]);
 
@@ -164,7 +189,6 @@ module.exports = function(grunt) {
         'copy:dist', // copy from to dist as well
         'copy:plugins:dist',
         'copy:fonts',
-        'copy:fonts2',
         'sass:dist',
 
         'useminPrepare',

@@ -46,6 +46,12 @@ it:
     public: true
     locale: it_IT
     fallback: en
+he:
+    name: עברית
+    short: HEB
+    public: false
+    locale: he_IL
+    fallback: en
 nl:
     name: Dutch
     short: NL

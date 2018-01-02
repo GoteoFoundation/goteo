@@ -9,7 +9,7 @@
 <script src="<?= SRC_URL ?>/assets/vendor/clipboard/dist/clipboard.min.js"></script>
 <script src="<?= SRC_URL ?>/assets/vendor/moment/min/moment-with-locales.min.js"></script>
 <script src="<?= SRC_URL ?>/assets/vendor/eonasdan-bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min.js"></script>
-<script src="<?= SRC_URL ?>/assets/vendor/d3/d3.v3.min.js"></script>
+<script src="<?= SRC_URL ?>/assets/vendor/d3/d3.min.js"></script>
 <script src="<?= SRC_URL ?>/assets/vendor/footable/compiled/footable.min.js"></script>
 
 <!-- Goteo utils: Debug functions, Session keeper -->
@@ -30,6 +30,7 @@ var goteo = {};
 <!-- build:js assets/js/all.js -->
 <script type="text/javascript" src="<?= SRC_URL ?>/assets/js/goteo.js"></script>
 <script type="text/javascript" src="<?= SRC_URL ?>/assets/js/jquery.animate-css.js"></script>
+<script type="text/javascript" src="<?= SRC_URL ?>/assets/js/jquery.animate-number.js"></script>
 <script type="text/javascript" src="<?= SRC_URL ?>/assets/js/menu.js"></script>
 <script type="text/javascript" src="<?= SRC_URL ?>/assets/js/sidebar.js"></script>
 <script type="text/javascript" src="<?= SRC_URL ?>/assets/js/widgets.js"></script>
