@@ -30,11 +30,11 @@
                         </div>
                         <div class="author" >
                             - David Cabo / Director Fundación Civio
-                        </div> 
-                    </div>   
+                        </div>
+                    </div>
 
 
-                </div>   
+                </div>
             </div>
             <div class="row">
                 <div class="col-md-6">
@@ -58,17 +58,17 @@
                         </div>
                         <div class="author">
                             - Denis Itxaso / Diputado de Cultura en Guipúzcoa
-                        </div>  
-                    </div>                  
-                </div>   
-            </div>    
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
 
         <div class="row details" id="foundation-advantages">
             <div class="col-sm-12 col-md-4 adventage">
                 <div class="title">
                 	<img src="/assets/img/home/graph_2.png" >
-                	<span class="text">                				
+                	<span class="text">
                 	<?= $this->text('home-foundation-stats-title') ?>
                 	</span>
                 </div>
@@ -89,7 +89,7 @@
             <div class="col-sm-12 col-md-4 adventage">
                 <div class="title">
                 	<img src="/assets/img/home/api.png" >
-                	<span class="text">                				
+                	<span class="text">
                 	<?= $this->text('home-foundation-api-title') ?>
                 	</span>
                 </div>
@@ -100,7 +100,7 @@
                    <?= $this->text('home-foundation-api-more-description') ?>
                 </div>
                 <div class="action">
-                	<a href="https//developers.goteo.org" >
+                	<a href="https://developers.goteo.org" >
 	                	<?= $this->text('home-foundation-api-action') ?>
 	                	<span class="icon glyphicon glyphicon glyphicon-menu-right" aria-hidden="true"></span>
                 	</a>
@@ -109,7 +109,7 @@
             <div class="col-sm-12 col-md-4 adventage">
                 <div class="title">
                 	<img src="/assets/img/home/goteo_logo.png" >
-                	<span class="text">                				
+                	<span class="text">
                 		<?= $this->text('home-foundation-goteo-values-title') ?>
                 	</span>
                 </div>
@@ -164,19 +164,19 @@
 
             <div class="row impact-data">
                 <div class="col-sm-4 col-md-4 item">
-                    <?= $this->stats->getAdvisedProjects() ?>
+                    <span class="animate-number"><?= $this->stats->getAdvisedProjects() ?></span>
                     <div class="description">
                         <?= $this->text('home-adventages-impact-data-advised-projects') ?>
                     </div>
                 </div>
                 <div class="col-sm-4 col-md-4 item">
-                    1042
+                    <span class="animate-number">1042</span>
                     <div class="description">
                         <?= $this->text('home-adventages-impact-data-workshops-participants') ?>
                     </div>
                 </div>
                 <div class="col-sm-4 col-md-4 item">
-                    <?= $this->stats->getFundedProjects() ?>
+                    <span class="animate-number"><?= $this->stats->getFundedProjects() ?></span>
                     <div class="description">
                         <?= $this->text('home-adventages-impact-data-funded-projects') ?>
                     </div>

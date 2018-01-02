@@ -125,18 +125,6 @@ module.exports = function(grunt) {
                 'build:devel',
                 'php:dist:keepalive']);
         }
-        if (target === 'nginx') {
-            return grunt.task.run([
-                'clean:server',
-                'copy:devel',
-                'copy:plugins:devel',
-                'sass:devel',
-                'run:fpm',
-                'run:nginx',
-                'watch'
-                ]);
-        }
-
 
         if (target === 'nginx') {
 
