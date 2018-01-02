@@ -101,19 +101,19 @@
             </div>
             <div class="row impact-data">
                 <div class="col-sm-4 col-md-4 item">
-                    <span class="animate-number"><?= amount_format($this->stats->getMatchfundingRaised(), 0, false) ?></span>
+                    <span class="animate-number"><?= amount_format($this->stats->matchfundingRaised(), 0, false) ?></span>
                     <div class="description">
                         <?= $this->text('home-adventages-impact-data-matchfunding-raised') ?>
                     </div>
                 </div>
                 <div class="col-sm-3 col-md-4 item">
-                     <span class="animate-number"><?= amount_format($this->stats->getMatchfundingSucessfulPercentage(), 0, true).'%' ?></span>
+                     <span class="animate-number"><?= amount_format($this->stats->matchfundingSucessfulPercentage(), 0, true).'%' ?></span>
                     <div class="description">
                         <?= $this->text('home-adventages-impact-data-success-projects-matchfunding') ?>
                     </div>
                 </div>
                 <div class="col-sm-5 col-md-4 item gender">
-                     <?php $gender=$this->stats->getMatchfundingOwnersGender(); ?>
+                     <?php $gender=$this->stats->matchfundingOwnersGender(); ?>
                      <strong>
                         <i class="fa fa-venus" aria-hidden="true"></i>
                         <span class="number animate-number"><?= $gender['percent_female'] ?></span><span class="percent">%</span>
