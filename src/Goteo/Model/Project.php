@@ -3667,7 +3667,7 @@ namespace Goteo\Model {
             $limit = (int) $limit;
             // la select
 
-            $sql_fields = ['id', 'status', 'contract_name', 'contract_nif', 'contract_email', 'contract_entity', 'contract_birthdate', 'entity_office', 'entity_name', 'entity_cif', 'phone', 'address', 'zipcode', 'location', 'country', 'secondary_address', 'post_address', 'post_zipcode', 'post_location', 'post_country', 'name', 'subtitle', 'lang', 'currency', 'currency_rate', 'description', 'motivation', 'video', 'video_usubs', 'about', 'goal', 'related', 'spread', 'execution_plan', 'execution_plan_url', 'sustainability_model', 'sustainability_model_url', 'reward', 'keywords', 'media', 'media_usubs', 'currently', 'project_location', 'scope', 'resource', 'comment', 'analytics_id', 'facebook_pixel', 'social_commitment', 'social_commitment_description',
+            $sql_fields = ['id', 'status', 'image', 'contract_name', 'contract_nif', 'contract_email', 'contract_entity', 'contract_birthdate', 'entity_office', 'entity_name', 'entity_cif', 'phone', 'address', 'zipcode', 'location', 'country', 'secondary_address', 'post_address', 'post_zipcode', 'post_location', 'post_country', 'name', 'subtitle', 'lang', 'currency', 'currency_rate', 'description', 'motivation', 'video', 'video_usubs', 'about', 'goal', 'related', 'spread', 'execution_plan', 'execution_plan_url', 'sustainability_model', 'sustainability_model_url', 'reward', 'keywords', 'media', 'media_usubs', 'currently', 'project_location', 'scope', 'resource', 'comment', 'analytics_id', 'facebook_pixel', 'social_commitment', 'social_commitment_description',
                 // extra
                 'draft', 'updated',
                 // from user table
@@ -3700,6 +3700,8 @@ namespace Goteo\Model {
                 $proj->user->name = $proj->user_name;
                 $proj->user->email = $proj->user_email;
                 $proj->user->lang = $proj->user_lang;
+
+                $proj->image = Image::get($proj->image);
 
                 // extra conf
                 $proj->days_total = ($proj->one_round) ? $proj->days_round1 : ( $proj->days_round1 + $proj->days_round2 );
