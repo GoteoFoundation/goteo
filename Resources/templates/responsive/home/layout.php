@@ -70,7 +70,7 @@ $this->section('content');
               slidesToScroll: 0,
               centerMode: true,
               centerPadding: '150px',
-              infinite: false,
+              infinite: true,
               responsive: [
                 {
                   breakpoint: 769,
@@ -136,7 +136,7 @@ $this->section('content');
 
           function initSlickChannels() {
             $('.slider-channels').slick({
-              infinite: false,
+              infinite: true,
               slidesToShow: 3,
               slidesToScroll: 1,
               arrows: true,
