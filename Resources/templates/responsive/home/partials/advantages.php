@@ -98,7 +98,7 @@
                 	<div class="row details">
                 		<div class="col-sm-12 col-md-3 adventage">
                 			<div class="title">
-                                <span class="icon icon-projects icon-3x"></span>
+                                <span class="icon icon-project sicon-3x"></span>
                                 <span class="text">
                                     <?= $this->text('home-adventages-dashboard-title') ?>
                                 </span>
@@ -107,7 +107,7 @@
                                 <?= $this->text('home-adventages-dashboard-description') ?>
                             </div>
                             <div class="action">
-                                <a href="/calculadora-fiscal" >
+                                <a data-toggle="modal" data-target="#DashboardVideoModal" href="#" >
                                     <?= $this->text('home-advantages-regular-action') ?>
                                     <span class="icon glyphicon glyphicon glyphicon-menu-right" aria-hidden="true"></span>
                                 </a>
