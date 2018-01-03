@@ -209,31 +209,53 @@ $this->section('content');
           });
 
           $(".auto-update-projects").on('click', ".filters li", function (e) {
-
-            $(".auto-update-projects .filters li").each(function(){
-              $(this).removeClass('active');
-            });
+            e.preventDefault();
+            $(".auto-update-projects .filters li").removeClass('active');
 
             $(this).addClass('active');
 
-            var filter=$(this).data('status');
+            var filter = $(this).data('status');
 
-            var url = '/home/ajax/projects/filtered';
             var drawProjects = function(lat, lng) {
-              $.post(url, { filter: filter, latitude: lat, longitude: lng }, function(result) {
+              var params = { filter: filter, latitude: lat, longitude: lng };
+              console.log('drawProjects', params)
+              $.post('/home/ajax/projects/filtered', params, function(result) {
                  destroySlickProjects();
                  $('#projects-container').html(result.html);
                  initSlickProjects();
                  //$('#projects-container').removeClass('fadeOut').animateCss('fadeIn');
              });
-
             };
-            if(filter=='near')
-            {
-              locator.getLocationFromBrowser(function(success, data) {
-                locator.trace('success: ' + success, data.city, data.region, data.country, data.country_code, data.latitude, data.longitude);
-                drawProjects(data.latitude, data.longitude);
-              });
+
+            if(filter === 'near') {
+              var fallbackUserLocation = function() {
+                // Fallback to existing user location or ip based
+                locator.getUserLocation(function(position, error) {
+                  locator.trace('fallback user location', position, error);
+                  if(position) {
+                    drawProjects(position.latitude, position.longitude);
+                  } else {
+                    console.error('Location not found', error);
+                  }
+                });
+              };
+
+              // Try browser first
+              if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(
+                  function(position) {
+                    locator.trace('browser info:', position.coords);
+                    drawProjects(position.coords.latitude, position.coords.longitude);
+                  },
+                  function(error) {
+                    locator.trace('browser locator error', error);
+                    fallbackUserLocation();
+
+                  });
+              } else {
+                  fallbackUserLocation();
+              }
+
             } else {
                 drawProjects();
             }

@@ -29,6 +29,28 @@ var locator = {
     autocomplete: null
 };
 
+
+locator.getUserLocation = function (callback) {
+    if(typeof callback !== 'function') {
+        callback = function() {};
+    }
+    if(goteo.user_location) {
+        locator.trace('Location already defined', goteo.user_location);
+        callback(goteo.user_location);
+    } else {
+        // get from ip
+        locator.setLocationFromFreegeoip('user', null, function(data, error) {
+            locator.trace('Location from freegeoip', data);
+            if(data) {
+                goteo.user_location = data;
+                callback(data);
+            } else {
+                callback(null, error);
+            }
+        });
+    }
+};
+
 /**
  * Send the data to ws/database
  */
@@ -74,7 +96,7 @@ locator.saveGeolocationData = function (type, item, data) {
 //     }
 // };
 
-locator.setLocationFromFreegeoip = function (type, item) {
+locator.setLocationFromFreegeoip = function (type, item, callback) {
     $.getJSON('//freegeoip.net/json/?callback=?', function(data){
         if(data.latitude && data.longitude) {
             locator.trace('Freegeoip geolocated type:', type, ' item:', item, ' data:', data);
@@ -88,9 +110,14 @@ locator.setLocationFromFreegeoip = function (type, item) {
                 country_code: data.country_code,
                 method: 'ip'
             });
-        }
-        else {
+            if(typeof callback === 'function') {
+                callback(data);
+            }
+        } else {
             locator.trace('Freegeoip error');
+            if(typeof callback === 'function') {
+                callback(null, 'Freegeoip error');
+            }
         }
     });
 };
@@ -557,38 +584,7 @@ locator.setGoogleAutocomplete = function(id, iteration) {
  */
 $(function(){
     // get user current location status, geolocate if needed
-    $.getJSON('/json/geolocate/user', function(data){
-        locator.trace('Current user localization status: ', data);
-
-        //only if user is logged
-        if(data.user) {
-            // Do not annoy users...
-            var use_browser = false;
-            var use_ip = true;
-
-            if(data.success) {
-                //Is located, if method is IP, Try to override by browser coordinates
-                use_ip = false;
-                //Don't annoy if unlocable or method is 'browser' or 'manual', no further actions are required
-                if(!data.location.locable || data.location.method !== 'ip') {
-                    use_browser = false;
-                }
-            }
-
-            if(use_browser) {
-                locator.trace('Trying browser localization');
-                //try the browser for more precision
-                locator.setLocationFromBrowser('user', null, function() {
-                    locator.setLocationFromFreegeoip('user');
-                });
-            }
-            else if(use_ip) {
-                //try google IP locator
-                // locator.setLocationFromGoogle('user');
-                locator.setLocationFromFreegeoip('user');
-            }
-        }
-    });
+    locator.getUserLocation();
 
     //handles all maps and print it
     $('.geo-map').each(function(){

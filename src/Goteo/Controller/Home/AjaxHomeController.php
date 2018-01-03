@@ -46,8 +46,9 @@ class AjaxHomeController extends \Goteo\Core\Controller {
 
         if($filter=='near')
         {
-            // Nearby defined as 100Km distance
-            $location = new UserLocation([ 'latitude' => $latitude, 'longitude' => $longitude, 'radius' => 100 ]);
+            // Nearby defined as 300Km distance
+            // Any LocationInterface will do (UserLocation, ProjectLocation, ...)
+            $location = new UserLocation([ 'latitude' => $latitude, 'longitude' => $longitude, 'radius' => 300 ]);
             $projects = Project::getList(['location' => $location, 'status' => Project::STATUS_IN_CAMPAIGN]);
         }
 
