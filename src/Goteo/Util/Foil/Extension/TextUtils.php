@@ -128,8 +128,8 @@ class TextUtils implements ExtensionInterface
         if($hex{0} === '#') $hex = substr($hex, 1);
         if(strlen($hex) == 3) $hex = $hex{0}.$hex{0}.$hex{1}.$hex{1}.$hex{2}.$hex{2};
 
-        return "#$hex" . dechex(256 * $opacity);
-        // return "rgba(${hex[0]}${hex[1]}, ${hex[2]}${hex[3]}, ${hex[4]}${hex[5]}, $opacity)";
+        // return "#$hex" . dechex(256 * $opacity);
+        return "rgba(${hex[0]}${hex[1]}, ${hex[2]}${hex[3]}, ${hex[4]}${hex[5]}, $opacity)";
     }
 
 }
