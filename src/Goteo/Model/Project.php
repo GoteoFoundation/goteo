@@ -3314,6 +3314,7 @@ namespace Goteo\Model {
                 SELECT
                     project.id AS project,
                     project.name AS name,
+                    project.subtitle AS subtitle,
                     $lang_select,
                     project.status AS status,
                     project.published AS published,
