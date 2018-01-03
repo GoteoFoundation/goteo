@@ -3685,7 +3685,7 @@ namespace Goteo\Model {
                     LEFT JOIN project_conf ON project_conf.project=project.id
                     LEFT JOIN user ON user.id=project.owner
                     ";
-                    
+
             if($count) {
                 // Return count
                 $sql = "SELECT COUNT(project.id)
@@ -3733,7 +3733,6 @@ namespace Goteo\Model {
             }
 
             //echo \sqldbg($sql, $values);print_r($filters);die;
-
 
             $query = self::query($sql, $values);
             foreach ($query->fetchAll(\PDO::FETCH_CLASS, __CLASS__) as $proj) {
