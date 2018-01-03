@@ -3270,7 +3270,7 @@ namespace Goteo\Model {
                 }
                 $order = 'promote.order ASC, name ASC';
             }
-            elseif($filter['type']==='matchfunding'){
+            elseif($filter['type']==='matchfunding') {
                 $where[] = 'project.id IN (
                                 SELECT project
                                 FROM call_project)';
@@ -3486,16 +3486,21 @@ namespace Goteo\Model {
             }
 
             $sqlFilter = "";
-            $sqlConsultantFilter = "";
+            $innerJoin = "";
 
             if ((!empty($filters['consultant'])) && ($filters['consultant'] != -1)) {
                 $sqlFilter .= " AND user_project.user = :consultant";
                 $values[':consultant'] = $filters['consultant'];
-                $sqlConsultantFilter = " INNER JOIN user_project ON user_project.project = project.id";
+                $innerJoin = " INNER JOIN user_project ON user_project.project = project.id";
             }
             if (!empty($filters['multistatus'])) {
                 $sqlFilter .= " AND project.status IN ({$filters['multistatus']})";
             }
+
+            /*if(!empty($filters['draft']))
+            {
+                $sqlFilter .= " AND project.id NOT REGEXP '[0-9a-f]{32}')";
+            }*/
 
             if (is_array($filters['status'])) {
                 $parts = [];
@@ -3507,12 +3512,6 @@ namespace Goteo\Model {
                 }
                 if($parts) $sqlFilter .= " AND project.status IN (" . implode(',', $parts) . ")";
             }
-
-            /*if(!empty($filters['draft']))
-            {
-                $sqlFilter .= " AND project.id NOT REGEXP '[0-9a-f]{32}')";
-            }*/
-
             elseif ($filters['status'] > -1) {
                 $sqlFilter .= " AND project.status = :status";
                 $values[':status'] = $filters['status'];
@@ -3526,13 +3525,14 @@ namespace Goteo\Model {
                 // default valid projects
                 $sqlFilter .= " AND (project.status > 1  OR (project.status = 1 AND project.id NOT REGEXP '[0-9a-f]{32}') )";
             }
+
             if (!empty($filters['owner'])) {
                 $sqlFilter .= " AND project.owner = :owner";
                 $values[':owner'] = $filters['owner'];
             }
             if (!empty($filters['name'])) {
                 $sqlFilter .= " AND project.owner IN ('".implode("','", $owners)."')";
-//                $values[':user'] = "%{$filters['name']}%";
+               // $values[':user'] = "%{$filters['name']}%";
             }
             if (!empty($filters['proj_name'])) {
                 $sqlFilter .= " AND project.name LIKE :name";
@@ -3570,7 +3570,7 @@ namespace Goteo\Model {
             if (!empty($filters['location']) && $filters['location'] instanceOf LocationInterface) {
                 $loc = $filters['location'];
                 $distance = $loc->radius ? $loc->radius : 50; // seasrch in 50 km by default
-                $sqlConsultantFilter .= "INNER JOIN project_location ON project_location.id = project.id";
+                $innerJoin .= "INNER JOIN project_location ON project_location.id = project.id";
                 $location_parts = ProjectLocation::getSQLFilterParts($loc, $distance);
                 $sqlFilter .= " AND ({$location_parts[firstcut_where]})" ;
                 $values = array_merge($values, $location_parts['params']);
@@ -3603,6 +3603,28 @@ namespace Goteo\Model {
 
                 }
 
+            }
+            if(!empty($filters['type'])) {
+                if($filters['type'] === 'promoted') {
+                    // en "promote"
+                    $innerJoin = 'INNER JOIN promote ON promote.project = project.id';
+                    $sqlFilter .= ' AND promote.active = 1';
+                    if(empty($filterss['order'])) {
+                        $filterss['order'] = 'ORDER BY promote.order, oroject.name ASC';
+                    }
+                }
+                elseif($filters['type'] === 'matchfunding') {
+                    $innerJoin = 'LEFT JOIN call_project ON call_project.project = project.id
+                    LEFT JOIN matcher_project ON matcher_project.project_id = project.id';
+                    $sqlFilter = ' AND (!ISNULL(call_project.project) OR !ISNULL(matcher_project.project_id))';
+                }
+                elseif($filters['type'] === 'outdated') {
+                    // los que les quedan 15 dias o menos
+                    $sqlFilter .= ' AND project.days <= 15 AND project.days > 0';
+                    if(empty($filters['order'])) {
+                        $order = 'ORDER BY project.days ASC';
+                    }
+                }
             }
             if (!empty($filters['node'])) {
                 $sqlFilter .= " AND project.node = :node";
@@ -3659,7 +3681,7 @@ namespace Goteo\Model {
                 // Return count
                 $sql = "SELECT COUNT(project.id)
                     $from
-                    $sqlConsultantFilter
+                    $innerJoin
                     WHERE $where";
                 return (int) self::query($sql, $values)->fetchColumn();
             }
@@ -3668,7 +3690,7 @@ namespace Goteo\Model {
             $limit = (int) $limit;
             // la select
 
-            $sql_fields = ['id', 'status', 'image', 'contract_name', 'contract_nif', 'contract_email', 'contract_entity', 'contract_birthdate', 'entity_office', 'entity_name', 'entity_cif', 'phone', 'address', 'zipcode', 'location', 'country', 'secondary_address', 'post_address', 'post_zipcode', 'post_location', 'post_country', 'name', 'subtitle', 'lang', 'currency', 'currency_rate', 'description', 'motivation', 'video', 'video_usubs', 'about', 'goal', 'related', 'spread', 'execution_plan', 'execution_plan_url', 'sustainability_model', 'sustainability_model_url', 'reward', 'keywords', 'media', 'media_usubs', 'currently', 'project_location', 'scope', 'resource', 'comment', 'analytics_id', 'facebook_pixel', 'social_commitment', 'social_commitment_description',
+            $sql_fields = ['id', 'status', 'image', 'contract_name', 'contract_nif', 'contract_email', 'contract_entity', 'contract_birthdate', 'entity_office', 'entity_name', 'entity_cif', 'phone', 'address', 'zipcode', 'location', 'country', 'secondary_address', 'post_address', 'post_zipcode', 'post_location', 'post_country', 'name', 'subtitle', 'lang', 'currency', 'currency_rate', 'description', 'motivation', 'video', 'video_usubs', 'about', 'goal', 'related', 'spread', 'execution_plan', 'execution_plan_url', 'sustainability_model', 'sustainability_model_url', 'reward', 'keywords', 'media', 'media_usubs', 'currently', 'project_location', 'scope', 'resource', 'comment', 'analytics_id', 'facebook_pixel', 'social_commitment', 'social_commitment_description, days',
                 // extra
                 'draft', 'updated',
                 // from user table
@@ -3685,10 +3707,10 @@ namespace Goteo\Model {
 
             if($location_parts) {
                 $sql .= "SELECT {$location_parts[distance]} AS Distance, `" . implode('`,`', $sql_fields) . "`
-                FROM (SELECT $fields,project_location.latitude,project_location.longitude $from $sqlConsultantFilter WHERE $where) as FirstCut
+                FROM (SELECT $fields,project_location.latitude,project_location.longitude $from $innerJoin WHERE $where) as FirstCut
                 WHERE {$location_parts[where]} LIMIT $offset, $limit";
             } else {
-                $sql = "SELECT $fields $from $sqlConsultantFilter WHERE $where LIMIT $offset, $limit";
+                $sql = "SELECT $fields $from $innerJoin WHERE $where LIMIT $offset, $limit";
             }
 
             // echo \sqldbg($sql, $values);print_r($filters);die;
