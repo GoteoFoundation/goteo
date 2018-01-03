@@ -3,7 +3,7 @@
         <?= $this->text('home-projects-title') ?>
     </h2>
     <ul class="filters list-inline center-block text-center">
-        <li data-status="outdate" class="active">
+        <li data-status="outdated" class="active">
             <?= $this->text('home-projects-outdate') ?>
         </li>
         <li data-status="promoted">
