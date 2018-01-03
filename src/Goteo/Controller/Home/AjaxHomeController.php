@@ -44,8 +44,8 @@ class AjaxHomeController extends \Goteo\Core\Controller {
 
         }
 
-        $filters = ['status' => [Project::STATUS_IN_CAMPAIGN, Project::STATUS_FUNDED]];
-        $filters['order'] = 'project.status ASC, project.name ASC';
+        $filters = $ofilters = ['status' => [Project::STATUS_IN_CAMPAIGN, Project::STATUS_FUNDED], 'published_since' => (new \DateTime('-6 month'))->format('Y-m-d')];
+        $filters['order'] = 'project.status ASC, project.published DESC, project.name ASC';
         if($filter === 'near') {
             // Nearby defined as 300Km distance
             // Any LocationInterface will do (UserLocation, ProjectLocation, ...)
@@ -55,14 +55,14 @@ class AjaxHomeController extends \Goteo\Core\Controller {
             $filters['status'] = Project::STATUS_IN_CAMPAIGN;
         } elseif($filter === 'promoted') {
             $filters['type'] = 'promoted';
-            $filters['order'] = 'promote.order ASC, project.name ASC';
+            $filters['order'] = 'promote.order ASC, project.published DESC, project.name ASC';
         } elseif(in_array($filter, ['matchfunding', 'promoted'])) {
             $filters['type'] = 'matchfunding';
         }
         $projects = Project::getList($filters, null, 0, 20);
 
         if(!$projects) {
-            $projects = Project::getList(['status' => Project::STATUS_IN_CAMPAIGN], null, 0, 20);
+            $projects = Project::getList($ofilters, null, 0, 20);
         }
 
         return $this->jsonResponse([
