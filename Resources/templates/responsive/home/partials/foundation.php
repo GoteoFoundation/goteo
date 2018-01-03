@@ -8,60 +8,36 @@
             </div>
         </div>
         <div class="slider slider-fade" id="stories">
-            <div class="row">
-                <div class="col-md-6">
-                    <img class="img-responsive" src="/assets/img/home/davidcabo.jpg" >
-                </div>
-                <div class="col-md-6">
-                    <div class="info-container">
-                        <div class="type-container">
-                            <span class="type">
-                            Casos de éxito en Goteo
-                            </span>
-                        </div>
-                        <div class="description">
-                            <div class="pull-left quote">
-                                <i class="fa fa-quote-left"></i>
-                            </div>
-                            <div class="pull-left text">
-                                Gracias al crowdfunding pudimos tratar con mayor profundidad datos que estaban dispersos por diversos organismos y tener una visión más próxima a la realidad
-                                <i class="fa fa-quote-right pull-right"></i>
-                            </div>
-                        </div>
-                        <div class="author" >
-                            - David Cabo / Director Fundación Civio
-                        </div>
+
+            <?php foreach($this->stories as $story): ?>
+                <div class="row">
+                    <div class="col-md-6">
+                        <img class="img-responsive" src="<?= $story->image->getLink(600, 400, true) ?>" >
                     </div>
-
-
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-md-6">
-                    <img class="img-responsive" src="/assets/img/home/denis.jpg" >
-                </div>
-                <div class="col-md-6">
-                    <div class="info-container">
-                        <div class="type-container">
-                            <span class="type">
-                            Matchfunding
-                            </span>
-                        </div>
-                        <div class="description">
-                            <div class="pull-left quote">
-                                <i class="fa fa-quote-left"></i>
+                    <div class="col-md-6">
+                        <div class="info-container">
+                            <div class="type-container">
+                                <span class="type">
+                                <?= $story->review ?>
+                                </span>
                             </div>
-                            <div class="pull-left text">
-                                La convocatoria Meta! en Goteo, fue una manera innovadora de apoyar proyectos culturales desde las instituciones públicas
-                                <i class="fa fa-quote-right pull-right"></i>
+                            <div class="description">
+                                <div class="pull-left quote">
+                                    <i class="fa fa-quote-left"></i>
+                                </div>
+                                <div class="pull-left text">
+                                    <?= $story->description ?>
+                                    <i class="fa fa-quote-right pull-right"></i>
+                                </div>
                             </div>
-                        </div>
-                        <div class="author">
-                            - Denis Itxaso / Diputado de Cultura en Guipúzcoa
+                            <div class="author" >
+                                <?= "- ".$story->title ?>
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
+            <?php endforeach; ?>
+
         </div>
 
         <div class="row details" id="foundation-advantages">
