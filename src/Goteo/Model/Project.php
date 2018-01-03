@@ -3676,6 +3676,7 @@ namespace Goteo\Model {
                     LEFT JOIN project_conf ON project_conf.project=project.id
                     LEFT JOIN user ON user.id=project.owner
                     ";
+                    
             if($count) {
                 // Return count
                 $sql = "SELECT COUNT(project.id)
