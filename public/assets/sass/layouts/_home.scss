@@ -1137,9 +1137,22 @@ body.home {
                     margin-top: 30px;
                 }
             }
+        }
 
-
-
+        div.section.channels div.container{
+            .widget-channel{
+                margin: 0 30px;
+            }
+            .custom-left-arrow{
+                top: 45%;
+                font-size: 3.57*$font-size;
+                left: 20px;
+            }
+            .custom-right-arrow{
+                top: 45%;
+                font-size: 3.57*$font-size;
+                right: 20px;
+            }
         }
     }
 
