@@ -12,15 +12,16 @@
 <script src="<?= SRC_URL ?>/assets/vendor/d3/d3.min.js"></script>
 <script src="<?= SRC_URL ?>/assets/vendor/footable/compiled/footable.min.js"></script>
 
-<!-- Goteo utils: Debug functions, Session keeper -->
+<!-- Goteo utils: Debug functions, some defaults -->
 <script type="text/javascript">
 // @license magnet:?xt=urn:btih:0b31508aeb0634b347b8270c7bee4d411b5d4109&dn=agpl-3.0.txt
-var goteo = {};
+var goteo = goteo || {};
 <?php
     echo 'goteo.debug = ' . (GOTEO_ENV !== 'real' ? 'true' : 'false') . ';';
     echo 'SRC_URL = "' . SRC_URL . '";';
     echo "goteo.locale = '" . $this->lang_current() . "';";
     echo 'MAX_FILE_SIZE = ' . \Goteo\Model\Image::getSystemMaxFileSize('mb') . ';';
+    echo "goteo.user_location = " .  json_encode($this->get_user_location()) .';';
 ?>
 
 // @license-end
