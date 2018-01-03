@@ -19,6 +19,7 @@ use Goteo\Application\Session;
 use Goteo\Application\App;
 use Goteo\Application\Lang;
 use Goteo\Model\User;
+use Goteo\Model\User\UserLocation;
 use Goteo\Library\Currency;
 
 class GoteoCore implements ExtensionInterface
@@ -59,6 +60,7 @@ class GoteoCore implements ExtensionInterface
           'get_user_menu' => [$this, 'get_user_menu'],
           'get_main_menu' => [$this, 'get_main_menu'],
           'get_sidebar_menu' => [$this, 'get_sidebar_menu'],
+          'get_user_location' => [$this, 'get_user_location'],
           'is_logged' => [$this, 'is_logged'],
           'has_role' => [$this, 'has_role'],
           'is_admin' => [$this, 'is_admin'],
@@ -189,6 +191,20 @@ class GoteoCore implements ExtensionInterface
     //User Sidebar menu
     public function get_sidebar_menu() {
         return Session::getSidebarMenu();
+    }
+
+    public function get_user_location() {
+        $user = Session::getUser();
+        if($user instanceOf User) {
+            $location = $user->getLocation();
+        } else {
+            $location = UserLocation::createByIp(null, self::getRequest()->getClientIp());
+        }
+
+        if(!$location) {
+            // TODO: some default?
+        }
+        return $location;
     }
 
     //Main Global menu
