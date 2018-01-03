@@ -15,10 +15,10 @@ $query = $this->query . '&amp;return=' . urlencode($this->raw('return')) . '&amp
         <div class="panel panel-default panel-form">
             <div class="panel-body">
 
+              <div style="padding:0 8%">
                 <h2 class="col-md-offset-1"><?= $this->text('login-title') ?></h2>
 
-                <form class="form-horizontal" role="form" method="POST" action="/invest/<?= $this->project->id ?>/login?<?= $query ?>">
-
+                <form role="form" method="POST" action="/invest/<?= $this->project->id ?>/login?<?= $query ?>">
 
                 <?= $this->insert('auth/partials/form_login', ['signup_link' => '/invest/' . $this->project->id . '/signup?' . $query]) ?>
 
@@ -32,6 +32,7 @@ $query = $this->query . '&amp;return=' . urlencode($this->raw('return')) . '&amp
                 </div>
                 <?php endif ?>
                 </form>
+              </div>
 
             </div>
         </div>
