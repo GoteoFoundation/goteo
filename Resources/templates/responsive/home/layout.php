@@ -218,7 +218,7 @@ $this->section('content');
 
             var drawProjects = function(lat, lng) {
               var params = { filter: filter, latitude: lat, longitude: lng };
-              console.log('drawProjects', params)
+              // console.log('drawProjects', params)
               $.post('/home/ajax/projects/filtered', params, function(result) {
                  destroySlickProjects();
                  $('#projects-container').html(result.html);
