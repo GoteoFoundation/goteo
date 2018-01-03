@@ -7,7 +7,7 @@
                 </h2>
             </div>
         </div>
-        <div class="slider fade" id="stories">
+        <div class="slider slider-fade" id="stories">
             <div class="row">
                 <div class="col-md-6">
                     <img class="img-responsive" src="/assets/img/home/davidcabo.jpg" >

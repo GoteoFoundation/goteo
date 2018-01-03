@@ -24,6 +24,7 @@ $this->section('content');
 <?php $this->append() ?>
 
 <?php $this->section('footer') ?>
+
     <?= $this->insert('home/partials/javascript') ?>
 
     <script type="text/javascript">
@@ -36,7 +37,7 @@ $this->section('content');
             steps: 30
           });
 
-          $('.fade').slick({
+          $('.slider-fade').slick({
             dots: true,
             infinite: true,
             speed: 1500,

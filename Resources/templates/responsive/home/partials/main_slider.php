@@ -27,7 +27,7 @@
 
 	<?php if($this->banners): ?>
 
-		<div class="slider fade">
+		<div class="slider slider-fade">
 			<?php foreach($this->banners as $banner): ?>
 				<?php if($banner->image): ?>
 					<div class="item">

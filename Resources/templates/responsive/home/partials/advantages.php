@@ -40,8 +40,8 @@
                 				<?= $this->text('home-advantages-certificates-description') ?>
                 			</div>
                 			<div class="action">
-                				<a href="/calculadora-fiscal" >
-	                				<?= $this->text('home-advantages-certificates-action') ?>
+                				<a data-toggle="modal" data-target="#WalletVideoModal" href="#" >
+	                				<?= $this->text('home-advantages-regular-action') ?>
 	                				<span class="icon glyphicon glyphicon glyphicon-menu-right" aria-hidden="true"></span>
                 				</a>
                 			</div>
@@ -98,17 +98,17 @@
                 	<div class="row details">
                 		<div class="col-sm-12 col-md-3 adventage">
                 			<div class="title">
-                                <img src="/assets/img/home/calculadora.png" >
+                                <span class="icon icon-projects icon-3x"></span>
                                 <span class="text">
-                                    <?= $this->text('home-advantages-calculator-owner-title') ?>
+                                    <?= $this->text('home-adventages-dashboard-title') ?>
                                 </span>
                             </div>
                             <div class="description">
-                                <?= $this->text('home-advantages-calculator-owner-description') ?>
+                                <?= $this->text('home-adventages-dashboard-description') ?>
                             </div>
                             <div class="action">
                                 <a href="/calculadora-fiscal" >
-                                    <?= $this->text('home-advantages-calculator-owner-action') ?>
+                                    <?= $this->text('home-advantages-regular-action') ?>
                                     <span class="icon glyphicon glyphicon glyphicon-menu-right" aria-hidden="true"></span>
                                 </a>
                             </div>

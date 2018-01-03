@@ -111,6 +111,41 @@ body.home {
         }
     }
 
+    /* Modal style */
+
+    .modal{
+        .close-button {
+          overflow: hidden;
+        }
+        .close {
+            font-size: 40px;
+            line-height: 30px;
+            padding: 7px 4px 0px 13px;
+            text-shadow: none;
+            opacity: .7;
+            color: #fff;
+            margin-bottom: 0;
+        }
+        .close span {
+          display: block;
+        }
+
+        .close:hover,
+        .close:focus {
+          opacity: 1;
+          outline: none;
+        }
+        .modal-content {
+          box-shadow: none;
+          background-color: transparent;
+          border: 0;
+        }
+        iframe {
+          display: block;
+          margin: 0 auto;
+        }
+    }
+
 
     div.section.main-slider{
         position: relative;
@@ -170,32 +205,32 @@ body.home {
 
     // Hide while loading
 
-    .fade{
+    .slider-fade{
          visibility:hidden;
          opacity:0;
          transition: opacity 1s;
     }
 
-    .fade.slick-initialized{
+    .slider-fade.slick-initialized{
         visibility:visible;
         opacity:1;
     }
 
-    .fade .item{
+    .slider-fade .item{
         display:none ;
     }
 
-    .fade .item:first-child{
+    .slider-fade .item:first-child{
         display:block; visibility:hidden;
     }
 
-    .fade.slick-initialized .item{
+    .slider-fade.slick-initialized .item{
         display:block;visibility:visible!important;
     }
 
 
 
-    .slider.fade{
+    .slider.slider-fade{
         opacity:1;
         .slick-slide img {
             display: block;
