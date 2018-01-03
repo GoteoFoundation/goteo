@@ -692,7 +692,10 @@ class Image extends \Goteo\Core\Model {
 
          */
         // no borramos nunca la imagen de la gota
-        if ($this->id == 'la_gota.png') return false;
+        if ($this->id == 'la_gota.png') {
+            $errors[] = 'Default image cannot be deleted';
+            return false;
+        }
 
         try {
             if (is_string($model_table) && in_array($model_table, self::$types)) {
