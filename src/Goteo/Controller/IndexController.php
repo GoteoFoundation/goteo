@@ -10,6 +10,7 @@
 
 namespace Goteo\Controller;
 
+use Symfony\Component\HttpFoundation\Request;
 use Goteo\Application\Config;
 use Goteo\Application\View;
 use Goteo\Model\Image;
@@ -34,7 +35,7 @@ class IndexController extends \Goteo\Core\Controller
         \Goteo\Core\DB::cache(true);
     }
 
-    public function indexAction()
+    public function indexAction(Request $request)
     {
 
         View::setTheme('responsive');
