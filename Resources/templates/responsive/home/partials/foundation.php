@@ -146,7 +146,7 @@
                     </div>
                 </div>
                 <div class="col-sm-4 col-md-4 item">
-                    <span class="animate-number">1042</span>
+                    <span class="animate-number"><?= $this->text('home-adventages-impact-data-workshops-participants-number') ?></span>
                     <div class="description">
                         <?= $this->text('home-adventages-impact-data-workshops-participants') ?>
                     </div>
