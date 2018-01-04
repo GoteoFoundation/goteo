@@ -33,10 +33,11 @@ class IndexController extends \Goteo\Core\Controller
     public function indexAction(Request $request)
     {
         $projects = Project::getList([
-            'status' => Project::STATUS_IN_CAMPAIGN,
-            'published_since' => (new \DateTime('-6 month'))->format('Y-m-d'),
-            'type' => 'outdated'
-        ], null, 0, 20);
+                'status' => Project::STATUS_IN_CAMPAIGN,
+                'published_since' => (new \DateTime('-6 month'))->format('Y-m-d'),
+                'type' => 'outdated'
+            ], null, 0, 20);
+
         $stories = Stories::getAll(true);
 
         $channels = Node::getAll(['status' => 'active', 'type' => 'channel']);
