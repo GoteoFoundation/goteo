@@ -49,7 +49,7 @@ class IndexController extends \Goteo\Core\Controller
 
         return $this->viewResponse('home/index', [
             'banners'   => $banners,
-            'projects'   => $projects,
+            'projects'  => $projects,
             'stories'   => $stories,
             'channels'  => $channels,
             'stats'     => $stats
