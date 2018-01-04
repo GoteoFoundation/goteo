@@ -98,7 +98,7 @@
                 	<div class="row details">
                 		<div class="col-sm-12 col-md-3 adventage">
                 			<div class="title">
-                                <span class="icon icon-project sicon-3x"></span>
+                                <span class="icon icon-projects icon-3x"></span>
                                 <span class="text">
                                     <?= $this->text('home-adventages-dashboard-title') ?>
                                 </span>
