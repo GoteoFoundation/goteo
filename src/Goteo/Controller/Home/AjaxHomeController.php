@@ -55,6 +55,7 @@ class AjaxHomeController extends \Goteo\Core\Controller {
             $filters['status'] = Project::STATUS_IN_CAMPAIGN;
         } elseif($filter === 'promoted') {
             $filters['type'] = 'promoted';
+            $filters['status'] = Project::STATUS_IN_CAMPAIGN;
             $filters['order'] = 'promote.order ASC, project.published DESC, project.name ASC';
         } elseif(in_array($filter, ['matchfunding', 'promoted'])) {
             $filters['type'] = 'matchfunding';
