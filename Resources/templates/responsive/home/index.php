@@ -39,6 +39,8 @@
 
     <?= $this->insertif('home/partials/channels') ?>
 
+    <?= $this->insertif('home/partials/sponsors') ?>
+
     <?= $this->insertif('home/partials/tools') ?>
 
     <?= $this->insert('home/partials/modals') ?>
