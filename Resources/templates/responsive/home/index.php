@@ -23,57 +23,25 @@
 
 <?php $this->section('home-content') ?>
 
-<!-- Banner section -->
+    <!-- Banner section -->
 
-<?= $this->insert('home/partials/main_slider') ?>
+    <?= $this->insert('home/partials/main_slider') ?>
 
-<?= $this->insert('home/partials/projects') ?>
+    <?= $this->insert('home/partials/projects') ?>
 
-<?= $this->insert('home/partials/call_to_action') ?>
+    <?= $this->insertif('home/partials/call_to_action') ?>
 
-<?= $this->insert('home/partials/advantages') ?>
+    <?= $this->insertif('home/partials/advantages') ?>
 
-<?= $this->insert('home/partials/matchfunding') ?>
+    <?= $this->insertif('home/partials/matchfunding') ?>
 
-<?= $this->insert('home/partials/foundation') ?>
+    <?= $this->insertif('home/partials/foundation') ?>
 
-<?= $this->insert('home/partials/channels') ?>
+    <?= $this->insertif('home/partials/channels') ?>
 
-<?= $this->insert('home/partials/tools') ?>
+    <?= $this->insertif('home/partials/tools') ?>
 
-<!-- Wallet Modal -->
-    <div class="modal fade" id="WalletVideoModal" tabindex="-1" role="dialog" aria-labelledby="WalletVideoModalLabel">
-      <div class="modal-dialog modal-lg" role="document">
-        <div class="modal-content">
-          <div class="modal-body">
-          	<div class="close-button">
-				<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-            </div>
-            <div class="embed-responsive embed-responsive-16by9">
-            	<iframe src="https://player.vimeo.com/video/246988506" width="100%" height="341" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-    <!-- Modal -->
-
-    <!-- Wallet Modal -->
-    <div class="modal fade" id="DashboardVideoModal" tabindex="-1" role="dialog" aria-labelledby="DashboardVideoModalLabel">
-      <div class="modal-dialog modal-lg" role="document">
-        <div class="modal-content">
-          <div class="modal-body">
-          	<div class="close-button">
-				<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-            </div>
-            <div class="embed-responsive embed-responsive-16by9">
-            	<iframe src="https://player.vimeo.com/video/238942023" width="100%" height="341" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-    <!-- Modal -->
+    <?= $this->insert('home/partials/modals') ?>
 
 <?php $this->replace() ?>
 

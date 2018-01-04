@@ -10,7 +10,7 @@ module.exports = function(grunt) {
             },
         fpm: {
             cmd: 'php-fpm7.0',
-            args: ['-p', '<%= goteo.dir %>', '-y', '<%= goteo.dir %>/var/php/php-fpm.conf']
+            args: ['-p', '<%= goteo.dir %>', '-y', '<%= goteo.dir %>/var/php/php-fpm.conf', '-d', 'upload_tmp_dir=<%= goteo.dir %>/var/php', '-d', 'sys_temp_dir=<%= goteo.dir %>/var/php', '-d', 'session.save_path=<%= goteo.dir %>/var/php/sessions']
         },
         nginx: {
             cmd: 'nginx',
