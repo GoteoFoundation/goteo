@@ -943,6 +943,34 @@ body.home {
         }
     }
 
+    div.section.sponsors{
+        padding-top:20px;
+        padding-bottom: 40px;
+        h2.title{
+            font-weight: bold;
+        }
+       
+        ul.img-list {
+            li {
+                margin-top:50px;
+                margin-left: 15px;
+                margin-right: 15px;
+            }
+        }
+
+        div.action{
+            margin-top: 50px;
+            text-align: center;
+            .btn{
+                text-transform: uppercase;
+                font-weight: bold;
+                font-size: $font-size*1.2;
+            }
+        }
+
+        
+    }
+
     @media (max-width: $breakpoint-md + 1) {
         .section.advantages .advantages-container{
             .row.details{
