@@ -25,6 +25,10 @@ body.home {
                 font-size: $font-size*2;
                 margin-left: 10px;
             }
+            i {
+                @include animation(none); // no animation here
+            }
+
         }
 
         #sidebar-menu {
@@ -864,8 +868,7 @@ body.home {
             margin-top:10px;
         }
         div.container{
-            padding-top: 30px;
-            padding-bottom: 40px;  
+            padding: 30px 0 40px 0;
             div.channel{
                     div.img-container{
                         height: 200px;
@@ -957,9 +960,9 @@ body.home {
             height: 24px;
             margin-right: 5px;
             display: block;
-            margin: 0 auto;  
-        } 
-    
+            margin: 0 auto;
+        }
+
     }
 
 
