@@ -280,16 +280,6 @@ $this->section('content');
 
           });
 
-
-          $(".sidebar-nav").on('click', "a", function (e) {
-            if(/^#/.test(href) === true) {
-                $('body').removeClass('sidebar-opened');
-            } else {
-                alert("no anchor")
-            }
-          });
-
-
         });
     </script>
 
