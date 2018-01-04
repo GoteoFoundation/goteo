@@ -7,7 +7,7 @@
                 </h2>
             </div>
         </div>
-        <div class="slider slider-fade" id="stories">
+        <div class="slider slider-stories" id="stories">
 
             <?php foreach($this->stories as $story): ?>
                 <div class="row">

@@ -42,10 +42,21 @@ $this->section('content');
             $(window).trigger('resize');
           })
 
-          $('.slider-fade').slick({
+          $('.slider-main').slick({
             dots: true,
             infinite: true,
             speed: 1500,
+            fade: true,
+            arrows: true,
+            cssEase: 'linear',
+            prevArrow: '<div class="custom-left-arrow"><span class="fa fa-angle-left"></span><span class="sr-only">Prev</span></div>',
+            nextArrow: '<div class="custom-right-arrow"><span class="fa fa-angle-right"></span><span class="sr-only">Prev</span></div>',
+          });
+
+          $('.slider-stories').slick({
+            dots: true,
+            infinite: true,
+            speed: 1000,
             fade: true,
             arrows: true,
             cssEase: 'linear',
