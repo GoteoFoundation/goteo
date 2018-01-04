@@ -37,6 +37,11 @@ $this->section('content');
             steps: 30
           });
 
+          // Trigger resize on change tab to animate numbers (if needed)
+          $('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
+            $(window).trigger('resize');
+          })
+
           $('.slider-fade').slick({
             dots: true,
             infinite: true,

@@ -3614,9 +3614,9 @@ namespace Goteo\Model {
                     }
                 }
                 elseif($filters['type'] === 'matchfunding') {
-                    $innerJoin = 'LEFT JOIN call_project ON call_project.project = project.id
-                    LEFT JOIN matcher_project ON matcher_project.project_id = project.id';
-                    $sqlFilter = ' AND (!ISNULL(call_project.project) OR !ISNULL(matcher_project.project_id))';
+                    $innerJoin = "LEFT JOIN call_project ON call_project.project = project.id
+                    LEFT JOIN matcher_project ON matcher_project.project_id = project.id AND matcher_project.status='active'";
+                    $sqlFilter .= ' AND (!ISNULL(call_project.project) OR !ISNULL(matcher_project.project_id))';
                 }
                 elseif($filters['type'] === 'outdated') {
                     // los que les quedan 15 dias o menos
@@ -3673,16 +3673,16 @@ namespace Goteo\Model {
                       $sqlOrder";
 
             $from = "FROM project
-                    LEFT JOIN project_conf
-                    ON project_conf.project=project.id
-                    LEFT JOIN user
-                    ON user.id=project.owner";
+                    LEFT JOIN project_conf ON project_conf.project=project.id
+                    LEFT JOIN user ON user.id=project.owner
+                    ";
             if($count) {
                 // Return count
                 $sql = "SELECT COUNT(project.id)
                     $from
                     $innerJoin
-                    WHERE $where";
+                    WHERE
+                    $where";
                 return (int) self::query($sql, $values)->fetchColumn();
             }
 
@@ -3690,9 +3690,9 @@ namespace Goteo\Model {
             $limit = (int) $limit;
             // la select
 
-            $sql_fields = ['id', 'status', 'image', 'contract_name', 'contract_nif', 'contract_email', 'contract_entity', 'contract_birthdate', 'entity_office', 'entity_name', 'entity_cif', 'phone', 'address', 'zipcode', 'location', 'country', 'secondary_address', 'post_address', 'post_zipcode', 'post_location', 'post_country', 'name', 'subtitle', 'lang', 'currency', 'currency_rate', 'description', 'motivation', 'video', 'video_usubs', 'about', 'goal', 'related', 'spread', 'execution_plan', 'execution_plan_url', 'sustainability_model', 'sustainability_model_url', 'reward', 'keywords', 'media', 'media_usubs', 'currently', 'project_location', 'scope', 'resource', 'comment', 'analytics_id', 'facebook_pixel', 'social_commitment', 'social_commitment_description, days',
+            $sql_fields = ['id', 'status', 'image', 'contract_name', 'contract_nif', 'contract_email', 'contract_entity', 'contract_birthdate', 'entity_office', 'entity_name', 'entity_cif', 'phone', 'address', 'zipcode', 'location', 'country', 'secondary_address', 'post_address', 'post_zipcode', 'post_location', 'post_country', 'name', 'subtitle', 'lang', 'currency', 'currency_rate', 'description', 'motivation', 'video', 'video_usubs', 'about', 'goal', 'related', 'spread', 'execution_plan', 'execution_plan_url', 'sustainability_model', 'sustainability_model_url', 'reward', 'keywords', 'media', 'media_usubs', 'currently', 'project_location', 'scope', 'resource', 'comment', 'analytics_id', 'facebook_pixel', 'social_commitment', 'social_commitment_description', 'days', 'created', 'updated', 'published', 'passed', 'success', 'closed', 'amount', 'mincost', 'maxcost',
                 // extra
-                'draft', 'updated',
+                'draft',
                 // from user table
                 'user_email', 'user_name', 'user_lang', 'user_id',
                 // from project_conf
@@ -3708,9 +3708,17 @@ namespace Goteo\Model {
             if($location_parts) {
                 $sql .= "SELECT {$location_parts[distance]} AS Distance, `" . implode('`,`', $sql_fields) . "`
                 FROM (SELECT $fields,project_location.latitude,project_location.longitude $from $innerJoin WHERE $where) as FirstCut
-                WHERE {$location_parts[where]} LIMIT $offset, $limit";
+                WHERE
+                {$location_parts[where]}
+                LIMIT $offset, $limit";
             } else {
-                $sql = "SELECT $fields $from $innerJoin WHERE $where LIMIT $offset, $limit";
+                $sql = "SELECT
+                        $fields
+                        $from
+                        $innerJoin
+                        WHERE
+                        $where
+                        LIMIT $offset, $limit";
             }
 
             // echo \sqldbg($sql, $values);print_r($filters);die;
@@ -3718,6 +3726,7 @@ namespace Goteo\Model {
 
             $query = self::query($sql, $values);
             foreach ($query->fetchAll(\PDO::FETCH_CLASS, __CLASS__) as $proj) {
+                // print_r($proj);die;
                 $proj->user = new User;
                 $proj->user->id = $proj->user_id;
                 $proj->user->name = $proj->user_name;
