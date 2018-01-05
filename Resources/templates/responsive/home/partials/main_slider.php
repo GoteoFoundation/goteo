@@ -49,7 +49,7 @@
 										<div class="description">
 											<?= $banner->description ?>
 										</div>
-										<a href="" class="btn btn-white"><?= $this->text('invest-more-info') ?></a>
+										<a href="<?= $banner->url ?>" class="btn btn-white"><?= $this->text('invest-more-info') ?></a>
 									</div>
 								</div>
 							</div>
