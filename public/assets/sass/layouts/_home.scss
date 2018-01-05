@@ -187,7 +187,7 @@ body.home {
             color: $color-white;
             width: 100%;
             span.title{
-                border: 1px solid rgba(255, 255, 255, .5);
+                border: 1.5px solid rgba(255, 255, 255, .5);
                 @include background-clip(padding-box);
                 font-size: 12px;
                 padding: 7px;
@@ -195,16 +195,25 @@ body.home {
             }
             div.description{
                 margin: 20px 0;
-                font-size:26px;
+                font-size:2*$font-size;
                 font-weight: bold;
+                text-shadow: 1px 1px #3A3A3A;
+                line-height: 1.2;
             }
             .btn{
                 text-transform: uppercase;
+            }
+            img{
+                filter: brightness(82%);
             }
         }
 
         .slick-slider{
             margin-bottom: 0;
+        }
+
+        .slick-slide img{
+            filter: brightness(85%);
         }
 
     }
@@ -964,7 +973,7 @@ body.home {
             .btn{
                 text-transform: uppercase;
                 font-weight: bold;
-                font-size: $font-size*1.2;
+                font-size: $font-size*1.14;
             }
         }
 
