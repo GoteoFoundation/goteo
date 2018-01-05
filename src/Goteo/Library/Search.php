@@ -113,10 +113,10 @@ namespace Goteo\Library {
             $different_select="project.popularity as popularity,";
 
             if(Project::default_lang($lang) === Config::get('lang')) {
-                $different_select2=" IFNULL(project_lang.description, project.description) as description";
+                $different_select2=" IFNULL(project_lang.subtitle, project.subtitle) as subtitle";
             }
             else {
-                $different_select2=" IFNULL(project_lang.description, IFNULL(eng.description, project.description)) as description";
+                $different_select2=" IFNULL(project_lang.subtitle, IFNULL(eng.subtitle, project.subtitle)) as subtitle";
                 $eng_join=" LEFT JOIN project_lang as eng
                                 ON  eng.id = project.id
                                 AND eng.lang = 'en'";
