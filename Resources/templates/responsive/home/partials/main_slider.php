@@ -33,16 +33,16 @@
 					<div class="item">
 						<div class="image">
 							<img src="<?= $banner->image->getLink(1920, 600, true) ?>" class="display-none-important img-responsive  hidden-xs visible-up-1400">
-		                    <img src="<?= $banner->image->getLink(1400, 475, true) ?>" class="display-none-important img-responsive  hidden-xs visible-1051-1400">
-			                <img src="<?= $banner->image->getLink(1051, 438, true) ?>" class="display-none-important img-responsive  hidden-xs visible-768-1050">
-		                    <img src="<?= $banner->image->getLink(750, 550, true) ?>" class="img-responsive visible-xs">
+		                    <img src="<?= $banner->image->getLink(1400, 500, true) ?>" class="display-none-important img-responsive  hidden-xs visible-1051-1400">
+			                <img src="<?= $banner->image->getLink(1051, 460, true) ?>" class="display-none-important img-responsive  hidden-xs visible-768-1050">
+		                    <img src="<?= $banner->image->getLink(750, 600, true) ?>" class="img-responsive visible-xs">
 						</div>
-						<div class="main-info hidden-xs">
+						<div class="main-info">
 							<div class="container">
 								<div class="row">
-									<div class="col-md-6">
+									<div class="col-lg-6 col-md-7 col-md-offset-1 col-sm-9 col-xs-8">
 										<div>
-											<span class="title">
+											<span class="title hidden-xs">
 											<?= $banner->title ?>
 											</span>
 										</div>

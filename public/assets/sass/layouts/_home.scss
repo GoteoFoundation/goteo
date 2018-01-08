@@ -982,29 +982,6 @@ body.home {
         
     }
 
-    @media (max-width: $breakpoint-md + 1) {
-        .section.advantages .advantages-container{
-            .row.details{
-                display: block;
-            }
-        }
-
-        .donor-container .row{
-            display: block !important;
-            img{
-                margin: 40px auto;
-            }
-        }
-        div.section.tools .row a.item img{
-            height: 24px;
-            margin-right: 5px;
-            display: block;
-            margin: 0 auto;
-        }
-
-    }
-
-
     @media (max-width: $breakpoint-sm - 1) {
         .section.search{
             .inner-addon{
@@ -1301,8 +1278,64 @@ body.home {
         font-size: $font-size*3;
     }
 
+    // Tablets customization
+
+    @media (max-width: $breakpoint-md + 1) {
+        .section.advantages .advantages-container{
+            .row.details{
+                display: block;
+            }
+        }
+
+        .donor-container .row{
+            display: block !important;
+            img{
+                margin: 40px auto;
+            }
+        }
+        div.section.tools .row a.item img{
+            height: 24px;
+            margin-right: 5px;
+            display: block;
+            margin: 0 auto;
+        }
+
+        div.section.main-slider{
+            div.main-info{
+                margin-left: 15%;
+                span.title{
+                    font-size: $font-size*0.8;
+                }
+                div.description{
+                    font-size: $font-size*1.4;
+                }
+                 .btn-white{
+                    font-size: $font-size*0.8 !important;
+                }
+            }
+        }
+
+    }
+
 
     @media (max-width: $breakpoint-sm - 1) {
+
+        div.section.main-slider{
+            div.main-info{
+                margin-left: 20%;
+                bottom: 18%;
+                span.title{
+                    font-size: $font-size*0.8 !important;
+                }
+                div.description{
+                    font-size: $font-size*1.1 !important;
+                    margin-bottom: 10px;
+                }
+                .btn-white{
+                    font-size: $font-size*0.7 !important;
+                }
+            }
+        }
         .section.search{
             .inner-addon{
                 margin-top:10px;
