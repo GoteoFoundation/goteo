@@ -156,6 +156,8 @@ regular-round: 'ª ronda'
 regular-save: Guardar
 regular-schedule: Horario
 regular-search: Buscar
+regular-search-desc: 'Escribe tu búsqueda aquí'
+regular-search-tooltip: 'Entra tu búsqueda y pulsa enter'
 regular-see_all: 'Ver todos'
 regular-see_blog: Blog
 regular-see_details: 'Ver detalles'

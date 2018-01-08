@@ -137,8 +137,10 @@ regular-read_more: 'Llegir més'
 regular-recomended_by: 'Projecte recomanat per:'
 regular-review_board: 'Panell revisor'
 regular-round: 'ª ronda'
-regular-save: Desar
-regular-search: Cercar
+regular-save: Desa
+regular-search: Cerca
+regular-search-desc: 'Escriu la teva cerca aquí'
+regular-search-tooltip: 'Entra la teva cerca i prem enter'
 regular-see_all: 'Veure tots'
 regular-see_blog: Blog
 regular-see_details: 'Veure detalls'

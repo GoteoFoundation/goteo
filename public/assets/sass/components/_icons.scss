@@ -114,5 +114,8 @@
     }
     &.icon-save-the-world {
         @include svg-background('../img/icons/save_world.svg');
+    }    
+    &.icon-calculator {
+        @include svg-background('../img/icons/calculator.svg');
     }
 }
