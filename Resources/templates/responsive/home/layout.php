@@ -216,14 +216,13 @@ $this->section('content');
 
           $(".auto-update-calls").on('click', ".filters li", function (e) {
 
-              $(this).toggleClass('active');
+            e.preventDefault();
 
-            var $filters = $('.auto-update-calls .filters');
-            var filters = [];
+            $(".auto-update-calls .filters li").removeClass('active');
 
-            $filters.find('li.active').each(function(){
-              filters.push($(this).data('status'));
-            });
+            $(this).addClass('active');
+
+            var filters = $(this).data('status');
 
             var url = '/home/ajax/calls/filtered';
 

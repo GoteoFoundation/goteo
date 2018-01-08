@@ -20,7 +20,13 @@ body.home {
             padding: 15px 10px;
             font-size: $font-size*1.3;
             font-weight: bold;
-            z-index: 1000;
+            transition: all .5s ease;
+            &.affix {
+                width: 30px;
+                overflow: hidden;
+                font-size: 0;
+                padding-left: 0;
+            }
             .fa-angle-right, .fa-angle-left {
                 font-size: $font-size*2;
                 margin-left: 10px;
@@ -34,7 +40,7 @@ body.home {
         #sidebar-menu {
             position: fixed;
             @include flex(0);
-            z-index: 1001;
+            z-index: 1002;
             overflow: hidden;
             background-color: transparent;
             height: auto;
@@ -88,6 +94,12 @@ body.home {
         &.sidebar-opened {
             #sidebar-menu-toggle {
                 left: 0;
+                &.affix {
+                    width: auto;
+                    overflow: none;
+                    font-size: inherit;
+                    padding-left: inherit;
+                }
             }
             .page-wrap {
                 #sidebar-menu {
@@ -965,7 +977,7 @@ body.home {
         h2.title{
             font-weight: bold;
         }
-       
+
         ul.img-list {
             li {
                 margin-top:50px;
@@ -984,7 +996,7 @@ body.home {
             }
         }
 
-        
+
     }
 
     @media (max-width: $breakpoint-sm - 1) {
@@ -1302,7 +1314,7 @@ body.home {
         .donor-container .row{
             display: block !important;
             img{
-                margin: 40px auto;
+                //margin: 40px auto;
             }
         }
 
