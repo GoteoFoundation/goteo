@@ -883,7 +883,8 @@ body.home {
             margin-top:10px;
         }
         div.container{
-            padding: 30px 0 40px 0;
+            padding-top: 30px;
+            padding-bottom: 40px;
             div.channel{
                     div.img-container{
                         height: 200px;
@@ -1282,6 +1283,13 @@ body.home {
         font-size: $font-size*3;
     }
 
+    @media (max-width: $breakpoint-lg)
+    {
+        .call-widget.normal .content div.amount{
+            font-size: $font-size*3;
+        }
+    }
+
     // Tablets customization
 
     @media (max-width: $breakpoint-md + 1) {
@@ -1296,6 +1304,10 @@ body.home {
             img{
                 margin: 40px auto;
             }
+        }
+
+        .call-widget.normal .content div.amount{
+            font-size: $font-size*3.1;
         }
         div.section.tools .row a.item img{
             height: 24px;

@@ -20,7 +20,7 @@
                 	<div class="row details">
                 		<div class="col-sm-12 col-md-4 adventage">
                 			<div class="title">
-                				<span class="icon icon-wallet icon-3x"></span>
+                				<span class="icon icon-save-the-world icon-3x"></span>
                 				<span class="text">
                 				    <?= $this->text('home-adventages-savetheworld-title') ?>
                 				</span>
