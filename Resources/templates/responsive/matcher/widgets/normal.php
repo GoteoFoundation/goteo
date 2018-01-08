@@ -4,9 +4,9 @@ $link = $this->link ? $this->link : '/matcher/' . $this->matcher->id;
 
 ?>
 
-<div class="flip-widget call-widget normal active" id="call-<?= $this->matcher->id ?>">
+<div class="flip-widget call-widget normal open" id="call-<?= $this->matcher->id ?>">
     <div class="status">
-        <?= $this->text('call-tagmark-active') ?>
+        <?= $this->text('call-tagmark-open') ?>
     </div>
 
     <div class="sphere">
