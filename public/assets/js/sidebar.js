@@ -177,6 +177,16 @@ $(function(){
             }
           });
 
+        console.log($toggle.css('top'));
+        $toggle.affix({
+          offset: {
+            top: parseInt($toggle.css('top'), 10)
+            // bottom: function () {
+            //   return (this.bottom = $('.footer').outerHeight(true))
+            // }
+          }
+        });
+
     }
 
 });
