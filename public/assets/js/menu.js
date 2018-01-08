@@ -123,6 +123,11 @@ $(function(){
         toggleMenu.call($('.navbar-always .toggle-menu.active')[0], e);
     });
 
+
+    /////////////////////////////
+    /// Global Search overlay ///
+    /// /////////////////////////
+
     $('a[href="#search"], a.global-search').on('click', function(event) {
       event.preventDefault();
       // check if it is
@@ -134,6 +139,27 @@ $(function(){
       if (event.target === this || event.target.className === 'close' || event.keyCode === 27) {
           $(this).removeClass('open');
       }
+    });
+
+
+    ////////////////////////////////////////////
+    /// Global hash-links with smooth scroll ///
+    /// ////////////////////////////////////////
+
+    $('a[href^="#"]:not([data-toggle])').on('click', function(e) {
+         e.preventDefault();
+         //calculate destination place
+         var dest=0;
+         var hash = this.hash;
+         if($(hash).offset().top > $(document).height()-$(window).height()){
+              dest=$(document).height()-$(window).height();
+         }else{
+              dest=$(hash).offset().top;
+         }
+         //go to destination
+         $('html,body').animate({scrollTop:dest}, 900,'swing', function() {
+            window.location.hash = hash;
+         });
     });
 
 });
