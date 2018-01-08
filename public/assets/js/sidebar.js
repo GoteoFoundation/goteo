@@ -177,7 +177,6 @@ $(function(){
             }
           });
 
-        console.log($toggle.css('top'));
         $toggle.affix({
           offset: {
             top: parseInt($toggle.css('top'), 10)
