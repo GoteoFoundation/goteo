@@ -93,13 +93,14 @@ body.home {
 
         &.sidebar-opened {
             #sidebar-menu-toggle {
-                left: 0;
-                &.affix {
-                    width: auto;
-                    overflow: none;
-                    font-size: inherit;
-                    padding-left: inherit;
-                }
+                display: none !important;
+                // left: 0;
+                // &.affix {
+                //     width: auto;
+                //     overflow: none;
+                //     font-size: inherit;
+                //     padding-left: inherit;
+                // }
             }
             .page-wrap {
                 #sidebar-menu {
