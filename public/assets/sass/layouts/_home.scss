@@ -152,6 +152,10 @@ body.home {
         }
     }
 
+    .modal-backdrop {
+        background-color: rgb(25, 180, 178);
+    }
+
 
     div.section.main-slider{
         position: relative;
@@ -1360,6 +1364,15 @@ body.home {
             .row.details{
                 display: block;
             }
+        }
+
+        .advantages.foundation .slider .custom-left-arrow{
+            top:60%;
+            left:3%;
+        }
+
+       .advantages.foundation .slider .custom-right-arrow{
+            top:60%;
         }
 
         div.section.tools .row a.item{

@@ -64,6 +64,17 @@ $this->section('content');
             nextArrow: '<div class="custom-right-arrow"><span class="fa fa-angle-right"></span><span class="sr-only">Prev</span></div>',
           });
 
+          $('.slider-team').slick({
+            dots: false,
+            autoplay: true,
+            infinite: true,
+            speed: 2000,
+            autoplaySpeed: 3500,
+            fade: true,
+            arrows: false,
+            cssEase: 'linear'
+          });
+
 
           function setSlideVisibility() {
             //Find the visible slides i.e. where aria-hidden="false"
