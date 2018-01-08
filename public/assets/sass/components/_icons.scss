@@ -112,4 +112,7 @@
     &.icon-channels {
         @include svg-background('../img/icons/channels.svg');
     }
+    &.icon-save-the-world {
+        @include svg-background('../img/icons/save_world.svg');
+    }
 }

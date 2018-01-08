@@ -27,7 +27,7 @@
                                     <?= $channel->name ?>
                                 </div>
                                 <div class="description">
-                                    <?= $this->text_truncate($channel->description, 120) ?>
+                                    <?= $this->text_truncate($channel->description, 100) ?>
                                 </div>
                             </div>
                         </div>
