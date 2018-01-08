@@ -1,16 +1,18 @@
-<div class="section call-action" style="background-color: #F04C27">
+<div class="section call-action">
 	<div class="container">
 		<div class="row">
 			<div class="col-sm-8 col-md-7">
 				<div class="title">
-				Por unos alquileres justos
+				<?= $this->text('home-call-to-action-title') ?>
 				</div>
 				<div class="description">
-					Sindicat de Llogaters i Llogateres
+					<?= $this->text('home-call-to-action-description') ?>
 				</div>
 			</div>
 			<div class="col-sm-4 col-md-3 col-md-offset-1 col-button">
-				<a href="" class="btn btn-white">MÁS INFORMACIÓN</a>
+				<a target="_blank" href="<?= $this->text('home-call-to-action-url') ?>" class="btn btn-white">
+					<?= $this->text('home-call-to-action-action') ?>
+				</a>
 			</div>
 		</div>
 	</div>
