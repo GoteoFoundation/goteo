@@ -216,7 +216,7 @@ $this->section('content');
 
           $(".auto-update-calls").on('click', ".filters li", function (e) {
 
-              $(this).toggleClass('active');
+            $(this).toggleClass('active');
 
             var $filters = $('.auto-update-calls .filters');
             var filters = [];
@@ -227,7 +227,7 @@ $this->section('content');
 
             var url = '/home/ajax/calls/filtered';
 
-          $('#calls-container').animateCss('fadeOut');
+            $('#calls-container').animateCss('fadeOut');
             $.post(url, { filters: filters }, function(result) {
                 destroySlickCalls();
                 $('#calls-container').html(result.html);
@@ -244,14 +244,17 @@ $this->section('content');
             $(this).addClass('active');
 
             var filter = $(this).data('status');
+            var $div = $(this).closest('.section');
 
             var drawProjects = function(lat, lng) {
               var params = { filter: filter, latitude: lat, longitude: lng };
+              $div.addClass('loading-container');
               // console.log('drawProjects', params)
               $.post('/home/ajax/projects/filtered', params, function(result) {
                  destroySlickProjects();
                  $('#projects-container').html(result.html);
                  initSlickProjects();
+                 $div.removeClass('loading-container');
                  //$('#projects-container').removeClass('fadeOut').animateCss('fadeIn');
              });
             };
