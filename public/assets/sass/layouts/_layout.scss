@@ -81,6 +81,16 @@ body {
         }
         #sidebar-menu-toggle {
           left: $dashboard-sidebar-width;
+          &.affix-top {
+              position: fixed;
+              top: 70px;
+          }
+
+          &.affix {
+              position: fixed;
+              top: 70px;
+          }
+
           i {
             &.fa-angle-double-right {
               display: none;
@@ -110,6 +120,17 @@ body {
     border-top-right-radius: 5px;
     border-bottom-right-radius: 5px;
     cursor: pointer;
+
+    &.affix-top {
+        position: absolute;
+        top: 70px;
+    }
+
+    &.affix {
+        position: fixed;
+        top: 0;
+    }
+
     i {
         @include animation(blink 8s linear 1s 3); //infinite;
         &.fa-angle-double-right {
