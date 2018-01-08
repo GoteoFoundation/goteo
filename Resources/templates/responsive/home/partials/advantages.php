@@ -31,7 +31,7 @@
                 		</div>
                 		<div class="col-sm-12 col-md-4 adventage">
                 			<div class="title">
-                				<img src="/assets/img/home/certificados.png" >
+                                <span class="icon icon-home-certificate icon-3x"></span>
                 				<span class="text">
                 				    <?= $this->text('home-advantages-certificates-title') ?>
                 				</span>
@@ -48,7 +48,7 @@
                 		</div>
                 		<div class="col-sm-12 col-md-4 adventage">
                 			<div class="title">
-                				<img src="/assets/img/home/calculadora.png" >
+                				<span class="icon icon-calculator icon-3x"></span>
                 				<span class="text">
                 				    <?= $this->text('home-advantages-calculator-title') ?>
                 				</span>
@@ -137,7 +137,7 @@
                 		</div>
                 		<div class="col-sm-12 col-md-3 adventage">
                 			<div class="title">
-                				<img src="/assets/img/home/matchfunding.png" >
+                				<span class="icon icon-call icon-3x"></span>
                 				<span class="text">
                 				<?= $this->text('home-advantages-matchfunding-title') ?>
                 				</span>
@@ -146,7 +146,7 @@
                                 <?= $this->text('home-advantages-matchfunding-description') ?>
                 			</div>
                 			<div class="action">
-                				<a href="/calculadora-fiscal" >
+                				<a href="#matchfunding" >
 	                				<?= $this->text('home-advantages-regular-action') ?>
 	                				<span class="icon glyphicon glyphicon glyphicon-menu-right" aria-hidden="true"></span>
                 				</a>
