@@ -160,10 +160,10 @@ $(function(){
 
         $('#sidebar-menu .toggle-submenu').on('click', toggleSubMenu);
         $("#sidebar-menu li > a").on('click', function (e) {
+            toggleSidebar();
             if(/^#/.test($(this).attr('href')) === true) {
                 // e.preventDefault();
                 // $('body').removeClass('sidebar-opened');
-                toggleSidebar();
                 e.preventDefault();
                  //calculate destination place
                  var dest=0;
