@@ -159,9 +159,10 @@ $(function(){
         });
 
         $('#sidebar-menu .toggle-submenu').on('click', toggleSubMenu);
-        $("#sidebar-menu li > a").on('click', function (e) {
-            toggleSidebar();
-          });
+        // Hide sidebar for anchor links
+        $("#sidebar-menu li > a[href^='#'']:not(.toggle-submenu)").on('click', function (e) {
+          toggleSidebar();
+        });
 
         $toggle.affix({
           offset: {
