@@ -30,9 +30,6 @@ $available = $reward->available();
             </div>
 
             <div class="amount-box">
-                <div class="col-sm-1 no-padding sm-display-none">
-                    <img class="img-responsive reward-icon" src="<?= SRC_URL ?>/assets/img/rewards/<?= $reward->icon ?>.svg">
-                </div>
 
                 <div class="row col-sm-10 col-sm-offset-2 margin-2" id="amount-container">
                     <div class="col-sm-1 col-sm-offset-1 no-padding col-xs-1">
