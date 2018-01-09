@@ -31,5 +31,13 @@
 	/*.fa-twitter:hover { 
     	background-color: #46c0fb; 
 	}*/
+
+	@media (max-width: $breakpoint-sm - 1) 
+	{
+		.footer-list{
+			text-align: center;
+		}
+	}
+
  }
 

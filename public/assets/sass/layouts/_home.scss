@@ -617,6 +617,16 @@ body.home {
     //Fundation customization
     .advantages.foundation{
         background-color: $background-yellow !important;
+        .foundation-img-container{
+            padding-top: 25px;
+            img.foundation-img{
+                width: 35px;
+            }
+        }
+        .advantages-container
+        {
+            padding-top: 20px;
+        }
         h2.title{
             font-size: 24px;
             font-weight: bold;

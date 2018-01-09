@@ -3609,8 +3609,15 @@ namespace Goteo\Model {
                     // en "promote"
                     $innerJoin = 'INNER JOIN promote ON promote.project = project.id';
                     $sqlFilter .= ' AND promote.active = 1';
-                    if(empty($filterss['order'])) {
-                        $filterss['order'] = 'ORDER BY promote.order, oroject.name ASC';
+                    if($filters['promote_node']) {
+                        $values[':promote_node'] = $filters['promote_node'];
+                    } else {
+                        $values[':promote_node'] = Config::get('current_node');
+                    }
+                    $sqlFilter .= ' AND promote.node = :promote_node';
+
+                    if(empty($filters['order'])) {
+                        $filters['order'] = 'ORDER BY promote.order, project.name ASC';
                     }
                 }
                 elseif($filters['type'] === 'matchfunding') {
@@ -3721,7 +3728,7 @@ namespace Goteo\Model {
                         LIMIT $offset, $limit";
             }
 
-            // echo \sqldbg($sql, $values);print_r($filters);die;
+            //echo \sqldbg($sql, $values);print_r($filters);die;
 
 
             $query = self::query($sql, $values);

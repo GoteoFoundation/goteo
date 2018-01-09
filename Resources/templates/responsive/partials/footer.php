@@ -3,7 +3,7 @@
       <div class="container">
         <div class="row">
             <div class="col-sm-5">
-              <ul class="list-inline">
+              <ul class="list-inline footer-list">
                 <li><a href="/about"><?= $this->text('regular-header-about')?></a></li>
                 <li><a href="http://stats.goteo.org" target="_blank"><?= $this->text('footer-resources-stats') ?></a></li>
                 <li><a href="/user/login"><?= $this->text('regular-login')?></a></li>
@@ -12,7 +12,7 @@
               </ul>
             </div>
 
-            <div class="col-sm-4 col-sm-offset-3">
+            <div class="col-sm-4 col-sm-offset-3 hidden-xs">
               <ul class="list-inline text-right">
                 <li class="label-img"><a href="#"><?=$this->text('footer-platoniq-iniciative') ?></a></li>
                 <li><a href="http://fundacion.goteo.org"><img src="/view/css/logoFG.png" class="img-responsive logo" alt="Fundación Goteo"></a></li>
