@@ -109,7 +109,7 @@ class DummyPaymentMethod extends AbstractPaymentMethod {
                     'card' => [
                         'number' => $request->request->get('number'),
                         'expiryMonth' => '12',
-                        'expiryYear' => '2017',
+                        'expiryYear' => date('Y'),
                         ],
                     'description' => $this->getInvestDescription(),
                     'returnUrl' => $this->getCompleteUrl(),
