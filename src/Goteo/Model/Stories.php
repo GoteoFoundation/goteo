@@ -16,14 +16,15 @@ namespace Goteo\Model {
         public
             $id,
             $node,
-            $project,
+            $project = null,
             $order,
             $image,
-            $image_pool,
             $title,
             $description,
             $review,
             $url,
+            $pool = false,
+            $pool_image,
             $post;
 
         /*
@@ -188,7 +189,7 @@ namespace Goteo\Model {
                 else
                     $story->pool_image = new Image();
 
-        
+
                 $story->status = $status[$story->status];
 
                 $user = new User;
@@ -269,7 +270,7 @@ namespace Goteo\Model {
         }
 
         public function validate (&$errors = array()) {
-           
+
             if (empty($errors))
                 return true;
             else
@@ -289,7 +290,7 @@ namespace Goteo\Model {
                     \Goteo\Application\Message::error(Text::get('image-upload-fail') . implode(', ', $errors));
                     $this->image = '';
                 }
-            } 
+            }
 
             // Imagen de landing monedero
             if (is_array($this->pool_image) && !empty($this->pool_image['name'])) {
