@@ -89,6 +89,17 @@ body.home {
             li:hover {
                 background-color: $color-light-green;
             }
+
+            // Custom .icon size
+            .sidebar-nav li > a  {
+                > i.icon {
+                    width: $font-size * 1.5;
+                    height: $font-size * 1.5;
+                    &:first-child {
+                        top: 12px;
+                    }
+                }
+            }
         }
 
         &.sidebar-opened {
