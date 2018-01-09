@@ -20,7 +20,7 @@ $sphere = $this->matcher->getMainSphere();
 
     <div class="content">
         <div class="amount-label">
-            Presupuesto de riego
+            <?= $this->text('matcher-budget-amount') ?>
         </div>
         <div class="amount">
            <?= amount_format($this->matcher->amount) ?>
