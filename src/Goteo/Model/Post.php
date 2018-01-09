@@ -24,6 +24,7 @@ namespace Goteo\Model {
         public
             $id,
             $title,
+            $blog,
             $date,
             $text,
             $image,
@@ -342,6 +343,8 @@ namespace Goteo\Model {
 
         public function save (&$errors = array()) {
             if (!$this->validate($errors)) return false;
+
+            if(!$this->date) $this->date = date('Y-m-d');
 
             $fields = array(
                 'blog',

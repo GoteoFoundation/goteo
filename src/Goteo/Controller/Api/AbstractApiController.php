@@ -22,5 +22,7 @@ abstract class AbstractApiController extends \Goteo\Core\Controller {
         View::setTheme('JSON');
         $this->user = Session::getUser();
         $this->is_admin = Session::isAdmin();
+        // cahe active
+        \Goteo\Core\DB::cache(true);
     }
 }

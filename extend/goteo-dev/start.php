@@ -23,7 +23,6 @@ use Goteodev\Console\Command\StatusInitCommand;
 Config::addAutoloadDir(__DIR__ . '/src');
 
 $sc = App::getServiceContainer();
-
 if(App::debug()) {
     // Adding toolbar as eventlistener
     $sc->register('dev.listener.profiler', 'Goteodev\Profiler\EventListener\ProfilerListener');

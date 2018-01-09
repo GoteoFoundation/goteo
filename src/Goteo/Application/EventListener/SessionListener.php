@@ -157,10 +157,13 @@ class SessionListener extends AbstractListener {
         $currency = Currency::get($currency, 'id');
         Session::store('currency', $currency); // depending on request
 
-        // Default menus
-        Session::addToMainMenu('<i class="icon icon-drop"></i> ' . Text::get('regular-header-about'), '/about', 'about', 10);
-        Session::addToMainMenu('<i class="fa fa-search"></i> ' . Text::get('regular-discover'), '/discover', 'discover', 20);
-        Session::addToMainMenu('<i class="fa fa-question-circle"></i> ' . Text::get('regular-faq'), '/faq', 'faq', 100);
+        // Langs
+        $langs = [];
+        foreach (Lang::listAll('name', true) as $id => $lang) {
+            if (Lang::isActive($id)) continue;
+            $langs[Lang::getUrl($id, $request)] = $lang;
+        }
+        Session::addToMainMenu('<i class="fa fa-globe"></i> ' . Lang::getName(), $langs, 'langs', 10, 'main');
 
         // Channels
         $nodes = [];
@@ -168,15 +171,12 @@ class SessionListener extends AbstractListener {
             if($node->id === Config::get('node')) continue;
             $nodes['/channel/' . $node->id] = $node->name;
         }
-        Session::addToMainMenu('<i class="icon icon-channel"></i> ' . Text::get('home-channels-header'), $nodes, 'channels', 30, 'main');
+        Session::addToMainMenu('<i class="icon icon-channel"></i> ' . Text::get('home-channels-header'), $nodes, 'channels', 20, 'main');
+        // Default menus
+        Session::addToMainMenu('<i class="fa fa-search"></i> ' . Text::get('regular-discover'), '/discover', 'discover', 30, null, 'global-search');
+        Session::addToMainMenu('<i class="icon icon-drop"></i> ' . Text::get('regular-header-about'), '/about', 'about', 40);
+        Session::addToMainMenu('<i class="fa fa-question-circle"></i> ' . Text::get('regular-faq'), '/faq', 'faq', 100);
 
-        // Langs
-        $langs = [];
-        foreach (Lang::listAll('name', true) as $id => $lang) {
-            if (Lang::isActive($id)) continue;
-            $langs[Lang::getUrl($id, $request)] = $lang;
-        }
-        Session::addToMainMenu('<i class="fa fa-globe"></i> ' . Lang::getName(), $langs, 'langs', 40, 'main');
 
         // Currencies
         $currencies = [];

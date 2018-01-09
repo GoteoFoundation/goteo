@@ -10,10 +10,11 @@
 
 namespace Goteo\Model;
 
+use Goteo\Application\Lang;
 use Goteo\Application\Config;
-use Goteo\Model\Image,
-    Goteo\Application\Exception,
-    Goteo\Library\Text;
+use Goteo\Model\Image;
+use Goteo\Application\Exception;
+use Goteo\Library\Text;
 
 class Node extends \Goteo\Core\Model {
 
@@ -54,6 +55,9 @@ class Node extends \Goteo\Core\Model {
 
     }
 
+    public static function getLangFields() {
+        return ['subtitle', 'description'];
+    }
 
     /**
      * Obtener datos de un nodo
@@ -149,46 +153,75 @@ class Node extends \Goteo\Core\Model {
     /*
      * Lista de nodos
      */
-    public static function getAll ($filters = array()) {
+    public static function getAll ($filters = array(), $lang = null) {
 
         $sqlFilter = [];
         $values = [];
 
         if (!empty($filters['name'])) {
-            $sqlFilter[] = "( name LIKE :name OR id = :id )";
+            $sqlFilter[] = "( node.name LIKE :name OR node.id = :id )";
             $values[':name'] = '%' . $filters['name'] . '%';
             $values[':id'] = $filters['name'];
         }
 
         if (!empty($filters['type'])) {
                 if($filters['type'] == 'channel')
-                    $sqlFilter[] = "url = ''";
+                    $sqlFilter[] = "node.url = ''";
                 else
-                    $sqlFilter[] = "url != ''";
+                    $sqlFilter[] = "node.url != ''";
         }
 
         if (!empty($filters['status'])) {
             $active = $filters['status'] == 'active' ? '1' : '0';
-            $sqlFilter[] = "active = '$active'";
+            $sqlFilter[] = "node.active = '$active'";
         }
 
         if (!empty($filters['admin'])) {
-            $sqlFilter[] = "id IN (SELECT node_id FROM user_role WHERE user_id = :user)";
+            $sqlFilter[] = "node.id IN (SELECT node_id FROM user_role WHERE user_id = :user)";
             $values[':user'] = $filters['admin'];
         }
 
         if (isset($filters['available'])) {
             if($filters['available']) {
-                $sqlFilter[] = "(active=1 OR id IN (SELECT node_id FROM user_role WHERE user_id = :user))";
+                $sqlFilter[] = "(node.active=1 OR node.id IN (SELECT node_id FROM user_role WHERE user_id = :user))";
                 $values[':user'] = $filters['available'];
             } else {
-                $sqlFilter[] = "active=1";
+                $sqlFilter[] = "node.active=1";
             }
         }
 
         if($sqlFilter) $sqlFilter = ' WHERE '. implode(' AND ', $sqlFilter);
-        $sql = "SELECT * FROM node $sqlFilter ORDER BY `name` ASC";
-        // die(\sqldbg($sql, $values));
+
+        if(!$lang) $lang = Lang::current();
+        $values['viewLang'] = $lang;
+        list($fields, $joins) = self::getLangsSQLJoins($lang, Config::get('lang'));
+
+        $sql = "SELECT node.id,
+                       node.name,
+                       $fields,
+                       node.email,
+                       node.active,
+                       node.url,
+                       node.logo,
+                       node.location,
+                       node.twitter,
+                       node.facebook,
+                       node.google,
+                       node.linkedin,
+                       node.label,
+                       node.owner_background,
+                       node.default_consultant,
+                       node.sponsors_limit,
+                       node.home_img,
+                       node.owner_font_color,
+                       node.owner_social_color,
+                       :viewLang as viewLang
+
+        FROM node
+        $joins
+        $sqlFilter
+        ORDER BY node.name ASC";
+        // print(\sqldbg($sql, $values));
         if($query = static::query($sql, $values)) {
             return $query->fetchAll(\PDO::FETCH_CLASS, __CLASS__);
         }

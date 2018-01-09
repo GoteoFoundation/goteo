@@ -1197,15 +1197,28 @@ class Call extends \Goteo\Core\Model {
      * @param array filters
      * @return array of call instances
      */
-    public static function getList($filters = array()) {
+    public static function getList($filters = array(), $count= false) {
         $calls = array();
 
         // los filtros
         $sqlFilter = "";
-        if (!empty($filters['status'])) {
+
+        if (is_array($filters['status'])) {
+            $parts = [];
+            foreach(array_values($filters['status']) as $i => $status) {
+                if(is_numeric($status)) {
+                    $parts[] = ':status' . $i;
+                    $values[':status' . $i] = $status;
+                }
+            }
+            if($parts) $sqlFilter .= " AND status IN (" . implode(',', $parts) . ")";
+        }
+
+        elseif (!empty($filters['status'])) {
             $sqlFilter .= " AND status = :status";
             $values[':status'] = $filters['status'];
         }
+
         if (!empty($filters['caller'])) {
             $sqlFilter .= " AND owner = :caller";
             $values[':caller'] = $filters['caller'];
@@ -1261,20 +1274,67 @@ class Call extends \Goteo\Core\Model {
             }
         }
 
-        // la select
-        $sql = "SELECT
-                    id
-                FROM `call`
-                WHERE status > 0
-                    $sqlFilter
-                    $sqlOrder
-                ";
+        if(!empty($filters['type'])) {
+                if($filters['type'] === 'explore') {
+                    $innerJoin = 'INNER JOIN call_conf ON call_conf.call = call.id';
 
-        $query = self::query($sql, $values);
-        foreach ($query->fetchAll(\PDO::FETCH_ASSOC) as $call) {
-            $calls[] = self::get($call['id']);
+                    $sqlFilter .= " AND call_conf.date_stage1_out < CURDATE()"; 
+                    
+                    if(empty($filters['order'])) {
+                        $sqlOrder = " ORDER BY call_conf.date_stage2 DESC";
+                    }
+                }
+                if($filters['type'] === 'open') {
+                    $innerJoin = 'INNER JOIN call_conf ON call_conf.call = call.id';
+
+                    $sqlFilter .= " AND call_conf.date_stage1_out >= CURDATE()"; 
+                    
+                    if(empty($filters['order'])) {
+                        $sqlOrder = " ORDER BY call_conf.date_stage1_out DESC";
+                    }
+                }
         }
-        return $calls;
+
+        if($count) {
+
+            $what = 'SUM(amount)';
+
+            $sql = "SELECT
+                        $what
+                    FROM `call`
+                    WHERE status > 0
+                        $sqlFilter
+                        $sqlOrder
+                    ";
+
+            $query = self::query($sql, $values);
+
+            $total = self::query($sql, $values)->fetchColumn();
+
+            return (int) $total;
+        }
+
+        else
+        {
+
+            // la select
+            $sql = "SELECT
+                        id
+                    FROM `call`
+                    $innerJoin
+                    WHERE status > 0
+                        $sqlFilter
+                        $sqlOrder
+                    ";
+
+            //echo \sqldbg($sql, $values);
+
+            $query = self::query($sql, $values);
+            foreach ($query->fetchAll(\PDO::FETCH_ASSOC) as $call) {
+                $calls[] = self::get($call['id']);
+            }
+            return $calls;
+        }
     }
 
     /**
@@ -2053,7 +2113,10 @@ class Call extends \Goteo\Core\Model {
         return $errors;
     }
 
-    /* Spheres of a call */
+    /* Spheres of a call
+    TODO: correct this, remove static use modern aproach to extract langs
+    (view this exact method in Matcher.php as an example)
+     */
 
     public static function getSpheres ($call = null) {
 
@@ -2108,7 +2171,7 @@ class Call extends \Goteo\Core\Model {
 
     public function getMainSphere()
     {
-        return current($this->getSpheres($this->id));
+        return current(self::getSpheres($this->id));
     }
 
 
@@ -2156,6 +2219,14 @@ class Call extends \Goteo\Core\Model {
             $errors[] = 'No se ha podido quitar el ambito {$sphere} a la convocatoria {$this->id}. ' . $e->getMessage();
             return false;
         }
+    }
+
+    /*
+     *   Total raised by calls
+     */
+    public static function getTotalRaised(){
+        $status_active=[self::STATUS_OPEN, self::STATUS_ACTIVE, self::STATUS_COMPLETED];
+        return self::getList(['status' => $status_active], true);
     }
 
 }

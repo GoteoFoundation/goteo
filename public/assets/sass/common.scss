@@ -14,15 +14,21 @@
 @import 'components/alerts';
 @import 'components/widgets';
 @import 'components/forms';
+@import 'components/widgets_call';
 
 @import 'misc/misc';
+@import 'misc/charts';
 // This will dissappear some day, cows may fly...
 @import 'misc/unordered';
 
+
 @import 'layouts/layout';
 @import 'layouts/header';
+@import 'layouts/search';
 @import 'layouts/footer';
 @import 'layouts/sidebar';
+@import 'layouts/home';
+@import 'layouts/discover';
 @import 'layouts/project';
 @import 'layouts/channel';
 @import 'layouts/channels';

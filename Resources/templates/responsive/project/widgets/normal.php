@@ -57,7 +57,7 @@ if(!($label = $this->label)) {
             <a href="/user/profile/<?= $this->project->user->id?>" <?= $target ?>><?= $this->text('regular-by').' '.$this->project->user->name ?></a>
         </h4>
         <div class="description">
-            <?= $this->text_truncate($this->project->description, 140) ?>
+            <?= $this->text_truncate($this->project->subtitle, 140) ?>
         </div>
 
         <?php // TODO: add links here?

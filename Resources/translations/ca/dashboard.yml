@@ -169,7 +169,7 @@ user-preferences-email: 'Ocultar el meu correu electrònic als projectes que rec
 user-preferences-mailing: 'Desactiva l''enviament del newsletter'
 user-preferences-rounds: 'Desactiva les notificacions de progrés dels projectes que recolzo'
 user-preferences-threads: 'Desactiva les notificacions de respostes als missatges que jo inicio '
-user-preferences-tips: 'Desactiva les notificacions ambe consells de difusió de campanya (per a impulsors)'
+user-preferences-tips: 'Desactiva les notificacions dels consells de difusió de campanya (per a impulsors)'
 user-preferences-updates: 'Desactiva les notificacions sobre novetats dels projectes que recolzo'
 user-profile-saved: 'Informació de perfil actualitzada'
 user-save-fail: 'Hi ha hagut algun problema en desar les dades'
@@ -273,3 +273,11 @@ dashboard-project-reward-cannot: 'Ara no es poden introduir noves recompenses. D
 dashboard-project-add-translations: 'Mentrestant, pots afegir traduccions al teu projecte si consideres que t''ajudarà a incrementar-ne la visibilitat.'
 
 dashboard-project-goto-first-error: 'Ves al primer error'
+
+dashboard-origin-project-referer: 'Origen de visites a la pàgina del projecte'
+dashboard-origin-invests-referer: 'Origen de visites en les aportacions reeixides'
+dashboard-origin-project-device: 'Dispositiu usat en la pàgina del projecte'
+dashboard-origin-invests-device: 'Dispositiu usat en les aportacions reeixides'
+dashboard-origin-disclaimer: '⚠ *Aquestes dades son orientatives i no inclouen la totalitat de les visites degut a limitacions tècniques.*
+
+> Et recomanem que configuris Google Analytics o Facebook Pixel per obtenir dades més detallades'

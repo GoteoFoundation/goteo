@@ -111,18 +111,20 @@ class DiscoverController extends \Goteo\Core\Controller {
 
         // print_r($params);
         if($params) {
-            $results = \Goteo\Library\Search::params($params, false, 33);
+            $projects = \Goteo\Library\Search::params($params, false, 33);
         }
         else {
             return new RedirectResponse('/discover');
         }
 
-        return new Response(View::render('discover/results', [
-                'message' => $message,
-                'results' => $results,
-                'query'   => $query,
-                'params'  => $params
-            ]));
+        View::setTheme('responsive');
+
+        return $this->viewResponse('discover/results', [
+            'message' => $message,
+            'projects' => $projects,
+            'query'   => $query,
+            'params'  => $params
+        ]);
     }
 
     /*

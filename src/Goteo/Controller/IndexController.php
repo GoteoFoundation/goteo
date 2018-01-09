@@ -10,18 +10,13 @@
 
 namespace Goteo\Controller;
 
-use Symfony\Component\HttpFoundation\Response;
-
-use Goteo\Application\Config;
+use Symfony\Component\HttpFoundation\Request;
 use Goteo\Application\View;
-use Goteo\Model;
-use Goteo\Model\Home;
 use Goteo\Model\Banner;
+use Goteo\Model\Project;
 use Goteo\Model\Stories;
-use Goteo\Model\News;
-use Goteo\Model\Post;
-use Goteo\Model\Promote;
-use Goteo\Library\Feed;
+use Goteo\Model\Node;
+use Goteo\Util\Stats\Stats;
 
 // para sacar el contenido de about
 
@@ -32,62 +27,34 @@ class IndexController extends \Goteo\Core\Controller
     {
         //activamos la cache para todo el controlador index
         \Goteo\Core\DB::cache(true);
+        View::setTheme('responsive');
     }
 
-    public function indexAction()
+    public function indexAction(Request $request)
     {
+        $projects = Project::getList([
+                'status' => Project::STATUS_IN_CAMPAIGN,
+                'published_since' => (new \DateTime('-6 month'))->format('Y-m-d'),
+                'type' => 'promoted',
+                'order' => 'promote.order ASC, project.published DESC, project.name ASC'
+            ], null, 0, 20);
 
-        // orden de los elementos en portada
-        $order = Home::getAll(Config::get('node'));
+        $stories = Stories::getAll(true);
 
-        // entradas de blog
-        if (isset($order['posts'])) {
-            // entradas en portada
-            $posts     = Post::getAll();
-        }
-
-        // Proyectos destacados
-        if (isset($order['promotes'])) {
-            $promotes  = Promote::getAll(true);
-        }
-
-        // actividad reciente
-        if (isset($order['feed'])) {
-            $feed = array();
-
-            $feed['goteo']     = Feed::getAll('goteo', 'public', 15);
-            $feed['projects']  = Feed::getAll('projects', 'public', 15);
-            $feed['community'] = Feed::getAll('community', 'public', 15);
-        }
-
-        $stories = (isset($order['stories'])) ? Stories::getAll(true) : array();
-
-        $news =  (isset($order['news'])) ? News::getAll(true) : array();
-
-        foreach ($news as $idNew => &$new) {
-            //comprobamos si esta activo el campo banner prensa y si tiene imagen asociada
-
-            if ( ! $new->press_banner || ! $new->image instanceof \Goteo\Model\Image ) {
-                    unset($news[$idNew]);
-            }
-
-        }
-
+        $channels = Node::getAll(['status' => 'active', 'type' => 'channel']);
 
         // Banners siempre
-        $banners   = Banner::getAll(true);
-        $vars = array(
-                'banners'   => $banners,
-                'stories'   => $stories,
-                'posts'     => $posts,
-                'promotes'  => $promotes,
-                'feed'      => $feed,
-                'news'      => $news,
-                'order'     => $order
-            );
+        $banners = Banner::getAll(true);
 
+        $stats = Stats::create();
 
-        return new Response(View::render('home/index', $vars));
+        return $this->viewResponse('home/index', [
+            'banners'   => $banners,
+            'projects'  => $projects,
+            'stories'   => $stories,
+            'channels'  => $channels,
+            'stats'     => $stats
+        ]);
     }
 
 }

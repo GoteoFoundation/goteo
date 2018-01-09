@@ -8,7 +8,7 @@ use Goteo\Model\Message,
 
 class MessageTest extends \PHPUnit_Framework_TestCase {
 
-    private static $data = array('message' => 'Test message content', 'project' => 'test');
+    private static $data = array('message' => 'Test message content');
     private static $user_data = array('userid' => 'test', 'name' => 'Test', 'email' => 'test@goteo.org', 'password' => 'testtest', 'active' => true);
 
     public function testInstance() {
@@ -31,17 +31,12 @@ class MessageTest extends \PHPUnit_Framework_TestCase {
 
     public function testCreate() {
 
-        //Creates the user first
-        if(!($user = User::getByEmail(self::$user_data['email']))) {
-            echo "Creating user [test]\n";
-            $user = new User(self::$user_data);
-            $this->assertTrue($user->save($errors, array('active')), print_r($errors, 1));
-            $user = User::getByEmail(self::$user_data['email']);
-        }
+        $user = get_test_user();
+        $p = get_test_project();
 
         $this->assertInstanceOf('\Goteo\Model\User', $user, print_r($errors, 1));
 
-        $ob = new Message(self::$data + array('user' => $user->id));
+        $ob = new Message(self::$data + array('project' => $p->id, 'user' => $user->id));
         $this->assertTrue($ob->validate($errors), print_r($errors, 1));
         $this->assertTrue($ob->save($errors), print_r($errors, 1));
 
@@ -71,4 +66,14 @@ class MessageTest extends \PHPUnit_Framework_TestCase {
         $this->assertFalse($ob);
         $this->assertFalse(Message::delete($ob->id));
     }
+
+    /**
+     * Some cleanup
+     */
+    static function tearDownAfterClass() {
+        delete_test_project();
+        delete_test_user();
+        delete_test_node();
+    }
+
 }

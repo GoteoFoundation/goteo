@@ -14,7 +14,7 @@ class LocationStatsTest extends \PHPUnit_Framework_TestCase {
     public function testInstance() {
         \Goteo\Core\DB::cache(false);
 
-        $stats = new LocationStats();
+        $stats = new LocationStats(new UserLocation, new User);
 
         $this->assertInstanceOf('\Goteo\Model\Location\LocationStats', $stats);
 

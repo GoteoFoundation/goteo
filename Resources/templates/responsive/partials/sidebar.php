@@ -25,6 +25,7 @@
         <?= $this->supply('sidebar-footer') ?>
       </div>
     </div>
+
   </nav>
 
   <div id="sidebar-menu-toggle" class="toggle-sidebar visible-xs" title="Open menu">

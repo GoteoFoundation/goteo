@@ -35,6 +35,15 @@ $background-dark-green: #14AE84;
 $background-pink: #CD5EB3;
 $background-red: #B32928;
 $background-black: #111111;
+$background-light-black: #333333;
+$background-white: #FFFFFF;
+$background-green-donor: #CFEBEB;
+$background-green-owner: #E3F3F4;
+$background-yellow: #FCFDD2;
+$background-dark-yellow: #EFE1A8;
+$background-light-yellow: #FFEC61;
+
+$background-blue: #DDF2F2;
 $background-sidebar-header: #2C2C2C;
 $background-sidebar: #3B3B3B;
 $background-sidebar-active: #727272;
@@ -46,8 +55,7 @@ $background-dark-lilac: #A65387;
 $background-active-green: #1BAFAC;
 $background-active-dark-green: #189D9A;
 
-
-
+$background-main-home: #f8f8f8;
 
 $color-white: #FFFFFF;
 $color-black: #000000;
@@ -56,14 +64,18 @@ $color-lilac: #A63C98;
 $color-orange: #FF6400;
 $color-red: #FF3936;
 $color-green: #14AE84;
+$color-light-green: #19B4B2;
 $color-light-grey: #BCBCBC;
 $color-grey: #58595B;
 $color-dark: #4D4D4D;
 $color-cyan: #2BBBB7;
 $color-grey-cyan: #C1D9DB;
+$color-light-black: #2C2C2C;
 
 $dashboard-sidebar-width: 240px;
 // $dashboard-sidebar-width: 20%;
+$home-sidebar-width: 400px;
+
 $dashboard-main-width: 80%;
 
 @import 'misc/mixins';

@@ -138,6 +138,8 @@ regular-review_board: 'Review panel'
 regular-round: Round
 regular-save: Save
 regular-search: Search
+regular-search-desc: 'Write your search here'
+regular-search-tooltip: 'Enter your keywords and press enter'
 regular-see_all: 'See all'
 regular-see_blog: Blog
 regular-see_details: 'See details'
@@ -181,6 +183,7 @@ regular-unknown: Unknown
 regular-input: Input
 regular-amount: Amount
 regular-copied: 'Copied to clipboard!'
+regular-remember-me: 'Remember me'
 session-about-to-expire: 'Your session will expire in 10 Minutes, do you want to reload?'
 session-expired: 'Your session has expired'
 stories-user-project: '%s, from the project: %s'

@@ -58,7 +58,10 @@ class DuplicateInvestMatcherProcessorTest extends TestCase {
             if(isset($user['pool'])) {
 
                 echo "\nSetting user's pool [{$user[userid]}]";
+                Matcher::query("REPLACE invest (`user`, amount, status, method, invested, charged, pool) VALUES (:user, :amount, :status, 'dummy', NOW(), NOW(), 1)", [':user' => $user['userid'], ':amount' => $user['pool'], ':status' => Invest::STATUS_TO_POOL]);
+
                 Matcher::query("REPLACE user_pool (`user`, amount) VALUES (:user, :amount)", [':user' => $user['userid'], ':amount' => $user['pool']]);
+
                 $this->assertEquals($user['pool'], $uob->getPool()->amount);
 
                 $this->assertInstanceOf('\Goteo\Model\Matcher', $matcher->addUsers($uob));
@@ -241,14 +244,15 @@ class DuplicateInvestMatcherProcessorTest extends TestCase {
     public function testDelete($matcher) {
         // Delete invests
         Matcher::query("DELETE FROM invest WHERE project=?", get_test_project()->id);
+        // delete matcher
         $this->assertTrue($matcher->dbDelete());
 
         return $matcher;
     }
     public function testCleanUsers() {
-
         foreach(self::$user_data as $user) {
             echo "\nDeleting user [{$user[userid]}]";
+            Matcher::query("DELETE FROM invest WHERE `user` = ?", $user['userid']);
             Matcher::query("DELETE FROM user_pool WHERE `user` = ?", $user['userid']);
             $user['ob']->dbDelete();
             $this->assertEquals(0, Matcher::query("SELECT COUNT(*) FROM `user` WHERE id = ?", $user['userid'])->fetchColumn(), "Unable to delete user [{$user[userid]}]. Please delete id manually");

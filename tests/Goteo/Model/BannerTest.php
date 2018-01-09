@@ -34,7 +34,7 @@ class BannerTest extends TestCase {
         self::$data['node'] = get_test_node()->id;
         $ob = new Banner(self::$data);
         $this->assertTrue($ob->validate($errors));
-        $this->assertTrue($ob->save());
+        $this->assertTrue($ob->save($errors), print_r($errors, 1));
         $ob = Banner::get($ob->id);
         $this->assertInstanceOf('\Goteo\Model\Banner', $ob);
 
@@ -62,7 +62,7 @@ class BannerTest extends TestCase {
     /**
      * Remove temporal files on finish
      */
-    public static function tearDownAfterClass($fp) {
+    public static function tearDownAfterClass() {
         delete_test_project();
         delete_test_user();
         delete_test_node();

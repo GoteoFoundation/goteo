@@ -13,6 +13,8 @@ namespace Goteo\Model;
 use Goteo\Core\Model;
 use Goteo\Application\Exception\ModelNotFoundException;
 use Goteo\Application\Exception\ModelException;
+use Goteo\Model\Project;
+use Goteo\Model\Invest;
 
 /**
  * Origin Model
@@ -30,7 +32,7 @@ class Origin extends \Goteo\Core\Model {
            $modified_at;
 
     /**
-     * Get instance of origin already in the table by action
+     * Get instance of origin by id
      * @return [type] [description]
      */
     static public function get($id) {
@@ -60,6 +62,120 @@ class Origin extends \Goteo\Core\Model {
         return new self($array);
     }
 
+    static public function getList($filter = [], $offset = 0, $limit = 10, $count = false) {
+        $values = [];
+        $where = [];
+        $join = '';
+        if(isset($filter['project'])) {
+            $where[] = 'origin.project_id = :project';
+            $values[':project'] = $filter['project'];
+        }
+        if(isset($filter['project_invests'])) {
+            $where[] = 'invest.project = :project';
+            $values[':project'] = $filter['project_invests'];
+            $join = 'RIGHT JOIN invest ON invest.id = origin.invest_id';
+        }
+        if(isset($filter['invest'])) {
+            $where[] = 'origin.invest_id = :invest';
+            $values[':invest'] = $filter['invest'];
+        }
+        if(isset($filter['call'])) {
+            $where[] = 'origin.call_id = :call';
+            $values[':call'] = $filter['call'];
+        }
+        if(isset($filter['type']) && in_array($filter['type'], ['ua', 'referer'])) {
+            $where[] = 'origin.type = :type';
+            $values[':type'] = $filter['type'];
+        }
+        if(isset($filter['from'])) {
+            $where[] = 'origin.created_at >= :from';
+            $values[':from'] = $filter['from'];
+        }
+        if(isset($filter['to'])) {
+            $where[] = 'origin.modified_at <= :to';
+            $values[':to'] = $filter['to'];
+        }
+        if(isset($filter['category'])) {
+            $where[] = 'origin.category = :category';
+            $values[':category'] = $filter['category'];
+        }
+        if(isset($filter['tag'])) {
+            $where[] = 'origin.tag = :tag';
+            $values[':tag'] = $filter['tag'];
+        }
+
+        $sqlFilter = $where ? ' WHERE '. implode(' AND ',  $where) : '';
+        if($count) {
+            if($count === 'all') {
+            }
+            else {
+                $what = 'SUM(origin.counter) AS total';
+            }
+            // Return count
+            $sql = "SELECT DISTINCT $what
+                FROM origin
+                $join
+                $sqlFilter";
+
+                // echo sqldbg($sql, $values);
+
+            // if($count === 'all') {
+            //     $ob = self::query($sql, $values)->fetchObject();
+            //     return ['amount' => (float) $ob->total_amount, 'invests' => (int) $ob->total_invests, 'users' => (int) $ob->total_users];
+            // }
+            $total = self::query($sql, $values)->fetchColumn();
+            return (int) $total;
+        }
+
+        $offset = (int) $offset;
+        $limit = (int) $limit;
+        $sql = "SELECT * FROM origin
+                $join
+                $sqlFilter ORDER BY origin.counter DESC LIMIT $offset, $limit";
+        // echo sqldbg($sql, $values);
+        $query = self::query($sql, $values);
+        return $query->fetchAll(\PDO::FETCH_CLASS, __CLASS__);
+    }
+
+    static public function getProjectStats($pid, $stat = 'project', $group = 'referer', $group_by = 'tag') {
+        if($pid instanceOf Project) $pid = $pid->id;
+
+        $values = [':project' => $pid, ':type' => $group];
+        $join = '';
+
+        $group_by = ($group_by === 'category') ? 'category' : 'tag';
+
+        if($stat === 'invests') {
+            // Project invests stats
+            $sql = "SELECT
+                origin.tag,
+                origin.category,
+                IF (MIN(origin.created_at), MIN(origin.created_at), MIN(invest.invested)) AS created,
+                IF (MAX(origin.modified_at), MAX(origin.modified_at), MAX(invest.invested)) as updated,
+                IF (SUM(origin.counter), SUM(origin.counter), COUNT(invest.id)) AS counter
+                FROM invest
+                LEFT JOIN origin ON origin.invest_id = invest.id AND origin.type = :type
+                WHERE invest.status IN (". implode(',', Invest::$ACTIVE_STATUSES) . ") AND invest.project = :project
+                GROUP BY origin.$group_by ORDER BY counter DESC";
+
+        } else {
+            // Project visit stats by default
+            $sql = "SELECT
+            origin.tag,
+            origin.category,
+            MIN(origin.created_at) AS created,
+            MAX(origin.modified_at) AS updated,
+            SUM(origin.counter) AS counter
+            FROM origin
+            WHERE origin.project_id = :project AND origin.type = :type
+            GROUP by origin.$group_by ORDER BY counter DESC";
+
+        }
+
+        // echo sqldbg($sql, $values);
+        $query = self::query($sql, $values);
+        return $query->fetchAll(\PDO::FETCH_OBJ);
+    }
 
     /**
      * Guardar.

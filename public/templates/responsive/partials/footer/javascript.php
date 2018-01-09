@@ -9,18 +9,19 @@
 <script src="<?= SRC_URL ?>/assets/vendor/clipboard/dist/clipboard.min.js"></script>
 <script src="<?= SRC_URL ?>/assets/vendor/moment/min/moment-with-locales.min.js"></script>
 <script src="<?= SRC_URL ?>/assets/vendor/eonasdan-bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min.js"></script>
-<script src="<?= SRC_URL ?>/assets/vendor/d3/d3.v3.min.js"></script>
+<script src="<?= SRC_URL ?>/assets/vendor/d3/d3.min.js"></script>
 <script src="<?= SRC_URL ?>/assets/vendor/footable/compiled/footable.min.js"></script>
 
-<!-- Goteo utils: Debug functions, Session keeper -->
+<!-- Goteo utils: Debug functions, some defaults -->
 <script type="text/javascript">
 // @license magnet:?xt=urn:btih:0b31508aeb0634b347b8270c7bee4d411b5d4109&dn=agpl-3.0.txt
-var goteo = {};
+var goteo = goteo || {};
 <?php
     echo 'goteo.debug = ' . (GOTEO_ENV !== 'real' ? 'true' : 'false') . ';';
     echo 'SRC_URL = "' . SRC_URL . '";';
     echo "goteo.locale = '" . $this->lang_current() . "';";
     echo 'MAX_FILE_SIZE = ' . \Goteo\Model\Image::getSystemMaxFileSize('mb') . ';';
+    echo "goteo.user_location = " .  json_encode($this->get_user_location()) .';';
 ?>
 
 // @license-end
@@ -30,6 +31,7 @@ var goteo = {};
 <!-- build:js assets/js/all.js -->
 <script type="text/javascript" src="<?= SRC_URL ?>/assets/js/goteo.js"></script>
 <script type="text/javascript" src="<?= SRC_URL ?>/assets/js/jquery.animate-css.js"></script>
+<script type="text/javascript" src="<?= SRC_URL ?>/assets/js/jquery.animate-number.js"></script>
 <script type="text/javascript" src="<?= SRC_URL ?>/assets/js/menu.js"></script>
 <script type="text/javascript" src="<?= SRC_URL ?>/assets/js/sidebar.js"></script>
 <script type="text/javascript" src="<?= SRC_URL ?>/assets/js/widgets.js"></script>

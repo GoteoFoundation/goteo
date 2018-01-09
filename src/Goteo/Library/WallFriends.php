@@ -61,8 +61,8 @@ namespace Goteo\Library {
          * */
         public static function pondera($array = array(),$max_multiplier = 4) {
 			$new = array();
-			$min = min($array);
-			$max = max($array);
+			$min = $array ? min($array) : 0;
+			$max = $array ? max($array) : 0;
 
 			foreach($array as $i => $n) {
 				//minim 1, màxim el que toqui

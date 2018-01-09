@@ -13,6 +13,30 @@ a::-moz-focus-inner {border:0;}
 blockquote {
     font-size: inherit;
 }
+
+@keyframes loading-bar {
+    from {width: 0%;}
+    to {width: 100%;}
+}
+
+.loading-container {
+    position: relative;
+    &::before {
+        z-index: 1000;
+        width: 30px;
+        height: 30px;
+        position: absolute;
+        content: '';
+        top: -10px;
+        left: 0;
+        border-top: 2px solid $color-cyan;
+        background:url(../img/ring.gif) no-repeat left;
+        background-size: contain;
+        @include animation-name (loading-bar);
+        @include animation-duration (1s);
+        @include animation-iteration-count (infinite);
+    }
+}
 .spacer {
     margin-top: 40px;
 }

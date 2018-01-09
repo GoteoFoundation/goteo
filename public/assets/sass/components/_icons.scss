@@ -97,4 +97,34 @@
     &.icon-call {
         @include svg-background('../img/icons/call.svg');
     }
+    &.icon-search {
+        @include svg-background('../img/icons/search.svg');
+    }
+    &.icon-home-certificate {
+        @include svg-background('../img/icons/home_certificate.svg');
+    }
+    &.icon-advantages {
+        @include svg-background('../img/icons/advantages.svg');
+    }
+    &.icon-stats {
+        @include svg-background('../img/icons/stats.svg');
+    }
+    &.icon-channels {
+        @include svg-background('../img/icons/channels.svg');
+    }
+    &.icon-save-the-world {
+        @include svg-background('../img/icons/save_world.svg');
+    }
+    &.icon-calculator {
+        @include svg-background('../img/icons/calculator.svg');
+    }
+    &.icon-calendar {
+        @include svg-background('../img/icons/calendar.svg');
+    }
+    &.icon-fee {
+        @include svg-background('../img/icons/fee.svg');
+    }
+    &.icon-api {
+        @include svg-background('../img/icons/api.svg');
+    }
 }

@@ -98,6 +98,24 @@
         background-color: $color-white;
     }
 }
+.btn-white {
+    background-color: $background-white;
+    color: $color-green;
+    font-weight: bold;  
+}
+.btn-light-green{
+    background-color: $background-light-green;
+    color:$color-white;
+}
+.btn-light-black {
+    background-color: $background-sidebar-footer;
+    color: $color-white;
+    border: 1px solid $color-white;
+    &:hover {
+        background-color:$background-light-green;
+        color: $color-white;
+    }
+}
 .btn-fashion {
     background: $color-pink;
     @include background(linear-gradient(to right, $color-pink 28%,$color-red 100%));

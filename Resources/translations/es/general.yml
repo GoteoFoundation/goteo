@@ -156,6 +156,8 @@ regular-round: 'ª ronda'
 regular-save: Guardar
 regular-schedule: Horario
 regular-search: Buscar
+regular-search-desc: 'Escribe tu búsqueda aquí'
+regular-search-tooltip: 'Entra tu búsqueda y pulsa enter'
 regular-see_all: 'Ver todos'
 regular-see_blog: Blog
 regular-see_details: 'Ver detalles'
@@ -212,6 +214,7 @@ regular-unknown: Desconocido
 regular-input: Aporte
 regular-amount: Importe
 regular-copied: 'Copiado al portapapeles!'
+regular-remember-me: 'Recordar mis datos'
 session-about-to-expire: 'Tu sesión expirará en 10 minutos. ¿Quieres recargar la página para renovarla?'
 session-expired: 'Tu sesión en goteo ha expirado!'
 spread-about: 'Texto spread-about'

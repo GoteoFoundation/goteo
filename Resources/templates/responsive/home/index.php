@@ -2,7 +2,7 @@
 
 <?php $this->section('sidebar-header') ?>
     <span class="header-title">
-    	<?= $this->text('home-menu-sidebar-header-title') ?>
+    	<?= $this->text('home-menu-toggle-label')."..." ?>
     </span>
 <?php $this->replace() ?>
 
@@ -23,21 +23,32 @@
 
 <?php $this->section('home-content') ?>
 
-<!-- Banner section -->
+    <!-- Banner section -->
 
-<?= $this->insert('home/partials/main_slider') ?>
+    <?= $this->insert('home/partials/main_slider') ?>
 
-<?= $this->insert('home/partials/projects') ?>
+    <?= $this->insert('home/partials/projects') ?>
 
-<?= $this->insert('home/partials/call_to_action') ?>
+    <?= $this->insertif('home/partials/call_to_action') ?>
 
-<?= $this->insert('home/partials/advantages') ?>
+    <?= $this->insertif('home/partials/advantages') ?>
 
-<?= $this->insert('home/partials/matchfunding') ?>
+    <?= $this->insertif('home/partials/matchfunding') ?>
 
-<?= $this->insert('home/partials/foundation') ?>
+    <?= $this->insertif('home/partials/foundation') ?>
 
-<?= $this->insert('home/partials/tools') ?>
+    <?= $this->insertif('home/partials/channels') ?>
 
+    <?= $this->insertif('home/partials/sponsors') ?>
+
+    <?= $this->insertif('home/partials/tools') ?>
+
+    <?= $this->insert('home/partials/modals') ?>
 
 <?php $this->replace() ?>
+
+
+<?php $this->section('footer') ?>
+    <?= $this->insert('home/partials/home_javascript') ?>
+<?php $this->append() ?>
+

@@ -1,11 +1,43 @@
  .footer{
     background-color: $background-grey;
     width:100%;
+    padding-top: 15px;
     a {
         color: $color-white;
     }
     ul {
         margin:10px 0;
     }
+    .social{
+    	margin-top: 0px;
+    	margin-bottom: 20px;
+    }
+    .social [class*="fa fa-"] {
+	    background-color: $color-white;
+	    border-radius: 35px;
+	    color: $background-grey;
+	    display: inline-block;
+	    height: 35px;
+	    line-height: 35px;
+	    margin: auto 3px;
+	    width: 35px;
+	    font-size: 20px;
+	    text-align: center;
+	}
+	.social [class*="fa fa-"]:hover{
+		background-color: $background-light-green;
+		color: $color-white;
+	}
+	/*.fa-twitter:hover { 
+    	background-color: #46c0fb; 
+	}*/
+
+	@media (max-width: $breakpoint-sm - 1) 
+	{
+		.footer-list{
+			text-align: center;
+		}
+	}
+
  }
 

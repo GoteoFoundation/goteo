@@ -73,7 +73,7 @@ $(function(){
                 $wrap.animateCss('slideOutLeft', function() {
                     // console.log('end');
                     // $toggle.css('opacity', 1).animateCss('fadeIn');
-                    $toggle.animate({opacity: 1});
+                    $toggle.css({opacity: 1});
                     $body.removeClass('sidebar-opened');
                 });
             } else {
@@ -82,7 +82,7 @@ $(function(){
                 $toggle.css('opacity', 0);
                 $wrap.animateCss('slideInLeft', function() {
                     // console.log('end');
-                    $toggle.animate({opacity: 1});
+                    $toggle.css({opacity: 1});
                     // $toggle.css('opacity', 1).animateCss('fadeIn');
                 });
             }
@@ -159,6 +159,19 @@ $(function(){
         });
 
         $('#sidebar-menu .toggle-submenu').on('click', toggleSubMenu);
+        $("#sidebar-menu li > a").on('click', function (e) {
+            toggleSidebar();
+          });
+
+        $toggle.affix({
+          offset: {
+            top: parseInt($toggle.css('top'), 10)
+            // bottom: function () {
+            //   return (this.bottom = $('.footer').outerHeight(true))
+            // }
+          }
+        });
+
     }
 
 });

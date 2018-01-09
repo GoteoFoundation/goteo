@@ -19,7 +19,7 @@ namespace Goteo\Model\Call {
             $image,
             $order,
             $amount,
-            $main;
+            $main = 1;
 
         /*
          *  Devuelve datos de un destacado

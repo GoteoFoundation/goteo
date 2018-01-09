@@ -39,3 +39,4 @@ matcher-project-accept: 'Congratulations! Your project has been added to the cal
 matcher-project-reject: 'Your project has been removed from the call %s'
 matcher-project-discard: 'El project has been discarded from the call %s'
 matcher-project-activate: 'El project has been activated at the call %s'
+matcher-budget-amount: 'Total budget'
