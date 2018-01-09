@@ -1,7 +1,7 @@
 <?php
 
 $link = $this->link ? $this->link : '/matcher/' . $this->matcher->id;
-
+$sphere = $this->matcher->getMainSphere();
 ?>
 
 <div class="flip-widget call-widget normal open" id="call-<?= $this->matcher->id ?>">
@@ -10,7 +10,10 @@ $link = $this->link ? $this->link : '/matcher/' . $this->matcher->id;
     </div>
 
     <div class="sphere">
-        <div class="text-center name"><?= $this->matcher->name ?></div>
+        <?php if($sphere): ?>
+            <img class="center-block" src="<?= $sphere->getImage()->getLink(60, 60, false) ?>">
+            <div class="text-center name"><?= $sphere->name ?></div>
+        <?php endif; ?>
     </div>
 
     <a class="floating flip" href="#backflip-<?= $this->matcher->id ?>" title="<?= $this->text('regular-more_info') ?>">+</a>

@@ -1275,7 +1275,7 @@ class Call extends \Goteo\Core\Model {
         }
 
         if($count) {
-            
+
             $what = 'SUM(amount)';
 
             $sql = "SELECT
@@ -1289,7 +1289,7 @@ class Call extends \Goteo\Core\Model {
             $query = self::query($sql, $values);
 
             $total = self::query($sql, $values)->fetchColumn();
-           
+
             return (int) $total;
         }
 
@@ -2089,7 +2089,9 @@ class Call extends \Goteo\Core\Model {
         return $errors;
     }
 
-    /* Spheres of a call */
+    /* Spheres of a call
+    TODO: correct this, remove static use modern aproach to extract langs
+     */
 
     public static function getSpheres ($call = null) {
 
