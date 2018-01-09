@@ -202,18 +202,6 @@ $this->section('content');
 
           initSlickChannels();
 
-          $('a[href="#search"]').on('click', function(event) {
-              event.preventDefault();
-              $('#search').addClass('open');
-              $('#search > form > input[type="search"]').focus();
-          });
-
-          $('#search, #search button.close').on('click keyup', function(event) {
-              if (event.target == this || event.target.className == 'close' || event.keyCode == 27) {
-                  $(this).removeClass('open');
-              }
-          });
-
           $(".auto-update-calls").on('click', ".filters li", function (e) {
 
             e.preventDefault();
@@ -226,7 +214,7 @@ $this->section('content');
 
             var url = '/home/ajax/calls/filtered';
 
-          $('#calls-container').animateCss('fadeOut');
+            $('#calls-container').animateCss('fadeOut');
             $.post(url, { filters: filters }, function(result) {
                 destroySlickCalls();
                 $('#calls-container').html(result.html);
@@ -243,14 +231,17 @@ $this->section('content');
             $(this).addClass('active');
 
             var filter = $(this).data('status');
+            var $div = $(this).closest('.section');
 
             var drawProjects = function(lat, lng) {
               var params = { filter: filter, latitude: lat, longitude: lng };
+              $div.addClass('loading-container');
               // console.log('drawProjects', params)
               $.post('/home/ajax/projects/filtered', params, function(result) {
                  destroySlickProjects();
                  $('#projects-container').html(result.html);
                  initSlickProjects();
+                 $div.removeClass('loading-container');
                  //$('#projects-container').removeClass('fadeOut').animateCss('fadeIn');
              });
             };

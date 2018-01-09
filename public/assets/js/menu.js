@@ -30,10 +30,10 @@ $(function(){
     var toggleMenu = function(e) {
         e.stopPropagation();
         e.preventDefault();
-        var button = this;
         var $button = $(this);
         // console.log($button.attr('class'));
         var target = $button.data('target');
+        var $buttons = $('.toggle-menu[data-target="' + target + '"]');
         var $t = $('#' + target);
         var $show = $button.find('.show-menu');
         var $close = $button.find('.close-menu');
@@ -51,7 +51,10 @@ $(function(){
 
         // Close other opened
         $('.top-menu.active:not([id="' + target + '"])').removeClass('active');
-        $button.siblings('.active').removeClass('active');
+        // $button.siblings('.active').removeClass('active');
+        $buttons.each(function(){
+            if($(this)[0] !== $button[0]) $(this).removeClass('active');
+        });
         $('#main-content').off();
 
         if($t.hasClass('active')) {
@@ -74,7 +77,7 @@ $(function(){
             }
             $t.addClass('active').animateCss(inAnimation, function(){
                 $('#main-content').on('click', function(e){
-                    toggleMenu.call(button, e);
+                    toggleMenu.call($button[0], e);
                     $(this).off();
                 });
             });
@@ -115,5 +118,48 @@ $(function(){
 
     $('.toggle-menu').on('click', toggleMenu);
     $('.top-menu .toggle-submenu').on('click', toggleSubMenu);
+
+    $(".top-menu li > a").on('click', function (e) {
+        toggleMenu.call($('.navbar-always .toggle-menu.active')[0], e);
+    });
+
+
+    /////////////////////////////
+    /// Global Search overlay ///
+    /// /////////////////////////
+
+    $('a[href="#search"], a.global-search').on('click', function(event) {
+      event.preventDefault();
+      // check if it is
+      $('#search').addClass('open');
+      $('#search > form > input[type="search"]').focus();
+    });
+
+    $('#search, #search button.close').on('click keyup', function(event) {
+      if (event.target === this || event.target.className === 'close' || event.keyCode === 27) {
+          $(this).removeClass('open');
+      }
+    });
+
+
+    ////////////////////////////////////////////
+    /// Global hash-links with smooth scroll ///
+    /// ////////////////////////////////////////
+
+    $('a[href^="#"]:not([data-toggle])').on('click', function(e) {
+         e.preventDefault();
+         //calculate destination place
+         var dest=0;
+         var hash = this.hash;
+         if($(hash).offset().top > $(document).height()-$(window).height()){
+              dest=$(document).height()-$(window).height();
+         }else{
+              dest=$(hash).offset().top;
+         }
+         //go to destination
+         $('html,body').animate({scrollTop:dest}, 900,'swing', function() {
+            window.location.hash = hash;
+         });
+    });
 
 });

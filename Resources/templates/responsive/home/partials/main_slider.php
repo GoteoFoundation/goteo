@@ -14,7 +14,7 @@
 			</li>
 			<li>
 				<a href="/project/create" class="btn btn-fashion">
-					<?= $this->text('regular-create') ?>		
+					<?= $this->text('regular-create') ?>
 				</a>
 			</li>
 			<li>
@@ -56,7 +56,7 @@
 						</div>
 					</div>
 				<?php endif; ?>
-				
+
 			<?php endforeach; ?>
 		</div>
 
@@ -64,11 +64,3 @@
 
 </div>
 
-<div id="search">
-    <button type="button" class="close">×</button>
-    <form action="/discover/results">
-        <input type="search" name="query" value="" placeholder="escribe tu búsqueda aquí" autocomplete="off"/>
-        <div class="tooltip">Entra tu búsqueda y pulsa enter</div>
-        <button type="submit" class="btn btn-white">Buscar</button>
-    </form>
-</div>

@@ -73,7 +73,7 @@ $(function(){
                 $wrap.animateCss('slideOutLeft', function() {
                     // console.log('end');
                     // $toggle.css('opacity', 1).animateCss('fadeIn');
-                    $toggle.animate({opacity: 1});
+                    $toggle.css({opacity: 1});
                     $body.removeClass('sidebar-opened');
                 });
             } else {
@@ -82,7 +82,7 @@ $(function(){
                 $toggle.css('opacity', 0);
                 $wrap.animateCss('slideInLeft', function() {
                     // console.log('end');
-                    $toggle.animate({opacity: 1});
+                    $toggle.css({opacity: 1});
                     // $toggle.css('opacity', 1).animateCss('fadeIn');
                 });
             }
@@ -160,24 +160,9 @@ $(function(){
 
         $('#sidebar-menu .toggle-submenu').on('click', toggleSubMenu);
         $("#sidebar-menu li > a").on('click', function (e) {
-            if(/^#/.test($(this).attr('href')) === true) {
-                // e.preventDefault();
-                // $('body').removeClass('sidebar-opened');
-                toggleSidebar();
-                e.preventDefault();
-                 //calculate destination place
-                 var dest=0;
-                 if($(this.hash).offset().top > $(document).height()-$(window).height()){
-                      dest=$(document).height()-$(window).height();
-                 }else{
-                      dest=$(this.hash).offset().top;
-                 }
-                 //go to destination
-                 $('html,body').animate({scrollTop:dest}, 1000,'swing');
-            }
+            toggleSidebar();
           });
 
-        console.log($toggle.css('top'));
         $toggle.affix({
           offset: {
             top: parseInt($toggle.css('top'), 10)
