@@ -58,7 +58,6 @@ class Matcher extends \Goteo\Core\Model {
     static public function get($id, $active_only = true, $lang = null) {
         $values = [':id' => $id];
         list($fields, $joins) = self::getLangsSQLJoins($lang);
-        $this->viewLang = $lang;
 
         $sql = "SELECT matcher.id,
                        $fields,
@@ -84,6 +83,7 @@ class Matcher extends \Goteo\Core\Model {
         }
         if ($query = static::query($sql, $values)) {
             if( $matcher = $query->fetchObject(__CLASS__) )
+                $matcher->viewLang = $lang;
                 return $matcher;
         }
         return null;
