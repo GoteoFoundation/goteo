@@ -23,6 +23,8 @@ namespace Goteo\Model {
             $description,
             $review,
             $url,
+            $pool = false,
+            $pool_image,
             $post,
             $active = false;
 
