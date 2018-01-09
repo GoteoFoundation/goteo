@@ -27,9 +27,9 @@ blockquote {
         height: 30px;
         position: absolute;
         content: '';
-        top: 0;
+        top: -10px;
         left: 0;
-        border-top: 1px solid $color-cyan;
+        border-top: 2px solid $color-cyan;
         background:url(../img/ring.gif) no-repeat left;
         background-size: contain;
         @include animation-name (loading-bar);
