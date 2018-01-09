@@ -119,7 +119,7 @@ $(function(){
     $('.toggle-menu').on('click', toggleMenu);
     $('.top-menu .toggle-submenu').on('click', toggleSubMenu);
 
-    $(".top-menu li > a").on('click', function (e) {
+    $(".top-menu li > a:not(.toggle-submenu)").on('click', function (e) {
         toggleMenu.call($('.navbar-always .toggle-menu.active')[0], e);
     });
 
