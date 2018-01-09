@@ -160,7 +160,7 @@ $(function(){
 
         $('#sidebar-menu .toggle-submenu').on('click', toggleSubMenu);
         // Hide sidebar for anchor links
-        $("#sidebar-menu li > a[href^='#'']:not(.toggle-submenu)").on('click', function (e) {
+        $("#sidebar-menu li > a[href^='#']:not(.toggle-submenu)").on('click', function (e) {
           toggleSidebar();
         });
 

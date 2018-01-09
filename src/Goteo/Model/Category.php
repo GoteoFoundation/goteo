@@ -33,7 +33,6 @@ class Category extends \Goteo\Core\Model {
      */
     public static function get ($id, $lang = null) {
         if(!$lang) $lang = Lang::current();
-        //Obtenemos el idioma de soporte
         list($fields, $joins) = self::getLangsSQLJoins($lang, Config::get('lang'));
         $sql = "
             SELECT
@@ -56,12 +55,10 @@ class Category extends \Goteo\Core\Model {
      * @TODO añadir el numero de usos
      */
     public static function getAll ($lang = null) {
-        if(!$lang) $lang = Lang::current();
         $list = array();
 
-
+        if(!$lang) $lang = Lang::current();
         list($fields, $joins) = self::getLangsSQLJoins($lang, Config::get('lang'));
-
 
         $sql="SELECT
                 category.id as id,
