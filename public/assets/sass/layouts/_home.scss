@@ -44,10 +44,16 @@ body.home {
             overflow: hidden;
             background-color: transparent;
             height: auto;
-            min-height: 660px;
+            // min-height: 660px;
+            min-height: none;
             width: 0;
-            @media(min-width: $breakpoint-sm) {
+            @media(min-height: 660px) {
                 top: 70px;
+            }
+            // @media(max-width: $breakpoint-xs - 1) {
+            @media(max-height: 600px) {
+                height: 100%;
+                overflow-y: scroll;
             }
             .sidebar-wrap {
                 width: 0;
@@ -74,15 +80,23 @@ body.home {
                 .btn-fashion{
                     font-weight: 500;
                     text-transform: uppercase;
-                    width: 47%;
                     padding:10px;
+                    width: 47%;
                 }
                 .btn-light-black{
                     margin-left:15px;
                     padding: 10px;
-                    width: 47%;
                     text-transform: uppercase;
                     font-weight: 500;
+                    width: 47%;
+                }
+                @media(max-width: $breakpoint-xs - 1) {
+                    .btn-fashion, .btn-light-black {
+                        width: 100%;
+                        display: block;
+                        margin: 10px 0;
+                    }
+
                 }
             }
 
