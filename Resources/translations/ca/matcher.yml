@@ -37,3 +37,4 @@ matcher-project-accept: 'Felicitats! El teu projecte ha sigut afegit a la convoc
 matcher-project-reject: 'El teu projecte has sigut eliminat de la convocatòria %s'
 matcher-project-discard: 'El projecte ha sigut descartat de la convocatòria %s'
 matcher-project-activate: 'El projecte ha sigut activat en la convocatòria %s'
+matcher-budget-amount: 'Pressupost total'

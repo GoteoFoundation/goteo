@@ -71,6 +71,7 @@ class Matcher extends \Goteo\Core\Model {
                        matcher.used,
                        matcher.crowd,
                        matcher.projects,
+                       matcher.matcher_location,
                        matcher.active,
                        matcher.created,
                        matcher.modified_at
@@ -187,6 +188,7 @@ class Matcher extends \Goteo\Core\Model {
                        matcher.used,
                        matcher.crowd,
                        matcher.projects,
+                       matcher.matcher_location,
                        matcher.active,
                        matcher.created,
                        matcher.modified_at,
