@@ -42,7 +42,7 @@ class AuthListener extends AbstractListener {
             } else {
                 // Remove cookie
                 Cookie::del('rememberme');
-                Message::error('Automatic login failed!');
+                // Message::error('Automatic login failed!');
                 $this->warning('Rememberme login failed', [$user]);
             }
         }
