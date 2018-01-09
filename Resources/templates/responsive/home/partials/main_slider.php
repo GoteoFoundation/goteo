@@ -3,12 +3,12 @@
 	<nav>
 		<ul class="list-inline navbar-right hidden-xs">
 			<li>
-				<a href="#foundation">
+				<a href="#foundation" class="scroller">
 					<?= $this->text('home-menu-our-foundation') ?>
 				</a>
 			</li>
 			<li>
-				<a href="#matchfunding" >
+				<a href="#matchfunding" class="scroller">
 					<?= $this->text('home-menu-matchfunding') ?>
 				</a>
 			</li>
@@ -49,7 +49,7 @@
 										<div class="description">
 											<?= $banner->description ?>
 										</div>
-										<a href="<?= $banner->url ?>" class="btn btn-white"><?= $this->text('invest-more-info') ?></a>
+										<a href="<?= $banner->url ?>" class="btn btn-white scroller"><?= $this->text('invest-more-info') ?></a>
 									</div>
 								</div>
 							</div>

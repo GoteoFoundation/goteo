@@ -16,6 +16,10 @@ class Sphere extends \Goteo\Core\Model {
     $image;
 
 
+    public static function getLangFields() {
+        return ['name'];
+    }
+
     /**
      * Get data about a sphere
      *
@@ -40,6 +44,15 @@ class Sphere extends \Goteo\Core\Model {
     }
 
 
+    public function getImage() {
+        if($this->image instanceOf Image) return $this->image;
+        if($this->image) {
+            $this->image = Image::get($this->image);
+        } else {
+            $this->image = new Image();
+        }
+        return $this->image;
+    }
     /**
      * Sphere list
      *
