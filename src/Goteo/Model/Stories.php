@@ -25,7 +25,8 @@ namespace Goteo\Model {
             $url,
             $pool = false,
             $pool_image,
-            $post;
+            $post,
+            $active = false;
 
         /*
          *  Devuelve datos de una historia exitosa
