@@ -152,13 +152,15 @@
 
         var drawProjects = function(lat, lng) {
           var params = { filter: filter, latitude: lat, longitude: lng };
-          $div.addClass('loading-container');
+          // $div.addClass('loading-container');
+          $('#projects-container').addClass('loading-container');
           // console.log('drawProjects', params)
           $.post('/home/ajax/projects/filtered', params, function(result) {
              destroySlickProjects();
              $('#projects-container').html(result.html);
              initSlickProjects();
-             $div.removeClass('loading-container');
+             // $div.removeClass('loading-container');
+             $('#projects-container').removeClass('loading-container');
              //$('#projects-container').removeClass('fadeOut').animateCss('fadeIn');
          });
         };
