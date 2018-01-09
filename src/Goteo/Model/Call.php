@@ -1274,8 +1274,29 @@ class Call extends \Goteo\Core\Model {
             }
         }
 
+        if(!empty($filters['type'])) {
+                if($filters['type'] === 'explore') {
+                    $innerJoin = 'INNER JOIN call_conf ON call_conf.call = call.id';
+
+                    $sqlFilter .= " AND call_conf.date_stage1_out < CURDATE()"; 
+                    
+                    if(empty($filters['order'])) {
+                        $sqlOrder = " ORDER BY call_conf.date_stage2 DESC";
+                    }
+                }
+                if($filters['type'] === 'open') {
+                    $innerJoin = 'INNER JOIN call_conf ON call_conf.call = call.id';
+
+                    $sqlFilter .= " AND call_conf.date_stage1_out >= CURDATE()"; 
+                    
+                    if(empty($filters['order'])) {
+                        $sqlOrder = " ORDER BY call_conf.date_stage1_out DESC";
+                    }
+                }
+        }
+
         if($count) {
-            
+
             $what = 'SUM(amount)';
 
             $sql = "SELECT
@@ -1289,7 +1310,7 @@ class Call extends \Goteo\Core\Model {
             $query = self::query($sql, $values);
 
             $total = self::query($sql, $values)->fetchColumn();
-           
+
             return (int) $total;
         }
 
@@ -1300,10 +1321,13 @@ class Call extends \Goteo\Core\Model {
             $sql = "SELECT
                         id
                     FROM `call`
+                    $innerJoin
                     WHERE status > 0
                         $sqlFilter
                         $sqlOrder
                     ";
+
+            //echo \sqldbg($sql, $values);
 
             $query = self::query($sql, $values);
             foreach ($query->fetchAll(\PDO::FETCH_ASSOC) as $call) {
@@ -2089,7 +2113,10 @@ class Call extends \Goteo\Core\Model {
         return $errors;
     }
 
-    /* Spheres of a call */
+    /* Spheres of a call
+    TODO: correct this, remove static use modern aproach to extract langs
+    (view this exact method in Matcher.php as an example)
+     */
 
     public static function getSpheres ($call = null) {
 
@@ -2144,7 +2171,7 @@ class Call extends \Goteo\Core\Model {
 
     public function getMainSphere()
     {
-        return current($this->getSpheres($this->id));
+        return current(self::getSpheres($this->id));
     }
 
 

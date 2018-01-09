@@ -64,8 +64,8 @@ home-call-to-action-url: 'https://en.goteo.org/project/intentando-comprender-com
 
 home-matchfunding-title: 'Matchfunding Calls'
 home-matchfunding-all: 'All'
-home-matchfunding-open: 'Open'
-home-matchfunding-active: 'Active'
+home-matchfunding-open: 'Apply'
+home-matchfunding-explore: 'Explore'
 home-matchfunding-finish: 'Closed'
 home-matchfunding-details-title: 'What means implementing Matchfunding?'
 home-matchfunding-details-participation: 'Participation'

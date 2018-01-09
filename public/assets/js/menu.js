@@ -28,8 +28,10 @@ for the JavaScript code in this page.
 $(function(){
     // Menu behaviour
     var toggleMenu = function(e) {
-        e.stopPropagation();
-        e.preventDefault();
+        if(e) {
+            e.stopPropagation();
+            e.preventDefault();
+        }
         var $button = $(this);
         // console.log($button.attr('class'));
         var target = $button.data('target');
@@ -119,8 +121,8 @@ $(function(){
     $('.toggle-menu').on('click', toggleMenu);
     $('.top-menu .toggle-submenu').on('click', toggleSubMenu);
 
-    $(".top-menu li > a:not(.toggle-submenu)").on('click', function (e) {
-        toggleMenu.call($('.navbar-always .toggle-menu.active')[0], e);
+    $(".top-menu li > a:not(.toggle-submenu)").on('click', function () {
+        toggleMenu.call($('.navbar-always .toggle-menu.active')[0]);
     });
 
 
@@ -146,18 +148,18 @@ $(function(){
     /// Global hash-links with smooth scroll ///
     /// ////////////////////////////////////////
 
-    $('a[href^="#"]:not([data-toggle])').on('click', function(e) {
+    $('a.scroller[href^="#"]').on('click', function(e) {
          e.preventDefault();
          //calculate destination place
-         var dest=0;
+         var dest = 0;
          var hash = this.hash;
-         if($(hash).offset().top > $(document).height()-$(window).height()){
-              dest=$(document).height()-$(window).height();
-         }else{
-              dest=$(hash).offset().top;
+         if($(hash).offset().top > $(document).height() - $(window).height()) {
+              dest = $(document).height() - $(window).height();
+         } else {
+              dest = $(hash).offset().top;
          }
          //go to destination
-         $('html,body').animate({scrollTop:dest}, 900,'swing', function() {
+         $('html,body').animate({scrollTop: dest}, 800, 'swing', function() {
             window.location.hash = hash;
          });
     });
