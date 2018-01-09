@@ -48,3 +48,7 @@
 <?php $this->replace() ?>
 
 
+<?php $this->section('footer') ?>
+    <?= $this->insert('home/partials/home_javascript') ?>
+<?php $this->append() ?>
+

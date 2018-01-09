@@ -667,10 +667,20 @@ body.home {
                 margin-left:20px;
                 max-width: 70%;
             }
+
             .type-container{
                 margin-top: 60px;
+                .type-label{
+                    color: $color-white;
+                    background-color: #A2AAAB;
+                    border: 1px solid #A2AAAB;
+                    font-size: 12px;
+                    padding: 7px;
+                    text-transform: uppercase;
+                    font-weight: bold;
+                }
                 .type{
-                    border: 1px solid #CAD7D8;
+                    border: 1px solid #A2AAAB;
                     font-size: 12px;
                     padding: 7px;
                     text-transform: uppercase;
