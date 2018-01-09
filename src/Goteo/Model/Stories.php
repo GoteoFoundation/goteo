@@ -16,11 +16,9 @@ namespace Goteo\Model {
         public
             $id,
             $node,
-            $project,
+            $project = null,
             $order,
             $image,
-            $pool_image,
-            $pool = false,
             $title,
             $description,
             $review,
