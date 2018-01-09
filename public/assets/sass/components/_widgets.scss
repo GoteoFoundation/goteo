@@ -553,6 +553,13 @@
   // padding-bottom: 20px;
 }
 
+@media (max-width: $breakpoint-sm+1) {
+  .call-widget.normal .content div.date{
+    margin-top: 0 !important;
+  }
+}
+
+
 @media (max-width: $breakpoint-xs) {
   .project-widget {
     margin-bottom: 40px;
