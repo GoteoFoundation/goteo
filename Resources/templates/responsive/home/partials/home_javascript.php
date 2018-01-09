@@ -18,6 +18,8 @@
       $('.slider-main').slick({
         dots: true,
         infinite: true,
+        autoplay: true,
+        autoplaySpeed: 7000,
         speed: 1500,
         fade: true,
         arrows: true,
