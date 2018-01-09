@@ -3497,10 +3497,10 @@ namespace Goteo\Model {
                 $sqlFilter .= " AND project.status IN ({$filters['multistatus']})";
             }
 
-            /*if(!empty($filters['draft']))
+            if(!empty($filters['is_draft']))
             {
-                $sqlFilter .= " AND project.id NOT REGEXP '[0-9a-f]{32}')";
-            }*/
+                $sqlFilter .= " AND project.id NOT REGEXP '[0-9a-f]{32}'";
+            }
 
             if (is_array($filters['status'])) {
                 $parts = [];
@@ -3690,6 +3690,7 @@ namespace Goteo\Model {
                     $innerJoin
                     WHERE
                     $where";
+                    //die(\sqldbg($sql, $values));
                 return (int) self::query($sql, $values)->fetchColumn();
             }
 
@@ -4085,8 +4086,8 @@ namespace Goteo\Model {
 
         static public function getAdvisedProjects() {
 
-            $filters=[  'status' => [self::STATUS_REVIEWING, self::STATUS_IN_CAMPAIGN, self::STATUS_FUNDED, self::STATUS_FULFILLED, self::STATUS_UNFUNDED]
-                     ];
+            $filters=[  'status' => [self::STATUS_EDITING, self::STATUS_REVIEWING, self::STATUS_IN_CAMPAIGN, self::STATUS_FUNDED, self::STATUS_FULFILLED, self::STATUS_UNFUNDED], 
+                        'is_draft' => true ];
 
             $num_advised_projects=self::getList($filters, null, 0, 0, true);
 
