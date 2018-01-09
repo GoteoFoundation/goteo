@@ -118,4 +118,13 @@
     &.icon-calculator {
         @include svg-background('../img/icons/calculator.svg');
     }
+    &.icon-calendar {
+        @include svg-background('../img/icons/calendar.svg');
+    }
+    &.icon-fee {
+        @include svg-background('../img/icons/fee.svg');
+    }
+    &.icon-api {
+        @include svg-background('../img/icons/api.svg');
+    }
 }
