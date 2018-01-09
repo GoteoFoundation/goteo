@@ -35,7 +35,8 @@ class IndexController extends \Goteo\Core\Controller
         $projects = Project::getList([
                 'status' => Project::STATUS_IN_CAMPAIGN,
                 'published_since' => (new \DateTime('-6 month'))->format('Y-m-d'),
-                'type' => 'outdated'
+                'type' => 'promoted',
+                'order' => 'promote.order ASC, project.published DESC, project.name ASC'
             ], null, 0, 20);
 
         $stories = Stories::getAll(true);

@@ -3,11 +3,11 @@
         <?= $this->text('home-projects-title') ?>
     </h2>
     <ul class="filters list-inline center-block text-center">
-        <li data-status="outdated" class="active">
-            <?= $this->text('home-projects-outdate') ?>
-        </li>
-        <li data-status="promoted">
+        <li data-status="promoted" class="active">
             <?= $this->text('home-projects-team-favourites') ?>
+        </li>
+        <li data-status="outdated">
+            <?= $this->text('home-projects-outdate') ?>
         </li>
         <li data-status="near">
             <?= $this->text('home-projects-near') ?>
