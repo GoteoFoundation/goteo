@@ -20,7 +20,7 @@
                 	<div class="row details">
                 		<div class="col-sm-12 col-md-4 adventage">
                 			<div class="title">
-                				<span class="icon icon-save-the-world icon-3x"></span>
+                				<span class="icon icon-save-the-world"></span>
                 				<span class="text">
                 				    <?= $this->text('home-adventages-savetheworld-title') ?>
                 				</span>
@@ -31,7 +31,7 @@
                 		</div>
                 		<div class="col-sm-12 col-md-4 adventage">
                 			<div class="title">
-                                <span class="icon icon-home-certificate icon-3x"></span>
+                                <span class="icon icon-home-certificate"></span>
                 				<span class="text">
                 				    <?= $this->text('home-advantages-certificates-title') ?>
                 				</span>
@@ -48,7 +48,7 @@
                 		</div>
                 		<div class="col-sm-12 col-md-4 adventage">
                 			<div class="title">
-                				<span class="icon icon-calculator icon-3x"></span>
+                				<span class="icon icon-calculator"></span>
                 				<span class="text">
                 				    <?= $this->text('home-advantages-calculator-title') ?>
                 				</span>
@@ -98,7 +98,7 @@
                 	<div class="row details">
                 		<div class="col-sm-12 col-md-3 adventage">
                 			<div class="title">
-                                <span class="icon icon-projects icon-3x"></span>
+                                <span class="icon icon-projects"></span>
                                 <span class="text">
                                     <?= $this->text('home-adventages-dashboard-title') ?>
                                 </span>
@@ -115,7 +115,7 @@
                 		</div>
                 		<div class="col-sm-12 col-md-3 adventage">
                 			<div class="title">
-                				<img src="/assets/img/home/calendar.png" >
+                				<span class="icon icon-calendar"></span>
                 				<span class="text">
                 				    <?= $this->text('home-advantages-flex-calendar-title') ?>
                 				</span>
@@ -126,7 +126,7 @@
                 		</div>
                 		<div class="col-sm-12 col-md-3 adventage">
                 			<div class="title">
-                				<img src="/assets/img/home/fee.png" >
+                				<span class="icon icon-fee"></span>
                 				<span class="text">
                 				<?= $this->text('home-advantages-fee-title') ?>
                 				</span>
@@ -137,7 +137,7 @@
                 		</div>
                 		<div class="col-sm-12 col-md-3 adventage">
                 			<div class="title">
-                				<span class="icon icon-call icon-3x"></span>
+                				<span class="icon icon-call"></span>
                 				<span class="text">
                 				<?= $this->text('home-advantages-matchfunding-title') ?>
                 				</span>
