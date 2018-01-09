@@ -2,9 +2,10 @@
 
 $link = $this->link ? $this->link : '/matcher/' . $this->matcher->id;
 $sphere = $this->matcher->getMainSphere();
+$location = explode(",", $this->matcher->matcher_location);
 ?>
 
-<div class="flip-widget call-widget normal open" id="call-<?= $this->matcher->id ?>">
+<div class="flip-widget call-widget normal open" id="matcher-<?= $this->matcher->id ?>">
     <div class="status">
         <?= $this->text('call-tagmark-open') ?>
     </div>
@@ -28,6 +29,16 @@ $sphere = $this->matcher->getMainSphere();
         <div class="bottom" >
             <div class="pull-left">
                 <img src="<?= $this->matcher->getOwner()->avatar->getLink(70) ?>">
+            </div>
+            <div class="location">
+                <div class="city">
+                    <?= $location[0] ?>
+                </div>
+                <?php if(count($location)>1): ?>
+                <div class="region">
+                    <?= $location[1] ?>
+                </div>
+                <?php endif; ?>
             </div>
         </div>
     </div>
