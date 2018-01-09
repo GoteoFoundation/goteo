@@ -11,6 +11,7 @@
 namespace Goteo\Model;
 
 use Goteo\Application\Config;
+use Goteo\Application\Lang;
 use Goteo\Core\Model;
 use Goteo\Model\User;
 use Goteo\Model\Project;
@@ -46,13 +47,36 @@ class Matcher extends \Goteo\Core\Model {
         if(empty($this->lang)) $this->lang = Config::get('lang');
     }
 
+    public static function getLangFields() {
+        return ['name', 'terms'];
+    }
+
     /**
      * Get instance of matcher already in the table by action
      * @return [type] [description]
      */
-    static public function get($id, $active_only = true) {
+    static public function get($id, $active_only = true, $lang = null) {
         $values = [':id' => $id];
-        $sql = "SELECT * FROM `matcher` WHERE id = :id";
+        list($fields, $joins) = self::getLangsSQLJoins($lang);
+        $this->viewLang = $lang;
+
+        $sql = "SELECT matcher.id,
+                       $fields,
+                       matcher.logo,
+                       matcher.lang,
+                       matcher.owner,
+                       matcher.processor,
+                       matcher.vars,
+                       matcher.amount,
+                       matcher.used,
+                       matcher.crowd,
+                       matcher.projects,
+                       matcher.active,
+                       matcher.created,
+                       matcher.modified_at
+            FROM `matcher`
+            $joins
+            WHERE id = :id";
         if($active_only) {
             $sql .= " AND active=:active";
             $values[':active'] = true;
@@ -111,7 +135,7 @@ class Matcher extends \Goteo\Core\Model {
      * @param  boolean $count   [description]
      * @return array
      */
-    static public function getList($filters = [], $offset = 0, $limit = 10, $count = false) {
+    static public function getList($filters = [], $offset = 0, $limit = 10, $count = false, $lang = null) {
         $values = [];
         $filter = [];
         foreach(['owner', 'active', 'processor'] as $key) {
@@ -147,9 +171,31 @@ class Matcher extends \Goteo\Core\Model {
 
         $offset = (int) $offset;
         $limit = (int) $limit;
-        $sql = "SELECT * FROM matcher$sql LIMIT $offset,$limit";
 
-        // echo \sqldbg($sql, $values);
+        if(!$lang) $lang = Lang::current();
+        $values['viewLang'] = $lang;
+        list($fields, $joins) = self::getLangsSQLJoins($lang);
+
+        $sql = "SELECT matcher.id,
+                       $fields,
+                       matcher.logo,
+                       matcher.lang,
+                       matcher.owner,
+                       matcher.processor,
+                       matcher.vars,
+                       matcher.amount,
+                       matcher.used,
+                       matcher.crowd,
+                       matcher.projects,
+                       matcher.active,
+                       matcher.created,
+                       matcher.modified_at,
+                       :viewLang as viewLang
+                FROM matcher
+                $joins
+        $sql LIMIT $offset,$limit";
+
+        // die(\sqldbg($sql, $values));
         if($query = self::query($sql, $values)) {
             return $query->fetchAll(\PDO::FETCH_CLASS, __CLASS__);
         }
@@ -221,7 +267,7 @@ class Matcher extends \Goteo\Core\Model {
             RIGHT JOIN matcher_user ON matcher_user.user_id = user_pool.user
             WHERE matcher_user.matcher_id = :match AND matcher_user.pool = 1";
         return self::query($sql, [':match' => $this->id])
-                    ->fetchAll(\PDO::FETCH_CLASS, '\Goteo\Model\User\Pool');
+                    ->fetchAll(\PDO::FETCH_CLASS, 'Goteo\Model\User\Pool');
     }
 
     /**
@@ -321,6 +367,39 @@ class Matcher extends \Goteo\Core\Model {
         return $this->userInstance;
     }
 
+
+    /**
+     *  Spheres of this matcher
+     */
+    public function getSpheres () {
+        if($this->spheresList) return $this->spheresList;
+        $values = [':matcher' => $this->id];
+
+        list($fields, $joins) = Sphere::getLangsSQLJoins($this->viewLang, Config::get('lang'));
+
+        $sql = "SELECT
+                sphere.id,
+                sphere.image,
+                $fields
+            FROM matcher_sphere
+            INNER JOIN sphere ON sphere.id = matcher_sphere.sphere
+            $joins
+            WHERE matcher_sphere.matcher = :matcher
+            ORDER BY matcher_sphere.order ASC";
+        // die(\sqldbg($sql, $values));
+        $query = static::query($sql, $values);
+        $this->spheresList = $query->fetchAll(\PDO::FETCH_CLASS, 'Goteo\Model\Sphere');
+        return $this->spheresList;
+
+    }
+
+    /**
+     * Return main sphere
+     */
+    public function getMainSphere() {
+        return $this->getSpheres() ? current($this->getSpheres()) : null;
+    }
+
     public function setVars(array $vars) {
         $this->vars = $vars ? json_encode($vars) : '';
         return $this;
@@ -389,7 +468,7 @@ class Matcher extends \Goteo\Core\Model {
      * @return [type] [amount]
      */
     public static function getTotalRaised() {
-        
+
         return self::getList([], 0, 10, 'money');
     }
 

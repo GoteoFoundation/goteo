@@ -146,7 +146,7 @@ $(function(){
     /// Global hash-links with smooth scroll ///
     /// ////////////////////////////////////////
 
-    $('a[href^="#"]:not([data-toggle])').on('click', function(e) {
+    $('a.scroller[href^="#"]').on('click', function(e) {
          e.preventDefault();
          //calculate destination place
          var dest=0;
