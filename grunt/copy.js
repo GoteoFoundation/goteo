@@ -97,6 +97,13 @@ module.exports = function(grunt) {
                 expand: true,
                 flatten: true,
                 dot: true,
+                cwd: '<%= goteo.app %>/assets/vendor/slick-carousel/slick/fonts/',
+                dest: '<%= goteo.dist %>/assets/css/fonts/',
+                src: [ '*' ]
+            },{
+                expand: true,
+                flatten: true,
+                dot: true,
                 cwd: '<%= goteo.app %>/assets/vendor/summernote/dist/font/',
                 dest: '<%= goteo.dist %>/assets/css/font/',
                 src: [ '*' ]

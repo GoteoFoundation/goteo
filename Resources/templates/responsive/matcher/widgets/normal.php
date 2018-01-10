@@ -28,7 +28,7 @@ $location = explode(",", $this->matcher->matcher_location);
         </div>
         <div class="bottom" >
             <div class="pull-left">
-                <img src="<?= $this->matcher->getOwner()->avatar->getLink(70) ?>">
+                <img src="<?= $this->matcher->getOwner()->avatar->getLink(60,60, true) ?>">
             </div>
             <div class="location">
                 <div class="city">
