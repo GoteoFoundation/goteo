@@ -3657,10 +3657,12 @@ namespace Goteo\Model {
                 $values[':gender'] = $filters['gender'];
             }
 
-            //el Order
-            if ($filters['order'] === 'updated') {
-                $sqlOrder = " ORDER BY project.updated DESC";
+            // order 
+            if (in_array($filters['order'], ['updated', 'name']))
+            {
+                $sqlOrder = " ORDER BY project.{$filters['order']} DESC";
             }
+
             elseif ($filters['order'] === 'publishing_estimation') {
                 $sqlOrder = " ORDER BY project_conf.publishing_estimation ASC";
 
