@@ -44,7 +44,7 @@
         autoplay: true,
         infinite: true,
         speed: 2000,
-        autoplaySpeed: 3500,
+        autoplaySpeed: 3000,
         fade: true,
         arrows: false,
         cssEase: 'linear'
