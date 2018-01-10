@@ -4086,7 +4086,7 @@ namespace Goteo\Model {
 
         static public function getAdvisedProjects() {
 
-            $filters=[  'status' => [self::STATUS_EDITING, self::STATUS_REVIEWING, self::STATUS_IN_CAMPAIGN, self::STATUS_FUNDED, self::STATUS_FULFILLED, self::STATUS_UNFUNDED], 
+            $filters=[  'status' => [self::STATUS_EDITING, self::STATUS_REVIEWING, self::STATUS_IN_CAMPAIGN, self::STATUS_FUNDED, self::STATUS_FULFILLED, self::STATUS_UNFUNDED],
                         'is_draft' => true ];
 
             $num_advised_projects=self::getList($filters, null, 0, 0, true);
