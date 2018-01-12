@@ -15,7 +15,6 @@
                 <?= $channel->owner_font_color ?>
 
                 <div class="channel col-sm-4">
-                    <a href="<?= '/channel/'.$channel->id ?>">
                         <div class="widget-channel">
                             <div class="img-container" style="background-color: <?= $background ?> ">
                                 <div class="img">
@@ -24,14 +23,15 @@
                             </div>
                             <div class="content" style="<?php if($background) echo ' background-color:' . $this->to_rgba($background, 0.8); if($channel->owner_font_color) echo ' color:' . $channel->owner_font_color; ?>" >
                                 <div class="title">
+                                    <a class="a-unstyled" href="<?= '/channel/'.$channel->id ?>">
                                     <?= $channel->name ?>
+                                    </a>
                                 </div>
                                 <div class="description">
                                     <?= $this->text_truncate($channel->description, 120) ?>
                                 </div>
                             </div>
                         </div>
-                    </a>
                 </div>
             <?php endforeach ;?>
             </div>
