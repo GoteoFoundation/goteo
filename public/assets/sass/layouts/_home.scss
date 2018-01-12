@@ -989,6 +989,7 @@ body.home {
                 left: -3%;
                 color: $background-light-green;
                 cursor: pointer;
+                z-index: 1000;
             }
             .custom-right-arrow{
                 top: 34%;
@@ -997,6 +998,7 @@ body.home {
                 right: -3%;
                 color: $background-light-green;
                 cursor: pointer;
+                z-index: 1000;
             }
             .slick-dots{
                 bottom: -40px;
