@@ -191,6 +191,7 @@ class Node extends \Goteo\Core\Model {
         }
 
         if($sqlFilter) $sqlFilter = ' WHERE '. implode(' AND ', $sqlFilter);
+        else $sqlFilter = '';
 
         if(!$lang) $lang = Lang::current();
         $values['viewLang'] = $lang;
@@ -221,7 +222,7 @@ class Node extends \Goteo\Core\Model {
         $joins
         $sqlFilter
         ORDER BY node.name ASC";
-        // print(\sqldbg($sql, $values));
+        // echo \sqldbg($sql, $values);;
         if($query = static::query($sql, $values)) {
             return $query->fetchAll(\PDO::FETCH_CLASS, __CLASS__);
         }
