@@ -39,8 +39,8 @@ class GoteoDonors
         CHANGE `edited` `edited` INT(1) DEFAULT 0 NOT NULL COMMENT 'Revisados por el usuario',
         CHANGE `confirmed` `confirmed` INT(1) DEFAULT 0 NOT NULL COMMENT 'Certificado generado',
         CHANGE `pdf` `pdf` VARCHAR(255) CHARSET utf8 COLLATE utf8_general_ci DEFAULT '' NOT NULL COMMENT 'nombre del archivo de certificado',
-        ADD COLUMN `processed` BOOLEAN DEFAULT 0 NOT NULL COMMENT 'Si se ha presentado el certificado en hacienda' AFTER `pdf`;
-        UPDATE `donor` SET `processed`=1 WHERE `confirmed`=1 AND `pdf`!='' AND `year` < 2017;
+        ADD COLUMN `processed` DATE NOT NULL COMMENT 'Si se ha presentado el certificado en hacienda' AFTER `pdf`;
+        UPDATE `donor` SET `processed`=CONCAT(`year`+1,'-','01','-','01') WHERE `confirmed`=1 AND `pdf`!='' AND `year` < 2017;
      ";
   }
 

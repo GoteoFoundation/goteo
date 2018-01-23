@@ -9,6 +9,7 @@ contract-data_title: 'Dades del contracte'
 dashboard-certificates-confirm: 'Confirmar dades'
 dashboard-certificates-confirm-checkbox: 'Confirmo que aquestes són les meves dades legals reals i sóc conscient que no podré modificar aquestes dades un cop confirmades'
 dashboard-certificates-confirmed: Confirmat
+dashboard-certificates-processed: Processat
 dashboard-certificates-confirmed-ok: 'Dades fiscals confirmades correctament , si el teu certificat no es descarrega automàticament fes clic %HERE%'
 dashboard-certificates-data-alert: 'Tingues en compte que un cop confirmat no es poden modificar les dades!'
 dashboard-certificates-data-desc: 'Si us plau, comprova que les dades del formulari són correctes i confirma''l'
