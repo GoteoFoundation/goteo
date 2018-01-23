@@ -151,7 +151,7 @@ class MailController extends \Goteo\Core\Controller {
                 $stat->save();
                 // Mark as readed if mail exists
                 $url = $stat->getMetric()->metric;
-                print_r($url);die;
+                // print_r($url);die;
                 if ($url) {
                     return $this->redirect($url);
                 }
