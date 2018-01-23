@@ -86,7 +86,7 @@ elseif (!empty($status)) {
             <a href="/user/profile/<?= $this->project->user->id?>" style="color:#20B3B2 !important" target="_blank"><?= $this->text('regular-by').' '.$this->project->user->name ?></a>
         </div>
         <div class="description">
-            <?= $this->text_truncate($this->project->description, 140) ?>
+            <?= $this->text_truncate($this->project->subtitle, 140) ?>
         </div>
 
         <?php if($project->called): ?>

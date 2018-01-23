@@ -148,6 +148,7 @@ user-save-fail: 'There was a problem saving the data'
 dashboard-certificates-confirm: 'Confirm data'
 dashboard-certificates-confirm-checkbox: 'I hereby confirm that these are my real legal data and I''m conscious that I will not be able to modify them once confirmed'
 dashboard-certificates-confirmed: Confirmed
+dashboard-certificates-processed: Processed
 dashboard-certificates-confirmed-ok: 'Your fiscal data are confirmed now. If your certificate does not download automatically, please click %HERE%'
 dashboard-certificates-data-alert: 'Keep in mind that once confirmed, the data can not be modified!'
 dashboard-certificates-data-desc: 'Please make sure the data in the form is correct and confirm the form'
