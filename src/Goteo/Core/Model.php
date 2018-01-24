@@ -378,16 +378,19 @@ abstract class Model {
 			unset($table['.']);
 		}
 
-		if ($enye) {
-			unset($table['Ñ']);
-			unset($table['ñ']);
-		}
+        if ($enye) {
+            unset($table['Ñ']);
+            unset($table['ñ']);
+        }
 
-		$id = strtr($id, $table);
-		$id = strtolower($id);
+        $id = strtr($id, $table);
+        $id = strtolower($id);
 
-		// Separadores
-		$id = preg_replace("/[\s\,\(\)\[\]\:\;\_\/\"\'\{\}]+/", "-", $id);
+        // Separadores
+        $id = preg_replace("/[\s\,\(\)\[\]\:\;\_\/\"\'\{\}]+/", "-", $id);
+		if (!$enye) {
+            $id = preg_replace('/[^\x20-\x7e]*/', '', $id);
+        }
 		$id = substr($id, 0, 50);
 
 		$id = trim($id, '-');

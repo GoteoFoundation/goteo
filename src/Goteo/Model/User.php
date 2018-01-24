@@ -2136,7 +2136,6 @@ class User extends \Goteo\Core\Model {
      */
     public static function suggestUserId() {
         $strings = func_get_args();
-
         $suggest = [];
         $originals = [];
         foreach($strings as $string) {
