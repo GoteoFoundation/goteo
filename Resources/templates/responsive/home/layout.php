@@ -1,7 +1,8 @@
 <?php
 
 $this->layout('layout', [
-    'bodyClass' => 'home'
+    'bodyClass' => 'home',
+    'meta_description' => $this->text('meta-description-index')
     ]);
 
 $this->section('content');
