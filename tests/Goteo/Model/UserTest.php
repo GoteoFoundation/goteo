@@ -85,6 +85,22 @@ class UserTest extends TestCase {
     /**
      * @depends testCreateUser
      */
+    public function testSuggestUserId($user) {
+        $suggestions = User::suggestUserId("I hope this user does not exists");
+        $this->assertInternalType('array', $suggestions);
+        $this->assertGreaterThanOrEqual(1, count($suggestions));
+        $this->assertEquals('ihope', $suggestions[0]);
+        $suggestions = User::suggestUserId("IHopeThisUserDoesNotexists:👑");
+        $this->assertEquals('ihopethisuserdoesnotexists', $suggestions[0]);
+
+        $this->assertEquals('a-n', User::idealiza("a.ñ"));
+        $this->assertEquals('a.n', User::idealiza("a.ñ", true));
+        $this->assertEquals('a.ñ', User::idealiza("a.ñ", true, true));
+    }
+
+    /**
+     * @depends testCreateUser
+     */
     public function testDeleteUser($user) {
         $this->assertTrue($user->dbDelete());
         $this->assertFalse(User::get(self::$user['userid']));
