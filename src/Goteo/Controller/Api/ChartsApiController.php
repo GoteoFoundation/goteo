@@ -168,6 +168,10 @@ class ChartsApiController extends AbstractApiController {
         $ret = array_map(function($ob) use ($group_by) {
             $label = $ob->tag ? $ob->tag : 'unknown';
             if($group_by === 'category') $label = $ob->category ? $ob->category : 'unknown';
+            elseif($ob->category === 'internal') {
+                $label = $ob->category . ": " . ucfirst($label);
+            }
+
             return [
                 'label' => ucfirst($label),
                 'counter' => (int) $ob->counter,

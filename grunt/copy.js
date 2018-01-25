@@ -72,27 +72,6 @@ module.exports = function(grunt) {
                 cwd: '<%= goteo.app %>/assets/vendor/',
                 dest: '<%= goteo.dist %>/assets/fonts/',
                 src: [ '**/fonts/*' ]
-            }, {
-	            expand: true,
-	            flatten: true,
-	            dot: true,
-	            cwd: '<%= goteo.app %>/assets/vendor/slick-carousel/',
-	            dest: '<%= goteo.dist %>/assets/css/fonts/',
-	            src: [ '**/fonts/*' ]
-	        }, {
-                expand: true,
-                flatten: true,
-                dot: true,
-                cwd: '<%= goteo.app %>/assets/vendor/slick-carousel/slick/fonts/',
-                dest: '<%= goteo.dist %>/assets/css/fonts/',
-                src: [ '*' ]
-            },{
-                expand: true,
-                flatten: true,
-                dot: true,
-                cwd: '<%= goteo.app %>/assets/vendor/slick-carousel/slick/fonts/',
-                dest: '<%= goteo.dist %>/assets/css/fonts/',
-                src: [ '*' ]
             },{
                 expand: true,
                 flatten: true,
