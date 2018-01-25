@@ -84,6 +84,8 @@
 .btn-white {
     background-color: $color-white;
     color: $color-cyan;
+    // color: $color-green;
+    // font-weight: bold;
     &:hover {
         background-color:darken($color-white, 10%);
     }
@@ -97,11 +99,6 @@
     .icon {
         background-color: $color-white;
     }
-}
-.btn-white {
-    background-color: $background-white;
-    color: $color-green;
-    font-weight: bold;  
 }
 .btn-light-green{
     background-color: $background-light-green;
