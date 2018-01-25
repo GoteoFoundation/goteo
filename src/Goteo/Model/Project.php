@@ -3660,7 +3660,7 @@ namespace Goteo\Model {
             // order 
             if (in_array($filters['order'], ['updated', 'name']))
             {
-                $sqlOrder = " ORDER BY project.{$filters['order']} DESC";
+                $sqlOrder = " ORDER BY project.{$filters['order']} ASC";
             }
 
             elseif ($filters['order'] === 'publishing_estimation') {
