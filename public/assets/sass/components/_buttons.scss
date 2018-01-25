@@ -84,6 +84,8 @@
 .btn-white {
     background-color: $color-white;
     color: $color-cyan;
+    // color: $color-green;
+    // font-weight: bold;
     &:hover {
         background-color:darken($color-white, 10%);
     }

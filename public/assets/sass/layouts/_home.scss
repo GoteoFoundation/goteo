@@ -770,10 +770,12 @@ body.home {
             text-transform: uppercase;
             font-size: $font-size*0.8;
             }
-            .description{
+            h1.description{
                 font-weight: bold;
                 font-size: $font-size*1.5;
                 line-height: 1.1;
+                margin: 0;
+                padding: 0;
             }
             .row{
             display: flex;

@@ -3660,7 +3660,7 @@ namespace Goteo\Model {
             // order 
             if (in_array($filters['order'], ['updated', 'name']))
             {
-                $sqlOrder = " ORDER BY project.{$filters['order']} DESC";
+                $sqlOrder = " ORDER BY project.{$filters['order']} ASC";
             }
 
             elseif ($filters['order'] === 'publishing_estimation') {
@@ -3685,6 +3685,7 @@ namespace Goteo\Model {
                     LEFT JOIN project_conf ON project_conf.project=project.id
                     LEFT JOIN user ON user.id=project.owner
                     ";
+
             if($count) {
                 // Return count
                 $sql = "SELECT COUNT(project.id)
