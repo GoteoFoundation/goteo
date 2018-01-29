@@ -10,8 +10,9 @@
  */
 
 namespace Goteo\Application\EventListener;
-
 use Symfony\Component\HttpKernel\Event\GetResponseEvent;
+
+use Symfony\Component\HttpKernel\Event\FilterResponseEvent;
 use Symfony\Component\HttpKernel\KernelEvents;
 
 use UAParser\Parser as UAParser;
@@ -20,6 +21,7 @@ use Snowplow\RefererParser\Parser as RefererParser;
 use Goteo\Application\AppEvents;
 use Goteo\Application\Event\FilterInvestInitEvent;
 use Goteo\Application\Session;
+use Goteo\Application\Config;
 use Goteo\Model\Origin;
 
 /**
@@ -27,6 +29,11 @@ use Goteo\Model\Origin;
  * mysql table
  */
 class OriginListener extends AbstractListener {
+    /**
+     * Saves default referer to session
+     * @param  GetResponseEvent $event [description]
+     * @return [type]                  [description]
+     */
     public function onRequest(GetResponseEvent $event) {
         //not need to do anything on sub-requests
         if (!$event->isMasterRequest()) {
@@ -48,7 +55,6 @@ class OriginListener extends AbstractListener {
         // var_dump($ua);
         if(!Session::exists('origin.ua')) {
             Session::store('origin.ua', $ua);
-            // echo "Saving ua";
         }
 
         // Extracting Referer elements
@@ -56,28 +62,49 @@ class OriginListener extends AbstractListener {
         $parser = new RefererParser();
         $ref = $request->headers->get('referer');
         $result = $parser->parse($ref, $request->getUri());
+        $parts = explode("/", $request->getPathInfo());
+
         // echo $ref .','. $request->getUri();
         $referer = array(
             'tag' => $result->getSource(),
             'category' => $result->getMedium(),
             'type' => 'referer'
             );
-        if ($result->isKnown()) {
-
-            // var_dump($referer);
-            // Save if is visiting a project
-
-            if(Session::get('origin.referer') !== $referer) {
-                Session::store('origin.referer', $referer);
-                // echo "Saving referer";
-            }
+        if($referer['category'] === 'internal') {
+            $referer['tag'] = $parts[1];
         }
-        // else echo "\nReferer unknown: ".$result->getMedium();
-        //
-        // Check if we are visiting a project
-        $path = $request->getPathInfo();
-        if(strpos($path, '/project/') === 0) {
-            $parts = explode("/", $path);
+
+        // Tracked links form MailController as type "email"
+        if($parts[1] === 'mail') {
+            $referer['tag'] = 'Newsletter';
+            $referer['category'] = 'email';
+        }
+
+        if($referer['category'] !== 'invalid' && Session::get('origin.referer') !== $referer) {
+            Session::store('origin.referer', $referer);
+        }
+    }
+
+
+    /**
+     * Registers the origin of the visit in the response event so controllers can manipulate
+     * the referer via $request->headers->set('referer', $request->getUri());
+     * @param  FilterResponseEvent $event [description]
+     * @return [type]                     [description]
+     */
+    public function onResponse(FilterResponseEvent $event) {
+        //not need to do anything on sub-requests
+        if (!$event->isMasterRequest()) {
+            return;
+        }
+
+        $request = $event->getRequest();
+        $parts = explode("/", $request->getPathInfo());
+
+        $ua = Session::get('origin.ua');
+        $referer = Session::get('origin.referer');
+
+        if($parts[1] === 'project') {
             if(Session::get('origin.project_ua') !== $ua) {
                 $origin = Origin::getFromArray($ua + ['project_id' => $parts[2]]);
                 // echo "saving ua";
@@ -91,8 +118,8 @@ class OriginListener extends AbstractListener {
                 Session::store('origin.project_referer', $referer);
             }
         }
-        if(strpos($path, '/call/') === 0) {
-            $parts = explode("/", $path);
+
+        if($parts[1] === 'call') {
             if(Session::get('origin.call_ua') !== $ua) {
                 $origin = Origin::getFromArray($ua + ['call_id' => $parts[2]]);
                 // echo "saving ua";
@@ -109,14 +136,16 @@ class OriginListener extends AbstractListener {
     }
 
     /**
-     * Register invest origin on create invest
-     */
+    * Register invest origin on create invest
+    */
     public function onInvestInit(FilterInvestInitEvent $event) {
         $invest  = $event->getInvest();
         $method  = $event->getMethod();
         $request = $event->getRequest();
+
         $ua = Session::get('origin.ua');
         $referer = Session::get('origin.referer');
+
         if(Session::get('origin.invest_ua') !== $ua) {
             $origin = Origin::getFromArray($ua + ['invest_id' => $invest->id]);
             // echo "saving ua";
@@ -131,11 +160,11 @@ class OriginListener extends AbstractListener {
         }
     }
 
-
     public static function getSubscribedEvents() {
         return array(
             KernelEvents::REQUEST => 'onRequest',
-            AppEvents::INVEST_INIT => 'onInvestInit',
+            KernelEvents::RESPONSE => 'onResponse',
+            AppEvents::INVEST_INIT => 'onInvestInit'
         );
     }
 
