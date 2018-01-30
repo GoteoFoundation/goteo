@@ -148,6 +148,7 @@ project-validation-error-costs_required: 'You need at least one cost of each typ
 project-validation-error-rewards: 'You need to add or complete rewards'
 project-validation-error-rewards_required: 'You need at least 3 rewards'
 project-validation-error-rewards_units: 'The reward must have at least %s units'
+project-validation-error-rewards_empty_amount: 'Rewards must have a non-zero value'
 project-validation-error-campaign: 'There are empty fields in the campaign configuration'
 
 project-non-public-field: 'This field is not public'

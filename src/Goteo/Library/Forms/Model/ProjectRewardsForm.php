@@ -38,6 +38,9 @@ class ProjectRewardsForm extends AbstractFormProcessor implements FormProcessorI
                 }
             });
         }
+        if(strpos($field, 'amount') === 0) {
+            $constraints[] = new Constraints\GreaterThan(0);
+        }
         elseif($this->getFullValidation()) {
             $constraints[] = new Constraints\NotBlank();
         }

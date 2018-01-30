@@ -147,6 +147,7 @@ project-validation-error-costs_required: 'Has de tenir al menys un cost de cada 
 project-validation-error-rewards: 'Falta afegir o completar les recompenses'
 project-validation-error-rewards_required: 'Has de tenir al menys 3 recompenses'
 project-validation-error-rewards_units: 'La recompensa ha de tenir almenys %s unitats'
+project-validation-error-rewards_empty_amount: 'No es poden definir recompenses de valor 0'
 project-validation-error-campaign: 'Falten camps per omplir a la configuració de campanya'
 
 project-non-public-field: 'Aquest camp no és públic'

@@ -2457,8 +2457,10 @@ namespace Goteo\Model {
                 $count2 = 0;
                 foreach($rewards as $field) {
                     if($field === 'amount') {
-                        if(is_numeric($reward->{$field})) {
+                        if((int) $reward->{$field} > 0) {
                             continue;
+                        } else {
+                            $errors['rewards'][] = 'rewards_empty_amount';
                         }
                     } elseif(!empty($reward->{$field})) {
                         continue;
