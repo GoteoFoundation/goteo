@@ -137,9 +137,9 @@ EOT
                     ':s5' => Invest::STATUS_TO_POOL];
 
             $sql = "SELECT id,status,amount,amount_users,amount_call,
-            (SELECT SUM(invest.amount) FROM invest WHERE invest.project=project.id AND invest.status IN (:s0, :s1, :s3, :s4, :s5)) AS invest_total,
-            (SELECT SUM(invest.amount) FROM invest WHERE invest.project=project.id AND invest.status IN (:s0, :s1, :s3, :s4, :s5) AND method = 'drop') AS invest_drop,
-            (SELECT SUM(invest.amount) FROM invest WHERE invest.project=project.id AND invest.status IN (:s0, :s1, :s3, :s4, :s5) AND method != 'drop') AS invest_user
+            (SELECT IFNULL(SUM(invest.amount), 0) FROM invest WHERE invest.project=project.id AND invest.status IN (:s0, :s1, :s3, :s4, :s5)) AS invest_total,
+            (SELECT IFNULL(SUM(invest.amount), 0) FROM invest WHERE invest.project=project.id AND invest.status IN (:s0, :s1, :s3, :s4, :s5) AND method = 'drop') AS invest_drop,
+            (SELECT IFNULL(SUM(invest.amount), 0) FROM invest WHERE invest.project=project.id AND invest.status IN (:s0, :s1, :s3, :s4, :s5) AND method != 'drop') AS invest_user
             FROM project
             WHERE";
             if($project) {
