@@ -140,7 +140,7 @@ class User extends \Goteo\Core\Model {
             // Nuevo usuario.
             if (empty($this->id)) {
                 $insert = true;
-                $this->id = static::idealiza($this->userid);
+                $this->id = static::idealiza($this->userid, true);
                 $data[':id'] = $this->id;
                 $data[':name'] = $this->name;
                 $data[':location'] = $this->location;
@@ -379,7 +379,7 @@ class User extends \Goteo\Core\Model {
             if (empty($this->userid)) {
                 $errors['userid'] = Text::get('error-register-userid');
             } else {
-                $id = self::idealiza($this->userid);
+                $id = self::idealiza($this->userid, true);
                 $query = self::query('SELECT id FROM user WHERE id = ?', array($id));
                 if ($query->fetchColumn()) {
                     $errors['userid'] = Text::get('error-register-user-exists'). " ($id)";
@@ -2353,7 +2353,7 @@ class User extends \Goteo\Core\Model {
             $parts = preg_split("/[\s,\-\@\.]+/", $string);
             $id = '';
             foreach($parts as $part) {
-                $id .= self::idealiza($part);
+                $id .= self::idealiza($part, true);
                 if(strlen($id) < 4) continue;
                 if($id) {
                     $originals[] = $id;
