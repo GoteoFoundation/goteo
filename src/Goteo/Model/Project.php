@@ -3634,6 +3634,13 @@ namespace Goteo\Model {
                         $order = 'ORDER BY project.days ASC';
                     }
                 }
+                elseif($filters['type'] === 'recent') {
+                    // Thouse recently published with a minimum amount of 20%
+                    $sqlFilter .= ' AND project.passed IS NULL AND project.amount/project.mincost >= 0.2';
+                    if(empty($filters['order'])) {
+                        $order = 'ORDER BY project.published DESC';
+                    }
+                }
             }
             if (!empty($filters['node'])) {
                 $sqlFilter .= " AND project.node = :node";
@@ -3734,7 +3741,7 @@ namespace Goteo\Model {
                         LIMIT $offset, $limit";
             }
 
-            //echo \sqldbg($sql, $values);print_r($filters);die;
+            // echo \sqldbg($sql, $values);print_r($filters);die;
 
             $query = self::query($sql, $values);
             foreach ($query->fetchAll(\PDO::FETCH_CLASS, __CLASS__) as $proj) {
