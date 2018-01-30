@@ -53,6 +53,7 @@ class AjaxHomeController extends \Goteo\Core\Controller {
         } elseif($filter === 'outdated') {
             $filters['type'] = 'outdated';
             $filters['status'] = Project::STATUS_IN_CAMPAIGN;
+            $filters['order'] = 'project.days ASC, project.published DESC, project.name ASC';
         } elseif($filter === 'promoted') {
             $filters['type'] = 'promoted';
             $filters['status'] = Project::STATUS_IN_CAMPAIGN;

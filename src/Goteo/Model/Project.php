@@ -3657,7 +3657,7 @@ namespace Goteo\Model {
                 $values[':gender'] = $filters['gender'];
             }
 
-            // order 
+            // order
             if (in_array($filters['order'], ['updated', 'name']))
             {
                 $sqlOrder = " ORDER BY project.{$filters['order']} DESC";
