@@ -1,29 +1,6 @@
 <div class="section main-slider">
 
-	<nav>
-		<ul class="list-inline navbar-right hidden-xs">
-			<li>
-				<a href="#foundation" class="scroller">
-					<?= $this->text('home-menu-our-foundation') ?>
-				</a>
-			</li>
-			<li>
-				<a href="#matchfunding" class="scroller">
-					<?= $this->text('home-menu-matchfunding') ?>
-				</a>
-			</li>
-			<li>
-				<a href="/project/create" class="btn btn-fashion">
-					<?= $this->text('regular-create') ?>
-				</a>
-			</li>
-			<li>
-				<a href="#search" class="search">
-					<img src="/assets/img/home/icono_lupa_white.png" >
-				</a>
-			</li>
-		</ul>
-	</nav>
+    <?= $this->insertif('home/partials/main_slider_nav') ?>
 
 	<?php if($this->banners): ?>
 

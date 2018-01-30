@@ -18,7 +18,7 @@
       $('.slider-main').slick({
         dots: true,
         infinite: true,
-        autoplay: true,
+        autoplay: false,
         autoplaySpeed: 7000,
         speed: 1500,
         fade: true,

@@ -1,0 +1,27 @@
+/* General responsive media queries */
+
+@media(min-width: 1401px){
+   .visible-up-1400{
+    display: block !important;
+   }
+}
+
+@media(min-width: 1051px) and (max-width: 1400px){
+    .visible-1051-1400{
+    display: block !important;
+   }
+}
+
+/* Ipad horizontal resolution */
+@media(min-width: 900px) and (max-width: 1050px){
+    .visible-900-1050{
+    display: block !important;
+   }
+}
+
+/* Ipad vertical resolution */
+@media(min-width: 768px) and (max-width: 1050px){
+    .visible-768-1050{
+    display: block !important;
+   }
+}

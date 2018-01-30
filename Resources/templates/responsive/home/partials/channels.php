@@ -1,12 +1,12 @@
 <?php if($this->channels): ?>
-    
+
     <div class="section channels" id="channels" >
         <div class="drop-img-container">
             <img class="center-block drop-img" src="/assets/img/project/channel.svg" alt="matchfunding">
         </div>
         <h2 class="title text-center">
             <?= $this->text('home-channels-title') ?>
-        </h2>    
+        </h2>
         <div class="container" id="channel-container">
             <div class="row slider slider-channels">
             <?php foreach($this->channels as $channel): ?>
