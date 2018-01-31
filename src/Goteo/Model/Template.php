@@ -98,6 +98,7 @@ class Template extends \Goteo\Core\Model {
     const MATCHER_PROJECT_ACTIVATED = 'matcher_project_activated';    // inform to owner that a new project is activated in a matcher
     const MATCHER_PROJECT_DISCARDED = 'matcher_project_discarded';    // inform to owner that a new project is discarded from a matcher
     const MATCHER_PROJECT_ADDED_ADMIN = 'matcher_project_added_admin';    // inform to admin that a new project is added to a matcher
+    const PROJECT_DERIVATION_DISCARD = 'project_derivation_discard';    // Discard derivating to others platforms.
 
     public
         $id,
