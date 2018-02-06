@@ -218,14 +218,15 @@ Grunt commands in Goteo
 * **Multi-threading development server**: `grunt serve:nginx`
   For localhost developing as well. But you need to have nginx installed on your machine, it may speed up significantly the development process.
 
-* **Run phpunit**: `grunt deploy`
+* **Deploy assets**: `grunt deploy`
   Can be used to upload files assets to Amazon S3 (settings.yml must be configured)
 
-* **Run phpunit**: `grunt phpunit`
+* **Run phpunit**: `./run-tests.sh`
+  bash script to wrap phpunit tests (run it with `--help` for more info)
 
 * **Default task**: `grunt`
   This task is the same as execute as doing: `grunt lint`
-  It performs static code analysis in order to quick detect mistakes or misspellings
+  It performs static code analysis in order to quick detect mistakes or misspe -hllings
 
 * **Code linter**: `grunt lint`
   Same as default

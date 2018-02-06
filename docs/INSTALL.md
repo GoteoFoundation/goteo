@@ -4,6 +4,9 @@ currentMenu: install
 Installation
 ============
 
+This guide shows you how to install a standard copy of the Goteo code. To personalize your installation (changing views, etc) it's strongly recommended to create a plugin where views are overwritten. Otherwise any change you make to the code will be lost on software updates (or you will go throught a lot of pain updating the code).
+
+Please referer to the "[extend section](http://goteofoundation.github.io/goteo/docs/developers/extend.html)" to learn how to do that. 
 
 Server requirements
 -------------------
