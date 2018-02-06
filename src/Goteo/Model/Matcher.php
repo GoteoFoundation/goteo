@@ -82,9 +82,10 @@ class Matcher extends \Goteo\Core\Model {
             $values[':active'] = true;
         }
         if ($query = static::query($sql, $values)) {
-            if( $matcher = $query->fetchObject(__CLASS__) )
+            if( $matcher = $query->fetchObject(__CLASS__) ) {
                 $matcher->viewLang = $lang;
                 return $matcher;
+            }
         }
         return null;
     }

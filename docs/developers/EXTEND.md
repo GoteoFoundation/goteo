@@ -27,17 +27,17 @@ All plugins must follow this structure (inside the `extend` folder):
 ```
 extend/
 └── plugin-name
-    ├── start.php         <- Mandatory, Will be called on app init  
-    ├── manifest.yml      <- Mandatory, Should specify name, version
-    ├── README.md         <- Optional
-    │── src/
-    │   └── Vendor/
-    │       └── Foo/
-    │           └── Bar.php
+    ├── start.php         <- Mandatory, Will be called on app init
+    ├── manifest.yml      <- Mandatory, Should specify name, version
+    ├── README.md         <- Optional
+    │── src/
+    │   └── Vendor/
+    │       └── Foo/
+    │           └── Bar.php
     │
-    └── Resources/       <- Optional
-        ├── templates/   <- Optional, templates will be searched here first
-        ...
+    └── Resources/       <- Optional
+        ├── templates/   <- Optional, templates will be searched here first
+        ...
 
 ```
 
@@ -52,7 +52,10 @@ This file should follow this structure:
 
 name: PluginName
 version: 1.0
+
+# Advanced/optional:
 # Next key/value array will be used by Grunt to copy this files under the "dist/" directory
+
 assets:
     # Will be copied as dist/plugin-name/assets
     Resources/assets: plugin-name/assets
@@ -62,9 +65,46 @@ assets:
 
 ### The `start.php` file:
 
-This will be fully documented some day. 
+Probably, the most common task to be achieved is to personalize the home page or any other view. A minimal start.php file should be something like this:
 
-Meanwhile, please take a look at the file  `extend/goteo-dev/start.php`  as an example.
+```php
+<?php
+
+// initial start.php can be empty, everything here is optionall
+
+use Goteo\Application\Config;
+use Goteo\Application\Lang;
+
+// Autoload additional Classes (if necessary)
+Config::addAutoloadDir(__DIR__ .'/src');
+
+// Adding lang files (if necessary)
+Lang::addYamlTranslation('en', __DIR__ .'/my-translations/en/some-file.yml');
+
+// ... other things...
+
+```
+
+Take a look at the file  `extend/goteo-dev/start.php`  as a more complex example.
+
+The important part about creating a dummy plugin like this is that any view can be overwritten by just making a replacement in the same directory relative to your plugin folder.
+
+For example, if you create a plugin named "my-plugin", you can overwrite the file `Resources/templates/responsive/partials/footer.php` by creating the same file in the path `extend/my-plugin/Resources/templates/responsive/partials/footer.php`
+
+Basically, you'll end with a plugin directory structure like this:
+
+```
+extend/
+└── my-plugin
+    ├── start.php
+    ├── manifest.yml
+    └── Resources/
+        └── templates/
+            └── responsive/
+                └── partials/
+                    └── footer.php
+
+```
 
 
 ## Dev plugin

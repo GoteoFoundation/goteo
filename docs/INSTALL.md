@@ -4,6 +4,9 @@ currentMenu: install
 Installation
 ============
 
+This guide shows you how to install a standard copy of the Goteo code. To personalize your installation (changing views, etc) it's strongly recommended to create a plugin where views are overwritten. Otherwise any change you make to the code will be lost on software updates (or you will go throught a lot of pain updating the code).
+
+Please referer to the "[extend section](http://goteofoundation.github.io/goteo/docs/developers/extend.html)" to learn how to do that. 
 
 Server requirements
 -------------------
@@ -202,7 +205,7 @@ db:
     driver:   mysql     # Database driver (mysql)
     host:     localhost # Database host
     port:     3306      # Database port
-    charset:  UTF-8     # Database charset
+    charset:  utf8mb4     # Database charset
     database: your_goteo_db     # Database schema (database name)
     username: your_user     # Database user for the goteo database
     password: your_password  # Password for the goteo database
@@ -330,6 +333,11 @@ oauth:
     openid:
         active: true
 
+# Optional analytics ID's
+# Example:
+# google: UA-0000000-01
+analytics:
+    google:
 
 ```
 
@@ -396,14 +404,43 @@ FallbackResource /index.php
 
 > **NOTE:**
 > - If you want to debug the site, you must point the server to the `index_dev.php` file instead of `index.php`. This way error traces will be shown in the error pages
-> - If you cannot configure the server to point to the `dist/` folder, the `.htaccess` file on the root folder can be used as alternative (using this solution will force the use of an assets URL pointing to the dist/ folder.)
+> - If you cannot configure the server to point to the `dist/` folder, the `.htaccess` file on the root folder can be used as alternative (using this solution will force the use of the URL assets to point to the dist/ folder.)
 
-### Nginx config:
+### Apache 2.4 config demo:
 
-```nginxs
+```apach2
+<VirtualHost *:80>
+    ServerName domain.tld
+
+    ServerAdmin webmaster@localhost
+    DocumentRoot /path/to/my/goteo-folder/dist
+
+    # Custom settings for apache
+    SetEnv GOTEO_CONFIG_FILE /path/to/my/settings.yml
+
+    FallbackResource /index.php
+
+    <Directory /path/to/my/goteo-folder/dist>
+        Options Indexes FollowSymlinks
+        AllowOverride All
+        Require all granted
+    </Directory>
+
+    #LogLevel info ssl:warn
+
+    ErrorLog ${APACHE_LOG_DIR}/error.log
+    CustomLog ${APACHE_LOG_DIR}/access.log combined
+
+</VirtualHost>
+```
+
+
+### Nginx config demo:
+
+```nginx
 server {
     server_name domain.tld www.domain.tld;
-    root /var/www/goteo-folder/dist;
+    root /path/to/my/goteo-folder/dist;
 
     location / {
         # try to serve file directly, fallback to front controller

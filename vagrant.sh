@@ -7,7 +7,7 @@ apt-get -y upgrade
 # Install essentials
 apt-get -y install build-essential binutils-doc libssl-dev git -y
 # Install Apache
-apt-get -y install apache2
+apt-get -y install apache2 libapache2-mod-ruid2
 #Install PHP
 apt-get -y install php libapache2-mod-php php-cli php-gd php-mcrypt php-mysql php-curl php-xdebug
 apt-get -y install nodejs npm
@@ -23,6 +23,14 @@ echo 'phpmyadmin phpmyadmin/mysql/admin-pass password root' | debconf-set-select
 echo 'phpmyadmin phpmyadmin/mysql/app-pass password root' | debconf-set-selections
 echo 'phpmyadmin phpmyadmin/reconfigure-webserver multiselect apache2' | debconf-set-selections
 apt-get -y install phpmyadmin
+
+# disable default apache site
+a2dissite 000-default
+# copy the apache configuration
+cp /home/vagrant/goteo/var/php/apache2.4.conf /etc/apache2/sites-enabled/goteo.conf
+# enable suexec
+a2enmod ruid2
+
 # Restart Apache service
 service apache2 restart
 
@@ -51,4 +59,5 @@ curl -sS https://getcomposer.org/installer | php
 mv composer.phar /usr/local/bin/composer
 
 #autochange to development dir on login
-su -c "source /home/ubuntu/goteo/vagrant-user-config.sh" ubuntu
+su -c "source /home/vagrant/goteo/vagrant-user-config.sh" vagrant
+

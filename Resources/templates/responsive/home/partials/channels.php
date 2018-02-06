@@ -1,4 +1,4 @@
-<?php if($this->channels): ?>
+<?php if($this->channels && count($this->channels) > 1): ?>
 
     <div class="section channels" id="channels" >
         <div class="drop-img-container">

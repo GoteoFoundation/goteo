@@ -122,7 +122,7 @@ EOT
             $res = Model::query("select count(*) from information_schema.tables where table_type = 'BASE TABLE' and table_schema = ?", $databases[0]);
             if($res->fetchColumn()) throw new \Exception("Database {$databases[0]} is not empty! Cannot install\n\nYou may want to execute:\nphp bin/console migrate all");
 
-            $output->writeln("<comment>Installing database structure into <info>[{$dsatabases[0]}]</info> ...</comment>");
+            $output->writeln("<comment>Installing database structure into <info>[{$databases[0]}]</info> ...</comment>");
             Model::query(file_get_contents(GOTEO_PATH . 'db/migrations/init-v3.2.sql'));
             $output->writeln('<info>Done</info>');
 
