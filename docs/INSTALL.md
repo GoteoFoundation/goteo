@@ -205,7 +205,7 @@ db:
     driver:   mysql     # Database driver (mysql)
     host:     localhost # Database host
     port:     3306      # Database port
-    charset:  UTF-8     # Database charset
+    charset:  utf8mb4     # Database charset
     database: your_goteo_db     # Database schema (database name)
     username: your_user     # Database user for the goteo database
     password: your_password  # Password for the goteo database
