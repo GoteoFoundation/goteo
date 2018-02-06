@@ -24,6 +24,7 @@ composer.lock
 !/config/README.md
 !/config/demo-settings.yml
 !/config/vagrant-settings.yml
+!/config/travis-settings.yml
 /dist
 
 phpunit.xml

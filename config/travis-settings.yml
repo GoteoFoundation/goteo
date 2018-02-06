@@ -1,0 +1,274 @@
+#Goteo settings file
+---
+
+# Maintenance
+maintenance: false
+
+# Max session time
+session:
+    time: 3600
+
+# Internal secret for hashes
+secret: --a-very-secret-string---
+
+# local environment: local, beta, real
+env: local # set to real to send emails
+debug: true # whether to show trace for errors or not
+            # This is always true for local or beta env
+
+# main node
+node: goteo
+
+# Default system language
+lang: es
+
+# Default timezone
+timezone: Europe/Madrid
+
+# url
+url:
+    main: //0.0.0.0:8081
+    # static resources url if you use a different assets server
+    assets: //0.0.0.0:8081
+    #optional, configure this as hostname only (ex: example.com) if you want languages to be selected as subdomains (es.example.com, en.example.com)
+    # url_lang: 0.0.0.0:8081
+
+    # If you want to use a CDN or another web server to serve the cached images
+    # You can define this constants. All cached images links will point to this
+    # Url, event if don't exists yet.
+    # Example:
+    # Point a data.example.com to var/cache/images
+    # the place a .htaccess in var/cache/images/.htaccess with this content
+    # <ifmodule mod_rewrite.c>
+    # RewriteEngine on
+    # RewriteCond %{REQUEST_FILENAME} !-f
+    # RewriteCond %{REQUEST_FILENAME} !-d
+    # RewriteRule ^(.*) http://example.com/img/$1 [R=302,L]
+    # </ifmodule>
+    #
+    data:
+
+# PLUGINS
+# Extend is the directory to personalize your copy of goteo.org
+# Routes, classes and templates can be overridden by copying the main structure
+# ie:
+#    - Autoloading classes
+#    - Templates will be found first from extend/plugin-name/Resources/templates path
+#    - Tests should be placed into extend/plugin-name/tests path
+#    - Routes can be overwritten
+#    - Service container can be tampered
+
+plugins:
+    goteo-dev:
+        active: true # plugin should be active=true to be loaded
+        liveport: 35729 # Local development only livereload port (optional)
+
+# Payment methods, must be registered as classes implementing Goteo\Payment\Method\PaymentMethodInterface
+payments:
+    # Paypal
+    paypal:
+        active: true
+        testMode:  true # set to false to real checkouts
+        username: paypal@example.com
+        password: paypal-password
+        signature: PAYPAL-Signature
+        appId: PAYPAL-APP-ID
+        # brandName: Your organisation
+        # headerImageUrl: Some URL image for the header
+        # logoImageUrl: logo URL
+        # borderColor: B5DADC
+
+    # This is a built-in payment method using internal credit
+    #
+    pool:
+        active: true
+    # A stupid payment method defined in the plugin goteo-dev
+    # Useful for development and testing
+    dummy:
+        active: true
+
+    # Additional custom payment methods should be added here
+
+# Force using https protocol
+ssl: false
+
+# IMPORTANT! if ssl is true and your server is behind a proxy
+# List the trusted proxies for SSL connection here
+proxies:
+    - 127.0.0.1
+    # Cloudflare IP list:
+    # - 103.21.244.0/22
+    # - 103.22.200.0/22
+    # - 103.31.4.0/22
+    # - 104.16.0.0/12
+    # - 108.162.192.0/18
+    # - 141.101.64.0/18
+    # - 162.158.0.0/15
+    # - 172.64.0.0/13
+    # - 173.245.48.0/20
+    # - 188.114.96.0/20
+    # - 190.93.240.0/20
+    # - 197.234.240.0/22
+    # - 198.41.128.0/17
+    # - 199.27.128.0/21
+
+
+# Default commission fee
+fee: 4
+
+# Filesystem used by goteo
+filesystem:
+    handler:    local      # 's3' to use AmazonS3 storage, 'local' to use local file system
+    # Only need to be defined credentials if filesystem is s3:
+    # AWS credentials
+    aws: &aws1
+        key:        your-aws-key
+        secret:     your-aws-secret
+        region:     eu-west-1
+
+    bucket:
+        static:     static.example.com        # where to store the assets (css, js, images)
+        mail:       mail-archive.example.com  # where to store alternative mail view
+
+# Database stuff
+db:
+    driver:   mysql     # Database driver (mysql)
+    host:     localhost # Database host
+    port:     3306      # Database port
+    charset:  utf8mb4     # Database charset
+    database: goteo     # Database schema (database name)
+    username: travis      # Database user for the goteo database
+    password:       # Password for the goteo database
+
+    # SELECT queries caching
+    # set it as 'files' to enable sql cache
+    cache:
+        driver:           # leave empty to avoid query-caching
+        time: 5           # time in seconds where SELECT queries will be cached (may be overwritten by Model::query->cacheTime())
+        long_time: 3600   # Obsolete
+
+    # Read-only replicas (optional)
+
+    replica:
+        host:  # leave empty to not activate replica
+        # this parameters are optionals (needed in case replica credentials are different)
+        port: 3306
+        username: db-replica-username
+        password: db-replica-password
+
+# HTML Metas
+meta:
+    title:       "Development Goteo"       # Html default <title>
+    description: "--meta-description--" # Html default <meta description>
+    keywords:    "--keywords--"         # Html default <meta keywords>
+    author:      "--author--"           # Html default <meta author>
+    copyright:   "--copyright--"        # Html default <meta copyright>
+
+# Loggin level
+log:
+    # app collects general messages generated by de website
+    app: info # debug info, warning, error (default)
+    # payment collects messages related to payments
+    payment: debug
+    # Debug level in Console commands
+    console: debug
+    # mail specifies at what log level the error will be sent to mail.fail email
+    mail: error # goes to mail.fail address
+
+# Mail transport
+mail:
+    # receiving emails
+    mail:         info@localhost     # Main
+    contact:      info@localhost     # consulting head
+    manager:      manager@localhost  # accounts manager
+    fail:         dev@localhost      # dev head
+    log:          sitelog@localhost  # Loggin mail
+
+    # allowed addresses while in BETA/LOCAL env in PREG format
+    beta_senders: "(.+)example\\.org|(.+)example\\.com"
+    # Add to BCC this address to all communications (except massive). Applies only in REAL env
+    # Not recommended, there's a way in the admin to see all sent communications
+    bcc_verifier:
+
+    # Default users where to send project notifications by default
+    # Only used if no consultants are assigned
+    consultants:
+        root: 'Root'
+
+    transport:
+        from:          noreply@localhost
+        name:          Goteo Sender
+        type:          smtp
+        # if type is smtp:
+        smtp:
+            auth:     true
+            secure:   ssl
+            host:     localhost
+            port:     587
+            username: root
+            password: root
+
+    quota:
+        total: 50000  # Maximum sending quota in 24 hours time (useful for SMTP servers like Amazon SES)
+        sender: 40000 # Part of this quota used by newsletter mailing
+        send_rate: 10  # Maximum number of mails per second to be send in mailing
+        concurrency: 10 # Maximum number of processes to be executed in parallel to send mailing
+
+    # Amazon SNS key to process automatic bounces: 'arn:aws:sns:us-east-1:XXXXXXXXX:amazon-ses-bounces'
+    # URL mus be: goteo_url.tld/aws-sns.php
+    sns:
+        client_id:        XXXXXXXXX
+        region:           us-east-1
+        bounces_topic:    amazon-ses-bounces
+        complaints_topic: amazon-ses-complaints
+
+# This will be used for geolocating users, projects, and mail tracking
+geolocation:
+    # Path to maxmind databases, you need to download (and keep updated) either the free o commercial
+    # databases from maxmind. Check this for more info: https://dev.maxmind.com/geoip/geoipupdate/
+    # relative paths are allowed (ie: you can save your maxmind databases into config/resources/maxmind if you want)
+    # Un comment next 2 lines if you have it installed and working:
+    # maxmind:
+    #    cities: /usr/share/GeoIP/GeoLite2-City.mmdb
+    google_maps_key: # Google Maps Key
+                     # Ge one here: https://developers.google.com/maps/documentation/javascript/get-api-key
+
+# Social Login Services
+# Fill an uncomment the needed one's
+oauth:
+    # Credentials app Facebook
+    facebook:
+       active: false
+       id:     000000000000000                  #
+       secret: aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa #
+
+    # Credentials app Twitter
+    twitter:
+       active: false
+       id:      aaaaaaaaaaaaaaaaaaaaaa                     #
+       secret:  aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa #
+
+    # Credentials app Linkedin
+    linkedin:
+       active: false
+       id:     aaaaaaaaaaaa     #
+       secret: aaaaaaaaaaaaaaaa #
+
+    # Credentials Google
+    google:
+       active: false
+       id: aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+       secret: aaaaaaaaaaaaaaaaaa
+
+    # OpenID logins does not need for Keys, just active/inactive
+    yahoo:
+        active: false
+
+    openid:
+        active: true
+
+# Optional analytics ID's
+# Example:
+# google: UA-0000000-01
+analytics:
+    google:

@@ -8,14 +8,12 @@ services:
   - mysql
 
 env:
-  - GOTEO_CONFIG_FILE="$TRAVIS_BUILD_DIR/config/vagrant-settings.yml"
+  - GOTEO_CONFIG_FILE="$TRAVIS_BUILD_DIR/config/travis-settings.yml"
 
 before_script:
   - mysql -e 'CREATE DATABASE goteo;'
-  - mysql -e "GRANT ALL PRIVILEGES ON goteo.* TO 'root'@'%' IDENTIFIED BY 'root';"
-  - composer self-update
   - composer install
   - ./bin/console migrate install
 
 script:
-  - ./run-tests.sh -t config/vagrant-settings.yml tests/
+  - ./run-tests.sh -t config/travis-settings.yml tests/
