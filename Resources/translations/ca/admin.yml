@@ -72,3 +72,10 @@ admin-project-to-negotiation-sure: 'ALERTA!! El projecte està en campanya! Amb 
 admin-project-to-publish: 'Publica'
 admin-project-to-publish-desc: 'Passa el projecte a l''estat "En campanya"'
 admin-project-to-publish-sure: 'El projecte començarà la campanya, ok?'
+
+admin-project-derivation-discard: 'Rebutjar i derivar'
+admin-project-derivation-discard-desc: 'Pasa el projecte a l''estat descartat i envia un mail derivant a una plataforma més idònia'
+admin-project-derivation-discard-sure: 'S''envia un mail derivant a una altra plataforma i passa a l''estat descartat"'
+
+
+
