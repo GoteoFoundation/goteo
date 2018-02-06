@@ -7,6 +7,26 @@ $account = $vars['account']; // cuentas del proyecto, para tener el porcentaje d
 
 $matchers=$project->getMatchers('active');
 
+
+$sumData['match_goteo']=0;
+$matchfunding_invest=0;
+
+if ($matchers)
+{
+    foreach($matchers as $matcher){
+        $matchfunding_invest+=Invest::getList(['projects' => $project->id, 'users' => $matcher->owner, 'types' => 'drop', 'status' => Invest::$ACTIVE_STATUSES
+                        ], null, 0, 0, 'money');
+
+        $matcher_fee=round($matcher->fee / 100, 2);
+
+        $sumData['match_goteo']= $matchfunding_invest * $matcher_fee;
+        //Aplicamos el IVA al 50% de la comision de Goteo
+        $sumData['match_goteo']=(( $sumData['match_goteo']/2)*($account->vat/100))+ $sumData['match_goteo'];
+
+    }
+
+}
+
 $called = $project->called;
 
 // comisión goteo para este proyecto
@@ -17,6 +37,9 @@ $CALL_FEE = round($called->fee_projects_drop / 100, 2);
 
 $Data    = $vars['Data'];
 $admin = (isset($vars['admin']) && $vars['admin'] === true) ? true : false;
+
+//restamos a los aportes recibios de monedero lo correspondiente a matchers
+$Data['pool']['total']['amount']=$Data['pool']['total']['amount']-$matchfunding_invest;
 
 $total_issues = 0;
 foreach ($Data['issues'] as $issue) {
@@ -79,7 +102,7 @@ $cName = "P-{$cNum}-{$cDate}";
     $sumData['pp_fee_project'] = ($Data['paypal']['total']['invests'] * 0.35) + ($sumData['pp_project'] * 0.034);
     $sumData['pp_net_project'] = $sumData['pp_project'] - $sumData['pp_fee_project'];
     $sumData['fee_goteo'] = $sumData['tpv_fee_goteo'] + $sumData['pp_fee_goteo'];
-    $sumData['goteo'] = $sumData['cash_goteo'] + $sumData['tpv_goteo'] + $sumData['pp_goteo'] + $sumData['drop_goteo'] + $sumData['pool_goteo'] + $sumData['ghost_goteo']; // si que se descuenta la comisión sobre capital riego
+    $sumData['goteo'] = $sumData['cash_goteo'] + $sumData['tpv_goteo'] + $sumData['pp_goteo'] + $sumData['drop_goteo'] + $sumData['pool_goteo'] + $sumData['ghost_goteo'] +$sumData['match_goteo']; // si que se descuenta la comisión sobre capital riego
 
     $sumData['total_fee_project'] = $sumData['fee_goteo'] + $sumData['goteo']; // este es el importe de la factura
 
@@ -134,11 +157,13 @@ $cName = "P-{$cNum}-{$cDate}";
 
          <?php if ($matchers) : ?>
             <?php foreach($matchers as $matcher): ?>
-                <?php $matchfunding_invest=Invest::getList(['projects' => $project->id, 'users' => $matcher->owner, 'types' => 'drop', 'status' => Invest::$ACTIVE_STATUSES
-                        ], null, 0, 0, 'money');
-                ?>
                 <tr>
-                    <td>-&nbsp;&nbsp;&nbsp;&nbsp;Riego obtenido del <strong>Canal <?= $matcher->name ?></strong>: <strong><?= amount_format($matchfunding_invest)  ?></strong> (Ya está incluido en el total de la recaudación del proyecto)</td>
+                    <td>-&nbsp;&nbsp;&nbsp;&nbsp;Riego obtenido del <strong>Canal <?= $matcher->name ?></strong>: <strong><?= amount_format($matchfunding_invest)  ?></strong> (A transferir de forma directa)</td>
+                </tr>
+                <tr>
+                    <td>
+                        <b>Comisión matcher:</b> <?= $matcher->fee.'%' ?>
+                    </td>
                 </tr>
             <?php endforeach; ?>
         <?php endif; ?>
@@ -162,6 +187,9 @@ $cName = "P-{$cNum}-{$cDate}";
             <td>-&nbsp;&nbsp;&nbsp;&nbsp;Comisión del <?php echo $account->fee; ?>&#37; de Goteo.org <?= $account->vat ? '(Incluye un '.$account->vat.'&#37; de IVA para el 50&#37; de la cantidad)' : '' ?>:  <strong><?php echo \amount_format($sumData['goteo'], 2); ?></strong>
                 <?php if($project->called): ?>
                     <br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<em>(<?= \amount_format($sumData['drop_goteo']) .' de comisión en la parte correspondiente a capital riego al aplicar un '.$called->fee_projects_drop .'%)' ?></em>
+                <?php endif; ?>
+                <?php if($matchers): ?>
+                    <br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<em>(<?= \amount_format($sumData['match_goteo']) .' de comisión en la parte correspondiente a riego' ?>)</em>
                 <?php endif; ?>
             </td>
             <td>

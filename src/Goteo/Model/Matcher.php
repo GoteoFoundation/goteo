@@ -29,6 +29,7 @@ class Matcher extends \Goteo\Core\Model {
            $lang,
            $owner,
            $terms,
+           $fee,
            $processor = '',
            $vars = [],
            $crowd = 0, // Calculated field with the sum of all invests made by the peoplo
@@ -64,6 +65,7 @@ class Matcher extends \Goteo\Core\Model {
                        matcher.logo,
                        matcher.lang,
                        matcher.owner,
+                       matcher.fee,
                        matcher.processor,
                        matcher.vars,
                        matcher.amount,
