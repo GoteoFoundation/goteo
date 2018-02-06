@@ -330,6 +330,11 @@ oauth:
     openid:
         active: true
 
+# Optional analytics ID's
+# Example:
+# google: UA-0000000-01
+analytics:
+    google:
 
 ```
 

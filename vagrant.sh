@@ -51,4 +51,5 @@ curl -sS https://getcomposer.org/installer | php
 mv composer.phar /usr/local/bin/composer
 
 #autochange to development dir on login
-su -c "source /home/ubuntu/goteo/vagrant-user-config.sh" ubuntu
+su -c "source /home/vagrant/goteo/vagrant-user-config.sh" vagrant
+

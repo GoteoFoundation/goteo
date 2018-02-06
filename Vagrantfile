@@ -12,6 +12,6 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     config.vm.network "forwarded_port", guest: 8081, host: 8081 # goteo test web
     config.vm.network "forwarded_port", guest: 35729, host: 35729 # live reload port
     config.vm.network "forwarded_port", guest: 3306, host: 3307
-    config.vm.synced_folder ".", "/home/ubuntu/goteo"
+    config.vm.synced_folder ".", "/home/vagrant/goteo"
     config.vm.provision "shell", path: "vagrant.sh"
 end
