@@ -8,6 +8,8 @@ if [ $(grep -c 'cd ~/goteo' ~/.bashrc) == '0' ]; then
     # create config file
     cp config/vagrant-settings.yml config/local-vagrant-settings.yml
     export GOTEO_CONFIG_FILE=~/goteo/config/local-vagrant-settings.yml
+    # Create config file for apache
+    cat config/vagrant-settings.yml | sed -e "s/8081/8080/" > config/apache-vagrant-settings.yml
     # install composer
     composer install
     # install database
