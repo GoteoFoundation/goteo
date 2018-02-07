@@ -1,0 +1,39 @@
+---
+mandatory-project-field-address: 'La dirección de la persona responsable del proyecto es obligatoria'
+mandatory-project-field-contract_email: 'Es obligatorio poner el email de la persona responsable del proyecto.'
+mandatory-project-field-country: 'El país de la persona responsable del proyecto es obligatorio'
+mandatory-project-field-phone: 'El teléfono de la persona responsable del proyecto es obligatorio'
+mandatory-project-field-residence: 'Es obligatorio poner el lugar de residencia de la persona responsable del proyecto'
+mandatory-project-field-zipcode: 'El código postal de la persona responsable del proyecto es obligatorio'
+personal-field-address: 'Dirección (indicar si es calle, plaza, avenida, etc)'
+personal-field-contract_birthdate: 'Fecha de nacimiento'
+personal-field-contract_data: 'Datos de la persona responsable del proyecto'
+personal-field-contract_email: 'Email vinculado al proyecto'
+personal-field-contract_entity-entity: 'Persona jurídica (asociaciones, fundaciones, empresas)'
+personal-field-contract_entity-person: 'Persona física'
+personal-field-country: País
+personal-field-entity_cif: 'CIF de la entidad'
+personal-field-entity_name: 'Denominación social (nombre) de la entidad'
+personal-field-entity_office: 'Cargo en la organización'
+personal-field-location: Localidad
+personal-field-phone: Teléfono
+personal-field-post_address-different: Diferente
+personal-field-post_address-same: Igual
+personal-field-zipcode: 'Código postal'
+personal-main-header: 'Datos de la persona promotora'
+step-2: Promotor/a
+step-userPersonal: 'Paso: Datos personales'
+tooltip-project-contract_birthdate: 'Indica la fecha de tu nacimiento. No se hará pública en ningún caso, nos interesa por temas estadísticos.'
+tooltip-project-contract_data: 'Ya sea como persona física o bien jurídica, es necesario que alguien figure como promotor/a del proyecto, y también para la interlocución con el equipo de Goteo. No tiene que coincidir necesariamente con el perfil de usuario del apartado anterior.'
+tooltip-project-contract_email: 'Dirección de correo electrónico principal asociada al proyecto. Aquí recibirás las notificaciones y mensajes del equipo de Goteo en relación al proyecto propuesto. Te recomendamos que la revises regularmente durante toda la campaña'
+tooltip-project-contract_surname: 'P2-Consejo-5  Consejo para rellenar el apellido del responsable del proyecto'
+tooltip-project-entity_cif: 'Escribe el CIF (letra + número) de la organización.'
+tooltip-project-entity_name: 'Escribe el nombre de la organización tal como aparece en su CIF.'
+tooltip-project-entity_office: 'Escribe el cargo con el que representas a la organización (secretario/a, presidente/a, tesorero/a...). '
+tooltip-project-main_address: 'Dirección fiscal de la persona u organización (según proceda).'
+tooltip-project-phone: 'Número de teléfono móvil o fijo, con su prefijo de marcado.'
+tooltip-project-post_address: 'Indica, en caso necesario, una dirección postal detallada'
+tooltip-user-image: 'No es obligatorio que pongas una fotografía en tu perfil, pero ayuda a que los demás usuarios/as te identifiquen.'
+validate-project-paypal_account: 'La cuenta PayPal debería ser similar a un email'
+validate-project-value-entity_cif: 'El CIF no es válido'
+validate-project-value-phone: 'El formato de número de teléfono no es correcto.'
