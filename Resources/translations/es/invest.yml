@@ -1,6 +1,7 @@
+---
 bazar-spread-text: '%s - Esta Navidad, regala crowdfunding abierto y para el bien común con @goteofunding #openbazaar'
 bazar-thanks: 'Gracias por visitar nuestro bazaar, puedes ayudarnos a difundirlo.'
-currency-alert: "Por favor, ten en cuenta que la gestión es en EUR. \r\nVas a pagar aproximadamente <span id=\"reminder_conversion\">%s</span> € <a href=\"/faq/investors#q115\" target=\"_blank\">Más info</a>"
+currency-alert: "Por favor, ten en cuenta que la gestión es en EUR. \\r\nVas a pagar aproximadamente <span id=\"reminder_conversion\">%s</span> € <a href=\"/faq/investors#q115\" target=\"_blank\">Más info</a>"
 faq-payment-method: '<a href="/faq/investors#q2" target="_blank">¿Qué sistemas de pago ofrece Goteo? ¿Son seguros?</a>'
 imperative-register: Regístrate
 invest-address-address-field: Dirección
@@ -62,7 +63,7 @@ invest-payment-fail: 'Algo ha fallado en el pago'
 invest-payment-success: 'El pago se ha completado correctamente'
 invest-payment_method-header: 'Elige el método de pago'
 invest-paypal-method: Paypal
-invest-paypal_disabled: "\r\nEste proyecto tiene desactivada la opción de pago a través de PayPal. <a href=\"/faq/investors#q2\" target=\"_blank\">Más info</a>"
+invest-paypal_disabled: "\\r\nEste proyecto tiene desactivada la opción de pago a través de PayPal. <a href=\"/faq/investors#q2\" target=\"_blank\">Más info</a>"
 invest-pool: 'Quiero que mi donación, en el caso de que el proyecto no llegue a su objetivo, permanezca en mi monedero virtual Goteo.'
 invest-pool-available: disponibles
 invest-pool-error: 'No tienes suficiente dinero en tu monedero virtual'
@@ -95,7 +96,7 @@ proj-widget-my_invest: 'Mi aporte'
 project-invest-confirm: 'Estás a un paso de cofinanciar este proyecto...'
 project-invest-continue: 'Haz click sobre el logo del sistema de pago que vas a utilizar:'
 project-invest-fail: 'Algo ha fallado, por favor inténtalo de nuevo'
-project-invest-guest: ¡Genial!
+project-invest-guest: '¡Genial!'
 project-invest-ok: 'Se ha tramitado tu aportación para cofinanciar este proyecto :)'
 project-invest-pool-button: 'Usar mi Monedero virtual'
 project-invest-start: 'Estás a un paso de cofinanciar este proyecto...'
@@ -108,6 +109,5 @@ warning_nojavascript: 'Habilita javascript desde la configuración de privacidad
 invest-no-register: 'Saltar este paso, sólo quiero aportar'
 invest-user-not-ghost: 'Este email pertenece a un usuario existente!'
 invest-user-name-or-anonymous: 'El nombre es obligatorio si no quieres hacer una aportación anónima'
-
 invest-created-manually-ok: 'Aporte manual creado correctamente, seleccionar recompensa y dirección de entrega.'
 invest-created-manually-ko: 'Error al crear el aporte manual [%s]'
