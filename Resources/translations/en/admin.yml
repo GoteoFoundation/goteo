@@ -4,79 +4,9 @@ admin-NO: 'NO'
 admin-YES: "YES"
 admin-account-amount: 'Donated amount'
 admin-account-change-user: 'Switch user'
-admin-account-change-user-confirm: '¿Seguro que quieres cambiar el usuario del aporte? El nuevo usuario será:'
-admin-account-convert-to-pool: 'Convertir a monedero'
-admin-account-convert-to-pool-confirm: 'Esto eliminará el proyecto asociado a este aporte y pasará a ser como si un fuera una compra de monedero. TODAS LAS RECOMENPENSAS ASOCIADAS SE PERDERÁN. ¿Continuar?'
-admin-account-convert-to-pool-ko: 'No se ha podido convertir el aporte a monedero: %s'
-admin-account-convert-to-pool-ok: 'Convertido a aporte de monedero correctamente'
-admin-account-detail: 'Detalles de la transacción'
-admin-account-donation: Donativo
-admin-account-edit-reward: 'Gestionar recompensa/dirección'
-admin-account-invalid-invest: 'Aporte [%s] no encontrado!'
-admin-account-invest-date: 'Fecha del aporte'
-admin-account-invest-non-pool-refundable: 'Este aporte no se puede reembolsar al monedero virtual. Sólo se pueden reembolsar los aportes en estado "Cobrado"'
-admin-account-invest-non-user-refundable: "Este aporte no se puede reembolsar. Se pueden reembolsar los aportes en estados:\n\"Pendiente\", \"Cobrado\" y \"Al monedero\" si hay suficiente dinero en el monedero para descontar\n"
-admin-account-invest-to-pool-ko: 'Fallo al devolver el aporte al monedero'
-admin-account-invest-to-pool-ok: 'Aporte reembolsado al monedero. Incrementado el monedero por valor de (%s)'
-admin-account-invest-user-refund-fail-pool-amount: 'Este aporte no se puede devolver porque el usuario no tiene suficiente dinero en el monedero (%s)'
-admin-account-invest-user-refund-ko: 'No se ha podido devolver el aporte: [%s]'
-admin-account-invest-user-refund-ok: 'Aporte reembolsado correctamente'
-admin-account-invest-user-refund-ok-pool: 'Aporte reembolsado correctamente. El monedero se ha reducido en %s'
-admin-account-issue-solved: 'Nos han hecho la transferencia'
-admin-account-modify-status: 'Modificar el estado'
-admin-account-modify-status-confirm: "¿Seguro que deseas cambiar manualmente el estado a este aporte? Esto es delicado!\nNO SE REALIZARÁ NINGUNA operación de retorno del aporte.\n"
-admin-account-payment-method: 'Método de pago'
-admin-account-pool-on-fail: 'Pool (retornar al monedero si falla)'
-admin-account-refund-to-pool: 'Reembolsar el aporte al monedero'
-admin-account-refund-to-pool-confirm: "Esto marcará el aporte como:\nRetornado si el proyecto es fallido\nCancelado si el proyecto està activo o es exitoso\nNo se reembolsará al usuario, se generá dinero en el monedero del usuario.\n¿Continuar?\n"
-admin-account-refund-to-user: 'Reembolsar el aporte al usuario'
-admin-account-refund-to-user-confirm: "Esto marcará el aporte como:\nRetornado si el proyecto es fallido\nCancelado si el proyecto està activo o es exitoso\nSe reembolsará el dinero al usuario.\nEsto puede NO funcionar si el aporte es muy antiguo o el método de pago no lo soporta.\n¿Continuar?\n"
-admin-account-rewards: 'Recompensas elegidas'
-admin-account-switch-donation: 'Conmutar donativo'
-admin-account-switch-donation-confirm: '¿Seguro que quieres cambiar el estado de donativo?'
-admin-account-switch-pool: 'Conmutar el pool'
-admin-account-switch-pool-confirm: 'Esto solo afecta para cuando falla el proyecto, no genera ni quita dinero del monedero. ¿Continuar?'
-admin-account-switch-pool-fail: 'No se puede cambiar el estado del pool de este aporte'
-admin-account-transaction: 'Códigos de seguimiento'
-admin-account-user-changed-error: 'No se ha podido cambiar el usuario del aporte [%ID%] a [%NAME%]!'
-admin-account-user-changed-successfully: 'Se ha cambiado el usuario del aporte [%ID%] a [%NAME%]'
-admin-address: Dirección
-admin-all: Todos
-admin-back: Volver
-admin-back-detail: 'Volver al detalle'
-admin-back-list: 'Volver al listado'
-admin-contents: 'Textos y Traducciones'
-admin-empty-list: 'No se han encontrado registros'
-admin-home: Portada
-admin-items: entradas
-admin-mailing-back-to-list: 'Volver a comuncaciones'
-admin-mailing-communicating-with: 'Buscábamos comunicarnos con %DESC%'
-admin-mailing-created: 'Creado el'
-admin-mailing-new-massive: 'Se ha creado un nuevo mailing masivo a %TOTAL% usuarios'
-admin-mailing-status: 'Estado del envío automático'
-admin-mailing-subject: Asunto
-admin-mailing-view-and-activate: 'Ver en el admin del boletín para activar el envio'
-admin-mailing-view-in-newsletter: 'Ver en el admin del boletín'
-admin-mailing-view-in-sent: 'Ver en el historial de envíos (estadísticas)'
-admin-mailing-view-message: 'Ver el mensaje'
-admin-newsletter-generated: 'Se ha generado el boletín [%ID%]'
-admin-newsletter-langs-to-send: 'Idiomas: %LANGS%'
-admin-newsletter-mind-activate: 'Actívalo para que se envíe'
-admin-no: 'No'
-admin-percent: Porcentaje
-admin-project: Proyecto
-admin-projects: Proyectos
+admin-account-change-user-confirm: 'Are you sure you want to change the user of the contribution? The new user will be:'
 admin-filters: 'Filters'
 admin-remove-filters: 'Remove filters'
-admin-sponsors: Servicios
-admin-status: Estado
-admin-text-type: 'Procesar el texto como'
-admin-text-type-html: HTML
-admin-text-type-md: Markdown
-admin-text-type-plain: 'Texto simple'
-admin-user: Usuario
-admin-users: Usuarios
-admin-yes: Si
 admin-impersonate-user: Impersonate %s
 admin-project-express-discard: 'Express discard'
 admin-project-express-discard-desc: 'Change the project status to Discard and sends an email'
