@@ -15,7 +15,7 @@ profile-field-interests: 'Quin tipus de projecte et motiva més'
 profile-field-keywords: 'Les meves paraules clau'
 profile-field-legal-entity: 'Forma jurídica'
 profile-field-legal-entity-asociation: Associació
-profile-field-legal-entity-choose: 'Selecciona una forma jurídica'
+profile-field-legal-entity-choose: 'Sel·lecciona una forma jurídica'
 profile-field-legal-entity-company: Empresa
 profile-field-legal-entity-cooperative: Cooperativa
 profile-field-legal-entity-ngo: ONG
@@ -38,7 +38,7 @@ tooltip-user-analytics: 'En cas de disposar-ne, ingresa el teu ID de seguiment d
 tooltip-user-avatar_upload: 'Text tooltip pujar imatge usuari'
 tooltip-user-contribution: 'Explica breument les teves habilitats o els àmbits on podries ajudar un projecte (traduint, difonent, testejant, programant, ensenyant, etc).'
 tooltip-user-facebook: 'Aquesta xarxa social pot ajudar-te a difondre projectes de Goteo que t''interessin entre amics i familiars.'
-tooltip-user-facebook-pixel: 'Ingresa el ID de tu Facebook Pixel, si quieres medir las conversiones de una campaña en Facebook.'
+tooltip-user-facebook-pixel: 'Introdueix el ID del teu Facebook Pixel, si vols mesurar les conversions d''una campanya de Facebook.'
 tooltip-user-google: 'La xarxa social de Google+ és molt nova però també pots indicar el teu usuari si ja la fas servir :)'
 tooltip-user-identica: 'Aquest canal pot ajudar que difonguis projectes de Goteo entre la comunitat propera al programari lliure.'
 tooltip-user-instagram: 'Aquesta xarxa social pot ajudar-te a difondre projectes de Goteo que t''interessin entre amics i familiars.'
