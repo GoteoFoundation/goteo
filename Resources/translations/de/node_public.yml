@@ -1,13 +1,14 @@
-﻿node-footer-about: 'Soziales Netzwerk für Crowdfunding und die Zusammenarbeit mit kreativen Projekten, die das Gemeinwohl fördern. <a href="/project/create">Haben Sie ein "open DNA"-Projekt?</a>'
+---
+node-footer-about: 'Soziales Netzwerk für Crowdfunding und die Zusammenarbeit mit kreativen Projekten, die das Gemeinwohl fördern. <a href="/project/create">Haben Sie ein "open DNA"-Projekt?</a>'
 node-footer-help-what: 'Was ist Crowdfunding?'
 node-footer-help-why: 'Was ist anders bei Goteo?'
 node-footer-investors-donate: 'Spenden und Steuerbescheinigungen'
 node-footer-investors-invest: 'Wie Sie ein Projekt unterstützen können'
 node-footer-investors-payment: 'Funktionsweise Bezahlsystem'
-node-footer-title-creators: 'Projektleiter'
+node-footer-title-creators: Projektleiter
 node-footer-title-help: 'Benötigen Sie Hilfe?'
 node-footer-title-investors: Unterstützer/innen
-node-footer-title-social: 'Folge uns'
+node-footer-title-social: Folge uns
 node-header-sponsorby: 'Mit der Unterstützung von:'
 node-home-calls-headers: Aufrufe
 node-home-posts-header: Neuigkeiten
@@ -28,3 +29,5 @@ node-side-summary-amount: 'gesammelter Geldbetrag'
 node-side-summary-investors: Unterstützer/innen
 node-side-summary-success: Erfolgreich
 node-side-summary-supporters: Unterstützer/innen
+node-stats-title: 'Datos de impacto'
+node-projects-title: 'Proyectos'
