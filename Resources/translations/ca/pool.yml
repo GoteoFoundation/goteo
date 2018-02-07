@@ -1,3 +1,4 @@
+---
 landing-calculate-button: Calcular
 landing-donor-button: Donar
 landing-error-zero: 'La quantitat a aportar ha de ser més gran que 0'
@@ -7,14 +8,16 @@ landing-more-info: 'Més informació'
 landing-more-info-text: '<h4>La nova llei et permet aportar més i contribuirà a concretar més projectes</h4><p>Fins ara el que aportaves a entitats benèfiques i similars desgravaba un 25% a la declaració de la renda. A partir d''aquest 2015 et podràs desgravar més, i encara més al 2016. <br><br>Els percentatges depenen no només de l''any, sinó també de quant aportes: així, per aportacions de tot un any que no superin els 150 € hi ha uns percentatges, i per als imports que superin els 150 € hi ha uns altres. </p><h4>I si repeteixes amb Goteo durant almenys 3 anys ... </h4><p>Si has col·laborat amb la mateixa entitat els darrers tres anys, els percentatges de desgravació són superiors*. D''aquesta manera la teva fidelitat es veu recompensada amb una devolució superior.</p><hr><p>(*) El límit de la deducció sobre la base liquidable es manté en el 10%.<br>Article 19 (Deducció de la quota de l''Impost sobre la Renda de les Persones Físiques) de la llei 49/2002, de 23 de desembre, de règim fiscal de les entitats sense fins lucratius i dels incentius fiscals al mecenatge. </p>'
 landing-real-amount: 'La teva despesa real serà'
 landing-regular-invest: Aportació
+landing-spread: 'Calcula la teva desgravació fiscal a Goteo! #mullarsedesgrava'
+landing-spread-title: 'Difunde las ventajas fiscales de Goteo!'
 landing-stories-title: 'Gràcies a la teva aportació es financen iniciatives com:'
-landing-subtitle-banner: "<span class=\"line\">Implicant-te i comprometent-te amb <strong>projectes a Goteo</strong><br><strong>desgraves</strong>entre un <strong>27,5%</strong> i un <strong>50%</strong>de l'import de la teva donació</span>\r\n"
-landing-target-description: "El nostre objectiu 2015: que <strong> més del 50 % dels usuaris de Goteo exerceixin el seu dret a obtenir beneficis fiscals </strong> sobre les seves aportacions (El 2014 només un 12% ho van fer).\r\n"
+landing-subtitle-banner: "<span class=\"line\">Implicant-te i comprometent-te amb <strong>projectes a Goteo</strong><br><strong>desgraves</strong>entre un <strong>27,5%</strong> i un <strong>50%</strong>de l'import de la teva donació</span>\\r\n"
+landing-target-description: "El nostre objectiu 2015: que <strong> més del 50 % dels usuaris de Goteo exerceixin el seu dret a obtenir beneficis fiscals </strong> sobre les seves aportacions (El 2014 només un 12% ho van fer).\\r\n"
 landing-target-title: 'Objectiu 2015'
 landing-taxes-explain: 'Fes la teva aportació ara amb el <strong>moneder Goteo</strong>: una nova funcionalitat que permet realitzar la teva donació al moment i decidir posteriorment a quin projecte destinar-la. Obtindràs a l''instant un certificat que justifica davant Hisenda la teva contribució a la Fundació Goteo, entitat sense ànim de lucre.'
-landing-taxes-regional: "<strong>* Important</strong>Aquesta millora fiscal no aplica fora d'Espanya, ni tampoc al País Basc ni a Navarra, que mantenen una deducció del 20 % i del 25% respectivament del total aportat.\r\n"
+landing-taxes-regional: "<strong>* Important</strong>Aquesta millora fiscal no aplica fora d'Espanya, ni tampoc al País Basc ni a Navarra, que mantenen una deducció del 20 % i del 25% respectivament del total aportat.\\r\n"
 landing-taxes-title: 'Hisenda et torna*:'
-landing-title-banner: "A Goteo,<br>\r\nmullar-se desgrava"
+landing-title-banner: "A Goteo,<br>\\r\nmullar-se desgrava"
 landing-type-company: Empresa
 landing-type-person: 'Persona física'
 pool-alert-recharging: 'Estàs a punt de carregar el teu moneder virtual amb'
@@ -24,7 +27,7 @@ pool-invest-ok: 'S''ha fet efectiva la teva càrrega del moneder virtual :) Desc
 pool-invest-share-discover: 'Descobreix projectes'
 pool-invest-spread-header: 'Difon i ajuda''ns a que més gent faci servir el moneder virtual de Goteo'
 pool-invest-spread-social: 'Acabo de carregar el meu moneder virtual a #Goteo Tu també pots donar ara i aportar després on vulguis'
-pool-invest-success-make-sure: "El teu moneder virtual ha estat carregat amb èxit! A partir d'ara, cada vegada que facis aportacions a una campanya a Goteo tindràs l'opció de donar des del teu moneder virtual, d'on s'anirà restant l'import. Podràs tornar a carregar-lo sempre que vulguis.\r\n"
+pool-invest-success-make-sure: "El teu moneder virtual ha estat carregat amb èxit! A partir d'ara, cada vegada que facis aportacions a una campanya a Goteo tindràs l'opció de donar des del teu moneder virtual, d'on s'anirà restant l'import. Podràs tornar a carregar-lo sempre que vulguis.\\r\n"
 pool-invest-suggest-projects: 'Projectes que podrien interessar-te'
 pool-make-sure-title: 'Confirmar dades per al certificat'
 pool-pay-method-title: 'Fes la teva aportació'
@@ -36,4 +39,3 @@ pool-step-2: Pagament
 pool-step-3: Certificat
 pool-step-4: Compartir
 recharge-button: Carregar
-landing-spread: 'Calcula la teva desgravació fiscal a Goteo! #mullarsedesgrava'
