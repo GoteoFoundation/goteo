@@ -1,0 +1,22 @@
+---
+profile-interests-header: 'Me interesan proyectos con fin...'
+profile-invest_on-header: 'Proyectos que apoyo'
+profile-invest_on-title: Cofinancia
+profile-keywords-header: 'Mis palabras clave'
+profile-last_worth-title: Fecha
+profile-location-header: 'Mi ubicación'
+profile-my_investors-header: 'Mis cofinanciadores'
+profile-my_projects-header: 'Mis proyectos'
+profile-my_worth-header: 'Mi caudal en goteo'
+profile-name-header: 'Perfil de '
+profile-patron-header: 'Recomienda <span class="red">%s proyectos</span>'
+profile-sharing_interests-header: 'Compartiendo intereses'
+profile-social-header: Social
+profile-webs-header: 'Mis webs'
+profile-widget-button: 'Ver perfil'
+profile-widget-user-header: Usuario/a
+profile-worth-title: 'Aporta aquí:'
+profile-worthcracy-title: Posición
+profile_patron-invest_on-header: 'Además cofinancio'
+user-message-restricted: 'Solo puede recibir mensajes de sus cofinanciadores'
+user-message-send_personal-header: 'Envia un mensaje al usuario'
