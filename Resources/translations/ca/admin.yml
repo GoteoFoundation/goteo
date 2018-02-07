@@ -1,13 +1,21 @@
+---
 admin-action: 'Acció d''administrador'
 admin-NO: 'NO'
+admin-YES: SI
 admin-account-amount: 'Quantitat aportada'
+admin-account-change-user: 'Cambiar de usuario'
+admin-account-change-user-confirm: '¿Seguro que quieres cambiar el usuario del aporte? El nuevo usuario será:'
+admin-account-convert-to-pool: 'Convertir a monedero'
+admin-account-convert-to-pool-confirm: 'Esto eliminará el proyecto asociado a este aporte y pasará a ser como si un fuera una compra de monedero. TODAS LAS RECOMENPENSAS ASOCIADAS SE PERDERÁN. ¿Continuar?'
+admin-account-convert-to-pool-ko: 'No se ha podido convertir el aporte a monedero: %s'
+admin-account-convert-to-pool-ok: 'Convertido a aporte de monedero correctamente'
 admin-account-detail: 'Detalls de la transacció'
 admin-account-donation: Donatiu
 admin-account-edit-reward: 'Gestionar recompensa/direcció'
 admin-account-invalid-invest: 'Aportació [%s] no trobada!'
 admin-account-invest-date: 'Data de l''aportació'
 admin-account-invest-non-pool-refundable: 'Aquesta aportació no es pot reemborsar al moneder virtual. Només es poden reemborsar les aportacions en estat "Cobrat"'
-admin-account-invest-non-user-refundable: 'Aquesta aportació no es pot reemborsar. Es poden reemborsar les aportacions en estats: "Pendent", "Cobrat", "Pagat al projecte" "Cancel·lat", "Retornat" (només si està marcat amb "pool" i hi ha prou diners al moneder per descomptar)'
+admin-account-invest-non-user-refundable: "Aquesta aportació no es pot reemborsar. Es poden reemborsar les aportacions en estats: \"Pendent\", \"Cobrat\", \"Pagat al projecte\" \"Cancel·lat\", \"Retornat\" (només si està marcat amb \"pool\" i hi ha prou diners al moneder per descomptar)"
 admin-account-invest-to-pool-ko: 'Errada al reemborsar l''aportació al moneder'
 admin-account-invest-to-pool-ok: 'Import reemborsat al moneder. Incrementat el moneder per valor de (%s)'
 admin-account-invest-user-refund-fail-pool-amount: 'Aquesta aportació no es pot tornar perquè l''usuari no té prou diners al moneder (%s)'
@@ -16,13 +24,13 @@ admin-account-invest-user-refund-ok: 'Aportació reemborsada correctament'
 admin-account-invest-user-refund-ok-pool: 'Aportació reemborsada correctament. El moneder s''ha reduït en %s'
 admin-account-issue-solved: 'Ens han fet la transferència'
 admin-account-modify-status: 'Modificar l''estat'
-admin-account-modify-status-confirm: 'Estàs segur/a que vols canviar manualment l''estat a aquesta aportació? Això és delicat! NO ES REALITZARÀ CAP operació de retorn de l''aportació.'
+admin-account-modify-status-confirm: "Estàs segur/a que vols canviar manualment l'estat a aquesta aportació? Això és delicat! NO ES REALITZARÀ CAP operació de retorn de l'aportació."
 admin-account-payment-method: 'Mètode de pagament'
 admin-account-pool-on-fail: 'Pool (retornar al moneder si falla)'
 admin-account-refund-to-pool: 'Reemborsar l''aportació al moneder'
-admin-account-refund-to-pool-confirm: 'Això marcarà l''aportació com: Retornada si el projecte és fallit Cancel·lada si el projecte està actiu o té èxit. No es reemborsarà a l''usuari, es generaran diners en el moneder de l''usuari. Continuar?'
+admin-account-refund-to-pool-confirm: "Això marcarà l'aportació com: Retornada si el projecte és fallit Cancel·lada si el projecte està actiu o té èxit. No es reemborsarà a l'usuari, es generaran diners en el moneder de l'usuari. Continuar?"
 admin-account-refund-to-user: 'Reemborsar l''aportació a l''usuari'
-admin-account-refund-to-user-confirm: 'Això marcarà l''aportació com: Retornada si el projecte és fallit Cancel·lada si el projecte està actiu o té èxit. Es reemborsaran els diners a l''usuari. Això pot NO funcionar si l''aportació és molt antiga o el mètode de pagament no ho suporta. Continuar?'
+admin-account-refund-to-user-confirm: "Això marcarà l'aportació com: Retornada si el projecte és fallit Cancel·lada si el projecte està actiu o té èxit. Es reemborsaran els diners a l'usuari. Això pot NO funcionar si l'aportació és molt antiga o el mètode de pagament no ho suporta. Continuar?"
 admin-account-rewards: 'Recompenses escollides'
 admin-account-switch-donation: 'Commutar donatiu'
 admin-account-switch-donation-confirm: 'Segur que vols canviar l''estat de donatiu?'
@@ -30,12 +38,17 @@ admin-account-switch-pool: 'Commutar el pool'
 admin-account-switch-pool-confirm: 'Això només afecta quan falla el projecte, no genera ni treu diners del moneder. Continuar?'
 admin-account-switch-pool-fail: 'No es pot canviar l''estat del pool d''aquesta aportació'
 admin-account-transaction: 'Codis de seguiment'
+admin-account-user-changed-error: 'No se ha podido cambiar el usuario del aporte [%ID%] a [%NAME%]!'
+admin-account-user-changed-successfully: 'Se ha cambiado el usuario del aporte [%ID%] a [%NAME%]'
 admin-address: Adreça
+admin-all: Todos
 admin-back: Tornar
 admin-back-detail: 'Tornar al detall'
 admin-back-list: 'Tornar al llistat'
 admin-contents: 'Textos i traduccions'
+admin-empty-list: 'No se han encontrado registros'
 admin-home: Portada
+admin-items: entradas
 admin-mailing-back-to-list: 'Tornar a comunicacions'
 admin-mailing-communicating-with: 'Cercàvem comunicar-nos amb %DESC%'
 admin-mailing-created: 'Creat el'
@@ -46,36 +59,38 @@ admin-mailing-view-and-activate: 'Veure en el admin del butlletí per activar l'
 admin-mailing-view-in-newsletter: 'Veure en l''admin del butlletí'
 admin-mailing-view-in-sent: 'Veure en l''historial d''enviaments (estadístiques)'
 admin-mailing-view-message: 'Veure el missatge'
+admin-newsletter-generated: 'Se ha generado el boletín [%ID%]'
+admin-newsletter-langs-to-send: 'Idiomas: %LANGS%'
+admin-newsletter-mind-activate: 'Actívalo para que se envíe'
+admin-no: 'No'
+admin-percent: Porcentaje
 admin-project: Projecte
 admin-projects: Projectes
+admin-filters: 'Filtres'
+admin-remove-filters: 'Treure filtres'
 admin-sponsors: Serveis
 admin-status: Estat
+admin-text-type: 'Procesar el texto como'
+admin-text-type-html: HTML
+admin-text-type-md: Markdown
+admin-text-type-plain: 'Texto simple'
 admin-user: Usuari
 admin-users: Usuaris
 admin-yes: Si
-admin-filters: Filtres
-admin-remove-filters: 'Treure filtres'
 admin-impersonate-user: Suplanta a %s
 admin-project-express-discard: 'Rebuig express'
 admin-project-express-discard-desc: 'Passa el projecte a estat Descartat i envia un email'
 admin-project-express-discard-sure: 'S''enviarà un email automàtic i es passarà a estat descartat,Ook?'
-
 admin-project-to-review: 'A revisió'
 admin-project-to-review-desc: 'Passa el projecte a l''estat Pendent de valoració'
 admin-project-to-review-sure: 'El creador no podrà editar més el projecte, ok?'
 admin-project-view-in-admin: 'Veure a l''admin'
-
 admin-project-to-negotiation: 'A negociació'
 admin-project-to-negotiation-desc: 'Passa el projecte a l''estat Editant-se'
 admin-project-to-negotiation-sure: 'ALERTA!! El projecte està en campanya! Amb això el des-publicarem, Ok?'
-
 admin-project-to-publish: 'Publica'
 admin-project-to-publish-desc: 'Passa el projecte a l''estat "En campanya"'
 admin-project-to-publish-sure: 'El projecte començarà la campanya, ok?'
-
 admin-project-derivation-discard: 'Rebutjar i derivar'
 admin-project-derivation-discard-desc: 'Pasa el projecte a l''estat descartat i envia un mail derivant a una plataforma més idònia'
 admin-project-derivation-discard-sure: 'S''envia un mail derivant a una altra plataforma i passa a l''estat descartat"'
-
-
-
