@@ -18,10 +18,7 @@ dashboard-menu-activity-donor: 'Certificato di donazione '
 donor-address-country-field: Paese 
 donor-address-location-field: Provincia 
 donor-field-amount: 'Importo della donazione'
-donor-field-amount-relief: Desgravación
-donor-field-lot-relief: Tramo
 donor-field-numproj: 'Donazioni realizzare il %s'
 personal-field-donor_name: 'Nome'
 personal-field-donor_surname: 'Cognome'
-personal-field-donor_surname2: 'Segundo apellido'
 validate-donor-mandatory: 'Tutti i campi sono obbligatori'
