@@ -1,3 +1,4 @@
+---
 dashboard-activity-donor-header: 'Datos fiscales para obtener el certificado de donación'
 dashboard-donor-confirm_button: 'Cerrar datos y emitir certificado'
 dashboard-donor-confirm_closed: 'El periodo de confirmación de datos fiscales para certificado de %s está cerrado'
@@ -11,7 +12,7 @@ dashboard-donor-main_guide: 'Pasado el año: Hasta el 15 de enero pueden confirm
 dashboard-donor-mandatory: 'OBLIGATORIO RELLENAR LOS DATOS FISCALES'
 dashboard-donor-no_donor: 'Tu certificado de donaciones de %s aun no está disponible'
 dashboard-donor-pdf_closed: 'Los datos fiscales para el certificado de donaciones de %s no están confirmados, no se puede descargar'
-dashboard-donor-save_fail: "Ha habido algun error al grabar los datos, por favor, revisalos y si persiste contacta con nosotros.\t"
+dashboard-donor-save_fail: "Ha habido algun error al grabar los datos, por favor, revisalos y si persiste contacta con nosotros.\\t"
 dashboard-donor-saved: 'Gracias por modificar tus datos. Para descargar el certificado asegúrate de que son correctos. A continuación valídalos con el botón de cerrar datos.'
 dashboard-menu-activity-donor: 'Certificado de donación'
 donor-address-country-field: País
