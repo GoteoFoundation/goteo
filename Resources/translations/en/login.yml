@@ -1,10 +1,11 @@
+---
 auth-access-forbbiden: 'You don''t have permission to acces here!'
 error-register-userid: 'You have to enter a user name'
 login-access-button: Enter
 login-access-header: 'Registered user'
 login-access-password-field: Password
 login-access-username-field: 'User name'
-login-fail: Error
+login-fail: 'Error'
 login-leave-button: 'Close the account'
 login-leave-header: 'Close the account'
 login-leave-message: 'Leave a message'
@@ -12,7 +13,6 @@ login-new-user-label: 'New user?'
 login-oneclick-header: 'Log in with a single click'
 login-recover-button: Recover
 login-recover-email-field: 'Email or user name'
-login-recover-header: "Recover password\r\nFill in the field with the email you used to sign up on the platform. You will receive there the information needed to recover your password. Frequently, it is the same email address linked to your social networks.\r\nNote: You will receive an email at the same email address with a direct link to change your password.\r\nIf you do not receive the email, make sure that it is not in the spam folder. If you have clicked several times asking for a new password, you may have received an email with a new auto-generated link for every time you clicked. Use the link in the last email you received.\r\nIf you do not remember the email address associated to your account, you can contact us and we will provide it. Please, do not forget to give us some data in order to enable us to search for your user in our system (full name, nickname, register date or if you made a contribution to a particular project)."
 login-recover-label: 'Forgot your password?'
 login-recover-link: 'Recover password'
 login-recover-modal-button: Send
@@ -22,7 +22,7 @@ login-recover-username-field: 'User name'
 login-register-button: Register
 login-register-confirm-field: 'Confirm email address'
 login-register-confirm_password-field: 'Confirm password'
-login-register-email-field: 'Email address'
+login-register-email-field: Email address
 login-register-header: 'New user'
 login-register-password-field: Password
 login-register-password-minlength: 'At least 6 characters'
@@ -45,7 +45,7 @@ oauth-goteo-openid-sync-password: 'You''re trying to connect an existing Goteo a
 oauth-goteo-user-not-exists: 'That user does not exist in Goteo'
 oauth-goteo-user-password-error: 'This account already uses a different password-free login provider. If you want to use more than one login provider for this account, you need to establish a password first.'
 oauth-goteo-user-password-exists: 'That user already exists in Goteo'
-oauth-goteo-user-provider-error: "You must use %s in order to access this user.\r\n\r\nIf you want to use more than one login provider for this account, you need to establish a password first."
+oauth-goteo-user-provider-error: "You must use %s in order to access this user.\\r\n\\r\nIf you want to use more than one login provider for this account, you need to establish a password first."
 oauth-import-about: 'About you'
 oauth-import-facebook: 'Link to your Facebook account'
 oauth-import-linkedin: 'Link to your LinkedIn account'
