@@ -1,3 +1,4 @@
+---
 contact-captcha-field: 'Prova d''humanitat (disculpeu...)'
 contact-captcha-refresh: 'Refresca la imatge'
 contact-email-field: Email
@@ -10,12 +11,12 @@ contact-form-others-tag-name: altres
 contact-form-project-form-tag-description: 'Tinc un dubte sobre el formulari de projecte'
 contact-form-project-form-tag-name: 'nou impulsor 2'
 contact-form-relief-tag-description: 'Desitjo un justificant de la meva donació'
-contact-form-relief-tag-name: justificant
+contact-form-relief-tag-name: 'justificant'
 contact-form-service-tag-description: 'Vull contractar un servei'
 contact-form-service-tag-name: servei
-contact-form-tags: "[usuario] Tengo problemas con mi cuenta;\r\n[nuevo impulsor] Tengo un posible proyecto;\r\n[nuevo impulsor 2] Tengo dudas sobre el formulario de proyecto;\r\n[desarrollo] Tengo dudas sobre cuestiones técnicas;\r\n[justificante] Deseo un justificante de mi donación;\r\n[servicio] Quiero contratar un servicio;\r\n[otros] Es otro tipo de consulta;"
+contact-form-tags: "[usuario] Tengo problemas con mi cuenta;\\r\n[nuevo impulsor] Tengo un posible proyecto;\\r\n[nuevo impulsor 2] Tengo dudas sobre el formulario de proyecto;\\r\n[desarrollo] Tengo dudas sobre cuestiones técnicas;\\r\n[justificante] Deseo un justificante de mi donación;\\r\n[servicio] Quiero contratar un servicio;\\r\n[otros] Es otro tipo de consulta;"
 contact-form-user-tag-description: 'Tinc problemes amb el meu compte'
-contact-form-user-tag-name: usuari
+contact-form-user-tag-name: 'usuari'
 contact-message-field: Missatge
 contact-name-field: Nom
 contact-send_message-button: Enviar
