@@ -1,27 +1,14 @@
 ---
 dashboard-activity-donor-header: 'Données fiscales pour obtenir un certificat de don'
 dashboard-donor-confirm_button: 'Clore les données et émettre le certificat'
-dashboard-donor-confirm_closed: 'El periodo de confirmación de datos fiscales para certificado de %s está cerrado'
 dashboard-donor-confirm_data: 'Les informations fiscales relatives à\_ ce don ne seront plus modifiables. En cliquant sur ACCEPTER vous confirmez leur authenticité. '
 dashboard-donor-confirm_succes: 'Vous venez de confirmer la véracité de vos données. Merci!'
 dashboard-donor-confirmed: 'Le certificat relatif à\_ ce don a déjà\_ été crée. Les informations ne peuvent plus être modifiées. Si une quelconque erreur a eu lieu, merci de nous contacter.'
 dashboard-donor-download_certificate: 'Télécharger votre Certificat de don'
 dashboard-donor-edit_data: 'Modifier vos informations fiscales pour ce certificat'
 dashboard-donor-edit_guide: 'Remplissez les informations fiscales correctement car une fois le certificat émis ces dernières ne pourront plus être modifiées.'
-dashboard-donor-main_guide: 'Pasado el año: Hasta el 15 de enero pueden confirmarse los datos. Hasta julio puede descargarse el certificado. <br />Para este año: A partir de julio se pueden confirmar dtos y descargar el certificado.'
-dashboard-donor-mandatory: 'OBLIGATORIO RELLENAR LOS DATOS FISCALES'
 dashboard-donor-no_donor: 'Nous observons que vous n''avez réalisé aucun don. Si vous en réalisiez un, s''il vous plait, contactez-nous.'
-dashboard-donor-pdf_closed: 'Los datos fiscales para el certificado de donaciones de %s no están confirmados, no se puede descargar'
-dashboard-donor-save_fail: "Une erreur est survenue lors de l'enregistrement des données. Vérifiez s'il vous plait et, si le problème persiste, merci de nous contacter."
 dashboard-donor-saved: 'Vous pouvez modifier à\_ nouveau les informations Jusqu''à\_ ce que vous téléchargiez le certificat. Après, vous ne pourrez plus l''éditer.'
 dashboard-menu-activity-donor: 'Certificat de don'
-donor-address-country-field: País
-donor-address-location-field: Provincia
 donor-field-amount: 'Montant du don'
-donor-field-amount-relief: Desgravación
-donor-field-lot-relief: Tramo
 donor-field-numproj: 'Nombre de projet'
-personal-field-donor_name: 'Nombre '
-personal-field-donor_surname: 'Primer apellido'
-personal-field-donor_surname2: 'Segundo apellido'
-validate-donor-mandatory: 'Todos los campos son obligatorios'
