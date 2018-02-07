@@ -1,3 +1,4 @@
+---
 cost-type-lend: Prêt
 cost-type-material: Matériel
 cost-type-structure: Infrastructure
@@ -5,7 +6,7 @@ cost-type-task: Tche
 costs-field-amount: Valeur
 costs-field-cost: Coût
 costs-field-date_from: Depuis
-costs-field-date_until: "Jusqu'à\_"
+costs-field-date_until: Jusqu'à\_
 costs-field-dates: Dates
 costs-field-description: Description
 costs-field-required_cost: 'Le coût est de'
@@ -34,7 +35,7 @@ tooltip-project-cost-description: 'Expliquez birèvement en quoi consiste ce co�
 tooltip-project-cost-required: 'Ce point est très important: à chaque coût vous devez écrire si c''est indispensable ou bien supplémentaire. Tous les coûts marqués comme essentiel s''additionneront en affichant le montant de la valeur du financement minimum pour le projet. L''addition des coûts indispensables, en échange, pourront être obtenu durant le second tour de financement, après l''obtention des fonds indispensables.'
 tooltip-project-cost-type: 'Ici, vous devez préciser le type de coût : associé à une tâche (nécessitant les compétences ou connaissances de quelqu''un), à l''achat de matériel (consommables, matières premières) ou bien à de l''infrastructure (locaux, équipements, mobiliers).'
 tooltip-project-costs: 'Plus les coûts sont détaillés est précise, mieux l''information générale du projet sera valorisé au sein de Goteo.'
-tooltip-project-resource: "Indiquez si vous bénéficiez d'apports supplémentaires, autres que ceux sollicités, pour mener à bien le projet: sources de financement, ressources propres ou stock de matériel déjà\_ réalisé.  Cela peut motiver des cofinanceurs potentiels."
+tooltip-project-resource: 'Indiquez si vous bénéficiez d''apports supplémentaires, autres que ceux sollicités, pour mener à bien le projet: sources de financement, ressources propres ou stock de matériel déjà\_ réalisé.  Cela peut motiver des cofinanceurs potentiels.'
 tooltip-project-totals: 'Ce graphique montre la somme des coûts indispensables (minimum pour réaliser le projet) et la somme des coûts secondaires (idéal) pour les deux tours de financement. Le premier tour dure 40 jours pour obtenir la quantité minimum indispensable. Une fois ce minimum obtenu, le second tour de 40 jours sera lancé afin d''obtenir le coût idéal. àla différence du premier tour, le second tour distribue toutes les recettes.'
 validate-cost-field-dates: 'Vous devez indiquer les dates de début et de fin de ce coût pour pouvoir mieux valoriser le projet.'
 validate-project-costs-any_error: 'Il manque quelques informations sur le détail des coûts'
