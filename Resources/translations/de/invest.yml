@@ -1,7 +1,6 @@
 ---
 bazar-spread-text: '%s – Verschenke zu Weihnachten einen Crowdfunding-Gutschein für Projekte des Gemeinwohls mit @goteofunding #openbazaar'
 bazar-thanks: 'Vielen Dank für Ihren Besuch unseres Basars, helfen Sie uns, ihn bekannter zumachen.'
-currency-alert: "Bitte beachten Sie, dass die Original-Währung dieses Projektes in EUR (€) ist. \\r\nSie werden ungefähr <span id=\"reminder_conversion\">%s</span> € <a href=\"/faq/investors#q115\" target=\"_blank\">More info</a>\" bezahlen"
 faq-payment-method: '<a href="/faq/investors#q2" target="_blank">Welche Bezahlmöglichkeiten bietet Goteo an? Sind diese sicher?</a>'
 imperative-register: Register
 invest-address-address-field: 'Adresse:'
@@ -62,7 +61,6 @@ invest-payment-email: 'Tragen Sie Ihren PayPal Usernamen ein'
 invest-payment-fail: 'Bei der Bezahlung ist etwas schiefgelaufen'
 invest-payment-success: 'Die Bezahlung wurde korrekt abgewickelt'
 invest-payment_method-header: 'Wählen Sie Ihre Bezahlmethode'
-invest-paypal_disabled: "Bei diesem Projekt steht die Paypal-Bezahlmethode nicht zur Verfügung. <a href=\"/faq/investors#q2\">Mehr Information</a>"
 invest-pool: 'Für den Fall, dass das Projekt nicht zustande kommt, soll mein Beitrag in meine virtuelle Geldbörse gespeichert werden, damit ich damit zu einem beliebigen späteren Zeitpunkt andere Projekte unterstützen kann. In jedem Fall wird meine Spendenbescheinigung das heutige Datum tragen.'
 invest-pool-available: Verfügbar
 invest-pool-error: 'Sie haben nicht genug Geld in Ihrer virtuellen Geldbörse.'
@@ -94,7 +92,7 @@ proj-widget-my_invest: 'Meine Unterstützung'
 project-invest-confirm: 'Sie sind nur noch einen Schritt davon entfernt, Unterstützer/in dieses Projektes zu werden...'
 project-invest-continue: 'Wählen Sie eine Bezahlmethode:'
 project-invest-fail: 'Irgendetwas ist schiefgelaufen. Bitte versuchen Sie es noch einmal.'
-project-invest-guest: Großartig!
+project-invest-guest: 'Großartig!'
 project-invest-ok: 'Ihre Unterstützung der Kofinanzierung dieses Projektes wurde bearbeitet :-) '
 project-invest-pool-button: 'Verwenden Sie meine virtuelle Geldbörse'
 project-invest-start: 'Sie sind nur noch einen Schritt davon entfernt, Unterstützer/in dieses Projektes zu werden...'
