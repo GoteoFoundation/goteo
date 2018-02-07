@@ -1,3 +1,4 @@
+---
 guide-project-user-information: '<strong>In questa sezione devi indicare i dati per l''informazione pubblica del tuo profilo utente.</strong><br><br>Sia che tu voglia presentare un progetto che subentrare come co-finanziatore, per formar parte della comunità di Goteo ti consigliamo di prestare attenzione al tuo testo di presentazione, di indicare i link inerenti alla tua attività e di caricare un''immagine di profilo per identificarti.'
 profile-field-about: 'Raccontaci qualcosa di te'
 profile-field-avatar_current: 'La tua immagina attuale'
@@ -5,16 +6,16 @@ profile-field-avatar_upload: 'Caricare un''immagine'
 profile-field-contribution: 'Come puoi sostenere Goteo'
 profile-field-interests: 'Che tipo di progetto ti interessa di più '
 profile-field-keywords: 'Temi che ti interessano'
+profile-field-legal-entity-person: 'Persona fisica'
 profile-field-location: 'Luogo abituale di residenza'
 profile-field-name: 'Nome utente'
-profile-field-url: URL
 profile-field-websites: 'Le mie pagine web'
 profile-fields-image-title: 'Immagine di profilo'
 profile-fields-social-title: 'Profili social'
 profile-main-header: 'Dati del profilo '
 step-1: Profilo
 step-userProfile: 'Passaggio: Utente/Profilo'
-tooltip-user-about: 'Come social network, Goteo vuole aiutare e diffondere e co-finanziare progetti interessanti con il massimo di persone possibile. Per questa finalità è importante l''informazione che dai sulle tue expertise e sulla tua esperienza (professionale, accademica, hobby, ecc.).'
+tooltip-user-about: "Come social network, Goteo vuole aiutare e diffondere e co-finanziare progetti interessanti con il massimo di persone possibile. Per questa finalità è importante l'informazione che dai sulle tue expertise e sulla tua esperienza (professionale, accademica, hobby, ecc.)."
 tooltip-user-avatar_upload: 'Testo tooltip per caricare immagine utente '
 tooltip-user-contribution: 'Descrivi brevemente le tue capacità e gli ambiti in cui potresti collaborare in un progetto (traduzione, diffusione, testing, programmazione, formazione, ecc.)'
 tooltip-user-facebook: 'Questo social network può aiutarti a diffondere progetti di Goteo che ti interessano tra familiari e amici.'

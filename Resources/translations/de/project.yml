@@ -1,40 +1,58 @@
+---
 contract-paypal_account: 'Mit Ihrem PayPal-Konto verbundene Email-Adresse:'
 currency-switch: UMRECHNUNG
-new-project: 'Das neue Projekt von '
 overview-field-spread: Verbreitung
 personal-field-accounts: 'Projektkonten'
+project-about-title: 'Über dieses Projekt'
+project-chart-amount-ideal: optimal
+project-chart-amount-reached: erreicht
+project-chart-costs-reset: 'Zurücksetzen'
+project-collaborations-available: 'verfügbare Kooperationen'
+project-collaborations-number: 'Unterstützer/-innen'
 project-collaborations-supertitle: 'Nicht-wirtschaftlicher Bedarf'
 project-collaborations-title: 'Suche nach'
+project-general-information: 'Allgemeine Informationen'
+project-go-up: 'zurück'
 project-help-cost: 'Ich brauche Hilfe bei der Kostenaufstellung'
 project-help-license: 'Ich brauche Hilfe beim kollektiven Nutzen und den Belohnungen'
+project-hide-donors: 'Kofinanzierer/-innen ausblenden'
+project-hide-needs: 'Liste der Bedürfnisse ausblenden'
+project-invest: Beitrag
+project-invest-msg: 'Support-Meldung:'
 project-langs-header: 'Projekt in:'
 project-media-play_video: 'Video ansehen'
+project-menu-home: Projekt
+project-menu-messages: Crowdsourcing
+project-menu-needs: Bedarf
+project-menu-news: 'News'
+project-menu-participate: 'Teilnehmen'
+project-menu-supporters: Unterstützer
+project-menu-updates: Neuigkeiten
 project-menu_title-home: 'Social impact: this project opens its code, shares knowledge, data or digital files in return for your backing.'
 project-menu_title-messages: 'Nicht nur Geld: Sie können mit Ihren Fähigkeiten, Materialien, Kontakten, Wissen, usw. unterstützen'
 project-menu_title-needs: 'Transparency of costs: detailed budget of minimum and optimum economic needs.'
 project-menu_title-supporters: 'Social network of support: co-financers are as much important as people creating this project.'
 project-menu_title-updates: 'Feedback and news: get informed about the project'' progress directly via its creators.'
-project-menu-home: Projekt
-project-menu-messages: Crowdsourcing
-project-menu-needs: Bedarf
-project-menu-supporters: Unterstützer
-project-menu-updates: Neuigkeiten
 project-messages-answer_it: Antworten
 project-messages-closed: 'It''s not possible to send messages to the project yet'
 project-messages-send_direct-header: 'Senden Sie eine Nachricht an den/die Projektinitiator/-in'
 project-messages-send_message-button: Senden
 project-messages-send_message-header: 'Nachricht verfassen'
 project-not_published: 'Das Projekt ist derzeit noch nicht öffentlich'
-project-rewards-bonus_reward-title: Bonus
+project-regular-support: unterstützen
+project-related: 'Verwandte Projekte'
 project-rewards-header: Belohnungen
 project-rewards-individual_reward-limited: 'Limitierte Belohnungen/Geschenke'
 project-rewards-individual_reward-title: 'Individuelle Belohnungen/Geschenke'
 project-rewards-individual_reward-units_left: ' <span class="left">%s</span> Einheiten übrig'
+project-rewards-side-title: 'Belohnungen'
 project-rewards-social_reward-title: 'Kollektiver Nutzen'
 project-rewards-supertitle: 'What is offered in exchange'
 project-rounds: 'Ein-Runden-Projekt'
 project-share-header: 'Teile dieses Projekt'
 project-share-pre_header: 'Lassen Sie Ihr Netzwerk wissen, dass...'
+project-show-donors: 'Kofinanzierer/-innen einblenden'
+project-show-needs: 'Liste der bedürfnisse einblenden'
 project-side-investors-header: 'Bereits beigetragen'
 project-spread-embed_code: 'Embedding Code'
 project-spread-header: 'Weitersagen'
@@ -51,15 +69,17 @@ project-view-metter-day_created: 'Erstellt am'
 project-view-metter-day_success: 'Fertiggestellt am'
 project-view-metter-day_updated: 'Aktualisiert am'
 project-view-metter-days: Verbleibend
+project-view-metter-favourite: 'Gefällt mir'
 project-view-metter-got: Empfangen
 project-view-metter-investment: Kofinanzierung
 project-view-metter-investors: Kofinanzierer
 project-view-metter-minimum: Minimum
 project-view-metter-optimum: Optimum
+project-view-preview: 'Projektvorschau'
 project-willpublish: 'Dieses Projekt wird am %s veröffentlicht'
 regular-new_project: 'Neues Projekt'
-social_reward-access_title: 'Auf diese kollektive Ressource zugreifen'
 social_reward-access: Zugang
+social_reward-access_title: 'Auf diese kollektive Ressource zugreifen'
 tooltip-project-bank: 'If you don''t want to add it now, you will be able to add it later when we formalise the contract'
 tooltip-project-help-cost: 'For any help about the costs breakdown, check this box. Send us the complete form to receive our advice.'
 tooltip-project-help-license: 'For any help about which licenses fit better to the collective returns of your project, check this box. Send us the complete form to receive our advice.'
@@ -67,42 +87,8 @@ tooltip-project-paypal: "<p>Neben unserem sicheren Bank Payment-Gateway, können
 tooltip-project-rounds: 'If you choose this option, your project will only have a single 40-day round to obtain the necessary funding: all or nothing.'
 tooltip-project-scope: 'Specify the geographic impact that you hope this project will have (each category includes the previous one)'
 tooltip-project-spread: 'Tell us how you''ll spread the project among your community: channels, type of messages, dissemination actions, minimum schedule...'
-tooltip-updates-allow_comments: tooltip-updates-allow_comments
-tooltip-updates-date: tooltip-updates-date
 tooltip-updates-home: 'Tooltip text updates-home'
-tooltip-updates-image_upload: tooltip-updates-image_upload
-tooltip-updates-image: tooltip-updates-image
-tooltip-updates-media: tooltip-updates-media
 tooltip-updates-tags: 'Tooltip text updates-tags'
-tooltip-updates-text: tooltip-updates-text
-tooltip-updates-title: tooltip-updates-title
-
-project-view-metter-favourite: 'Gefällt mir'
-project-view-metter-favourite-me-and-other: 'Gefällt mir und einer weiteren Person'
-project-view-metter-favourite-me-and-others: 'Gefällt mir und %s weiteren Personen'
-project-view-metter-favourite-others: 'Gefällt %s Personen'
-project-menu-news: 'News'
-project-menu-participate: 'Teilnehmen'
-project-about-title: 'Über dieses Projekt'
-project-rewards-side-title: 'Belohnungen'
-project-general-information: 'Allgemeine Informationen'
-project-go-up: 'zurück'
-project-collaborations-number: 'Unterstützer/-innen'
-project-collaborations-available: 'verfügbare Kooperationen'
-project-invest: 'Beitrag'
-
-project-invest-msg: 'Support-Meldung:'
-project-hide-needs: 'Liste der Bedürfnisse ausblenden'
-project-show-needs: 'Liste der bedürfnisse einblenden'
-project-hide-donors: 'Kofinanzierer/-innen ausblenden'
-project-show-donors: 'Kofinanzierer/-innen einblenden'
-project-related: 'Verwandte Projekte'
-project-regular-support: 'unterstützen'
-project-chart-costs-reset: 'Zurücksetzen'
-project-chart-amount-reached: 'erreicht'
-project-chart-amount-ideal: 'optimal'
-
-project-comment-start-sesion: 'Inicia sesión'
-project-comment-start-sesion-2: 'para dejar un comentario'
-project-view-preview: 'Projektvorschau'
-
+project-obtained: 'Empfangen'
+project-costs-total: 'Gesamt'
+project-create-minimum-calculate-button: 'berechnen'

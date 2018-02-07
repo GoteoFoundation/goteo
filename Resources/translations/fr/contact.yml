@@ -1,13 +1,31 @@
+---
 contact-captcha-field: 'Test d''humanité(désolé...)'
 contact-captcha-refresh: 'Actualiser l''image'
-contact-email-field: 'Adresse mail'
-contact-form-tags: "[user] J'ai un problème avec mon compte;\r\n[new promoter] J'ai un projet;\r\n[new promoter 2] J'ai une question sur un projet;\r\n[development] J'ai besoin d'une aide technique;\r\n[service] J'aimerais contacter votre bureau;\r\n[other] J'ai une qutre question;"
+contact-email-field: Adresse mail
+contact-form-dev-tag-description: 'Tengo dudas sobre cuestiones técnicas'
+contact-form-dev-tag-name: Desarrollo
+contact-form-new-project-tag-description: 'Tengo un posible proyecto'
+contact-form-new-project-tag-name: 'Posible proyecto'
+contact-form-others-tag-description: 'Es otro tipo de consulta'
+contact-form-others-tag-name: Otros
+contact-form-project-form-tag-description: 'Tengo dudas sobre el formulario de proyecto'
+contact-form-project-form-tag-name: 'Problemas formulario proyecto'
+contact-form-relief-tag-description: 'Deseo un justificante de mi donación'
+contact-form-relief-tag-name: 'Justificante donación'
+contact-form-service-tag-description: 'Quiero contratar un servicio'
+contact-form-service-tag-name: Servicio
+contact-form-tags: "[user] J'ai un problème avec mon compte;\\r\n[new promoter] J'ai un projet;\\r\n[new promoter 2] J'ai une question sur un projet;\\r\n[development] J'ai besoin d'une aide technique;\\r\n[service] J'aimerais contacter votre bureau;\\r\n[other] J'ai une qutre question;"
+contact-form-user-tag-description: 'Tengo problemas con mi cuenta'
+contact-form-user-tag-name: 'Problemas cuenta'
 contact-message-field: Message
 contact-name-field: Nom
 contact-send_message-button: Envoyer
 contact-send_message-header: 'Envoyez-nous un message'
 contact-subject-field: Sujet
+contact-tag-field: 'Tipo de consulta'
 error-contact-captcha: 'Le code CAPTCHA n''a pas été saisi correctement. Réessayer.'
 error-contact-email-empty: 'Vous n''avez pas inscris votre adresse mail'
 error-contact-message-empty: 'Votre message est vide'
 error-contact-subject-empty: 'Vous n''avez pas inscris de sujet'
+meta-description-contact: 'Contacta con el equipo de Goteo.org'
+meta-title-contact: 'Contáctanos :: Goteo.org'

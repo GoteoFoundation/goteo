@@ -1,5 +1,5 @@
-blog-coments-header: 'Commenti '
-blog-comments_no_allowed: ...
+---
+blog-coments-header: Commenti 
 blog-comments_no_comments: 'Non ci sono commenti in questa entrata'
 blog-no_comments: 'Senza commenti'
 blog-no_posts: 'Nessuna entrata pubblicata'
@@ -7,4 +7,4 @@ blog-send_comment-button: Inviare
 blog-send_comment-header: 'Scrivi il tuo commento'
 blog-side-last_comments: 'Ultimi commenti'
 blog-side-last_posts: 'Ultime entrate'
-blog-side-tags: 'Categorie '
+blog-side-tags: Categorie 

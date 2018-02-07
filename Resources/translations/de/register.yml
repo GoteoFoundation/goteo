@@ -1,9 +1,8 @@
-error-register-email-confirm: 'Die Email-Adressen stimmen nicht überein.'
+---
 error-register-email: 'Es wird eine Email-Adresse benötigt.'
+error-register-email-confirm: 'Die Email-Adressen stimmen nicht überein.'
 error-register-invalid-password: 'Dieses Passwort ist ungültig.'
 error-register-password-confirm: 'Die Passwörter stimmen nicht überein.'
-error-register-password-empty: 'Sie müssen ein Passwort eingeben.'
-error-register-password: 'Sie müssen ein Passwort eingeben.'
 error-register-pasword: 'Sie müssen ein Passwort eingeben.'
 error-register-short-password: 'Dass Passwort sollte mindestens 8 Zeichen haben.'
 error-register-user-exists: 'Dieser Benutzername ist bereits in Benutzung.'
@@ -25,7 +24,7 @@ register-form-title: Registrieren
 register-id-field: 'Nickname'
 register-name-field: 'Vorname Nachname'
 register-password-confirm-field: 'Passwort bestätigen'
-register-password-field: 'Passwort'
+register-password-field: Passwort
 user-activate-already-active: 'Dieser Account ist bereits aktiv.'
 user-activate-success: 'Dieser Account wurde korrekt aktiviert.'
 validate-project-value-contract_email: 'Die Email-Adresse ist falsch.'

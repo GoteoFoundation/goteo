@@ -1,7 +1,7 @@
+---
 channel-join: 'Uneix-te'
 channel-join-desc: 'Vols formar part d''aquest canal?'
 channel-join-reviewing: 'En avaluació...'
-
 matcher-apply-pending: 'Aquest projecte està pre-seleccionat per a la convocatòria matchfunding %s'
 matcher-apply-accepted: 'Aquest projecte està pendent d''aprovació per la convocatòria matchfunding %s'
 matcher-apply-active: 'Aquest projecte està inscrit en la convocatòria matchfunding %s'
@@ -13,16 +13,12 @@ matcher-apply-reject: 'No gracies, renuncio a la convocatòria'
 matcher-apply-reject-sure: 'Aquesta convocatòria matchfunding pot proporcionar-te fons addicionals. Estàs segur de renunciar-hi?'
 matcher-apply-discard: 'Descarta el projecte'
 matcher-apply-discard-sure: 'Aquest projecte ja no participarà de la convocatòria %s Continuar?'
-
-
 matcher-duplicateinvest-max_amount_per_project: 'Quantitat màxima que es donarà per projecte'
 matcher-duplicateinvest-max_amount_per_invest: 'Quantitat màxima per aportació'
 matcher-duplicateinvest-max_invests_per_user: 'Número màxim d''aportacions por usuari que es multiplicaran'
 matcher-duplicateinvest-rules: >
-    Aquest processador multiplica x2 qualsevol aportació de qualsevol usuari
-
-    El total màxim por projecte, la quantitat màxima por aportació i el número màxim d'aportacions per usuari es poden configurar
-
+  Aquest processador multiplica x2 qualsevol aportació de qualsevol usuari
+  El total màxim por projecte, la quantitat màxima por aportació i el número màxim d'aportacions per usuari es poden configurar
 matcher-drop: 'Capital matchfunding'
 matcher-feed-invest: 'Ha aportat %AMOUNT% de %DROP% al projecte %PROJECT% a través de la convocatòria "match" %MATCHER%'
 matcher-feed-invest-by: 'Aportació matchfunding %s'
@@ -31,8 +27,6 @@ matcher-feed-user-invest-error: 'Hi ha hagut un <span class="red">ERROR de la co
 matcher-feed-invest-standalone: 'Aportació matchfunding automàtica'
 matcher-feed-standalone-invest: 'La convocatòria "match" %MATCHER% ha aportat %AMOUNT% al projecte %PROJECT% sense aportació de referencia'
 matcher-feed-standalone-invest-error: 'Ha ocorregut un <span class="red">ERROR en la convocatòria "match" %MATCHER% [%MESSAGE%]</span> en l''aportació al projecte %PROJECT% sense aportació de referencia'
-
-
 matcher-project-accept: 'Felicitats! El teu projecte ha sigut afegit a la convocatòria %s. Ara està pendent d''aprovació per part dels promotors.'
 matcher-project-reject: 'El teu projecte has sigut eliminat de la convocatòria %s'
 matcher-project-discard: 'El projecte ha sigut descartat de la convocatòria %s'

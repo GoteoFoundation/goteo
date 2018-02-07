@@ -1,3 +1,4 @@
+---
 assign-call-success: 'The project has been assigned to the call %s'
 dashboard-donor-remember: 'Remember to confirm your tax details for the donation certificate.'
 image-upload-fail: 'Fehler beim Hochladen des Bildes'
@@ -22,10 +23,10 @@ register-confirm_mail-fail: 'There has been an error when sending the account ac
 register-confirm_mail-success: 'Kontoaktivierungs-Nachricht gesendet. Wenn Sie sie nicht in Ihrem Posteingang finden überprüfen Sie bitte Ihren Spam-Ordner.'
 review-ajax-alert: 'Evaluation / feedback fields will be automatically updated when changed'
 review-closed-alert: 'You marked the review as finished, no more changes can be done.'
+user-login-required: 'You have to <a href="/user/login">sign in</a> to interact with the Goteo community'
 user-login-required-access: 'You have to sign in or ask for permission to get access to this section'
 user-login-required-to_create: 'You have to sign in to create a project'
 user-login-required-to_invest: 'You have to sign in to co-finance this project'
 user-login-required-to_message: 'You have to sign in to send messages'
-user-login-required-to_see-supporters: 'You have to sign in to see the other co-financiers'
 user-login-required-to_see: 'You have to sign in to see this page'
-user-login-required: 'You have to <a href="/user/login">sign in</a> to interact with the Goteo community'
+user-login-required-to_see-supporters: 'You have to sign in to see the other co-financiers'

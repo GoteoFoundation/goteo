@@ -1,3 +1,4 @@
+---
 feed-new_project: '<span class="red">Neues Goteo Projekt</span>, Sie haben 40 Tage ab heute, um dieses Projekt zu unterstützen.'
 feed-new_update: '%USER% Neuer Post in %BLOG% über %PROJECT%'
 feed-project_fail: 'Das Projekt, %s, ist <span class="red">geschlossen</span> Es hat leider nur <span class="violet">%s ? (%s %) vom Mindestbetrag erhalten</span>'

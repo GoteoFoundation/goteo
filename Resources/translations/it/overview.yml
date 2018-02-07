@@ -1,3 +1,4 @@
+---
 images-main-header: 'Immagini del progetto'
 mandatory-project-field-about: 'È obbligatorio spiegare le caratteristiche basilari del progetto'
 mandatory-project-field-category: 'È obbligatorio scegliere almeno una categoria per il progetto.'
@@ -10,7 +11,7 @@ mandatory-project-field-media: 'Suggeriamo di aggiungere un video per migliorare
 mandatory-project-field-motivation: 'È obbligatorio spiegare la motivazione nella descrizione del progetto'
 mandatory-project-field-name: 'È obbligatorio dare un nome al progetto'
 mandatory-project-field-related: 'È obbligatorio spiegare nella descrizione del progetto l''esperienza relativa e/o il gruppo che si prevede'
-overview-field-categories: 'Categorie '
+overview-field-categories: Categorie 
 overview-field-currency: 'Moneta originale'
 overview-field-currently: 'Stato attuale'
 overview-field-description: 'Breve descrizione'
@@ -22,12 +23,11 @@ overview-field-lang: 'Lingua originale'
 overview-field-media: 'Video di presentazione'
 overview-field-media_preview: 'Visualizzazione previa '
 overview-field-name: 'Titolo del progetto'
-overview-field-options-currently_avanzado: 'Avanzato '
-overview-field-options-currently_finalizado: 'Terminato '
+overview-field-options-currently_avanzado: Avanzato 
+overview-field-options-currently_finalizado: Terminato 
 overview-field-options-currently_inicial: Iniziale
-overview-field-options-currently_medio: Medio
 overview-field-options-scope_global: Globale
-overview-field-options-scope_local: 'Locale '
+overview-field-options-scope_local: Locale 
 overview-field-options-scope_nacional: Nazionale
 overview-field-options-scope_regional: Regionale
 overview-field-play-video: 'Nel video'
@@ -41,7 +41,7 @@ overview-field-video: 'Video aggiuntivo sulla motivazione'
 overview-fields-images-title: 'Immagini del progetto '
 overview-main-header: 'Descrizione del progetto'
 step-3: Descrizione
-step-3b: 'Immagini '
+step-3b: Immagini 
 step-images: 'Passaggio: Immagini del progetto'
 step-overview: 'Passaggio: Descrizione del progetto'
 tooltip-project-about: 'Descrivi brevemente il progetto concettualmente, tecnicamente o in forma pratica. Per esempio puoi definire le sue caratteristiche di funzionamento o di che parti sarà formato. Pensa come sarà quando si sarà realizzato e quello che le persone potranno fare all''interno di esso.'
@@ -66,5 +66,5 @@ tooltip-project-video: 'Tieni in conta la possibilità di postare e linkare un v
 validate-project-field-about: 'La descrizione del progetto è troppo corta'
 validate-project-field-currently: 'Indica la situazione del progetto per aiutare la sua valutazione rispetto alla sua pubblicazione su Goteo. '
 validate-project-field-description: 'La descrizione del progetto è troppo corta'
-validate-project-value-description: 'La descrizione del progetto è troppo corta'
+validate-project-value-description: "La descrizione del progetto è troppo corta"
 validate-project-value-keywords: 'Indica minimo 5 parole chiave del progetto per aiutare la sua valutazione, rispetto alla pubblicazione su Goteo.'

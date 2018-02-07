@@ -1,12 +1,13 @@
+---
 node-footer-about: 'Xarxa social per cofinançar i col.laborar amb projectes creatius que fomentin el procomú <a href="/project/create">Tens un projecte amb adn obert?</a>'
 node-footer-help-what: 'Què és el crowdfunding'
 node-footer-help-why: 'Per què Goteo és diferent'
 node-footer-investors-donate: 'Donacions i desgravacions'
 node-footer-investors-invest: 'Com recolzar un projecte'
 node-footer-investors-payment: 'Com funcionen els pagaments'
-node-footer-title-creators: 'Persones impulsores'
+node-footer-title-creators: Persones impulsores
 node-footer-title-help: 'Necessites ajuda?'
-node-footer-title-investors: 'Persones cofinançadores'
+node-footer-title-investors: Persones cofinançadores
 node-footer-title-social: Segueix-nos
 node-header-sponsorby: 'Amb el suport de:'
 node-home-calls-headers: Convocatòries
@@ -17,7 +18,7 @@ node-side-searcher-outdate: Urgents
 node-side-searcher-popular: Populars
 node-side-searcher-promote: Destacats
 node-side-searcher-recent: Recents
-node-side-searcher-success: Exitosos
+node-side-searcher-success: Reeixits
 node-side-sumcalls-budget: 'Total (totes les campanyes)'
 node-side-sumcalls-calls: Obert
 node-side-sumcalls-campaigns: Actiu
@@ -25,7 +26,8 @@ node-side-sumcalls-header: 'Capital<br />irrigació'
 node-side-sumcalls-rest: 'Queda per repartir'
 node-side-summary-active: Actius
 node-side-summary-amount: 'Diners recaptats'
-node-side-summary-investors: 'Persones cofinançadores'
-node-side-summary-success: Exitosos
-node-side-summary-supporters: 'Persones col.laboradores'
+node-side-summary-investors: Persones cofinançadores
+node-side-summary-success: Reeixits
+node-side-summary-supporters: Persones col.laboradores
+node-stats-title: 'Dades d''impacte'
 node-projects-title: 'Projectes'

@@ -1,3 +1,4 @@
+---
 costs-field-select-rounds: Termini
 form-accept-button: Accettare
 form-add-button: Aggiungere
@@ -17,8 +18,8 @@ form-project-status-title: 'Situazione del progetto '
 form-project_status-campaing: 'In fase di campagna'
 form-project_status-cancel: Cestinato
 form-project_status-cancelled: Scartato
-form-project_status-edit: 'In fase di scrittura'
-form-project_status-expired: 'Archiviato '
+form-project_status-edit: In fase di scrittura
+form-project_status-expired: Archiviato 
 form-project_status-fulfilled: 'Beneficio realizzato'
 form-project_status-review: 'In attesa di valutazione'
 form-project_status-success: Finanziato

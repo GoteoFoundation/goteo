@@ -1,8 +1,9 @@
+---
 bazar-spread-text: '%s - A Natale regala crowdfunding aperto per il bene comune con @goteofunding #openbazaar'
 bazar-thanks: 'Grazie della visita nel nostro bazar, ci puoi aiutare a diffonderlo. '
-currency-alert: 'Per favore, ricorda che la gestione è in EUR. Pagherai approssimativamente <span id="reminder_conversion">%s</span> € <a href="/faq/investors#q115" target="_blank">Più info</a>'
+currency-alert: "Per favore, ricorda che la gestione è in EUR. Pagherai approssimativamente <span id=\"reminder_conversion\">%s</span> € <a href=\"/faq/investors#q115\" target=\"_blank\">Più info</a>"
 faq-payment-method: '<a href="/faq/investors#q2" target="_blank">Che sistemi di pagamento offre Goteo?Sono sicuri?</a>'
-imperative-register: 'Registrati '
+imperative-register: Registrati 
 invest-address-address-field: 'Indirizzo:'
 invest-address-country-field: Paese
 invest-address-friend-field: 'Seleziona questa casella se è un regalo per un''altra persona'
@@ -11,7 +12,7 @@ invest-address-location-field: 'Città:'
 invest-address-maildest-field: 'Mail del destinatario '
 invest-address-msgdest-field: 'Messaggio per il destinatario'
 invest-address-myemail-field: 'Mail '
-invest-address-myname-field: Nome
+invest-address-myname-field: 'Nome'
 invest-address-name-field: 'Nome e cognome'
 invest-address-namedest-field: 'Nome del destinatario '
 invest-address-nif-field: 'Numero di identità/ partita IVA'
@@ -26,6 +27,7 @@ invest-alert-rewards: 'Hai scelto le seguenti ricompense:'
 invest-amount: Quantità
 invest-amount-tooltip: 'Indica l''importo con cui sosterrai il progetto'
 invest-anonymous: 'Voglio che il mio donativo sia anonimo '
+invest-button: Contribuire 
 invest-called-allready: 'Hai dato a questo progetto <strong>Cloudfunfing</strong> della campagna %s, non riceverai più <strong>Cloudfunding</strong> per le tue donazioni'
 invest-called-maxdrop: 'Fino a un massimo di <strong>%s &euro;</strong>'
 invest-called-maxproj: 'È stato già raggiunto il massimo di <strong>Cloudfunding</strong> possibile con la campagna %s'
@@ -34,10 +36,11 @@ invest-called-rest: 'Restano solo <strong>%s €</strong> del  <strong>Cloudfund
 invest-donation-header: 'Indica i dati fiscali per la donazione'
 invest-mail_info-address: 'Hai indicato il seguente indirizzo '
 invest-mail_info-drop: 'In più, %s ha donato %s di cloudfunding con la campagna%s'
+invest-make-sure-save: Salvare
 invest-next_step: 'Passo sucessivo '
 invest-payment-email: 'Indica il tuo account di PayPal'
 invest-payment_method-header: 'Scegli il metodo di pagamento'
-invest-paypal_disabled: 'Per questo progetto l''opzione di pagamento con PayPal. <a href="/faq/investors#q2" target="_blank"> è bloccata. Più info</a>'
+invest-paypal_disabled: "Per questo progetto l'opzione di pagamento con PayPal. <a href=\"/faq/investors#q2\" target=\"_blank\"> è bloccata. Più info</a>"
 invest-process-completed: 'Questa donazione è stata già completata precedentemente. '
 invest-resign: 'Rinuncio a questa ricompensa individuale, voglio solo sostenere il progetto'
 invest-reward-none: 'Non è più possibile scegliere '

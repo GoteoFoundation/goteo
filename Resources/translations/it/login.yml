@@ -1,22 +1,24 @@
+---
 error-register-userid: 'Il nome utente è obbligatorio'
 login-access-button: Entrare
 login-access-header: 'Utente registrato'
 login-access-password-field: Password
 login-access-username-field: 'Nome utente o mail '
 login-fail: 'Errore di accesso'
-login-leave-button: Disattivare
+login-leave-button: 'Disattivare'
 login-leave-header: 'Cancellare account'
 login-leave-message: 'Lascia un messaggio'
 login-oneclick-header: 'Entra con un solo click'
-login-recover-button: 'Ripristinare '
+login-recover-button: Ripristinare 
 login-recover-email-field: 'Mail dell''account (o nome utente)'
-login-recover-header: 'Completa il campo con la mail che hai utilizzato per iscriverti alla piattaforma. Spesso coincide con la mail dei tuoi social network. Attenzione: riceverai una mail a questa stessa mail con un link diretto per cambiare la password. Se non ricevi la mail controlla che non sia nella cartella spam. Se hai fatto richiesto molte volte di cambiare la password, ogni volta avrai ricevuto  una mail con un nuovo link autogenerato. Utilizza l''ultimo link nell''ultima mail ricevuta. Se non ricordi la mail ci puoi contattare, non dimenticarti di completare tutti i dati per aiutarci nella ricerca del tuo account (nome completo. nick che utilizzi, data di iscrizione, se hai fatto qualche donazione in qualche progetto concreto). '
+login-recover-header: "Completa il campo con la mail che hai utilizzato per iscriverti alla piattaforma. Spesso coincide con la mail dei tuoi social network. Attenzione: riceverai una mail a questa stessa mail con un link diretto per cambiare la password. Se non ricevi la mail controlla che non sia nella cartella spam. Se hai fatto richiesto molte volte di cambiare la password, ogni volta avrai ricevuto  una mail con un nuovo link autogenerato. Utilizza l'ultimo link nell'ultima mail ricevuta. Se non ricordi la mail ci puoi contattare, non dimenticarti di completare tutti i dati per aiutarci nella ricerca del tuo account (nome completo. nick che utilizzi, data di iscrizione, se hai fatto qualche donazione in qualche progetto concreto). "
 login-recover-link: 'Ripristinare la password '
+login-recover-modal-button: Inviare
 login-recover-username-field: 'Nome di accesso '
-login-register-button: 'Registrare '
+login-register-button: Registrare 
 login-register-confirm-field: 'Confermare mail '
 login-register-confirm_password-field: 'Confermare password'
-login-register-email-field: 'Mail '
+login-register-email-field: Mail 
 login-register-header: 'Nuovo utente'
 login-register-password-field: Password
 login-register-password-minlength: 'Minimo 6 caratteri '
@@ -27,7 +29,7 @@ login-signin-google: 'Entra con Google'
 login-signin-linkedin: 'Entra con LinkedIn'
 login-signin-myopenid: 'Entra con myOpenID'
 login-signin-openid: 'Otro server Open ID'
-login-signin-openid-go: 'Vai '
+login-signin-openid-go: Vai 
 login-signin-twitter: 'Entra con Twitter'
 login-signin-ubuntu: 'Entra con Ubuntu One'
 login-signin-view-more: 'Mostrare più opzioni di accesso '
@@ -43,7 +45,7 @@ oauth-import-about: 'Il tuo profilo'
 oauth-import-facebook: 'Link al tuo account di Facebook'
 oauth-import-linkedin: 'Link al tuo account di LinkedIn'
 oauth-import-location: 'Luogo di residenza '
-oauth-import-name: 'Nome '
+oauth-import-name: Nome 
 oauth-import-twitter: 'Link al tuo profilo Twitter'
 oauth-import-website: 'Le tue pagine web'
 oauth-linkedin-access-denied: 'Login con LinkedIn rifiutato'
@@ -55,3 +57,4 @@ oauth-openid-not-logged: 'Utente non connesso a Open ID'
 oauth-token-request-error: 'Si è verificato un errore nell''ottenimento delle credenziali con il fornitore'
 oauth-twitter-access-denied: 'Login con Twitter rifiutato'
 oauth-unknown-provider: 'Non è possibile iniziare la sessione con questo fornitore '
+reset-password-save: Salvare

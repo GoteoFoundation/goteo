@@ -1,3 +1,4 @@
+---
 guide-project-error-mandatories: 'Faltan campos obrigados'
 guide-project-preview: '<strong>Este é un resumo de toda a información sobre o proxecto.</strong><br><br> Repasa os puntos de cada apartado para ver se podes mellorar algo, ou ben envía o proxecto para a súa valoración (empregando o botón "Enviar" da parte de abaixo) se xa están enchidos todos os campos obrigados, para que así poida ser valorado polo equipo e a comunidade de Goteo. Unha vez o envíes xa non se poderán inserir cambios. <br><br>Ten en conta que só podemos seleccionar uns cantos proxectos ó mes para garantir a atención e a difusión das propostas que se fan públicas. Próximamente chegarache unha mensaxe con toda a información, que te indicará os pasos a seguir e recomendacións para que o teu proxecto poida alcanzar a meta proposta. '
 guide-project-success-minprogress: 'Chegou ó porcentaxe mínimo'
@@ -8,3 +9,10 @@ preview-send-comment: 'Notas adicionais para o administrador'
 step-7: Previsualización
 step-preview: 'Proxecto / Previsualización'
 tooltip-project-comment: '¿Tes dúbidas ou comentarios para que as lea o administrador de Goteo? Éste é o lugar para explicar algunha parte do que escribiches da que non esteas seguro, para propor melloras, etc.'
+project-send-review-desc: >
+  Una vez lo envíes ya no se podrán introducir cambios hasta que abramos de nuevo su edición.
+  
+  En breve nos pondremos en contacto contigo para comentar la propuesta de campaña y poder continuar con su proceso de optimización y publicación.
+  
+  **No dejes de revisar tu bandeja de SPAM**, en ocasiones la tecnología no es capaz de apreciar el cariño que damos a nuestros proyectos.
+

@@ -1,10 +1,11 @@
+---
 mandatory-project-field-address: 'A dirección da persoa responsable do proxecto é obrigada'
 mandatory-project-field-contract_email: 'É obrigado poñer o email da persoa responsable do proxecto.'
 mandatory-project-field-country: 'O país do/da responsable do proxecto é obrigado'
 mandatory-project-field-phone: 'O teléfono do/da responsable do proxecto é obrigado'
 mandatory-project-field-residence: 'É obrigado poñer o lugar de residencia da persoa responsable do proxecto'
 mandatory-project-field-zipcode: 'O código postal da persoa responsable do proxecto é obrigado'
-personal-field-address: Dirección
+personal-field-address: 'Dirección'
 personal-field-contract_birthdate: 'Data de nacemento'
 personal-field-contract_data: 'Datos da persoa responsable do proxecto'
 personal-field-contract_email: 'Email ligado ó proxecto'

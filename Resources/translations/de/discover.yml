@@ -1,11 +1,12 @@
+---
 discover-group-all-header: 'laufende Kampagne'
 discover-group-archive-header: Abgelegt
 discover-group-fulfilled-header: 'Kollektive Belohnungen wurden zugelassen!'
 discover-group-others-header: 'In anderen Knoten'
 discover-group-outdate-header: 'Läuft bald ab'
 discover-group-popular-header: 'Am beliebtesten'
-discover-group-recent-header: Kürzlich
-discover-group-success-header: Erfolgreich
+discover-group-recent-header: 'Kürzlich'
+discover-group-success-header: 'Erfolgreich'
 discover-patron-header: '<span class="greenblue">%s</span> empfiehlt<br />diese <span class="red"Projekte</span>'
 discover-results-empty: 'Wir haben leider kein Projekt gefunden, daß Ihren Suchkriterien entspricht.'
 discover-results-header: 'Suche Ergebnisse'

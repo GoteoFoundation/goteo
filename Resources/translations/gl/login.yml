@@ -1,3 +1,5 @@
+---
+auth-access-forbbiden: '¡No tienes permiso para acceder aquí!'
 error-register-userid: 'É obrigado escribir un nome de acceso'
 login-access-button: Entrar
 login-access-header: 'Usuario rexistrado'
@@ -7,11 +9,16 @@ login-fail: 'Erro de acceso'
 login-leave-button: 'Darse de baixa'
 login-leave-header: 'Pechar a conta'
 login-leave-message: 'Déixanos unha mensaxe'
+login-new-user-label: '¿Crear un nuevo usuario?'
 login-oneclick-header: 'Accede cun só click'
 login-recover-button: Recuperar
 login-recover-email-field: 'Email da conta'
-login-recover-header: 'Enche o campo co correo electrónico que empregaches ó darte de alta na plataforma. Nese mesmo correo electrónico recibirás a información para recuperar o teu contrasinal. Moitas veces coincide co mesmo correo electrónico ligado ás túas redes sociais. Se non lembras o teu correo electrónico podes contactarnos, non esquezas mencionar algúns datos para facilitarnos a busca do teu usuario/a (nome completo, nick que soes empregar, data de alta ou se fixeches algunha achega a algún proxecto en concreto)'
+login-recover-header: "Enche o campo co correo electrónico que empregaches ó darte de alta na plataforma. Nese mesmo correo electrónico recibirás a información para recuperar o teu contrasinal. Moitas veces coincide co mesmo correo electrónico ligado ás túas redes sociais. Se non lembras o teu correo electrónico podes contactarnos, non esquezas mencionar algúns datos para facilitarnos a busca do teu usuario/a (nome completo, nick que soes empregar, data de alta ou se fixeches algunha achega a algún proxecto en concreto)"
+login-recover-label: '¿Olvidaste tu contraseña?'
 login-recover-link: 'Recuperar contrasinal'
+login-recover-modal-button: Enviar
+login-recover-modal-sucess: '¡Hecho! - te hemos enviado un correo electrónico a %s con un enlace para restablecer la contraseña.'
+login-recover-modal-text: 'Ingresa la dirección de correo electrónico que usaste para registrarte y te enviaremos un enlace para restablecer tu contraseña.'
 login-recover-username-field: 'Nome de acceso'
 login-register-button: Rexistrar
 login-register-confirm-field: 'Confirmar email'
@@ -25,19 +32,24 @@ login-register-username-field: 'Nome público'
 login-signin-facebook: 'Accede con Facebook'
 login-signin-google: 'Accede con Google'
 login-signin-linkedin: 'Accede con LinkedIn'
+login-signin-myopenid: 'Accede con myOpenID'
 login-signin-openid: 'Outro servidor Open ID'
 login-signin-openid-go: Ir
 login-signin-twitter: 'Accede con Twitter'
 login-signin-ubuntu: 'Accede co usuario de Ubuntu One'
 login-signin-view-more: 'Ensinar máis opcións de aceso'
 login-signin-yahoo: 'Accede con Yahoo'
+login-title: 'Iniciar sesión'
 oauth-confirm-user: 'Ligar usuario existente'
 oauth-facebook-access-denied: 'Acceso dende Facebook denegado'
 oauth-goteo-openid-sync-password: 'Estás tentando ligar unha conta xa existente en Goteo cun provedor externo. Isto permitirache entrar en Goteo cun so clic no futuro.<br/>Esta primeira vez deberás proporcionar o contrasinal da túa conta en Goteo para confirmar a túa identidade.'
 oauth-goteo-user-not-exists: 'Ese usuario non existe en Goteo'
+oauth-goteo-user-password-error: 'Esta cuenta ya usa otro proveedor de login sin contraseña. Si quieres usar más de un proveedor de login debes primero establecer una contraseña.'
 oauth-goteo-user-password-exists: 'Ese usuario xa existe en Goteo'
+oauth-goteo-user-provider-error: 'Debes usar <strong>%s</strong> para acceder a este usuario.<br>Si quieres usar más de un proveedor de login para esta cuenta debes primero establecer una contraseña.'
 oauth-import-about: 'Acerca de ti'
 oauth-import-facebook: 'Ligazón á túa conta de Facebook'
+oauth-import-linkedin: 'Link a tu cuenta de LinkedIn'
 oauth-import-location: 'Lugar de residencia'
 oauth-import-name: Nome
 oauth-import-twitter: 'Ligazón á túa conta de Twitter'
@@ -51,3 +63,8 @@ oauth-openid-not-logged: 'Usuario desconectado dende Open ID'
 oauth-token-request-error: 'Ocurriu un erro ó obter as credenciais co provedor'
 oauth-twitter-access-denied: 'Acceso dende Twitter denegado'
 oauth-unknown-provider: 'Non se pode comezar sesión con este provedor'
+reset-password-new-password: 'Vuelve a escribir tu nueva contraseña'
+reset-password-old-password: 'Tu nueva contraseña'
+reset-password-save: Guardar
+reset-password-title: 'Establecer nueva contraseña'
+login-alternate-ids: Otras opciones

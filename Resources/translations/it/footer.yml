@@ -1,8 +1,9 @@
-footer-header-categories: 'Categorie '
-footer-header-projects: 'Progetti '
+---
+footer-header-categories: Categorie 
+footer-header-projects: Progetti 
 footer-header-resources: Risorse
-footer-header-services: 'Servizi '
-footer-header-social: 'Seguici '
+footer-header-services: Servizi 
+footer-header-social: Seguici 
 footer-header-sponsors: 'Partner istituzionali'
 footer-platoniq-iniciative: 'Un''iniziativa di:'
 footer-resources-glossary: Glossario
@@ -12,7 +13,7 @@ footer-service-campaign: Campagne
 footer-service-consulting: Consulenza
 footer-service-resources: '*Clouddfunding '
 footer-service-workshop: Workshop
-regular-footer-contact: 'Contatto '
+regular-footer-contact: Contatto 
 regular-footer-legal: 'Termini legali '
 regular-footer-privacy: 'Politica sulla privacy '
 regular-footer-terms: 'Condizioni d''uso'

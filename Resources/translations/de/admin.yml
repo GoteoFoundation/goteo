@@ -1,18 +1,22 @@
+---
+admin-action: 'Aktion des Administrators'
+admin-NO: 'NEIN'
+admin-YES: JA
 admin-account-amount: 'beigetragene Menge'
-admin-account-change-user:  'Benutzerwechsel'
-admin-account-change-user-confirm:  'Sind Sie sicher, dass Sie den Benutzernamen für den Beitrag wechseln möchten? Der Neue Benutzer sei:'
+admin-account-change-user: 'Benutzerwechsel'
+admin-account-change-user-confirm: 'Sind Sie sicher, dass Sie den Benutzernamen für den Beitrag wechseln möchten? Der Neue Benutzer sei:'
 admin-account-convert-to-pool: 'In den Geldpool verschieben'
 admin-account-convert-to-pool-confirm: 'Dies wird das mit diesem Beitrag verbundene Projekt beseitigen und es wird so aussehen, als wäre es ein Geldpoolkauf. ALLE ZUGEHÖRIGEN EMPFEHLUNGEN GEHEN VERLOREN. Fortfahren?'
 admin-account-convert-to-pool-ko: 'Der Beitrag konnte nicht in den Geldpool verschoben werden: %s'
 admin-account-convert-to-pool-ok: 'Der Beitrag wurde in den Geldpool verschoben'
 admin-account-detail: 'Angaben zur Transaktion'
-admin-account-donation: 'Geschenk/Spende'
+admin-account-donation: Geschenk/Spende
 admin-account-edit-reward: 'Belohnungen bearbeiten'
 admin-account-invalid-invest: 'Beitrag [%s] wurde nicht gefunden!'
 admin-account-invest-date: 'Datum des Beitrags'
 admin-account-invest-non-pool-refundable: 'Diesen Beitrag können Sie nicht in die virtuelle Geldbörse zurücküberweisen. Es können ausschließlich Beiträge mit dem Status "Bezahlt" zurücküberwiesen werden.'
-admin-account-invest-non-user-refundable : "Diesen Beitrag können Sie nicht zurücküberweisen. Es können ausschließlich Beiträge mit dem Status:\n\"Ausstehend\", \"Bezahlt\" und \"in der Geldbörse\" übertragen werden, und dies nur, wenn genügend Geld in de Geldbörse vorhanden ist\n"
-admin-account-invest-to-pool-ko: 'Fehler bei der Rückführung des Beitrages in die Geldbörse' 
+admin-account-invest-non-user-refundable: "Diesen Beitrag können Sie nicht zurücküberweisen. Es können ausschließlich Beiträge mit dem Status:\n\"Ausstehend\", \"Bezahlt\" und \"in der Geldbörse\" übertragen werden, und dies nur, wenn genügend Geld in de Geldbörse vorhanden ist\n"
+admin-account-invest-to-pool-ko: 'Fehler bei der Rückführung des Beitrages in die Geldbörse'
 admin-account-invest-to-pool-ok: 'Der Beitrag wurde in die Geldbörse zurückgeführt. Der Saldo in der Geldbörse hat sich um (%s) erhöht.'
 admin-account-invest-user-refund-fail-pool-amount: 'Dieser Beitrag konnte nicht zurückgezahlt werden. In der Geldbörse des Benutzers befand sich nicht genügend Geld (%s).'
 admin-account-invest-user-refund-ko: 'Der Beitrag über [%s] konnte nicht zurückerstattet werden.'
@@ -21,7 +25,7 @@ admin-account-invest-user-refund-ok-pool: 'Der Beitrag wurde ordnungsgemäß ers
 admin-account-issue-solved: 'Die Transaktion wurde durchgeführt.'
 admin-account-modify-status: 'Ändern des Status'
 admin-account-modify-status-confirm: "Sind Sie sicher dass Sie den Status dieses Beitrages manuel ändern wollen? Dies könnte ein heikle Angelegenheit werden, denn der Betrag kann NICHT rückerstattet werden."
-admin-account-payment-method: Zahlungsmethode
+admin-account-payment-method: 'Zahlungsmethode'
 admin-account-pool-on-fail: 'Pool (Bei nicht zustandekommener Rückführung in die Geldbörse)'
 admin-account-refund-to-pool: 'Rückzahlung des Beitrags in die virtuelle Geldbörse'
 admin-account-refund-to-pool-confirm: "Dies bestimmt die Verfahrensweise für den Beitrag:\nRückführung wenn das Projekt scheitert\nAbbrechen, wenn das Projekt aktiv oder erfolgreich ist\nDer Beitrag wird dem Benutzer nicht direkt zurückerstattet, sondern der Geldbörse des Benutzers gutgeschrieben.\nWeiter fortfahren?\n"
@@ -29,14 +33,12 @@ admin-account-refund-to-user: 'Rückzahlung des Beitrags an der Bunutzer'
 admin-account-refund-to-user-confirm: "Dies bestimmt die Verfahrensweise für den Beitrag:\nRückführung wenn das Projekt scheitert\nAbbrechen, wenn das Projekt aktiv oder erfolgreich ist\nDer Beitrag wird dem Benutzer direkt zurückerstattet.\nDies funktioniert nicht, wenn der Zeitraum seit dem Beitrag sehr lang ist oder die Zahlungsmethode nicht unterstützt wird.\nWeiter fortfahren?\n"
 admin-account-rewards: 'gewählte Belohnungen'
 admin-account-switch-donation: 'Spende umwandeln'
-admin-account-switch-donation-confirm:	 'Sind Sie sicher, dass sie die Spende umwandeln möchten?'
 admin-account-switch-pool: 'Umschalten auf die Virtuelle Geldbörse'
 admin-account-switch-pool-confirm: 'Dies wirkt sich nur für den Fall des Scheiterns des Projektes aus. Weder erzeugt es Geld in, noch entnimmt es Geld aus der Gelbörse. Weiter fortfahren?'
 admin-account-switch-pool-fail: 'Der Pool-Staus diese Beitrages kann nicht geändert werden.'
 admin-account-transaction: 'Tracking-Codes / Codes für die Nachverfolgung'
 admin-account-user-changed-error: 'Zu dem Beitrag [%ID%] konnte der Benutzer nicht auf [%NAME%] geändert werden!'
 admin-account-user-changed-successfully: 'Für den Beitrag [%ID%] wurde der Benutzer auf [%NAME%] geändert!'
-admin-action: 'Aktion des Administrators'
 admin-address: Anschrift
 admin-all: Alle
 admin-back: Zurück
@@ -44,17 +46,8 @@ admin-back-detail: 'Zurück zu den Details'
 admin-back-list: 'Zurück zur Liste'
 admin-contents: 'Texte und Übersetzungen'
 admin-empty-list: 'Es wurden keine registrierten Einträge gefunden'
-admin-faq-add-question-btn: 'Frage hinzufügen'
-admin-faq-list-edit: Bearbeiten
-admin-faq-list-position: Position
-admin-faq-list-remove: entfernen
-admin-faq-list-title: Titel
-admin-faq-list-translate: übersetzen
-admin-faq-show-questions: 'Fragen anzeigen aus Sektion'
-admin-filters: Filter
 admin-home: Startseite
-admin-impersonate-user:	'Imitiere %s'
-admin-items: 'Eingänge'
+admin-items: Eingänge
 admin-mailing-back-to-list: 'Zurück zu Kommunikation'
 admin-mailing-communicating-with: 'Wir versuchten mit %DESC% zu kommunizieren'
 admin-mailing-created: 'Erstellt am'
@@ -68,29 +61,26 @@ admin-mailing-view-message: 'Schauen sie in diese Nachricht!'
 admin-newsletter-generated: 'Das Rundscheiben  [%ID%] wurde erstellt'
 admin-newsletter-langs-to-send: 'Sprachen: %LANGS%'
 admin-newsletter-mind-activate: 'Aktivieren Sie den Versand!'
-admin-NO: 'NEIN'
 admin-no: 'Nein'
 admin-percent: Prozentsatz
 admin-project: Projekt
+admin-projects: Projekte
+admin-filters: 'Filter'
+admin-remove-filters: 'Filter entfernen'
+admin-sponsors: Dienstleister (Unterstützer/admin-sponsors)
+admin-status: Status
+admin-text-type: 'Bearbeite den Text als'
+admin-text-type-plain: 'einfacher Text'
+admin-user: Benutzer
+admin-users: Benutzer
+admin-yes: Ja
 admin-project-express-discard: 'Express verwerfen'
 admin-project-express-discard-desc: 'Ändern Sie den Projektstatus in "Verwerfen" und senden Sie eine E-Mail'
 admin-project-express-discard-sure: 'Das Projekt wird verworfen und der Besitzer erhält eine E-Mail, ok?'
-admin-project-to-negotiation: 'Zur Negotiation'	
-admin-project-to-negotiation-desc: 'Ändern Sie den Projektstatus auf "Bearbeiten"'
-admin-project-to-negotiation-sure: 'ALARM!! Das Projekt ist in der Kampagne! Damit werden wir dies aufheben. Ok?'
 admin-project-to-review: 'Zur Rezension'
 admin-project-to-review-desc: 'Übergeben Sie das Projekt in den "ausstehenden Status"'
 admin-project-to-review-sure: 'Der Ersteller kann es nicht mehr bearbeiten, ok?'
 admin-project-view-in-admin: 'Als Administrator betrachten'
-admin-projects: Projekte
-admin-remove-filters: 'Filter entfernen'
-admin-sponsors: 'Dienstleister (Unterstützer/admin-sponsors)'
-admin-status: Status
-admin-text-type: 'Bearbeite den Text als'
-admin-text-type-html: HTML
-admin-text-type-md: Markdown
-admin-text-type-plain: 'einfacher Text'
-admin-user: Benutzer
-admin-users: Benutzer
-admin-YES: JA
-admin-yes: Ja
+admin-project-to-negotiation: 'Zur Negotiation'
+admin-project-to-negotiation-desc: 'Ändern Sie den Projektstatus auf "Bearbeiten"'
+admin-project-to-negotiation-sure: 'ALARM!! Das Projekt ist in der Kampagne! Damit werden wir dies aufheben. Ok?'

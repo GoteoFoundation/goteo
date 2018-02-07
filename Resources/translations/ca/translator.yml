@@ -1,10 +1,11 @@
+---
 translator: Traductor
 translator-autotranslate-from: 'Traducció automàtica de'
 translator-back-to-list: 'Torna a la llista'
 translator-banner: Banners
-translator-bazar: 'Catàleg'
+translator-bazar: Catàleg
 translator-cannot-delete-system: 'No es pot esborrar aquesta traducció perquè és de sistema!'
-translator-category: 'Categories'
+translator-category: Categories
 translator-choose: 'Escull una opció'
 translator-copy-from: 'Copia el contingut de'
 translator-criteria: 'Criteris de evaluación'
@@ -20,34 +21,34 @@ translator-field-content: Contingut
 translator-field-description: Descripció
 translator-field-facebook_msg: 'Missatge de facebook'
 translator-field-facebook_msg_owner: 'Autor de facebook'
-translator-field-legend: 'Llegenda'
-translator-field-media: 'Media'
-translator-field-name: 'Nom'
-translator-field-review: 'Review'
+translator-field-legend: Llegenda
+translator-field-media: Media
+translator-field-name: Nom
+translator-field-review: Review
 translator-field-schedule: Horari
 translator-field-share_facebook: 'Text compartir facebook'
 translator-field-share_twitter: 'Text compartir twitter'
 translator-field-text: Text
-translator-field-title: 'Títol'
+translator-field-title: Títol
 translator-field-twitter_msg: 'Missatge de twitter'
 translator-field-twitter_msg_owner: 'Autor de twitter'
 translator-field-url: URL
 translator-glossary: 'Glossari de termes'
-translator-home: 'Portada'
+translator-home: Portada
 translator-icon: 'Tipus de retorn/recompensa'
 translator-info: 'Idees de about'
 translator-lang-no-perms: 'No tens permisos per administrar aquest idioma'
-translator-license: 'Llicencies'
-translator-milestone: 'fites'
+translator-license: Llicencies
+translator-milestone: fites
 translator-more-langs: Altres
 translator-news: Noticies
 translator-no-langs: 'No tens cap idioma assignat, contacta amb el administrador'
 translator-not-saved: 'No s''ha desat cap contingut! (potser tens camps buits?)'
 translator-not-translated: 'Sense entrada a la taula de traduccions'
 translator-only-pendings: 'Només pendents en:'
-translator-opentag: 'Agrupacions'
+translator-opentag: Agrupacions
 translator-original-text: 'Text original'
-translator-page: 'Pàgines'
+translator-page: Pàgines
 translator-patron: 'Projectes apadrinats'
 translator-pending: 'Pendient de traducció'
 translator-pending-desc: 'Aquest contingut està "pendent", cosa que significa que <strong>NO ES PÚBLIC</strong> i queda coma esborrany fins que es tregui l''opció "pendent de traducció"'
@@ -60,14 +61,14 @@ translator-saved-ok: 'Traduccions desades correctament per als idiomes [%s]'
 translator-skipped-fields: "Alguns camps no s''han copiat perquè ja contenien text.\nEsborra el text original para poder copiar des de un altre idioma."
 translator-sphere: 'Àmbits de la convocatòria'
 translator-stories: 'Histories exitoses'
-translator-system: 'Sistema'
+translator-system: Sistema
 translator-tables: 'Taules generals'
 translator-tag: 'Tags de blog'
 translator-template: 'Plantilles emails automàtics'
 translator-texts: 'Textos interfície'
-translator-translations: 'Traduccions'
-translator-workshop: 'Tallers'
-translator-worthcracy: 'Meritocràcia'
+translator-translations: Traduccions
+translator-workshop: Tallers
+translator-worthcracy: Meritocràcia
 translator-zone-not-found: 'Aquesta zona de traducció no es vàlida'
 translator-lang-not-found: 'Aquest idioma no està configurat en la plataforma!'
 translator-percent: '%d&#37; traduït'

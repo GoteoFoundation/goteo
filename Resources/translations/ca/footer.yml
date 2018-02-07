@@ -1,3 +1,4 @@
+---
 footer-header-categories: Categories
 footer-header-projects: Projectes
 footer-header-resources: Recursos
@@ -6,18 +7,18 @@ footer-header-social: Segueix-nos
 footer-header-sponsors: 'Suports institucionals'
 footer-platoniq-iniciative: 'Una iniciativa de:'
 footer-resources-api: API
-footer-resources-glossary: 'Glossari '
+footer-resources-glossary: Glossari 
 footer-resources-press: Premsa
 footer-resources-source_code: 'Codi font AGPL3'
 footer-resources-stats: Stats
+footer-resources-channels: Canals
+footer-service-calculator: Calculadora fiscal
 footer-service-campaign: Campanyes
 footer-service-consulting: Consultoria
+footer-service-pool: Moneder
 footer-service-resources: 'Capital d''irrigació'
 footer-service-workshop: Tallers
 regular-footer-contact: Contacte
 regular-footer-legal: 'Termes legals'
 regular-footer-privacy: 'Política de privacitat'
 regular-footer-terms: 'Condicions d´us'
-footer-service-calculator: 'Calculadora fiscal'
-footer-service-pool: 'Moneder'
-footer-resources-channels: 'Canals'

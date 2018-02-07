@@ -1,15 +1,16 @@
-﻿mandatory-project-field-address: 'Die Adresse des Projektleiters ist erforderlich'
+---
+mandatory-project-field-address: 'Die Adresse des Projektleiters ist erforderlich'
 mandatory-project-field-contract_email: 'Sie müssen eine Email-Adresse für den/die Projektleiter/in angeben.'
 mandatory-project-field-country: 'Sie müssen ein Land für den/die Projektleiter/in angeben.'
 mandatory-project-field-phone: 'Sie müssen eine Telefonnummer für den/die Projektleiter/in angeben.'
 mandatory-project-field-residence: 'Sie müssen den Wohnort des/der Projektleiter/in angeben.'
 mandatory-project-field-zipcode: 'Eine Postleitzahl des Projektleiters ist erforderlich'
-personal-field-address: Adresse
+personal-field-address: 'Adresse'
 personal-field-contract_birthdate: 'Geburtsdatum'
 personal-field-contract_data: 'Information über den/die Projektleiter/in'
 personal-field-contract_email: 'Mit dem Projekt verbundene Email-Adresse'
 personal-field-contract_entity-entity: 'juristische Person (Verein, Stiftung, Firma, etc.)'
-personal-field-contract_entity-person: Person
+personal-field-contract_entity-person: 'Person'
 personal-field-country: Land
 personal-field-entity_cif: 'Vereinsregisternummer oder Unternehmensnummer der Organisation'
 personal-field-entity_name: 'Offizieller Name der Organisation'

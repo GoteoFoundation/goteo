@@ -1,6 +1,6 @@
+---
 feed-blog-comment: 'Ha scritto <span class="green">Commento</span>al post "%s" del blog de %s'
 feed-invest: 'Hai donato %AMOUNT% al progetto %PROJECT%'
-feed-message_support-response: 'Nuovo contributo con %s nel progetto %s'
 feed-messages-new_thread: 'Hai aperto un tema in %s del progetto %s'
 feed-messages-response: 'Ha risposto a %s del progetto %s'
 feed-new_project: 'Nuovo progetto su Goteo, abbiamo ancora 40 giorni per collaborare!'

@@ -1,7 +1,10 @@
+---
+text-group-admin: 'Textos Admin'
 text-group-banners: 'Banners y cabeceras'
 text-group-blog: Blog/Actualizaciones
 text-group-bluead: 'Avisos azules'
 text-group-call_dash: 'Convocatorias: dashboard'
+text-group-call_feed: 'Convocatòries: feed'
 text-group-call_form: 'Convocatorias: formulario'
 text-group-call_public: 'Convocatorias: publicos'
 text-group-community: 'Sección comunidad'
@@ -19,9 +22,11 @@ text-group-form: 'Generales del formulario de proyecto'
 text-group-general: 'Propósito general'
 text-group-home: Portada
 text-group-invest: 'Pagina de aportar a un proyecto'
+text-group-location: Geolocalització
 text-group-login: 'Pagina de login'
 text-group-mailer: 'Emails automaticos'
 text-group-menu: 'Menu superior'
+text-group-metas: 'SEO: Metes'
 text-group-node_public: Nodos
 text-group-overview: 'Descripción del proyecto'
 text-group-personal: 'Datos personales del usuario'
@@ -38,10 +43,6 @@ text-group-template: 'En plantilla agradecimiento'
 text-group-text_groups: 'Descripción de las agrupaciones de textos'
 text-group-translate: 'Panel traductor'
 text-group-types: 'Tooltips para tipos de necesidades'
+text-group-url: 'Social external URL'
 text-group-widget: Banderolos
 text-group-wof: 'Wall of friends'
-text-group-admin: 'Textos Admin'
-text-group-call_feed: 'Convocatòries: feed'
-text-group-location: Geolocalització
-text-group-metas: 'SEO: Metes'
-text-group-url: 'Social external URL'

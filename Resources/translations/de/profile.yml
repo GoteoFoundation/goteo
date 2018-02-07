@@ -1,41 +1,37 @@
+---
 guide-project-user-information: '<strong>In diesem Abschnitt werden Sie Daten für den öffentlichen Teil Ihres Benutzerprofils eingeben.</strong><br><br>Egal ob Sie ein Projekt erstellen oder ein anderes kofinanzieren wollen - um der Goteo Community beizutreten, empfehlen wir, dass sie Ihren Vostellungstext sorgfältig bearbeiten und mit allen relevanten Links über Ihr Schaffen als auch mit einem aussagekräftigen Profilfoto versehen.'
 profile-credit-available: 'Dies ist der verfügbare Geldbetrag ihrer virtuellen Geldbörse, den Sie auf andere Goteo-Projekte verteilen können.'
 profile-field-about: 'Erzählen Sie uns etwas über sich'
 profile-field-avatar_current: 'Ihr derzeitiges Profilbild'
 profile-field-avatar_upload: 'Bild hochladen'
 profile-field-contribution: 'Was können Sie Goteo bieten?'
+profile-field-entity-type: 'Art der Organisation'
+profile-field-entity-type-checkbox-public: 'I''m a public entity'
+profile-field-entity-type-choose: 'Wähle Art der Organisation'
+profile-field-entity-type-concerted: Private-Public partnership
+profile-field-entity-type-private: Private
+profile-field-entity-type-public: Public
 profile-field-interests: 'Welche Art von Projekten interessiert Sie am meisten?'
 profile-field-keywords: 'Meine Schlagwörter'
+profile-field-legal-entity: 'Rechtsform'
+profile-field-legal-entity-asociation: Verein/Verband
+profile-field-legal-entity-choose: 'Wähle eine Rechtsform'
+profile-field-legal-entity-company: Unternehmen
+profile-field-legal-entity-cooperative: Genossenschaft
+profile-field-legal-entity-ngo: NGO
+profile-field-legal-entity-others: Sonstige
+profile-field-legal-entity-person: 'Privatperson'
+profile-field-legal-entity-self-employed: Freelancer
 profile-field-location: 'Wohnsitz'
 profile-field-name: 'Benutzername'
-profile-field-url: URL
 profile-field-websites: 'Meine Webseiten'
 profile-fields-image-title: 'Profilbild'
 profile-fields-social-title: 'Soziale Profile'
-
-profile-field-entity-type: 'Art der Organisation'
-profile-field-entity-type-choose: 'Wähle Art der Organisation'
-profile-field-entity-type-public: 'Public'
-profile-field-entity-type-private: 'Private'
-profile-field-entity-type-concerted: 'Private-Public partnership'
-
-profile-field-entity-type-checkbox-public: 'I''m a public entity'
-
-profile-field-legal-entity: 'Rechtsform'
-profile-field-legal-entity-choose: 'Wähle eine Rechtsform'
-profile-field-legal-entity-person: 'Privatperson'
-profile-field-legal-entity-self-employed: 'Freelancer'
-profile-field-legal-entity-ngo: 'NGO'
-profile-field-legal-entity-company: 'Unternehmen'
-profile-field-legal-entity-cooperative: 'Genossenschaft'
-profile-field-legal-entity-asociation: 'Verein/Verband'
-profile-field-legal-entity-others: 'Sonstige'
-
 profile-main-header: 'Profildaten'
 profile-suggest-projects-interest: 'Vielleicht wollen Sie dies unterstützen'
 step-1: Profil
 step-userProfile: 'Schritt: Benutzer / Profil'
-tooltip-user-about: 'Als soziales Netzwerk möchte Goteo helfen, interessante Projekte in einer größtmöglichem Community bekannt zu machen und mit ihr zu finanzieren. Dazu ist es wichtig, dass Sie Informationen über Ihre Fähigkeiten und Erfahrungen (beruflich, akademisch, Hobbies, etc.) mitteilen.'
+tooltip-user-about: "Als soziales Netzwerk möchte Goteo helfen, interessante Projekte in einer größtmöglichem Community bekannt zu machen und mit ihr zu finanzieren. Dazu ist es wichtig, dass Sie Informationen über Ihre Fähigkeiten und Erfahrungen (beruflich, akademisch, Hobbies, etc.) mitteilen."
 tooltip-user-avatar_upload: 'Kurzinfo Text Upload User Bild'
 tooltip-user-contribution: 'Beschreiben Sie kurz Ihre Fähigkeiten und die Bereiche, in denen Sie anderen helfen könnten (Übersetzungen, Marketing, Testen, Programmieren, Unterrichten, etc.)'
 tooltip-user-facebook: 'Dieses soziale Netzwerk hilft dabei, Goteo-Projekte schnell und viral bekannt zu machen, die Sie und Ihre Freunde interessieren.'

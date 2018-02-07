@@ -1,25 +1,25 @@
+---
 api-key-no-generated: 'Sie haben noch keinen API-Key generiert'
-api-key-tool-tip: 'Mit Ihrem Benutzernamen und dem API-Schlüssel können Sie alle Daten mit unserer API abfragen.'
 api-key-tool-tip: 'Mit Deinem Benutzernamen und API-Key kannst Du Anfragen an unsere API stellen'
-contract-data_title: 'Vertragsdetails'
+api-key-user: 'Benutzer'
 contract-data_title: 'Vertragsdaten'
-dashboard-certificates-confirm-checkbox: 'Hiermit bestätige ich, das dies meine richtigen Daten sind. Mir ist bewusst, dass ich diese Daten nicht mehr verändern kann, sobald sie bestätigt sind.'
 dashboard-certificates-confirm: 'Daten bestätigen'
-dashboard-certificates-confirmed-ok: 'Steuerliche Daten korrekt bestätigt. Wenn Deine Bescheinigung nicht automatisch herunterlässt, klicke bitte %HERE%'
+dashboard-certificates-confirm-checkbox: 'Hiermit bestätige ich, das dies meine richtigen Daten sind. Mir ist bewusst, dass ich diese Daten nicht mehr verändern kann, sobald sie bestätigt sind.'
 dashboard-certificates-confirmed: Bestätigt
+dashboard-certificates-confirmed-ok: 'Steuerliche Daten korrekt bestätigt. Wenn Deine Bescheinigung nicht automatisch herunterlässt, klicke bitte %HERE%'
 dashboard-certificates-data-alert: 'Beachte, dass die Daten nicht mehr geändert werden können, sobald sie bestätigt sind.'
 dashboard-certificates-data-desc: 'Bitte versichere Dich, dass die Formulardaten korrekt sind und bestätige das Formular.'
 dashboard-certificates-data-download-all: 'Zeige oder downloads alle Bescheinigungen des Finanzjahres für Deine Steuererklärung'
 dashboard-certificates-data-new-invests: 'Keine Sorge, jede neue Spende über Goteo generiert eine neue Spendenbescheinigung'
 dashboard-certificates-desc: 'Diese Bescheinigungen ermöglichen Dir eine Reduzierung Deiner Einkommenssteuer, wenn Du in Spanien veranlagt wirst.'
-dashboard-certificates-details-desc: 'Liste der Beiträge für die Bescheinigung %CERT%'
 dashboard-certificates-details: 'Details ansehen'
+dashboard-certificates-details-desc: 'Liste der Beiträge für die Bescheinigung %CERT%'
 dashboard-certificates-download: 'Bestätigen und herunterladen'
 dashboard-certificates-empty: 'Um Deine Bescheinigungen zu sehen, musst Du irgendein Projekt mit einem Betrag unterstützen oder Deine virtuelle Geldbörse aufladen.'
 dashboard-certificates-expired: abgelaufen
 dashboard-certificates-no-pending: 'Es gibt keinen unerledigten Beitrag'
-dashboard-certificates-pending-desc: 'Dies sind die Beiträge, die in zukünftigen Bescheinigungen berücksichtigt werden.'
 dashboard-certificates-pending: unerledigt
+dashboard-certificates-pending-desc: 'Dies sind die Beiträge, die in zukünftigen Bescheinigungen berücksichtigt werden.'
 dashboard-certificates-please-confirm: 'Bitte markiere das Bestätigungskästchen, um fortzufahren'
 dashboard-certificates-summary: 'Bescheinigung %ID%, Jahr %YEAR%'
 dashboard-certificates-too-old: 'Diese Bescheinigung ist zu alt, um sie zu ändern. Für Nachfragen nimm bitte Kontakt zu uns auf'
@@ -36,27 +36,26 @@ dashboard-embed_code_investor: 'KÜRZEL MIT BILD DES CROWDFUNDERS'
 dashboard-header-main: 'Mein Dashboard'
 dashboard-investors-mail-fail: '    Nachricht fehlgeschlagen %s: %s'
 dashboard-investors-mail-nowho: 'kein Empfänger gefunden'
-dashboard-investors-mail-sended: 'Nachricht erfolgreich versandt an %s: %s'
 dashboard-investors-mail-sendto: 'Gesendet an %s Ihrer Unterstützer:'
 dashboard-investors-mail-text-required: 'Schreiben Sie eine Nachricht'
 dashboard-investors_table-disclaimer: 'Erinnerung an Projektinitiatoren: wie in der Nutzervereinbarung festgelegt, dürfen die downloadfähigen Details der Unterstützer ausschließlich zum Zweck der Projektkommunikation (Nachrichten, Projektfortschritt, projektbezogene Aktivitäten) und zur Auslieferung der vereinbarten Belohnung verwendet werden. Jede andere Nutzung dieser persönlichen Details ist absolut verboten. Eine Übertretung dieser Verpflichtung berechtigt die Plattformbetreiber, entsprechende rechtliche Schritte einzuleiten und das Projekt von der Plattform zu entfernen.'
+dashboard-menu-activity: 'Meine Aktivitäten'
 dashboard-menu-activity-apikey: 'API-Key'
-dashboard-menu-activity-spread: 'Weitersagen'
+dashboard-menu-activity-spread: Weitersagen
 dashboard-menu-activity-summary: Zusammenfassung
 dashboard-menu-activity-wall: 'Meine Pinnwand'
-dashboard-menu-activity: 'Meine Aktivitäten'
 dashboard-menu-admin_board: Administration
 dashboard-menu-calls-sponsors: Sponsoren
-dashboard-menu-pool-available: Saldo
-dashboard-menu-pool-conditions: Konditionen
 dashboard-menu-pool: 'Meine Geldbörse'
+dashboard-menu-pool-conditions: Konditionen
+dashboard-menu-profile: 'Mein Profil'
 dashboard-menu-profile-access: 'Kontodetails'
 dashboard-menu-profile-location: Aufenthaltsort
 dashboard-menu-profile-personal: 'Persönliche Informationen'
-dashboard-menu-profile-preferences: Einstellungen
+dashboard-menu-profile-preferences: 'Einstellungen'
 dashboard-menu-profile-profile: 'Profil bearbeiten'
 dashboard-menu-profile-public: 'öffentliches  Profil'
-dashboard-menu-profile: 'Mein Profil'
+dashboard-menu-projects: 'Meine Projekte'
 dashboard-menu-projects-commons: Belohnungen
 dashboard-menu-projects-contract: Vertrag
 dashboard-menu-projects-messegers: Teilnehmer
@@ -65,15 +64,13 @@ dashboard-menu-projects-rewards: Unterstützer
 dashboard-menu-projects-summary: Zusammenfassung
 dashboard-menu-projects-supports: Kooperationen
 dashboard-menu-projects-updates: Neuigkeiten
-dashboard-menu-projects-widgets: Widget
-dashboard-menu-projects: 'Meine Projekte'
-dashboard-menu-review_board: 'Rezension/Beurteilung'
+dashboard-menu-review_board: Rezension/Beurteilung
 dashboard-menu-translate_board: Übersetzung
 dashboard-menu-translates: 'Meine Übersetzungen'
 dashboard-messegers-mail-sendto: ' Gesendet an %s Ihrer Teilnehmer:'
 dashboard-my-wallet-available: 'Derzeit haben Sie <span class="pool-amount">%s</span> <span class="pool-desc">in Ihrer Geldbörse</span>'
 dashboard-my-wallet-contribute-button: spenden
-dashboard-my-wallet-modal-pool-info: 'Die virtuelle Geldbörse von Goteo ist eine Funktion auf unserer Plattform, die ermöglicht, eine Spende zu tätigen und später zu entscheiden, welches Projekt damit unterstützt wird. <br> <p>Die Spenden, die Du über unsere Plattform tätigst, sind steuerlich absetzbar nach dem spanischen Gesetz 49/2002 vom 23.12. zur steuerlichen Regelung gemeinnütziger Organisationen und zur Förderung des Mäzenatentums.</p> <p>Sobald Du Deine Spende tätigst, kannst du eine steuerlich absetzbare Spendenbescheinigung herunterladen. In Deinem Benutzer-Dashboard kannst Du eine Liste mit allen verfügbaren Spendenbescheinigungen einsehen, genauer gesagt in der Rubrik <a href=\"/dashboard/wallet/certificate\" target=\"_blank\">Spendenbescheinigung</a>.</p><p> WICHTIGE MITTEILUNG: Wir erinnern daran, dass alle Spenden, für die Du eine Spendenbescheinigung unserer Stiftung erhalten hast, nicht rückgängig gemacht werden können.<br> Das bedeutet, dass wenn Du auf unserer Platform eine projektgebundene Spende an ein bestimmtes Projekt getätigt hast, dass seine Minimalfinanzierung innerhalb der Kampagnenzeit nicht erreicht, dass dieser Betrag Deiner virtuellen Geldbörse zugerechnet wird, Du ihn jedoch nicht mehr auf Dein Konto zurückbuchen kannst. Stattdessen kannst Du den Betrag von Deiner virtuellen Geldbörse von Goteo.org an jedes beliebige aktive Projekt Deiner Wahl spenden, ohne wieder von vorne die Bank- oder PayPal-Daten eingeben zu müssen.</p>'
+dashboard-my-wallet-modal-pool-info: "Die virtuelle Geldbörse von Goteo ist eine Funktion auf unserer Plattform, die ermöglicht, eine Spende zu tätigen und später zu entscheiden, welches Projekt damit unterstützt wird. <br> <p>Die Spenden, die Du über unsere Plattform tätigst, sind steuerlich absetzbar nach dem spanischen Gesetz 49/2002 vom 23.12. zur steuerlichen Regelung gemeinnütziger Organisationen und zur Förderung des Mäzenatentums.</p> <p>Sobald Du Deine Spende tätigst, kannst du eine steuerlich absetzbare Spendenbescheinigung herunterladen. In Deinem Benutzer-Dashboard kannst Du eine Liste mit allen verfügbaren Spendenbescheinigungen einsehen, genauer gesagt in der Rubrik <a href=\"/dashboard/wallet/certificate\" target=\"_blank\">Spendenbescheinigung</a>.</p><p> WICHTIGE MITTEILUNG: Wir erinnern daran, dass alle Spenden, für die Du eine Spendenbescheinigung unserer Stiftung erhalten hast, nicht rückgängig gemacht werden können.<br> Das bedeutet, dass wenn Du auf unserer Platform eine projektgebundene Spende an ein bestimmtes Projekt getätigt hast, dass seine Minimalfinanzierung innerhalb der Kampagnenzeit nicht erreicht, dass dieser Betrag Deiner virtuellen Geldbörse zugerechnet wird, Du ihn jedoch nicht mehr auf Dein Konto zurückbuchen kannst. Stattdessen kannst Du den Betrag von Deiner virtuellen Geldbörse von Goteo.org an jedes beliebige aktive Projekt Deiner Wahl spenden, ohne wieder von vorne die Bank- oder PayPal-Daten eingeben zu müssen.</p>"
 dashboard-my-wallet-pool-info: 'Weitere Informationen zu Ihrem virtueller Geldbörse finden Sie '
 dashboard-password-recover-advice: 'Sie wollen Ihr Passwort wiederherstellen. Bitte traten Sie Ihren Benutzernamen in das Feld „aktuelles Passwort“, um dieses zu ändern.'
 dashboard-project-blog-fail: 'Kontaktieren Sie uns'
@@ -99,11 +96,11 @@ dashboard-rewards-fulfilled_status: erfüllt
 dashboard-rewards-group_msg: 'Nachricht für diese Gruppe'
 dashboard-rewards-investors_table: 'Sie können es offline bearbeiten, indem Sie <a href="%URL%">die Unterstützer-Tabelle downloaden.</a>'
 dashboard-rewards-issue: Ereignis!
+dashboard-rewards-massive_msg: 'Gruppen-Nachricht'
 dashboard-rewards-massive_msg-all: 'An alle Unterstützer dieses Projektes'
 dashboard-rewards-massive_msg-all_alert: 'Alle bedeutet alle, es berücksichtigt nicht die restlichen markierten Objekte'
-dashboard-rewards-massive_msg: 'Gruppen-Nachricht'
 dashboard-rewards-notice: 'DIES IST EINE VISUALISIERUNG DER AUSGEWÄHLTEN BELOHNUNGEN IHRER UNTERSTÜTZER. <br />SIE MÜSSEN DIES ERST MANAGEN, WENN SIE DIE MINDESTFÖRDERSUMME ERREICHT HABEN.'
-dashboard-rewards-num_taken: Verpflichtend bestellt
+dashboard-rewards-num_taken: 'Verpflichtend bestellt'
 dashboard-rewards-pending_filter: unerledigt
 dashboard-rewards-pending_status: unerledigt
 dashboard-rewards-process: 'Markierte Punkte anwenden'
@@ -154,3 +151,4 @@ user-preferences-tips: 'Empfehlung, wie die Kampagne promoted werden kann (für 
 user-preferences-updates: 'Nachrichten der von mir unterstützten Projekte blockieren'
 user-profile-saved: 'Profil wurde aktualisiert'
 user-save-fail: 'Es gibt ein Problem bei der Datensicherung.'
+dashboard-new-material-form-description: 'Beschreibung'

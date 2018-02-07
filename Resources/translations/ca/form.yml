@@ -1,3 +1,4 @@
+---
 costs-field-select-rounds: Plaços
 form-accept-button: Acceptar
 form-add-button: Afegir
@@ -24,7 +25,7 @@ form-project_status-fulfilled: 'Retorn complert'
 form-project_status-review: 'Pendent de valoració'
 form-project_status-success: Finançat
 form-remove-button: Elimina
-form-self_review-button: 'Corregeix'
+form-self_review-button: Corregeix
 form-send_review-button: Envia
 form-upload-button: Pujar
 help-cost-to-consultant: '- Necessita ajuda per definir els costos<br/>'
@@ -37,7 +38,7 @@ project-two-rounds: 'Dues rondes de 40 dies'
 tooltip-project-personal-entity_name: 'Si representes alguna entitat, indica el seu nom en aquest camp.'
 form-sent-success: 'S''han desat les dades correctament!'
 form-sent-error: 'Ha ocorregut un error al desar les dades: [%s]'
-form-confirm-exit: 'Es perdran les dades que no has desat\nSegur que vols sortir de la pàgina?'
+form-confirm-exit: "Es perdran les dades que no has desat\nSegur que vols sortir de la pàgina?"
 overview-extra-call: 'Camps complementaris per la convocatòria %s'
 form-editor-bold: 'Negreta'
 form-editor-italic: 'Cursiva'

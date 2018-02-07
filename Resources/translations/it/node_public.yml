@@ -1,3 +1,4 @@
+---
 node-footer-about: 'Social network per cofinanziare e collaborare con progetti creativi che sostengono il commons <a href="/project/create">¿ Hai un progetto con DNA aperto?</a>'
 node-footer-help-what: 'Cos''è il Crowdfunding'
 node-footer-help-why: 'In cosa si distingue Goteo'
@@ -6,10 +7,10 @@ node-footer-investors-invest: 'Come sostenere un progetto'
 node-footer-investors-payment: 'Come funzionano i pagamenti '
 node-footer-title-creators: Promotori
 node-footer-title-help: 'Hai bisogno di aiuto?'
-node-footer-title-investors: 'Co-finanziatori '
+node-footer-title-investors: Co-finanziatori 
 node-footer-title-social: Seguici
 node-header-sponsorby: 'Con il sostegno di:'
-node-home-calls-headers: 'Call '
+node-home-calls-headers: Call 
 node-home-posts-header: Novità
 node-side-searcher-bycategory: 'Per categoria'
 node-side-searcher-byreward: 'Per beneficio'
@@ -17,14 +18,14 @@ node-side-searcher-outdate: Urgenti
 node-side-searcher-popular: Popolari
 node-side-searcher-promote: Rievanti
 node-side-searcher-recent: Recenti
-node-side-searcher-success: 'Di successo'
+node-side-searcher-success: Di successo
 node-side-sumcalls-budget: 'Totale (tutte le campagne)'
 node-side-sumcalls-calls: Aperto
-node-side-sumcalls-campaigns: 'Attivo '
+node-side-sumcalls-campaigns: Attivo 
 node-side-sumcalls-header: 'Cloud<br />funding'
 node-side-sumcalls-rest: 'Resta da distribuire'
 node-side-summary-active: Attivi
 node-side-summary-amount: 'Quantità di denaro raccolto'
-node-side-summary-investors: 'Co-finanziatori '
-node-side-summary-success: 'Di successo'
-node-side-summary-supporters: 'Collaborazioni '
+node-side-summary-investors: Co-finanziatori 
+node-side-summary-success: Di successo
+node-side-summary-supporters: Collaborazioni 
