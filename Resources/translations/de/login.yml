@@ -1,10 +1,11 @@
-﻿auth-access-forbbiden: 'Sie haben keine Berechtigung hier zugreifen!'
+---
+auth-access-forbbiden: 'Sie haben keine Berechtigung hier zugreifen!'
 error-register-userid: 'Geben Sie Ihren Benutzernamen ein'
 login-access-button: Eingabe
 login-access-header: 'Benutzer registrieren'
 login-access-password-field: Passwort
 login-access-username-field: 'Benutzername'
-login-fail: Fehler
+login-fail: 'Fehler'
 login-leave-button: 'Konto schliessen'
 login-leave-header: 'Konto schliessen'
 login-leave-message: 'Hinterlasse eine Nachricht'
@@ -12,17 +13,17 @@ login-new-user-label: 'Neuen Benutzer anlegen?'
 login-oneclick-header: '1-Klick-Anmeldung'
 login-recover-button: Wiederherstellen
 login-recover-email-field: 'Account Email-Adresse'
-login-recover-header: "Passwort wiederherstellen\r\n Tragen Sie in diesem Feld dieselbe Email ein, die Sie bei der Anmeldung auf der Plattform verwendet haben. Sie werden die erforderlichen Informationen zum Wiederherstellen des Passwortes erhalten. Häufig ist es dieselbe Email, die mit Ihren sozialen Natzwerken verknüpft ist.\r\n Achtung: Sie werden eine Email mit einem Direktlink zum Ändern des Passwortes auf dieselbe Adresse erhalten.\r\n Wenn Sie keine Email erhalten, stellen Sie sicher, dass sich die Email nicht in Ihrem Spam-Ordner befindet. Wenn Sie mehrere Male geklickt haben, um ein neues Passwort zu erhalten, haben Sie gegebenenfalls einen automatisch generierten Link für jede Anforderung erhalten. Verwenden Sie den Link in der letzten Email, die Sie erhalten haben.\r\n Wenn Sie sich nicht mehr an die Email-Adresse erinnern, die mit Ihrem Konto verknüpft ist, können Sie uns zur Lösung des Problems kontaktieren. Bitte vergessen Sie dabei nicht, uns einige Daten mitzuteilen, damit wir Ihr Konto in unserem System finden können (Kompletter Name, Aliasname, Datum der Reistrierung oder Informationen, wenn Sie bereits ein bestimmtes Projekt unterstützt haben)."
+login-recover-header: "Passwort wiederherstellen\\r\n Tragen Sie in diesem Feld dieselbe Email ein, die Sie bei der Anmeldung auf der Plattform verwendet haben. Sie werden die erforderlichen Informationen zum Wiederherstellen des Passwortes erhalten. Häufig ist es dieselbe Email, die mit Ihren sozialen Natzwerken verknüpft ist.\\r\n Achtung: Sie werden eine Email mit einem Direktlink zum Ändern des Passwortes auf dieselbe Adresse erhalten.\\r\n Wenn Sie keine Email erhalten, stellen Sie sicher, dass sich die Email nicht in Ihrem Spam-Ordner befindet. Wenn Sie mehrere Male geklickt haben, um ein neues Passwort zu erhalten, haben Sie gegebenenfalls einen automatisch generierten Link für jede Anforderung erhalten. Verwenden Sie den Link in der letzten Email, die Sie erhalten haben.\\r\n Wenn Sie sich nicht mehr an die Email-Adresse erinnern, die mit Ihrem Konto verknüpft ist, können Sie uns zur Lösung des Problems kontaktieren. Bitte vergessen Sie dabei nicht, uns einige Daten mitzuteilen, damit wir Ihr Konto in unserem System finden können (Kompletter Name, Aliasname, Datum der Reistrierung oder Informationen, wenn Sie bereits ein bestimmtes Projekt unterstützt haben)."
 login-recover-label: 'Password vergessen?'
 login-recover-link: 'Passwort wiederherstellen'
-login-recover-modal-button: 'Senden'
+login-recover-modal-button: Senden
 login-recover-modal-sucess: 'Fertig! - Wir haben Ihnen eine Email mit einem Link zum Rücksetzen Ihres Passwortes an %s geschickt.'
 login-recover-modal-text: 'Geben Sie die bei der Registrierung verwendete Email-Adresse ein und wir senden Ihnen einen Link zum Rücksetzen Ihres Passwortes.'
 login-recover-username-field: 'Benutzername'
 login-register-button: Registrieren
-login-register-confirm_password-field: 'Passwort bestätigen'
 login-register-confirm-field: 'Email-Adresse bestätigen'
-login-register-email-field: 'Email-Adresse'
+login-register-confirm_password-field: 'Passwort bestätigen'
+login-register-email-field: Email-Adresse
 login-register-header: 'Neuer Benutzer'
 login-register-password-field: Passwort
 login-register-password-minlength: 'Mindestens 6 Zeichen'
@@ -32,8 +33,8 @@ login-signin-facebook: 'Anmeldung über Facebook'
 login-signin-google: 'Anmeldung über Google'
 login-signin-linkedin: 'Anmeldung über LinkedIn'
 login-signin-myopenid: 'Zugang mit myOpenID'
-login-signin-openid-go: Los
 login-signin-openid: 'Weitere OpenID Server'
+login-signin-openid-go: Los
 login-signin-twitter: 'Anmeldung über Twitter'
 login-signin-ubuntu: 'Anmeldung über Ubuntu One'
 login-signin-view-more: 'Weitere Anmeldeoptionen'
@@ -43,9 +44,9 @@ oauth-confirm-user: 'Mit existierendem Benutzer verbinden'
 oauth-facebook-access-denied: 'Facebook Zugang verweigert'
 oauth-goteo-openid-sync-password: 'Sie sind dabei, ein bestehendes Goteo-Konto mit einem externen Provider zu verbinden. Das ermöglicht Ihnen, sich bei Goteo mit einem einzigen Klick anzumelden.<br>Dieses Mal müssen Sie Ihr Goteo-Konto Passwort angeben, um Ihre Identität zu bestätigen.'
 oauth-goteo-user-not-exists: 'Dieser Benutzer existiert nicht bei Goteo'
-oauth-goteo-user-password-error: 'Dieses Konto verwendet bereits einen anderen passwortfreien Login-Anbieter.\r\nWenn Sie mehr als einen Login-Anbieter für dieses Konto verwenden möchten, müssen Sie erst ein Passwort einrichten.'
+oauth-goteo-user-password-error: "Dieses Konto verwendet bereits einen anderen passwortfreien Login-Anbieter.\\r\nWenn Sie mehr als einen Login-Anbieter für dieses Konto verwenden möchten, müssen Sie erst ein Passwort einrichten."
 oauth-goteo-user-password-exists: 'Dieser Benutzer existiert bereits bei Goteo'
-oauth-goteo-user-provider-error: "Sie müssen %s verwenden, um den User zu erreichen.\r\n\r\n Wenn Sie mehr als einen Login-Provider für dieses Konto verwenden möchten, müssen Sie zunächst ein Passwort einrichten."
+oauth-goteo-user-provider-error: "Sie müssen %s verwenden, um den User zu erreichen.\\r\n\\r\n Wenn Sie mehr als einen Login-Provider für dieses Konto verwenden möchten, müssen Sie zunächst ein Passwort einrichten."
 oauth-import-about: 'Über Sie'
 oauth-import-facebook: 'Link zu Ihrem Facebook-Konto'
 oauth-import-linkedin: 'Link zu Ihrem LinkedIn-Konto'
@@ -66,3 +67,4 @@ reset-password-new-password: 'Ihr neues Passwort'
 reset-password-old-password: 'Ihr altes Passwort'
 reset-password-save: Speichern
 reset-password-title: 'Neues Passwort erstellen'
+login-alternate-ids: Otras opciones
