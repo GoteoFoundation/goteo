@@ -1,9 +1,11 @@
+---
 mandatory-individual_reward-field-description: 'É obrigado poñer algunha descrición'
 mandatory-individual_reward-field-icon: 'É obrigado seleccionar o tipo de recompensa'
 mandatory-individual_reward-field-name: 'É obrigado poñer a recompensa'
 mandatory-social_reward-field-description: 'É obrigado poñer algunha descrición ó retorno'
 mandatory-social_reward-field-icon: 'É obrigado seleccionar o tipo de retorno'
 mandatory-social_reward-field-name: 'É obrigado especificar o retorno'
+mandatory-social_reward-field-category: 'Es obligatorio especificar el comprimiso social'
 rewards-field-individual_reward-amount: 'Importe'
 rewards-field-individual_reward-description: Descrición
 rewards-field-individual_reward-other: 'Indicar o tipo de recompensa'
@@ -15,10 +17,11 @@ rewards-field-social_reward-license: 'Opcións de licenza'
 rewards-field-social_reward-other: 'Especificar o tipo de retorno'
 rewards-field-social_reward-reward: Retorno
 rewards-field-social_reward-type: 'Tipo de retorno'
+rewards-field-social_reward-url: Url
 rewards-fields-individual_reward-title: 'Recompensas individuais'
 rewards-fields-social_reward-title: 'Retornos colectivos'
 rewards-main-header: 'Retornos e recompensas'
-step-5: Retorno
+step-5: 'Retorno'
 step-rewards: 'Paso: Proxecto / Retornos'
 tooltip-project-individual_reward-amount: 'Importe a cambio do cal pódese obter este tipo de recompensa.'
 tooltip-project-individual_reward-description: 'Explica brevemente en que consistirá a recompensa para quen cofinancie con este importe o proxecto.'
