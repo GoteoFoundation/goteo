@@ -1,0 +1,6 @@
+---
+mailer-baja: '¿No quieres recibir más comunicaciones de Goteo? Puedes dar tu email de baja mediante este <a href="%s">enlace</a>'
+mailer-disclaimer: 'Goteo es una plataforma para apoyar proyectos cívicos, éticos y abiertos de ciudadan@s, emprendedor@s, innovador@s sociales y creativ@s que compartan conocimiento significativo para la sociedad. '
+mailer-sinoves: 'Si no puedes ver este mensaje utiliza este <a href="%s">enlace</a>'
+newsletter-block: '¿No quieres recibir más boletines de Goteo? <br /><a href="%s">Desuscríbete</a>.'
+unsuscribe-request-success: 'Has cancelado tu suscripción a la newsletter.'
