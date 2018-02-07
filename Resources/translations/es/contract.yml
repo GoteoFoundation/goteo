@@ -1,3 +1,4 @@
+---
 contract-accounts_title: 'Cuentas bancarias del proyecto'
 contract-bank_account: 'Cuenta bancaria (código IBAN, formato ESxx xxxx xxxx xxxx xxxx xxxx):'
 contract-bank_owner: 'Titular de la cuenta bancaria:'
@@ -20,8 +21,8 @@ contract-step-documents: Documentación
 contract-step-entity: 'Entidad jurídica'
 contract-step-final: Revisión
 contract-step-promoter: Representante
-guide-contract-accounts: "En este paso debes indicar la cuenta bancaria en la que desearás recibir el ingreso de la recaudación, así como el nombre del titular. Si indicaste una cuenta PayPal, también debes decirnos el nombre del titular de ésta (si tu proyecto forma parte de una convocatoria de Capital Riego no es necesario).\r\n\r\nRecuerda que, a efectos fiscales, recibiréis la recaudación como una donación que hace la Fundación Goteo para el desarrollo del proyecto. Es un ingreso sin IVA y no hay factura, por eso contamos con el contrato firmado al que adjuntaremos el recibo de la transferencia realizada.\r\n\r\n<b>1. Si sois entidades jurídicas:  </b>\r\nLa recaudación tributará en el Impuesto de Sociedades. En el caso de entidades sin ánimo de lucro, para saber si estáis exentas, deberíais consultar a vuestro asesor fiscal porque depende de cada caso.\r\n\r\n<b>2. En el caso de personas físicas: </b>\r\nEl dinero recaudado tributará en el IRPF, y pueden darse dos situaciones:\r\n a/ Que el dinero recaudado sea para llevar a cabo una actividad económica, y estéis dados de alta por ese concepto. Si es así podréis deduciros los gastos generados por el proyecto.\r\n b/ Si no lleváis a cabo una actividad económica o no estáis dados de alta, el dinero recaudado será una ganancia patrimonial neta. En este caso no os podréis deducir los gastos relacionados.\r\n\r\nAl recibir la donación por parte de la Fundación Goteo, entidad que gestiona Goteo, NO estáis sujetos al Impuesto sobre Sucesiones y Donaciones en aplicación del ar. 3 del Reglamento del Impuesto que, entre otras, declara no sujetas \"las subvenciones, becas, premios, primas, gratificaciones y auxilios que se concedan por Entidades públicas o privadas con fines benéficos, docentes, culturales, deportivos o de acción social\"."
-guide-contract-documents: "Es obligatorio subir los documentos que acrediten los datos introducidos y que te detallamos a continuación:\r\n- EN TODOS LOS CASOS, copia del DNI/NIE de la persona que firma (sea en tu propio nombre o en nombre de una entidad)\r\n- EN TODOS LOS CASOS, copia de algún documento en que aparezca (completo) el número de cuenta corriente (libreta bancaria, recibos...)\r\n- sólo en el caso de que el contrato sea con una EMPRESA, FUNDACIÓN o ASOCIACIÓN: ADEMÁS, copia del CIF y copia del documento acreditativo de apoderamiento (acta de reunión de la asociación donde conste claramente el nombre y cargo de la persona que firma el contrato, u hoja de las escrituras de la empresa, o carta de poderes donde se manifiesta que la persona que firma puede hacerlo representando a la entidad) "
+guide-contract-accounts: "En este paso debes indicar la cuenta bancaria en la que desearás recibir el ingreso de la recaudación, así como el nombre del titular. Si indicaste una cuenta PayPal, también debes decirnos el nombre del titular de ésta (si tu proyecto forma parte de una convocatoria de Capital Riego no es necesario).\\r\n\\r\nRecuerda que, a efectos fiscales, recibiréis la recaudación como una donación que hace la Fundación Goteo para el desarrollo del proyecto. Es un ingreso sin IVA y no hay factura, por eso contamos con el contrato firmado al que adjuntaremos el recibo de la transferencia realizada.\\r\n\\r\n<b>1. Si sois entidades jurídicas:  </b>\\r\nLa recaudación tributará en el Impuesto de Sociedades. En el caso de entidades sin ánimo de lucro, para saber si estáis exentas, deberíais consultar a vuestro asesor fiscal porque depende de cada caso.\\r\n\\r\n<b>2. En el caso de personas físicas: </b>\\r\nEl dinero recaudado tributará en el IRPF, y pueden darse dos situaciones:\\r\n a/ Que el dinero recaudado sea para llevar a cabo una actividad económica, y estéis dados de alta por ese concepto. Si es así podréis deduciros los gastos generados por el proyecto.\\r\n b/ Si no lleváis a cabo una actividad económica o no estáis dados de alta, el dinero recaudado será una ganancia patrimonial neta. En este caso no os podréis deducir los gastos relacionados.\\r\n\\r\nAl recibir la donación por parte de la Fundación Goteo, entidad que gestiona Goteo, NO estáis sujetos al Impuesto sobre Sucesiones y Donaciones en aplicación del ar. 3 del Reglamento del Impuesto que, entre otras, declara no sujetas \"las subvenciones, becas, premios, primas, gratificaciones y auxilios que se concedan por Entidades públicas o privadas con fines benéficos, docentes, culturales, deportivos o de acción social\"."
+guide-contract-documents: "Es obligatorio subir los documentos que acrediten los datos introducidos y que te detallamos a continuación:\\r\n- EN TODOS LOS CASOS, copia del DNI/NIE de la persona que firma (sea en tu propio nombre o en nombre de una entidad)\\r\n- EN TODOS LOS CASOS, copia de algún documento en que aparezca (completo) el número de cuenta corriente (libreta bancaria, recibos...)\\r\n- sólo en el caso de que el contrato sea con una EMPRESA, FUNDACIÓN o ASOCIACIÓN: ADEMÁS, copia del CIF y copia del documento acreditativo de apoderamiento (acta de reunión de la asociación donde conste claramente el nombre y cargo de la persona que firma el contrato, u hoja de las escrituras de la empresa, o carta de poderes donde se manifiesta que la persona que firma puede hacerlo representando a la entidad) "
 guide-contract-entity: 'En este paso debes rellenar los datos de la entidad a la que representas. Si firmarás el contrato en tu propio nombre debes volver al primer paso (''Representante'') e indicarlo adecuadamente.'
 guide-contract-final: 'Verificar los datos introducidos. Si no hay errores, se puede cerrar para que lo revisemos. Si hay errores, se deben corregir.'
 guide-contract-no_entity: 'Como promotor en propio nombre y derecho no tienes nada para rellenar en este paso.'
@@ -65,12 +66,9 @@ tooltip-project-contract_entity: 'Selecciona "En tu propio nombre y derecho" en 
 tooltip-project-contract_name: 'Debes escribir tu nombre y tus dos apellidos reales.Ten en cuenta que figurarás como responsable del proyecto. Tu nombre y tu firma serán las que constarán en el contrato.'
 tooltip-project-contract_nif: 'Tu número de NIF o NIE con cifras y letra.'
 validate-project-value-contract_nif: 'El NIF no es correcto.'
-
 contract-admin-fields: 'Campos administrativos (a rellenar por equipo Goteo)'
 contract-funding-goal: 'Objetivos de financiación'
 contract-committed-return: 'Retornos comprometidos'
-
-
 contract-final-name: 'Nombre y apellidos (propios o representante)'
 contract-final-nif: 'NIF (propio o representante)'
 contract-final-office: 'Cargo en la asociación o entidad mercantil (solo si representa a una asociación o entidad mercantil)'
@@ -79,7 +77,6 @@ contract-final-location: 'Municipio (propio o representante)'
 contract-final-region: 'Provincia (propio o representante)'
 contract-final-zipcode: 'Código postal (propio o representante)'
 contract-final-country: 'País (propio o representante)'
-
 contract-final-entity_name: 'Nombre o razón social (de la asociación o entidad mercantil)'
 contract-final-entity_cif: 'CIF (de la asociación o entidad mercantil)'
 contract-final-entity_address: 'Domicilio social (de la asociación o entidad mercantil)'
@@ -87,21 +84,17 @@ contract-final-entity_location: 'Municipio (de la asociación o entidad mercanti
 contract-final-entity_region: 'Provincia (de la asociación o entidad mercantil)'
 contract-final-entity_zipcode: 'Código postal (de la asociación o entidad mercantil)'
 contract-final-entity_country: 'País (de la asociación o entidad mercantil)'
-
 contract-final-reg_name: 'Registro en el que se inscribió la entidad/asociación'
 contract-final-reg_date: 'Fecha en que se otorgó la escritura pública de la empresa (solo si entidad mercantil)'
 contract-final-reg_number: 'Número de Registro (si asociación o entidad mercantil)'
 contract-final-reg_id: 'Número del protocolo del notario (solo si entidad mercantil)'
 contract-final-reg_idname: 'Nombre  del notario que  otorgó la escritura pública de la empresa (si entidad mercantil)'
 contract-final-reg_idloc: 'Ciudad de actuación del notario (solo si entidad mercantil)'
-
 contract-final-paypal: 'Cuenta PayPal del proyecto'
 contract-final-paypal_owner: 'Titular de la cuenta PayPal'
 contract-final-bank: 'Cuenta bancaria del proyecto'
 contract-final-bank_owner: 'Titular de la cuenta bancaria'
-
 contract-final-close: 'Cerrar datos y procesar el contrato'
-
 contract-validation-ok: El contrato parece correcto. Por favor, revisa los datos y finaliza el proceso cerrando los datos. '
 contract-non-available: 'El contrato todavía no está disponible!'
 contract-validation-errors: El contrato todavía no está completado!'
@@ -110,5 +103,4 @@ contract-validation-error-promoter_nif: 'El NIF no es correcto.'
 contract-validation-error-entity: 'Faltan campos para llenar en la entidad'
 contract-validation-error-accounts: 'Faltan campos para llenar en las cuentas'
 contract-validation-error-documentos: 'Falta documentación'
-
 contract-already-processed: 'El contrato ya ha sido procesado.'
