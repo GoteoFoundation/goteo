@@ -16,9 +16,6 @@ matcher-apply-discard-sure: 'Aquest projecte ja no participarà de la convocatò
 matcher-duplicateinvest-max_amount_per_project: 'Quantitat màxima que es donarà per projecte'
 matcher-duplicateinvest-max_amount_per_invest: 'Quantitat màxima per aportació'
 matcher-duplicateinvest-max_invests_per_user: 'Número màxim d''aportacions por usuari que es multiplicaran'
-matcher-duplicateinvest-rules: >
-  Aquest processador multiplica x2 qualsevol aportació de qualsevol usuari
-  El total màxim por projecte, la quantitat màxima por aportació i el número màxim d'aportacions per usuari es poden configurar
 matcher-drop: 'Capital matchfunding'
 matcher-feed-invest: 'Ha aportat %AMOUNT% de %DROP% al projecte %PROJECT% a través de la convocatòria "match" %MATCHER%'
 matcher-feed-invest-by: 'Aportació matchfunding %s'
