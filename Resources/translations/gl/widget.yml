@@ -1,3 +1,4 @@
+---
 call-tagmark-3: 'Convocatoria aberta'
 call-tagmark-4: 'Campaña activa!'
 call-tagmark-5: 'Campaña finalizada'
@@ -5,5 +6,10 @@ call-tagmark-6: 'Convocatoria archivada'
 regular-fail_mark: Archivado...
 regular-gotit_mark: Cofinanciado!
 regular-keepiton_mark: 'A polo óptimo'
+regular-oneround_mark: 'Ronda única'
 regular-onrun_mark: 'Imos aló!'
 regular-success_mark: 'Caso de éxito!'
+call-tagmark-open: 'Convocatoria abierta'
+call-tagmark-active: 'Campaña activa!'
+call-tagmark-completed: 'Campaña finalizada'
+call-tagmark-archived: 'Convocatoria archivada'
