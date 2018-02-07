@@ -1,4 +1,5 @@
-﻿tooltip-project-cost-type-material: 'Benötigte Materialien für das Projekt, wie bspw. Werkzeuge, Büromaterial, Computer Equipement, etc.'
+---
+tooltip-project-cost-type-material: 'Benötigte Materialien für das Projekt, wie bspw. Werkzeuge, Büromaterial, Computer Equipement, etc.'
 tooltip-project-cost-type-structure: 'finanzieller Aufwand für grundlegend benötigte Infrastruktur für das Projekt, wie bspw. Büromiete oder Lagerkosten, Trtansportlogistik oder ähnliche Ausgaben.'
 tooltip-project-cost-type-task: 'Aufgaben, bei denen sich Unterstützer/innen mit ihrem Wissen oder Fähigkeiten an der Realisierung des Projektes oder eines Teils davon beteiligen können.'
 tooltip-project-support-type-lend: 'Zeitlich begrenzte Ausleihe von Werkzeug, Material, Infrastruktur oder Raum für das Projekt. Das kann auch dauerhafte Ausleihe – sprich Geschenke – beinhalten :-)'
