@@ -1,3 +1,4 @@
+---
 ID_DEL_TEXTO: 'Texto ID_DEL_TEXTO'
 admin_no_permission: 'No tienes permisos para acceder a <strong>%s</strong>'
 bazar-description-seo: 'Regalos solidarios crowdfunding en Goteo.org.'
@@ -35,18 +36,17 @@ explain-project-progress: 'Este gráfico explica de un modo visual el nivel de d
 fancybox: 'Texto fancybox'
 goteo-return-button: 'Volver a Goteo'
 guide-dashboard-user-access: 'Desde aquí puedes modificar los datos con que accedes a tu cuenta de Goteo.'
-guide-dashboard-user-personal: "Sólo debes cumplimentar estos datos si has creado un proyecto y quieres que sea cofinanciado y apoyado mediante Goteo.\r\n\r\nLa información de este apartado es necesaria para contactarte en caso de que obtengas la financiación requerida, y que así se pueda efectuar el ingreso."
+guide-dashboard-user-personal: "Sólo debes cumplimentar estos datos si has creado un proyecto y quieres que sea cofinanciado y apoyado mediante Goteo.\\r\n\\r\nLa información de este apartado es necesaria para contactarte en caso de que obtengas la financiación requerida, y que así se pueda efectuar el ingreso."
 guide-project-comment: guide-project-comment
 guide-project-contract-information: 'La información de este apartado es necesaria para contactarte durante la campaña y si obtienes la financiación requerida, para así poder efectuar el ingreso una vez finalice. Es importante tener en cuenta que quien impulse la iniciativa y firme el contrato (en caso de éxito de la campaña) debe ser la misma persona/entidad que reciba el dinero. En el caso de entidades, se recomienda que quien represente a la organización pueda luego acreditarlo formalmente (por ejemplo a través de los estatutos o de un certificado del secretario con el visto bueno del presidente, en el caso de asociaciones). Esta información completa so os requerirá una vez finalizada la primera ronda en caso de éxito.'
-guide-project-costs: "<strong>En esta sección debes elaborar un pequeño presupuesto basado en los costes que calcules va a tener la realización del proyecto.</strong><br><br>\r\nDebes especificar según tareas, infraestructura o materiales. Intenta ser realista en los costes y explicar brevemente por qué necesitas cubrir cada uno de ellos. Ten en cuenta que por norma general, la mayor parte del proyecto deberá ser realizado directamente por la persona o equipo que promueve el proyecto, y no subcontratado a terceros. En el cálculo también debes tener en cuenta las comisiones de prestación de servicios de Goteo y de transacción, que suman entre un 4'8% y aprox. un 6%, dependiendo de si activáis la opción de pago vía Paypal o no (<a href=\"/faq/sponsor#q98\" target=\"new\">+ info en nuestras FAQ</a>).<br><br>\r\n<strong>Muy importante</strong>: En Goteo diferenciamos entre costes imprescindibles y costes adicionales. Los primeros deben lograrse en su totalidad para poder obtener la financiación, mientras que los segundos se solicitan y obtienen directamente en una ronda posterior, una vez está en marcha el proyecto, para poder cubrir costes de optimización del mismo (difusión, diseño, alcance, más unidades, etc). Es recomendable que estos costes adicionales no superen la mitad de los costes totales del proyecto.<br>\r\nEn caso de que quieras que tu campaña sea más breve, de una sola ronda a “todo o nada”, puedes indicarlo marcando la casilla correspondiente, aunque el cálculo de costes debe ser el mismo. "
-guide-project-description: "<strong>Éste es el apartado donde explicar con detalle los aspectos conceptuales del proyecto. </strong><br><br>Es lo primero con lo que cualquier usuario de la red se encontrará, así que cuida la redacción y evita las faltas de ortografía. Verás que hay campos obligatorios como incluir un vídeo o subir imágenes. Esto es así porque los consideramos imprescindibles para empezar con éxito una campaña de recaudación de fondos mediante Goteo.<br><br>\r\nTen en cuenta que lo más valorado en Goteo es: la información o conocimiento libre de interés general que tu proyecto aportará a la comunidad,  la originalidad, aspirar a resolver una demanda social,  el potencial para atraer a una comunidad amplia de personas interesadas, dejar claro que el equipo promotor posee las capacidades y experiencia para poder llevarlo a buen puerto. Así que no pierdas de vista informar sobre esos aspectos."
+guide-project-costs: "<strong>En esta sección debes elaborar un pequeño presupuesto basado en los costes que calcules va a tener la realización del proyecto.</strong><br><br>\\r\nDebes especificar según tareas, infraestructura o materiales. Intenta ser realista en los costes y explicar brevemente por qué necesitas cubrir cada uno de ellos. Ten en cuenta que por norma general, la mayor parte del proyecto deberá ser realizado directamente por la persona o equipo que promueve el proyecto, y no subcontratado a terceros. En el cálculo también debes tener en cuenta las comisiones de prestación de servicios de Goteo y de transacción, que suman entre un 4'8% y aprox. un 6%, dependiendo de si activáis la opción de pago vía Paypal o no (<a href=\"/faq/sponsor#q98\" target=\"new\">+ info en nuestras FAQ</a>).<br><br>\\r\n<strong>Muy importante</strong>: En Goteo diferenciamos entre costes imprescindibles y costes adicionales. Los primeros deben lograrse en su totalidad para poder obtener la financiación, mientras que los segundos se solicitan y obtienen directamente en una ronda posterior, una vez está en marcha el proyecto, para poder cubrir costes de optimización del mismo (difusión, diseño, alcance, más unidades, etc). Es recomendable que estos costes adicionales no superen la mitad de los costes totales del proyecto.<br>\\r\nEn caso de que quieras que tu campaña sea más breve, de una sola ronda a “todo o nada”, puedes indicarlo marcando la casilla correspondiente, aunque el cálculo de costes debe ser el mismo. "
+guide-project-description: "<strong>Éste es el apartado donde explicar con detalle los aspectos conceptuales del proyecto. </strong><br><br>Es lo primero con lo que cualquier usuario de la red se encontrará, así que cuida la redacción y evita las faltas de ortografía. Verás que hay campos obligatorios como incluir un vídeo o subir imágenes. Esto es así porque los consideramos imprescindibles para empezar con éxito una campaña de recaudación de fondos mediante Goteo.<br><br>\\r\nTen en cuenta que lo más valorado en Goteo es: la información o conocimiento libre de interés general que tu proyecto aportará a la comunidad,  la originalidad, aspirar a resolver una demanda social,  el potencial para atraer a una comunidad amplia de personas interesadas, dejar claro que el equipo promotor posee las capacidades y experiencia para poder llevarlo a buen puerto. Así que no pierdas de vista informar sobre esos aspectos."
 guide-project-images: 'Éste es el apartado para añadir las imágenes del proyecto. Pueden ser esquemas, pantallazos, fotografías, ilustraciones, storyboards, etc. Recuerda que deben ser de tu autoría, o bien cumpliendo con una licencia que permita su reutilización. ¡Puedes subir tantas como quieras!'
 guide-project-rewards: "<strong>En este apartado debes establecer qué ofrece el proyecto a cambio a quienes lo apoyen.</strong>"
 guide-project-support: guide-project-support
 guide-project-supports: '<strong>En este apartado puedes especificar qué otras ayudas, aparte de donaciones, pueden ser necesarias para llevar a cabo el proyecto.</strong><br><br> Pueden ser tareas o acciones a cargo de otras personas (traducciones, gestiones, difusión, etc), o bien préstamos específicos (de material, transporte, hardware, etc).'
-guide-project-updates: "<b>Es muy importante que los proyectos mantengan informados a sus cofinanciadores y el resto de personas potencialmente interesadas sobre cómo avanza su campaña. Desde este apartado puedes publicar mensajes de actualización sobre el proyecto, como una especie de blog público.</b>\r\n\r\nEn Goteo además, una vez se han logrado los fondos mínimos, para la segunda ronda de cofinanciación es crítico explicar regularmente cómo ha arrancado la producción, avances, problemas, etc que permitan la mayor transparencia posible y saber cómo evoluciona el inicio del proyecto, para así tratar de generar más interés y comunidad en torno al mismo."
+guide-project-updates: "<b>Es muy importante que los proyectos mantengan informados a sus cofinanciadores y el resto de personas potencialmente interesadas sobre cómo avanza su campaña. Desde este apartado puedes publicar mensajes de actualización sobre el proyecto, como una especie de blog público.</b>\\r\n\\r\nEn Goteo además, una vez se han logrado los fondos mínimos, para la segunda ronda de cofinanciación es crítico explicar regularmente cómo ha arrancado la producción, avances, problemas, etc que permitan la mayor transparencia posible y saber cómo evoluciona el inicio del proyecto, para así tratar de generar más interés y comunidad en torno al mismo."
 guide-project-invests: 'Desde este apartado podrás gestionar a tus cofinanciadores, las recompenses que han escogido y también ponerte en contacto con ellos si lo consideras necesario.'
-
 header-about-side: 'Lo que nos mueve'
 home-posts-header: Novedades
 horizontal-project-investors: 'cofinanciadores'
@@ -68,7 +68,7 @@ profile-about-header: 'Sobre mí'
 project-invest-total: 'Total de aportaciones'
 project-messages-send_message-your_answer: 'Escribe aquí tu respuesta'
 project-messages-send_message_support-your_answer: 'Escribe aquí tu mensaje de colaboración para %s'
-regular-add: 'Nuevo registro'
+regular-add: Nuevo registro
 regular-admin_board: 'Panel admin'
 regular-allsome: 'todos/algunos de'
 regular-anonymous: Anónimo
@@ -84,8 +84,8 @@ regular-content: Contenido
 regular-continue-question: '¿Continuar?'
 regular-create: 'Crea un proyecto'
 regular-date: Fecha
-regular-date_in: 'Fecha entrada'
-regular-date_out: 'Fecha salida'
+regular-date_in: Fecha entrada
+regular-date_out: Fecha salida
 regular-days: días
 regular-delete: Borrar
 regular-description: Descripción
@@ -149,7 +149,7 @@ regular-projects: proyectos
 regular-published_no: Borrador
 regular-published_yes: Publicado
 regular-read_more: 'Leer más'
-regular-recent-activity: 'Actividad reciente'
+regular-recent-activity: Actividad reciente
 regular-recomended_by: 'Proyecto recomendado por:'
 regular-review_board: 'Panel revisor'
 regular-round: 'ª ronda'
@@ -187,21 +187,9 @@ regular-web: Web
 regular-weeks: semanas
 regular-year: Año
 regular-yes: Sí
-regular-add: Nuevo registro
 regular-name: Nombre
-regular-description: Descripción
 regular-image: Imagen
 regular-images: Imágenes
-regular-content: Contenido
-regular-url: Enlace
-regular-date: Fecha
-regular-date_in: Fecha entrada
-regular-date_out: Fecha salida
-regular-schedule: Horario
-regular-template: Plantilla
-regular-matchfunding: 'Match funding'
-regular-recent-activity: Actividad reciente
-regular-message-clipboard-fail: 'Selecciona y copia este enlace'
 regular-load-more: 'Cargar más'
 regular-analytics: 'Google Analytics'
 regular-facebook-pixel: 'Facebook Pixel'
@@ -237,5 +225,5 @@ user-changeemail-invalid-token: 'Esta acción ha caducado o bien ya se ha ejecut
 user-changeemail-fail: 'Error al cambiar el email'
 user-register-success: 'El usuario se ha registrado correctamente. A continuación recibirás un mensaje de correo para activarlo.'
 validate-project-social_rewards: 'Es obligatorio indicar como mínimo un retorno colectivo '
-validate-project-total-costs: "El coste óptimo no puede superar en más de un 50% al coste mínimo. O subes los costes imprescindibles o bajas los costes adicionales.\r\n"
+validate-project-total-costs: "El coste óptimo no puede superar en más de un 50% al coste mínimo. O subes los costes imprescindibles o bajas los costes adicionales.\\r\n"
 user-promoter: 'El usuario impulsor'
