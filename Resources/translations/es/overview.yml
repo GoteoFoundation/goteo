@@ -1,3 +1,4 @@
+---
 images-main-header: 'Imágenes del proyecto'
 mandatory-project-field-about: 'Es obligatorio explicar las características básicas del proyecto'
 mandatory-project-field-category: 'Es obligatorio elegir al menos una categoria para el proyecto.'
@@ -72,7 +73,7 @@ tooltip-project-social-description: 'Explica en que consiste el compromiso socia
 validate-project-field-about: 'La explicación del proyecto es demasiado corta'
 validate-project-field-currently: 'Indica el estado del proyecto para mejorar la valoración del mismo, de cara a determinar si publicarlo en Goteo.'
 validate-project-field-description: 'La descripción del proyecto es demasiado corta'
-validate-project-value-description: "La descripción del proyecto es demasiado corta\t"
+validate-project-value-description: "La descripción del proyecto es demasiado corta\\t"
 validate-project-value-keywords: 'Indica un mínimo de 5 palabras clave del proyecto para mejorar la valoración del mismo, de cara a determinar si publicarlo en Goteo.'
 overview-field-execution-plan: 'Plan de ejecución'
 tooltip-project-execution-plan: 'Explica tu plan de ejecución'
