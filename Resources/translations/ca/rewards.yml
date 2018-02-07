@@ -1,9 +1,11 @@
+---
 mandatory-individual_reward-field-description: 'És obligatori posar alguna descripció'
 mandatory-individual_reward-field-icon: 'És obligatori seleccionar el tipus de recompensa'
 mandatory-individual_reward-field-name: 'És obligatori posar la recompensa'
 mandatory-social_reward-field-description: 'És obligatori posar alguna descripció al retorn'
 mandatory-social_reward-field-icon: 'És obligatori seleccionar el tipus de retorn'
 mandatory-social_reward-field-name: 'És obligatori especificar el retorn'
+mandatory-social_reward-field-category: 'Es obligatorio especificar el comprimiso social'
 rewards-field-individual_reward-amount: 'Import'
 rewards-field-individual_reward-description: Descripció
 rewards-field-individual_reward-other: 'Especifica el tipus de recompensa'
@@ -19,7 +21,7 @@ rewards-field-social_reward-url: URL
 rewards-fields-individual_reward-title: 'Recompenses individuals'
 rewards-fields-social_reward-title: 'Retorns col·lectius'
 rewards-main-header: 'Recompenses'
-step-5: Recompenses
+step-5: 'Recompenses'
 step-rewards: 'Pas: Projecte / Recompenses'
 tooltip-project-individual_reward-amount: 'Import a canvi del que es pot obtenir aquest tipus de recompensa. '
 tooltip-project-individual_reward-description: 'Explica breument en què consistirà la recompensa pels qui cofinancin amb aquest import el projecte.'
