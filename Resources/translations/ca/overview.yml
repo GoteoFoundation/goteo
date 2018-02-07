@@ -1,3 +1,4 @@
+---
 images-main-header: 'Imatges del projecte'
 mandatory-project-field-about: 'És obligatori explicar les característiques bàsiques del projecte'
 mandatory-project-field-category: 'És obligatori triar almenys una categoria pel projecte.'
@@ -14,7 +15,7 @@ overview-field-categories: Categories
 overview-field-currency: 'Divisa original'
 overview-field-currently: 'Estat actual'
 overview-field-description: 'Breu descripció'
-overview-field-goal: Objectius
+overview-field-goal: 'Objectius'
 overview-field-main-gallery: Galeria principal
 overview-field-image_gallery: 'Imatges actuals'
 overview-field-image_upload: 'Pujar una imatge (2MB max.)'
@@ -24,10 +25,10 @@ overview-field-media: 'Vídeo de presentació'
 overview-field-media_preview: 'Vista prèvia'
 overview-field-name: 'Títol del projecte'
 overview-field-options-currently_avanzado: Avançat
-overview-field-options-currently_finalizado: 'Finalitzat '
+overview-field-options-currently_finalizado: Finalitzat 
 overview-field-options-currently_inicial: Inicial
 overview-field-options-currently_medio: Mitjà
-overview-field-options-scope_global: 'Global '
+overview-field-options-scope_global: Global 
 overview-field-options-scope_local: Local
 overview-field-options-scope_nacional: Nacional
 overview-field-options-scope_regional: Regional
@@ -39,6 +40,8 @@ overview-field-scope: 'Abast del projecte'
 overview-field-subtitle: 'Subtítol'
 overview-field-usubs: 'Carregar amb Universal Subtitles'
 overview-field-video: 'Vídeo addicional sobre motivació'
+overview-field-social-category: 'Compromís social'
+overview-field-social-description: 'Descripció compromís social'
 overview-fields-images-title: 'Imatges del projecte'
 overview-main-header: 'Descripció del projecte'
 step-3: Descripció
@@ -65,12 +68,13 @@ tooltip-project-reward: 'Aquí expliquem tot allò bo que té en quant a recompe
 tooltip-project-subtitle: 'Descriu el teu projecte en 140 caràcters com a màxim de forma clara i concisa. Aquest text es farà servir per difondre en xarxes socials.'
 tooltip-project-usubs: 'Marca la casella en cas que hagis subtitulat a altres idiomes el vídeo mitjançant Universal Subtitles: http://www.universalsubtitles.org/'
 tooltip-project-video: 'Considera aquí la possibilitat de publicar i enllaçar un vídeo (a Youtube o Vimeo) on expliquis breument a la càmera el perquè del teu projecte. Es tracta de quelcom que pugui complementar el vídeo principal, amb una persona que transmeti la seva necessitat o originalitat, de la manera més directa possible. Si et dóna tall parlar a càmera, també pot ser alguna persona que coneixes i segueix el projecte o la idea i pugui fer aquesta aportació com a "fan". L''empatia i necessitat de veure algú a l''altre costat del projecte és molt important para determinat tipus de cofinançadors.'
+tooltip-project-social-category: 'Selecciona el teu compromís social'
+tooltip-project-social-description: 'Explica amb poques paraules en què consisteix aquest compromís social'
 validate-project-field-about: 'L''explicació del projecte és massa curta'
 validate-project-field-currently: 'Indica l''estat del projecte per millorar-ne la seva valoració, de cara a determinar si publicar-ho a Goteo.'
 validate-project-field-description: 'La descripció del projecte és massa curta'
-validate-project-value-description: 'La descripció del projecte és massa curta '
+validate-project-value-description: "La descripció del projecte és massa curta "
 validate-project-value-keywords: 'Indica un mínim de 5 paraules clau del projecte per millorar-ne la seva valoració, de cara a determinar si publicar-ho a Goteo.'
-
 overview-field-execution-plan: 'Pla d''execució'
 tooltip-project-execution-plan: 'Explica el teu pla d''execució'
 tooltip-project-execution-plan-url: 'Url amb el teu model de sostenibilitat pla d''execució'
@@ -78,8 +82,3 @@ overview-field-sustainability-model: 'Model de sostenibilitat'
 overview-field-sustainability-model-url: 'URL del teu business canvas'
 tooltip-project-sustainability-model: 'Explica el model de sostenibilitat del teu projecte'
 tooltip-project-sustainability-model-url: 'Afegeix una url amb teu <a href="https://canvanizer.com/new/business-model-canvas" target="_blank">business canvas</a>'
-
-overview-field-social-category: 'Compromís social'
-overview-field-social-description: 'Descripció compromís social'
-tooltip-project-social-category: 'Selecciona el teu compromís social'
-tooltip-project-social-description: 'Explica amb poques paraules en què consisteix aquest compromís social'
