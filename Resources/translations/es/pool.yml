@@ -1,3 +1,4 @@
+---
 landing-calculate-button: Calcular
 landing-donor-button: Donar
 landing-error-zero: 'La cantidad a aportar debe ser mayor de 0'
@@ -10,7 +11,7 @@ landing-regular-invest: Aportación
 landing-spread: 'Calcula tu desgravación fiscal en Goteo! #mojarsedesgrava'
 landing-spread-title: 'Difunde las ventajas fiscales de Goteo!'
 landing-stories-title: 'Gracias a tu aportación se financian iniciativas como:'
-landing-subtitle-banner: "<span class=\"line\">Implicándote y comprometiéndote con <strong>proyectos en Goteo</strong><br>\r\n<strong>desgravas</strong> entre un <strong>27,5%</strong> y un <strong>50%</strong> del importe de tu donación</span>"
+landing-subtitle-banner: "<span class=\"line\">Implicándote y comprometiéndote con <strong>proyectos en Goteo</strong><br>\\r\n<strong>desgravas</strong> entre un <strong>27,5%</strong> y un <strong>50%</strong> del importe de tu donación</span>"
 landing-target-description: 'Nuestro objetivo 2015: que <strong> más del 50% de los usuarios de Goteo ejerzan su derecho a obtener beneficios fiscales</strong> sobre sus aportaciones (En 2014 solo un 12% lo hicieron).'
 landing-target-title: 'Objetivo 2015'
 landing-taxes-explain: 'Haz tu aportación ahora con el <strong>monedero Goteo</strong>: una nueva funcionalidad que permite realizar tu donación al momento y decidir posteriormente a qué proyecto destinarla. Obtendrás al instante un certificado que justifica ante Hacienda tu contribución a la Fundación Goteo, entidad sin ánimo de lucro.'
