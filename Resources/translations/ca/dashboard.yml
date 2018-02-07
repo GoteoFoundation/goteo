@@ -47,7 +47,7 @@ dashboard-investors-mail-sent: 'Missatges enviats correctament'
 dashboard-investors-mail-text-required: 'Escriu el missatge'
 dashboard-investors_table-disclaimer: 'Us recordem que, tal com estableix el vostre contracte, les dades descarregables dels finançadors inclosos a l''arxiu es faciliten als únics i exclusius efectes de satisfer als finançadors les recompenses o retorns compromesos en el projecte, així com per informar aquells sobre les novetats, avenços i activitats relacionades amb el projecte, quedant absolutament prohibit l''ús dels mateixos per a qualsevol altra finalitat. L''incompliment d''aquesta obligació faculta la Fundació Fuentes Abiertas, gestora de la plataforma, per emprendre les accions legals corresponents i retirar el projecte de la plataforma'
 dashboard-menu-activity: 'Activitat'
-dashboard-menu-activity-apikey: 'Clave API'
+dashboard-menu-activity-apikey: 'Clau API'
 dashboard-menu-activity-spread: Difusió
 dashboard-menu-activity-summary: Resum
 dashboard-menu-activity-wall: 'El meu mur'
@@ -61,13 +61,13 @@ dashboard-menu-profile-access: 'Dades d''accés'
 dashboard-menu-profile-location: Geolocalització
 dashboard-menu-profile-personal: 'Dades personals'
 dashboard-menu-profile-preferences: 'Preferències'
-dashboard-menu-profile-profile: 'Editar perfil'
+dashboard-menu-profile-profile: 'Edita el Perfil'
 dashboard-menu-profile-public: 'Perfil públic'
 dashboard-menu-projects: 'Projectes'
 dashboard-menu-projects-analytics: Analítica
 dashboard-menu-projects-commons: Retorns
 dashboard-menu-projects-contract: Contracte
-dashboard-menu-projects-social-commitment: 'Compromiso social'
+dashboard-menu-projects-social-commitment: 'Compromís social'
 dashboard-menu-projects-messegers: Participants
 dashboard-menu-projects-preview: 'Pàgina pública'
 dashboard-menu-projects-rewards: Gestió cofinançadors
@@ -81,12 +81,11 @@ dashboard-menu-translates: 'Traduccions'
 dashboard-messegers-mail-sendto: 'Enviat a %s els/les participants:'
 dashboard-my-wallet-available: 'Actualment tens <span class="pool-amount">%s</span> <span class="pool-desc">al teu moneder Goteo</span>'
 dashboard-my-wallet-contribute-button: Repartir
-dashboard-my-wallet-modal-pool-info: "El moneder de Goteo és una funcionalitat de la nostra plataforma que et permet fer la teva donació i decidir posteriorment a quin projecte o projectes aportar-la.<br><p>Les donacions que fas a través de la nostra plataforma són fiscalment desgravables, d'acord amb la Llei 49 / 2002, de 23 de desembre, de règim fiscal de les entitats sense fins lucratius i dels incentius fiscals al mecenatge.</p><p> Quan fas la teva donació, pots descarregar-te un certificat de donació que justifica davant Hisenda la teva contribució a una entitat sense ànim de lucre. Pots accedir a un històric dels certificats disponibles associats a les teves donacions a Goteo des del teu tauler d'usuari, concretament a la secció <a href=\"/dashboard/wallet/certificate\" target=\"_blank\">Certificat de donació</a>.</p><p>NOTA IMPORTANT:  Et recordem que totes les aportacions per les que hagis obtingut un certificat de donació de la nostra Fundació no es retornen. Això vol dir que si has fet una donació vinculada a un projecte concret dins la nostra plataforma i aquest no arriba al seu objectiu mínim de finançament durant la seva campanya, el teu aport anirà al teu moneder però no tornarà al teu compte corrent. Tot i això, podràs destinar aquest import des del teu moneder virtual a Goteo.org a qualsevol altre projecte actiu que desitgis en el moment que tu triïs, sense necessitat de tornar a introduir les dades bancàries o de PayPal.</p>"
 dashboard-my-wallet-pool-info: 'Més informació sobre l''ús del teu moneder'
-dashboard-no-projects: 'No tienes ningún proyecto, puedes crear uno <a href="/project/create">aquí</a>'
+dashboard-no-projects: 'No tens cap projecte, pots crear-ne un <a href="/project/create">aquí</a>'
 dashboard-password-recover-advice: 'Assegura''t de restablir la teva contrasenya'
-dashboard-project-analytics-fail: 'Ha ocurrido un error al guardar tus identificadores para analítica'
-dashboard-project-analytics-ok: 'Tus identificadores para analítica se han guardado correctamente'
+dashboard-project-analytics-fail: 'S''ha produït un error en desar els identificadors per l''analítica'
+dashboard-project-analytics-ok: 'Els teus identificadors per l''analítica s''han desat correctament'
 dashboard-project-blog-fail: 'Contacta amb nosaltres'
 dashboard-project-blog-inactive: 'Ho sentim, la publicació de novetats en aquest projecte està desactivada'
 dashboard-project-blog-empty: 'No hi ha publicacions encara.'
@@ -133,7 +132,7 @@ dashboard-rewards-pending_status: Pendent
 dashboard-rewards-process: 'Aplicar marcats'
 dashboard-rewards-process_alert: 'Ull! En marcar com a complerta no es pot desmarcar. Continuem?'
 dashboard-rewards-resign_filter: Donatius
-dashboard-rewards-resigns: 'Renuncia a la recompensa'
+dashboard-rewards-resigns: 'Renúncia a la recompensa'
 dashboard-rewards-reward_order: 'Per retorn'
 dashboard-rewards-thanks: 'Agraïment / Donatiu'
 dashboard-rewards-user_msg: 'Individual a'
@@ -180,7 +179,7 @@ user-profile-saved: 'Informació de perfil actualitzada'
 user-save-fail: 'Hi ha hagut algun problema en desar les dades'
 dashboard-modal-url-success-msg: 'La URL s''ha actualitzat correctament'
 dashboard-add-new-share-material: 'Nou material'
-dashboard-edit-share-material-url: 'Editar URL'
+dashboard-edit-share-material-url: 'Edita la URL'
 dashboard-modal-edit-url: 'URL on es troba el material compartit'
 dashboard-modal-placeholder-edit-url: 'Url'
 dashboard-new-material-form-success: 'El nou material s''ha afegit correctament'
