@@ -1,3 +1,4 @@
+---
 guide-project-user-information: '    <strong>In deze sectie voeg je informatie toe voor het publieke deel van je gebruikersprofiel. </strong><br><br>Of je nou je iegen project wilt starten of een project van iemand anders steunen, om mee te doen in de Goteo gemeenschap, raden we je aan dat je je presentatietekst zorgvuldig bewerkt, en relevante links toevoegt maar ook een afbeelding waarmee je je indetificeert.'
 profile-field-about: 'Vertel ons iets over jezelf'
 profile-field-avatar_current: 'Je hudige afbeelding'
@@ -5,16 +6,15 @@ profile-field-avatar_upload: 'Upload een afbeelding'
 profile-field-contribution: 'Wat heb je bieden?'
 profile-field-interests: 'Welke soort project motiveert je het meest?'
 profile-field-keywords: 'Mijn steekwoorden'
-profile-field-location: Woonplaats
-profile-field-name: Gebruikersnaam
-profile-field-url: URL
+profile-field-legal-entity-person: 'Persoon'
+profile-field-location: 'Woonplaats'
+profile-field-name: 'Gebruikersnaam'
 profile-field-websites: 'Mijn webpagina''s'
-profile-fields-image-title: Profielafbeelding
+profile-fields-image-title: 'Profielafbeelding'
 profile-fields-social-title: 'Sociale profilen'
 profile-main-header: 'Profie data'
 step-1: Profiel
 step-userProfile: 'Step: Gebruiker / Profiel'
-tooltip-user-about: 'Als sociaal netwerk probeert Goteo bij zoveel mogelijk mensen bekend te maken wat de meest interessante projecten en hun financieringsmogelijkheden zijn. Daarom is het belangrijk om informatie te delen over je vaardigheden, interesses, en ervaringen (professioneel, academisch, hobbies, etc.)'
 tooltip-user-avatar_upload: 'Tooltip tekst voor gebruikersafbeelding'
 tooltip-user-contribution: 'Leg kort uit wat je vaardigheden zijn en op welke gebieden je zou kunnen helpen (vetralen. marketing, testen, onderwijs, etc.)'
 tooltip-user-facebook: 'Dit sociale netwerk kan je helpen bij het bekend raken met Goteo projecten die jou interesseren en je vrienden en familie.'
