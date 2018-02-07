@@ -1,3 +1,4 @@
+---
 api-key-no-generated: 'Aún no tienes una key generada'
 api-key-tool-tip: 'Con tu usuario y Api Key podrás realizar consultas a nuestra API'
 api-key-documentation: 'Ver la documentación de la API'
@@ -80,7 +81,7 @@ dashboard-menu-translates: 'Mis Traducciones'
 dashboard-messegers-mail-sendto: 'Enviado a %s los participantes:'
 dashboard-my-wallet-available: 'Actualmente tienes <span class="pool-amount">%s</span> <span class="pool-desc">en tu monedero Goteo</span>'
 dashboard-my-wallet-contribute-button: Donar
-dashboard-my-wallet-modal-pool-info: "El monedero de Goteo es una funcionalidad de nuestra plataforma que te permite efectuar tu donación y decidir posteriormente a qué proyecto aportarla.<br> <p>Las donaciones que realizas a través de nuestra plataforma son fiscalmente desgravables, de acuerdo a la Ley 49/2002, de 23 de diciembre, de régimen fiscal de las entidades sin fines lucrativos y de los incentivos fiscales al mecenazgo.</p> <p>Cuando efectúas tu donación, puedes descargarte un certificado de donación que justifica ante Hacienda tu contribución a una entidad sin ánimo de lucro. Puedes acceder a un histórico de los certificados disponibles asociados a tus donaciones en Goteo en tu panel del usuario, concretamente en la sección <a href=\"/dashboard/wallet/certificate\" target=\"_blank\">Certificado de donación</a>.</p><p> NOTA IMPORTANTE: Te recordamos que todas las aportaciones por las que hayas obtenido un certificado de donación de nuestra Fundación no se devuelven.\r\nEsto significa que si has hecho una donación vinculada a un proyecto concreto dentro de nuestra plataforma y este no llega a su objetivo mínimo de financiación durante su campaña, tu aporte irá a tu monedero pero no volverá a tu cuenta corriente. Sin embargo podrás destinar ese importe desde tu monedero virtual en Goteo.org a cualquier otro proyecto activo que desees en el momento que tú elijas, sin necesidad de volver a introducir tus datos bancarios o de PayPal.</p>"
+dashboard-my-wallet-modal-pool-info: "El monedero de Goteo es una funcionalidad de nuestra plataforma que te permite efectuar tu donación y decidir posteriormente a qué proyecto aportarla.<br> <p>Las donaciones que realizas a través de nuestra plataforma son fiscalmente desgravables, de acuerdo a la Ley 49/2002, de 23 de diciembre, de régimen fiscal de las entidades sin fines lucrativos y de los incentivos fiscales al mecenazgo.</p> <p>Cuando efectúas tu donación, puedes descargarte un certificado de donación que justifica ante Hacienda tu contribución a una entidad sin ánimo de lucro. Puedes acceder a un histórico de los certificados disponibles asociados a tus donaciones en Goteo en tu panel del usuario, concretamente en la sección <a href=\"/dashboard/wallet/certificate\" target=\"_blank\">Certificado de donación</a>.</p><p> NOTA IMPORTANTE: Te recordamos que todas las aportaciones por las que hayas obtenido un certificado de donación de nuestra Fundación no se devuelven.\\r\nEsto significa que si has hecho una donación vinculada a un proyecto concreto dentro de nuestra plataforma y este no llega a su objetivo mínimo de financiación durante su campaña, tu aporte irá a tu monedero pero no volverá a tu cuenta corriente. Sin embargo podrás destinar ese importe desde tu monedero virtual en Goteo.org a cualquier otro proyecto activo que desees en el momento que tú elijas, sin necesidad de volver a introducir tus datos bancarios o de PayPal.</p>"
 dashboard-my-wallet-pool-info: 'Más información sobre el uso de tu monedero'
 dashboard-no-projects: 'No tienes ningún proyecto, puedes crear uno <a href="/project/create">aquí</a>'
 dashboard-password-recover-advice: 'Asegúrate de restablecer tu contraseña'
@@ -106,13 +107,11 @@ dashboard-project-updates-saved: 'La entrada se ha actualizado correctamente'
 dashboard-project-updates-add: 'Nuevo post'
 dashboard-project-updates-editing: 'Editando post'
 dashboard-project-updates-translating: 'Traduciendo post'
-
 dashboard-project-updates-sent-to-investors: 'Se ha enviado un email a todos los cofinanciadores con el contenido de este post.'
 dashboard-project-updates-sent-to-investors-error: 'No se ha enviado ningún email a los cofinanciadores: %s'
 dashboard-project-updates-sent-reason-no-investors: 'No hay cofinanciadores todavía!'
 dashboard-project-updates-sent-reason-no-unique: 'Ya se ha enviado un email con este post anteriormente!'
 dashboard-project-updates-sent-reason-too-old: 'La fecha del post es demasiado antigua!'
-
 dashboard-rewards-address: 'Dirección de entrega:'
 dashboard-rewards-all_filter: Todas
 dashboard-rewards-amount_group: 'Aportaciones de '
@@ -179,15 +178,11 @@ user-preferences-tips: 'Desactivar el envío de consejos de difusión de campañ
 user-preferences-updates: 'Desactivar notificaciones de novedades sobre los proyectos que apoyo'
 user-profile-saved: 'Información de perfil actualizada'
 user-save-fail: 'Ha habido algún problema al guardar los datos'
-dashboard-project-analytics-ok: 'Tus identificadores para analítica se han guardado correctamente'
-dashboard-project-analytics-fail: 'Ha ocurrido un error al guardar tus identificadores para analítica'
-
 dashboard-modal-url-success-msg: 'La URL ha sido actualizada correctamente'
 dashboard-add-new-share-material: 'Nuevo material'
 dashboard-edit-share-material-url: 'Editar URL'
 dashboard-modal-edit-url: 'Url donde se encuentra el material compartido'
 dashboard-modal-placeholder-edit-url: 'Url'
-
 dashboard-new-material-form-success: 'El nuevo material compartido ha sido agregado correctamente.'
 dashboard-new-material-form-material: 'Material'
 dashboard-new-material-form-description: 'Descripción'
@@ -196,7 +191,6 @@ dashboard-new-material-form-type: 'Tipo de material'
 dashboard-new-material-form-license: 'Licencia del material'
 dashboard-menu-projects-shared-materials: 'Materiales'
 project-no-share-material: 'No hay materiales compartidos por el proyecto'
-
 dashboard-project-images-desc: 'Organiza las imágenes como quieras arrastrando y soltando entre zonas incluso.'
 dashboard-project-default-image: 'Imagen por defecto'
 dashboard-project-delete-image: 'Borrar archivo'
@@ -209,7 +203,6 @@ project-upload-images-some-ko: 'Algunas imágenes no se han subido!'
 dashboard-project-default-image-confirm: '¿Quieres poner esta imagen por defecto del proyecto?'
 dashboard-project-image-default-ko: 'No se ha podido poner la imagen por defecto!'
 dashboard-project-image-reorder-ko: 'No se han podido ordenar las imágenes!'
-
 dashboard-project-send-to-markdown: "Introducir esta imagen en el texto"
 dashboard-max-files-reached: "Has alcanzado el número máximo de archivos!"
 dashboard-file-type-error: "Este tipo de archivo no está permitido!"
@@ -217,7 +210,6 @@ all-files-uploaded: "Todos los archivos se han subido correctamente"
 uploaded-ok: "Subido correctamente"
 publish-confirm-yes: "Quieres publicar esta entrada?"
 publish-confirm-no: "Quieres despublicar esta entrada?"
-
 dashboard-project-support-empty: 'No hay ninguna petición de colaboraciones todavía.'
 dashboard-project-support-responses: Respuestas
 dashboard-project-support-no-responses: 'No hay respuestas todavía.'
@@ -232,11 +224,9 @@ dashboard-project-filter-by-drop: 'Ver sólo aportes de matchfunding'
 dashboard-project-filter-by-nondrop: 'Esconder aportes de matchfunding'
 dashboard-project-filter-by-pending: 'Ver sólo las pendientes'
 dashboard-project-filter-by-fulfilled: 'Ver sólo las completadas'
-
 dashboard-project-no-invests: 'No hay aportes para este criterio de búsqueda'
 dashboard-new-message-to-donors: 'Nuevo mensaje a cofinanciadores'
 dashboard-message-donors-reward: 'Los cofinanciadores con la recompensa %s'
-
 dashboard-message-donors-donors: 'Todos los cofinanciadores que'
 dashboard-message-donors-and: 'y que además'
 dashboard-message-donors-donative: 'renuncian a recompensa'
@@ -245,46 +235,34 @@ dashboard-message-donors-pending: 'están pendientes'
 dashboard-message-donors-fulfilled: 'están completados'
 dashboard-message-donors-error: 'No hay destinatarios válidos, no se puede enviar el mensaje'
 dashboard-message-donors-total: '%s cofinanciadores'
-
 dashboard-message-no-message: 'No tienes ningún mensaje todavía.'
 dashboard-message-threads: 'Tienes %s hilos de mensajes'
-
 dashboard-translate-profile: 'Traducir perfil'
 dashboard-translate-profile-desc: 'Estás traduciendo tu perfil personal al %LANG%. Los usuarios que visiten tu perfil personal en este idioma verán esta traducción. El resto de idiomas mostrarán los <a href="%URL%">datos por defecto</a> a menos que también tengan una traducción asignada.'
 dashboard-translate-profile-ok: 'Perfil traducido correctamente al %s'
-
 dashboard-translate-project: 'Traducir el proyecto'
 dashboard-translate-empty: 'No hay traducciones todavía.'
 dashboard-translate-project-empty: 'No hay traducciones todavía para este proyecto.'
 dashboard-translate-project-currents: 'El idioma original de este proyecto es el %LANG% y está traducido a %NUM% idiomas:'
 dashboard-translate-project-translating: 'Estás traduciendo este proyecto al %LANG%. El idioma original es el %ORIGINAL%.'
 dashboard-translate-project-ok: '%ZONE% traducido correctamente al %LANG%'
-
 dashboard-project-updates-translate-ok: 'Post %TITLE% traducido correctamente al %LANG%'
 dashboard-project-updates-translating-post: 'Estás traduciendo este post al %LANG%. El idioma original es el %ORIGINAL%.'
-
 dashboard-translate-overview: 'Traducir los datos principales costes del proyecto'
 dashboard-translate-costs: 'Traducir los costes del proyecto'
 dashboard-translate-rewards: 'Traducir las recompensas del proyecto'
 dashboard-translate-supports: 'Traducir las colaboraciones del proyecto'
-
 dashboard-project-support-translate-ok: 'Entrada de soporte %TITLE% traducido correctamente al %LANG%'
 dashboard-project-support-translating: 'Estás traduciendo esta entrada de soporte al %LANG%. El idioma original es el %ORIGINAL%.'
 dashboard-project-saved: 'Proyecto actualizado correctamente'
-
 dashboard-project-is-dead: 'El proyecto está archivado y no se puede editar'
 dashboard-project-not-alive-yet: 'Este apartado estará disponible cuando tu proyecto entre en campaña'
 dashboard-project-not-funded-yet: 'Este apartado estará disponible cuando tu proyecto acabe la  campaña exitosamente'
 dashboard-project-reward-cannot: 'Ahora no se pueden introducir nuevas recompensas. Durante la campaña es posible introducir nuevas recompensas (pero no borrar las que ya existen)'
-
 dashboard-project-add-translations: 'Mientras tanto, puedes añadir traducciones a tu proyecto si consideras que te ayudará a incrementar su visibilidad.'
-
 dashboard-project-goto-first-error: 'Ir al primer error'
-
 dashboard-origin-project-referer: 'Origen de visitas a la página del proyecto'
 dashboard-origin-invests-referer: 'Origen de visitas en los aportes exitosos'
 dashboard-origin-project-device: 'Dispositivo usado en la página del proyecto'
 dashboard-origin-invests-device: 'Dispositivo usado en los aportes exitosos'
-dashboard-origin-disclaimer: '⚠ *Estos datos son orientativos y no incluyen la totalidad de las visitas debido a limitaciones técnicas.*
-
-> Te recomendamos que configures Google Analytics o Facebook Pixel para tener datos más detallados'
+dashboard-origin-disclaimer: '⚠ *Estos datos son orientativos y no incluyen la totalidad de las visitas debido a limitaciones técnicas.*  > Te recomendamos que configures Google Analytics o Facebook Pixel para tener datos más detallados'
