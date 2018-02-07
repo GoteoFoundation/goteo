@@ -1,47 +1,22 @@
 ---
 guide-project-user-information: "<strong>Neste apartado debes introducir os datos para a información pública do teu perfil de usuario/a.</strong><br><br> Tanto se queres presentar o proxecto coma incorporarte como cofinancieiro/a para formar parte da comunidade de Goteo recomendámosche que poñas atención ó teu texto de presentación, que engadas ligazóns relevantes sobre o que fas e subas unha imaxe de perfil coa que te identifiques.\\r\n"
-profile-credit-available: 'Este es el saldo disponible en tu monedero virtual para distribuir en proyectos de Goteo.'
 profile-field-about: 'Cóntanos algo sobre ti'
 profile-field-avatar_current: 'A túa imaxe actual'
 profile-field-avatar_upload: 'Cargar unha imaxe'
 profile-field-contribution: 'Que podes achegar a Goteo'
-profile-field-entity-type: 'Tipo de entidad'
-profile-field-entity-type-checkbox-public: 'Soy una entidad publica'
-profile-field-entity-type-choose: 'Selecciona un tipo de entidad'
-profile-field-entity-type-concerted: Concertado
-profile-field-entity-type-private: Privado
-profile-field-entity-type-public: Público
 profile-field-interests: 'Que tipo de proxecto motívate máis'
 profile-field-keywords: 'As miñas palabras clave'
-profile-field-legal-entity: 'Forma jurídica'
-profile-field-legal-entity-asociation: Asociación
-profile-field-legal-entity-choose: 'Selecciona una forma jurídica'
-profile-field-legal-entity-company: Empresa
-profile-field-legal-entity-cooperative: Cooperativa
-profile-field-legal-entity-ngo: ONG
-profile-field-legal-entity-others: Otros
-profile-field-legal-entity-person: 'Persona física'
-profile-field-legal-entity-self-employed: Autónomo
-profile-field-location: 'Lugar de residencia habitual'
+profile-field-legal-entity-person: 'Persoa física'
 profile-field-name: 'Nome de usuario/a'
-profile-field-url: URL
 profile-field-websites: 'As miñas páxinas web'
-profile-fields-analytics-title: Analítica
 profile-fields-image-title: 'Imaxe de perfil'
 profile-fields-social-title: 'Perfiles sociais'
-profile-main-header: 'Datos de perfil'
-profile-suggest-projects-interest: 'Quizás quieras apoyar proyectos de categorías similares'
-step-1: Perfil
 step-userProfile: 'Paso: Usuario/Perfil'
-tooltip-user-about: "Coma rede social, Goteo pretende axudar a difundir e financiar proxectos interesantes entre o máximo de xente posible. Para iso é importante a información que poidas compartir sobre as túas habilidades ou experiencia (profesional, académica, afeccións, etc)."
-tooltip-user-analytics: 'Ingresa, en caso de que dispongas de uno, tu ID de seguimiento de Google Analytics para habilitar Google Analytics en tu proyecto. El ID debe estar en este formato: UA-000000-01 (ejemplo de ID)'
 tooltip-user-avatar_upload: 'Texto tooltip cargar imaxe usuario'
 tooltip-user-contribution: 'Explica brevemente as túas habilidades ou os ámbitos nos que poderías axudar nun proxecto (traducindo, difundindo, probando, programando, ensinando, etc).'
 tooltip-user-facebook: 'Esta rede social pode axudar a que difundas proxectos de Goteo que che interesan entre amigos e familiares.'
-tooltip-user-facebook-pixel: 'Ingresa el ID de tu Facebook Pixel, si quieres medir las conversiones de una campaña en Facebook.'
 tooltip-user-google: 'A rede social de Google+ é moi nova mais tamén podes indicar o teu usuario se xa a empregas :-)'
 tooltip-user-identica: 'Esta canle pode axudar a que difundas proxecto de Goteo entre a comunidade afín ó software libre.'
-tooltip-user-instagram: 'Esta red social te permite compartir imágenes de manera fácil e inmediata'
 tooltip-user-interests: 'Indica o tipo de proxectos que poden conectar cos teus intereses para cofinancialos e/ou aportar con outros recursos, coñecementos ou habelencias. Estas categorías son transversais, podes seleccionar máis dunha.'
 tooltip-user-keywords: 'Segundo vaias introducindo texto o sistema suxerirache palabras clave que xa escribiran outros usuarios/as. Estas categorías axudan a ligar o teu perfil con outras persoas e con proxectos concretos.'
 tooltip-user-linkedin: 'Esta rede social pode axudar a que espalles proxectos de Goteo que che interesan entre contactos profesionais.'
@@ -63,5 +38,3 @@ validate-user-field-name: 'Pon o teu nome completo para mellorar a valoración d
 validate-user-field-twitter: 'O usuario de Twitter non é válido'
 validate-user-field-web: 'Debes poñer a dirección (URL) da web'
 validate-user-field-webs: 'Pon a túa páxina web para mellorar a valoración do proxecto de cara a determinar se publicalo en Goteo.'
-help-user-analytics: 'Ingresa, en caso de que dispongas de uno, tu ID de seguimiento de Google Analytics para habilitar Google Analytics en tu proyecto.<br>El ID debe estar en este formato: <strong>UA-000000-01</strong> (ejemplo de ID)<br><a href="https://analytics.google.com" target="_blank">Ir a Google Analytics</a>'
-help-user-facebook-pixel: 'Ingresa el ID de tu Facebook Pixel, si quieres medir las conversiones de una campaña en Facebook.<br><a href="https://www.facebook.com/ads/manager/pixel/facebook_pixel" target="_blank">Ir a Píxel de Facebook</a>'
