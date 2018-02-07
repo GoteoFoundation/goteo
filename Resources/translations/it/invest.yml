@@ -1,7 +1,6 @@
 ---
 bazar-spread-text: '%s - A Natale regala crowdfunding aperto per il bene comune con @goteofunding #openbazaar'
 bazar-thanks: 'Grazie della visita nel nostro bazar, ci puoi aiutare a diffonderlo. '
-currency-alert: "Per favore, ricorda che la gestione è in EUR. Pagherai approssimativamente <span id=\"reminder_conversion\">%s</span> € <a href=\"/faq/investors#q115\" target=\"_blank\">Più info</a>"
 faq-payment-method: '<a href="/faq/investors#q2" target="_blank">Che sistemi di pagamento offre Goteo?Sono sicuri?</a>'
 imperative-register: Registrati 
 invest-address-address-field: 'Indirizzo:'
@@ -40,7 +39,6 @@ invest-make-sure-save: Salvare
 invest-next_step: 'Passo sucessivo '
 invest-payment-email: 'Indica il tuo account di PayPal'
 invest-payment_method-header: 'Scegli il metodo di pagamento'
-invest-paypal_disabled: "Per questo progetto l'opzione di pagamento con PayPal. <a href=\"/faq/investors#q2\" target=\"_blank\"> è bloccata. Più info</a>"
 invest-process-completed: 'Questa donazione è stata già completata precedentemente. '
 invest-resign: 'Rinuncio a questa ricompensa individuale, voglio solo sostenere il progetto'
 invest-reward-none: 'Non è più possibile scegliere '
@@ -50,7 +48,7 @@ proj-widget-my_invest: 'La mia donazione'
 project-invest-confirm: 'Stai per co-finanziare questo progetto...'
 project-invest-continue: 'Clicca sul logo del sistema di pagamento che utilizzerai '
 project-invest-fail: 'C''è stato un errore, per favore riprova'
-project-invest-guest: Ottimo!
+project-invest-guest: 'Ottimo!'
 project-invest-ok: 'Il tuo contributo per finanziare questo progetto è stato inviato :)'
 project-invest-start: 'Stai per co-finanziare questo progetto...'
 spread-facebook: 'Diffondi su Facebook'
