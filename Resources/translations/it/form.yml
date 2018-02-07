@@ -1,9 +1,11 @@
+---
 costs-field-select-rounds: Termini
 form-accept-button: Accettare
 form-add-button: Aggiungere
 form-ajax-info: 'Il questionario si registra man mano che compili ogni campo'
 form-apply-button: Inviare
 form-edit-button: Modificare
+form-has-errors: 'El formulario contiene errores, revísalos antes de continuar!'
 form-errors-info: 'Total: %s | in questo passaggio: %s'
 form-errors-total: 'Ci sono %s errori in totale'
 form-footer-errors_title: Errori
@@ -17,8 +19,8 @@ form-project-status-title: 'Situazione del progetto '
 form-project_status-campaing: 'In fase di campagna'
 form-project_status-cancel: Cestinato
 form-project_status-cancelled: Scartato
-form-project_status-edit: 'In fase di scrittura'
-form-project_status-expired: 'Archiviato '
+form-project_status-edit: In fase di scrittura
+form-project_status-expired: Archiviato 
 form-project_status-fulfilled: 'Beneficio realizzato'
 form-project_status-review: 'In attesa di valutazione'
 form-project_status-success: Finanziato
@@ -34,3 +36,35 @@ project-one-round: 'Giro unico di 40 giorni'
 project-personal-field-entity_name: 'Entità per cui si agisce '
 project-two-rounds: 'Due giri di 40 giorni'
 tooltip-project-personal-entity_name: 'Se rappresenti un''entità, indica il suo nome in questo campo.'
+form-sent-success: 'Los datos se han guardado correctamente!'
+form-sent-error: 'Ha ocurrido un error al guardar los datos: [%s]'
+form-confirm-exit: "Se van a perder los datos que no has guardado\n¿Seguro que quieres salir de la página?"
+overview-extra-call: 'Campos complementarios para la convocatoria %s'
+form-editor-bold: 'Negrita'
+form-editor-italic: 'Cursiva'
+form-editor-strikethrough: 'Tachado'
+form-editor-heading: 'Encabezado'
+form-editor-smaller_heading: 'Disminuir el encabezado'
+form-editor-bigger_heading: 'Aumentar el encabezado'
+form-editor-code: 'Código'
+form-editor-quote: 'Cita'
+form-editor-generic_list: 'Lista genérica'
+form-editor-numbered_list: 'Lista ordenada'
+form-editor-create_link: 'Crear enlace'
+form-editor-insert_image: 'Insertar imagen'
+form-editor-insert_table: 'Insertar tabla'
+form-editor-insert_horizontal_line: 'Línea horizontal'
+form-editor-toggle_preview: 'Conmutar la previsualización'
+form-editor-toggle_side_by_side: 'Conmutar vista paralela'
+form-editor-toggle_fullscreen: 'Conmutar pantalla completa'
+form-editor-markdown_guide: 'Guía markdown'
+form-editor-undo: 'Deshacer'
+form-editor-redo: 'Rehacer'
+form-editor-close: 'Cerrar'
+form-editor-exact-location: 'Localización exacta'
+form-editor-change-location: 'Cambiar'
+form-editor-change-unlocated: 'Sin localizar'
+form-editor-fine-locate: 'Puedes afinar la localización arrastrando y soltando la marca.'
+form-editor-error-locating: 'No se ha encontrado una dirección!'
+form-editor-success-locating: 'Se ha encontrado una dirección válida'
+form-dragndrop-unsupported: 'Ha ocurrido un problema al arrastrar y soltar archivos. Por favor, inténtalo de nuevo haciendo clic al botón de subir archivos'
