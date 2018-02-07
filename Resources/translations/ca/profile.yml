@@ -33,7 +33,6 @@ profile-main-header: 'Dades de perfil'
 profile-suggest-projects-interest: 'Potser vols donar suport a projectes de categories similars'
 step-1: Perfil
 step-userProfile: 'Pas: Usuari / Perfil'
-tooltip-user-about: "Com a xarxa social, Goteo pretén ajudar a difondre i finançar projectes interessants entre el màxim de gent possible. Per això és important la informació que puguis compartir sobre les teves habilitats o experiència (professional, acadèmica, aficions, etc). "
 tooltip-user-analytics: 'En cas de disposar-ne, ingresa el teu ID de seguiment de Google Analytics per tal d''habilitar Google Analytics pel teu projecte. L''ID ha de ser en aquest format: UA-000000-01 (exemple d''ID)'
 tooltip-user-avatar_upload: 'Text tooltip pujar imatge usuari'
 tooltip-user-contribution: 'Explica breument les teves habilitats o els àmbits on podries ajudar un projecte (traduint, difonent, testejant, programant, ensenyant, etc).'
