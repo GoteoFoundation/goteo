@@ -1,4 +1,5 @@
-costs-field-select-rounds: 'Campaign duration'
+---
+costs-field-select-rounds: Campaign duration
 form-accept-button: OK
 form-add-button: Add
 form-ajax-info: 'This form is saved automatically while you fill it out'
@@ -18,7 +19,7 @@ form-project-status-title: 'Project status'
 form-project_status-campaing: 'Campaign in progress'
 form-project_status-cancel: Discarded
 form-project_status-cancelled: Canceled
-form-project_status-edit: 'In review'
+form-project_status-edit: In review
 form-project_status-expired: Closed
 form-project_status-fulfilled: 'Benefit completed'
 form-project_status-review: 'Evaluation pending'
@@ -37,7 +38,7 @@ project-two-rounds: 'Two 40-day rounds'
 tooltip-project-personal-entity_name: 'If you represent an entity, this is the indicated place to let it be known.'
 form-sent-success: 'Data saved successfully!'
 form-sent-error: 'An error has occurred while saving data: [%s]'
-form-confirm-exit: 'Unsaved data will be lost.\nDo you wish to continue?'
+form-confirm-exit: "Unsaved data will be lost.\nDo you wish to continue?"
 overview-extra-call: 'Complementary fields for the call %s'
 form-editor-bold: 'Bold'
 form-editor-italic: 'Italic'
