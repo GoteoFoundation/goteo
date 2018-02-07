@@ -1,0 +1,70 @@
+---
+costs-field-select-rounds: Plazos
+form-accept-button: Aceptar
+form-add-button: Añadir
+form-ajax-info: 'El formulario se va grabando según pases por cada campo'
+form-apply-button: Aplicar
+form-edit-button: Editar
+form-has-errors: 'El formulario contiene errores, revísalos antes de continuar!'
+form-errors-info: 'Total: %s | En este paso: %s'
+form-errors-total: 'Hay %s errores en total'
+form-footer-errors_title: Errores
+form-image_upload-button: 'Subir imagen'
+form-media_send-button: 'Poner vídeo'
+form-navigation_bar-header: 'Ir a'
+form-next-button: Siguiente
+form-project-info_status-title: 'Estado global de la información'
+form-project-progress-title: 'Evaluación de datos'
+form-project-status-title: 'Estado del proyecto'
+form-project_status-campaing: 'En campaña'
+form-project_status-cancel: Desechado
+form-project_status-cancelled: Descartado
+form-project_status-edit: Editándose
+form-project_status-expired: Archivado
+form-project_status-fulfilled: 'Retorno cumplido'
+form-project_status-review: 'Pendiente de valoración'
+form-project_status-success: Financiado
+form-remove-button: Quitar
+form-self_review-button: Corregir
+form-send_review-button: Enviar
+form-upload-button: Enviar
+help-cost-to-consultant: '- Necesita ayuda en costes<br/>'
+help-license-to-consultant: '- Necesita ayuda con retornos colectivos y licencias<br/>'
+overview-extra-fields: 'Campos complementarios'
+project-form-header: Formulario
+project-one-round: 'Ronda única de 40 días'
+project-personal-field-entity_name: 'Entidad en nombre de la que se actúa (si procede)'
+project-two-rounds: 'Dos rondas de 40 días'
+tooltip-project-personal-entity_name: 'Si representas a alguna entidad, indica su nombre en este campo.'
+form-sent-success: 'Los datos se han guardado correctamente!'
+form-sent-error: 'Ha ocurrido un error al guardar los datos: [%s]'
+form-confirm-exit: "Se van a perder los datos que no has guardado\n¿Seguro que quieres salir de la página?"
+overview-extra-call: 'Campos complementarios para la convocatoria %s'
+form-editor-bold: 'Negrita'
+form-editor-italic: 'Cursiva'
+form-editor-strikethrough: 'Tachado'
+form-editor-heading: 'Encabezado'
+form-editor-smaller_heading: 'Disminuir el encabezado'
+form-editor-bigger_heading: 'Aumentar el encabezado'
+form-editor-code: 'Código'
+form-editor-quote: 'Cita'
+form-editor-generic_list: 'Lista genérica'
+form-editor-numbered_list: 'Lista ordenada'
+form-editor-create_link: 'Crear enlace'
+form-editor-insert_image: 'Insertar imagen'
+form-editor-insert_table: 'Insertar tabla'
+form-editor-insert_horizontal_line: 'Línea horizontal'
+form-editor-toggle_preview: 'Conmutar la previsualización'
+form-editor-toggle_side_by_side: 'Conmutar vista paralela'
+form-editor-toggle_fullscreen: 'Conmutar pantalla completa'
+form-editor-markdown_guide: 'Guía markdown'
+form-editor-undo: 'Deshacer'
+form-editor-redo: 'Rehacer'
+form-editor-close: 'Cerrar'
+form-editor-exact-location: 'Localización exacta'
+form-editor-change-location: 'Cambiar'
+form-editor-change-unlocated: 'Sin localizar'
+form-editor-fine-locate: 'Puedes afinar la localización arrastrando y soltando la marca.'
+form-editor-error-locating: 'No se ha encontrado una dirección!'
+form-editor-success-locating: 'Se ha encontrado una dirección válida'
+form-dragndrop-unsupported: 'Ha ocurrido un problema al arrastrar y soltar archivos. Por favor, inténtalo de nuevo haciendo clic al botón de subir archivos'
