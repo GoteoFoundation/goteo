@@ -1,6 +1,6 @@
+---
 feed-blog-comment: '<span class="green">Iruzkina</span> idatzi duzu "%s" sarreran %s-(e)ko blogean'
 feed-invest: '%AMOUNT% eman duzu %PROJECT% proiektuari'
-feed-message_support-response: 'Elkarlan berria %s-(r)ekin %s proiektuan'
 feed-messages-new_thread: 'Tema berria %s-n ireki duzu %s proiektuan'
 feed-messages-response: '%s-(e)n erantzun du % proiektuan'
 feed-new_project: '<span class="redd">Proiektu berria Goteo-n</span>, hemendik aurrera 40 egun daukagu proiektua babesteko!'
@@ -12,7 +12,7 @@ feed-project_finish: '%s proiektua <span class="red">bigarren txanda bukatu du</
 feed-project_goon: '%PROJECT% proiektua <span class="red">kanpainan jarraitzen du</span> bigarren txandan eta <span class="violet">%AMOUNT% (%PERCENT% %) gutxiengoa baino gehiago</span> jaso du'
 feed-project_runout: '%PROJECT% proiektua %ROUND%.txanda bukatzeko <span class="red">%DAYS% egun</span> falta'
 feed-timeago: 'Orain dela %s'
-feed-timeago-justnow: 'ezer ez'
+feed-timeago-justnow: ezer ez
 feed-timeago-periods: segundo-segundoak_minutu-minutuak_hordua-horduak_egun-egunak_aste-asteak_hil-hileak_urte-urteak_hamarkada-hamarkadak
 feed-timeago-published: 'Argitaratuta orain dela %s'
 feed-updates-comment: '<span class="green">Iruzkina</span> idatzi duzu "%s" sarreran %s-en %s proiektuan'
