@@ -1,10 +1,11 @@
+---
 node-footer-about: 'Réseau social pour contribuer à des projets qui génèrent et favorisent le bien commun : Avez-vous un projet ouvert ?'
 node-footer-help-what: 'Le crowdfunding c''est quoi ?'
 node-footer-help-why: 'Pourquoi Goteo est différent ?'
 node-footer-investors-donate: 'Dons et dégrèvements'
 node-footer-investors-invest: 'Comment soutenir un projet ?'
 node-footer-investors-payment: 'Comment fonctionnent les paiements'
-node-footer-title-creators: 'Porteurs de projets'
+node-footer-title-creators: Porteurs de projets
 node-footer-title-help: 'Besoin d''aide ?'
 node-footer-title-investors: Cofinanceurs
 node-footer-title-social: Suivez-nous
@@ -28,3 +29,5 @@ node-side-summary-amount: 'Argent collecté'
 node-side-summary-investors: Cofinanceurs
 node-side-summary-success: Réussis
 node-side-summary-supporters: Collaborateurs
+node-stats-title: 'Datos de impacto'
+node-projects-title: 'Proyectos'
