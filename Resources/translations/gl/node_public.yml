@@ -1,3 +1,4 @@
+---
 node-footer-about: 'Rede social para cofinanciar e colaborar con proxectos creativos que fomentan o ben común <a href="/project/create">¿Tes un proxecto con adn aberto?</a>'
 node-footer-help-what: 'Que é o Crowdfunding'
 node-footer-help-why: 'Porqué Goteo é diferente'
@@ -28,3 +29,5 @@ node-side-summary-amount: 'Cartos recadados'
 node-side-summary-investors: Cofinanceiros
 node-side-summary-success: Éxitos
 node-side-summary-supporters: Colaboradores
+node-stats-title: 'Datos de impacto'
+node-projects-title: 'Proyectos'
