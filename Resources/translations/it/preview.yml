@@ -1,3 +1,4 @@
+---
 guide-project-error-mandatories: 'Mancano campi obbligatori'
 guide-project-preview: '<strong>Questo è un riassunto di tutta l''informazione che riguarda il tuo progetto.</strong><br><br> Ripassa gli appartati di ogni sezione nel caso volessi migliorare qualche punto o manda il tuo progetto per una valutazione (con il tasto"Inviare"sotto) se tutti i campi obbligatori sono completi, per farlo valutare dal team de la comunità di Goteo. Una volta inviato non potrai introdurre modifiche finché non lo apriamo di nuovo per altre modifiche. <br><br> Tieni conto che possiamo selezionare solo alcuni progetti al mese per garantire attenzione e diffusione delle proposte che si rendono pubbliche. A breve ti contatteremo per spiegarti la nostra proposta di campagna e così continuare con il suo processo di ottimizzazione e di diffusione pubblica.'
 guide-project-success-minprogress: 'Ha raggiunto la percentuale minima '
@@ -6,5 +7,12 @@ guide-project-success-okfinish: 'Si può inviare alla revisione'
 preview-main-header: 'Previsualizzazione di dati'
 preview-send-comment: 'Note aggiuntive per l''amministratore'
 step-7: Previsualizzazione
-step-preview: Progetto/Previsualizzazione
+step-preview: 'Progetto/Previsualizzazione'
 tooltip-project-comment: 'Hai dubbi o commenti che vuoi far leggere all''amministratore di Goteo? Questo è il luogo per spiegare parti di ciò che hai scritto di cui non sei sicuro, per proporre miglioramenti, ecc.'
+project-send-review-desc: >
+  Una vez lo envíes ya no se podrán introducir cambios hasta que abramos de nuevo su edición.
+  
+  En breve nos pondremos en contacto contigo para comentar la propuesta de campaña y poder continuar con su proceso de optimización y publicación.
+  
+  **No dejes de revisar tu bandeja de SPAM**, en ocasiones la tecnología no es capaz de apreciar el cariño que damos a nuestros proyectos.
+
