@@ -11,7 +11,6 @@ profile-my_worth-header: 'Ma contribution sur Goteo'
 profile-name-header: 'Profil de'
 profile-patron-header: "Recommande <span class=\"red\">%s projets</span>\\r\n"
 profile-sharing_interests-header: 'Intérêts partagés'
-profile-social-header: Social
 profile-webs-header: 'Mes sites web'
 profile-widget-button: 'Voir le profil'
 profile-widget-user-header: Utilisateur
