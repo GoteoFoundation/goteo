@@ -11,7 +11,6 @@ login-leave-message: 'Lascia un messaggio'
 login-oneclick-header: 'Entra con un solo click'
 login-recover-button: Ripristinare 
 login-recover-email-field: 'Mail dell''account (o nome utente)'
-login-recover-header: "Completa il campo con la mail che hai utilizzato per iscriverti alla piattaforma. Spesso coincide con la mail dei tuoi social network. Attenzione: riceverai una mail a questa stessa mail con un link diretto per cambiare la password. Se non ricevi la mail controlla che non sia nella cartella spam. Se hai fatto richiesto molte volte di cambiare la password, ogni volta avrai ricevuto  una mail con un nuovo link autogenerato. Utilizza l'ultimo link nell'ultima mail ricevuta. Se non ricordi la mail ci puoi contattare, non dimenticarti di completare tutti i dati per aiutarci nella ricerca del tuo account (nome completo. nick che utilizzi, data di iscrizione, se hai fatto qualche donazione in qualche progetto concreto). "
 login-recover-link: 'Ripristinare la password '
 login-recover-modal-button: Inviare
 login-recover-username-field: 'Nome di accesso '
