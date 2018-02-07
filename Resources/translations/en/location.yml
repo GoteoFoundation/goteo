@@ -1,8 +1,9 @@
+---
 dashboard-user-location-change: 'You can change your location in your user profile.'
 dashboard-user-location-locate: 'Share my location'
-dashboard-user-location-located-text: 'If you do not want to share your localization data with us, simply click the next button:'
+dashboard-user-location-located-text: "If you do not want to share your localization data with us, simply click the next button:"
 dashboard-user-location-located-title: 'You have been correctly geolocated.'
 dashboard-user-location-unlocate: 'Don''t share my location'
-dashboard-user-location-unlocated-text: 'It could be due to your entering an unrecognized address, or because at some stage you refused a browser prompt to locate your geographic position.This is important data for the Goteo system, as it allows us to generate information (anonymously, without disclosing any of your personal data to outside parties), as well as impact indicators to improve the efficiency of our work and project support. '
+dashboard-user-location-unlocated-text: "It could be due to your entering an unrecognized address, or because at some stage you refused a browser prompt to locate your geographic position.This is important data for the Goteo system, as it allows us to generate information (anonymously, without disclosing any of your personal data to outside parties), as well as impact indicators to improve the efficiency of our work and project support. "
 dashboard-user-location-unlocated-title: 'The system can''t detect your location.'
 dashboard-user-location-help: 'Your geographic position is important data for the Goteo system, as it allows us to generate information (anonymously, without disclosing any of your personal data to outside parties), as well as impact indicators to improve the efficiency of our work and project support. '
