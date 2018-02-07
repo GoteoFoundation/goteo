@@ -1,0 +1,42 @@
+---
+cost-type-lend: Préstamo
+cost-type-material: Material
+cost-type-structure: Infraestructura
+cost-type-task: Tarea
+costs-field-amount: Valor
+costs-field-cost: Coste
+costs-field-date_from: Desde
+costs-field-date_until: Hasta
+costs-field-dates: Fechas
+costs-field-description: Descripción
+costs-field-required_cost: 'Este coste es'
+costs-field-required_cost-no: Adicional
+costs-field-required_cost-yes: Imprescindible
+costs-field-resoure: 'Otros recursos'
+costs-field-schedule: 'Agenda de trabajo'
+costs-field-type: Tipo
+costs-fields-main-title: 'Desglose de costes'
+costs-fields-metter-title: 'Visualización de costes'
+costs-fields-resources-title: Recurso
+costs-main-header: 'Aspectos económicos'
+mandatory-cost-field-amount: 'Es obligatorio asignar un importe a los costes'
+mandatory-cost-field-description: 'Es obligatorio poner alguna descripción a los costes'
+mandatory-cost-field-name: 'Es obligatorio ponerle un nombre al coste'
+mandatory-cost-field-task_dates: 'Es obligatorio especificar las fechas aproximadas de la tarea'
+mandatory-project-field-resource: 'Es obligatorio especificar si cuentas con otros recursos o no'
+mandatory-project-resource: 'Es obligatorio especificar si cuentas con otros recursos o no'
+mandatory-project-total-costs: 'Es obligatorio especificar algún coste'
+step-4: Costes
+step-costs: 'Paso: Proyecto / Costes'
+tooltip-project-cost-amount: 'Especifica el importe en la moneda elegida de lo que consideras que implica este coste. No utilices puntos para las cifras de miles ok?'
+tooltip-project-cost-cost: 'Introduce un título lo más descriptivo posible de este coste.'
+tooltip-project-cost-dates: 'Indica entre qué fechas calculas que se va a llevar a cabo esa tarea o cubrir ese coste. Planifícalo empezando no antes de dos meses a partir de ahora, pues hay que considerar el plazo para revisar la propuesta, publicarla si es seleccionada y los 40 días de la primera financiación. No incluyas en este calendario la agenda de lo desarrollado anteriormente aunque es bueno que lo expliques en la descripción del proyecto. En la agenda sólo nos interesan las fases que quedan por hacer y buscan ser cofinanciadas.'
+tooltip-project-cost-description: 'Explica brevemente en qué consiste este coste.'
+tooltip-project-cost-required: 'Este punto es muy importante: en cada coste que introduzcas tienes que marcar si es imprescindible o bien adicional. Todos los costes marcados como imprescindibles se sumarán dando el valor del importe de financiación mínimo para el proyecto. La suma de los costes adicionales, en cambio, se podrá obtener durante la segunda ronda de financiación, después de haber obtenido los fondos imprescindibles.'
+tooltip-project-cost-type: 'Aquí debes especificar el tipo de coste: vinculado a una tarea (algo que requiere la habilidad o conocimientos de alguien), la obtención de material (consumibles, materias primas) o bien infraestructura (espacios, equipos, mobiliario).'
+tooltip-project-costs: 'Cuanto más precisión en el desglose mejor valorará Goteo la información general del proyecto. '
+tooltip-project-resource: 'Indica aquí si cuentas con recursos adicionales, aparte de los que solicitas, para llevar a cabo el proyecto: fuentes de financiación, recursos propios o bien ya has hecho acopio de materiales. Puede suponer un aliciente para los potenciales cofinanciadores del proyecto.'
+tooltip-project-totals: 'Este gráfico muestra la suma de costes imprescindibles (mínimos para realizar el proyecto) y la suma de costes secundarios (importe óptimo) para las dos rondas de financiación. La primera ronda es de 40 días, para conseguir el importe mínimo imprescindible. Sólo si se consigue ese volumen de financiación se puede optar a la segunda ronda, de 40 días más, para llegar al presupuesto óptimo. A diferencia de la primera, en la segunda ronda se obtiene todo lo recaudado.'
+validate-cost-field-dates: 'Debes indicar las fechas de inicio y final de este coste para poder valorar mejor el proyecto.'
+validate-project-costs-any_error: 'Falta alguna información en el desglose de costes'
+validate-project-field-costs: 'Recomendamos desglosar hasta 5 costes diferentes para mejorar la valoración del proyecto de cara a determinar si publicarlo en Goteo.'
