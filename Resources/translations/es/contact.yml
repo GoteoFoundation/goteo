@@ -1,3 +1,4 @@
+---
 contact-captcha-field: 'Prueba de humanidad (lo sentimos...)'
 contact-captcha-refresh: 'Refresh image'
 contact-email-field: Email
@@ -13,7 +14,7 @@ contact-form-relief-tag-description: 'Deseo un justificante de mi donación'
 contact-form-relief-tag-name: 'Justificante donación'
 contact-form-service-tag-description: 'Quiero contratar un servicio'
 contact-form-service-tag-name: Servicio
-contact-form-tags: "[usuario] Tengo problemas con mi cuenta;\r\n[nuevo impulsor] Tengo un posible proyecto;\r\n[nuevo impulsor 2] Tengo dudas sobre el formulario de proyecto;\r\n[desarrollo] Tengo dudas sobre cuestiones técnicas;\r\n[justificante] Deseo un justificante de mi donación;\r\n[servicio] Quiero contratar un servicio;\r\n[otros] Es otro tipo de consulta;"
+contact-form-tags: "[usuario] Tengo problemas con mi cuenta;\\r\n[nuevo impulsor] Tengo un posible proyecto;\\r\n[nuevo impulsor 2] Tengo dudas sobre el formulario de proyecto;\\r\n[desarrollo] Tengo dudas sobre cuestiones técnicas;\\r\n[justificante] Deseo un justificante de mi donación;\\r\n[servicio] Quiero contratar un servicio;\\r\n[otros] Es otro tipo de consulta;"
 contact-form-user-tag-description: 'Tengo problemas con mi cuenta'
 contact-form-user-tag-name: 'Problemas cuenta'
 contact-message-field: Mensaje
