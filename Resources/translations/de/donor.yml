@@ -18,8 +18,6 @@ dashboard-menu-activity-donor: 'Spendenbescheinigung'
 donor-address-country-field: Land
 donor-address-location-field: Provinz
 donor-field-amount: 'Spendenbetrag: '
-donor-field-amount-relief: Desgravación
-donor-field-lot-relief: Tramo
 donor-field-numproj: 'Anzahl der Projekte:'
 personal-field-donor_name: 'Nachname '
 personal-field-donor_surname: 'Erster Vorname'
