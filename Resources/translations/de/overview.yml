@@ -16,7 +16,6 @@ overview-field-currency: 'Original-Währung'
 overview-field-currently: 'Aktueller Status'
 overview-field-description: 'Kurzbeschreibung'
 overview-field-goal: 'Ziele der Crowdfunding Kampagne'
-overview-field-main-gallery: Galería principal
 overview-field-image_gallery: 'Aktuelle Bilder'
 overview-field-image_upload: 'Laden Sie ein Bild hoch (max. 2MB)'
 overview-field-keywords: 'Schlagworte für das Projekt'
@@ -28,10 +27,8 @@ overview-field-options-currently_avanzado: Fortgeschritten
 overview-field-options-currently_finalizado: Fertig
 overview-field-options-currently_inicial: Beginnend
 overview-field-options-currently_medio: Halbzeit
-overview-field-options-scope_global: Global
 overview-field-options-scope_local: Lokal
 overview-field-options-scope_nacional: National
-overview-field-options-scope_regional: Regional
 overview-field-play-video: 'Infofilm'
 overview-field-project_location: Ort
 overview-field-related: 'Team und Erfahrung'
@@ -40,12 +37,9 @@ overview-field-scope: 'Projektreichweite'
 overview-field-subtitle: 'Zusammenfassung'
 overview-field-usubs: 'mit „Universal Subtitles“ veröffentlichen'
 overview-field-video: 'Zusätzliches Motivationsvideo'
-overview-field-social-category: 'Compromiso social'
-overview-field-social-description: 'Descripción Compromiso Social'
 overview-fields-images-title: 'Projektbilder'
 overview-main-header: 'Projektbeschreibung'
 step-3: Beschreibung
-step-main: Datos principales
 step-3b: Bilder
 step-images: 'Schritt: PProjektbilder'
 step-overview: 'Schritt: Projektbeschreibung'
@@ -68,17 +62,8 @@ tooltip-project-reward: 'Hier wird beschrieben, welche Dankeschöns und Belohnun
 tooltip-project-subtitle: 'Beschreiben Sie in einem einzigen Satz, worum es bei Ihrem Projekt geht, sodass man ein Gefühl dafür bekommt und erkennt, woraus es besteht und wozu es dient. Dieser Untertitel wird zusammen mit dem Projekttitel dargestellt.'
 tooltip-project-usubs: 'Prüfen Sie, ob Sie den Film mit „Universal Subtitles“ in anderen Sprachen untertitelt haben: http://www.universalsubtitles.org/'
 tooltip-project-video: 'Publizieren oder verlinken Sie ein Video (YouTube, Vimeo oder Giss.tv), in dem Sie kurz Ihre Vision des Projektes erklären. Dies ist eine hilfreiche Ergänzung Ihres Hauptfilms, bei dem Sie möglichen Unterstützer/innen möglichst direkt den Nutzen oder die Einzigartigkeit Ihres Projektes darstellen. Wenn es Ihnen schwer fällt, direkt in die Kamera zu sprechen, kann vielleicht ein früher Fan oder Unterstützer Ihres Projektes diese Referenz für Ihr Projekt aufnehmen? Für vielen Unterstützer/innen sind Empathie und Vertrauen in die projektleitende Person ausschlaggebende Elemente für ihr Engagement.'
-tooltip-project-social-category: 'Selecciona tu compromiso social de entre los que te mostramos'
-tooltip-project-social-description: 'Explica en que consiste el compromiso social que has seleccionado'
 validate-project-field-about: 'Die Projektbeschreibung ist zu kurz'
 validate-project-field-currently: 'Tragen Sie den aktuellen Projektstatus ein, um die Projektbeurteilung und die Entscheidung zu ermöglichen, ob das Projekt bei Goteo veröffentlicht werden sollte.'
 validate-project-field-description: 'Die Projektbeschreibung ist zu kurz'
 validate-project-value-description: "Die Projektbeschreibung ist zu kurz"
 validate-project-value-keywords: 'Tragen Sie mindestens fünf Schlagworte  zu Ihrem Projekt ein, die eine Beurteilung durch das Goteo-Team ermöglichen.'
-overview-field-execution-plan: 'Plan de ejecución'
-tooltip-project-execution-plan: 'Explica tu plan de ejecución'
-tooltip-project-execution-plan-url: 'Url con tu plan de ejecución'
-overview-field-sustainability-model: 'Modelo de sostenibilidad'
-overview-field-sustainability-model-url: 'URL de tu business canva'
-tooltip-project-sustainability-model: 'Explica el modelo de sostenibilidad de tu proyecto'
-tooltip-project-sustainability-model-url: 'Agrega una url con tu <a href="https://canvanizer.com/new/business-model-canvas" target="_blank">business canvas</a>'
