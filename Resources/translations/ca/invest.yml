@@ -1,7 +1,6 @@
 ---
 bazar-spread-text: '%s - Aquest Nadal, regala crowdfunding obert i per al bé comú amb @goteofunding #openbazaar'
 bazar-thanks: 'Gràcies per visitar el nostre bazaar, pots ajudar-nos a difondre''l.'
-currency-alert: "Tingues en compte que la gestió és en EUR.\\r\nPagaràs aproximadament <span id=\"reminder_conversion\">%s</span> € <a href=\"/faq/investors#q115\" target=\"_blank\">Més info</a>"
 faq-payment-method: '<a href="/faq/investors#q2" target="_blank">Quins sistemes de pagament ofereix Goteo? Són segurs?</a>'
 imperative-register: Registra't
 invest-address-address-field: Adreça
@@ -63,7 +62,6 @@ invest-payment-fail: 'Alguna cosa ha anat malament a l''hora de pagar'
 invest-payment-success: 'El pagament s''ha realitzat correctament'
 invest-payment_method-header: 'Escull el mètode de pagament'
 invest-paypal-method: PayPal
-invest-paypal_disabled: "Aquest projecte té desactivada l'opció de pagament a través de PayPal. <a href=\"/faq/investors#q2\">Més info</a>"
 invest-pool: 'Vull que la meva donació, en el cas que el projecte no arribi al seu objectiu, romangui al meu moneder virtual Goteo. '
 invest-pool-available: disponibles
 invest-pool-error: 'No tens prou diners al teu moneder virtual'
@@ -96,7 +94,7 @@ proj-widget-my_invest: 'La meva aportació'
 project-invest-confirm: 'Estàs a un pas de cofinançar aquest projecte...'
 project-invest-continue: 'Tria el mode de pagament:'
 project-invest-fail: 'Quelcom ha fallat, si us plau prova-ho de nou '
-project-invest-guest: Fantàstic!
+project-invest-guest: 'Fantàstic!'
 project-invest-ok: 'S''ha tramitat la teva aportació per cofinançar aquest projecte :) '
 project-invest-pool-button: 'Fer servir el meu moneder virtual'
 project-invest-start: 'Estàs a un pas de cofinançar aquest projecte...'
