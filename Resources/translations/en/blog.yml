@@ -1,6 +1,6 @@
 ---
 blog-coments-header: Comments
-blog-comments_no_allowed: Comments are not allowed on this post
+blog-comments_no_allowed: 'Comments are not allowed on this post'
 blog-comments_no_comments: 'This post has no comments'
 blog-no_comments: 'No comment'
 blog-no_posts: 'No posts have been published'
