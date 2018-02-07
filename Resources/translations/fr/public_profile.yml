@@ -1,4 +1,5 @@
-profile-interests-header: "Je suis intéressé par les projets à\_vocation..."
+---
+profile-interests-header: 'Je suis intéressé par les projets à\_vocation...'
 profile-invest_on-header: 'Projets que je soutiens'
 profile-invest_on-title: Cofinance
 profile-keywords-header: 'Mes mots clés'
@@ -8,7 +9,7 @@ profile-my_investors-header: 'Mes cofinanceurs'
 profile-my_projects-header: 'Mes projets'
 profile-my_worth-header: 'Ma contribution sur Goteo'
 profile-name-header: 'Profil de'
-profile-patron-header: "Recommande <span class=\"red\">%s projets</span>\r\n"
+profile-patron-header: "Recommande <span class=\"red\">%s projets</span>\\r\n"
 profile-sharing_interests-header: 'Intérêts partagés'
 profile-social-header: Social
 profile-webs-header: 'Mes sites web'

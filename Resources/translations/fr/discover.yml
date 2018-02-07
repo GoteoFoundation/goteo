@@ -1,11 +1,12 @@
+---
 discover-group-all-header: 'Campagne en cours'
 discover-group-archive-header: Archivés
 discover-group-fulfilled-header: 'Retombées aprouvées!'
 discover-group-others-header: 'Autre noeud:'
 discover-group-outdate-header: 'Sur le point d''etre archivés'
-discover-group-popular-header: Populaires
+discover-group-popular-header: 'Populaires'
 discover-group-recent-header: 'Publiés récemment'
-discover-group-success-header: Réussis
+discover-group-success-header: 'Réussis'
 discover-patron-header: '<span class="greenblue">%s</span> recommande<br />ces <span class="red">Projets</span>'
 discover-results-empty: 'Nous n''avons trouvé aucun projet répondant aux critères de votre recherche.'
 discover-results-header: 'Résultat de la recherche'

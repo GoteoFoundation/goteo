@@ -1,3 +1,4 @@
+---
 discover-group-all-header: 'En campaña'
 discover-group-archive-header: Archivados
 discover-group-fulfilled-header: 'Cumpriches cos retornos colectivos'
@@ -18,3 +19,4 @@ discover-searcher-bylocation-header: 'Por lugar:'
 discover-searcher-byreward-all: TODOS
 discover-searcher-byreward-header: 'Por retorno:'
 discover-searcher-header: 'Buscar un proxecto'
+meta-title-discover: 'Descubre proyectos :: Goteo.org'

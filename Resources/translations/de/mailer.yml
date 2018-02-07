@@ -1,5 +1,5 @@
+---
 mailer-baja: 'Wenn Sie keine weiteren Updates von Goteo.org erhalten möchten, können Sie Ihre Email-Adresse mit folgendem <a href="%s">Link</a> aus unserem Verteiler entfernen lassen.'
-﻿mailer-disclaimer: 'Goteo ist ein soziales Netzwerk für Crowdfunding und kollaborative Zusammenarbeit (Dienstleistungen, Infrastrukturen, Mikro Jobs und andere Ressourcen) zur Förderung unabhängiger Entwicklung kreativer und innovativer Initiativen, die zum Gemeinwohl beitragen.'
 mailer-sinoves: 'Wenn Sie diese Nachricht nicht lesen können, benutzen Sie bitte diesen <a href="%s">Link</a>'
 newsletter-block: 'Möchten Sie den Newsletter von Goteo nicht weiter erhalten?<br/> <a href="%s">Abbestellen</a>.'
 unsuscribe-request-success: 'Sie haben Ihr Newsletter-Abonnement gekündigt.'

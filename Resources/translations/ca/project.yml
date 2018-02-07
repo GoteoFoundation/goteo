@@ -1,45 +1,64 @@
+---
+contract-paypal_account: 'Email de tu cuenta PayPal:'
 currency-switch: CANVIAR
 overview-field-spread: Difusió
 personal-field-accounts: 'Comptes del projecte'
+project-about-title: 'Sobre aquest projecte'
+project-call-got: 'El projecte ja ha aconseguit <strong>%s</strong> de <strong>%s</strong>'
 project-chart-amount-end-round: 'Fi Ronda'
-project-costs-total: 'Total'
+project-chart-amount-ideal: Ideal
+project-chart-amount-reached: Acumulat
+project-chart-costs-reset: 'Torna'
+project-collaborations-available: 'Col·laboracions disponibles'
+project-collaborations-number: 'col·laboradors'
 project-collaborations-supertitle: 'Necessitats no monetàries'
-project-collaborations-title: Cercant
+project-collaborations-title: 'Cercant'
+project-comment-start-sesion: 'Inicia sesión'
+project-comment-start-sesion-2: 'para dejar un comentario'
 project-error-main-lang: 'No es pot establir aquest idioma [%s] com a principal perquè ja està assignat a una traducció. Elimina la traducció existent en [%s], des de el panell de traducció, per introduir-ne una de nova.'
+project-general-information: 'Informació general'
+project-go-up: 'Tornar a dalt'
 project-help-cost: 'Necessito ajuda per definir els costos'
 project-help-license: 'Necessito ajuda per definir els retorns col·lectius i les llicències'
+project-hide-donors: 'Amagar cofinançadors'
+project-hide-needs: 'Amagar llistat de necessitats'
+project-invest: Aportació
+project-invest-msg: 'Missatge de suport:'
 project-langs-header: 'Projecte en:'
 project-media-play_video: 'Veure vídeo'
 project-menu-home: Projecte
 project-menu-messages: Col·laboracions
 project-menu-needs: Necessitats
-project-menu-supporters: 'Cofinançadors '
+project-menu-news: 'Notícies'
+project-menu-participate: 'Participa'
+project-menu-supporters: Cofinançadors 
 project-menu-updates: Novetats
 project-menu_title-home: 'Impacte social: aquest projecte obre el seu codi, comparteix coneixements, dades o arxius digitals a canvi del teu suport. '
 project-menu_title-messages: 'No només diners: també pots ajudar amb el teu talent, materials, temps, contactes, coneixements... '
 project-menu_title-needs: 'Transparència de costos: desglossament detallat del mínim i l''òptim que necessita per a  dur-se a terme. '
 project-menu_title-supporters: 'Xarxa social de suport: els cofinançadors i cofinançadores són tan importants com qui impulsa aquesta iniciativa. '
 project-menu_title-updates: 'Feedback i novetats: informa''t sobre els avanços del projecte directament a través de qui ho impulsa. '
-project-messages-answer_it: 'Respondre '
+project-messages-answer_it: Respondre 
 project-messages-closed: 'Encara no es poden enviar missatges al projecte'
 project-messages-send_direct-header: 'Envia un missatge a l''impulsor/a del projecte'
 project-messages-send_message-button: Enviar
 project-messages-send_message-header: 'Escriu el teu missatge'
 project-not_published: 'Aquest projecte encara no és públic'
-project-remove-translation: 'Elimina la traducció'
-project-remove-translation-confirm: 'Segur que vols eliminar aquesta traducció? Aquesta operació no es pot desfer!'
-project-removed-translation-ko: 'Error al intentar eliminar la traducció!'
-project-removed-translation-ok: 'Traducció eliminada!'
+project-regular-support: Cofinançar
+project-related: 'Projectes relacionats'
 project-rewards-bonus_reward-title: Bonus
 project-rewards-header: Retorn
 project-rewards-individual_reward-limited: 'Recompensa limitada'
 project-rewards-individual_reward-title: 'Recompenses individuals'
 project-rewards-individual_reward-units_left: 'Queden <span class="left">%s</span> unitats'
+project-rewards-side-title: 'Recompenses'
 project-rewards-social_reward-title: 'Retorn col·lectiu '
 project-rewards-supertitle: 'Què ofereix a canvi'
 project-rounds: 'Projecte d''una sola ronda'
 project-share-header: 'Comparteix aquest projecte'
 project-share-pre_header: 'Fes saber a la teva xarxa que'
+project-show-donors: 'Mostrar cofinançadors'
+project-show-needs: 'Mostrar llistat de necessitats'
 project-side-investors-header: 'Ja han aportat'
 project-spread-embed_code: 'Codi Embed'
 project-spread-header: 'Difon aquest projecte i ajuda''l a aconseguir més visibilitat i donacions!'
@@ -56,11 +75,12 @@ project-view-metter-day_created: 'Creat el'
 project-view-metter-day_success: 'Finançat el'
 project-view-metter-day_updated: 'Rebut el'
 project-view-metter-days: Queden
+project-view-metter-favourite: 'Recorda-m''ho'
 project-view-metter-got: Obtingut
-project-view-metter-investment: 'Cofinançament '
-project-view-metter-investors: 'Cofinançadors '
+project-view-metter-investment: Cofinançament 
+project-view-metter-investors: Cofinançadors 
 project-view-metter-minimum: Mínim
-project-view-metter-optimum: 'Òptim  '
+project-view-metter-optimum: Òptim  
 project-view-preview: 'Previsualització del projecte'
 project-willpublish: 'Aquest projecte es publicarà el %s'
 regular-new_project: 'Projecte nou'
@@ -69,7 +89,7 @@ social_reward-access_title: 'Accedeix a aquest recurs col·lectiu'
 tooltip-project-bank: 'Si no vols posar-la ara podràs indicar-la més endavant quan formalitzem el contracte en cas d''èxit'
 tooltip-project-help-cost: 'Si no tens clar el desglossament de costos o vols consultar-nos alguna qüestió, marca aquesta opció. Hauràs de finalitzar i enviar-nos el formulari per poder rebre assessorament.'
 tooltip-project-help-license: 'Si tens dubtes sobre les llicències més adequades als retorns col·lectius del teu projecte, marca aquesta opció. Hauràs de finalitzar i enviar-nos el formulari per poder assessorar-te.'
-tooltip-project-paypal: "<p>A més de la pasarel·la de pagament bancari, a Goteo <strong>és possible rebre aportacions mitjançant PayPal</strong>. Per a això, has d'indicar aquí una adreça d'email associada a un compte PayPal degudament validat. No escriguis cap caràcter en aquest camp si no vols oferir l'opció de pagament via PayPal</p> <p>Tot i que no és obligatori oferir aquesta opció per rebre la recaptació del teu projecte, sí que és altament recomanable.</p>\r\n<p><strong>Si no indiques un compte PayPal, vàlid i verificat, abans de l'inici de la campanya, la gent usuària no podrà cofinançar mitjançant PayPal.</strong> </p> <p>Tingues present que no podràs modificar-lo posteriorment, hauràs de contactar amb nosaltres si vols canviar-lo.</p> <p><strong>IMPORTANT: Recorda que no es pot usar aquest mateix compte per fer aportacions al teu propi projecte ja que donaria un error de sistema.</strong></p>"
+tooltip-project-paypal: "<p>A més de la pasarel·la de pagament bancari, a Goteo <strong>és possible rebre aportacions mitjançant PayPal</strong>. Per a això, has d'indicar aquí una adreça d'email associada a un compte PayPal degudament validat. No escriguis cap caràcter en aquest camp si no vols oferir l'opció de pagament via PayPal</p> <p>Tot i que no és obligatori oferir aquesta opció per rebre la recaptació del teu projecte, sí que és altament recomanable.</p>\\r\n<p><strong>Si no indiques un compte PayPal, vàlid i verificat, abans de l'inici de la campanya, la gent usuària no podrà cofinançar mitjançant PayPal.</strong> </p> <p>Tingues present que no podràs modificar-lo posteriorment, hauràs de contactar amb nosaltres si vols canviar-lo.</p> <p><strong>IMPORTANT: Recorda que no es pot usar aquest mateix compte per fer aportacions al teu propi projecte ja que donaria un error de sistema.</strong></p>"
 tooltip-project-2rounds: 'Si esculls aquesta opció, el teu projecte tindrà 2 rondes de finançament de 40 dies. Una para aconseguir el mínim i l''altre per l''òptim.'
 tooltip-project-rounds: 'Si esculls aquesta opció, el teu projecte només tindrà una ronda de 40 dies per aconseguir la finançament necesaria: tot o res.'
 tooltip-project-scope: 'Indica l''impacte geogràfic que aspira a tenir el projecte (cada categoria inclou l''anterior). '
@@ -83,29 +103,12 @@ tooltip-updates-media: tooltip-updates-media
 tooltip-updates-tags: 'Text tooltip-updates-tags'
 tooltip-updates-text: tooltip-updates-text
 tooltip-updates-title: tooltip-updates-title
-project-about-title: 'Sobre aquest projecte'
-project-call-got: 'El projecte ja ha aconseguit <strong>%s</strong> de <strong>%s</strong>'
-project-chart-amount-reached: Acumulat
-project-chart-costs-reset: Torna
-project-chart-amount-ideal: Ideal
-project-collaborations-available: 'Col·laboracions disponibles'
-project-collaborations-number: col·laboradors
 project-obtained: 'Obtingut'
-project-general-information: 'Informació general'
-project-go-up: 'Tornar a dalt'
-project-hide-donors: 'Amagar cofinançadors'
-project-hide-needs: 'Amagar llistat de necessitats'
-project-invest: Aportació
-project-invest-msg: 'Missatge de suport:'
-project-menu-news: Notícies
-project-menu-participate: Participa
-project-regular-support: Cofinançar
-project-related: 'Projectes relacionats'
-project-rewards-side-title: Recompenses
-project-show-donors: 'Mostrar cofinançadors'
-project-show-needs: 'Mostrar llistat de necessitats'
-project-view-metter-favourite: 'Recorda-m''ho'
-
+project-costs-total: 'Total'
+project-remove-translation: 'Elimina la traducció'
+project-remove-translation-confirm: 'Segur que vols eliminar aquesta traducció? Aquesta operació no es pot desfer!'
+project-removed-translation-ok: 'Traducció eliminada!'
+project-removed-translation-ko: 'Error al intentar eliminar la traducció!'
 project-social-commitment-title: 'Compromís social'
 project-create-title: 'Comença el projecte'
 project-create-subtitle-alert: '<strong>WOOOOW!</strong><p>Avancem!! Ara toca sintetitzar el teu projecte en poques paraules!</p>'
@@ -132,7 +135,6 @@ project-add-cost: 'Afegeix un cost'
 project-add-reward: 'Afegeix una recompensa'
 project-remove-reward-confirm: 'Segur que vols esborrar aquesta recompensa?'
 project-reward-unlimited: 'Il·limitades'
-
 project-send-review: 'Envia a revisió'
 project-reviewing: 'Estem valorant i revisant el teu projecte'
 project-validation-ok: 'Has completat el formulari. Genial! Pots clicar al següent botó perquè els nostres assessors revisin el teu projecte.'
@@ -149,13 +151,11 @@ project-validation-error-rewards_required: 'Has de tenir al menys 3 recompenses'
 project-validation-error-rewards_units: 'La recompensa ha de tenir almenys %s unitats'
 project-validation-error-rewards_empty_amount: 'No es poden definir recompenses de valor 0'
 project-validation-error-campaign: 'Falten camps per omplir a la configuració de campanya'
-
 project-non-public-field: 'Aquest camp no és públic'
 project-campaign: 'Configuració'
 project-campaign-configuration: 'Configuració de campanya'
 project-campaign-use-paypal: 'Vull permetre que els usuaris pugin pagar mitjançant Paypal'
 project-manage: 'Gestiona'
 project-manage-campaign: 'Gestiona la campanya'
-
 project-widget-not-visible: 'Aquest widget no serà visible fins que el projecte sigui públic'
 project-donors-with-reward: '%s cofinançadors han escollit aquesta recompensa'

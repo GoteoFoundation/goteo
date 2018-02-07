@@ -1,3 +1,4 @@
+---
 auth-access-forbbiden: 'No tens permis per accedir aquí!'
 error-register-userid: 'És obligatori posar un nom d''accés'
 login-access-button: Entrar
@@ -12,12 +13,12 @@ login-new-user-label: 'Ets un nou usuari?'
 login-oneclick-header: 'Accedeix amb només un clic'
 login-recover-button: Recuperar
 login-recover-email-field: 'Email del compte'
-login-recover-header: 'Emplena el camp amb l''email que vas utilitzar per donar-te d''alta en la plataforma. En aquest mateix email rebràs la informació per recuperar la teva contrasenya. Moltes vegades coincideix amb el mateix correu vinculat a les teves xarxes socials. Si no recordes l''email pots contactar-nos, no oblidis esmentar algunes dades per facilitar-nos la cerca del teu usuari/a (nom sencer, nick que sols utilitzar, data d''alta o si vas fer alguna aportació a algun projecte en concret...)'
+login-recover-header: "Emplena el camp amb l'email que vas utilitzar per donar-te d'alta en la plataforma. En aquest mateix email rebràs la informació per recuperar la teva contrasenya. Moltes vegades coincideix amb el mateix correu vinculat a les teves xarxes socials. Si no recordes l'email pots contactar-nos, no oblidis esmentar algunes dades per facilitar-nos la cerca del teu usuari/a (nom sencer, nick que sols utilitzar, data d'alta o si vas fer alguna aportació a algun projecte en concret...)"
 login-recover-label: 'Has oblidat la contrasenya?'
 login-recover-link: 'Recuperar contrasenya '
 login-recover-modal-button: Enviar
 login-recover-modal-sucess: 'Fet! - T''hem enviat un correu electrònic a %s amb un enllaç per restablir la contrasenya.'
-login-recover-modal-text: "Escriu l'adreça de correu electrònic que vas fer servir per registrar-te i t'enviarem un enllaç on restablir la teva contrasenya\r\n"
+login-recover-modal-text: "Escriu l'adreça de correu electrònic que vas fer servir per registrar-te i t'enviarem un enllaç on restablir la teva contrasenya\\r\n"
 login-recover-username-field: 'Nom d''accés '
 login-register-button: Registrar
 login-register-confirm-field: 'Confirmar email'

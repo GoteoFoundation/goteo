@@ -1,3 +1,4 @@
+---
 mandatory-support-field-description: 'Derrigorrekoa da deskribapena idaztea'
 mandatory-support-field-name: 'Derrigorrekoa da elkarlanaren izena idaztea'
 step-6: Elkarlanak
@@ -9,7 +10,21 @@ supports-fields-support-title: Elkarlanak
 supports-main-header: 'Elkarlanen eskaera'
 tooltip-project-nsupport: 'Elkarlan berri bat betetzeko alholkua'
 tooltip-project-support: 'Dauden elkarlanak editatzeko alhokua'
-tooltip-project-support-description: 'Laburki azaldu zertan datza proiektuak behar duen laguntza, jendea igarri eta laguntzen animatu dezala.'
+tooltip-project-support-description: "Laburki azaldu zertan datza proiektuak behar duen laguntza, jendea igarri eta laguntzen animatu dezala."
 tooltip-project-support-support: 'Behar den elkarlaneko tituloa'
 tooltip-project-support-type: 'Aukera ezazu, proiektuak ekintza konkretuetan laguntza behar badu, edo maileguak behar badu (materialak, azpiegiturak, etabar).'
 tooltip-project-supports: 'Goteon proiektuak bestelako laguntza mota jaso dezakete, diruaz gain. Badago jendea ekonomikoki agian ezin duela babestu, baina bai bere gaitasunarekin, denborarekin, energiarekin, etabar.'
+support-sure-to-remove: 'Seguro que quieres borrar esta petición?'
+support-remove-error-messages: 'No se puede borrar esta petición porqué tiene respuestas.<br>Por favor, borra las respuestas antes!'
+support-removed: 'Petición borrada correctamente'
+support-sure-to-delete: 'Seguro que quieres borrar este mensaje?'
+support-public-message: 'Este mensaje se publicará en la página del proyecto'
+support-private-message: 'Mensaje privado para:'
+support-private_all-message: 'Este mensaje se enviará a los participantes de este hilo'
+support-is-private: 'Mensaje privado'
+support-set-private-message: 'Envía sólo a los participantes de este hilo'
+support-send-private-message: 'Envía un mensaje privado a este usuario'
+message-response: 'Respuesta'
+message-project-comment: 'Comentario al proyecto'
+message-project-support: 'Colaboración al proyecto'
+message-project-private: 'Conversación del proyecto'
