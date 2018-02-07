@@ -1,3 +1,4 @@
+---
 error-register-email: 'Het email veld moet ingevuld worden.'
 error-register-email-confirm: 'De emailadressen komen niet overeen.'
 error-register-invalid-password: 'Dat wachtwoord is niet geldig.'
@@ -14,7 +15,8 @@ leave-token-incorrect: 'De code voor het sluiten van dit account is niet geldig.
 recover-email-sended: 'We hebben je een mail gestuurd met instructies om je wachtwoord te herstellen. Als je die niet direct ontvangt, kijk dan even in je spam folders.'
 recover-request-fail: 'We kunnen je wachtwoord niet herstellen vanaf een account met die gegevens'
 recover-token-incorrect: 'De code voor het herstellen van je wachtwoord is niet geldig'
-register-id-field: Username
+register-id-field: 'Username'
+register-password-field: Wachtwoord
 user-activate-already-active: 'Het account is al actief.'
 user-activate-success: 'Het account is correct geactiveerd.'
 validate-project-value-contract_email: 'Het emailadres is incorrect.'
