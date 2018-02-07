@@ -1,6 +1,15 @@
+---
+call-tagmark-3: 'Convocatoria abierta'
+call-tagmark-4: 'Campaña activa!'
+call-tagmark-5: 'Campaña finalizada'
+call-tagmark-6: 'Convocatoria archivada'
 regular-fail_mark: Artxibatuta...
-regular-gotit_mark: 'Aldi berean finantzatuta!'
+regular-gotit_mark: Aldi berean finantzatuta!
 regular-keepiton_mark: 'Gutxienekoa lortuta'
-regular-onrun_mark: Abian!
-regular-success_mark: Ondo!
 regular-oneround_mark: 'Erronda bakarra'
+regular-onrun_mark: 'Abian!'
+regular-success_mark: 'Ondo!'
+call-tagmark-open: 'Convocatoria abierta'
+call-tagmark-active: 'Campaña activa!'
+call-tagmark-completed: 'Campaña finalizada'
+call-tagmark-archived: 'Convocatoria archivada'
