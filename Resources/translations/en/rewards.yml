@@ -1,3 +1,4 @@
+---
 mandatory-individual_reward-field-description: 'You must add a description'
 mandatory-individual_reward-field-icon: 'You must choose the type of reward'
 mandatory-individual_reward-field-name: 'You must enter a reward'
@@ -15,7 +16,7 @@ rewards-field-social_reward-license: 'Licensing options'
 rewards-field-social_reward-other: 'Specify the type of benefit'
 rewards-field-social_reward-reward: Benefits
 rewards-field-social_reward-type: 'Type of benefit'
-rewards-field-social_reward-url: Url
+rewards-field-social_reward-url: URL
 rewards-fields-individual_reward-title: 'Individual rewards'
 rewards-fields-social_reward-title: 'Collective benefits'
 rewards-main-header: 'Rewards'
