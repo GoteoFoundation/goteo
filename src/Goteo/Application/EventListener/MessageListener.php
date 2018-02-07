@@ -90,7 +90,7 @@ class MessageListener extends AbstractListener {
         $project = $message->getProject();
         $user = $message->getUser();
         $type = $message->getType();
-        $this->info("Message created", ['project' => $message->project, 'message_id' => $message->id, 'type' => $type, 'message' => $message->message]);
+        $this->notice("Message created", ['project' => $message->project, 'message_id' => $message->id, 'type' => $type, 'message' => $message->message]);
 
         $title = $message->getSubject();
         // Message created from support type
@@ -211,7 +211,7 @@ class MessageListener extends AbstractListener {
 
         }
 
-        if($type === 'project-private') {
+        if($type === 'project-private' || $type === 'project-private-response') {
             $log = new Feed();
             $log->setTarget($project->id)
                 ->populate('feed-message-new-project-response',
