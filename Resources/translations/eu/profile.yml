@@ -1,3 +1,4 @@
+---
 guide-project-user-information: '<strong>Arlo honetan zure erabiltzaile soslaiko alde publikorako datuak sartuko dituzu. </strong><br><br>Proiektu bat aurkeztu nahi baduzu, edota alde bereko finantzakide bezala parte hartu nahi baduzu, Goteo-ko komunitatean parte hartzeko arreta handiz zure aurkezpen testua idaztea gomendatzen dizugu, baita esteka interesgarriak zuri eta egiten duzunari buruz ipintzea eta parekotzat daukazun irudi bat igotzea.'
 profile-field-about: 'Kontaiguzu zeozer zuri buruz'
 profile-field-avatar_current: 'Zure oraingo irudia'
@@ -16,20 +17,18 @@ profile-field-legal-entity-asociation: Elkartea
 profile-field-legal-entity-choose: 'Hautatu forma juridiko bat'
 profile-field-legal-entity-company: Enpresa
 profile-field-legal-entity-cooperative: Kooperatiba
-profile-field-legal-entity-ngo: 'Gobernuz Kanpoko Erakundea'
-profile-field-legal-entity-others: 'Beste batzuk'
+profile-field-legal-entity-ngo: Gobernuz Kanpoko Erakundea
+profile-field-legal-entity-others: Beste batzuk
 profile-field-legal-entity-person: 'Pertsona fisikoa'
 profile-field-legal-entity-self-employed: Autonomoa
-profile-field-location: Bizilekua
+profile-field-location: 'Bizilekua'
 profile-field-name: 'Erabiltzaile izena'
-profile-field-url: URL
 profile-field-websites: 'Nire web orriak'
 profile-fields-image-title: 'Soslaiko irudia'
 profile-fields-social-title: 'Soslai sozialak'
 profile-main-header: 'Soslaiko datuak'
 step-1: Soslaia
 step-userProfile: 'urratsa: Erabiltzailea / Soslaia'
-tooltip-user-about: 'Sare soziala bezala, Goteo-k proiektu interesgarriak zabaldu eta finantzatu nahi du, ahalik eta jende multzo handiaren artean. Horretarako garrantzitsua da  zure gaitasunei eta esperientziari buruzko informazioa (profesionala, akademikoa, zaletasunak, etabar) ipintzea.'
 tooltip-user-avatar_upload: 'Tooltip testua eralbiltzaile irudia igo'
 tooltip-user-contribution: 'Azaldu laburki zure gaitasunak edo zein arloetan lagundu ahal izango zenukeen (itzultzen, zabaltzen, frogatzen, programatzen, irakasten, etabar).'
 tooltip-user-facebook: 'Posiblea da sare sozial honen bitartez, zure gustuko Goteo-ko proiektuak lagunen eta familiakoen artean zabaltzea.'
