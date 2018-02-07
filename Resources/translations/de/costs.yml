@@ -1,3 +1,4 @@
+---
 cost-type-lend: Darlehen
 cost-type-material: Material
 cost-type-structure: Infrastruktur
@@ -8,16 +9,16 @@ costs-field-date_from: Von
 costs-field-date_until: Bis
 costs-field-dates: Daten
 costs-field-description: Beschreibung
+costs-field-required_cost: 'Diese Ausgabe ist'
 costs-field-required_cost-no: zusätzlich
 costs-field-required_cost-yes: Erforderlich
-costs-field-required_cost: 'Diese Ausgabe ist'
 costs-field-resoure: 'Andere Ressourcen'
 costs-field-schedule: 'Aufgaben-Zeitplan'
 costs-field-type: Type
 costs-fields-main-title: 'Kostenaufstellung der Aufwendungen'
 costs-fields-metter-title: 'Ansicht der Aufwendungen'
 costs-fields-resources-title: Ressource
-costs-main-header: Aufwendungen
+costs-main-header: 'Aufwendungen'
 mandatory-cost-field-amount: 'Sie müssen den Aufwendungen einen Betrag zuzuordnen'
 mandatory-cost-field-description: 'Sie müssen eine Beschreibung für die Aufwendungen hinzufügen'
 mandatory-cost-field-name: 'Sie müssen die Aufwendungen beschriften'
