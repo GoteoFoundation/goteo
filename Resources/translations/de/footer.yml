@@ -1,8 +1,9 @@
+---
 footer-header-categories: Kategorien
 footer-header-projects: Projekte
 footer-header-resources: Ressourcen
 footer-header-services: Dienstleistungen
-footer-header-social: 'Folge uns'
+footer-header-social: Folge uns
 footer-header-sponsors: 'Institutionelle Unterstützung'
 footer-platoniq-iniciative: 'Eine Initiative von:'
 footer-resources-api: API
@@ -10,15 +11,14 @@ footer-resources-glossary: Glossar
 footer-resources-press: Presse
 footer-resources-source_code: 'Source Code AGPL3'
 footer-resources-stats: Stats
-footer-service-calculator: 'Rechner'
+footer-resources-channels: Canales
+footer-service-calculator: Rechner
 footer-service-campaign: Kampagnen
 footer-service-consulting: Beratung
-footer-service-pool: 'Geldbörse'
-footer-service-resources: Risikokapital
+footer-service-pool: Geldbörse
+footer-service-resources: 'Risikokapital'
 footer-service-workshop: Workshops
 regular-footer-contact: Kontakt
-regular-footer-impressum: Impressum
 regular-footer-legal: 'Rechtliche Bestimmungen'
-regular-footer-privacy: Datenschutz
-regular-footer-terms: Nutzungsbedingungen
-
+regular-footer-privacy: 'Datenschutz'
+regular-footer-terms: 'Nutzungsbedingungen'
