@@ -73,7 +73,6 @@ tooltip-project-social-description: 'Explica amb poques paraules en què consist
 validate-project-field-about: 'L''explicació del projecte és massa curta'
 validate-project-field-currently: 'Indica l''estat del projecte per millorar-ne la seva valoració, de cara a determinar si publicar-ho a Goteo.'
 validate-project-field-description: 'La descripció del projecte és massa curta'
-validate-project-value-description: "La descripció del projecte és massa curta "
 validate-project-value-keywords: 'Indica un mínim de 5 paraules clau del projecte per millorar-ne la seva valoració, de cara a determinar si publicar-ho a Goteo.'
 overview-field-execution-plan: 'Pla d''execució'
 tooltip-project-execution-plan: 'Explica el teu pla d''execució'
