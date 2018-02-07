@@ -1,3 +1,4 @@
+---
 error-register-email: 'L''adreça de correu és obligatòria'
 error-register-email-confirm: 'La comprovació de correu electrònic no coincideix'
 error-register-invalid-password: 'La contrasenya no és vàlida'
@@ -17,10 +18,10 @@ password-changed-ok: 'La teva contrasenya ha estat canviada correctament.'
 recover-email-sended: 'T''hem enviat un email per restablir la contrasenya del teu compte. Verifica també la carpeta de correu no desitjat o /Spam.'
 recover-request-fail: 'No es pot recuperar la contrasenya de cap compte amb aquestes dades'
 recover-token-incorrect: 'El codi de recuperació de contrasenya no és vàlid'
-register-button-title: 'Registra''t'
+register-button-title: Registra't
 register-email-confirm-field: 'Torna a escriure el teu correu electrònic'
 register-email-field: 'Correu electrònic'
-register-form-title: 'Registra''t'
+register-form-title: Registra't
 register-id-field: 'Nom d''usuari'
 register-name-field: 'Nom i cognoms'
 register-password-confirm-field: 'Torna a escriure la contrasenya'
