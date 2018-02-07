@@ -5,7 +5,6 @@ mandatory-individual_reward-field-name: 'Vous devez nommer cette récompense'
 mandatory-social_reward-field-description: 'Vous devez renseigner la descritpion des récompenses'
 mandatory-social_reward-field-icon: 'Vous devez choisir le type de récompence'
 mandatory-social_reward-field-name: 'Vous devez choisir le nom de la récompence'
-mandatory-social_reward-field-category: 'Es obligatorio especificar el comprimiso social'
 rewards-field-individual_reward-amount: 'Valeur financée'
 rewards-field-individual_reward-description: Description
 rewards-field-individual_reward-other: 'Spécifiez le type de récompense individuelle.'
@@ -17,7 +16,6 @@ rewards-field-social_reward-license: 'Choix de licences'
 rewards-field-social_reward-other: 'Spécifiez le type de récompense individuelle'
 rewards-field-social_reward-reward: Récompenses
 rewards-field-social_reward-type: 'Type de retombée collective'
-rewards-field-social_reward-url: Url
 rewards-fields-individual_reward-title: 'Récompenses individuelles'
 rewards-fields-social_reward-title: 'Retombées collectives'
 rewards-main-header: 'Retombées et récompenses'
