@@ -1,23 +1,25 @@
-costs-field-select-rounds: 'Durée de la campagne'
+---
+costs-field-select-rounds: Durée de la campagne
 form-accept-button: Valider
 form-add-button: Ajouter
 form-ajax-info: 'Le formulaire est sauvegardé automatiquement au fur et àmesure'
 form-apply-button: Valider
 form-edit-button: Editer
+form-has-errors: 'El formulario contiene errores, revísalos antes de continuar!'
 form-errors-info: 'Total: %s | Dans cette section: %s'
 form-errors-total: '%s erreurs au total'
 form-footer-errors_title: Erreurs
 form-image_upload-button: 'Envoyer image'
 form-media_send-button: 'Importer vidéo'
 form-navigation_bar-header: 'Aller a'
-form-next-button: 'Etape suivante'
+form-next-button: Etape suivante
 form-project-info_status-title: 'Statut général des donnés inscrites'
 form-project-progress-title: 'Evaluation des données'
 form-project-status-title: 'Stade du projet'
 form-project_status-campaing: 'Campagne en cours'
 form-project_status-cancel: Rejeté
 form-project_status-cancelled: Annulé
-form-project_status-edit: 'En cours d´édition'
+form-project_status-edit: En cours d´édition
 form-project_status-expired: Archivé
 form-project_status-fulfilled: 'Récompense effectuée'
 form-project_status-review: 'En cours de validation'
@@ -34,3 +36,35 @@ project-one-round: 'Un seul round de 40 jours'
 project-personal-field-entity_name: 'The party on behalf of which you are acting (if applicable) '
 project-two-rounds: '2 rounds de 40 jours'
 tooltip-project-personal-entity_name: 'Si vous representez une organisation, veuillez nous l''indiquer ici'
+form-sent-success: 'Los datos se han guardado correctamente!'
+form-sent-error: 'Ha ocurrido un error al guardar los datos: [%s]'
+form-confirm-exit: "Se van a perder los datos que no has guardado\n¿Seguro que quieres salir de la página?"
+overview-extra-call: 'Campos complementarios para la convocatoria %s'
+form-editor-bold: 'Negrita'
+form-editor-italic: 'Cursiva'
+form-editor-strikethrough: 'Tachado'
+form-editor-heading: 'Encabezado'
+form-editor-smaller_heading: 'Disminuir el encabezado'
+form-editor-bigger_heading: 'Aumentar el encabezado'
+form-editor-code: 'Código'
+form-editor-quote: 'Cita'
+form-editor-generic_list: 'Lista genérica'
+form-editor-numbered_list: 'Lista ordenada'
+form-editor-create_link: 'Crear enlace'
+form-editor-insert_image: 'Insertar imagen'
+form-editor-insert_table: 'Insertar tabla'
+form-editor-insert_horizontal_line: 'Línea horizontal'
+form-editor-toggle_preview: 'Conmutar la previsualización'
+form-editor-toggle_side_by_side: 'Conmutar vista paralela'
+form-editor-toggle_fullscreen: 'Conmutar pantalla completa'
+form-editor-markdown_guide: 'Guía markdown'
+form-editor-undo: 'Deshacer'
+form-editor-redo: 'Rehacer'
+form-editor-close: 'Cerrar'
+form-editor-exact-location: 'Localización exacta'
+form-editor-change-location: 'Cambiar'
+form-editor-change-unlocated: 'Sin localizar'
+form-editor-fine-locate: 'Puedes afinar la localización arrastrando y soltando la marca.'
+form-editor-error-locating: 'No se ha encontrado una dirección!'
+form-editor-success-locating: 'Se ha encontrado una dirección válida'
+form-dragndrop-unsupported: 'Ha ocurrido un problema al arrastrar y soltar archivos. Por favor, inténtalo de nuevo haciendo clic al botón de subir archivos'
