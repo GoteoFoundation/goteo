@@ -3,34 +3,15 @@ contract-paypal_account: 'Mail del tuo profilo PayPal:'
 currency-switch: CAMBIARE 
 overview-field-spread: Diffusione
 personal-field-accounts: 'Conti del progetto'
-project-about-title: 'Sobre este proyecto'
-project-call-got: 'El proyecto ya ha conseguido <strong>%s</strong> de <strong>%s</strong>'
-project-chart-amount-end-round: 'Fin Ronda'
-project-chart-amount-ideal: Ideal
-project-chart-amount-reached: Acumulado
-project-chart-costs-reset: 'Volver'
-project-collaborations-available: 'colaboraciones disponibles'
-project-collaborations-number: 'colaboradores'
 project-collaborations-supertitle: 'Bisogni non monetari'
 project-collaborations-title: 'Si cerca'
-project-comment-start-sesion: 'Inicia sesión'
-project-comment-start-sesion-2: 'para dejar un comentario'
-project-error-main-lang: 'No se puede establecer este idioma [%s] como principal porque ya está asignado a una traducción. Elimina la traducción existente en [%s], desde el panel de traducción, para poder introducir una nueva.'
-project-general-information: 'Información general'
-project-go-up: 'volver arriba'
 project-help-cost: 'Ho bisogno d''aiuto nella definizione dei costi'
 project-help-license: 'Ho bisogno d''aiuto per definire i benefici collettive e le licenze'
-project-hide-donors: 'Ocultar cofinanciadores'
-project-hide-needs: 'Ocultar listado de necesidades'
-project-invest: Aportación
-project-invest-msg: 'Mensaje de apoyo:'
 project-langs-header: 'Progetto in '
 project-media-play_video: 'Vedere video '
 project-menu-home: Progetto
 project-menu-messages: Collaborazioni 
 project-menu-needs: Bisogni 
-project-menu-news: 'Noticias'
-project-menu-participate: 'Participa'
 project-menu-supporters: Co-finanziatori 
 project-menu-updates: Novità
 project-menu_title-home: 'Impatto sociale: questo progetto è in open source, condivide conoscenza, dati o archivi digitali in cambio di sostegno.'
@@ -44,21 +25,15 @@ project-messages-send_direct-header: 'Manda un messaggio al promotore del proget
 project-messages-send_message-button: Inviare
 project-messages-send_message-header: 'Scrivi il tuo messaggio '
 project-not_published: 'Questo progetto non è ancora pubblico'
-project-regular-support: Cofinanciar
-project-related: 'Proyectos relacionados'
-project-rewards-bonus_reward-title: Bonus
 project-rewards-header: Benefici
 project-rewards-individual_reward-limited: 'Recompensa limitata '
 project-rewards-individual_reward-title: 'Recompense individuali'
 project-rewards-individual_reward-units_left: 'Restano <span class="left">%s</span>  unità'
-project-rewards-side-title: 'Recompensas'
 project-rewards-social_reward-title: 'Beneficio collettivo'
 project-rewards-supertitle: 'Cosa offre in cambio'
 project-rounds: 'Progetto con uno solo giro'
 project-share-header: 'Condividi questo progetto '
 project-share-pre_header: 'Fai sapere al tuo network che '
-project-show-donors: 'Mostrar cofinanciadores'
-project-show-needs: 'Mostrar listado de necesidades'
 project-side-investors-header: 'Hanno già contribuito '
 project-spread-embed_code: 'Codice Embed'
 project-spread-header: 'Diffondi questo progetto '
@@ -75,13 +50,11 @@ project-view-metter-day_created: 'Creato il '
 project-view-metter-day_success: 'Finanziato il '
 project-view-metter-day_updated: 'Ricevuto il '
 project-view-metter-days: Restano
-project-view-metter-favourite: 'Recordarme'
 project-view-metter-got: Ottenuto
 project-view-metter-investment: Co-finanziamento
 project-view-metter-investors: Co-finanziatori 
 project-view-metter-minimum: Minimo
 project-view-metter-optimum: Ottimo
-project-view-preview: 'Previsualización del proyecto'
 project-willpublish: 'Questo progetto su pubblicherà il %s'
 regular-new_project: 'Progetto nuovo'
 social_reward-access: Accedi 
@@ -90,72 +63,9 @@ tooltip-project-bank: 'Se non vuoi indicarla ora potrai aggiungerla più tardi q
 tooltip-project-help-cost: 'Se non ti è chiaro l''elenco dei costi o hai bisogno di farci delle domande, seleziona quest''opzione. Devi terminare il questionario per portarti aiutare.'
 tooltip-project-help-license: 'Se hai dubbi sulle licenze più adeguate ai benefici collettivi del tuo progetto, seleziona quest''opzione. Devi terminare e inviare il questionario così ti possiamo aiutare.'
 tooltip-project-paypal: "<p> In aggiunta al nostro gateway di pagamento,<strong> si possono ricevere donazioni via PayPal</strong>. Per accedervi devi indicare qui un indirizzo mail associato a un account valido su PayPal. Non scrivere niente (nessun carattere) in questo campo se non vuoi utilizzare l'opzione di pagamento di Paypal.</p> <p> Anche se non è obbligatorio essere registrato su Paypal per ricevere le donazioni del tuo progetto, è comunque caldamente consigliato.<strong> Se non si indicata un account di PayPal valido e verificato prima della pubblicazione di questa campagna, non sarà possibile ricevere le donazioni con questa modalità.</strong></p> <p> Questo account non potrà essere modificato posteriormente, dovrai contattarci se desideri cambiarlo.</p> <p><strong>IMPORTANTE: Non è possibile usare questo stesso account per effettuare donazioni al tuo proprio progetto e si verificherebbe ub errore nel sistema.</strong></p>"
-tooltip-project-2rounds: 'Si eliges esta opción, tu proyecto tendrá 2 rondas de financiación de 40 días. Una para conseguir el mínimo y otra para el óptimo.'
 tooltip-project-rounds: 'Se scegli questa opzione, il tuo progetto avrà un giro di 40 giorni per ottenere il finanziamento necessario: tutto o niente.'
 tooltip-project-scope: 'Indica l''impatto geografico a cui il progetto aspira (ogni categoria include quella precedente).'
 tooltip-project-spread: 'Spiegaci come credi di diffondere il progetto tra la tua comunità.'
-tooltip-updates-allow_comments: tooltip-updates-allow_comments
-tooltip-updates-date: tooltip-updates-date
-tooltip-updates-home: 'Texto tooltip-updates-home'
-tooltip-updates-image: tooltip-updates-image
-tooltip-updates-image_upload: tooltip-updates-image_upload
-tooltip-updates-media: tooltip-updates-media
-tooltip-updates-tags: 'Texto tooltip-updates-tags'
 tooltip-updates-text: tooltip-updates-title
-tooltip-updates-title: tooltip-updates-title
-project-obtained: 'Obtenido'
-project-costs-total: 'Total'
-project-remove-translation: 'Eliminar traducción'
-project-remove-translation-confirm: '¿Seguro que quieres eliminar esta traducción? Esta operación no se puede deshacer!'
-project-removed-translation-ok: '¡Traducción eliminada!'
-project-removed-translation-ko: '¡Error al intentar eliminar la traducción!'
-project-social-commitment-title: 'Compromiso social'
-project-create-title: 'Comienza un proyecto'
-project-create-subtitle-alert: '<strong>WOOOOW!</strong><p>Avanzamos!! Ahora a sintetizar tu proyecto en pocas palabras!!</p>'
-project-create-minimum-field: 'Mínimo (€)'
-project-create-minimum-calculate-button: 'Calcular'
-project-create-minimum-alert: '<strong>BRAVOOO!</strong><p>Seguimos!! Piensa en el dinero que necesitas, pulsa calcular, y te diremos cuantos mecenas tendrás que conseguir, utilizando nuestra media de donaciones ;-)</p>'
-project-create-minimum-calculated-alert: '<strong>BIEN!</strong><p>¿Te ves capaz de conseguir aproximadamente este numero de mecenas? Si es así adelante! De lo contrario, piensa mejor tu mínimo y vuelve a calcular!</p>'
-project-create-publishing-date-field: '¿Cuando tienes pensado que se publique el proyecto?'
-project-create-social-select-field: 'Selecciona tu compromiso social'
-project-create-social-select-alert: '<strong>GOTEO-TASTIC!!</strong><p>En Goteo necesitamos un compromiso social, piensa cual es el tuyo y selecciónalo! </p>'
-project-create-social-text-field: 'Explica en unas pocas palabras en que consiste ese compromiso social'
-project-create-social-text-alert: '<strong>TROPPO BELLO!!</strong><p>Ahora necesitamos que nos expliques un poquito ese compromiso que has seleccionado</p>'
-project-create-terms-field: 'He leído, entiendo y acepto las <a data-toggle="modal" data-target="#termsModal" href="">condiciones</a> y requisitos para crear un proyecto en Goteo, así como la <a target="_blank" href="/legal/privacy">política de privacidad</a> de la plataforma.'
-project-create-save-button: 'Guardar y continuar'
-project-create-save-alert: '<strong>GRANDE!!</strong><p>Ahora que ya tenemos una idea sobre tu proyecto, pasarás al siguiente paso con un formulario ampliado sobre tu proyecto</p>'
-project-create-modal-no-social-title: 'Compromiso Social'
-project-create-modal-no-social-description: 'Es obligatorio tener un compromiso social para que tu proyecto sea aceptado en Goteo. Si no te comprometes seleccionando uno, no se activará el botón que permite continuar :-('
-project-share-materials: 'Materiales compartidos'
-project-create-no-social-commitment: 'No tengo'
-project-progress-title: Cómo va el proyecto
-project-edit: Editar proyecto
-project-remove-cost-confirm: '¿Seguro que quieres eliminar este coste?'
-project-add-cost: 'Añadir coste'
-project-add-reward: 'Añadir recompensa'
-project-remove-reward-confirm: '¿Seguro que quieres eliminar esta recompensa?'
-project-reward-unlimited: 'Ilimitadas'
-project-send-review: 'Enviar a revisión'
-project-reviewing: 'Estamos valorando y revisando tu proyecto'
-project-validation-ok: 'Has completado el formulario. ¡Genial! Puedes clicar al siguiente botón para que nuestros asesores revisen tu proyecto.'
-project-validation-errors: 'El proyecto todavía no está completado!'
-project-validation-error-profile: 'Faltan campos por rellenar en tu perfil de usuario'
-project-validation-error-profile_social: 'Debes rellenar alguno de los campos de Web, Facebook o Twitter'
-project-validation-error-personal: 'Faltan campos por rellenar en las cuentas del proyecto'
-project-validation-error-overview: 'Faltan campos por rellenar en la descripción del proyecto'
-project-validation-error-images: 'Hace falta que el proyecto tenga al menos una imagen'
-project-validation-error-costs: 'Falta añadir o completar los costes'
-project-validation-error-costs_required: 'Debes tener al menos un coste de cada tipo, imprescindible y opcional'
-project-validation-error-rewards: 'Falta añadir o completar las recompensas'
-project-validation-error-rewards_required: 'Debes tener al menos 3 recompensas'
-project-validation-error-rewards_units: 'La recompensa debe tener al menos %s unidades'
-project-validation-error-rewards_empty_amount: 'No se pueden definir recompensas de valor 0'
-project-validation-error-campaign: 'Faltan campos por rellenar en la configuración de campaña'
-project-non-public-field: 'Este campo no es público'
-project-campaign: 'Configuración'
-project-campaign-configuration: 'Configuración de campaña'
-project-campaign-use-paypal: 'Quiero permitir que los usuarios puedan pagar con Paypal'
-project-manage: 'Gestionar'
-project-manage-campaign: 'Gestionar campaña'
-project-widget-not-visible: 'Este widget no será visible hasta que el proyecto sea público'
-project-donors-with-reward: '%s cofinanciadores han escogido esta recompensa'
+project-obtained: 'Ottenuto'
+project-costs-total: 'Totale'
