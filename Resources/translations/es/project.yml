@@ -1,3 +1,4 @@
+---
 contract-paypal_account: 'Email de tu cuenta PayPal:'
 currency-switch: CAMBIAR
 overview-field-spread: Difusión
@@ -28,8 +29,8 @@ project-media-play_video: 'Ver video'
 project-menu-home: Proyecto
 project-menu-messages: Colaboraciones
 project-menu-needs: Necesidades
-project-menu-news: Noticias
-project-menu-participate: Participa
+project-menu-news: 'Noticias'
+project-menu-participate: 'Participa'
 project-menu-supporters: Cofinanciadores
 project-menu-updates: Novedades
 project-menu_title-home: 'Impacto social: este proyecto abre su código, comparte conocimientos, datos o archivos digitales a cambio de tu apoyo.'
@@ -50,7 +51,7 @@ project-rewards-header: Retorno
 project-rewards-individual_reward-limited: 'Recompensa limitada'
 project-rewards-individual_reward-title: 'Recompensas individuales'
 project-rewards-individual_reward-units_left: 'Quedan <span class="left">%s</span> unidades'
-project-rewards-side-title: Recompensas
+project-rewards-side-title: 'Recompensas'
 project-rewards-social_reward-title: 'Retorno colectivo'
 project-rewards-supertitle: 'Qué ofrece a cambio'
 project-rounds: 'Proyecto de una sola ronda'
@@ -74,7 +75,7 @@ project-view-metter-day_created: 'Creado el'
 project-view-metter-day_success: 'Financiado el'
 project-view-metter-day_updated: 'Recibido el'
 project-view-metter-days: Quedan
-project-view-metter-favourite: Recordarme
+project-view-metter-favourite: 'Recordarme'
 project-view-metter-got: Obtenido
 project-view-metter-investment: Cofinanciación
 project-view-metter-investors: Cofinanciadores
@@ -88,7 +89,7 @@ social_reward-access_title: 'Accede a este recurso colectivo'
 tooltip-project-bank: 'Si no quieres ponerla ahora podrás ponerla más adelante cuando formalicemos el contrato'
 tooltip-project-help-cost: 'Si no tienes claro el desglose de costes o quieres consultarnos alguna cuestión, marca esta opción. Debes finalizar y enviar el formulario para que podamos asesorarte en esto.'
 tooltip-project-help-license: 'Si tienes dudas acerca de las licencias más adecuadas a los retornos colectivos de tu proyecto, marca esta opción. Debes finalizar y enviar el formulario para que podamos asesorarte en esto.'
-tooltip-project-paypal: "<p> Además de mediante nuestra pasarela de pago bancaria, <strong>es posible recibir aportaciones vía PayPal</strong>. Para ello, debes indicar aquí una dirección de email asociada a una cuenta validada en PayPal. No escribas nada (ningún carácter) en este campo si no deseas ofrecer la opción de pago Paypal.</p>\r\n<p> Aunque no es obligatorio tener una cuenta en Paypal para recibir la recaudación de tu proyecto, sí es altamente recomendable.<strong> Si no se facilita una cuenta PayPal validada y verificada antes de la publicación de esta campaña, no será posible la recepción de aportaciones por esta vía.</strong></p>\r\n<p>Esta cuenta no podrás modificarla posteriormente, tendrás que contactar con nosotros si quieres cambiarla.</p>\r\n<p><strong>IMPORTANTE: No se puede usar esta misma cuenta para hacer aportaciones a tu propio proyecto ya que daría un error de sistema.</strong></p>\r\n"
+tooltip-project-paypal: "<p> Además de mediante nuestra pasarela de pago bancaria, <strong>es posible recibir aportaciones vía PayPal</strong>. Para ello, debes indicar aquí una dirección de email asociada a una cuenta validada en PayPal. No escribas nada (ningún carácter) en este campo si no deseas ofrecer la opción de pago Paypal.</p>\\r\n<p> Aunque no es obligatorio tener una cuenta en Paypal para recibir la recaudación de tu proyecto, sí es altamente recomendable.<strong> Si no se facilita una cuenta PayPal validada y verificada antes de la publicación de esta campaña, no será posible la recepción de aportaciones por esta vía.</strong></p>\\r\n<p>Esta cuenta no podrás modificarla posteriormente, tendrás que contactar con nosotros si quieres cambiarla.</p>\\r\n<p><strong>IMPORTANTE: No se puede usar esta misma cuenta para hacer aportaciones a tu propio proyecto ya que daría un error de sistema.</strong></p>\\r\n"
 tooltip-project-2rounds: 'Si eliges esta opción, tu proyecto tendrá 2 rondas de financiación de 40 días. Una para conseguir el mínimo y otra para el óptimo.'
 tooltip-project-rounds: 'Si eliges esta opción, tu proyecto solo tendrá una ronda de 40 días para conseguir la financiación necesaria: todo o nada.'
 tooltip-project-scope: 'Indica el impacto geográfico que aspira a tener el proyecto (cada categoría incluye la anterior). '
@@ -102,31 +103,12 @@ tooltip-updates-media: tooltip-updates-media
 tooltip-updates-tags: 'Texto tooltip-updates-tags'
 tooltip-updates-text: tooltip-updates-text
 tooltip-updates-title: tooltip-updates-title
-
-project-view-metter-favourite: 'Recordarme'
-project-menu-news: 'Noticias'
-project-menu-participate: 'Participa'
-project-about-title: 'Sobre este proyecto'
-project-rewards-side-title: 'Recompensas'
-project-general-information: 'Información general'
-project-go-up: 'volver arriba'
 project-obtained: 'Obtenido'
-
 project-costs-total: 'Total'
-
-
-project-comment-start-sesion: 'Inicia sesión'
-project-comment-start-sesion-2: 'para dejar un comentario'
-project-view-preview: 'Previsualización del proyecto'
-
-project-call-got: 'El proyecto ya ha conseguido <strong>%s</strong> de <strong>%s</strong>'
-
-project-error-main-lang: 'No se puede establecer este idioma [%s] como principal porque ya está asignado a una traducción. Elimina la traducción existente en [%s], desde el panel de traducción, para poder introducir una nueva.'
 project-remove-translation: 'Eliminar traducción'
 project-remove-translation-confirm: '¿Seguro que quieres eliminar esta traducción? Esta operación no se puede deshacer!'
 project-removed-translation-ok: '¡Traducción eliminada!'
 project-removed-translation-ko: '¡Error al intentar eliminar la traducción!'
-
 project-social-commitment-title: 'Compromiso social'
 project-create-title: 'Comienza un proyecto'
 project-create-subtitle-alert: '<strong>WOOOOW!</strong><p>Avanzamos!! Ahora a sintetizar tu proyecto en pocas palabras!!</p>'
@@ -153,7 +135,6 @@ project-add-cost: 'Añadir coste'
 project-add-reward: 'Añadir recompensa'
 project-remove-reward-confirm: '¿Seguro que quieres eliminar esta recompensa?'
 project-reward-unlimited: 'Ilimitadas'
-
 project-send-review: 'Enviar a revisión'
 project-reviewing: 'Estamos valorando y revisando tu proyecto'
 project-validation-ok: 'Has completado el formulario. ¡Genial! Puedes clicar al siguiente botón para que nuestros asesores revisen tu proyecto.'
@@ -170,13 +151,11 @@ project-validation-error-rewards_required: 'Debes tener al menos 3 recompensas'
 project-validation-error-rewards_units: 'La recompensa debe tener al menos %s unidades'
 project-validation-error-rewards_empty_amount: 'No se pueden definir recompensas de valor 0'
 project-validation-error-campaign: 'Faltan campos por rellenar en la configuración de campaña'
-
 project-non-public-field: 'Este campo no es público'
 project-campaign: 'Configuración'
 project-campaign-configuration: 'Configuración de campaña'
 project-campaign-use-paypal: 'Quiero permitir que los usuarios puedan pagar con Paypal'
 project-manage: 'Gestionar'
 project-manage-campaign: 'Gestionar campaña'
-
 project-widget-not-visible: 'Este widget no será visible hasta que el proyecto sea público'
 project-donors-with-reward: '%s cofinanciadores han escogido esta recompensa'
