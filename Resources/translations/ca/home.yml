@@ -1,3 +1,4 @@
+---
 home-channel-project: '%s projectes'
 home-channels-header: Canals
 home-news-header: 'El que diuen de nosaltres'
@@ -5,51 +6,42 @@ home-patrons-header: Recomanen
 home-promotes-header: Destacats
 home-stories-header: 'Casos d''èxit'
 node-home-calls-header: Convocatòries
-
 home-menu-matchfunding: 'Matchfunding'
 home-menu-our-foundation: 'La Fundació'
-
+home-search-keyword: 'Busca por palabra clave'
+home-search-location: 'Provincia, ciudad, CP'
 home-projects-title: 'Alguns dels nostres projectes'
 home-projects-outdate: 'Urgents'
 home-projects-team-favourites: 'Favorits de l''equip'
 home-projects-near: 'A prop vostre'
 home-projects-matchfunding: 'Matchfunding'
-
 home-advantages-donor-title: 'Avantatges com a donant'
 home-advantages-owner-title: 'Avantatges com a impulsor'
-
 home-adventages-savetheworld-title: 'Compromís social'
 home-adventages-savetheworld-description: 'Feu costat a projectes amb un elevat impacte social'
-
+home-adventages-savetheworld-action: 'Quiero saber más'
 home-advantages-wallet-title: 'Monedero virtual'
 home-advantages-wallet-description: 'El monedero virtual te permite donar ahora y distribuir los aportes cuando y como prefieras. Ideal para organizaciones'
 home-advantages-wallet-action: 'Ir al monedero virtual'
-
 home-advantages-certificates-title: 'Certificats'
 home-advantages-certificates-description: 'Obtingueu un certificat per a justificar la vostra donació a Hisenda'
 home-advantages-certificates-action: 'Aneu a certificats'
-
 home-advantages-calculator-title: 'Calculadora fiscal'
 home-advantages-calculator-description: 'Calculeu el vostre estalvi fiscal (entre un 30% i un 75% de la donació)'
 home-advantages-calculator-action: 'Aneu a la calculadora'
-
 home-adventages-dashboard-title: 'Una interfície senzilla'
 home-adventages-dashboard-description: 'Centreu-vos en l''important: un menú intuïtiu per a llançar i gestionar el vostre projecte de forma fàcil'
-
 home-advantages-flex-calendar-title: 'Calendaris flexibles'
 home-advantages-flex-calendar-description: 'Campanya de 20, 40 o 80 dies. Escolliu el que millor s''adapti al vostre projecte.'
-
 home-advantages-regular-action: 'Vull saber-ne més'
-
 home-advantages-fee-title: 'Comissió justa'
 home-advantages-fee-description: 'Només un 4% de comissió, de les més baixes del món'
 home-advantages-matchfunding-title: 'Matchfunding'
 home-advantages-matchfunding-description: 'Institucions que multipliquen la quantitat aportada pels vostres donants'
-
 home-advantages-impact-data-title: 'Dades d''impacte'
 home-advantages-impact-data-money-label: 'Diners recaptats'
 home-advantages-impact-data-success-projects-label: 'Projectes reeixits'
-home-advantages-impact-data-invest-avg-label: Donació mitjana a Goteo'
+home-advantages-impact-data-invest-avg-label: 'Donació mitjana a Goteo'''
 home-adventages-impact-data-users-number: 'Comunitat d''usuaris'
 home-adventages-impact-data-matchfunding-raised: 'Diners recaptats per la Fundació Goteo'
 home-adventages-impact-data-success-projects-matchfunding: 'Projectes reeixits en convocatòria'
@@ -57,12 +49,10 @@ home-adventages-impact-data-advised-projects: 'Projectes assessorats en línia'
 home-adventages-impact-data-workshops-participants: 'Participants en tallers'
 home-adventages-impact-data-funded-projects: 'Projectes finançats'
 home-adventages-impact-data-workshops-participants-number: '1452'
-
 home-call-to-action-title: 'Pel·lícula creative commons'
 home-call-to-action-description: 'Aquesta és la pel·lícula sobre Juan Carlos I que alguns no volen que vegis!'
 home-call-to-action-action: 'Recolza''ls'
 home-call-to-action-url: 'https://ca.goteo.org/project/el-rey-la-peli'
-
 home-matchfunding-title: 'Convocatòries de Matchfunding'
 home-matchfunding-all: 'Totes'
 home-matchfunding-open: 'Presenta''t'
@@ -74,11 +64,9 @@ home-matchfunding-details-transparent: 'Transparència'
 home-matchfunding-details-legacy: 'Llegat'
 home-matchfunding-details-learning: 'Aprenentatge'
 home-matchfunding-details-economy: 'Economia/Ocupació'
-
 home-matchfunding-call-to-action-title: 'Impulseu el canvi'
 home-matchfunding-call-to-action-description: 'Uniu-vos a la nostra xarxa d''Ajuntaments, fundacions i institucions'
 home-matchfunding-call-to-action-action: 'Vull fer match!'
-
 home-foundation-title: 'Fundació Goteo'
 home-foundation-story-label: 'Experiències'
 home-foundation-stats-title: 'Transparents'
@@ -89,22 +77,15 @@ home-foundation-api-title: 'API per a desenvolupadors'
 home-foundation-api-description: 'Jugueu, mapegeu, investigueu, analitzeu, creueu les nostres dades...sorpreneu-nos!'
 home-foundation-api-more-description: 'Accediu directament a la nostra API per a crear noves aplicacions, anàlisis i visualitzacions'
 home-foundation-api-action: 'Consulteu l''API'
-
 home-foundation-goteo-values-title: 'Valors de Goteo'
 home-foundation-goteo-values-description: 'Per una societat més ètica i col·laborativa'
 home-foundation-goteo-values-more-description: 'Facilitem processos col·laboratius de millora de les comunitats: en l''econòmic, mediambiental, educatiu, polític, social i/o cultural'
 home-foundation-goteo-values-action: 'Més informació'
-
 home-foundation-team-title: 'Fundació Goteo'
 home-foundation-team-description: 'Tot un equip treballant per a un crowdfunding cívic!'
 home-foundation-team-action: 'Per què donar?'
-
-home-channels-title: 'Canals de Goteo'
-
 home-tools-title: 'Atajos'
-
 home-sponsors-action: 'Col·labora amb nosaltres'
-
 home-menu-sidebar-find-project: 'Cercar projectes'
 home-menu-sidebar-load-wallet: 'Recarregar el moneder'
 home-menu-sidebar-download-certificate: 'Baixar el meu certificat de donació'
@@ -112,7 +93,9 @@ home-menu-sidebar-goteo-advantages: 'Conèixer les avantatges de Goteo'
 home-menu-sidebar-create-project: 'Crear un projecte'
 home-menu-sidebar-matchfunding: 'Accedir a fons complementaris'
 home-menu-sidebar-design-matchfunding: 'Dissenyar un programa de finançament de Goteo'
+home-menu-sidebar-about-foundation: 'Conocer las acciones de la Fundación Goteo'
 home-menu-sidebar-goteo-impact: 'Veure l''impacte de la Fundació Goteo'
 home-menu-sidebar-channels: 'Descobrir els canals de Goteo'
-
+home-menu-sidebar-header-title: 'Encuentra lo que estés buscando en Goteo'
 home-menu-toggle-label: 'Vull'
+home-channels-title: 'Canals de Goteo'
