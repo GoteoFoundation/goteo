@@ -1,9 +1,11 @@
-﻿mandatory-individual_reward-field-description: 'Sie müssen eine Beschreibung ergänzen'
+---
+mandatory-individual_reward-field-description: 'Sie müssen eine Beschreibung ergänzen'
 mandatory-individual_reward-field-icon: 'Sie müssen die Art der Belohnung auswählen'
 mandatory-individual_reward-field-name: 'Sie müssen eine Belohung eingeben'
 mandatory-social_reward-field-description: 'Sie müssen eine Beschreibung des Nutzens eingeben'
 mandatory-social_reward-field-icon: 'Sie müssen die Art des Nutzens auswählen'
 mandatory-social_reward-field-name: 'Sie müssen den Nutzen spezifizieren'
+mandatory-social_reward-field-category: 'Es obligatorio especificar el comprimiso social'
 rewards-field-individual_reward-amount: 'Betrag finanziert'
 rewards-field-individual_reward-description: Beschreibung
 rewards-field-individual_reward-other: 'Spezifizieren Sie die Art der Belohnung'
@@ -13,7 +15,7 @@ rewards-field-individual_reward-units: Einheiten
 rewards-field-social_reward-description: Beschreibung
 rewards-field-social_reward-license: 'Lizenierungsoptionen'
 rewards-field-social_reward-other: 'Spezifizieren Sie die Art des Nutzens'
-rewards-field-social_reward-reward: 'Allgemeiner Nutzen'
+rewards-field-social_reward-reward: Allgemeiner Nutzen
 rewards-field-social_reward-type: 'Art des Nutzens'
 rewards-field-social_reward-url: Url
 rewards-fields-individual_reward-title: 'Individuelle Belohnungen'
@@ -34,7 +36,7 @@ tooltip-project-social_reward-license: 'Wählen Sie eine Lizenzart aus der darge
 tooltip-project-social_reward-reward: 'Versuchen Sie, den Titel so beschreibend wie möglich zu formulieren. Bedenken Sie, dass Sie später weitere „Nutzen“ anlegen können.'
 tooltip-project-social_reward-type: 'Spezifizieren Sie die Art des Nutzens: DIGITALE DATEN wie Musik, Video, Textdokumente, etc. QUELLCODE eines Softwareprogramms, DESIGNS von Layouts oder Mustern, MANUALS in Form von Bauplänen, Business-Plänen, how-to''s, SERVICES wie Workshops, Online-Kurse, Beratungsleistungen, Websitezugang, Online-Datenbanken.'
 tooltip-project-social_rewards: 'Definieren Sie die Art des Nutzens Ihres Projektes, der öffentlich in Anspruch genommen werden kann sowie die betrefende Lizenz. Wenn Sie im Zweifel sind, welche Option Sie wählen sollten oder welche die beste in Ihrem Falle sei, <a href="/contact" target="new">contact us</a> und wir werden Sie dabei beraten.'
-validate-project-individual_rewards-any_error: 'Es fehlen noch einige Informationen über individuelle Belohnungen.'
 validate-project-individual_rewards: 'Geben Sie mehr als 3 individuelle Belohnungen an, um den allgemeinen Projektwert zu erhöhen'
+validate-project-individual_rewards-any_error: 'Es fehlen noch einige Informationen über individuelle Belohnungen.'
 validate-project-social_rewards-any_error: 'Es fehlen noch einige Informationen über allgemeine Nutzen.'
 validate-social_reward-license: 'Geben Sie eine Lizenz an, um den allgemeinen Projektwert zu erhöhen'
