@@ -1,10 +1,12 @@
+---
 guide-project-error-mandatories: 'Er ontbreken verplichte velden'
 guide-project-preview: '<strong>Dit is een samenvatting van alle informatie over het project.</strong><br><br>Bekijk de informatie in ieder veld om te zien of er verbeteringen mogelijk zijn. Als je klaar bent, stuur ons dan het project (door op de verzendknop hieronder te klikken) zodat we het kunnen beoordelen. Als je voorstel eenmaal is ingezonden, kunnen er geen wijzigingen meer worden aangebracht.<br><br>Denk er aan dat we maar een paar projecten per maand kunnen plaatsen, om te garanderen dat er genoeg aandacht voor ieder project is. Je ontvangt binnekort een bericht met al deze informatie, met daarin de volgende stappen en wat aanbevelingen die kunnen helpen je project te laten slagen.'
 guide-project-success-minprogress: 'Je hebt het minimum percentage bereikt'
 guide-project-success-noerrors: 'Alle verplichte velden zijn ingevuld'
 guide-project-success-okfinish: 'Je kunt het insturen voor beoordeling'
-preview-main-header: Informatiepreview
+preview-main-header: 'Informatiepreview'
 preview-send-comment: 'Additionele notes for the administrator'
 step-7: Preview
 step-preview: 'Project / Preview'
 tooltip-project-comment: 'Heb je twijfels of vragen voor de Goteo beheerder? Dit is de plek om te schrijven over wat je niet zeker weet, verbeteringen etc.'
+
