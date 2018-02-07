@@ -1,5 +1,4 @@
 ---
-images-main-header: 'Imágenes del proyecto'
 mandatory-project-field-about: 'É obrigado explicar as características básicas do proxecto'
 mandatory-project-field-category: 'É obrigado elixir polo menos unha categoría para o proxecto.'
 mandatory-project-field-description: 'É obrigado resumir o proxecto'
@@ -11,52 +10,29 @@ mandatory-project-field-media: 'Suxerimos poñer un vídeo para mellorar a valor
 mandatory-project-field-motivation: 'É obrigado explicar a motivación na descrición do proxecto'
 mandatory-project-field-name: 'É obrigado poñer un nome ó proxecto'
 mandatory-project-field-related: 'É obrigado explicar na descrición do proxecto a experiencia relacionada e/ou o equipo co que se conta'
-overview-field-categories: Categorías
-overview-field-currency: 'Divisa original'
-overview-field-currently: 'Estado actual'
 overview-field-description: 'Descripción curta'
 overview-field-goal: 'Obxectivos da campaña de crowdfunding'
-overview-field-main-gallery: Galería principal
 overview-field-image_gallery: 'Imaxes actuais'
 overview-field-image_upload: 'Subir unha imaxe (2MB max.)'
 overview-field-keywords: 'Palabras clave do proxecto'
 overview-field-lang: 'Idioma orixinal'
-overview-field-media: 'Vídeo de presentación'
-overview-field-media_preview: 'Vista previa'
 overview-field-name: 'Título do proxecto'
-overview-field-options-currently_avanzado: Avanzado
 overview-field-options-currently_finalizado: Rematado
-overview-field-options-currently_inicial: Inicial
-overview-field-options-currently_medio: Medio
-overview-field-options-scope_global: Global
-overview-field-options-scope_local: Local
-overview-field-options-scope_nacional: Nacional
 overview-field-options-scope_regional: Rexional
-overview-field-play-video: 'Carátula del vídeo'
-overview-field-project_location: Ubicación
 overview-field-related: 'Experiencia previa e equipo'
-overview-field-reward: Recompensas
 overview-field-scope: 'Alcance do proxecto'
 overview-field-subtitle: 'Frase de resumo'
-overview-field-usubs: 'Cargar con Universal Subtitles'
 overview-field-video: 'Vídeo adicional sobre a motivación'
-overview-field-social-category: 'Compromiso social'
-overview-field-social-description: 'Descripción Compromiso Social'
 overview-fields-images-title: 'Imaxes do proxecto'
 overview-main-header: 'Descrición do proxecto'
 step-3: Descrición
-step-main: Datos principales
-step-3b: Imágenes
-step-images: 'Paso: Imágenes del proyecto'
 step-overview: 'Paso: Descrición do proxecto'
 tooltip-project-about: 'Describe brevemente o proxecto en modo conceptual, técnico ou práctico. Por exemplo explicando as súas características de funcionamento, ou en que partes consistirá. Pensa en como será unha vez rematado e todo o que a xente poderá facer con el.'
 tooltip-project-category: 'Elixe un máximo de 4 categorías coma creas necesarias para describir o proxecto, baseándote en todo o que describiches arriba. Mediante estas palabras clave poderémolo facer chegar a diferentes usuarios/as de Goteo.'
-tooltip-project-currency: 'Indica en qué divisa calculas los costes del proyecto.'
 tooltip-project-currently: 'Indica en que fase se atopa o proxecto actualmente respecto ó seu proceso de creación ou execución.'
 tooltip-project-description: 'Describe o proxecto cun mínimo de 80 palabras (con menos marcará erro). Explícao de modo que sexa fácil de entender para calquera persoa. Tenta darlle un enfoque atractivo e social, resumindo os seus puntos fortes, que o fai único, innovador ou especial.'
 tooltip-project-goal: 'Enumera as metas principais do proxecto, a curto e longo prazo, en todos os aspectos que consideres importantes salientar. Trátase de outra oportunidade para contactar e acadar o apoio de xente que simpatice con eses obxectivos.'
 tooltip-project-image: 'Poden ser esquemas, pantallas, fotografías, ilustracións, storyboards, etc. (a súa licenza de autoría debe ser compatíbel coa que escollas no apartado 5). Suxerímosche que sexan diversas e de boa calidade, aínda que non demasiado grandes (uns 900 píxeles de ancho / 2 MB Max). ¡Podes subir tantas como queiras!'
-tooltip-project-image_upload: BORRAR
 tooltip-project-keywords: 'A medida que insiras texto o sistema suxerírache verbas clave que xa escribiron outros usuarios. Estas categorías axúdanche a vincular o teu proxecto con persoas afíns.'
 tooltip-project-lang: 'Indica en que idioma enches o formulario do proxecto.'
 tooltip-project-media: 'Copia e pega a dirección URL dun vídeo de presentación do proxecto, publicado previamente en Youtube ou Vimeo. Esta parte é fundamental para atraer a atención dos potenciais cofinanceiros e colaboradores, e canto máis orixinal sexa mellor. Recomendámosche que teña unha duración entre 2 e 4 minutos.'
@@ -68,17 +44,7 @@ tooltip-project-reward: 'Aquí explicamos o bo que ten en canto a recompensas'
 tooltip-project-subtitle: 'Define cunha frase un subtítulo que remate de explicar en que consistirá a iniciativa, que permita facerse unha idea mínima de para que serve ou en que consiste. Aparecerá xunto ó título do proxecto.'
 tooltip-project-usubs: 'Marca o check en caso de que subtitularas a outros idiomas o vídeo mediante Universal Subtitles:  http://www.universalsubtitles.org/'
 tooltip-project-video: 'Considera aquí a posibilidade de publicar e ligar un vídeo (en Youtube ou Vimeo) onde expliques brevemente á cámara o porque do teu proxecto. Se se trata dalgo que poida complementar o vídeo principal, cunha persoa que transmita a súa necesidade ou orixinalidade, do modo máis directo posible. Se che da vergoña falar á cámara, tamén pode ser algunha persoa que coñezas e que siga o proxecto ou a idea e pida facer esa aportación coma "fan". A empatía e a necesidade de ver a alguen ó outro lado do proxecto é moi importante para determinado tipo de confinanceiros.'
-tooltip-project-social-category: 'Selecciona tu compromiso social de entre los que te mostramos'
-tooltip-project-social-description: 'Explica en que consiste el compromiso social que has seleccionado'
 validate-project-field-about: 'A explicación do proxecto é demasiado curta'
 validate-project-field-currently: 'Indica o estado do proxecto para mellorar a valoración do mesmo, de cara a determinar se publicalo en Goteo.'
 validate-project-field-description: 'A descripción do proxecto é demasiado curta'
-validate-project-value-description: "A descripción do proxecto é demasiado curta"
 validate-project-value-keywords: 'Indica un mínimo de 5 palabras clave do proxecto para mellorar a valoración do mesmo, de cara a determinar se publicalo en Goteo.'
-overview-field-execution-plan: 'Plan de ejecución'
-tooltip-project-execution-plan: 'Explica tu plan de ejecución'
-tooltip-project-execution-plan-url: 'Url con tu plan de ejecución'
-overview-field-sustainability-model: 'Modelo de sostenibilidad'
-overview-field-sustainability-model-url: 'URL de tu business canva'
-tooltip-project-sustainability-model: 'Explica el modelo de sostenibilidad de tu proyecto'
-tooltip-project-sustainability-model-url: 'Agrega una url con tu <a href="https://canvanizer.com/new/business-model-canvas" target="_blank">business canvas</a>'
