@@ -1,3 +1,4 @@
+---
 error-register-userid: 'Sartzeko izena idaztea derrigorrekoa da'
 login-access-button: Sartu
 login-access-header: 'Erabiltzaileak izena eman du'
@@ -7,16 +8,20 @@ login-fail: 'Sartzean errorea'
 login-leave-button: 'Harpidetza utzi'
 login-leave-header: 'Kontua ezeztatu'
 login-leave-message: 'Utziguzu mezua'
+login-new-user-label: 'Erabiltzaile berri bat sortu nahi?'
 login-oneclick-header: 'Clik bat eginez sartu'
 login-recover-button: Berreskuratu
 login-recover-email-field: 'Posta elektronikoa edo erabiltzaile izena'
-login-recover-header: 'Plataforman alta emateko erabili zenuen e-mailarekin bete eremua. E-mail horretan jasoko duzu zure pasahitza berreskuratzeko informazioa. Sarri zure sare sozialetara lotutako posta berarekin bat dator. Zure emaila gogoratzen ez baduzu jar zaitez gurekin harremanetan. Ez ahaztu zure erabiltzailea bilatzeko lagungarri izango zaizkigun  datuak aipatzea (izen osoa, erabiltzen duzun nick-a, alta-data edo proiektu zehatzen bati ekarpenik egin diozun…).'
+login-recover-label: 'Pasahitza ahaztu duzu?'
 login-recover-link: 'Pasahitza berreskuratu'
+login-recover-modal-button: Bidali
+login-recover-modal-sucess: 'Eginda! - Mezu elektroniko bat bidaliko dizugu %s –(e)ra pasahitza berrezartzeko lotura batekin.'
+login-recover-modal-text: 'Sartu erregistratzeko erabili zenuen posta elektronikoko helbidea eta lotura bat bidaliko dizugu zure pasahitza berrezartzeko.'
 login-recover-username-field: 'Sartzeko izena'
-login-register-button: 'Izena eman'
+login-register-button: Izena eman
 login-register-confirm-field: 'Emaila baieztatu'
 login-register-confirm_password-field: 'Pasahitza baieztatu '
-login-register-email-field: Email
+login-register-email-field: Emaila
 login-register-header: 'Erabiltzaile berria'
 login-register-password-field: Pasahitza
 login-register-password-minlength: '6 karakter gutxienez'
@@ -31,6 +36,7 @@ login-signin-twitter: 'Twitter bitartez sartu'
 login-signin-ubuntu: 'Ubuntu One bitartez sartu'
 login-signin-view-more: 'Sartzeko aukera gehiago azaldu'
 login-signin-yahoo: 'Yahoo bitartez sartu'
+login-title: 'Hasi saioa'
 oauth-confirm-user: 'Jada dagoen erabiltzailearekin lotu'
 oauth-facebook-access-denied: 'Facebook bitartez sartzea ezeztatua'
 oauth-goteo-openid-sync-password: 'Goteo-n jada dagoen kontu bat, kanpoko hornitzaile batekin lotzen saiatzen ari zara. Hau bada clik baten bitartez sartuko zara Goteo-n.<br/>Hau lehenengo aldia denez zure Goteo-ko pasahitza idatzi behar izango duzu, zure nortasuna baieztatzeko.'
@@ -38,7 +44,7 @@ oauth-goteo-user-not-exists: 'Erabiltzaile izen hori ez dago Goteo-n'
 oauth-goteo-user-password-exists: 'Erabiltzaile izen hori jada Goteo-n dago'
 oauth-import-about: 'Zuri buruz'
 oauth-import-facebook: 'Zure Facebook-eko kontuaren esteka'
-oauth-import-location: Bizilekua
+oauth-import-location: 'Bizilekua'
 oauth-import-name: Izena
 oauth-import-twitter: 'Zure Twitter-eko kontuaren esteka'
 oauth-import-website: 'Zure webguneak'
@@ -51,12 +57,6 @@ oauth-openid-not-logged: 'Open ID-tik erabiltzailea deskonektatua izan da'
 oauth-token-request-error: 'Errorea gertatu da hornitzailearen egiaztagiriak jasotzerakoan'
 oauth-twitter-access-denied: 'Twitter bitartez sartzea ezeztatua'
 oauth-unknown-provider: 'Ezin da hornitzaile honen bitartez sartu'
-login-new-user-label: 'Erabiltzaile berri bat sortu nahi?'
-login-recover-label: 'Pasahitza ahaztu duzu?'
-login-recover-modal-button: Bidali
-login-recover-modal-sucess: 'Eginda! - Mezu elektroniko bat bidaliko dizugu %s –(e)ra pasahitza berrezartzeko lotura batekin.'
-login-recover-modal-text: 'Sartu erregistratzeko erabili zenuen posta elektronikoko helbidea eta lotura bat bidaliko dizugu zure pasahitza berrezartzeko.'
-login-title: 'Hasi saioa'
 reset-password-new-password: 'Idatzi berriro zure pasahitz berria'
 reset-password-old-password: 'Zure pasahitz berria'
 reset-password-save: Gorde
