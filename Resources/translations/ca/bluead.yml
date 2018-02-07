@@ -2,7 +2,7 @@
 assign-call-success: 'El projecte ha estat assignat a la convocatòria %s'
 dashboard-donor-remember: 'Recorda confirmar les teves dades fiscals per poder obtenir el certificat de donatiu'
 image-upload-fail: 'Error en pujar la imatge'
-gallery-upload-fail: 'Fallo al subir la galería'
+gallery-upload-fail: 'Error en pujar la galeria'
 invest-amount-error: 'Has d''indicar l''import'
 invest-create-error: 'Hi ha hagut algun problema en inicialitzar la transacció'
 invest-data-error: 'No s''han rebut les dades necessàries'
