@@ -13,10 +13,8 @@ translator-delete: 'Entferne %s Übersetzung'
 translator-delete-sure: 'Sind Sie sicher, dass Sie die Übersetzung %s löschen wollen? Dieser Vorgang kann nicht rückgängig gemacht werden!'
 translator-deleted-ko: 'Fehlen bein Löschen der Übersetzung %s'
 translator-deleted-ok: 'Übersetzung %s wurde erfolgreich gelöscht'
-translator-faq: Faq
 translator-feed-translated-desc: '%LINK% wurde übersetzt von %USER% nach %LANGS%'
 translator-feed-translated-target: 'Übersetzung in %s'
-translator-field-blog: Blog
 translator-field-content: Inhalt
 translator-field-description: Beschreibung
 translator-field-facebook_msg: 'Facebook Nachricht'
@@ -32,7 +30,6 @@ translator-field-text: Text
 translator-field-title: Title
 translator-field-twitter_msg: 'Twitter Nachricht'
 translator-field-twitter_msg_owner: 'Twitter Autor'
-translator-field-url: URL
 translator-glossary: 'Glossar der Begriffe'
 translator-home: Startseite
 translator-icon: 'Arten der Rückgabe / Belohnung'
@@ -66,7 +63,6 @@ translator-tables: 'Allgemeine Tabellen'
 translator-tag: 'Blog-Tags'
 translator-template: 'Automatik-Email-Vorlagen'
 translator-texts: 'Interface-Texte'
-translator-translations: Traducciones
 translator-workshop: Workshops
 translator-worthcracy: Meritokratie (Verdienstadel)
 translator-zone-not-found: 'Dieser Übersetzungsbereich ist ungültig'
