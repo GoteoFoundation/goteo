@@ -1,6 +1,7 @@
+---
 bazar-spread-text: '%s – Verschenke zu Weihnachten einen Crowdfunding-Gutschein für Projekte des Gemeinwohls mit @goteofunding #openbazaar'
 bazar-thanks: 'Vielen Dank für Ihren Besuch unseres Basars, helfen Sie uns, ihn bekannter zumachen.'
-currency-alert: 'Bitte beachten Sie, dass die Original-Währung dieses Projektes in EUR (€) ist. \r\nSie werden ungefähr <span id=\"reminder_conversion\">%s</span> € <a href=\"/faq/investors#q115\" target=\"_blank\">More info</a>" bezahlen'
+currency-alert: "Bitte beachten Sie, dass die Original-Währung dieses Projektes in EUR (€) ist. \\r\nSie werden ungefähr <span id=\"reminder_conversion\">%s</span> € <a href=\"/faq/investors#q115\" target=\"_blank\">More info</a>\" bezahlen"
 faq-payment-method: '<a href="/faq/investors#q2" target="_blank">Welche Bezahlmöglichkeiten bietet Goteo an? Sind diese sicher?</a>'
 imperative-register: Register
 invest-address-address-field: 'Adresse:'
@@ -23,8 +24,8 @@ invest-address-zipcode-field: 'Postleitzahl:'
 invest-alert-investing: 'Sie sind dabei, das Projekt zu unterstützen mit'
 invest-alert-lackamount: 'Der Betrag muss gleich oder höher, als die gewählte Belohnung sein'
 invest-alert-lackdrop: 'Es ist kein „Feeder Capital“ zur Multiplizierung Ihres Beitrages übrig.'
-invest-alert-noreward_renounce: 'Möchten Sie wirklich auf jegliche Belohnung verzichten? '
 invest-alert-noreward: 'Sie haben keine Belohnung ausgewählt. Ist das korrekt?'
+invest-alert-noreward_renounce: 'Möchten Sie wirklich auf jegliche Belohnung verzichten? '
 invest-alert-renounce: 'Sie verzichten auf eine Belohung oder die ausgewählte Belohnung ist kein Produkt oder Objekt. Also kann Ihre Spende steuerlich geltend gemacht werden. Dazu benötigen wir Ihre VAT-Nummer'
 invest-alert-rewards: 'Sie haben die folgenden Belohnungen ausgewählt:'
 invest-amount: Betrag
@@ -37,7 +38,7 @@ invest-called-maxdrop: 'Bis zum Maximalbetrag von <strong>%s &euro;</strong>'
 invest-called-maxproj: 'Dieses Projekt hat die maximale Summe an <strong>“Feeder Capital“</strong> aus der <span class="call">%s</span> Cloudfunding Kampagne erhalten'
 invest-called-nodrop: 'Zur Zeit ist kein <strong>"Feeder Capital"</strong> für diese Cloudfunding Kampagne verfügbar: %s'
 invest-called-rest: 'Es gibt nur <strong>%s &euro;</strong> <strong>“Feeder Capital“</strong> bei dieser Cloudfunding Kampagne <span class="call">%s</span>'
-invest-card-method: 'Kreditkarte'
+invest-card-method: Kreditkarte
 invest-cash-method: 'Manual (Bargeld)'
 invest-donation-header: 'Tragen Sie Ihre steuerlichen Angaben für diese Spende ein'
 invest-drop-method: Gießkannenfinanzierung
@@ -57,16 +58,16 @@ invest-modal-pool-description: 'Die virtuelle Geldbörse ist eine virtuelle Kred
 invest-modal-pool-title: 'Information zur virtuellen Geldbörse'
 invest-more-info: 'Mehr Information'
 invest-next_step: 'Nächster Schritt'
-invest-payment_method-header: 'Wählen Sie Ihre Bezahlmethode'
 invest-payment-email: 'Tragen Sie Ihren PayPal Usernamen ein'
 invest-payment-fail: 'Bei der Bezahlung ist etwas schiefgelaufen'
 invest-payment-success: 'Die Bezahlung wurde korrekt abgewickelt'
-invest-paypal_disabled: 'Bei diesem Projekt steht die Paypal-Bezahlmethode nicht zur Verfügung. <a href="/faq/investors#q2">Mehr Information</a>'
+invest-payment_method-header: 'Wählen Sie Ihre Bezahlmethode'
 invest-paypal-method: Paypal
+invest-paypal_disabled: "Bei diesem Projekt steht die Paypal-Bezahlmethode nicht zur Verfügung. <a href=\"/faq/investors#q2\">Mehr Information</a>"
+invest-pool: 'Für den Fall, dass das Projekt nicht zustande kommt, soll mein Beitrag in meine virtuelle Geldbörse gespeichert werden, damit ich damit zu einem beliebigen späteren Zeitpunkt andere Projekte unterstützen kann. In jedem Fall wird meine Spendenbescheinigung das heutige Datum tragen.'
 invest-pool-available: Verfügbar
 invest-pool-error: 'Sie haben nicht genug Geld in Ihrer virtuellen Geldbörse.'
 invest-pool-method: 'Virtuelle Geldbörse'
-invest-pool: 'Für den Fall, dass das Projekt nicht zustande kommt, soll mein Beitrag in meine virtuelle Geldbörse gespeichert werden, damit ich damit zu einem beliebigen späteren Zeitpunkt andere Projekte unterstützen kann. In jedem Fall wird meine Spendenbescheinigung das heutige Datum tragen.'
 invest-process-completed: 'Ihre Spendenzahlung wurde bereits vervollständigt '
 invest-project: 'Das Projekt'
 invest-resign: 'Ich möchte keine Belohnung, ich möchte einfach dieses Projekt unterstützen.'
@@ -74,7 +75,6 @@ invest-reward-first: '<br>Hinweis, dass die Spendensumme größer als 0 sein mus
 invest-reward-none: 'Diese Auswahl ist nicht mehr möglich'
 invest-reward-not-found: 'Diese Belohnung wurde nicht gefunden!'
 invest-reward-used-up: 'Von dieser Belohnung sind keine Einheiten mehr verfügbar!'
-invest-secupay-method: Secupay
 invest-select-reward: 'Wählen Sie Ihre Belohnung'
 invest-share-title: Teilen
 invest-social-header: 'Mit Gemeinwohl-Nutzen kommen wir gemeinsam voran.'
@@ -85,10 +85,11 @@ invest-status-pending: vorab bestätigt
 invest-status-processing: Nicht vollständig
 invest-status-relocated: Wiederhergestellt
 invest-status-returned: 'Abgelegt (archiviert)'
-invest-step-1: 'Belohnung'
-invest-step-2: 'Bezahlung'
-invest-step-3: 'Überprüfung'
-invest-step-4: 'Teilen'
+invest-status-to-pool: 'Al monedero'
+invest-step-1: Belohnung
+invest-step-2: Bezahlung
+invest-step-3: Überprüfung
+invest-step-4: Teilen
 invest-success-make-sure: 'Hervorragend! Ihre Unterstützung des Projektes <strong>%s</strong> war erfolgreich'
 investing_closed: 'Für diese Kampagne ist keine Unterstützung mehr möglich.'
 proj-widget-my_invest: 'Meine Unterstützung'
@@ -100,11 +101,13 @@ project-invest-ok: 'Ihre Unterstützung der Kofinanzierung dieses Projektes wurd
 project-invest-pool-button: 'Verwenden Sie meine virtuelle Geldbörse'
 project-invest-start: 'Sie sind nur noch einen Schritt davon entfernt, Unterstützer/in dieses Projektes zu werden...'
 project-return-button: 'Zurück zum Projekt'
-project-see-msg: 'Sehen Sie Ihre Nachricht'
+project-see-msg: 'Ihre Nachricht'
 spread-facebook: 'Auf Facebook teilen'
 spread-twitter: 'Auf Twitter teilen'
 user-login-required-login: 'Wenn Sie bereits registriert sind, müssen Sie sich einloggen (eine Sitzung starten), sonst erstellen Sie ein neues Benutzerkonto'
 warning_nojavascript: 'Bitte erlauben Sie javascript in Ihren persönlichen Browsereinstellungen, um mit dem Bezahlprozess fortzufahren.'
-
-project-return-button: 'Zurück zum Projekt'
-project-see-msg: 'Ihre Nachricht'
+invest-no-register: 'Saltar este paso, sólo quiero aportar'
+invest-user-not-ghost: 'Este email pertenece a un usuario existente!'
+invest-user-name-or-anonymous: 'El nombre es obligatorio si no quieres hacer una aportación anónima'
+invest-created-manually-ok: 'Aporte manual creado correctamente, seleccionar recompensa y dirección de entrega.'
+invest-created-manually-ko: 'Error al crear el aporte manual [%s]'
