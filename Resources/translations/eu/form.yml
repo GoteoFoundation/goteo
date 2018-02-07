@@ -1,3 +1,4 @@
+---
 form-accept-button: Onartu
 form-add-button: Gehitu
 form-ajax-info: 'Formularioa gorde egiten da, kanpo baikotzatik pasatu ahala'
@@ -13,13 +14,13 @@ form-next-button: Hurrengoa
 form-project-info_status-title: 'Informazioaren egoera orokorra'
 form-project-progress-title: 'Datu ebaluazioa'
 form-project-status-title: 'Proiektuaren egoera'
-form-project_status-campaing: Kanpainan
-form-project_status-cancel: 'Alde batera utzita'
+form-project_status-campaing: 'Kanpainan'
+form-project_status-cancel: Alde batera utzita
 form-project_status-cancelled: Baztertuta
 form-project_status-edit: Editatzen
 form-project_status-expired: Gordetuta
 form-project_status-fulfilled: 'Itzulera osatuta'
-form-project_status-review: Balorateke
+form-project_status-review: 'Balorateke'
 form-project_status-success: Finantzatuta
 form-remove-button: Kendu
 form-self_review-button: Zuzentu
