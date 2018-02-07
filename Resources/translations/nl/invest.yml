@@ -1,3 +1,4 @@
+---
 invest-address-address-field: 'Adres:'
 invest-address-country-field: 'Land:'
 invest-address-header: 'Waar wil je de beloning ontvangen (alleen als het via de post verstuurd wordt)'
@@ -14,9 +15,11 @@ invest-alert-rewards: 'Je hebt de volgende beloningen gekozen:'
 invest-amount: Bedrag
 invest-amount-tooltip: 'Voer het bedrag in waarmee je dit project wilt steunen'
 invest-anonymous: 'Maak mijn donatie anoniem'
+invest-button: Draag bij
 invest-donation-header: 'Voer de fiscale informatie in voor deze donatie'
 invest-mail_info-address: 'Heeft het volgende adres ingesteld:'
 invest-mail_info-drop: 'Heeft ook, %s bijgedragen %s aan cloudfunding via de %s campagne '
+invest-make-sure-save: Bewaar
 invest-next_step: 'Volgende knop'
 invest-payment-email: 'voer je PayPal gebruikersnaam in'
 invest-payment_method-header: 'Kies een betalingsmethode'
