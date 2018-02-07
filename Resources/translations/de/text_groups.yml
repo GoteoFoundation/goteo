@@ -1,6 +1,7 @@
-﻿text-group-admin: 'Texte Admin'
+---
+text-group-admin: 'Texte Admin'
 text-group-banners: 'Banner und Header'
-text-group-blog: 'Blog/Updates'
+text-group-blog: Blog/Updates
 text-group-bluead: 'blaue Notizen'
 text-group-call_dash: 'Aufrufe: Kontrollpanel'
 text-group-call_feed: 'Aufrufe: Feed'
@@ -21,7 +22,7 @@ text-group-form: 'Generelles Projekt Formular'
 text-group-general: 'Allgemeine Seite'
 text-group-home: Startseite
 text-group-invest: 'Unterstützungen für das Projekt'
-text-group-location: 'Geolocation'
+text-group-location: Geolocation
 text-group-login: 'Login Seite'
 text-group-mailer: 'Auto-Emails'
 text-group-menu: 'Top Menü'
@@ -43,5 +44,5 @@ text-group-text_groups: 'Beschreibung der Gruppierungen von Texten'
 text-group-translate: 'Übersetzungs-Panel'
 text-group-types: 'Tooltips Arten von Aufwendungen'
 text-group-url: 'Social Media externe URLs'
-text-group-widget: 'Widget Seite'
+text-group-widget: Widget Seite
 text-group-wof: 'Freundesliste'
