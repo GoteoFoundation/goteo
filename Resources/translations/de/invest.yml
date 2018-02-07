@@ -62,7 +62,6 @@ invest-payment-email: 'Tragen Sie Ihren PayPal Usernamen ein'
 invest-payment-fail: 'Bei der Bezahlung ist etwas schiefgelaufen'
 invest-payment-success: 'Die Bezahlung wurde korrekt abgewickelt'
 invest-payment_method-header: 'Wählen Sie Ihre Bezahlmethode'
-invest-paypal-method: Paypal
 invest-paypal_disabled: "Bei diesem Projekt steht die Paypal-Bezahlmethode nicht zur Verfügung. <a href=\"/faq/investors#q2\">Mehr Information</a>"
 invest-pool: 'Für den Fall, dass das Projekt nicht zustande kommt, soll mein Beitrag in meine virtuelle Geldbörse gespeichert werden, damit ich damit zu einem beliebigen späteren Zeitpunkt andere Projekte unterstützen kann. In jedem Fall wird meine Spendenbescheinigung das heutige Datum tragen.'
 invest-pool-available: Verfügbar
@@ -85,7 +84,6 @@ invest-status-pending: vorab bestätigt
 invest-status-processing: Nicht vollständig
 invest-status-relocated: Wiederhergestellt
 invest-status-returned: 'Abgelegt (archiviert)'
-invest-status-to-pool: 'Al monedero'
 invest-step-1: Belohnung
 invest-step-2: Bezahlung
 invest-step-3: Überprüfung
@@ -106,8 +104,3 @@ spread-facebook: 'Auf Facebook teilen'
 spread-twitter: 'Auf Twitter teilen'
 user-login-required-login: 'Wenn Sie bereits registriert sind, müssen Sie sich einloggen (eine Sitzung starten), sonst erstellen Sie ein neues Benutzerkonto'
 warning_nojavascript: 'Bitte erlauben Sie javascript in Ihren persönlichen Browsereinstellungen, um mit dem Bezahlprozess fortzufahren.'
-invest-no-register: 'Saltar este paso, sólo quiero aportar'
-invest-user-not-ghost: 'Este email pertenece a un usuario existente!'
-invest-user-name-or-anonymous: 'El nombre es obligatorio si no quieres hacer una aportación anónima'
-invest-created-manually-ok: 'Aporte manual creado correctamente, seleccionar recompensa y dirección de entrega.'
-invest-created-manually-ko: 'Error al crear el aporte manual [%s]'
