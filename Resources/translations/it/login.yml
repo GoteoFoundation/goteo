@@ -1,5 +1,4 @@
 ---
-auth-access-forbbiden: '¡No tienes permiso para acceder aquí!'
 error-register-userid: 'Il nome utente è obbligatorio'
 login-access-button: Entrare
 login-access-header: 'Utente registrato'
@@ -9,16 +8,12 @@ login-fail: 'Errore di accesso'
 login-leave-button: 'Disattivare'
 login-leave-header: 'Cancellare account'
 login-leave-message: 'Lascia un messaggio'
-login-new-user-label: '¿Crear un nuevo usuario?'
 login-oneclick-header: 'Entra con un solo click'
 login-recover-button: Ripristinare 
 login-recover-email-field: 'Mail dell''account (o nome utente)'
 login-recover-header: "Completa il campo con la mail che hai utilizzato per iscriverti alla piattaforma. Spesso coincide con la mail dei tuoi social network. Attenzione: riceverai una mail a questa stessa mail con un link diretto per cambiare la password. Se non ricevi la mail controlla che non sia nella cartella spam. Se hai fatto richiesto molte volte di cambiare la password, ogni volta avrai ricevuto  una mail con un nuovo link autogenerato. Utilizza l'ultimo link nell'ultima mail ricevuta. Se non ricordi la mail ci puoi contattare, non dimenticarti di completare tutti i dati per aiutarci nella ricerca del tuo account (nome completo. nick che utilizzi, data di iscrizione, se hai fatto qualche donazione in qualche progetto concreto). "
-login-recover-label: '¿Olvidaste tu contraseña?'
 login-recover-link: 'Ripristinare la password '
-login-recover-modal-button: Enviar
-login-recover-modal-sucess: '¡Hecho! - te hemos enviado un correo electrónico a %s con un enlace para restablecer la contraseña.'
-login-recover-modal-text: 'Ingresa la dirección de correo electrónico que usaste para registrarte y te enviaremos un enlace para restablecer tu contraseña.'
+login-recover-modal-button: Inviare
 login-recover-username-field: 'Nome di accesso '
 login-register-button: Registrare 
 login-register-confirm-field: 'Confermare mail '
@@ -39,7 +34,6 @@ login-signin-twitter: 'Entra con Twitter'
 login-signin-ubuntu: 'Entra con Ubuntu One'
 login-signin-view-more: 'Mostrare più opzioni di accesso '
 login-signin-yahoo: 'Entra con Yahoo'
-login-title: 'Iniciar sesión'
 oauth-confirm-user: 'Associare utente esistente'
 oauth-facebook-access-denied: 'Login con Facebook rifiutato'
 oauth-goteo-openid-sync-password: 'Stai cercando di associare un account già esistente su Goteo con un fornitore esterno. Questo ti permetterà entrare su Goteo con un solo click in futuro. <br/>Per questo primo accesso dovrai fornire la password del tuo account di Goteo per confermare la tua identità.'
@@ -63,8 +57,4 @@ oauth-openid-not-logged: 'Utente non connesso a Open ID'
 oauth-token-request-error: 'Si è verificato un errore nell''ottenimento delle credenziali con il fornitore'
 oauth-twitter-access-denied: 'Login con Twitter rifiutato'
 oauth-unknown-provider: 'Non è possibile iniziare la sessione con questo fornitore '
-reset-password-new-password: 'Vuelve a escribir tu nueva contraseña'
-reset-password-old-password: 'Tu nueva contraseña'
-reset-password-save: Guardar
-reset-password-title: 'Establecer nueva contraseña'
-login-alternate-ids: Otras opciones
+reset-password-save: Salvare
