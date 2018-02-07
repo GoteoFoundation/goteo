@@ -4,15 +4,7 @@ guide-project-preview: '<strong>Este é un resumo de toda a información sobre o
 guide-project-success-minprogress: 'Chegou ó porcentaxe mínimo'
 guide-project-success-noerrors: 'Todos os campos obrigados foron enchidos'
 guide-project-success-okfinish: 'Pode enviarse para revisión'
-preview-main-header: 'Previsualización de datos'
 preview-send-comment: 'Notas adicionais para o administrador'
-step-7: Previsualización
 step-preview: 'Proxecto / Previsualización'
 tooltip-project-comment: '¿Tes dúbidas ou comentarios para que as lea o administrador de Goteo? Éste é o lugar para explicar algunha parte do que escribiches da que non esteas seguro, para propor melloras, etc.'
-project-send-review-desc: >
-  Una vez lo envíes ya no se podrán introducir cambios hasta que abramos de nuevo su edición.
-  
-  En breve nos pondremos en contacto contigo para comentar la propuesta de campaña y poder continuar con su proceso de optimización y publicación.
-  
-  **No dejes de revisar tu bandeja de SPAM**, en ocasiones la tecnología no es capaz de apreciar el cariño que damos a nuestros proyectos.
 
