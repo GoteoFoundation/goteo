@@ -1,9 +1,8 @@
+---
 feed-admin-invest-manual-subject: 'Manual invest (admin)'
 feed-admin-invest-manual: '%ADMIN% has added %AMOUNT% to the project %PROJECT% in the name of %USER%'
 feed-admin-invest-modified-subject: 'Invest manually modified (admin)'
 feed-admin-invest-modified: 'The admin %ADMIN% has modified the invest %INVEST% of %AMOUNT%. Old user: %OLDUSER%. New user: %NEWUSER%'
-
-
 feed-blog-comment: 'Has written a <span class="green">Comment</span> at the post "%s" from the %s blog'
 feed-invest: 'Has contributed with %AMOUNT% to %PROJECT%'
 feed-invest-by: 'Invest by %s'
@@ -13,7 +12,6 @@ feed-messages-new_thread: 'Has opened a thread at %s of the project %s'
 feed-messages-new-thread: 'Has opened a thread at %TYPE% of the project %PROJECT%'
 feed-messages-response: 'Has answered in %s of the project %s'
 feed-message-response: 'Has answered in %TYPE% of the project %PROJECT%'
-feed-new-user-confirmed: 'New registered user (confirmed)'
 feed-new_project: '<span class="red">New Goteo project</span>, you''ve got 40 days from today to support this project.'
 feed-new_support: 'Has published a new <span class="green">Collaboration</span> at the %s project, with the title "%s"'
 feed-new-support: 'Has published a new <span class="green">Collaboration</span> at the %PROJECT% project, with the title "%TITLE%"'
@@ -36,10 +34,8 @@ feed-message-message-published: '%USER% has published a new %TYPE% in the projec
 feed-message-new-project-response: 'user participates with a message/response in a project'
 feed-message-support-response-published: 'New collaboration from %USER% with %TITLE% in the project %PROJECT%'
 feed-message-response-published: '%USER% has responded to %TYPE% at project %PROJECT%'
-
 feed-project-ready-sent: 'Project sent to review'
 feed-project-ready-ko: 'Error from %USER% while sending the project %PROJECT% to <span class="red">review</span>'
 feed-project-ready-ok: '%USER% has sent the project %PROJECT% to <span class="red">review</span>'
-
 feed-project-new-post: 'User publishes an update in his project (dashboard)'
 feed-project-post-published: '%USER% has published a new post in %BLOG% about the project %PROJECT%, titled "%TITLE%"'
