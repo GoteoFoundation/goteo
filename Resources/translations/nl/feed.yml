@@ -1,5 +1,5 @@
+---
 feed-invest: 'Heeft met %AMOUNT% bijgedragen aan het %PROJECT% project'
-feed-message_support-response: 'Nieuwe samenwerking met %s bij project %s'
 feed-messages-new_thread: 'heeft een thread geopend op %s van project %s'
 feed-messages-response: 'Heeft geantwoordt op %s van project %s'
 feed-new_project: '    <span class="red">Nieuw Goteo project</span>, je hebt 40 dagen om dit project te steunen.'
