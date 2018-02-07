@@ -1,7 +1,22 @@
+---
 contact-captcha-field: 'Test auf menschlichen Benutzer (BOT-Blocker)'
 contact-captcha-refresh: 'Bild aktualisieren'
-contact-email-field: 'Email-Adresse'
-contact-form-tags: "[user] Ich habe ein Problem mit meinem Konto; \r\n[new promoter] Ich habe ein Projekt;\r\n[new promoter 2] Ich habe eine Frage über das Projektformular;\r\n[development] Ich brauche Hilfe bei Technik-Fragen;\r\n[service] Ich möchte Ihre Dienste in Anspruch nehmen;\r\n[other] Ich habe eine andere Frage;"
+contact-email-field: Email-Adresse
+contact-form-dev-tag-description: 'Tengo dudas sobre cuestiones técnicas'
+contact-form-dev-tag-name: Desarrollo
+contact-form-new-project-tag-description: 'Tengo un posible proyecto'
+contact-form-new-project-tag-name: 'Posible proyecto'
+contact-form-others-tag-description: 'Es otro tipo de consulta'
+contact-form-others-tag-name: Otros
+contact-form-project-form-tag-description: 'Tengo dudas sobre el formulario de proyecto'
+contact-form-project-form-tag-name: 'Problemas formulario proyecto'
+contact-form-relief-tag-description: 'Deseo un justificante de mi donación'
+contact-form-relief-tag-name: 'Justificante donación'
+contact-form-service-tag-description: 'Quiero contratar un servicio'
+contact-form-service-tag-name: Servicio
+contact-form-tags: "[user] Ich habe ein Problem mit meinem Konto; \\r\n[new promoter] Ich habe ein Projekt;\\r\n[new promoter 2] Ich habe eine Frage über das Projektformular;\\r\n[development] Ich brauche Hilfe bei Technik-Fragen;\\r\n[service] Ich möchte Ihre Dienste in Anspruch nehmen;\\r\n[other] Ich habe eine andere Frage;"
+contact-form-user-tag-description: 'Tengo problemas con mi cuenta'
+contact-form-user-tag-name: 'Problemas cuenta'
 contact-message-field: Nachricht
 contact-name-field: Name
 contact-send_message-button: Senden
@@ -12,3 +27,5 @@ error-contact-captcha: 'Das reCAPTCHA wurde nicht korrekt eingegeben. Versuchen 
 error-contact-email-empty: 'Sie haben Ihre Email-Adresse nicht angegeben'
 error-contact-message-empty: 'Sie haben keine Nachricht geschrieben'
 error-contact-subject-empty: 'Sie haben keinen Betreff angegeben'
+meta-description-contact: 'Contacta con el equipo de Goteo.org'
+meta-title-contact: 'Contáctanos :: Goteo.org'
