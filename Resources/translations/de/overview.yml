@@ -65,5 +65,4 @@ tooltip-project-video: 'Publizieren oder verlinken Sie ein Video (YouTube, Vimeo
 validate-project-field-about: 'Die Projektbeschreibung ist zu kurz'
 validate-project-field-currently: 'Tragen Sie den aktuellen Projektstatus ein, um die Projektbeurteilung und die Entscheidung zu ermöglichen, ob das Projekt bei Goteo veröffentlicht werden sollte.'
 validate-project-field-description: 'Die Projektbeschreibung ist zu kurz'
-validate-project-value-description: "Die Projektbeschreibung ist zu kurz"
 validate-project-value-keywords: 'Tragen Sie mindestens fünf Schlagworte  zu Ihrem Projekt ein, die eine Beurteilung durch das Goteo-Team ermöglichen.'
