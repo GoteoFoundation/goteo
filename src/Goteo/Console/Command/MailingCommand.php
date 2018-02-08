@@ -149,6 +149,7 @@ EOT
 						$line = $php.' '.GOTEO_PATH."bin/console sendmail {$recipient->id} --lock --lock-name sendmail.{$recipient->id}" .($update?' --update':'');
 						//. ' --verbose  2>/dev/null';
 						$process = new Process($line);
+                        $process->setTimeout(null); // no time limit
 						$process->start();
 						$pid             = $process->getPid();
 						$processes[$pid] = $process;

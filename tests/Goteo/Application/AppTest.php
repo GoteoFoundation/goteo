@@ -44,7 +44,8 @@ class AppTest extends TestCase {
         $this->assertContains('</body>', $response->getContent());
     }
 
-*/    public function testRedirections() {
+*/
+    public function testRedirections() {
         $routes = array(
             '/discover/',
             '/non-existing/'

@@ -30,14 +30,14 @@ module.exports = function(grunt) {
         livereload: {
             options: {
                 base: '.tmp', //Set the document root to the src folder.
-                router: 'var/php/router_dev.php',
+                router: absolute + '/var/php/router_dev.php',
                 open: true,
             },
         },
         dist: { // The "server" task can pass in a "dist" arguement. Configure the server accordingly.
             options: {
                 base: '<%= goteo.dist %>', //Set the document root to the dist folder.
-                router: 'var/php/router.php',
+                router: absolute + '/var/php/router.php',
                 open: false
             }
         }

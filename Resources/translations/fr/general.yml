@@ -43,7 +43,7 @@ horizontal-project-investors: 'cofinanceurs'
 horizontal-project-percent: 'financé'
 horizontal-project-reached: 'Obtenu'
 invest-individual-header: 'Vous pouvez refuser de recevoir votre récompense, ou sélectionner une récompense d''un montant égal ou inférieur àvotre contribution.'
-login-register-conditions: "J'accepte les conditions d'utilisation de la plateforme, et je donne mon consentement pour le traitement de mes données personnelles. Le responsable du portail a établi une politique de confidentialité qui définit l'usage des données personnelles fournis par ce formulaire, ainsi que les droits de la personne qui a fourni ses données.\\\\r\n"
+login-register-conditions: "J'accepte les conditions d'utilisation de la plateforme, et je donne mon consentement pour le traitement de mes données personnelles. Le responsable du portail a établi une politique de confidentialité qui définit l'usage des données personnelles fournis par ce formulaire, ainsi que les droits de la personne qui a fourni ses données."
 mandatory-cost-field-type: 'Vous devez sélectionner le type de coût'
 mandatory-individual_reward-field-amount: 'Vous devez spécifier le montant pour cette récompense'
 mandatory-project-costs: 'These should be broken down into at least two groups.'

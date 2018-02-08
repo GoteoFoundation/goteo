@@ -9,7 +9,7 @@ profile-my_investors-header: 'Mes cofinanceurs'
 profile-my_projects-header: 'Mes projets'
 profile-my_worth-header: 'Ma contribution sur Goteo'
 profile-name-header: 'Profil de'
-profile-patron-header: "Recommande <span class=\"red\">%s projets</span>\\\\r\n"
+profile-patron-header: "Recommande <span class=\"red\">%s projets</span>"
 profile-sharing_interests-header: 'Intérêts partagés'
 profile-webs-header: 'Mes sites web'
 profile-widget-button: 'Voir le profil'

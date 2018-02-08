@@ -25,12 +25,12 @@ invest-alert-lackamount: 'L''aportació ha de ser de valor més elevat que la re
 invest-alert-lackdrop: 'No queda prou Capital Regadiu per cobrir la teva aportació, només queden'
 invest-alert-noreward: 'No has marcat cap recompensa, és correcte?'
 invest-alert-noreward_renounce: 'Desitges renunciar a la recompensa i desgravar el teu donatiu?'
-invest-alert-renounce: "Renuncies però no has posat el teu NIF per desgravar el donatiu, és correcte?\\\\r\n"
+invest-alert-renounce: "Renuncies però no has posat el teu NIF per desgravar el donatiu, és correcte?"
 invest-alert-rewards: 'Has escollit les següents recompenses:'
 invest-amount: Quantitat
 invest-amount-in-pool: 'Tens %s al teu moneder virtual'
 invest-amount-tooltip: 'Introdueix la quantitat amb que recolzaràs el projecte'
-invest-anonymous: "Vull que la meva aportació sigui anònima \\\\r\n"
+invest-anonymous: "Vull que la meva aportació sigui anònima "
 invest-button: Aporta
 invest-called-allready: 'A aquest projecte ja li has donat <strong>Matchfunding</strong> de la convocatòria %s, no n''obtindrà més pels teus aports'
 invest-called-maxdrop: 'Fins a un màxim de <strong>%s &euro;</strong>'
@@ -46,7 +46,7 @@ invest-fiscal-skip: 'Prefereixo omplir aquestes dades en un altre moment'
 invest-fiscal-title: 'Assegura''t de que puguis desgravar la teva aportació (per a contribuents a l''estat espanyol)'
 invest-login-alert: 'T''has de registrar o <a href="%s">iniciar sessió</a> per poder realitzar l''aportació'
 invest-mail_info-address: 'Has especificat la següent direcció:'
-invest-mail_info-drop: 'A més, %s ha aportat %s de capital irrigació a través de la campanya %s'
+invest-mail_info-drop: 'A més, %s ha aportat %s de capital Matchfunding a través de la campanya %s'
 invest-make-sure-save: Desar
 invest-make-sure-title: Confirma
 invest-method: 'Mètode de pagament'
@@ -68,7 +68,7 @@ invest-pool-error: 'No tens prou diners al teu moneder virtual'
 invest-pool-method: 'Moneder virtual'
 invest-process-completed: 'Aquesta aportació ja es va completar anteriorment'
 invest-project: 'al projecte'
-invest-resign: "Renuncio a una recompensa individual, només vull donar suport al projecte \\\\r\n"
+invest-resign: "Renuncio a una recompensa individual, només vull donar suport al projecte "
 invest-reward-first: 'Recorda que la quantitat a aportar ha de ser més gran que 0'
 invest-reward-none: 'Ja no es pot escollir'
 invest-reward-not-found: 'Aquesta recompensa no existeis!'
