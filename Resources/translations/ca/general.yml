@@ -73,7 +73,8 @@ regular-calendar: Calendari
 regular-cancel: Cancel·lar
 regular-cancel-back: 'Cancel·lar i torna enrere'
 regular-back: 'Torna enrere'
-regular-collaborate: Col·labora 
+regular-channel: Canal
+regular-collaborate: Col·labora
 regular-content: Contingut
 regular-continue-question: 'Continuar?'
 regular-create: 'Crea un projecte'
@@ -133,17 +134,17 @@ regular-menu-personal: Menú personal
 regular-message-clipboard-fail: 'Selecciona i copia aquest enllaç'
 regular-message_fail: 'Hi ha hagut algun error en enviar el missatge'
 regular-message_success: 'Missatge enviat correctament'
-regular-months: mesos 
+regular-months: mesos
 regular-more_info: '+ info'
 regular-news: 'Notícies: '
 regular-no: 'No'
 regular-of: de
-regular-preview: Previsualitzar 
+regular-preview: Previsualitzar
 regular-projects: projectes
 regular-published_no: Esborrany
 regular-published_yes: Publicat
 regular-read_more: 'Llegir més'
-regular-recent-activity: Activitat recent 
+regular-recent-activity: Activitat recent
 regular-recomended_by: 'Projecte recomanat per:'
 regular-review_board: 'Panell revisor'
 regular-round: 'a ronda'
@@ -187,7 +188,7 @@ regular-images: Imatges
 regular-load-more: 'Carregar-ne més'
 regular-analytics: 'Google Analytics'
 regular-facebook-pixel: 'Facebook Píxel'
-regular-call: Capital d'irrigació
+regular-call: Matchfunding
 regular-num-comments: '%s comentaris'
 regular-manage: 'Gestiona'
 regular-no-edit-permissions: No tens permís per editar aquesta entrada!
