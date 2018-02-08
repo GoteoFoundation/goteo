@@ -32,7 +32,6 @@ class NewsletterController extends \Goteo\Core\Controller {
                     " . ($id ? ' id=' . (int) $id . ' AND' : '') . "
                     email = 'any'
                     AND template = " . Template::NEWSLETTER . "
-                    AND  DATEDIFF(NOW(), date) < 30
                 ORDER BY
                     lang = '$lang' DESC,
                     date DESC
@@ -46,7 +45,7 @@ class NewsletterController extends \Goteo\Core\Controller {
 				return $this->viewResponse('email/newsletter', array('content' => $content));
 			}
 		}
-		throw new ModelNotFoundException();
+		throw new ModelNotFoundException('Newsletter not found!');
 
 	}
 
