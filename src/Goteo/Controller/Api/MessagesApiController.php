@@ -202,6 +202,7 @@ class MessagesApiController extends AbstractApiController {
                    'project' => $msg->project,
                    'timeago' => $msg->timeago,
                    'recipient' => $msg->recipient,
+                   'recipient_name' => $msg->recipient_name,
                    'user' => $msg->user,
                    'name' => $msg->getUser()->name,
                    'avatar' => $msg->getUser()->avatar->getLink(60,60,true),

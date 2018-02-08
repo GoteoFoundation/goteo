@@ -235,6 +235,7 @@ class Message extends \Goteo\Core\Model {
         $sql = "FROM message a
                 LEFT JOIN support b ON b.thread = a.thread
                 LEFT JOIN message_user c ON c.message_id = a.id
+                JOIN user d ON c.user_id = d.id
                 WHERE blocked=0
                 AND (c.user_id = :user OR a.user = :user)
                 AND b.id IS NULL
@@ -245,7 +246,7 @@ class Message extends \Goteo\Core\Model {
 
         $offset = (int) $offset;
         $limit = (int) $limit;
-        $sql = "SELECT a.*, b.id AS support_id, c.user_id AS recipient $sql ORDER BY date DESC, id DESC LIMIT $offset, $limit";
+        $sql = "SELECT a.*, b.id AS support_id, c.user_id AS recipient, d.name AS recipient_name $sql ORDER BY date DESC, id DESC LIMIT $offset, $limit";
 
         $sql = "SELECT * FROM ($sql) rev ORDER BY date ASC, id ASC ";
         // die(sqldbg($sql, $values));
