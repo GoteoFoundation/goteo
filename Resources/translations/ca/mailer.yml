@@ -4,4 +4,5 @@ mailer-disclaimer: 'Goteo és una plataforma digital per al finançament col·le
 mailer-sinoves: 'Si no pots veure aquest missatge utilitza aquest <a href="%s">link</a>'
 newsletter-block: 'No vols rebre més butlletins de Goteo? <br/> <a href="%s"> Desubscriu-te</a>.'
 unsuscribe-request-success: 'Has cancel.lat la teva subscripció al butlletí.'
+mailer-from: De
 mailer-to: Per
