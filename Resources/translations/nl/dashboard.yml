@@ -1,3 +1,4 @@
+---
 dashboard-embed_code: 'eenvoudige code diffusie'
 dashboard-embed_code_investor: 'CODE MET PLAATJE VAN CROWDFUNDER'
 dashboard-header-main: 'Mijn dashboard'
@@ -7,7 +8,7 @@ dashboard-investors-mail-sendto: 'Verstuurd naar %s van je funders:'
 dashboard-investors-mail-sent: 'Berichten correct verzonden'
 dashboard-investors-mail-text-required: 'Schrijf het bericht'
 dashboard-menu-activity: 'Mijn activiteit'
-dashboard-menu-activity-spread: 'Verspreid het wooord'
+dashboard-menu-activity-spread: Verspreid het wooord
 dashboard-menu-activity-summary: Samenvatting
 dashboard-menu-activity-wall: 'Mijn etalage'
 dashboard-menu-admin_board: Beheer
@@ -15,18 +16,17 @@ dashboard-menu-calls-sponsors: Sponsors
 dashboard-menu-profile: 'Mijn profiel'
 dashboard-menu-profile-access: 'Account details'
 dashboard-menu-profile-personal: 'Persoonlijke informatie'
-dashboard-menu-profile-preferences: Voorkeuren
+dashboard-menu-profile-preferences: 'Voorkeuren'
 dashboard-menu-profile-profile: 'Profiel bewerken'
 dashboard-menu-profile-public: 'Publiek profiel'
 dashboard-menu-projects: 'Mijn projecten'
 dashboard-menu-projects-contract: Kontract
 dashboard-menu-projects-messegers: Deelnemers
 dashboard-menu-projects-preview: 'Publieke pagina'
-dashboard-menu-projects-rewards: 'Beloningen beheren'
+dashboard-menu-projects-rewards: Beloningen beheren
 dashboard-menu-projects-summary: Samenvatting
 dashboard-menu-projects-supports: Samenwerkingen
 dashboard-menu-projects-updates: Nieuws
-dashboard-menu-projects-widgets: Widget
 dashboard-menu-review_board: Review
 dashboard-menu-translate_board: Vertaling
 dashboard-menu-translates: 'Mijn vertalingen'
@@ -70,3 +70,5 @@ user-preferences-threads: 'Zet antwoordnotificaties uit van de berichten die ik 
 user-preferences-updates: 'Zet nieuwsberichten over de projecten die ik steun uit'
 user-profile-saved: 'Profiel bijgewerkt'
 user-save-fail: 'Er is een prbleem met het opslaan van de data'
+dashboard-new-material-form-material: 'Materiaal'
+dashboard-new-material-form-description: 'Omschrijving'

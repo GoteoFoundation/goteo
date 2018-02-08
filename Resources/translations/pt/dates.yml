@@ -1,8 +1,4 @@
 ---
-date-apr: Abr
-date-april: Abril
-date-aug: Ago
-date-august: Agosto
 date-dec: Dez
 date-december: Dezembro
 date-feb: Fev
@@ -12,28 +8,20 @@ date-fri: Sex
 date-friday: Sexta-feira
 date-jan: Jan
 date-january: Janeiro
-date-jul: Jul
 date-july: Julho
-date-jun: Jun
 date-june: Junho
-date-mar: Mar
 date-march: Março
 date-may: Maio
 date-mo: Seg
 date-mon: Seg
 date-monday: Segunda-feira
-date-nov: Nov
 date-november: Novembro
 date-oct: Out
 date-october: Outubro
 date-sa: Sáb
-date-sat: Sáb
-date-saturday: Sábado
 date-sep: Set
 date-september: Setembro
 date-su: Dom
-date-sun: Dom
-date-sunday: Domingo
 date-th: Qui
 date-thu: Qui
 date-thursday: Quinta-feira

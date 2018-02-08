@@ -1,9 +1,6 @@
 ---
 cost-type-lend: Préstec
-cost-type-material: Material
-cost-type-structure: Infraestructura
 cost-type-task: Tasca
-costs-field-amount: Valor
 costs-field-cost: Cost
 costs-field-date_from: Des de
 costs-field-date_until: Fins
@@ -11,7 +8,6 @@ costs-field-dates: Dates
 costs-field-description: Descripció
 costs-field-required_cost: 'Aquest cost és'
 costs-field-required_cost-no: Addicional
-costs-field-required_cost-yes: Imprescindible
 costs-field-resoure: 'Altres recursos'
 costs-field-schedule: 'Agenda de treball'
 costs-field-type: Tipus

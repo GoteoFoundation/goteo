@@ -1,3 +1,4 @@
+---
 mandatory-project-field-about: 'Je moet de basiskenmerken van het project uitleggen'
 mandatory-project-field-category: 'Je moet tenminste een categorie kiezen voor het project'
 mandatory-project-field-description: 'Je moet een samenvatting van het project invoeren'
@@ -17,12 +18,12 @@ overview-field-image_gallery: 'Huidige afbeeldingen'
 overview-field-image_upload: 'Upload een afbeelding'
 overview-field-keywords: 'Steekwoorden voor het project'
 overview-field-lang: 'Originele taal'
-overview-field-media: Videointroductie
-overview-field-media_preview: Preview
-overview-field-name: Projecttitel
+overview-field-media: 'Videointroductie'
+overview-field-media_preview: 'Preview'
+overview-field-name: 'Projecttitel'
 overview-field-options-currently_avanzado: Gevorderd
 overview-field-options-currently_finalizado: klaar
-overview-field-options-currently_inicial: 'Aan het starten'
+overview-field-options-currently_inicial: Aan het starten
 overview-field-options-currently_medio: Halverwege
 overview-field-options-scope_global: Globaal
 overview-field-options-scope_local: Lokaal
@@ -31,11 +32,11 @@ overview-field-options-scope_regional: Regionaal
 overview-field-project_location: Locatie
 overview-field-related: 'Team en ervaring'
 overview-field-scope: 'Bereik van het project'
-overview-field-subtitle: Samenvatting
+overview-field-subtitle: 'Samenvatting'
 overview-field-usubs: 'Publiceer met Universal Subtitles'
 overview-field-video: 'Additionele video over motivatie'
 overview-fields-images-title: 'Afbeeldingen van het project'
-overview-main-header: Projectomschrijving
+overview-main-header: 'Projectomschrijving'
 step-3: Omschrijving
 step-overview: 'Step: Projectomschrijving'
 tooltip-project-about: 'Omschrijf kort je project in conceptuele, practische en technische termen. Bij voorbeeld door uit te wijden over hoe het werkt en waar het uit bestaat. Denk na over hoe het er uit ziet als het af is en wat mensen er mee kunnen.'
@@ -58,5 +59,4 @@ tooltip-project-video: 'Overweeg een video te publiceren en te linken (YouTube o
 validate-project-field-about: 'De projectomschrijving is te kort'
 validate-project-field-currently: 'Geef de huidige status aan van je project zodat we kunnen zien of het past bij Goteo.'
 validate-project-field-description: 'De projectomschijving is te kort'
-validate-project-value-description: 'De projectomschrijving is te kort'
 validate-project-value-keywords: 'Noem 5 steekwoorden die helpen bij de beoordeling door Goteo.'

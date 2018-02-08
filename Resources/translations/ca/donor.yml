@@ -12,7 +12,6 @@ dashboard-donor-main_guide: 'Passat l''any: fins el 15 de gener de cada any es p
 dashboard-donor-mandatory: 'ÉS OBLIGATORI OMPLIR LES DADES FISCALS'
 dashboard-donor-no_donor: 'El teu certificat de donacions de %s encara no està disponible'
 dashboard-donor-pdf_closed: 'Les dades fiscals per al certificat de donacions de %s no han estat confirmades, no es pot descarregar'
-dashboard-donor-save_fail: "Hi ha hagut algun error en gravar les teves dades. Si us plau, revisa'ls i, si persisteix el problema, contacta amb nosaltres."
 dashboard-donor-saved: 'Gràcies per modificar les teves dades. Per descarregar el certificat assegura''t primer de que són correctes, i a continuació valida''ls amb el botó de tancar dades.'
 dashboard-menu-activity-donor: 'Certificat de donatiu'
 donor-address-country-field: País

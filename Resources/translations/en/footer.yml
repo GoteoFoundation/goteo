@@ -1,24 +1,22 @@
+---
 footer-header-categories: Categories
 footer-header-projects: Projects
 footer-header-resources: Resources
 footer-header-services: Services
-footer-header-social: 'Follow us'
+footer-header-social: Follow us
 footer-header-sponsors: 'Institutional support'
 footer-platoniq-iniciative: 'An initiative of:'
-footer-resources-api: API
 footer-resources-glossary: Glossary
-footer-resources-press: 'Press Kit'
+footer-resources-press: Press Kit
 footer-resources-source_code: 'Goteo''s code is AGPL3'
-footer-resources-stats: Stats
+footer-resources-channels: Channels
+footer-service-calculator: Tax calculator
 footer-service-campaign: Campaigns
-footer-service-consulting: 'Consulting firm'
-footer-service-pool: 'Virtual wallet'
+footer-service-consulting: Consulting firm
+footer-service-pool: Virtual wallet
 footer-service-resources: 'Feeder capital'
 footer-service-workshop: Workshops
 regular-footer-contact: Contact
 regular-footer-legal: 'Legal terms'
 regular-footer-privacy: 'Privacy policy'
 regular-footer-terms: 'Terms of service'
-footer-service-calculator: 'Tax calculator'
-footer-resources-channels: 'Channels'
-

@@ -1,18 +1,19 @@
+---
 error-register-userid: 'Je moet een gebruikersnaam invoeren'
 login-access-button: Enter
 login-access-header: 'Geregistreerde gebruiker'
 login-access-password-field: Wachtwoord
-login-access-username-field: Gebruikersnaam
-login-fail: Fout
+login-access-username-field: 'Gebruikersnaam'
+login-fail: 'Fout'
 login-leave-button: 'Sluit het account'
 login-leave-header: 'Sluit het account'
 login-leave-message: 'Laat het bericht achter'
 login-oneclick-header: 'Log in met een enkele klik'
 login-recover-button: Herstel
 login-recover-email-field: 'Account email'
-login-recover-header: 'Herstel wachtwoord'
 login-recover-link: 'Herstel wachtwoord'
-login-recover-username-field: Gebruikersnaam
+login-recover-modal-button: Versturen
+login-recover-username-field: 'Gebruikersnaam'
 login-register-button: Registeer
 login-register-confirm-field: 'Bevestig emailadres'
 login-register-confirm_password-field: 'Bevestig wachtwoord'
@@ -20,8 +21,8 @@ login-register-email-field: Emailadres
 login-register-header: 'Nieuwe gebruiker'
 login-register-password-field: Wachtwoord
 login-register-password-minlength: 'Ten minste 6 characters'
-login-register-userid-field: Gebruikersnaam
-login-register-username-field: Alias
+login-register-userid-field: 'Gebruikersnaam'
+login-register-username-field: 'Alias'
 login-signin-facebook: 'Log in met Facebook'
 login-signin-google: 'Log in met Google'
 login-signin-linkedin: 'Log in met LinkedIn'
@@ -37,7 +38,7 @@ oauth-goteo-openid-sync-password: 'Je probeert te verbinden met een bestaand Got
 oauth-goteo-user-not-exists: 'Die gebruiker bestaat niet in Goteo'
 oauth-import-about: 'Over jou'
 oauth-import-facebook: 'Verbind aan je Facebook account'
-oauth-import-location: Woonplaats
+oauth-import-location: 'Woonplaats'
 oauth-import-name: Naam
 oauth-import-twitter: 'Verbind aan je Twitter account'
 oauth-import-website: 'Jouw websites'
@@ -50,3 +51,4 @@ oauth-openid-not-logged: 'Gebruiker niet meer verbonden met Open ID'
 oauth-token-request-error: 'Er is een fout opgetreden bij het ophalen van data bij de provider'
 oauth-twitter-access-denied: 'Twitter toegang geweigerd'
 oauth-unknown-provider: 'Sessie kan niet gestart worden bij deze provider'
+reset-password-save: Bewaar

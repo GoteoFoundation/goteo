@@ -12,7 +12,6 @@ dashboard-donor-main_guide: 'Trascorso l''anno: fino al 15 gennaio puoi conferma
 dashboard-donor-mandatory: 'OBBLIGATORIO INDICARE I DATI FISCALI'
 dashboard-donor-no_donor: 'Il tuo certificato delle donazioni di %s  non è ancora disponibile'
 dashboard-donor-pdf_closed: 'I dati fiscali per il certificato di donazione di %s non sono confermati, non si può scaricare'
-dashboard-donor-save_fail: "Si è verificato un errore nella registrazione dei dati, per favore, ricontrolla e se l'errore persiste mettiti in contatto con noi."
 dashboard-donor-saved: 'Grazie della modifica ai tuoi dati. Per scaricare il certificato assicurati che siano corretti. A continuazione convalidali con il tasto chiudi dati. '
 dashboard-menu-activity-donor: 'Certificato di donazione '
 donor-address-country-field: Paese 

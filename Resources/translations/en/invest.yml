@@ -1,11 +1,14 @@
+---
 bazar-spread-text: '%s - This Christmas, give open crowdfunding for the common good with @goteofunding #openbazaar'
 bazar-thanks: 'Thank you for visiting our bazaar, you can help us promote it.'
-currency-alert: "Please note that the original currency of this project is EUR (€). \r\nYou will pay approximately <span id=\"reminder_conversion\">%s</span> € <a href=\"/faq/investors#q115\" target=\"_blank\">More info</a>"
 faq-payment-method: '<a href="/faq/investors#q2" target="_blank">What payment systems does Goteo offer? Are they safe?</a>'
 imperative-register: Register
 invest-address-address-field: Address
+invest-address-birthyear-field: 'Year of birth'
 invest-address-country-field: Country
+invest-address-fail: 'There are empty or faulty fields. Please check the form so you can go forward and receive your reward!'
 invest-address-friend-field: 'Tick this box if it is a gift for another person'
+invest-address-gender-field: Gender
 invest-address-header: 'Where would you like to receive the reward (only if it''s sent via the postal service)'
 invest-address-location-field: City
 invest-address-maildest-field: 'Recipient''s email'
@@ -34,14 +37,18 @@ invest-called-maxdrop: 'Up to a maximum of <strong>%s &euro;</strong>'
 invest-called-maxproj: 'This project has obtained the maximum quantity of <strong>Feeder Capital</strong> from the <span class="call">%s</span> cloudfunding call'
 invest-called-nodrop: 'Now there is no <strong>Feeder Capital</strong> left for this cloudfunding call: %s'
 invest-called-rest: 'There’s just <strong>%s €</strong> left of <strong>Feeder Capital</strong> in this cloudfunding call <span class="call">%s</span>'
-invest-card-method: 'Credit Card'
+invest-card-method: Credit Card
 invest-donation-header: 'Enter the fiscal information for this donation'
+invest-drop-method: Matching funds
+invest-fiscal-fail: 'There are faulty of empty fields. Please check the fiscal form to go forward and deduct your contribution!'
 invest-fiscal-skip: 'I don’t want to fill in this now'
 invest-fiscal-title: 'Make sure you can get a Tax return on your contribution (only for declarants in Spain)'
+invest-login-alert: 'You must register or <a href="%s">log in</a> to make your contribution'
 invest-mail_info-address: 'You''ll receive the reward at the following address:'
 invest-mail_info-drop: 'Has also, %s contributed %s of cloudfunding via the %s campaign '
 invest-make-sure-save: Save
 invest-make-sure-title: Confirm
+invest-method: 'Payment method'
 invest-method-title: 'Make your contribution'
 invest-modal-fiscal-description: 'As you already may know, contributing in Goteo doesn’t just make possible many of the projects with a common benefit, its even prex-tax-deductible! As you contribute to a project, and thanks to the 2015 applicable deduction rates for pure and simple donations done in favor of Fundación Goteo, as it''s an entity under the special tax regime under the Spanish Law 49/2002, December 23rd, you''ll be able to deduct according to the percentages you can read on our <a href="https://goteo.org/faq/investors#q112" target="_blank">FAQ nr. 18 for backers</a>.'
 invest-modal-fiscal-title: 'Tax information'
@@ -53,8 +60,6 @@ invest-payment-email: 'Enter your PayPal user name'
 invest-payment-fail: 'Something went wrong with the payment'
 invest-payment-success: 'The payment has been made correctly'
 invest-payment_method-header: 'Choose a method of payment'
-invest-paypal-method: Paypal
-invest-paypal_disabled: 'Payment via paypal is desactivated for this project. <a href="/faq/investors#q2">More info</a>'
 invest-pool: 'In case the project fails, I want my donation to go into my virtual Goteo Purse.'
 invest-pool-available: Available
 invest-pool-error: 'You do not have enough money in your virtual purse.'
@@ -62,12 +67,21 @@ invest-pool-method: 'Virtual purse'
 invest-process-completed: 'Your contribution has been completed previoulsy'
 invest-project: 'to the project'
 invest-resign: 'I renounce to my personal reward, I just want to support the project'
+invest-reward-first: 'Remember the amount for a donation must be higher than 0'
 invest-reward-none: 'These can no longer be chosen'
 invest-reward-not-found: 'Reward not found!'
 invest-reward-used-up: 'This reward has been used up!'
 invest-select-reward: 'Choose your reward'
 invest-share-title: Share
 invest-social-header: 'With collective benefits, we all move forward'
+invest-status-cancelled: Cancelled
+invest-status-charged: Charged
+invest-status-paid: 'Paid to project'
+invest-status-pending: Pending
+invest-status-processing: Incomplete
+invest-status-relocated: Relocated
+invest-status-returned: 'Returned (archived)'
+invest-status-to-pool: 'Virtual wallet'
 invest-step-1: Reward
 invest-step-2: Payment
 invest-step-3: Confirm
@@ -78,36 +92,18 @@ proj-widget-my_invest: 'My contribution'
 project-invest-confirm: 'You''re one step away from becoming a backer of this project...'
 project-invest-continue: 'Choose a method of payment:'
 project-invest-fail: 'Something went wrong, please try again.'
-project-invest-guest: Awesome!
+project-invest-guest: 'Awesome!'
 project-invest-ok: 'Your contribution to co-finance this project has been processed :)'
 project-invest-pool-button: 'Use my Virtual Wallet'
 project-invest-start: 'You''re one step away from becoming a backer of this project...'
+project-return-button: 'Back to project'
+project-see-msg: 'See your message'
 spread-facebook: 'Share on Facebook'
 spread-twitter: 'Share on Twitter'
 user-login-required-login: 'If you’re a registered user you should <a href="%s">log in</a>; if you are not, you should create a new user. (In case you want to make an anonymous donation, you can select that option later)'
 warning_nojavascript: 'Please enable javascript from your browser''s privacy settings to continue the payment process'
-invest-address-birthyear-field: 'Year of birth'
-invest-address-fail: 'There are empty or faulty fields. Please check the form so you can go forward and receive your reward!'
-invest-address-gender-field: Gender
-invest-cash-method: 'Manual (cash)'
-invest-drop-method: 'Matching funds'
-invest-fiscal-fail: 'There are faulty of empty fields. Please check the fiscal form to go forward and deduct your contribution!'
-invest-login-alert: 'You must register or <a href="%s">log in</a> to make your contribution'
-invest-method: 'Payment method'
-invest-reward-first: 'Remember the amount for a donation must be higher than 0'
-invest-status-cancelled: Cancelled
-invest-status-charged: Charged
-invest-status-paid: 'Paid to project'
-invest-status-pending: Pending
-invest-status-processing: Incomplete
-invest-status-relocated: Relocated
-invest-status-returned: 'Returned (archived)'
-invest-status-to-pool: 'Virtual wallet'
-project-return-button: 'Back to project'
-project-see-msg: 'See your message'
 invest-no-register: 'Skip this step, I just want to contribute'
 invest-user-not-ghost: 'This email belongs to an existing user!'
 invest-user-name-or-anonymous: 'Name is mandatory unless you want to donate anonymously'
-
 invest-created-manually-ok: 'Manual invest created successfully, select reward and address now'
 invest-created-manually-ko: 'Error on creating manual invest [%s]'

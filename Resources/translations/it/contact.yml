@@ -2,7 +2,6 @@
 contact-captcha-field: 'Sei umano (ci dispiace)?'
 contact-captcha-refresh: 'Immagine di refresh'
 contact-email-field: Mail 
-contact-form-tags: "[utente] Ho problemi con il mio account;[nuovo promoter] Ho un problema tecnico;[nuovo promoter2] Ho dei dubbi sul questionario del progetto;[sviluppo]Ho dubbi di carattere tecnico;[giustificativo] Ho bisogno di un giustificati della mia donazione;[servizio] Voglio contrattare un servizio; [altro] È un'altra consulenza;"
 contact-message-field: Messaggio
 contact-name-field: Nome
 contact-send_message-button: Inviare

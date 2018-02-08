@@ -1,24 +1,17 @@
 ---
-cost-type-lend: Préstamo
-cost-type-material: Material
 cost-type-structure: Infraestrutura
 cost-type-task: Tarefa
-costs-field-amount: Valor
 costs-field-cost: Custo
 costs-field-date_from: Dende
 costs-field-date_until: ata
 costs-field-dates: Datas
 costs-field-description: Descrición
 costs-field-required_cost: 'Este custo é'
-costs-field-required_cost-no: Adicional
 costs-field-required_cost-yes: Imprescindíbel
 costs-field-resoure: 'Outros recursos'
 costs-field-schedule: 'Axenda de traballo'
-costs-field-type: Tipo
 costs-fields-main-title: 'Detalle de custos'
 costs-fields-metter-title: 'Visualización dos custos'
-costs-fields-resources-title: Recurso
-costs-main-header: 'Aspectos económicos'
 mandatory-cost-field-amount: 'É obrigado asignar un importe ós custos'
 mandatory-cost-field-description: 'É obrigado poñer algunha descrición dos custos'
 mandatory-cost-field-name: 'É obrigado poñerlle un nome ó custo'

@@ -1,6 +1,5 @@
 ---
-landing-calculate-button: Calcular
-landing-donor-button: Donar
+landing-donor-button: Repartir
 landing-error-zero: 'La quantitat a aportar ha de ser més gran que 0'
 landing-less-info: 'Menys informació'
 landing-main-slogan: 'Calcula el teu estalvi en impostos gràcies a la millora fiscal a partir del 2015'
@@ -9,16 +8,13 @@ landing-more-info-text: '<h4>La nova llei et permet aportar més i contribuirà 
 landing-real-amount: 'La teva despesa real serà'
 landing-regular-invest: Aportació
 landing-spread: 'Calcula la teva desgravació fiscal a Goteo! #mullarsedesgrava'
-landing-spread-title: 'Difunde las ventajas fiscales de Goteo!'
 landing-stories-title: 'Gràcies a la teva aportació es financen iniciatives com:'
-landing-subtitle-banner: "<span class=\"line\">Implicant-te i comprometent-te amb <strong>projectes a Goteo</strong><br><strong>desgraves</strong>entre un <strong>27,5%</strong> i un <strong>50%</strong>de l'import de la teva donació</span>\\r\n"
 landing-target-description: "El nostre objectiu 2015: que <strong> més del 50 % dels usuaris de Goteo exerceixin el seu dret a obtenir beneficis fiscals </strong> sobre les seves aportacions (El 2014 només un 12% ho van fer).\\r\n"
 landing-target-title: 'Objectiu 2015'
 landing-taxes-explain: 'Fes la teva aportació ara amb el <strong>moneder Goteo</strong>: una nova funcionalitat que permet realitzar la teva donació al moment i decidir posteriorment a quin projecte destinar-la. Obtindràs a l''instant un certificat que justifica davant Hisenda la teva contribució a la Fundació Goteo, entitat sense ànim de lucre.'
 landing-taxes-regional: "<strong>* Important</strong>Aquesta millora fiscal no aplica fora d'Espanya, ni tampoc al País Basc ni a Navarra, que mantenen una deducció del 20 % i del 25% respectivament del total aportat.\\r\n"
 landing-taxes-title: 'Hisenda et torna*:'
 landing-title-banner: "A Goteo,<br>\\r\nmullar-se desgrava"
-landing-type-company: Empresa
 landing-type-person: 'Persona física'
 pool-alert-recharging: 'Estàs a punt de carregar el teu moneder virtual amb'
 pool-amount-first: 'Has d''indicar una quantitat més gran que 0 per poder carregar el teu moneder'
@@ -37,5 +33,5 @@ pool-share-title: 'Descarrega''t el teu certificat i difon'
 pool-step-1: Carrega
 pool-step-2: Pagament
 pool-step-3: Certificat
-pool-step-4: Compartir
+pool-step-4: Comparteix
 recharge-button: Carregar

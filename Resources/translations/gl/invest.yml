@@ -1,25 +1,11 @@
 ---
-bazar-spread-text: '%s - Esta Navidad, regala crowdfunding abierto y para el bien común con @goteofunding #openbazaar'
-bazar-thanks: 'Gracias por visitar nuestro bazaar, puedes ayudarnos a difundirlo.'
-currency-alert: "Por favor, ten en cuenta que la gestión es en EUR. \\r\nVas a pagar aproximadamente <span id=\"reminder_conversion\">%s</span> € <a href=\"/faq/investors#q115\" target=\"_blank\">Más info</a>"
-faq-payment-method: '<a href="/faq/investors#q2" target="_blank">¿Qué sistemas de pago ofrece Goteo? ¿Son seguros?</a>'
 imperative-register: Rexístrate
 invest-address-address-field: 'Dirección:'
-invest-address-birthyear-field: 'Año de nacimiento'
 invest-address-country-field: 'País:'
-invest-address-fail: 'Hay campos vacíos o con errores, comprueba el formulario para que puedas recibir tu recompensa!'
-invest-address-friend-field: 'Selecciona esta casilla si es un regalo para otra persona'
-invest-address-gender-field: Sexo
 invest-address-header: 'Onde queres recibir a recompensa (só en caso de envíos postais)'
 invest-address-location-field: 'Cidade:'
-invest-address-maildest-field: 'Email del destinatario'
-invest-address-msgdest-field: 'Mensaje para el destinatario'
-invest-address-myemail-field: 'Tu email'
-invest-address-myname-field: 'Tu nombre'
 invest-address-name-field: 'Nome e apelidos:'
-invest-address-namedest-field: 'Nombre del destinatario'
 invest-address-nif-field: 'Número de NIF / NIE / CIF / VAT'
-invest-address-title: 'Asegúrate de que recibes tu recompensa'
 invest-address-zipcode-field: 'Código postal:'
 invest-alert-investing: 'Vas aportar'
 invest-alert-lackamount: 'A achega debe ser maior cá recompensa elixida'
@@ -29,85 +15,29 @@ invest-alert-noreward_renounce: '¿Desexas renunciar á recompensa e desgravar a
 invest-alert-renounce: 'Renuncias mais non puxeches o teu DNI para desgravar a doazón, ¿é correcto?'
 invest-alert-rewards: 'Elixiches as seguintes recompensas:'
 invest-amount: Cantidade
-invest-amount-in-pool: 'Tienes %s en tu monedero virtual'
 invest-amount-tooltip: 'Insire a cantidade coa que apoiaras ó proxecto'
 invest-anonymous: 'Quero que a miña achega sexa anónima'
-invest-button: Aportar
 invest-called-allready: 'A este proxecto xa lle deches <strong>Capital Riego</strong> da campaña %s, non obterá máis <strong>Capital Riego</strong> polas túas achegas'
 invest-called-maxdrop: 'Ata un máximo de <strong>%s &euro;</strong>'
 invest-called-maxproj: 'Xa se acadou o máximo de <strong>Capital Riego</strong> posible na campaña %s'
 invest-called-nodrop: 'Actualmente non hai <strong>Capital Riego</strong> dispoñible na campaña %s'
 invest-called-rest: 'Só quedan <strong>%s &euro;</strong> de <strong>Capital Riego</strong> na campaña %s'
-invest-card-method: Tarjeta
-invest-cash-method: 'Manual (cash)'
 invest-donation-header: 'Inserir os datos fiscais para a doazón'
-invest-drop-method: Riego
-invest-fiscal-fail: 'Hay campos vacíos o con errores, comprueba el formulario fiscal para que puedas desgravar tu aporte!'
-invest-fiscal-skip: 'Ahora no quiero rellenar estos datos.'
-invest-fiscal-title: 'Asegúrate de que puedas desgravar tu aportación (para contribuyentes en España)'
-invest-login-alert: 'Debes registrarte o <a href="%s">iniciar sesión</a> para poder realizar el aporte'
 invest-mail_info-address: 'Especificaches a seguinte dirección:'
 invest-mail_info-drop: 'Ademais, %s achegaches %s de capital riego por medio da campaña %s'
-invest-make-sure-save: Guardar
-invest-make-sure-title: Confirmar
-invest-method: 'Método de pago'
-invest-method-title: 'Realiza tu aporte'
-invest-modal-fiscal-description: 'Como ya debes saber, aportar en Goteo no sólo hace posibles un montón de proyectos que nos benefician a todxs, sino que ¡además desgrava! <p>Al realizar una aportación a un proyecto, y gracias al incremento en los tipos de deducción aplicables desde 2015 para las donaciones puras y simples que se realicen en favor de la Fundación Goteo, como entidad acogida al régimen fiscal especial de la Ley 49/2002 de 23 de diciembre, podrás deducirte las cantidades que indicamos en nuestra <a href="https://goteo.org/faq/investors#q112" target="_blank">FAQ 18 para comecenas</a>.'
-invest-modal-fiscal-title: 'Información fiscal'
-invest-modal-pool-description: 'El monedero virtual es un sistema de crédito de la plataforma Goteo, que podrás rellenar con tu dinero y usarlo como vía de pago siempre que quieras realizar aportes a proyectos en nuestra plataforma, sin necesidad de dar tus datos de tarjeta ni de paypal cada vez.'
-invest-modal-pool-title: 'Sobre el monedero virtual Goteo'
-invest-more-info: 'Más información'
+invest-make-sure-save: Gardar
 invest-next_step: 'Paso seguinte'
 invest-payment-email: 'Insire a túa conta de PayPal'
-invest-payment-fail: 'Algo ha fallado en el pago'
-invest-payment-success: 'El pago se ha completado correctamente'
 invest-payment_method-header: 'Elixe o método de pago'
-invest-paypal-method: Paypal
-invest-paypal_disabled: "Este proxecto ten desactivada a opción de pago a través de PayPal. <a href=\"/faq/investors#q2\">Máis info</a>"
-invest-pool: 'Quiero que mi donación, en el caso de que el proyecto no llegue a su objetivo, permanezca en mi monedero virtual Goteo.'
-invest-pool-available: disponibles
-invest-pool-error: 'No tienes suficiente dinero en tu monedero virtual'
-invest-pool-method: 'Monedero virtual'
 invest-process-completed: 'Esta achega xa se completou anteriormente'
-invest-project: 'al proyecto'
 invest-resign: 'Renuncio a unha recompensa individual, só quero axudar ó proxecto'
-invest-reward-first: '<br>Recuerda que la cantidad a aportar debe ser mayor a 0'
 invest-reward-none: 'Xa non se pode elixir'
-invest-reward-not-found: 'Esta recompensa no se ha encontrado!'
-invest-reward-used-up: '¡Ya no quedan unidades de esta recompensa!'
-invest-select-reward: 'Selecciona tu recompensa'
-invest-share-title: Compartir
 invest-social-header: 'Cos retornos colectivos gañamos tod@s'
-invest-status-cancelled: Cancelado
-invest-status-charged: Cobrado
-invest-status-paid: 'Pagado al proyecto'
-invest-status-pending: Preaprobado
-invest-status-processing: Incompleto
-invest-status-relocated: Reubicado
-invest-status-returned: 'Devuelto (archivado)'
-invest-status-to-pool: 'Al monedero'
-invest-step-1: Recompensa
-invest-step-2: Pago
-invest-step-3: Confirmar
-invest-step-4: Compartir
-invest-success-make-sure: '¡Bien hecho! Tu donación al proyecto <strong>%s</strong> se ha realizado correctamente.'
-investing_closed: 'No se permiten más aportes en esta campaña.'
 proj-widget-my_invest: 'As miñas achegas'
 project-invest-confirm: 'Estás a un paso de cofinanciar este proxecto...'
 project-invest-continue: 'Preme no logo do sistema de pago que empregarás:'
 project-invest-fail: 'Algo fallou, por favor ténteo de novo'
 project-invest-guest: '¡Xenial!'
 project-invest-ok: 'Tramitouse a túa achega para confinanciar este proxecto :)'
-project-invest-pool-button: 'Usar mi Monedero virtual'
 project-invest-start: 'Estás a un intre de cofinanciar este proxecto...'
-project-return-button: 'Volver al proyecto'
-project-see-msg: 'Ver tu mensaje'
-spread-facebook: 'Difunde en Facebook'
-spread-twitter: 'Difunde en Twitter'
 user-login-required-login: 'Se xa estás rexistrado debes iniciar sesión, se non, debes crear un novo usuario.'
-warning_nojavascript: 'Habilita javascript desde la configuración de privacidad de tu navegador para poder seguir con el proceso de pago'
-invest-no-register: 'Saltar este paso, sólo quiero aportar'
-invest-user-not-ghost: 'Este email pertenece a un usuario existente!'
-invest-user-name-or-anonymous: 'El nombre es obligatorio si no quieres hacer una aportación anónima'
-invest-created-manually-ok: 'Aporte manual creado correctamente, seleccionar recompensa y dirección de entrega.'
-invest-created-manually-ko: 'Error al crear el aporte manual [%s]'

@@ -31,7 +31,6 @@ profile-main-header: 'Profildaten'
 profile-suggest-projects-interest: 'Vielleicht wollen Sie dies unterstützen'
 step-1: Profil
 step-userProfile: 'Schritt: Benutzer / Profil'
-tooltip-user-about: "Als soziales Netzwerk möchte Goteo helfen, interessante Projekte in einer größtmöglichem Community bekannt zu machen und mit ihr zu finanzieren. Dazu ist es wichtig, dass Sie Informationen über Ihre Fähigkeiten und Erfahrungen (beruflich, akademisch, Hobbies, etc.) mitteilen."
 tooltip-user-avatar_upload: 'Kurzinfo Text Upload User Bild'
 tooltip-user-contribution: 'Beschreiben Sie kurz Ihre Fähigkeiten und die Bereiche, in denen Sie anderen helfen könnten (Übersetzungen, Marketing, Testen, Programmieren, Unterrichten, etc.)'
 tooltip-user-facebook: 'Dieses soziale Netzwerk hilft dabei, Goteo-Projekte schnell und viral bekannt zu machen, die Sie und Ihre Freunde interessieren.'

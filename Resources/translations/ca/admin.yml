@@ -3,12 +3,7 @@ admin-action: 'Acció d''administrador'
 admin-NO: 'NO'
 admin-YES: SI
 admin-account-amount: 'Quantitat aportada'
-admin-account-change-user: 'Cambiar de usuario'
-admin-account-change-user-confirm: '¿Seguro que quieres cambiar el usuario del aporte? El nuevo usuario será:'
-admin-account-convert-to-pool: 'Convertir a monedero'
-admin-account-convert-to-pool-confirm: 'Esto eliminará el proyecto asociado a este aporte y pasará a ser como si un fuera una compra de monedero. TODAS LAS RECOMENPENSAS ASOCIADAS SE PERDERÁN. ¿Continuar?'
-admin-account-convert-to-pool-ko: 'No se ha podido convertir el aporte a monedero: %s'
-admin-account-convert-to-pool-ok: 'Convertido a aporte de monedero correctamente'
+admin-account-change-user: 'Canvia d''usuari'
 admin-account-detail: 'Detalls de la transacció'
 admin-account-donation: Donatiu
 admin-account-edit-reward: 'Gestionar recompensa/direcció'
@@ -38,17 +33,11 @@ admin-account-switch-pool: 'Commutar el pool'
 admin-account-switch-pool-confirm: 'Això només afecta quan falla el projecte, no genera ni treu diners del moneder. Continuar?'
 admin-account-switch-pool-fail: 'No es pot canviar l''estat del pool d''aquesta aportació'
 admin-account-transaction: 'Codis de seguiment'
-admin-account-user-changed-error: 'No se ha podido cambiar el usuario del aporte [%ID%] a [%NAME%]!'
-admin-account-user-changed-successfully: 'Se ha cambiado el usuario del aporte [%ID%] a [%NAME%]'
 admin-address: Adreça
-admin-all: Todos
 admin-back: Tornar
 admin-back-detail: 'Tornar al detall'
 admin-back-list: 'Tornar al llistat'
 admin-contents: 'Textos i traduccions'
-admin-empty-list: 'No se han encontrado registros'
-admin-home: Portada
-admin-items: entradas
 admin-mailing-back-to-list: 'Tornar a comunicacions'
 admin-mailing-communicating-with: 'Cercàvem comunicar-nos amb %DESC%'
 admin-mailing-created: 'Creat el'
@@ -59,24 +48,14 @@ admin-mailing-view-and-activate: 'Veure en el admin del butlletí per activar l'
 admin-mailing-view-in-newsletter: 'Veure en l''admin del butlletí'
 admin-mailing-view-in-sent: 'Veure en l''historial d''enviaments (estadístiques)'
 admin-mailing-view-message: 'Veure el missatge'
-admin-newsletter-generated: 'Se ha generado el boletín [%ID%]'
-admin-newsletter-langs-to-send: 'Idiomas: %LANGS%'
-admin-newsletter-mind-activate: 'Actívalo para que se envíe'
-admin-no: 'No'
-admin-percent: Porcentaje
 admin-project: Projecte
 admin-projects: Projectes
 admin-filters: 'Filtres'
 admin-remove-filters: 'Treure filtres'
 admin-sponsors: Serveis
 admin-status: Estat
-admin-text-type: 'Procesar el texto como'
-admin-text-type-html: HTML
-admin-text-type-md: Markdown
-admin-text-type-plain: 'Texto simple'
 admin-user: Usuari
 admin-users: Usuaris
-admin-yes: Si
 admin-impersonate-user: Suplanta a %s
 admin-project-express-discard: 'Rebuig express'
 admin-project-express-discard-desc: 'Passa el projecte a estat Descartat i envia un email'

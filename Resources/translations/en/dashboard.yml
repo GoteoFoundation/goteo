@@ -1,3 +1,4 @@
+---
 api-key-no-generated: 'No API key generated yet'
 api-key-tool-tip: 'With your Goteo user and API key you''re able to query any data trough our API'
 api-key-documentation: 'View API documentation'
@@ -6,6 +7,31 @@ api-key-key: 'Key'
 api-key-generate-new: 'Generate a new key'
 api-key-generate-new-confirm: 'This action will remove the current key and will generate a new one. Continue?'
 contract-data_title: 'Contract details'
+dashboard-certificates-confirm: 'Confirm data'
+dashboard-certificates-confirm-checkbox: 'I hereby confirm that these are my real legal data and I''m conscious that I will not be able to modify them once confirmed'
+dashboard-certificates-confirmed: Confirmed
+dashboard-certificates-processed: Processed
+dashboard-certificates-confirmed-ok: 'Your fiscal data are confirmed now. If your certificate does not download automatically, please click %HERE%'
+dashboard-certificates-data-alert: 'Keep in mind that once confirmed, the data can not be modified!'
+dashboard-certificates-data-desc: 'Please make sure the data in the form is correct and confirm the form'
+dashboard-certificates-data-download-all: 'Please confirm your certificates in order to active your deduction. Afterward, you can download a copy of them. Once a year, Goteo Foundation notifies all your confirmed donations to the tax office.'
+dashboard-certificates-data-new-invests: 'And hey, don''t worry! Any further donation you make through Goteo will generate a new certificate'
+dashboard-certificates-desc: 'These certificates will allow a deduction in your income tax declaration only if you are a taxpayer in Spain.'
+dashboard-certificates-details: 'Show details'
+dashboard-certificates-details-desc: 'List of donations for the certificate %CERT%'
+dashboard-certificates-download: 'Confirm and download'
+dashboard-certificates-empty: 'You need to make at least a donation to any project or charge an amount to your virtual wallet to see your certificates'
+dashboard-certificates-expired: Expired
+dashboard-certificates-no-pending: 'There''s no pending donation'
+dashboard-certificates-pending: Pending
+dashboard-certificates-pending-desc: 'These donations will be included in future certificates.'
+dashboard-certificates-please-confirm: 'Please check the verification box to continue'
+dashboard-certificates-summary: 'Certificate %ID%, Year %YEAR%'
+dashboard-certificates-too-old: 'This certificate is too old and can''t be modified. In case you have any question, please contact us'
+dashboard-certificates-totals: '%NUM% donations, %AMOUNT%'
+dashboard-certificates-unconfirmed: 'For downloading this certificate, you need to confirm the data first!'
+dashboard-certificates-view-pending: 'Donations to projects which have still not passed its first round are not displayed. You can check them %HERE%.<br>Donations using the virtual wallet are included in the certificates generated when the physical payment was made.'
+dashboard-certificates-no-invests: 'Certificate cannot be confirmed without any donation!'
 dashboard-chart-days: '%s DAYS LEFT'
 dashboard-chart-invested: 'FINANÇAMENT OBTINGUT'
 dashboard-chart-investors: CO-FINANCIERS
@@ -16,22 +42,25 @@ dashboard-embed_code_investor: 'CODE WITH IMAGE OF CROWDFUNDER'
 dashboard-header-main: 'My dashboard'
 dashboard-investors-mail-fail: '    Message failed to %s: %s'
 dashboard-investors-mail-nowho: 'No recipient was found'
-dashboard-investors-mail-sendt: 'Messages sent successfully'
 dashboard-investors-mail-sendto: 'Sent to %s of your backers:'
+dashboard-investors-mail-sent: 'Messages sent correctly'
 dashboard-investors-mail-text-required: 'Write the message'
 dashboard-investors_table-disclaimer: 'We remind the campaign leader that, as established in their contract, the details of financiers included in the downloadable file are provided with the only and exclusive effects of providing the financiers the rewards committed to by the project, as well as informing them on news, progress, and activities related to the project, with an absolute prohibition of using these details for any other purpose. Failure to satisfy this obligation gives the Foundation the right to initiate the corresponding legal actions and to retire the project from the platform'
 dashboard-menu-activity: 'My activity'
 dashboard-menu-activity-apikey: 'API key'
-dashboard-menu-activity-spread: 'Spread the word'
+dashboard-menu-activity-spread: Spread the word
 dashboard-menu-activity-summary: Summary
 dashboard-menu-activity-wall: 'My wall'
 dashboard-menu-admin_board: Administration
 dashboard-menu-calls-sponsors: Sponsors
+dashboard-menu-pool: 'My virtual wallet'
+dashboard-menu-pool-available: Remainder
+dashboard-menu-pool-conditions: Conditions
 dashboard-menu-profile: 'My profile'
 dashboard-menu-profile-access: 'Account details'
 dashboard-menu-profile-location: Geo-location
 dashboard-menu-profile-personal: 'Personal information'
-dashboard-menu-profile-preferences: Preferences
+dashboard-menu-profile-preferences: 'Preferences'
 dashboard-menu-profile-profile: 'Edit profile'
 dashboard-menu-profile-public: 'Public profile'
 dashboard-menu-projects: 'My projects'
@@ -44,11 +73,13 @@ dashboard-menu-projects-rewards: Backers
 dashboard-menu-projects-summary: Summary
 dashboard-menu-projects-supports: Collaborations
 dashboard-menu-projects-updates: News
-dashboard-menu-projects-widgets: Widget
 dashboard-menu-review_board: Review
 dashboard-menu-translate_board: Translation
 dashboard-menu-translates: 'My translations'
 dashboard-messegers-mail-sendto: 'Sent to %s the participants:'
+dashboard-my-wallet-available: 'You currently have <span class="pool-amount">%s</span> <span class="pool-desc">in your virtual wallet in Goteo</span>'
+dashboard-my-wallet-contribute-button: Donate
+dashboard-my-wallet-pool-info: 'More information on using your wallet'
 dashboard-password-recover-advice: 'You are recovering your password. Remember to put your user name in the "current password" field to change it.'
 dashboard-project-analytics-fail: 'Error while saving analytics IDs'
 dashboard-project-analytics-ok: 'Your analytics IDs have been saved correctly'
@@ -72,13 +103,11 @@ dashboard-project-updates-saved: 'Post updated correctly'
 dashboard-project-updates-add: 'Add new post'
 dashboard-project-updates-editing: 'Editing post'
 dashboard-project-updates-translating: 'Translating post'
-
 dashboard-project-updates-sent-to-investors: 'An email has been sent to all donors with this post content.'
 dashboard-project-updates-sent-to-investors-error: 'No email has been sent to donors: %s'
 dashboard-project-updates-sent-reason-no-investors: 'No donors yet!'
 dashboard-project-updates-sent-reason-no-unique: 'A previous email has been sent with the same post!'
 dashboard-project-updates-sent-reason-too-old: 'The post date is too old!'
-
 dashboard-rewards-address: 'Delivery address:'
 dashboard-rewards-all_filter: All
 dashboard-rewards-amount_group: 'Contributions by '
@@ -94,7 +123,7 @@ dashboard-rewards-massive_msg: 'Collective messages'
 dashboard-rewards-massive_msg-all: 'To all the co-financiers of this project'
 dashboard-rewards-massive_msg-all_alert: 'All means all, it doesn''t take into account the rest of marked items'
 dashboard-rewards-notice: 'THIS IS A VISUALISATION OF THE REWARD OPTIONS CHOSEN BY YOUR CO-FINANCIERS. <br />YOU DON''T HAVE TO MANAGE THESE REWARDS UNTIL YOU REACH THE MINIMUM OF THE DESIRED QUANTITY'
-dashboard-rewards-num_taken: Committed
+dashboard-rewards-num_taken: 'Committed'
 dashboard-rewards-pending_filter: Pending
 dashboard-rewards-pending_status: Pending
 dashboard-rewards-process: 'Apply marked items'
@@ -145,57 +174,18 @@ user-preferences-tips: 'Block advice on how to promote the campaign (for campaig
 user-preferences-updates: 'Disable news notifications from the projects I''m backing'
 user-profile-saved: 'Profile updated'
 user-save-fail: 'There was a problem saving the data'
-dashboard-certificates-confirm: 'Confirm data'
-dashboard-certificates-confirm-checkbox: 'I hereby confirm that these are my real legal data and I''m conscious that I will not be able to modify them once confirmed'
-dashboard-certificates-confirmed: Confirmed
-dashboard-certificates-processed: Processed
-dashboard-certificates-confirmed-ok: 'Your fiscal data are confirmed now. If your certificate does not download automatically, please click %HERE%'
-dashboard-certificates-data-alert: 'Keep in mind that once confirmed, the data can not be modified!'
-dashboard-certificates-data-desc: 'Please make sure the data in the form is correct and confirm the form'
-dashboard-certificates-data-download-all: 'Please confirm your certificates in order to active your deduction. Afterward, you can download a copy of them. Once a year, Goteo Foundation notifies all your confirmed donations to the tax office.'
-dashboard-certificates-data-new-invests: 'And hey, don''t worry! Any further donation you make through Goteo will generate a new certificate'
-dashboard-certificates-desc: 'These certificates will allow a deduction in your income tax declaration only if you are a taxpayer in Spain.'
-dashboard-certificates-details: 'Show details'
-dashboard-certificates-details-desc: 'List of donations for the certificate %CERT%'
-dashboard-certificates-download: 'Confirm and download'
-dashboard-certificates-empty: 'You need to make at least a donation to any project or charge an amount to your virtual wallet to see your certificates'
-dashboard-certificates-expired: Expired
-dashboard-certificates-no-pending: 'There''s no pending donation'
-dashboard-certificates-pending: Pending
-dashboard-certificates-pending-desc: 'These donations will be included in future certificates.'
-dashboard-certificates-please-confirm: 'Please check the verification box to continue'
-dashboard-certificates-summary: 'Certificate %ID%, Year %YEAR%'
-dashboard-certificates-too-old: 'This certificate is too old and can''t be modified. In case you have any question, please contact us'
-dashboard-certificates-totals: '%NUM% donations, %AMOUNT%'
-dashboard-certificates-unconfirmed: 'For downloading this certificate, you need to confirm the data first!'
-dashboard-certificates-view-pending: 'Donations to projects which have still not passed its first round are not displayed. You can check them %HERE%.<br>Donations using the virtual wallet are included in the certificates generated when the physical payment was made.'
-dashboard-certificates-no-invests: 'Certificate cannot be confirmed without any donation!'
-dashboard-investors-mail-sent: 'Messages sent correctly'
-dashboard-menu-pool: 'My virtual wallet'
-dashboard-menu-pool-available: Remainder
-dashboard-menu-pool-conditions: Conditions
-dashboard-my-wallet-available: 'You currently have <span class="pool-amount">%s</span> <span class="pool-desc">in your virtual wallet in Goteo</span>'
-dashboard-my-wallet-contribute-button: Donate
-dashboard-my-wallet-modal-pool-info: 'Goteo’s virtual wallet is a feature of our platform that allows you to make a donation and later decide which project you’d like to support.<br> <p>Donations made through our platform pay you back in your income tax declaration, according to the Spanish regulation (Ley 49/2002, de 23 de diciembre, de régimen fiscal de las entidades sin fines lucrativos y de los incentivos fiscales al mecenazgo).</p> <p>When donating, you can download a certificate that validates towards the Tax Office your contribution to a non profit entity. You may access a compilation of your certificates in the past, associated with your previous donations in Goteo through your User Pannel, exactly in the section <a href="/dashboard/wallet/certificate" target="_blank">Certificado de donación</a>.</p><p> IMPORTANT NOTE: We remind you that the donations already reflected in a certificate from our Foundation can not be refunded. This means that if you have made a donation to a concrete project in our platform and that project does not reach its minimum tuning goal during the campaign, your donation will be transferred to your wallet but not back to your bank account. However, you may donate later that amount from your virtual wallet in Goteo.org to any other future project that you like, when you like, without introducing again your bank account number or PayPal user.</p>'
-dashboard-my-wallet-pool-info: 'More information on using your wallet'
-
 dashboard-modal-url-success-msg: 'The URL has been correctly updated'
 dashboard-add-new-share-material: 'New material'
 dashboard-edit-share-material-url: 'Editing the URL'
 dashboard-modal-edit-url: 'URL where the shared materials are'
 dashboard-modal-placeholder-edit-url: 'URL'
-
 dashboard-new-material-form-success: 'The new shared material has been added successfully.'
-dashboard-new-material-form-material: 'Material'
 dashboard-new-material-form-description: 'Description'
-dashboard-new-material-form-url: 'URL'
 dashboard-new-material-form-type: 'Materials type'
 dashboard-new-material-form-license: 'Files licence'
 dashboard-menu-projects-shared-materials: 'Files'
 project-no-share-material: 'There are not shared materials for this project'
-
 dashboard-project-images-desc: 'Drag and drop images as you like to organize them, even between areas. On finish, remember to save the changes.'
-
 dashboard-project-default-image: 'Default image'
 dashboard-project-delete-image: 'Delete file'
 dashboard-project-delete-image-confirm: 'Are you sure to remove this file?'
@@ -207,7 +197,6 @@ project-upload-images-some-ko: 'Some images has not been uploaded!'
 dashboard-project-default-image-confirm: 'Do you want to use this image as a default for the project?'
 dashboard-project-image-default-ko: 'The image has not been set as default!'
 dashboard-project-image-reorder-ko: 'The images have not been ordered!'
-
 dashboard-project-send-to-markdown: "Insert this image into the text field"
 dashboard-max-files-reached: "The maximum number of files has been reached!"
 dashboard-file-type-error: "You can't upload files of this type!"
@@ -215,9 +204,8 @@ all-files-uploaded: "All files uploaded successfully"
 uploaded-ok: "Uploaded successfully"
 publish-confirm-yes: "Do you want to publish this entry?"
 publish-confirm-no: "Do you want to unpublish this entry?"
-
 dashboard-project-support-empty: 'No collaboration petitions yet.'
-dashboard-project-support-responses: 'Responses'
+dashboard-project-support-responses: Responses
 dashboard-project-support-no-responses: 'No responses yet.'
 dashboard-project-support-add: 'Ask for a new collaboration'
 dashboard-search-invests-totals: 'In this search: %TOTAL_INVESTS% donations from %TOTAL_USERS% users. Total %TOTAL_AMOUNT%'
@@ -231,10 +219,8 @@ dashboard-project-filter-by-nondrop: 'Hide matchfunding donations'
 dashboard-project-filter-by-pending: 'Show only pending'
 dashboard-project-filter-by-fulfilled: 'Show only completed'
 dashboard-project-no-invests: 'No entries for the current search criteria'
-
 dashboard-new-message-to-donors: 'New message to donors'
 dashboard-message-donors-reward: 'Donors with the reward %s'
-
 dashboard-message-donors-donors: 'All donors that'
 dashboard-message-donors-and: 'and also'
 dashboard-message-donors-donative: 'renounce a reward (donatives)'
@@ -243,48 +229,33 @@ dashboard-message-donors-pending: 'are pending'
 dashboard-message-donors-fulfilled: 'are completed'
 dashboard-message-donors-error: 'No valid recipients, message cannot be sent'
 dashboard-message-donors-total: '%s donors'
-
 dashboard-message-no-message: 'No messages for you yet.'
 dashboard-message-threads: 'You have %s message threads'
-
 dashboard-translate-profile: 'Translate profile'
 dashboard-translate-profile-desc: 'You are translating your personal profile to %LANG%. Users who visit your personal profile in this language will see this translation. All other languages will display the <a href="%URL%">default data</a> unless they also have an assigned translation.'
 dashboard-translate-profile-ok: 'Profile successfully translated to %s'
-
 dashboard-translate-project: 'Translate project'
 dashboard-translate-empty: 'No translations yet.'
 dashboard-translate-project-empty: 'Not translations yet for this project.'
 dashboard-translate-project-currents: 'The original language of this project is %LANG% and is translated into %NUM% languages:'
 dashboard-translate-project-translating: 'You are translating this project to %LANG%. The original language is %ORIGINAL%.'
 dashboard-translate-project-ok: '%ZONE% successfully translated to %LANG%'
-
 dashboard-project-updates-translate-ok: 'Post %TITLE% successfully translated to %LANG%'
 dashboard-project-updates-translating-post: 'You are translating this post to %LANG%. The original language is %ORIGINAL%.'
-
 dashboard-translate-overview: 'Translate project main data'
 dashboard-translate-costs: 'Translate project costs'
 dashboard-translate-rewards: 'Translate project rewards'
 dashboard-translate-supports: 'Translate project collaborations'
-
 dashboard-project-support-translate-ok: 'Support %TITLE% successfully translated to %LANG%'
 dashboard-project-support-translating: 'You are translating this support entry to %LANG%. The original language is %ORIGINAL%.'
-
 dashboard-project-saved: 'Project updated successfully'
-
 dashboard-project-is-dead: 'The project is archived and cannot be edited'
-dashboard-project-not-alive-yet: 'This section will be available when your project begins the campaign'
 dashboard-project-not-alive-yet: 'This section will be available when your project successfully completes the campaign'
 dashboard-project-reward-cannot: 'New rewards can not be added now. During the campaign, adding new rewards is possible (but not to delete those that already exist)'
-
 dashboard-project-add-translations: 'In the meantime, you can add translations to your project, this might help you to increase its visibility.'
-
 dashboard-project-goto-first-error: 'Go to the first error'
-
-
 dashboard-origin-project-referer: 'Origin of visits to the project page'
 dashboard-origin-invests-referer: 'Origin of visits in successful contributions'
 dashboard-origin-project-device: 'Device used on the project page'
 dashboard-origin-invests-device: 'Device used in successful contributions'
-dashboard-origin-disclaimer: '⚠ *These data are indicative and do not include all visits due to technical limitations.*
-
-> We recommend you to configure Google Analytics or Facebook Pixel for a better detailed data'
+dashboard-origin-disclaimer: '⚠ *These data are indicative and do not include all visits due to technical limitations.*  > We recommend you to configure Google Analytics or Facebook Pixel for a better detailed data'

@@ -1,3 +1,4 @@
+---
 mandatory-support-field-description: 'A description is required.'
 mandatory-support-field-name: 'You have to enter a name for the collaboration'
 step-6: Collaborations
@@ -9,11 +10,10 @@ supports-fields-support-title: Collaborations
 supports-main-header: 'Request for collaborations'
 tooltip-project-nsupport: 'Advice on filling out a new collaboration proposal'
 tooltip-project-support: 'Advice on editing existing collaborations'
-tooltip-project-support-description: 'Briefly explain the kind of help that your project needs, to help people see what is needed and encourage them to collaborate.'
+tooltip-project-support-description: "Briefly explain the kind of help that your project needs, to help people see what is needed and encourage them to collaborate."
 tooltip-project-support-support: 'Descriptive title about the needed collaboration'
 tooltip-project-support-type: 'Choose if the project needs help with concrete tasks or rather loans of material, infrastructure, etc.'
 tooltip-project-supports: 'In Goteo, projects can be supported in other ways besides just monetary. There are people who can''t help economically but have plenty to offer in terms of their talent, time, energy, and more.'
-
 support-sure-to-remove: 'Are you sure to remove this petition?'
 support-remove-error-messages: 'This petition has responses and cannot be deleted.<br>Please, delete all the responses before!'
 support-removed: 'Petition delete successfully'
@@ -24,7 +24,6 @@ support-private_all-message: 'It will be sent to all this thread participants'
 support-is-private: 'Private message'
 support-set-private-message: 'Send only to the participants of this thread'
 support-send-private-message: 'Send a private message to this user'
-
 message-response: 'Response'
 message-project-comment: 'Project comment'
 message-project-support: 'Project collaboration'

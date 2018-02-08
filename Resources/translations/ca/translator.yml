@@ -1,8 +1,6 @@
 ---
-translator: Traductor
 translator-autotranslate-from: 'Traducció automàtica de'
 translator-back-to-list: 'Torna a la llista'
-translator-banner: Banners
 translator-bazar: Catàleg
 translator-cannot-delete-system: 'No es pot esborrar aquesta traducció perquè és de sistema!'
 translator-category: Categories
@@ -13,28 +11,22 @@ translator-delete: 'Esborra la traducció al %s'
 translator-delete-sure: 'Segur que vols esborrar la traducció al %s? Aquesta acció no es pot desfer!'
 translator-deleted-ko: 'Error al esborrar la traducció al %s!'
 translator-deleted-ok: 'Traducció al %s esborrada correctament'
-translator-faq: Faq
 translator-feed-translated-desc: '%LINK% traduït por %USER% a %LANGS%'
 translator-feed-translated-target: 'Traducció en %s'
 translator-field-blog: Blog
 translator-field-content: Contingut
 translator-field-description: Descripció
 translator-field-facebook_msg: 'Missatge de facebook'
-translator-field-facebook_msg_owner: 'Autor de facebook'
 translator-field-legend: Llegenda
-translator-field-media: Media
 translator-field-name: Nom
-translator-field-review: Review
 translator-field-schedule: Horari
 translator-field-share_facebook: 'Text compartir facebook'
 translator-field-share_twitter: 'Text compartir twitter'
 translator-field-text: Text
 translator-field-title: Títol
 translator-field-twitter_msg: 'Missatge de twitter'
-translator-field-twitter_msg_owner: 'Autor de twitter'
 translator-field-url: URL
 translator-glossary: 'Glossari de termes'
-translator-home: Portada
 translator-icon: 'Tipus de retorn/recompensa'
 translator-info: 'Idees de about'
 translator-lang-no-perms: 'No tens permisos per administrar aquest idioma'
@@ -61,11 +53,8 @@ translator-saved-ok: 'Traduccions desades correctament per als idiomes [%s]'
 translator-skipped-fields: "Alguns camps no s''han copiat perquè ja contenien text.\nEsborra el text original para poder copiar des de un altre idioma."
 translator-sphere: 'Àmbits de la convocatòria'
 translator-stories: 'Histories exitoses'
-translator-system: Sistema
 translator-tables: 'Taules generals'
-translator-tag: 'Tags de blog'
 translator-template: 'Plantilles emails automàtics'
-translator-texts: 'Textos interfície'
 translator-translations: Traduccions
 translator-workshop: Tallers
 translator-worthcracy: Meritocràcia

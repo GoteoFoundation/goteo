@@ -1,6 +1,6 @@
 ---
 blog-coments-header: Comentaris
-blog-comments_no_allowed: No es permeten comentaris en aquesta entrada
+blog-comments_no_allowed: 'No es permeten comentaris en aquesta entrada'
 blog-comments_no_comments: 'No hi ha comentaris en aquesta entrada'
 blog-no_comments: 'Sense comentaris'
 blog-no_posts: 'No s''ha publicat cap entrada d''actualització'

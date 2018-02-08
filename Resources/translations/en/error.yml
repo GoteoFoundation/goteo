@@ -1,3 +1,4 @@
+---
 fatal-error-project: 'The project you''re looking for... <span class="red">does not exist :(</span>'
 fatal-error-teapot: '<span class="greenblue">How embarassing...</span> an unexpected  error occurred'
 fatal-error-user: 'The user you''re looking for... <span class="red">does not exist :(</span>'

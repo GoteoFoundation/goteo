@@ -22,12 +22,9 @@ node-side-searcher-success: Réussis
 node-side-sumcalls-budget: 'Total ( toutes les campagnes )'
 node-side-sumcalls-calls: Ouvert
 node-side-sumcalls-campaigns: Actif
-node-side-sumcalls-header: 'Capital<br />riego'
 node-side-sumcalls-rest: 'Reste à répartir'
 node-side-summary-active: Actifs
 node-side-summary-amount: 'Argent collecté'
 node-side-summary-investors: Cofinanceurs
 node-side-summary-success: Réussis
 node-side-summary-supporters: Collaborateurs
-node-stats-title: 'Datos de impacto'
-node-projects-title: 'Proyectos'

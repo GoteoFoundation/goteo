@@ -1,8 +1,6 @@
 ---
 assign-call-success: 'O proxecto asignouse á convocatoria %s'
-dashboard-donor-remember: 'Recuerda confirmar tus datos fiscales para el certificado de donativo.'
 image-upload-fail: 'Erro ó subir a imaxe'
-gallery-upload-fail: 'Fallo al subir la galería'
 invest-amount-error: 'Tes que indicar o importe'
 invest-create-error: 'Houbo algún problema ó comezar a transacción'
 invest-data-error: 'Non se recibiron os datos necesarios'
@@ -12,8 +10,6 @@ invest-paypal-error_fatal: 'Ocorreu un erro fatal ó conecta con Paypal. Informo
 invest-tpv-error_fatal: 'Ocorreu un erro fatal ó conecta co TPV. Informouse a incidencia, desculpa as molestias.'
 message-cookies: 'Empregamos cookies propias e de terceiros para mellorar a súa experiencia e os nosos servizos, analizando a navegación no noso sitio web. Se continuas navegando, considérase que das  o teu consentimento para o seu uso. Pode obter máis información na nosa <a href="/legal/cookies">Política de Cookies</a>'
 project-invest-closed: 'O proxecto xa non está en campaña'
-project-invest-friend_mail-fail: 'Ha habido algún error al enviar el mensaje de regalo al destinatario'
-project-invest-friend_mail-success: 'Mensaje de regalo enviado correctamente al destinatario'
 project-invest-thanks_mail-fail: 'Houbo algún erro ó enviar a mensaxe de agradecemento'
 project-invest-thanks_mail-success: 'Mensaxe de agradecemento enviado correctamente'
 project-review-confirm_mail-fail: 'Houbo algún erro ó enviar a mensaxe de confirmación de recepción'

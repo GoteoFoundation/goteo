@@ -15,7 +15,6 @@ profile-fields-social-title: 'Profili social'
 profile-main-header: 'Dati del profilo '
 step-1: Profilo
 step-userProfile: 'Passaggio: Utente/Profilo'
-tooltip-user-about: "Come social network, Goteo vuole aiutare e diffondere e co-finanziare progetti interessanti con il massimo di persone possibile. Per questa finalità è importante l'informazione che dai sulle tue expertise e sulla tua esperienza (professionale, accademica, hobby, ecc.)."
 tooltip-user-avatar_upload: 'Testo tooltip per caricare immagine utente '
 tooltip-user-contribution: 'Descrivi brevemente le tue capacità e gli ambiti in cui potresti collaborare in un progetto (traduzione, diffusione, testing, programmazione, formazione, ecc.)'
 tooltip-user-facebook: 'Questo social network può aiutarti a diffondere progetti di Goteo che ti interessano tra familiari e amici.'

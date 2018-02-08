@@ -66,5 +66,4 @@ tooltip-project-video: 'Tieni in conta la possibilità di postare e linkare un v
 validate-project-field-about: 'La descrizione del progetto è troppo corta'
 validate-project-field-currently: 'Indica la situazione del progetto per aiutare la sua valutazione rispetto alla sua pubblicazione su Goteo. '
 validate-project-field-description: 'La descrizione del progetto è troppo corta'
-validate-project-value-description: "La descrizione del progetto è troppo corta"
 validate-project-value-keywords: 'Indica minimo 5 parole chiave del progetto per aiutare la sua valutazione, rispetto alla pubblicazione su Goteo.'

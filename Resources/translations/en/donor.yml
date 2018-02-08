@@ -1,3 +1,4 @@
+---
 dashboard-activity-donor-header: 'Tax details in order to obtain the certificate of donation'
 dashboard-donor-confirm_button: 'Confirm details and issue certificate'
 dashboard-donor-confirm_closed: 'The confirmation period for tax information for %s certification is closed.'
@@ -11,7 +12,6 @@ dashboard-donor-main_guide: 'After one year: Details can be confirmed up until J
 dashboard-donor-mandatory: 'IT IS COMPULSORY TO FILL IN THE TAX DETAILS'
 dashboard-donor-no_donor: 'There is no record of you having made any donation. If you did make a donation, please, get in touch with us.'
 dashboard-donor-pdf_closed: 'The tax details for the donation certificate of %s are not confirmed, it cannot be downloaded.'
-dashboard-donor-save_fail: 'There has been an error in saving the details, please, review them and, if the error persists, get in touch with us. '
 dashboard-donor-saved: 'Thank you for modifying your details. In order to download the certificate, make sure that they are correct. Then, validate them with the "Confirm details" button. '
 dashboard-menu-activity-donor: 'Donation Certificate'
 donor-address-country-field: Country
@@ -19,6 +19,6 @@ donor-address-location-field: Province
 donor-field-amount: 'Donation amount'
 donor-field-numproj: 'Number of projects:'
 personal-field-donor_name: 'Name '
-personal-field-donor_surname: Surname
+personal-field-donor_surname: 'Surname'
 personal-field-donor_surname2: 'Second surname (if any)'
 validate-donor-mandatory: 'All fields are compulsory'

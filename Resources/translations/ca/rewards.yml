@@ -5,7 +5,6 @@ mandatory-individual_reward-field-name: 'És obligatori posar la recompensa'
 mandatory-social_reward-field-description: 'És obligatori posar alguna descripció al retorn'
 mandatory-social_reward-field-icon: 'És obligatori seleccionar el tipus de retorn'
 mandatory-social_reward-field-name: 'És obligatori especificar el retorn'
-mandatory-social_reward-field-category: 'Es obligatorio especificar el comprimiso social'
 rewards-field-individual_reward-amount: 'Import'
 rewards-field-individual_reward-description: Descripció
 rewards-field-individual_reward-other: 'Especifica el tipus de recompensa'

@@ -16,12 +16,8 @@ personal-field-entity_cif: 'CIF da entidade'
 personal-field-entity_name: 'Denominación social (nome) da entidade'
 personal-field-entity_office: 'Cargo na organización'
 personal-field-location: Localidade
-personal-field-phone: Teléfono
-personal-field-post_address-different: Diferente
-personal-field-post_address-same: Igual
-personal-field-zipcode: 'Código postal'
+personal-field-zipcode: 'Código postal:'
 personal-main-header: 'Datos do promotor/a'
-step-2: Promotor/a
 step-userPersonal: 'Paso: Datos persoais'
 tooltip-project-contract_birthdate: 'Indica a data do teu nacemento. Non se fará pública en ningún caso, interésanos por razóns estatísticas.'
 tooltip-project-contract_data: 'Ben coma persoa física ou ben coma persoa xurídica, é necesario que alguen figure como promotor/a do proxecto, e tamén para a interlocución có equipo de Goteo. Non ten que coincidir necesariamente có perfil do usuario do apartado anterior.'

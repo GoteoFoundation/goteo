@@ -1,9 +1,11 @@
+---
 invest-address-address-field: Helbidea
 invest-address-country-field: Herrialdea
 invest-address-header: 'Non jaso nahi duzu saria (postontzira bidali behar bada bakarrik)'
 invest-address-location-field: Hiria
-invest-address-name-field: Izen-abizenak
+invest-address-name-field: 'Izen-abizenak'
 invest-address-nif-field: 'IFZ/ AIZ / IFK / VAT zenbakia'
+invest-address-title: 'Ziurta ezazu zure saria jasotzen duzula'
 invest-address-zipcode-field: 'Posta kodea'
 invest-alert-investing: 'Ekarpena egingo diozu'
 invest-alert-lackamount: 'Jartzen dena aukeratutako saria baino gehiago izan behar da'
@@ -12,36 +14,20 @@ invest-alert-noreward_renounce: 'Zure dohaina desgrabatzeari eta sariari uko egi
 invest-alert-renounce: 'Uko egiten duzu, baina ez duzu IFZ jarri zure dohaina desgrabatzeko, ondo da?'
 invest-alert-rewards: 'Sari hauek aukeratu dituzu:'
 invest-amount: Zenbatekoa
+invest-amount-in-pool: '%s € dituzu txanpon txartel birtualean'
 invest-amount-tooltip: 'Sar ezazu proiektua babesteko jarriko duzun kopurua'
 invest-anonymous: 'Nire ekarpena anonimoa izatea nahi dut'
-invest-donation-header: 'Sar itzazu datu fiskalak dohaina egiteko'
-invest-mail_info-address: 'Honako helbide hau aukeratu duzu:'
-invest-mail_info-drop: 'Gainera, %s-(e)k %s ureztatze kapitala jarri du %s kanpainaren bitartez'
-invest-next_step: 'Hurrengo urratsa'
-invest-payment-email: 'Sar ezazu zure PayPal kontua'
-invest-payment_method-header: 'Aukeratu ezazu ordainketa mota'
-invest-process-completed: 'Jarritako hau aurreko urrats batean dago egina'
-invest-resign: 'Uko egiten diot banakako sariari, proiektuari lagundu nahi diot soilik'
-invest-reward-none: 'Ezin da aukeratu dagoeneko'
-invest-social-header: 'Talde itzulerekin guztiok irabazten dugu'
-project-invest-confirm: 'Proiektu honen finantziakide bihurtzeko zorian zaude...'
-project-invest-continue: 'Aukeratu ezazu ordainketa mota:'
-project-invest-fail: 'Akatsa egon da, mesedez saiatu zaitez berriro'
-project-invest-guest: Primeran!
-project-invest-ok: 'Tramitatu da proiektu hau finantzatzen laguntzeko egin duzun ekarpena :)'
-project-invest-start: 'Proiektu honen finantziakide bihurtzeko zorian zaude...'
-spread-facebook: 'Zabaldu Facebooken'
-spread-twitter: 'Zabaldu Twitterren'
-invest-address-title: 'Ziurta ezazu zure saria jasotzen duzula'
-invest-amount-in-pool: '%s € dituzu txanpon txartel birtualean'
-invest-button: 'Ekarpena egin'
+invest-button: Ekarpena egin
 invest-called-allready: 'Ez denez proiektu honi dohaintza egiten diozun lehenengo aldia (eskerrik asko!), gogorarazten dizugu %s -k soilik biderkatzen duela erabiltzaile bakoitzaren lehenengo ekarpena. Ekarpen honek eta proiektu honi egiten dizkiozun hurrengoek ez dute izango efektu biderkatzailerik, baina oso ongi etorriak dira, hala ere ;)'
 invest-called-maxdrop: 'Eman <strong>%s</strong>'
 invest-called-maxproj: 'Lagundu duzun proiektuak dagoeneko ezin du %s -(r)en ekarpen gehiago lortu, deialdi honen oinarrien arabera.'
 invest-called-rest: 'Soilik gelditzen dira <strong>%s</strong> eskuragarri ren aurrekontuan <span class="call">%s</span> deialdian'
 invest-card-method: Txartela
+invest-donation-header: 'Sar itzazu datu fiskalak dohaina egiteko'
 invest-fiscal-skip: 'Orain ez ditut datu horiek bete nahi'
 invest-fiscal-title: 'Ziurta ezazu zure zerga ekarpenak kenkaria izan dezakeela (Espainiako zergadunentzat)'
+invest-mail_info-address: 'Honako helbide hau aukeratu duzu:'
+invest-mail_info-drop: 'Gainera, %s-(e)k %s ureztatze kapitala jarri du %s kanpainaren bitartez'
 invest-make-sure-save: Gorde
 invest-make-sure-title: Berretsi
 invest-method-title: 'Egin zure ekarpena'
@@ -50,17 +36,32 @@ invest-modal-fiscal-title: 'Informazio fiskala'
 invest-modal-pool-description: 'Diru zorro birtuala Goteo plataformaren funtzionaltasun bat da, eta baimentzen dizu zure kontuan kreditua izatea eta ordaintzeko bide gisa erabiltzea gure plataformako proiektuei ekarpenak egin nahi dizkiezun bakoitzean, zure txartelaren datuak edo PayPalekoak eman behar izan gabe.'
 invest-modal-pool-title: 'Goteo plataformako diru zorro birtualari buruz'
 invest-more-info: 'Informazio gehiago'
+invest-next_step: 'Hurrengo urratsa'
+invest-payment-email: 'Sar ezazu zure PayPal kontua'
 invest-payment-fail: 'Zerbaitek huts egin du ordainketan'
 invest-payment-success: 'Ordainketa ongi egin da'
+invest-payment_method-header: 'Aukeratu ezazu ordainketa mota'
 invest-pool: 'Nire dohaintza, proiektuak bere helburua lortzen ez badu, Goteoko nire diru zorro birtualean gelditzea nahi dut.'
 invest-pool-method: 'Txanpon txartel birtuala'
-invest-project: proiektuari
+invest-process-completed: 'Jarritako hau aurreko urrats batean dago egina'
+invest-project: 'proiektuari'
+invest-resign: 'Uko egiten diot banakako sariari, proiektuari lagundu nahi diot soilik'
+invest-reward-none: 'Ezin da aukeratu dagoeneko'
 invest-select-reward: 'Aukeratu zure saria'
 invest-share-title: Partekatu
+invest-social-header: 'Talde itzulerekin guztiok irabazten dugu'
 invest-step-1: Saria
 invest-step-2: Ordainketa
 invest-step-3: Berretsi
 invest-step-4: Partekatu
 invest-success-make-sure: 'Ongi eginda! <strong>%s</strong> proiektuari egin diozun dohaintza ongi egin da.'
+project-invest-confirm: 'Proiektu honen finantziakide bihurtzeko zorian zaude...'
+project-invest-continue: 'Aukeratu ezazu ordainketa mota:'
+project-invest-fail: 'Akatsa egon da, mesedez saiatu zaitez berriro'
+project-invest-guest: 'Primeran!'
+project-invest-ok: 'Tramitatu da proiektu hau finantzatzen laguntzeko egin duzun ekarpena :)'
+project-invest-start: 'Proiektu honen finantziakide bihurtzeko zorian zaude...'
 project-return-button: 'Itzuli proiektura'
+spread-facebook: 'Zabaldu Facebooken'
+spread-twitter: 'Zabaldu Twitterren'
 user-login-required-login: 'Dagoeneko erregistratu bazara <a href="%s">saioa hasi</a>, behar duzu; bestela erabiltzaile berri bat sortu behar duzu.'

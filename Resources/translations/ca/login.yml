@@ -13,7 +13,6 @@ login-new-user-label: 'Ets un nou usuari?'
 login-oneclick-header: 'Accedeix amb només un clic'
 login-recover-button: Recupera
 login-recover-email-field: 'Email del compte'
-login-recover-header: "Emplena el camp amb l'email que vas utilitzar per donar-te d'alta en la plataforma. En aquest mateix email rebràs la informació per recuperar la teva contrasenya. Moltes vegades coincideix amb el mateix correu vinculat a les teves xarxes socials. Si no recordes l'email pots contactar-nos, no oblidis esmentar algunes dades per facilitar-nos la cerca del teu usuari/a (nom sencer, nick que sols utilitzar, data d'alta o si vas fer alguna aportació a algun projecte en concret...)"
 login-recover-label: 'Has oblidat la contrasenya?'
 login-recover-link: 'Recuperar contrasenya '
 login-recover-modal-button: Envia

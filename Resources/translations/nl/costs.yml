@@ -1,3 +1,4 @@
+---
 cost-type-lend: Lening
 cost-type-material: Materiaal
 cost-type-structure: Infrastructuur
@@ -12,12 +13,12 @@ costs-field-required_cost: 'Deze uitgave is'
 costs-field-required_cost-no: Additioneel
 costs-field-required_cost-yes: Noodzakelijk
 costs-field-resoure: 'Andere bronnen'
-costs-field-schedule: Werkschema
+costs-field-schedule: 'Werkschema'
 costs-field-type: Type
-costs-fields-main-title: Deeluitgaven
+costs-fields-main-title: 'Deeluitgaven'
 costs-fields-metter-title: 'Overzicht van uitgaven'
 costs-fields-resources-title: Kapitaal
-costs-main-header: Uitgaven
+costs-main-header: 'Uitgaven'
 mandatory-cost-field-description: 'Je moet een omschrijving bij de uitgave invullen'
 mandatory-cost-field-name: 'Je moet de uitgaven een label geven'
 mandatory-cost-field-task_dates: 'Je moet de data voor de taak specificeren'

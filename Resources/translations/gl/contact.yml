@@ -1,31 +1,9 @@
 ---
 contact-captcha-field: 'Proba de humanidade (sentímolo...)'
 contact-captcha-refresh: 'Actualizar imaxe'
-contact-email-field: Email
-contact-form-dev-tag-description: 'Tengo dudas sobre cuestiones técnicas'
-contact-form-dev-tag-name: Desarrollo
-contact-form-new-project-tag-description: 'Tengo un posible proyecto'
-contact-form-new-project-tag-name: 'Posible proyecto'
-contact-form-others-tag-description: 'Es otro tipo de consulta'
-contact-form-others-tag-name: Otros
-contact-form-project-form-tag-description: 'Tengo dudas sobre el formulario de proyecto'
-contact-form-project-form-tag-name: 'Problemas formulario proyecto'
-contact-form-relief-tag-description: 'Deseo un justificante de mi donación'
-contact-form-relief-tag-name: 'Justificante donación'
-contact-form-service-tag-description: 'Quiero contratar un servicio'
-contact-form-service-tag-name: Servicio
-contact-form-tags: "[usuario] Teño problemas coa miña conta; [impulsor] Teño dúbidas sobre a campaña; [novo impulsor] Teño un posible proxecto; [servizo] Quero contratar un servizo; [outros] É outro tipo de consulta;"
-contact-form-user-tag-description: 'Tengo problemas con mi cuenta'
-contact-form-user-tag-name: 'Problemas cuenta'
 contact-message-field: Mensaxe
 contact-name-field: Nome
-contact-send_message-button: Enviar
 contact-send_message-header: 'Envíanos unha mensaxe'
-contact-subject-field: Asunto
-contact-tag-field: 'Tipo de consulta'
-error-contact-captcha: 'The reCAPTCHA wasn''t entered correctly. Try it again.'
 error-contact-email-empty: 'Non engadiches o teu email'
 error-contact-message-empty: 'Non escribiches ningunha mensaxe'
 error-contact-subject-empty: 'Non escribiches o asunto'
-meta-description-contact: 'Contacta con el equipo de Goteo.org'
-meta-title-contact: 'Contáctanos :: Goteo.org'

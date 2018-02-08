@@ -1,22 +1,11 @@
 ---
-discover-group-all-header: 'En campaña'
-discover-group-archive-header: Archivados
 discover-group-fulfilled-header: 'Cumpriches cos retornos colectivos'
 discover-group-others-header: 'Noutros nodos'
 discover-group-outdate-header: 'A piques de ser arquivado'
 discover-group-popular-header: 'Máis populares'
 discover-group-recent-header: 'Publicados recentemente'
-discover-group-success-header: 'Campañas exitosas'
 discover-patron-header: '<span class="greenblue">%s</span> recomenda<br />estes <span class="red">Proxectos</span>'
 discover-results-empty: 'Non atopamos ningún proxecto que cumpra os criterios de busca'
 discover-results-header: 'Resultado da procura'
-discover-searcher-button: Buscar
-discover-searcher-bycategory-all: TODAS
-discover-searcher-bycategory-header: 'Por categoría:'
 discover-searcher-bycontent-header: 'Por contido:'
-discover-searcher-bylocation-all: TODOS
-discover-searcher-bylocation-header: 'Por lugar:'
-discover-searcher-byreward-all: TODOS
-discover-searcher-byreward-header: 'Por retorno:'
 discover-searcher-header: 'Buscar un proxecto'
-meta-title-discover: 'Descubre proyectos :: Goteo.org'

@@ -1,3 +1,4 @@
+---
 dashboard-embed_code: 'HEDAPEN SINPLEAREN KODEA'
 dashboard-embed_code_investor: 'FINANTZAKIDEAREN IRUDI KODEA'
 dashboard-header-main: 'Nire iragarki-taula'
@@ -15,14 +16,14 @@ dashboard-menu-calls-sponsors: Babesleak
 dashboard-menu-profile: 'Nire soslaia'
 dashboard-menu-profile-access: 'Sartze datuak'
 dashboard-menu-profile-personal: 'Norbanakoaren datuak'
-dashboard-menu-profile-preferences: Lehetasunak
+dashboard-menu-profile-preferences: 'Lehetasunak'
 dashboard-menu-profile-profile: 'Soslaia editatu'
 dashboard-menu-profile-public: 'Soslai publikoa'
 dashboard-menu-projects: 'Nire proiektuak'
-dashboard-menu-projects-contract: 'Banketxeko kontua'
+dashboard-menu-projects-contract: Banketxeko kontua
 dashboard-menu-projects-messegers: Partaideak
 dashboard-menu-projects-preview: 'Orrialde publikoa'
-dashboard-menu-projects-rewards: 'Finantzakideen kudeaketa'
+dashboard-menu-projects-rewards: Finantzakideen kudeaketa
 dashboard-menu-projects-summary: Laburpena
 dashboard-menu-projects-supports: Kolaborazioak
 dashboard-menu-projects-updates: Berriak
@@ -30,6 +31,7 @@ dashboard-menu-review_board: Berraztertze
 dashboard-menu-translate_board: Itzulpena
 dashboard-menu-translates: 'Nire itzulpenak'
 dashboard-messegers-mail-sendto: 'Partaideei bidalita:'
+dashboard-my-wallet-contribute-button: Dohaintzan eman
 dashboard-password-recover-advice: 'Baieztatu pasahitza berriro jartzen duzula'
 dashboard-project-blog-fail: 'Gurekin harremanetan jarri'
 dashboard-project-blog-inactive: 'Barkatu, baina berrien argitalpena proiektu honetan desaktibaturik dago'
@@ -55,7 +57,7 @@ dashboard-rewards-issue: Gertakaria!
 dashboard-rewards-massive_msg: 'Mezu kolektiboak'
 dashboard-rewards-massive_msg-all: 'Proiektu honen kofinantzadore guztiei'
 dashboard-rewards-massive_msg-all_alert: 'guztiak guztiak dira, ez ditu beste markatuak kontuan hartzen'
-dashboard-rewards-notice: "HAU ZURE KOFINANTZADOREEK HAUTATUTAKO ITZULERA AUKEREN ITXURA BAT DA. </br>EZ DITUZU ITZULERA HAUEK KUDEATU BEHAR NAHI DUZUN KANTITATE MINIMORA HELDU ARTE\r\n\r\n"
+dashboard-rewards-notice: "HAU ZURE KOFINANTZADOREEK HAUTATUTAKO ITZULERA AUKEREN ITXURA BAT DA. </br>EZ DITUZU ITZULERA HAUEK KUDEATU BEHAR NAHI DUZUN KANTITATE MINIMORA HELDU ARTE\\r\n\\r\n"
 dashboard-rewards-num_taken: 'Kompromisua hartu dutenak'
 dashboard-rewards-process: 'Markatuak aplikatu'
 dashboard-rewards-process_alert: 'Adi! Behin aukera beteta egonda, ezin da atzera bueltatu. Aurrera jarraitzen dugu?'
@@ -96,4 +98,5 @@ user-preferences-threads: 'Nik hasten ditudan mezuen erantzun jakinarazpenak blo
 user-preferences-updates: 'Babesten ditudan proiektuen inguruko berrien jakinarazpenak blokeatu'
 user-profile-saved: 'Soslai informazioa eguneratuta'
 user-save-fail: 'Nolabaiteko arazoa gertatu datuak gordetzerakoan'
-dashboard-my-wallet-contribute-button: 'Dohaintzan eman'
+dashboard-new-material-form-material: 'Materiala'
+dashboard-new-material-form-description: 'Deskribapena'
