@@ -220,7 +220,7 @@ class MatcherTest extends TestCase {
     }
 
     /**
-     * @depends testAddProjecs
+     * @depends testAddProjects
      */
     public function testRemoveProjects($ob) {
         $this->assertInstanceOf('\Goteo\Model\Matcher', $ob->removeProjects(self::$project));

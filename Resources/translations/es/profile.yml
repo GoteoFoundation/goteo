@@ -33,7 +33,7 @@ profile-main-header: 'Datos de perfil'
 profile-suggest-projects-interest: 'Quizás quieras apoyar proyectos de categorías similares'
 step-1: Perfil
 step-userProfile: 'Paso: Usuario / Perfil'
-tooltip-user-about: "Como red social, Goteo pretende ayudar a difundir y financiar proyectos interesantes entre el máximo de gente posible. Para eso es importante la información que puedas compartir sobre tus habilidades o experiencia (profesional, académica, aficiones, etc).\\r\n"
+tooltip-user-about: "Como red social, Goteo pretende ayudar a difundir y financiar proyectos interesantes entre el máximo de gente posible. Para eso es importante la información que puedas compartir sobre tus habilidades o experiencia (profesional, académica, aficiones, etc)."
 tooltip-user-analytics: 'Ingresa, en caso de que dispongas de uno, tu ID de seguimiento de Google Analytics para habilitar Google Analytics en tu proyecto. El ID debe estar en este formato: UA-000000-01 (ejemplo de ID)'
 tooltip-user-avatar_upload: 'Texto tooltip subir imagen usuario'
 tooltip-user-contribution: 'Explica brevemente tus habilidades o los ámbitos en que podrías ayudar a un proyecto (traduciendo, difundiendo, testeando, programando, enseñando, etc).'

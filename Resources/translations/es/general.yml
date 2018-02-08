@@ -226,5 +226,5 @@ user-changeemail-invalid-token: 'Esta acción ha caducado o bien ya se ha ejecut
 user-changeemail-fail: 'Error al cambiar el email'
 user-register-success: 'El usuario se ha registrado correctamente. A continuación recibirás un mensaje de correo para activarlo.'
 validate-project-social_rewards: 'Es obligatorio indicar como mínimo un retorno colectivo '
-validate-project-total-costs: "El coste óptimo no puede superar en más de un 50% al coste mínimo. O subes los costes imprescindibles o bajas los costes adicionales.\\r\n"
+validate-project-total-costs: "El coste óptimo no puede superar en más de un 50% al coste mínimo. O subes los costes imprescindibles o bajas los costes adicionales."
 user-promoter: 'El usuario impulsor'
