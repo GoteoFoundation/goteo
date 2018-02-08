@@ -22,7 +22,7 @@ node-side-searcher-success: Exitosos
 node-side-sumcalls-budget: 'Total (todas las campañas)'
 node-side-sumcalls-calls: Abierto
 node-side-sumcalls-campaigns: Activo
-node-side-sumcalls-header: 'Capital<br />riego'
+node-side-sumcalls-header: 'Matchfunding'
 node-side-sumcalls-rest: 'Queda por repartir'
 node-side-summary-active: Activos
 node-side-summary-amount: 'Dinero recaudado'
