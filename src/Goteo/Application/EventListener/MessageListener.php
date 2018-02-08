@@ -40,7 +40,8 @@ class MessageListener extends AbstractListener {
                 '%PROJECTURL%' => SITE_URL . '/project/' . $project->id . '/participate#message'.$message->id,
                 '%RESPONSEURL%' => SITE_URL . '/dashboard/activity#comments-' . $message->thread
                ])
-                ->setSubject($message->getSubject());
+                ->setSubject($message->getSubject())
+                ->setMessage($message);
 
             if ( ! $mail->save($errors) ) { //persists in database
                 throw new MailException(implode("\n",$errors));
@@ -76,7 +77,9 @@ class MessageListener extends AbstractListener {
             // Either add a reply-to or put a link to respond in the platform
             // ->setReply($owner->email, $owner->name)
             ->setSubject($message->getSubject())
+            ->setMessage($message)
             ->send($errors);
+
             if($errors) {
                 throw new MailException(implode("\n", $errors));
             }

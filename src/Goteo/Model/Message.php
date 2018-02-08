@@ -14,6 +14,7 @@ use Goteo\Library\Text;
 use Goteo\Library\Feed;
 use Goteo\Model\User;
 use Goteo\Model\Image;
+use Goteo\Model\Mail;
 use Goteo\Model\Project;
 use Goteo\Application\App;
 use Goteo\Application\Lang;
@@ -45,6 +46,10 @@ class Message extends \Goteo\Core\Model {
         call_user_func_array(array('parent', '__construct'), $args);
         $this->timeago = Feed::time_ago($this->date);
         // $this->message = nl2br(Text::urlink($this->message));
+    }
+
+    static public function getLangFields() {
+        return ['message'];
     }
 
     /*
@@ -109,18 +114,10 @@ class Message extends \Goteo\Core\Model {
     public static function getAll ($project, $lang = null, $with_private = false) {
         if($project instanceOf Project) $project = $project->id;
 
-        if(empty($lang)) $lang = Lang::current();
         $messages = array();
 
-        if(self::default_lang($lang) === Config::get('lang')) {
-            $different_select=" IFNULL(message_lang.message, message.message) as message";
-            }
-        else {
-                $different_select=" IFNULL(message_lang.message, IFNULL(eng.message, message.message)) as message";
-                $eng_join=" LEFT JOIN message_lang as eng
-                                ON  eng.id = message.id
-                                AND eng.lang = 'en'";
-            }
+        if(!$lang) $lang = Lang::current();
+        list($fields, $joins) = self::getLangsSQLJoins($lang, Config::get('lang'));
 
         $sql="
               SELECT
@@ -129,7 +126,7 @@ class Message extends \Goteo\Core\Model {
                 message.project as project,
                 message.thread as thread,
                 message.date as date,
-                $different_select,
+                $fields,
                 message.blocked as blocked,
                 message.closed as closed,
                 message.private as private,
@@ -138,18 +135,14 @@ class Message extends \Goteo\Core\Model {
                 user.email as user_email,
                 user.avatar as user_avatar
             FROM  message
-            INNER JOIN user
-            ON user.id=message.user
-            LEFT JOIN message_lang
-                ON  message_lang.id = message.id
-                AND message_lang.lang = :lang
-            $eng_join
+            INNER JOIN user ON user.id=message.user
+            $joins
             WHERE   message.project = :project
             AND     message.thread IS NULL
             " . ($with_private ? '' : ' AND private=0 ') . "
             ORDER BY date ASC, id ASC
             ";
-        $query = static::query($sql, array(':project'=>$project, ':lang'=>$lang));
+        $query = static::query($sql, array(':project' => $project));
         foreach ($query->fetchAll(\PDO::FETCH_CLASS, __CLASS__) as $message) {
 
             // datos del usuario. Eliminación User::getMini
@@ -313,6 +306,17 @@ class Message extends \Goteo\Core\Model {
         if($this->projectInstance instanceOf Project) return $this->projectInstance;
         $this->projectInstance = Project::get($this->project);
         return $this->projectInstance;
+    }
+
+    public function getMail() {
+        if($this->emailInstance) return $this->emailInstance;
+        $this->emailInstance = Mail::getFromMessageId($this->id);
+        return $this->emailInstance;
+    }
+
+    public function getStats() {
+        if($mail = $this->getMail()) return $mail->getStats();
+        return null;
     }
 
     // Description title from project
