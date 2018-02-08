@@ -13,7 +13,6 @@ translator-deleted-ko: 'Error al esborrar la traducció al %s!'
 translator-deleted-ok: 'Traducció al %s esborrada correctament'
 translator-feed-translated-desc: '%LINK% traduït por %USER% a %LANGS%'
 translator-feed-translated-target: 'Traducció en %s'
-translator-field-blog: Blog
 translator-field-content: Contingut
 translator-field-description: Descripció
 translator-field-facebook_msg: 'Missatge de facebook'
@@ -25,7 +24,6 @@ translator-field-share_twitter: 'Text compartir twitter'
 translator-field-text: Text
 translator-field-title: Títol
 translator-field-twitter_msg: 'Missatge de twitter'
-translator-field-url: URL
 translator-glossary: 'Glossari de termes'
 translator-icon: 'Tipus de retorn/recompensa'
 translator-info: 'Idees de about'
@@ -44,7 +42,6 @@ translator-page: Pàgines
 translator-patron: 'Projectes apadrinats'
 translator-pending: 'Pendient de traducció'
 translator-pending-desc: 'Aquest contingut està "pendent", cosa que significa que <strong>NO ES PÚBLIC</strong> i queda coma esborrany fins que es tregui l''opció "pendent de traducció"'
-translator-post: Blog
 translator-promote: 'Projectes destacats'
 translator-save: 'Desa i publica'
 translator-save-draft: 'Desa com a esborrany'

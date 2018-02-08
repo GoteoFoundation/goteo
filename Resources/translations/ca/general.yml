@@ -143,7 +143,7 @@ regular-projects: projectes
 regular-published_no: Esborrany
 regular-published_yes: Publicat
 regular-read_more: 'Llegir més'
-regular-recent-activity: Activitat recent 
+regular-recent-activity: Activitat recent
 regular-recomended_by: 'Projecte recomanat per:'
 regular-review_board: 'Panell revisor'
 regular-round: 'a ronda'
@@ -199,7 +199,7 @@ regular-copied: 'Copiat al porta-retalls!'
 regular-remember-me: 'Recorda''m'
 session-about-to-expire: 'La teva sessió expirarà en 10 minuts. ¿Vols recarregar la pàgina per renovar-la?'
 session-expired: 'La teva sessió ha expirat!'
-stories-user-project: "%s, del projecte: %s\\r\n"
+stories-user-project: "%s, del projecte: %s\\\\r\n"
 support-our-mission: 'Dóna suport a la nostra missió'
 tooltip: 'Text d''ajuda'
 tooltip-dashboard-user-access_data: 'Aquestes són les teves dades actuals d''accés. L''única cosa que no es pot canviar és el login o nom d''usuari.'

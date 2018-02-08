@@ -45,7 +45,7 @@ oauth-goteo-openid-sync-password: 'You''re trying to connect an existing Goteo a
 oauth-goteo-user-not-exists: 'That user does not exist in Goteo'
 oauth-goteo-user-password-error: 'This account already uses a different password-free login provider. If you want to use more than one login provider for this account, you need to establish a password first.'
 oauth-goteo-user-password-exists: 'That user already exists in Goteo'
-oauth-goteo-user-provider-error: "You must use %s in order to access this user.\\r\n\\r\nIf you want to use more than one login provider for this account, you need to establish a password first."
+oauth-goteo-user-provider-error: "You must use %s in order to access this user.\\\\r\n\\\\r\nIf you want to use more than one login provider for this account, you need to establish a password first."
 oauth-import-about: 'About you'
 oauth-import-facebook: 'Link to your Facebook account'
 oauth-import-linkedin: 'Link to your LinkedIn account'

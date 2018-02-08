@@ -1,8 +1,49 @@
 ---
-blog-lb: Blog
+accounts-lb: Aportacions
+accounts-lb-add: 'Aportació manual'
+accounts-lb-cancel: 'Cancel·lació de l''aportació'
+accounts-lb-cancel-pool: 'Cancel·lar l''opció de crèdit'
+accounts-lb-details: 'Detalls de l''aportació'
+accounts-lb-execute: 'Execució del càrrec'
+accounts-lb-list: Llistant
+accounts-lb-move: 'Reubicant l''aportació'
+accounts-lb-report: 'Informe de projecte'
+accounts-lb-update: 'Canviant l''estat de l''aportació'
+accounts-lb-viewer: 'Veient logs'
+banners-lb: Banner
+banners-lb-add: 'Nou Banner'
+banners-lb-cancel: 'Cancel·lant l''aportació'
+banners-lb-details: 'Detalls de l''aportació'
+banners-lb-edit: 'Editant Banner'
+banners-lb-execute: 'Execució del càrrec'
+banners-lb-list: Llistant
+banners-lb-move: 'Reubicant l''aportació'
+banners-lb-report: 'Informe de projecte'
+banners-lb-translate: 'Traduïnt Banner'
+blog-lb-add: 'Nova entrada'
+blog-lb-edit: 'Editant Entrada'
+blog-lb-footer: 'Ordenant les entrades al Footer'
+blog-lb-reorder: 'Ordenant les entrades a la Portada'
+blog-lb-translate: 'Traduïnt Entrada'
 categories-lb: Categories de projecte
-faq-lb: FAQ
-glossary-lb: Glossari 
+categories-lb-add: 'Categoria nova'
+categories-lb-edit: 'Editant Categoria'
+categories-lb-keywords: 'Paraules clau'
+categories-lb-list: Llistant
+categories-lb-translate: 'Traduïnt Categoria'
+commons-lb: 'Retorns col·lectius'
+commons-lb-add: 'Nou retorn'
+commons-lb-edit: 'Editant retorn'
+commons-lb-info: 'Informació de contacte'
+commons-lb-view: 'Gestió de retorns'
+criteria-lb: 'Criteris de revisió'
+criteria-lb-add: 'Nou criteri'
+criteria-lb-edit: 'Editant Criteri'
+criteria-lb-translate: 'Traduïnt Criteri'
+faq-lb-add: 'Nova Pregunta'
+faq-lb-edit: 'Editant Pregunta'
+faq-lb-translate: 'Traduïnt Pregunta'
+glossary-lb: Glossari
 newsletter-lb-list: 'Estat de l''enviament automàtic'
 nodes-lb: Canals
 projects-lb: Projectes

@@ -26,7 +26,7 @@ invest-alert-rewards: 'Hai scelto le seguenti ricompense:'
 invest-amount: Quantità
 invest-amount-tooltip: 'Indica l''importo con cui sosterrai il progetto'
 invest-anonymous: 'Voglio che il mio donativo sia anonimo '
-invest-button: Contribuire 
+invest-button: Contribuire
 invest-called-allready: 'Hai dato a questo progetto <strong>Cloudfunfing</strong> della campagna %s, non riceverai più <strong>Cloudfunding</strong> per le tue donazioni'
 invest-called-maxdrop: 'Fino a un massimo di <strong>%s &euro;</strong>'
 invest-called-maxproj: 'È stato già raggiunto il massimo di <strong>Cloudfunding</strong> possibile con la campagna %s'
