@@ -22,7 +22,6 @@ node-side-searcher-success: Di successo
 node-side-sumcalls-budget: 'Totale (tutte le campagne)'
 node-side-sumcalls-calls: Aperto
 node-side-sumcalls-campaigns: Attivo 
-node-side-sumcalls-header: 'Cloud<br />funding'
 node-side-sumcalls-rest: 'Resta da distribuire'
 node-side-summary-active: Attivi
 node-side-summary-amount: 'Quantità di denaro raccolto'
