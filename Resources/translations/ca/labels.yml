@@ -20,13 +20,9 @@ banners-lb-list: Llistant
 banners-lb-move: 'Reubicant l''aportació'
 banners-lb-report: 'Informe de projecte'
 banners-lb-translate: 'Traduïnt Banner'
-banners-lb-update: 'Canviant l''estat de l''aportació'
-banners-lb-viewer: 'Veient logs'
-blog-lb: Blog
 blog-lb-add: 'Nova entrada'
 blog-lb-edit: 'Editant Entrada'
 blog-lb-footer: 'Ordenant les entrades al Footer'
-blog-lb-list: Llistant
 blog-lb-reorder: 'Ordenant les entrades a la Portada'
 blog-lb-translate: 'Traduïnt Entrada'
 categories-lb: Categories de projecte
@@ -39,47 +35,18 @@ commons-lb: 'Retorns col·lectius'
 commons-lb-add: 'Nou retorn'
 commons-lb-edit: 'Editant retorn'
 commons-lb-info: 'Informació de contacte'
-commons-lb-list: Llistant
-commons-lb-report: 'Informe de projecte'
 commons-lb-view: 'Gestió de retorns'
 criteria-lb: 'Criteris de revisió'
 criteria-lb-add: 'Nou criteri'
 criteria-lb-edit: 'Editant Criteri'
-criteria-lb-list: Llistant
 criteria-lb-translate: 'Traduïnt Criteri'
-faq-lb: FAQ
 faq-lb-add: 'Nova Pregunta'
 faq-lb-edit: 'Editant Pregunta'
-faq-lb-list: Llistant
 faq-lb-translate: 'Traduïnt Pregunta'
-glossary-lb: Glossari 
-glossary-lb-list: Llistant
-icons-lb-list: Llistant
-info-lb-list: Llistant
-licenses-lb-list: Llistant
-milestones-lb-list: Llistant
-news-lb-list: Llistant
+glossary-lb: Glossari
 newsletter-lb-list: 'Estat de l''enviament automàtic'
 nodes-lb: Canals
-nodes-lb-list: Llistant
-pages-lb-list: Llistant
 projects-lb: Projectes
-projects-lb-cancel: 'Cancel·lació de l''aportació'
-projects-lb-execute: 'Execució del càrrec'
-projects-lb-list: Llistant
-promote-lb-list: Llistant
 recent-lb: 'Activitat recent '
-recent-lb-list: Llistant
-reviews-lb-list: Llistant
-rewards-lb-list: Llistant
 sponsors-lb: 'Suports institucionals'
-sponsors-lb-list: Llistant
-tags-lb-list: Llistant
-templates-lb-list: Llistant
-texts-lb-list: Llistant
-translates-lb-list: Llistant
-transnodes-lb-list: Llistant
 users-lb: Usuaris
-users-lb-list: Llistant
-word-lb-list: Llistant
-worth-lb-list: Llistant
