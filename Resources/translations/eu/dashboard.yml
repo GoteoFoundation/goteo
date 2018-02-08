@@ -57,7 +57,7 @@ dashboard-rewards-issue: Gertakaria!
 dashboard-rewards-massive_msg: 'Mezu kolektiboak'
 dashboard-rewards-massive_msg-all: 'Proiektu honen kofinantzadore guztiei'
 dashboard-rewards-massive_msg-all_alert: 'guztiak guztiak dira, ez ditu beste markatuak kontuan hartzen'
-dashboard-rewards-notice: "HAU ZURE KOFINANTZADOREEK HAUTATUTAKO ITZULERA AUKEREN ITXURA BAT DA. </br>EZ DITUZU ITZULERA HAUEK KUDEATU BEHAR NAHI DUZUN KANTITATE MINIMORA HELDU ARTE\\\\r\n\\\\r\n"
+dashboard-rewards-notice: "HAU ZURE KOFINANTZADOREEK HAUTATUTAKO ITZULERA AUKEREN ITXURA BAT DA. </br>EZ DITUZU ITZULERA HAUEK KUDEATU BEHAR NAHI DUZUN KANTITATE MINIMORA HELDU ARTE\\\\r\n"
 dashboard-rewards-num_taken: 'Kompromisua hartu dutenak'
 dashboard-rewards-process: 'Markatuak aplikatu'
 dashboard-rewards-process_alert: 'Adi! Behin aukera beteta egonda, ezin da atzera bueltatu. Aurrera jarraitzen dugu?'

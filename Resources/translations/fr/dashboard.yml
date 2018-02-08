@@ -68,7 +68,7 @@ dashboard-rewards-issue: Incident!
 dashboard-rewards-massive_msg: 'Messages groupés'
 dashboard-rewards-massive_msg-all: 'A tous les cofinanceurs de ce projet'
 dashboard-rewards-massive_msg-all_alert: 'A tous signifie "A tous". Le système ne tient pas compte des utilisateurs marqués d''une croix.'
-dashboard-rewards-notice: "CECI EST UNE VISUALISATION DES OPTIONS DE RECOMPENSES CHOISIES PAR VOS COFINANCEURS.<br />VOUS N'AVEZ PAS A GERER CES RECOMPENSES AVANT D'AVOIR ATTEINT LE FINANCEMENT MINIMUM SOUHAITE\\\\r\n"
+dashboard-rewards-notice: "CECI EST UNE VISUALISATION DES OPTIONS DE RECOMPENSES CHOISIES PAR VOS COFINANCEURS.<br />VOUS N'AVEZ PAS A GERER CES RECOMPENSES AVANT D'AVOIR ATTEINT LE FINANCEMENT MINIMUM SOUHAITE"
 dashboard-rewards-num_taken: 'Engagées'
 dashboard-rewards-pending_filter: En attente
 dashboard-rewards-pending_status: En attente
