@@ -4,3 +4,5 @@ mailer-disclaimer: 'Goteo is a social network for crowdfunding and distributed c
 mailer-sinoves: 'If you can''t see this message use this <a href="%s">link</a>'
 newsletter-block: 'Would you like to no longer receive newsletters from Goteo? <br/> <a href="%s">Unsubscribe</a>.'
 unsuscribe-request-success: 'You have canceled your subscription to the newsletter.'
+mailer-from: From
+mailer-to: To
