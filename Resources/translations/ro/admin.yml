@@ -3,3 +3,9 @@ admin-NO: 'Nu'
 admin-YES: Da
 admin-account-change-user: 'Schimbare user'
 admin-account-convert-to-pool-confirm: 'Acest lucru va elimina campania asociată cu această contribuţie şi va fi ca și cum a fost o achiziţie de monedă. TOATE RECOMPENSELE ASOCIATE VOR FI PIERDUTE. Continuați?'
+admin-account-convert-to-pool-ko: 'Contribuţia nu a fost convertită în monedă: %s'
+admin-account-convert-to-pool-ok: 'Contribuția a fost convertită cu succes în monedă'
+admin-account-detail: 'Detaliile tranzacţiei'
+admin-account-donation: Donație
+admin-account-edit-reward: 'Gestionare recompensă/adresă'
+admin-account-invalid-invest: 'Contribuţia [%s] nu a fost găsită!'
