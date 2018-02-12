@@ -110,10 +110,10 @@ EOT
             $query = Project::query($sql, $values);
             foreach($query->fetchAll(\PDO::FETCH_CLASS) as $prj) {
                 $output->writeln("Found project <info>{$prj->name}</info> with ID <info>{$prj->id}</info> having costs mismatch:");
-                $t = "\tMincost: ";
+                $t = "\tMincost (expected / currently): ";
                 $v = "{$prj->mincost} / {$prj->oldmincost}";
                 $t .= ($prj->mincost != $prj->oldmincost) ? "<error>$v</error>" : "<comment>$v</comment>";
-                $t .= "\tMaxcost: ";
+                $t .= "\tMaxcost (expected / currently): ";
                 $v = "{$prj->maxcost} / {$prj->oldmaxcost}";
                 $t .= ($prj->maxcost != $prj->oldmaxcost) ? "<error>$v</error>" : "<comment>$v</comment>";
                 $output->writeln($t);
@@ -152,13 +152,13 @@ EOT
             $query = Project::query($sql, $values);
             foreach($query->fetchAll(\PDO::FETCH_CLASS) as $prj) {
                 $output->writeln("Found project <info>{$prj->name}</info> with ID <info>{$prj->id}</info> having amounts mismatch:");
-                $t = "\tTotal amount: ";
+                $t = "\tTotal amount (expected / currently): ";
                 $v = (int) $prj->invest_total . ' / ' . (int)$prj->amount;
                 $t .= ($prj->amount != $prj->invest_total) ? "<error>$v</error>" : "<comment>$v</comment>";
-                $t .= "\tUsers amount: ";
+                $t .= "\tUsers amount (expected / currently): ";
                 $v = (int) $prj->invest_user . ' / ' . (int)$prj->amount_users;
                 $t .= ($prj->amount_users != $prj->invest_user) ? "<error>$v</error>" : "<comment>$v</comment>";
-                $t .= "\tDrop amount: ";
+                $t .= "\tDrop amount (expected / currently): ";
                 $v = (int) $prj->invest_drop . ' / ' . (int)$prj->amount_call;
                 $t .= ($prj->amount_call != $prj->invest_drop) ? "<error>$v</error>" : "<comment>$v</comment>";
 
@@ -166,7 +166,7 @@ EOT
 
                 if($update) {
                     if(Project::query("UPDATE project SET amount = :amount, amount_users = :amount_users, amount_call = :amount_call WHERE id = :id",
-                        [':id' => $prj->id, ':amount' => $prj->invest_total, ':amount_users' => $prj->invest_drop, ':amount_call' => $prj->invest_call])) {
+                        [':id' => $prj->id, ':amount' => (int)$prj->invest_total, ':amount_users' => (int)$prj->invest_user, ':amount_call' => (int)$prj->invest_drop])) {
                         $fixes++;
                     }
                 }
