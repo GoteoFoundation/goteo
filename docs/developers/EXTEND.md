@@ -53,7 +53,7 @@ This file should follow this structure:
 name: PluginName
 version: 1.0
 
-# Advanced/optional:
+# Advanced/optional (don't write anything else in this file if you don't known what your are doing):
 # Next key/value array will be used by Grunt to copy this files under the "dist/" directory
 
 assets:
@@ -70,7 +70,7 @@ Probably, the most common task to be achieved is to personalize the home page or
 ```php
 <?php
 
-// initial start.php can be empty, everything here is optionall
+// initial start.php can be empty, everything here is optional
 
 use Goteo\Application\Config;
 use Goteo\Application\Lang;
@@ -105,6 +105,62 @@ extend/
                     └── footer.php
 
 ```
+
+
+## Example, a test plugin
+
+This example will create a very simple plugin that adds a "Call to action button" in the home:
+
+1. Create a folder named `home-addons` in the folder `extend` where you have your copy of Goteo.
+
+We will create 2 files in that folder:
+
+2. Create the `manifest.yml` file, that should be exactly like this:
+
+```yaml
+name: home-addons
+version: 1.0
+```
+
+(You don't need to specify any other resources for the moment: *start simple*).
+
+3. Create the `start.php` file, something like this:
+
+```php
+<?php
+// plugin init file
+```
+
+That's right, nothing in it...
+
+Then you can start overwriting views, for example create this file:
+
+`extend/plugin-responsive/Resources/templates/responsive/home/partials/call_to_action.php`
+
+With this content:
+
+```html
+<div class="section call-action">
+    <div class="container">
+        Check this out: <a class="btn btn-lg btn-orange pull-right" href="www.goteo.org">Goteo rocks</a>
+    </div>
+</div>
+```
+
+Finally, activate the plugin in your `settings.yml`:
+
+```yaml
+...
+plugins:
+    home-addons:
+        active: true
+```
+
+
+Now, you should view at the home page a nice cyan bar with the new content added.
+This process can be repeated by adding more files with you custom content.
+
+For example, you can create this file: `extend/plugin-responsive/Resources/templates/responsive/home/index.php` with anything you want in it and it will replace the default one. At this point you may want to check the [templates section](http://goteofoundation.github.io/goteo/docs/developers/templates.html) and the [Foil template documentation](https://foilphp.github.io/Foil/)
 
 
 ## Dev plugin

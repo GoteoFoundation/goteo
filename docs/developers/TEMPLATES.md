@@ -3,7 +3,7 @@ currentMenu: templates
 ---
 ## Template system
 
-The new template system in Goteo uses [FOIL](http://www.foilphp.it) which is a powerful php-native template system.
+The new template system in Goteo uses [FOIL](https://foilphp.github.io/Foil/) which is a powerful php-native template system.
 
 However, there's still a lot of the legacy views in use. They will coexist until we can fully get rid of the old system.
 
@@ -111,9 +111,10 @@ Let's override some vars in a final template extending `layout.php`, in this cas
 <?php $this->stop() ?>
 ```
 
-More info:  
-http://www.foilphp.it/docs/TEMPLATES/INHERITANCE.html  
-http://www.foilphp.it/docs/DATA/PASS-DATA.html  
+More info:
+
+https://foilphp.github.io/Foil/docs/TEMPLATES/INHERITANCE.html
+https://foilphp.github.io/Foil/docs/DATA/PASS-DATA.html
 
 
 Template inheritance:
