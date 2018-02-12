@@ -11,3 +11,20 @@
         color: $color-white;
     }
 }
+
+.admin {
+    #sidebar-menu {
+        .sidebar-wrap {
+            // background-color: #652D2D;
+        }
+        .sidebar-nav li {
+            // background-color: #652D2D;
+        }
+        .sidebar-header {
+            background-color: #620D0D;
+            .sidebar-widget a.img-link img {
+                box-shadow: 0 5px 20px 0px #af1515;
+            }
+        }
+    }
+}
