@@ -9,3 +9,5 @@ admin-account-detail: 'Detaliile tranzacţiei'
 admin-account-donation: Donație
 admin-account-edit-reward: 'Gestionare recompensă/adresă'
 admin-account-invalid-invest: 'Contribuţia [%s] nu a fost găsită!'
+admin-account-invest-non-pool-refundable: 'Această contribuţie nu poate fi plătită înapoi sub formă de monedă virtuală. Se pot rambursa numai contribuţii cu statusul "încasate"'
+admin-account-invest-non-user-refundable: "Această contribuție nu poate fi rambursată. Pot fi rambursate contribuţii cu statusul: \"În aşteptare\", \"Încasat\" și \"Monedă virtuală\", dacă există destui bani în cont ca să fie scăzuți \n"
