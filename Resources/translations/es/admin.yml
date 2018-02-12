@@ -94,3 +94,4 @@ admin-project-to-publish-sure: 'El proyecto va a comenzar su campaña, ¿comenza
 admin-project-derivation-discard: 'Rechazo con derivación'
 admin-project-derivation-discard-desc: 'Pasa el proyecto a estado Descartado y manda un mail derivando a otra plataforma más adecuada'
 admin-project-derivation-discard-sure: 'Se va a enviar un mail automáticamente derivando a otra plataforma y pasará a estado descartado, ¿ok?'
+admin-home-title: Administrar Goteo

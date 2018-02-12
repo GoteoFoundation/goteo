@@ -18,6 +18,8 @@ use Goteo\Application\View;
 use Goteo\Library\Feed;
 use Goteo\Library\Text;
 use Goteo\Model;
+use Goteo\Model\User;
+use Goteo\Controller\Admin\AdminControllerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -25,6 +27,78 @@ class AdminController extends \Goteo\Core\Controller {
 
 	private static $subcontrollers = array();
 	private static $context_vars = array();
+
+    public function __construct() {
+        // changing to a responsive theme here
+        View::setTheme('responsive');
+    }
+
+    public function indexAction(Request $request) {
+        $user = self::getCurrentUser($request);
+
+        static::createAdminSidebar($user);
+        return $this->viewResponse('admin/index', []);
+    }
+
+    static function createAdminSidebar (User $user) {
+        $prefix = 'admin';
+        // Create sidebar menu
+        Session::addToSidebarMenu('<i class="icon icon-2x icon-summary"></i> ' . Text::get('admin-home'), $prefix, '');
+
+        // Old sub-modules
+        $modules = [];
+        foreach (static::$subcontrollers as $class) {
+            if(in_array('Goteo\Controller\Admin\AdminControllerInterface', class_implements($class))) {
+            }
+            // Old sub-controllers
+            elseif ($class::isAllowed($user, Config::get('node'))) {
+                $modules[] = ['text' => '<i class="icon icon-2x icon-user"></i> ' . $class::getLabel(), 'link' => $prefix . '/' .  $class::getId(), 'id' => $class::getId()];
+            }
+        }
+
+        Session::addToSidebarMenu('<i class="icon icon-2x icon-projects"></i> ' . Text::get('regular-all'), $modules, 'project', null, 'sidebar' . ($admin ? ' admin' : ''));
+    }
+
+    private static function getCurrentUser(Request $request) {
+
+        //refresh permission status
+        User::flush();
+        $user = Session::getUser();
+
+        if (!$user) {
+            throw new ControllerAccessDeniedException(Text::get('user-login-required-access'));
+        }
+
+        // TODO: Check if has permissions
+
+
+        return $user;
+    }
+
+
+
+
+    public function indexOldAction(Request $request) {
+        $ret = array();
+        $user = self::checkCurrentUser($request);
+        $this->contextVars(self::$context_vars, 'admin/');
+
+        //feed by default for someones
+        $admin_node = Session::get('admin_node');
+        if ($user->hasRoleInNode($admin_node, ['superadmin', 'root']) || ($user->hasRoleInNode($admin_node, ['admin']) && Config::isMasterNode($admin_node))) {
+            //TODO: allow Feed to handle multiple nodes
+            $ret['feed'] = Feed::getAll('all', 'admin', 50, $admin_node);
+        }
+        //default admin dashboard (nothing!)
+        return $this->viewResponse('admin/default', $ret);
+
+    }
+
+
+
+    ///////////////////////////////
+    /// OLD code...
+    /// ////////////////////////
 
     /**
      * Registers a subcontroller in the admin
@@ -76,6 +150,9 @@ class AdminController extends \Goteo\Core\Controller {
 		$admin_node = Session::get('admin_node') ? Session::get('admin_node') : Config::get('node');
 
 		foreach (static::$subcontrollers as $class) {
+            if(in_array('Goteo\Controller\Admin\AdminControllerInterface', class_implements($class))) {
+                continue;
+            }
 			if ($class::isAllowed($user, $admin_node)) {
 				return true;
 			}
@@ -83,7 +160,7 @@ class AdminController extends \Goteo\Core\Controller {
 		return false;
 	}
 	/**
-	 * Security method
+	 * Old Security method
 	 * Gets the current user
 	 * Gets the menu
 	 * Sets the current node to admin from the user or the get Request
@@ -172,25 +249,12 @@ class AdminController extends \Goteo\Core\Controller {
 		return $user;
 	}
 
-	/** Default index action */
-	public function indexAction(Request $request) {
-		$ret = array();
-		$user = self::checkCurrentUser($request);
-		$this->contextVars(self::$context_vars, 'admin/');
-
-		//feed by default for someones
-		$admin_node = Session::get('admin_node');
-		if ($user->hasRoleInNode($admin_node, ['superadmin', 'root']) || ($user->hasRoleInNode($admin_node, ['admin']) && Config::isMasterNode($admin_node))) {
-			//TODO: allow Feed to handle multiple nodes
-			$ret['feed'] = Feed::getAll('all', 'admin', 50, $admin_node);
-		}
-		//default admin dashboard (nothing!)
-		return $this->viewResponse('admin/default', $ret);
-
-	}
-
-	// preparado para index unificado
+	// Old dispatcher for submodules
+    // preparado para index unificado
+    //
 	public function optionAction($option, $action = 'list', $id = null, $subaction = null, Request $request) {
+        View::setTheme('default');
+
 		$ret = array();
 		$SubC = static::$subcontrollers[$option];
 
