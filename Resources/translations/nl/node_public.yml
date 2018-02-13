@@ -21,7 +21,6 @@ node-side-searcher-success: Succesvol
 node-side-sumcalls-budget: 'Totaal ( alle campagnes )'
 node-side-sumcalls-calls: Open
 node-side-sumcalls-campaigns: Actief
-node-side-sumcalls-header: 'Cloud<br />fund'
 node-side-sumcalls-rest: 'Rest om te distribueren'
 node-side-summary-active: Actief
 node-side-summary-amount: 'Verzameld geld'

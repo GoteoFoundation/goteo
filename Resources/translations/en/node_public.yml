@@ -22,7 +22,6 @@ node-side-searcher-success: Successful
 node-side-sumcalls-budget: 'Total (all campaigns)'
 node-side-sumcalls-calls: Open
 node-side-sumcalls-campaigns: Active
-node-side-sumcalls-header: 'Matchfunding'
 node-side-sumcalls-rest: 'Pending assignment'
 node-side-summary-active: Active
 node-side-summary-amount: 'Money collected'
