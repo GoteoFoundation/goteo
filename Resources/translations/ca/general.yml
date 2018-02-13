@@ -198,6 +198,8 @@ regular-input: Aportació
 regular-amount: Import
 regular-copied: 'Copiat al porta-retalls!'
 regular-remember-me: 'Recorda''m'
+regular-next: Següent
+regular-previous: Anterior
 session-about-to-expire: 'La teva sessió expirarà en 10 minuts. ¿Vols recarregar la pàgina per renovar-la?'
 session-expired: 'La teva sessió ha expirat!'
 stories-user-project: "%s, del projecte: %s"

@@ -2174,6 +2174,7 @@ class Invest extends \Goteo\Core\Model {
 
         // proyecto
         self::invested($this->project); // conseguido
+        self::invested($this->project, 'users'); // users amount
         self::numInvestors($this->project); // inversores
 
     }
