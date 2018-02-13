@@ -1,3 +1,10 @@
 ---
+admin-NO: 'NO'
+admin-YES: SI
 admin-account-amount: 'Importo contribuito'
 admin-account-change-user: 'Cambia utente'
+admin-account-change-user-confirm: 'Sei sicuro/a di voler modificare l''utente del contributo? il/la nuovo/a utente sarà:'
+admin-account-convert-to-pool: 'Convertire in portafoglio'
+admin-account-detail: 'Dettagli della transazione'
+admin-account-donation: Donazione
+admin-account-invest-date: 'Data del contributo'
