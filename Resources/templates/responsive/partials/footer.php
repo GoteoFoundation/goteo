@@ -9,6 +9,7 @@
                 <li><a href="/user/login"><?= $this->text('regular-login')?></a></li>
                 <li><a href="/contact"><?= $this->text('regular-footer-contact')?></a></li>
                 <li><a data-jslicense="1" href="/about/librejs">Licenses</a></li>
+                <li><a href="/faq"><?= $this->text('regular-header-faq')?></a></li>
               </ul>
             </div>
 
