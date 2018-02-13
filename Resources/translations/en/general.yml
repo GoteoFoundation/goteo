@@ -70,7 +70,6 @@ regular-by: 'By:'
 regular-cancel: Cancel
 regular-cancel-back: 'Cancel & Go back'
 regular-back: 'Go back'
-regular-channel: Channel
 regular-collaborate: Collaborate
 regular-create: 'Create a project'
 regular-days: days
@@ -158,7 +157,7 @@ regular-name: Name
 regular-image: Image
 regular-images: Images
 regular-load-more: 'Load more'
-regular-call: Matchfunding
+regular-call: Feeder capital
 regular-num-comments: '%s comments'
 regular-manage: 'Manage'
 regular-no-edit-permissions: Not enough permissions to edit this entry!
