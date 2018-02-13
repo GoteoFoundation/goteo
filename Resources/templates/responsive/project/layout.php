@@ -111,19 +111,19 @@ $this->section('content');
 <div class="sticky-menu" data-offset-top="880" data-spy="affix">
 	<div class="container-fluid">
 		<div class="row">
-			<a href="/project/<?= $project->id ?>" data-pronto-target="#project-tabs">
+			<a href="/project/<?= $project->id ?>" class="pronto" data-pronto-target="#project-tabs" data-pronto-scroll-to="#project-tabs-menu">
 				<div class="home col-sm-2 hidden-xs sticky-item <?= $this->show=='home' ? 'current' : '' ?>">
 					<img class="" src="<?= SRC_URL . '/assets/img/project/home.png' ?>">
 		            <span class="label-sticky-item"><?= $this->text('project-menu-home') ?></span>
 				</div>
 			</a>
-			<a href="/project/<?= $project->id ?>/updates"  data-pronto-target="#project-tabs">
+			<a href="/project/<?= $project->id ?>/updates"  class="pronto" data-pronto-target="#project-tabs" data-pronto-scroll-to="#project-tabs-menu">
 				<div class="updates col-sm-2 hidden-xs sticky-item <?= $this->show=='updates' ? 'current' : '' ?>">
 					<img class="" src="<?= SRC_URL . '/assets/img/project/news.png' ?>">
 	                <span class="label-sticky-item"><?= $this->text('project-menu-news') ?></span>
 				</div>
 			</a>
-			<a href="/project/<?= $project->id ?>/participate" data-pronto-target="#project-tabs">
+			<a href="/project/<?= $project->id ?>/participate" class="pronto" data-pronto-target="#project-tabs" data-pronto-scroll-to="#project-tabs-menu">
 				<div class="participate col-sm-2 hidden-xs sticky-item <?= $this->show=='participate' ? 'current' : '' ?>">
 					<img class="" src="<?= SRC_URL . '/assets/img/project/participate.png' ?>">
 	                <span class="label-sticky-item"><?= $this->text('project-menu-participate') ?></span>
