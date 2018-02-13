@@ -27,3 +27,6 @@ admin-account-modify-status: 'Modifică statusul'
 admin-account-modify-status-confirm: "Sunteţi sigur că doriţi să schimbaţi manual starea pentru această contribuţie? Acest lucru este sensibil! NU SE VA MAI EFECTUA nici o operaţiune de returnare a contribuţiei. \n"
 admin-account-payment-method: 'Metodă de plată'
 admin-account-pool-on-fail: 'Grup (reveniți la portofelul virtual dacă lipsește)'
+admin-account-refund-to-pool: 'Rambursați contribuția în portofelul electronic'
+admin-account-refund-to-pool-confirm: "Acest lucru va marca contribuţia astfel: \nReturnare dacă proiectul nu este de succes\nAnulare în cazul în care proiectul este activ sau de succes\nContribuția nu se va returnata utilizatorului, ci va fi generată monedă virtuală în portofelul utilizatorului. \nPot continua? \n"
+admin-account-refund-to-user: 'Rambursați contribuția către utilizator'
