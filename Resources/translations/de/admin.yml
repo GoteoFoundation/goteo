@@ -70,6 +70,7 @@ admin-remove-filters: 'Filter entfernen'
 admin-sponsors: Dienstleister (Unterstützer/admin-sponsors)
 admin-status: Status
 admin-text-type: 'Bearbeite den Text als'
+admin-text-type-html: HTML
 admin-text-type-plain: 'einfacher Text'
 admin-user: Benutzer
 admin-users: Benutzer
@@ -84,3 +85,4 @@ admin-project-view-in-admin: 'Als Administrator betrachten'
 admin-project-to-negotiation: 'Zur Negotiation'
 admin-project-to-negotiation-desc: 'Ändern Sie den Projektstatus auf "Bearbeiten"'
 admin-project-to-negotiation-sure: 'ALARM!! Das Projekt ist in der Kampagne! Damit werden wir dies aufheben. Ok?'
+admin-project-to-publish: 'Veröffentlichen'
