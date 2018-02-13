@@ -140,21 +140,20 @@ $langs = $project->getLangs();
 
                 <?= $this->insert('project/partials/responsive_meter.php', ['project' => $project ]) ?>
 
-
-                <div class="row spacer project-menu hidden-xs">
-                    <a href="/project/<?= $project->id ?>" class="pronto" data-pronto-target="#project-tabs">
+                <div id="project-tabs-menu" class="row spacer project-menu hidden-xs">
+                    <a href="/project/<?= $project->id ?>" class="pronto" data-pronto-target="#project-tabs" data-pronto-scroll-to="#project-tabs-menu">
                         <div class="home col-xs-4 text-center item <?= $this->show=='home' ? 'current' : '' ?>" id="home">
                                 <img class="" src="<?= SRC_URL . '/assets/img/project/home.png' ?>">
                                 <span class="label-item"><?= $this->text('project-menu-home') ?></span>
                         </div>
                     </a>
-                    <a href="/project/<?= $project->id ?>/updates" class="pronto" data-pronto-target="#project-tabs">
+                    <a href="/project/<?= $project->id ?>/updates" class="pronto" data-pronto-target="#project-tabs" data-pronto-scroll-to="#project-tabs-menu">
                         <div class="updates col-xs-4 text-center item <?= $this->show=='updates' ? 'current' : '' ?>" id="updates">
                                 <img class="" src="<?= SRC_URL . '/assets/img/project/news.png' ?>">
                                 <span class="label-item"><?= $this->text('project-menu-news') ?></span>
                         </div>
                     </a>
-                    <a href="/project/<?= $project->id ?>/participate" class="pronto" data-pronto-target="#project-tabs">
+                    <a href="/project/<?= $project->id ?>/participate" class="pronto" data-pronto-target="#project-tabs" data-pronto-scroll-to="#project-tabs-menu">
                         <div class="participate col-xs-4 text-center item <?= $this->show=='participate' ? 'current' : '' ?>" id="participate">
                                 <img class="" src="<?= SRC_URL . '/assets/img/project/participate.png' ?>">
                                 <span class="label-item"><?= $this->text('project-menu-participate') ?></span>
@@ -250,19 +249,19 @@ $langs = $project->getLangs();
 
 
             <div class="row spacer project-menu visible-xs">
-                    <a href="/project/<?= $project->id ?>" class="pronto" data-pronto-target="#project-tabs">
+                    <a href="/project/<?= $project->id ?>" class="pronto" data-pronto-target="#project-tabs" data-pronto-scroll-to="#project-tabs-menu">
                         <div class="home col-xs-4 text-center item <?= $this->show=='home' ? 'current' : '' ?>" id="home">
                                 <img class="" src="<?= SRC_URL . '/assets/img/project/home.png' ?>">
                                 <span class="label-item"><?= $this->text('project-menu-home') ?></span>
                         </div>
                     </a>
-                    <a href="/project/<?= $project->id ?>/updates" class="pronto" data-pronto-target="#project-tabs">
+                    <a href="/project/<?= $project->id ?>/updates" class="pronto" data-pronto-target="#project-tabs" data-pronto-scroll-to="#project-tabs-menu">
                         <div class="updates col-xs-4 text-center item <?= $this->show=='updates' ? 'current' : '' ?>" id="updates">
                                 <img class="" src="<?= SRC_URL . '/assets/img/project/news.png' ?>">
                                 <span class="label-item"><?= $this->text('project-menu-news') ?></span>
                         </div>
                     </a>
-                    <a href="/project/<?= $project->id ?>/participate" class="pronto" data-pronto-target="#project-tabs">
+                    <a href="/project/<?= $project->id ?>/participate" class="pronto" data-pronto-target="#project-tabs" data-pronto-scroll-to="#project-tabs-menu">
                         <div class="participate col-xs-4 text-center item <?= $this->show=='participate' ? 'current' : '' ?>" id="participate">
                                 <img class="" src="<?= SRC_URL . '/assets/img/project/participate.png' ?>">
                                 <span class="label-item"><?= $this->text('project-menu-participate') ?></span>
