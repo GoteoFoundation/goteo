@@ -1,10 +1,23 @@
 ---
+admin-action: 'Azione dell''amministratore'
 admin-NO: 'NO'
 admin-YES: SI
 admin-account-amount: 'Importo contribuito'
 admin-account-change-user: 'Cambia utente'
 admin-account-change-user-confirm: 'Sei sicuro/a di voler modificare l''utente del contributo? il/la nuovo/a utente sarà:'
 admin-account-convert-to-pool: 'Convertire in portafoglio'
+admin-account-convert-to-pool-ko: 'Il contributo non è stato convertito in portafoglio: %s'
+admin-account-convert-to-pool-ok: 'Convertito con successo a contributo di portafoglio'
 admin-account-detail: 'Dettagli della transazione'
 admin-account-donation: Donazione
+admin-account-invalid-invest: 'Contributo [%] non trovato!'
 admin-account-invest-date: 'Data del contributo'
+admin-account-invest-user-refund-ok: 'Contributi rimborsati correttamente'
+admin-account-modify-status: 'Modifica lo stato'
+admin-account-payment-method: 'Metodo di pagamento'
+admin-account-refund-to-pool: 'Rimborsare il contributo al portafoglio'
+admin-account-rewards: 'Ricompense scelte'
+admin-account-switch-pool-confirm: 'Questo vale solo per quando il progetto fallisce, non genera ne toglie soldi dal portafoglio. Vuoi continuare?'
+admin-back-detail: 'Torna ai dettagli'
+admin-back-list: 'Torna alla lista'
+admin-contents: 'Testi e traduzioni'
