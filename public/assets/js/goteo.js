@@ -43,6 +43,7 @@ goteo.error = function () {
 };
 
 var prontoTarget = '#main-content';
+var prontoScroll = '#main-content';
 var transitionDeferred;
 
 function getTransitionOutDeferred() {
@@ -66,25 +67,31 @@ function getTransitionOutDeferred() {
 
 function pageRequested(e) {
     // Update state to reflect loading
-    goteo.trace("Request new page");
+    goteo.trace("Request new page", e);
 }
 
 function pageLoadProgress(e, percent) {
     // Update progress to reflect loading
-    goteo.trace("New page load progress", percent);
+    goteo.trace("New page load progress", percent, e);
 }
 
 function pageLoaded(e) {
     // Unbind old events and remove plugins
-    goteo.trace("Destroy old page");
+    goteo.trace("Destroy old page", e);
 }
 
 function pageRendered(e) {
+    if(e === undefined) return;
     // Bind new events and initialize plugins
-    goteo.trace("Render new page");
+    goteo.trace("Render new page", e);
 
     // Animate content in
-    $(prontoTarget).animate({ opacity: 1 }, 500);
+    $(prontoTarget).animate({opacity: 1}, 500);
+    // Deferred scroll to allow html elements in place
+    // console.log('scroll-to:',prontoScroll, 'scroll-to-top:',$(prontoScroll).offset().top,'body-top:', $('html, body').scrollTop());
+    if($('html, body').scrollTop() > $(prontoScroll).offset().top) {
+        $('html, body').animate({scrollTop: $(prontoScroll).offset().top}, 800);
+    }
 }
 
 function pageLoadError(e, error) {
@@ -105,20 +112,21 @@ $(function(){
              .on("pronto.render", pageRendered)
              .on("pronto.error", pageLoadError);
 
-    $('#main-content').on('click', 'a.pronto', function(e){
+    $('#main').on('click', 'a.pronto', function(e){
         if($(this).data('pronto-target')) {
             prontoTarget = $(this).data('pronto-target');
-            $.pronto('defaults',{
-                target: { title: 'title', content: prontoTarget }
-            });
-        } else {
-            if(prontoTarget !== '#main-content') {
-                prontoTarget = '#main-content';
-                $.pronto('defaults',{
-                    target: { title: 'title', content: prontoTarget }
-                });
-            }
+        } else if(prontoTarget !== '#main-content') {
+            prontoTarget = '#main-content';
         }
+        if($(this).data('pronto-scroll-to')) {
+            prontoScroll = $(this).data('pronto-scroll-to');
+        } else if(prontoScroll !== prontoTarget) {
+            prontoScroll = prontoTarget;
+        }
+        // console.log('click',$(this).data('pronto-scroll-to'), prontoScroll);
+        $.pronto('defaults', {
+            target: { title: 'title', content: prontoTarget }
+        });
     });
     $.pronto({
         selector: "a.pronto",
@@ -130,7 +138,7 @@ $(function(){
     pageRendered();
 
     // Responsive tables initialization
-    $('table.footable').footable();
+    if($('table.footable').length) $('table.footable').footable();
 
 });
 
