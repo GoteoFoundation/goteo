@@ -38,3 +38,17 @@ admin-account-switch-pool: 'Schimbați grupul'
 admin-account-switch-pool-confirm: 'Acest lucru se aplică numai în cazul în care proiectul nu reuşeşte, nu generează și nici nu elimină monedă din portofelu electronic. Pot continua?'
 admin-account-switch-pool-fail: 'Imposibil de modificat starea de grup la această contribuţie'
 admin-account-transaction: 'Coduri de urmărire'
+admin-account-user-changed-error: 'Nu s-a putut schimba contribuţia utilizatorului [%ID%] la [%NAME%]!'
+admin-account-user-changed-successfully: 'Nu s-a putut schimba contribuţia utilizatorului [%ID%] la [%NAME%]'
+admin-address: Adresa
+admin-all: Toate
+admin-back: Înapoi
+admin-back-detail: 'Înapoi la detalii'
+admin-back-list: 'Înapoi la listă'
+admin-contents: 'Texte și traduceri'
+admin-empty-list: 'Nu s-au găsit înregistrări'
+admin-home: Pagina principală
+admin-items: bilete
+admin-mailing-back-to-list: 'Înapoi la comunicare'
+admin-mailing-communicating-with: 'Doream să comunicăm cu %DESC%'
+admin-mailing-created: 'Creat la data de'
