@@ -91,3 +91,6 @@ admin-project-to-negotiation-sure: 'ALERTA! Proiectul este publicat! Cu aceasta 
 admin-project-to-publish: 'Publică'
 admin-project-to-publish-desc: 'Alocați proiectului statusul de "Publicat"'
 admin-project-to-publish-sure: 'Proiectul e pe cale să înceapă campania. Pornim?'
+admin-project-derivation-discard: 'Respingere și întoarcere la origine'
+admin-project-derivation-discard-desc: 'Alocați proiectului statusul Respingere și trimiteți un email altor platforme mai potrivite'
+admin-project-derivation-discard-sure: 'Se va trimite un email automat altor platforme și proeictul va avea statusul respins. Ok?'
