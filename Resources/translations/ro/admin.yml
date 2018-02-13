@@ -1,7 +1,11 @@
 ---
+admin-action: 'Acţiune de administrator'
 admin-NO: 'Nu'
 admin-YES: Da
+admin-account-amount: 'Sumă cu care s-a contribuit'
 admin-account-change-user: 'Schimbare user'
+admin-account-change-user-confirm: 'Sunteți sigur că doriți să schimbați utilizatorul contribuției? Noul utilizator va fi:'
+admin-account-convert-to-pool: 'Convertește în monedă'
 admin-account-convert-to-pool-confirm: 'Acest lucru va elimina campania asociată cu această contribuţie şi va fi ca și cum a fost o achiziţie de monedă. TOATE RECOMPENSELE ASOCIATE VOR FI PIERDUTE. Continuați?'
 admin-account-convert-to-pool-ko: 'Contribuţia nu a fost convertită în monedă: %s'
 admin-account-convert-to-pool-ok: 'Contribuția a fost convertită cu succes în monedă'
@@ -9,5 +13,17 @@ admin-account-detail: 'Detaliile tranzacţiei'
 admin-account-donation: Donație
 admin-account-edit-reward: 'Gestionare recompensă/adresă'
 admin-account-invalid-invest: 'Contribuţia [%s] nu a fost găsită!'
+admin-account-invest-date: 'Data contribuției'
 admin-account-invest-non-pool-refundable: 'Această contribuţie nu poate fi plătită înapoi sub formă de monedă virtuală. Se pot rambursa numai contribuţii cu statusul "încasate"'
 admin-account-invest-non-user-refundable: "Această contribuție nu poate fi rambursată. Pot fi rambursate contribuţii cu statusul: \"În aşteptare\", \"Încasat\" și \"Monedă virtuală\", dacă există destui bani în cont ca să fie scăzuți \n"
+admin-account-invest-to-pool-ko: 'Imposibiitate în a transforma contribuția în monedă'
+admin-account-invest-to-pool-ok: 'Contribuția transformată în monedă virtuală. Valoarea a crescut cu (%s)'
+admin-account-invest-user-refund-fail-pool-amount: 'Această contribuție nu poate fi returnată, pentru că utilizatorul nu deține suficientă monedă în portofelul electronic (%s)'
+admin-account-invest-user-refund-ko: 'Contribuţia nu a putut fi returnată: [%s]'
+admin-account-invest-user-refund-ok: 'Contribuţie rambursată corect'
+admin-account-invest-user-refund-ok-pool: 'Contribuţie rambursată corect. Moneda virtuală din portofel s-a redus la %s'
+admin-account-issue-solved: 'Nu a avut loc transferul'
+admin-account-modify-status: 'Modifică statusul'
+admin-account-modify-status-confirm: "Sunteţi sigur că doriţi să schimbaţi manual starea pentru această contribuţie? Acest lucru este sensibil! NU SE VA MAI EFECTUA nici o operaţiune de returnare a contribuţiei. \n"
+admin-account-payment-method: 'Metodă de plată'
+admin-account-pool-on-fail: 'Grup (reveniți la portofelul virtual dacă lipsește)'
