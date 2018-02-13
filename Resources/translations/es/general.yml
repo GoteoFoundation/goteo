@@ -204,6 +204,8 @@ regular-input: Aporte
 regular-amount: Importe
 regular-copied: 'Copiado al portapapeles!'
 regular-remember-me: 'Recordar mis datos'
+regular-next: Siguiente
+regular-previous: Anterior
 session-about-to-expire: 'Tu sesión expirará en 10 minutos. ¿Quieres recargar la página para renovarla?'
 session-expired: 'Tu sesión en goteo ha expirado!'
 spread-about: 'Texto spread-about'

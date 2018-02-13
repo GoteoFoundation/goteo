@@ -86,7 +86,7 @@
 					</div>
 				<?php endforeach ?>
 
-				<?=$this->insert('partials/utils/paginator', ['total' => $this->investors_total, 'limit' => $this->investors_limit ? $this->investors_limit : 10])?>
+				<?=$this->insert('partials/utils/paginator', ['total' => $this->investors_total, 'limit' => $this->investors_limit ? $this->investors_limit : 10, 'a_extra' => 'class="pronto" data-pronto-target="#project-tabs" data-pronto-scroll-to="#supporters"'])?>
 
 			</div>
 		<!-- end body -->

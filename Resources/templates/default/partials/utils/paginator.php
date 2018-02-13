@@ -16,9 +16,25 @@ if (empty($page_var)) $page_var = 'pag';
 $pag = (int) $this->page;
 if(empty($pag)) $pag = (int) $this->get_query($page_var);
 
+
 // URL to be added the page_var variable
 $baselink =  (string) $this->baselink;
-if(empty($baselink)) $baselink = $this->get_pathinfo() . '?' . $this->get_querystring();
+if(empty($baselink)) {
+    $baselink = $this->get_pathinfo();
+
+    if($gets = parse_str($this->get_querystring())) {
+        $query_removal =  $this->query_removal;
+        if (empty($query_removal) || !is_array($query_removal)) {
+            $query_removal = ['pronto'];
+        }
+
+        if($query_removal) {
+            $gets = array_diff_key($gets, array_flip($query_removal));
+        }
+
+         $baselink .= '?'. http_build_query($gets, '', '&amp;');
+    }
+}
 
 // max number of pages without resuming in ... dots
 $max_pages =  (string) $this->max_pages;
