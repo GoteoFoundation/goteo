@@ -30,3 +30,11 @@ admin-account-pool-on-fail: 'Grup (reveniți la portofelul virtual dacă lipseș
 admin-account-refund-to-pool: 'Rambursați contribuția în portofelul electronic'
 admin-account-refund-to-pool-confirm: "Acest lucru va marca contribuţia astfel: \nReturnare dacă proiectul nu este de succes\nAnulare în cazul în care proiectul este activ sau de succes\nContribuția nu se va returnata utilizatorului, ci va fi generată monedă virtuală în portofelul utilizatorului. \nPot continua? \n"
 admin-account-refund-to-user: 'Rambursați contribuția către utilizator'
+admin-account-refund-to-user-confirm: "Acest lucru va marca contribuţia astfel: \nReturnare dacă proiectul nu este de succes\nAnulare în cazul în care proiectul este activ sau de succes\nContribuția se va returnata utilizatorului\nAcest lucru ar putea să NU funcționeze dacă contribuția este foarte veche sau dacă metoda de plata nu o mai permite.\nPot continua? \n"
+admin-account-rewards: 'Recompense selectate'
+admin-account-switch-donation: 'Schimbă donația'
+admin-account-switch-donation-confirm: 'Sunteți sigur că doriți să schimbați statusul donației?'
+admin-account-switch-pool: 'Schimbați grupul'
+admin-account-switch-pool-confirm: 'Acest lucru se aplică numai în cazul în care proiectul nu reuşeşte, nu generează și nici nu elimină monedă din portofelu electronic. Pot continua?'
+admin-account-switch-pool-fail: 'Imposibil de modificat starea de grup la această contribuţie'
+admin-account-transaction: 'Coduri de urmărire'
