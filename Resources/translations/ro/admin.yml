@@ -74,3 +74,20 @@ admin-text-type: 'Procesare text ca'
 admin-text-type-html: HTML
 admin-text-type-md: Reducere
 admin-text-type-plain: 'Text simplu'
+admin-user: Utilizator
+admin-users: Utilizatori
+admin-yes: Da
+admin-impersonate-user: În locul %s
+admin-project-express-discard: 'Exprimă respingerea'
+admin-project-express-discard-desc: 'Mutați proiectul cu status Respins și trimiteți un email'
+admin-project-express-discard-sure: 'Se va trimite un email automat și va fi respins. Ok?'
+admin-project-to-review: 'Revizuire'
+admin-project-to-review-desc: 'Alocați proiectului statusul În curs'
+admin-project-to-review-sure: 'Creatorul nu îl va mai putea edita. Ok?'
+admin-project-view-in-admin: 'A se vedea în admin'
+admin-project-to-negotiation: 'De negociat'
+admin-project-to-negotiation-desc: 'Alocați proiectului statusul de Editare'
+admin-project-to-negotiation-sure: 'ALERTA! Proiectul este publicat! Cu aceasta l-am șterge. Ok?'
+admin-project-to-publish: 'Publică'
+admin-project-to-publish-desc: 'Alocați proiectului statusul de "Publicat"'
+admin-project-to-publish-sure: 'Proiectul e pe cale să înceapă campania. Pornim?'
