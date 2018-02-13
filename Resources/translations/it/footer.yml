@@ -1,6 +1,6 @@
 ---
-footer-header-categories: Categorie 
-footer-header-projects: Progetti 
+footer-header-categories: Categorie
+footer-header-projects: Progetti
 footer-header-resources: Risorse
 footer-header-services: Servizi 
 footer-header-social: Seguici 
@@ -9,8 +9,11 @@ footer-platoniq-iniciative: 'Un''iniziativa di:'
 footer-resources-glossary: Glossario
 footer-resources-press: Stampa
 footer-resources-source_code: 'Codice sorgente AGPL3'
+footer-resources-stats: Statistiche
+footer-resources-channels: Canali
 footer-service-campaign: Campagne
 footer-service-consulting: Consulenza
+footer-service-pool: Portafoglio
 footer-service-resources: '*Clouddfunding '
 footer-service-workshop: Workshop
 regular-footer-contact: Contatto 
