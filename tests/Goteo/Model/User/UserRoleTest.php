@@ -3,13 +3,14 @@
 
 namespace Goteo\Model\User\Tests;
 
+use Goteo\Model\User;
 use Goteo\Model\User\UserRole;
 
 class UserRoleTest extends \PHPUnit_Framework_TestCase {
 
     public function testInstance() {
 
-        $ob = new UserRole();
+        $ob = new UserRole(new User());
 
         $this->assertInstanceOf('Goteo\Model\User\UserRole', $ob);
         $this->assertInstanceOf('\ArrayObject', $ob);
@@ -62,10 +63,27 @@ class UserRoleTest extends \PHPUnit_Framework_TestCase {
             $this->assertInstanceOf('Goteo\Application\Exception\RoleException', $e);
         }
         $this->assertTrue($roles->hasRole('user'));
+
+        return $roles;
     }
 
-    public function testPersistence() {
-        // TODO...
+    /**
+     * @depends testRemoveRoles
+     */
+    public function testPersistence($roles) {
+        $this->assertInstanceOf('Goteo\Model\User\UserRole', $roles->addRole('admin'));
+        $this->assertTrue($roles->save($errors), print_r($errors, true));
+        return $roles;
+    }
+
+    /**
+     * @depends testPersistence
+     */
+    public function testCheckPersistence($roles) {
+        $new = UserRole::getRolesForUser(get_test_user());
+        $this->assertInstanceOf('Goteo\Model\User\UserRole', $new);
+        $this->assertTrue($new->hasRole('user'));
+        $this->assertTrue($new->hasRole('admin'));
     }
 
     /**

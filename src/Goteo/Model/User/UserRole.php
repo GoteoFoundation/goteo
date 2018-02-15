@@ -23,13 +23,11 @@ use Goteo\Model\User;
  */
 class UserRole extends \ArrayObject
 {
-    public $user_id;
+    protected $user;
 
-    protected $permissions = array();
-
-    public function __construct() {
-        $args = func_get_args();
-        call_user_func_array(array('parent', '__construct'), $args);
+    public function __construct(User $user, $roles = []) {
+        $this->user = $user;
+        parent::__construct($roles);
         if(!$this->hasRole('user')) {
             $this->addRole('user');
         }
@@ -40,20 +38,19 @@ class UserRole extends \ArrayObject
      * @param  User   $user [description]
      * @return [type]       [description]
      */
-    public static function getRolesForUser($user_id) {
-        if($user_id instanceOf User) $user_id = $user_id->id;
+    public static function getRolesForUser(User $user) {
 
         $sql = "SELECT * FROM user_role WHERE user_id = ?";
 
         $roles = [];
-        if($query = User::query($sql, $user_id)) {
+        if($query = User::query($sql, $user->id)) {
             if($result = $query->fetchAll(\PDO::FETCH_OBJ)) {
                 foreach($result as $ob) {
                     if(Role::roleExists($ob->role_id)) $roles[$ob->role_id] = Role::getRolePerms($ob->role_id);
                 }
             }
         }
-        return new UserRole($roles);
+        return new UserRole($user, $roles);
     }
 
     /**
@@ -84,7 +81,30 @@ class UserRole extends \ArrayObject
      * Persists the current object to the database
      */
     public function save(&$errors = []) {
-        // TODO
+        $values = [':user_id' => $this->user->id];
+        $inserts = '';
+        $i = 0;
+        foreach($this as $role => $permissions) {
+            if($role !== 'user') {
+                $values[":role_$i"] = $role;
+                $inserts[] = ":role_$i, :user_id";
+                $i++;
+            }
+        }
+        $sql = "DELETE FROM user_role WHERE user_id = ?";
+        // die(\sqldbg($sql, [$this->user->id]));
+        $res = User::query($sql, $this->user_id);
+        if(!$inserts) {
+            return true;
+        }
+        $sql = "INSERT INTO user_role (role_id, user_id) VALUES (" . implode(',(', $inserts) .")";
+        try {
+            User::query($sql, $values);
+            return true;
+        } catch(\PDOException $e) {
+            $errors[] = $e->getMessage();
+        }
+        return false;
     }
 
     /**
