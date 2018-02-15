@@ -125,7 +125,6 @@ regular-view_project: 'Voir le projet'
 regular-weeks: Semaines
 regular-yes: Oui
 regular-name: Nom
-regular-call: Capital
 session-about-to-expire: 'La session se fermera dans 10 minutes. Desirez vous reloader la page pour renouveler la session?'
 session-expired: 'La session est terminée'
 tooltip-dashboard-user-access_data: 'Voici vos données d''accès actuelles. Attention, vous ne pouvez modifier votre LOGIN !'
