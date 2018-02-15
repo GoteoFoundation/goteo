@@ -47,6 +47,7 @@ admin:
     extends: consultant # inherits permissions from role "consultant"
     perms:
         - publish-any-project # Publish/unpublish any project
+        - assign-consultant # Assign consultant to a project
         - edit-any-project # Edit any project
         - remove-any-project # Remove any project
         - impersonate-users # Impersonate any user with roles below admin (excluding admins)

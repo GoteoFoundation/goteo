@@ -15,13 +15,13 @@ use Goteo\Application\Exception\RoleException;
 use Goteo\Model\User;
 
 /**
- * Class UserRole
+ * Class UserRoles
  * @package Goteo\Model\User
  *
  * Class for handeling user permissions
  *
  */
-class UserRole extends \ArrayObject
+class UserRoles extends \ArrayObject
 {
     protected $user;
 
@@ -44,13 +44,13 @@ class UserRole extends \ArrayObject
 
         $roles = [];
         if($query = User::query($sql, $user->id)) {
-            if($result = $query->fetchAll(\PDO::FETCH_OBJ)) {
+            if($result = $query->skipCache()->fetchAll(\PDO::FETCH_OBJ)) {
                 foreach($result as $ob) {
                     if(Role::roleExists($ob->role_id)) $roles[$ob->role_id] = Role::getRolePerms($ob->role_id);
                 }
             }
         }
-        return new UserRole($user, $roles);
+        return new UserRoles($user, $roles);
     }
 
     /**
@@ -58,6 +58,8 @@ class UserRole extends \ArrayObject
      */
     public function addRole($role) {
         if(Role::roleExists($role)) {
+            if($role === 'root') throw new RoleException("Role [root] cannot be added");
+
             $this->offsetSet($role, Role::getRolePerms($role));
         }
         return $this;
@@ -93,7 +95,8 @@ class UserRole extends \ArrayObject
         }
         $sql = "DELETE FROM user_role WHERE user_id = ?";
         // die(\sqldbg($sql, [$this->user->id]));
-        $res = User::query($sql, $this->user_id);
+        User::query($sql, $this->user->id);
+
         if(!$inserts) {
             return true;
         }
