@@ -4,14 +4,14 @@ feed-admin-invest-cancelled-pool: 'L''admin %ADMIN% ha cancel·lat i retornat al
 feed-admin-invest-cancelled-pool-subject: 'Càrrec cancel·lat al moneder manualment (admin)'
 feed-admin-invest-cancelled-subject: 'Càrrec cancel·lat manualment (admin)'
 feed-admin-invest-returned: 'L''admin %ADMIN% ha retornat l''aportació de %USER% de %AMOUNT% mitjançant %METHOD% (Id: %INVEST%) al projecte "%PROJECT%" del dia %DATE%'
-feed-admin-invest-returned-pool: "L'admin %ADMIN% ha retrocedit i retornat al monedero l'aportació de %USER% de %AMOUNT% mitjançant %METHOD% (Id: %INVEST%) al projecte \"%PROJECT%\" del dia %DATE%"
+feed-admin-invest-returned-pool: "L'admin %ADMIN% ha retrocedit i retornat al monedero l'aportació de %USER% de %AMOUNT% mitjançant %METHOD% (Id: %INVEST%) al projecte \"%PROJECT%\" del dia %DATE%\\\\r\n"
 feed-admin-invest-returned-pool-subject: 'Càrrec retornat al moneder manualment (admin)'
 feed-admin-invest-returned-subject: 'Càrrec retornat manualment (admin)'
 feed-admin-invest-manual-subject: 'Aportació manual (admin)'
 feed-admin-invest-manual: '%ADMIN% ha aportat %AMOUNT% al projecte %PROJECT% en nom de %USER%'
 feed-admin-invest-modified-subject: 'Càrrec modificat manualment (admin)'
 feed-admin-invest-modified: 'L''admin %ADMIN% ha modificat l''aportació %INVEST% de %AMOUNT%. Antic usuari: %OLDUSER%. Nou usuari: %NEWUSER%'
-feed-admin-massive: "L'admin %USER% ha iniciat una %TYPE% a %TO%"
+feed-admin-massive: "L'admin %USER% ha iniciat una %TYPE% a %TO%\\\\r\n"
 feed-admin-massive-communication: 'Comunicació massiva'
 feed-admin-massive-subject: 'comunicació massiva a usuaris (admin)'
 feed-admin-new_project: 'Publicació automàtica d''un projecte'

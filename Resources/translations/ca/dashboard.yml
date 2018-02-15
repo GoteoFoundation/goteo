@@ -72,7 +72,7 @@ dashboard-menu-projects-messegers: Participants
 dashboard-menu-projects-preview: 'Pàgina pública'
 dashboard-menu-projects-rewards: Gestió cofinançadors
 dashboard-menu-projects-summary: Resum
-dashboard-menu-projects-supports: Col·laboracions
+dashboard-menu-projects-supports: Col·laboracions 
 dashboard-menu-projects-updates: Actualitzacions
 dashboard-menu-projects-widgets: Widget
 dashboard-menu-review_board: Revisió
@@ -140,7 +140,7 @@ dashboard-rewards-user_order: 'Per usuari'
 dashboard-translate-doing_call: 'Estàs traduint la convocatòria <strong>%s</strong>. L''idioma original és <strong>%s</strong>'
 dashboard-translate-doing_node: 'Estàs traduint el node <strong>%s</strong>. L''idioma original és <strong>Català</strong>'
 dashboard-translate-doing_profile: 'Estàs traduint el teu perfil personal.'
-dashboard-translate-doing_project: "Estàs traduint el projecte <strong>%s</strong>. L'idioma original és <strong>%s</strong>"
+dashboard-translate-doing_project: "Estàs traduint el projecte <strong>%s</strong>. L'idioma original és <strong>%s</strong>\\\\r\n"
 dashboard-translate-select_call: 'Selecciona convocatòria per traduir'
 dashboard-translate-select_node: 'Selecciona node per traduir'
 dashboard-translate-select_profile: 'Traduir el teu perfil personal'
