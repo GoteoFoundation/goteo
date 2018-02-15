@@ -13,17 +13,18 @@ namespace Goteo\Application;
 use Goteo\Application\Exception\RoleException;
 
 class Role {
+    // This is set by Config using file Resources/roles.yml
+    // Plugins can add their roles as well
     private static $roles = [];
 
-    // This is overwriten by Config using file Resources/roles.yml
-    // Plugins can add their roles as well
-    static protected  $roles_available = [];
-
-    public function addRole($role_id, array $permissions = []) {
+    public static function addRole($role_id, array $permissions = []) {
         static::$roles[$role_id] = $permissions;
     }
 
-    public function addRolesFromArray(array $roles) {
+    /**
+     * Sets a full collection of roles from an array styled as Resources/roles.yml
+     */
+    public static function addRolesFromArray(array $roles) {
         $extends = [];
         foreach($roles as $role_id => $parts) {
             if($parts['extends']) {
@@ -40,7 +41,15 @@ class Role {
         }
     }
 
-    public function getRoles() {
+    public static function getRoles() {
         return static::$roles;
+    }
+
+    public static function getRolePerms($role_id) {
+        return static::$roles[$role_id];
+    }
+
+    public static function roleHasPerm($role_id, $permission) {
+        return isset(static::$roles[$role_id]) && in_array($permission, static::$roles[$role_id]);
     }
 }
