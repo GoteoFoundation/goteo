@@ -14,6 +14,14 @@ class RoleTest extends \PHPUnit_Framework_TestCase {
         $this->assertInstanceOf('\Goteo\Application\Role', $ob);
 
     }
+    public function testDefaults() {
+        $this->assertInternalType('array', Role::getRolePerms('non-existing-role'));
+        try {
+            Role::addRolePerms('non-existing-role', 'test');
+        } catch(\Exception $e) {
+            $this->assertInstanceOf('Goteo\Application\Exception\RoleException', $e);
+        }
+    }
 
     public function testAddRoles() {
         $roles = [
@@ -47,6 +55,12 @@ class RoleTest extends \PHPUnit_Framework_TestCase {
         $this->assertContains('perm1', $roles['admin1']);
         $this->assertContains('perm2', $roles['admin1']);
 
+    }
+
+    public function testRoleExists() {
+        $this->assertTrue(Role::roleExists('admin1'));
+        $this->assertTrue(Role::roleExists('user1'));
+        $this->assertFalse(Role::roleExists('admin2'));
     }
 
     public function testRoleGetPerm() {
