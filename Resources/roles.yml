@@ -4,7 +4,8 @@
 # Labels and descriptions for roles can be found in translations/{LANG}/roles.yml
 #
 # Historical roles are vip, translator, admin, caller, checker, manager, root, superadmin
-user:
+
+user: # This user is assigned automatically to all users regardless the user_role table
     perms:
         - create-project # create own projects
         - edit-project   # edit own projects

@@ -21,6 +21,14 @@ class Role {
         static::$roles[$role_id] = $permissions;
     }
 
+    public static function addRolePerms($role_id, $permissions) {
+        if(!is_array($permissions)) $permissions = [$permissions];
+
+        if(!isset(static::$roles[$role_id])) throw new RoleException("Role [$role_id] does not exist!");
+
+        static::$roles[$role_id] = array_merge($permissions, static::$roles[$role_id]);
+    }
+
     /**
      * Sets a full collection of roles from an array styled as Resources/roles.yml
      */
@@ -36,7 +44,7 @@ class Role {
 
         foreach($extends as $role => $parent) {
             if(isset(static::$roles[$role]) && static::$roles[$parent]) {
-                static::$roles[$role] = array_merge(static::$roles[$parent], static::$roles[$role]);
+                static::addRolePerms($role, static::$roles[$parent]);
             }
         }
     }
@@ -45,8 +53,12 @@ class Role {
         return static::$roles;
     }
 
+    public static function roleExists($role_id) {
+        return isset(static::$roles[$role_id]);
+    }
+
     public static function getRolePerms($role_id) {
-        return static::$roles[$role_id];
+        return isset(static::$roles[$role_id]) ? static::$roles[$role_id] : [];
     }
 
     public static function roleHasPerm($role_id, $permission) {
