@@ -121,7 +121,6 @@ regular-view_project: 'Vedere progetto '
 regular-weeks: settimane
 regular-yes: Si 
 regular-name: Nome
-regular-call: '*Clouddfunding '
 session-about-to-expire: 'La tua sessione scadrà tra 10 minuti. Vuoi ricaricare la pagina per rinnovarla? '
 session-expired: 'La tua sessione su Goteo è scaduta '
 stories-user-project: '%s, del progetto:%s'
