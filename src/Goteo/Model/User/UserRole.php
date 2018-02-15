@@ -19,7 +19,7 @@ use Goteo\Application\Role;
  * Class for handeling user permissions
  *
  */
-class UserRole extends \Goteo\Core\Model {
+class UserRole extends \Goteo\Core\Model
 {
     protected $permissions = array();
     protected $role_id;
