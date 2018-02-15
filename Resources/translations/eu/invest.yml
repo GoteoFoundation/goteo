@@ -27,7 +27,7 @@ invest-donation-header: 'Sar itzazu datu fiskalak dohaina egiteko'
 invest-fiscal-skip: 'Orain ez ditut datu horiek bete nahi'
 invest-fiscal-title: 'Ziurta ezazu zure zerga ekarpenak kenkaria izan dezakeela (Espainiako zergadunentzat)'
 invest-mail_info-address: 'Honako helbide hau aukeratu duzu:'
-invest-mail_info-drop: 'Gainera, %s-(e)k %s ureztatze kapitala jarri du %s kanpainaren bitartez'
+invest-mail_info-drop: 'Gainera, %s-(e) k %s matchfunding jarri du %s kanpainaren bitartez'
 invest-make-sure-save: Gorde
 invest-make-sure-title: Berretsi
 invest-method-title: 'Egin zure ekarpena'

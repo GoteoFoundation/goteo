@@ -73,8 +73,7 @@ regular-calendar: Calendari
 regular-cancel: Cancel·lar
 regular-cancel-back: 'Cancel·lar i torna enrere'
 regular-back: 'Torna enrere'
-regular-channel: Canal
-regular-collaborate: Col·labora
+regular-collaborate: Col·labora 
 regular-content: Contingut
 regular-continue-question: 'Continuar?'
 regular-create: 'Crea un projecte'
@@ -134,12 +133,12 @@ regular-menu-personal: Menú personal
 regular-message-clipboard-fail: 'Selecciona i copia aquest enllaç'
 regular-message_fail: 'Hi ha hagut algun error en enviar el missatge'
 regular-message_success: 'Missatge enviat correctament'
-regular-months: mesos
+regular-months: mesos 
 regular-more_info: '+ info'
 regular-news: 'Notícies: '
 regular-no: 'No'
 regular-of: de
-regular-preview: Previsualitzar
+regular-preview: Previsualitzar 
 regular-projects: projectes
 regular-published_no: Esborrany
 regular-published_yes: Publicat
@@ -202,7 +201,7 @@ regular-next: Següent
 regular-previous: Anterior
 session-about-to-expire: 'La teva sessió expirarà en 10 minuts. ¿Vols recarregar la pàgina per renovar-la?'
 session-expired: 'La teva sessió ha expirat!'
-stories-user-project: "%s, del projecte: %s"
+stories-user-project: "%s, del projecte: %s\\\\r\n"
 support-our-mission: 'Dóna suport a la nostra missió'
 tooltip: 'Text d''ajuda'
 tooltip-dashboard-user-access_data: 'Aquestes són les teves dades actuals d''accés. L''única cosa que no es pot canviar és el login o nom d''usuari.'
