@@ -32,11 +32,11 @@ invest-amount-in-pool: 'You’ve got %s in your virtual purse'
 invest-amount-tooltip: 'Enter the quantity with which you want to support this project'
 invest-anonymous: 'I want my contribution to be anonymous'
 invest-button: Contribute
-invest-called-allready: 'You''ve allready backed this project. No <strong>Feeder Capital</strong> from the <span class="call">%s</span> cloudfunding call will be released.'
+invest-called-allready: 'You''ve already backed this project. No more <strong>Matchfunding</strong> funds from the call <span class="call">%s</span> will be added'
 invest-called-maxdrop: 'Up to a maximum of <strong>%s &euro;</strong>'
-invest-called-maxproj: 'This project has obtained the maximum quantity of <strong>Feeder Capital</strong> from the <span class="call">%s</span> cloudfunding call'
-invest-called-nodrop: 'Now there is no <strong>Feeder Capital</strong> left for this cloudfunding call: %s'
-invest-called-rest: 'There’s just <strong>%s €</strong> left of <strong>Feeder Capital</strong> in this cloudfunding call <span class="call">%s</span>'
+invest-called-maxproj: 'This project has obtained the maximum quantity of <strong>Matchfunding</strong> from the call <span class="call">%s</span>.'
+invest-called-nodrop: 'Currently, there is no more <strong>Matchfunding</strong> left for the call %s'
+invest-called-rest: 'There’s just <strong>%s €</strong> left of <strong>Matchfunding</strong> for the call <span class="call">%s</span>'
 invest-card-method: Credit Card
 invest-donation-header: 'Enter the fiscal information for this donation'
 invest-drop-method: Matching funds
