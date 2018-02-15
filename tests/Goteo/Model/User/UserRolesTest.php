@@ -3,24 +3,25 @@
 
 namespace Goteo\Model\User\Tests;
 
+use Goteo\Core\DB;
 use Goteo\Model\User;
-use Goteo\Model\User\UserRole;
+use Goteo\Model\User\UserRoles;
 
-class UserRoleTest extends \PHPUnit_Framework_TestCase {
+class UserRolesTest extends \PHPUnit_Framework_TestCase {
 
     public function testInstance() {
 
-        $ob = new UserRole(new User());
+        $ob = new UserRoles(new User());
 
-        $this->assertInstanceOf('Goteo\Model\User\UserRole', $ob);
+        $this->assertInstanceOf('Goteo\Model\User\UserRoles', $ob);
         $this->assertInstanceOf('\ArrayObject', $ob);
 
         return $ob;
     }
 
     public function testGetRole() {
-        $roles = UserRole::getRolesForUser(get_test_user());
-        $this->assertInstanceOf('Goteo\Model\User\UserRole', $roles);
+        $roles = UserRoles::getRolesForUser(get_test_user());
+        $this->assertInstanceOf('Goteo\Model\User\UserRoles', $roles);
         $this->assertInstanceOf('\ArrayObject', $roles);
 
         return $roles;
@@ -41,9 +42,17 @@ class UserRoleTest extends \PHPUnit_Framework_TestCase {
      * @depends testGetRole
      */
     public function testAddRoles($roles) {
-        $this->assertInstanceOf('Goteo\Model\User\UserRole', $roles->addRole('admin'));
+        $this->assertInstanceOf('Goteo\Model\User\UserRoles', $roles->addRole('admin'));
         $this->assertTrue($roles->hasRole('admin'));
         $this->assertTrue($roles->hasPerm('publish-any-project'));
+
+        try {
+            // Role root cannot be added
+            $roles->addRole('root');
+        } catch(\Exception $e) {
+            $this->assertInstanceOf('Goteo\Application\Exception\RoleException', $e);
+        }
+        $this->assertFalse($roles->hasRole('root'));
         return $roles;
     }
 
@@ -51,7 +60,7 @@ class UserRoleTest extends \PHPUnit_Framework_TestCase {
      * @depends testAddRoles
      */
     public function testRemoveRoles($roles) {
-        $this->assertInstanceOf('Goteo\Model\User\UserRole', $roles->removeRole('admin'));
+        $this->assertInstanceOf('Goteo\Model\User\UserRoles', $roles->removeRole('admin'));
         $this->assertTrue($roles->hasRole('user'));
         $this->assertTrue($roles->hasPerm('create-project'));
         $this->assertFalse($roles->hasRole('admin'));
@@ -71,7 +80,7 @@ class UserRoleTest extends \PHPUnit_Framework_TestCase {
      * @depends testRemoveRoles
      */
     public function testPersistence($roles) {
-        $this->assertInstanceOf('Goteo\Model\User\UserRole', $roles->addRole('admin'));
+        $this->assertInstanceOf('Goteo\Model\User\UserRoles', $roles->addRole('admin'));
         $this->assertTrue($roles->save($errors), print_r($errors, true));
         return $roles;
     }
@@ -80,11 +89,24 @@ class UserRoleTest extends \PHPUnit_Framework_TestCase {
      * @depends testPersistence
      */
     public function testCheckPersistence($roles) {
-        $new = UserRole::getRolesForUser(get_test_user());
-        $this->assertInstanceOf('Goteo\Model\User\UserRole', $new);
+        // DB::cache(false);
+        $new = UserRoles::getRolesForUser(get_test_user());
+        $this->assertInstanceOf('Goteo\Model\User\UserRoles', $new);
         $this->assertTrue($new->hasRole('user'));
         $this->assertTrue($new->hasRole('admin'));
+        $new->removeRole('admin');
+
+        $new2 = UserRoles::getRolesForUser(get_test_user());
+        $this->assertTrue($new2->hasRole('admin'));
+
+        $this->assertTrue($new->save($errors), print_r($errors, true));
+        $this->assertFalse($new->hasRole('admin'));
+        $this->assertTrue($new2->hasRole('admin'));
+
+        $new3 = UserRoles::getRolesForUser(get_test_user());
+        $this->assertFalse($new3->hasRole('admin'));
     }
+
 
     /**
      * Some cleanup
