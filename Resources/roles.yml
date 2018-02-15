@@ -1,0 +1,62 @@
+---
+# Default roles list
+#
+# Labels and descriptions for roles can be found in translations/{LANG}/roles.yml
+#
+# Historical roles are vip, translator, admin, caller, checker, manager, root, superadmin
+user: &user
+    perms:
+        - create-project # create own projects
+        - edit-project   # edit own projects
+        - remove-project # remove own project
+
+vip: &vip
+    parent: *user # inherits permissions from role "user"
+    perms:
+        - recommend-projects # personal list of recommended projects
+
+translator: &translator
+    parent: *user # inherits permissions from role "user"
+    perms:
+        - translate-language # translate assigned language in user_translang table
+
+consultant: &consultant
+    parent: *user # inherits permissions from role "user"
+    perms:
+        - publish-projects # Publish//unpublish assigned projects as a consultant
+        - edit-projects # Edit projects assigned as a consultant
+        - remove-projects # Remove projects assigned as a consultant
+        - impersonate-owners # Impersonate projects owners assigned as a consultant
+
+# caller:
+#     parent: *user
+#     name: Convocador
+
+# checker:
+#     parent: *user
+#     name: Revisor de proyectos
+
+# manager:
+#     parent: *user
+#     name: Gestor de contratos
+#     perms:
+#         -
+
+admin: &admin
+    parent: *consultant # inherits permissions from role "consultant"
+    perms:
+        - publish-any-project # Publish/unpublish any project
+        - edit-any-project # Edit any project
+        - remove-any-project # Remove any project
+        - impersonate-users # Impersonate any user with roles below admin (excluding admins)
+
+superadmin: &superadmin
+    name: Super administrador
+    parent: *admin
+    perms:
+        - impersonate-admins # Impersonate any user with any role (except super-admins)
+
+root: # This user has to be assigned manually in the table user_role
+    parent: *superadmin
+    perms:
+        - impersonate-everyone # Impersonate any user
