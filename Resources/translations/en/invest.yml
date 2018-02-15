@@ -45,7 +45,7 @@ invest-fiscal-skip: 'I don’t want to fill in this now'
 invest-fiscal-title: 'Make sure you can get a Tax return on your contribution (only for declarants in Spain)'
 invest-login-alert: 'You must register or <a href="%s">log in</a> to make your contribution'
 invest-mail_info-address: 'You''ll receive the reward at the following address:'
-invest-mail_info-drop: 'Has also, %s contributed %s of cloudfunding via the %s campaign '
+invest-mail_info-drop: 'Has also, %s contributed %s of matchfunding via the %s campaign'
 invest-make-sure-save: Save
 invest-make-sure-title: Confirm
 invest-method: 'Payment method'
