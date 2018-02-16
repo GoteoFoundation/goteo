@@ -7,9 +7,9 @@
 
 user: # This user is assigned automatically to all users regardless the user_role table
     perms:
-        - create-project # create own projects
-        - edit-project   # edit own projects
-        - remove-project # remove own project
+        - create-project # create own projects, this permission is implicit
+        - edit-project   # edit own projects, this permission is implicit
+        - remove-project # remove own project, this permission is implicit
 
 vip:
     extends: user # inherits permissions from role "user"
@@ -31,6 +31,12 @@ checker:
     perms:
         - review-project # View/review an assigned review project before their publication
 
+manager:
+    extends: user
+    perms:
+        - view-any-project # View any editing project
+        - edit-published-project # Edit any published project
+
 consultant:
     extends: checker # inherits permissions from role "user"
     perms:
@@ -40,13 +46,6 @@ consultant:
         - remove-projects # Remove projects assigned as a consultant
         - impersonate-owners # Impersonate projects owners assigned as a consultant
         - assign-checker # Assignate any other user for review projects
-
-
-# manager:
-#     extends: user
-#     name: Gestor de contratos
-#     perms:
-#         -
 
 admin:
     extends: consultant # inherits permissions from role "consultant"

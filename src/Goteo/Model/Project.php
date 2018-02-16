@@ -281,12 +281,18 @@ namespace Goteo\Model {
                 return true;
             }
 
+            if($user->hasPerm('edit-any-project')) return true;
+            if($user->hasPerm('edit-published-project') && $this->isApproved()) return true;
+            if($user->hasPerm('edit-projects', $this->id)) return true;
+            if($user->hasPerm('review-project', $this->id)) return true;
+
+            // Legacy roles
             // is superadmin in the project node
-            if($user->hasRoleInNode($this->node, ['manager', 'superadmin', 'root'])) return true;
+            // if($user->hasRoleInNode($this->node, ['manager', 'superadmin', 'root'])) return true;
             // is a consultant
-            if($user->hasRoleInNode($this->node, ['consultant', 'admin']) && array_key_exists($user->id, $this->getConsultants())) return true;
+            // if($user->hasRoleInNode($this->node, ['consultant', 'admin']) && array_key_exists($user->id, $this->getConsultants())) return true;
             // is reviewer
-            if($user->hasRoleInNode($this->node, ['checker']) && User\Review::is_assigned($user->id, $this->id)) return true;
+            // if($user->hasRoleInNode($this->node, ['checker']) && User\Review::is_assigned($user->id, $this->id)) return true;
             return false;
         }
 
@@ -301,8 +307,13 @@ namespace Goteo\Model {
             if(!in_array($this->status, array(self::STATUS_DRAFT, self::STATUS_REJECTED, self::STATUS_EDITING))) return false;
             // owns the project
             if($this->owner === $user->id) return true;
+
+            if($user->hasPerm('delete-any-project')) return true;
+            if($user->hasPerm('remove-projects', $this->id)) return true;
+
+            // Legacy roles
             // is superadmin in the project node
-            if($user->hasRoleInNode($this->node, ['superadmin', 'root'])) return true;
+            // if($user->hasRoleInNode($this->node, ['superadmin', 'root'])) return true;
 
             return false;
         }
@@ -316,10 +327,13 @@ namespace Goteo\Model {
             if(empty($user)) return false;
             if(!$user instanceOf User) return false;
 
+            if($user->hasPerm('publish-any-project')) return true;
+            if($user->hasPerm('publish-projects', $this->id)) return true;
+            // Legacy roles
             // is superadmin in the project node
-            if($user->hasRoleInNode($this->node, ['superadmin', 'root'])) return true;
+            // if($user->hasRoleInNode($this->node, ['superadmin', 'root'])) return true;
             // is a consultant
-            if($user->hasRoleInNode($this->node, ['consultant', 'admin']) && array_key_exists($user->id, $this->getConsultants())) return true;
+            // if($user->hasRoleInNode($this->node, ['consultant', 'admin']) && array_key_exists($user->id, $this->getConsultants())) return true;
 
             return false;
         }
@@ -333,8 +347,11 @@ namespace Goteo\Model {
             if(empty($user)) return false;
             if(!$user instanceOf User) return false;
 
+            if($user->hasPerm('edit-any-project')) return true;
+            if($user->hasPerm('edit-published-projects') && $this->isApproved()) return true;
+            // Legacy roles
             // is manager or superadmin in the project node
-            if($user->hasRoleInNode($this->node, ['manager', 'superadmin', 'root'])) return true;
+            // if($user->hasRoleInNode($this->node, ['manager', 'superadmin', 'root'])) return true;
 
             return false;
         }
@@ -349,10 +366,13 @@ namespace Goteo\Model {
             if(empty($user)) return false;
             if(!$user instanceOf User) return false;
 
-            $roles = ['superadmin', 'root'];
-            if($include_admins) $roles[] = 'admin';
-            // is superadmin in the project node
-            if($user->hasRoleInNode($this->node, $roles)) return true;
+            if($user->hasPerm('edit-any-project')) return true;
+            if($include_admins && $user->hasPerm('edit-projects', $this->id)) return true;
+            // Legacy roles
+            // $roles = ['superadmin', 'root'];
+            // if($include_admins) $roles[] = 'admin';
+            // // is superadmin in the project node
+            // if($user->hasRoleInNode($this->node, $roles)) return true;
 
             return false;
         }
