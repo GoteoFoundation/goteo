@@ -2,6 +2,7 @@
 role-name-user: 'Non privileged user'
 role-name-vip: 'VIP user (godfather)'
 role-name-translator: 'Content translator'
+role-name-checker: 'Project reviewer'
 role-name-consultant: 'Project''s consultant'
 role-name-admin: 'Consultant''s administrator'
 role-name-superadmin: 'Super-Administrator'

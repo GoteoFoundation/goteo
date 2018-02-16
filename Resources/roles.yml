@@ -21,9 +21,15 @@ translator:
     perms:
         - translate-language # translate assigned language in user_translang table
 
+checker:
+    extends: user
+    perms:
+        - review-project # View/review an assigned review project before their publication
+
 consultant:
     extends: user # inherits permissions from role "user"
     perms:
+        - view-any-project # View any editing project
         - publish-projects # Publish//unpublish assigned projects as a consultant
         - edit-projects # Edit projects assigned as a consultant
         - remove-projects # Remove projects assigned as a consultant
@@ -32,10 +38,6 @@ consultant:
 # caller:
 #     extends: user
 #     name: Convocador
-
-# checker:
-#     extends: user
-#     name: Revisor de proyectos
 
 # manager:
 #     extends: user

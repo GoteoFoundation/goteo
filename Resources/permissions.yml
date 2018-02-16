@@ -1,0 +1,88 @@
+---
+# Full list of Permissions in Goteo
+#
+# Some permission require to check if the user and the model_ID is present in
+# a table.
+#
+# Example:
+#   permission review-project is bind with the user_review table where
+#   user_review:user must be the user_ID and user_review:review must be the review_ID
+#
+# These are the defaults, can be extended by plugins
+
+create-project: # create own projects
+    model: null
+    relational: null
+
+edit-project:   # edit own projects
+    model: null
+    relational: null
+
+remove-project: # remove own project
+    model: null
+    relational: null
+
+recommend-projects: # can have a personal list of recommended projects
+    model: null
+    relational: null
+
+translate-language: # translate assigned language in user_translang table
+    model: null
+    relational:
+        table: user_translang
+        user_id: user # relational user_ID in user_translang table
+
+review-project: # View/review an assigned review project before their publication
+    model: review
+    relational:
+        table: user_review
+        user_id: user
+        table_id: review # relational review_ID in user_review table
+
+view-any-project: # View any editing project
+    model: null
+    relational: null
+
+publish-projects: # Publish//unpublish assigned projects as a consultant
+    model: null
+    relational: null
+
+edit-projects: # Edit projects assigned as a consultant
+    model: null
+    relational: null
+
+remove-projects: # Remove projects assigned as a consultant
+    model: null
+    relational: null
+
+impersonate-owners: # Impersonate projects owners assigned as a consultant
+    model: null
+    relational: null
+
+publish-any-project: # Publish/unpublish any project
+    model: null
+    relational: null
+
+assign-consultant: # Assign consultant to a project
+    model: null
+    relational: null
+
+edit-any-project: # Edit any project
+    model: null
+    relational: null
+
+remove-any-project: # Remove any project
+    model: null
+    relational: null
+
+impersonate-users: # Impersonate any user with roles below admin (excluding admins)
+    model: null
+    relational: null
+
+impersonate-admins: # Impersonate any user with any role (except super-admins)
+    model: null
+    relational: null
+
+impersonate-everyone: # Impersonate any user
+    model: null
+    relational: null

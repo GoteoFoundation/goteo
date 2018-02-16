@@ -14,8 +14,13 @@ use Goteo\Application\Exception\RoleException;
 
 class Role {
     // This is set by Config using file Resources/roles.yml
-    // Plugins can add their roles as well
+    // Plugins can add their roles as well using addRole and addRolePerms
     private static $roles = [];
+
+    //
+    private static $permission_tables = [
+        'review-project' =>
+    ];
 
     public static function addRole($role_id, array $permissions = []) {
         static::$roles[$role_id] = $permissions;

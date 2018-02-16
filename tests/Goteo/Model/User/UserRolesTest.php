@@ -109,6 +109,13 @@ class UserRolesTest extends \PHPUnit_Framework_TestCase {
 
 
     /**
+     * @depends testPersistence
+     */
+    public function testRelationalPermsTranslator($roles) {
+        $this->assertInstanceOf('Goteo\Model\User\UserRoles', $roles->addRole('translator'));
+    }
+
+    /**
      * Some cleanup
      */
     static function tearDownAfterClass() {
