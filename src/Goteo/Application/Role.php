@@ -56,6 +56,12 @@ class Role {
         if(!$relational || !is_array($relational)) {
             $relational = [];
         }
+        if(!$model || !is_array($model)) {
+            $model = [];
+        }
+        if(!isset($model['table'])) $model['table'] = null;
+        if(!isset($model['table_id'])) $model['table_id'] = null;
+        if(!isset($model['query_id'])) $model['query_id'] = $model['table_id'];
         if(!isset($relational['table'])) $relational['table'] = null;
         if(!isset($relational['user_id'])) $relational['user_id'] = null;
         if(!isset($relational['table_id'])) $relational['table_id'] = null;
