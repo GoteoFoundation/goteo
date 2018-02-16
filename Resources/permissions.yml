@@ -47,6 +47,15 @@ review-project: # View/review an assigned review project before their publicatio
         user_id: user
         table_id: review # relational review_ID in user_review table
 
+view-call-project: # view projects included in the user_call table
+    model:
+        table: call
+        table_id: id
+    relational:
+        table: user_call
+        user_id: user
+        table_id: call # relational call_ID in user_call table
+
 view-any-project: # View any editing project
     model: null
     relational: null
