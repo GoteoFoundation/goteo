@@ -27,13 +27,14 @@ checker:
         - review-project # View/review an assigned review project before their publication
 
 consultant:
-    extends: user # inherits permissions from role "user"
+    extends: checker # inherits permissions from role "user"
     perms:
         - view-any-project # View any editing project
         - publish-projects # Publish//unpublish assigned projects as a consultant
         - edit-projects # Edit projects assigned as a consultant
         - remove-projects # Remove projects assigned as a consultant
         - impersonate-owners # Impersonate projects owners assigned as a consultant
+        - assign-checker # Assignate any other user for review projects
 
 # caller:
 #     extends: user

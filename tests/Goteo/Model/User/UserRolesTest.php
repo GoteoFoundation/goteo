@@ -3,7 +3,6 @@
 
 namespace Goteo\Model\User\Tests;
 
-use Goteo\Core\DB;
 use Goteo\Model\User;
 use Goteo\Model\User\UserRoles;
 
@@ -89,7 +88,6 @@ class UserRolesTest extends \PHPUnit_Framework_TestCase {
      * @depends testPersistence
      */
     public function testCheckPersistence($roles) {
-        // DB::cache(false);
         $new = UserRoles::getRolesForUser(get_test_user());
         $this->assertInstanceOf('Goteo\Model\User\UserRoles', $new);
         $this->assertTrue($new->hasRole('user'));
@@ -119,12 +117,29 @@ class UserRolesTest extends \PHPUnit_Framework_TestCase {
 
         $this->assertInstanceOf('Goteo\Model\User\UserRoles', $roles->assignUserPerm('translate-language', 'en'));
         $this->assertTrue($roles->hasPerm('translate-language', 'en'));
+        return $roles;
+    }
+
+    /**
+     * @depends testRelationalPermsTranslator
+     */
+    public function testRelationalPermsReview($roles) {
+        $this->assertInstanceOf('Goteo\Model\User\UserRoles', $roles->addRole('checker'));
+        $this->assertTrue($roles->hasRole('checker'));
+        $this->assertTrue($roles->hasPerm('review-project'));
+        $this->assertFalse($roles->hasPerm('review-project', get_test_project()->id));
+
+        User::query('insert into review (project) values (?)', [get_test_project()->id]);
+        $this->assertInstanceOf('Goteo\Model\User\UserRoles', $roles->assignUserPerm('review-project', get_test_project()->id));
+        $this->assertTrue($roles->hasPerm('review-project', get_test_project()->id));
+        return $roles;
     }
 
     /**
      * Some cleanup
      */
     static function tearDownAfterClass() {
+        delete_test_project();
         delete_test_user();
         delete_test_node();
     }

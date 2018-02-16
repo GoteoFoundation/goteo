@@ -26,6 +26,10 @@ recommend-projects: # can have a personal list of recommended projects
     model: null
     relational: null
 
+assign-checker: # Assign any user for project review
+    model: null
+    relational: null
+
 translate-language: # translate assigned language in user_translang table
     model: null
     relational:
@@ -34,7 +38,10 @@ translate-language: # translate assigned language in user_translang table
         table_id: lang
 
 review-project: # View/review an assigned review project before their publication
-    model: review
+    model:
+        table: review
+        table_id: id
+        query_id: project
     relational:
         table: user_review
         user_id: user
