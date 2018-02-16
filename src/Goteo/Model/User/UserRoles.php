@@ -119,7 +119,7 @@ class UserRoles extends \ArrayObject
     }
 
     // check if a permission is set
-    public function hasPerm($perms) {
+    public function hasPerm($perms, $model_id = null) {
         if(!is_array($perms)) $perms = [$perms];
         foreach($this as $role => $permissions) {
             if(array_intersect($perms, $permissions)) return true;

@@ -2,6 +2,7 @@
 role-name-user: 'Usuari sense privilegis'
 role-name-vip: 'Usuari VIP (padrí)'
 role-name-translator: 'Traductor de continguts'
+role-name-checker: 'Revisor de projectes'
 role-name-consultant: 'Assessor de projectes'
 role-name-admin: 'Administrador d''assessores'
 role-name-superadmin: 'Super-Administrador'

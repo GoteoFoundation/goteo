@@ -248,12 +248,18 @@ namespace Goteo\Model {
             if(!$user instanceOf User) return false;
             // owns the project
             if($this->owner === $user->id) return true;
+
+            if($user->hasPerm('view-any-project')) return true;
+            // if($user->hasPerm('review-project') && User\Review::is_assigned($user->id, $this->id)) return true;
+            if($user->hasPerm('review-project', $this)) return true;
+
+            // Legacy roles
             // is admin in the project node
-            if($user->hasRoleInNode($this->node, ['admin', 'superadmin', 'root'])) return true;
-            // is reviewer
-            if($user->hasRoleInNode($this->node, ['checker']) && User\Review::is_assigned($user->id, $this->id)) return true;
-            // is caller
-            if($user->hasRoleInNode($this->node, ['caller']) && Call\Project::is_assigned($user->id, $this->id)) return true;
+            // if($user->hasRoleInNode($this->node, ['admin', 'superadmin', 'root'])) return true;
+            // // is reviewer
+            // if($user->hasRoleInNode($this->node, ['checker']) && User\Review::is_assigned($user->id, $this->id)) return true;
+            // // is caller
+            // if($user->hasRoleInNode($this->node, ['caller']) && Call\Project::is_assigned($user->id, $this->id)) return true;
 
             return false;
         }
