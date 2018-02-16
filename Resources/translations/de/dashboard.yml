@@ -127,7 +127,7 @@ form-project_waitfor-review: 'Wir werden uns melden, sobald wir Gelegenheit hatt
 form-project_waitfor-success: 'Sie haben Ihr Finanzierungsziel für dieses Projekt erreicht. In Kürze kontaktieren wir Sie, um mit Ihnen über Geld zu reden :-)'
 guide-dashboard-user-location: 'Das System verwendet folgende Details zu Ihrer Geo-Lokalisierung.'
 guide-dashboard-user-preferences: 'Wähle ''Ja'' für die automatischen Nachrichten, die blockiert werden sollen.'
-guide-dashboard-user-profile: 'Egal ob Sie ein Projekt erstellen oder ein anderes kofinanzieren wollen, um der Goteo Community beizutreten, empfehlen wir, dass sie Ihren Vostellungstext sorgfältig bearbeiten und mit sämtlichen relevanten Links über Ihr Schaffen als auch mit einem aussagekräftigen Profilfoto versehen.'
+guide-dashboard-user-profile: 'Egal ob Sie ein Projekt erstellen oder ein anderes kofinanzieren wollen, um der Goteo Community beizutreten, empfehlen wir, dass sie Ihren Vorstellungstext sorgfältig bearbeiten und mit sämtlichen relevanten Links über Ihr Schaffen als auch mit einem aussagekräftigen Profilfoto versehen.'
 guide-user-data: 'Textanleitung für wichtige Textfelder.'
 user-changeemail-success: 'Die Email-Adresse wurde geändert.'
 user-changeemail-title: 'Email-Adresse ändern'
