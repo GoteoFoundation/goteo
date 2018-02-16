@@ -54,6 +54,11 @@ class Config {
 					Lang::addYamlTranslation($lang, __DIR__ . '/../../../Resources/translations/' . $lang . '/' . $group . '.yml');
 				}
 			}
+
+            // Add model zones for the translator
+            \Goteo\Controller\TranslateController::addTranslateModel('criteria');
+            \Goteo\Controller\TranslateController::addTranslateModel('sphere');
+
 			// sets up the rest...
 			self::setDirConfiguration();
 		} catch (\Exception $e) {
