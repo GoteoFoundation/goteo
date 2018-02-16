@@ -28,6 +28,7 @@ use Goteo\Model\User\Pool as UserPool;
 use Goteo\Model\User\UserLocation;
 use Goteo\Model\User\Web as UserWeb;
 use Goteo\Model\User\Interest as UserInterest;
+use Goteo\Model\User\UserRoles;
 
 class User extends \Goteo\Core\Model {
 
@@ -725,7 +726,7 @@ class User extends \Goteo\Core\Model {
                 $user->lang = Lang::current();
             }
 
-            $user->roles = $user->getRoles();
+            $user->roles = $user->getLegacyRoles();
             $user->avatar = Image::get($user->user_avatar);
             $user->interests = UserInterest::get($id);
 
@@ -1221,9 +1222,26 @@ class User extends \Goteo\Core\Model {
     }
 
     /**
-     * Return all the user roles
+     * Returns the object UserRoles for this user
+     * @return [type] [description]
      */
     public function getRoles() {
+        if($this->rolesInstance) return $this->rolesInstance;
+        $this->rolesInstance = UserRoles::getRolesForUser($this);
+        return $this->rolesInstance;
+    }
+
+    /**
+     * shortcut for UserRoles::hasPerm
+     */
+    public function hasPerm($perm) {
+        return $this->getRoles()->hasPerm($perm);
+    }
+
+    /**
+     * Return all the user roles
+     */
+    public function getLegacyRoles() {
 
         $roles = array();
         $query = self::query('
