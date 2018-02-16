@@ -29,7 +29,7 @@ translator-icon: 'Tipus de retorn/recompensa'
 translator-info: 'Idees de about'
 translator-lang-no-perms: 'No tens permisos per administrar aquest idioma'
 translator-license: Llicencies
-translator-milestone: fites
+translator-milestone: Fites
 translator-more-langs: Altres
 translator-news: Noticies
 translator-no-langs: 'No tens cap idioma assignat, contacta amb el administrador'
@@ -44,6 +44,7 @@ translator-pending: 'Pendient de traducció'
 translator-pending-desc: 'Aquest contingut està "pendent", cosa que significa que <strong>NO ES PÚBLIC</strong> i queda coma esborrany fins que es tregui l''opció "pendent de traducció"'
 translator-promote: 'Projectes destacats'
 translator-save: 'Desa i publica'
+translator-save-original: 'Desa a la taula original'
 translator-save-draft: 'Desa com a esborrany'
 translator-saved-ko: 'Error al desar la traducció al %LANG% (%ERROR%)'
 translator-saved-ok: 'Traduccions desades correctament per als idiomes [%s]'

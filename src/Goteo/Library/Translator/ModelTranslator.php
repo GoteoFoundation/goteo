@@ -287,7 +287,12 @@ class ModelTranslator implements TranslatorInterface {
 
     public function save($lang, $values) {
         if(!$this->id) throw new ModelException("Error: Missing ID field int `{$this->_table}`");
-        $bind = [':lang' => $lang, ':id' => $this->id];
+
+        $bind = [':id' => $this->id];
+        if($lang !== $this->original) {
+            $bind[':lang'] = $lang;
+        }
+
         if(isset(self::$_forced_fields[$this->_table])) {
             foreach(self::$_forced_fields[$this->_table] as $k => $v) {
                 $values[$k] = $v;
@@ -298,12 +303,18 @@ class ModelTranslator implements TranslatorInterface {
             $bind[":$key"] = $val;
             $update[] = "`$key` = :$key";
         }
-        $sql = "INSERT INTO `{$this->_table_lang}`
-        (`lang`, `id`, `" . implode('`,`', array_keys($values)) . "`)
-        VALUES (" . implode(', ', array_keys($bind)) . ")
-        ON DUPLICATE KEY UPDATE " . implode(', ', $update) . "
-        ";
-        // print_r(\sqldbg($sql, $bind));
+        if($lang !== $this->original) {
+            $sql = "INSERT INTO `{$this->_table_lang}`
+            (`lang`, `id`, `" . implode('`,`', array_keys($values)) . "`)
+            VALUES (" . implode(', ', array_keys($bind)) . ")
+            ON DUPLICATE KEY UPDATE " . implode(', ', $update);
+        } else {
+            $sql = "UPDATE `{$this->_table}`
+            SET " . implode(', ', $update) ."
+            WHERE `id` = :id";
+
+        }
+        // die(\sqldbg($sql, $bind));
         Model::query($sql, $bind);
     }
 }

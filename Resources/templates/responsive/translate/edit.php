@@ -12,6 +12,9 @@ $query = $this->get_query() ? '?'. http_build_query($this->get_query()) : '';
 
 ?>
 
+<div class="dashboard-content">
+  <div class="inner-container">
+
 
 <?php
 $default_lang = $this->get_query('hl');
@@ -108,14 +111,19 @@ $default_lang = $this->get_query('hl');
         </div>
         <div class="alert alert-danger pending"<?= $translator->isPending($lang) ? '' : ' style="display:none"' ?>><?= $this->text('translator-pending-desc') ?></div>
       <?php endif ?>
-      <button type="submit" class="btn btn-primary" name="save"><?= $translator->isPending($lang) || !$translator->isTranslated($lang) ? $this->text('translator-save-draft') : $this->text('translator-save') ?></button>
+      <button type="submit" class="btn btn-cyan" name="save"><?= $translator->isPending($lang) || !$translator->isTranslated($lang) ? $this->text('translator-save-draft') : $this->text('translator-save') ?></button>
       <button type="submit" name="d" value="<?= $lang ?>" onclick="return confirm('<?= $this->ee($this->text('translator-delete-sure', $name),'js') ?>')" class="btn btn-danger pull-right"><?= $this->text('translator-delete', $name) ?></button>
+    <?php else: ?>
+        <button type="submit" class="btn btn-cyan" name="save"><?= $this->text('translator-save-original') ?></button>
     <?php endif ?>
 
   </div>
 <?php endforeach ?>
 </div>
 </form>
+
+  </div>
+</div>
 
 <?php $this->replace() ?>
 
