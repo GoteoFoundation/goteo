@@ -151,6 +151,28 @@ class UserRolesTest extends \PHPUnit_Framework_TestCase {
 
         return $roles;
     }
+
+    /**
+     * @depends testRelationalPermsCall
+     */
+    public function testRelationalPermsProject($roles) {
+        $this->assertInstanceOf('Goteo\Model\User\UserRoles', $roles->addRole('consultant'));
+        $this->assertTrue($roles->hasRole('consultant'));
+        $this->assertTrue($roles->hasPerm('edit-projects'));
+        $this->assertTrue($roles->hasPerm('remove-projects'));
+        $this->assertTrue($roles->hasPerm('publish-projects'));
+        $this->assertFalse($roles->hasPerm('edit-projects', get_test_project()->id));
+        $this->assertFalse($roles->hasPerm('remove-projects', get_test_project()->id));
+        $this->assertFalse($roles->hasPerm('publish-projects', get_test_project()->id));
+
+        $this->assertInstanceOf('Goteo\Model\User\UserRoles', $roles->assignUserPerm('edit-projects', get_test_project()->id));
+        $this->assertTrue($roles->hasPerm('edit-projects', get_test_project()->id));
+        $this->assertTrue($roles->hasPerm('remove-projects', get_test_project()->id));
+        $this->assertTrue($roles->hasPerm('publish-projects', get_test_project()->id));
+
+        return $roles;
+    }
+
     /**
      * Some cleanup
      */
