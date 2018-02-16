@@ -31,6 +31,7 @@ translate-language: # translate assigned language in user_translang table
     relational:
         table: user_translang
         user_id: user # relational user_ID in user_translang table
+        table_id: lang
 
 review-project: # View/review an assigned review project before their publication
     model: review

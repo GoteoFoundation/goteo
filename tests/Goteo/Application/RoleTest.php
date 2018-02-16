@@ -75,4 +75,31 @@ class RoleTest extends \PHPUnit_Framework_TestCase {
 		$this->assertTrue(Role::roleHasPerm('admin1', 'adm1'));
 		$this->assertFalse(Role::roleHasPerm('user1', 'adm1'));
 	}
+
+    public function testAddPermissions() {
+        $perms = [
+            'perm-test1' => [
+                'model' => null,
+                'relational' => null
+            ],
+            'perm-test2' => [
+                'model' => 'testmodel',
+                'relational' => [
+                    'table' => 'user_testmodel',
+                    'user_id' => 'user_id',
+                    'table_id' => 'testmodel_id'
+                ]
+            ]
+        ];
+        Role::addPermsFromArray($perms);
+
+        $permissions = Role::getPerms();
+
+        $this->assertInternalType('array', $permissions);
+        $this->assertArrayHasKey('perm-test1', $permissions);
+        $this->assertArrayHasKey('perm-test2', $permissions);
+        $this->assertContains('testmodel', $permissions['perm-test2']);
+
+    }
+
 }

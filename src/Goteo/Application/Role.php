@@ -18,9 +18,7 @@ class Role {
     private static $roles = [];
 
     //
-    private static $permission_tables = [
-        'review-project' =>
-    ];
+    private static $permission_tables = [];
 
     public static function addRole($role_id, array $permissions = []) {
         static::$roles[$role_id] = $permissions;
@@ -40,11 +38,11 @@ class Role {
     public static function addRolesFromArray(array $roles) {
         $extends = [];
         foreach($roles as $role_id => $parts) {
-            if($parts['extends']) {
+            if(isset($parts['extends'])) {
                 $extends[$role_id] = $parts['extends'];
             }
 
-            static::addRole($role_id, $parts['perms'] ? $parts['perms'] : []);
+            static::addRole($role_id, isset($parts['perms']) ? $parts['perms'] : []);
         }
 
         foreach($extends as $role => $parent) {
@@ -54,8 +52,29 @@ class Role {
         }
     }
 
+    public static function addPerm($perm_id, $model = null, $relational = null) {
+        if(!$relational || !is_array($relational)) {
+            $relational = [];
+        }
+        if(!isset($relational['table'])) $relational['table'] = null;
+        if(!isset($relational['user_id'])) $relational['user_id'] = null;
+        if(!isset($relational['table_id'])) $relational['table_id'] = null;
+
+        static::$permission_tables[$perm_id] = ['model' => $model, 'relational' => $relational];
+    }
+
+    public static function addPermsFromArray(array $permissions) {
+        foreach($permissions as $perm_id => $parts) {
+            static::addPerm($perm_id, $parts['model'], $parts['relational']);
+        }
+    }
+
     public static function getRoles() {
         return static::$roles;
+    }
+
+    public static function getPerms() {
+        return static::$permission_tables;
     }
 
     public static function roleExists($role_id) {

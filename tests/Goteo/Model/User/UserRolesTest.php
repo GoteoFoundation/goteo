@@ -113,6 +113,12 @@ class UserRolesTest extends \PHPUnit_Framework_TestCase {
      */
     public function testRelationalPermsTranslator($roles) {
         $this->assertInstanceOf('Goteo\Model\User\UserRoles', $roles->addRole('translator'));
+        $this->assertTrue($roles->hasRole('translator'));
+        $this->assertTrue($roles->hasPerm('translate-language'));
+        $this->assertFalse($roles->hasPerm('translate-language', 'en'));
+
+        $this->assertInstanceOf('Goteo\Model\User\UserRoles', $roles->assignUserPerm('translate-language', 'en'));
+        $this->assertTrue($roles->hasPerm('translate-language', 'en'));
     }
 
     /**
