@@ -21,6 +21,11 @@ translator:
     perms:
         - translate-language # translate assigned language in user_translang table
 
+caller:
+    extends: user
+    perms:
+        - view-call-project # view projects included in the user_call table
+
 checker:
     extends: user
     perms:
@@ -36,9 +41,6 @@ consultant:
         - impersonate-owners # Impersonate projects owners assigned as a consultant
         - assign-checker # Assignate any other user for review projects
 
-# caller:
-#     extends: user
-#     name: Convocador
 
 # manager:
 #     extends: user

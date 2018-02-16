@@ -250,8 +250,8 @@ namespace Goteo\Model {
             if($this->owner === $user->id) return true;
 
             if($user->hasPerm('view-any-project')) return true;
-            // if($user->hasPerm('review-project') && User\Review::is_assigned($user->id, $this->id)) return true;
-            if($user->hasPerm('review-project', $this)) return true;
+            if($user->hasPerm('review-project', $this->id)) return true;
+            if(($call = $this->getCall()) && $user->hasPerm('view-call-project', $call->id)) return true;
 
             // Legacy roles
             // is admin in the project node

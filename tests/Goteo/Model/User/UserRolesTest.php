@@ -135,10 +135,27 @@ class UserRolesTest extends \PHPUnit_Framework_TestCase {
         return $roles;
     }
 
+
+    /**
+     * @depends testRelationalPermsReview
+     */
+    public function testRelationalPermsCall($roles) {
+        $this->assertInstanceOf('Goteo\Model\User\UserRoles', $roles->addRole('caller'));
+        $this->assertTrue($roles->hasRole('caller'));
+        $this->assertTrue($roles->hasPerm('view-call-project'));
+        $this->assertFalse($roles->hasPerm('view-call-project', get_test_project()->id));
+
+        User::query('insert into `call` (id, name, owner) values (?, ?, ?)', ['test-call', 'test call',get_test_user()->id]);
+        $this->assertInstanceOf('Goteo\Model\User\UserRoles', $roles->assignUserPerm('view-call-project', 'test-call'));
+        $this->assertTrue($roles->hasPerm('view-call-project', 'test-call'));
+
+        return $roles;
+    }
     /**
      * Some cleanup
      */
     static function tearDownAfterClass() {
+        User::query('delete from `call` where id = ?', 'test-call');
         delete_test_project();
         delete_test_user();
         delete_test_node();
