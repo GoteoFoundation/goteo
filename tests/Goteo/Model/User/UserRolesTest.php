@@ -33,7 +33,7 @@ class UserRolesTest extends \PHPUnit_Framework_TestCase {
     public function testDefaultRoles($roles) {
         $this->assertTrue($roles->hasRole('user'));
         $this->assertTrue($roles->hasPerm('create-project'));
-        $this->assertTrue($roles->hasPerm('edit-project'));
+        $this->assertTrue($roles->hasPerm(['create-project', 'edit-project']));
         $this->assertTrue($roles->hasPerm('remove-project'));
         $this->assertFalse($roles->hasPerm('publish-any-project'));
     }

@@ -119,9 +119,10 @@ class UserRoles extends \ArrayObject
     }
 
     // check if a permission is set
-    public function hasPerm($perm) {
+    public function hasPerm($perms) {
+        if(!is_array($perms)) $perms = [$perms];
         foreach($this as $role => $permissions) {
-            if(in_array($perm, $permissions)) return true;
+            if(array_intersect($perms, $permissions)) return true;
         }
         return false;
     }

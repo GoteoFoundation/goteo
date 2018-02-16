@@ -37,7 +37,6 @@ class Config {
             // Load default roles from yaml
             $roles = self::loadFromYaml(__DIR__ . '/../../../Resources/roles.yml');
             Role::addRolesFromArray($roles);
-            // print_r(Role::getRoles());die;
 
 			//Timezone
 			if (self::get('timezone')) {
