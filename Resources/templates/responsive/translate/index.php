@@ -11,33 +11,20 @@ $query = $this->get_query() ? '?'. http_build_query($this->get_query()) : '';
 
 
 ?>
-        <h3><?= $this->text('regular-recent-activity') ?></h3>
+<div class="dashboard-content">
+  <div class="inner-container">
 
-        <ul class="list-group">
-            <?php foreach ($this->feed as $item): ?>
-                <li class="list-group-item">
-                    <span class="badge"><?= $this->text('feed-timeago', $item->timeago) ?></span>
-                    <?php echo $item->html; ?>
-                </li>
-            <?php endforeach ?>
-        </ul>
+    <h3><?= $this->text('regular-recent-activity') ?></h3>
 
-<div class="well">
-    <h3><?= $this->text('translator-choose') ?></h3>
-    <dl>
-        <?php foreach($this->zones as $k => $parts) :?>
-            <dt>
-                <?= $this->text("translator-$k") ?>
-            </dt>
-            <dd>
-                <ul class="list-unstyled">
-                <?php foreach($parts as $v) :?>
-                    <li><a href="/translate/<?= $v ?>"><?= $this->text("translator-$v") ?></a></li>
-                <?php endforeach ?>
-                </ul>
-            </dd>
+    <ul class="list-group">
+        <?php foreach ($this->feed as $item): ?>
+            <li class="list-group-item">
+                <span class="badge"><?= $this->text('feed-timeago', $item->timeago) ?></span>
+                <?php echo $item->html; ?>
+            </li>
         <?php endforeach ?>
-    </dl>
-
+    </ul>
+  </div>
 </div>
+
 <?php $this->replace() ?>

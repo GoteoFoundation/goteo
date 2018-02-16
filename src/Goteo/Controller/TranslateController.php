@@ -25,35 +25,30 @@ use Goteo\Library\FeedBody;
 
 class TranslateController extends \Goteo\Core\Controller {
 
-    protected $zones = [
+    protected static $zones = [
         'home' => [
             'news',
             'promote',
             'stories',
-            'patron',
+            'banner',
         ],
         'system' => [
-            'texts'
-        ],
-        'tables' => [
-            'icon',
-            'license',
+            'template',
+            'texts',
             'category',
             'opentag',
+            'worthcracy',
+            'icon',
+            'license',
+            'milestone',
+        ],
+        'tables' => [
             'faq',
             'page',
             'post',
-            'banner',
-            'bazar',
             'tag',
-            'criteria',
-            'worthcracy',
-            'template',
             'glossary',
             'info',
-            'milestone',
-            'sphere',
-            'workshop',
         ]
     ];
 
@@ -75,20 +70,48 @@ class TranslateController extends \Goteo\Core\Controller {
 
         // Common vars for all views
         $this->contextVars([
-            'zones' => $this->zones,
+            'zones' => self::$zones,
             'languages' => $this->langs
             ]);
     }
 
+    /**
+     * Adds a model to the translator
+     * @param [type] $table  [description]
+     * @param string $parent [description]
+     */
+    public static function addTranslateModel($table, $parent = 'tables') {
+        if(!is_array(self::$zones[$parent])) self::$zones[$parent] = [];
+        self::$zones[$parent][] = $table;
+    }
+
+    public function createSidebar($zone = 'activity') {
+        Session::addToSidebarMenu('<i class="icon icon-2x icon-activity"></i> ' . Text::get('dashboard-menu-activity'), '/translate', 'activity');
+        $icons = ['home' => 'home', 'system' => 'cogs', 'tables' => 'table'];
+        foreach(self::$zones as $k => $parts) {
+            $submenu = [];
+            foreach($parts as $v) {
+                $submenu[$v] = ['text' => Text::get("translator-$v"), 'id' => $v, 'link' => "/translate/$v", 'class' => 'nopadding'];
+            }
+            Session::addToSidebarMenu('<i class="fa fa-2x fa-' . $icons[$k] . '"></i> ' . Text::get("translator-$k"), $submenu, $k, null, 'sidebar');
+        }
+
+        $this->contextVars([
+            'zone' => $zone,
+        ]);
+    }
+
     public function indexAction (Request $request) {
+        $this->createSidebar('activity');
 
         return $this->viewResponse('translate/index', [
-            'zone' => null,
             'feed' => Feed::getAll('translate', 'admin', 50)
-            ]);
+        ]);
     }
 
     protected function doList($zone, $translator, Request $request) {
+        $this->createSidebar($zone);
+
         // Get list texts
         $filters = [];
         $limit = 20;
@@ -113,7 +136,6 @@ class TranslateController extends \Goteo\Core\Controller {
         }
 
         return $this->viewResponse('translate/list', [
-            'zone' => $zone,
             'list' => $list,
             'limit' => $limit,
             'total' => $total,
@@ -123,6 +145,7 @@ class TranslateController extends \Goteo\Core\Controller {
     }
 
     protected function doEdit ($zone, $id, $translator, Request $request) {
+
         $redirect = "/translate/$zone" . ($request->getQueryString() ? '?' . $request->getQueryString() : '');
 
         try {
@@ -143,8 +166,8 @@ class TranslateController extends \Goteo\Core\Controller {
                 $langs_ok = [];
                 $all = $request->request->get('t');
                 foreach($all as $lang => $texts) {
-                    // Skip original lang
-                    if($lang === $translator->original) continue;
+                    // Don't skip original lang anymore, Translator is capable of editing original tables too
+                    // if($lang === $translator->original) continue;
                     $all_empty = true;
                     $values = [];
                     // $values = [];
@@ -181,7 +204,7 @@ class TranslateController extends \Goteo\Core\Controller {
                     }
                     // Insert if not exists
                     // Update if exists
-                    // Exception on falilure
+                    // Exception on failure
                     try {
                         $translator->save($lang, $values);
                         // print_r($values);print_r($lang);
@@ -231,9 +254,9 @@ class TranslateController extends \Goteo\Core\Controller {
         }
         // print_R($previous_values);die;
         Session::store("previous_values", $previous_values);
+        $this->createSidebar($zone);
 
         return $this->viewResponse('translate/edit', [
-            'zone' => $zone,
             'id' => $id,
             'fields' => $fields,
             'translator' => $translator
