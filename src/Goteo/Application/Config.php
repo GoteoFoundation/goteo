@@ -34,9 +34,13 @@ class Config {
 			// load the main config
 			self::$config = self::loadFromYaml($config_file);
 
+            // Load default permissions from yaml
+            $permissions = self::loadFromYaml(__DIR__ . '/../../../Resources/permissions.yml');
+            Role::addPermsFromArray($permissions);
             // Load default roles from yaml
             $roles = self::loadFromYaml(__DIR__ . '/../../../Resources/roles.yml');
             Role::addRolesFromArray($roles);
+
 
 			//Timezone
 			if (self::get('timezone')) {

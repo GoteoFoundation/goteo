@@ -119,11 +119,71 @@ class UserRoles extends \ArrayObject
     }
 
     // check if a permission is set
-    public function hasPerm($perms, $model_id = null) {
+    public function hasPerm($perms, $model_val = null) {
         if(!is_array($perms)) $perms = [$perms];
         foreach($this as $role => $permissions) {
-            if(array_intersect($perms, $permissions)) return true;
+            foreach($perms as $perm) {
+                if(in_array($perm, $permissions)) {
+                    if($model_val) {
+                        return $this->userAssignedInModel($perm, $model_val);
+                    }
+                    return true;
+                }
+            }
         }
         return false;
+    }
+
+    protected function userAssignedInModel($perm, $model_val) {
+        $perms = Role::getPerms();
+        if(!isset($perms[$perm])) return false;
+        $table = $perms[$perm]['model'];
+        $relational_table =  $perms[$perm]['relational']['table'];
+        $relational_user_id =  $perms[$perm]['relational']['user_id'];
+        $relational_table_id =  $perms[$perm]['relational']['table_id'];
+
+        if(!$relational_table || !$relational_table_id || !$relational_user_id) return false;
+
+        $values = [':user_id' => $this->user->id, ':model_id' => $model_val];
+        $sql = "SELECT COUNT(*) as total
+            FROM `$relational_table`
+            WHERE
+            `$relational_user_id` = :user_id AND `$relational_table_id` = :model_id";
+
+        echo \sqldbg($sql, $values);
+        if($ob = User::query($sql, $values)->fetchObject()) {
+            return $ob->total > 0;
+        }
+        return false;
+    }
+
+    /**
+     * Assings this user to a relational table related with a permission
+     * @param  [type] $perm      [description]
+     * @param  [type] $model_val [description]
+     * @return [type]            [description]
+     */
+    public function assignUserPerm($perm, $model_val) {
+        $perms = Role::getPerms();
+        if(!isset($perms[$perm])) throw new RoleException("Permission [$perm] not defined!");
+        $table = $perms[$perm]['model'];
+        $relational_table =  $perms[$perm]['relational']['table'];
+        $relational_user_id =  $perms[$perm]['relational']['user_id'];
+        $relational_table_id =  $perms[$perm]['relational']['table_id'];
+
+        if(!$relational_table || !$relational_table_id || !$relational_user_id) {
+            throw new RoleException("table, user_id or table_id not defined for permission [$perm]");
+        }
+
+        $values = [':user_id' => $this->user->id, ':model_id' => $model_val];
+        $insert =  ["`$relational_user_id`" => ':user_id', "`$relational_table_id`" => ':model_id'];
+        $update = ["`$relational_user_id` = :user_id", "`$relational_table_id` = :model_id"];
+        $sql = "INSERT INTO `$relational_table`
+            (" . implode(', ', array_keys($insert)) . ")
+            VALUES (" . implode(', ', $insert) . ")
+            ON DUPLICATE KEY UPDATE " . implode(', ', $update);
+        // die(\sqldbg($sql, $values));
+        User::query($sql, $values);
+        return $this;
     }
 }
