@@ -10,6 +10,8 @@ $q = $this->get_query('q');
 $query = $this->get_query() ? '?'. http_build_query($this->get_query()) : '';
 
 ?>
+<div class="dashboard-content">
+  <div class="inner-container">
 
 <table class="footable table table-striped">
   <thead>
@@ -54,6 +56,8 @@ $query = $this->get_query() ? '?'. http_build_query($this->get_query()) : '';
   </tbody>
 </table>
 
+  </div>
+</div>
 <?= $this->insert('partials/utils/paginator', ['total' => $this->total, 'limit' => $this->limit]) ?>
 
 <?php $this->replace() ?>

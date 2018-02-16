@@ -80,15 +80,33 @@ class TranslateController extends \Goteo\Core\Controller {
             ]);
     }
 
+    public function createSidebar($zone = 'activity') {
+        Session::addToSidebarMenu('<i class="icon icon-2x icon-activity"></i> ' . Text::get('dashboard-menu-activity'), '/translate', 'activity');
+        $icons = ['home' => 'home', 'system' => 'cogs', 'tables' => 'table'];
+        foreach($this->zones as $k => $parts) {
+            $submenu = [];
+            foreach($parts as $v) {
+                $submenu[$v] = ['text' => Text::get("translator-$v"), 'id' => $v, 'link' => "/translate/$v", 'class' => 'nopadding'];
+            }
+            Session::addToSidebarMenu('<i class="fa fa-2x fa-' . $icons[$k] . '"></i> ' . Text::get("translator-$k"), $submenu, $k, null, 'sidebar');
+        }
+
+        $this->contextVars([
+            'zone' => $zone,
+        ]);
+    }
+
     public function indexAction (Request $request) {
+        $this->createSidebar('activity');
 
         return $this->viewResponse('translate/index', [
-            'zone' => null,
             'feed' => Feed::getAll('translate', 'admin', 50)
-            ]);
+        ]);
     }
 
     protected function doList($zone, $translator, Request $request) {
+        $this->createSidebar($zone);
+
         // Get list texts
         $filters = [];
         $limit = 20;
@@ -113,7 +131,6 @@ class TranslateController extends \Goteo\Core\Controller {
         }
 
         return $this->viewResponse('translate/list', [
-            'zone' => $zone,
             'list' => $list,
             'limit' => $limit,
             'total' => $total,
@@ -123,6 +140,7 @@ class TranslateController extends \Goteo\Core\Controller {
     }
 
     protected function doEdit ($zone, $id, $translator, Request $request) {
+
         $redirect = "/translate/$zone" . ($request->getQueryString() ? '?' . $request->getQueryString() : '');
 
         try {
@@ -231,9 +249,9 @@ class TranslateController extends \Goteo\Core\Controller {
         }
         // print_R($previous_values);die;
         Session::store("previous_values", $previous_values);
+        $this->createSidebar($zone);
 
         return $this->viewResponse('translate/edit', [
-            'zone' => $zone,
             'id' => $id,
             'fields' => $fields,
             'translator' => $translator
