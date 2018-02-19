@@ -2,6 +2,13 @@
 contact-captcha-field: 'Test d''humanité(désolé...)'
 contact-captcha-refresh: 'Actualiser l''image'
 contact-email-field: Adresse mail
+contact-form-dev-tag-description: 'J''ai des questions du caractère technique'
+contact-form-dev-tag-name: Développement
+contact-form-new-project-tag-description: 'J''ai un éventuel projet'
+contact-form-new-project-tag-name: 'Éventuel projet'
+contact-form-others-tag-description: 'C''est une consultation d''un autre genre'
+contact-form-others-tag-name: Autres
+contact-form-project-form-tag-description: 'J''ai des questions sur le formulaire du projet'
 contact-message-field: Message
 contact-name-field: Nom
 contact-send_message-button: Envoyer
