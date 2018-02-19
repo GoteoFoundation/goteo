@@ -9,3 +9,6 @@ blog-send_comment-header: 'Verfasse deinen Kommentar'
 blog-side-last_comments: 'Letzte Kommentare'
 blog-side-last_posts: 'Letzte Einträge'
 blog-side-tags: Kategorien
+blog-allow-comments: Kommentare erlauben
+blog-publish: Veröffentlichen
+blog-published: Veröffentlicht
