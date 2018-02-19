@@ -65,10 +65,30 @@ invest-paypal-method: PayPal
 invest-paypal_disabled: "\\Per questo progetto prevede l'opzione di pagamento con PayPal. <a href=\"/faq/investors#q2\" target=\"_blank\"> è bloccata. Più info</a>"
 invest-pool: 'Voglio la mia donazione, nel caso in cui il progetto non raggiunga il suo obiettivo, rimanga nel mio portafoglio virtuale Goteo.'
 invest-pool-available: disponibili
+invest-pool-error: 'Non hai abbastanza soldi nel tuo portafoglio virtuale'
+invest-pool-method: 'Portafoglio virtuale'
 invest-process-completed: 'Questa donazione è stata già completata precedentemente. '
+invest-project: 'vedere progetto'
 invest-resign: 'Rinuncio a questa ricompensa individuale, voglio solo sostenere il progetto'
+invest-reward-first: '<br> Ricorda che l''importo da contribuire deve essere maggiore di 0'
 invest-reward-none: 'Non è più possibile scegliere '
+invest-reward-not-found: 'Questa ricompensa non è stata trovata!'
+invest-reward-used-up: 'Non ci sono più unità di questa ricompensa!'
+invest-select-reward: 'Seleziona la tua ricompensa'
+invest-share-title: Condividi
 invest-social-header: 'Con i benefici collettivi ci guadagniamo tutt@'
+invest-status-cancelled: Annullato
+invest-status-charged: Incassato
+invest-status-paid: 'Pagato al progetto'
+invest-status-pending: Preapprovato
+invest-status-processing: Incompleto
+invest-status-relocated: Ricollocato
+invest-status-returned: 'Restituito (archived)'
+invest-status-to-pool: 'Al portafoglio'
+invest-step-1: Ricompensa
+invest-step-2: Pagamento
+invest-step-3: Conferma
+invest-step-4: Condividi
 investing_closed: 'Non è permessa un''altra donazione per questa campagna. '
 proj-widget-my_invest: 'La mia donazione'
 project-invest-confirm: 'Stai per co-finanziare questo progetto...'
