@@ -33,6 +33,7 @@ admin-account-refund-to-user: 'Rückzahlung des Beitrags an der Bunutzer'
 admin-account-refund-to-user-confirm: "Dies bestimmt die Verfahrensweise für den Beitrag:\nRückführung wenn das Projekt scheitert\nAbbrechen, wenn das Projekt aktiv oder erfolgreich ist\nDer Beitrag wird dem Benutzer direkt zurückerstattet.\nDies funktioniert nicht, wenn der Zeitraum seit dem Beitrag sehr lang ist oder die Zahlungsmethode nicht unterstützt wird.\nWeiter fortfahren?\n"
 admin-account-rewards: 'gewählte Belohnungen'
 admin-account-switch-donation: 'Spende umwandeln'
+admin-account-switch-donation-confirm: 'Sind Sie sicher, dass Sie den Spendenstatus ändern möchten?'
 admin-account-switch-pool: 'Umschalten auf die Virtuelle Geldbörse'
 admin-account-switch-pool-confirm: 'Dies wirkt sich nur für den Fall des Scheiterns des Projektes aus. Weder erzeugt es Geld in, noch entnimmt es Geld aus der Gelbörse. Weiter fortfahren?'
 admin-account-switch-pool-fail: 'Der Pool-Staus diese Beitrages kann nicht geändert werden.'
@@ -71,6 +72,7 @@ admin-sponsors: Dienstleister (Unterstützer/admin-sponsors)
 admin-status: Status
 admin-text-type: 'Bearbeite den Text als'
 admin-text-type-html: HTML
+admin-text-type-md: Markieren Sie
 admin-text-type-plain: 'einfacher Text'
 admin-user: Benutzer
 admin-users: Benutzer
