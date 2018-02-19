@@ -77,6 +77,7 @@ admin-text-type-plain: 'einfacher Text'
 admin-user: Benutzer
 admin-users: Benutzer
 admin-yes: Ja
+admin-impersonate-user: Sich als %s ausgeben
 admin-project-express-discard: 'Express verwerfen'
 admin-project-express-discard-desc: 'Ändern Sie den Projektstatus in "Verwerfen" und senden Sie eine E-Mail'
 admin-project-express-discard-sure: 'Das Projekt wird verworfen und der Besitzer erhält eine E-Mail, ok?'
