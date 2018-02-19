@@ -1,7 +1,26 @@
 ---
+home-channels-header: Canali
 home-news-header: 'Cosa dicono di noi '
 home-patrons-header: Gli esperti consigliano 
 home-promotes-header: Ultimi progetti
 home-stories-header: 'Casi di successo '
 node-home-calls-header: Call
+home-menu-matchfunding: 'Matchfunding'
+home-menu-our-foundation: 'La nostra Fondazione'
+home-search-keyword: 'Ricerca per parola chiave'
+home-search-location: 'Provincia, città, codice postale'
+home-projects-title: 'Alcuni dei nostri progetti'
+home-projects-outdate: 'Urgenti'
+home-projects-team-favourites: 'Preferiti dal team'
+home-projects-near: 'Vicino a te'
+home-projects-matchfunding: 'Matchfunding'
+home-advantages-donor-title: 'Vantaggi come donatore'
+home-advantages-owner-title: 'Vantaggi come promotore'
+home-adventages-savetheworld-title: 'Impegno sociale'
+home-adventages-savetheworld-description: 'È parte di una comunità impegnata in progetti con impatto sociale'
+home-adventages-savetheworld-action: 'Voglio saperne di più'
+home-advantages-wallet-title: 'Portafoglio virtuale'
+home-advantages-wallet-description: 'Il portafoglio virtuale consente di donare ora e distribuire i contributi quando e come si preferisce. Ideale per le organizzazioni'
+home-advantages-wallet-action: 'Vai al portafoglio virtuale'
+home-advantages-certificates-title: 'Certificati'
 home-matchfunding-all: 'Tutte'
