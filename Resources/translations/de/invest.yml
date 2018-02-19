@@ -1,6 +1,7 @@
 ---
 bazar-spread-text: '%s – Verschenke zu Weihnachten einen Crowdfunding-Gutschein für Projekte des Gemeinwohls mit @goteofunding #openbazaar'
 bazar-thanks: 'Vielen Dank für Ihren Besuch unseres Basars, helfen Sie uns, ihn bekannter zumachen.'
+currency-alert: "Bitte beachten Sie, dass die Original-Währung dieses Projektes in EUR ist. \\r\nSie werden ungefähr <span id=\"reminder_conversion\">%s</span> € bezahlen<a href=\"/faq/investors#q115\" target=\"_blank\">Weitere Informationen</a>\""
 faq-payment-method: '<a href="/faq/investors#q2" target="_blank">Welche Bezahlmöglichkeiten bietet Goteo an? Sind diese sicher?</a>'
 imperative-register: Register
 invest-address-address-field: 'Adresse:'
@@ -61,6 +62,8 @@ invest-payment-email: 'Tragen Sie Ihren PayPal Usernamen ein'
 invest-payment-fail: 'Bei der Bezahlung ist etwas schiefgelaufen'
 invest-payment-success: 'Die Bezahlung wurde korrekt abgewickelt'
 invest-payment_method-header: 'Wählen Sie Ihre Bezahlmethode'
+invest-paypal-method: PayPal
+invest-paypal_disabled: "\\r \nFür dieses Projekts wurde die Möglichkeit der Zahlung per PayPal deaktiviert. <a href=\"/faq/investors#q2\" target=\"_blank\"> mehr info</a>"
 invest-pool: 'Für den Fall, dass das Projekt nicht zustande kommt, soll mein Beitrag in meine virtuelle Geldbörse gespeichert werden, damit ich damit zu einem beliebigen späteren Zeitpunkt andere Projekte unterstützen kann. In jedem Fall wird meine Spendenbescheinigung das heutige Datum tragen.'
 invest-pool-available: Verfügbar
 invest-pool-error: 'Sie haben nicht genug Geld in Ihrer virtuellen Geldbörse.'
