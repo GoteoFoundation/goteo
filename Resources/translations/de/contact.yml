@@ -14,6 +14,9 @@ contact-form-relief-tag-description: 'Ich möchte eine Quittung für meine Spend
 contact-form-relief-tag-name: 'Spendenquittung'
 contact-form-service-tag-description: 'Ich möchte einen Service abonnieren'
 contact-form-service-tag-name: Service
+contact-form-tags: "[usuario] Ich habe ein Problem mit meinem Konto; \\r\n[nuevo impulsor] Ich habe ein mögliches Projekt;\\r\n[nuevo impulsor 2] Ich habe eine Frage über das Projektformular;\\r\n[desarrollo] Ich brauche Hilfe bei Technik-Fragen;\\r\n[justificante] Ich möchte eine Spendenquittung;\\r\n[servicio] Ich möchte Ihre Dienste in Anspruch nehmen;\\r\n[otros] Ich habe eine andere Frage;"
+contact-form-user-tag-description: 'Ich habe Probleme mit meinem Konto'
+contact-form-user-tag-name: 'Probleme Konto'
 contact-message-field: Nachricht
 contact-name-field: Name
 contact-send_message-button: Senden
@@ -24,3 +27,5 @@ error-contact-captcha: 'Das reCAPTCHA wurde nicht korrekt eingegeben. Versuchen 
 error-contact-email-empty: 'Sie haben Ihre Email-Adresse nicht angegeben'
 error-contact-message-empty: 'Sie haben keine Nachricht geschrieben'
 error-contact-subject-empty: 'Sie haben keinen Betreff angegeben'
+meta-description-contact: 'Kontaktieren Sie das Goteo.org-team'
+meta-title-contact: 'Kontaktieren Sie uns: Goteo.org'
