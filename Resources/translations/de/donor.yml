@@ -12,11 +12,13 @@ dashboard-donor-main_guide: 'Nach einem Jahr: Details können bis zum 15. Januar
 dashboard-donor-mandatory: 'ES IST ZWINGEND ERFORDERLICH DIE STEUERRELEVANTEN DATEN AUSZUFÜLLEN'
 dashboard-donor-no_donor: 'Es gibt keine Aufzeichnung jeder Spende von Ihnen. Wenn Sie eine Spende getätigt haben, nehmen Sie bitte Kontakt mit uns auf.'
 dashboard-donor-pdf_closed: 'Die Steuerdetails für die Spendenbescheinigung von %s sind nicht bestätigt worden, sie kann daher nicht heruntergeladen werden.'
+dashboard-donor-save_fail: "Es ist ein Fehler bei der Speicherung der Daten aufgetreten, speichern Sie bitte erneut und, falls der Fehler weiterhin besteht, nehmen Sie bitte Kontakt mit uns auf.\\t"
 dashboard-donor-saved: 'Vielen Dank für die Änderung Ihrer Angaben. Um die Bescheinigung zu downloaden, stellen Sie sicher, dass Die Angaben richtig sind. Dann bestätigen Sie mit klicken des "Details bestätigen"-Knopfes.'
 dashboard-menu-activity-donor: 'Spendenbescheinigung'
 donor-address-country-field: Land
 donor-address-location-field: Provinz
 donor-field-amount: 'Spendenbetrag: '
+donor-field-amount-relief: Abzüge
 donor-field-numproj: 'Anzahl der Projekte:'
 personal-field-donor_name: 'Nachname '
 personal-field-donor_surname: 'Erster Vorname'
