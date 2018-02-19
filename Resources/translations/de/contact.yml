@@ -2,6 +2,18 @@
 contact-captcha-field: 'Test auf menschlichen Benutzer (BOT-Blocker)'
 contact-captcha-refresh: 'Bild aktualisieren'
 contact-email-field: Email-Adresse
+contact-form-dev-tag-description: 'Ich habe Fragen zu technischen Problemen'
+contact-form-dev-tag-name: Entwicklung
+contact-form-new-project-tag-description: 'Ich habe ein mögliches Projekt'
+contact-form-new-project-tag-name: 'Mögliches Projekt'
+contact-form-others-tag-description: 'Es ist eine andere Art der Anfrage'
+contact-form-others-tag-name: Sonstige
+contact-form-project-form-tag-description: 'Ich habe Fragen zum Projektformular'
+contact-form-project-form-tag-name: 'Probleme mit dem Formular Projekt'
+contact-form-relief-tag-description: 'Ich möchte eine Quittung für meine Spende'
+contact-form-relief-tag-name: 'Spendenquittung'
+contact-form-service-tag-description: 'Ich möchte einen Service abonnieren'
+contact-form-service-tag-name: Service
 contact-message-field: Nachricht
 contact-name-field: Name
 contact-send_message-button: Senden
