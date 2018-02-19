@@ -14,13 +14,31 @@ use Symfony\Component\Routing\RouteCollection;
 $admin = new RouteCollection();
 
 ////// ADMIN //////
-$admin->add('admin-action', new Route(
-    '/{option}/{action}/{id}/{subaction}',
-    array('_controller' => 'Goteo\Controller\AdminController::optionAction',
-        'action' => 'list',
-        'id' => null,
-        'subaction' => null
-        )
+$admin->add('admin-module-routing', new Route(
+    '/{id}/{uri}',
+    array('_controller' => 'Goteo\Controller\AdminController::routingAction',
+        'uri' => ''
+    ),
+    array('uri' => '.*') // Matches any subroute
 ));
+
+// $admin->add('admin-submodule-index', new Route(
+//     '/{id}/{options}',
+//     array('_controller' => 'Goteo\Controller\AdminController::submoduleAction',
+//         'action' => 'list',
+//         'id' => null,
+//         'subaction' => null
+//         )
+// ));
+
+////// OLD ROUTES //////
+// $admin->add('admin-action', new Route(
+//     '/{option}/{action}/{id}/{subaction}',
+//     array('_controller' => 'Goteo\Controller\AdminController::optionAction',
+//         'action' => 'list',
+//         'id' => null,
+//         'subaction' => null
+//         )
+// ));
 
 return $admin;

@@ -10,5 +10,6 @@
 
 namespace Goteo\Controller\Admin;
 
-class UsersAdminController extends AbstractAdminController implements AdminControllerInterface{
+class UsersAdminController extends AbstractAdminController implements AdminControllerInterface {
+    protected static $icon = '<i class="fa fa-2x fa-users"></i>';
 }

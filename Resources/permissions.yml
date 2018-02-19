@@ -60,7 +60,7 @@ view-any-project: # View any editing project
     model: null
     relational: null
 
-edit-published-project: # Edit published projects
+edit-published-projects: # Edit published projects
     model: null
     relational: null
 
@@ -120,5 +120,13 @@ impersonate-admins: # Impersonate any user with any role (except super-admins)
     relational: null
 
 impersonate-everyone: # Impersonate any user
+    model: null
+    relational: null
+
+admin-any-module-users: # Admin any module in Admin (instances of AdminControllerInterface)
+    model: null
+    relational: null
+
+admin-module-users: # Can access to module UserAdminController
     model: null
     relational: null

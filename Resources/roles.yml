@@ -35,7 +35,7 @@ manager:
     extends: user
     perms:
         - view-any-project # View any editing project
-        - edit-published-project # Edit any published project
+        - edit-published-projects # Edit any published project
 
 consultant:
     extends: checker # inherits permissions from role "user"
@@ -55,11 +55,13 @@ admin:
         - edit-any-project # Edit any project
         - remove-any-project # Remove any project
         - impersonate-users # Impersonate any user with roles below admin (excluding admins)
+        - admin-module-users # Can access to module UserAdminController
 
 superadmin:
     extends: admin
     perms:
         - impersonate-admins # Impersonate any user with any role (except super-admins)
+        - admin-any-module # Admin any module in Admin (instances of AdminControllerInterface)
 
 root: # This user has to be assigned manually in the table user_role
     extends: superadmin

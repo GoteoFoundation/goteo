@@ -39,7 +39,7 @@
         padding-bottom:13px;
         padding-top:12px;
         border-top:2px solid $background-grey;
-        display: relative;
+        position: relative;
         padding-left:45px;
         &:hover,&:active,&:focus {
             background-color:inherit;

@@ -24,14 +24,14 @@
         <?php if(is_array($submenu)): ?>
             <a class="toggle-submenu" href="#" role="button" aria-haspopup="true" aria-expanded="false">
                 <?php if(in_array('main', $class)): ?>
-                  <i class="fa fa-angle-left hidden-xs"></i> &nbsp;
+                  <span class="fa fa-angle-left hidden-xs"></span> &nbsp;
                 <?php endif ?>
                 <?= $item['text'] ?>
                 <?php if(in_array('main', $class)): ?>
-                  &nbsp; <i class="fa fa-angle-right visible-xs"></i>
+                  &nbsp; <span class="fa fa-angle-right visible-xs"></span>
                 <?php endif ?>
                 <?php if(in_array('sidebar', $class)): ?>
-                  &nbsp; <i class="fa fa-angle-down"></i><i class="fa fa-angle-up"></i>
+                  &nbsp; <span class="fa fa-angle-down"></span><span class="fa fa-angle-up"></span>
                 <?php endif ?>
             </a>
             <ul class="nav submenu">
