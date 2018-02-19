@@ -43,7 +43,7 @@ invest-cash-method: 'Manuale (in contanti)'
 invest-donation-header: 'Indica i dati fiscali per la donazione'
 invest-fiscal-fail: 'Ci sono campi vuoti o con errori, controlla il modulo fiscale così da poter detrarre il tuo contributo!'
 invest-fiscal-skip: 'Ora non voglio compilare questi dati.'
-invest-fiscal-title: 'Assicurati di poter detrarre il tuo contributo (per i contribuenti in Spagna)'
+invest-fiscal-title: 'Assicurati di poter detrarre il tuo contributo (per i/le contribuenti in Spagna)'
 invest-login-alert: 'Devi registrarti o <a href="%s">iniciar sesión</a> per poter realizzare la donazione'
 invest-mail_info-address: 'Hai indicato il seguente indirizzo '
 invest-mail_info-drop: 'In più, %s ha donato %s di Matchfunding con la campagna%s'
@@ -89,6 +89,7 @@ invest-step-1: Ricompensa
 invest-step-2: Pagamento
 invest-step-3: Conferma
 invest-step-4: Condividi
+invest-success-make-sure: 'Ben fatto! La tua donazione al progetto <strong>%s</strong> è stata completata.'
 investing_closed: 'Non è permessa un''altra donazione per questa campagna. '
 proj-widget-my_invest: 'La mia donazione'
 project-invest-confirm: 'Stai per co-finanziare questo progetto...'
@@ -96,7 +97,9 @@ project-invest-continue: 'Clicca sul logo del sistema di pagamento che utilizzer
 project-invest-fail: 'C''è stato un errore, per favore riprova'
 project-invest-guest: 'Ottimo!'
 project-invest-ok: 'Il tuo contributo per finanziare questo progetto è stato inviato :)'
+project-invest-pool-button: 'Utilizzare il mio portafoglio virtuale'
 project-invest-start: 'Stai per co-finanziare questo progetto...'
+project-return-button: 'Tornare al progetto'
 spread-facebook: 'Diffondi su Facebook'
 spread-twitter: 'Diffondi su Twitter '
 user-login-required-login: 'Se sei già registrato inizia la tua sessione, sennò crea un nuovo account '
