@@ -300,11 +300,12 @@ class Session {
         if(empty($node)) $node = Config::get('current_node');
         if(empty($user)) $user = static::getUser();
         if(static::isLogged()) {
-            $class = '\Goteo\Controller\Admin\\' . ucfirst($subcontroller) . 'SubController';
-            // Silent false return on missing class
-            if( ! class_exists($class) ) return false;
-            // let's throw a exception if its a wrong class
-            return $class::isAllowed($user, $node);
+            if($class = getSubController($subcontroller)) {
+                if(in_array('Goteo\Controller\Admin\AdminControllerInterface', class_implements($class))) {
+                    return $class::isAllowed($user);
+                }
+                return $class::isAllowed($user, $node);
+            }
         }
         return false;
     }

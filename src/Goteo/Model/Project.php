@@ -366,8 +366,8 @@ namespace Goteo\Model {
             if(empty($user)) return false;
             if(!$user instanceOf User) return false;
 
-            if($user->hasPerm('edit-any-project')) return true;
-            if($include_admins && $user->hasPerm('edit-projects', $this->id)) return true;
+            if($user->hasPerm('remove-any-project')) return true;
+            if($include_admins && $user->hasPerm('remove-projects', $this->id)) return true;
             // Legacy roles
             // $roles = ['superadmin', 'root'];
             // if($include_admins) $roles[] = 'admin';
