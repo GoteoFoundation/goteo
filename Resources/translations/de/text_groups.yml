@@ -17,6 +17,7 @@ text-group-donor: 'Ünterstützer/innen-Zertifikate'
 text-group-error: 'Katastrophaler Fehler'
 text-group-faq: 'FAQ Seite'
 text-group-feed: 'Aktuelle Veranstaltungen'
+text-group-footer: Footer
 text-group-form: 'Generelles Projekt Formular'
 text-group-general: 'Allgemeine Seite'
 text-group-home: Startseite
@@ -25,6 +26,7 @@ text-group-location: Geolocation
 text-group-login: 'Login Seite'
 text-group-mailer: 'Auto-Emails'
 text-group-menu: 'Top Menü'
+text-group-metas: 'SEO: Metadaten'
 text-group-node_public: öffentlicher Knoten
 text-group-overview: 'Projektbeschreibung'
 text-group-personal: 'Persönliche Daten des Benutzers'
