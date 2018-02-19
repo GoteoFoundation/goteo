@@ -1,4 +1,17 @@
 ---
+accounts-lb: Contributi
+accounts-lb-add: 'Contributo manuale'
+accounts-lb-cancel: 'Annullando il contributo'
+accounts-lb-cancel-pool: 'Annullamento dell''opzione di credito'
+accounts-lb-details: 'Dettagli del contributo'
+accounts-lb-list: Creando lista
+accounts-lb-move: 'Spostando il contributo'
+accounts-lb-report: 'Rapporto di progetto'
+accounts-lb-update: 'Modifica dello stato del contributo'
+banners-lb: Banner
+banners-lb-add: 'Nuovo banner'
+banners-lb-cancel: 'Annullando il contributo'
+banners-lb-details: 'Dettagli del contributo'
 categories-lb: Categorie
 faq-lb: '* FAQ'
 glossary-lb: Glossario
