@@ -9,6 +9,11 @@ contact-form-new-project-tag-name: 'Éventuel projet'
 contact-form-others-tag-description: 'C''est une consultation d''un autre genre'
 contact-form-others-tag-name: Autres
 contact-form-project-form-tag-description: 'J''ai des questions sur le formulaire du projet'
+contact-form-project-form-tag-name: 'Problèmes formulaire projet'
+contact-form-relief-tag-description: 'Je souhaiterais un justificatif de ma donation'
+contact-form-relief-tag-name: 'Justificatif donation'
+contact-form-service-tag-description: 'Je voudrais engager un service'
+contact-form-service-tag-name: Service
 contact-message-field: Message
 contact-name-field: Nom
 contact-send_message-button: Envoyer
