@@ -24,18 +24,24 @@ profile-field-legal-entity-person: 'Privatperson'
 profile-field-legal-entity-self-employed: Freelancer
 profile-field-location: 'Wohnsitz'
 profile-field-name: 'Benutzername'
+profile-field-url: URL
 profile-field-websites: 'Meine Webseiten'
+profile-fields-analytics-title: Statistiken
 profile-fields-image-title: 'Profilbild'
 profile-fields-social-title: 'Soziale Profile'
 profile-main-header: 'Profildaten'
 profile-suggest-projects-interest: 'Vielleicht wollen Sie dies unterstützen'
 step-1: Profil
 step-userProfile: 'Schritt: Benutzer / Profil'
+tooltip-user-about: "Als soziales Netzwerk möchte Goteo helfen, interessante Projekte in einer größtmöglichem Community bekannt zu machen und mit ihr zu finanzieren. Dazu ist es wichtig, dass Sie Informationen über Ihre Fähigkeiten und Erfahrungen (beruflich, akademisch, Hobbies, etc.) mitteilen."
+tooltip-user-analytics: 'Geben Sie Ihre ID-tracking für Google Analytics ein, um Google Analytics in Ihrem Projekt zu ermöglichen. Die ID muss in diesem Format sein: UA-000000-01 (Beispiel der ID)'
 tooltip-user-avatar_upload: 'Kurzinfo Text Upload User Bild'
 tooltip-user-contribution: 'Beschreiben Sie kurz Ihre Fähigkeiten und die Bereiche, in denen Sie anderen helfen könnten (Übersetzungen, Marketing, Testen, Programmieren, Unterrichten, etc.)'
 tooltip-user-facebook: 'Dieses soziale Netzwerk hilft dabei, Goteo-Projekte schnell und viral bekannt zu machen, die Sie und Ihre Freunde interessieren.'
+tooltip-user-facebook-pixel: 'Geben Sie hier die ID Ihres Facebook-Pixel ein, wenn Sie die Konvertierung einer Kampagne auf Facebook messen wollen.'
 tooltip-user-google: 'Die Google+ Community ist relativ neu, aber Sie können Ihre User-id spezifizieren, wenn Sie es bereits nutzen.'
 tooltip-user-identica: 'Dieser Kanal kann Ihen helfen, Goteo-Projekte in der Open-Source Community zu verbreiten.'
+tooltip-user-instagram: 'Dieses soziale Netzwerk ermöglicht es Ihnen, Bilder einfach und schnell zu teilen'
 tooltip-user-interests: 'Teilen Sie die Art von Projekten mit, die Sie gegebenenfalls kofinanzieren oder anderes unterstützen würden, wie etwa mit Ressourcen, mit Wissen oder Ihren Fähigkeiten. Diese Kategorien überschneiden sich; Sie können mehrere auswählen.'
 tooltip-user-keywords: 'Während Sie Text eingeben wird das System Ihnen Schlagwörter vorschlagen, die bereits von anderen Usern verwendet wurden. Diese Kategorien helfen, Ihr Profil mit ausgewählten anderen Leuten und Projekten zu vernetzen.'
 tooltip-user-linkedin: 'Dieses soziale Netzwerk hilft dabei, Goteo-Projekte in Ihrem professionellen Umfeld bekannt zu machen.'
@@ -57,3 +63,4 @@ validate-user-field-name: 'Geben Sie Ihren kompletten Namen an, damit wir Ihr Pr
 validate-user-field-twitter: 'Ihr Twitter Benutzername ist ungültig'
 validate-user-field-web: 'Bitte geben Sie die Adresse (URL) Ihrer Webseite an'
 validate-user-field-webs: 'Geben Sie Ihre Website-Adresse an, damit wir Ihr Projekt evaluieren und feststellen können, ob es zur Veröffentlichung auf Goteo geeignet ist.'
+help-user-analytics: 'Geben Sie Ihre ID-tracking für Google Analytics ein, um Google Analytics in Ihrem Projekt zu ermöglichen. <br>Die ID muss in diesem Format sein: <strong>UA-000000-01</strong> (Beispiel der ID)<br><a href="https://analytics.google.com" target="_blank">Google Analytics aufrufen</a>'
