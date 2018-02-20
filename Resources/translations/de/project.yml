@@ -4,6 +4,7 @@ currency-switch: UMRECHNUNG
 overview-field-spread: Verbreitung
 personal-field-accounts: 'Projektkonten'
 project-about-title: 'Über dieses Projekt'
+project-call-got: 'Das Projekt hat bereits <strong>%s</strong> von <strong>%s</strong> erreicht'
 project-chart-amount-end-round: 'Ende der Runde'
 project-chart-amount-ideal: optimal
 project-chart-amount-reached: erreicht
@@ -14,6 +15,7 @@ project-collaborations-supertitle: 'Nicht-wirtschaftlicher Bedarf'
 project-collaborations-title: 'Suche nach'
 project-comment-start-sesion: 'Anmeldung'
 project-comment-start-sesion-2: 'um einen Kommentar zu hinterlassen'
+project-error-main-lang: 'Diese Sprache[%s] kann nicht als Primärsprache eingestellt werden, da sie bereits einer Übersetzung zugeordnet ist. Entfernen Sie die vorhandene Übersetzung aus [%s] aus dem Übersetzungsfenster, um eine neue einzugeben.'
 project-general-information: 'Allgemeine Informationen'
 project-go-up: 'zurück'
 project-help-cost: 'Ich brauche Hilfe bei der Kostenaufstellung'
@@ -127,3 +129,15 @@ project-create-no-social-commitment: 'Ich habe nicht'
 project-progress-title: Wie geht das Projekt voran
 project-edit: Projekt bearbeiten
 project-remove-cost-confirm: 'Sind Sie sicher, dass Sie diese Kosten löschen möchten?'
+project-add-cost: 'Kosten hinzufügen'
+project-add-reward: 'Belohnung hinzufügen'
+project-remove-reward-confirm: 'Bist du sicher, dass du diese Belohnung löschen willst?'
+project-reward-unlimited: 'Unbegrenzt'
+project-send-review: 'Zur Überprüfung senden'
+project-reviewing: 'Wir evaluieren und begutachten Ihr Projekt'
+project-validation-ok: 'Sie haben das Formular ausgefüllt. Das ist genial! Sie können die Schaltfläche Weiter klicken, so dass unsere Berater Ihr Projekt ansehen.'
+project-validation-errors: 'Das Projekt ist noch nicht fertiggestellt!'
+project-validation-error-profile: 'Es fehlen Felder, die Sie in Ihrem Benutzerprofil ausfüllen müssen'
+project-validation-error-profile_social: 'Sie müssen einige Felder von Web, Facebook oder Twitter ausfüllen'
+project-validation-error-personal: 'Felder, die in den Projektkonten ausgefüllt werden müssen, fehlen'
+project-validation-error-overview: 'Es fehlen Felder, die in der Projektbeschreibung ausgefüllt werden müssen'
