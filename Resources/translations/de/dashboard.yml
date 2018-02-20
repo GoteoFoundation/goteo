@@ -102,6 +102,7 @@ dashboard-project-updates-noblog: 'Für dieses Projekt wurde kein Blog gefunden'
 dashboard-project-updates-nopost: 'Nachricht nicht gefunden'
 dashboard-project-updates-postcorrupt: 'Es gibt ein Problem mit Ihrer Nachricht. Bitte kontaktieren Sie uns.'
 dashboard-project-updates-saved: 'Neue Nachricht gespeichert'
+dashboard-project-updates-add: 'Neuer Beitrag'
 dashboard-rewards-address: 'Lieferanschrift:'
 dashboard-rewards-all_filter: Alle
 dashboard-rewards-amount_group: 'Zuwendungen von '
