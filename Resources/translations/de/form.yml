@@ -5,6 +5,7 @@ form-add-button: Hinzufügen
 form-ajax-info: 'Dieses Formular wird beim Ausfüllen automatisch gespeichert'
 form-apply-button: Anwenden
 form-edit-button: Bearbeiten
+form-has-errors: 'Das Formular enthält Fehler, prüfen Sie diese, bevor Sie fortfahren!'
 form-errors-info: 'Total: %s | In diesem Schritt: %s'
 form-errors-total: 'Hier sind insgesamt %s Fehler'
 form-footer-errors_title: Fehler
@@ -35,3 +36,12 @@ project-one-round: 'Eine 40-Tage-Runde'
 project-personal-field-entity_name: 'The party on behalf of which you are acting (if applicable)'
 project-two-rounds: 'Zwei 40-Tage-Runden'
 tooltip-project-personal-entity_name: 'If you represent an entity, this is the indicated place to let it be known.'
+form-sent-success: 'Die Daten wurden korrekt gespeichert!'
+form-sent-error: 'Fehler beim Speichern von Daten: [%s]'
+form-confirm-exit: "Verlieren Sie Daten, die Sie nicht gespeichert haben. Sind Sie sicher, dass Sie die Seite verlassen wollen?"
+overview-extra-call: 'Zusätzliche Felder für den Aufruf %s'
+form-editor-bold: 'Fett'
+form-editor-italic: 'Kursiv'
+form-editor-strikethrough: 'Durchgestrichen'
+form-editor-heading: 'Kopfzeile'
+form-editor-smaller_heading: 'Kopfzeile verkleinern'
