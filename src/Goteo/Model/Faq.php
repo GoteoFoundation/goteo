@@ -34,7 +34,8 @@ class Faq extends \Goteo\Core\Model {
      */
     public static function get ($id, $lang = null) {
 
-        list($fields, $joins) = self::getLangsSQLJoins($lang, Config::get('lang'));
+        if(!$lang) $lang = Lang::current();
+        list($fields, $joins) = self::getLangsSQLJoins($lang, Config::get('sql_lang'));
 
         $query = static::query("
             SELECT
@@ -59,7 +60,7 @@ class Faq extends \Goteo\Core\Model {
         if(!$lang) $lang = Lang::current();
         $values = array(':section' => $section);
 
-        list($fields, $joins) = self::getLangsSQLJoins($lang, Config::get('lang'));
+        list($fields, $joins) = self::getLangsSQLJoins($lang, Config::get('sql_lang'));
 
         $sql="SELECT
                     faq.id as id,
@@ -99,28 +100,15 @@ class Faq extends \Goteo\Core\Model {
     public function save (&$errors = array()) {
         if (!$this->validate($errors)) return false;
 
-        $fields = array(
-            'id',
-            'node',
-            'section',
-            'title',
-            'description',
-            'order'
-            );
-
-        $set = '';
-        $values = array();
-
-        foreach ($fields as $field) {
-            if ($set != '') $set .= ", ";
-            $set .= "`$field` = :$field ";
-            $values[":$field"] = $this->$field;
-        }
-
         try {
-            $sql = "REPLACE INTO faq SET " . $set;
-            self::query($sql, $values);
-            if (empty($this->id)) $this->id = self::insertId();
+            $this->dbInsertUpdate([
+                'id',
+                'node',
+                'section',
+                'title',
+                'description',
+                'order'
+            ]);
 
             $extra = array(
                 'section' => $this->section,
@@ -129,9 +117,9 @@ class Faq extends \Goteo\Core\Model {
             Check::reorder($this->id, $this->move, 'faq', 'id', 'order', $extra);
 
             return true;
-        } catch(\PDOException $e) {
-            $errors[] = "HA FALLADO!!! " . $e->getMessage();
-            return false;
+        }
+        catch(\PDOException $e) {
+            $errors[] = 'Error saving faq: ' . $e->getMessage();
         }
     }
 

@@ -70,5 +70,7 @@ class LangTest extends \PHPUnit_Framework_TestCase {
             $this->assertEquals($lang, Lang::current());
             $this->assertTrue(Lang::isActive($lang, false));
         }
+        Lang::set('es');
+        $this->assertEquals('es', Lang::current());
     }
 }

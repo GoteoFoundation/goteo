@@ -21,6 +21,8 @@ class Node extends \Goteo\Core\Model {
     public
         $id = null,
         $name,
+        $subtitle,
+        $description,
         $email,
         $admins = array(), // administradores
         $logo,
@@ -67,15 +69,14 @@ class Node extends \Goteo\Core\Model {
     static public function get ($id, $lang = null) {
 
         //Obtenemos el idioma de soporte
-        $lang=self::default_lang_by_id($id, 'node_lang', $lang);
+        if(!$lang) $lang = Lang::current();
+        list($fields, $joins) = self::getLangsSQLJoins($lang, Config::get('sql_lang'));
 
-        $sql = static::query("
-            SELECT
+        $sql = "SELECT
                 node.id as id,
                 node.name as name,
                 node.email as email,
-                IFNULL(node_lang.subtitle, node.subtitle) as subtitle,
-                IFNULL(node_lang.description, node.description) as description,
+                $fields,
                 node.logo as logo,
                 node.label as label,
                 node.home_img as home_img,
@@ -92,12 +93,13 @@ class Node extends \Goteo\Core\Model {
                 node.default_consultant as default_consultant,
                 node.sponsors_limit as sponsors_limit
             FROM node
-            LEFT JOIN node_lang
-                ON  node_lang.id = node.id
-                AND node_lang.lang = :lang
-            WHERE node.id = :id
-            ", array(':id' => $id, ':lang' => $lang));
-        $item = $sql->fetchObject(__CLASS__);
+            $joins
+            WHERE node.id = :id";
+
+        $values = [':id' => $id];
+        // die(\sqldbg($sql, $values));
+        $query = static::query($sql, $values);
+        $item = $query->fetchObject(__CLASS__);
 
         if (!$item instanceof Node) {
             throw new Exception\ModelNotFoundException(Text::get('fatal-error-node'));
@@ -195,7 +197,7 @@ class Node extends \Goteo\Core\Model {
 
         if(!$lang) $lang = Lang::current();
         $values['viewLang'] = $lang;
-        list($fields, $joins) = self::getLangsSQLJoins($lang, Config::get('lang'));
+        list($fields, $joins) = self::getLangsSQLJoins($lang, Config::get('sql_lang'));
 
         $sql = "SELECT node.id,
                        node.name,
@@ -222,7 +224,7 @@ class Node extends \Goteo\Core\Model {
         $joins
         $sqlFilter
         ORDER BY node.name ASC";
-        // echo \sqldbg($sql, $values);;
+        // echo \sqldbg($sql, $values);
         if($query = static::query($sql, $values)) {
             return $query->fetchAll(\PDO::FETCH_CLASS, __CLASS__);
         }
@@ -305,6 +307,8 @@ class Node extends \Goteo\Core\Model {
             'name',
             'email',
             'active',
+            'subtitle',
+            'description',
             'url',
             'default_consultant',
             'sponsors_limit'
@@ -348,6 +352,8 @@ class Node extends \Goteo\Core\Model {
             'id',
             'name',
             'email',
+            'subtitle',
+            'description',
             'url',
             'active',
             'default_consultant',

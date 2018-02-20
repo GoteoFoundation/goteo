@@ -40,7 +40,7 @@ class Banner extends \Goteo\Core\Model {
     public static function get ($id, $lang = null) {
 
         if(!$lang) $lang = Lang::current();
-        list($fields, $joins) = self::getLangsSQLJoins($lang, Config::get('lang'));
+        list($fields, $joins) = self::getLangsSQLJoins($lang, Config::get('sql_lang'));
 
         $query = static::query("
             SELECT
@@ -76,7 +76,7 @@ class Banner extends \Goteo\Core\Model {
         $banners = array();
 
         if(!$lang) $lang = Lang::current();
-        list($fields, $joins) = self::getLangsSQLJoins($lang, Config::get('lang'));
+        list($fields, $joins) = self::getLangsSQLJoins($lang, Config::get('sql_lang'));
 
         $sqlFilter = ($activeonly) ? " AND banner.active = 1" : '';
 

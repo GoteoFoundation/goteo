@@ -50,7 +50,7 @@ class Category extends \Goteo\Core\Model {
         $array = array ();
 
         try {
-            list($fields, $joins) = self::getLangsSQLJoins($lang, Config::get('lang'));
+            list($fields, $joins) = self::getLangsSQLJoins($lang, Config::get('sql_lang'));
 
             $sql="SELECT
                     category.id as id,
@@ -86,7 +86,7 @@ class Category extends \Goteo\Core\Model {
         $array = array ();
         try {
             $sqlFilter = "";
-            list($fields, $joins) = self::getLangsSQLJoins($lang, Config::get('lang'));
+            list($fields, $joins) = self::getLangsSQLJoins($lang, Config::get('sql_lang'));
 
             if (!empty($call)) {
                 $sqlFilter = " WHERE category.id IN (SELECT category FROM call_category WHERE `call` = '$call')";

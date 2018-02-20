@@ -55,15 +55,27 @@ class Message extends \Goteo\Core\Model {
     /*
      *  Devuelve datos de un mensaje
      */
-    public static function get ($id) {
+    public static function get ($id, $lang = null) {
+
+
+        list($fields, $joins) = self::getLangsSQLJoins($lang, Config::get('sql_lang'));
 
         $sql="
-            SELECT  message.*,
+            SELECT  message.id,
+                    message.user,
+                    message.project,
+                    message.thread,
+                    message.date,
+                    $fields,
+                    message.blocked,
+                    message.closed,
+                    message.private,
                     user.id as user_id,
                     user.name as user_name,
                     user.email as user_email,
                     user.avatar as user_avatar
             FROM    message
+            $joins
             INNER JOIN user ON user.id=message.user
             WHERE   message.id = :id
             ";
@@ -117,7 +129,7 @@ class Message extends \Goteo\Core\Model {
         $messages = array();
 
         if(!$lang) $lang = Lang::current();
-        list($fields, $joins) = self::getLangsSQLJoins($lang, Config::get('lang'));
+        list($fields, $joins) = self::getLangsSQLJoins($lang, Config::get('sql_lang'));
 
         $sql="
               SELECT

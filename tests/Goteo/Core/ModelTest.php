@@ -11,9 +11,13 @@ class MockModel extends Model {
     public $id;
     public $uniq;
     public $name;
+    public $description;
     public static function get ($id) {}
     public function save (&$errors = array()) {}
     public function validate (&$errors = array()) {}
+    public static function getLangFields() {
+        return ['title', 'description'];
+    }
 }
 
 class ModelTest extends \PHPUnit_Framework_TestCase {
@@ -32,7 +36,7 @@ class ModelTest extends \PHPUnit_Framework_TestCase {
      * @depends testGetTable
      */
     public function testIdealiza($mock) {
-        $text = "àẁèỳśẅçÇ h";
+        $text = "àẁèỳśẅçÇ h😱";
         $this->assertEquals('aweyswcc-h', Model::idealiza($text));
         $this->assertEquals('aweyswcc-h', $mock::idealiza($text));
         return $mock;
@@ -260,6 +264,46 @@ class ModelTest extends \PHPUnit_Framework_TestCase {
         $this->assertNotEquals($res1, $res2);
         //wait until cache expires
         return $mock;
+    }
+
+    /**
+     * @depends testInvalidateCache
+     */
+    public function testLangsSQLJoins($mock) {
+        list($fields, $joins) = $mock::getLangsSQLJoins('es');
+        $this->assertContains("IF(`mockmodel`.lang='es', `mockmodel`.`title`, IFNULL(IFNULL(b.`title`,c.`title`), `mockmodel`.`title`)) AS `title`", $fields);
+        $this->assertContains("IF(`mockmodel`.lang='es', `mockmodel`.`description`, IFNULL(IFNULL(b.`description`,c.`description`), `mockmodel`.`description`)) AS `description`", $fields);
+        $this->assertContains("LEFT JOIN `mockmodel_lang` b ON `mockmodel`.id=b.id AND b.lang='es' AND b.lang!=`mockmodel`.lang", $joins);
+        $this->assertContains("LEFT JOIN `mockmodel_lang` c ON `mockmodel`.id=c.id AND c.lang='en' AND c.lang!=`mockmodel`.lang", $joins);
+
+        Config::set('sql_lang', 'ca');
+        list($fields, $joins) = $mock::getLangsSQLJoins('es');
+        $this->assertContains("IF(`mockmodel`.lang='es', `mockmodel`.`title`, IFNULL(IFNULL(b.`title`,c.`title`), `mockmodel`.`title`)) AS `title`", $fields);
+        $this->assertContains("LEFT JOIN `mockmodel_lang` b ON `mockmodel`.id=b.id AND b.lang='es' AND b.lang!=`mockmodel`.lang", $joins);
+
+        list($fields, $joins) = $mock::getLangsSQLJoins('de');
+        $this->assertContains("IF(`mockmodel`.lang='de', `mockmodel`.`title`, IFNULL(IFNULL(b.`title`,c.`title`), `mockmodel`.`title`)) AS `title`", $fields);
+        $this->assertContains("LEFT JOIN `mockmodel_lang` b ON `mockmodel`.id=b.id AND b.lang='de' AND b.lang!=`mockmodel`.lang", $joins);
+
+        Config::set('sql_lang', 'es');
+        Config::set('lang', 'es');
+        list($fields, $joins) = $mock::getLangsSQLJoins('es', Config::get('sql_lang'));
+        $this->assertContains("IF('es'='es', `mockmodel`.`title`, IFNULL(IFNULL(b.`title`,c.`title`), `mockmodel`.`title`)) AS `title`", $fields);
+        $this->assertContains("LEFT JOIN `mockmodel_lang` b ON `mockmodel`.id=b.id AND b.lang='es' AND b.lang!='es'", $joins);
+
+        Config::set('sql_lang', 'ca');
+        list($fields, $joins) = $mock::getLangsSQLJoins('es', Config::get('sql_lang'));
+        $this->assertContains("IF('ca'='es', `mockmodel`.`title`, IFNULL(IFNULL(b.`title`,c.`title`), `mockmodel`.`title`)) AS `title`", $fields);
+        $this->assertContains("LEFT JOIN `mockmodel_lang` b ON `mockmodel`.id=b.id AND b.lang='es' AND b.lang!='ca'", $joins);
+
+        Config::set('sql_lang', 'es');
+        Config::set('lang', 'ca');
+        list($fields, $joins) = $mock::getLangsSQLJoins('de', Config::get('lang'));
+        $this->assertContains("IF('ca'='de', `mockmodel`.`title`, IFNULL(IFNULL(b.`title`,c.`title`), `mockmodel`.`title`)) AS `title`", $fields);
+        $this->assertContains("LEFT JOIN `mockmodel_lang` b ON `mockmodel`.id=b.id AND b.lang='de' AND b.lang!='ca'", $joins);
+
+        // print_r($fields);
+        // print_r($joins);
     }
 
     public static function tearDownAfterClass() {

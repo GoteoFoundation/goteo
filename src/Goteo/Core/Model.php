@@ -405,7 +405,7 @@ abstract class Model {
 	 * @return  string $default_lang
 	 */
 	public static function default_lang($lang) {
-		if ($lang == Config::get('lang')) {
+		if ($lang == Config::get('sql_lang')) {
 			return $lang;
 		}
 
@@ -421,7 +421,7 @@ abstract class Model {
 	 */
 	public static function default_lang_by_id($id, $table, $lang = null) {
 		// Devolver inglés cuando no esté traducido en idioma no-español
-		if ($lang != Config::get('lang')) {
+		if ($lang != Config::get('sql_lang')) {
 			if (empty($lang)) {
 				$lang = Lang::current();
 			}
@@ -503,7 +503,7 @@ abstract class Model {
      * @param  string $lang_model  if empty and $model_join_id is also empty the fallback lang will be used from the main model
      *                             (this means the model MUST have the `lang` field)
      *                             if defined and $model_join_id is empty, will be used as the fallback language
-     *                             (usually, just pass Config::get('lang') for fallback)
+     *                             (usually, just pass Config::get('sql_lang') for fallback)
      *                             if defined and $model_join_id is also defined,
      *                                will be used as the name of the table to JOIN to get the fallback language
      * @param  string $model_join_id the field in the table_lang to use with the JOIN table.id
@@ -522,7 +522,7 @@ abstract class Model {
             return ["`$table`.`".implode("`,\n`$table`.`", $fields).'`', ''];
         }
         $fallback_lang = Lang::getDefault($lang);
-        $default_lang = ($lang_model && !$model_join_id) ? $lang_model : Config::get($lang);
+        $default_lang = ($lang_model && !$model_join_id) ? $lang_model : Config::get('sql_lang');
         $sql_fields = [];
         $sql_joins = [];
         foreach($fields as $field) {
