@@ -1,7 +1,10 @@
 ---
 api-key-no-generated: 'Sie haben noch keinen API-Key generiert'
 api-key-tool-tip: 'Mit Deinem Benutzernamen und API-Key kannst Du Anfragen an unsere API stellen'
+api-key-documentation: 'API-Dokumentation anzeigen'
 api-key-user: 'Benutzer'
+api-key-key: 'Schlüssel'
+api-key-generate-new: 'Einen neuen Schlüssel generieren'
 contract-data_title: 'Vertragsdaten'
 dashboard-certificates-confirm: 'Daten bestätigen'
 dashboard-certificates-confirm-checkbox: 'Hiermit bestätige ich, das dies meine richtigen Daten sind. Mir ist bewusst, dass ich diese Daten nicht mehr verändern kann, sobald sie bestätigt sind.'
