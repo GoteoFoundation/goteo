@@ -1,7 +1,9 @@
 ---
 channel-join: 'Nehmen Sie teil!'
 channel-join-desc: 'Möchten Sie am Channel teilnehmen?'
+channel-join-reviewing: 'In Auswertung...'
 matcher-apply-pending: 'Dieses Projekt ist für die Matchfunding-Ausschreibung %s vorselektiert.'
+matcher-apply-accepted: 'Dieses Projekt steht unter dem Vorbehalt der Genehmigung für die Matchfunding-Ausschreibung %s'
 matcher-apply-active: 'Dieses Projekt ist in die Matchfunding-Ausschreibung %s eingetragen.'
 matcher-apply-pending-desc: 'Wenn Sie sich für das zusätzlich angebotene Geld interessieren, müssen Sie die %s akzeptieren.'
 matcher-terms: 'Grundlagen und Bedingungen der Ausschreibung'
