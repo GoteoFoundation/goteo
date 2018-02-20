@@ -112,3 +112,18 @@ project-create-subtitle-alert: '<strong>WOOOOW!</strong><p>Wir machen Fortschrit
 project-create-minimum-field: 'Minimum (€)'
 project-create-minimum-calculate-button: 'berechnen'
 project-create-minimum-alert: '<strong>BRAVOOO!</strong><p>Gehen wir weiter! Denken Sie über das Geld nach, das Sie benötigen, drücken Sie auf Berechnen, und wir sagen Ihnen, wie viele Unterstützer Sie mit unseren durchschnittlichen Spenden erhalten müssen ;-)</p>'
+project-create-minimum-calculated-alert: '<strong>SUPER!</strong><p>Sind Sie in der Lage, ungefähr diese Anzahl an Unterstützer zu bekommen? Wenn ja, dann nur zu! Andernfalls denken Sie an Ihr Minimum und rechnen Sie neu!</p>'
+project-create-publishing-date-field: 'Wann planen Sie, das Projekt zu veröffentlichen?'
+project-create-social-select-field: 'Wählen Sie Ihr soziale Engagement'
+project-create-social-select-alert: "<strong>GOTEO-TASTIC!!</strong><p>Bei Goteo brauchen wir ein soziales Engagement, denken Sie darüber nach, was es ist und wählen Sie eines aus! \n</p>"
+project-create-social-text-field: 'Erklären Sie in wenigen Worten, woraus dieses soziale Engagement besteht'
+project-create-social-text-alert: '<strong>TROPPO BELLO!!</strong><p>Jetzt müssen Sie uns ein wenig über das Engagement, das Sie gewählt haben, erzählen.</p>'
+project-create-save-button: 'Speichern und fortsetzen'
+project-create-save-alert: '<strong>GROSSARTIG!!</strong><p>Nachdem wir nun eine Vorstellung von Ihrem Projekt haben, gehen Sie mit einem erweiterten Formular über Ihr Projekt zum nächsten Schritt über.</p>'
+project-create-modal-no-social-title: 'Soziales Engagement'
+project-create-modal-no-social-description: 'Es ist zwingend erforderlich, ein soziales Engagement zu haben, damit Ihr Projekt in Goteo akzeptiert wird. Wenn Sie sich nicht selbst festlegen, indem Sie eine davon auswählen, wird die Schaltfläche, mit der Sie fortfahren können, nicht aktiviert: - ('
+project-share-materials: 'Gemeinsame Materialien'
+project-create-no-social-commitment: 'Ich habe nicht'
+project-progress-title: Wie geht das Projekt voran
+project-edit: Projekt bearbeiten
+project-remove-cost-confirm: 'Sind Sie sicher, dass Sie diese Kosten löschen möchten?'
