@@ -5,10 +5,12 @@ api-key-documentation: 'API-Dokumentation anzeigen'
 api-key-user: 'Benutzer'
 api-key-key: 'Schlüssel'
 api-key-generate-new: 'Einen neuen Schlüssel generieren'
+api-key-generate-new-confirm: 'Diese Aktion wird den aktuellen Schlüssel löschen und einen neuen Schlüssel generieren. Fortfahren?'
 contract-data_title: 'Vertragsdaten'
 dashboard-certificates-confirm: 'Daten bestätigen'
 dashboard-certificates-confirm-checkbox: 'Hiermit bestätige ich, das dies meine richtigen Daten sind. Mir ist bewusst, dass ich diese Daten nicht mehr verändern kann, sobald sie bestätigt sind.'
 dashboard-certificates-confirmed: Bestätigt
+dashboard-certificates-processed: Bearbeitet
 dashboard-certificates-confirmed-ok: 'Steuerliche Daten korrekt bestätigt. Wenn Deine Bescheinigung nicht automatisch herunterlässt, klicke bitte %HERE%'
 dashboard-certificates-data-alert: 'Beachte, dass die Daten nicht mehr geändert werden können, sobald sie bestätigt sind.'
 dashboard-certificates-data-desc: 'Bitte versichere Dich, dass die Formulardaten korrekt sind und bestätige das Formular.'
@@ -29,6 +31,7 @@ dashboard-certificates-too-old: 'Diese Bescheinigung ist zu alt, um sie zu ände
 dashboard-certificates-totals: '%NUM% Beiträge, %AMOUNT%'
 dashboard-certificates-unconfirmed: 'Bestätige erst die Daten, bevor Du die Bescheinigung herunterlädst.'
 dashboard-certificates-view-pending: 'Deine Beiträge an Projekte, die ihr Minimalziel noch nicht erreicht haben, werden nicht dargestellt. Du kannst sie %HERE% einsehen.'
+dashboard-certificates-no-invests: 'Sie können das Zertifikat nicht bestätigen, wenn Sie keine Spendenbeiträge haben!'
 dashboard-chart-days: '%s VERBLEIBENDE TAGE'
 dashboard-chart-invested: 'ZUWENDUNG ERHALTEN'
 dashboard-chart-investors: UNTERSTÜTZER
@@ -40,6 +43,7 @@ dashboard-header-main: 'Mein Dashboard'
 dashboard-investors-mail-fail: '    Nachricht fehlgeschlagen %s: %s'
 dashboard-investors-mail-nowho: 'kein Empfänger gefunden'
 dashboard-investors-mail-sendto: 'Gesendet an %s Ihrer Unterstützer:'
+dashboard-investors-mail-sent: 'Nachrichten erfolgreich gesendet'
 dashboard-investors-mail-text-required: 'Schreiben Sie eine Nachricht'
 dashboard-investors_table-disclaimer: 'Erinnerung an Projektinitiatoren: wie in der Nutzervereinbarung festgelegt, dürfen die downloadfähigen Details der Unterstützer ausschließlich zum Zweck der Projektkommunikation (Nachrichten, Projektfortschritt, projektbezogene Aktivitäten) und zur Auslieferung der vereinbarten Belohnung verwendet werden. Jede andere Nutzung dieser persönlichen Details ist absolut verboten. Eine Übertretung dieser Verpflichtung berechtigt die Plattformbetreiber, entsprechende rechtliche Schritte einzuleiten und das Projekt von der Plattform zu entfernen.'
 dashboard-menu-activity: 'Meine Aktivitäten'
@@ -50,6 +54,7 @@ dashboard-menu-activity-wall: 'Meine Pinnwand'
 dashboard-menu-admin_board: Administration
 dashboard-menu-calls-sponsors: Sponsoren
 dashboard-menu-pool: 'Meine Geldbörse'
+dashboard-menu-pool-available: Saldo
 dashboard-menu-pool-conditions: Konditionen
 dashboard-menu-profile: 'Mein Profil'
 dashboard-menu-profile-access: 'Kontodetails'
@@ -59,14 +64,17 @@ dashboard-menu-profile-preferences: 'Einstellungen'
 dashboard-menu-profile-profile: 'Profil bearbeiten'
 dashboard-menu-profile-public: 'öffentliches  Profil'
 dashboard-menu-projects: 'Meine Projekte'
+dashboard-menu-projects-analytics: Statistik
 dashboard-menu-projects-commons: Belohnungen
 dashboard-menu-projects-contract: Vertrag
+dashboard-menu-projects-social-commitment: 'Soziales Engagement'
 dashboard-menu-projects-messegers: Teilnehmer
 dashboard-menu-projects-preview: 'öffentliche Seite'
 dashboard-menu-projects-rewards: Unterstützer
 dashboard-menu-projects-summary: Zusammenfassung
 dashboard-menu-projects-supports: Kooperationen
 dashboard-menu-projects-updates: Neuigkeiten
+dashboard-menu-projects-widgets: Widget
 dashboard-menu-review_board: Rezension/Beurteilung
 dashboard-menu-translate_board: Übersetzung
 dashboard-menu-translates: 'Meine Übersetzungen'
@@ -74,11 +82,18 @@ dashboard-messegers-mail-sendto: ' Gesendet an %s Ihrer Teilnehmer:'
 dashboard-my-wallet-available: 'Derzeit haben Sie <span class="pool-amount">%s</span> <span class="pool-desc">in Ihrer Geldbörse</span>'
 dashboard-my-wallet-contribute-button: spenden
 dashboard-my-wallet-pool-info: 'Weitere Informationen zu Ihrem virtueller Geldbörse finden Sie '
+dashboard-no-projects: 'Sie haben kein Projekt, Sie können <a href="/project/create">hier</a> ein Projekt anlegen'
 dashboard-password-recover-advice: 'Sie wollen Ihr Passwort wiederherstellen. Bitte traten Sie Ihren Benutzernamen in das Feld „aktuelles Passwort“, um dieses zu ändern.'
+dashboard-project-analytics-fail: 'Bei der Speicherung Ihrer Identifikatoren für die Analyse ist ein Fehler aufgetreten'
+dashboard-project-analytics-ok: 'Ihre Identifikatoren für die Analyse wurden korrekt gespeichert'
 dashboard-project-blog-fail: 'Kontaktieren Sie uns'
 dashboard-project-blog-inactive: 'Sorry, Sie können zur Zeit keine Nachrichten über dieses Projekt veröffentlichen.'
+dashboard-project-blog-empty: 'Noch keine Beiträge zum Anzeigen.'
 dashboard-project-blog-wrongstatus: 'Sorry, Sie können noch keine Nachrichten über dieses Projekt veröffentlichen...'
+dashboard-project-delete: Projekt verwerfen
 dashboard-project-delete_alert: 'Sind Sie sicher, dass Sie dieses Projekt dauerhaft löschen wollen?'
+dashboard-project-delete-no-perms: 'Ihnen fehlt die Berechtigung dieses Projekt zu löschen'
+dashboard-project-delete-ko: 'Das Projekt %s konnte nicht gelöscht werden!'
 dashboard-project-updates-delete_fail: 'Fehler beim Löschen'
 dashboard-project-updates-deleted: 'Nachricht entfernt'
 dashboard-project-updates-fail: 'Es gibt ein Problem bei der Datensicherung.'
