@@ -21,6 +21,7 @@ contract-step-documents: Documentation
 contract-step-entity: 'Legal entity'
 contract-step-final: Review
 contract-step-promoter: Representative
+guide-contract-documents: "Es ist zwingend erforderlich, die Dokumente hochzuladen, die die eingegebenen Daten belegen und auf die wir im Folgenden näher eingehen: \\r\nIN ALLEN FÄLLEN eine Kopie der ID/NIE der unterzeichnenden Person (sei es in Ihrem eigenen Namen oder im Namen einer juristischen Person).\\r\nIN ALLEN FÄLLEN eine Kopie eines beliebigen Dokuments, das die laufende Kontonummer (Bankbuch, Quittungen...) enthält.\\r\nnur für den Fall, dass der Vertrag mit einer FIRMA, STIFTUNG oder VEREINIGUNG geschlossen wurde: ALSO, eine Kopie des CIF und eine Kopie der Vollmacht (Sitzungsprotokoll des Vereins, in dem Name und Position des Unterzeichners des Vertrags, ein Dokument der Gesellschaft oder eine Vollmacht, aus der hervorgeht, dass der Unterzeichner dies im Namen des Unternehmens tun kann). "
 guide-contract-entity: 'In this step you need to fill in the details of the entity you represent. If you are going to sign the contract in your own name, you have to go back to the first step ("Representative"), and indicate so adequately.'
 guide-contract-final: 'Verify the entered details. If there are no errors, you can complete it so that we can review it. If there are errors, they must be corrected.'
 guide-contract-no_entity: 'Als Einzelperson haben Sie nichts in dieser Phase auszufüllen'
@@ -62,6 +63,7 @@ tooltip-project-contract_entity: 'Choose “Person” if you are the project pro
 tooltip-project-contract_name: 'Please use your real first name and surname. Note that you will be listed as the project leader.'
 tooltip-project-contract_nif: 'Your NIF, NIE or VAT number with digits and the letter'
 validate-project-value-contract_nif: 'Ihre Steuer-Identifikationsnummer (TIN) ist ungültig!'
+contract-admin-fields: 'Administrative Felder (vom Goteo-Team auszufüllen)'
 contract-funding-goal: 'Finanzierungsziele'
 contract-committed-return: 'Bestätigte Retouren'
 contract-final-name: 'Vor- und Nachname (Eigene oder Vertreter)'
@@ -91,4 +93,11 @@ contract-final-bank: 'Bankkonto für das Projekt'
 contract-final-bank_owner: 'Kontoinhaber'
 contract-final-close: 'Daten abschließen und den Vertrag bearbeiten'
 contract-validation-ok: Der Vertrag scheint richtig zu sein. Bitte überprüfen Sie die Daten und schließen Sie den Vorgang ab, indem Sie die Dateneingabe abschließen.
+contract-non-available: 'Der Vertrag steht noch nicht zur Verfügung!'
+contract-validation-errors: Der Vertrag ist noch nicht fertig! "
+contract-validation-error-promoter: 'Fehlende Felder beim Ausfüllen des Projektträgers'
 contract-validation-error-promoter_nif: 'Ihre Steuer-Identifikationsnummer (TIN) ist ungültig!'
+contract-validation-error-entity: 'Es sind noch Felder in dieser Instanz auszufüllen'
+contract-validation-error-accounts: 'Es fehlen noch auszufüllende Felder bei den Konten'
+contract-validation-error-documentos: 'Fehlende Dokumentation'
+contract-already-processed: 'Der Vertrag wurde bereits bearbeitet.'
