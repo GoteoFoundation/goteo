@@ -38,7 +38,7 @@ class Config {
 				date_default_timezone_set(self::get('timezone'));
 			}
             // Default system_lang to 'es' if not defined
-            if($name === 'sql_lang' && !array_key_exists('sql_lang', self::$config)) {
+            if(!array_key_exists('sql_lang', self::$config)) {
                 self::$config['sql_lang'] = 'es';
             }
 

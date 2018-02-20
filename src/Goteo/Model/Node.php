@@ -224,7 +224,7 @@ class Node extends \Goteo\Core\Model {
         $joins
         $sqlFilter
         ORDER BY node.name ASC";
-        // echo \sqldbg($sql, $values);
+        // die(\sqldbg($sql, $values));
         if($query = static::query($sql, $values)) {
             return $query->fetchAll(\PDO::FETCH_CLASS, __CLASS__);
         }
