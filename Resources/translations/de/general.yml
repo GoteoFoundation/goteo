@@ -36,9 +36,11 @@ fancybox: 'Fancybox text'
 goteo-return-button: 'Zurück zu Goteo'
 guide-dashboard-user-access: 'Sie können die Informationen ändern, mit denen Sie sich in Ihren Goteo-Account einloggen.'
 guide-project-contract-information: 'Ihre Informationen in diesem Bereich sind erforderlich, um Sie zu kontaktieren, wenn wir Ihnen die gewünschte Unterstützung gewähren können. Im Falle von Organisationen empfehlen wir, dass der Repräsentant von seiner Organisation offiziell akkreditiert wird. (Bspw. Im Rahmen der Vereinssatzung oder durch ein entsprechendes Schreiben der Geschäftsführung bzw. des Vereinsvorstands)'
+guide-project-description: "<strong>Nutzen Sie diesen Bereich, um die Projektkonzeption darzustellen. </strong><br><br>Dies ist die erste Information, die der Seitenbetrachter sehen wird. Deshalb empfehlen wir, dies aufmerksam zu formulieren und Tippfehler zu vermeiden. Sie werden sehen, dass es dabei einige Pflichtfelder gibt, darunter eins für einen Projektfilm und Bilder. Wir halten dies für wesentlich, um eine Crowdfunding-Kampagne mit Goteo zu starten und Geld oder Unterstützung einzuwerben.<br><br>\\r\nBedenken Sie, dass für Goteo freie Information, offenes und Gemeinwohl-Nutzen Wissen das Wertvollste sind, mit dem Ihr Projekt unsere Gesellschaft bereichern kann. Die Originalität Ihres Projektes; das Bestreben, ein soziales Problem zu lösen; die Fähigkeit, eine große Menge interessierter Menschen damit zu begeistern; und die Qualität und Erfahrung Ihres Teams, das Projekt zum Erfolg zu bringen, sind die Argumente, die am meisten zählen. Vergessen Sie also nicht, Ihre Stärken in diesen Punkten hervorzuheben."
 guide-project-images: 'Bilder können Fotos, Screenshots, Skizzen, Illustrationen, Storyboards, etc. sein. (ihre Lizenzierung sollte kompatibel mit Ihrer gewählten Projektlizensierung sein. Sie können so viele Motive hochladen, wie Sie möchten.'
 guide-project-rewards: "<strong>In diesem Bereich sollen Sie beschreiben, was das Projekt seinen Unterstützern als Dankeschön oder Belohnung anbietet und welchen allgemeinen Nutzen es für die Gesellschaft hat.</strong><br><br>Zusätzlich zu den individuellen Belohnungen für verschiedene Zuwendungsbeträge sollten Sie den Lizenztyp Ihres Projektes definieren, je nach seinem Format und/oder dem Grad der Offenheit (open-source) des Projektes o(der seiner Teile). Dies ist daher wichtig, weil Goteo diese Crowdfunding-Plattform für Projekte entwickelt hat, die auf der Open-Source Philosophie beruhen und das Gemein-Gut fördern.<br><br>Im Falle, dass Sie zusätzlich zu einer der hier spezifizierten Lizenzarten auch ein Urheberrecht Ihrer Arbeit oder Idee geltend machen möchten, welches dennoch kompatibel mit kollektivem Nutzen ist, können Sie auf der folgenden Seite spezifischen rechtlichen Schutz erhalten:<a href=\"http://www.safecreative.org/\" target=\"new\">Safe Creative</a>."
 guide-project-supports: '<strong>In diesem Bereich können Sie angeben, welche nichtmonetäre Unterstützung Sie zur Realisierung Ihres Projektes benötigen.</strong><br><br>Das kann eine Projektunterstützung durch andere sein (bspw. Übersetzungen, Organisation, Werbung, etc.) oder vielleicht spezifische Leihgaben (Material, Technik, Transport, Werkzeug, etc.)'
+guide-project-updates: "<b>Es ist für Projekte überaus wichtig, ihre Unterstützer/innen und andere potentiell interessierte Menschen über den Projektverlauf auf dem Laufenden zu halten. Nutzen Sie diesen Bereich wie einen Blog für Neuigkeiten über Ihr Projekt.</b>\\r\n\\r\nAuf dieser Plattform sollten Sie - auch nachdem Sie das minimale Finanzierungsziel erreicht haben, sowie in der zweiten Finanzierungsrunde – regelmäßig über den Projektfortschritt, über Probleme und Erfolge, etc. berichten, um eine größtmögliche Transparenz zu gewährleisten. So können Sie Ihre Unterstützer/innen weiter einbinden und eine noch größere Community erreichen."
 header-about-side: 'Was uns inspiriert'
 home-posts-header: Neuigkeiten
 horizontal-project-investors: 'Ko-Finanzierer'
@@ -59,6 +61,7 @@ profile-about-header: 'über mich'
 project-invest-total: 'Gesamte Zusendungen'
 project-messages-send_message-your_answer: 'Schreiben Sie hier Ihre Antwort'
 project-messages-send_message_support-your_answer: 'Schreiben Sie hier Ihre Kooperationsnachricht an %s'
+regular-add: Neue Registrierung
 regular-admin_board: 'Admin Panel'
 regular-allsome: 'alle/einige'
 regular-anonymous: Anonym
@@ -68,23 +71,34 @@ regular-by: 'Von:'
 regular-calendar: Kalender
 regular-cancel: Abbrechen
 regular-cancel-back: 'Abbrechen und zurück'
+regular-back: 'Zurück'
+regular-channel: Kanal
 regular-collaborate: Kooperieren Sie
+regular-content: Inhalt
 regular-continue-question: 'Weiter?'
 regular-create: 'Erstellen Sie ein Projekt'
 regular-date: Datum
+regular-date_in: Datum der Eintragung
+regular-date_out: Herausgabedatum
 regular-days: Tage
 regular-delete: Löschen
 regular-description: Beschreibung
 regular-discover: 'Entdecken Sie Projekte'
+regular-discard: 'Verwerfen'
+regular-download-pdf: 'PDF herunterladen'
 regular-download: Download
+regular-actions: Aktionen
 regular-edit: Bearbeiten
 regular-email: Email-Adresse
+regular-join: 'Nehmen Sie teil'
+regular-facebook: Facebook
 regular-faq: 'Häufigste Fragen'
 regular-female: weiblich
 regular-first: First
 regular-from: von
 regular-getit: Get it
 regular-go_up: Upload
+regular-google: Google+
 regular-header-about: 'über Goteo'
 regular-header-glossary: 'Glossar der Goteo-Begriffe'
 regular-hello: Hallo
