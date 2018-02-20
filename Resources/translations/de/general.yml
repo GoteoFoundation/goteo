@@ -99,26 +99,38 @@ regular-from: von
 regular-getit: Get it
 regular-go_up: Upload
 regular-google: Google+
+regular-header: Kopfdaten
 regular-header-about: 'über Goteo'
+regular-header-blog: Blog
+regular-header-faq: FAQ
 regular-header-glossary: 'Glossar der Goteo-Begriffe'
 regular-hello: Hallo
 regular-here: hier
+regular-help: Hilfe
 regular-home: Start
+regular-identica: Identi.ca
 regular-im: Ich bin
+regular-instagram: Instagram
 regular-invest: Unterstützen Sie
 regular-invest_it: 'Projekt unterstützen'
 regular-investing: Unterstützend
 regular-lang: Sprache
 regular-last: Last
 regular-license: Lizenz
+regular-linkedin: LinkedIn
 regular-login: Einloggen
 regular-logout: 'Ausloggen'
 regular-looks_for: 'suchen nach:'
+regular-main-header: Goteo.org
 regular-male: männlich
+regular-others: Sonstige
 regular-manage_board: 'Processing Agency Panel'
 regular-mandatory: 'Erforderliches Feld!'
+regular-matchfunding: 'Match Funding'
 regular-media_legend: Legende
 regular-menu: Menü
+regular-menu-personal: Persönliches Menü
+regular-message-clipboard-fail: 'Wählen Sie aus und kopieren Sie diesen link'
 regular-message_fail: 'Fehler beim Senden der Nachricht'
 regular-message_success: 'Nachricht erfolgreich gesendet'
 regular-months: Monate
@@ -136,8 +148,12 @@ regular-recomended_by: 'Projekt empfohlen von:'
 regular-review_board: 'Bewertungsgremium'
 regular-round: 'Runde'
 regular-save: Sichern
+regular-schedule: Zeitplan
 regular-search: Suchen
+regular-search-desc: 'Geben Sie Ihren Suchbegriff hier ein'
+regular-search-tooltip: 'Geben Sie Ihren Suchbegriff ein und drücken Sie die Eingabetaste'
 regular-see_all: 'Alle anzeigen'
+regular-see_blog: Blog
 regular-see_details: 'Details anzeigen'
 regular-see_more: 'Mehr anzeigen'
 regular-send_message: 'Nachricht senden'
@@ -148,15 +164,28 @@ regular-share_this: 'Teilen auf:'
 regular-sorry: 'Es tut uns leid'
 regular-spread: Verbreitung
 regular-status: Status
+regular-template: Vorlage
 regular-thanks: Vielen Dank
+regular-title: Title
+regular-text: Text
+regular-media: Video (Youtube, Vimeo)
 regular-total: Gesamt
+regular-translate: Übersetzen
+regular-translations: 'Übersetzungen'
 regular-translate_board: 'Übersetzungsfeld'
+regular-twitter: Twitter
+regular-url: Link
+regular-view: Ansehen
 regular-view_project: 'Projekt anzeigen'
 regular-web: Seite
 regular-weeks: Wochen
 regular-year: Jahr
 regular-yes: Ja
 regular-name: Name
+regular-image: Bild
+regular-images: Bilder
+regular-load-more: 'Weitere laden'
+regular-analytics: 'Google Analytics'
 session-about-to-expire: 'Ihre Sitzung wird in 10 Minuten ablaufen, wollen Sie erneut laden?'
 session-expired: 'Ihre Sitzung ist abgelaufen'
 spread-about: 'Text spread-about'
