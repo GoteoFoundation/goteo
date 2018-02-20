@@ -13,6 +13,7 @@ login-new-user-label: 'Neuen Benutzer anlegen?'
 login-oneclick-header: '1-Klick-Anmeldung'
 login-recover-button: Wiederherstellen
 login-recover-email-field: 'Account Email-Adresse'
+login-recover-header: "\"Passwort wiederherstellen\\r\\n Tragen Sie in diesem Feld dieselbe Email ein, die Sie bei der Anmeldung auf der Plattform verwendet haben.\nAchtung: Sie werden die erforderlichen Informationen zum Wiederherstellen des Passwortes erhalten. Häufig ist es dieselbe Email, die mit Ihren sozialen Netzwerken verknüpft ist.\\r\nAchtung: Sie werden eine Email mit einem Direktlink zum Ändern des Passwortes auf dieselbe Adresse erhalten.\\r\nWenn Sie keine Email erhalten, stellen Sie sicher, dass sich die Email nicht in Ihrem Spam-Ordner befindet. \\r\nWenn Sie mehrere Male geklickt haben, um ein neues Passwort zu erhalten, haben Sie gegebenenfalls einen automatisch generierten Link für jede Anforderung erhalten. \\r\nVerwenden Sie den Link in der letzten Email, die Sie erhalten haben.\\r\\n \nWenn Sie sich nicht mehr an die Email-Adresse erinnern, die mit Ihrem Konto verknüpft ist, können Sie uns zur Lösung des Problems kontaktieren. Bitte vergessen Sie dabei nicht, uns einige Daten mitzuteilen, damit wir Ihr Konto in unserem System finden können (Kompletter Name, Aliasname, Datum der Reistrierung oder Informationen, wenn Sie bereits ein bestimmtes Projekt unterstützt haben)."
 login-recover-label: 'Password vergessen?'
 login-recover-link: 'Passwort wiederherstellen'
 login-recover-modal-button: Senden
@@ -66,3 +67,4 @@ reset-password-new-password: 'Ihr neues Passwort'
 reset-password-old-password: 'Ihr altes Passwort'
 reset-password-save: Speichern
 reset-password-title: 'Neues Passwort erstellen'
+login-alternate-ids: Weitere Optionen
