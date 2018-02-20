@@ -78,11 +78,12 @@ class Matcher extends \Goteo\Core\Model {
                        matcher.modified_at
             FROM `matcher`
             $joins
-            WHERE id = :id";
+            WHERE matcher.id = :id";
         if($active_only) {
-            $sql .= " AND active=:active";
+            $sql .= " AND matcher.active=:active";
             $values[':active'] = true;
         }
+        // print(\sqldbg($sql, $values));
         if ($query = static::query($sql, $values)) {
             if( $matcher = $query->fetchObject(__CLASS__) ) {
                 $matcher->viewLang = $lang;
@@ -200,7 +201,7 @@ class Matcher extends \Goteo\Core\Model {
                 $joins
         $sql LIMIT $offset,$limit";
 
-        // die(\sqldbg($sql, $values));
+        // print(\sqldbg($sql, $values));
         if($query = self::query($sql, $values)) {
             return $query->fetchAll(\PDO::FETCH_CLASS, __CLASS__);
         }
@@ -380,7 +381,7 @@ class Matcher extends \Goteo\Core\Model {
         if($this->spheresList) return $this->spheresList;
         $values = [':matcher' => $this->id];
 
-        list($fields, $joins) = Sphere::getLangsSQLJoins($this->viewLang, Config::get('lang'));
+        list($fields, $joins) = Sphere::getLangsSQLJoins($this->viewLang, Config::get('sql_lang'));
 
         $sql = "SELECT
                 sphere.id,
