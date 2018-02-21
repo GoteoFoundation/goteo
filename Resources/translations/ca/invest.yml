@@ -32,7 +32,6 @@ invest-amount-in-pool: 'Tens %s al teu moneder virtual'
 invest-amount-tooltip: 'Introdueix la quantitat amb que recolzaràs el projecte'
 invest-anonymous: "Vull que la meva aportació sigui anònima \\\\r\n"
 invest-button: Aporta
-invest-called-allready: 'A aquest projecte ja li has donat <strong>Matchfunding</strong> de la convocatòria %s, no n''obtindrà més per les teves aportacions'
 invest-called-maxdrop: 'Fins a un màxim de <strong>%s &euro;</strong>'
 invest-called-maxproj: 'El projecte al que has donat suport ja ha aconseguit el màxim de <strong>Matchfunding</strong> possible en la convocatòria <span class="call">%s</span>.'
 invest-called-nodrop: 'Actualment no hi ha més <strong>Matchfunding</strong> disponible a la convocatòria %s'
@@ -51,7 +50,6 @@ invest-make-sure-save: Desar
 invest-make-sure-title: Confirma
 invest-method: 'Mètode de pagament'
 invest-method-title: 'Fes la teva aportació'
-invest-modal-fiscal-description: 'Com ja deus saber, fer aportacions a Goteo no només fa possibles un munt de projectes que ens beneficien a tots i totes, sinó que a més desgrava! <p>En realitzar una aportació a un projecte, i gràcies a l''increment en els tipus de deducció aplicables des de 2015 per a les donacions pures i simples que es realitzin a favor de la Fundació Goteo, com a entitat acollida al règim fiscal especial de la Llei 49/2002 de 23 de desembre, podràs deduir les quantitats que indiquem en la nostra <a href="https://goteo.org/faq/investors#q112" target="_blank">FAQ nº 18 per a comecenes</a>.'
 invest-modal-fiscal-title: 'Informació fiscal'
 invest-modal-pool-description: 'El moneder virtual és un sistema de crèdit de la plataforma Goteo, que podràs omplir amb els teus diners i utilitzar-lo com a via de pagament sempre que vulguis realitzar aportacions a projectes dins la nostra plataforma, sense necessitat d''indicar les teves dades de targeta ni de paypal cada vegada.'
 invest-modal-pool-title: 'Sobre el moneder virtual Goteo'
@@ -69,7 +67,6 @@ invest-pool-method: 'Moneder virtual'
 invest-process-completed: 'Aquesta aportació ja es va completar anteriorment'
 invest-project: 'al projecte'
 invest-resign: "Renuncio a una recompensa individual, només vull donar suport al projecte \\\\r\n"
-invest-reward-first: 'Recorda que la quantitat a aportar ha de ser més gran que 0'
 invest-reward-none: 'Ja no es pot escollir'
 invest-reward-not-found: 'Aquesta recompensa no existeis!'
 invest-reward-used-up: 'Ja queden unitats d''aquesta recompensa!'
