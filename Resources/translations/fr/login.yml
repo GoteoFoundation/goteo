@@ -4,7 +4,7 @@ error-register-userid: 'Il est obligatoire d''écrire un nom d''accès'
 login-access-button: Entrer
 login-access-header: 'Utilisateur enregistré'
 login-access-password-field: Mot de passe
-login-access-username-field: 'login'
+login-access-username-field: 'Nom d''utilisateur ou Email'
 login-fail: 'Erreur d''accès'
 login-leave-button: 'Supprimer mon compte'
 login-leave-header: 'Annuler le compte'
@@ -26,7 +26,7 @@ login-register-email-field: Adresse mail
 login-register-header: 'Nouvel utilisateur'
 login-register-password-field: Mot de passe
 login-register-password-minlength: '6 caractères minimum'
-login-register-userid-field: 'login'
+login-register-userid-field: 'Login'
 login-register-username-field: 'Nom public'
 login-signin-facebook: 'Se connecter avec facebook'
 login-signin-google: 'Accès via Google'
