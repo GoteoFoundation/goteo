@@ -1,7 +1,6 @@
 ---
 bazar-spread-text: '%s – Verschenke zu Weihnachten einen Crowdfunding-Gutschein für Projekte des Gemeinwohls mit @goteofunding #openbazaar'
 bazar-thanks: 'Vielen Dank für Ihren Besuch unseres Basars, helfen Sie uns, ihn bekannter zumachen.'
-currency-alert: "Bitte beachten Sie, dass die Original-Währung dieses Projektes in EUR ist. \\r\nSie werden ungefähr <span id=\"reminder_conversion\">%s</span> € bezahlen<a href=\"/faq/investors#q115\" target=\"_blank\">Weitere Informationen</a>\""
 faq-payment-method: '<a href="/faq/investors#q2" target="_blank">Welche Bezahlmöglichkeiten bietet Goteo an? Sind diese sicher?</a>'
 imperative-register: Register
 invest-address-address-field: 'Adresse:'
@@ -33,7 +32,6 @@ invest-amount-in-pool: 'Sie haben %s in Ihrer virtuellen Geldbörse'
 invest-amount-tooltip: 'Tragen Sie den Betrag ein, mit dem Sie dieses Projekt unterstützen wollen'
 invest-anonymous: 'Bitte anonymisieren Sie meinen Beitrag'
 invest-button: Unterstütze
-invest-called-allready: 'Sie haben dieses Projekt bereits unterstützt. Kein <strong>Matchfunding</strong> der <span class="call">%s</span> <strong>Matchfunding</strong> Kampagne wird ausgezahlt'
 invest-called-maxdrop: 'Bis zum Maximalbetrag von <strong>%s &euro;</strong>'
 invest-called-maxproj: 'Dieses Projekt hat die maximale Summe an <strong>Matchfunding</strong> aus der <span class="call">%s</span> Kampagne erhalten.'
 invest-called-nodrop: 'Zur Zeit ist kein <strong>Matchfunding</strong> für diese Kampagne verfügbar: %s'
@@ -52,7 +50,6 @@ invest-make-sure-save: Speichern
 invest-make-sure-title: Bestätigen
 invest-method: 'Zahlungsmethode'
 invest-method-title: 'Unterstützen Sie jetzt'
-invest-modal-fiscal-description: 'Wie Sie bereits wissen, ermöglicht Ihre Unterstützung auf Goteo nicht nur eine Reihe Projekte, von denen wir alle profitieren; Sie können damit auch Steuern sparen! <p>Bei Zahlung einer Projektunterstützung auf Goteo und dank der bestätigten Gemeinnützigkeit der Goteo-Stiftung gemäß des spanischen Gesetzes 49/2002 vom 23.12.2015'
 invest-modal-fiscal-title: 'Steuerliche Information'
 invest-modal-pool-description: 'Die virtuelle Geldbörse ist eine virtuelle Kreditsystem-Plattform von Goteo, mit der Sie Projekte unterstützen können'
 invest-modal-pool-title: 'Information zur virtuellen Geldbörse'
@@ -63,7 +60,6 @@ invest-payment-fail: 'Bei der Bezahlung ist etwas schiefgelaufen'
 invest-payment-success: 'Die Bezahlung wurde korrekt abgewickelt'
 invest-payment_method-header: 'Wählen Sie Ihre Bezahlmethode'
 invest-paypal-method: PayPal
-invest-paypal_disabled: "\\r \nFür dieses Projekts wurde die Möglichkeit der Zahlung per PayPal deaktiviert. <a href=\"/faq/investors#q2\" target=\"_blank\"> mehr info</a>"
 invest-pool: 'Für den Fall, dass das Projekt nicht zustande kommt, soll mein Beitrag in meine virtuelle Geldbörse gespeichert werden, damit ich damit zu einem beliebigen späteren Zeitpunkt andere Projekte unterstützen kann. In jedem Fall wird meine Spendenbescheinigung das heutige Datum tragen.'
 invest-pool-available: Verfügbar
 invest-pool-error: 'Sie haben nicht genug Geld in Ihrer virtuellen Geldbörse.'
@@ -71,7 +67,6 @@ invest-pool-method: 'Virtuelle Geldbörse'
 invest-process-completed: 'Ihre Spendenzahlung wurde bereits vervollständigt '
 invest-project: 'Das Projekt'
 invest-resign: 'Ich möchte keine Belohnung, ich möchte einfach dieses Projekt unterstützen.'
-invest-reward-first: '<br>Hinweis, dass die Spendensumme größer als 0 sein muss'
 invest-reward-none: 'Diese Auswahl ist nicht mehr möglich'
 invest-reward-not-found: 'Diese Belohnung wurde nicht gefunden!'
 invest-reward-used-up: 'Von dieser Belohnung sind keine Einheiten mehr verfügbar!'
