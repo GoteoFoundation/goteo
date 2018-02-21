@@ -19,17 +19,27 @@ use Goteo\Console\Command\AbstractCommand;
 use Goteo\Application\Config;
 
 class CrowdinCommand extends AbstractCommand {
+    private $id;
+    private $key;
 
     protected function configure()
     {
         $this->setName("dev:crowdin")
              ->setDescription("Initializes the database with some know project status")
               ->setDefinition(array(
-                       new InputOption('update', 'u', InputOption::VALUE_NONE, 'Updates the README.md file in Goteo\'s folder'),
+                       new InputOption('update', 'u', InputOption::VALUE_NONE, 'Actually does the job. Updates the README.md or uploads data'),
+                       new InputArgument('scope', InputArgument::REQUIRED, 'Operation scope: [readme]'),
                  ))
              ->setHelp(<<<EOT
-This script imports data from crowdin (currently top translators members)
+This script imports data from crowdin
 
+Usage:
+
+Shows the list of translators from translate.goteo.org
+<info>./console dev:crowdin readme</info>
+
+Updates the README.md with the list of translators from translate.goteo.org
+<info>./console dev:crowdin readme -u</info>
 EOT
 );
     }
@@ -38,15 +48,27 @@ EOT
     {
 
         $update  = $input->getOption('update');
+        $scope  = $input->getArgument('scope');
 
-        $id = Config::get('crowdin.project');
-        $key = Config::get('crowdin.key');
-        $skip = Config::get('crowdin.skip_list');
+        $this->id = Config::get('crowdin.project');
+        $this->key = Config::get('crowdin.key');
         if(!is_array($skip)) $skip = [];
-        if(empty($id) || empty($key)) {
+        if(empty($this->id) || empty($this->key)) {
             throw new \Exception('crowdin.project and crowdin.key must be defined in settings.yml');
         }
 
+        if($scope === 'readme') {
+            $this->readme($input, $output);
+        }
+
+    }
+
+    protected function readme(InputInterface $input, OutputInterface $output) {
+        $update  = $input->getOption('update');
+
+        $skip = Config::get('crowdin.skip_list');
+        $id = $this->id;
+        $key = $this->key;
         $request_url = "https://api.crowdin.com/api/project/$id/reports/top-members/export?format=csv&json&key=$key&language=en";
 
         $ch = curl_init();
