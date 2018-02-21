@@ -7,7 +7,6 @@ discover-group-outdate-header: 'In archiviazione'
 discover-group-popular-header: 'Più popolari '
 discover-group-recent-header: 'Pubblicati recentemente'
 discover-group-success-header: 'Campagne di successo '
-discover-patron-header: '<span class="greenblue">%s</span> consiglia<br />estos <span class="red">Progetti</span>'
 discover-results-empty: 'Non abbiamo trovato nessun progetto che abbia i requisiti della ricerca'
 discover-results-header: 'Risultato della ricerca'
 discover-searcher-button: Cercare
