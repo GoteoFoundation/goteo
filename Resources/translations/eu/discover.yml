@@ -6,7 +6,6 @@ discover-group-outdate-header: 'Artxibatzeko zorian'
 discover-group-popular-header: 'Ezagunenak'
 discover-group-recent-header: 'Orain dela gutxi argitaraturik'
 discover-group-success-header: 'Arrakastatsuak'
-discover-patron-header: '<span class="greenblue">%s-(e)k</span> honako<br /><span class="red">Proiektu</span> hauek gomendatzen ditu'
 discover-results-empty: 'Ez dugu proiekturik aurkitu bilaketa irizpideak kontutan izanda'
 discover-results-header: 'Bilaketaren emaitza'
 discover-searcher-button: Bilatu
