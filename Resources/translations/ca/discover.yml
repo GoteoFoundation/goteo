@@ -7,7 +7,6 @@ discover-group-outdate-header: 'A punt de caducar'
 discover-group-popular-header: 'Més populars'
 discover-group-recent-header: 'Recents'
 discover-group-success-header: 'Reeixits '
-discover-patron-header: '<span class="greenblue">%s</span> recomana<br />aquests <span class="red">projectes</span>'
 discover-results-empty: 'No hem trobat cap projecte que compleixi els criteris de cerca'
 discover-results-header: 'Resultat de la cerca'
 discover-searcher-button: Cercar
