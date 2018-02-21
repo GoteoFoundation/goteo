@@ -1,6 +1,5 @@
 ---
 contract-accounts_title: 'Comptes bancaires du projet'
-contract-bank_account: 'Compte bancaire:'
 contract-bank_owner: 'Titulaire du compte bancaire'
 contract-entity-option_1: 'Comme representant d''une associatión'
 contract-entity-option_2: 'Comme un commercant'
@@ -9,10 +8,6 @@ contract-field-reg_date_2: 'Date légale de l''acte public pour la société.'
 contract-field-reg_id_2: 'Numéro du protocole notarial'
 contract-field-reg_idloc_2: 'Ville du notaire.'
 contract-field-reg_idname_2: 'Nom du notaire'
-contract-field-reg_name_1: 'Nom de l''Associatión'
-contract-field-reg_name_2: 'Nom de l''entreprise'
-contract-field-reg_number_1: 'Número Siret'
-contract-field-reg_number_2: 'Número Siret'
 contract-field-regdata: 'Date d''enregistrement'
 contract-paypal_owner: 'Titulaire du compte paypal'
 contract-step-accounts: Comptes
