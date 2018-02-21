@@ -7,7 +7,6 @@ feed-new_project: '<span class="red">Proiektu berria Goteo-n</span>, hemendik au
 feed-new_support: '<span class="green">Kolaborazio</span> berri bat argitaratu duzu %s proiektuan, "%s" izenburuarekin'
 feed-new_update: '%USER%(k) %BLOG%(n) post berria argitaratu du, %PROJECT% proiektuari buruz'
 feed-new_user: 'Erabiltzaile berria Goteo-n %s'
-feed-project_fail: '%s proiektua <span class="red">ondo artxibatu da</span> eta <span class="violet">%s ? (%s %%) gutxiengoa baino gehiago</span> jaso du'
 feed-project_finish: '%s proiektua <span class="red">bigarren txanda bukatu du</span> eta <span class="violet">%s ? (%s %) gutxiengoa baino gehiago</span> jaso du'
 feed-project_goon: '%PROJECT% proiektua <span class="red">kanpainan jarraitzen du</span> bigarren txandan eta <span class="violet">%AMOUNT% (%PERCENT% %) gutxiengoa baino gehiago</span> jaso du'
 feed-project_runout: '%PROJECT% proiektua %ROUND%.txanda bukatzeko <span class="red">%DAYS% egun</span> falta'
