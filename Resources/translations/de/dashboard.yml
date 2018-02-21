@@ -112,12 +112,10 @@ dashboard-rewards-date_order: 'Nach Datum'
 dashboard-rewards-fulfilled_filter: erfüllt
 dashboard-rewards-fulfilled_status: erfüllt
 dashboard-rewards-group_msg: 'Nachricht für diese Gruppe'
-dashboard-rewards-investors_table: 'Sie können es offline bearbeiten, indem Sie <a href="%URL%">die Unterstützer-Tabelle downloaden.</a>'
 dashboard-rewards-issue: Ereignis!
 dashboard-rewards-massive_msg: 'Gruppen-Nachricht'
 dashboard-rewards-massive_msg-all: 'An alle Unterstützer dieses Projektes'
 dashboard-rewards-massive_msg-all_alert: 'Alle bedeutet alle, es berücksichtigt nicht die restlichen markierten Objekte'
-dashboard-rewards-notice: 'DIES IST EINE VISUALISIERUNG DER AUSGEWÄHLTEN BELOHNUNGEN IHRER UNTERSTÜTZER. <br />SIE MÜSSEN DIES ERST MANAGEN, WENN SIE DIE MINDESTFÖRDERSUMME ERREICHT HABEN.'
 dashboard-rewards-num_taken: 'Verpflichtend bestellt'
 dashboard-rewards-pending_filter: unerledigt
 dashboard-rewards-pending_status: unerledigt
