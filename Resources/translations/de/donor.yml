@@ -8,7 +8,6 @@ dashboard-donor-confirmed: 'Die Spendenbescheinigung wurde korrekt erstellt. Fü
 dashboard-donor-download_certificate: 'Spendenbescheinigung herunterladen'
 dashboard-donor-edit_data: 'Details ändern'
 dashboard-donor-edit_guide: 'Füllen Sie die Details, die im Zertifikat erscheinen sollen, aus. Sobald Sie die Datei heruntergeladen haben, können diese Angaben nicht mehr geändert werden.'
-dashboard-donor-main_guide: 'Nach einem Jahr: Details können bis zum 15. Januar bestätigt werden. Das Zertifikat kann bis Juli heruntergeladen werden.<br />Für dieses Jahr: Ab Juli können die Details bestätigt werden und das Zertifikat kann heruntergeladen werden.'
 dashboard-donor-mandatory: 'ES IST ZWINGEND ERFORDERLICH DIE STEUERRELEVANTEN DATEN AUSZUFÜLLEN'
 dashboard-donor-no_donor: 'Es gibt keine Aufzeichnung jeder Spende von Ihnen. Wenn Sie eine Spende getätigt haben, nehmen Sie bitte Kontakt mit uns auf.'
 dashboard-donor-pdf_closed: 'Die Steuerdetails für die Spendenbescheinigung von %s sind nicht bestätigt worden, sie kann daher nicht heruntergeladen werden.'
