@@ -25,7 +25,7 @@ dashboard-certificates-summary: 'Bescheinigung %ID%, Jahr %YEAR%'
 dashboard-certificates-too-old: 'Diese Bescheinigung ist zu alt, um sie zu ändern. Für Nachfragen nimm bitte Kontakt zu uns auf'
 dashboard-certificates-totals: '%NUM% Beiträge, %AMOUNT%'
 dashboard-certificates-unconfirmed: 'Bestätige erst die Daten, bevor Du die Bescheinigung herunterlädst.'
-dashboard-certificates-view-pending: 'Deine Beiträge an Projekte, die ihr Minimalziel noch nicht erreicht haben, werden nicht dargestellt. Du kannst sie %HERE% einsehen.'
+dashboard-certificates-view-pending: 'Deine Beiträge an Projekte, die ihr Minimalziel noch nicht erreicht haben, werden nicht dargestellt.<br>Du kannst sie %HERE% einsehen.'
 dashboard-chart-days: '%s VERBLEIBENDE TAGE'
 dashboard-chart-invested: 'ZUWENDUNG ERHALTEN'
 dashboard-chart-investors: UNTERSTÜTZER
@@ -98,7 +98,7 @@ dashboard-rewards-issue: Ereignis!
 dashboard-rewards-massive_msg: 'Gruppen-Nachricht'
 dashboard-rewards-massive_msg-all: 'An alle Unterstützer dieses Projektes'
 dashboard-rewards-massive_msg-all_alert: 'Alle bedeutet alle, es berücksichtigt nicht die restlichen markierten Objekte'
-dashboard-rewards-notice: 'DIES IST EINE VISUALISIERUNG DER AUSGEWÄHLTEN BELOHNUNGEN IHRER UNTERSTÜTZER. <br />SIE MÜSSEN DIES ERST MANAGEN, WENN SIE DIE MINDESTFÖRDERSUMME ERREICHT HABEN.'
+dashboard-rewards-notice: 'DIES IST EINE VISUALISIERUNG DER AUSGEWÄHLTEN BELOHNUNGEN IHRER UNTERSTÜTZER.<br>SIE MÜSSEN DIES ERST MANAGEN, WENN SIE DIE MINDESTFÖRDERSUMME ERREICHT HABEN.'
 dashboard-rewards-num_taken: 'Verpflichtend bestellt'
 dashboard-rewards-pending_filter: unerledigt
 dashboard-rewards-pending_status: unerledigt

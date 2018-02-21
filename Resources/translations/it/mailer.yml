@@ -2,5 +2,5 @@
 mailer-baja: 'Non vuoi più ricevere comunicazioni di Goteo? Puoi disattivare la tua mail questo <a href="%s">link</a>'
 mailer-disclaimer: 'Goteo è una piattaforma digitale per il finanziamento collettivo, la collaborazione la distribuzione di risorse per lo sviluppo di progetti sociali, culturali, educativi, tecnologici che contribuiscano al rafforzamento dei beni comuni, in open source e/o e della libera conoscenza. '
 mailer-sinoves: 'Se non riesci a vedere questo messaggio utilizza questo <a href="%s">link</a>'
-newsletter-block: 'Non vuoi più ricevere bollettini di Goteo? <br /><a href="%s">Didsattivati</a>.'
+newsletter-block: 'Non vuoi più ricevere bollettini di Goteo? <br><a href="%s">Didsattivati</a>.'
 unsuscribe-request-success: 'Hai cancellato la tua registrazione alla newsletter. '

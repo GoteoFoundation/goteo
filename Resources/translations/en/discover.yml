@@ -7,7 +7,7 @@ discover-group-outdate-header: 'About to expire'
 discover-group-popular-header: 'Most popular'
 discover-group-recent-header: 'Recent'
 discover-group-success-header: 'Successful'
-discover-patron-header: '<span class="greenblue">%s</span> recommend<br />these <span class="red">projects</span>'
+discover-patron-header: '<span class="greenblue">%s</span> recommend<br>these <span class="red">projects</span>'
 discover-results-empty: 'We did not find any project that matches your search criteria'
 discover-results-header: 'Search results'
 discover-searcher-button: Search

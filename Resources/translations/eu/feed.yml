@@ -3,7 +3,7 @@ feed-blog-comment: '<span class="green">Iruzkina</span> idatzi duzu "%s" sarrera
 feed-invest: '%AMOUNT% eman duzu %PROJECT% proiektuari'
 feed-messages-new_thread: 'Tema berria %s-n ireki duzu %s proiektuan'
 feed-messages-response: '%s-(e)n erantzun du %s proiektuan'
-feed-new_project: '<span class="redd">Proiektu berria Goteo-n</span>, hemendik aurrera 40 egun daukagu proiektua babesteko!'
+feed-new_project: '<span class="red">Proiektu berria Goteo-n</span>, hemendik aurrera 40 egun daukagu proiektua babesteko!'
 feed-new_support: '<span class="green">Kolaborazio</span> berri bat argitaratu duzu %s proiektuan, "%s" izenburuarekin'
 feed-new_update: '%USER%(k) %BLOG%(n) post berria argitaratu du, %PROJECT% proiektuari buruz'
 feed-new_user: 'Erabiltzaile berria Goteo-n %s'

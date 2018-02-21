@@ -183,3 +183,21 @@ function delete_test_project() {
 
     return false;
 }
+
+
+function check_html($string) {
+  $start = strpos($string, '<');
+  $end  = strrpos($string, '>', $start);
+
+  $len = strlen($string);
+
+  if ($end !== false) {
+    $string = substr($string, $start);
+  } else {
+    $string = substr($string, $start, $len - $start);
+  }
+  libxml_use_internal_errors(true);
+  libxml_clear_errors();
+  $xml = simplexml_load_string($string);
+  return count(libxml_get_errors()) === 0;
+}

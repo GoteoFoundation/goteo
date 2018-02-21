@@ -43,9 +43,9 @@ oauth-confirm-user: 'Mit existierendem Benutzer verbinden'
 oauth-facebook-access-denied: 'Facebook Zugang verweigert'
 oauth-goteo-openid-sync-password: 'Sie sind dabei, ein bestehendes Goteo-Konto mit einem externen Provider zu verbinden. Das ermöglicht Ihnen, sich bei Goteo mit einem einzigen Klick anzumelden.<br>Dieses Mal müssen Sie Ihr Goteo-Konto Passwort angeben, um Ihre Identität zu bestätigen.'
 oauth-goteo-user-not-exists: 'Dieser Benutzer existiert nicht bei Goteo'
-oauth-goteo-user-password-error: "Dieses Konto verwendet bereits einen anderen passwortfreien Login-Anbieter.\\\\r\nWenn Sie mehr als einen Login-Anbieter für dieses Konto verwenden möchten, müssen Sie erst ein Passwort einrichten."
+oauth-goteo-user-password-error: "Dieses Konto verwendet bereits einen anderen passwortfreien Login-Anbieter. Wenn Sie mehr als einen Login-Anbieter für dieses Konto verwenden möchten, müssen Sie erst ein Passwort einrichten."
 oauth-goteo-user-password-exists: 'Dieser Benutzer existiert bereits bei Goteo'
-oauth-goteo-user-provider-error: "Sie müssen %s verwenden, um den User zu erreichen.\\\\r\n\\\\r\n Wenn Sie mehr als einen Login-Provider für dieses Konto verwenden möchten, müssen Sie zunächst ein Passwort einrichten."
+oauth-goteo-user-provider-error: "Sie müssen <strong>%s</strong> verwenden, um den User zu erreichen.<br>Wenn Sie mehr als einen Login-Provider für dieses Konto verwenden möchten, müssen Sie zunächst ein Passwort einrichten."
 oauth-import-about: 'Über Sie'
 oauth-import-facebook: 'Link zu Ihrem Facebook-Konto'
 oauth-import-linkedin: 'Link zu Ihrem LinkedIn-Konto'

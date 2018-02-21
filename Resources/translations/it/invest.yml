@@ -27,7 +27,7 @@ invest-amount: Quantità
 invest-amount-tooltip: 'Indica l''importo con cui sosterrai il progetto'
 invest-anonymous: 'Voglio che il mio donativo sia anonimo '
 invest-button: Contribuire
-invest-called-allready: 'Hai dato a questo progetto <strong>Matchfunding</strong> della campagna <span class="call">%s</span>., non riceverai più <strong>Matchfunding</strong> per le tue donazioni'
+invest-called-allready: 'Hai dato a questo progetto <strong>Matchfunding</strong> della campagna <span class="call">%s</span>., non riceverai più Matchfunding per le tue donazioni'
 invest-called-maxdrop: 'Fino a un massimo di <strong>%s &euro;</strong>'
 invest-called-maxproj: 'È stato già raggiunto il massimo di <strong>Matchfunding</strong> possibile con la campagna <span class="call">%s</span>.'
 invest-called-nodrop: 'Non è attualmente disponibile <strong>Matchfunding</strong> nella campagna %s'

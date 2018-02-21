@@ -3,7 +3,7 @@ ID_DEL_TEXTO: 'Testo ID_DEL_TESTO'
 admin_no_permission: 'Non hai il permesso di entrare in <strong>%s</strong>'
 bazar-description-seo: 'Regali solidali crowdfunding su Goteo.org.'
 bazar-title-seo: 'Regali Solidali :: Goteo.org'
-blog-comments: Commenti 
+blog-comments: Commenti
 blog-main-header: 'Blog di Goteo'
 calendar-workshops-category: Workshop
 couldn: 'Testo couldn'
@@ -30,19 +30,17 @@ fancybox: 'Testo fancybox'
 guide-dashboard-user-access: 'Qui puoi modificare i dati di accesso al tuo account di Goteo.'
 guide-project-contract-information: 'L''informazione di questa sezione è necessaria per contattarti durante la campagna e se ottieni il finanziamento richiesto, per poter così realizzare il pagamento, a conclusione della campagna. Bisogna considerare che chi lancia l''iniziativa e firma il contratto (in caso di successo della campagna) deve essere la stessa persona o entità che riceve la donazione. Nel caso di entità, si consiglia che il rappresentante dell''organizzazione possa dimostrarlo formalmente (ad esempio con lo statuto o il certificato del segretario con il nullaosta del presidente, nel caso di associazioni). Questa informazione completa vi sarà richiesta una volta finalizzato il primo giro di successo. '
 guide-project-images: 'Ecco la sezione in cui aggiungere le immagini del progetto. Può trattarsi di schemi, screenshot, illustrazioni, storyboard, ecc. Ricorda che devi essere tu l''autore o in alternativa devono utilizzare una licenza che permetta il loro riutilizzo. Puoi caricarne quante ne vuoi!'
-guide-project-rewards: "<strong>In questa sezione devi indicare ciò che il progetto offre a coloro che lo sostengono e anche i benefici collettivi.</strong><br><br> Oltre alle ricompense individuali in cambio di ogni donazione, devi definire che tipo di licenza vuoi assegnare al progetto rispetto al suo formato e/o al suo grado di apertura dello stesso (o di qualche sua parte). <br><br> In caso che ti interessi oltre alle licenze specificate registrare in forma addizionale la proprietà intellettuale di un lavoro o di un'idea, mantenendo la sua compatibilità con i benefici colletivi, si consiglia di richiedere una protezione legale specifica con il servizio <a href=\"http://www.safecreative.org/\" target=\"new\">Safe Creative</a>."
-guide-project-supports: '<strong>In questa sezione puoi specificare che altri tipi di aiuti, oltre alla donazioni, possono essere necessari per finalizzare il progetto.</strong> Possono essere compiti o azioni a carico di altre persone (traduzioni, gestione, divulgazione, ecc.) o prestiti specifici (di materiale, trasporto, hardware, ecc).'
+guide-project-supports: '<strong>In questa sezione puoi specificare che altri tipi di aiuti, oltre alla donazioni, possono essere necessari per finalizzare il progetto.</strong><br><br>Possono essere compiti o azioni a carico di altre persone (traduzioni, gestione, divulgazione, ecc.) o prestiti specifici (di materiale, trasporto, hardware, ecc).'
 header-about-side: 'La nostra filosofia '
-home-posts-header: Novità 
+home-posts-header: Novità
 invest-individual-header: 'Puoi rinunciare a ricevere un compenso per il tuo apporto, o selezionare quelle uguali o inferiori all''importo che hai introdotto. '
-login-register-conditions: 'Accetto le condizioni d''utilizzo della piattaforma e autorizzo il trattamento dei miei dati personali. In tal senso il responsabile del sito ha stabilito una <a href="/legal/privacy" target="_blank">politica sulla privacy</a> che informa sulla finalità dei dati inviati con questo questionario e dei diritti della persona che fornisce tali dati. '
 mandatory-cost-field-type: 'Il tipo di costo è obbligatorio '
 mandatory-individual_reward-field-amount: 'Il tipo di importo che permette ottenere la ricompensa è obbligatorio '
 mandatory-project-costs: 'Deve distinguere almeno due tipi di costo. '
 mandatory-register-field-email: 'Devi indicare una mail '
 mark-pending: 'Indicare in attesa di traduzione '
 meta-description-index: 'Goteo è un network aperto per il crowdfunding, la collaborazione e la formazione, leader in progetti di innovazione sociale. Offre 2 giri e vantaggi fiscali per i donatori!'
-node-menu-home: Nodo 
+node-menu-home: Nodo
 overview-field-about: 'Caratteristiche fondamentali '
 overview-field-motivation: 'Obiettivo e a chi si dirige il progetto '
 profile-about-header: 'Chi sono '
@@ -54,9 +52,9 @@ regular-anonymous: Anonimo
 regular-ask: Domandare
 regular-submit: Inviare
 regular-by: 'Per '
-regular-collaborate: Collabora 
+regular-collaborate: Collabora
 regular-create: 'Crea un progetto '
-regular-days: giorni 
+regular-days: giorni
 regular-delete: Cancellare
 regular-description: Descrizione
 regular-discover: 'Scopri i progetti '
@@ -64,20 +62,20 @@ regular-edit: Modificare
 regular-email: Mail
 regular-facebook: '* Facebook'
 regular-faq: 'Domande frequenti '
-regular-first: Prima 
-regular-from: Da 
-regular-getit: Ottienilo 
-regular-go_up: Caricare 
+regular-first: Prima
+regular-from: Da
+regular-getit: Ottienilo
+regular-go_up: Caricare
 regular-header-about: 'Cos''è Goteo '
 regular-header-faq: '* FAQ'
 regular-header-glossary: 'Principi per un'' economia aperta '
-regular-hello: Ciao 
-regular-home: Inizio 
-regular-im: Sono 
-regular-invest: Contribuire 
+regular-hello: Ciao
+regular-home: Inizio
+regular-im: Sono
+regular-invest: Contribuire
 regular-invest_it: 'Co-finanzia questo progetto '
 regular-investing: Collaborando
-regular-lang: Lingua 
+regular-lang: Lingua
 regular-last: Ultima
 regular-license: Licenza
 regular-login: Entra
@@ -86,19 +84,19 @@ regular-looks_for: 'cerca'
 regular-main-header: '* Goteo.org'
 regular-manage_board: 'Panel Amministrazione '
 regular-mandatory: 'Campo obbligatorio'
-regular-media_legend: Legenda 
-regular-menu: Menú 
+regular-media_legend: Legenda
+regular-menu: Menú
 regular-message_fail: 'Errore nell''invio del messaggio '
 regular-message_success: 'Messaggio inviato correttamente '
-regular-months: mesi 
+regular-months: mesi
 regular-more_info: '+informazioni '
 regular-news: 'Notizie '
 regular-no: 'No '
-regular-of: di 
-regular-preview: Pre-visualizzazare 
-regular-projects: Progetti 
+regular-of: di
+regular-preview: Pre-visualizzazare
+regular-projects: Progetti
 regular-published_no: Bozza
-regular-published_yes: Pubblicato 
+regular-published_yes: Pubblicato
 regular-read_more: 'Continua a leggere'
 regular-recent-activity: Attività recente
 regular-recomended_by: 'Progetto consigliato da '
@@ -114,12 +112,12 @@ regular-share-facebook: 'Goteo su Facebook'
 regular-share-twitter: 'Seguici su Twitter '
 regular-share_this: 'Condividere in: '
 regular-sorry: 'Ci dispiace '
-regular-thanks: Grazie 
+regular-thanks: Grazie
 regular-total: Totale
 regular-translate_board: 'Panel traduttore '
 regular-view_project: 'Vedere progetto '
 regular-weeks: settimane
-regular-yes: Si 
+regular-yes: Si
 regular-name: Nome
 session-about-to-expire: 'La tua sessione scadrà tra 10 minuti. Vuoi ricaricare la pagina per rinnovarla? '
 session-expired: 'La tua sessione su Goteo è scaduta '

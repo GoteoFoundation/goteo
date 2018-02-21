@@ -19,7 +19,7 @@ form-project_status-campaing: 'In fase di campagna'
 form-project_status-cancel: Cestinato
 form-project_status-cancelled: Scartato
 form-project_status-edit: In fase di scrittura
-form-project_status-expired: Archiviato 
+form-project_status-expired: Archiviato
 form-project_status-fulfilled: 'Beneficio realizzato'
 form-project_status-review: 'In attesa di valutazione'
 form-project_status-success: Finanziato
@@ -27,8 +27,8 @@ form-remove-button: Togliere
 form-self_review-button: Correggere
 form-send_review-button: Inviare
 form-upload-button: Inviare
-help-cost-to-consultant: '-Richiede aiuto nei costi<br/>'
-help-license-to-consultant: '-Richiede aiuto in benefici collettivi e licenze<br/>'
+help-cost-to-consultant: '-Richiede aiuto nei costi<br>'
+help-license-to-consultant: '-Richiede aiuto in benefici collettivi e licenze<br>'
 overview-extra-fields: 'Campi complementari '
 project-form-header: Questionario
 project-one-round: 'Giro unico di 40 giorni'

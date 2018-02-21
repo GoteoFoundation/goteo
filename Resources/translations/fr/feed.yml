@@ -10,7 +10,7 @@ feed-new_user: 'Nouvel utilisateur %s'
 feed-project_fail: 'Le projet %s a été <span class="red"> archivé sans succès</span> et a obtenu <span class="violet">%s ? (%s %%) du minimum demandé</span>'
 feed-project_finish: 'Le projet %s a <span class="red"> réalisé le second tour de campagne</span> et obtenu <span class="violet">%s ? (%s &#37;) d''apports en plus du minimum</span>'
 feed-project_goon: 'Le projet %PROJECT% <span class="red">poursuit sa campagne</span> en second tour il a obtenu<span class="violet">%AMOUNT% ? (%PERCENT% &#37;) d''apport minimum</span>'
-feed-project_runout: 'Le projet %PROJECT% manque de %DAYS% jours pour finaliser le %ROUND%ª tour'
+feed-project_runout: 'Le projet %PROJECT% manque de <span class="red">%DAYS%</span> jours pour finaliser le %ROUND%ª tour'
 feed-timeago: 'Cela fait %s'
 feed-timeago-justnow: rien
 feed-timeago-periods: seconde-secondes_minute-minutes_heure-heures_jour-jours_semaine-semaines_mois-mois_an-années_décennie-décennies

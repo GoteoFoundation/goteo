@@ -23,7 +23,7 @@ dashboard-menu-admin_board: Amministrazione
 dashboard-menu-calls-sponsors: Patrocinatori
 dashboard-menu-profile: 'Il mio profilo'
 dashboard-menu-profile-access: 'Dati di accesso'
-dashboard-menu-profile-location: Geolocalizzazione 
+dashboard-menu-profile-location: Geolocalizzazione
 dashboard-menu-profile-personal: 'Dati personali '
 dashboard-menu-profile-preferences: 'I miei preferiti '
 dashboard-menu-profile-profile: 'Modificare il profilo '
@@ -31,13 +31,13 @@ dashboard-menu-profile-public: 'Profilo pubblico'
 dashboard-menu-projects: 'I miei progetti '
 dashboard-menu-projects-commons: Benefici
 dashboard-menu-projects-contract: Contratto
-dashboard-menu-projects-messegers: Partecipanti 
+dashboard-menu-projects-messegers: Partecipanti
 dashboard-menu-projects-preview: 'Pagina pubblica '
-dashboard-menu-projects-rewards: Co-finanziatori 
+dashboard-menu-projects-rewards: Co-finanziatori
 dashboard-menu-projects-summary: Riassunto
-dashboard-menu-projects-supports: Collaborazioni 
+dashboard-menu-projects-supports: Collaborazioni
 dashboard-menu-projects-updates: Novità
-dashboard-menu-review_board: Correzione 
+dashboard-menu-review_board: Correzione
 dashboard-menu-translate_board: Traduzione
 dashboard-menu-translates: 'Le mie Traduzioni '
 dashboard-messegers-mail-sendto: 'Inviato a %s dei partecipanti:'
@@ -68,7 +68,7 @@ dashboard-rewards-issue: Errore!
 dashboard-rewards-massive_msg: 'Messaggi collettivi '
 dashboard-rewards-massive_msg-all: 'A tutti i co-finanziatori di questo progetto'
 dashboard-rewards-massive_msg-all_alert: 'Per tutti è di tutti, non tiene conto del resto delle selezioni'
-dashboard-rewards-notice: 'QUESTA È UNA VISUALIZZAZIONE DEI TIPI DI BENEFICI CHE I TUOI CO-FINANZIATORI POSSONO SCEGLIERE.<br /> NON DEVI GESTIRE QUESTI BENEFICI PRIMA DI RAGGIUNGERE IL MINIMO IMPORTO DESIDERATO'
+dashboard-rewards-notice: 'QUESTA È UNA VISUALIZZAZIONE DEI TIPI DI BENEFICI CHE I TUOI CO-FINANZIATORI POSSONO SCEGLIERE.<br> NON DEVI GESTIRE QUESTI BENEFICI PRIMA DI RAGGIUNGERE IL MINIMO IMPORTO DESIDERATO'
 dashboard-rewards-num_taken: 'Impegnate'
 dashboard-rewards-pending_filter: In attesa
 dashboard-rewards-pending_status: In attesa

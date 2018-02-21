@@ -1,6 +1,6 @@
 ---
-discover-banner-header: 'Bai kategoria, tokia edo itzulera dela,<br /><span class="red">aurkitu ezazu</span> gehien bat zatozen proiektua'
-login-banner-header: 'Goteo komunitatean sartu<br /><span class="greenblue">100&#37; irekia</span>'
-main-banner-header: '<h2 class="message">Sortzaile diren eta herri ondarea bultzatzen dituzten proiektuak, <span class="greenblue">aldi berean finantzatu eta elkarlanean aritzeko</span><br/> sare soziala.<br/> <span class="greenblue">DNA irekiko</span> proiekturik bai?</h2><a href="/contact" class="button banner-button">Jarri zaitez harremanetan gurekin</a>'
+discover-banner-header: 'Bai kategoria, tokia edo itzulera dela,<br><span class="red">aurkitu ezazu</span> gehien bat zatozen proiektua'
+login-banner-header: 'Goteo komunitatean sartu<br><span class="greenblue">100&#37; irekia</span>'
+main-banner-header: '<h2 class="message">Sortzaile diren eta herri ondarea bultzatzen dituzten proiektuak, <span class="greenblue">aldi berean finantzatu eta elkarlanean aritzeko</span><br> sare soziala.<br> <span class="greenblue">DNA irekiko</span> proiekturik bai?</h2><a href="/contact" class="button banner-button">Jarri zaitez harremanetan gurekin</a>'
 open-banner-header: '<div class="modpo-open">OPEN</div><div class="modpo-percent">100&#37;an IREKIA</div><div class="modpo-whyopen">%s</div>'
 regular-banner-metter: lortuta-zenbatetik-faltan

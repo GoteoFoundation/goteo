@@ -28,8 +28,8 @@ form-remove-button: Remove
 form-self_review-button: Correct
 form-send_review-button: Send
 form-upload-button: Send
-help-cost-to-consultant: '- Needs some help in the costs section.<br/>'
-help-license-to-consultant: '- Needs help with collective returns and licenses<br/>'
+help-cost-to-consultant: '- Needs some help in the costs section.<br>'
+help-license-to-consultant: '- Needs help with collective returns and licenses<br>'
 overview-extra-fields: 'Complementary fields'
 project-form-header: Form
 project-one-round: 'Single 40-day round'

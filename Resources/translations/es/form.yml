@@ -28,8 +28,8 @@ form-remove-button: Quitar
 form-self_review-button: Corregir
 form-send_review-button: Enviar
 form-upload-button: Enviar
-help-cost-to-consultant: '- Necesita ayuda en costes<br/>'
-help-license-to-consultant: '- Necesita ayuda con retornos colectivos y licencias<br/>'
+help-cost-to-consultant: '- Necesita ayuda en costes<br>'
+help-license-to-consultant: '- Necesita ayuda con retornos colectivos y licencias<br>'
 overview-extra-fields: 'Campos complementarios'
 project-form-header: Formulario
 project-one-round: 'Ronda única de 40 días'
