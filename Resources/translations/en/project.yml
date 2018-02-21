@@ -92,6 +92,7 @@ tooltip-project-spread: 'Tell us how you''ll spread the project among your commu
 tooltip-updates-home: 'Tooltip text updates-home'
 tooltip-updates-tags: 'Tooltip text updates-tags'
 project-obtained: 'Obtained'
+project-costs-total: 'Total'
 project-remove-translation: 'Remove translation'
 project-remove-translation-confirm: 'Are you sure to remove this translation? This operation cannot be undone!'
 project-removed-translation-ok: 'Translation removed!'
