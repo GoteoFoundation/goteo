@@ -16,11 +16,11 @@ error-image-size-too-large: 'L''image est trop lourde.'
 error-image-tmp: 'Echec au chargement du document.'
 error-image-type: 'Seules les images au format  jpg, png et gif sont permises.'
 error-image-type-not-allowed: 'Seules les pièces jointes de type .png .jpg .gif sont permises.'
-error-register-email-exists: 'L''adresse email indiquée correspond à un utilisateur déjà\_ enregistré.'
+error-register-email-exists: 'L''adresse email indiquée correspond à un utilisateur déjà enregistré.'
 error-register-pasword-empty: 'Vous n''avez pas inscris de mot de passe.'
 error-user-email-confirm: 'La confirmation de l''adresse email ne concorde pas.'
 error-user-email-empty: 'Vous ne pouvez laisser le champ "adresse mail" vide.'
-error-user-email-exists: 'Il existe déjà\_ un utilisateur enregistré avec cette adresse mail.'
+error-user-email-exists: 'Il existe déjà un utilisateur enregistré avec cette adresse mail.'
 error-user-email-invalid: 'L''adresse email n''est pas valide.'
 error-user-email-token-invalid: 'Le code est erroné.'
 error-user-password-confirm: 'La confirmation du mot de passe ne concorde pas.'
@@ -32,18 +32,16 @@ fancybox: 'Texte fancybox'
 goteo-return-button: 'Retour vers Goteo'
 guide-dashboard-user-access: 'Vous pouvez changer les informations avec lesquelles vous vous connectez via Goteo accompte.'
 guide-project-comment: guide-projet-commentaire
-guide-project-contract-information: "Les informations de cette section sont nécessaires pour vous contacter si vous obtenez le financement nécessaire, et ainsi permettre le versement. Dans le cas d'une structure, nous vous recommandons que la personne qui représente l'organisation puisse plus tard être accrédité formellement.\\\\r\n( par exemple au travers les statuts ou via un certificat du secrétaire avec agrément du président, dans le cas d'associations )"
+guide-project-contract-information: "Les informations de cette section sont nécessaires pour vous contacter si vous obtenez le financement nécessaire, et ainsi permettre le versement. Dans le cas d'une structure, nous vous recommandons que la personne qui représente l'organisation puisse plus tard être accrédité formellement. (Par exemple au travers les statuts ou via un certificat du secrétaire avec agrément du président, dans le cas d'associations )"
 guide-project-images: 'Les images du projet peuvent être des plans, screenshots, photographies, illustrations, storyboards, etc. (la licence associée doit être compatible avec les licences sélecionnées dans la section 5. Vous pouvez en charger autant que souhaité!'
-guide-project-rewards: "<strong>Dans cette partie, vous devez définir ce que vous proposez en échange à vos cofinanceurs, et aussi les récompenses collectives</strong><br><br>En plus des récompenses individuelles pour chaque personne apportant du cofinancement, vous devez définir quelle licence attribuée au projet, en fonction de son format et/ou du niveau d'ouverture de celui-ci. Cette partie est très importane, puisque Goteo est une plateforme de crowdfunding pour des projets basés sur la philosophie de la culture libre et favorise la notion de biens communs.<br><br> Au cas ou aux licences spécifiées ici vous voudriez ajouter un certificat d'auteur, nous vous recommandons d'obtenir une protection auprès de <a href=\"http://www.safecreative.org/\" target=\"new\">Safe Creative</a>."
 guide-project-support: guide-projet-support
-guide-project-supports: "<strong> Dans ce paragraphe, précisez les besoins, hors financement, nécessaires à la réalisation de votre projet. </strong><br><br> \\\\r\nDans ce paragraphe, précisez les besoins, hors financement, nécessaires à la réalisation de votre projet. \\\\r\nCes besoins peuvent prendre la forme de tches ou d'actions réalisables par d'autres personnes (traduction, gestion, diffiusion, etc.), ou de prêts (de matériel informatique, pour le transport, etc.)"
+guide-project-supports: "<strong> Dans ce paragraphe, précisez les besoins, hors financement, nécessaires à la réalisation de votre projet. </strong><br><br>Dans ce paragraphe, précisez les besoins, hors financement, nécessaires à la réalisation de votre projet. Ces besoins peuvent prendre la forme de tches ou d'actions réalisables par d'autres personnes (traduction, gestion, diffiusion, etc.), ou de prêts (de matériel informatique, pour le transport, etc.)"
 header-about-side: 'Ce qui nous inspire'
 home-posts-header: Nouveautés
 horizontal-project-investors: 'cofinanceurs'
 horizontal-project-percent: 'financé'
 horizontal-project-reached: 'Obtenu'
 invest-individual-header: 'Vous pouvez refuser de recevoir votre récompense, ou sélectionner une récompense d''un montant égal ou inférieur àvotre contribution.'
-login-register-conditions: "J'accepte les conditions d'utilisation de la plateforme, et je donne mon consentement pour le traitement de mes données personnelles. Le responsable du portail a établi une politique de confidentialité qui définit l'usage des données personnelles fournis par ce formulaire, ainsi que les droits de la personne qui a fourni ses données.\\\\r\n"
 mandatory-cost-field-type: 'Vous devez sélectionner le type de coût'
 mandatory-individual_reward-field-amount: 'Vous devez spécifier le montant pour cette récompense'
 mandatory-project-costs: 'These should be broken down into at least two groups.'

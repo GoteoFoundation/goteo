@@ -71,31 +71,47 @@ class TextTest extends TestCase {
         $langs = Lang::getLangsAvailable();
         $originals = Text::getAll([], Config::get('sql_lang'));
         foreach($originals as $key => $ob) {
-            // Check for variables in the form %VAR%
-            if(preg_match_all('/\%([A-Z0-9_-]+)\%/', $ob->text, $matches)) {
-                sort($matches[0]);
-                foreach($langs as $lang => $parts) {
-                    if($lang === Config::get('sql_lang')) continue;
-                    $trans = Text::lang($key, $lang);
-                    if($trans === $key) continue;
+            foreach($langs as $lang => $parts) {
+
+                $trans = Text::lang($key, $lang);
+                // Skip non-translated strings
+                if($trans === $key) continue;
+
+                // Check the existence of invalid chars
+                $this->assertFalse(strpos($trans, '\\r'), "Key [$key] in lang [$lang] has the invalid char [\\r]");
+
+                // Check that sentences with html tags are valid
+                if(preg_match_all('/\<([^>]+)\>/', $ob->text, $matches)) {
+                    sort($matches[0]);
+                    $this->assertNotFalse(preg_match_all('/\<([^>]+)\>/', $trans, $matches2));
+                    sort($matches2[0]);
+                    $this->assertEquals($matches[0], $matches2[0], "Key [$key] in lang [$lang] fails to include all original html tags: (" .implode(', ', $matches[0]). ") Having: (" . implode(", ", $matches2[0]) . ")");
+                }
+
+                // if(strpos($ob->text, '<') !== false) {
+                //     $this->assertTrue(check_html($trans), "Key [$key] in lang [$lang] has invalid html tags: [$trans]");
+                //     // check that translations has the same tags as the original
+                // }
+
+                if($lang === Config::get('sql_lang')) continue;
+
+                // Check for variables in the form %VAR%
+                if(preg_match_all('/\%([A-Z0-9_-]+)\%/', $ob->text, $matches)) {
+                    sort($matches[0]);
                     $this->assertNotFalse(preg_match_all('/\%([A-Z0-9_-]+)\%/', $trans, $matches2));
                     sort($matches2[0]);
                     $this->assertEquals($matches[0], $matches2[0], "Key [$key] in lang [$lang] fails to include all variables: (" .implode(', ', $matches[0]). ") Having: (" . implode(", ", $matches2[0]) . ")");
                 }
-            }
-            // Check for variables in the form %s %d
-            if(preg_match_all('/\%([sd]+)/', $ob->text, $matches)) {
-                sort($matches[0]);
-                foreach($langs as $lang => $parts) {
-                    if($lang === Config::get('sql_lang')) continue;
-                    $trans = Text::lang($key, $lang);
-                    if($trans === $key) continue;
+
+                // Check for variables in the form %s %d
+                if(preg_match_all('/\%([sd]+)/', $ob->text, $matches)) {
+                    sort($matches[0]);
                     $this->assertNotFalse(preg_match_all('/\%([sd]+)/', $trans, $matches2));
                     sort($matches2[0]);
                     $this->assertEquals($matches[0], $matches2[0], "Key [$key] in lang [$lang] fails to include all variables: (" .implode(', ', $matches[0]). ") Having: (" . implode(", ", $matches2[0]) . ")");
                 }
-            }
 
+            }
         }
     }
 

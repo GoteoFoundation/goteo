@@ -18,7 +18,7 @@ register-confirm_mail-fail: 'Er is een fout opgetreden bij het verzenden van de 
 register-confirm_mail-success: 'Accountactivatiebericht verzonden. Als je het niet direct krijgt, kijk dan even in je Spam folder.'
 review-ajax-alert: 'Evaluatie / feedbackvelden worden automatisch bijgewerkt bij veranderingen'
 review-closed-alert: 'Je hebt aangegeven dat je klaar bent, er kan niets meer veranderd worden.'
-user-login-required: 'Je moet inloggen om te kunnen interacteren met de Goteo gemeenschap'
+user-login-required: 'Je moet <a href="/user/login">inloggen</a> om te kunnen interacteren met de Goteo gemeenschap'
 user-login-required-access: 'Je moet inloggen of toestemming vragen om toegang te krijgen to deze sectie'
 user-login-required-to_create: 'Je moet inloggen om een project aan te maken'
 user-login-required-to_invest: 'Je moet inloggen om een project te cofinancieren'
