@@ -27,8 +27,6 @@ form-remove-button: Effacer
 form-self_review-button: Corriger
 form-send_review-button: Envoyer
 form-upload-button: Envoyer
-help-cost-to-consultant: '- Besoin d''aide pour la section budget.<br/>'
-help-license-to-consultant: '- Besoin d''aide pour établir les retombées et choisir une license<br/>'
 overview-extra-fields: 'Champs complémentaires du formulaire'
 project-form-header: Formulaire
 project-one-round: 'Un seul round de 40 jours'
