@@ -29,7 +29,28 @@ There's still a lot of documentation missing. We'll try to do our best completin
 - [Developers](http://goteofoundation.github.io/goteo/docs/developers/environment.html)
 - [Credits](http://goteofoundation.github.io/goteo/release_notes.html)
 
-This documentation is created using [Couscous](http://couscous.io).
+### TRANSLATORS
+
+Since version 3.3 where are using [Crowdin](https://crowdin.com/) as a tool for collaborators translating the code. Feel free to join this awesome people who's contributed in traslating Goteo to many languages:
+
+<translators>
+
+<ul>
+	<li>pep_laDeriva</li>
+	<li>CataAz</li>
+	<li>Chris_W</li>
+	<li>helpPAM</li>
+	<li>Udo.Wierlemann</li>
+	<li>elena-2018</li>
+	<li>enolp</li>
+	<li>Júlia Petúlia Sol (juliaxsol)</li>
+</ul>
+</translators>
+
+You can join to the Crowdin translator team here: https://translate.goteo.org/
+
+
+*This documentation is created using [Couscous](http://couscous.io).*
 
 License
 -------
