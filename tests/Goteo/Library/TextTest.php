@@ -7,6 +7,7 @@ use Goteo\Application\Config;
 use Goteo\Library\Text;
 use Goteo\TestCase;
 use Symfony\Component\Translation\Loader\ArrayLoader;
+use PHPUnit_Framework_AssertionFailedError;
 
 class TextTest extends TestCase {
 	protected $translator;
@@ -64,10 +65,7 @@ class TextTest extends TestCase {
      * have the same vars (%VAR% or %s)
 	 */
 	public function testLangTranslations() {
-        // Lang::set('es');
-        // echo Lang::current().']';
-        // print_r(Text::get('feed-admin-invest-cancelled'));
-        // print_r(Text::lang('feed-admin-invest-cancelled', 'as'));print_r(Text::getErrors());die;
+        $failures = [];
         $langs = Lang::getLangsAvailable();
         $originals = Text::getAll([], Config::get('sql_lang'));
         foreach($originals as $key => $ob) {
@@ -77,15 +75,24 @@ class TextTest extends TestCase {
                 // Skip non-translated strings
                 if($trans === $key) continue;
 
-                // Check the existence of invalid chars
-                $this->assertFalse(strpos($trans, '\\r'), "Key [$key] in lang [$lang] has the invalid char [\\r]");
+                try {
+                    // Check the existence of invalid chars
+                    $this->assertFalse(strpos($trans, '\\r'), "Key [$key] in lang [$lang] has the invalid char [\\r]");
+                } catch(PHPUnit_Framework_AssertionFailedError $e) {
+                    $failures[] = $e->getMessage();
+                }
+
 
                 // Check that sentences with html tags are valid
                 if(preg_match_all('/\<([^>]+)\>/', $ob->text, $matches)) {
                     sort($matches[0]);
-                    $this->assertNotFalse(preg_match_all('/\<([^>]+)\>/', $trans, $matches2));
-                    sort($matches2[0]);
-                    $this->assertEquals($matches[0], $matches2[0], "Key [$key] in lang [$lang] fails to include all original html tags: (" .implode(', ', $matches[0]). ") Having: (" . implode(", ", $matches2[0]) . ")");
+                    try {
+                        $this->assertNotFalse(preg_match_all('/\<([^>]+)\>/', $trans, $matches2), "Key [$key] contains incorrect HTML code");
+                        sort($matches2[0]);
+                        $this->assertEquals($matches[0], $matches2[0], "Key [$key] in lang [$lang] fails to include all original html tags: (" .implode(', ', $matches[0]). ") Having: (" . implode(", ", $matches2[0]) . ")");
+                    } catch(PHPUnit_Framework_AssertionFailedError $e) {
+                        $failures[] = $e->getMessage();
+                    }
                 }
 
                 // if(strpos($ob->text, '<') !== false) {
@@ -98,20 +105,33 @@ class TextTest extends TestCase {
                 // Check for variables in the form %VAR%
                 if(preg_match_all('/\%([A-Z0-9_-]+)\%/', $ob->text, $matches)) {
                     sort($matches[0]);
-                    $this->assertNotFalse(preg_match_all('/\%([A-Z0-9_-]+)\%/', $trans, $matches2));
-                    sort($matches2[0]);
-                    $this->assertEquals($matches[0], $matches2[0], "Key [$key] in lang [$lang] fails to include all variables: (" .implode(', ', $matches[0]). ") Having: (" . implode(", ", $matches2[0]) . ")");
+                    try {
+                        $this->assertNotFalse(preg_match_all('/\%([A-Z0-9_-]+)\%/', $trans, $matches2), "Key [$key] contains incorrect variables defined as %VAR%");
+                        sort($matches2[0]);
+                        $this->assertEquals($matches[0], $matches2[0], "Key [$key] in lang [$lang] fails to include all variables: (" .implode(', ', $matches[0]). ") Having: (" . implode(", ", $matches2[0]) . ")");
+                    } catch(PHPUnit_Framework_AssertionFailedError $e) {
+                        $failures[] = $e->getMessage();
+                    }
                 }
 
                 // Check for variables in the form %s %d
                 if(preg_match_all('/\%([sd]+)/', $ob->text, $matches)) {
                     sort($matches[0]);
-                    $this->assertNotFalse(preg_match_all('/\%([sd]+)/', $trans, $matches2));
-                    sort($matches2[0]);
-                    $this->assertEquals($matches[0], $matches2[0], "Key [$key] in lang [$lang] fails to include all variables: (" .implode(', ', $matches[0]). ") Having: (" . implode(", ", $matches2[0]) . ")");
+                    try {
+                        $this->assertNotFalse(preg_match_all('/\%([sd]+)/', $trans, $matches2), "Key [$key] contains incorrect variables defined as %s");
+                        sort($matches2[0]);
+                        $this->assertEquals($matches[0], $matches2[0], "Key [$key] in lang [$lang] fails to include all variables: (" .implode(', ', $matches[0]). ") Having: (" . implode(", ", $matches2[0]) . ")");
+                    } catch(PHPUnit_Framework_AssertionFailedError $e) {
+                        $failures[] = $e->getMessage();
+                    }
                 }
 
             }
+        }
+         if($failures) {
+            throw new PHPUnit_Framework_AssertionFailedError (
+                count($failures)." translation assertions failed:\n\t".implode("\n\t", $failures)
+            );
         }
     }
 

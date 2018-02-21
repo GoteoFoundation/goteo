@@ -60,25 +60,35 @@ EOT
 
         $contributors = array_map('str_getcsv', file("https://api.crowdin.com/api/project/$id/reports/top-members/download?key=$key&hash={$json->hash}"));
 
-        $skipped = $valid = [];
+        $skipped = $valid = $titles = $info = [];
         foreach($contributors as $i => $user) {
-            if($i === 0) continue; // First line are description
+            if($i === 0) {
+                $titles = $user;
+                continue; // First line are description
+            }
+            foreach($user as $i => $u) {
+                if($i === 0) continue;
+                if($u) $info[$user[0]] .= " <comment>{$titles[$i]}</comment>: <fg=cyan>{$u}</>";
+            }
+
             if(in_array($user[0], $skip)) {
                 $skipped[] = $user;
                 continue;
             }
             $valid[] = $user;
         }
+
+
         if($output->isVerbose()) {
-            $output->writeln("Contributors skipped:");
+            $output->writeln("\nContributors skipped:");
             foreach($skipped as $user) {
-                $output->writeln("<comment>{$user[0]}</comment>");
+                $output->writeln("<info>{$user[0]}</info>" . $info[$user[0]]);
             }
         }
 
-        $output->writeln("Contributors found:");
+        $output->writeln("\nContributors found:");
         foreach($valid as $user) {
-            $output->writeln("<info>{$user[0]}</info>");
+            $output->writeln("<info>{$user[0]}</info>" . $info[$user[0]]);
         }
 
         if($update) {
