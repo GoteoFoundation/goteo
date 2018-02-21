@@ -17,6 +17,8 @@ before_script:
     - mysql -e 'CREATE DATABASE goteo;'
     - composer install
     - ./bin/console migrate install
+    - gem install sass -v 3.4.23
+    - gem install compass
     - npm install -g grunt-cli
     - npm install
     - grunt build:dist
