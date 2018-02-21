@@ -20,7 +20,6 @@ donor-address-location-field: Provinz
 donor-field-amount: 'Spendenbetrag: '
 donor-field-amount-relief: Abzüge
 donor-field-lot-relief: Abschnitt
-donor-field-numproj: 'Anzahl der Projekte:'
 personal-field-donor_name: 'Nachname '
 personal-field-donor_surname: 'Erster Vorname'
 personal-field-donor_surname2: 'Zweiter Vorname'
