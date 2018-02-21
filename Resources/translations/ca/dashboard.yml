@@ -120,12 +120,10 @@ dashboard-rewards-date_order: 'Per data'
 dashboard-rewards-fulfilled_filter: Complertes
 dashboard-rewards-fulfilled_status: Complerta
 dashboard-rewards-group_msg: 'missatge a aquell grup'
-dashboard-rewards-investors_table: 'Si vols gestionar-lo offline pots <a href="%URL%">baixar la Taula de cofinançadors</a>'
 dashboard-rewards-issue: Incidència!
 dashboard-rewards-massive_msg: 'Missatges col.lectius'
 dashboard-rewards-massive_msg-all: 'A totes les persones cofinançadores d''aquest projecte'
 dashboard-rewards-massive_msg-all_alert: 'a tots és a tots, no té en compte la resta de marcats'
-dashboard-rewards-notice: 'AIXÒ ÉS UNA VISUALITZACIÓ DE LES OPCIONS DE RETORN QUE TRIEN ELS TEUS COFINANÇADORS.<br/> NO HAS DE GESTIONAR AQUESTS RETORNS FINS HAVER ARRIBAT AL MÍNIM DE LA QUANTITAT DESITJADA'
 dashboard-rewards-num_taken: 'Compromeses'
 dashboard-rewards-pending_filter: Pendents
 dashboard-rewards-pending_status: Pendent
