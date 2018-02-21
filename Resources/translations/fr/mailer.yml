@@ -2,5 +2,4 @@
 mailer-baja: 'Si vous ne voulez pas recevoir plus de mise àjour, vous pouvez vous désinscrire via ce <a href="%s">lien</a>'
 mailer-disclaimer: 'Goteo est une plateforme digitale pour le financement participatif, pour la collaboration et la distribution des récompenses pour le dévellopement de projet social, culturel, artistique et technique.'
 mailer-sinoves: 'Si vous ne pouvez voir ce message utiliser ce <a href="%s">lien</a>'
-newsletter-block: 'Ne plus recevoir de nouvelle de Goteo?<br />Vous pouvez bloquez nos newsletter dans le menu ''My Profile > Preferences'' ou <a href="/dashboard/profile/preferences"> Panneau Vos préférences</a>.'
 unsuscribe-request-success: 'Vous avez annuler votre souscription à notre Bulletin d''information'
