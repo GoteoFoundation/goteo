@@ -1,6 +1,3 @@
 ---
-discover-banner-header: '  Sortiert nach Kategorie, Ort oder Gegenleistung,<br /><span class="red">finde das Projekt</span> mit dem du dich am meisten identifizierst.'
-login-banner-header: 'Mach mit bei der Goteo Community<br /><span class="greenblue">100% offen</span>'
-main-banner-header: '<h2 class="message">Das soziale Netzwerk<span class="greenblue"> zur Ko-Finanzierung und Mitarbeit </span><br />bei Projekten, die das Gemeinwohl fördern.<br /> Hast du ein Projekt mit <span class="greenblue">offener DNA</span>?</h2><a href="/contact" class="button banner-button">Kontaktiere uns</a>'
 open-banner-header: '    <div class="modpo-open">OPEN</div><div class="modpo-percent">100&#37; OFFEN</div><div class="modpo-whyopen">%s</div>'
 regular-banner-metter: dauerhaft-erhalten
