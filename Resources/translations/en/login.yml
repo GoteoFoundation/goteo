@@ -16,7 +16,7 @@ login-recover-email-field: 'Email or user name'
 login-recover-label: 'Forgot your password?'
 login-recover-link: 'Recover password'
 login-recover-modal-button: Send
-login-recover-modal-sucess: 'Done! We’ve sent you an email where you''ll find a link to reestablish your password'
+login-recover-modal-sucess: 'Done! We’ve sent you an email to %s where you''ll find a link to reestablish your password'
 login-recover-modal-text: 'Write the email you used when you registered and will send you a link to reestablish your password'
 login-recover-username-field: 'User name'
 login-register-button: Register

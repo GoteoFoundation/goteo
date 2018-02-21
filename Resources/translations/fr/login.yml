@@ -16,7 +16,7 @@ login-recover-email-field: 'Email du compte ou nom d''utilisateur'
 login-recover-label: 'Mot de passe oublié?'
 login-recover-link: 'Récupérer le mot de passe'
 login-recover-modal-button: Envoyer
-login-recover-modal-sucess: 'Nous vous avons envoyé un email contenant un lien pour réinitialiser le mot de passe'
+login-recover-modal-sucess: 'Nous vous avons envoyé un email a %s contenant un lien pour réinitialiser le mot de passe'
 login-recover-modal-text: 'Vous avez oublié votre mot de passe? Saisissez votre adresse mail et nous vous enverrons un nouveau mot de passe'
 login-recover-username-field: 'Login'
 login-register-button: Créer un utilisateur
