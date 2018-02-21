@@ -19,7 +19,6 @@ invest-amount: Quantité
 invest-amount-tooltip: 'Entrer la quantité avec laquelle vous voulez soutenir ce project'
 invest-anonymous: 'Faire une donation anonyme'
 invest-button: Contribuer
-invest-called-allready: 'Ce projet a déjà reçu <strong>Matchfunding</strong> lors de la campagne <span class="call">%s</span>. Il ne recevra pas davantage de <strong>Matchfunding</strong> via tes apports'
 invest-called-maxdrop: 'Jusqu''à maximum <strong>%s &euro;</strong>'
 invest-called-maxproj: 'Le maximum de <strong>Capital Riego</strong> possible dans cette campagne <span class="call">%s</span> a été atteint.'
 invest-called-nodrop: 'Il n''y a pas actuellement de <strong>Matchfunding</strong> disponible dans la campagne %s'
@@ -32,7 +31,6 @@ invest-mail_info-drop: 'De plus, %s a apporté %s de matchfunding à travers la 
 invest-make-sure-save: Valider
 invest-make-sure-title: Confirmation
 invest-method-title: 'Choisissez votre moyen de paiement '
-invest-modal-fiscal-description: 'Comme vous le savez, contribuer à des projets sur Goteo vous donne droit a obtenir un certificat de donation et vous autorise à bénéficier d''avantages fiscaux! Pour en savoir plus sur le sujet, lisez nôtre <a href="https://goteo.org/faq/investors#q112" target="_blank">FAQ nr. 18 pour donateurs</a>.'
 invest-modal-fiscal-title: 'Information fiscale'
 invest-modal-pool-description: 'Le porte-monnaie virtuel de Goteo vous permet de contribuer aux projets quand vous le souhaitez sans avoir à donner vôtre numéro de carte ou compte paypal à chaque fois'
 invest-modal-pool-title: 'Comment fonctionne le porte-monnaie virtuel de Goteo?'
