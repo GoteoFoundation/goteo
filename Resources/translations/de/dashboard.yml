@@ -169,4 +169,7 @@ user-preferences-tips: 'Empfehlung, wie die Kampagne promoted werden kann (für 
 user-preferences-updates: 'Nachrichten der von mir unterstützten Projekte blockieren'
 user-profile-saved: 'Profil wurde aktualisiert'
 user-save-fail: 'Es gibt ein Problem bei der Datensicherung.'
+dashboard-modal-placeholder-edit-url: 'Url'
+dashboard-new-material-form-material: 'Material'
 dashboard-new-material-form-description: 'Beschreibung'
+dashboard-new-material-form-url: 'URL'
