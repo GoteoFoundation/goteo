@@ -8,7 +8,6 @@ dashboard-donor-confirmed: 'The certificate of this donation has been created co
 dashboard-donor-download_certificate: 'Download the certificate'
 dashboard-donor-edit_data: 'Modify details'
 dashboard-donor-edit_guide: 'Fill in the details you want to appear in the certificate. Once you download the file, these details cannot be modified.'
-dashboard-donor-main_guide: 'After one year: Details can be confirmed up until January the 15th. The certificate can be downloaded up until July. <br /> For this year: From July on, details can be confirmed and the certificate can be downloaded.'
 dashboard-donor-mandatory: 'IT IS COMPULSORY TO FILL IN THE TAX DETAILS'
 dashboard-donor-no_donor: 'There is no record of you having made any donation. If you did make a donation, please, get in touch with us.'
 dashboard-donor-pdf_closed: 'The tax details for the donation certificate of %s are not confirmed, it cannot be downloaded.'
