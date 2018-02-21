@@ -17,7 +17,6 @@ invest-alert-rewards: 'Elixiches as seguintes recompensas:'
 invest-amount: Cantidade
 invest-amount-tooltip: 'Insire a cantidade coa que apoiaras ó proxecto'
 invest-anonymous: 'Quero que a miña achega sexa anónima'
-invest-called-allready: 'A este proxecto xa lle deches <strong>Matchfunding</strong> da campaña <span class="call">%s</span>, non obterá máis <strong>Matchfunding</strong> polas túas achegas'
 invest-called-maxdrop: 'Ata un máximo de <strong>%s &euro;</strong>'
 invest-called-maxproj: 'Xa se acadou o máximo de <strong>Matchfunding</strong> posible na campaña <span class="call">%s</span>.'
 invest-called-nodrop: 'Actualmente non hai <strong>Matchfunding</strong> dispoñible na campaña %s'
