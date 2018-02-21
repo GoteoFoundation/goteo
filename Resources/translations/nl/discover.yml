@@ -5,7 +5,6 @@ discover-group-outdate-header: 'Verloopt bijna'
 discover-group-popular-header: 'Populairst'
 discover-group-recent-header: 'Recent'
 discover-group-success-header: 'Successen'
-discover-patron-header: '<span class="greenblue">%s</span> raad<br />deze <span class="red">projecten</span> aan'
 discover-results-empty: 'We hebben geen projecten gevonden die aan jouw zoekcriteria voldoen'
 discover-results-header: 'Zoekresultaten'
 discover-searcher-button: Zoek
