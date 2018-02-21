@@ -8,7 +8,6 @@ dashboard-donor-confirmed: 'Hai già confermato i dati fiscali per il certificat
 dashboard-donor-download_certificate: 'Scaricare il certificato'
 dashboard-donor-edit_data: 'Modificare dati'
 dashboard-donor-edit_guide: 'Completa i dati che vuoi che si visualizzano nel certificato. Una volta scaricato l''archivio questi dati non si potranno cambiare.'
-dashboard-donor-main_guide: 'Trascorso l''anno: fino al 15 gennaio puoi confermare i dati. Fino a luglio puoi scaricare il certificato.  <br />Per quest''anno: a partire da luglio si possono confermare i dati e scaricare il certificato.'
 dashboard-donor-mandatory: 'OBBLIGATORIO INDICARE I DATI FISCALI'
 dashboard-donor-no_donor: 'Il tuo certificato delle donazioni di %s  non è ancora disponibile'
 dashboard-donor-pdf_closed: 'I dati fiscali per il certificato di donazione di %s non sono confermati, non si può scaricare'
