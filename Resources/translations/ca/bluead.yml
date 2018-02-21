@@ -20,7 +20,7 @@ project-review-confirm_mail-fail: 'Hi ha hagut algun error en enviar el missatge
 project-review-confirm_mail-success: 'Missatge de confirmació de recepció per a revisió enviat correctament'
 project-review-request_mail-fail: 'Hi ha hagut algun error en enviar la sol·licitud de revisió'
 project-review-request_mail-success: 'Missatge de sol·licitud de revisió enviat correctament'
-register-confirm_mail-fail: 'Hi ha hagut algun error en enviar l''email d''activació de compte. Per favor, contacta''ns a %'
+register-confirm_mail-fail: 'Hi ha hagut algun error en enviar l''email d''activació de compte. Si us plau, contacta''ns a %s'
 register-confirm_mail-success: 'Missatge d''activació de compte enviat. Si no està en la teva bústia de correu, revisa la carpeta de /Spam'
 review-ajax-alert: 'Els criteris i els camps d''avaluació / millores es desen automàticament en modificar-se'
 review-closed-alert: 'Has donat per acabada aquesta revisió, no pots fer més canvis'
