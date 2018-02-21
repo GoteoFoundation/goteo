@@ -25,7 +25,7 @@ class OpenTag extends \Goteo\Core\Model {
      * @param varcahr(50) $id  Project identifier
      * @return array of categories identifiers
      */
- 	public static function get ($id) {
+ 	public static function get ($id, $lang = null) {
         $array = array ();
         try {
             $query = static::query("SELECT open_tag FROM project_open_tag WHERE project = ?", array($id));
@@ -51,7 +51,7 @@ class OpenTag extends \Goteo\Core\Model {
         $array = array ();
         try {
 
-            list($fields, $joins) = self::getLangsSQLJoins($lang, Config::get('lang'));
+            list($fields, $joins) = self::getLangsSQLJoins($lang, Config::get('sql_lang'));
 
             $sql="SELECT
                     open_tag.id as id,

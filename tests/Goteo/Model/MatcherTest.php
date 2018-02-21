@@ -16,14 +16,23 @@ use Goteo\Model\Matcher;
 use Goteo\Model\User;
 use Goteo\Model\Project;
 use Goteo\Model\Invest;
+use Goteo\Application\Config;
+use Goteo\Application\Lang;
 
 class MatcherTest extends TestCase {
-    private static $data = ['id' => 'matchertest', 'name' => 'Matcher test'];
+    private static $data = ['id' => 'matchertest', 'name' => 'Matcher test', 'terms' => 'Terms test'];
+    private static $trans_data = ['name' => 'Test de Matcher', 'terms' => 'Test de termes i condicions'];
     private static $user_data = [
         ['userid' => 'simulated-user-test1', 'name' => 'Test 1', 'email' => 'test1@goteo.org', 'password' => 'testtest', 'active' => true, 'pool' => 11],
         ['userid' => 'simulated-user-test2', 'name' => 'Test 2', 'email' => 'test2@goteo.org', 'password' => 'testtest', 'active' => true, 'pool' => 22]
     ];
     private static $project;
+
+    public static function setUpBeforeClass() {
+        Config::set('lang', 'es');
+        Lang::setDefault('es');
+        Lang::set('es');
+    }
 
     public function testInstance() {
         \Goteo\Core\DB::cache(false);
@@ -187,6 +196,7 @@ class MatcherTest extends TestCase {
         $this->assertInstanceOf('\Goteo\Model\Matcher', $ob2);
         $this->assertEquals($ob->id, $ob2->id);
         $this->assertEquals($ob->name, $ob2->name);
+        $this->assertEquals($ob->terms, $ob2->terms);
         $this->assertEquals($ob->getTotalAmount(), $ob2->getTotalAmount());
         $this->assertEquals($ob->getTotalProjects(), $ob2->getTotalProjects());
 
@@ -225,6 +235,52 @@ class MatcherTest extends TestCase {
     public function testRemoveProjects($ob) {
         $this->assertInstanceOf('\Goteo\Model\Matcher', $ob->removeProjects(self::$project));
         $this->assertEquals(0, $ob->getTotalProjects());
+    }
+
+    /**
+     * @depends testCreate
+     */
+    public function testSaveLanguages($ob) {
+        $errors = [];
+        $this->assertTrue($ob->setLang('ca', self::$trans_data, $errors), print_r($errors, 1));
+        return $ob;
+    }
+
+    /**
+     * @depends testSaveLanguages
+     */
+    public function testCheckLanguages($ob) {
+        $new = Matcher::get($ob->id);
+        $this->assertInstanceOf('Goteo\Model\Matcher', $new);
+        $this->assertEquals(self::$data['title'], $new->title);
+        $this->assertEquals(self::$data['terms'], $new->terms);
+        Lang::set('ca');
+        $new2 = Matcher::get($ob->id, false, 'ca');
+        $this->assertEquals(self::$trans_data['title'], $new2->title);
+        $this->assertEquals(self::$trans_data['terms'], $new2->terms);
+        Lang::set('es');
+    }
+
+    /**
+     * @depends testCreate
+     */
+    public function testListing($ob) {
+        $list = Matcher::getList();
+        $this->assertInternalType('array', $list);
+        $new = end($list);
+        $this->assertInstanceOf('Goteo\Model\Matcher', $new);
+        $this->assertEquals(self::$data['title'], $new->title);
+        $this->assertEquals(self::$data['terms'], $new->terms);
+
+        Lang::set('ca');
+        $list = Matcher::getList();
+        $this->assertInternalType('array', $list);
+        $new2 = end($list);
+        $this->assertEquals(self::$trans_data['title'], $new2->title);
+        $this->assertEquals(self::$trans_data['terms'], $new2->terms);
+
+        Lang::set('es');
+
     }
 
     /**

@@ -1,6 +1,6 @@
 ---
-discover-banner-header: 'Per categoria, luogo, beneficio,<br /><span class="red">trovi il progetto</span> con cui ti puoi identificare di più'
-login-banner-header: 'Accedi alla comunità goteo<br /><span class="greenblue">100% aperto</span>'
-main-banner-header: '<h2 class="message">Social network per <span class="greenblue">co-finanziare e collaborare a</span><br /> progetti innovativi che promuovono i beni comuni <br /> Hai progetto a <span class="greenblue">DNA aperto</span>?</h2><a href="/contact" class="button banner-button">Contattaci</a>'
+discover-banner-header: 'Per categoria, luogo, beneficio,<br><span class="red">trovi il progetto</span> con cui ti puoi identificare di più'
+login-banner-header: 'Accedi alla comunità goteo<br><span class="greenblue">100% aperto</span>'
+main-banner-header: '<h2 class="message">Social network per <span class="greenblue">co-finanziare e collaborare a</span><br> progetti innovativi che promuovono i beni comuni <br> Hai progetto a <span class="greenblue">DNA aperto</span>?</h2><a href="/contact" class="button banner-button">Contattaci</a>'
 open-banner-header: '<div class="modpo-open">OPEN</div><div class="modpo-percent">100&#37; APERTO</div><div class="modpo-whyopen">%s</div>'
 regular-banner-metter: ottenuto da**

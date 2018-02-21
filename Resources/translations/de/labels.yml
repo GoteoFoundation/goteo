@@ -10,6 +10,7 @@ accounts-lb-move: 'Spende neu platzieren'
 accounts-lb-report: 'Projektbericht'
 accounts-lb-update: 'Spendenstatus aktualisieren'
 accounts-lb-viewer: 'Logs sehen'
+banners-lb: Banner
 banners-lb-add: 'Neues Banner'
 banners-lb-cancel: 'Spende löschen'
 banners-lb-details: 'Spendendetails'
@@ -21,6 +22,7 @@ banners-lb-report: 'Projektbericht'
 banners-lb-translate: 'Banner übersetzen'
 banners-lb-update: 'Spendenstatus aktualisieren'
 banners-lb-viewer: 'Logs sehen'
+blog-lb: Blog
 blog-lb-add: 'Neuer Eintrag'
 blog-lb-edit: 'Eintrag bearbeiten'
 blog-lb-footer: 'Einträge im Footer sortieren'
@@ -45,6 +47,7 @@ criteria-lb-add: 'Neues Kriterium'
 criteria-lb-edit: 'Kriterium bearbeiten'
 criteria-lb-list: Auflistung
 criteria-lb-translate: 'Kriterium übersetzen'
+faq-lb: Häufig gestellte Fragen
 faq-lb-add: 'Neue Frage'
 faq-lb-edit: 'Frage bearbeiten'
 faq-lb-list: Auflistung
@@ -161,6 +164,7 @@ users-lb-impersonate: 'Benutzer ersetzen'
 users-lb-list: Auflistung
 users-lb-manage: 'Benutzer verwalten'
 users-lb-move: 'Wechseln zu anderem Knoten des Benutzers'
+word-lb: 'Wörter zählen'
 word-lb-list: Auflistung
 worth-lb: 'Wertelevel'
 worth-lb-edit: 'Level bearbeiten'

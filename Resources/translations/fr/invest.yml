@@ -19,7 +19,7 @@ invest-amount: Quantité
 invest-amount-tooltip: 'Entrer la quantité avec laquelle vous voulez soutenir ce project'
 invest-anonymous: 'Faire une donation anonyme'
 invest-button: Contribuer
-invest-called-allready: 'Ce projet a déjà reçu <strong>Matchfunding</strong> lors de la campagne <span class="call">%s</span>. Il ne recevra pas davantage de <strong>Matchfunding</strong> via tes apports'
+invest-called-allready: 'Ce projet a déjà reçu <strong>Matchfunding</strong> lors de la campagne <span class="call">%s</span>. Il ne recevra pas davantage de Matchfunding via tes apports'
 invest-called-maxdrop: 'Jusqu''à maximum <strong>%s &euro;</strong>'
 invest-called-maxproj: 'Le maximum de <strong>Capital Riego</strong> possible dans cette campagne <span class="call">%s</span> a été atteint.'
 invest-called-nodrop: 'Il n''y a pas actuellement de <strong>Matchfunding</strong> disponible dans la campagne %s'

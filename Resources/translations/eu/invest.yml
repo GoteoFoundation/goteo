@@ -18,10 +18,7 @@ invest-amount-in-pool: '%s € dituzu txanpon txartel birtualean'
 invest-amount-tooltip: 'Sar ezazu proiektua babesteko jarriko duzun kopurua'
 invest-anonymous: 'Nire ekarpena anonimoa izatea nahi dut'
 invest-button: Ekarpena egin
-invest-called-allready: 'Ez denez proiektu honi dohaintza egiten diozun lehenengo aldia (eskerrik asko!), gogorarazten dizugu %s -k soilik biderkatzen duela erabiltzaile bakoitzaren lehenengo ekarpena. Ekarpen honek eta proiektu honi egiten dizkiozun hurrengoek ez dute izango efektu biderkatzailerik, baina oso ongi etorriak dira, hala ere ;)'
 invest-called-maxdrop: 'Eman <strong>%s</strong>'
-invest-called-maxproj: 'Lagundu duzun proiektuak dagoeneko ezin du %s -(r)en ekarpen gehiago lortu, deialdi honen oinarrien arabera.'
-invest-called-rest: 'Soilik gelditzen dira <strong>%s</strong> eskuragarri ren aurrekontuan <span class="call">%s</span> deialdian'
 invest-card-method: Txartela
 invest-donation-header: 'Sar itzazu datu fiskalak dohaina egiteko'
 invest-fiscal-skip: 'Orain ez ditut datu horiek bete nahi'
@@ -31,7 +28,7 @@ invest-mail_info-drop: 'Gainera, %s-(e) k %s matchfunding jarri du %s kanpainare
 invest-make-sure-save: Gorde
 invest-make-sure-title: Berretsi
 invest-method-title: 'Egin zure ekarpena'
-invest-modal-fiscal-description: 'Dagoeneko jakingo duzun moduan, Goteon ekarpena egiteak denoi onura egiten diguten proiektu pila posible egiteaz gain, kenkaria du zerga aitorpenean! <p>Proiektu bati ekarpena egitean, eta 2015etik Goteo Fundazioaren aldeko dohaintza puru eta sinpleentzat aplikagarriak diren KENKARI motak igo izanari esker, 2002ko abenduaren 23ko 49/2002 Legean ezarritako zerga araubide bereziari atxikita dagoen erakunde gisa, gure <a href="https://goteo.org/faq/investors#q112" target="_blank">FAQ 18 para comecenas</a> atalean adierazitako zenbatekoak kendu ahal izango dituzu'
+invest-modal-fiscal-description: 'Dagoeneko jakingo duzun moduan, Goteon ekarpena egiteak denoi onura egiten diguten proiektu pila posible egiteaz gain, kenkaria du zerga aitorpenean! Proiektu bati ekarpena egitean, eta 2015etik Goteo Fundazioaren aldeko dohaintza puru eta sinpleentzat aplikagarriak diren KENKARI motak igo izanari esker, 2002ko abenduaren 23ko 49/2002 Legean ezarritako zerga araubide bereziari atxikita dagoen erakunde gisa, gure <a href="https://goteo.org/faq/investors#q112" target="_blank">FAQ 18 para comecenas</a> atalean adierazitako zenbatekoak kendu ahal izango dituzu'
 invest-modal-fiscal-title: 'Informazio fiskala'
 invest-modal-pool-description: 'Diru zorro birtuala Goteo plataformaren funtzionaltasun bat da, eta baimentzen dizu zure kontuan kreditua izatea eta ordaintzeko bide gisa erabiltzea gure plataformako proiektuei ekarpenak egin nahi dizkiezun bakoitzean, zure txartelaren datuak edo PayPalekoak eman behar izan gabe.'
 invest-modal-pool-title: 'Goteo plataformako diru zorro birtualari buruz'

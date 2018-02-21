@@ -52,7 +52,7 @@ translator-save-original: 'Save in the original table'
 translator-save-draft: 'Save as draft'
 translator-saved-ko: 'Failed to save translation to %LANG% (%ERROR%)'
 translator-saved-ok: 'Translations saved correctly for languages [%s]'
-translator-skipped-fields: "Some fields have not been copied because they already contain text.\\r\nDelete the original text to allow copying from another language."
+translator-skipped-fields: "Some fields have not been copied because they already contain text. Delete the original text to allow copying from another language."
 translator-sphere: 'Areas of a call'
 translator-stories: 'Success stories'
 translator-system: System
