@@ -7,10 +7,13 @@ use Goteo\TestCase;
 use Goteo\Model\Promote;
 use Goteo\Model\User;
 use Goteo\Model\Project;
+use Goteo\Application\Lang;
+use Goteo\Application\Config;
 
 class PromoteTest extends TestCase {
 
     private static $data = array('title' => 'test title', 'description' => 'test description', 'order' => 0, 'active' => 0);
+    private static $trans_data = array('title' => 'Test títol', 'description' => 'test descripció');
 
     public function testInstance() {
         \Goteo\Core\DB::cache(false);
@@ -64,15 +67,45 @@ class PromoteTest extends TestCase {
         foreach(self::$data as $key => $val) {
             $this->assertEquals($ob->$key, $val);
         }
+        return $ob;
+    }
 
+    /**
+     * @depends testCreate
+     */
+    public function testSaveLanguages($ob) {
+        $errors = [];
+        $this->assertTrue($ob->setLang('ca', self::$trans_data, $errors), print_r($errors, 1));
+        return $ob;
+    }
+
+    /**
+     * @depends testSaveLanguages
+     */
+    public function testCheckLanguages($ob) {
+        $new = Promote::get($ob->id);
+        $this->assertInstanceOf('Goteo\Model\Promote', $new);
+        $this->assertEquals(self::$data['title'], $new->title);
+        $this->assertEquals(self::$data['description'], $new->description);
+        Lang::set('ca');
+        $new2 = Promote::get($ob->id);
+        $this->assertEquals(self::$trans_data['title'], $new2->title);
+        $this->assertEquals(self::$trans_data['description'], $new2->description);
+        Lang::set('es');
+
+    }
+
+    /**
+     * @depends testCreate
+     */
+    public function testDelete($ob) {
         $this->assertTrue($ob->dbDelete());
 
         //save and delete statically
         $this->assertTrue($ob->save($errors), print_r($errors, 1));
         $this->assertTrue(Promote::delete($ob->id));
-
-        return $ob;
     }
+
     /**
      * @depends testCreate
      */

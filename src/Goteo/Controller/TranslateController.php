@@ -206,8 +206,8 @@ class TranslateController extends \Goteo\Core\Controller {
                     // Update if exists
                     // Exception on failure
                     try {
+                        // if($lang != 'ca') {print_r($values);print_r($lang);die;}
                         $translator->save($lang, $values);
-                        // print_r($values);print_r($lang);
                         $langs_ok[$lang] = $this->langs[$lang];
                     } catch(\Exception $e) {
                         Message::error(Text::get('translator-saved-ko', ['%LANG%' => $lang, '%ERROR%' => $e->getMessage()]));
