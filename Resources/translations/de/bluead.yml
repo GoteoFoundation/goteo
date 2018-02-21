@@ -1,6 +1,6 @@
 ---
 assign-call-success: 'The project has been assigned to the call %s'
-dashboard-donor-remember: 'Remember to confirm your tax details for the donation certificate.'
+dashboard-donor-remember: 'Denken Sie daran, Ihre Steuerinformationen für Geschenk-Gutschein zu bestätigen.'
 image-upload-fail: 'Fehler beim Hochladen des Bildes'
 gallery-upload-fail: 'Fehler beim Hochladen der Galerie'
 invest-amount-error: 'You have to write an amount'
