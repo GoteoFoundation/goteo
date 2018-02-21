@@ -27,4 +27,6 @@ feed-project_fail: 'Das Projekt, %s, ist <span class="red">geschlossen</span> Es
 feed-project_finish: 'Das Projekt, %s, wurde <span class="red">in der zweiten Runde erfolgreich abgeschlossen</span> Es hat <span class="violet">%s ? (%s %) vom Mindestbetrag erhalten</span>'
 feed-project_finish_unique: 'Projekt %s hat seine Kampagne vollendet, reaching %s € (%s %) of contributions against its minimum budget'
 feed-project_goon: 'Das Projekt, %s, <span class="red">wird fortgesetzt</span> in der zweiten Runde, da Sie bereits  <span class="violet">%s ? (%s %) der minimal erforderlichen Beiträge erhalten haben</span>'
+feed-timeago: 'Vor %s'
 feed-timeago-periods: Sekunde-Sekunden_Minute-Minuten_Stunde-Stunden_Tag-Tage_Woche-Wochen_Monat-Monate_Jahr-Jahre_Dekade-Dekaden
+feed-timeago-published: 'Veröffentlicht vor %s'
