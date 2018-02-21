@@ -42,11 +42,9 @@ dashboard-rewards-date_order: 'Por data'
 dashboard-rewards-fulfilled_filter: Cumpridas
 dashboard-rewards-fulfilled_status: Cumprida
 dashboard-rewards-group_msg: 'mensaxe a ese grupo'
-dashboard-rewards-investors_table: 'Se queres xestionalo offline podes  <a href="%URL%">sacar a Táboa de Cofinanciadores</a>'
 dashboard-rewards-massive_msg: 'Mensaxes colectivos'
 dashboard-rewards-massive_msg-all: 'A todos os cofinanceiros deste proxecto'
 dashboard-rewards-massive_msg-all_alert: 'a todos é a todos, non ten en conta o resto de sinalados'
-dashboard-rewards-notice: 'ISTO É UNHA VISUALIZACIÓN DAS OPCIÓNS DE RETORNO QUE ELIXEN OS TEUS COFINANCEIROS.<BR/>NON TES QUE XESTIONAR ESES RETORNOS ATA QUE CHEGUEN Ó MÍNIMO DA CANTIDADE DESEXADA'
 dashboard-rewards-num_taken: 'Comprometidas'
 dashboard-rewards-pending_filter: Pendentes
 dashboard-rewards-pending_status: Pendente
