@@ -5,6 +5,7 @@ mandatory-individual_reward-field-name: 'Sie müssen eine Belohung eingeben'
 mandatory-social_reward-field-description: 'Sie müssen eine Beschreibung des Nutzens eingeben'
 mandatory-social_reward-field-icon: 'Sie müssen die Art des Nutzens auswählen'
 mandatory-social_reward-field-name: 'Sie müssen den Nutzen spezifizieren'
+mandatory-social_reward-field-category: 'Die Angabe des sozialen Engagements ist obligatorisch'
 rewards-field-individual_reward-amount: 'Betrag finanziert'
 rewards-field-individual_reward-description: Beschreibung
 rewards-field-individual_reward-other: 'Spezifizieren Sie die Art der Belohnung'
@@ -16,6 +17,7 @@ rewards-field-social_reward-license: 'Lizenierungsoptionen'
 rewards-field-social_reward-other: 'Spezifizieren Sie die Art des Nutzens'
 rewards-field-social_reward-reward: Allgemeiner Nutzen
 rewards-field-social_reward-type: 'Art des Nutzens'
+rewards-field-social_reward-url: Url
 rewards-fields-individual_reward-title: 'Individuelle Belohnungen'
 rewards-fields-social_reward-title: 'Allgemeiner Nutzen'
 rewards-main-header: 'allgemeiner Nutzen und Belohnungen'

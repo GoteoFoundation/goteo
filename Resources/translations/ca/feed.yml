@@ -63,7 +63,6 @@ feed-updates-comment: 'Ha escrit un <span class="green">Comentari</span> a l''en
 feed-user-invest: '%USER% ha aportat %AMOUNT% al projecte %PROJECT% mitjançant %METHOD%'
 feed-user-invest-error: 'Hi ha hagut un <span class="red">ERROR de %METHOD% [%MESSAGE%]</span> a l''aportació de %USER% de %AMOUNT% al projecte %PROJECT%'
 feed-message-new-support: 'nova col·laboració en el projecte de l''usuari (dashboard)'
-feed-message-message-published: '%USER% ha publicat una nova %TYPE% en el projecte %PROJECT%, con el títol "%TITLE%"'
 feed-message-new-project-response: 'usuari participa amb un missatge/resposta al projecte'
 feed-message-support-response-published: 'Nova col·laboració de %USER% amb %TITLE% al projecte %PROJECT%'
 feed-message-response-published: '%USER% ha contestat en %TYPE% del projecte %PROJECT%'

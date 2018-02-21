@@ -41,7 +41,6 @@ login-signin-yahoo: 'Anmeldung über Yahoo'
 login-title: 'Login'
 oauth-confirm-user: 'Mit existierendem Benutzer verbinden'
 oauth-facebook-access-denied: 'Facebook Zugang verweigert'
-oauth-goteo-openid-sync-password: 'Sie sind dabei, ein bestehendes Goteo-Konto mit einem externen Provider zu verbinden. Das ermöglicht Ihnen, sich bei Goteo mit einem einzigen Klick anzumelden.<br>Dieses Mal müssen Sie Ihr Goteo-Konto Passwort angeben, um Ihre Identität zu bestätigen.'
 oauth-goteo-user-not-exists: 'Dieser Benutzer existiert nicht bei Goteo'
 oauth-goteo-user-password-error: "Dieses Konto verwendet bereits einen anderen passwortfreien Login-Anbieter. Wenn Sie mehr als einen Login-Anbieter für dieses Konto verwenden möchten, müssen Sie erst ein Passwort einrichten."
 oauth-goteo-user-password-exists: 'Dieser Benutzer existiert bereits bei Goteo'
@@ -66,3 +65,4 @@ reset-password-new-password: 'Ihr neues Passwort'
 reset-password-old-password: 'Ihr altes Passwort'
 reset-password-save: Speichern
 reset-password-title: 'Neues Passwort erstellen'
+login-alternate-ids: Weitere Optionen

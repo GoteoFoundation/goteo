@@ -30,7 +30,6 @@ feed-updates-comment: 'Has written a <span class="green">Comment</span> to the m
 feed-user-invest: '%USER% has invested %AMOUNT% to project %PROJECT% using %METHOD%'
 feed-user-invest-error: 'Ha <span class="red">ERROR de %METHOD% [%MESSAGE%]</span> has occurred when %USER% was investing %AMOUNT% to project %PROJECT%'
 feed-message-new-support: 'new collaboration in a user''s project (dashboard)'
-feed-message-message-published: '%USER% has published a new %TYPE% in the project %PROJECT%, titled "%TITLE%"'
 feed-message-new-project-response: 'user participates with a message/response in a project'
 feed-message-support-response-published: 'New collaboration from %USER% with %TITLE% in the project %PROJECT%'
 feed-message-response-published: '%USER% has responded to %TYPE% at project %PROJECT%'

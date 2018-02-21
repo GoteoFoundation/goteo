@@ -9,4 +9,8 @@ preview-send-comment: 'Zusätzliche Anmerkungen für den Administrator'
 step-7: Vorschau
 step-preview: 'Projekt / Vorschau'
 tooltip-project-comment: 'Haben Sie irgendwelche Zweifel oder Anmerkungen für den Goteo-Administrator? Dies ist der Ort, um etwas von dem, was Sie geschrieben haben, bei dem Sie sich nicht sicher sind, zu erwähnen oder um Verbesserungsvorschläge, usw. zu nennen.'
+project-send-review-desc: >
+  Sobald Sie es abgeschickt haben, können keine Änderungen mehr vorgenommen werden, bis wir die Bearbeitung wieder ermöglichen.
+  Wir werden uns in Kürze mit Ihnen in Verbindung setzen, um den Kampagnenvorschlag zu besprechen und den Optimierungs- und Publikationsprozess fortzusetzen.
+  **Vergessen Sie nicht, Ihren SPAM-Ordner** zu überprüfen, manchmal ist die Anti-Spam-Technologie nicht in der Lage, die Liebenswürdigkeit einzuschätzen, die wir unseren Projekten entgegenbringen.
 
