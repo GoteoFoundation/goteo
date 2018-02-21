@@ -26,7 +26,6 @@ guide-project-supports: '<strong>Neste apartado podes especificar qué outras ax
 header-about-side: 'O que nos move'
 home-posts-header: Novidades
 invest-individual-header: 'Podes renunciar a recibir recompensas pola túa achega, ou seleccionar as que igualen ou estean por debaixo do importe que inseriches.'
-login-register-conditions: 'Acepto as condicións de uso da plataforma, así­ como dou o meu consentimento para o tratamento dos meus datos persoais. A tal efecto, o responsable do portal estableceu unha <a href="/legal/privacy" target="_blank">polí­tica de privacidade</a> onde se pode coñecer a finalidade que se lle darán ós datos subministrados a través do presente formulario, así­ como os dereitos que asisten á persoa que subministra ditos datos.'
 mandatory-cost-field-type: 'É obrigado poñer indicar o tipo de custo'
 mandatory-individual_reward-field-amount: 'É obrigado indicar o importe que permite obter a recompensa'
 mandatory-project-costs: 'Debe detallarse polo menos dous custos.'
