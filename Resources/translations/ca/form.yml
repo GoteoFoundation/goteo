@@ -28,8 +28,6 @@ form-remove-button: Elimina
 form-self_review-button: Corregeix
 form-send_review-button: Envia
 form-upload-button: Pujar
-help-cost-to-consultant: '- Necessita ajuda per definir els costos<br/>'
-help-license-to-consultant: '- Necessita ajuda en retorns col.lectius i llicències<br/>'
 overview-extra-fields: 'Camps complementaris'
 project-form-header: Formulari
 project-one-round: 'Ronda única de 40 dies'
