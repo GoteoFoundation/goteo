@@ -117,12 +117,10 @@ dashboard-rewards-date_order: 'By date'
 dashboard-rewards-fulfilled_filter: Fulfilled
 dashboard-rewards-fulfilled_status: Fulfilled
 dashboard-rewards-group_msg: 'message to this group'
-dashboard-rewards-investors_table: 'If you want to manage it off-line, you can <a href="%URL%">download the Table of Co-Financiers</a>'
 dashboard-rewards-issue: Incidence!
 dashboard-rewards-massive_msg: 'Collective messages'
 dashboard-rewards-massive_msg-all: 'To all the co-financiers of this project'
 dashboard-rewards-massive_msg-all_alert: 'All means all, it doesn''t take into account the rest of marked items'
-dashboard-rewards-notice: 'THIS IS A VISUALISATION OF THE REWARD OPTIONS CHOSEN BY YOUR CO-FINANCIERS. <br />YOU DON''T HAVE TO MANAGE THESE REWARDS UNTIL YOU REACH THE MINIMUM OF THE DESIRED QUANTITY'
 dashboard-rewards-num_taken: 'Committed'
 dashboard-rewards-pending_filter: Pending
 dashboard-rewards-pending_status: Pending
