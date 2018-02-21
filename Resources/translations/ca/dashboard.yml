@@ -40,7 +40,7 @@ dashboard-chart-optimum: Òptim
 dashboard-embed_code: 'CODI DIFUSIÓ SIMPLE'
 dashboard-embed_code_investor: 'CODI AMB IMATGE DE PERSONA COFINANÇADORA'
 dashboard-header-main: 'El meu panell'
-dashboard-investors-mail-fail: 'Error en enviar el missatge a %s: %s'
+dashboard-investors-mail-fail: 'Error en enviar el missatge a %s'
 dashboard-investors-mail-nowho: 'No s''han trobat destinataris'
 dashboard-investors-mail-sendto: 'Enviat a %s dels teus cofinançadors:'
 dashboard-investors-mail-sent: 'Missatges enviats correctament'
@@ -72,7 +72,7 @@ dashboard-menu-projects-messegers: Participants
 dashboard-menu-projects-preview: 'Pàgina pública'
 dashboard-menu-projects-rewards: Gestió cofinançadors
 dashboard-menu-projects-summary: Resum
-dashboard-menu-projects-supports: Col·laboracions 
+dashboard-menu-projects-supports: Col·laboracions
 dashboard-menu-projects-updates: Actualitzacions
 dashboard-menu-projects-widgets: Widget
 dashboard-menu-review_board: Revisió

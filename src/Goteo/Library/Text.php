@@ -213,6 +213,7 @@ class Text {
                 $file = $files[$l];
                 // echo "[$l $file]\n";
                 $catalogue = Yaml::parse(file_get_contents($file));
+                if(!$catalogue) continue;
                 ksort($catalogue);
                 foreach($catalogue as $i => $t) {
                     if(in_array($i, $skip)) continue;

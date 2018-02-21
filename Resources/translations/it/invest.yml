@@ -2,7 +2,7 @@
 bazar-spread-text: '%s - A Natale regala crowdfunding aperto per il bene comune con @goteofunding #openbazaar'
 bazar-thanks: 'Grazie della visita nel nostro bazar, ci puoi aiutare a diffonderlo. '
 faq-payment-method: '<a href="/faq/investors#q2" target="_blank">Che sistemi di pagamento offre Goteo?Sono sicuri?</a>'
-imperative-register: Registrati 
+imperative-register: Registrati
 invest-address-address-field: 'Indirizzo:'
 invest-address-country-field: Paese
 invest-address-friend-field: 'Seleziona questa casella se è un regalo per un''altra persona'
@@ -53,5 +53,5 @@ project-invest-ok: 'Il tuo contributo per finanziare questo progetto è stato in
 project-invest-start: 'Stai per co-finanziare questo progetto...'
 spread-facebook: 'Diffondi su Facebook'
 spread-twitter: 'Diffondi su Twitter '
-user-login-required-login: 'Se sei già registrato inizia la tua sessione, sennò crea un nuovo account '
+user-login-required-login: 'Se sei già registrato <a href="%s">inizia la tua sessione</a>, sennò crea un nuovo account '
 warning_nojavascript: 'Attiva javascrip dalla configurazione di privacy del tuo navigatore per poter seguire i passaggi del processo di pagamento. '

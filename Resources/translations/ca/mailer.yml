@@ -2,6 +2,6 @@
 mailer-baja: 'No vols rebre més comunicacions de Goteo? Pots donar el teu email de baixa mitjançant aquest <a href="%s">link</a>'
 mailer-disclaimer: 'Goteo és una plataforma digital per al finançament col·lectiu, col·laboració i distribució de recursos per al desenvolupament de projectes socials, culturals, educatius, tecnològics... que contribueixin a l''enfortiment del béns comuns, el codi obert i/o el coneixement lliure.'
 mailer-sinoves: 'Si no pots veure aquest missatge utilitza aquest <a href="%s">link</a>'
-newsletter-block: 'No vols rebre més butlletins de Goteo? <br/> <a href="%s"> Desubscriu-te</a>.'
-unsuscribe-request-success: 'Has cancel.lat la teva subscripció al butlletí.'
+newsletter-block: 'No vols rebre més butlletins de Goteo? <br/> <a href="%s">Esborra''t aquí</a>.'
+unsuscribe-request-success: 'Has cancel·lat la teva subscripció al butlletí.'
 mailer-to: Per

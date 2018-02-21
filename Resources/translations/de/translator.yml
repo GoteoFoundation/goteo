@@ -53,7 +53,7 @@ translator-post: Blogpost
 translator-promote: 'Herausragende Projekte'
 translator-save: 'Speichern & publizieren'
 translator-save-draft: 'Als Entwurf speichern'
-translator-saved-ko: 'Übersetzung in %LANG% konnte nicht gespeichert werden (% ERROR%)'
+translator-saved-ko: 'Übersetzung in %LANG% konnte nicht gespeichert werden (%ERROR%)'
 translator-saved-ok: 'Übersetzung wurde korrekt gespeichert für die Sprachen [%s]'
 translator-skipped-fields: "Einige Felder wurden nicht kopiert, da sie bereits Text enthalten.\nLöschen Sie den Originaltext, um das Kopieren aus einer anderen Sprache zu ermöglichen."
 translator-sphere: 'Tätigkeitsfehler'

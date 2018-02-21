@@ -10,7 +10,7 @@ admin-account-convert-to-pool-ko: 'Il contributo non è stato convertito in port
 admin-account-convert-to-pool-ok: 'Convertito con successo a contributo di portafoglio'
 admin-account-detail: 'Dettagli della transazione'
 admin-account-donation: Donazione
-admin-account-invalid-invest: 'Contributo [%] non trovato!'
+admin-account-invalid-invest: 'Contributo [%s] non trovato!'
 admin-account-invest-date: 'Data del contributo'
 admin-account-invest-user-refund-ok: 'Contributi rimborsati correttamente'
 admin-account-modify-status: 'Modifica lo stato'

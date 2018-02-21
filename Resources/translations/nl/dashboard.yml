@@ -2,7 +2,7 @@
 dashboard-embed_code: 'eenvoudige code diffusie'
 dashboard-embed_code_investor: 'CODE MET PLAATJE VAN CROWDFUNDER'
 dashboard-header-main: 'Mijn dashboard'
-dashboard-investors-mail-fail: '    Het is niet gelukt een bericht te versturen naar %s: %s'
+dashboard-investors-mail-fail: 'Het is niet gelukt een bericht te versturen naar %s'
 dashboard-investors-mail-nowho: 'Geen ontvanger gevonden'
 dashboard-investors-mail-sendto: 'Verstuurd naar %s van je funders:'
 dashboard-investors-mail-sent: 'Berichten correct verzonden'

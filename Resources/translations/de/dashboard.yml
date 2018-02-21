@@ -34,7 +34,7 @@ dashboard-chart-optimum: optimal
 dashboard-embed_code: 'EINFACHER PROMOTION CODE'
 dashboard-embed_code_investor: 'KÜRZEL MIT BILD DES CROWDFUNDERS'
 dashboard-header-main: 'Mein Dashboard'
-dashboard-investors-mail-fail: '    Nachricht fehlgeschlagen %s: %s'
+dashboard-investors-mail-fail: 'Nachricht fehlgeschlagen %s'
 dashboard-investors-mail-nowho: 'kein Empfänger gefunden'
 dashboard-investors-mail-sendto: 'Gesendet an %s Ihrer Unterstützer:'
 dashboard-investors-mail-text-required: 'Schreiben Sie eine Nachricht'

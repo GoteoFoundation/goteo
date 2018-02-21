@@ -30,7 +30,7 @@ dashboard-menu-projects-updates: Berriak
 dashboard-menu-review_board: Berraztertze
 dashboard-menu-translate_board: Itzulpena
 dashboard-menu-translates: 'Nire itzulpenak'
-dashboard-messegers-mail-sendto: 'Partaideei bidalita:'
+dashboard-messegers-mail-sendto: 'Partaideei bidalita (%s):'
 dashboard-my-wallet-contribute-button: Dohaintzan eman
 dashboard-password-recover-advice: 'Baieztatu pasahitza berriro jartzen duzula'
 dashboard-project-blog-fail: 'Gurekin harremanetan jarri'

@@ -40,7 +40,7 @@ dashboard-chart-optimum: optimum
 dashboard-embed_code: 'SIMPLE PROMOTION CODE'
 dashboard-embed_code_investor: 'CODE WITH IMAGE OF CROWDFUNDER'
 dashboard-header-main: 'My dashboard'
-dashboard-investors-mail-fail: '    Message failed to %s: %s'
+dashboard-investors-mail-fail: 'Message failed to %s'
 dashboard-investors-mail-nowho: 'No recipient was found'
 dashboard-investors-mail-sendto: 'Sent to %s of your backers:'
 dashboard-investors-mail-sent: 'Messages sent correctly'
