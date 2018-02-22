@@ -19,6 +19,7 @@ invest-amount-tooltip: 'Sar ezazu proiektua babesteko jarriko duzun kopurua'
 invest-anonymous: 'Nire ekarpena anonimoa izatea nahi dut'
 invest-button: Ekarpena egin
 invest-called-maxdrop: 'Eman <strong>%s</strong>'
+invest-called-rest: 'Soilik gelditzen dira <strong>%s</strong> eskuragarri ren <strong>aurrekontuan</strong> <span class="call">%s</span> deialdian'
 invest-card-method: Txartela
 invest-donation-header: 'Sar itzazu datu fiskalak dohaina egiteko'
 invest-fiscal-skip: 'Orain ez ditut datu horiek bete nahi'

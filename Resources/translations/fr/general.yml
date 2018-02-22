@@ -32,10 +32,11 @@ fancybox: 'Texte fancybox'
 goteo-return-button: 'Retour vers Goteo'
 guide-dashboard-user-access: 'Vous pouvez changer les informations avec lesquelles vous vous connectez via Goteo accompte.'
 guide-project-comment: guide-projet-commentaire
-guide-project-contract-information: "Les informations de cette section sont nécessaires pour vous contacter si vous obtenez le financement nécessaire, et ainsi permettre le versement. Dans le cas d'une structure, nous vous recommandons que la personne qui représente l'organisation puisse plus tard être accrédité formellement. (Par exemple au travers les statuts ou via un certificat du secrétaire avec agrément du président, dans le cas d'associations )"
+guide-project-contract-information: 'Les informations de cette section sont nécessaires pour vous contacter si vous obtenez le financement nécessaire, et ainsi permettre le versement. Dans le cas d''une structure, nous vous recommandons que la personne qui représente l''organisation puisse plus tard être accrédité formellement. (Par exemple au travers les statuts ou via un certificat du secrétaire avec agrément du président, dans le cas d''associations )'
 guide-project-images: 'Les images du projet peuvent être des plans, screenshots, photographies, illustrations, storyboards, etc. (la licence associée doit être compatible avec les licences sélecionnées dans la section 5. Vous pouvez en charger autant que souhaité!'
+guide-project-rewards: "<strong>Dans cette partie, vous devez définir ce que vous proposez en échange à vos cofinanceurs.</strong>"
 guide-project-support: guide-projet-support
-guide-project-supports: "<strong> Dans ce paragraphe, précisez les besoins, hors financement, nécessaires à la réalisation de votre projet. </strong><br><br>Dans ce paragraphe, précisez les besoins, hors financement, nécessaires à la réalisation de votre projet. Ces besoins peuvent prendre la forme de tches ou d'actions réalisables par d'autres personnes (traduction, gestion, diffiusion, etc.), ou de prêts (de matériel informatique, pour le transport, etc.)"
+guide-project-supports: '<strong> Dans ce paragraphe, précisez les besoins, hors financement, nécessaires à la réalisation de votre projet. </strong><br><br>Dans ce paragraphe, précisez les besoins, hors financement, nécessaires à la réalisation de votre projet. Ces besoins peuvent prendre la forme de tches ou d''actions réalisables par d''autres personnes (traduction, gestion, diffiusion, etc.), ou de prêts (de matériel informatique, pour le transport, etc.)'
 header-about-side: 'Ce qui nous inspire'
 home-posts-header: Nouveautés
 horizontal-project-investors: 'cofinanceurs'

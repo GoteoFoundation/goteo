@@ -23,7 +23,7 @@ dashboard-menu-admin_board: Amministrazione
 dashboard-menu-calls-sponsors: Patrocinatori
 dashboard-menu-profile: 'Il mio profilo'
 dashboard-menu-profile-access: 'Dati di accesso'
-dashboard-menu-profile-location: Geolocalizzazione
+dashboard-menu-profile-location: Geolocalizzazione 
 dashboard-menu-profile-personal: 'Dati personali '
 dashboard-menu-profile-preferences: 'I miei preferiti '
 dashboard-menu-profile-profile: 'Modificare il profilo '
@@ -31,13 +31,13 @@ dashboard-menu-profile-public: 'Profilo pubblico'
 dashboard-menu-projects: 'I miei progetti '
 dashboard-menu-projects-commons: Benefici
 dashboard-menu-projects-contract: Contratto
-dashboard-menu-projects-messegers: Partecipanti
+dashboard-menu-projects-messegers: Partecipanti 
 dashboard-menu-projects-preview: 'Pagina pubblica '
-dashboard-menu-projects-rewards: Co-finanziatori
+dashboard-menu-projects-rewards: Co-finanziatori 
 dashboard-menu-projects-summary: Riassunto
-dashboard-menu-projects-supports: Collaborazioni
+dashboard-menu-projects-supports: Collaborazioni 
 dashboard-menu-projects-updates: Novità
-dashboard-menu-review_board: Correzione
+dashboard-menu-review_board: Correzione 
 dashboard-menu-translate_board: Traduzione
 dashboard-menu-translates: 'Le mie Traduzioni '
 dashboard-messegers-mail-sendto: 'Inviato a %s dei partecipanti:'

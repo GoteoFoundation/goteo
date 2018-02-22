@@ -14,8 +14,8 @@ dashboard-donor-no_donor: 'Il tuo certificato delle donazioni di %s  non è anco
 dashboard-donor-pdf_closed: 'I dati fiscali per il certificato di donazione di %s non sono confermati, non si può scaricare'
 dashboard-donor-saved: 'Grazie della modifica ai tuoi dati. Per scaricare il certificato assicurati che siano corretti. A continuazione convalidali con il tasto chiudi dati. '
 dashboard-menu-activity-donor: 'Certificato di donazione '
-donor-address-country-field: Paese
-donor-address-location-field: Provincia
+donor-address-country-field: Paese 
+donor-address-location-field: Provincia 
 donor-field-amount: 'Importo della donazione'
 donor-field-numproj: 'Donazioni realizzare il %s'
 personal-field-donor_name: 'Nome'

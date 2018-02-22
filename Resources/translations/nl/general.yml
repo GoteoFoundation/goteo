@@ -24,6 +24,7 @@ explain-project-progress: 'Deze grafiek legt op een visuele manier uit wat het n
 guide-dashboard-user-access: 'Je kunt de informatie veranderen waarmee je in kunt loggen op Goteo.'
 guide-project-comment: gids-project-commentaar
 guide-project-contract-information: 'De informatie in deze sectie is noodzakelijk om contact met je op te kunnen nemen als je project gefinancierd is, en zodat we het geld naar je over kunnen maken. In het geval van organisaties raden we aan dat de vertegenwoordiger van de organisatie gevolmacht wordt (bijvoorbeeld door statuten of een schriftelijke volmacht).'
+guide-project-rewards: "<strong>In deze sectie moet je duidelijk maken wat het project de cofinanciers biedt en ook wat de collectieve winst is.</strong>"
 guide-project-support: gids-project-support
 guide-project-supports: '<strong>In deze sectie kun je aangeven welke andere steun, behalve financiering, je nodig hebt om je project uit te kunnen voeren.</strong><br><br>Dat kan bestaan uit samenwerking of assistentie van andere mensen(vertalingen, organisatie, promotie, etc.) of misschien specifieke leningen (van materialen, transport, hardware, etc.)'
 header-about-side: 'Wat inspireert ons'
