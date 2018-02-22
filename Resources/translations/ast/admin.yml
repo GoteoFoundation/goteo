@@ -1,1 +1,16 @@
 ---
+admin-action: 'Aición d''alministrador'
+admin-NO: 'NON'
+admin-YES: SÍ
+admin-account-amount: 'Cantidá aportada'
+admin-account-change-user: 'Camudar d''usuariu'
+admin-account-change-user-confirm: '¿De xuru que quies camudar l''usuariu del aporte? L''usuariu nuevu va ser:'
+admin-account-convert-to-pool: 'Convertir a monedero'
+admin-account-convert-to-pool-confirm: 'Esto va desaniciar el proyeutu venceyáu a esti aporte y va pasar a ser como si fore una merca de monederu. VAN PERDESE TOLES RECOMPENSES VENCEYAES. ¿Siguir?'
+admin-account-convert-to-pool-ko: 'Nun pudo convertise l''aporte a monederu: %s'
+admin-account-detail: 'Detalles de la transación'
+admin-account-donation: Donativu
+admin-account-edit-reward: 'Xestionar recompensa/direición'
+admin-account-invalid-invest: '¡Nun s''alcontró l''aporte [%s]!'
+admin-account-invest-date: 'Data del aporte'
+admin-account-invest-non-pool-refundable: 'Esti aporte nun pue reembolsase al monederu virtual. Namái puen reembolsase los aportes n''estáu «Cobróse»'
