@@ -13,6 +13,7 @@ namespace Goteo\Controller\Admin;
 use Symfony\Component\Routing\Route;
 use Symfony\Component\HttpFoundation\Request;
 use Goteo\Library\Text;
+use Goteo\Model\User;
 
 class UsersAdminController extends AbstractAdminController {
     protected static $icon = '<i class="fa fa-2x fa-users"></i>';
@@ -37,8 +38,19 @@ class UsersAdminController extends AbstractAdminController {
         ];
     }
 
+
     public function listAction(Request $request) {
-        return $this->viewResponse('admin/index');
+        $filters = [];
+        $limit = 25;
+        $page = $request->query->get('pag') ?: 0;
+        $users = User::getList($filters, [], $page * $limit, $limit);
+        $total = User::getList($filters, [], 0, 0, true);
+        return $this->viewResponse('admin/generic_list', [
+            'list' => $users,
+            'link_prefix' => '/users/edit/',
+            'total' => $total,
+            'limit' => $limit
+        ]);
     }
 
     public function statsAction(Request $request) {

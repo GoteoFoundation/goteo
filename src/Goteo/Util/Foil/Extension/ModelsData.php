@@ -12,7 +12,7 @@ namespace Goteo\Util\Foil\Extension;
 
 use Foil\Contracts\ExtensionInterface;
 
-use Goteo\Model\Page;
+use Goteo\Model;
 
 class ModelsData implements ExtensionInterface
 {
@@ -34,11 +34,12 @@ class ModelsData implements ExtensionInterface
         return [
           'page' => [$this, 'page'],
           'model_static' => [$this, 'model_static'],
+          'model_list_entries' => [$this, 'model_list_entries'],
         ];
     }
     public function page($var)
     {
-        return Page::get($var);
+        return Model\Page::get($var);
     }
 
     public function model_static()
@@ -55,6 +56,29 @@ class ModelsData implements ExtensionInterface
         // print_r($res);die;
         return $res;
 
+    }
+
+    /**
+     * [model_list_entries description]
+     * @param  [type] $list [description]
+     * @return [type]       [description]
+     */
+    public function model_list_entries($list) {
+        $array = [];
+        if(!is_array($list)) return $array;
+
+        foreach($list as $key => $ob) {
+            $item = [];
+            if($ob instanceOf Model\User) {
+                $item['id'] = $ob->id;
+                $item['name'] = $ob->name;
+                $item['email'] = $ob->email;
+                $item['avatar'] = $ob->avatar->id ? $ob->avatar->getLink(50, 50) : '';
+                $item['roles'] = $ob->getRoles()->getRoleNames();
+            }
+            $array[] = $item;
+        }
+        return $array;
     }
 
 }
