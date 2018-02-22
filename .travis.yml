@@ -27,7 +27,7 @@ script:
 
 before_deploy:
     - cd ..
-    - tar -zcf ${TRAVIS_BUILD_DIR}${REPO}-${TRAVIS_TAG}-${TRAVIS_BUILD_NUMBER}.tar.gz ${REPO}
+    - tar  --exclude=${REPO}/.tmp --exclude=${REPO}/.git --exclude=${REPO}/.sass-cache -zcf ${TRAVIS_BUILD_DIR}${REPO}-${TRAVIS_TAG}-${TRAVIS_BUILD_NUMBER}.tar.gz ${REPO}
 
 deploy:
     provider: releases
