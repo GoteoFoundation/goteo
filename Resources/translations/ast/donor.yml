@@ -5,6 +5,8 @@ dashboard-donor-confirm_closed: 'El periodu de confirmación de datos fiscales p
 dashboard-donor-download_certificate: 'Baxar certificáu'
 dashboard-donor-edit_data: 'Modificar datos'
 dashboard-donor-edit_guide: 'Rellena los datos que quieras qu''apaeza nel certificáu. Namái que baxes el ficheru, estos datos nun van poder modificase.'
+dashboard-donor-save_fail: "Hebo dalgún fallu al guardar los datos, revísalos y si sigues col problema, contauta con nós."
+dashboard-donor-saved: 'Gracies por modificar los tos datos. Pa baxar el certificáu asegúrate de que son correutos. Darréu valídalos col botón de zarrar datos.'
 dashboard-menu-activity-donor: 'Certificáu de donación'
 donor-address-country-field: País
 donor-address-location-field: Provincia
