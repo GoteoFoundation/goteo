@@ -78,6 +78,7 @@ class TextTest extends TestCase {
                 try {
                     // Check the existence of invalid chars
                     $this->assertFalse(strpos($trans, '\\r'), "Key [$key] in lang [$lang] has the invalid char [\\r]");
+                    $this->assertFalse(strpos($trans, '\\t'), "Key [$key] in lang [$lang] has the invalid char [\\t]");
                 } catch(PHPUnit_Framework_AssertionFailedError $e) {
                     $failures[] = $e->getMessage();
                 }
