@@ -62,7 +62,7 @@ dashboard-rewards-choosen: 'Récompenses espérées'
 dashboard-rewards-date_order: 'Par date'
 dashboard-rewards-fulfilled_filter: Réalisées
 dashboard-rewards-fulfilled_status: Réalisée
-dashboard-rewards-group_msg: 'Message à\_ce groupe de cofinanceurs'
+dashboard-rewards-group_msg: 'message à ce groupe de cofinanceurs'
 dashboard-rewards-investors_table: 'Si vous souhaitez le gérer hors ligne vous pouvez <a href="%URL%">modifier la liste des récompenses</a>'
 dashboard-rewards-issue: Incident!
 dashboard-rewards-massive_msg: 'Messages groupés'
@@ -84,7 +84,7 @@ dashboard-translate-doing_call: 'Vous êtes en train de traduire l''appel de fon
 dashboard-translate-doing_node: 'Vous êtes en train de traduire le noeud <strong>%s</strong>. La langue originale est <strong>l''espagnol</strong>'
 dashboard-translate-doing_profile: 'Vous êtes en train de traduire votre profil personnel.'
 dashboard-translate-doing_project: 'Vous êtes en train de traduire le projet <strong>%s</strong>. La langue originale est <strong>%s</strong>'
-dashboard-translate-select_call: 'Choisissez l''appel de fond au\_ projet à traduire'
+dashboard-translate-select_call: 'Choisissez l''appel de fond au projet à traduire'
 dashboard-translate-select_node: 'Choisissez le noeud à traduire'
 dashboard-translate-select_profile: 'Traduire mon profil personnel'
 dashboard-translate-select_project: 'Choose project for translation'
