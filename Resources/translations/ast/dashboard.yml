@@ -1,1 +1,7 @@
 ---
+api-key-no-generated: 'Entá nun tienes una clave xenerada'
+api-key-tool-tip: 'Col to usuariu y clave d''API vas poder facer consultes a la nuesa API'
+api-key-documentation: 'Ver la documentación de l''API'
+api-key-user: 'Usuariu'
+api-key-key: 'Clave'
+api-key-generate-new: 'Xenerar una clave nueva'
