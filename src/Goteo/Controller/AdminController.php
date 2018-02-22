@@ -34,8 +34,8 @@ use Symfony\Component\Routing\Matcher\UrlMatcher;
 
 class AdminController extends \Goteo\Core\Controller {
 
-	private static $subcontrollers = array();
-	private static $context_vars = array();
+    private static $subcontrollers = array();
+    private static $context_vars = array();
     private static $groups = [
         'projects' => ['text' => 'admin-projects', 'icon' => '<i class="icon icon-2x icon-projects"></i>', 'position' => 10],
         'all' => ['text' => 'admin-all', 'icon' => '', 'position' => 100]
@@ -52,21 +52,20 @@ class AdminController extends \Goteo\Core\Controller {
     public function indexAction(Request $request) {
         $user = self::getCurrentUser($request);
         static::createAdminSidebar($user);
-
-        return $this->viewResponse('admin/index', []);
+        return $this->viewResponse('admin/index');
     }
-
     /**
      * Controller for any route under /admin/{route}
+
      */
     public function routingAction($id, $uri = '', Request $request) {
 
         $user = self::getCurrentUser($request);
         $uri = "/$uri";
-        static::createAdminSidebar($user, $id, $uri);
 
         if($module = self::getSubController($id)) {
             if(in_array('Goteo\Controller\Admin\AdminControllerInterface', class_implements($module))) {
+                static::createAdminSidebar($user, $id, $uri);
                 // Add the admin routes
                 $module_routes = $routes = $module::getRoutes();
 
@@ -94,6 +93,12 @@ class AdminController extends \Goteo\Core\Controller {
                             throw new ControllerAccessDeniedException("User [{$user->id}] has no privileges on URI [$uri] in module [$module]");
                         }
 
+                        // Add vars to the view
+                        $this->contextVars([
+                            'icon' => $module::getLabel('icon'),
+                            'module_id' => $id,
+                            'module_label' => $module::getLabel('text')
+                        ]);
                         // Forward the subcontroller
                         return $this->forward($parameters['_controller'], $parameters);
 
@@ -106,6 +111,7 @@ class AdminController extends \Goteo\Core\Controller {
                 }
             } else {
                 // OLD admin modules
+                // Do not create sidebar here
                 list($action, $sid, $subaction) = explode('/', $uri);
                 return $this->optionAction($id, $action ? $action : 'list', $sid, $subaction, $request);
             }
@@ -113,10 +119,16 @@ class AdminController extends \Goteo\Core\Controller {
         throw new NotFoundHttpException("Admin module [$id] not found");
     }
 
+    /**
+     * Creates the sidebar in admin
+     * @param  User   $user [description]
+     * @param  string $zone [description]
+     */
     public static function createAdminSidebar (User $user, $zone = '') {
-        $prefix = '/admin';
 
+        $prefix = '/admin';
         $modules = ['all' => []];
+
         foreach (static::$subcontrollers as $id => $class) {
 
             if(in_array('Goteo\Controller\Admin\AdminControllerInterface', class_implements($class))) {
@@ -273,141 +285,141 @@ class AdminController extends \Goteo\Core\Controller {
     }
 
 
-	/**
-	 * Old Security method
-	 * Gets the current user
-	 * Gets the menu
-	 * Sets the current node to admin from the user or the get Request
-	 * @param User $user    [description]
-	 * @param Request    $request [description]
-	 */
-	private static function checkCurrentUser(Request $request, $option = null, $action = null, $id = null) {
+    /**
+     * Old Security method
+     * Gets the current user
+     * Gets the menu
+     * Sets the current node to admin from the user or the get Request
+     * @param User $user    [description]
+     * @param Request    $request [description]
+     */
+    private static function checkCurrentUser(Request $request, $option = null, $action = null, $id = null) {
 
-		//refresh permission status
-		User::flush();
-		$user = Session::getUser();
+        //refresh permission status
+        User::flush();
+        $user = Session::getUser();
 
-		if (!$user) {
-			throw new ControllerAccessDeniedException(Text::get('user-login-required-access'));
-		}
+        if (!$user) {
+            throw new ControllerAccessDeniedException(Text::get('user-login-required-access'));
+        }
 
-		// all node names
-		$all_nodes = Node::getList();
-		// simple list of administrable nodes
-		$admin_nodes = array();
-		foreach ($user->getAdminNodes() as $node_id => $role) {
-			$admin_nodes[$node_id] = $all_nodes[$node_id];
-		}
-		// all roles names
-		$all_roles = User::getRolesList();
+        // all node names
+        $all_nodes = Node::getList();
+        // simple list of administrable nodes
+        $admin_nodes = array();
+        foreach ($user->getAdminNodes() as $node_id => $role) {
+            $admin_nodes[$node_id] = $all_nodes[$node_id];
+        }
+        // all roles names
+        $all_roles = User::getRolesList();
 
-		// get working node
-		$admin_node = Session::exists('admin_node') ? Session::get('admin_node') : Config::get('node');
-		if (!array_key_exists($admin_node, $admin_nodes)) {
-			// back to first node
-			$admin_node = key($admin_nodes);
-		}
+        // get working node
+        $admin_node = Session::exists('admin_node') ? Session::get('admin_node') : Config::get('node');
+        if (!array_key_exists($admin_node, $admin_nodes)) {
+            // back to first node
+            $admin_node = key($admin_nodes);
+        }
 
-		//if need to change the current node
-		if ($request->query->has('admin_node') && array_key_exists($request->query->get('admin_node'), $admin_nodes)) {
-			$admin_node = $request->query->get('admin_node');
-		}
+        //if need to change the current node
+        if ($request->query->has('admin_node') && array_key_exists($request->query->get('admin_node'), $admin_nodes)) {
+            $admin_node = $request->query->get('admin_node');
+        }
 
-		Session::store('admin_node', $admin_node);
+        Session::store('admin_node', $admin_node);
 
-		// Build menu from subcontrollers for the current user/node
-		// Build the navigation breadcrumb
-		$menu = array();
-		$breadcrumb = array(['Admin', '/admin']);
+        // Build menu from subcontrollers for the current user/node
+        // Build the navigation breadcrumb
+        $menu = array();
+        $breadcrumb = array(['Admin', '/admin']);
 
-		foreach (static::$subcontrollers as $class) {
-			if ($class::isAllowed($user, $admin_node)) {
-				$menu[$class::getId()] = $class::getLabel();
-				if ($option === $class::getId()) {
-					// add option
-					$breadcrumb[] = [$class::getLabel(), $class::getUrl()];
-					// add action
-					if ($action) {
-						$breadcrumb[] = [
-							$class::getLabel($action) . ($id ? " [$id]" : ''),
-							($action === 'list' || $id) ? '' : $class::getUrl($action, $id),
-						];
-					}
-				}
-			}
-		}
+        foreach (static::$subcontrollers as $class) {
+            if ($class::isAllowed($user, $admin_node)) {
+                $menu[$class::getId()] = $class::getLabel();
+                if ($option === $class::getId()) {
+                    // add option
+                    $breadcrumb[] = [$class::getLabel(), $class::getUrl()];
+                    // add action
+                    if ($action) {
+                        $breadcrumb[] = [
+                            $class::getLabel($action) . ($id ? " [$id]" : ''),
+                            ($action === 'list' || $id) ? '' : $class::getUrl($action, $id),
+                        ];
+                    }
+                }
+            }
+        }
 
-		self::$context_vars = [
-			'option' => $option,
-			'admin_menu' => $menu,
-			'all_roles' => $all_roles,
-			'all_nodes' => $all_nodes,
-			'admin_node' => $admin_node,
-			'admin_nodes' => $admin_nodes,
-			'breadcrumb' => $breadcrumb,
-		];
+        self::$context_vars = [
+            'option' => $option,
+            'admin_menu' => $menu,
+            'all_roles' => $all_roles,
+            'all_nodes' => $all_nodes,
+            'admin_node' => $admin_node,
+            'admin_nodes' => $admin_nodes,
+            'breadcrumb' => $breadcrumb,
+        ];
 
-		// If menu is not allowed, throw exception
-		if (empty($menu) || ($option && !array_key_exists($option, $menu))) {
-			$zone = $menu[$option] ? $menu[$option] : $option;
-			if ($zone) {
-				$msg = 'Access denied to <strong>' . $zone . '</strong>';
-			} else {
-				$msg = 'Access denied!';
-			}
+        // If menu is not allowed, throw exception
+        if (empty($menu) || ($option && !array_key_exists($option, $menu))) {
+            $zone = $menu[$option] ? $menu[$option] : $option;
+            if ($zone) {
+                $msg = 'Access denied to <strong>' . $zone . '</strong>';
+            } else {
+                $msg = 'Access denied!';
+            }
 
-			Message::error($msg);
-			throw new ControllerAccessDeniedException($msg);
-		}
+            Message::error($msg);
+            throw new ControllerAccessDeniedException($msg);
+        }
 
-		return $user;
-	}
+        return $user;
+    }
 
-	// Old dispatcher for submodules
+    // Old dispatcher for submodules
     // preparado para index unificado
     //
-	public function optionAction($option, $action = 'list', $id = null, $subaction = null, Request $request) {
+    public function optionAction($option, $action = 'list', $id = null, $subaction = null, Request $request) {
         View::setTheme('default');
 
-		$ret = array();
-		$SubC = static::$subcontrollers[$option];
+        $ret = array();
+        $SubC = static::$subcontrollers[$option];
 
-		// 'Goteo\Controller\Admin\\' . \strtoCamelCase($option) . 'SubController';
+        // 'Goteo\Controller\Admin\\' . \strtoCamelCase($option) . 'SubController';
 
-		try {
-			$user = self::checkCurrentUser($request, $option, $action, $id);
+        try {
+            $user = self::checkCurrentUser($request, $option, $action, $id);
 
-			if (!class_exists($SubC)) {
-				return $this->viewResponse('admin/denied', ['msg' => "Class [$SubC] not found for path [$option]"], Response::HTTP_BAD_REQUEST);
-			}
-			$node = Session::exists('admin_node') ? Session::get('admin_node') : Config::get('node');
-			$controller = new $SubC($node, $user, $request);
-			$method = $action . 'Action';
-			if (!method_exists($controller, $method)) {
-				return $this->viewResponse('admin/denied', ['msg' => "Method [$method()] not found for class [$SubC]"], Response::HTTP_BAD_REQUEST);
-			}
-			$ret = $controller->$method($id, $subaction);
+            if (!class_exists($SubC)) {
+                return $this->viewResponse('admin/denied', ['msg' => "Class [$SubC] not found for path [$option]"], Response::HTTP_BAD_REQUEST);
+            }
+            $node = Session::exists('admin_node') ? Session::get('admin_node') : Config::get('node');
+            $controller = new $SubC($node, $user, $request);
+            $method = $action . 'Action';
+            if (!method_exists($controller, $method)) {
+                return $this->viewResponse('admin/denied', ['msg' => "Method [$method()] not found for class [$SubC]"], Response::HTTP_BAD_REQUEST);
+            }
+            $ret = $controller->$method($id, $subaction);
 
-		} catch (ControllerAccessDeniedException $e) {
-			// Instead of the default denied page, redirect to login
-			Message::error($e->getMessage());
-			$url = $request->getPathInfo();
-			if (empty($url)) {
-				$url = '/admin';
-			}
-			if (Session::isLogged()) {
-				return $this->redirect('/admin');
-			}
-			return $this->redirect('/login?return=' . urlencode($url));
-		}
+        } catch (ControllerAccessDeniedException $e) {
+            // Instead of the default denied page, redirect to login
+            Message::error($e->getMessage());
+            $url = $request->getPathInfo();
+            if (empty($url)) {
+                $url = '/admin';
+            }
+            if (Session::isLogged()) {
+                return $this->redirect('/admin');
+            }
+            return $this->redirect('/login?return=' . urlencode($url));
+        }
 
-		//Return the response if the subcontroller is a handy guy
+        //Return the response if the subcontroller is a handy guy
         if ($ret instanceOf Response) {
             return $ret;
         }
 
-		// If the subcontroller just specifies a template to render let's do it
-		$this->contextVars(self::$context_vars, 'admin/');
+        // If the subcontroller just specifies a template to render let's do it
+        $this->contextVars(self::$context_vars, 'admin/');
 
         // Legacy view compatibility
         // They return a file to be rendered along with vars
@@ -421,13 +433,13 @@ class AdminController extends \Goteo\Core\Controller {
             ]);
         }
 
-		if ($ret['template']) {
-			return $this->viewResponse($ret['template'], $ret + self::$context_vars);
-		}
+        if ($ret['template']) {
+            return $this->viewResponse($ret['template'], $ret + self::$context_vars);
+        }
 
-		//default admin dashboard (nothing!)
-		return $this->viewResponse('admin/default', $ret);
+        //default admin dashboard (nothing!)
+        return $this->viewResponse('admin/default', $ret);
 
-	}
+    }
 
 }

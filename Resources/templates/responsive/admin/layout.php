@@ -24,7 +24,7 @@ $this->section('content');
 
 <?php $this->section('sidebar-header') ?>
 
-    <?= $this->supply('admin-sidebar-header', $this->insert("dashboard/partials/sidebar_header")) ?>
+    <?= $this->supply('admin-sidebar-header', $this->insert("admin/partials/sidebar_header")) ?>
 
 <?php $this->replace() ?>
 
@@ -36,6 +36,7 @@ $this->section('content');
 
 <?php $this->section('footer') ?>
 
+    <?= $this->insert('admin/partials/javascript_editors') ?>
     <?= $this->insert('admin/partials/javascript') ?>
 
 <?php $this->append() ?>

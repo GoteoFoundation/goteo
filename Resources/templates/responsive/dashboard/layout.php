@@ -36,6 +36,7 @@ $this->section('content');
 
 <?php $this->section('footer') ?>
 
+    <?= $this->insert('admin/partials/javascript_editors') ?>
     <?= $this->insert('dashboard/partials/javascript') ?>
 
 <?php $this->append() ?>
