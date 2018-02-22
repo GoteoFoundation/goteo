@@ -58,6 +58,15 @@ class UserRolesTest extends \PHPUnit_Framework_TestCase {
     /**
      * @depends testAddRoles
      */
+    public function testRoleNames($roles) {
+        $this->assertInternalType('array', $roles->getRoleNames());
+        $this->assertContains('user', $roles->getRoleNames());
+        $this->assertContains('admin', $roles->getRoleNames());
+    }
+
+    /**
+     * @depends testAddRoles
+     */
     public function testRemoveRoles($roles) {
         $this->assertInstanceOf('Goteo\Model\User\UserRoles', $roles->removeRole('admin'));
         $this->assertTrue($roles->hasRole('user'));

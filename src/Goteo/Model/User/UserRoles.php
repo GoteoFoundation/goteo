@@ -80,6 +80,13 @@ class UserRoles extends \ArrayObject
     }
 
     /**
+     * Returns an array of all roles names for the user
+     */
+    public function getRoleNames() {
+        return array_keys((array)$this);
+    }
+
+    /**
      * Persists the current object to the database
      */
     public function save(&$errors = []) {

@@ -97,3 +97,4 @@ admin-project-derivation-discard-sure: 'Se va a enviar un mail automáticamente 
 admin-home-title: Administrar Goteo
 admin-list: Listado
 admin-stats: Estadísticas
+admin-list-total: 'Total: <strong>%s</strong> resultados'
