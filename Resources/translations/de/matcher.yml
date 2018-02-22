@@ -25,7 +25,7 @@ matcher-feed-user-invest: 'Die "Match"-Ausschreibung %MATCHER% hat %AMOUNT% zum 
 matcher-feed-user-invest-error: 'In dem Beitrag zum %PROJECT%-Projekt von %USER% über %AMOUNT% mittels %METHOD% ist ein <span class="red">FEHLER bei der Ausschreibung "match" %MATCHER%[%MESSAGE%]</span> aufgetreten.'
 matcher-feed-invest-standalone: 'Automatischer Matchfunding-Beitrag'
 matcher-feed-standalone-invest: 'Die "Match"-Ausschreibung %MATCHER% hat %AMOUNT% ohne Referenzbeitrag zum Projekt %PROJECT% beigetragen.'
-matcher-feed-standalone-invest-error: 'In dem Beitrag zum %PROJECT%-Projekt über %AMOUNT% ohne Referenzbeitrag ist ein <span class="red">FEHLER bei der Anforderung "match" %MATCHER%[%MESSAGE%]</span> aufgetreten.'''
+matcher-feed-standalone-invest-error: 'In dem Beitrag zum %PROJECT%-Projekt über ohne Referenzbeitrag ist ein <span class="red">FEHLER bei der Anforderung "match" %MATCHER%[%MESSAGE%]</span> aufgetreten.'''
 matcher-project-accept: 'Herzlichen Glückwunsch! Ihr Projekt wurde zur Ausschreibung %s hinzugefügt. Jetzt wartet es auf die Zustimmung der Sponsoren.'
 matcher-project-reject: 'Ihr Projekt wurde aus der Ausschreibung %s entfernt.'
 matcher-project-discard: 'Das Projekt wurde von der Ausschreibung %s ausgeschlossen'
