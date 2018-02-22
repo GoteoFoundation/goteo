@@ -68,7 +68,7 @@ dashboard-rewards-issue: Errore!
 dashboard-rewards-massive_msg: 'Messaggi collettivi '
 dashboard-rewards-massive_msg-all: 'A tutti i co-finanziatori di questo progetto'
 dashboard-rewards-massive_msg-all_alert: 'Per tutti è di tutti, non tiene conto del resto delle selezioni'
-dashboard-rewards-notice: 'QUESTA È UNA VISUALIZZAZIONE DEI TIPI DI BENEFICI CHE I TUOI CO-FINANZIATORI POSSONO SCEGLIERE.<br /> NON DEVI GESTIRE QUESTI BENEFICI PRIMA DI RAGGIUNGERE IL MINIMO IMPORTO DESIDERATO'
+dashboard-rewards-notice: 'QUESTA È UNA VISUALIZZAZIONE DEI TIPI DI BENEFICI CHE I TUOI CO-FINANZIATORI POSSONO SCEGLIERE.<br> NON DEVI GESTIRE QUESTI BENEFICI PRIMA DI RAGGIUNGERE IL MINIMO IMPORTO DESIDERATO'
 dashboard-rewards-num_taken: 'Impegnate'
 dashboard-rewards-pending_filter: In attesa
 dashboard-rewards-pending_status: In attesa

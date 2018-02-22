@@ -4,6 +4,7 @@ admin-NO: 'NO'
 admin-YES: SI
 admin-account-amount: 'Quantitat aportada'
 admin-account-change-user: 'Canvia d''usuari'
+admin-account-convert-to-pool: 'Converteix a moneder virtual'
 admin-account-detail: 'Detalls de la transacció'
 admin-account-donation: Donatiu
 admin-account-edit-reward: 'Gestionar recompensa/direcció'

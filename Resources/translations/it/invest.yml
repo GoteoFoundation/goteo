@@ -4,8 +4,11 @@ bazar-thanks: 'Grazie della visita nel nostro bazar, ci puoi aiutare a diffonder
 faq-payment-method: '<a href="/faq/investors#q2" target="_blank">Che sistemi di pagamento offre Goteo?Sono sicuri?</a>'
 imperative-register: Registrati 
 invest-address-address-field: 'Indirizzo:'
+invest-address-birthyear-field: 'Anno di nascita'
 invest-address-country-field: Paese
+invest-address-fail: 'Ci sono vuoti o con errori, controlla il modulo così da poter ricevere la tua ricompensa!'
 invest-address-friend-field: 'Seleziona questa casella se è un regalo per un''altra persona'
+invest-address-gender-field: Sesso
 invest-address-header: 'Dove vuoi ricevere la ricompensa (solo in caso di spedizioni postali)'
 invest-address-location-field: 'Città:'
 invest-address-maildest-field: 'Mail del destinatario '
@@ -15,6 +18,7 @@ invest-address-myname-field: 'Nome'
 invest-address-name-field: 'Nome e cognome'
 invest-address-namedest-field: 'Nome del destinatario '
 invest-address-nif-field: 'Numero di identità/ partita IVA'
+invest-address-title: 'Assicurarti di ricevere la tua ricompensa'
 invest-address-zipcode-field: 'Codice postale:'
 invest-alert-investing: 'Procedi con la tua donazione'
 invest-alert-lackamount: 'L''importo deve essere maggiore alla ricompensa selezionata'
@@ -24,25 +28,64 @@ invest-alert-noreward_renounce: 'Vuoi rinunciare alla ricompensa e sgravare la t
 invest-alert-renounce: 'Rinunci però non hai indicato il tuo numero di identità per sgravare la donazione. È corretto?'
 invest-alert-rewards: 'Hai scelto le seguenti ricompense:'
 invest-amount: Quantità
+invest-amount-in-pool: 'Hai %s nel tuo portafoglio virtuale'
 invest-amount-tooltip: 'Indica l''importo con cui sosterrai il progetto'
 invest-anonymous: 'Voglio che il mio donativo sia anonimo '
 invest-button: Contribuire
-invest-called-allready: 'Hai dato a questo progetto <strong>Matchfunding</strong> della campagna <span class="call">%s</span>., non riceverai più <strong>Matchfunding</strong> per le tue donazioni'
+invest-called-allready: 'Hai dato a questo progetto <strong>Matchfunding</strong> della campagna <span class="call">%s</span>., non riceverai più Matchfunding per le tue donazioni'
 invest-called-maxdrop: 'Fino a un massimo di <strong>%s &euro;</strong>'
 invest-called-maxproj: 'È stato già raggiunto il massimo di <strong>Matchfunding</strong> possibile con la campagna <span class="call">%s</span>.'
 invest-called-nodrop: 'Non è attualmente disponibile <strong>Matchfunding</strong> nella campagna %s'
 invest-called-rest: 'Restano solo <strong>%s €</strong> del <strong>Matchfunding</strong> nella campagna <span class="call">%s</span>'
+invest-card-method: Carta
+invest-cash-method: 'Manuale (in contanti)'
 invest-donation-header: 'Indica i dati fiscali per la donazione'
+invest-fiscal-fail: 'Ci sono campi vuoti o con errori, controlla il modulo fiscale così da poter detrarre il tuo contributo!'
+invest-fiscal-skip: 'Ora non voglio compilare questi dati.'
+invest-fiscal-title: 'Assicurati di poter detrarre il tuo contributo (per i/le contribuenti in Spagna)'
+invest-login-alert: 'Devi registrarti o <a href="%s">iniciar sesión</a> per poter realizzare la donazione'
 invest-mail_info-address: 'Hai indicato il seguente indirizzo '
 invest-mail_info-drop: 'In più, %s ha donato %s di Matchfunding con la campagna%s'
 invest-make-sure-save: Salvare
+invest-make-sure-title: Conferma
+invest-method: 'Metodo di pagamento'
+invest-method-title: 'Realizza la tua donazione'
+invest-modal-fiscal-title: 'Informazioni fiscali'
+invest-modal-pool-description: 'Il portafoglio virtuale è un sistema di crediti della piattaforma Goteo che puoi riempire con i tuoi soldi e usarlo come metodo di pagamento ogni volta che vorrai contribuire ai progetti sulla nostra piattaforma, senza dover dare i dati della tua carta o di PayPal ogni volta.'
+invest-modal-pool-title: 'A riguardo del portafoglio virtuale di Goteo'
+invest-more-info: 'Ulteriori Info'
 invest-next_step: 'Passo sucessivo '
 invest-payment-email: 'Indica il tuo account di PayPal'
+invest-payment-fail: 'Qualcosa non ha funzionato nel pagamento'
+invest-payment-success: 'Pagamento effettuato con successo'
 invest-payment_method-header: 'Scegli il metodo di pagamento'
+invest-paypal-method: PayPal
+invest-pool: 'Voglio la mia donazione, nel caso in cui il progetto non raggiunga il suo obiettivo, rimanga nel mio portafoglio virtuale Goteo.'
+invest-pool-available: disponibili
+invest-pool-error: 'Non hai abbastanza soldi nel tuo portafoglio virtuale'
+invest-pool-method: 'Portafoglio virtuale'
 invest-process-completed: 'Questa donazione è stata già completata precedentemente. '
+invest-project: 'vedere progetto'
 invest-resign: 'Rinuncio a questa ricompensa individuale, voglio solo sostenere il progetto'
 invest-reward-none: 'Non è più possibile scegliere '
+invest-reward-not-found: 'Questa ricompensa non è stata trovata!'
+invest-reward-used-up: 'Non ci sono più unità di questa ricompensa!'
+invest-select-reward: 'Seleziona la tua ricompensa'
+invest-share-title: Condividi
 invest-social-header: 'Con i benefici collettivi ci guadagniamo tutt@'
+invest-status-cancelled: Annullato
+invest-status-charged: Incassato
+invest-status-paid: 'Pagato al progetto'
+invest-status-pending: Preapprovato
+invest-status-processing: Incompleto
+invest-status-relocated: Ricollocato
+invest-status-returned: 'Restituito (archived)'
+invest-status-to-pool: 'Al portafoglio'
+invest-step-1: Ricompensa
+invest-step-2: Pagamento
+invest-step-3: Conferma
+invest-step-4: Condividi
+invest-success-make-sure: 'Ben fatto! La tua donazione al progetto <strong>%s</strong> è stata completata.'
 investing_closed: 'Non è permessa un''altra donazione per questa campagna. '
 proj-widget-my_invest: 'La mia donazione'
 project-invest-confirm: 'Stai per co-finanziare questo progetto...'
@@ -50,8 +93,10 @@ project-invest-continue: 'Clicca sul logo del sistema di pagamento che utilizzer
 project-invest-fail: 'C''è stato un errore, per favore riprova'
 project-invest-guest: 'Ottimo!'
 project-invest-ok: 'Il tuo contributo per finanziare questo progetto è stato inviato :)'
+project-invest-pool-button: 'Utilizzare il mio portafoglio virtuale'
 project-invest-start: 'Stai per co-finanziare questo progetto...'
+project-return-button: 'Tornare al progetto'
 spread-facebook: 'Diffondi su Facebook'
 spread-twitter: 'Diffondi su Twitter '
-user-login-required-login: 'Se sei già registrato inizia la tua sessione, sennò crea un nuovo account '
+user-login-required-login: 'Se sei già registrato <a href="%s">inizia la tua sessione</a>, sennò crea un nuovo account '
 warning_nojavascript: 'Attiva javascrip dalla configurazione di privacy del tuo navigatore per poter seguire i passaggi del processo di pagamento. '

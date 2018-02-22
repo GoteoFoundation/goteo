@@ -1,203 +1,183 @@
 <?php
 
-namespace Goteo\Model {
+namespace Goteo\Model;
 
-    use Goteo\Library\Check;
-    use Goteo\Application\Lang;
-    use Goteo\Application\Config;
+use Goteo\Library\Check;
+use Goteo\Application\Lang;
+use Goteo\Application\Config;
 
-    class OpenTag extends \Goteo\Core\Model {
-        //table for this model is not opentag but open_tag
-        protected $Table = 'open_tag';
+class OpenTag extends \Goteo\Core\Model {
+    //table for this model is not opentag but open_tag
+    protected $Table = 'open_tag';
+    protected static $Table_static = 'open_tag';
 
-        public
-            $id,
-            $name,
-            $description,
-            $post,
-            $used; // numero de proyectos que usan la agrupacion
+    public
+        $id,
+        $name,
+        $description,
+        $post,
+        $used; // numero de proyectos que usan la agrupacion
 
-        /*
-         *  Devuelve datos de una agrupacion
-         */
-        public static function get ($id, $lang = null) {
-                //Obtenemos el idioma de soporte
-                $lang=self::default_lang_by_id($id, 'open_tag_lang', $lang);
+    static public function getLangFields() {
+        return ['name', 'description'];
+    }
 
-                $query = static::query("
-                    SELECT
+    /*
+     *  Devuelve datos de una agrupacion
+     */
+    public static function get ($id, $lang = null) {
+        //Obtenemos el idioma de soporte
+        if(!$lang) $lang = Lang::current();
+        list($fields, $joins) = self::getLangsSQLJoins($lang, Config::get('sql_lang'));
+
+        $query = static::query("
+            SELECT
+                open_tag.id,
+                $fields,
+                open_tag.post as post
+            FROM    open_tag
+            $joins
+            WHERE open_tag.id = :id
+            ", array(':id' => $id));
+
+        return $query->fetchObject(__CLASS__);
+    }
+
+    /*
+     * Lista de agrupaciones para proyectos
+     * @TODO añadir el numero de usos
+     */
+    public static function getAll ($lang = null) {
+        $list = array();
+
+        if(!$lang) $lang = Lang::current();
+        list($fields, $joins) = self::getLangsSQLJoins($lang, Config::get('sql_lang'));
+
+        $sql="SELECT
+                open_tag.id as id,
+                $fields,
+                open_tag.post as post,
+                (   SELECT
+                        COUNT(project_open_tag.project)
+                    FROM project_open_tag
+                    WHERE project_open_tag.open_tag = open_tag.id
+                ) as numProj,
+                open_tag.order as `order`
+            FROM    open_tag
+            $joins
+            ORDER BY `order` ASC";
+
+        $query = static::query($sql);
+
+        foreach ($query->fetchAll(\PDO::FETCH_CLASS, __CLASS__) as $open_tag) {
+            $list[$open_tag->id] = $open_tag;
+        }
+
+        return $list;
+    }
+
+    /**
+     * Get all open_tags used in published projects
+     *
+     * @param void
+     * @return array
+     */
+	public static function getList () {
+        if(!$lang) $lang = Lang::current();
+        list($fields, $joins) = self::getLangsSQLJoins($lang, Config::get('sql_lang'));
+
+        $array = array ();
+
+        try {
+
+            $sql="SELECT
                         open_tag.id,
-                        IFNULL(open_tag_lang.name, open_tag.name) as name,
-                        IFNULL(open_tag_lang.description, open_tag.description) as description,
-                        open_tag.post as post
-                    FROM    open_tag
+                        $fields
+                    FROM open_tag
                     LEFT JOIN open_tag_lang
                         ON  open_tag_lang.id = open_tag.id
                         AND open_tag_lang.lang = :lang
-                    WHERE open_tag.id = :id
-                    ", array(':id' => $id, ':lang'=>$lang));
-                $open_tag = $query->fetchObject(__CLASS__);
+                    $joins
+                    GROUP BY open_tag.id
+                    ORDER BY open_tag.order ASC
+                    ";
 
-                return $open_tag;
-        }
-
-        /*
-         * Lista de agrupaciones para proyectos
-         * @TODO añadir el numero de usos
-         */
-        public static function getAll () {
-            $lang = Lang::current();
-            $list = array();
-
-            if(self::default_lang($lang) === Config::get('lang')) {
-                $different_select=" IFNULL(open_tag_lang.name, open_tag.name) as name,
-                                    IFNULL(open_tag_lang.description, open_tag.description) as description";
-                }
-                else {
-                    $different_select=" IFNULL(open_tag_lang.name, IFNULL(eng.name, open_tag.name)) as name,
-                                        IFNULL(open_tag_lang.description, IFNULL(eng.description, open_tag.description)) as description";
-                    $eng_join=" LEFT JOIN open_tag_lang as eng
-                                    ON  eng.id = open_tag.id
-                                    AND eng.lang = 'en'";
-                }
-
-                $sql="SELECT
-                         open_tag.id as id,
-                                $different_select,
-                                open_tag.post as post,
-                                (   SELECT
-                                        COUNT(project_open_tag.project)
-                                    FROM project_open_tag
-                                    WHERE project_open_tag.open_tag = open_tag.id
-                                ) as numProj,
-                                open_tag.order as `order`
-                            FROM    open_tag
-                            LEFT JOIN open_tag_lang
-                                ON  open_tag_lang.id = open_tag.id
-                                AND open_tag_lang.lang = :lang
-                            ORDER BY `order` ASC";
-
-            $query = static::query($sql, array(':lang'=>$lang));
-
-            foreach ($query->fetchAll(\PDO::FETCH_CLASS, __CLASS__) as $open_tag) {
-                $list[$open_tag->id] = $open_tag;
+            $query = static::query($sql);
+            $open_tags = $query->fetchAll();
+            foreach ($open_tags as $cat) {
+                $array[$cat[0]] = $cat[1];
             }
 
-            return $list;
+            return $array;
+        } catch(\PDOException $e) {
+			throw new \Goteo\Core\Exception($e->getMessage());
+        }
+	}
+
+
+    public function validate (&$errors = array()) {
+        if (empty($this->name))
+            $errors[] = 'Falta nombre';
+            //Text::get('mandatory-open_tag-name');
+
+        if (empty($errors))
+            return true;
+        else
+            return false;
+    }
+
+    public function save (&$errors = array()) {
+        if (!$this->validate($errors)) return false;
+
+        $fields = array(
+            'id',
+            'name',
+            'description',
+            'post'
+            );
+
+        $set = '';
+        $values = array();
+
+        foreach ($fields as $field) {
+            if ($set != '') $set .= ", ";
+            $set .= "`$field` = :$field ";
+            $values[":$field"] = $this->$field;
         }
 
-        /**
-         * Get all open_tags used in published projects
-         *
-         * @param void
-         * @return array
-         */
-		public static function getList () {
-            $lang = Lang::current();
-            $array = array ();
+        try {
+            $sql = "REPLACE INTO open_tag SET " . $set;
+            self::query($sql, $values);
+            if (empty($this->id)) $this->id = self::insertId();
 
-            try {
-
-                if(self::default_lang($lang) === Config::get('lang')) {
-                $different_select=" IFNULL(open_tag_lang.name, open_tag.name) as name";
-                }
-                else {
-                    $different_select=" IFNULL(open_tag_lang.name, IFNULL(eng.name,open_tag.name)) as name";
-                    $eng_join=" LEFT JOIN open_tag_lang as eng
-                                    ON  eng.id = open_tag.id
-                                    AND eng.lang = 'en'";
-                }
-
-                $sql="SELECT
-                            open_tag.id,
-                            $different_select
-                        FROM open_tag
-                        LEFT JOIN open_tag_lang
-                            ON  open_tag_lang.id = open_tag.id
-                            AND open_tag_lang.lang = :lang
-                        $eng_join
-                        GROUP BY open_tag.id
-                        ORDER BY open_tag.order ASC
-                        ";
-
-                $query = static::query($sql, array(':lang'=>$lang));
-                $open_tags = $query->fetchAll();
-                foreach ($open_tags as $cat) {
-                    $array[$cat[0]] = $cat[1];
-                }
-
-                return $array;
-            } catch(\PDOException $e) {
-				throw new \Goteo\Core\Exception($e->getMessage());
-            }
-		}
-
-
-        public function validate (&$errors = array()) {
-            if (empty($this->name))
-                $errors[] = 'Falta nombre';
-                //Text::get('mandatory-open_tag-name');
-
-            if (empty($errors))
-                return true;
-            else
-                return false;
+            return true;
+        } catch(\PDOException $e) {
+            $errors[] = "HA FALLADO!!! " . $e->getMessage();
+            return false;
         }
+    }
 
-        public function save (&$errors = array()) {
-            if (!$this->validate($errors)) return false;
+    /*
+     * Para que salga antes  (disminuir el order)
+     */
+    public static function up ($id) {
+        return Check::reorder($id, 'up', 'open_tag', 'id', 'order');
+    }
 
-            $fields = array(
-                'id',
-                'name',
-                'description',
-                'post'
-                );
+    /*
+     * Para que salga despues  (aumentar el order)
+     */
+    public static function down ($id) {
+        return Check::reorder($id, 'down', 'open_tag', 'id', 'order');
+    }
 
-            $set = '';
-            $values = array();
-
-            foreach ($fields as $field) {
-                if ($set != '') $set .= ", ";
-                $set .= "`$field` = :$field ";
-                $values[":$field"] = $this->$field;
-            }
-
-            try {
-                $sql = "REPLACE INTO open_tag SET " . $set;
-                self::query($sql, $values);
-                if (empty($this->id)) $this->id = self::insertId();
-
-                return true;
-            } catch(\PDOException $e) {
-                $errors[] = "HA FALLADO!!! " . $e->getMessage();
-                return false;
-            }
-        }
-
-        /*
-         * Para que salga antes  (disminuir el order)
-         */
-        public static function up ($id) {
-            return Check::reorder($id, 'up', 'open_tag', 'id', 'order');
-        }
-
-        /*
-         * Para que salga despues  (aumentar el order)
-         */
-        public static function down ($id) {
-            return Check::reorder($id, 'down', 'open_tag', 'id', 'order');
-        }
-
-        /*
-         * Orden para añadirlo al final
-         */
-        public static function next () {
-            $query = self::query('SELECT MAX(`order`) FROM open_tag');
-            $order = $query->fetchColumn(0);
-            return ++$order;
-
-        }
+    /*
+     * Orden para añadirlo al final
+     */
+    public static function next () {
+        $query = self::query('SELECT MAX(`order`) FROM open_tag');
+        $order = $query->fetchColumn(0);
+        return ++$order;
 
     }
 

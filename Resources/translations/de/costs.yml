@@ -1,5 +1,6 @@
 ---
 cost-type-lend: Darlehen
+cost-type-material: Material
 cost-type-structure: Infrastruktur
 cost-type-task: Aufgabe
 costs-field-amount: Value
@@ -13,7 +14,7 @@ costs-field-required_cost-no: zusätzlich
 costs-field-required_cost-yes: Erforderlich
 costs-field-resoure: 'Andere Ressourcen'
 costs-field-schedule: 'Aufgaben-Zeitplan'
-costs-field-type: Type
+costs-field-type: Art
 costs-fields-main-title: 'Kostenaufstellung der Aufwendungen'
 costs-fields-metter-title: 'Ansicht der Aufwendungen'
 costs-fields-resources-title: Ressource

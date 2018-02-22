@@ -4,10 +4,13 @@ namespace Goteo\Model\Tests;
 
 use Goteo\Model\Glossary;
 use Goteo\Model\Image;
+use Goteo\Application\Config;
+use Goteo\Application\Lang;
 
 class GlossaryTest extends \PHPUnit_Framework_TestCase {
 
     private static $data = array('title' => 'Test title', 'text' => 'Test text');
+    private static $trans_data = array('title' => 'Test títle', 'text' => 'Test text traduït');
 
     private static $related_tables = array(
                     'glossary_image' => 'glossary',
@@ -22,6 +25,10 @@ class GlossaryTest extends \PHPUnit_Framework_TestCase {
     private static $image2;
 
     public static function setUpBeforeClass() {
+
+        Config::set('lang', 'es');
+        Lang::setDefault('es');
+        Lang::set('es');
 
        //temp file
         $i = base64_decode('iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAABkElEQVRYhe3Wv2qDQBgA8LxJH8BXcHLN4pCgBxIOddAlSILorFDaQRzFEHEXUWyXlo6BrkmeI32Hr1PTMyb1rtpIIQff6vdTvz83unt+giFjdAP8awCXZ8Dl2XCAcRjAOAyGA8iaDrKmDwMQ4ggQUgAhBYQ4uj5AMswjQDLM6wJE3zsm/wrR964D4NOkkbzLr2AC8GkC8gxfBMgzDHya/A2AyzOQNf1i8iNC05lmAxWAy7Na0bWFZJjUCCrAdLmoJbDmFlRFCe+bDVhz6yxiulz0AyD7HSEFHu8fgDyu7XQqylbAxP1O4NoOnB6M1YuAiet0B5CF9/by2gC0FWRnAPnAj8OBCYCQ0i+A9vQKIAfPfrtrTb7f7mqDqTOAbMF1vGoFrOMVUyu2AsZhUPukP30F8u0RUqguK1SDiJyCGKtQFWUjeVWUtZakXdFUgHNLCGMVXNsB13Yas4BlKVEvIz5NqJcRy0ZkWsdcnoHoe2dXsjzDIPoe8y3511cyPk1AiCMQ4oj5DtALoK+4AQYHfALaYBdH6m2UnQAAAABJRU5ErkJggg==');
@@ -135,6 +142,51 @@ class GlossaryTest extends \PHPUnit_Framework_TestCase {
         $this->assertEquals($ob->image, $ob->gallery[0]);
 
     }
+
+    /**
+     * @depends testGetGlossary
+     */
+    public function testSaveLanguages($ob) {
+        $errors = [];
+        $this->assertTrue($ob->setLang('ca', self::$trans_data, $errors), print_r($errors, 1));
+        return $ob;
+    }
+
+    /**
+     * @depends testSaveLanguages
+     */
+    public function testCheckLanguages($ob) {
+        $glo = Glossary::get($ob->id);
+        $this->assertInstanceOf('Goteo\Model\Glossary', $glo);
+        // $this->assertEquals(self::$data['title'], $glo->title);
+        $this->assertEquals(self::$data['description'], $glo->description);
+        Lang::set('ca');
+        $glo2 = Glossary::get($ob->id);
+        $this->assertEquals(self::$trans_data['title'], $glo2->title);
+        $this->assertEquals(self::$trans_data['description'], $glo2->description);
+        Lang::set('es');
+    }
+
+    /**
+     * @depends testGetGlossary
+     */
+    public function testListing($ob) {
+        $list = Glossary::getAll();
+        $this->assertInternalType('array', $list);
+        $glo = $list[$ob->id];
+        $this->assertInstanceOf('Goteo\Model\Glossary', $glo);
+        $this->assertEquals(self::$data['description'], $glo->description);
+
+        Lang::set('ca');
+        $list = Glossary::getAll();
+        $this->assertInternalType('array', $list);
+        $glo2 = $list[$ob->id];
+        $this->assertEquals(self::$trans_data['title'], $glo2->title);
+        $this->assertEquals(self::$trans_data['description'], $glo2->description);
+
+        Lang::set('es');
+    }
+
     /**
      * @depends testGetGlossary
      */

@@ -37,7 +37,7 @@ goteo-return-button: 'Zurück zu Goteo'
 guide-dashboard-user-access: 'Sie können die Informationen ändern, mit denen Sie sich in Ihren Goteo-Account einloggen.'
 guide-project-contract-information: 'Ihre Informationen in diesem Bereich sind erforderlich, um Sie zu kontaktieren, wenn wir Ihnen die gewünschte Unterstützung gewähren können. Im Falle von Organisationen empfehlen wir, dass der Repräsentant von seiner Organisation offiziell akkreditiert wird. (Bspw. Im Rahmen der Vereinssatzung oder durch ein entsprechendes Schreiben der Geschäftsführung bzw. des Vereinsvorstands)'
 guide-project-images: 'Bilder können Fotos, Screenshots, Skizzen, Illustrationen, Storyboards, etc. sein. (ihre Lizenzierung sollte kompatibel mit Ihrer gewählten Projektlizensierung sein. Sie können so viele Motive hochladen, wie Sie möchten.'
-guide-project-rewards: "<strong>In diesem Bereich sollen Sie beschreiben, was das Projekt seinen Unterstützern als Dankeschön oder Belohnung anbietet und welchen allgemeinen Nutzen es für die Gesellschaft hat.</strong><br><br>Zusätzlich zu den individuellen Belohnungen für verschiedene Zuwendungsbeträge sollten Sie den Lizenztyp Ihres Projektes definieren, je nach seinem Format und/oder dem Grad der Offenheit (open-source) des Projektes o(der seiner Teile). Dies ist daher wichtig, weil Goteo diese Crowdfunding-Plattform für Projekte entwickelt hat, die auf der Open-Source Philosophie beruhen und das Gemein-Gut fördern.<br><br>Im Falle, dass Sie zusätzlich zu einer der hier spezifizierten Lizenzarten auch ein Urheberrecht Ihrer Arbeit oder Idee geltend machen möchten, welches dennoch kompatibel mit kollektivem Nutzen ist, können Sie auf der folgenden Seite spezifischen rechtlichen Schutz erhalten:<a href=\"http://www.safecreative.org/\" target=\"new\">Safe Creative</a>."
+guide-project-rewards: "<strong>In diesem Bereich sollen Sie beschreiben, was das Projekt seinen Unterstützern als Dankeschön oder Belohnung anbietet und welchen allgemeinen Nutzen es für die Gesellschaft hat.</strong>"
 guide-project-supports: '<strong>In diesem Bereich können Sie angeben, welche nichtmonetäre Unterstützung Sie zur Realisierung Ihres Projektes benötigen.</strong><br><br>Das kann eine Projektunterstützung durch andere sein (bspw. Übersetzungen, Organisation, Werbung, etc.) oder vielleicht spezifische Leihgaben (Material, Technik, Transport, Werkzeug, etc.)'
 header-about-side: 'Was uns inspiriert'
 home-posts-header: Neuigkeiten
@@ -45,7 +45,6 @@ horizontal-project-investors: 'Ko-Finanzierer'
 horizontal-project-percent: 'finanziert'
 horizontal-project-reached: 'erreicht'
 invest-individual-header: 'Sie können auf die Projektbelohnung für Ihre Zuwendung verzichten oder diejenige wählen, die dem Betrag Ihrer Zuwendung oder einem kleineren als dem von Ihnen eingetragenen Betrag entspricht.'
-login-register-conditions: 'Ich akzeptiere die <a href="/legal/privacy/terms" target="_blank">Nutzungsbedingungen</a> der Plattform und gebe meine Zustimmung zur Behandlung meiner persönlichen Daten. Zu diesem Zweck haben die Betreiber der Website <a href="/legal/privacy" target="_blank"> Datenschutzbestimmungen </a>, die festlegen, wie mit den Daten umgegangen wird.'
 mandatory-cost-field-type: 'Sie müssen eine Kostenart auswählen'
 mandatory-individual_reward-field-amount: 'Sie müssen den Betrag angeben, ab dem die Belohnung verfügbar ist.'
 mandatory-project-costs: 'Dies sollte untergliedert sein in mindestens zwei Gruppen.'
@@ -59,6 +58,7 @@ profile-about-header: 'über mich'
 project-invest-total: 'Gesamte Zusendungen'
 project-messages-send_message-your_answer: 'Schreiben Sie hier Ihre Antwort'
 project-messages-send_message_support-your_answer: 'Schreiben Sie hier Ihre Kooperationsnachricht an %s'
+regular-add: Neue Registrierung
 regular-admin_board: 'Admin Panel'
 regular-allsome: 'alle/einige'
 regular-anonymous: Anonym
@@ -68,43 +68,66 @@ regular-by: 'Von:'
 regular-calendar: Kalender
 regular-cancel: Abbrechen
 regular-cancel-back: 'Abbrechen und zurück'
+regular-back: 'Zurück'
+regular-channel: Kanal
 regular-collaborate: Kooperieren Sie
+regular-content: Inhalt
 regular-continue-question: 'Weiter?'
 regular-create: 'Erstellen Sie ein Projekt'
 regular-date: Datum
+regular-date_in: Datum der Eintragung
+regular-date_out: Herausgabedatum
 regular-days: Tage
 regular-delete: Löschen
 regular-description: Beschreibung
 regular-discover: 'Entdecken Sie Projekte'
+regular-discard: 'Verwerfen'
+regular-download-pdf: 'PDF herunterladen'
 regular-download: Download
+regular-actions: Aktionen
 regular-edit: Bearbeiten
 regular-email: Email-Adresse
+regular-join: 'Nehmen Sie teil'
+regular-facebook: Facebook
 regular-faq: 'Häufigste Fragen'
 regular-female: weiblich
 regular-first: First
 regular-from: von
 regular-getit: Get it
 regular-go_up: Upload
+regular-google: Google+
+regular-header: Kopfdaten
 regular-header-about: 'über Goteo'
+regular-header-blog: Blog
+regular-header-faq: FAQ
 regular-header-glossary: 'Glossar der Goteo-Begriffe'
 regular-hello: Hallo
 regular-here: hier
+regular-help: Hilfe
 regular-home: Start
+regular-identica: Identi.ca
 regular-im: Ich bin
+regular-instagram: Instagram
 regular-invest: Unterstützen Sie
 regular-invest_it: 'Projekt unterstützen'
 regular-investing: Unterstützend
 regular-lang: Sprache
 regular-last: Last
 regular-license: Lizenz
+regular-linkedin: LinkedIn
 regular-login: Einloggen
 regular-logout: 'Ausloggen'
 regular-looks_for: 'suchen nach:'
+regular-main-header: Goteo.org
 regular-male: männlich
+regular-others: Sonstige
 regular-manage_board: 'Processing Agency Panel'
 regular-mandatory: 'Erforderliches Feld!'
+regular-matchfunding: 'Match Funding'
 regular-media_legend: Legende
 regular-menu: Menü
+regular-menu-personal: Persönliches Menü
+regular-message-clipboard-fail: 'Wählen Sie aus und kopieren Sie diesen link'
 regular-message_fail: 'Fehler beim Senden der Nachricht'
 regular-message_success: 'Nachricht erfolgreich gesendet'
 regular-months: Monate
@@ -122,8 +145,12 @@ regular-recomended_by: 'Projekt empfohlen von:'
 regular-review_board: 'Bewertungsgremium'
 regular-round: 'Runde'
 regular-save: Sichern
+regular-schedule: Zeitplan
 regular-search: Suchen
+regular-search-desc: 'Geben Sie Ihren Suchbegriff hier ein'
+regular-search-tooltip: 'Geben Sie Ihren Suchbegriff ein und drücken Sie die Eingabetaste'
 regular-see_all: 'Alle anzeigen'
+regular-see_blog: Blog
 regular-see_details: 'Details anzeigen'
 regular-see_more: 'Mehr anzeigen'
 regular-send_message: 'Nachricht senden'
@@ -134,15 +161,28 @@ regular-share_this: 'Teilen auf:'
 regular-sorry: 'Es tut uns leid'
 regular-spread: Verbreitung
 regular-status: Status
+regular-template: Vorlage
 regular-thanks: Vielen Dank
+regular-title: Title
+regular-text: Text
+regular-media: Video (Youtube, Vimeo)
 regular-total: Gesamt
+regular-translate: Übersetzen
+regular-translations: 'Übersetzungen'
 regular-translate_board: 'Übersetzungsfeld'
+regular-twitter: Twitter
+regular-url: Link
+regular-view: Ansehen
 regular-view_project: 'Projekt anzeigen'
 regular-web: Seite
 regular-weeks: Wochen
 regular-year: Jahr
 regular-yes: Ja
 regular-name: Name
+regular-image: Bild
+regular-images: Bilder
+regular-load-more: 'Weitere laden'
+regular-analytics: 'Google Analytics'
 session-about-to-expire: 'Ihre Sitzung wird in 10 Minuten ablaufen, wollen Sie erneut laden?'
 session-expired: 'Ihre Sitzung ist abgelaufen'
 spread-about: 'Text spread-about'

@@ -305,7 +305,7 @@ class ModelTranslator implements TranslatorInterface {
         }
         if($lang !== $this->original) {
             $sql = "INSERT INTO `{$this->_table_lang}`
-            (`lang`, `id`, `" . implode('`,`', array_keys($values)) . "`)
+            (`id`, `lang`, `" . implode('`,`', array_keys($values)) . "`)
             VALUES (" . implode(', ', array_keys($bind)) . ")
             ON DUPLICATE KEY UPDATE " . implode(', ', $update);
         } else {

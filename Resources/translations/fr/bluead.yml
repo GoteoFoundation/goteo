@@ -1,5 +1,6 @@
 ---
 assign-call-success: 'Le projet a été relié à\_l''appel du\_ projet %s.'
+dashboard-donor-remember: 'N''oubliez pas de confirmer votres données fiscales pour le certificat de la donation.'
 image-upload-fail: 'Erreur lors du téléchargement de l''image'
 invest-amount-error: 'Vous devez inscrire un montant'
 invest-create-error: 'Il y a eu un problème lors de votre paiement'

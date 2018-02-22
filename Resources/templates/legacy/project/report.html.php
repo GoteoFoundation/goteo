@@ -5,6 +5,12 @@ use Goteo\Model\Invest;
 $project = $vars['project'];
 $account = $vars['account']; // cuentas del proyecto, para tener el porcentaje de comisión
 
+
+if(!$account->vat) 
+{
+    $account->vat=21;
+}
+
 $matchers=$project->getMatchers('active');
 
 
