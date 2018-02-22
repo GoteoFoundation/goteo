@@ -89,7 +89,7 @@ namespace Goteo\Model {
                     license.group as `group`,
                     license.order as `order`,
                     " .
-                     ( $icon ? 'icon_license.icon as `icon`' : "GROUP_CONCAT(DIStINCT icon_license.icon SEPARATOR ' ') as icons")
+                     ( $icon ? 'icon_license.icon as `icon`' : "GROUP_CONCAT(DISTINCT icon_license.icon SEPARATOR ' ') as icons")
                      . "
                 FROM    license
                 LEFT JOIN license_lang
