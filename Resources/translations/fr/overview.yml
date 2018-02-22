@@ -43,7 +43,7 @@ step-3b: Images
 step-images: 'Section: Images du projet'
 step-overview: 'Etape 3: Description du projet'
 tooltip-project-about: 'Décrivez brièvement le projet de façon conceptuelle, technique ou pratique. En détaillant par exemple ses caractéristiques de fonctionnement ou ses différentes étapes. Imaginez comment il sera une fois terminé et tout ce que les gens pourront faire grâçe à lui. '
-tooltip-project-category: 'Sélectionnez toutes les catégories que vous jugez nécessaires pour décrire le projet, en vous basant sur les infos que vous avez introduites Jusqu''à maintenant. Ces mots clés nous permettront de cibler les utilisateurs de Goteo à solliciter.'
+tooltip-project-category: 'Sélectionnez toutes les catégories que vous jugez nécessaires pour décrire le projet, en vous basant sur les infos que vous avez introduites Jusqu''à\_ maintenant. Ces mots clés nous permettront de cibler les utilisateurs de Goteo à solliciter.'
 tooltip-project-currency: 'Indiquez la monnaie dans laquelle vous calculez les coûts de votre projet'
 tooltip-project-currently: 'Indiquez dans quelle phase se trouve le projet actuellement. Par exemple, s''il est en phase de création ou d''éxécution.'
 tooltip-project-description: 'Décrivez le projet en utilisant au moins 80 mots (en-deçà, cela indiquera une erreur). Expliquez-le afin qu''il soit facile à comprendre par n''importe qui. Essayez de le présenter de façon attractive, en résumant ses points forts, ce qui le rend unique, socialement intéressant, innovant ou spécial. '
