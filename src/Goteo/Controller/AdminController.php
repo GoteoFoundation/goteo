@@ -70,7 +70,8 @@ class AdminController extends \Goteo\Core\Controller {
             Log::append(['scope' => 'admin', 'target_type' => 'admin_module', 'target_id' => $id]);
 
             if(in_array('Goteo\Controller\Admin\AdminControllerInterface', class_implements($module))) {
-                static::createAdminSidebar($user, $id, $uri);
+                static::createAdminSidebar($user, $id, $request->getPathInfo());
+
                 // Add the admin routes
                 $module_routes = $routes = $module::getRoutes();
 
@@ -129,10 +130,12 @@ class AdminController extends \Goteo\Core\Controller {
      * @param  User   $user [description]
      * @param  string $zone [description]
      */
-    public static function createAdminSidebar (User $user, $zone = '') {
+    public static function createAdminSidebar (User $user, $module, $uri = '') {
 
         $prefix = '/admin';
         $modules = ['all' => []];
+        $zone = preg_replace('|^/admin|', '', $uri);
+        // die("[$uri]");
 
         foreach (static::$subcontrollers as $id => $class) {
 
@@ -144,16 +147,23 @@ class AdminController extends \Goteo\Core\Controller {
                 $init_route = ['text' => $label, 'link' => "$prefix/$id", 'id' => "admin-$id", 'class' => $c];
                 $group = $class::getGroup();
                 // Include suboptions as a main links in sidebar
-                if($zone === $id) {
+                if($module === $id) {
                     $sidebar = $class::getSidebar();
                     $i = 0;
                     if(!$sidebar) {
+                        $zone = $module;
                         // Create an automatic link if no sidebar defined
                         Session::addToSidebarMenu($init_route['text'], $init_route['link'], $id, $i++, $init_route['class']);
                     } else {
-                        foreach($sidebar as  $route) {
+                        foreach($sidebar as $link => $route) {
                             // TODO: Apply isAllowed($user, uri)
+                            if(!is_array($route)) {
+                                $route = ['text' => $route, 'link' => $link];
+                            }
                             $c = $route['class'] ? $route['class'] : (strpos($route['text'], '<i') === false ? 'nopadding' : '');
+
+                            if(!$route['id']) $route['id'] = $route['link'];
+
                             Session::addToSidebarMenu($route['text'], $prefix . $route['link'], $route['id'], $i++, $c);
                         }
                     }

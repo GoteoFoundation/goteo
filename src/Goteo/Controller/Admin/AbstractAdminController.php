@@ -74,7 +74,7 @@ abstract class AbstractAdminController extends \Goteo\Core\Controller implements
 
     public static function getSidebar() {
         return [
-            // ['text' => 'List', 'link' => '/list', 'id' => 'users-list']
+            // '/module/list' => 'Link'
         ];
     }
 
