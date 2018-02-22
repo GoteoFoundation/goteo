@@ -21,6 +21,7 @@ use Goteo\Library\Feed;
 use Goteo\Library\Text;
 use Goteo\Model\Node;
 use Goteo\Model\User;
+use Goteo\Model\Log;
 use Goteo\Controller\Admin\AdminControllerInterface;
 
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
@@ -64,6 +65,10 @@ class AdminController extends \Goteo\Core\Controller {
         $uri = "/$uri";
 
         if($module = self::getSubController($id)) {
+
+            // Log this entry
+            Log::append(['scope' => 'admin', 'target_type' => 'admin_module', 'target_id' => $id]);
+
             if(in_array('Goteo\Controller\Admin\AdminControllerInterface', class_implements($module))) {
                 static::createAdminSidebar($user, $id, $uri);
                 // Add the admin routes
