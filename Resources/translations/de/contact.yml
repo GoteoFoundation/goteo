@@ -14,6 +14,7 @@ contact-form-relief-tag-description: 'Ich möchte eine Quittung für meine Spend
 contact-form-relief-tag-name: 'Spendenquittung'
 contact-form-service-tag-description: 'Ich möchte einen Service abonnieren'
 contact-form-service-tag-name: Service
+contact-form-tags: "[usuario] Ich habe Probleme mit meinem Konto;[nuevo impulsor] Ich habe ein mögliches Projekt;[nuevo impulsor 2] Ich habe Fragen zum Projektformular;[desarrollo] Ich habe Fragen zu technischen Fragen;[justificante] Ich möchte einen Nachweis meiner Spende;[servicio] Ich möchte einen Service buchen;[otros] Es ist eine andere Art der Anfrage;"
 contact-form-user-tag-description: 'Ich habe Probleme mit meinem Konto'
 contact-form-user-tag-name: 'Probleme Konto'
 contact-message-field: Nachricht
