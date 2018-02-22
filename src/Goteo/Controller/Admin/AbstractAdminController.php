@@ -93,7 +93,7 @@ abstract class AbstractAdminController extends \Goteo\Core\Controller implements
      */
     public function indexAction(Request $request) {
         $id = static::getId();
-        Message::error("Submodule [$id] not defined yet");
+        Message::error("Submodule [$id] has no routes/controllers defined yet");
         return $this->viewResponse('admin/index', []);
     }
 
