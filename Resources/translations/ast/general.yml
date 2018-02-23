@@ -136,3 +136,5 @@ regular-amount: Importe
 regular-copied: '¡Copióse al cartafueyu!'
 regular-remember-me: 'Recordar los mios datos'
 regular-next: Siguiente
+regular-previous: Anterior
+session-about-to-expire: 'La sesión va caducar en 10 minutos. ¿Quies recargar la páxina p''anovala?'
