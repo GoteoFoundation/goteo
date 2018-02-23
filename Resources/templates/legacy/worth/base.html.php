@@ -1,7 +1,7 @@
 <?php
 
 use Goteo\Library\Worth;
-use Goteo\Library\Currency;
+use Goteo\Application\Currency;
 
 $worthcracy = isset($vars['worthcracy']) ? $vars['worthcracy'] : Worth::getAll();
 

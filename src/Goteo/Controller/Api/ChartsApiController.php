@@ -13,7 +13,7 @@ namespace Goteo\Controller\Api;
 use Symfony\Component\HttpFoundation\Request;
 use Goteo\Application\Exception\ControllerAccessDeniedException;
 use Goteo\Library\Text;
-use Goteo\Library\Currency;
+use Goteo\Application\Currency;
 use Goteo\Model\Project;
 use Goteo\Model\Invest;
 use Goteo\Model\Image;

@@ -18,7 +18,7 @@ use Goteo\Application\Lang;
 use Goteo\Model\Project;
 use Goteo\Model\SocialCommitment;
 use Goteo\Library\Text;
-use Goteo\Library\Currency;
+use Goteo\Application\Currency;
 use Goteo\Library\Forms\FormModelException;
 use Goteo\Model\Project\ProjectLocation;
 

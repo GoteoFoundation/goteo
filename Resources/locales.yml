@@ -1,4 +1,4 @@
-as:
+ast:
     name: Asturiano
     short: AST
     public: false

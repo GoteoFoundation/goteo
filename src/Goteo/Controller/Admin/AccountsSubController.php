@@ -16,7 +16,7 @@ use Goteo\Library\Paypal;
 use Goteo\Library\Feed;
 use Goteo\Library\FeedBody;
 use Goteo\Library\Text;
-use Goteo\Library\Currency;
+use Goteo\Application\Currency;
 use Goteo\Application\AppEvents;
 use Goteo\Application\Message;
 use Goteo\Application\Config;

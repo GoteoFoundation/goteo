@@ -17,7 +17,7 @@ use Goteo\Library\Forms\AbstractFormProcessor;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Validator\Constraints;
 use Goteo\Library\Text;
-use Goteo\Library\Currency;
+use Goteo\Application\Currency;
 use Goteo\Model\Project\Reward;
 use Goteo\Library\Forms\FormModelException;
 

@@ -20,7 +20,7 @@ use Goteo\Application\Config;
 use Goteo\Application\View;
 use Goteo\Library\Text;
 use Goteo\Library\Check;
-use Goteo\Library\Currency;
+use Goteo\Application\Currency;
 use Goteo\Application\Message;
 use Goteo\Model\User\Apikey;
 use Goteo\Model\User\UserLocation;
