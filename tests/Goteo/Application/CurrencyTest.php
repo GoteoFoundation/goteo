@@ -1,7 +1,7 @@
 <?php
 
 
-namespace Goteo\Library\Tests;
+namespace Goteo\Application\Tests;
 
 use Goteo\Application\Currency;
 use Goteo\Application\Session;
@@ -49,7 +49,7 @@ class CurrencyTest extends \PHPUnit_Framework_TestCase {
         // to euro
         Session::store('currency', 'EUR');
         $format = Currency::amountFormat($amount);
-        // print("[$format]\n");
+        print("[$amount/$format]\n");
         // format must have . for miliar
         $this->assertRegExp('/\d?\.{1}\d?/', $format, $format);
         $this->assertContains('€', $format);
