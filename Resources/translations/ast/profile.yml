@@ -1,5 +1,17 @@
 ---
 profile-field-about: 'Cúntanos daqué tocante a tigo'
+profile-field-avatar_current: 'La to imaxe actual'
+profile-field-avatar_upload: 'Xubir una imaxe'
+profile-field-contribution: 'Qué pues aportar a Goteo'
 profile-field-entity-type: 'Triba d''entidá'
 profile-field-entity-type-checkbox-public: 'Soi una entidá pública'
 profile-field-entity-type-choose: 'Esbilla una triba d''entida'
+profile-field-keywords: 'Temes que t''interesen'
+profile-field-legal-entity: 'Forma xurídica'
+profile-field-legal-entity-asociation: Asociación
+profile-field-legal-entity-choose: 'Esbilla una forma xudicial'
+profile-field-legal-entity-company: Empresa
+profile-field-legal-entity-cooperative: Cooperativa
+profile-field-legal-entity-ngo: ONG
+profile-field-legal-entity-person: 'Persona física'
+profile-field-legal-entity-self-employed: Autónomu
