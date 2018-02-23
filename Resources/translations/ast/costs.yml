@@ -15,3 +15,16 @@ costs-field-required_cost-yes: Imprescindible
 costs-field-resoure: 'Otros recursos'
 costs-field-schedule: 'Axenda de trabayu'
 costs-field-type: Triba
+costs-fields-main-title: 'Desglose de costos'
+costs-fields-metter-title: 'Visualización de costos'
+costs-fields-resources-title: Recursu
+costs-main-header: 'Aspeutos económicos'
+mandatory-cost-field-amount: 'Ye obligatorio asignar un importe a los costos'
+mandatory-cost-field-description: 'Ye obligatorio poner dalguna descripción a los costos'
+mandatory-cost-field-name: 'Ye obligatorio pone-y un nome al costu'
+mandatory-cost-field-task_dates: 'Ye obligatorio especificar les dates aproximaes de la xera'
+mandatory-project-field-resource: 'Ye obligatorio especificar si cuentes con otros recursos o non'
+mandatory-project-resource: 'Ye obligatorio especificar si cuentes con otros recursos o non'
+mandatory-project-total-costs: 'Ye obligatorio especificar dalgún costu'
+step-4: Costos
+step-costs: 'Pasu: Proyeutu / Costos'
