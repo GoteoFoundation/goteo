@@ -15,7 +15,9 @@ use Goteo\Application\Message;
 use Goteo\Application\Lang;
 use Goteo\Application\Config;
 use Goteo\Application\Session;
+use Goteo\Application\View;
 use Goteo\Model;
+use Goteo\Model\Blog\Post;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -23,8 +25,9 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 class BlogController extends \Goteo\Core\Controller {
 
     public function __construct() {
-        //activamos la cache para todo el controlador blog
-        \Goteo\Core\DB::cache(true);
+
+        View::setTheme('responsive');
+
     }
 
     public function indexAction ($post = '', Request $request) {
@@ -86,13 +89,26 @@ class BlogController extends \Goteo\Core\Controller {
 
         // segun eso montamos la vista
 
-        return $this->viewResponse('blog/index', array(
+        return $this->viewResponse('blog/post', array(
                     'blog' => $blog,
                     'show' => $show,
                     'filters' => $filters,
                     'post' => $post,
                     'owner' => Config::get('node')
                 )
+        );
+
+    }
+
+    public function postAction($post, Request $request)
+    {
+        $post=Post::get($post, Lang::current());
+
+        return $this->viewResponse('blog/post', 
+                [
+                    'post' => $post,
+                    'author' => $author
+                ]
         );
 
     }

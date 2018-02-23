@@ -303,6 +303,13 @@ class Post extends \Goteo\Core\Model {
         return $list;
     }
 
+    // returns the author
+    public function getAuthor() {
+        if($this->userInstance) return $this->userInstance;
+        $this->userInstance = User::get($this->author);
+        return $this->userInstance;
+    }
+
     /*
      * Lista de entradas filtradas
      *  por tag

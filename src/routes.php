@@ -114,7 +114,7 @@ $routes->addCollection($misc_routes);
 
 $routes->add('blog-post', new Route(
     '/blog/{post}',
-    array('_controller' => 'Goteo\Controller\BlogController::indexAction',
+    array('_controller' => 'Goteo\Controller\BlogController::postAction',
         'post' => '' //optional parameter
         )
 ));
