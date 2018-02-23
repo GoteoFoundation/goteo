@@ -1,1 +1,17 @@
 ---
+cost-type-lend: Préstamu
+cost-type-material: Material
+cost-type-structure: Infraestructura
+cost-type-task: Xera
+costs-field-amount: Valir
+costs-field-cost: Costu
+costs-field-date_from: Dende
+costs-field-date_until: Hasta
+costs-field-dates: Dates
+costs-field-description: Descripción
+costs-field-required_cost: 'Esti costu ye'
+costs-field-required_cost-no: Adicional
+costs-field-required_cost-yes: Imprescindible
+costs-field-resoure: 'Otros recursos'
+costs-field-schedule: 'Axenda de trabayu'
+costs-field-type: Triba
