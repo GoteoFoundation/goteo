@@ -1,6 +1,6 @@
 ---
 assign-call-success: 'The project has been assigned to the call %s'
-dashboard-donor-remember: 'Denken Sie daran, Ihre Steuerinformationen für Geschenk-Gutschein zu bestätigen.'
+dashboard-donor-remember: 'Denken Sie daran Ihre Steuerinformationen für die Spendenbescheinigung zu bestätigen.'
 image-upload-fail: 'Fehler beim Hochladen des Bildes'
 gallery-upload-fail: 'Fehler beim Hochladen der Galerie'
 invest-amount-error: 'Sie müssen den Betrag angeben'
