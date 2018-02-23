@@ -14,7 +14,7 @@ use Goteo\Application\EventListener\AbstractListener;
 use Goteo\Console\ConsoleEvents;
 use Goteo\Console\Event\FilterProjectEvent;
 use Goteo\Console\UsersSend;
-use Goteo\Library\Currency;
+use Goteo\Application\Currency;
 use Goteo\Library\Feed;
 use Goteo\Library\FeedBody;
 

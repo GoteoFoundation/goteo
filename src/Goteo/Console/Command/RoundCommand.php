@@ -12,7 +12,7 @@ namespace Goteo\Console\Command;
 
 use Goteo\Console\ConsoleEvents;
 use Goteo\Console\Event\FilterProjectEvent;
-use Goteo\Library\Currency;
+use Goteo\Application\Currency;
 use Goteo\Model\Invest;
 use Goteo\Model\Project;
 

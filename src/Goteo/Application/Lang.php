@@ -444,7 +444,11 @@ class Lang {
      */
     static function listCountries($lang = null) {
         if(!$lang) $lang = static::current();
-        $countries = include(__DIR__ . '/../../../vendor/openclerk/country-list/country/' . $lang . '/country.php');
+        if(is_file(__DIR__ . '/../../../vendor/openclerk/country-list/country/' . $lang . '/country.php')) {
+            $countries = include(__DIR__ . '/../../../vendor/openclerk/country-list/country/' . $lang . '/country.php');
+        } else {
+            $countries = include(__DIR__ . '/../../../vendor/openclerk/country-list/country/' . self::getFallback($lang) . '/country.php');
+        }
         if(!$countries) {
             $countries = include(__DIR__ . '/../../../vendor/openclerk/country-list/country/en/country.php');
         }

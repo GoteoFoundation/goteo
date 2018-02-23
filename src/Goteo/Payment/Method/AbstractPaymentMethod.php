@@ -18,7 +18,7 @@ use Goteo\Model\Invest;
 use Goteo\Model\User;
 use Goteo\Payment\PaymentException;
 use Goteo\Library\Text;
-use Goteo\Library\Currency;
+use Goteo\Application\Currency;
 
 use Symfony\Component\HttpFoundation\Request;
 use Omnipay\Omnipay;

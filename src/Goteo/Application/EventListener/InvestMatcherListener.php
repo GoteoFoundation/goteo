@@ -13,7 +13,7 @@ namespace Goteo\Application\EventListener;
 
 use Goteo\Application\AppEvents;
 use Goteo\Application\Event\FilterInvestRequestEvent;
-use Goteo\Library\Currency;
+use Goteo\Application\Currency;
 use Goteo\Library\Feed;
 use Goteo\Library\FeedBody;
 use Goteo\Library\Text;

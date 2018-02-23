@@ -14,7 +14,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Omnipay\Common\Message\ResponseInterface;
 
 use Goteo\Payment\Method\AbstractPaymentMethod;
-use Goteo\Library\Currency;
+use Goteo\Application\Currency;
 use Goteo\Util\Omnipay\Message\EmptyFailedResponse;
 use Goteo\Util\Omnipay\Message\EmptySuccessfulResponse;
 use Goteo\Application\App;
