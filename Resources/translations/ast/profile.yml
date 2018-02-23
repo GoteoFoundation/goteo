@@ -15,3 +15,15 @@ profile-field-legal-entity-cooperative: Cooperativa
 profile-field-legal-entity-ngo: ONG
 profile-field-legal-entity-person: 'Persona física'
 profile-field-legal-entity-self-employed: Autónomu
+profile-field-name: 'Nome d''usuariu/a'
+profile-field-url: URL
+profile-field-websites: 'Les mios páxines web'
+profile-fields-analytics-title: Analítica
+profile-fields-image-title: 'Imaxe de perfil'
+profile-fields-social-title: 'Perfiles sociales'
+profile-main-header: 'Datos del perfil'
+step-1: Perfil
+step-userProfile: 'Pasu: Usuariu / Perfil'
+validate-project-userProfile-web: 'Ye aconseyable indicar dalguna web'
+validate-user-field-facebook: 'Pon la to cuenta de Facebook p''ameyorar la valoración del proyeutu de cara a determinar si espublizalu en Goteo.'
+validate-user-field-interests: 'Esbilla dalgún interés p''ameyorar la valoración del proyeutu de cara a determinar si espublizalu en Goteo.'
