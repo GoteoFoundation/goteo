@@ -173,6 +173,9 @@ class Lang {
      */
     static public function getDefault($lang = '', $only_public = true) {
         $default = static::isPublic(static::$default) ? static::$default : '';
+
+        if(empty($default) && static::exists(Config::get('lang'))) $default = Config::get('lang');
+
         foreach(static::$langs_available as $l => $info) {
             if($info['public'] || !$only_public) {
                 if(empty($default)) {
