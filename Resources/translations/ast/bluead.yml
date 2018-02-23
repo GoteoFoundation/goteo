@@ -1,4 +1,6 @@
 ---
+assign-call-success: 'El proyeutu asignose a la convocatoria %s'
+dashboard-donor-remember: 'Alcuérdate de confirmar los tos datos fiscales pal certificáu del donativu.'
 image-upload-fail: 'Fallu al xubir la imaxe'
 gallery-upload-fail: 'Fallu al xubir la galería'
 invest-amount-error: 'Tienes d''indicar l''importe'
@@ -11,6 +13,11 @@ invest-tpv-error_fatal: 'Asocedió un fallu fatal al conteutase col TPV. Inform�
 message-cookies: 'Usamos cookies propies y de terceros p''ameyorar la to esperiencia y los nuesos servicios analizando''l restolar nel nuesu sitiu web. Si sigues, considérase que das laude pal so usu. Pues consiguir más información na nuesa <a href="/legal/cookies">Política de Cookies</a>'
 project-invest-closed: 'El proyeutu yá nun ta en campaña'
 project-invest-friend_mail-fail: 'Hebo dalgún fallu al unviar el mensaxe de regalu al destinatariu'
+project-invest-thanks_mail-fail: 'Hebo dalgún fallu al unviar el mensaxe d''agradecimientu'
+project-review-request_mail-fail: 'Hebo dalgún fallu al unviar la solicitú de revisión'
+register-confirm_mail-fail: 'Hebo dalgún fallu al unviar el corréu d''activación de la cuenta. Por favor, contauta con nós en %s'
+review-closed-alert: 'Diesti por terminada esta revisión, nun pues facer más cambeos'
+user-login-required: 'Has <a href="/user/login">aniciar sesión</a> pa interactuar cola comunidá de Goteo'
 user-login-required-access: 'Has aniciar sesión o solicitar permisos p''acceder a esta estaya'
 user-login-required-to_create: 'Has aniciar sesión pa crear un proyeutu'
 user-login-required-to_invest: 'Has aniciar sesión pa cofinanciar el proyeutu'
