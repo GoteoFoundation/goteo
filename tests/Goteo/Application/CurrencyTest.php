@@ -39,6 +39,7 @@ class CurrencyTest extends \PHPUnit_Framework_TestCase {
         Session::store('currency', 'NON');
         $this->assertEquals(Currency::current(), Currency::get('INR', 'id'));
         Session::store('currency', 'EUR');
+        Currency::setDefault('EUR');
         $this->assertEquals(Currency::current(), Currency::get('EUR', 'id'));
     }
 

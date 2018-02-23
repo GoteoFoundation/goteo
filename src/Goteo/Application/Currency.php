@@ -141,7 +141,7 @@ class Currency {
 
         if ($currency != $default) {
             $rates = $converter->getRates($default);
-            $amount = round(($revert) ? $amount / $rates[$currency] : $amount * $rates[$currency]);
+            $amount = round($revert ? $amount / $rates[$currency] : $amount * $rates[$currency]);
         }
 
         $symbol = $nosymbol ? "" : $ccy['symbol']." ";
