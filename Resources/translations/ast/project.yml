@@ -1,2 +1,6 @@
 ---
+currency-switch: CAMUDAR
 project-about-title: 'Sobre esti proyeutu'
+project-chart-amount-ideal: Ideal
+project-chart-amount-reached: Acumulóse
+project-chart-costs-reset: 'Volver'
