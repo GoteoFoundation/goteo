@@ -128,3 +128,11 @@ regular-analytics: 'Google Analytics'
 regular-facebook-pixel: 'Facebook Pixel'
 regular-num-comments: '%s comentarios'
 regular-manage: 'Xestionar'
+regular-no-edit-permissions: '¡Nun tienes permisu pa editar esta entrada!'
+regular-messages: Mensaxes
+regular-unknown: Desconozse
+regular-input: Aporte
+regular-amount: Importe
+regular-copied: '¡Copióse al cartafueyu!'
+regular-remember-me: 'Recordar los mios datos'
+regular-next: Siguiente
