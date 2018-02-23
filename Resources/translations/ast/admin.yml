@@ -26,7 +26,9 @@ admin-home: Portada
 admin-items: entraes
 admin-mailing-back-to-list: 'Volver a les comunicaciones'
 admin-mailing-created: 'Creóse''l'
+admin-mailing-status: 'Estáu del unviu automáticu'
 admin-mailing-subject: Asuntu
+admin-newsletter-generated: 'Xeneróse''l boletín [%ID%]'
 admin-newsletter-langs-to-send: 'Llingües: %LANGS%'
 admin-newsletter-mind-activate: 'Actívalo pa que s''unvie'
 admin-no: 'Non'
@@ -47,3 +49,4 @@ admin-yes: Sí
 admin-project-to-review: 'A revisión'
 admin-project-to-negotiation: 'A negociación'
 admin-project-to-publish: 'Espublizar'
+admin-project-derivation-discard: 'Refugu con derivación'
