@@ -1,1 +1,5 @@
 ---
+feed-admin-massive-communication: 'Comunicación masiva'
+feed-admin-new_project: 'Espublización automática d''un proyeutu'
+feed-mailing-massive: 'Unviu masivu (cron)'
+feed-mailing-massive-completed: 'Completóse l''unviu masiu [%ID%] [%SUBJECT%]'
