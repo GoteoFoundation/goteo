@@ -53,7 +53,7 @@ tooltip-contract-bank_owner: 'Burada, banka hesabının sahibinin kim olduğunu 
 tooltip-contract-docs: 'İhtiyacınız olan kadar çok dosya yükleyebilirsiniz, bunların her biri 2Mb''den büyük olmamalıdır. Tercihen bunları .PDF, .ODT, .DOC, .JPG formatında gönderiniz. Eğer bir tarayıcınız yoksa, her bir belgenin resmini çekebilirsiniz, ancak lütfen bilgilerin okunabilir olduğundan emin olunuz.'
 tooltip-contract-entity_cif: 'Varlığın vergi numarasının hangisi olduğunu belirtiniz'
 tooltip-contract-entity_name: 'Sözleşmenin imzalanacağı taraflardaki varlığın tam adını belirtiniz.'
-tooltip-contract-entity_office: 'Varlık ile sizin pozisyonunuzun ne olduğunu belirtmeniz gerekmektedir.Onların tarafı adına hareket etme hakkının bulunduğunu belgeleyen belgeleri ('Dokümantasyon' bölümünde) eklemenizi isteriz.'
+tooltip-contract-entity_office: 'Varlık ile sizin pozisyonunuzun ne olduğunu belirtmeniz gerekmektedir.Onların tarafı adına hareket etme hakkının bulunduğunu belgeleyen belgeleri (''Dokümantasyon'' bölümünde) eklemenizi isteriz.'
 tooltip-contract-paypal_owner: 'Paypal hesap sahibinin adını belirtiniz.'
 tooltip-contract-project_description: 'Bu proje açıklaması, sözleşmenin formülleştirilmesine uyum sağlamak için değiştirilmesi mümkündür (bunu Goteo ekibinin bir üyesi yapar)'
 tooltip-contract-project_invest: 'Yatırım yapma Hedefi için otomatik olarak oluşturulmuş metni düzeltiniz'
