@@ -34,7 +34,7 @@ mandatory-contract-reg_idloc_2: 'Noterin çalışma yaptığı şehiri belirtmes
 mandatory-contract-reg_idname_2: 'Kamusal şirket tüzüğüne izin veren noterin ismini belirtmek zorunludur. '
 mandatory-contract-reg_name_1: 'Kayıtların tam adının belirtilmesi zorunludur (örn., Madrid Ticaret Kaydı/Barselona Ticaret Kaydı/Sevilla Kooperatifi Kaydı)'
 mandatory-contract-reg_number_1: 'Kayıt numarasını belirtmek zorunludur'
-mandatory-contract-reg_number_2: 'Kayıt numarasını belirtmek zorunludur
+mandatory-contract-reg_number_2: 'Kayıt numarasını belirtmek zorunludur'
 mandatory-project-field-contract_birthdate: 'Proje sorumlu kişinin doğum tarihini girmek zorunludur'
 mandatory-project-field-contract_name: 'Proje liderinin adını girmeniz gerekiyor'
 mandatory-project-field-contract_nif: 'Proje liderinin kimlik numarasını girmeniz gerekiyor'
