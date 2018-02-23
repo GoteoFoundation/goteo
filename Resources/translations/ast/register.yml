@@ -10,6 +10,7 @@ error-register-username: 'El nome públicu ye obligatoriu.'
 error-register-accept: 'Has aceutar les condiciones del rexistru.'
 guide-user-register: 'Testu guía nel rexistru d''un usuariu nuevu.'
 leave-email-sended: 'Unviémoste un corréu pa completar el procesu de baxa. Verifica tamién la carpeta de corréu non deseyáu o puxarra.'
+recover-email-sended: 'Unviémoste un corréu pa reafitar la contraseña de la cuenta. Verifica tamién la carpeta de corréu non deseyáu o puxarra.'
 register-button-title: Rexístrate
 register-email-confirm-field: 'Volvi escribir el corréu electrónicu'
 register-email-field: 'Corréu electrónicu'
