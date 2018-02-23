@@ -9,6 +9,7 @@ calendar-net-category: 'Rede y política'
 calendar-projects-category: Proyeutos
 calendar-share: Compartir
 calendar-workshops-category: Talleres
+error-image-tmp: 'Fallu al cargar el ficheru'
 goteo-return-button: 'Volver a Goteo'
 guide-dashboard-user-personal: "Namái has cumplimentar estos datos si creesti un proyeutu y quies que seya cofinanciáu y sofitáu pente Goteo. La información d'esti apartáu ye precisa pa contautate en casu de que consigas la financiación riquida, y qu'asina puea efectúe l'ingresu."
 guide-project-comment: guide-project-comment
@@ -16,6 +17,8 @@ guide-project-support: guide-project-support
 header-about-side: 'Lo que nos mueve'
 home-posts-header: Novedaes
 horizontal-project-investors: 'cofinanciadores'
+project-invest-total: 'Total d''aportaciones'
+regular-add: Rexistru nuevu
 regular-ask: Entrugar
 regular-submit: Unviar
 regular-by: 'Por:'
@@ -71,6 +74,7 @@ regular-main-header: Goteo.org
 regular-male: Home
 regular-manage_board: 'Panel Xestoría'
 regular-mandatory: '¡Campu obligatoriu!'
+regular-matchfunding: 'Match funding'
 regular-media_legend: Lleenda
 regular-menu: Menú
 regular-menu-personal: Menú personal
@@ -126,6 +130,7 @@ regular-images: Imáxenes
 regular-load-more: 'Cargar más'
 regular-analytics: 'Google Analytics'
 regular-facebook-pixel: 'Facebook Pixel'
+regular-call: Matchfunding
 regular-num-comments: '%s comentarios'
 regular-manage: 'Xestionar'
 regular-no-edit-permissions: '¡Nun tienes permisu pa editar esta entrada!'
