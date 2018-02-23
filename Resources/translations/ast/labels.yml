@@ -7,6 +7,15 @@ accounts-lb-details: 'Detalles del aporte'
 accounts-lb-execute: 'Execución del cargu'
 accounts-lb-list: Llistando
 accounts-lb-report: 'Informe del proyeutu'
+categories-lb: Estayes
+categories-lb-add: 'Estaya nueva'
+categories-lb-keywords: 'Pallabres clave'
+commons-lb: 'Retornos coleutivos'
+commons-lb-add: 'Retornu nuevu'
+commons-lb-info: 'Información de contautu'
+commons-lb-report: 'Informe del proyeutu'
+commons-lb-view: 'Xestión de retornos'
+criteria-lb: 'Criterios de revisión'
 criteria-lb-add: 'Criteriu nuevu'
 criteria-lb-edit: 'Editando criteriu'
 criteria-lb-list: Llistando
