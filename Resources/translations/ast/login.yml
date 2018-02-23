@@ -39,8 +39,11 @@ login-signin-view-more: 'Amosar más opciones d''aniciu de sesión'
 login-signin-yahoo: 'Anicia sesión con Yahoo!'
 login-title: 'Aniciar sesión'
 oauth-confirm-user: 'Arreyar usuariu esistente'
+oauth-goteo-user-not-exists: 'Esi usuariu nun esiste en Goteo'
 oauth-goteo-user-password-exists: 'Esi usuariu yá esiste en Goteo'
 oauth-goteo-user-provider-error: 'Has usar <strong>%s</strong> p''acceder a esti usuariu.<br>Si quies usar más d''un fornidor d''anicios de sesión pa esta cuenta, primero has afitar una contraseña.'
 oauth-import-name: Nome
 oauth-import-twitter: 'Enllaz a la to cuenta en Twitter'
 oauth-import-website: 'Los tos sitios web'
+reset-password-save: Guardar
+login-alternate-ids: Otres opciones
