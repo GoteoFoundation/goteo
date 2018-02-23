@@ -50,7 +50,7 @@ personal-field-post_address: 'Posta Adresi'
 personal-field-region: İl
 tooltip-contract-bank_account: 'Yeni Avrupa adladırmasının ardından banka hesap numarasının belirtiniz: IBAN ESxx xxxx xxxx xxxx xxxx xxxx'
 tooltip-contract-bank_owner: 'Burada, banka hesabının sahibinin kim olduğunu belirtiniz.'
-tooltip-contract-docs: 'İhtiyacınız olan kadar çok dosya yükleyebilirsiniz, bunların her biri 2Mb'den büyük olmamalıdır. Tercihen bunları .PDF, .ODT, .DOC, .JPG formatında gönderiniz. Eğer bir tarayıcınız yoksa, her bir belgenin resmini çekebilirsiniz, ancak lütfen bilgilerin okunabilir olduğundan emin olunuz.'
+tooltip-contract-docs: 'İhtiyacınız olan kadar çok dosya yükleyebilirsiniz, bunların her biri 2Mb''den büyük olmamalıdır. Tercihen bunları .PDF, .ODT, .DOC, .JPG formatında gönderiniz. Eğer bir tarayıcınız yoksa, her bir belgenin resmini çekebilirsiniz, ancak lütfen bilgilerin okunabilir olduğundan emin olunuz.'
 tooltip-contract-entity_cif: 'Varlığın vergi numarasının hangisi olduğunu belirtiniz'
 tooltip-contract-entity_name: 'Sözleşmenin imzalanacağı taraflardaki varlığın tam adını belirtiniz.'
 tooltip-contract-entity_office: 'Varlık ile sizin pozisyonunuzun ne olduğunu belirtmeniz gerekmektedir.Onların tarafı adına hareket etme hakkının bulunduğunu belgeleyen belgeleri ('Dokümantasyon' bölümünde) eklemenizi isteriz.'
