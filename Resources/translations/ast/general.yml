@@ -143,3 +143,5 @@ regular-remember-me: 'Recordar los mios datos'
 regular-next: Siguiente
 regular-previous: Anterior
 session-about-to-expire: 'La sesión va caducar en 10 minutos. ¿Quies recargar la páxina p''anovala?'
+user-changeemail-fail: 'Fallu al camudar el corréu'
+user-promoter: 'L''usuariu impulsor'
