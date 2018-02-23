@@ -1,7 +1,7 @@
 ast:
     name: Asturiano
     short: AST
-    public: false
+    public: true
     locale: as_ES
     fallback: es
 en:
