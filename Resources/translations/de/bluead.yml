@@ -13,7 +13,7 @@ invest-tpv-error_fatal: 'Beim Auschecken ist ein kritische Fehler aufgetaucht. D
 message-cookies: 'Damit wir unsere Webseite für Sie optimal gestalten und fortlaufend verbessern können, verwenden wir Cookies. Durch die weitere Nutzung der Webseite stimmen Sie der Verwendung von Cookies zu. Weitere Informationen zu Cookies erhalten Sie in unserer <a href="/legal/cookies">Datenschutzerklärung für Cookies</a>'
 project-invest-closed: 'Das Projekt ist nicht mehr aktiv'
 project-invest-friend_mail-fail: 'Beim Senden der Nachricht über das Geschenk ist ein Fehler aufgetreten'
-project-invest-friend_mail-success: '''Die Geschenknachricht wurde korrekt an den Adressaten gesendet'
+project-invest-friend_mail-success: 'Die Geschenknachricht wurde korrekt an den Adressaten gesendet'
 project-invest-thanks_mail-fail: 'Beim Senden der Danknachricht ist ein Fehler aufgetreten'
 project-invest-thanks_mail-success: 'Danknachricht wurde erfolgreich gesendet'
 project-review-confirm_mail-fail: 'Beim Versand der Bestätigungsnachricht ist ein Fehler aufgetreten'
