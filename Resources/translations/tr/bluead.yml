@@ -1,5 +1,5 @@
 ---
-assign-call-success: 'Proje, çağrıya atanmıştır'
+assign-call-success: 'Proje, çağrıya atanmıştır %s'
 dashboard-donor-remember: 'Bağış belgesi için vergi detaylarınızı onaylamayı unutmayınız.'
 image-upload-fail: 'Resim yükleme hatası'
 gallery-upload-fail: 'Galeri yükleme hatası'
