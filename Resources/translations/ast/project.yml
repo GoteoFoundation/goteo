@@ -4,6 +4,7 @@ project-about-title: 'Sobre esti proyeutu'
 project-chart-amount-ideal: Ideal
 project-chart-amount-reached: Acumulóse
 project-chart-costs-reset: 'Volver'
+project-collaborations-number: 'collaboradores'
 project-collaborations-supertitle: 'Necesidaes non monetaries'
 project-comment-start-sesion: 'Anicia sesión'
 project-comment-start-sesion-2: 'pa dexar un comentariu'
@@ -19,3 +20,18 @@ project-menu-news: 'Noticies'
 project-menu-participate: 'Participa'
 project-menu-supporters: Cofinanciadores
 project-menu-updates: Novedaes
+project-messages-send_message-button: Unviar
+project-not_published: 'Esti proyeutu entá nun ye públicu'
+project-create-no-social-commitment: 'Nun teo'
+project-progress-title: Cómo va'l proyeutu
+project-edit: Editar proyeutu
+project-remove-cost-confirm: '¿De xuru que quies desaniciar esti costu?'
+project-add-cost: 'Amestar costu'
+project-add-reward: 'Amestar recompensa'
+project-remove-reward-confirm: '¿De xuruq que quies desaniciar esta recompensa?'
+project-send-review: 'Unviar revisión'
+project-reviewing: 'Tamos valoranso y revisando''l to proyeutu'
+project-validation-errors: '¡El proyeutu entá nun ta completáu!'
+project-validation-error-profile: 'Falten campos por rellenar nel to perfil d''usuariu'
+project-campaign: 'Configuración'
+project-manage: 'Xestionar'
