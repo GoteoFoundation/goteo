@@ -1,1 +1,49 @@
 ---
+admin-action: 'Aición d''alministrador'
+admin-NO: 'NON'
+admin-YES: SÍ
+admin-account-amount: 'Cantidá aportada'
+admin-account-change-user: 'Camudar d''usuariu'
+admin-account-change-user-confirm: '¿De xuru que quies camudar l''usuariu del aporte? L''usuariu nuevu va ser:'
+admin-account-convert-to-pool: 'Convertir a monedero'
+admin-account-convert-to-pool-confirm: 'Esto va desaniciar el proyeutu venceyáu a esti aporte y va pasar a ser como si fore una merca de monederu. VAN PERDESE TOLES RECOMPENSES VENCEYAES. ¿Siguir?'
+admin-account-convert-to-pool-ko: 'Nun pudo convertise l''aporte a monederu: %s'
+admin-account-detail: 'Detalles de la transación'
+admin-account-donation: Donativu
+admin-account-edit-reward: 'Xestionar recompensa/direición'
+admin-account-invalid-invest: '¡Nun s''alcontró l''aporte [%s]!'
+admin-account-invest-date: 'Data del aporte'
+admin-account-invest-non-pool-refundable: 'Esti aporte nun pue reembolsase al monederu virtual. Namái puen reembolsase los aportes n''estáu «Cobróse»'
+admin-account-switch-donation: 'Conmutar donativu'
+admin-account-switch-donation-confirm: '¿De xuru que quies camudar l''estáu del donativu?'
+admin-account-transaction: 'Códigos de siguimientu'
+admin-account-user-changed-error: '¡Nun pudo camudase l''usuariu del aporte [%ID%] a [%NAME%]!'
+admin-address: Direición
+admin-back: Volver
+admin-contents: 'Testos y traducciones'
+admin-empty-list: 'Nun s''alcontraron rexistros'
+admin-home: Portada
+admin-items: entraes
+admin-mailing-back-to-list: 'Volver a les comunicaciones'
+admin-mailing-created: 'Creóse''l'
+admin-mailing-subject: Asuntu
+admin-newsletter-langs-to-send: 'Llingües: %LANGS%'
+admin-newsletter-mind-activate: 'Actívalo pa que s''unvie'
+admin-no: 'Non'
+admin-percent: Porcentaxe
+admin-project: Proyeutu
+admin-projects: Proyeutos
+admin-filters: 'Peñeres'
+admin-remove-filters: 'Quitar peñeres'
+admin-sponsors: Servicios
+admin-status: Estáu
+admin-text-type: 'Procesar testu como'
+admin-text-type-html: HTML
+admin-text-type-md: Markdown
+admin-text-type-plain: 'Testu simple'
+admin-user: Usuariu
+admin-users: Usuarios
+admin-yes: Sí
+admin-project-to-review: 'A revisión'
+admin-project-to-negotiation: 'A negociación'
+admin-project-to-publish: 'Espublizar'
