@@ -1,1 +1,28 @@
 ---
+accounts-lb: Aportes
+accounts-lb-add: 'Aporte manual'
+accounts-lb-cancel: 'Encaboxando aporte'
+accounts-lb-cancel-pool: 'Encaboxando opción de creitu'
+accounts-lb-details: 'Detalles del aporte'
+accounts-lb-execute: 'Execución del cargu'
+accounts-lb-list: Llistando
+accounts-lb-report: 'Informe del proyeutu'
+criteria-lb-add: 'Criteriu nuevu'
+criteria-lb-edit: 'Editando criteriu'
+criteria-lb-list: Llistando
+criteria-lb-translate: 'Traduciendo criteriu'
+faq-lb: Entrugues frecuentes
+faq-lb-add: 'Entruga nueva'
+faq-lb-edit: 'Editando entruga'
+faq-lb-list: Llistando
+faq-lb-translate: 'Traduciendo entruga'
+glossary-lb: Glosariu
+glossary-lb-edit: 'Editando términu'
+glossary-lb-list: Llistando
+glossary-lb-translate: 'Traduciendo términu'
+home-lb: 'Elementos na portada'
+licenses-lb-translate: 'Traduciendo llicencia'
+mailing-lb: Comunicaciones
+mailing-lb-edit: 'Escribiendo conteníu'
+mailing-lb-list: 'Esbillando destinatarios'
+mailing-lb-send: 'Comunicación unviada'
