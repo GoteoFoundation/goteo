@@ -77,9 +77,12 @@ all-files-uploaded: "Tolos ficheros xubiéronse correutamente"
 uploaded-ok: "Xubióse correutamente"
 publish-confirm-yes: "¿Quies espublizar esta entrada?"
 dashboard-project-support-responses: Rempuestes
+dashboard-message-donors-pending: 'tán pendientes'
+dashboard-message-donors-total: '%s cofinanciadores'
 dashboard-message-no-message: 'Entá nun tienes dengún mensaxe.'
 dashboard-translate-empty: 'Entá nun hai traducciones.'
 dashboard-translate-project-empty: 'Entá nun hai traducciones pa esti proyeutu.'
 dashboard-translate-project-currents: 'La llingua orixinal d''esti proyeutu ye''l %LANG% y ta traducíu a %NUM% llingües:'
 dashboard-translate-project-translating: 'Tas traduciendo esti proyeutu al %LANG%. La llingua orixinal ye''l %ORIGINAL%.'
 dashboard-translate-project-ok: '%ZONE% tradúxose correutamente al %LANG%'
+dashboard-project-goto-first-error: 'Dir al primer fallu'
