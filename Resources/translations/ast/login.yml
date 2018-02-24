@@ -46,4 +46,5 @@ oauth-import-name: Nome
 oauth-import-twitter: 'Enllaz a la to cuenta en Twitter'
 oauth-import-website: 'Los tos sitios web'
 reset-password-save: Guardar
+reset-password-title: 'Afitar contraseña nueva'
 login-alternate-ids: Otres opciones
