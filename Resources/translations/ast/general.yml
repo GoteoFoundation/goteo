@@ -9,7 +9,12 @@ calendar-net-category: 'Rede y política'
 calendar-projects-category: Proyeutos
 calendar-share: Compartir
 calendar-workshops-category: Talleres
+error-image-name: 'Fallu nel nome del ficheru'
+error-image-size: 'Fallu nel tamañu del ficheru'
+error-image-size-too-large: 'El ficheru ye pergrande, 2MB máx'
 error-image-tmp: 'Fallu al cargar el ficheru'
+error-image-type-not-allowed: 'Namái se permiten ficheros de la triba .png, .jpg, .gif'
+error-user-email-token-invalid: 'El códigu nun ye correutu'
 goteo-return-button: 'Volver a Goteo'
 guide-dashboard-user-personal: "Namái has cumplimentar estos datos si creesti un proyeutu y quies que seya cofinanciáu y sofitáu pente Goteo. La información d'esti apartáu ye precisa pa contautate en casu de que consigas la financiación riquida, y qu'asina puea efectúe l'ingresu."
 guide-project-comment: guide-project-comment
@@ -143,5 +148,6 @@ regular-remember-me: 'Recordar los mios datos'
 regular-next: Siguiente
 regular-previous: Anterior
 session-about-to-expire: 'La sesión va caducar en 10 minutos. ¿Quies recargar la páxina p''anovala?'
+tooltip-dashboard-user-change_password: 'Dende equí pues camudar la contraseña cola qu''accedes a Goteo.'
 user-changeemail-fail: 'Fallu al camudar el corréu'
 user-promoter: 'L''usuariu impulsor'
