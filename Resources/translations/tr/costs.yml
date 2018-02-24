@@ -38,4 +38,4 @@ tooltip-project-resource: 'Ek kaynaklara güveniyorsanız burada not ediniz, ist
 tooltip-project-totals: 'Bu grafik, iki tur finansman için gerekli giderlerin toplamını (projeyi tamamlamak için minimum gerekli olan) ve ikincil giderlerin toplamını (optimum miktar) göstermektedir. Birinci turda minimum gerekli olan miktarı elde etmek 40 gün sürüyor.Sadece bu finansman seviyesine ulaşanlar, ikinci turda optimum fon tutarını elde etmek için ilave 40 gün daha devam etmeyi tercih edebilirler.İkinci turda (birinciye zıt olarak), tam hedefe ulaşamasanız bile yükselttiğiniz her şeyi elde edersiniz.'
 validate-cost-field-dates: 'Projeyi daha iyi değerlendirmek için giderin başlangıç ve bitiş tarihlerini belirtiniz.'
 validate-project-costs-any_error: 'Giderlerin hesap dökümünden bazı bilgiler eksik'
-validate-project-field-costs: ' Projenizi değerlendirmeyi kolaylaştırmak, Goteo'da yayınlanıp yayınlanamayacağını görmek için en az 5 ayrı gidere bölmenizi öneririz.'
+validate-project-field-costs: ' Projenizi değerlendirmeyi kolaylaştırmak, Goteo''da yayınlanıp yayınlanamayacağını görmek için en az 5 ayrı gidere bölmenizi öneririz.'
