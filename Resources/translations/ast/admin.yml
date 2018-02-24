@@ -14,12 +14,15 @@ admin-account-edit-reward: 'Xestionar recompensa/direición'
 admin-account-invalid-invest: '¡Nun s''alcontró l''aporte [%s]!'
 admin-account-invest-date: 'Data del aporte'
 admin-account-invest-non-pool-refundable: 'Esti aporte nun pue reembolsase al monederu virtual. Namái puen reembolsase los aportes n''estáu «Cobróse»'
+admin-account-payment-method: 'Métodu de pagu'
+admin-account-rewards: 'Recompenses escoyíes'
 admin-account-switch-donation: 'Conmutar donativu'
 admin-account-switch-donation-confirm: '¿De xuru que quies camudar l''estáu del donativu?'
 admin-account-transaction: 'Códigos de siguimientu'
 admin-account-user-changed-error: '¡Nun pudo camudase l''usuariu del aporte [%ID%] a [%NAME%]!'
 admin-address: Direición
 admin-back: Volver
+admin-back-list: 'Volver al llistáu'
 admin-contents: 'Testos y traducciones'
 admin-empty-list: 'Nun s''alcontraron rexistros'
 admin-home: Portada
