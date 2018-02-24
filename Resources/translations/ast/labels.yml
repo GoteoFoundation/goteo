@@ -40,6 +40,8 @@ mailing-lb: Comunicaciones
 mailing-lb-edit: 'Escribiendo conteníu'
 mailing-lb-list: 'Esbillando destinatarios'
 mailing-lb-send: 'Comunicación unviada'
+newsletter-lb: Boletín
+newsletter-lb-list: 'Estáu del unviu automáticu'
 node-lb: 'Datos de la canal'
 node-lb-list: 'Datos actuales'
 nodes-lb: Canales
@@ -51,3 +53,7 @@ projects-lb-accounts: 'Cuentes del proyeutu'
 projects-lb-dates: 'Dates del proyeutu'
 projects-lb-execute: 'Execución del cargu'
 projects-lb-images: 'Imáxenes del proyeutu'
+rewards-lb: Recompenses
+sent-lb: 'Historial d''unvios'
+transnodes-lb: 'Traducciones de noyos'
+worth-lb: 'Niveles de meritocracia'
