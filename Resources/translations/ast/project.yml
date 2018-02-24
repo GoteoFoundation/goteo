@@ -1,5 +1,6 @@
 ---
 currency-switch: CAMUDAR
+personal-field-accounts: 'Cuentes del proyeutu'
 project-about-title: 'Sobre esti proyeutu'
 project-chart-amount-ideal: Ideal
 project-chart-amount-reached: Acumulóse
@@ -10,6 +11,8 @@ project-comment-start-sesion: 'Anicia sesión'
 project-comment-start-sesion-2: 'pa dexar un comentariu'
 project-error-main-lang: 'Nun pue afitase esta lingua [%s] como principal porque yá s''asignó a una traducción. Desaniciar la traducción esistente en [%s], dende''l panel de traducción pa poder introducir una nueva.'
 project-general-information: 'Información xeneral'
+project-hide-donors: 'Anubrir cofinanciadores'
+project-hide-needs: 'Anubrir llistáu de necesidaes'
 project-invest: Aportación
 project-langs-header: 'Proyeutu en'
 project-media-play_video: 'Ver videu'
@@ -25,12 +28,18 @@ project-messages-closed: 'Entá nun puen unviase mensaxes el proyeutu'
 project-messages-send_message-button: Unviar
 project-not_published: 'Esti proyeutu entá nun ye públicu'
 project-regular-support: Cofinanciar
+project-rewards-individual_reward-title: 'Recompenses individuales'
 project-rewards-side-title: 'Recompenses'
 project-rewards-supertitle: 'Qué ufre empara'
 project-share-header: 'Comparti esti proyeutu'
 project-side-investors-header: 'Yá aportaron'
 project-spread-widget: 'Widget del proyeutu'
 project-support-supertitle: 'Necesidaes económiques'
+regular-new_project: 'Proyeutu nuevu'
+project-costs-total: 'Total'
+project-removed-translation-ko: '¡Fallu al tentar de desaniciar la traducción!'
+project-social-commitment-title: 'Compromisu social'
+project-create-minimum-calculate-button: 'Calcular'
 project-create-no-social-commitment: 'Nun teo'
 project-progress-title: Cómo va'l proyeutu
 project-edit: Editar proyeutu
