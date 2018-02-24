@@ -10,3 +10,5 @@ supports-fields-support-title: Collaboraciones
 supports-main-header: 'Solicitú de collaboraciones'
 tooltip-project-nsupport: 'Conseyu pa rellenar una collaboración nueva'
 tooltip-project-support: 'Conseyu pa editar collaboraciones esistentes'
+support-is-private: 'Mensaxe priváu'
+message-response: 'Rempuesta'
