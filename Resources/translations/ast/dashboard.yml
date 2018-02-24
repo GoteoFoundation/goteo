@@ -39,6 +39,7 @@ dashboard-menu-translate_board: Traducción
 dashboard-my-wallet-contribute-button: Donar
 dashboard-project-blog-fail: 'Contauta con nós'
 dashboard-project-updates-delete_fail: 'Fallu al desaniciar la entrada'
+dashboard-project-updates-nopost: 'Nun s''alcontró la entrada'
 dashboard-project-updates-postcorrupt: 'La entada ta toyída, contauta con nós'
 dashboard-project-updates-saved: 'La entada anovóse correutamente'
 dashboard-project-updates-add: 'Artículu nuevu'
@@ -57,6 +58,14 @@ dashboard-edit-share-material-url: 'Editar URL'
 dashboard-modal-edit-url: 'URL onde s''alcuentra''l material compartíu'
 dashboard-modal-placeholder-edit-url: 'URL'
 dashboard-new-material-form-material: 'Material'
+dashboard-new-material-form-description: 'Descripción'
+dashboard-new-material-form-url: 'URL'
+dashboard-new-material-form-type: 'Triba de material'
+dashboard-new-material-form-license: 'Llicencia del material'
+dashboard-menu-projects-shared-materials: 'Materiales'
+project-no-share-material: 'Nun hai materiales compartíos pol proyeutu'
+dashboard-project-delete-image: 'Desaniciar ficheru'
+dashboard-project-delete-image-confirm: '¿De xuru que quies desaniciar esti ficheru?'
 dashboard-project-image-delete-ko: '¡Nun pudo desanciase la imaxe!'
 project-upload-images-some-ko: '¡Nun se xubieron delles imáxenes!'
 dashboard-project-default-image-confirm: '¿Quies predeterminar esta imaxe nel proyeutu?'
@@ -67,6 +76,7 @@ dashboard-file-type-error: "¡Nun se permite esta triba de ficheru!"
 all-files-uploaded: "Tolos ficheros xubiéronse correutamente"
 uploaded-ok: "Xubióse correutamente"
 publish-confirm-yes: "¿Quies espublizar esta entrada?"
+dashboard-project-support-responses: Rempuestes
 dashboard-message-no-message: 'Entá nun tienes dengún mensaxe.'
 dashboard-translate-empty: 'Entá nun hai traducciones.'
 dashboard-translate-project-empty: 'Entá nun hai traducciones pa esti proyeutu.'
