@@ -1,1 +1,20 @@
 ---
+contract-accounts_title: 'Salaysay ng proyekto'
+contract-bank_account: 'Bank account (Kodigo sa IBAN, ESxx format xxxx xxxx xxxx xxxx xxxx):'
+contract-bank_owner: 'May-ari ng account:'
+contract-entity-option_0: 'Sa iyong sariling pangalan at karapatan'
+contract-entity-option_1: 'Bilang isang kinatawan ng isang samahan'
+contract-entity-option_2: 'Bilang isang kinatawan ng isang negosyo entidad'
+contract-field-location: 'Bayan:'
+contract-field-reg_date_2: 'Ginawaran ng petsa na kung saan ang mga pampublikong gawa ng kumpanya'
+contract-field-reg_id_2: 'Bilang ng mga notaryo Protocol'
+contract-field-reg_idloc_2: 'Lungsod ng pagganap ng ang notaryo'
+contract-field-reg_idname_2: 'Pangalan ng mga notaryo'
+contract-field-reg_name_1: 'Rehistrasyon kung saan nakarehistro ang Association'
+contract-field-reg_name_2: 'Pagpaparehistro sa na kung saan ay nakaukit ang entidad'
+contract-field-reg_number_1: 'Numero ng rehistrasyon'
+contract-field-reg_number_2: '(Puno) na numero ng Patalaan:'
+contract-field-regdata: 'Datos ng log'
+contract-paypal_owner: 'Sa paypal account holder:'
+contract-step-accounts: Mga tala
+contract-step-documents: Dokumentasyon
