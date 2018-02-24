@@ -1,6 +1,6 @@
 ---
 api-key-no-generated: 'Henüz bir API anahtarı oluştrulmadı'
-api-key-tool-tip: 'Goteo kullanıcısı ve API anahtarınız ile API'mız sayesinde herhangi bir veriyi sorgulayabilirsiniz'
+api-key-tool-tip: 'Goteo kullanıcısı ve API anahtarınız ile API''mız sayesinde herhangi bir veriyi sorgulayabilirsiniz'
 api-key-documentation: 'API dökümantasyonlarını görüntüle'
 api-key-user: 'Kullanıcı'
 api-key-key: 'Anahtar'
