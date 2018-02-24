@@ -81,8 +81,8 @@ dashboard-my-wallet-available: 'Şu anda  <span class="pool-desc">Goteo''da ki s
 dashboard-my-wallet-contribute-button: Bağışlamak
 dashboard-my-wallet-pool-info: 'Cüzdanınızı kullanma hakkında daha fazla bilgi'
 dashboard-password-recover-advice: 'Şifreniz geri alınıyor. Değiştirmek için kullanıcı adınızı "geçerli şifre" alanına yerleştirmeyi unutmayınız.'
-dashboard-project-analytics-fail: 'Analiz ID'leri kaydedilirken hata oluştu'
-dashboard-project-analytics-ok: 'Analiz ID'leriniz doğru kaydedildi'
+dashboard-project-analytics-fail: 'Analiz ID''leri kaydedilirken hata oluştu'
+dashboard-project-analytics-ok: 'Analiz ID''leriniz doğru kaydedildi'
 dashboard-project-blog-fail: 'Bizimle iletişime geçiniz'
 dashboard-project-blog-inactive: 'Üzgünüz, şu anda bu projeyle ilgili haber yayınlayamazsınız.'
 dashboard-project-blog-empty: 'Henüz yayın yok'
