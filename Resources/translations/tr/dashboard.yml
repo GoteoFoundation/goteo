@@ -251,7 +251,7 @@ dashboard-project-support-translating: 'Bu destek girdsini %LANG%''a tercüme ed
 dashboard-project-saved: 'Proje başarıyla güncellendi'
 dashboard-project-is-dead: 'Proje arşivlendi ve düzenlenememektedir'
 dashboard-project-not-alive-yet: 'Bu bölüm, projeniz kampanyayı başarıyla tamamladığında geçerli olacaktır'
-dashboard-project-reward-cannot: 'Artık yeni ödüller eklenemez.Kampanya sırasında yeni ödüller eklemek mümkündür (ancak mevcut olanları silmek için değildir)
+dashboard-project-reward-cannot: 'Artık yeni ödüller eklenemez.Kampanya sırasında yeni ödüller eklemek mümkündür (ancak mevcut olanları silmek için değildir) '
 dashboard-project-add-translations: 'Bu arada, projenize çeviriler ekleyebilirsiniz, bunlar görünürlüğünü artırmanıza yardımcı olması mümkündür.'
 dashboard-project-goto-first-error: 'İlk hataya gidin'
 dashboard-origin-project-referer: 'Proje sayfasına yapılan ziyaretlerin başlangıcı'
