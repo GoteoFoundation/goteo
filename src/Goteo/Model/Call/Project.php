@@ -509,6 +509,8 @@ namespace Goteo\Model\Call {
                 // configuración para esta ronda
                 $call->conf = ($project->round > 0) ? $call->getConf('limit'.$project->round) : 'none';
 
+                $call->unique_user_drop=$call->getConf('unique_user_drop');
+
                 // calcular el obtenido por este proyecto, si no lo tenemos
                 if (!isset($project->amount_call))
                     $project->amount_call = Model\Invest::invested($project->id, 'call', $call->id);
