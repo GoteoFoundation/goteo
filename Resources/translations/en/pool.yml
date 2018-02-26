@@ -1,3 +1,4 @@
+---
 landing-calculate-button: Calculate
 landing-donor-button: Donate
 landing-error-zero: 'The amount for a donation needs to be over 0'
@@ -8,14 +9,16 @@ landing-more-info-text: '<h4>The new regulation makes it easier for you to donat
 landing-real-amount: 'Your real expense will be'
 landing-regular-invest: Donation
 landing-stories-title: 'Thanks to your donation, initiatives like these get funded:'
-landing-subtitle-banner: '<span class="line">When engaging and supporting <strong>projects through Goteo,</strong><br> <strong>it pays off</strong> between <strong>30%</strong> and <strong>75%</strong> of your donation!</span>'
 landing-target-description: 'Our objective in 2015: getting <strong> over 50% of Goteo’s users to exercise their right to tax benefits</strong> on their donations (in 2014, only 12% did!).'
 landing-taxes-explain: 'Make your donation through <strong>Goteo’s Virtual Wallet</strong>: a recently developed feature that allows you to donate immediately and later decide which projects to support. You will instantly obtain a document by our non profit entity Fundación Goteo, that certifies your donation to the Tax Office.'
 landing-taxes-regional: '<strong>* Important</strong> This fiscal advantages do not apply outside Spain, nor in the Basque Country or Navarra, which maintain a tax deduction of 20% and 25% from the total donation respectively.'
 landing-taxes-title: 'The Tax Office pays you back*:'
 landing-title-banner: 'At Goteo,<br>contributing pays off'
 landing-type-company: Company
-landing-type-person: Individual
+landing-type-person: 'Individual'
+pool-invest-share-discover: 'Discover projects'
 pool-make-sure-title: 'Confirm data for the certificate'
 pool-share-title: 'Download your certificate and share'
+pool-step-2: Payment
+pool-step-4: Share
 recharge-button: Charge

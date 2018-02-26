@@ -1,3 +1,4 @@
+---
 mandatory-project-field-about: 'É obrigado explicar as características básicas do proxecto'
 mandatory-project-field-category: 'É obrigado elixir polo menos unha categoría para o proxecto.'
 mandatory-project-field-description: 'É obrigado resumir o proxecto'
@@ -9,31 +10,18 @@ mandatory-project-field-media: 'Suxerimos poñer un vídeo para mellorar a valor
 mandatory-project-field-motivation: 'É obrigado explicar a motivación na descrición do proxecto'
 mandatory-project-field-name: 'É obrigado poñer un nome ó proxecto'
 mandatory-project-field-related: 'É obrigado explicar na descrición do proxecto a experiencia relacionada e/ou o equipo co que se conta'
-overview-field-categories: Categorías
-overview-field-currently: 'Estado actual'
 overview-field-description: 'Descripción curta'
 overview-field-goal: 'Obxectivos da campaña de crowdfunding'
 overview-field-image_gallery: 'Imaxes actuais'
 overview-field-image_upload: 'Subir unha imaxe (2MB max.)'
 overview-field-keywords: 'Palabras clave do proxecto'
 overview-field-lang: 'Idioma orixinal'
-overview-field-media: 'Vídeo de presentación'
-overview-field-media_preview: 'Vista previa'
 overview-field-name: 'Título do proxecto'
-overview-field-options-currently_avanzado: Avanzado
 overview-field-options-currently_finalizado: Rematado
-overview-field-options-currently_inicial: Inicial
-overview-field-options-currently_medio: Medio
-overview-field-options-scope_global: Global
-overview-field-options-scope_local: Local
-overview-field-options-scope_nacional: Nacional
 overview-field-options-scope_regional: Rexional
-overview-field-project_location: Ubicación
 overview-field-related: 'Experiencia previa e equipo'
-overview-field-reward: Recompensas
 overview-field-scope: 'Alcance do proxecto'
 overview-field-subtitle: 'Frase de resumo'
-overview-field-usubs: 'Cargar con Universal Subtitles'
 overview-field-video: 'Vídeo adicional sobre a motivación'
 overview-fields-images-title: 'Imaxes do proxecto'
 overview-main-header: 'Descrición do proxecto'
@@ -45,7 +33,6 @@ tooltip-project-currently: 'Indica en que fase se atopa o proxecto actualmente r
 tooltip-project-description: 'Describe o proxecto cun mínimo de 80 palabras (con menos marcará erro). Explícao de modo que sexa fácil de entender para calquera persoa. Tenta darlle un enfoque atractivo e social, resumindo os seus puntos fortes, que o fai único, innovador ou especial.'
 tooltip-project-goal: 'Enumera as metas principais do proxecto, a curto e longo prazo, en todos os aspectos que consideres importantes salientar. Trátase de outra oportunidade para contactar e acadar o apoio de xente que simpatice con eses obxectivos.'
 tooltip-project-image: 'Poden ser esquemas, pantallas, fotografías, ilustracións, storyboards, etc. (a súa licenza de autoría debe ser compatíbel coa que escollas no apartado 5). Suxerímosche que sexan diversas e de boa calidade, aínda que non demasiado grandes (uns 900 píxeles de ancho / 2 MB Max). ¡Podes subir tantas como queiras!'
-tooltip-project-image_upload: BORRAR
 tooltip-project-keywords: 'A medida que insiras texto o sistema suxerírache verbas clave que xa escribiron outros usuarios. Estas categorías axúdanche a vincular o teu proxecto con persoas afíns.'
 tooltip-project-lang: 'Indica en que idioma enches o formulario do proxecto.'
 tooltip-project-media: 'Copia e pega a dirección URL dun vídeo de presentación do proxecto, publicado previamente en Youtube ou Vimeo. Esta parte é fundamental para atraer a atención dos potenciais cofinanceiros e colaboradores, e canto máis orixinal sexa mellor. Recomendámosche que teña unha duración entre 2 e 4 minutos.'
@@ -60,5 +47,4 @@ tooltip-project-video: 'Considera aquí a posibilidade de publicar e ligar un v�
 validate-project-field-about: 'A explicación do proxecto é demasiado curta'
 validate-project-field-currently: 'Indica o estado do proxecto para mellorar a valoración do mesmo, de cara a determinar se publicalo en Goteo.'
 validate-project-field-description: 'A descripción do proxecto é demasiado curta'
-validate-project-value-description: 'A descripción do proxecto é demasiado curta'
 validate-project-value-keywords: 'Indica un mínimo de 5 palabras clave do proxecto para mellorar a valoración do mesmo, de cara a determinar se publicalo en Goteo.'

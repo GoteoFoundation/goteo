@@ -1,3 +1,4 @@
+---
 error-register-email: 'La dirección de correo es obligatoria'
 error-register-email-confirm: 'La comprobación de email no coincide'
 error-register-invalid-password: 'La contraseña no es válida'

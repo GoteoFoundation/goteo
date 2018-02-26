@@ -1,7 +1,7 @@
 .vagrant
 .sass-cache
 
-/extend/
+/extend/*
 !/extend/README.md
 !/extend/goteo-dev
 !/extend/private-zones
@@ -24,6 +24,7 @@ composer.lock
 !/config/README.md
 !/config/demo-settings.yml
 !/config/vagrant-settings.yml
+!/config/travis-settings.yml
 /dist
 
 phpunit.xml

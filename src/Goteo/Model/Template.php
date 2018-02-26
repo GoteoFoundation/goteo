@@ -110,6 +110,9 @@ class Template extends \Goteo\Core\Model {
         $type,
         $text;
 
+    static public function getFieldLangs() {
+        return ['title', 'test'];
+    }
 
     static public function get ($id, &$lang = null, $avoid_pending = true) {
 

@@ -1,3 +1,4 @@
+---
 mandatory-project-field-address: 'L''indirizzo del responsabile del progetto è obbligatoria'
 mandatory-project-field-contract_email: 'È obbligatorio indicare la mail della persona responsabile del progetto.'
 mandatory-project-field-country: 'il Paese della persona responsabile del progetto è obbligatorio'
@@ -10,11 +11,11 @@ personal-field-contract_data: 'Dati del responsabile del progetto'
 personal-field-contract_email: 'Mail associato al progetto'
 personal-field-contract_entity-entity: 'Persona giuridica (associazioni, fondazione, imprese)'
 personal-field-contract_entity-person: 'Persona fisica'
-personal-field-country: 'Paese '
+personal-field-country: Paese 
 personal-field-entity_cif: 'Partita IVA dell''entità '
 personal-field-entity_name: 'Denominazione sociale(nome) dell''entità'
 personal-field-entity_office: 'A carico della organizzazione'
-personal-field-location: 'Località '
+personal-field-location: Località 
 personal-field-phone: Telefono
 personal-field-post_address-different: Diverso
 personal-field-post_address-same: Uguale

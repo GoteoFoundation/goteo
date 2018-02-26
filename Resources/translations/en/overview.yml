@@ -1,3 +1,4 @@
+---
 images-main-header: 'Project images'
 mandatory-project-field-about: 'You have to explain the project''s basic characteristics'
 mandatory-project-field-category: 'You must choose at least one category for the project'
@@ -21,16 +22,13 @@ overview-field-image_upload: 'Upload an image (2MB max.)'
 overview-field-keywords: 'Key words for the project'
 overview-field-lang: 'Original language'
 overview-field-media: 'Video introduction'
-overview-field-media_preview: Preview
+overview-field-media_preview: 'Preview'
 overview-field-name: 'Project title'
 overview-field-options-currently_avanzado: Advanced
 overview-field-options-currently_finalizado: Finished
 overview-field-options-currently_inicial: Starting
 overview-field-options-currently_medio: Midway
-overview-field-options-scope_global: Global
-overview-field-options-scope_local: Local
 overview-field-options-scope_nacional: National
-overview-field-options-scope_regional: Regional
 overview-field-play-video: 'Video cover'
 overview-field-project_location: Location
 overview-field-related: 'Team and experience'
@@ -39,6 +37,8 @@ overview-field-scope: 'Project reach'
 overview-field-subtitle: 'Subtitle'
 overview-field-usubs: 'Publish with Universal Subtitles'
 overview-field-video: 'Additional video about motivation'
+overview-field-social-category: 'Social commitment'
+overview-field-social-description: 'Social commitment description'
 overview-fields-images-title: 'Images from the project'
 overview-main-header: 'Project description'
 step-3: Description
@@ -65,17 +65,12 @@ tooltip-project-reward: 'Here we explain what''s good about it in terms of rewar
 tooltip-project-subtitle: 'Create a single phrase for the subtitle that explains just what your initiative is about, that gives a taste of what it''s for and what it consists of in less than 140 characters. It will be used in social networks.'
 tooltip-project-usubs: 'Check if you subtitled the video to other languages with Universal Subtitles: http://www.universalsubtitles.org/'
 tooltip-project-video: 'Consider publishing and linking a video (YouTube, Vimeo or Giss.tv) where you briefly explain to the camera your vision for your project. This is something that might compliment the principal video, by letting you transmit your need or originality in the most direct way possible. If you find it hard speaking to the camera, maybe there''s someone else you know and who is following the project that might complete this step as a "fan". Feeling empathy for and seeing the person on the other side of the project is a key component for certain kinds of co-financiers.'
+tooltip-project-social-category: 'Choose your social commitment'
+tooltip-project-social-description: 'Explain your social commitment'
 validate-project-field-about: 'The project description is too short'
 validate-project-field-currently: 'Indicate the current status of the project in order to facilitate the evaluation of the project and to determine whether it should be published on Goteo.'
 validate-project-field-description: 'The project description is too short'
-validate-project-value-description: 'The project description is too short'
 validate-project-value-keywords: 'Write down at least five key words about the project that will help facilitate its evaulation by Goteo.'
-
-overview-field-social-category: 'Social commitment'
-overview-field-social-description: 'Social commitment description'
-tooltip-project-social-category: 'Choose your social commitment'
-tooltip-project-social-description: 'Explain your social commitment'
-
 overview-field-execution-plan: 'Schedule plan'
 tooltip-project-execution-plan: 'Set a clear timeline with concrete milestones that demonstrates how you will develop and deliver your prototype'
 tooltip-project-execution-plan-url: 'Schedule plan URL'

@@ -1,3 +1,4 @@
+---
 call-tagmark-3: 'Open call'
 call-tagmark-4: 'Campaign is active!'
 call-tagmark-5: 'Completed campaign.'
@@ -7,4 +8,8 @@ regular-gotit_mark: Funded!
 regular-keepiton_mark: 'Now 4 the optimum'
 regular-oneround_mark: 'Single round'
 regular-onrun_mark: 'In progress!'
-regular-success_mark: Accomplished!
+regular-success_mark: 'Accomplished!'
+call-tagmark-open: 'Open call'
+call-tagmark-active: 'Campaign is active!'
+call-tagmark-completed: 'Completed campaign.'
+call-tagmark-archived: 'Archived call'

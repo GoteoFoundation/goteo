@@ -1,7 +1,21 @@
+---
 contact-captcha-field: 'Test auf menschlichen Benutzer (BOT-Blocker)'
 contact-captcha-refresh: 'Bild aktualisieren'
-contact-email-field: 'Email-Adresse'
-contact-form-tags: "[user] Ich habe ein Problem mit meinem Konto; \r\n[new promoter] Ich habe ein Projekt;\r\n[new promoter 2] Ich habe eine Frage über das Projektformular;\r\n[development] Ich brauche Hilfe bei Technik-Fragen;\r\n[service] Ich möchte Ihre Dienste in Anspruch nehmen;\r\n[other] Ich habe eine andere Frage;"
+contact-email-field: Email-Adresse
+contact-form-dev-tag-description: 'Ich habe Fragen zu technischen Problemen'
+contact-form-dev-tag-name: Entwicklung
+contact-form-new-project-tag-description: 'Ich habe ein mögliches Projekt'
+contact-form-new-project-tag-name: 'Mögliches Projekt'
+contact-form-others-tag-description: 'Es ist eine andere Art der Anfrage'
+contact-form-others-tag-name: Sonstige
+contact-form-project-form-tag-description: 'Ich habe Fragen zum Projektformular'
+contact-form-project-form-tag-name: 'Probleme mit dem Formular Projekt'
+contact-form-relief-tag-description: 'Ich möchte eine Quittung für meine Spende'
+contact-form-relief-tag-name: 'Spendenquittung'
+contact-form-service-tag-description: 'Ich möchte einen Service abonnieren'
+contact-form-service-tag-name: Service
+contact-form-user-tag-description: 'Ich habe Probleme mit meinem Konto'
+contact-form-user-tag-name: 'Probleme Konto'
 contact-message-field: Nachricht
 contact-name-field: Name
 contact-send_message-button: Senden
@@ -12,3 +26,5 @@ error-contact-captcha: 'Das reCAPTCHA wurde nicht korrekt eingegeben. Versuchen 
 error-contact-email-empty: 'Sie haben Ihre Email-Adresse nicht angegeben'
 error-contact-message-empty: 'Sie haben keine Nachricht geschrieben'
 error-contact-subject-empty: 'Sie haben keinen Betreff angegeben'
+meta-description-contact: 'Kontaktieren Sie das Goteo.org-team'
+meta-title-contact: 'Kontaktieren Sie uns: Goteo.org'

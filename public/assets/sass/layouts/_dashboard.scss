@@ -577,6 +577,30 @@
       cursor: pointer;
     }
   }
+  .messages-list {
+    .media {
+        h4 {
+            font-weight: normal;
+            font-size: 1em;
+            .recipient {
+                float: right;
+                &::after {
+                    font-family: FontAwesome;
+                    content: "\f00d";
+                    color: $color-red;
+                }
+                &.sent::after {
+                    content: "\f00c";
+                    color: $color-grey-cyan;
+                }
+                &.opened::after {
+                    content: "\f00c";
+                    color: $color-cyan;
+                }
+            }
+        }
+    }
+  }
   .costs-bar {
     .min, .opt, .total {
         color: $color-dark;

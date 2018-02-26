@@ -1,9 +1,10 @@
+---
 auth-access-forbbiden: 'Vous n''avez vas pas la permission pour accéder a cette section'
 error-register-userid: 'Il est obligatoire d''écrire un nom d''accès'
 login-access-button: Entrer
 login-access-header: 'Utilisateur enregistré'
-login-access-password-field: 'Mot de passe'
-login-access-username-field: login
+login-access-password-field: Mot de passe
+login-access-username-field: 'Nom d''utilisateur ou Email'
 login-fail: 'Erreur d''accès'
 login-leave-button: 'Supprimer mon compte'
 login-leave-header: 'Annuler le compte'
@@ -12,21 +13,20 @@ login-new-user-label: 'Pas encore de compte utilisateur sur Goteo?'
 login-oneclick-header: 'Accès en un clic'
 login-recover-button: Récupérer
 login-recover-email-field: 'Email du compte ou nom d''utilisateur'
-login-recover-header: 'Récupérer votre mot de passe'
 login-recover-label: 'Mot de passe oublié?'
 login-recover-link: 'Récupérer le mot de passe'
 login-recover-modal-button: Envoyer
-login-recover-modal-sucess: 'Nous vous avons envoyé un email contenant un lien pour réinitialiser le mot de passe'
+login-recover-modal-sucess: 'Nous vous avons envoyé un email a %s contenant un lien pour réinitialiser le mot de passe'
 login-recover-modal-text: 'Vous avez oublié votre mot de passe? Saisissez votre adresse mail et nous vous enverrons un nouveau mot de passe'
-login-recover-username-field: Login
-login-register-button: 'Créer un utilisateur'
+login-recover-username-field: 'Login'
+login-register-button: Créer un utilisateur
 login-register-confirm-field: 'Confirmer l''email'
 login-register-confirm_password-field: 'Confirmer le mot de passe'
-login-register-email-field: Email
+login-register-email-field: Adresse mail
 login-register-header: 'Nouvel utilisateur'
-login-register-password-field: 'Mot de passe'
+login-register-password-field: Mot de passe
 login-register-password-minlength: '6 caractères minimum'
-login-register-userid-field: login
+login-register-userid-field: 'Login'
 login-register-username-field: 'Nom public'
 login-signin-facebook: 'Se connecter avec facebook'
 login-signin-google: 'Accès via Google'
@@ -41,14 +41,14 @@ login-signin-yahoo: 'Accès avec Yahoo'
 login-title: 'Se connecter'
 oauth-confirm-user: 'Utilisateur existant'
 oauth-facebook-access-denied: 'Accès depuis facebook refusé'
-oauth-goteo-openid-sync-password: 'Vous êtes en train de lier un compte déjà existante sur goteo avec un fournisseur extérieur. Ceci te permettra d''entrer sur goteo en un seul clic <br/> Pour la première fois vous devrez confirmer le mot de passe de votre compte sur goteo pour valider votre compte.'
+oauth-goteo-openid-sync-password: 'Vous êtes en train de lier un compte déjà existante sur goteo avec un fournisseur extérieur. Ceci te permettra d''entrer sur goteo en un seul clic <br> Pour la première fois vous devrez confirmer le mot de passe de votre compte sur goteo pour valider votre compte.'
 oauth-goteo-user-not-exists: 'Cet utilisateur n''existe pas'
 oauth-goteo-user-password-exists: 'Cet utilisateur existe déjà !'
 oauth-import-about: 'A propos'
 oauth-import-facebook: 'Lien vers votre compte facebook'
 oauth-import-linkedin: 'Lien vers vôtre compte LinkedIn'
 oauth-import-location: 'Lieu de résidence'
-oauth-import-name: Nombre
+oauth-import-name: Nom
 oauth-import-twitter: 'Lien avec votre compte Twitter'
 oauth-import-website: 'Vos sites web'
 oauth-linkedin-access-denied: 'Accès depuis Linkedin refusé'

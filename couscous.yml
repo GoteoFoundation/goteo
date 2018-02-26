@@ -3,7 +3,7 @@ baseUrl: http://goteofoundation.github.io/goteo
 
 template:
     # url: https://github.com/CouscousPHP/Template-ReadTheDocs
-    url: https://github.com/CouscousPHP/Template-Dark
+    url: https://github.com/GoteoFoundation/Template-Goteo-Docs
 
 # Used to link to the GitHub project
 github:

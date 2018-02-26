@@ -1,10 +1,5 @@
 {
-    "repositories": [
-        {
-            "type": "vcs",
-            "url": "https://github.com/GoteoFoundation/omnipay-paypal"
-        }
-    ],
+
     "require": {
 
         "foil/foil": "~0.6",
@@ -59,8 +54,8 @@
         "setasign/fpdf": ">=1.8.1",
         "rych/phpass": "3.0.*@beta",
         "erusev/parsedown": "^1.6",
-        "omnipay/omnipay": "^2.3",
-        "omnipay/paypal": "dev-master",
+        "omnipay/omnipay": "~2.0",
+        "omnipay/paypal": "~2.0",
         "symfony/templating": "2.8",
         "symfony/framework-bundle": "2.8",
         "league/html-to-markdown": "^4.4",

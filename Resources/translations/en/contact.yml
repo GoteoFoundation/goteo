@@ -1,6 +1,6 @@
+---
 contact-captcha-field: 'Test of humanity (sorry...)'
-contact-captcha-refresh: 'Refresh image'
-contact-email-field: 'Email address'
+contact-email-field: Email address
 contact-form-dev-tag-description: 'I need help with tech questions'
 contact-form-dev-tag-name: desenvolupament
 contact-form-new-project-tag-description: 'I have a project'
@@ -10,12 +10,11 @@ contact-form-others-tag-name: other
 contact-form-project-form-tag-description: 'I have a question on the project form'
 contact-form-project-form-tag-name: 'new promoter 2'
 contact-form-relief-tag-description: 'Relief queries'
-contact-form-relief-tag-name: relief
+contact-form-relief-tag-name: 'relief'
 contact-form-service-tag-description: 'I''d like to contract your services'
 contact-form-service-tag-name: service
-contact-form-tags: "[user] I have a problem with my account;\r\n[new promoter] I have a project;\r\n[new promoter 2] I have a question on the project form;\r\n[development] I need help with tech questions;\r\n[service] I'd like to contract your services;\r\n[other] I have another question;"
 contact-form-user-tag-description: 'I have a problem with my account'
-contact-form-user-tag-name: user
+contact-form-user-tag-name: 'user'
 contact-message-field: Message
 contact-name-field: Name
 contact-send_message-button: Send

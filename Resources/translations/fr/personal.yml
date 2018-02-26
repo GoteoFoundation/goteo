@@ -1,10 +1,11 @@
+---
 mandatory-project-field-address: 'L''adresse du responsable du projet est obligatoire'
 mandatory-project-field-contract_email: 'Il est obligatoire de mettre l''email du responsable de projet.'
 mandatory-project-field-country: 'Le pays du responsable de projet est obligatoire.'
 mandatory-project-field-phone: 'Le téléphone du responsable de projet est obligatoire.'
 mandatory-project-field-residence: 'Il est obligatoire de mettre le lieu de résidence du responsable de projet.'
 mandatory-project-field-zipcode: 'Le code postal du responsable de projet est obligatoire.'
-personal-field-address: Adresse
+personal-field-address: 'Adresse'
 personal-field-contract_birthdate: 'Date de naissance'
 personal-field-contract_data: 'Informations sur le/la responsable du projet'
 personal-field-contract_email: 'Email lié au projet'
@@ -20,7 +21,7 @@ personal-field-post_address-different: Autres
 personal-field-post_address-same: Identique
 personal-field-zipcode: 'Code postal'
 personal-main-header: 'Informations sur le/la porteur(se) de projet'
-step-2: 'Porteur(se) du projet'
+step-2: Porteur(se) du projet
 step-userPersonal: 'Etape 2: informations personnelles'
 tooltip-project-contract_birthdate: 'Indiquez votre date de naissance. Elle ne sera à aucun moment rendue publique, elle nous intéresse pour des raisons statistiques.'
 tooltip-project-contract_data: 'Que vous soyez une personne physique ou bien juridique, il est nécessaire qu''une personne apparaisse comme porteur(se) de projet, ceci notamment pour les relations avec l''équipe de Goteo. Cette personne n''est pas nécessairement la même que l''utilisateur inscrit auparavant. '

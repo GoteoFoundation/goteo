@@ -33,7 +33,7 @@ class GoteoMatcherlang
   {
      return "
      ALTER TABLE `matcher_user` ADD COLUMN `admin` BOOL DEFAULT 0 NOT NULL COMMENT 'If the user is admin' AFTER `pool`;
-     CREATE TABLE `matcher_lang`( `id` VARCHAR(50) NOT NULL, `lang` VARCHAR(2), `name` VARCHAR(255), `terms` LONGTEXT, PRIMARY KEY (`id`), FOREIGN KEY (`id`) REFERENCES `matcher`(`id`) ON UPDATE CASCADE ON DELETE CASCADE );
+     CREATE TABLE `matcher_lang`( `id` VARCHAR(50) NOT NULL, `lang` VARCHAR(2), `name` VARCHAR(255), `terms` LONGTEXT, PRIMARY KEY (`id`), FOREIGN KEY (`id`) REFERENCES `matcher`(`id`) ON UPDATE CASCADE ON DELETE CASCADE ) ENGINE=INNODB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
      ";
   }
 

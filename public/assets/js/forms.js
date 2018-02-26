@@ -646,7 +646,7 @@ $(function(){
         var target = $form.attr('name') + '_' + $(this).data('target');
         var md = markdowns[target];
         if(md) {
-            md.value(md.value().replace(/\s+$/g, '') + "\n\n![](" + SRC_URL + '/img/600x600/' + name + ")");
+            md.value(md.value().replace(/\s+$/g, '') + "\n\n![](" + IMG_URL + '/600x600/' + name + ")");
         }
     });
 

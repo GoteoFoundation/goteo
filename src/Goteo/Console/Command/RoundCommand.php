@@ -118,6 +118,7 @@ EOT
                         else        $args .= ' --any-project';
                         if($output->isVerbose()) $args .= ' --verbose';
                         $process = new Process(GOTEO_PATH . 'bin/console refund' . $args);
+                        $process->setTimeout(null); // no time limit
                         $process->run(function ($type, $buffer) use ($output) {
                             if (Process::ERR === $type) {
                                 $output->write("<error>$buffer</error>");

@@ -1,3 +1,4 @@
+---
 mandatory-individual_reward-field-description: 'Je moet een omschrijving toevoegen'
 mandatory-individual_reward-field-icon: 'Je moet een type beloning kiezen'
 mandatory-individual_reward-field-name: 'Je moet een beloning invoeren'
@@ -18,7 +19,7 @@ rewards-field-social_reward-type: 'Type winst'
 rewards-fields-individual_reward-title: 'Individuele beloningen'
 rewards-fields-social_reward-title: 'Collective winst'
 rewards-main-header: 'Voordelen en beloningen'
-step-5: Baten
+step-5: 'Baten'
 step-rewards: 'Step: Project / Baten'
 tooltip-project-individual_reward-amount: 'Hoeveelheid waarvoor je dit type beloning kunt kiezen.'
 tooltip-project-individual_reward-description: 'Korte uitleggen waar de beloning uit bestaat voor degenen die het project in deze fase cofinancieren.'

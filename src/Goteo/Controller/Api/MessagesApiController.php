@@ -190,16 +190,22 @@ class MessagesApiController extends AbstractApiController {
 
         // TODO: filter type
         foreach(Comment::getUserMessages($user, $prj) as $msg) {
+            $mail = $msg->getMail();
+            $stats = $msg->getStats();
+            $opened = (bool) $stats && $stats->getEmailOpenedCollector()->getPercent();
             $ob = ['id' => $msg->id,
                    'message' => $msg->getHtml(),
+                   'sent' => $mail ? true : false,
+                   'opened' => $opened,
                    // 'date' => date_formater($msg->date, true),
                    'date' => $msg->date,
                    'project' => $msg->project,
                    'timeago' => $msg->timeago,
                    'recipient' => $msg->recipient,
+                   'recipient_name' => $msg->recipient_name,
                    'user' => $msg->user,
                    'name' => $msg->getUser()->name,
-                   'avatar' => $msg->getUser()->avatar->getLink(60,60,c),
+                   'avatar' => $msg->getUser()->avatar->getLink(60,60,true),
                    'thread' => $msg->thread
                ];
             $list[] = $ob;

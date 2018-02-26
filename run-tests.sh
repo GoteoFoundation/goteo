@@ -11,9 +11,21 @@ for var in "$@"; do
         SET_CONFIG=
         continue
     fi
+    if [ "$var" == '--help' ] || [ "$var" == '-h' ]; then
+        echo "Wrap script for running tests"
+        echo "Usage"
+        echo -e "$0 [options|phpunit options]"
+        echo "Options"
+        echo -e "\t--reset-database (-r)\t Drops and reinstalls the database before testing"
+        echo -e "\t--test-config (-t) file.yml\t Specifies a settings.yml file to be used for testing"
+        echo "The rest of options will be passed to phpunit"
+        exit
     # Remove --reset argument
-    if [ "$var" == '--reset-database' ] || [ "$var" == '-r' ]; then
+    elif [ "$var" == '--reset-database' ] || [ "$var" == '-r' ]; then
         RESET_DATABASE=1
+    elif [ "$var" == '--test-config' ] || [ "$var" == '-t' ]; then
+        SET_CONFIG=1
+        continue
     else
         ARGS+=("$var")
     fi

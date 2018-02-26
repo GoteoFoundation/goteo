@@ -1,15 +1,17 @@
+---
 mandatory-project-field-contract_birthdate: 'Je moet de geboortedatum van de projectleider invoeren'
 mandatory-project-field-contract_name: 'Je moet de naam van de projectleider invoeren'
 mandatory-project-field-contract_nif: 'Je moet het nummer van het identiteitsbewijs van de projectleider invoeren'
 mandatory-project-field-entity_cif: 'Je moet het BTW-nummer van de organisatie invoeren'
 mandatory-project-field-entity_name: 'Je moet de naam van de organisatie invoeren'
 mandatory-project-field-entity_office: 'Je moet de positie invoeren die je bekleedt binnen de organisatie die je vertegenwoordigt'
-personal-field-contract_entity: Projectpromoter
+personal-field-contract_entity: 'Projectpromoter'
 personal-field-contract_name: 'Voor- en achternamen'
-personal-field-contract_nif: BTW-nummer
+personal-field-contract_nif: 'BTW-nummer'
 personal-field-main_address: 'Officieel adres'
-personal-field-post_address: Postadres
+personal-field-post_address: 'Postadres'
 tooltip-project-contract_entity: 'Kies ''persoon'' als je de projectpromotor bent en jezelf vertegenwoordigt. Als de promotor een groep is, moet je de tweede optie kiezen: ''rechtsvorm'', en dan moet je een kvk-nummer invoeren.'
 tooltip-project-contract_name: 'gebruik je echte voornaam en je achternaam. Je zult aangemerkt worden als de projectleider.'
 tooltip-project-contract_nif: 'Je BTW-nummer met de getallen en letters'
 validate-project-value-contract_nif: 'Het BTWnummer is incorrect'
+contract-validation-error-promoter_nif: 'Het BTWnummer is incorrect'

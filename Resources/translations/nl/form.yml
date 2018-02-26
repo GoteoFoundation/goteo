@@ -1,7 +1,8 @@
+---
 form-accept-button: OK
-form-add-button: 'Voeg toe'
+form-add-button: Voeg toe
 form-ajax-info: 'Dit formulier wordt automatisch opgeslagen als je het invult'
-form-apply-button: 'Pas toe'
+form-apply-button: Pas toe
 form-edit-button: Bewerken
 form-errors-info: 'Totaal: %s | bij deze stap: %s'
 form-footer-errors_title: Fouten
@@ -15,9 +16,9 @@ form-project-status-title: 'Project status'
 form-project_status-campaing: 'Campagne loopt'
 form-project_status-cancel: Verworpen
 form-project_status-cancelled: Afgelast
-form-project_status-edit: 'In beoordeling'
+form-project_status-edit: In beoordeling
 form-project_status-expired: Gesloten
-form-project_status-fulfilled: Voltooid
+form-project_status-fulfilled: 'Voltooid'
 form-project_status-review: 'In afwachting van evaluatie'
 form-project_status-success: Gefinancierd
 form-remove-button: Verwijder

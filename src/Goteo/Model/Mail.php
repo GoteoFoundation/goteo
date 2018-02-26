@@ -22,6 +22,7 @@ use Goteo\Model\Mail\MailStats;
 use Goteo\Model\Mail\StatsCollector;
 use Goteo\Model\Mail\Metric;
 use Goteo\Model\Mail\Sender;
+use Goteo\Model\Message as Comment;
 use Goteo\Library\FileHandler\File;
 use Goteo\Library\Newsletter;
 use Goteo\Util\Monolog\Processor\WebProcessor;
@@ -52,6 +53,7 @@ class Mail extends \Goteo\Core\Model {
         $error = '',
         $log,
         $status = 'pending',
+        $message_id = null,
         $lang = null;
 
     /**
@@ -160,19 +162,41 @@ class Mail extends \Goteo\Core\Model {
         return $this->replyName;
     }
 
+    public function setMessage($message) {
+        if($message instanceOf Comment) {
+            $this->message_id = $message->id;
+        } else {
+            $this->message_id = $message;
+        }
+        return $this;
+    }
+
     /**
      * Get instance of mail already on table
      * @return [type] [description]
      */
     static public function get($id) {
         if ($query = static::query('SELECT * FROM mail WHERE id = ?', $id)) {
-            if( ! ($mail = $query->fetchObject(__CLASS__)) ) return false;
+            if( ! ($mail = $query->fetchObject(__CLASS__)) ) return null;
             $mail->to = $mail->email;
             // $mail->toName = $to_name; // TODO: add name from users
 
             return $mail;
         }
-        return false;
+        return null;
+    }
+
+    /**
+     * Get instance of mail already on table using message_id identifier
+     * @return [type] [description]
+     */
+    static public function getFromMessageId($message_id) {
+        if ($query = static::query('SELECT * FROM mail WHERE message_id = ?', $message_id)) {
+            if( ! ($mail = $query->fetchObject(__CLASS__)) ) return null;
+            $mail->to = $mail->email;
+            return $mail;
+        }
+        return null;
     }
 
     /**
@@ -490,7 +514,7 @@ class Mail extends \Goteo\Core\Model {
         $this->email = ($this->massive) ? 'any' : $this->to;
 
         try {
-            $this->dbInsertUpdate(['email', 'subject', 'content', 'template', 'node', 'lang', 'sent', 'error']);
+            $this->dbInsertUpdate(['email', 'subject', 'content', 'template', 'node', 'lang', 'sent', 'error', 'message_id']);
             return true;
         }
         catch(\PDOException $e) {

@@ -1,3 +1,4 @@
+---
 contract-accounts_title: 'Comptes bancaires du projet'
 contract-bank_account: 'Compte bancaire:'
 contract-bank_owner: 'Titulaire du compte bancaire'
@@ -17,7 +18,6 @@ contract-paypal_owner: 'Titulaire du compte paypal'
 contract-step-accounts: Comptes
 contract-step-documents: Documentatió
 contract-step-entity: 'Entité juridique'
-contract-step-final: Revisión
 contract-step-promoter: Representant
 mandatory-project-field-contract_birthdate: 'Il est obligatoire de mettre la date de naissance du responsable du projet.'
 mandatory-project-field-contract_name: 'Il est obligatoire de mettre le nom du responsable du projet.'
@@ -30,10 +30,10 @@ personal-field-contract_name: 'Nom et prénom'
 personal-field-contract_nif: '* Numéro de NIF / NIE / TVA '
 personal-field-main_address: 'Adresse fiscale'
 personal-field-post_address: 'Adresse postale'
-tooltip-contract-bank_account: tooltip-contract-bank_account
+tooltip-contract-bank_account: 'tooltip-contract-bank_account'
 tooltip-contract-bank_owner: 'Désigne le titulaire du compte bancaire'
 tooltip-contract-docs: 'Vous pouvez importez autant de fichier que vous le souhaitez, chacun d''une taille de 2Mb max. Envoyer de préférence des fichiers de type .PDF, .ODT, .DOC, .JPG.'
-tooltip-contract-entity_cif: tooltip-contract-entity_cif
+tooltip-contract-entity_cif: 'tooltip-contract-entity_cif'
 tooltip-contract-entity_name: 'Indique le nom de l'' entité au nom de laquelle est établi le contrat'
 tooltip-contract-entity_office: 'Vous devez indiquer votre position au sein de l''entité afin que nous puissions rattacher les documents prouvant que vous pouvez agir au nom de celle-ci. (dans la section ''documentation'')'
 tooltip-contract-paypal_owner: 'Indique le nom du propriétaire du compte Paypal'
@@ -41,3 +41,4 @@ tooltip-project-contract_entity: 'Sélectionnez "Personne physique" dans le cas 
 tooltip-project-contract_name: 'Indiquez vos véritables noms et prénoms. Notez que vous apparaâtrez comme responsable du projet.'
 tooltip-project-contract_nif: 'Votre numéro de NIF ou NIE comprenant chiffres et lettres'
 validate-project-value-contract_nif: 'Le numéro fiscal n''est pas correct'
+contract-validation-error-promoter_nif: 'Le numéro fiscal n''est pas correct'

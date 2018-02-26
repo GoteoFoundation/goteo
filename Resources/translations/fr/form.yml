@@ -1,4 +1,5 @@
-costs-field-select-rounds: 'Durée de la campagne'
+---
+costs-field-select-rounds: Durée de la campagne
 form-accept-button: Valider
 form-add-button: Ajouter
 form-ajax-info: 'Le formulaire est sauvegardé automatiquement au fur et àmesure'
@@ -10,14 +11,14 @@ form-footer-errors_title: Erreurs
 form-image_upload-button: 'Envoyer image'
 form-media_send-button: 'Importer vidéo'
 form-navigation_bar-header: 'Aller a'
-form-next-button: 'Etape suivante'
+form-next-button: Etape suivante
 form-project-info_status-title: 'Statut général des donnés inscrites'
 form-project-progress-title: 'Evaluation des données'
 form-project-status-title: 'Stade du projet'
 form-project_status-campaing: 'Campagne en cours'
 form-project_status-cancel: Rejeté
 form-project_status-cancelled: Annulé
-form-project_status-edit: 'En cours d´édition'
+form-project_status-edit: En cours d´édition
 form-project_status-expired: Archivé
 form-project_status-fulfilled: 'Récompense effectuée'
 form-project_status-review: 'En cours de validation'
@@ -26,8 +27,8 @@ form-remove-button: Effacer
 form-self_review-button: Corriger
 form-send_review-button: Envoyer
 form-upload-button: Envoyer
-help-cost-to-consultant: '- Besoin d''aide pour la section budget.<br/>'
-help-license-to-consultant: '- Besoin d''aide pour établir les retombées et choisir une license<br/>'
+help-cost-to-consultant: '- Besoin d''aide pour la section budget.<br>'
+help-license-to-consultant: '- Besoin d''aide pour établir les retombées et choisir une license<br>'
 overview-extra-fields: 'Champs complémentaires du formulaire'
 project-form-header: Formulaire
 project-one-round: 'Un seul round de 40 jours'

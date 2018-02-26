@@ -1,22 +1,22 @@
+---
 cost-type-lend: Prestito
 cost-type-material: Materiale
 cost-type-structure: Infrastruttura
 cost-type-task: Compito
-costs-field-amount: 'Valore '
+costs-field-amount: Valore 
 costs-field-cost: Costo
 costs-field-date_from: Da
 costs-field-date_until: Fino
 costs-field-dates: Date
 costs-field-description: Descrizione
 costs-field-required_cost: 'La spesa è'
-costs-field-required_cost-no: 'Aggiuntivo '
-costs-field-required_cost-yes: 'Imprescindibile '
+costs-field-required_cost-no: Aggiuntivo 
+costs-field-required_cost-yes: Imprescindibile 
 costs-field-resoure: 'Altre risorse'
 costs-field-schedule: 'Agenda di lavoro'
-costs-field-type: Tipo
 costs-fields-main-title: 'Elenco dei costi'
 costs-fields-metter-title: 'Visualizzazione delle spese'
-costs-fields-resources-title: 'Risorse '
+costs-fields-resources-title: Risorse 
 costs-main-header: 'Aspetti economici '
 mandatory-cost-field-amount: 'È obbligatorio assegnare un importo ai costi'
 mandatory-cost-field-description: 'È obbligatorio aggiungere una descrizione ai costi'

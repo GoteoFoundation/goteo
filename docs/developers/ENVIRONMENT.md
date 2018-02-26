@@ -54,6 +54,20 @@ You just need to log into vagrant and start the development server:
 grunt serve
 ```
 
+**Vagrant Apache dist testing**
+
+It is possible to build the distribution goteo package (for production sites) and test it in the same vagrant installation which is already configured to serve the content of the folder `/home/vagrant/goteo/dist`.
+
+Try it on by building the package (remember to log into vagrant first):
+
+```bash
+grunt build:dist
+```
+
+And, then pointing your browser to http://localhost:8080/
+You can tweak the Apache configuration in `/etc/apache2/sites-enabled/goteo.conf` (inside vagrant)
+
+
 **Code updates**
 
 To update composer or npm dependencies when code is updated, you just need to log into vagrant (`vagrant ssh`) and run these commands:
@@ -61,7 +75,7 @@ To update composer or npm dependencies when code is updated, you just need to lo
 Node and composer dependencies:
 
 ```bash
-cd /home/ubuntu/goteo
+cd /home/vagrant/goteo
 npm install
 composer install
 ```
@@ -161,7 +175,7 @@ db:
     driver:   mysql     # Database driver (mysql)
     host:     0.0.0.0 # Database host
     port:     3307      # Database port
-    charset:  UTF-8     # Database charset
+    charset:  utf8mb4     # Database charset
     database: goteo     # Database schema (database name)
     username: root     # Database user for the goteo database
     password: root  # Password for the goteo database
@@ -194,21 +208,25 @@ Grunt commands in Goteo
 
 * **Build**: `grunt build`
   This will create a `dist` folder ready to point a web server (apache, nginx) onto it
- 
+
 * **Development Build**: `grunt build:devel`
   Same as build, but the files created into `dist` will not be minimized
 
 * **Development server**: `grunt serve`
   Php standalone server. For localhost developing.
 
-* **Run phpunit**: `grunt deploy`
+* **Multi-threading development server**: `grunt serve:nginx`
+  For localhost developing as well. But you need to have nginx installed on your machine, it may speed up significantly the development process.
+
+* **Deploy assets**: `grunt deploy`
   Can be used to upload files assets to Amazon S3 (settings.yml must be configured)
 
-* **Run phpunit**: `grunt phpunit`
+* **Run phpunit**: `./run-tests.sh`
+  bash script to wrap phpunit tests (run it with `--help` for more info)
 
 * **Default task**: `grunt`
   This task is the same as execute as doing: `grunt lint`
-  It performs static code analysis in order to quick detect mistakes or misspellings
+  It performs static code analysis in order to quick detect mistakes or misspe -hllings
 
 * **Code linter**: `grunt lint`
   Same as default

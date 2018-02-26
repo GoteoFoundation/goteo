@@ -1,5 +1,5 @@
+---
 contract-data_title: 'Datos do contrato'
-dashboard-embed_code: 'CÓDIGO DIFUSIÓN SIMPLE'
 dashboard-embed_code_investor: 'CÓDIGO COA IMAXE DO COFINANCEIRO'
 dashboard-header-main: 'O meu panel'
 dashboard-investors-mail-fail: 'Erro ó enviar a mensaxe a %s'
@@ -8,29 +8,18 @@ dashboard-investors-mail-sendto: 'Enviado a %s dos teus cofinanceiros:'
 dashboard-investors-mail-sent: 'Mensaxes enviadas correctamente'
 dashboard-investors-mail-text-required: 'Escribe a mensaxe'
 dashboard-menu-activity: 'A miña actividade'
-dashboard-menu-activity-spread: Difusión
 dashboard-menu-activity-summary: Resumo
 dashboard-menu-activity-wall: 'O meu muro'
-dashboard-menu-admin_board: Administración
-dashboard-menu-calls-sponsors: Patrocinadores
 dashboard-menu-profile: 'O meu perfil'
-dashboard-menu-profile-access: 'Datos de acceso'
 dashboard-menu-profile-location: Xeolocalización
 dashboard-menu-profile-personal: 'Datos persoais'
-dashboard-menu-profile-preferences: Preferencias
-dashboard-menu-profile-profile: 'Editar perfil'
-dashboard-menu-profile-public: 'Perfil público'
+dashboard-menu-profile-preferences: 'Preferencias'
 dashboard-menu-projects: 'Os meus proxectos'
-dashboard-menu-projects-commons: Retornos
-dashboard-menu-projects-contract: Contrato
-dashboard-menu-projects-messegers: Participantes
 dashboard-menu-projects-preview: 'Páxina pública'
 dashboard-menu-projects-rewards: Cofinanceiros
 dashboard-menu-projects-summary: Resumo
 dashboard-menu-projects-supports: Colaboracións
 dashboard-menu-projects-updates: Novidades
-dashboard-menu-projects-widgets: Widget
-dashboard-menu-review_board: Revisión
 dashboard-menu-translate_board: Tradución
 dashboard-menu-translates: 'As miñas traduccións'
 dashboard-messegers-mail-sendto: 'Enviado a %s os participantes:'
@@ -40,15 +29,12 @@ dashboard-project-blog-inactive: 'Sentímolo, a publicación de novidades neste 
 dashboard-project-blog-wrongstatus: 'Sentímolo, aínda non se poden publicar novidades neste proxecto...'
 dashboard-project-delete_alert: '¿Seguro que desexas borrar absoluta e definitivamente este proxecto?'
 dashboard-project-updates-delete_fail: 'Erro o eliminar a entrada'
-dashboard-project-updates-deleted: 'Entrada eliminada'
 dashboard-project-updates-fail: 'Houbo algún problema ó garda-los datos'
 dashboard-project-updates-inserted: 'Engadiuse unha nova entrada'
 dashboard-project-updates-noblog: 'Non se atopou ningún blog para este proxecto'
 dashboard-project-updates-nopost: 'Non se atopou a entrada'
 dashboard-project-updates-postcorrupt: 'A entrada está corrupta, contáctenos'
 dashboard-project-updates-saved: 'A entrada actualizouse correctamente'
-dashboard-rewards-address: 'Dirección de entrega:'
-dashboard-rewards-all_filter: Todas
 dashboard-rewards-amount_group: 'Aportacións de'
 dashboard-rewards-amount_order: 'Polo importe'
 dashboard-rewards-choosen: 'Recompensas agardadas:'
@@ -57,28 +43,23 @@ dashboard-rewards-fulfilled_filter: Cumpridas
 dashboard-rewards-fulfilled_status: Cumprida
 dashboard-rewards-group_msg: 'mensaxe a ese grupo'
 dashboard-rewards-investors_table: 'Se queres xestionalo offline podes  <a href="%URL%">sacar a Táboa de Cofinanciadores</a>'
-dashboard-rewards-issue: Incidencia!
 dashboard-rewards-massive_msg: 'Mensaxes colectivos'
 dashboard-rewards-massive_msg-all: 'A todos os cofinanceiros deste proxecto'
 dashboard-rewards-massive_msg-all_alert: 'a todos é a todos, non ten en conta o resto de sinalados'
-dashboard-rewards-notice: 'ISTO É UNHA VISUALIZACIÓN DAS OPCIÓNS DE RETORNO QUE ELIXEN OS TEUS COFINANCEIROS.<BR/>NON TES QUE XESTIONAR ESES RETORNOS ATA QUE CHEGUEN Ó MÍNIMO DA CANTIDADE DESEXADA'
-dashboard-rewards-num_taken: Comprometidas
+dashboard-rewards-notice: 'ISTO É UNHA VISUALIZACIÓN DAS OPCIÓNS DE RETORNO QUE ELIXEN OS TEUS COFINANCEIROS.<br>NON TES QUE XESTIONAR ESES RETORNOS ATA QUE CHEGUEN Ó MÍNIMO DA CANTIDADE DESEXADA'
+dashboard-rewards-num_taken: 'Comprometidas'
 dashboard-rewards-pending_filter: Pendentes
 dashboard-rewards-pending_status: Pendente
 dashboard-rewards-process: 'Aplicar sinalados'
 dashboard-rewards-process_alert: 'Ollo! Ó sinalala como cumprida non se pode desmarcar. Continuamos?'
 dashboard-rewards-resign_filter: Doazóns
 dashboard-rewards-resigns: 'Renuncia á recompensa'
-dashboard-rewards-reward_order: 'Por retorno'
-dashboard-rewards-thanks: Agradecemento/Doazón
+dashboard-rewards-thanks: 'Agradecemento/Doazón'
 dashboard-rewards-user_msg: 'Individual a'
-dashboard-rewards-user_order: 'Por usuario'
 dashboard-translate-doing_call: 'Estás traducindo a convocatoria <strong>%s</strong>. O idioma orixinal é <strong>%s</strong>'
 dashboard-translate-doing_node: 'Estás traducindo o nodo <strong>%s</strong>. O idioma orixinal é <strong>Castelán</strong>'
 dashboard-translate-doing_profile: 'Estás traducindo o teu perfil persoal.'
 dashboard-translate-doing_project: 'Estás traducindo o proxecto <strong>%s</strong>. O idioma orixinal é <strong>%s</strong>'
-dashboard-translate-select_call: 'Selecciona convocatoria para traducir'
-dashboard-translate-select_node: 'Selecciona nodo para traducir'
 dashboard-translate-select_profile: 'Ir a traducir o teu perfil persoal'
 dashboard-translate-select_project: 'Selecciona proxecto para traducir'
 form-project_waitfor-campaing: 'Difunde o teu proxecto, axuda a que consiga o máximo de achegas!'
@@ -93,7 +74,6 @@ guide-dashboard-user-preferences: 'Marca ''Si'' nas notificacións automáticas 
 guide-dashboard-user-profile: 'Tanto se queres presentar un proxecto como engadirte coma cofinanceiro/a, para formar parte da comunidade de Goteo suxerímosche que poñas atención no teu texto de presentación, que engadas ligazóns salientables sobre o que fas e subas algunha imaxe de perfil coa que te identifiques.'
 guide-user-data: 'Texto guía na edición de campos sensibles.'
 user-changeemail-success: 'O email cambiouse con éxito ;-)'
-user-changeemail-title: 'Cambiar email'
 user-changepass-confirm: 'Confirmar a nova contrasinal'
 user-changepass-new: 'Novo contrasinal'
 user-changepass-old: 'Contrasinal actual'
@@ -108,5 +88,5 @@ user-preferences-rounds: 'Bloquear notificacións do progreso dos proxectos que 
 user-preferences-threads: 'Bloquear notificacións de respostas nas mensaxes que comece eu'
 user-preferences-tips: 'Bloquear consellos de difusión de campaña (para impulsores)'
 user-preferences-updates: 'Bloquear notificacións de novidades sobre os proxectos que apoio'
-user-profile-saved: 'Información de perfil actualizada'
 user-save-fail: 'Houbo algún problema ó gardar os datos'
+dashboard-new-material-form-description: 'Descrición'

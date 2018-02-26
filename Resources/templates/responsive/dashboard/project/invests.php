@@ -163,10 +163,14 @@
         <img title="{name}" src="{avatar}" class="img-circle">
     </div>
     <div class="media-body">
-        <p>
+        <h4> <?= $this->text('mailer-from') ?>:
             <strong>{name}</strong>
-            <em>{date}</em>
-        </p>
+            - <em>{date}</em>
+            <span class="recipient">
+                <?= $this->text('mailer-to') ?>:
+                <strong>{recipient}</strong>
+            </span>
+        </h4>
         <p>{message}</p>
         <p class="text-danger hidden error-message"></p>
     </div>
@@ -241,9 +245,14 @@ $(function(){
                 // console.log(i, item);
                 var msg = $template.html()
                             .replace(/\{name\}/g, item.name)
+                            .replace(/\{recipient\}/g, item.recipient_name)
                             .replace(/\{date\}/g, item.timeago)
                             .replace(/\{avatar\}/g, item.avatar)
                             .replace(/\{message\}/g, item.message);
+
+                if(item.opened) msg = msg.replace('"recipient"', '"recipient opened"');
+                else if(item.sent) msg = msg.replace('"recipient"', '"recipient sent"');
+
                 $list.append(msg);
               });
             } else {
@@ -295,7 +304,7 @@ $(function(){
         $('#messageModal').modal('hide');
         if(request.users) {
             for(var i in request.users) {
-                console.log(request.users[i]);
+                // console.log(request.users[i]);
                 var $span = $('a.send-private[data-user="' +  request.users[i] + '"]>span');
                 $span.text(parseInt($span.text()) + 1);
             }

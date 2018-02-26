@@ -1,3 +1,4 @@
+---
 error-register-email: 'A dirección de correo é obligada'
 error-register-email-confirm: 'A comprobación do correo electrónico non coincide'
 error-register-invalid-password: 'O contrasinal non é válido. Asegúrate de que ten polo menos 6 caracteres'
@@ -15,6 +16,9 @@ leave-token-incorrect: 'O código para completar o proceso de baixa non é váli
 recover-email-sended: 'Enviámosche un correo electrónico para restablecer o contrasinal da túa conta. Verifica tamén a carpeta de correo non desexado ou spam.'
 recover-request-fail: 'Non se pode recuperar o contrasinal de ningunha conta con estes datos'
 recover-token-incorrect: 'O código de recuperación da contrasinal non é válido'
+register-button-title: Rexístrate
+register-form-title: Rexístrate
+register-password-field: Contrasinal
 user-activate-already-active: 'A conta de usuario xa está activada'
 user-activate-success: 'A conta de usuario activouse correctamente'
 validate-project-value-contract_email: 'A dirección de email non é correcta'

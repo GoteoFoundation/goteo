@@ -1,3 +1,4 @@
+---
 images-main-header: 'Images du projet'
 mandatory-project-field-about: 'Il est obligatoire d''expliquer les caractéristiques de base du projet'
 mandatory-project-field-category: 'Il est obligatoire de choisir au moins une catégorie pour le projet.'
@@ -20,16 +21,13 @@ overview-field-image_upload: 'Importez une image'
 overview-field-keywords: 'Mots clés pour le projet'
 overview-field-lang: 'Langue d''origine'
 overview-field-media: 'Video d''introduction'
-overview-field-media_preview: Prévisualiser
+overview-field-media_preview: 'Prévisualiser'
 overview-field-name: 'Titre du Projet'
 overview-field-options-currently_avanzado: Avancé
 overview-field-options-currently_finalizado: Finalisé
 overview-field-options-currently_inicial: Commencement
 overview-field-options-currently_medio: Mi-chemin
-overview-field-options-scope_global: Global
-overview-field-options-scope_local: Local
 overview-field-options-scope_nacional: National
-overview-field-options-scope_regional: Regional
 overview-field-play-video: 'Cue video'
 overview-field-project_location: Localisation
 overview-field-related: 'Expérience antérieure et équipe'
@@ -45,14 +43,14 @@ step-3b: Images
 step-images: 'Section: Images du projet'
 step-overview: 'Etape 3: Description du projet'
 tooltip-project-about: 'Décrivez brièvement le projet de façon conceptuelle, technique ou pratique. En détaillant par exemple ses caractéristiques de fonctionnement ou ses différentes étapes. Imaginez comment il sera une fois terminé et tout ce que les gens pourront faire grâçe à lui. '
-tooltip-project-category: "Sélectionnez toutes les catégories que vous jugez nécessaires pour décrire le projet, en vous basant sur les infos que vous avez introduites Jusqu'à\_ maintenant. Ces mots clés nous permettront de cibler les utilisateurs de Goteo à solliciter."
+tooltip-project-category: 'Sélectionnez toutes les catégories que vous jugez nécessaires pour décrire le projet, en vous basant sur les infos que vous avez introduites Jusqu''à\_ maintenant. Ces mots clés nous permettront de cibler les utilisateurs de Goteo à solliciter.'
 tooltip-project-currency: 'Indiquez la monnaie dans laquelle vous calculez les coûts de votre projet'
 tooltip-project-currently: 'Indiquez dans quelle phase se trouve le projet actuellement. Par exemple, s''il est en phase de création ou d''éxécution.'
 tooltip-project-description: 'Décrivez le projet en utilisant au moins 80 mots (en-deçà, cela indiquera une erreur). Expliquez-le afin qu''il soit facile à comprendre par n''importe qui. Essayez de le présenter de façon attractive, en résumant ses points forts, ce qui le rend unique, socialement intéressant, innovant ou spécial. '
 tooltip-project-goal: 'Enumérez les objectifs principaux du projet, à court et long terme, sur tous les aspects que vous considérez important de traiter. Cela offre une nouvelle opportunité pour toucher les gens qui se retrouvent dans ces objectifs et obtenir leur soutien.'
 tooltip-project-image: 'Cela peut être des plans, screenshots, photographies, illustrations, storyboards, etc. (la licence associée doit être compatible avec les licences sélecionnées dans la section 5). Nous recommendons la publication de documents divers avec une bonne résolution (900 pixels largeur max /  2MB Max). Vous pouvez en charger autant que souhaité!'
 tooltip-project-image_upload: Effacer
-tooltip-project-keywords: "A mesure que vous mettez du texte dans le système, des mots clés déjà\_ écrits par d'autres utilisateurs apparaâtront. Ces catégories aident à relier votre projet aux personnes partageant vos centres d'intérêts."
+tooltip-project-keywords: 'A mesure que vous mettez du texte dans le système, des mots clés déjà\_ écrits par d''autres utilisateurs apparaâtront. Ces catégories aident à relier votre projet aux personnes partageant vos centres d''intérêts.'
 tooltip-project-lang: 'Indiquez la langue dans lequel vous remplissez ce formulaire.'
 tooltip-project-media: 'Copiez/collez l''adresse URL d''une vidéo de présentation du projet, publiée auparavant sur Youtube ou autre plateforme. Cette partie est clé pour attirer l''attention de cofinanceurs et contributeurs potentiels. Plus elle est originale, mieux c''est. Nous vous recommandons qu''elle dure entre 2 et 4 minutes.'
 tooltip-project-motivation: 'Expliquez les raisons et les circonstances qui sont à l''origine du projet, ainsi que les communautés ou utilisateurs auxquels il s''adresse. Cela vous aidera à vous mettre en relation avec des personnes mues par les mêmes centres d''intérêts, problématiques ou goûts.'
@@ -66,5 +64,4 @@ tooltip-project-video: 'Vous avez ici la possibilité de publier et d''embarquer
 validate-project-field-about: 'L''explication du projet est trop courte'
 validate-project-field-currently: 'Indiquez l''état du projet pour faciliter l''évaluation et la possible publication du projet sur Goteo.'
 validate-project-field-description: 'La description du projet est trop courte'
-validate-project-value-description: 'La description du projet est trop courte'
 validate-project-value-keywords: 'Indiquez un minimum de 5 mots clés pour faciliter l''évaluation et la possible publication du projet sur Goteo.'

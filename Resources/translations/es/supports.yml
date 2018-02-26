@@ -1,3 +1,4 @@
+---
 mandatory-support-field-description: 'Es obligatorio poner alguna descripción'
 mandatory-support-field-name: 'Es obligatorio ponerle un nombre a la colaboración'
 step-6: Colaboraciones
@@ -13,7 +14,6 @@ tooltip-project-support-description: "Explica brevemente en qué consiste la ayu
 tooltip-project-support-support: 'Título descriptivo sobre la colaboración necesaria.'
 tooltip-project-support-type: 'Selecciona si el proyecto necesita ayuda en tareas concretas  o bien préstamos (de material, infraestructura, etc).  '
 tooltip-project-supports: 'En Goteo los proyectos pueden recibir otro tipo de ayudas además de aportaciones monetarias. Hay gente que a lo mejor no puede ayudar económicamente pero sí con su talento, tiempo, energía, etc.'
-
 support-sure-to-remove: 'Seguro que quieres borrar esta petición?'
 support-remove-error-messages: 'No se puede borrar esta petición porqué tiene respuestas.<br>Por favor, borra las respuestas antes!'
 support-removed: 'Petición borrada correctamente'
@@ -24,7 +24,6 @@ support-private_all-message: 'Este mensaje se enviará a los participantes de es
 support-is-private: 'Mensaje privado'
 support-set-private-message: 'Envía sólo a los participantes de este hilo'
 support-send-private-message: 'Envía un mensaje privado a este usuario'
-
 message-response: 'Respuesta'
 message-project-comment: 'Comentario al proyecto'
 message-project-support: 'Colaboración al proyecto'

@@ -1,7 +1,7 @@
+---
 channel-join: 'Únete'
 channel-join-desc: '¿Quieres participar en el canal?'
 channel-join-reviewing: 'En evaluación...'
-
 matcher-apply-pending: 'Este proyecto está preseleccionado para la convocatoria matchfunding %s'
 matcher-apply-accepted: 'Este proyecto está pendiente de aprobación para la convocatoria matchfunding %s'
 matcher-apply-active: 'Este proyecto está inscrito en la convocatoria matchfunding %s'
@@ -13,16 +13,12 @@ matcher-apply-reject: 'No gracias, renuncio a la convocatoria'
 matcher-apply-reject-sure: 'Esta convocatoria matchfunding puede proporcionarte fondos adicionales. ¿Estás seguro de renunciar?'
 matcher-apply-discard: 'Descartar el proyecto'
 matcher-apply-discard-sure: 'Este proyecto ya no participará de la convocatoria %s ¿Continuar?'
-
-
 matcher-duplicateinvest-max_amount_per_project: 'Cantidad máxima que se donará por proyecto'
 matcher-duplicateinvest-max_amount_per_invest: 'Cantidad máxima por aporte'
 matcher-duplicateinvest-max_invests_per_user: 'Número máximo de aportes por usuario que se multiplicarán'
 matcher-duplicateinvest-rules: >
-    Este procesador multiplica x2 cualquier aporte de cualquier usuario
-
-    El total máximo por proyecto, la cantidad máxima por aporte y el número máximo de aportes por usuario se pueden configurar
-
+  Este procesador multiplica x2 cualquier aporte de cualquier usuario
+  El total máximo por proyecto, la cantidad máxima por aporte y el número máximo de aportes por usuario se pueden configurar
 matcher-drop: 'Capital matchfunding'
 matcher-feed-invest: 'Ha aportado %AMOUNT% de %DROP% al proyecto %PROJECT% a través de la convocatoria "match" %MATCHER%'
 matcher-feed-invest-by: 'Aporte matchfunding %s'
@@ -31,8 +27,6 @@ matcher-feed-user-invest-error: 'Ha ocurrido un <span class="red">ERROR de la co
 matcher-feed-invest-standalone: 'Aporte matchfunding automático'
 matcher-feed-standalone-invest: 'La convocatoria "match" %MATCHER% ha aportado %AMOUNT% al proyecto %PROJECT% sin aporte de referencia'
 matcher-feed-standalone-invest-error: 'Ha ocurrido un <span class="red">ERROR de la convocatoria "match" %MATCHER% [%MESSAGE%]</span> en el aporte al proyecto %PROJECT% sin aporte de referencia'
-
-
 matcher-project-accept: 'Felicidades! Tu proyecto ha sido añadido a la convocatoria %s. Ahora está pendiente de aprobación por parte de los promotores.'
 matcher-project-reject: 'Tu proyecto has sido eliminado de la convocatoria %s'
 matcher-project-discard: 'El proyecto ha sido descartado de la convocatoria %s'

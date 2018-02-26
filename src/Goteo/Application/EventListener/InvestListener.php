@@ -247,7 +247,7 @@ class InvestListener extends AbstractListener {
 
             $mailHandler = new Mail();
             $mailHandler->lang = $lang;
-            $mailHandler->reply = Config::get('mail.transport.name');
+            $mailHandler->reply = Config::get('mail.transport.from');
             $mailHandler->replyName = Config::get('mail.transport.name');
             $mailHandler->to = $user->email;
             $mailHandler->toName = $user->name;

@@ -1,3 +1,4 @@
+---
 contract-accounts_title: 'Proiektuaren banketxeko kontuak:'
 contract-bank_account: 'Banketxeko kontua:'
 contract-bank_owner: 'Banketxeko kontuko titularra'
@@ -11,10 +12,11 @@ mandatory-project-field-entity_office: 'Errepresentatuko duzun erakundearen barr
 personal-field-contract_entity: 'Proiektuaren bultzatzailea'
 personal-field-contract_name: 'Izen abizenak'
 personal-field-contract_nif: 'IFZ / AIZ / VAT zenbakia '
-personal-field-main_address: Zerga-egoitza
-personal-field-post_address: Helbidea
+personal-field-main_address: 'Zerga-egoitza'
+personal-field-post_address: 'Helbidea'
+personal-field-region: Probintzia
 tooltip-project-contract_entity: 'Aukeratu "Pertsona fisikoa" proiektuaren bultzatzaile izan ezkero eta zeure burua ordezkatu ezkero. Bultzatzailea pertsona taldea bada, beharrezkoa da IFK zenbakia duen bigarren aukera aukeratzea, kasu honetan aukerazazu "Pertsona juridikoa".'
 tooltip-project-contract_name: 'Zure benetako izen abizenak izan behar dira. Kontuan hartu proiektuaren erantzulez agertuko zarela.'
 tooltip-project-contract_nif: 'Zure NAN zenbakia, zenbakiak eta letrarekin.'
 validate-project-value-contract_nif: 'NAN zenbakia ez da zuzena'
-personal-field-region: Probintzia
+contract-validation-error-promoter_nif: 'NAN zenbakia ez da zuzena'

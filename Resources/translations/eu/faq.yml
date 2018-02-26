@@ -1,6 +1,6 @@
-faq-ask-question: 'Zure zalantza ezin izan duzu argitu? Bidali ezazu mezu bat zure galderarekin.'
-faq-investors-section-header: Finantzakideentzat
+---
+faq-investors-section-header: 'Finantzakideentzat'
 faq-main-section-header: 'Goteo-ri buruz'
 faq-nodes-section-header: 'Bertoko nodoei buruz'
 faq-project-section-header: 'Proiektuei buruz'
-faq-sponsor-section-header: Bultzatzaileentzat
+faq-sponsor-section-header: 'Bultzatzaileentzat'

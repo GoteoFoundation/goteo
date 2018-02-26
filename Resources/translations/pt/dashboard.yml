@@ -1,4 +1,5 @@
-dashboard-header-main: Dashboard
+---
+dashboard-header-main: 'Dashboard'
 dashboard-menu-projects-rewards: Apoiadores
 dashboard-menu-projects-supports: Colaborações
 dashboard-menu-projects-updates: Novidades

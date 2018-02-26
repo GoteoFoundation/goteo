@@ -37,6 +37,11 @@ class Config {
 			if (self::get('timezone')) {
 				date_default_timezone_set(self::get('timezone'));
 			}
+            // Default system_lang to 'es' if not defined
+            if(!array_key_exists('sql_lang', self::$config)) {
+                self::$config['sql_lang'] = 'es';
+            }
+
 
 			// handles legacy config values
 			self::setConstants();
@@ -54,6 +59,11 @@ class Config {
 					Lang::addYamlTranslation($lang, __DIR__ . '/../../../Resources/translations/' . $lang . '/' . $group . '.yml');
 				}
 			}
+
+            // Add model zones for the translator
+            \Goteo\Controller\TranslateController::addTranslateModel('criteria');
+            \Goteo\Controller\TranslateController::addTranslateModel('sphere');
+
 			// sets up the rest...
 			self::setDirConfiguration();
 		} catch (\Exception $e) {

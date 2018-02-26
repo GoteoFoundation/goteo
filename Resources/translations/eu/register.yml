@@ -1,3 +1,4 @@
+---
 error-register-email: 'Posta helbidea derrigorrekoa da'
 error-register-email-confirm: 'Email egiaztapena ez dator bat'
 error-register-invalid-password: 'Pasahitza ez du balio'
@@ -15,15 +16,15 @@ leave-token-incorrect: 'Harpidetza uzteko kodea ez da zuzena'
 recover-email-sended: 'Zure kontuan pasahitza berripintzeko emaila bidali dizuegu. Ikusi spam eta nahi ezkoen karpetak ere.'
 recover-request-fail: 'Ezin da datu hauekin pasahitzik berreskuratu inongo kontutik'
 recover-token-incorrect: 'Pasahitza berreskuratzeko kodea ez da zuzena'
+register-button-title: Erregistra zaitez
+register-email-confirm-field: 'Idatzi berriro zure posta elektronikoa'
+register-email-field: 'Posta elektronikoa.'
+register-form-title: Erregistra zaitez
 register-id-field: 'Erabiltzaile izena'
+register-name-field: 'Izen publikoa'
+register-password-confirm-field: 'Idatzi berriro pasahitza'
+register-password-field: Pasahitza
 user-activate-already-active: 'Erabiltzaile kontua martxan dago dagoeneko'
 user-activate-success: 'Erabiltzaile kontuan ondo martxan jarri da'
 validate-project-value-contract_email: 'Email helbidea ez da zuzena'
 validate-register-value-email: 'Sartutako emaila ez da zuzena'
-register-button-title: 'Erregistra zaitez'
-register-email-confirm-field: 'Idatzi berriro zure posta elektronikoa'
-register-email-field: 'Posta elektronikoa.'
-register-form-title: 'Erregistra zaitez'
-register-name-field: 'Izen publikoa'
-register-password-confirm-field: 'Idatzi berriro pasahitza'
-register-password-field: Pasahitza

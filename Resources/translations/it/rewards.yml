@@ -1,3 +1,4 @@
+---
 mandatory-individual_reward-field-description: 'È obbligatorio indicare una descrizione'
 mandatory-individual_reward-field-icon: 'È obbligatorio selezionare il tipo di ricompensa '
 mandatory-individual_reward-field-name: 'È obbligatorio indicare la ricompensa '
@@ -7,13 +8,12 @@ mandatory-social_reward-field-name: 'È obbligatorio specificare il beneficio'
 rewards-field-individual_reward-amount: 'Importo finanziato'
 rewards-field-individual_reward-description: Descrizione
 rewards-field-individual_reward-other: 'Specificare il tipo di ricompensa'
-rewards-field-individual_reward-reward: Recompensa
 rewards-field-individual_reward-type: 'Tipo di ricompensa'
 rewards-field-individual_reward-units: Unità
 rewards-field-social_reward-description: Descrizione
 rewards-field-social_reward-license: 'Opzioni tipi di licenza'
 rewards-field-social_reward-other: 'Specificare il tipo di ritorno'
-rewards-field-social_reward-reward: 'Benefici '
+rewards-field-social_reward-reward: Benefici 
 rewards-field-social_reward-type: 'Tipo di beneficio'
 rewards-fields-individual_reward-title: 'Recompense individuali'
 rewards-fields-social_reward-title: 'Benefici collettivi'

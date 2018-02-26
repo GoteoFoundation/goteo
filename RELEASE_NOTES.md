@@ -25,6 +25,12 @@ This is a list of (still most work-in-progress) of the new features:
 - Using grunt for developing
 - Better translations
 
+#### Version 3.3
+
+- New responsive Home
+- Added automated tests in Travis
+- Bug fixes, better translations & documentation
+
 #### Version 3.2
 
 - Includes a new full responsive dashboard for users

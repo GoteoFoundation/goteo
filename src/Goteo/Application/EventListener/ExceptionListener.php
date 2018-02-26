@@ -167,7 +167,6 @@ class ExceptionListener extends AbstractListener {
             }
         }
 
-        $this->logException($exception, sprintf('Exception thrown when handling an exception (%s at %s line %s: %s)', get_class($exception), $exception->getFile(), $exception->getLine(), $exception->getMessage()));
 
         // Customize your response object to display the exception details
         $response = new Response();
@@ -185,6 +184,21 @@ class ExceptionListener extends AbstractListener {
         } else {
             $code = Response::HTTP_INTERNAL_SERVER_ERROR;
         }
+
+        if($code === Response::HTTP_INTERNAL_SERVER_ERROR) {
+            // Check if there's some strange char in the URL
+            $uri = urldecode($request->getUri());
+            if(preg_match('/[^\x20-\x7e]/', $uri)) {
+                $redirect = preg_replace('/[^\x20-\x7e]*/', '', $uri);
+                if($redirect !== $uri) {
+                    $this->logger->warning('Kernel Exception', ['etype' => 'CharError', 'uri' => $uri, 'message' => "Redirected to [$redirect]"]);
+                    $event->setResponse(new RedirectResponse($redirect));
+                    return;
+                }
+            }
+        }
+
+        $this->logException($exception, sprintf('Exception thrown when handling an exception (%s at %s line %s: %s)', get_class($exception), $exception->getFile(), $exception->getLine(), $exception->getMessage()));
 
         $response->setStatusCode($code);
 

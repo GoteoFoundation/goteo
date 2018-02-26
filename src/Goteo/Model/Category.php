@@ -33,7 +33,7 @@ class Category extends \Goteo\Core\Model {
      */
     public static function get ($id, $lang = null) {
         if(!$lang) $lang = Lang::current();
-        list($fields, $joins) = self::getLangsSQLJoins($lang, Config::get('lang'));
+        list($fields, $joins) = self::getLangsSQLJoins($lang, Config::get('sql_lang'));
         $sql = "
             SELECT
                 category.id,
@@ -58,7 +58,7 @@ class Category extends \Goteo\Core\Model {
         $list = array();
 
         if(!$lang) $lang = Lang::current();
-        list($fields, $joins) = self::getLangsSQLJoins($lang, Config::get('lang'));
+        list($fields, $joins) = self::getLangsSQLJoins($lang, Config::get('sql_lang'));
 
         $sql="SELECT
                 category.id as id,
@@ -99,7 +99,7 @@ class Category extends \Goteo\Core\Model {
 
         $array = array ();
         try {
-            list($fields, $joins) = self::getLangsSQLJoins($lang, Config::get('lang'));
+            list($fields, $joins) = self::getLangsSQLJoins($lang, Config::get('sql_lang'));
 
             $sql="SELECT
                         category.id as id,
@@ -138,32 +138,19 @@ class Category extends \Goteo\Core\Model {
     public function save (&$errors = array()) {
         if (!$this->validate($errors)) return false;
 
-        $fields = array(
-            'id',
-            'name',
-            'description',
-            'social_commitment'
-            );
-
-        $set = '';
-        $values = array();
-
-        foreach ($fields as $field) {
-            if ($set != '') $set .= ", ";
-            $set .= "`$field` = :$field ";
-            $values[":$field"] = $this->$field;
-        }
-
         try {
-            $sql = "REPLACE INTO category SET " . $set;
-            self::query($sql, $values);
-            if (empty($this->id)) $this->id = self::insertId();
-
+            $this->dbInsertUpdate([
+                'id',
+                'name',
+                'description',
+                'social_commitment'
+            ]);
             return true;
-        } catch(\PDOException $e) {
-            $errors[] = "HA FALLADO!!! " . $e->getMessage();
-            return false;
         }
+        catch(\PDOException $e) {
+            $errors[] = 'Error saving category: ' . $e->getMessage();
+        }
+        return false;
     }
 
     /*

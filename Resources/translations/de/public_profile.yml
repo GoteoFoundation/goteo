@@ -1,4 +1,4 @@
-﻿profile_patron-invest_on-header: 'Ich habe auch kofinanziert'
+---
 profile-interests-header: 'Ich interessiere mich für folgende Projekte'
 profile-invest_on-header: 'Projekte, die ich unterstütze'
 profile-invest_on-title: Kofinanzierer
@@ -17,5 +17,6 @@ profile-widget-button: 'Profil anzeigen'
 profile-widget-user-header: Benutzer
 profile-worth-title: 'hierzu beigetragen:'
 profile-worthcracy-title: Position
+profile_patron-invest_on-header: 'Ich habe auch kofinanziert'
 user-message-restricted: 'Kann nur von seinem Kofinanzierern Nachrichten empfangen'
 user-message-send_personal-header: 'Sende eine Nachricht an den Benutzer'

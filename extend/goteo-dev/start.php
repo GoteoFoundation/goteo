@@ -16,6 +16,7 @@ use Goteo\Application\App;
 use Goteo\Console\Console;
 use Goteo\Application\Config;
 use Goteodev\Console\Command\StatusInitCommand;
+use Goteodev\Console\Command\CrowdinCommand;
 
 
 
@@ -47,3 +48,4 @@ $routes = App::getRoutes();
 \Goteo\Payment\Payment::addMethod('Goteodev\Payment\DummyPaymentMethod');
 // add usefull testing commands
 Console::add(new StatusInitCommand());
+Console::add(new CrowdinCommand());
