@@ -49,6 +49,26 @@ dashboard-investors_table-disclaimer: 'Ang driver ay ipinaalala na, tulad ng iti
 dashboard-menu-activity: 'Aking aktibidad'
 dashboard-menu-activity-apikey: 'Ang API key'
 dashboard-menu-activity-spread: Brodkast
+dashboard-menu-activity-summary: Buod
+dashboard-menu-activity-wall: 'Aking dingding'
+dashboard-menu-admin_board: Pangangasiwa
+dashboard-menu-calls-sponsors: Mga sponsor
+dashboard-menu-pool: 'Aking pitaka'
+dashboard-menu-pool-available: Balanse
+dashboard-menu-pool-conditions: Kundisyon
+dashboard-menu-profile: 'Aking profile'
+dashboard-menu-profile-access: 'I-access ang datos'
+dashboard-menu-profile-location: Ang Heyolokasyon
+dashboard-menu-profile-personal: 'Personal na impormasyon'
+dashboard-menu-profile-preferences: 'Aking mga kagustuhan'
+dashboard-menu-profile-profile: 'I-edit ang profile'
+dashboard-menu-profile-public: 'Pampublikong profile'
+dashboard-menu-projects: 'Aking mga proyekto'
+dashboard-menu-projects-analytics: Analitika
+dashboard-menu-projects-commons: Ibinabalik
+dashboard-menu-projects-contract: Kontrata
+dashboard-menu-projects-social-commitment: 'Panlipunan pangako'
+dashboard-menu-projects-messegers: Mga kalahok
 dashboard-project-updates-inserted: 'Ang isang bagong entry ay naidagdag'
 dashboard-project-updates-noblog: 'Walang nakitang blog para sa proyektong ito'
 dashboard-project-updates-nopost: 'Ang entry ay hindi natagpuan'
