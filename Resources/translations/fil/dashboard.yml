@@ -1,1 +1,11 @@
 ---
+api-key-no-generated: 'Wala ka pang nakabuo na key'
+api-key-tool-tip: 'Sa iyong user at Api Key maaari kang magsagawa ng mga tanong sa aming API'
+api-key-documentation: 'Tingnan ang dokumentasyon ng API'
+api-key-user: 'Gumagamit'
+api-key-key: 'Susi'
+api-key-generate-new: 'Gumawa ng bagong password'
+api-key-generate-new-confirm: 'Ang pagkilos na ito ay magbubura sa kasalukuyang key at bumuo ng isang bagong key. Magpatuloy?'
+contract-data_title: 'Kontrata ng datos'
+dashboard-certificates-confirm: 'Kumpirmahin ang datos'
+dashboard-certificates-confirm-checkbox: 'Kinukumpirma ko na ang mga ito ang aking tunay na legal na datos at nalalaman ko na hindi ko mababago ang datos na ito kapag nakumpirma na'
