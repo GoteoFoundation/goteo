@@ -24,3 +24,13 @@ mandatory-cost-field-description: 'Ito ay sapilitan upang ilagay ang ilang mga p
 mandatory-cost-field-name: 'Ito ay sapilitan upang magbigay ng isang pangalan sa gastos'
 mandatory-cost-field-task_dates: 'Ito ay kinakailangan upang tukuyin ang mga tinatayang petsa ng gawain'
 mandatory-project-field-resource: 'Ito ay kinakailangan upang tukuyin kung mayroon kang iba pang mga mapagkukunan o hindi'
+mandatory-project-resource: 'Ito ay kinakailangan upang tukuyin kung mayroon kang iba pang mga mapagkukunan o hindi'
+mandatory-project-total-costs: 'Ito ay kinakailangan upang tukuyin ang ilang mga gastos'
+step-4: Mga gastos
+step-costs: 'Hakbang: Proyekto / Gastos'
+tooltip-project-cost-amount: 'Tukuyin ang halaga sa napiling pera ng kung ano ang iyong isinasaalang-alang ang halagang ito. Huwag gumamit ng mga puntos para sa libu-libong pigura ok?'
+tooltip-project-cost-cost: 'Magpasok ng pamagat bilang mapaglarawan hangga''t maaari sa halagang ito.'
+tooltip-project-cost-dates: 'Ipahiwatig sa pagitan ng mga petsa kung kailan mo kinakalkula na ang gawaing ito ay gagawin o sakupin ang gastos na iyon. Planuhin ito simula hindi mas maaga kaysa sa dalawang buwan mula ngayon, dahil kailangan mong isaalang-alang ang deadline upang repasuhin ang panukala, i-publish ito kung ito ay napili at 40 araw pagkatapos ng unang pagtustos. Huwag isama sa kalendaryong ito ang agenda ng dating binuo bagaman mabuti na ipaliwanag mo ito sa paglalarawan ng proyekto. Sa agenda, interesado lang kami sa mga yugto na nananatiling tapos na at humingi ng co-financed.'
+tooltip-project-cost-description: 'Ipaliwanag nang maikli kung ano ang binubuo ng gastos na ito.'
+tooltip-project-cost-required: 'Ang puntong ito ay napakahalaga: sa bawat gastos na ipinasok mo kailangan mong markahan kung ito ay mahalaga o karagdagang. Ang lahat ng mga gastos na minarkahan bilang mahalaga ay idaragdag sa pagbibigay ng halaga ng minimum na halaga ng financing para sa proyekto. Gayunpaman, ang kabuuan ng mga karagdagang gastos ay maaaring makuha sa ikalawang yugto ng pagtustos, matapos makuha ang mahahalagang pondo.'
+tooltip-project-cost-type: 'Narito dapat mong tukuyin ang uri ng gastos: naka-link sa isang gawain (isang bagay na nangangailangan ng kasanayan o kaalaman ng isang tao), pagkuha ng materyal (consumables, hilaw na materyales) o imprastraktura (mga puwang, kagamitan, kasangkapan).'
