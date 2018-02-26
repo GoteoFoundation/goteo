@@ -194,3 +194,20 @@ dashboard-project-delete-image: 'Tanggalin ang file'
 dashboard-project-delete-image-confirm: 'Sigurado ka bang gusto mong tanggalin ang file na ito?'
 dashboard-project-delete-default-image: "Ang default na imahe ay hindi maaaring matanggal.\nPumili ng isa pang default na imahe bago tanggalin ang isang ito."
 dashboard-project-dnd-image: 'I-drag at i-drop ang isa o higit pang mga larawan dito'
+dashboard-project-dnd-file: 'I-drag at i-drop ang isa o higit pang mga file dito'
+dashboard-project-image-delete-ko: 'Hindi mabura ang larawan!'
+project-upload-images-some-ko: 'Ang ilang mga larawan ay hindi nai-upload!'
+dashboard-project-default-image-confirm: 'Gusto mo bang ilagay ang default na imahe ng proyekto?'
+dashboard-project-image-default-ko: 'Hindi mailagay ang default na imahe!'
+dashboard-project-image-reorder-ko: 'Ang mga imahe ay hindi maaaring pinagsunod-sunod!'
+dashboard-project-send-to-markdown: "Ipasok ang larawang ito sa teksto"
+dashboard-max-files-reached: "Naabot mo na ang maximum na bilang ng mga file!"
+dashboard-file-type-error: "Hindi pinapayagan ang ganitong uri ng file!"
+all-files-uploaded: "Na-upload nang tama ang lahat ng mga file"
+uploaded-ok: "Na-upload nang tama"
+publish-confirm-yes: "Gusto mo bang i-publish ang post na ito?"
+publish-confirm-no: "Gusto mo bang i-publish ang post na ito?"
+dashboard-project-support-empty: 'Walang kahilingan para sa mga pakikipagtulungan.'
+dashboard-project-support-responses: Sagot
+dashboard-project-support-no-responses: 'Wala pang mga sagot.'
+dashboard-project-support-add: 'Magdagdag ng bagong kahilingan sa pakikipagtulungan'
