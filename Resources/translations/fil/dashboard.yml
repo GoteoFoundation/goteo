@@ -16,3 +16,17 @@ dashboard-certificates-data-alert: 'Tandaan na kapag nakumpirma na, ang data ay 
 dashboard-certificates-data-desc: 'Mangyaring tiyaking tama ang datos ng anyo at kumpirmahin ang anyo'
 dashboard-certificates-data-download-all: 'Kumpirmahin ang iyong mga sertipiko upang maisaaktibo ang pagbawas sa buwis. Sa sandaling tapos na maaari mong i-download ang isang kopya ng mga ito. Taun-taon ay ginagawa ng Goteo Foundation ang abiso sa Treasury ng lahat ng nakumpirma na mga donasyon.'
 dashboard-certificates-data-new-invests: 'Ngunit huwag mag-alala, anumang bagong kontribusyon na gagawin mo sa Goteo ay bubuo ng isang bagong sertipiko'
+dashboard-certificates-desc: 'Ang mga sertipiko ay magbibigay-daan sa iyo na ibawas sa iyong pahayag ng kita kung ikaw ay isang nagbabayad ng buwis sa estado ng Espanyol.'
+dashboard-certificates-details: 'Tingnan ang mga detalye'
+dashboard-certificates-details-desc: 'Listahan ng mga kontribusyon para sa sertipiko ng%CERT%'
+dashboard-certificates-download: 'Kumpirmahin at i-download'
+dashboard-certificates-empty: 'Dapat kang gumawa ng kontribusyon sa isang proyekto o i-reload ang virtual wallet upang makita ang iyong mga sertipiko'
+dashboard-certificates-expired: Nag-expire na
+dashboard-certificates-no-pending: 'Walang nakabinbing kontribusyon'
+dashboard-certificates-pending: Nakabinbin
+dashboard-certificates-pending-desc: 'Ito ang mga kontribusyon na isasama sa mga sertipiko sa hinaharap.'
+dashboard-certificates-please-confirm: 'Dapat mong suriin ang kahon upang magpatuloy'
+dashboard-certificates-summary: 'Certificate%ID%, Taon%YEAR%'
+dashboard-certificates-too-old: 'Ang sertipiko na ito ay masyadong luma at hindi mababago. Kung mayroon kang anumang mga katanungan, makipag-ugnay sa amin'
+dashboard-certificates-totals: '%NUM% na kontribusyon,%AMOUNT%'
+dashboard-certificates-unconfirmed: 'Upang i-download ang sertipiko na ito dapat mong kumpirmahin ang datos muna!'
