@@ -1978,6 +1978,7 @@ class Call extends \Goteo\Core\Model {
         $fields = array(
               'limit1', // tipo limite riego primera ronda
               'limit2', // tipo limite riego segunda ronda
+              'unique_user_drop', // a user only drop once
               'buzz_first', // Solo primer hashtag en el buzz
               'buzz_own', // Tweets  propios en el buzz
               'buzz_mention', // Menciones en el buzz
@@ -1987,7 +1988,7 @@ class Call extends \Goteo\Core\Model {
               'date_stage1', // Date stage 1
               'date_stage1_out', // Date finish stage 1
               'date_stage2', // Date stage 2
-              'date_stage3' // Date stage 3
+              'date_stage3' // Date stage 3,
               );
 
 
