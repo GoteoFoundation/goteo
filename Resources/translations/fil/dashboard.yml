@@ -125,3 +125,18 @@ dashboard-rewards-issue: Insidente!
 dashboard-rewards-massive_msg: 'Mga kolektibong mensahe'
 dashboard-rewards-massive_msg-all: 'Sa lahat ng kapwa nag-pupundo ng proyektong ito'
 dashboard-rewards-massive_msg-all_alert: 'lahat ay lahat, ay hindi isinasaalang-alang ang natitirang bahagi ng minarkahan'
+dashboard-rewards-notice: 'ITO AY ISANG VISUALISASYON NG MGA OPTION NG RETURN NA PUMILI NG IYONG KAPWA NAG-PUPUNDO.<br>HINDI KA KAILANGANG GUMAGAMIT NG MGA NAGBABAGO HANGGANG NAKUHA MO SA MINIMUM NA HALAGA ANG MGA DESISYONG'
+dashboard-rewards-num_taken: 'Nakatuon '
+dashboard-rewards-pending_filter: Hikaw
+dashboard-rewards-pending_status: Nakabinbin
+dashboard-rewards-process: 'Ilapat ang minarkahan'
+dashboard-rewards-process_alert: 'Mata! Kapag ang pagmamarka ay natutupad, hindi ito maiiwasan. Patuloy na namin?'
+dashboard-rewards-resign_filter: Mga donasyon
+dashboard-rewards-resigns: 'Pagwawaksi ng gantimpala'
+dashboard-rewards-reward_order: 'Sa pagbabalik'
+dashboard-rewards-thanks: 'Pagkilala / Donasyon'
+dashboard-rewards-user_msg: 'Indibidwal sa '
+dashboard-rewards-user_order: 'Sa pamamagitan ng gumagamit'
+dashboard-translate-doing_call: 'Isinasalin mo ang tawag na <strong>%s</strong>. Ang orihinal na wika ay <strong>%s</strong>'
+dashboard-translate-doing_node: 'Isinasalin mo ang node <strong>%s</strong>. Ang orihinal na wika ay <strong> Espanyol </strong>'
+dashboard-translate-doing_profile: 'Isinasalin mo ang iyong personal na profile.'
