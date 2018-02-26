@@ -1,1 +1,10 @@
 ---
+cost-type-lend: Pautang
+cost-type-material: Materyal
+cost-type-structure: Imprastraktura
+cost-type-task: Task
+costs-field-amount: Lakas ng loob
+costs-field-cost: Gastos
+costs-field-date_from: Mula sa
+costs-field-date_until: Up
+costs-field-dates: Mga petsa
