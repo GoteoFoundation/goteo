@@ -69,6 +69,17 @@ dashboard-menu-projects-commons: Ibinabalik
 dashboard-menu-projects-contract: Kontrata
 dashboard-menu-projects-social-commitment: 'Panlipunan pangako'
 dashboard-menu-projects-messegers: Mga kalahok
+dashboard-menu-projects-preview: 'Pampublikong pahina'
+dashboard-menu-projects-rewards: Mga kapwa pinanser
+dashboard-menu-projects-summary: Buod
+dashboard-menu-projects-supports: Mga pakikipagtulungan
+dashboard-menu-projects-updates: Balita
+dashboard-menu-projects-widgets: Mga widget
+dashboard-menu-review_board: Pagbabago
+dashboard-menu-translate_board: Pagsasalin
+dashboard-menu-translates: 'Aking Mga Pagsasalin'
+dashboard-messegers-mail-sendto: 'Ipinadala sa %s ang mga kalahok:'
+dashboard-my-wallet-available: 'Kasalukuyan kang mayroong <span class="pool-amount"%s></span>class = "pool-desc">en sa iyong drip purse </span>'
 dashboard-project-updates-inserted: 'Ang isang bagong entry ay naidagdag'
 dashboard-project-updates-noblog: 'Walang nakitang blog para sa proyektong ito'
 dashboard-project-updates-nopost: 'Ang entry ay hindi natagpuan'
