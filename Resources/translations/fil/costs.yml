@@ -8,3 +8,9 @@ costs-field-cost: Gastos
 costs-field-date_from: Mula sa
 costs-field-date_until: Up
 costs-field-dates: Mga petsa
+costs-field-description: Paglalarawan
+costs-field-required_cost: 'Ang gastos na ito ay'
+costs-field-required_cost-no: Karagdagang
+costs-field-required_cost-yes: Mahalagang
+costs-field-resoure: 'Iba pang mapagkukunan'
+costs-field-schedule: 'Agenda ng trabaho'
