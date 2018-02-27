@@ -35,10 +35,10 @@ $(function(){
     //     target: { title: 'title', content: prontoTarget }
     // });
 
-    $.pronto({
-        selector: '#admin-content a',
-        target: { title: 'title', content: '#admin-content' }
+    $('#main').on('click', 'a.pronto', function(e){
+        $.pronto('defaults', {
+            target: { title: 'title', content: '#admin-content' }
+        });
     });
-
 });
 

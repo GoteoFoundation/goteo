@@ -30,8 +30,13 @@ abstract class Controller {
     /**
      * Handy method to send a response from a view
      */
-    public function viewResponse($view, $vars = [], $status = 200) {
-        return new Response(View::render($view, $vars), $status);
+    public function viewResponse($view, $vars = [], $status = 200, $contentType = 'text/html') {
+        $view = View::render($view, $vars);
+        $request = App::getRequest();
+        if($request->query->has('pronto') && (App::debug() || $request->isXmlHttpRequest())) {
+            $contentType = 'application/json';
+        }
+        return new Response($view, $status, ['Content-Type' => $contentType]);
     }
 
     /**
