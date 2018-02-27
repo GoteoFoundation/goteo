@@ -19,7 +19,7 @@ use Goteo\Application\View;
 use Goteo\Core\Model;
 use Goteo\Model\Project;
 use Goteo\Model\Node;
-use Goteo\Library\Currency;
+use Goteo\Application\Currency;
 use Goteo\Library\Text;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Response;

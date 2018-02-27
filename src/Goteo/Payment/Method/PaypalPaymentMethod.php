@@ -11,7 +11,7 @@
 namespace Goteo\Payment\Method;
 
 use Goteo\Application\Config;
-use Goteo\Library\Currency;
+use Goteo\Application\Currency;
 
 /**
  * Creates a Payment Method that uses Paypal provider
