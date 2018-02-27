@@ -27,6 +27,10 @@ abstract class AbstractAdminController extends \Goteo\Core\Controller implements
     public function __construct() {
         // changing to a responsive theme here
         View::setTheme('responsive');
+        View::getEngine()->useContext('admin', [
+            'module' => static::getId(),
+            'module_label' => static::getLabel()
+        ]);
     }
 
     /**

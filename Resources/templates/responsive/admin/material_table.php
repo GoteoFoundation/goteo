@@ -54,7 +54,7 @@ $list = $this->model_list_entries($this->list);
       </table>
       </div>
 
-      <?= $this->insert('partials/utils/paginator', ['total' => $this->total, 'limit' => $this->limit ? $this->limit : 10]) ?>
+      <?= $this->insert('partials/utils/paginator', ['total' => $this->total, 'limit' => $this->limit ? $this->limit : 10, 'a_extra' => 'class="pronto"']) ?>
 
     <?php else: ?>
         <p class="alert alert-info"><?= $this->text('admin-empty-list') ?></p>

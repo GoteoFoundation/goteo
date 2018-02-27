@@ -25,6 +25,10 @@ class UsersAdminController extends AbstractAdminController {
                 ['_controller' => __CLASS__ . "::listAction"]
             ),
             new Route(
+                '/manage/{uid}',
+                ['_controller' => __CLASS__ . "::manageAction"]
+            ),
+            new Route(
                 '/stats',
                 ['_controller' => __CLASS__ . "::statsAction"]
             )
@@ -48,13 +52,20 @@ class UsersAdminController extends AbstractAdminController {
 
         return $this->viewResponse('admin/material_table', [
             'list' => $users,
-            'link_prefix' => '/users/edit/',
+            'link_prefix' => '/users/manage/',
             'total' => $total,
             'limit' => $limit,
             'filter' => [
                 '_action' => '/users',
-                'q' => Text::get('global-search')
+                'q' => Text::get('regular-search')
             ]
+        ]);
+    }
+
+    public function manageAction($uid, Request $request) {
+        $user = User::get($uid);
+        return $this->viewResponse('admin/users/manage', [
+            'user' => $user
         ]);
     }
 

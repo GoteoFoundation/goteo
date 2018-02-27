@@ -10,7 +10,7 @@ $class = $this->class ?: 'text';
 if($this->last) $class .= ' last';
 
 if($link): ?>
-    <a href="<?= $link ?>" class="<?= $class ?>"><?= $value ?></a>
+    <a href="<?= $link ?>" class="pronto <?= $class ?>"><?= $value ?></a>
 <?php else: ?>
     <span class="<?= $class ?>"><?= $value ?></span>
 <?php endif ?>
