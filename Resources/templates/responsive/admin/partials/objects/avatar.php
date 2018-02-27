@@ -1,1 +1,1 @@
-<?= $this->insert('admin/partials/objects/text', ['value' => $this->raw('value'), 'link' => $this->link, 'class' => 'avatar']) ?>
+<?= $this->insert('admin/partials/objects/text', ['value' => '<img class="img-circle avatar" src="' . $this->value . '">', 'link' => $this->link, 'class' => 'avatar']) ?>

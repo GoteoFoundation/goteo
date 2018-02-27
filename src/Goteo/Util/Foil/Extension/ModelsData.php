@@ -71,9 +71,9 @@ class ModelsData implements ExtensionInterface
             $item = [];
             if($ob instanceOf Model\User) {
                 $item['id'] = $ob->id;
+                $item['avatar'] = $ob->avatar->name ? $ob->avatar->getLink(64, 64) : '';
                 $item['name'] = $ob->name;
                 $item['email'] = $ob->email;
-                $item['avatar'] = $ob->avatar->id ? $ob->avatar->getLink(50, 50) : '';
                 $item['roles'] = $ob->getRoles()->getRoleNames();
             }
             $array[] = $item;

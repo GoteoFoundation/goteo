@@ -40,16 +40,21 @@ class UsersAdminController extends AbstractAdminController {
 
 
     public function listAction(Request $request) {
-        $filters = [];
+        $filters = ['global' => $request->query->get('q')];
         $limit = 25;
         $page = $request->query->get('pag') ?: 0;
         $users = User::getList($filters, [], $page * $limit, $limit);
         $total = User::getList($filters, [], 0, 0, true);
-        return $this->viewResponse('admin/generic_list', [
+
+        return $this->viewResponse('admin/material_table', [
             'list' => $users,
             'link_prefix' => '/users/edit/',
             'total' => $total,
-            'limit' => $limit
+            'limit' => $limit,
+            'filter' => [
+                '_action' => '/users',
+                'q' => Text::get('global-search')
+            ]
         ]);
     }
 
