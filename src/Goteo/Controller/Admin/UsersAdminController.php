@@ -57,7 +57,7 @@ class UsersAdminController extends AbstractAdminController {
             'limit' => $limit,
             'filter' => [
                 '_action' => '/users',
-                'q' => Text::get('regular-search')
+                'q' => Text::get('admin-users-global-search')
             ]
         ]);
     }

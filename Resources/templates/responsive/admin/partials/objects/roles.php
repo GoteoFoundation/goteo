@@ -12,7 +12,7 @@ $value = is_array($this->value) ? $this->value : [$this->value];
     elseif('consultant' === $v) $class = 'warning';
     elseif('manager' === $v) $class = 'primary';
     elseif('translator' === $v) $class = 'success';
-    elseif('checker' === $v) $class = 'info';
+    elseif('user' !== $v) $class = 'info';
 
     echo "<span class=\"label label-$class\">$v</span> ";
   }

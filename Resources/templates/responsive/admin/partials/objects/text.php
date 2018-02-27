@@ -7,7 +7,6 @@ $link = $this->link;
 if(is_array($this->value)) $value = implode(', ', $value);
 
 $class = $this->class ?: 'text';
-if($this->last) $class .= ' last';
 
 if($link): ?>
     <a href="<?= $link ?>" class="pronto <?= $class ?>"><?= $value ?></a>

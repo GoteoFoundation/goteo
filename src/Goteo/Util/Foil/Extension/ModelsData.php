@@ -75,6 +75,15 @@ class ModelsData implements ExtensionInterface
                 $item['name'] = $ob->name;
                 $item['email'] = $ob->email;
                 $item['roles'] = $ob->getRoles()->getRoleNames();
+                $item['amount'] = $ob->amount;
+                // $item['num_owned'] = $ob->num_owned;
+                // $item['num_invested'] = $ob->num_invested;
+                $projects = $ob->getProjectNames();
+                if($projects) {
+                    $item['roles'][] = 'owner';
+                }
+                $item['info'] = $projects;
+
             }
             $array[] = $item;
         }
