@@ -40,7 +40,7 @@ ul.generic-list {
       // font-weight: 300;
       min-width: 200px;
     }
-    &.last {
+    &::last-child {
       position: absolute;
       top: 2px;
       right: 2px;

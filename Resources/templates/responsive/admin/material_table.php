@@ -36,18 +36,14 @@ $list = $this->model_list_entries($this->list);
             <tr>
             <?php
             $t = count($entry);
-            $i = 1;
             foreach($entry as $key => $val):
                 $vars = ['value' => $val, 'last' => false, 'link' => '', 'class' => '', 'entry' => $entry];
                 if($link_prefix && $entry['id']) $vars['link'] = $link_prefix . $entry['id'];
-                if($i === $t) $vars['last'] = true;
                 // Skip avatar (shown on name object)
                 if($key === 'avatar' && isset($entry['name'])) continue;
             ?>
                 <td data-title="<?= $this->text("admin-title-$key") ?>"><?= $this->insertIf("admin/partials/objects/$key", $vars) ?: $this->insert("admin/partials/objects/text", $vars) ?></td>
-            <?php $i++;
-            endforeach;
-            ?>
+            <?php endforeach ?>
             </tr>
         <?php endforeach ?>
         </tbody>

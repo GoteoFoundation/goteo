@@ -273,11 +273,13 @@ for the JavaScript code in this page.
 			error = "User error",
 			response = null;
 
-		if (hashIndex > -1) {
-			hash = (queryIndex > -1) ? url.slice(hashIndex, queryIndex) : url.slice(hashIndex);
-		}
+        if (hashIndex > -1) {
+            hash = (queryIndex > -1) ? url.slice(hashIndex, queryIndex) : url.slice(hashIndex);
+        }
 
-		data[ options.requestKey ] = true;
+        data[ options.requestKey ] = true;
+
+        console.log(url, url.slice( queryIndex + 1 ), data);
 
 		// Request new content
 		request = $.ajax({

@@ -19,7 +19,12 @@ blockquote {
     to {width: 100%;}
 }
 
-.loading-container {
+@keyframes loading-bar-padding {
+    from {width: 0%;}
+    to {width: calc(100% - 30px);}
+}
+
+.loading-container, .pronto-loading {
     position: relative;
     &::before {
         z-index: 1000;
@@ -36,7 +41,14 @@ blockquote {
         @include animation-duration (1s);
         @include animation-iteration-count (infinite);
     }
+    &.pronto-loading::before {
+        // margin: 0 20px;
+        left: 15px;
+        @include animation-name (loading-bar-padding);
+
+    }
 }
+
 .spacer {
     margin-top: 40px;
 }
