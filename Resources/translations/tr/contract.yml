@@ -91,9 +91,9 @@ contract-final-paypal_owner: 'PayPal hesap sahibi'
 contract-final-bank: 'Proje banka hesabı'
 contract-final-bank_owner: 'Hesap sahibi'
 contract-final-close: 'Verileri kapat ve sözleşmeye işlem yap'
-contract-validation-ok: 'Sözleşme doğru görünüyor. Lütfen verileri gözden geçiriniz ve verileri kapatarak işlemi tamamlayınız.'
+contract-validation-ok: Sözleşme doğru görünüyor. Lütfen verileri gözden geçiriniz ve verileri kapatarak işlemi tamamlayınız.
 contract-non-available: 'Sözleşme henüz mevcut değil!'
-contract-validation-errors: 'Sözleşme henüz tamamlanmamış!'
+contract-validation-errors: Sözleşme henüz tamamlanmamış!
 contract-validation-error-promoter: 'Organizatörde eksik alanlar var'
 contract-validation-error-promoter_nif: ' NIF yanlış '
 contract-validation-error-entity: 'Varlıkta eksik alanlar var'
