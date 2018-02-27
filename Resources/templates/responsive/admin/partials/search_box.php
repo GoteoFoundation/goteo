@@ -14,5 +14,5 @@ $method = $filter['_method'] ? $filter['_method'] : 'get';
       </div>
     <?php endforeach ?>
 
-    <button type="submit" class="btn btn-cyan"><i class="fa fa-search" title="<?= $this->text('regular-search') ?>"></i></button>
+    <button type="submit" class="btn btn-cyan" title="<?= $this->text('regular-search') ?>"><i class="fa fa-search"></i></button>
 </form>

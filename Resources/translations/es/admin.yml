@@ -98,8 +98,12 @@ admin-home-title: Administrar Goteo
 admin-list: Listado
 admin-stats: Estadísticas
 admin-list-total: 'Total: <strong>%s</strong> resultados'
+
+admin-users-global-search: 'Id, nombre, email o proyecto'
 admin-title-id: Id
 admin-title-name: Nombre
 admin-title-email: Email
 admin-title-avatar: Avatar
 admin-title-roles: Roles
+admin-title-amount: Invertido
+admin-title-info: Info

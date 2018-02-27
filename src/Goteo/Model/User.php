@@ -808,7 +808,8 @@ class User extends \Goteo\Core\Model {
             $values[':id'] = $filters['id'];
         }
         if (!empty($filters['global'])) {
-            $sqlFilter[] = "(id LIKE :global OR name LIKE :global OR email LIKE :global)";
+            $sqlFilter[] = "(id LIKE :global OR name LIKE :global OR email LIKE :global OR
+                             (SELECT CONCAT(GROUP_CONCAT(id), '', GROUP_CONCAT(name)) FROM project WHERE project.owner=user.id) LIKE :global)";
             $values[':global'] = '%' . $filters['global'] . '%';
         }
         if (!empty($filters['name'])) {
@@ -1229,6 +1230,22 @@ class User extends \Goteo\Core\Model {
         if($this->rolesInstance) return $this->rolesInstance;
         $this->rolesInstance = UserRoles::getRolesForUser($this);
         return $this->rolesInstance;
+    }
+
+
+    /**
+     * Returns project names owned by the user
+     * @return [type] [description]
+     */
+    public function getProjectNames() {
+        if($this->projectNames) return $this->projectNames;
+        $query = self::query('SELECT p.id, p.name FROM project p WHERE p.owner = ? ORDER BY p.name', $this->id);
+        $this->projectNames = [];
+        foreach ($query->fetchAll(\PDO::FETCH_OBJ) as $p) {
+            $this->projectNames[$p->id] = $p->name;
+        }
+
+        return $this->projectNames;
     }
 
     /**
