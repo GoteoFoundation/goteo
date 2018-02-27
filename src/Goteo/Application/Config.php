@@ -14,6 +14,7 @@ use Goteo\Application\Config\ConfigException;
 use Goteo\Application\Config\YamlSettingsLoader;
 use Goteo\Console\UsersSend;
 use Goteo\Core\Model;
+use Goteo\Application\Currency;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\Config\Loader\DelegatingLoader;
 use Symfony\Component\Config\Loader\LoaderResolver;
@@ -63,6 +64,14 @@ class Config {
 			if (is_array($locales) && $locales) {
 				Lang::setLangsAvailable($locales);
 			}
+            // load the currency configuration
+            $currencies = self::loadFromYaml(__DIR__ . '/../../../Resources/currencies.yml');
+            if (is_array($currencies) && $currencies) {
+                Currency::setCurrenciesAvailable($currencies);
+            }
+            if (self::get('currency')) {
+                Currency::setDefault(self::get('currency'));
+            }
 
 			// load translations
 			foreach (Lang::listAll('name', false) as $lang => $name) {

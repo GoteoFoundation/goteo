@@ -7,7 +7,7 @@ use Goteo\Application\Lang;
 use Goteo\Application\Config;
 use Goteo\Application\Cookie;
 use Goteo\Core\Model;
-use Goteo\Library\Currency;
+use Goteo\Application\Currency;
 use Symfony\Component\HttpFoundation\Request;
 
 class WebProcessor

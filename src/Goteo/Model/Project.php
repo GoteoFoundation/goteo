@@ -21,7 +21,7 @@ namespace Goteo\Model {
     use Goteo\Library\Check;
     use Goteo\Library\Text;
     use Goteo\Library\Feed;
-    use Goteo\Library\Currency;
+    use Goteo\Application\Currency;
     use Goteo\Model\Project\Account;
     use Goteo\Model\Project\ProjectLocation;
     use Goteo\Model\Location\LocationInterface;
@@ -1380,7 +1380,7 @@ namespace Goteo\Model {
          */
         public function setCurrency() {
 
-            if ($this->currency == Currency::DEFAULT_CURRENCY) {
+            if ($this->currency == Currency::getDefault('id')) {
 
                 $this->currency_rate = 1;
 

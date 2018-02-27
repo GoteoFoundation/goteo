@@ -521,9 +521,10 @@ abstract class Model {
         if(!$lang) {
             return ["`$table`.`".implode("`,\n`$table`.`", $fields).'`', ''];
         }
-        $fallback_lang = Lang::getDefault($lang);
+        $fallback_lang = Lang::getFallback($lang);
         $default_lang = ($lang_model && !$model_join_id) ? $lang_model : Config::get('sql_lang');
         $sql_fields = [];
+        // echo "\nSQL_LANG[" . Config::get('sql_lang') ."] LANG_MODE: [$lang_model] FALLBACK: [$fallback_lang]\n";
         $sql_joins = [];
         foreach($fields as $field) {
             if(!$lang_model && !$model_join_id) {

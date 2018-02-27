@@ -107,7 +107,7 @@ class Converter {
             $mailHandler = new Mail();
             $mailHandler->to = Config::getMail('fail');
             $mailHandler->subject = 'No coge divisas '.$this->source;
-            $mailHandler->content = 'Library\Currency->getData  no obtiene feed desde '.$feed_url.' la respuesta es de '.strlen($response['body']);
+            $mailHandler->content = 'Application\Currency->getData  no obtiene feed desde '.$feed_url.' la respuesta es de '.strlen($response['body']);
             $mailHandler->html = false;
             $mailHandler->template = null;
             $mailHandler->send();
@@ -132,7 +132,7 @@ class Converter {
                         $mailHandler = new Mail();
                         $mailHandler->to = Config::getMail('fail');
                         $mailHandler->subject = 'No coge divisas';
-                        $mailHandler->content = 'Library\Currency->getData  no obtiene valor para '.$rate["currency"].' <pre>'.print_r($rate , 1).'</pre>';
+                        $mailHandler->content = 'Application\Currency->getData  no obtiene valor para '.$rate["currency"].' <pre>'.print_r($rate , 1).'</pre>';
                         $mailHandler->html = false;
                         $mailHandler->template = null;
                         $mailHandler->send();

@@ -21,7 +21,7 @@ use Goteo\Application\Lang;
 use Goteo\Application\Message;
 use Goteo\Application\Session;
 use Goteo\Application\Exception\ModelException;
-use Goteo\Library\Currency;
+use Goteo\Application\Currency;
 use Goteo\Library\Feed;
 use Goteo\Library\FeedBody;
 use Goteo\Library\Text;

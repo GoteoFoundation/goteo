@@ -173,6 +173,9 @@ class Lang {
      */
     static public function getDefault($lang = '', $only_public = true) {
         $default = static::isPublic(static::$default) ? static::$default : '';
+
+        if(empty($default) && static::exists(Config::get('lang'))) $default = Config::get('lang');
+
         foreach(static::$langs_available as $l => $info) {
             if($info['public'] || !$only_public) {
                 if(empty($default)) {
@@ -444,7 +447,11 @@ class Lang {
      */
     static function listCountries($lang = null) {
         if(!$lang) $lang = static::current();
-        $countries = include(__DIR__ . '/../../../vendor/openclerk/country-list/country/' . $lang . '/country.php');
+        if(is_file(__DIR__ . '/../../../vendor/openclerk/country-list/country/' . $lang . '/country.php')) {
+            $countries = include(__DIR__ . '/../../../vendor/openclerk/country-list/country/' . $lang . '/country.php');
+        } else {
+            $countries = include(__DIR__ . '/../../../vendor/openclerk/country-list/country/' . self::getFallback($lang) . '/country.php');
+        }
         if(!$countries) {
             $countries = include(__DIR__ . '/../../../vendor/openclerk/country-list/country/en/country.php');
         }
