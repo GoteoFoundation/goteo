@@ -10,6 +10,7 @@ $this->section('blog-content');
 ?>
 
 	<?= $this->insert('blog/partials/blog_header') ?>
+	<?= $this->insert('blog/partials/content') ?>
 
 
 <?php $this->replace() ?>

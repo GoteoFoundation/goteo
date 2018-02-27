@@ -27,16 +27,13 @@
 						<?= date_formater($this->post->date) ?>	
 					</span>					
 				<li>
+				<li class="social">
+					<a class="fa fa-twitter" title="" target="_blank" href=""></a>
+          			<a class="fa fa-facebook" title="" target="_blank" href=""></a>
+          			<a class="fa fa-telegram" title="" target="_blank" href=""></a>
+          			<a class="fa fa-whatsapp" title="" target="_blank" href=""></a>
 				</li>
 			</div>
-		</div>
-	</div>
-</div>
-
-<div class="section post-content">
-	<div class="container">
-		<div class="text">
-			<?= $this->markdown($this->post->text) ?>
 		</div>
 	</div>
 </div>
