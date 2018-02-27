@@ -24,6 +24,10 @@ translator-field-legend: Leenda
 translator-field-media: Medios
 translator-field-name: Nome
 translator-field-schedule: Horariu
+translator-field-text: Testu
+translator-field-title: Títulu
+translator-field-twitter_msg: 'Mensaje de Twitter'
+translator-field-twitter_msg_owner: 'Autor de Twitter'
 translator-field-url: URL
 translator-glossary: 'Glosariu de términos'
 translator-home: Portada
@@ -31,9 +35,12 @@ translator-lang-no-perms: 'Nun tienes permisu p''alministrar esta llingua'
 translator-license: Licencies
 translator-news: Noticies
 translator-no-langs: 'Nun tienen denguna llingua, contauta col alministrador'
+translator-only-pendings: 'Namái pendientes en:'
 translator-opentag: Agrupaciones
 translator-original-text: 'Testu orixinal'
 translator-page: Páxines
+translator-patron: 'Proyeutos apadrinaos'
+translator-pending: 'Pendiente de traducción'
 translator-post: Blogue
 translator-promote: 'Proyeutos destacaos'
 translator-save: 'Guardar y espublizar'
