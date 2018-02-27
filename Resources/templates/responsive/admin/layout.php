@@ -12,7 +12,7 @@ $this->section('content');
 // main layout. Therefore the main layout won't repeat them
 ?>
 
-<div class="admin">
+<div class="admin" id="admin-content">
 
     <?= $this->supply('admin-messages', $this->insert("partials/header/messages")) ?>
 
