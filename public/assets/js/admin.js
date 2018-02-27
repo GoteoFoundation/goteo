@@ -40,5 +40,20 @@ $(function(){
             target: { title: 'title', content: '#admin-content' }
         });
     });
+
+    $('#main').on('submit', 'form.pronto', function(e) {
+        var action = $(this).attr('action');
+        var method = $(this).attr('method').toLowerCase();
+        var query = $(this).serialize()
+                           .replace("+", " ")
+                           // .replace("*", "%2A")
+                           // .replace("%7E", "~")
+                           ;
+        console.log('submit', action, query, method, e);
+        if(method === 'get') {
+            $.pronto("load", action + '?' + query);
+        }
+        e.preventDefault();
+    });
 });
 

@@ -1,16 +1,20 @@
 <?php
 
-if(is_array($this->value)) $value = implode(', ', $this->value);
-
-$class = 'roles label';
-if($this->last) $class .= ' last';
-
-if(in_array('admin', $this->value)) $class .= ' label-danger';
-elseif(in_array('consultant', $this->value)) $class .= ' label-warning';
-elseif(in_array('manager', $this->value)) $class .= ' label-primary';
-elseif(in_array('translator', $this->value)) $class .= ' label-success';
-elseif(count($this->value) > 1) $class .= ' label-info';
-elseif(in_array('user', $this->value)) $class .= ' label-default';
+$value = is_array($this->value) ? $this->value : [$this->value];
 
 ?>
-<span class="<?= $class ?>"><?= $value ?></span>
+<span class="roles">
+<?php
+  foreach($value as $v) {
+    if(count($value) > 1 && $v === 'user') continue;
+    $class = 'default';
+    if(in_array($v, ['admin', 'superadmin'])) $class = 'danger';
+    elseif('consultant' === $v) $class = 'warning';
+    elseif('manager' === $v) $class = 'primary';
+    elseif('translator' === $v) $class = 'success';
+    elseif('checker' === $v) $class = 'info';
+
+    echo "<span class=\"label label-$class\">$v</span> ";
+  }
+?>
+</span>

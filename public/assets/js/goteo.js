@@ -56,7 +56,8 @@ function getTransitionOutDeferred() {
     transitionDeferred = $.Deferred();
 
     // Animate content out
-    $(prontoTarget).animate({ opacity: 0 }, 500, function() {
+    $(prontoTarget).addClass('pronto-loading');
+    $(prontoTarget).contents('*').animate({ opacity: 0 }, 200, function() {
         // Resolve active deferred
         transitionDeferred.resolve();
     });
@@ -86,7 +87,9 @@ function pageRendered(e) {
     goteo.trace("Render new page", e);
 
     // Animate content in
-    $(prontoTarget).animate({opacity: 1}, 500);
+    $(prontoTarget).contents('*').animate({opacity: 1}, 200, function() {
+        $(prontoTarget).removeClass('pronto-loading');
+    });
     // Deferred scroll to allow html elements in place
     // console.log('scroll-to:',prontoScroll, 'scroll-to-top:',$(prontoScroll).offset().top,'body-top:', $('html, body').scrollTop());
     if($('html, body').scrollTop() > $(prontoScroll).offset().top) {
