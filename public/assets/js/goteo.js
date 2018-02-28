@@ -100,6 +100,8 @@ function pageRendered(e) {
 function pageLoadError(e, error) {
     // Watch for load errors
     goteo.error("Error loading page", error);
+    $(prontoTarget).html('<div class="alert alert-danger" style="margin: 1em;">' + goteo.texts['ajax-load-error'].replace('%ERROR%', error) + '</div>');
+    $(prontoTarget).removeClass('pronto-loading');
 }
 
 

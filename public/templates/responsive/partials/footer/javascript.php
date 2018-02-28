@@ -26,6 +26,7 @@ goteo.user_location = <?= json_encode($this->get_user_location()) ?>;
 goteo.decimal = '<?= $this->get_currency('dec') ?>';
 goteo.thousands = '<?= $this->get_currency('thou') ?>';
 goteo.texts = goteo.texts || {};
+goteo.texts['ajax-load-error'] = '<?= $this->ee($this->text('ajax-load-error'), 'js') ?>';
 goteo.texts['regular-loading'] = '<?= $this->ee($this->text('regular-loading'), 'js') ?>';
 goteo.urlParams;
 (window.onpopstate = function () {
