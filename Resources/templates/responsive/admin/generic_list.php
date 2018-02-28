@@ -18,8 +18,8 @@ $link_prefix = $this->link_prefix ? '/admin' . $this->link_prefix : '';
         <?php
         $t = count($entry);
         foreach($entry as $key => $val) {
-            $vars = ['value' => $val, 'last' => false, 'link' => '', 'class' => ''];
-            if($link_prefix && $entry['id']) $vars['link'] = $link_prefix . $entry['id'];
+            $vars = ['value' => $val, 'ob' => $entry];
+            // if($link_prefix && $entry['id']) $vars['link'] = $link_prefix . $entry['id'];
             echo $this->insertIf("admin/partials/objects/$key", $vars) ?: $this->insert("admin/partials/objects/text", $vars);
         }
         ?>

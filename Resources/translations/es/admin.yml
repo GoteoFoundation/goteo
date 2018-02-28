@@ -102,6 +102,7 @@ admin-list-total: 'Total: <strong>%s</strong> resultados'
 admin-users-global-search: 'Id, nombre, email o proyecto'
 admin-title-id: Id
 admin-title-name: Nombre
+admin-title-fullname: Nombre
 admin-title-email: Email
 admin-title-avatar: Avatar
 admin-title-roles: Roles

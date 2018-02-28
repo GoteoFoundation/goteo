@@ -1,8 +1,9 @@
 <?php
 
 $value = $this->raw('value');
+$ob = $this->raw('ob');
 
-$link = $this->link;
+$link = $ob->getLink();
 
 if(is_array($this->value)) $value = implode(', ', $value);
 
