@@ -60,3 +60,5 @@ admin-project-derivation-discard: 'Discard and derivation'
 admin-project-derivation-discard-desc: 'Change the project status to Discard and sends an email derivating to others platforms'
 admin-project-derivation-discard-sure: 'The project will be discarded and the owner will receive an email derivating to other platforms, ok?'
 admin-home-title: Administrate Goteo
+
+admin-already-impersonating: 'You are already impersonating a user. Please close the session first!'

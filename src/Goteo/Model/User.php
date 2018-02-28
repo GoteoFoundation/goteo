@@ -1251,8 +1251,15 @@ class User extends \Goteo\Core\Model {
     /**
      * shortcut for UserRoles::hasPerm
      */
-    public function hasPerm($perm) {
-        return $this->getRoles()->hasPerm($perm);
+    public function hasPerm($perm, $model_val = null) {
+        return $this->getRoles()->hasPerm($perm, $model_val);
+    }
+
+    /**
+     * shortcut for UserRoles::hasRole
+     */
+    public function hasRole($role) {
+        return $this->getRoles()->hasRole($role);
     }
 
     /**
@@ -1462,6 +1469,26 @@ class User extends \Goteo\Core\Model {
         }
         // print_r($all_roles_nodes_raw);die;
         return $all_roles_nodes_raw;
+    }
+
+    /**
+     * Checks if this user can impersonate another
+     * @param  User   $user [description]
+     * @return [type]       [description]
+     */
+    public function canImpersonate(User $user) {
+        if($this->hasPerm('impersonate-everyone')) return true;
+        if(!$user->hasRole(['admin', 'superadmin', 'root']) && $this->hasPerm('impersonate-owners', $user->id)) return true;
+        // Admins cannot impersonate other admins
+        if(!$user->hasRole(['admin', 'superadmin', 'root']) && $this->hasPerm('impersonate-users', 'admin')) return true;
+        // Can superadmins impersonate other superadmins?
+        // Case Yes
+        if(!$user->hasRole('root') && $this->hasPerm('impersonate-users', 'superadmin')) return true;
+        // Case No
+        // if(!$user->hasRole(['superadmin', 'root']) && $this->hasPerm('impersonate-users', 'superadmin')) return true;
+        if(!$user->hasRole('root') && $this->hasPerm('impersonate-users', 'root')) return true;
+
+        return false;
     }
 
     /**

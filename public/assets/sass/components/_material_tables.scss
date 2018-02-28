@@ -155,16 +155,6 @@ $table-border-color:            #e0e0e0;
 // by vertical table-cell display. Only applies <768px. Everything above that will display normally.
 // For correct display you must add 'data-title' to each 'td'
 .table-responsive-vertical {
-
-  font-family: 'RobotoDraft', 'Roboto', 'Helvetica Neue, Helvetica, Arial', sans-serif;
-  font-style: normal;
-  font-weight: 300;
-  font-size: 1.4rem;
-  line-height: 2rem;
-  letter-spacing: 0.01rem;
-  color: #212121;
-  text-rendering: optimizeLegibility;
-
   // Some overrides
   img.avatar {
     max-width: 32px;
