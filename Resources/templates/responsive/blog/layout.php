@@ -7,6 +7,20 @@ $this->layout('layout', [
     'tw_image' =>  $this->post->image ? $this->post->image->getlink(400,0, false, true) : ''
     ]);
 
+
+
+$this->section('head');
+
+?>
+
+<link rel="stylesheet" href="/assets/vendor/selection-sharer/selection-sharer.css" />
+
+<?php
+
+$this->append();
+
+
+
 $this->section('header-navbar-brand');
 
 ?>
@@ -28,3 +42,14 @@ $this->section('content');
 </div>
 
 <?php $this->replace() ?>
+
+<?php $this->section('footer') ?>
+
+<link rel="stylesheet" href="/assets/vendor/selection-sharer/selection-sharer.js" />
+
+<script>
+	$('div').selectionSharer();
+</script>
+
+<?php $this->append() ?>
+

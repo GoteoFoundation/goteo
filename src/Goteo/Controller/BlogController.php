@@ -26,8 +26,6 @@ class BlogController extends \Goteo\Core\Controller {
 
     public function __construct() {
 
-        View::setTheme('responsive');
-
     }
 
     public function indexAction ($post = '', Request $request) {
@@ -89,7 +87,7 @@ class BlogController extends \Goteo\Core\Controller {
 
         // segun eso montamos la vista
 
-        return $this->viewResponse('blog/post', array(
+        return $this->viewResponse('blog/index', array(
                     'blog' => $blog,
                     'show' => $show,
                     'filters' => $filters,
@@ -102,6 +100,8 @@ class BlogController extends \Goteo\Core\Controller {
 
     public function postAction($post, Request $request)
     {
+        View::setTheme('responsive');
+
         $post=Post::get($post, Lang::current());
 
         return $this->viewResponse('blog/post', 
