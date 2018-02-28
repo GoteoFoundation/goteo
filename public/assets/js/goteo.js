@@ -49,6 +49,7 @@ var transitionDeferred;
 function getTransitionOutDeferred() {
     // Reject active deferred
     if (transitionDeferred) {
+        goteo.trace('rejecting current transition');
         transitionDeferred.reject();
     }
 
@@ -57,10 +58,14 @@ function getTransitionOutDeferred() {
 
     // Animate content out
     $(prontoTarget).addClass('pronto-loading');
-    $(prontoTarget).contents('*').animate({ opacity: 0 }, 200, function() {
-        // Resolve active deferred
+    if($(prontoTarget).contents('*').length) {
+        $(prontoTarget).contents('*').animate({ opacity: 0 }, 200, function() {
+            // Resolve active deferred
+            transitionDeferred.resolve();
+        });
+    } else {
         transitionDeferred.resolve();
-    });
+    }
 
     // Return active deferred
     return transitionDeferred;
@@ -68,30 +73,33 @@ function getTransitionOutDeferred() {
 
 function pageRequested(e) {
     // Update state to reflect loading
-    goteo.trace("Request new page", e);
+    goteo.trace("Request new page", e, 'prontoTarget:', prontoTarget);
 }
 
 function pageLoadProgress(e, percent) {
     // Update progress to reflect loading
-    goteo.trace("New page load progress", percent, e);
+    goteo.trace("New page load progress", percent, e, 'prontoTarget:', prontoTarget);
 }
 
 function pageLoaded(e) {
     // Unbind old events and remove plugins
-    goteo.trace("Destroy old page", e);
+    goteo.trace("Destroy old page", e, 'prontoTarget:', prontoTarget);
 }
 
 function pageRendered(e) {
     if(e === undefined) return;
     // Bind new events and initialize plugins
-    goteo.trace("Render new page", e);
+    goteo.trace("Render new page", e, 'prontoTarget:', prontoTarget);
 
-    // Animate content in
-    $(prontoTarget).contents('*').animate({opacity: 1}, 200, function() {
+    if($(prontoTarget).contents('*').length) {
+        // Animate content in
+        $(prontoTarget).contents('*').animate({opacity: 1}, 200, function() {
+            $(prontoTarget).removeClass('pronto-loading');
+        });
+    } else {
         $(prontoTarget).removeClass('pronto-loading');
-    });
-    // Deferred scroll to allow html elements in place
-    // console.log('scroll-to:',prontoScroll, 'scroll-to-top:',$(prontoScroll).offset().top,'body-top:', $('html, body').scrollTop());
+    }
+
     if($('html, body').scrollTop() > $(prontoScroll).offset().top) {
         $('html, body').animate({scrollTop: $(prontoScroll).offset().top}, 800);
     }
@@ -128,7 +136,7 @@ $(function(){
         } else if(prontoScroll !== prontoTarget) {
             prontoScroll = prontoTarget;
         }
-        // console.log('click',$(this).data('pronto-scroll-to'), prontoScroll);
+        console.log('pronto click',$(this).data('pronto-target'), prontoTarget, $(this).data('pronto-scroll-to'), prontoScroll);
         $.pronto('defaults', {
             target: { title: 'title', content: prontoTarget }
         });

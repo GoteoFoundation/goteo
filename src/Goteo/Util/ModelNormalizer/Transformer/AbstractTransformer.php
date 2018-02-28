@@ -24,6 +24,11 @@ abstract class AbstractTransformer extends \ArrayObject implements TransformerIn
         }
     }
 
+    public function getModelName() {
+        $class = get_class($this->model);
+        return basename(str_replace('\\', '/', strtolower($class)));
+    }
+
     public function getDefaultKeys() {
         return ['id', 'name'];
     }
@@ -47,7 +52,7 @@ abstract class AbstractTransformer extends \ArrayObject implements TransformerIn
         return $this->model->name ? $this->model->name : $this->model->title;
     }
 
-    public function getLink() {
+    public function getLink($type = 'public') {
         return '';
     }
 }

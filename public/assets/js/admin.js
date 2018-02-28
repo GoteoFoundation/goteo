@@ -26,22 +26,37 @@ for the JavaScript code in this page.
 /**
  * Document ready
  */
+
 $(function(){
+    var prontoLoad = function(href, target) {
+        target = target || '#admin-content';
+        prontoTarget = target;
+        prontoScroll = target;
+        console.log('admin pronto load into', prontoTarget, href);
 
-    // $.pronto({
-    //     selector: "a.pronto",
-    //     transitionOut: getTransitionOutDeferred,
-    //     jump: false,
-    //     target: { title: 'title', content: prontoTarget }
-    // });
-
-    $('#main').on('click', 'a.pronto', function(e){
         $.pronto('defaults', {
-            target: { title: 'title', content: '#admin-content' }
+            target: { title: 'title', content: prontoTarget }
         });
+        $.pronto('load', href);
+    };
+
+    // Some tweaks on pronto links
+    $('#main').off('click', 'a.pronto');
+    $('#main').on('click', 'a.pronto', function(e){
+        var href = $(this).attr('href');
+        if(href.indexOf('#') === 0) return;
+
+        var target = $(this).attr('target');
+        if(!target || href.indexOf('/admin/') === 0) {
+            e.preventDefault();
+            prontoLoad(href, '#admin-content');
+        }
     });
 
+    // Manage GET forms with pronto as well
     $('#main').on('submit', 'form.pronto', function(e) {
+        e.preventDefault();
+
         var action = $(this).attr('action');
         var method = $(this).attr('method').toLowerCase();
         var query = $(this).serialize()
@@ -51,9 +66,45 @@ $(function(){
                            ;
         console.log('submit', action, query, method, e);
         if(method === 'get') {
-            $.pronto("load", action + '?' + query);
+            prontoLoad(action + '?' + query, '#admin-content');
         }
+    });
+
+    // User table links
+    // $('#main').off('click', 'table.model-user a');
+    $('#main').on('click', 'table.model-user a', function(e) {
         e.preventDefault();
+        // e.stopPropagation();
+
+        var href = $(this).attr('href');
+        if(href.indexOf('#') === 0) return;
+
+        var $tb = $(this).closest('table');
+        var $tr = $(this).closest('tr');
+        var id = $tr.attr('id');
+        var cols = $tr.contents('td').length;
+        if($('#manage-' +  id).length) {
+            $tr.removeClass('active');
+            $('#manage-' +  id).slideUp(function(){
+                $(this).remove();
+            });
+            return;
+        }
+        var $new = $('<tr class="active"><td id="manage-' + id + '" colspan="' + cols +'"></td></tr>').insertAfter($tr.addClass('active'));
+        // Ajax load
+
+        if(href.indexOf('?') === -1) {
+            href += '?ajax';
+        } else {
+            href += '&ajax';
+        }
+        prontoLoad(href, '#manage-' + id);
+    });
+
+    // Manual initialization of collapse plugin to apply involved classes
+    $('.collapsable').collapse();
+    $(window).on("pronto.render", function(e){
+        $('.collapsable').collapse();
     });
 });
 

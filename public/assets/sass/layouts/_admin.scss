@@ -27,4 +27,30 @@
             }
         }
     }
+
+
+    // Custom classes
+    a.collapsable {
+      &::after {
+        font-family: FontAwesome;
+        content: "\f0d8";
+        margin: 0 5px;
+      }
+      &.collapsed::after {
+        content: "\f0d7";
+      }
+    }
+
+    .admin-list {
+
+      list-style: none;
+      button {
+        border: none;
+        padding: 0;
+        background: none;
+      }
+      li {
+        padding:0 0 10px 0;
+      }
+    }
 }

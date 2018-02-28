@@ -7,6 +7,7 @@ admin-account-change-user: 'Switch user'
 admin-account-change-user-confirm: 'Are you sure you want to change the user of the contribution? The new user will be:'
 admin-filters: 'Filters'
 admin-remove-filters: 'Remove filters'
+admin-impersonate: Impersonate
 admin-impersonate-user: Impersonate %s
 admin-project-express-discard: 'Express discard'
 admin-project-express-discard-desc: 'Change the project status to Discard and sends an email'

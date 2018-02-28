@@ -18,19 +18,19 @@ $list = $this->model_list_entries($this->list);
 
     <h5><?= $this->text('admin-list-total', $this->total) ?></h5>
 
-    <?php if($list): ?>
+    <?php if($list):
+        $first = current($list);
+    ?>
       <div class="table-responsive-vertical shadow-z-1">
-      <table class="material-table table-hover table-mc-cyan">
+      <table class="material-table table-hover model-<?= $first->getModelName() ?>">
         <thead><tr>
-        <?php
-        $entry = current($list);
-        foreach($entry->getDefaultKeys() as $key):?>
-            <th><?= $entry->getLabel($key) ?></th>
+        <?php foreach($first->getDefaultKeys() as $key):?>
+            <th><?= $first->getLabel($key) ?></th>
         <?php endforeach ?>
         </tr></thead>
         <tbody>
         <?php foreach($list as $entry): ?>
-            <tr>
+            <tr id="tr-<?= $entry->getId() ?>">
             <?php
             $t = count($entry);
             foreach($entry as $key => $val):
