@@ -75,8 +75,10 @@ admin-text-type-html: HTML
 admin-text-type-md: Markdown
 admin-text-type-plain: 'Texto simple'
 admin-user: Usuario
+admin-user-no-projects: 'No ha creado ningún proyecto todavía'
 admin-users: Usuarios
 admin-yes: Si
+admin-impersonate: Suplantar
 admin-impersonate-user: Suplantar a %s
 admin-project-express-discard: 'Rechazo express'
 admin-project-express-discard-desc: 'Pasa el proyecto a estado Descartado y manda un mail'

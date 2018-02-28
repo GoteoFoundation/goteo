@@ -1,12 +1,12 @@
 <?php
 
-if($this->is_pronto()):
+if($this->is_pronto()) {
     echo json_encode([
         'title' => 'Goteo.org :: Admin :: ' . $this->module_label,
         'content' => $this->supply('admin-messages', $this->insert("partials/header/messages")) . $this->supply('admin-content')
         ]);
     return;
-endif;
+}
 
 $this->layout('layout', [
     'bodyClass' => 'admin',

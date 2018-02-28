@@ -12,7 +12,8 @@ namespace Goteo\Util\Foil\Extension;
 
 use Foil\Contracts\ExtensionInterface;
 
-use Goteo\Core\Model;
+use Goteo\Core\Model as CoreModel;
+use Goteo\Model;
 use Goteo\Util\ModelNormalizer\ModelNormalizer;
 
 class ModelsData implements ExtensionInterface
@@ -70,7 +71,7 @@ class ModelsData implements ExtensionInterface
 
         foreach($list as $key => $ob) {
             $item = [];
-            if($ob instanceOf Model) {
+            if($ob instanceOf CoreModel) {
                 $normalizer = new ModelNormalizer($ob);
                 $array[] = $normalizer->get();
             }

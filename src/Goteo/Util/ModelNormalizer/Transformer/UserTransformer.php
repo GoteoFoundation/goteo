@@ -14,11 +14,6 @@ use Goteo\Model\User;
 /**
  * Transform a Model\User
 
-// $item['id'] = $ob->id;
-// $item['avatar'] = $ob->avatar->name ? $ob->avatar->getLink(64, 64) : '';
-// $item['name'] = $ob->name;
-// $item['email'] = $ob->email;
-// $item['roles'] = $ob->getRoles()->getRoleNames();
 // $item['amount'] = $ob->amount;
 // // $item['num_owned'] = $ob->num_owned;
 // // $item['num_invested'] = $ob->num_invested;
@@ -32,7 +27,7 @@ use Goteo\Model\User;
  */
 class UserTransformer extends AbstractTransformer {
     public function getDefaultKeys() {
-        return ['id', 'fullname', 'email', 'roles'];
+        return ['id', 'fullname', 'email', 'amount', 'roles'];
     }
 
     function getAvatar() {
@@ -50,7 +45,31 @@ class UserTransformer extends AbstractTransformer {
         return $this->model->email;
     }
 
+    function getAmount() {
+        return (int) $this->model->amount;
+    }
+
+    function getProjects() {
+        return $this->model->getProjectNames();
+    }
+
     function getRoles() {
-        return $this->model->getRoles()->getRoleNames();
+        $roles = $this->model->getRoles();
+        $names = $roles->getRoleNames();
+        if($projects = $this->getProjects()) {
+            $names['owner'] = $roles::getRoleName('owner');
+        }
+        return $names;
+    }
+
+    function getLink($type = 'public') {
+        if($type === 'admin') {
+            return '/admin/users/manage/' . $this->getId();
+        }
+        return '/user/profile/' . $this->getId();
+    }
+
+    function getInfo() {
+        return $this->getRoles();
     }
 }

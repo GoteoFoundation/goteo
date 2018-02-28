@@ -68,8 +68,8 @@ class GoteoCore implements ExtensionInterface
           'is_master_node' => [$this, 'is_master_node'],
           'get_query' => [$this, 'get_query'],
           'get_post' => [$this, 'get_post'],
-          'query_has' => [$this, 'query_has'],
-          'post_has' => [$this, 'post_has'],
+          'has_query' => [$this, 'has_query'],
+          'has_post' => [$this, 'has_post'],
           'get_uri' => [$this, 'get_uri'],
           'get_url' => [$this, 'get_url'],
           'get_pathinfo' => [$this, 'get_pathinfo'],
@@ -142,12 +142,12 @@ class GoteoCore implements ExtensionInterface
     }
 
     //Request (_GET) has var
-    public function query_has($var) {
+    public function has_query($var) {
         return self::getRequest()->query->has($var);
     }
 
     //Request (_POST) has var
-    public function post_has($var) {
+    public function has_post($var) {
         return self::getRequest()->request->has($var);
     }
 

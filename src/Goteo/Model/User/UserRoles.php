@@ -13,6 +13,7 @@ namespace Goteo\Model\User;
 use Goteo\Application\Role;
 use Goteo\Application\Exception\RoleException;
 use Goteo\Model\User;
+use Goteo\Library\Text;
 
 /**
  * Class UserRoles
@@ -31,6 +32,22 @@ class UserRoles extends \ArrayObject
         if(!$this->hasRole('user')) {
             $this->addRole('user');
         }
+    }
+
+    static public function getRoleName($key) {
+        return Text::get("role-name-$key");
+    }
+
+    static public function getPermName($key) {
+        return Text::get("role-perm-name-$key");
+    }
+
+    static public function getRolePerms($role_id) {
+        $perms = [];
+        foreach(Role::getRolePerms($role_id) as $perm) {
+            $perms[$perm] = static::getPermName($key);
+        }
+        return $perms;
     }
 
     /**
@@ -83,7 +100,11 @@ class UserRoles extends \ArrayObject
      * Returns an array of all roles names for the user
      */
     public function getRoleNames() {
-        return array_keys((array)$this);
+        $roles = [];
+        foreach($this as $role => $perms) {
+            $roles[$role] = static::getRoleName($role);
+        }
+        return $roles;
     }
 
     /**

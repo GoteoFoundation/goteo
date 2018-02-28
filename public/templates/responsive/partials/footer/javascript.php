@@ -1,5 +1,17 @@
 <!-- Bootstrap core JavaScript -->
-
+<?php if($this->debug()): ?>
+<script src="<?= SRC_URL ?>/assets/vendor/jquery-1.12.4.min.js"></script>
+<script src="<?= SRC_URL ?>/assets/vendor/jquery.mobile.custom.min.js"></script>
+<script src="<?= SRC_URL ?>/assets/vendor/bootstrap/dist/js/bootstrap.min.js"></script>
+<script src="<?= SRC_URL ?>/assets/vendor/pronto/jquery.fs.pronto-3.2.1.js"></script>
+<script src="<?= SRC_URL ?>/assets/vendor/hammerjs/hammer.min.js"></script>
+<script src="<?= SRC_URL ?>/assets/vendor/jquery-hammerjs/jquery.hammer.js"></script>
+<script src="<?= SRC_URL ?>/assets/vendor/clipboard/dist/clipboard.min.js"></script>
+<script src="<?= SRC_URL ?>/assets/vendor/moment/min/moment-with-locales.min.js"></script>
+<script src="<?= SRC_URL ?>/assets/vendor/eonasdan-bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min.js"></script>
+<script src="<?= SRC_URL ?>/assets/vendor/d3/d3.min.js"></script>
+<script src="<?= SRC_URL ?>/assets/vendor/footable/compiled/footable.min.js"></script>
+<?php else: ?>
 <script src="<?= SRC_URL ?>/assets/vendor/jquery-1.12.4.min.js"></script>
 <script src="<?= SRC_URL ?>/assets/vendor/jquery.mobile.custom.min.js"></script>
 <script src="<?= SRC_URL ?>/assets/vendor/bootstrap/dist/js/bootstrap.min.js"></script>
@@ -11,6 +23,7 @@
 <script src="<?= SRC_URL ?>/assets/vendor/eonasdan-bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min.js"></script>
 <script src="<?= SRC_URL ?>/assets/vendor/d3/d3.min.js"></script>
 <script src="<?= SRC_URL ?>/assets/vendor/footable/compiled/footable.min.js"></script>
+<?php endif ?>
 
 <!-- Goteo utils: Debug functions, some defaults -->
 <script type="text/javascript">

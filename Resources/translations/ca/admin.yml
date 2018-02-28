@@ -57,6 +57,7 @@ admin-sponsors: Serveis
 admin-status: Estat
 admin-user: Usuari
 admin-users: Usuaris
+admin-impersonate: Suplanta
 admin-impersonate-user: Suplanta a %s
 admin-project-express-discard: 'Rebuig express'
 admin-project-express-discard-desc: 'Passa el projecte a estat Descartat i envia un email'

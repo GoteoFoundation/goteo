@@ -41,6 +41,7 @@ admin-text-type-plain: 'Plaintext'
 admin-user: User
 admin-users: Users
 admin-yes: "Yes"
+admin-impersonate: Impersonate
 admin-impersonate-user: Impersonate %s
 admin-project-express-discard: 'Express discard'
 admin-project-express-discard-desc: 'Change the project status to Discard and sends an email'
