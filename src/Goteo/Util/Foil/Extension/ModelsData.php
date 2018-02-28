@@ -12,7 +12,8 @@ namespace Goteo\Util\Foil\Extension;
 
 use Foil\Contracts\ExtensionInterface;
 
-use Goteo\Model;
+use Goteo\Core\Model;
+use Goteo\Util\ModelNormalizer\ModelNormalizer;
 
 class ModelsData implements ExtensionInterface
 {
@@ -69,23 +70,10 @@ class ModelsData implements ExtensionInterface
 
         foreach($list as $key => $ob) {
             $item = [];
-            if($ob instanceOf Model\User) {
-                $item['id'] = $ob->id;
-                $item['avatar'] = $ob->avatar->name ? $ob->avatar->getLink(64, 64) : '';
-                $item['name'] = $ob->name;
-                $item['email'] = $ob->email;
-                $item['roles'] = $ob->getRoles()->getRoleNames();
-                $item['amount'] = $ob->amount;
-                // $item['num_owned'] = $ob->num_owned;
-                // $item['num_invested'] = $ob->num_invested;
-                $projects = $ob->getProjectNames();
-                if($projects) {
-                    $item['roles'][] = 'owner';
-                }
-                $item['info'] = $projects;
-
+            if($ob instanceOf Model) {
+                $normalizer = new ModelNormalizer($ob);
+                $array[] = $normalizer->get();
             }
-            $array[] = $item;
         }
         return $array;
     }

@@ -24,11 +24,8 @@ $list = $this->model_list_entries($this->list);
         <thead><tr>
         <?php
         $entry = current($list);
-        foreach($entry as $key => $val):
-            // Skip avatar (shown on name object)
-            if($key === 'avatar' && isset($entry['name'])) continue;
-        ?>
-            <th><?= $this->text("admin-title-$key") ?></th>
+        foreach($entry->getDefaultKeys() as $key):?>
+            <th><?= $entry->getLabel($key) ?></th>
         <?php endforeach ?>
         </tr></thead>
         <tbody>
@@ -37,12 +34,9 @@ $list = $this->model_list_entries($this->list);
             <?php
             $t = count($entry);
             foreach($entry as $key => $val):
-                $vars = ['value' => $val, 'last' => false, 'link' => '', 'class' => '', 'entry' => $entry];
-                if($link_prefix && $entry['id']) $vars['link'] = $link_prefix . $entry['id'];
-                // Skip avatar (shown on name object)
-                if($key === 'avatar' && isset($entry['name'])) continue;
+                $vars = ['value' => $val, 'ob' => $entry];
             ?>
-                <td data-title="<?= $this->text("admin-title-$key") ?>"><?= $this->insertIf("admin/partials/objects/$key", $vars) ?: $this->insert("admin/partials/objects/text", $vars) ?></td>
+                <td data-title="<?= $entry->getLabel($key) ?>"><?= $this->insertIf("admin/partials/objects/$key", $vars) ?: $this->insert("admin/partials/objects/text", $vars) ?></td>
             <?php endforeach ?>
             </tr>
         <?php endforeach ?>
