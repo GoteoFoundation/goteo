@@ -112,12 +112,20 @@ $routes->addCollection($misc_routes);
 
 ///// BLOG //////
 
+$routes->add('blog', new Route(
+    '/blog',
+    array('_controller' => 'Goteo\Controller\BlogController::indexAction'
+        )
+));
+
 $routes->add('blog-post', new Route(
     '/blog/{post}',
-    array('_controller' => 'Goteo\Controller\BlogController::indexAction',
+    array('_controller' => 'Goteo\Controller\BlogController::postAction',
         'post' => '' //optional parameter
         )
 ));
+
+
 
 ///// RSS //////
 

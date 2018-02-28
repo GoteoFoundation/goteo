@@ -1,0 +1,108 @@
+@import "compass/css3";
+
+/* blog styles */
+
+body.blog {
+
+    background-color: $background-white;
+
+    .top-navbar{
+      background-color: $background-yellow;
+      h3{
+        font-size: $font-size*1.1;
+        margin-left:10px;
+        float: left;
+      }
+    }
+
+    .top-navbar .navbar-always > a, .top-navbar .navbar-always > a i.icon, .top-navbar .navbar-always > button{
+      color: $primary-color;
+      background-color: transparent;
+    }
+    .top-navbar .navbar-always > button img {
+      border-color: lighten($primary-color, 50%);
+    }
+
+    .top-navbar .navbar-always > a i.icon{
+      background-color: $primary-color;
+    }
+
+    div.section.post-header{
+      position: relative;
+      padding-bottom: 30px;
+
+      div.info{
+        position: absolute;
+        width: 100%;
+        bottom: 0;
+        background-color: transparent;
+        .container{
+          background-color: $background-white;
+          h1{
+            font-size: $font-size*2;
+            text-align: center;
+            padding: 20px 15%;
+            font-size: 40px;
+            font-weight: bold;
+          }
+          div.subtitle{
+            text-align: center;
+            font-size: 20px;
+            font-weight: lighter;
+            padding: 0 10%;
+          }
+          ul.info-extra{
+            margin: 20px 10% 0 10%;
+            border-bottom: 2px dotted $primary-color;
+            padding-bottom: 5px;
+            li{
+              vertical-align: middle;
+              .author{
+                display: block;
+                font-size: 16px;
+              }
+              .date{
+                display: block;
+                font-size: 12px;
+                color: $color-date-grey;
+              }
+              &.social{
+                text-align: center;
+                vertical-align: middle;
+                margin-left: 35px;
+              }
+              /* Icons social */
+   
+              &.social [class*="fa fa-"] {
+                background-color: $primary-color;
+                border-radius: 40px;
+                color: $color-white;
+                display: inline-block;
+                height: 40px;
+                line-height: 40px;
+                margin: auto 10px;
+                width: 40px;
+                font-size: 22px;
+                text-align: center;
+              }
+              &.social [class*="fa fa-"]:hover{
+                background-color: $background-light-green;
+                color: $color-white;
+                text-align: center;
+              }
+            }
+          }
+        }
+      }
+    }
+
+    div.section.post-content{
+      div.text{
+        margin-top:40px;
+        font-size: 16px;
+        padding-bottom: 30px;
+      }
+    }
+
+
+}
