@@ -13,6 +13,7 @@
 				<?= $this->post->title ?>
 			</h1>
 			<div class="subtitle">
+				<?= $this->post->subtitle ?>
 				Las instituciones ganan visiblidad y reconocimiento asociados a proyectos para el bien común e iniciativas respaldadas por la sociedad Lorem ipsum dolor sit amet.
 			</div>
 			<ul class="info-extra list-inline">
