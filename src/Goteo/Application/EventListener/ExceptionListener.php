@@ -138,7 +138,6 @@ class ExceptionListener extends AbstractListener {
     public function onKernelException(GetResponseForExceptionEvent $event) {
         // close pending buffers
         ob_end_clean();
-
         // You get the exception object from the received event
         $exception = $event->getException();
         $request = $event->getRequest();
@@ -150,15 +149,15 @@ class ExceptionListener extends AbstractListener {
         }
 
             // redirect to login on acces denied exception if not logged already
-            if ($exception instanceof ControllerAccessDeniedException) {
-                $error = $exception->getMessage() ? $exception->getMessage() : Text::get('user-login-required-access');
-                // JSON response for ApiController
-                if(View::getTheme() == 'JSON') {
-                    $event->setResponse(new JsonResponse(['error' => $error]));
-                    return;
-                }
+        if ($exception instanceof ControllerAccessDeniedException) {
+            $error = $exception->getMessage() ? $exception->getMessage() : Text::get('user-login-required-access');
+            // JSON response for ApiController
+            if(View::getTheme() === 'JSON') {
+                $event->setResponse(new JsonResponse(['error' => $error]));
+                return;
+            }
 
-            if(!$request->isXmlHttpRequest()) {
+            if(!$request->isXmlHttpRequest() && !(App::debug() && $request->query->has('pronto'))) {
                 Message::error($error);
                 if (!Session::isLogged()) {
                     $event->setResponse(new RedirectResponse('/user/login?return=' . rawurlencode($request->getPathInfo())));
@@ -216,7 +215,7 @@ class ExceptionListener extends AbstractListener {
         }
 
         // JSON response for ApiController
-        if(View::getTheme() == 'JSON') {
+        if(View::getTheme() === 'JSON') {
             $ret = ['error' => $exception->getMessage()];
             if($info) $ret['info'] = $info;
             $event->setResponse(new JsonResponse($ret));
