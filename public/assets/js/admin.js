@@ -71,13 +71,15 @@ $(function(){
     });
 
     // User table links
-    // $('#main').off('click', 'table.model-user a');
-    $('#main').on('click', 'table.model-user a', function(e) {
-        e.preventDefault();
-        // e.stopPropagation();
+    $('#main').on('click', 'table.model-user tr:not(.extra) a', function(e) {
 
+        // Skip links with target attribute or href to hashes only
         var href = $(this).attr('href');
         if(href.indexOf('#') === 0) return;
+        if($(this).attr('target'))  return;
+
+        e.preventDefault();
+        // e.stopPropagation();
 
         var $tb = $(this).closest('table');
         var $tr = $(this).closest('tr');
@@ -90,7 +92,7 @@ $(function(){
             });
             return;
         }
-        var $new = $('<tr class="active"><td id="manage-' + id + '" colspan="' + cols +'"></td></tr>').insertAfter($tr.addClass('active'));
+        var $new = $('<tr class="extra active"><td id="manage-' + id + '" colspan="' + cols +'"></td></tr>').insertAfter($tr.addClass('active'));
         // Ajax load
 
         if(href.indexOf('?') === -1) {
@@ -99,6 +101,22 @@ $(function(){
             href += '&ajax';
         }
         prontoLoad(href, '#manage-' + id);
+    });
+
+    // $.fn.editable.defaults.mode = 'inline';
+    // Auto-Editable fields
+    $('#main').on('click', '.editable', function(e) {
+        var target = $(this).data('target') || this;
+        e.stopPropagation();
+        e.preventDefault();
+        console.log('create editable', target);
+        // var ops = {};
+        // if($(this).hasClass('edit-roles')) {
+        //     ops.source = {role1: 'test', role2: 'test 2'};
+        //     console.log('edit-roles', ops);
+        //     $(target).editable(ops);
+        // }
+        $(target).editable('show');
     });
 
     // Manual initialization of collapse plugin to apply involved classes

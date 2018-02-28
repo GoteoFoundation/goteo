@@ -72,3 +72,7 @@ feed-project-ready-ko: 'Error de %USER% al enviar el projecte %PROJECT% a <span 
 feed-project-ready-ok: '%USER% ha enviat el projecte %PROJECT% a <span class="red">revisió</span>'
 feed-project-new-post: 'Usuari publica una novetat al seu projecte (dashboard)'
 feed-project-post-published: '%USER% ha publicat un nou post a %BLOG% sobre el projecte %PROJECT%, amb el títol "%TITLE%"'
+
+feed-user-impersonated: 'Usuari suplantat'
+feed-user-impersonated-desc: '%ADMIN% ha %ACTION% l''usuari %USER%'
+feed-user-impersonated-action: 'suplantat'

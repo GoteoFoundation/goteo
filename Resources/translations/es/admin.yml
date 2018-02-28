@@ -101,6 +101,11 @@ admin-list: Listado
 admin-stats: Estadísticas
 admin-list-total: 'Total: <strong>%s</strong> resultados'
 
+admin-already-impersonating: 'Ya estas suplantando un usuario, por favor cierra primero la sesión!'
+admin-rebase-user: 'Cambiar el ID de usuario'
+admin-edit-name: 'Cambiar el nombre'
+admin-edit-roles: 'Cambiar los roles del usuario'
+
 admin-users-global-search: 'Id, nombre, email o proyecto'
 admin-title-id: Id
 admin-title-name: Nombre

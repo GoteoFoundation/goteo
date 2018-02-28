@@ -1,56 +1,67 @@
 /* DIV impersonator */
 .user-shadowing-bar {
-    font-weight: 700;
-    background: #D9534F;
-    color:$color-white;
-    white-space: nowrap;
-    text-align: center;
-    vertical-align: baseline;
-    padding: 0.3em 0.6em 0.3em;
-    a {
-        color: $color-white;
-    }
+  font-weight: 700;
+  background: #D9534F;
+  color:$color-white;
+  white-space: nowrap;
+  text-align: center;
+  vertical-align: baseline;
+  padding: 0.3em 0.6em 0.3em;
+  a {
+      color: $color-white;
+  }
 }
 
 .admin {
-    #sidebar-menu {
-        .sidebar-wrap {
-            // background-color: #652D2D;
-        }
-        .sidebar-nav li {
-            // background-color: #652D2D;
-        }
-        .sidebar-header {
-            background-color: #620D0D;
-            .sidebar-widget a.img-link img {
-                box-shadow: 0 5px 20px 0px #af1515;
-            }
-        }
+  font-family: 'RobotoDraft', 'Roboto', 'Helvetica Neue, Helvetica, Arial', sans-serif;
+  font-style: normal;
+  font-weight: 300;
+  font-size: 1.4rem;
+  line-height: 2rem;
+  letter-spacing: 0.01rem;
+  color: #212121;
+  text-rendering: optimizeLegibility;
+
+  #sidebar-menu {
+    .sidebar-wrap {
+      // background-color: #652D2D;
     }
-
-
-    // Custom classes
-    a.collapsable {
-      &::after {
-        font-family: FontAwesome;
-        content: "\f0d8";
-        margin: 0 5px;
-      }
-      &.collapsed::after {
-        content: "\f0d7";
+    .sidebar-nav li {
+      // background-color: #652D2D;
+    }
+    .sidebar-header {
+      background-color: #620D0D;
+      .sidebar-widget a.img-link img {
+        box-shadow: 0 5px 20px 0px #af1515;
       }
     }
+  }
 
-    .admin-list {
 
-      list-style: none;
-      button {
-        border: none;
-        padding: 0;
-        background: none;
-      }
-      li {
-        padding:0 0 10px 0;
-      }
+  // Custom classes
+  a.collapsable {
+    &::after {
+      font-family: FontAwesome;
+      content: "\f0d8";
+      margin: 0 5px;
     }
+    &.collapsed::after {
+      content: "\f0d7";
+    }
+  }
+
+  .admin-list {
+    list-style: none;
+    margin:0;
+    padding:0;
+
+    button {
+      border: none;
+      padding: 0;
+      background: none;
+    }
+    li {
+      padding:5px 0;
+    }
+  }
 }

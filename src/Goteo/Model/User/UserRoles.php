@@ -34,6 +34,15 @@ class UserRoles extends \ArrayObject
         }
     }
 
+    static public function getAllRoleNames() {
+        $roles = [];
+        foreach(Role::getRoles() as $role => $perms) {
+            if($role === 'root') continue;
+            $roles[$role] = static::getRoleName($role);
+        }
+        return $roles;
+    }
+
     static public function getRoleName($key) {
         return Text::get("role-name-$key");
     }
@@ -142,8 +151,12 @@ class UserRoles extends \ArrayObject
      * Check if some role is set
      * @return boolean [description]
      */
-    public function hasRole($role) {
-        return $this->offsetExists($role);
+    public function hasRole($roles) {
+        if(!is_array($roles)) $roles = [$roles];
+        foreach($roles as $role) {
+            if($this->offsetExists($role)) return true;
+        }
+        return false;
     }
 
     // check if a permission is set
@@ -151,6 +164,7 @@ class UserRoles extends \ArrayObject
         if(!is_array($perms)) $perms = [$perms];
         foreach($this as $role => $permissions) {
             foreach($perms as $perm) {
+
                 if(in_array($perm, $permissions)) {
                     if($model_val) {
                         return $this->userAssignedInModel($perm, $model_val);
@@ -164,6 +178,7 @@ class UserRoles extends \ArrayObject
 
     protected function userAssignedInModel($perm, $model_val) {
         $perms = Role::getPerms();
+
         if(!isset($perms[$perm])) return false;
         $table = $perms[$perm]['model']['table'];
         $table_id = $perms[$perm]['model']['table_id'];
@@ -171,7 +186,6 @@ class UserRoles extends \ArrayObject
         $relational_table =  $perms[$perm]['relational']['table'];
         $relational_user_id =  $perms[$perm]['relational']['user_id'];
         $relational_table_id =  $perms[$perm]['relational']['table_id'];
-
         if(!$relational_table || !$relational_table_id || !$relational_user_id) return false;
 
         // If a join table exists, get the id first
