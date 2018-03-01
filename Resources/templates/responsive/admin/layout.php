@@ -26,6 +26,8 @@ $this->section('content');
 
     <?= $this->supply('admin-content') ?>
 
+    <?= $this->supply('admin-modal', $this->insert("admin/partials/modal")) ?>
+
 </div>
 
 <?php $this->replace() ?>

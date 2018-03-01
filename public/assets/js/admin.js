@@ -42,7 +42,7 @@ $(function(){
 
     // Some tweaks on pronto links
     $('#main').off('click', 'a.pronto');
-    $('#main').on('click', 'a.pronto', function(e){
+    $('#main').on('click', 'a.pronto', function(e) {
         var href = $(this).attr('href');
         if(href.indexOf('#') === 0) return;
 
@@ -76,6 +76,7 @@ $(function(){
         // Skip links with target attribute or href to hashes only
         var href = $(this).attr('href');
         if(href.indexOf('#') === 0) return;
+        if(href.indexOf('mailto:') === 0) return;
         if($(this).attr('target'))  return;
 
         e.preventDefault();
@@ -103,7 +104,16 @@ $(function(){
         prontoLoad(href, '#manage-' + id);
     });
 
+    /**  jQuery x-Editable plugins tweaks */
     // $.fn.editable.defaults.mode = 'inline';
+    $.fn.editable.defaults.ajaxOptions = {type: "put"};
+    $.fn.editable.defaults.error = function(response, newValue) {
+        console.log('editable error', response, newValue);
+        if(response.responseJSON && response.responseJSON.error) return response.responseJSON.error;
+        return response.responseText;
+    };
+    $.fn.editableform.buttons = '<button type="submit" class="btn btn-cyan btn-sm editable-submit"><i class="fa fa-check"></i></button><button type="button" class="btn btn-default btn-sm editable-cancel"><i class="fa fa-remove"></i></button>';
+
     // Auto-Editable fields
     $('#main').on('click', '.editable', function(e) {
         var target = $(this).data('target') || this;
@@ -119,10 +129,53 @@ $(function(){
         $(target).editable('show');
     });
 
-    // Manual initialization of collapse plugin to apply involved classes
-    $('.collapsable').collapse();
-    $(window).on("pronto.render", function(e){
+
+    var initBindings = function() {
+        // Manual initialization of collapse plugin to apply involved classes
         $('.collapsable').collapse();
+
+    };
+
+    // Admin modal can load ajax pages
+    $('#admin-modal').on('show.bs.modal', function (event) {
+      var $button = $(event.relatedTarget); // Button that triggered the modal
+      var url = $button.data('url'); // Extract info from data-* attributes
+      var title = $button.data('title'); // Extract info from data-* attributes
+      // console.log('modal load. url:', url, 'title:', title);
+      // If necessary, you could initiate an AJAX request here (and then do the updating in a callback).
+      // Update the modal's content. We'll use jQuery here, but you could use a data binding library or other methods instead.
+      var $modal = $(this);
+      var $title = $modal.find('.modal-title');
+      var $body = $modal.find('.modal-body');
+      if(title) $title.text(title).show();
+      else $title.hide();
+      if(url) {
+        $body.html('').addClass('loading');
+        // Request new content
+        var request = $.ajax({
+            url: url,
+            dataType: "json",
+            success: function(resp, status, jqXHR) {
+                response  = (typeof resp === "string") ? $.parseJSON(resp) : resp;
+                // console.log(response);
+                var text = response.content || response;
+                $body.html(text);
+                $body.removeClass('loading');
+                initBindings();
+            },
+            error: function(jqXHR, status, err) {
+                var error = err;
+                if(response.responseJSON && response.responseJSON.error) error = response.responseJSON.error;
+                else error = response.responseText;
+                console.log('error', err, error);
+                $body.html(error);
+            }
+        });
+      }
+    });
+
+    $(window).on("pronto.render", function(e){
+        initBindings();
     });
 });
 

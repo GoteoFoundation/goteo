@@ -27,7 +27,7 @@ use Goteo\Model\User;
  */
 class UserTransformer extends AbstractTransformer {
     public function getDefaultKeys() {
-        return ['id', 'fullname', 'email', 'amount', 'roles'];
+        return ['id', 'fullname', 'amount', 'roles'];
     }
 
     function getAvatar() {

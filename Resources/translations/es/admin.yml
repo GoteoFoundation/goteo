@@ -105,6 +105,9 @@ admin-already-impersonating: 'Ya estas suplantando un usuario, por favor cierra 
 admin-rebase-user: 'Cambiar el ID de usuario'
 admin-edit-name: 'Cambiar el nombre'
 admin-edit-roles: 'Cambiar los roles del usuario'
+admin-send-email: 'Enviar Email'
+admin-show-roles-info: '¿Que puede hacer cada rol?'
+admin-user-roles: 'Lista de roles de usuario'
 
 admin-users-global-search: 'Id, nombre, email o proyecto'
 admin-title-id: Id

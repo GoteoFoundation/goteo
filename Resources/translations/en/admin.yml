@@ -62,3 +62,5 @@ admin-project-derivation-discard-sure: 'The project will be discarded and the ow
 admin-home-title: Administrate Goteo
 
 admin-already-impersonating: 'You are already impersonating a user. Please close the session first!'
+admin-show-roles-info: 'What can each role do?'
+admin-user-roles: 'User roles list'

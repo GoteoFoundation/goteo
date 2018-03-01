@@ -32,6 +32,12 @@ class UsersAdminController extends AbstractAdminController {
                 ['_controller' => __CLASS__ . "::listAction"]
             ),
             new Route(
+                '/roles/{uid}', [
+                    '_controller' => __CLASS__ . "::rolesAction",
+                    'uid' => null
+                ]
+            ),
+            new Route(
                 '/impersonate/{uid}',
                 ['_controller' => __CLASS__ . "::impersonateAction"]
             ),
@@ -81,8 +87,25 @@ class UsersAdminController extends AbstractAdminController {
         ]);
     }
 
+    public function rolesAction($uid = null, Request $request) {
+        $user = User::get($uid);
+        $admin = Session::getUser();
+        if( $user instanceOf User ) {
+            $roles = $user->getRoles();
+            $role_names = $roles->getRoleNames();
+        } else {
+            $roles = $admin->getRoles();
+            $role_names = $roles::getAllRoleNames();
+        }
+        return $this->viewResponse('admin/users/role_list', [
+            'user' => $user,
+            'roles' => $roles,
+            'role_names' => $role_names
+        ]);
+    }
+
     public function impersonateAction($uid, Request $request) {
-        $admin = Session::get('user');
+        $admin = Session::getUser();
         $user = User::get($uid);
         if( !$user instanceOf User ) throw new ModelNotFoundException("User [$uid] does not exists");
         if(!$admin->canImpersonate($user)) {
@@ -109,12 +132,12 @@ class UsersAdminController extends AbstractAdminController {
         $log = new Feed();
         $log->setTarget($admin->id, 'user')
             ->populate(
-                Text::sys('feed-user-impersonated'),
+                Text::sys('feed-admin-impersonated'),
                 '/admin/users/manage/' . $user->id,
-            new FeedBody(null, null, 'feed-user-impersonated-desc', [
+            new FeedBody(null, null, 'feed-admin-has-done', [
                     '%ADMIN%' => Feed::item('user', $admin->name, $admin->id),
                     '%USER%'    => Feed::item('user', $user->name, $user->id),
-                    '%ACTION%'  => new FeedBody('relevant', null, 'feed-user-impersonated-action')
+                    '%ACTION%'  => new FeedBody('relevant', null, 'feed-admin-impersonated-action')
                 ])
             )
             ->doAdmin('user');

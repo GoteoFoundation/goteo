@@ -34,7 +34,7 @@ $list = $this->model_list_entries($this->list);
             <?php
             $t = count($entry);
             foreach($entry as $key => $val):
-                $vars = ['value' => $val, 'ob' => $entry];
+                $vars = ['value' => $val, 'ob' => $entry, 'link' => ''];
             ?>
                 <td data-title="<?= $entry->getLabel($key) ?>"><?= $this->insertIf("admin/partials/objects/$key", $vars) ?: $this->insert("admin/partials/objects/text", $vars) ?></td>
             <?php endforeach ?>

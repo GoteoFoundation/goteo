@@ -14,13 +14,44 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Goteo\Application\Exception\ControllerAccessDeniedException;
 use Goteo\Application\Exception\ModelNotFoundException;
+use Goteo\Application\Exception\ModelException;
 
 use Goteo\Model\User;
 use Goteo\Model\Category;
 use Goteo\Model\Image;
 use Goteo\Library\Text;
+use Goteo\Library\Feed;
+use Goteo\Library\FeedBody;
 
 class UsersApiController extends AbstractApiController {
+
+    protected function getSafeUser($user) {
+        if(!$user instanceOf User) $user = User::get($user);
+        if(!$user instanceOf User) throw new ModelNotFoundException();
+
+        // Security, first of all...
+        if(!$this->user instanceOf User) throw new ControllerAccessDeniedException();
+
+        $is_admin = $this->user->canImpersonate($user);
+
+        $ob = [];
+        foreach(['id', 'name', 'about', 'avatar'] as $k)
+                $ob[$k] = $user->$k;
+
+        if($user->avatar instanceof Image) {
+            $ob['avatar'] = $user->avatar->id;
+        } else {
+            $ob['avatar'] = $user->avatar;
+        }
+
+        if($is_admin) {
+            $ob['password'] = '';
+            $ob['id'] = $user->id;
+            $ob['email'] = $user->email;
+            $ob['roles'] = $user->getRoles()->getRoleNames();
+        }
+        return $ob;
+    }
     /**
      * Simple listing of users
      * TODO: according to permissions, filter this users
@@ -28,9 +59,8 @@ class UsersApiController extends AbstractApiController {
      * @return [type]           [description]
      */
     public function usersAction(Request $request) {
-        if(!$this->user) {
-            throw new ControllerAccessDeniedException();
-        }
+        if(!$this->user instanceOf User) throw new ControllerAccessDeniedException();
+
         $filters = [];
         $node = null;
         $page = max((int) $request->query->get('pag'), 0);
@@ -103,13 +133,13 @@ class UsersApiController extends AbstractApiController {
      * AJAX upload image to profile
      */
     public function userUploadAvatarAction($id, Request $request) {
-        if(!$this->user) {
-            throw new ControllerAccessDeniedException();
-        }
+        if(!$this->user instanceOf User) throw new ControllerAccessDeniedException();
         if(!($user = User::get($id))) {
             throw new ModelNotFoundException();
         }
-        if($user->id !== $user->id && !$this->user->hasRoleInNode($user->node, ['superadmin', 'root'])) {
+        $is_admin = $this->user->canImpersonate($user);
+
+        if($this->user->id !== $user->id && !$$is_admin) {
             throw new ControllerAccessDeniedException();
         }
 
@@ -156,6 +186,96 @@ class UsersApiController extends AbstractApiController {
         }
 
         return $this->jsonResponse(['files' => $result, 'avatar' => $avatar,  'msg' => $global_msg, 'success' => $all_success]);
+    }
+
+
+    /**
+     * Individual user property checker/updater
+     * To update a property, use the PUT method
+     */
+    public function userPropertyAction($id, $prop, Request $request) {
+        $user = User::get($id);
+        $properties = $this->getSafeUser($user);
+        $write_fields = ['name'];
+        $is_admin = $this->user->canImpersonate($user);
+        if($is_admin) {
+            $write_fields[] = 'id';
+            $write_fields[] = 'email';
+            $write_fields[] = 'roles';
+            $write_fields[] = 'password';
+        }
+        if(!isset($properties[$prop])) {
+            throw new ModelNotFoundException("Property [$prop] not found");
+        }
+
+        $result = ['value' => $properties[$prop], 'error' => false];
+
+        if($request->isMethod('put')) {
+            if($this->user->id !== $user->id && !$is_admin) {
+                throw new ControllerAccessDeniedException();
+            }
+
+            if(!in_array($prop, $write_fields)) {
+                throw new ModelNotFoundException("Property [$prop] not writeable");
+            }
+            if($prop === 'roles') {
+                $roles = $request->request->get('value');
+                if(!is_array($roles)) $roles = [$roles];
+
+                $ob = $user->getRoles();
+                $current_roles = array_keys((array)$ob);
+
+                foreach($current_roles as $role) {
+                    if(!in_array($role, $roles)) {
+                        $ob->removeRole($role);
+                    }
+                }
+                foreach($roles as $role) {
+                    $ob->addRole($role);
+                }
+
+                $errors = [];
+                $ob->save($errors);
+                $new_roles = array_keys((array)$user->getRoles());
+                if(count($new_roles) !== count($roles)) {
+                    $errors[] = 'Role mismatch in' . implode(', ', $new_roles) .' against ' . implode(', ', $roles);
+                }
+                if($errors) throw new ModelException("Error assigning roles: " . implode(', ', $errors));
+                $result['value'] = $new_roles;
+
+            } else {
+                $value = $request->request->get('value');
+                if(in_array($prop, ['id', 'email', 'password'])) {
+                    $errors = [];
+                    $user->rebase($value, $prop);
+
+                } else {
+                    // do the SQL update
+                    $user->{$prop} = $value;
+                    $user->dbUpdate([$prop]);
+                }
+                if($is_admin) {
+                    // Feed Event
+                    // TODO: throw event instead
+                    $log = new Feed();
+                    $log->setTarget($admin->id, 'user')
+                        ->populate(
+                            Text::sys('feed-admin-user-modification'),
+                            '/admin/users/manage/' . $user->id,
+                        new FeedBody(null, null, 'feed-admin-has-modified', [
+                                '%ADMIN%' => Feed::item('user', $admin->name, $admin->id),
+                                '%USER%'    => Feed::item('user', $user->name, $user->id),
+                                '%ACTION%'  => new FeedBody('relevant', null, 'feed-admin-modified-action'),
+                                '%PROPERTY%'  => $prop
+                            ])
+                        )
+                        ->doAdmin('user');
+                }
+                $result['value'] = $user->{$prop};
+            }
+        }
+        return $this->jsonResponse($result);
+
     }
 
 }

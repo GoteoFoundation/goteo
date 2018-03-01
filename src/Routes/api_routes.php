@@ -38,6 +38,13 @@ $api->add('api-user-avatar-upload', new Route(
     array('POST') // methods
 ));
 
+// User property
+$api->add('api-user-property', new Route(
+    '/users/{id}/property/{prop}',
+    array('_controller' => 'Goteo\Controller\Api\UsersApiController::userPropertyAction'
+        )
+));
+
 // Projects list
 $api->add('api-projects', new Route(
     '/projects',
