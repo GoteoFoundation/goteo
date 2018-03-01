@@ -179,6 +179,12 @@ $table-border-color:            #e0e0e0;
           border: 1px solid $table-border-color;
           border-radius: 2px;
           margin-bottom: $table-cell-padding;
+          &.active + tr.active {
+            margin-top: -$table-cell-padding;
+            > td {
+              text-align: left;
+            }
+          }
 
           > td {
             background-color: $table-bg;
@@ -246,7 +252,9 @@ $table-border-color:            #e0e0e0;
         > tr:hover {
           background-color: $table-bg;
         }
-        > tr > td:hover {
+        > tr > td:hover,
+        > tr.active > td,
+        > tr.active > td:hover {
           background-color: $table-bg-hover;
         }
       }

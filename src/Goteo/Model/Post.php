@@ -200,8 +200,8 @@ namespace Goteo\Model {
                         $post->owner_name = $proj_blog->name;
                         //esto solo hacerlo si hace falta
                         if($post->author != $proj_blog->owner) {
-                            $sql = "UPDATE post SET author = '.$proj_blog->owner.' WHERE post.id = ?";
-                            self::query($sql, array($post->id));
+                            $sql = "UPDATE post SET author = :owner WHERE post.id = :id";
+                            self::query($sql, [':id' => $post->id, ':owner' => $proj_blog->owner]);
                         }
                         break;
 

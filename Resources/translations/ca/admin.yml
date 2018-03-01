@@ -78,3 +78,5 @@ admin-project-derivation-discard-sure: 'S''envia un mail derivant a una altra pl
 admin-home-title: Administra Goteo
 
 admin-already-impersonating: 'Ja estàs suplantant un usuari, tanca primer la sessió!'
+admin-show-roles-info: 'Què pot fer cada rol?'
+admin-user-roles: 'Llistat de rols d''usuari'

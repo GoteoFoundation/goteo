@@ -39,6 +39,10 @@ feed-project-ready-ok: '%USER% has sent the project %PROJECT% to <span class="re
 feed-project-new-post: 'User publishes an update in his project (dashboard)'
 feed-project-post-published: '%USER% has published a new post in %BLOG% about the project %PROJECT%, titled "%TITLE%"'
 
-feed-user-impersonated: 'User impersonated'
-feed-user-impersonated-desc: '%USER% has been %ACTION% by %ADMIN%'
-feed-user-impersonated-action: 'impersonated'
+feed-admin-has-done: 'The admin %ADMIN% has %ACTION% the user %USER%'
+feed-admin-has-modified: 'The admin %ADMIN% has %ACTION% (%PROPERTY%) the user %USER%'
+feed-admin-impersonated: 'User impersonated'
+feed-admin-impersonated-action: 'impersonated'
+
+feed-admin-user-modification: 'User modified by admin'
+feed-admin-modified-action: 'modified'

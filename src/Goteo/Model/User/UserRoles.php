@@ -54,7 +54,7 @@ class UserRoles extends \ArrayObject
     static public function getRolePerms($role_id) {
         $perms = [];
         foreach(Role::getRolePerms($role_id) as $perm) {
-            $perms[$perm] = static::getPermName($key);
+            $perms[$perm] = static::getPermName($perm);
         }
         return $perms;
     }
@@ -83,7 +83,7 @@ class UserRoles extends \ArrayObject
      * Adds a role to the user
      */
     public function addRole($role) {
-        if(Role::roleExists($role)) {
+        if(Role::roleExists($role) && !$this->offsetExists($role)) {
             if($role === 'root') throw new RoleException("Role [root] cannot be added");
 
             $this->offsetSet($role, Role::getRolePerms($role));
@@ -137,7 +137,8 @@ class UserRoles extends \ArrayObject
         if(!$inserts) {
             return true;
         }
-        $sql = "INSERT INTO user_role (role_id, user_id) VALUES (" . implode(',(', $inserts) .")";
+        $sql = "INSERT INTO user_role (role_id, user_id) VALUES (" . implode('), (', $inserts) .")";
+        // die(\sqldbg($sql, $values));
         try {
             User::query($sql, $values);
             return true;

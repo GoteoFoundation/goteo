@@ -15,6 +15,7 @@ use Goteo\Application\Config;
 use Goteo\Application\Lang;
 use Goteo\Application\Message;
 use Goteo\Application\Session;
+use Goteo\Application\Exception\ModelException;
 use Goteo\Library\Check;
 use Goteo\Library\Text;
 use Goteo\Library\Password;
@@ -475,7 +476,69 @@ class User extends \Goteo\Core\Model {
     }
 
     /**
+     * Changes, email (with database duplicate checks), password (Will be encoded) or Id (changing relationships between tables)
+     * Throws ModelException on errors
+     * @param  string $field [description]
+     * @return this user (fluent)
+     */
+    public function rebase($value, $field = 'id') {
+        $values = [':id' => $this->id];
+
+        if($field === 'id') {
+            if($value !== self::idealiza($value)) {
+                throw new ModelException(Text::get('error-user-id-invalid'));
+            }
+            $query = self::query('SELECT id FROM user WHERE id = ?', $value);
+            if ($found = $query->fetchColumn()) {
+                if ($this->id !== $found) {
+                    throw new ModelException(Text::get('error-user-id-exists'));
+                }
+            }
+
+            $set = "`id` = :value ";
+            $values[":value"] = $value;
+
+        } elseif($field === 'password') {
+            if (!Check::password($value)) {
+                throw new ModelException(Text::get('error-user-password-invalid'));
+            }
+
+            $set = "`password` = :value ";
+            $values[":value"] = Password::encode($value);
+
+        } elseif($field === 'email') {
+            if (!Check::mail($value)) {
+                throw new ModelException(Text::get('error-user-email-invalid'));
+            }
+
+            $query = self::query('SELECT id FROM user WHERE email = ?', $value);
+            if ($found = $query->fetchColumn()) {
+                if ($this->id !== $found) {
+                    throw new ModelException(Text::get('error-user-email-exists'));
+                }
+            }
+
+            $set = "`email` = :value ";
+            $values[":value"] = $value;
+
+        } else {
+            throw new ModelException("Field [$field] cannot be modified here, please use method ->save()");
+        }
+
+        $sql = "UPDATE user SET $set WHERE id = :id";
+        // TODO: change non foreign keys for this user if id modified
+        if($field === 'id') {
+            //
+        }
+        self::query($sql, $values);
+        $this->{$field} = $values[':value'];
+
+        return $this;
+    }
+
+    /**
      * Este método actualiza directamente los campos de email y contraseña de un usuario (para gestión de superadmin)
+     * @deprecated
      */
     public function update(&$errors = array()) {
         if (!empty($this->password)) {
@@ -531,7 +594,7 @@ class User extends \Goteo\Core\Model {
 
             return true;
         } catch (\PDOException $e) {
-            $errors[] = "HA FALLADO!!! " . $e->getMessage();
+            $errors[] = "User update failed: " . $e->getMessage();
             return false;
         }
 
