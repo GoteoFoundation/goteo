@@ -1304,7 +1304,7 @@ class User extends \Goteo\Core\Model {
         $projects = [];
         foreach ($query->fetchAll(\PDO::FETCH_OBJ) as $p) {
             $t = '';
-            if($p->image) $t = '<img src="' . Image::get($p->image)->getLink(50, 50). '" class="img-circle"> ';
+            if($p->image) $t = '<img src="' . Image::get($p->image)->getLink(64, 64, true). '" class="img-circle"> ';
             $t .= $p->name;
             $projects[$p->id] = $t;
         }

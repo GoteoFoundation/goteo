@@ -31,7 +31,7 @@ class UserTransformer extends AbstractTransformer {
     }
 
     function getAvatar() {
-        return $this->model->avatar->name ? $this->model->avatar->getLink(64, 64) : '';
+        return $this->model->avatar->name ? $this->model->avatar->getLink(64, 64, true) : '';
     }
 
     /**
