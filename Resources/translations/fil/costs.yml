@@ -1,0 +1,42 @@
+---
+cost-type-lend: Pautang
+cost-type-material: Materyal
+cost-type-structure: Imprastraktura
+cost-type-task: Task
+costs-field-amount: Lakas ng loob
+costs-field-cost: Gastos
+costs-field-date_from: Mula sa
+costs-field-date_until: Up
+costs-field-dates: Mga petsa
+costs-field-description: Paglalarawan
+costs-field-required_cost: 'Ang gastos na ito ay'
+costs-field-required_cost-no: Karagdagang
+costs-field-required_cost-yes: Mahalagang
+costs-field-resoure: 'Iba pang mapagkukunan'
+costs-field-schedule: 'Agenda ng trabaho'
+costs-field-type: Uri
+costs-fields-main-title: 'Pagkasira ng gastos'
+costs-fields-metter-title: 'Ipakita ang gastos'
+costs-fields-resources-title: Mapagkukunan
+costs-main-header: 'Mga aspeto ng ekonomiya'
+mandatory-cost-field-amount: 'Ito ay sapilitan upang magtalaga ng isang halaga sa mga gastos'
+mandatory-cost-field-description: 'Ito ay sapilitan upang ilagay ang ilang mga paglalarawan sa mga gastos'
+mandatory-cost-field-name: 'Ito ay sapilitan upang magbigay ng isang pangalan sa gastos'
+mandatory-cost-field-task_dates: 'Ito ay kinakailangan upang tukuyin ang mga tinatayang petsa ng gawain'
+mandatory-project-field-resource: 'Ito ay kinakailangan upang tukuyin kung mayroon kang iba pang mga mapagkukunan o hindi'
+mandatory-project-resource: 'Ito ay kinakailangan upang tukuyin kung mayroon kang iba pang mga mapagkukunan o hindi'
+mandatory-project-total-costs: 'Ito ay kinakailangan upang tukuyin ang ilang mga gastos'
+step-4: Mga gastos
+step-costs: 'Hakbang: Proyekto / Gastos'
+tooltip-project-cost-amount: 'Tukuyin ang halaga sa napiling pera ng kung ano ang iyong isinasaalang-alang ang halagang ito. Huwag gumamit ng mga puntos para sa libu-libong pigura ok?'
+tooltip-project-cost-cost: 'Magpasok ng pamagat bilang mapaglarawan hangga''t maaari sa halagang ito.'
+tooltip-project-cost-dates: 'Ipahiwatig sa pagitan ng mga petsa kung kailan mo kinakalkula na ang gawaing ito ay gagawin o sakupin ang gastos na iyon. Planuhin ito simula hindi mas maaga kaysa sa dalawang buwan mula ngayon, dahil kailangan mong isaalang-alang ang deadline upang repasuhin ang panukala, i-publish ito kung ito ay napili at 40 araw pagkatapos ng unang pagtustos. Huwag isama sa kalendaryong ito ang agenda ng dating binuo bagaman mabuti na ipaliwanag mo ito sa paglalarawan ng proyekto. Sa agenda, interesado lang kami sa mga yugto na nananatiling tapos na at humingi ng co-financed.'
+tooltip-project-cost-description: 'Ipaliwanag nang maikli kung ano ang binubuo ng gastos na ito.'
+tooltip-project-cost-required: 'Ang puntong ito ay napakahalaga: sa bawat gastos na ipinasok mo kailangan mong markahan kung ito ay mahalaga o karagdagang. Ang lahat ng mga gastos na minarkahan bilang mahalaga ay idaragdag sa pagbibigay ng halaga ng minimum na halaga ng financing para sa proyekto. Gayunpaman, ang kabuuan ng mga karagdagang gastos ay maaaring makuha sa ikalawang yugto ng pagtustos, matapos makuha ang mahahalagang pondo.'
+tooltip-project-cost-type: 'Narito dapat mong tukuyin ang uri ng gastos: naka-link sa isang gawain (isang bagay na nangangailangan ng kasanayan o kaalaman ng isang tao), pagkuha ng materyal (consumables, hilaw na materyales) o imprastraktura (mga puwang, kagamitan, kasangkapan).'
+tooltip-project-costs: 'Ang mas katumpakan sa pagkasira, mas mabuti ang pangkalahatang impormasyon ng proyekto ay tasahin. '
+tooltip-project-resource: 'Ipahiwatig dito kung mayroon kang karagdagang mga mapagkukunan, bukod sa mga hiniling mo, upang isakatuparan ang proyekto: mga mapagkukunan ng pinansyal, sariling mga mapagkukunan o nakolekta mo na ang mga materyales. Maaari itong maging isang insentibo para sa mga potensyal na co-financiers ng proyekto.'
+tooltip-project-totals: 'Ipinapakita ng grap na ito ang kabuuan ng mga mahahalagang gastos (pinakamaliit upang isakatuparan ang proyekto) at ang kabuuan ng mga pangalawang gastos (pinakamainam na halaga) para sa dalawang saklaw ng financing. Ang unang round ay 40 araw, upang makuha ang minimum na halaga na kinakailangan. Tanging kung ang dami ng financing na ito ay nakakamit maaari kang maging karapat-dapat para sa ikalawang saklaw, 40 na araw na, upang maabot ang pinakamainam na badyet. Hindi tulad ng una, sa ikalawang round makakakuha ka ng lahat ng pera na nakolekta.'
+validate-cost-field-dates: 'Dapat mong ipahiwatig ang mga petsa ng pagsisimula at pagtatapos ng gastos na ito upang mas mahusay na masuri ang proyekto.'
+validate-project-costs-any_error: 'Ang ilang impormasyon ay nawawala sa pagkasira ng gastos'
+validate-project-field-costs: 'Inirerekumenda namin ang pagbagsak ng hanggang sa 5 iba''t ibang mga gastos upang mapabuti ang pagtatasa ng proyekto upang matukoy kung i-publish ito sa Goteo.'

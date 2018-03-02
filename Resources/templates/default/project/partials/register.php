@@ -1,7 +1,7 @@
-<?php 
+<?php
 
 use Goteo\Library\Text,
-	Goteo\Library\Currency;
+	Goteo\Application\Currency;
 
 $select_currency=Currency::$currencies[$_SESSION['currency']]['html'];
 $amount=0;
@@ -29,8 +29,8 @@ $amount=0;
 
 <div class="reminder reminder-signed"><?php echo Text::get('invest-alert-investing') ?> <span class="amount-reminder"><?php echo $select_currency; ?></span><span id="amount-reminder"><?php echo $amount ?></span>
 <div id="reward-reminder"></div>
-<?php   
-    if ($_SESSION['currency'] != Currency::DEFAULT_CURRENCY ) :
+<?php
+    if ($_SESSION['currency'] != Currency::getDefault('id') ) :
         echo '<div>'.Text::html('currency-alert', \amount_format($amount, 3, true, true) ).'</div>';
     endif;
 ?>
@@ -38,6 +38,6 @@ $amount=0;
 
 <div class="reminder"><?php echo Text::html('faq-payment-method'); ?></div>
 
-<?php if ($_SESSION['currency'] != Currency::DEFAULT_CURRENCY ) : ?>
+<?php if ($_SESSION['currency'] != Currency::getDefault('id') ) : ?>
     <div class="reminder"><?php echo Text::html('currency-alert', \amount_format($amount, 0, true, true) ); ?></div>
 <?php endif; ?>

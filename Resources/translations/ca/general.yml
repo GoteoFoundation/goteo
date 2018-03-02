@@ -31,6 +31,8 @@ error-user-email-token-invalid: 'El codi no és correcte'
 error-user-password-confirm: 'La confirmació de contrasenya no coincideix'
 error-user-password-empty: 'No has posat la contrasenya'
 error-user-password-invalid: 'La contrasenya és massa curta'
+error-user-id-invalid: 'El id d''usuari no es vàlid. Useu només caràcters a-z 0-9'
+error-user-id-exists: 'Ja hi ha un usuari registrat amb aquest id'
 error-user-wrong-password: 'La contrasenya no és correcta'
 explain-project-progress: 'Aquest gràfic explica d''una manera visual el nivell de dades que has introduït juntament amb una avaluació bàsica que fa el sistema. Per poder enviar el projecte has de superar el 80%. Els criteris que fan pujar aquest "termòmetre" tenen a veure amb la informació rellevant que facilites, els media, imatges i links que introdueixes, si tries una llicència més oberta que una altre, la coherència del teu pressupost respecte a les tasques a desenvolupar, etc. No perdis de vista els consells de la columna dreta, que guien durant tot el procés.'
 fancybox: 'Text fancybox'
@@ -73,7 +75,7 @@ regular-calendar: Calendari
 regular-cancel: Cancel·lar
 regular-cancel-back: 'Cancel·lar i torna enrere'
 regular-back: 'Torna enrere'
-regular-collaborate: Col·labora 
+regular-collaborate: Col·labora
 regular-content: Contingut
 regular-continue-question: 'Continuar?'
 regular-create: 'Crea un projecte'
@@ -133,12 +135,12 @@ regular-menu-personal: Menú personal
 regular-message-clipboard-fail: 'Selecciona i copia aquest enllaç'
 regular-message_fail: 'Hi ha hagut algun error en enviar el missatge'
 regular-message_success: 'Missatge enviat correctament'
-regular-months: mesos 
+regular-months: mesos
 regular-more_info: '+ info'
 regular-news: 'Notícies: '
 regular-no: 'No'
 regular-of: de
-regular-preview: Previsualitzar 
+regular-preview: Previsualitzar
 regular-projects: projectes
 regular-published_no: Esborrany
 regular-published_yes: Publicat

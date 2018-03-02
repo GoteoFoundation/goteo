@@ -1,0 +1,22 @@
+# Default currencies used in Goteo
+# Plugins can extend that using the class Currency::addCurrency()
+EUR:
+    name: 'Euro'
+    symbol: '€'
+    thousands: .
+    decimal: ','
+    active: true
+
+USD:
+    name: 'U.S. Dollar'
+    symbol: '$'
+    thousands: ','
+    decimal: '.'
+    active: true
+
+GBP:
+    name: 'British Pound'
+    symbol: '£'
+    thousands: ','
+    decimal: .
+    active: true

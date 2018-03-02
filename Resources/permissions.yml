@@ -1,0 +1,151 @@
+---
+# Full list of Permissions in Goteo
+#
+# Some permission require to check if the user and the model.id is present in
+# a table.
+#
+# Example:
+#   permission review-project is bind with the user_review table where
+#   user_review:user must be the user.id and user_review:review must be the review.id
+#
+# These are the defaults, can be extended by plugins
+
+create-project: # create own projects, currently not used as a real perm (implicit for all users)
+    model: null
+    relational: null
+
+edit-project:   # edit own projects, currently not used as a real perm (implicit for all users)
+    model: null
+    relational: null
+
+remove-project: # remove own project, currently not used as a real perm (implicit for all users)
+    model: null
+    relational: null
+
+recommend-projects: # can have a personal list of recommended projects
+    model: null
+    relational: null
+
+assign-checker: # Assign any user for project review
+    model: null
+    relational: null
+
+translate-language: # translate assigned language in user_translang table
+    model: null
+    relational:
+        table: user_translang
+        user_id: user # relational user.id in user_translang table
+        table_id: lang
+
+review-project: # View/review an assigned review project before their publication
+    model:
+        table: review
+        table_id: id # field where to search perm value in table review
+        query_id: project # field in table project where to search the perm value
+                          # usually defaults to the same value as table_id
+    relational:
+        table: user_review
+        user_id: user
+        table_id: review # relational review.id in user_review table
+
+view-call-project: # view projects included in the user_call table
+    model:
+        table: call
+        table_id: id # field where to search perm value in table call
+    relational:
+        table: user_call
+        user_id: user
+        table_id: call # relational call.id in user_call table
+
+view-any-project: # View any editing project
+    model: null
+    relational: null
+
+edit-published-projects: # Edit published projects
+    model: null
+    relational: null
+
+publish-projects: # Publish//unpublish assigned projects as a consultant
+    model:
+        table: project
+        table_id: id # field in table project to join to table user_project
+    relational:
+        table: user_project
+        user_id: user
+        table_id: project # relational project.id in user_project table
+
+edit-projects: # Edit projects assigned as a consultant
+    model:
+        table: project
+        table_id: id
+    relational:
+        table: user_project
+        user_id: user
+        table_id: project # relational project.id in user_project table
+
+remove-projects: # Remove projects assigned as a consultant
+    model:
+        table: project
+        table_id: id
+    relational:
+        table: user_project
+        user_id: user
+        table_id: project # relational project.id in user_project table
+
+
+publish-any-project: # Publish/unpublish any project
+    model: null
+    relational: null
+
+assign-consultant: # Assign consultant to a project
+    model: null
+    relational: null
+
+edit-any-project: # Edit any project
+    model: null
+    relational: null
+
+remove-any-project: # Remove any project
+    model: null
+    relational: null
+
+impersonate-owners: # Impersonate projects owners assigned as a consultant
+    model:
+        table: project
+        table_id: id # field in table project to join to table user_project
+        query_id: owner # field in table project where to search the perm value
+                        # usually defaults to the same value as table_id
+    relational:
+        table: user_project
+        user_id: user
+        table_id: project # relational project.id in user_project table
+
+impersonate-users: # Impersonate any user with roles below admin (excluding admins)
+    model: null
+    relational:
+        table: user_role
+        user_id: user_id # relational user.id in user_translang table
+        table_id: role_id
+
+# impersonate-admins: # Impersonate any user with any role (except super-admins)
+#     model: null
+#     relational: null
+
+impersonate-everyone: # Impersonate any user
+    model: null
+    relational: null
+
+rebase-users: # Edit sensitive data in users (id, email, password) without confirmation (for users below admin unless is superadmin)
+    model: null
+    relational:
+        table: user_role
+        user_id: user_id # relational user.id in user_translang table
+        table_id: role_id
+
+admin-any-module-users: # Admin any module in Admin (instances of AdminControllerInterface)
+    model: null
+    relational: null
+
+admin-module-users: # Can access to module UserAdminController
+    model: null
+    relational: null

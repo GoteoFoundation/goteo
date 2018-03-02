@@ -65,7 +65,11 @@ admin-newsletter-mind-activate: 'Actívalo para que se envíe'
 admin-no: 'No'
 admin-percent: Porcentaje
 admin-project: Proyecto
+admin-main: Principal
+admin-legacy: Antiguos
 admin-projects: Proyectos
+admin-consultants: Consultoría
+admin-invests: Aportes
 admin-filters: 'Filtros'
 admin-remove-filters: 'Quitar filtros'
 admin-sponsors: Servicios
@@ -75,8 +79,10 @@ admin-text-type-html: HTML
 admin-text-type-md: Markdown
 admin-text-type-plain: 'Texto simple'
 admin-user: Usuario
+admin-user-no-projects: 'No ha creado ningún proyecto todavía'
 admin-users: Usuarios
 admin-yes: Si
+admin-impersonate: Suplantar
 admin-impersonate-user: Suplantar a %s
 admin-project-express-discard: 'Rechazo express'
 admin-project-express-discard-desc: 'Pasa el proyecto a estado Descartado y manda un mail'
@@ -94,3 +100,39 @@ admin-project-to-publish-sure: 'El proyecto va a comenzar su campaña, ¿comenza
 admin-project-derivation-discard: 'Rechazo con derivación'
 admin-project-derivation-discard-desc: 'Pasa el proyecto a estado Descartado y manda un mail derivando a otra plataforma más adecuada'
 admin-project-derivation-discard-sure: 'Se va a enviar un mail automáticamente derivando a otra plataforma y pasará a estado descartado, ¿ok?'
+admin-home-title: Administrar Goteo
+admin-list: Listado
+admin-stats: Estadísticas
+admin-list-total: 'Total: <strong>%s</strong> resultados'
+
+admin-already-impersonating: 'Ya estas suplantando un usuario, por favor cierra primero la sesión!'
+admin-rebase-user: 'Cambiar el ID de usuario'
+admin-edit-name: 'Cambiar el nombre'
+admin-edit-roles: 'Cambiar los roles del usuario'
+admin-send-email: 'Enviar Email'
+admin-show-roles-info: '¿Que puede hacer cada rol?'
+admin-user-roles: 'Lista de roles de usuario'
+admin-view-user-projects: 'Todos los proyectos'
+admin-view-user-invests: 'Todos los aportes'
+admin-user-hidden: 'Privado (escondido)'
+admin-user-active: 'Cuenta activa'
+admin-user-warning: 'Atención: Estas operaciones se ejecutan sin enviar ningún aviso al usuario'
+admin-user-wallet-amount: 'Crédito en el monedero'
+admin-user-create-invest: 'Crear aporte'
+admin-mailing: 'Mailing'
+admin-user-no-mailing: 'No se le ha enviado ningún email todavía'
+admin-view-user-mailing: 'Todos los envíos'
+admin-role-change-forbidden: 'No tienes permiso para gestionar el rol %ROLE% en este usuario'
+
+admin-users-global-search: 'Id, nombre, email o proyecto'
+admin-title-id: Id
+admin-title-name: Nombre
+admin-title-about: Info
+admin-title-location: Localización
+admin-title-fullname: Nombre
+admin-title-email: Email
+admin-title-password: Contraseña
+admin-title-avatar: Avatar
+admin-title-roles: Roles
+admin-title-amount: Invertido
+admin-title-info: Info

@@ -26,7 +26,7 @@ use Goteo\Application\Event\FilterInvestInitEvent;
 use Goteo\Application\Event\FilterInvestRequestEvent;
 use Goteo\Application\Event\FilterInvestFinishEvent;
 use Goteo\Library\Text;
-use Goteo\Library\Currency;
+use Goteo\Application\Currency;
 use Goteo\Library\Listing;
 use Goteo\Model\Project;
 use Goteo\Model\Invest;

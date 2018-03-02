@@ -1,0 +1,49 @@
+/* generic lists widgets */
+@import "compass/css3";
+
+ul.generic-list {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+
+  li {
+    font-size: $font-size;
+    border-bottom: 1px solid #ccc;
+    @include transition(font-size 0.3s ease, background-color 0.3s ease);
+    display: block;
+    width: 100%;
+    position: relative;
+    &:hover {
+      background: #f6f6f6;
+      >a {
+        font-size: 150%;
+      }
+    }
+  }
+
+  li:last-child {
+    border: none;
+  }
+
+  li > a {
+    text-decoration: none;
+    color: $color-black;
+  }
+  li > a, li > span {
+    display: inline-block;
+    min-width: 100px;
+    font-weight: 400;
+    &.id {
+      font-weight: 300;
+    }
+    &.text {
+      // font-weight: 300;
+      min-width: 200px;
+    }
+    &::last-child {
+      position: absolute;
+      top: 2px;
+      right: 2px;
+    }
+  }
+}

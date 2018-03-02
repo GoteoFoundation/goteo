@@ -1,7 +1,7 @@
 <?php
 if(!$this->validation) return;
 if($this->validation->{$this->zone} == 100) return;
-if(!$this->query_has('validate')) return;
+if(!$this->has_query('validate')) return;
 
 $show = false;
 foreach($this->validation->errors[$this->zone] as $err) {

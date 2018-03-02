@@ -14,6 +14,7 @@ use Goteo\Application\Config\ConfigException;
 use Goteo\Application\Config\YamlSettingsLoader;
 use Goteo\Console\UsersSend;
 use Goteo\Core\Model;
+use Goteo\Application\Currency;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\Config\Loader\DelegatingLoader;
 use Symfony\Component\Config\Loader\LoaderResolver;
@@ -21,7 +22,7 @@ use Symfony\Component\Routing\Route;
 
 class Config {
     // Initial translation groups (groupped in yml files into Resources/translations/)
-    static public $trans_groups = ['home', 'public_profile', 'project', 'labels', 'form', 'profile', 'personal', 'overview', 'costs', 'rewards', 'supports', 'preview', 'dashboard', 'register', 'login', 'discover', 'community', 'general', 'blog', 'faq', 'contact', 'widget', 'invest', 'matcher', 'types', 'banners', 'footer', 'social', 'review', 'translate', 'menu', 'feed', 'mailer', 'bluead', 'error', 'wof', 'node_public', 'contract', 'donor', 'text_groups', 'template', 'admin', 'translator', 'metas', 'location', 'url', 'pool', 'dates'];
+    static public $trans_groups = ['home', 'roles', 'public_profile', 'project', 'labels', 'form', 'profile', 'personal', 'overview', 'costs', 'rewards', 'supports', 'preview', 'dashboard', 'register', 'login', 'discover', 'community', 'general', 'blog', 'faq', 'contact', 'widget', 'invest', 'matcher', 'types', 'banners', 'footer', 'social', 'review', 'translate', 'menu', 'feed', 'mailer', 'bluead', 'error', 'wof', 'node_public', 'contract', 'donor', 'text_groups', 'template', 'admin', 'translator', 'metas', 'location', 'url', 'pool', 'dates'];
 	static protected $loader;
 	static protected $config;
 
@@ -33,6 +34,15 @@ class Config {
             if(!is_file($config_file)) $config_file = __DIR__ . '/../../../config/' . $config_file;
 			// load the main config
 			self::$config = self::loadFromYaml($config_file);
+
+            // Load default permissions from yaml
+            $permissions = self::loadFromYaml(__DIR__ . '/../../../Resources/permissions.yml');
+            Role::addPermsFromArray($permissions);
+            // Load default roles from yaml
+            $roles = self::loadFromYaml(__DIR__ . '/../../../Resources/roles.yml');
+            Role::addRolesFromArray($roles);
+
+
 			//Timezone
 			if (self::get('timezone')) {
 				date_default_timezone_set(self::get('timezone'));
@@ -45,13 +55,24 @@ class Config {
 
 			// handles legacy config values
 			self::setConstants();
+
 			// Init database
 			Model::factory();
+
 			// load the language configuration
 			$locales = self::loadFromYaml(__DIR__ . '/../../../Resources/locales.yml');
 			if (is_array($locales) && $locales) {
 				Lang::setLangsAvailable($locales);
 			}
+            // load the currency configuration
+            $currencies = self::loadFromYaml(__DIR__ . '/../../../Resources/currencies.yml');
+            if (is_array($currencies) && $currencies) {
+                Currency::setCurrenciesAvailable($currencies);
+            }
+            if (self::get('currency')) {
+                Currency::setDefault(self::get('currency'));
+            }
+
 			// load translations
 			foreach (Lang::listAll('name', false) as $lang => $name) {
 				Lang::addSqlTranslation($lang);
@@ -66,6 +87,7 @@ class Config {
 
 			// sets up the rest...
 			self::setDirConfiguration();
+
 		} catch (\Exception $e) {
 			if (PHP_SAPI === 'cli') {
 				throw $e;
@@ -134,36 +156,38 @@ class Config {
 	static private function setDirConfiguration() {
 
 		//Admin subcontrollers added manually for legacy compatibility
-		\Goteo\Controller\AdminController::addSubController('Goteo\Controller\Admin\AccountsSubController');
-		\Goteo\Controller\AdminController::addSubController('Goteo\Controller\Admin\NodeSubController');
-		\Goteo\Controller\AdminController::addSubController('Goteo\Controller\Admin\NodesSubController');
-		\Goteo\Controller\AdminController::addSubController('Goteo\Controller\Admin\TransnodesSubController');
-		\Goteo\Controller\AdminController::addSubController('Goteo\Controller\Admin\BannersSubController');
-		\Goteo\Controller\AdminController::addSubController('Goteo\Controller\Admin\BlogSubController');
-		\Goteo\Controller\AdminController::addSubController('Goteo\Controller\Admin\CategoriesSubController');
-		\Goteo\Controller\AdminController::addSubController('Goteo\Controller\Admin\CommonsSubController');
-		\Goteo\Controller\AdminController::addSubController('Goteo\Controller\Admin\CriteriaSubController');
-		\Goteo\Controller\AdminController::addSubController('Goteo\Controller\Admin\FaqSubController');
-		\Goteo\Controller\AdminController::addSubController('Goteo\Controller\Admin\HomeSubController');
-		\Goteo\Controller\AdminController::addSubController('Goteo\Controller\Admin\GlossarySubController');
-		\Goteo\Controller\AdminController::addSubController('Goteo\Controller\Admin\IconsSubController');
-		\Goteo\Controller\AdminController::addSubController('Goteo\Controller\Admin\LicensesSubController');
-		\Goteo\Controller\AdminController::addSubController('Goteo\Controller\Admin\MailingSubController');
-		\Goteo\Controller\AdminController::addSubController('Goteo\Controller\Admin\NewsSubController');
-		\Goteo\Controller\AdminController::addSubController('Goteo\Controller\Admin\NewsletterSubController');
-		\Goteo\Controller\AdminController::addSubController('Goteo\Controller\Admin\PagesSubController');
-		\Goteo\Controller\AdminController::addSubController('Goteo\Controller\Admin\ProjectsSubController');
-		\Goteo\Controller\AdminController::addSubController('Goteo\Controller\Admin\PromoteSubController');
-		\Goteo\Controller\AdminController::addSubController('Goteo\Controller\Admin\RecentSubController');
-		\Goteo\Controller\AdminController::addSubController('Goteo\Controller\Admin\ReviewsSubController');
-		\Goteo\Controller\AdminController::addSubController('Goteo\Controller\Admin\RewardsSubController');
-		\Goteo\Controller\AdminController::addSubController('Goteo\Controller\Admin\SentSubController');
-		\Goteo\Controller\AdminController::addSubController('Goteo\Controller\Admin\SponsorsSubController');
-		\Goteo\Controller\AdminController::addSubController('Goteo\Controller\Admin\TagsSubController');
-		\Goteo\Controller\AdminController::addSubController('Goteo\Controller\Admin\TemplatesSubController');
-		\Goteo\Controller\AdminController::addSubController('Goteo\Controller\Admin\TextsSubController');
-		\Goteo\Controller\AdminController::addSubController('Goteo\Controller\Admin\TranslatesSubController');
-		\Goteo\Controller\AdminController::addSubController('Goteo\Controller\Admin\UsersSubController');
+		\Goteo\Controller\AdminController::addSubController('Goteo\Controller\Admin\UsersAdminController');
+        // \Goteo\Controller\AdminController::addSubController('Goteo\Controller\Admin\UsersSubController');
+
+        \Goteo\Controller\AdminController::addSubController('Goteo\Controller\Admin\AccountsSubController');
+        \Goteo\Controller\AdminController::addSubController('Goteo\Controller\Admin\NodeSubController');
+        \Goteo\Controller\AdminController::addSubController('Goteo\Controller\Admin\NodesSubController');
+        \Goteo\Controller\AdminController::addSubController('Goteo\Controller\Admin\TransnodesSubController');
+        \Goteo\Controller\AdminController::addSubController('Goteo\Controller\Admin\BannersSubController');
+        \Goteo\Controller\AdminController::addSubController('Goteo\Controller\Admin\BlogSubController');
+        \Goteo\Controller\AdminController::addSubController('Goteo\Controller\Admin\CategoriesSubController');
+        \Goteo\Controller\AdminController::addSubController('Goteo\Controller\Admin\CommonsSubController');
+        \Goteo\Controller\AdminController::addSubController('Goteo\Controller\Admin\CriteriaSubController');
+        \Goteo\Controller\AdminController::addSubController('Goteo\Controller\Admin\FaqSubController');
+        \Goteo\Controller\AdminController::addSubController('Goteo\Controller\Admin\HomeSubController');
+        \Goteo\Controller\AdminController::addSubController('Goteo\Controller\Admin\GlossarySubController');
+        \Goteo\Controller\AdminController::addSubController('Goteo\Controller\Admin\IconsSubController');
+        \Goteo\Controller\AdminController::addSubController('Goteo\Controller\Admin\LicensesSubController');
+        \Goteo\Controller\AdminController::addSubController('Goteo\Controller\Admin\MailingSubController');
+        \Goteo\Controller\AdminController::addSubController('Goteo\Controller\Admin\NewsSubController');
+        \Goteo\Controller\AdminController::addSubController('Goteo\Controller\Admin\NewsletterSubController');
+        \Goteo\Controller\AdminController::addSubController('Goteo\Controller\Admin\PagesSubController');
+        \Goteo\Controller\AdminController::addSubController('Goteo\Controller\Admin\ProjectsSubController');
+        \Goteo\Controller\AdminController::addSubController('Goteo\Controller\Admin\PromoteSubController');
+        \Goteo\Controller\AdminController::addSubController('Goteo\Controller\Admin\RecentSubController');
+        \Goteo\Controller\AdminController::addSubController('Goteo\Controller\Admin\ReviewsSubController');
+        \Goteo\Controller\AdminController::addSubController('Goteo\Controller\Admin\RewardsSubController');
+        \Goteo\Controller\AdminController::addSubController('Goteo\Controller\Admin\SentSubController');
+        \Goteo\Controller\AdminController::addSubController('Goteo\Controller\Admin\SponsorsSubController');
+        \Goteo\Controller\AdminController::addSubController('Goteo\Controller\Admin\TagsSubController');
+        \Goteo\Controller\AdminController::addSubController('Goteo\Controller\Admin\TemplatesSubController');
+        \Goteo\Controller\AdminController::addSubController('Goteo\Controller\Admin\TextsSubController');
+        \Goteo\Controller\AdminController::addSubController('Goteo\Controller\Admin\TranslatesSubController');
 		\Goteo\Controller\AdminController::addSubController('Goteo\Controller\Admin\WordcountSubController');
 		\Goteo\Controller\AdminController::addSubController('Goteo\Controller\Admin\WorthSubController');
 		\Goteo\Controller\AdminController::addSubController('Goteo\Controller\Admin\MilestonesSubController');
