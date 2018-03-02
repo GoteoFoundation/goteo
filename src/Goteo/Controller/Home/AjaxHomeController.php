@@ -61,10 +61,11 @@ class AjaxHomeController extends \Goteo\Core\Controller {
         } elseif(in_array($filter, ['matchfunding', 'recent'])) {
             $filters['type'] = $filter;
         }
-        $projects = Project::getList($filters, null, 0, 20);
+
+        $projects = Project::getList($filters, null, 0, 25);
 
         if(!$projects) {
-            $projects = Project::getList($ofilters, null, 0, 20);
+            $projects = Project::getList($ofilters, null, 0, 25);
         }
 
         return $this->jsonResponse([
