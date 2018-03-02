@@ -526,10 +526,7 @@ class User extends \Goteo\Core\Model {
         }
 
         $sql = "UPDATE user SET $set WHERE id = :id";
-        // TODO: change non foreign keys for this user if id modified
-        if($field === 'id') {
-            //
-        }
+        // NOTE: Database should have now all relationships with user in foreign keys with update on cascade
         self::query($sql, $values);
         $this->{$field} = $values[':value'];
 
@@ -1300,15 +1297,38 @@ class User extends \Goteo\Core\Model {
      * Returns project names owned by the user
      * @return [type] [description]
      */
-    public function getProjectNames() {
-        if($this->projectNames) return $this->projectNames;
-        $query = self::query('SELECT p.id, p.name FROM project p WHERE p.owner = ? ORDER BY p.name', $this->id);
-        $this->projectNames = [];
+    public function getProjectNames($limit = 10) {
+        $limit = (int)$limit;
+        $sql = "SELECT p.id, p.name, p.image FROM project p WHERE p.owner = ? ORDER BY p.name ASC, p.updated DESC, p.created DESC LIMIT $limit";
+        $query = self::query($sql, $this->id);
+        $projects = [];
         foreach ($query->fetchAll(\PDO::FETCH_OBJ) as $p) {
-            $this->projectNames[$p->id] = $p->name;
+            $t = '';
+            if($p->image) $t = '<img src="' . Image::get($p->image)->getLink(50, 50). '" class="img-circle"> ';
+            $t .= $p->name;
+            $projects[$p->id] = $t;
         }
+        return $projects;
+    }
 
-        return $this->projectNames;
+    public function getTotalProjects() {
+        $sql = "SELECT COUNT(*) as total FROM project p WHERE p.owner = ?";
+        return (int) self::query($sql, $this->id)->fetchColumn();
+    }
+
+    public function getInvests($limit = 10) {
+        return Invest::getList(['status' => Invest::$RAISED_STATUSES, 'users' => $this->id], null, 0, $limit);
+    }
+
+    public function getTotalInvests() {
+        return Invest::getList(['users' => $this->id], null, 0, 0, true);
+    }
+
+    public function getMailing($limit = 10) {
+        return Mail::getSentList(['email' => $this->email], null, 0, $limit);
+    }
+    public function getTotalMailing() {
+        return Mail::getSentList(['email' => $this->email], null, 0, 0, true);
     }
 
     /**
@@ -1552,6 +1572,48 @@ class User extends \Goteo\Core\Model {
         if(!$user->hasRole('root') && $this->hasPerm('impersonate-users', 'root')) return true;
 
         return false;
+    }
+
+    /**
+     * Checks if this user can edit sensitive data from another user
+     * @param  User   $user [description]
+     * @return [type]       [description]
+     */
+    public function canRebase(User $user) {
+        // Admins cannot impersonate other admins
+        if(!$user->hasRole(['admin', 'superadmin', 'root']) && $this->hasPerm('rebase-users', 'admin')) return true;
+        // Can superadmins rebase other superadmins?
+        // Case Yes
+        if(!$user->hasRole('root') && $this->hasPerm('rebase-users', 'superadmin')) return true;
+        // Case No
+        // if(!$user->hasRole(['superadmin', 'root']) && $this->hasPerm('rebase-users', 'superadmin')) return true;
+        if(!$user->hasRole('root') && $this->hasPerm('rebase-users', 'root')) return true;
+
+        return false;
+    }
+
+
+    /**
+     * Checks if this user can change the role of another user
+     * @param  User   $user [description]
+     * @return [type]       [description]
+     */
+    public function canChangeRole($roles, &$failed = '') {
+        if(!is_array($roles)) $roles = [$roles];
+        $my_roles = $this->getRoles();
+        // User Role has to be at least admin
+        if(!$my_roles->atLeast('admin')) {
+            $failed = 'admin';
+            return false;
+        }
+
+        foreach($roles as $role) {
+            if(!$my_roles->greaterThan($role)) {
+                $failed = $role;
+                return false;
+            }
+        }
+        return true;
     }
 
     /**

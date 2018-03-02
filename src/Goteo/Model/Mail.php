@@ -621,6 +621,12 @@ class Mail extends \Goteo\Core\Model {
         $sqlFilter = '';
         $and = " WHERE";
 
+        if (!empty($filters['email'])) {
+            $sqlFilter .= $and . " mail.email = :email";
+            $and = " AND";
+            $values[':email'] = $filters['email'];
+        }
+
         if (!empty($filters['user'])) {
             $sqlFilter .= $and . " mail.email LIKE :user";
             $and = " AND";

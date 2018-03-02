@@ -135,6 +135,13 @@ impersonate-everyone: # Impersonate any user
     model: null
     relational: null
 
+rebase-users: # Edit sensitive data in users (id, email, password) without confirmation (for users below admin unless is superadmin)
+    model: null
+    relational:
+        table: user_role
+        user_id: user_id # relational user.id in user_translang table
+        table_id: role_id
+
 admin-any-module-users: # Admin any module in Admin (instances of AdminControllerInterface)
     model: null
     relational: null

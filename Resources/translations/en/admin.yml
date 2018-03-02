@@ -43,6 +43,12 @@ admin-users: Users
 admin-yes: "Yes"
 admin-impersonate: Impersonate
 admin-impersonate-user: Impersonate %s
+admin-project: Project
+admin-main: Main
+admin-legacy: Legacy
+admin-projects: Projects
+admin-invests: Contributions
+admin-consultants: Consulting
 admin-project-express-discard: 'Express discard'
 admin-project-express-discard-desc: 'Change the project status to Discard and sends an email'
 admin-project-express-discard-sure: 'The project will be discarded and the owner will receive an email, ok?'
@@ -62,5 +68,34 @@ admin-project-derivation-discard-sure: 'The project will be discarded and the ow
 admin-home-title: Administrate Goteo
 
 admin-already-impersonating: 'You are already impersonating a user. Please close the session first!'
+admin-rebase-user: 'Change user ID'
+admin-edit-name: 'Change name'
+admin-edit-roles: 'Change user role'
+admin-send-email: 'Send Email'
 admin-show-roles-info: 'What can each role do?'
 admin-user-roles: 'User roles list'
+admin-view-user-projects: 'All user projects'
+admin-view-user-invests: 'All user contributions'
+admin-user-hidden: 'Private (hidden)'
+admin-user-active: 'Account active'
+admin-user-warning: 'Warning: These operations are executed without any notice to the user'
+admin-user-wallet-amount: 'Wallet credit'
+admin-user-create-invest: 'Create contribution'
+admin-mailing: 'Mailing'
+admin-user-no-mailing: 'No emails has been sent yet'
+admin-view-user-mailing: 'All mailing'
+admin-role-change-forbidden: 'You don''t have permissions to manage the role %ROLE% in this user'
+
+admin-users-global-search: 'Id, name, email or project'
+admin-title-id: Id
+admin-title-name: Name
+admin-title-fullname: Name
+admin-title-about: About
+admin-title-location: Location
+admin-title-email: Email
+admin-title-password: Password
+admin-title-avatar: Avatar
+admin-title-roles: Roles
+admin-title-amount: Invested
+admin-title-info: Info
+

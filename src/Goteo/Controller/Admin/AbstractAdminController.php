@@ -60,7 +60,7 @@ abstract class AbstractAdminController extends \Goteo\Core\Controller implements
     }
 
     public static function getGroup() {
-        return 'projects';
+        return 'consultants';
     }
 
     /**

@@ -45,19 +45,19 @@ class UsersAdminController extends AbstractAdminController {
                 '/manage/{uid}',
                 ['_controller' => __CLASS__ . "::manageAction"]
             ),
-            new Route(
-                '/stats',
-                ['_controller' => __CLASS__ . "::statsAction"]
-            )
+            // new Route(
+            //     '/stats',
+            //     ['_controller' => __CLASS__ . "::statsAction"]
+            // )
         ];
     }
 
-    public static function getSidebar() {
-        return [
-            '/users' => Text::get('admin-list'),
-            '/users/stats' => Text::get('admin-stats')
-        ];
-    }
+    // public static function getSidebar() {
+    //     return [
+    //         '/users' => self::getLabel(),
+    //         // '/users/stats' => Text::get('admin-stats')
+    //     ];
+    // }
 
 
     public function listAction(Request $request) {

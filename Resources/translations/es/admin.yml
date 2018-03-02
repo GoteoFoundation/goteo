@@ -65,7 +65,11 @@ admin-newsletter-mind-activate: 'Actívalo para que se envíe'
 admin-no: 'No'
 admin-percent: Porcentaje
 admin-project: Proyecto
+admin-main: Principal
+admin-legacy: Antiguos
 admin-projects: Proyectos
+admin-consultants: Consultoría
+admin-invests: Aportes
 admin-filters: 'Filtros'
 admin-remove-filters: 'Quitar filtros'
 admin-sponsors: Servicios
@@ -108,12 +112,26 @@ admin-edit-roles: 'Cambiar los roles del usuario'
 admin-send-email: 'Enviar Email'
 admin-show-roles-info: '¿Que puede hacer cada rol?'
 admin-user-roles: 'Lista de roles de usuario'
+admin-view-user-projects: 'Todos los proyectos'
+admin-view-user-invests: 'Todos los aportes'
+admin-user-hidden: 'Privado (escondido)'
+admin-user-active: 'Cuenta activa'
+admin-user-warning: 'Atención: Estas operaciones se ejecutan sin enviar ningún aviso al usuario'
+admin-user-wallet-amount: 'Crédito en el monedero'
+admin-user-create-invest: 'Crear aporte'
+admin-mailing: 'Mailing'
+admin-user-no-mailing: 'No se le ha enviado ningún email todavía'
+admin-view-user-mailing: 'Todos los envíos'
+admin-role-change-forbidden: 'No tienes permiso para gestionar el rol %ROLE% en este usuario'
 
 admin-users-global-search: 'Id, nombre, email o proyecto'
 admin-title-id: Id
 admin-title-name: Nombre
+admin-title-about: Info
+admin-title-location: Localización
 admin-title-fullname: Nombre
 admin-title-email: Email
+admin-title-password: Contraseña
 admin-title-avatar: Avatar
 admin-title-roles: Roles
 admin-title-amount: Invertido

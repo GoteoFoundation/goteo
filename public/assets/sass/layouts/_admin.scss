@@ -17,7 +17,7 @@
   font-style: normal;
   font-weight: 300;
   font-size: 1.4rem;
-  line-height: 2rem;
+  line-height: 1.6em;
   letter-spacing: 0.01rem;
   color: #212121;
   text-rendering: optimizeLegibility;
@@ -62,6 +62,25 @@
     }
     li {
       padding:5px 0;
+    }
+
+    .img-circle {
+      width:24px;
+    }
+    .recipient {
+        &::after {
+            font-family: FontAwesome;
+            content: "\f00d";
+            color: $color-red;
+        }
+        &.sent::after {
+            content: "\f00c";
+            color: $color-grey-cyan;
+        }
+        &.opened::after {
+            content: "\f00c";
+            color: $color-cyan;
+        }
     }
   }
 }

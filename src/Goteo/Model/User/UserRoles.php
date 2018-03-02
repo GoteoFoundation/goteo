@@ -160,6 +160,42 @@ class UserRoles extends \ArrayObject
         return false;
     }
 
+
+    /**
+     * gets the level of a role
+     * @return boolean [description]
+     */
+    public function getLevel($role) {
+        if($this->offsetExists($role)) {
+            return Role::getRoleLevel($role);
+        }
+        return 0;
+    }
+
+    /**
+     * Checks if current user has a role with greater level than the argument
+     * @param  [type] $role [description]
+     * @return [type]       [description]
+     */
+    public function greaterThan($role) {
+        foreach(array_keys((array)$this) as $r) {
+            if(Role::getRoleLevel($r) > Role::getRoleLevel($role)) return true;
+        }
+        return false;
+    }
+
+    /**
+     * Same as greaterThan but allows the same role
+     * @param  [type] $role [description]
+     * @return [type]       [description]
+     */
+    public function atLeast($role) {
+        foreach(array_keys((array)$this) as $r) {
+            if(Role::getRoleLevel($r) >= Role::getRoleLevel($role)) return true;
+        }
+        return false;
+    }
+
     // check if a permission is set
     public function hasPerm($perms, $model_val = null) {
         if(!is_array($perms)) $perms = [$perms];

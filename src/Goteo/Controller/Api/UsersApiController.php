@@ -29,14 +29,22 @@ class UsersApiController extends AbstractApiController {
         if(!$user instanceOf User) $user = User::get($user);
         if(!$user instanceOf User) throw new ModelNotFoundException();
 
-        // Security, first of all...
         if(!$this->user instanceOf User) throw new ControllerAccessDeniedException();
 
-        $is_admin = $this->user->canImpersonate($user);
+        $is_admin = $this->user->canImpersonate($user) || $this->user->canRebase($user);
 
         $ob = [];
-        foreach(['id', 'name', 'about', 'avatar'] as $k)
-                $ob[$k] = $user->$k;
+        $fields = ['id', 'name', 'about', 'keywords', 'twitter', 'facebook', 'google', 'instagram', 'identica', 'linkedin'];
+        if($is_admin) {
+            $fields = array_merge($fields, ['email', 'gender', 'birthyear', 'entity_type', 'legal_entity', 'hide', 'active', 'confirmed']);
+        }
+        foreach($fields as $k) {
+            if(in_array($k, ['hide', 'active', 'confirmed'])) {
+                $ob[$k] = (bool) $user->{$k};
+            } else {
+                $ob[$k] = $user->{$k};
+            }
+        }
 
         if($user->avatar instanceof Image) {
             $ob['avatar'] = $user->avatar->id;
@@ -46,8 +54,6 @@ class UsersApiController extends AbstractApiController {
 
         if($is_admin) {
             $ob['password'] = '';
-            $ob['id'] = $user->id;
-            $ob['email'] = $user->email;
             $ob['roles'] = $user->getRoles()->getRoleNames();
         }
         return $ob;
@@ -196,14 +202,15 @@ class UsersApiController extends AbstractApiController {
     public function userPropertyAction($id, $prop, Request $request) {
         $user = User::get($id);
         $properties = $this->getSafeUser($user);
-        $write_fields = ['name'];
-        $is_admin = $this->user->canImpersonate($user);
+
+        $write_fields = ['name', 'gender', 'birthyear', 'entity_type', 'legal_entity', 'about', 'keywords', 'twitter', 'facebook', 'google', 'instagram', 'identica', 'linkedin'];
+
+        $is_admin = $this->user->canRebase($user);
+
         if($is_admin) {
-            $write_fields[] = 'id';
-            $write_fields[] = 'email';
-            $write_fields[] = 'roles';
-            $write_fields[] = 'password';
+            $write_fields = array_merge($write_fields, ['id', 'roles', 'email', 'password', 'active', 'hide', 'confirmed']);
         }
+
         if(!isset($properties[$prop])) {
             throw new ModelNotFoundException("Property [$prop] not found");
         }
@@ -218,14 +225,19 @@ class UsersApiController extends AbstractApiController {
             if(!in_array($prop, $write_fields)) {
                 throw new ModelNotFoundException("Property [$prop] not writeable");
             }
+
             if($prop === 'roles') {
                 $roles = $request->request->get('value');
                 if(!is_array($roles)) $roles = [$roles];
 
                 $ob = $user->getRoles();
                 $current_roles = array_keys((array)$ob);
+                if(!$this->user->canChangeRole(array_merge($roles, $current_roles), $fail)) {
+                    throw new ModelException(Text::get('admin-role-change-forbidden', ['%ROLE%' => "'$fail'"]));
+                }
 
                 foreach($current_roles as $role) {
+
                     if(!in_array($role, $roles)) {
                         $ob->removeRole($role);
                     }
@@ -245,10 +257,16 @@ class UsersApiController extends AbstractApiController {
 
             } else {
                 $value = $request->request->get('value');
+                if(in_array($prop, ['hide', 'active', 'confirmed'])) {
+                    if($value === 'false') $value = false;
+                    if($value === 'true') $value = true;
+                    $value = (bool) $value;
+                }
+
+
                 if(in_array($prop, ['id', 'email', 'password'])) {
                     $errors = [];
                     $user->rebase($value, $prop);
-
                 } else {
                     // do the SQL update
                     $user->{$prop} = $value;
@@ -263,7 +281,7 @@ class UsersApiController extends AbstractApiController {
                             Text::sys('feed-admin-user-modification'),
                             '/admin/users/manage/' . $user->id,
                         new FeedBody(null, null, 'feed-admin-has-modified', [
-                                '%ADMIN%' => Feed::item('user', $admin->name, $admin->id),
+                                '%ADMIN%' => Feed::item('user', $this->user->name, $this->user->id),
                                 '%USER%'    => Feed::item('user', $user->name, $user->id),
                                 '%ACTION%'  => new FeedBody('relevant', null, 'feed-admin-modified-action'),
                                 '%PROPERTY%'  => $prop
