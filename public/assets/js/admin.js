@@ -114,27 +114,30 @@ $(function(){
     };
     $.fn.editableform.buttons = '<button type="submit" class="btn btn-cyan btn-sm editable-submit"><i class="fa fa-check"></i></button><button type="button" class="btn btn-default btn-sm editable-cancel"><i class="fa fa-remove"></i></button>';
 
-    // Auto-Editable fields
+    // Manually create auto-Editable fields on click to allow target different elements than clicked
     $('#main').on('click', '.editable', function(e) {
         var target = $(this).data('target') || this;
         e.stopPropagation();
         e.preventDefault();
         console.log('create editable', target);
-        // var ops = {};
-        // if($(this).hasClass('edit-roles')) {
-        //     ops.source = {role1: 'test', role2: 'test 2'};
-        //     console.log('edit-roles', ops);
-        //     $(target).editable(ops);
-        // }
         $(target).editable('show');
+        // Disable autocomplete in password fields
+        $(target).on('shown', function(e, editable) {
+            console.log('shown', e, editable);
+            editable.input.$input.attr('autocomplete', 'off');
+        });
+
     });
 
 
     var initBindings = function() {
         // Manual initialization of collapse plugin to apply involved classes
         $('.collapsable').collapse();
-
     };
+    initBindings();
+    $(window).on("pronto.render", function(e){
+        initBindings();
+    });
 
     // Admin modal can load ajax pages
     $('#admin-modal').on('show.bs.modal', function (event) {
@@ -172,10 +175,6 @@ $(function(){
             }
         });
       }
-    });
-
-    $(window).on("pronto.render", function(e){
-        initBindings();
     });
 });
 

@@ -38,8 +38,10 @@ class AdminController extends \Goteo\Core\Controller {
     private static $subcontrollers = array();
     private static $context_vars = array();
     private static $groups = [
-        'projects' => ['text' => 'admin-projects', 'icon' => '<i class="icon icon-2x icon-projects"></i>', 'position' => 10],
-        'all' => ['text' => 'admin-all', 'icon' => '', 'position' => 100]
+        'consultants' => ['text' => 'admin-consultants', 'icon' => '<i class="fa fa-2x fa-fax"></i>', 'position' => 10],
+        'projects' => ['text' => 'admin-projects', 'icon' => '<i class="icon icon-2x icon-projects"></i>', 'position' => 20],
+        'main' => ['text' => 'admin-main', 'icon' => '<i class="fa fa-2x fa-home"></i>', 'position' => 100],
+        'legacy' => ['text' => 'admin-legacy', 'icon' => '<i class="fa fa-2x fa-folder"></i>', 'position' => 110]
     ];
 
     public function __construct() {
@@ -130,10 +132,10 @@ class AdminController extends \Goteo\Core\Controller {
      * @param  User   $user [description]
      * @param  string $zone [description]
      */
-    public static function createAdminSidebar (User $user, $module, $uri = '') {
+    public static function createAdminSidebar (User $user, $module = '', $uri = '') {
 
         $prefix = '/admin';
-        $modules = ['all' => []];
+        $modules = [];
         $zone = preg_replace('|^/admin|', '', $uri);
         // die("[$uri]");
 
@@ -169,14 +171,13 @@ class AdminController extends \Goteo\Core\Controller {
                     }
                 }
 
-                $modules[$group ? $group : 'all'][] = $init_route;
+                $modules[$group ? $group : 'main'][] = $init_route;
             }
             // Old sub-controllers
             elseif ($class::isAllowed($user, Config::get('node'))) {
-                $modules['all'][] = ['text' => $class::getLabel(), 'link' => "$prefix/$id", 'id' => "admin-$id", 'class' => 'nopadding'];
+                $modules['legacy'][] = ['text' => $class::getLabel(), 'link' => "$prefix/$id", 'id' => "admin-$id", 'class' => 'nopadding'];
             }
         }
-
         foreach($modules as $key => $paths) {
             $label = self::getGroupLabel($key, $position);
             $c = strpos($label, '<i') === false ? 'nopadding' : '';

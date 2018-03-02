@@ -16,12 +16,14 @@ class Role {
     // This is set by Config using file Resources/roles.yml
     // Plugins can add their roles as well using addRole and addRolePerms
     private static $roles = [];
+    private static $levels = [];
 
     //
     private static $permission_tables = [];
 
-    public static function addRole($role_id, array $permissions = []) {
+    public static function addRole($role_id, array $permissions = [], $level = 0) {
         static::$roles[$role_id] = $permissions;
+        static::$levels[$role_id] = $level;
     }
 
     public static function addRolePerms($role_id, $permissions) {
@@ -37,12 +39,17 @@ class Role {
      */
     public static function addRolesFromArray(array $roles) {
         $extends = [];
+        $level = 0;
         foreach($roles as $role_id => $parts) {
             if(isset($parts['extends'])) {
                 $extends[$role_id] = $parts['extends'];
             }
+            if(isset($parts['level'])) {
+                $level = (int) $parts['level'];
+            }
 
-            static::addRole($role_id, isset($parts['perms']) ? $parts['perms'] : []);
+            static::addRole($role_id, isset($parts['perms']) ? $parts['perms'] : [], $level);
+            $level++;
         }
 
         foreach($extends as $role => $parent) {
@@ -89,6 +96,10 @@ class Role {
 
     public static function getRolePerms($role_id) {
         return isset(static::$roles[$role_id]) ? static::$roles[$role_id] : [];
+    }
+
+    public static function getRoleLevel($role_id) {
+        return isset(static::$levels[$role_id]) ? static::$levels[$role_id] : 0;
     }
 
     public static function roleHasPerm($role_id, $permission) {
