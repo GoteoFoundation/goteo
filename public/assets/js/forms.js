@@ -709,7 +709,7 @@ $(function(){
             locator.setGoogleMapPoint($map[0]);
             locator.setGoogleAutocomplete('#' + $search.attr('id'));
         });
-    }
+    };
 
     initBindings();
     $(window).on("pronto.render", function(e){
