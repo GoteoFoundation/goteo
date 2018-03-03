@@ -28,7 +28,7 @@ feed-timeago-periods: second-seconds_minute-minutes_hour-hours_day-days_week-wee
 feed-timeago-published: ' %s önce yayınlandı'
 feed-updates-comment: '%s projesinde %s üzerindeki "%s" mesajına bir <span class="green">yorum</span> yazıldı'
 feed-user-invest: '%USER%, %PROJECT% projesi için  %METHOD% kullanarak %AMOUNT% yatırımını yaptı'
-feed-user-invest-error: ' %USER%, %PROJECT% projesi için %AMOUNT% yatırımını yaparken Ha ERROR de %METHOD% [%MESSAGE%] meydana geldi'
+feed-user-invest-error: ' %USER%, %PROJECT% projesi için %AMOUNT% yatırımını yaparken <span class="red">Ha ERROR de %METHOD% [%MESSAGE%]</span> meydana geldi'
 feed-message-new-support: 'Bir kullanıcının projesinin içerisindeki yeni işbirliği (gösterge tablosu)'
 feed-message-new-project-response: 'kullanıcı, bir projeye bir mesaj/yanıt ile katıldı'
 feed-message-support-response-published: '%PROJECT% projesinde %TITLE% ile %USER%''dan yeni işbirliği'
