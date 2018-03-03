@@ -1,6 +1,6 @@
 ---
 ID_DEL_TEXTO: 'ID_DEL_TEXTO Metni'
-admin_no_permission: '%s''e erişmek için izniniz yoktur'
+admin_no_permission: '<strong>%s</strong>''e erişmek için izniniz yoktur'
 bazar-description-seo: 'Kitlesel fonlamaya Goteo.org''da dayanışma hediyeleri'
 bazar-title-seo: 'Dayanışma Hediyeleri :: Goteo.org'
 blog-comments: Yorumlar
