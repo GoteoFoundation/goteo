@@ -120,7 +120,8 @@ class AdminController extends \Goteo\Core\Controller {
             } else {
                 // OLD admin modules
                 // Do not create sidebar here
-                list($action, $sid, $subaction) = explode('/', $uri);
+                list($empty,$action, $sid, $subaction) = explode('/', $uri);
+
                 return $this->optionAction($id, $action ? $action : 'list', $sid, $subaction, $request);
             }
         }
