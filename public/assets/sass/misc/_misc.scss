@@ -184,13 +184,13 @@ ul.project-filters {
     &.active{
       background-color: $background-light-green;
       border-radius: 5px;
-      color: $color-white;
+      color: $color-white !important;
       cursor: none;
       a {
-        color: $color-white;
+        color: $color-white !important;
       }
     }
-    &.matchfunding{
+    &.matchfunding, &.matchfunding a {
       color: $color-lilac;
     }
   }

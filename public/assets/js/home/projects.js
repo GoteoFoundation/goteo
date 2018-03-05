@@ -29,7 +29,7 @@ $(function(){
   var $slider = $container.contents('.slider-projects');
   var total = $slider.data('total');
   var params = {
-    filter: $(".auto-update-projects .filters li.active").data('status'),
+    filter: $(".auto-update-projects .project-filters li.active").data('status'),
     latitude: 0,
     longitude: 0,
     pag: 0,
@@ -154,10 +154,10 @@ $(function(){
   }
 
   // Ajax reload when nav clicked
-  $(".auto-update-projects").on('click', ".filters li", function (e) {
+  $(".auto-update-projects").on('click', ".project-filters li", function (e) {
     e.preventDefault();
 
-    $(".auto-update-projects .filters li").removeClass('active');
+    $(".auto-update-projects .project-filters li").removeClass('active');
     $(this).addClass('active');
 
     var filter = $(this).data('status');

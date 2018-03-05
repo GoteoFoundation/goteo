@@ -30,7 +30,7 @@ class DiscoverController extends \Goteo\Core\Controller {
      */
     protected function getProjectFilters($filter, $vars = []) {
         $filters = $ofilters = [
-            'status' => [Project::STATUS_IN_CAMPAIGN, Project::STATUS_FUNDED],
+            'status' => [Project::STATUS_IN_CAMPAIGN, Project::STATUS_FUNDED, Project::STATUS_FULFILLED],
             'published_since' => (new \DateTime('-6 month'))->format('Y-m-d')
         ];
 
@@ -73,17 +73,23 @@ class DiscoverController extends \Goteo\Core\Controller {
             $filters['type'] = 'succeeded';
             $filters['status'] = [Project::STATUS_FUNDED, Project::STATUS_FULFILLED];
             $filters['order'] = 'project.published DESC, project.name ASC';
-            $filters['published_since'] = (new \DateTime('-12 month'))->format('Y-m-d');
+            // $filters['published_since'] = (new \DateTime('-12 month'))->format('Y-m-d');
+            unset($filters['published_since']);
         } elseif($filter === 'fulfilled') {
             $filters['status'] = [Project::STATUS_FULFILLED];
             $filters['order'] = 'project.published DESC, project.name ASC';
-            $filters['published_since'] = (new \DateTime('-24 month'))->format('Y-m-d');
+            // $filters['published_since'] = (new \DateTime('-24 month'))->format('Y-m-d');
+            unset($filters['published_since']);
         } elseif($filter === 'archived') {
             $filters['status'] = [Project::STATUS_UNFUNDED];
             $filters['order'] = 'project.published DESC, project.name ASC';
-            $filters['published_since'] = (new \DateTime('-12 month'))->format('Y-m-d');
-        } elseif(in_array($filter, ['matchfunding', 'recent'])) {
-            $filters['type'] = $filter;
+            $filters['published_since'] = (new \DateTime('-24 month'))->format('Y-m-d');
+        } elseif($filter === 'matchfunding') {
+            $filters['type'] = 'matchfunding';
+            // $filters['published_since'] = (new \DateTime('-24 month'))->format('Y-m-d');
+            unset($filters['published_since']);
+        } elseif($filter === 'recent') {
+            $filters['type'] = 'recent';
         }
 
         return $filters;
