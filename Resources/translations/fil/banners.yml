@@ -1,0 +1,6 @@
+---
+discover-banner-header: 'Pamamagitan ng mga kategorya, lokasyon o pagbalik,<br><span class="red">proyekto</span> may higit na matukoy mo'
+login-banner-header: 'Sumali sa komunidad kumayat<br><span class="greenblue">100% bukas</span>'
+main-banner-header: '<h2 class="message">Sosyal na network para <span class="greenblue">cofinancing at pakikipagtulungan sa</span><br> malikhaing proyekto na nagsusulong sa Commons<br> Mayroon kang isang proyekto na may <span class="greenblue">? Buksan ang Dna</span>?</h2><a href="/contact" class="button banner-button">Makipag-ugnay sa amin</a>'
+open-banner-header: '<div class="modpo-open">BUKAS</div><div class="modpo-percent">100&#37; BUKAS</div><div class="modpo-whyopen">%s</div>'
+regular-banner-metter: natamo ang-ng-manatili

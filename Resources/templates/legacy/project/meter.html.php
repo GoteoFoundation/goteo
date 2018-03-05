@@ -1,7 +1,7 @@
 <?php
 use Goteo\Library\Text,
     Goteo\Library\Check,
-    Goteo\Library\Currency;
+    Goteo\Application\Currency;
 
 $level = (int) $vars['level'] ?: 3;
 

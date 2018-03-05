@@ -14,7 +14,7 @@ use Goteo\Application\AppEvents;
 use Goteo\Model\Matcher;
 use Goteo\Model\Project;
 use Goteo\Model\Invest;
-use Goteo\Library\Currency;
+use Goteo\Application\Currency;
 use Goteo\Payment\Method\PaymentMethodInterface;
 use Goteo\Payment\Method\PoolPaymentMethod;
 

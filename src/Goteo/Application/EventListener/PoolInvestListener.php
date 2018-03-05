@@ -18,7 +18,7 @@ use Goteo\Application\Event\FilterInvestRequestEvent;
 use Goteo\Application\Lang;
 use Goteo\Application\Message;
 use Goteo\Application\Session;
-use Goteo\Library\Currency;
+use Goteo\Application\Currency;
 use Goteo\Library\Feed;
 use Goteo\Library\FeedBody;
 use Goteo\Library\Text;
@@ -116,8 +116,8 @@ class PoolInvestListener extends AbstractListener {
 
         if( Mail::createFromTemplate($user->email, $user->name, Template::POOL_RECHARGUE_THANKS, [
               '%USERNAME%'   => $user->name,
-              '%AMOUNT_RECHARGUED%'   => Currency::amount_format($invest->amount),
-              '%AMOUNT_POOL%'     => Currency::amount_format($amount_pool),
+              '%AMOUNT_RECHARGUED%'   => Currency::amountFormat($invest->amount),
+              '%AMOUNT_POOL%'     => Currency::amountFormat($amount_pool),
               '%WALLET_URL%'     => Config::getUrl($lang) . '/dashboard/wallet',
               '%CERTIFICATE_URL%'     => Config::getUrl($lang) . '/dashboard/wallet/certificate'
                ], $user->lang)

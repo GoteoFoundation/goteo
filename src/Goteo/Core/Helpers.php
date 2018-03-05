@@ -178,7 +178,7 @@ namespace {
     function amount_format($amount, $decs = 0, $nosymbol = false, $revert = false) {
 
 
-        return \Goteo\Library\Currency::amount_format($amount, $decs, $nosymbol, $revert);
+        return \Goteo\Application\Currency::amountFormat($amount, $decs, $nosymbol, $revert);
     }
 
     /**
