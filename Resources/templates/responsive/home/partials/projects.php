@@ -10,7 +10,8 @@
     <div class="container" id="projects-container">
         <?php if($this->projects): ?>
             <?= $this->insert('home/partials/projects_list', [
-                'projects' => $this->projects
+                'projects' => $this->projects,
+                'total_projects' => $this->total_projects
             ]) ?>
         <?php endif ?>
     </div>

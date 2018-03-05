@@ -1,4 +1,4 @@
-<ul class="filters list-inline center-block text-center">
+<ul class="project-filters list-inline center-block text-center">
     <li data-status="promoted" class="active">
         <?= $this->text('home-projects-team-favourites') ?>
     </li>

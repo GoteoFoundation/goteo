@@ -19,4 +19,7 @@ discover-searcher-bylocation-header: 'By location:'
 discover-searcher-byreward-all: ALL
 discover-searcher-byreward-header: 'By benefit:'
 discover-searcher-header: 'Find a project'
+discover-by-keyword: 'By keyword:'
+discover-near-by: 'Near by:'
+discover-any-city: 'City, Zip code, ...'
 meta-title-discover: 'Discover projects :: Goteo.org'

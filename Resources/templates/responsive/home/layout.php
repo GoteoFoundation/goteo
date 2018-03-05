@@ -7,8 +7,6 @@ $this->layout('layout', [
 
 $this->section('content');
 
-// We include alert messages in this layout, so it will be processed before the
-// main layout. Therefore the main layout won't repeat them
 ?>
 
 <div class="home">

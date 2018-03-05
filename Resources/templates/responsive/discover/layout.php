@@ -8,8 +8,6 @@ $this->layout('layout', [
 
 $this->section('content');
 
-// We include alert messages in this layout, so it will be processed before the
-// main layout. Therefore the main layout won't repeat them
 ?>
 
 <div class="discover">
@@ -19,4 +17,8 @@ $this->section('content');
 </div>
 
 <?php $this->replace() ?>
-    
+
+
+<?php $this->section('footer') ?>
+    <?= $this->insert('discover/partials/javascript') ?>
+<?php $this->append() ?>

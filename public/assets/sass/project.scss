@@ -514,6 +514,10 @@ div {
   }
   &.general-text {
     font-size: 15px;
+    img{
+      max-width: 100%;
+      margin: 0 auto;
+    }
   }
   &.small-subtitle {
     font-size: 13px;

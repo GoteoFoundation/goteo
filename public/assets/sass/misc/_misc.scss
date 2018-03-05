@@ -53,46 +53,46 @@ blockquote {
     margin-top: 40px;
 }
 
-.spacer-20{
+.spacer-20 {
     margin-top:20px;
 }
 
-.padding-20{
+.padding-20 {
     padding-top:20px;
 }
 
-.spacer-5{
+.spacer-5 {
     margin-top:5px;
 }
 
-.spacer-10{
+.spacer-10 {
     margin-top:10px !important;
 }
 .spacer-bottom {
     margin-bottom: 40px;
 }
 
-.spacer-bottom-20{
+.spacer-bottom-20 {
     margin-bottom:20px;
 }
 
-.spacer-bottom-5{
+.spacer-bottom-5 {
     margin-bottom:5px;
 }
 
-.spacer-bottom-10{
+.spacer-bottom-10 {
     margin-bottom:10px !important;
 }
 
-.cursor-pointer{
+.cursor-pointer {
     cursor: pointer;
 }
 
-.text-left-important{
+.text-left-important {
     text-align: left !important;
 }
 
-.align-center-margin{
+.align-center-margin {
     margin: 0 auto;
 }
 
@@ -104,48 +104,48 @@ blockquote {
     clear:both !important;
 }
 
-.no-margin{
+.no-margin {
     margin:0 !important;
 }
 
-.no-padding{
+.no-padding {
     padding: 0 !important;
 }
 
-.margin-left-2{
+.margin-left-2 {
     margin-left: 2%;
 }
 
-.margin-top-7{
+.margin-top-7 {
     margin-top:7.5%;
 }
 
-.padding-bottom-6{
+.padding-bottom-6 {
     padding-bottom: 6%;
 }
 
-.padding-bottom-2{
+.padding-bottom-2 {
     padding-bottom: 2%;
 }
 
-.text-bold{
+.text-bold {
     font-weight: bold;
 }
 
-.text-font-normal{
+.text-font-normal {
     font-weight: normal;
 }
 
 
-.label-img{
+.label-img {
     vertical-align: top;
 }
 
-.standard-margin-top{
+.standard-margin-top {
     margin-top:3%;
 }
 
-.panel-form{
+.panel-form {
     margin: 0px auto;
     max-width: 375px;
 }
@@ -178,6 +178,32 @@ a.expand-link{
     cursor: pointer;
 }
 
-.uppercase{
+.uppercase {
     text-transform: uppercase;
+}
+
+
+ul.project-filters {
+  margin:20px 0;
+  li{
+    font-weight: bold;
+    padding: 5px 15px;
+    cursor: pointer;
+    color: $primary-color;
+    a {
+      color: $primary-color;
+    }
+    &.active{
+      background-color: $background-light-green;
+      border-radius: 5px;
+      color: $color-white !important;
+      cursor: none;
+      a {
+        color: $color-white !important;
+      }
+    }
+    &.matchfunding, &.matchfunding a {
+      color: $color-lilac;
+    }
+  }
 }
