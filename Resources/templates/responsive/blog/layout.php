@@ -45,7 +45,7 @@ $this->section('content');
 
 <?php $this->section('footer') ?>
 
-<link rel="stylesheet" href="/assets/vendor/selection-sharer/selection-sharer.js" />
+<script type="text/javascript" src="/assets/vendor/selection-sharer/selection-sharer.js" ></script>
 
 <script>
 	$('div').selectionSharer();

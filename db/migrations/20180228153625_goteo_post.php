@@ -2,7 +2,7 @@
 /**
  * Migration Task class.
  */
-class GoteoPostsubtitle
+class GoteoPost
 {
   public function preUp()
   {
