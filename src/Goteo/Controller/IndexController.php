@@ -20,7 +20,7 @@ use Goteo\Util\Stats\Stats;
 
 // para sacar el contenido de about
 
-class IndexController extends \Goteo\Core\Controller
+class IndexController extends DiscoverController
 {
 
     public function __construct()
@@ -33,14 +33,9 @@ class IndexController extends \Goteo\Core\Controller
     public function indexAction(Request $request)
     {
         $limit = 24;
-        $filter = [
-            'status' => Project::STATUS_IN_CAMPAIGN,
-            'published_since' => (new \DateTime('-6 month'))->format('Y-m-d'),
-            'type' => 'promoted',
-            'order' => 'promote.order ASC, project.published DESC, project.name ASC'
-        ];
-        $projects = Project::getList($filter, null, 0, $limit);
-        $total_projects = Project::getList($filter, null, 0, 0, true);
+        $filters = $this->getProjectFilters('promoted');
+        $projects = Project::getList($filters, null, 0, $limit);
+        $total_projects = Project::getList($filters, null, 0, 0, true);
 
         $stories = Stories::getAll(true);
 

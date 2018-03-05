@@ -33,7 +33,7 @@ $langs = $project->getLangs();
                             <img class="tags" src="<?= SRC_URL . '/assets/img/project/tags.png' ?>">
                             <?php $sep = '';
                             foreach ($project->cat_names as $key=>$value) :
-                                echo $sep.'<a href="/discover/results/'.$key.'/'.$value.'" class="tag">'.htmlspecialchars($value).'</a>';
+                                echo $sep.'<a href="/discover?category=' . $key . '" class="tag">'.htmlspecialchars($value).'</a>';
                                 $sep = ', ';
                             endforeach; ?>
                         </div>

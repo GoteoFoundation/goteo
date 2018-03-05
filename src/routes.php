@@ -19,13 +19,6 @@ $routes->add('home', new Route(
     array('_controller' => 'Goteo\Controller\IndexController::indexAction')
 ));
 
-// AJAX utils Home
-$routes->add('home-ajax-projects-filtered', new Route(
-    '/home/ajax/projects',
-    array('_controller' => 'Goteo\Controller\Home\AjaxHomeController::projectsSearchAction',
-        )
-));
-
 // Discover routes
 $routes->add('discover', new Route(
     '/discover',

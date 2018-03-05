@@ -431,23 +431,10 @@ body.home {
         .title{
             margin-top: 0;
         }
-        .filters{
-           margin:40px 0 35px 0;
-           li{
-            font-weight: bold;
-            padding: 5px 15px;
-            cursor: pointer;
-            }
-            .active{
-                background-color: $background-light-green;
-                border-radius: 5px;
-                color: #FFF !important;
-                cursor: none;
-            }
-            .matchfunding{
-                color: $color-lilac;
-            }
+        ul.project-filters {
+          margin:40px 0 35px 0;
         }
+
 
         // Hide while loading
 
@@ -1022,7 +1009,7 @@ body.home {
             }
         }
     }
-    
+
 
     div.section.tools{
         background-color: $background-blue !important;
