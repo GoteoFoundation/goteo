@@ -2,7 +2,7 @@
 /**
  * Migration Task class.
  */
-class GoteoPostsubtitle
+class GoteoPost
 {
   public function preUp()
   {
@@ -34,7 +34,7 @@ class GoteoPostsubtitle
      return "
             ALTER TABLE `post` ADD COLUMN `subtitle` TINYTEXT NULL AFTER `title`;
             ALTER TABLE `post_lang` ADD COLUMN `subtitle` TINYTEXT NULL AFTER `title`;
-
+            ALTER TABLE `post` ADD COLUMN `header_image` VARCHAR(255) NULL AFTER `image`
       ";
   }
 
@@ -48,6 +48,7 @@ class GoteoPostsubtitle
      return "
             ALTER TABLE `post` DROP COLUMN `subtitle`;
             ALTER TABLE `post_lang` DROP COLUMN `subtitle`;
+            ALTER TABLE `header_image` DROP COLUMN `subtitle`;
 
       ";
   }
