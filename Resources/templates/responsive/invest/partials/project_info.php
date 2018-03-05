@@ -11,8 +11,8 @@
           <?php if ($this->project_categories) : ?>
             <div class="project-tags pull-left hidden-xs hidden-sm">
             <?php $sep = '';
-            foreach ($this->project_categories as $key=>$value) :
-            echo $sep.'<a href="/discover/results/'.$key.'/'.$value.'">'.$value.'</a>';
+            foreach ($this->project_categories as $key => $value) :
+            echo $sep . '<a href="/discover?category=' . $key . '">' . $value . '</a>';
                  $sep = ', ';
                   endforeach ?>
             </div>

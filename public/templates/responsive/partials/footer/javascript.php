@@ -35,9 +35,23 @@ IMG_URL = '<?= $this->ee(defined('GOTEO_DATA_URL') ? GOTEO_DATA_URL : SITE_URL .
 goteo.locale = '<?= $this->lang_current() ?>';
 MAX_FILE_SIZE = <?= \Goteo\Model\Image::getSystemMaxFileSize('mb') ?>;
 goteo.user_location = <?= json_encode($this->get_user_location()) ?>;
+goteo.decimal = '<?= $this->get_currency('dec') ?>';
+goteo.thousands = '<?= $this->get_currency('thou') ?>';
 goteo.texts = goteo.texts || {};
 goteo.texts['ajax-load-error'] = '<?= $this->ee($this->text('ajax-load-error'), 'js') ?>';
+goteo.texts['regular-loading'] = '<?= $this->ee($this->text('regular-loading'), 'js') ?>';
+goteo.urlParams;
+(window.onpopstate = function () {
+    var match,
+        pl     = /\+/g,  // Regex for replacing addition symbol with a space
+        search = /([^&=]+)=?([^&]*)/g,
+        decode = function (s) { return decodeURIComponent(s.replace(pl, " ")); },
+        query  = window.location.search.substring(1);
 
+    goteo.urlParams = {};
+    while (match = search.exec(query))
+       goteo.urlParams[decode(match[1])] = decode(match[2]);
+})();
 // @license-end
 </script>
 

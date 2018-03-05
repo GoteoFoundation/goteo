@@ -3516,6 +3516,19 @@ namespace Goteo\Model {
             $sqlFilter = "";
             $innerJoin = "";
 
+            if (!empty($filters['global'])) {
+                $sqlFilter .= ' AND (project.name LIKE :query
+                    OR project.description LIKE :query
+                    OR project.motivation LIKE :query
+                    OR project.about LIKE :query
+                    OR project.goal LIKE :query
+                    OR project.related LIKE :query
+                    OR project.keywords LIKE :query
+                )';
+                // TODO: search in project_lang too with $innerJoin
+                $values[':query'] = "%{$filters['query']}%";
+            }
+
             if ((!empty($filters['consultant'])) && ($filters['consultant'] != -1)) {
                 $sqlFilter .= " AND user_project.user = :consultant";
                 $values[':consultant'] = $filters['consultant'];
@@ -3525,8 +3538,7 @@ namespace Goteo\Model {
                 $sqlFilter .= " AND project.status IN ({$filters['multistatus']})";
             }
 
-            if(!empty($filters['is_draft']))
-            {
+            if(!empty($filters['is_draft'])) {
                 $sqlFilter .= " AND project.id NOT REGEXP '[0-9a-f]{32}'";
             }
 
@@ -3595,14 +3607,20 @@ namespace Goteo\Model {
                     )";
                 $values[':category'] = $filters['category'];
             }
+
             if (!empty($filters['location']) && $filters['location'] instanceOf LocationInterface) {
                 $loc = $filters['location'];
-                $distance = $loc->radius ? $loc->radius : 50; // seasrch in 50 km by default
+                $distance = $loc->radius ? $loc->radius : 50; // search in 50 km by default
                 $innerJoin .= "INNER JOIN project_location ON project_location.id = project.id";
-                $location_parts = ProjectLocation::getSQLFilterParts($loc, $distance);
-                $sqlFilter .= " AND ({$location_parts[firstcut_where]})" ;
+                $location_parts = ProjectLocation::getSQLFilterParts($loc, $distance, true, $loc->city, 'project_location');
+                $sqlFilter .= " AND ({$location_parts['firstcut_where']})" ;
                 $values = array_merge($values, $location_parts['params']);
+                if(empty($filters['order'])) {
+                    $order = 'ORDER BY Distance ASC';
+                }
+                // print_r($loc);die;
             }
+
             if (!empty($filters['called'])) {
 
                 switch ($filters['called']) {
@@ -3667,6 +3685,19 @@ namespace Goteo\Model {
                         $order = 'ORDER BY project.published DESC';
                     }
                 }
+                elseif($filters['type'] === 'popular') {
+                    // more users between cofinancers and messages
+                    $sqlFilter .= ' AND project.popularity > 20';
+                    if(empty($filters['order'])) {
+                        $order = 'ORDER BY project.popularity DESC';
+                    }
+                }
+                elseif($filters['type'] === 'succeeded') {
+                    $sqlFilter .= ' AND project.amount >= project.mincost';
+                    if(empty($filters['order'])) {
+                        $order = 'ORDER BY project.published DESC';
+                    }
+                }
             }
             if (!empty($filters['node'])) {
                 $sqlFilter .= " AND project.node = :node";
@@ -3713,8 +3744,7 @@ namespace Goteo\Model {
 
             $where = "project.id != ''
                       $not_null_date_publishing
-                      $sqlFilter
-                      $sqlOrder";
+                      $sqlFilter";
 
             $from = "FROM project
                     LEFT JOIN project_conf ON project_conf.project=project.id
@@ -3722,13 +3752,21 @@ namespace Goteo\Model {
                     ";
 
             if($count) {
-                // Return count
-                $sql = "SELECT COUNT(project.id)
-                    $from
-                    $innerJoin
+                if($location_parts) {
+                    $sql .= "SELECT COUNT(id)
+                    FROM (SELECT project.id,project.project_location,project_location.latitude,project_location.longitude $from $innerJoin WHERE $where) as FirstCut
                     WHERE
-                    $where";
-                    //die(\sqldbg($sql, $values));
+                    {$location_parts['where']}";
+                    // print_r($values);die($sql);
+                } else {
+                    // Return count
+                    $sql = "SELECT COUNT(project.id)
+                        $from
+                        $innerJoin
+                        WHERE
+                        $where";
+                        //die(\sqldbg($sql, $values));
+                }
                 return (int) self::query($sql, $values)->fetchColumn();
             }
 
@@ -3736,7 +3774,7 @@ namespace Goteo\Model {
             $limit = (int) $limit;
             // la select
 
-            $sql_fields = ['id', 'status', 'image', 'contract_name', 'contract_nif', 'contract_email', 'contract_entity', 'contract_birthdate', 'entity_office', 'entity_name', 'entity_cif', 'phone', 'address', 'zipcode', 'location', 'country', 'secondary_address', 'post_address', 'post_zipcode', 'post_location', 'post_country', 'name', 'subtitle', 'lang', 'currency', 'currency_rate', 'description', 'motivation', 'video', 'video_usubs', 'about', 'goal', 'related', 'spread', 'execution_plan', 'execution_plan_url', 'sustainability_model', 'sustainability_model_url', 'reward', 'keywords', 'media', 'media_usubs', 'currently', 'project_location', 'scope', 'resource', 'comment', 'analytics_id', 'facebook_pixel', 'social_commitment', 'social_commitment_description', 'days', 'created', 'updated', 'published', 'passed', 'success', 'closed', 'amount', 'mincost', 'maxcost',
+            $sql_fields = ['id', 'status', 'image', 'contract_name', 'contract_nif', 'contract_email', 'contract_entity', 'contract_birthdate', 'entity_office', 'entity_name', 'entity_cif', 'phone', 'address', 'zipcode', 'location', 'country', 'secondary_address', 'post_address', 'post_zipcode', 'post_location', 'post_country', 'name', 'subtitle', 'lang', 'currency', 'currency_rate', 'description', 'motivation', 'video', 'video_usubs', 'about', 'goal', 'related', 'spread', 'execution_plan', 'execution_plan_url', 'sustainability_model', 'sustainability_model_url', 'reward', 'keywords', 'media', 'media_usubs', 'currently', 'project_location', 'scope', 'resource', 'comment', 'analytics_id', 'facebook_pixel', 'social_commitment', 'social_commitment_description', 'days', 'num_investors', 'created', 'updated', 'published', 'passed', 'success', 'closed', 'amount', 'mincost', 'maxcost',
                 // extra
                 'draft',
                 // from user table
@@ -3752,11 +3790,12 @@ namespace Goteo\Model {
                     project_conf.*";
 
             if($location_parts) {
-                $sql .= "SELECT {$location_parts[distance]} AS Distance, `" . implode('`,`', $sql_fields) . "`
-                FROM (SELECT $fields,project_location.latitude,project_location.longitude $from $innerJoin WHERE $where) as FirstCut
+                $sql .= "SELECT {$location_parts['distance']} AS Distance, `" . implode('`,`', $sql_fields) . "`
+                FROM (SELECT $fields,{$location_parts['distance']} AS Distance,project_location.latitude,project_location.longitude $from $innerJoin WHERE $where $sqlOrder) as FirstCut
                 WHERE
-                {$location_parts[where]}
+                {$location_parts['where']}
                 LIMIT $offset, $limit";
+                // print_r($values);die($sql);
             } else {
                 $sql = "SELECT
                         $fields
@@ -3764,10 +3803,11 @@ namespace Goteo\Model {
                         $innerJoin
                         WHERE
                         $where
+                        $sqlOrder
                         LIMIT $offset, $limit";
             }
 
-            // echo \sqldbg($sql, $values);print_r($filters);die;
+            // echo "\n".\sqldbg($sql, $values)."\n";print_r($filters);die;
 
             $query = self::query($sql, $values);
             foreach ($query->fetchAll(\PDO::FETCH_CLASS, __CLASS__) as $proj) {
