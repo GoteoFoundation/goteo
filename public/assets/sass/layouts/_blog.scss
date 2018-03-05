@@ -30,6 +30,8 @@ body.blog {
     div.section.post-header{
       position: relative;
       padding-bottom: 30px;
+      //background-color: $background-light-yellow;
+      min-height: 450px;
 
       div.info{
         position: absolute;
@@ -39,15 +41,14 @@ body.blog {
         .container{
           background-color: $background-white;
           h1{
-            font-size: $font-size*2;
+            font-size: $font-size*2.67;
             text-align: center;
             padding: 20px 15%;
-            font-size: 40px;
             font-weight: bold;
           }
           div.subtitle{
             text-align: center;
-            font-size: 20px;
+            font-size: $font-size*1.33;
             font-weight: lighter;
             padding: 0 10%;
           }
@@ -59,7 +60,7 @@ body.blog {
               vertical-align: middle;
               .author{
                 display: block;
-                font-size: 16px;
+                font-size: $font-size*1.1;
               }
               .date{
                 display: block;
@@ -101,7 +102,51 @@ body.blog {
         margin-top:40px;
         font-size: 16px;
         padding-bottom: 30px;
+        img{
+          max-width: 100%;
+        }
       }
+    }
+
+
+  // Tablets customization
+
+    @media (max-width: $breakpoint-md + 1) {
+
+    }
+
+    @media (max-width: $breakpoint-sm - 1) {
+      div.section.post-header{
+        position:static;
+
+        div.info{
+          position: static;
+          h1{
+            padding: 20px 0 !important;
+            font-size: $font-size*1.8;
+          }
+          .container{
+            ul.info-extra{
+              border-bottom: 0px;
+              li {
+                img{
+                  width: 55px;
+                }
+                .author{
+                  font-size: $font-size*0.8 !important;
+                }
+                &.social{
+                  margin-top:10px;
+                }
+                &.social [class*="fa fa-"]{
+                  margin: auto 5px;
+                }
+              }
+            }
+          }
+        }
+      }
+
     }
 
 
