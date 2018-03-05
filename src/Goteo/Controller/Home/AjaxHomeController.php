@@ -31,18 +31,16 @@ class AjaxHomeController extends \Goteo\Core\Controller {
     /**
      * Projects filtered
      */
-    public function projectsFilterAction(Request $request)
+    public function projectsSearchAction(Request $request)
     {
 
-        $filter = $request->query->get('filter');
-        $latitude = $request->query->get('latitude');
-        $longitude = $request->query->get('longitude');
-        if ($request->isMethod('post')) {
-            $filter = $request->request->get('filter');
-            $latitude = $request->request->get('latitude');
-            $longitude = $request->request->get('longitude');
-
-        }
+        $limit = $request->get('limit', 24); // extracts from GET, PATH or POST
+        $pag = $request->get('pag', 0);
+        $limit = min(25, abs($limit));
+        $pag = max(0, abs($pag));
+        $filter = $request->get('filter');
+        $latitude = $request->get('latitude');
+        $longitude = $request->get('longitude');
 
         $filters = $ofilters = ['status' => [Project::STATUS_IN_CAMPAIGN, Project::STATUS_FUNDED], 'published_since' => (new \DateTime('-6 month'))->format('Y-m-d')];
         $filters['order'] = 'project.status ASC, project.published DESC, project.name ASC';
@@ -62,16 +60,25 @@ class AjaxHomeController extends \Goteo\Core\Controller {
             $filters['type'] = $filter;
         }
 
-        $projects = Project::getList($filters, null, 0, 25);
-
-        if(!$projects) {
-            $projects = Project::getList($ofilters, null, 0, 25);
+        $offset = $pag * $limit;
+        $projects = Project::getList($filters, null, $offset, $limit);
+        if($projects) {
+            $total_projects = Project::getList($filters, null, 0, 0, true);
+        } else {
+            $projects = Project::getList($ofilters, null, $offset, $limit);
+            $total_projects = Project::getList($ofilters, null, 0, 0, true);
         }
 
-        return $this->jsonResponse([
+        $vars = [
             'filter' => $filter,
-            'html' => View::render( 'home/partials/projects_list', ['projects' => $projects] )
-        ]);
+            'limit' => $limit,
+            'total' => $total_projects,
+            'items' => []
+        ];
+        foreach($projects as $p) {
+            $vars['items'][] = View::render('project/widgets/normal', ['project' => $p]);
+        }
+        return $this->jsonResponse($vars);
     }
 
 }

@@ -21,8 +21,8 @@ $routes->add('home', new Route(
 
 // AJAX utils Home
 $routes->add('home-ajax-projects-filtered', new Route(
-    '/home/ajax/projects/filtered',
-    array('_controller' => 'Goteo\Controller\Home\AjaxHomeController::projectsFilterAction',
+    '/home/ajax/projects',
+    array('_controller' => 'Goteo\Controller\Home\AjaxHomeController::projectsSearchAction',
         )
 ));
 

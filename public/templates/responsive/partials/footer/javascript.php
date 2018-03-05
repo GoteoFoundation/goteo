@@ -23,7 +23,8 @@ IMG_URL = '<?= $this->ee(defined('GOTEO_DATA_URL') ? GOTEO_DATA_URL : SITE_URL .
 goteo.locale = '<?= $this->lang_current() ?>';
 MAX_FILE_SIZE = <?= \Goteo\Model\Image::getSystemMaxFileSize('mb') ?>;
 goteo.user_location = <?= json_encode($this->get_user_location()) ?>;
-
+goteo.decimal = '<?= $this->get_currency('dec') ?>';
+goteo.thousands = '<?= $this->get_currency('thou') ?>';
 // @license-end
 </script>
 
