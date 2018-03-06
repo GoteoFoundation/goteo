@@ -40,7 +40,7 @@
 					<a class="fa fa-twitter" title="" target="_blank" href=""></a>
           			<a class="fa fa-facebook" title="" target="_blank" href=""></a>
           			<a class="fa fa-telegram" title="" target="_blank" href=""></a>
-          			<a class="fa fa-whatsapp" title="" target="_blank" href=""></a>
+          			<!--<a class="fa fa-whatsapp" title="" target="_blank" href=""></a>-->
 				</li>
 			</div>
 		</div>
