@@ -95,6 +95,7 @@ $(function(){
 
     // Load more slides if end of the carrousle reached
     $slider.on('beforeChange', function(event, slick, currentSlide, nextSlide) {
+      if($container.hasClass('loading-container')) return;
       var size = $slider.find('.widget-slide:not(.slick-cloned)').length;
       var visible = $slider.find('.widget-slide[aria-hidden="false"]').length;
       // console.log('slide about to load, currentSlide', currentSlide, 'nextSlide', nextSlide,'visible',visible);
