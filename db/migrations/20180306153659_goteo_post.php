@@ -34,7 +34,7 @@ class GoteoPost
      return "
             ALTER TABLE `post` ADD COLUMN `subtitle` TINYTEXT NULL AFTER `title`;
             ALTER TABLE `post_lang` ADD COLUMN `subtitle` TINYTEXT NULL AFTER `title`;
-            ALTER TABLE `post` ADD COLUMN `header_image` VARCHAR(255) NULL AFTER `image`
+            ALTER TABLE `post` ADD COLUMN header_image VARCHAR(255) CHARSET utf8 COLLATE utf8_general_ci NULL AFTER image;
       ";
   }
 
