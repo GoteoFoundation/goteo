@@ -1,5 +1,5 @@
 <div class="backside" id="backflip-<?= $this->matcher->id ?>">
-    <div class="close flip" href="#backflip-<?= $this->matcher->id ?>"><i class="icon icon-close"></i></div>
+    <a class="close flip" href="#backflip-<?= $this->matcher->id ?>"><i class="icon icon-close"></i></a>
     <div class="status">
         <?= $this->text_truncate($this->matcher->name, 60) ?>
     </div>
