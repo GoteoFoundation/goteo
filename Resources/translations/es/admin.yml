@@ -136,3 +136,11 @@ admin-title-avatar: Avatar
 admin-title-roles: Roles
 admin-title-amount: Invertido
 admin-title-info: Info
+
+
+admin-all-project-referers: 'Origen de visitas en los proyectos'
+admin-all-invests-referers: 'Origen de visitas en los aportes a proyectos'
+admin-all-call-referers: 'Origen de visitas a las convocatorias'
+admin-all-project-devices: 'Dispositivo usado en las páginas de proyectos'
+admin-all-invests-devices: 'Dispositivo usado en los aportes a proyectos'
+admin-all-call-devices: 'Dispositivo usado en las páginas de convocatorias'

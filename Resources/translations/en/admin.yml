@@ -65,3 +65,9 @@ admin-title-roles: Roles
 admin-title-amount: Invested
 admin-title-info: Info
 
+admin-all-project-referers: 'Origin of visits to project pages'
+admin-all-invests-referers: 'Origin of visits in successful contributions to projects'
+admin-all-call-referers: 'Origin of visits to matchfunding pages'
+admin-all-project-devices: 'Device used on project pages'
+admin-all-invests-devices: 'Device used in successful contributions to projects'
+admin-all-call-devices: 'Device used on matchfunding pages'
