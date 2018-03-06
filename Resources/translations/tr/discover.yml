@@ -1,1 +1,22 @@
 ---
+discover-group-all-header: 'Kampanya devam ediyor'
+discover-group-archive-header: Arşivlenen
+discover-group-fulfilled-header: 'Toplu iadeler onaylandı!'
+discover-group-others-header: 'Diğer düğümlerde'
+discover-group-outdate-header: 'Süresi dolmak üzere'
+discover-group-popular-header: 'En popüler'
+discover-group-recent-header: 'Son'
+discover-group-success-header: 'Başarılı'
+discover-patron-header: '<span class="greenblue">%s</span> tavsiye edilen<br>these <span class="red">projeler</span>'
+discover-results-empty: 'Aradığınız kriterlere uygun herhangi bir proje bulamadık'
+discover-results-header: 'Arama sonuçları'
+discover-searcher-button: Arama
+discover-searcher-bycategory-all: HEPSİ
+discover-searcher-bycategory-header: 'Kategoriye göre:'
+discover-searcher-bycontent-header: 'İçeriğe göre:'
+discover-searcher-bylocation-all: HEPSİ
+discover-searcher-bylocation-header: 'Konuma göre:'
+discover-searcher-byreward-all: HEPSİ
+discover-searcher-byreward-header: 'Kazança göre:'
+discover-searcher-header: 'Bir proje bulun'
+meta-title-discover: 'Projeleri keşfedin :: Goteo.org'
