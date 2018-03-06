@@ -43,8 +43,11 @@ $(function(){
     var $visibleSlides = $slider.find('.widget-slide[aria-hidden="false"]');
     //Make sure all of the visible slides have an opacity of 1
     $visibleSlides.css('opacity', 1);
-    //Set the opacity of the first and last partial slides.
+    // hide the first (which is the last in a infinite loop) partial slides to avoid a the rendering of the last
+    // slide in the inifinite loop
     $visibleSlides.first().prev().css('opacity', 0);
+    // in case there's a partial on the left this should be uncommented
+    // $visibleSlides.last().next().css('opacity', 0);
   }
 
   function destroySlickProjects() {
@@ -95,6 +98,10 @@ $(function(){
 
     // Load more slides if end of the carrousle reached
     $slider.on('beforeChange', function(event, slick, currentSlide, nextSlide) {
+
+      //Re-apply the visibility of the slides
+      $slider.find('.widget-slide').css('opacity', 1);
+
       if($container.hasClass('loading-container')) return;
       var size = $slider.find('.widget-slide:not(.slick-cloned)').length;
       var visible = $slider.find('.widget-slide[aria-hidden="false"]').length;
@@ -127,13 +134,14 @@ $(function(){
       //   console.log('left edge reached');
       // }
     });
-    // $slider.on('afterChange', function(event, slick, currentSlide) {
-    //   setSlideVisibility();
-    // });
 
     $slider.slick('slickGoTo', 1);
 
     setSlideVisibility();
+    //After the slide change has completed, call the setSlideVisibility to hide the partial slides.
+    $slider.on('afterChange', function(event, slick, currentSlide) {
+      setSlideVisibility();
+    });
   }
 
 
