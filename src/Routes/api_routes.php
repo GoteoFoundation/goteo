@@ -61,22 +61,22 @@ $api->add('api-project', new Route(
 
 // One Project chart preprocessed data (costs)
 $api->add('api-chart-project-costs', new Route(
-    '/charts/{id}/costs',
+    '/projects/{id}/charts/costs',
     array('_controller' => 'Goteo\Controller\Api\ChartsApiController::projectCostsAction',
         )
 ));
 
 // One Project chart preprocessed data (invests)
 $api->add('api-chart-project-invests', new Route(
-    '/charts/{id}/invests',
+    '/projects/{id}/charts/invests',
     array('_controller' => 'Goteo\Controller\Api\ChartsApiController::projectInvestsAction',
         )
 ));
 
 // One Project chart preprocessed data (origin)
 $api->add('api-chart-project-referer', new Route(
-    '/charts/{id}/referer/{type}',
-    array('_controller' => 'Goteo\Controller\Api\ChartsApiController::projectOriginAction',
+    '/projects/{id}/charts/referer/{type}',
+    array('_controller' => 'Goteo\Controller\Api\ChartsApiController::originStatsAction',
         'type' => 'project',
         'group' => 'referer'
         )
@@ -84,12 +84,32 @@ $api->add('api-chart-project-referer', new Route(
 
 // One Project chart preprocessed data (origin)
 $api->add('api-chart-project-device', new Route(
-    '/charts/{id}/device/{type}',
-    array('_controller' => 'Goteo\Controller\Api\ChartsApiController::projectOriginAction',
+    '/projects/{id}/charts/device/{type}',
+    array('_controller' => 'Goteo\Controller\Api\ChartsApiController::originStatsAction',
         'type' => 'project',
         'group' => 'ua'
         )
 ));
+
+// any project/call origins stats
+$api->add('api-charts-referers', new Route(
+    '/charts/referers/{type}',
+    array('_controller' => 'Goteo\Controller\Api\ChartsApiController::originStatsAction',
+        'id' => null,
+        'type' => 'project',
+        'group' => 'referer'
+        )
+));
+
+// any project/call origins stats (origin)
+$api->add('api-chart-devices', new Route(
+    '/charts/devices/{type}',
+    array('_controller' => 'Goteo\Controller\Api\ChartsApiController::originStatsAction',
+        'type' => 'project',
+        'group' => 'ua'
+        )
+));
+
 
 // Project images upload (POST method only)
 $api->add('api-projects-images-upload', new Route(

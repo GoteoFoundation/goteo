@@ -12,9 +12,12 @@ namespace Goteo\Controller\Api;
 
 use Symfony\Component\HttpFoundation\Request;
 use Goteo\Application\Exception\ControllerAccessDeniedException;
+use Goteo\Application\Exception\ControllerException;
 use Goteo\Library\Text;
 use Goteo\Application\Currency;
+use Goteo\Core\Model;
 use Goteo\Model\Project;
+use Goteo\Model\Call;
 use Goteo\Model\Invest;
 use Goteo\Model\Image;
 use Goteo\Model\Origin;
@@ -34,6 +37,20 @@ class ChartsApiController extends AbstractApiController {
             throw new ControllerAccessDeniedException();
         }
         return $prj;
+    }
+
+    protected function getCall($call, $private = false) {
+        if( ! $call instanceOf Call) {
+            $call = Call::get($call);
+        }
+
+        $is_visible = in_array($call->status, [Call::STATUS_OPEN, Call::STATUS_ACTIVE, Call::STATUS_COMPLETED]) && !$private;
+
+        $is_mine = $call->owner === $this->user->id;
+        if(!$this->is_admin && !$is_mine && !$is_visible) {
+            throw new ControllerAccessDeniedException();
+        }
+        return $call;
     }
 
     /**
@@ -155,15 +172,22 @@ class ChartsApiController extends AbstractApiController {
         return $this->jsonResponse($ret);
     }
 
+
     /**
      * Simple projects origins data
      * @param  Request $request [description]
      */
-    public function projectOriginAction($id, $type = 'project', $group = 'referer', Request $request) {
-        $prj = $this->getProject($id, true);
+    public function originStatsAction($id = null, $type = 'project', $group = 'referer', Request $request) {
+
+        if($type === 'call')
+            $model = $id ? $this->getCall($id, true) : new Call();
+        else
+            $model = $id ? $this->getProject($id, true) : new Project();
 
         $group_by = $request->query->get('group_by');
-        $ret = Origin::getProjectStats($prj->id, $type, $group, $group_by);
+
+        if($type === 'invests') $ret = Origin::getInvestsStats($model, $group, $group_by);
+        else $ret = Origin::getModelStats($model, $group, $group_by);
 
         $ret = array_map(function($ob) use ($group_by) {
             $label = $ob->tag ? $ob->tag : 'unknown';
@@ -178,7 +202,9 @@ class ChartsApiController extends AbstractApiController {
                 'created' => $ob->created,
                 'updated' => $ob->updated
             ];
-            }, $ret);
+        }, $ret);
+
         return $this->jsonResponse($ret);
     }
+
 }
