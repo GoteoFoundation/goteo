@@ -27,6 +27,11 @@ body.blog {
       background-color: $primary-color;
     }
 
+    img.header-default{
+      height:600px;
+      object-fit: cover;
+    }
+
     div.section.post-header{
       position: relative;
       padding-bottom: 30px;
@@ -112,12 +117,16 @@ body.blog {
   // Tablets customization
 
     @media (max-width: $breakpoint-md + 1) {
-
+    
     }
 
     @media (max-width: $breakpoint-sm - 1) {
       div.section.post-header{
         position:static;
+
+        img.header-default{
+          height:250px;
+        }
 
         div.info{
           position: static;
@@ -128,6 +137,7 @@ body.blog {
           .container{
             ul.info-extra{
               border-bottom: 0px;
+              text-align: center;
               li {
                 img{
                   width: 55px;
