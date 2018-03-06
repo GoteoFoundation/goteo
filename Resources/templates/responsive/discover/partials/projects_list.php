@@ -1,4 +1,4 @@
-<div class="section projects-list auto-update-projects" data-filter="<?= $this->filter ?>" data-total="<?= $this->total ?>" data-limit="<?= $this->limit ?>">
+<div class="section projects-list auto-update-projects" data-filter="<?= $this->filter ?>" data-total="<?= $this->total ?>" data-limit="<?= $this->limit ?>" data-limit-add="<?= $this->limit_add ?>">
     <div class="container">
 	   <div class="row">
 	   <?php if ($this->projects) : ?>

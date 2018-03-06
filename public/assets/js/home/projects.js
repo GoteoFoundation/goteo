@@ -28,6 +28,7 @@ $(function(){
   var $container = $('#projects-container');
   var $slider = $container.contents('.slider-projects');
   var total = $slider.data('total');
+  var limit_add = $slider.data('limit-add') || $slider.data('limit');
   var params = {
     filter: $(".auto-update-projects .project-filters li.active").data('status'),
     latitude: 0,
@@ -92,6 +93,7 @@ $(function(){
 
     $slider.slick(settings);
 
+    // Load more slides if end of the carrousle reached
     $slider.on('beforeChange', function(event, slick, currentSlide, nextSlide) {
       var size = $slider.find('.widget-slide:not(.slick-cloned)').length;
       var visible = $slider.find('.widget-slide[aria-hidden="false"]').length;
@@ -100,13 +102,20 @@ $(function(){
         // console.log('right edge reached, currentSlide', currentSlide,'size', size, 'visible slides', visible, 'page', pag);
         if( currentSlide < total && size < total) {
           params.pag++;
+          // We change some defaults here
+          var query = jQuery.extend({}, params);
+          query.limit = limit_add; // smaller limit than the initial slide load
+          query.strict = true; // do not give default projects if current filter returns empty
           $container.addClass('loading-container');
-          $.getJSON('/discover/ajax', params, function(result) {
+          $.getJSON('/discover/ajax', query, function(result) {
             total = result.total;
-            params.limit = result.limit;
+            var items = '';
             result.items.forEach(function(html, index) {
-              $slider.slick('slickAdd', '<div class="item widget-slide">' + html + '</div>');
+              // $slider.slick('slickAdd', '<div class="item widget-slide">' + html + '</div>');
+              items += '<div class="item widget-slide">' + html + '</div>';
             });
+            // Add all items at once, seems to be more efficient for slick
+            $slider.slick('slickAdd', items);
             $container.removeClass('loading-container');
             // $slider.slick('slickGoTo', currentSlide + 1);
             // console.log('new loaded with params', params, 'result', result);
@@ -142,7 +151,6 @@ $(function(){
     $.getJSON('/discover/ajax', params, function(result) {
       // console.log(result);
       destroySlickProjects();
-      params.limit = result.limit;
       total = result.total;
       $slider.contents('.widget-slide').remove();
       result.items.forEach(function(html, index) {
