@@ -13,6 +13,7 @@ namespace Goteo\Controller;
 use Symfony\Component\HttpFoundation\Request;
 
 use Goteo\Application\View;
+use Goteo\Application\Session;
 use Goteo\Model\Category;
 use Goteo\Model\Project;
 use Goteo\Model\Project\ProjectLocation;
@@ -92,6 +93,11 @@ class DiscoverController extends \Goteo\Core\Controller {
             $filters['type'] = 'recent';
         }
 
+        if($vars['review']) {
+            $filters['status'] = [ Project::STATUS_EDITING, Project::STATUS_REVIEWING, Project::STATUS_IN_CAMPAIGN, Project::STATUS_FUNDED, Project::STATUS_FULFILLED, Project::STATUS_UNFUNDED ];
+            $filters['is_draft'] = true;
+            // unset($filters['published_since']);
+        }
         return $filters;
     }
 
@@ -107,8 +113,12 @@ class DiscoverController extends \Goteo\Core\Controller {
         $latitude = $request->query->get('latitude');
         $longitude = $request->query->get('longitude');
         $category = $request->query->get('category');
+        $vars = ['q' => $q, 'category' => $category, 'location' => $location, 'latitude' => $latitude, 'longitude' => $longitude];
+        if(Session::isAdmin()) {
+            $vars['review'] = $request->query->get('review') !== '0';
+        }
 
-        $filters = $this->getProjectFilters($filter, ['q' => $q, 'category' => $category, 'location' => $location, 'latitude' => $latitude, 'longitude' => $longitude]);
+        $filters = $this->getProjectFilters($filter, $vars);
 
         $projects = Project::getList($filters, null, 0, $limit);
         $total = Project::getList($filters, null, 0, 0, true);

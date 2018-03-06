@@ -26,6 +26,7 @@ for the JavaScript code in this page.
 $(function(){
     // Intial page for auto-scroll
     $container = $('.auto-update-projects');
+    $in_review = $('#include-in-review').length && $('#include-in-review');
     var total = $container.data('total');
     var query = {
         filter: $container.data('filter'),
@@ -62,6 +63,17 @@ $(function(){
                 $container.find('.loading-container').remove();
                 query.pag++;
             });
+        }
+    });
+
+    // if admin, allow to choose if search in-review projects
+    $('#main').on('submit', 'form.form-search', function(e) {
+        if($in_review) {
+            // console.log('in review', $in_review.prop('checked'));
+            $('<input>').attr('type', 'hidden')
+              .attr('name', $in_review.attr('name'))
+              .attr('value', $in_review.prop('checked') ? 1 : 0)
+              .appendTo($(this));
         }
     });
 

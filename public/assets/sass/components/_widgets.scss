@@ -370,6 +370,22 @@
     }
   }
 
+  &.non-public {
+    // Mark the project as non-public
+    // border: 1px solid $color-orange;
+    position: relative;
+    &::before {
+      position: absolute;
+      font-family: fontAwesome;
+      content: '\f023';
+      display: inline-block;
+      top: 0;
+      left: 10px;
+      z-index: 1;
+      font-size: 32px;
+      color: $color-red;
+    }
+  }
   >.backside {
     background: $background-light;
     position: absolute;
