@@ -101,7 +101,7 @@ $(function(){
         if( currentSlide < total && size < total) {
           params.pag++;
           $container.addClass('loading-container');
-          $.post('/discover/ajax', params, function(result) {
+          $.getJSON('/discover/ajax', params, function(result) {
             total = result.total;
             params.limit = result.limit;
             result.items.forEach(function(html, index) {
@@ -139,7 +139,7 @@ $(function(){
     params.pag = 0;
 
     // console.log('drawProjects', params)
-    $.post('/discover/ajax', params, function(result) {
+    $.getJSON('/discover/ajax', params, function(result) {
       // console.log(result);
       destroySlickProjects();
       params.limit = result.limit;
