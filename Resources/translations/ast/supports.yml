@@ -1,0 +1,14 @@
+---
+mandatory-support-field-description: 'Ye obligatorio poner dalguna descripción'
+mandatory-support-field-name: 'Ye obligatorio pone-y un nome a la collaboración'
+step-6: Collaboraciones
+step-supports: 'Pasu: Proyeutu / Collaboraciones'
+supports-field-description: Descripción
+supports-field-support: Resume
+supports-field-type: 'Triba d''ayuda'
+supports-fields-support-title: Collaboraciones
+supports-main-header: 'Solicitú de collaboraciones'
+tooltip-project-nsupport: 'Conseyu pa rellenar una collaboración nueva'
+tooltip-project-support: 'Conseyu pa editar collaboraciones esistentes'
+support-is-private: 'Mensaxe priváu'
+message-response: 'Rempuesta'

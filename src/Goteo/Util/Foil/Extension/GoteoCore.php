@@ -20,7 +20,7 @@ use Goteo\Application\App;
 use Goteo\Application\Lang;
 use Goteo\Model\User;
 use Goteo\Model\User\UserLocation;
-use Goteo\Library\Currency;
+use Goteo\Application\Currency;
 
 class GoteoCore implements ExtensionInterface
 {

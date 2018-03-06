@@ -1,0 +1,3 @@
+---
+error-register-invalid-password: 'That password is not valid. Please make sure you use at least 6 characters.'
+error-register-short-password: 'The password should have at least 6 characters.'

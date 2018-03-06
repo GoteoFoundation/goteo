@@ -14,6 +14,7 @@ use Goteo\Application\Config\ConfigException;
 use Goteo\Application\Config\YamlSettingsLoader;
 use Goteo\Console\UsersSend;
 use Goteo\Core\Model;
+use Goteo\Application\Currency;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\Config\Loader\DelegatingLoader;
 use Symfony\Component\Config\Loader\LoaderResolver;
@@ -37,6 +38,11 @@ class Config {
 			if (self::get('timezone')) {
 				date_default_timezone_set(self::get('timezone'));
 			}
+            // Default system_lang to 'es' if not defined
+            if(!array_key_exists('sql_lang', self::$config)) {
+                self::$config['sql_lang'] = 'es';
+            }
+
 
 			// handles legacy config values
 			self::setConstants();
@@ -47,6 +53,15 @@ class Config {
 			if (is_array($locales) && $locales) {
 				Lang::setLangsAvailable($locales);
 			}
+            // load the currency configuration
+            $currencies = self::loadFromYaml(__DIR__ . '/../../../Resources/currencies.yml');
+            if (is_array($currencies) && $currencies) {
+                Currency::setCurrenciesAvailable($currencies);
+            }
+            if (self::get('currency')) {
+                Currency::setDefault(self::get('currency'));
+            }
+
 			// load translations
 			foreach (Lang::listAll('name', false) as $lang => $name) {
 				Lang::addSqlTranslation($lang);
@@ -54,6 +69,11 @@ class Config {
 					Lang::addYamlTranslation($lang, __DIR__ . '/../../../Resources/translations/' . $lang . '/' . $group . '.yml');
 				}
 			}
+
+            // Add model zones for the translator
+            \Goteo\Controller\TranslateController::addTranslateModel('criteria');
+            \Goteo\Controller\TranslateController::addTranslateModel('sphere');
+
 			// sets up the rest...
 			self::setDirConfiguration();
 		} catch (\Exception $e) {

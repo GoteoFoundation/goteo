@@ -1,5 +1,5 @@
 ---
-node-footer-about: 'Réseau social pour contribuer à des projets qui génèrent et favorisent le bien commun : Avez-vous un projet ouvert ?'
+node-footer-about: 'Réseau social pour contribuer à des projets qui génèrent et favorisent le bien commun: <a href="/project/create">Avez-vous un projet ouvert?</a>'
 node-footer-help-what: 'Le crowdfunding c''est quoi ?'
 node-footer-help-why: 'Pourquoi Goteo est différent ?'
 node-footer-investors-donate: 'Dons et dégrèvements'

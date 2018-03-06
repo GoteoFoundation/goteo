@@ -1,6 +1,6 @@
 <?php
 
-use Goteo\Library\Currency;
+use Goteo\Application\Currency;
 
 $currencies = Currency::$currencies;
 

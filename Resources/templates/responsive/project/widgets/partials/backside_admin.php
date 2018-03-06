@@ -1,5 +1,5 @@
 <div class="backside admin" id="backflip-<?= $this->project->id ?>">
-    <div class="close flip" href="#backflip-<?= $this->project->id ?>"><i class="icon icon-close"></i></div>
+    <a class="close flip" href="#backflip-<?= $this->project->id ?>"><i class="icon icon-close"></i></a>
 
     <a href="/project/<?= $this->project->id ?>" class="floating" title="<?= $this->text('regular-preview') ?>"><i class="icon icon-preview"></i></a>
 

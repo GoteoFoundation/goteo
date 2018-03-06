@@ -1,0 +1,54 @@
+---
+costs-field-select-rounds: Plazos
+form-accept-button: Aceutar
+form-add-button: Amestar
+form-ajax-info: 'El formulariu va guardándose a midida que pases per cada campu'
+form-apply-button: Aplicar
+form-edit-button: Editar
+form-has-errors: 'El formulariu contién fallos, revísalos enantes de siguir.'
+form-errors-info: 'Total: %s | Nesti pasu: %s'
+form-errors-total: 'Hai %s fallos en total'
+form-footer-errors_title: Fallos
+form-image_upload-button: 'Xubir imaxe'
+form-media_send-button: 'Poner videu'
+form-navigation_bar-header: 'Dir a'
+form-next-button: Siguiente
+form-project-info_status-title: 'Estáu global de la información'
+form-project-progress-title: 'Evaluación de datos'
+form-project-status-title: 'Estáu del proyeutu'
+form-project_status-campaing: 'En campaña'
+form-project_status-cancelled: Escartóse
+form-project_status-edit: Editándose
+form-project_status-expired: Archivóse
+form-project_status-review: 'Pendiente de valoración'
+form-project_status-success: Financiáu
+form-remove-button: Desaniciar
+form-self_review-button: Correxir
+form-send_review-button: Unviar
+form-upload-button: Unviar
+project-form-header: Formulariu
+project-one-round: 'Ronda única de 40 díes'
+project-two-rounds: 'Dos rondes de 40 díes'
+form-editor-bold: 'Negrina'
+form-editor-italic: 'Cursiva'
+form-editor-strikethrough: 'Tacháu'
+form-editor-heading: 'Testera'
+form-editor-smaller_heading: 'Amenorgar testera'
+form-editor-bigger_heading: 'Aumentar testara'
+form-editor-code: 'Códigu'
+form-editor-quote: 'Cita'
+form-editor-generic_list: 'Llistáu xenéricu'
+form-editor-numbered_list: 'Llistáu ordenáu'
+form-editor-create_link: 'Crear enllaz'
+form-editor-insert_image: 'Inxertar imaxe'
+form-editor-insert_table: 'Inxertar tabla'
+form-editor-insert_horizontal_line: 'Llinia horizontal'
+form-editor-markdown_guide: 'Guía markdown'
+form-editor-undo: 'Desfacer'
+form-editor-redo: 'Refacer'
+form-editor-close: 'Zarrar'
+form-editor-exact-location: 'Allugamientu exautu'
+form-editor-change-location: 'Camudar'
+form-editor-fine-locate: 'Pues afinar l''allugamientu arrastrando y soltando la marca.'
+form-editor-success-locating: 'Nun s''alcontró una direición válida'
+form-dragndrop-unsupported: 'Asocedió un problema al arrastrar y soltar ficheros. Por favor, volvi tentalo faciendo clic nel botón de xubir ficheros'

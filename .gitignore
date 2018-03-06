@@ -1,10 +1,11 @@
 .vagrant
 .sass-cache
 
-/extend/
+/extend/*
 !/extend/README.md
 !/extend/goteo-dev
 !/extend/private-zones
+!/extend/plugin-responsive
 
 /node_modules/
 /vendor/

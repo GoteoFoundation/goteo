@@ -1,0 +1,79 @@
+---
+currency-switch: CAMUDAR
+personal-field-accounts: 'Cuentes del proyeutu'
+project-about-title: 'Sobre esti proyeutu'
+project-chart-amount-ideal: Ideal
+project-chart-amount-reached: Acumulóse
+project-chart-costs-reset: 'Volver'
+project-collaborations-number: 'collaboradores'
+project-collaborations-supertitle: 'Necesidaes non monetaries'
+project-comment-start-sesion: 'Anicia sesión'
+project-comment-start-sesion-2: 'pa dexar un comentariu'
+project-error-main-lang: 'Nun pue afitase esta lingua [%s] como principal porque yá s''asignó a una traducción. Desaniciar la traducción esistente en [%s], dende''l panel de traducción pa poder introducir una nueva.'
+project-general-information: 'Información xeneral'
+project-hide-donors: 'Anubrir cofinanciadores'
+project-hide-needs: 'Anubrir llistáu de necesidaes'
+project-invest: Aportación
+project-langs-header: 'Proyeutu en'
+project-media-play_video: 'Ver videu'
+project-menu-home: Proyeutu
+project-menu-messages: Collaboraciones
+project-menu-needs: Necesidaes
+project-menu-news: 'Noticies'
+project-menu-participate: 'Participa'
+project-menu-supporters: Cofinanciadores
+project-menu-updates: Novedaes
+project-messages-answer_it: Responder
+project-messages-closed: 'Entá nun puen unviase mensaxes el proyeutu'
+project-messages-send_message-button: Unviar
+project-not_published: 'Esti proyeutu entá nun ye públicu'
+project-regular-support: Cofinanciar
+project-rewards-individual_reward-title: 'Recompenses individuales'
+project-rewards-side-title: 'Recompenses'
+project-rewards-supertitle: 'Qué ufre empara'
+project-share-header: 'Comparti esti proyeutu'
+project-side-investors-header: 'Yá aportaron'
+project-spread-widget: 'Widget del proyeutu'
+project-support-supertitle: 'Necesidaes económiques'
+project-view-categories-title: Estayes
+project-view-metter-day_closed: 'Archivóse''l'
+project-view-metter-day_created: 'Creóse''l'
+project-view-metter-day_success: 'Financióse''l'
+project-view-metter-day_updated: 'Recibióse''l'
+project-view-metter-days: Queden
+project-view-metter-favourite: 'Recordame'
+project-view-metter-got: Consiguióse
+project-view-metter-investment: Cofinanciación
+project-view-metter-investors: Cofinanciadores
+project-view-metter-minimum: Mínimu
+project-view-metter-optimum: Óptimu
+project-view-preview: 'Previsualización del proyeutu'
+project-willpublish: 'Esti proyeutu va espublizase''l %s'
+regular-new_project: 'Proyeutu nuevu'
+social_reward-access: Anicia sesión
+tooltip-updates-date: tooltip-updates-date
+tooltip-updates-image: tooltip-updates-image
+tooltip-updates-image_upload: tooltip-updates-image_upload
+tooltip-updates-media: tooltip-updates-media
+tooltip-updates-text: tooltip-updates-text
+tooltip-updates-title: tooltip-updates-title
+project-obtained: 'Consiguióse'
+project-costs-total: 'Total'
+project-removed-translation-ko: '¡Fallu al tentar de desaniciar la traducción!'
+project-social-commitment-title: 'Compromisu social'
+project-create-minimum-field: 'Mínimu (€)'
+project-create-minimum-calculate-button: 'Calcular'
+project-create-save-button: 'Guardar siguir'
+project-create-no-social-commitment: 'Nun teo'
+project-progress-title: Cómo va'l proyeutu
+project-edit: Editar proyeutu
+project-remove-cost-confirm: '¿De xuru que quies desaniciar esti costu?'
+project-add-cost: 'Amestar costu'
+project-add-reward: 'Amestar recompensa'
+project-remove-reward-confirm: '¿De xuruq que quies desaniciar esta recompensa?'
+project-send-review: 'Unviar revisión'
+project-reviewing: 'Tamos valoranso y revisando''l to proyeutu'
+project-validation-errors: '¡El proyeutu entá nun ta completáu!'
+project-validation-error-profile: 'Falten campos por rellenar nel to perfil d''usuariu'
+project-campaign: 'Configuración'
+project-manage: 'Xestionar'

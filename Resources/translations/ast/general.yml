@@ -1,0 +1,153 @@
+---
+blog-comments: Comentarios
+blog-main-header: 'Blogue de Goteo'
+calendar-calls-category: Convocatories
+calendar-events-category: Eventos
+calendar-home-hour: a
+calendar-home-title: 'Eventu próximu'
+calendar-net-category: 'Rede y política'
+calendar-projects-category: Proyeutos
+calendar-share: Compartir
+calendar-workshops-category: Talleres
+error-image-name: 'Fallu nel nome del ficheru'
+error-image-size: 'Fallu nel tamañu del ficheru'
+error-image-size-too-large: 'El ficheru ye pergrande, 2MB máx'
+error-image-tmp: 'Fallu al cargar el ficheru'
+error-image-type-not-allowed: 'Namái se permiten ficheros de la triba .png, .jpg, .gif'
+error-user-email-token-invalid: 'El códigu nun ye correutu'
+goteo-return-button: 'Volver a Goteo'
+guide-dashboard-user-personal: "Namái has cumplimentar estos datos si creesti un proyeutu y quies que seya cofinanciáu y sofitáu pente Goteo. La información d'esti apartáu ye precisa pa contautate en casu de que consigas la financiación riquida, y qu'asina puea efectúe l'ingresu."
+guide-project-comment: guide-project-comment
+guide-project-support: guide-project-support
+header-about-side: 'Lo que nos mueve'
+home-posts-header: Novedaes
+horizontal-project-investors: 'cofinanciadores'
+project-invest-total: 'Total d''aportaciones'
+regular-add: Rexistru nuevu
+regular-ask: Entrugar
+regular-submit: Unviar
+regular-by: 'Por:'
+regular-cancel: Encaboxar
+regular-channel: Canal
+regular-collaborate: Collabora
+regular-content: Conteníu
+regular-continue-question: '¿Siguir?'
+regular-create: 'Crear un proyeutu'
+regular-date: Data
+regular-date_in: Data d'entrada
+regular-date_out: Data de salida
+regular-days: díes
+regular-delete: Desaniciar
+regular-description: Descipción
+regular-discover: 'Escubri proyeutos'
+regular-discard: 'Escartar'
+regular-download-pdf: 'Baxar PDF'
+regular-download: Baxar
+regular-actions: Aiciones
+regular-edit: Editar
+regular-email: Corréu
+regular-join: 'Xúnite'
+regular-facebook: Facebook
+regular-faq: 'Entrugues frecuentes'
+regular-female: Muyer
+regular-first: Primera
+regular-from: dende
+regular-getit: Consíguilo
+regular-go_up: Xubir
+regular-google: Google+
+regular-header: Testera
+regular-header-about: 'Tocante a Goteo'
+regular-header-blog: Blogue
+regular-header-faq: FAQ
+regular-header-glossary: 'Principios pa una economía abierta'
+regular-hello: Hola
+regular-here: equí
+regular-help: Ayuda
+regular-home: Aniciu
+regular-identica: Identi.ca
+regular-im: Soi
+regular-instagram: Instagram
+regular-invest: Aportar
+regular-invest_it: 'Cofinancia esti proyeutu'
+regular-investing: Aportando
+regular-lang: Llingua
+regular-license: Llicencia
+regular-linkedin: LinkedIn
+regular-login: Anicia sesión
+regular-logout: 'Zarrar sesión'
+regular-main-header: Goteo.org
+regular-male: Home
+regular-manage_board: 'Panel Xestoría'
+regular-mandatory: '¡Campu obligatoriu!'
+regular-matchfunding: 'Match funding'
+regular-media_legend: Lleenda
+regular-menu: Menú
+regular-menu-personal: Menú personal
+regular-message-clipboard-fail: 'Esbilla y copia esti enllaz'
+regular-message_fail: 'Hebo dalgún fallu al unviar el mensaxe'
+regular-months: meses
+regular-news: 'Noticies:'
+regular-no: 'Non'
+regular-of: de
+regular-preview: Previsualizar
+regular-projects: proyeutos
+regular-published_no: Borrador
+regular-published_yes: Espublizóse
+regular-read_more: 'Lleer más'
+regular-recent-activity: Actividá reciente
+regular-recomended_by: 'Proyeutu aconseyáu por'
+regular-review_board: 'Panel revisor'
+regular-round: 'ª ronda'
+regular-save: Guardar
+regular-schedule: Horariu
+regular-search: Guetar
+regular-see_blog: Blogue
+regular-see_details: 'Ver detalles'
+regular-see_more: 'Ver más'
+regular-send_message: 'Unviar mensaxe'
+regular-share-facebook: 'Goteo en Facebook'
+regular-share-rss: RSS/BLOG
+regular-share-twitter: 'Síguinos en Twittwe'
+regular-share_this: 'Compartir en:'
+regular-sorry: 'Sentímoslo'
+regular-spread: ESPARDIMIENTU
+regular-status: Estáu
+regular-template: Plantía
+regular-thanks: Gracies
+regular-title: Títulu
+regular-text: Testu
+regular-media: Videu (YouTube, Vimeo)
+regular-total: Total
+regular-translate: Traducir
+regular-translations: 'Traducciones'
+regular-translate_board: 'Panel traductor'
+regular-twitter: Twitter
+regular-url: Enllaz
+regular-view: Ver
+regular-view_project: 'Ver proyeutu'
+regular-web: Web
+regular-weeks: selmanes
+regular-year: Añu
+regular-yes: Sí
+regular-name: Nome
+regular-image: Imaxe
+regular-images: Imáxenes
+regular-load-more: 'Cargar más'
+regular-analytics: 'Google Analytics'
+regular-facebook-pixel: 'Facebook Pixel'
+regular-call: Matchfunding
+regular-num-comments: '%s comentarios'
+regular-manage: 'Xestionar'
+regular-no-edit-permissions: '¡Nun tienes permisu pa editar esta entrada!'
+regular-messages: Mensaxes
+regular-unknown: Desconozse
+regular-input: Aporte
+regular-amount: Importe
+regular-copied: '¡Copióse al cartafueyu!'
+regular-remember-me: 'Recordar los mios datos'
+regular-next: Siguiente
+regular-previous: Anterior
+session-about-to-expire: 'La sesión va caducar en 10 minutos. ¿Quies recargar la páxina p''anovala?'
+tooltip-dashboard-user-change_password: 'Dende equí pues camudar la contraseña cola qu''accedes a Goteo.'
+user-changeemail-fail: 'Fallu al camudar el corréu'
+user-promoter: 'L''usuariu impulsor'

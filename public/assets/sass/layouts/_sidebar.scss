@@ -85,6 +85,9 @@
             }
         }
       }
+      &.nopadding > a {
+        padding-left:0;
+      }
       &.sidebar {
         > a {
             white-space: nowrap;

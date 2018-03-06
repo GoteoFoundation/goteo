@@ -13,6 +13,7 @@ login-new-user-label: 'Neuen Benutzer anlegen?'
 login-oneclick-header: '1-Klick-Anmeldung'
 login-recover-button: Wiederherstellen
 login-recover-email-field: 'Account Email-Adresse'
+login-recover-header: "Füllen Sie das Feld mit der E-Mail aus, mit der Sie sich auf der Plattform registriert haben. Viele Male fällt es mit derselben E-Mail zusammen, die mit Ihren sozialen Netzwerken verknüpft ist. Achtung: Sie erhalten eine E-Mail mit einem direkten Link zur Änderung Ihres Passwortes. Wenn Sie die E-Mail nicht erhalten, vergewissern Sie sich, dass sie sich nicht im Spam-Ordner befindet. Wenn Sie mehrmals ein neues Passwort angefordert haben, wird jedes Mal eine E-Mail mit einem neuen, automatisch generierten Link versendet. Verwenden Sie den Link aus der letzten E-Mail, die Sie erhalten haben. Wenn Sie sich nicht an die E-Mail erinnern, können Sie uns kontaktieren. Vergessen Sie dabei nicht, einige Daten anzugeben, um uns die Suche nach Ihrem Benutzerkonto zu erleichtern (vollständiger Name, Spitzname, den Sie normalerweise verwenden, Datum der Registrierung oder wenn Sie einen Beitrag zu einem bestimmten Projekt geleistet haben)."
 login-recover-label: 'Password vergessen?'
 login-recover-link: 'Passwort wiederherstellen'
 login-recover-modal-button: Senden
@@ -41,11 +42,11 @@ login-signin-yahoo: 'Anmeldung über Yahoo'
 login-title: 'Login'
 oauth-confirm-user: 'Mit existierendem Benutzer verbinden'
 oauth-facebook-access-denied: 'Facebook Zugang verweigert'
-oauth-goteo-openid-sync-password: 'Sie sind dabei, ein bestehendes Goteo-Konto mit einem externen Provider zu verbinden. Das ermöglicht Ihnen, sich bei Goteo mit einem einzigen Klick anzumelden.<br>Dieses Mal müssen Sie Ihr Goteo-Konto Passwort angeben, um Ihre Identität zu bestätigen.'
+oauth-goteo-openid-sync-password: 'Sie versuchen, ein bestehendes Goteo-Konto mit einem externen Anbieter zu verknüpfen. Dies ermöglicht es Ihnen, sich zukünftig bei Goteo mit einem einzigen Klick zu anzumelden. <br>Dieses erste Mal müssen Sie Ihr Goteo-Konto-Passwort angeben, um Ihre Identität zu bestätigen.'
 oauth-goteo-user-not-exists: 'Dieser Benutzer existiert nicht bei Goteo'
-oauth-goteo-user-password-error: "Dieses Konto verwendet bereits einen anderen passwortfreien Login-Anbieter.\\\\r\nWenn Sie mehr als einen Login-Anbieter für dieses Konto verwenden möchten, müssen Sie erst ein Passwort einrichten."
+oauth-goteo-user-password-error: 'Dieses Konto verwendet bereits einen anderen passwortfreien Login-Anbieter. Wenn Sie mehr als einen Login-Anbieter für dieses Konto verwenden möchten, müssen Sie erst ein Passwort einrichten.'
 oauth-goteo-user-password-exists: 'Dieser Benutzer existiert bereits bei Goteo'
-oauth-goteo-user-provider-error: "Sie müssen %s verwenden, um den User zu erreichen.\\\\r\n\\\\r\n Wenn Sie mehr als einen Login-Provider für dieses Konto verwenden möchten, müssen Sie zunächst ein Passwort einrichten."
+oauth-goteo-user-provider-error: 'Sie müssen <strong>%s</strong> verwenden, um den User zu erreichen.<br>Wenn Sie mehr als einen Login-Provider für dieses Konto verwenden möchten, müssen Sie zunächst ein Passwort einrichten.'
 oauth-import-about: 'Über Sie'
 oauth-import-facebook: 'Link zu Ihrem Facebook-Konto'
 oauth-import-linkedin: 'Link zu Ihrem LinkedIn-Konto'
@@ -66,3 +67,4 @@ reset-password-new-password: 'Ihr neues Passwort'
 reset-password-old-password: 'Ihr altes Passwort'
 reset-password-save: Speichern
 reset-password-title: 'Neues Passwort erstellen'
+login-alternate-ids: Weitere Optionen

@@ -1,13 +1,30 @@
 ---
-contact-captcha-field: 'Test d''humanité(désolé...)'
+contact-captcha-field: 'Test d''humanité (désolé...)'
 contact-captcha-refresh: 'Actualiser l''image'
 contact-email-field: Adresse mail
+contact-form-dev-tag-description: 'J''ai des questions du caractère technique'
+contact-form-dev-tag-name: Développement
+contact-form-new-project-tag-description: 'J''ai un éventuel projet'
+contact-form-new-project-tag-name: 'Éventuel projet'
+contact-form-others-tag-description: 'C''est une consultation d''un autre genre'
+contact-form-others-tag-name: Autres
+contact-form-project-form-tag-description: 'J''ai des questions sur le formulaire du projet'
+contact-form-project-form-tag-name: 'Problèmes formulaire projet'
+contact-form-relief-tag-description: 'Je souhaiterais un justificatif de ma donation'
+contact-form-relief-tag-name: 'Justificatif donation'
+contact-form-service-tag-description: 'Je voudrais engager un service'
+contact-form-service-tag-name: Service
+contact-form-user-tag-description: 'J''ai des problèmes avec mon accueil'
+contact-form-user-tag-name: 'Problèmes accueil'
 contact-message-field: Message
 contact-name-field: Nom
 contact-send_message-button: Envoyer
 contact-send_message-header: 'Envoyez-nous un message'
 contact-subject-field: Sujet
+contact-tag-field: 'Type de consultation'
 error-contact-captcha: 'Le code CAPTCHA n''a pas été saisi correctement. Réessayer.'
 error-contact-email-empty: 'Vous n''avez pas inscris votre adresse mail'
 error-contact-message-empty: 'Votre message est vide'
 error-contact-subject-empty: 'Vous n''avez pas inscris de sujet'
+meta-description-contact: 'Contactez avec l''équipe du Goteo.org'
+meta-title-contact: 'Contactez avec nous :: Goteo.org'

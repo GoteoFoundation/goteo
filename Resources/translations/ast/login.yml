@@ -1,0 +1,50 @@
+---
+auth-access-forbbiden: '¡Nun tienes permisu p''acceder equí!'
+error-register-userid: 'Ye obligatorio escribir un nome d''accesu'
+login-access-button: Entrar
+login-access-header: 'Usuariu rexistráu'
+login-access-password-field: Contraseña
+login-access-username-field: 'Nome d''usuariu o corréu'
+login-fail: 'Fallu d''accesu'
+login-leave-button: 'Esborriase'
+login-leave-header: 'Encaboxar la cuenta'
+login-leave-message: 'Déxanos un mensaxe'
+login-new-user-label: '¿Crear un usuariu nuevu?'
+login-oneclick-header: 'Accedi con namái un clic'
+login-recover-button: Recuperar
+login-recover-email-field: 'Corréu electrónicu o nome d''usuariu'
+login-recover-label: '¿Escaeciesti la contraseña?'
+login-recover-link: 'Recuperar contraseña'
+login-recover-modal-button: Unviar
+login-recover-modal-sucess: '¡Fecho! - unviémoste un corréu electrónicu a %s con un enllaz pa reafitar la contraseña.'
+login-recover-username-field: 'Nome d''accesu'
+login-register-button: Rexistrar
+login-register-confirm-field: 'Confirmar corréu'
+login-register-confirm_password-field: 'Confirmar contraseña'
+login-register-email-field: Corréu
+login-register-header: 'Usuariu nuevu'
+login-register-password-field: Contraseña
+login-register-password-minlength: 'Mínimu 6 caráuteres'
+login-register-userid-field: 'Nome d''accesu'
+login-register-username-field: 'Nome públicu'
+login-signin-facebook: 'Anicia sesión con Facebook'
+login-signin-google: 'Anicia sesión con Google'
+login-signin-linkedin: 'Anicia sesión con Linkedin'
+login-signin-myopenid: 'Anicia sesión con myOpenID'
+login-signin-openid: 'Otru sirvidor Open ID'
+login-signin-openid-go: Dir
+login-signin-twitter: 'Anicia sesión con Twitter'
+login-signin-ubuntu: 'Anicia sesión con Ubuntu One'
+login-signin-view-more: 'Amosar más opciones d''aniciu de sesión'
+login-signin-yahoo: 'Anicia sesión con Yahoo!'
+login-title: 'Aniciar sesión'
+oauth-confirm-user: 'Arreyar usuariu esistente'
+oauth-goteo-user-not-exists: 'Esi usuariu nun esiste en Goteo'
+oauth-goteo-user-password-exists: 'Esi usuariu yá esiste en Goteo'
+oauth-goteo-user-provider-error: 'Has usar <strong>%s</strong> p''acceder a esti usuariu.<br>Si quies usar más d''un fornidor d''anicios de sesión pa esta cuenta, primero has afitar una contraseña.'
+oauth-import-name: Nome
+oauth-import-twitter: 'Enllaz a la to cuenta en Twitter'
+oauth-import-website: 'Los tos sitios web'
+reset-password-save: Guardar
+reset-password-title: 'Afitar contraseña nueva'
+login-alternate-ids: Otres opciones

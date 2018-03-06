@@ -18,7 +18,7 @@ invest-anonymous: 'Maak mijn donatie anoniem'
 invest-button: Draag bij
 invest-donation-header: 'Voer de fiscale informatie in voor deze donatie'
 invest-mail_info-address: 'Heeft het volgende adres ingesteld:'
-invest-mail_info-drop: 'Heeft ook, %s bijgedragen %s aan cloudfunding via de %s campagne '
+invest-mail_info-drop: 'Heeft ook, %s bijgedragen %s aan matchfunding via de %s campagne'
 invest-make-sure-save: Bewaar
 invest-next_step: 'Volgende knop'
 invest-payment-email: 'voer je PayPal gebruikersnaam in'

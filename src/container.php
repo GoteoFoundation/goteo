@@ -151,10 +151,12 @@ $sc->register('app.matcher.finder', 'Goteo\Util\MatcherProcessor\MatcherFinder')
     ->setArguments(array($sc));
 
 // Markdown parser
-$sc->register('app.md.parser', '\Parsedown')
+$sc->register('app.md.parser', 'Parsedown')
    ->addMethodCall('setBreaksEnabled', [true])
    ->addMethodCall('setUrlsLinked', [true])
 ;
+// Currency convertes
+$sc->register('app.currency.converter', 'Goteo\Library\Converter');
 
 // Event Dispatcher object
 $sc->register('dispatcher', 'Symfony\Component\EventDispatcher\EventDispatcher')

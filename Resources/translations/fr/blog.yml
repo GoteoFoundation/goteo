@@ -9,3 +9,6 @@ blog-send_comment-header: 'Ecrivez votre commentaire'
 blog-side-last_comments: 'Derniers commentaires'
 blog-side-last_posts: 'Derniers articles'
 blog-side-tags: Catégories
+blog-allow-comments: Permet des commentaires
+blog-publish: Publier
+blog-published: Publié

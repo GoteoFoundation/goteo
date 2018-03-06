@@ -22,6 +22,13 @@ node: goteo
 # Default system language
 lang: es
 
+# Default system language (for SQL tables)
+# (DO NO CHANGE THIS UNLESS YOU KNOW WHAT YOU'RE DOING)
+sql_lang: es
+
+# Default public currency for the website
+currency: EUR
+
 # Default timezone
 timezone: Europe/Madrid
 

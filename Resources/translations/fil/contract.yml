@@ -1,0 +1,25 @@
+---
+contract-accounts_title: 'Salaysay ng proyekto'
+contract-bank_account: 'Bank account (Kodigo sa IBAN, ESxx format xxxx xxxx xxxx xxxx xxxx):'
+contract-bank_owner: 'May-ari ng account:'
+contract-entity-option_0: 'Sa iyong sariling pangalan at karapatan'
+contract-entity-option_1: 'Bilang isang kinatawan ng isang samahan'
+contract-entity-option_2: 'Bilang isang kinatawan ng isang negosyo entidad'
+contract-field-location: 'Bayan:'
+contract-field-reg_date_2: 'Ginawaran ng petsa na kung saan ang mga pampublikong gawa ng kumpanya'
+contract-field-reg_id_2: 'Bilang ng mga notaryo Protocol'
+contract-field-reg_idloc_2: 'Lungsod ng pagganap ng ang notaryo'
+contract-field-reg_idname_2: 'Pangalan ng mga notaryo'
+contract-field-reg_name_1: 'Rehistrasyon kung saan nakarehistro ang Association'
+contract-field-reg_name_2: 'Pagpaparehistro sa na kung saan ay nakaukit ang entidad'
+contract-field-reg_number_1: 'Numero ng rehistrasyon'
+contract-field-reg_number_2: '(Puno) na numero ng Patalaan:'
+contract-field-regdata: 'Datos ng log'
+contract-paypal_owner: 'Sa paypal account holder:'
+contract-step-accounts: Mga tala
+contract-step-documents: Dokumentasyon
+contract-step-entity: 'Legal na entity'
+contract-step-final: Rebisyon
+contract-step-promoter: Kinatawan
+guide-contract-accounts: "Sa hakbang na ito, kailangan mong tumiyak ng akawnt na gusto mong makatanggap ng mga kita mula sa pangangalap ng pondo, pati na rin ang mga pangalan ng mga mayhawak ng. Kung kayo ay papasok ng PayPal account, kailangan ninyong rin sabihin ang pangalan ng mga mayhawak nito (kung ang iyong proyekto ay bahagi ng isang tawag para sa Capital patubig ay hindi kinakailangan). Tandaan na, para sa mga layunin ng buwis, matatanggap mo ang koleksiyon bilang donasyon na ginagawang ang swero na pundasyon para sa pagbuo ng proyekto. Ito ay isang kita nang walang VAT at doon ay walang mga invoice, kaya mayroon tayong papadalhan ang kontrata na ang mga resibo ng mga paglipat na ginawa. <b>1. Kung kayo ay legal na mga entity:  </b>pangangalap ng pondo ay binubuwisan sa buwis. Sa kaso ng mga non-profit na entidad, upang malaman kung ikaw ay hindi kasali, mo dapat konsultahin ang iyong advisor ng buwis dahil ito ay depende sa bawat kaso. <b>2. Sa kaso ng natural na tao: </b>nalikom ay binubuwisan sa buwis sa kita, at maaaring may dalawang situwasyon: isang / na ang perang nalikom ay upang magsagawa ng isang aktibidad na pang-ekonomiya, at bigyan ka ng mataas ng konsepto. Kung gayon kayo ay deduce mo gastos na nabuo sa pamamagitan ng mga proyekto. b / kung hindi ka magsagawa ng isang pang-ekonomiyang aktibidad o ay hindi binigyan ng mataas, ang perang nalikom ay magiging isang netong equity makakuha. Sa kasong ito maari ninyong ibawas mo gastos. Upang tumanggap ng mga donasyon sa pamamagitan ang swero na pundasyon, entidad na namamahala ng swero, ikaw ay hindi napapailalim sa mga buwis sa mana at hindi nagpapasakop ng donasyon sa pagsasabuhay ng mga AR. 3 ng mga regulasyon ng buwis na kung saan, ilibing alia, ipinahayag \"grants, scholarship, mga parangal, bonus, pribilehiyo at tulong na ipinagkaloob ng pampubliko o pribadong mga entidad sa ang mga layunin na mapagbigay, edukasyon, kultura, pampalakasan o sosyal na pagkilos\"."
+guide-contract-documents: "Sapilitan silang mag-upload ng mga dokumento na pinapatunayanna ang ng datos na ipinasok at sundin mo ang mga tagubilin sa ibaba:-sa lahat ng mga kaso, kopya ng ID number ng tao na pag-sign (alinman sa iyong sariling kapakanan o sa ngalan ng isang entity) - sa lahat ng pagkakataon, ng kopya ng anumang dokumentong kung saan sa tumingin ng (buong) ang bilang ng kasalukuyang account (Aklat ng pagbabangko, resibo...) -lamang sa kaso na ang kontrata ay sa isang kumpanya, pundasyon o Association: sa karagdagan, CIF kopya at mga kopya ng mga katibayan ng kapangyarihan ng abogado (minuto ng pulong ng Association, stating malinaw na ang mga pangalan at titulo ng tao na pag-sign ang kontrata (, o ng mga isinulat ng kumpanya, o umupa ng kapangyarihan na kung saan ay makikita ang maaaring gawin ng mga tao na pag-sign kaya kumakatawan ang entidad) "

@@ -1,0 +1,41 @@
+---
+cost-type-lend: Borç
+cost-type-structure: Altyapı
+cost-type-task: Görev
+costs-field-amount: Değer
+costs-field-cost: Gider
+costs-field-date_from: itibaren
+costs-field-date_until: e kadar
+costs-field-dates: Tarihler
+costs-field-description: Açıklama
+costs-field-required_cost: 'Bu gider '
+costs-field-required_cost-no: Tamamlayıcı
+costs-field-required_cost-yes: Gerekli
+costs-field-resoure: 'Diğer kaynaklar'
+costs-field-schedule: 'Görevlerin programı'
+costs-field-type: Tür
+costs-fields-main-title: 'Giderlerin dağılımı'
+costs-fields-metter-title: 'Giderlerin görünümü'
+costs-fields-resources-title: Kaynak
+costs-main-header: 'Giderler'
+mandatory-cost-field-amount: 'Giderlere bir miktar belirlemeniz gerekmektedir'
+mandatory-cost-field-description: 'Giderler için bir açıklama eklemeniz gereklidir'
+mandatory-cost-field-name: 'Giderleri etiketlemeniz gereklidir'
+mandatory-cost-field-task_dates: 'Görev için yaklaşık tarihleri belirtmeniz gereklidir'
+mandatory-project-field-resource: 'Çizilecek diğer kaynaklara sahip olup olmadığınızı belirtmeniz gerekiyor'
+mandatory-project-resource: 'Çizilecek diğer kaynaklara sahip olup olmadığınızı belirtmeniz gerekiyor'
+mandatory-project-total-costs: 'Bir gider belirtmelisiniz'
+step-4: Giderler
+step-costs: 'Adım: Proje/Giderler'
+tooltip-project-cost-amount: 'Her bir gider için miktarı Euro cinsinden belirtiniz. Binlerce kişiyi işaretlemek için puan veya virgül kullanmayınız, tamam mı?'
+tooltip-project-cost-cost: 'Bu gider için mümkün olan en açıklayıcı başlığı giriniz'
+tooltip-project-cost-dates: 'Görevin ne zaman tamamlandığı veya masrafın karşılandığı zaman için bir zaman çizelgesi veriniz. Teklifi gözden geçirmek için gerekli zamanı göz önüne almalısınız, eğer seçerseniz ilan etmeniz ve ilk finansmanın yapıldığı 40 gün içinde hesaba katmanız gerektiğinden, bunu bugün için en az iki ayda başlatarak planlayınız.Projenizin açıklamasında, açıklamak güzel olsa da daha önce geliştirilen parçaları eklemeyiniz.Sadece yapılması gereken ve ortak finansman istediğinizde istenilen şeyleri zamanlama çizelgesinde istiyoruz.'
+tooltip-project-cost-description: 'Bu giderin ne olduğunu kısaca açıklayınız.'
+tooltip-project-cost-required: 'Bu bölüm çok önemlidir: girdiğiniz her giderde, kesinlikle gerekli mi veya tamamlayıcı mı olduğunu belirtmeniz gereklidir.Gerekli olarak işaretlenen giderlerin tamamı, proje için gereken minimum finansman tutarının tamamı için eklenecektir.Aksine, ek masrafların toplamı, "gerekli" fonları almasına karşın ikinci tur finansman sırasında istenebilir.'
+tooltip-project-cost-type: 'Burada bir gider türünü belirtmeniz gereklidir: bir göreve ilişkin (birinin beceri veya bilgisini gerektiren bir şey), malzeme elde etme (sarf malzemeler, ham maddeler) veya altyapı (alanlar, ekipmanlar, eşya) '
+tooltip-project-costs: 'Giderleri ne kadar iyi bölerseniz, Goteo projeniz hakkındaki genel bilgileri daha iyi değerlendirir.'
+tooltip-project-resource: 'Ek kaynaklara güveniyorsanız burada not ediniz, istediğiniz projeler dışında, bu projeyi gerçekleştirmek için: finansman kaynakları, kendi kaynaklarınız veya muhtemelen de bazı materyalleri zaten topladınız. Bu, projenizin potansiyel ortak finansörler için cazip olabilir.'
+tooltip-project-totals: 'Bu grafik, iki tur finansman için gerekli giderlerin toplamını (projeyi tamamlamak için minimum gerekli olan) ve ikincil giderlerin toplamını (optimum miktar) göstermektedir. Birinci turda minimum gerekli olan miktarı elde etmek 40 gün sürüyor.Sadece bu finansman seviyesine ulaşanlar, ikinci turda optimum fon tutarını elde etmek için ilave 40 gün daha devam etmeyi tercih edebilirler.İkinci turda (birinciye zıt olarak), tam hedefe ulaşamasanız bile yükselttiğiniz her şeyi elde edersiniz.'
+validate-cost-field-dates: 'Projeyi daha iyi değerlendirmek için giderin başlangıç ve bitiş tarihlerini belirtiniz.'
+validate-project-costs-any_error: 'Giderlerin hesap dökümünden bazı bilgiler eksik'
+validate-project-field-costs: ' Projenizi değerlendirmeyi kolaylaştırmak, Goteo''da yayınlanıp yayınlanamayacağını görmek için en az 5 ayrı gidere bölmenizi öneririz.'

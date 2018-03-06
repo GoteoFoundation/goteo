@@ -1,0 +1,53 @@
+---
+images-main-header: 'Imáxenes del proyeutu'
+mandatory-project-field-about: 'Ye obligatorio desplicar les carauterístiques básiques del proyeutu'
+mandatory-project-field-category: 'Ye obligatorio escoyer polo menos una estaya pal proyeutu.'
+mandatory-project-field-description: 'Ye obligatorio resumir el proyeutu'
+mandatory-project-field-goal: 'Ye obligatorio desplicar los oxetivos na descripción del proyeutu'
+mandatory-project-field-lang: 'Tienes d''indicar la llingua del proyeutu'
+mandatory-project-field-location: 'Ye obligatorio poner l''algame potencial del proyeutu'
+mandatory-project-field-media: 'Aconseyamos poner un videu p''ameyorar la valoración del proyeutu nel momentu de decidir si espublizalu o non en Goteo.'
+overview-field-categories: Estayes
+overview-field-currency: 'Divisa orixinal'
+overview-field-currently: 'Estáu actual'
+overview-field-description: 'Descripción'
+overview-field-goal: 'Oxetivos de la campaña de micromexenalgu'
+overview-field-main-gallery: Galería principal
+overview-field-image_gallery: 'Imáxenes actuales'
+overview-field-image_upload: 'Xubir una imaxe (2MB máx.)'
+overview-field-keywords: 'Pallabres clave del proyeutu'
+overview-field-lang: 'Llingua orixinal'
+overview-field-media: 'Videu de la presentación'
+overview-field-media_preview: 'Vista previa'
+overview-field-name: 'Títulu del proyeutu'
+overview-field-options-currently_avanzado: Avanzóse
+overview-field-options-currently_finalizado: Finó
+overview-field-options-currently_inicial: Inicial
+overview-field-options-currently_medio: Mediu
+overview-field-options-scope_global: Global
+overview-field-options-scope_local: Llocal
+overview-field-options-scope_nacional: Nacional
+overview-field-options-scope_regional: Rexonal
+overview-field-play-video: 'Carátula del videu'
+overview-field-project_location: Allugamientu
+overview-field-related: 'Esperiencia previa y equipu'
+overview-field-reward: Recompenses
+overview-field-scope: 'Algame xeográficu del proyeutu'
+overview-field-subtitle: 'Sotítulu'
+overview-field-usubs: 'Cargar con Universal Subtitles'
+overview-field-video: 'Videu aidicional tocante a la motivación'
+overview-field-social-category: 'C'
+overview-field-social-description: 'Descripción de Compromisu Social'
+overview-fields-images-title: 'Imáxenes del proyeutu'
+overview-main-header: 'Descripción del proyeutu'
+step-3: Descripción
+step-main: Datos principales
+step-3b: Imáxenes
+step-images: 'Pasu: Imáxenes del proyeutu'
+step-overview: 'Pasu: Descripción del proyeutu'
+tooltip-project-image_upload: DESANICIAR
+tooltip-project-keywords: 'A midida qu''introduza testu, el sistema va suxerite pallabres clave que yá teclexaron otros usuarios. Estes estayes ayuden a venceyar el to proyeutu con persones afines.'
+tooltip-project-lang: 'Más alantres pues traducir el proyeutu a otres llingües dende''l panel de traducción.'
+tooltip-project-media: 'El videu de presentación ye una parte fundamental p''atrayer l''atención de la comunidá, asina que cuanto más orixinal seya, meyor. Ye imprescindible que tenga una duración máxima de 4 minutos. Xúbilu a Youtube o Vimeo y apega equí la URL.'
+overview-field-execution-plan: 'Plan d''execución'
+overview-field-sustainability-model: 'Modelu de sostenibilidá'

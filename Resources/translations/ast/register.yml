@@ -1,0 +1,26 @@
+---
+error-register-email: 'La direición de corréu ye obligatoria'
+error-register-email-confirm: 'La comprobación del corréu nun concasa'
+error-register-invalid-password: 'La contraseña nun ye válida'
+error-register-password-confirm: 'La comprobación de la contraseña nun coincida'
+error-register-pasword: 'La contraseña nun pue tar balera'
+error-register-short-password: 'La contraseña ha contener un mínimu de 8 caráuteres'
+error-register-user-exists: 'Esti nome d''usuariu yá ta rexistráu.'
+error-register-username: 'El nome públicu ye obligatoriu.'
+error-register-accept: 'Has aceutar les condiciones del rexistru.'
+guide-user-register: 'Testu guía nel rexistru d''un usuariu nuevu.'
+leave-email-sended: 'Unviémoste un corréu pa completar el procesu de baxa. Verifica tamién la carpeta de corréu non deseyáu o puxarra.'
+recover-email-sended: 'Unviémoste un corréu pa reafitar la contraseña de la cuenta. Verifica tamién la carpeta de corréu non deseyáu o puxarra.'
+register-button-title: Rexístrate
+register-email-confirm-field: 'Volvi escribir el corréu electrónicu'
+register-email-field: 'Corréu electrónicu'
+register-form-title: Rexístrate
+register-id-field: 'Nome d''usuariu'
+register-name-field: 'Nome completu'
+register-password-confirm-field: 'Volvi escribir la contraseña'
+register-password-field: Contraseña
+register-question: 'Yá soi usuariu'
+user-activate-already-active: 'La cuenta d''usuariu yá ta activada'
+user-activate-success: 'La cuenta d''usuariu activóse correutamente'
+validate-project-value-contract_email: 'La direición de corréu nun ye correuta'
+validate-register-value-email: 'El corréu introducíu nun ye válidu'

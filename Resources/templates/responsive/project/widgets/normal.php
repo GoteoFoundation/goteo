@@ -19,7 +19,7 @@ if(!($label = $this->label)) {
     $matchers = $this->project->getMatchers('active');
 }
 
-?><div class="project-widget flip-widget normal" id="project-<?= $this->project->id ?>">
+?><div class="project-widget flip-widget normal<?= $this->project->isApproved() ? '' : ' non-public' ?>" id="project-<?= $this->project->id ?>">
 
     <?php if($label): ?>
         <div class="status btn-lilac">

@@ -36,7 +36,7 @@ class LocationStatsTest extends \PHPUnit_Framework_TestCase {
         $this->assertInternalType('integer', $notSpain);
         $this->assertEquals($located, $spain + $notSpain);
 
-        echo "USERS, located: [$located] unlocated: [$unlocated] unlocable: [$unlocable] spain: [$spain] notSpain: [$notSpain]\n";
+        echo "\nUSERS, located: [$located] unlocated: [$unlocated] unlocable: [$unlocable] spain: [$spain] notSpain: [$notSpain]\n";
 
         $spainRegions = $stats->countGroupFiltered('region', 'country_code', 'ES');
         $this->assertInternalType('array', $spainRegions);
@@ -63,7 +63,7 @@ class LocationStatsTest extends \PHPUnit_Framework_TestCase {
         $this->assertInternalType('integer', $notSpain);
         $this->assertEquals($located, $spain + $notSpain);
 
-        echo "PROJECTS, located: [$located] unlocated: [$unlocated] unlocable: [$unlocable] spain: [$spain] notSpain: [$notSpain]\n";
+        echo "\nPROJECTS, located: [$located] unlocated: [$unlocated] unlocable: [$unlocable] spain: [$spain] notSpain: [$notSpain]\n";
 
         $spainRegions = $stats->countGroupFiltered('region', 'country_code', 'ES');
         $this->assertInternalType('array', $spainRegions);

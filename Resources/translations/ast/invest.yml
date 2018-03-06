@@ -1,0 +1,83 @@
+---
+bazar-spread-text: '%s - Esti nadal, regala micromenecalgu abiertu y pal bien común con @goteofunding #openbazaar'
+bazar-thanks: 'Gracies por visitar el nuesu bazaar, pues ayudanos a espardelu.'
+faq-payment-method: '<a href="/faq/investors#q2" target="_blank">¿Qué sistemes de pagu ufre Goteo? ¿Son seguros?</a>'
+imperative-register: Rexístrate
+invest-address-address-field: Direición
+invest-address-birthyear-field: 'Añu de nacencia'
+invest-address-country-field: País
+invest-address-fail: '¡Hai campos baleros o con fallos, comprueba''l formulariu pa que puedas recibir la to recompensa!'
+invest-address-friend-field: 'Conseña esti caxellu si ye un regalu pa otra persona'
+invest-address-gender-field: Sexu
+invest-address-header: 'Ónde quies recibir la recompensa (namái en casu d''unvios postales)'
+invest-address-location-field: Ciudá
+invest-address-maildest-field: 'Corréu del destinatariu'
+invest-address-msgdest-field: 'Mensaxe pal destinatariu'
+invest-address-myemail-field: 'El to corréu'
+invest-address-myname-field: 'El to nome'
+invest-address-name-field: 'Nome y apellíos'
+invest-address-namedest-field: 'Nome del destinatariu'
+invest-address-nif-field: 'Númberu de NIF / NIE / VAT'
+invest-address-title: 'Asegúrate que recibes la to recompensa'
+invest-address-zipcode-field: 'Códigu postal'
+invest-alert-investing: 'Vas aportar'
+invest-alert-lackamount: 'L''aporte ha ser mayor a la recompensa escoyida'
+invest-alert-lackdrop: 'Nun Capital riegu abondo pa cubrir la to aportación, namái queden'
+invest-alert-noreward: 'Nun conseñesti denguna recompensa, ¿ta bien?'
+invest-alert-rewards: 'Escoyesti les recompenses de darréu:'
+invest-amount: Cantidá
+invest-amount-in-pool: 'Tienes %s nel to monederu virtual'
+invest-amount-tooltip: 'Introduz la cantidá cola que vas sofitar el proyeutu'
+invest-anonymous: 'Quiero que la mio aportación seya anónima'
+invest-button: Aportar
+invest-card-method: Tarxeta
+invest-cash-method: 'Manual (n''efeutivo)'
+invest-donation-header: 'Introduz los datos fiscales pal donativu'
+invest-drop-method: Riegu
+invest-fiscal-fail: '¡Hai campos baleros o con fallos, comprueba''l formulariu fiscal pa que pueas desgravar el to aporte!'
+invest-fiscal-skip: 'Agora nun quiero rellenar estos datos.'
+invest-fiscal-title: 'Asegúrate que pues desgrabar la to aportación (pa contribuyentes n''España)'
+invest-login-alert: 'Has rexistrate o <a href="%s">aniciar sesión</a> pa poder facer l''aporte'
+invest-mail_info-address: 'Especifiquesti la direición de darréu:'
+invest-mail_info-drop: 'Amás, %s aportó %s de capital riegu pente la campaña %s'
+invest-make-sure-save: Guardar
+invest-make-sure-title: Confirmar
+invest-method: 'Métodu de pagu'
+invest-method-title: 'Facer el to aporte'
+invest-modal-fiscal-title: 'Información fiscal'
+invest-modal-pool-description: 'El monederu virtual ye un sistema de creitu de la plataforma Goteo, que podrás rellenar col to dineru y usalo como vía de pagu siempres que quieras facer aportes a proyeutos na nuesa plataforma, ensin necesidá de dar los tos datos de tarxeta nin de PayPal cada vegada.'
+invest-modal-pool-title: 'Tocante al monederu virtual Goteo'
+invest-more-info: 'Más información'
+invest-next_step: 'Pasu siguiente'
+invest-payment-email: 'Introduz la to cuenta de PayPal'
+invest-payment-fail: 'Daqué falló nel pagu'
+invest-payment-success: 'El pagu completóse correutamente'
+invest-payment_method-header: 'Escueyi''l métodu de pagu'
+invest-paypal-method: PayPal
+invest-paypal_disabled: "Esti proyeutu tien desactivada la opción de pagu pente PayPal. <a href=\"/faq/investors#q2\" target=\"_blank\">Más información</a>"
+invest-pool: 'Quiero que la mio donación, nel casu de que''l proyeutu nun llegue al so oxetivu, permaneza nel mio monederu virtual de Goteo.'
+invest-pool-available: disponibles
+invest-pool-method: 'Monedero virtual'
+invest-project: 'al proyeutu'
+invest-reward-none: 'Yá nun pue escouese'
+invest-reward-not-found: '¡Nun s''alcontró esta recompensa!'
+invest-reward-used-up: '¡Yá nun queden unidaes d''esta recompensa!'
+invest-select-reward: 'Esbilla la to recompensa'
+invest-share-title: Compartir
+invest-social-header: 'Colos retornos coleutivos ganamos toos/es'
+invest-status-cancelled: Encaboxóse
+invest-status-charged: Cobróse
+invest-step-2: Pagu
+invest-step-3: Confirmar
+invest-step-4: Compartir
+investing_closed: 'Nun se permiten más aportes nesta campaña.'
+proj-widget-my_invest: 'El mio aporte'
+project-invest-confirm: 'Tas a un pasu de cofinanciar esti proyeutu...'
+project-invest-continue: 'Fai clic nel logu del sistema de pagu que vas usar:'
+project-invest-fail: 'Daqué falló, volvi tentalo'
+project-invest-guest: '¡Xenial!'
+project-invest-ok: 'Tramitóse la to aportación pa cofinanciar esti proyeutu :)'
+project-invest-pool-button: 'Usar el mio Monederu virtual'
+project-invest-start: 'Tas a un pasu de cofinanciar esti proyeutu...'
+project-return-button: 'Volver al proyeutu'
+project-see-msg: 'Ver el to mensaxe'

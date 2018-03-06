@@ -73,7 +73,6 @@ regular-calendar: Calendari
 regular-cancel: Cancel·lar
 regular-cancel-back: 'Cancel·lar i torna enrere'
 regular-back: 'Torna enrere'
-regular-channel: Canal
 regular-collaborate: Col·labora
 regular-content: Contingut
 regular-continue-question: 'Continuar?'
@@ -119,6 +118,7 @@ regular-lang: Idioma
 regular-last: Darrera
 regular-license: Llicència
 regular-linkedin: LinkedIn
+regular-loading: Carregant...
 regular-login: Accedeix
 regular-logout: 'Tanca la sessió'
 regular-looks_for: 'cerca:'
@@ -199,10 +199,9 @@ regular-amount: Import
 regular-copied: 'Copiat al porta-retalls!'
 regular-remember-me: 'Recorda''m'
 regular-next: Següent
-regular-previous: Anterior
 session-about-to-expire: 'La teva sessió expirarà en 10 minuts. ¿Vols recarregar la pàgina per renovar-la?'
 session-expired: 'La teva sessió ha expirat!'
-stories-user-project: "%s, del projecte: %s"
+stories-user-project: '%s, del projecte: %s'
 support-our-mission: 'Dóna suport a la nostra missió'
 tooltip: 'Text d''ajuda'
 tooltip-dashboard-user-access_data: 'Aquestes són les teves dades actuals d''accés. L''única cosa que no es pot canviar és el login o nom d''usuari.'
