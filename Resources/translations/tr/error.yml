@@ -1,1 +1,4 @@
 ---
+fatal-error-project: 'Sizin aradığınız proje... <span class="red">mevcut değildir :(</span>'
+fatal-error-teapot: '<span class="greenblue">Nasıl can sıkıcı...</span> beklenmedik bir hata oluştu'
+fatal-error-user: 'Sizin aradığınız kullanıcı... <span class="red">mevcut değildir :(</span>'

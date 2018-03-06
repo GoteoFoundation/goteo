@@ -4,7 +4,7 @@
 
 body.blog {
 
-    background-color: $background-white;
+    background-color: $background-main-home;
 
     .top-navbar{
       background-color: $background-yellow;
@@ -25,6 +25,46 @@ body.blog {
 
     .top-navbar .navbar-always > a i.icon{
       background-color: $primary-color;
+    }
+
+    img.header-default{
+      height:600px;
+      object-fit: cover;
+    }
+
+   .social{
+      text-align: center;
+      vertical-align: middle;
+      margin-left: 35px;
+    }
+
+    /* Icons social */
+
+    .social [class*="fa fa-"] {
+      background-color: $primary-color;
+      border-radius: 40px;
+      color: $color-white;
+      display: inline-block;
+      height: 40px;
+      line-height: 40px;
+      margin: auto 10px;
+      width: 40px;
+      font-size: 22px;
+      text-align: center;
+    }
+    .social [class*="fa fa-"]:hover{
+      background-color: $background-light-green;
+      color: $color-white;
+      text-align: center;
+    }
+
+    /* Sticky menu */
+    
+     div.sticky-menu{
+      padding-top: 10px;
+      .social{
+        margin-left: 0px;
+      }
     }
 
     div.section.post-header{
@@ -67,30 +107,6 @@ body.blog {
                 font-size: 12px;
                 color: $color-date-grey;
               }
-              &.social{
-                text-align: center;
-                vertical-align: middle;
-                margin-left: 35px;
-              }
-              /* Icons social */
-   
-              &.social [class*="fa fa-"] {
-                background-color: $primary-color;
-                border-radius: 40px;
-                color: $color-white;
-                display: inline-block;
-                height: 40px;
-                line-height: 40px;
-                margin: auto 10px;
-                width: 40px;
-                font-size: 22px;
-                text-align: center;
-              }
-              &.social [class*="fa fa-"]:hover{
-                background-color: $background-light-green;
-                color: $color-white;
-                text-align: center;
-              }
             }
           }
         }
@@ -102,6 +118,9 @@ body.blog {
         margin-top:40px;
         font-size: 16px;
         padding-bottom: 30px;
+        img.main-image{
+          margin: 10px auto;
+        }
         img{
           max-width: 100%;
         }
@@ -112,12 +131,22 @@ body.blog {
   // Tablets customization
 
     @media (max-width: $breakpoint-md + 1) {
-
+    
     }
 
     @media (max-width: $breakpoint-sm - 1) {
+
+      div.sticky-menu {
+          bottom: 0;
+          top: auto;
+          z-index: 1000;
+      }
       div.section.post-header{
         position:static;
+
+        img.header-default{
+          height:250px;
+        }
 
         div.info{
           position: static;
@@ -128,6 +157,7 @@ body.blog {
           .container{
             ul.info-extra{
               border-bottom: 0px;
+              text-align: center;
               li {
                 img{
                   width: 55px;
