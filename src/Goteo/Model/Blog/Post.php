@@ -32,6 +32,7 @@ class Post extends \Goteo\Core\Model {
         $subtitle,
         $text,
         $image,
+        $header_image,
         $media,
         $legend,
         $date,
@@ -73,6 +74,7 @@ class Post extends \Goteo\Core\Model {
                 IFNULL(post_lang.text, post.text) as text,
                 IFNULL(post_lang.legend, post.legend) as legend,
                 post.image as `image`,
+                post.header_image as `header_image`,
                 IFNULL(post_lang.media, post.media) as `media`,
                 post.date as `date`,
                 DATE_FORMAT(post.date, '%d | %m | %Y') as fecha,
@@ -125,6 +127,7 @@ class Post extends \Goteo\Core\Model {
 
         $post->gallery = Image::getModelGallery('post', $post->id);
         $post->image = Image::getModelImage($post->image, $post->gallery);
+        $post->header_image = Image::getModelImage($post->header_image);
 
         // video
         if (isset($post->media)) {
@@ -164,6 +167,7 @@ class Post extends \Goteo\Core\Model {
                     IFNULL(post_lang.subtitle, post.subtitle) as subtitle,
                     IFNULL(post_lang.text, post.text) as text,
                     post.image as `image`,
+                    post.header_image as `header_image`,
                     post.date as `date`,
                     DATE_FORMAT(post.date, '%d | %m | %Y') as fecha
                     blog.type as owner_type,
