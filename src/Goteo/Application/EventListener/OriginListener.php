@@ -81,7 +81,9 @@ class OriginListener extends AbstractListener {
         }
 
         if($referer['category'] !== 'invalid' && Session::get('origin.referer') !== $referer) {
-            Session::store('origin.referer', $referer);
+            if(!Session::exists('origin.referer')) {
+                Session::store('origin.referer', $referer);
+            }
         }
     }
 
