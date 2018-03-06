@@ -1,5 +1,5 @@
 <div class="backside call" id="backflip-<?= $this->project->id ?>">
-    <div class="close flip" href="#backflip-<?= $this->project->id ?>"><i class="icon icon-close"></i></div>
+    <a class="close flip" href="#backflip-<?= $this->project->id ?>"><i class="icon icon-close"></i></a>
 
     <div class="data-list title">
         <h5 title="<?= $this->call->name ?>">

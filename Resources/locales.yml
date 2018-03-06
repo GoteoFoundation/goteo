@@ -100,3 +100,27 @@ sv:
     public: true
     locale: sv_SE
     fallback: en
+fil:
+    name: Filipino
+    short: FIL
+    public: false
+    locale: fil
+    fallback: en
+id:
+    name: Bahasa Indonesia
+    short: IND
+    public: false
+    locale: id_ID
+    fallback: en
+ja:
+    name: 日本語
+    short: JPN
+    public: false
+    locale: ja_JP
+    fallback: en
+ro:
+    name: Română
+    short: RUM
+    public: false
+    locale: ro_RO
+    fallback: en

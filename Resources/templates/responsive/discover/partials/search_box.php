@@ -1,3 +1,6 @@
+    <?php if($this->is_admin()): ?>
+    <div class="checkbox text-danger"><label><input type="checkbox" id="include-in-review" name="review"<?= $this->get_query('review') === '0' ? '' : ' checked="checked"' ?>> <?= $this->text('discover-include-review-projects') ?></label></div>
+    <?php endif ?>
 
     <div class="row">
       <div class="col-xs-12 col-sm-4">

@@ -51,6 +51,7 @@ class IndexController extends DiscoverController
             'projects'  => $projects,
             'total_projects'  => $total_projects,
             'limit'     => $limit,
+            'limit_add' => 12, // Limit for javascript on addSlick
             'stories'   => $stories,
             'channels'  => $channels,
             'stats'     => $stats

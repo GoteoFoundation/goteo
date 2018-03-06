@@ -28,6 +28,7 @@ $(function(){
   var $container = $('#projects-container');
   var $slider = $container.contents('.slider-projects');
   var total = $slider.data('total');
+  var limit_add = $slider.data('limit-add') || $slider.data('limit');
   var params = {
     filter: $(".auto-update-projects .project-filters li.active").data('status'),
     latitude: 0,
@@ -42,8 +43,11 @@ $(function(){
     var $visibleSlides = $slider.find('.widget-slide[aria-hidden="false"]');
     //Make sure all of the visible slides have an opacity of 1
     $visibleSlides.css('opacity', 1);
-    //Set the opacity of the first and last partial slides.
+    // hide the first (which is the last in a infinite loop) partial slides to avoid a the rendering of the last
+    // slide in the inifinite loop
     $visibleSlides.first().prev().css('opacity', 0);
+    // in case there's a partial on the left this should be uncommented
+    // $visibleSlides.last().next().css('opacity', 0);
   }
 
   function destroySlickProjects() {
@@ -92,7 +96,13 @@ $(function(){
 
     $slider.slick(settings);
 
+    // Load more slides if end of the carrousle reached
     $slider.on('beforeChange', function(event, slick, currentSlide, nextSlide) {
+
+      //Re-apply the visibility of the slides
+      $slider.find('.widget-slide').css('opacity', 1);
+
+      if($container.hasClass('loading-container')) return;
       var size = $slider.find('.widget-slide:not(.slick-cloned)').length;
       var visible = $slider.find('.widget-slide[aria-hidden="false"]').length;
       // console.log('slide about to load, currentSlide', currentSlide, 'nextSlide', nextSlide,'visible',visible);
@@ -100,13 +110,20 @@ $(function(){
         // console.log('right edge reached, currentSlide', currentSlide,'size', size, 'visible slides', visible, 'page', pag);
         if( currentSlide < total && size < total) {
           params.pag++;
+          // We change some defaults here
+          var query = jQuery.extend({}, params);
+          query.limit = limit_add; // smaller limit than the initial slide load
+          query.strict = true; // do not give default projects if current filter returns empty
           $container.addClass('loading-container');
-          $.post('/discover/ajax', params, function(result) {
+          $.getJSON('/discover/ajax', query, function(result) {
             total = result.total;
-            params.limit = result.limit;
+            var items = '';
             result.items.forEach(function(html, index) {
-              $slider.slick('slickAdd', '<div class="item widget-slide">' + html + '</div>');
+              // $slider.slick('slickAdd', '<div class="item widget-slide">' + html + '</div>');
+              items += '<div class="item widget-slide">' + html + '</div>';
             });
+            // Add all items at once, seems to be more efficient for slick
+            $slider.slick('slickAdd', items);
             $container.removeClass('loading-container');
             // $slider.slick('slickGoTo', currentSlide + 1);
             // console.log('new loaded with params', params, 'result', result);
@@ -117,13 +134,14 @@ $(function(){
       //   console.log('left edge reached');
       // }
     });
-    // $slider.on('afterChange', function(event, slick, currentSlide) {
-    //   setSlideVisibility();
-    // });
 
     $slider.slick('slickGoTo', 1);
 
     setSlideVisibility();
+    //After the slide change has completed, call the setSlideVisibility to hide the partial slides.
+    $slider.on('afterChange', function(event, slick, currentSlide) {
+      setSlideVisibility();
+    });
   }
 
 
@@ -139,10 +157,9 @@ $(function(){
     params.pag = 0;
 
     // console.log('drawProjects', params)
-    $.post('/discover/ajax', params, function(result) {
+    $.getJSON('/discover/ajax', params, function(result) {
       // console.log(result);
       destroySlickProjects();
-      params.limit = result.limit;
       total = result.total;
       $slider.contents('.widget-slide').remove();
       result.items.forEach(function(html, index) {
