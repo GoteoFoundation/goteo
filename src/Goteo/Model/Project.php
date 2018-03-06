@@ -3517,16 +3517,17 @@ namespace Goteo\Model {
             $innerJoin = "";
 
             if (!empty($filters['global'])) {
-                $sqlFilter .= ' AND (project.name LIKE :query
+                $sqlFilter .= ' AND (project.id LIKE :query
+                    OR project.name LIKE :query
+                    OR project.subtitle LIKE :query
                     OR project.description LIKE :query
                     OR project.motivation LIKE :query
                     OR project.about LIKE :query
                     OR project.goal LIKE :query
                     OR project.related LIKE :query
-                    OR project.keywords LIKE :query
-                )';
+                    OR project.keywords LIKE :query)';
                 // TODO: search in project_lang too with $innerJoin
-                $values[':query'] = "%{$filters['query']}%";
+                $values[':query'] = "%{$filters['global']}%";
             }
 
             if ((!empty($filters['consultant'])) && ($filters['consultant'] != -1)) {
@@ -3581,11 +3582,6 @@ namespace Goteo\Model {
             if (!empty($filters['proj_id'])) {
                 $sqlFilter .= " AND project.id = :proj_id";
                 $values[':proj_id'] = $filters['proj_id'];
-            }
-            if (!empty($filters['global'])) {
-                $sqlFilter .= " AND (project.id LIKE :name OR project.name LIKE :name)";
-                $values[':proj_id'] = "%{$filters['global']}%";
-                $values[':name'] = "%{$filters['global']}%";
             }
             if (!empty($filters['published'])) {
                 $sqlFilter .= " AND project.published = :published";
