@@ -4,8 +4,12 @@
 <?php $this->section('admin-content') ?>
 
 <div class="admin-content">
-  <div class="inner-container">
+    <div class="inner-container">
         <h2><?= $this->text('admin-home-title') ?></h2>
+
+
+
+
     </div>
 </div>
 

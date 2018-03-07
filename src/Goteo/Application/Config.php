@@ -156,7 +156,8 @@ class Config {
 	static private function setDirConfiguration() {
 
 		//Admin subcontrollers added manually for legacy compatibility
-		\Goteo\Controller\AdminController::addSubController('Goteo\Controller\Admin\UsersAdminController');
+        \Goteo\Controller\AdminController::addSubController('Goteo\Controller\Admin\UsersAdminController');
+		\Goteo\Controller\AdminController::addSubController('Goteo\Controller\Admin\StatsAdminController');
         // \Goteo\Controller\AdminController::addSubController('Goteo\Controller\Admin\UsersSubController');
 
         \Goteo\Controller\AdminController::addSubController('Goteo\Controller\Admin\AccountsSubController');

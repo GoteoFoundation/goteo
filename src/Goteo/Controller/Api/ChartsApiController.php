@@ -12,9 +12,12 @@ namespace Goteo\Controller\Api;
 
 use Symfony\Component\HttpFoundation\Request;
 use Goteo\Application\Exception\ControllerAccessDeniedException;
+use Goteo\Application\Exception\ControllerException;
 use Goteo\Library\Text;
 use Goteo\Application\Currency;
+use Goteo\Core\Model;
 use Goteo\Model\Project;
+use Goteo\Model\Call;
 use Goteo\Model\Invest;
 use Goteo\Model\Image;
 use Goteo\Model\Origin;
@@ -34,6 +37,20 @@ class ChartsApiController extends AbstractApiController {
             throw new ControllerAccessDeniedException();
         }
         return $prj;
+    }
+
+    protected function getCall($call, $private = false) {
+        if( ! $call instanceOf Call) {
+            $call = Call::get($call);
+        }
+
+        $is_visible = in_array($call->status, [Call::STATUS_OPEN, Call::STATUS_ACTIVE, Call::STATUS_COMPLETED]) && !$private;
+
+        $is_mine = $call->owner === $this->user->id;
+        if(!$this->is_admin && !$is_mine && !$is_visible) {
+            throw new ControllerAccessDeniedException();
+        }
+        return $call;
     }
 
     /**
@@ -155,15 +172,26 @@ class ChartsApiController extends AbstractApiController {
         return $this->jsonResponse($ret);
     }
 
+
     /**
      * Simple projects origins data
      * @param  Request $request [description]
      */
-    public function projectOriginAction($id, $type = 'project', $group = 'referer', Request $request) {
-        $prj = $this->getProject($id, true);
+    public function originStatsAction($id = null, $type = 'project', $group = 'referer', Request $request) {
+
+        if($type === 'call')
+            $model = $id ? $this->getCall($id, true) : new Call();
+        else
+            $model = $id ? $this->getProject($id, true) : new Project();
 
         $group_by = $request->query->get('group_by');
-        $ret = Origin::getProjectStats($prj->id, $type, $group, $group_by);
+        $filters = [
+            'from' =>$request->query->get('from'),
+            'to' => $request->query->get('to')
+        ];
+
+        if($type === 'invests') $ret = Origin::getInvestsStats($model, $group, $group_by, $filters);
+        else $ret = Origin::getModelStats($model, $group, $group_by, $filters);
 
         $ret = array_map(function($ob) use ($group_by) {
             $label = $ob->tag ? $ob->tag : 'unknown';
@@ -178,7 +206,103 @@ class ChartsApiController extends AbstractApiController {
                 'created' => $ob->created,
                 'updated' => $ob->updated
             ];
-            }, $ret);
+        }, $ret);
+
         return $this->jsonResponse($ret);
+    }
+
+    /**
+     * Groups data in time units (5min, 1 hour, 1 day, etc)
+     * @param  Request $request [description]
+     */
+    public function aggregatesAction($type = 'invests', Request $request) {
+        $limit = 100;
+
+        if($type === 'invests') {
+            $table = 'invest';
+            $datetime = 'datetime';
+            $amount = 'amount';
+            $where = "WHERE invest.status IN (". implode(',', Invest::$ACTIVE_STATUSES) . ")";
+        } elseif($type === 'projects') {
+            $table = 'project';
+            $datetime = 'published';
+            $amount = 'amount';
+            $where = "WHERE project.status > (" . PROJECT::STATUS_REVIEWING . ")";
+        }
+        $values = [];
+
+        $ob = Model::query("SELECT
+            COUNT(*) AS `total`,
+            MIN(`$datetime`) AS min_date,
+            MAX(`$datetime`) AS max_date
+             FROM `$table` $where", $values)->fetchObject();
+        $total_items = (int) $ob->total;
+        $min_date = $ob->min_date;
+        $max_date = $ob->max_date;
+
+        if($from = $request->query->get('from')) {
+            if(!\date_valid($from)) throw new ControllerException("Date 'from' [$from] is invalid");
+            $where .= " AND `$datetime` >= :from";
+            $values[':from'] = $from;
+            $min_date = $from;
+        }
+        if($to = $request->query->get('to')) {
+            if(!\date_valid($to)) throw new ControllerException("Date 'to' [$to] is invalid");
+            $where .= " AND `$datetime` <= :to";
+            $values[':to'] = $to;
+            $max_date = $to;
+        }
+
+        $diff = (new \DateTime($min_date))->diff(new \DateTime($max_date));
+        $diff_years = $diff->y;
+        $diff_months = $diff_years*12 + $diff->m;
+        $diff_hours = $diff->days*24 + $diff->h;
+        $diff_minutes = $diff_hours*60 + $diff->i;
+        $diff_seconds = $diff_minutes*60 + $diff->s;
+
+        // print_r($diff);die;
+        $granularity =  max(60, 60 * floor($diff_minutes / $limit)); // minimun granularity is 1 minute
+        $div = "UNIX_TIMESTAMP(`$datetime`) DIV $granularity";
+
+        $total = (int)Model::query("SELECT count(*) FROM (SELECT COUNT(*) FROM `$table` $where GROUP BY $div) AS sub", $values)->fetchColumn();
+
+        $sql = "SELECT
+            FROM_UNIXTIME(($div) * $granularity) AS `date`,
+            SUM(`$amount`) AS `total`,
+            AVG(`$amount`) AS `average`,
+            COUNT(*) AS `count`
+        FROM `$table`
+        $where
+        GROUP BY `date`
+        ORDER BY `date` DESC
+        LIMIT $limit";
+
+        $items = [];
+        if($query = Model::query($sql, $values)) {
+            foreach($query->fetchAll(\PDO::FETCH_OBJ) as $ob) {
+                $ob->total = \amount_format($ob->total, 0, true, false, false);
+                $ob->count = (int) $ob->count;
+                $ob->average = round($ob->average, 2);
+                $items[] = $ob;
+            }
+        }
+
+        return $this->jsonResponse([
+            'granularity' => $granularity,
+            'granularity_hours' => floor($granularity/3600),
+            'granularity_days' => floor($granularity/(3600*24)),
+            'limit' => $limit,
+            'total' => $total,
+            'total_items' => $total_items,
+            'min_date' => $min_date,
+            'max_date' => $max_date,
+            'diff_seconds' => $diff_seconds,
+            'diff_minutes' => $diff_minutes,
+            'diff_hours' => $diff_hours,
+            'diff_days' => $diff->days,
+            'diff_months' => $diff_months,
+            'diff_years' => $diff_years,
+            'items' => $items
+        ]);
     }
 }

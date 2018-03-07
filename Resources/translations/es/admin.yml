@@ -136,3 +136,25 @@ admin-title-avatar: Avatar
 admin-title-roles: Roles
 admin-title-amount: Invertido
 admin-title-info: Info
+
+
+admin-all-project-referers: 'Origen de visitas en los proyectos'
+admin-all-invests-referers: 'Origen de visitas en los aportes a proyectos'
+admin-all-call-referers: 'Origen de visitas a las convocatorias'
+admin-all-project-devices: 'Dispositivo usado en las páginas de proyectos'
+admin-all-invests-devices: 'Dispositivo usado en los aportes a proyectos'
+admin-all-call-devices: 'Dispositivo usado en las páginas de convocatorias'
+
+
+admin-aggregate-autoupdate: 'Auto-update'
+admin-aggregate-timeline: 'Línea de tiempo'
+admin-aggregate-invests: 'Total de aportes'
+admin-aggretate-invests-format: '%CURRENCY% %VALUE% (%TOTAL% invests)'
+admin-aggregate-invests-desc: 'Suma de aportes por unidad de tiempo'
+admin-aggregate-invests-average: 'Media de aportes'
+admin-aggregate-invests-average-desc: 'Media de aportes por unidad de tiempo'
+admin-aggregate-projects: 'Total recaudado en proyectos'
+admin-aggretate-projects-format: '%CURRENCY% %VALUE% - %TOTAL% projects'
+admin-aggregate-projects-desc: 'Suma de aportes por unidad de tiempo'
+admin-aggregate-projects-average: 'Media recaudación en proyectos'
+admin-aggregate-projects-average-desc: 'Media de recaudación por unidad de tiempo'
