@@ -51,7 +51,7 @@ class StatsAdminController extends AbstractAdminController {
     // }
 
     public function indexAction(Request $request) {
-        return $this->viewResponse('admin/stats/index', []);
+        return $this->zoneAction('index', $request);
     }
 
     public function zoneAction($zone, Request $request) {
@@ -59,7 +59,13 @@ class StatsAdminController extends AbstractAdminController {
         if(!$this->getViewEngine()->find($template)) {
             throw new ControllerException("Template [$zone] not found");
         }
-        return $this->viewResponse('admin/stats/' .  $zone, []);
+
+        $filters = [
+            'from' => $request->query->has('from') ? $request->query->get('from') : (new \Datetime('1 week'))->format('Y-m-d'),
+            'to' => $request->query->has('to') ? $request->query->get('to') : null
+        ];
+
+        return $this->viewResponse("admin/stats/$zone", ['filters' => $filters]);
     }
 
 

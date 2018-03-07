@@ -25,26 +25,70 @@ for the JavaScript code in this page.
 
 $(function(){
 
+    var createChart = function($ob, data, settings) {
+        console.log('data', data);
+
+        console.log('createChart with', settings)
+
+        if(!data || (data.items === undefined && !data.length) || (data.items !== undefined && !data.items.length)) {
+            $ob.html('<small class="text-danger">No data</small>');
+        }
+        else if($ob.hasClass('percent-pie')) {
+
+            // console.log('data', data);
+            var pieData = data.map(function(x){
+                return {label:x.label, value: x.counter};
+            });
+            var pie = d3.goteo.pieChart();
+            d3.select($ob[0]).datum(pieData).call(pie);
+
+        } else if($ob.hasClass('time-metrics')) {
+            var data_transformed = data.items.map(function(x){
+                x.date = new Date(x.date);
+                return x;
+            });
+            settings.min_date = new Date(data.min_date);
+            settings.max_date = new Date(data.max_date);
+            var time = d3.goteo.timemetricsChart(settings);
+            d3.select($ob[0]).datum(data_transformed).call(time);
+
+        } else {
+            $ob.html('<small class="text-danger">Chart not found</small>');
+        }
+    };
+
     var initBindings = function() {
+        var sources = {}; // Sources cache
 
         // Percent pie with source
-        $('.d3-chart.percent-pie').each(function(){
+        $('.d3-chart').each(function(){
             var $self = $(this);
-            $(this).css('cursor', 'pointer');
-            // console.log('source', $(this).data('source'));
-            d3.json($(this).data('source'), function (error, data) {
-                if(error) {
+            if($self.hasClass('auto-enlarge')) {
+                $self.css('cursor', 'pointer');
+            }
+
+            var source = $(this).data('source');
+
+            $.getJSON(source)
+                .done(function(data) {
+                    sources[source] = data;
+                    createChart($self, data, $self.data());
+                })
+                .fail(function(error) {
                     console.log(error);
-                    $self.html('<small class="text-danger">' + (error && error.message) + '</small>');
-                    throw error;
-                }
-                // console.log('data', data);
-                var pieData = data.map(function(x){
-                    return {label:x.label, value: x.counter};
+                    $self.html('<small class="text-danger">' + (error || error.error) + '</small>');
+                    // throw error;
                 });
-                var pie = d3.goteo.piechart();
-                d3.select($self[0]).datum(pieData).call(pie);
-            });
+        });
+
+        // Update charts from data-properties
+        $('.d3-chart-updater').on('click', function(e) {
+            e.preventDefault();
+            var target = $(this).data('target');
+            var source = $(target).data('source');
+            var settings = $.extend($(target).data(), $(this).data());
+            console.log('reinit with', settings);
+            createChart($(target), sources[source], settings);
         });
 
         // enlarge charts
@@ -53,6 +97,7 @@ $(function(){
             var $wrap = $(this).closest('.chart-wrapper');
             $wrap.toggleClass('d3-chart-wide');
         });
+
     };
 
     initBindings();

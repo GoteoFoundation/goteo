@@ -125,7 +125,7 @@ class Currency {
      *
      *  requires a Converter instance
      */
-    static public function amountFormat($amount, $decs = 0, $nosymbol = false, $revert = false) {
+    static public function amountFormat($amount, $decs = 0, $nosymbol = false, $revert = false, $format = true) {
 
         // check odd behaviour
         if (!is_float($amount) && !is_numeric($amount)) {
@@ -147,11 +147,11 @@ class Currency {
         $symbol = $nosymbol ? "" : $ccy['symbol']." ";
 
         if ($amount === false) {
-            return '';
+            $ret = $format ? '' : 0;
         } else {
-            return $symbol . number_format($amount, $decs, $ccy['decimal'], $ccy['thousands']);
+            $ret = $format ? $symbol . number_format($amount, $decs, $ccy['decimal'], $ccy['thousands']) : round($amount, $decs);
         }
-
+        return $ret;
     }
 
     /**

@@ -138,9 +138,13 @@ namespace {
         return $timestamp;
     }
 
-    function date_valid($date, $format = 'Y-m-d') {
-        $d = DateTime::createFromFormat($format, $date);
-        return $d && $d->format($format) == $date;
+    function date_valid($date) {
+        try {
+            $d = new DateTime($date);
+        } catch(\Exception $e) {
+            return false;
+        }
+        return $d && checkdate($d->format('m'), $d->format('d'), $d->format('Y'));
     }
 
     /**
@@ -180,10 +184,9 @@ namespace {
     /**
      * Numberformat para convertir importes
      */
-    function amount_format($amount, $decs = 0, $nosymbol = false, $revert = false) {
+    function amount_format($amount, $decs = 0, $nosymbol = false, $revert = false, $format = true) {
 
-
-        return \Goteo\Application\Currency::amountFormat($amount, $decs, $nosymbol, $revert);
+        return \Goteo\Application\Currency::amountFormat($amount, $decs, $nosymbol, $revert, $format);
     }
 
     /**
