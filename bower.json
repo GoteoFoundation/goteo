@@ -33,6 +33,7 @@
     "summernote": "^0.8.8",
     "clipboard": "^1.7.1",
     "d3": "^4.12.2",
-    "x-editable": "^1.5.1"
+    "x-editable": "^1.5.1",
+    "metrics-graphics": "^2.13.0"
   }
 }

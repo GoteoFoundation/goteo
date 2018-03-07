@@ -185,9 +185,13 @@ class ChartsApiController extends AbstractApiController {
             $model = $id ? $this->getProject($id, true) : new Project();
 
         $group_by = $request->query->get('group_by');
+        $filters = [
+            'from' =>$request->query->get('from'),
+            'to' => $request->query->get('to')
+        ];
 
-        if($type === 'invests') $ret = Origin::getInvestsStats($model, $group, $group_by);
-        else $ret = Origin::getModelStats($model, $group, $group_by);
+        if($type === 'invests') $ret = Origin::getInvestsStats($model, $group, $group_by, $filters);
+        else $ret = Origin::getModelStats($model, $group, $group_by, $filters);
 
         $ret = array_map(function($ob) use ($group_by) {
             $label = $ob->tag ? $ob->tag : 'unknown';

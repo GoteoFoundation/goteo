@@ -138,7 +138,7 @@ class Origin extends \Goteo\Core\Model {
         return $query->fetchAll(\PDO::FETCH_CLASS, __CLASS__);
     }
 
-    static public function getInvestsStats(Model $model = null, $group = 'referer', $group_by = 'tag') {
+    static public function getInvestsStats(Model $model = null, $group = 'referer', $group_by = 'tag', $filters = []) {
         $values = [':type' => $group];
         $add_sql = '';
         if($model instanceOf Project) {
@@ -155,12 +155,20 @@ class Origin extends \Goteo\Core\Model {
 
         $group_by = ($group_by === 'category') ? 'category' : 'tag';
 
+        if($filters['from']) {
+            $add_sql .= ' AND invest.datetime >= :from';
+            $values[':from'] = $filters['from'];
+        }
+        if($filters['to']) {
+            $add_sql .= ' AND invest.datetime <= :to';
+            $values[':to'] = $filters['to'];
+        }
         // Project invests stats
         $sql = "SELECT
         origin.tag,
         origin.category,
-        IF (MIN(origin.created_at), MIN(origin.created_at), MIN(invest.invested)) AS created,
-        IF (MAX(origin.modified_at), MAX(origin.modified_at), MAX(invest.invested)) as updated,
+        IF (MIN(origin.created_at), MIN(origin.created_at), MIN(invest.datetime)) AS created,
+        IF (MAX(origin.modified_at), MAX(origin.modified_at), MAX(invest.datetime)) as updated,
         IF (SUM(origin.counter), SUM(origin.counter), COUNT(invest.id)) AS counter
         FROM invest
         LEFT JOIN origin ON origin.invest_id = invest.id AND origin.type = :type
@@ -173,7 +181,7 @@ class Origin extends \Goteo\Core\Model {
         return $query->fetchAll(\PDO::FETCH_OBJ);
     }
 
-    static public function getModelStats(Model $model = null, $group = 'referer', $group_by = 'tag') {
+    static public function getModelStats(Model $model = null, $group = 'referer', $group_by = 'tag', $filters = []) {
         $values = [':type' => $group];
 
         $add_sql = '';
@@ -198,6 +206,14 @@ class Origin extends \Goteo\Core\Model {
         }
 
         $group_by = ($group_by === 'category') ? 'category' : 'tag';
+        if($filters['from']) {
+            $add_sql .= ' AND origin.created_at >= :from';
+            $values[':from'] = $filters['from'];
+        }
+        if($filters['to']) {
+            $add_sql .= ' AND origin.updated_at <= :to';
+            $values[':to'] = $filters['to'];
+        }
 
         // Project visit stats by default
         $sql = "SELECT
