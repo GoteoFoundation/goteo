@@ -143,4 +143,18 @@ body {
 
   }
 
+
+  // row-tweak to behave as tables (bottom aligned)
+  .row.table-row {
+    display: table;
+    margin-bottom: 20px;
+    width: 100%;
+    div[class^='col-'], div[class*=' col-']{
+      float: none;
+      display: table-cell;
+      &.align-bottom {
+        vertical-align: bottom;
+      }
+    }
+  }
 }

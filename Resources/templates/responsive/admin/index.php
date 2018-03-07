@@ -8,7 +8,7 @@
         <h2><?= $this->text('admin-home-title') ?></h2>
 
 
-        <?= $this->supply('admin-content-analytics', $this->insert('admin/partials/analytics')) ?>
+
 
     </div>
 </div>
