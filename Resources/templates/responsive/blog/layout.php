@@ -4,7 +4,7 @@ if($this->post->image)
 
 	$meta_img= $this->post->image->getlink(400, 0, false, true);
 
-elseif($this->post->image_header)
+elseif($this->post->header_image)
 	$meta_img= $this->post->header_image->getlink(400, 0, false, true);
 
 else
