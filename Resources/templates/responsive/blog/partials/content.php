@@ -6,7 +6,7 @@
 					<img src="<?= $this->post->image->getLink(800, 0) ?>" class="img-responsive main-image">
 				</p>
 			<?php endif; ?>
-			<?= $this->markdown($this->post->text) ?>
+			<?= $this->post->text ?>
 		</div>
 	</div>
 </div>
