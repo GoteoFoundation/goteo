@@ -1,10 +1,21 @@
 <?php
 
+if($this->post->image)
+
+	$meta_img= $this->post->image->getlink(400, 0, false, true);
+
+elseif($this->post->image_header)
+	$meta_img= $this->post->header_image->getlink(400, 0, false, true);
+
+else
+	$meta_img= $this->asset('img/blog/header_default.jpg');
+
+
 $this->layout('layout', [
     'bodyClass' => 'blog',
     'title' =>  $this->post->title,
     'meta_description' => $this->text_truncate($this->post->text, 155),
-    'tw_image' =>  $this->post->image ? $this->post->image->getlink(400,0, false, true) : ''
+    'tw_image' =>  $meta_img
     ]);
 
 
