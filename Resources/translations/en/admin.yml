@@ -5,6 +5,16 @@ admin-YES: "YES"
 admin-account-amount: 'Donated amount'
 admin-account-change-user: 'Switch user'
 admin-account-change-user-confirm: 'Are you sure you want to change the user of the contribution? The new user will be:'
+admin-account-convert-to-pool: 'Convert to Pool'
+admin-account-convert-to-pool-confirm: 'This will eliminate the project associated with this input and it will be as though it were a pool purchase. ALL THE ASSOCIATED REWARDS WILL BE LOST. Continue?'
+admin-address: Direction
+admin-all: All
+admin-back: Back
+admin-back-detail: 'Back to Detail'
+admin-back-list: 'Back to Listed'
+admin-contents: 'Texts and Translations'
+admin-empty-list: 'No results found'
+admin-mailing-back-to-list: 'Back to Messages'
 admin-filters: 'Filters'
 admin-remove-filters: 'Remove filters'
 admin-impersonate-user: Impersonate %s
