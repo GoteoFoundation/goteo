@@ -5,8 +5,9 @@ admin-YES: "YES"
 admin-account-amount: 'Donated amount'
 admin-account-change-user: 'Switch user'
 admin-account-change-user-confirm: 'Are you sure you want to change the user of the contribution? The new user will be:'
-admin-account-convert-to-pool: 'Convert to Pool'
-admin-account-convert-to-pool-confirm: 'This will eliminate the project associated with this input and it will be as though it were a pool purchase. ALL THE ASSOCIATED REWARDS WILL BE LOST. Continue?'
+admin-account-convert-to-pool: 'Convert to Wallet'
+admin-account-convert-to-pool-confirm: 'This will eliminate the project associated with this contribution and it will be like it was a wallet purchase. ALL THE ASSOCIATED REWARDS WILL BE LOST. Continue?'
+admin-account-convert-to-pool-ko: 'Could not convert contribution to wallet: %s'
 admin-address: Direction
 admin-all: All
 admin-back: Back
