@@ -138,6 +138,11 @@ namespace {
         return $timestamp;
     }
 
+    function date_valid($date, $format = 'Y-m-d') {
+        $d = DateTime::createFromFormat($format, $date);
+        return $d && $d->format($format) == $date;
+    }
+
     /**
      * Checkea si todos los indices del array son vacios
      * @param array $mixed

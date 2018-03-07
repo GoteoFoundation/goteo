@@ -156,10 +156,12 @@ class Origin extends \Goteo\Core\Model {
         $group_by = ($group_by === 'category') ? 'category' : 'tag';
 
         if($filters['from']) {
+            if(!\date_valid($filters['from'])) throw new ModelException("Invalid date 'from' [{$filters['from']}]");
             $add_sql .= ' AND invest.datetime >= :from';
             $values[':from'] = $filters['from'];
         }
         if($filters['to']) {
+            if(!\date_valid($filters['to'])) throw new ModelException("Invalid date 'to' [{$filters['to']}]");
             $add_sql .= ' AND invest.datetime <= :to';
             $values[':to'] = $filters['to'];
         }
@@ -207,11 +209,13 @@ class Origin extends \Goteo\Core\Model {
 
         $group_by = ($group_by === 'category') ? 'category' : 'tag';
         if($filters['from']) {
+            if(!\date_valid($filters['from'])) throw new ModelException("Invalid date 'from' [{$filters['from']}]");
             $add_sql .= ' AND origin.created_at >= :from';
             $values[':from'] = $filters['from'];
         }
         if($filters['to']) {
-            $add_sql .= ' AND origin.updated_at <= :to';
+            if(!\date_valid($filters['to'])) throw new ModelException("Invalid date 'to' [{$filters['to']}]");
+            $add_sql .= ' AND origin.modified_at <= :to';
             $values[':to'] = $filters['to'];
         }
 
@@ -227,7 +231,7 @@ class Origin extends \Goteo\Core\Model {
         $add_sql
         GROUP by origin.$group_by ORDER BY counter DESC";
 
-        // echo sqldbg($sql, $values);
+        // die(sqldbg($sql, $values));
         $query = self::query($sql, $values);
         return $query->fetchAll(\PDO::FETCH_OBJ);
     }
