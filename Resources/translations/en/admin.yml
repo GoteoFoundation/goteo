@@ -8,6 +8,12 @@ admin-account-change-user-confirm: 'Are you sure you want to change the user of 
 admin-account-convert-to-pool: 'Convert to Wallet'
 admin-account-convert-to-pool-confirm: 'This will eliminate the project associated with this contribution and it will be like it was a wallet purchase. ALL THE ASSOCIATED REWARDS WILL BE LOST. Continue?'
 admin-account-convert-to-pool-ko: 'Could not convert contribution to wallet: %s'
+admin-account-convert-to-pool-ok: 'Converted to money contribution correctly'
+admin-account-detail: 'Transaction Details'
+admin-account-donation: Donate
+admin-account-edit-reward: 'Manage return/address'
+admin-account-invalid-invest: 'Contribution [%s] not found!'
+admin-account-invest-date: 'Date of Contribution'
 admin-address: Direction
 admin-all: All
 admin-back: Back
@@ -16,7 +22,13 @@ admin-back-list: 'Back to Listed'
 admin-contents: 'Texts and Translations'
 admin-empty-list: 'No results found'
 admin-mailing-back-to-list: 'Back to Messages'
+admin-mailing-created: 'Created on'
+admin-mailing-new-massive: 'You have created a new mailing list to %TOTAL% users'
+admin-mailing-status: 'Automatic delivery status'
 admin-mailing-subject: Subject
+admin-mailing-view-and-activate: 'See the post admin to start sending'
+admin-mailing-view-in-newsletter: 'See the post admin'
+admin-projects: Projects
 admin-filters: 'Filters'
 admin-remove-filters: 'Remove filters'
 admin-sponsors: Services
