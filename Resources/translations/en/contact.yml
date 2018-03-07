@@ -1,5 +1,6 @@
 ---
 contact-captcha-field: 'Test of humanity (sorry...)'
+contact-captcha-refresh: 'Refresh Image'
 contact-email-field: Email address
 contact-form-dev-tag-description: 'I need help with tech questions'
 contact-form-dev-tag-name: desenvolupament
