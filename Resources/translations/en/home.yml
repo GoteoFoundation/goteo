@@ -1,4 +1,5 @@
 ---
+home-channel-project: '%s projects'
 home-channels-header: Channels
 home-news-header: 'What they''re saying about Goteo'
 home-patrons-header: Mentors
@@ -18,6 +19,8 @@ home-advantages-donor-title: 'Benefits as a donor'
 home-advantages-owner-title: 'Benefits as a promoter '
 home-adventages-savetheworld-title: 'Social commitment'
 home-adventages-savetheworld-description: 'Support projects with a high social impact'
+home-adventages-savetheworld-action: 'I want to know more'
+home-advantages-wallet-title: 'Virtual Fund'
 home-advantages-certificates-title: 'Certificates'
 home-advantages-certificates-description: 'Get the certificate for your donation with the tax office'
 home-advantages-certificates-action: 'Go to certificates'
