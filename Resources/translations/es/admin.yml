@@ -146,9 +146,10 @@ admin-all-invests-devices: 'Dispositivo usado en los aportes a proyectos'
 admin-all-call-devices: 'Dispositivo usado en las páginas de convocatorias'
 
 
+admin-aggregate-autoupdate: 'Auto-update'
 admin-aggregate-timeline: 'Línea de tiempo'
 admin-aggregate-invests: 'Total de aportes'
-admin-aggretate-invests-format: '%CURRENCY% %VALUE% - %TOTAL% invests'
+admin-aggretate-invests-format: '%CURRENCY% %VALUE% (%TOTAL% invests)'
 admin-aggregate-invests-desc: 'Suma de aportes por unidad de tiempo'
 admin-aggregate-invests-average: 'Media de aportes'
 admin-aggregate-invests-average-desc: 'Media de aportes por unidad de tiempo'

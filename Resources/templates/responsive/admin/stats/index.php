@@ -11,9 +11,9 @@ $query = http_build_query($this->filters);
   <div class="panel-body">
     <h5><?= $this->text('admin-aggregate-timeline') ?></h5>
 
-    <div class="d3-chart time-metrics" data-source="/api/charts/aggregates/invests?<?= $query ?>" data-field="total" data-title="<?= $this->text('admin-aggregate-invests') ?>" data-description="<?= $this->text('admin-aggregate-invests-desc') ?>" data-format="<?= $this->text('admin-aggretate-invests-format', ['%CURRENCY%' => $this->get_currency()]) ?>"></div>
+    <?= $this->insert('admin/stats/partials/timeline/invests', ['query' => $query]) ?>
 
-    <p><a class="pronto" href="/admin/stats/timeline"><i class="fa fa-line-chart"></i> <?= $this->text('regular-see_more') ?></a></p>
+    <p><a class="pronto" href="/admin/stats/timeline?<?= $query ?>"><i class="fa fa-line-chart"></i> <?= $this->text('regular-see_more') ?></a></p>
 
   </div>
 </div>
@@ -37,7 +37,7 @@ $query = http_build_query($this->filters);
 
 
     </div>
-    <p><a class="pronto" href="/admin/stats/origins"><i class="fa fa-pie-chart"></i> <?= $this->text('regular-see_more') ?></a></p>
+    <p><a class="pronto" href="/admin/stats/origins?<?= $query ?>"><i class="fa fa-pie-chart"></i> <?= $this->text('regular-see_more') ?></a></p>
 
   </div>
 </div>

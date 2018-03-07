@@ -63,7 +63,7 @@ d3.goteo.timemetricsChart = function(settings){
                 var df = d3.timeFormat('%b %d, %Y');
                 var date = df(d.date);
                 var y_val = format.replace("%VALUE%", d[field])
-                                  .replace("%TOTAL%", d.total);
+                                  .replace("%TOTAL%", d.count);
                 // console.log(d, format, y_val);
 
                 d3.select(self).select('svg .mg-active-datapoint')
