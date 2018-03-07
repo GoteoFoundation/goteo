@@ -67,12 +67,14 @@ dashboard-menu-projects: 'My projects'
 dashboard-menu-projects-analytics: Analytics
 dashboard-menu-projects-commons: Rewards
 dashboard-menu-projects-contract: Contract
+dashboard-menu-projects-social-commitment: 'Social Compromise'
 dashboard-menu-projects-messegers: Participants
 dashboard-menu-projects-preview: 'Public page'
 dashboard-menu-projects-rewards: Backers
 dashboard-menu-projects-summary: Summary
 dashboard-menu-projects-supports: Collaborations
 dashboard-menu-projects-updates: News
+dashboard-menu-projects-widgets: Widget
 dashboard-menu-review_board: Review
 dashboard-menu-translate_board: Translation
 dashboard-menu-translates: 'My translations'
@@ -180,7 +182,9 @@ dashboard-edit-share-material-url: 'Editing the URL'
 dashboard-modal-edit-url: 'URL where the shared materials are'
 dashboard-modal-placeholder-edit-url: 'URL'
 dashboard-new-material-form-success: 'The new shared material has been added successfully.'
+dashboard-new-material-form-material: 'Material'
 dashboard-new-material-form-description: 'Description'
+dashboard-new-material-form-url: 'URL'
 dashboard-new-material-form-type: 'Materials type'
 dashboard-new-material-form-license: 'Files licence'
 dashboard-menu-projects-shared-materials: 'Files'
