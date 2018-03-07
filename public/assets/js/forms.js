@@ -161,6 +161,14 @@ $(function(){
                 // console.log(e);
                 // $('#publishing-date').val(e.date.format('YYYY/MM/DD'));
             });
+        // Full time datepicker
+        $('.autoform .datepicker-full, .autoform .datepicker-full > input').datetimepicker({
+                locale: goteo.locale,
+
+            }).on('dp.change', function(e) {
+              // TODO: some kind of solution to transform locale dates:
+              // https://github.com/Eonasdan/bootstrap-datetimepicker/issues/1869
+            });
         // Year only datepickers
         $('.autoform .datepicker-year, .autoform .datepicker-year > input').datetimepicker({
                 format: 'YYYY',

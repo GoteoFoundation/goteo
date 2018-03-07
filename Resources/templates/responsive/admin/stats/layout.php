@@ -3,6 +3,7 @@
 $this->layout('admin/container');
 
 $this->section('admin-container-head');
+
 ?>
     <h2><?= $this->text('admin-stats') ?></h2>
 

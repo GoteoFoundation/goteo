@@ -2,7 +2,8 @@
 
 $this->layout('admin/stats/layout');
 
-$filters = $this->get_querystring();
+$query = http_build_query($this->filters);
+
 ?>
 
 <?php $this->section('admin-stats-container') ?>
