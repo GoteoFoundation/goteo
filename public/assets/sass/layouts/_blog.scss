@@ -4,7 +4,7 @@
 
 body.blog {
 
-    background-color: $background-main-home;
+    background-color: $background-white;
 
     .top-navbar{
       background-color: $background-yellow;
@@ -62,6 +62,7 @@ body.blog {
     
      div.sticky-menu{
       padding-top: 10px;
+      background-color: $background-main-home;
       .social{
         margin-left: 0px;
       }
