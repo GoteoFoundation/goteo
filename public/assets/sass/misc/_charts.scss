@@ -2,6 +2,7 @@
 
 .d3-chart {
   &.auto-enlarge {
+    cursor: pointer;
     max-width: 300px;
     transition: all 0.5s ease;
   }

@@ -60,35 +60,65 @@ $(function(){
     var initBindings = function() {
         var sources = {}; // Sources cache
 
-        // Percent pie with source
-        $('.d3-chart').each(function(){
-            var $self = $(this);
-            if($self.hasClass('auto-enlarge')) {
-                $self.css('cursor', 'pointer');
+        var initChart = function($chart) {
+            var $chart = $(this);
+            var source = $chart.data('source');
+            if(!sources[source]) {
+                sources[source] = {settings: $chart.data(), data: []};
             }
-
-            var source = $(this).data('source');
+            var interval = parseInt(sources[source].settings.interval, 10) || 0;
 
             $.getJSON(source)
                 .done(function(data) {
-                    sources[source] = data;
-                    createChart($self, data, $self.data());
+                    sources[source].data = data;
+                    createChart($chart, data, $chart.data());
+                    if(interval) {
+                        console.log('timeout at ', interval);
+                        setTimeout(function(){
+                            console.log('recreating chart with', sources[source]);
+                            initChart.call($chart);
+                        }, interval * 1000);
+                    }
                 })
                 .fail(function(error) {
                     console.log(error);
-                    $self.html('<small class="text-danger">' + (error || error.error) + '</small>');
+                    $chart.html('<small class="text-danger">' + (error || error.error) + '</small>');
                     // throw error;
                 });
-        });
+        };
+
+
+        // Charts with data-source attribute
+        $('.d3-chart').each(initChart);
 
         // Update charts from data-properties
         $('.d3-chart-updater').on('click', function(e) {
             e.preventDefault();
             var target = $(this).data('target');
             var source = $(target).data('source');
-            var settings = $.extend($(target).data(), $(this).data());
-            console.log('reinit with', settings);
-            createChart($(target), sources[source], settings);
+            sources[source].settings = $.extend(sources[source].settings, $(this).data());
+            console.log('reinit with', sources[source].settings);
+            createChart($(target), sources[source].data, sources[source].settings);
+        });
+
+        // Update settings from checkboxes will update data if active or remove otherwise
+        $('input[type="checkbox"].d3-chart-updater').on('change', function(e){
+            var settings = $(this).data();
+            var target = $(this).data('target');
+            var source = $(target).data('source');
+            if($(this).prop('checked')) {
+                // add settings
+                console.log('add settings', settings);
+                // Save current settings
+                $(this).data('settings-backup', sources[source].settings);
+                sources[source].settings = $.extend(sources[source].settings, settings);
+            } else if($(this).data('settings-backup')) {
+                // remove settings
+                console.log('remove settings', settings);
+                // Retrieve backup
+                sources[source].settings = $(this).data('settings-backup');
+            }
+            initChart.call($(target));
         });
 
         // enlarge charts
