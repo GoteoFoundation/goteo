@@ -1,4 +1,26 @@
-<?php $author=$this->post->getAuthor(); ?>
+<?php 
+
+$author=$this->post->getAuthor();
+
+
+$share_url = $this->get_url() . '/post/' . $this->post->id;
+
+$author_twitter = str_replace(
+                        array(
+                            'https://',
+                            'http://',
+                            'www.',
+                            'twitter.com/',
+                            '#!/',
+                            '@'
+                        ), '', $this->post->user->twitter);
+$author_share = !empty($author_twitter) ? ' '.$this->text('regular-by').' @'.$author_twitter.' ' : '';
+$share_title = $this->post->title . $author_share;
+
+$facebook_url = 'http://facebook.com/sharer.php?u=' . urlencode($share_url) . '&t=' . urlencode($share_title);
+$twitter_url = 'http://twitter.com/intent/tweet?text=' . urlencode($share_title . ': ' . $share_url . ' #Goteo');
+
+?>
 
 <div class="section post-header">
 	<div class="image">
@@ -37,9 +59,9 @@
 					</span>					
 				<li>
 				<li class="social hidden-xs">
-					<a class="fa fa-twitter" title="" target="_blank" href=""></a>
-          			<a class="fa fa-facebook" title="" target="_blank" href=""></a>
-          			<a class="fa fa-telegram" title="" target="_blank" href=""></a>
+					<a class="fa fa-twitter" title="" target="_blank" href="<?= $twitter_url ?>"></a>
+          			<a class="fa fa-facebook" title="" target="_blank" href="<?= $facebook_url ?>"></a>
+          			<a class="fa fa-telegram" title="" target="_blank" href="https://telegram.me/share/url?url=<?= $share_url ?>&text=<?= urlencode($share_title) ?>"></a>
           			<!--<a class="fa fa-whatsapp" title="" target="_blank" href=""></a>-->
 				</li>
 			</div>
