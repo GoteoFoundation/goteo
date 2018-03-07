@@ -15,8 +15,18 @@ admin-back-list: 'Back to Listed'
 admin-contents: 'Texts and Translations'
 admin-empty-list: 'No results found'
 admin-mailing-back-to-list: 'Back to Messages'
+admin-mailing-subject: Subject
 admin-filters: 'Filters'
 admin-remove-filters: 'Remove filters'
+admin-sponsors: Services
+admin-status: Status
+admin-text-type: 'Process the text as'
+admin-text-type-html: HTML
+admin-text-type-md: Markdown
+admin-text-type-plain: 'Plaintext'
+admin-user: User
+admin-users: Users
+admin-yes: "Yes"
 admin-impersonate-user: Impersonate %s
 admin-project-express-discard: 'Express discard'
 admin-project-express-discard-desc: 'Change the project status to Discard and sends an email'
