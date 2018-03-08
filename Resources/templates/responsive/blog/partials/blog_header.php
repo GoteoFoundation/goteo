@@ -31,10 +31,10 @@ $twitter_url = 'http://twitter.com/intent/tweet?text=' . urlencode($share_title 
 			<img src="<?= $this->post->header_image->getLink(750, 450, true) ?>" class="img-responsive visible-xs">
 
 		<?php else: ?>
-			<img src="/assets/img/blog/header_default.jpg" width="1920" class="display-none-important header-default img-responsive  hidden-xs visible-up-1400">
-			<img src="/assets/img/blog/header_default.jpg" width="1400" class="display-none-important header-default img-responsive  hidden-xs visible-1051-1400">
-			<img src="/assets/img/blog/header_default.jpg" width="1051" class="display-none-important header-default img-responsive  hidden-xs visible-768-1050">
-			<img src="/assets/img/blog/header_default.jpg" width="750"  class="img-responsive header-default visible-xs">
+			<img src="/assets/img/blog/header_default.png" width="1920" class="display-none-important header-default img-responsive  hidden-xs visible-up-1400">
+			<img src="/assets/img/blog/header_default.png" width="1400" class="display-none-important header-default img-responsive  hidden-xs visible-1051-1400">
+			<img src="/assets/img/blog/header_default.png" width="1051" class="display-none-important header-default img-responsive  hidden-xs visible-768-1050">
+			<img src="/assets/img/blog/header_default.png" width="750"  class="img-responsive header-default visible-xs">
 		<?php endif; ?>
 
 	</div>
