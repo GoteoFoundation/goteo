@@ -30,8 +30,11 @@ d3.goteo.discretevaluesChart = function(settings){
     // defaults
     var width = settings && settings.width || 64,
       height = settings && settings.height || 64,
-      title = settings && settings.title || 'Time series',
-      description = settings && settings.description || 'Show events in a timeline';
+      color = settings && settings.color || 'black',
+      flash_color = settings && settings['flash-color'] || 'red',
+      flash_time = settings && settings['flash-time'] || 10,
+      delay = settings && settings.delay || 200
+      ;
 
     var findValue = function(ob, value) {
         var parts = value.split('.');
@@ -73,13 +76,16 @@ d3.goteo.discretevaluesChart = function(settings){
                 if(value !== null) {
                     // console.log(it, i, title, property, value);
                     // remove if existing and has different value, otherwise do nothing
+                    var flash = false;
                     var svg = d3.select(this).select('svg');
                     console.log(svg, svg.empty());
                     if(!svg.empty()) {
                         console.log(svg.select('g').select('text'), svg.select('g').select('text').text());
                         if(svg.select('g').select('text').text() == value) return;
                         svg.remove();
+                        flash = true;
                     }
+
                     svg = d3.select(this).append("svg")
                         .attr("viewBox", "0 0 " + width + " " + height)
                         .attr("preserveAspectRatio", "xMinYMin meet");
@@ -90,12 +96,15 @@ d3.goteo.discretevaluesChart = function(settings){
                         .attr( 'text-anchor', 'middle' )
                         .attr( 'x',  width/2 )
                         .attr( 'y', height/3 )
-                        .attr( 'fill', 'red')
+                        .attr( 'fill', flash ? flash_color : color)
                         .style('opacity', 0)
                         .transition()
-                        .delay( 300 * i )
-                        .attr( 'fill', 'black')
-                        .style('opacity', 1);
+                        .delay( delay * i )
+                        .style('opacity', 1)
+                        .transition()
+                        .duration( flash_time * 1000 )
+                        .attr( 'fill', color)
+                        ;
                         // .tween( 'text', tweenText( value ) );
 
                     var w = width;
@@ -111,7 +120,7 @@ d3.goteo.discretevaluesChart = function(settings){
                         .style('font-size', '8px')
                         .style('line-height', '1')
                         .style('text-align', 'center')
-                        .style('background-color', 'transparent')
+                        // .style('background-color', 'transparent')
                         // .style({width: w + 'px',
                         //     height: h + 'px',
                         //     "font-size": "20px",

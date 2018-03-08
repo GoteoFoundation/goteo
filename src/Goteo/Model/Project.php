@@ -3799,22 +3799,44 @@ namespace Goteo\Model {
                     ";
 
             if($count) {
+                if($count === 'all') {
+                    $what = 'SUM(project.amount) AS total_amount, COUNT(project.id) AS total_projects, SUM(project_account.fee * project.amount / 100) AS total_fee';
+                    $innerJoin .= ' LEFT JOIN project_account ON project_account.project = project.id';
+                }
+                elseif($count === 'money') {
+                    $what = 'SUM(project.amount)';
+                }
+                elseif($count === 'fee') {
+                    $what = 'SUM(project_account.fee * project.amount / 100)';
+                    $innerJoin .= ' LEFT JOIN project_account ON project_account.project = project.id';
+                }
+                else {
+                    $what = 'COUNT(project.id)';
+                }
                 if($location_parts) {
-                    $sql .= "SELECT COUNT(id)
-                    FROM (SELECT project.id,project.project_location,project_location.latitude,project_location.longitude $from $innerJoin WHERE $where) as FirstCut
+                    $sql .= "SELECT $what
+                    FROM (SELECT project.id,project.amount,project.fee,project.project_location,project_location.latitude,project_location.longitude $from $innerJoin WHERE $where) as FirstCut
                     WHERE
                     {$location_parts['where']}";
                     // print_r($values);die($sql);
                 } else {
                     // Return count
-                    $sql = "SELECT COUNT(project.id)
+                    $sql = "SELECT $what
                         $from
                         $innerJoin
                         WHERE
                         $where";
                         //die(\sqldbg($sql, $values));
                 }
-                return (int) self::query($sql, $values)->fetchColumn();
+                if($count === 'all') {
+                    $ob = self::query($sql, $values)->fetchObject();
+                    return ['amount' => (float) $ob->total_amount, 'projects' => (int) $ob->total_projects, 'fee' => (float) $ob->total_fee];
+                }
+                $total = self::query($sql, $values)->fetchColumn();
+                if(in_array($count, ['money', 'fee'])) {
+                    return (float) $total;
+                }
+                return (int) $total;
             }
 
             $offset = (int) $offset;

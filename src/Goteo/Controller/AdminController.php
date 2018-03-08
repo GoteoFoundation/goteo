@@ -55,7 +55,15 @@ class AdminController extends \Goteo\Core\Controller {
     public function indexAction(Request $request) {
         $user = self::getCurrentUser($request);
         static::createAdminSidebar($user);
-        return $this->viewResponse('admin/index');
+        $links = $legacy = [];
+        foreach (static::$subcontrollers as $id => $class) {
+            if(in_array('Goteo\Controller\Admin\AdminControllerInterface', class_implements($class))) {
+                $links["/admin/$id"] = $class::getLabel('html');
+            } else {
+                $legacy["/admin/$id"] = $class::getLabel();
+            }
+        }
+        return $this->viewResponse('admin/index', ['links' => $links, 'legacy' => $legacy]);
     }
     /**
      * Controller for any route under /admin/{route}
