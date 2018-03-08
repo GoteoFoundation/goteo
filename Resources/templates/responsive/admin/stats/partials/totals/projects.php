@@ -1,4 +1,4 @@
-<div class="d3-chart discrete-values" data-source="/api/charts/totals/projects?<?= $this->query ?>" data-title="<?= $this->text('admin-projects-stats') ?>" data-interval="15">
+<div class="d3-chart discrete-values" data-source="/api/charts/totals/projects?<?= $this->query ?>" data-interval="15">
     <ul class="row list-unstyled">
         <li class="col-xs-4 col-sm-2" data-property="created.today" data-title="<?= $this->text('admin-projects-created-today') ?>"></li>
         <li class="col-xs-4 col-sm-2" data-property="created.yesterday" data-title="<?= $this->text('admin-projects-created-yesterday') ?>"></li>

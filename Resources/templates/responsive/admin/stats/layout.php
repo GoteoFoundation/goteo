@@ -9,16 +9,6 @@ $this->section('admin-container-head');
 
 <?php $this->replace() ?>
 
-<?php $this->section('admin-container-body') ?>
-
-    <?php $this->section('admin-stats-body') ?>
-        <?= $this->supply('admin-stats-filters', $this->insert('admin/stats/partials/filters')) ?>
-
-        <?php $this->section('admin-stats-container') ?>
-        <?php $this->stop() ?>
-    <?php $this->stop() ?>
-
-<?php $this->replace() ?>
 
 <?php $this->section('footer') ?>
 

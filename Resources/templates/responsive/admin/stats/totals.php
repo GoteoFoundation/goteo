@@ -7,7 +7,7 @@ $query = '';
 
 ?>
 
-<?php $this->section('admin-stats-body') ?>
+<?php $this->section('admin-container-body') ?>
 
 <div class="panel">
   <div class="panel-body">
