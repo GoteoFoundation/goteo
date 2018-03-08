@@ -72,5 +72,11 @@ $api->add('api-chart-aggregates', new Route(
         )
 ));
 
+// aggregate time metric series
+$api->add('api-chart-totals', new Route(
+    '/charts/totals',
+    array('_controller' => 'Goteo\Controller\Api\ChartsApiController::totalsAction',
+        )
+));
 
 return $api;

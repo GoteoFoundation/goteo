@@ -305,4 +305,47 @@ class ChartsApiController extends AbstractApiController {
             'items' => $items
         ]);
     }
+
+
+    /**
+     * Gets totals
+     * @param  Request $request [description]
+     */
+    public function totalsAction(Request $request) {
+        $filter = ['status' => Invest::$RAISED_STATUSES];
+        $filter['date_from'] = (new \DateTime('today'))->format('Y-m-d');
+        $filter['date_until'] = (new \DateTime('today'))->format('Y-m-d');
+
+        $today = Invest::getList($filter, null, 0, 0, 'all');
+
+        $filter['date_from'] = (new \DateTime('yesterday'))->format('Y-m-d');
+        $filter['date_until'] = (new \DateTime('yesterday'))->format('Y-m-d');
+        $yesterday = Invest::getList($filter, null, 0, 0, 'all');
+
+        $filter['date_from'] = (new \DateTime('first day of this week'))->format('Y-m-d');
+        $filter['date_until'] = (new \DateTime('today'))->format('Y-m-d');
+        $week = Invest::getList($filter, null, 0, 0, 'all');
+
+        $filter['date_from'] = (new \DateTime('first day of this month'))->format('Y-m-d');
+        $filter['date_until'] = (new \DateTime('today'))->format('Y-m-d');
+        $month = Invest::getList($filter, null, 0, 0, 'all');
+
+        $filter['date_from'] = (new \DateTime('first day of january this year'))->format('Y-m-d');
+        $filter['date_until'] = (new \DateTime('today'))->format('Y-m-d');
+        $year = Invest::getList($filter, null, 0, 0, 'all');
+
+        $filter['date_from'] = (new \DateTime('first day of january last year'))->format('Y-m-d');
+        $filter['date_until'] = (new \DateTime('last day of december last year'))->format('Y-m-d');
+        $lastyear = Invest::getList($filter, null, 0, 0, 'all');
+
+        $ret = [
+            'raised_today' => $today,
+            'raised_yesterday' => $yesterday,
+            'raised_week' => $week,
+            'raised_month' => $month,
+            'raised_year' => $year,
+            'raised_lastyear' => $lastyear
+        ];
+        return $this->jsonResponse($ret);
+    }
 }
