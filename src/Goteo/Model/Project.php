@@ -3535,6 +3535,57 @@ namespace Goteo\Model {
                 $values[':consultant'] = $filters['consultant'];
                 $innerJoin = " INNER JOIN user_project ON user_project.project = project.id";
             }
+
+            if (!empty($filters['created_from'])) {
+                $sqlFilter .= " AND project.created >= :created_from";
+                $values[':created_from'] = $filters['created_from'];
+            }
+            if (!empty($filters['created_until'])) {
+                $sqlFilter .= " AND project.created <= :created_until";
+                $values[':created_until'] = $filters['created_until'];
+            }
+            if (!empty($filters['published_from'])) {
+                $sqlFilter .= " AND project.published >= :published_from";
+                $values[':published_from'] = $filters['published_from'];
+            }
+            if (!empty($filters['published_until'])) {
+                $sqlFilter .= " AND project.published <= :published_until";
+                $values[':published_until'] = $filters['published_until'];
+            }
+            if (!empty($filters['updated_from'])) {
+                $sqlFilter .= " AND project.updated >= :updated_from";
+                $values[':updated_from'] = $filters['updated_from'];
+            }
+            if (!empty($filters['updated_until'])) {
+                $sqlFilter .= " AND project.updated <= :updated_until";
+                $values[':updated_until'] = $filters['updated_until'];
+            }
+            if (!empty($filters['success_from'])) {
+                $sqlFilter .= " AND project.success >= :success_from";
+                $values[':success_from'] = $filters['success_from'];
+            }
+            if (!empty($filters['success_until'])) {
+                $sqlFilter .= " AND project.success <= :success_until";
+                $values[':success_until'] = $filters['success_until'];
+            }
+            if (!empty($filters['closed_from'])) {
+                $sqlFilter .= " AND project.closed >= :closed_from";
+                $values[':closed_from'] = $filters['closed_from'];
+            }
+            if (!empty($filters['closed_until'])) {
+                $sqlFilter .= " AND project.closed <= :closed_until";
+                $values[':closed_until'] = $filters['closed_until'];
+            }
+            if (!empty($filters['passed_from'])) {
+                $sqlFilter .= " AND project.passed >= :passed_from";
+                $values[':passed_from'] = $filters['passed_from'];
+            }
+            if (!empty($filters['passed_until'])) {
+                $sqlFilter .= " AND project.passed <= :passed_until";
+                $values[':passed_until'] = $filters['passed_until'];
+            }
+
+            // @deprecated, use status instead
             if (!empty($filters['multistatus'])) {
                 $sqlFilter .= " AND project.status IN ({$filters['multistatus']})";
             }
