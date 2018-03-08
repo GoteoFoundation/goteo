@@ -137,7 +137,6 @@ admin-title-roles: Roles
 admin-title-amount: Invertido
 admin-title-info: Info
 
-
 admin-all-project-referers: 'Origen de visitas en los proyectos'
 admin-all-invests-referers: 'Origen de visitas en los aportes a proyectos'
 admin-all-call-referers: 'Origen de visitas a las convocatorias'
@@ -158,3 +157,30 @@ admin-aggretate-projects-format: '%CURRENCY% %VALUE% - %TOTAL% projects'
 admin-aggregate-projects-desc: 'Suma de aportes por unidad de tiempo'
 admin-aggregate-projects-average: 'Media recaudación en proyectos'
 admin-aggregate-projects-average-desc: 'Media de recaudación por unidad de tiempo'
+
+
+admin-stats-project-totals: 'Estado de los proyectos'
+admin-projects-created-today: 'Proyectos creados hoy'
+admin-projects-created-yesterday: 'Proyectos creados ayer'
+admin-projects-created-week: 'Proyectos creados esta semana'
+admin-projects-created-month: 'Proyectos creados este mes'
+admin-projects-created-year: 'Proyectos creados este año'
+admin-projects-created-lastyear: 'Proyectos creados el año pasado'
+admin-projects-published-today: 'Proyectos publicados hoy'
+admin-projects-published-yesterday: 'Proyectos publicados ayer'
+admin-projects-published-week: 'Proyectos publicados esta semana'
+admin-projects-published-month: 'Proyectos publicados este mes'
+admin-projects-published-year: 'Proyectos publicados este año'
+admin-projects-published-lastyear: 'Proyectos publicados el año pasado'
+admin-projects-rejected-today: 'Proyectos descartados hoy'
+admin-projects-rejected-yesterday: 'Proyectos descartados ayer'
+admin-projects-rejected-week: 'Proyectos descartados esta semana'
+admin-projects-rejected-month: 'Proyectos descartados este mes'
+admin-projects-rejected-year: 'Proyectos descartados este año'
+admin-projects-rejected-lastyear: 'Proyectos descartados el año pasado'
+admin-projects-review-today: 'Proyectos en revisión hoy'
+admin-projects-review-yesterday: 'Proyectos en revisión ayer'
+admin-projects-review-week: 'Proyectos en revisión esta semana'
+admin-projects-review-month: 'Proyectos en revisión este mes'
+admin-projects-review-year: 'Proyectos en revisión este año'
+admin-projects-review-lastyear: 'Proyectos en revisión el año pasado'

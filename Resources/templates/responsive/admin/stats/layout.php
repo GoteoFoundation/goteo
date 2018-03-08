@@ -11,9 +11,11 @@ $this->section('admin-container-head');
 
 <?php $this->section('admin-container-body') ?>
 
-    <?= $this->supply('admin-stats-filters', $this->insert('admin/stats/partials/filters')) ?>
+    <?php $this->section('admin-stats-body') ?>
+        <?= $this->supply('admin-stats-filters', $this->insert('admin/stats/partials/filters')) ?>
 
-    <?php $this->section('admin-stats-container') ?>
+        <?php $this->section('admin-stats-container') ?>
+        <?php $this->stop() ?>
     <?php $this->stop() ?>
 
 <?php $this->replace() ?>
