@@ -84,6 +84,9 @@ payments:
         # headerImageUrl: Some URL image for the header
         # logoImageUrl: logo URL
         # borderColor: B5DADC
+        comissions: # Per-invests commissions
+            fixed: 0.35 # Paypal charges 0.35€ per invest, non-returnable
+            percent: 0.034 # 3.4% of the amount per invest
 
     # This is a built-in payment method using internal credit
     #
