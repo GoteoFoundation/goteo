@@ -103,15 +103,15 @@ class Stats {
     /**
      * Handy method to obtain cached totals from invests
      */
-    public function getInvestsTotals($filter = []) {
-        return Invest::getList($filter, null, 0, 0, 'all');
+    public function getInvestsTotals($filter = [], $count = 'all') {
+        return Invest::getList($filter, null, 0, 0, $count);
     }
 
     /**
      * Handy method to obtain cached totals from projects
      */
-    public function getProjectsTotals($filter = []) {
-        return Project::getList($filter, null, 0, 0, true);
+    public function getProjectsTotals($filter = [], $count = 'all') {
+        return Project::getList($filter, null, 0, 0, $count);
     }
 
 }

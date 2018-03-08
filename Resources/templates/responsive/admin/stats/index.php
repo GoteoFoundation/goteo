@@ -15,15 +15,28 @@ $query = http_build_query($this->filters);
   <div class="panel-body">
     <h5><?= $this->text('admin-stats-project-totals') ?></h5>
 
-    <div class="d3-chart discrete-values" data-source="/api/charts/totals/projects?" data-title="<?= $this->text('admin-projects-stats') ?>" data-interval="15">
+    <div class="d3-chart discrete-values" data-source="/api/charts/totals/projects" data-interval="15" data-flash-time="30">
         <ul class="row list-unstyled">
-            <li class="col-xs-4 col-sm-2" data-property="created.today" data-title="<?= $this->text('admin-projects-created-today') ?>"></li>
-            <li class="col-xs-4 col-sm-2" data-property="published.today" data-title="<?= $this->text('admin-projects-published-today') ?>"></li>
-            <li class="col-xs-4 col-sm-2" data-property="published.yesterday" data-title="<?= $this->text('admin-projects-published-yesterday') ?>"></li>
-            <li class="col-xs-4 col-sm-2" data-property="reviewing.week" data-title="<?= $this->text('admin-projects-review-week') ?>"></li>
-            <li class="col-xs-4 col-sm-2" data-property="rejected.week" data-title="<?= $this->text('admin-projects-created-week') ?>"></li>
-            <li class="col-xs-4 col-sm-2" data-property="published.year" data-title="<?= $this->text('admin-projects-published-year') ?>"></li>
-            <li class="col-xs-4 col-sm-2" data-property="published.lastyear" data-title="<?= $this->text('admin-projects-published-lastyear') ?>"></li>
+            <li class="col-xs-2 col-xxs-4" data-property="created.today" data-title="<?= $this->text('admin-projects-created-today') ?>"></li>
+            <li class="col-xs-2 col-xxs-4" data-property="published.today" data-title="<?= $this->text('admin-projects-published-today') ?>"></li>
+            <li class="col-xs-2 col-xxs-4" data-property="published.yesterday" data-title="<?= $this->text('admin-projects-published-yesterday') ?>"></li>
+            <li class="col-xs-2 col-xxs-4" data-property="reviewing.week" data-title="<?= $this->text('admin-projects-review-week') ?>"></li>
+            <li class="col-xs-2 col-xxs-4" data-property="rejected.week" data-title="<?= $this->text('admin-projects-rejected-week') ?>"></li>
+            <li class="col-xs-2 col-xxs-4" data-property="published.year" data-title="<?= $this->text('admin-projects-published-year') ?>"></li>
+        </ul>
+
+    </div>
+
+    <h5><?= $this->text('admin-stats-invest-totals') ?></h5>
+
+    <div class="d3-chart discrete-values" data-source="/api/charts/totals/invests" data-interval="15" data-flash-time="15">
+        <ul class="row list-unstyled">
+            <li class="col-xs-2 col-xxs-4" data-property="global.raised.today.amount" data-title="<?= $this->text('admin-invest-raised-amount-today') ?>"></li>
+            <li class="col-xs-2 col-xxs-4" data-property="global.raised.yesterday.amount" data-title="<?= $this->text('admin-invest-raised-amount-yesterday') ?>"></li>
+            <li class="col-xs-2 col-xxs-4" data-property="global.commissions.today" data-title="<?= $this->text('admin-invest-commissions-today') ?>"></li>
+            <li class="col-xs-2 col-xxs-4" data-property="global.commissions.yesterday" data-title="<?= $this->text('admin-invest-commissions-yesterday') ?>"></li>
+            <li class="col-xs-2 col-xxs-4" data-property="fees.month" data-title="<?= $this->text('admin-invest-fees-month') ?>"></li>
+            <li class="col-xs-2 col-xxs-4" data-property="fees.year" data-title="<?= $this->text('admin-invest-fees-year') ?>"></li>
         </ul>
 
     </div>
