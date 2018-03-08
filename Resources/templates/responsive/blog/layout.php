@@ -8,7 +8,7 @@ elseif($this->post->header_image)
 	$meta_img= $this->post->header_image->getlink(400, 0, false, true);
 
 else
-	$meta_img= $this->asset('img/blog/header_default.jpg');
+	$meta_img= $this->asset('img/blog/header_default.png');
 
 
 $this->layout('layout', [
