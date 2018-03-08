@@ -15,12 +15,14 @@ use Goteo\Application\Exception\ControllerAccessDeniedException;
 use Goteo\Application\Exception\ControllerException;
 use Goteo\Library\Text;
 use Goteo\Application\Currency;
+use Goteo\Payment\Payment;
 use Goteo\Core\Model;
 use Goteo\Model\Project;
 use Goteo\Model\Call;
 use Goteo\Model\Invest;
 use Goteo\Model\Image;
 use Goteo\Model\Origin;
+use Goteo\Util\Stats\Stats;
 
 
 class ChartsApiController extends AbstractApiController {
@@ -308,44 +310,188 @@ class ChartsApiController extends AbstractApiController {
 
 
     /**
-     * Gets totals
+     * Gets totals for invests
      * @param  Request $request [description]
      */
-    public function totalsAction(Request $request) {
-        $filter = ['status' => Invest::$RAISED_STATUSES];
-        $filter['date_from'] = (new \DateTime('today'))->format('Y-m-d');
-        $filter['date_until'] = (new \DateTime('today'))->format('Y-m-d');
+    public function totalInvestsAction(Request $request) {
+        // Use the Stats class to take advantage of the Caching component
+        $stats = Stats::create('api_totals');
+        $payments = [];
+        $global = ['raised' => [], 'active' => []];
+        foreach(Payment::getMethods() as $method) {
 
-        $today = Invest::getList($filter, null, 0, 0, 'all');
+            $raised = []; // payments including returned
+            $active = []; // paid payments
+            $fees = []; // commissions
 
-        $filter['date_from'] = (new \DateTime('yesterday'))->format('Y-m-d');
-        $filter['date_until'] = (new \DateTime('yesterday'))->format('Y-m-d');
-        $yesterday = Invest::getList($filter, null, 0, 0, 'all');
+            $filter = ['status' => Invest::$RAISED_STATUSES, 'methods' => $method::getId()];
+            $filter['date_from'] = (new \DateTime('today'))->format('Y-m-d');
+            $filter['date_until'] = (new \DateTime('today'))->format('Y-m-d');
 
-        $filter['date_from'] = (new \DateTime('first day of this week'))->format('Y-m-d');
-        $filter['date_until'] = (new \DateTime('today'))->format('Y-m-d');
-        $week = Invest::getList($filter, null, 0, 0, 'all');
+            $raised['today'] = $stats->investsTotals($filter);
 
-        $filter['date_from'] = (new \DateTime('first day of this month'))->format('Y-m-d');
-        $filter['date_until'] = (new \DateTime('today'))->format('Y-m-d');
-        $month = Invest::getList($filter, null, 0, 0, 'all');
+            $filter['status'] = Invest::$ACTIVE_STATUSES;
+            $active['today'] = $stats->investsTotals($filter);
 
-        $filter['date_from'] = (new \DateTime('first day of january this year'))->format('Y-m-d');
-        $filter['date_until'] = (new \DateTime('today'))->format('Y-m-d');
-        $year = Invest::getList($filter, null, 0, 0, 'all');
+            $filter['status'] = Invest::$RAISED_STATUSES;
+            $filter['date_from'] = (new \DateTime('yesterday'))->format('Y-m-d');
+            $filter['date_until'] = (new \DateTime('yesterday'))->format('Y-m-d');
+            $raised['yesterday'] = $stats->investsTotals($filter);
 
-        $filter['date_from'] = (new \DateTime('first day of january last year'))->format('Y-m-d');
-        $filter['date_until'] = (new \DateTime('last day of december last year'))->format('Y-m-d');
-        $lastyear = Invest::getList($filter, null, 0, 0, 'all');
+            $filter['status'] = Invest::$ACTIVE_STATUSES;
+            $active['yesterday'] = $stats->investsTotals($filter);
 
-        $ret = [
-            'raised_today' => $today,
-            'raised_yesterday' => $yesterday,
-            'raised_week' => $week,
-            'raised_month' => $month,
-            'raised_year' => $year,
-            'raised_lastyear' => $lastyear
-        ];
-        return $this->jsonResponse($ret);
+            $filter['status'] = Invest::$RAISED_STATUSES;
+            $filter['date_from'] = (new \DateTime('monday this week'))->format('Y-m-d');
+            $filter['date_until'] = (new \DateTime('today'))->format('Y-m-d');
+            $raised['week'] = $stats->investsTotals($filter);
+
+            $filter['status'] = Invest::$ACTIVE_STATUSES;
+            $active['week'] = $stats->investsTotals($filter);
+
+            $filter['status'] = Invest::$RAISED_STATUSES;
+            $filter['date_from'] = (new \DateTime('first day of this month'))->format('Y-m-d');
+            $filter['date_until'] = (new \DateTime('today'))->format('Y-m-d');
+            $raised['month'] = $stats->investsTotals($filter);
+
+            $filter['status'] = Invest::$ACTIVE_STATUSES;
+            $active['month'] = $stats->investsTotals($filter);
+
+            $filter['status'] = Invest::$RAISED_STATUSES;
+            $filter['date_from'] = (new \DateTime('first day of january this year'))->format('Y-m-d');
+            $filter['date_until'] = (new \DateTime('today'))->format('Y-m-d');
+            $raised['year'] = $stats->investsTotals($filter);
+
+            $filter['status'] = Invest::$ACTIVE_STATUSES;
+            $active['year'] = $stats->investsTotals($filter);
+
+            $filter['status'] = Invest::$RAISED_STATUSES;
+            $filter['date_from'] = (new \DateTime('first day of january last year'))->format('Y-m-d');
+            $filter['date_until'] = (new \DateTime('last day of december last year'))->format('Y-m-d');
+            $raised['lastyear'] = $stats->investsTotals($filter);
+
+            $filter['status'] = Invest::$ACTIVE_STATUSES;
+            $active['lastyear'] = $stats->investsTotals($filter);
+
+
+            // Comissions
+            foreach($raised as $slot => $part) {
+                $returned_invests = $part['invests'] - $active[$slot]['invests'];
+                $returned_amount = $part['amount'] - $active[$slot]['amount'];
+                $fees[$slot] = $method::calculateFee($part['invests'], $part['amount'], $returned_invests, $returned_amount);
+            }
+            // print_r($fees);die("$returned_invests $returned_amount ");
+
+            $ret = [
+                'raised' => $raised,
+                'active' => $active,
+                'commissions' => $fees
+            ];
+            $payments[$method::getId()] = $ret;
+
+            // Skip pool method payment as is internal
+            if(in_array($method::getId(), ['pool', 'dummy'])) continue;
+            // Sum totals
+            foreach($raised as $slot => $part) {
+                foreach($part as $k => $v) {
+                    $global['raised'][$slot][$k] += $v;
+                }
+            }
+            foreach($active as $slot => $part) {
+                foreach($part as $k => $v) {
+                    $global['active'][$slot][$k] += $v;
+                }
+            }
+            foreach($fees as $slot => $v) {
+                $global['fees'][$slot] += $v;
+            }
+        }
+
+        return $this->jsonResponse([
+            'payments' => $payments,
+            'global' => $global
+        ]);
+    }
+
+
+        /**
+     * Gets totals for invests
+     * @param  Request $request [description]
+     */
+    public function totalProjectsAction(Request $request) {
+        // Use the Stats class to take advantage of the Caching component
+        $stats = Stats::create('api_totals');
+        $projects= [];
+
+        $ofilter = [];
+        if($consultant = $request->query->get('consultant')) {
+            $ofilter['consultant'] = $consultant;
+        }
+        foreach(['created', 'published', 'reviewing', 'rejected'] as $part) {
+            $date_from = 'created_from';
+            $date_until = 'created_until';
+            $filter = $ofilter;
+            if($part === 'published') {
+                $filter['status'] = [Project::STATUS_IN_CAMPAIGN, Project::STATUS_FUNDED, Project::STATUS_FULFILLED, Project::STATUS_UNFUNDED];
+                $date_from = 'published_from';
+                $date_until = 'published_until';
+            }
+            elseif($part === 'reviewing') {
+                $filter['status'] = Project::STATUS_REVIEWING;
+                $date_from = 'updated_from';
+                $date_until = 'updated_until';
+            }
+            elseif($part === 'rejected') {
+                // Rejected project have updated date defined
+                // $filter['status'] = [Project::STATUS_REJECTED, Project::STATUS_EDITING];
+                $filter['status'] = Project::STATUS_REJECTED;
+                $date_from = 'updated_from';
+                $date_until = 'updated_until';
+            }
+
+            $filter[$date_from] = (new \DateTime('today'))->format('Y-m-d');
+            $filter[$date_until] = (new \DateTime('today'))->format('Y-m-d');
+            $projects[$part]['today'] = $stats->projectsTotals($filter);
+
+            $filter[$date_from] = (new \DateTime('yesterday'))->format('Y-m-d');
+            $filter[$date_until] = (new \DateTime('yesterday'))->format('Y-m-d');
+            $projects[$part]['yesterday'] = $stats->projectsTotals($filter);
+
+            $filter[$date_from] = (new \DateTime('monday this week'))->format('Y-m-d');
+            $filter[$date_until] = (new \DateTime('today'))->format('Y-m-d');
+            $projects[$part]['week'] = $stats->projectsTotals($filter);
+
+            $filter[$date_from] = (new \DateTime('first day of this month'))->format('Y-m-d');
+            $filter[$date_until] = (new \DateTime('today'))->format('Y-m-d');
+            $projects[$part]['month'] = $stats->projectsTotals($filter);
+
+            $filter[$date_from] = (new \DateTime('first day of january this year'))->format('Y-m-d');
+            $filter[$date_until] = (new \DateTime('today'))->format('Y-m-d');
+            $projects[$part]['year'] = $stats->projectsTotals($filter);
+
+            $filter[$date_from] = (new \DateTime('first day of january last year'))->format('Y-m-d');
+            $filter[$date_until] = (new \DateTime('last day of december last year'))->format('Y-m-d');
+            $projects[$part]['lastyear'] = $stats->projectsTotals($filter);
+
+        }
+
+        $pending = [];
+        $filter = $ofilter;
+        $filter['published_from'] = (new \DateTime('today'))->format('Y-m-d');
+        $filter['status'] = Project::STATUS_REVIEWING;
+
+        foreach(Project::getList($filter, null, 0, 100) as $prj) {
+            $pending[] = [
+                'id' => $prj->id,
+                'image' => $prj->image ? $prj->image->getLink(64, 64, true) : '',
+                'name' => $prj->name,
+                'publish' => $prj->published,
+                'created' => $prj->created,
+                'status' => $prj->getTextStatus(),
+                'consultants' => $prj->getConsultants(),
+            ];
+        }
+        $projects['pending'] = $pending;
+        return $this->jsonResponse($projects);
     }
 }
