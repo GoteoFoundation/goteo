@@ -6,7 +6,9 @@ $query = http_build_query($this->filters);
 
 ?>
 
-<?php $this->section('admin-stats-container') ?>
+<?php $this->section('admin-container-body') ?>
+
+<?= $this->supply('admin-stats-filters', $this->insert('admin/stats/partials/filters')) ?>
 
 <div class="panel">
   <div class="panel-body">
