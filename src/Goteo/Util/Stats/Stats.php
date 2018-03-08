@@ -27,8 +27,8 @@ class Stats {
         $this->ttl = $ttl;
     }
 
-	static public function create($name = 'home_stats') {
-		return new self(new Cacher($name));
+	static public function create($name = 'generic', $ttl = 1800) {
+		return new self(new Cacher($name), $ttl);
 	}
 
     /**

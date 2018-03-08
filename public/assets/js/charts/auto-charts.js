@@ -30,10 +30,16 @@ $(function(){
 
         console.log('createChart with', settings)
 
-        if(!data || (data.items === undefined && !data.length) || (data.items !== undefined && !data.items.length)) {
+        if(!data || (data.items === undefined && !Object.keys(data).length) || (data.items !== undefined && !data.items.length)) {
             $ob.html('<small class="text-danger">No data</small>');
         }
-        else if($ob.hasClass('percent-pie')) {
+        else if($ob.hasClass('discrete-values')) {
+            // Simple graph with discrete values
+
+            var discrete = d3.goteo.discretevaluesChart(settings);
+            d3.select($ob[0]).datum(data).call(discrete);
+
+        } else if($ob.hasClass('percent-pie')) {
 
             // console.log('data', data);
             var pieData = data.map(function(x){
