@@ -281,4 +281,23 @@ abstract class AbstractPaymentMethod implements PaymentMethodInterface {
         return $this->gateway;
     }
 
+    /**
+     * Calculates banks fee in a generic way, based on settings.yml config and following the Paypal fees rules (which suits many gateways)
+     * payments.method.comissions.fixed : fixed amount per transaction, does not refund
+     * payments.method.comissions.percent percent amount per transaction, refunds
+     */
+    static public function calculateFee($total_invests, $total_amount, $returned_invests = 0, $returned_amount = 0) {
+        $commissions = Config::get('payments.' . static::getId() . '.commissions');
+        $fee = 0;
+        if($commissions && is_array($commissions)) {
+            // Per-amount percent
+            if($commissions['percent']) {
+                $fee += ($total_invests - $returned_invests) * $commissions['percent'] / 100;
+            }
+            if($commissions['fixed']) {
+                $fee += $total_invests * $commissions['fixed'];
+            }
+        }
+        return $fee;
+    }
 }

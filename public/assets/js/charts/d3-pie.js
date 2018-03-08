@@ -26,12 +26,13 @@ for the JavaScript code in this page.
 d3.goteo = d3.goteo || {};
 
 
-d3.goteo.pieChart = function(){
-  // defaults
-  var width = "450",
-    height = 300,
-    outerRadius = "150",
-    innerRadius = "15";
+d3.goteo.pieChart = function(settings){
+
+// defaults
+  var width = settings && settings.width || 450,
+      height = settings && settings.height || 300,
+      outerRadius = settings && settings.outerRadius || 150,
+      innerRadius = settings && settings.innerRadius || 15;
 
   var _colors = d3.scaleOrdinal(d3.schemeCategory20c);
   var colors = function(d, i) {

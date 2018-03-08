@@ -27,8 +27,8 @@ class Stats {
         $this->ttl = $ttl;
     }
 
-	static public function create() {
-		return new self(new Cacher('home_stats'));
+	static public function create($name = 'generic', $ttl = 1800) {
+		return new self(new Cacher($name), $ttl);
 	}
 
     /**
@@ -100,5 +100,18 @@ class Stats {
 		return Project::getMatchfundingOwnersGender();;
 	}
 
+    /**
+     * Handy method to obtain cached totals from invests
+     */
+    public function getInvestsTotals($filter = []) {
+        return Invest::getList($filter, null, 0, 0, 'all');
+    }
+
+    /**
+     * Handy method to obtain cached totals from projects
+     */
+    public function getProjectsTotals($filter = []) {
+        return Project::getList($filter, null, 0, 0, true);
+    }
 
 }

@@ -44,7 +44,7 @@ class IndexController extends DiscoverController
         // Banners siempre
         $banners = Banner::getAll(true);
 
-        $stats = Stats::create();
+        $stats = Stats::create('home_stats');
 
         return $this->viewResponse('home/index', [
             'banners'   => $banners,
