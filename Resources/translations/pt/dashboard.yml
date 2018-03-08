@@ -1,4 +1,17 @@
 ---
+api-key-tool-tip: 'Com o seu nome de utilizador e Api Key poderá realizar consultas na nossa API'
+api-key-documentation: 'Ver a documentação da API'
+api-key-user: 'Nome de utilizador'
+api-key-key: 'Palavra-passe'
+api-key-generate-new: 'Gerar uma nova palavra passe'
+api-key-generate-new-confirm: 'Esta acção eliminará a sua palavra passe actual e criará uma nova. Pretende continuar?'
+contract-data_title: 'Dados do contrato'
+dashboard-certificates-confirm: 'Confirmar dados'
+dashboard-certificates-confirm-checkbox: 'Confirmo que estes são os meus dados legais reais e estou consciente de que não vou poder modificá-los depois de confirmados'
+dashboard-certificates-confirmed: Confirmado
+dashboard-certificates-processed: Processado
+dashboard-certificates-confirmed-ok: 'Dados fiscais confirmados correctamente. Se o seu certificado não se descarregar automaticamente, clique %HERE%'
+dashboard-certificates-data-alert: 'Tenha em conta que, uma vez confirmado, não se podem modificar os dados!'
 dashboard-header-main: 'Dashboard'
 dashboard-menu-projects-rewards: Apoiadores
 dashboard-menu-projects-supports: Colaborações
