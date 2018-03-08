@@ -309,6 +309,23 @@ class ChartsApiController extends AbstractApiController {
     }
 
 
+    private function timeSlots() {
+        return [
+            'today' => ['from' => (new \DateTime('today'))->format('Y-m-d'),
+                        'to' => (new \DateTime('today'))->format('Y-m-d')],
+            'yesterday' => ['from' => (new \DateTime('yesterday'))->format('Y-m-d'),
+                            'to' => (new \DateTime('yesterday'))->format('Y-m-d')],
+            'week' => ['from' => (new \DateTime('monday this week'))->format('Y-m-d'),
+                       'to' => (new \DateTime('today'))->format('Y-m-d')],
+            'month' => ['from' => (new \DateTime('first day of this month'))->format('Y-m-d'),
+                        'to' => (new \DateTime('today'))->format('Y-m-d')],
+            'year' => ['from' => (new \DateTime('first day of january this year'))->format('Y-m-d'),
+                        'to' => (new \DateTime('today'))->format('Y-m-d')],
+            'lastyear' => ['from' => (new \DateTime('first day of january last year'))->format('Y-m-d'),
+                           'to' => (new \DateTime('last day of december last year'))->format('Y-m-d')],
+        ];
+    }
+
     /**
      * Gets totals for invests
      * @param  Request $request [description]
@@ -317,75 +334,43 @@ class ChartsApiController extends AbstractApiController {
         // Use the Stats class to take advantage of the Caching component
         $stats = Stats::create('api_totals');
         $payments = [];
-        $global = ['raised' => [], 'active' => []];
+        $global = ['raised' => [], 'active' => [], 'commissions' => []];
+        $fees = [];
         foreach(Payment::getMethods() as $method) {
 
             $raised = []; // payments including returned
             $active = []; // paid payments
-            $fees = []; // commissions
+            $commissions = []; // bank commissions
 
-            $filter = ['status' => Invest::$RAISED_STATUSES, 'methods' => $method::getId()];
-            $filter['date_from'] = (new \DateTime('today'))->format('Y-m-d');
-            $filter['date_until'] = (new \DateTime('today'))->format('Y-m-d');
+            foreach(self::timeSlots() as $slot => $dates) {
+                $filter = ['status' => Invest::$RAISED_STATUSES,
+                           'methods' => $method::getId(),
+                           'date_from' => $dates['from'],
+                           'date_until' => $dates['to']];
 
-            $raised['today'] = $stats->investsTotals($filter);
+                $raised[$slot] = $stats->investsTotals($filter);
+                $raised[$slot]['amount'] = \amount_format($raised[$slot]['amount']);
 
-            $filter['status'] = Invest::$ACTIVE_STATUSES;
-            $active['today'] = $stats->investsTotals($filter);
+                $filter['status'] = Invest::$ACTIVE_STATUSES;
+                $active[$slot] = $stats->investsTotals($filter);
+                $active[$slot]['amount'] = \amount_format($active[$slot]['amount']);
+            }
 
-            $filter['status'] = Invest::$RAISED_STATUSES;
-            $filter['date_from'] = (new \DateTime('yesterday'))->format('Y-m-d');
-            $filter['date_until'] = (new \DateTime('yesterday'))->format('Y-m-d');
-            $raised['yesterday'] = $stats->investsTotals($filter);
-
-            $filter['status'] = Invest::$ACTIVE_STATUSES;
-            $active['yesterday'] = $stats->investsTotals($filter);
-
-            $filter['status'] = Invest::$RAISED_STATUSES;
-            $filter['date_from'] = (new \DateTime('monday this week'))->format('Y-m-d');
-            $filter['date_until'] = (new \DateTime('today'))->format('Y-m-d');
-            $raised['week'] = $stats->investsTotals($filter);
-
-            $filter['status'] = Invest::$ACTIVE_STATUSES;
-            $active['week'] = $stats->investsTotals($filter);
-
-            $filter['status'] = Invest::$RAISED_STATUSES;
-            $filter['date_from'] = (new \DateTime('first day of this month'))->format('Y-m-d');
-            $filter['date_until'] = (new \DateTime('today'))->format('Y-m-d');
-            $raised['month'] = $stats->investsTotals($filter);
-
-            $filter['status'] = Invest::$ACTIVE_STATUSES;
-            $active['month'] = $stats->investsTotals($filter);
-
-            $filter['status'] = Invest::$RAISED_STATUSES;
-            $filter['date_from'] = (new \DateTime('first day of january this year'))->format('Y-m-d');
-            $filter['date_until'] = (new \DateTime('today'))->format('Y-m-d');
-            $raised['year'] = $stats->investsTotals($filter);
-
-            $filter['status'] = Invest::$ACTIVE_STATUSES;
-            $active['year'] = $stats->investsTotals($filter);
-
-            $filter['status'] = Invest::$RAISED_STATUSES;
-            $filter['date_from'] = (new \DateTime('first day of january last year'))->format('Y-m-d');
-            $filter['date_until'] = (new \DateTime('last day of december last year'))->format('Y-m-d');
-            $raised['lastyear'] = $stats->investsTotals($filter);
-
-            $filter['status'] = Invest::$ACTIVE_STATUSES;
-            $active['lastyear'] = $stats->investsTotals($filter);
-
-
-            // Comissions
+            // Bank Comissions
             foreach($raised as $slot => $part) {
                 $returned_invests = $part['invests'] - $active[$slot]['invests'];
                 $returned_amount = $part['amount'] - $active[$slot]['amount'];
-                $fees[$slot] = $method::calculateFee($part['invests'], $part['amount'], $returned_invests, $returned_amount);
+                $commissions[$slot] = $method::calculateFee($part['invests'], $part['amount'], $returned_invests, $returned_amount);
+                $global['commissions'][$slot] += $commissions[$slot];
+                $commissions[$slot] = \amount_format($commissions[$slot]);
             }
-            // print_r($fees);die("$returned_invests $returned_amount ");
+            // print_r($commissions);die("$returned_invests $returned_amount ");
 
             $ret = [
                 'raised' => $raised,
                 'active' => $active,
-                'commissions' => $fees
+                'commissions' => $commissions,
+                'fees' => $fees
             ];
             $payments[$method::getId()] = $ret;
 
@@ -402,14 +387,21 @@ class ChartsApiController extends AbstractApiController {
                     $global['active'][$slot][$k] += $v;
                 }
             }
-            foreach($fees as $slot => $v) {
-                $global['fees'][$slot] += $v;
-            }
+        }
+
+        foreach(self::timeSlots() as $slot => $dates) {
+            // Goteo fee
+            $pfilter = ['status' => [Project::STATUS_FUNDED, Project::STATUS_FULFILLED],
+                        'success_from' => $dates['from'],
+                        'success_until' => $dates['to']];
+            $fees[$slot] = \amount_format($stats->projectsTotals($pfilter, 'fee'));
+            $global['commissions'][$slot] = \amount_format($global['commissions'][$slot]);
         }
 
         return $this->jsonResponse([
             'payments' => $payments,
-            'global' => $global
+            'global' => $global,
+            'fees' => $fees
         ]);
     }
 
@@ -449,29 +441,12 @@ class ChartsApiController extends AbstractApiController {
                 $date_until = 'updated_until';
             }
 
-            $filter[$date_from] = (new \DateTime('today'))->format('Y-m-d');
-            $filter[$date_until] = (new \DateTime('today'))->format('Y-m-d');
-            $projects[$part]['today'] = $stats->projectsTotals($filter);
-
-            $filter[$date_from] = (new \DateTime('yesterday'))->format('Y-m-d');
-            $filter[$date_until] = (new \DateTime('yesterday'))->format('Y-m-d');
-            $projects[$part]['yesterday'] = $stats->projectsTotals($filter);
-
-            $filter[$date_from] = (new \DateTime('monday this week'))->format('Y-m-d');
-            $filter[$date_until] = (new \DateTime('today'))->format('Y-m-d');
-            $projects[$part]['week'] = $stats->projectsTotals($filter);
-
-            $filter[$date_from] = (new \DateTime('first day of this month'))->format('Y-m-d');
-            $filter[$date_until] = (new \DateTime('today'))->format('Y-m-d');
-            $projects[$part]['month'] = $stats->projectsTotals($filter);
-
-            $filter[$date_from] = (new \DateTime('first day of january this year'))->format('Y-m-d');
-            $filter[$date_until] = (new \DateTime('today'))->format('Y-m-d');
-            $projects[$part]['year'] = $stats->projectsTotals($filter);
-
-            $filter[$date_from] = (new \DateTime('first day of january last year'))->format('Y-m-d');
-            $filter[$date_until] = (new \DateTime('last day of december last year'))->format('Y-m-d');
-            $projects[$part]['lastyear'] = $stats->projectsTotals($filter);
+            foreach(self::timeSlots() as $slot => $dates) {
+                $filter[$date_from] = $dates['from'];
+                $filter[$date_until] = $dates['to'];
+                $projects[$part][$slot] = $stats->projectsTotals($filter, 'total');
+                // $projects[$part][$slot] = rand(1,100);
+            }
 
         }
 

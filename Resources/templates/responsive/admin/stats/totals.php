@@ -15,6 +15,13 @@ $query = '';
 
     <?= $this->insert('admin/stats/partials/totals/projects', ['query' => $query]) ?>
 
+  </div>
+</div>
+
+<div class="panel">
+  <div class="panel-body">
+    <h5><?= $this->text('admin-stats-invest-totals') ?></h5>
+
     <?= $this->insert('admin/stats/partials/totals/invests', ['query' => $query]) ?>
 
   </div>
