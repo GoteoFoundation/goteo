@@ -7,11 +7,12 @@ $query = http_build_query($this->filters);
 ?>
 
 <?php $this->section('admin-stats-container') ?>
+
 <div class="panel">
   <div class="panel-body">
     <h5><?= $this->text('admin-projects-stats') ?></h5>
 
-    <div class="d3-chart discrete-values" data-source="/api/charts/totals/projects?<?= $this->query ?>" data-title="<?= $this->text('admin-projects-stats') ?>" data-interval="15">
+    <div class="d3-chart discrete-values" data-source="/api/charts/totals/projects?<?= $query ?>" data-title="<?= $this->text('admin-projects-stats') ?>" data-interval="15">
         <ul class="row list-unstyled">
             <li class="col-xs-4 col-sm-2" data-property="created.today" data-title="<?= $this->text('admin-projects-created-today') ?>"></li>
             <li class="col-xs-4 col-sm-2" data-property="published.today" data-title="<?= $this->text('admin-projects-published-today') ?>"></li>
