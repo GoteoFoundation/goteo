@@ -1,6 +1,14 @@
 ---
+text-group-costs: 'Project costs'
+text-group-faq: 'FAQ'
+text-group-feed: 'Recent events'
+text-group-home: Front page
 text-group-location: Geo-location
+text-group-login: 'Login page'
+text-group-node_public: Nodes
 text-group-overview: 'Project description'
 text-group-preview: 'Preview the project'
+text-group-register: 'User sign up'
 text-group-review: 'Review panel'
 text-group-translate: 'Translation panel'
+text-group-wof: 'Wall of friends'
