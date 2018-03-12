@@ -2,8 +2,10 @@
 text-group-banners: 'Pancartes y testeres'
 text-group-blog: Blogue/Anovamientos
 text-group-bluead: 'Avisos axules'
+text-group-community: 'Estaya Comunidá'
 text-group-contact: 'Páxina de contautu'
 text-group-costs: 'Costos del proyeutu'
+text-group-discover: 'Estaya Descubri proyeutos'
 text-group-error: 'Fallos catastróficos'
 text-group-faq: 'Pagina de FAQ'
 text-group-feed: 'Eventos recientes'
@@ -11,6 +13,7 @@ text-group-footer: Pie
 text-group-general: 'Propósitu xeneral'
 text-group-home: Portada
 text-group-login: 'Páxina d''aniciu de sesión'
+text-group-mailer: 'Correos automáticos'
 text-group-menu: 'Menú cimeru'
 text-group-metas: 'SEO: Metes'
 text-group-node_public: Noyos
@@ -24,3 +27,4 @@ text-group-review: 'Panel revisor'
 text-group-social: 'Cuentes de redes sociales'
 text-group-supports: 'Collaboraciones del proyeutu'
 text-group-text_groups: 'Descripción de les agrupaciones de testos'
+text-group-wof: 'Muria de collacios'
