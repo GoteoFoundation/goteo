@@ -1,6 +1,6 @@
 ---
 discover-group-all-header: 'En campanya'
-discover-group-archive-header: Arxivats 
+discover-group-archive-header: Arxivats
 discover-group-fulfilled-header: 'Han complert amb els retorns col·lectius'
 discover-group-others-header: 'En altres nodes'
 discover-group-outdate-header: 'A punt de caducar'
@@ -19,4 +19,8 @@ discover-searcher-bylocation-header: 'Per lloc:'
 discover-searcher-byreward-all: TOTS
 discover-searcher-byreward-header: 'Per retorn:'
 discover-searcher-header: 'Cerca un projecte'
+discover-by-keyword: 'Per paraula clau:'
+discover-near-by: 'A prop de:'
+discover-any-city: 'Ciutat, codi postal, ...'
 meta-title-discover: 'Descobreix projectes :: Goteo.org'
+discover-include-review-projects: 'Inclou projectes en revisió'

@@ -1,5 +1,5 @@
 <div class="backside" id="backflip-<?= $this->project->id ?>">
-    <div class="close flip" href="#backflip-<?= $this->project->id ?>"><i class="icon icon-close"></i></div>
+    <a class="close flip" href="#backflip-<?= $this->project->id ?>"><i class="icon icon-close"></i></a>
 
     <?= $this->insert('project/widgets/partials/data_list') ?>
 

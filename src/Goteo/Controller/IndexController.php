@@ -20,7 +20,7 @@ use Goteo\Util\Stats\Stats;
 
 // para sacar el contenido de about
 
-class IndexController extends \Goteo\Core\Controller
+class IndexController extends DiscoverController
 {
 
     public function __construct()
@@ -32,12 +32,10 @@ class IndexController extends \Goteo\Core\Controller
 
     public function indexAction(Request $request)
     {
-        $projects = Project::getList([
-                'status' => Project::STATUS_IN_CAMPAIGN,
-                'published_since' => (new \DateTime('-6 month'))->format('Y-m-d'),
-                'type' => 'promoted',
-                'order' => 'promote.order ASC, project.published DESC, project.name ASC'
-            ], null, 0, 20);
+        $limit = 24;
+        $filters = $this->getProjectFilters('promoted');
+        $projects = Project::getList($filters, null, 0, $limit);
+        $total_projects = Project::getList($filters, null, 0, 0, true);
 
         $stories = Stories::getAll(true);
 
@@ -51,6 +49,9 @@ class IndexController extends \Goteo\Core\Controller
         return $this->viewResponse('home/index', [
             'banners'   => $banners,
             'projects'  => $projects,
+            'total_projects'  => $total_projects,
+            'limit'     => $limit,
+            'limit_add' => 12, // Limit for javascript on addSlick
             'stories'   => $stories,
             'channels'  => $channels,
             'stats'     => $stats

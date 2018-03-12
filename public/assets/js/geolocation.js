@@ -543,7 +543,7 @@ locator.changePlace = function(id, place) {
     }
 };
 /**
- * Loads a google map on a div
+ * Autocompletes from google places
  * @param {object} obj       DOM div to create a map on
  * @param {string} desc      description (optional)
  *

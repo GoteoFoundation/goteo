@@ -322,7 +322,7 @@ abstract class LocationItem extends \Goteo\Core\Model implements LocationInterfa
         return $ret;
     }
 
-    static public function getSQLFilterParts(LocationInterface $location, $distance = 100, $locable_only = true) {
+    static public function getSQLFilterParts(LocationInterface $location, $distance = 100, $locable_only = true, $alt_location_search = '', $text_location_field = 'location') {
         // Creating a square "first cut" to not do the calculation over the full table
 
         $lat = $location->latitude;  // latitude of centre of bounding circle in degrees
@@ -347,15 +347,19 @@ abstract class LocationItem extends \Goteo\Core\Model implements LocationInterfa
             ':location_R'      => $R
         );
 
-        $table = self::getTableStatic();
+        $table = static::getTableStatic();
         $firstCutWhere = "$table.latitude BETWEEN :location_minLat AND :location_maxLat
                       AND $table.longitude BETWEEN :location_minLon AND :location_maxLon";
         if($locable_only) {
             $firstCutWhere .= " AND $table.locable = 1";
         }
         if($location->id && get_class($location) === $clas) {
-            $firstCutWhere .= ' AND $table.id != :location_id';
+            $firstCutWhere .= " AND $table.id != :location_id";
             $params[':location_id'] = $location->id;
+        }
+        if($alt_location_search) {
+            $firstCutWhere = "($firstCutWhere) OR $text_location_field LIKE :location_text";
+            $params[':location_text'] = "%$alt_location_search%";
         }
 
         $firstCut = "SELECT $table.id, $table.latitude, $table.longitude, $table.method, $table.locable, $table.city, $table.region, $table.country, $table.country_code, $table.info, $table.modified
@@ -366,7 +370,7 @@ abstract class LocationItem extends \Goteo\Core\Model implements LocationInterfa
             'params' => $params,
             'firstcut' => $firstCut,
             'firstcut_where' => $firstCutWhere,
-            'where' => 'ACOS(SIN(:location_lat)*SIN(RADIANS(latitude)) + COS(:location_lat)*COS(RADIANS(latitude))*COS(RADIANS(longitude)-:location_lon)) * :location_R < :location_rad'
+            'where' => 'ACOS(SIN(:location_lat)*SIN(RADIANS(latitude)) + COS(:location_lat)*COS(RADIANS(latitude))*COS(RADIANS(longitude)-:location_lon)) * :location_R < :location_rad' . ($alt_location_search ? " OR $text_location_field LIKE :location_text" : '')
         ];
     }
 }
