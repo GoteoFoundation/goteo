@@ -269,6 +269,50 @@
         }
     }
 
+    /* .top-navbar variations */
+
+  // Channels
+  &.white {
+    background-color: $color-white;
+    .navbar-always > a, .navbar-always > a i.icon, .navbar-always > button{
+      color: $primary-color;
+      background-color: transparent;
+    }
+    .navbar-always > button img {
+      border-color: lighten($primary-color, 50%);
+    }
+
+    .navbar-always > a i.icon{
+      background-color: $primary-color;
+    }
+  }
+
+  // Blog, admin, corporative
+  &.yellow, &.light-yellow{
+    background-color: $background-dark-yellow;
+    &.light-yellow {
+      background-color: $background-yellow;
+    }
+    h3{
+        font-size: $font-size*1.1;
+        margin-left:10px;
+        float: left;
+    }
+
+
+    .navbar-always > a, .navbar-always > a i.icon, .navbar-always > button{
+        color: $primary-color;
+        background-color: transparent;
+    }
+    .navbar-always > button img {
+        border-color: lighten($primary-color, 50%);
+    }
+
+    .navbar-always > a i.icon{
+        background-color: $primary-color;
+    }
+  }
+
 }
 
 /*Navbar */

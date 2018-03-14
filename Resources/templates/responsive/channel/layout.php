@@ -1,19 +1,11 @@
 <?php
 $this->layout('layout', [
     'bodyClass' => 'channel',
+    'navClass' => 'white',
     'title' =>  $this->text('regular-channel').' '.$this->channel->name,
     'meta_description' => $this->channel->description,
     'tw_image' =>  $this->channel->logo ? $this->channel->logo->getlink(400,0, false, true) : ''
     ]);
-
-$this->section('header-navbar-brand');
-
-?>
-    <a class="navbar-brand" href="<?= $this->get_config('url.main') ?>"><img src="<?= $this->asset('img/goteo.svg') ?>" class="logo" alt="Goteo"></a>
-
-<?php
-
-$this->replace();
 
 $this->section('content');
 

@@ -6,27 +6,6 @@ body.blog {
 
     background-color: $background-white;
 
-    .top-navbar{
-      background-color: $background-yellow;
-      h3{
-        font-size: $font-size*1.1;
-        margin-left:10px;
-        float: left;
-      }
-    }
-
-    .top-navbar .navbar-always > a, .top-navbar .navbar-always > a i.icon, .top-navbar .navbar-always > button{
-      color: $primary-color;
-      background-color: transparent;
-    }
-    .top-navbar .navbar-always > button img {
-      border-color: lighten($primary-color, 50%);
-    }
-
-    .top-navbar .navbar-always > a i.icon{
-      background-color: $primary-color;
-    }
-
     img.header-default{
       height:600px;
       object-fit: cover;
@@ -71,7 +50,7 @@ body.blog {
     div.section.post-header{
       position: relative;
       padding-bottom: 30px;
-      //background-color: $background-light-yellow;
+      //background-color: $background-dark-yellow;
       min-height: 450px;
 
       div.info{
