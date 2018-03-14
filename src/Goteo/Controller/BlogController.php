@@ -104,9 +104,17 @@ class BlogController extends \Goteo\Core\Controller {
 
         $post=Post::get($post, Lang::current());
 
+        // Get related posts
+
+        reset($post->tags);
+        $first_key_tags=key($post->tags);
+
+        $related_posts=Post::getList(['tag' => $first_key_tags, 'excluded' => $post->id ], true, 0, $limit = 3, false);
+
         return $this->viewResponse('blog/post', 
                 [
                     'post' => $post,
+                    'related_posts' => $related_posts,
                     'author' => $author
                 ]
         );

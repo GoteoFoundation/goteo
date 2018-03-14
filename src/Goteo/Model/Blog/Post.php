@@ -358,6 +358,7 @@ class Post extends \Goteo\Core\Model {
                 post.blog as blog,
                 $different_select,
                 post.image as `image`,
+                post.header_image as `header_image`,
                 post.media as `media`,
                 post.date as `date`,
                 DATE_FORMAT(post.date, '%d-%m-%Y') as fecha,
@@ -420,6 +421,13 @@ class Post extends \Goteo\Core\Model {
             $sqlWhere .= " AND post.id IN (SELECT post FROM post_tag WHERE tag = :tag)
             ";
             $values[':tag'] = $filters['tag'];
+        }
+
+        // Post excluded from the
+        if (!empty($filters['excluded'])) {
+            $sqlWhere .= " AND post.id  != :excluded
+            ";
+            $values[':excluded'] = $filters['excluded'];
         }
 
         if (!empty($filters['author'])) {
@@ -490,6 +498,7 @@ class Post extends \Goteo\Core\Model {
 
             $post->gallery = Image::getModelGallery('post', $post->id);
             $post->image = Image::getModelImage($post->image, $post->gallery);
+            $post->header_image = Image::getModelImage($post->header_image);
 
             // video
             if (isset($post->media)) {
