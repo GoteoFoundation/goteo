@@ -5,5 +5,5 @@
 
 <span class="pull-right"><?= $this->insert('dashboard/project/partials/boolean', ['name' => 'autoupdate', 'value' => false, 'input_class' => 'd3-chart-updater', 'input_data' => ['target' => '#invests-metrics', 'interval' => 15]]) ?> <?= $this->text('admin-aggregate-autoupdate') ?></span>
 
-<div id="invests-metrics" class="d3-chart time-metrics spacer-20" data-source="/api/charts/aggregates/invests?<?= $this->query ?>" data-field="total" data-title="<?= $this->text('admin-aggregate-invests') ?>" data-description="<?= $this->text('admin-aggregate-invests-desc') ?>" data-format="<?= $this->text('admin-aggretate-invests-format', ['%CURRENCY%' => $this->get_currency()]) ?>"></div>
+<div id="invests-metrics" class="d3-chart loading time-metrics spacer-20" data-source="/api/charts/aggregates/invests?<?= $this->query ?>" data-field="total" data-title="<?= $this->text('admin-aggregate-invests') ?>" data-description="<?= $this->text('admin-aggregate-invests-desc') ?>" data-format="<?= $this->text('admin-aggretate-invests-format', ['%CURRENCY%' => $this->get_currency()]) ?>"></div>
 
