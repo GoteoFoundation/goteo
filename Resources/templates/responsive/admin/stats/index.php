@@ -15,7 +15,7 @@ $query = http_build_query($this->filters);
   <div class="panel-body">
     <h5><?= $this->text('admin-stats-project-totals') ?></h5>
 
-    <div class="d3-chart discrete-values" data-source="/api/charts/totals/projects" data-interval="15" data-flash-time="30">
+    <div class="d3-chart loading discrete-values" data-source="/api/charts/totals/projects" data-interval="15" data-flash-time="30">
         <ul class="row list-unstyled">
             <li class="col-xs-2 col-xxs-4" data-property="created.today" data-title="<?= $this->text('admin-projects-created-today') ?>"></li>
             <li class="col-xs-2 col-xxs-4" data-property="published.today" data-title="<?= $this->text('admin-projects-published-today') ?>"></li>
@@ -29,7 +29,7 @@ $query = http_build_query($this->filters);
 
     <h5><?= $this->text('admin-stats-invest-totals') ?></h5>
 
-    <div class="d3-chart discrete-values" data-source="/api/charts/totals/invests" data-interval="15" data-flash-time="15">
+    <div class="d3-chart loading discrete-values" data-source="/api/charts/totals/invests" data-interval="15" data-flash-time="15">
         <ul class="row list-unstyled">
             <li class="col-xs-2 col-xxs-4" data-property="global.raised.today.amount" data-title="<?= $this->text('admin-invest-raised-amount-today') ?>"></li>
             <li class="col-xs-2 col-xxs-4" data-property="global.raised.yesterday.amount" data-title="<?= $this->text('admin-invest-raised-amount-yesterday') ?>"></li>
@@ -64,14 +64,14 @@ $query = http_build_query($this->filters);
         <div class="chart-wrapper col-sm-6 col-xs-12">
             <a class="pronto" href="/admin/stats/origins">
                 <h5><?= $this->text('admin-all-project-referers') ?></h5>
-                <div class="d3-chart percent-pie" data-source="/api/charts/referers/project?<?= $query ?>"></div>
+                <div class="d3-chart loading percent-pie" data-source="/api/charts/referers/project?<?= $query ?>"></div>
             </a>
         </div>
 
         <div class="chart-wrapper col-sm-6 col-xs-12">
             <a class="pronto" href="/admin/stats/origins">
                 <h5><?= $this->text('admin-all-project-devices') ?></h5>
-                <div class="d3-chart percent-pie" data-source="/api/charts/devices/project?group_by=category&<?= $query ?>"></div>
+                <div class="d3-chart loading percent-pie" data-source="/api/charts/devices/project?group_by=category&<?= $query ?>"></div>
             </a>
         </div>
 
