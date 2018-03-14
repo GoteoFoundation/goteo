@@ -125,6 +125,15 @@ $(document).ready(function(){
                 'errors'    => !empty($errors['title']) ? array($errors['title']) : array(),
                 'value'     => $post->title,
             ),
+            'subtitle' => array(
+                'type'      => 'TextBox',
+                'required'  => true,
+                'size'      => 20,
+                'title'     => 'Subtítulo',
+                'hint'      => Text::get('tooltip-updates-subtitle'),
+                'errors'    => !empty($errors['subtitle']) ? array($errors['subtitle']) : array(),
+                'value'     => $post->subtitle,
+            ),
             'text' => array(
                 'type'      => 'TextArea',
                 'required'  => true,

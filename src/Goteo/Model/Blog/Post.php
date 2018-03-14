@@ -29,8 +29,10 @@ class Post extends \Goteo\Core\Model {
         $blog,
         $project,
         $title,
+        $subtitle,
         $text,
         $image,
+        $header_image,
         $media,
         $legend,
         $date,
@@ -68,9 +70,11 @@ class Post extends \Goteo\Core\Model {
                 post.id as id,
                 post.blog as blog,
                 IFNULL(post_lang.title, post.title) as title,
+                IFNULL(post_lang.subtitle, post.subtitle) as subtitle,
                 IFNULL(post_lang.text, post.text) as text,
                 IFNULL(post_lang.legend, post.legend) as legend,
                 post.image as `image`,
+                post.header_image as `header_image`,
                 IFNULL(post_lang.media, post.media) as `media`,
                 post.date as `date`,
                 DATE_FORMAT(post.date, '%d | %m | %Y') as fecha,
@@ -123,6 +127,7 @@ class Post extends \Goteo\Core\Model {
 
         $post->gallery = Image::getModelGallery('post', $post->id);
         $post->image = Image::getModelImage($post->image, $post->gallery);
+        $post->header_image = Image::getModelImage($post->header_image);
 
         // video
         if (isset($post->media)) {
@@ -159,8 +164,10 @@ class Post extends \Goteo\Core\Model {
                     post.id as id,
                     post.blog as blog,
                     IFNULL(post_lang.title, post.title) as title,
+                    IFNULL(post_lang.subtitle, post.subtitle) as subtitle,
                     IFNULL(post_lang.text, post.text) as text,
                     post.image as `image`,
+                    post.header_image as `header_image`,
                     post.date as `date`,
                     DATE_FORMAT(post.date, '%d | %m | %Y') as fecha
                     blog.type as owner_type,
@@ -196,12 +203,14 @@ class Post extends \Goteo\Core\Model {
 
         if(self::default_lang($lang) === $model_lang ? $model_lang : Config::get('lang')) {
             $different_select=" IFNULL(post_lang.title, post.title) as title,
+                                IFNULL(post_lang.subtitle, post.subtitle) as subtitle,
                                 IFNULL(post_lang.text, post.text) as `text`,
                                 IFNULL(post_lang.legend, post.legend) as `legend`,
                                 IFNULL(post_lang.media, post.media) as `media`";
             }
         else {
                 $different_select=" IFNULL(post_lang.title, IFNULL(eng.title, post.title)) as title,
+                                    IFNULL(post_lang.subtitle, IFNULL(eng.subtitle, post.subtitle)) as subtitle,
                                     IFNULL(post_lang.text, IFNULL(eng.text, post.text)) as `text`,
                                     IFNULL(post_lang.legend, IFNULL(eng.legend, post.legend)) as `legend`,
                                     IFNULL(post_lang.media, IFNULL(eng.media, post.media)) as `media`";
@@ -303,6 +312,13 @@ class Post extends \Goteo\Core\Model {
         return $list;
     }
 
+    // returns the author
+    public function getAuthor() {
+        if($this->userInstance) return $this->userInstance;
+        $this->userInstance = User::get($this->author);
+        return $this->userInstance;
+    }
+
     /*
      * Lista de entradas filtradas
      *  por tag
@@ -316,12 +332,14 @@ class Post extends \Goteo\Core\Model {
 
         if(self::default_lang($lang) === $model_lang ? $model_lang : Config::get('lang')) {
             $different_select=" IFNULL(post_lang.title, post.title) as title,
+                                IFNULL(post_lang.subtitle, post.subtitle) as subtitle,
                                 IFNULL(post_lang.text, post.text) as `text`,
                                 IFNULL(post_lang.legend, post.legend) as `legend`,
                                 IFNULL(post_lang.media, post.media) as `media`";
             }
         else {
                 $different_select=" IFNULL(post_lang.title, IFNULL(eng.title, post.title)) as title,
+                                    IFNULL(post_lang.subtitle, IFNULL(eng.subtitle, post.subtitle)) as subtitle,
                                     IFNULL(post_lang.text, IFNULL(eng.text, post.text)) as `text`,
                                     IFNULL(post_lang.legend, IFNULL(eng.legend, post.legend)) as `legend`,
                                     IFNULL(post_lang.media, IFNULL(eng.media, post.media)) as `media`";
@@ -513,6 +531,7 @@ class Post extends \Goteo\Core\Model {
             // 'id',
             'blog',
             'title',
+            'subtitle',
             'text',
             'media',
             'legend',
@@ -606,6 +625,7 @@ class Post extends \Goteo\Core\Model {
             'blog'=>'blog',
             'lang'=>'lang',
             'title'=>'title_lang',
+            'subtitle'=>'subtitle_lang',
             'text'=>'text_lang',
             'media'=>'media_lang',
             'legend'=>'legend_lang'

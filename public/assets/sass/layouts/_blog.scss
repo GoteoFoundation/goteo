@@ -1,0 +1,187 @@
+@import "compass/css3";
+
+/* blog styles */
+
+body.blog {
+
+    background-color: $background-white;
+
+    .top-navbar{
+      background-color: $background-yellow;
+      h3{
+        font-size: $font-size*1.1;
+        margin-left:10px;
+        float: left;
+      }
+    }
+
+    .top-navbar .navbar-always > a, .top-navbar .navbar-always > a i.icon, .top-navbar .navbar-always > button{
+      color: $primary-color;
+      background-color: transparent;
+    }
+    .top-navbar .navbar-always > button img {
+      border-color: lighten($primary-color, 50%);
+    }
+
+    .top-navbar .navbar-always > a i.icon{
+      background-color: $primary-color;
+    }
+
+    img.header-default{
+      height:600px;
+      object-fit: cover;
+    }
+
+   .social{
+      text-align: center;
+      vertical-align: middle;
+      margin-left: 35px;
+    }
+
+    /* Icons social */
+
+    .social [class*="fa fa-"] {
+      background-color: $primary-color;
+      border-radius: 40px;
+      color: $color-white;
+      display: inline-block;
+      height: 40px;
+      line-height: 40px;
+      margin: auto 10px;
+      width: 40px;
+      font-size: 22px;
+      text-align: center;
+    }
+    .social [class*="fa fa-"]:hover{
+      background-color: $background-light-green;
+      color: $color-white;
+      text-align: center;
+    }
+
+    /* Sticky menu */
+    
+     div.sticky-menu{
+      padding-top: 10px;
+      background-color: $background-main-home;
+      .social{
+        margin-left: 0px;
+      }
+    }
+
+    div.section.post-header{
+      position: relative;
+      padding-bottom: 30px;
+      //background-color: $background-light-yellow;
+      min-height: 450px;
+
+      div.info{
+        position: absolute;
+        width: 100%;
+        bottom: 0;
+        background-color: transparent;
+        .container{
+          background-color: $background-white;
+          h1{
+            font-size: $font-size*2.67;
+            text-align: center;
+            padding: 20px 15%;
+            font-weight: bold;
+          }
+          div.subtitle{
+            text-align: center;
+            font-size: $font-size*1.33;
+            font-weight: lighter;
+            padding: 0 10%;
+          }
+          ul.info-extra{
+            margin: 20px 10% 0 10%;
+            border-bottom: 2px dotted $primary-color;
+            padding-bottom: 5px;
+            li{
+              vertical-align: middle;
+              .author{
+                display: block;
+                font-size: $font-size*1.1;
+              }
+              .date{
+                display: block;
+                font-size: 12px;
+                color: $color-date-grey;
+              }
+            }
+          }
+        }
+      }
+    }
+
+    div.section.post-content{
+      div.text{
+        font-size: 16px;
+        padding: 40px 80px 30px 80px;
+        img.main-image{
+          margin: 10px auto;
+        }
+        img{
+          max-width: 100%;
+        }
+      }
+    }
+
+
+  // Tablets customization
+
+    @media (max-width: $breakpoint-md + 1) {
+      div.section.post-content{
+        div.text{
+          padding: 40px 0px 30px 0px;
+        }
+      }
+    }
+
+    @media (max-width: $breakpoint-sm - 1) {
+
+      div.sticky-menu {
+          bottom: 0;
+          top: auto;
+          z-index: 1000;
+      }
+      div.section.post-header{
+        position:static;
+
+        img.header-default{
+          height:250px;
+        }
+
+        div.info{
+          position: static;
+          h1{
+            padding: 20px 0 !important;
+            font-size: $font-size*1.8;
+          }
+          .container{
+            ul.info-extra{
+              border-bottom: 0px;
+              text-align: center;
+              li {
+                img{
+                  width: 55px;
+                }
+                .author{
+                  font-size: $font-size*0.8 !important;
+                }
+                &.social{
+                  margin-top:10px;
+                }
+                &.social [class*="fa fa-"]{
+                  margin: auto 5px;
+                }
+              }
+            }
+          }
+        }
+      }
+
+    }
+
+
+}
