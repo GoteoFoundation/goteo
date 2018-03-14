@@ -4,21 +4,6 @@
 
 body.channel {
 
-    .top-navbar{
-      background-color: $color-white;
-    }
-    .top-navbar .navbar-always > a, .top-navbar .navbar-always > a i.icon, .top-navbar .navbar-always > button{
-      color: $primary-color;
-      background-color: transparent;
-    }
-    .top-navbar .navbar-always > button img {
-      border-color: lighten($primary-color, 50%);
-    }
-
-    .top-navbar .navbar-always > a i.icon{
-      background-color: $primary-color;
-    }
-
     #main {
         background-color: $background-light-body;
         #main-content {

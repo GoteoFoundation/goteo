@@ -13,9 +13,10 @@ else
 
 $this->layout('layout', [
     'bodyClass' => 'blog',
+    'navClass' => 'light-yellow',
     'title' =>  $this->post->title,
     'meta_description' => $this->post->subtitle ? $this->post->subtitle : $this->text_truncate($this->post->text, 100),
-    'tw_image' =>  $meta_img
+    'tw_image' =>  $meta_img,
     ]);
 
 

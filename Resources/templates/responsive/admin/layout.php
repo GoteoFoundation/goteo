@@ -10,6 +10,8 @@ if($this->is_pronto()) {
 
 $this->layout('layout', [
     'bodyClass' => 'admin',
+    'navClass' => 'yellow',
+    'sidebarClass' => 'yellow',
     'title' => 'Goteo.org :: Admin :: ' . $this->module_label,
     'meta_description' => $this->text('meta-description-admin')
     ]);
