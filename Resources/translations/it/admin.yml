@@ -51,6 +51,19 @@ admin-mailing-created: 'Creato il'
 admin-mailing-new-massive: 'E'' stata creata una mail di massa a %TOTAL% utenti'
 admin-mailing-status: 'Stato dell''invio automatico'
 admin-mailing-subject: Problema
-admin-mailing-view-and-activate: 'Vedere l''admin della newsletter per attivare l''invio'
-admin-mailing-view-in-newsletter: 'Vedere l''admin della newsletter'
+admin-mailing-view-and-activate: 'Vedere l''admin del bollettino per attivare l''invio'
+admin-mailing-view-in-newsletter: 'Vedere l''admin del bollettino'
 admin-mailing-view-in-sent: 'Vai al registro degli invii (statistiche)'
+admin-mailing-view-message: 'Visualizza messaggio'
+admin-newsletter-generated: 'E'' stato generato il bollettino [%ID%]'
+admin-newsletter-langs-to-send: 'Lingue: %LANGS%'
+admin-newsletter-mind-activate: 'Attivala affinché sia inviato'
+admin-no: 'No'
+admin-percent: Percentuale
+admin-project: Progetto
+admin-projects: Progetti
+admin-filters: 'Filtri'
+admin-remove-filters: 'Eliminare filtri'
+admin-sponsors: Servizi
+admin-status: Stato
+admin-text-type: 'Elaborare il testo come'
