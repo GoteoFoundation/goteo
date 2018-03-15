@@ -26,7 +26,12 @@ admin-account-modify-status: 'Modifica lo stato'
 admin-account-modify-status-confirm: "Sei sicuro/a di voler modificare manualmente lo stato di questo contributo? E' un'azione delicata! NON si eseguirà nessuna operazione di restituzione del contributo.\n"
 admin-account-payment-method: 'Metodo di pagamento'
 admin-account-refund-to-pool: 'Rimborsare il contributo al portafoglio'
+admin-account-refund-to-pool-confirm: "Questo indicherà il contributo come: \nRestituito se il progetto è fallito \nAnnullato se il progetto è attivo o di successo \nL'importo non sarà rimborsato all'utente, si genererà un ammontare nel portafoglio virtuale dell'utente. \nVuoi continuare?\n"
+admin-account-refund-to-user: 'Rimborsare il contributo all''utente'
+admin-account-refund-to-user-confirm: "Questo indicherà il contributo come: \nRestituito se il progetto è fallito \nAnnullato se il progetto è attivo o di successo \nSi rimborserà l'importo all'utente.\nQuesto potrebbe NON funzionare se il contributo è molto vecchio o se il metodo di pagamento non è supportato.\nVuoi continuare?\n"
 admin-account-rewards: 'Ricompense scelte'
+admin-account-switch-donation: 'Cambiare la donazione'
+admin-account-switch-donation-confirm: 'Sei sicuro/a di voler modificare lo stato della donazione?'
 admin-account-switch-pool-confirm: 'Questo vale solo per quando il progetto fallisce, non genera ne toglie soldi dal portafoglio. Vuoi continuare?'
 admin-back-detail: 'Torna ai dettagli'
 admin-back-list: 'Torna alla lista'
