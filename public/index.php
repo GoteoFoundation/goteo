@@ -19,6 +19,8 @@ define('GOTEO_WEB_PATH', __DIR__ . '/');
 
 require_once __DIR__ . '/../src/autoload.php';
 
+\Goteo\Application\Session::factory(); // session start
+
 // Create first the request object (to avoid other classes reading from php://input specially)
 $request = Request::createFromGlobals();
 
@@ -46,4 +48,3 @@ $app = App::get();
 
 // handle routes, flush buffer out
 $app->run();
-

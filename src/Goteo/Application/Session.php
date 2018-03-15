@@ -36,14 +36,18 @@ class Session {
      * @return [type] [description]
      */
     static public function factory(Request $request = null) {
-        if($request) {
+        if ($request) {
             self::$request = $request;
         }
-        if(!self::$session) {
+        if (!self::$session) {
             $storage = new NativeSessionStorage();
             $storage->setOptions(['gc_maxlifetime' => self::getSessionExpires()]);
-            self::$session = new SymfonySession();
+            self::$session = new SymfonySession($storage);
+
+            self::$session->start();
         }
+
+        return self::$session;
     }
 
     /**
