@@ -20,8 +20,9 @@ namespace Goteo\Controller {
     class Community extends \Goteo\Core\Controller {
 
         public function __construct() {
-            //activamos la cache para todo el controlador index
+            // Cache & replica read activated in this controller
             \Goteo\Core\DB::cache(true);
+            \Goteo\Core\DB::replica(true);
         }
 
         public function index ($show = 'activity', $category = null) {
