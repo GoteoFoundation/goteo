@@ -1,5 +1,13 @@
 ---
+api-key-no-generated: 'Non hai ancora creato una key'
+api-key-tool-tip: 'Con il tuo nome utente e la chiave Api è possibile consultare il nostro API'
+api-key-documentation: 'Visualizza la documentazione della API'
+api-key-user: 'Nome utente'
+api-key-key: 'Password'
+api-key-generate-new: 'Genera una nuova chiave'
+api-key-generate-new-confirm: 'Questa azione eliminerà la password corrente e creerà una nuova chiave. Vuoi continuare?'
 contract-data_title: 'Dati del contratto'
+dashboard-certificates-confirm: 'Confermare i dati'
 dashboard-chart-days: 'RIMANGONO %s GIORNI'
 dashboard-chart-invested: 'FINANZIAMENTO OTTENUTO'
 dashboard-chart-investors: CO-FINANZIATORI
