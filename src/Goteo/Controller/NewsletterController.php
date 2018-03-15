@@ -19,8 +19,9 @@ use Symfony\Component\HttpFoundation\Request;
 class NewsletterController extends \Goteo\Core\Controller {
 
 	public function __construct() {
-		//activamos la cache para todo el controlador newsletter
-		\Goteo\Core\DB::cache(true);
+		// Cache & replica read activated in this controller
+        \Goteo\Core\DB::cache(true);
+		\Goteo\Core\DB::replica(true);
 	}
 
 	// última newsletter enviada

@@ -17,8 +17,9 @@ namespace Goteo\Controller {
     class Faq extends \Goteo\Core\Controller {
 
         public function __construct() {
-            //activamos la cache para todo el controlador faq
+            // Cache & replica read activated in this controller
             \Goteo\Core\DB::cache(true);
+            \Goteo\Core\DB::replica(true);
         }
 
         public function index ($current = 'node') {
