@@ -23,8 +23,9 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 class AboutController extends \Goteo\Core\Controller {
 
     public function __construct() {
-        //activamos la cache para todo el controlador about
+        // Cache & replica read activated in this controller
         \Goteo\Core\DB::cache(true);
+        \Goteo\Core\DB::replica(true);
     }
 
     public function indexAction ($id = '') {

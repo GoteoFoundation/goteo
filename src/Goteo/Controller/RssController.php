@@ -19,8 +19,9 @@ use Goteo\Model;
 class RssController extends \Goteo\Core\Controller {
 
     public function __construct() {
-        //activamos la cache para todo el controlador index
+        // Cache & replica read activated in this controller
         \Goteo\Core\DB::cache(true);
+        \Goteo\Core\DB::replica(true);
     }
 
     public function indexAction ($lang = '', Request $request) {
