@@ -8,6 +8,30 @@ api-key-generate-new: 'Genera una nuova chiave'
 api-key-generate-new-confirm: 'Questa azione eliminerà la password corrente e creerà una nuova chiave. Vuoi continuare?'
 contract-data_title: 'Dati del contratto'
 dashboard-certificates-confirm: 'Confermare i dati'
+dashboard-certificates-confirm-checkbox: 'Posso confermare che questi sono mio dati giuridici reali e sono consapevole del fatto che non sarò in grado di modificare questi dati una volta confermati'
+dashboard-certificates-confirmed: Confermato
+dashboard-certificates-processed: Elaborato
+dashboard-certificates-confirmed-ok: 'Dati fiscali confermati correttamente, se il certificato non viene scaricato automaticamente clicca qui %HERE%'
+dashboard-certificates-data-alert: 'Ricorda che una volta confermato, non è possibile modificare i dati!'
+dashboard-certificates-data-desc: 'Si prega di assicurarsi che i dati nel modulo siano corretti e, successivamente, confermare il modulo'
+dashboard-certificates-data-download-all: 'Conferma i tuoi certificati per attivare lo sgravio fiscale. Una volta fatto ciò, sarà possibile scaricarne una copia. La Fondazione Goteo dichiara annualmente al fisco tutte le donazioni confermate.'
+dashboard-certificates-data-new-invests: 'Ma non preoccuparti, ogni nuovo contributo che tu dia dentro Goteo genererà un nuovo certificato'
+dashboard-certificates-desc: 'Questi certificati consentono di dedurre dalla tua dichiarazione dei redditi, se sei un/a contribuente nello stato spagnolo.'
+dashboard-certificates-details: 'Vedi dettagli'
+dashboard-certificates-details-desc: 'Elenco di contributi per il certificato %CERT%'
+dashboard-certificates-download: 'Conferma e scarica'
+dashboard-certificates-empty: 'È necessario dare un contributo a un progetto o ricaricare il portafoglio virtuale per la visualizzazione dei certificati'
+dashboard-certificates-expired: Scaduto
+dashboard-certificates-no-pending: 'Non c''è nessun contributo in attesa'
+dashboard-certificates-pending: In attesa
+dashboard-certificates-pending-desc: 'Questi sono i contributi che verranno inclusi nei certificati futuri.'
+dashboard-certificates-please-confirm: 'È necessario selezionare la casella di controllo per continuare'
+dashboard-certificates-summary: 'Certificato %ID%, Anno %YEAR%'
+dashboard-certificates-too-old: 'Questo certificato è troppo vecchio e non può essere modificato. Se hai domande non esitare a contattarci'
+dashboard-certificates-totals: '%NUM% contributi, %AMOUNT%'
+dashboard-certificates-unconfirmed: 'Per scaricare questo certificato devi prima confermare i dati!'
+dashboard-certificates-view-pending: 'Non è possibile visualizzare i tuoi contributi diretti a progetti che ancora non abbiano raggiunto il loro obiettivo minimo. Puoi verificarlo %HERE%.<br>I contributi realizzati attraverso il portafoglio virtuale sono inclusi nel certificato creato nel momento stesso del pagamento.'
+dashboard-certificates-no-invests: 'Non è possibile confermare il certificato se non hai realizzato contributi!'
 dashboard-chart-days: 'RIMANGONO %s GIORNI'
 dashboard-chart-invested: 'FINANZIAMENTO OTTENUTO'
 dashboard-chart-investors: CO-FINANZIATORI
@@ -29,6 +53,9 @@ dashboard-menu-activity-summary: Riassunto
 dashboard-menu-activity-wall: 'La mia bacheca'
 dashboard-menu-admin_board: Amministrazione
 dashboard-menu-calls-sponsors: Patrocinatori
+dashboard-menu-pool: 'Il mio portafoglio virtuale'
+dashboard-menu-pool-available: Saldo
+dashboard-menu-pool-conditions: Condizioni
 dashboard-menu-profile: 'Il mio profilo'
 dashboard-menu-profile-access: 'Dati di accesso'
 dashboard-menu-profile-location: Geolocalizzazione 
@@ -37,18 +64,26 @@ dashboard-menu-profile-preferences: 'I miei preferiti '
 dashboard-menu-profile-profile: 'Modificare il profilo '
 dashboard-menu-profile-public: 'Profilo pubblico'
 dashboard-menu-projects: 'I miei progetti '
+dashboard-menu-projects-analytics: Analitici
 dashboard-menu-projects-commons: Benefici
 dashboard-menu-projects-contract: Contratto
+dashboard-menu-projects-social-commitment: 'Impegno sociale'
 dashboard-menu-projects-messegers: Partecipanti 
 dashboard-menu-projects-preview: 'Pagina pubblica '
 dashboard-menu-projects-rewards: Co-finanziatori 
 dashboard-menu-projects-summary: Riassunto
 dashboard-menu-projects-supports: Collaborazioni 
 dashboard-menu-projects-updates: Novità
+dashboard-menu-projects-widgets: Widget
 dashboard-menu-review_board: Correzione 
 dashboard-menu-translate_board: Traduzione
 dashboard-menu-translates: 'Le mie Traduzioni '
 dashboard-messegers-mail-sendto: 'Inviato a %s dei partecipanti:'
+dashboard-my-wallet-available: 'Attualmente disponi di <span class="pool-amount">%s</span> <span class="pool-desc"> nel tuo portafoglio virtuale Goteo</span>'
+dashboard-my-wallet-contribute-button: Dona
+dashboard-my-wallet-modal-pool-info: "Il portafoglio virtuale Goteo è una funzionalità della nostra piattaforma che ti permette di fare la tua donazione e decidere in seguito a quale progetto destinare l'importo.<br> <p> Le donazioni effettuate attraverso la nostra piattaforma sono deducibili dalle tasse, secondo la legge 49/2002, del 23 dicembre, il regime fiscale di enti non profit e incentivi fiscali per le sponsorizzazioni.</p> <p>Quando tu fai la tua donazione, è possibile scaricare un certificato di donazione che giustifica con il fisco il tuo contributo a un'entità senza scopo di lucro. È possibile accedere al registro dei certificati disponibili associati con le vostre donazioni dentro Goteo attraverso il tuo pannello dell'utente, nella specifico nella la sezione <a href=\"/dashboard/wallet/certificate\" target=\"_blank\">Certificado de donación</a>.</p><p> Nota importante: vi ricordiamo che tutti i contributi che hanno ottenuto un certificato di donazione da parte della nostra Fondazione non verranno restituiti. Ciò significa che se avete fatto una donazione collegata a un progetto concreto all'interno della nostra piattaforma e questo non raggiunge l'obiettivo minimo del finanziamento durante la sua campagna, il vostro contributo andrà al tuo portafoglio virtuale ma non tornerà al tuo conto corrente bancario. Tuttavia, è possibile destinare tale importo dal tuo portafoglio virtuale in Goteo.org a qualsiasi altro progetto desiderato e che sia attivo nel momento in cui si esegue la donazione, senza dover inserire nuovamente i tuoi dati bancari o PayPal.</p>"
+dashboard-my-wallet-pool-info: 'Ulteriori informazioni sull''utilizzo del tuo portafoglio virtuale'
+dashboard-no-projects: 'Non si dispone di nessun progetto, è possibile crearne uno <a href="/project/create">aquí</a>'
 dashboard-password-recover-advice: 'Assicurati di aggiornare la tua password'
 dashboard-project-blog-fail: 'Mettiti in contatto con noi'
 dashboard-project-blog-inactive: 'Ci dispiace, la pubblicazione degli aggiornamenti è disattivata per questo progetto '
