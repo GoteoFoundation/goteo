@@ -36,6 +36,21 @@ admin-account-switch-pool: 'Cambiare il pool'
 admin-account-switch-pool-confirm: 'Questo vale solo per quando il progetto fallisce, non genera ne toglie soldi dal portafoglio. Vuoi continuare?'
 admin-account-switch-pool-fail: 'Non è possibile modificare lo stato del pool di questo contributo'
 admin-account-transaction: 'Codici di monitoraggio'
+admin-account-user-changed-error: 'Non è stato possibile cambiare l''utente del contributo da [%ID%] a [%NAME%]!'
+admin-account-user-changed-successfully: 'E'' stato cambiato l''utente del contributo da [%ID%] a [%NAME%]'
+admin-address: Indirizzo
+admin-all: Tutti
+admin-back: Indietro
 admin-back-detail: 'Torna ai dettagli'
 admin-back-list: 'Torna alla lista'
 admin-contents: 'Testi e traduzioni'
+admin-empty-list: 'Nessun risultato trovato'
+admin-mailing-back-to-list: 'Tornare a comunicazioni'
+admin-mailing-communicating-with: 'Volevamo contattare %DESC%'
+admin-mailing-created: 'Creato il'
+admin-mailing-new-massive: 'E'' stata creata una mail di massa a %TOTAL% utenti'
+admin-mailing-status: 'Stato dell''invio automatico'
+admin-mailing-subject: Problema
+admin-mailing-view-and-activate: 'Vedere l''admin della newsletter per attivare l''invio'
+admin-mailing-view-in-newsletter: 'Vedere l''admin della newsletter'
+admin-mailing-view-in-sent: 'Vai al registro degli invii (statistiche)'
