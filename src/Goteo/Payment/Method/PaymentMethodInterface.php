@@ -125,6 +125,6 @@ interface PaymentMethodInterface {
      * payments.method.comissions.percent percent amount per transaction, refunds
      * @return float
      */
-    static public function calculateFee($total_invests, $total_amount, $returned_invests = 0, $returned_amount = 0);
+    static public function calculateComission($total_invests, $total_amount, $returned_invests = 0, $returned_amount = 0);
 
 }
