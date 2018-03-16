@@ -74,14 +74,16 @@ $api->add('api-chart-aggregates', new Route(
 
 // Totals for invests (today, yesterday, this week, etc)
 $api->add('api-chart-totals-invests', new Route(
-    '/charts/totals/invests',
+    '/charts/totals/invests/{part}',
     array('_controller' => 'Goteo\Controller\Api\ChartsApiController::totalInvestsAction',
+          'part' => null
         )
 ));
 // Totals for projects
 $api->add('api-chart-totals-projects', new Route(
-    '/charts/totals/projects',
+    '/charts/totals/projects/{part}',
     array('_controller' => 'Goteo\Controller\Api\ChartsApiController::totalProjectsAction',
+          'part' => null
         )
 ));
 

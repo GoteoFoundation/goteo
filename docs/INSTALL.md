@@ -148,8 +148,18 @@ payments:
         # headerImageUrl: Some URL image for the header
         # logoImageUrl: logo URL
         # borderColor: B5DADC
+        commissions: # Per-invests commissions
+            refunded:
+                fixed: 0.35 # Paypal charges 0.35€ per invest, non-returnable
+                percent: 0
+            charged:
+                fixed: 0.35 # Paypal charges 0.35€ per invest, non-returnable
+                percent: 3.4 # 3.4% of the amount per invest
+            # Other variables may be added on other methods and
+            # customize the calculateFee() in the corresponding class
 
     # This is a built-in payment method using internal credit
+    # Comissions can be configured here if needed
     pool:
         active: true
     # A stupid payment method defined in the plugin goteo-dev

@@ -337,14 +337,14 @@ class ChartsApiController extends AbstractApiController {
      * Gets totals for invests
      * @param  Request $request [description]
      */
-    public function totalInvestsAction(Request $request) {
+    public function totalInvestsAction($part = null, Request $request) {
         // Use the Stats class to take advantage of the Caching component
         $stats = Stats::create('api_totals');
         $payments = [];
         $global = ['raised' => [], 'active' => [], 'commissions' => []];
         $fees = [];
         foreach(Payment::getMethods() as $method) {
-
+            if($part && $part !== $method::getId()) continue;
             $raised = []; // payments including returned
             $active = []; // paid payments
             $commissions = []; // bank commissions
@@ -356,20 +356,23 @@ class ChartsApiController extends AbstractApiController {
                            'date_until' => $dates['to']];
 
                 $raised[$slot] = $stats->investsTotals($filter);
-                $raised[$slot]['amount'] = \amount_format($raised[$slot]['amount']);
-
+                
                 $filter['status'] = Invest::$ACTIVE_STATUSES;
                 $active[$slot] = $stats->investsTotals($filter);
-                $active[$slot]['amount'] = \amount_format($active[$slot]['amount']);
             }
-
+            
             // Bank Comissions
-            foreach($raised as $slot => $part) {
-                $returned_invests = $part['invests'] - $active[$slot]['invests'];
-                $returned_amount = $part['amount'] - $active[$slot]['amount'];
-                $commissions[$slot] = $method::calculateFee($part['invests'], $part['amount'], $returned_invests, $returned_amount);
+            foreach($raised as $slot => $v) {
+                $returned_invests = $v['invests'] - $active[$slot]['invests'];
+                $returned_amount = $v['amount'] - $active[$slot]['amount'];
+                // if($v['invests']) die($v['invests'] .', '. $v['amount'] .', '. $returned_invests .', '. $returned_amount);
+                // if($v['invests']) {print_r($v);print_r($active[$slot]);die;};
+                $commissions[$slot] = $method::calculateComission($v['invests'], $v['amount'], $returned_invests, $returned_amount);
                 $global['commissions'][$slot] += $commissions[$slot];
+                // Nice-formatting
                 $commissions[$slot] = \amount_format($commissions[$slot]);
+                $active[$slot]['amount'] = \amount_format($active[$slot]['amount']);
+                $raised[$slot]['amount'] = \amount_format($raised[$slot]['amount']);
             }
             // print_r($commissions);die("$returned_invests $returned_amount ");
 
@@ -379,21 +382,25 @@ class ChartsApiController extends AbstractApiController {
                 'commissions' => $commissions,
                 'fees' => $fees
             ];
+            
+            if($part) return $this->jsonResponse($ret);
+
             $payments[$method::getId()] = $ret;
 
             // Skip pool method payment as is internal
-            if(in_array($method::getId(), ['pool', 'dummy'])) continue;
+            // if(in_array($method::getId(), ['pool', 'dummy'])) continue;
             // Sum totals
-            foreach($raised as $slot => $part) {
-                foreach($part as $k => $v) {
+            foreach($raised as $slot => $v) {
+                foreach($v as $k => $v) {
                     $global['raised'][$slot][$k] += $v;
                 }
             }
-            foreach($active as $slot => $part) {
-                foreach($part as $k => $v) {
+            foreach($active as $slot => $v) {
+                foreach($v as $k => $v) {
                     $global['active'][$slot][$k] += $v;
                 }
             }
+
         }
 
         foreach(self::timeSlots() as $slot => $dates) {
@@ -417,30 +424,31 @@ class ChartsApiController extends AbstractApiController {
      * Gets totals for invests
      * @param  Request $request [description]
      */
-    public function totalProjectsAction(Request $request) {
+    public function totalProjectsAction($part = null, Request $request) {
         // Use the Stats class to take advantage of the Caching component
-        $stats = Stats::create('api_totals');
+        $stats = Stats::create('api_totals', 30);
         $projects= [];
 
         $ofilter = [];
         if($consultant = $request->query->get('consultant')) {
             $ofilter['consultant'] = $consultant;
         }
-        foreach(['created', 'published', 'reviewing', 'rejected'] as $part) {
+        foreach(['created', 'published', 'reviewing', 'rejected'] as $when) {
+            if($part && $part !== $when) continue;
             $date_from = 'created_from';
             $date_until = 'created_until';
             $filter = $ofilter;
-            if($part === 'published') {
+            if($when === 'published') {
                 $filter['status'] = [Project::STATUS_IN_CAMPAIGN, Project::STATUS_FUNDED, Project::STATUS_FULFILLED, Project::STATUS_UNFUNDED];
                 $date_from = 'published_from';
                 $date_until = 'published_until';
             }
-            elseif($part === 'reviewing') {
+            elseif($when === 'reviewing') {
                 $filter['status'] = Project::STATUS_REVIEWING;
                 $date_from = 'updated_from';
                 $date_until = 'updated_until';
             }
-            elseif($part === 'rejected') {
+            elseif($when === 'rejected') {
                 // Rejected project have updated date defined
                 // $filter['status'] = [Project::STATUS_REJECTED, Project::STATUS_EDITING];
                 $filter['status'] = Project::STATUS_REJECTED;
@@ -451,10 +459,10 @@ class ChartsApiController extends AbstractApiController {
             foreach(self::timeSlots() as $slot => $dates) {
                 $filter[$date_from] = $dates['from'];
                 $filter[$date_until] = $dates['to'];
-                $projects[$part][$slot] = $stats->projectsTotals($filter, 'total');
-                // $projects[$part][$slot] = rand(1,100);
+                $projects[$when][$slot] = $stats->projectsTotals($filter, 'total');
+                // $projects[$when][$slot] = rand(1,100);
             }
-
+            if($part) return $this->jsonResponse($projects[$part]);
         }
 
         $pending = [];
