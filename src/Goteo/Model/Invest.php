@@ -48,7 +48,9 @@ class Invest extends \Goteo\Core\Model {
 
     static $ACTIVE_STATUSES = [self::STATUS_PENDING, self::STATUS_CHARGED, self::STATUS_PAID];
     static $FAILED_STATUSES = [self::STATUS_RELOCATED, self::STATUS_RETURNED, self::STATUS_TO_POOL, self::STATUS_CANCELLED];
-    static $RAISED_STATUSES = [self::STATUS_PENDING, self::STATUS_CHARGED, self::STATUS_PAID, self::STATUS_RETURNED, self::STATUS_TO_POOL];
+    // STATUS_CANCELLED may rise the achieved amount but it is not included in fee/comissions calculations
+    static $RAISED_STATUSES = [self::STATUS_PENDING, self::STATUS_CHARGED, self::STATUS_PAID, self::STATUS_CANCELLED, self::STATUS_RETURNED, self::STATUS_TO_POOL];
+    static $BILLABLE_STATUSES = [self::STATUS_PENDING, self::STATUS_CHARGED, self::STATUS_PAID, self::STATUS_RETURNED, self::STATUS_TO_POOL];
 
     public
         $id,
@@ -425,7 +427,9 @@ class Invest extends \Goteo\Core\Model {
 
         if($count) {
             if($count === 'all') {
-                $what = 'SUM(invest.amount) AS total_amount, COUNT(invest.id) AS total_invests, COUNT(DISTINCT invest.user) AS total_users';
+                $what = 'SUM(invest.amount) AS total_amount, 
+                COUNT(invest.id) AS total_invests, 
+                COUNT(DISTINCT invest.user) AS total_users';
             }
             elseif($count === 'money') {
                 $what = 'SUM(invest.amount)';
@@ -511,6 +515,36 @@ class Invest extends \Goteo\Core\Model {
         return $query->fetchAll(\PDO::FETCH_CLASS, '\Goteo\Model\User');
     }
 
+    /**
+     * Returns the platform fee associate with a list of invests
+     */
+    public static function calculateFees($filters = []) {
+        $fee = (float) Config::get('fee'); // default platform fee
+        list($sqlFilter, $values) = self::getSQLFilter($filters);
+        $sqlFilter = preg_replace('/^WHERE/', 'AND', $sqlFilter);
+        // Normal invests fee
+        $sql = "SELECT IFNULL(project_account.fee, $fee) * SUM(invest.amount) / 100
+                FROM invest
+                LEFT JOIN project_account ON invest.project = project_account.project 
+                WHERE invest.campaign=0 $sqlFilter";
+        $users_fee = (float) self::query($sql, $values)->fetchColumn();
+
+        // Call Matchfunding invests fee
+        $sql = "SELECT IFNULL(`call`.fee_projects_drop, $fee) * SUM(invest.amount) / 100
+                FROM invest
+                LEFT JOIN `call` ON invest.call = `call`.id 
+                WHERE invest.campaign=1 AND invest.method='drop' $sqlFilter";
+        $calls_fee = (float) self::query($sql, $values)->fetchColumn();
+        
+        // Matcher Matchfunding invests fee
+        $sql = "SELECT IFNULL(`matcher`.fee, $fee) * SUM(invest.amount) / 100
+                FROM invest
+                LEFT JOIN `matcher` ON invest.matcher = `matcher`.id 
+                WHERE invest.campaign=1 AND invest.method!='drop' $sqlFilter";
+        $matchers_fee = (float) self::query($sql, $values)->fetchColumn();
+        
+        return ['user' => $users_fee, 'call' => $calls_fee, 'matcher' => $matchers_fee];
+    }
 
     // returns the current project
     public function getProject() {
