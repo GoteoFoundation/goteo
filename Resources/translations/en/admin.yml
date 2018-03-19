@@ -14,6 +14,7 @@ admin-account-donation: Donate
 admin-account-edit-reward: 'Manage return/address'
 admin-account-invalid-invest: 'Contribution [%s] not found!'
 admin-account-invest-date: 'Date of Contribution'
+admin-account-invest-non-pool-refundable: 'This contribution can not be reimbursed to the virtual wallet. You can only reimburse the contributions in the "Charged" status'
 admin-address: Direction
 admin-all: All
 admin-back: Back
