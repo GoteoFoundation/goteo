@@ -10,6 +10,7 @@
 
 namespace Goteo\Payment\Method;
 
+use Goteo\Core\Model;
 use Goteo\Application\Config;
 use Goteo\Application\App;
 use Goteo\Application\AppEvents;
@@ -309,4 +310,5 @@ abstract class AbstractPaymentMethod implements PaymentMethodInterface {
         }
         return $fee;
     }
+
 }

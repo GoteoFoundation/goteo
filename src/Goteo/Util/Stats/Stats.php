@@ -9,6 +9,8 @@
  */
 
 namespace Goteo\Util\Stats;
+
+use Goteo\Application\Config;
 use Goteo\Model\User;
 use Goteo\Model\Project;
 use Goteo\Model\Invest;
@@ -103,14 +105,25 @@ class Stats {
     /**
      * Handy method to obtain cached totals from invests
      */
-    public function getInvestsTotals($filter = [], $count = 'all') {
-        return Invest::getList($filter, null, 0, 0, $count);
+    public function getInvestTotals($filter = [], $count = 'all') {
+        $totals = Invest::getList($filter, null, 0, 0, $count);
+        // Add matchfunding calc
+        $filter['types'] = 'drop';
+        $totals['matchfunding'] = Invest::getList($filter, null, 0, 0, 'money');
+        return $totals;
     }
 
+    public function getInvestFees($filter = []) {
+        $totals = Invest::calculateFees($filter);
+        foreach($totals as $k => $a) {
+            $totals['vat'] += Config::get('vat') * $a / 100;
+        }
+        return $totals;
+    }
     /**
      * Handy method to obtain cached totals from projects
      */
-    public function getProjectsTotals($filter = [], $count = 'all') {
+    public function getProjectTotals($filter = [], $count = 'all') {
         return Project::getList($filter, null, 0, 0, $count);
     }
 

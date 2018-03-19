@@ -3807,6 +3807,7 @@ namespace Goteo\Model {
                     $what = 'SUM(project.amount)';
                 }
                 elseif($count === 'fee') {
+                    // This is incorrect, fees are not applied to all types of invests
                     $what = 'SUM(project_account.fee * project.amount / 100)';
                     $innerJoin .= ' LEFT JOIN project_account ON project_account.project = project.id';
                 }
