@@ -13,6 +13,7 @@ namespace Goteo\Controller\Api;
 use Symfony\Component\HttpFoundation\Request;
 use Goteo\Application\Exception\ControllerAccessDeniedException;
 use Goteo\Application\Exception\ControllerException;
+use Goteo\Application\Config;
 use Goteo\Library\Text;
 use Goteo\Application\Currency;
 use Goteo\Payment\Payment;
@@ -317,90 +318,108 @@ class ChartsApiController extends AbstractApiController {
 
 
     private function timeSlots() {
-        return [
-            'today' => ['from' => (new \DateTime('today'))->format('Y-m-d'),
-                        'to' => (new \DateTime('today'))->format('Y-m-d')],
-            'yesterday' => ['from' => (new \DateTime('yesterday'))->format('Y-m-d'),
-                            'to' => (new \DateTime('yesterday'))->format('Y-m-d')],
-            'week' => ['from' => (new \DateTime('monday this week'))->format('Y-m-d'),
-                       'to' => (new \DateTime('today'))->format('Y-m-d')],
-            'month' => ['from' => (new \DateTime('first day of this month'))->format('Y-m-d'),
-                        'to' => (new \DateTime('today'))->format('Y-m-d')],
-            'year' => ['from' => (new \DateTime('first day of january this year'))->format('Y-m-d'),
-                        'to' => (new \DateTime('today'))->format('Y-m-d')],
-            'lastyear' => ['from' => (new \DateTime('first day of january last year'))->format('Y-m-d'),
-                           'to' => (new \DateTime('last day of december last year'))->format('Y-m-d')]
+        $f = 'Y-m-d H:i:s';
+        $slots = [
+            'today' => [
+                'from' => (new \DateTime('today'))->format($f),
+                'to' => (new \DateTime('now'))->format($f)
+            ],
+            'yesterday' => [
+                'from' => (new \DateTime('yesterday'))->format($f),
+                'to' => (new \DateTime('today -1 second'))->format($f)
+            ],
+            'week' => [
+                'from' => (new \DateTime('monday this week 00:00'))->format($f),
+                'to' => (new \DateTime('now'))->format($f)
+            ],
+            'last_week' => [
+                'from' => (new \DateTime('monday -2 weeks'))->format($f),
+                'to' => (new \DateTime('now -1 weeks'))->format($f)
+            ],
+            'month' => [
+                'from' => (new \DateTime('first day of this month 00:00'))->format($f),
+                'to' => (new \DateTime('now'))->format($f)
+            ],
+            'last_month' => [
+                'from' => (new \DateTime('first day of last month 00:00'))->format($f),
+                'to' => (new \DateTime('now -1 month'))->format($f)
+            ],
+            'year' => [
+                'from' => (new \DateTime('first day of january this year'))->format($f),
+                'to' => (new \DateTime('now'))->format($f)
+            ],
+            'last_year' => [
+                'from' => (new \DateTime('first day of january last year'))->format($f),
+                // 'to' => (new \DateTime('first day of january this year -1 second'))->format($f)
+                // Last year so far
+                'to' => (new \DateTime('now -1 year'))->format($f)
+            ]
         ];
+        // print_r($slots);die;
+        return $slots;
     }
 
     /**
      * Gets totals for invests
+     * @param  string $target [raised, active, comissions, fees]
+     * @param  string $method raised[paypal, tpv, ..., global]  active[paypal,...], comissions[paypal, ...], fees]
      * @param  Request $request [description]
      */
-    public function totalInvestsAction($part = null, Request $request) {
+    public function totalInvestsAction($target, $method = 'global', Request $request) {
         // Use the Stats class to take advantage of the Caching component
         $project_id = $request->query->get('project');
         $stats = Stats::create('api_totals'. ($project_id ? "_$project_id" : ''), Config::get('db.cache.long_time'));
-        $payments = [];
-        $global = ['raised' => [], 'active' => [], 'commissions' => [], 'fees' => [], 'invoice' => 0];
         $timeslots = self::timeSlots();
         if($project_id) {
             // $timeslots = ['all' => ['from' => null, 'to' => null]];
             $timeslots['all'] = ['from' => null, 'to' => null];
         }
-        foreach(Payment::getMethods() as $method) {
-            if($part && $part !== $method::getId()) continue;
-            $raised = []; // payments including returned
-            $active = []; // paid payments
-            $commissions = []; // bank commissions
-            $fees = []; // platform commissions
+        $totals = [];
+        foreach($timeslots as $slot => $dates) {
+            $filter = ['datetime_from' => $dates['from'],
+                'datetime_until' => $dates['to'],
+                'projects' => $project_id];
 
-            foreach($timeslots as $slot => $dates) {
-                $filter = ['status' => Invest::$RAISED_STATUSES,
-                           'methods' => $method::getId(),
-                           'date_from' => $dates['from'],
-                           'date_until' => $dates['to'],
-                           'projects' => $project_id
-                        ];
-
-                $raised[$slot] = $stats->investTotals($filter);
-                
-                $filter['status'] = Invest::$ACTIVE_STATUSES;
-                $active[$slot] = $stats->investTotals($filter);
-                // Bank Comissions
-                $returned_invests = $raised[$slot]['invests'] - $active[$slot]['invests'];
-                $returned_amount = $raised[$slot]['amount'] - $active[$slot]['amount'];
-                $commissions[$slot] = $method::calculateComission($raised[$slot]['invests'], $raised[$slot]['amount'], $returned_invests, $returned_amount);
-                $global['commissions'][$slot] += $commissions[$slot];
-                // Global invoice derives bank commissions to the project   
-                if($slot === 'all') $global['invoice'] += $commissions[$slot];
-                $fees[$slot] = $stats->investFees($filter);
-                foreach($fees[$slot] as $k => $a) {
-                    $global['fees'][$slot][$k] += $a;
-                    if($slot === 'all') $global['invoice'] += $a;
-                }
-    
-                $global['raised'][$slot]['amount'] += $raised[$slot]['amount'];
-                $global['active'][$slot]['amount'] += $active[$slot]['amount'];
+            if(Payment::methodExists($method)) {
+                $filter['methods'] = $method;
+                $methods = [$method => Payment::getMethod($method)];
+            } else {
+                $method = 'global';
+                $methods = Payment::getMethods();
             }
-            
-            $ret = [
-                'raised' => $raised,
-                'active' => $active,
-                'commissions' => $commissions,
-                'fees' => $fees
-            ];
-            
-            if($part) return $this->jsonResponse($ret);
-
-            $payments[$method::getId()] = $ret;
-
+            if (in_array($target,['raised', 'active', 'raw'])) {
+                $filter['status'] = Invest::$RAISED_STATUSES;
+                if($target === 'active') $filter['status'] = Invest::$ACTIVE_STATUSES;
+                elseif($target === 'raw') $filter['status'] = Invest::$RAW_STATUSES;
+                $totals[$slot] = $stats->investTotals($filter);
+            } elseif($target === 'commissions') {
+                // Bank Comissions
+                $totals[$slot] = ['charged' => 0, 'lost' => 0 ];
+                foreach($methods as $i => $m) {
+                    $raised = $stats->investTotals($filter + ['methods' => $i, 'status' => Invest::$RAISED_STATUSES]);
+                    $returned = $stats->investTotals($filter + ['methods' => $i, 'status' => Invest::$FAILED_STATUSES]);
+                    $totals[$slot]['charged'] += $m::calculateComission($raised['invests'], $raised['amount'], $returned['invests'], $returned['amount']);
+                    $totals[$slot]['lost'] -= $m::calculateComission($returned['invests'], $returned['amount'], $returned['invests'], $returned['amount']);
+                }
+            } elseif($target === 'fees') {
+                // Platform fees
+                $totals[$slot] = $stats->investFees($filter);
+                // Global invoice derives bank commissions to the project   
+                // TODO: move the all to a new api end point "invoice"
+                if($slot === 'all') {
+                    $invoice = $totals['total'];
+                    foreach($methods as $i => $m) {
+                        $raised = $stats->investTotals($filter + ['methods' => $i, 'status' => Invest::$RAISED_STATUSES]);
+                        $returned = $stats->investTotals($filter + ['methods' => $i, 'status' => Invest::$FAILED_STATUSES]);
+                        $invoice +=  $m::calculateComission($raised['invests'], $raised['amount'], $returned['invests'], $returned['amount']);
+                    }
+                    $totals['invoice'] = $invoice;  
+                }
+            } elseif($target !== 'global') {
+                throw new ControllerException("[$target] not found, try one of [raised, active, raw, commissions, fees]");
+            }
         }
-
-        return $this->jsonResponse([
-            'payments' => $payments,
-            'global' => $global
-        ]);
+        return $this->jsonResponse([$target => [$method => $totals]]);
     }
 
 
