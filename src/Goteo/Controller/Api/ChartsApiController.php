@@ -317,7 +317,7 @@ class ChartsApiController extends AbstractApiController {
     }
 
 
-    private function timeSlots() {
+    private function timeSlots(Request $request = null) {
         $f = 'Y-m-d H:i:s';
         $slots = [
             'today' => [
@@ -344,6 +344,10 @@ class ChartsApiController extends AbstractApiController {
                 'from' => (new \DateTime('first day of last month 00:00'))->format($f),
                 'to' => (new \DateTime('now -1 month'))->format($f)
             ],
+            'last_month_complete' => [
+                'from' => (new \DateTime('first day of last month 00:00'))->format($f),
+                'to' => (new \DateTime('first day of this month -1 second'))->format($f)
+            ],
             'year' => [
                 'from' => (new \DateTime('first day of january this year'))->format($f),
                 'to' => (new \DateTime('now'))->format($f)
@@ -353,8 +357,28 @@ class ChartsApiController extends AbstractApiController {
                 // 'to' => (new \DateTime('first day of january this year -1 second'))->format($f)
                 // Last year so far
                 'to' => (new \DateTime('now -1 year'))->format($f)
-            ]
-        ];
+            ],
+            'last_year_complete' => [
+                'from' => (new \DateTime('first day of january last year'))->format($f),
+                'to' => (new \DateTime('first day of january this year -1 second'))->format($f)
+                ]
+            ];
+        if($request) {
+            $to = $request->query->get('to');
+            $from = $request->query->get('from');
+            $project_id = $request->query->get('project');
+            $call_id = $request->query->get('call');
+            $matcher_id = $request->query->get('matcher');
+            $user_id = $request->query->get('user');
+
+            if($from) {
+                $slots['custom'] = ['from' => (new \DateTime($from))->format($f)];
+                if($to) $slots['custom']['to'] = (new \DateTime($to))->format($f);
+                else  $slots['custom']['to'] = (new \DateTime('now'))->format($f);
+            } elseif($project_id || $call_id || $matcher_id || $user_id) {
+                $slots['custom'] = ['from' => null, 'to' => null];
+            }
+        }
         // print_r($slots);die;
         return $slots;
     }
@@ -367,18 +391,18 @@ class ChartsApiController extends AbstractApiController {
      */
     public function totalInvestsAction($target, $method = 'global', Request $request) {
         // Use the Stats class to take advantage of the Caching component
-        $project_id = $request->query->get('project');
         $stats = Stats::create('api_totals'. ($project_id ? "_$project_id" : ''), Config::get('db.cache.long_time'));
-        $timeslots = self::timeSlots();
-        if($project_id) {
-            // $timeslots = ['all' => ['from' => null, 'to' => null]];
-            $timeslots['all'] = ['from' => null, 'to' => null];
-        }
+
+        $timeslots = self::timeSlots($request);
         $totals = [];
         foreach($timeslots as $slot => $dates) {
             $filter = ['datetime_from' => $dates['from'],
                 'datetime_until' => $dates['to'],
-                'projects' => $project_id];
+                'projects' => $request->query->get('project'),
+                'calls' => $request->query->get('call'),
+                'matchers' => $request->query->get('matcher'),
+                'users' => $request->query->get('user'),
+                ];
 
             if(Payment::methodExists($method)) {
                 $filter['methods'] = $method;
@@ -419,7 +443,11 @@ class ChartsApiController extends AbstractApiController {
                 throw new ControllerException("[$target] not found, try one of [raised, active, raw, commissions, fees]");
             }
         }
-        return $this->jsonResponse([$target => [$method => $totals]]);
+        // Add some formatting
+        foreach($totals as $k => $v) {
+
+        }
+        return $this->jsonResponse([$target => [$method => $totals], 'slots' => $timeslots]);
     }
 
 

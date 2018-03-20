@@ -255,6 +255,18 @@ class Invest extends \Goteo\Core\Model {
             }
             if($parts) $sqlFilter[] = "invest.status IN (" . implode(',', $parts) . ")";
         }
+        if (!empty($filters['amount'])) {
+            $sqlFilter[] = "invest.amount >= :amount";
+            $values[':amount'] = $filters['amount'];
+        }
+        if (!empty($filters['maxamount'])) {
+            $sqlFilter[] = "invest.amount <= :maxamount";
+            $values[':maxamount'] = $filters['maxamount'];
+        }
+        if (!empty($filters['name'])) {
+            $sqlFilter[] = "invest.user IN (SELECT id FROM user WHERE (name LIKE :name OR email LIKE :name))";
+            $values[':name'] = "%{$filters['name']}%";
+        }
         if (!empty($filters['projects'])) {
             $parts = [];
             if(!is_array($filters['projects'])) $filters['projects'] = [$filters['projects']];
@@ -263,14 +275,6 @@ class Invest extends \Goteo\Core\Model {
                 $values[':prj' . $i] = is_object($prj) ? $prj->id : $prj;
             }
             $sqlFilter[] = "invest.project IN (" . implode(',', $parts) . ")";
-        }
-        if (!empty($filters['amount'])) {
-            $sqlFilter[] = "invest.amount >= :amount";
-            $values[':amount'] = $filters['amount'];
-        }
-        if (!empty($filters['maxamount'])) {
-            $sqlFilter[] = "invest.amount <= :maxamount";
-            $values[':maxamount'] = $filters['maxamount'];
         }
         if (!empty($filters['users'])) {
             $i = 0;
@@ -283,13 +287,23 @@ class Invest extends \Goteo\Core\Model {
             }
             $sqlFilter[] = 'invest.user IN(' . implode(',', $parts) . ')';
         }
-        if (!empty($filters['name'])) {
-            $sqlFilter[] = "invest.user IN (SELECT id FROM user WHERE (name LIKE :name OR email LIKE :name))";
-            $values[':name'] = "%{$filters['name']}%";
-        }
         if (!empty($filters['calls'])) {
-            $sqlFilter[] = "invest.`call` = :calls";
-            $values[':calls'] = $filters['calls'];
+            $parts = [];
+            if(!is_array($filters['calls'])) $filters['calls'] = [$filters['calls']];
+            foreach($filters['calls'] as $i => $prj) {
+                $parts[] = ':prj' . $i;
+                $values[':prj' . $i] = is_object($prj) ? $prj->id : $prj;
+            }
+            $sqlFilter[] = "invest.call IN (" . implode(',', $parts) . ")";
+        }
+        if (!empty($filters['matchers'])) {
+            $parts = [];
+            if(!is_array($filters['matchers'])) $filters['matchers'] = [$filters['matchers']];
+            foreach($filters['matchers'] as $i => $prj) {
+                $parts[] = ':prj' . $i;
+                $values[':prj' . $i] = is_object($prj) ? $prj->id : $prj;
+            }
+            $sqlFilter[] = "invest.matcher IN (" . implode(',', $parts) . ")";
         }
         if (!empty($filters['issue'])) {
             switch ($filters['issue']) {
