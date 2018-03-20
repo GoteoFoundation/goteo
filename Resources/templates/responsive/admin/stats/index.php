@@ -29,12 +29,16 @@ $query = http_build_query($this->filters);
 
     <h5><?= $this->text('admin-stats-invest-totals') ?></h5>
 
-    <div class="d3-chart loading discrete-values" data-source="/api/charts/totals/invests" data-interval="15" data-flash-time="15">
-        <ul class="row list-unstyled">
-            <li class="col-xs-2 col-xxs-4" data-property="global.raised.today.amount" data-title="<?= $this->text('admin-invest-raised-amount-today') ?>"></li>
-            <li class="col-xs-2 col-xxs-4" data-property="global.raised.yesterday.amount" data-title="<?= $this->text('admin-invest-raised-amount-yesterday') ?>"></li>
-            <li class="col-xs-2 col-xxs-4" data-property="global.commissions.today" data-title="<?= $this->text('admin-invest-commissions-today') ?>"></li>
-            <li class="col-xs-2 col-xxs-4" data-property="global.commissions.yesterday" data-title="<?= $this->text('admin-invest-commissions-yesterday') ?>"></li>
+    <div class="">
+        <ul class="row list-unstyled d3-chart loading discrete-values" data-source="/api/charts/totals/invests/raised" data-interval="15" data-flash-time="15">
+            <li class="col-xs-2 col-xxs-4" data-property="raised.global.today.amount_formatted" data-title="<?= $this->text('admin-invest-raised-amount-today') ?>"></li>
+            <li class="col-xs-2 col-xxs-4" data-property="raised.global.yesterday.amount_formatted" data-title="<?= $this->text('admin-invest-raised-amount-yesterday') ?>"></li>
+            <li class="col-xs-2 col-xxs-4" data-property="raised.global.today.amount_diff_formatted" data-title="<?= $this->text('admin-invest-raised-amount-diff') ?>"></li>
+            <li class="col-xs-2 col-xxs-4" data-property="raised.global.today.amount_percent" data-title="<?= $this->text('admin-invest-raised-amount-diff-percent') ?>"></li>
+        </ul>
+        <ul class="row list-unstyled d3-chart loading discrete-values" data-source="/api/charts/totals/invests/commissions" data-interval="15" data-flash-time="15">
+            <li class="col-xs-2 col-xxs-4" data-property="commissions.global.today.charged_formatted" data-title="<?= $this->text('admin-invest-commissions-today') ?>"></li>
+            <li class="col-xs-2 col-xxs-4" data-property="commissions.global.yesterday.charged_formatted" data-title="<?= $this->text('admin-invest-commissions-yesterday') ?>"></li>
             <li class="col-xs-2 col-xxs-4" data-property="fees.month" data-title="<?= $this->text('admin-invest-fees-month') ?>"></li>
             <li class="col-xs-2 col-xxs-4" data-property="fees.year" data-title="<?= $this->text('admin-invest-fees-year') ?>"></li>
         </ul>
