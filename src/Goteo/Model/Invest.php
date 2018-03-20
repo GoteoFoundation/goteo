@@ -50,7 +50,7 @@ class Invest extends \Goteo\Core\Model {
     static $FAILED_STATUSES = [self::STATUS_RELOCATED, self::STATUS_RETURNED, self::STATUS_TO_POOL, self::STATUS_CANCELLED];
     // STATUS_CANCELLED may rise the achieved amount but it is not included in fee/comissions calculations
     static $RAISED_STATUSES = [self::STATUS_PENDING, self::STATUS_CHARGED, self::STATUS_PAID, self::STATUS_CANCELLED, self::STATUS_RETURNED, self::STATUS_TO_POOL];
-    static $BILLABLE_STATUSES = [self::STATUS_PENDING, self::STATUS_CHARGED, self::STATUS_PAID, self::STATUS_RETURNED, self::STATUS_TO_POOL];
+    static $RAW_STATUSES = [self::STATUS_PENDING, self::STATUS_CHARGED, self::STATUS_PAID, self::STATUS_RETURNED, self::STATUS_TO_POOL];
 
     public
         $id,
@@ -389,6 +389,14 @@ class Invest extends \Goteo\Core\Model {
         if (!empty($filters['date_until'])) {
             $sqlFilter[] = "invest.invested <= :date_until";
             $values[':date_until'] = $filters['date_until'];
+        }
+        if (!empty($filters['datetime_from'])) {
+            $sqlFilter[] = "invest.invested >= :datetime_from";
+            $values[':datetime_from'] = $filters['datetime_from'];
+        }
+        if (!empty($filters['datetime_until'])) {
+            $sqlFilter[] = "invest.invested <= :datetime_until";
+            $values[':datetime_until'] = $filters['datetime_until'];
         }
         if (isset($filters['fulfilled'])) {
             $sqlFilter[] = "invest_reward.fulfilled=" . ($filters['fulfilled'] ? '1' : '0');
