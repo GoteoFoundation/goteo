@@ -115,10 +115,11 @@ class Stats {
 
     public function getInvestFees($filter = []) {
         $totals = Invest::calculateFees($filter);
+        // print_r($filter);print_r($totals);
         // Add some extra useful calcs
         foreach($totals as $k => $a) {
             $totals['total'] += $a;
-            $totals['vat'] += Config::get('vat') * $a / 100;
+            $totals['vat'] += ((float)Config::get('vat')) * $a / 100;
         }
         return $totals;
     }

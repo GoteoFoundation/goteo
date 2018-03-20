@@ -49,8 +49,9 @@ class Invest extends \Goteo\Core\Model {
     static $ACTIVE_STATUSES = [self::STATUS_PENDING, self::STATUS_CHARGED, self::STATUS_PAID];
     static $FAILED_STATUSES = [self::STATUS_RELOCATED, self::STATUS_RETURNED, self::STATUS_TO_POOL, self::STATUS_CANCELLED];
     // STATUS_CANCELLED may rise the achieved amount but it is not included in fee/comissions calculations
-    static $RAISED_STATUSES = [self::STATUS_PENDING, self::STATUS_CHARGED, self::STATUS_PAID, self::STATUS_CANCELLED, self::STATUS_RETURNED, self::STATUS_TO_POOL];
-    static $RAW_STATUSES = [self::STATUS_PENDING, self::STATUS_CHARGED, self::STATUS_PAID, self::STATUS_RETURNED, self::STATUS_TO_POOL];
+    // static $RAISED_STATUSES = [self::STATUS_PENDING, self::STATUS_CHARGED, self::STATUS_PAID, self::STATUS_CANCELLED, self::STATUS_RETURNED, self::STATUS_TO_POOL];
+    static $RAISED_STATUSES = [self::STATUS_PENDING, self::STATUS_CHARGED, self::STATUS_PAID, self::STATUS_RETURNED, self::STATUS_TO_POOL];
+    static $RAW_STATUSES = [self::STATUS_PENDING, self::STATUS_CHARGED, self::STATUS_PAID, self::STATUS_CANCELLED, self::STATUS_RETURNED, self::STATUS_TO_POOL];
 
     public
         $id,
@@ -290,20 +291,26 @@ class Invest extends \Goteo\Core\Model {
         if (!empty($filters['calls'])) {
             $parts = [];
             if(!is_array($filters['calls'])) $filters['calls'] = [$filters['calls']];
-            foreach($filters['calls'] as $i => $prj) {
-                $parts[] = ':prj' . $i;
-                $values[':prj' . $i] = is_object($prj) ? $prj->id : $prj;
+            foreach($filters['calls'] as $i => $call) {
+                $parts[] = ':call' . $i;
+                $values[':call' . $i] = is_object($call) ? $call->id : $call;
             }
-            $sqlFilter[] = "invest.call IN (" . implode(',', $parts) . ")";
+            // This may lead to a confusion, some invests are in projects belonging to a call
+            // but they have the invest.call field empty:
+            // $sqlFilter[] = "invest.call IN (" . implode(',', $parts) . ")";
+            // Search all invests where the project is in that call instead:
+            $sqlFilter[] = 'invest.project IN (SELECT project FROM call_project WHERE call_project.call IN (' . implode(',', $parts) . '))';
         }
         if (!empty($filters['matchers'])) {
             $parts = [];
             if(!is_array($filters['matchers'])) $filters['matchers'] = [$filters['matchers']];
-            foreach($filters['matchers'] as $i => $prj) {
-                $parts[] = ':prj' . $i;
-                $values[':prj' . $i] = is_object($prj) ? $prj->id : $prj;
+            foreach($filters['matchers'] as $i => $matcher) {
+                $parts[] = ':matcher' . $i;
+                $values[':matcher' . $i] = is_object($matcher) ? $matcher->id : $matcher;
             }
-            $sqlFilter[] = "invest.matcher IN (" . implode(',', $parts) . ")";
+            // Same case as calls
+            // $sqlFilter[] = "invest.matcher IN (" . implode(',', $parts) . ")";
+            $sqlFilter[] = 'invest.project IN (SELECT project_id FROM matcher_project WHERE matcher_project.matcher_id IN (' . implode(',', $parts) . '))';
         }
         if (!empty($filters['issue'])) {
             switch ($filters['issue']) {
@@ -405,11 +412,11 @@ class Invest extends \Goteo\Core\Model {
             $values[':date_until'] = $filters['date_until'];
         }
         if (!empty($filters['datetime_from'])) {
-            $sqlFilter[] = "invest.invested >= :datetime_from";
+            $sqlFilter[] = "invest.datetime >= :datetime_from";
             $values[':datetime_from'] = $filters['datetime_from'];
         }
         if (!empty($filters['datetime_until'])) {
-            $sqlFilter[] = "invest.invested <= :datetime_until";
+            $sqlFilter[] = "invest.datetime <= :datetime_until";
             $values[':datetime_until'] = $filters['datetime_until'];
         }
         if (isset($filters['fulfilled'])) {
@@ -473,7 +480,7 @@ class Invest extends \Goteo\Core\Model {
                     ON invest_reward.invest = invest.id
                 $sqlFilter";
 
-                // echo sqldbg($sql, $values);
+                // echo sqldbg($sql, $values)."\n";
 
             if($count === 'all') {
                 $ob = self::query($sql, $values)->fetchObject();
@@ -545,21 +552,21 @@ class Invest extends \Goteo\Core\Model {
         list($sqlFilter, $values) = self::getSQLFilter($filters);
         $sqlFilter = preg_replace('/^WHERE/', 'AND', $sqlFilter);
         // Normal invests fee
-        $sql = "SELECT IFNULL(project_account.fee, $fee) * SUM(invest.amount) / 100
+        $sql = "SELECT SUM(IFNULL(project_account.fee, $fee) * invest.amount) / 100
                 FROM invest
                 LEFT JOIN project_account ON invest.project = project_account.project 
                 WHERE invest.campaign=0 $sqlFilter";
         $users_fee = (float) self::query($sql, $values)->fetchColumn();
 
         // Call Matchfunding invests fee
-        $sql = "SELECT IFNULL(`call`.fee_projects_drop, $fee) * SUM(invest.amount) / 100
+        $sql = "SELECT SUM(IFNULL(`call`.fee_projects_drop, $fee) * invest.amount) / 100
                 FROM invest
                 LEFT JOIN `call` ON invest.call = `call`.id 
                 WHERE invest.campaign=1 AND invest.method='drop' $sqlFilter";
         $calls_fee = (float) self::query($sql, $values)->fetchColumn();
-        
+        // echo \sqldbg($sql, $values);
         // Matcher Matchfunding invests fee
-        $sql = "SELECT IFNULL(`matcher`.fee, $fee) * SUM(invest.amount) / 100
+        $sql = "SELECT SUM(IFNULL(`matcher`.fee, $fee) * invest.amount) / 100
                 FROM invest
                 LEFT JOIN `matcher` ON invest.matcher = `matcher`.id 
                 WHERE invest.campaign=1 AND invest.method!='drop' $sqlFilter";

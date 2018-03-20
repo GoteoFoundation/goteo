@@ -243,18 +243,19 @@ class AdminChartsApiController extends ChartsApiController {
                 }
             } elseif($target === 'fees') {
                 // Platform fees
+                $filter['status'] = Invest::$ACTIVE_STATUSES;
                 $totals[$slot] = $stats->investFees($filter);
                 // Global invoice derives bank commissions to the project   
                 // TODO: move the all to a new api end point "invoice"
-                if($slot === 'all') {
-                    $invoice = $totals['total'];
-                    foreach($methods as $i => $m) {
-                        $raised = $stats->investTotals($filter + ['methods' => $i, 'status' => Invest::$RAISED_STATUSES]);
-                        $returned = $stats->investTotals($filter + ['methods' => $i, 'status' => Invest::$FAILED_STATUSES]);
-                        $invoice +=  $m::calculateComission($raised['invests'], $raised['amount'], $returned['invests'], $returned['amount']);
-                    }
-                    $totals['invoice'] = $invoice;  
-                }
+                // if($slot === 'all') {
+                //     $invoice = $totals['total'];
+                //     foreach($methods as $i => $m) {
+                //         $raised = $stats->investTotals($filter + ['methods' => $i, 'status' => Invest::$RAISED_STATUSES]);
+                //         $returned = $stats->investTotals($filter + ['methods' => $i, 'status' => Invest::$FAILED_STATUSES]);
+                //         $invoice +=  $m::calculateComission($raised['invests'], $raised['amount'], $returned['invests'], $returned['amount']);
+                //     }
+                //     $totals['invoice'] = $invoice;  
+                // }
             } elseif($target === 'amounts') {
                 $filter['status'] = Invest::$ACTIVE_STATUSES;
                 $totals[$slot] = $stats->investAmounts($filter);
@@ -265,16 +266,23 @@ class AdminChartsApiController extends ChartsApiController {
         $increments = ['today' => 'yesterday', 'week' => 'last_week', 'month' => 'last_month', 'year' => 'last_year'];
         foreach($totals as $slot => $parts) {
             foreach($parts as $k => $v) {
-                // Add some formatting
-                if(is_float($v)) $totals[$slot][$k . '_formatted'] = \amount_format($v, 2);
                 // increments
-                if($inc = $increments[$slot] && is_numeric($totals[$slot][$k])) {
-                    $totals[$slot][$k . '_diff'] = $totals[$slot][$k] - $totals[$inc][$k];
-                    $totals[$slot][$k . '_diff_formatted'] = \amount_format($totals[$slot][$k . '_diff'], 2);
-                    $totals[$slot][$k . '_gain'] = round(100 * ($totals[$slot][$k] - $totals[$slot][$k . '_diff']), 2) ;
+                if(($inc = $increments[$slot]) && is_numeric($v)) {
+                    $totals[$slot][$k . '_diff'] = $v - $totals[$inc][$k];
+                    $totals[$slot][$k . '_gain'] = $totals[$inc][$k] ? round(100 * (($v / $totals[$inc][$k] - 1)), 2) : 0;
                 }
             }
         }
+        // Add some formatting
+        foreach($totals as $slot => $parts) {
+            foreach($parts as $k => $v) {
+                if(strpos($k, '_gain') !== false)
+                    $totals[$slot][$k . '_formatted'] = number_format($v, 1, Currency::get('', 'decimal'), Currency::get('', 'thousands')) . '%';
+                elseif(strpos($k, 'amount') !== false || in_array($target, ['fees', 'commissions'])) 
+                    $totals[$slot][$k . '_formatted'] = \amount_format($v, 2);
+            }
+        }
+        // print_r($totals);die;
         return $this->jsonResponse([$target => [$method => $totals], 'slots' => $timeslots]);
     }
 
