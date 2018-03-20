@@ -5,7 +5,7 @@
         <li class="col-xxs-4 col-xs-2" data-property="created.week" data-title="<?= $this->text('admin-projects-created-week') ?>"></li>
         <li class="col-xxs-4 col-xs-2" data-property="created.month" data-title="<?= $this->text('admin-projects-created-month') ?>"></li>
         <li class="col-xxs-4 col-xs-2" data-property="created.year" data-title="<?= $this->text('admin-projects-created-year') ?>"></li>
-        <li class="col-xxs-4 col-xs-2" data-property="created.lastyear" data-title="<?= $this->text('admin-projects-created-lastyear') ?>"></li>
+        <li class="col-xxs-4 col-xs-2" data-property="created.last_year" data-title="<?= $this->text('admin-projects-created-last_year') ?>"></li>
     </ul>
 
     <ul class="row list-unstyled">
@@ -14,7 +14,7 @@
         <li class="col-xxs-4 col-xs-2" data-property="published.week" data-title="<?= $this->text('admin-projects-published-week') ?>"></li>
         <li class="col-xxs-4 col-xs-2" data-property="published.month" data-title="<?= $this->text('admin-projects-published-month') ?>"></li>
         <li class="col-xxs-4 col-xs-2" data-property="published.year" data-title="<?= $this->text('admin-projects-published-year') ?>"></li>
-        <li class="col-xxs-4 col-xs-2" data-property="published.lastyear" data-title="<?= $this->text('admin-projects-published-lastyear') ?>"></li>
+        <li class="col-xxs-4 col-xs-2" data-property="published.last_year" data-title="<?= $this->text('admin-projects-published-last_year') ?>"></li>
     </ul>
 
     <ul class="row list-unstyled">
@@ -23,7 +23,7 @@
         <li class="col-xxs-4 col-xs-2" data-property="reviewing.week" data-title="<?= $this->text('admin-projects-review-week') ?>"></li>
         <li class="col-xxs-4 col-xs-2" data-property="reviewing.month" data-title="<?= $this->text('admin-projects-review-month') ?>"></li>
         <li class="col-xxs-4 col-xs-2" data-property="reviewing.year" data-title="<?= $this->text('admin-projects-review-year') ?>"></li>
-        <li class="col-xxs-4 col-xs-2" data-property="reviewing.lastyear" data-title="<?= $this->text('admin-projects-review-lastyear') ?>"></li>
+        <li class="col-xxs-4 col-xs-2" data-property="reviewing.last_year" data-title="<?= $this->text('admin-projects-review-last_year') ?>"></li>
     </ul>
 
     <ul class="row list-unstyled">
@@ -32,6 +32,6 @@
         <li class="col-xxs-4 col-xs-2" data-property="rejected.week" data-title="<?= $this->text('admin-projects-rejected-week') ?>"></li>
         <li class="col-xxs-4 col-xs-2" data-property="rejected.month" data-title="<?= $this->text('admin-projects-rejected-month') ?>"></li>
         <li class="col-xxs-4 col-xs-2" data-property="rejected.year" data-title="<?= $this->text('admin-projects-rejected-year') ?>"></li>
-        <li class="col-xxs-4 col-xs-2" data-property="rejected.lastyear" data-title="<?= $this->text('admin-projects-rejected-lastyear') ?>"></li>
+        <li class="col-xxs-4 col-xs-2" data-property="rejected.last_year" data-title="<?= $this->text('admin-projects-rejected-last_year') ?>"></li>
     </ul>
 </div>

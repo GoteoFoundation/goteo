@@ -63,7 +63,7 @@ module.exports = function(grunt) {
     }
 
     
-    grunt.log.ok('CURRENT DIR',GOTEO.dir),
+    grunt.log.ok('CURRENT DIR',GOTEO.dir);
     // Project configuration.
     grunt.initConfig({
         // Metadata.

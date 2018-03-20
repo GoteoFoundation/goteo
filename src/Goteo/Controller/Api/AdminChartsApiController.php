@@ -279,7 +279,7 @@ class AdminChartsApiController extends ChartsApiController {
                 if(strpos($k, '_gain') !== false)
                     $totals[$slot][$k . '_formatted'] = number_format($v, 1, Currency::get('', 'decimal'), Currency::get('', 'thousands')) . '%';
                 elseif(strpos($k, 'amount') !== false || in_array($target, ['fees', 'commissions'])) 
-                    $totals[$slot][$k . '_formatted'] = \amount_format($v, 2);
+                    $totals[$slot][$k . '_formatted'] = \amount_format($v);
             }
         }
         // print_r($totals);die;

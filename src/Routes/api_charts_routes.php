@@ -80,6 +80,7 @@ $api->add('api-chart-totals-invests', new Route(
           'method' => 'global'
         )
 ));
+
 // Totals for projects
 $api->add('api-chart-totals-projects', new Route(
     '/charts/totals/projects/{part}',
