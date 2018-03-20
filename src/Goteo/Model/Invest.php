@@ -207,7 +207,7 @@ class Invest extends \Goteo\Core\Model {
     /**
      * reusable sql filters for searching in invests table
      */
-    private static function getSQLFilter($filters = [], $node = null) {
+    public static function getSQLFilter($filters = [], $node = null) {
         $values = [];
         $sqlFilter = [];
 
