@@ -9,6 +9,7 @@
 // 'test/spec/**/*.js'
 //
 GOTEO = {
+    dir: process.cwd(),
     app: 'public',
     templates: 'Resources/templates',
     src: 'src',
@@ -21,7 +22,7 @@ GOTEO = {
     // var/php/php.ini file to config/php.ini
     // and edit it with your own data
     phpINI: 'var/php/php.ini',
-    configFile: process.env.GOTEO_CONFIG_FILE || 'config/settings.yml'
+    configFile: process.env.GOTEO_CONFIG_FILE || process.cwd() + '/config/settings.yml'
 };
 
 module.exports = function(grunt) {
@@ -61,10 +62,8 @@ module.exports = function(grunt) {
         grunt.log.ok('Using livePort from settings: ' + livePort);
     }
 
-    var dir = process.cwd();
-    grunt.log.ok('CURRENT DIR',dir);
-
-    GOTEO.dir = dir;
+    
+    grunt.log.ok('CURRENT DIR',GOTEO.dir),
     // Project configuration.
     grunt.initConfig({
         // Metadata.
