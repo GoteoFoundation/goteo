@@ -23,22 +23,16 @@ through which recipients can access the Corresponding Source.
 for the JavaScript code in this page.
 */
 
+function adminProntoLoad (href, target) {
+    target = target || '#admin-content';
+    return prontoLoad(href, target);
+}
+
+
 /**
  * Document ready
  */
-
 $(function(){
-    var prontoLoad = function(href, target) {
-        target = target || '#admin-content';
-        prontoTarget = target;
-        prontoScroll = target;
-        console.log('admin pronto load into', prontoTarget, href);
-
-        $.pronto('defaults', {
-            target: { title: 'title', content: prontoTarget }
-        });
-        $.pronto('load', href);
-    };
 
     // Some tweaks on pronto links
     $('#main').off('click', 'a.pronto');
@@ -49,7 +43,7 @@ $(function(){
         var target = $(this).attr('target');
         if(!target || href.indexOf('/admin/') === 0) {
             e.preventDefault();
-            prontoLoad(href, '#admin-content');
+            adminProntoLoad(href, '#admin-content');
         }
     });
 
@@ -66,7 +60,7 @@ $(function(){
                            ;
         console.log('submit', action, query, method, e);
         if(method === 'get') {
-            prontoLoad(action + '?' + query, '#admin-content');
+            adminProntoLoad(action + '?' + query, '#admin-content');
         }
     });
 
@@ -101,7 +95,7 @@ $(function(){
         } else {
             href += '&ajax';
         }
-        prontoLoad(href, '#manage-' + id);
+        adminProntoLoad(href, '#manage-' + id);
     });
 
     /**  jQuery x-Editable plugins tweaks */
@@ -163,8 +157,6 @@ $(function(){
                     });
                     // initialize the bloodhound suggestion engine
                     projects.initialize();
-                    // ensure default users are read on initialization
-                    projects.get();
 
                     engines.push({
                         name: 'projects',
@@ -199,11 +191,11 @@ $(function(){
                 })
                 .on('typeahead:asynccancel typeahead:asyncreceive', function (event) {
                     $(event.target).removeClass('loading');
-                })
-                .on('typeahead:select', function (event, datum, name) {
-                    console.log('selected',name, event, datum);
-                    if(datum.url) location.href = datum.url;
                 });
+                // .on('typeahead:select', function (event, datum, name) {
+                //     console.log('selected',name, event, datum);
+                //     if(datum.url) location.href = datum.url;
+                // });
         });
 
     };
