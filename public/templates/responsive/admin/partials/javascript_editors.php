@@ -3,7 +3,7 @@
 <script type="text/javascript" src="<?= SRC_URL ?>/assets/vendor/simplemde/dist/simplemde.min.js"></script>
 <script type="text/javascript" src="<?= SRC_URL ?>/assets/vendor/summernote/dist/summernote.min.js"></script>
 <script type="text/javascript" src="<?= SRC_URL ?>/assets/vendor/bootstrap-tagsinput/dist/bootstrap-tagsinput.min.js"></script>
-<script type="text/javascript" src="<?= SRC_URL ?>/assets/vendor/typeahead.js/dist/typeahead.bundle.min.js"></script>
+<script type="text/javascript" src="<?= SRC_URL ?>/assets/vendor/corejs-typeahead/dist/typeahead.bundle.min.js"></script>
 <script type="text/javascript">
     // Disable dropzone auto discover...
     Dropzone.autoDiscover = false;

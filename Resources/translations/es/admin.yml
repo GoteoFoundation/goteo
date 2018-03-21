@@ -104,6 +104,7 @@ admin-home-title: Administrar Goteo
 admin-list: Listado
 admin-stats: Estadísticas
 admin-list-total: 'Total: <strong>%s</strong> resultados'
+admin-search-global: 'Proyecto, canal, convocatoria...'
 
 admin-already-impersonating: 'Ya estas suplantando un usuario, por favor cierra primero la sesión!'
 admin-rebase-user: 'Cambiar el ID de usuario'

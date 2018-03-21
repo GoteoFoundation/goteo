@@ -105,9 +105,9 @@ module.exports = function(grunt) {
     //  any files that need to be watched for changes, and open a browser to our dev URL
     grunt.registerTask('nginx_prepare', function() {
         ['/var/php/tmp/nginx/client_temp', '/var/php/tmp/nginx/cache', '/var/php/sessions'].forEach(function(d) {
-            grunt.file.mkdir(dir + d);
-            if( !grunt.file.exists(dir + d)) {
-                grunt.fail.fatal('Not existing dir: '+ dir + d);
+            grunt.file.mkdir(GOTEO.dir + d);
+            if( !grunt.file.exists(GOTEO.dir + d)) {
+                grunt.fail.fatal('Not existing dir: '+ GOTEO.dir + d);
             }
         });
     });

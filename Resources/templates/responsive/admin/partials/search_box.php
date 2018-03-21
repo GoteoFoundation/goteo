@@ -1,11 +1,12 @@
 <?php
 
 if(!$filter = $this->a('filter')) return;
-
+$class = $filter['_class'];
+if(!$class) $class = 'pronto';
 $action_prefix = $filter['_action_prefix'] ? $filter['_action_prefix'] : '/admin';
 $method = $filter['_method'] ? $filter['_method'] : 'get';
 
-?><form class="form-inline pronto" action="<?= $action_prefix . $filter['_action'] ?>" method="<?= $method ?>">
+?><form class="form-inline <?= $class ?>" action="<?= $action_prefix . $filter['_action'] ?>" method="<?= $method ?>">
     <?php foreach($filter as $key => $value):
         if($key{0} === '_') continue;
     ?>

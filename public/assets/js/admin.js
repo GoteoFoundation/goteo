@@ -129,10 +129,83 @@ $(function(){
 
     });
 
-
     var initBindings = function() {
         // Manual initialization of collapse plugin to apply involved classes
         $('.collapsable').collapse();
+        // Typeahead global search
+        $('.admin-typeahead').each(function () {
+            var $this = $(this);
+            var sources = $this.data('sources').split(',');
+            var engines = [{ 
+                minLength: 0, 
+                highlight: true
+            }];
+            sources.forEach(function(source) {
+                if(source === 'projects') {
+                    var projects = new Bloodhound({
+                        // datumTokenizer: function (list) {
+                        //     console.log('token', list);
+                        //     return Bloodhound.tokenizers.whitespace(list.name);
+                        // },
+                        datumTokenizer: Bloodhound.tokenizers.obj.whitespace('name', 'subtitle'),
+                        identify: function (o) { return o.id; },
+                        dupDetector: function (a, b) { return a.id === b.id; },
+                        queryTokenizer: Bloodhound.tokenizers.whitespace,
+                        prefetch: '/api/projects?status=3',
+                        remote: {
+                            url: '/api/projects?status=1,2,3,4,5,6&q=%QUERY',
+                            wildcard: '%QUERY',
+                            filter: function (response) {
+                                console.log('remote hit', response);
+                                return response.list;
+                            }
+                        }
+                    });
+                    // initialize the bloodhound suggestion engine
+                    projects.initialize();
+                    // ensure default users are read on initialization
+                    projects.get();
+
+                    engines.push({
+                        name: 'projects',
+                        displayKey: 'name',
+                        source: projects,
+                        templates: {
+                            header: '<h3>Projects</h3>',
+                            suggestion: function(datum) {
+                                console.log(datum);
+                                var label = 'default';
+                                if(datum.status === 2) label = 'info';
+                                if(datum.status === 3) label = 'warning';
+                                if(datum.status === 4) label = 'success';
+                                if(datum.status === 5) label = 'success';
+                                if(datum.status === 6) label = 'danger';
+                                var t = '<div><img src="' + datum.image + '" class="img-circle"> ';
+                                t += '<span class="label label-' + label + '">' + datum.status_desc + '</span> ';
+                                t += datum.name + '</div>';
+                                return t;
+                            }
+                        }
+                    });
+                }
+            });
+            $.fn.typeahead.apply($this.find('.typeahead'), engines)
+                .on('typeahead:active', function (event) {
+                    $(event.target).select();
+                })
+                .on('typeahead:asyncrequest', function (event) {
+                    // console.log('async loading', event);
+                    $(event.target).addClass('loading');
+                })
+                .on('typeahead:asynccancel typeahead:asyncreceive', function (event) {
+                    $(event.target).removeClass('loading');
+                })
+                .on('typeahead:select', function (event, datum, name) {
+                    console.log('selected',name, event, datum);
+                    if(datum.url) location.href = datum.url;
+                });
+        });
+
     };
     initBindings();
     $(window).on("pronto.render", function(e){
