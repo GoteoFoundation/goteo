@@ -49,7 +49,9 @@
 <!-- POST PROCESSING THIS JAVASCRIPT BY GRUNT -->
 <!-- build:js assets/js/editors.js -->
 <script type="text/javascript" src="<?= SRC_URL ?>/assets/js/forms.js"></script>
+<script type="text/javascript" src="<?= SRC_URL ?>/assets/js/charts/d3-discrete-values.js"></script>
 <script type="text/javascript" src="<?= SRC_URL ?>/assets/js/charts/d3-pie.js"></script>
+<script type="text/javascript" src="<?= SRC_URL ?>/assets/js/charts/d3-timemetrics.js"></script>
 <!-- endbuild -->
 
 

@@ -3535,6 +3535,57 @@ namespace Goteo\Model {
                 $values[':consultant'] = $filters['consultant'];
                 $innerJoin = " INNER JOIN user_project ON user_project.project = project.id";
             }
+
+            if (!empty($filters['created_from'])) {
+                $sqlFilter .= " AND project.created >= :created_from";
+                $values[':created_from'] = $filters['created_from'];
+            }
+            if (!empty($filters['created_until'])) {
+                $sqlFilter .= " AND project.created <= :created_until";
+                $values[':created_until'] = $filters['created_until'];
+            }
+            if (!empty($filters['published_from'])) {
+                $sqlFilter .= " AND project.published >= :published_from";
+                $values[':published_from'] = $filters['published_from'];
+            }
+            if (!empty($filters['published_until'])) {
+                $sqlFilter .= " AND project.published <= :published_until";
+                $values[':published_until'] = $filters['published_until'];
+            }
+            if (!empty($filters['updated_from'])) {
+                $sqlFilter .= " AND project.updated >= :updated_from";
+                $values[':updated_from'] = $filters['updated_from'];
+            }
+            if (!empty($filters['updated_until'])) {
+                $sqlFilter .= " AND project.updated <= :updated_until";
+                $values[':updated_until'] = $filters['updated_until'];
+            }
+            if (!empty($filters['success_from'])) {
+                $sqlFilter .= " AND project.success >= :success_from";
+                $values[':success_from'] = $filters['success_from'];
+            }
+            if (!empty($filters['success_until'])) {
+                $sqlFilter .= " AND project.success <= :success_until";
+                $values[':success_until'] = $filters['success_until'];
+            }
+            if (!empty($filters['closed_from'])) {
+                $sqlFilter .= " AND project.closed >= :closed_from";
+                $values[':closed_from'] = $filters['closed_from'];
+            }
+            if (!empty($filters['closed_until'])) {
+                $sqlFilter .= " AND project.closed <= :closed_until";
+                $values[':closed_until'] = $filters['closed_until'];
+            }
+            if (!empty($filters['passed_from'])) {
+                $sqlFilter .= " AND project.passed >= :passed_from";
+                $values[':passed_from'] = $filters['passed_from'];
+            }
+            if (!empty($filters['passed_until'])) {
+                $sqlFilter .= " AND project.passed <= :passed_until";
+                $values[':passed_until'] = $filters['passed_until'];
+            }
+
+            // @deprecated, use status instead
             if (!empty($filters['multistatus'])) {
                 $sqlFilter .= " AND project.status IN ({$filters['multistatus']})";
             }
@@ -3748,22 +3799,44 @@ namespace Goteo\Model {
                     ";
 
             if($count) {
+                if($count === 'all') {
+                    $what = 'SUM(project.amount) AS total_amount, COUNT(project.id) AS total_projects, SUM(project_account.fee * project.amount / 100) AS total_fee';
+                    $innerJoin .= ' LEFT JOIN project_account ON project_account.project = project.id';
+                }
+                elseif($count === 'money') {
+                    $what = 'SUM(project.amount)';
+                }
+                elseif($count === 'fee') {
+                    $what = 'SUM(project_account.fee * project.amount / 100)';
+                    $innerJoin .= ' LEFT JOIN project_account ON project_account.project = project.id';
+                }
+                else {
+                    $what = 'COUNT(project.id)';
+                }
                 if($location_parts) {
-                    $sql .= "SELECT COUNT(id)
-                    FROM (SELECT project.id,project.project_location,project_location.latitude,project_location.longitude $from $innerJoin WHERE $where) as FirstCut
+                    $sql .= "SELECT $what
+                    FROM (SELECT project.id,project.amount,project.fee,project.project_location,project_location.latitude,project_location.longitude $from $innerJoin WHERE $where) as FirstCut
                     WHERE
                     {$location_parts['where']}";
                     // print_r($values);die($sql);
                 } else {
                     // Return count
-                    $sql = "SELECT COUNT(project.id)
+                    $sql = "SELECT $what
                         $from
                         $innerJoin
                         WHERE
                         $where";
                         //die(\sqldbg($sql, $values));
                 }
-                return (int) self::query($sql, $values)->fetchColumn();
+                if($count === 'all') {
+                    $ob = self::query($sql, $values)->fetchObject();
+                    return ['amount' => (float) $ob->total_amount, 'projects' => (int) $ob->total_projects, 'fee' => (float) $ob->total_fee];
+                }
+                $total = self::query($sql, $values)->fetchColumn();
+                if(in_array($count, ['money', 'fee'])) {
+                    return (float) $total;
+                }
+                return (int) $total;
             }
 
             $offset = (int) $offset;

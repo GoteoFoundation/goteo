@@ -113,3 +113,10 @@ admin-title-roles: Rols
 admin-title-amount: Invertit
 admin-title-info: Info
 
+
+admin-all-project-referers: 'Origen de visites als projectes'
+admin-all-invests-referers: 'Origen de visites a les aportacions a projectes'
+admin-all-call-referers: 'Origen de visites a les convocatòries'
+admin-all-project-devices: 'Dispositiu usat en les pàgines de projectes'
+admin-all-invests-devices: 'Dispositiu usat en les aportacions a projectes'
+admin-all-call-devices: 'Dispositiu usat en las pàgines de convocatòries'

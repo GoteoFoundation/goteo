@@ -188,7 +188,7 @@ function printAmount() {
     }
 
     var parseDate  = d3.timeParse('%Y-%m-%d');
-    d3.json('/api/charts/<?= $this->project->id ?>/invests', function (error, rawData) {
+    d3.json('/api/projects/<?= $this->project->id ?>/charts/invests', function (error, rawData) {
       if (error) throw error;
 
       var data = rawData.map(function (d) {
