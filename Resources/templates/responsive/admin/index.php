@@ -7,9 +7,9 @@
     <div class="inner-container">
         <h2><?= $this->text('admin-home-title') ?></h2>
 
-
-        <p>What a wonderful world...</p>
-
+        <?= $this->insert('admin/partials/typeahead') ?>
+        <hr>
+        
         <div class="row">
             <?php foreach($this->raw('links') as $link => $text): ?>
             <div class="col-xs-4 col-sm-3"><a href="<?= $link ?>"><?= $text ?></a></div>

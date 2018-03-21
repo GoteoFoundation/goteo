@@ -3530,6 +3530,15 @@ namespace Goteo\Model {
                 $values[':query'] = "%{$filters['global']}%";
             }
 
+            if (!empty($filters['basic'])) {
+                $sqlFilter .= ' AND (project.id LIKE :basic
+                    OR project.name LIKE :basic
+                    OR project.subtitle LIKE :basic
+                    OR project.keywords LIKE :basic)';
+                // TODO: search in project_lang too with $innerJoin
+                $values[':basic'] = "%{$filters['basic']}%";
+            }
+
             if ((!empty($filters['consultant'])) && ($filters['consultant'] != -1)) {
                 $sqlFilter .= " AND user_project.user = :consultant";
                 $values[':consultant'] = $filters['consultant'];

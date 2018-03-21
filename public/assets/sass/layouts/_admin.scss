@@ -37,6 +37,45 @@
     }
   }
 
+  .admin-typeahead {
+    &::before {
+      content: "\f002";
+      font-family: FontAwesome;
+      margin: 0 5px;
+      color: #999;
+    }
+    .twitter-typeahead {
+      width: calc(100% - 40px);
+    }
+    .typeahead {
+      &.loading {
+        background-position: right;
+        background-size: 24px;
+        min-height: auto;
+      }
+    }
+    .tt-dataset {
+      h3 {
+        font-size: 1.3rem;
+        border-bottom: 1px solid rgba(0, 0, 0, 0.15);
+        background: #f0f0f0;
+        padding: 3px 20px;
+        margin: -5px 0 0 0;
+        font-weight: 500;
+        text-transform: uppercase;
+      }
+    }
+    .tt-suggestion {
+      img {
+        width: 32px;
+        height: 32px;
+      }
+      label {
+        // min-width: 40px;
+      }
+    }
+    margin-bottom: 20px;
+  }
 
   // Custom classes
   a.collapsable {
