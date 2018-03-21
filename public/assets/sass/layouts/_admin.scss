@@ -38,6 +38,7 @@
   }
 
   .admin-typeahead {
+    margin: 15px 0;
     &::before {
       content: "\f002";
       font-family: FontAwesome;
@@ -74,7 +75,6 @@
         // min-width: 40px;
       }
     }
-    margin-bottom: 20px;
   }
 
   // Custom classes

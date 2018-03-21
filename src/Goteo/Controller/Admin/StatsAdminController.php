@@ -33,8 +33,10 @@ class StatsAdminController extends AbstractAdminController {
                 ['_controller' => __CLASS__ . "::indexAction"]
             ),
             new Route(
-                '/{zone}',
-                ['_controller' => __CLASS__ . "::zoneAction"]
+                '/{zone}/{part}',
+                ['_controller' => __CLASS__ . "::zoneAction",
+                'part' => 'projects'
+                ]
             )
         ];
     }
@@ -51,13 +53,14 @@ class StatsAdminController extends AbstractAdminController {
     // }
 
     public function indexAction(Request $request) {
-        return $this->zoneAction('index', $request);
+        return $this->zoneAction('index', '', $request);
     }
 
-    public function zoneAction($zone, Request $request) {
+    public function zoneAction($zone, $part = 'projects', Request $request) {
         $template = "admin/stats/$zone";
+        if($part) $template .= "/$part";
         if(!$this->getViewEngine()->find($template)) {
-            throw new ControllerException("Template [$zone] not found");
+            throw new ControllerException("Template [$template] not found");
         }
 
         $filters = [
@@ -65,7 +68,7 @@ class StatsAdminController extends AbstractAdminController {
             'to' => $request->query->has('to') ? $request->query->get('to') : null
         ];
 
-        return $this->viewResponse("admin/stats/$zone", ['filters' => $filters]);
+        return $this->viewResponse($template, ['filters' => $filters, 'zone' => $zone, 'part' => $part]);
     }
 
 

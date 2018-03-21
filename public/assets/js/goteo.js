@@ -86,6 +86,17 @@ function pageLoaded(e) {
     goteo.trace("Destroy old page", e, 'prontoTarget:', prontoTarget);
 }
 
+function prontoLoad(href, target) {
+    target = target || '#main-content';
+    prontoTarget = target;
+    prontoScroll = target;
+
+    $.pronto('defaults', {
+        target: { title: 'title', content: prontoTarget }
+    });
+    $.pronto('load', href);
+}
+
 function pageRendered(e) {
     if(e === undefined) return;
     // Bind new events and initialize plugins
