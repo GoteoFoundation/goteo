@@ -455,6 +455,24 @@
   }
 }
 
+
+.calls-summary{
+  th{
+    color: $color-aux-green;
+  }
+  td{
+    vertical-align: middle !important;
+    text-align: left;
+    .img-owner{
+      border-radius: 50%;
+      width: 40px;
+      height: 40px;
+      padding: 10px;
+      background-color: #fff;
+    }
+  }
+}
+
 .project-widget-admin-panel {
   padding: 20px;
   .btn-group {
