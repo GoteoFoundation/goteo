@@ -30,10 +30,12 @@ namespace Goteo\Model\Call {
                 // traduccion default english
                 if(self::default_lang($lang) === Config::get('lang')) {
                     $different_select=" IFNULL(post_lang.title, post.title) as title,
+                                        IFNULL(post_lang.subtitle, post.subtitle) as subtitle,
                                     IFNULL(post_lang.text, post.text) as `text`";
                 }
                 else {
                     $different_select=" IFNULL(post_lang.title, IFNULL(eng.title, post.title)) as title,
+                                        IFNULL(post_lang.subtitle, IFNULL(eng.subtitle, post.subtitle)) as subtitle,
                                         IFNULL(post_lang.text, IFNULL(eng.text, post.text)) as `text`";
                     $eng_join=" LEFT JOIN post_lang as eng
                                     ON  eng.id = post.id
@@ -46,6 +48,7 @@ namespace Goteo\Model\Call {
                             post.id as id,
                             $different_select,
                             post.image as `image`,
+                            post.header_image as `header_image`,
                             DATE_FORMAT(post.date, '%d-%m-%Y') as date,
                             DATE_FORMAT(post.date, '%d | %m | %Y') as fecha,
                             post.author as author,
@@ -77,6 +80,7 @@ namespace Goteo\Model\Call {
 
                     $post->gallery = Image::getModelGallery('post', $post->id);
                     $post->image = Image::getModelImage($post->image, $post->gallery);
+                    $post->header_image = Image::getModelImage($post->header_image);
 
                     $list[] = $post;
                 }

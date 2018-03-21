@@ -25,7 +25,9 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 class BlogController extends \Goteo\Core\Controller {
 
     public function __construct() {
-
+        // Cache & replica read activated in this controller
+        \Goteo\Core\DB::cache(true);
+        // \Goteo\Core\DB::replica(true);
     }
 
     public function indexAction ($post = '', Request $request) {
@@ -104,7 +106,7 @@ class BlogController extends \Goteo\Core\Controller {
 
         $post=Post::get($post, Lang::current());
 
-        return $this->viewResponse('blog/post', 
+        return $this->viewResponse('blog/post',
                 [
                     'post' => $post,
                     'author' => $author

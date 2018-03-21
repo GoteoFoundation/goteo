@@ -4,15 +4,24 @@
 $(function(){
     var _get_ajax_password_result = function() {
         var email=$("#password-recover-email").val();
+        $('#myModal form').addClass('loading-container');
+        $('#myModal form input').attr('disabled', true);
 
         $.ajax({
             url: "/password-recovery",
             data: { 'email' : email, 'return' : '<?= urlencode($this->raw('return')) ?>'  },
-            type: 'post',
-            success: function(result){
+            type: 'post'
+            })
+            .success(function(result){
                 $("#modal-content").html(result);
-            }
-        });
+            })
+            .fail(function(){
+                $("#modal-content").append('<p class="text-tanger">ERROR!</p>');
+            })
+            .always(function(){
+                $('#myModal form').removeClass('loading-container');
+                $('#myModal form input').attr('disabled', false);
+            })
    };
 
    $("#myModal").on('keypress', "#password-recover-email", function (e) {

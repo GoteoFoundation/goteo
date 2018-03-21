@@ -4,7 +4,7 @@
 
 body.blog {
 
-    background-color: $background-main-home;
+    background-color: $background-white;
 
     .top-navbar{
       background-color: $background-yellow;
@@ -62,6 +62,7 @@ body.blog {
     
      div.sticky-menu{
       padding-top: 10px;
+      background-color: $background-main-home;
       .social{
         margin-left: 0px;
       }
@@ -115,9 +116,8 @@ body.blog {
 
     div.section.post-content{
       div.text{
-        margin-top:40px;
         font-size: 16px;
-        padding-bottom: 30px;
+        padding: 40px 80px 30px 80px;
         img.main-image{
           margin: 10px auto;
         }
@@ -131,7 +131,11 @@ body.blog {
   // Tablets customization
 
     @media (max-width: $breakpoint-md + 1) {
-    
+      div.section.post-content{
+        div.text{
+          padding: 40px 0px 30px 0px;
+        }
+      }
     }
 
     @media (max-width: $breakpoint-sm - 1) {
