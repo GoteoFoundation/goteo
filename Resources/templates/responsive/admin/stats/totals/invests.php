@@ -8,6 +8,14 @@ if($this->has_query('project')) {
     $value = $this->get_query('project');
     $query = http_build_query(['project' => $value]);
 }
+elseif($this->has_query('call')) {
+    $value = $this->get_query('call');
+    $query = http_build_query(['call' => $value]);
+}
+elseif($this->has_query('matcher')) {
+    $value = $this->get_query('matcher');
+    $query = http_build_query(['matcher' => $value]);
+} 
 // Nice name
 if($this->has_query('text')) $value = $this->get_query('text');
 ?>
@@ -34,11 +42,7 @@ if($this->has_query('text')) $value = $this->get_query('text');
 <script type="text/javascript">
 $('.admin-typeahead').on('typeahead:select', function(event, datum, name) {
     console.log('search for', event, datum, name);
-    if(name === 'projects') {
-        adminProntoLoad(location.pathname + '?project=' + datum.id + '&text=' + datum.name );
-    } else {
-        alert('error' + name + ' not ready yet');
-    }
+    adminProntoLoad(location.pathname + '?' + name + '=' + datum.id + '&text=' + datum.name );
 });
 </script>
 <?php $this->append() ?>

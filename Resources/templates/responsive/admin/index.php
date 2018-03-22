@@ -29,3 +29,11 @@
 
 <?php $this->replace() ?>
 
+
+<?php $this->section('footer') ?>
+<script type="text/javascript">
+$('.admin-typeahead').on('typeahead:select', function(event, datum, name) {
+    if(datum && datum.url) location = datum.url;
+});
+</script>
+<?php $this->append() ?>

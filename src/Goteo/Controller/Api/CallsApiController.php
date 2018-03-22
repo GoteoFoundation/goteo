@@ -69,6 +69,8 @@ class CallsApiController extends AbstractApiController {
             foreach(['status', 'amount', 'maxdrop', 'maxproj', 'days'] as $k)
                 $ob[$k] = (int)$call->$k;
             $ob['image'] = $call->image ? $call->getImage()->getLink(64,64,true) : null;
+            $ob['backimage'] = $call->backimage ? $call->getBackImage()->getLink(64,64,true) : null;
+            $ob['logo'] = $call->logo ? $call->getLogo()->getLink(64,64,true) : null;
             $ob['status_desc'] = $call->getTextStatus();
             $ob['url'] = '/call/' . $call->id;
             $list[] = $ob;

@@ -15,7 +15,7 @@ class Call extends \Goteo\Core\Model {
 
     // CALL STATUS IDs
     const STATUS_EDITING     = 1;  // edicion
-    const STATUS_REVIEWING   = 2; // en revisFión
+    const STATUS_REVIEWING   = 2; // en revisión
     const STATUS_OPEN        = 3; // en campaña de inscripción
     const STATUS_ACTIVE      = 4; // en campaña de repartir dinero
     const STATUS_COMPLETED   = 5; // se acabo el dinero
@@ -434,7 +434,7 @@ class Call extends \Goteo\Core\Model {
     }
     public function getBackImage() {
         if(!$this->backImageInstance instanceOf Image) {
-            $this->backImageInstance = new Image($this->backImage);
+            $this->backImageInstance = new Image($this->backimage);
         }
         return $this->backImageInstance;
     }

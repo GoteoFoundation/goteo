@@ -33,32 +33,39 @@ class StatsAdminController extends AbstractAdminController {
                 ['_controller' => __CLASS__ . "::indexAction"]
             ),
             new Route(
-                '/{zone}/{part}',
-                ['_controller' => __CLASS__ . "::zoneAction",
-                'part' => 'projects'
+                '/{sub}/{part}',
+                ['_controller' => __CLASS__ . "::subAction",
+                'part' => ''
                 ]
             )
         ];
     }
 
-    public static function getGroup() {
-        return 'main';
-    }
-
-    // public static function getSidebar() {
-    //     return [
-    //         '/users' => self::getLabel(),
-    //         // '/users/stats' => Text::get('admin-stats')
-    //     ];
+    // public static function getGroup() {
+    //     return 'stats';
     // }
 
-    public function indexAction(Request $request) {
-        return $this->zoneAction('index', '', $request);
+    public static function getSidebar() {
+        return [
+            '/stats' => Text::get('admin-summary'),
+            '/stats/totals/projects' => Text::get('admin-projects'),
+            '/stats/totals/invests' => Text::get('admin-invests'),
+            '/stats/timeline' => Text::get('admin-timeline'),
+            '/stats/origins' => Text::get('admin-origins'),
+        ];
     }
 
-    public function zoneAction($zone, $part = 'projects', Request $request) {
-        $template = "admin/stats/$zone";
+    public function indexAction(Request $request) {
+        return $this->subAction('index', '', $request);
+    }
+
+    public function subAction($sub, $part = '', Request $request) {
+        $template = "admin/stats/$sub";
         if($part) $template .= "/$part";
+        elseif($sub === 'totals') {
+            // Redirect to project totals
+            return $this->redirect('/admin/stats/totals/projects');
+        }
         if(!$this->getViewEngine()->find($template)) {
             throw new ControllerException("Template [$template] not found");
         }
@@ -68,7 +75,7 @@ class StatsAdminController extends AbstractAdminController {
             'to' => $request->query->has('to') ? $request->query->get('to') : null
         ];
 
-        return $this->viewResponse($template, ['filters' => $filters, 'zone' => $zone, 'part' => $part]);
+        return $this->viewResponse($template, ['filters' => $filters, 'sub' => $sub, 'part' => $part]);
     }
 
 

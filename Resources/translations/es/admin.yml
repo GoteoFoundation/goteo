@@ -81,6 +81,10 @@ admin-text-type-plain: 'Texto simple'
 admin-user: Usuario
 admin-user-no-projects: 'No ha creado ningún proyecto todavía'
 admin-users: Usuarios
+admin-calls: Convocatorias
+admin-matchers: Matchers
+admin-channels: Canales
+admin-users: Usuarios
 admin-yes: Si
 admin-impersonate: Suplantar
 admin-impersonate-user: Suplantar a %s

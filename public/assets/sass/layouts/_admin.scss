@@ -38,17 +38,31 @@
   }
 
   .admin-typeahead {
-    margin: 15px 0;
-    &::before {
-      content: "\f002";
-      font-family: FontAwesome;
-      margin: 0 5px;
-      color: #999;
-    }
+    margin: 0 0 15px 0;
+    // &::before {
+    //   content: "\f002";
+    //   font-family: FontAwesome;
+    //   margin: 0 5px;
+    //   color: #999;
+    // }
+    // .twitter-typeahead {
+      //   width: calc(100% - 40px);
+      // }
     .twitter-typeahead {
-      width: calc(100% - 40px);
+      width: 100%;
+    }
+    .has-feedback .form-control {
+        padding-left: 32px;
+        padding-right: 0;
+    }
+    .form-control-feedback {
+      right: auto;
+      left: 0;
+      top: 9px;
+      color:#bbb;
     }
     .typeahead {
+      vertical-align: middle !important;
       &.loading {
         background-position: right;
         background-size: 24px;
@@ -61,8 +75,8 @@
         border-bottom: 1px solid rgba(0, 0, 0, 0.15);
         background: #f0f0f0;
         padding: 3px 20px;
-        margin: -5px 0 0 0;
         font-weight: 500;
+        margin: 0 0 0 0;
         text-transform: uppercase;
       }
     }
@@ -74,9 +88,15 @@
       label {
         // min-width: 40px;
       }
+      &:first-child h3 {
+        margin-top: -5px;
+      }
+
     }
   }
-
+  .nav {
+    margin-bottom: 15px;
+  }
   // Custom classes
   a.collapsable {
     &::after {
