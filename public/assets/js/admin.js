@@ -28,7 +28,7 @@ function adminProntoLoad (href, target) {
     return prontoLoad(href, target);
 }
 
-
+goteo.typeahead_engines = goteo.typeahead_engines || {};
 /**
  * Document ready
  */
@@ -132,53 +132,15 @@ $(function(){
             var sources = $this.data('sources').split(',');
             var engines = [{ 
                 minLength: 0, 
+                hint: true,
                 highlight: true
             }];
             sources.forEach(function(source) {
-                if(source === 'projects') {
-                    var projects = new Bloodhound({
-                        // datumTokenizer: function (list) {
-                        //     console.log('token', list);
-                        //     return Bloodhound.tokenizers.whitespace(list.name);
-                        // },
-                        datumTokenizer: Bloodhound.tokenizers.obj.whitespace('name', 'subtitle'),
-                        identify: function (o) { return o.id; },
-                        dupDetector: function (a, b) { return a.id === b.id; },
-                        queryTokenizer: Bloodhound.tokenizers.whitespace,
-                        prefetch: '/api/projects?status=3',
-                        remote: {
-                            url: '/api/projects?status=1,2,3,4,5,6&q=%QUERY',
-                            wildcard: '%QUERY',
-                            filter: function (response) {
-                                console.log('remote hit', response);
-                                return response.list;
-                            }
-                        }
-                    });
-                    // initialize the bloodhound suggestion engine
-                    projects.initialize();
-
-                    engines.push({
-                        name: 'projects',
-                        displayKey: 'name',
-                        source: projects,
-                        templates: {
-                            header: '<h3>Projects</h3>',
-                            suggestion: function(datum) {
-                                console.log(datum);
-                                var label = 'default';
-                                if(datum.status === 2) label = 'info';
-                                if(datum.status === 3) label = 'warning';
-                                if(datum.status === 4) label = 'success';
-                                if(datum.status === 5) label = 'success';
-                                if(datum.status === 6) label = 'danger';
-                                var t = '<div><img src="' + datum.image + '" class="img-circle"> ';
-                                t += '<span class="label label-' + label + '">' + datum.status_desc + '</span> ';
-                                t += datum.name + '</div>';
-                                return t;
-                            }
-                        }
-                    });
+                if(goteo.typeahead_engines[source]) {
+                    engines.push(goteo.typeahead_engines[source]({
+                        remote_statuses: '1,2,3,4,5,6',
+                        defaults: true // Show a list of prefetch projects without typing
+                    }));
                 }
             });
             $.fn.typeahead.apply($this.find('.typeahead'), engines)
