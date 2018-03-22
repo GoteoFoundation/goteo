@@ -49,8 +49,8 @@ class StatsAdminController extends AbstractAdminController {
         return [
             '/stats' => Text::get('admin-summary'),
             '/stats/totals/projects' => Text::get('admin-projects'),
-            '/stats/totals/invests' => Text::get('admin-invests'),
-            '/stats/timeline' => Text::get('admin-timeline'),
+            '/stats/totals/invests' => Text::get('admin-stats-totals'),
+            '/stats/timeline' => Text::get('admin-aggregate-timeline'),
             '/stats/origins' => Text::get('admin-origins'),
         ];
     }

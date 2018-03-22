@@ -59,6 +59,7 @@ abstract class AbstractAdminController extends \Goteo\Core\Controller implements
         return $txt;
     }
 
+    // Only used if getSidebar is not defined
     public static function getGroup() {
         return 'consultants';
     }

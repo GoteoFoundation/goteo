@@ -73,6 +73,9 @@ admin-invests: Aportes
 admin-filters: 'Filtros'
 admin-remove-filters: 'Quitar filtros'
 admin-sponsors: Servicios
+admin-others: Otros
+admin-summary: Resumen
+admin-origins: Analítica de visitas
 admin-status: Estado
 admin-text-type: 'Procesar el texto como'
 admin-text-type-html: HTML
@@ -197,7 +200,9 @@ admin-projects-review-last_month: 'En revisión el mes pasado'
 admin-projects-review-year: 'En revisión este año'
 admin-projects-review-last_year: 'En revisión el año pasado'
 
-admin-stats-invest-totals: 'Aportes y comisiones'
+admin-stats-totals: 'Aportes y comisiones'
+admin-stats-invest-totals: 'Ingresos'
+admin-stats-commission-totals: 'Comisiones'
 admin-invest-raised-amount-today: 'Recaudado hoy'
 admin-invest-raised-total-today: 'Donaciones hoy'
 admin-invest-raised-amount-yesterday: 'Recaudado ayer'

@@ -311,4 +311,12 @@ abstract class AbstractPaymentMethod implements PaymentMethodInterface {
         return $fee;
     }
 
+    /**
+     * Internal payments does not increased raised amounts
+     * (pool)
+     * @return boolean
+     */
+    static public function isInternal() {
+        return false;
+    }
 }

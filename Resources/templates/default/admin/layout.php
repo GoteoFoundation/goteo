@@ -5,6 +5,7 @@
 
 $this->layout('layout', [
     'bodyClass' => 'admin',
+    'sidebarClass' => 'yellow',
     'jsreq_autocomplete' => true,
     'jquery' => 'latest' // Use the latest jquery release please...
     ]);

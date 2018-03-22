@@ -9,9 +9,6 @@ $query = '';
 
 <?php $this->section('admin-container-body') ?>
 
-<?= $this->insert('admin/stats/totals/partials/menu') ?>
-
-
 <div class="panel">
   <div class="panel-body">
     

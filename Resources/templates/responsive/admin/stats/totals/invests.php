@@ -22,17 +22,18 @@ if($this->has_query('text')) $value = $this->get_query('text');
 
 <?php $this->section('admin-container-body') ?>
 
-<?= $this->insert('admin/stats/totals/partials/menu') ?>
-
 <?= $this->insert('admin/partials/typeahead', ['value' => $value]) ?>
 
 <div class="panel">
   <div class="panel-body">
     
     <h5><?= $this->text('admin-stats-invest-totals') ?></h5>
-
+    
     <?= $this->insert('admin/stats/totals/partials/invests', ['query' => $query]) ?>
     
+    <h5><?= $this->text('admin-stats-commission-totals') ?></h5>
+    <?= $this->insert('admin/stats/totals/partials/commissions', ['query' => $query]) ?>
+
   </div>
 </div>
 
