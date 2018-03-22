@@ -164,14 +164,16 @@ $(function(){
           toggleSidebar();
         });
 
-        $toggle.affix({
-          offset: {
-            top: parseInt($toggle.css('top'), 10)
-            // bottom: function () {
-            //   return (this.bottom = $('.footer').outerHeight(true))
-            // }
-          }
-        });
+        if($toggle.affix) {
+            $toggle.affix({
+                    offset: {
+                top: parseInt($toggle.css('top'), 10)
+                // bottom: function () {
+                    //   return (this.bottom = $('.footer').outerHeight(true))
+                    // }
+                }
+            });
+        }
 
     }
 
