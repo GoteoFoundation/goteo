@@ -874,6 +874,14 @@ body.home {
             }
         }
 
+        .show-action{
+            text-align: center;
+            text-transform: uppercase;
+            padding: 25px 0 40px 0;
+            font-size: $font-size*1.2;
+            font-weight: 500;
+        }
+
         .matchfunding-call-to-action{
             background-color: $background-light-lilac;
             .call-action{

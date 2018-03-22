@@ -473,40 +473,45 @@
     border-bottom: 1px solid $color-aux-green !important;
     border-right: 1px solid $color-aux-green !important;
     color: 5px;
-    margin-bottom: 2px;
     text-transform: uppercase;
     font-weight: 500;
     padding-left: 20px !important;
     &:first-child{
       border: none !important;
-      border-top-left-radius: 5px;
-      border-bottom-left-radius: 5px;
+      padding: 0px !important;
     }
     &:last-child{
       border-top-right-radius: 5px;
       border-bottom-right-radius: 5px;
     }
+    a{
+      display: block;
+      padding: 8px;
+      padding-left: 20px !important;
+      border: none !important;
+      border-top-left-radius: 5px;
+      border-bottom-left-radius: 5px;
+      &.open{
+        color: $color-white;
+        background-color: $background-light-lilac;
+      }
 
-    &.open{
-      color: $color-white;
-      background-color: $background-light-lilac;
-    }
-
-    &.active{
-      color: $color-white;
-      background-color: $background-active-green !important;
-    }
+      &.active:first-child{
+        color: $color-white;
+        background-color: $background-active-green !important;
+      }
 
 
-    &.completed{
-      color: $primary-color;
-      background-color: $background-yellow;
+      &.completed{
+        color: $primary-color;
+        background-color: $background-yellow;
+      }
     }
     .img-owner{
       border-radius: 50%;
       width: 40px;
       height: 40px;
-      padding: 10px;
+      padding: 6px;
       background-color: #fff;
       margin-right: 10px;
     }

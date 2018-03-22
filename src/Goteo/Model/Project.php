@@ -4208,7 +4208,7 @@ namespace Goteo\Model {
 
 
         /*
-        * Return the number of active users in Goteo
+        * Return the success projects porcentage
         */
 
         static public function getSucessfulPercentage($matchfunding=false) {
@@ -4222,8 +4222,8 @@ namespace Goteo\Model {
 
             if($matchfunding)
             {
-                $filters_published['called']='all';
-                $filters_succesful['called']='all';
+                $filters_published['called']=$matchfunding;
+                $filters_succesful['called']=$matchfunding;
             }
 
             $num_published_projects=self::getList($filters_published, null, 0, 0, true);
@@ -4258,6 +4258,25 @@ namespace Goteo\Model {
         static public function getFundedProjects() {
 
             $filters=['status' => [self::STATUS_FUNDED, self::STATUS_FULFILLED]];
+
+            $num_projects=self::getList($filters, null, 0, 0, true);
+
+            return $num_projects;
+
+        }
+
+         /*
+        * Return the number of projects published in Goteo
+        */
+
+        static public function getPublishedProjects($matchfunding= false) {
+
+            $filters=['status' => [self::STATUS_IN_CAMPAIGN, self::STATUS_FUNDED, self::STATUS_FULFILLED, self::STATUS_UNFUNDED]];
+
+            if($matchfunding)
+            { 
+                $filters['called']=$matchfunding;
+            }
 
             $num_projects=self::getList($filters, null, 0, 0, true);
 
