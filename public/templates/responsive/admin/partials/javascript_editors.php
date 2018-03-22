@@ -17,6 +17,9 @@
         goteo.texts['form-editor-<?= $key ?>'] = '<?= $this->ee($this->text('form-editor-' . $key), 'js') ?>';
     <?php endforeach ?>
     goteo.texts['form-dragndrop-unsupported'] = '<?= $this->ee($this->text('form-dragndrop-unsupported'), 'js') ?>';
+    goteo.texts['admin-projects'] = '<?= $this->ee($this->text('admin-projects'), 'js') ?>';
+
+    goteo.typeahead_engines = goteo.typeahead_engines || {};
 
     // Forms process
     $(function(){
@@ -48,6 +51,8 @@
 </script>
 <!-- POST PROCESSING THIS JAVASCRIPT BY GRUNT -->
 <!-- build:js assets/js/editors.js -->
+<script type="text/javascript" src="<?= SRC_URL ?>/assets/js/typeahead/engine.projects.js"></script>
+<script type="text/javascript" src="<?= SRC_URL ?>/assets/js/typeahead/engine.calls.js"></script>
 <script type="text/javascript" src="<?= SRC_URL ?>/assets/js/forms.js"></script>
 <script type="text/javascript" src="<?= SRC_URL ?>/assets/js/charts/d3-discrete-values.js"></script>
 <script type="text/javascript" src="<?= SRC_URL ?>/assets/js/charts/d3-pie.js"></script>
