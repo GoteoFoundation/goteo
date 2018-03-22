@@ -61,7 +61,7 @@
       }
       &:first-child {
         >a, >button {
-            border-top-color:transparent;
+            border-top-color:transparent !important;
         }
       }
       &.active,&:hover,&:focus {
