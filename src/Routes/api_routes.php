@@ -139,6 +139,15 @@ $api->add('api-projects-invests-csv', new Route(
         )
 ));
 
+
+// Calls list
+$api->add('api-calls', new Route(
+    '/calls',
+    array('_controller' => 'Goteo\Controller\Api\CallsApiController::callsAction',
+        )
+));
+
+
 // Licenses list
 $api->add('api-licenses', new Route(
     '/licenses',

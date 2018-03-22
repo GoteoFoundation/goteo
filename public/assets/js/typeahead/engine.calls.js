@@ -1,6 +1,6 @@
 goteo.typeahead_engines = goteo.typeahead_engines || {};
 
-goteo.typeahead_engines.projects = function (settings) {
+goteo.typeahead_engines.calls = function (settings) {
     var prefetch_statuses = settings && settings.prefetch_statuses || '3',
         remote_statuses = settings && settings.remote_statuses || '3,4,5,6',
         defaults = settings && settings.defaults || false;
@@ -15,14 +15,14 @@ goteo.typeahead_engines.projects = function (settings) {
         dupDetector: function (a, b) { return a.id === b.id; },
         queryTokenizer: Bloodhound.tokenizers.whitespace,
         prefetch: {
-            url: '/api/projects?status=' + prefetch_statuses,
+            url: '/api/calls?status=' + prefetch_statuses,
             filter: function (response) {
                 // console.log('prefetch hit', response);  
                 return response.list;
             }
         },
         remote: {
-            url: '/api/projects?status=' + remote_statuses + '&q=%QUERY',
+            url: '/api/calls?status=' + remote_statuses + '&q=%QUERY',
             wildcard: '%QUERY',
             filter: function (response) {
                 // console.log('remote hit', response);
@@ -49,11 +49,11 @@ goteo.typeahead_engines.projects = function (settings) {
 
     // Engine
     return {
-        name: 'projects',
+        name: 'calls',
         displayKey: 'name',
         source: engineWithDefaults,
         templates: {
-            header: '<h3>' + (goteo.texts && goteo.texts['admin-projects'] || 'Projects') + '</h3>',
+            header: '<h3>' + (goteo.texts && goteo.texts['admin-calls'] || 'calls') + '</h3>',
             suggestion: function (datum) {
                 var label = 'default';
                 if (datum.status === 2) label = 'info';
