@@ -18,6 +18,10 @@
     <?php endforeach ?>
     goteo.texts['form-dragndrop-unsupported'] = '<?= $this->ee($this->text('form-dragndrop-unsupported'), 'js') ?>';
     goteo.texts['admin-projects'] = '<?= $this->ee($this->text('admin-projects'), 'js') ?>';
+    goteo.texts['admin-calls'] = '<?= $this->ee($this->text('admin-calls'), 'js') ?>';
+    goteo.texts['admin-matchers'] = '<?= $this->ee($this->text('admin-matchers'), 'js') ?>';
+    goteo.texts['admin-users'] = '<?= $this->ee($this->text('admin-users'), 'js') ?>';
+    goteo.texts['admin-channels'] = '<?= $this->ee($this->text('admin-channels'), 'js') ?>';
 
     goteo.typeahead_engines = goteo.typeahead_engines || {};
 

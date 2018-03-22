@@ -133,12 +133,15 @@ $(function(){
             var engines = [{ 
                 minLength: 0, 
                 hint: true,
-                highlight: true
+                highlight: true,
+                classNames: {
+                    hint: ''
+                }
             }];
             sources.forEach(function(source) {
                 if(goteo.typeahead_engines[source]) {
                     engines.push(goteo.typeahead_engines[source]({
-                        remote_statuses: '1,2,3,4,5,6',
+                        remote_statuses: '1,2,3,4,5,6', // TODO: from data-attributes
                         defaults: true // Show a list of prefetch projects without typing
                     }));
                 }

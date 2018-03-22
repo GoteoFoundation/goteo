@@ -1,6 +1,6 @@
 goteo.typeahead_engines = goteo.typeahead_engines || {};
 
-goteo.typeahead_engines.projects = function (settings) {
+goteo.typeahead_engines.project = function (settings) {
     var prefetch_statuses = settings && settings.prefetch_statuses || '3',
         remote_statuses = settings && settings.remote_statuses || '3,4,5,6',
         defaults = settings && settings.defaults || false;
@@ -10,7 +10,7 @@ goteo.typeahead_engines.projects = function (settings) {
         //     console.log('token', list);
         //     return Bloodhound.tokenizers.whitespace(list.name);
         // },
-        datumTokenizer: Bloodhound.tokenizers.obj.whitespace('name', 'subtitle'),
+        datumTokenizer: Bloodhound.tokenizers.obj.whitespace('id', 'name', 'subtitle'),
         identify: function (o) { return o.id; },
         dupDetector: function (a, b) { return a.id === b.id; },
         queryTokenizer: Bloodhound.tokenizers.whitespace,
@@ -49,7 +49,7 @@ goteo.typeahead_engines.projects = function (settings) {
 
     // Engine
     return {
-        name: 'projects',
+        name: 'project',
         displayKey: 'name',
         source: engineWithDefaults,
         templates: {
@@ -57,7 +57,7 @@ goteo.typeahead_engines.projects = function (settings) {
             suggestion: function (datum) {
                 var label = 'default';
                 if (datum.status === 2) label = 'info';
-                if (datum.status === 3) label = 'warning';
+                if (datum.status === 3) label = 'orange';
                 if (datum.status === 4) label = 'success';
                 if (datum.status === 5) label = 'success';
                 if (datum.status === 6) label = 'danger';
