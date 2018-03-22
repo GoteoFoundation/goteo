@@ -226,6 +226,10 @@ class AdminChartsApiController extends ChartsApiController {
             } else {
                 $method = 'global';
                 $methods = Payment::getMethods();
+                $filter['methods'] = array_keys(array_filter($methods, function($val){
+                    return !$val::isInternal();
+                }));
+                // print_r($filter['methods']);die;
             }
             if (in_array($target,['raised', 'active', 'raw'])) {
                 $filter['status'] = Invest::$RAISED_STATUSES;
@@ -278,7 +282,7 @@ class AdminChartsApiController extends ChartsApiController {
             foreach($parts as $k => $v) {
                 if(strpos($k, '_gain') !== false)
                     $totals[$slot][$k . '_formatted'] = number_format($v, 1, Currency::get('', 'decimal'), Currency::get('', 'thousands')) . '%';
-                elseif(strpos($k, 'amount') !== false || in_array($target, ['fees', 'commissions'])) 
+                elseif(strpos($k, 'amount') !== false || strpos($k, 'matchfunding') !== false || in_array($target, ['fees', 'commissions'])) 
                     $totals[$slot][$k . '_formatted'] = \amount_format($v);
             }
         }

@@ -33,6 +33,20 @@ body {
         #wrapper {
             @include wrapper-props();
         }
+
+        @media(min-width: $breakpoint-sm) {
+            #sidebar-menu {
+              width: $dashboard-sidebar-width;
+              background-color: rgba(0,0,0,0.2);
+              .sidebar-wrap {
+                // height: 100%;
+                width: 100%;
+              }
+            }
+            #sidebar-menu-toggle {
+                display: none;
+            }
+        }
     }
 
     &.sidebar-opened {
@@ -69,6 +83,7 @@ body {
 @import 'layouts/layout';
 @import 'layouts/sidebar';
 @import 'components/widgets';
+@import 'components/icons';
 
 .top-navbar {
     display:none;
@@ -102,13 +117,20 @@ body {
             position: relative;
             display: block;
         }
-        & >li >a {
-            position: relative;
-            display: block;
-            // padding: 10px 15px;
+        & >li {
+            >a {
+                position: relative;
+                display: block;
+                padding: 10px 15px 10px 30px;
+            }
+            &.nopadding > a {
+                padding-left:5px;
+            }
+            .fa.fa-2x {
+                width: 30px;
+                font-size: 1.1em;
+            }
         }
-
-
     }
 }
 

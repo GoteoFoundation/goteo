@@ -125,4 +125,10 @@ interface PaymentMethodInterface {
      */
     static public function calculateComission($total_invests, $total_amount, $returned_invests = 0, $returned_amount = 0);
 
+    /**
+     * Internal payments does not increased raised amounts
+     * (pool)
+     * @return boolean
+     */
+    static public function isInternal();
 }
