@@ -85,7 +85,7 @@ class Stats {
 	}
 
 	public function getMatchfundingSucessfulPercentage() {
-		return Project::getSucessfulPercentage(true);
+		return Project::getSucessfulPercentage('all');
 	}
 
 	public function getAdvisedProjects() {
