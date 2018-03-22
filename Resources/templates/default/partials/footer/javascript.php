@@ -1,5 +1,6 @@
 <!-- Goteo utils: Debug functions, Session keeper -->
 <script type="text/javascript" src="<?php echo SRC_URL ?>/view/js/goteo.js"></script>
+<script type="text/javascript" src="<?= SRC_URL ?>/assets/js/jquery.animate-css.js"></script>
 <script type="text/javascript" src="<?php echo SRC_URL ?>/assets/js/sidebar.js"></script>
 <script src="<?= SRC_URL ?>/assets/vendor/hammerjs/hammer.min.js"></script>
 <script src="<?= SRC_URL ?>/assets/vendor/jquery-hammerjs/jquery.hammer.js"></script>
