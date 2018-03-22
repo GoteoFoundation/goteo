@@ -9,6 +9,8 @@
  */
 
 namespace Goteo\Util\Stats;
+
+use Goteo\Application\Config;
 use Goteo\Model\User;
 use Goteo\Model\Project;
 use Goteo\Model\Invest;
@@ -103,14 +105,47 @@ class Stats {
     /**
      * Handy method to obtain cached totals from invests
      */
-    public function getInvestsTotals($filter = [], $count = 'all') {
-        return Invest::getList($filter, null, 0, 0, $count);
+    public function getInvestTotals($filter = [], $count = 'all') {
+        $totals = Invest::getList($filter, null, 0, 0, $count);
+        // Add matchfunding calc
+        $filter['types'] = 'drop';
+        $totals['matchfunding'] = Invest::getList($filter, null, 0, 0, 'money');
+        return $totals;
     }
 
+    public function getInvestFees($filter = []) {
+        $totals = Invest::calculateFees($filter);
+        // print_r($filter);print_r($totals);
+        // Add some extra useful calcs
+        foreach($totals as $k => $a) {
+            $totals['total'] += $a;
+            $totals['vat'] += ((float)Config::get('vat')) * $a / 100;
+        }
+        return $totals;
+    }
+
+    public function getInvestAmounts($filter, $div = 10) {
+
+        list($sqlFilter, $values) = Invest::getSQLFilter($filter);
+        $sql = "SELECT CONCAT(10 * (amount DIV $div),'-',($div * (amount DIV $div) + $div)) AS amount,
+            COUNT(id) AS total, ROUND(100*COUNT(id)/(SELECT COUNT(id) FROM invest $sqlFilter ), 2) AS percent 
+            FROM invest $sqlFilter 
+            GROUP BY $div * (amount DIV $div)
+            HAVING percent > 0.1 
+            ORDER BY percent DESC";
+        // die(\sqldbg($sql, $values));die;
+        $totals = [];
+        if($res = Invest::query($sql, $values)->fetchAll(\PDO::FETCH_OBJ)) {
+            foreach($res as $ob) {
+                $totals[] = ['amount' => $ob->amount, 'total' => (int) $ob->total, 'percent' => round($ob->percent,2)];
+            }
+        }
+        return $totals;
+    }
     /**
      * Handy method to obtain cached totals from projects
      */
-    public function getProjectsTotals($filter = [], $count = 'all') {
+    public function getProjectTotals($filter = [], $count = 'all') {
         return Project::getList($filter, null, 0, 0, $count);
     }
 

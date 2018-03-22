@@ -45,7 +45,7 @@ class ProjectsApiController extends AbstractApiController {
         if(!$this->user) {
             throw new ControllerAccessDeniedException();
         }
-        $filters = [];
+        $filters = ['order' => 'updated DESC, created DESC'];
         $node = null;
         $page = max((int) $request->query->get('pag'), 0);
         $status = [
@@ -57,10 +57,10 @@ class ProjectsApiController extends AbstractApiController {
 
         // General search
         if($request->query->has('q')) {
-            $filters['global'] = $request->query->get('q');
+            $filters['basic'] = $request->query->get('q');
         }
         if(!$this->is_admin) {
-            $filters['multistatus'] = implode(",", $status);
+            $filters['status'] = $status;
         }
 
         if($request->query->has('status')) {
@@ -68,7 +68,7 @@ class ProjectsApiController extends AbstractApiController {
             if(!$this->is_admin) {
                 $s = array_intersect($status, $s);
             }
-            $filters['multistatus'] = implode(",", $s);
+            $filters['status'] = $s;
         }
 
         $limit = 25;
@@ -76,10 +76,13 @@ class ProjectsApiController extends AbstractApiController {
         $total = Project::getList($filters, $node, 0, 0, true);
         $list = [];
         foreach(Project::getList($filters, $node, $offset, $limit) as $prj) {
-            foreach(['id', 'name', 'owner', 'subtitle', 'status', 'node', 'published', 'project_location', 'success', 'passed', 'closed', 'video', 'image', 'lang', 'currency'] as $k)
+            foreach(['id', 'name', 'owner', 'subtitle', 'node', 'created', 'updated', 'published', 'project_location', 'success', 'passed', 'closed', 'video', 'lang', 'currency'] as $k)
                 $ob[$k] = $prj->$k;
-            foreach(['amount', 'mincost', 'maxcost'] as $k)
+            foreach(['status', 'amount', 'mincost', 'maxcost'] as $k)
                 $ob[$k] = (int)$prj->$k;
+            $ob['image'] = $prj->image ? $prj->image->getLink(64,64,true) : null;
+            $ob['status_desc'] = $prj->getTextStatus();
+            $ob['url'] = '/project/' . $prj->id;
             $list[] = $ob;
         }
 

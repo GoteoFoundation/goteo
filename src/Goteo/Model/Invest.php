@@ -48,7 +48,10 @@ class Invest extends \Goteo\Core\Model {
 
     static $ACTIVE_STATUSES = [self::STATUS_PENDING, self::STATUS_CHARGED, self::STATUS_PAID];
     static $FAILED_STATUSES = [self::STATUS_RELOCATED, self::STATUS_RETURNED, self::STATUS_TO_POOL, self::STATUS_CANCELLED];
+    // STATUS_CANCELLED may rise the achieved amount but it is not included in fee/comissions calculations
+    // static $RAISED_STATUSES = [self::STATUS_PENDING, self::STATUS_CHARGED, self::STATUS_PAID, self::STATUS_CANCELLED, self::STATUS_RETURNED, self::STATUS_TO_POOL];
     static $RAISED_STATUSES = [self::STATUS_PENDING, self::STATUS_CHARGED, self::STATUS_PAID, self::STATUS_RETURNED, self::STATUS_TO_POOL];
+    static $RAW_STATUSES = [self::STATUS_PENDING, self::STATUS_CHARGED, self::STATUS_PAID, self::STATUS_CANCELLED, self::STATUS_RETURNED, self::STATUS_TO_POOL];
 
     public
         $id,
@@ -205,7 +208,7 @@ class Invest extends \Goteo\Core\Model {
     /**
      * reusable sql filters for searching in invests table
      */
-    private static function getSQLFilter($filters = [], $node = null) {
+    public static function getSQLFilter($filters = [], $node = null) {
         $values = [];
         $sqlFilter = [];
 
@@ -253,6 +256,18 @@ class Invest extends \Goteo\Core\Model {
             }
             if($parts) $sqlFilter[] = "invest.status IN (" . implode(',', $parts) . ")";
         }
+        if (!empty($filters['amount'])) {
+            $sqlFilter[] = "invest.amount >= :amount";
+            $values[':amount'] = $filters['amount'];
+        }
+        if (!empty($filters['maxamount'])) {
+            $sqlFilter[] = "invest.amount <= :maxamount";
+            $values[':maxamount'] = $filters['maxamount'];
+        }
+        if (!empty($filters['name'])) {
+            $sqlFilter[] = "invest.user IN (SELECT id FROM user WHERE (name LIKE :name OR email LIKE :name))";
+            $values[':name'] = "%{$filters['name']}%";
+        }
         if (!empty($filters['projects'])) {
             $parts = [];
             if(!is_array($filters['projects'])) $filters['projects'] = [$filters['projects']];
@@ -261,14 +276,6 @@ class Invest extends \Goteo\Core\Model {
                 $values[':prj' . $i] = is_object($prj) ? $prj->id : $prj;
             }
             $sqlFilter[] = "invest.project IN (" . implode(',', $parts) . ")";
-        }
-        if (!empty($filters['amount'])) {
-            $sqlFilter[] = "invest.amount >= :amount";
-            $values[':amount'] = $filters['amount'];
-        }
-        if (!empty($filters['maxamount'])) {
-            $sqlFilter[] = "invest.amount <= :maxamount";
-            $values[':maxamount'] = $filters['maxamount'];
         }
         if (!empty($filters['users'])) {
             $i = 0;
@@ -281,13 +288,29 @@ class Invest extends \Goteo\Core\Model {
             }
             $sqlFilter[] = 'invest.user IN(' . implode(',', $parts) . ')';
         }
-        if (!empty($filters['name'])) {
-            $sqlFilter[] = "invest.user IN (SELECT id FROM user WHERE (name LIKE :name OR email LIKE :name))";
-            $values[':name'] = "%{$filters['name']}%";
-        }
         if (!empty($filters['calls'])) {
-            $sqlFilter[] = "invest.`call` = :calls";
-            $values[':calls'] = $filters['calls'];
+            $parts = [];
+            if(!is_array($filters['calls'])) $filters['calls'] = [$filters['calls']];
+            foreach($filters['calls'] as $i => $call) {
+                $parts[] = ':call' . $i;
+                $values[':call' . $i] = is_object($call) ? $call->id : $call;
+            }
+            // This may lead to a confusion, some invests are in projects belonging to a call
+            // but they have the invest.call field empty:
+            // $sqlFilter[] = "invest.call IN (" . implode(',', $parts) . ")";
+            // Search all invests where the project is in that call instead:
+            $sqlFilter[] = 'invest.project IN (SELECT project FROM call_project WHERE call_project.call IN (' . implode(',', $parts) . '))';
+        }
+        if (!empty($filters['matchers'])) {
+            $parts = [];
+            if(!is_array($filters['matchers'])) $filters['matchers'] = [$filters['matchers']];
+            foreach($filters['matchers'] as $i => $matcher) {
+                $parts[] = ':matcher' . $i;
+                $values[':matcher' . $i] = is_object($matcher) ? $matcher->id : $matcher;
+            }
+            // Same case as calls
+            // $sqlFilter[] = "invest.matcher IN (" . implode(',', $parts) . ")";
+            $sqlFilter[] = 'invest.project IN (SELECT project_id FROM matcher_project WHERE matcher_project.matcher_id IN (' . implode(',', $parts) . '))';
         }
         if (!empty($filters['issue'])) {
             switch ($filters['issue']) {
@@ -388,6 +411,14 @@ class Invest extends \Goteo\Core\Model {
             $sqlFilter[] = "invest.invested <= :date_until";
             $values[':date_until'] = $filters['date_until'];
         }
+        if (!empty($filters['datetime_from'])) {
+            $sqlFilter[] = "invest.datetime >= :datetime_from";
+            $values[':datetime_from'] = $filters['datetime_from'];
+        }
+        if (!empty($filters['datetime_until'])) {
+            $sqlFilter[] = "invest.datetime <= :datetime_until";
+            $values[':datetime_until'] = $filters['datetime_until'];
+        }
         if (isset($filters['fulfilled'])) {
             $sqlFilter[] = "invest_reward.fulfilled=" . ($filters['fulfilled'] ? '1' : '0');
         }
@@ -425,7 +456,9 @@ class Invest extends \Goteo\Core\Model {
 
         if($count) {
             if($count === 'all') {
-                $what = 'SUM(invest.amount) AS total_amount, COUNT(invest.id) AS total_invests, COUNT(DISTINCT invest.user) AS total_users';
+                $what = 'SUM(invest.amount) AS total_amount, 
+                COUNT(invest.id) AS total_invests, 
+                COUNT(DISTINCT invest.user) AS total_users';
             }
             elseif($count === 'money') {
                 $what = 'SUM(invest.amount)';
@@ -447,7 +480,7 @@ class Invest extends \Goteo\Core\Model {
                     ON invest_reward.invest = invest.id
                 $sqlFilter";
 
-                // echo sqldbg($sql, $values);
+                // echo sqldbg($sql, $values)."\n";
 
             if($count === 'all') {
                 $ob = self::query($sql, $values)->fetchObject();
@@ -511,6 +544,36 @@ class Invest extends \Goteo\Core\Model {
         return $query->fetchAll(\PDO::FETCH_CLASS, '\Goteo\Model\User');
     }
 
+    /**
+     * Returns the platform fee associate with a list of invests
+     */
+    public static function calculateFees($filters = []) {
+        $fee = (float) Config::get('fee'); // default platform fee
+        list($sqlFilter, $values) = self::getSQLFilter($filters);
+        $sqlFilter = preg_replace('/^WHERE/', 'AND', $sqlFilter);
+        // Normal invests fee
+        $sql = "SELECT SUM(IFNULL(project_account.fee, $fee) * invest.amount) / 100
+                FROM invest
+                LEFT JOIN project_account ON invest.project = project_account.project 
+                WHERE invest.campaign=0 $sqlFilter";
+        $users_fee = (float) self::query($sql, $values)->fetchColumn();
+
+        // Call Matchfunding invests fee
+        $sql = "SELECT SUM(IFNULL(`call`.fee_projects_drop, $fee) * invest.amount) / 100
+                FROM invest
+                LEFT JOIN `call` ON invest.call = `call`.id 
+                WHERE invest.campaign=1 AND invest.method='drop' $sqlFilter";
+        $calls_fee = (float) self::query($sql, $values)->fetchColumn();
+        // echo \sqldbg($sql, $values);
+        // Matcher Matchfunding invests fee
+        $sql = "SELECT SUM(IFNULL(`matcher`.fee, $fee) * invest.amount) / 100
+                FROM invest
+                LEFT JOIN `matcher` ON invest.matcher = `matcher`.id 
+                WHERE invest.campaign=1 AND invest.method!='drop' $sqlFilter";
+        $matchers_fee = (float) self::query($sql, $values)->fetchColumn();
+        
+        return ['user' => $users_fee, 'call' => $calls_fee, 'matcher' => $matchers_fee];
+    }
 
     // returns the current project
     public function getProject() {

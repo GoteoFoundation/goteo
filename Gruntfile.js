@@ -9,6 +9,7 @@
 // 'test/spec/**/*.js'
 //
 GOTEO = {
+    dir: process.cwd(),
     app: 'public',
     templates: 'Resources/templates',
     src: 'src',
@@ -21,7 +22,7 @@ GOTEO = {
     // var/php/php.ini file to config/php.ini
     // and edit it with your own data
     phpINI: 'var/php/php.ini',
-    configFile: process.env.GOTEO_CONFIG_FILE || 'config/settings.yml'
+    configFile: process.env.GOTEO_CONFIG_FILE || process.cwd() + '/config/settings.yml'
 };
 
 module.exports = function(grunt) {
@@ -61,10 +62,8 @@ module.exports = function(grunt) {
         grunt.log.ok('Using livePort from settings: ' + livePort);
     }
 
-    var dir = process.cwd();
-    grunt.log.ok('CURRENT DIR',dir);
-
-    GOTEO.dir = dir;
+    
+    grunt.log.ok('CURRENT DIR',GOTEO.dir);
     // Project configuration.
     grunt.initConfig({
         // Metadata.
@@ -106,9 +105,9 @@ module.exports = function(grunt) {
     //  any files that need to be watched for changes, and open a browser to our dev URL
     grunt.registerTask('nginx_prepare', function() {
         ['/var/php/tmp/nginx/client_temp', '/var/php/tmp/nginx/cache', '/var/php/sessions'].forEach(function(d) {
-            grunt.file.mkdir(dir + d);
-            if( !grunt.file.exists(dir + d)) {
-                grunt.fail.fatal('Not existing dir: '+ dir + d);
+            grunt.file.mkdir(GOTEO.dir + d);
+            if( !grunt.file.exists(GOTEO.dir + d)) {
+                grunt.fail.fatal('Not existing dir: '+ GOTEO.dir + d);
             }
         });
     });

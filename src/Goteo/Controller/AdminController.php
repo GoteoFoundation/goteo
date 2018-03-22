@@ -35,13 +35,20 @@ use Symfony\Component\Routing\Matcher\UrlMatcher;
 
 class AdminController extends \Goteo\Core\Controller {
 
-    private static $subcontrollers = array();
-    private static $context_vars = array();
+    private static $subcontrollers = [];
+    private static $context_vars = [];
     private static $groups = [
         'consultants' => ['text' => 'admin-consultants', 'icon' => '<i class="fa fa-2x fa-fax"></i>', 'position' => 10],
         'projects' => ['text' => 'admin-projects', 'icon' => '<i class="icon icon-2x icon-projects"></i>', 'position' => 20],
         'main' => ['text' => 'admin-main', 'icon' => '<i class="fa fa-2x fa-home"></i>', 'position' => 100],
         'legacy' => ['text' => 'admin-legacy', 'icon' => '<i class="fa fa-2x fa-folder"></i>', 'position' => 110]
+    ];
+    private static $legacy_groups = [
+        'contents' => ['node', 'blog', 'texts', 'faq', 'pages', 'categories', 'social_commitment', 'licenses', 'icons', 'tags', 'criteria', 'templates', 'glossary', 'info', 'wordcount', 'milestones'],
+        'projects' => ['projects', 'accounts', 'reviews', 'translates', 'rewards', 'commons'],
+        'users' => ['users', 'worth', 'mailing', 'sent'],
+        'home' => ['home', 'promote', 'news', 'banners', 'footer', 'recent', 'open_tags', 'stories'],
+        'sponsors' => ['newsletter', 'sponsors', 'nodes', 'transnodes'],
     ];
 
     public function __construct() {
@@ -79,8 +86,8 @@ class AdminController extends \Goteo\Core\Controller {
             // Log this entry
             Log::append(['scope' => 'admin', 'target_type' => 'admin_module', 'target_id' => $id]);
 
+            static::createAdminSidebar($user, $id, $request->getPathInfo());
             if(in_array('Goteo\Controller\Admin\AdminControllerInterface', class_implements($module))) {
-                static::createAdminSidebar($user, $id, $request->getPathInfo());
 
                 // Add the admin routes
                 $module_routes = $routes = $module::getRoutes();
@@ -152,47 +159,53 @@ class AdminController extends \Goteo\Core\Controller {
 
             if(in_array('Goteo\Controller\Admin\AdminControllerInterface', class_implements($class))) {
                 if(!$class::isAllowed($user)) continue;
-
+                
                 $label = $class::getLabel('html');
-                $c = strpos($label, '<i') === false ? 'nopadding' : '';
-                $init_route = ['text' => $label, 'link' => "$prefix/$id", 'id' => "admin-$id", 'class' => $c];
-                $group = $class::getGroup();
-                // Include suboptions as a main links in sidebar
-                if($module === $id) {
-                    $sidebar = $class::getSidebar();
-                    $i = 0;
-                    if(!$sidebar) {
-                        $zone = $module;
-                        // Create an automatic link if no sidebar defined
-                        Session::addToSidebarMenu($init_route['text'], $init_route['link'], $id, $i++, $init_route['class']);
-                    } else {
-                        foreach($sidebar as $link => $route) {
-                            // TODO: Apply isAllowed($user, uri)
-                            if(!is_array($route)) {
-                                $route = ['text' => $route, 'link' => $link];
-                            }
-                            $c = $route['class'] ? $route['class'] : (strpos($route['text'], '<i') === false ? 'nopadding' : '');
-
-                            if(!$route['id']) $route['id'] = $route['link'];
-
-                            Session::addToSidebarMenu($route['text'], $prefix . $route['link'], $route['id'], $i++, $c);
+                $cls = strpos($label, '<i') === false ? 'nopadding' : '';
+                if($sidebar = $class::getSidebar()) {
+                    $paths = [];
+                    // Submodules returning a custom menu will have its own group
+                    foreach($sidebar as $link => $route) {
+                        // TODO: Apply isAllowed($user, uri)
+                        if(!is_array($route)) {
+                            $route = ['text' => $route, 'link' => $link];
                         }
+                        $c = $route['class'] ? $route['class'] : (strpos($route['text'], '<i') === false ? 'nopadding' : '');
+                        
+                        if(!$route['id']) $route['id'] = $route['link'];
+                        
+                        $paths[] = ['text' => $route['text'], 'link' => $prefix . $route['link'], 'id' => $route['id'], 'class' => $c];
                     }
+                    $modules[$id] = $paths;
+                } else {
+                    $group = $class::getGroup();
+                    $init_route = ['text' => $label, 'link' => "$prefix/$id", 'id' => "/$id", 'class' => $cls];
+                    $modules[$group ? $group : 'main'][] = $init_route;
                 }
-
-                $modules[$group ? $group : 'main'][] = $init_route;
             }
             // Old sub-controllers
             elseif ($class::isAllowed($user, Config::get('node'))) {
-                $modules['legacy'][] = ['text' => $class::getLabel(), 'link' => "$prefix/$id", 'id' => "admin-$id", 'class' => 'nopadding'];
+                $group = 'others';
+                foreach(self::$legacy_groups as $g => $ms) {
+                    foreach($ms as $i) {
+                        if($id === $i) {
+                            $group = $g;
+                            break;
+                        }
+                    }
+                }
+                $modules[$group][] = ['text' => $class::getLabel(), 'link' => "$prefix/$id", 'id' => "/$id", 'class' => 'nopadding'];
             }
         }
+        // group the modules that don't define a custom menu
+        $index = 0;
         foreach($modules as $key => $paths) {
             $label = self::getGroupLabel($key, $position);
             $c = strpos($label, '<i') === false ? 'nopadding' : '';
-            Session::addToSidebarMenu($label, $paths, $key, $position, "sidebar $c");
+            Session::addToSidebarMenu($label, $paths, $key, $index, "sidebar $c");
+            $index += $position;
         }
-
+        
         if($zone) {
             View::getEngine()->useData([
                 'zone' => $zone,
@@ -207,6 +220,9 @@ class AdminController extends \Goteo\Core\Controller {
             $g = self::$groups[$key];
             $position = $g['position'];
             return trim($g['icon']. ' ' . Text::get($g['text']));
+        }
+        if(isset(self::$subcontrollers[$key]) && in_array('Goteo\Controller\Admin\AdminControllerInterface', class_implements(self::$subcontrollers[$key]))) {
+            return self::$subcontrollers[$key]::getLabel('html');
         }
         return Text::get('admin-' . $key);
     }

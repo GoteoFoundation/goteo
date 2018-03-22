@@ -61,7 +61,7 @@
       }
       &:first-child {
         >a, >button {
-            border-top-color:transparent;
+            border-top-color:transparent !important;
         }
       }
       &.active,&:hover,&:focus {
@@ -272,5 +272,24 @@
         mask-size:100% auto;
         -webkit-mask-size:100% auto;
     }
+
+    /* Color variations */
+    &.yellow {
+      .sidebar-nav li {
+        &.ok::after {
+            color: $background-dark-yellow;
+        }
+        &.sidebar {
+          border-left: 6px solid $background-dark-yellow;
+          &.active, &.selected {
+          .submenu {
+            >li.active {
+              border-left: 6px solid $background-dark-yellow;
+            }
+          }
+        }
+      }
+    }
+  }
 }
 

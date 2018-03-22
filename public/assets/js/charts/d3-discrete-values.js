@@ -74,6 +74,7 @@ d3.goteo.discretevaluesChart = function(settings){
                 var property = child.attr('data-property');
                 var value = findValue(dataSet, property);
                 if(value !== null) {
+                    value = value.toString();
                     // console.log(it, i, title, property, value);
                     // remove if existing and has different value, otherwise do nothing
                     var flash = false;
@@ -91,19 +92,27 @@ d3.goteo.discretevaluesChart = function(settings){
                         .attr("preserveAspectRatio", "xMinYMin meet");
 
                     var g = svg.append('g');
+                    var l = Math.min(1, Math.round(80 / value.length) / 10);
+                    var c = color;
+                    if(value.indexOf('%') !== -1) {
+                        c = value.indexOf('-') === -1 ? 'green' : '#b00';
+                    } else if(value.indexOf('-') !== -1) {
+                        c = '#b00';
+                    }
                     g.append('text')
                         .text(value)
                         .attr( 'text-anchor', 'middle' )
+                        .attr( 'font-size', l + 'em' )
                         .attr( 'x',  width/2 )
                         .attr( 'y', height/3 )
-                        .attr( 'fill', flash ? flash_color : color)
+                        .attr( 'fill', flash ? flash_color : c)
                         .style('opacity', 0)
                         .transition()
                         .delay( delay * i )
                         .style('opacity', 1)
                         .transition()
                         .duration( flash_time * 1000 )
-                        .attr( 'fill', color)
+                        .attr( 'fill', c)
                         ;
                         // .tween( 'text', tweenText( value ) );
 

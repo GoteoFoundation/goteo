@@ -109,4 +109,13 @@ class PoolPaymentMethod extends AbstractPaymentMethod {
             return new EmptyFailedResponse(implode(', ', $errors));
         }
     }
+
+    /**
+     * Internal payments does not increased raised amounts
+     * (pool)
+     * @return boolean
+     */
+    static public function isInternal() {
+        return true;
+    }
 }

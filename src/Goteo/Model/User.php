@@ -994,6 +994,7 @@ class User extends \Goteo\Core\Model {
         }
 
         // si es solo los usuarios normales, añadimos HAVING
+        // TODO: cambiar esto a JOINS
         if ($filters['role'] == 'user') {
             $sqlCR = ", (SELECT COUNT(role_id) FROM user_role WHERE user_id = user.id) as roles";
             $sqlOrder .= " HAVING roles = 0";

@@ -3,7 +3,7 @@
 <script type="text/javascript" src="<?= SRC_URL ?>/assets/vendor/simplemde/dist/simplemde.min.js"></script>
 <script type="text/javascript" src="<?= SRC_URL ?>/assets/vendor/summernote/dist/summernote.min.js"></script>
 <script type="text/javascript" src="<?= SRC_URL ?>/assets/vendor/bootstrap-tagsinput/dist/bootstrap-tagsinput.min.js"></script>
-<script type="text/javascript" src="<?= SRC_URL ?>/assets/vendor/typeahead.js/dist/typeahead.bundle.min.js"></script>
+<script type="text/javascript" src="<?= SRC_URL ?>/assets/vendor/corejs-typeahead/dist/typeahead.bundle.min.js"></script>
 <script type="text/javascript">
     // Disable dropzone auto discover...
     Dropzone.autoDiscover = false;
@@ -17,6 +17,13 @@
         goteo.texts['form-editor-<?= $key ?>'] = '<?= $this->ee($this->text('form-editor-' . $key), 'js') ?>';
     <?php endforeach ?>
     goteo.texts['form-dragndrop-unsupported'] = '<?= $this->ee($this->text('form-dragndrop-unsupported'), 'js') ?>';
+    goteo.texts['admin-projects'] = '<?= $this->ee($this->text('admin-projects'), 'js') ?>';
+    goteo.texts['admin-calls'] = '<?= $this->ee($this->text('admin-calls'), 'js') ?>';
+    goteo.texts['admin-matchers'] = '<?= $this->ee($this->text('admin-matchers'), 'js') ?>';
+    goteo.texts['admin-users'] = '<?= $this->ee($this->text('admin-users'), 'js') ?>';
+    goteo.texts['admin-channels'] = '<?= $this->ee($this->text('admin-channels'), 'js') ?>';
+
+    goteo.typeahead_engines = goteo.typeahead_engines || {};
 
     // Forms process
     $(function(){
@@ -48,6 +55,8 @@
 </script>
 <!-- POST PROCESSING THIS JAVASCRIPT BY GRUNT -->
 <!-- build:js assets/js/editors.js -->
+<script type="text/javascript" src="<?= SRC_URL ?>/assets/js/typeahead/engine.projects.js"></script>
+<script type="text/javascript" src="<?= SRC_URL ?>/assets/js/typeahead/engine.calls.js"></script>
 <script type="text/javascript" src="<?= SRC_URL ?>/assets/js/forms.js"></script>
 <script type="text/javascript" src="<?= SRC_URL ?>/assets/js/charts/d3-discrete-values.js"></script>
 <script type="text/javascript" src="<?= SRC_URL ?>/assets/js/charts/d3-pie.js"></script>

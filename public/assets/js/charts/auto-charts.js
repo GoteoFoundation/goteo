@@ -65,33 +65,37 @@ $(function(){
 
     var initBindings = function() {
         var sources = {}; // Sources cache
-
-        var initChart = function($chart) {
+        var first = true;
+        var initChart = function() {
+            first = false;
             var $chart = $(this);
             var source = $chart.data('source');
             if(!sources[source]) {
                 sources[source] = {settings: $chart.data(), data: []};
             }
             var interval = parseInt(sources[source].settings.interval, 10) || 0;
-
+            var interval_delay = parseInt(sources[source].settings['interval-delay'], 10) || 0;
             $.getJSON(source)
-                .done(function(data) {
-                    sources[source].data = data;
-                    createChart($chart, data, $chart.data());
-                    if(interval) {
-                        console.log('timeout at ', interval);
-                        setTimeout(function(){
-                            console.log('recreating chart with', sources[source]);
-                            initChart.call($chart);
-                        }, interval * 1000);
+            .done(function(data) {
+                sources[source].data = data;
+                createChart($chart, data, $chart.data());
+                if(interval) {
+                    console.log('timeout at ', interval, 'delay at', interval_delay);
+                    setTimeout(function(){
+                        console.log('recreating chart with', sources[source]);
+                        initChart.call($chart);
+                        }, ((first ? interval_delay : 0) + interval) * 1000);
                     }
                 })
                 .fail(function(error) {
                     console.log(error);
                     $chart.html('<small class="text-danger">' + (error || error.error) + '</small>');
                     // throw error;
+                })
+                .always(function() {
+                    $chart.removeClass('loading');
                 });
-        };
+            };
 
 
         // Charts with data-source attribute

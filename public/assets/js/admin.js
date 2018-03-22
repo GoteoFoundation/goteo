@@ -23,22 +23,16 @@ through which recipients can access the Corresponding Source.
 for the JavaScript code in this page.
 */
 
+function adminProntoLoad (href, target) {
+    target = target || '#admin-content';
+    return prontoLoad(href, target);
+}
+
+goteo.typeahead_engines = goteo.typeahead_engines || {};
 /**
  * Document ready
  */
-
 $(function(){
-    var prontoLoad = function(href, target) {
-        target = target || '#admin-content';
-        prontoTarget = target;
-        prontoScroll = target;
-        console.log('admin pronto load into', prontoTarget, href);
-
-        $.pronto('defaults', {
-            target: { title: 'title', content: prontoTarget }
-        });
-        $.pronto('load', href);
-    };
 
     // Some tweaks on pronto links
     $('#main').off('click', 'a.pronto');
@@ -49,7 +43,7 @@ $(function(){
         var target = $(this).attr('target');
         if(!target || href.indexOf('/admin/') === 0) {
             e.preventDefault();
-            prontoLoad(href, '#admin-content');
+            adminProntoLoad(href, '#admin-content');
         }
     });
 
@@ -66,7 +60,7 @@ $(function(){
                            ;
         console.log('submit', action, query, method, e);
         if(method === 'get') {
-            prontoLoad(action + '?' + query, '#admin-content');
+            adminProntoLoad(action + '?' + query, '#admin-content');
         }
     });
 
@@ -101,7 +95,7 @@ $(function(){
         } else {
             href += '&ajax';
         }
-        prontoLoad(href, '#manage-' + id);
+        adminProntoLoad(href, '#manage-' + id);
     });
 
     /**  jQuery x-Editable plugins tweaks */
@@ -129,10 +123,46 @@ $(function(){
 
     });
 
-
     var initBindings = function() {
         // Manual initialization of collapse plugin to apply involved classes
         $('.collapsable').collapse();
+        // Typeahead global search
+        $('.admin-typeahead').each(function () {
+            var $this = $(this);
+            var sources = $this.data('sources').split(',');
+            var engines = [{ 
+                minLength: 0, 
+                hint: true,
+                highlight: true,
+                classNames: {
+                    hint: ''
+                }
+            }];
+            sources.forEach(function(source) {
+                if(goteo.typeahead_engines[source]) {
+                    engines.push(goteo.typeahead_engines[source]({
+                        remote_statuses: '1,2,3,4,5,6', // TODO: from data-attributes
+                        defaults: true // Show a list of prefetch projects without typing
+                    }));
+                }
+            });
+            $.fn.typeahead.apply($this.find('.typeahead'), engines)
+                .on('typeahead:active', function (event) {
+                    $(event.target).select();
+                })
+                .on('typeahead:asyncrequest', function (event) {
+                    // console.log('async loading', event);
+                    $(event.target).addClass('loading');
+                })
+                .on('typeahead:asynccancel typeahead:asyncreceive', function (event) {
+                    $(event.target).removeClass('loading');
+                });
+                // .on('typeahead:select', function (event, datum, name) {
+                //     console.log('selected',name, event, datum);
+                //     if(datum.url) location.href = datum.url;
+                // });
+        });
+
     };
     initBindings();
     $(window).on("pronto.render", function(e){

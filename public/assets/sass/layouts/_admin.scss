@@ -30,14 +30,73 @@
       // background-color: #652D2D;
     }
     .sidebar-header {
-      background-color: #620D0D;
+      // background-color: #620D0D;
       .sidebar-widget a.img-link img {
-        box-shadow: 0 5px 20px 0px #af1515;
+        // box-shadow: 0 5px 20px 0px #af1515;
       }
     }
   }
 
+  .admin-typeahead {
+    margin: 0 0 15px 0;
+    // &::before {
+    //   content: "\f002";
+    //   font-family: FontAwesome;
+    //   margin: 0 5px;
+    //   color: #999;
+    // }
+    // .twitter-typeahead {
+      //   width: calc(100% - 40px);
+      // }
+    .twitter-typeahead {
+      width: 100%;
+    }
+    .has-feedback .form-control {
+        padding-left: 32px;
+        padding-right: 0;
+    }
+    .form-control-feedback {
+      right: auto;
+      left: 0;
+      top: 9px;
+      color:#bbb;
+    }
+    .typeahead {
+      vertical-align: middle !important;
+      &.loading {
+        background-position: right;
+        background-size: 24px;
+        min-height: auto;
+      }
+    }
+    .tt-dataset {
+      h3 {
+        font-size: 1.3rem;
+        border-bottom: 1px solid rgba(0, 0, 0, 0.15);
+        background: #f0f0f0;
+        padding: 3px 20px;
+        font-weight: 500;
+        margin: 0 0 0 0;
+        text-transform: uppercase;
+      }
+    }
+    .tt-suggestion {
+      img {
+        width: 32px;
+        height: 32px;
+      }
+      label {
+        // min-width: 40px;
+      }
+      &:first-child h3 {
+        margin-top: -5px;
+      }
 
+    }
+  }
+  .nav {
+    margin-bottom: 15px;
+  }
   // Custom classes
   a.collapsable {
     &::after {

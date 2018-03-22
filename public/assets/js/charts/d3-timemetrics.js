@@ -59,6 +59,7 @@ d3.goteo.timemetricsChart = function(settings){
             min_x: min_date,
             max_x: max_date,
             target: self,
+            linked: true,
             mouseover: function(d, i) {
                 var df = d3.timeFormat('%b %d, %Y');
                 var date = df(d.date);

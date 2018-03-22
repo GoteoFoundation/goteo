@@ -48,7 +48,7 @@ $api->add('api-chart-project-device', new Route(
 // any project/call origins stats
 $api->add('api-charts-referers', new Route(
     '/charts/referers/{type}',
-    array('_controller' => 'Goteo\Controller\Api\ChartsApiController::originStatsAction',
+    array('_controller' => 'Goteo\Controller\Api\AdminChartsApiController::originStatsAction',
         'id' => null,
         'type' => 'project',
         'group' => 'referer'
@@ -58,7 +58,7 @@ $api->add('api-charts-referers', new Route(
 // any project/call origins stats (origin)
 $api->add('api-chart-devices', new Route(
     '/charts/devices/{type}',
-    array('_controller' => 'Goteo\Controller\Api\ChartsApiController::originStatsAction',
+    array('_controller' => 'Goteo\Controller\Api\AdminChartsApiController::originStatsAction',
         'type' => 'project',
         'group' => 'ua'
         )
@@ -67,21 +67,25 @@ $api->add('api-chart-devices', new Route(
 // aggregate time metric series
 $api->add('api-chart-aggregates', new Route(
     '/charts/aggregates/{type}',
-    array('_controller' => 'Goteo\Controller\Api\ChartsApiController::aggregatesAction',
+    array('_controller' => 'Goteo\Controller\Api\AdminChartsApiController::aggregatesAction',
         'type' => 'invests'
         )
 ));
 
 // Totals for invests (today, yesterday, this week, etc)
 $api->add('api-chart-totals-invests', new Route(
-    '/charts/totals/invests',
-    array('_controller' => 'Goteo\Controller\Api\ChartsApiController::totalInvestsAction',
+    '/charts/totals/invests/{target}/{method}',
+    array('_controller' => 'Goteo\Controller\Api\AdminChartsApiController::totalInvestsAction',
+          'target' => '',
+          'method' => 'global'
         )
 ));
+
 // Totals for projects
 $api->add('api-chart-totals-projects', new Route(
-    '/charts/totals/projects',
-    array('_controller' => 'Goteo\Controller\Api\ChartsApiController::totalProjectsAction',
+    '/charts/totals/projects/{part}',
+    array('_controller' => 'Goteo\Controller\Api\AdminChartsApiController::totalProjectsAction',
+          'part' => null
         )
 ));
 

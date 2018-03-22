@@ -4,7 +4,7 @@
     <!-- endbuild -->
 
     <link href="<?= SRC_URL ?>/assets/vendor/font-awesome/css/font-awesome.min.css" rel="stylesheet">
-
+    <link href="<?= SRC_URL ?>/assets/vendor/animate.css/animate.css" rel="stylesheet">
     <link rel="stylesheet" type="text/css" href="<?= SRC_URL ?>/assets/css/legacy_compat.css" />
 
     <!--[if IE]>

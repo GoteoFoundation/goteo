@@ -163,7 +163,7 @@ class Config {
         \Goteo\Controller\AdminController::addSubController('Goteo\Controller\Admin\AccountsSubController');
         \Goteo\Controller\AdminController::addSubController('Goteo\Controller\Admin\NodeSubController');
         \Goteo\Controller\AdminController::addSubController('Goteo\Controller\Admin\NodesSubController');
-        \Goteo\Controller\AdminController::addSubController('Goteo\Controller\Admin\TransnodesSubController');
+        // \Goteo\Controller\AdminController::addSubController('Goteo\Controller\Admin\TransnodesSubController');
         \Goteo\Controller\AdminController::addSubController('Goteo\Controller\Admin\BannersSubController');
         \Goteo\Controller\AdminController::addSubController('Goteo\Controller\Admin\BlogSubController');
         \Goteo\Controller\AdminController::addSubController('Goteo\Controller\Admin\CategoriesSubController');
@@ -189,7 +189,7 @@ class Config {
         \Goteo\Controller\AdminController::addSubController('Goteo\Controller\Admin\TemplatesSubController');
         \Goteo\Controller\AdminController::addSubController('Goteo\Controller\Admin\TextsSubController');
         \Goteo\Controller\AdminController::addSubController('Goteo\Controller\Admin\TranslatesSubController');
-		\Goteo\Controller\AdminController::addSubController('Goteo\Controller\Admin\WordcountSubController');
+		// \Goteo\Controller\AdminController::addSubController('Goteo\Controller\Admin\WordcountSubController');
 		\Goteo\Controller\AdminController::addSubController('Goteo\Controller\Admin\WorthSubController');
 		\Goteo\Controller\AdminController::addSubController('Goteo\Controller\Admin\MilestonesSubController');
         \Goteo\Controller\AdminController::addSubController('Goteo\Controller\Admin\OpenTagsSubController');

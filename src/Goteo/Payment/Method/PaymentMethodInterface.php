@@ -121,10 +121,14 @@ interface PaymentMethodInterface {
 
     /**
      * Calculates banks fee in a generic way, based on settings.yml config and following the Paypal fees rules (which suits many gateways)
-     * payments.method.comissions.fixed : fixed amount per transaction, does not refund
-     * payments.method.comissions.percent percent amount per transaction, refunds
      * @return float
      */
-    static public function calculateFee($total_invests, $total_amount, $returned_invests = 0, $returned_amount = 0);
+    static public function calculateComission($total_invests, $total_amount, $returned_invests = 0, $returned_amount = 0);
 
+    /**
+     * Internal payments does not increased raised amounts
+     * (pool)
+     * @return boolean
+     */
+    static public function isInternal();
 }

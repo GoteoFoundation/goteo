@@ -14,7 +14,7 @@ admin-main: Main
 admin-legacy: Legacy
 admin-projects: Projects
 admin-invests: Contributions
-admin-consultants: Consulting
+admin-consultants: Consultants
 admin-project-express-discard: 'Express discard'
 admin-project-express-discard-desc: 'Change the project status to Discard and sends an email'
 admin-project-express-discard-sure: 'The project will be discarded and the owner will receive an email, ok?'
