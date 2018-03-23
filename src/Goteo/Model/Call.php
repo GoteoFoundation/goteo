@@ -1294,6 +1294,12 @@ class Call extends \Goteo\Core\Model {
                         $sqlOrder = " ORDER BY call_conf.date_stage1_out DESC";
                     }
                 }
+                if($filters['type'] === 'all') {
+                    $innerJoin = 'INNER JOIN call_conf ON call_conf.call = call.id';
+                      
+                    $sqlOrder = " ORDER BY call_conf.date_stage1_out DESC";
+                    
+                }
         }
 
         if($count) {
