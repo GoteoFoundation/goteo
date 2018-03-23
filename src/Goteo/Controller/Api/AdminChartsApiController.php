@@ -135,6 +135,25 @@ class AdminChartsApiController extends ChartsApiController {
 
     private function timeSlots(Request $request = null) {
         $f = 'Y-m-d H:i:s';
+        if($request) {
+            $to = $request->query->get('to');
+            $from = $request->query->get('from');
+            $project_id = $request->query->get('project');
+            $call_id = $request->query->get('call');
+            $matcher_id = $request->query->get('matcher');
+            $user_id = $request->query->get('user');
+
+            if($from) {
+                $slots['custom'] = ['from' => (new \DateTime($from))->format($f)];
+                if($to) $slots['custom']['to'] = (new \DateTime($to))->format($f);
+                else  $slots['custom']['to'] = (new \DateTime('now'))->format($f);
+                return $slots;
+            } elseif($project_id || $call_id || $matcher_id || $user_id) {
+                $slots['custom'] = ['from' => null, 'to' => null];
+                return $slots;
+            }
+        }
+
         $slots = [
             'today' => [
                 'from' => (new \DateTime('today'))->format($f),
@@ -179,29 +198,13 @@ class AdminChartsApiController extends ChartsApiController {
                 'to' => (new \DateTime('first day of january this year -1 second'))->format($f)
                 ]
             ];
-        if($request) {
-            $to = $request->query->get('to');
-            $from = $request->query->get('from');
-            $project_id = $request->query->get('project');
-            $call_id = $request->query->get('call');
-            $matcher_id = $request->query->get('matcher');
-            $user_id = $request->query->get('user');
-
-            if($from) {
-                $slots['custom'] = ['from' => (new \DateTime($from))->format($f)];
-                if($to) $slots['custom']['to'] = (new \DateTime($to))->format($f);
-                else  $slots['custom']['to'] = (new \DateTime('now'))->format($f);
-            } elseif($project_id || $call_id || $matcher_id || $user_id) {
-                $slots['custom'] = ['from' => null, 'to' => null];
-            }
-        }
         // print_r($slots);die;
         return $slots;
     }
 
     /**
      * Gets totals for invests
-     * @param  string $target [raised, active, comissions, fees]
+     * @param  string $target [raised, active, refunded, comissions, fees]
      * @param  string $method raised[paypal, tpv, ..., global]  active[paypal,...], comissions[paypal, ...], fees]
      * @param  Request $request [description]
      */
@@ -236,12 +239,36 @@ class AdminChartsApiController extends ChartsApiController {
                 if($target === 'active') $filter['status'] = Invest::$ACTIVE_STATUSES;
                 elseif($target === 'raw') $filter['status'] = Invest::$RAW_STATUSES;
                 $totals[$slot] = $stats->investTotals($filter);
+                // Add matchfunding calc
+                $matchfunding = $stats->investTotals(['types' => 'drop'] + $filter);
+                $totals[$slot]['from_matchfunding_amount'] = $matchfunding['amount'];
+                $totals[$slot]['from_matchfunding_invests'] = $matchfunding['invests'];
+                $totals[$slot]['from_matchfunding_users'] = $matchfunding['users'];
+                // Add projects calc
+                $projects = $stats->investTotals(['types' => 'project'] + $filter);
+                $totals[$slot]['to_projects_amount'] = $projects['amount'];
+                $totals[$slot]['to_projects_invests'] = $projects['invests'];
+                $totals[$slot]['to_projects_users'] = $projects['users'];
+                // Add wallet calc
+                $wallet = $stats->investTotals(['types' => 'wallet'] + $filter);
+                $totals[$slot]['to_wallet_amount'] = $wallet['amount'];
+                $totals[$slot]['to_wallet_invests'] = $wallet['invests'];
+                $totals[$slot]['to_wallet_users'] = $wallet['users'];
+
+            } elseif($target === 'refunded') {
+                $filter['status'] = Invest::STATUS_RETURNED;
+                $totals[$slot] = $stats->investTotals($filter);
+                // Add refunded to pool
+                $to_pool = $stats->investTotals(['types' => 'project', 'status' => Invest::STATUS_TO_POOL] + $filter);
+                $totals[$slot]['to_pool_amount'] = $to_pool['amount'];
+                $totals[$slot]['to_pool_invests'] = $to_pool['invests'];
+                $totals[$slot]['to_pool_users'] = $to_pool['users'];
             } elseif($target === 'commissions') {
                 // Bank Comissions
                 $totals[$slot] = ['charged' => 0, 'lost' => 0 ];
                 foreach($methods as $i => $m) {
-                    $raised = $stats->investTotals($filter + ['methods' => $i, 'status' => Invest::$RAISED_STATUSES]);
-                    $returned = $stats->investTotals($filter + ['methods' => $i, 'status' => Invest::$FAILED_STATUSES]);
+                    $raised = $stats->investTotals(['methods' => $i, 'status' => Invest::$RAISED_STATUSES] + $filter );
+                    $returned = $stats->investTotals(['methods' => $i, 'status' => Invest::$FAILED_STATUSES] + $filter);
                     $totals[$slot]['charged'] += $m::calculateComission($raised['invests'], $raised['amount'], $returned['invests'], $returned['amount']);
                     $totals[$slot]['lost'] -= $m::calculateComission($returned['invests'], $returned['amount'], $returned['invests'], $returned['amount']);
                 }
@@ -249,16 +276,16 @@ class AdminChartsApiController extends ChartsApiController {
                 // Platform fees
                 $filter['status'] = Invest::$ACTIVE_STATUSES;
                 $totals[$slot] = $stats->investFees($filter);
-                // Global invoice derives bank commissions to the project   
+                // Global invoice derives bank commissions to the project
                 // TODO: move the all to a new api end point "invoice"
                 // if($slot === 'all') {
                 //     $invoice = $totals['total'];
                 //     foreach($methods as $i => $m) {
-                //         $raised = $stats->investTotals($filter + ['methods' => $i, 'status' => Invest::$RAISED_STATUSES]);
-                //         $returned = $stats->investTotals($filter + ['methods' => $i, 'status' => Invest::$FAILED_STATUSES]);
+                //         $raised = $stats->investTotals(['methods' => $i, 'status' => Invest::$RAISED_STATUSES] + $filter);
+                //         $returned = $stats->investTotals(['methods' => $i, 'status' => Invest::$FAILED_STATUSES] + $filter);
                 //         $invoice +=  $m::calculateComission($raised['invests'], $raised['amount'], $returned['invests'], $returned['amount']);
                 //     }
-                //     $totals['invoice'] = $invoice;  
+                //     $totals['invoice'] = $invoice;
                 // }
             } elseif($target === 'amounts') {
                 $filter['status'] = Invest::$ACTIVE_STATUSES;
@@ -282,7 +309,7 @@ class AdminChartsApiController extends ChartsApiController {
             foreach($parts as $k => $v) {
                 if(strpos($k, '_gain') !== false)
                     $totals[$slot][$k . '_formatted'] = number_format($v, 1, Currency::get('', 'decimal'), Currency::get('', 'thousands')) . '%';
-                elseif(strpos($k, 'amount') !== false || strpos($k, 'matchfunding') !== false || in_array($target, ['fees', 'commissions'])) 
+                elseif(strpos($k, 'amount') !== false || in_array($target, ['fees', 'commissions']))
                     $totals[$slot][$k . '_formatted'] = \amount_format($v);
             }
         }
