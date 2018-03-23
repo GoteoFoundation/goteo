@@ -2234,11 +2234,11 @@ class Call extends \Goteo\Core\Model {
 
                 return true;
             } else {
-                $errors[] = 'No se ha creado el registro `call_sphere`';
+                $errors[] = 'Error creating entry in `call_sphere`';
                 return false;
             }
         } catch(\PDOException $e) {
-            $errors[] = 'No se ha podido asignar el ambito {$sphere} a la convocatoria {$this->id}.' . $e->getMessage();
+            $errors[] = "Error assigning [$sphere] to the call [{$this->id}]" . $e->getMessage();
             return false;
         }
 
@@ -2261,7 +2261,7 @@ class Call extends \Goteo\Core\Model {
                 return false;
             }
         } catch(\PDOException $e) {
-            $errors[] = 'No se ha podido quitar el ambito {$sphere} a la convocatoria {$this->id}. ' . $e->getMessage();
+            $errors[] = "Error removing [$sphere] to the call {{$this->id}]" . $e->getMessage();
             return false;
         }
     }
