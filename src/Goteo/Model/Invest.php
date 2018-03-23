@@ -48,8 +48,7 @@ class Invest extends \Goteo\Core\Model {
 
     static $ACTIVE_STATUSES = [self::STATUS_PENDING, self::STATUS_CHARGED, self::STATUS_PAID];
     static $FAILED_STATUSES = [self::STATUS_RELOCATED, self::STATUS_RETURNED, self::STATUS_TO_POOL, self::STATUS_CANCELLED];
-    // STATUS_CANCELLED may rise the achieved amount but it is not included in fee/comissions calculations
-    // static $RAISED_STATUSES = [self::STATUS_PENDING, self::STATUS_CHARGED, self::STATUS_PAID, self::STATUS_CANCELLED, self::STATUS_RETURNED, self::STATUS_TO_POOL];
+    // STATUS_CANCELLED may rise the achieved amount in projects but it is not included in fee/comissions calculations
     static $RAISED_STATUSES = [self::STATUS_PENDING, self::STATUS_CHARGED, self::STATUS_PAID, self::STATUS_RETURNED, self::STATUS_TO_POOL];
     static $RAW_STATUSES = [self::STATUS_PENDING, self::STATUS_CHARGED, self::STATUS_PAID, self::STATUS_CANCELLED, self::STATUS_RETURNED, self::STATUS_TO_POOL];
 
@@ -354,6 +353,12 @@ class Invest extends \Goteo\Core\Model {
                 case 'nonanonymous':
                     $sqlFilter[] = "invest.anonymous = 0";
                     break;
+                case 'wallet':
+                    $sqlFilter[] = "invest.project IS NULL";
+                    break;
+                case 'project':
+                    $sqlFilter[] = "invest.project IS NOT NULL";
+                    break;
                 case 'manual':
                     $sqlFilter[] = "invest.admin IS NOT NULL";
                     break;
@@ -456,8 +461,8 @@ class Invest extends \Goteo\Core\Model {
 
         if($count) {
             if($count === 'all') {
-                $what = 'SUM(invest.amount) AS total_amount, 
-                COUNT(invest.id) AS total_invests, 
+                $what = 'SUM(invest.amount) AS total_amount,
+                COUNT(invest.id) AS total_invests,
                 COUNT(DISTINCT invest.user) AS total_users';
             }
             elseif($count === 'money') {
@@ -554,24 +559,24 @@ class Invest extends \Goteo\Core\Model {
         // Normal invests fee
         $sql = "SELECT SUM(IFNULL(project_account.fee, $fee) * invest.amount) / 100
                 FROM invest
-                LEFT JOIN project_account ON invest.project = project_account.project 
+                LEFT JOIN project_account ON invest.project = project_account.project
                 WHERE invest.campaign=0 $sqlFilter";
         $users_fee = (float) self::query($sql, $values)->fetchColumn();
 
         // Call Matchfunding invests fee
         $sql = "SELECT SUM(IFNULL(`call`.fee_projects_drop, $fee) * invest.amount) / 100
                 FROM invest
-                LEFT JOIN `call` ON invest.call = `call`.id 
+                LEFT JOIN `call` ON invest.call = `call`.id
                 WHERE invest.campaign=1 AND invest.method='drop' $sqlFilter";
         $calls_fee = (float) self::query($sql, $values)->fetchColumn();
         // echo \sqldbg($sql, $values);
         // Matcher Matchfunding invests fee
         $sql = "SELECT SUM(IFNULL(`matcher`.fee, $fee) * invest.amount) / 100
                 FROM invest
-                LEFT JOIN `matcher` ON invest.matcher = `matcher`.id 
+                LEFT JOIN `matcher` ON invest.matcher = `matcher`.id
                 WHERE invest.campaign=1 AND invest.method!='drop' $sqlFilter";
         $matchers_fee = (float) self::query($sql, $values)->fetchColumn();
-        
+
         return ['user' => $users_fee, 'call' => $calls_fee, 'matcher' => $matchers_fee];
     }
 

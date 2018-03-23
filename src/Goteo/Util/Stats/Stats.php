@@ -107,9 +107,6 @@ class Stats {
      */
     public function getInvestTotals($filter = [], $count = 'all') {
         $totals = Invest::getList($filter, null, 0, 0, $count);
-        // Add matchfunding calc
-        $filter['types'] = 'drop';
-        $totals['matchfunding'] = Invest::getList($filter, null, 0, 0, 'money');
         return $totals;
     }
 
@@ -128,10 +125,10 @@ class Stats {
 
         list($sqlFilter, $values) = Invest::getSQLFilter($filter);
         $sql = "SELECT CONCAT(10 * (amount DIV $div),'-',($div * (amount DIV $div) + $div)) AS amount,
-            COUNT(id) AS total, ROUND(100*COUNT(id)/(SELECT COUNT(id) FROM invest $sqlFilter ), 2) AS percent 
-            FROM invest $sqlFilter 
+            COUNT(id) AS total, ROUND(100*COUNT(id)/(SELECT COUNT(id) FROM invest $sqlFilter ), 2) AS percent
+            FROM invest $sqlFilter
             GROUP BY $div * (amount DIV $div)
-            HAVING percent > 0.1 
+            HAVING percent > 0.1
             ORDER BY percent DESC";
         // die(\sqldbg($sql, $values));die;
         $totals = [];
