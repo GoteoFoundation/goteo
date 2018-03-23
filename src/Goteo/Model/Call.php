@@ -1317,8 +1317,8 @@ class Call extends \Goteo\Core\Model {
                 if($filters['type'] === 'explore') {
                     $innerJoin = 'INNER JOIN call_conf ON call_conf.call = call.id';
 
-                    $sqlFilter .= " AND call_conf.date_stage1_out < CURDATE()"; 
-                    
+                    $sqlFilter .= " AND call_conf.date_stage1_out < CURDATE()";
+
                     if(empty($filters['order'])) {
                         $sqlOrder = " ORDER BY call_conf.date_stage2 DESC";
                     }
@@ -1326,8 +1326,8 @@ class Call extends \Goteo\Core\Model {
                 if($filters['type'] === 'open') {
                     $innerJoin = 'INNER JOIN call_conf ON call_conf.call = call.id';
 
-                    $sqlFilter .= " AND call_conf.date_stage1_out >= CURDATE()"; 
-                    
+                    $sqlFilter .= " AND call_conf.date_stage1_out >= CURDATE()";
+
                     if(empty($filters['order'])) {
                         $sqlOrder = " ORDER BY call_conf.date_stage1_out DESC";
                     }
@@ -2265,7 +2265,7 @@ class Call extends \Goteo\Core\Model {
      */
     public static function getTotalRaised(){
         $status_active=[self::STATUS_OPEN, self::STATUS_ACTIVE, self::STATUS_COMPLETED];
-        return self::getList(['status' => $status_active], true);
+        return self::getList(['status' => $status_active],0, 0, true);
     }
 
     /*
@@ -2282,7 +2282,7 @@ class Call extends \Goteo\Core\Model {
         return Project::getPublishedProjects($this->id);
     }
 
-   
+
 
 }
 
