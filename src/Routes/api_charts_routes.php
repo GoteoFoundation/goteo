@@ -74,10 +74,11 @@ $api->add('api-chart-aggregates', new Route(
 
 // Totals for invests (today, yesterday, this week, etc)
 $api->add('api-chart-totals-invests', new Route(
-    '/charts/totals/invests/{target}/{method}',
+    '/charts/totals/invests/{target}/{method}/{slot}',
     array('_controller' => 'Goteo\Controller\Api\AdminChartsApiController::totalInvestsAction',
           'target' => '',
-          'method' => 'global'
+          'method' => 'global',
+          'slot' => ''
         )
 ));
 

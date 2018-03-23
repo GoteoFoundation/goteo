@@ -356,8 +356,16 @@ class Invest extends \Goteo\Core\Model {
                 case 'wallet':
                     $sqlFilter[] = "invest.project IS NULL";
                     break;
+                case 'matcher_wallet':
+                    $sqlFilter[] = "invest.project IS NULL";
+                    $sqlFilter[] = "invest.user IN (SELECT user_id FROM matcher_user)";
+                    break;
                 case 'project':
                     $sqlFilter[] = "invest.project IS NOT NULL";
+                    break;
+                case 'matcher':
+                    $sqlFilter[] = "invest.campaign = 1";
+                    $sqlFilter[] = "invest.project IN (SELECT project_id FROM matcher_project)";
                     break;
                 case 'manual':
                     $sqlFilter[] = "invest.admin IS NOT NULL";
