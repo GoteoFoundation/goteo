@@ -133,9 +133,9 @@ class AdminChartsApiController extends ChartsApiController {
     }
 
 
-    private function timeSlots(Request $request = null) {
+    private function timeSlots($slot = '', Request $request = null) {
         $f = 'Y-m-d H:i:s';
-        if($request) {
+        if(!$slot && $request) {
             $to = $request->query->get('to');
             $from = $request->query->get('from');
             $project_id = $request->query->get('project');
@@ -198,6 +198,14 @@ class AdminChartsApiController extends ChartsApiController {
                 'to' => (new \DateTime('first day of january this year -1 second'))->format($f)
                 ]
             ];
+        if($slot) {
+            if($slots[$slot]) {
+                return array_filter($slots, function ($k) use ($slot) {
+                    return strpos($k, $slot) !== false;
+                }, ARRAY_FILTER_USE_KEY);
+            }
+            throw new ControllerException("Slot [$slot] not found, try one of [today, yesterday, week, month, year]");
+        }
         // print_r($slots);die;
         return $slots;
     }
@@ -208,11 +216,11 @@ class AdminChartsApiController extends ChartsApiController {
      * @param  string $method raised[paypal, tpv, ..., global]  active[paypal,...], comissions[paypal, ...], fees]
      * @param  Request $request [description]
      */
-    public function totalInvestsAction($target, $method = 'global', Request $request) {
+    public function totalInvestsAction($target, $method = 'global', $slot = '', Request $request) {
         // Use the Stats class to take advantage of the Caching component
         $stats = Stats::create('api_totals'. ($project_id ? "_$project_id" : ''), Config::get('db.cache.long_time'));
 
-        $timeslots = self::timeSlots($request);
+        $timeslots = self::timeSlots($slot, $request);
         $totals = [];
         foreach($timeslots as $slot => $dates) {
             $filter = ['datetime_from' => $dates['from'],
@@ -240,10 +248,15 @@ class AdminChartsApiController extends ChartsApiController {
                 elseif($target === 'raw') $filter['status'] = Invest::$RAW_STATUSES;
                 $totals[$slot] = $stats->investTotals($filter);
                 // Add matchfunding calc
-                $matchfunding = $stats->investTotals(['types' => 'drop'] + $filter);
+                $matchfunding = $stats->investTotals(['types' => 'drop', 'methods' => null] + $filter);
                 $totals[$slot]['from_matchfunding_amount'] = $matchfunding['amount'];
                 $totals[$slot]['from_matchfunding_invests'] = $matchfunding['invests'];
                 $totals[$slot]['from_matchfunding_users'] = $matchfunding['users'];
+                // Add matchfunding from pool calc
+                $matchfunding = $stats->investTotals(['types' => 'matcher', 'methods' => null] + $filter);
+                $totals[$slot]['from_matcher_amount'] = $matchfunding['amount'];
+                $totals[$slot]['from_matcher_invests'] = $matchfunding['invests'];
+                $totals[$slot]['from_matcher_users'] = $matchfunding['users'];
                 // Add projects calc
                 $projects = $stats->investTotals(['types' => 'project'] + $filter);
                 $totals[$slot]['to_projects_amount'] = $projects['amount'];
@@ -254,6 +267,17 @@ class AdminChartsApiController extends ChartsApiController {
                 $totals[$slot]['to_wallet_amount'] = $wallet['amount'];
                 $totals[$slot]['to_wallet_invests'] = $wallet['invests'];
                 $totals[$slot]['to_wallet_users'] = $wallet['users'];
+                // Add in-wallet calc
+                // $wallet = $stats->investTotals(['types' => 'in_wallet'] + $filter);
+                $wallet = $stats->investTotals(['status' => Invest::STATUS_TO_POOL] + $filter);
+                $totals[$slot]['in_wallet_amount'] = $wallet['amount'];
+                $totals[$slot]['in_wallet_invests'] = $wallet['invests'];
+                $totals[$slot]['in_wallet_users'] = $wallet['users'];
+                // Add matcher wallet calc
+                $wallet = $stats->investTotals(['types' => 'matcher_wallet'] + $filter);
+                $totals[$slot]['to_matchers_wallet_amount'] = $wallet['amount'];
+                $totals[$slot]['to_matchers_wallet_invests'] = $wallet['invests'];
+                $totals[$slot]['to_matchers_wallet_users'] = $wallet['users'];
 
             } elseif($target === 'refunded') {
                 $filter['status'] = Invest::STATUS_RETURNED;
@@ -291,7 +315,7 @@ class AdminChartsApiController extends ChartsApiController {
                 $filter['status'] = Invest::$ACTIVE_STATUSES;
                 $totals[$slot] = $stats->investAmounts($filter);
             } elseif($target !== 'global') {
-                throw new ControllerException("[$target] not found, try one of [raised, active, raw, commissions, fees]");
+                throw new ControllerException("[$target] not found, try one of [raised, active, raw, refunded, commissions, fees]");
             }
         }
         $increments = ['today' => 'yesterday', 'week' => 'last_week', 'month' => 'last_month', 'year' => 'last_year'];
