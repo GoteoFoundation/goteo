@@ -12,3 +12,8 @@ call-tagmark-open: 'Convocatòria oberta'
 call-tagmark-active: 'Campanya activa!'
 call-tagmark-completed: 'Campanya finalitzada'
 call-tagmark-archived: 'Convocatòria arxivada'
+
+call-short-tagmark-open: 'Oberta'
+call-short-tagmark-active: 'Activa!'
+call-short-tagmark-completed: 'Finalitzada'
+call-short-tagmark-archived: 'Arxivada'
