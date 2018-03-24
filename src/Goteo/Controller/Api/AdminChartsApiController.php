@@ -171,6 +171,10 @@ class AdminChartsApiController extends ChartsApiController {
                 'from' => (new \DateTime('monday -2 weeks'))->format($f),
                 'to' => (new \DateTime('now -1 weeks'))->format($f)
             ],
+            'last_week_complete' => [
+                'from' => (new \DateTime('monday -2 weeks'))->format($f),
+                'to' => (new \DateTime('monday -1 weeks -1 second'))->format($f)
+            ],
             'month' => [
                 'from' => (new \DateTime('first day of this month 00:00'))->format($f),
                 'to' => (new \DateTime('now'))->format($f)
@@ -201,6 +205,8 @@ class AdminChartsApiController extends ChartsApiController {
         if($slot) {
             if($slots[$slot]) {
                 return array_filter($slots, function ($k) use ($slot) {
+                    $t = ['today', 'yesterday'];
+                    if(in_array($k,$t) && in_array($slot, $t)) return true;
                     return strpos($k, $slot) !== false;
                 }, ARRAY_FILTER_USE_KEY);
             }
