@@ -22,6 +22,7 @@ use Goteo\Library\Feed;
 use Goteo\Library\FeedBody;
 use Goteo\Library\Text;
 use Goteo\Model\User;
+use Goteo\Payment\Payment;
 
 class StatsAdminController extends AbstractAdminController {
     protected static $icon = '<i class="fa fa-2x fa-bar-chart"></i>';
@@ -48,7 +49,7 @@ class StatsAdminController extends AbstractAdminController {
     public static function getSidebar() {
         return [
             '/stats' => Text::get('admin-summary'),
-            '/stats/totals/projects' => Text::get('admin-projects'),
+            '/stats/totals/projects' => Text::get('admin-stats-projects-totals'),
             '/stats/totals/invests' => Text::get('admin-stats-totals'),
             '/stats/timeline' => Text::get('admin-aggregate-timeline'),
             '/stats/origins' => Text::get('admin-origins'),
@@ -71,11 +72,20 @@ class StatsAdminController extends AbstractAdminController {
         }
 
         $filters = [
-            'from' => $request->query->has('from') ? $request->query->get('from') : (new \Datetime('1 week'))->format('Y-m-d'),
+            'from' => $request->query->has('from') ? $request->query->get('from') : null,
             'to' => $request->query->has('to') ? $request->query->get('to') : null
         ];
+        $methods = array_map(function($m) {
+                return $m->getName();
+            }, Payment::getMethods(Session::getUser()));
 
-        return $this->viewResponse($template, ['filters' => $filters, 'sub' => $sub, 'part' => $part]);
+        return $this->viewResponse($template, [
+            'filters' => $filters,
+            'sub' => $sub,
+            'part' => $part,
+            'methods' => ['global' => Text::get('regular-all') ] + $methods,
+            'intervals' => ['today' => 'the_day', 'week' => 'the_week', 'month' => 'the_month', 'year' => 'the_year']
+        ]);
     }
 
 

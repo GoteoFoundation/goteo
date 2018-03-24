@@ -66,6 +66,7 @@ project-invest-total: 'Total contributions'
 project-messages-send_message-your_answer: 'Write your answer here'
 project-messages-send_message_support-your_answer: 'Write here your collaboration message for %s'
 regular-add: New Record
+regular-all: All
 regular-admin_board: 'Admin panel'
 regular-allsome: 'all/some of'
 regular-anonymous: Anonymous

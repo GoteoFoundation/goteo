@@ -71,6 +71,7 @@ project-invest-total: 'Total de aportaciones'
 project-messages-send_message-your_answer: 'Escribe aquí tu respuesta'
 project-messages-send_message_support-your_answer: 'Escribe aquí tu mensaje de colaboración para %s'
 regular-add: Nuevo registro
+regular-all: Todos
 regular-admin_board: 'Panel admin'
 regular-allsome: 'todos/algunos de'
 regular-anonymous: Anónimo

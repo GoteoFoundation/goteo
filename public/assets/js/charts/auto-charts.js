@@ -66,6 +66,7 @@ $(function(){
     var initBindings = function() {
         var sources = {}; // Sources cache
         var first = true;
+
         var initChart = function() {
             first = false;
             var $chart = $(this);
@@ -81,9 +82,13 @@ $(function(){
                 createChart($chart, data, $chart.data());
                 if(interval) {
                     console.log('timeout at ', interval, 'delay at', interval_delay);
-                    setTimeout(function(){
-                        console.log('recreating chart with', sources[source]);
-                        initChart.call($chart);
+                    setTimeout(function() {
+                        if($('[data-source="' +  source +'"]').length) {
+                            console.log('recreating chart with', source, sources[source]);
+                            initChart.call($chart);
+                        } else {
+                            console.log('canceling timeout for ', source, sources[source]);
+                        }
                         }, ((first ? interval_delay : 0) + interval) * 1000);
                     }
                 })
@@ -102,6 +107,7 @@ $(function(){
         $('.d3-chart').each(initChart);
 
         // Update charts from data-properties
+        $('.d3-chart-updater').off('click');
         $('.d3-chart-updater').on('click', function(e) {
             e.preventDefault();
             var target = $(this).data('target');
@@ -112,6 +118,7 @@ $(function(){
         });
 
         // Update settings from checkboxes will update data if active or remove otherwise
+        $('input[type="checkbox"].d3-chart-updater').off('change');
         $('input[type="checkbox"].d3-chart-updater').on('change', function(e){
             var settings = $(this).data();
             var target = $(this).data('target');
@@ -132,6 +139,7 @@ $(function(){
         });
 
         // enlarge charts
+        $('.d3-chart.auto-enlarge').off('click',);
         $('.d3-chart.auto-enlarge').on('click', function(e) {
             e.preventDefault();
             var $wrap = $(this).closest('.chart-wrapper');
@@ -142,6 +150,9 @@ $(function(){
 
     initBindings();
     $(window).on("pronto.render", function(e){
+        initBindings();
+    });
+    $(window).on("autocharts.init", function(e){
         initBindings();
     });
 

@@ -130,8 +130,8 @@ $(function(){
         $('.admin-typeahead').each(function () {
             var $this = $(this);
             var sources = $this.data('sources').split(',');
-            var engines = [{ 
-                minLength: 0, 
+            var engines = [{
+                minLength: 0,
                 hint: true,
                 highlight: true,
                 classNames: {

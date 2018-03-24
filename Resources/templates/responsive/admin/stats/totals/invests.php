@@ -15,35 +15,36 @@ elseif($this->has_query('call')) {
 elseif($this->has_query('matcher')) {
     $value = $this->get_query('matcher');
     $query = http_build_query(['matcher' => $value]);
-} 
+}
 // Nice name
 if($this->has_query('text')) $value = $this->get_query('text');
+
+$parts = ['raised', 'active', 'refunded', 'fees', 'commissions'];
+
+$interval_active = $this->active ?: 'week';
+$method_active = $this->methods ? key($this->methods) : 'global';
+
 ?>
 
 <?php $this->section('admin-container-body') ?>
 
 <?= $this->insert('admin/partials/typeahead', ['value' => $value]) ?>
+<?= $this->supply('admin-stats-filters', $this->insert('admin/stats/partials/filters')) ?>
 
-<div class="panel">
-  <div class="panel-body">
-    
-    <h5><?= $this->text('admin-stats-invest-totals') ?></h5>
-    
-    <?= $this->insert('admin/stats/totals/partials/invests', ['query' => $query]) ?>
-    
-    <h5><?= $this->text('admin-stats-commission-totals') ?></h5>
-    <?= $this->insert('admin/stats/totals/partials/commissions', ['query' => $query]) ?>
+<ul class="nav nav-tabs" role="tablist">
+  <?php foreach($parts as $part): ?>
+    <li role="presentation"><a href="#<?= $part ?>" id="tab-menu-<?= $part ?>" data-target="#tab-<?= $part ?>" aria-controls="<?= $part ?>" role="tab" data-toggle="tab"><?= $this->text("admin-stats-$part") ?></a></li>
+  <?php endforeach ?>
+</ul>
 
-  </div>
+<div class="tab-content">
+  <?php foreach($parts as $part): ?>
+    <div role="tabpanel" class="panel tab-pane" id="tab-<?= $part ?>">
+        <?= $this->insertIf("admin/stats/totals/partials/invests/$part/menu") ?>
+        <div class="panel-body"></div>
+        <?= $this->insertIf("admin/stats/totals/partials/invests/$part/scripts", ['part' => $part]) ?>
+    </div>
+  <?php endforeach ?>
 </div>
 
 <?php $this->replace() ?>
-
-<?php $this->section('footer') ?>
-<script type="text/javascript">
-$('.admin-typeahead').on('typeahead:select', function(event, datum, name) {
-    console.log('search for', event, datum, name);
-    adminProntoLoad(location.pathname + '?' + name + '=' + datum.id + '&text=' + datum.name );
-});
-</script>
-<?php $this->append() ?>

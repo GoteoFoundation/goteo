@@ -167,7 +167,35 @@ admin-aggregate-projects-average: 'Media recaudación en proyectos'
 admin-aggregate-projects-average-desc: 'Media de recaudación por unidad de tiempo'
 
 
+admin-stats-totals: 'Aportes y comisiones'
 admin-stats-project-totals: 'Estado de los proyectos'
+admin-stats-raised: 'Ingresos brutos'
+admin-stats-active: 'Ingresos netos'
+admin-stats-refunded: 'Devoluciones'
+admin-stats-fees: 'Comisión plataforma'
+admin-stats-commissions: 'Comisión banco'
+
+admin-stats-method: 'Método de pago'
+
+admin-raised: Recaudado
+admin-diff: Diferencia
+admin-the_day: El día
+admin-the_week: La semana
+admin-the_month: El mes
+admin-the_year: El año
+
+admin-today: Hoy
+admin-yesterday: Ayer
+admin-week: Esta semana
+admin-last_week: El mismo día de la semana pasada
+admin-last_week_complete: Toda la semana pasada
+admin-month: Este mes
+admin-last_month: El mismo día del mes pasado
+admin-last_month_complete: Todo el mes pasado
+admin-year: Este año
+admin-last_year: El mismo día del año pasado
+admin-last_year_complete: Todo el año pasado
+
 admin-projects-created-today: 'Creados hoy'
 admin-projects-created-yesterday: 'Creados ayer'
 admin-projects-created-week: 'Creados esta semana'
@@ -200,9 +228,6 @@ admin-projects-review-last_month: 'En revisión el mes pasado'
 admin-projects-review-year: 'En revisión este año'
 admin-projects-review-last_year: 'En revisión el año pasado'
 
-admin-stats-totals: 'Aportes y comisiones'
-admin-stats-invest-totals: 'Ingresos'
-admin-stats-commission-totals: 'Comisiones'
 admin-invest-raised-amount-today: 'Recaudado hoy'
 admin-invest-raised-total-today: 'Donaciones hoy'
 admin-invest-raised-amount-yesterday: 'Recaudado ayer'
