@@ -102,6 +102,12 @@ class MessagesApiController extends AbstractApiController {
         }
         if($recipients = $request->request->get('recipients')) {
             $comment->setRecipients($recipients);
+        } else {
+            // Set the parent as recipient
+            $comment->setRecipients([$parent->getUser()]);
+        }
+        if(!$comment->getRecipients()) {
+            throw new ModelException(Text::get('dashboard-message-donors-error'));
         }
 
         // Send and event to create the Feed and send emails
@@ -236,7 +242,8 @@ class MessagesApiController extends AbstractApiController {
             $body = "### $subject\n\n$body";
         }
 
-
+        // TODO: find the last thread for this user/project
+        //
         // Create the message
         $message = new Comment([
             'user' => $this->user,

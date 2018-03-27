@@ -16,6 +16,13 @@ use Goteo\Application\Exception\ControllerAccessDeniedException;
 use Goteo\Model\License;
 
 class LicensesApiController extends AbstractApiController {
+    public function __construct() {
+        parent::__construct();
+        // Activate cache & replica read for this controller
+        $this->dbReplica(true);
+        $this->dbCache(true);
+    }
+
     /**
      * Simple listing of license
      * GET filters:
