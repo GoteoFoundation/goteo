@@ -15,12 +15,12 @@
                         <div class="content">
                             <div class="title">
                                 <a class="a-unstyled" href="<?= '/blog/'.$related_post->id ?>">
-                                	<?= $this->text_truncate($related_post->title, 120) ?>
+                                	<?= $this->text_truncate($related_post->title, 100) ?>
                                 </a>
                             </div>
                             <div class="related-author">
-                                <img src="<?= $related_author->avatar->getLink(40, 40, true); ?>" ?>
-                                <?= $this->text('regular-by').' '?><?= $related_author->name ?>
+                                <img src="<?= $related_author->avatar->getLink(35, 35, true); ?>" ?>
+                                <?= $related_author->name ?>
                             </div>
                         </div>
                     </div>
