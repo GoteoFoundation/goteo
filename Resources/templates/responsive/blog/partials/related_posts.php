@@ -1,6 +1,7 @@
 <?php if($this->related_posts): ?>
 	<div class="section related-posts">
 		<div class="container">
+            <h2 class="title"><?= $this->text('blog-related-posts') ?></h2>
 			<div class="row">
 				<?php foreach($this->related_posts as $related_post): ?>
 					<?php $image= $related_post->header_image ? $related_post->header_image : $related_post->image; ?>

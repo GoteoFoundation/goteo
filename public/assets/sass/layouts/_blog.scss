@@ -133,6 +133,11 @@ body.blog {
 
     div.section.related-posts{
       padding: 70px 0;
+      h2.title{
+        text-align: center;
+        margin-top: 0;
+        padding-bottom: 30px;
+      }
       .img-link{
           display: flex;
           height: 200px;
@@ -150,6 +155,7 @@ body.blog {
         height: 180px;
         border-bottom-left-radius: 5px;
         border-bottom-right-radius: 5px;
+        position: relative;
         div.title{
           color: $primary-color;
           font-size: $font-size*1.46;
@@ -161,6 +167,8 @@ body.blog {
           color: $color-white;
         }
         div.related-author{
+          position: absolute;
+          bottom: 25px;
           img{
             vertical-align: bottom;
           }
