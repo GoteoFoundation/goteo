@@ -2,7 +2,7 @@
 
 /* blog styles */
 
-body.blog {
+body.post {
 
     background-color: $background-white;
 
@@ -229,6 +229,10 @@ body.blog {
             }
           }
         }
+      }
+
+      div.related-post{
+        margin-top: 20px;
       }
 
     }
