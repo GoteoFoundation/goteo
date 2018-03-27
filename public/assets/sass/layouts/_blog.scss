@@ -145,12 +145,12 @@ body.blog {
       }
       .content{
         color: $primary-color;
-        //background-color: $background-yellow;
+        background-color: rgba(255,236,97,0.7);
         padding: 5%;
-        height: 250px;
+        height: 180px;
         div.title{
           color: $primary-color;
-          font-size: $font-size*2;
+          font-size: $font-size*1.46;
           font-weight: 700;
           line-height: 1.1;
           margin-bottom: 5px;
@@ -158,6 +158,12 @@ body.blog {
         div.description{
           color: $color-white;
         }
+        div.related-author{
+          img{
+            vertical-align: bottom;
+          }
+        }
+
       }
     }
 
