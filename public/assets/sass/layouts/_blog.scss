@@ -6,9 +6,34 @@ body.blog {
 
     background-color: $background-white;
 
+    .top-navbar{
+      background-color: $background-yellow;
+      h3{
+        font-size: $font-size*1.1;
+        margin-left:10px;
+        float: left;
+      }
+    }
+
+    .a-unstyled{
+      color: $primary-color;
+    }
+
+    .top-navbar .navbar-always > a, .top-navbar .navbar-always > a i.icon, .top-navbar .navbar-always > button{
+      color: $primary-color;
+      background-color: transparent;
+    }
+    .top-navbar .navbar-always > button img {
+      border-color: lighten($primary-color, 50%);
+    }
+
+    .top-navbar .navbar-always > a i.icon{
+      background-color: $primary-color;
+    }
+
     img.header-default{
-      height:600px;
       object-fit: cover;
+      width: 100%;
     }
 
    .social{
@@ -102,6 +127,36 @@ body.blog {
         }
         img{
           max-width: 100%;
+        }
+      }
+    }
+
+    div.section.related-posts{
+      padding: 20px 0;
+      .img-link{
+          display: flex;
+          height: 200px;
+          border-top-left-radius: 5px;
+          border-top-right-radius: 5px;
+        img{
+          width: 100%;
+          object-fit: cover;
+        }
+      }
+      .content{
+        color: $primary-color;
+        //background-color: $background-yellow;
+        padding: 5%;
+        height: 250px;
+        div.title{
+          color: $primary-color;
+          font-size: $font-size*2;
+          font-weight: 700;
+          line-height: 1.1;
+          margin-bottom: 5px;
+        }
+        div.description{
+          color: $color-white;
         }
       }
     }

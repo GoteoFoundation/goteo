@@ -21,13 +21,18 @@ $this->layout('layout', [
 
 
 
-$this->section('head');
+$this->section('head'); ?>
 
-?>
+<link rel="stylesheet" type="text/css" href="<?= SRC_URL ?>/assets/vendor/slick-carousel/slick/slick.css"/>
+<link rel="stylesheet" type="text/css" href="<?= SRC_URL ?>/assets/vendor/slick-carousel/slick/slick-theme.css"/>
+<link href="<?= SRC_URL ?>/assets/css/typeahead.css" rel="stylesheet">
 
 <link rel="stylesheet" href="/assets/vendor/selection-sharer/selection-sharer.css" />
 
-<?php
+
+<?php 
+
+//$this->insert('blog/partials/styles');
 
 $this->append();
 
@@ -57,10 +62,23 @@ $this->section('content');
 
 <?php $this->section('footer') ?>
 
-<script type="text/javascript" src="/assets/vendor/selection-sharer/selection-sharer.js" ></script>
+<?= $this->insert('blog/partials/javascript') ?>
 
 <script>
-	$('div').selectionSharer();
+    $(function(){
+    	$('div').selectionSharer();
+
+        $('.slider-team').slick({
+            dots: false,
+            autoplay: true,
+            infinite: true,
+            speed: 2000,
+            autoplaySpeed: 3000,
+            fade: true,
+            arrows: false,
+            cssEase: 'linear'
+        });
+    });
 </script>
 
 <?php $this->append() ?>

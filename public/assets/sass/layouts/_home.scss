@@ -750,38 +750,7 @@ body.home {
         .data-container{
             padding: 40px 0;
         }
-        .donor-container{
-            background-color: $background-dark-yellow;
-            padding-top: 30px;
-            .title{
-            text-transform: uppercase;
-            font-size: $font-size*0.8;
-            }
-            h1.description{
-                font-weight: bold;
-                font-size: $font-size*1.5;
-                line-height: 1.1;
-                margin: 0;
-                padding: 0;
-            }
-            .row{
-            display: flex;
-            }
-            .col-button{
-                display: flex;
-                flex-direction: column;
-                justify-content: center;
-                padding-bottom: 20px;
-              .btn-white{
-                color: $color-grey;
-                padding: 13px 0px;
-                font-size: $font-size*1.2;
-                }
-            }
-
-
-
-        }
+    
     }
 
     div.section.matchfunding{
@@ -1177,22 +1146,6 @@ body.home {
             margin-top:20px;
         }
 
-
-        .donor-container{
-            .title{
-            margin-top: 30px;
-            }
-            .row{
-            display: block !important;
-            }
-            .col-button{
-
-              .btn-white{
-                    margin-top: 30px;
-                }
-            }
-        }
-
         div.section.channels div.container{
             .widget-channel{
                 margin: 0 30px;
@@ -1223,13 +1176,6 @@ body.home {
         .section.advantages .advantages-container{
             .row.details{
                 display: block;
-            }
-        }
-
-        .donor-container .row{
-            display: block !important;
-            img{
-                //margin: 40px auto;
             }
         }
 
