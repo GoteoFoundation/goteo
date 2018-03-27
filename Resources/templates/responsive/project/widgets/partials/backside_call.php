@@ -12,7 +12,7 @@
 
     <?php if($this->project->inCampaign()): ?>
     <div class="invest">
-        <a class="btn btn-lg btn-block btn-white" href="/invest/<?= $this->project->id ?>"><?= $this->text('project-regular-support') ?></a>
+        <a class="btn btn-lg btn-block btn-white" target="_blank" href="/invest/<?= $this->project->id ?>"><?= $this->text('project-regular-support') ?></a>
     </div>
     <?php endif ?>
 </div>
