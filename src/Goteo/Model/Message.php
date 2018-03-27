@@ -620,13 +620,14 @@ class Message extends \Goteo\Core\Model {
                 ON project.id = message.project
             WHERE   message.project = :project
             AND message.user != :user
+            AND message.private = 0
             ";
 
         // die(\sqldbg($sql, $values));
 
         $query = static::query($sql, $values);
         if($got = $query->fetchObject()) {
-            // si ha cambiado, actualiza el numero de inversores en proyecto
+            // si ha cambiado, actualiza el numero de colaboraciones en proyecto
             if ($got->messengers != $got->num) {
                 static::query("UPDATE project SET num_messengers = :num, popularity = :pop WHERE id = :project", array(':num' => (int) $got->messengers, 'pop' => ( $got->messengers + $got->pop), ':project' => $project->id));
             }
