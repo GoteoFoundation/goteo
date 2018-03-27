@@ -18,7 +18,7 @@
     <div class="panel section-content">
       <div class="panel-body">
         <h4 class="data-support">
-            <a href="/project/<?= $message->project ?>"><i class="icon icon-2x icon-<?= $icon ?>"></i> <?= $message->getTitle() ?></a>
+            <a href="/project/<?= $message->project ?>"><img class="img-circle" src="<?= $message->getProject()->image->getLink(64,64,true)?>" style="height: 32px"> <?= $message->getTitle() ?></a>
             <small><em><?= date_formater($message->date, true) ?></em></small>
             <small class="pull-right"><?= $this->text('message-'. $type ) ?></small>
         </h4>

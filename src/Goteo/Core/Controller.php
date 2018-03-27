@@ -68,6 +68,21 @@ abstract class Controller {
         return new RedirectResponse($path, $status);
     }
 
+
+    /**
+     * Handy method to enable/disable the SQL cache
+     */
+    public function dbCache($cache = null) {
+        return \Goteo\Core\DB::cache($cache);
+    }
+
+    /**
+     * Handy method to enable/disable the SQL replica
+     */
+    public function dbReplica($replica = null) {
+        return \Goteo\Core\DB::replica($replica);
+    }
+
     /**
      * Handy method to obtain the view engine object
      */

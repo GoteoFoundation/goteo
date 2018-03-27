@@ -290,8 +290,12 @@ class Message extends \Goteo\Core\Model {
     public function setThread($thread) {
         if($thread === 'auto') {
             $user = reset($this->getRecipients());
-            if($last = static::getUserThreads($user, 0, 1)) {
-                $this->thread = $last[0]->id;
+            if($lasts = static::getUserThreads($user, 0, 2)) {
+                // Make sure is not the same message
+                foreach($lasts as $last) {
+                    if($last->id != $this->id)
+                        $this->thread = $last->id;
+                }
             }
         } else {
             $this->thread = $thread;

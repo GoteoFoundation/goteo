@@ -21,6 +21,14 @@ use Goteo\Model\Image;
 use Goteo\Library\Text;
 
 class UsersApiController extends AbstractApiController {
+    public function __construct() {
+        parent::__construct();
+        // De-Activate cache & replica read for this controller
+        $this->dbReplica(false);
+        $this->dbCache(false);
+    }
+
+
     /**
      * Simple listing of users
      * TODO: according to permissions, filter this users
