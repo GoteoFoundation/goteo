@@ -22,6 +22,13 @@ use Goteo\Model\Origin;
 
 class ChartsApiController extends AbstractApiController {
 
+    public function __construct() {
+        parent::__construct();
+        // Activate replica read for this controller (cache already activated in AbstractApiController)
+        \Goteo\Core\DB::replica(true);
+    }
+
+
     protected function getProject($prj, $private = false) {
         if( ! $prj instanceOf Project) {
             $prj = Project::get($prj);

@@ -258,7 +258,6 @@
             position: absolute;
             left: 15px;
             bottom: 15px;
-            text-transform: lowercase;
             line-height: 1;
             &::first-letter {
                 text-transform: uppercase;
@@ -581,6 +580,7 @@
     margin-bottom: 40px;
     .content {
       height: auto;
+      min-height: 298px !important;
     }
     ul.amounts {
       position: static;

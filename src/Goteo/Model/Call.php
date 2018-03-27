@@ -10,6 +10,7 @@ use Goteo\Library\Text;
 use Goteo\Model\User;
 use Goteo\Model\Image;
 use Goteo\Model\Message;
+use Goteo\Model\Project;
 
 class Call extends \Goteo\Core\Model {
 
@@ -1293,6 +1294,12 @@ class Call extends \Goteo\Core\Model {
                         $sqlOrder = " ORDER BY call_conf.date_stage1_out DESC";
                     }
                 }
+                if($filters['type'] === 'all') {
+                    $innerJoin = 'INNER JOIN call_conf ON call_conf.call = call.id';
+                      
+                    $sqlOrder = " ORDER BY call_conf.date_stage1_out DESC";
+                    
+                }
         }
 
         if($count) {
@@ -2229,6 +2236,22 @@ class Call extends \Goteo\Core\Model {
         $status_active=[self::STATUS_OPEN, self::STATUS_ACTIVE, self::STATUS_COMPLETED];
         return self::getList(['status' => $status_active], true);
     }
+
+    /*
+     *   Porcentage of sucess projects
+    */
+    public function getSuccessPorcentage(){
+        return Project::getSucessfulPercentage($this->id);
+    }
+
+    /*
+     *   Porcentage of sucess projects
+    */
+    public function getPublished(){
+        return Project::getPublishedProjects($this->id);
+    }
+
+   
 
 }
 
