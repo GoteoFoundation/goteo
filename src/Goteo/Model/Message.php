@@ -193,30 +193,37 @@ class Message extends \Goteo\Core\Model {
     /**
      * Returns user messages
      */
-    public static function getUserThreads($user, $offset = 0, $limit = 10, $count = false, $order = 'date DESC, id DESC') {
+    public static function getUserThreads($user, $offset = 0, $limit = 10, $count = false, $order = 'date_max DESC, date DESC, id DESC') {
 
         $id = $user instanceOf User ? $user->id : $user;
-        if($count) $order = '';
+
+        // $sql = 'FROM message a
+        //           LEFT JOIN message_user d ON d.message_id=a.id
+        //           WHERE (
+        //             a.id IN (
+        //                 SELECT thread FROM message b
+        //                 WHERE (b.user = :user OR
+        //                     :user IN (SELECT user_id FROM message_user c WHERE c.message_id=b.id)
+        //                     ) AND b.blocked=0)
+        //             OR d.user_id = :user)
+        //             AND ISNULL(a.thread)
+        //             ';
 
         $sql = 'FROM message a
-                  LEFT JOIN message_user d ON d.message_id=a.id
-                  WHERE (
-                    a.id IN (
-                        SELECT thread FROM message b
-                        WHERE (b.user = :user OR
-                            :user IN (SELECT user_id FROM message_user c WHERE c.message_id=b.id)
-                            ) AND b.blocked=0)
-                    OR d.user_id = :user)
-                    AND ISNULL(a.thread)
-                    ';
-
+                LEFT JOIN message_user b ON b.message_id=a.id
+                WHERE a.user = :user OR b.user_id=:user
+                GROUP BY IF(ISNULL(a.thread),a.id,a.thread)
+                HAVING ISNULL(a.thread) AND a.blocked=0
+            ';
         $values = [':user' => $id];
 
         if($count) {
-            return (int) self::query("SELECT COUNT(DISTINCT a.id) $sql", $values)->fetchColumn();
+            // return (int) self::query("SELECT COUNT(DISTINCT a.id) $sql", $values)->fetchColumn();
+            return (int) self::query("SELECT COUNT(*) FROM (SELECT a.thread,a.blocked $sql) s", $values)->fetchColumn();
         }
 
-        $sql = "SELECT DISTINCT a.* $sql";
+        // $sql = "SELECT DISTINCT a.* $sql";
+        $sql = "SELECT a.*, MAX(a.date) AS date_max $sql";
         $offset = (int) $offset;
         $limit = (int) $limit;
         $sql .=  $order ? " ORDER BY $order" : '';
@@ -245,9 +252,10 @@ class Message extends \Goteo\Core\Model {
             $values[':project'] = $pid;
         }
         $sql = "FROM message a
+                JOIN `user` u1 ON a.user = u1.id
                 LEFT JOIN support b ON b.thread = a.thread
                 LEFT JOIN message_user c ON c.message_id = a.id
-                JOIN user d ON c.user_id = d.id
+                LEFT JOIN `user` u2 ON c.user_id = u2.id
                 WHERE blocked=0
                 AND (c.user_id = :user OR a.user = :user)
                 AND b.id IS NULL
@@ -258,7 +266,9 @@ class Message extends \Goteo\Core\Model {
 
         $offset = (int) $offset;
         $limit = (int) $limit;
-        $sql = "SELECT a.*, b.id AS support_id, c.user_id AS recipient, d.name AS recipient_name $sql ORDER BY date DESC, id DESC LIMIT $offset, $limit";
+        $sql = "SELECT a.*, b.id AS support_id,
+        IF(ISNULL(u2.id), u1.id, u2.id) AS recipient,
+        IF(ISNULL(u2.name), u1.name, u2.name)  AS recipient_name $sql ORDER BY date DESC, id DESC LIMIT $offset, $limit";
 
         $sql = "SELECT * FROM ($sql) rev ORDER BY date ASC, id ASC ";
         // die(sqldbg($sql, $values));

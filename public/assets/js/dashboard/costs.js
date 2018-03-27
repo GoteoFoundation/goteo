@@ -25,10 +25,6 @@ for the JavaScript code in this page.
 
 $(function(){
 
-    $('.autoform').on('change', '.cost-item .type select', function() {
-        $(this).closest('.type').find('img').attr('src', '<?= $this->ee($this->asset('img/project/needs/'), 'js') ?>' + $(this).val() + '.png');
-    });
-
     var setBar = function() {
         var $container = $('.dashboard-content>.inner-container');
         var $bar = $container.find('.costs-bar');
