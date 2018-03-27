@@ -139,7 +139,7 @@ $(function(){
         });
 
         // enlarge charts
-        $('.d3-chart.auto-enlarge').off('click',);
+        $('.d3-chart.auto-enlarge').off('click');
         $('.d3-chart.auto-enlarge').on('click', function(e) {
             e.preventDefault();
             var $wrap = $(this).closest('.chart-wrapper');
