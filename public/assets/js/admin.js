@@ -53,13 +53,11 @@ $(function(){
 
         var action = $(this).attr('action');
         var method = $(this).attr('method').toLowerCase();
-        var query = $(this).serialize()
-                           .replace("+", " ")
-                           // .replace("*", "%2A")
-                           // .replace("%7E", "~")
-                           ;
-        console.log('submit', action, query, method, e);
+        var query = decodeURIComponent($(this).serialize())
+                           .replace(/\+/g, " ");
+        console.log('submit', action, query, method, location, e);
         if(method === 'get') {
+            if(location.hash) query += location.hash;
             adminProntoLoad(action + '?' + query, '#admin-content');
         }
     });

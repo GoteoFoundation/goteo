@@ -135,24 +135,12 @@ class AdminChartsApiController extends ChartsApiController {
 
     private function timeSlots($slot = '', Request $request = null) {
         $f = 'Y-m-d H:i:s';
-        if(!$slot && $request) {
-            $to = $request->query->get('to');
-            $from = $request->query->get('from');
-            $project_id = $request->query->get('project');
-            $call_id = $request->query->get('call');
-            $matcher_id = $request->query->get('matcher');
-            $user_id = $request->query->get('user');
-
-            if($from) {
-                $slots['custom'] = ['from' => (new \DateTime($from))->format($f)];
-                if($to) $slots['custom']['to'] = (new \DateTime($to))->format($f);
-                else  $slots['custom']['to'] = (new \DateTime('now'))->format($f);
-                return $slots;
-            } elseif($project_id || $call_id || $matcher_id || $user_id) {
-                $slots['custom'] = ['from' => null, 'to' => null];
-                return $slots;
-            }
-        }
+        $to = $request->query->get('to');
+        $from = $request->query->get('from');
+        $project_id = $request->query->get('project');
+        $call_id = $request->query->get('call');
+        $matcher_id = $request->query->get('matcher');
+        $user_id = $request->query->get('user');
 
         $slots = [
             'today' => [
@@ -204,13 +192,28 @@ class AdminChartsApiController extends ChartsApiController {
             ];
         if($slot) {
             if($slots[$slot]) {
-                return array_filter($slots, function ($k) use ($slot) {
+                $slots = array_filter($slots, function ($k) use ($slot) {
                     $t = ['today', 'yesterday'];
                     if(in_array($k,$t) && in_array($slot, $t)) return true;
                     return strpos($k, $slot) !== false;
                 }, ARRAY_FILTER_USE_KEY);
+            } elseif($slot !== 'custom') {
+                throw new ControllerException("Slot [$slot] not found, try one of [today, yesterday, week, month, year]");
             }
-            throw new ControllerException("Slot [$slot] not found, try one of [today, yesterday, week, month, year]");
+        }
+        // Add custom slot if searching
+        if($request) {
+            if($from) {
+                $slots['custom'] = ['from' => (new \DateTime($from))->format($f)];
+                if($to) $slots['custom']['to'] = (new \DateTime($to))->format($f);
+                else  $slots['custom']['to'] = (new \DateTime('now'))->format($f);
+            } elseif($project_id || $call_id || $matcher_id || $user_id) {
+                $slots['custom'] = ['from' => null, 'to' => null];
+            }
+            // Return only the custom slot if no period specified
+            if(!$slot || $slot === 'custom') {
+                return ['custom' => $slots['custom']];
+            }
         }
         // print_r($slots);die;
         return $slots;
@@ -224,7 +227,7 @@ class AdminChartsApiController extends ChartsApiController {
      */
     public function totalInvestsAction($target, $method = 'global', $slot = '', Request $request) {
         // Use the Stats class to take advantage of the Caching component
-        $stats = Stats::create('api_totals'. ($project_id ? "_$project_id" : ''), Config::get('db.cache.long_time'));
+        $stats = Stats::create('api_totals'. ($project_id ? "_$project_id" : ''), 30);
 
         $timeslots = self::timeSlots($slot, $request);
         $totals = [];
@@ -273,17 +276,24 @@ class AdminChartsApiController extends ChartsApiController {
                 $totals[$slot]['to_wallet_amount'] = $wallet['amount'];
                 $totals[$slot]['to_wallet_invests'] = $wallet['invests'];
                 $totals[$slot]['to_wallet_users'] = $wallet['users'];
-                // Add in-wallet calc
-                // $wallet = $stats->investTotals(['types' => 'in_wallet'] + $filter);
-                $wallet = $stats->investTotals(['status' => Invest::STATUS_TO_POOL] + $filter);
-                $totals[$slot]['in_wallet_amount'] = $wallet['amount'];
-                $totals[$slot]['in_wallet_invests'] = $wallet['invests'];
-                $totals[$slot]['in_wallet_users'] = $wallet['users'];
                 // Add matcher wallet calc
                 $wallet = $stats->investTotals(['types' => 'matcher_wallet'] + $filter);
-                $totals[$slot]['to_matchers_wallet_amount'] = $wallet['amount'];
-                $totals[$slot]['to_matchers_wallet_invests'] = $wallet['invests'];
-                $totals[$slot]['to_matchers_wallet_users'] = $wallet['users'];
+                $totals[$slot]['to_matcher_wallet_amount'] = $wallet['amount'];
+                $totals[$slot]['to_matcher_wallet_invests'] = $wallet['invests'];
+                $totals[$slot]['to_matcher_wallet_users'] = $wallet['users'];
+                // Add accumulated in-wallet calc
+                $to_wallet = $stats->investTotals(['types' => 'to_wallet', 'datetime_from' => null, 'methods' => null] + $filter);
+                $from_wallet = $stats->investTotals(['types' => 'from_wallet', 'datetime_from' => null, 'methods' => null] + $filter);
+                $totals[$slot]['in_wallet_amount'] = $to_wallet['amount'] - $from_wallet['amount'];
+                $totals[$slot]['in_wallet_invests'] = $to_wallet['invests'] - $from_wallet['invests'];
+                $totals[$slot]['in_wallet_users'] = $to_wallet['users'] - $from_wallet['users'];
+                $to_matcher_wallet = $stats->investTotals(['types' => 'to_matcher_wallet', 'datetime_from' => null, 'methods' => null] + $filter);
+                $from_matcher_wallet = $stats->investTotals(['types' => 'from_matcher_wallet', 'datetime_from' => null, 'methods' => null] + $filter);
+                // print_r($to_matcher_wallet);print_r($from_matcher_wallet);die;
+                $totals[$slot]['in_matcher_wallet_amount'] = $to_matcher_wallet['amount'] - $from_matcher_wallet['amount'];
+                $totals[$slot]['in_matcher_wallet_invests'] = $to_matcher_wallet['invests'] - $from_matcher_wallet['invests'];
+                $totals[$slot]['in_matcher_wallet_users'] = $to_matcher_wallet['users'] - $from_matcher_wallet['users'];
+
 
             } elseif($target === 'refunded') {
                 $filter['status'] = Invest::STATUS_RETURNED;

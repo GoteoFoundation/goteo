@@ -25,34 +25,29 @@ for the JavaScript code in this page.
 
 $(function(){
 
-    // $('.admin-typeahead').on('typeahead:select', function(event, datum, name) {
-    //     console.log('search for', event, datum, name);
-    //     adminProntoLoad(location.pathname + '?' + name + '=' + datum.id + '&text=' + datum.name );
-    // });
-
     var printRaisedGraph = function(target) {
         var hash = location.hash.substr(1).split(',');
         // from hash
-        var method = hash[1] || $('#tab-' + target).find('div.choose-method a:first').attr('href').substr(1);
-        var interval = hash[2] || $('#tab-' + target).find('div.choose-interval a:first').attr('href').substr(1);
-        if($(this).closest('div.btn-group').length) {
+        var method = hash[1] || $('#tab-' + target).find('.choose-method a:first').attr('href').substr(1);
+        var interval = hash[2] || $('#tab-' + target).find('.choose-interval a:first').attr('href').substr(1);
+        if($(this).closest('.invests-filter').length) {
             var part = $(this).attr('href').substr(1);
-            var is_method = $(this).closest('div.btn-group').hasClass('choose-method');
+            var is_method = $(this).closest('.invests-filter').hasClass('choose-method');
             if(is_method) method = part;
             else          interval = part;
         }
         console.log('click', hash, 'part', part, 'target', target, method, interval);
 
         location.hash = target  + ',' + method  + ',' + interval;
-        $('#tab-' + target).find('div.choose-method a[href="#' + method +'"]').addClass('active').siblings().removeClass('active');
-        $('#tab-' + target).find('div.choose-interval a[href="#' + interval +'"]').addClass('active').siblings().removeClass('active');
+        $('#tab-' + target).find('.choose-method a[href="#' + method +'"]').closest('li').addClass('active').siblings().removeClass('active');
+        $('#tab-' + target).find('.choose-interval a[href="#' + interval +'"]').addClass('active').siblings().removeClass('active');
 
         var $template =  $('#tab-' + target).find('script#template-' + method + '-' + interval + '');
-        var $body = $('#tab-' + target).find('.panel-body');
+        var $body = $('#tab-' + target).find('.stats-charts');
         // console.log($template.html(), e.target);
         // Create graph
         if($template.length) {
-            console.log('Found template', method, interval, $template.html());
+            // console.log('Found template', method, interval, $template.html());
             $body.html($template.html());
             $(window).trigger("autocharts.init");
         } else {
@@ -60,33 +55,55 @@ $(function(){
         }
     };
 
-    $('a[data-toggle="tab"]').on('show.bs.tab', function (e) {
-      // e.target // newly activated tab
-      // e.relatedTarget // previous active tab
-      var target = $(e.target).attr('href').substr(1);
-      var $menu = $('#tab-' + target).find('div.btn-group');
-      $menu.contents('a').on('click', function(e) {
-        e.preventDefault();
-        printRaisedGraph.call(e.target, target);
-      });
-      printRaisedGraph(target);
-      // $menu.contents('a:first').click();
 
-      // var method = $menu1.attr('href').split(',');
-      // var method = parts[1] || menu[1] || 'global';
-      // var interval = parts[2] || menu[2] || 'today';
-      // console.log('target',target,parts,'menu', $menu, $menu.attr('href'), interval)
-      // var $template = $('#tab-' + target).find('script[class="' + interval + '"]');
+    var HASH = location.hash;
+    var initBindings = function() {
+        HASH = location.hash;
+        console.log('initBindings, current hash', HASH);
 
+        $('a[data-toggle="tab"]').on('show.bs.tab', function (e) {
+          console.log('tab show', e);
+          // e.target // newly activated tab
+          // e.relatedTarget // previous active tab
+          var target = $(e.target).attr('href').substr(1);
+          var $menu = $('#tab-' + target).find('.invests-filter');
+          $menu.find('a').on('click', function(e) {
+            e.preventDefault();
+            printRaisedGraph.call(e.target, target);
+          });
+          printRaisedGraph(target);
+        });
+
+        // Click the first
+        var hash = HASH.substr(1).split(',') || [];
+        if($('#tab-menu-' + hash[0]).length) {
+            $('#tab-menu-' + hash[0]).click();
+        } else {
+            $('a[data-toggle="tab"]:first').click();
+        }
+
+        // Change typeahead behaviour
+        $('.admin-typeahead').on('typeahead:select', function(event, datum, name) {
+            var search = location.search && location.search.substr(1) || '';
+            var parts = search.split('&');
+            var query = [];
+            parts.forEach(function(it){
+                if(it.indexOf(name) === 0) return;
+                if(it.indexOf('text') === 0) return;
+                if(it.indexOf(datum.id) === 0) return;
+                query.push(it);
+            });
+            var href = location.pathname + '?' + (query ? query.join('&') + '&' : '') + name + '=' + datum.id + '&text=' + datum.name;
+            console.log('parts',parts,'new query', query, 'href', href);
+            adminProntoLoad(href);
+        });
+    };
+
+    initBindings();
+    $(window).on("pronto.render", function(e){
+        location.hash = HASH;
+        initBindings();
     });
 
-
-    // Click the first
-    var hash = location.hash.substr(1).split(',') || [];
-    if($('#tab-menu-' + hash[0]).length) {
-        $('#tab-menu-' + hash[0]).click();
-    } else {
-        $('a[data-toggle="tab"]:first').click();
-    }
 
 });
