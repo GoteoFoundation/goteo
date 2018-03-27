@@ -154,6 +154,7 @@ regular-round: 'a ronda'
 regular-save: Desa
 regular-schedule: Horari
 regular-search: Cerca
+regular-search-user: Cerca un usuari
 regular-search-desc: 'Escriu la teva cerca aquí'
 regular-search-tooltip: 'Entra la teva cerca i prem enter'
 regular-see_all: 'Veure tots'

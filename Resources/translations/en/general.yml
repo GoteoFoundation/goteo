@@ -154,6 +154,7 @@ regular-round: 'Round'
 regular-save: Save
 regular-schedule: Schedule
 regular-search: Search
+regular-search-user: Find a user
 regular-search-desc: 'Write your search here'
 regular-search-tooltip: 'Enter your keywords and press enter'
 regular-see_all: 'See all'
