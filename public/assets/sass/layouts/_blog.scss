@@ -132,7 +132,7 @@ body.blog {
     }
 
     div.section.related-posts{
-      padding: 20px 0;
+      padding: 70px 0;
       .img-link{
           display: flex;
           height: 200px;
@@ -148,6 +148,8 @@ body.blog {
         background-color: rgba(255,236,97,0.7);
         padding: 5%;
         height: 180px;
+        border-bottom-left-radius: 5px;
+        border-bottom-right-radius: 5px;
         div.title{
           color: $primary-color;
           font-size: $font-size*1.46;
