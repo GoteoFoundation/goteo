@@ -356,8 +356,30 @@ class Invest extends \Goteo\Core\Model {
                 case 'wallet':
                     $sqlFilter[] = "invest.project IS NULL";
                     break;
+                case 'to_wallet':
+                    $sqlFilter[] = "invest.project IS NULL";
+                    $sqlFilter[] = "invest.method!='pool'";
+                    break;
                 case 'matcher_wallet':
                     $sqlFilter[] = "invest.project IS NULL";
+                    $sqlFilter[] = "invest.user IN (SELECT user_id FROM matcher_user)";
+                    break;
+                case 'to_matcher_wallet':
+                    $sqlFilter[] = "invest.project IS NULL";
+                    $sqlFilter[] = "invest.method!='pool'";
+                    $sqlFilter[] = "invest.user IN (SELECT user_id FROM matcher_user)";
+                    break;
+                case 'from_wallet':
+                    $sqlFilter[] = "invest.method='pool'";
+                    $values[':status0'] = self::STATUS_PAID;
+                    $values[':status1'] = self::STATUS_CHARGED;
+                    $sqlFilter[] = "invest.status IN (:status0, :status1)";
+                    break;
+                case 'from_matcher_wallet':
+                    $sqlFilter[] = "invest.method='pool'";
+                    $values[':status0'] = self::STATUS_PAID;
+                    $values[':status1'] = self::STATUS_CHARGED;
+                    $sqlFilter[] = "invest.status IN (:status0, :status1)";
                     $sqlFilter[] = "invest.user IN (SELECT user_id FROM matcher_user)";
                     break;
                 case 'project':

@@ -109,8 +109,8 @@
 
   .nav-tabs {
     li.active > a {
-        background-color: $background-light;
-        border-bottom-color: $background-light;
+        background-color: $background-light-body;
+        border-bottom-color: $background-light-body;
         font-weight: 500;
     }
     &.nav-justified > li {

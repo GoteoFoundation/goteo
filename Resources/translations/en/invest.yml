@@ -57,6 +57,7 @@ invest-next_step: 'Next step'
 invest-payment-email: 'Enter your PayPal user name'
 invest-payment-fail: 'Something went wrong with the payment'
 invest-payment-success: 'The payment has been made correctly'
+invest-payment-method: 'Payment method'
 invest-payment_method-header: 'Choose a method of payment'
 invest-pool: 'In case the project fails, I want my donation to go into my virtual Goteo Purse.'
 invest-pool-available: Available

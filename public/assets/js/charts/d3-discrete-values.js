@@ -83,7 +83,7 @@ d3.goteo.discretevaluesChart = function(settings){
                     // remove if existing and has different value, otherwise do nothing
                     var flash = false;
                     var svg = d3.select(this).select( 'svg' );
-                    console.log(svg, svg.empty());
+                    // console.log(svg, svg.empty());
                     if(!svg.empty()) {
                         // console.log(svg.select( 'g' ).select( 'text' ), svg.select( 'g' ).select( 'text' ).text());
                         if(svg.select( 'g' ).select( 'text' ).text() == value) return;

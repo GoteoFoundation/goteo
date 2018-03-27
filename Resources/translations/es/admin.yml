@@ -42,6 +42,7 @@ admin-account-user-changed-error: 'No se ha podido cambiar el usuario del aporte
 admin-account-user-changed-successfully: 'Se ha cambiado el usuario del aporte [%ID%] a [%NAME%]'
 admin-address: Dirección
 admin-all: Todos
+admin-global: Global
 admin-back: Volver
 admin-back-detail: 'Volver al detalle'
 admin-back-list: 'Volver al listado'
@@ -175,7 +176,17 @@ admin-stats-refunded: 'Devoluciones'
 admin-stats-fees: 'Comisión plataforma'
 admin-stats-commissions: 'Comisión banco'
 
-admin-stats-method: 'Método de pago'
+admin-stats-method: 'Ingresos por método de pago'
+admin-stats-from_matchfunding: 'Parte de ingresos por matchfunding'
+admin-stats-matchfunding-part: 'Todo Matchfunding'
+admin-stats-matcher-part: 'Parte Matcher'
+admin-stats-invest-destination: 'Destino de los aportes'
+admin-stats-invest-in_wallet: 'Total acumulado en el monedero'
+admin-stats-to_projects: 'A proyectos'
+admin-stats-to_wallet: 'Al monedero'
+admin-stats-to_matcher_wallet: 'Al monedero de Matchers'
+admin-stats-in_wallet: 'En el monedero'
+admin-stats-in_matcher_wallet: 'En el monedero de Matchers'
 
 admin-raised: Recaudado
 admin-diff: Diferencia
@@ -184,6 +195,8 @@ admin-the_week: La semana
 admin-the_month: El mes
 admin-the_year: El año
 
+admin-custom: Segun filtro
+admin-total: Total
 admin-today: Hoy
 admin-yesterday: Ayer
 admin-week: Esta semana
