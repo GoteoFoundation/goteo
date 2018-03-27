@@ -112,6 +112,13 @@ class ProjectRewardsForm extends AbstractFormProcessor implements FormProcessorI
                 'constraints' => $this->getConstraints("units$suffix"),
                 'required' => false,
             ])
+            ->add("unlimited$suffix", 'boolean', [
+                'label' => false,
+                'data' => (int)$reward->units === 0,
+                'disabled' => $units_readonly,
+                'required' => false,
+                'color' => 'cyan'
+            ])
             // ->add("icon$suffix", 'choice', [
             //     'label' => 'rewards-field-icon',
             //     'data' => $reward->icon,
@@ -174,6 +181,9 @@ class ProjectRewardsForm extends AbstractFormProcessor implements FormProcessorI
         foreach($data as $key => $val) {
             list($field, $id) = explode('_', $key);
             if(!in_array($field, ['amount', 'icon', 'units', 'reward', 'description'])) continue;
+            if($field == 'units' && $data['unlimited_' . $id]) {
+                $val = 0;
+            }
             $ids[$id] = $id;
 
             $reward = $this->rewards[$id];
