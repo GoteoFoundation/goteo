@@ -30,7 +30,7 @@ $method = $this->method ?: $this->text('regular-all');
         <li class="col-xs-2 col-xxs-4" data-property="<?= "$target.$id.$slot1" ?>.invests" data-title="<?= $this->text('admin-invests') . ': ' . $this->text('admin-' . $slot1) ?>"></li>
         <?php if($slot2): ?>
         <li class="col-xs-2 col-xxs-4" data-property="<?= "$target.$id.$slot2" ?>.invests" data-title="<?= $this->text('admin-invests') . ': ' . $this->text('admin-' . $slot2) ?>"></li>
-        <li class="col-xs-2 col-xxs-4" data-property="<?= "$target.$id.$slot1" ?>.invests_gain_formatted" data-tooltip="<?= "$target.$id.$slot1" ?>.invests_diff" data-title="<?= $this->text('admin-invests') . ': ' . $this->text('admin-diff') ?>"></li>
+        <li class="col-xs-2 col-xxs-4" data-property="<?= "$target.$id.$slot1" ?>.invests_gain_formatted" data-tooltip="<?= "$target.$id.$slot1" ?>.invests_diff_formatted" data-title="<?= $this->text('admin-invests') . ': ' . $this->text('admin-diff') ?>"></li>
         <?php endif ?>
         <?php if($slot3): ?>
             <li class="col-xs-2 col-xs-offset-4 col-xxs-4" data-property="<?= "$target.$id.$slot3" ?>.invests" data-title="<?= $this->text('admin-invests') . ': ' . $this->text('admin-' . $slot3) ?>"></li>
@@ -52,7 +52,7 @@ $method = $this->method ?: $this->text('regular-all');
         <li class="col-xs-2 col-xxs-4" data-property="<?= "$target.$id.$slot1" ?>.to_pool_invests" data-title="<?= $this->text('admin-invests') . ': ' . $this->text('admin-' . $slot1) ?>"></li>
         <?php if($slot2): ?>
         <li class="col-xs-2 col-xxs-4" data-property="<?= "$target.$id.$slot2" ?>.to_pool_invests" data-title="<?= $this->text('admin-invests') . ': ' . $this->text('admin-' . $slot2) ?>"></li>
-        <li class="col-xs-2 col-xxs-4" data-property="<?= "$target.$id.$slot1" ?>.to_pool_invests_gain_formatted" data-tooltip="<?= "$target.$id.$slot1" ?>.to_pool_invests_diff" data-title="<?= $this->text('admin-invests') . ': ' . $this->text('admin-diff') ?>"></li>
+        <li class="col-xs-2 col-xxs-4" data-property="<?= "$target.$id.$slot1" ?>.to_pool_invests_gain_formatted" data-tooltip="<?= "$target.$id.$slot1" ?>.to_pool_invests_diff_formatted" data-title="<?= $this->text('admin-invests') . ': ' . $this->text('admin-diff') ?>"></li>
         <?php endif ?>
         <?php if($slot3): ?>
             <li class="col-xs-2 col-xs-offset-4 col-xxs-4" data-property="<?= "$target.$id.$slot3" ?>.to_pool_invests" data-title="<?= $this->text('admin-invests') . ': ' . $this->text('admin-' . $slot3) ?>"></li>

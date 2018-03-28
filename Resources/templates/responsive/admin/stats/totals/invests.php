@@ -61,10 +61,17 @@ if($query || $filters) {
                 <?= $this->insertIf("admin/stats/totals/partials/invests/$part/menu",  ['intervals' => $intervals]) ?>
                 <div class="stats-charts"></div>
             </div>
-            <?= $this->insertIf("admin/stats/totals/partials/invests/$part/scripts", ['target' => $part, 'intervals' => $intervals, 'query' => http_build_query($query + $filters)]) ?>
         </div>
       <?php endforeach ?>
     </div>
 </div>
 
 <?php $this->replace() ?>
+
+<?php $this->section('footer') ?>
+
+  <?php foreach($parts as $part): ?>
+        <?= $this->insertIf("admin/stats/totals/partials/invests/$part/scripts", ['target' => $part, 'intervals' => $intervals, 'query' => http_build_query($query + $filters)]) ?>
+  <?php endforeach ?>
+
+<?php $this->append() ?>
