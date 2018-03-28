@@ -1,14 +1,15 @@
 <?php
-
+$target = $this->target ?: 'raised';
 $scripts = [];
 foreach($this->methods as $id => $method):
     foreach($this->intervals as $interval => $label): ?>
-    <script type="text/template" id="template-raised-<?= "$id-$interval" ?>"><?=
-        $this->insertIf("admin/stats/totals/partials/invests/" . $this->part, [
+    <script type="text/template" id="template-<?= $target ?>-<?= "$id-$interval" ?>"><?=
+        $this->insertIf("admin/stats/totals/partials/invests/" . $target, [
             'id' => $id,
             'method' => $method,
-            'interval' => $interval
-        ]) ?: '<p class="text-danger">Error loading [' . $this->part . '] view</p>'
+            'interval' => $interval,
+            'target' => $target
+        ]) ?: '<p class="text-danger">Error loading [' . $target . '] view</p>'
         ?>
     </script>
 <?php endforeach;

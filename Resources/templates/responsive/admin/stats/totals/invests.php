@@ -61,7 +61,7 @@ if($query || $filters) {
                 <?= $this->insertIf("admin/stats/totals/partials/invests/$part/menu",  ['intervals' => $intervals]) ?>
                 <div class="stats-charts"></div>
             </div>
-            <?= $this->insertIf("admin/stats/totals/partials/invests/$part/scripts", ['part' => $part, 'intervals' => $intervals, 'query' => http_build_query($query + $filters)]) ?>
+            <?= $this->insertIf("admin/stats/totals/partials/invests/$part/scripts", ['target' => $part, 'intervals' => $intervals, 'query' => http_build_query($query + $filters)]) ?>
         </div>
       <?php endforeach ?>
     </div>
