@@ -257,6 +257,7 @@ class AdminChartsApiController extends ChartsApiController {
                 elseif($target === 'raw') $filter['status'] = Invest::$RAW_STATUSES;
                 $totals[$slot] = $stats->investTotals($filter);
 
+                if($target !== 'raised') continue;
                 // Add projects calc
                 $projects = $stats->investTotals(['types' => 'project'] + $filter);
                 $totals[$slot]['to_projects_amount'] = $projects['amount'];
