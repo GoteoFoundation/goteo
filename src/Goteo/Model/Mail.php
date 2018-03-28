@@ -409,7 +409,7 @@ class Mail extends \Goteo\Core\Model {
     }
 
     public function getToken($tracker = true, $force_to = '', $encode = true) {
-        $to = $this->to;
+        $to = $this->to ? $this->to : $this->email;
         if($force_to) $to = $force_to;
         $tracker = $tracker ? '1' : '0';
         $token = md5(Config::get('secret') . '-' . $to . '-' . $this->id . '-' . $tracker) . '¬' . $to . '¬' . $this->id . '¬' . $tracker;
@@ -615,11 +615,10 @@ class Mail extends \Goteo\Core\Model {
      *
      * @param array $filters    user (nombre o email),  template
      */
-    public static function getSentList($filters = array(), $node = null, $offset = 0, $limit = 10, $count = false) {
+    public static function getSentList($filters = array(), $offset = 0, $limit = 10, $count = false) {
 
         $values = array();
-        $sqlFilter = '';
-        $and = " WHERE";
+        $sqlFilter = [];
 
         if (!empty($filters['email'])) {
             $sqlFilter .= $and . " mail.email = :email";
@@ -628,61 +627,73 @@ class Mail extends \Goteo\Core\Model {
         }
 
         if (!empty($filters['user'])) {
-            $sqlFilter .= $and . " mail.email LIKE :user";
-            $and = " AND";
+            $sqlFilter[] = "mail.email LIKE :user";
             $values[':user'] = "%{$filters['user']}%";
         }
 
         if (!empty($filters['reply'])) {
-            $sqlFilter .= $and . " (mailer_content.reply LIKE :reply OR mailer_content.reply_name LIKE :reply)";
-            $and = " AND";
+            $sqlFilter[] = "(mailer_content.reply LIKE :reply OR mailer_content.reply_name LIKE :reply)";
             $values[':reply'] = "%{$filters['reply']}%";
         }
 
-        if (!empty($filters['template'])) {
-            $sqlFilter .= $and . " mail.template = :template";
-            $and = " AND";
-            $values[':template'] = $filters['template'];
+        if (isset($filters['message'])) {
+            if(is_bool($filters['message'])) {
+                $sqlFilter[] = ($filters['message'] ? '!' : '') . "ISNULL(mail.message_id)";
+            }
+            else {
+                $parts = [];
+                if(!is_array($filters['message'])) $filters['message'] = [$filters['message']];
+                foreach($filters['message'] as $i => $m) {
+                    $parts[] = ':message' . $i;
+                    $values[':message' . $i] = is_object($m) ? $m->id : $m;
+                }
+                $sqlFilter[] = "mail.message_id IN (" . implode(',', $parts) . ")";
+                $values[':message'] = $filters['message'];
+            }
+        }
+
+        if (isset($filters['template'])) {
+            if(is_bool($filters['template'])) {
+                $sqlFilter[] = ($filters['template'] ? '!' : '') . "ISNULL(mail.template)";
+            }
+            else {
+                $parts = [];
+                if(!is_array($filters['template'])) $filters['template'] = [$filters['template']];
+                foreach($filters['template'] as $i => $t) {
+                    $parts[] = ':template' . $i;
+                    $values[':template' . $i] = $t;
+                }
+                $sqlFilter[] = "mail.template IN (" . implode(',', $parts) . ")";
+                $values[':template'] = $filters['template'];
+            }
         }
 
         if (!empty($filters['subject'])) {
-            $sqlFilter .= $and . " mail.subject = :subject";
-            $and = " AND";
+            $sqlFilter[] = "mail.subject = :subject";
             $values[':subject'] = $filters['subject'];
         }
 
-
-        /*
-        if ($node != \GOTEO_NODE) {
-            $sqlFilter .= $and . " mail.node = :node";
-            $and = " AND";
-            $values[':node'] = $node;
-        } else
-        */
         if (!empty($filters['node'])) {
-            $sqlFilter .= $and . " mail.node = :node";
-            $and = " AND";
+            $sqlFilter[] = "mail.node = :node";
             $values[':node'] = $filters['node'];
         }
 
         if (!empty($filters['date_from'])) {
-            $sqlFilter .= $and . " mail.date >= :date_from";
-            $and = " AND";
+            $sqlFilter[] = "mail.date >= :date_from";
             $values[':date_from'] = $filters['date_from'];
         }
         if (!empty($filters['date_until'])) {
-
             if (!empty($filters['date_from']) && $filters['date_from'] == $filters['date_until']) {
-                $sqlFilter .= $and . " mail.date = :date";
+                $sqlFilter[] = "mail.date = :date";
                 $values[':date'] = $filters['date'];
             }
             else {
-                $sqlFilter .= $and . " mail.date <= :date_until";
-                $and = " AND";
+                $sqlFilter[] = "mail.date <= :date_until";
                 $values[':date_until'] = $filters['date_until'];
             }
         }
 
+        $sqlFilter = $sqlFilter ? ' WHERE ' . implode(' AND ', $sqlFilter) : '';
         // Return total count for pagination
         if($count) {
             $sql = "SELECT COUNT(mail.id)

@@ -30,8 +30,9 @@ class ChartsApiController extends AbstractApiController {
 
     public function __construct() {
         parent::__construct();
-        // Activate replica read for this controller (cache already activated in AbstractApiController)
-        \Goteo\Core\DB::replica(true);
+        // Activate cache & replica read for this controller
+        $this->dbReplica(true);
+        $this->dbCache(true);
     }
 
 

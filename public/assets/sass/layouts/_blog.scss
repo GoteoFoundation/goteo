@@ -7,8 +7,8 @@ body.blog {
     background-color: $background-white;
 
     img.header-default{
-      height:600px;
       object-fit: cover;
+      width: 100%;
     }
 
    .social{

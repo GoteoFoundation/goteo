@@ -154,8 +154,8 @@ class SentSubController extends AbstractSubController {
 
         $filters = $this->getFilters();
         $limit = 20;
-        $sent_list = Mail::getSentList($filters, $this->node, $this->getGet('pag') * $limit, $limit);
-        $total = Mail::getSentList($filters, $this->node, 0, 0, true);
+        $sent_list = Mail::getSentList($filters, $this->getGet('pag') * $limit, $limit);
+        $total = Mail::getSentList($filters, 0, 0, true);
 
         return array(
                 'template' => 'admin/sent/list',

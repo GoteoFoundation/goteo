@@ -193,36 +193,66 @@ class Message extends \Goteo\Core\Model {
     /**
      * Returns user messages
      */
-    public static function getUserThreads($user, $offset = 0, $limit = 10, $count = false, $order = 'date DESC, id DESC') {
+    public static function getUserThreads($user, $filters = [], $offset = 0, $limit = 10, $count = false, $order = 'date_max DESC, date DESC, id DESC') {
 
         $id = $user instanceOf User ? $user->id : $user;
-        if($count) $order = '';
-
-        $sql = 'FROM message a
-                  LEFT JOIN message_user d ON d.message_id=a.id
-                  WHERE (
-                    a.id IN (
-                        SELECT thread FROM message b
-                        WHERE (b.user = :user OR
-                            :user IN (SELECT user_id FROM message_user c WHERE c.message_id=b.id)
-                            ) AND b.blocked=0)
-                    OR d.user_id = :user)
-                    AND ISNULL(a.thread)
-                    ';
-
         $values = [':user' => $id];
-
-        if($count) {
-            return (int) self::query("SELECT COUNT(DISTINCT a.id) $sql", $values)->fetchColumn();
+        // $sql = 'FROM message a
+        //           LEFT JOIN message_user d ON d.message_id=a.id
+        //           WHERE (
+        //             a.id IN (
+        //                 SELECT thread FROM message b
+        //                 WHERE (b.user = :user OR
+        //                     :user IN (SELECT user_id FROM message_user c WHERE c.message_id=b.id)
+        //                     ) AND b.blocked=0)
+        //             OR d.user_id = :user)
+        //             AND ISNULL(a.thread)
+        //             ';
+        $sqlFilter = [];
+        if($filters['project']) {
+            $parts = [];
+            if(!is_array($filters['project'])) $filters['project'] = [$filters['project']];
+            foreach(array_values($filters['project']) as $i => $prj) {
+                $parts[] = ':prj' . $i;
+                $values[':prj' . $i] = is_object($prj) ? $prj->id : $prj;
+            }
+            $sqlFilter[] = "a.project IN (" . implode(',', $parts) . ")";
+        }
+        if($filters['recipient']) {
+            $parts = [];
+            if(!is_array($filters['recipient'])) $filters['recipient'] = [$filters['recipient']];
+            foreach(array_values($filters['recipient']) as $i => $rcp) {
+                $parts[] = ':rcp' . $i;
+                $values[':rcp' . $i] = is_object($rcp) ? $rcp->id : $rcp;
+            }
+            $sqlFilter[] = "b.user_id IN (" . implode(',', $parts) . ")";
         }
 
-        $sql = "SELECT DISTINCT a.* $sql";
+        if($sqlFilter) {
+            $sqlFilter = ' AND (' . implode(' AND ', $sqlFilter) . ')';
+        } else {
+            $sqlFilter = '';
+        }
+        $sql = "FROM message a
+                LEFT JOIN message_user b ON b.message_id=a.id
+                WHERE (a.user = :user OR b.user_id=:user) $sqlFilter
+                GROUP BY IF(ISNULL(a.thread),a.id,a.thread)
+                HAVING ISNULL(a.thread) AND a.blocked=0
+            ";
+
+        if($count) {
+            // return (int) self::query("SELECT COUNT(DISTINCT a.id) $sql", $values)->fetchColumn();
+            return (int) self::query("SELECT COUNT(*) FROM (SELECT a.thread,a.blocked $sql) s", $values)->fetchColumn();
+        }
+
+        // $sql = "SELECT DISTINCT a.* $sql";
+        $sql = "SELECT a.*, MAX(a.date) AS date_max $sql";
         $offset = (int) $offset;
         $limit = (int) $limit;
         $sql .=  $order ? " ORDER BY $order" : '';
         $sql .= " LIMIT $offset, $limit";
 
-        // die(\sqldbg($sql, $values));
+        // if($sqlFilter) die(\sqldbg($sql, $values));
         $query = self::query($sql, $values);
         if($resp = $query->fetchAll(\PDO::FETCH_CLASS, __CLASS__)) {
             return $resp;
@@ -245,9 +275,10 @@ class Message extends \Goteo\Core\Model {
             $values[':project'] = $pid;
         }
         $sql = "FROM message a
+                JOIN `user` u1 ON a.user = u1.id
                 LEFT JOIN support b ON b.thread = a.thread
                 LEFT JOIN message_user c ON c.message_id = a.id
-                JOIN user d ON c.user_id = d.id
+                LEFT JOIN `user` u2 ON c.user_id = u2.id
                 WHERE blocked=0
                 AND (c.user_id = :user OR a.user = :user)
                 AND b.id IS NULL
@@ -258,7 +289,9 @@ class Message extends \Goteo\Core\Model {
 
         $offset = (int) $offset;
         $limit = (int) $limit;
-        $sql = "SELECT a.*, b.id AS support_id, c.user_id AS recipient, d.name AS recipient_name $sql ORDER BY date DESC, id DESC LIMIT $offset, $limit";
+        $sql = "SELECT a.*, b.id AS support_id,
+        IF(ISNULL(u2.id), u1.id, u2.id) AS recipient,
+        IF(ISNULL(u2.name), u1.name, u2.name)  AS recipient_name $sql ORDER BY date DESC, id DESC LIMIT $offset, $limit";
 
         $sql = "SELECT * FROM ($sql) rev ORDER BY date ASC, id ASC ";
         // die(sqldbg($sql, $values));
@@ -274,14 +307,16 @@ class Message extends \Goteo\Core\Model {
      * Assigns thread
      * In mode 'auto' search for the most recent parent thread with
      * the same caracteristics: same user in the replies and same project
-     * ONLY works for one user (the first)
      * @param [type] $thread [description]
      */
     public function setThread($thread) {
         if($thread === 'auto') {
-            $user = reset($this->getRecipients());
-            if($last = static::getUserThreads($user, 0, 1)) {
-                $this->thread = $last[0]->id;
+            if($lasts = static::getUserThreads($this->user, ['project' => $this->project, 'recipient' => $this->getRecipients()], 0, 2)) {
+                // Make sure is not the same message
+                foreach($lasts as $last) {
+                    if($last->id != $this->id)
+                        $this->thread = $last->id;
+                }
             }
         } else {
             $this->thread = $thread;
@@ -620,13 +655,14 @@ class Message extends \Goteo\Core\Model {
                 ON project.id = message.project
             WHERE   message.project = :project
             AND message.user != :user
+            AND message.private = 0
             ";
 
         // die(\sqldbg($sql, $values));
 
         $query = static::query($sql, $values);
         if($got = $query->fetchObject()) {
-            // si ha cambiado, actualiza el numero de inversores en proyecto
+            // si ha cambiado, actualiza el numero de colaboraciones en proyecto
             if ($got->messengers != $got->num) {
                 static::query("UPDATE project SET num_messengers = :num, popularity = :pop WHERE id = :project", array(':num' => (int) $got->messengers, 'pop' => ( $got->messengers + $got->pop), ':project' => $project->id));
             }

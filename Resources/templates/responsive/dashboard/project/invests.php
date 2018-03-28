@@ -11,10 +11,30 @@
         <p><?= $this->text('dashboard-rewards-notice') ?></p>
     <?php endif ?>
 
-    <form id="filters" class="row">
-      <span class="col-xs-6">
-        <label for="filter-reward"><?= $this->text('dashboard-project-filter-by-reward') ?></label>
-        <?= $this->html('input',
+    <form id="filters">
+      <div class="row">
+        <div class="col-xs-10">
+            <p><?= $this->html('input',
+                        ['type' => 'text',
+                        'name' => 'filter[query]',
+                        'value' => $this->filter['query'],
+                        'attribs' => [
+                            'id' => 'filter-query',
+                            'class' => 'form-control',
+                            'placeholder' => $this->text('regular-search-user')
+                        ],
+                        'options' => $this->filters['query']
+                    ]) ?></p>
+
+        </div>
+        <div class="col-xs-2">
+            <button type="submit" class="btn btn-cyan" ><i class="fa fa-search"></i> <?= $this->text('regular-search') ?></button>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-xs-6">
+            <label for="filter-reward"><?= $this->text('dashboard-project-filter-by-reward') ?></label>
+            <?= $this->html('input',
                         ['type' => 'select',
                         'name' => 'filter[reward]',
                         'value' => $this->filter['reward'],
@@ -24,10 +44,10 @@
                         ],
                         'options' => $this->filters['reward']
                     ]) ?>
-      </span>
-      <span class="col-xs-6">
-        <label for="filter-others"><?= $this->text('dashboard-project-filter-by-others') ?></label>
-        <?= $this->html('input',
+        </div>
+        <div class="col-xs-6">
+            <label for="filter-others"><?= $this->text('dashboard-project-filter-by-others') ?></label>
+            <?= $this->html('input',
                         ['type' => 'select',
                         'name' => 'filter[others]',
                         'value' => $this->filter['others'],
@@ -37,7 +57,8 @@
                         ],
                         'options' => $this->filters['others']
                     ]) ?>
-      </span>
+        </div>
+      </div>
       <input type="hidden" name="order" value="<?= $this->order ?>">
     </form>
 

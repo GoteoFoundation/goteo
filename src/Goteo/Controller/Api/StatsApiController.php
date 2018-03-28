@@ -18,6 +18,13 @@ use Goteo\Application\Exception\ModelException;
 use Goteo\Model\Project;
 
 class StatsApiController extends AbstractApiController {
+    public function __construct() {
+        parent::__construct();
+        // Activate cache & replica read for this controller
+        $this->dbReplica(true);
+        $this->dbCache(true);
+    }
+
 
     /**
      * Calculate de investors required for the minimum
