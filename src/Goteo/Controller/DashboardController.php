@@ -39,7 +39,7 @@ class DashboardController extends \Goteo\Core\Controller {
 
     public static function createSidebar($section, $zone = '') {
         $user = Session::getUser();
-        $total_messages = Comment::getUserThreads($user, 0, 0, true);
+        $total_messages = Comment::getUserThreads($user, [], 0, 0, true);
         $total_mails = Mail::getSentList(['user' => $user->email, 'message' => false], 0, 0, true);
         $total_invests = Invest::getList(['users' => $user, 'status' => Invest::$RAISED_STATUSES], null, 0, 0, 'total');
 
@@ -121,8 +121,10 @@ class DashboardController extends \Goteo\Core\Controller {
 
         $limit = 10;
         $offset = $request->query->get('pag') * $limit;
-        $messages = Comment::getUserThreads($this->user, $offset, $limit);
-        $total = Comment::getUserThreads($this->user, 0, 0, true);
+
+        $messages = Comment::getUserThreads($this->user, [], $offset, $limit);
+        // print_r($messages[0]->getRecipients());
+        $total = Comment::getUserThreads($this->user, [], 0, 0, true);
 
         self::createSidebar('activity', 'messages');
 
