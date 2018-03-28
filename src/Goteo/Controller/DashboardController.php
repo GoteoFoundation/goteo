@@ -94,7 +94,7 @@ class DashboardController extends \Goteo\Core\Controller {
         ]);
     }
 
-    public function rewardsAction(Request $request) {
+    public function myRewardsAction(Request $request) {
 
         $limit = 10;
         $offset = $request->query->get('pag') * $limit;
