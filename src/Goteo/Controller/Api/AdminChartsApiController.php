@@ -256,16 +256,7 @@ class AdminChartsApiController extends ChartsApiController {
                 if($target === 'active') $filter['status'] = Invest::$ACTIVE_STATUSES;
                 elseif($target === 'raw') $filter['status'] = Invest::$RAW_STATUSES;
                 $totals[$slot] = $stats->investTotals($filter);
-                // Add matchfunding calc
-                $matchfunding = $stats->investTotals(['types' => 'drop', 'methods' => null] + $filter);
-                $totals[$slot]['from_matchfunding_amount'] = $matchfunding['amount'];
-                $totals[$slot]['from_matchfunding_invests'] = $matchfunding['invests'];
-                $totals[$slot]['from_matchfunding_users'] = $matchfunding['users'];
-                // Add matchfunding from pool calc
-                $matchfunding = $stats->investTotals(['types' => 'matcher', 'methods' => null] + $filter);
-                $totals[$slot]['from_matcher_amount'] = $matchfunding['amount'];
-                $totals[$slot]['from_matcher_invests'] = $matchfunding['invests'];
-                $totals[$slot]['from_matcher_users'] = $matchfunding['users'];
+
                 // Add projects calc
                 $projects = $stats->investTotals(['types' => 'project'] + $filter);
                 $totals[$slot]['to_projects_amount'] = $projects['amount'];
@@ -330,8 +321,21 @@ class AdminChartsApiController extends ChartsApiController {
             } elseif($target === 'amounts') {
                 $filter['status'] = Invest::$ACTIVE_STATUSES;
                 $totals[$slot] = $stats->investAmounts($filter);
+            } elseif($target === 'matchfunding') {
+                $filter['status'] = Invest::$RAISED_STATUSES;
+                $filter['methods'] = null;
+                // Add matchfunding calc
+                $matchfunding = $stats->investTotals(['types' => 'drop'] + $filter);
+                $totals[$slot]['from_matchfunding_amount'] = $matchfunding['amount'];
+                $totals[$slot]['from_matchfunding_invests'] = $matchfunding['invests'];
+                $totals[$slot]['from_matchfunding_users'] = $matchfunding['users'];
+                // Add matchfunding from pool calc
+                $matchfunding = $stats->investTotals(['types' => 'matcher'] + $filter);
+                $totals[$slot]['from_matcher_amount'] = $matchfunding['amount'];
+                $totals[$slot]['from_matcher_invests'] = $matchfunding['invests'];
+                $totals[$slot]['from_matcher_users'] = $matchfunding['users'];
             } elseif($target !== 'global') {
-                throw new ControllerException("[$target] not found, try one of [raised, active, raw, refunded, commissions, fees]");
+                throw new ControllerException("[$target] not found, try one of [raised, active, raw, refunded, commissions, fees, matchfunding]");
             }
         }
         $increments = ['today' => 'yesterday', 'week' => 'last_week', 'month' => 'last_month', 'year' => 'last_year'];
