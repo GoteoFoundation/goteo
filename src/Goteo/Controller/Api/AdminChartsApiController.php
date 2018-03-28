@@ -308,6 +308,9 @@ class AdminChartsApiController extends ChartsApiController {
                 // Platform fees
                 $filter['status'] = Invest::$ACTIVE_STATUSES;
                 $totals[$slot] = $stats->investFees($filter);
+                $totals[$slot]['user_percent'] = 100 * round($totals[$slot]['user'] / $totals[$slot]['total'], 3);
+                $totals[$slot]['call_percent'] = 100 * round($totals[$slot]['call'] / $totals[$slot]['total'], 3);
+                $totals[$slot]['matcher_percent'] = 100 * round($totals[$slot]['matcher'] / $totals[$slot]['total'], 3);
                 // Global invoice derives bank commissions to the project
                 // TODO: move the all to a new api end point "invoice"
                 // if($slot === 'all') {

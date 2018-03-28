@@ -38,11 +38,11 @@ $(function(){
         }
         console.log('click', hash, 'part', part, 'target', target, method, interval);
         var id = target  + '-' + method  + '-' + interval;
-        var $template =  $('#tab-' + target).find('script#template-' + id + '');
+        var $template =  $('#template-' + id + '');
         if(!$template.length) {
             method = 'global';
             id = target + '-global-' + interval;
-            $template =  $('#tab-' + target).find('script#template-' + id + '');
+            $template =  $('#template-' + id + '');
         }
 
         location.hash = target  + ',' + method  + ',' + interval;
