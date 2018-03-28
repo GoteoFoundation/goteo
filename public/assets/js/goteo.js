@@ -147,7 +147,7 @@ $(function(){
         } else if(prontoScroll !== prontoTarget) {
             prontoScroll = prontoTarget;
         }
-        console.log('pronto click',$(this).data('pronto-target'), prontoTarget, $(this).data('pronto-scroll-to'), prontoScroll);
+        goteo.trace('pronto click',$(this).data('pronto-target'), prontoTarget, $(this).data('pronto-scroll-to'), prontoScroll);
         $.pronto('defaults', {
             target: { title: 'title', content: prontoTarget }
         });

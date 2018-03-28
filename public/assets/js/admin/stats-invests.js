@@ -37,12 +37,18 @@ $(function(){
             else          interval = part;
         }
         console.log('click', hash, 'part', part, 'target', target, method, interval);
+        var id = target  + '-' + method  + '-' + interval;
+        var $template =  $('#template-' + id + '');
+        if(!$template.length) {
+            method = 'global';
+            id = target + '-global-' + interval;
+            $template =  $('#template-' + id + '');
+        }
 
         location.hash = target  + ',' + method  + ',' + interval;
         $('#tab-' + target).find('.choose-method a[href="#' + method +'"]').closest('li').addClass('active').siblings().removeClass('active');
         $('#tab-' + target).find('.choose-interval a[href="#' + interval +'"]').addClass('active').siblings().removeClass('active');
 
-        var $template =  $('#tab-' + target).find('script#template-' + method + '-' + interval + '');
         var $body = $('#tab-' + target).find('.stats-charts');
         // console.log($template.html(), e.target);
         // Create graph
@@ -51,7 +57,7 @@ $(function(){
             $body.html($template.html());
             $(window).trigger("autocharts.init");
         } else {
-            $body.html('Template [' + method + '-' + interval + '] not found!');
+            $body.html('Template [' + id + '] not found!');
         }
     };
 

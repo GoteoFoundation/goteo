@@ -256,16 +256,8 @@ class AdminChartsApiController extends ChartsApiController {
                 if($target === 'active') $filter['status'] = Invest::$ACTIVE_STATUSES;
                 elseif($target === 'raw') $filter['status'] = Invest::$RAW_STATUSES;
                 $totals[$slot] = $stats->investTotals($filter);
-                // Add matchfunding calc
-                $matchfunding = $stats->investTotals(['types' => 'drop', 'methods' => null] + $filter);
-                $totals[$slot]['from_matchfunding_amount'] = $matchfunding['amount'];
-                $totals[$slot]['from_matchfunding_invests'] = $matchfunding['invests'];
-                $totals[$slot]['from_matchfunding_users'] = $matchfunding['users'];
-                // Add matchfunding from pool calc
-                $matchfunding = $stats->investTotals(['types' => 'matcher', 'methods' => null] + $filter);
-                $totals[$slot]['from_matcher_amount'] = $matchfunding['amount'];
-                $totals[$slot]['from_matcher_invests'] = $matchfunding['invests'];
-                $totals[$slot]['from_matcher_users'] = $matchfunding['users'];
+
+                if($target !== 'raised') continue;
                 // Add projects calc
                 $projects = $stats->investTotals(['types' => 'project'] + $filter);
                 $totals[$slot]['to_projects_amount'] = $projects['amount'];
@@ -316,6 +308,9 @@ class AdminChartsApiController extends ChartsApiController {
                 // Platform fees
                 $filter['status'] = Invest::$ACTIVE_STATUSES;
                 $totals[$slot] = $stats->investFees($filter);
+                $totals[$slot]['user_percent'] = 100 * round($totals[$slot]['user'] / $totals[$slot]['total'], 3);
+                $totals[$slot]['call_percent'] = 100 * round($totals[$slot]['call'] / $totals[$slot]['total'], 3);
+                $totals[$slot]['matcher_percent'] = 100 * round($totals[$slot]['matcher'] / $totals[$slot]['total'], 3);
                 // Global invoice derives bank commissions to the project
                 // TODO: move the all to a new api end point "invoice"
                 // if($slot === 'all') {
@@ -330,8 +325,46 @@ class AdminChartsApiController extends ChartsApiController {
             } elseif($target === 'amounts') {
                 $filter['status'] = Invest::$ACTIVE_STATUSES;
                 $totals[$slot] = $stats->investAmounts($filter);
+            } elseif($target === 'matchfunding') {
+                foreach(['raised' => Invest::$RAISED_STATUSES, 'active' => Invest::$ACTIVE_STATUSES] as $type => $s) {
+                    $filter['status'] = $s;
+                    $filter['methods'] = null;
+                    $global = $stats->investTotals($filter);
+
+                    // matchfunding global (includes projects)
+                    $matchfunding = $stats->investTotals(['types' => 'matchfunding'] + $filter);
+                    $totals[$slot][$type.'_matchfunding_amount'] = $matchfunding['amount'];
+                    $totals[$slot][$type.'_matchfunding_invests'] = $matchfunding['invests'];
+                    $totals[$slot][$type.'_matchfunding_users'] = $matchfunding['users'];
+                    $totals[$slot][$type.'_matchfunding_amount_percent'] = 100 * round($matchfunding['amount'] / $global['amount'], 3);
+
+                    $totals[$slot][$type.'_users_amount'] = $global['amount'] - $matchfunding['amount'];
+                    $totals[$slot][$type.'_users_invests'] = $global['invests'] - $matchfunding['invests'];
+                    $totals[$slot][$type.'_users_users'] = $global['users'] - $matchfunding['users'];
+                    $totals[$slot][$type.'_users_amount_percent'] = 100 - $totals[$slot][$type.'_matchfunding_amount_percent'];
+
+                    // matchfunding alone
+                    $match = $stats->investTotals(['types' => 'drop'] + $filter);
+                    $totals[$slot][$type.'_from_matchfunding_amount'] = $match['amount'];
+                    $totals[$slot][$type.'_from_matchfunding_invests'] = $match['invests'];
+                    $totals[$slot][$type.'_from_matchfunding_users'] = $match['users'];
+
+                    $totals[$slot][$type.'_from_users_amount'] = $matchfunding['amount'] - $match['amount'] ;
+                    $totals[$slot][$type.'_from_users_invests'] = $matchfunding['invests'] - $match['invests'] ;
+                    $totals[$slot][$type.'_from_users_users'] = $matchfunding['users'] - $match['users'] ;
+
+                    $totals[$slot][$type.'_from_matchfunding_amount_percent'] = 100 * round( $match['amount'] / $global['amount'], 3);
+                    $totals[$slot][$type.'_from_users_amount_percent'] = 100 - $totals[$slot][$type.'_from_matchfunding_amount_percent'];
+
+                    // matchfunding from pool (matcher)
+                    $matcher = $stats->investTotals(['types' => 'matcher'] + $filter);
+                    $totals[$slot][$type.'_from_matcher_amount'] = $matcher['amount'];
+                    $totals[$slot][$type.'_from_matcher_invests'] = $matcher['invests'];
+                    $totals[$slot][$type.'_from_matcher_users'] = $matcher['users'];
+                }
+
             } elseif($target !== 'global') {
-                throw new ControllerException("[$target] not found, try one of [raised, active, raw, refunded, commissions, fees]");
+                throw new ControllerException("[$target] not found, try one of [raised, active, raw, refunded, commissions, fees, matchfunding]");
             }
         }
         $increments = ['today' => 'yesterday', 'week' => 'last_week', 'month' => 'last_month', 'year' => 'last_year'];
@@ -340,15 +373,21 @@ class AdminChartsApiController extends ChartsApiController {
                 // increments
                 if(($inc = $increments[$slot]) && is_numeric($v)) {
                     $totals[$slot][$k . '_diff'] = $v - $totals[$inc][$k];
-                    $totals[$slot][$k . '_gain'] = $totals[$inc][$k] ? round(100 * (($v / $totals[$inc][$k] - 1)), 2) : 0;
+                    $totals[$slot][$k . '_gain'] = $totals[$inc][$k] ? round(100 * (($v / $totals[$inc][$k] - 1)), 2) : '--';
                 }
             }
         }
         // Add some formatting
+        $emoji = ['🤓','😱','🙄','🤔','☢','💥','🙈'];
         foreach($totals as $slot => $parts) {
             foreach($parts as $k => $v) {
-                if(strpos($k, '_gain') !== false)
+                if(strpos($k, '_gain') !== false || strpos($k, '_percent') !== false) {
+                    if($v === '--') {
+                        $totals[$slot][$k . '_formatted'] =  $emoji[array_rand($emoji)];
+                        continue;
+                    }
                     $totals[$slot][$k . '_formatted'] = number_format($v, 1, Currency::get('', 'decimal'), Currency::get('', 'thousands')) . '%';
+                }
                 elseif(strpos($k, 'amount') !== false || in_array($target, ['fees', 'commissions']))
                     $totals[$slot][$k . '_formatted'] = \amount_format($v);
             }

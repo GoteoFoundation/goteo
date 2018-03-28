@@ -153,7 +153,7 @@ class UsersApiController extends AbstractApiController {
         }
         $is_admin = $this->user->canImpersonate($user);
 
-        if($this->user->id !== $user->id && !$$is_admin) {
+        if($this->user->id !== $user->id && !$is_admin) {
             throw new ControllerAccessDeniedException();
         }
 
