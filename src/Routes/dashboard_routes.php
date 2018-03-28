@@ -31,7 +31,7 @@ $dash->add('dashboard-mailing', new Route(
 ));
 $dash->add('dashboard-rewards', new Route(
     '/rewards',
-    array('_controller' => 'Goteo\Controller\DashboardController::rewardsAction',
+    array('_controller' => 'Goteo\Controller\DashboardController::myRewardsAction',
         )
 ));
 // Virtual wallet
