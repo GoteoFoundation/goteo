@@ -102,6 +102,12 @@ class MessagesApiController extends AbstractApiController {
         }
         if($recipients = $request->request->get('recipients')) {
             $comment->setRecipients($recipients);
+        } else {
+            // Set the parent as recipient
+            $comment->setRecipients([$parent->getUser()]);
+        }
+        if(!$comment->getRecipients()) {
+            throw new ModelException(Text::get('dashboard-message-donors-error'));
         }
 
         // Send and event to create the Feed and send emails
@@ -236,12 +242,11 @@ class MessagesApiController extends AbstractApiController {
             $body = "### $subject\n\n$body";
         }
 
-
         // Create the message
         $message = new Comment([
             'user' => $this->user,
             'project' => $project,
-            'thread' => $thread ? $thread : null,
+            'thread' => null, // Thread is assigned after creating the message
             'blocked' => false,
             'private' => true,
             'subject' => $subject,
@@ -285,19 +290,11 @@ class MessagesApiController extends AbstractApiController {
         // Send and event to create the Feed and send emails
         $this->dispatch(AppEvents::MESSAGE_CREATED, $event);
 
-        // if($request->request->get('view') === 'dashboard') {
-        //     $view = 'dashboard/project/partials/comments/item';
-        // }
-        // else {
-        //     $view = 'project/partials/comment';
-        // }
-        View::setTheme('responsive');
         return $this->jsonResponse([
             'id' => $message->id,
             'user' => $comment->user,
             'project' => $comment->project,
-            'message' => $comment->message,
-            // 'html' => View::render($view, [ 'comment' => $comment, 'project' => $prj, 'admin' => $request->request->get('admin') ])
+            'message' => $comment->message
         ]);
     }
 }

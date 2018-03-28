@@ -63,6 +63,9 @@ class MessageListener extends AbstractListener {
             return;
         }
 
+        if(!$recipients) {
+            throw new MailException(Text::get('dashboard-message-donors-error'));
+        }
         $errors = [];
         foreach($recipients as $user) {
             $lang = User::getPreferences($user)->comlang;
@@ -126,7 +129,7 @@ class MessageListener extends AbstractListener {
 
             // No mails sent
         }
-        if($type === 'project-support-response') {
+        elseif($type === 'project-support-response') {
             $log = new Feed();
             $log->setTarget($project->id)
                 ->populate('feed-message-new-project-response',
@@ -154,8 +157,7 @@ class MessageListener extends AbstractListener {
             $recipients[$project->getOwner()->id] = $project->getOwner();
             $this->sendMail($message, Template::THREAD_OWNER, $recipients);
         }
-
-        if($type === 'project-comment') {
+        elseif($type === 'project-comment') {
             $log = new Feed();
             $log->setTarget($project->id)
                 ->populate('feed-message-new-project-response',
@@ -182,8 +184,7 @@ class MessageListener extends AbstractListener {
             // sent mail to project owner
             $this->sendMail($message, Template::OWNER_NEW_THREAD, [$project->getOwner()]);
         }
-
-        if($type === 'project-comment-response') {
+        elseif($type === 'project-comment-response') {
             $log = new Feed();
             $log->setTarget($project->id)
                 ->populate('feed-message-new-project-response',
@@ -213,8 +214,7 @@ class MessageListener extends AbstractListener {
             $this->sendMail($message, Template::THREAD_OWNER, $recipients);
 
         }
-
-        if($type === 'project-private' || $type === 'project-private-response') {
+        elseif($type === 'project-private' || $type === 'project-private-response') {
             $log = new Feed();
             $log->setTarget($project->id)
                 ->populate('feed-message-new-project-response',

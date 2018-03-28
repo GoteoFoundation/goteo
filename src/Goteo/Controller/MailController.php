@@ -42,6 +42,7 @@ class MailController extends \Goteo\Core\Controller {
                     try {
                         // email tracker
                         $stat = MailStats::incMetric($mail_id, $email, 'EMAIL_OPENED');
+                        // print_r($stat);die;
                         // geolocation if exists database
                         if (Config::get('geolocation.maxmind.cities')) {
                             $loc = MailStatsLocation::createByIp($stat->id, $request->getClientIp());
@@ -55,6 +56,9 @@ class MailController extends \Goteo\Core\Controller {
 
                 } catch(\Exception $e) {
                     // TODO: log this
+                    if (App::debug()) {
+                        throw $e;
+                    }
                 }
 
             }

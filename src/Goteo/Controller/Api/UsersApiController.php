@@ -25,7 +25,14 @@ use Goteo\Library\FeedBody;
 
 class UsersApiController extends AbstractApiController {
 
-    protected function getSafeUser($user) {
+    public function __construct() {
+        parent::__construct();
+        // De-Activate cache & replica read for this controller
+        $this->dbReplica(false);
+        $this->dbCache(false);
+    }
+
+	protected function getSafeUser($user) {
         if(!$user instanceOf User) $user = User::get($user);
         if(!$user instanceOf User) throw new ModelNotFoundException();
 
@@ -58,6 +65,7 @@ class UsersApiController extends AbstractApiController {
         }
         return $ob;
     }
+
     /**
      * Simple listing of users
      * TODO: according to permissions, filter this users

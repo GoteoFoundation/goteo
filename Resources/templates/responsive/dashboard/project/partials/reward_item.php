@@ -7,12 +7,11 @@
   <div class="panel-body reward-item">
       <div class="row">
         <div class="amount"><?= $this->form_row($form["amount_$id"]) ?></div>
-        <div class="units"><?= $this->form_row($form["units_$id"]) ?></div>
+        <div class="units fade <?= $unlimited ? 'out' : 'in' ?>"><?= $this->form_row($form["units_$id"]) ?></div>
         <div class="unlimited form-group">
-          <label for="unlimited_<?= $id ?>"><?= $this->text('project-reward-unlimited') ?></label>
-          <div class="material-switch">
-              <input id="unlimited_<?= $id ?>"<?= $form["units_$id"]->vars['disabled'] ? ' disabled' :'' ?> type="checkbox"<?= $unlimited ? ' checked="true"' : '' ?>>
-              <label for="unlimited_<?= $id ?>" class="label-cyan"></label>
+            <label for="unlimited_<?= $id ?>"><?= $this->text('project-reward-unlimited') ?></label>
+            <div class="input-wrap">
+              <?= $this->form_row($form["unlimited_$id"]) ?>
           </div>
         </div>
       </div>

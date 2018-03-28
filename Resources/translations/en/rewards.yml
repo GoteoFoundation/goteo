@@ -10,7 +10,7 @@ rewards-field-individual_reward-description: Description
 rewards-field-individual_reward-other: 'Specify the type of reward'
 rewards-field-individual_reward-reward: Reward
 rewards-field-individual_reward-type: 'Type of reward'
-rewards-field-individual_reward-units: Units
+rewards-field-individual_reward-units: 'Available items'
 rewards-field-social_reward-description: Description
 rewards-field-social_reward-license: 'Licensing options'
 rewards-field-social_reward-other: 'Specify the type of benefit'
