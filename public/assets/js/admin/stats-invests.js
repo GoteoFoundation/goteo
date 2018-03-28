@@ -38,11 +38,17 @@ $(function(){
         }
         console.log('click', hash, 'part', part, 'target', target, method, interval);
         var id = target  + '-' + method  + '-' + interval;
+        var $template =  $('#tab-' + target).find('script#template-' + id + '');
+        if(!$template.length) {
+            method = 'global';
+            id = target + '-global-' + interval;
+            $template =  $('#tab-' + target).find('script#template-' + id + '');
+        }
+
         location.hash = target  + ',' + method  + ',' + interval;
         $('#tab-' + target).find('.choose-method a[href="#' + method +'"]').closest('li').addClass('active').siblings().removeClass('active');
         $('#tab-' + target).find('.choose-interval a[href="#' + interval +'"]').addClass('active').siblings().removeClass('active');
 
-        var $template =  $('#tab-' + target).find('script#template-' + id + '');
         var $body = $('#tab-' + target).find('.stats-charts');
         // console.log($template.html(), e.target);
         // Create graph
