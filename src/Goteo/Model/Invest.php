@@ -393,6 +393,10 @@ class Invest extends \Goteo\Core\Model {
                     $sqlFilter[] = "invest.campaign = 1";
                     $sqlFilter[] = "invest.project IN (SELECT project_id FROM matcher_project)";
                     break;
+                case 'matchfunding': // all invests involving matchfunding campaings
+                    $sqlFilter[] = "(invest.project IN (SELECT project_id FROM matcher_project) OR
+                                     invest.project IN (SELECT project FROM call_project))";
+                    break;
                 case 'manual':
                     $sqlFilter[] = "invest.admin IS NOT NULL";
                     break;

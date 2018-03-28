@@ -22,6 +22,11 @@
   color: #212121;
   text-rendering: optimizeLegibility;
 
+  blockquote {
+    font-size: inherit;
+    font-weight: inherit;
+  }
+
   #sidebar-menu {
     .sidebar-wrap {
       // background-color: #652D2D;

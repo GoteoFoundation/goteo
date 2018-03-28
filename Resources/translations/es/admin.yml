@@ -178,8 +178,11 @@ admin-stats-commissions: 'Comisión banco'
 admin-stats-matchfunding: 'Matchfunding'
 
 admin-stats-method: 'Ingresos por método de pago'
-admin-stats-from_matchfunding: 'Parte aportada a proyectos por matchfunding'
-admin-stats-matchfunding-part: 'Todo Matchfunding'
+admin-stats-from_matchfunding: 'Detalle de proyectos con Matchfunding'
+admin-stats-matchfunding-part: 'Proyectos con Matchfunding'
+admin-stats-users-part: 'Proyectos sin Matchfunding'
+admin-stats-match-part: 'Parte Multiplicadora'
+admin-stats-citizens-part: 'Parte Ciudadana'
 admin-stats-matcher-part: 'Parte Matcher'
 admin-stats-invest-destination: 'Destino de los aportes'
 admin-stats-invest-in_wallet: 'Total acumulado en el monedero'
@@ -188,6 +191,7 @@ admin-stats-to_wallet: 'Al monedero'
 admin-stats-to_matcher_wallet: 'Al monedero de Matchers'
 admin-stats-in_wallet: 'En el monedero'
 admin-stats-in_matcher_wallet: 'En el monedero de Matchers'
+admin-stats-matchfunding-global: 'Influencia Matchfunding'
 
 admin-raised: Recaudado
 admin-diff: Diferencia
@@ -209,6 +213,9 @@ admin-last_month_complete: Todo el mes pasado
 admin-year: Este año
 admin-last_year: El mismo día del año pasado
 admin-last_year_complete: Todo el año pasado
+
+
+
 
 admin-projects-created-today: 'Creados hoy'
 admin-projects-created-yesterday: 'Creados ayer'
