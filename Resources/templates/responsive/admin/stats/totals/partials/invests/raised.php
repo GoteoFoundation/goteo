@@ -1,6 +1,6 @@
 <?php
 
-$target = 'raised';
+$target = $this->target ?: 'raised';
 $slot1 = $this->interval ?: 'today';
 $slot2 = $slot1 === 'custom' ? '' : 'yesterday';
 $slot3 = '';
@@ -13,9 +13,10 @@ $method = $this->method ?: $this->text('regular-all');
 ?>
 
 
-<div class="d3-chart loading discrete-values" data-source="/api/charts/totals/invests/raised/<?= $id ?>/<?= $slot1 ?>?<?= $this->query ?>" data-interval="40" data-flash-time="15" data-delay="50">
+<div class="d3-chart loading discrete-values" data-source="/api/charts/totals/invests/<?= $target ?>/<?= $id ?>/<?= $slot1 ?>?<?= $this->query ?>" data-interval="40" data-flash-time="15" data-delay="50">
 
-    <h4><?= $this->text('admin-stats-method') ?>: <?= $method ?></h4>
+    <h4><?= $this->text("admin-stats-$target-method") ?>: <?= $method ?></h4>
+
     <ul class="row list-unstyled">
         <li class="col-xs-2 col-xxs-4" data-property="<?= "$target.$id.$slot1" ?>.amount_formatted" data-title="<?= $this->text('admin-' . $target) . ': ' . $this->text('admin-' . $slot1) ?>"></li>
         <?php if($slot2): ?>
@@ -37,7 +38,7 @@ $method = $this->method ?: $this->text('regular-all');
 
 
 
-<?php if($slot1 !== 'custom'): ?>
+<?php if($slot1 !== 'custom' && $target === 'raised'): ?>
     <h4><?= $this->text('admin-stats-invest-destination') ?></h4>
     <ul class="row list-unstyled">
         <li class="col-xs-2 col-xxs-4" data-property="<?= "$target.$id.$slot1" ?>.to_projects_amount_formatted" data-title="<?= $this->text('admin-stats-to_projects') . ': ' . $this->text('admin-' . $slot1) ?>"></li>

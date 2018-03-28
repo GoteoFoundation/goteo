@@ -177,7 +177,9 @@ admin-stats-fees: 'Comisión plataforma'
 admin-stats-commissions: 'Comisión banco'
 admin-stats-matchfunding: 'Matchfunding'
 
-admin-stats-method: 'Ingresos por método de pago'
+admin-stats-raised-method: 'Ingresos brutos segun método de pago'
+admin-stats-active-method: 'Ingresos netos segun método de pago'
+admin-stats-refunded-method: 'Devoluciones segun método de pago'
 admin-stats-from_matchfunding: 'Detalle de proyectos con Matchfunding'
 admin-stats-matchfunding-part: 'Proyectos con Matchfunding'
 admin-stats-users-part: 'Proyectos sin Matchfunding'
@@ -194,6 +196,8 @@ admin-stats-in_matcher_wallet: 'En el monedero de Matchers'
 admin-stats-matchfunding-global: 'Influencia Matchfunding'
 
 admin-raised: Recaudado
+admin-active: Exitoso
+admin-refunded: Devuelto
 admin-diff: Diferencia
 admin-the_day: El día
 admin-the_week: La semana
