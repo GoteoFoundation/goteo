@@ -242,13 +242,11 @@ class MessagesApiController extends AbstractApiController {
             $body = "### $subject\n\n$body";
         }
 
-        // TODO: find the last thread for this user/project
-        //
         // Create the message
         $message = new Comment([
             'user' => $this->user,
             'project' => $project,
-            'thread' => $thread ? $thread : null,
+            'thread' => null, // Thread is assigned after creating the message
             'blocked' => false,
             'private' => true,
             'subject' => $subject,
@@ -292,19 +290,11 @@ class MessagesApiController extends AbstractApiController {
         // Send and event to create the Feed and send emails
         $this->dispatch(AppEvents::MESSAGE_CREATED, $event);
 
-        // if($request->request->get('view') === 'dashboard') {
-        //     $view = 'dashboard/project/partials/comments/item';
-        // }
-        // else {
-        //     $view = 'project/partials/comment';
-        // }
-        View::setTheme('responsive');
         return $this->jsonResponse([
             'id' => $message->id,
             'user' => $comment->user,
             'project' => $comment->project,
-            'message' => $comment->message,
-            // 'html' => View::render($view, [ 'comment' => $comment, 'project' => $prj, 'admin' => $request->request->get('admin') ])
+            'message' => $comment->message
         ]);
     }
 }

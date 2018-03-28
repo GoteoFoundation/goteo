@@ -72,7 +72,7 @@ dashboard-menu-projects-messegers: Participants
 dashboard-menu-projects-preview: 'Pàgina pública'
 dashboard-menu-projects-rewards: Gestió cofinançadors
 dashboard-menu-projects-summary: Resum
-dashboard-menu-projects-supports: Col·laboracions 
+dashboard-menu-projects-supports: Col·laboracions
 dashboard-menu-projects-updates: Actualitzacions
 dashboard-menu-projects-widgets: Widget
 dashboard-menu-review_board: Revisió
@@ -236,6 +236,8 @@ dashboard-message-donors-error: 'No hi ha destinataris vàlids, no es pot enviar
 dashboard-message-donors-total: '%s cofinançadors'
 dashboard-message-no-message: 'No tens cap missatge encara.'
 dashboard-message-threads: 'Tens %s fils de missatges'
+dashboard-mails-no-mails: 'No tens cap comunicació enviada encara.'
+
 dashboard-translate-profile: 'Traduir perfil'
 dashboard-translate-profile-desc: 'Estàs traduint el teu perfil personal al %LANG%. Els usuaris que visitin el tu perfil personal en aquest idioma veuran aquesta traducció. La resta d''idiomes mostraran les <a href="%URL%">dades per defecte</a> a menys que també tinguin una traducció assignada.'
 dashboard-translate-profile-ok: 'Perfil traduït correctament al %s'
