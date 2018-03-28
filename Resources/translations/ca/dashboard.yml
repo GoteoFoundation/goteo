@@ -236,7 +236,16 @@ dashboard-message-donors-error: 'No hi ha destinataris vàlids, no es pot enviar
 dashboard-message-donors-total: '%s cofinançadors'
 dashboard-message-no-message: 'No tens cap missatge encara.'
 dashboard-message-threads: 'Tens %s fils de missatges'
+
 dashboard-mails-no-mails: 'No tens cap comunicació enviada encara.'
+dashboard-mail-mailing: 'Comunicacions'
+dashboard-mail-sent-mails: 'Comunicacions enviades a %s'
+dashboard-mail-sent-mails-desc: 'Aquestes son les últimes comunicacions enviades al teu email personal.<br><em>NOTA: Les comunicacions antigues s''eliminen automàticament.</em>'
+
+dashboard-rewards-my-invests: 'Les meves donacions'
+dashboard-rewards-no-invests: 'No has fet cap donació encara.'
+dashboard-rewards-invests-totals: 'Aquest és el teu historial de donacions i recompenses.<br>Has realitzat %TOTAL% aportacions per un valor total de <strong>%RAISED%</strong>, d''aquesta quantitat se t''han tornat <strong>%RETURNED%</strong> (ja sigui al teu moneder virtual o al teu compte bancari) degut a projectes que no han arribat al seu objectiu.'
+dashboard-rewards-invests-wallet: 'a més, al teu moneder virtual hi tens <strong>%AMOUNT%</strong> que pots fer servir en qualsevol moment.'
 
 dashboard-translate-profile: 'Traduir perfil'
 dashboard-translate-profile-desc: 'Estàs traduint el teu perfil personal al %LANG%. Els usuaris que visitin el tu perfil personal en aquest idioma veuran aquesta traducció. La resta d''idiomes mostraran les <a href="%URL%">dades per defecte</a> a menys que també tinguin una traducció assignada.'

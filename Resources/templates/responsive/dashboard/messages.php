@@ -43,6 +43,8 @@
       </div>
     </div>
   <?php endforeach ?>
+  <?= $this->insert('partials/utils/paginator', ['total' => $this->total, 'limit' => $this->limit ? $this->limit : 10]) ?>
+
 <?php else: ?>
     <blockquote><?= $this->text('dashboard-message-no-message') ?></blockquote>
 <?php endif ?>

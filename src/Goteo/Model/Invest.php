@@ -107,6 +107,10 @@ class Invest extends \Goteo\Core\Model {
     }
 
     /* handy methods */
+    public function inPool() {
+        return $this->status == self::STATUS_TO_POOL;
+    }
+
     public function isCharged() {
         return in_array($this->status, self::$ACTIVE_STATUSES);
     }
@@ -116,7 +120,7 @@ class Invest extends \Goteo\Core\Model {
     }
 
     public function isCancelled() {
-        return $this->status === self::STATUS_CANCELLED;
+        return $this->status == self::STATUS_CANCELLED;
     }
 
     public function getStatusText($simple = false) {

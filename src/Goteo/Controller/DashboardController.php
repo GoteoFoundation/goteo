@@ -17,6 +17,7 @@ use Goteo\Application\Session;
 use Goteo\Application\Config;
 use Goteo\Application\View;
 use Goteo\Model\Project;
+use Goteo\Model\Invest;
 use Goteo\Model\Message as Comment;
 use Goteo\Model\User;
 use Goteo\Model\Mail;
@@ -40,8 +41,11 @@ class DashboardController extends \Goteo\Core\Controller {
         $user = Session::getUser();
         $total_messages = Comment::getUserThreads($user, 0, 0, true);
         $total_mails = Mail::getSentList(['user' => $user->email, 'message' => false], 0, 0, true);
+        $total_invests = Invest::getList(['users' => $user, 'status' => Invest::$RAISED_STATUSES], null, 0, 0, 'total');
+
         if($total_messages > 0 && $section === 'activity') {
             Session::addToSidebarMenu('<i class="icon icon-2x icon-activity"></i> ' . Text::get('dashboard-menu-activity'), '/dashboard/activity', 'activity');
+            Session::addToSidebarMenu('<i class="fa fa-2x fa-gift"></i> ' . Text::get('dashboard-rewards-my-invests') .' <span class="badge">' . $total_invests . '</span>', '/dashboard/rewards', 'rewards');
             Session::addToSidebarMenu('<i class="icon icon-2x icon-partners"></i> ' . Text::get('regular-messages') .' <span class="badge">' . $total_messages . '</span>', '/dashboard/messages', 'messages');
             Session::addToSidebarMenu('<i class="fa fa-2x fa-envelope"></i> ' . Text::get('dashboard-mail-mailing') .' <span class="badge">' . $total_mails . '</span>', '/dashboard/mailing', 'mailling');
         }
@@ -90,15 +94,43 @@ class DashboardController extends \Goteo\Core\Controller {
         ]);
     }
 
+    public function rewardsAction(Request $request) {
+
+        $limit = 10;
+        $offset = $request->query->get('pag') * $limit;
+        $filter = ['users' => $this->user, 'status' => Invest::$RAISED_STATUSES];
+        $invests = Invest::getList($filter, null, $offset, $limit);
+        $raised = Invest::getList($filter, null, 0, 0, 'all');
+        $returned = Invest::getList(['status' => Invest::$FAILED_STATUSES] + $filter, null, 0, 0, 'money');
+        $wallet = $this->user->getPool()->amount;
+
+        self::createSidebar('activity', 'rewards');
+
+        return $this->viewResponse('dashboard/rewards', [
+            'section' => 'activity',
+            'invests' => $invests,
+            'raised' => $raised['amount'],
+            'total' => $raised['invests'],
+            'returned' => $returned,
+            'wallet' => $wallet,
+            'limit' => $limit
+        ]);
+    }
+
     public function messagesAction(Request $request) {
 
-        $messages = Comment::getUserThreads($this->user);
+        $limit = 10;
+        $offset = $request->query->get('pag') * $limit;
+        $messages = Comment::getUserThreads($this->user, $offset, $limit);
+        $total = Comment::getUserThreads($this->user, 0, 0, true);
 
         self::createSidebar('activity', 'messages');
 
         return $this->viewResponse('dashboard/messages', [
             'section' => 'activity',
-            'messages' => $messages
+            'messages' => $messages,
+            'total' => $total,
+            'limit' => $limit
         ]);
     }
 
