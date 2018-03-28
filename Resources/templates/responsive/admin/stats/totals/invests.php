@@ -30,7 +30,7 @@ if($this->has_query('from')) {
 if($this->has_query('to')) {
     $filters['to'] = $this->get_query('to');
 }
-$parts = ['raised', 'active', 'refunded', 'fees', 'commissions'];
+$parts = ['raised', 'active', 'refunded', 'fees', 'commissions', 'matchfunding'];
 
 $interval_active = $this->active ?: 'week';
 $method_active = $this->methods ? key($this->methods) : 'global';

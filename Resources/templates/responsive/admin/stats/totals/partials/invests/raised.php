@@ -35,27 +35,7 @@ $method = $this->method ?: $this->text('regular-all');
         <?php endif ?>
     </ul>
 
-    <h4><?= $this->text('admin-stats-from_matchfunding') ?></h4>
-    <ul class="row list-unstyled">
-        <li class="col-xs-2 col-xxs-4" data-property="<?= "$target.$id.$slot1" ?>.from_matchfunding_amount_formatted" data-title="<?= $this->text('admin-stats-matchfunding-part') . ': ' . $this->text('admin-' . $slot1) ?>"></li>
-        <?php if($slot2): ?>
-        <li class="col-xs-2 col-xxs-4" data-property="<?= "$target.$id.$slot2" ?>.from_matchfunding_amount_formatted" data-title="<?= $this->text('admin-stats-matchfunding-part') . ': ' . $this->text('admin-' . $slot2)  ?>"></li>
-        <li class="col-xs-2 col-xxs-4" data-property="<?= "$target.$id.$slot1" ?>.from_matchfunding_amount_gain_formatted" data-tooltip="<?= "$target.$id.$slot1" ?>.from_matchfunding_amount_diff_formatted" data-title="<?= $this->text('admin-diff') ?>"></li>
-        <?php endif ?>
-        <?php if($slot3): ?>
-            <li class="col-xs-2 col-xs-offset-4 col-xxs-4" data-property="<?= "$target.$id.$slot3" ?>.from_matchfunding_amount_formatted" data-title="<?= $this->text('admin-stats-matchfunding-part') . ': ' . $this->text('admin-' . $slot3) ?>"></li>
-        <?php endif ?>
 
-        <li class="col-xs-2 col-xxs-4" data-property="<?= "$target.$id.$slot1" ?>.from_matcher_amount_formatted" data-title="<?= $this->text('admin-stats-matcher-part') . ': ' . $this->text('admin-' . $slot1) ?>"></li>
-        <?php if($slot2): ?>
-        <li class="col-xs-2 col-xxs-4" data-property="<?= "$target.$id.$slot2" ?>.from_matcher_amount_formatted" data-title="<?= $this->text('admin-stats-matcher-part') . ': ' . $this->text('admin-' . $slot2)  ?>"></li>
-        <li class="col-xs-2 col-xxs-4" data-property="<?= "$target.$id.$slot1" ?>.from_matcher_amount_gain_formatted" data-tooltip="<?= "$target.$id.$slot1" ?>.from_matcher_amount_diff_formatted" data-title="<?= $this->text('admin-diff') ?>"></li>
-        <?php endif ?>
-        <?php if($slot3): ?>
-            <li class="col-xs-2 col-xs-offset-4 col-xxs-4" data-property="<?= "$target.$id.$slot3" ?>.from_matcher_amount_formatted" data-title="<?= $this->text('admin-stats-matcher-part') . ': ' . $this->text('admin-' . $slot3) ?>"></li>
-        <?php endif ?>
-
-    </ul>
 
 <?php if($slot1 !== 'custom'): ?>
     <h4><?= $this->text('admin-stats-invest-destination') ?></h4>
