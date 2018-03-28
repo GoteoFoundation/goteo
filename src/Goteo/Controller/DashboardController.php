@@ -19,6 +19,7 @@ use Goteo\Application\View;
 use Goteo\Model\Project;
 use Goteo\Model\Message as Comment;
 use Goteo\Model\User;
+use Goteo\Model\Mail;
 use Goteo\Library\Text;
 use Goteo\Model\User\Interest;
 use Goteo\Model\Page;
@@ -36,10 +37,13 @@ class DashboardController extends \Goteo\Core\Controller {
     }
 
     public static function createSidebar($section, $zone = '') {
-        $total_messages = Comment::getUserThreads(Session::getUser(), 0, 0, true);
+        $user = Session::getUser();
+        $total_messages = Comment::getUserThreads($user, 0, 0, true);
+        $total_mails = Mail::getSentList(['user' => $user->email, 'message' => false], 0, 0, true);
         if($total_messages > 0 && $section === 'activity') {
             Session::addToSidebarMenu('<i class="icon icon-2x icon-activity"></i> ' . Text::get('dashboard-menu-activity'), '/dashboard/activity', 'activity');
             Session::addToSidebarMenu('<i class="icon icon-2x icon-partners"></i> ' . Text::get('regular-messages') .' <span class="badge">' . $total_messages . '</span>', '/dashboard/messages', 'messages');
+            Session::addToSidebarMenu('<i class="fa fa-2x fa-envelope"></i> ' . Text::get('dashboard-mail-mailing') .' <span class="badge">' . $total_mails . '</span>', '/dashboard/mailing', 'mailling');
         }
         if($section === 'wallet') {
             Session::addToSidebarMenu('<i class="icon icon-2x icon-wallet-sidebar"></i> ' . Text::get('dashboard-menu-pool'), '/dashboard/wallet', 'wallet');
@@ -97,6 +101,28 @@ class DashboardController extends \Goteo\Core\Controller {
             'messages' => $messages
         ]);
     }
+
+    public function mailingAction(Request $request) {
+
+        $limit = 10;
+        $offset = $request->query->get('pag') * $limit;
+        $filter = [
+            'user' => $this->user->email,
+            'message' => false
+            ];
+        $mails = Mail::getSentList($filter, $offset, $limit);
+        $total = Mail::getSentList($filter, 0, 0, true);
+
+        self::createSidebar('activity', 'mailing');
+
+        return $this->viewResponse('dashboard/mailing', [
+            'section' => 'activity',
+            'mails' => $mails,
+            'total' => $total,
+            'limit' => $limit
+        ]);
+    }
+
     /**
      * Virtual wallet
      */

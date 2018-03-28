@@ -237,6 +237,11 @@ dashboard-message-donors-error: 'No hay destinatarios válidos, no se puede envi
 dashboard-message-donors-total: '%s cofinanciadores'
 dashboard-message-no-message: 'No tienes ningún mensaje todavía.'
 dashboard-message-threads: 'Tienes %s hilos de mensajes'
+dashboard-mails-no-mails: 'No tienes ninguna comunicación enviada todavía.'
+dashboard-mail-mailing: 'Comunicaciones'
+dashboard-mail-sent-mails: 'Comunicaciones enviadas a %s'
+dashboard-mail-sent-mails-desc: 'Estas son las últimas comunicaciones enviadas a tu email personal.<br><em>NOTA: Las comunicaciones antiguas se eliminan automáticamente.</em>'
+
 dashboard-translate-profile: 'Traducir perfil'
 dashboard-translate-profile-desc: 'Estás traduciendo tu perfil personal al %LANG%. Los usuarios que visiten tu perfil personal en este idioma verán esta traducción. El resto de idiomas mostrarán los <a href="%URL%">datos por defecto</a> a menos que también tengan una traducción asignada.'
 dashboard-translate-profile-ok: 'Perfil traducido correctamente al %s'
