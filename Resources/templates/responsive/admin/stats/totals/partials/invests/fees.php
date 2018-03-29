@@ -18,13 +18,13 @@ $method = $this->method ?: $this->text('regular-all');
     <h4><?= $this->text("admin-stats-$target-method") ?>: <?= $method ?></h4>
 
     <ul class="row list-unstyled">
-        <li class="col-xs-2 col-xxs-4" data-property="<?= "$target.$id.$slot1" ?>.total_formatted" data-title="<?= $this->text('admin-' . $target) . ': ' . $this->text('admin-' . $slot1) ?>"></li>
+        <li class="col-xs-2 col-xxs-4" data-property="<?= "$target.$id.$slot1" ?>.subtotal_formatted" data-title="<?= $this->text('admin-' . $target) . ': ' . $this->text('admin-' . $slot1) ?>"></li>
         <?php if($slot2): ?>
-        <li class="col-xs-2 col-xxs-4" data-property="<?= "$target.$id.$slot2" ?>.total_formatted" data-title="<?= $this->text('admin-' . $target) . ': ' . $this->text('admin-' . $slot2) ?>"></li>
-        <li class="col-xs-2 col-xxs-4" data-property="<?= "$target.$id.$slot1" ?>.total_gain_formatted" data-tooltip="<?= "$target.$id.$slot1" ?>.total_diff_formatted" data-title="<?= $this->text('admin-' . $target) . ': ' .$this->text('admin-diff') ?>"></li>
+        <li class="col-xs-2 col-xxs-4" data-property="<?= "$target.$id.$slot2" ?>.subtotal_formatted" data-title="<?= $this->text('admin-' . $target) . ': ' . $this->text('admin-' . $slot2) ?>"></li>
+        <li class="col-xs-2 col-xxs-4" data-property="<?= "$target.$id.$slot1" ?>.subtotal_gain_formatted" data-tooltip="<?= "$target.$id.$slot1" ?>.subtotal_diff_formatted" data-title="<?= $this->text('admin-' . $target) . ': ' .$this->text('admin-diff') ?>"></li>
         <?php endif ?>
         <?php if($slot3): ?>
-            <li class="col-xs-2 col-xs-offset-4 col-xxs-4" data-property="<?= "$target.$id.$slot3" ?>.total_formatted" data-title="<?= $this->text('admin-' . $target) . ': ' . $this->text('admin-' . $slot3) ?>"></li>
+            <li class="col-xs-2 col-xs-offset-4 col-xxs-4" data-property="<?= "$target.$id.$slot3" ?>.subtotal_formatted" data-title="<?= $this->text('admin-' . $target) . ': ' . $this->text('admin-' . $slot3) ?>"></li>
         <?php endif ?>
 
         <li class="col-xs-2 col-xxs-4" data-property="<?= "$target.$id.$slot1" ?>.vat_formatted" data-title="<?= $this->text('admin-vat') . ': ' . $this->text('admin-' . $slot1) ?>"></li>

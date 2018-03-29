@@ -93,8 +93,8 @@ $(function(){
                     }
                 })
                 .fail(function(error) {
-                    console.log(error);
-                    $chart.html('<small class="text-danger">' + (error || error.error) + '</small>');
+                    console.log('Error fetching ', source,'ERROR:',error);
+                    $chart.html('<small class="text-danger">' + ((error.responseJSON && error.responseJSON.error) || error.responseText || error) + '</small>');
                     // throw error;
                 })
                 .always(function() {

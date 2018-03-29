@@ -220,35 +220,36 @@ EOT
             $paid_status = Invest::STATUS_PAID .','. Invest::STATUS_CHARGED;
 
 
-            $sql_total_to_pool = "SELECT SUM(amount) FROM invest i1 WHERE i1.user=invest.user
+            $sql_total_to_pool = "SELECT SUM(amount) FROM invest i1 WHERE i1.user=u.id
                 # AND status IN ($returned_status)
-                 AND status > 0
+                AND status > 0
                 AND pool=1
                 AND (project IN ($sql_failed_projects) OR ISNULL(project) OR status=".Invest::STATUS_TO_POOL.")
                 AND method!='pool'";
 
-            $sql_total_from_pool = "SELECT SUM(amount) FROM invest i2 WHERE i2.user=invest.user
+            $sql_total_from_pool = "SELECT SUM(amount) FROM invest i2 WHERE i2.user=u.id
                 AND status IN ($paid_status)
                 AND method='pool'";
 
-            $sql = "SELECT DISTINCT invest.user, user_pool.amount,
+            $sql = "SELECT DISTINCT u.id as user, p.amount,
                 ($sql_total_to_pool) as total_to_pool,
                 ($sql_total_from_pool) as total_from_pool
-             FROM invest
-             LEFT JOIN user_pool ON user_pool.user=invest.user
-             WHERE invest.pool=1 OR invest.method='pool'";
+             FROM user u
+             LEFT JOIN user_pool p ON p.user=u.id
+             ";
              // echo $sql;
             $query = Pool::query($sql);
             foreach ($query->fetchAll(\PDO::FETCH_CLASS, '\Goteo\Model\User\Pool') as $pool) {
+                $amount = (int)$pool->amount;
                 $total_to_pool = (int)$pool->total_to_pool;
                 $total_from_pool = (int)$pool->total_from_pool;
                 $diff = $total_to_pool - $total_from_pool;
-                if($pool->amount == 0 && $total_to_pool == 0 && $total_from_pool == 0) {
+                if($amount == 0 && $total_to_pool == 0 && $total_from_pool == 0) {
                     continue;
                 }
                 // pool inconsistences
-                if($pool->amount != $diff) {
-                    $output->write("USER <info>{$pool->user}</info> TOTAL TO POOL: <info>{$total_to_pool}</info> TOTAL FROM POOL: <info>{$total_from_pool}</info> DIFF: <error>{$diff}</error> AMOUNT: <comment>{$pool->amount}</comment> ");
+                if($amount != $diff) {
+                    $output->write("USER <info>{$pool->user}</info> TOTAL TO POOL: <info>{$total_to_pool}</info> TOTAL FROM POOL: <info>{$total_from_pool}</info> DIFF: <error>{$diff}</error> AMOUNT: <comment>{$amount}</comment> ");
                     if($update) {
                         $output->writeln("<comment>Pool amount changed to $diff</comment>");
                         $errors = [];

@@ -48,6 +48,7 @@ class Invest extends \Goteo\Core\Model {
 
     static $ACTIVE_STATUSES = [self::STATUS_PENDING, self::STATUS_CHARGED, self::STATUS_PAID];
     static $FAILED_STATUSES = [self::STATUS_RELOCATED, self::STATUS_RETURNED, self::STATUS_TO_POOL, self::STATUS_CANCELLED];
+    static $RETURNED_STATUSES = [self::STATUS_RETURNED, self::STATUS_CANCELLED];
     // STATUS_CANCELLED may rise the achieved amount in projects but it is not included in fee/comissions calculations
     static $RAISED_STATUSES = [self::STATUS_PENDING, self::STATUS_CHARGED, self::STATUS_PAID, self::STATUS_RETURNED, self::STATUS_TO_POOL];
     static $RAW_STATUSES = [self::STATUS_PENDING, self::STATUS_CHARGED, self::STATUS_PAID, self::STATUS_CANCELLED, self::STATUS_RETURNED, self::STATUS_TO_POOL];
@@ -362,18 +363,24 @@ class Invest extends \Goteo\Core\Model {
                     $sqlFilter[] = "invest.anonymous = 0";
                     break;
                 case 'wallet':
-                    $sqlFilter[] = "invest.project IS NULL";
+                    $sqlFilter[] = "ISNULL(invest.project)";
                     break;
                 case 'to_wallet':
-                    $sqlFilter[] = "invest.project IS NULL";
+                    $sql_failed_projects = "SELECT id FROM project WHERE status NOT IN (" . Project::STATUS_IN_CAMPAIGN . ',' . Project::STATUS_FUNDED. ',' . Project::STATUS_FULFILLED . ")";
+
+                    $values[':status0'] = self::STATUS_TO_POOL;
+                    $sqlFilter[] = "(invest.project IN ($sql_failed_projects) OR ISNULL(invest.project) OR invest.status = :status0)";
                     $sqlFilter[] = "invest.method!='pool'";
+                    $sqlFilter[] = "invest.status>0";
+                    $sqlFilter[] = "invest.pool=1";
+
                     break;
                 case 'matcher_wallet':
-                    $sqlFilter[] = "invest.project IS NULL";
+                    $sqlFilter[] = "ISNULL(invest.project)";
                     $sqlFilter[] = "invest.user IN (SELECT user_id FROM matcher_user)";
                     break;
                 case 'to_matcher_wallet':
-                    $sqlFilter[] = "invest.project IS NULL";
+                    $sqlFilter[] = "ISNULL(invest.project)";
                     $sqlFilter[] = "invest.method!='pool'";
                     $sqlFilter[] = "invest.user IN (SELECT user_id FROM matcher_user)";
                     break;
@@ -391,7 +398,7 @@ class Invest extends \Goteo\Core\Model {
                     $sqlFilter[] = "invest.user IN (SELECT user_id FROM matcher_user)";
                     break;
                 case 'project':
-                    $sqlFilter[] = "invest.project IS NOT NULL";
+                    $sqlFilter[] = "!ISNULL(invest.project)";
                     break;
                 case 'matcher':
                     $sqlFilter[] = "invest.campaign = 1";
@@ -402,10 +409,10 @@ class Invest extends \Goteo\Core\Model {
                                      invest.project IN (SELECT project FROM call_project))";
                     break;
                 case 'manual':
-                    $sqlFilter[] = "invest.admin IS NOT NULL";
+                    $sqlFilter[] = "!ISNULL(invest.admin)";
                     break;
                 case 'campaign':
-                    $sqlFilter[] = "invest.droped IS NOT NULL";
+                    $sqlFilter[] = "!ISNULL(invest.droped)";
                     break;
                 case 'drop':
                     $sqlFilter[] = "invest.campaign = 1";
@@ -560,7 +567,7 @@ class Invest extends \Goteo\Core\Model {
                 LIMIT $offset, $limit
                 ";
 
-        // print_r($filters);echo sqldbg($sql, $values);die;
+        // print_r($filters);echo sqldbg($sql, $values);
         $query = self::query($sql, $values);
         foreach ($query->fetchAll(\PDO::FETCH_CLASS, __CLASS__) as $item) {
             $list[$item->id] = $item;

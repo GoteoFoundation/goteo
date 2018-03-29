@@ -115,9 +115,10 @@ class Stats {
         // print_r($filter);print_r($totals);
         // Add some extra useful calcs
         foreach($totals as $k => $a) {
-            $totals['total'] += $a;
+            $totals['subtotal'] += $a;
             $totals['vat'] += ((float)Config::get('vat')) * $a / 100;
         }
+        $totals['total'] = $totals['subtotal'] + $totals['vat'];
         return $totals;
     }
 
