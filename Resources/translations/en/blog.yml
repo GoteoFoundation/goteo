@@ -12,3 +12,11 @@ blog-side-tags: Categories
 blog-allow-comments: Allow comments
 blog-publish: Publish
 blog-published: Published
+blog-related-posts: 'Related'
+
+blog-section-mission: 'Mission'
+blog-section-milestones: 'Milestones'
+blog-section-matchfunding: 'Matchfunding'
+blog-section-glossary: 'Glossary'
+blog-section-transparency: 'Transparency'
+blog-section-team: 'Team'

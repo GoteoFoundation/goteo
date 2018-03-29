@@ -202,102 +202,32 @@ body.home {
         background-color: rgb(25, 180, 178);
     }
 
-
-    div.section.main-slider{
-        position: relative;
-
-         nav{
-            position: absolute;
-            top: 0;
-            right: 0;
-            width: 100%;
-            z-index: 100;
-            margin: 20px 30px 20px 0;
-            li{
-                margin-left: 20px;
-                text-transform: uppercase;
-            }
-            li a
-            {
-                font-weight: bold;
-                color: $color-white;
-
-            }
-            .btn{
-                font-weight: bold;
-                border: none;
-                padding: 12px;
-            }
-        }
-
-        div.main-info{
-            position: absolute;
-            bottom: 20%;
-            z-index: 150;
-            color: $color-white;
-            width: 100%;
-            span.title{
-                border: 1.7px solid rgba(255, 255, 255, .5);
-                @include background-clip(padding-box);
-                font-size: $font-size;
-                padding: 7px;
-                text-transform: uppercase;
-                font-weight: 600;
-                text-shadow: 0.4px 0.4px #3A3A3A;
-            }
-            div.description{
-                margin: 20px 0;
-                font-size:2.5*$font-size;
-                font-weight: bold;
-                text-shadow: 0.5px 0.5px #3A3A3A;
-                line-height: 1.1;
-            }
-            .btn{
-                text-transform: uppercase;
-            }
-            img{
-                filter: brightness(85%) contrast(80%);
-            }
-        }
-
-        .slick-slider{
-            margin-bottom: 0;
-        }
-
-        .slick-slide img{
-            filter: brightness(85%);
-        }
-
-    }
-
     // Hide while loading
 
-    .slider-main, .slider-stories{
+    .slider-stories{
          visibility:hidden;
          opacity:0;
          transition: opacity 1s;
     }
 
-    .slider-main.slick-initialized, .slider-stories.slick-initialized{
+    .slider-stories.slick-initialized{
         visibility:visible;
         opacity:1;
     }
 
-    .slider-main .item, .slider-stories .item{
+    .slider-stories .item{
         display:none ;
     }
 
-    .slider-main .item:first-child, .slider-stories .item:first-child{
+    .slider-stories .item:first-child{
         display:block; visibility:hidden;
     }
 
-    .slider-main.slick-initialized .item, .slider-stories.slick-initialized .item{
+    .slider-stories.slick-initialized .item{
         display:block;visibility:visible!important;
     }
 
-
-
-    .slider.slider-main, .slider.slider-stories{
+    .slider.slider-stories{
         opacity:1;
         .slick-slide img {
             display: block;
@@ -320,20 +250,6 @@ body.home {
             color: $color-white;
             cursor: pointer;
         }
-    }
-
-    .slick-dots{
-        bottom: 10px;
-    }
-
-    .slick-dots li.slick-active button::before{
-        color: $background-light-green;
-    }
-
-    .slick-dots li button::before{
-        color: #FFF;
-        opacity: 1;
-        font-size: 13px;
     }
 
     .section.search{
@@ -1242,43 +1158,11 @@ body.home {
             display: block;
             margin: 0 auto;
         }
-
-        div.section.main-slider{
-            div.main-info{
-                margin-left: 15%;
-                span.title{
-                    font-size: $font-size*0.8;
-                }
-                div.description{
-                    font-size: $font-size*1.4;
-                }
-                 .btn-white{
-                    font-size: $font-size*0.8 !important;
-                }
-            }
-        }
-
     }
 
 
     @media (max-width: $breakpoint-sm - 1) {
 
-        div.section.main-slider{
-            div.main-info{
-                margin-left: 20%;
-                bottom: 18%;
-                span.title{
-                    font-size: $font-size*0.8 !important;
-                }
-                div.description{
-                    font-size: $font-size*1.1 !important;
-                    margin-bottom: 10px;
-                }
-                .btn-white{
-                    font-size: $font-size*0.7 !important;
-                }
-            }
-        }
         .section.search{
             .inner-addon{
                 margin-top:10px;
