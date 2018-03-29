@@ -168,7 +168,7 @@ admin-aggregate-projects-average: 'Media recaudación en proyectos'
 admin-aggregate-projects-average-desc: 'Media de recaudación por unidad de tiempo'
 
 
-admin-stats-totals: 'Aportes y comisiones'
+admin-stats-invest-totals: 'Aportes y comisiones'
 admin-stats-project-totals: 'Estado de los proyectos'
 admin-stats-raised: 'Ingresos brutos'
 admin-stats-active: 'Ingresos netos'
@@ -178,11 +178,13 @@ admin-stats-commissions: 'Comisión banco'
 admin-stats-matchfunding: 'Matchfunding'
 
 admin-stats-raised-method: 'Ingresos brutos segun método de pago'
+admin-stats-raised-method-desc: 'Los ingresos brutos incluyen todo el dinero que se ha cobrado por la plataforma en algun momento (se incluyen los aportes a proyectos fallidos, además de los aportes directos al monedero o provenientes de proyectos fallidos con retorno al monedero).<br><em>No se incluyen los aportes provenientes del monedero</em> (a menos que se escoja ese medio de pago)</b>'
 admin-stats-active-method: 'Ingresos netos segun método de pago'
+admin-stats-active-method-desc: 'Los ingresos netos incluyen todo el dinero cobrado por la plataforma excluyendo devoluciones (se incluyen los aportes al monedero, directos y provenientes de proyectos fallidos con retorno al monedero).<br><em>No se incluyen los aportes provenientes del monedero</em> (a menos que se escoja ese medio de pago).'
 admin-stats-refunded-method: 'Devoluciones segun método de pago'
+admin-stats-refunded-method-desc: 'Las devoluciones incluyen todos los metodos de pago (incluyen los aportes desde el monedero)'
 admin-stats-commissions-method: 'Comisiones bancarias segun método de pago'
 admin-stats-fees-method: 'Comisión de la plataforma segun método de pago'
-admin-stats-refunded-pool: 'Parte de devoluciones al monedero'
 admin-stats-from_matchfunding: 'Detalle de proyectos con Matchfunding'
 admin-stats-matchfunding-part: 'Proyectos con Matchfunding'
 admin-stats-users-part: 'Proyectos sin Matchfunding'
@@ -194,16 +196,25 @@ admin-stats-invest-in_wallet: 'Total acumulado en el monedero'
 admin-stats-to_projects: 'A proyectos'
 admin-stats-to_wallet: 'Al monedero'
 admin-stats-to_matcher_wallet: 'Al monedero de Matchers'
+admin-stats-to_fee: 'A comisiones'
+admin-stats-to_fee-percent: 'Comisión efectiva'
 admin-stats-in_wallet: 'En el monedero'
 admin-stats-in_matcher_wallet: 'En el monedero de Matchers'
+admin-stats-in_users_wallet: 'En el monedero de usuarios'
+
 admin-stats-matchfunding-global: 'Influencia Matchfunding'
 
+admin-stats-refunded-parts: 'Desglose de devoluciones'
 admin-stats-fees-parts: 'Desglose de comisiones'
+admin-stats-invest-active-parts: 'Destino ingresos netos'
+admin-stats-invest-in_wallet-parts: 'Desglose del monedero'
 
 admin-losts: Pèrdidas
 admin-raised: Recaudado
-admin-active: Exitoso
+admin-active: Cobrado
 admin-refunded: Devuelto
+admin-refunded-to_users: Devuelto a usuarios
+admin-refunded-to_wallet: Devuelto al monedero
 admin-commissions: Comisión
 admin-fees: Comisión plataforma
 admin-user-fee: Comisión ciudadana

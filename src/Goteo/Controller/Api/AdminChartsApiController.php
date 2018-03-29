@@ -135,12 +135,6 @@ class AdminChartsApiController extends ChartsApiController {
 
     private function timeSlots($slot = '', Request $request = null) {
         $f = 'Y-m-d H:i:s';
-        $to = $request->query->get('to');
-        $from = $request->query->get('from');
-        $project_id = $request->query->get('project');
-        $call_id = $request->query->get('call');
-        $matcher_id = $request->query->get('matcher');
-        $user_id = $request->query->get('user');
 
         $slots = [
             'today' => [
@@ -191,11 +185,15 @@ class AdminChartsApiController extends ChartsApiController {
                 ]
             ];
         if($slot) {
-            if($slots[$slot]) {
-                $slots = array_filter($slots, function ($k) use ($slot) {
+            $varis = explode(',', $slot);
+            if(array_diff($varis, $slots)) {
+                $slots = array_filter($slots, function ($k) use ($varis) {
                     $t = ['today', 'yesterday'];
-                    if(in_array($k,$t) && in_array($slot, $t)) return true;
-                    return strpos($k, $slot) !== false;
+                    foreach($varis as $slot) {
+                        if(in_array($k, $t) && in_array($slot, $t)) return true;
+                        if(strpos($k, $slot) !== false) return true;
+                    }
+                    return false;
                 }, ARRAY_FILTER_USE_KEY);
             } elseif($slot !== 'custom') {
                 throw new ControllerException("Slot [$slot] not found, try one of [today, yesterday, week, month, year]");
@@ -203,6 +201,13 @@ class AdminChartsApiController extends ChartsApiController {
         }
         // Add custom slot if searching
         if($request) {
+            $to = $request->query->get('to');
+            $from = $request->query->get('from');
+            $project_id = $request->query->get('project');
+            $call_id = $request->query->get('call');
+            $matcher_id = $request->query->get('matcher');
+            $user_id = $request->query->get('user');
+
             if($from) {
                 $slots['custom'] = ['from' => (new \DateTime($from))->format($f)];
                 if($to) $slots['custom']['to'] = (new \DateTime($to))->format($f);
@@ -251,34 +256,35 @@ class AdminChartsApiController extends ChartsApiController {
                 }));
                 // print_r($filter['methods']);die;
             }
-            if (in_array($target,['raised', 'active', 'raw'])) {
+
+            if($target === 'raised') {
+
                 $filter['status'] = Invest::$RAISED_STATUSES;
-                if($target === 'active') $filter['status'] = Invest::$ACTIVE_STATUSES;
-                elseif($target === 'raw') $filter['status'] = Invest::$RAW_STATUSES;
                 $totals[$slot] = $stats->investTotals($filter);
 
-                if($target !== 'raised') continue;
-                // Add projects calc
-                $projects = $stats->investTotals(['types' => 'project'] + $filter);
-                $totals[$slot]['to_projects_amount'] = $projects['amount'];
-                $totals[$slot]['to_projects_invests'] = $projects['invests'];
-                $totals[$slot]['to_projects_users'] = $projects['users'];
                 // Add wallet calc
                 $wallet = $stats->investTotals(['types' => 'wallet'] + $filter);
                 $totals[$slot]['to_wallet_amount'] = $wallet['amount'];
                 $totals[$slot]['to_wallet_invests'] = $wallet['invests'];
                 $totals[$slot]['to_wallet_users'] = $wallet['users'];
+                // Add projects calc
+                $projects = $stats->investTotals(['types' => 'project'] + $filter);
+                $totals[$slot]['to_projects_amount'] = $projects['amount'];
+                $totals[$slot]['to_projects_invests'] = $projects['invests'];
+                $totals[$slot]['to_projects_users'] = $projects['users'];
                 // Add matcher wallet calc
                 $wallet = $stats->investTotals(['types' => 'matcher_wallet'] + $filter);
                 $totals[$slot]['to_matcher_wallet_amount'] = $wallet['amount'];
                 $totals[$slot]['to_matcher_wallet_invests'] = $wallet['invests'];
                 $totals[$slot]['to_matcher_wallet_users'] = $wallet['users'];
                 // Add accumulated in-wallet calc
-                $to_wallet = $stats->investTotals(['types' => 'to_wallet', 'datetime_from' => null, 'methods' => null] + $filter);
+                $to_wallet = $stats->investTotals(['types' => 'to_wallet', 'status' => Invest::$RAW_STATUSES, 'datetime_from' => null, 'methods' => null] + $filter);
                 $from_wallet = $stats->investTotals(['types' => 'from_wallet', 'datetime_from' => null, 'methods' => null] + $filter);
+                // print_r($to_wallet);print_r($from_wallet);die;
                 $totals[$slot]['in_wallet_amount'] = $to_wallet['amount'] - $from_wallet['amount'];
                 $totals[$slot]['in_wallet_invests'] = $to_wallet['invests'] - $from_wallet['invests'];
                 $totals[$slot]['in_wallet_users'] = $to_wallet['users'] - $from_wallet['users'];
+
                 $to_matcher_wallet = $stats->investTotals(['types' => 'to_matcher_wallet', 'datetime_from' => null, 'methods' => null] + $filter);
                 $from_matcher_wallet = $stats->investTotals(['types' => 'from_matcher_wallet', 'datetime_from' => null, 'methods' => null] + $filter);
                 // print_r($to_matcher_wallet);print_r($from_matcher_wallet);die;
@@ -286,31 +292,125 @@ class AdminChartsApiController extends ChartsApiController {
                 $totals[$slot]['in_matcher_wallet_invests'] = $to_matcher_wallet['invests'] - $from_matcher_wallet['invests'];
                 $totals[$slot]['in_matcher_wallet_users'] = $to_matcher_wallet['users'] - $from_matcher_wallet['users'];
 
+                $totals[$slot]['in_users_wallet_amount'] = $totals[$slot]['in_wallet_amount'] - $totals[$slot]['in_matcher_wallet_amount'];
+                $totals[$slot]['in_users_wallet_invests'] = $totals[$slot]['in_wallet_invests'] - $totals[$slot]['in_matcher_wallet_invests'];
+                $totals[$slot]['in_users_wallet_users'] = $totals[$slot]['in_wallet_users'] - $totals[$slot]['in_matcher_wallet_users'];
+                // Add percentages
+                if($totals[$slot]['in_wallet_amount']) {
+                    $totals[$slot]['in_users_wallet_percent'] = 100 * round($totals[$slot]['in_users_wallet_amount'] / $totals[$slot]['in_wallet_amount'], 4);
+                    $totals[$slot]['in_matcher_wallet_percent'] = 100 * round($totals[$slot]['in_matcher_wallet_amount'] / $totals[$slot]['in_wallet_amount'], 4);
+                } else {
+                    $totals[$slot]['in_users_wallet_percent'] = '--';
+                    $totals[$slot]['in_matcher_wallet_percent'] = '--';
+                }
+
+            } elseif($target === 'active') {
+
+                $filter['status'] = array_merge(Invest::$ACTIVE_STATUSES, [Invest::STATUS_TO_POOL]);
+                $totals[$slot] = $stats->investTotals($filter);
+
+                // Add projects calc
+                $projects = $stats->investTotals(['types' => 'project', 'status' => Invest::$ACTIVE_STATUSES] + $filter);
+                $wallet = $stats->investTotals(['types' => 'wallet'] + $filter);
+                $totals[$slot]['projects_amount'] = $projects['amount'];
+                $totals[$slot]['projects_invests'] = $projects['invests'];
+                $totals[$slot]['projects_users'] = $projects['users'];
+                $totals[$slot]['wallet_amount'] = $wallet['amount'];
+                $totals[$slot]['wallet_invests'] = $wallet['invests'];
+                $totals[$slot]['wallet_users'] = $wallet['users'];
+                // Full commission
+                // Platform fees
+                $fees = $stats->investFees($filter);
+                $totals[$slot]['to_fee_amount'] = $fees['total'];
+                // Bank Comissions
+                foreach($methods as $i => $m) {
+                    $raised = $stats->investTotals(['methods' => $i, 'status' => Invest::$RAISED_STATUSES] + $filter );
+                    $returned = $stats->investTotals(['methods' => $i, 'status' => Invest::$RETURNED_STATUSES] + $filter);
+                    $totals[$slot]['to_fee_amount'] += $m::calculateComission($raised['invests'], $raised['amount'], $returned['invests'], $returned['amount']);
+                }
+                // To projects without commissions
+                $totals[$slot]['to_projects_amount'] = $projects['amount'] - $totals[$slot]['to_fee_amount'];
+                $totals[$slot]['to_projects_invests'] = $projects['invests'];
+                $totals[$slot]['to_projects_users'] = $projects['users'];
+                // To wallet calc
+                $wallet = $stats->investTotals(['status' => Invest::STATUS_TO_POOL] + $filter);
+                $totals[$slot]['to_wallet_amount'] = $wallet['amount'];
+                $totals[$slot]['to_wallet_invests'] = $wallet['invests'];
+                $totals[$slot]['to_wallet_users'] = $wallet['users'];
+
+                // Add percentages
+                if($totals[$slot]['amount']) {
+                    $totals[$slot]['to_wallet_percent'] = 100 * round($totals[$slot]['to_wallet_amount'] / $totals[$slot]['amount'], 4);
+                    $totals[$slot]['to_projects_percent'] = 100 * round($totals[$slot]['to_projects_amount'] / $totals[$slot]['amount'], 4);
+                    $totals[$slot]['to_fee_percent'] = 100 * round($totals[$slot]['to_fee_amount'] / $totals[$slot]['amount'], 4);
+                } else {
+                    $totals[$slot]['to_wallet_percent'] = '--';
+                    $totals[$slot]['to_projects_percent'] = '--';
+                    $totals[$slot]['to_fee_percent'] = '--';
+                }
+                // add a nice effective commission percentage
+                if($projects['amount']) {
+                    $totals[$slot]['fee_percent'] = 100 * round($totals[$slot]['to_fee_amount'] / $projects['amount'], 4);
+                } else {
+                    $totals[$slot]['fee_percent'] = '--';
+                }
+
+            } elseif($target === 'raw') {
+
+                $filter['status'] = Invest::$RAW_STATUSES;
+                $totals[$slot] = $stats->investTotals($filter);
 
             } elseif($target === 'refunded') {
-                $filter['status'] = Invest::STATUS_RETURNED;
+                // Add pool method if global in this case
+                if($method === 'global') $filter['methods'][] = 'pool';
+                // $filter['status'] = Invest::STATUS_RETURNED;
+                $filter['status'] = Invest::$FAILED_STATUSES;
                 $totals[$slot] = $stats->investTotals($filter);
                 // Add refunded to pool
-                $to_pool = $stats->investTotals(['types' => 'project', 'status' => Invest::STATUS_TO_POOL] + $filter);
-                $totals[$slot]['to_pool_amount'] = $to_pool['amount'];
-                $totals[$slot]['to_pool_invests'] = $to_pool['invests'];
-                $totals[$slot]['to_pool_users'] = $to_pool['users'];
+                $to_pool = $stats->investTotals(['status' => Invest::STATUS_TO_POOL] + $filter);
+                $totals[$slot]['to_wallet_amount'] = $to_pool['amount'];
+                $totals[$slot]['to_wallet_invests'] = $to_pool['invests'];
+                $totals[$slot]['to_wallet_users'] = $to_pool['users'];
+
+                // Add refunded to users
+                $to_users = $stats->investTotals(['status' => Invest::$RETURNED_STATUSES] + $filter);
+                $totals[$slot]['to_users_amount'] = $to_users['amount'];
+                $totals[$slot]['to_users_invests'] = $to_users['invests'];
+                $totals[$slot]['to_users_users'] = $to_users['users'];
+
+                // Add percents
+                if($totals[$slot]['amount']) {
+                    $totals[$slot]['to_users_percent'] = 100 * round($totals[$slot]['to_users_amount'] / $totals[$slot]['amount'], 4);
+                    $totals[$slot]['to_wallet_percent'] = 100 * round($totals[$slot]['to_wallet_amount'] / $totals[$slot]['amount'], 4);
+                } else {
+                    $totals[$slot]['to_users_percent'] = '--';
+                    $totals[$slot]['to_wallet'] = '--';
+                }
             } elseif($target === 'commissions') {
+
                 // Bank Comissions
                 $totals[$slot] = ['charged' => 0, 'lost' => 0 ];
                 foreach($methods as $i => $m) {
                     $raised = $stats->investTotals(['methods' => $i, 'status' => Invest::$RAISED_STATUSES] + $filter );
-                    $returned = $stats->investTotals(['methods' => $i, 'status' => Invest::$FAILED_STATUSES] + $filter);
+                    $returned = $stats->investTotals(['methods' => $i, 'status' => Invest::$RETURNED_STATUSES] + $filter);
                     $totals[$slot]['charged'] += $m::calculateComission($raised['invests'], $raised['amount'], $returned['invests'], $returned['amount']);
                     $totals[$slot]['lost'] -= $m::calculateComission($returned['invests'], $returned['amount'], $returned['invests'], $returned['amount']);
+
                 }
             } elseif($target === 'fees') {
+
                 // Platform fees
                 $filter['status'] = Invest::$ACTIVE_STATUSES;
                 $totals[$slot] = $stats->investFees($filter);
-                $totals[$slot]['user_percent'] = 100 * round($totals[$slot]['user'] / $totals[$slot]['total'], 3);
-                $totals[$slot]['call_percent'] = 100 * round($totals[$slot]['call'] / $totals[$slot]['total'], 3);
-                $totals[$slot]['matcher_percent'] = 100 * round($totals[$slot]['matcher'] / $totals[$slot]['total'], 3);
+                if($totals[$slot]['subtotal']) {
+                    $totals[$slot]['user_percent'] = 100 * round($totals[$slot]['user'] / $totals[$slot]['subtotal'], 4);
+                    $totals[$slot]['call_percent'] = 100 * round($totals[$slot]['call'] / $totals[$slot]['subtotal'], 4);
+                    $totals[$slot]['matcher_percent'] = 100 * round($totals[$slot]['matcher'] / $totals[$slot]['subtotal'], 4);
+                } else {
+                    $totals[$slot]['user_percent'] = '--';
+                    $totals[$slot]['call_percent'] = '--';
+                    $totals[$slot]['matcher_percent'] = '--';
+                }
                 // Global invoice derives bank commissions to the project
                 // TODO: move the all to a new api end point "invoice"
                 // if($slot === 'all') {
@@ -323,9 +423,12 @@ class AdminChartsApiController extends ChartsApiController {
                 //     $totals['invoice'] = $invoice;
                 // }
             } elseif($target === 'amounts') {
+
                 $filter['status'] = Invest::$ACTIVE_STATUSES;
                 $totals[$slot] = $stats->investAmounts($filter);
+
             } elseif($target === 'matchfunding') {
+
                 foreach(['raised' => Invest::$RAISED_STATUSES, 'active' => Invest::$ACTIVE_STATUSES] as $type => $s) {
                     $filter['status'] = $s;
                     $filter['methods'] = null;
@@ -336,12 +439,11 @@ class AdminChartsApiController extends ChartsApiController {
                     $totals[$slot][$type.'_matchfunding_amount'] = $matchfunding['amount'];
                     $totals[$slot][$type.'_matchfunding_invests'] = $matchfunding['invests'];
                     $totals[$slot][$type.'_matchfunding_users'] = $matchfunding['users'];
-                    $totals[$slot][$type.'_matchfunding_amount_percent'] = 100 * round($matchfunding['amount'] / $global['amount'], 3);
 
                     $totals[$slot][$type.'_users_amount'] = $global['amount'] - $matchfunding['amount'];
                     $totals[$slot][$type.'_users_invests'] = $global['invests'] - $matchfunding['invests'];
                     $totals[$slot][$type.'_users_users'] = $global['users'] - $matchfunding['users'];
-                    $totals[$slot][$type.'_users_amount_percent'] = 100 - $totals[$slot][$type.'_matchfunding_amount_percent'];
+
 
                     // matchfunding alone
                     $match = $stats->investTotals(['types' => 'drop'] + $filter);
@@ -353,14 +455,25 @@ class AdminChartsApiController extends ChartsApiController {
                     $totals[$slot][$type.'_from_users_invests'] = $matchfunding['invests'] - $match['invests'] ;
                     $totals[$slot][$type.'_from_users_users'] = $matchfunding['users'] - $match['users'] ;
 
-                    $totals[$slot][$type.'_from_matchfunding_amount_percent'] = 100 * round( $match['amount'] / $global['amount'], 3);
-                    $totals[$slot][$type.'_from_users_amount_percent'] = 100 - $totals[$slot][$type.'_from_matchfunding_amount_percent'];
-
                     // matchfunding from pool (matcher)
                     $matcher = $stats->investTotals(['types' => 'matcher'] + $filter);
                     $totals[$slot][$type.'_from_matcher_amount'] = $matcher['amount'];
                     $totals[$slot][$type.'_from_matcher_invests'] = $matcher['invests'];
                     $totals[$slot][$type.'_from_matcher_users'] = $matcher['users'];
+
+                    // Add some percentages
+                    if($global['amount']) {
+                        $totals[$slot][$type.'_matchfunding_amount_percent'] = 100 * round($matchfunding['amount'] / $global['amount'], 4);
+                        $totals[$slot][$type.'_users_amount_percent'] = 100 - $totals[$slot][$type.'_matchfunding_amount_percent'];
+                        $totals[$slot][$type.'_from_matchfunding_amount_percent'] = 100 * round( $match['amount'] / $global['amount'], 4);
+                        $totals[$slot][$type.'_from_users_amount_percent'] = 100 - $totals[$slot][$type.'_from_matchfunding_amount_percent'];
+                    } else {
+                        $totals[$slot][$type.'_matchfunding_amount_percent'] = '--';
+                        $totals[$slot][$type.'_users_amount_percent'] = '--';
+                        $totals[$slot][$type.'_from_matchfunding_amount_percent'] = '--';
+                        $totals[$slot][$type.'_from_users_amount_percent'] = '--';
+                    }
+
                 }
 
             } elseif($target !== 'global') {
@@ -373,7 +486,11 @@ class AdminChartsApiController extends ChartsApiController {
                 // increments
                 if(($inc = $increments[$slot]) && is_numeric($v)) {
                     $totals[$slot][$k . '_diff'] = $v - $totals[$inc][$k];
-                    $totals[$slot][$k . '_gain'] = $totals[$inc][$k] ? round(100 * (($v / $totals[$inc][$k] - 1)), 2) : '--';
+                    if($totals[$inc][$k] && $totals[$inc][$k] != '--') {
+                        $totals[$slot][$k . '_gain'] = $totals[$inc][$k] ? round(100 * (($v / $totals[$inc][$k]) - 1), 2) : '--';
+                    } else {
+                        $totals[$slot][$k . '_gain'] = '--';
+                    }
                 }
             }
         }
@@ -386,7 +503,7 @@ class AdminChartsApiController extends ChartsApiController {
                         $totals[$slot][$k . '_formatted'] =  $emoji[array_rand($emoji)];
                         continue;
                     }
-                    $totals[$slot][$k . '_formatted'] = number_format($v, 1, Currency::get('', 'decimal'), Currency::get('', 'thousands')) . '%';
+                    $totals[$slot][$k . '_formatted'] = number_format($v, 2, Currency::get('', 'decimal'), Currency::get('', 'thousands')) . '%';
                 }
                 elseif(strpos($k, 'amount') !== false || in_array($target, ['fees', 'commissions']))
                     $totals[$slot][$k . '_formatted'] = \amount_format($v);
