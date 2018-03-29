@@ -145,22 +145,22 @@ body.blog {
       .post-widget{
         margin-top:30px;
       }
-      .filters {
-        margin: 40px 0 35px 0;
-        a > li {
-            font-weight: 700;
-            padding: 5px 15px;
-            cursor: pointer;
-            display: inline-block;
-            color: $primary-color;
-            &.active{
-              background-color: #19b4b2;
-              border-radius: 5px;
-              color: $color-white !important;
-            }
-        }
+    }
+    
+    ul.filters {
+      margin: 40px 0 35px 0;
+      a > li {
+          font-weight: 700;
+          padding: 5px 15px;
+          cursor: pointer;
+          display: inline-block;
+          color: $primary-color;
+          &.active{
+            background-color: #19b4b2;
+            border-radius: 5px;
+            color: $color-white !important;
+          }
       }
-      
     }
 
 
