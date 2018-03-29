@@ -2,7 +2,7 @@
  	<ul class="filters list-inline center-block text-center">
 	    <?php foreach ($this->blog_sections as $key => $section) : ?>
 	        <a href="<?= '/blog/section/' . $key ?>" >
-	            <li class="<?php if ($section == $key) echo 'active' ?>">
+	            <li class="<?php if ($section == $key||$key=='mission') echo 'active' ?>">
 	                <?= $this->text($section) ?>
 	            </li>
 	        </a>
