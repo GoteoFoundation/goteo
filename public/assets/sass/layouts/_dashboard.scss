@@ -223,6 +223,9 @@
             &:first-child {
                 padding-left:10px;
             }
+            &.strikethrough {
+                text-decoration: line-through;
+            }
             a.send-private {
                 color:$color-dark;
                 .icon {
@@ -425,7 +428,7 @@
                 }
                 float: left;
                 width: 20%;
-                text-align: center;
+                // text-align: center;
                 .material-switch {
                     margin-top:17px;
                 }

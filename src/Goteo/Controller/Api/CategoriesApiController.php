@@ -17,6 +17,14 @@ use Goteo\Model\Category;
 
 class CategoriesApiController extends AbstractApiController {
 
+    public function __construct() {
+        parent::__construct();
+        // Activate cache & replica read for this controller
+        $this->dbReplica(true);
+        $this->dbCache(true);
+    }
+
+
     /**
      * Returns a list of keywords for suggestions
      */

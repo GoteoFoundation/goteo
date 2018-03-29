@@ -960,6 +960,9 @@ class ProjectDashboardController extends DashboardController {
         if(array_key_exists($filter['others'], $filters['others'])) {
             $filter_by['types'] = $filter['others'];
         }
+        if($filter['query']) {
+            $filter_by['name'] = $filter['query'];
+        }
 
         $invests = Invest::getList($filter_by, null, $offset, $limit, false, $order);
         $totals = Invest::getList($filter_by, null, 0, 0, 'all');
