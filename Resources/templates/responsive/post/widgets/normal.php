@@ -1,10 +1,14 @@
-<?php $image= $this->post->header_image ? $this->post->header_image : $this->post->image; ?>
+<?php 
+
+$image= $this->post->header_image ? $this->post->header_image : $this->post->image; ?>
 <?php $author=$this->post->getAuthor(); ?>
 
 <div class="post-widget">
     <a class="img-link" href="<?= '/blog/'.$this->post->id ?>">
-    	<?php if($this->post->image): ?>
+    	<?php if($image): ?>
         	<img class="img-link" src="<?= $image->getLink(350, 200, true); ?>" alt="<?= $this->post->title ?>"/>
+        <?php else: ?>
+            <img class="img-link" src="/assets/img/blog/widget_post_default.png" alt="<?= $this->post->title ?>"/>
     	<?php endif; ?>
     </a>
     <div class="content">
