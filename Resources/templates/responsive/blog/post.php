@@ -1,7 +1,7 @@
 <?php
 
 $this->layout('blog/layout', [
-	'bodyClass' => 'post',
+	'bodyClass' => 'blog',
     'title' => $this->post->title,
     'meta_description' => $this->post->title
     ]);
