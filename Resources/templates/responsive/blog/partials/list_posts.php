@@ -3,7 +3,7 @@
 	    <?php foreach ($this->blog_sections as $key => $section) : ?>
 	        <a href="<?= '/blog/section/' . $key ?>" >
 	            <li class="<?php if ($section == $key) echo 'active' ?>">
-	                <span class="icon icon-home-certificate"></span><?= $this->text($section) ?>
+	                <?= $this->text($section) ?>
 	            </li>
 	        </a>
 	    <?php endforeach; ?>
