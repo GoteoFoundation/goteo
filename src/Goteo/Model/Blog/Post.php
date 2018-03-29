@@ -358,6 +358,8 @@ class Post extends \Goteo\Core\Model {
                 post.blog as blog,
                 $different_select,
                 post.image as `image`,
+                post.section as `section`,
+                post.glossary as `glossary`,
                 post.header_image as `header_image`,
                 post.media as `media`,
                 post.date as `date`,
@@ -720,7 +722,26 @@ class Post extends \Goteo\Core\Model {
             }
         }
 
-        return (int) $got->posts;
+        return (int) $got->posts; 
+    }
+
+    // List of blog sections
+    public static function getListSections(){
+        $sections=[ 'mission'      => 'blog-section-mission',
+                    'milestones'   => 'blog-section-milestones',
+                    'matchfunding' => 'blog-section-matchfunding',
+                    'glossary'     => 'blog-section-glossary',
+                    'transparency' => 'blog-section-transparency',
+                    'team'         => 'blog-section-team'
+                ];
+
+        return $sections;
+    }
+
+    public static function getSection($section){
+        $sections=self::getListSections();
+
+        return $sections[$section];
     }
 }
 

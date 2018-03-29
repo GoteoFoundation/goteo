@@ -12,35 +12,21 @@ else
 
 
 $this->layout('layout', [
-    'bodyClass' => 'blog',
-    'navClass' => 'light-yellow',
     'title' =>  $this->post->title,
     'meta_description' => $this->post->subtitle ? $this->post->subtitle : $this->text_truncate($this->post->text, 100),
     'tw_image' =>  $meta_img,
     ]);
 
-
-
-$this->section('head'); ?>
-
-<link rel="stylesheet" type="text/css" href="<?= SRC_URL ?>/assets/vendor/slick-carousel/slick/slick.css"/>
-<link rel="stylesheet" type="text/css" href="<?= SRC_URL ?>/assets/vendor/slick-carousel/slick/slick-theme.css"/>
-<link href="<?= SRC_URL ?>/assets/css/typeahead.css" rel="stylesheet">
-
-<link rel="stylesheet" href="/assets/vendor/selection-sharer/selection-sharer.css" />
-
-
-<?php 
-
-//$this->insert('blog/partials/styles');
-
-$this->append();
-
-
-
-$this->section('header-navbar-brand');
-
 ?>
+
+<?php $this->section('head'); ?>
+
+    <?= $this->insert('blog/partials/styles'); ?>
+
+<?php $this->append(); ?>
+
+<?php $this->section('header-navbar-brand'); ?>
+
     <a class="navbar-brand" href="<?= $this->get_config('url.main') ?>"><img src="<?= $this->asset('/img/icons/foundation.svg') ?>" class="logo" alt="Goteo"></a>
     <h3><?= $this->text('home-foundation-title') ?></h3>
 
@@ -77,6 +63,19 @@ $this->section('content');
             fade: true,
             arrows: false,
             cssEase: 'linear'
+        });
+
+        $('.slider-main').slick({
+            dots: true,
+            infinite: true,
+            autoplay: false,
+            autoplaySpeed: 7000,
+            speed: 1500,
+            fade: true,
+            arrows: true,
+            cssEase: 'linear',
+            prevArrow: '<div class="custom-left-arrow"><span class="fa fa-angle-left"></span><span class="sr-only">Prev</span></div>',
+            nextArrow: '<div class="custom-right-arrow"><span class="fa fa-angle-right"></span><span class="sr-only">Prev</span></div>',
         });
     });
 </script>

@@ -138,42 +138,27 @@ body.blog {
         margin-top: 0;
         padding-bottom: 30px;
       }
-      .img-link{
-          display: flex;
-          height: 200px;
-          border-top-left-radius: 5px;
-          border-top-right-radius: 5px;
-        img{
-          width: 100%;
-          object-fit: cover;
-        }
-      }
-      .content{
-        color: $primary-color;
-        background-color: rgba(255,236,97,0.7);
-        padding: 5%;
-        height: 180px;
-        border-bottom-left-radius: 5px;
-        border-bottom-right-radius: 5px;
-        position: relative;
-        div.title{
-          color: $primary-color;
-          font-size: $font-size*1.46;
-          font-weight: 700;
-          line-height: 1.1;
-          margin-bottom: 5px;
-        }
-        div.description{
-          color: $color-white;
-        }
-        div.related-author{
-          position: absolute;
-          bottom: 25px;
-          img{
-            vertical-align: bottom;
-          }
-        }
+    }
 
+    div.section.list-posts{
+      padding: 30px 0;
+      .post-widget{
+        margin-top:30px;
+      }
+      .filters {
+        margin: 40px 0 35px 0;
+        a > li {
+            font-weight: 700;
+            padding: 5px 15px;
+            cursor: pointer;
+            display: inline-block;
+            color: $primary-color;
+            &.active{
+              background-color: #19b4b2;
+              border-radius: 5px;
+              color: $color-white !important;
+            }
+        }
       }
     }
 
@@ -229,6 +214,10 @@ body.blog {
             }
           }
         }
+      }
+
+      div.related-post{
+        margin-top: 20px;
       }
 
     }

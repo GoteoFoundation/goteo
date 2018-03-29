@@ -25,7 +25,11 @@
 
     <!-- Banner section -->
 
-    <?= $this->insert('home/partials/main_slider') ?>
+    <?= $this->insert('partials/components/main_slider', [
+            'banners' => $this->banners,
+            'nav' => 'home/partials/main_slider_nav',
+            'button_text' => $this->text('invest-more-info')
+    ]) ?>
 
     <?= $this->insert('home/partials/projects') ?>
 

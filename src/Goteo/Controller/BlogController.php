@@ -28,29 +28,24 @@ class BlogController extends \Goteo\Core\Controller {
         // Cache & replica read activated in this controller
         \Goteo\Core\DB::cache(true);
         // \Goteo\Core\DB::replica(true);
+        View::setTheme('responsive');
+
     }
 
-    public function indexAction ($post = '', Request $request) {
+    public function indexAction (Request $request) {
 
-        if ($post) {
-            $show = 'post';
-            // -- Mensaje azul molesto para usuarios no registrados
-            if (!Session::isLogged()) {
-                Session::store('jumpto', '/blog/' .  $post);
-                Message::info(Text::html('user-login-required'));
-            }
-        } else {
-            $show = 'list';
-        }
+        $slider_posts=Post::getList([], true, 0, 3);
+        $list_posts=Post::getList([], true, 3, 12);
+        $blog_sections=Post::getListSections();
 
-        // sacamos su blog
-        $blog = Model\Blog::get(Config::get('node'), 'node');
-        if(!$blog) {
-            Message::error("No blogs for [" . Config::get('node') ."]!");
-            return $this->redirect('/blog');
-        }
-        // print_r($blog);die;
-        $filters = array();
+        return $this->viewResponse('blog/list', [
+                    'slider_posts' => $slider_posts,
+                    'list_posts'   => $list_posts,
+                    'blog_sections'     => $blog_sections
+                ]
+        );
+
+        /*$filters = array();
         if ($request->query->has('tag')) {
             $tag = Model\Blog\Post\Tag::get($request->query->get('tag'));
             if ($tag->id) {
@@ -85,25 +80,16 @@ class BlogController extends \Goteo\Core\Controller {
                  )
                 )
                 return $this->redirect('/blog');
-        }
+        }*/
 
         // segun eso montamos la vista
 
-        return $this->viewResponse('blog/index', array(
-                    'blog' => $blog,
-                    'show' => $show,
-                    'filters' => $filters,
-                    'post' => $post,
-                    'owner' => Config::get('node')
-                )
-        );
+       
 
     }
 
     public function postAction($post, Request $request)
     {
-        View::setTheme('responsive');
-
         $post=Post::get($post, Lang::current());
 
         // Get related posts
