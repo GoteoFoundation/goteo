@@ -135,12 +135,6 @@ class AdminChartsApiController extends ChartsApiController {
 
     private function timeSlots($slot = '', Request $request = null) {
         $f = 'Y-m-d H:i:s';
-        $to = $request->query->get('to');
-        $from = $request->query->get('from');
-        $project_id = $request->query->get('project');
-        $call_id = $request->query->get('call');
-        $matcher_id = $request->query->get('matcher');
-        $user_id = $request->query->get('user');
 
         $slots = [
             'today' => [
@@ -191,11 +185,15 @@ class AdminChartsApiController extends ChartsApiController {
                 ]
             ];
         if($slot) {
-            if($slots[$slot]) {
-                $slots = array_filter($slots, function ($k) use ($slot) {
+            $varis = explode(',', $slot);
+            if(array_diff($varis, $slots)) {
+                $slots = array_filter($slots, function ($k) use ($varis) {
                     $t = ['today', 'yesterday'];
-                    if(in_array($k,$t) && in_array($slot, $t)) return true;
-                    return strpos($k, $slot) !== false;
+                    foreach($varis as $slot) {
+                        if(in_array($k, $t) && in_array($slot, $t)) return true;
+                        if(strpos($k, $slot) !== false) return true;
+                    }
+                    return false;
                 }, ARRAY_FILTER_USE_KEY);
             } elseif($slot !== 'custom') {
                 throw new ControllerException("Slot [$slot] not found, try one of [today, yesterday, week, month, year]");
@@ -203,6 +201,13 @@ class AdminChartsApiController extends ChartsApiController {
         }
         // Add custom slot if searching
         if($request) {
+            $to = $request->query->get('to');
+            $from = $request->query->get('from');
+            $project_id = $request->query->get('project');
+            $call_id = $request->query->get('call');
+            $matcher_id = $request->query->get('matcher');
+            $user_id = $request->query->get('user');
+
             if($from) {
                 $slots['custom'] = ['from' => (new \DateTime($from))->format($f)];
                 if($to) $slots['custom']['to'] = (new \DateTime($to))->format($f);

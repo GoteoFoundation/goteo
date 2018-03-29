@@ -168,7 +168,7 @@ admin-aggregate-projects-average: 'Media recaudación en proyectos'
 admin-aggregate-projects-average-desc: 'Media de recaudación por unidad de tiempo'
 
 
-admin-stats-totals: 'Aportes y comisiones'
+admin-stats-invest-totals: 'Aportes y comisiones'
 admin-stats-project-totals: 'Estado de los proyectos'
 admin-stats-raised: 'Ingresos brutos'
 admin-stats-active: 'Ingresos netos'
