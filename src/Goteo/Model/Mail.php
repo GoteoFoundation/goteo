@@ -660,11 +660,14 @@ class Mail extends \Goteo\Core\Model {
                 $parts = [];
                 if(!is_array($filters['template'])) $filters['template'] = [$filters['template']];
                 foreach($filters['template'] as $i => $t) {
-                    $parts[] = ':template' . $i;
-                    $values[':template' . $i] = $t;
+                    if($t) {
+                        $parts[] = ':template' . $i;
+                        $values[':template' . $i] = $t;
+                    }
                 }
-                $sqlFilter[] = "mail.template IN (" . implode(',', $parts) . ")";
-                $values[':template'] = $filters['template'];
+                if($parts) {
+                    $sqlFilter[] = "mail.template IN (" . implode(',', $parts) . ")";
+                }
             }
         }
 
@@ -718,7 +721,7 @@ class Mail extends \Goteo\Core\Model {
                 ORDER BY mail.date DESC
                 LIMIT $offset,$limit";
 
-        // die(\sqldbg($sql, $values));
+        // print_r($filters);print_r($values);die(\sqldbg($sql, $values));
         $query = static::query($sql, $values);
         return $query->fetchAll(\PDO::FETCH_CLASS, __CLASS__);
 
