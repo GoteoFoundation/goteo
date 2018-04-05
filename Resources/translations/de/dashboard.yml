@@ -222,3 +222,5 @@ dashboard-project-filter-by-donative: 'Nur diejenigen anzeigen, die auf die Belo
 dashboard-project-filter-by-nondonative: 'Diejenigen ausblenden, die auf die Belohnung verzichten'
 dashboard-project-filter-by-drop: 'Nur Matchfunding-Beiträge anzeigen'
 dashboard-project-filter-by-nondrop: 'Beiträge aus Matchfunding ausblenden'
+dashboard-project-filter-by-pending: 'Nur ungeklärte anzeigen'
+dashboard-project-filter-by-fulfilled: 'Nur abgeschlossene anzeigen'
