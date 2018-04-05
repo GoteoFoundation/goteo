@@ -203,6 +203,10 @@ regular-messages: Nachrichten
 regular-unknown: Unbekannt
 regular-input: Beitrag
 regular-amount: Betrag
+regular-copied: 'In Zwischenablage kopiert!'
+regular-remember-me: 'Meine Daten speichern'
+regular-next: Weiter
+regular-previous: Zurück
 session-about-to-expire: 'Ihre Sitzung wird in 10 Minuten ablaufen, wollen Sie erneut laden?'
 session-expired: 'Ihre Sitzung ist abgelaufen'
 spread-about: 'Text spread-about'
@@ -221,6 +225,9 @@ tooltip-project-schedule: 'Produktionskalender Ihres Projektes. Bitte tragen Sie
 translate-home-guide: 'Nachricht an die Übersetzer'
 user-account-inactive: 'Das Konto ist deaktiviert.'
 user-activate-fail: 'Fehler beim Aktivieren des User-Accounts'
+user-changeemail-invalid-token: 'Diese Aktion ist abgelaufen oder wurde bereits vorher ausgeführt'
 user-changeemail-fail: 'Fehler beim Wechseln der Email Adresse'
 user-register-success: 'Der User wurde korrekt registriert. Wir senden Ihnen jetzt eine Aktivierungsmail.'
 validate-project-social_rewards: 'Sie müssen zumindest einen kollektiven Nutzen benennen'
+validate-project-total-costs: "Die optimalen Kosten dürfen die Mindestkosten nicht um mehr als 50% übersteigen. Entweder Sie erhöhen die notwendigen Kosten oder Sie senken die Mehrkosten."
+user-promoter: 'Der veranstaltende Benutzer'
