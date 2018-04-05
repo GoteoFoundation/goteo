@@ -202,3 +202,23 @@ dashboard-project-image-delete-ko: 'Das Bild konnte nicht gelöscht werden!'
 project-upload-images-some-ko: 'Einige Bilder wurden nicht hochgeladen!'
 dashboard-project-default-image-confirm: 'Möchten Sie dieses Bild standardmäßig in das Projekt einfügen?'
 dashboard-project-image-default-ko: 'Das Bild konnte nicht als Standardbild gesetzt werden!'
+dashboard-project-image-reorder-ko: 'Die Bilder konnten nicht geordnet werden!'
+dashboard-project-send-to-markdown: "Dieses Bild in den Text Einfügen"
+dashboard-max-files-reached: "Sie haben die maximale Anzahl an Dateien erreicht!"
+dashboard-file-type-error: "Dieser Dateityp ist nicht erlaubt!"
+all-files-uploaded: "Alle Dateien wurden erfolgreich hochgeladen"
+uploaded-ok: "Hochladen erfolgreich"
+publish-confirm-yes: "Möchten Sie diesen Beitrag veröffentlichen?"
+publish-confirm-no: "Möchten Sie die Veröffentlichung dieses Beitrags rückgängig machen?"
+dashboard-project-support-empty: 'Es gibt noch keine Anfragen für eine Zusammenarbeit.'
+dashboard-project-support-responses: Antworten
+dashboard-project-support-no-responses: 'Noch keine Antworten.'
+dashboard-project-support-add: 'Eine neue Anfrage für die Zusammenarbeit hinzufügen'
+dashboard-search-invests-totals: 'In dieser Suche: %TOTAL_INVESTS% Beiträge von %TOTAL_USERS% Benutzern. Gesamt %TOTAL_AMOUNT%'
+dashboard-search-invests-msg: 'Eine Nachricht an die Kofinanzierer dieser Suche senden'
+dashboard-project-filter-by-reward: 'Nach Belohnung filtern'
+dashboard-project-filter-by-others: 'Andere Filter'
+dashboard-project-filter-by-donative: 'Nur diejenigen anzeigen, die auf die Belohnung verzichten'
+dashboard-project-filter-by-nondonative: 'Diejenigen ausblenden, die auf die Belohnung verzichten'
+dashboard-project-filter-by-drop: 'Nur Matchfunding-Beiträge anzeigen'
+dashboard-project-filter-by-nondrop: 'Beiträge aus Matchfunding ausblenden'
