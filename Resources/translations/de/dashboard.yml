@@ -178,6 +178,7 @@ user-preferences-updates: 'Nachrichten der von mir unterstützten Projekte block
 user-profile-saved: 'Profil wurde aktualisiert'
 user-save-fail: 'Es gibt ein Problem bei der Datensicherung.'
 dashboard-modal-url-success-msg: 'URL wurde korrekt aktualisiert'
+dashboard-add-new-share-material: 'Neues Material'
 dashboard-modal-placeholder-edit-url: 'Url'
 dashboard-new-material-form-material: 'Material'
 dashboard-new-material-form-description: 'Beschreibung'
