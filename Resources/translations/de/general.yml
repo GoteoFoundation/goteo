@@ -45,12 +45,16 @@ guide-project-images: 'Bilder können Fotos, Screenshots, Skizzen, Illustratione
 guide-project-rewards: "<strong>In diesem Bereich sollen Sie beschreiben, was das Projekt seinen Unterstützern als Dankeschön oder Belohnung anbietet und welchen allgemeinen Nutzen es für die Gesellschaft hat.</strong>"
 guide-project-support: guide-project-support
 guide-project-supports: '<strong>In diesem Bereich können Sie angeben, welche nichtmonetäre Unterstützung Sie zur Realisierung Ihres Projektes benötigen.</strong><br><br>Das kann eine Projektunterstützung durch andere sein (bspw. Übersetzungen, Organisation, Werbung, etc.) oder vielleicht spezifische Leihgaben (Material, Technik, Transport, Werkzeug, etc.)'
+guide-project-updates: "<b>Es ist sehr wichtig, dass die Projekte ihre Kofinanzierer und andere potenziell interessierte Personen über den Verlauf ihrer Kampagne auf dem Laufenden halten. In diesem Bereich können Sie Aktualisierungsnachrichten über das Projekt als eine Art öffentlicher Blog publizieren.</b>Darüber hinaus ist es für die zweite Runde der Kofinanzierung wichtig, regelmäßig zu erläutern, wie die Produktion begonnen hat, welche Fortschritte, Probleme usw. die größtmögliche Transparenz ermöglichen und wie sich der Projektstart entwickelt, um mehr Interesse und Gemeinschaft zu schaffen."
+guide-project-invests: 'In diesem Bereich können Sie Ihre Kofinanzierer und die von ihnen gewählten Prämien verwalten und sich auch an sie wenden, wenn Sie es für notwendig halten.'
 header-about-side: 'Was uns inspiriert'
 home-posts-header: Neuigkeiten
 horizontal-project-investors: 'Ko-Finanzierer'
 horizontal-project-percent: 'finanziert'
 horizontal-project-reached: 'erreicht'
 invest-individual-header: 'Sie können auf die Projektbelohnung für Ihre Zuwendung verzichten oder diejenige wählen, die dem Betrag Ihrer Zuwendung oder einem kleineren als dem von Ihnen eingetragenen Betrag entspricht.'
+login-register-conditions: 'Mit der Registrierung bestätigen Sie Ihre Zustimmung zu unseren <a href="/legal/terms">Nutzungsbedingungen</a>, <a href="/legal/privacy">Datenschutzrichtlinien</a> und <a href="/legal/cookies">Cookie Richtlinien</a>.'
+login-accept-conditions: 'Ich akzeptiere die <a href="/legal/terms">Nutzungsbedingungen</a>, <a href="/legal/privacy">Datenschutzrichtlinie</a> und <a href="/legal/cookies">Cookie-Richtlinie</a>.'
 mandatory-cost-field-type: 'Sie müssen eine Kostenart auswählen'
 mandatory-individual_reward-field-amount: 'Sie müssen den Betrag angeben, ab dem die Belohnung verfügbar ist.'
 mandatory-project-costs: 'Dies sollte untergliedert sein in mindestens zwei Gruppen.'
@@ -121,6 +125,7 @@ regular-lang: Sprache
 regular-last: Last
 regular-license: Lizenz
 regular-linkedin: LinkedIn
+regular-loading: Wird geladen...
 regular-login: Einloggen
 regular-logout: 'Ausloggen'
 regular-looks_for: 'suchen nach:'
@@ -189,6 +194,15 @@ regular-image: Bild
 regular-images: Bilder
 regular-load-more: 'Weitere laden'
 regular-analytics: 'Google Analytics'
+regular-facebook-pixel: 'Facebook-Pixel'
+regular-call: Matchfunding
+regular-num-comments: '%s Kommentar(e)'
+regular-manage: 'Verwalten'
+regular-no-edit-permissions: Sie haben keine Berechtigung, diesen Beitrag zu bearbeiten!
+regular-messages: Nachrichten
+regular-unknown: Unbekannt
+regular-input: Beitrag
+regular-amount: Betrag
 session-about-to-expire: 'Ihre Sitzung wird in 10 Minuten ablaufen, wollen Sie erneut laden?'
 session-expired: 'Ihre Sitzung ist abgelaufen'
 spread-about: 'Text spread-about'
