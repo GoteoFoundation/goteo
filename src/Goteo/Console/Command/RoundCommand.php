@@ -31,7 +31,8 @@ class RoundCommand extends AbstractCommand {
 		     ->setDefinition(array(
 				new InputOption('update', 'u', InputOption::VALUE_NONE, 'Actually does the job. If not specified, nothing is done, readonly process.'),
 				new InputOption('project', 'p', InputOption::VALUE_OPTIONAL, 'Only processes the specified Project ID'),
-				new InputOption('skip-invests', 's', InputOption::VALUE_NONE, 'Do not processes Invests returns'),
+                new InputOption('skip-invests', 's', InputOption::VALUE_NONE, 'Do not processes Invests returns'),
+				new InputOption('predict', 't', InputOption::VALUE_REQUIRED, 'Try to predict the endround in the number of days specified'),
 			))
 		->setHelp(<<<EOT
 This script proccesses active projects reaching ending rounds.
@@ -54,6 +55,8 @@ Processes projects demo-project only and write operations to database but
 does not execute refunds on the related invests
 <info>./console endround --project demo-project --skip-invests --update</info>
 
+Says if a project will change status 1 day before real end
+<info>./console endround --predict 1 --update</info>
 
 EOT
 		)
@@ -64,7 +67,8 @@ EOT
 	protected function execute(InputInterface $input, OutputInterface $output) {
 		$update       = $input->getOption('update');
 		$project_id   = $input->getOption('project');
-		$skip_invests = $input->getOption('skip-invests');
+        $skip_invests = $input->getOption('skip-invests');
+		$predict = $input->getOption('predict');
 
 		if ($project_id) {
 			$output->writeln("<info>Processing Project [$project_id]:</info>");
@@ -76,6 +80,27 @@ EOT
 			$projects = Project::getList(['status' => Project::STATUS_IN_CAMPAIGN], null, 0, 10000);
 		}
 
+        if($predict) {
+            if($update) {
+                throw new \RuntimeException("Option --predict cannot be executed with --update");
+            }
+            foreach($projects as $p) {
+                $published = new \Datetime($p->published);
+                $published->modify("-$predict day");
+                $new = $published->format("Y-m-d");
+                if($new != $p->published) {
+                    $output->write("<fg=red>Mocking project</> <info>{$p->id}</info> from published at <comment>{$p->published}</comment> to <fg=red>{$new}</>. From days active <comment>{$p->days_active}</comment> to ");
+                    $p->published = $new;
+                    $p->setDays();
+                }
+                    $output->writeln("<fg=red>{$p->days_active}</>");
+
+            }
+            // die;
+        }
+
+        // print_r($projects->days_active);die(date("Y-m-d H:i\n"));
+
 		if (!$projects) {
 			$this->info("No projects found");
 			return;
@@ -84,6 +109,7 @@ EOT
 		$symbol    = Currency::getDefault('id');
 		$processed = 0;
         $action_done = false;
+        $returnd_code = 0;
         foreach ($projects as $project) {
             if ((int) $project->status !== Project::STATUS_IN_CAMPAIGN) {
                 $this->debug("Skipping status [{$project->status}] from PROJECT: {$project->id}. Only projects IN CAMPAIGN will be processed");
@@ -109,7 +135,7 @@ EOT
                     }
 
                     if ($skip_invests) {
-                        $this->warning("Skipping Invests refunds as required", [$project]);
+                        $this->warning("Skipping Invests refunds as required\n--");
                     } else {
                         // Execute "console refund"  command for returning invests
                         // refund Invests for this project
@@ -161,6 +187,7 @@ EOT
                         //     $this->error('Subcommand failed', $arguments);
                         // }
                     }
+                    $return_code = 2;
                 } else {
                     if ($project->one_round) {
                         if(empty($project->success)) {
@@ -213,5 +240,6 @@ EOT
 			$this->warning('Dummy execution. No write operations done');
 			$output->writeln('<comment>No write operations done. Please execute the command with the --update modifier to perform write operations</comment>');
 		}
+        return $return_code;
 	}
 }
