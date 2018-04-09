@@ -13,6 +13,7 @@ namespace Goteo\Console\Command;
 use Goteo\Console\ConsoleEvents;
 use Goteo\Console\Event\FilterProjectEvent;
 use Goteo\Application\Currency;
+use Goteo\Application\Config;
 use Goteo\Model\Invest;
 use Goteo\Model\Project;
 
@@ -89,14 +90,12 @@ EOT
                 $published->modify("-$predict day");
                 $new = $published->format("Y-m-d");
                 if($new != $p->published) {
-                    $output->write("<fg=red>Mocking project</> <info>{$p->id}</info> from published at <comment>{$p->published}</comment> to <fg=red>{$new}</>. From days active <comment>{$p->days_active}</comment> to ");
+                    $p->old_published = $p->published;
+                    $p->old_days_active = $p->days_active;
                     $p->published = $new;
                     $p->setDays();
                 }
-                    $output->writeln("<fg=red>{$p->days_active}</>");
-
             }
-            // die;
         }
 
         // print_r($projects->days_active);die(date("Y-m-d H:i\n"));
@@ -123,12 +122,25 @@ EOT
 			$this->debug("Processing project in campaign", [$project, "project_days_active" => $project->days_active, 'project_days_round1'  => $project->days_round1,
                     'project_days_round2'  => $project->days_round2, "percent" => $percent]);
 
+
             // Check project's health
             if ($project->days_active >= $project->days_round1) {
                 // si no ha alcanzado el mínimo, pasa a estado caducado
                 if ($project->amount < $project->mincost) {
                     $action_done = true;
-                    $this->notice("Archiving project. It has FAILED on achieving the minimum amount", [$project]);
+                    if($predict) {
+                        $output->writeln("Mocking project <info>{$project->id}</info> from published at <comment>{$project->old_published}</comment> to <fg=red>{$new}</>. From days active <comment>{$project->old_days_active}</comment> to <fg=red>{$project->days_active}</>\n");
+
+                        $text = $predict == 1 ? "tonight" : "in $predict days.";
+                        $output->writeln("The project [<info>{$project->name}</info>] will be <fg=red>ARCHIVED</> $text");
+                        $output->writeln("Amount: <fg=blue>" . \amount_format($project->amount) . '</>');
+                        $output->writeln("Minimum: <fg=blue>" . \amount_format($project->mincost) . '</>');
+                        $output->writeln("Percent achieved: <fg=red>" . round(100 * $project->amount / $project->mincost, 2).'%</>');
+                        $output->writeln("Project page: " . Config::getUrl() . "/project/{$project->id}");
+                        $output->writeln("\n---\n");
+                    } else {
+                        $this->notice("Archiving project. It has FAILED on achieving the minimum amount", [$project]);
+                    }
                     if ($update) {
                         // dispatch ending event, will generate a feed entry if needed
                         $project = $this->dispatch(ConsoleEvents::PROJECT_FAILED, new FilterProjectEvent($project))->getProject();

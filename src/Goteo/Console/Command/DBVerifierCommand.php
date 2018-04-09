@@ -271,18 +271,18 @@ EOT
             $command = $this->getApplication()->find('endround');
             $out = new BufferedOutput(BufferedOutput::VERBOSITY_NORMAL, true);
             $args = new ArrayInput(['command' => 'endround', '--skip-invests' => true, '--predict' => 1]);
-            $command->setOutput($out);
-            $command->setInput($args);
+            // $command->setOutput($out);
+            // $command->setInput($args);
             // print_r($command->output);die;
-            if($command->run($args, $command->output) !== 0) {
+            if($command->run($args, $out) !== 0) {
                 $output->writeln("<error>Errors found!</error>");
                 $res = $out->fetch();
-                $html .= '<p>'.nl2br($converter->convert($res)).'</p>';
+                $html .= '<p>' . nl2br($converter->convert($res)) .'</p>';
                 if($output->isVerbose()) {
                     $output->writeln($res);
                 }
                 $index = 1;
-                $mailer = Mail::createFromHtml(Config::getMail('fail'), '', "DATABASE INCONSISTENCY in [" .Config::get('url.main')."]", $html);
+                $mailer = Mail::createFromHtml(Config::getMail('fail'), '', "FAILING PROJECTS PREDICTION in [" .Config::get('url.main')."]", $html);
                 $errors = [];
                 if(!$mailer->send($errors)) {
                     throw new \RuntimeException('Error sending email: ' . implode("\n", $errors));
