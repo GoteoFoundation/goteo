@@ -127,4 +127,19 @@
     &.icon-api {
         @include svg-background('../img/icons/api.svg');
     }
+    &.icon-mission {
+        @include svg-background('../img/icons/mission.svg');
+    }
+    &.icon-milestones {
+        @include svg-background('../img/icons/milestones.svg');
+    }
+    &.icon-team {
+        @include svg-background('../img/icons/team.svg');
+    }
+    &.icon-transparency {
+        @include svg-background('../img/icons/transparency.svg');
+    }
+    &.icon-voices {
+        @include svg-background('../img/icons/voices.svg');
+    }
 }

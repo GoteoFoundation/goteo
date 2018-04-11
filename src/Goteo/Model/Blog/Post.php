@@ -730,7 +730,7 @@ class Post extends \Goteo\Core\Model {
         $sections=[ 'mission'      => 'blog-section-mission',
                     'milestones'   => 'blog-section-milestones',
                     'matchfunding' => 'blog-section-matchfunding',
-                    'glossary'     => 'blog-section-glossary',
+                    'voices'     => 'blog-section-voices',
                     'transparency' => 'blog-section-transparency',
                     'team'         => 'blog-section-team'
                 ];
