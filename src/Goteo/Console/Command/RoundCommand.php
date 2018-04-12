@@ -129,7 +129,7 @@ EOT
                 if ($project->amount < $project->mincost) {
                     $action_done = true;
                     if($predict) {
-                        $output->writeln("Mocking project <info>{$project->id}</info> from published at <comment>{$project->old_published}</comment> to <fg=red>{$new}</>. From days active <comment>{$project->old_days_active}</comment> to <fg=red>{$project->days_active}</>\n");
+                        $output->writeln("Mocking project <info>{$project->id}</info> from published at <comment>{$project->old_published}</comment> to <fg=red>{$project->published}</>. From days active <comment>{$project->old_days_active}</comment> to <fg=red>{$project->days_active}</>\n");
 
                         $text = $predict == 1 ? "tonight" : "in $predict days.";
                         $output->writeln("The project [<info>{$project->name}</info>] will be <fg=red>ARCHIVED</> $text");
