@@ -67,6 +67,21 @@ body.blog {
      div.sticky-menu{
       padding-top: 10px;
       background-color: $background-main-home;
+      &.sticky-list{
+        padding-top:0 !important;
+        div.foundation-mark{
+          display: block;
+          top: 20%;
+          img.logo{
+            width: 40px;
+            height: 40px;
+          }
+          h3{
+            font-size: 16.5px;
+            margin-left: 10px;
+          }
+        }
+      }
       .social{
         margin-left: 0px;
       }

@@ -425,6 +425,12 @@ class Post extends \Goteo\Core\Model {
             $values[':tag'] = $filters['tag'];
         }
 
+        if (!empty($filters['section'])) {
+            $sqlWhere .= " AND post.section = :section
+            ";
+            $values[':section'] = $filters['section'];
+        }
+
         // Post excluded from the
         if (!empty($filters['excluded'])) {
             $sqlWhere .= " AND post.id  != :excluded

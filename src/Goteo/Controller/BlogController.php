@@ -32,16 +32,17 @@ class BlogController extends \Goteo\Core\Controller {
 
     }
 
-    public function indexAction (Request $request) {
+    public function indexAction ($section='', Request $request) {
 
         $slider_posts=Post::getList([], true, 0, 3);
-        $list_posts=Post::getList([], true, 3, 12);
+        $list_posts=Post::getList(['section' => $section], true, 3, 12);
         $blog_sections=Post::getListSections();
 
         return $this->viewResponse('blog/list', [
                     'slider_posts' => $slider_posts,
                     'list_posts'   => $list_posts,
-                    'blog_sections'     => $blog_sections
+                    'blog_sections'     => $blog_sections,
+                    'section'           => $section
                 ]
         );
 
