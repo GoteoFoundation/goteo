@@ -1,0 +1,63 @@
+---
+translator: Traductor
+translator-autotranslate-from: 'Traducción automatica de'
+translator-back-to-list: 'Volver al llistáu'
+translator-banner: Pancartes
+translator-bazar: Catálogu
+translator-cannot-delete-system: '¡Nun pue desaniciase esta traducción porque ye del sistema!'
+translator-category: Estayes
+translator-choose: 'Escueyi una opción'
+translator-copy-from: 'Copiar conteniu de'
+translator-criteria: 'Criterios d''evaluación'
+translator-delete: 'Desaniciar traducción al %s'
+translator-delete-sure: '¿De xuru que quies desaniciar la traducción al %s? ¡Esto nun pue desfacese!'
+translator-deleted-ko: '¡Fallu al desaniciar la traducción al %s!'
+translator-faq: Entrugues frecuentes
+translator-feed-translated-desc: '%USER% traduxo %LINK% al %LANGS%'
+translator-feed-translated-target: 'Traducción en %s'
+translator-field-blog: Blogue
+translator-field-content: Conteníu
+translator-field-description: Descripción
+translator-field-facebook_msg: 'Mensaxe de Facebook'
+translator-field-facebook_msg_owner: 'Autor del Facebook'
+translator-field-legend: Leenda
+translator-field-media: Medios
+translator-field-name: Nome
+translator-field-schedule: Horariu
+translator-field-text: Testu
+translator-field-title: Títulu
+translator-field-twitter_msg: 'Mensaje de Twitter'
+translator-field-twitter_msg_owner: 'Autor de Twitter'
+translator-field-url: URL
+translator-glossary: 'Glosariu de términos'
+translator-home: Portada
+translator-lang-no-perms: 'Nun tienes permisu p''alministrar esta llingua'
+translator-license: Licencies
+translator-news: Noticies
+translator-no-langs: 'Nun tienen denguna llingua, contauta col alministrador'
+translator-only-pendings: 'Namái pendientes en:'
+translator-opentag: Agrupaciones
+translator-original-text: 'Testu orixinal'
+translator-page: Páxines
+translator-patron: 'Proyeutos apadrinaos'
+translator-pending: 'Pendiente de traducción'
+translator-post: Blogue
+translator-promote: 'Proyeutos destacaos'
+translator-save: 'Guardar y espublizar'
+translator-save-original: 'Guardar na tabla orixinal'
+translator-save-draft: 'Guardar como borrador'
+translator-saved-ko: 'Fallu al guardar la traducción al %LANG% (%ERROR%)'
+translator-skipped-fields: "Nun pudieron copiase dellos campos porque yá conteníen testu.\nDesanicia'l testu orixinal pa poder copiar dende otra llingua."
+translator-sphere: 'Ámbitos de convocatoria'
+translator-stories: 'Histories esitoses'
+translator-system: Sistema
+translator-tables: 'Tables xenerales'
+translator-tag: 'Etiquetes del blogue'
+translator-template: 'Plantíes automátices de corréu'
+translator-translations: Traducciones
+translator-workshop: Talleres
+translator-worthcracy: Meritocrácia
+translator-zone-not-found: 'Esta zona de traducción nun ye válida'
+translator-lang-not-found: '¡Esta llingua nun ta na plataforma!'
+translator-percent: '%d&#37; traducíu'
+translator-add-translation: 'Amestar traducción nueva'

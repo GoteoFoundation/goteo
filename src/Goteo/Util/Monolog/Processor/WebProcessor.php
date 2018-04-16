@@ -7,7 +7,7 @@ use Goteo\Application\Lang;
 use Goteo\Application\Config;
 use Goteo\Application\Cookie;
 use Goteo\Core\Model;
-use Goteo\Library\Currency;
+use Goteo\Application\Currency;
 use Symfony\Component\HttpFoundation\Request;
 
 class WebProcessor
@@ -18,6 +18,8 @@ class WebProcessor
     private $uid;
     static private $fields = [
                 'owner' => 'str',
+                'name' => 'str',
+                'title' => 'str',
                 'method' => 'str',
                 'amount' => 'int',
                 'status' => 'int',
@@ -26,6 +28,7 @@ class WebProcessor
                 'one_round' => 'int',
                 'mincost' => 'int',
                 'maxcost' => 'int',
+                'date' => 'date',
                 'published' => 'date',
                 'passed' => 'date',
                 'success' => 'date',

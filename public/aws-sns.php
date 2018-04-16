@@ -26,7 +26,9 @@ require_once __DIR__ . '/../src/autoload.php';
 
 
 // Config file...
-Config::load();
+$config = getenv('GOTEO_CONFIG_FILE');
+if(!is_file($config)) $config = __DIR__ . '/config/settings.yml';
+Config::load($config);
 
 try {
 

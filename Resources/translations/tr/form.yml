@@ -1,0 +1,70 @@
+---
+costs-field-select-rounds: Kampanya Süresi
+form-accept-button: TAMAM
+form-add-button: Ekle
+form-ajax-info: 'Bu form doldurduğunuzda otomatik olarak kaydedilecektir'
+form-apply-button: Uygula
+form-edit-button: Düzenle
+form-has-errors: 'Formda hataları içeriyor, lütfen kontrol edip tekrar deneyiniz!'
+form-errors-info: 'Toplam: %s | Bu adımda: %s'
+form-errors-total: 'Toplamda %s hataları var'
+form-footer-errors_title: Hatalar
+form-image_upload-button: 'Fotoğram yükleniyor'
+form-media_send-button: 'Videoyu oynat'
+form-navigation_bar-header: 'Gidin'
+form-next-button: Sonraki
+form-project-info_status-title: 'Bilginin genel durumu'
+form-project-progress-title: 'Veri Değerlendirmesi'
+form-project-status-title: 'Proje durumu'
+form-project_status-campaing: 'Kampanya devam ediyor'
+form-project_status-cancel: Atıldı
+form-project_status-cancelled: İptal Edildi
+form-project_status-edit: İncelemede
+form-project_status-expired: Kapalı
+form-project_status-fulfilled: 'Kazanç tamamlandı'
+form-project_status-review: 'Değerlendirme beklemede'
+form-project_status-success: Fonlu
+form-remove-button: Kaldır
+form-self_review-button: Doğru
+form-send_review-button: Gönder
+form-upload-button: Gönder
+help-cost-to-consultant: '- Maliyet bölümünde biraz yardıma ihtiyaç var.<br>'
+help-license-to-consultant: '- Toplu iadeler ve lisanslarla ilgili yardıma ihtiyaç var<br>'
+overview-extra-fields: 'Tamamlayıcı alanlar'
+project-form-header: Form
+project-one-round: '40-günlük tek tur'
+project-personal-field-entity_name: 'Hareket ettiğiniz taraf adına(eğer varsa)'
+project-two-rounds: '40-günlük iki tur'
+tooltip-project-personal-entity_name: 'Bir varlığı temsil ediyorsanız, bilinmesi için belirtilen yer burasıdır.'
+form-sent-success: 'Veri başarıyla kaydedildi!'
+form-sent-error: 'Veri kaydedilirken bir hata meydana geldi: [%s]'
+form-confirm-exit: "Kaydedilmemiş veriler kaybolacak.\nDevam etmek istiyor musunuz?"
+overview-extra-call: 'Çağrı için tamamlayıcı alanlar %s'
+form-editor-bold: 'Koyu'
+form-editor-italic: 'İtalik'
+form-editor-strikethrough: 'Üstü çizili'
+form-editor-heading: 'Başlık'
+form-editor-smaller_heading: 'Daha küçük Başlık'
+form-editor-bigger_heading: 'Daha büyük Başlık'
+form-editor-code: 'Kod'
+form-editor-quote: 'Alıntı'
+form-editor-generic_list: 'Genel Liste'
+form-editor-numbered_list: 'Numaralı Liste'
+form-editor-create_link: 'Bağlantı oluştur'
+form-editor-insert_image: 'Resim ekle'
+form-editor-insert_table: 'Tablo ekle'
+form-editor-insert_horizontal_line: 'Yatay çizgi ekle'
+form-editor-toggle_preview: 'Önizlemeyi aç/kapa'
+form-editor-toggle_side_by_side: 'Yan yana çevir'
+form-editor-toggle_fullscreen: 'Tam ekrana geç'
+form-editor-markdown_guide: 'Markdown klavuzu'
+form-editor-undo: 'Geri al'
+form-editor-redo: 'Yinele'
+form-editor-close: 'Kapat'
+form-editor-exact-location: 'Tam konum'
+form-editor-change-location: 'Değiştir'
+form-editor-change-unlocated: 'Bulunmayan'
+form-editor-fine-locate: 'İşareti sürükleyip ve bırakarak konumu iyice ayarlayınız.'
+form-editor-error-locating: 'Adres bulunamadı!'
+form-editor-success-locating: 'Adres başarıyla bulundu!'
+form-dragndrop-unsupported: 'Dosyaları sürüklerken bir sorun meydana geldi.Lütfen, yükleme butonuna tıklayarak tekrar deneyiniz'

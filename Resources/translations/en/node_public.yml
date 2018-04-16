@@ -1,13 +1,14 @@
+---
 node-footer-about: 'Social network for crowdfunding and collaborating with creative projects that support the commons <a href="/project/create">Do you have an open DNA project?</a>'
 node-footer-help-what: 'What is Crowdfunding?'
 node-footer-help-why: 'What''s different about Goteo'
 node-footer-investors-donate: 'Donations and tax deductions'
 node-footer-investors-invest: 'How to help a project'
 node-footer-investors-payment: 'How payments work'
-node-footer-title-creators: 'Campaign leaders'
+node-footer-title-creators: Campaign leaders
 node-footer-title-help: 'Need help?'
 node-footer-title-investors: Backers
-node-footer-title-social: 'Follow us'
+node-footer-title-social: Follow us
 node-header-sponsorby: 'With the support of:'
 node-home-calls-headers: Calls
 node-home-posts-header: News
@@ -21,10 +22,11 @@ node-side-searcher-success: Successful
 node-side-sumcalls-budget: 'Total (all campaigns)'
 node-side-sumcalls-calls: Open
 node-side-sumcalls-campaigns: Active
-node-side-sumcalls-header: 'Cloud<br />fund'
 node-side-sumcalls-rest: 'Pending assignment'
 node-side-summary-active: Active
 node-side-summary-amount: 'Money collected'
 node-side-summary-investors: Backers
 node-side-summary-success: Successful
 node-side-summary-supporters: Backers
+node-stats-title: 'Impact data'
+node-projects-title: 'Projects'

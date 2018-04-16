@@ -1,0 +1,64 @@
+---
+admin-action: 'Tagapangasiwa ng aksyon'
+admin-NO: 'Hindi'
+admin-YES: Oo
+admin-account-amount: 'Halaga na nag-ambag'
+admin-account-change-user: 'Gumagamit ng pagbabago'
+admin-account-change-user-confirm: 'Tiyak ka bang gusto mong magbago ng gumagamit ng kontribusyon? Ang bagong user ay maaaring:'
+admin-account-convert-to-pool: 'Convert sa pitaka'
+admin-account-convert-to-pool-confirm: 'Ito ay mag-aalis ng mga proyektong kaugnay ng ambag na ito at magiging parang isang ay bumili ng supot. MAWAWALA ANG LAHAT NG MGA KAUGNAY NA GANTIMPALA. Maaaring magpatuloy?'
+admin-account-convert-to-pool-ko: 'Ang kontribusyon ay nagbalik-loob hindi na wallet: %s'
+admin-account-convert-to-pool-ok: 'Matagumpay na nagbalik-loob na kontribusyon ng pitaka'
+admin-account-detail: 'Ang mga detalye ng transaksyon'
+admin-account-donation: Donasyon
+admin-account-edit-reward: 'Mamahala ng mga gantimpala/tirahan'
+admin-account-invalid-invest: 'Kontribusyon [%s] hindi natagpuan!'
+admin-account-invest-date: 'Petsa ng kontribusyon'
+admin-account-invest-non-pool-refundable: 'Ambag na ito ay hindi bayaran pabalik ang virtual na wallet. Ito maaari lamang bayaran ang kontribusyon sa State "Charged"'
+admin-account-invest-non-user-refundable: "Ambag na ito ay hindi mare-refund. Maaari mong bayaran ang kontribusyon sa estado: \"Pending\", \"Inutusan\" at \"supot\" kung mayroong sapat na pera sa wallet na kaltasin\n"
+admin-account-invest-to-pool-ko: 'Kabiguan upang bumalik ang mga kontribusyon ng pitaka'
+admin-account-invest-to-pool-ok: 'Mga kontribusyon na isinauli ang pitaka. Tumaas ang halaga ng supot ng (%s)'
+admin-account-invest-user-refund-fail-pool-amount: 'Ambag na ito ay hindi nagbalik dahil user hindi magkakaroon ng sapat na pera sa mga pitaka (%s)'
+admin-account-invest-user-refund-ko: 'Hindi maibalik ang kontribusyon: [%s]'
+admin-account-invest-user-refund-ok: 'Ang mga kontribusyon na reimbursed nang tama'
+admin-account-invest-user-refund-ok-pool: 'Mga kontribusyon na reimbursed nang tama. Ang pitaka ay nabawasan nang %s'
+admin-account-issue-solved: 'Ginawa nila sa atin ang paglipat'
+admin-account-modify-status: 'Baguhin ang status'
+admin-account-modify-status-confirm: "Sigurado ka ba na gusto mong baguhin ang katayuan nang manu-mano sa ambag na ito? Ito ay maselan! Walang makagagawa ng mga walang operasyon ng pagbabalik ng kontribusyon. \n"
+admin-account-payment-method: 'Paraan ng Pagbabayad'
+admin-account-pool-on-fail: 'Pool (return na ang pitaka kung sakaling mabigo ito)'
+admin-account-refund-to-pool: 'Bayaran ang kontribusyon para sa pitaka'
+admin-account-refund-to-pool-confirm: "Mamarkahan ito ang kontribusyon bilang: bumalik kung ang proyekto ay nabigong kinansela kung ang proyekto ay aktibo o matagumpay ay isinauli sa gumagamit, ay bubuo ng pera sa pitaka ng gumagamit. Maaaring magpatuloy? \n"
+admin-account-refund-to-user: 'Bayaran ang kontribusyon para sa mga gumagamit'
+admin-account-refund-to-user-confirm: "Mamarkahan ito ang kontribusyon bilang: bumalik kung ang proyekto ay hindi nakansela kung ang proyekto ay aktibo o matagumpay ang pera isasauli sa gumagamit. Hindi ito maaaring gawin kung ang kontribusyon ay lubhang luma, o hindi ito sinusuportahan ng paraan ng pagbabayad. Maaaring magpatuloy?\n"
+admin-account-rewards: 'Pinili ng mga gantimpala'
+admin-account-switch-donation: 'Baguhin ang donasyon'
+admin-account-switch-donation-confirm: 'Sigurado ka bang gusto mong baguhin ang katayuan ng donasyon?'
+admin-account-switch-pool: 'Lumipat sa pool'
+admin-account-switch-pool-confirm: 'Nakakaapekto lamang ito kapag nabigo ang proyekto, hindi ito bumubuo o nag-aalis ng pera mula sa wallet. Magpatuloy?'
+admin-account-transaction: 'Ang iyong tracking code'
+admin-address: Address
+admin-all: Lahat
+admin-back: Bumalik
+admin-back-list: 'Bumalik sa Checkout'
+admin-empty-list: 'Hindi nakita ang mga produkto'
+admin-home: Takip
+admin-items: mga input
+admin-mailing-created: 'Ang petsa ng pagkalikha'
+admin-mailing-subject: Ang paksa
+admin-mailing-view-message: 'Buksan ang mensahe'
+admin-no: 'Hindi'
+admin-percent: Porsyento
+admin-project: Proyekto
+admin-projects: Proyekto
+admin-filters: 'Salain'
+admin-remove-filters: 'Alisin ang Photo'
+admin-sponsors: Paglilingkod
+admin-status: Katayuan
+admin-text-type-html: Ang HTML
+admin-text-type-md: Marka pababa
+admin-user: Gumagamit
+admin-users: Ang mga gumagamit
+admin-yes: Opo
+admin-project-to-review: 'Rebisyon'
+admin-project-to-negotiation-desc: 'Ipasa ang proyekto sa pag-edit ng katayuan'

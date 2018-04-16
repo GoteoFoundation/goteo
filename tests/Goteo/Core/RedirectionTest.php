@@ -6,7 +6,7 @@ use Goteo\Core\Redirection;
 
 class RedirectionTest extends \PHPUnit_Framework_TestCase {
     public function testInstance() {
-        $test = new Redirection();
+        $test = new Redirection('http://www.google.com');
         $this->assertInstanceOf('\Goteo\Core\Redirection', $test);
         $this->assertInstanceOf('\Exception', $test);
         return $test;

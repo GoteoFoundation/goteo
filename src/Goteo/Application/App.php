@@ -188,7 +188,7 @@ class App extends HttpKernel\HttpKernel {
      * Resets the current app
      * @return [type] [description]
      */
-    public function clearApp() {
+    static public function clearApp() {
         self::$_app     = null;
         self::$_sc      = null;
         self::$_routes  = null;

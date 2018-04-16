@@ -27,8 +27,13 @@ class LiveReloadListener implements EventSubscriberInterface
         if(!$event->isMasterRequest() || false === stripos($response->headers->get('Content-Type'), 'text/html') || $request->isXmlHttpRequest()) {
             return;
         }
-        $port = Config::get('liveport');
-        if(empty($port)) $port = 35729;
+        if(Config::get('env') !== 'local') return;
+
+        $port = Config::get('plugins.goteo-dev.liveport');
+        // if(empty($port)) $port = 35729;
+
+        if(empty($port)) return;
+
         $html  = "\n\t<!-- Debug Javascript for developers -->\n\t";
         $html .= '<script src="//' . $request->getHost() . ':' . $port . '/livereload.js"></script>';
         $html .=  "\n\n";

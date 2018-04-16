@@ -10,22 +10,33 @@
 
 namespace Goteo\Controller\Api;
 
+use Symfony\Component\HttpFoundation\Request;
 use Goteo\Application\Exception\ControllerAccessDeniedException;
-
 use Goteo\Library\Text;
-use Goteo\Library\Currency;
+use Goteo\Application\Currency;
 use Goteo\Model\Project;
 use Goteo\Model\Invest;
 use Goteo\Model\Image;
+use Goteo\Model\Origin;
 
 
 class ChartsApiController extends AbstractApiController {
 
-    protected function getProject($prj) {
+    public function __construct() {
+        parent::__construct();
+        // Activate cache & replica read for this controller
+        $this->dbReplica(true);
+        $this->dbCache(true);
+    }
+
+
+    protected function getProject($prj, $private = false) {
         if( ! $prj instanceOf Project) {
             $prj = Project::get($prj);
         }
-        $is_visible = in_array($prj->status, [Project::STATUS_IN_CAMPAIGN, Project::STATUS_FUNDED, Project::STATUS_FULFILLED, Project::STATUS_UNFUNDED]);
+
+        $is_visible = in_array($prj->status, [Project::STATUS_IN_CAMPAIGN, Project::STATUS_FUNDED, Project::STATUS_FULFILLED, Project::STATUS_UNFUNDED]) && !$private;
+
         $is_mine = $prj->owner === $this->user->id;
         if(!$this->is_admin && !$is_mine && !$is_visible) {
             throw new ControllerAccessDeniedException();
@@ -39,7 +50,7 @@ class ChartsApiController extends AbstractApiController {
      * @param  Request $request [description]
      * @return [type]           [description]
      */
-    public function projectCostsAction($id) {
+    public function projectCostsAction($id, Request $request) {
         $prj = $this->getProject($id);
         $mincost = (int) Currency::amount($prj->mincost);
         $maxcost = (int) Currency::amount($prj->maxcost);
@@ -87,7 +98,7 @@ class ChartsApiController extends AbstractApiController {
      * @param  Request $request [description]
      * @return [type]           [description]
      */
-    public function projectInvestsAction($id) {
+    public function projectInvestsAction($id, Request $request) {
         $prj = $this->getProject($id);
         $mincost = (int) Currency::amount($prj->mincost);
         $maxcost = (int) Currency::amount($prj->maxcost);
@@ -149,6 +160,33 @@ class ChartsApiController extends AbstractApiController {
             $ret[] = $v;
             $last = $v;
         }
+        return $this->jsonResponse($ret);
+    }
+
+    /**
+     * Simple projects origins data
+     * @param  Request $request [description]
+     */
+    public function projectOriginAction($id, $type = 'project', $group = 'referer', Request $request) {
+        $prj = $this->getProject($id, true);
+
+        $group_by = $request->query->get('group_by');
+        $ret = Origin::getProjectStats($prj->id, $type, $group, $group_by);
+
+        $ret = array_map(function($ob) use ($group_by) {
+            $label = $ob->tag ? $ob->tag : 'unknown';
+            if($group_by === 'category') $label = $ob->category ? $ob->category : 'unknown';
+            elseif($ob->category === 'internal') {
+                $label = $ob->category . ": " . ucfirst($label);
+            }
+
+            return [
+                'label' => ucfirst($label),
+                'counter' => (int) $ob->counter,
+                'created' => $ob->created,
+                'updated' => $ob->updated
+            ];
+            }, $ret);
         return $this->jsonResponse($ret);
     }
 }

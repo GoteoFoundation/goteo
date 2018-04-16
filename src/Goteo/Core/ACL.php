@@ -21,8 +21,6 @@ use Goteo\Application\Session;
 class ACL {
     protected static $resources = array(
         //  role,      URL prefix          Active
-        '/dashboard' => ['user'],
-        '/message' => ['user'],
         '/community' => ['user'],
 
         '/message' => ['user'],
@@ -30,9 +28,6 @@ class ACL {
         '/message/delete' => ['superadmin'],
 
         '/review' => ['checker'],
-
-        '/translate' => ['translator'],
-        '/translate/select' => ['admin'],
 
         '/sacaexcel' => ['admin', 'superadmin', 'root'],
 

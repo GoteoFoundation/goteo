@@ -1,10 +1,11 @@
+---
 mandatory-project-field-address: 'Proiektuaren erantzulearen helbideo idaztea derrigorrekoa da.'
 mandatory-project-field-contract_email: 'Proiektuaren erantzulearen emaila idaztea derrigorrekoa da.'
 mandatory-project-field-country: 'Proiektuaren erantzulearen herria derrigorrekoa da'
 mandatory-project-field-phone: 'Proiektuaren erantzulearen telefono zenbakia derrigorrekoa da'
 mandatory-project-field-residence: 'Proiektuaren erantzulearen bizilekua idaztea derrigorrekoa da.'
 mandatory-project-field-zipcode: 'Proiektuaren erantzulearen posta kodea derrigorrekoa da'
-personal-field-address: Helbidea
+personal-field-address: 'Helbidea'
 personal-field-contract_birthdate: 'Jaiotze eguna'
 personal-field-contract_data: 'Proiektua erantzulearen datuak'
 personal-field-contract_email: 'Proiektuari lotutako emaila'
@@ -15,7 +16,7 @@ personal-field-entity_cif: 'Erakundearen IFK zenbakia'
 personal-field-entity_name: 'Erakundearen izena'
 personal-field-entity_office: 'Erakundean daukazun kargua'
 personal-field-location: Hiria/herria
-personal-field-phone: 'Telefono zenbakia'
+personal-field-phone: Telefono zenbakia
 personal-field-post_address-different: Desberdina
 personal-field-post_address-same: Berdin
 personal-field-zipcode: 'Posta kodea'

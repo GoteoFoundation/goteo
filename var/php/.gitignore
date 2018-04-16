@@ -4,3 +4,6 @@
 !php.ini
 !router.php
 !router_dev.php
+!php-fpm.conf
+!nginx.conf
+!apache2.4.conf

@@ -14,6 +14,7 @@ use Goteo\Model\Call;
 
 class CallLocation extends \Goteo\Model\Location\LocationItem {
     protected $Table = 'call_location';
+    protected static $Table_static = 'call_location';
     public $call;
 
     public function __construct() {

@@ -1,0 +1,71 @@
+---
+accounts-lb: Contributi
+accounts-lb-add: 'Contributo manuale'
+accounts-lb-cancel: 'Annullando il contributo'
+accounts-lb-cancel-pool: 'Annullamento dell''opzione di credito'
+accounts-lb-details: 'Dettagli del contributo'
+accounts-lb-list: Creando lista
+accounts-lb-move: 'Spostando il contributo'
+accounts-lb-report: 'Rapporto di progetto'
+accounts-lb-update: 'Modifica dello stato del contributo'
+banners-lb: Banner
+banners-lb-add: 'Nuovo banner'
+banners-lb-cancel: 'Annullando il contributo'
+banners-lb-details: 'Dettagli del contributo'
+banners-lb-edit: 'Modificando Banner'
+banners-lb-list: Creando lista
+banners-lb-move: 'Spostando il contributo'
+banners-lb-report: 'Rapporto di progetto'
+banners-lb-translate: 'Traducendo Banner'
+banners-lb-update: 'Modificando lo stato del contributo'
+blog-lb: Blog
+blog-lb-add: 'Nuovo Post'
+categories-lb: Categorie
+categories-lb-add: 'Nuova Categoria'
+categories-lb-edit: 'Modificando la categoria'
+categories-lb-keywords: 'Parole Chiave'
+categories-lb-list: Creando lista
+categories-lb-translate: 'Traducendo Categoria'
+commons-lb: 'Beneficio collettivo'
+commons-lb-info: 'Informazioni di contatto'
+commons-lb-list: Creando lista
+commons-lb-report: 'Rapporto di progetto'
+criteria-lb: 'Criteri di revisione'
+criteria-lb-list: Creando lista
+criteria-lb-translate: 'Traducendo Criterio'
+faq-lb: '* FAQ'
+faq-lb-add: 'Nuova Domanda'
+faq-lb-edit: 'Modifica Domanda'
+faq-lb-list: Creando lista
+glossary-lb: Glossario
+newsletter-lb-init: 'Iniziando un nuovo invio'
+newsletter-lb-list: 'Stato di consegna automatica'
+node-lb: 'Dati del Canale'
+nodes-lb-list: Creando lista
+pages-lb-add: 'Nuova pagina'
+pages-lb-translate: 'Traducendo Pagina'
+pages-lbedit: 'Modifica pagina'
+projects-lb: Progetti
+projects-lb-accounts: 'Conti del progetto'
+projects-lb-images: 'Immagini del progetto'
+projects-lb-list: Creando lista
+projects-lb-rebase: 'Cambiando Id del progetto'
+projects-lb-report: 'Rapporto finanziario sul progetto'
+promote-lb: 'Progetti In Evidenza'
+promote-lb-list: Creando lista
+recent-lb: 'Attività recente '
+recent-lb-list: Creando lista
+reviews-lb: Revisioni
+reviews-lb-add: 'Iniziando briefing'
+reviews-lb-edit: 'Modificando briefing'
+reviews-lb-list: Creando lista
+rewards-lb: Ricompense
+rewards-lb-edit: 'Gestendo ricompensa'
+rewards-lb-list: Creando lista
+sponsors-lb: 'Partner istituzionali'
+sponsors-lb-list: Creando lista
+tags-lb-add: 'Nuova Tag'
+word-lb-list: Creando lista
+worth-lb: 'Livelli di meritocrazia'
+worth-lb-edit: 'Modificando livello'
+worth-lb-list: Creando lista

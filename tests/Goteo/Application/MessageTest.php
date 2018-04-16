@@ -9,7 +9,7 @@ class MessageTest extends \PHPUnit_Framework_TestCase {
 
     public function testInstance() {
 
-        $converter = new Message();
+        $converter = new Message('info', 'test message');
 
         $this->assertInstanceOf('\Goteo\Application\Message', $converter);
         //clear the message

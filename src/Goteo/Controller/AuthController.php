@@ -12,6 +12,7 @@ namespace Goteo\Controller;
 
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Goteo\Application\Exception\ControllerAccessDeniedException;
 
 use Goteo\Application\App;
@@ -43,12 +44,34 @@ class AuthController extends \Goteo\Core\Controller {
     }
 
     /**
+     * Checks if the user is logged or needs to redirect to SSL
+     * @return [type] [description]
+     */
+    protected static function checkSession(Request $request) {
+
+        // Already logged? let's get out of here
+        if (Session::isLogged()) {
+            return App::dispatch(AppEvents::ALREADY_LOGGED, new FilterAuthEvent(Session::getUser()))->getUserRedirect($request);
+        }
+
+        // Check if needs to be redirected to SSL
+        if(Config::get('ssl') && !$request->isSecure()) {
+            if (null !== $qs = $request->getQueryString()) {
+                $qs = '?'.$qs;
+            }
+
+            return new RedirectResponse('https://' . $request->getHttpHost().$request->getBaseUrl().$request->getPathInfo().$qs);
+        }
+
+        // Nothing to return if everything is ok
+    }
+
+    /**
      * Reusable static login checker
      */
     public static function checkLogin(Request $request) {
-        // Already logged?
-        if (Session::isLogged()) {
-            return App::dispatch(AppEvents::ALREADY_LOGGED, new FilterAuthEvent(Session::getUser()))->getUserRedirect($request);
+        if($sess = static::checkSession($request)) {
+            return $sess;
         }
 
         // check username/password
@@ -57,8 +80,12 @@ class AuthController extends \Goteo\Core\Controller {
             $password = $request->request->get('password');
             if (false !== ($user = (User::login($username, $password)))) {
                 if(Session::setUser($user, true)) {
+                    $event = new FilterAuthEvent($user);
+                    if($request->request->has('rememberme')) {
+                        $event->setProvider('rememberme');
+                    }
                     //Everything ok, redirecting
-                    return App::dispatch(AppEvents::LOGIN_SUCCEEDED, new FilterAuthEvent($user))->getUserRedirect($request);
+                    return App::dispatch(AppEvents::LOGIN_SUCCEEDED, $event)->getUserRedirect($request);
                 }
             }
 
@@ -70,14 +97,14 @@ class AuthController extends \Goteo\Core\Controller {
         return true;
     }
 
-    public function loginAction(Request $request)
-    {
+    public function loginAction(Request $request) {
         $result = self::checkLogin($request);
         if($result instanceOf Response) return $result;
 
         return $this->viewResponse('auth/login', ['return' => $request->query->get('return')]);
 
     }
+
     /**
      * Cerrar sesión.
      * TODO: change to a event dispatcher
@@ -111,13 +138,11 @@ class AuthController extends \Goteo\Core\Controller {
      * Reusable static signup checker
      */
     public static function checkSignup(Request $request) {
-        // Already logged?
-        if (Session::isLogged()) {
-            return App::dispatch(AppEvents::ALREADY_LOGGED, new FilterAuthEvent(Session::getUser()))->getUserRedirect($request);
+        if($sess = static::checkSession($request)) {
+            return $sess;
         }
 
         $vars = [];
-
 
         if ($request->getMethod() == 'POST') {
             foreach ($request->request->all() as $key => $value) {
@@ -169,8 +194,7 @@ class AuthController extends \Goteo\Core\Controller {
         return $vars;
     }
 
-    public function signupAction(Request $request)
-    {
+    public function signupAction(Request $request) {
         $result = self::checkSignup($request);
         if($result instanceOf Response) return $result;
 
@@ -178,8 +202,7 @@ class AuthController extends \Goteo\Core\Controller {
 
     }
 
-    public function passwordRecoveryAction($token = '', Request $request)
-    {
+    public function passwordRecoveryAction($token = '', Request $request) {
 
         $vars = array();
 
@@ -250,8 +273,7 @@ class AuthController extends \Goteo\Core\Controller {
         return $this->redirect('/login?' . $request->getQueryString());
     }
 
-    public function passwordResetAction(Request $request)
-    {
+    public function passwordResetAction(Request $request) {
         if ($request->getMethod() == 'POST') {
             $password = $request->request->get('password');
             $rpassword = $request->request->get('rpassword');

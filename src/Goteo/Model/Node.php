@@ -10,16 +10,19 @@
 
 namespace Goteo\Model;
 
+use Goteo\Application\Lang;
 use Goteo\Application\Config;
-use Goteo\Model\Image,
-    Goteo\Application\Exception,
-    Goteo\Library\Text;
+use Goteo\Model\Image;
+use Goteo\Application\Exception;
+use Goteo\Library\Text;
 
 class Node extends \Goteo\Core\Model {
 
     public
         $id = null,
         $name,
+        $subtitle,
+        $description,
         $email,
         $admins = array(), // administradores
         $logo,
@@ -31,6 +34,32 @@ class Node extends \Goteo\Core\Model {
         $sponsors_limit;
 
 
+    public function __construct() {
+        $args = func_get_args();
+        call_user_func_array(array('parent', '__construct'), $args);
+
+        if($this->id) {
+            // y sus administradores
+            $this->admins = self::getAdmins($this->id);
+            // pojects
+
+            $this->summary = $this->getSummary();
+
+            // logo
+            $this->logo = (!empty($this->logo)) ? Image::get($this->logo) : null;
+
+            // label
+            $this->label = (!empty($this->label)) ? Image::get($this->label) : null;
+
+            // home img
+            $this->home_img = (!empty($this->home_img)) ? Image::get($this->home_img) : $this->logo;
+        }
+
+    }
+
+    public static function getLangFields() {
+        return ['subtitle', 'description'];
+    }
 
     /**
      * Obtener datos de un nodo
@@ -40,15 +69,14 @@ class Node extends \Goteo\Core\Model {
     static public function get ($id, $lang = null) {
 
         //Obtenemos el idioma de soporte
-        $lang=self::default_lang_by_id($id, 'node_lang', $lang);
+        if(!$lang) $lang = Lang::current();
+        list($fields, $joins) = self::getLangsSQLJoins($lang, Config::get('sql_lang'));
 
-        $sql = static::query("
-            SELECT
+        $sql = "SELECT
                 node.id as id,
                 node.name as name,
                 node.email as email,
-                IFNULL(node_lang.subtitle, node.subtitle) as subtitle,
-                IFNULL(node_lang.description, node.description) as description,
+                $fields,
                 node.logo as logo,
                 node.label as label,
                 node.home_img as home_img,
@@ -65,28 +93,17 @@ class Node extends \Goteo\Core\Model {
                 node.default_consultant as default_consultant,
                 node.sponsors_limit as sponsors_limit
             FROM node
-            LEFT JOIN node_lang
-                ON  node_lang.id = node.id
-                AND node_lang.lang = :lang
-            WHERE node.id = :id
-            ", array(':id' => $id, ':lang' => $lang));
-        $item = $sql->fetchObject(__CLASS__);
+            $joins
+            WHERE node.id = :id";
+
+        $values = [':id' => $id];
+        // die(\sqldbg($sql, $values));
+        $query = static::query($sql, $values);
+        $item = $query->fetchObject(__CLASS__);
 
         if (!$item instanceof Node) {
             throw new Exception\ModelNotFoundException(Text::get('fatal-error-node'));
         }
-
-        // y sus administradores
-        $item->admins = self::getAdmins($id);
-
-        // logo
-        $item->logo = (!empty($item->logo)) ? Image::get($item->logo) : null;
-
-        // label
-        $item->label = (!empty($item->label)) ? Image::get($item->label) : null;
-
-        // label
-        $item->home_img = (!empty($item->home_img)) ? Image::get($item->home_img) : null;
 
         return $item;
     }
@@ -138,57 +155,80 @@ class Node extends \Goteo\Core\Model {
     /*
      * Lista de nodos
      */
-    public static function getAll ($filters = array()) {
+    public static function getAll ($filters = array(), $lang = null) {
 
-        $list = array();
-
-        $sqlFilter = "";
+        $sqlFilter = [];
+        $values = [];
 
         if (!empty($filters['name'])) {
-            $sqlFilter .= " AND ( name LIKE ('%{$filters['name']}%') OR id = '{$filters['name']}' )";
+            $sqlFilter[] = "( node.name LIKE :name OR node.id = :id )";
+            $values[':name'] = '%' . $filters['name'] . '%';
+            $values[':id'] = $filters['name'];
         }
 
         if (!empty($filters['type'])) {
-                if($filters['type'] == 'channel') 
-                    $sqlFilter .= " AND url = ''";
+                if($filters['type'] == 'channel')
+                    $sqlFilter[] = "node.url = ''";
                 else
-                    $sqlFilter .= " AND url != ''";
+                    $sqlFilter[] = "node.url != ''";
         }
 
         if (!empty($filters['status'])) {
             $active = $filters['status'] == 'active' ? '1' : '0';
-            $sqlFilter .= " AND active = '$active'";
+            $sqlFilter[] = "node.active = '$active'";
         }
 
         if (!empty($filters['admin'])) {
-            $sqlFilter .= " AND id IN (SELECT node_id FROM user_role WHERE user_id = '{$filters['admin']}')";
+            $sqlFilter[] = "node.id IN (SELECT node_id FROM user_role WHERE user_id = :user)";
+            $values[':user'] = $filters['admin'];
         }
 
-        $sql = static::query("
-            SELECT
-                *
-            FROM node
-            WHERE id IS NOT NULL
-                $sqlFilter
-            ORDER BY `name` ASC
-            ");
-
-        foreach ($sql->fetchAll(\PDO::FETCH_CLASS, __CLASS__) as $item) {
-            // y sus administradores
-            $item->admins = self::getAdmins($item->id);
-
-            if (!empty($item->home_img)) {
-                    $item->home_img = Image::get($item->home_img);
-                }
-
-            // pojects
-           
-            $item->summary = $item->getSummary();
-
-            $list[] = $item;
+        if (isset($filters['available'])) {
+            if($filters['available']) {
+                $sqlFilter[] = "(node.active=1 OR node.id IN (SELECT node_id FROM user_role WHERE user_id = :user))";
+                $values[':user'] = $filters['available'];
+            } else {
+                $sqlFilter[] = "node.active=1";
+            }
         }
 
-        return $list;
+        if($sqlFilter) $sqlFilter = ' WHERE '. implode(' AND ', $sqlFilter);
+        else $sqlFilter = '';
+
+        if(!$lang) $lang = Lang::current();
+        $values['viewLang'] = $lang;
+        list($fields, $joins) = self::getLangsSQLJoins($lang, Config::get('sql_lang'));
+
+        $sql = "SELECT node.id,
+                       node.name,
+                       $fields,
+                       node.email,
+                       node.active,
+                       node.url,
+                       node.logo,
+                       node.location,
+                       node.twitter,
+                       node.facebook,
+                       node.google,
+                       node.linkedin,
+                       node.label,
+                       node.owner_background,
+                       node.default_consultant,
+                       node.sponsors_limit,
+                       node.home_img,
+                       node.owner_font_color,
+                       node.owner_social_color,
+                       :viewLang as viewLang
+
+        FROM node
+        $joins
+        $sqlFilter
+        ORDER BY node.name ASC";
+        // die(\sqldbg($sql, $values));
+        if($query = static::query($sql, $values)) {
+            return $query->fetchAll(\PDO::FETCH_CLASS, __CLASS__);
+        }
+        return [];
     }
 
     /*
@@ -267,6 +307,8 @@ class Node extends \Goteo\Core\Model {
             'name',
             'email',
             'active',
+            'subtitle',
+            'description',
             'url',
             'default_consultant',
             'sponsors_limit'
@@ -310,6 +352,8 @@ class Node extends \Goteo\Core\Model {
             'id',
             'name',
             'email',
+            'subtitle',
+            'description',
             'url',
             'active',
             'default_consultant',
@@ -622,17 +666,21 @@ class Node extends \Goteo\Core\Model {
             WHERE node = :node
             LIMIT 1
             ";
-        $query = self::query($sql, array(':node' => $this->id));
-        $data = $query->fetch(\PDO::FETCH_ASSOC);
+        try {
+            $query = self::query($sql, array(':node' => $this->id));
+            $data = $query->fetch(\PDO::FETCH_ASSOC);
 
-        // si el calculo tiene más de 30 minutos (ojo, timeago son segundos) , calculamos de nuevo
-        if (empty($data) || $data['timeago'] > (30*60)) {
-            if ($newdata = $this->updateData()) {
-                return $newdata;
+            // si el calculo tiene más de 30 minutos (ojo, timeago son segundos) , calculamos de nuevo
+            if (empty($data) || $data['timeago'] > (30*60)) {
+                if ($newdata = $this->updateData()) {
+                    return $newdata;
+                }
             }
-        }
+            return $data;
+        } catch(\PDOException $e) {
 
-        return $data;
+        }
+        return [];
     }
 
     /** Resumen convocatorias: (destacadas por el nodo)

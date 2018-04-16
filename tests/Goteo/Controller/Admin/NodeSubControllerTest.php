@@ -12,7 +12,7 @@ class NodeSubControllerTest extends \PHPUnit_Framework_TestCase {
     public function testInstance() {
         $user = new User();
         $node = get_test_node()->id;
-        $request = Request::create();
+        $request = Request::create('/admin');
 
         $controller = new NodeSubController($node, $user, $request);
 
@@ -24,7 +24,7 @@ class NodeSubControllerTest extends \PHPUnit_Framework_TestCase {
     /**
      * Remove temporal files on finish
      */
-    public static function tearDownAfterClass($fp) {
+    public static function tearDownAfterClass() {
          delete_test_node();
     }
 

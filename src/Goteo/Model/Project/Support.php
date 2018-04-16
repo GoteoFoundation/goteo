@@ -47,49 +47,24 @@ class Support extends \Goteo\Core\Model {
 	public static function getAll ($project, $lang = null) {
         try {
             $array = array();
-            if($project instanceOf Project) $project = $project->id;
 
-            // FIXES #42
-            $values = array(':project'=>$project, ':lang'=>$lang);
-
-            $join = " LEFT JOIN support_lang
-                        ON  support_lang.id = support.id
-                        AND support_lang.project = :project
-                        AND support_lang.lang = :lang
-            ";
-            $eng_join = '';
-
-            // tener en cuenta si se solicita el contenido original
-            if (!isset($lang)) {
-                $different_select=" support.support as support,
-                                    support.description as description";
-                $join = '';
-                unset($values[':lang']);
-
-            } elseif(self::default_lang($lang)=='es') {
-                $different_select=" IFNULL(support_lang.support, support.support) as support,
-                                    IFNULL(support_lang.description, support.description) as description";
-
-            } else {
-                $different_select=" IFNULL(support_lang.support, IFNULL(eng.support, support.support)) as support,
-                                    IFNULL(support_lang.description, IFNULL(eng.description, support.description)) as description";
-
-                $eng_join=" LEFT JOIN support_lang as eng
-                                ON  eng.id = support.id
-                                AND eng.project = :project
-                                AND eng.lang = 'en'
-                                ";
+            if($project instanceOf Project) {
+                $values = array(':project' => $project->id);
+                list($fields, $joins) = self::getLangsSQLJoins($lang, $project->lang);
+            }
+            else {
+                $values = array(':project' => $project);
+                list($fields, $joins) = self::getLangsSQLJoins($lang, 'project', 'project');
             }
 
             $sql = "SELECT
                         support.id as id,
                         support.project as project,
                         support.type as type,
-                        {$different_select} ,
+                        $fields,
                         support.thread as thread
                     FROM support
-                    {$join}
-                    {$eng_join}
+                    $joins
                     WHERE support.project = :project
                     ORDER BY support.id ASC
                     ";
@@ -98,6 +73,7 @@ class Support extends \Goteo\Core\Model {
 			foreach ($query->fetchAll(\PDO::FETCH_CLASS, __CLASS__) as $item ) {
                 $array[$item->id] = $item;
             }
+            // print_r($array);die;
 			return $array;
         } catch(\PDOException $e) {
             throw new \Goteo\Core\Exception($e->getMessage());
@@ -109,19 +85,7 @@ class Support extends \Goteo\Core\Model {
         if (empty($this->project))
             $errors[] = 'No hay proyecto al que asignar la colaboración';
             //Text::get('validate-collaboration-noproject');
-/*
-        if (empty($this->support))
-            $errors[] = 'No hay colaboración';
-            //Text::get('validate-collaboration-name');
 
-        if (!isset($this->description))
-            $errors[] = 'No hay descripción de la colaboración';
-            //Text::get('validate-collaboration-description');
-
-        if (empty($this->type))
-            $errors[] = 'No hay tipo de colaboración';
-            //Text::get('validate-collaboration-type');
-*/
         //cualquiera de estos errores hace fallar la validación
         if (!empty($errors))
             return false;

@@ -1,0 +1,8 @@
+---
+mailer-baja: '¿Nun quies recibir más comunicaciones de goteo? Pues esborriar el corréu pente esti <a href="%s">enllaz</a>'
+mailer-disclaimer: 'Goteo ye una plataforma pa sofitar proyeutos cívicos, éticos y abiertos de ciudadanos/es, emprendedores, innovadores sociales y creativos/es que compartan conocencia significativa pa la sociedá. '
+mailer-sinoves: 'Si nun pues ver el mensaxe, usa esti <a href="%s">enllaz</a>'
+newsletter-block: '¿Nun quies recibir más boletinos de Goteo? <br><a href="%s">Esbórriate</a>.'
+unsuscribe-request-success: 'Encaboxesti la to soscripción al boletín.'
+mailer-from: De
+mailer-to: Pa

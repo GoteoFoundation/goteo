@@ -1,0 +1,6 @@
+invest-return-already-processed: 'This payment has already been processed!'
+invest-not-found: This payment does not exists
+invest-return-compensation: "This donation is to compensate the one incorrectly returned at <strong>%s</strong>"
+invest-return-reward: "The reward <strong>%s</strong> will be automatically assigned once payment is done."
+invest-return-reward-error: "Payment has been processed successfully but there's been a problem assigning the reward. Please, send an email to info@goteo.org and we will do it manually. Apologies for the inconvenience"
+invest-return-success: "Retrieval process completed successfully."

@@ -1,3 +1,4 @@
+---
 error-register-email: 'L''adresse mail est obligatoire'
 error-register-email-confirm: 'La confirmation de l''adresse mail ne coincide pas'
 error-register-invalid-password: 'Le mot de passe n''est pas valide'
@@ -16,14 +17,14 @@ password-changed-ok: 'Mot de passe réinitialisé correctement'
 recover-email-sended: 'Nous vous avons envoyer un email pour rétablir le mot de passe de votre compte. Vérifiez également le dossier de courrier indésirable ou les spams.'
 recover-request-fail: 'Ces données ne renvoient à aucun compte utilisateur.'
 recover-token-incorrect: 'Le code de récupération du mot de passe n''est pas valide'
-register-button-title: 'Se connecter'
+register-button-title: Se connecter
 register-email-confirm-field: 'Confirmer email'
-register-email-field: Email
-register-form-title: 'S''inscrire'
+register-email-field: 'Email'
+register-form-title: S'inscrire
 register-id-field: 'Nom d''utilisateur'
-register-name-field: Nom
+register-name-field: 'Nom'
 register-password-confirm-field: 'Confirmez votre mot de passe'
-register-password-field: 'Mot de passe'
+register-password-field: Mot de passe
 register-question: 'Déjà un compte sur Goteo?'
 user-activate-already-active: 'Le compte d''utilisateur est déjà activé'
 user-activate-success: 'Le compte d''utilisateur a été activé correctement'

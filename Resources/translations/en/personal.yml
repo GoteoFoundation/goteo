@@ -1,3 +1,4 @@
+---
 mandatory-project-field-address: 'The project leaders'' address is required'
 mandatory-project-field-contract_email: 'You must enter the project leader''s email'
 mandatory-project-field-country: 'You must enter a country for the project leader'
@@ -9,7 +10,7 @@ personal-field-contract_birthdate: 'Date of birth'
 personal-field-contract_data: 'Information about the project leader'
 personal-field-contract_email: 'Email linked to the project'
 personal-field-contract_entity-entity: 'Legal entity (associations, foundations, businesses, etc.)'
-personal-field-contract_entity-person: Person
+personal-field-contract_entity-person: 'Person'
 personal-field-country: Country
 personal-field-entity_cif: 'Organization''s Business ID Number (CIF)'
 personal-field-entity_name: 'Official name of the organization'

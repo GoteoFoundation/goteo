@@ -81,6 +81,7 @@ class ErrorController extends \Goteo\Core\Controller {
             // print_r($res);
             return $res;
         }
+        View::setTheme('responsive');
         return new Response(View::render('errors/not_found', ['msg' => 'Route not found', 'code' => Response::HTTP_NOT_FOUND]), Response::HTTP_NOT_FOUND);
     }
 }

@@ -20,16 +20,8 @@ use Goteo\Core\Traits\LoggerTrait;
 abstract class AbstractListener implements EventSubscriberInterface {
     use LoggerTrait;
 
-    protected $logger;
-
     public function __construct(LoggerInterface $logger = null) {
-        $this->logger = $logger;
-    }
-
-    public function log($message, array $context = [], $func = 'info') {
-        if (null !== $this->logger && method_exists($this->logger, $func)) {
-            return $this->logger->$func($message, WebProcessor::processObject($context));
-        }
+        $this->setLog($logger);
     }
 
     /**

@@ -44,8 +44,10 @@ error_reporting(E_ALL & ~E_NOTICE & ~E_USER_DEPRECATED); // for symfony user dep
 set_error_handler('Goteo\Application\App::errorHandler');
 
 // Config file...
-
-Config::load(is_file(__DIR__ .'/../config/dev-settings.yml')?'dev-settings.yml':'settings.yml');
+$config = getenv('GOTEO_CONFIG_FILE');
+if(!is_file($config)) $config = __DIR__ . '/../config/dev-settings.yml';
+if(!is_file($config)) $config = __DIR__ . '/../config/settings.yml';
+Config::load($config);
 
 //Get from globals defaults
 App::setRequest($request);

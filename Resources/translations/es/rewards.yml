@@ -1,3 +1,4 @@
+---
 mandatory-individual_reward-field-description: 'Es obligatorio poner alguna descripción'
 mandatory-individual_reward-field-icon: 'Es obligatorio seleccionar el tipo de recompensa'
 mandatory-individual_reward-field-name: 'Es obligatorio poner la recompensa'
@@ -10,7 +11,7 @@ rewards-field-individual_reward-description: Descripción
 rewards-field-individual_reward-other: 'Especificar el tipo de recompensa'
 rewards-field-individual_reward-reward: Recompensa
 rewards-field-individual_reward-type: 'Tipo de recompensa'
-rewards-field-individual_reward-units: Unidades
+rewards-field-individual_reward-units: 'Unidades disponibles'
 rewards-field-social_reward-description: Descripción
 rewards-field-social_reward-license: 'Opciones de licencia'
 rewards-field-social_reward-other: 'Especificar el tipo de retorno'

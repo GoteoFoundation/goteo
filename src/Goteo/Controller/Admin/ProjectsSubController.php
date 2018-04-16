@@ -678,6 +678,44 @@ class ProjectsSubController extends AbstractSubController {
         return $this->redirect();
     }
 
+    //  Reject derivating to other plattform
+    public function derivationAction($id) {
+        // Project && permission check
+        $project = $this->getProject($id, 'moderate');
+        $consultants = $project->getConsultants();
+
+        //  idioma de preferencia
+        $comlang = Model\User::getPreferences($project->user)->comlang;
+        $dest= 'owner';
+
+        $vars=[ '%PROJECTNAME%' => $project->name,
+        ];
+
+        // Send mail to owner: project not accepted in the Matcher
+        $tpl = Template::PROJECT_DERIVATION_DISCARD;
+        $mail = Mail::createFromTemplate($project->user->email, $project->user->name, $tpl, $vars, $comlang);
+
+        $errors = [];
+
+        if ($mail->send($errors)) {
+            $this->notice("Communication sent successfully to $dest", ['type' => 'project', $project, 'email' => $mail->to, 'bcc' => $mail->bcc, 'template' => $mail->template]);
+        } else {
+            $this->critical("ERROR sending communication to $dest", ['type' => 'project', $project, 'email' => $mail->to, 'bcc' => $mail->bcc, 'template' => $mail->template, 'errors' => $errors]);
+        }
+
+        // Admin as consultor
+        if ($this->user->id != 'root') {
+            if ((!isset($consultants[$this->user->id])) && ($project->assignConsultant($this->user->id, $errors))) {
+                $msg = 'Se ha asignado tu usuario (' . $this->user->id . ') como asesor del proyecto "' . $project->id . '"';
+                Message::info($msg);
+            }
+        }
+
+        $project->cancel();
+
+        return $this->redirect();
+    }
+
     // cortar el grifo
     public function noinvestAction($id) {
         // Project && permission check

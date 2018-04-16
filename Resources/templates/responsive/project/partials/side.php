@@ -6,7 +6,7 @@
         <?= $this->text('project-rewards-side-title') ?>
         </h2>
 
-        <?php foreach ($project->individual_rewards as $individual) : ?>
+        <?php foreach ($this->individual_rewards as $individual) : ?>
 
         <?php $available = $individual->available(); ?>
         <?php $units = ($individual->units - $individual->taken); // units left?>
@@ -14,11 +14,11 @@
 
             <div class="amount"><?= $this->text('regular-investing').' '.amount_format($individual->amount); ?></div>
             <div class="text-bold spacer-20"><?= $individual->reward ?></div>
-            <div class="spacer-20"><?= $individual->description ?></div>
+            <div class="spacer-20"><?= $this->text_url_link($individual->description) ?></div>
 
             <div class="investors">
                 <div><?= '> '.sprintf("%02d", $individual->taken).' '.$this->text('project-view-metter-investors') ?></div>
-                <?php if ($project->status==3): ?>
+                <?php if ($project->inCampaign()): ?>
 
                 <?php if (!$available):  ?>
                     <div class="left"><?= ' > '.$this->text('invest-reward-none') ?></div>
@@ -32,14 +32,12 @@
             </div>
 
 
-            <?php if ($project->status==3): ?>
+            <?php if ($project->inCampaign()): ?>
 
-                <div class="row spacer-5">
-                    <div class="col-md-6 col-sm-8">
-                        <?php if(!$individual->none): ?>
-                        <a href="<?= '/invest/'.$project->id.'/payment?reward='.$individual->id ?>"><button class="btn btn-block side-pink"><?= $this->text('regular-getit') ?></button></a>
+                <div class="spacer-5">
+                    <?php if(!$individual->none): ?>
+                    <a href="<?= '/invest/'.$project->id.'/payment?reward='.$individual->id ?>"><button class="btn btn-block btn-pink"><?= $this->text('regular-getit') ?></button></a>
                         <?php endif; ?>
-                    </div>
                 </div>
 
             <?php endif; ?>
@@ -51,10 +49,10 @@
         <?= $this->text('project-menu-messages') ?>
         </h2>
         <div class="small-subtitle">
-        <?= '> '.$project->num_messengers.' '.$this->text('project-collaborations-number') ?>
+        &gt; <?= $project->num_messengers.' '.$this->text('project-collaborations-number') ?>
         </div>
         <div class="small-subtitle">
-        <?=  '> '.sprintf("%02d", count($project->supports)).' '.$this->text('project-collaborations-available') ?>
+        &gt; <?= count($project->supports).' '.$this->text('project-collaborations-available') ?>
         </div>
 
         <div class="collaborations">
@@ -63,10 +61,8 @@
             <div class="side-widget">
                 <div class="text-bold"><?= $support->support ?></div>
                 <div class="spacer-20"><?= substr($support->description,0,150) ?></div>
-                <div class="row spacer-5">
-                    <div class="col-md-6 col-sm-8">
-                        <a href="<?= '/project/'.$project->id.'/participate#msg-'.$support->thread ?>"><button class="btn btn-block green"><?= $this->text('regular-collaborate') ?></button></a>
-                    </div>
+                <div class="spacer-5">
+                    <a href="<?= '/project/'.$project->id.'/participate#msg-'.$support->thread ?>"><button class="btn btn-block btn-green"><?= $this->text('regular-collaborate') ?></button></a>
                 </div>
             </div>
         <?php endforeach ?>

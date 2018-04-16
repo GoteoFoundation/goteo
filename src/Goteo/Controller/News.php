@@ -17,8 +17,9 @@ namespace Goteo\Controller {
     class News extends \Goteo\Core\Controller {
 
         public function __construct() {
-            //activamos la cache para todo el controlador news
-            \Goteo\Core\DB::cache(true);
+        // Cache & replica read activated in this controller
+        \Goteo\Core\DB::cache(true);
+        \Goteo\Core\DB::replica(true);
         }
 
         public function index () {
@@ -29,7 +30,7 @@ namespace Goteo\Controller {
             //Parse Content ONLY if data found on db
             if ($page) {
                $content = $page->parseContent();
-            } 
+            }
 
             return new View(
                 'news.html.php',

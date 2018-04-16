@@ -1,0 +1,34 @@
+---
+profile-field-about: 'Cúntanos daqué tocante a tigo'
+profile-field-avatar_current: 'La to imaxe actual'
+profile-field-avatar_upload: 'Xubir una imaxe'
+profile-field-contribution: 'Qué pues aportar a Goteo'
+profile-field-entity-type: 'Triba d''entidá'
+profile-field-entity-type-checkbox-public: 'Soi una entidá pública'
+profile-field-entity-type-choose: 'Esbilla una triba d''entida'
+profile-field-keywords: 'Temes que t''interesen'
+profile-field-legal-entity: 'Forma xurídica'
+profile-field-legal-entity-asociation: Asociación
+profile-field-legal-entity-choose: 'Esbilla una forma xudicial'
+profile-field-legal-entity-company: Empresa
+profile-field-legal-entity-cooperative: Cooperativa
+profile-field-legal-entity-ngo: ONG
+profile-field-legal-entity-person: 'Persona física'
+profile-field-legal-entity-self-employed: Autónomu
+profile-field-name: 'Nome d''usuariu/a'
+profile-field-url: URL
+profile-field-websites: 'Les mios páxines web'
+profile-fields-analytics-title: Analítica
+profile-fields-image-title: 'Imaxe de perfil'
+profile-fields-social-title: 'Perfiles sociales'
+profile-main-header: 'Datos del perfil'
+step-1: Perfil
+step-userProfile: 'Pasu: Usuariu / Perfil'
+validate-project-userProfile-any_error: 'Hai dalgún fallu na direición URL introducida'
+validate-project-userProfile-web: 'Ye aconseyable indicar dalguna web'
+validate-user-field-facebook: 'Pon la to cuenta de Facebook p''ameyorar la valoración del proyeutu de cara a determinar si espublizalu en Goteo.'
+validate-user-field-interests: 'Esbilla dalgún interés p''ameyorar la valoración del proyeutu de cara a determinar si espublizalu en Goteo.'
+validate-user-field-keywords: 'Indica hasta 5 pallabres clave que te definan, p''ameyorar la valoración del proyeutu de cara a determinar si espublizalu en Goteo.'
+validate-user-field-linkedin: 'El campu de Linkedin nun ye válidu'
+validate-user-field-twitter: 'L''usuariu de Twitter nun ye válidu'
+validate-user-field-web: 'Has poner la direición (URL) de la web'

@@ -11,7 +11,7 @@
 namespace Goteo\Util\Form;
 
 /**
- * ModelException.
+ * FormFinderException.
  *
  */
 class FormFinderException extends \RuntimeException

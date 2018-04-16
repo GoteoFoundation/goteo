@@ -24,7 +24,7 @@ use Goteo\Model\Project\ProjectLocation;
 use Goteo\Model\User\UserLocation;
 use Goteo\Util\Google\GoogleGeocoder;
 
-class LocationCommand extends Command {
+class LocationCommand extends AbstractCommand {
 
     protected function configure()
     {

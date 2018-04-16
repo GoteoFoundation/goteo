@@ -1,0 +1,10 @@
+---
+channel-join: 'Xúnite'
+channel-join-desc: '¿Quies participar na canal?'
+channel-join-reviewing: 'N''evaluación...'
+matcher-terms: 'bases de la convocatoria'
+matcher-terms-desc: 'Bases pa participar na convocatoria'
+matcher-apply-accept: 'Sí, apúntome'
+matcher-apply-reject: 'Non gracies, renuncio a la convocatoria'
+matcher-apply-discard: 'Escartar proyeutu'
+matcher-budget-amount: 'Presupuestu total'

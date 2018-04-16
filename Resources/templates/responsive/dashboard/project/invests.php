@@ -11,10 +11,30 @@
         <p><?= $this->text('dashboard-rewards-notice') ?></p>
     <?php endif ?>
 
-    <form id="filters" class="row">
-      <span class="col-xs-6">
-        <label for="filter-reward"><?= $this->text('dashboard-project-filter-by-reward') ?></label>
-        <?= $this->html('input',
+    <form id="filters">
+      <div class="row">
+        <div class="col-xs-10">
+            <p><?= $this->html('input',
+                        ['type' => 'text',
+                        'name' => 'filter[query]',
+                        'value' => $this->filter['query'],
+                        'attribs' => [
+                            'id' => 'filter-query',
+                            'class' => 'form-control',
+                            'placeholder' => $this->text('regular-search-user')
+                        ],
+                        'options' => $this->filters['query']
+                    ]) ?></p>
+
+        </div>
+        <div class="col-xs-2">
+            <button type="submit" class="btn btn-cyan" ><i class="fa fa-search"></i> <?= $this->text('regular-search') ?></button>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-xs-6">
+            <label for="filter-reward"><?= $this->text('dashboard-project-filter-by-reward') ?></label>
+            <?= $this->html('input',
                         ['type' => 'select',
                         'name' => 'filter[reward]',
                         'value' => $this->filter['reward'],
@@ -24,10 +44,10 @@
                         ],
                         'options' => $this->filters['reward']
                     ]) ?>
-      </span>
-      <span class="col-xs-6">
-        <label for="filter-others"><?= $this->text('dashboard-project-filter-by-others') ?></label>
-        <?= $this->html('input',
+        </div>
+        <div class="col-xs-6">
+            <label for="filter-others"><?= $this->text('dashboard-project-filter-by-others') ?></label>
+            <?= $this->html('input',
                         ['type' => 'select',
                         'name' => 'filter[others]',
                         'value' => $this->filter['others'],
@@ -37,7 +57,8 @@
                         ],
                         'options' => $this->filters['others']
                     ]) ?>
-      </span>
+        </div>
+      </div>
       <input type="hidden" name="order" value="<?= $this->order ?>">
     </form>
 
@@ -96,14 +117,16 @@
 
 
       ?>
-        <tr>
+        <tr<?= $invest->isCharged() ? '' : ' class="strikethrough"'?>>
           <td><?= $invest->id ?></td>
           <td><?= date_formater($invest->invested) ?></td>
           <td><?php if($uid): ?><img src="<?= $invest->getUser()->avatar->getLink(30, 30, true) ?>" alt="<?= $name ?>" class="img-circle"> <?= $name ?><?php else: ?><?= $this->text('regular-anonymous') ?><?php endif ?> </td>
           <td><?= amount_format($invest->amount) ?></td>
           <td><?= $reward ?></td>
           <td>
-              <?php if($invest->resign): ?>
+              <?php if(!$invest->isCharged()): ?>
+                <span class="label label-danger"><?= $invest->getStatusText(true) ?></span>
+              <?php elseif($invest->resign): ?>
                 &nbsp;
               <?php elseif($invest->fulfilled): ?>
                 <span class="label label-cyan"><?= $this->text('regular-yes') ?></span>
@@ -113,7 +136,7 @@
           </td>
           <td><?= $address ?></td>
           <td>
-            <a data-toggle="modal" href="#messageModal" data-user="<?= $invest->getUser()->id ?>" data-name="<?= $invest->getUser()->name ?>" class="send-private" title="<?= $this->text('support-send-private-message') ?>"><?= (int)$this->messages[$invest->getUser()->id] ?> <i class="icon-1x icon icon-partners"></i></a>
+            <a data-toggle="modal" href="#messageModal" data-user="<?= $invest->getUser()->id ?>" data-name="<?= $invest->getUser()->name ?>" class="send-private" title="<?= $this->text('support-send-private-message') ?>"><span><?= (int)$this->messages[$invest->getUser()->id] ?></span> <i class="icon-1x icon icon-partners"></i></a>
           </td>
         </tr>
       <?php endforeach ?>
@@ -161,10 +184,14 @@
         <img title="{name}" src="{avatar}" class="img-circle">
     </div>
     <div class="media-body">
-        <p>
+        <h4> <?= $this->text('mailer-from') ?>:
             <strong>{name}</strong>
-            <em>{date}</em>
-        </p>
+            - <em>{date}</em>
+            <span class="recipient">
+                <?= $this->text('mailer-to') ?>:
+                <strong>{recipient}</strong>
+            </span>
+        </h4>
         <p>{message}</p>
         <p class="text-danger hidden error-message"></p>
     </div>
@@ -210,6 +237,8 @@ $(function(){
         var private = $(evt.relatedTarget).hasClass('send-private');
         var user_id = $(evt.relatedTarget).data('user');
         var user_txt = $(evt.relatedTarget).data('name');
+        var $span = $(evt.relatedTarget).find('>span');
+        var $subject = $('#messageModal input[name="subject"]').closest('.form-group');
         var $list = $('#messageModal .messages-list');
         var $recipients = $('#messageModal .ajax-message .recipients');
         var prefix = $recipients.data('private');
@@ -221,21 +250,30 @@ $(function(){
         // Create form fields
         $('#messageModal .ajax-message .error-message').addClass('hidden');
         $list.removeClass('loading').html('');
+        $subject.show();
         if(private) {
+          if(parseInt($span.text()) > 0) {
+            $subject.hide();
+          }
           // Create messages
           var $template = $('script.item_message_template');
           $list.addClass('loading');
           $.getJSON('/api/projects/<?= $this->project->id ?>/messages/' + user_id, function(msgs) {
-            console.log('msgs', msgs);
+            // console.log('msgs', msgs);
             if(msgs && msgs.list) {
               $list.removeClass('loading');
               $.each(msgs.list, function(i, item){
-                console.log(i, item);
+                // console.log(i, item);
                 var msg = $template.html()
                             .replace(/\{name\}/g, item.name)
+                            .replace(/\{recipient\}/g, item.recipient_name)
                             .replace(/\{date\}/g, item.timeago)
                             .replace(/\{avatar\}/g, item.avatar)
                             .replace(/\{message\}/g, item.message);
+
+                if(item.opened) msg = msg.replace('"recipient"', '"recipient opened"');
+                else if(item.sent) msg = msg.replace('"recipient"', '"recipient sent"');
+
                 $list.append(msg);
               });
             } else {
@@ -274,13 +312,24 @@ $(function(){
         $('.ajax-message input[name="users"]').val(user_id || '');
         $('.ajax-message .recipients').html(prefix + ' <strong>'+ txt + '</strong>');
     });
-    $(document).on('message-sent', function(evt, data){
-        console.log('message sent', data);
+
+    $(document).on('message-sent', function(evt, request, response){
+        // console.log('message sent', request, response);
         $('.ajax-message input[name="reward"]').val('');
         $('.ajax-message input[name="filter"]').val('');
         $('.ajax-message input[name="users"]').val('');
-        // TODO: clear subject and body?
+        // Clear subject and body?
+        $('.ajax-message input[name="subject"]').val('');
+        $('.ajax-message textarea[name="body"]').val('');
+
         $('#messageModal').modal('hide');
+        if(request.users) {
+            for(var i in request.users) {
+                // console.log(request.users[i]);
+                var $span = $('a.send-private[data-user="' +  request.users[i] + '"]>span');
+                $span.text(parseInt($span.text()) + 1);
+            }
+        }
     });
 })
 

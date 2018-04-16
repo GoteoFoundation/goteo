@@ -1,4 +1,26 @@
+---
 admin-action: 'Administrator action'
-admin-filters: Filters
+admin-NO: 'NO'
+admin-YES: "YES"
+admin-account-amount: 'Donated amount'
+admin-account-change-user: 'Switch user'
+admin-account-change-user-confirm: 'Are you sure you want to change the user of the contribution? The new user will be:'
+admin-filters: 'Filters'
 admin-remove-filters: 'Remove filters'
 admin-impersonate-user: Impersonate %s
+admin-project-express-discard: 'Express discard'
+admin-project-express-discard-desc: 'Change the project status to Discard and sends an email'
+admin-project-express-discard-sure: 'The project will be discarded and the owner will receive an email, ok?'
+admin-project-to-review: 'To review'
+admin-project-to-review-desc: 'Change the project status to Review pending'
+admin-project-to-review-sure: 'The owner won''t be able to edit the project anymore, ok?'
+admin-project-view-in-admin: 'View in admin'
+admin-project-to-negotiation: 'To negotiation'
+admin-project-to-negotiation-desc: 'Change the project status to Editing'
+admin-project-to-negotiation-sure: 'ALERT! The project is in campaign! This action will unpublish the project, Ok?'
+admin-project-to-publish: 'Publish'
+admin-project-to-publish-desc: 'Change the project status to "In campaign"'
+admin-project-to-publish-sure: 'Project is going to start its campaign, ok?'
+admin-project-derivation-discard: 'Discard and derivation'
+admin-project-derivation-discard-desc: 'Change the project status to Discard and sends an email derivating to others platforms'
+admin-project-derivation-discard-sure: 'The project will be discarded and the owner will receive an email derivating to other platforms, ok?'

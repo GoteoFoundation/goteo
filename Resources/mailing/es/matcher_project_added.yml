@@ -1,0 +1,23 @@
+group: project
+name: 'Project added to a Matchfunding call'
+purpose: 'Mail template to be sent to a project owner when his project is added to a Matcher call'
+type: 'md'
+title: '¡Tu proyecto ha sido preseleccionado para una convocatoria matchfunding!'
+text: >
+    # La convocatoria matchfunding **%CALLNAME%** ha preseleccionado tu proyecto **%PROJECTNAME%**!
+
+    Esto significa que, si eres aceptado en la convocatoria, puedes acceder a una fuente de financiación adicional para tu campaña.
+
+
+    Para ello **debes aceptar (o rechazar) las bases de la convocatoria** en tu dashboard:
+
+
+    [%PROJECTSUMMARYURL%](%PROJECTSUMMARYURL%)
+
+
+    Una vez hayas aceptado, los responsables de la convocatoria deben confirmar tu proyecto.
+    Para más información, consulta las bases aquí:
+
+
+    [%CALLURL%](%CALLURL%)
+

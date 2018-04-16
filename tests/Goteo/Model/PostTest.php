@@ -39,8 +39,9 @@ class PostTest extends \PHPUnit_Framework_TestCase {
      */
     public function testCreatePost() {
         $ob = new Post(self::$data);
+        $errors = [];
         $this->assertTrue($ob->validate($errors));
-        $this->assertTrue($ob->save());
+        $this->assertTrue($ob->save($errors), print_r($errors, 1));
         $ob = Post::get($ob->id);
         $this->assertInstanceOf('\Goteo\Model\Post', $ob);
 

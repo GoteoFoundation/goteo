@@ -37,5 +37,6 @@ $.fn.extend({
             }
             $(this).off();
         });
+        return this;
     }
 });

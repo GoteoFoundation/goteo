@@ -10,8 +10,8 @@
 
 namespace Goteo\Core\Traits;
 
-use Monolog\Logger;
 use Goteo\Util\Monolog\Processor\WebProcessor;
+use Psr\Log\LoggerInterface;
 
 /**
  * Trait to use log on legacy classes
@@ -20,11 +20,11 @@ trait StaticLoggerTrait {
 
     static protected $logger = null;
 
-    static public function setLogger(Logger $logger) {
+    static public function setLogger(LoggerInterface $logger) {
         static::$logger = $logger;
     }
 
-    static public function getLogger(Logger $logger) {
+    static public function getLogger(LoggerInterface $logger) {
         return static::$logger;
     }
 

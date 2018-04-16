@@ -1,3 +1,4 @@
+---
 translator: Traductor
 translator-autotranslate-from: 'Traducción automática de'
 translator-back-to-list: 'Volver a la lista'
@@ -54,6 +55,7 @@ translator-pending-desc: 'Este contenido está "pendiente", cosa que significa q
 translator-post: Blog
 translator-promote: 'Proyectos destacados'
 translator-save: 'Guardar y publicar'
+translator-save-original: 'Guardar en la tabla original'
 translator-save-draft: 'Guardar como borrador'
 translator-saved-ko: 'Error al guardar la traducción al %LANG% (%ERROR%)'
 translator-saved-ok: 'Traducciones guardadas correctamente para los idiomas [%s]'

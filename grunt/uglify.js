@@ -10,7 +10,7 @@ module.exports = function(grunt) {
         options: {
             output: {
                 comments: function(node, comment) {
-                    console.log('comment', comment.value);
+                    // console.log('comment', comment.value);
                     if(!licenseOk && comment.value.indexOf('@licstart') > -1 && comment.value.indexOf('@licend') > -1) {
                         licenseOk = true;
                         return true;

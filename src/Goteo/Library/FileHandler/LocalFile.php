@@ -123,7 +123,7 @@ class LocalFile extends BaseFile implements FileInterface {
 
         $auto_delete_dirs = $extra['auto_delete_dirs'];
 
-        if(unlink($remote)) {
+        if(@unlink($remote)) {
             $ok = true;
             if($auto_delete_dirs) {
     			$this->delete_empty_dir(dirname($remote), is_string($auto_delete_dirs) ? $auto_delete_dirs : false);
@@ -347,13 +347,14 @@ class LocalFile extends BaseFile implements FileInterface {
         if(!$this->connect()) return false;
         if(!$remote_original) return false;
         $dir = dirname($remote_original);
+        if($dir === '.') $dir = '';
         if($dir) $dir = "$dir/";
         $name = basename($remote_original);
         $name = preg_replace("/[^a-z0-9_~\.-]+/","-",strtolower(Model::idealiza($name, true)));
         $remote = $this->get_path($dir . $name);
 
         while ( file_exists ( $remote )) {
-            $name = preg_replace_callback( '/^(.+?)(_?)(\d*)(\.[^.]+)?$/', function($m){
+            $name = preg_replace_callback( '/^(.+?)(\-?)(\d*)(\.[^.]+)?$/', function($m){
                 return $m[1] .'-' . ((int)$m[3]+1) . $m[4];
             }, $name );
             $remote = $this->get_path($dir . $name);
@@ -367,7 +368,7 @@ class LocalFile extends BaseFile implements FileInterface {
     public function setPath($path) {
         while(substr($path,0,1) == DIRECTORY_SEPARATOR) $path = substr($path, 1);
 
-        $this->path = static::$base_dir . DIRECTORY_SEPARATOR . $path;
+        $this->path = static::$base_dir . $path;
         if(!is_dir($this->path)) @mkdir($this->path, 0777, true);
     }
 

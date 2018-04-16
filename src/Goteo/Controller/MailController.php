@@ -42,6 +42,7 @@ class MailController extends \Goteo\Core\Controller {
                     try {
                         // email tracker
                         $stat = MailStats::incMetric($mail_id, $email, 'EMAIL_OPENED');
+                        // print_r($stat);die;
                         // geolocation if exists database
                         if (Config::get('geolocation.maxmind.cities')) {
                             $loc = MailStatsLocation::createByIp($stat->id, $request->getClientIp());
@@ -55,6 +56,9 @@ class MailController extends \Goteo\Core\Controller {
 
                 } catch(\Exception $e) {
                     // TODO: log this
+                    if (App::debug()) {
+                        throw $e;
+                    }
                 }
 
             }
@@ -83,9 +87,8 @@ class MailController extends \Goteo\Core\Controller {
     }
 
     /**
-     * @deprecated
      * Redirects to the apropiate link
-     * Not really used, only as a fallback if mailstats fails
+     * Using this method as default to avoid creating empty metrics in database
      */
     public function urlAction ($token, Request $request) {
 
@@ -94,6 +97,7 @@ class MailController extends \Goteo\Core\Controller {
             // track this opening
             try {
                 $stat = MailStats::incMetric($mail_id, $email, $url);
+                // var_dump($stat);die;
                 // try to geolocate
                 try {
                     // set email opened metric if empty
@@ -151,11 +155,12 @@ class MailController extends \Goteo\Core\Controller {
                 $stat->save();
                 // Mark as readed if mail exists
                 $url = $stat->getMetric()->metric;
+                // print_r($url);die;
                 if ($url) {
                     return $this->redirect($url);
                 }
             } catch(\Exception $e) {
-                //TODO: log this
+                $this->warning($e->getMessage(), [$stat, 'link_id' => $id, 'url' => $url]);
                 Message::error($e->getMessage());
             }
 

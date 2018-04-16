@@ -42,7 +42,7 @@
     <?php endif; ?>
 
     <div class="general-text spacer-20">
-        <?= $this->post->text; ?>
+        <?= $this->markdown($this->post->text) ?>
     </div>
 
     <?php if (!empty($this->post->media->url)) :

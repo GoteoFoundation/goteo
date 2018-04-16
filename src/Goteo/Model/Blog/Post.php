@@ -29,8 +29,10 @@ class Post extends \Goteo\Core\Model {
         $blog,
         $project,
         $title,
+        $subtitle,
         $text,
         $image,
+        $header_image,
         $media,
         $legend,
         $date,
@@ -38,12 +40,14 @@ class Post extends \Goteo\Core\Model {
         $footer,
         $author,
         $owner,
+        $owner_id,
         $allow = false,
         $publish = false,
         $tags = array(),
         $gallery = array(), // array de instancias image de post_image
         $num_comments = 0,
         $comments = array();
+
 
     public static function sanitizeText($t) {
         return strip_tags($t, '<br><a><strong><i><b><ul><li><ol><em><blockquote><p><img><code><pre><h1><h2><h3><h4><h5><h6><small>');
@@ -52,23 +56,25 @@ class Post extends \Goteo\Core\Model {
     /*
      *  Devuelve datos de una entrada
      */
-    public static function get ($id, $lang = null) {
+    public static function get ($id, $lang = null, $model_lang = null) {
 
         // This model does not automaticalley request translation
         // support language only if requested
         // That's because Projects can be in any custom language and its
         // corresponding blog will match the same language as main
 
-        if($lang) $lang = self::default_lang_by_id($id, 'post_lang', $lang);
+        if($lang !== $model_lang) $lang = self::default_lang_by_id($id, 'post_lang', $lang);
 
         $sql = "
             SELECT
                 post.id as id,
                 post.blog as blog,
                 IFNULL(post_lang.title, post.title) as title,
+                IFNULL(post_lang.subtitle, post.subtitle) as subtitle,
                 IFNULL(post_lang.text, post.text) as text,
                 IFNULL(post_lang.legend, post.legend) as legend,
                 post.image as `image`,
+                post.header_image as `header_image`,
                 IFNULL(post_lang.media, post.media) as `media`,
                 post.date as `date`,
                 DATE_FORMAT(post.date, '%d | %m | %Y') as fecha,
@@ -106,7 +112,7 @@ class Post extends \Goteo\Core\Model {
 
         $values = array(':id' => $id, ':lang'=>$lang);
 
-        // die(\sqldbg($sql, $values));
+        // die("[$lang]".\sqldbg($sql, $values));
 
         $query = static::query($sql, $values);
         $post = $query->fetchObject('\Goteo\Model\Blog\Post');
@@ -121,6 +127,7 @@ class Post extends \Goteo\Core\Model {
 
         $post->gallery = Image::getModelGallery('post', $post->id);
         $post->image = Image::getModelImage($post->image, $post->gallery);
+        $post->header_image = Image::getModelImage($post->header_image);
 
         // video
         if (isset($post->media)) {
@@ -157,8 +164,10 @@ class Post extends \Goteo\Core\Model {
                     post.id as id,
                     post.blog as blog,
                     IFNULL(post_lang.title, post.title) as title,
+                    IFNULL(post_lang.subtitle, post.subtitle) as subtitle,
                     IFNULL(post_lang.text, post.text) as text,
                     post.image as `image`,
+                    post.header_image as `header_image`,
                     post.date as `date`,
                     DATE_FORMAT(post.date, '%d | %m | %Y') as fecha
                     blog.type as owner_type,
@@ -186,20 +195,22 @@ class Post extends \Goteo\Core\Model {
      * de mas nueva a mas antigua
      * // si es portada son los que se meten por la gestion de entradas en portada que llevan el tag 1 'Portada'
      */
-    public static function getAll ($blog = null, $limit = null, $published = true) {
+    public static function getAll ($blog = null, $limit = null, $published = true, $model_lang = null) {
         $lang = Lang::current();
         $list = array();
 
         $values = array(':lang'=>$lang);
 
-        if(self::default_lang($lang) === Config::get('lang')) {
+        if(self::default_lang($lang) === $model_lang ? $model_lang : Config::get('lang')) {
             $different_select=" IFNULL(post_lang.title, post.title) as title,
+                                IFNULL(post_lang.subtitle, post.subtitle) as subtitle,
                                 IFNULL(post_lang.text, post.text) as `text`,
                                 IFNULL(post_lang.legend, post.legend) as `legend`,
                                 IFNULL(post_lang.media, post.media) as `media`";
             }
         else {
                 $different_select=" IFNULL(post_lang.title, IFNULL(eng.title, post.title)) as title,
+                                    IFNULL(post_lang.subtitle, IFNULL(eng.subtitle, post.subtitle)) as subtitle,
                                     IFNULL(post_lang.text, IFNULL(eng.text, post.text)) as `text`,
                                     IFNULL(post_lang.legend, IFNULL(eng.legend, post.legend)) as `legend`,
                                     IFNULL(post_lang.media, IFNULL(eng.media, post.media)) as `media`";
@@ -271,7 +282,7 @@ class Post extends \Goteo\Core\Model {
             $sql .= "LIMIT $limit";
         }
 
-//            die(\sqldbg($sql, $values));
+           // die(\sqldbg($sql, $values));
 
         $query = static::query($sql, $values);
 
@@ -301,25 +312,34 @@ class Post extends \Goteo\Core\Model {
         return $list;
     }
 
+    // returns the author
+    public function getAuthor() {
+        if($this->userInstance) return $this->userInstance;
+        $this->userInstance = User::get($this->author);
+        return $this->userInstance;
+    }
+
     /*
      * Lista de entradas filtradas
      *  por tag
      * de mas nueva a mas antigua
      */
-    public static function getList ($filters = array(), $published = true, $offset = 0, $limit = 10, $count = false) {
-        $lang = Lang::current();
+    public static function getList ($filters = array(), $published = true, $offset = 0, $limit = 10, $count = false, $lang = null, $model_lang = null) {
+        if(!$lang) $lang = Lang::current();
         $values = array(':lang'=>$lang);
 
         $list = array();
 
-        if(self::default_lang($lang) === Config::get('lang')) {
+        if(self::default_lang($lang) === $model_lang ? $model_lang : Config::get('lang')) {
             $different_select=" IFNULL(post_lang.title, post.title) as title,
+                                IFNULL(post_lang.subtitle, post.subtitle) as subtitle,
                                 IFNULL(post_lang.text, post.text) as `text`,
                                 IFNULL(post_lang.legend, post.legend) as `legend`,
                                 IFNULL(post_lang.media, post.media) as `media`";
             }
         else {
                 $different_select=" IFNULL(post_lang.title, IFNULL(eng.title, post.title)) as title,
+                                    IFNULL(post_lang.subtitle, IFNULL(eng.subtitle, post.subtitle)) as subtitle,
                                     IFNULL(post_lang.text, IFNULL(eng.text, post.text)) as `text`,
                                     IFNULL(post_lang.legend, IFNULL(eng.legend, post.legend)) as `legend`,
                                     IFNULL(post_lang.media, IFNULL(eng.media, post.media)) as `media`";
@@ -511,6 +531,7 @@ class Post extends \Goteo\Core\Model {
             // 'id',
             'blog',
             'title',
+            'subtitle',
             'text',
             'media',
             'legend',
@@ -534,7 +555,7 @@ class Post extends \Goteo\Core\Model {
             if ($this->id) {
                 // Will be an Upload if it's not Image
                 if($this->image) {
-                    if(is_array($this->image)) {
+                    if(is_array($this->image) && !$this->image['tmp_name']) {
                         try {
                             Image::replaceGallery('post', $this->id, $this->image);
                         } catch(ModelException $e) {
@@ -545,6 +566,7 @@ class Post extends \Goteo\Core\Model {
                     } else {
                         // Old behaviour, add the image to the gallery if
                         // needed (it's an upload)
+                        $img = $this->image;
                         if(!$img instanceOf Image) {
                             $img = new Image($img);
                         }
@@ -590,7 +612,8 @@ class Post extends \Goteo\Core\Model {
     }
 
     public static function getLangFields() {
-        return ['title', 'text', 'media', 'legend'];
+        // return ['title', 'text', 'media', 'legend'];
+        return ['title', 'text'];
     }
 
     public function saveLang (&$errors = array()) {
@@ -602,6 +625,7 @@ class Post extends \Goteo\Core\Model {
             'blog'=>'blog',
             'lang'=>'lang',
             'title'=>'title_lang',
+            'subtitle'=>'subtitle_lang',
             'text'=>'text_lang',
             'media'=>'media_lang',
             'legend'=>'legend_lang'

@@ -78,12 +78,14 @@ if($sidebar) {
 
     <?= $this->supply('header', $this->insert("partials/header")) ?>
 
+    <?= $this->supply('search', $this->insert("partials/search")) ?>
+
     <div class="page-wrap">
       <?= $this->supply('sidebar', $this->insert("partials/sidebar", ['sidebarMenu' => $sidebar])) ?>
       <div id="main">
 
         <div id="main-content">
-            <?= $this->supply('messages', $this->insert("partials/header/messages")) ?>
+            <?= $this->supply('flash-messages', $this->insert("partials/header/messages"))?>
             <?= $this->supply('content') ?>
         </div>
 

@@ -97,17 +97,17 @@ class ConsoleExceptionListener extends AbstractListener {
 		}
 
 		// nice colors
-		if ($this->logger) {
+		if ($this->getLog()) {
 			// if errors should be mailed
 			if ($input->getOption('logmail')) {
 				$mailer            = Mail::createFromHtml(Config::getMail('fail'), '', "CLI-ERROR: [$name] in [" .Config::get('url.main')."]");
 				$this->mailhandler = new MailHandler($mailer, '', Logger::DEBUG, true);
 				$this->mailhandler->setFormatter(new HtmlFormatter());
-				$this->logger->pushHandler(new FingersCrossedHandler($this->mailhandler, Logger::ERROR));
+				$this->getLog()->pushHandler(new FingersCrossedHandler($this->mailhandler, Logger::ERROR));
 			}
 
 			if (!$input->getOption('no-ansi')) {
-				foreach ($this->logger->getHandlers() as $handler) {
+				foreach ($this->getLog()->getHandlers() as $handler) {
 					if ($handler instanceOf StreamHandler && $handler->getFormatter() instanceOf LineFormatter) {
 						$handler->setFormatter(new ColoredLineFormatter());
 					}
@@ -118,7 +118,7 @@ class ConsoleExceptionListener extends AbstractListener {
 		$this->debug("Command [".$command->getName()."] started", ['command' => $command->getName(), 'options' => $input->getOptions(), 'started' => $this->starttime]);
 
 		// Add logger for some Objects
-		UsersSend::setLogger($this->logger);
+		UsersSend::setLogger($this->getLog());
 
 		// Get a lock for this process
 		$this->lock_name = $env.'.'.$input->getOption('lock-name');
@@ -139,7 +139,7 @@ class ConsoleExceptionListener extends AbstractListener {
 			$command->setOutput($event->getOutput());
 			$command->setInput($input);
 			// Add logger
-			$command->addLogger($this->logger);
+			$command->addLogger($this->getLog());
 		}
 
 	}

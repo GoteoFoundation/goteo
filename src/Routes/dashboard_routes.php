@@ -24,6 +24,16 @@ $dash->add('dashboard-messages', new Route(
     array('_controller' => 'Goteo\Controller\DashboardController::messagesAction',
         )
 ));
+$dash->add('dashboard-mailing', new Route(
+    '/mailing',
+    array('_controller' => 'Goteo\Controller\DashboardController::mailingAction',
+        )
+));
+$dash->add('dashboard-rewards', new Route(
+    '/rewards',
+    array('_controller' => 'Goteo\Controller\DashboardController::myRewardsAction',
+        )
+));
 // Virtual wallet
 $dash->add('dashboard-wallet', new Route(
     '/wallet',
@@ -52,6 +62,13 @@ $dash->add('dashboard-ajax-projects-materials-table', new Route(
     array('_controller' => 'Goteo\Controller\Dashboard\AjaxDashboardController::projectMaterialsTableAction',
         )
 ));
+
+// join action for a project in when selected for a matcher
+$dash->add('dashboard-ajax-matcher-action', new Route(
+    '/ajax/matchers/{mid}/{action}/{pid}',
+    array('_controller' => 'Goteo\Controller\Dashboard\AjaxDashboardController::joinMatcherAction')
+));
+
 
 // Projects editing
 // Summary
@@ -176,6 +193,13 @@ $dash->add('dashboard-project-translate-costs', new Route(
 $dash->add('dashboard-project-translate-rewards', new Route(
     '/project/{pid}/translate/rewards/{lang}',
     array('_controller' => 'Goteo\Controller\Dashboard\TranslateProjectDashboardController::rewardsTranslateAction',
+        'lang' => null
+        )
+));
+// Project translate supports
+$dash->add('dashboard-project-translate-supports', new Route(
+    '/project/{pid}/translate/supports/{lang}',
+    array('_controller' => 'Goteo\Controller\Dashboard\TranslateProjectDashboardController::supportsTranslateAction',
         'lang' => null
         )
 ));
@@ -396,7 +420,10 @@ $dash->add('dashboard-old-translate', new Route(
         if($type === 'project' && is_object($project)) {
             return new RedirectResponse("/dashboard/project/" . $project->id . '/translate');
         }
-        // TODO: calls & nodes
+        if($type === 'call') {
+            return new RedirectResponse("/dashboard/calls");
+        }
+        // TODO: nodes
         return new RedirectResponse("/dashboard/settings/profile");
     },
     'zone' => null,

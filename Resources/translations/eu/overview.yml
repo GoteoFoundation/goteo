@@ -1,3 +1,4 @@
+---
 images-main-header: 'Proiektuaren argazkiak'
 mandatory-project-field-about: 'Proiektuaren oinarrizko ezaugarriak azaltzea derrigorrekoa da'
 mandatory-project-field-category: 'Proiektuarentzat kategoria bat aukeratzea gutxienez derrigorrekoa da.'
@@ -19,7 +20,7 @@ overview-field-image_upload: 'Irudia igo (2MB max.)'
 overview-field-keywords: 'Proiektuaren hitz gakoak'
 overview-field-lang: 'Jatorrizko hizkuntza'
 overview-field-media: 'Aurkezpena bideoa'
-overview-field-media_preview: Aurrebista
+overview-field-media_preview: 'Aurrebista'
 overview-field-name: 'Proiektuaren izenburua'
 overview-field-options-currently_avanzado: Aurreratuta
 overview-field-options-currently_finalizado: Bukatuta
@@ -62,5 +63,4 @@ tooltip-project-video: 'Pentsa ezazu hemen bideo bat argitaratu eta lotzeko auke
 validate-project-field-about: 'Proiektuaren azalpena laburregia da'
 validate-project-field-currently: ' Zehaztu proiektuaren egoera bere balorazioa hobetzeko, eta Goteo-n argitaratuko den ala ez jakiteko.'
 validate-project-field-description: 'Proiektuaren deskribapena laburregia da'
-validate-project-value-description: 'Proiektuaren deskribapena laburregia da'
 validate-project-value-keywords: 'Zehaztu proiektuari buruz 5 hitz gako gutxienez bere balorazioa hobetzeko, eta Goteo-n argitaratuko den ala ez jakiteko.'

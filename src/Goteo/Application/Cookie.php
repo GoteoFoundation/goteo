@@ -54,7 +54,7 @@ class Cookie {
         $ttl = (int) $ttl;
         if (PHP_SAPI !== 'cli') {
             //delete previous cookie
-            setcookie($key, '', time() - 3600, self::$path, self::getDomain());
+            // setcookie($key, '', time() - 3600, self::$path, self::getDomain());
             //store cookie
             setcookie($key, $value, time() + $ttl, self::$path, self::getDomain());
             // print_r($_COOKIE);

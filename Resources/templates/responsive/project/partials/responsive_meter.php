@@ -162,6 +162,23 @@ use Goteo\Library\Check;
 
 <?php endif; ?>
 
+ <?php if ($project->node !== $this->get_config('current_node')&&($project->nodeData->active)) : ?>
+
+    <div class="visible-xs channel" >
+        <span class="channel-label">
+            <img src="/assets/img/project/channel.svg" width="20"> <?= $this->text('regular-channel') ?> 
+        </span>
+        <a href="<?= $project->nodeData->url ?>">
+            <button class="btn" style="<?= $project->nodeData->owner_background ? 'background-color: '.$project->nodeData->owner_background :  '' ?>" > 
+                <?= $project->nodeData->name ?>    
+            </button>
+        </a>
+    </div>
+
+<?php endif; ?>
+
+
+
 <div class="row visible-xs extra-responsive-meter">
     <?php if(!$this->get_user() ): ?>
         <a href="/project/favourite/<?= $project->id ?>">

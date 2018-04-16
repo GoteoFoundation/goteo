@@ -6,7 +6,7 @@
         <?php foreach ($this->interests as $key => $interest): ?>
           <div class="col-sm-4 col-xs-6">
             <label>
-              <input type="checkbox" class="no-margin-checkbox big-checkbox interest" name="interest-<?= $key ?>" id="<?= $key ?>" <?= isset($this->user_interests[$key]) ? 'checked=checked' : '' ?>)>
+              <input type="checkbox" class="no-margin-checkbox big-checkbox interest" name="interest-<?= $key ?>" id="<?= $key ?>"<?= isset($this->user_interests[$key]) ? ' checked="checked"' : '' ?>>
               <span style="margin-left:5px; font-weight:normal;"><?= $interest ?></span>
             </label>
           </div>

@@ -1,0 +1,49 @@
+.discover{
+	background-color: $background-main-home;
+	.main-info{
+		background-color: $color-white;
+		padding-bottom: 40px;
+		h2.title{
+			margin-top: 40px;
+			margin-bottom: 20px;
+		}
+		.custom-search-input {
+	        margin:0;
+	        margin-top: 10px;
+	        padding: 0;
+    	    .custom-search-input .search-query {
+    	        /* IE7-8 doesn't have border-radius, so don't indent the padding */
+
+    	        margin-bottom: 0;
+    	        -webkit-border-radius: 3px;
+    	        -moz-border-radius: 3px;
+    	        border-radius: 3px;
+    	    }
+        }
+
+    	button {
+    		text-transform: uppercase;
+    	}
+	}
+
+	.projects-list {
+		padding-bottom: 40px;
+		h3.no-results{
+			margin-top:40px;
+			text-align: center;
+		}
+
+        .loading-container {
+            position: relative;
+            width: 100%;
+            float: left;
+            margin: 50px 0;
+            display: block;
+            height: 1px;
+            text-align: center;
+            padding: 20px;
+            color: $color-grey;
+        }
+	}
+}
+

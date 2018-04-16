@@ -21,6 +21,7 @@ module.exports = function(grunt) {
                 '!var/php/php.ini',
                 '!var/php/README',
                 '!var/php/*.php',
+                '!var/php/*.conf',
                 'var/cache/sql/**',
                 'var/cache/**/*',
                 '!var/cache/images/**',

@@ -44,43 +44,50 @@ You need to log into the virtual machine to start the development server:
 
 ```bash
 vagrant ssh
-cd /home/vagrant/goteo
 ```
 
-First time (or when dependencies are updated), you need to run:
+The first time, a vagrant local config file will be create a a `config/local-vagrant-settings.yml`. The env variable GOTEO_CONFIG_FILE will be append to the .bashrc file in vagrant poining to that file. Database will be autocreated and dependencies installed.
 
-Node and composer dependencies:
-
-```bash
-npm install
-composer install
-```
-
-Create a settings file:
-
-```bash
-cp config/vagrant-settings.yml config/settings.yml
-```
-
-Import a starting database to the server:
-
-```bash
-mysql -u your_user -p your_password < db/install/structure.sql
-mysql -u your_user -p your_password < db/install/data.sql
-```
-
-
-```
-mysql ...
-```
-
-Start the development server:
+You just need to log into vagrant and start the development server:
 
 ```bash
 grunt serve
 ```
 
-You can do the last command in your own machine, then vagrant will be used for mysql only.
+**Vagrant Apache dist testing**
+
+It is possible to build the distribution goteo package (for production sites) and test it in the same vagrant installation which is already configured to serve the content of the folder `/home/vagrant/goteo/dist`.
+
+Try it on by building the package (remember to log into vagrant first):
+
+```bash
+grunt build:dist
+```
+
+And, then pointing your browser to http://localhost:8080/
+You can tweak the Apache configuration in `/etc/apache2/sites-enabled/goteo.conf` (inside vagrant)
+
+
+**Code updates**
+
+To update composer or npm dependencies when code is updated, you just need to log into vagrant (`vagrant ssh`) and run these commands:
+
+Node and composer dependencies:
+
+```bash
+cd /home/vagrant/goteo
+npm install
+composer install
+```
+
+It's also safe to run the MySQL migration tool to ensure database version is up to date:
+
+```bash
+./bin/console migrate all
+```
+
+
+You can do the `grunt serve` command in your own machine, then vagrant will be used for mysql only.
 
 Now you can open your favorite browser on your machine and go to:
 
@@ -106,16 +113,15 @@ http://gruntjs.com/getting-started
 If you want to install grunt on Ubuntu 16.04 for the very first time just do:
 
 ```bash
-sudo apt-get install build-essential libssl-dev git
-sudo apt-get update
-sudo apt-get install nodejs npm
-sudo apt-get ruby-dev install rubygems-integration
+sudo apt install build-essential libssl-dev git
+sudo apt install nodejs npm
+sudo apt install ruby-dev rubygems-integration
 sudo gem install sass -v 3.4.23
 sudo gem install compass
 sudo npm install -g grunt-cli
 ```
 
-If you want to install grunt on Ubuntu 12.04 o4 14.04 for the very first time just do:
+If you want to install grunt on Ubuntu 12.04 or 14.04 for the very first time just do:
 
 ```bash
 sudo apt-get install build-essential libssl-dev git
@@ -169,7 +175,7 @@ db:
     driver:   mysql     # Database driver (mysql)
     host:     0.0.0.0 # Database host
     port:     3307      # Database port
-    charset:  UTF-8     # Database charset
+    charset:  utf8mb4     # Database charset
     database: goteo     # Database schema (database name)
     username: root     # Database user for the goteo database
     password: root  # Password for the goteo database
@@ -202,21 +208,25 @@ Grunt commands in Goteo
 
 * **Build**: `grunt build`
   This will create a `dist` folder ready to point a web server (apache, nginx) onto it
- 
+
 * **Development Build**: `grunt build:devel`
   Same as build, but the files created into `dist` will not be minimized
 
 * **Development server**: `grunt serve`
   Php standalone server. For localhost developing.
 
-* **Run phpunit**: `grunt deploy`
+* **Multi-threading development server**: `grunt serve:nginx`
+  For localhost developing as well. But you need to have nginx installed on your machine, it may speed up significantly the development process.
+
+* **Deploy assets**: `grunt deploy`
   Can be used to upload files assets to Amazon S3 (settings.yml must be configured)
 
-* **Run phpunit**: `grunt phpunit`
+* **Run phpunit**: `./run-tests.sh`
+  bash script to wrap phpunit tests (run it with `--help` for more info)
 
 * **Default task**: `grunt`
   This task is the same as execute as doing: `grunt lint`
-  It performs static code analysis in order to quick detect mistakes or misspellings
+  It performs static code analysis in order to quick detect mistakes or misspe -hllings
 
 * **Code linter**: `grunt lint`
   Same as default

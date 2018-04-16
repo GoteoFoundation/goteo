@@ -24,7 +24,7 @@ use Goteo\Library\Text;
 use FileSystemCache;
 
 
-class CacheCommand extends Command {
+class CacheCommand extends AbstractCommand {
 
     protected function configure()
     {

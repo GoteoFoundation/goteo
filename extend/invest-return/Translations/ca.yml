@@ -1,0 +1,6 @@
+invest-return-already-processed: 'Aquest pagament ja ha sigut processat anteriorment!'
+invest-not-found: "No s'ha trobat aquest pagament"
+invest-return-compensation: "Aquesta aportació compensarà l'aportació retornada incorrectament el dia <strong>%s</strong>"
+invest-return-reward: "S'assignarà la recompensa <strong>%s</strong> automàticament un cop fet el pagament."
+invest-return-reward-error: "Tot hi que l'aportació s'ha fet correctament hi ha hagut un problema assignant la recompensa. Si us plau, envia un email a info@goteo.org hi ho farem manualment. Disculpa les molèsties"
+invest-return-success: "S'ha completat el procés de recuperació correctament."

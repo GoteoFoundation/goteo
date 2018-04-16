@@ -31,6 +31,7 @@ if (!$project->isApproved()){
 }
 
 ?>
+
 <?php if ($status_text): ?>
     <div class="spacer alert alert-<?= $status_class ?>"><?= $status_text ?></div>
 <?php endif ?>

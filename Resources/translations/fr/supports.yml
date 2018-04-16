@@ -1,3 +1,4 @@
+---
 mandatory-support-field-description: 'Il est obligatoire de mettre une description'
 mandatory-support-field-name: 'Il est obligatoire de donner un nom à la contribution'
 step-6: Contributions
@@ -9,7 +10,7 @@ supports-fields-support-title: Contributions
 supports-main-header: 'Demande de collaboration'
 tooltip-project-nsupport: 'Conseil pour remplir une nouvelle contribution'
 tooltip-project-support: 'Conseil pour modifier des contributions existantes'
-tooltip-project-support-description: 'Expliquez brièvement de quelle aide le projet àbesoin pour mieux l''identifier et donner aux gens l''envie de contribuer'
+tooltip-project-support-description: "Expliquez brièvement de quelle aide le projet àbesoin pour mieux l'identifier et donner aux gens l'envie de contribuer"
 tooltip-project-support-support: 'Titre descriptif de la contribution recherchée'
 tooltip-project-support-type: 'Sélectionnez si le projet nécessite de l''aide sur des tches concrètes ou via du prêt (de matériel, d''infrastructure, etc)'
 tooltip-project-supports: 'Dans Goteo, les projets peuvent recevoir d''autres formes d''aides en plus de soutiens financiers. Certaines personnes peuvent ne pas soutenir économiquement les projets mais les aider avec leur talent, leur temps, leur énergie etc...'

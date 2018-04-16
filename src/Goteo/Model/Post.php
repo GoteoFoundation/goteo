@@ -24,6 +24,7 @@ namespace Goteo\Model {
         public
             $id,
             $title,
+            $blog,
             $date,
             $text,
             $image,
@@ -32,6 +33,7 @@ namespace Goteo\Model {
             $author,
             $order,
             $publish,
+            $home = false,
             $node;  // las entradas en portada para nodos se guardan en la tabla post_node con unos metodos alternativos
 
         /*
@@ -341,6 +343,8 @@ namespace Goteo\Model {
 
         public function save (&$errors = array()) {
             if (!$this->validate($errors)) return false;
+
+            if(!$this->date) $this->date = date('Y-m-d');
 
             $fields = array(
                 'blog',

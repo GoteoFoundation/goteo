@@ -1,0 +1,88 @@
+---
+api-key-no-generated: 'Entá nun tienes una clave xenerada'
+api-key-tool-tip: 'Col to usuariu y clave d''API vas poder facer consultes a la nuesa API'
+api-key-documentation: 'Ver la documentación de l''API'
+api-key-user: 'Usuariu'
+api-key-key: 'Clave'
+api-key-generate-new: 'Xenerar una clave nueva'
+api-key-generate-new-confirm: 'Esta aición va desaniciar la clave actual y xenera otra nueva. ¿Siguir?'
+contract-data_title: 'Datos del contratu'
+dashboard-certificates-confirm: 'Confirmar datos'
+dashboard-certificates-data-alert: '¡Decatate que nel momentu que se confirme, nun puen modificar los datos!'
+dashboard-certificates-details: 'Ver detalles'
+dashboard-certificates-download: 'Confirmar y baxar'
+dashboard-certificates-expired: Caducó
+dashboard-certificates-pending: Pendiente
+dashboard-certificates-totals: '%NUM% aportes, %AMOUNT%'
+dashboard-chart-days: 'QUEDEN %s DÍES'
+dashboard-chart-invested: 'FINANCIACIÓN CONSIGUIDA'
+dashboard-chart-investors: COFINANCIADORES
+dashboard-chart-no-invested: 'Nun hai aportes.'
+dashboard-chart-optimum: óptimu
+dashboard-header-main: 'El mio panel'
+dashboard-investors-mail-fail: 'Fallu al unviar el mensaxe a %s'
+dashboard-investors-mail-nowho: 'Nun s''alcontraron destinatarios'
+dashboard-menu-activity: 'La mio actividá'
+dashboard-menu-activity-apikey: 'Clave d''API'
+dashboard-menu-activity-summary: Resume
+dashboard-menu-admin_board: Alministración
+dashboard-menu-calls-sponsors: Patrocinadores
+dashboard-menu-pool: 'El mio monederu'
+dashboard-menu-pool-available: Saldu
+dashboard-menu-projects-rewards: Cofinanciadores
+dashboard-menu-projects-summary: Resume
+dashboard-menu-projects-supports: Collaboraciones
+dashboard-menu-projects-updates: Novedaes
+dashboard-menu-projects-widgets: Widget
+dashboard-menu-review_board: Revisión
+dashboard-menu-translate_board: Traducción
+dashboard-my-wallet-contribute-button: Donar
+dashboard-project-blog-fail: 'Contauta con nós'
+dashboard-project-updates-delete_fail: 'Fallu al desaniciar la entrada'
+dashboard-project-updates-nopost: 'Nun s''alcontró la entrada'
+dashboard-project-updates-postcorrupt: 'La entada ta toyída, contauta con nós'
+dashboard-project-updates-saved: 'La entada anovóse correutamente'
+dashboard-project-updates-add: 'Artículu nuevu'
+dashboard-rewards-address: 'Direición d''entrega:'
+dashboard-rewards-amount_group: 'Aportaciones de '
+user-changepass-old: 'Contraseña actual'
+user-changepass-title: 'Camudar contraseña'
+user-email-change-sent: 'Unviémoste un corréu pa que confirmes el cambéu de direición de corréu'
+user-password-changed: 'Camudesti la to contraseña'
+user-preferences-comlang: 'Llingua na que prefieres recibir los avisos'
+user-preferences-currency: 'Divisa na que prefieres ver los importes'
+user-save-fail: 'Hebo dalgún problema al guardar los datos'
+dashboard-modal-url-success-msg: 'La URL nun s''anovó correutamente'
+dashboard-add-new-share-material: 'Material nuevu'
+dashboard-edit-share-material-url: 'Editar URL'
+dashboard-modal-edit-url: 'URL onde s''alcuentra''l material compartíu'
+dashboard-modal-placeholder-edit-url: 'URL'
+dashboard-new-material-form-material: 'Material'
+dashboard-new-material-form-description: 'Descripción'
+dashboard-new-material-form-url: 'URL'
+dashboard-new-material-form-type: 'Triba de material'
+dashboard-new-material-form-license: 'Llicencia del material'
+dashboard-menu-projects-shared-materials: 'Materiales'
+project-no-share-material: 'Nun hai materiales compartíos pol proyeutu'
+dashboard-project-delete-image: 'Desaniciar ficheru'
+dashboard-project-delete-image-confirm: '¿De xuru que quies desaniciar esti ficheru?'
+dashboard-project-image-delete-ko: '¡Nun pudo desanciase la imaxe!'
+project-upload-images-some-ko: '¡Nun se xubieron delles imáxenes!'
+dashboard-project-default-image-confirm: '¿Quies predeterminar esta imaxe nel proyeutu?'
+dashboard-project-image-default-ko: '¡Nun pudo predeterminase la imaxe!'
+dashboard-project-image-reorder-ko: '¡Nun pudieron ordenase les imáxenes!'
+dashboard-max-files-reached: "¡Algamesti'l númberu máximu de ficheros!"
+dashboard-file-type-error: "¡Nun se permite esta triba de ficheru!"
+all-files-uploaded: "Tolos ficheros xubiéronse correutamente"
+uploaded-ok: "Xubióse correutamente"
+publish-confirm-yes: "¿Quies espublizar esta entrada?"
+dashboard-project-support-responses: Rempuestes
+dashboard-message-donors-pending: 'tán pendientes'
+dashboard-message-donors-total: '%s cofinanciadores'
+dashboard-message-no-message: 'Entá nun tienes dengún mensaxe.'
+dashboard-translate-empty: 'Entá nun hai traducciones.'
+dashboard-translate-project-empty: 'Entá nun hai traducciones pa esti proyeutu.'
+dashboard-translate-project-currents: 'La llingua orixinal d''esti proyeutu ye''l %LANG% y ta traducíu a %NUM% llingües:'
+dashboard-translate-project-translating: 'Tas traduciendo esti proyeutu al %LANG%. La llingua orixinal ye''l %ORIGINAL%.'
+dashboard-translate-project-ok: '%ZONE% tradúxose correutamente al %LANG%'
+dashboard-project-goto-first-error: 'Dir al primer fallu'

@@ -1,0 +1,29 @@
+---
+contact-captcha-field: 'İnsanlık testi (özür dilerim ...)'
+contact-email-field: E-posta adresi
+contact-form-dev-tag-description: 'Teknik sorularla yardıma ihtiyacım var'
+contact-form-dev-tag-name: desenvolupament
+contact-form-new-project-tag-description: 'Bir projem var'
+contact-form-new-project-tag-name: 'yeni destekleyen'
+contact-form-others-tag-description: 'Başka bir sorum daha var'
+contact-form-others-tag-name: öteki
+contact-form-project-form-tag-description: 'Proje formunda bir sorum var'
+contact-form-project-form-tag-name: 'yeni destekleyen 2'
+contact-form-relief-tag-description: 'Rahatlama sorguları'
+contact-form-relief-tag-name: 'rahatlama'
+contact-form-service-tag-description: 'Servisleriniz ile sözleşme yapmak isterdim'
+contact-form-service-tag-name: servis
+contact-form-user-tag-description: 'Hesabımla ilgili bir sorunum var'
+contact-form-user-tag-name: 'kullanıcı'
+contact-message-field: Mesaj
+contact-name-field: İsim
+contact-send_message-button: Gönder
+contact-send_message-header: 'Bize bir mesaj gönder'
+contact-subject-field: Konu
+contact-tag-field: 'Soru türü'
+error-contact-captcha: 'reCAPTCHA doğru girilmedi.Tekrar deneyiniz'
+error-contact-email-empty: 'E-posta adresinizi eklemediniz'
+error-contact-message-empty: 'Bir mesaj yazmadınız'
+error-contact-subject-empty: 'Bir konu girmediniz'
+meta-description-contact: 'Goteo.org ile irtibat kurun'
+meta-title-contact: 'İrtibat :: Goteo.org'

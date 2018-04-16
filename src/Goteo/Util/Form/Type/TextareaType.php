@@ -30,6 +30,7 @@ class TextareaType extends SymfonyTextareaType
     {
         parent::configureOptions($resolver);
         $resolver->setDefault('row_class', '');
+        $resolver->setDefault('html_editor', false);
     }
 
     // /**
@@ -47,5 +48,9 @@ class TextareaType extends SymfonyTextareaType
     {
         parent::buildView($view, $form, $options);
         $view->vars['row_class'] = $options['row_class'];
+
+        if($options['html_editor']) {
+            $view->vars['type'] = 'summernote';
+        }
     }
 }

@@ -4,7 +4,7 @@ Not foil templates!
 Files in this path are for Form views, they make use of the templating component
 of Symfony Components.
 
-They **do not use** [Foil](http://www.foilphp.it/)
+They **do not use** [Foil](https://foilphp.github.io/Foil/)
 
 More info:
 ---------

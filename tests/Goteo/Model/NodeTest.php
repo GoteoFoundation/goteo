@@ -7,6 +7,8 @@ use Goteo\TestCase;
 use Goteo\Model\Node;
 use Goteo\Model\User;
 use Goteo\Model\Project;
+use Goteo\Application\Config;
+use Goteo\Application\Lang;
 
 class NodeTest extends TestCase {
     private static $related_tables = array('project' => 'node',
@@ -20,16 +22,22 @@ class NodeTest extends TestCase {
                     'node_lang' => 'id',
                     'invest_node' => ['user_node', 'project_node', 'invest_node'],
                     'patron' => 'node',
-                    'page_node' => 'node',
                     'post_node' => 'node',
                     'sponsor' => 'node',
                     'stories' => 'node',
                     );
 
-    private static $data = array('id' => 'testnode2', 'name' => 'Test node 2');
+    private static $data = array('id' => 'testnode2', 'name' => 'Test node 2', 'subtitle' => 'Test subtitle', 'description' => 'Test description');
+    private static $trans_data = array('subtitle' => 'Test de subtítol', 'description' => 'Test descripció');
+
+    public static function setUpBeforeClass() {
+        Config::set('lang', 'es');
+        Lang::setDefault('es');
+        Lang::set('es');
+    }
 
     public function testInstance() {
-
+        \Goteo\Core\DB::cache(false);
         $ob = new Node();
 
         $this->assertInstanceOf('\Goteo\Model\Node', $ob);
@@ -59,14 +67,15 @@ class NodeTest extends TestCase {
         $node = new Node(self::$data);
         $this->assertTrue($node->validate($errors), print_r($errors, 1));
         $this->assertNotFalse($node->create($errors), print_r($errors, 1));
-// die($node->id);
-        $node = Node::get($node->id);
-        $this->assertInstanceOf('\Goteo\Model\Node', $node);
+        // die($node->id);
+        $ob = Node::get($node->id);
+        $this->assertInstanceOf('\Goteo\Model\Node', $ob);
+        $this->assertEquals($ob->id, self::$data['id']);
+        $this->assertEquals($ob->name, self::$data['name']);
+        $this->assertEquals($ob->subtitle, self::$data['subtitle']);
+        $this->assertEquals($ob->description, self::$data['description']);
 
-        $this->assertEquals($node->id, self::$data['id']);
-        $this->assertEquals($node->name, self::$data['name']);
-
-        return $node;
+        return $ob;
     }
 
     /**
@@ -85,6 +94,51 @@ class NodeTest extends TestCase {
         return $node;
     }
 
+    /**
+     * @depends testRenameNode
+     */
+    public function testSaveLanguages($ob) {
+        $errors = [];
+        $this->assertTrue($ob->setLang('ca', self::$trans_data, $errors), print_r($errors, 1));
+        return $ob;
+    }
+
+    /**
+     * @depends testSaveLanguages
+     */
+    public function testCheckLanguages($ob) {
+        $new = Node::get($ob->id);
+        $this->assertInstanceOf('Goteo\Model\Node', $new);
+        $this->assertEquals(self::$data['subtitle'], $new->subtitle);
+        $this->assertEquals(self::$data['description'], $new->description);
+        Lang::set('ca');
+        $new2 = Node::get($ob->id);
+        $this->assertEquals(self::$trans_data['subtitle'], $new2->subtitle);
+        $this->assertEquals(self::$trans_data['description'], $new2->description);
+        Lang::set('es');
+    }
+
+    /**
+     * @depends testRenameNode
+     */
+    public function testListing($ob) {
+        $list = Node::getAll();
+        $this->assertInternalType('array', $list);
+        $new = end($list);
+        $this->assertInstanceOf('Goteo\Model\Node', $new);
+        $this->assertEquals(self::$data['subtitle'], $new->subtitle);
+        $this->assertEquals(self::$data['description'], $new->description);
+
+        Lang::set('ca');
+        $list = Node::getAll();
+        $this->assertInternalType('array', $list);
+
+        $new2 = end($list);
+        $this->assertEquals(self::$trans_data['subtitle'], $new2->subtitle);
+        $this->assertEquals(self::$trans_data['description'], $new2->description);
+        Lang::set('es');
+    }
+
 
     /**
      * @depends testRenameNode
@@ -101,8 +155,9 @@ class NodeTest extends TestCase {
         $this->assertTrue($node->rebase($testnode->id));
         $u = get_test_user();
         $p = get_test_project();
+
+        $this->assertTrue($node->rebase('testnode2'));
         try {
-            $node->rebase('testnode2');
         }
         catch(\Exception $e) {
             $this->assertInstanceOf('\Goteo\Application\Exception\ModelException', $e);
@@ -152,6 +207,7 @@ class NodeTest extends TestCase {
             }
         }
     }
+
     /**
      * Some cleanup
      */

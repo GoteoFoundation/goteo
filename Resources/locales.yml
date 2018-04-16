@@ -1,9 +1,3 @@
-as:
-    name: Asturiano
-    short: AST
-    public: false
-    locale: as_ES
-    fallback: es
 en:
     name: English
     short: ENG
@@ -34,6 +28,12 @@ gl:
     public: true
     locale: gl_ES
     fallback: es
+ast:
+    name: Asturiano
+    short: AST
+    public: true
+    locale: as_ES
+    fallback: es
 fr:
     name: Français
     short: FRA
@@ -46,6 +46,12 @@ it:
     public: true
     locale: it_IT
     fallback: en
+he:
+    name: עברית
+    short: HEB
+    public: false
+    locale: he_IL
+    fallback: en
 nl:
     name: Dutch
     short: NL
@@ -55,7 +61,7 @@ nl:
 de:
     name: Deutsch
     short: DE
-    public: false
+    public: true
     locale: de_DE
     fallback: en
 el:
@@ -93,4 +99,28 @@ sv:
     short: SV
     public: true
     locale: sv_SE
+    fallback: en
+fil:
+    name: Filipino
+    short: FIL
+    public: false
+    locale: fil
+    fallback: en
+id:
+    name: Bahasa Indonesia
+    short: IND
+    public: false
+    locale: id_ID
+    fallback: en
+ja:
+    name: 日本語
+    short: JPN
+    public: false
+    locale: ja_JP
+    fallback: en
+ro:
+    name: Română
+    short: RUM
+    public: false
+    locale: ro_RO
     fallback: en

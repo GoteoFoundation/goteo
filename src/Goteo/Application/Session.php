@@ -10,10 +10,12 @@
 
 namespace Goteo\Application;
 
+use Goteo\Application\App;
 use Goteo\Model\User;
 use Goteo\Library\Text;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\Session as SymfonySession;
+use Symfony\Component\HttpFoundation\Session\Storage\NativeSessionStorage;
 
 /**
  * Class for dealing with $_SESSION related stuff
@@ -38,6 +40,8 @@ class Session {
             self::$request = $request;
         }
         if(!self::$session) {
+            $storage = new NativeSessionStorage();
+            $storage->setOptions(['gc_maxlifetime' => self::getSessionExpires()]);
             self::$session = new SymfonySession();
         }
     }
@@ -105,13 +109,17 @@ class Session {
         if (PHP_SAPI === 'cli') {
             $_SESSION = array();
         }*/
+        if($session_time) {
+            self::setSessionExpires($session_time);
+        }
         try {
             if(!self::getSession()->isStarted()) {
                 self::getSession()->setName($name);
                 self::getSession()->start();
             }
             // Fixes session cookie time life
-            self::getSession()->migrate(false, self::getSessionExpires());
+            // TODO: To be removed? only make it in user personal changes(password)
+            // self::getSession()->migrate(false, self::getSessionExpires());
         } catch(\RuntimeException $e) {
             throw new Config\ConfigException($e->getMessage());
         }
@@ -121,10 +129,8 @@ class Session {
         if(!self::exists('init_time')) {
             self::store('init_time', self::getStartTime());
         }
-        if($session_time) {
-            self::setSessionExpires($session_time);
-        }
         if( self::getStartTime() > self::get('init_time') + self::getSessionExpires() ) {
+            App::getService('logger')->err('destroying session: expired', ['init_time' => self::get('init_time'), 'expires_time' => self::getSessionExpires(), 'start_time' => self::getStartTime()]);
             // expires session
             self::destroy(false);
             $callback = self::$triggers['session_expires'];

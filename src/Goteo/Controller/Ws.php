@@ -14,18 +14,6 @@ namespace Goteo\Controller {
 
     class Ws extends \Goteo\Core\Controller {
 
-        public function get_home_post($id) {
-            $Post = Model\Post::get($id);
-
-            header ('HTTP/1.1 200 Ok');
-            echo <<< EOD
-<h3>{$Post->title}</h3>
-<div class="embed">{$Post->media->getEmbedCode()}</div>
-<div class="description">{$Post->text}</div>
-EOD;
-            die;
-        }
-
         public function get_faq_order($section) {
             $next = Model\Faq::next($section);
 
@@ -127,32 +115,6 @@ EOD;
         }
 
 
-        /*
-         * Marcar recompensa cumplida
-         */
-        public function fulfill_reward($project, $user) {
-
-            if (Model\Project::isMine($project, $user)) {
-                $parts = explode('-', $_POST['token']);
-                if ($parts[0] == 'ful_reward') {
-                    if (Model\Invest::setFulfilled($parts[1], $parts[2])) {
-                        header ('HTTP/1.1 200 Ok');
-                        echo 'Recompensa '.$_POST['token'].' marcada como cumplida por '.$user;
-                        die;
-                    } else {
-                        header ('HTTP/1.1 200 Ok');
-                        die;
-                    }
-                } else {
-                    header ('HTTP/1.1 400 Bad request');
-                    die;
-                }
-            } else {
-                header ('HTTP/1.1 403 Forbidden');
-                die;
-            }
-
-        }
 
     }
 

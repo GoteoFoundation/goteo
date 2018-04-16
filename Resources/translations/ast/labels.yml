@@ -1,0 +1,59 @@
+---
+accounts-lb: Aportes
+accounts-lb-add: 'Aporte manual'
+accounts-lb-cancel: 'Encaboxando aporte'
+accounts-lb-cancel-pool: 'Encaboxando opción de creitu'
+accounts-lb-details: 'Detalles del aporte'
+accounts-lb-execute: 'Execución del cargu'
+accounts-lb-list: Llistando
+accounts-lb-report: 'Informe del proyeutu'
+banners-lb: Pancarta
+banners-lb-add: 'Pancarta nueva'
+blog-lb: Blogue
+blog-lb-add: 'Entrada nueva'
+categories-lb: Estayes
+categories-lb-add: 'Estaya nueva'
+categories-lb-keywords: 'Pallabres clave'
+commons-lb: 'Retornos coleutivos'
+commons-lb-add: 'Retornu nuevu'
+commons-lb-info: 'Información de contautu'
+commons-lb-report: 'Informe del proyeutu'
+commons-lb-view: 'Xestión de retornos'
+criteria-lb: 'Criterios de revisión'
+criteria-lb-add: 'Criteriu nuevu'
+criteria-lb-edit: 'Editando criteriu'
+criteria-lb-list: Llistando
+criteria-lb-translate: 'Traduciendo criteriu'
+faq-lb: Entrugues frecuentes
+faq-lb-add: 'Entruga nueva'
+faq-lb-edit: 'Editando entruga'
+faq-lb-list: Llistando
+faq-lb-translate: 'Traduciendo entruga'
+glossary-lb: Glosariu
+glossary-lb-edit: 'Editando términu'
+glossary-lb-list: Llistando
+glossary-lb-translate: 'Traduciendo términu'
+home-lb: 'Elementos na portada'
+licenses-lb: Licencies
+licenses-lb-translate: 'Traduciendo llicencia'
+mailing-lb: Comunicaciones
+mailing-lb-edit: 'Escribiendo conteníu'
+mailing-lb-list: 'Esbillando destinatarios'
+mailing-lb-send: 'Comunicación unviada'
+newsletter-lb: Boletín
+newsletter-lb-list: 'Estáu del unviu automáticu'
+node-lb: 'Datos de la canal'
+node-lb-list: 'Datos actuales'
+nodes-lb: Canales
+nodes-lb-add: 'Canal nueva'
+pages-lb: Páxines
+pages-lb-add: 'Páxina nueva'
+projects-lb: Proyeutos
+projects-lb-accounts: 'Cuentes del proyeutu'
+projects-lb-dates: 'Dates del proyeutu'
+projects-lb-execute: 'Execución del cargu'
+projects-lb-images: 'Imáxenes del proyeutu'
+rewards-lb: Recompenses
+sent-lb: 'Historial d''unvios'
+transnodes-lb: 'Traducciones de noyos'
+worth-lb: 'Niveles de meritocracia'

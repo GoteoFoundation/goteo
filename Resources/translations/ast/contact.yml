@@ -1,0 +1,26 @@
+---
+contact-captcha-field: 'Prueba d''humanidá (sentímoslo...)'
+contact-captcha-refresh: 'Refrescar imaxe'
+contact-email-field: Corréu
+contact-form-dev-tag-description: 'Teo duldes tocante a cuestiones téuniques'
+contact-form-dev-tag-name: Desendolcu
+contact-form-others-tag-description: 'Ye otra triba de consulta'
+contact-form-project-form-tag-description: 'Teo duldes tocante al formulariu del proyeutu'
+contact-form-project-form-tag-name: 'Problemes col fromulariu del proyeutu'
+contact-form-relief-tag-name: 'Xustificante de donación'
+contact-form-service-tag-description: 'Quiero contratar un serviciu'
+contact-form-service-tag-name: Serviciu
+contact-form-user-tag-description: 'Teo problemes cola mio cuenta'
+contact-form-user-tag-name: 'Problemes cola cuenta'
+contact-message-field: Mensaxe
+contact-name-field: Nome
+contact-send_message-button: Unviar
+contact-send_message-header: 'Únvianos un mensaxe'
+contact-subject-field: Asuntu
+contact-tag-field: 'Triba de consulta'
+error-contact-captcha: 'El reCAPTCHA nun s''introduxo correutamente. Volvi tentalo.'
+error-contact-email-empty: 'Nun amestesti''l to corréu'
+error-contact-message-empty: 'Nun escribiesti dengún mensaxe'
+error-contact-subject-empty: 'Nun escribiesti l''asuntu'
+meta-description-contact: 'Contauta col equipu de Goteo.org'
+meta-title-contact: 'Contauta con nós :: Goteo.org'

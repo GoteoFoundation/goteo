@@ -1,3 +1,5 @@
+---
+overview-field-spread: Verspreid het wooord
 project-collaborations-supertitle: 'Niet-economische behoeften'
 project-collaborations-title: 'Op zoek naar'
 project-menu-home: Project
@@ -39,4 +41,7 @@ project-view-metter-investors: Co-financiers
 project-view-metter-minimum: Minimum
 project-view-metter-optimum: Optimum
 regular-new_project: 'Nieuw project'
+social_reward-access: Log in
 tooltip-project-scope: 'Specificeer de geografische impact die je hoopt dat jouw project zal hebben (elke categorie zit al ingebed in de vorige)'
+project-obtained: 'Ontvangen'
+project-costs-total: 'Totaal'

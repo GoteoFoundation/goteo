@@ -124,45 +124,47 @@ namespace Goteo\Library {
                 $return =json_decode($result);
 
                 // parsear los resultados para devolver un array simple
-                foreach ($return->statuses as $item) {
-//                    echo \trace($item).'<hr />';
-                    $the_author = $item->user->screen_name;
-                    $the_user = $item->user->name;
-                    $the_avatar = (\HTTPS_ON) ? str_replace('http://', 'https://', $item->user->profile_image_url) : $item->user->profile_image_url;
-                    $the_profile = 'https://twitter.com/'.$the_author;
-                    $twitter_user = $the_author;
-                    $gUser = false;
+                if(is_array($return->statuses)) {
+                    foreach ($return->statuses as $item) {
+                        // echo \trace($item).'<hr />';
+                        $the_author = $item->user->screen_name;
+                        $the_user = $item->user->name;
+                        $the_avatar = (\HTTPS_ON) ? str_replace('http://', 'https://', $item->user->profile_image_url) : $item->user->profile_image_url;
+                        $the_profile = 'https://twitter.com/'.$the_author;
+                        $twitter_user = $the_author;
+                        $gUser = false;
 
-                    if ($matchusers) {
-                        $sql = "SELECT id, name, avatar FROM user WHERE twitter LIKE :author";
-                        $uQuery = Model\User::query($sql, array(':author' => "%{$the_author}%"));
-                        if ($user = $uQuery->fetchObject()) {
-                            $the_author = $user->id;
-                            $the_user = $user->name;
-                            if (!empty($user->avatar)) {
-                                $image = Model\Image::get($user->avatar);
-                                if ($image instanceof Model\Image) {
-                                    $the_avatar = $image->getLink(48, 48, true);
+                        if ($matchusers) {
+                            $sql = "SELECT id, name, avatar FROM user WHERE twitter LIKE :author";
+                            $uQuery = Model\User::query($sql, array(':author' => "%{$the_author}%"));
+                            if ($user = $uQuery->fetchObject()) {
+                                $the_author = $user->id;
+                                $the_user = $user->name;
+                                if (!empty($user->avatar)) {
+                                    $image = Model\Image::get($user->avatar);
+                                    if ($image instanceof Model\Image) {
+                                        $the_avatar = $image->getLink(48, 48, true);
+                                    }
                                 }
+                                $the_profile = SITE_URL.'/user/profile/'.$the_author;
+                                $gUser = true;
+                            } else {
+                                $gUser = false;
                             }
-                            $the_profile = SITE_URL.'/user/profile/'.$the_author;
-                            $gUser = true;
-                        } else {
-                            $gUser = false;
                         }
+
+
+                        $list[] = (object) array(
+                            'date' => $item->created_at,
+                            'author' => $the_author,
+                            'user' => $the_user,
+                            'avatar' => $the_avatar,
+                            'profile' => $the_profile,
+                            'text' => $item->text,
+                            'es_usuario' => $gUser,
+                            'twitter_user' => $twitter_user
+                        );
                     }
-
-
-                    $list[] = (object) array(
-                        'date' => $item->created_at,
-                        'author' => $the_author,
-                        'user' => $the_user,
-                        'avatar' => $the_avatar,
-                        'profile' => $the_profile,
-                        'text' => $item->text,
-                        'es_usuario' => $gUser,
-                        'twitter_user' => $twitter_user
-                    );
                 }
             }
 

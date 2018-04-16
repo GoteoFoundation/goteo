@@ -2,12 +2,11 @@
     <?php if(!$this->invests): ?>
         <p><?= $this->text('dashboard-certificates-no-pending') ?></p>
     <?php return; endif ?>
-
     <table class="footable table">
       <thead>
         <tr>
           <th data-type="number" data-breakpoints="xs">#</th>
-          <th data-type="date" data-breakpoints="xs"><?= $this->text('regular-date') ?></th>
+          <th data-type="string" data-breakpoints="xs"><?= $this->text('regular-date') ?></th>
           <th><?= $this->text('invest-amount') ?></th>
           <th data-breakpoints="xs"><?= $this->text('invest-method') ?></th>
           <th data-type="html"><?= $this->text('project-menu-home') ?></th>

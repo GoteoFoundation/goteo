@@ -8,17 +8,21 @@ $this->layout('auth/layout', [
 $this->section('inner-content');
 
 ?>
-    <h2 class="col-md-offset-1 padding-bottom-6"><?= $this->text('login-title') ?></h2>
+  <div style="padding:0 8%">
+
+    <h2 class="padding-bottom-6"><?= $this->text('login-title') ?></h2>
 
     <?= $this->supply('sub-header', $this->get_session('sub-header')) ?>
 
-    <form class="form-horizontal" role="form" method="POST" action="/login?return=<?= urlencode($this->raw('return')) ?>&amp;lang=<?= $this->lang_current() ?>">
+    <form role="form" method="POST" action="/login?return=<?= urlencode($this->raw('return')) ?>&amp;lang=<?= $this->lang_current() ?>">
 
     <?= $this->insert('auth/partials/form_login') ?>
 
     <?= $this->insert('auth/partials/social_login') ?>
 
     </form>
+
+  </div>
 
 <?php $this->replace() ?>
 

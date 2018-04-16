@@ -12,7 +12,7 @@ class TextsSubControllerTest extends \PHPUnit_Framework_TestCase {
     public function testInstance() {
         $user = new User();
         $node = 'test';
-        $request = Request::create();
+        $request = Request::create('/admin');
 
         $controller = new TextsSubController($node, $user, $request);
 

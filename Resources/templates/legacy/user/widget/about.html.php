@@ -27,7 +27,7 @@ $interests = Interest::getAll();
         $c = 0;
         foreach ($user->interests as $interest) {
             if ($c > 0) echo ', ';
-            echo $interests[$interest];
+            echo $interests[$interest->interest];
             $c++;
         } ?></p>
     </div>

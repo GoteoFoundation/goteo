@@ -15,6 +15,7 @@ use Goteo\Model\User;
 
 class UserLocation extends \Goteo\Model\Location\LocationItem {
     protected $Table = 'user_location';
+    protected static $Table_static = 'user_location';
     public $user;
 
     public function __construct() {

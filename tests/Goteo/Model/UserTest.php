@@ -73,12 +73,29 @@ class UserTest extends TestCase {
     public function testCreateUser() {
         // TODO: more tests...
         $user = new User(self::$user);
+        $errors = [];
         $user->save($errors, array('password'));
         $this->assertInstanceOf('\Goteo\Model\Image', $user->avatar);
         $user = User::get(self::$user['userid']);
         $this->assertInstanceOf('\Goteo\Model\User', $user);
         $this->assertInstanceOf('\Goteo\Model\Image', $user->avatar);
         return $user;
+    }
+
+    /**
+     * @depends testCreateUser
+     */
+    public function testSuggestUserId($user) {
+        $suggestions = User::suggestUserId("I hope this user does not exists");
+        $this->assertInternalType('array', $suggestions);
+        $this->assertGreaterThanOrEqual(1, count($suggestions));
+        $this->assertEquals('ihope', $suggestions[0]);
+        $suggestions = User::suggestUserId("IHopeThisUserDoesNotexists:👑");
+        $this->assertEquals('ihopethisuserdoesnotexists', $suggestions[0]);
+
+        $this->assertEquals('a-n', User::idealiza("a.ñ"));
+        $this->assertEquals('a.n', User::idealiza("a.ñ", true));
+        $this->assertEquals('a.ñ', User::idealiza("a.ñ", true, true));
     }
 
     /**

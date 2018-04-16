@@ -10,13 +10,6 @@ $url = SITE_URL . '/project/' . $project->id;
 
 <div style="width: 600px; background-color: #ffffff;padding: 20px 10px 20px 20px;margin-top: 20px;">
 
-    <div style="color: #38b5b1;font-weight: bold;text-transform: uppercase;font-size: 16px;">
-        <a href="<?= $url ?>" style="text-decoration:none;color: #38b5b1;font-weight: bold;text-transform: uppercase;font-size: 16px;"><?= $promote->title ?></a><br />
-        <a href="<?= $url ?>" style="text-decoration:none;color: #38b5b1;font-size: 14px;font-weight: normal;font-style: normal;text-transform: none; padding-top:5px;"><?= $promote->promo_text ?></a>
-    </div>
-
-    <div style="width: 25px;height: 2px;border-bottom: 1px solid #38b5b1;margin-bottom: 15px; margin-top:15px;"></div>
-
     <div>
         <a style="font-size:14px;font-weight:bold;text-transform:uppercase;text-decoration:none;color:#58595b;" href="<?= $url ?>"><?= $project->name ?></a>
     </div>

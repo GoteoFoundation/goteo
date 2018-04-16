@@ -1,0 +1,6 @@
+---
+discover-banner-header: '    Kategoriye göre, konum veya fayda <br><span class="red"> </span> en çok tanımladığınız projeyi bulun.'
+login-banner-header: '    Şuraya erişin <br><span class="greenblue">100% açık</span> Goteo topluluğu'
+main-banner-header: '    <h2 class="message">Sosyal ağ için <span class="greenblue">ile kitlesel fon ve ortak çalışın </span><br>Yaratıcı projeler daha da yaygınlaşıyor.<br> Ile bir projeniz var mı <span class="greenblue">açık DNA</span>?</h2><a href="/contact" class="button banner-button">Bizimle iletişime geçin!</a>'
+open-banner-header: '<div class="modpo-open">AÇ</div><div class="modpo-percent">100&#37; AÇ</div><div class="modpo-whyopen">%s</div>'
+regular-banner-metter: Obtained-of-lasting

@@ -16,7 +16,7 @@ use Goteo\Library\Forms\AbstractFormProcessor;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Validator\Constraints;
 use Goteo\Library\Text;
-use Goteo\Library\Currency;
+use Goteo\Application\Currency;
 use Goteo\Model\Project\Cost;
 use Goteo\Library\Forms\FormModelException;
 
@@ -96,7 +96,8 @@ class ProjectCostsForm extends AbstractFormProcessor implements FormProcessorInt
                 'required' => true,
             ])
             ->add("cost$suffix", 'text', [
-                'label' => 'costs-field-cost',
+                // 'label' => 'costs-field-cost',
+                'label' => 'regular-title',
                 'disabled' => $this->getReadonly(),
                 'data' => $cost->cost,
                 'constraints' => $this->getConstraints("cost$suffix"),

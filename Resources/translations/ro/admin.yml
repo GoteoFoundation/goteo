@@ -1,0 +1,96 @@
+---
+admin-action: 'Acţiune de administrator'
+admin-NO: 'Nu'
+admin-YES: Da
+admin-account-amount: 'Sumă cu care s-a contribuit'
+admin-account-change-user: 'Schimbare user'
+admin-account-change-user-confirm: 'Sunteți sigur că doriți să schimbați utilizatorul contribuției? Noul utilizator va fi:'
+admin-account-convert-to-pool: 'Convertește în monedă'
+admin-account-convert-to-pool-confirm: 'Acest lucru va elimina campania asociată cu această contribuţie şi va fi ca și cum a fost o achiziţie de monedă. TOATE RECOMPENSELE ASOCIATE VOR FI PIERDUTE. Continuați?'
+admin-account-convert-to-pool-ko: 'Contribuţia nu a fost convertită în monedă: %s'
+admin-account-convert-to-pool-ok: 'Contribuția a fost convertită cu succes în monedă'
+admin-account-detail: 'Detaliile tranzacţiei'
+admin-account-donation: Donație
+admin-account-edit-reward: 'Gestionare recompensă/adresă'
+admin-account-invalid-invest: 'Contribuţia [%s] nu a fost găsită!'
+admin-account-invest-date: 'Data contribuției'
+admin-account-invest-non-pool-refundable: 'Această contribuţie nu poate fi plătită înapoi sub formă de monedă virtuală. Se pot rambursa numai contribuţii cu statusul "încasate"'
+admin-account-invest-non-user-refundable: "Această contribuție nu poate fi rambursată. Pot fi rambursate contribuţii cu statusul: \"În aşteptare\", \"Încasat\" și \"Monedă virtuală\", dacă există destui bani în cont ca să fie scăzuți \n"
+admin-account-invest-to-pool-ko: 'Imposibiitate în a transforma contribuția în monedă'
+admin-account-invest-to-pool-ok: 'Contribuția transformată în monedă virtuală. Valoarea a crescut cu (%s)'
+admin-account-invest-user-refund-fail-pool-amount: 'Această contribuție nu poate fi returnată, pentru că utilizatorul nu deține suficientă monedă în portofelul electronic (%s)'
+admin-account-invest-user-refund-ko: 'Contribuţia nu a putut fi returnată: [%s]'
+admin-account-invest-user-refund-ok: 'Contribuţie rambursată corect'
+admin-account-invest-user-refund-ok-pool: 'Contribuţie rambursată corect. Moneda virtuală din portofel s-a redus la %s'
+admin-account-issue-solved: 'Nu a avut loc transferul'
+admin-account-modify-status: 'Modifică statusul'
+admin-account-modify-status-confirm: "Sunteţi sigur că doriţi să schimbaţi manual starea pentru această contribuţie? Acest lucru este sensibil! NU SE VA MAI EFECTUA nici o operaţiune de returnare a contribuţiei. \n"
+admin-account-payment-method: 'Metodă de plată'
+admin-account-pool-on-fail: 'Grup (reveniți la portofelul virtual dacă lipsește)'
+admin-account-refund-to-pool: 'Rambursați contribuția în portofelul electronic'
+admin-account-refund-to-pool-confirm: "Acest lucru va marca contribuţia astfel: \nReturnare dacă proiectul nu este de succes\nAnulare în cazul în care proiectul este activ sau de succes\nContribuția nu se va returnata utilizatorului, ci va fi generată monedă virtuală în portofelul utilizatorului. \nPot continua? \n"
+admin-account-refund-to-user: 'Rambursați contribuția către utilizator'
+admin-account-refund-to-user-confirm: "Acest lucru va marca contribuţia astfel: \nReturnare dacă proiectul nu este de succes\nAnulare în cazul în care proiectul este activ sau de succes\nContribuția se va returnata utilizatorului\nAcest lucru ar putea să NU funcționeze dacă contribuția este foarte veche sau dacă metoda de plata nu o mai permite.\nPot continua? \n"
+admin-account-rewards: 'Recompense selectate'
+admin-account-switch-donation: 'Schimbă donația'
+admin-account-switch-donation-confirm: 'Sunteți sigur că doriți să schimbați statusul donației?'
+admin-account-switch-pool: 'Schimbați grupul'
+admin-account-switch-pool-confirm: 'Acest lucru se aplică numai în cazul în care proiectul nu reuşeşte, nu generează și nici nu elimină monedă din portofelu electronic. Pot continua?'
+admin-account-switch-pool-fail: 'Imposibil de modificat starea de grup la această contribuţie'
+admin-account-transaction: 'Coduri de urmărire'
+admin-account-user-changed-error: 'Nu s-a putut schimba contribuţia utilizatorului [%ID%] la [%NAME%]!'
+admin-account-user-changed-successfully: 'Nu s-a putut schimba contribuţia utilizatorului [%ID%] la [%NAME%]'
+admin-address: Adresa
+admin-all: Toate
+admin-back: Înapoi
+admin-back-detail: 'Înapoi la detalii'
+admin-back-list: 'Înapoi la listă'
+admin-contents: 'Texte și traduceri'
+admin-empty-list: 'Nu s-au găsit înregistrări'
+admin-home: Pagina principală
+admin-items: bilete
+admin-mailing-back-to-list: 'Înapoi la comunicare'
+admin-mailing-communicating-with: 'Doream să comunicăm cu %DESC%'
+admin-mailing-created: 'Creat la data de'
+admin-mailing-new-massive: 'Un nou newsletter a fost trimis în masă %TOTAL% utilizatorilor'
+admin-mailing-status: 'Status automatic la livrare'
+admin-mailing-subject: Subiect
+admin-mailing-view-and-activate: 'A se vedea newsletter-ul de la Admin pentru a activa livrarea'
+admin-mailing-view-in-newsletter: 'A se vedea newsletter-ul de la Admin'
+admin-mailing-view-in-sent: 'A se vedea evidența livrărilor (date statistice)'
+admin-mailing-view-message: 'A se vedea mesajul'
+admin-newsletter-generated: 'Newsletter-ul a fost generat [%ID%]'
+admin-newsletter-langs-to-send: 'Limbi: %LANGS%'
+admin-newsletter-mind-activate: 'Activ pentru a fi trimis'
+admin-no: 'Nu'
+admin-percent: Procent
+admin-project: Proiect
+admin-projects: Proiecte
+admin-filters: 'Filtre'
+admin-remove-filters: 'Elimină filtrele'
+admin-sponsors: Servicii
+admin-status: Status
+admin-text-type: 'Procesare text ca'
+admin-text-type-html: HTML
+admin-text-type-md: Reducere
+admin-text-type-plain: 'Text simplu'
+admin-user: Utilizator
+admin-users: Utilizatori
+admin-yes: Da
+admin-impersonate-user: În locul %s
+admin-project-express-discard: 'Exprimă respingerea'
+admin-project-express-discard-desc: 'Mutați proiectul cu status Respins și trimiteți un email'
+admin-project-express-discard-sure: 'Se va trimite un email automat și va fi respins. Ok?'
+admin-project-to-review: 'Revizuire'
+admin-project-to-review-desc: 'Alocați proiectului statusul În curs'
+admin-project-to-review-sure: 'Creatorul nu îl va mai putea edita. Ok?'
+admin-project-view-in-admin: 'A se vedea în admin'
+admin-project-to-negotiation: 'De negociat'
+admin-project-to-negotiation-desc: 'Alocați proiectului statusul de Editare'
+admin-project-to-negotiation-sure: 'ALERTA! Proiectul este publicat! Cu aceasta l-am șterge. Ok?'
+admin-project-to-publish: 'Publică'
+admin-project-to-publish-desc: 'Alocați proiectului statusul de "Publicat"'
+admin-project-to-publish-sure: 'Proiectul e pe cale să înceapă campania. Pornim?'
+admin-project-derivation-discard: 'Respingere și întoarcere la origine'
+admin-project-derivation-discard-desc: 'Alocați proiectului statusul Respingere și trimiteți un email altor platforme mai potrivite'
+admin-project-derivation-discard-sure: 'Se va trimite un email automat altor platforme și proeictul va avea statusul respins. Ok?'

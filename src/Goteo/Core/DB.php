@@ -16,8 +16,9 @@ use Goteo\Library\Cacher;
 
 class DB extends \PDO {
 	public $cache = null;
-	static $cache_active = false; //para poder desactivar la cache globalmente si se necesita
-	public $read_replica = null;
+    public $read_replica = null;
+	static $cache_active = false;  // can be activated/deactivated globally if needed
+	static $read_replica_active = false; // can be activated/deactivated globally if needed
 	public $is_select = false;
 	public $type = 'master';
 
@@ -93,7 +94,10 @@ class DB extends \PDO {
 	public function prepare($statement, $driver_options = array(), $select_from_replica = true) {
 
 		$this->is_select = (strtolower(rtrim(substr(ltrim($statement), 0, 7))) == 'select');
-		if ($this->read_replica && $this->is_select && $select_from_replica) {
+        if(stripos($statement, 'FROM') === false) $this->is_select = false;
+        if(stripos($statement, 'LAST_INSERT_ID') !== false) $this->is_select = false;
+
+		if ($this->read_replica && $this->is_select && $select_from_replica && static::$read_replica_active) {
 			$this->read_replica->is_select = true;
 			//usamos el objecto replica
 			// echo '[$statement] des de replica';
@@ -120,14 +124,25 @@ class DB extends \PDO {
 		return $ret;
 	}
 
+    /**
+     * Static method that allows to activate/deactivate globally the sql internal cache
+     * Withou arguments returns if it is active
+     */
+    static public function cache($activate = null) {
+        if ($activate !== null) {
+            self::$cache_active = (boolean) $activate;
+        }
+        return self::$cache_active;
+    }
+
 	/**
-	 * Metodo global para activar/desactivar la cache
-	 * Sin argumentos simplemente retorna si está o no activa
+	 * Static method that allows to activate/deactivate globally if the db replica can be used (does'nt mean it will be used)
+	 * Withou arguments returns if it is active
 	 */
-	static public function cache($activate = null) {
+	static public function replica($activate = null) {
 		if ($activate !== null) {
-			self::$cache_active = (boolean) $activate;
+			self::$read_replica_active = (boolean) $activate;
 		}
-		return self::$cache_active;
+		return self::$read_replica_active;
 	}
 }

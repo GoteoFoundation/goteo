@@ -1,3 +1,4 @@
+---
 contract-paypal_account: 'Compte PayPal:'
 currency-switch: CONVERTIR
 overview-field-spread: Diffusion
@@ -24,7 +25,6 @@ project-messages-send_direct-header: 'Envoyer un message au porteur du projet'
 project-messages-send_message-button: Envoyer
 project-messages-send_message-header: 'Ecrivez votre message'
 project-not_published: 'Ce projet n''est pas encore public.'
-project-rewards-bonus_reward-title: Bonus
 project-rewards-header: Récompense
 project-rewards-individual_reward-limited: 'Récompense limitée'
 project-rewards-individual_reward-title: 'Récompenses individuelles'
@@ -49,7 +49,7 @@ project-view-metter-day_closed: 'Classé le'
 project-view-metter-day_created: 'Créé le'
 project-view-metter-day_success: 'Financié le'
 project-view-metter-day_updated: 'reçu le'
-project-view-metter-days: 'Il reste'
+project-view-metter-days: Il reste
 project-view-metter-got: Accumulé
 project-view-metter-investment: Cofinancement
 project-view-metter-investors: Cofinanceurs
@@ -62,16 +62,9 @@ social_reward-access_title: 'Accedez a cette ressource'
 tooltip-project-bank: 'Si vous ne désirez pas indiquer le numéro, vous pouvez le faire plus tard, au moment de formaliser le contrat'
 tooltip-project-help-cost: 'Si vous avez des doutes pour la section budget, cochez cette case. Nous recevrons une demande d''aide seulement si vous compléter le formulaire.'
 tooltip-project-help-license: 'Si vous avez des doutes à propos des licenses et des retombées collectives, cochez cette case. Nous recevrons une demande d''aide seulement si vous compléter le formulaire.'
-tooltip-project-paypal: "<p>En plus du paiement sécurisé, vous pouvez recevoir des règlements via PayPal</strong>. Pour cela, Merci d'inscrire ici une adresse email liè àvotre compte PayPal.</p (ce compte est obligatoire pour recevoir les fonds collecté)<strong>Si vous n'avez pas soumis un compte Paypal actif et vérifié lors de la validation de votre campagne, les contributions ne seront pas autorisée. <strong></p>\r\n<p>Ce compte peut être changer ultérieurement. Contactez-nous si vous avez besoin de le modifier.</p>\r\n<p><strong>IMPORTANT: Notez que vous ne pouvez pas utlisez le même compte pour faire une contributions àvotre propre projet car cela génèrerait une erreur.</strong></p>"
 tooltip-project-rounds: 'Si vous choisissez cette option, vôtre campagne durera 40 jours'
 tooltip-project-scope: 'Indiquez l''impact géographique que souhaite avoir ce projet (chaque catégorie comprend la categorie précédente).'
 tooltip-project-spread: 'Expliquez comment vous prévoyez de diffuser le projet au sein de votre communauté: canaux, tels messages, la diffusion, le calendrier minimum...'
-tooltip-updates-allow_comments: tooltip-updates-allow_comments
-tooltip-updates-date: tooltip-updates-date
 tooltip-updates-home: 'Texte tooltip-updates-home'
-tooltip-updates-image: tooltip-updates-image
-tooltip-updates-image_upload: tooltip-updates-image_upload
-tooltip-updates-media: tooltip-updates-media
 tooltip-updates-tags: 'Texte tooltip-updates-tags'
-tooltip-updates-text: tooltip-updates-text
-tooltip-updates-title: tooltip-updates-title
+project-obtained: 'Accumulé'

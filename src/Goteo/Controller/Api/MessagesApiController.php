@@ -60,7 +60,7 @@ class MessagesApiController extends AbstractApiController {
     /**
      * Add a comment over a support message
      */
-    public function commentsAddAction(Request $request) {
+    public function addCommentAction(Request $request) {
         if(!$this->user) {
             throw new ControllerAccessDeniedException();
         }
@@ -92,6 +92,7 @@ class MessagesApiController extends AbstractApiController {
                 'thread' => $thread,
                 'project' => $project,
                 'blocked' => false,
+                'private' => $parent->private,
                 'message' => $message,
                 'date' => date('Y-m-d H:i:s')
             ]);
@@ -101,6 +102,12 @@ class MessagesApiController extends AbstractApiController {
         }
         if($recipients = $request->request->get('recipients')) {
             $comment->setRecipients($recipients);
+        } else {
+            // Set the parent as recipient
+            $comment->setRecipients([$parent->getUser()]);
+        }
+        if(!$comment->getRecipients()) {
+            throw new ModelException(Text::get('dashboard-message-donors-error'));
         }
 
         // Send and event to create the Feed and send emails
@@ -126,7 +133,7 @@ class MessagesApiController extends AbstractApiController {
     /**
      * Delete a comment
      */
-    public function commentsDeleteAction($cid, Request $request) {
+    public function deleteCommentAction($cid, Request $request) {
         if(!$this->user) {
             throw new ControllerAccessDeniedException();
         }
@@ -160,7 +167,7 @@ class MessagesApiController extends AbstractApiController {
         // TODO: filter type
         foreach(Comment::getAll($prj) as $msg) {
             $ob = ['id' => $msg->id,
-                   'message' => $msg->message,
+                   'message' => $msg->getHtml(),
                    'date' => $msg->date,
                    'project' => $msg->project,
                    'user' => $msg->getUser()->id
@@ -188,17 +195,23 @@ class MessagesApiController extends AbstractApiController {
         $list = [];
 
         // TODO: filter type
-        foreach(Comment::getUserPrivateMessages($user, $prj) as $msg) {
+        foreach(Comment::getUserMessages($user, $prj) as $msg) {
+            $mail = $msg->getMail();
+            $stats = $msg->getStats();
+            $opened = (bool) $stats && $stats->getEmailOpenedCollector()->getPercent();
             $ob = ['id' => $msg->id,
-                   'message' => $msg->message,
+                   'message' => $msg->getHtml(),
+                   'sent' => $mail ? true : false,
+                   'opened' => $opened,
                    // 'date' => date_formater($msg->date, true),
                    'date' => $msg->date,
                    'project' => $msg->project,
                    'timeago' => $msg->timeago,
                    'recipient' => $msg->recipient,
+                   'recipient_name' => $msg->recipient_name,
                    'user' => $msg->user,
                    'name' => $msg->getUser()->name,
-                   'avatar' => $msg->getUser()->avatar->getLink(60,60,c),
+                   'avatar' => $msg->getUser()->avatar->getLink(60,60,true),
                    'thread' => $msg->thread
                ];
             $list[] = $ob;
@@ -210,31 +223,34 @@ class MessagesApiController extends AbstractApiController {
     }
 
     /**
-     * Add a comment over a support message
+     * Add a comment over a project
      */
-    public function messagesAddAction(Request $request) {
+    public function addMessageAction(Request $request) {
         $subject = trim($request->request->get('subject'));
         $body = trim($request->request->get('body'));
         $project = $request->request->get('project');
+
         $prj = Project::get($project);
         if(!$prj->userCanEdit($this->user)) {
             throw new ControllerAccessDeniedException();
         }
 
-        if($subject && $body) {
-            $message = "<strong>$subject</strong><br>\n<br>\n$body";
-        } else {
+        if(!$body && !$subject) {
             throw new ModelException(Text::get('validate-donor-mandatory'));
+        }
+        if($subject) {
+            $body = "### $subject\n\n$body";
         }
 
         // Create the message
         $message = new Comment([
             'user' => $this->user,
             'project' => $project,
+            'thread' => null, // Thread is assigned after creating the message
             'blocked' => false,
             'private' => true,
             'subject' => $subject,
-            'message' => $message,
+            'message' => $body,
             'date' => date('Y-m-d H:i:s')
         ]);
         if(!$message->save($errors)) {
@@ -243,41 +259,42 @@ class MessagesApiController extends AbstractApiController {
         $users = $request->request->get('users');
         if(is_array($users)) $users = array_filter($users);
 
-        $evt = new FilterMessageEvent($message);
+        $event = new FilterMessageEvent($message);
         if($users) {
             $message->setRecipients($users);
         } else {
             // TODO: find recipients from filters
             $filters = [
                 'projects' => $project,
-                'status' => [Invest::STATUS_CHARGED, Invest::STATUS_PAID],
+                // 'status' => [Invest::STATUS_CHARGED, Invest::STATUS_PAID],
+                'status' => [Invest::STATUS_CHARGED, Invest::STATUS_PAID, Invest::STATUS_RETURNED, Invest::STATUS_RELOCATED, Invest::STATUS_TO_POOL],
                 'reward' => $request->request->get('reward'),
                 'types' => $request->request->get('filter')
             ];
             $message->setRecipients(Invest::getUsersList($filters));
-            $evt->setDelayed(true);
+            $event->setDelayed(true);
         }
 
-        if(!$message->getRecipients()) {
+        if($recipients = $message->getRecipients()) {
+            // assign a thread if the user is already in the coversation
+            if(count($recipients) == 1) {
+                $message->setThread('auto');
+                if($message->thread) {
+                    $message->save();
+                }
+            }
+        } else {
             throw new ModelException(Text::get('dashboard-message-donors-error'));
         }
 
         // Send and event to create the Feed and send emails
-        $this->dispatch(AppEvents::MESSAGE_CREATED, $evt);
+        $this->dispatch(AppEvents::MESSAGE_CREATED, $event);
 
-        // if($request->request->get('view') === 'dashboard') {
-        //     $view = 'dashboard/project/partials/comments/item';
-        // }
-        // else {
-        //     $view = 'project/partials/comment';
-        // }
-        View::setTheme('responsive');
         return $this->jsonResponse([
             'id' => $message->id,
             'user' => $comment->user,
             'project' => $comment->project,
-            'message' => $comment->message,
-            // 'html' => View::render($view, [ 'comment' => $comment, 'project' => $prj, 'admin' => $request->request->get('admin') ])
+            'message' => $comment->message
         ]);
     }
 }

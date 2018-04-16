@@ -15,7 +15,6 @@ secret: --a-very-secret-string---
 env: local # set to real to send emails
 debug: true # whether to show trace for errors or not
             # This is always true for local or beta env
-liveport: 35729 # Local development only livereload port (optional)
 
 # main node
 node: goteo
@@ -23,16 +22,23 @@ node: goteo
 # Default system language
 lang: es
 
+# Default system language (for SQL tables)
+# (DO NO CHANGE THIS UNLESS YOU KNOW WHAT YOU'RE DOING)
+sql_lang: es
+
+# Default public currency for the website
+currency: EUR
+
 # Default timezone
 timezone: Europe/Madrid
 
 # url
 url:
-    main: //localhost:8082
+    main: //0.0.0.0:8081
     # static resources url if you use a different assets server
-    assets: //localhost:8082
+    assets: //0.0.0.0:8081
     #optional, configure this as hostname only (ex: example.com) if you want languages to be selected as subdomains (es.example.com, en.example.com)
-    url_lang: localhost:8081
+    # url_lang: 0.0.0.0:8081
 
     # If you want to use a CDN or another web server to serve the cached images
     # You can define this constants. All cached images links will point to this
@@ -62,6 +68,7 @@ url:
 plugins:
     goteo-dev:
         active: true # plugin should be active=true to be loaded
+        liveport: 35729 # Local development only livereload port (optional)
 
 # Payment methods, must be registered as classes implementing Goteo\Payment\Method\PaymentMethodInterface
 payments:
@@ -135,7 +142,7 @@ db:
     driver:   mysql     # Database driver (mysql)
     host:     localhost # Database host
     port:     3306      # Database port
-    charset:  UTF-8     # Database charset
+    charset:  utf8mb4     # Database charset
     database: goteo     # Database schema (database name)
     username: root      # Database user for the goteo database
     password: root      # Password for the goteo database
@@ -211,6 +218,8 @@ mail:
     quota:
         total: 50000  # Maximum sending quota in 24 hours time (useful for SMTP servers like Amazon SES)
         sender: 40000 # Part of this quota used by newsletter mailing
+        send_rate: 10  # Maximum number of mails per second to be send in mailing
+        concurrency: 10 # Maximum number of processes to be executed in parallel to send mailing
 
     # Amazon SNS key to process automatic bounces: 'arn:aws:sns:us-east-1:XXXXXXXXX:amazon-ses-bounces'
     # URL mus be: goteo_url.tld/aws-sns.php
@@ -228,6 +237,8 @@ geolocation:
     # Un comment next 2 lines if you have it installed and working:
     # maxmind:
     #    cities: /usr/share/GeoIP/GeoLite2-City.mmdb
+    google_maps_key: # Google Maps Key
+                     # Ge one here: https://developers.google.com/maps/documentation/javascript/get-api-key
 
 # Social Login Services
 # Fill an uncomment the needed one's

@@ -25,8 +25,9 @@ class BannerTest extends \PHPUnit_Framework_TestCase {
     public function testValidate($ob) {
         $this->assertFalse($ob->validate(), print_r($errors, 1));
         $this->assertFalse($ob->save());
+        return $ob;
     }
-
+/*
     public function testCreate() {
         $ob = new Banner(self::$data);
 
@@ -47,8 +48,9 @@ class BannerTest extends \PHPUnit_Framework_TestCase {
 
         return $ob;
     }
+    */
     /**
-     * @depends testCreate
+     * @depends testValidate
      */
     public function testNonExisting($ob) {
         $ob = Banner::get($ob->id);

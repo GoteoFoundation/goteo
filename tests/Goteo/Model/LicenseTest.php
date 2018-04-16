@@ -29,8 +29,9 @@ class LicenseTest extends \PHPUnit_Framework_TestCase {
 
     public function testCreate() {
         $ob = new License(self::$data);
-        $this->assertTrue($ob->validate($errors));
-        $this->assertTrue($ob->save());
+        $errors = [];
+        $this->assertTrue($ob->validate($errors), print_r($errors, 1));
+        $this->assertTrue($ob->save($errors), print_r($errors, 1));
         $ob = License::get($ob->id);
         $this->assertInstanceOf('\Goteo\Model\License', $ob);
 

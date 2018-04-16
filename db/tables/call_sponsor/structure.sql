@@ -10,3 +10,9 @@ PRIMARY KEY ( `id` )
 
 -- campo imagen a nombre archivo
 ALTER TABLE `call_sponsor` CHANGE `image` `image` VARCHAR( 255 ) NULL DEFAULT NULL COMMENT 'Contiene nombre de archivo';
+
+
+-- Main sponsor
+ALTER TABLE `call_sponsor` ADD `main` BOOLEAN NOT NULL DEFAULT TRUE COMMENT 'Sponsor main';
+
+ALTER TABLE `call_sponsor` ADD FOREIGN KEY (`call`) REFERENCES `call`(`id`) ON UPDATE CASCADE ON DELETE CASCADE;

@@ -110,11 +110,11 @@ class StoriesSubController extends AbstractSubController {
             $story = new Model\Stories(array(
                 'id' => $this->getPost('id'),
                 'node' => $node,
-                'project' => $this->getPost('project'),
+                'project' => $this->getPost('project') ? $this->getPost('project') : null,
                 'order' => $this->getPost('order'),
                 'image' => $this->getPost('image'),
                 'pool_image' => $this->getPost('pool_image'),
-                'pool' => $this->getPost('pool'),
+                'pool' => (bool) $this->getPost('pool'),
                 'text_position' => $this->getPost('text_position'),
                 'active' => $this->getPost('active'),
                 'title' => $this->getPost('title'),

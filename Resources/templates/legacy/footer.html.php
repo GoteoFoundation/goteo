@@ -16,7 +16,7 @@ $lang = (LANG != 'es') ? '?lang='.LANG : '';
 
 //activamos la cache para las consultas de categorias, posts, sponsors
 \Goteo\Core\DB::cache(true);
-$categories = Category::getList();  // categorias que se usan en proyectos
+$categories = Category::getNames();  // categorias que se usan en proyectos
 $posts      = Post::getList('footer');
 $sponsors   = Sponsor::getList();
 

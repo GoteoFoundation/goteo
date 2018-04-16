@@ -48,7 +48,7 @@ foreach($milestones as $update):
 
     <?php if($update->post): ?>
     <div class="col-sm-9 col-xs-8 content">
-        <a href="<?= '/project/'.$this->project->id.'/updates/'.$update->post->id ?>">
+        <a class="pronto" data-pronto-target="#project-tabs" href="<?= '/project/'.$this->project->id.'/updates/'.$update->post->id ?>">
             <h2><?= $update->post->title ?></h2>
         </a>
 
@@ -64,7 +64,7 @@ foreach($milestones as $update):
         <?php if($update->post->text): ?>
         <div class="description spacer-20">
             <?= $this->text_truncate($this->text_plain($update->post->text), 250) ?>
-            <a href="<?= '/project/'.$this->project->id.'/updates/'.$update->post->id ?>"><span class="read-more">[<?= $this->text('regular-read_more') ?>]</span></a>
+            <a class="pronto" data-pronto-target="#project-tabs" href="<?= '/project/'.$this->project->id.'/updates/'.$update->post->id ?>"><span class="read-more">[<?= $this->text('regular-read_more') ?>]</span></a>
         </div>
         <?php endif ?>
         <?php if($update->post->num_comments): ?>
@@ -78,8 +78,8 @@ foreach($milestones as $update):
 
             <div class="inside">
                 <?php if(!empty($update->milestone->link)): ?>
-                    <?php if($update->milestone->link!="invest"): ?>
-                        <a class="expand-link" href="/project/<?= $this->project->id.$update->milestone->link ?>" target="_blank"></a>
+                    <?php if($update->milestone->link != "invest"): ?>
+                        <a class="pronto expand-link" data-pronto-target="#project-tabs" href="/project/<?= $this->project->id . ($update->milestone->link === '/' ? '' : $update->milestone->link) ?>"></a>
                     <?php else: ?>
                         <a class="expand-link" href="/invest/<?= $this->project->id ?>" target="_blank"></a>
                     <?php endif;?>

@@ -102,7 +102,7 @@ class BannersSubController extends AbstractSubController {
             // objeto
             $banner = $id ? Model\Banner::get($id, Config::get('lang')) : new Model\Banner;
             $banner->node = $node;
-            $banner->project = $this->getPost('item');
+            $banner->project = $this->getPost('item') ? $this->getPost('item') : null;
             $banner->title = $this->getPost('title');
             $banner->description = $this->getPost('description');
             $banner->url = $this->getPost('url');

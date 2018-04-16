@@ -1,5 +1,5 @@
+---
 cost-type-lend: Loan
-cost-type-material: Material
 cost-type-structure: Infrastructure
 cost-type-task: Task
 costs-field-amount: Value
@@ -17,7 +17,7 @@ costs-field-type: Type
 costs-fields-main-title: 'Breakdown of expenses'
 costs-fields-metter-title: 'View of expenses'
 costs-fields-resources-title: Resource
-costs-main-header: Expenses
+costs-main-header: 'Expenses'
 mandatory-cost-field-amount: 'You must assign an amount to the expenses'
 mandatory-cost-field-description: 'You must add a description for the expenses'
 mandatory-cost-field-name: 'You must label the expenses'

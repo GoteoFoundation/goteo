@@ -24,7 +24,7 @@ use Goteo\Application\Lang;
 use Goteo\Library\Text;
 
 
-class TranslationsCommand extends Command {
+class TranslationsCommand extends AbstractCommand {
 
     protected function configure()
     {

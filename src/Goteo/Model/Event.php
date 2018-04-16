@@ -105,7 +105,7 @@ class Event extends \Goteo\Core\Model {
         $this->hash = md5($this->action);
         // check non-repeated
         if(self::exists($this->hash)) {
-            throw new DuplicatedEventException();
+            throw new DuplicatedEventException($this->action);
         }
     }
 

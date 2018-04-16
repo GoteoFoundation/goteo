@@ -1,10 +1,56 @@
 ---
 currentMenu: migration
 ---
+MySQL migrations
+================
+
+Starting in version **3.2** a SQL migrations uses the library [LibMigration](http://kohkimakimoto.github.io/lib-migration/).
+
+The console command `migrate` must be used to create sql migrations:
+
+**Creates a new PHP Class file to write migrations inside:**
+
+```bash
+php bin/console create some_description
+```
+
+A new file will be created in `db/migrations/{timestamp}_dbname_some_description.php`, edit it and write the UP/DOWN SQL commands there.
+
+
+To apply migrations these commands can be used:
+
+**Shows the current status:**
+
+```bash
+php bin/console migrate
+```
+
+**Execute all the migrations up pending:**
+
+```bash
+php bin/console migrate all
+```
+
+**Execute only the next migration up pending:**
+
+```bash
+php bin/console migrate up
+```
+
+
+In case you need to downgrade:
+
+**Execute the next migration down:**
+
+```bash
+php bin/console migrate up
+```
+
+
 Legacy views migration:
 ======================
 
-This document is about how to change Controllers and views (templates) from the old system to the new one:
+This is about how to change Controllers and views (templates) from the old system to the new one:
 
 ## Response
 

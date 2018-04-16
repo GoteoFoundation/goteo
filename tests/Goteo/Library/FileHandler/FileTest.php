@@ -2,10 +2,10 @@
 
 namespace Goteo\Library\Tests;
 
-use Goteo\Model,
-    Goteo\Library\FileHandler\File,
-    Goteo\Library\FileHandler\S3File,
-    Goteo\Library\FileHandler\LocalFile;
+use Goteo\Model;
+use Goteo\Library\FileHandler\File;
+use Goteo\Library\FileHandler\S3File;
+use Goteo\Library\FileHandler\LocalFile;
 
 class FileTest extends \PHPUnit_Framework_TestCase {
     protected static $handler = 'local';
@@ -144,7 +144,7 @@ class FileTest extends \PHPUnit_Framework_TestCase {
     /**
      * Remove temporal files on finish
      */
-    public static function tearDownAfterClass($fp) {
+    public static function tearDownAfterClass() {
         unlink(self::$test_img);
     }
 }

@@ -1,0 +1,21 @@
+---
+contract-field-reg_number_1: 'Númberu de rexistru'
+contract-field-reg_number_2: 'Númberu d''inscripción nel rexistru (completu):'
+contract-field-regdata: 'Datos de rexistru'
+contract-step-accounts: Cuentes
+contract-step-documents: Documentación
+contract-step-entity: 'Entidá xurídica'
+contract-step-final: Revisión
+contract-step-promoter: Representante
+guide-contract-entity: 'Nesti pasu has rellenar los datos de la entidá a la que representes. Si robles el contratu nel to nome, has volver al primer pasu («Representante») ya indicalo afayadizamente.'
+personal-field-contract_name: 'Nome y apellíos'
+personal-field-contract_nif: 'Númberu de NIF / NIE / VAT'
+personal-field-main_address: 'Direición postal'
+personal-field-post_address: 'Direición social'
+personal-field-region: Provincia
+validate-project-value-contract_nif: 'El NIF nun ye correutu.'
+contract-final-nif: 'NIF (propiu o representante)'
+contract-final-address: 'Domiciliu (propiu o representante)'
+contract-final-location: 'Conceyu (propiu o representante)'
+contract-final-region: 'Provincia (propiu o representante)'
+contract-final-country: 'País (propiu o representante)'

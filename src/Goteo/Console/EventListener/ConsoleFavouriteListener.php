@@ -23,7 +23,7 @@ use Goteo\Application\Config;
 use Goteo\Model\Event;
 use Goteo\Model\Project;
 use Goteo\Model\Project\Favourite;
-use Goteo\Library\Currency;
+use Goteo\Application\Currency;
 use Goteo\Model\Mail;
 use Goteo\Model\Template;
 
@@ -31,7 +31,7 @@ use Goteo\Model\Template;
 class ConsoleFavouriteListener extends AbstractListener {
 
     /**
-     * 
+     *
      * @param  FilterProjectEvent $event
      */
     public function onProjectActive(FilterProjectEvent $event) {
@@ -53,7 +53,7 @@ class ConsoleFavouriteListener extends AbstractListener {
                     // Send mail with favourite
 
                     $days_left=40-$day;
-                    $money_left=Currency::amount_format($project->mincost-$project->amount);
+                    $money_left=Currency::amountFormat($project->mincost-$project->amount);
 
                     if( Mail::createFromTemplate($user->user_email, $user->user_name, Template::FAVOURITE_PROJECT_REMEMBER, [
                             '%PROJECTNAME%'   => $project->name,
@@ -78,7 +78,7 @@ class ConsoleFavouriteListener extends AbstractListener {
 
 	public static function getSubscribedEvents() {
 		return array(
-            ConsoleEvents::PROJECT_ACTIVE    => 'onProjectActive'   
+            ConsoleEvents::PROJECT_ACTIVE    => 'onProjectActive'
 		);
 	}
 }

@@ -12,28 +12,21 @@
                 ]) ?></p>
 
         <!-- <div class="list-group"> -->
-        <?php foreach($this->translated as $lang):
-            $percent1 = $this->project->getLangsPercent($lang);
-            $cost = current($this->project->costs);
-            $percent2 = $cost ? $cost->getLangsGroupPercent($lang, ['project']) : 0;
-            $reward = current($this->project->rewards);
-            $percent3 = $reward ? $reward->getLangsGroupPercent($lang, ['project']) : 0;
+        <?php
+        $zones = $this->a('zones');
+        $percents = $this->a('percents');
+        foreach($this->translated as $lang):
         ?>
-                <blockquote>
-                    <h4><?= $this->languages[$lang] ?>
-                      <span class="btn-group pull-right">
-                        <a class="btn btn-default btn-lg" title="<?= $this->text('translator-percent', $percent1) ?>" href="/dashboard/project/<?= $this->project->id ?>/translate/overview/<?= $lang ?>">
-                            <strong><?= $this->text('step-main') ?></strong> <?= $this->percent_badge($percent1) ?>
-                        </a>
-                        <a class="btn btn-default btn-lg" title="<?= $this->text('translator-percent', $percent2) ?>" href="/dashboard/project/<?= $this->project->id ?>/translate/costs/<?= $lang ?>">
-                            <?= $this->text('step-4') ?> <?= $this->percent_badge($percent2) ?>
-                        </a>
-                        <a class="btn btn-default btn-lg" title="<?= $this->text('translator-percent', $percent3) ?>" href="/dashboard/project/<?= $this->project->id ?>/translate/rewards/<?= $lang ?>">
-                            <?= $this->text('step-5') ?> <?= $this->percent_badge($percent3) ?>
-                        </a>
-                      </span>
-                    </h4>
-                </blockquote>
+            <blockquote>
+                <h4><i class="fa fa-globe"></i> <?= $this->languages[$lang] ?></h4>
+                <div class="btn-group">
+                  <?php foreach($zones as $zone => $name): ?>
+                    <a class="btn btn-default btn-lg" title="<?= $this->text('translator-percent', $percent1) ?>" href="/dashboard/project/<?= $this->project->id ?>/translate/<?= $zone ?>/<?= $lang ?>">
+                      <strong><?= $name ?></strong> <?= $this->percent_badge($percents[$lang][$zone]) ?>
+                    </a>
+                  <?php endforeach ?>
+                </div>
+            </blockquote>
         <?php endforeach ?>
         <!-- </div> -->
     <?php else: ?>

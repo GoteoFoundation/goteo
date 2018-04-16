@@ -61,16 +61,32 @@ module.exports = function(grunt) {
             dot: true,
             cwd: '<%= goteo.app %>',
             dest: '<%= goteo.dist %>',
-            src: [ '*', 'assets/vendor/**/*', 'assets/img/**/*', 'templates/**/*', 'view/**/*' ]
+            src: [ '*', 'assets/js/*/*', 'assets/vendor/**/*', 'assets/img/**/*', 'templates/**/*', 'view/**/*' ]
         },
 
         fonts: {
-            expand: true,
-            flatten: true,
-            dot: true,
-            cwd: '<%= goteo.app %>/assets/vendor/',
-            dest: '<%= goteo.dist %>/assets/fonts/',
-            src: [ '**/fonts/*' ]
+            files: [{
+                expand: true,
+                flatten: true,
+                dot: true,
+                cwd: '<%= goteo.app %>/assets/vendor/',
+                dest: '<%= goteo.dist %>/assets/fonts/',
+                src: [ '**/fonts/*' ]
+            },{
+                expand: true,
+                flatten: true,
+                dot: true,
+                cwd: '<%= goteo.app %>/assets/vendor/slick-carousel/slick/fonts/',
+                dest: '<%= goteo.dist %>/assets/css/fonts/',
+                src: [ '*' ]
+            },{
+                expand: true,
+                flatten: true,
+                dot: true,
+                cwd: '<%= goteo.app %>/assets/vendor/summernote/dist/font/',
+                dest: '<%= goteo.dist %>/assets/css/font/',
+                src: [ '*' ]
+            }]
         }
     });
     grunt.loadNpmTasks('grunt-contrib-copy');

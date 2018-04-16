@@ -24,7 +24,7 @@
           <th data-type="html"><?= $this->text('blog-published') ?></th>
           <th data-type="html" data-breakpoints="xs"><?= $this->text('regular-image') ?></th>
           <th><?= $this->text('regular-title') ?></th>
-          <th style="min-width: 135px"><?= $this->text('regular-actions') ?></th>
+          <th style="min-width: 140px"><?= $this->text('regular-actions') ?></th>
         </tr>
       </thead>
       <tbody>
@@ -39,12 +39,13 @@
           <td><?= $post->title ?></td>
           <td>
             <div class="btn-group">
-              <a class="btn btn-default" title="<?= $this->text('regular-view') ?>" target="_blank" href="/project/<?= $this->project->id ?>/updates/<?= $post->id ?>#updates"><i class="icon icon-preview"></i></a>
-              <a class="btn btn-default" title="<?= $this->text('regular-edit') ?>" href="/dashboard/project/<?= $this->project->id ?>/updates/<?= $post->id ?>"><i class="icon icon-edit"></i></a>
-              <?php if($this->languages): ?>
-                <?= $this->insert('dashboard/partials/translate_menu', ['no_title' => true, 'btn_class' => 'btn-default', 'base_link' => '/dashboard/project/' . $this->project->id . '/updates/' . $post->id . '/', 'translated' => $post->getLangsAvailable(), 'percentModel' => $post]) ?>
-              <?php endif ?>
-
+                <a class="btn btn-default" title="<?= $this->text('regular-view') ?>" target="_blank" href="/project/<?= $this->project->id ?>/updates/<?= $post->id ?>#updates"><i class="icon icon-preview"></i></a>
+                <a class="btn btn-default" title="<?= $this->text('regular-edit') ?>" href="/dashboard/project/<?= $this->project->id ?>/updates/<?= $post->id ?>"><i class="icon icon-edit"></i></a>
+                <?php
+                  if($this->languages) {
+                    echo $this->insert('dashboard/partials/translate_menu', ['no_title' => true, 'btn_class' => 'btn-default', 'base_link' => '/dashboard/project/' . $this->project->id . '/updates/' . $post->id . '/', 'translated' => $post->getLangsAvailable(), 'percentModel' => $post]);
+                  }
+                ?>
             </div>
           </td>
         </tr>

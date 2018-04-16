@@ -141,8 +141,8 @@ class Document extends \Goteo\Core\Model {
                 }
 
                 // Construye SQL.
-                $query = "INSERT INTO document (id, contract, name, type, size)
-                    VALUES ('', :contract, :name, :type, :size)";
+                $query = "INSERT INTO document (contract, name, type, size)
+                    VALUES (:contract, :name, :type, :size)";
                 // Ejecuta SQL.
                 if (self::query($query, $data)) {
                     $this->id = self::insertId();
@@ -261,23 +261,23 @@ class Document extends \Goteo\Core\Model {
      */
     public function remove (&$errors = array()) {
         $ok = false;
-        $this->filedir = $this->contract.'/';
 
         try {
             $sql = "DELETE FROM document WHERE id = ?";
             $values = array($this->id);
+
             if (self::query($sql, $values)) {
                  //esborra de disk
-                if ($this->fp->delete($this->filedir . $this->name)) {
+                if ($this->fp->delete($this->contract . '/' . $this->name)) {
                     $ok = true;
                 } else {
-                    $errors[] = 'Se ha borrado el registro pero ha fallado al borrar el archivo';
+                    $errors[] = "File deleted from database successfully. But failed deleting it from disk.";
                 }
             } else {
-                $errors[] = 'El sql ha fallado: '.$sql.' con id: '.$this->id;
+                $errors[] = "Document [{$this->id}] not deleted from database (neither from disk)";
             }
         } catch(\PDOException $e) {
-            $errors[] = 'El sql ha fallado: '.$sql.' con id: '.$this->id;
+            $errors[] = 'Internal server error: '.$e->getMessage();
         }
 
         return $ok;

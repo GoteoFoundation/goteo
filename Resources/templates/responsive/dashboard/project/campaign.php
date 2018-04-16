@@ -51,9 +51,17 @@
 // @license magnet:?xt=urn:btih:0b31508aeb0634b347b8270c7bee4d411b5d4109&dn=agpl-3.0.txt
 
 $(function(){
+
+    $('#autoform_one_round input[type="radio"]').on('change', function() {
+        var $help = $(this).closest('.input-wrap').find('.help-text');
+        $active = $help.find('span').eq(1-$(this).val()).removeClass('hidden');
+        $help.find('span').not($active).addClass('hidden');
+    });
+
+
     $('#paypal_switch').on('change', function() {
         $paypal = $(this).closest('.form-group').next('.paypal');
-        console.log('switch', $paypal.attr('class'));
+        // console.log('switch', $paypal.attr('class'));
         if($(this).prop('checked')) {
             $paypal.addClass('show');
         } else {

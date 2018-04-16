@@ -295,6 +295,7 @@ class UserController extends \Goteo\Core\Controller {
     /**
      * Registro instantáneo de usuario mediante email
      * (Si existe devuelve id pero no loguea)
+     * @deprecated
      */
     static public function instantReg($email, $name = '') {
 
@@ -536,25 +537,23 @@ class UserController extends \Goteo\Core\Controller {
         $token = \mybase64_decode($token);
         if (count(explode('¬', $token)) > 1) {
             $query = Model\User::query('SELECT id FROM user WHERE token = ?', array($token));
+            $errors = [];
             if ($id = $query->fetchColumn()) {
                 $user = Model\User::get($id);
-                $user->email = $token;
-                $errors = array();
-                if ($user->save($errors)) {
+                if($user->setEmail($user->getToken(true), $errors, true)) {
                     Application\Message::info(Text::get('user-changeemail-success'));
-
                     // Refresca la sesión.
                     Model\User::flush();
                 } else {
                     Application\Message::error($errors);
                 }
             } else {
-                Application\Message::error(Text::get('user-changeemail-fail'));
+               Application\Message::error(Text::get('user-changeemail-invalid-token'));
             }
         } else {
             Application\Message::error(Text::get('user-changeemail-fail'));
         }
-        return new RedirectResponse('/dashboard');
+        return new RedirectResponse('/dashboard/settings/access');
     }
 
     /**

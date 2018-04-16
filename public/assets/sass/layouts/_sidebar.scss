@@ -6,11 +6,12 @@
     line-height: 1.5;
     // height: 100%;
     top: 0;
+
     .sidebar-wrap {
         background-color: $background-sidebar;
     }
 
-    li {
+    .sidebar-nav li {
       padding: 0 15px;
       background-color: $background-sidebar;
       &.ok::after{
@@ -76,6 +77,16 @@
                 border-top-color:transparent;
             }
         }
+      }
+      &.active+li {
+        >a, >button {
+            &.btn {
+                margin-top: 10px;
+            }
+        }
+      }
+      &.nopadding > a {
+        padding-left:0;
       }
       &.sidebar {
         > a {
@@ -181,14 +192,26 @@
                 padding:0 0 20px 0;
                 border-radius: 0;
                 color:$color-white;
-                a {
+                a,button {
                     color:$color-white;
+                    border: 0;
+                    background-color: transparent;
+                    &:hover {
+                        background-color: $background-light;
+                    }
+                }
+                ul.dropdown-menu {
+                    color:$primary-color;
+                    a,button {
+                        color:$primary-color;
+                    }
+
                 }
                 .error {
                     margin: 5px 0;
                     font-size: 12px;
                     line-height: 12px;
-                    a {
+                    a,button {
                         color: $color-red;
                     }
                 }

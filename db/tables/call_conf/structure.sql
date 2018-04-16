@@ -10,3 +10,5 @@ PRIMARY KEY (`call`)
 
 -- Y este se me olvidaba
 ALTER TABLE `call_conf`  ADD `applied` INT(4) NULL DEFAULT NULL COMMENT 'Para fijar numero de proyectos recibidos' AFTER `call`;
+
+ALTER TABLE `call_conf` ADD FOREIGN KEY (`call`) REFERENCES `call`(`id`) ON UPDATE CASCADE ON DELETE CASCADE;

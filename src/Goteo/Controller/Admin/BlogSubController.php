@@ -173,6 +173,7 @@ class BlogSubController extends AbstractSubController {
                     'id',
                     'blog',
                     'title',
+                    'subtitle',
                     'text',
                     'image',
                     'media',

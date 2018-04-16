@@ -1,36 +1,25 @@
-/* Costs chart */
 
-div {
-  &.chart-costs {
-    font-size: 20px;
-    padding: 20px;
-    path {
-      stroke: #fff;
-      fill-rule: evenodd;
-      cursor: pointer;
-    }
-    text {
-      font-size: 75%;
-      cursor: pointer;
-    }
-    image {
-      cursor: pointer;
-    }
+/* Costs chart */
+.chart-costs {
+  font-size: 20px;
+  padding: 20px;
+  path {
+    stroke: #fff;
+    fill-rule: evenodd;
+    cursor: pointer;
   }
-  &.chart-amount {
-    svg {
-      font-size: 80% !important;
-    }
-    .axis path {
-      fill: none;
-      stroke: #000;
-      shape-rendering: crispEdges;
-    }
+  text {
+    font-size: 75%;
+    cursor: pointer;
+  }
+  image {
+    cursor: pointer;
   }
 }
 
+
 // TODO: check if this is needed
-@import url(//fonts.googleapis.com/css?family=Open+Sans:400,700);
+// @import url(//fonts.googleapis.com/css?family=Open+Sans:400,700);
 
 .axis line {
   fill: none;
@@ -38,8 +27,16 @@ div {
   shape-rendering: crispEdges;
 }
 
-div.chart-amount {
+.chart-amount {
+  svg {
+    font-size: 80% !important;
+  }
   .axis {
+    path {
+      fill: none;
+      stroke: #000;
+      shape-rendering: crispEdges;
+    }
     text {
       fill: #000;
     }

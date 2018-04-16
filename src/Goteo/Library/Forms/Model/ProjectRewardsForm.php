@@ -17,7 +17,7 @@ use Goteo\Library\Forms\AbstractFormProcessor;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Validator\Constraints;
 use Goteo\Library\Text;
-use Goteo\Library\Currency;
+use Goteo\Application\Currency;
 use Goteo\Model\Project\Reward;
 use Goteo\Library\Forms\FormModelException;
 
@@ -37,6 +37,9 @@ class ProjectRewardsForm extends AbstractFormProcessor implements FormProcessorI
                     ->addViolation();
                 }
             });
+        }
+        if(strpos($field, 'amount') === 0) {
+            $constraints[] = new Constraints\GreaterThan(0);
         }
         elseif($this->getFullValidation()) {
             $constraints[] = new Constraints\NotBlank();
@@ -109,6 +112,13 @@ class ProjectRewardsForm extends AbstractFormProcessor implements FormProcessorI
                 'constraints' => $this->getConstraints("units$suffix"),
                 'required' => false,
             ])
+            ->add("unlimited$suffix", 'boolean', [
+                'label' => false,
+                'data' => (int)$reward->units === 0,
+                'disabled' => $units_readonly,
+                'required' => false,
+                'color' => 'cyan'
+            ])
             // ->add("icon$suffix", 'choice', [
             //     'label' => 'rewards-field-icon',
             //     'data' => $reward->icon,
@@ -117,7 +127,8 @@ class ProjectRewardsForm extends AbstractFormProcessor implements FormProcessorI
             //     'required' => true,
             // ])
             ->add("reward$suffix", 'text', [
-                'label' => 'rewards-field-individual_reward-reward',
+                // 'label' => 'rewards-field-individual_reward-reward',
+                'label' => 'regular-title',
                 'data' => $reward->reward,
                 'disabled' => $readonly,
                 'constraints' => $this->getConstraints("reward$suffix"),
@@ -170,6 +181,9 @@ class ProjectRewardsForm extends AbstractFormProcessor implements FormProcessorI
         foreach($data as $key => $val) {
             list($field, $id) = explode('_', $key);
             if(!in_array($field, ['amount', 'icon', 'units', 'reward', 'description'])) continue;
+            if($field == 'units' && $data['unlimited_' . $id]) {
+                $val = 0;
+            }
             $ids[$id] = $id;
 
             $reward = $this->rewards[$id];

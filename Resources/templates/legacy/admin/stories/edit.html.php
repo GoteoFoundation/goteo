@@ -44,12 +44,12 @@ $status = Model\Project::status();
 
     <div id="text-story">
     <p>
-        <label for="story-name">T&iacute;tulo:</label><br />
+        <label for="story-name">Autor/T&iacute;tulo:</label><br />
         <input type="text" name="title" id="story-title" value="<?php echo $story->title; ?>" size="60" />
     </p>
 
     <p>
-        <label for="story-review">Review de Goteo: (Texto banner general)</label><br />
+        <label for="story-review">Review de Goteo: (Subtítulo)</label><br />
         <textarea id="story-review" name="review" cols="60" rows="2"><?php echo $story->review; ?></textarea>
     </p>
 
@@ -63,7 +63,7 @@ $status = Model\Project::status();
         </p>
 
     <p>
-        <label for="story-description">Feedback impulsor:</label><br />
+        <label for="story-description">Testimonio:</label><br />
         <textarea id="story-description" name="description" cols="60" rows="2"><?php echo $story->description; ?></textarea>
     </p>
 
@@ -79,7 +79,7 @@ $status = Model\Project::status();
     </div>
 
     <p>
-        <label for="story-image">Imagen de fondo: 941x383</label><br />
+        <label for="story-image">Imagen de fondo: 600x400</label><br />
         <input type="file" id="story-image" name="image" />
         <?php if (!empty($story->image)) : ?>
             <br />

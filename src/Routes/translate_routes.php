@@ -10,6 +10,7 @@
 
 use Symfony\Component\Routing\Route;
 use Symfony\Component\Routing\RouteCollection;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 
 $trans = new RouteCollection();
 

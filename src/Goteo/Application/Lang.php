@@ -63,9 +63,9 @@ class Lang {
      * @param string $lang      Language ID (es, en, fr, etc.)
      * @param [type] $yaml_file [description]
      */
-    static public function addYamlTranslation($lang, $yaml_file) {
+    static public function addYamlTranslation($lang, $yaml_file, $group = null) {
         static::factory($lang);
-        $group = strtok(basename($yaml_file), '.');
+        $group = $group ?: strtok(basename($yaml_file), '.');
         if(isset(static::$all_groups[$group]))
             static::$all_groups[$group][] = $yaml_file;
         else
@@ -173,6 +173,9 @@ class Lang {
      */
     static public function getDefault($lang = '', $only_public = true) {
         $default = static::isPublic(static::$default) ? static::$default : '';
+
+        if(empty($default) && static::exists(Config::get('lang'))) $default = Config::get('lang');
+
         foreach(static::$langs_available as $l => $info) {
             if($info['public'] || !$only_public) {
                 if(empty($default)) {
@@ -274,12 +277,11 @@ class Lang {
         return static::current($public_only) === $lang;
     }
 
-    static public function getUrl($lang) {
+    static public function getUrl($lang, Request $request = null) {
         $url = Config::get('url.main');
         $url_lang = Config::get('url.url_lang');
         $path = '/';
-        if($request = App::getRequest()) {
-            // $path = $request->getRequestUri();
+        if($request) {
             $path = $request->getBaseUrl().$request->getPathInfo();
             $get = $request->query->all();
             if(isset($get['lang'])) unset($get['lang']);
@@ -445,7 +447,11 @@ class Lang {
      */
     static function listCountries($lang = null) {
         if(!$lang) $lang = static::current();
-        $countries = include(__DIR__ . '/../../../vendor/openclerk/country-list/country/' . $lang . '/country.php');
+        if(is_file(__DIR__ . '/../../../vendor/openclerk/country-list/country/' . $lang . '/country.php')) {
+            $countries = include(__DIR__ . '/../../../vendor/openclerk/country-list/country/' . $lang . '/country.php');
+        } else {
+            $countries = include(__DIR__ . '/../../../vendor/openclerk/country-list/country/' . self::getFallback($lang) . '/country.php');
+        }
         if(!$countries) {
             $countries = include(__DIR__ . '/../../../vendor/openclerk/country-list/country/en/country.php');
         }

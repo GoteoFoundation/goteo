@@ -8,13 +8,6 @@
   color: $secondary-color;
   margin-bottom: 20px;
 
-  // TODO: check for removal
-  .general-dashboard {
-    background-color: $background-white;
-    padding: 15px;
-    margin: 0 -15px 40px -15px;
-  }
-
   .inner-container {
       max-width: $breakpoint-md - 30;
       padding-right: 15px;
@@ -149,16 +142,16 @@
   }
 
   .dropdown-menu {
-    a:focus, a:hover {
+    a:focus, a:hover, button:focus, button:hover {
       background-color: $background-light;
     }
     > .active {
-      > a {
+      > a, >button {
         background-color: $color-cyan;
       }
     }
     > .available {
-      > a {
+      > a, >button {
         font-weight: bold;
         text-decoration: underline;
       }
@@ -220,10 +213,18 @@
     color: $secondary-color;
     background: $background-light-body;
     tr {
+        &.strikethrough {
+            td {
+                text-decoration: line-through;
+            }
+        }
         th,td {
             padding: 10px 5px;
             &:first-child {
                 padding-left:10px;
+            }
+            &.strikethrough {
+                text-decoration: line-through;
             }
             a.send-private {
                 color:$color-dark;
@@ -254,6 +255,16 @@
         box-shadow: none;
         color: $secondary-color;
         font-weight: 500;
+      }
+      &[data-toggle="collapse"] {
+        &::after {
+          margin-left: 6px;
+          content: '\f0d7';
+          font-family: FontAwesome;
+        }
+        &[aria-expanded="true"]::after {
+          content: '\f0d8';
+        }
       }
   }
   .buttons {
@@ -417,7 +428,7 @@
                 }
                 float: left;
                 width: 20%;
-                text-align: center;
+                // text-align: center;
                 .material-switch {
                     margin-top:17px;
                 }
@@ -518,6 +529,16 @@
         font-size: 92%;
     }
   }
+  .pool-container {
+    padding-left:5%;
+    padding-right:5%;
+    .pool-box {
+        input[type="number"] {
+            margin-right: 10px;
+            max-width: 190px;
+        }
+    }
+  }
   .pool-box {
     // width: 100%;
     // padding:2%;
@@ -559,14 +580,53 @@
       cursor: pointer;
     }
   }
+  .messages-list {
+    .media {
+        h4 {
+            font-weight: normal;
+            font-size: 1em;
+            .recipient {
+                float: right;
+                &::after {
+                    font-family: FontAwesome;
+                    content: "\f00d";
+                    color: $color-red;
+                }
+                &.sent::after {
+                    content: "\f00c";
+                    color: $color-grey-cyan;
+                }
+                &.opened::after {
+                    content: "\f00c";
+                    color: $color-cyan;
+                }
+            }
+        }
+    }
+  }
   .costs-bar {
     .min, .opt, .total {
         color: $color-dark;
         float: left;
         // min-width: 101px;
-        max-width: 80%;
+        // max-width: 80%;
         // max-width: calc(100% - 202px);
+        transition: width .6s ease, min-width .6s ease, max-width .6s ease;
+
+        &.min {
+            width: 45%;
+            >span {
+                margin-right: 10px;
+            }
+        }
+        &.opt {
+            width: 30%;
+            >span {
+                margin-right: 10px;
+            }
+        }
         &.total {
+            width: auto;
             float: right;
             text-align: right;
         }
@@ -694,47 +754,6 @@
         padding-top: 8%;
         padding-bottom: 8%;
         margin: 40px 2%;
-    }
-  }
-}
-
-// ? To remove ?
-div {
-  &.row {
-    &.general-dashboard {
-      background-color: $background-white;
-      padding: 2% 5%;
-      margin-bottom: 40px;
-      border-radius: 7px;
-    }
-  }
-  &.container.general-dashboard {
-    background-color: $background-white;
-    padding: 2% 5%;
-    margin-bottom: 40px;
-    border-radius: 7px;
-    &:first-child {
-      border-top-right-radius: none;
-      border-top-left-radius: none;
-    }
-  }
-}
-
-.general-dashboard div.row.more-projects-button {
-  display: flex;
-  justify-content: center;
-  margin-top: 40px;
-}
-
-@media (max-width: $breakpoint-sm - 1) {
-  div {
-    &.row.general-dashboard, &.container.general-dashboard {
-      background-color: $background-white;
-      padding: 2% 5%;
-      margin-right: 0;
-      margin-left: 0;
-      border-radius: none;
-      margin-bottom: 20px;
     }
   }
 }

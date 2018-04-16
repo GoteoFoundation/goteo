@@ -1,0 +1,33 @@
+---
+mandatory-project-field-address: 'Ye obligatoria la direición de la persona responsable del proyeutu'
+mandatory-project-field-contract_email: 'Ye obligatorio poner el corréu de la persona responsable del proyeutu.'
+mandatory-project-field-country: 'Ye obligatoriu''l país de la persona responsable del proyeutu'
+mandatory-project-field-phone: 'Ye obligatoriu''l teléfonu de la persona responsable del proyeutu'
+mandatory-project-field-residence: 'Ye obligatorio poner el llugar de residencia de la persona responsable del proyeutu'
+mandatory-project-field-zipcode: 'Ye obligatoriu''l códigu postas de la persona responsable del proyeutu'
+personal-field-address: 'Direición (indicar si ye cai, plaza, avenida, etc)'
+personal-field-contract_birthdate: 'Data de nacencia'
+personal-field-contract_data: 'Datos de la persona responsable del proyeutu'
+personal-field-contract_email: 'Corréu venceyáu al proyeutu'
+personal-field-contract_entity-entity: 'Persona xurídica (asociaciones, fundaciones, empreses)'
+personal-field-contract_entity-person: 'Persona física'
+personal-field-country: País
+personal-field-entity_cif: 'CIF de la entidá'
+personal-field-entity_office: 'Cargu na organización'
+personal-field-location: Llugar
+personal-field-phone: Teléfonu
+personal-field-post_address-different: Diferente
+personal-field-post_address-same: Igual
+personal-field-zipcode: 'Códigu postal'
+personal-main-header: 'Datos de la persona promotora'
+step-2: Promotor/a
+step-userPersonal: 'Pasu: Datos personales'
+tooltip-project-contract_birthdate: 'Indica la to data de nacencia. Nun va facese pública en dengún casu, interésanos por temes estadísticos.'
+tooltip-project-entity_cif: 'Escribi''l CIF (lletra + númberu) de la organización.'
+tooltip-project-entity_name: 'Escribi''l nome de la organización como apaez nel so CIF.'
+tooltip-project-entity_office: 'Escribi''l cargu col que representes a la organización (secretariu/a, presidente/a, ayalgueru/a...). '
+tooltip-project-main_address: 'Direición fiscal de la persona u organización (según proceda).'
+tooltip-project-phone: 'Númberu telefónicu móvil o fixu, col so prefixu de marcáu.'
+validate-project-paypal_account: 'La cuenta PayPal debería ser asemeyada a un corréu'
+validate-project-value-entity_cif: 'El CIF nun ye válidu'
+validate-project-value-phone: 'El formatu de númberu telefónicu nun ye correutu.'

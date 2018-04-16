@@ -12,14 +12,28 @@ namespace Goteo\Core\Traits;
 
 use Goteo\Application\App;
 use Goteo\Util\Monolog\Processor\WebProcessor;
+use Psr\Log\LoggerInterface;
 
 /**
  * Trait to add log common methods
  */
 trait LoggerTrait {
+    protected $logger;
+
+    public function setLog(LoggerInterface $logger = null) {
+        $this->logger = $logger;
+        return $this;
+    }
+
+    public function getLog() {
+        if(!$this->logger) {
+            $this->logger = App::getService('logger');
+        }
+        return $this->logger;
+    }
 
     public function log($message, array $context = [], $func = 'info') {
-        $logger = App::getService('logger');
+        $logger = $this->getLog();
         if (null !== $logger && method_exists($logger, $func)) {
             return $logger->$func($message, WebProcessor::processObject($context));
         }

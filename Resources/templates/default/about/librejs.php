@@ -102,9 +102,9 @@ TODO:
                 <td><a href="<?= SRC_URL ?>/assets/vendor/typeahead/jquery.typeahead.js">jquery.typeahead.js</a></td>
             </tr>
             <tr>
-                <td><a href="<?= SRC_URL ?>/assets/vendor/d3/d3.v3.min.js">d3.v3.min.js</a></td>
+                <td><a href="<?= SRC_URL ?>/assets/vendor/d3/d3.min.js">d3.min.js</a></td>
                 <td><a href="http://opensource.org/licenses/BSD-3-Clause">BSD-3-Clause</a></td>
-                <td><a href="<?= SRC_URL ?>/assets/vendor/d3/d3.v3.js">d3.v3.js</a></td>
+                <td><a href="<?= SRC_URL ?>/assets/vendor/d3/d3.js">d3.js</a></td>
             </tr>
             <tr>
                 <td><a href="<?= SRC_URL ?>/assets/vendor/footable/footable.min.js">footable.min.js</a></td>

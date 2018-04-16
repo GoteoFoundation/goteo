@@ -1,0 +1,18 @@
+group: project
+name: 'Project discarded derivating to others platforms'
+purpose: 'Mail template to be sent to a project owner when his project has been discarded derivating to others platforms'
+type: 'md'
+title: 'Tu proyecto %PROJECTNAME% ha sido revisado por nuestro equipo'
+text: >
+      Hola,
+
+      Después de revisar vuestro proyecto, consideramos que para una necesidad tan concreta y un importe tan reducido, no creemos que os resulte conveniente emprender una campaña de crowdfunding, que exige trabajo, una campaña de comunicación, muchas energías y tiempo.
+
+      Consideramos por lo tanto que sería más conveniente que os dirijáis a plataformas como http://www.migranodearena.org/ o https://www.gofundme.com/ más enfocada en solventar necesidades tan específicas e inmediatas.
+
+      Pese al hecho de no publicar la campaña, seguimos abiertos a nuevas propuestas y a vuestra participación en nuestra comunidad.
+
+      Cordialmente,
+
+      El equipo de Goteo
+

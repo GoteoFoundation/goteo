@@ -1,0 +1,25 @@
+group: project
+name: 'Project added to a Matchfunding call (admin communication)'
+purpose: 'Mail template to be sent to a matcher owner when a project is added to his Matcher call'
+type: 'md'
+title: 'Nueva preselección de proyecto: %PROJECTNAME%'
+text: >
+    # El proyecto **%PROJECTNAME%** ha sido preseleccionado para la convocatoria **%CALLNAME%**
+
+    Ahora, el impulsor del proyecto debe aceptar formar parte de la convocatoria.
+
+
+    Si no realizas ninguna acción, el proyecto pasará a formar parte de la convocatoria según los términos acordados en las bases.
+
+
+    Para ver el proyecto y/o rechazarlo dirígete aquí:
+
+
+    [%PROJECTURL%](%PROJECTURL%)
+
+
+    Para ver todos los proyectos de la convocatoria, visita esta página:
+
+
+    [%CALLURL%](%CALLURL%)
+

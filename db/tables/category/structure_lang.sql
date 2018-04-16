@@ -14,3 +14,6 @@ ALTER TABLE `category_lang`
     DROP KEY `id_lang` ,
     ADD KEY `lang`(`lang`) ,
     ADD PRIMARY KEY(`id`,`lang`) ;
+
+
+ALTER TABLE `category_lang` CHANGE `id` `id` INT(10) UNSIGNED NOT NULL, ADD FOREIGN KEY (`id`) REFERENCES `category`(`id`) ON UPDATE CASCADE ON DELETE CASCADE;

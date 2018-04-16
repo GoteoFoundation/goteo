@@ -1,8 +1,4 @@
-<?php
-$path = realpath(dirname(dirname(dirname(__DIR__))));
-$file = $path .'/config/settings.yml';
-
-?><!DOCTYPE html>
+<!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml">
 
     <head>
@@ -69,12 +65,12 @@ $file = $path .'/config/settings.yml';
 <?php endif ?>
 
     </div>
-<?php if(basename($this->file) == 'settings.yml'): ?>
+<?php if($this->file): ?>
     <div class="widget">
-    <p>Your <b><?= $file ?></b> seems incomplete or erroneous</p>
+    <p>Your <b><?= $this->file ?></b> seems incomplete or erroneous</p>
     <p>Be sure that you have all this variables defined in your <b><?= $file ?></b> config file:</p>
     <pre style="padding:10px;border:1px solid #999999;font-family:Consolas,Monaco,Lucida Console,Liberation Mono,DejaVu Sans Mono,Bitstream Vera Sans Mono,Courier New, monospace;
-"><?= htmlspecialchars(file_get_contents($path . '/config/demo-settings.yml')); ?></pre>
+"><?= htmlspecialchars(file_get_contents(GOTEO_PATH . 'config/demo-settings.yml')); ?></pre>
     </div>
 <?php endif ?>
 

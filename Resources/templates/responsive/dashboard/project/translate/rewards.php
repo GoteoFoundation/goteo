@@ -2,7 +2,12 @@
 
 <?php $this->section('dashboard-translate-project') ?>
 
-  <?= $this->form_start($this->raw('form')) ?>
+<?php
+
+$form = $this->raw('form');
+
+?>
+  <?= $this->form_start($form) ?>
 
   <h2><?= $this->text('rewards-fields-individual_reward-title') ?></h2>
 
@@ -10,11 +15,10 @@
       <div class="panel section-content" data-id="<?= $reward->id ?>">
         <div class="panel-body">
           <div class="pull-left" style="width: 85%;">
-            <?= $this->insert('dashboard/project/translate/partials/reward_form', [
-              'form' => $this->raw('form'),
-              'reward' => $reward,
-              'lang' => $this->lang
-              ]) ?>
+
+            <?= $this->form_row($form['reward_' . $reward->id]) ?>
+            <?= $this->form_row($form['description_' . $reward->id]) ?>
+
           </div>
           <div class="pull-right text-right" style="width: 15%;">
             <h4>
@@ -32,11 +36,10 @@
       <div class="panel section-content" data-id="<?= $reward->id ?>">
         <div class="panel-body lilac">
           <div class="pull-left" style="width: 85%;">
-            <?= $this->insert('dashboard/project/translate/partials/reward_form', [
-              'form' => $this->raw('form'),
-              'reward' => $reward,
-              'lang' => $this->lang
-              ]) ?>
+
+            <?= $this->form_row($form['reward_' . $reward->id]) ?>
+            <?= $this->form_row($form['description_' . $reward->id]) ?>
+
           </div>
           <div class="pull-right text-right" style="width: 15%;">
             <h4>
@@ -48,7 +51,7 @@
   <?php endforeach ?>
 <?php endif ?>
 
-  <?= $this->form_end($this->raw('form')) ?>
+  <?= $this->form_end($form) ?>
 
 <?php $this->replace() ?>
 

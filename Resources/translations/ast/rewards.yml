@@ -1,0 +1,16 @@
+---
+mandatory-individual_reward-field-description: 'Ye obligatorio poner dalguna descripción'
+mandatory-individual_reward-field-icon: 'Ye obligatorio esbillar la triba de recompensa'
+mandatory-individual_reward-field-name: 'Ye obligatorio poner la recompensa'
+rewards-field-individual_reward-description: Descripción
+rewards-field-individual_reward-reward: Recompensa
+rewards-field-individual_reward-type: 'Triba de recompensa'
+rewards-field-individual_reward-units: Unidaes
+rewards-field-social_reward-description: Descripción
+rewards-field-social_reward-license: 'Opciones de llicencia'
+rewards-field-social_reward-url: URL
+rewards-fields-individual_reward-title: 'Recompenses individuales'
+rewards-fields-social_reward-title: 'Compromisu social'
+rewards-main-header: 'Recompenses'
+step-5: 'Recompenses'
+step-rewards: 'Pasu: Proyectu / Recompenses'

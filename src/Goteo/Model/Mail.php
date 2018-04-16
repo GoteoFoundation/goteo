@@ -22,6 +22,7 @@ use Goteo\Model\Mail\MailStats;
 use Goteo\Model\Mail\StatsCollector;
 use Goteo\Model\Mail\Metric;
 use Goteo\Model\Mail\Sender;
+use Goteo\Model\Message as Comment;
 use Goteo\Library\FileHandler\File;
 use Goteo\Library\Newsletter;
 use Goteo\Util\Monolog\Processor\WebProcessor;
@@ -48,10 +49,11 @@ class Mail extends \Goteo\Core\Model {
         $html = true,
         $massive = false,
         $template = null,
-        $sent,
+        $sent = null,
         $error = '',
         $log,
         $status = 'pending',
+        $message_id = null,
         $lang = null;
 
     /**
@@ -160,19 +162,41 @@ class Mail extends \Goteo\Core\Model {
         return $this->replyName;
     }
 
+    public function setMessage($message) {
+        if($message instanceOf Comment) {
+            $this->message_id = $message->id;
+        } else {
+            $this->message_id = $message;
+        }
+        return $this;
+    }
+
     /**
      * Get instance of mail already on table
      * @return [type] [description]
      */
     static public function get($id) {
         if ($query = static::query('SELECT * FROM mail WHERE id = ?', $id)) {
-            if( ! ($mail = $query->fetchObject(__CLASS__)) ) return false;
+            if( ! ($mail = $query->fetchObject(__CLASS__)) ) return null;
             $mail->to = $mail->email;
             // $mail->toName = $to_name; // TODO: add name from users
 
             return $mail;
         }
-        return false;
+        return null;
+    }
+
+    /**
+     * Get instance of mail already on table using message_id identifier
+     * @return [type] [description]
+     */
+    static public function getFromMessageId($message_id) {
+        if ($query = static::query('SELECT * FROM mail WHERE message_id = ?', $message_id)) {
+            if( ! ($mail = $query->fetchObject(__CLASS__)) ) return null;
+            $mail->to = $mail->email;
+            return $mail;
+        }
+        return null;
     }
 
     /**
@@ -385,7 +409,7 @@ class Mail extends \Goteo\Core\Model {
     }
 
     public function getToken($tracker = true, $force_to = '', $encode = true) {
-        $to = $this->to;
+        $to = $this->to ? $this->to : $this->email;
         if($force_to) $to = $force_to;
         $tracker = $tracker ? '1' : '0';
         $token = md5(Config::get('secret') . '-' . $to . '-' . $this->id . '-' . $tracker) . '¬' . $to . '¬' . $this->id . '¬' . $tracker;
@@ -430,8 +454,8 @@ class Mail extends \Goteo\Core\Model {
         $token = $this->getToken();
         return $this->render($plain, [
                     'alternate' => SITE_URL . '/mail/' . $token,
-                    'tracker' => SITE_URL . '/mail/track/' . $token . '.gif' ]
-                );
+                    'tracker' => SITE_URL . '/mail/track/' . $token . '.gif'
+                ]);
 
     }
 
@@ -451,20 +475,8 @@ class Mail extends \Goteo\Core\Model {
                 "/(<a.*)href=(')([^']*)'([^>]*)>/U"
                 ],
                 function ($matches){
-                    // create metric for it
-                    try {
-                        $stat = MailStats::getStat($this->id, $this->to, Metric::getMetric($matches[3]));
-                        $errors = [];
-                        if (! $stat->save($errors) ) {
-                            throw new ModelException(implode("\n", $errors));
-                        }
-
-                        $new = SITE_URL . '/mail/link/' . $stat->id;
-                    } catch(ModelException $e) {
-                        $this->logger('Error creating MailStats, fallback to base64', ['error' => $e->getMessage()], 'error');
-                        $url = $matches[3];
-                        $new = SITE_URL . '/mail/url/' . \mybase64_encode(md5(Config::get('secret') . '-' . $this->to . '-' . $this->id. '-' . $url) . '¬' . $this->to  . '¬' . $this->id . '¬' . $url);
-                    }
+                    $url = $matches[3];
+                    $new = SITE_URL . '/mail/url/' . \mybase64_encode(md5(Config::get('secret') . '-' . $this->to . '-' . $this->id. '-' . $url) . '¬' . $this->to  . '¬' . $this->id . '¬' . $url);
                     return $matches[1] . 'href="' . $new . '"'. $matches[4] . '>';
                 },
                 $content);
@@ -478,12 +490,15 @@ class Mail extends \Goteo\Core\Model {
         if ($plain) {
             return strip_tags($this->content) . ($extra_vars['alternate'] ? "\n\n" . $extra_vars['alternate'] : '');
         }
+        // Render in a separate instance of Foil to avoid some unexpected problems
+        $engine = View::createEngine();
+        $engine->setFolders(View::getFolders());
         // para plantilla boletin
         if ($this->template == Template::NEWSLETTER) {
             $extra_vars['unsubscribe'] = SITE_URL . '/user/unsubscribe/' . $this->getToken(); // ????
-            return View::render('email/newsletter', $extra_vars);
+            return $engine->render('email/newsletter', $extra_vars, false);
         }
-        return View::render('email/default', $extra_vars);
+        return $engine->render('email/default', $extra_vars, false);
     }
 
     /**
@@ -499,7 +514,7 @@ class Mail extends \Goteo\Core\Model {
         $this->email = ($this->massive) ? 'any' : $this->to;
 
         try {
-            $this->dbInsertUpdate(['email', 'subject', 'content', 'template', 'node', 'lang', 'sent', 'error']);
+            $this->dbInsertUpdate(['email', 'subject', 'content', 'template', 'node', 'lang', 'sent', 'error', 'message_id']);
             return true;
         }
         catch(\PDOException $e) {
@@ -600,68 +615,82 @@ class Mail extends \Goteo\Core\Model {
      *
      * @param array $filters    user (nombre o email),  template
      */
-    public static function getSentList($filters = array(), $node = null, $offset = 0, $limit = 10, $count = false) {
+    public static function getSentList($filters = array(), $offset = 0, $limit = 10, $count = false) {
 
         $values = array();
-        $sqlFilter = '';
-        $and = " WHERE";
+        $sqlFilter = [];
 
         if (!empty($filters['user'])) {
-            $sqlFilter .= $and . " mail.email LIKE :user";
-            $and = " AND";
+            $sqlFilter[] = "mail.email LIKE :user";
             $values[':user'] = "%{$filters['user']}%";
         }
 
         if (!empty($filters['reply'])) {
-            $sqlFilter .= $and . " (mailer_content.reply LIKE :reply OR mailer_content.reply_name LIKE :reply)";
-            $and = " AND";
+            $sqlFilter[] = "(mailer_content.reply LIKE :reply OR mailer_content.reply_name LIKE :reply)";
             $values[':reply'] = "%{$filters['reply']}%";
         }
 
-        if (!empty($filters['template'])) {
-            $sqlFilter .= $and . " mail.template = :template";
-            $and = " AND";
-            $values[':template'] = $filters['template'];
+        if (isset($filters['message'])) {
+            if(is_bool($filters['message'])) {
+                $sqlFilter[] = ($filters['message'] ? '!' : '') . "ISNULL(mail.message_id)";
+            }
+            else {
+                $parts = [];
+                if(!is_array($filters['message'])) $filters['message'] = [$filters['message']];
+                foreach($filters['message'] as $i => $m) {
+                    $parts[] = ':message' . $i;
+                    $values[':message' . $i] = is_object($m) ? $m->id : $m;
+                }
+                $sqlFilter[] = "mail.message_id IN (" . implode(',', $parts) . ")";
+                $values[':message'] = $filters['message'];
+            }
+        }
+
+        if (isset($filters['template'])) {
+            if(is_bool($filters['template'])) {
+                $sqlFilter[] = ($filters['template'] ? '!' : '') . "ISNULL(mail.template)";
+            }
+            else {
+                $parts = [];
+                if(!is_array($filters['template'])) $filters['template'] = [$filters['template']];
+                foreach($filters['template'] as $i => $t) {
+                    if($t) {
+                        $parts[] = ':template' . $i;
+                        $values[':template' . $i] = $t;
+                    }
+                }
+                if($parts) {
+                    $sqlFilter[] = "mail.template IN (" . implode(',', $parts) . ")";
+                }
+            }
         }
 
         if (!empty($filters['subject'])) {
-            $sqlFilter .= $and . " mail.subject = :subject";
-            $and = " AND";
+            $sqlFilter[] = "mail.subject = :subject";
             $values[':subject'] = $filters['subject'];
         }
 
-
-        /*
-        if ($node != \GOTEO_NODE) {
-            $sqlFilter .= $and . " mail.node = :node";
-            $and = " AND";
-            $values[':node'] = $node;
-        } else
-        */
         if (!empty($filters['node'])) {
-            $sqlFilter .= $and . " mail.node = :node";
-            $and = " AND";
+            $sqlFilter[] = "mail.node = :node";
             $values[':node'] = $filters['node'];
         }
 
         if (!empty($filters['date_from'])) {
-            $sqlFilter .= $and . " mail.date >= :date_from";
-            $and = " AND";
+            $sqlFilter[] = "mail.date >= :date_from";
             $values[':date_from'] = $filters['date_from'];
         }
         if (!empty($filters['date_until'])) {
-
             if (!empty($filters['date_from']) && $filters['date_from'] == $filters['date_until']) {
-                $sqlFilter .= $and . " mail.date = :date";
+                $sqlFilter[] = "mail.date = :date";
                 $values[':date'] = $filters['date'];
             }
             else {
-                $sqlFilter .= $and . " mail.date <= :date_until";
-                $and = " AND";
+                $sqlFilter[] = "mail.date <= :date_until";
                 $values[':date_until'] = $filters['date_until'];
             }
         }
 
+        $sqlFilter = $sqlFilter ? ' WHERE ' . implode(' AND ', $sqlFilter) : '';
         // Return total count for pagination
         if($count) {
             $sql = "SELECT COUNT(mail.id)
@@ -686,7 +715,7 @@ class Mail extends \Goteo\Core\Model {
                 ORDER BY mail.date DESC
                 LIMIT $offset,$limit";
 
-        // die(\sqldbg($sql, $values));
+        // print_r($filters);print_r($values);die(\sqldbg($sql, $values));
         $query = static::query($sql, $values);
         return $query->fetchAll(\PDO::FETCH_CLASS, __CLASS__);
 

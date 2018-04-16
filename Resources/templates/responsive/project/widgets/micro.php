@@ -29,12 +29,20 @@ if($this->project->inEdition()) {
             <?php else: ?>
                 <span class="label label-<?= $label_color ?>"><?= $this->project->getTextStatus() ?></span>
             <?php endif ?>
+
             <?php if($this->is_admin()): ?>
-                <form method="post" action="/admin/users/impersonate/<?= $this->project->owner ?>" class="pull-right">
-                    <input type="hidden" name="id" value="<?= $this->project->owner ?>">
-                <button type="submit" class="btn btn-xs btn-orange" title="<?= $this->text('admin-impersonate-user', $this->project->getOwner()->name) ?>"><i class="fa fa-user-md"></i></button>
-                </form>
+                <div class="btn-group pull-right">
+                  <button type="button" class="btn btn-xs btn-orange dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                     <i class="fa fa-cogs"></i> <span class="caret"></span>
+                  </button>
+                  <ul class="dropdown-menu">
+                    <?= $this->insert('admin/partials/project_actions_list') ?>
+                    <li role="separator" class="divider"></li>
+                    <li><a href="/admin/projects?filtered=yes&name=&category=&node=&proj_name=&status=-3&called=&proj_id=<?= $this->project->id ?>&consultant=-1"><i class="fa fa-stethoscope"></i> <?= $this->text('admin-project-view-in-admin') ?></a></li>
+                  </ul>
+                </div>
             <?php endif ?>
+
         <?php endif ?>
         <div class="title"><a href="/project/<?= $this->project->id ?>"><?= $this->text_truncate($this->project->name, 80); ?></a></div>
     </div>

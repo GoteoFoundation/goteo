@@ -1,0 +1,76 @@
+---
+translator: Übersetzer
+translator-autotranslate-from: 'Automatische Übersetzung von'
+translator-back-to-list: 'Zurück zur Liste'
+translator-banner: Banner
+translator-bazar: Katalog
+translator-cannot-delete-system: 'Sie können diese Übersetzung nicht löschen, weil sie systemisch ist!'
+translator-category: Kategorien
+translator-choose: 'Wählen Sie eine Option'
+translator-copy-from: 'Kopieren von Inhalten aus'
+translator-criteria: 'Bewertungskriterien'
+translator-delete: 'Entferne %s Übersetzung'
+translator-delete-sure: 'Sind Sie sicher, dass Sie die Übersetzung %s löschen wollen? Dieser Vorgang kann nicht rückgängig gemacht werden!'
+translator-deleted-ko: 'Fehlen bein Löschen der Übersetzung %s'
+translator-deleted-ok: 'Übersetzung %s wurde erfolgreich gelöscht'
+translator-faq: Faq
+translator-feed-translated-desc: '%LINK% wurde übersetzt von %USER% nach %LANGS%'
+translator-feed-translated-target: 'Übersetzung in %s'
+translator-field-blog: Blog
+translator-field-content: Inhalt
+translator-field-description: Beschreibung
+translator-field-facebook_msg: 'Facebook Nachricht'
+translator-field-facebook_msg_owner: 'Facebook Autor'
+translator-field-legend: Legende
+translator-field-media: Medium
+translator-field-name: Name
+translator-field-review: Rezension
+translator-field-schedule: Plan/Programm
+translator-field-share_facebook: 'Nachricht auf Facebook teilen'
+translator-field-share_twitter: 'Nachricht auf Twitter teilen'
+translator-field-text: Text
+translator-field-title: Title
+translator-field-twitter_msg: 'Twitter Nachricht'
+translator-field-twitter_msg_owner: 'Twitter Autor'
+translator-field-url: URL
+translator-glossary: 'Glossar der Begriffe'
+translator-home: Startseite
+translator-icon: 'Arten der Rückgabe / Belohnung'
+translator-info: 'Über Ideen'
+translator-lang-no-perms: 'Sie haben keine Berechtigung diese Sprache zu verwalten'
+translator-license: Lizenzen
+translator-milestone: Meilensteine
+translator-more-langs: Andere
+translator-news: Neuigkeiten
+translator-no-langs: 'Keine Sprachen verfügbar. Bitte kontaktieren Sie den Administrator'
+translator-not-saved: 'Kein Inhalt gespeichert! (Vielleicht gibt es leere Felder?)'
+translator-not-translated: 'Kein Eintrag in der Übersetzungstabelle vorhanden'
+translator-only-pendings: 'Noch ausstehend:'
+translator-opentag: Gruppierungen
+translator-original-text: 'Originaltext'
+translator-page: Seiten
+translator-patron: 'Gesponsorte Projekte'
+translator-pending: 'Übersetzung ausstehend'
+translator-pending-desc: 'Dieser Inhalt ist "ausstehend", was bedeutet, dass er <strong>NICHT ÖFFENTLICH</strong> ist und als Entwurf beibehalten wird, bis die Option "Ausstehende Übersetzung" entfernt wird.'
+translator-post: Blogpost
+translator-promote: 'Herausragende Projekte'
+translator-save: 'Speichern & publizieren'
+translator-save-original: 'Sichern in Originaltabelle'
+translator-save-draft: 'Als Entwurf speichern'
+translator-saved-ko: 'Übersetzung in %LANG% konnte nicht gespeichert werden (%ERROR%)'
+translator-saved-ok: 'Übersetzung wurde korrekt gespeichert für die Sprachen [%s]'
+translator-skipped-fields: "Einige Felder wurden nicht kopiert, da sie bereits Text enthalten.\nLöschen Sie den Originaltext, um das Kopieren aus einer anderen Sprache zu ermöglichen."
+translator-sphere: 'Tätigkeitsfehler'
+translator-stories: 'Erfolgstories'
+translator-system: System
+translator-tables: 'Allgemeine Tabellen'
+translator-tag: 'Blog-Tags'
+translator-template: 'Automatik-Email-Vorlagen'
+translator-texts: 'Interface-Texte'
+translator-translations: Übersetzungen
+translator-workshop: Workshops
+translator-worthcracy: Meritokratie (Verdienstadel)
+translator-zone-not-found: 'Dieser Übersetzungsbereich ist ungültig'
+translator-lang-not-found: 'Diese Sprache ist auf der Plattform nicht konfiguriert!'
+translator-percent: '%d&#37; übersetzt'
+translator-add-translation: 'Füge eine neue Übersetzung hinzu'

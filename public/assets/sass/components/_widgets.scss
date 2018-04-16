@@ -114,6 +114,7 @@
         background: transparent;
         border: 0;
         color: $color-grey;
+        overflow: unset;
       }
       .title {
         line-height: 20px;
@@ -183,6 +184,11 @@
       }
     }
   }
+  ul.dropdown-menu {
+    li {
+        padding: 2px;
+    }
+  }
   .project-widget-admin {
     position: absolute;
     top: 0;
@@ -235,7 +241,10 @@
         overflow: hidden;
         .img-project {
             // height: 100%;
-            width: auto;
+            // width: auto;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
         }
         h2 {
             display: inline-block;
@@ -249,7 +258,6 @@
             position: absolute;
             left: 15px;
             bottom: 15px;
-            text-transform: lowercase;
             line-height: 1;
             &::first-letter {
                 text-transform: uppercase;
@@ -361,6 +369,22 @@
     }
   }
 
+  &.non-public {
+    // Mark the project as non-public
+    // border: 1px solid $color-orange;
+    position: relative;
+    &::before {
+      position: absolute;
+      font-family: fontAwesome;
+      content: '\f023';
+      display: inline-block;
+      top: 0;
+      right: 10px;
+      z-index: 100;
+      font-size: 32px;
+      color: $color-red;
+    }
+  }
   >.backside {
     background: $background-light;
     position: absolute;
@@ -544,11 +568,19 @@
   // padding-bottom: 20px;
 }
 
+@media (max-width: $breakpoint-sm+1) {
+  .call-widget.normal .content div.date{
+    margin-top: 0 !important;
+  }
+}
+
+
 @media (max-width: $breakpoint-xs) {
   .project-widget {
     margin-bottom: 40px;
     .content {
       height: auto;
+      min-height: 298px !important;
     }
     ul.amounts {
       position: static;

@@ -2,6 +2,7 @@
 $user = $this->get_user();
 $admin = $this->is_admin();
 $truncate = $admin ? 19 : 40;
+if(!$user) return;
 ?>
 <div class="sidebar-widget" id="user-<?= $user->id ?>">
     <a class="img-link" href="/dashboard/settings/profile">

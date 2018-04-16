@@ -17,7 +17,10 @@ namespace Goteo\Model\Blog\Post {
 
         public
             $id,
-            $name;
+            $name,
+            $post,
+            $tag;
+
 
         /*
          *  Devuelve datos de una comentario

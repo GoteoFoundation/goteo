@@ -19,8 +19,9 @@ use Symfony\Component\HttpFoundation\Request;
 class NewsletterController extends \Goteo\Core\Controller {
 
 	public function __construct() {
-		//activamos la cache para todo el controlador newsletter
-		\Goteo\Core\DB::cache(true);
+		// Cache & replica read activated in this controller
+        \Goteo\Core\DB::cache(true);
+		\Goteo\Core\DB::replica(true);
 	}
 
 	// última newsletter enviada
@@ -32,7 +33,6 @@ class NewsletterController extends \Goteo\Core\Controller {
                     " . ($id ? ' id=' . (int) $id . ' AND' : '') . "
                     email = 'any'
                     AND template = " . Template::NEWSLETTER . "
-                    AND  DATEDIFF(NOW(), date) < 30
                 ORDER BY
                     lang = '$lang' DESC,
                     date DESC
@@ -46,7 +46,7 @@ class NewsletterController extends \Goteo\Core\Controller {
 				return $this->viewResponse('email/newsletter', array('content' => $content));
 			}
 		}
-		throw new ModelNotFoundException();
+		throw new ModelNotFoundException('Newsletter not found!');
 
 	}
 

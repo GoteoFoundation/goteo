@@ -1,7 +1,8 @@
+---
 assign-call-success: 'El projecte ha estat assignat a la convocatòria %s'
 dashboard-donor-remember: 'Recorda confirmar les teves dades fiscals per poder obtenir el certificat de donatiu'
 image-upload-fail: 'Error en pujar la imatge'
-image-gallery-fail: 'Error en pujar la galeria'
+gallery-upload-fail: 'Error en pujar la galeria'
 invest-amount-error: 'Has d''indicar l''import'
 invest-create-error: 'Hi ha hagut algun problema en inicialitzar la transacció'
 invest-data-error: 'No s''han rebut les dades necessàries'
@@ -19,7 +20,7 @@ project-review-confirm_mail-fail: 'Hi ha hagut algun error en enviar el missatge
 project-review-confirm_mail-success: 'Missatge de confirmació de recepció per a revisió enviat correctament'
 project-review-request_mail-fail: 'Hi ha hagut algun error en enviar la sol·licitud de revisió'
 project-review-request_mail-success: 'Missatge de sol·licitud de revisió enviat correctament'
-register-confirm_mail-fail: 'Hi ha hagut algun error en enviar l''email d''activació de compte. Per favor, contacta''ns a %'
+register-confirm_mail-fail: 'Hi ha hagut algun error en enviar l''email d''activació de compte. Si us plau, contacta''ns a %s'
 register-confirm_mail-success: 'Missatge d''activació de compte enviat. Si no està en la teva bústia de correu, revisa la carpeta de /Spam'
 review-ajax-alert: 'Els criteris i els camps d''avaluació / millores es desen automàticament en modificar-se'
 review-closed-alert: 'Has donat per acabada aquesta revisió, no pots fer més canvis'

@@ -14,6 +14,7 @@ use Goteo\Model\Invest;
 
 class InvestLocation extends \Goteo\Model\Location\LocationItem {
     protected $Table = 'invest_location';
+    protected static $Table_static = 'invest_location';
     public $invest;
 
     public function __construct() {

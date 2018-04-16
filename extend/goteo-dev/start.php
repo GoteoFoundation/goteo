@@ -16,6 +16,7 @@ use Goteo\Application\App;
 use Goteo\Console\Console;
 use Goteo\Application\Config;
 use Goteodev\Console\Command\StatusInitCommand;
+use Goteodev\Console\Command\CrowdinCommand;
 
 
 
@@ -23,7 +24,6 @@ use Goteodev\Console\Command\StatusInitCommand;
 Config::addAutoloadDir(__DIR__ . '/src');
 
 $sc = App::getServiceContainer();
-
 if(App::debug()) {
     // Adding toolbar as eventlistener
     $sc->register('dev.listener.profiler', 'Goteodev\Profiler\EventListener\ProfilerListener');
@@ -48,3 +48,4 @@ $routes = App::getRoutes();
 \Goteo\Payment\Payment::addMethod('Goteodev\Payment\DummyPaymentMethod');
 // add usefull testing commands
 Console::add(new StatusInitCommand());
+Console::add(new CrowdinCommand());

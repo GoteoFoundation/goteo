@@ -17,6 +17,9 @@ foreach($this->zones as $k => $v) {
 $query = $this->get_query() ? '?'. http_build_query($this->get_query()) : '';
 
 ?>
+<div class="dashboard-content">
+  <div class="inner-container">
+
 <nav class="navbar navbar-default">
   <div class="container-fluid">
     <!-- Brand and toggle get grouped for better mobile display -->
@@ -35,7 +38,7 @@ $query = $this->get_query() ? '?'. http_build_query($this->get_query()) : '';
 
 
     <?php if($this->zone && !$this->id): ?>
-      <form class="navbar-form navbar-left" action="/translate/<?= $this->zone . $query ?>" method="get">
+      <form class="navbar-form navbar-right" action="/translate/<?= $this->zone . $query ?>" method="get">
         <div class="form-group">
           <input type="text" name="q" class="form-control" placeholder="Search" value="<?= $this->get_query('q') ?>">
         </div>
@@ -48,19 +51,9 @@ $query = $this->get_query() ? '?'. http_build_query($this->get_query()) : '';
       </form>
     <?php endif ?>
 
-      <form class="navbar-form navbar-right">
-          <?php if($this->id): ?>
-            <a class="btn btn-primary" href="/translate/<?= $this->zone . $query ?>">
-                <span class="glyphicon glyphicon-list"></span>
-                <?= $this->text('translator-back-to-list') ?>
-            </a>
-          <?php endif ?>
-        <div class="form-group">
-        <?= $this->html('select', ['options' => ['' => '↓ ' . $this->text('translator-choose') . ' ↓'] + $zones, 'value' => $this->zone, 'name' => 'select-zone', 'attribs' => ['id' => 'select-zone', 'class' => 'form-control']]) ?>
-        </div>
-      </form>
-
-
     </div><!-- /.navbar-collapse -->
   </div><!-- /.container-fluid -->
 </nav>
+
+  </div>
+</div>

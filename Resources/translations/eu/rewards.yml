@@ -1,3 +1,4 @@
+---
 mandatory-individual_reward-field-description: 'Nolabaiteko deskribapena jartzea derrigorrekoa da.'
 mandatory-individual_reward-field-icon: 'Sari mota aukeratzea derrigorrekoa da.'
 mandatory-individual_reward-field-name: 'Saria idaztea derrigorrekoa da.'
@@ -18,7 +19,7 @@ rewards-field-social_reward-type: 'Itzulera mota'
 rewards-fields-individual_reward-title: 'Banakako sariak'
 rewards-fields-social_reward-title: 'Talde itzulerak'
 rewards-main-header: 'Itzulerak eta sariak'
-step-5: Itzulera
+step-5: 'Itzulera'
 step-rewards: 'urratsa: Proiektua / Itzulerak'
 tooltip-project-individual_reward-amount: 'Sari hau jasotzeko diru kopuru minimoa.'
 tooltip-project-individual_reward-description: 'Azaldu ezazu laburki zertan datza jasoko duten saria, proiektua diru kopuru honekin alde berean finantzatuko dutenentzat.'

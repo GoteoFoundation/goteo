@@ -72,6 +72,10 @@ class Account extends \Goteo\Core\Model {
              VALUES(:project, :bank, :bank_owner, :paypal, :paypal_owner, :allowpp, :fee, :skip_login)";
             $values = array(':project' => $this->project, ':bank' => $this->bank, ':bank_owner' => $this->bank_owner, ':paypal' => $this->paypal, ':paypal_owner' => $this->paypal_owner, ':allowpp' => $this->allowpp, ':fee' => $this->fee, ':skip_login' => $this->skip_login);
 			self::query($sql, $values);
+
+            // Update in contract if exists
+            $sql = "UPDATE IGNORE contract SET paypal=:paypal WHERE project=:project";
+            self::query($sql, [':project' => $this->project, ':paypal' => $this->paypal]);
 			return true;
 		} catch(\PDOException $e) {
 			$errors[] = "Las cuentas no se han asignado correctamente. Por favor, revise los datos." . $e->getMessage();

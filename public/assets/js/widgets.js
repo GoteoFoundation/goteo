@@ -52,6 +52,7 @@ $(function(){
         }
     };
 
+
     $('body').on('click', '.flip-widget .flip', toggleFlipWidgetBackside);
 
 });

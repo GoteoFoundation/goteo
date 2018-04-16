@@ -4,7 +4,7 @@
 
 <?php
 
-$data = $this->data;
+$data = $this->data ? $this->data : [];
 $user = $this->user;
 
 ?>

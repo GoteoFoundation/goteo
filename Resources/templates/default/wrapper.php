@@ -1,11 +1,7 @@
-<?php $this->section('header') ?>
-    <?= $this->insert("partials/header") ?>
-<?php $this->stop() ?>
+<?= $this->supply('header', $this->insert("partials/header")) ?>
 
-<?php $this->section('sub-header') ?>
-<?php $this->stop() ?>
+<?= $this->supply('sub-header') ?>
 
 <?= $this->supply('messages', $this->insert("partials/header/messages")) ?>
 
-<?php $this->section('content') ?>
-<?php $this->stop() ?>
+<?= $this->supply('content') ?>

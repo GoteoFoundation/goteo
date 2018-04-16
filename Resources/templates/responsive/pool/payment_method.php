@@ -5,7 +5,7 @@ $this->layout('pool/layout');
 $this->section('dashboard-content-pool');
 
 ?>
-<div class="col-sm-offset-1 col-sm-10">
+<div class="pool-container">
 
 	<h2><?= $this->text('pool-pay-method-title') ?></h2>
 
