@@ -18,6 +18,7 @@ use Goteo\Application\Session;
 use Goteo\Application\View;
 use Goteo\Model;
 use Goteo\Model\Blog\Post;
+use Goteo\Model\Blog\Post\Tag;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -32,18 +33,20 @@ class BlogController extends \Goteo\Core\Controller {
 
     }
 
-    public function indexAction ($section='', Request $request) {
+    public function indexAction ($section='', $tag='', Request $request) {
 
         $slider_posts=Post::getList([], true, 0, 3);
-        $init= $section ? 0 : 3;
-        $list_posts=Post::getList(['section' => $section], true, $init, 12);
+        $init= $section||$tag ? 0 : 3;
+        $list_posts=Post::getList(['section' => $section, 'tag' => $tag], true, $init, 12);
         $blog_sections=Post::getListSections();
+        $tag=Tag::get($tag);
 
         return $this->viewResponse('blog/list', [
                     'slider_posts' => $slider_posts,
                     'list_posts'   => $list_posts,
                     'blog_sections'     => $blog_sections,
-                    'section'           => $section
+                    'section'           => $section,
+                    'tag'               => $tag
                 ]
         );
 
@@ -96,8 +99,9 @@ class BlogController extends \Goteo\Core\Controller {
 
         // Get related posts
 
-        reset($post->tags);
-        $first_key_tags=key($post->tags);
+        $tags=$post->tags;
+        reset($tags);
+        $first_key_tags=key($tags);
 
         $related_posts=Post::getList(['tag' => $first_key_tags, 'excluded' => $post->id ], true, 0, $limit = 3, false);
 

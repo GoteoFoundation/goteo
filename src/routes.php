@@ -118,6 +118,13 @@ $routes->add('blog-section', new Route(
         )
 ));
 
+$routes->add('blog-tag', new Route(
+    '/blog-tag/{tag}',
+    array(  '_controller' => 'Goteo\Controller\BlogController::indexAction',
+            'tag' => '' //optional parameter
+        )
+));
+
 $routes->add('blog-post', new Route(
     '/blog/{post}',
     array('_controller' => 'Goteo\Controller\BlogController::postAction',

@@ -28,7 +28,7 @@
 										<div class="description">
 											<?= $banner->description ? $banner->description : $banner->title ?>
 										</div>
-										<a href="<?= $banner->url ? $banner->url : 'blog/'.$banner->id ?>" class="btn btn-white scroller"><?= $this->button_text ?></a>
+										<a href="<?= $banner->url ? $banner->url : '/blog/'.$banner->id ?>" class="btn btn-white scroller"><?= $this->button_text ?></a>
 									</div>
 								</div>
 							</div>
