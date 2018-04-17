@@ -202,6 +202,10 @@ body.blog {
           bottom: 0;
           top: auto;
           z-index: 1000;
+          overflow-y: scroll;
+          white-space: nowrap;
+          -webkit-overflow-scrolling: touch;
+          background-color: $background-yellow;
       }
       div.section.post-header{
         position:static;
@@ -237,6 +241,10 @@ body.blog {
             }
           }
         }
+      }
+
+      div.section.list-posts{
+        padding: 30px 15px 0 15px
       }
 
       div.related-post{
