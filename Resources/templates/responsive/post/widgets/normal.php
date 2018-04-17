@@ -4,6 +4,12 @@ $image= $this->post->header_image ? $this->post->header_image : $this->post->ima
 <?php $author=$this->post->getAuthor(); ?>
 
 <div class="post-widget">
+    <?php if($this->post->section): ?>
+        <?php $icon= $this->post->section=='matchfunding' ? 'icon-call' : 'icon-'.$this->post->section ?>
+        <div class="section" >
+            <span class="block icon icon-2x <?= $icon ?>"></span>
+        </div>
+    <?php endif; ?>
     <a class="img-link" href="<?= '/blog/'.$this->post->id ?>">
     	<?php if($image): ?>
         	<img class="img-link" src="<?= $image->getLink(350, 200, true); ?>" alt="<?= $this->post->title ?>"/>
