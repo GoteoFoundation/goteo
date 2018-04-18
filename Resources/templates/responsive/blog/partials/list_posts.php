@@ -14,11 +14,14 @@
 		    </a>
 		<?php endforeach; ?>
 	</ul>
+
+<?php if(!$this->section) $description=$this->text('blog-main-description') ?>
+
 <?php else: ?>
 	<h2 class="tag-title"><?= ucfirst($this->tag->name) ?></h2>
 <?php endif; ?>
  <div class="section list-posts container">
- 	<?php if(!$this->tag->name): ?>
+ 	<?php if($description): ?>
 	 	<div class="description">
 	 		<?= $this->text($description) ?>
 	 	</div>
