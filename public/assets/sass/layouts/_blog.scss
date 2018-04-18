@@ -74,16 +74,20 @@ body.blog {
       background-color: $background-main-home;
       &.sticky-list{
         padding-top:0 !important;
-        div.foundation-mark{
-          display: block;
-          top: 20%;
-          img.logo{
-            width: 40px;
-            height: 40px;
-          }
-          h3{
-            font-size: 16.5px;
-            margin-left: 10px;
+        ul.filters{
+          margin-bottom: 0px;
+          padding: 15px 0 15px 0;
+          div.foundation-mark{
+            display: block;
+            top: 20%;
+            img.logo{
+              width: 40px;
+              height: 40px;
+            }
+            h3{
+              font-size: 16.5px;
+              margin-left: 10px;
+            }
           }
         }
       }
