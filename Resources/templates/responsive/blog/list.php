@@ -22,8 +22,4 @@ $this->section('blog-content');
 	<?= $this->insert('blog/partials/list_sticky') ?>
 <?php endif; ?>
 
-<?= $this->insert('partials/utils/paginator', ['total' => $this->total, 'limit' => $this->limit ? $this->limit : 10]) ?>
-
-
-
 <?php $this->replace() ?>

@@ -212,6 +212,19 @@ body.blog {
       }
     }
 
+  .pagination{ 
+    li{
+      &.active > a{
+        background-color: #555555;
+        border-color: #555555;
+        color: $color-white;
+      }
+      a{
+        color: #555555;
+      }
+    }
+  }
+
   // Tablets customization
 
     @media (max-width: $breakpoint-md + 1) {
@@ -224,7 +237,7 @@ body.blog {
 
     @media (max-width: $breakpoint-sm - 1) {
 
-      div.sticky-menu {
+      div.sticky-menu, .filters {
           bottom: 0;
           top: auto;
           z-index: 1000;
@@ -232,6 +245,8 @@ body.blog {
           white-space: nowrap;
           -webkit-overflow-scrolling: touch;
           background-color: $background-yellow;
+          margin-bottom: 0px;
+          padding: 15px 0 15px 0;
       }
       div.section.post-header{
         position:static;

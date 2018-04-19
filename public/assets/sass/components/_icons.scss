@@ -142,4 +142,7 @@
     &.icon-voices {
         @include svg-background('../img/icons/voices.svg');
     }
+    &.icon-match-blog {
+        @include svg-background('../img/icons/match_blog.svg');
+    }
 }

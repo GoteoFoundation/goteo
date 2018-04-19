@@ -35,4 +35,7 @@
 	 	</div>
 	 	<?php endforeach; ?>
  	</div>
+
+ 	<?= $this->insert('partials/utils/paginator', ['total' => $this->total, 'limit' => $this->limit ? $this->limit : 10]) ?>
+
  </div>
