@@ -246,7 +246,7 @@ body.blog {
           -webkit-overflow-scrolling: touch;
           background-color: $background-yellow;
           margin-bottom: 0px;
-          padding: 15px 0 15px 0;
+          padding: 15px 0 0px 0 !important;
       }
       div.section.post-header{
         position:static;
