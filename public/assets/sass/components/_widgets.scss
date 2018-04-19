@@ -636,6 +636,17 @@
       width: 100%;
     }
   }
+
+  .post-widget{
+    position: relative;
+    .section{
+      .icon{
+        width: 20px;
+        height: 20px;
+      }
+    }
+  }
+
 }
 
 /* Steps bar */
