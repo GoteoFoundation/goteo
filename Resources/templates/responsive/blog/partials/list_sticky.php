@@ -1,6 +1,6 @@
 <!-- sticky menu -->
 
-<div class="sticky-menu sticky-list" data-offset-top="600" data-spy="affix">
+<div class="sticky-menu sticky-list <?= $this->total <8 ? 'visible-xs' : '' ?> " data-offset-top="650" data-spy="affix">
       	<ul class="filters list-inline center-block text-center">
             <?php foreach ($this->blog_sections as $key => $section) : ?>
                 <?php $icon= $key=='matchfunding' ? 'icon-call' : 'icon-'.$key ?>
