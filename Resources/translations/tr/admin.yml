@@ -1,7 +1,7 @@
 ---
 admin-action: 'Yönetici hareketleri'
 admin-NO: 'HAYIR'
-admin-YES: 'EVET'
+admin-YES: EVET
 admin-account-amount: 'Bağışlanmış miktar'
 admin-account-change-user: 'Kullanıcı değiştir'
 admin-account-change-user-confirm: 'Katkının kullanıcısını değiştirmek istediğinizden emin misiniz? Yeni kullanıcı olarak:'

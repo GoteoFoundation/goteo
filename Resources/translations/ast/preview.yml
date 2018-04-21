@@ -1,4 +1,8 @@
 ---
+guide-project-error-mandatories: 'Falten campos obligatorios'
+guide-project-success-okfinish: 'Pue unviase pa revisión'
+preview-main-header: 'Previsualización de datos'
+preview-send-comment: 'Notes adicionales pal alministrador'
 step-7: Previsualización
 step-preview: 'Proyeutu / Previsualización'
 
