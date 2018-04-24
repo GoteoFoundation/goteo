@@ -232,4 +232,27 @@ Grunt commands in Goteo
   Same as default
 
 
+Docker
+======
 
+We just started to work with Docker. For the moment is still experimental.
+
+You can set up a development server using:
+
+```bash
+docker-compose up -d
+```
+
+The first time, you can execute install commands inside docker container:
+
+```bash
+docker exec goteo-php composer install
+docker exec goteo-php npm install
+docker exec goteo-php bin/console migrate install
+```
+
+Finally, the grunt watch command alone to rebuild assets on editing
+
+```
+docker exec -it goteo-php grunt build:watch
+```

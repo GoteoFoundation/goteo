@@ -155,6 +155,14 @@ module.exports = function(grunt) {
         grunt.task.run(['serve']);
     });
 
+    grunt.registerTask('build:watch', [
+        'clean:server',
+        'copy:devel',
+        'copy:plugins:devel',
+        'sass:devel',
+        'watch'
+    ]);
+
     grunt.registerTask('build:dist', [
         'build'
     ]);
