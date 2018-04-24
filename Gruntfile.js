@@ -62,7 +62,7 @@ module.exports = function(grunt) {
         grunt.log.ok('Using livePort from settings: ' + livePort);
     }
 
-    
+
     grunt.log.ok('CURRENT DIR',GOTEO.dir);
     // Project configuration.
     grunt.initConfig({
@@ -154,6 +154,14 @@ module.exports = function(grunt) {
         grunt.log.warn('The `server` task has been deprecated. Use `grunt serve` to start a server.');
         grunt.task.run(['serve']);
     });
+
+    grunt.registerTask('build:watch', [
+        'clean:server',
+        'copy:devel',
+        'copy:plugins:devel',
+        'sass:devel',
+        'watch'
+    ]);
 
     grunt.registerTask('build:dist', [
         'build'

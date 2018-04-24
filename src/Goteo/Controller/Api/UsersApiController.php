@@ -24,14 +24,15 @@ use Goteo\Library\Feed;
 use Goteo\Library\FeedBody;
 
 class UsersApiController extends AbstractApiController {
+
     public function __construct() {
         parent::__construct();
         // De-Activate cache & replica read for this controller
         $this->dbReplica(false);
         $this->dbCache(false);
     }
-    
-    protected function getSafeUser($user) {
+
+	protected function getSafeUser($user) {
         if(!$user instanceOf User) $user = User::get($user);
         if(!$user instanceOf User) throw new ModelNotFoundException();
 
