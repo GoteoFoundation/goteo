@@ -12,3 +12,18 @@ blog-side-tags: Categories de projecte
 blog-allow-comments: Permet comentaris
 blog-publish: Publica
 blog-published: Publicat
+blog-related-posts: 'Relacionados'
+
+blog-section-mission: 'Missió'
+blog-section-milestones: 'Fites'
+blog-section-matchfunding: 'Matchfunding'
+blog-section-voices: 'Veus'
+blog-section-transparency: 'Transparència'
+blog-section-team: 'Equip'
+
+blog-section-mission-description: 'A simple vista, Goteo es una plataforma de crowdfunding cívico y colaboración en torno a iniciativas ciudadanas, proyectos sociales, culturales, tecnológicos y educativos. Con réplicas y alianzas en varios países, gracias a su código abierto, además de reconocida y premiada internacionalmente desde 2011. Constituye una herramienta de generación de recursos, gota a gota, para una comunidad de comunidades compuesta por más de 65.000 personas, con un porcentaje de éxito de financiación superior al 70%.'
+blog-section-milestones-description: 'Nuestras herramientas, como Goteo, movilizan recursos económicos y colaboraciones humanas; contribuyen a la creación de comunidad; divulgan y generan conciencia y compromiso en torno a causas ciudadanas; habilitan la colaboración entre iguales a gran escala; establecen conexiones y apoyos entre empresas, universidades y ciudadanos/as; promueven la apertura de la información y del conocimiento, para activar lógicas de transparencia y cooperación en lugar de opacidad y competición.'
+blog-section-matchfunding-description: 'El matchfunding es la práctica que nos permite llevar la corresponsabilidad, que forma parte del ADN de Goteo y de la misión de la fundación, a su máximo exponente. Este principio refleja el compromiso compartido presente en cada una de las prácticas que promovemos, desde la financiación colectiva (en el crowdfunding tradicional y el matchfunding con instituciones) hasta nuestras metodologías de formación y co-creación, que siempre están motivadas por el objetivo de mejorar nuestro entorno.'
+blog-section-voices-description: ' Pero en realidad Goteo es mucho más que eso. Tras la plataforma existe una fundación sin ánimo de lucro (con las consecuentes ventajas fiscales para donantes) y un equipo multidisciplinar desde el que desarrollamos herramientas y servicios de co-creación y financiación colectiva. Con una misión común vinculada siempre a principios de transparencia, progreso y mejora de la sociedad.'
+blog-section-transparency-description: 'Una Internet más ética y colaborativa en que la ciudadanía, a través de procesos cooperativos, tenga un papel activo en la mejora y el avance de sus comunidades. En términos económicos, medioambientales, educativos, políticos, sociales y/o culturales. Una sociedad en la que se proteja el valor y amplíe el reconocimiento de los bienes comunes, garantes de derechos fundamentales.'
+blog-section-team-description: 'Nuestras herramientas, como Goteo, movilizan recursos económicos y colaboraciones humanas; contribuyen a la creación de comunidad; divulgan y generan conciencia y compromiso en torno a causas ciudadanas; habilitan la colaboración entre iguales a gran escala; establecen conexiones y apoyos entre empresas, universidades y ciudadanos/as; promueven la apertura de la información y del conocimiento, para activar lógicas de transparencia y cooperación en lugar de opacidad y competición.'

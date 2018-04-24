@@ -2,7 +2,7 @@
 /**
  * Migration Task class.
  */
-class GoteoPost
+class GoteoPostCategorization
 {
   public function preUp()
   {
@@ -31,11 +31,10 @@ class GoteoPost
    */
   public function getUpSQL()
   {
-     return "
-            ALTER TABLE `post` ADD COLUMN `subtitle` TINYTEXT NULL AFTER `title`;
-            ALTER TABLE `post_lang` ADD COLUMN `subtitle` TINYTEXT NULL AFTER `title`;
-            ALTER TABLE `post` ADD COLUMN header_image VARCHAR(255) CHARSET utf8 COLLATE utf8_general_ci NULL AFTER image;
-      ";
+    return "
+      ALTER TABLE `post` ADD COLUMN `section` TINYTEXT NULL AFTER `subtitle`;
+      ALTER TABLE `post` ADD COLUMN `glossary` TINYTEXT NULL AFTER `text`;
+    ";
   }
 
   /**
@@ -45,12 +44,10 @@ class GoteoPost
    */
   public function getDownSQL()
   {
-     return "
-            ALTER TABLE `post` DROP COLUMN `subtitle`;
-            ALTER TABLE `post_lang` DROP COLUMN `subtitle`;
-            ALTER TABLE `post` DROP COLUMN `header_image`;
-
-      ";
+    return "
+      ALTER TABLE `post` DROP COLUMN `section`;
+      ALTER TABLE `post` DROP COLUMN `glossary`;
+    ";
   }
 
 }
