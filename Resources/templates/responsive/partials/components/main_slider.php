@@ -8,7 +8,7 @@
 			<?php foreach($this->banners as $banner): ?>
 				<?php $banner_image=$banner->header_image ? $banner->header_image : $banner->image; ?>
 					
-				<?php if($banner_image): ?>
+				<?php if($banner_image||!$banner->description): ?>
 					<div class="item">
 						<div class="image">
 							<?php if(!$banner->description&&!$banner->header_image): ?>
