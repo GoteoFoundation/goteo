@@ -5,7 +5,7 @@ version: "3.1"
 services:
 
   mariadb:
-    image: mariadb:10.1
+    image: mariadb:10.2
     container_name: goteo-mariadb
     working_dir: /application
     volumes:
@@ -38,7 +38,7 @@ services:
       - .:/application
       - ./phpdocker/php/php-ini-overrides.ini:/etc/php/7.1/fpm/conf.d/99-overrides.ini
     environment:
-      - GOTEO_CONFIG_FILE=/application/config/docker-settings.yml
+      - GOTEO_CONFIG_FILE=/application/config/local-docker-settings.yml
 
 volumes:
   goteo-mariadb:
