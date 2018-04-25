@@ -270,13 +270,13 @@
                         <?php if($project->social_commitmentData): ?>
 
                             <div class="row social-commitment">
-                                <div class="col-xs-2">
+                                <div class="col-sm-2">
                                     <img class="img-responsive social-img" src="<?= $project->social_commitmentData->image->getLink(60, 60, false) ?>">
                                 <h3 class="title text-center">
                                     <?= $project->social_commitmentData->name ?>
                                 </h3>
                                 </div>
-                                <div class="col-xs-10 description">
+                                <div class="col-sm-10 description">
                                     <?= $project->social_commitment_description ?>
                                 </div>
                             </div>
@@ -305,10 +305,10 @@
                                     <?= $this->licenses[$social->license]->name ?>
                                     </h3>
                                     <div class="row">
-                                        <div class="col-xs-2 license-img">
+                                        <div class="col-sm-2 license-img">
                                             <img class="img-responsive" src="<?= SRC_URL . '/assets/img/project/license/'.$social->license.'.png' ?> ">
                                         </div>
-                                        <div class="col-xs-10 description">
+                                        <div class="col-sm-10 description">
                                         <?= $this->licenses[$social->license]->description ?>
                                         </div>
                                     </div>
