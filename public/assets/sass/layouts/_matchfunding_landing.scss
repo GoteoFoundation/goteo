@@ -1,0 +1,17 @@
+@import "compass/css3";
+
+/* matchfunding landing styles */
+
+body.matchfunding-landing {
+
+  .top-navbar{
+      background-color: $color-white;
+      h3{
+        font-size: $font-size*1.6;
+        margin-left:10px;
+        float: left;
+      }
+  }
+}
+
+
