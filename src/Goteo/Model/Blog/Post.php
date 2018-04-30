@@ -734,10 +734,10 @@ class Post extends \Goteo\Core\Model {
     // List of blog sections
     public static function getListSections(){
         $sections=[ 'mission'      => 'blog-section-mission',
-                    'milestones'   => 'blog-section-milestones',
                     'matchfunding' => 'blog-section-matchfunding',
                     'voices'     => 'blog-section-voices',
                     'transparency' => 'blog-section-transparency',
+                    'milestones'   => 'blog-section-milestones',
                     'team'         => 'blog-section-team'
                 ];
 
