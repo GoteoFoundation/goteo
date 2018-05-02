@@ -920,7 +920,7 @@ body.home {
                 z-index: 1000;
             }
             .slick-dots{
-                bottom: -40px;
+                bottom: -40px !important;
 
                 li button::before{
                     color: $color-light-grey !important;
