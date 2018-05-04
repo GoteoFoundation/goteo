@@ -46,13 +46,27 @@ function create_variables() {
     eval "$(parse_yaml "$yaml_file")"
 }
 
+conf='config/local-docker-settings.yml'
+
+if [ ! -f $conf ]; then
+    echo -e "\e[31m$conf does not exists!"
+    echo -e "\e[31mAborting"
+    exit 1
+fi
 # read yaml file
-create_variables config/local-docker-settings.yml
+create_variables $conf
 
 composer install
 npm install
 ./bin/console migrate install
 grunt build:tmp
+
+if [ $? -ne 0 ]; then
+    echo -e "\e[31mgrunt build:tmp failed!"
+    echo -e "\e[31mAborting"
+    exit 1
+fi
+
 echo -e "\e[32m*************************************"
 echo -e "\e[32m System ready!"
 echo
@@ -61,4 +75,6 @@ echo -e
 echo -e "\e[32m $url__main"
 echo -e
 echo -e "\e[32m*************************************"
+
+# launch php service
 /usr/bin/php-fpm
