@@ -22,6 +22,14 @@ Some folders may have its own README.md file with comments. However, we will try
 - [Install](http://goteofoundation.github.io/goteo/docs/install.html)
 - [Upgrade](http://goteofoundation.github.io/goteo/docs/upgrade.html)
 
+> ### Docker quickstart:
+> 
+> ```bash
+> cp config/docker-settings.yml config/local-docker-settings.yml
+> docker-compose up -d
+> ```
+> [More info](http://goteofoundation.github.io/goteo/docs/developers/environment.html#docker)
+
 ### CONTRIBUTING
 
 There's still a lot of documentation missing. We'll try to do our best completing it, however any help will be appreciated.
