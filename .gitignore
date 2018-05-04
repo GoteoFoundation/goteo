@@ -12,6 +12,7 @@
 /public/assets/vendor/footable/releases/
 /bower_components/
 *.log
+*.pid
 .tmp
 /var/*
 !/var/logs
