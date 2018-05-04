@@ -313,7 +313,7 @@ body.home {
 
 
     .call-action{
-        background-color: $background-light-green;
+        background-color: #57246F;
         color: $color-white;
         padding: 30px 0;
         .row{
@@ -634,11 +634,11 @@ body.home {
                 right: 4%;
                 width: 50%;
                 li.slick-active button::before{
-                    color: $primary-color;
+                    color: $primary-color !important;
                 }
 
                 li button::before{
-                    color: $color-light-grey;
+                    color: $color-light-grey !important;
                     opacity: 1;
                     font-size: 11px;
                 }
@@ -746,15 +746,15 @@ body.home {
                 cursor: pointer;
             }
             .slick-dots{
-                bottom: -40px;
-                li.slick-active button::before{
-                    color: $background-dark-lilac;
-                }
+                bottom: -40px !important;
 
                 li button::before{
-                    color: $color-light-grey;
+                    color: $color-light-grey !important;
                     opacity: 1;
                     font-size: 11px;
+                }
+                li.slick-active button::before{
+                    color: $background-dark-lilac !important;
                 }
             }
         }
@@ -889,15 +889,15 @@ body.home {
                 z-index: 1000;
             }
             .slick-dots{
-                bottom: -40px;
-                li.slick-active button::before{
-                    color: $background-light-green;
-                }
+                bottom: -40px !important;
 
                 li button::before{
-                    color: $color-light-grey;
+                    color: $color-light-grey !important;
                     opacity: 1;
                     font-size: 11px;
+                }
+                li.slick-active button::before{
+                    color: $background-light-green !important;
                 }
             }
         }

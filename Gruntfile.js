@@ -62,7 +62,7 @@ module.exports = function(grunt) {
         grunt.log.ok('Using livePort from settings: ' + livePort);
     }
 
-    
+
     grunt.log.ok('CURRENT DIR',GOTEO.dir);
     // Project configuration.
     grunt.initConfig({
@@ -86,6 +86,12 @@ module.exports = function(grunt) {
     // Default task. Just linter
     grunt.registerTask('default', ['lint']);
     grunt.registerTask('lint', ['jshint', 'phplint']);
+
+
+    // Just returns the hostname extracted from settings.yml (or GOTEO_CONFIG_FILE)
+    grunt.registerTask('hostname', function() {
+        grunt.log.writeln(config.url.main);
+    });
 
     // PRE-COMMIT ready hook
     // $ cd {repo}
@@ -111,6 +117,8 @@ module.exports = function(grunt) {
             }
         });
     });
+
+    // Uses php built-in server to execute a local development server
     grunt.registerTask('serve', function (target) {
         if (target === 'dist') {
             return grunt.task.run([
@@ -155,6 +163,25 @@ module.exports = function(grunt) {
         grunt.task.run(['serve']);
     });
 
+    // Use .tmp directory to build & copy files, then watches changes on the files
+    grunt.registerTask('build:watch', [
+        'clean:server',
+        'copy:devel',
+        'copy:plugins:devel',
+        'sass:devel',
+        'watch'
+    ]);
+    // Same as before but without watching files (compile and copy to .tmp only)
+    // This is used by docker to compile assets on docker-compose up
+    grunt.registerTask('build:tmp', [
+        'clean:server',
+        'copy:devel',
+        'copy:plugins:devel',
+        'sass:devel'
+    ]);
+
+    // Standard build (copy & minification to dist folder). This leaves ready the dist folder to
+    // point a real server there
     grunt.registerTask('build:dist', [
         'build'
     ]);

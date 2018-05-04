@@ -8,13 +8,24 @@
 			<?php foreach($this->banners as $banner): ?>
 				<?php $banner_image=$banner->header_image ? $banner->header_image : $banner->image; ?>
 					
-				<?php if($banner_image): ?>
+				<?php if($banner_image||!$banner->description): ?>
 					<div class="item">
 						<div class="image">
-							<img src="<?= $banner_image->getLink(1920, 600, true) ?>" class="display-none-important img-responsive  hidden-xs visible-up-1400">
-		                    <img src="<?= $banner_image->getLink(1400, 500, true) ?>" class="display-none-important img-responsive  hidden-xs visible-1051-1400">
-			                <img src="<?= $banner_image->getLink(1051, 460, true) ?>" class="display-none-important img-responsive  hidden-xs visible-768-1050">
-		                    <img src="<?= $banner_image->getLink(750, 600, true) ?>" class="img-responsive visible-xs">
+							<?php if(!$banner->description&&!$banner->header_image): ?>
+								<img src="/assets/img/blog/header_default.png" width="1920" class="display-none-important header-default img-responsive  hidden-xs visible-up-1400">
+								<img src="/assets/img/blog/header_default.png" width="1400" class="display-none-important header-default img-responsive  hidden-xs visible-1051-1400">
+								<img src="/assets/img/blog/header_default.png" width="1051" class="display-none-important header-default img-responsive  hidden-xs visible-768-1050">
+								<img src="/assets/img/blog/header_default.png" width="750"  class="img-responsive header-default visible-xs">
+
+							<?php else: ?>
+
+								<img src="<?= $banner_image->getLink(1920, 600, true) ?>" class="display-none-important img-responsive  hidden-xs visible-up-1400">
+			                    <img src="<?= $banner_image->getLink(1400, 500, true) ?>" class="display-none-important img-responsive  hidden-xs visible-1051-1400">
+				                <img src="<?= $banner_image->getLink(1051, 460, true) ?>" class="display-none-important img-responsive  hidden-xs visible-768-1050">
+			                    <img src="<?= $banner_image->getLink(750, 600, true) ?>" class="img-responsive visible-xs">
+
+							<?php endif; ?>
+
 						</div>
 						<div class="main-info">
 							<div class="container">

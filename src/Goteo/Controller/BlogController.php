@@ -37,7 +37,7 @@ class BlogController extends \Goteo\Core\Controller {
 
         $limit=12;
         $slider_posts=Post::getList(['section' => $section, 'tag' => $tag], true, 0, 3);
-        $init= $request->query->get('pag') ? $request->query->get('pag')*$limit : 3;
+        $init= $request->query->get('pag') ? $request->query->get('pag')*$limit : 0;
         
         $list_posts=Post::getList(['section' => $section, 'tag' => $tag], true, $init, $limit);
         $total=Post::getList(['section' => $section, 'tag' => $tag], true, 0, 0, true);

@@ -14,6 +14,7 @@
     "node": ">= 0.10.0"
   },
   "devDependencies": {
+    "command-exists": "^1.2.6",
     "grunt": "~1.0.1",
     "grunt-aws-s3": "^0.14.5",
     "grunt-contrib-clean": "^1.0.0",

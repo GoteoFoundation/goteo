@@ -237,6 +237,7 @@ body.blog {
 
     @media (max-width: $breakpoint-sm - 1) {
 
+
       div.sticky-menu, .filters {
           bottom: 0;
           top: auto;
@@ -246,7 +247,13 @@ body.blog {
           -webkit-overflow-scrolling: touch;
           background-color: $background-yellow;
           margin-bottom: 0px;
-          padding: 15px 0 0px 0 !important;
+      }
+      div.sticky-menu{
+        padding: 15px 0 0px 0 !important;
+      }
+
+      .filters{
+        padding: 20px 0 20px 5px !important;
       }
       div.section.post-header{
         position:static;

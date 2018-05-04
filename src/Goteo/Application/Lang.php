@@ -63,9 +63,9 @@ class Lang {
      * @param string $lang      Language ID (es, en, fr, etc.)
      * @param [type] $yaml_file [description]
      */
-    static public function addYamlTranslation($lang, $yaml_file) {
+    static public function addYamlTranslation($lang, $yaml_file, $group = null) {
         static::factory($lang);
-        $group = strtok(basename($yaml_file), '.');
+        $group = $group ?: strtok(basename($yaml_file), '.');
         if(isset(static::$all_groups[$group]))
             static::$all_groups[$group][] = $yaml_file;
         else
