@@ -1,11 +1,11 @@
 <!-- POST PROCESSING THIS CSS BY GRUNT -->
 
-<!-- build:css assets/css/vendor.css -->
+<!-- build:css assets/css/vendor-legacy.css -->
 <link href="<?= SRC_URL ?>/assets/vendor/font-awesome/css/font-awesome.min.css" rel="stylesheet">
 <link href="<?= SRC_URL ?>/assets/vendor/animate.css/animate.css" rel="stylesheet">
 <!-- endbuild -->
 
-<!-- build:css view/css/all.css -->
+<!-- build:css view/css/all-legacy.css -->
 <link rel="stylesheet" type="text/css" href="<?= SRC_URL ?>/view/css/goteo.css" />
 <link rel="stylesheet" type="text/css" href="<?= SRC_URL ?>/assets/css/legacy_compat.css" />
 <!-- endbuild -->
