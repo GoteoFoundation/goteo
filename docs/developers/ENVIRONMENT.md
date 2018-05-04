@@ -184,7 +184,7 @@ db:
 
 Otherwise, you can install mysql on your own machine and proceed to import the database into it.
 
-<a name="#grunt"></a>
+<a name="grunt"></a>
 Using grunt in Goteo
 ====================
 
@@ -232,17 +232,11 @@ Grunt commands in Goteo
   Same as default
 
 
+<a name="docker"></a>
 Docker
 ======
 
 We just started to work with Docker. For the moment is still experimental.
-
-You can set up a development server using:
-
-```bash
-docker-compose up -d
-```
-
 
 The first time, it is necessary to create a local docker config that you can personalize:
 
@@ -250,15 +244,29 @@ The first time, it is necessary to create a local docker config that you can per
 cp config/docker-settings.yml config/local-docker-settings.yml
 ```
 
-Also -only the first time- you should execute all thes install commands inside docker container:
+Then, you can set up a development server using:
+
+```bash
+docker-compose up
+```
+
+At this point you should be able to point your browser to http://localhost:8081 (or whatever host name you have in your local-docker-settings.yml).
+We recommend not to use the `-d` flag on `docker-compose` to be aware of the log messages while building the container or php/server errors while browsing.
+
+### TL;TR
+
+The `docker-compose up` command executes `docker/php/init.sh` script, which is equivalent as running the next commands:
 
 ```bash
 docker exec goteo-php composer install
 docker exec goteo-php npm install
 docker exec goteo-php bin/console migrate install
+docker exec -it goteo-php grunt build:tmp
 ```
 
-Finally, the grunt watch command alone to rebuild assets on editing
+You can (or must) run any of the above commands if the are changes in relevant files (database changes, css, javascript or public template files)
+
+Finally -optionally-, by running the grunt watch command alone allows you to rebuild assets automatically while editing files. If this command is not executed assets are copied and compiled only once at the beginning when `docker-compose up` runs.
 
 ```bash
 docker exec -it goteo-php grunt build:watch
@@ -268,4 +276,6 @@ Upgrades and other commands can be executed the same way:
 
 ```bash
 docker exec -it goteo-php bin/console migrate all
+docker exec -it goteo-php bin/console toolkit project
+docker exec -it goteo-php bin/console --help
 ```

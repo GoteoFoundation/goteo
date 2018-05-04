@@ -3,8 +3,7 @@
 ####################################
 
 FROM phpdockerio/php71-cli
-#VOLUME /application
-#WORKDIR /application
+WORKDIR /application
 
 # Install FPM
 RUN export DEBIAN_FRONTEND=noninteractive \
@@ -36,4 +35,5 @@ EXPOSE 35729
 
 ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]
 
+# Will be overwritten by docker-compose.yml
 CMD /usr/bin/php-fpm
