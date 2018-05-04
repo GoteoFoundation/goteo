@@ -189,11 +189,11 @@ $(document).ready(function(){
                 'options'   => $tags
             ),
 
-            'new-tag' => array(
+            /*'new-tag' => array(
                 'type'  => 'HTML',
                 'class' => 'inline',
                 'html'  => '<input type="text" name="new-tag" value="" /> <input type="submit" name="new-tag_save" value="Añadir" />'
-            ),
+            ),*/
 
             'date' => array(
                 'type'      => 'DateBox',

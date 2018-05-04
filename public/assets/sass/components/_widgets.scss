@@ -569,6 +569,15 @@
 }
 
 .post-widget{
+  position: relative;
+  .section{
+    position:absolute;
+    top:15px;
+    left: 15px;
+    background-color: $background-light-yellow;
+    border-radius: 50%;
+    padding: 5px;
+  }
   .img-link{
       display: flex;
       height: 200px;
@@ -627,6 +636,17 @@
       width: 100%;
     }
   }
+
+  .post-widget{
+    position: relative;
+    .section{
+      .icon{
+        width: 20px;
+        height: 20px;
+      }
+    }
+  }
+
 }
 
 /* Steps bar */

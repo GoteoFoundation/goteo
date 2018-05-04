@@ -1,8 +1,10 @@
 <?php
 
+$title= $this->section ? $this->text($this->blog_sections[$this->section]) : $this->tag->name;
+
 $this->layout('blog/layout', [
 	'bodyClass' => 'blog',
-    'title' => 'Blog',
+    'title' => $title ? ucfirst($title).' :: Goteo.org' : 'Blog',
     'meta_description' => ''
     ]);
 
@@ -15,7 +17,9 @@ $this->section('blog-content');
             	  'button_text' => $this->text('regular-read_more')
 ]) ?>
 <?= $this->insert('blog/partials/list_posts') ?>
-<?= $this->insert('blog/partials/list_sticky') ?>
 
+<?php if(!$this->tag): ?>
+	<?= $this->insert('blog/partials/list_sticky') ?>
+<?php endif; ?>
 
 <?php $this->replace() ?>

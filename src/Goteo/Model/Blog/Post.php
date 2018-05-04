@@ -425,6 +425,12 @@ class Post extends \Goteo\Core\Model {
             $values[':tag'] = $filters['tag'];
         }
 
+        if (!empty($filters['section'])) {
+            $sqlWhere .= " AND post.section = :section
+            ";
+            $values[':section'] = $filters['section'];
+        }
+
         // Post excluded from the
         if (!empty($filters['excluded'])) {
             $sqlWhere .= " AND post.id  != :excluded
@@ -728,10 +734,10 @@ class Post extends \Goteo\Core\Model {
     // List of blog sections
     public static function getListSections(){
         $sections=[ 'mission'      => 'blog-section-mission',
-                    'milestones'   => 'blog-section-milestones',
                     'matchfunding' => 'blog-section-matchfunding',
-                    'glossary'     => 'blog-section-glossary',
+                    'voices'     => 'blog-section-voices',
                     'transparency' => 'blog-section-transparency',
+                    'milestones'   => 'blog-section-milestones',
                     'team'         => 'blog-section-team'
                 ];
 
