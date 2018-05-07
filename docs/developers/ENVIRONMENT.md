@@ -266,6 +266,13 @@ docker exec -it goteo-php grunt build:tmp
 
 You can (or must) run any of the above commands if the are changes in relevant files (database changes, css, javascript or public template files)
 
+If you want to test a production environment, you can pass the var `DEBUG=0` to the docker-compose command:
+
+```bash
+DEBUG=false docker-compose up
+```
+
+
 Finally -optionally-, by running the grunt watch command alone allows you to rebuild assets automatically while editing files. If this command is not executed assets are copied and compiled only once at the beginning when `docker-compose up` runs.
 
 ```bash
