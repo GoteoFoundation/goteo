@@ -20,7 +20,6 @@ namespace Goteo\Model\Project {
             $url = '';
 
         public function __construct ($url) {
-            // $this->url = (\HTTPS_ON) ? str_replace('http://', 'https://', $url) : $url;
             $this->url = str_replace('http://', 'https://', $url);
         }
 
@@ -86,7 +85,6 @@ namespace Goteo\Model\Project {
 
         public function getEmbedCode ($universalSubtitles = false, $lang = null, $autoplay = false) {
             if(empty($lang)) $lang = Lang::current();
-            // $https = \HTTPS_ON;
             $https = true;
 
             $code = '';

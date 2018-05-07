@@ -46,13 +46,43 @@ function create_variables() {
     eval "$(parse_yaml "$yaml_file")"
 }
 
+if [ -z "$GOTEO_CONFIG_FILE" ]; then
+    echo -e "\e[31mGOTEO_CONFIG_FILE is not defined!"
+    echo -e "\e[31mAborting"
+    exit 1
+fi
+
+if [ ! -f $GOTEO_CONFIG_FILE ]; then
+    echo -e "\e[31m$GOTEO_CONFIG_FILE does not exists!"
+    echo -e "\e[31mAborting"
+    exit 1
+fi
+
 # read yaml file
-create_variables config/local-docker-settings.yml
+create_variables $GOTEO_CONFIG_FILE
 
 composer install
 npm install
 ./bin/console migrate install
-grunt build:tmp
+
+if [ "$DEBUG" = false ] || [ "$DEBUG" = 0 ]; then
+    grunt build:dist
+    # Mock .tmp as dist minimized folder
+    rsync -a --delete ./dist/ ./.tmp/
+    cp -af ./dist/index.php ./.tmp/index_dev.php
+    echo -e "\e[33m Pointing nginx server as PRODUCTION (index.php)"
+else
+    grunt build:tmp
+    echo -e "\e[33m Pointing nginx server as DEVELOPMENT (index_dev.php)"
+fi
+
+
+if [ $? -ne 0 ]; then
+    echo -e "\e[31mgrunt build:tmp failed!"
+    echo -e "\e[31mAborting"
+    exit 1
+fi
+
 echo -e "\e[32m*************************************"
 echo -e "\e[32m System ready!"
 echo
@@ -61,4 +91,6 @@ echo -e
 echo -e "\e[32m $url__main"
 echo -e
 echo -e "\e[32m*************************************"
+
+# launch php service
 /usr/bin/php-fpm

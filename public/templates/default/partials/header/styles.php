@@ -5,8 +5,9 @@
 <link href="<?= SRC_URL ?>/assets/vendor/animate.css/animate.css" rel="stylesheet">
 <!-- endbuild -->
 
-<!-- build:css view/css/all-legacy.css -->
 <link rel="stylesheet" type="text/css" href="<?= SRC_URL ?>/view/css/goteo.css" />
+
+<!-- build:css assets/css/all-legacy.css -->
 <link rel="stylesheet" type="text/css" href="<?= SRC_URL ?>/assets/css/legacy_compat.css" />
 <!-- endbuild -->
 
