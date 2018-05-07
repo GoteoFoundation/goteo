@@ -394,7 +394,7 @@ class Image extends \Goteo\Core\Model {
 
             $file = SRC_URL . '/' . $file;
             if(substr($file, 0, 2) === '//') {
-                $file = (HTTPS_ON ? 'https:' : 'http:' ) . $file;
+                $file = (Config::get('ssl') ? 'https:' : 'http:' ) . $file;
             }
         }
         else {
