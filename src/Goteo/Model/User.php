@@ -116,6 +116,13 @@ class User extends \Goteo\Core\Model {
         return ['name', 'about'];
     }
 
+    public function getImage() {
+        if(!$this->imageInstance instanceOf Image) {
+            $this->imageInstance = new Image($this->avatar);
+        }
+        return $this->imageInstance;
+    }
+
     /**
      * Guardar usuario.
      * Guarda los valores de la instancia del usuario en la tabla.

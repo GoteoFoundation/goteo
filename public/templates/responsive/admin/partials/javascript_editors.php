@@ -57,6 +57,7 @@
 <!-- build:js assets/js/editors.js -->
 <script type="text/javascript" src="<?= SRC_URL ?>/assets/js/typeahead/engine.projects.js"></script>
 <script type="text/javascript" src="<?= SRC_URL ?>/assets/js/typeahead/engine.calls.js"></script>
+<script type="text/javascript" src="<?= SRC_URL ?>/assets/js/typeahead/engine.users.js"></script>
 <script type="text/javascript" src="<?= SRC_URL ?>/assets/js/forms.js"></script>
 <script type="text/javascript" src="<?= SRC_URL ?>/assets/js/charts/d3-discrete-values.js"></script>
 <script type="text/javascript" src="<?= SRC_URL ?>/assets/js/charts/d3-pie.js"></script>
