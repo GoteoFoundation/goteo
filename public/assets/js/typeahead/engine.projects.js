@@ -17,7 +17,7 @@ goteo.typeahead_engines.project = function (settings) {
         prefetch: {
             url: '/api/projects?status=' + prefetch_statuses,
             filter: function (response) {
-                // console.log('prefetch hit', response);  
+                // console.log('prefetch hit', response);
                 return response.list;
             }
         },
@@ -30,7 +30,7 @@ goteo.typeahead_engines.project = function (settings) {
             }
         }
     });
-    
+
     // initialize the bloodhound suggestion engine
     // engine.clearPrefetchCache();
     engine.initialize();

@@ -83,6 +83,7 @@ class UsersApiController extends AbstractApiController {
                    'name' => $user->name,
                    'node' => $user->node,
                    'avatar' => $user->avatar->name ? $user->avatar->name : 'la_gota.png',
+                   'image' => $user->avatar->name ? $user->getImage()->getLink(64,64,true) : null,
                    'created' => $user->created];
             if($this->is_admin) {
                 $ob['email'] = $user->email;
