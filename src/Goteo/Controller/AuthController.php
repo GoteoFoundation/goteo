@@ -329,12 +329,10 @@ class AuthController extends \Goteo\Core\Controller {
                     // existe usuario, formulario de vinculacion
                     elseif ($oauth->error_type == 'user-password-exists') {
                         Message::info($oauth->last_error);
-                        return $this->viewResponse('auth/confirm_account',
-                                        array(
-                                            'oauth' => $oauth,
-                                            'user' => User::get($oauth->user_data['username'])
-                                        )
-                        );
+                        return $this->viewResponse('auth/confirm_account', [
+                            'oauth' => $oauth,
+                            'user' => User::get($oauth->user_data['username'])
+                        ]);
                     }
                     else {
                         Message::error($oauth->last_error);
@@ -401,7 +399,8 @@ class AuthController extends \Goteo\Core\Controller {
             }
 
             if ($u = User::getByEmail($user->email, null, true)) {
-                if ($u->password == sha1($request->request->get('password'))) {
+                if (false !== ($user = (User::login($u->id, $request->request->get('password'))))) {
+                // if ($u->password == sha1($request->request->get('password'))) {
                     //ok, login en goteo e importar datos
                     //y fuerza que pueda logear en caso de que no tenga contraseña o email sin confirmar
                     if ($user = $oauth->goteoLogin(true)) {
