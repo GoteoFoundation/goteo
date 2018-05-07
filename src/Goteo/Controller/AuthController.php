@@ -100,8 +100,16 @@ class AuthController extends \Goteo\Core\Controller {
     public function loginAction(Request $request) {
         $result = self::checkLogin($request);
         if($result instanceOf Response) return $result;
+        $return = $request->query->get('return');
 
-        return $this->viewResponse('auth/login', ['return' => $request->query->get('return')]);
+        if(Config::get('ssl') && !$request->isSecure()) {
+            if (null !== $qs = $request->getQueryString()) {
+                $qs = '?'.$qs;
+            }
+            $return = 'https://' . $request->getHttpHost() . $request->getBaseUrl() . $request->getPathInfo() . $qs;
+        }
+
+        return $this->viewResponse('auth/login', ['return' => $return]);
 
     }
 
