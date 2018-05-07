@@ -621,7 +621,7 @@ class Mail extends \Goteo\Core\Model {
         $sqlFilter = [];
 
         if (!empty($filters['email'])) {
-            $sqlFilter .= $and . " mail.email = :email";
+            $sqlFilter[] = $and . " mail.email = :email";
             $and = " AND";
             $values[':email'] = $filters['email'];
         }
@@ -703,6 +703,7 @@ class Mail extends \Goteo\Core\Model {
                     FROM mail
                     LEFT JOIN mailer_content ON mailer_content.mail = mail.id
                     $sqlFilter";
+            // die(\sqldbg($sql, $values));
             return (int) static::query($sql, $values)->fetchColumn();
         }
 
