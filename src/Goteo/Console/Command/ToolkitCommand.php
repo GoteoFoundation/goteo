@@ -270,14 +270,22 @@ EOT
         }
         elseif($scope == 'poolstatus') {
             $output->writeln("Checking pool statuses related to project statuses...");
+            $output->writeln("<comment>NOTE: Not all issues found here are necessarily problems. Use with caution.</comment>");
+            if($project) {
+                $sqladd = ' AND project=:project';
+            } else {
+                $values = [];
+            }
 
-            $sql = "SELECT * FROM invest WHERE status>0 AND pool=1 AND (project IN ($sql_failed_projects) OR ISNULL(project))";
-            $subquery = Invest::query($sql);
+            $sql = "SELECT * FROM invest WHERE status>0 AND pool=1 AND (project IN ($sql_failed_projects) OR ISNULL(project))$sqladd";
+            // die(\sqldbg($sql, $values));
+            $subquery = Invest::query($sql, $values);
             foreach($subquery->fetchAll(\PDO::FETCH_CLASS, '\Goteo\Model\Invest') as $invest) {
                 $project = $invest->project;
                 if(empty($project)) $project = 'POOL-PAYMENT';
-                $output->write("User: <info>{$invest->user}</info> Failed project: <info>$project</info> Invest: {$invest->id} Amount: <comment>{$invest->amount}</comment> Method: <comment>{$invest->method}</comment> Status: <comment>{$invest->status}</comment> ");
+                $info = "User: <info>{$invest->user}</info> Failed project: <info>$project</info> Invest: {$invest->id} Amount: <comment>{$invest->amount}</comment> Method: <comment>{$invest->method}</comment> Status: <comment>{$invest->status}</comment> ";
                 if($invest->status != Invest::STATUS_TO_POOL) {
+                    $output->write($info);
                     if($update) {
                         $output->writeln("<comment>Status changed to " . Invest::STATUS_TO_POOL . "</comment>");
                         $invest->setStatus(Invest::STATUS_TO_POOL);
@@ -287,13 +295,17 @@ EOT
                     }
                     $index++;
                 } else {
-                    $output->writeln("<info>OK</info>");
+                    if($output->isVerbose()) {
+                        $output->write($info);
+                        $output->writeln("<info>OK</info>");
+                    }
                 }
             }
 
             $output->writeln("Checking pool statuses related to invests statuses...");
-            $sql = "SELECT * FROM invest WHERE status=" . Invest::STATUS_TO_POOL. " AND (project NOT IN ($sql_failed_projects) OR ISNULL(project))";
-            $subquery = Invest::query($sql);
+            $sql = "SELECT * FROM invest WHERE status=" . Invest::STATUS_TO_POOL. " AND (project NOT IN ($sql_failed_projects) OR ISNULL(project))$sqladd";
+
+            $subquery = Invest::query($sql, $values);
             foreach($subquery->fetchAll(\PDO::FETCH_CLASS, '\Goteo\Model\Invest') as $invest) {
                 if(!$invest->getProject()) {
                     continue;
