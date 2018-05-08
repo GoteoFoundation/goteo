@@ -1,15 +1,15 @@
 goteo.typeahead_engines = goteo.typeahead_engines || {};
 
-goteo.typeahead_engines.user = function (settings) {
+goteo.typeahead_engines.channel = function (settings) {
     var defaults = settings && settings.defaults || false;
 
     var engine = new Bloodhound({
-        datumTokenizer: Bloodhound.tokenizers.obj.whitespace('id', 'name', 'email'),
+        datumTokenizer: Bloodhound.tokenizers.obj.whitespace('id', 'name', 'subtitle'),
         identify: function (o) { return o.id; },
         dupDetector: function (a, b) { return a.id === b.id; },
         queryTokenizer: Bloodhound.tokenizers.whitespace,
         remote: {
-            url: '/api/users?q=%QUERY',
+            url: '/api/channels?q=%QUERY',
             wildcard: '%QUERY',
             filter: function (response) {
                 // console.log('remote hit', response);
@@ -34,13 +34,13 @@ goteo.typeahead_engines.user = function (settings) {
 
     // Engine
     return {
-        name: 'user',
+        name: 'channel',
         displayKey: 'name',
         source: engineWithDefaults,
         templates: {
-            header: '<h3>' + (goteo.texts && goteo.texts['admin-users'] || 'users') + '</h3>',
+            header: '<h3>' + (goteo.texts && goteo.texts['admin-channels'] || 'channels') + '</h3>',
             suggestion: function (datum) {
-                // console.log('user suggestion',datum);
+                console.log('channel suggestiono',datum);
                 var t = '<div><img src="' + datum.avatar + '" class="img-circle"> ';
                 t += datum.name + '</div>';
                 return t;

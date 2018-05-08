@@ -160,6 +160,11 @@ class Node extends \Goteo\Core\Model {
         $sqlFilter = [];
         $values = [];
 
+        if (!empty($filters['global'])) {
+            $sqlFilter[] = "(node.id LIKE :global OR node.name LIKE :global OR node.subtitle LIKE :global)";
+            $values[':global'] = '%' . $filters['global'] . '%';
+        }
+
         if (!empty($filters['name'])) {
             $sqlFilter[] = "( node.name LIKE :name OR node.id = :id )";
             $values[':name'] = '%' . $filters['name'] . '%';
@@ -233,6 +238,7 @@ class Node extends \Goteo\Core\Model {
 
     /*
      * Lista simple de nodos
+     * TODO: complete this with paginations, filters and counter
      */
     public static function getList () {
 
@@ -293,6 +299,27 @@ class Node extends \Goteo\Core\Model {
         }
 
         return empty($errors);
+    }
+
+    public function getHomeImage() {
+        if(!$this->homeImageInstance instanceOf Image) {
+            $this->homeImageInstance = new Image($this->home_img);
+        }
+        return $this->homeImageInstance;
+    }
+
+    public function getLogo() {
+        if(!$this->logoInstance instanceOf Image) {
+            $this->logoInstance = new Image($this->logo);
+        }
+        return $this->logoInstance;
+    }
+
+    public function getLabel() {
+        if(!$this->labelInstance instanceOf Image) {
+            $this->labelInstance = new Image($this->label);
+        }
+        return $this->labelInstance;
     }
 
     /**

@@ -147,6 +147,13 @@ $api->add('api-calls', new Route(
         )
 ));
 
+// Channels list
+$api->add('api-channels', new Route(
+    '/channels',
+    array('_controller' => 'Goteo\Controller\Api\ChannelsApiController::channelsAction',
+        )
+));
+
 
 // Licenses list
 $api->add('api-licenses', new Route(
