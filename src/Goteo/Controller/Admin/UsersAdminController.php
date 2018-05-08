@@ -61,7 +61,7 @@ class UsersAdminController extends AbstractAdminController {
 
 
     public function listAction(Request $request) {
-        $filters = ['global' => $request->query->get('q')];
+        $filters = ['superglobal' => $request->query->get('q')];
         $limit = 25;
         $page = $request->query->get('pag') ?: 0;
         $users = User::getList($filters, [], $page * $limit, $limit);
