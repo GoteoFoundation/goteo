@@ -13,6 +13,10 @@ elseif($this->has_query('call')) {
     $value = $this->get_query('call');
     $query['call'] = $value;
 }
+elseif($this->has_query('channel')) {
+    $value = $this->get_query('channel');
+    $query['channel'] = $value;
+}
 elseif($this->has_query('matcher')) {
     $value = $this->get_query('matcher');
     $query['matcher'] = $value;

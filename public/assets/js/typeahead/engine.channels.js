@@ -8,6 +8,13 @@ goteo.typeahead_engines.channel = function (settings) {
         identify: function (o) { return o.id; },
         dupDetector: function (a, b) { return a.id === b.id; },
         queryTokenizer: Bloodhound.tokenizers.whitespace,
+        prefetch: {
+            url: '/api/channels',
+            filter: function (response) {
+                // console.log('prefetch hit', response);
+                return response.list;
+            }
+        },
         remote: {
             url: '/api/channels?q=%QUERY',
             wildcard: '%QUERY',
@@ -40,8 +47,8 @@ goteo.typeahead_engines.channel = function (settings) {
         templates: {
             header: '<h3>' + (goteo.texts && goteo.texts['admin-channels'] || 'channels') + '</h3>',
             suggestion: function (datum) {
-                console.log('channel suggestiono',datum);
-                var t = '<div><img src="' + datum.avatar + '" class="img-circle"> ';
+                // console.log('channel suggestion', datum);
+                var t = '<div><img src="' + datum.logo + '" class="img-circle"> ';
                 t += datum.name + '</div>';
                 return t;
             }
