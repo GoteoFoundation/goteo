@@ -524,9 +524,12 @@ class AdminChartsApiController extends ChartsApiController {
         $projects= [];
 
         $ofilter = [];
-        if($consultant = $request->query->get('consultant')) {
-            $ofilter['consultant'] = $consultant;
-        }
+        $ofilter['owner'] = $request->query->get('owner');
+        $ofilter['consultant'] = $request->query->get('user');
+        $ofilter['called'] = $request->query->get('call');
+        $ofilter['matchers'] = $request->query->get('matcher');
+        $ofilter['node'] = $request->query->has('channel') ? $request->query->get('channel') : $request->query->get('node');
+
         foreach(['created', 'published', 'reviewing', 'rejected'] as $when) {
             if($part && $part !== $when) continue;
             $date_from = 'created_from';

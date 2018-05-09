@@ -159,7 +159,7 @@ $(function(){
                     $(event.target).removeClass('loading');
                 });
                 // typeahead:select event is done when needed.
-                // For example: assets/js/admin/stats-invests.js
+                // For example: assets/js/admin/stats.js
                 // .on('typeahead:select', function (event, datum, name) {
                 //     console.log('selected',name, event, datum);
                 //     if(datum.url) location.href = datum.url;
