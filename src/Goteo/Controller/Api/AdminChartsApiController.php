@@ -243,8 +243,8 @@ class AdminChartsApiController extends ChartsApiController {
                 'calls' => $request->query->get('call'),
                 'matchers' => $request->query->get('matcher'),
                 'users' => $request->query->get('user'),
+                'node' => $request->query->has('channel') ? $request->query->get('channel') : $request->query->get('node'),
                 ];
-
             if(Payment::methodExists($method)) {
                 $filter['methods'] = $method;
                 $methods = [$method => Payment::getMethod($method)];
@@ -254,8 +254,8 @@ class AdminChartsApiController extends ChartsApiController {
                 $filter['methods'] = array_keys(array_filter($methods, function($val){
                     return !$val::isInternal();
                 }));
-                // print_r($filter['methods']);die;
             }
+            // print_r($filter);die;
 
             if($target === 'raised') {
 

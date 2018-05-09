@@ -212,7 +212,7 @@ class Invest extends \Goteo\Core\Model {
     /**
      * reusable sql filters for searching in invests table
      */
-    public static function getSQLFilter($filters = [], $node = null) {
+    public static function getSQLFilter($filters = []) {
         $values = [];
         $sqlFilter = [];
 
@@ -477,9 +477,11 @@ class Invest extends \Goteo\Core\Model {
             $sqlFilter[] = "invest_reward.reward=" . (int)$filters['reward'];
         }
 
-        if ($node) {
-            $sqlFilter[] = "(project.node = :node OR ISNULL(invest.project))";
-            $values[':node'] = $node;
+        if (isset($filters['node'])) {
+            // $sqlFilter[] = "(project.node = :node OR ISNULL(invest.project))";
+            if($filters['node']) $sqlFilter[] = "project.node = :node";
+            else $sqlFilter[] = "ISNULL(invest.project)";
+            $values[':node'] = $filters['node'];
         }
 
         if($sqlFilter) {
@@ -502,7 +504,8 @@ class Invest extends \Goteo\Core\Model {
     public static function getList ($filters = array(), $node = null, $offset = 0, $limit = 10, $count = false, $order = 'id DESC') {
 
         $list = [];
-        list($sqlFilter, $values) = self::getSQLFilter($filters, $node);
+        if($node) $filters['node'] = $node; // For old compatibility
+        list($sqlFilter, $values) = self::getSQLFilter($filters);
 
         if($count) {
             if($count === 'all') {
@@ -604,6 +607,7 @@ class Invest extends \Goteo\Core\Model {
         // Normal invests fee
         $sql = "SELECT SUM(IFNULL(project_account.fee, $fee) * invest.amount) / 100
                 FROM invest
+                LEFT JOIN project ON invest.project = project.id
                 LEFT JOIN project_account ON invest.project = project_account.project
                 WHERE invest.campaign=0 $sqlFilter";
         $users_fee = (float) self::query($sql, $values)->fetchColumn();
@@ -611,6 +615,7 @@ class Invest extends \Goteo\Core\Model {
         // Call Matchfunding invests fee
         $sql = "SELECT SUM(IFNULL(`call`.fee_projects_drop, $fee) * invest.amount) / 100
                 FROM invest
+                LEFT JOIN project ON invest.project = project.id
                 LEFT JOIN `call` ON invest.call = `call`.id
                 WHERE invest.campaign=1 AND invest.method='drop' $sqlFilter";
         $calls_fee = (float) self::query($sql, $values)->fetchColumn();
@@ -618,6 +623,7 @@ class Invest extends \Goteo\Core\Model {
         // Matcher Matchfunding invests fee
         $sql = "SELECT SUM(IFNULL(`matcher`.fee, $fee) * invest.amount) / 100
                 FROM invest
+                LEFT JOIN project ON invest.project = project.id
                 LEFT JOIN `matcher` ON invest.matcher = `matcher`.id
                 WHERE invest.campaign=1 AND invest.method!='drop' $sqlFilter";
         $matchers_fee = (float) self::query($sql, $values)->fetchColumn();
