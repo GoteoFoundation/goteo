@@ -41,7 +41,7 @@ $(function(){
             if(is_method) method = part;
             else          interval = part;
         }
-        console.log('click', hash, 'part', part, 'target', target, method, interval);
+        // console.log('click', hash, 'part', part, 'target', target, method, interval);
         var id = target  + '-' + method  + '-' + interval;
         var $template =  $('#template-' + id + '');
         if(!$template.length) {
@@ -123,13 +123,15 @@ $(function(){
         // Change source in text/template
         $('script[type="text/template"]').each(function(){
             var $template = $(this);
+            // console.log('template', $template);
             var content = $template.html();
             var source = $(content).data('source');
-            var query = location.search.replace(/&text=.+/, '');
+
+            var query = location.search.replace(/&text=[^&]+/, '');
             var source2 = source.replace(/\?.+/g, query);
             // console.log('modify', source, source2);
             content = content.replace(new RegExp(escapeRegExp(source), 'g'), source2)
-            // $chart.data(source2);
+            // console.log(content);
             $template.html(content);
         });
         initBindings();

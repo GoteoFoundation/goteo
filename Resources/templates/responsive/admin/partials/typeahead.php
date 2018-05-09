@@ -1,9 +1,13 @@
 <?php
-$all = ['call','channel','project','user'];
-$defaults = ['call','channel'];
+$all = ['call', 'channel', 'project', 'user'];
+$defaults = [];
+foreach($all as $q) {
+    if($this->has_query($q)) $defaults[] = $q;
+}
+if(empty($defaults)) $defaults = ['call', 'channel'];
 ?>
 <div class="admin-typeahead" data-sources="<?= implode(',', $defaults) ?>">
-  <div class="form-group has-feedback<?= ($this->value ? ' has-warning' : '') ?>">
+  <div class="form-group has-feedback<?= ($this->value ? ' has-error' : '') ?>">
 
     <input class="typeahead form-control" autocomplete="off" type="text" placeholder="<?= $this->placeholder ?: $this->text('admin-search-global') ?>" value="<?= $this->value ?>">
     <span class="fa fa-search form-control-feedback" aria-hidden="true"></span>

@@ -26,9 +26,9 @@ for the JavaScript code in this page.
 $(function(){
 
     var createChart = function($ob, data, settings) {
-        console.log('data', data);
+        // console.log('data', data);
 
-        console.log('createChart with', settings)
+        // console.log('createChart with', settings)
 
         if(!data || (data.items === undefined && !Object.keys(data).length) || (data.items !== undefined && !data.items.length)) {
             $ob.html('<small class="text-danger">No data</small>');
@@ -71,7 +71,7 @@ $(function(){
             first = false;
             var $chart = $(this);
             var source = $chart.data('source');
-            console.log('initChart with source', source);
+            // console.log('initChart with source', source);
             if(!sources[source]) {
                 sources[source] = {settings: $chart.data(), data: []};
             }
@@ -85,10 +85,10 @@ $(function(){
                     console.log('timeout at ', interval, 'delay at', interval_delay);
                     setTimeout(function() {
                         if($('[data-source="' +  source +'"]').length) {
-                            console.log('recreating chart with', source, sources[source]);
+                            // console.log('recreating chart with', source, sources[source]);
                             initChart.call($chart);
                         } else {
-                            console.log('canceling timeout for ', source, sources[source]);
+                            // console.log('canceling timeout for ', source, sources[source]);
                         }
                         }, ((first ? interval_delay : 0) + interval) * 1000);
                     }
@@ -114,7 +114,7 @@ $(function(){
             var target = $(this).data('target');
             var source = $(target).data('source');
             sources[source].settings = $.extend(sources[source].settings, $(this).data());
-            console.log('reinit with', sources[source].settings);
+            // console.log('reinit with', sources[source].settings);
             createChart($(target), sources[source].data, sources[source].settings);
         });
 
@@ -126,13 +126,13 @@ $(function(){
             var source = $(target).data('source');
             if($(this).prop('checked')) {
                 // add settings
-                console.log('add settings', settings);
+                // console.log('add settings', settings);
                 // Save current settings
                 $(this).data('settings-backup', sources[source].settings);
                 sources[source].settings = $.extend(sources[source].settings, settings);
             } else if($(this).data('settings-backup')) {
                 // remove settings
-                console.log('remove settings', settings);
+                // console.log('remove settings', settings);
                 // Retrieve backup
                 sources[source].settings = $(this).data('settings-backup');
             }

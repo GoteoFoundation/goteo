@@ -10,10 +10,11 @@ if(in_array($this->interval, ['week', 'month', 'year'])) {
 }
 $id = $this->id ?: 'global';
 $method = $this->method ?: $this->text('regular-all');
+$query = $this->raw('query');
 ?>
 
 
-<div class="d3-chart loading discrete-values" data-source="/api/charts/totals/invests/<?= $target ?>/<?= $id ?>/<?= $slot1 ?>?<?= $this->query ?>" data-interval="40" data-flash-time="15" data-delay="50">
+<div class="d3-chart loading discrete-values" data-source="/api/charts/totals/invests/<?= $target ?>/<?= $id ?>/<?= $slot1 ?>?<?= $query ?>" data-interval="40" data-flash-time="15" data-delay="50">
 <?php foreach(['raised', 'active'] as $type): ?>
     <h2><?= $this->text('admin-stats-'.$type) ?></h2>
     <blockquote>
