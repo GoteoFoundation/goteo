@@ -134,7 +134,7 @@ $(function(){
             var source2 = source.replace(/\?.+/g, query);
             console.log('modify', source, source2);
             content = content.replace(new RegExp(escapeRegExp(source), 'g'), source2)
-            console.log(content);
+            // console.log(content);
             $template.html(content);
         });
         initBindings();

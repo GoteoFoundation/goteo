@@ -152,10 +152,14 @@ class Matcher extends \Goteo\Core\Model {
         foreach(['id', 'name', 'terms'] as $key) {
             if (isset($filters[$key])) {
                 $filter[] = "matcher.$key LIKE :$key";
-                $values[":$key"] = $filters[$key];
+                $values[":$key"] = '%'.$filters[$key].'%';
             }
         }
-
+        if($filters['global']) {
+            $filter[] = "(matcher.name LIKE :global OR matcher.matcher_location LIKE :global)";
+            $values[':global'] = '%'.$filters['global'].'%';
+        }
+        // print_r($filter);die;
         if($filter) {
             $sql = " WHERE " . implode(' AND ', $filter);
         }

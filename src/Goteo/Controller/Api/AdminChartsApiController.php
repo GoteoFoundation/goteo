@@ -528,10 +528,11 @@ class AdminChartsApiController extends ChartsApiController {
         $ofilter['owner'] = $request->query->get('owner');
         $ofilter['consultant'] = $request->query->get('consultant');
         $ofilter['called'] = $request->query->get('call');
-        $ofilter['matchers'] = $request->query->get('matcher');
+        $ofilter['matcher'] = $request->query->get('matcher');
         $ofilter['node'] = $request->query->has('channel') ? $request->query->get('channel') : $request->query->get('node');
+        $filter['status'] = -3; // all projects
 
-        foreach(['created', 'published', 'reviewing', 'rejected'] as $when) {
+        foreach(['created', 'negotiating', 'reviewing', 'published', 'rejected'] as $when) {
             if($part && $part !== $when) continue;
             $date_from = 'created_from';
             $date_until = 'created_until';
@@ -540,6 +541,11 @@ class AdminChartsApiController extends ChartsApiController {
                 $filter['status'] = [Project::STATUS_IN_CAMPAIGN, Project::STATUS_FUNDED, Project::STATUS_FULFILLED, Project::STATUS_UNFUNDED];
                 $date_from = 'published_from';
                 $date_until = 'published_until';
+            }
+            elseif($when === 'negotiating') {
+                $filter['status'] = -2;
+                $date_from = 'updated_from';
+                $date_until = 'updated_until';
             }
             elseif($when === 'reviewing') {
                 $filter['status'] = Project::STATUS_REVIEWING;

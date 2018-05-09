@@ -4,11 +4,17 @@ $this->layout('admin/stats/layout');
 
 $filters = $this->a('filters');
 
+$engines = ['channel', 'call', 'matcher', 'consultant'];
+$defaults = [];
+foreach($engines as $q) {
+    if($this->has_query($q)) $defaults[] = $q;
+}
+
 ?>
 
 <?php $this->section('admin-stats-head') ?>
 
-    <?= $this->insert('admin/partials/typeahead', ['value' => $value, 'engines' => ['channel', 'call', 'matcher', 'consultant']]) ?>
+    <?= $this->insert('admin/partials/typeahead', ['engines' => $engines, 'defaults' => $engines]) ?>
 
 <?php $this->replace() ?>
 
@@ -17,7 +23,12 @@ $filters = $this->a('filters');
 <div class="panel">
   <div class="panel-body">
 
-    <h5><?= $this->text('admin-stats-project-totals') ?></h5>
+    <h4><?= $this->text('admin-stats-project-totals') ?></h4>
+
+    <?php foreach($defaults as $engine): ?>
+        <p><?= $this->text("admin-stats-projects-$engine-desc") ?></p>
+    <?php endforeach ?>
+
 
     <?= $this->insert('admin/stats/totals/partials/projects', ['query' => http_build_query($filters, '', '&')]) ?>
 

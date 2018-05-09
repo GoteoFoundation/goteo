@@ -2,6 +2,7 @@
 $query = $this->raw('query');
 ?>
 <div class="d3-chart loading discrete-values" data-source="/api/charts/totals/projects?<?= $query ?>" data-interval="15" data-flash-time="30" data-delay="50">
+
     <ul class="row list-unstyled">
         <li class="col-xxs-4 col-xs-2" data-property="created.today" data-title="<?= $this->text('admin-projects-created-today') ?>"></li>
         <li class="col-xxs-4 col-xs-2" data-property="created.yesterday" data-title="<?= $this->text('admin-projects-created-yesterday') ?>"></li>
@@ -12,13 +13,14 @@ $query = $this->raw('query');
     </ul>
 
     <ul class="row list-unstyled">
-        <li class="col-xxs-4 col-xs-2" data-property="published.today" data-title="<?= $this->text('admin-projects-published-today') ?>"></li>
-        <li class="col-xxs-4 col-xs-2" data-property="published.yesterday" data-title="<?= $this->text('admin-projects-published-yesterday') ?>"></li>
-        <li class="col-xxs-4 col-xs-2" data-property="published.week" data-title="<?= $this->text('admin-projects-published-week') ?>"></li>
-        <li class="col-xxs-4 col-xs-2" data-property="published.month" data-title="<?= $this->text('admin-projects-published-month') ?>"></li>
-        <li class="col-xxs-4 col-xs-2" data-property="published.year" data-title="<?= $this->text('admin-projects-published-year') ?>"></li>
-        <li class="col-xxs-4 col-xs-2" data-property="published.last_year" data-title="<?= $this->text('admin-projects-published-last_year') ?>"></li>
+        <li class="col-xxs-4 col-xs-2" data-property="negotiating.today" data-title="<?= $this->text('admin-projects-negotiating-today') ?>"></li>
+        <li class="col-xxs-4 col-xs-2" data-property="negotiating.yesterday" data-title="<?= $this->text('admin-projects-negotiating-yesterday') ?>"></li>
+        <li class="col-xxs-4 col-xs-2" data-property="negotiating.week" data-title="<?= $this->text('admin-projects-negotiating-week') ?>"></li>
+        <li class="col-xxs-4 col-xs-2" data-property="negotiating.month" data-title="<?= $this->text('admin-projects-negotiating-month') ?>"></li>
+        <li class="col-xxs-4 col-xs-2" data-property="negotiating.year" data-title="<?= $this->text('admin-projects-negotiating-year') ?>"></li>
+        <li class="col-xxs-4 col-xs-2" data-property="negotiating.last_year" data-title="<?= $this->text('admin-projects-negotiating-last_year') ?>"></li>
     </ul>
+
 
     <ul class="row list-unstyled">
         <li class="col-xxs-4 col-xs-2" data-property="reviewing.today" data-title="<?= $this->text('admin-projects-review-today') ?>"></li>
@@ -27,6 +29,15 @@ $query = $this->raw('query');
         <li class="col-xxs-4 col-xs-2" data-property="reviewing.month" data-title="<?= $this->text('admin-projects-review-month') ?>"></li>
         <li class="col-xxs-4 col-xs-2" data-property="reviewing.year" data-title="<?= $this->text('admin-projects-review-year') ?>"></li>
         <li class="col-xxs-4 col-xs-2" data-property="reviewing.last_year" data-title="<?= $this->text('admin-projects-review-last_year') ?>"></li>
+    </ul>
+
+    <ul class="row list-unstyled">
+        <li class="col-xxs-4 col-xs-2" data-property="published.today" data-title="<?= $this->text('admin-projects-published-today') ?>"></li>
+        <li class="col-xxs-4 col-xs-2" data-property="published.yesterday" data-title="<?= $this->text('admin-projects-published-yesterday') ?>"></li>
+        <li class="col-xxs-4 col-xs-2" data-property="published.week" data-title="<?= $this->text('admin-projects-published-week') ?>"></li>
+        <li class="col-xxs-4 col-xs-2" data-property="published.month" data-title="<?= $this->text('admin-projects-published-month') ?>"></li>
+        <li class="col-xxs-4 col-xs-2" data-property="published.year" data-title="<?= $this->text('admin-projects-published-year') ?>"></li>
+        <li class="col-xxs-4 col-xs-2" data-property="published.last_year" data-title="<?= $this->text('admin-projects-published-last_year') ?>"></li>
     </ul>
 
     <ul class="row list-unstyled">
