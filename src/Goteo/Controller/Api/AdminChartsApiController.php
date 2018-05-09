@@ -243,6 +243,7 @@ class AdminChartsApiController extends ChartsApiController {
                 'calls' => $request->query->get('call'),
                 'matchers' => $request->query->get('matcher'),
                 'users' => $request->query->get('user'),
+                'consultants' => $request->query->get('consultant'),
                 'node' => $request->query->has('channel') ? $request->query->get('channel') : $request->query->get('node'),
                 ];
             if(Payment::methodExists($method)) {
@@ -525,7 +526,7 @@ class AdminChartsApiController extends ChartsApiController {
 
         $ofilter = [];
         $ofilter['owner'] = $request->query->get('owner');
-        $ofilter['consultant'] = $request->query->get('user');
+        $ofilter['consultant'] = $request->query->get('consultant');
         $ofilter['called'] = $request->query->get('call');
         $ofilter['matchers'] = $request->query->get('matcher');
         $ofilter['node'] = $request->query->has('channel') ? $request->query->get('channel') : $request->query->get('node');
