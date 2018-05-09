@@ -25,6 +25,11 @@ for the JavaScript code in this page.
 
 $(function(){
 
+    $('#main').on('click', '.admin-content .btn-group button', function() {
+        $(this).addClass('active').siblings().removeClass('active');
+    });
+
+
     var printRaisedGraph = function(target) {
         var hash = location.hash.substr(1).split(',');
         // from hash
@@ -65,7 +70,7 @@ $(function(){
     var HASH = location.hash;
     var initBindings = function() {
         HASH = location.hash;
-        console.log('initBindings, current hash', HASH);
+        // console.log('initBindings, current hash', HASH);
 
         $('a[data-toggle="tab"]').on('show.bs.tab', function (e) {
           console.log('tab show', e);
@@ -95,6 +100,10 @@ $(function(){
             var query = [];
             parts.forEach(function(it){
                 if(it.indexOf(name) === 0) return;
+                if(it.indexOf('channel') === 0) return;
+                if(it.indexOf('call') === 0) return;
+                if(it.indexOf('user') === 0) return;
+                if(it.indexOf('project') === 0) return;
                 if(it.indexOf('text') === 0) return;
                 if(it.indexOf(datum.id) === 0) return;
                 query.push(it);

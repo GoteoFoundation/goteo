@@ -41,6 +41,8 @@ class ChannelsApiController extends AbstractApiController {
         // General search
         if($request->query->has('q')) {
             $filters[$this->is_admin ? 'global' : 'name'] = $request->query->get('q');
+        } else {
+            $filters['available'] = true;
         }
         $limit = 25;
         $offset = $page * $limit;
