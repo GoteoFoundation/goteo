@@ -56,7 +56,8 @@ goteo.typeahead_engines.call = function (settings) {
                 if (datum.status === 4) label = 'orange';
                 if (datum.status === 5) label = 'success';
                 if (datum.status === 6) label = 'danger';
-                var t = '<div><img src="' + datum.image + '" class="img-circle"> ';
+                var t = '<div>';
+                if(datum.image) t += '<img src="' + datum.image + '" class="img-circle"> ';
                 t += '<span class="label label-' + label + '">' + datum.status_desc + '</span> ';
                 t += datum.name + '</div>';
                 return t;

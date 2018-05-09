@@ -48,7 +48,8 @@ goteo.typeahead_engines.channel = function (settings) {
             header: '<h3>' + (goteo.texts && goteo.texts['admin-channels'] || 'channels') + '</h3>',
             suggestion: function (datum) {
                 // console.log('channel suggestion', datum);
-                var t = '<div><img src="' + datum.logo + '" class="img-circle"> ';
+                var t = '<div>';
+                if(datum.logo) t += '<img src="' + datum.logo + '" class="img-circle"> ';
                 t += datum.name + '</div>';
                 return t;
             }
