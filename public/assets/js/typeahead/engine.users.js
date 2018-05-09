@@ -41,7 +41,8 @@ goteo.typeahead_engines.user = function (settings) {
             header: '<h3>' + (goteo.texts && goteo.texts['admin-users'] || 'users') + '</h3>',
             suggestion: function (datum) {
                 // console.log('user suggestion',datum);
-                var t = '<div><img src="' + datum.avatar + '" class="img-circle"> ';
+                var t = '<div>';
+                if(datum.image) t += '<img src="' + datum.image + '" class="img-circle"> ';
                 t += datum.name + '</div>';
                 return t;
             }

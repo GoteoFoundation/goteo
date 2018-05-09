@@ -7,6 +7,8 @@ $this->section('admin-container-head');
 ?>
     <h2><?= $this->text('admin-stats') ?></h2>
 
+    <?= $this->supply('admin-stats-head') ?>
+
 <?php $this->replace() ?>
 
 
