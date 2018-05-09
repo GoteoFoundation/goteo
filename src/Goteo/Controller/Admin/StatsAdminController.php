@@ -71,16 +71,31 @@ class StatsAdminController extends AbstractAdminController {
             throw new ControllerException("Template [$template] not found");
         }
 
-        $filters = [
-            'from' => $request->query->has('from') ? $request->query->get('from') : null,
-            'to' => $request->query->has('to') ? $request->query->get('to') : null
-        ];
+        $filters = [];
+        if($request->query->has('from')) $filters['from'] = $request->query->get('from');
+        if($request->query->has('to')) $filters['to'] = $request->query->get('to');
+
         $methods = array_map(function($m) {
                 return $m->getName();
             }, Payment::getMethods(Session::getUser()));
 
+        $text = '';
+        // Search engines
+        $engines = ['channel', 'call', 'matcher', 'project', 'user'];
+        foreach($engines as $e) {
+            if($request->query->has($e)) {
+                $text = $request->query->get($e);
+                $filters[$e] = $text;
+                break;
+            }
+        }
+        // Nice name if available
+        if($request->query->has('text')) $text = $request->query->get('text');
+
         return $this->viewResponse($template, [
+            'engines' => $engines,
             'filters' => $filters,
+            'text' => $text,
             'sub' => $sub,
             'part' => $part,
             'methods' => ['global' => Text::get('regular-all') ] + $methods,

@@ -12,6 +12,11 @@
       }
     }
   }
+  &::after {
+    display: block;
+    content: '';
+    clear: both;
+  }
 }
 .twitter-typeahead .tt-query,
 .twitter-typeahead .tt-hint {

@@ -1,23 +1,27 @@
 <?php
-$all = ['call', 'channel', 'project', 'user'];
+
 $defaults = [];
-foreach($all as $q) {
+$engines = $this->a('engines');
+foreach($engines as $q) {
     if($this->has_query($q)) $defaults[] = $q;
 }
-if(empty($defaults)) $defaults = ['call', 'channel'];
+if(empty($defaults)) $defaults = ['call', 'channel', 'matcher'];
+
+$value = $this->text;
+
 ?>
 <div class="admin-typeahead" data-sources="<?= implode(',', $defaults) ?>">
-  <div class="form-group has-feedback<?= ($this->value ? ' has-error' : '') ?>">
+  <div class="form-group has-feedback<?= ($value ? ' has-error' : '') ?>">
 
-    <input class="typeahead form-control" autocomplete="off" type="text" placeholder="<?= $this->placeholder ?: $this->text('admin-search-global') ?>" value="<?= $this->value ?>">
+    <input class="typeahead form-control" autocomplete="off" type="text" placeholder="<?= $this->placeholder ?: $this->text('admin-search-global') ?>" value="<?= $value ?>">
     <span class="fa fa-search form-control-feedback" aria-hidden="true"></span>
     <span class="help-block pull-left">
-      <?php foreach($all as $k): ?>
+      <?php foreach($engines as $k): ?>
         <label><input type="checkbox" autocomplete="off" name="<?= $k ?>"<?= in_array($k, $defaults) ? ' checked' : '' ?>> <?= $this->text('admin-' . $k . 's') ?></label>
       <?php endforeach ?>
     </span>
 
-    <?php if($this->value) {
+    <?php if($value) {
       echo '<span class="help-block text-right"><a href="' . $this->get_pathinfo() . '" class="pronto text-danger"><i class="fa fa-close"></i> ' . $this->text('admin-remove-filters') . '</a> &nbsp;</span>';
     } ?>
   </div>
