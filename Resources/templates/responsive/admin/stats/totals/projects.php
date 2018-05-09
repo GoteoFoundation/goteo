@@ -2,9 +2,8 @@
 
 $this->layout('admin/stats/layout');
 
-// $query = http_build_query($this->filters);
-$query = '';
-
+$filters = $this->a('filters');
+// if($filters['call']) die('call');
 ?>
 
 <?php $this->section('admin-stats-head') ?>
@@ -20,7 +19,7 @@ $query = '';
 
     <h5><?= $this->text('admin-stats-project-totals') ?></h5>
 
-    <?= $this->insert('admin/stats/totals/partials/projects', ['query' => $query]) ?>
+    <?= $this->insert('admin/stats/totals/partials/projects', ['query' => http_build_query($filters, '', '&')]) ?>
 
   </div>
 </div>

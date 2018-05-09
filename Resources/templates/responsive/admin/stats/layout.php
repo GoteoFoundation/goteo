@@ -14,6 +14,6 @@ $this->section('admin-container-head');
 
 <?php $this->section('footer') ?>
 
-<script type="text/javascript" src="<?= SRC_URL ?>/assets/js/admin/stats-invests.js"></script>
+<script type="text/javascript" src="<?= SRC_URL ?>/assets/js/admin/stats.js"></script>
 
 <?php $this->append() ?>
