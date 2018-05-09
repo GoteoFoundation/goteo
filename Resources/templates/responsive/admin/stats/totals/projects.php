@@ -3,12 +3,12 @@
 $this->layout('admin/stats/layout');
 
 $filters = $this->a('filters');
-// if($filters['call']) die('call');
+
 ?>
 
 <?php $this->section('admin-stats-head') ?>
 
-    <?= $this->insert('admin/partials/typeahead', ['value' => $value, 'engines' => ['channel', 'call', 'matcher']]) ?>
+    <?= $this->insert('admin/partials/typeahead', ['value' => $value, 'engines' => ['channel', 'call', 'matcher', 'consultant']]) ?>
 
 <?php $this->replace() ?>
 

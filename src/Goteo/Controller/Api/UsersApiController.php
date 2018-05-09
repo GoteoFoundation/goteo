@@ -74,6 +74,11 @@ class UsersApiController extends AbstractApiController {
         if($request->query->has('q')) {
             $filters[$this->is_admin ? 'global' : 'name'] = $request->query->get('q');
         }
+        if($this->is_admin && $request->query->has('role')) {
+            $role = $request->query->get('role');
+            if($role === 'consultant') $filters['type'] = 'consultants';
+        }
+
         $limit = 25;
         $offset = $page * $limit;
         $total = User::getList($filters, $node, 0, 0, true);

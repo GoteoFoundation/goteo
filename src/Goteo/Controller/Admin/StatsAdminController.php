@@ -81,7 +81,7 @@ class StatsAdminController extends AbstractAdminController {
 
         $text = '';
         // Search engines
-        $engines = ['channel', 'call', 'matcher', 'project', 'user'];
+        $engines = ['channel', 'call', 'matcher', 'project', 'user', 'consultant'];
         foreach($engines as $e) {
             if($request->query->has($e)) {
                 $text = $request->query->get($e);

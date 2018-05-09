@@ -246,6 +246,18 @@ class Invest extends \Goteo\Core\Model {
             }
             if($parts) $sqlFilter[] = "project.status IN (" . implode(',', $parts) . ")";
         }
+        if (!empty($filters['consultants'])) {
+            $i = 0;
+            $parts = [];
+            if(!is_array($filters['consultants'])) $filters['consultants'] = [$filters['consultants']];
+            foreach($filters['consultants'] as $u) {
+                $parts[] = ":consultant$i";
+                $values[":consultant$i"] = is_object($u) ? $u->id : $u;
+                $i++;
+            }
+            $sqlFilter[] = 'invest.project IN (SELECT project FROM user_project WHERE user IN(' . implode(',', $parts) . '))';
+        }
+
         if (is_numeric($filters['status'])) {
             $sqlFilter[] = "invest.status = :status";
             $values[':status'] = $filters['status'];

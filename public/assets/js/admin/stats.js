@@ -109,6 +109,7 @@ $(function(){
                 if(it.indexOf('user') === 0) return;
                 if(it.indexOf('project') === 0) return;
                 if(it.indexOf('matcher') === 0) return;
+                if(it.indexOf('consultant') === 0) return;
                 if(it.indexOf('text') === 0) return;
                 if(it.indexOf(datum.id) === 0) return;
                 query.push(it);
@@ -131,9 +132,9 @@ $(function(){
 
             var query = location.search.replace(/&text=[^&]+/, '');
             var source2 = source.replace(/\?.+/g, query);
-            // console.log('modify', source, source2);
+            console.log('modify', source, source2);
             content = content.replace(new RegExp(escapeRegExp(source), 'g'), source2)
-            // console.log(content);
+            console.log(content);
             $template.html(content);
         });
         initBindings();
