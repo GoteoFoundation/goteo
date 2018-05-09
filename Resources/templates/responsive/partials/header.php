@@ -6,6 +6,9 @@
       <?php $this->stop(); ?>
     </div><!--/.navbar-header -->
 
+    <?php $this->section('header-navbar-powered') ?>
+    <?php $this->stop(); ?>
+
     <div class="navbar-always">
       <?php if (!$this->get_user()) : ?>
         <a class="hidden-xs" href="/signup?return=<?= $this->get_uri() ?>"><?= $this->text('menu-signup') ?></a>
