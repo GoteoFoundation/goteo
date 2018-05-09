@@ -33,8 +33,9 @@ $(function(){
     var printRaisedGraph = function(target) {
         var hash = location.hash.substr(1).split(',');
         // from hash
+        var interva_first = location.search ? '.choose-interval a:first' : '.choose-interval a:eq(1)';
         var method = hash[1] || $('#tab-' + target).find('.choose-method a:first').attr('href').substr(1);
-        var interval = hash[2] || $('#tab-' + target).find('.choose-interval a:first').attr('href').substr(1);
+        var interval = hash[2] || $('#tab-' + target).find(interva_first).attr('href').substr(1);
         if($(this).closest('.invests-filter').length) {
             var part = $(this).attr('href').substr(1);
             var is_method = $(this).closest('.invests-filter').hasClass('choose-method');
@@ -107,6 +108,7 @@ $(function(){
                 if(it.indexOf('call') === 0) return;
                 if(it.indexOf('user') === 0) return;
                 if(it.indexOf('project') === 0) return;
+                if(it.indexOf('matcher') === 0) return;
                 if(it.indexOf('text') === 0) return;
                 if(it.indexOf(datum.id) === 0) return;
                 query.push(it);
