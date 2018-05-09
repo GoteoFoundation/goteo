@@ -71,6 +71,7 @@ $(function(){
             first = false;
             var $chart = $(this);
             var source = $chart.data('source');
+            console.log('initChart with source', source);
             if(!sources[source]) {
                 sources[source] = {settings: $chart.data(), data: []};
             }

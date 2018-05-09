@@ -66,6 +66,9 @@ $(function(){
         }
     };
 
+    function escapeRegExp(str) {
+      return str.replace(/[.*+?^${}()|[\]\\]/g, "\\$&"); // $& means the whole matched string
+    }
 
     var HASH = location.hash;
     var initBindings = function() {
@@ -109,7 +112,7 @@ $(function(){
                 query.push(it);
             });
             var href = location.pathname + '?' + (query ? query.join('&') + '&' : '') + name + '=' + datum.id + '&text=' + datum.name;
-            console.log('parts',parts,'new query', query, 'href', href);
+            // console.log('parts',parts,'new query', query, 'href', href);
             adminProntoLoad(href);
         });
     };
@@ -117,6 +120,18 @@ $(function(){
     initBindings();
     $(window).on("pronto.render", function(e){
         location.hash = HASH;
+        // Change source in text/template
+        $('script[type="text/template"]').each(function(){
+            var $template = $(this);
+            var content = $template.html();
+            var source = $(content).data('source');
+            var query = location.search.replace(/&text=.+/, '');
+            var source2 = source.replace(/\?.+/g, query);
+            // console.log('modify', source, source2);
+            content = content.replace(new RegExp(escapeRegExp(source), 'g'), source2)
+            // $chart.data(source2);
+            $template.html(content);
+        });
         initBindings();
     });
 
